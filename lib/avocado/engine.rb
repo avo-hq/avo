@@ -15,7 +15,7 @@ module Avocado
           # What to do on file change
           config.to_prepare do
             puts 'to_prepare'.inspect
-            Dir.glob(Rails.root + "avocado/src/**/*.rb").each { |c| require(c) }
+            Dir.glob(Rails.root + "avocado/src/**/*.rb").each { |c| load(c) }
         end
       end
     end
