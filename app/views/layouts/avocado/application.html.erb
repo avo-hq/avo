@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Avocado</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+</head>
+<body>
+
+<div id="app" class="flex min-h-screen">
+  <%= render partial: 'layouts/avocado/sidebar' %>
+
+  <div class="flex-1">
+    <div class="header">
+      logo
+      search
+    </div>
+
+    <div class="content">
+      <%= yield %>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

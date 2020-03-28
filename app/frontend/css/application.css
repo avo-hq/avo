@@ -1,0 +1,16 @@
+@import './tailwindcss/base.css';
+@import './typography.css';
+@import './forms.css';
+@import './buttons.css';
+@import './tailwindcss/components.css';
+@import './tailwindcss/utilities.css';
+
+html,
+body {
+  @apply antialiased relative h-full bg-gray-300;
+}
+
+
+body {
+  /* background: red; */
+}
