@@ -55,7 +55,7 @@ export default {
   },
   methods: {
     async getResourceFields() {
-      const {data} = await axios.get(`/avocado/avocado-api/${this.resourceName}/${this.resourceId}/fields`)
+      const {data} = await axios.get(`/avocado/avocado-api/${this.resourceName}/${this.resourceId}`)
 
       this.resource = data.resource
     },
