@@ -5,13 +5,13 @@
     <div class="pl-4 resources-links w-full">
       <router-link
         v-for="resource in resources"
-        :key="resource.url"
-        v-text="resource.name"
+        :key="resource.resource_name"
+        v-text="resource.label"
         class="text-white font-semibold p-2 block rounded-lg"
         :to="{
           name: 'index',
           params: {
-            resourceName: resource.name,
+            resourceName: resource.resource_name,
           },
         }"></router-link>
     </div>

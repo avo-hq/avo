@@ -6,6 +6,6 @@
     <div class="py-4">
       <router-link to="/" class="text-white font-semibold" exact>Dashboard</router-link>
     </div>
-    <resources-navigation :resources='<%= Avocado::App.get_resources_navigation.to_json.to_s.html_safe %>'>
+    <resources-navigation :resources='<%= Avocado::App.get_resources_navigation %>'>
   </div>
 </div>

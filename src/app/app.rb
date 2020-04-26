@@ -28,7 +28,7 @@ module Avocado
       end
 
       def init_resources
-        @@app[:resources] = Avocado::Resources.constants.map do |c|
+        @@app[:resources] = Avocado::Resources.constants.select { |r| r != :Resource }.map do |c|
           if Avocado::Resources.const_get(c).is_a? Class
             "Avocado::Resources::#{c}".safe_constantize.new
           end
@@ -40,7 +40,6 @@ module Avocado
       end
 
       def get_resource(resource)
-        # abort [resource, @@app[:resources]].inspect
         @@app[:resources].find { |available_resource| "Avocado::Resources::#{resource}".safe_constantize == available_resource.class }
       end
 
@@ -51,9 +50,7 @@ module Avocado
       end
 
       def render_navigation
-        # abort 222.inspect
         navigation = []
-        # abort @@app.inspect
         @@app[:tools].each do |tool|
           navigation.push(tool.render_navigation) if tool.class.method_defined?(:render_navigation)
         end
@@ -62,12 +59,7 @@ module Avocado
       end
 
       def get_resources_navigation
-        App.get_resources.map do |resource|
-          {
-            name: resource.name,
-            url: resource.url,
-          }
-        end
+        App.get_resources.map { |resource| { label: resource.name, resource_name: resource.url.pluralize }}.to_json.to_s.html_safe
       end
     end
   end
