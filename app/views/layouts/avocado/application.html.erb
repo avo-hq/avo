@@ -11,15 +11,14 @@
 <body>
 
 <div id="app" class="flex min-h-screen">
-  <%= render partial: 'layouts/avocado/sidebar' %>
+  <%= render partial: 'avocado/partials/sidebar' %>
 
   <div class="flex-1">
-    <div class="header">
-      logo
-      search
+    <div class="bg-white p-4 shadow-md">
+      <%# search %> &nbsp;
     </div>
 
-    <div class="content">
+    <div class="content p-8">
       <%= yield %>
     </div>
   </div>

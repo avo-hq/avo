@@ -1,0 +1,8 @@
+<%= sidebar_heading 'Resources' %>
+
+<div class="p-4">
+  <% resources.each do |resource| %>
+    <%= resource_item resource.name, resource.url %>
+  <% end %>
+</div>
+

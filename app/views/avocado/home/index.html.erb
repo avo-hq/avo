@@ -1,15 +1,9 @@
-<p>
-  hello <%=  root_path %>
-</p>
-<div>
+<%# <loading ref="loading"></loading> %>
 
-  <strong>look here:</strong> <%= Avocado::ResourceManager.say_hello %>
-  <strong>helper here:</strong> <%= say_bye %>
-</div>
-<%# path = Avocado::ROOT_PATH.join('src', 'tools') %>
-<%# t = Dir[path] %>
-<%# t.each do |file| %>
-<%#= file %>
+<router-view :key="$route.name + ($route.params.resourceName || '')"></router-view>
 
-  <%#= File.read(file).directory?.inspect %>
-<%# end %>
+<%# <fade-transition>
+</fade-transition> %>
+
+<%# <portal-target name="modals" transition="fade-transition"></portal-target>
+<portal-target name="dropdowns" transition="fade-transition"></portal-target> %>
