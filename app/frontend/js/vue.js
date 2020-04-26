@@ -35,13 +35,13 @@ Vue.component('view-footer', require('./components/ViewFooter').default)
 Vue.component('panel', require('./components/Panel').default)
 Vue.component('field-wrapper', require('./components/FieldWrapper').default)
 Vue.component('heading', require('./components/Heading').default)
+Vue.component('resources-navigation', require('./components/ResourcesNavigation').default)
 
 
 const routes = [
   {
     path: '/',
     component: Dashboard,
-
   },
   {
     name: 'index',

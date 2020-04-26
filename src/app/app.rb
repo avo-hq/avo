@@ -60,6 +60,15 @@ module Avocado
 
         navigation.join('')
       end
+
+      def get_resources_navigation
+        App.get_resources.map do |resource|
+          {
+            name: resource.name,
+            url: resource.url,
+          }
+        end
+      end
     end
   end
 end

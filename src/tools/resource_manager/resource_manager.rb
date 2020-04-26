@@ -5,7 +5,7 @@ module Avocado
         'ResourceManager.initing'
       end
 
-      def render_navigation
+      def get_resources_navigation
         # render 'navigation'
       end
 

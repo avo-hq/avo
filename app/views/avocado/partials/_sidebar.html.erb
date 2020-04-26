@@ -2,10 +2,10 @@
   <div class="logo">
     <%#= inline_svg_pack_tag 'media/svgs/acorn.svg' %>
   </div>
-  <div class="tools p-4">
+  <div class="tools pl-4">
     <div class="py-4">
-      <%= router_link 'Dashboard', '/' %>
+      <router-link to="/" class="text-white font-semibold" exact>Dashboard</router-link>
     </div>
-    <%= render_navigation %>
+    <resources-navigation :resources='<%= Avocado::App.get_resources_navigation.to_json.to_s.html_safe %>'>
   </div>
 </div>

@@ -8,8 +8,3 @@ html,
 body {
   @apply antialiased relative h-full bg-gray-300;
 }
-
-
-body {
-  /* background: red; */
-}
