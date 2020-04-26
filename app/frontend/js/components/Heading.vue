@@ -1,16 +1,15 @@
 <template>
-  <td>
-    {{value}}
-  </td>
+  <div class="text-2xl font-bold pb-4"><slot/></div>
 </template>
 
 <script>
 export default {
-  // name: 'TextField',
   data: () => ({}),
-  props: ['value'],
+  props: [],
   computed: {},
   methods: {},
   mounted() {},
 }
 </script>
+
+<style lang="postcss"></style>

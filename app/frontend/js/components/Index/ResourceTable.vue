@@ -1,14 +1,17 @@
 <template>
   <div>
-    <table class="w-full">
-      <thead>
+    <table class="w-full px-4">
+      <thead v-if="hasFields" class="bg-gray-200">
+        <th class="w-8">
+          <!-- Select cell -->
+        </th>
         <th v-for="field in fields"
+          :key="field.id"
           v-text="field.name"
-          v-if="hasFields"
-          class="text-left"
+          class="text-left uppercase text-sm py-2"
           :resource-name="resourceName"
         ></th>
-        <th>
+        <th class="w-24">
           <!-- Control cell -->
         </th>
       </thead>

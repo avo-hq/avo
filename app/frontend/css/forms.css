@@ -2,17 +2,12 @@ label{
   @apply inline-block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2;
 }
 
-input[type=button],
-input[type=submit],
-button {
-  @apply inline-block bg-gray-200 text-gray-700 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight;
-}
 
 input[type=email],
 input[type=password],
 textarea,
 input[type=text] {
-  @apply appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight;
+  @apply appearance-none inline-block bg-gray-200 text-gray-700 border border-gray-300 rounded py-2 px-4 leading-tight;
 
   &:focus{
     @apply outline-none bg-white border-gray-500;

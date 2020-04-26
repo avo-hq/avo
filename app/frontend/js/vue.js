@@ -5,9 +5,11 @@ import Vue from 'vue/dist/vue.esm.js'
 import Vuex from 'vuex'
 import VueRouter from 'vue-router'
 
-import Dashboard from './components/Dashboard'
-import ResourceIndex from './components/ResourceIndex'
-import ResourceDetail from './components/ResourceDetail'
+import Dashboard from './views/Dashboard'
+import ResourceNew from './views/ResourceNew'
+import ResourceIndex from './views/ResourceIndex'
+import ResourceShow from './views/ResourceShow'
+import ResourceEdit from './views/ResourceEdit'
 
 import './components'
 import './fields'
@@ -17,10 +19,22 @@ Vue.use(Vuex);
 Vue.use(TurbolinksAdapter)
 
 
+Vue.component('index-id-field', require('./components/Index/IdField').default)
 Vue.component('index-text-field', require('./components/Index/TextField').default)
 
-Vue.component('resource-table', require('./components/ResourceTable').default)
+Vue.component('show-id-field', require('./components/Show/IdField').default)
+Vue.component('show-text-field', require('./components/Show/TextField').default)
+
+Vue.component('edit-text-field', require('./components/Edit/TextField').default)
+
+Vue.component('resource-table', require('./components/Index/ResourceTable').default)
 Vue.component('table-row', require('./components/Index/TableRow').default)
+
+Vue.component('view-header', require('./components/ViewHeader').default)
+Vue.component('view-footer', require('./components/ViewFooter').default)
+Vue.component('panel', require('./components/Panel').default)
+Vue.component('field-wrapper', require('./components/FieldWrapper').default)
+Vue.component('heading', require('./components/Heading').default)
 
 
 const routes = [
@@ -36,9 +50,21 @@ const routes = [
     props: true,
   },
   {
-    name: 'detail',
+    name: 'new',
+    path: '/resources/:resourceName/new',
+    component: ResourceNew,
+    props: true,
+  },
+  {
+    name: 'show',
     path: '/resources/:resourceName/:resourceId',
-    component: ResourceDetail,
+    component: ResourceShow,
+    props: true,
+  },
+  {
+    name: 'edit',
+    path: '/resources/:resourceName/:resourceId/edit',
+    component: ResourceEdit,
     props: true,
   },
 ]

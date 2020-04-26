@@ -6,6 +6,7 @@ module Avocado
 
       @@name = 'Services'
       @@url = 'services'
+      @@title = 'name'
 
       # @name = 'Services'
       # @url = 'services'
@@ -24,8 +25,12 @@ module Avocado
         @@url
       end
 
+      def title
+        @@title
+      end
+
       fields do
-        text :ID
+        id :ID
         text :Name
       end
 

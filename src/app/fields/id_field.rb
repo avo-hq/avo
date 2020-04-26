@@ -1,11 +1,11 @@
 module Avocado
   module ResourceFields
-    class TextField
+    class IdField
       # extend Avocado::ResourceFields::Field
       attr_reader :name
 
-      @@component = 'text-field'
-      @@can_be_updated = true
+      @@component = 'id-field'
+      @@can_be_updated = false
 
       def initialize(*args)
         @name = args.first

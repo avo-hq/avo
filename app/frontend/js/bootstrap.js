@@ -2,17 +2,11 @@ import axios from "axios";
 import _ from "lodash";
 import { Bus } from "./bus";
 
-// declare global {
-//     interface Window {
-//         _: any;
-//         axios: any;
-//     }
-// }
-
 window._ = _;
 
 window.axios = axios;
 window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
+window.axios.defaults.headers.common['X-CSRF-TOKEN'] = document.head.querySelector('meta[name="csrf-token"]').content
 
 // Add a response interceptor
 axios.interceptors.response.use(

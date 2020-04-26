@@ -43,5 +43,16 @@ module Avocado
       @@fields.push Avocado::ResourceFields::TextField::new(name)
       # name
     end
+
+    def id(name)
+      # abort args.inspect
+      # abort field.inspect
+      @@fields.push Avocado::ResourceFields::IdField::new(name)
+      # name
+    end
+
+    def hydrate_resource(resource)
+
+    end
   end
 end

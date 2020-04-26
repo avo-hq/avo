@@ -2,8 +2,8 @@ import '@/css/application.css'
 
 import Rails from "@rails/ujs"
 import Turbolinks from "turbolinks"
-import '@/src/bootstrap'
-import '@/src/vue'
+import '@/js/bootstrap'
+import '@/js/vue'
 
 // Uncomment to copy all static images under ../images to the output folder and reference
 // them with the image_pack_tag helper in views (e.g <%= image_pack_tag 'rails.png' %>)
