@@ -1,12 +1,12 @@
 export default {
   data: () => ({
-    value: ''
+    value: '',
   }),
   methods: {
-    setInitialValue(){
+    setInitialValue() {
       this.value = this.field.value
     },
-    getValue(){
+    getValue() {
       return this.value
     },
   },
@@ -14,5 +14,5 @@ export default {
     this.setInitialValue()
 
     this.field.getValue = this.getValue
-  }
+  },
 }

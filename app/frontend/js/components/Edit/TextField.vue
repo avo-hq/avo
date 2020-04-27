@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import FormField from '@/js/mixins/form-field.js'
+import FormField from '@/js/mixins/form-field'
 
 export default {
   mixins: [FormField],

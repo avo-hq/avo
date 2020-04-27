@@ -5,8 +5,8 @@ const aliases = require('./aliases')
 const vue = require('./loaders/vue')
 const vueSvg = require('./loaders/vue-svg')
 
-environment.loaders.prepend('vueSvg', vueSvg)
-environment.plugins.prepend('VueLoaderPlugin', new VueLoaderPlugin())
-environment.loaders.prepend('vue', vue)
+environment.loaders.append('vueSvg', vueSvg)
+environment.plugins.append('VueLoaderPlugin', new VueLoaderPlugin())
+environment.loaders.append('vue', vue)
 environment.config.merge(aliases)
 module.exports = environment

@@ -40,12 +40,10 @@ export default {
       return this.resources && this.resources.length > 0 && this.resources[0].fields && this.resources[0].fields.length > 0
     },
     fields() {
-      if (!this.hasFields) {
-        return []
-      }
+      if (!this.hasFields) return []
 
       return this.resources[0].fields
-    }
+    },
   },
   methods: {},
   mounted() {},

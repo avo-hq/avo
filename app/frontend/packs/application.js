@@ -2,8 +2,15 @@ import '@/css/application.css'
 
 import Rails from "@rails/ujs"
 import Turbolinks from "turbolinks"
-import '@/js/bootstrap'
-import '@/js/vue'
+import * as Mousetrap from 'mousetrap';
+import Avocado from '@/js/Avo'
+
+document.addEventListener('DOMContentLoaded', Avocado.init);
+document.addEventListener('turbolinks:load', Avocado.turbolinksLoad);
+
+Mousetrap.bind('r r r', () => Turbolinks.visit(window.location.href));
+// import '@/js/bootstrap'
+// import '@/js/vue'
 
 // Uncomment to copy all static images under ../images to the output folder and reference
 // them with the image_pack_tag helper in views (e.g <%= image_pack_tag 'rails.png' %>)
@@ -16,5 +23,6 @@ const svgPath = (name) => svgs(name, true)
 
 import '~/heroicons/dist/outline-md/md-adjustments.svg'
 
-Rails.start()
-Turbolinks.start()
+// Start turbolinks & UJS
+if (!Turbolinks || !Turbolinks.controller || !Turbolinks.controller.started) Turbolinks.start();
+if (!window._rails_loaded) Rails.start();

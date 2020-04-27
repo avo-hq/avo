@@ -32,6 +32,8 @@
 </template>
 
 <script>
+import { Api } from '@/js/Avo'
+
 export default {
   name: 'ResourceShow',
   data: () => ({
@@ -44,14 +46,13 @@ export default {
   computed: {
     fields() {
       return this.resource.fields
-    }
+    },
   },
   methods: {
     async getResource() {
-      const {data} = await axios.get(`/avocado/avocado-api/${this.resourceName}/${this.resourceId}`)
+      const { data } = await Api.get(`/avocado/avocado-api/${this.resourceName}/${this.resourceId}`)
 
       this.resource = data.resource
-
     },
   },
   async mounted() {

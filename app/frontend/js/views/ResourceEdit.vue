@@ -16,27 +16,27 @@
     </panel>
 
     <view-footer>
-        <router-link
-          class="button"
-          :to="{
-            name: 'show',
-            params: {
-              resourceName: resourceName,
-              resourceId: resource.id,
-            },
-          }">cancel</router-link>
+      <router-link
+        class="button"
+        :to="{
+          name: 'show',
+          params: {
+            resourceName: resourceName,
+            resourceId: resource.id,
+          },
+        }">cancel</router-link>
       <button class="button" @click="updateResource">Save</button>
     </view-footer>
-
   </div>
 </template>
 
 <script>
+import { Api } from '@/js/Avo'
 
 export default {
   data: () => ({
     resource: null,
-    form: {}
+    form: {},
   }),
   props: [
     'resourceName',
@@ -50,12 +50,12 @@ export default {
       if (!this.resource) {
         return []
       }
-      return this.resource.fields.filter(field => field.can_be_updated)
+      return this.resource.fields.filter((field) => field.can_be_updated)
     },
   },
   methods: {
     async getResourceFields() {
-      const {data} = await axios.get(`/avocado/avocado-api/${this.resourceName}/${this.resourceId}`)
+      const { data } = await Api.get(`/avocado/avocado-api/${this.resourceName}/${this.resourceId}`)
 
       this.resource = data.resource
     },
@@ -67,23 +67,18 @@ export default {
     },
     async updateResource() {
       console.log('updateResource')
-      console.log('this.form->', this.form)
 
-      const resource = {}
+      const { data } = await Api.put(`/avocado/avocado-api/${this.resourceName}/${this.resourceId}`, this.buildFormData())
 
-      this.resource.fields.filter(field => {
-        return field.can_be_updated
-      }).forEach((field) => {
-        console.log('field->', field)
-        console.log('field.getValue->', field.getValue())
-
-        resource[field.id] = field.getValue()
-      })
-      console.log(resource)
-      const {data} = await axios.put(`/avocado/avocado-api/${this.resourceName}/${this.resourceId}`, {resource})
       console.log(data)
-      // console.log()
-    }
+    },
+    buildFormData() {
+      const form = new FormData()
+
+      this.resource.fields.filter((field) => field.can_be_updated).forEach((field) => form.append(`resource[${field.id}]`, String(field.getValue())))
+
+      return form
+    },
   },
   async mounted() {
     await this.getResourceFields()

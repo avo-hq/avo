@@ -31,10 +31,12 @@
 </template>
 
 <script>
+import { Api } from '@/js/Avo'
+
 export default {
   data: () => ({
     resource: {},
-    form: {}
+    form: {},
   }),
   props: [
     'resourceName',
@@ -43,11 +45,11 @@ export default {
   computed: {
     resourceNameSingular() {
       return this.resource.resource_name_singular
-    }
+    },
   },
   methods: {
     async getResourceFields() {
-      const {data} = await axios.get(`/avocado/avocado-api/${this.resourceName}/${this.resourceId}/fields`)
+      const { data } = await Api.get(`/avocado/avocado-api/${this.resourceName}/${this.resourceId}/fields`)
 
       this.resource = data.resource
     },
@@ -60,15 +62,9 @@ export default {
     async updateResource() {
       console.log('updateResource')
       console.log('this.form->', this.form)
-      // const {data} = await axios.put(`/avocado/avocado-api/${this.resourceName}/${this.resourceId}`, {resource: this.form})
+      const { data } = await Api.put(`/avocado/avocado-api/${this.resourceName}/${this.resourceId}`, { resource: this.form })
       console.log(data)
-
-      // this.resource.fields.forEach((field) => {
-      //   console.log('field->', field)
-      //   console.log('field.getData->', field.getData())
-      // })
-      // console.log()
-    }
+    },
   },
   async mounted() {
     await this.getResourceFields()

@@ -15,17 +15,3 @@ export default {
 </script>
 
 <style lang="postcss"></style>
-
-</template>
-
-<script>
-export default {
-  data: () => ({}),
-  props: ['field'],
-  computed: {},
-  methods: {},
-  mounted() {},
-}
-</script>
-
-<style lang="postcss"></style>

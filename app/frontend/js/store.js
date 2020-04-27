@@ -1,10 +1,13 @@
+import Vue from 'vue'
 import Vuex from 'vuex'
 
-const initialState = {};
+Vue.use(Vuex)
 
-export const store =  new Vuex.Store({
+const initialState = {}
+
+export default new Vuex.Store({
   state: initialState,
   getters: {},
   actions: {},
   mutations: {},
-});
+})

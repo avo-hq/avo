@@ -21,7 +21,7 @@ module Avocado
       end
 
       render json: {
-        resources: resources_with_fields
+        resources: resources_with_fields,
       }
     end
 
@@ -60,7 +60,8 @@ module Avocado
       resource.update(resource_params(permitted_params))
 
       render json: {
-        resource: resource_with_fields
+        resource: resource_with_fields,
+        message: 'Resource updated',
       }
     end
 

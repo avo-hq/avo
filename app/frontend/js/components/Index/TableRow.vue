@@ -43,7 +43,7 @@ import EditIcon from '@/svgs/edit.svg?inline'
 import DeleteIcon from '@/svgs/trash.svg?inline'
 
 export default {
-  components: {ViewIcon, EditIcon, DeleteIcon},
+  components: { ViewIcon, EditIcon, DeleteIcon },
   data: () => ({
   }),
   props: [
@@ -53,7 +53,7 @@ export default {
   methods: {
     openDeleteModal() {
       console.log('openDeleteModal')
-    }
+    },
   },
   mounted() {
     console.log(this.resourceName, this.resourceId)
@@ -62,4 +62,3 @@ export default {
 </script>
 
 <style lang="postcss"></style>
-

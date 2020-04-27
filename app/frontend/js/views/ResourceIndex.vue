@@ -25,7 +25,6 @@
     <div class="flex justify-between items-center mb-4">
     </div>
 
-
     <panel>
       <resource-table
         :resources="resources"
@@ -36,7 +35,7 @@
 </template>
 
 <script>
-// import Vue from 'vue'
+import { Api } from '@/js/Avo'
 
 export default {
   name: 'ResourceIndex',
@@ -51,12 +50,14 @@ export default {
       if (this.resources && this.resources.length > 0) {
         return this.resources[0].resource_name_singular
       }
+
+      return ''
     },
   },
   methods: {},
   async mounted() {
     console.log('mounted')
-    const {data} = await axios.get(`/avocado/avocado-api/${this.resourceName}`)
+    const { data } = await Api.get(`/avocado/avocado-api/${this.resourceName}`)
 
     this.resources = data.resources
   },
