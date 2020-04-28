@@ -3,6 +3,8 @@ import Vue from 'vue/dist/vue.esm'
 import VueRouter from 'vue-router'
 import Turbolinks from 'turbolinks'
 import Toasted from 'vue-toasted'
+import VModal from 'vue-js-modal'
+import PortalVue from 'portal-vue'
 import router from '@/js/router'
 import store from '@/js/store'
 import Api from '@/js/Api'
@@ -62,6 +64,8 @@ const Avo = {
     })
     Vue.use(VueRouter)
     Vue.use(TurbolinksAdapter)
+    Vue.use(VModal, { dynamic: true, injectModalsContainer: false })
+    Vue.use(PortalVue)
 
     this.vue = new Vue({
       router,
@@ -76,7 +80,9 @@ const Avo = {
           Turbolinks.visit(url)
         },
         alert(message, type = 'success') {
-          this.$toasted.show(message, { type })
+          setTimeout(() => {
+            this.$toasted.show(message, { type })
+          }, 1)
         },
       },
       mounted() {

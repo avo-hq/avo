@@ -17,6 +17,7 @@ const appArgs = {
 
 const Api = axios.create(appArgs)
 
+// @todo: take redirects and reload into account before flashing toasts
 Api.interceptors.response.use(
   (response) => {
     const { data } = response
