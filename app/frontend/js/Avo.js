@@ -2,15 +2,11 @@ import TurbolinksAdapter from 'vue-turbolinks'
 import Vue from 'vue/dist/vue.esm'
 import VueRouter from 'vue-router'
 import Turbolinks from 'turbolinks'
+import Toasted from 'vue-toasted'
 import router from '@/js/router'
 import store from '@/js/store'
 import Api from '@/js/Api'
 import Bus from '@/js/Bus'
-
-
-Vue.use(VueRouter)
-Vue.use(TurbolinksAdapter)
-
 
 Vue.component('index-id-field', require('@/js/components/Index/IdField').default)
 Vue.component('index-text-field', require('@/js/components/Index/TextField').default)
@@ -58,6 +54,15 @@ const Avo = {
   // }
 
   initVue() {
+    Vue.use(Toasted, {
+      duration: 5000,
+      keepOnHover: true,
+      position: 'bottom-right',
+      closeOnSwipe: true,
+    })
+    Vue.use(VueRouter)
+    Vue.use(TurbolinksAdapter)
+
     this.vue = new Vue({
       router,
       store,
@@ -70,22 +75,19 @@ const Avo = {
         redirect(url) {
           Turbolinks.visit(url)
         },
-        onMessage() {
-          console.log('onMessage')
-        },
-        onError() {
-          console.log('onError')
+        alert(message, type = 'success') {
+          this.$toasted.show(message, { type })
         },
       },
       mounted() {
-        Avo.bus.$on('reload', this.reload)
-        Avo.bus.$on('redirect', this.redirect)
-        Avo.bus.$on('message', this.onMessage)
-        Avo.bus.$on('error', this.onError)
+        Bus.$on('reload', this.reload)
+        Bus.$on('redirect', this.redirect)
+        Bus.$on('message', (message) => this.alert(message, 'success'))
+        Bus.$on('error', (error) => this.alert(error, 'error'))
       },
       destroyed() {
-        Avo.bus.$off('reload')
-        Avo.bus.$off('redirect')
+        Bus.$off('reload')
+        Bus.$off('redirect')
       },
     })
   },
