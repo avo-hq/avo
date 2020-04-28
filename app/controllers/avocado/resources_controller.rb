@@ -3,7 +3,9 @@ require_dependency "avocado/application_controller"
 module Avocado
   class ResourcesController < ApplicationController
     def index
-      resources = resource_model.safe_constantize.order(created_at: :desc).take(12)
+      per_page = 24
+      params[:page] ||= 1
+      resources = resource_model.safe_constantize.order(created_at: :desc).page(params[:page]).per(per_page)
 
       resources_with_fields = []
       resources.each do |resource|
@@ -22,6 +24,8 @@ module Avocado
 
       render json: {
         resources: resources_with_fields,
+        per_page: per_page,
+        total_pages: resources.total_pages,
       }
     end
 

@@ -75,6 +75,18 @@ GEM
       activesupport (>= 3.0)
       nokogiri (>= 1.6)
     jaro_winkler (1.5.4)
+    kaminari (1.2.0)
+      activesupport (>= 4.1.0)
+      kaminari-actionview (= 1.2.0)
+      kaminari-activerecord (= 1.2.0)
+      kaminari-core (= 1.2.0)
+    kaminari-actionview (1.2.0)
+      actionview
+      kaminari-core (= 1.2.0)
+    kaminari-activerecord (1.2.0)
+      activerecord
+      kaminari-core (= 1.2.0)
+    kaminari-core (1.2.0)
     loofah (2.4.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -164,6 +176,7 @@ PLATFORMS
 DEPENDENCIES
   avocado!
   inline_svg
+  kaminari
   rubocop
   sqlite3
   webpacker (~> 4.0)

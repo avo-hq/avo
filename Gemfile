@@ -24,3 +24,6 @@ gem 'inline_svg'
 gem 'rubocop'
 
 gem 'zeitwerk', '~> 2.3'
+
+# Pagination
+gem 'kaminari'

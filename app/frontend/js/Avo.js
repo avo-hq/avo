@@ -5,10 +5,13 @@ import Turbolinks from 'turbolinks'
 import Toasted from 'vue-toasted'
 import VModal from 'vue-js-modal'
 import PortalVue from 'portal-vue'
+import Paginate from 'vuejs-paginate'
 import router from '@/js/router'
 import store from '@/js/store'
 import Api from '@/js/Api'
 import Bus from '@/js/Bus'
+
+Vue.component('paginate', Paginate)
 
 Vue.component('index-id-field', require('@/js/components/Index/IdField').default)
 Vue.component('index-text-field', require('@/js/components/Index/TextField').default)
