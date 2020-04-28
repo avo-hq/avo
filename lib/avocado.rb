@@ -18,7 +18,7 @@ module Avocado
       )
     end
 
-    def avocado_url
+    def root_path
       '/avocado'
     end
   end

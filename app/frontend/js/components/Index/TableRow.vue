@@ -38,26 +38,35 @@
 </template>
 
 <script>
+import { Api } from '@/js/Avo'
 import ViewIcon from '@/svgs/eye.svg?inline'
 import EditIcon from '@/svgs/edit.svg?inline'
 import DeleteIcon from '@/svgs/trash.svg?inline'
+import Modal from '@/js/components/Modal'
 
 export default {
-  components: { ViewIcon, EditIcon, DeleteIcon },
-  data: () => ({
-  }),
+  components: {
+    ViewIcon, EditIcon, DeleteIcon,
+  },
+  data: () => ({}),
   props: [
     'resource',
     'resourceName',
   ],
   methods: {
+    async deleteResource() {
+      await Api.delete(`/avocado/avocado-api/${this.resourceName}/${this.resource.id}`)
+    },
     openDeleteModal() {
-      console.log('openDeleteModal')
+      console.log('openDeleteModal', this.$modal)
+      // @todo: fix modal in turbolinks
+      this.$modal.show(Modal, {
+        text: 'Are you sure?',
+        confirmAction: () => this.deleteResource(),
+      })
     },
   },
-  mounted() {
-    console.log(this.resourceName, this.resourceId)
-  },
+  mounted() {},
 }
 </script>
 

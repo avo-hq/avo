@@ -3,7 +3,7 @@ require_dependency "avocado/application_controller"
 module Avocado
   class ResourcesController < ApplicationController
     def index
-      resources = resource_model.safe_constantize.take(12)
+      resources = resource_model.safe_constantize.order(created_at: :desc).take(12)
 
       resources_with_fields = []
       resources.each do |resource|
@@ -26,8 +26,6 @@ module Avocado
     end
 
     def show
-      resource = resource_model.safe_constantize.find params[:id]
-
       resource_with_fields = {
         id: resource.id,
         resource_name_singular: params[:resource_name].to_s.singularize,
@@ -40,12 +38,31 @@ module Avocado
       end
 
       render json: {
-        resource: resource_with_fields
+        resource: resource_with_fields,
       }
     end
 
     def update
-      resource = resource_model.safe_constantize.find params[:id]
+      resource_with_fields = {
+        id: resource.id,
+        fields: [],
+      }
+
+      resource_fields.each do |field|
+        resource_with_fields[:fields] << field.fetch_for_resource(resource)
+      end
+
+      resource.update(resource_params)
+
+      render json: {
+        resource: resource_with_fields,
+        message: 'Resource updated',
+      }
+    end
+
+    def create
+      resource = resource_model.safe_constantize.new(resource_params)
+      resource.save
 
       resource_with_fields = {
         id: resource.id,
@@ -56,20 +73,18 @@ module Avocado
         resource_with_fields[:fields] << field.fetch_for_resource(resource)
       end
 
-      permitted_params = resource_with_fields[:fields].select { |f| f[:can_be_updated] == true }.map { |f| f[:id].to_sym }
-      resource.update(resource_params(permitted_params))
-
       render json: {
         resource: resource_with_fields,
-        message: 'Resource updated',
+        message: 'Resource created',
+        redirect_url: Avocado::Resources::Resource.show_path(resource),
       }
     end
 
     def fields
-      # resource = resource_model.safe_constantize.find params[:id]
+      resource = resource_model.safe_constantize.new
 
       resource_with_fields = {
-        # id: resource.id,
+        id: resource.id,
         resource_name_singular: params[:resource_name].to_s.singularize,
         fields: [],
       }
@@ -78,12 +93,27 @@ module Avocado
         resource_with_fields[:fields] << field.fetch_for_resource(resource)
       end
 
+      # abort resource_fields.inspect
+
       render json: {
         resource: resource_with_fields
       }
     end
 
+    def destroy
+      resource.destroy
+
+      render json: {
+        redirect_url: Avocado::Resources::Resource.index_path(resource_model),
+        message: 'Resource destroyed',
+      }
+    end
+
     private
+      def resource
+        resource_model.safe_constantize.find params[:id]
+      end
+
       def resource_model
         params[:resource_name].to_s.camelize.singularize
       end
@@ -96,7 +126,11 @@ module Avocado
         avocado_resource.get_fields
       end
 
-      def resource_params(permitted_params)
+      def permitted_params
+        resource_fields.select(&:can_be_updated).map(&:id).map(&:to_sym)
+      end
+
+      def resource_params
         params.require(:resource).permit(permitted_params)
       end
   end

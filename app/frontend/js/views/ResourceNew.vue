@@ -7,7 +7,7 @@
     </view-header>
     <panel>
       <component
-        v-for="field in resource.fields"
+        v-for="field in fields"
         :key="field.id"
         :is="`edit-${field.component}`"
         :field="field"
@@ -24,7 +24,7 @@
             resourceName: resourceName,
           },
         }">cancel</router-link>
-      <button class="button" @click="updateResource">Save</button>
+      <button class="button" @click="createResource">Save</button>
     </view-footer>
 
   </div>
@@ -46,10 +46,17 @@ export default {
     resourceNameSingular() {
       return this.resource.resource_name_singular
     },
+    fields() {
+      if (!this.resource || !this.resource.fields || this.resource.fields.length === 0) {
+        return []
+      }
+
+      return this.resource.fields.filter((field) => field.can_be_updated)
+    },
   },
   methods: {
     async getResourceFields() {
-      const { data } = await Api.get(`/avocado/avocado-api/${this.resourceName}/${this.resourceId}/fields`)
+      const { data } = await Api.get(`/avocado/avocado-api/${this.resourceName}/fields`)
 
       this.resource = data.resource
     },
@@ -59,11 +66,17 @@ export default {
 
       this.form[key] = value
     },
-    async updateResource() {
-      console.log('updateResource')
-      console.log('this.form->', this.form)
-      const { data } = await Api.put(`/avocado/avocado-api/${this.resourceName}/${this.resourceId}`, { resource: this.form })
+    async createResource() {
+      const { data } = await Api.post(`/avocado/avocado-api/${this.resourceName}`, this.buildFormData())
+
       console.log(data)
+    },
+    buildFormData() {
+      const form = new FormData()
+
+      this.resource.fields.filter((field) => field.can_be_updated).forEach((field) => form.append(`resource[${field.id}]`, String(field.getValue())))
+
+      return form
     },
   },
   async mounted() {

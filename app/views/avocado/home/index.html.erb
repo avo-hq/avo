@@ -2,8 +2,9 @@
 
 <router-view :key="$route.name + ($route.params.resourceName || '')"></router-view>
 
+<modals-container />
 <%# <fade-transition>
-</fade-transition> %>
 
-<%# <portal-target name="modals" transition="fade-transition"></portal-target>
-<portal-target name="dropdowns" transition="fade-transition"></portal-target> %>
+
+</fade-transition> %>
+<!--<portal-target name="modals" transitieon="fade-transition"></portal-target>-->
