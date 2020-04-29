@@ -30,12 +30,12 @@ export default {
 }
 </script>
 
-<style>
-.resources-links {
-  a {
-    &.router-link-active {
-      @apply bg-blue-900;
+<style slang="postcss">
+  .resources-links {
+    a {
+      &.router-link-active {
+        @apply bg-blue-900;
+      }
     }
   }
-}
 </style>

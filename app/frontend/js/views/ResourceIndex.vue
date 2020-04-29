@@ -43,10 +43,10 @@
           :click-handler="changePage"
           :prev-text="'Prev'"
           :next-text="'Next'"
-          container-class="flex justify-end px-4"
+          container-class="avo-pagination flex justify-end px-4"
           page-class="pagination-button"
           page-link-class="button"
-          active-class="button bg-indigo-400"
+          active-class="active"
           prev-link-class="button"
           next-link-class="button"
         ></paginate>
@@ -128,5 +128,13 @@ export default {
 }
 </script>
 
-<style>
+<style slang="postcss">
+/* @todo: fix loaders to support lang= */
+.avo-pagination {
+  .active {
+    a {
+      @apply bg-indigo-400;
+    }
+  }
+}
 </style>
