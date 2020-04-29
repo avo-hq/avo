@@ -23,6 +23,7 @@ Vue.component('edit-text-field', require('@/js/components/Edit/TextField').defau
 
 Vue.component('resource-table', require('@/js/components/Index/ResourceTable').default)
 Vue.component('table-row', require('@/js/components/Index/TableRow').default)
+Vue.component('table-header-cell', require('@/js/components/Index/TableHeaderCell').default)
 
 Vue.component('view-header', require('@/js/components/ViewHeader').default)
 Vue.component('view-footer', require('@/js/components/ViewFooter').default)

@@ -33,6 +33,9 @@
         v-else
         :resources="resources"
         :resource-name="resourceName"
+        :sort-by="sortBy"
+        :sort-direction="sortDirection"
+        @sort="sort"
         ></resource-table>
 
         <paginate
@@ -64,6 +67,8 @@ export default {
     resources: [],
     totalPages: 0,
     page: 0,
+    sortBy: '',
+    sortDirection: '',
     isLoading: true,
   }),
   props: [
@@ -96,23 +101,50 @@ export default {
         },
       })
     },
-    async getResources(page) {
-      const { data } = await Api.get(`/avocado/avocado-api/${this.resourceName}?page=${page}`)
+    async getResources() {
+      const { data } = await Api.get(`/avocado/avocado-api/${this.resourceName}?page=${this.page}&sort_by=${this.sortBy}&sort_direction=${this.sortDirection}`)
 
       this.resources = data.resources
       this.totalPages = data.total_pages
 
       this.isLoading = false
     },
+    changeSortDirection() {
+      switch (this.sortDirection) {
+        case '':
+          this.sortDirection = 'desc'
+          break
+        case 'desc':
+          this.sortDirection = 'asc'
+          break
+        case 'asc':
+          this.sortDirection = ''
+          this.sortBy = ''
+          break
+        default:
+          this.sortDirection = ''
+          break
+      }
+    },
+    sort(by) {
+      this.sortBy = by
+      this.changeSortDirection()
+    },
   },
-
   beforeRouteUpdate(to, from, next) {
     next()
     this.setPage(to.query.page)
   },
   watch: {
     page(page) {
-      this.getResources(page)
+      this.page = page
+      this.getResources()
+    },
+    sortBy() {
+      this.getResources()
+    },
+    sortDirection() {
+      this.getResources()
     },
   },
   async mounted() {

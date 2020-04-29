@@ -4,11 +4,13 @@ module Avocado
       attr_reader :name
       attr_reader :component
       attr_reader :can_be_updated
+      attr_reader :sortable
 
       def initialize(*args)
         @name = args.first
         @component = 'field'
         @can_be_updated = true
+        @sortable = false
       end
 
       def id
@@ -37,7 +39,8 @@ module Avocado
           id: id,
           name: name,
           component: component,
-          can_be_updated: can_be_updated
+          can_be_updated: can_be_updated,
+          sortable: sortable,
         }
 
         fields[:value] = resource[id] if is_model

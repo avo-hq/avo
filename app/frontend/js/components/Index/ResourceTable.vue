@@ -7,9 +7,13 @@
         </th>
         <th v-for="field in fields"
           :key="field.id"
-          v-text="field.name"
+          is="table-header-cell"
           class="text-left uppercase text-sm py-2"
           :resource-name="resourceName"
+          :field="field"
+          :sort-by="sortBy"
+          :sort-direction="sortDirection"
+          @sort="$emit('sort', field.id)"
         ></th>
         <th class="w-24">
           <!-- Control cell -->
@@ -34,10 +38,15 @@ export default {
   props: [
     'resources',
     'resourceName',
+    'sortBy',
+    'sortDirection',
   ],
   computed: {
     hasFields() {
-      return this.resources && this.resources.length > 0 && this.resources[0].fields && this.resources[0].fields.length > 0
+      return this.resources
+        && this.resources.length > 0
+        && this.resources[0].fields
+        && this.resources[0].fields.length > 0
     },
     fields() {
       if (!this.hasFields) return []

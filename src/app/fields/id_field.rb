@@ -8,6 +8,7 @@ module Avocado
 
         @component = 'id-field'
         @can_be_updated = false
+        @sortable = true
       end
     end
   end

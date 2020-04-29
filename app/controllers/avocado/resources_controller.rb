@@ -5,7 +5,10 @@ module Avocado
     def index
       per_page = 24
       params[:page] ||= 1
-      resources = resource_model.safe_constantize.order(created_at: :desc).page(params[:page]).per(per_page)
+      params[:sort_by] = params[:sort_by].present? ? params[:sort_by] : :created_at
+      params[:sort_direction] = params[:sort_direction].present? ? params[:sort_direction] : :desc
+
+      resources = resource_model.safe_constantize.order("#{params[:sort_by]} #{params[:sort_direction]}").page(params[:page]).per(per_page)
 
       resources_with_fields = []
       resources.each do |resource|
