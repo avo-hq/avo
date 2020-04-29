@@ -1,6 +1,6 @@
 <%# <loading ref="loading"></loading> %>
 
-<router-view :key="$route.name + ($route.params.resourceName || '')"></router-view>
+<router-view :key="routerKey"></router-view>
 
 <modals-container />
 <%# <fade-transition>

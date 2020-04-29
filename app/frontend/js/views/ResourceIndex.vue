@@ -26,7 +26,11 @@
     </div>
 
     <panel>
+      <div v-if="isLoading">
+        loading
+      </div>
       <resource-table
+        v-else
         :resources="resources"
         :resource-name="resourceName"
         ></resource-table>
@@ -42,7 +46,7 @@
           container-class="flex justify-end px-4"
           page-class="pagination-button"
           page-link-class="button"
-          active-link-class="button"
+          active-class="button bg-indigo-400"
           prev-link-class="button"
           next-link-class="button"
         ></paginate>
@@ -52,7 +56,6 @@
 
 <script>
 import URI from 'urijs'
-import Turbolinks from 'turbolinks'
 import { Api } from '@/js/Avo'
 
 export default {
@@ -61,6 +64,7 @@ export default {
     resources: [],
     totalPages: 0,
     page: 0,
+    isLoading: true,
   }),
   props: [
     'resourceName',
@@ -76,29 +80,50 @@ export default {
     },
   },
   methods: {
-    changePage(page) {
-      const uri = URI(window.location.toString())
-      const newUrl = uri.query({ page })
+    setPage(page) {
+      this.page = parseInt(page, 10)
+    },
+    async changePage(page) {
+      this.isLoading = true
 
-      Turbolinks.visit(newUrl.toString())
+      this.$router.push({
+        name: 'index',
+        params: {
+          resourceName: this.resourceName,
+        },
+        query: {
+          page,
+        },
+      })
     },
     async getResources(page) {
       const { data } = await Api.get(`/avocado/avocado-api/${this.resourceName}?page=${page}`)
 
       this.resources = data.resources
       this.totalPages = data.total_pages
+
+      this.isLoading = false
+    },
+  },
+
+  beforeRouteUpdate(to, from, next) {
+    next()
+    this.setPage(to.query.page)
+  },
+  watch: {
+    page(page) {
+      this.getResources(page)
     },
   },
   async mounted() {
     let page = 1
+
     try {
       page = URI(window.location.toString()).query(true).page
     // eslint-disable-next-line no-empty
     } catch (err) {}
 
-    this.page = parseInt(page, 10)
-
-    await this.getResources(this.page)
+    this.setPage(page)
   },
 }
 </script>

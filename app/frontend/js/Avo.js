@@ -75,6 +75,11 @@ const Avo = {
       store,
       el: '#app',
       data: {},
+      computed: {
+        routerKey() {
+          return `${this.$route.name}-${this.$route.params.resourceName || ''}`
+        },
+      },
       methods: {
         reload() {
           Turbolinks.visit(window.location.href)

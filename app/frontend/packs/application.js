@@ -1,14 +1,14 @@
 import '@/css/application.css'
 
-import Rails from "@rails/ujs"
-import Turbolinks from "turbolinks"
-import * as Mousetrap from 'mousetrap';
+import Rails from '@rails/ujs'
+import Turbolinks from 'turbolinks'
+import * as Mousetrap from 'mousetrap'
 import Avocado from '@/js/Avo'
 
-document.addEventListener('DOMContentLoaded', Avocado.init);
-document.addEventListener('turbolinks:load', Avocado.turbolinksLoad);
+document.addEventListener('DOMContentLoaded', Avocado.init)
+document.addEventListener('turbolinks:load', Avocado.turbolinksLoad)
 
-Mousetrap.bind('r r r', () => Turbolinks.visit(window.location.href));
+Mousetrap.bind('r r r', () => Turbolinks.visit(window.location.href))
 // import '@/js/bootstrap'
 // import '@/js/vue'
 
@@ -21,8 +21,6 @@ const imagePath = (name) => images(name, true)
 const svgs = require.context('../svgs', true)
 const svgPath = (name) => svgs(name, true)
 
-import '~/heroicons/dist/outline-md/md-adjustments.svg'
-
 // Start turbolinks & UJS
-if (!Turbolinks || !Turbolinks.controller || !Turbolinks.controller.started) Turbolinks.start();
-if (!window._rails_loaded) Rails.start();
+if (!Turbolinks || !Turbolinks.controller || !Turbolinks.controller.started) Turbolinks.start()
+if (!window._rails_loaded) Rails.start()
