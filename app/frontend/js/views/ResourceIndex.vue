@@ -43,7 +43,7 @@
           v-model="page"
           ref="paginate"
           :page-count="totalPages"
-          :click-handler="changePage"
+          :click-handler="changePageFromPagination"
           :prev-text="'Prev'"
           :next-text="'Next'"
           container-class="avo-pagination flex justify-end px-4"
@@ -60,6 +60,8 @@
 <script>
 import URI from 'urijs'
 import { Api } from '@/js/Avo'
+import isUndefined from 'lodash/isUndefined'
+import isNull from 'lodash/isNull'
 
 export default {
   name: 'ResourceIndex',
@@ -85,23 +87,40 @@ export default {
     },
   },
   methods: {
-    setPage(page) {
-      this.page = parseInt(page, 10)
+    changePageFromPagination(page) {
+      return this.setNewQueryParam('page', page === 1 ? null : page)
     },
-    async changePage(page) {
-      this.isLoading = true
+    setNewQueryParam(param, value) {
+      this[param] = value
+      this.updateQueryParam()
+    },
+    buildQueryParams() {
+      const params = {}
 
+      if (this.page === '' || Number.isNaN(this.page) || isUndefined(this.page) || isNull(this.page)) {
+        delete params.page
+      } else {
+        params.page = this.page
+      }
+      // eslint-disable-next-line camelcase
+      if (this.sortBy !== '') params.sort_by = this.sortBy
+      // eslint-disable-next-line camelcase
+      if (this.sortDirection !== '') params.sort_direction = this.sortDirection
+
+      return params
+    },
+    updateQueryParam() {
       this.$router.push({
         name: 'index',
         params: {
           resourceName: this.resourceName,
         },
-        query: {
-          page,
-        },
+        query: this.buildQueryParams(),
       })
     },
     async getResources() {
+      this.loading = true
+
       const { data } = await Api.get(`/avocado/avocado-api/${this.resourceName}?page=${this.page}&sort_by=${this.sortBy}&sort_direction=${this.sortDirection}`)
 
       this.resources = data.resources
@@ -109,7 +128,13 @@ export default {
 
       this.isLoading = false
     },
-    changeSortDirection() {
+    changeSortDirection(by) {
+      if (this.sortBy !== by) {
+        this.sortDirection = 'desc'
+
+        return
+      }
+
       switch (this.sortDirection) {
         case '':
           this.sortDirection = 'desc'
@@ -127,20 +152,49 @@ export default {
       }
     },
     sort(by) {
+      this.changeSortDirection(by)
+
+      if (this.sortDirection) {
+        this.setNewQueryParam('sortBy', by)
+      } else {
+        this.setNewQueryParam('sortBy', '')
+      }
+    },
+    setPage(page) {
+      this.page = parseInt(page, 10)
+    },
+    setSortBy(by) {
+      if (isUndefined(by)) return
       this.sortBy = by
-      this.changeSortDirection()
+    },
+    setSortDirection(direction) {
+      if (isUndefined(direction)) return
+      this.sortDirection = direction
+    },
+    initQueryParams() {
+      let page = 1
+      let sortBy = ''
+      let sortDirection = ''
+
+      try {
+        page = URI(window.location.toString()).query(true).page
+        sortBy = URI(window.location.toString()).query(true).sort_by
+        sortDirection = URI(window.location.toString()).query(true).sort_direction
+      // eslint-disable-next-line no-empty
+      } catch (err) {}
+
+      this.setPage(page)
+      this.setSortBy(sortBy)
+      this.setSortDirection(sortDirection)
     },
   },
-  beforeRouteUpdate(to, from, next) {
-    next()
+  afterRouteUpdate(to) {
     this.setPage(to.query.page)
+    this.setSortBy(to.query.sortBy)
+    this.setSortDirection(to.query.sortDirection)
   },
   watch: {
-    page(page) {
-      this.page = page
-      this.getResources()
-    },
-    sortBy() {
+    page() {
       this.getResources()
     },
     sortDirection() {
@@ -148,14 +202,7 @@ export default {
     },
   },
   async mounted() {
-    let page = 1
-
-    try {
-      page = URI(window.location.toString()).query(true).page
-    // eslint-disable-next-line no-empty
-    } catch (err) {}
-
-    this.setPage(page)
+    this.initQueryParams()
   },
 }
 </script>

@@ -7,6 +7,7 @@ module Avocado
         super
 
         @component = 'text-field'
+        @sortable = true
       end
     end
   end
