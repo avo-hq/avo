@@ -161,15 +161,13 @@ export default {
       }
     },
     setPage(page) {
-      this.page = parseInt(page, 10)
+      this.page = isUndefined(page) ? 1 : parseInt(page, 10)
     },
     setSortBy(by) {
-      if (isUndefined(by)) return
-      this.sortBy = by
+      this.sortBy = isUndefined(by) ? '' : by
     },
     setSortDirection(direction) {
-      if (isUndefined(direction)) return
-      this.sortDirection = direction
+      this.sortDirection = isUndefined(direction) ? '' : direction
     },
     initQueryParams() {
       let page = 1
@@ -188,7 +186,8 @@ export default {
       this.setSortDirection(sortDirection)
     },
   },
-  afterRouteUpdate(to) {
+  beforeRouteUpdate(to, from, next) {
+    next()
     this.setPage(to.query.page)
     this.setSortBy(to.query.sortBy)
     this.setSortDirection(to.query.sortDirection)
