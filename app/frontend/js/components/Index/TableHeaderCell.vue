@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 <template>
   <th
     :key="key"
@@ -17,9 +18,11 @@
 </template>
 
 <script>
+/* eslint-disable import/no-unresolved */
 import Sort from '@/svgs/sort.svg?inline'
-import SortUp from '@/svgs/sort-up.svg?inline'
 import SortDown from '@/svgs/sort-down.svg?inline'
+import SortUp from '@/svgs/sort-up.svg?inline'
+/* eslint-enable import/no-unresolved */
 
 export default {
   components: { Sort, SortUp, SortDown },

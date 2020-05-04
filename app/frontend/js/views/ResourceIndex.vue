@@ -6,7 +6,7 @@
       </template>
 
       <template #search>
-        <input type="text" placeholder="search"/>
+        <resources-search :resource-name="resourceName" />
       </template>
       <template #tools>
 
@@ -35,7 +35,7 @@
         :resource-name="resourceName"
         :sort-by="sortBy"
         :sort-direction="sortDirection"
-        @sort="sort"
+        @sort="changeSortBy"
         ></resource-table>
 
         <paginate
@@ -58,10 +58,10 @@
 </template>
 
 <script>
-import URI from 'urijs'
 import { Api } from '@/js/Avo'
-import isUndefined from 'lodash/isUndefined'
+import URI from 'urijs'
 import isNull from 'lodash/isNull'
+import isUndefined from 'lodash/isUndefined'
 
 export default {
   name: 'ResourceIndex',
@@ -77,7 +77,6 @@ export default {
     'resourceName',
   ],
   computed: {
-
     resourceNameSingular() {
       if (this.resources && this.resources.length > 0) {
         return this.resources[0].resource_name_singular
@@ -85,23 +84,15 @@ export default {
 
       return ''
     },
-  },
-  methods: {
-    changePageFromPagination(page) {
-      return this.setNewQueryParam('page', page === 1 ? null : page)
-    },
-    setNewQueryParam(param, value) {
-      this[param] = value
-      this.updateQueryParam()
-    },
-    buildQueryParams() {
+    queryParams() {
       const params = {}
 
-      if (this.page === '' || Number.isNaN(this.page) || isUndefined(this.page) || isNull(this.page)) {
+      if (this.page === '' || Number.isNaN(this.page) || isUndefined(this.page) || isNull(this.page) || this.page === 1) {
         delete params.page
       } else {
         params.page = this.page
       }
+
       // eslint-disable-next-line camelcase
       if (this.sortBy !== '') params.sort_by = this.sortBy
       // eslint-disable-next-line camelcase
@@ -109,17 +100,23 @@ export default {
 
       return params
     },
-    updateQueryParam() {
+  },
+  methods: {
+    updateQueryParams() {
       this.$router.push({
         name: 'index',
         params: {
           resourceName: this.resourceName,
         },
-        query: this.buildQueryParams(),
+        query: this.queryParams,
       })
     },
+    changePageFromPagination(page) {
+      this.setPage(page)
+      this.updateQueryParams()
+    },
     async getResources() {
-      this.loading = true
+      this.isLoading = true
 
       const { data } = await Api.get(`/avocado/avocado-api/${this.resourceName}?page=${this.page}&sort_by=${this.sortBy}&sort_direction=${this.sortDirection}`)
 
@@ -129,7 +126,7 @@ export default {
       this.isLoading = false
     },
     changeSortDirection(by) {
-      if (this.sortBy !== by) {
+      if (this.sortBy !== '' && this.sortBy !== by) {
         this.sortDirection = 'desc'
 
         return
@@ -144,21 +141,18 @@ export default {
           break
         case 'asc':
           this.sortDirection = ''
-          this.sortBy = ''
           break
         default:
           this.sortDirection = ''
           break
       }
     },
-    sort(by) {
-      this.changeSortDirection(by)
+    changeSortBy(by) {
+      const newBy = this.sortDirection === 'asc' ? '' : by
 
-      if (this.sortDirection) {
-        this.setNewQueryParam('sortBy', by)
-      } else {
-        this.setNewQueryParam('sortBy', '')
-      }
+      this.changeSortDirection(by)
+      this.setSortBy(newBy)
+      this.updateQueryParams()
     },
     setPage(page) {
       this.page = isUndefined(page) ? 1 : parseInt(page, 10)
@@ -174,31 +168,21 @@ export default {
       let sortBy = ''
       let sortDirection = ''
 
-      try {
-        page = URI(window.location.toString()).query(true).page
-        sortBy = URI(window.location.toString()).query(true).sort_by
-        sortDirection = URI(window.location.toString()).query(true).sort_direction
-      // eslint-disable-next-line no-empty
-      } catch (err) {}
+      page = URI(window.location.toString()).query(true).page
+      sortBy = URI(window.location.toString()).query(true).sort_by
+      sortDirection = URI(window.location.toString()).query(true).sort_direction
 
       this.setPage(page)
       this.setSortBy(sortBy)
       this.setSortDirection(sortDirection)
+
+      this.getResources()
     },
   },
   beforeRouteUpdate(to, from, next) {
     next()
-    this.setPage(to.query.page)
-    this.setSortBy(to.query.sortBy)
-    this.setSortDirection(to.query.sortDirection)
-  },
-  watch: {
-    page() {
-      this.getResources()
-    },
-    sortDirection() {
-      this.getResources()
-    },
+
+    this.getResources()
   },
   async mounted() {
     this.initQueryParams()

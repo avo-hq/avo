@@ -156,6 +156,8 @@ GEM
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
     sqlite3 (1.4.1)
+    textacular (5.2.0)
+      activerecord (>= 5.0, < 6.1)
     thor (1.0.1)
     thread_safe (0.3.6)
     tzinfo (1.2.6)
@@ -179,6 +181,7 @@ DEPENDENCIES
   kaminari
   rubocop
   sqlite3
+  textacular
   webpacker (~> 4.0)
   zeitwerk (~> 2.3)
 

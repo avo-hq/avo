@@ -32,6 +32,33 @@ module Avocado
       }
     end
 
+    def search
+      # abort resource_model.safe_constantize.inspect
+      resources = resource_model.safe_constantize.fuzzy_search(name: params[:q])
+      # abort resources.to_json.inspect
+
+      # resources_with_fields = []
+      # resources.each do |resource|
+      #   resource_with_fields = {
+      #     id: resource.id,
+      #     resource_name_singular: params[:resource_name].to_s.singularize,
+      #     title: resource[avocado_resource.title],
+      #     fields: [],
+      #   }
+
+      #   resource_fields.each do |field|
+      #     resource_with_fields[:fields] << field.fetch_for_resource(resource)
+      #   end
+      #   resources_with_fields << resource_with_fields
+      # end
+
+      return render json: {
+        resources: resources,
+        # per_page: per_page,
+        # total_pages: resources.total_pages,
+      }
+    end
+
     def show
       resource_with_fields = {
         id: resource.id,

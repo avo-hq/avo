@@ -1,5 +1,5 @@
-import axios from 'axios'
 import Bus from '@/js/Bus'
+import axios from 'axios'
 
 function getCSRFToken() {
   const metaEl = document.querySelector('meta[name="csrf-token"]')

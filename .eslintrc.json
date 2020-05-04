@@ -16,9 +16,16 @@
         "sourceType": "module"
     },
     "plugins": [
-        "vue"
+        "vue",
+        "sort-imports-es6-autofix"
     ],
     "rules": {
+        "sort-imports-es6-autofix/sort-imports-es6": [2, {
+            "ignoreCase": false,
+            "ignoreMemberSort": false,
+            "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
+        }],
+        // "sort-imports": ["error"],
         "semi": ["error", "never"],
         "camelcase": ["error", {"ignoreDestructuring": true}]
     },
@@ -26,7 +33,8 @@
         "import/resolver": {
             "alias": {
                 "map": [
-                    ["@", "./app/frontend"]
+                    ["@", "./app/frontend"],
+                    ["~", "./node_modules"]
                 ]
             }
         }
