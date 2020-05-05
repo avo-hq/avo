@@ -25,8 +25,29 @@ module Avocado
           @@fields[self].push Avocado::Fields::BelongsToField::new(name)
         end
 
-        def hydrate_resource(resource)
+        def has_many(name)
+          @@fields[self].push Avocado::Fields::HasManyField::new(name)
+        end
 
+        def hydrate_resource(resource, avocado_resource, view = :index)
+          resource_with_fields = {
+            id: resource.id,
+            resource_name_singular: avocado_resource.name,
+            resource_name_plural: avocado_resource.name.pluralize,
+            title: resource[avocado_resource.title],
+            fields: [],
+            fields: [],
+          }
+
+          avocado_resource.get_fields.each do |field|
+            furnished_field = field.fetch_for_resource(resource, view)
+
+            next if furnished_field.blank?
+
+            resource_with_fields[:fields] << furnished_field
+          end
+
+          resource_with_fields
         end
 
         def show_path(resource)
@@ -49,7 +70,7 @@ module Avocado
       def name
         return @name if @name.present?
 
-        self.class.name.demodulize
+        self.class.name.demodulize.titlecase
       end
 
       def url

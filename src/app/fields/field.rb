@@ -17,7 +17,7 @@ module Avocado
         name.to_s.parameterize
       end
 
-      def fetch_for_resource(resource)
+      def fetch_for_resource(resource, view = :index)
         fetch_fields resource
       end
 

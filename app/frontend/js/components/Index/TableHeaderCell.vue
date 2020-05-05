@@ -6,7 +6,7 @@
   >
     <div class="inline-block"
       :class="{'cursor-pointer': sortable}"
-      @click="$emit('sort')"
+      @click="tryAndSort"
     >
       {{field.name}}
       <component :is="sortComponent"
@@ -55,7 +55,13 @@ export default {
       return 'Sort'
     },
   },
-  methods: {},
+  methods: {
+    tryAndSort() {
+      if (!this.sortable) return
+
+      this.$emit('sort')
+    },
+  },
   mounted() {},
 }
 </script>

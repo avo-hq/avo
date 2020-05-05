@@ -2,7 +2,7 @@
   <div>
     <view-header>
       <template #heading>
-        {{resourceName}}
+        {{resourceNamePlural}}
       </template>
 
       <template #search>
@@ -80,6 +80,13 @@ export default {
     resourceNameSingular() {
       if (this.resources && this.resources.length > 0) {
         return this.resources[0].resource_name_singular
+      }
+
+      return ''
+    },
+    resourceNamePlural() {
+      if (this.resources && this.resources.length > 0) {
+        return this.resources[0].resource_name_plural
       }
 
       return ''

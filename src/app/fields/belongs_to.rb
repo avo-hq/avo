@@ -9,7 +9,7 @@ module Avocado
         @component = 'belongs-to-field'
       end
 
-      def fetch_for_resource(resource)
+      def fetch_for_resource(resource, view)
         fields = super(resource)
 
         fields[:is_relation] = true

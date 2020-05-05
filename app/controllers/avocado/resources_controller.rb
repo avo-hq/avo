@@ -12,17 +12,7 @@ module Avocado
 
       resources_with_fields = []
       resources.each do |resource|
-        resource_with_fields = {
-          id: resource.id,
-          resource_name_singular: params[:resource_name].to_s.singularize,
-          title: resource[avocado_resource.title],
-          fields: [],
-        }
-
-        resource_fields.each do |field|
-          resource_with_fields[:fields] << field.fetch_for_resource(resource)
-        end
-        resources_with_fields << resource_with_fields
+        resources_with_fields << Avocado::Resources::Resource.hydrate_resource(resource, avocado_resource, :index)
       end
 
       render json: {
@@ -56,36 +46,16 @@ module Avocado
     end
 
     def show
-      resource_with_fields = {
-        id: resource.id,
-        resource_name_singular: params[:resource_name].to_s.singularize,
-        title: resource[avocado_resource.title],
-        fields: [],
-      }
-
-      resource_fields.each do |field|
-        resource_with_fields[:fields] << field.fetch_for_resource(resource)
-      end
-
       render json: {
-        resource: resource_with_fields,
+        resource: Avocado::Resources::Resource.hydrate_resource(resource, avocado_resource, :show),
       }
     end
 
     def update
-      resource_with_fields = {
-        id: resource.id,
-        fields: [],
-      }
-
-      resource_fields.each do |field|
-        resource_with_fields[:fields] << field.fetch_for_resource(resource)
-      end
-
       resource.update(resource_params)
 
       render json: {
-        resource: resource_with_fields,
+        resource: Avocado::Resources::Resource.hydrate_resource(resource, avocado_resource, :update),
         message: 'Resource updated',
       }
     end
@@ -94,17 +64,8 @@ module Avocado
       resource = resource_model.safe_constantize.new(resource_params)
       resource.save
 
-      resource_with_fields = {
-        id: resource.id,
-        fields: [],
-      }
-
-      resource_fields.each do |field|
-        resource_with_fields[:fields] << field.fetch_for_resource(resource)
-      end
-
       render json: {
-        resource: resource_with_fields,
+        resource: Avocado::Resources::Resource.hydrate_resource(resource, avocado_resource, :create),
         message: 'Resource created',
         redirect_url: Avocado::Resources::Resource.show_path(resource),
       }
@@ -113,20 +74,8 @@ module Avocado
     def fields
       resource = resource_model.safe_constantize.new
 
-      resource_with_fields = {
-        id: resource.id,
-        resource_name_singular: params[:resource_name].to_s.singularize,
-        fields: [],
-      }
-
-      resource_fields.each do |field|
-        resource_with_fields[:fields] << field.fetch_for_resource(resource)
-      end
-
-      # abort resource_fields.inspect
-
       render json: {
-        resource: resource_with_fields
+        resource: Avocado::Resources::Resource.hydrate_resource(resource, avocado_resource, :fields),
       }
     end
 
