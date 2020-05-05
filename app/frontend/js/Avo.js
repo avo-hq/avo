@@ -45,7 +45,6 @@ const Avo = {
   },
 
   turbolinksLoad() {
-    console.log('turbolinksLoad')
     if (document.getElementById('app')) {
       Avo.initVue()
     }

@@ -2,7 +2,7 @@
   <tr v-if="resource" class="border-t hover:bg-gray-100">
     <td>
       <div class="flex justify-center h-full">
-        <input type="checkbox">
+        <input type="checkbox" />
       </div>
     </td>
     <component
@@ -18,31 +18,36 @@
           name: 'show',
           params: {
             resourceName: resourceName,
-            resourceId: resource.id,
-          },
-        }"><ViewIcon class="text-gray-400 h-6 mr-2"/></router-link>
+            resourceId: resource.id
+          }
+        }"
+        ><ViewIcon class="text-gray-400 h-6 mr-2"
+      /></router-link>
       <router-link
         :to="{
           name: 'edit',
           params: {
             resourceName: resourceName,
-            resourceId: resource.id,
-          },
-        }"><EditIcon class="text-gray-400 h-6 mr-2"/></router-link>
-        <a
-          href="javascript:void(0);"
-          @click="openDeleteModal"
-        ><DeleteIcon class="text-gray-400 h-6 mr-2"/></a>
+            resourceId: resource.id
+          }
+        }"
+        ><EditIcon class="text-gray-400 h-6 mr-2"
+      /></router-link>
+      <a href="javascript:void(0);" @click="openDeleteModal"
+        ><DeleteIcon class="text-gray-400 h-6 mr-2"
+      /></a>
     </td>
   </tr>
 </template>
 
 <script>
 import { Api } from '@/js/Avo'
-import ViewIcon from '@/svgs/eye.svg?inline'
-import EditIcon from '@/svgs/edit.svg?inline'
+/* eslint-disable import/no-unresolved */
 import DeleteIcon from '@/svgs/trash.svg?inline'
+import EditIcon from '@/svgs/edit.svg?inline'
 import Modal from '@/js/components/Modal'
+import ViewIcon from '@/svgs/eye.svg?inline'
+/* eslint-enable import/no-unresolved */
 
 export default {
   components: {
@@ -58,7 +63,7 @@ export default {
       await Api.delete(`/avocado/avocado-api/${this.resourceName}/${this.resource.id}`)
     },
     openDeleteModal() {
-      console.log('openDeleteModal', this.$modal)
+      console.log('openDeleteModal', this.$modal);
       // @todo: fix modal in turbolinks
       this.$modal.show(Modal, {
         text: 'Are you sure?',
@@ -66,7 +71,7 @@ export default {
       })
     },
   },
-  mounted() {},
+  mounted() { },
 }
 </script>
 

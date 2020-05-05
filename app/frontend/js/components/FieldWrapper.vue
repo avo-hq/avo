@@ -2,11 +2,11 @@
   <div class="flex border-b items-center" v-if="field">
     <div class="w-1/3 p-4">
       <slot name="label">
-        {{field.name}}
+        {{ field.name }}
       </slot>
     </div>
     <div class="w-1/3">
-      <slot/>
+      <slot />
     </div>
   </div>
 </template>
@@ -17,7 +17,7 @@ export default {
   props: ['field'],
   computed: {},
   methods: {},
-  mounted() {},
+  mounted() { },
 }
 </script>
 

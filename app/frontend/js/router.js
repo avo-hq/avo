@@ -1,10 +1,10 @@
 import VueRouter from 'vue-router'
 
-import Dashboard from '@/js/views/Dashboard'
-import ResourceNew from '@/js/views/ResourceNew'
-import ResourceIndex from '@/js/views/ResourceIndex'
-import ResourceShow from '@/js/views/ResourceShow'
-import ResourceEdit from '@/js/views/ResourceEdit'
+import Dashboard from '@/js/views/Dashboard.vue'
+import ResourceEdit from '@/js/views/ResourceEdit.vue'
+import ResourceIndex from '@/js/views/ResourceIndex.vue'
+import ResourceNew from '@/js/views/ResourceNew.vue'
+import ResourceShow from '@/js/views/ResourceShow.vue'
 
 const routes = [
   {

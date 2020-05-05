@@ -42,10 +42,6 @@ module Avocado
         end
       end
 
-      def get_fields
-        self.class.get_fields
-      end
-
       def name
         return @name if @name.present?
 
@@ -62,6 +58,20 @@ module Avocado
         return @title if @title.present?
 
         'id'
+      end
+
+      def get_fields
+        self.class.get_fields
+      end
+
+      def search
+        @search
+      end
+
+      def model
+        return @model if @model.present?
+
+        self.class.name.demodulize.safe_constantize
       end
     end
   end

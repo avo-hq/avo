@@ -1,6 +1,7 @@
 Avocado::Engine.routes.draw do
   root 'home#index'
 
+  get '/avocado-api/search', to: 'resources#search'
   get '/avocado-api/:resource_name/search', to: 'resources#search'
   get '/avocado-api/:resource_name', to: 'resources#index'
   post '/avocado-api/:resource_name', to: 'resources#create'

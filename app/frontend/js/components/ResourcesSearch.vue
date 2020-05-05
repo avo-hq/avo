@@ -1,26 +1,26 @@
 <template>
   <div>
     <multiselect
-      v-model="selectedCountries"
       id="ajax"
       label="name"
       track-by="code"
       placeholder="Type to search"
       open-direction="bottom"
-      :options="countries"
-      :multiple="true"
+      :options="resources"
       :searchable="true"
       :loading="isLoading"
       :internal-search="false"
-      :clear-on-select="false"
-      :close-on-select="false"
+      :clear-on-select="true"
+      :close-on-select="true"
       :options-limit="300"
       :limit="3"
       :limit-text="limitText"
       :max-height="600"
-      :show-no-results="false"
+      :group-values="groupValues"
+      :group-label="groupLabel"
       :hide-selected="true"
       @search-change="asyncFind"
+      @select="select"
     >
       <template slot="tag" slot-scope="{ option, remove }">
         <span class="custom__tag"
@@ -28,18 +28,10 @@
           ><span class="custom__remove" @click="remove(option)">❌</span></span
         >
       </template>
-      <template slot="clear" slot-scope="props">
-        <div
-          class="multiselect__clear"
-          v-if="selectedCountries.length"
-          @mousedown.prevent.stop="clearAll(props.search)"
-        ></div>
-      </template>
       <span slot="noResult"
         >Oops! No elements found. Consider changing the search query.</span
       >
     </multiselect>
-    <pre class="language-json"><code>{{ selectedCountries  }}</code></pre>
   </div>
 </template>
 
@@ -47,36 +39,50 @@
 import '~/vue-multiselect/dist/vue-multiselect.min.css'
 import { Api } from '@/js/Avo'
 import Multiselect from 'vue-multiselect'
+import Turbolinks from 'turbolinks'
+import debounce from 'lodash/debounce'
 
 export default {
   components: { Multiselect },
   data: () => ({
     results: [],
-    selectedCountries: [],
-    countries: [],
+    resources: [],
     isLoading: false,
   }),
-  props: ['resourceName'],
-  computed: {},
+  props: ['resourceName', 'global'],
+  computed: {
+    groupValues() {
+      return this.global ? 'resources' : null
+    },
+    groupLabel() {
+      return this.global ? 'label' : null
+    },
+  },
   methods: {
     limitText(count) {
-      return `and ${count} other countries`
+      return `and ${count} other resources`
     },
-    asyncFind(query) {
-      this.isLoading = true
-      this.ajaxFindCountry(query).then((response) => {
-        this.countries = response
-        this.isLoading = false
-      })
-    },
-    async ajaxFindCountry(query) {
-      const { data } = await Api.get(`/avocado/avocado-api/${this.resourceName}/search?q=${query}`)
+    asyncFind: debounce(function (query) {
+      const vm = this
 
-      console.log(data)
-      return data.resources
+      vm.isLoading = true
+      Api.get(this.queryUrl(query))
+        .then(({ data }) => {
+          vm.resources = data.resources
+          vm.isLoading = false
+        })
+    }, 300),
+    queryUrl(query) {
+      if (this.global) {
+        return `/avocado/avocado-api/search?q=${query}`
+      }
+
+      return `/avocado/avocado-api/${this.resourceName}/search?q=${query}`
     },
-    clearAll() {
-      this.selectedCountries = []
+    select(resource) {
+      setTimeout(() => {
+        Turbolinks.visit(resource.link)
+      }, 1)
     },
   },
   mounted() { },

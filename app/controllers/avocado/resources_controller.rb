@@ -33,29 +33,25 @@ module Avocado
     end
 
     def search
-      # abort resource_model.safe_constantize.inspect
-      resources = resource_model.safe_constantize.fuzzy_search(name: params[:q])
-      # abort resources.to_json.inspect
+      if params[:resource_name].present?
+        resources = search_resource resource_model.safe_constantize
+      else
+        resources = []
 
-      # resources_with_fields = []
-      # resources.each do |resource|
-      #   resource_with_fields = {
-      #     id: resource.id,
-      #     resource_name_singular: params[:resource_name].to_s.singularize,
-      #     title: resource[avocado_resource.title],
-      #     fields: [],
-      #   }
+        resources_to_search_through = App.get_resources.select { |r| r.search.present? }.map(&:model)
 
-      #   resource_fields.each do |field|
-      #     resource_with_fields[:fields] << field.fetch_for_resource(resource)
-      #   end
-      #   resources_with_fields << resource_with_fields
-      # end
+        resources_to_search_through.each do |resource_model|
+          found_resources = add_link_to_search_results search_resource(resource_model)
+          resources.push({
+            label: resource_model.name,
+            resources: found_resources
+          })
+        end
+      end
+
 
       return render json: {
-        resources: resources,
-        # per_page: per_page,
-        # total_pages: resources.total_pages,
+        resources: resources
       }
     end
 
@@ -166,6 +162,19 @@ module Avocado
 
       def resource_params
         params.require(:resource).permit(permitted_params)
+      end
+
+      def search_resource(resource)
+        resource.fuzzy_search(name: params[:q])
+      end
+
+      def add_link_to_search_results(resources)
+        resources.map do |model|
+          resource = model.as_json
+          resource[:link] = "/avocado/resources/#{model.class.to_s.singularize.underscore}/#{model.id}"
+
+          resource
+        end
       end
   end
 end
