@@ -21,6 +21,10 @@ module Avocado
           @@fields[self].push Avocado::Fields::TextField::new(name)
         end
 
+        def belongs_to(name)
+          @@fields[self].push Avocado::Fields::BelongsToField::new(name)
+        end
+
         def hydrate_resource(resource)
 
         end
@@ -33,9 +37,9 @@ module Avocado
 
         def index_path(resource_or_class)
           if resource_or_class.class == String
-            url = resource_or_class.downcase.pluralize
+            url = resource_or_class.underscore.pluralize
           else
-            url = resource_or_class.class.name.demodulize.downcase.pluralize
+            url = resource_or_class.class.name.demodulize.underscore.pluralize
           end
 
           "#{Avocado.root_path}/resources/#{url}"
@@ -51,7 +55,7 @@ module Avocado
       def url
         return @url if @url.present?
 
-        self.class.name.demodulize.downcase.pluralize
+        self.class.name.demodulize.underscore.pluralize
       end
 
       def title
