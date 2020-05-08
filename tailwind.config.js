@@ -2,12 +2,19 @@ const plugin = require('tailwindcss/plugin')
 
 module.exports = {
   theme: {
-    extend: {},
+    extend: {
+      inset: {
+        full: '100%',
+      },
+      minWidth: {
+        '300px': '300px',
+      },
+    },
   },
   variants: {},
   plugins: [
     // buttons
-    plugin(function ({ addComponents, theme }) {
+    plugin(({ addComponents, theme }) => {
       const styles = {
         display: 'inline-flex',
         flexGrow: 0,
@@ -62,11 +69,11 @@ module.exports = {
             '&1active': {
               backgroundColor: theme('colors.indigo.800'),
             },
-          }
+          },
         },
       }
 
       addComponents(buttons)
-    })
+    }),
   ],
 }

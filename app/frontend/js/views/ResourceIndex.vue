@@ -1,64 +1,77 @@
 <template>
   <div>
-    <view-header>
+    <panel>
       <template #heading>
         {{resourceNamePlural}}
       </template>
 
-      <template #search>
-        <resources-search :resource-name="resourceName" />
-      </template>
       <template #tools>
-
-        <router-link
-          :to="{
-            name: 'new',
-            params: {
-              resourceName: resourceName,
-            },
-          }"
-          class="button"
-        >Create new {{resourceNameSingular}}</router-link>
+        <div class="flex justify-between items-center mb-4 w-full">
+          <div>
+            <resources-search :resource-name="resourceName" />
+          </div>
+          <div>
+            <router-link
+              :to="{
+                name: 'new',
+                params: {
+                  resourceName: resourceName,
+                },
+              }"
+              class="button"
+            >Create new {{resourceNameSingular}}</router-link>
+          </div>
+        </div>
       </template>
-    </view-header>
 
-    <div class="flex justify-between items-center mb-4">
-    </div>
+      <template #content>
+        <div v-if="isLoading">
+          loading
+        </div>
 
-    <panel>
-      <div v-if="isLoading">
-        loading
-      </div>
-      <resource-table
-        v-else
-        :resources="resources"
-        :resource-name="resourceName"
-        :sort-by="sortBy"
-        :sort-direction="sortDirection"
-        @sort="changeSortBy"
-        ></resource-table>
+        <div v-else>
+          <div class="flex justify-between items-center mb-4">
+            <resources-filter
+              @change-per-page="changePerPage"
+              :per-page="perPage"
+              :filters="filters"
+              :applied-filters="appliedFilters"
+              @change-filter="changeFilter"
+            />
+          </div>
 
-        <paginate
-          v-show="totalPages > 0 && resources.length > 0"
-          v-model="page"
-          ref="paginate"
-          :page-count="totalPages"
-          :click-handler="changePageFromPagination"
-          :prev-text="'Prev'"
-          :next-text="'Next'"
-          container-class="avo-pagination flex justify-end px-4"
-          page-class="pagination-button"
-          page-link-class="button"
-          active-class="active"
-          prev-link-class="button"
-          next-link-class="button"
-        ></paginate>
+          <resource-table
+            :resources="resources"
+            :resource-name="resourceName"
+            :sort-by="sortBy"
+            :sort-direction="sortDirection"
+            @sort="changeSortBy"
+            ></resource-table>
+
+            <paginate
+              v-show="totalPages > 0 && resources.length > 0"
+              v-model="page"
+              ref="paginate"
+              :page-count="totalPages"
+              :click-handler="changePageFromPagination"
+              :prev-text="'Prev'"
+              :next-text="'Next'"
+              container-class="avo-pagination flex justify-end px-4"
+              page-class="pagination-button"
+              page-link-class="button"
+              active-class="active"
+              prev-link-class="button"
+              next-link-class="button"
+            ></paginate>
+        </div>
+
+      </template>
     </panel>
   </div>
 </template>
 
 <script>
-import { Api } from '@/js/Avo'
+import Api from '@/js/Api'
 import URI from 'urijs'
 import isNull from 'lodash/isNull'
 import isUndefined from 'lodash/isUndefined'
@@ -69,9 +82,12 @@ export default {
     resources: [],
     totalPages: 0,
     page: 0,
+    perPage: 25,
     sortBy: '',
     sortDirection: '',
     isLoading: true,
+    filters: [],
+    appliedFilters: {},
   }),
   props: [
     'resourceName',
@@ -100,12 +116,28 @@ export default {
         params.page = this.page
       }
 
+      if (this.perPage === '' || Number.isNaN(this.perPage) || isUndefined(this.perPage) || isNull(this.perPage) || this.perPage === 25) {
+        delete params.per_page
+      } else {
+        // eslint-disable-next-line camelcase
+        params.per_page = this.perPage
+      }
+
+      if (Object.keys(this.appliedFilters).length > 0) {
+        params.filters = this.encodedFilters
+      } else {
+        delete params.filters
+      }
+
       // eslint-disable-next-line camelcase
       if (this.sortBy !== '') params.sort_by = this.sortBy
       // eslint-disable-next-line camelcase
       if (this.sortDirection !== '') params.sort_direction = this.sortDirection
 
       return params
+    },
+    encodedFilters() {
+      return btoa(JSON.stringify(this.appliedFilters))
     },
   },
   methods: {
@@ -118,6 +150,14 @@ export default {
         query: this.queryParams,
       })
     },
+    changeFilter(args) {
+      this.setFilterValue(args)
+      this.updateQueryParams()
+    },
+    changePerPage(perPage) {
+      this.setPerPage(perPage)
+      this.updateQueryParams()
+    },
     changePageFromPagination(page) {
       this.setPage(page)
       this.updateQueryParams()
@@ -125,11 +165,19 @@ export default {
     async getResources() {
       this.isLoading = true
 
-      const { data } = await Api.get(`/avocado/avocado-api/${this.resourceName}?page=${this.page}&sort_by=${this.sortBy}&sort_direction=${this.sortDirection}`)
+      const { data } = await Api.get(`/avocado/avocado-api/${this.resourceName}?page=${this.page}&per_page=${this.perPage}&sort_by=${this.sortBy}&sort_direction=${this.sortDirection}&filters=${this.encodedFilters}`)
 
       this.resources = data.resources
       this.totalPages = data.total_pages
 
+      this.isLoading = false
+    },
+    async getFilters() {
+      this.isLoading = true
+
+      const { data } = await Api.get(`/avocado/avocado-api/${this.resourceName}/filters`)
+
+      this.filters = data.filters
       this.isLoading = false
     },
     changeSortDirection(by) {
@@ -164,24 +212,44 @@ export default {
     setPage(page) {
       this.page = isUndefined(page) ? 1 : parseInt(page, 10)
     },
+    setPerPage(perPage) {
+      this.perPage = isUndefined(perPage) ? 25 : parseInt(perPage, 10)
+    },
     setSortBy(by) {
       this.sortBy = isUndefined(by) ? '' : by
     },
     setSortDirection(direction) {
       this.sortDirection = isUndefined(direction) ? '' : direction
     },
+    setFilterValue(args) {
+      Object.keys(args).forEach((filterClass) => {
+        const value = args[filterClass]
+
+        if (value === '' || value === '-') {
+          this.$delete(this.appliedFilters, filterClass)
+        } else {
+          this.$set(this.appliedFilters, filterClass, value)
+        }
+      })
+    },
     initQueryParams() {
       let page = 1
+      let perPage = 25
       let sortBy = ''
       let sortDirection = ''
+      let filters = ''
 
       page = URI(window.location.toString()).query(true).page
+      perPage = URI(window.location.toString()).query(true).per_page
       sortBy = URI(window.location.toString()).query(true).sort_by
       sortDirection = URI(window.location.toString()).query(true).sort_direction
+      filters = URI(window.location.toString()).query(true).filters
 
       this.setPage(page)
+      this.setPerPage(perPage)
       this.setSortBy(sortBy)
       this.setSortDirection(sortDirection)
+      if (filters) this.setFilterValue(JSON.parse(atob(filters)))
 
       this.getResources()
     },
@@ -192,6 +260,7 @@ export default {
     this.getResources()
   },
   async mounted() {
+    this.getFilters()
     this.initQueryParams()
   },
 }

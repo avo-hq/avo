@@ -3,12 +3,20 @@ require_dependency "avocado/application_controller"
 module Avocado
   class ResourcesController < ApplicationController
     def index
-      per_page = 24
       params[:page] ||= 1
+      params[:per_page] ||= 25
       params[:sort_by] = params[:sort_by].present? ? params[:sort_by] : :created_at
       params[:sort_direction] = params[:sort_direction].present? ? params[:sort_direction] : :desc
+      filters = JSON.parse Base64.decode64(params[:filters])
 
-      resources = resource_model.safe_constantize.order("#{params[:sort_by]} #{params[:sort_direction]}").page(params[:page]).per(per_page)
+      query = resource_model.safe_constantize.order("#{params[:sort_by]} #{params[:sort_direction]}")
+      if filters.present?
+        filters.each do |filter_class, filter_value|
+          query = filter_class.safe_constantize.new.apply_query request, query, filter_value
+        end
+      end
+
+      resources = query.page(params[:page]).per(params[:per_page])
 
       resources_with_fields = []
       resources.each do |resource|
@@ -17,7 +25,7 @@ module Avocado
 
       render json: {
         resources: resources_with_fields,
-        per_page: per_page,
+        per_page: params[:per_page],
         total_pages: resources.total_pages,
       }
     end
@@ -85,6 +93,19 @@ module Avocado
       render json: {
         redirect_url: Avocado::Resources::Resource.index_path(resource_model),
         message: 'Resource destroyed',
+      }
+    end
+
+    def filters
+      avocado_filters = avocado_resource.get_filters
+      filters = []
+
+      avocado_filters.each do |filter|
+        filters.push(filter.new.render_response)
+      end
+
+      render json: {
+        filters: filters,
       }
     end
 

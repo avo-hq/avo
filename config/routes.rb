@@ -4,6 +4,7 @@ Avocado::Engine.routes.draw do
   get '/avocado-api/search', to: 'resources#search'
   get '/avocado-api/:resource_name/search', to: 'resources#search'
   get '/avocado-api/:resource_name', to: 'resources#index'
+  get '/avocado-api/:resource_name/filters', to: 'resources#filters'
   post '/avocado-api/:resource_name', to: 'resources#create'
   get '/avocado-api/:resource_name/fields', to: 'resources#fields'
   get '/avocado-api/:resource_name/:id', to: 'resources#show'

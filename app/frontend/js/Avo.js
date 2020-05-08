@@ -21,6 +21,7 @@ Vue.component('index-belongs-to-field', require('@/js/components/Index/BelongsTo
 Vue.component('show-id-field', require('@/js/components/Show/IdField.vue').default)
 Vue.component('show-text-field', require('@/js/components/Show/TextField.vue').default)
 Vue.component('show-belongs-to-field', require('@/js/components/Show/BelongsTo.vue').default)
+Vue.component('show-has-many-field', require('@/js/components/Show/HasMany.vue').default)
 
 Vue.component('edit-text-field', require('@/js/components/Edit/TextField.vue').default)
 Vue.component('edit-belongs-to-field', require('@/js/components/Edit/BelongsTo.vue').default)
@@ -37,6 +38,8 @@ Vue.component('field-wrapper', require('@/js/components/FieldWrapper.vue').defau
 Vue.component('heading', require('@/js/components/Heading.vue').default)
 Vue.component('resources-navigation', require('@/js/components/ResourcesNavigation.vue').default)
 Vue.component('resources-search', require('@/js/components/ResourcesSearch.vue').default)
+Vue.component('resources-filter', require('@/js/components/ResourcesFilter.vue').default)
+Vue.component('select-filter', require('@/js/components/Index/Filters/SelectFilter.vue').default)
 
 const Avo = {
   Bus,

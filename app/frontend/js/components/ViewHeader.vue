@@ -2,13 +2,8 @@
   <div>
     <heading><slot name="heading"/></heading>
 
-    <div class="flex justify-between items-center mb-4 w-full">
-      <div>
-        <slot name="search"/>
-      </div>
-      <div>
-        <slot name="tools"/>
-      </div>
+    <div>
+      <slot name="tools"/>
     </div>
   </div>
 </template>

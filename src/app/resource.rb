@@ -3,14 +3,24 @@ module Avocado
     class Resource
       class << self
         @@fields = {}
+        @@filters = {}
 
         def fields(&block)
           @@fields[self] ||= []
           yield
         end
 
+        def use_filter(filter)
+          @@filters[self] ||= []
+          @@filters[self].push(filter)
+        end
+
         def get_fields
           @@fields[self]
+        end
+
+        def get_filters
+          @@filters[self]
         end
 
         def id(name)
@@ -30,19 +40,34 @@ module Avocado
         end
 
         def hydrate_resource(resource, avocado_resource, view = :index)
+          default_panel_name = "#{avocado_resource.name} Details"
+
           resource_with_fields = {
             id: resource.id,
             resource_name_singular: avocado_resource.name,
             resource_name_plural: avocado_resource.name.pluralize,
             title: resource[avocado_resource.title],
             fields: [],
-            fields: [],
+            panels: [{
+              name: default_panel_name,
+              component: 'panel',
+            }]
           }
 
           avocado_resource.get_fields.each do |field|
             furnished_field = field.fetch_for_resource(resource, view)
 
             next if furnished_field.blank?
+
+            furnished_field[:panel_name] = default_panel_name
+
+            if ['has-many-field'].include?(furnished_field[:component])
+              resource_with_fields[:panels].push({
+                name: avocado_resource.name.pluralize,
+                component: 'panel'
+              })
+              furnished_field[:panel_name] = avocado_resource.name.pluralize
+            end
 
             resource_with_fields[:fields] << furnished_field
           end
@@ -73,6 +98,12 @@ module Avocado
         self.class.name.demodulize.titlecase
       end
 
+      def underscore_name
+        return @name if @name.present?
+
+        self.class.name.demodulize.underscore
+      end
+
       def url
         return @url if @url.present?
 
@@ -87,6 +118,10 @@ module Avocado
 
       def get_fields
         self.class.get_fields
+      end
+
+      def get_filters
+        self.class.get_filters
       end
 
       def search
