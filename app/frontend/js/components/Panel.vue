@@ -13,6 +13,12 @@
     <div class="bg-white rounded shadow py-4 mb-8">
       <slot name="content"/>
     </div>
+
+    <div class="flex justify-end w-full">
+      <div>
+        <slot name="footer"/>
+      </div>
+    </div>
   </div>
 </template>
 

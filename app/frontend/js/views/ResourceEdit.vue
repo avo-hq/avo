@@ -1,32 +1,34 @@
 <template>
   <div v-if="resource">
-    <view-header>
-      <template #heading>
-        Edit {{resourceNameSingular}}
-      </template>
-    </view-header>
+    <div v-for="(panel, index) in resource.panels" :key="panel.name">
+      <panel>
+        <template #heading>
+            Edit {{resourceNameSingular}}
+        </template>
 
-    <panel>
-      <component
-        v-for="field in fields"
-        :key="field.id"
-        :is="`edit-${field.component}`"
-        :field="field"
-      ></component>
+        <template #content>
+          <component
+            v-for="field in fields"
+            :key="field.id"
+            :is="`edit-${field.component}`"
+            :field="field"
+          ></component>
+        </template>
+
+        <template #footer>
+          <router-link
+            class="button"
+            :to="{
+              name: 'show',
+              params: {
+                resourceName: resourceName,
+                resourceId: resource.id,
+              },
+            }">cancel</router-link>
+          <button class="button" @click="updateResource">Save</button>
+        </template>
     </panel>
-
-    <view-footer>
-      <router-link
-        class="button"
-        :to="{
-          name: 'show',
-          params: {
-            resourceName: resourceName,
-            resourceId: resource.id,
-          },
-        }">cancel</router-link>
-      <button class="button" @click="updateResource">Save</button>
-    </view-footer>
+    </div>
   </div>
 </template>
 

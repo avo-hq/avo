@@ -3,7 +3,7 @@ Gem.loaded_specs['avocado'].dependencies.each do |d|
   require d.name
 end
 
- module Avocado
+module Avocado
   class Engine < ::Rails::Engine
     isolate_namespace Avocado
 
@@ -31,11 +31,11 @@ end
                           end
       next unless insert_middleware
 
-      # app.middleware.insert_before(
-      #   0, Webpacker::DevServerProxy,
-      #   ssl_verify_none: true,
-      #   webpacker: Avocado.webpacker
-      # )
+      app.middleware.insert_before(
+        0, Webpacker::DevServerProxy,
+        ssl_verify_none: true,
+        webpacker: Avocado.webpacker
+      )
     end
 
     config.app_middleware.use(
