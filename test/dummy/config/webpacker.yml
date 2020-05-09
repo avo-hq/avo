@@ -8,7 +8,7 @@ default: &default
   check_yarn_integrity: false
   public_output_path: avocado-packs
   webpack_compile_output: false
-  public_root_path: public
+  public_root_path: ../public
   # use a different sub-folder name
 
   # Additional paths webpack should lookup modules
