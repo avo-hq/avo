@@ -36,11 +36,11 @@ end
         ssl_verify_none: true,
         webpacker: Avocado.webpacker
       )
-
-      config.app_middleware.use(
-        Rack::Static,
-        urls: ["/avocado-packs"], root: "avocado/public"
-      )
     end
+
+    config.app_middleware.use(
+      Rack::Static,
+      urls: ["/avocado-packs"], root: Avocado::Engine.root.join("public")
+    )
   end
 end
