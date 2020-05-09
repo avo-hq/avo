@@ -34,7 +34,7 @@ import FilterIcon from '@/svgs/filter.svg?inline'
 export default {
   components: { FilterIcon },
   data: () => ({
-    open: true,
+    open: false,
     locaPerPage: 25,
     filterr: [],
   }),

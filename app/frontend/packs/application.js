@@ -1,9 +1,9 @@
 import '@/css/application.css'
 
-import Rails from '@rails/ujs'
-import Turbolinks from 'turbolinks'
 import * as Mousetrap from 'mousetrap'
 import Avocado from '@/js/Avo'
+import Rails from '@rails/ujs'
+import Turbolinks from 'turbolinks'
 
 document.addEventListener('DOMContentLoaded', Avocado.init)
 document.addEventListener('turbolinks:load', Avocado.turbolinksLoad)

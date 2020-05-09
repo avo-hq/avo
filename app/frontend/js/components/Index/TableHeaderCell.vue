@@ -2,7 +2,7 @@
 <template>
   <th
     :key="key"
-    class="text-left uppercase text-sm py-2"
+    :class="classes"
   >
     <div class="inline-block"
       :class="{'cursor-pointer': sortable}"
@@ -34,8 +34,15 @@ export default {
     'sortDirection',
   ],
   computed: {
+    classes() {
+      let classes = 'text-left uppercase text-sm py-2'
+
+      if (this.field.id === 'id') classes += ' w-12'
+
+      return classes
+    },
     key() {
-      return `header-${this.ressourceName}-${this.field.id}`
+      return `header-${this.resourceName}-${this.field.id}`
     },
     sortable() {
       return this.field.sortable

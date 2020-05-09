@@ -2,9 +2,7 @@ require "avocado/engine"
 require "zeitwerk"
 
 loader = Zeitwerk::Loader.for_gem
-loader.push_dir(Pathname.new(File.join(__dir__, "..", 'src')))
-# loader.push_dir(Pathname.new(File.join(__dir__, '..', "app", 'resources')))
-# loader.collapse(__dir__, "..", 'src', 'tools', '**')
+loader.push_dir(Pathname.new(File.join(__dir__, 'avocado')))
 loader.setup
 
 module Avocado

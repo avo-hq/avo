@@ -1,36 +1,26 @@
-module Avocado
+# requires all dependencies
+Gem.loaded_specs['avocado'].dependencies.each do |d|
+  require d.name
+end
+
+ module Avocado
   class Engine < ::Rails::Engine
     isolate_namespace Avocado
 
     initializer 'avocado.init' do |app|
       avocado_root = Avocado::Engine.root.to_s
-      puts 'avocado_root->'.inspect
-      puts avocado_root.inspect
-      # app.paths['app/views'].push File.join(avocado_root, 'src', 'tools')
-      # puts paths.inspect
 
-      if Rails.env == "development"
-        puts 'avocado.init'.inspect
-
+      if Rails.env == 'development'
         # Register reloader
         app.reloaders << app.config.file_watcher.new([], {
-          # Watch the src directory:
-          Rails.root.join("avocado/src").to_s => ["rb"],
-          # Rails.root.join("avocado/{src/app").to_s => ["rb"],
-          # Rails.root.join("avocado/src/tools/**/").to_s => ["rb"],
+          Rails.root.join("avocado/lib/avocado").to_s => ["rb"],
         }) {}
 
         # What to do on file change
         config.to_prepare do
-          puts 'to_prepare'.inspect
-          Dir.glob(Rails.root + "avocado/src/**/*.rb").each { |c| load(c) }
+          Dir.glob(avocado_root + '/lib/avocado/app/**/*.rb'.to_s).each { |c| load(c) }
         end
-        # Dir.glob(Rails.root + "avocado/src/**/*.rb").each { |c| load(c) }
       end
-
-      # Avocado::App.init
-      # app.append_view_path Rails.root.join('src', 'tools')
-      # paths["app/views"]           # => ["app/views"]
     end
 
     initializer "webpacker.proxy" do |app|

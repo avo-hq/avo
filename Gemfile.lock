@@ -2,7 +2,11 @@ PATH
   remote: .
   specs:
     avocado (0.1.0)
+      inline_svg
+      kaminari
       rails (~> 6.0.2, >= 6.0.2.1)
+      webpacker
+      zeitwerk
 
 GEM
   remote: https://rubygems.org/
@@ -62,7 +66,6 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
       zeitwerk (~> 2.2)
-    ast (2.4.0)
     builder (3.2.4)
     concurrent-ruby (1.1.6)
     crass (1.0.6)
@@ -74,7 +77,6 @@ GEM
     inline_svg (1.7.1)
       activesupport (>= 3.0)
       nokogiri (>= 1.6)
-    jaro_winkler (1.5.4)
     kaminari (1.2.0)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.2.0)
@@ -102,9 +104,6 @@ GEM
     nio4r (2.5.2)
     nokogiri (1.10.9)
       mini_portile2 (~> 2.4.0)
-    parallel (1.19.1)
-    parser (2.7.0.5)
-      ast (~> 2.4.0)
     rack (2.2.2)
     rack-proxy (0.6.5)
       rack
@@ -136,18 +135,7 @@ GEM
       method_source
       rake (>= 0.8.7)
       thor (>= 0.20.3, < 2.0)
-    rainbow (3.0.0)
     rake (13.0.1)
-    rexml (3.2.4)
-    rubocop (0.80.1)
-      jaro_winkler (~> 1.5.1)
-      parallel (~> 1.10)
-      parser (>= 2.7.0.1)
-      rainbow (>= 2.2.2, < 4.0)
-      rexml
-      ruby-progressbar (~> 1.7)
-      unicode-display_width (>= 1.4.0, < 1.7)
-    ruby-progressbar (1.10.1)
     sprockets (4.0.0)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
@@ -155,14 +143,10 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
-    sqlite3 (1.4.1)
-    textacular (5.2.0)
-      activerecord (>= 5.0, < 6.1)
     thor (1.0.1)
     thread_safe (0.3.6)
     tzinfo (1.2.6)
       thread_safe (~> 0.1)
-    unicode-display_width (1.6.1)
     webpacker (4.2.2)
       activesupport (>= 4.2)
       rack-proxy (>= 0.6.1)
@@ -179,9 +163,6 @@ DEPENDENCIES
   avocado!
   inline_svg
   kaminari
-  rubocop
-  sqlite3
-  textacular
   webpacker (~> 4.0)
   zeitwerk (~> 2.3)
 

@@ -20,13 +20,10 @@ gem 'webpacker', '~> 4.0'
 # SVGs
 gem 'inline_svg'
 
-# Linting
-gem 'rubocop'
+group :development do
+end
 
 gem 'zeitwerk', '~> 2.3'
 
 # Pagination
 gem 'kaminari'
-
-# Search
-gem 'textacular'
