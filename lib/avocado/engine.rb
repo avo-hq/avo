@@ -42,5 +42,9 @@ module Avocado
       Rack::Static,
       urls: ["/avocado-packs"], root: Avocado::Engine.root.join("public")
     )
+
+    config.generators do |g|
+      g.test_framework :rspec, view_specs: false
+    end
   end
 end

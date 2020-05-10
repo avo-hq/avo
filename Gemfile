@@ -21,6 +21,18 @@ gem 'webpacker', '~> 4.0'
 gem 'inline_svg'
 
 group :development do
+  gem 'sqlite3'
+end
+
+group :development, :test do
+  gem 'rspec-rails', '~> 4.0.0'
+  # Use Puma as the app server
+  gem 'puma', '~> 4.1'
+  # Adds support for Capybara system testing and selenium driver
+  gem 'capybara', '>= 2.15'
+  gem 'selenium-webdriver'
+  # Easy installation and use of web drivers to run system tests with browsers
+  gem 'webdrivers'
 end
 
 gem 'zeitwerk', '~> 2.3'
