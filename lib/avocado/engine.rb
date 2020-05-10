@@ -13,7 +13,7 @@ module Avocado
       if Rails.env == 'development'
         # Register reloader
         app.reloaders << app.config.file_watcher.new([], {
-          Rails.root.join("avocado/lib/avocado").to_s => ["rb"],
+          Avocado::Engine.root.join('lib', 'avocado').to_s => ['rb'],
         }) {}
 
         # What to do on file change
