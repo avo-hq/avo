@@ -16,11 +16,11 @@ module Avocado
         end
 
         def get_fields
-          @@fields[self]
+          @@fields[self] or []
         end
 
         def get_filters
-          @@filters[self]
+          @@filters[self] or []
         end
 
         def id(name = nil)
