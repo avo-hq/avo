@@ -1,6 +1,9 @@
 <template>
   <div>
-    {{field}}
+    <resource-table
+      :resources="resources"
+      :resource-name="resourceName"
+      ></resource-table>
   </div>
 </template>
 
@@ -8,13 +11,19 @@
 import Api from '@/js/Api'
 
 export default {
-  data: () => ({}),
-  props: ['field'],
-  computed: {},
+  data: () => ({
+    resources: []
+  }),
+  props: ['resourceName', 'resourceId', 'field'],
+  computed: {
+    queryUrl() {
+      return `/avocado/avocado-api/${this.field.path}?via_resource_name=${this.resourceName}&via_resource_id=${this.resourceId}`
+    }
+  },
   methods: {
     async getResources() {
-      // const { data } = await Api.get(this.queryUrl)
-      // console.log(data)
+      const { data } = await Api.get(this.queryUrl)
+      this.resources = data.resources
     },
   },
   async mounted() {

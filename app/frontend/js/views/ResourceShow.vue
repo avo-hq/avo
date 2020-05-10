@@ -26,6 +26,8 @@
             :key="field.id"
             :is="`show-${field.component}`"
             :field="field"
+            :resource-name="resourceName"
+            :resource-id="resourceId"
           ></component>
         </template>
       </panel>

@@ -44,8 +44,8 @@ module Avocado
 
           resource_with_fields = {
             id: resource.id,
-            resource_name_singular: avocado_resource.name,
-            resource_name_plural: avocado_resource.name.pluralize,
+            resource_name_singular: avocado_resource.resource_name_singular,
+            resource_name_plural: avocado_resource.resource_name_plural,
             title: resource[avocado_resource.title],
             fields: [],
             panels: [{
@@ -63,10 +63,10 @@ module Avocado
 
             if ['has-many-field'].include?(furnished_field[:component])
               resource_with_fields[:panels].push({
-                name: avocado_resource.name.pluralize,
-                component: 'panel'
+                name: field.name.to_s.pluralize,
+                component: 'panel',
               })
-              furnished_field[:panel_name] = avocado_resource.name.pluralize
+              furnished_field[:panel_name] = field.name.to_s.pluralize
             end
 
             resource_with_fields[:fields] << furnished_field
@@ -96,6 +96,14 @@ module Avocado
         return @name if @name.present?
 
         self.class.name.demodulize.titlecase
+      end
+
+      def resource_name_singular
+        name
+      end
+
+      def resource_name_plural
+        name.pluralize
       end
 
       def underscore_name

@@ -48,8 +48,8 @@ module Avocado
         @@app[:resources].find { |available_resource| "Avocado::Resources::#{resource}".safe_constantize == available_resource.class }
       end
 
-      def get_resource(resource)
-        @@app[:resources].find { |available_resource| "Avocado::Resources::#{resource}".safe_constantize == available_resource.class }
+      def get_resource_by_name(resource)
+        self.get_resource resource.singularize.camelize
       end
 
       # def init_tools

@@ -6,7 +6,9 @@
       </template>
 
       <template #tools>
-        <slot name="tools"/>
+        <div class="mb-2">
+          <slot name="tools"/>
+        </div>
       </template>
     </view-header>
 

@@ -15,7 +15,8 @@ module Avocado
         fields = super(resource)
 
         target_resource = App.get_resources.find { |r| r.class == "Avocado::Resources::#{name.to_s.singularize}".safe_constantize }
-        # relation_model = resource.public_send(target_resource.underscore_name.to_s.pluralize)
+        fields[:relation_class] = target_resource.class.to_s
+        fields[:path] = target_resource.url
 
         fields
       end
