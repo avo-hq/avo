@@ -23,7 +23,7 @@ module Avocado
           @@filters[self]
         end
 
-        def id(name)
+        def id(name = nil)
           @@fields[self].push Avocado::Fields::IdField::new(name)
         end
 
