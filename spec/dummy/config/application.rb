@@ -5,6 +5,9 @@ require 'rails/all'
 Bundler.require(*Rails.groups)
 require "avocado"
 
+# Tell spring where the new dummy ap is located
+Spring.application_root = 'spec/dummy'
+
 module Dummy
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.

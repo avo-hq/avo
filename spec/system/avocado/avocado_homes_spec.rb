@@ -1,18 +1,19 @@
 require 'rails_helper'
 
-RSpec.describe "Homes", type: :system do
-  before do
-    # driven_by(:rack_test)
-    driven_by :selenium, using: :chrome, screen_size: [1400, 1400]
-  end
+RSpec.describe 'Posts', type: :system do
+  describe 'index' do
+    before do
+      user = User.create!(name: 'John', email: 'dasdad@dasd.cc', password: 'qweqwe')
+      post = Post.create(name: 'Project 1', user: user)
+      post.save!
+    end
 
-  it "enables me to create widgets" do
-    visit "/avocado"
-    sleep 2
+    it 'Shows the projects' do
+      visit '/avocado'
 
-    fill_in "Name", :with => "My Widget"
-    click_button "Create Widget"
+      click_link 'Post'
 
-    expect(page).to have_text("Widget was successfully created.")
+      expect(page).to have_text('Project 1')
+    end
   end
 end

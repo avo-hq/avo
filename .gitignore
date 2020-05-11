@@ -6,6 +6,10 @@ spec/dummy/db/*.sqlite3-journal
 spec/dummy/db/*.sqlite3-*
 spec/dummy/log/*.log
 spec/dummy/storage/
+spec/dummy/node_modules/
+spec/dummy/assets/
+spec/dummy/public/packs/
+spec/dummy/public/packs-test/
 spec/dummy/tmp/
 
 # See https://help.github.com/articles/ignoring-files for more about ignoring files.

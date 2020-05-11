@@ -10,7 +10,7 @@ module Avocado
     initializer 'avocado.init' do |app|
       avocado_root = Avocado::Engine.root.to_s
 
-      if Rails.env == 'development'
+      if ['development', 'test'].include? Rails.env
         # Register reloader
         app.reloaders << app.config.file_watcher.new([], {
           Avocado::Engine.root.join('lib', 'avocado').to_s => ['rb'],

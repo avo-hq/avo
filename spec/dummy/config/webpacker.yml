@@ -1,15 +1,13 @@
 # Note: You must restart bin/webpack-dev-server for changes to take effect
 
 default: &default
-  source_path: app/frontend
+  source_path: app/javascript
   source_entry_path: packs
-  # public_root_path: public
+  public_root_path: public
+  public_output_path: packs
   cache_path: tmp/cache/webpacker
   check_yarn_integrity: false
-  public_output_path: avocado-packs
-  webpack_compile_output: false
-  public_root_path: ../public
-  # use a different sub-folder name
+  webpack_compile_output: true
 
   # Additional paths webpack should lookup modules
   # ['app/assets', 'engine/foo/app/assets']

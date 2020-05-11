@@ -8,6 +8,7 @@
         :key="resource.resource_name"
         v-text="resource.label"
         class="text-white font-semibold p-2 block rounded-lg"
+        :test="`resource-navication-${resource.resource_name}`"
         :to="{
           name: 'index',
           params: {

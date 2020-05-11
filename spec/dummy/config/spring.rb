@@ -1,3 +1,4 @@
+Spring.application_root = '.'
 Spring.watch(
   ".ruby-version",
   ".rbenv-vars",
