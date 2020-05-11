@@ -37,7 +37,7 @@ module Avocado
           sortable: sortable,
         }
 
-        fields[:value] = model[id] if model_or_class(model) == 'class'
+        fields[:value] = model[id] if model_or_class(model) == 'model'
 
         fields
       end
