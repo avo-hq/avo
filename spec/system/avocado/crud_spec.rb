@@ -11,7 +11,7 @@ RSpec.describe 'Posts', type: :system do
     it 'Shows the projects' do
       visit '/avocado'
 
-      click_link 'Post'
+      click_link 'Posts'
 
       expect(page).to have_text('Project 1')
     end
