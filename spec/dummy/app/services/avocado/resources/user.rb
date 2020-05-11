@@ -9,6 +9,9 @@ module Avocado
       fields do
         id :ID
         text :Name, required: true
+        text(:Foo, required: true) do |model, resource|
+          "foo or bar #{model.id}, #{resource.name}"
+        end
         has_many :Posts
         has_many :Projects
       end

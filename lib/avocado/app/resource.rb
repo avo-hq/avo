@@ -29,8 +29,8 @@ module Avocado
           @@fields[self].push Avocado::Fields::IdField::new(name, **args)
         end
 
-        def text(name, **args)
-          @@fields[self].push Avocado::Fields::TextField::new(name, **args)
+        def text(name, **args, &block)
+          @@fields[self].push Avocado::Fields::TextField::new(name, **args, &block)
         end
 
         def belongs_to(name, **args)

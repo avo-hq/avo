@@ -6,12 +6,14 @@ module Avocado
       attr_reader :can_be_updated
       attr_reader :sortable
       attr_reader :required
+      attr_reader :block
 
-      def initialize(name, **args)
+      def initialize(name, **args, &block)
         @name = name
         @component = 'field'
         @can_be_updated = true
         @sortable = false
+        @block = block
 
         @required = args[:required] ? true : false
       end
