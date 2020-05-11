@@ -40,12 +40,11 @@ module Avocado
 
     def search
       if params[:resource_name].present?
-        resources = search_resource resource_model.safe_constantize
+        resources = add_link_to_search_results search_resource(avocado_resource)
       else
         resources = []
 
-        resources_to_search_through = App.get_resources.select { |r| r.search.present? }.map(&:model)
-
+        resources_to_search_through = App.get_resources.select { |r| r.search.present? }
         resources_to_search_through.each do |resource_model|
           found_resources = add_link_to_search_results search_resource(resource_model)
           resources.push({
@@ -142,8 +141,8 @@ module Avocado
         params.require(:resource).permit(permitted_params)
       end
 
-      def search_resource(resource)
-        resource.fuzzy_search(name: params[:q])
+      def search_resource(avocado_resource)
+        avocado_resource.query_search(query: params[:q], via_resource_name: params[:via_resource_name], via_resource_id: params[:via_resource_id])
       end
 
       def add_link_to_search_results(resources)

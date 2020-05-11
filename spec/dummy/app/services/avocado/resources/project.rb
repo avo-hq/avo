@@ -9,7 +9,7 @@ module Avocado
       fields do
         id :ID
         text :Name
-        # belongs_to :User
+        has_many :Users
       end
 
       # use_filter Avocado::Filters::IndicatorFilter

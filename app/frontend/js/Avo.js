@@ -41,6 +41,9 @@ Vue.component('resources-search', require('@/js/components/ResourcesSearch.vue')
 Vue.component('resources-filter', require('@/js/components/ResourcesFilter.vue').default)
 Vue.component('select-filter', require('@/js/components/Index/Filters/SelectFilter.vue').default)
 
+// Views
+Vue.component('resources-index', require('@/js/views/ResourceIndex.vue').default)
+
 const Avo = {
   Bus,
   Api,

@@ -9,6 +9,7 @@ module Avocado
       fields do
         id :ID
         text :Name
+        # text_area :Body
         belongs_to :User
       end
 

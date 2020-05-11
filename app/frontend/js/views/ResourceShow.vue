@@ -31,6 +31,17 @@
           ></component>
         </template>
       </panel>
+
+      <component
+        v-for="field in hasManyRelations"
+        :key="field.id"
+        :is="`show-${field.component}`"
+        :field="field"
+        :resource-name="resourceName"
+        :resource-id="resourceId"
+      ></component>
+        <!-- :via-resource-name="resourceName"
+        :via-resource-id="resourceId" -->
     </div>
   </div>
 </template>
@@ -50,6 +61,9 @@ export default {
   computed: {
     fields() {
       return this.resource.fields
+    },
+    hasManyRelations() {
+      return this.fields.filter((field) => field.has_many_relationship)
     },
   },
   methods: {

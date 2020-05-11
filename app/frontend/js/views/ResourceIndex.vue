@@ -8,7 +8,11 @@
       <template #tools>
         <div class="flex justify-between items-center mb-4 w-full">
           <div>
-            <resources-search :resource-name="resourceName" />
+            <resources-search
+              :resource-name="resourceName"
+              :via-resource-name="viaResourceName"
+              :via-resource-id="viaResourceId"
+              />
           </div>
           <div>
             <router-link
@@ -91,6 +95,8 @@ export default {
   }),
   props: [
     'resourceName',
+    'viaResourceName',
+    'viaResourceId',
   ],
   computed: {
     resourceNameSingular() {
@@ -124,6 +130,7 @@ export default {
       }
 
       if (Object.keys(this.appliedFilters).length > 0) {
+        console.log(this.appliedFilters)
         params.filters = this.encodedFilters
       } else {
         delete params.filters
@@ -138,6 +145,32 @@ export default {
     },
     encodedFilters() {
       return btoa(JSON.stringify(this.appliedFilters))
+    },
+    queryUrl() {
+      const url = new URI()
+      url.path(`/avocado/avocado-api/${this.resourceName.toLowerCase()}`)
+
+      /* eslint-disable camelcase */
+      let query = {
+        filters: this.encodedFilters,
+        page: this.page,
+        per_page: this.perPage,
+        sort_by: this.sortBy,
+        sort_direction: this.sortDirection,
+      }
+
+      if (this.viaResourceName) {
+        query = {
+          ...query,
+          via_resource_name: this.viaResourceName.toLowerCase(),
+          via_resource_id: this.viaResourceId,
+        }
+      }
+      /* eslint-enable camelcase */
+
+      url.query(query)
+
+      return url.toString()
     },
   },
   methods: {
@@ -165,7 +198,7 @@ export default {
     async getResources() {
       this.isLoading = true
 
-      const { data } = await Api.get(`/avocado/avocado-api/${this.resourceName}?page=${this.page}&per_page=${this.perPage}&sort_by=${this.sortBy}&sort_direction=${this.sortDirection}&filters=${this.encodedFilters}`)
+      const { data } = await Api.get(this.queryUrl)
 
       this.resources = data.resources
       this.totalPages = data.total_pages

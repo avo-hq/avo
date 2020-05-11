@@ -1,8 +1,8 @@
 <template>
   <field-wrapper :field="field">
-      <input type="text"
-        v-model="value"
-      >
+    <input type="text"
+      v-model="value"
+    >
   </field-wrapper>
 </template>
 

@@ -40,7 +40,9 @@ import '~/vue-multiselect/dist/vue-multiselect.min.css'
 import { Api } from '@/js/Avo'
 import Multiselect from 'vue-multiselect'
 import Turbolinks from 'turbolinks'
+import URI from 'urijs'
 import debounce from 'lodash/debounce'
+import isUndefined from 'lodash/isUndefined'
 
 export default {
   components: { Multiselect },
@@ -49,13 +51,42 @@ export default {
     resources: [],
     isLoading: false,
   }),
-  props: ['resourceName', 'global'],
+  props: [
+    'resourceName',
+    'viaResourceName',
+    'viaResourceId',
+    'global',
+  ],
   computed: {
     groupValues() {
       return this.global ? 'resources' : null
     },
     groupLabel() {
       return this.global ? 'label' : null
+    },
+    queryUrl() {
+      const url = new URI()
+
+      url.path('/avocado/avocado-api/search')
+
+      const query = {
+        q: this.query,
+      }
+
+      if (!this.global) {
+        if (!isUndefined(this.viaResourceName)) {
+          // eslint-disable-next-line dot-notation
+          query['via_resource_name'] = this.viaResourceName
+        }
+        if (!isUndefined(this.viaResourceId)) {
+          // eslint-disable-next-line dot-notation
+          query['via_resource_id'] = this.viaResourceId
+        }
+      }
+
+      url.query(query)
+
+      return url.toString()
     },
   },
   methods: {
@@ -64,21 +95,15 @@ export default {
     },
     asyncFind: debounce(function (query) {
       const vm = this
+      this.query = query
 
       vm.isLoading = true
-      Api.get(this.queryUrl(query))
+      Api.get(this.queryUrl)
         .then(({ data }) => {
           vm.resources = data.resources
           vm.isLoading = false
         })
     }, 300),
-    queryUrl(query) {
-      if (this.global) {
-        return `/avocado/avocado-api/search?q=${query}`
-      }
-
-      return `/avocado/avocado-api/${this.resourceName}/search?q=${query}`
-    },
     select(resource) {
       setTimeout(() => {
         Turbolinks.visit(resource.link)

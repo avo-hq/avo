@@ -1,12 +1,12 @@
 import '@/css/application.css'
 
 import * as Mousetrap from 'mousetrap'
-import Avocado from '@/js/Avo'
+import Avo from '@/js/Avo'
 import Rails from '@rails/ujs'
 import Turbolinks from 'turbolinks'
 
-document.addEventListener('DOMContentLoaded', Avocado.init)
-document.addEventListener('turbolinks:load', Avocado.turbolinksLoad)
+document.addEventListener('DOMContentLoaded', Avo.init)
+document.addEventListener('turbolinks:load', Avo.turbolinksLoad)
 
 Mousetrap.bind('r r r', () => Turbolinks.visit(window.location.href))
 // import '@/js/bootstrap'

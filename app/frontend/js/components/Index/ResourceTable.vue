@@ -16,7 +16,7 @@
           @sort="$emit('sort', field.id)"
         ></th>
         <th class="w-24">
-          <!-- Control cell -->
+          <!-- Controls cell -->
         </th>
       </thead>
       <tbody>

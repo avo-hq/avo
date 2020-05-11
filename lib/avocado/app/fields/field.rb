@@ -25,11 +25,11 @@ module Avocado
       #   fetch_fields resource_model
       # end
 
-      def fetch_fields(resource)
+      def fetch_fields(model)
         is_class = false
         is_model = false
 
-        if resource.class == String
+        if model.class == String
           is_class = true
         else
           is_model = true
@@ -43,7 +43,7 @@ module Avocado
           sortable: sortable,
         }
 
-        fields[:value] = resource[id] if is_model
+        fields[:value] = model[id] if is_model
 
         fields
       end

@@ -6,17 +6,20 @@ module Avocado
       end
 
       def apply(request, query, value)
-        if value.present?
-          return query.where(availability: value)
+        case value
+        when 'available'
+          return query.where(availability: true)
+        when 'unavailable'
+          return query.where(availability: false)
+        else
+          query
         end
-
-        query
       end
 
       def options
         {
-          true: 'Available',
-          false: 'Unavailable',
+          'available': 'Available',
+          'unavailable': 'Unavailable',
         }
       end
     end
