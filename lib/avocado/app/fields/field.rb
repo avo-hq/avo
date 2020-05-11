@@ -5,36 +5,29 @@ module Avocado
       attr_reader :component
       attr_reader :can_be_updated
       attr_reader :sortable
+      attr_reader :required
 
-      def initialize(*args)
-        @name = args.first
+      def initialize(name, **args)
+        @name = name
         @component = 'field'
         @can_be_updated = true
         @sortable = false
+
+        @required = args[:required] ? true : false
       end
 
       def id
         name.to_s.parameterize
       end
 
-      def fetch_for_resource(resource, view = :index)
-        fetch_fields resource
-      end
-
-      # def fetch_for_resource_model(resource_model)
-      #   fetch_fields resource_model
-      # end
-
-      def fetch_fields(model)
-        is_class = false
-        is_model = false
-
+      def fetch_for_resource(model, view = :index)
         fields = {
           id: id,
           name: name,
           component: component,
           can_be_updated: can_be_updated,
           sortable: sortable,
+          required: required,
         }
 
         fields[:value] = model[id] if model_or_class(model) == 'model'

@@ -7,8 +7,8 @@ module Avocado
       end
 
       fields do
-        id
-        text :Name
+        id :ID
+        text :Name, required: true
         has_many :Posts
         has_many :Projects
       end

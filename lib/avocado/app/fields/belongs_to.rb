@@ -3,8 +3,8 @@ require_relative './field'
 module Avocado
   module Fields
     class BelongsToField < Field
-      def initialize(*args)
-        super
+      def initialize(name, **args)
+        super(name, args)
 
         @component = 'belongs-to-field'
       end

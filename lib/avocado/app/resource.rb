@@ -1,6 +1,8 @@
 module Avocado
   module Resources
     class Resource
+      attr_reader :required
+
       class << self
         @@fields = {}
         @@filters = {}
@@ -23,20 +25,20 @@ module Avocado
           @@filters[self] or []
         end
 
-        def id(name = nil)
-          @@fields[self].push Avocado::Fields::IdField::new(name)
+        def id(name, **args)
+          @@fields[self].push Avocado::Fields::IdField::new(name, **args)
         end
 
-        def text(name)
-          @@fields[self].push Avocado::Fields::TextField::new(name)
+        def text(name, **args)
+          @@fields[self].push Avocado::Fields::TextField::new(name, **args)
         end
 
-        def belongs_to(name)
-          @@fields[self].push Avocado::Fields::BelongsToField::new(name)
+        def belongs_to(name, **args)
+          @@fields[self].push Avocado::Fields::BelongsToField::new(name, **args)
         end
 
-        def has_many(name)
-          @@fields[self].push Avocado::Fields::HasManyField::new(name)
+        def has_many(name, **args)
+          @@fields[self].push Avocado::Fields::HasManyField::new(name, **args)
         end
 
         def hydrate_resource(model, avocado_resource, view = :index)

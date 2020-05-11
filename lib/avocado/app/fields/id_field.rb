@@ -3,10 +3,10 @@ require_relative './field'
 module Avocado
   module Fields
     class IdField < Field
-      def initialize(*args)
-        super
+      def initialize(name = 'ID', **args)
+        super(name, args)
 
-        @name ||= 'ID'
+        @name = name
         @component = 'id-field'
         @can_be_updated = false
         @sortable = true
