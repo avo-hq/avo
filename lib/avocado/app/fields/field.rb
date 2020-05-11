@@ -29,12 +29,6 @@ module Avocado
         is_class = false
         is_model = false
 
-        if model.class == String
-          is_class = true
-        else
-          is_model = true
-        end
-
         fields = {
           id: id,
           name: name,
@@ -43,9 +37,17 @@ module Avocado
           sortable: sortable,
         }
 
-        fields[:value] = model[id] if is_model
+        fields[:value] = model[id] if model_or_class(model) == 'class'
 
         fields
+      end
+
+      def model_or_class(model)
+        if model.class == String
+          return 'class'
+        else
+          return 'model'
+        end
       end
     end
   end
