@@ -25,7 +25,7 @@ FactoryBot.define do
 
   factory :post do
     name { Faker::Quote.famous_last_words }
-    body { Faker::Lorem.paragraphs(number: rand(4...10)) }
+    body { Faker::Lorem.paragraphs(number: rand(4...10)).join("\n") }
     published_at { Time.now - rand(10...365).days }
   end
 
