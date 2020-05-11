@@ -27,7 +27,7 @@
             }">cancel</router-link>
           <button class="button" @click="updateResource">Save</button>
         </template>
-    </panel>
+      </panel>
     </div>
   </div>
 </template>
