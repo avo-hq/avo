@@ -49,6 +49,8 @@
             :resource-name="resourceName"
             :sort-by="sortBy"
             :sort-direction="sortDirection"
+            :via-resource-name="viaResourceName"
+            :via-resource-id="viaResourceId"
             @sort="changeSortBy"
             ></resource-table>
 

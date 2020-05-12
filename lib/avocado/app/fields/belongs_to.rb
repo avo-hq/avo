@@ -18,6 +18,7 @@ module Avocado
         target_resource = App.get_resources.find { |r| r.class == "Avocado::Resources::#{name}".safe_constantize }
         relation_model = model.public_send(target_resource.name.underscore)
         fields[:value] = relation_model[target_resource.title] if relation_model.present?
+        fields[:resource_name_plural] = target_resource.resource_name_plural
 
         fields
       end
