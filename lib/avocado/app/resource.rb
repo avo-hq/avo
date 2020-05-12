@@ -80,7 +80,7 @@ module Avocado
         def show_path(resource)
           url = resource.class.name.demodulize.downcase.pluralize
 
-          "#{Avocado.root_path}/resources/#{url}/#{resource.id}"
+          "/resources/#{url}/#{resource.id}"
         end
 
         def index_path(resource_or_class)
@@ -90,7 +90,7 @@ module Avocado
             url = resource_or_class.class.name.demodulize.underscore.pluralize
           end
 
-          "#{Avocado.root_path}/resources/#{url}"
+          "/resources/#{url}"
         end
       end
 

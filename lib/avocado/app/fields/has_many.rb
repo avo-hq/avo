@@ -7,6 +7,7 @@ module Avocado
         super(name, args)
 
         @component = 'has-many-field'
+        @updatable = false
       end
 
       def fetch_for_resource(resource, view)

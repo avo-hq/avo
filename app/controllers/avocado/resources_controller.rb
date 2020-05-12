@@ -134,7 +134,7 @@ module Avocado
       end
 
       def permitted_params
-        resource_fields.select(&:can_be_updated).map(&:id).map(&:to_sym)
+        resource_fields.select(&:updatable).map(&:id).map(&:to_sym)
       end
 
       def resource_params

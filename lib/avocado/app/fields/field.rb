@@ -3,7 +3,7 @@ module Avocado
     class Field
       attr_reader :name
       attr_reader :component
-      attr_reader :can_be_updated
+      attr_reader :updatable
       attr_reader :sortable
       attr_reader :required
       attr_reader :block
@@ -11,7 +11,7 @@ module Avocado
       def initialize(name, **args, &block)
         @name = name
         @component = 'field'
-        @can_be_updated = true
+        @updatable = true
         @sortable = false
         @block = block
 
@@ -27,7 +27,7 @@ module Avocado
           id: id,
           name: name,
           component: component,
-          can_be_updated: can_be_updated,
+          updatable: updatable,
           sortable: sortable,
           required: required,
         }

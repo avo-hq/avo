@@ -3,8 +3,6 @@ import Bus from '@/js/Bus'
 import Paginate from 'vuejs-paginate'
 import PortalVue from 'portal-vue'
 import Toasted from 'vue-toasted'
-import Turbolinks from 'turbolinks'
-import TurbolinksAdapter from 'vue-turbolinks'
 import VModal from 'vue-js-modal'
 import Vue from 'vue/dist/vue.esm'
 import VueRouter from 'vue-router'
@@ -51,12 +49,19 @@ const Avo = {
 
   init() {
     Avo.env = window.env || 'production'
+    if (document.getElementById('app')) {
+      Avo.initVue()
+    }
   },
 
   turbolinksLoad() {
     if (document.getElementById('app')) {
       Avo.initVue()
     }
+  },
+
+  reload() {
+    this.vue.reload()
   },
 
   initVue() {
@@ -67,7 +72,6 @@ const Avo = {
       closeOnSwipe: true,
     })
     Vue.use(VueRouter)
-    Vue.use(TurbolinksAdapter)
     Vue.use(VModal, { dynamic: true, injectModalsContainer: false })
     Vue.use(PortalVue)
 
@@ -83,10 +87,10 @@ const Avo = {
       },
       methods: {
         reload() {
-          Turbolinks.visit(window.location.href)
+          this.$router.go()
         },
         redirect(url) {
-          Turbolinks.visit(url)
+          this.$router.push(url)
         },
         alert(message, type = 'success') {
           setTimeout(() => {

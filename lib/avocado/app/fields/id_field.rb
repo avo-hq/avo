@@ -8,7 +8,7 @@ module Avocado
 
         @name = name
         @component = 'id-field'
-        @can_be_updated = false
+        @updatable = false
         @sortable = true
       end
     end

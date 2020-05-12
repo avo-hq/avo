@@ -52,7 +52,7 @@ export default {
       if (!this.resource) {
         return []
       }
-      return this.resource.fields.filter((field) => field.can_be_updated)
+      return this.resource.fields.filter((field) => field.updatable)
     },
   },
   methods: {
@@ -77,7 +77,7 @@ export default {
     buildFormData() {
       const form = new FormData()
 
-      this.resource.fields.filter((field) => field.can_be_updated).forEach((field) => form.append(`resource[${field.id}]`, String(field.getValue())))
+      this.resource.fields.filter((field) => field.updatable).forEach((field) => form.append(`resource[${field.id}]`, String(field.getValue())))
 
       return form
     },

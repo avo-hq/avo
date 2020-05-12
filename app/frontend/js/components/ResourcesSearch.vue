@@ -39,7 +39,6 @@
 import '~/vue-multiselect/dist/vue-multiselect.min.css'
 import { Api } from '@/js/Avo'
 import Multiselect from 'vue-multiselect'
-import Turbolinks from 'turbolinks'
 import URI from 'urijs'
 import debounce from 'lodash/debounce'
 import isUndefined from 'lodash/isUndefined'
@@ -114,7 +113,7 @@ export default {
     }, 300),
     select(resource) {
       setTimeout(() => {
-        Turbolinks.visit(resource.link)
+        this.$router.push(resource.link)
       }, 1)
     },
   },
