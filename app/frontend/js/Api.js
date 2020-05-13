@@ -36,12 +36,13 @@ Api.interceptors.response.use(
 
     return response
   },
-  ({ response }) => {
+  (error) => {
+    const { response } = error
     const { data } = response
 
-    console.log(data.exception)
-    if (data && data.exception) Bus.$emit('error', "#<ActiveRecord::RecordInvalid: Validation failed: Email can't be blank, Password can't be blank>")
-    if (data && data.exception) Bus.$emit('error', data.exception.toString())
+    if (data && data.message) Bus.$emit('error', data.message)
+
+    return Promise.reject(error)
   },
 )
 

@@ -6,6 +6,7 @@ module Avocado
       def initialize(name, **args)
         super(name, args)
 
+        @updatable = false
         @component = 'belongs-to-field'
       end
 

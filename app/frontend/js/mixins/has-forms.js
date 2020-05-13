@@ -1,6 +1,10 @@
+import isNull from 'lodash/isNull'
 import pluralize from 'pluralize'
 
 export default {
+  data: () => ({
+    errors: {},
+  }),
   computed: {
     resourceNameSingular() {
       return pluralize(this.resourceName, 1)
@@ -24,8 +28,8 @@ export default {
         .fields
         .filter((field) => field.updatable)
         .filter((field) => !field.computed)
-        // .forEach((field) => console.log(field))
-        .forEach((field) => form.append(`resource[${field.id}]`, String(field.getValue())))
+        .map((field) => [field, isNull(field.getValue()) ? '' : field.getValue()])
+        .forEach(([field, value]) => form.append(`resource[${field.id}]`, value))
 
       return form
     },

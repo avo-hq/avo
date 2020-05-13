@@ -12,7 +12,7 @@
             :key="field.id"
             :is="`edit-${field.component}`"
             :field="field"
-            @update="updateForm"
+            :errors="errors"
           ></component>
         </template>
 
@@ -53,16 +53,15 @@ export default {
 
       this.resource = data.resource
     },
-    async updateForm(params) {
-      const key = params[0]
-      const value = params[1]
-
-      this.form[key] = value
-    },
     async createResource() {
-      const { data } = await Api.post(`/avocado/avocado-api/${this.resourceName}`, this.buildFormData())
+      this.errors = {}
 
-      console.log(data)
+      try {
+        await Api.post(`/avocado/avocado-api/${this.resourceName}`, this.buildFormData())
+      } catch (error) {
+        const { response } = error
+        this.errors = response.data.errors
+      }
     },
   },
   async mounted() {

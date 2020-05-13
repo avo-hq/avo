@@ -72,6 +72,7 @@ module Avocado
       render json: {
         resource: Avocado::Resources::Resource.hydrate_resource(resource, avocado_resource, :update),
         message: 'Resource updated',
+        redirect_url: Avocado::Resources::Resource.show_path(resource),
       }
     end
 

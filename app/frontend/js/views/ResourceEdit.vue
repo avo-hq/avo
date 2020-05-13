@@ -53,12 +53,6 @@ export default {
 
       this.resource = data.resource
     },
-    async updateForm(params) {
-      const key = params[0]
-      const value = params[1]
-
-      this.form[key] = value
-    },
     async updateResource() {
       console.log('updateResource')
 

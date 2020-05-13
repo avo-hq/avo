@@ -6,6 +6,7 @@ module Avocado
       attr_reader :updatable
       attr_reader :sortable
       attr_reader :required
+      attr_reader :nullable
       attr_reader :block
 
       def initialize(name, **args, &block)
@@ -13,6 +14,7 @@ module Avocado
         @component = 'field'
         @updatable = true
         @sortable = false
+        @nullable = false
         @block = block
 
         @required = args[:required] ? true : false
@@ -30,6 +32,7 @@ module Avocado
           updatable: updatable,
           sortable: sortable,
           required: required,
+          nullable: nullable,
           computed: block.present?,
         }
 

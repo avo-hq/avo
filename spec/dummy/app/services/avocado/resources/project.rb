@@ -8,7 +8,7 @@ module Avocado
 
       fields do
         id :ID
-        text :Name
+        text :Name, required: true
         has_many :Users
       end
 

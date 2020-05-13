@@ -76,8 +76,6 @@ export default {
       await Api.delete(`/avocado/avocado-api/${this.resourceName}/${this.resource.id}`)
     },
     openDeleteModal() {
-      console.log('openDeleteModal', this.$modal)
-      // @todo: fix modal in turbolinks
       this.$modal.show(Modal, {
         text: 'Are you sure?',
         confirmAction: () => this.deleteResource(),

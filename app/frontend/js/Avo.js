@@ -115,6 +115,8 @@ const Avo = {
       destroyed() {
         Bus.$off('reload')
         Bus.$off('redirect')
+        Bus.$off('message')
+        Bus.$off('error')
       },
     })
   },
