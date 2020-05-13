@@ -1,0 +1,21 @@
+<template>
+  <field-wrapper :field="field">
+    <input type="number"
+      v-model="value"
+    >
+  </field-wrapper>
+</template>
+
+<script>
+import FormField from '@/js/mixins/form-field'
+
+export default {
+  mixins: [FormField],
+  data: () => ({}),
+  props: ['field'],
+  computed: {},
+  methods: {},
+}
+</script>
+
+<style lang="postcss"></style>

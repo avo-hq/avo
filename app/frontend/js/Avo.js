@@ -16,16 +16,19 @@ Vue.component('index-id-field', require('@/js/components/Index/IdField.vue').def
 Vue.component('index-text-field', require('@/js/components/Index/TextField.vue').default)
 Vue.component('index-belongs-to-field', require('@/js/components/Index/BelongsTo.vue').default)
 Vue.component('index-textarea-field', require('@/js/components/Index/TextareaField.vue').default)
+Vue.component('index-number-field', require('@/js/components/Index/NumberField.vue').default)
 
 Vue.component('show-id-field', require('@/js/components/Show/IdField.vue').default)
 Vue.component('show-text-field', require('@/js/components/Show/TextField.vue').default)
 Vue.component('show-belongs-to-field', require('@/js/components/Show/BelongsTo.vue').default)
 Vue.component('show-has-many-field', require('@/js/components/Show/HasMany.vue').default)
 Vue.component('show-textarea-field', require('@/js/components/Show/TextareaField.vue').default)
+Vue.component('show-number-field', require('@/js/components/Show/NumberField.vue').default)
 
 Vue.component('edit-text-field', require('@/js/components/Edit/TextField.vue').default)
 Vue.component('edit-belongs-to-field', require('@/js/components/Edit/BelongsTo.vue').default)
 Vue.component('edit-textarea-field', require('@/js/components/Edit/TextareaField.vue').default)
+Vue.component('edit-number-field', require('@/js/components/Edit/NumberField.vue').default)
 
 // Components
 Vue.component('resource-table', require('@/js/components/Index/ResourceTable.vue').default)

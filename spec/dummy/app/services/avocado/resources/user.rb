@@ -12,6 +12,7 @@ module Avocado
         text 'Is Writer' do |model, resource|
           model.posts.count > 0 ? 'yes' : 'no'
         end
+        number :Age
         textarea :Description
         has_many :Posts
         has_many :Projects
