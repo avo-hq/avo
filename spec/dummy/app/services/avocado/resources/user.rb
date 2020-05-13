@@ -9,6 +9,7 @@ module Avocado
       fields do
         id
         text :Name
+        textarea :Description
         has_many :Posts
         has_many :Projects
       end
