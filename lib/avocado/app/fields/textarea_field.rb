@@ -2,7 +2,7 @@ require_relative './field'
 
 module Avocado
   module Fields
-    class TextAreaField < Field
+    class TextareaField < Field
       def initialize(*args)
         super
 

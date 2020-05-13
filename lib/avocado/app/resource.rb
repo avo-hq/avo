@@ -32,7 +32,7 @@ module Avocado
         end
 
         def textarea(name)
-          @@fields[self].push Avocado::Fields::TextAreaField::new(name)
+          @@fields[self].push Avocado::Fields::TextareaField::new(name)
         end
 
         def belongs_to(name)
