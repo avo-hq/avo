@@ -7,10 +7,10 @@ module Avocado
       end
 
       fields do
-        id
+        id :ID
         text :Name, required: true
-        text :Foo do |model, resource|
-          "foo or bar #{model.id}, #{resource.name}"
+        text 'Is Writer' do |model, resource|
+          model.posts.count > 0 ? 'yes' : 'no'
         end
         textarea :Description
         has_many :Posts
