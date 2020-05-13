@@ -34,10 +34,15 @@ Vue.component('view-footer', require('@/js/components/ViewFooter.vue').default)
 Vue.component('panel', require('@/js/components/Panel.vue').default)
 Vue.component('field-wrapper', require('@/js/components/FieldWrapper.vue').default)
 Vue.component('heading', require('@/js/components/Heading.vue').default)
-Vue.component('resources-navigation', require('@/js/components/ResourcesNavigation.vue').default)
 Vue.component('resources-search', require('@/js/components/ResourcesSearch.vue').default)
 Vue.component('resources-filter', require('@/js/components/ResourcesFilter.vue').default)
 Vue.component('select-filter', require('@/js/components/Index/Filters/SelectFilter.vue').default)
+
+// Sidebar
+Vue.component('resources-navigation', require('@/js/components/ResourcesNavigation.vue').default)
+Vue.component('sidebar-link', require('@/js/components/SidebarLink.vue').default)
+Vue.component('application-sidebar', require('@/js/components/ApplicationSidebar.vue').default)
+Vue.component('logo-component', require('@/js/components/LogoComponent.vue').default)
 
 // Views
 Vue.component('resources-index', require('@/js/views/ResourceIndex.vue').default)

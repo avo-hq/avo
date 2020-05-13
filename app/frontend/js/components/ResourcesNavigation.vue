@@ -1,42 +1,35 @@
 <template>
   <div>
-    <div class="font-bold text-2xl mb-4">Resources</div>
+    <div class="flex items-center font-bold mb-2 uppercase tracking-normal p-2 text-blue-200 text-sm">
+      <GameBoard class="h-4 inline-block mr-2" /> Resources
+    </div>
 
-    <div class="pl-4 resources-links w-full">
-      <router-link
+    <div class="resources-links w-full">
+      <sidebar-link
         v-for="resource in resources"
         :key="resource.resource_name"
         v-text="resource.label"
-        class="text-white font-semibold p-2 block rounded-lg"
-        :test="`resource-navication-${resource.resource_name}`"
         :to="{
           name: 'index',
           params: {
             resourceName: resource.resource_name,
           },
-        }"></router-link>
+        }"></sidebar-link>
     </div>
   </div>
 </template>
 
 <script>
+import GameBoard from '@/svgs/game-board.svg?inline'
+
 export default {
+  components: { GameBoard },
   data: () => ({}),
   props: ['resources'],
   computed: {},
   methods: {},
-  mounted() {
-    console.log('this.resources->', this.resources)
-  },
+  mounted() {},
 }
 </script>
 
-<style slang="postcss">
-  .resources-links {
-    a {
-      &.router-link-active {
-        @apply bg-blue-900;
-      }
-    }
-  }
-</style>
+<style slang="postcss"></style>

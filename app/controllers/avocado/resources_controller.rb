@@ -77,7 +77,7 @@ module Avocado
 
     def create
       resource = resource_model.safe_constantize.new(resource_params)
-      resource.save
+      resource.save!
 
       render json: {
         resource: Avocado::Resources::Resource.hydrate_resource(resource, avocado_resource, :create),
@@ -148,7 +148,7 @@ module Avocado
       def add_link_to_search_results(resources)
         resources.map do |model|
           resource = model.as_json
-          resource[:link] = "/avocado/resources/#{model.class.to_s.singularize.underscore}/#{model.id}"
+          resource[:link] = "/resources/#{model.class.to_s.singularize.underscore}/#{model.id}"
 
           resource
         end

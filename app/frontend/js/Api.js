@@ -36,6 +36,11 @@ Api.interceptors.response.use(
 
     return response
   },
+  ({ response }) => {
+    const { data } = response
+
+    if (data && data.exception) Bus.$emit('error', data.exception)
+  },
 )
 
 export default Api

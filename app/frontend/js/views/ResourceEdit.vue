@@ -33,9 +33,11 @@
 </template>
 
 <script>
-import { Api } from '@/js/Avo'
+import Api from '@/js/Api'
+import HasForms from '@/js/mixins/has-forms'
 
 export default {
+  mixins: [HasForms],
   data: () => ({
     resource: null,
     form: {},
@@ -44,17 +46,7 @@ export default {
     'resourceName',
     'resourceId',
   ],
-  computed: {
-    resourceNameSingular() {
-      return this.resource.resource_name_singular
-    },
-    fields() {
-      if (!this.resource) {
-        return []
-      }
-      return this.resource.fields.filter((field) => field.updatable)
-    },
-  },
+  computed: {},
   methods: {
     async getResourceFields() {
       const { data } = await Api.get(`/avocado/avocado-api/${this.resourceName}/${this.resourceId}`)
@@ -73,13 +65,6 @@ export default {
       const { data } = await Api.put(`/avocado/avocado-api/${this.resourceName}/${this.resourceId}`, this.buildFormData())
 
       console.log(data)
-    },
-    buildFormData() {
-      const form = new FormData()
-
-      this.resource.fields.filter((field) => field.updatable).forEach((field) => form.append(`resource[${field.id}]`, String(field.getValue())))
-
-      return form
     },
   },
   async mounted() {

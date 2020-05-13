@@ -30,6 +30,7 @@ module Avocado
           updatable: updatable,
           sortable: sortable,
           required: required,
+          computed: block.present?,
         }
 
         fields[:value] = model[id] if model_or_class(model) == 'model'

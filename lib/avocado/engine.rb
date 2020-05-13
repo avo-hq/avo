@@ -36,6 +36,7 @@ module Avocado
         ssl_verify_none: true,
         webpacker: Avocado.webpacker
       )
+      app.config.debug_exception_response_format = :api
     end
 
     config.app_middleware.use(

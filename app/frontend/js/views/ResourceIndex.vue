@@ -81,6 +81,7 @@ import Api from '@/js/Api'
 import URI from 'urijs'
 import isNull from 'lodash/isNull'
 import isUndefined from 'lodash/isUndefined'
+import pluralize from 'pluralize'
 
 export default {
   name: 'ResourceIndex',
@@ -102,18 +103,10 @@ export default {
   ],
   computed: {
     resourceNameSingular() {
-      if (this.resources && this.resources.length > 0) {
-        return this.resources[0].resource_name_singular
-      }
-
-      return ''
+      return pluralize(this.resourceName, 1)
     },
     resourceNamePlural() {
-      if (this.resources && this.resources.length > 0) {
-        return this.resources[0].resource_name_plural
-      }
-
-      return ''
+      return this.resourceName.charAt(0).toUpperCase() + this.resourceName.slice(1)
     },
     queryParams() {
       const params = {}
