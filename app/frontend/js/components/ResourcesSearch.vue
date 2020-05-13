@@ -39,7 +39,6 @@
 import '~/vue-multiselect/dist/vue-multiselect.min.css'
 import { Api } from '@/js/Avo'
 import Multiselect from 'vue-multiselect'
-import Turbolinks from 'turbolinks'
 import URI from 'urijs'
 import debounce from 'lodash/debounce'
 import isUndefined from 'lodash/isUndefined'
@@ -47,6 +46,7 @@ import isUndefined from 'lodash/isUndefined'
 export default {
   components: { Multiselect },
   data: () => ({
+    query: '',
     results: [],
     resources: [],
     isLoading: false,
@@ -64,16 +64,23 @@ export default {
     groupLabel() {
       return this.global ? 'label' : null
     },
+    isGlobal() {
+      return !isUndefined(this.global)
+    },
     queryUrl() {
       const url = new URI()
 
-      url.path('/avocado/avocado-api/search')
+      if (this.isGlobal) {
+        url.path('/avocado/avocado-api/search')
+      } else {
+        url.path(`/avocado/avocado-api/${this.resourceName}/search`)
+      }
 
       const query = {
         q: this.query,
       }
 
-      if (!this.global) {
+      if (this.isGlobal) {
         if (!isUndefined(this.viaResourceName)) {
           // eslint-disable-next-line dot-notation
           query['via_resource_name'] = this.viaResourceName
@@ -86,7 +93,7 @@ export default {
 
       url.query(query)
 
-      return url.toString()
+      return url
     },
   },
   methods: {
@@ -106,7 +113,7 @@ export default {
     }, 300),
     select(resource) {
       setTimeout(() => {
-        Turbolinks.visit(resource.link)
+        this.$router.push(resource.link)
       }, 1)
     },
   },

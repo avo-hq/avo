@@ -3,8 +3,6 @@ import Bus from '@/js/Bus'
 import Paginate from 'vuejs-paginate'
 import PortalVue from 'portal-vue'
 import Toasted from 'vue-toasted'
-import Turbolinks from 'turbolinks'
-import TurbolinksAdapter from 'vue-turbolinks'
 import VModal from 'vue-js-modal'
 import Vue from 'vue/dist/vue.esm'
 import VueRouter from 'vue-router'
@@ -39,10 +37,15 @@ Vue.component('view-footer', require('@/js/components/ViewFooter.vue').default)
 Vue.component('panel', require('@/js/components/Panel.vue').default)
 Vue.component('field-wrapper', require('@/js/components/FieldWrapper.vue').default)
 Vue.component('heading', require('@/js/components/Heading.vue').default)
-Vue.component('resources-navigation', require('@/js/components/ResourcesNavigation.vue').default)
 Vue.component('resources-search', require('@/js/components/ResourcesSearch.vue').default)
 Vue.component('resources-filter', require('@/js/components/ResourcesFilter.vue').default)
 Vue.component('select-filter', require('@/js/components/Index/Filters/SelectFilter.vue').default)
+
+// Sidebar
+Vue.component('resources-navigation', require('@/js/components/ResourcesNavigation.vue').default)
+Vue.component('sidebar-link', require('@/js/components/SidebarLink.vue').default)
+Vue.component('application-sidebar', require('@/js/components/ApplicationSidebar.vue').default)
+Vue.component('logo-component', require('@/js/components/LogoComponent.vue').default)
 
 // Views
 Vue.component('resources-index', require('@/js/views/ResourceIndex.vue').default)
@@ -54,12 +57,19 @@ const Avo = {
 
   init() {
     Avo.env = window.env || 'production'
+    if (document.getElementById('app')) {
+      Avo.initVue()
+    }
   },
 
   turbolinksLoad() {
     if (document.getElementById('app')) {
       Avo.initVue()
     }
+  },
+
+  reload() {
+    this.vue.reload()
   },
 
   initVue() {
@@ -70,7 +80,6 @@ const Avo = {
       closeOnSwipe: true,
     })
     Vue.use(VueRouter)
-    Vue.use(TurbolinksAdapter)
     Vue.use(VModal, { dynamic: true, injectModalsContainer: false })
     Vue.use(PortalVue)
 
@@ -86,10 +95,10 @@ const Avo = {
       },
       methods: {
         reload() {
-          Turbolinks.visit(window.location.href)
+          this.$router.go()
         },
         redirect(url) {
-          Turbolinks.visit(url)
+          this.$router.push(url)
         },
         alert(message, type = 'success') {
           setTimeout(() => {

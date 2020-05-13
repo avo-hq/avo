@@ -3,10 +3,11 @@ require_relative './field'
 module Avocado
   module Fields
     class HasManyField < Field
-      def initialize(*args)
-        super
+      def initialize(name, **args)
+        super(name, args)
 
         @component = 'has-many-field'
+        @updatable = false
       end
 
       def fetch_for_resource(resource, view)

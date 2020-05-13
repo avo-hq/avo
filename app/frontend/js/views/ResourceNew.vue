@@ -1,39 +1,43 @@
 <template>
   <div v-if="resource">
-    <view-header>
-      <template #heading>
-        Create new {{resourceNameSingular}}
-      </template>
-    </view-header>
-    <panel>
-      <component
-        v-for="field in fields"
-        :key="field.id"
-        :is="`edit-${field.component}`"
-        :field="field"
-        @update="updateForm"
-      ></component>
-    </panel>
+    <div v-for="(panel, index) in resource.panels" :key="panel.name">
+      <panel>
+        <template #heading>
+          Create new {{resourceNameSingular}}
+        </template>
 
-    <view-footer>
-      <router-link
-        class="button"
-        :to="{
-          name: 'index',
-          params: {
-            resourceName: resourceName,
-          },
-        }">cancel</router-link>
-      <button class="button" @click="createResource">Save</button>
-    </view-footer>
+        <template #content>
+          <component
+            v-for="field in fields"
+            :key="field.id"
+            :is="`edit-${field.component}`"
+            :field="field"
+            @update="updateForm"
+          ></component>
+        </template>
 
+        <template #footer>
+          <router-link
+            class="button"
+            :to="{
+              name: 'index',
+              params: {
+                resourceName: resourceName,
+              },
+            }">cancel</router-link>
+          <button class="button" @click="createResource">Save</button>
+        </template>
+      </panel>
+    </div>
   </div>
 </template>
 
 <script>
-import { Api } from '@/js/Avo'
+import Api from '@/js/Api'
+import HasForms from '@/js/mixins/has-forms'
 
 export default {
+  mixins: [HasForms],
   data: () => ({
     resource: {},
     form: {},
@@ -42,20 +46,9 @@ export default {
     'resourceName',
     'resourceId',
   ],
-  computed: {
-    resourceNameSingular() {
-      return this.resource.resource_name_singular
-    },
-    fields() {
-      if (!this.resource || !this.resource.fields || this.resource.fields.length === 0) {
-        return []
-      }
-
-      return this.resource.fields.filter((field) => field.can_be_updated)
-    },
-  },
+  computed: {},
   methods: {
-    async getResourceFields() {
+    async getResource() {
       const { data } = await Api.get(`/avocado/avocado-api/${this.resourceName}/fields`)
 
       this.resource = data.resource
@@ -71,16 +64,9 @@ export default {
 
       console.log(data)
     },
-    buildFormData() {
-      const form = new FormData()
-
-      this.resource.fields.filter((field) => field.can_be_updated).forEach((field) => form.append(`resource[${field.id}]`, String(field.getValue())))
-
-      return form
-    },
   },
   async mounted() {
-    await this.getResourceFields()
+    await this.getResource()
   },
 }
 </script>

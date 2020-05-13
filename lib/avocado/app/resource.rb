@@ -1,6 +1,8 @@
 module Avocado
   module Resources
     class Resource
+      attr_reader :required
+
       class << self
         @@fields = {}
         @@filters = {}
@@ -23,12 +25,12 @@ module Avocado
           @@filters[self] or []
         end
 
-        def id(name = nil)
-          @@fields[self].push Avocado::Fields::IdField::new(name)
+        def id(name, **args)
+          @@fields[self].push Avocado::Fields::IdField::new(name, **args)
         end
 
-        def text(name)
-          @@fields[self].push Avocado::Fields::TextField::new(name)
+        def text(name, **args, &block)
+          @@fields[self].push Avocado::Fields::TextField::new(name, **args, &block)
         end
 
         def textarea(name)
@@ -39,8 +41,8 @@ module Avocado
           @@fields[self].push Avocado::Fields::BelongsToField::new(name)
         end
 
-        def has_many(name)
-          @@fields[self].push Avocado::Fields::HasManyField::new(name)
+        def has_many(name, **args)
+          @@fields[self].push Avocado::Fields::HasManyField::new(name, **args)
         end
 
         def hydrate_resource(model, avocado_resource, view = :index)
@@ -82,7 +84,7 @@ module Avocado
         def show_path(resource)
           url = resource.class.name.demodulize.downcase.pluralize
 
-          "#{Avocado.root_path}/resources/#{url}/#{resource.id}"
+          "/resources/#{url}/#{resource.id}"
         end
 
         def index_path(resource_or_class)
@@ -92,7 +94,7 @@ module Avocado
             url = resource_or_class.class.name.demodulize.underscore.pluralize
           end
 
-          "#{Avocado.root_path}/resources/#{url}"
+          "/resources/#{url}"
         end
       end
 

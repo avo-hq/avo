@@ -6,7 +6,7 @@
       </div>
     </td>
     <component
-      v-for="field in resource.fields"
+      v-for="field in fields"
       :key="field.id"
       :is="`index-${field.component}`"
       :value="field.value"
@@ -48,16 +48,29 @@ import EditIcon from '@/svgs/edit.svg?inline'
 import Modal from '@/js/components/Modal'
 import ViewIcon from '@/svgs/eye.svg?inline'
 /* eslint-enable import/no-unresolved */
+import ExtractsFields from '@/js/mixins/extracts-fields'
 
 export default {
   components: {
     ViewIcon, EditIcon, DeleteIcon,
   },
   data: () => ({}),
+  mixins: [ExtractsFields],
   props: [
     'resource',
     'resourceName',
+    'viaResourceName',
+    'viaResourceId',
   ],
+  computed: {
+    resourceFields() {
+      if (this.resource
+        && this.resource.fields
+        && this.resource.fields.length > 0) return this.resource.fields
+
+      return []
+    },
+  },
   methods: {
     async deleteResource() {
       await Api.delete(`/avocado/avocado-api/${this.resourceName}/${this.resource.id}`)
