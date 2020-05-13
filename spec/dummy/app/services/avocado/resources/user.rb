@@ -7,11 +7,12 @@ module Avocado
       end
 
       fields do
-        id :ID
+        id
         text :Name, required: true
-        text(:Foo, required: true) do |model, resource|
+        text :Foo do |model, resource|
           "foo or bar #{model.id}, #{resource.name}"
         end
+        textarea :Description
         has_many :Posts
         has_many :Projects
       end

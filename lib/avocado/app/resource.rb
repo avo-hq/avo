@@ -33,8 +33,12 @@ module Avocado
           @@fields[self].push Avocado::Fields::TextField::new(name, **args, &block)
         end
 
-        def belongs_to(name, **args)
-          @@fields[self].push Avocado::Fields::BelongsToField::new(name, **args)
+        def textarea(name)
+          @@fields[self].push Avocado::Fields::TextareaField::new(name)
+        end
+
+        def belongs_to(name)
+          @@fields[self].push Avocado::Fields::BelongsToField::new(name)
         end
 
         def has_many(name, **args)
