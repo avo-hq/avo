@@ -1,12 +1,17 @@
 <template>
   <td>
-    {{value}}
+    <a href="javascript:void(0)" @click="open = true" v-if="!open">more</a>
+    <div v-if="open">
+      {{value}}
+    </div>
   </td>
 </template>
 
 <script>
 export default {
-  data: () => ({}),
+  data: () => ({
+    open: false,
+  }),
   props: ['value'],
   computed: {},
   methods: {},

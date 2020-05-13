@@ -3,7 +3,7 @@ module Avocado
     class User < Resource
       def initialize
         @title = :name
-        @search = [:name, :id]
+        @search = [:name, :id, :description]
       end
 
       fields do
