@@ -1,11 +1,13 @@
 <template>
-  <router-link :to="to" class="text-white text-lg font-bold p-2 block hover:bg-gray-800" :exact="exact"><slot/></router-link>
+  <field-wrapper :field="field">
+    <div v-text="field.value"></div>
+  </field-wrapper>
 </template>
 
 <script>
 export default {
   data: () => ({}),
-  props: ['to', 'label', 'exact'],
+  props: ['field'],
   computed: {},
   methods: {},
   mounted() {},
