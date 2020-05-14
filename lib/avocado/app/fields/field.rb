@@ -1,6 +1,7 @@
 module Avocado
   module Fields
     class Field
+      attr_reader :id
       attr_reader :name
       attr_reader :component
       attr_reader :updatable
@@ -9,8 +10,9 @@ module Avocado
       attr_reader :nullable
       attr_reader :block
 
-      def initialize(name, **args, &block)
-        @name = name
+      def initialize(id_or_name, **args, &block)
+        @id = id_or_name.to_s.parameterize.underscore
+        @name = args[:name] || id_or_name.to_s.camelize
         @component = 'field'
         @updatable = true
         @sortable = false
@@ -18,10 +20,6 @@ module Avocado
         @block = block
 
         @required = args[:required] ? true : false
-      end
-
-      def id
-        name.to_s.parameterize
       end
 
       def fetch_for_resource(model, view = :index)
