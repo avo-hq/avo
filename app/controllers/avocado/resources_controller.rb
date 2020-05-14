@@ -67,7 +67,7 @@ module Avocado
     end
 
     def update
-      resource.update(resource_params)
+      resource.update!(resource_params)
 
       render json: {
         resource: Avocado::Resources::Resource.hydrate_resource(resource, avocado_resource, :update),
@@ -96,7 +96,7 @@ module Avocado
     end
 
     def destroy
-      resource.destroy
+      resource.destroy!
 
       render json: {
         redirect_url: Avocado::Resources::Resource.index_path(resource_model),
