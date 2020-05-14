@@ -10,8 +10,9 @@ module Avocado
 
     def exception_logger(exception)
       respond_to do |format|
+        format.html { raise exception }
         format.json { render json: {
-          errors: exception.record.errors,
+          errors: exception.record.present? ? exception.record.errors : [],
           message: exception.message,
           traces: exception.backtrace,
         }, status: ActionDispatch::ExceptionWrapper.status_code_for_exception(exception.class.name) }
