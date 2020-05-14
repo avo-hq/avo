@@ -1,10 +1,10 @@
 <template>
-  <field-wrapper :field="field">
+  <show-field-wrapper :field="field">
       <input type="text"
         v-model="value"
         disabled
       >
-  </field-wrapper>
+  </show-field-wrapper>
 </template>
 
 <script>

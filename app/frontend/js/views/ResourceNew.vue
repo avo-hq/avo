@@ -25,7 +25,7 @@
                 resourceName: resourceName,
               },
             }">cancel</router-link>
-          <button class="button" @click="createResource">Save</button>
+          <button class="button" @click="submitResource">Save</button>
         </template>
       </panel>
     </div>
@@ -33,7 +33,6 @@
 </template>
 
 <script>
-import Api from '@/js/Api'
 import HasForms from '@/js/mixins/has-forms'
 
 export default {
@@ -47,23 +46,7 @@ export default {
     'resourceId',
   ],
   computed: {},
-  methods: {
-    async getResource() {
-      const { data } = await Api.get(`/avocado/avocado-api/${this.resourceName}/fields`)
-
-      this.resource = data.resource
-    },
-    async createResource() {
-      this.errors = {}
-
-      try {
-        await Api.post(`/avocado/avocado-api/${this.resourceName}`, this.buildFormData())
-      } catch (error) {
-        const { response } = error
-        this.errors = response.data.errors
-      }
-    },
-  },
+  methods: {},
   async mounted() {
     await this.getResource()
   },

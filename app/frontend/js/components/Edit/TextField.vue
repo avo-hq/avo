@@ -1,12 +1,13 @@
 <template>
-  <field-wrapper :field="field" :errors="errors">
+  <show-field-wrapper :field="field" :errors="errors">
+    {{field.id}}
     <input type="text"
       :class="classes"
       v-model="value"
     >
     <br>
     <div class="text-red-600" v-if="fieldError" v-text="fieldError"></div>
-  </field-wrapper>
+  </show-field-wrapper>
 </template>
 
 <script>

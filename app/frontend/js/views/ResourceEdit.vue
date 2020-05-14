@@ -12,6 +12,7 @@
             :key="field.id"
             :is="`edit-${field.component}`"
             :field="field"
+            :errors="errors"
           ></component>
         </template>
 
@@ -25,7 +26,7 @@
                 resourceId: resource.id,
               },
             }">cancel</router-link>
-          <button class="button" @click="updateResource">Save</button>
+          <button class="button" @click="submitResource">Save</button>
         </template>
       </panel>
     </div>
@@ -33,7 +34,6 @@
 </template>
 
 <script>
-import Api from '@/js/Api'
 import HasForms from '@/js/mixins/has-forms'
 
 export default {
@@ -47,20 +47,7 @@ export default {
     'resourceId',
   ],
   computed: {},
-  methods: {
-    async getResourceFields() {
-      const { data } = await Api.get(`/avocado/avocado-api/${this.resourceName}/${this.resourceId}`)
-
-      this.resource = data.resource
-    },
-    async updateResource() {
-      console.log('updateResource')
-
-      const { data } = await Api.put(`/avocado/avocado-api/${this.resourceName}/${this.resourceId}`, this.buildFormData())
-
-      console.log(data)
-    },
-  },
+  methods: {},
   async mounted() {
     await this.getResourceFields()
   },

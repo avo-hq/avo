@@ -1,7 +1,7 @@
 <template>
-  <field-wrapper :field="field">
+  <show-field-wrapper :field="field">
     <div v-text="field.value"></div>
-  </field-wrapper>
+  </show-field-wrapper>
 </template>
 
 <script>

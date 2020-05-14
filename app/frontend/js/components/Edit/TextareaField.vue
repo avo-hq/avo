@@ -1,9 +1,9 @@
 <template>
-  <field-wrapper :field="field">
+  <show-field-wrapper :field="field">
     <textarea
       v-model="value"
     ></textarea>
-  </field-wrapper>
+  </show-field-wrapper>
 </template>
 
 <script>
