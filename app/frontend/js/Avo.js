@@ -106,7 +106,9 @@ const Avo = {
           this.$router.go()
         },
         redirect(url) {
-          this.$router.push(url)
+          if (this.$route.path === url) return this.reload()
+
+          return this.$router.push(url)
         },
         alert(message, type = 'success') {
           setTimeout(() => {
