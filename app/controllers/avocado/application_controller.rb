@@ -1,6 +1,6 @@
 module Avocado
   class ApplicationController < ActionController::Base
-    rescue_from Exception, with: :exception_logger
+    rescue_from ActiveRecord::RecordInvalid, with: :exception_logger
     protect_from_forgery with: :exception
     before_action :init_app
 

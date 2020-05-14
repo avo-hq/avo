@@ -1,6 +1,10 @@
+require_relative 'element'
+
 module Avocado
   module Fields
     class Field
+      include Avocado::Fields::Element
+
       attr_reader :id
       attr_reader :name
       attr_reader :component
@@ -11,6 +15,8 @@ module Avocado
       attr_reader :block
 
       def initialize(id_or_name, **args, &block)
+        super(id_or_name, **args, &block)
+
         @id = id_or_name.to_s.parameterize.underscore
         @name = args[:name] || id_or_name.to_s.camelize
         @component = 'field'
@@ -20,6 +26,12 @@ module Avocado
         @block = block
 
         @required = args[:required] ? true : false
+
+        # Set the visibility
+        show_on args[:show_on] if args[:show_on].present?
+        hide_on args[:hide_on] if args[:hide_on].present?
+        only_on args[:only_on] if args[:only_on].present?
+        except_on args[:except_on] if args[:except_on].present?
       end
 
       def fetch_for_resource(model, view = :index)

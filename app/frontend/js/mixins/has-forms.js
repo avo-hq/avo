@@ -21,7 +21,7 @@ export default {
         .filter((field) => !field.computed)
     },
     getResourceUrl() {
-      if (this.resourceId) return `/avocado/avocado-api/${this.resourceName}/${this.resourceId}`
+      if (this.resourceId) return `/avocado/avocado-api/${this.resourceName}/${this.resourceId}/edit`
 
       return `/avocado/avocado-api/${this.resourceName}/fields`
     },
@@ -49,7 +49,7 @@ export default {
 
       return form
     },
-    async getResourceFields() {
+    async getResource() {
       const { data } = await Api.get(this.getResourceUrl)
 
       this.resource = data.resource
@@ -70,5 +70,8 @@ export default {
         this.errors = response.data.errors
       }
     },
+  },
+  async mounted() {
+    await this.getResource()
   },
 }

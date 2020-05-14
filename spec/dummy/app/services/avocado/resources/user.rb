@@ -7,15 +7,15 @@ module Avocado
       end
 
       fields do
-        id :ID
-        text :Name, required: true
-        text :email, name: 'User Email', required: true
-        password :password, name: 'User Password', required: true
+        id
+        text :Name, required: true, only_on: [:forms, :index]
+        text :email, name: 'User Email', required: true, hide_on: :edit
+        password :password, name: 'User Password', required: true, except_on: :forms
         password :password_confirmation, name: 'Password confirmation', required: true
         text 'Is Writer' do |model, resource|
           model.posts.count > 0 ? 'yes' : 'no'
         end
-        textarea :Description
+        textarea :Description, except_on: :edit
         has_many :Posts
         has_many :Projects
       end

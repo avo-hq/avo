@@ -7,6 +7,8 @@ module Avocado
         super(name, **args, &block)
 
         @component = 'password-field'
+
+        only_on :forms
       end
     end
   end

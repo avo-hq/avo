@@ -48,8 +48,5 @@ export default {
   ],
   computed: {},
   methods: {},
-  async mounted() {
-    await this.getResourceFields()
-  },
 }
 </script>

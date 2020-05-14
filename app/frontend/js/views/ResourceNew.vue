@@ -47,8 +47,5 @@ export default {
   ],
   computed: {},
   methods: {},
-  async mounted() {
-    await this.getResource()
-  },
 }
 </script>
