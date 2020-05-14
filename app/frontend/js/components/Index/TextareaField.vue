@@ -1,10 +1,10 @@
 <template>
-  <td>
+  <index-field-wrapper :field="field">
     <a href="javascript:void(0)" @click="open = true" v-if="!open">more</a>
     <div v-if="open">
-      {{value}}
+      {{field.value}}
     </div>
-  </td>
+  </index-field-wrapper>
 </template>
 
 <script>
@@ -12,7 +12,7 @@ export default {
   data: () => ({
     open: false,
   }),
-  props: ['value'],
+  props: ['field'],
   computed: {},
   methods: {},
   mounted() {},

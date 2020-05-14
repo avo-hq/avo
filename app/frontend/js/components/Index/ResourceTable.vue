@@ -2,13 +2,12 @@
   <div>
     <table class="w-full px-4">
       <thead v-if="hasFields" class="bg-gray-200">
-        <th class="w-8">
+        <th class="min-w-8">
           <!-- Select cell -->
         </th>
         <th v-for="field in fields"
           :key="field.id"
           is="table-header-cell"
-          class="text-left uppercase text-sm py-2"
           :resource-name="resourceName"
           :field="field"
           :sort-by="sortBy"

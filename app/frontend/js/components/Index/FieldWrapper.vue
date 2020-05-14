@@ -1,7 +1,7 @@
 <template>
-  <index-field-wrapper :field="field">
-    {{field.value}}
-  </index-field-wrapper>
+  <td class="px-2 py-3">
+    <slot/>
+  </td>
 </template>
 
 <script>

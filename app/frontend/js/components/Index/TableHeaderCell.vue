@@ -4,14 +4,14 @@
     :key="key"
     :class="classes"
   >
-    <div class="inline-block"
+    <div class="inline-flex items-center text-gray-700 leading-tight text-sm"
       :class="{'cursor-pointer': sortable}"
       @click="tryAndSort"
     >
       {{field.name}}
       <component :is="sortComponent"
         v-if="sortable"
-        class="inline-block h-4"
+        class="inline-block h-4 ml-1 fill-current w-3"
        />
     </div>
   </th>
@@ -35,11 +35,9 @@ export default {
   ],
   computed: {
     classes() {
-      let classes = 'text-left uppercase text-sm py-2'
+      const classes = ['text-left', 'uppercase', 'text-sm', 'p-2']
 
-      if (this.field.id === 'id') classes += ' w-12'
-
-      return classes
+      return classes.join(' ')
     },
     key() {
       return `header-${this.resourceName}-${this.field.id}`

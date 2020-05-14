@@ -33,7 +33,7 @@
           loading
         </div>
 
-        <div v-else>
+        <template v-else>
           <div class="flex justify-between items-center mb-4">
             <resources-filter
               @change-per-page="changePerPage"
@@ -44,32 +44,34 @@
             />
           </div>
 
-          <resource-table
-            :resources="resources"
-            :resource-name="resourceName"
-            :sort-by="sortBy"
-            :sort-direction="sortDirection"
-            :via-resource-name="viaResourceName"
-            :via-resource-id="viaResourceId"
-            @sort="changeSortBy"
-            ></resource-table>
+          <div class="w-full overflow-auto">
+            <resource-table
+              :resources="resources"
+              :resource-name="resourceName"
+              :sort-by="sortBy"
+              :sort-direction="sortDirection"
+              :via-resource-name="viaResourceName"
+              :via-resource-id="viaResourceId"
+              @sort="changeSortBy"
+              ></resource-table>
 
-            <paginate
-              v-show="totalPages > 0 && resources.length > 0"
-              v-model="page"
-              ref="paginate"
-              :page-count="totalPages"
-              :click-handler="changePageFromPagination"
-              :prev-text="'Prev'"
-              :next-text="'Next'"
-              container-class="avo-pagination flex justify-end px-4"
-              page-class="pagination-button"
-              page-link-class="button"
-              active-class="active"
-              prev-link-class="button"
-              next-link-class="button"
-            ></paginate>
-        </div>
+              <paginate
+                v-show="totalPages > 0 && resources.length > 0"
+                v-model="page"
+                ref="paginate"
+                :page-count="totalPages"
+                :click-handler="changePageFromPagination"
+                :prev-text="'Prev'"
+                :next-text="'Next'"
+                container-class="avo-pagination flex justify-end px-4"
+                page-class="pagination-button"
+                page-link-class="button"
+                active-class="active"
+                prev-link-class="button"
+                next-link-class="button"
+              ></paginate>
+            </div>
+        </template>
 
       </template>
     </panel>
