@@ -1,0 +1,17 @@
+<template>
+  <show-field-wrapper :field="field">
+    <div v-text="field.value"></div>
+  </show-field-wrapper>
+</template>
+
+<script>
+export default {
+  data: () => ({}),
+  props: ['field'],
+  computed: {},
+  methods: {},
+  mounted() {},
+}
+</script>
+
+<style lang="postcss"></style>

@@ -33,6 +33,10 @@ module Avocado
           @@fields[self].push Avocado::Fields::TextField::new(name, **args, &block)
         end
 
+        def password(name, **args, &block)
+          @@fields[self].push Avocado::Fields::PasswordField::new(name, **args, &block)
+        end
+
         def textarea(name)
           @@fields[self].push Avocado::Fields::TextareaField::new(name)
         end
