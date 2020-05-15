@@ -1,6 +1,8 @@
 <template>
   <show-field-wrapper :field="field">
     <textarea
+      :rows="rows"
+      class="w-full"
       v-model="value"
     ></textarea>
   </show-field-wrapper>
@@ -13,7 +15,11 @@ export default {
   mixins: [FormField],
   data: () => ({}),
   props: ['field'],
-  computed: {},
+  computed: {
+    rows() {
+      return this.field.rows || 5
+    },
+  },
   methods: {},
 }
 </script>
