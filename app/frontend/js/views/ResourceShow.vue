@@ -22,10 +22,11 @@
 
         <template #content>
           <component
-            v-for="field in fieldsForPanel(panel)"
+            v-for="(field, index) in fieldsForPanel(panel)"
             :key="field.id"
             :is="`show-${field.component}`"
             :field="field"
+            :index="index"
             :resource-name="resourceName"
             :resource-id="resourceId"
           ></component>

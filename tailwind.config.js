@@ -1,6 +1,11 @@
 const plugin = require('tailwindcss/plugin')
 
 module.exports = {
+  purge: [
+    './src/**/*.html',
+    './src/**/*.html.erb',
+    './src/**/*.vue',
+  ],
   theme: {
     extend: {
       fontFamily: {

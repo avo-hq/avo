@@ -1,5 +1,5 @@
 <template>
-  <show-field-wrapper :field="field">
+  <show-field-wrapper :field="field" :index="index">
     <div v-text="field.value"></div>
   </show-field-wrapper>
 </template>

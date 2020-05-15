@@ -2,6 +2,15 @@ export default {
   data: () => ({
     value: '',
   }),
+  props: {
+    index: {
+      type: Number,
+    },
+    errors: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
   methods: {
     setInitialValue() {
       this.value = this.field.value

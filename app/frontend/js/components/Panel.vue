@@ -12,7 +12,7 @@
       </template>
     </view-header>
 
-    <div class="bg-white rounded shadow py-4 mb-8">
+    <div class="relative bg-white rounded shadow-lg mb-8">
       <slot name="content"/>
     </div>
 

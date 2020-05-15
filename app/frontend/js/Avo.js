@@ -46,6 +46,8 @@ Vue.component('heading',                         require('@/js/components/Headin
 Vue.component('resources-search',                require('@/js/components/ResourcesSearch.vue').default)
 Vue.component('resources-filter',                require('@/js/components/ResourcesFilter.vue').default)
 Vue.component('select-filter',                   require('@/js/components/Index/Filters/SelectFilter.vue').default)
+Vue.component('loading-component',               require('@/js/components/LoadingComponent.vue').default)
+Vue.component('loading-overlay',                 require('@/js/components/LoadingOverlay.vue').default)
 
 // Sidebar
 Vue.component('resources-navigation',            require('@/js/components/ResourcesNavigation.vue').default)

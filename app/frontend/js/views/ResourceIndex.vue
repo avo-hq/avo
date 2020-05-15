@@ -29,12 +29,8 @@
       </template>
 
       <template #content>
-        <div v-if="isLoading">
-          loading
-        </div>
-
-        <template v-else>
-          <div class="flex justify-between items-center mb-4">
+        <template>
+          <div class="flex justify-between items-center py-4">
             <resources-filter
               @change-per-page="changePerPage"
               :per-page="perPage"
@@ -45,32 +41,38 @@
           </div>
 
           <div class="w-full overflow-auto">
-            <resource-table
-              :resources="resources"
-              :resource-name="resourceName"
-              :sort-by="sortBy"
-              :sort-direction="sortDirection"
-              :via-resource-name="viaResourceName"
-              :via-resource-id="viaResourceId"
-              @sort="changeSortBy"
-              ></resource-table>
+            <loading-overlay class="relative" v-if="resources.length === 0 && isLoading"></loading-overlay>
+            <div class="relative flex" v-else>
+              <loading-overlay v-if="isLoading" />
 
-              <paginate
-                v-show="totalPages > 0 && resources.length > 0"
-                v-model="page"
-                ref="paginate"
-                :page-count="totalPages"
-                :click-handler="changePageFromPagination"
-                :prev-text="'Prev'"
-                :next-text="'Next'"
-                container-class="avo-pagination flex justify-end px-4"
-                page-class="pagination-button"
-                page-link-class="button"
-                active-class="active"
-                prev-link-class="button"
-                next-link-class="button"
-              ></paginate>
+              <resource-table
+                :resources="resources"
+                :resource-name="resourceName"
+                :sort-by="sortBy"
+                :sort-direction="sortDirection"
+                :via-resource-name="viaResourceName"
+                :via-resource-id="viaResourceId"
+                @sort="changeSortBy"
+                ></resource-table>
             </div>
+
+            <paginate
+              v-show="totalPages > 0 && resources.length > 0"
+              v-model="page"
+              ref="paginate"
+              :page-count="totalPages"
+              :click-handler="changePageFromPagination"
+              :prev-text="'Prev'"
+              :next-text="'Next'"
+              container-class="avo-pagination flex justify-end px-4"
+              page-class="pagination-button"
+              page-link-class="button"
+              active-class="active"
+              prev-link-class="button"
+              next-link-class="button"
+              class="py-4 space-x-2"
+            ></paginate>
+          </div>
         </template>
 
       </template>
@@ -127,7 +129,6 @@ export default {
       }
 
       if (Object.keys(this.appliedFilters).length > 0) {
-        console.log(this.appliedFilters)
         params.filters = this.encodedFilters
       } else {
         delete params.filters
@@ -301,7 +302,7 @@ export default {
 .avo-pagination {
   .active {
     a {
-      @apply bg-indigo-400;
+      @apply bg-gray-300 border-gray-300;
     }
   }
 }

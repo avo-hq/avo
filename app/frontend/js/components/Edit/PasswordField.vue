@@ -1,5 +1,5 @@
 <template>
-  <show-field-wrapper :field="field" :errors="errors">
+  <show-field-wrapper :field="field" :errors="errors" :index="index">
     <input type="password"
       :class="classes"
       v-model="value"
@@ -25,7 +25,7 @@ export default {
   },
   computed: {
     classes() {
-      const classes = []
+      const classes = ['w-full']
 
       if (this.hasErrors) classes.push('border', 'border-red-600')
 

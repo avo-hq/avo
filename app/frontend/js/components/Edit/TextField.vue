@@ -1,10 +1,7 @@
 <template>
-  <show-field-wrapper :field="field" :errors="errors">
-    <input type="text"
-      :class="classes"
-      v-model="value"
-    >
-    <br>
+  <show-field-wrapper :field="field" :errors="errors" :index="index">
+    <input type="text" :class="classes" v-model="value" />
+    <br />
     <div class="text-red-600" v-if="fieldError" v-text="fieldError"></div>
   </show-field-wrapper>
 </template>
@@ -18,14 +15,10 @@ export default {
   data: () => ({}),
   props: {
     field: {},
-    errors: {
-      type: Object,
-      default: () => ({}),
-    },
   },
   computed: {
     classes() {
-      const classes = []
+      const classes = ['w-full']
 
       if (this.hasErrors) classes.push('border', 'border-red-600')
 
