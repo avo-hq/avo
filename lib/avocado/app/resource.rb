@@ -70,7 +70,6 @@ module Avocado
 
           avocado_resource.get_fields.each do |field|
             next unless field.send "show_on_#{view.to_s}"
-            # abort field.inspect if field.id === 'age'
 
             furnished_field = field.fetch_for_resource(model, view)
 
