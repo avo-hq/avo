@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="w-full">
     <table class="w-full px-4">
       <thead v-if="hasFields" class="bg-gray-200">
         <th class="min-w-8">

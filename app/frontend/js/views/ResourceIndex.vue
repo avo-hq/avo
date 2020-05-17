@@ -297,7 +297,7 @@ export default {
 }
 </script>
 
-<style slang="postcss">
+<style>
 /* @todo: fix loaders to support lang= */
 .avo-pagination {
   .active {

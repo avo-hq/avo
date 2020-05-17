@@ -13,5 +13,3 @@ export default {
   mounted() {},
 }
 </script>
-
-<style lang="postcss"></style>

@@ -86,5 +86,90 @@ module.exports = {
 
       addComponents(buttons)
     }),
+    // form fields
+    plugin(({ addComponents, theme }) => {
+      const styles = {
+        appearance: 'none',
+        display: 'inline-flex',
+        backgroundColor: theme('colors.white'),
+        color: theme('colors.gray.700'),
+        borderStyle: 'solid',
+        borderWidth: '1px',
+        borderColor: theme('colors.gray.300'),
+        borderRadius: theme('borderRadius.default'),
+        padding: `${theme('spacing.2')} ${theme('spacing.4')}`,
+        lineHeight: theme('lineHeight.tight'),
+        '&:focus': {
+          outline: 'none',
+          backgroundColor: theme('colors.white'),
+          borderColor: theme('colors.gray.500'),
+        },
+      }
+      const components = {
+        'input[type=email]': {
+          ...styles,
+        },
+        'input[type=password]': {
+          ...styles,
+        },
+        textarea: {
+          ...styles,
+        },
+        'input[type=text]': {
+          ...styles,
+        },
+      }
+
+      addComponents(components)
+    }),
+    // labels
+    plugin(({ addComponents, theme }) => {
+      const styles = {
+        display: 'inline-flex',
+        textTransform: 'uppercase',
+        letterSpacing: theme('letterSpacing.wide'),
+        color: theme('color.gray.700'),
+        fontSize: theme('fontSize.xs'),
+        fontWeight: theme('fontWeight.bold'),
+        marginBottom: theme('spacing.2'),
+      }
+      const components = {
+        label: {
+          ...styles,
+        },
+      }
+
+      addComponents(components)
+    }),
+    // select
+    plugin(({ addComponents, theme }) => {
+      const styles = {
+        appearance: 'none',
+        display: 'inline-flex',
+        borderStyle: 'solid',
+        borderWidth: '1px',
+        borderColor: theme('colors.gray.300'),
+        backgroundColor: theme('colors.white'),
+        color: theme('colors.gray.700'),
+        padding: `${theme('spacing.2')} ${theme('spacing.8')} ${theme('spacing.2')} ${theme('spacing.4')}`,
+        borderRadius: theme('borderRadius.default'),
+        lineHeight: theme('lineHeight.tight'),
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'right .5rem center',
+        backgroundImage: 'url(data:image/svg+xml;base64,PHN2ZyBhcmlhLWhpZGRlbj0idHJ1ZSIgZm9jdXNhYmxlPSJmYWxzZSIgZGF0YS1wcmVmaXg9ImZhZCIgZGF0YS1pY29uPSJjaGV2cm9uLWRvd24iIHJvbGU9ImltZyIgaGVpZ2h0PSIxNiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgNDQ4IDUxMiIgY2xhc3M9InN2Zy1pbmxpbmUtLWZhIGZhLWNoZXZyb24tZG93biBmYS13LTE0IGZhLTd4Ij48ZyBjbGFzcz0iZmEtZ3JvdXAiPjxwYXRoIGZpbGw9ImN1cnJlbnRDb2xvciIgZD0iTTIyNC4xIDI4NC42NGwtNTYuODkgNTYuNzgtMTU0LTE1NC4zMWEyNCAyNCAwIDAgMSAwLTMzLjk0bDIyLjY1LTIyLjdhMjMuOTMgMjMuOTMgMCAwIDEgMzMuODQgMHoiIGNsYXNzPSJmYS1zZWNvbmRhcnkiPjwvcGF0aD48cGF0aCBmaWxsPSJjdXJyZW50Q29sb3IiIGQ9Ik00MzUgMTg3LjE1TDI0MSAzODEuNDhhMjMuOTQgMjMuOTQgMCAwIDEtMzMuODQgMGwtNDAtNDAgMjExLjM0LTIxMWEyMy45MyAyMy45MyAwIDAgMSAzMy44NCAwTDQzNSAxNTMuMjFhMjQgMjQgMCAwIDEgMCAzMy45NHoiIGNsYXNzPSJmYS1wcmltYXJ5Ij48L3BhdGg+PC9nPjwvc3ZnPg==)',
+        '&:focus': {
+          outline: 'none',
+          backgroundColor: theme('colors.white'),
+          borderColor: theme('colors.gray.500'),
+        },
+      }
+      const components = {
+        select: {
+          ...styles,
+        },
+      }
+
+      addComponents(components)
+    }),
   ],
 }
