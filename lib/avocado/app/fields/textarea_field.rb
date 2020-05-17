@@ -4,7 +4,7 @@ module Avocado
   module Fields
     class TextareaField < Field
       def initialize(name, **args, &block)
-        super
+        super(name, **args, &block)
 
         @component = 'textarea-field'
         @sortable = true

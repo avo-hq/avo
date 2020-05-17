@@ -106,16 +106,7 @@ module.exports = {
         },
       }
       const components = {
-        'input[type=email]': {
-          ...styles,
-        },
-        'input[type=password]': {
-          ...styles,
-        },
-        textarea: {
-          ...styles,
-        },
-        'input[type=text]': {
+        'input[type=password], input[type=email], textarea, input[type=text]': {
           ...styles,
         },
       }
