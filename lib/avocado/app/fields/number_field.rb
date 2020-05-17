@@ -2,20 +2,26 @@ require_relative './field'
 
 module Avocado
   module Fields
-    class TextareaField < Field
+    class NumberField < Field
       def initialize(name, **args, &block)
         super(name, **args, &block)
 
-        @component = 'textarea-field'
+        @component = 'number-field'
         @sortable = true
-        @rows = args[:rows].present? ? args[:rows].to_i : 5
+
+        @min = args[:min].present? ? args[:min].to_i : nil
+        @max = args[:max].present? ? args[:max].to_i : nil
+        @step = args[:step].present? ? args[:step].to_i : nil
       end
 
       def fetch_for_resource(model, view = :index)
         fields = super(model, view)
 
-        fields[:rows] = @rows
         fields[:value] = @block.call model, self if @block.present?
+
+        fields[:min] = @min
+        fields[:max] = @max
+        fields[:step] = @step
 
         fields
       end
