@@ -88,26 +88,23 @@ module.exports = {
     }),
     // form fields
     plugin(({ addComponents, theme }) => {
-      const styles = {
-        appearance: 'none',
-        display: 'inline-flex',
-        backgroundColor: theme('colors.white'),
-        color: theme('colors.gray.700'),
-        borderStyle: 'solid',
-        borderWidth: '1px',
-        borderColor: theme('colors.gray.300'),
-        borderRadius: theme('borderRadius.default'),
-        padding: `${theme('spacing.2')} ${theme('spacing.4')}`,
-        lineHeight: theme('lineHeight.tight'),
-        '&:focus': {
-          outline: 'none',
-          backgroundColor: theme('colors.white'),
-          borderColor: theme('colors.gray.500'),
-        },
-      }
       const components = {
-        'input[type=password], input[type=email], textarea, input[type=text]': {
-          ...styles,
+        'input[type=email], input[type=password], textarea, input[type=text], input[type=number]': {
+          appearance: 'none',
+          display: 'inline-flex',
+          backgroundColor: theme('colors.white'),
+          color: theme('colors.gray.700'),
+          borderStyle: 'solid',
+          borderWidth: '1px',
+          borderColor: theme('colors.gray.300'),
+          borderRadius: theme('borderRadius.default'),
+          padding: `${theme('spacing.2')} ${theme('spacing.4')}`,
+          lineHeight: theme('lineHeight.tight'),
+          '&:focus': {
+            outline: 'none',
+            backgroundColor: theme('colors.white'),
+            borderColor: theme('colors.gray.500'),
+          },
         },
       }
 
