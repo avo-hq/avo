@@ -41,8 +41,8 @@ module Avocado
           @@fields[self].push Avocado::Fields::TextareaField::new(name, **args, &block)
         end
 
-        def number(name, **args)
-          @@fields[self].push Avocado::Fields::NumberField::new(name)
+        def number(name, **args, &block)
+          @@fields[self].push Avocado::Fields::NumberField::new(name, **args, &block)
         end
 
         def belongs_to(name)
