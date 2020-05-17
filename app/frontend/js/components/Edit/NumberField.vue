@@ -1,6 +1,9 @@
 <template>
   <show-field-wrapper :field="field" :errors="errors" :index="index">
     <input type="number"
+      :min="min"
+      :max="max"
+      :step="step"
       :class="classes"
       v-model="value"
     >
@@ -20,6 +23,15 @@ export default {
       if (this.hasErrors) classes.push('border', 'border-red-600')
 
       return classes.join(' ')
+    },
+    min() {
+      return this.field.min
+    },
+    max() {
+      return this.field.max
+    },
+    step() {
+      return this.field.step
     },
   },
   methods: {},

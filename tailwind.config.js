@@ -118,6 +118,9 @@ module.exports = {
         'input[type=text]': {
           ...styles,
         },
+        'input[type=number]': {
+          ...styles,
+        }
       }
 
       addComponents(components)
