@@ -1,13 +1,13 @@
 <template>
-  <td>
-    {{value}}
-  </td>
+  <index-field-wrapper :field="field">
+    {{field.value}}
+  </index-field-wrapper>
 </template>
 
 <script>
 export default {
   data: () => ({}),
-  props: ['value'],
+  props: ['field'],
   computed: {},
   methods: {},
   mounted() {},

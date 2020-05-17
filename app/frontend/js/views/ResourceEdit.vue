@@ -1,17 +1,20 @@
 <template>
   <div v-if="resource">
-    <div v-for="(panel, index) in resource.panels" :key="panel.name">
+    <div v-for="panel in resource.panels" :key="panel.name">
       <panel>
         <template #heading>
             Edit {{resourceNameSingular}}
         </template>
 
         <template #content>
+          <loading-overlay v-if="isLoading" />
           <component
-            v-for="field in fields"
+            v-for="(field, index) in fields"
             :key="field.id"
+            :index="index"
             :is="`edit-${field.component}`"
             :field="field"
+            :errors="errors"
           ></component>
         </template>
 
@@ -25,7 +28,7 @@
                 resourceId: resource.id,
               },
             }">cancel</router-link>
-          <button class="button" @click="updateResource">Save</button>
+          <button class="button" @click="submitResource">Save</button>
         </template>
       </panel>
     </div>
@@ -33,11 +36,11 @@
 </template>
 
 <script>
-import Api from '@/js/Api'
 import HasForms from '@/js/mixins/has-forms'
+import LoadsResource from '@/js/mixins/loads-resource'
 
 export default {
-  mixins: [HasForms],
+  mixins: [HasForms, LoadsResource],
   data: () => ({
     resource: null,
     form: {},
@@ -47,28 +50,6 @@ export default {
     'resourceId',
   ],
   computed: {},
-  methods: {
-    async getResourceFields() {
-      const { data } = await Api.get(`/avocado/avocado-api/${this.resourceName}/${this.resourceId}`)
-
-      this.resource = data.resource
-    },
-    async updateForm(params) {
-      const key = params[0]
-      const value = params[1]
-
-      this.form[key] = value
-    },
-    async updateResource() {
-      console.log('updateResource')
-
-      const { data } = await Api.put(`/avocado/avocado-api/${this.resourceName}/${this.resourceId}`, this.buildFormData())
-
-      console.log(data)
-    },
-  },
-  async mounted() {
-    await this.getResourceFields()
-  },
+  methods: {},
 }
 </script>

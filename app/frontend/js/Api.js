@@ -36,10 +36,13 @@ Api.interceptors.response.use(
 
     return response
   },
-  ({ response }) => {
+  (error) => {
+    const { response } = error
     const { data } = response
 
-    if (data && data.exception) Bus.$emit('error', data.exception)
+    if (data && data.message) Bus.$emit('error', data.message)
+
+    return Promise.reject(error)
   },
 )
 

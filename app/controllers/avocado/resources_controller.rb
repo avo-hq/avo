@@ -61,17 +61,25 @@ module Avocado
     end
 
     def show
+      @view ||= :show
       render json: {
-        resource: Avocado::Resources::Resource.hydrate_resource(resource, avocado_resource, :show),
+        resource: Avocado::Resources::Resource.hydrate_resource(resource, avocado_resource, @view),
       }
     end
 
+    def edit
+      @view = :edit
+
+      show
+    end
+
     def update
-      resource.update(resource_params)
+      resource.update!(resource_params)
 
       render json: {
-        resource: Avocado::Resources::Resource.hydrate_resource(resource, avocado_resource, :update),
+        resource: Avocado::Resources::Resource.hydrate_resource(resource, avocado_resource, :show),
         message: 'Resource updated',
+        redirect_url: Avocado::Resources::Resource.show_path(resource),
       }
     end
 
@@ -90,12 +98,12 @@ module Avocado
       resource = resource_model.safe_constantize.new
 
       render json: {
-        resource: Avocado::Resources::Resource.hydrate_resource(resource, avocado_resource, :fields),
+        resource: Avocado::Resources::Resource.hydrate_resource(resource, avocado_resource, :create),
       }
     end
 
     def destroy
-      resource.destroy
+      resource.destroy!
 
       render json: {
         redirect_url: Avocado::Resources::Resource.index_path(resource_model),

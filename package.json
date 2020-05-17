@@ -38,6 +38,7 @@
     "turbolinks": "^5.2.0",
     "typescript": "^3.8.3",
     "urijs": "^1.19.2",
+    "v-tooltip": "^2.0.3",
     "vue": "^2.6.11",
     "vue-js-modal": "^2.0.0-rc.3",
     "vue-loader": "^15.9.0",

@@ -1,13 +1,13 @@
 <template>
-  <field-wrapper :field="field">
+  <show-field-wrapper :field="field" :index="index">
     <div v-text="field.value"></div>
-  </field-wrapper>
+  </show-field-wrapper>
 </template>
 
 <script>
 export default {
   data: () => ({}),
-  props: ['field'],
+  props: ['field', 'index'],
   computed: {},
   methods: {},
   mounted() {},

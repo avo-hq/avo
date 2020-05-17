@@ -27,6 +27,7 @@
         }],
         // "sort-imports": ["error"],
         "semi": ["error", "never"],
+        "no-multi-spaces": 0,
         "camelcase": ["error", {"ignoreDestructuring": true}]
     },
     "settings": {

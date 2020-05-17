@@ -3,7 +3,7 @@ require_relative './field'
 module Avocado
   module Fields
     class IdField < Field
-      def initialize(name = 'ID', **args)
+      def initialize(name, **args)
         super(name, args)
 
         @name = name

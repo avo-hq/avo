@@ -29,12 +29,8 @@
       </template>
 
       <template #content>
-        <div v-if="isLoading">
-          loading
-        </div>
-
-        <div v-else>
-          <div class="flex justify-between items-center mb-4">
+        <template>
+          <div class="flex justify-between items-center py-4">
             <resources-filter
               @change-per-page="changePerPage"
               :per-page="perPage"
@@ -44,15 +40,21 @@
             />
           </div>
 
-          <resource-table
-            :resources="resources"
-            :resource-name="resourceName"
-            :sort-by="sortBy"
-            :sort-direction="sortDirection"
-            :via-resource-name="viaResourceName"
-            :via-resource-id="viaResourceId"
-            @sort="changeSortBy"
-            ></resource-table>
+          <div class="w-full overflow-auto">
+            <loading-overlay class="relative" v-if="resources.length === 0 && isLoading"></loading-overlay>
+            <div class="relative flex" v-else>
+              <loading-overlay v-if="isLoading" />
+
+              <resource-table
+                :resources="resources"
+                :resource-name="resourceName"
+                :sort-by="sortBy"
+                :sort-direction="sortDirection"
+                :via-resource-name="viaResourceName"
+                :via-resource-id="viaResourceId"
+                @sort="changeSortBy"
+                ></resource-table>
+            </div>
 
             <paginate
               v-show="totalPages > 0 && resources.length > 0"
@@ -68,8 +70,10 @@
               active-class="active"
               prev-link-class="button"
               next-link-class="button"
+              class="py-4 space-x-2"
             ></paginate>
-        </div>
+          </div>
+        </template>
 
       </template>
     </panel>
@@ -125,7 +129,6 @@ export default {
       }
 
       if (Object.keys(this.appliedFilters).length > 0) {
-        console.log(this.appliedFilters)
         params.filters = this.encodedFilters
       } else {
         delete params.filters
@@ -294,12 +297,12 @@ export default {
 }
 </script>
 
-<style slang="postcss">
+<style>
 /* @todo: fix loaders to support lang= */
 .avo-pagination {
   .active {
     a {
-      @apply bg-indigo-400;
+      @apply bg-gray-300 border-gray-300;
     }
   }
 }

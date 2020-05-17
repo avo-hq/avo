@@ -18,9 +18,6 @@ export default {
   ],
   computed: {},
   methods: {},
-  async mounted() {
-    console.log('has-many mounted', this.resourceName)
-  },
 }
 </script>
 

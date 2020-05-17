@@ -8,6 +8,7 @@ Avocado::Engine.routes.draw do
   post '/avocado-api/:resource_name', to: 'resources#create'
   get '/avocado-api/:resource_name/fields', to: 'resources#fields'
   get '/avocado-api/:resource_name/:id', to: 'resources#show'
+  get '/avocado-api/:resource_name/:id/edit', to: 'resources#edit'
   put '/avocado-api/:resource_name/:id', to: 'resources#update'
   delete '/avocado-api/:resource_name/:id', to: 'resources#destroy'
 

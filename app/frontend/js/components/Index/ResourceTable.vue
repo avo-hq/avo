@@ -1,14 +1,13 @@
 <template>
-  <div>
+  <div class="w-full">
     <table class="w-full px-4">
       <thead v-if="hasFields" class="bg-gray-200">
-        <th class="w-8">
+        <th class="min-w-8">
           <!-- Select cell -->
         </th>
-        <th v-for="field in fields"
-          :key="field.id"
+        <th v-for="(field, index) in fields"
+          :key="index"
           is="table-header-cell"
-          class="text-left uppercase text-sm py-2"
           :resource-name="resourceName"
           :field="field"
           :sort-by="sortBy"
@@ -22,8 +21,8 @@
       <tbody>
         <tr
           is="table-row"
-          v-for="resource in resources"
-          :key="resource.id"
+          v-for="(resource, index) in resources"
+          :key="index"
           :resource="resource"
           :resource-name="resourceName"
           :via-resource-name="viaResourceName"

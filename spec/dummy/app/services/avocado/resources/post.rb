@@ -8,8 +8,8 @@ module Avocado
 
       fields do
         id :ID
-        text :Name
-        # text_area :Body
+        text :Name, required: true
+        textarea :Body
         belongs_to :User
       end
 

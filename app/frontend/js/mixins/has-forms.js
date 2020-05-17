@@ -1,6 +1,12 @@
+import Api from '@/js/Api'
+import isNull from 'lodash/isNull'
 import pluralize from 'pluralize'
 
 export default {
+  data: () => ({
+    isLoading: false,
+    errors: {},
+  }),
   computed: {
     resourceNameSingular() {
       return pluralize(this.resourceName, 1)
@@ -15,6 +21,16 @@ export default {
         .filter((field) => field.updatable)
         .filter((field) => !field.computed)
     },
+    submitResourceUrl() {
+      if (this.resourceId) return `/avocado/avocado-api/${this.resourceName}/${this.resourceId}`
+
+      return `/avocado/avocado-api/${this.resourceName}`
+    },
+    submitMethod() {
+      if (this.resourceId) return 'put'
+
+      return 'post'
+    },
   },
   methods: {
     buildFormData() {
@@ -24,10 +40,27 @@ export default {
         .fields
         .filter((field) => field.updatable)
         .filter((field) => !field.computed)
-        // .forEach((field) => console.log(field))
-        .forEach((field) => form.append(`resource[${field.id}]`, String(field.getValue())))
+        .map((field) => [field, isNull(field.getValue()) ? '' : field.getValue()])
+        .forEach(([field, value]) => form.append(`resource[${field.id}]`, value))
 
       return form
+    },
+    async submitResource() {
+      this.isLoading = true
+      this.errors = {}
+
+      try {
+        await Api({
+          method: this.submitMethod,
+          url: this.submitResourceUrl,
+          data: this.buildFormData(),
+        })
+      } catch (error) {
+        const { response } = error
+        this.errors = response.data.errors
+      }
+
+      this.isLoading = false
     },
   },
 }

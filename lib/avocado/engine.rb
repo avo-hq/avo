@@ -37,6 +37,7 @@ module Avocado
         webpacker: Avocado.webpacker
       )
       app.config.debug_exception_response_format = :api
+      app.config.logger = ::Logger.new(STDOUT)
     end
 
     config.app_middleware.use(

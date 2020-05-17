@@ -25,7 +25,7 @@ module Avocado
           @@filters[self] or []
         end
 
-        def id(name, **args)
+        def id(name = 'ID', **args)
           @@fields[self].push Avocado::Fields::IdField::new(name, **args)
         end
 
@@ -33,8 +33,12 @@ module Avocado
           @@fields[self].push Avocado::Fields::TextField::new(name, **args, &block)
         end
 
-        def textarea(name)
-          @@fields[self].push Avocado::Fields::TextareaField::new(name)
+        def password(name, **args, &block)
+          @@fields[self].push Avocado::Fields::PasswordField::new(name, **args, &block)
+        end
+
+        def textarea(name, **args, &block)
+          @@fields[self].push Avocado::Fields::TextareaField::new(name, **args, &block)
         end
 
         def number(name, **args)
@@ -65,11 +69,14 @@ module Avocado
           }
 
           avocado_resource.get_fields.each do |field|
+            next unless field.send "show_on_#{view.to_s}"
+
             furnished_field = field.fetch_for_resource(model, view)
 
             next if furnished_field.blank?
 
             furnished_field[:panel_name] = default_panel_name
+            furnished_field[:show_on_show] = field.show_on_show
 
             if ['has-many-field'].include?(furnished_field[:component])
             #   resource_with_fields[:panels].push({

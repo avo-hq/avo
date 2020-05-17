@@ -1,9 +1,9 @@
 <template>
   <show-field-wrapper :field="field" :errors="errors" :index="index">
-      <input type="text"
-        v-model="value"
-        disabled
-      >
+    <input type="password"
+      :class="classes"
+      v-model="value"
+    >
   </show-field-wrapper>
 </template>
 
@@ -13,10 +13,15 @@ import FormField from '@/js/mixins/form-field'
 export default {
   mixins: [FormField],
   data: () => ({}),
-  props: ['field'],
-  computed: {},
+  computed: {
+    classes() {
+      const classes = ['w-full']
+
+      if (this.hasErrors) classes.push('border', 'border-red-600')
+
+      return classes.join(' ')
+    },
+  },
   methods: {},
 }
 </script>
-
-<style lang="postcss"></style>
