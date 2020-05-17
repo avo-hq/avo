@@ -13,7 +13,7 @@
     ></component>
 
     <td class="text-right p-2">
-      <div class="flex items-center justify-end flex-grow-0 space-x-2 h-full w-full">
+      <div class="flex items-center justify-end flex-grow-0 space-x-2 pr-2 h-full w-full">
         <router-link
           :to="{
             name: 'show',

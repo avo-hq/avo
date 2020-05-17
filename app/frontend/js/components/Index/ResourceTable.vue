@@ -5,8 +5,8 @@
         <th class="min-w-8">
           <!-- Select cell -->
         </th>
-        <th v-for="field in fields"
-          :key="field.id"
+        <th v-for="(field, index) in fields"
+          :key="index"
           is="table-header-cell"
           :resource-name="resourceName"
           :field="field"
@@ -21,8 +21,8 @@
       <tbody>
         <tr
           is="table-row"
-          v-for="resource in resources"
-          :key="resource.id"
+          v-for="(resource, index) in resources"
+          :key="index"
           :resource="resource"
           :resource-name="resourceName"
           :via-resource-name="viaResourceName"

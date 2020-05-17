@@ -21,6 +21,8 @@
         </template>
 
         <template #content>
+          <loading-overlay v-if="isLoading" />
+
           <component
             v-for="(field, index) in fieldsForPanel(panel)"
             :key="field.id"
@@ -48,10 +50,11 @@
 </template>
 
 <script>
-import Api from '@/js/Api'
+import LoadsResource from '@/js/mixins/loads-resource'
 
 export default {
   name: 'ResourceShow',
+  mixins: [LoadsResource],
   data: () => ({
     resource: null,
   }),
@@ -68,17 +71,9 @@ export default {
     },
   },
   methods: {
-    async getResource() {
-      const { data } = await Api.get(`/avocado/avocado-api/${this.resourceName}/${this.resourceId}`)
-
-      this.resource = data.resource
-    },
     fieldsForPanel(panel) {
       return this.fields.filter((field) => field.panel_name === panel.name)
     },
-  },
-  async mounted() {
-    await this.getResource()
   },
 }
 </script>

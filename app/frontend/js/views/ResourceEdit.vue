@@ -7,6 +7,7 @@
         </template>
 
         <template #content>
+          <loading-overlay v-if="isLoading" />
           <component
             v-for="(field, index) in fields"
             :key="field.id"
@@ -36,9 +37,10 @@
 
 <script>
 import HasForms from '@/js/mixins/has-forms'
+import LoadsResource from '@/js/mixins/loads-resource'
 
 export default {
-  mixins: [HasForms],
+  mixins: [HasForms, LoadsResource],
   data: () => ({
     resource: null,
     form: {},

@@ -4,6 +4,7 @@ import pluralize from 'pluralize'
 
 export default {
   data: () => ({
+    isLoading: false,
     errors: {},
   }),
   computed: {
@@ -19,11 +20,6 @@ export default {
         .fields
         .filter((field) => field.updatable)
         .filter((field) => !field.computed)
-    },
-    getResourceUrl() {
-      if (this.resourceId) return `/avocado/avocado-api/${this.resourceName}/${this.resourceId}/edit`
-
-      return `/avocado/avocado-api/${this.resourceName}/fields`
     },
     submitResourceUrl() {
       if (this.resourceId) return `/avocado/avocado-api/${this.resourceName}/${this.resourceId}`
@@ -49,12 +45,8 @@ export default {
 
       return form
     },
-    async getResource() {
-      const { data } = await Api.get(this.getResourceUrl)
-
-      this.resource = data.resource
-    },
     async submitResource() {
+      this.isLoading = true
       this.errors = {}
 
       try {
@@ -64,14 +56,11 @@ export default {
           data: this.buildFormData(),
         })
       } catch (error) {
-        console.log('error->', error)
         const { response } = error
-        console.log('response->', response)
         this.errors = response.data.errors
       }
+
+      this.isLoading = false
     },
-  },
-  async mounted() {
-    await this.getResource()
   },
 }

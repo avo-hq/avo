@@ -5,7 +5,7 @@
         {{ field.name }} <span class="text-red-600" v-if="field.required">*</span>
       </slot>
     </div>
-    <div class="w-1/3">
+    <div class="w-1/3 py-4">
       <slot />
     </div>
   </div>
@@ -17,7 +17,7 @@ export default {
   props: ['field', 'index'],
   computed: {
     classes() {
-      const classes = ['flex', 'items-center', 'py-2']
+      const classes = ['flex', 'items-center', 'py-2', 'leading-tight']
 
       if (this.index !== 0) classes.push('border-t')
 

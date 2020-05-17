@@ -7,7 +7,7 @@
 <script>
 export default {
   data: () => ({}),
-  props: ['field'],
+  props: ['field', 'index'],
   computed: {},
   methods: {},
   mounted() {},

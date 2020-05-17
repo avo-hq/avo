@@ -1,15 +1,17 @@
 <template>
   <div v-if="resource">
-    <div v-for="(panel, index) in resource.panels" :key="panel.name">
+    <div v-for="panel in resource.panels" :key="panel.name">
       <panel>
         <template #heading>
           Create new {{resourceNameSingular}}
         </template>
 
         <template #content>
+          <loading-overlay v-if="isLoading" />
           <component
-            v-for="field in fields"
+            v-for="(field, index) in fields"
             :key="field.id"
+            :index="index"
             :is="`edit-${field.component}`"
             :field="field"
             :errors="errors"
@@ -34,9 +36,10 @@
 
 <script>
 import HasForms from '@/js/mixins/has-forms'
+import LoadsResource from '@/js/mixins/loads-resource'
 
 export default {
-  mixins: [HasForms],
+  mixins: [HasForms, LoadsResource],
   data: () => ({
     resource: {},
     form: {},
