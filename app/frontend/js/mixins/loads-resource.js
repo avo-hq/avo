@@ -7,7 +7,7 @@ export default {
   computed: {
     getResourceUrl() {
       if (this.resourceId) {
-        if (this.$options.name === 'ResourceShow') {
+        if (this.$route.name === 'show') {
           return `/avocado/avocado-api/${this.resourceName}/${this.resourceId}`
         }
 
