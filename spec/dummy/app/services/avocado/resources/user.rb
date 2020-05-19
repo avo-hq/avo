@@ -18,7 +18,7 @@ module Avocado
         text 'Is Writer' do |model, resource|
           model.posts.count > 0 ? 'yes' : 'no'
         end
-        textarea :Description, except_on: :edit, rows: 5, readonly: true
+        textarea :Description, rows: 5, readonly: true, hide_on: :index
         has_many :Posts
         has_many :Projects
       end

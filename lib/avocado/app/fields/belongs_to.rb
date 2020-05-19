@@ -3,11 +3,16 @@ require_relative 'field'
 module Avocado
   module Fields
     class BelongsToField < Field
+      attr_accessor :searchable
+      attr_accessor :relation_method
+
       def initialize(name, **args, &block)
         @defaults = {
-          updatable: false,
-          component: 'belongs-to-field'
+          component: 'belongs-to-field',
         }
+
+        @searchable = args[:searchable] == true ? true : false
+        @relation_method = name.to_s.parameterize.underscore
 
         super(name, **args, &block)
       end
@@ -17,10 +22,33 @@ module Avocado
 
         return fields if model_or_class(model) == 'class'
 
+        fields[:searchable] = @searchable
         fields[:is_relation] = true
+        fields[:db_field] = model.class.reflections[@relation_method].foreign_key
         target_resource = App.get_resources.find { |r| r.class == "Avocado::Resources::#{name}".safe_constantize }
-        relation_model = model.public_send(target_resource.name.underscore)
-        fields[:value] = relation_model[target_resource.title] if relation_model.present?
+
+        relation_model = model.public_send(@relation_method)
+
+        if relation_model.present?
+          relation_model = model.public_send(@relation_method)
+          fields[:value] = relation_model[target_resource.title] if relation_model.present?
+          fields[:select_value] = relation_model[:id] if relation_model.present?
+          fields[:link] = Avocado::Resources::Resource.show_path(relation_model)
+        end
+
+        fields[:options] = []
+        if view == :edit and !self.searchable
+          # searchable
+          fields[:options] = target_resource.model.select(:id, target_resource.title).all.map do |model|
+            {
+              value: model.id,
+              label: model[target_resource.title]
+            }
+          end
+        end
+
+        # abort fields[:options].inspect
+
         fields[:resource_name_plural] = target_resource.resource_name_plural
 
         fields

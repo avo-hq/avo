@@ -2,13 +2,13 @@
   <div class="relative w-full px-4 flex justify-between">
     <div></div>
     <button class="bg-blue-300 p-2 shadow rounded text-white" @click="toggleFiltersPanel"><FilterIcon class="h-8"/></button>
-    <div class="absolute block inset-auto right-0 top-full rounded bg-white shadow min-w-300px mr-4" v-if="open">
+    <div class="absolute block inset-auto right-0 top-full rounded bg-white shadow min-w-300px mr-4 z-20" v-if="open">
       <div>
         <div class="bg-blue-600 text-white py-2 px-4">
           Per page
         </div>
         <div class="p-4">
-          <select name="per_page" id="per_page" @change="changePerPage" v-model="locaPerPage">
+          <select name="per_page" id="per_page" @change="changePerPage" v-model="locaPerPage" class="w-full">
             <option value="25">25</option>
             <option value="50">50</option>
             <option value="100">100</option>

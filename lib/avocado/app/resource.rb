@@ -48,9 +48,9 @@ module Avocado
         def boolean(name, **args, &block)
           @@fields[self].push Avocado::Fields::BooleanField::new(name, **args, &block)
         end
-
-        def belongs_to(name)
-          @@fields[self].push Avocado::Fields::BelongsToField::new(name)
+        
+        def belongs_to(name, **args)
+          @@fields[self].push Avocado::Fields::BelongsToField::new(name, **args)
         end
 
         def has_many(name, **args)

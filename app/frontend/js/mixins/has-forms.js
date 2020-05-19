@@ -1,5 +1,6 @@
 import Api from '@/js/Api'
 import isNull from 'lodash/isNull'
+import isUndefined from 'lodash/isUndefined'
 import pluralize from 'pluralize'
 
 export default {
@@ -41,7 +42,7 @@ export default {
         .filter((field) => field.updatable)
         .filter((field) => !field.computed)
         .map((field) => [field, isNull(field.getValue()) ? '' : field.getValue()])
-        .forEach(([field, value]) => form.append(`resource[${field.id}]`, value))
+        .forEach(([field, value]) => form.append(`resource[${isUndefined(field.db_field) ? field.id : field.db_field}]`, value))
 
       return form
     },
