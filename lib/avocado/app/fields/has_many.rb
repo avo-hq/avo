@@ -3,12 +3,10 @@ require_relative './field'
 module Avocado
   module Fields
     class HasManyField < Field
-      def initialize(name, **args)
-        super(name, args)
-
-        @component = 'has-many-field'
-        @updatable = false
-      end
+      @defaults = {
+        updatable: false,
+        component: 'has-many-field'
+      }
 
       def fetch_for_resource(resource, view)
         return if [:create, :index].include? view

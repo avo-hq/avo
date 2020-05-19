@@ -1,16 +1,16 @@
 require_relative './field'
+require_relative './is_readonly'
 
 module Avocado
   module Fields
     class TextField < Field
       include IsReadonly
 
-      def initialize(name, **args, &block)
-        super(name, **args, &block)
-
-        @component = 'text-field'
-        @sortable = true
-      end
+      @defaults = {
+        sortable: true,
+        sortable: true,
+        component: 'teext-field'
+      }
 
       def fetch_for_resource(model, view = :index)
         fields = super(model, view)

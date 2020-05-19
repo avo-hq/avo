@@ -2,8 +2,9 @@
   <show-field-wrapper :field="field" :errors="errors" :index="index">
     <textarea
       :rows="rows"
-      class="w-full"
+      :disabled="disabled"
       v-model="value"
+      class="w-full"
     ></textarea>
   </show-field-wrapper>
 </template>

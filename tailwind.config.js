@@ -105,6 +105,9 @@ module.exports = {
             backgroundColor: theme('colors.white'),
             borderColor: theme('colors.gray.500'),
           },
+          '&:disabled': {
+            backgroundColor: theme('colors.gray.200'),
+          },
         },
       }
 

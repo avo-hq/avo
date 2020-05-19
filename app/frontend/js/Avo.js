@@ -30,6 +30,7 @@ Vue.component('show-textarea-field',             require('@/js/components/Show/T
 Vue.component('show-password-field',             require('@/js/components/Show/PasswordField.vue').default)
 Vue.component('show-number-field',               require('@/js/components/Show/NumberField.vue').default)
 
+Vue.component('edit-id-field',                   require('@/js/components/Edit/IdField.vue').default)
 Vue.component('edit-text-field',                 require('@/js/components/Edit/TextField.vue').default)
 Vue.component('edit-belongs-to-field',           require('@/js/components/Edit/BelongsTo.vue').default)
 Vue.component('edit-textarea-field',             require('@/js/components/Edit/TextareaField.vue').default)

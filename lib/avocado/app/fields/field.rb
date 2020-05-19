@@ -16,16 +16,21 @@ module Avocado
 
       def initialize(id_or_name, **args, &block)
         super(id_or_name, **args, &block)
+        @defaults ||= {}
+        @field_args ||= {}
+
+        args = @field_args.merge(@defaults).merge(args)
 
         @id = id_or_name.to_s.parameterize.underscore
         @name = args[:name] || id_or_name.to_s.camelize
-        @component = 'field'
-        @updatable = true
-        @sortable = false
-        @nullable = false
-        @block = block
+        @component = args[:component] || 'field'
+        @updatable = args[:updatable] || true
+        @readonly = args[:readonly] || false
+        @sortable = args[:sortable] || false
+        @nullable = args[:nullable] || false
+        @required = args[:required] || false
 
-        @required = args[:required] ? true : false
+        @block = block
 
         # Set the visibility
         show_on args[:show_on] if args[:show_on].present?

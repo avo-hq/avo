@@ -5,6 +5,7 @@
       :max="max"
       :step="step"
       :class="classes"
+      :disabled="disabled"
       v-model="value"
     >
   </show-field-wrapper>

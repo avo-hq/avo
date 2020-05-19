@@ -15,6 +15,9 @@ export default {
     },
   },
   computed: {
+    disabled() {
+      return this.field.readonly
+    },
     hasErrors() {
       if (Object.keys(this.errors).length === 0) return false
 
