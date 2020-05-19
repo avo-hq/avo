@@ -63,6 +63,7 @@ module Avocado
           fields[name] = self.send(name)
         end
 
+        fields[:db_value] = model[id] if model_or_class(model) == 'model'
         fields[:value] = model[id] if model_or_class(model) == 'model'
 
         fields

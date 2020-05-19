@@ -142,7 +142,19 @@ module Avocado
       end
 
       def permitted_params
-        resource_fields.select(&:updatable).map(&:id).map(&:to_sym)
+        params = resource_fields.select(&:updatable).map do |f|
+          if f.methods.include? :relation_method
+            db_field = avocado_resource.model.reflections[f.relation_method].foreign_key
+          end
+
+          if db_field.present?
+            db_field.to_sym
+          else
+            f.id
+          end
+        end
+
+        params.map(&:to_sym)
       end
 
       def resource_params

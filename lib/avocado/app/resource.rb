@@ -45,8 +45,8 @@ module Avocado
           @@fields[self].push Avocado::Fields::NumberField::new(name, **args, &block)
         end
 
-        def belongs_to(name)
-          @@fields[self].push Avocado::Fields::BelongsToField::new(name)
+        def belongs_to(name, **args)
+          @@fields[self].push Avocado::Fields::BelongsToField::new(name, **args)
         end
 
         def has_many(name, **args)

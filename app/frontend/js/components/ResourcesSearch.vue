@@ -15,13 +15,14 @@
       :options-limit="300"
       :limit="3"
       :limit-text="limitText"
-      :max-height="600"
+      :max-height="300"
       :group-values="groupValues"
       :group-label="groupLabel"
       :hide-selected="true"
       @search-change="asyncFind"
       @select="select"
     >
+      <!-- v-model="value" -->
       <template slot="tag" slot-scope="{ option, remove }">
         <span class="custom__tag"
           ><span>{{ option.name }}</span
@@ -37,7 +38,7 @@
 
 <script>
 import '~/vue-multiselect/dist/vue-multiselect.min.css'
-import { Api } from '@/js/Avo'
+import Api from '@/js/Api'
 import Multiselect from 'vue-multiselect'
 import URI from 'urijs'
 import debounce from 'lodash/debounce'
@@ -50,12 +51,14 @@ export default {
     results: [],
     resources: [],
     isLoading: false,
+    value: {},
   }),
   props: [
     'resourceName',
     'viaResourceName',
     'viaResourceId',
     'global',
+    'single',
   ],
   computed: {
     groupValues() {
@@ -112,9 +115,14 @@ export default {
         })
     }, 300),
     select(resource) {
-      setTimeout(() => {
-        this.$router.push(resource.link)
-      }, 1)
+      if (this.single) {
+        this.value = resource
+        this.$emit('select', resource)
+      } else {
+        setTimeout(() => {
+          this.$router.push(resource.link)
+        }, 1)
+      }
     },
   },
   mounted() { },
