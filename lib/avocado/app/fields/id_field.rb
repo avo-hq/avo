@@ -10,6 +10,8 @@ module Avocado
           component: 'id-field'
         }
 
+        hide_on :edit
+
         super(name, **args, &block)
       end
     end

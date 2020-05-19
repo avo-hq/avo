@@ -7,10 +7,10 @@ module Avocado
       attr_accessor :show_on_edit
 
       def initialize(id_or_name, **args, &block)
-        @show_on_index = true
-        @show_on_show = true
-        @show_on_create = true
-        @show_on_edit = true
+        @show_on_index = @show_on_index.nil? ? true : @show_on_index
+        @show_on_show = @show_on_show.nil? ? true : @show_on_show
+        @show_on_create = @show_on_create.nil? ? true : @show_on_create
+        @show_on_edit = @show_on_edit.nil? ? true : @show_on_edit
       end
 
       def show_on(*where)

@@ -8,7 +8,6 @@ class User < ApplicationRecord
   validates :description, presence: true
   validates :age, numericality: { greater_than: 0, less_than: 120 }
 
-
   has_many :posts
   has_and_belongs_to_many :projects
 end
