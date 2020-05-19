@@ -1,11 +1,11 @@
 <template>
-  <show-field-wrapper :field="field" :errors="errors" :index="index">
+  <edit-field-wrapper :field="field" :errors="errors" :index="index">
     <input type="password"
       :class="classes"
       :disabled="disabled"
       v-model="value"
     >
-  </show-field-wrapper>
+  </edit-field-wrapper>
 </template>
 
 <script>

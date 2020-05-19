@@ -40,12 +40,13 @@
             />
           </div>
 
-          <div class="w-full overflow-auto">
+          <div class="w-full overflow-auto min-h-28 flex flex-col">
             <loading-overlay class="relative" v-if="resources.length === 0 && isLoading"></loading-overlay>
-            <div class="relative flex" v-else>
+            <div class="relative flex-1 flex" v-else>
               <loading-overlay v-if="isLoading" />
 
               <resource-table
+                v-if="resources && resources.length > 0"
                 :resources="resources"
                 :resource-name="resourceName"
                 :sort-by="sortBy"
@@ -54,6 +55,10 @@
                 :via-resource-id="viaResourceId"
                 @sort="changeSortBy"
                 ></resource-table>
+
+                <div class="h-full flex-1 flex items-center justify-center" v-else>
+                  No {{resourceNamePlural}} found
+                </div>
             </div>
 
             <paginate

@@ -1,5 +1,5 @@
 <template>
-  <show-field-wrapper :field="field" :errors="errors" :index="index">
+  <edit-field-wrapper :field="field" :errors="errors" :index="index">
     <input type="number"
       :min="min"
       :max="max"
@@ -8,7 +8,7 @@
       :disabled="disabled"
       v-model="value"
     >
-  </show-field-wrapper>
+  </edit-field-wrapper>
 </template>
 
 <script>

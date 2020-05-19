@@ -1,12 +1,12 @@
 <template>
-  <show-field-wrapper :field="field" :errors="errors" :index="index">
+  <edit-field-wrapper :field="field" :errors="errors" :index="index">
     <textarea
       :rows="rows"
       :disabled="disabled"
       v-model="value"
       class="w-full"
     ></textarea>
-  </show-field-wrapper>
+  </edit-field-wrapper>
 </template>
 
 <script>
