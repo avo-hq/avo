@@ -4,7 +4,9 @@ module Avocado
   module Fields
     module IsReadonly
       def initialize(name, **args, &block)
-        @field_args = { readonly: false }
+        args = { readonly: false }.merge((@defaults or {})).merge(args)
+
+        @readonly = args[:readonly] || false
 
         super(name, **args, &block)
       end
