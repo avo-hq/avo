@@ -1,5 +1,4 @@
-require_relative './field'
-require_relative './is_readonly'
+require_relative 'field'
 
 module Avocado
   module Fields
