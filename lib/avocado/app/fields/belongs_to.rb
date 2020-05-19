@@ -1,12 +1,16 @@
-require_relative './field'
+require_relative 'field'
 
 module Avocado
   module Fields
     class BelongsToField < Field
-      @defaults = {
-        updatable: false,
-        component: 'belongs-to-field'
-      }
+      def initialize(name, **args, &block)
+        @defaults = {
+          updatable: false,
+          component: 'belongs-to-field'
+        }
+
+        super(name, **args, &block)
+      end
 
       def fetch_for_resource(model, view)
         fields = super(model)

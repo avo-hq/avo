@@ -1,15 +1,15 @@
-require_relative './field'
+require_relative 'field'
 
 module Avocado
   module Fields
     class NumberField < Field
-      include IsReadonly
-
       def initialize(name, **args, &block)
-        super(name, **args, &block)
+        @defaults = {
+          sortable: true,
+          component: 'number-field',
+        }
 
-        @component = 'number-field'
-        @sortable = true
+        super(name, **args, &block)
 
         @min = args[:min].present? ? args[:min].to_i : nil
         @max = args[:max].present? ? args[:max].to_i : nil

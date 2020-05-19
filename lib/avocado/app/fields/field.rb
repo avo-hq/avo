@@ -5,28 +5,44 @@ module Avocado
     class Field
       include Avocado::Fields::Element
 
-      attr_reader :id
-      attr_reader :name
-      attr_reader :component
-      attr_reader :updatable
-      attr_reader :sortable
-      attr_reader :required
-      attr_reader :nullable
-      attr_reader :block
+      attr_accessor :id
+      attr_accessor :name
+      attr_accessor :component
+      attr_accessor :updatable
+      attr_accessor :sortable
+      attr_accessor :required
+      attr_accessor :readonly
+      attr_accessor :nullable
+      attr_accessor :block
 
       def initialize(id_or_name, **args, &block)
         super(id_or_name, **args, &block)
         @defaults ||= {}
 
-        args = @defaults.merge(args)
+        args = @defaults.merge(args).symbolize_keys
+
+        # The field properties as a hash {property: default_value}
+        @field_properties = {
+          name: id_or_name.to_s.camelize,
+          component: 'field',
+          required: false,
+          readonly: false,
+          updatable: true,
+          sortable: false,
+          required: false,
+          nullable: false,
+        }
+
+        # Set the values in the following order
+        # - app defaults
+        # - field defaults
+        # - field option
+        @field_properties.each do |name, default_value|
+          final_value = args[name.to_sym]
+          self.send("#{name}=", final_value.nil? || !defined?(final_value) ? default_value : final_value)
+        end
 
         @id = id_or_name.to_s.parameterize.underscore
-        @name = args[:name] || id_or_name.to_s.camelize
-        @component = args[:component] || 'field'
-        @updatable = args[:updatable] || true
-        @sortable = args[:sortable] || false
-        @nullable = args[:nullable] || false
-        @required = args[:required] || false
 
         @block = block
 
@@ -40,14 +56,12 @@ module Avocado
       def fetch_for_resource(model, view = :index)
         fields = {
           id: id,
-          name: name,
-          component: component,
-          updatable: updatable,
-          sortable: sortable,
-          required: required,
-          nullable: nullable,
           computed: block.present?,
         }
+
+        @field_properties.each do |name, value|
+          fields[name] = self.send(name)
+        end
 
         fields[:value] = model[id] if model_or_class(model) == 'model'
 

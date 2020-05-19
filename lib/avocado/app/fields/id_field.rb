@@ -1,15 +1,17 @@
-require_relative './field'
+require_relative 'field'
 
 module Avocado
   module Fields
     class IdField < Field
-      include IsReadonly
+      def initialize(name, **args, &block)
+        @defaults = {
+          readonly: true,
+          sortable: true,
+          component: 'id-field'
+        }
 
-      @defaults = {
-        readonly: true,
-        sortable: true,
-        component: 'id-field'
-      }
+        super(name, **args, &block)
+      end
     end
   end
 end

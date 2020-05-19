@@ -7,7 +7,7 @@ module Avocado
       end
 
       fields do
-        id :ID, readonly: true
+        id :ID
         text :Name, required: true, only_on: [:forms, :index]
         text :email, name: 'User Email', required: true, hide_on: :edit
         number :age, min: 0, max: 120, step: 1

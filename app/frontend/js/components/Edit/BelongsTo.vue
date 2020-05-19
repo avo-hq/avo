@@ -2,6 +2,7 @@
   <show-field-wrapper :field="field" :errors="errors" :index="index">
       <input type="text"
         v-model="value"
+        class="w-full"
         disabled
       >
   </show-field-wrapper>

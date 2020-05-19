@@ -107,6 +107,7 @@ module.exports = {
           },
           '&:disabled': {
             backgroundColor: theme('colors.gray.200'),
+            color: theme('colors.gray.500'),
           },
         },
       }
