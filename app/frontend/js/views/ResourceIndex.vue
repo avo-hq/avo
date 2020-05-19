@@ -56,8 +56,8 @@
                 @sort="changeSortBy"
                 ></resource-table>
 
-                <div class="h-full flex-1 flex items-center justify-center" v-else>
-                  No {{resourceNamePlural}} found
+                <div class="flex-1 flex items-center justify-center" v-else>
+                  No {{resourceNamePlural | toLowerCase}} found
                 </div>
             </div>
 
@@ -79,7 +79,6 @@
             ></paginate>
           </div>
         </template>
-
       </template>
     </panel>
   </div>
@@ -110,6 +109,11 @@ export default {
     'viaResourceName',
     'viaResourceId',
   ],
+  filters: {
+    toLowerCase(value) {
+      return value.toLowerCase()
+    },
+  },
   computed: {
     resourceNameSingular() {
       return pluralize(this.resourceName, 1)
@@ -209,12 +213,9 @@ export default {
       this.isLoading = false
     },
     async getFilters() {
-      this.isLoading = true
-
       const { data } = await Api.get(`/avocado/avocado-api/${this.resourceName}/filters`)
 
       this.filters = data.filters
-      this.isLoading = false
     },
     changeSortDirection(by) {
       if (this.sortBy !== '' && this.sortBy !== by) {
@@ -268,7 +269,7 @@ export default {
         }
       })
     },
-    initQueryParams() {
+    async initQueryParams() {
       let page = 1
       let perPage = 25
       let sortBy = ''
@@ -287,13 +288,11 @@ export default {
       this.setSortDirection(sortDirection)
       if (filters) this.setFilterValue(JSON.parse(atob(filters)))
 
-      this.getResources()
+      await this.getResources()
     },
   },
-  beforeRouteUpdate(to, from, next) {
-    next()
-
-    this.getResources()
+  watch: {
+    $route: 'getResources',
   },
   async mounted() {
     this.getFilters()

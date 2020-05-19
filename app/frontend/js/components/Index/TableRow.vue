@@ -2,7 +2,7 @@
   <tr v-if="resource" class="border-t hover:bg-gray-100">
     <td>
       <div class="flex justify-center h-full">
-        <input type="checkbox" />
+        <input type="checkbox" class="mx-3" />
       </div>
     </td>
     <component

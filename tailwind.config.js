@@ -15,9 +15,6 @@ module.exports = {
         full: '100%',
       },
       minWidth: {
-        4: '1rem',
-        8: '2rem',
-        12: '3rem',
         '300px': '300px',
       },
       minHeight: {
