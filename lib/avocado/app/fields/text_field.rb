@@ -1,14 +1,15 @@
-require_relative './field'
+require_relative 'field'
 
 module Avocado
   module Fields
     class TextField < Field
-      def initialize(name, **args, &block)
-        super(name, **args, &block)
+      include IsReadonly
 
-        @component = 'text-field'
-        @sortable = true
-      end
+      @defaults = {
+        sortable: true,
+        sortable: true,
+        component: 'teext-field'
+      }
 
       def fetch_for_resource(model, view = :index)
         fields = super(model, view)

@@ -1,8 +1,10 @@
-require_relative './field'
+require_relative 'field'
 
 module Avocado
   module Fields
     class TextareaField < Field
+      include IsReadonly
+
       def initialize(name, **args, &block)
         super(name, **args, &block)
 
