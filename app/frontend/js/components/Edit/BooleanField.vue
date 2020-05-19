@@ -28,11 +28,10 @@ export default {
     getValue() {
       switch (this.value) {
         case true:
-          return this.field.trueValue
-        case false:
-          return this.field.falseValue
+          return this.field.true_value
         default:
-          return this.field.falseValue
+        case false:
+          return this.field.false_value
       }
     },
   },

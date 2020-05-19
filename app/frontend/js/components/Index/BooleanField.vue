@@ -1,20 +1,19 @@
 <template>
   <index-field-wrapper :field="field" class="text-center">
-    <div v-if="field.value">
-        ✅
-    </div>
-    <div v-else>
-        ❌
-    </div>
+    {{value}}
   </index-field-wrapper>
 </template>
 
 <script>
 export default {
-  data: () => ({}),
   props: ['field'],
-  computed: {},
-  methods: {},
-  mounted() {},
+  computed: {
+    value() {
+      if (this.field.value) {
+        return '✅'
+      }
+      return '❌'
+    },
+  },
 }
 </script>
