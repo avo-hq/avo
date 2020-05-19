@@ -6,7 +6,13 @@ export default {
   }),
   computed: {
     getResourceUrl() {
-      if (this.resourceId) return `/avocado/avocado-api/${this.resourceName}/${this.resourceId}/edit`
+      if (this.resourceId) {
+        if (this.$options.name === 'ResourceShow') {
+          return `/avocado/avocado-api/${this.resourceName}/${this.resourceId}`
+        }
+
+        return `/avocado/avocado-api/${this.resourceName}/${this.resourceId}/edit`
+      }
 
       return `/avocado/avocado-api/${this.resourceName}/fields`
     },
