@@ -1,11 +1,11 @@
 <template>
-  <edit-field-wrapper :field="field" :errors="errors" :index="index">
-    <input type="text"
+<edit-field-wrapper :field="field" :errors="errors" :index="index">
+    <input type="checkbox"
       :id="field.id"
       :class="classes"
       :disabled="disabled"
       v-model="value"
-      />
+    >
   </edit-field-wrapper>
 </template>
 
@@ -24,7 +24,17 @@ export default {
       return classes.join(' ')
     },
   },
-  methods: {},
+  methods: {
+    getValue() {
+      switch (this.value) {
+        case true:
+          return this.field.true_value
+        default:
+        case false:
+          return this.field.false_value
+      }
+    },
+  },
 }
 </script>
 
