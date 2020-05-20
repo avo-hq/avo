@@ -20,6 +20,7 @@ Vue.component('index-belongs-to-field',          require('@/js/components/Index/
 Vue.component('index-textarea-field',            require('@/js/components/Index/TextareaField.vue').default)
 Vue.component('password-field-wrapper',          require('@/js/components/Index/PasswordField.vue').default)
 Vue.component('index-number-field',              require('@/js/components/Index/NumberField.vue').default)
+Vue.component('index-boolean-field',             require('@/js/components/Index/BooleanField.vue').default)
 
 Vue.component('show-field-wrapper',              require('@/js/components/Show/FieldWrapper.vue').default)
 Vue.component('show-id-field',                   require('@/js/components/Show/IdField.vue').default)
@@ -29,6 +30,7 @@ Vue.component('show-has-many-field',             require('@/js/components/Show/H
 Vue.component('show-textarea-field',             require('@/js/components/Show/TextareaField.vue').default)
 Vue.component('show-password-field',             require('@/js/components/Show/PasswordField.vue').default)
 Vue.component('show-number-field',               require('@/js/components/Show/NumberField.vue').default)
+Vue.component('show-boolean-field',              require('@/js/components/Show/BooleanField.vue').default)
 
 Vue.component('edit-field-wrapper',              require('@/js/components/Edit/FieldWrapper.vue').default)
 Vue.component('edit-id-field',                   require('@/js/components/Edit/IdField.vue').default)
@@ -37,6 +39,7 @@ Vue.component('edit-belongs-to-field',           require('@/js/components/Edit/B
 Vue.component('edit-textarea-field',             require('@/js/components/Edit/TextareaField.vue').default)
 Vue.component('edit-password-field',             require('@/js/components/Edit/PasswordField.vue').default)
 Vue.component('edit-number-field',               require('@/js/components/Edit/NumberField.vue').default)
+Vue.component('edit-boolean-field',              require('@/js/components/Edit/BooleanField.vue').default)
 
 
 // Components

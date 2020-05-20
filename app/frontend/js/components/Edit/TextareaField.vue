@@ -1,6 +1,7 @@
 <template>
   <edit-field-wrapper :field="field" :errors="errors" :index="index">
     <textarea
+      :id="field.id"
       :rows="rows"
       :disabled="disabled"
       v-model="value"
