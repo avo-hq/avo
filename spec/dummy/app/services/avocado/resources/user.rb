@@ -14,6 +14,11 @@ module Avocado
         number :age, min: 0, max: 120, step: 1
         boolean :availability
         boolean :highlighted, true_value: 'yes', false_value: 'no'
+        select :shoesize, options: {
+          '38' => 'thirtyeight',
+          '43' => 'fourtythree',
+          '39' => 'thirtynine'
+        }
         password :password, name: 'User Password', required: true, except_on: :forms
         password :password_confirmation, name: 'Password confirmation', required: true
         text 'Is Writer' do |model, resource, view, field|

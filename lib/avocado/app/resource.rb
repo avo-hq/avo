@@ -50,6 +50,10 @@ module Avocado
           @@fields[self].push Avocado::Fields::BooleanField::new(name, **args, &block)
         end
 
+        def select(name, **args, &block)
+          @@fields[self].push Avocado::Fields::SelectField::new(name, **args, &block)
+        end
+
         def belongs_to(name, **args)
           @@fields[self].push Avocado::Fields::BelongsToField::new(name, **args)
         end
