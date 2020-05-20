@@ -12,7 +12,7 @@ module Avocado
         super(name, **args, &block)
       end
 
-      def fetch_for_resource(resource, view)
+      def fetch_for_resource(model, resource, view)
         return if [:create, :index].include? view
 
         fields = super(resource)

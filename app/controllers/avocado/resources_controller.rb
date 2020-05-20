@@ -24,6 +24,10 @@ module Avocado
         query = related_model.find(params[:via_resource_id]).public_send(params[:resource_name])
       end
 
+      if avocado_resource.includes.present?
+        query = query.includes(*avocado_resource.includes)
+      end
+
       resources = query.page(params[:page]).per(params[:per_page])
 
       resources_with_fields = []

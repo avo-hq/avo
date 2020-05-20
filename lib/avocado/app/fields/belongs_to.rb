@@ -17,8 +17,8 @@ module Avocado
         super(name, **args, &block)
       end
 
-      def fetch_for_resource(model, view)
-        fields = super(model)
+      def fetch_for_resource(model, resource, view)
+        fields = super(model, resource, view)
 
         return fields if model_or_class(model) == 'class'
 

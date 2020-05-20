@@ -14,11 +14,11 @@ module Avocado
         @rows = args[:rows].present? ? args[:rows].to_i : 5
       end
 
-      def fetch_for_resource(model, view = :index)
-        fields = super(model, view)
+      def fetch_for_resource(model, resource, view)
+        fields = super(model, resource, view)
 
         fields[:rows] = @rows
-        fields[:value] = @block.call model, self if @block.present?
+        fields[:value] = @block.call model, resource, view, self if @block.present?
 
         fields
       end

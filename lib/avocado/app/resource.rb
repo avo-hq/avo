@@ -2,6 +2,7 @@ module Avocado
   module Resources
     class Resource
       attr_reader :required
+      attr_reader :includes
 
       class << self
         @@fields = {}
@@ -57,14 +58,14 @@ module Avocado
           @@fields[self].push Avocado::Fields::HasManyField::new(name, **args)
         end
 
-        def hydrate_resource(model, avocado_resource, view = :index)
-          default_panel_name = "#{avocado_resource.name} Details"
+        def hydrate_resource(model, resource, view = :index)
+          default_panel_name = "#{resource.name} Details"
 
           resource_with_fields = {
             id: model.id,
-            resource_name_singular: avocado_resource.resource_name_singular,
-            resource_name_plural: avocado_resource.resource_name_plural,
-            title: model[avocado_resource.title],
+            resource_name_singular: resource.resource_name_singular,
+            resource_name_plural: resource.resource_name_plural,
+            title: model[resource.title],
             fields: [],
             panels: [{
               name: default_panel_name,
@@ -72,10 +73,10 @@ module Avocado
             }]
           }
 
-          avocado_resource.get_fields.each do |field|
+          resource.get_fields.each do |field|
             next unless field.send "show_on_#{view.to_s}"
 
-            furnished_field = field.fetch_for_resource(model, view)
+            furnished_field = field.fetch_for_resource(model, resource, view)
 
             next if furnished_field.blank?
 
@@ -83,11 +84,7 @@ module Avocado
             furnished_field[:show_on_show] = field.show_on_show
 
             if ['has-many-field'].include?(furnished_field[:component])
-            #   resource_with_fields[:panels].push({
-            #     name: field.name.to_s.pluralize,
-            #     component: 'panel',
-            #   })
-            furnished_field[:panel_name] = field.name.to_s.pluralize
+              furnished_field[:panel_name] = field.name.to_s.pluralize
             end
 
             resource_with_fields[:fields] << furnished_field

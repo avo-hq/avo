@@ -29,7 +29,6 @@ module Avocado
           readonly: false,
           updatable: true,
           sortable: false,
-          required: false,
           nullable: false,
         }
 
@@ -53,7 +52,7 @@ module Avocado
         except_on args[:except_on] if args[:except_on].present?
       end
 
-      def fetch_for_resource(model, view = :index)
+      def fetch_for_resource(model, resource, view)
         fields = {
           id: id,
           computed: block.present?,

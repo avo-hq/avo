@@ -12,10 +12,10 @@ module Avocado
         super(name, **args, &block)
       end
 
-      def fetch_for_resource(model, view = :index)
-        fields = super(model, view)
+      def fetch_for_resource(model, resource, view)
+        fields = super(model, resource, view)
 
-        fields[:value] = @block.call model, self if @block.present?
+        fields[:value] = @block.call model, resource, view, self if @block.present?
 
         fields
       end

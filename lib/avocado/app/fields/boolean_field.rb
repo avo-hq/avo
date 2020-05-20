@@ -15,11 +15,11 @@ module Avocado
         @false_value = args[:false_value].present? ? args[:false_value] : false
       end
 
-      def fetch_for_resource(model, view = :index)
-        fields = super(model, view)
+      def fetch_for_resource(model, resource, view)
+        fields = super(model, resource, view)
 
         fields[:value] = if @block.present?
-           @block.call model, self
+           @block.call model, resource, view, self
         else
           model[id] == @true_value
         end
