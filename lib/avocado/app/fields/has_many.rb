@@ -12,10 +12,10 @@ module Avocado
         super(name, **args, &block)
       end
 
-      def fetch_for_resource(model, resource, view)
+      def hydrate_resource(model, resource, view)
         return if [:create, :index].include? view
 
-        fields = super(model, resource, view)
+        fields = {}
 
         target_resource = App.get_resources.find { |r| r.class == "Avocado::Resources::#{name.to_s.singularize}".safe_constantize }
         fields[:relation_class] = target_resource.class.to_s

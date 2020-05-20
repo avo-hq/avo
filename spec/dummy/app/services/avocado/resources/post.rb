@@ -7,12 +7,11 @@ module Avocado
         @includes = [:user]
       end
 
-
       fields do
         id :ID
         text :Name, required: true
         textarea :Body
-        belongs_to :User, searchable: true
+        belongs_to :User, searchable: false
       end
 
       # use_filter Avocado::Filters::IndicatorFilter

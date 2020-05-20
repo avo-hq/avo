@@ -9,17 +9,17 @@ module Avocado
 
       fields do
         id :ID
-        text :Name, required: true, only_on: [:forms, :index]
-        text :email, name: 'User Email', required: true, hide_on: :edit
+        text :Name, required: true
+        text :email, name: 'User Email', required: true
         number :age, min: 0, max: 120, step: 1
         boolean :availability
         boolean :highlighted, true_value: 'yes', false_value: 'no'
         password :password, name: 'User Password', required: true, except_on: :forms
         password :password_confirmation, name: 'Password confirmation', required: true
-        text 'Is Writer' do |model, resource, view, field|
+        text 'Is Writer', resolve_using: -> (value) { value.truncate 3 }, hide_on: :edit do |model, resource, view, field|
           model.posts.to_a.count > 0 ? 'yes' : 'no'
         end
-        textarea :Description, rows: 5, readonly: true, hide_on: :index
+        textarea :Description, rows: 5, readonly: true, hide_on: :index, resolve_using: -> (value) { value.truncate 30 }
         has_many :Posts
         has_many :Projects
       end

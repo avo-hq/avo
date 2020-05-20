@@ -13,6 +13,8 @@ module Avocado
       attr_accessor :required
       attr_accessor :readonly
       attr_accessor :nullable
+      attr_accessor :resolve_using
+      attr_accessor :computable
       attr_accessor :block
 
       def initialize(id_or_name, **args, &block)
@@ -30,6 +32,8 @@ module Avocado
           updatable: true,
           sortable: false,
           nullable: false,
+          computable: false,
+          resolve_using: false,
         }
 
         # Set the values in the following order
@@ -58,23 +62,34 @@ module Avocado
           computed: block.present?,
         }
 
+        # Fill the properties with values
         @field_properties.each do |name, value|
           fields[name] = self.send(name)
         end
 
-        fields[:db_value] = model[id] if model_or_class(model) == 'model'
+        # Set initial value
         fields[:value] = model[id] if model_or_class(model) == 'model'
+
+        # Run each field's custom hydration
+        fields.merge! self.hydrate_resource model, resource, view if self.methods.include? :hydrate_resource
+
+        # Run callback block if present
+        fields[:value] = @block.call model, resource, view, self if computable and @block.present?
+
+        # Run the value through resolver if present
+        fields[:value] = @resolve_using.call fields[:value] if @resolve_using.present?
 
         fields
       end
 
-      def model_or_class(model)
-        if model.class == String
-          return 'class'
-        else
-          return 'model'
+      private
+        def model_or_class(model)
+          if model.class == String
+            return 'class'
+          else
+            return 'model'
+          end
         end
-      end
     end
   end
 end

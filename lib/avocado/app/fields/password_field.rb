@@ -5,7 +5,7 @@ module Avocado
     class PasswordField < TextField
       def initialize(name, **args, &block)
         @defaults = {
-          component: 'password-field'
+          component: 'password-field',
         }
 
         super(name, **args, &block)

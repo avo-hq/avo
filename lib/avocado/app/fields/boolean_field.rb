@@ -7,6 +7,7 @@ module Avocado
         @defaults = {
           sortable: true,
           component: 'boolean-field',
+          computable: true,
         }
 
         super(name, **args, &block)
@@ -15,19 +16,12 @@ module Avocado
         @false_value = args[:false_value].present? ? args[:false_value] : false
       end
 
-      def fetch_for_resource(model, resource, view)
-        fields = super(model, resource, view)
-
-        fields[:value] = if @block.present?
-           @block.call model, resource, view, self
-        else
-          model[id] == @true_value
-        end
-
-        fields[:true_value] = @true_value
-        fields[:false_value] = @false_value
-
-        fields
+      def hydrate_resource(model, resource, view)
+        {
+          value: model[id] == @true_value,
+          true_value: @true_value,
+          false_value: @false_value,
+        }
       end
     end
   end
