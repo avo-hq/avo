@@ -4,7 +4,10 @@
       <resources-search :resource-name="field.id"
         :via-resource-name="resourceName"
         :single="true"
+        :search-value="field.model"
+        :value="selectedValue"
         @select="select"
+        :field-id="field.id"
       />
     </div>
     <div v-else>
@@ -16,16 +19,19 @@
           ></option>
       </select>
     </div>
+    <template #extra>
+      <div v-if="searchable">
+        <button @click="removeSelection">remove selection</button>
+      </div>
+    </template>
   </edit-field-wrapper>
 </template>
 
 <script>
-import '~/vue-multiselect/dist/vue-multiselect.min.css'
+import Bus from '@/js/Bus'
 import FormField from '@/js/mixins/form-field'
-import Multiselect from 'vue-multiselect'
 
 export default {
-  components: { Multiselect },
   mixins: [FormField],
   data: () => ({
     options: [],
@@ -41,10 +47,16 @@ export default {
   },
   methods: {
     select(resource) {
+      console.log('select parent')
       this.selectedValue = resource.id
     },
     getValue() {
       return this.selectedValue
+    },
+    removeSelection() {
+      console.log('remove selection')
+      this.selectedValue = {}
+      Bus.$emit(`clearSearchSelection${this.field.id}`)
     },
   },
   mounted() {

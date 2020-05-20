@@ -114,25 +114,6 @@ module.exports = {
 
       addComponents(components)
     }),
-    // labels
-    plugin(({ addComponents, theme }) => {
-      const styles = {
-        display: 'inline-flex',
-        textTransform: 'uppercase',
-        letterSpacing: theme('letterSpacing.wide'),
-        color: theme('color.gray.700'),
-        fontSize: theme('fontSize.xs'),
-        fontWeight: theme('fontWeight.bold'),
-        marginBottom: theme('spacing.2'),
-      }
-      const components = {
-        label: {
-          ...styles,
-        },
-      }
-
-      addComponents(components)
-    }),
     // select
     plugin(({ addComponents, theme }) => {
       const styles = {

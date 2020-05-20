@@ -36,7 +36,6 @@ Vue.component('edit-text-field',                 require('@/js/components/Edit/T
 Vue.component('edit-belongs-to-field',           require('@/js/components/Edit/BelongsTo.vue').default)
 Vue.component('edit-textarea-field',             require('@/js/components/Edit/TextareaField.vue').default)
 Vue.component('edit-password-field',             require('@/js/components/Edit/PasswordField.vue').default)
-// Vue.component('edit-field-wrapper',           require('@/js/components/Edit/FieldWrapper.vue').default)
 Vue.component('edit-number-field',               require('@/js/components/Edit/NumberField.vue').default)
 
 

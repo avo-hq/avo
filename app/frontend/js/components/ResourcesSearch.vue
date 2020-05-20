@@ -1,37 +1,31 @@
 <template>
   <div>
     <multiselect
-      id="ajax"
       label="name"
-      track-by="code"
       placeholder="Type to search"
-      open-direction="bottom"
-      :options="resources"
+      :options="options"
       :searchable="true"
       :loading="isLoading"
       :internal-search="false"
-      :clear-on-select="true"
-      :close-on-select="true"
+      :clear-on-select="false"
+      :close-on-select="false"
       :options-limit="300"
       :limit="3"
       :limit-text="limitText"
       :max-height="300"
       :group-values="groupValues"
       :group-label="groupLabel"
-      :hide-selected="true"
       @search-change="asyncFind"
       @select="select"
+      :value="value"
+      :show-labels="false"
+      :allow-empty="true"
     >
-      <!-- v-model="value" -->
       <template slot="tag" slot-scope="{ option, remove }">
-        <span class="custom__tag"
-          ><span>{{ option.name }}</span
-          ><span class="custom__remove" @click="remove(option)">❌</span></span
+        <span class="custom__tag"><span>11{{ option.name }}</span><span class="custom__remove" @click="remove(option)">❌</span></span
         >
       </template>
-      <span slot="noResult"
-        >Oops! No elements found. Consider changing the search query.</span
-      >
+      <span slot="noResult">Oops! Nothing found...</span>
     </multiselect>
   </div>
 </template>
@@ -39,6 +33,7 @@
 <script>
 import '~/vue-multiselect/dist/vue-multiselect.min.css'
 import Api from '@/js/Api'
+import Bus from '@/js/Bus'
 import Multiselect from 'vue-multiselect'
 import URI from 'urijs'
 import debounce from 'lodash/debounce'
@@ -49,7 +44,7 @@ export default {
   data: () => ({
     query: '',
     results: [],
-    resources: [],
+    options: [],
     isLoading: false,
     value: {},
   }),
@@ -59,6 +54,8 @@ export default {
     'viaResourceId',
     'global',
     'single',
+    'searchValue',
+    'fieldId',
   ],
   computed: {
     groupValues() {
@@ -110,7 +107,7 @@ export default {
       vm.isLoading = true
       Api.get(this.queryUrl)
         .then(({ data }) => {
-          vm.resources = data.resources
+          vm.options = data.resources
           vm.isLoading = false
         })
     }, 300),
@@ -124,8 +121,18 @@ export default {
         }, 1)
       }
     },
+    clearSelection() {
+      this.value = {}
+    },
   },
-  mounted() { },
+  mounted() {
+    this.value = this.searchValue
+
+    if (this.fieldId) Bus.$on(`clearSearchSelection${this.fieldId}`, this.clearSelection)
+  },
+  destroyed() {
+    if (this.fieldId) Bus.$off(`clearSearchSelection${this.fieldId}`)
+  },
 }
 </script>
 

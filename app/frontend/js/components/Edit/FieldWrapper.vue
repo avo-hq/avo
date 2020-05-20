@@ -2,14 +2,17 @@
   <div :class="classes" v-if="field">
     <div class="w-1/3 p-4 h-full flex">
       <slot name="label">
-        <div class="py-2">
+        <label :for="field.id" class="py-2">
           {{ field.name }} <span class="text-red-600" v-if="field.required">*</span>
-        </div>
+        </label>
       </slot>
     </div>
     <div class="w-1/3 py-4">
       <slot />
       <div class="text-red-600 mt-2" v-if="fieldError" v-text="fieldError"></div>
+    </div>
+    <div class="w-1/3 py-4">
+      <slot name="extra" />
     </div>
   </div>
 </template>

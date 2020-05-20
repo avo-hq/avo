@@ -37,17 +37,18 @@ module Avocado
         end
 
         fields[:options] = []
-        if view == :edit and !self.searchable
-          # searchable
-          fields[:options] = target_resource.model.select(:id, target_resource.title).all.map do |model|
-            {
-              value: model.id,
-              label: model[target_resource.title]
-            }
-          end
+        if view == :edit
+          if self.searchable
+            fields[:model] = relation_model
+          else
+            fields[:options] = target_resource.model.select(:id, target_resource.title).all.map do |model|
+              {
+                value: model.id,
+                label: model[target_resource.title]
+              }
+            end
+           end
         end
-
-        # abort fields[:options].inspect
 
         fields[:resource_name_plural] = target_resource.resource_name_plural
 
