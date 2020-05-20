@@ -15,7 +15,7 @@ module Avocado
       def fetch_for_resource(model, resource, view)
         return if [:create, :index].include? view
 
-        fields = super(resource)
+        fields = super(model, resource, view)
 
         target_resource = App.get_resources.find { |r| r.class == "Avocado::Resources::#{name.to_s.singularize}".safe_constantize }
         fields[:relation_class] = target_resource.class.to_s
