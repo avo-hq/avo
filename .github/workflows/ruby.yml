@@ -30,5 +30,12 @@ jobs:
       run: |
         bundle config path vendor/bundle
         bundle install --jobs 4 --retry 3
+    - name: Create Database
+      run: |
+        sudo systemctl start mysql
+        psql --user="root" --password="root" -e "CREATE DATABASE dummy_test character set UTF8mb4 collate utf8mb4_bin;"
+    - name: Verify DB connection from host
+      run: |
+        mysql --host 127.0.0.1 --port="${{ job.services.psql.ports['5432'] }}" -uroot -proot -e "SHOW DATABASES"
     - name: Run tests
       run: npm run test-all
