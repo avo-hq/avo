@@ -12,14 +12,20 @@ module Avocado
         super(name, **args, &block)
 
         @options = args[:options].present? ? args[:options] : null
+        @display_with_value = args[:display_with_value].present? ? args[:display_with_value] : false
       end
 
       def fetch_for_resource(model, resource, view)
         fields = super(model, resource, view)
 
-        fields[:value] = @block.call model, resource, view, self if @block.present?
+        fields[:value] = if @block.present?
+          @block.call model, resource, view, self
+        else
+          model[id]
+        end
 
         fields[:options] = @options
+        fields[:display_with_value] = @display_with_value
 
         fields
       end

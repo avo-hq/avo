@@ -13,14 +13,10 @@ module Avocado
         text :email, name: 'User Email', required: true, hide_on: :edit
         number :age, min: 0, max: 120, step: 1
         boolean :availability
-        boolean :highlighted, true_value: 'yes', false_value: 'no'
-        select :shoesize, options: {
-          '38' => 'thirtyeight',
-          '43' => 'fourtythree',
-          '39' => 'thirtynine'
-        }
-        password :password, name: 'User Password', required: true, except_on: :forms
-        password :password_confirmation, name: 'Password confirmation', required: true
+        # boolean :highlighted, true_value: 'yes', false_value: 'no'
+        select :highlighted, options: {'yes' => 'Highlighted', 'no' => 'Not Highlighted'}, display_with_value: true
+        # password :password, name: 'User Password', required: true, except_on: :forms
+        # password :password_confirmation, name: 'Password confirmation', required: true
         text 'Is Writer' do |model, resource, view, field|
           model.posts.to_a.count > 0 ? 'yes' : 'no'
         end

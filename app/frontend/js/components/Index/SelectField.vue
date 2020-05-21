@@ -9,10 +9,13 @@ export default {
   data: () => ({}),
   props: ['field'],
   computed: {
+    displayValue() {
+      return this.field.options[this.field.value]
+    },
     value() {
-      if (this.field.options[this.field.value]) return this.field.options[this.field.value]
+      if (this.field.display_with_value && this.displayValue) return this.displayValue
 
-      return 'No value found!'
+      return this.field.value
     },
   },
   methods: {},
