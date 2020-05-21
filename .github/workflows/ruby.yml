@@ -32,7 +32,6 @@ jobs:
         bundle install --jobs 4 --retry 3
     - name: Create Database
       run: |
-        sudo systemctl start psql
         psql --user="root" --password="root" -e "CREATE DATABASE dummy_test character set UTF8mb4 collate utf8mb4_bin;"
     - name: Verify DB connection from host
       run: |
