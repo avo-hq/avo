@@ -1,3 +1,5 @@
+![Ruby](https://github.com/adrianthedev/avocado/workflows/Ruby/badge.svg)
+
 # Avocado
 The missing Ruby on Rails admin
 
@@ -20,6 +22,10 @@ Or install it yourself as:
 ```bash
 $ gem install avocado
 ```
+
+## Testing
+
+We use `rspec` to run our tests. To run unit tests use `npm run test`. For system tests `npm run test-system` and to run them all `npm run test-all` or simply `rspec`
 
 ## Contributing
 
