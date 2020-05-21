@@ -11,11 +11,11 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    # services:
-    #   postgres:
-    #     image: postgres:11.5
-    #     ports: ["5432:5432"]
-    #     options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    services:
+      postgres:
+        image: postgres:11.5
+        ports: ["5432:5432"]
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
     - uses: actions/checkout@v2
@@ -40,7 +40,7 @@ jobs:
 
     - name: Bundle install
       env:
-        # PGHOST: localhost
+        PGHOST: localhost
         PGUSER: postgres
         RAILS_ENV: test
       run: |
@@ -51,9 +51,9 @@ jobs:
     # - name: Create Database
     #   run: |
     #     psql --user="root" --password="root" -e "CREATE DATABASE dummy_test character set UTF8mb4 collate utf8mb4_bin;"
-    - name: Verify DB connection from host
-      run: |
-        mysql --host 127.0.0.1 --port="${{ job.services.psql.ports['5432'] }}" -uroot -proot -e "SHOW DATABASES"
+    # - name: Verify DB connection from host
+    #   run: |
+    #     mysql --host 127.0.0.1 --port="${{ job.services.psql.ports['5432'] }}" -uroot -proot -e "SHOW DATABASES"
     - name: Run tests
       env:
         PGHOST: localhost
