@@ -54,6 +54,9 @@ jobs:
     # - name: Verify DB connection from host
     #   run: |
     #     mysql --host 127.0.0.1 --port="${{ job.services.psql.ports['5432'] }}" -uroot -proot -e "SHOW DATABASES"
+    - name: Update Chrome webdriver
+      run: |
+        app:webdrivers:chromedriver:update
     - name: Run tests
       env:
         PGHOST: localhost
