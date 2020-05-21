@@ -57,6 +57,10 @@ jobs:
     - name: Update Chrome webdriver
       run: |
         bundle exec rails app:webdrivers:chromedriver:update
+    - name: Bundle assets
+      run: |
+        bundle exec rails app:yarn:install
+        bundle exec rails app:webpacker:compile
     - name: Run tests
       env:
         PGHOST: localhost
