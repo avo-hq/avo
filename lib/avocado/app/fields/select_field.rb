@@ -11,23 +11,15 @@ module Avocado
 
         super(name, **args, &block)
 
-        @options = args[:options].present? ? args[:options] : null
+        @options = args[:options].present? ? args[:options] : {}
         @display_with_value = args[:display_with_value].present? ? args[:display_with_value] : false
       end
 
-      def fetch_for_resource(model, resource, view)
-        fields = super(model, resource, view)
-
-        fields[:value] = if @block.present?
-          @block.call model, resource, view, self
-        else
-          model[id]
-        end
-
-        fields[:options] = @options
-        fields[:display_with_value] = @display_with_value
-
-        fields
+      def hydrate_resource(model, resource, view)
+        {
+          options: @options,
+          display_with_value: @display_with_value,
+        }
       end
     end
   end

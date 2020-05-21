@@ -13,7 +13,7 @@ module Avocado
       end
 
       def hydrate_resource(model, resource, view)
-        return if [:create, :index].include? view
+        return {} if [:create, :index].include? view
 
         fields = {}
 
