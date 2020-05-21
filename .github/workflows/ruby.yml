@@ -40,7 +40,7 @@ jobs:
 
     - name: Bundle install
       env:
-        PGHOST: localhost
+        # PGHOST: localhost
         PGUSER: postgres
         RAILS_ENV: test
       run: |
