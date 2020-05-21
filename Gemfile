@@ -20,10 +20,6 @@ gem 'webpacker', '~> 4.0'
 # SVGs
 gem 'inline_svg'
 
-group :development do
-  gem 'sqlite3'
-end
-
 # These are the dummy app's dependencies
 group :development, :test do
   # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -77,6 +73,7 @@ group :development, :test do
   gem 'selenium-webdriver'
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'webdrivers'
+  gem 'fuubar'
 end
 
 gem 'zeitwerk', '~> 2.3'

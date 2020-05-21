@@ -1,11 +1,11 @@
-require_relative 'field'
+require_relative 'text_field'
 
 module Avocado
   module Fields
     class PasswordField < TextField
       def initialize(name, **args, &block)
         @defaults = {
-          component: 'password-field'
+          component: 'password-field',
         }
 
         super(name, **args, &block)

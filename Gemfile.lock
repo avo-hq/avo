@@ -106,6 +106,9 @@ GEM
     faker (2.11.0)
       i18n (>= 1.6, < 2)
     ffi (1.12.2)
+    fuubar (2.3.2)
+      rspec-core (~> 3.0)
+      ruby-progressbar (~> 1.4)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     i18n (1.8.2)
@@ -210,6 +213,7 @@ GEM
     rspec-support (3.9.3)
     ruby-debug-ide (0.7.2)
       rake (>= 0.8.1)
+    ruby-progressbar (1.10.1)
     ruby_dep (1.5.0)
     rubyzip (2.3.0)
     sass-rails (6.0.0)
@@ -236,7 +240,6 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
-    sqlite3 (1.4.1)
     thor (1.0.1)
     thread_safe (0.3.6)
     tilt (2.0.10)
@@ -277,6 +280,7 @@ DEPENDENCIES
   dotenv-rails
   factory_bot_rails
   faker
+  fuubar
   inline_svg
   jbuilder (~> 2.7)
   kaminari
@@ -290,7 +294,6 @@ DEPENDENCIES
   selenium-webdriver
   spring
   spring-watcher-listen (~> 2.0.0)
-  sqlite3
   tzinfo-data
   web-console (>= 3.3.0)
   webdrivers

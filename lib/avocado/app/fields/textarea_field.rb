@@ -6,7 +6,8 @@ module Avocado
       def initialize(name, **args, &block)
         @defaults = {
           sortable: true,
-          component: 'textarea-field'
+          component: 'textarea-field',
+          computable: true,
         }
 
         super(name, **args, &block)
@@ -14,13 +15,10 @@ module Avocado
         @rows = args[:rows].present? ? args[:rows].to_i : 5
       end
 
-      def fetch_for_resource(model, resource, view)
-        fields = super(model, resource, view)
-
-        fields[:rows] = @rows
-        fields[:value] = @block.call model, resource, view, self if @block.present?
-
-        fields
+      def hydrate_resource(model, resource, view)
+        {
+          rows: @rows
+        }
       end
     end
   end

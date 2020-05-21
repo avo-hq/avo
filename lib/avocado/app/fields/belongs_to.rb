@@ -17,8 +17,8 @@ module Avocado
         super(name, **args, &block)
       end
 
-      def fetch_for_resource(model, resource, view)
-        fields = super(model, resource, view)
+      def hydrate_resource(model, resource, view)
+        fields = {}
 
         return fields if model_or_class(model) == 'class'
 
@@ -47,7 +47,7 @@ module Avocado
                 label: model[target_resource.title]
               }
             end
-           end
+          end
         end
 
         fields[:resource_name_plural] = target_resource.resource_name_plural

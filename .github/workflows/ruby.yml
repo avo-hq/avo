@@ -1,0 +1,65 @@
+name: Ruby
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:11.5
+        ports: ["5432:5432"]
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Ruby
+    # To automatically get bug fixes and new Ruby versions for ruby/setup-ruby,
+    # change this to (see https://github.com/ruby/setup-ruby#versioning):
+    # uses: ruby/setup-ruby@v1
+      uses: ruby/setup-ruby@ec106b438a1ff6ff109590de34ddc62c540232e0
+      with:
+        ruby-version: 2.6.3
+
+    - name: Install PostgreSQL 11 client
+      run: |
+        sudo apt-get -yqq install libpq-dev
+
+    - uses: actions/cache@v1
+      with:
+        path: vendor/bundle
+        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-gems-
+
+    - name: Bundle install
+      env:
+        PGHOST: localhost
+        PGUSER: postgres
+        RAILS_ENV: test
+      run: |
+        bundle config path vendor/bundle
+        bundle install --jobs 4 --retry 3
+        bin/rails db:setup
+
+    # - name: Create Database
+    #   run: |
+    #     psql --user="root" --password="root" -e "CREATE DATABASE dummy_test character set UTF8mb4 collate utf8mb4_bin;"
+    # - name: Verify DB connection from host
+    #   run: |
+    #     mysql --host 127.0.0.1 --port="${{ job.services.psql.ports['5432'] }}" -uroot -proot -e "SHOW DATABASES"
+    - name: Update Chrome webdriver
+      run: |
+        bundle exec rails app:webdrivers:chromedriver:update
+    - name: Run tests
+      env:
+        PGHOST: localhost
+        PGUSER: postgres
+        RAILS_ENV: test
+      run: npm run test-all

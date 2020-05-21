@@ -6,6 +6,11 @@
   "author": "Adrian Marin <adrian@adrianthedev.com>",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "test": "bundle exec rspec ./spec --tag ~type:system",
+    "test-system": "bundle exec rspec ./spec --tag type:system",
+    "test-all": "bundle exec rspec ./spec"
+  },
   "dependencies": {
     "@rails/actioncable": "^6.0.2-1",
     "@rails/activestorage": "^6.0.2-1",

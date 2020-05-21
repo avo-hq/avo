@@ -7,6 +7,7 @@ module Avocado
         @defaults = {
           sortable: true,
           component: 'number-field',
+          computable: true,
         }
 
         super(name, **args, &block)
@@ -16,16 +17,12 @@ module Avocado
         @step = args[:step].present? ? args[:step].to_i : nil
       end
 
-      def fetch_for_resource(model, resource, view)
-        fields = super(model, resource, view)
-
-        fields[:value] = @block.call model, resource, view, self if @block.present?
-
-        fields[:min] = @min
-        fields[:max] = @max
-        fields[:step] = @step
-
-        fields
+      def hydrate_resource(model, resource, view)
+        {
+          min: @min,
+          max: @max,
+          step: @step,
+        }
       end
     end
   end
