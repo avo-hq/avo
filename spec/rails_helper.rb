@@ -44,6 +44,14 @@ RSpec.configure do |config|
   # instead of true.
   config.use_transactional_fixtures = true
 
+  config.before(:each, type: :system) do
+    driven_by :selenium_headless_chrome
+  end
+
+  config.before(:each, type: :system, js: true) do
+    driven_by :selenium_chrome_headless
+  end
+
   # You can uncomment this line to turn off ActiveRecord support entirely.
   # config.use_active_record = false
 
@@ -69,4 +77,6 @@ RSpec.configure do |config|
 end
 
 # abort Rails.configuration.database_configuration.inspect
+require 'support/helpers'
+# require 'support/capybara'
 require 'support/database_cleaner'
