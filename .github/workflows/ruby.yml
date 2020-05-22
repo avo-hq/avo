@@ -48,19 +48,24 @@ jobs:
         bundle install --jobs 4 --retry 3
         bin/rails db:setup
 
-    # - name: Create Database
-    #   run: |
-    #     psql --user="root" --password="root" -e "CREATE DATABASE dummy_test character set UTF8mb4 collate utf8mb4_bin;"
-    # - name: Verify DB connection from host
-    #   run: |
-    #     mysql --host 127.0.0.1 --port="${{ job.services.psql.ports['5432'] }}" -uroot -proot -e "SHOW DATABASES"
-    - name: Update Chrome webdriver
-      run: |
-        bundle exec rails app:webdrivers:chromedriver:update
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo "::set-output name=dir::$(yarn cache dir)"
+
+    - uses: actions/cache@v1
+      id: yarn-cache
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+
+    - name: Yarn install
+      run: bundle exec rails app:yarn:install
+
     - name: Bundle assets
-      run: |
-        bundle exec rails app:yarn:install
-        bundle exec rails app:webpacker:compile
+      run: bundle exec rails app:webpacker:compile
+
     - name: Run tests
       env:
         PGHOST: localhost
