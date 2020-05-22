@@ -1,4 +1,4 @@
-![Ruby](https://github.com/adrianthedev/avocado/workflows/Ruby/badge.svg)
+![Tests](https://github.com/adrianthedev/avocado/workflows/Tests/badge.svg)
 
 # Avocado
 The missing Ruby on Rails admin
