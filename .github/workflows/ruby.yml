@@ -46,6 +46,9 @@ jobs:
       run: |
         bundle config path vendor/bundle
         bundle install --jobs 4 --retry 3
+
+    - name: DB setup
+      run: |
         bin/rails db:setup
 
     - name: Get yarn cache directory path
