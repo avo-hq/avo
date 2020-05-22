@@ -46,6 +46,7 @@ jobs:
       run: |
         bundle config path vendor/bundle
         bundle install --jobs 4 --retry 3
+        bin/rails db:setup
 
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
@@ -62,9 +63,9 @@ jobs:
     - name: Yarn install
       run: bundle exec rails app:yarn:install
 
-    - name: DB setup
-      run: |
-        bin/rails db:setup
+    # - name: DB setup
+    #   run: |
+    #     bin/rails db:setup
 
     - name: Bundle assets
       run: bundle exec rails app:webpacker:compile
