@@ -63,10 +63,6 @@ jobs:
     - name: Yarn install
       run: bundle exec rails app:yarn:install
 
-    # - name: DB setup
-    #   run: |
-    #     bin/rails db:setup
-
     - name: Bundle assets
       run: bundle exec rails app:webpacker:compile
 
