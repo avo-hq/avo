@@ -34,6 +34,7 @@ end
 
 # ActiveRecord::Migrator.migrate(File.join(Rails.root, 'db/migrate'))
 
+test_driver = ENV['HEADFULL'] ? :selenium_chrome : :selenium_chrome_headless
 
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
@@ -45,11 +46,11 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = true
 
   config.before(:each, type: :system) do
-    driven_by :selenium_headless_chrome
+    driven_by test_driver
   end
 
   config.before(:each, type: :system, js: true) do
-    driven_by :selenium_chrome_headless
+    driven_by test_driver
   end
 
   # You can uncomment this line to turn off ActiveRecord support entirely.
@@ -78,5 +79,4 @@ end
 
 # abort Rails.configuration.database_configuration.inspect
 require 'support/helpers'
-# require 'support/capybara'
 require 'support/database_cleaner'
