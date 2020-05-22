@@ -79,4 +79,5 @@ end
 
 # abort Rails.configuration.database_configuration.inspect
 require 'support/helpers'
+require 'support/factory_bot'
 require 'support/database_cleaner'
