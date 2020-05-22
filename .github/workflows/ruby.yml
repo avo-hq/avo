@@ -40,7 +40,7 @@ jobs:
 
     - name: Bundle install
       env:
-        PGHOST: localhost
+        PGHOST: postgres
         PGUSER: postgres
         RAILS_ENV: test
       run: |
@@ -68,7 +68,7 @@ jobs:
 
     - name: Run tests
       env:
-        PGHOST: localhost
+        PGHOST: postgres
         PGUSER: postgres
         RAILS_ENV: test
       run: npm run test-all
