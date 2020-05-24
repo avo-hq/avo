@@ -15,6 +15,8 @@ export default {
   methods: {
     setInitialValue() {
       if (this.field.value) this.value = flatpickr.formatDate(new Date(this.field.value), this.field.pickerFormat)
+
+      this.value = this.field.placeholder
     },
     getValue() {
       return flatpickr.parseDate(this.value, this.field.pickerFormat)

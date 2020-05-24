@@ -14,7 +14,7 @@ module Avocado
         number :age, min: 0, max: 120, step: 1
         boolean :availability
         select :highlighted, options: { yes: 'Highlighted', no: 'Not Highlighted' }, display_with_value: true
-        date :birthday, firstDayOfWeek: 1, pickerFormat: 'J--n--Y', format: 'D/MMMM/YYYY'
+        date :birthday, firstDayOfWeek: 1, pickerFormat: 'J--n--Y', format: 'D/MMMM/YYYY', placeholder: 'Empty!'
         # password :password, name: 'User Password', required: true, except_on: :forms
         # password :password_confirmation, name: 'Password confirmation', required: true
         text 'Is Writer', resolve_using: -> (value) { value.truncate 3 }, hide_on: :edit do |model, resource, view, field|

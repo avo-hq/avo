@@ -14,7 +14,7 @@ export default {
     value() {
       if (this.field.value) return moment(this.field.value).format(this.field.format)
 
-      return this.field.value
+      return this.field.placeholder
     },
   },
   methods: {},

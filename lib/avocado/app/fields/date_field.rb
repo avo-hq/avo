@@ -15,6 +15,7 @@ module Avocado
         @firstDayOfWeek = args[:firstDayOfWeek].present? ? args[:firstDayOfWeek].to_i : 0
         @pickerFormat = args[:pickerFormat].present? ? args[:pickerFormat] : 'Y-m-d'
         @format = args[:format].present? ? args[:format] : 'YYYY-MM-DD'
+        @placeholder = args[:placeholder].present? ? args[:placeholder] : ''
       end
 
       def hydrate_resource(model, resource, view)
@@ -22,6 +23,7 @@ module Avocado
           firstDayOfWeek: @firstDayOfWeek,
           pickerFormat: @pickerFormat,
           format: @format,
+          placeholder: @placeholder,
         }
       end
     end
