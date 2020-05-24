@@ -1,8 +1,8 @@
-require_relative 'field'
+require_relative 'text_field'
 
 module Avocado
   module Fields
-    class NumberField < Field
+    class NumberField < TextField
       def initialize(name, **args, &block)
         @defaults = {
           sortable: true,
