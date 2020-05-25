@@ -1,6 +1,6 @@
 <template>
   <edit-field-wrapper :field="field" :errors="errors" :index="index">
-    <input type="text" id="datepicker" v-model="value"/>
+    <input type="text" ref="datepicker" v-model="value"/>
   </edit-field-wrapper>
 </template>
 
@@ -23,7 +23,7 @@ export default {
     },
   },
   mounted() {
-    flatpickr('#datepicker', {
+    flatpickr(this.$refs['datepicker'], {
       defaultDate: this.value,
       dateFormat: this.field.pickerFormat,
       locale: {
