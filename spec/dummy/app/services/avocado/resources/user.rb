@@ -10,6 +10,10 @@ module Avocado
       fields do
         id :ID
         text :Name, required: true
+        file :cv, name: 'CV'
+        file :avatar, is_avatar: true
+        files :images, avatar: true
+        files :docs
         text :email, name: 'User Email', required: true
         number :age, min: 0, max: 120, step: 1
         boolean :availability

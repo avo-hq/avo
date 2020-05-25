@@ -1,7 +1,9 @@
+import { objectToFormData } from 'object-to-formdata'
 import Api from '@/js/Api'
 import isNull from 'lodash/isNull'
 import isUndefined from 'lodash/isUndefined'
 import pluralize from 'pluralize'
+
 
 export default {
   data: () => ({
@@ -35,18 +37,35 @@ export default {
   },
   methods: {
     buildFormData() {
-      const form = new FormData()
+      const formData = {
+        resource: {},
+        // eslint-disable-next-line camelcase
+        file_fields: {},
+      }
 
-      this.resource
+      const updatableFields = this.resource
         .fields
         .filter((field) => field.updatable)
         .filter((field) => !field.computed)
-        .map((field) => [field, isNull(field.getValue()) ? '' : field.getValue()])
-        .forEach(([field, value]) => form.append(`resource[${isUndefined(field.db_field) ? field.id : field.db_field}]`, value))
 
-      return form
+      updatableFields
+        .filter((field) => !field.is_file_field)
+        // eslint-disable-next-line no-return-assign
+        .forEach((field) => formData.resource[field.id] = isNull(field.getValue()) ? '' : field.getValue())
+
+      updatableFields
+        .filter((field) => field.is_file_field)
+        // eslint-disable-next-line no-return-assign
+        .forEach((field) => formData.file_fields[field.id] = field.getFileFieldValue())
+
+      console.log('formData->', (formData))
+      console.log('objectToFormData(formData)->', objectToFormData(formData))
+
+      return objectToFormData(formData)
     },
     async submitResource() {
+      // this.buildFormData()
+      // return
       this.isLoading = true
       this.errors = {}
 

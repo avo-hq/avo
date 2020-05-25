@@ -24,6 +24,14 @@ module Avocado
         query = related_model.find(params[:via_resource_id]).public_send(params[:resource_name])
       end
 
+      # Eager load the attachments
+      if avocado_resource.has_file_fields_attached?
+        avocado_resource.file_fields_attached.map(&:id).map do |field|
+          query = query.send :"with_attached_#{field}"
+        end
+      end
+
+      # Eager lood the relations
       if avocado_resource.includes.present?
         query = query.includes(*avocado_resource.includes)
       end
@@ -65,9 +73,8 @@ module Avocado
     end
 
     def show
-      @view ||= :show
       render json: {
-        resource: Avocado::Resources::Resource.hydrate_resource(resource, avocado_resource, @view),
+        resource: Avocado::Resources::Resource.hydrate_resource(resource, avocado_resource, @view || :show),
       }
     end
 
@@ -78,7 +85,41 @@ module Avocado
     end
 
     def update
-      resource.update!(resource_params)
+      # abort permitted_params.inspect
+      if avocado_resource.has_file_fields_attached?
+        file_fields_params = {}
+        file_fields = avocado_resource.file_fields_attached
+
+        file_fields.each do |field|
+          file_fields_params[field.id] = params[field.id]
+        end
+
+        params = resource_params.select { |id, value| !file_fields.map(&:id).include? id }
+
+        # abort file_params.inspect
+        # abort [file_params, file_fields_params, params].inspect
+
+        file_params.each do |id, params_value|
+          file_field = file_fields.select { |field| field.id === id }
+          # abort id.inspect
+          field = resource.send(id)
+          # abort [params_value[:file]].inspect
+
+          # form
+          next if params_value[:has_changed] == 'false'
+
+          if params_value[:file].present?
+            t= field.attached?
+            if !field.attached? or params_value[:has_changed] == 'true'
+              field.attach params_value[:file]
+            end
+          else
+            field.purge
+          end
+        end
+      end
+
+      resource.update!(params)
 
       render json: {
         resource: Avocado::Resources::Resource.hydrate_resource(resource, avocado_resource, :show),
@@ -146,23 +187,36 @@ module Avocado
       end
 
       def permitted_params
-        params = resource_fields.select(&:updatable).map do |f|
-          if f.methods.include? :relation_method
-            db_field = avocado_resource.model.reflections[f.relation_method].foreign_key
+        params = resource_fields.select { |field| !field.is_file_field }.select(&:updatable).map do |field|
+          if field.methods.include? :relation_method
+            db_field = avocado_resource.model.reflections[field.relation_method].foreign_key
           end
 
           if db_field.present?
             db_field.to_sym
           else
-            f.id
+            field.id
           end
         end
 
         params.map(&:to_sym)
       end
 
+      def permitted_file_params
+        resource_fields
+          .select { |field| field.is_file_field }
+          .select(&:updatable)
+          .map(&:id)
+          .map(&:to_sym)
+          .map { |field_id| [field_id, [:has_changed, :file]] }.to_h
+      end
+
       def resource_params
         params.require(:resource).permit(permitted_params)
+      end
+
+      def file_params
+        params.require(:file_fields).permit(permitted_file_params)
       end
 
       def search_resource(avocado_resource)

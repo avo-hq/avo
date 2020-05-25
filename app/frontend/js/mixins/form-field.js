@@ -36,5 +36,6 @@ export default {
     this.setInitialValue()
 
     this.field.getValue = this.getValue
+    this.field.getFileFieldValue = this.getFileFieldValue
   },
 }

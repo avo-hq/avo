@@ -98,7 +98,7 @@ module.exports = {
           borderWidth: '1px',
           borderColor: theme('colors.gray.300'),
           borderRadius: theme('borderRadius.default'),
-          padding: `${theme('spacing.2')} ${theme('spacing.4')}`,
+          padding: `${theme('spacing.2')} ${theme('spacing.3')}`,
           lineHeight: theme('lineHeight.tight'),
           '&:focus': {
             outline: 'none',
