@@ -25,8 +25,8 @@ module Avocado
       end
 
       # Eager load the attachments
-      if avocado_resource.has_file_fields_attached?
-        avocado_resource.file_fields_attached.map(&:id).map do |field|
+      if avocado_resource.attached_file_fields.present?
+        avocado_resource.attached_file_fields.map(&:id).map do |field|
           query = query.send :"with_attached_#{field}"
         end
       end
@@ -85,41 +85,34 @@ module Avocado
     end
 
     def update
-      # abort permitted_params.inspect
-      if avocado_resource.has_file_fields_attached?
+      # Pick and attach file fields
+      attached_file_fields = avocado_resource.attached_file_fields
+      if attached_file_fields.present?
         file_fields_params = {}
-        file_fields = avocado_resource.file_fields_attached
 
-        file_fields.each do |field|
-          file_fields_params[field.id] = params[field.id]
+        # Map params to fields
+        attached_file_fields.each do |field|
+          file_fields_params[field.id] = resource_params[field.id]
         end
 
-        params = resource_params.select { |id, value| !file_fields.map(&:id).include? id }
-
-        # abort file_params.inspect
-        # abort [file_params, file_fields_params, params].inspect
-
-        file_params.each do |id, params_value|
-          file_field = file_fields.select { |field| field.id === id }
-          # abort id.inspect
+        file_fields_params.each do |id, param_value|
           field = resource.send(id)
-          # abort [params_value[:file]].inspect
 
-          # form
-          next if params_value[:has_changed] == 'false'
-
-          if params_value[:file].present?
-            t= field.attached?
-            if !field.attached? or params_value[:has_changed] == 'true'
-              field.attach params_value[:file]
-            end
-          else
+          # Figure oute what has been submitted
+          if param_value.is_a? ActionDispatch::Http::UploadedFile
+            field.attach param_value
+          elsif param_value.blank?
+            # File has been deleted
             field.purge
+          elsif param_value.is_a? String
+            # Field is unchanged
           end
         end
       end
 
-      resource.update!(params)
+      # Filter out the file params
+      regular_resource_params = resource_params.select { |id, value| !file_fields_params.keys.include? id }
+      resource.update!(regular_resource_params)
 
       render json: {
         resource: Avocado::Resources::Resource.hydrate_resource(resource, avocado_resource, :show),
@@ -187,7 +180,7 @@ module Avocado
       end
 
       def permitted_params
-        params = resource_fields.select { |field| !field.is_file_field }.select(&:updatable).map do |field|
+        params = resource_fields.select(&:updatable).map do |field|
           if field.methods.include? :relation_method
             db_field = avocado_resource.model.reflections[field.relation_method].foreign_key
           end
@@ -202,21 +195,8 @@ module Avocado
         params.map(&:to_sym)
       end
 
-      def permitted_file_params
-        resource_fields
-          .select { |field| field.is_file_field }
-          .select(&:updatable)
-          .map(&:id)
-          .map(&:to_sym)
-          .map { |field_id| [field_id, [:has_changed, :file]] }.to_h
-      end
-
       def resource_params
         params.require(:resource).permit(permitted_params)
-      end
-
-      def file_params
-        params.require(:file_fields).permit(permitted_file_params)
       end
 
       def search_resource(avocado_resource)

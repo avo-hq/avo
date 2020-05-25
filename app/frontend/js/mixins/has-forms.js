@@ -39,24 +39,14 @@ export default {
     buildFormData() {
       const formData = {
         resource: {},
-        // eslint-disable-next-line camelcase
-        file_fields: {},
       }
 
-      const updatableFields = this.resource
+      this.resource
         .fields
         .filter((field) => field.updatable)
         .filter((field) => !field.computed)
-
-      updatableFields
-        .filter((field) => !field.is_file_field)
         // eslint-disable-next-line no-return-assign
         .forEach((field) => formData.resource[field.id] = isNull(field.getValue()) ? '' : field.getValue())
-
-      updatableFields
-        .filter((field) => field.is_file_field)
-        // eslint-disable-next-line no-return-assign
-        .forEach((field) => formData.file_fields[field.id] = field.getFileFieldValue())
 
       console.log('formData->', (formData))
       console.log('objectToFormData(formData)->', objectToFormData(formData))
@@ -64,8 +54,6 @@ export default {
       return objectToFormData(formData)
     },
     async submitResource() {
-      // this.buildFormData()
-      // return
       this.isLoading = true
       this.errors = {}
 

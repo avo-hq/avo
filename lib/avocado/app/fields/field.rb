@@ -15,7 +15,6 @@ module Avocado
       attr_accessor :nullable
       attr_accessor :resolve_using
       attr_accessor :computable
-      attr_accessor :is_file_field
       attr_accessor :block
 
       def initialize(id_or_name, **args, &block)

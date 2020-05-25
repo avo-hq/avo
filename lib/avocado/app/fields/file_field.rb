@@ -18,24 +18,15 @@ module Avocado
         @is_image = args[:is_image].present? ? args[:is_image] : @is_avatar
       end
 
-      def is_file_field
-        true
-      end
-
       def hydrate_resource(model, resource, view)
         storage_field = model.send(id)
 
-        field = {
-          is_file_field: true,
-        }
+        field = {}
 
         return field unless storage_field.attached?
 
-        # @todo: refactor representable into `value` maybe?
-        field[:field_id] = storage_field.id
         field[:filename] = storage_field.filename
         field[:value] = rails_blob_url(storage_field, only_path: true)
-        # abort self.inspect
         field[:is_image] = self.is_image
 
         field

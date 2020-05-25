@@ -190,11 +190,7 @@ module Avocado
         self.class.name.demodulize.safe_constantize
       end
 
-      def has_file_fields_attached?
-        file_fields_attached.present?
-      end
-
-      def file_fields_attached
+      def attached_file_fields
         get_fields.select do |field|
           field.class == Avocado::Fields::FileField
         end
