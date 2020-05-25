@@ -1,7 +1,7 @@
 <template>
   <edit-field-wrapper :field="field" :errors="errors" :index="index">
-    <div v-if="field.value">
-      <img v-if="field.is_image" :src="field.value" />
+    <div v-if="value">
+      <img v-if="field.is_image" :src="value" />
       <a href="javascript:void(0);"
         v-tooltip="`Delete ${field.filename}`"
         class="my-2 inline-block"
