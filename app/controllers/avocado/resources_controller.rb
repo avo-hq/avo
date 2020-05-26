@@ -80,43 +80,10 @@ module Avocado
     end
 
     def update
-      # Pick and attach file fields
-      attached_file_fields = avocado_resource.attached_file_fields
-      if attached_file_fields.present?
-        file_fields_params = {}
-
-        # Map params to fields
-        attached_file_fields.each do |field|
-          file_fields_params[field.id] = resource_params[field.id.to_sym]
-        end
-
-        file_fields_params.each do |id, attachment|
-          # Identify field to make it easier to work with
-          field = resource.send(id)
-
-          if file_fields_params[id].is_a? Array
-            # Get the ID's that we kept
-            file_ids_kept = file_fields_params[id].select { |attachment| attachment.is_a? String }.map(&:to_i)
-            # Compute the difference
-            to_remove = field.pluck(:id) - file_ids_kept
-            # Remove the missing ones
-            to_remove.map { |attachment_id| field.find(attachment_id).purge }
-          end
-
-          # Figure out what has been submitted
-          if attachment.is_a? Array
-            # Files have been attached
-            attachment.each do |attachment|
-              process_file_field field, attachment
-            end
-          else
-            process_file_field field, attachment
-          end
-        end
-      end
+      update_file_fields
 
       # Filter out the file params
-      regular_resource_params = resource_params.select { |id, value| !file_fields_params.keys.include? id }
+      regular_resource_params = resource_params.select { |id, value| !avocado_resource.attached_file_fields.map(&:id).include? id }
 
       resource.update!(regular_resource_params)
 
@@ -241,6 +208,43 @@ module Avocado
           field.purge
         elsif attachment.is_a? String
           # Field is unchanged
+        end
+      end
+
+      def update_file_fields
+        # Pick and attach file fields
+        attached_file_fields = avocado_resource.attached_file_fields
+        if attached_file_fields.present?
+          file_fields_params = {}
+
+          # Map params to fields
+          attached_file_fields.each do |field|
+            file_fields_params[field.id] = resource_params[field.id.to_sym]
+          end
+
+          file_fields_params.each do |id, attachment|
+            # Identify field to make it easier to work with
+            field = resource.send(id)
+
+            if file_fields_params[id].is_a? Array
+              # Get the ID's that we kept
+              file_ids_kept = file_fields_params[id].select { |attachment| attachment.is_a? String }.map(&:to_i)
+              # Compute the difference
+              to_remove = field.pluck(:id) - file_ids_kept
+              # Remove the missing ones
+              to_remove.map { |attachment_id| field.find(attachment_id).purge }
+            end
+
+            # Figure out what has been submitted
+            if attachment.is_a? Array
+              # Files have been attached
+              attachment.each do |attachment|
+                process_file_field field, attachment
+              end
+            else
+              process_file_field field, attachment
+            end
+          end
         end
       end
   end

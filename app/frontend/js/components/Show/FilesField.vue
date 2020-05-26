@@ -1,6 +1,6 @@
 <template>
   <show-field-wrapper :field="field" :index="index" :value-slot-full-width="true">
-    <div v-if="hasFiles" class="relative p-2 bg-gray-200 grid grid-cols-4 gap-2">
+    <div v-if="hasFiles" class="relative p-2 bg-gray-200 grid grid-cols-3 lg:grid-cols-4 gap-2">
       <div v-for="file in field.files" :key="file.path" class="relative pb-full">
         <a :href="file.path"
           class="w-full h-full block"

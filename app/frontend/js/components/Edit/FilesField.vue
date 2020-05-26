@@ -1,6 +1,6 @@
 <template>
   <edit-field-wrapper :field="field" :errors="errors" :index="index" :value-slot-full-width="true">
-    <div v-if="hasFiles" class="relative p-2 bg-gray-200 grid grid-cols-4 gap-2 mb-2">
+    <div v-if="hasFiles" class="relative p-2 bg-gray-200 grid grid-cols-3 lg:grid-cols-4 gap-2 mb-2">
       <div v-for="file in allFiles" :key="file.path" class="relative pb-full">
         <div class="absolute flex z-10 w-full h-full justify-center items-end p-2">
           <a href="javascript:void(0);"
