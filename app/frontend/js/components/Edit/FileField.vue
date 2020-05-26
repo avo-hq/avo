@@ -3,8 +3,7 @@
     <div v-if="value">
       <img v-if="field.is_image" :src="value" />
       <a href="javascript:void(0);"
-        v-tooltip="`Delete ${field.filename}`"
-        class="my-2 inline-block"
+        class="my-2 inline-block button bg-indigo-600 text-white hover:bg-indigo-800"
         @click="deleteFile"
       >Delete <span class="font-semibold">{{field.filename}}</span></a>
     </div>
@@ -13,7 +12,6 @@
       :class="classes"
       :disabled="disabled"
       @change="fileChanged"
-      :multiple="multiple"
     />
   </edit-field-wrapper>
 </template>
@@ -32,16 +30,12 @@ export default {
 
       return classes.join(' ')
     },
-    multiple() {
-      return false
-    },
   },
   methods: {
     deleteFile() {
       this.value = null
     },
     fileChanged(event) {
-      console.log('fileChanged', event, event.target.files)
       // eslint-disable-next-line prefer-destructuring
       this.value = event.target.files[0]
     },
