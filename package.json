@@ -28,6 +28,7 @@
     "heroicons": "^0.1.0",
     "lodash": "^4.17.15",
     "mousetrap": "^1.6.5",
+    "object-to-formdata": "^3.0.9",
     "pluralize": "^8.0.0",
     "pnp-webpack-plugin": "^1.6.4",
     "portal-vue": "^2.1.7",

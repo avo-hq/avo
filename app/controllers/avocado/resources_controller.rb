@@ -24,6 +24,10 @@ module Avocado
         query = related_model.find(params[:via_resource_id]).public_send(params[:resource_name])
       end
 
+      # Eager load the attachments
+      query = eager_load_files(query)
+
+      # Eager lood the relations
       if avocado_resource.includes.present?
         query = query.includes(*avocado_resource.includes)
       end
@@ -58,16 +62,14 @@ module Avocado
         end
       end
 
-
-      return render json: {
+      render json: {
         resources: resources
       }
     end
 
     def show
-      @view ||= :show
       render json: {
-        resource: Avocado::Resources::Resource.hydrate_resource(resource, avocado_resource, @view),
+        resource: Avocado::Resources::Resource.hydrate_resource(resource, avocado_resource, @view || :show),
       }
     end
 
@@ -78,7 +80,12 @@ module Avocado
     end
 
     def update
-      resource.update!(resource_params)
+      update_file_fields
+
+      # Filter out the file params
+      regular_resource_params = resource_params.select { |id, value| !avocado_resource.attached_file_fields.map(&:id).include? id }
+
+      resource.update!(regular_resource_params)
 
       render json: {
         resource: Avocado::Resources::Resource.hydrate_resource(resource, avocado_resource, :show),
@@ -130,7 +137,7 @@ module Avocado
 
     private
       def resource
-        resource_model.safe_constantize.find params[:id]
+        eager_load_files(resource_model.safe_constantize).find params[:id]
       end
 
       def resource_model
@@ -146,19 +153,23 @@ module Avocado
       end
 
       def permitted_params
-        params = resource_fields.select(&:updatable).map do |f|
-          if f.methods.include? :relation_method
-            db_field = avocado_resource.model.reflections[f.relation_method].foreign_key
+        params = resource_fields.select(&:updatable).map do |field|
+          # If it's a relation
+          if field.methods.include? :relation_method
+            db_field = avocado_resource.model.reflections[field.relation_method].foreign_key
           end
 
+          # Set the db_field for relations???
           if db_field.present?
             db_field.to_sym
+          elsif field.is_array_param
+            { "#{field.id}": [] }
           else
-            f.id
+            field.id.to_sym
           end
         end
 
-        params.map(&:to_sym)
+        params
       end
 
       def resource_params
@@ -175,6 +186,65 @@ module Avocado
           resource[:link] = "/resources/#{model.class.to_s.singularize.underscore}/#{model.id}"
 
           resource
+        end
+      end
+
+      def eager_load_files(query)
+        if avocado_resource.attached_file_fields.present?
+          avocado_resource.attached_file_fields.map(&:id).map do |field|
+            query = query.send :"with_attached_#{field}"
+          end
+        end
+
+        query
+      end
+
+      def process_file_field(field, attachment)
+        if attachment.is_a? ActionDispatch::Http::UploadedFile
+          # New file has been attached
+          field.attach attachment
+        elsif attachment.blank?
+          # File has been deleted
+          field.purge
+        elsif attachment.is_a? String
+          # Field is unchanged
+        end
+      end
+
+      def update_file_fields
+        # Pick and attach file fields
+        attached_file_fields = avocado_resource.attached_file_fields
+        if attached_file_fields.present?
+          file_fields_params = {}
+
+          # Map params to fields
+          attached_file_fields.each do |field|
+            file_fields_params[field.id] = resource_params[field.id.to_sym]
+          end
+
+          file_fields_params.each do |id, attachment|
+            # Identify field to make it easier to work with
+            field = resource.send(id)
+
+            if file_fields_params[id].is_a? Array
+              # Get the ID's that we kept
+              file_ids_kept = file_fields_params[id].select { |attachment| attachment.is_a? String }.map(&:to_i)
+              # Compute the difference
+              to_remove = field.pluck(:id) - file_ids_kept
+              # Remove the missing ones
+              to_remove.map { |attachment_id| field.find(attachment_id).purge }
+            end
+
+            # Figure out what has been submitted
+            if attachment.is_a? Array
+              # Files have been attached
+              attachment.each do |attachment|
+                process_file_field field, attachment
+              end
+            else
+              process_file_field field, attachment
+            end
+          end
         end
       end
   end

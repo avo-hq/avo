@@ -10,4 +10,9 @@ class User < ApplicationRecord
 
   has_many :posts
   has_and_belongs_to_many :projects
+
+  has_one_attached :cv
+  has_many_attached :docs
+  has_one_attached :avatar
+  has_many_attached :images
 end

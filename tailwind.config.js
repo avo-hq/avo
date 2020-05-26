@@ -20,9 +20,18 @@ module.exports = {
       minHeight: {
         28: '7rem',
       },
+      spacing: {
+        full: '100%',
+        72: '18rem',
+        80: '20rem',
+        88: '22rem',
+        96: '24rem',
+      },
     },
   },
-  variants: {},
+  variants: {
+    display: ['responsive', 'hover', 'focus', 'group-hover'],
+  },
   plugins: [
     // buttons
     plugin(({ addComponents, theme }) => {
@@ -98,7 +107,7 @@ module.exports = {
           borderWidth: '1px',
           borderColor: theme('colors.gray.300'),
           borderRadius: theme('borderRadius.default'),
-          padding: `${theme('spacing.2')} ${theme('spacing.4')}`,
+          padding: `${theme('spacing.2')} ${theme('spacing.3')}`,
           lineHeight: theme('lineHeight.tight'),
           '&:focus': {
             outline: 'none',
