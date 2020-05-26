@@ -66,6 +66,10 @@ module Avocado
           @@fields[self].push Avocado::Fields::FileField::new(name, **args)
         end
 
+        def files(name, **args)
+          @@fields[self].push Avocado::Fields::FilesField::new(name, **args)
+        end
+
         def hydrate_resource(model, resource, view = :index)
           default_panel_name = "#{resource.name} Details"
 
@@ -192,7 +196,7 @@ module Avocado
 
       def attached_file_fields
         get_fields.select do |field|
-          field.class == Avocado::Fields::FileField
+          [Avocado::Fields::FileField, Avocado::Fields::FilesField].include? field.class
         end
       end
     end

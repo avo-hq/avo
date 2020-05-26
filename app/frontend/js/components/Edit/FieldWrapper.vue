@@ -1,17 +1,17 @@
 <template>
   <div :class="classes" v-if="field">
-    <div class="w-1/2 md:w-2/3 lg:w-1/4 p-4 h-full flex">
+    <div class="w-48 md:w-64 p-4 h-full flex">
       <slot name="label">
         <label :for="field.id" class="py-2">
           {{ field.name }} <span class="text-red-600" v-if="field.required">*</span>
         </label>
       </slot>
     </div>
-    <div class="w-4/5 lg:w-1/3 py-4">
+    <div class="flex-1 p-4">
       <slot />
       <div class="text-red-600 mt-2" v-if="fieldError" v-text="fieldError"></div>
     </div>
-    <div class="w-1/3 py-4">
+    <div class="w-1/3 py-4" v-if="!valueSlotFullWidth">
       <slot name="extra" />
     </div>
   </div>
@@ -25,7 +25,7 @@ import isUndefined from 'lodash/isUndefined'
 export default {
   data: () => ({}),
   mixins: [FormField],
-  props: ['field', 'index', 'errors'],
+  props: ['field', 'index', 'errors', 'valueSlotFullWidth'],
   computed: {
     classes() {
       const classes = ['flex', 'items-start', 'py-2', 'leading-tight']

@@ -41,12 +41,8 @@ export default {
         resource: {},
       }
 
-      this.resource
-        .fields
-        .filter((field) => field.updatable)
-        .filter((field) => !field.computed)
-        // eslint-disable-next-line no-return-assign
-        .forEach((field) => formData.resource[field.id] = isNull(field.getValue()) ? '' : field.getValue())
+      // eslint-disable-next-line no-return-assign
+      this.fields.forEach((field) => formData.resource[field.id] = isNull(field.getValue()) ? '' : field.getValue())
 
       console.log('formData->', (formData))
       console.log('objectToFormData(formData)->', objectToFormData(formData))
@@ -54,6 +50,7 @@ export default {
       return objectToFormData(formData)
     },
     async submitResource() {
+      // return this.buildFormData()
       this.isLoading = true
       this.errors = {}
 
@@ -62,6 +59,10 @@ export default {
           method: this.submitMethod,
           url: this.submitResourceUrl,
           data: this.buildFormData(),
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+          },
         })
       } catch (error) {
         const { response } = error

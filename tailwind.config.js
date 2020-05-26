@@ -20,9 +20,14 @@ module.exports = {
       minHeight: {
         28: '7rem',
       },
+      spacing: {
+        full: '100%',
+      },
     },
   },
-  variants: {},
+  variants: {
+    display: ['responsive', 'hover', 'focus', 'group-hover'],
+  },
   plugins: [
     // buttons
     plugin(({ addComponents, theme }) => {

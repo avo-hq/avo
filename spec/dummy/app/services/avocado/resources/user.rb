@@ -12,8 +12,8 @@ module Avocado
         text :Name, required: true
         file :cv, name: 'CV'
         file :avatar, is_avatar: true
-        # files :images, avatar: true
-        # files :docs
+        files :images, is_image: true
+        files :docs
         text :email, name: 'User Email', required: true
         number :age, min: 0, max: 120, step: 1
         boolean :availability
@@ -24,8 +24,8 @@ module Avocado
           model.posts.to_a.count > 0 ? 'yes' : 'no'
         end
         textarea :Description, rows: 5, readonly: true, hide_on: :index, resolve_using: -> (value) { value.truncate 30 }
-        # has_many :Posts
-        # has_many :Projects
+        has_many :Posts
+        has_many :Projects
       end
 
       use_filter Avocado::Filters::AvailableFilter

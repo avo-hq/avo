@@ -6,6 +6,8 @@ export default {
   }),
   props: {
     field: {},
+    resourceName: {},
+    resourceId: {},
     index: {
       type: Number,
     },
