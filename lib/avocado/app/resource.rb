@@ -54,7 +54,7 @@ module Avocado
           @@fields[self].push Avocado::Fields::SelectField::new(name, **args, &block)
         end
 
-        def date(name, **args, &block)
+        def date(name, **args)
           @@fields[self].push Avocado::Fields::DateField::new(name, **args, &block)
         end
 
