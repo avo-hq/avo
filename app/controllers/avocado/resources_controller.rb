@@ -170,7 +170,7 @@ module Avocado
 
     private
       def resource
-        eager_load_files(resource_model.safe_constantize).with_attached_images.find params[:id]
+        eager_load_files(resource_model.safe_constantize).find params[:id]
       end
 
       def resource_model
