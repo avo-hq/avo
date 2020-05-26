@@ -1,3 +1,4 @@
+import isNull from 'lodash/isNull'
 import isUndefined from 'lodash/isUndefined'
 
 export default {
@@ -6,6 +7,8 @@ export default {
   }),
   props: {
     field: {},
+    resourceName: {},
+    resourceId: {},
     index: {
       type: Number,
     },
@@ -18,8 +21,15 @@ export default {
     disabled() {
       return this.field.readonly
     },
+    fieldError() {
+      if (!this.hasErrors) return ''
+
+      return `${this.field.id} ${this.errors[this.field.id].join(', ')}`
+    },
     hasErrors() {
-      if (Object.keys(this.errors).length === 0) return false
+      if (isUndefined(this.errors)
+          || isNull(this.errors)
+          || Object.keys(this.errors).length === 0) return false
 
       return !isUndefined(this.errors[this.field.id])
     },
@@ -36,5 +46,6 @@ export default {
     this.setInitialValue()
 
     this.field.getValue = this.getValue
+    this.field.getFileFieldValue = this.getFileFieldValue
   },
 }

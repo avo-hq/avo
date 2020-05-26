@@ -1,6 +1,6 @@
 <template>
   <edit-field-wrapper :field="field" :errors="errors" :index="index">
-    <select v-model="value">
+    <select class="w-full" v-model="value">
       <option v-for="(option, key) in field.options" :value="key" :key="key">
         {{option}}
       </option>

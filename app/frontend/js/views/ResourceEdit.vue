@@ -16,6 +16,7 @@
             :field="field"
             :errors="errors"
             :resource-name="resourceName"
+            :resource-id="resourceId"
           ></component>
         </template>
 
