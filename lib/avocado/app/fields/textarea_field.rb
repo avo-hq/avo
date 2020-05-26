@@ -12,6 +12,8 @@ module Avocado
 
         super(name, **args, &block)
 
+        hide_on :index
+
         @rows = args[:rows].present? ? args[:rows].to_i : 5
       end
 
