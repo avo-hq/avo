@@ -11,7 +11,11 @@
       />
     </div>
     <div v-else>
-      <select name="options" id="options" v-model="selectedValue">
+      <select name="options"
+        id="options"
+        class="w-full"
+        v-model="selectedValue"
+      >
         <option v-for="option in options"
           :key="option.value"
           :value="option.value"
