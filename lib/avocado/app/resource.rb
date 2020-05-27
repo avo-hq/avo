@@ -70,6 +70,14 @@ module Avocado
           @@fields[self].push Avocado::Fields::HasManyField::new(name, **args)
         end
 
+        def file(name, **args)
+          @@fields[self].push Avocado::Fields::FileField::new(name, **args)
+        end
+
+        def files(name, **args)
+          @@fields[self].push Avocado::Fields::FilesField::new(name, **args)
+        end
+
         def hydrate_resource(model, resource, view = :index)
           default_panel_name = "#{resource.name} Details"
 
@@ -192,6 +200,12 @@ module Avocado
         return @model if @model.present?
 
         self.class.name.demodulize.safe_constantize
+      end
+
+      def attached_file_fields
+        get_fields.select do |field|
+          [Avocado::Fields::FileField, Avocado::Fields::FilesField].include? field.class
+        end
       end
     end
   end

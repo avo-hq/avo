@@ -24,7 +24,7 @@ module Avocado
 
         fields[:searchable] = @searchable
         fields[:is_relation] = true
-        fields[:db_field] = model.class.reflections[@relation_method].foreign_key
+        fields[:database_field_name] = model.class.reflections[@relation_method].foreign_key
         target_resource = App.get_resources.find { |r| r.class == "Avocado::Resources::#{name}".safe_constantize }
 
         relation_model = model.public_send(@relation_method)

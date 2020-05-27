@@ -12,6 +12,8 @@ module Avocado
         hide_on :show
 
         super(name, **args, &block)
+
+        hide_on :index
       end
 
       def hydrate_resource(model, resource, view)
