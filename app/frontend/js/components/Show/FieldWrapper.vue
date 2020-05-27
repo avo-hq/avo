@@ -5,11 +5,13 @@
         {{ field.name }} <span class="text-red-600" v-if="field.required">*</span>
       </slot>
     </div>
-    <div :class="valueSlotClasses">
-      <slot />
-    </div>
-    <div class="flex-1 py-4" v-if="!valueSlotFullWidth">
-      <slot name="extra" />
+    <div class="flex-1 flex flex-row">
+      <div :class="valueSlotClasses">
+        <slot />
+      </div>
+      <div class="flex-1 py-4 flex" v-if="!valueSlotFullWidth">
+        <slot name="extra" />
+      </div>
     </div>
   </div>
 </template>

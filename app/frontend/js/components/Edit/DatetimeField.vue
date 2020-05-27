@@ -8,16 +8,16 @@
 </template>
 
 <script>
+import 'flatpickr/dist/flatpickr.css'
 import FormField from '@/js/mixins/form-field'
 import flatpickr from 'flatpickr'
-import 'flatpickr/dist/flatpickr.css'
 
 export default {
   mixins: [FormField],
   data: () => ({
     enableTime: false,
     displayTimezone: false,
-    value: ''
+    value: '',
   }),
   methods: {
     setInitialValue() {

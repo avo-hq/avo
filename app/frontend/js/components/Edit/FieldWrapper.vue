@@ -7,12 +7,14 @@
         </label>
       </slot>
     </div>
-    <div :class="valueSlotClasses">
-      <slot />
-      <div class="text-red-600 mt-2" v-if="fieldError" v-text="fieldError"></div>
-    </div>
-    <div class="flex-1 py-4" v-if="!valueSlotFullWidth">
-      <slot name="extra" />
+    <div class="flex-1 flex flex-row">
+      <div :class="valueSlotClasses">
+        <slot />
+        <div class="text-red-600 mt-2" v-if="fieldError" v-text="fieldError"></div>
+      </div>
+      <div class="flex-1 py-4 flex" v-if="!valueSlotFullWidth">
+        <slot name="extra" />
+      </div>
     </div>
   </div>
 </template>
