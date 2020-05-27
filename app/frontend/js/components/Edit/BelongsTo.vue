@@ -53,6 +53,9 @@ export default {
     getValue() {
       return this.selectedValue
     },
+    getId() {
+      return this.field.database_field_name
+    },
     removeSelection() {
       console.log('remove selection')
       this.selectedValue = {}

@@ -41,11 +41,14 @@ export default {
     getValue() {
       return this.value
     },
+    getId() {
+      return this.field.id
+    },
   },
   mounted() {
     this.setInitialValue()
 
+    this.field.getId = this.getId
     this.field.getValue = this.getValue
-    this.field.getFileFieldValue = this.getFileFieldValue
   },
 }
