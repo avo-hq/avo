@@ -1,7 +1,9 @@
+import { objectToFormData } from 'object-to-formdata'
 import Api from '@/js/Api'
 import isNull from 'lodash/isNull'
 import isUndefined from 'lodash/isUndefined'
 import pluralize from 'pluralize'
+
 
 export default {
   data: () => ({
@@ -35,18 +37,17 @@ export default {
   },
   methods: {
     buildFormData() {
-      const form = new FormData()
+      const formData = {
+        resource: {},
+      }
 
-      this.resource
-        .fields
-        .filter((field) => field.updatable)
-        .filter((field) => !field.computed)
-        .map((field) => [field, isNull(field.getValue()) ? '' : field.getValue()])
-        .forEach(([field, value]) => form.append(`resource[${isUndefined(field.db_field) ? field.id : field.db_field}]`, value))
+      // eslint-disable-next-line no-return-assign
+      this.fields.forEach((field) => formData.resource[field.getId()] = isNull(field.getValue()) ? '' : field.getValue())
 
-      return form
+      return objectToFormData(formData)
     },
     async submitResource() {
+      // return this.buildFormData()
       this.isLoading = true
       this.errors = {}
 
@@ -55,6 +56,10 @@ export default {
           method: this.submitMethod,
           url: this.submitResourceUrl,
           data: this.buildFormData(),
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+          },
         })
       } catch (error) {
         const { response } = error
