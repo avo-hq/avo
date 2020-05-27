@@ -55,7 +55,11 @@ module Avocado
         end
 
         def date(name, **args)
-          @@fields[self].push Avocado::Fields::DateField::new(name, **args, &block)
+          @@fields[self].push Avocado::Fields::DateField::new(name, **args)
+        end
+
+        def datetime(name, **args)
+          @@fields[self].push Avocado::Fields::DatetimeField::new(name, **args)
         end
 
         def belongs_to(name, **args)

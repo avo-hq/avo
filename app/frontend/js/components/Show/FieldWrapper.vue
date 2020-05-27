@@ -8,6 +8,9 @@
     <div class="w-1/3 py-4">
       <slot />
     </div>
+    <div class="w-1/3 py-4">
+      <slot name="extra" />
+    </div>
   </div>
 </template>
 

@@ -13,8 +13,9 @@ module Avocado
         text :email, name: 'User Email', required: true
         number :age, min: 0, max: 120, step: 1
         boolean :availability
-        select :highlighted, options: { yes: 'Highlighted', no: 'Not Highlighted' }, display_with_value: true
+        select :highlighted, options: { yes: 'Highlighted', no: 'Not Highlightedsajjsajashjasfhjsajhhjafshjsafhjssaassafafsafsassassaassaasssafas' }, display_with_value: true
         date :birthday, first_day_of_week: 1, picker_format: 'J--n--Y', format: 'D/MMMM/YYYY', placeholder: 'This field stores the birthday of user!'
+        datetime :starts_on, placeholder: 'This field stores the started date of user!'
         # password :password, name: 'User Password', required: true, except_on: :forms
         # password :password_confirmation, name: 'Password confirmation', required: true
         text 'Is Writer', resolve_using: -> (value) { value.truncate 3 }, hide_on: :edit do |model, resource, view, field|

@@ -9,6 +9,8 @@ module Avocado
           component: 'has-many-field'
         }
 
+        hide_on :show
+
         super(name, **args, &block)
       end
 
