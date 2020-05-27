@@ -17,8 +17,10 @@ module Avocado
 
       def hydrate_resource(model, resource, view)
         {
+          first_day_of_week: @first_day_of_week,
           picker_format: @picker_format,
           format: @format,
+          placeholder: @placeholder,
           enable_time: true,
         }
       end
