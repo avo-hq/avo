@@ -22,6 +22,7 @@ Vue.component('password-field-wrapper',          require('@/js/components/Index/
 Vue.component('index-number-field',              require('@/js/components/Index/NumberField.vue').default)
 Vue.component('index-boolean-field',             require('@/js/components/Index/BooleanField.vue').default)
 Vue.component('index-select-field',              require('@/js/components/Index/SelectField.vue').default)
+Vue.component('index-datetime-field',            require('@/js/components/Index/DatetimeField.vue').default)
 Vue.component('index-file-field',                require('@/js/components/Index/FileField.vue').default)
 Vue.component('index-files-field',               require('@/js/components/Index/FilesField.vue').default)
 
@@ -35,6 +36,7 @@ Vue.component('show-password-field',             require('@/js/components/Show/P
 Vue.component('show-number-field',               require('@/js/components/Show/NumberField.vue').default)
 Vue.component('show-boolean-field',              require('@/js/components/Show/BooleanField.vue').default)
 Vue.component('show-select-field',               require('@/js/components/Show/SelectField.vue').default)
+Vue.component('show-datetime-field',             require('@/js/components/Show/DatetimeField.vue').default)
 Vue.component('show-file-field',                 require('@/js/components/Show/FileField.vue').default)
 Vue.component('show-files-field',                require('@/js/components/Show/FilesField.vue').default)
 
@@ -47,6 +49,7 @@ Vue.component('edit-password-field',             require('@/js/components/Edit/P
 Vue.component('edit-number-field',               require('@/js/components/Edit/NumberField.vue').default)
 Vue.component('edit-boolean-field',              require('@/js/components/Edit/BooleanField.vue').default)
 Vue.component('edit-select-field',               require('@/js/components/Edit/SelectField.vue').default)
+Vue.component('edit-datetime-field',             require('@/js/components/Edit/DatetimeField.vue').default)
 Vue.component('edit-file-field',                 require('@/js/components/Edit/FileField.vue').default)
 Vue.component('edit-files-field',                require('@/js/components/Edit/FilesField.vue').default)
 

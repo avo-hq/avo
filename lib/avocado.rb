@@ -19,5 +19,9 @@ module Avocado
     def root_path
       '/avocado'
     end
+
+    def default_timezone
+      'Europe/Bucharest'
+    end
   end
 end
