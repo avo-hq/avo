@@ -11,8 +11,10 @@ module Avocado
 
         super(name, **args, &block)
 
-        @picker_format = args[:picker_format].present? ? args[:picker_format] : 'Y-m-d G:i:S K'
+        @picker_format = args[:picker_format].present? ? args[:picker_format] : 'Y-m-d H:i:S'
         @format = args[:format].present? ? args[:format] : 'YYYY-MM-DD hh:mm:ss A'
+        @time_24hr = args[:time_24hr].present? ? args[:time_24hr] : false
+        @timezone = args[:timezone].present? ? args[:timezone] : Rails.application.config.time_zone
       end
 
       def hydrate_resource(model, resource, view)
@@ -22,6 +24,8 @@ module Avocado
           format: @format,
           placeholder: @placeholder,
           enable_time: true,
+          time_24hr: @time_24hr,
+          timezone: @timezone,
         }
       end
     end

@@ -35,6 +35,7 @@ export default {
     },
   },
   methods: {
+    setInitialConfig() {},
     setInitialValue() {
       this.value = this.field.value
     },
@@ -44,6 +45,9 @@ export default {
     getId() {
       return this.field.id
     },
+  },
+  created() {
+    this.setInitialConfig()
   },
   mounted() {
     this.setInitialValue()

@@ -1,52 +1,96 @@
 <template>
   <edit-field-wrapper :field="field" :errors="errors" :index="index">
-    <input type="text" ref="datetimepicker" v-model="value" :placeholder="field.placeholder" class='w-full'/>
+     <flat-pickr
+      class="w-full"
+      v-model="value"
+      :enable-time="flatpickrConfig.enableTime"
+      :config="flatpickrConfig"
+      />
     <template #extra>
-      <span v-if="displayTimezone" class='px-4 items-center flex text-gray-500'> ({{timezone}})</span>
+      <span v-if="displayTimezone" class='px-4 items-center flex text-gray-500'>({{timezone}})</span>
     </template>
   </edit-field-wrapper>
 </template>
 
 <script>
+// eslint-disable-next-line import/no-extraneous-dependencies
 import 'flatpickr/dist/flatpickr.css'
 import FormField from '@/js/mixins/form-field'
-import flatpickr from 'flatpickr'
+import flatPickr from 'vue-flatpickr-component'
+import isNull from 'lodash/isNull'
+import moment from 'moment-timezone'
+
 
 export default {
   mixins: [FormField],
+  components: { flatPickr },
   data: () => ({
+    value: '',
+    timezone: '',
+    appTimezone: 'UTC',
     enableTime: false,
     displayTimezone: false,
-    value: '',
-  }),
-  methods: {
-    setInitialValue() {
-      // sets the value of the field and formats it to flatpiuckr format
-      if (this.field.value) this.value = flatpickr.formatDate(new Date(this.field.value), this.field.picker_format)
-
-      // enable time settings
-      if (this.field.enable_time) this.enableTime = true
-
-      // enable timezone displayed
-      if (this.field.enable_time && this.field.value) {
-        this.displayTimezone = true
-        this.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
-      }
+    flatpickrConfig: {
+      dateFormat: 'Y-m-d',
+      enableTime: false,
+      enableSeconds: false,
+      // eslint-disable-next-line camelcase
+      time_24hr: false,
+      locale: {
+        firstDayOfWeek: 0,
+      },
+      altInput: true,
+      altFormat: 'Y-m-d',
     },
-    getValue() {
-      return flatpickr.parseDate(this.value, this.field.picker_format)
+  }),
+  computed: {
+    submitFormat() {
+      return 'YYYY-MM-DD'
     },
   },
-  mounted() {
-    flatpickr(this.$refs.datetimepicker, {
-      // defaultDate: this.value,
-      dateFormat: this.field.picker_format,
-      enableTime: this.enableTime,
-      enableSeconds: this.enableTime,
-      locale: {
-        firstDayOfWeek: this.field.first_day_of_week,
-      },
-    })
+  methods: {
+    setInitialConfig() {
+      this.value = isNull(this.field.value) ? '' : moment(this.field.value)
+
+      // enable timezone display
+      if (this.field.enable_time && this.value) {
+        this.displayTimezone = true
+        this.flatpickrConfig.dateFormat = 'Y-m-d H:i:S'
+        // eslint-disable-next-line camelcase
+        this.flatpickrConfig.time_24hr = this.field.time_24hr
+        this.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+        this.appTimezone = this.field.timezone
+
+        if (this.value) {
+          this.value = this.value.tz(this.timezone)
+        }
+      }
+
+      if (this.value) {
+        this.value = this.value.toDate()
+      }
+
+      // enable time settings
+      this.flatpickrConfig.enableTime = this.field.enable_time
+      this.flatpickrConfig.enableSeconds = this.field.enable_time
+
+      this.flatpickrConfig.altFormat = this.field.picker_format
+
+      // set first day of the week
+      this.flatpickrConfig.locale.firstDayOfWeek = this.field.first_day_of_week
+    },
+    getValue() {
+      let value = moment(this.value)
+
+      // Convert the time to the app's timezone
+      if (this.field.enable_time) {
+        value = value.tz(this.appTimezone)
+      }
+
+      if (this.field.enable_time) return value.toISOString()
+
+      return value.format(this.submitFormat)
+    },
   },
 }
 </script>

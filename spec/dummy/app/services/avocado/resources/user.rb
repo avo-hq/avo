@@ -18,7 +18,7 @@ module Avocado
         number :age, min: 0, max: 120, step: 1
         boolean :availability
         date :birthday, first_day_of_week: 1, picker_format: 'F J Y', format: 'MMMM Do YYYY', placeholder: 'Set the users birthday'
-        datetime :starts_on, placeholder: 'When the user should start'
+        datetime :starts_on, placeholder: 'When the user should start', time_24hr: true
         select :highlighted, options: { yes: 'Highlighted', no: 'Not Highlighted' }, display_with_value: true
         # password :password, name: 'User Password', required: true, except_on: :forms
         # password :password_confirmation, name: 'Password confirmation', required: true
