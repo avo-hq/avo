@@ -47,6 +47,7 @@ jobs:
         bundle config path vendor/bundle
         bundle install --jobs 4 --retry 3
         bin/rails db:setup
+        bin/rails db:migrate
 
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
