@@ -1,6 +1,7 @@
 <template>
   <edit-field-wrapper :field="field" :errors="errors" :index="index">
-    <input type="number"
+    <input-component
+      type="number"
       :id="field.id"
       :min="min"
       :max="max"
@@ -8,7 +9,7 @@
       :class="classes"
       :disabled="disabled"
       v-model="value"
-    >
+    />
   </edit-field-wrapper>
 </template>
 

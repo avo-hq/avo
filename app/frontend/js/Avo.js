@@ -53,6 +53,9 @@ Vue.component('edit-datetime-field',             require('@/js/components/Edit/D
 Vue.component('edit-file-field',                 require('@/js/components/Edit/FileField.vue').default)
 Vue.component('edit-files-field',                require('@/js/components/Edit/FilesField.vue').default)
 
+// Form Fields
+Vue.component('input-component',                 require('@/js/components/InputComponent.vue').default)
+
 // Components
 Vue.component('resource-table',                  require('@/js/components/Index/ResourceTable.vue').default)
 Vue.component('table-row',                       require('@/js/components/Index/TableRow.vue').default)

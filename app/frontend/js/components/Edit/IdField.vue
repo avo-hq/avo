@@ -1,6 +1,6 @@
 <template>
   <edit-field-wrapper :field="field" :errors="errors" :index="index">
-    <input type="text"
+    <input-component
       :id="field.id"
       :class="classes"
       :disabled="disabled"

@@ -1,0 +1,44 @@
+<template>
+  <textarea
+    v-if="type === 'textarea'"
+    :id="id"
+    :class="classes"
+    :disabled="disabled"
+    :value="value"
+    @input="$emit('input', $event.target.value)"
+    cols="30"
+    rows="10"
+    ></textarea>
+  <input
+    v-else
+    :type="type"
+    :class="classes"
+    :id="id"
+    :disabled="disabled"
+    :value="value"
+    :min="min"
+    :max="max"
+    :step="step"
+    @input="$emit('input', $event.target.value)"
+  />
+</template>
+
+<script>
+import HasInputAppearance from '@/js/mixins/has-input-appearance'
+
+export default {
+  mixins: [HasInputAppearance],
+  props: {
+    id: {},
+    disabled: {},
+    value: {},
+    min: {},
+    max: {},
+    step: {},
+    type: {
+      type: String,
+      default: 'text',
+    },
+  },
+}
+</script>

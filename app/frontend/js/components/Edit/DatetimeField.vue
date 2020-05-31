@@ -16,13 +16,14 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'flatpickr/dist/flatpickr.css'
 import FormField from '@/js/mixins/form-field'
+import HasInputAppearance from '@/js/mixins/has-input-appearance'
 import flatPickr from 'vue-flatpickr-component'
 import isNull from 'lodash/isNull'
 import moment from 'moment-timezone'
 
 
 export default {
-  mixins: [FormField],
+  mixins: [FormField, HasInputAppearance],
   components: { flatPickr },
   data: () => ({
     value: '',
@@ -41,6 +42,7 @@ export default {
       },
       altInput: true,
       altFormat: 'Y-m-d',
+      altInputClass: 'w-full',
     },
   }),
   computed: {
@@ -75,6 +77,7 @@ export default {
       this.flatpickrConfig.enableSeconds = this.field.enable_time
 
       this.flatpickrConfig.altFormat = this.field.picker_format
+      this.flatpickrConfig.altInputClass += ` ${this.classes}`
 
       // set first day of the week
       this.flatpickrConfig.locale.firstDayOfWeek = this.field.first_day_of_week

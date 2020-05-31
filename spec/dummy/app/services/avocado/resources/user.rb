@@ -15,7 +15,7 @@ module Avocado
         files :images, is_image: true
         files :docs
         text :email, name: 'User Email', required: true
-        number :age, min: 0, max: 120, step: 1
+        number :age, min: 0, max: 120, step: 5
         boolean :availability
         date :birthday, first_day_of_week: 1, picker_format: 'F J Y', format: 'MMMM Do YYYY', placeholder: 'Set the users birthday'
         datetime :starts_on, placeholder: 'When the user should start', time_24hr: true
