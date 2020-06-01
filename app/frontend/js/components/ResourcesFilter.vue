@@ -8,7 +8,13 @@
           Per page
         </div>
         <div class="p-4">
-          <select name="per_page" id="per_page" @change="changePerPage" v-model="locaPerPage" class="w-full">
+          <select name="per_page"
+            id="per_page"
+            @change="changePerPage"
+            v-model="locaPerPage"
+            :class="inputClasses"
+            class="select-input w-full"
+          >
             <option value="25">25</option>
             <option value="50">50</option>
             <option value="100">100</option>
@@ -30,9 +36,11 @@
 <script>
 // eslint-disable-next-line import/no-unresolved
 import FilterIcon from '@/svgs/filter.svg?inline'
+import HasInputAppearance from '@/js/mixins/has-input-appearance'
 
 export default {
   components: { FilterIcon },
+  mixins: [HasInputAppearance],
   data: () => ({
     open: false,
     locaPerPage: 25,

@@ -4,7 +4,13 @@
       {{filter.name}}
     </div>
     <div class="p-4">
-      <select name="per_page" id="per_page" @change="changeFilter" v-model="value">
+      <select name="per_page"
+        id="per_page"
+        @change="changeFilter"
+        v-model="value"
+        :class="inputClasses"
+        class="select-input w-full"
+      >
         <option value="">-</option>
         <option v-for="(value, name) in filter.options" :value="name" v-text="value" :key="name"></option>
       </select>
@@ -13,7 +19,10 @@
 </template>
 
 <script>
+import HasInputAppearance from '@/js/mixins/has-input-appearance'
+
 export default {
+  mixins: [HasInputAppearance],
   data: () => ({
     value: '',
   }),

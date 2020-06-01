@@ -2,7 +2,7 @@
   <textarea
     v-if="type === 'textarea'"
     :id="id"
-    :class="classes"
+    :class="inputClasses"
     :disabled="disabled"
     :value="value"
     @input="$emit('input', $event.target.value)"
@@ -12,7 +12,7 @@
   <input
     v-else
     :type="type"
-    :class="classes"
+    :class="inputClasses"
     :id="id"
     :disabled="disabled"
     :value="value"

@@ -1,0 +1,68 @@
+require 'rails_helper'
+
+RSpec.describe 'UserForms', type: :system do
+
+  it 'Shows the empty users page' do
+    visit '/avocado/resources/users'
+
+    expect(page).to have_text('No users found')
+  end
+
+  it 'accesses the create user page' do
+    visit '/avocado/resources/users'
+
+    click_on 'Create new user'
+
+    expect(page).to have_text('Create new user')
+    expect(page).to have_text('ID')
+    expect(page).to have_text('Name')
+    expect(page).to have_text('Avatar')
+    expect(page).to have_text('Description')
+    expect(page).to have_text('Cancel')
+    expect(page).to have_text('Save')
+  end
+
+  it 'navigates back to the index page' do
+    visit '/avocado/resources/users/new'
+
+    click_on 'Cancel'
+
+    expect(page).to have_text 'No users found'
+    expect(page).to have_css 'a.button', text: 'Create new user'
+    expect(current_path).to eq '/avocado/resources/users'
+  end
+
+  it 'displays valdation errors' do
+    visit '/avocado/resources/users/new'
+
+    click_on 'Save'
+
+    expect(page).to have_text("name can't be blank")
+    expect(page).to have_text("email can't be blank")
+    expect(page).to have_text('age is not a number')
+    expect(page).to have_text("description can't be blank")
+  end
+
+  it 'creates a user' do
+    visit '/avocado/resources/users/new'
+
+    fill_in 'name', with: 'John Doe'
+    fill_in 'email', with: 'john@doe.com'
+    fill_in 'age', with: '21'
+    fill_in 'description', with: 'Hey there,'
+    fill_in 'password', with: 'secret_password'
+    fill_in 'password_confirmation', with: 'secret_password'
+
+    click_on 'Save'
+
+    expect(page).to have_text('John Doe')
+    expect(page).to have_text('john@doe.com')
+    expect(page).to have_text('Hey there,')
+    expect(current_path).to eq '/avocado/resources/users/1'
+
+    click_on 'Users'
+
+    expect(page).to have_text('John Doe')
+    expect(current_path).to eq '/avocado/resources/users'
+  end
+end

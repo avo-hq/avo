@@ -29,7 +29,7 @@
                 resourceName: resourceName,
                 resourceId: resource.id,
               },
-            }">cancel</router-link>
+            }">Cancel</router-link>
           <button class="button" @click="submitResource">Save</button>
         </template>
       </panel>

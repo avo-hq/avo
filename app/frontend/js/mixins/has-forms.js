@@ -42,7 +42,12 @@ export default {
       }
 
       // eslint-disable-next-line no-return-assign
-      this.fields.forEach((field) => formData.resource[field.getId()] = isNull(field.getValue()) ? '' : field.getValue())
+      this.fields.forEach((field) => {
+        const id = field.getId()
+        if (id) {
+          formData.resource[id] = isNull(field.getValue()) ? '' : field.getValue()
+        }
+      })
 
       return objectToFormData(formData)
     },

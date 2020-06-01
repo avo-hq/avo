@@ -77,7 +77,7 @@ export default {
       this.flatpickrConfig.enableSeconds = this.field.enable_time
 
       this.flatpickrConfig.altFormat = this.field.picker_format
-      this.flatpickrConfig.altInputClass += ` ${this.classes}`
+      this.flatpickrConfig.altInputClass += ` ${this.inputClasses}`
 
       // set first day of the week
       this.flatpickrConfig.locale.firstDayOfWeek = this.field.first_day_of_week

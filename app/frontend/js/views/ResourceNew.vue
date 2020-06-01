@@ -26,7 +26,7 @@
               params: {
                 resourceName: resourceName,
               },
-            }">cancel</router-link>
+            }">Cancel</router-link>
           <button class="button" @click="submitResource">Save</button>
         </template>
       </panel>
