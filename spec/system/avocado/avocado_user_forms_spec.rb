@@ -14,7 +14,6 @@ RSpec.describe 'UserForms', type: :system do
     click_on 'Create new user'
 
     expect(page).to have_text('Create new user')
-    expect(page).to have_text('ID')
     expect(page).to have_text('Name')
     expect(page).to have_text('Avatar')
     expect(page).to have_text('Description')
