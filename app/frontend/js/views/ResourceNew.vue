@@ -15,6 +15,7 @@
             :is="`edit-${field.component}`"
             :field="field"
             :errors="errors"
+            :field-id="field.id"
           ></component>
         </template>
 

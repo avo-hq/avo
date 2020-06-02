@@ -207,6 +207,10 @@ module Avocado
           [Avocado::Fields::FileField, Avocado::Fields::FilesField].include? field.class
         end
       end
+
+      def has_devise_password
+        @has_devise_password or false
+      end
     end
   end
 end

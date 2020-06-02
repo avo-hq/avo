@@ -85,6 +85,11 @@ module Avocado
       # Filter out the file params
       regular_resource_params = resource_params.select { |id, value| !avocado_resource.attached_file_fields.map(&:id).include? id }
 
+      if avocado_resource.has_devise_password and regular_resource_params[:password].blank?
+        regular_resource_params.delete(:password_confirmation)
+        regular_resource_params.delete(:password)
+      end
+
       resource.update!(regular_resource_params)
 
       render json: {

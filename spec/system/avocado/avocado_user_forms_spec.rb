@@ -57,7 +57,8 @@ RSpec.describe 'UserForms', type: :system do
     expect(page).to have_text('John Doe')
     expect(page).to have_text('john@doe.com')
     expect(page).to have_text('Hey there,')
-    expect(current_path).to eq '/avocado/resources/users/1'
+    user_id = page.find('[field-id="id"] [data-slot="value"]').text
+    expect(current_path).to eq "/avocado/resources/users/#{user_id}"
 
     click_on 'Users'
 

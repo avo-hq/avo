@@ -5,6 +5,7 @@ module Avocado
         @title = :name
         @search = [:name, :id, :description]
         @includes = :posts
+        @has_devise_password = true
       end
 
       fields do

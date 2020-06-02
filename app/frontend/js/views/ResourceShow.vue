@@ -31,6 +31,7 @@
             :index="index"
             :resource-name="resourceName"
             :resource-id="resourceId"
+            :field-id="field.id"
           ></component>
         </template>
       </panel>
