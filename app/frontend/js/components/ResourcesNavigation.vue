@@ -6,7 +6,7 @@
 
     <div class="resources-links w-full">
       <sidebar-link
-        v-for="resource in resources"
+        v-for="resource in sortedResources"
         :key="resource.resource_name"
         v-text="resource.label"
         :to="{
@@ -21,12 +21,17 @@
 
 <script>
 import GameBoard from '@/svgs/game-board.svg?inline'
+import sortBy from 'lodash/sortBy'
 
 export default {
   components: { GameBoard },
   data: () => ({}),
   props: ['resources'],
-  computed: {},
+  computed: {
+    sortedResources() {
+      return sortBy(this.resources, 'resource_name')
+    },
+  },
   methods: {},
   mounted() {},
 }

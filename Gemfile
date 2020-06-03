@@ -74,6 +74,7 @@ group :development, :test do
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'webdrivers'
   gem 'fuubar'
+  gem 'rubocop'
 end
 
 gem 'zeitwerk', '~> 2.3'

@@ -1,6 +1,6 @@
 <template>
   <edit-field-wrapper :field="field" :errors="errors" :index="index">
-    <input type="text"
+    <input-component
       :id="field.id"
       :class="classes"
       :disabled="disabled"
@@ -19,7 +19,7 @@ export default {
     classes() {
       const classes = ['w-full']
 
-      if (this.hasErrors) classes.push('border', 'border-red-600')
+      if (this.hasErrors) classes.push('border-red-600')
 
       return classes.join(' ')
     },
