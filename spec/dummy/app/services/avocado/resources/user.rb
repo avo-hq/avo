@@ -20,6 +20,7 @@ module Avocado
         date :birthday, first_day_of_week: 1, picker_format: 'F J Y', format: 'MMMM Do YYYY', placeholder: 'Set the users birthday'
         datetime :starts_on, placeholder: 'When the user should start', time_24hr: true
         select :highlighted, options: { yes: 'Highlighted', no: 'Not Highlighted' }, display_with_value: true
+        booleangroup :roles, options: { 'admin': 'Administrator', 'manager': 'Manager' }
         # password :password, name: 'User Password', required: true, except_on: :forms
         # password :password_confirmation, name: 'Password confirmation', required: true
         text 'Is Writer', resolve_using: -> (value) { value.truncate 3 }, hide_on: :edit do |model, resource, view, field|

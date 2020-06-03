@@ -80,6 +80,8 @@ module Avocado
     end
 
     def update
+      # abort resource_params.inspect
+
       update_file_fields
 
       # Filter out the file params
@@ -165,6 +167,9 @@ module Avocado
           elsif field.is_array_param
             # Allow array param if necessary
             { "#{field.id}": [] }
+          elsif field.is_object_param
+            # Allow array param if necessary
+            { "#{field.id}": {} }
           else
             field.id.to_sym
           end

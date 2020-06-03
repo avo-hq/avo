@@ -16,6 +16,7 @@ module Avocado
       attr_accessor :resolve_using
       attr_accessor :computable
       attr_accessor :is_array_param
+      attr_accessor :is_object_param
       attr_accessor :block
 
       def initialize(id_or_name, **args, &block)
@@ -35,6 +36,7 @@ module Avocado
           nullable: false,
           computable: false,
           is_array_param: false,
+          is_object_param: false,
           resolve_using: false,
         }
 
