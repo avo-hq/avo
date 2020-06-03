@@ -80,8 +80,6 @@ module Avocado
     end
 
     def update
-      # abort resource_params.inspect
-
       update_file_fields
 
       # Filter out the file params
@@ -92,7 +90,7 @@ module Avocado
         regular_resource_params.delete(:password)
       end
 
-      resource.update!(regular_resource_params)
+      avocado_resource.fill_model(resource, regular_resource_params).save!
 
       render json: {
         resource: Avocado::Resources::Resource.hydrate_resource(resource, avocado_resource, :show),

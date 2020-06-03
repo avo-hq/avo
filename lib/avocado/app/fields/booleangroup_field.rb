@@ -32,6 +32,20 @@ module Avocado
           hide_true_values: @hide_true_values,
         }
       end
+
+      def fill_model(model, value)
+        return model unless value.is_a? ActionController::Parameters
+
+        new_value = {}
+
+        value.each do |key, value|
+          new_value[key] = ActiveModel::Type::Boolean.new.cast value
+        end
+
+        model[id] = new_value
+
+        model
+      end
     end
   end
 end
