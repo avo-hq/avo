@@ -84,6 +84,12 @@ module Avocado
         fields
       end
 
+      def fill_model(model, value)
+        model[id] = value
+
+        model
+      end
+
       private
         def model_or_class(model)
           if model.class == String

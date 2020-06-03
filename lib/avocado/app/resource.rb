@@ -211,6 +211,20 @@ module Avocado
       def has_devise_password
         @has_devise_password or false
       end
+
+      def fill_model(model, params)
+        fields_by_id = self.get_fields.map { |field| [field.id, field] }.to_h
+
+        params.each do |key, value|
+          field = fields_by_id[key]
+
+          next unless field
+
+          model = field.fill_model model, value
+        end
+
+        model
+      end
     end
   end
 end

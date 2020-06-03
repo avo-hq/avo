@@ -91,7 +91,7 @@ module Avocado
         regular_resource_params.delete(:password)
       end
 
-      resource.update!(regular_resource_params)
+      avocado_resource.fill_model(resource, regular_resource_params).save!
 
       render json: {
         resource: Avocado::Resources::Resource.hydrate_resource(resource, avocado_resource, :show),
