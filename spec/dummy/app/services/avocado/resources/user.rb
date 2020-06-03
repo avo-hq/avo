@@ -27,8 +27,8 @@ module Avocado
           model.posts.to_a.count > 0 ? 'yes' : 'no'
         end
         textarea :Description, rows: 5, readonly: false, hide_on: :index, resolve_using: -> (value) { value.to_s.truncate 30 }, required: true
-        has_many :Posts
         has_many :Projects
+        has_many :Posts
       end
 
       use_filter Avocado::Filters::AvailableFilter

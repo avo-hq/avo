@@ -41,7 +41,7 @@
           </div>
 
           <div class="w-full overflow-auto min-h-28 flex flex-col">
-            <loading-overlay class="relative" v-if="resources.length === 0 && isLoading"></loading-overlay>
+            <loading-overlay class="relative" v-if="resources.length === 0 && isLoading"/>
             <div class="relative flex-1 flex" v-else>
               <loading-overlay v-if="isLoading" />
 
@@ -62,20 +62,21 @@
             </div>
 
             <paginate
-              v-show="totalPages > 0 && resources.length > 0"
+              v-show="totalPages > 1"
               v-model="page"
               ref="paginate"
               :page-count="totalPages"
               :click-handler="changePageFromPagination"
               :prev-text="'Prev'"
               :next-text="'Next'"
+              :no-li-surround="true"
               container-class="avo-pagination flex justify-end px-4"
               page-class="pagination-button"
-              page-link-class="button"
+              page-link-class="button select-none rounded-none focus:outline-none"
               active-class="active"
-              prev-link-class="button"
-              next-link-class="button"
-              class="py-4 space-x-2"
+              prev-link-class="button rounded-none focus:outline-none"
+              next-link-class="button rounded-none focus:outline-none"
+              class="py-4 select-none"
             ></paginate>
           </div>
         </template>
@@ -103,6 +104,7 @@ export default {
     isLoading: true,
     filters: [],
     appliedFilters: {},
+    oldQueryUrl: '',
   }),
   props: [
     'resourceName',
@@ -121,13 +123,35 @@ export default {
     resourceNamePlural() {
       return this.resourceName.charAt(0).toUpperCase() + this.resourceName.slice(1)
     },
-    queryParams() {
+    relatedResourcePage() {
+      return `${this.resourceName}_page`
+    },
+    newQueryParams() {
+      return {
+        name: this.viaResourceName ? 'show' : 'index',
+        params: this.params,
+        query: this.query,
+      }
+    },
+    params() {
+      return {
+        resourceName: this.viaResourceName ? this.viaResourceName : this.resourceName,
+        resourceId: this.viaResourceId ? this.viaResourceId : null,
+      }
+    },
+    query() {
       const params = {}
 
       if (this.page === '' || Number.isNaN(this.page) || isUndefined(this.page) || isNull(this.page) || this.page === 1) {
         delete params.page
       } else {
         params.page = this.page
+      }
+
+      if (this.viaResourceName) {
+        params[this.relatedResourcePage] = params.page
+
+        delete params.page
       }
 
       if (this.perPage === '' || Number.isNaN(this.perPage) || isUndefined(this.perPage) || isNull(this.perPage) || this.perPage === 25) {
@@ -182,13 +206,7 @@ export default {
   },
   methods: {
     updateQueryParams() {
-      this.$router.push({
-        name: 'index',
-        params: {
-          resourceName: this.resourceName,
-        },
-        query: this.queryParams,
-      })
+      this.$router.push(this.newQueryParams)
     },
     changeFilter(args) {
       this.setFilterValue(args)
@@ -203,6 +221,9 @@ export default {
       this.updateQueryParams()
     },
     async getResources() {
+      if (this.oldQueryUrl === this.queryUrl) return
+      this.oldQueryUrl = this.queryUrl
+
       this.isLoading = true
 
       const { data } = await Api.get(this.queryUrl)
@@ -277,6 +298,8 @@ export default {
       let filters = ''
 
       page = URI(window.location.toString()).query(true).page
+      // @todo: do the same with the other params (sort, filter, etc.)
+      page = URI(window.location.toString()).query(true)[this.relatedResourcePage]
       perPage = URI(window.location.toString()).query(true).per_page
       sortBy = URI(window.location.toString()).query(true).sort_by
       sortDirection = URI(window.location.toString()).query(true).sort_direction
@@ -301,12 +324,20 @@ export default {
 }
 </script>
 
-<style>
+<style slang="postcss">
 /* @todo: fix loaders to support lang= */
 .avo-pagination {
-  .active {
-    a {
-      @apply bg-gray-300 border-gray-300;
+  a {
+    @apply shadow-md;
+  }
+  a.active {
+    @apply bg-gray-300 border-gray-300;
+  }
+  a.disabled {
+    @apply text-gray-500;
+
+    &:hover {
+      @apply bg-white;
     }
   }
 }
