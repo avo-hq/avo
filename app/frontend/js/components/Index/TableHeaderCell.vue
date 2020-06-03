@@ -67,8 +67,5 @@ export default {
       this.$emit('sort')
     },
   },
-  mounted() {},
 }
 </script>
-
-<style lang="postcss"></style>

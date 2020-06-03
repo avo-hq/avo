@@ -11,16 +11,11 @@
 import isUndefined from 'lodash/isUndefined'
 
 export default {
-  data: () => ({}),
   props: ['logo'],
   computed: {
     hasLogo() {
       return !isUndefined(this.logo)
     },
   },
-  methods: {},
-  mounted() {},
 }
 </script>
-
-<style lang="postcss"></style>

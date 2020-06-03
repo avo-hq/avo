@@ -19,14 +19,7 @@
 </template>
 
 <script>
-
 export default {
-  data: () => ({}),
   props: ['text', 'confirmAction'],
-  computed: {},
-  methods: {},
-  mounted() { },
 }
 </script>
-
-<style lang="postcss"></style>

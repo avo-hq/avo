@@ -16,14 +16,10 @@ import FormField from '@/js/mixins/form-field'
 
 export default {
   mixins: [FormField],
-  data: () => ({}),
   computed: {
     rows() {
       return this.field.rows || 5
     },
   },
-  methods: {},
 }
 </script>
-
-<style lang="postcss"></style>

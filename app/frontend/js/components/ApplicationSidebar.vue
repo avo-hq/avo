@@ -14,11 +14,7 @@
 
 <script>
 export default {
-  data: () => ({}),
   props: ['logo', 'resources'],
-  computed: {},
-  methods: {},
-  mounted() { },
 }
 </script>
 

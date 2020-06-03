@@ -14,7 +14,7 @@
 
 <script>
 // eslint-disable-next-line import/no-extraneous-dependencies
-import 'flatpickr/dist/flatpickr.css'
+import '~/flatpickr/dist/flatpickr.css'
 import FormField from '@/js/mixins/form-field'
 import HasInputAppearance from '@/js/mixins/has-input-appearance'
 import flatPickr from 'vue-flatpickr-component'

@@ -3,15 +3,3 @@
     <loading-component class="bg-white rounded bg-opacity-75"/>
   </div>
 </template>
-
-<script>
-export default {
-  data: () => ({}),
-  props: [],
-  computed: {},
-  methods: {},
-  mounted() {},
-}
-</script>
-
-<style lang="postcss"></style>
