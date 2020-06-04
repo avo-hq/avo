@@ -39,6 +39,12 @@ export default {
       // eslint-disable-next-line prefer-destructuring
       this.value = event.target.files[0]
     },
+    getId() {
+      // Temporary solution to allow creation of a form with file fields without files attached
+      if (this.value) return this.field.id
+
+      return null
+    },
   },
 }
 </script>

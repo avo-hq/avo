@@ -3,50 +3,56 @@
     <div class="flex items-center">
       <template v-if="value">
       <div class="space-y-3">
-          <template v-for="(key, val, index) in value">
-            <div v-bind:key="index">
-              <input
-                type="checkbox"
-                :id="field.id"
-                :name="field.id"
-                :disabled="disabled"
-                :checked="key"
-                @click="onToggle(val)"
-              />
-              <label for="field.id">{{ label(val) }}</label>
-            </div>
-          </template>
-        </div>
-      </template>
-      <template v-else>
-        {{field.no_value_text}}
-      </template>
+        <template v-for="(value, name, index) in fieldValues">
+          <div :key="index" @click="toggleOption(name)">
+            <input
+              type="checkbox"
+              :id="field.id"
+              :name="field.id"
+              :checked="value"
+              :disabled="disabled"
+            />
+            <label>{{ labelForOption(name) }}</label>
+          </div>
+        </template>
+      </div>
     </div>
   </edit-field-wrapper>
 </template>
 
 <script>
 import FormField from '@/js/mixins/form-field'
+import isNull from 'lodash/isNull'
+import isUndefined from 'lodash/isUndefined'
 
 export default {
   mixins: [FormField],
   data: () => ({
     fieldValues: {},
   }),
+  computed: {
+    parsedValue() {
+      if (isNull(this.field.value) || isUndefined(this.field.value)) return {}
+
+      return this.field.value
+    },
+  },
   methods: {
     setInitialValue() {
       this.value = this.field.value
-      this.fieldValues = this.field.value
+
+      Object.keys(this.field.options).forEach((key) => {
+        this.$set(this.fieldValues, key, this.parsedValue[key] ? this.parsedValue[key] : false)
+      })
     },
     getValue() {
       return this.fieldValues
     },
-    label(key) {
-      if (this.field.options[key]) return this.field.options[key]
-      return key
+    labelForOption(name) {
+      return this.field.options[name]
     },
-    onToggle(key) {
-      this.fieldValues[key] = !this.fieldValues[key]
+    toggleOption(name) {
+      this.fieldValues[name] = !this.fieldValues[name]
     },
   },
 }

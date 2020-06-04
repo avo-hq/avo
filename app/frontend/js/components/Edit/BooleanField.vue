@@ -4,6 +4,7 @@
     <input type="checkbox"
       :id="field.id"
       :disabled="disabled"
+      class="w-4 h-4"
       v-model="value"
     >
   </div>

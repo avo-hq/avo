@@ -17,6 +17,7 @@
             :errors="errors"
             :resource-name="resourceName"
             :resource-id="resourceId"
+            :field-id="field.id"
           ></component>
         </template>
 
@@ -29,7 +30,7 @@
                 resourceName: resourceName,
                 resourceId: resource.id,
               },
-            }">cancel</router-link>
+            }">Cancel</router-link>
           <button class="button" @click="submitResource">Save</button>
         </template>
       </panel>

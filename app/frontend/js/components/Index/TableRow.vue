@@ -1,5 +1,9 @@
 <template>
-  <tr v-if="resource" class="border-t hover:bg-gray-100">
+  <tr v-if="resource"
+    class="border-t hover:bg-gray-100"
+    :resource-name="resourceName"
+    :resource-id="resource.id"
+  >
     <td>
       <div class="flex justify-center h-full">
         <input type="checkbox" class="mx-3" />
@@ -10,6 +14,7 @@
       :key="field.id"
       :is="`index-${field.component}`"
       :field="field"
+      :field-id="field.id"
     ></component>
 
     <td class="text-right p-2">

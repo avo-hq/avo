@@ -1,12 +1,13 @@
 <template>
   <edit-field-wrapper :field="field" :errors="errors" :index="index">
-    <textarea
-      :id="field.id"
-      :rows="rows"
-      :disabled="disabled"
-      v-model="value"
+    <input-component
+      type="textarea"
       class="w-full"
-    ></textarea>
+      :id="field.id"
+      :disabled="disabled"
+      :rows="rows"
+      v-model="value"
+      />
   </edit-field-wrapper>
 </template>
 

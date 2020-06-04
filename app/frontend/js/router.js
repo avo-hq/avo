@@ -37,8 +37,23 @@ const routes = [
   },
 ]
 
-export default new VueRouter({
+const router = new VueRouter({
   mode: 'history',
   base: '/avocado',
   routes,
 })
+
+router.beforeResolve((to, from, next) => {
+  // If this isn't an initial page load.
+  if (to.name) {
+    document.querySelector('body').classList.add('route-loading')
+  }
+
+  next()
+})
+
+router.afterEach(() => {
+  document.querySelector('body').classList.remove('route-loading')
+})
+
+export default router

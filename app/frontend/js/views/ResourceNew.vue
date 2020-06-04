@@ -15,6 +15,7 @@
             :is="`edit-${field.component}`"
             :field="field"
             :errors="errors"
+            :field-id="field.id"
           ></component>
         </template>
 
@@ -26,7 +27,7 @@
               params: {
                 resourceName: resourceName,
               },
-            }">cancel</router-link>
+            }">Cancel</router-link>
           <button class="button" @click="submitResource">Save</button>
         </template>
       </panel>

@@ -106,7 +106,7 @@ Layout/SpaceInsideParens:
 
 # Check quotes usage according to lint rule below.
 Style/StringLiterals:
-  Enabled: false
+  Enabled: true
   EnforcedStyle: single_quotes
 
 

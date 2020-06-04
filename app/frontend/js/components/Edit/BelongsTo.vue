@@ -13,7 +13,8 @@
     <div v-else>
       <select name="options"
         id="options"
-        class="w-full"
+        :class="inputClasses"
+        class="select-input w-full"
         v-model="selectedValue"
       >
         <option v-for="option in options"
@@ -34,9 +35,10 @@
 <script>
 import Bus from '@/js/Bus'
 import FormField from '@/js/mixins/form-field'
+import HasInputAppearance from '@/js/mixins/has-input-appearance'
 
 export default {
-  mixins: [FormField],
+  mixins: [FormField, HasInputAppearance],
   data: () => ({
     options: [],
     value: {},

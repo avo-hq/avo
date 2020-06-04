@@ -1,6 +1,7 @@
 <template>
   <edit-field-wrapper :field="field" :errors="errors" :index="index">
-    <input type="number"
+    <input-component
+      type="number"
       :id="field.id"
       :min="min"
       :max="max"
@@ -8,7 +9,7 @@
       :class="classes"
       :disabled="disabled"
       v-model="value"
-    >
+    />
   </edit-field-wrapper>
 </template>
 
@@ -17,7 +18,6 @@ import FormField from '@/js/mixins/form-field'
 
 export default {
   mixins: [FormField],
-  data: () => ({}),
   computed: {
     classes() {
       const classes = ['w-full']
@@ -36,8 +36,5 @@ export default {
       return this.field.step
     },
   },
-  methods: {},
 }
 </script>
-
-<style lang="postcss"></style>

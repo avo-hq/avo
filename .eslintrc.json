@@ -28,7 +28,8 @@
         // "sort-imports": ["error"],
         "semi": ["error", "never"],
         "no-multi-spaces": 0,
-        "camelcase": ["error", {"ignoreDestructuring": true}]
+        "camelcase": ["error", {"ignoreDestructuring": true}],
+        "newline-before-return": 1
     },
     "settings": {
         "import/resolver": {
