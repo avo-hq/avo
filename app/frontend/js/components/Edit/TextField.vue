@@ -14,7 +14,6 @@ import FormField from '@/js/mixins/form-field'
 
 export default {
   mixins: [FormField],
-  data: () => ({}),
   computed: {
     classes() {
       const classes = ['w-full']
@@ -24,8 +23,5 @@ export default {
       return classes.join(' ')
     },
   },
-  methods: {},
 }
 </script>
-
-<style lang="postcss"></style>

@@ -6,12 +6,6 @@
 
 <script>
 export default {
-  data: () => ({}),
   props: ['field', 'index'],
-  computed: {},
-  methods: {},
-  mounted() {},
 }
 </script>
-
-<style lang="postcss"></style>

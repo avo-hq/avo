@@ -22,6 +22,7 @@ module Avocado
         related_model = related_resource.model
         # fetch the entries
         query = related_model.find(params[:via_resource_id]).public_send(params[:resource_name])
+        params[:per_page] = 5
       end
 
       # Eager load the attachments

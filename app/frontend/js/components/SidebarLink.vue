@@ -4,12 +4,6 @@
 
 <script>
 export default {
-  data: () => ({}),
   props: ['to', 'label', 'exact'],
-  computed: {},
-  methods: {},
-  mounted() {},
 }
 </script>
-
-<style lang="postcss"></style>

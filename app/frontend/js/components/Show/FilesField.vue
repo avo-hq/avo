@@ -22,7 +22,6 @@
 
 <script>
 export default {
-  data: () => ({}),
   props: ['field', 'index'],
   computed: {
     hasFiles() {
@@ -36,9 +35,5 @@ export default {
       return []
     },
   },
-  methods: {},
-  mounted() { },
 }
 </script>
-
-<style lang="postcss"></style>

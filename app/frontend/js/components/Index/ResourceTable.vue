@@ -37,7 +37,6 @@
 import ExtractsFields from '@/js/mixins/extracts-fields'
 
 export default {
-  data: () => ({}),
   mixins: [ExtractsFields],
   props: [
     'resources',
@@ -57,9 +56,5 @@ export default {
       return []
     },
   },
-  methods: {},
-  mounted() {},
 }
 </script>
-
-<style lang="postcss"></style>

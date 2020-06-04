@@ -11,16 +11,6 @@
   </div>
 </template>
 
-<script>
-export default {
-  data: () => ({}),
-  props: [],
-  computed: {},
-  methods: {},
-  mounted() {},
-}
-</script>
-
 <style scoped>
 body {
   min-height: 100vh;

@@ -10,15 +10,10 @@
 
 <script>
 export default {
-  data: () => ({}),
   props: [
     'resourceName',
     'resourceId',
     'field',
   ],
-  computed: {},
-  methods: {},
 }
 </script>
-
-<style lang="postcss"></style>
