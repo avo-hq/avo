@@ -9,8 +9,7 @@
         </div>
       </template>
       <template v-else>
-        <!-- {{field.no_value_text}} -->
-        -
+        {{field.no_value_text}}
       </template>
     </template>
     <template v-else>
@@ -35,23 +34,23 @@ export default {
       if (this.field.value) {
         const values = this.field.value
         const result = {}
-        for (let [key, value] of Object.entries(values)) {
-            // (value === this.field.true_value && !this.field.hide_true_values) ||
-            // (value === true && !this.field.hide_true_values) ||
-            // (value === false && !this.field.hide_false_values)
+        Object.keys(values).forEach((key) => {
+          const value = values[key]
           if (value === true || value === false) {
             result[key] = value
           }
-        }
+        })
         this.value = result
       }
     },
     emoji(booly) {
       if (booly === true) return '✅'
+
       return '❌'
     },
     label(key) {
       if (this.field.options[key]) return this.field.options[key]
+
       return key
     },
     toggleView() {

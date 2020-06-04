@@ -8,7 +8,7 @@
       </div>
     </template>
     <template v-else>
-      -
+    -
     </template>
   </show-field-wrapper>
 </template>
@@ -24,20 +24,23 @@ export default {
       if (this.field.value) {
         const values = this.field.value
         const result = {}
-        for (let [key, value] of Object.entries(values)) {
+        Object.keys(values).forEach((key) => {
+          const value = values[key]
           if (value === true || value === false) {
             result[key] = value
           }
-        }
+        })
         this.value = result
       }
     },
     emoji(booly) {
       if (booly === true) return '✅'
+
       return '❌'
     },
     label(key) {
       if (this.field.options[key]) return this.field.options[key]
+
       return key
     },
   },
