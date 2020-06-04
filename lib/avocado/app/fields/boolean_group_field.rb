@@ -2,11 +2,11 @@ require_relative 'field'
 
 module Avocado
   module Fields
-    class BooleangroupField < Field
+    class BooleanGroupField < Field
       def initialize(name, **args, &block)
         @defaults = {
           # sortable: true,
-          component: 'booleangroup-field',
+          component: 'boolean-group-field',
           computable: true,
         }
 
@@ -17,9 +17,9 @@ module Avocado
         # @true_value = args[:true_value].present? ? args[:true_value] : true
         # @false_value = args[:false_value].present? ? args[:false_value] : false
         @options = args[:options].present? ? args[:options] : {}
-        @no_value_text = args[:no_value_text].present? ? args[:no_value_text] : '-'
-        @hide_false_values = args[:hide_false_values].present? ? args[:hide_false_values] : false
-        @hide_true_values = args[:hide_true_values].present? ? args[:hide_true_values] : false
+        # @no_value_text = args[:no_value_text].present? ? args[:no_value_text] : '-'
+        # @hide_false_values = args[:hide_false_values].present? ? args[:hide_false_values] : false
+        # @hide_true_values = args[:hide_true_values].present? ? args[:hide_true_values] : false
       end
 
       def hydrate_resource(model, resource, view)
@@ -27,9 +27,9 @@ module Avocado
           # true_value: @true_value,
           # false_value: @false_value,
           options: @options,
-          no_value_text: @no_value_text,
-          hide_false_values: @hide_false_values,
-          hide_true_values: @hide_true_values,
+          # no_value_text: @no_value_text,
+          # hide_false_values: @hide_false_values,
+          # hide_true_values: @hide_true_values,
         }
       end
 

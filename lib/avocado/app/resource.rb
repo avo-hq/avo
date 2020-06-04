@@ -62,8 +62,8 @@ module Avocado
           @@fields[self].push Avocado::Fields::DatetimeField::new(name, **args)
         end
 
-        def booleangroup(name, **args, &block)
-          @@fields[self].push Avocado::Fields::BooleangroupField::new(name, **args, &block)
+        def boolean_group(name, **args, &block)
+          @@fields[self].push Avocado::Fields::BooleanGroupField::new(name, **args, &block)
         end
 
         def belongs_to(name, **args)

@@ -8,13 +8,13 @@
       </div>
     </template>
     <template v-else>
-      {{field.no_value_text}}
+      -
     </template>
   </show-field-wrapper>
 </template>
 
 <script>
-import FormField from '@/js/mixins/form-field';
+import FormField from '@/js/mixins/form-field'
 
 export default {
   mixins: [FormField],
@@ -25,10 +25,7 @@ export default {
         const values = this.field.value
         const result = {}
         for (let [key, value] of Object.entries(values)) {
-          if (
-            (value === true && !this.field.hide_true_values) ||
-            (value === false && !this.field.hide_false_values)
-          ) {
+          if (value === true || value === false) {
             result[key] = value
           }
         }

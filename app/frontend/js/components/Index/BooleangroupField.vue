@@ -9,7 +9,8 @@
         </div>
       </template>
       <template v-else>
-        {{field.no_value_text}}
+        <!-- {{field.no_value_text}} -->
+        -
       </template>
     </template>
     <template v-else>
@@ -35,11 +36,10 @@ export default {
         const values = this.field.value
         const result = {}
         for (let [key, value] of Object.entries(values)) {
-          if (
             // (value === this.field.true_value && !this.field.hide_true_values) ||
-            (value === true && !this.field.hide_true_values) ||
-            (value === false && !this.field.hide_false_values)
-          ) {
+            // (value === true && !this.field.hide_true_values) ||
+            // (value === false && !this.field.hide_false_values)
+          if (value === true || value === false) {
             result[key] = value
           }
         }
