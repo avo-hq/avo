@@ -13,9 +13,9 @@
       </template>
     </template>
     <template v-else>
-      <a @click="toggleView">
+      <button @click="toggleView">
         View
-      </a>
+      </button>
     </template>
   </index-field-wrapper>
 </template>

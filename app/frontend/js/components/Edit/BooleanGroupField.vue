@@ -7,7 +7,7 @@
             <input
               type="checkbox"
               :id="field.id"
-              :name="field.id"
+              :name="name"
               :checked="value"
               :disabled="disabled"
             />
