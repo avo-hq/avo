@@ -1,7 +1,7 @@
 <template>
   <index-field-wrapper :field="field" class="text-center">
     <template v-if="clicked">
-      <template v-if='value'>
+      <template v-if="value">
         <div class="space-y-3">
           <template v-for="(val, key, index) in value">
             <div v-bind:key="index">{{ emoji(val) }} {{ label(key) }}</div>

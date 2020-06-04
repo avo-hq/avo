@@ -1,7 +1,7 @@
 <template>
   <edit-field-wrapper :field="field" :errors="errors" :index="index">
     <div class="flex items-center">
-      <template v-if='value'>
+      <template v-if="value">
       <div class="space-y-3">
           <template v-for="(key, val, index) in value">
             <div v-bind:key="index">
