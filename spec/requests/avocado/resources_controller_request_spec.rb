@@ -7,7 +7,14 @@ RSpec.describe 'ResourcesControllers', type: :request do
         get '/avocado/avocado-api/users'
 
         expect(response).to have_http_status(200)
-        expect(parsed_response).to eql({ per_page: 25, resources: [], total_pages: 0 }.stringify_keys)
+        expect(parsed_response).to eql({
+          meta: {
+            per_page_steps: [24, 48, 72]
+          },
+          per_page: 24,
+          resources: [],
+          total_pages: 0
+        }.deep_stringify_keys)
       end
     end
   end

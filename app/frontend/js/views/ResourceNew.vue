@@ -36,11 +36,12 @@
 </template>
 
 <script>
+import DealsWithResourceLabels from '@/js/mixins/deals-with-resource-labels'
 import HasForms from '@/js/mixins/has-forms'
 import LoadsResource from '@/js/mixins/loads-resource'
 
 export default {
-  mixins: [HasForms, LoadsResource],
+  mixins: [HasForms, LoadsResource, DealsWithResourceLabels],
   data: () => ({
     resource: {},
     form: {},

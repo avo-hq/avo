@@ -1,7 +1,6 @@
 import { objectToFormData } from 'object-to-formdata'
 import Api from '@/js/Api'
 import isNull from 'lodash/isNull'
-import pluralize from 'pluralize'
 
 
 export default {
@@ -10,9 +9,6 @@ export default {
     errors: {},
   }),
   computed: {
-    resourceNameSingular() {
-      return pluralize(this.resourceName, 1)
-    },
     fields() {
       if (!this.resource || !this.resource.fields || this.resource.fields.length === 0) {
         return []

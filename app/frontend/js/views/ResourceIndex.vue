@@ -1,104 +1,108 @@
 <template>
-  <div>
-    <panel>
-      <template #heading>
-        {{resourceNamePlural}}
-      </template>
+  <panel>
+    <template #heading>
+      {{resourceNamePlural}}
+    </template>
 
-      <template #tools>
-        <div class="flex justify-between items-center mb-4 w-full">
-          <div>
-            <resources-search
+    <template #tools>
+      <div class="flex justify-between items-center mb-4 w-full">
+        <div>
+          <resources-search
+            :resource-name="resourceName"
+            :via-resource-name="viaResourceName"
+            :via-resource-id="viaResourceId"
+          />
+        </div>
+        <div>
+          <router-link
+            :to="{
+              name: 'new',
+              params: {
+                resourceName: resourceName,
+              },
+            }"
+            class="button"
+          >Create new {{resourceNameSingular}}</router-link>
+        </div>
+      </div>
+    </template>
+
+    <template #content>
+      <template>
+        <div class="flex justify-between items-center py-4">
+          <resources-filter
+            @change-per-page="changePerPage"
+            :per-page="perPage"
+            :per-page-steps="perPageSteps"
+            :filters="filters"
+            :applied-filters="appliedFilters"
+            @change-filter="changeFilter"
+            :via-resource-name="viaResourceName"
+          />
+        </div>
+
+        <div class="w-full overflow-auto min-h-28 flex flex-col">
+          <loading-overlay class="relative" v-if="resources.length === 0 && isLoading"/>
+          <div class="relative flex-1 flex" v-else>
+            <loading-overlay v-if="isLoading" />
+
+            <resource-table
+              v-if="resources && resources.length > 0"
+              :resources="resources"
               :resource-name="resourceName"
+              :sort-by="sortBy"
+              :sort-direction="sortDirection"
               :via-resource-name="viaResourceName"
               :via-resource-id="viaResourceId"
-              />
+              @sort="changeSortBy"
+              ></resource-table>
+
+              <div class="flex-1 flex items-center justify-center" v-else>
+                No {{resourceNamePlural | toLowerCase}} found
+              </div>
           </div>
-          <div>
-            <router-link
-              :to="{
-                name: 'new',
-                params: {
-                  resourceName: resourceName,
-                },
-              }"
-              class="button"
-            >Create new {{resourceNameSingular}}</router-link>
-          </div>
+
+          <paginate
+            v-show="totalPages > 1"
+            v-model="page"
+            ref="paginate"
+            :page-count="totalPages"
+            :click-handler="changePageFromPagination"
+            :prev-text="'Prev'"
+            :next-text="'Next'"
+            :no-li-surround="true"
+            container-class="avo-pagination flex justify-end px-4"
+            page-class="pagination-button"
+            page-link-class="button select-none rounded-none focus:outline-none"
+            active-class="active"
+            prev-link-class="button rounded-none focus:outline-none"
+            next-link-class="button rounded-none focus:outline-none"
+            class="py-4 select-none"
+          ></paginate>
         </div>
       </template>
-
-      <template #content>
-        <template>
-          <div class="flex justify-between items-center py-4">
-            <resources-filter
-              @change-per-page="changePerPage"
-              :per-page="perPage"
-              :filters="filters"
-              :applied-filters="appliedFilters"
-              @change-filter="changeFilter"
-            />
-          </div>
-
-          <div class="w-full overflow-auto min-h-28 flex flex-col">
-            <loading-overlay class="relative" v-if="resources.length === 0 && isLoading"/>
-            <div class="relative flex-1 flex" v-else>
-              <loading-overlay v-if="isLoading" />
-
-              <resource-table
-                v-if="resources && resources.length > 0"
-                :resources="resources"
-                :resource-name="resourceName"
-                :sort-by="sortBy"
-                :sort-direction="sortDirection"
-                :via-resource-name="viaResourceName"
-                :via-resource-id="viaResourceId"
-                @sort="changeSortBy"
-                ></resource-table>
-
-                <div class="flex-1 flex items-center justify-center" v-else>
-                  No {{resourceNamePlural | toLowerCase}} found
-                </div>
-            </div>
-
-            <paginate
-              v-show="totalPages > 1"
-              v-model="page"
-              ref="paginate"
-              :page-count="totalPages"
-              :click-handler="changePageFromPagination"
-              :prev-text="'Prev'"
-              :next-text="'Next'"
-              :no-li-surround="true"
-              container-class="avo-pagination flex justify-end px-4"
-              page-class="pagination-button"
-              page-link-class="button select-none rounded-none focus:outline-none"
-              active-class="active"
-              prev-link-class="button rounded-none focus:outline-none"
-              next-link-class="button rounded-none focus:outline-none"
-              class="py-4 select-none"
-            ></paginate>
-          </div>
-        </template>
-      </template>
-    </panel>
-  </div>
+    </template>
+  </panel>
 </template>
 
 <script>
 import Api from '@/js/Api'
+import DealsWithResourceLabels from '@/js/mixins/deals-with-resource-labels'
 import URI from 'urijs'
 import isNull from 'lodash/isNull'
 import isUndefined from 'lodash/isUndefined'
-import pluralize from 'pluralize'
 
 export default {
   name: 'ResourceIndex',
+  mixins: [DealsWithResourceLabels],
   data: () => ({
     resources: [],
     totalPages: 0,
     page: 0,
     perPage: 25,
+    meta: {
+      per_page_steps: [],
+    },
     sortBy: '',
     sortDirection: '',
     isLoading: true,
@@ -111,21 +115,7 @@ export default {
     'viaResourceName',
     'viaResourceId',
   ],
-  filters: {
-    toLowerCase(value) {
-      return value.toLowerCase()
-    },
-  },
   computed: {
-    resourceNameSingular() {
-      return pluralize(this.resourceName, 1)
-    },
-    resourceNamePlural() {
-      return this.resourceName.charAt(0).toUpperCase() + this.resourceName.slice(1)
-    },
-    relatedResourcePage() {
-      return `${this.resourceName}_page`
-    },
     newQueryParams() {
       return {
         name: this.viaResourceName ? 'show' : 'index',
@@ -142,35 +132,54 @@ export default {
     query() {
       const params = {}
 
-      if (this.page === '' || Number.isNaN(this.page) || isUndefined(this.page) || isNull(this.page) || this.page === 1) {
-        delete params.page
-      } else {
-        params.page = this.page
+      if (!this.paramCanBeOmitted(this.page, 1)) {
+        if (this.viaResourceName) {
+          params[this.uriParam('apge')] = this.page
+        } else {
+          params.page = this.page
+        }
       }
 
-      if (this.viaResourceName) {
-        params[this.relatedResourcePage] = params.page
-
-        delete params.page
+      if (!this.paramCanBeOmitted(this.perPage, 25)) {
+        if (this.viaResourceName) {
+          params[this.uriParam('per_page')] = this.perPage
+        } else {
+          // eslint-disable-next-line camelcase
+          params.per_page = this.perPage
+        }
       }
 
-      if (this.perPage === '' || Number.isNaN(this.perPage) || isUndefined(this.perPage) || isNull(this.perPage) || this.perPage === 25) {
-        delete params.per_page
-      } else {
-        // eslint-disable-next-line camelcase
-        params.per_page = this.perPage
-      }
-
+      // if (Object.keys(this.appliedFilters).length > 0) {
+      //   params.filters = this.encodedFilters
+      // } else {
+      //   delete params.filters
+      // }
       if (Object.keys(this.appliedFilters).length > 0) {
-        params.filters = this.encodedFilters
-      } else {
-        delete params.filters
+        if (this.viaResourceName) {
+          params[this.uriParam('filters')] = this.encodedFilters
+        } else {
+          // eslint-disable-next-line camelcase
+          params.filters = this.encodedFilters
+        }
       }
 
-      // eslint-disable-next-line camelcase
-      if (this.sortBy !== '') params.sort_by = this.sortBy
-      // eslint-disable-next-line camelcase
-      if (this.sortDirection !== '') params.sort_direction = this.sortDirection
+      if (this.sortBy !== '') {
+        if (this.viaResourceName) {
+          params[this.uriParam('sort_by')] = this.sortBy
+        } else {
+          // eslint-disable-next-line camelcase
+          params.sort_by = this.sortBy
+        }
+      }
+
+      if (this.sortDirection !== '') {
+        if (this.viaResourceName) {
+          params[this.uriParam('sort_direction')] = this.sortDirection
+        } else {
+          // eslint-disable-next-line camelcase
+          params.sort_direction = this.sortDirection
+        }
+      }
 
       return params
     },
@@ -203,6 +212,9 @@ export default {
 
       return url.toString()
     },
+    perPageSteps() {
+      return this.meta.per_page_steps
+    },
   },
   methods: {
     updateQueryParams() {
@@ -230,6 +242,7 @@ export default {
 
       this.resources = data.resources
       this.totalPages = data.total_pages
+      this.meta = data.meta
 
       this.isLoading = false
     },
@@ -291,33 +304,28 @@ export default {
       })
     },
     async initQueryParams() {
-      let page = 1
-      let perPage = 25
-      let sortBy = ''
-      let sortDirection = ''
-      let filters = ''
-
-      page = URI(window.location.toString()).query(true).page
-      // @todo: do the same with the other params (sort, filter, etc.)
-      page = URI(window.location.toString()).query(true)[this.relatedResourcePage]
-      perPage = URI(window.location.toString()).query(true).per_page
-      sortBy = URI(window.location.toString()).query(true).sort_by
-      sortDirection = URI(window.location.toString()).query(true).sort_direction
-      filters = URI(window.location.toString()).query(true).filters
-
-      this.setPage(page)
-      this.setPerPage(perPage)
-      this.setSortBy(sortBy)
-      this.setSortDirection(sortDirection)
+      this.setPage(URI(window.location.toString()).query(true)[this.uriParam('page')])
+      this.setPerPage(URI(window.location.toString()).query(true)[this.uriParam('per_page')])
+      this.setSortBy(URI(window.location.toString()).query(true)[this.uriParam('sort_by')])
+      this.setSortDirection(URI(window.location.toString()).query(true)[this.uriParam('sort_direction')])
+      const filters = URI(window.location.toString()).query(true)[this.uriParam('filters')]
       if (filters) this.setFilterValue(JSON.parse(atob(filters)))
 
       await this.getResources()
+    },
+    paramCanBeOmitted(param, defaultValue) {
+      return param === '' || Number.isNaN(param) || isUndefined(param) || isNull(param) || param === defaultValue
+    },
+    uriParam(param) {
+      if (this.viaResourceName) return `${this.resourceName}_${param}`
+
+      return param
     },
   },
   watch: {
     $route: 'getResources',
   },
-  async mounted() {
+  async created() {
     this.getFilters()
     this.initQueryParams()
   },

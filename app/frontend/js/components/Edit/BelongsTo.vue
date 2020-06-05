@@ -11,12 +11,13 @@
       />
     </div>
     <div v-else>
-      <select name="options"
-        id="options"
+      <select :name="field.id"
+        :id="field.id"
         :class="inputClasses"
         class="select-input w-full"
         v-model="selectedValue"
       >
+        <option value="">Choose {{field.id}}</option>
         <option v-for="option in options"
           :key="option.value"
           :value="option.value"
@@ -42,7 +43,7 @@ export default {
   data: () => ({
     options: [],
     value: {},
-    selectedValue: null,
+    selectedValue: '',
     isLoading: false,
   }),
   props: ['resourceName', 'field'],
@@ -53,24 +54,22 @@ export default {
   },
   methods: {
     select(resource) {
-      console.log('select parent')
       this.selectedValue = resource.id
     },
     getValue() {
       return this.selectedValue
     },
     getId() {
-      return this.field.database_field_name
+      return this.field.database_id
     },
     removeSelection() {
-      console.log('remove selection')
       this.selectedValue = {}
       Bus.$emit(`clearSearchSelection${this.field.id}`)
     },
   },
   mounted() {
     this.options = this.field.options
-    this.selectedValue = this.field.select_value
+    if (this.field.database_value) this.selectedValue = this.field.database_value
   },
 }
 </script>
