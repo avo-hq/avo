@@ -1,4 +1,6 @@
 import pluralize from 'pluralize'
+import lowerCase from 'lodash/lowerCase'
+import upperFirst from 'lodash/upperFirst'
 
 export default {
   filters: {
@@ -7,11 +9,14 @@ export default {
     },
   },
   computed: {
+    sentencedCase() {
+      return upperFirst(lowerCase(this.resourceName))
+    },
     resourceNameSingular() {
-      return pluralize(this.resourceName, 1)
+      return pluralize(this.sentencedCase, 1)
     },
     resourceNamePlural() {
-      return this.resourceName.charAt(0).toUpperCase() + this.resourceName.slice(1)
+      return this.sentencedCase.charAt(0).toUpperCase() + this.sentencedCase.slice(1)
     },
   },
 }

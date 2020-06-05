@@ -22,7 +22,7 @@
               },
             }"
             class="button"
-          >Create new {{resourceNameSingular}}</router-link>
+          >Create new {{resourceNameSingular | toLowerCase}}</router-link>
         </div>
       </div>
     </template>
