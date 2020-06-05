@@ -17,6 +17,7 @@ module Avocado
       attr_accessor :computable
       attr_accessor :is_array_param
       attr_accessor :block
+      attr_accessor :placeholder
 
       def initialize(id_or_name, **args, &block)
         super(id_or_name, **args, &block)
@@ -38,6 +39,7 @@ module Avocado
           computable: false,
           is_array_param: false,
           resolve_using: false,
+          placeholder: id_or_name.to_s.camelize,
         }
 
         # Set the values in the following order

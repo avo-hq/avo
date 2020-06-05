@@ -11,7 +11,7 @@ module Avocado
         id :ID
         text :Name, required: true
         textarea :Body
-        belongs_to :User, searchable: false
+        belongs_to :User, searchable: false, placeholder: '-'
       end
 
       # use_filter Avocado::Filters::IndicatorFilter
