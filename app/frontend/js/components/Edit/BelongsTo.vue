@@ -17,7 +17,7 @@
         class="select-input w-full"
         v-model="selectedValue"
       >
-        <option value="">Choose {{field.id}}</option>
+        <option value="" v-text="placeholder"></option>
         <option v-for="option in options"
           :key="option.value"
           :value="option.value"
@@ -50,6 +50,11 @@ export default {
   computed: {
     searchable() {
       return this.field.searchable
+    },
+    placeholder() {
+      if (this.field.placeholder) return this.field.placeholder
+
+      return `Choose ${this.field.id}`
     },
   },
   methods: {

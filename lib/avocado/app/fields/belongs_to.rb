@@ -9,6 +9,7 @@ module Avocado
       def initialize(name, **args, &block)
         @defaults = {
           component: 'belongs-to-field',
+          placeholder: "Choose #{name.downcase}",
         }
 
         @searchable = args[:searchable] == true ? true : false

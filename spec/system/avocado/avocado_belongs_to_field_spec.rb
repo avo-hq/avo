@@ -43,11 +43,11 @@ RSpec.describe 'BelongsToField', type: :system do
     describe 'without user attached' do
       let!(:post) { create :post }
 
-      it { is_expected.to have_select 'user', selected: 'Choose user' }
+      it { is_expected.to have_select 'user', selected: '-' }
 
       it 'changes the user' do
         visit url
-        expect(page).to have_select 'user', selected: 'Choose user'
+        expect(page).to have_select 'user', selected: '-'
 
         select user.name, from: 'user'
 
@@ -82,7 +82,7 @@ RSpec.describe 'BelongsToField', type: :system do
         visit url
         expect(page).to have_select 'user', selected: user.name
 
-        select 'Choose user', from: 'user'
+        select '-', from: 'user'
 
         click_on 'Save'
         wait_for_loaded
