@@ -38,7 +38,9 @@ RSpec.describe "BooleanGroupFields", type: :system do
         click_on 'Save'
         wait_for_loaded
 
-        expect(current_path).to eql "/avocado/resources/users/#{user.id}"
+        user_id = page.find('[field-id="id"] [data-slot="value"]').text
+        expect(current_path).to eql "/avocado/resources/users/#{user_id}"
+
         expect(page).to have_text '✅'
         expect(page).to have_text '❌'
       end

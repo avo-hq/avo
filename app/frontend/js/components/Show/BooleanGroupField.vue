@@ -1,12 +1,10 @@
 <template>
   <show-field-wrapper :field="field" :index="index">
-    <template v-if="value">
-      <div class="space-y-3">
-        <template v-for="(val, key, index) in value">
-          <div v-bind:key="index">{{ emoji(val) }} {{ label(key) }}</div>
-        </template>
-      </div>
-    </template>
+    <div class="space-y-3" v-if="value">
+      <template v-for="(val, key, index) in value">
+        <div v-bind:key="index">{{ emoji(val) }} {{ label(key) }}</div>
+      </template>
+    </div>
     <template v-else>
     -
     </template>

@@ -1,22 +1,18 @@
 <template>
   <index-field-wrapper :field="field" class="text-center">
-    <template v-if="clicked">
-      <template v-if="value">
-        <div class="space-y-3">
-          <template v-for="(val, key, index) in value">
-            <div v-bind:key="index">{{ emoji(val) }} {{ label(key) }}</div>
-          </template>
-        </div>
-      </template>
+    <template v-if="isVisible">
+      <div class="space-y-3" v-if="value">
+        <template v-for="(val, key, index) in value">
+          <div v-bind:key="index">{{ emoji(val) }} {{ label(key) }}</div>
+        </template>
+      </div>
       <template v-else>
-        {{field.no_value_text}}
+        -
       </template>
     </template>
-    <template v-else>
-      <button @click="toggleView">
-        View
-      </button>
-    </template>
+    <button @click="toggleView" v-else>
+      View
+    </button>
   </index-field-wrapper>
 </template>
 
@@ -27,7 +23,7 @@ export default {
   mixins: [FormField],
   props: ['field'],
   data: () => ({
-    clicked: false,
+    isVisible: false,
   }),
   methods: {
     setInitialValue() {
@@ -54,7 +50,7 @@ export default {
       return key
     },
     toggleView() {
-      this.clicked = true
+      this.isVisible = true
     },
   },
 }
