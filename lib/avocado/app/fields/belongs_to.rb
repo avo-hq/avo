@@ -24,7 +24,7 @@ module Avocado
 
         fields[:searchable] = @searchable
         fields[:is_relation] = true
-        fields[:database_field_name] = model.class.reflections[@relation_method].foreign_key
+        fields[:database_id] = foreign_key model
         target_resource = App.get_resources.find { |r| r.class == "Avocado::Resources::#{name}".safe_constantize }
 
         relation_model = model.public_send(@relation_method)
@@ -32,25 +32,32 @@ module Avocado
         if relation_model.present?
           relation_model = model.public_send(@relation_method)
           fields[:value] = relation_model[target_resource.title] if relation_model.present?
-          fields[:select_value] = relation_model[:id] if relation_model.present?
+          fields[:database_value] = relation_model[:id] if relation_model.present?
           fields[:link] = Avocado::Resources::Resource.show_path(relation_model)
         end
 
+        # Populate the options on show and edit
         fields[:options] = []
-        if self.searchable
-          fields[:model] = relation_model
-        else
-          fields[:options] = target_resource.model.select(:id, target_resource.title).all.map do |model|
-            {
-              value: model.id,
-              label: model[target_resource.title]
-            }
+        if view == :edit
+          if self.searchable
+            fields[:model] = relation_model
+          else
+            fields[:options] = target_resource.model.select(:id, target_resource.title).all.map do |model|
+              {
+                value: model.id,
+                label: model[target_resource.title]
+              }
+            end
           end
         end
 
         fields[:resource_name_plural] = target_resource.resource_name_plural
 
         fields
+      end
+
+      def foreign_key(model)
+        model.class.reflections[@relation_method].foreign_key
       end
     end
   end

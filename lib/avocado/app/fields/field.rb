@@ -26,7 +26,9 @@ module Avocado
 
         # The field properties as a hash {property: default_value}
         @field_properties = {
+          id: id_or_name.to_s.parameterize.underscore,
           name: id_or_name.to_s.camelize,
+          block: block,
           component: 'field',
           required: false,
           readonly: false,
@@ -46,10 +48,6 @@ module Avocado
           final_value = args[name.to_sym]
           self.send("#{name}=", final_value.nil? || !defined?(final_value) ? default_value : final_value)
         end
-
-        @id = id_or_name.to_s.parameterize.underscore
-
-        @block = block
 
         # Set the visibility
         show_on args[:show_on] if args[:show_on].present?
@@ -84,10 +82,19 @@ module Avocado
         fields
       end
 
-      def fill_model(model, value)
-        model[id] = value
+      def fill_model(model, key, value)
+        model[key] = value
 
         model
+      end
+
+      # Try to see if the field has a different database ID than it's name
+      def database_id(model)
+        begin
+          foreign_key(model)
+        rescue => exception
+          id
+        end
       end
 
       private
