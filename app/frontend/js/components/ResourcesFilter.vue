@@ -11,7 +11,7 @@
           <select name="per_page"
             id="per_page"
             @change="changePerPage"
-            v-model="locaPerPage"
+            v-model="localPerPage"
             :class="inputClasses"
             class="select-input w-full"
           >
@@ -43,8 +43,7 @@ export default {
   mixins: [HasInputAppearance],
   data: () => ({
     open: false,
-    locaPerPage: 25,
-    filterr: [],
+    localPerPage: 25,
   }),
   props: ['resourceName', 'resourceId', 'perPage', 'filters', 'appliedFilters'],
   computed: {},
@@ -53,14 +52,14 @@ export default {
       this.open = !this.open
     },
     changePerPage() {
-      this.$emit('change-per-page', this.locaPerPage)
+      this.$emit('change-per-page', this.localPerPage)
     },
     changeFilter(args) {
       this.$emit('change-filter', args)
     },
   },
   mounted() {
-    this.locaPerPage = this.perPage
+    this.localPerPage = this.perPage
   },
 }
 </script>

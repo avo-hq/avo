@@ -162,12 +162,12 @@ module Avocado
         permitted = resource_fields.select(&:updatable).map do |field|
           # If it's a relation
           if field.methods.include? :relation_method
-            database_field_name = avocado_resource.model.reflections[field.relation_method].foreign_key
+            database_id = avocado_resource.model.reflections[field.relation_method].foreign_key
           end
 
-          if database_field_name.present?
-            # Allow the database_field_name for belongs_to relation
-            database_field_name.to_sym
+          if database_id.present?
+            # Allow the database_id for belongs_to relation
+            database_id.to_sym
           elsif field.is_array_param
             # Allow array param if necessary
             { "#{field.id}": [] }
