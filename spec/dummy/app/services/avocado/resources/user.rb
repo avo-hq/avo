@@ -10,7 +10,7 @@ module Avocado
 
       fields do
         id :ID
-        text :Name, required: true, placeholder: 'This is the field that stores full name of user.'
+        text :Name, required: true, placeholder: 'John Doe'
         file :cv, name: 'CV'
         file :avatar, is_avatar: true
         files :images, is_image: true
@@ -18,9 +18,9 @@ module Avocado
         text :email, name: 'User Email', required: true
         number :age, min: 0, max: 120, step: 5
         boolean :availability
-        date :birthday, first_day_of_week: 1, picker_format: 'F J Y', format: 'MMMM Do YYYY', placeholder: 'Set the users birthday', required: true
-        datetime :starts_on, placeholder: 'When the user should start', time_24hr: true
-        select :highlighted, options: { yes: 'Highlighted', no: 'Not Highlighted' }, display_with_value: true, placeholder: "This shows whether the user is highlighted."
+        date :birthday, first_day_of_week: 1, picker_format: 'F J Y', format: 'MMMM Do YYYY', placeholder: 'Feb 24th 1955', required: true
+        datetime :starts_on, time_24hr: true
+        select :highlighted, options: { yes: 'Highlighted', no: 'Not Highlighted' }, display_with_value: true, placeholder: 'This shows whether the user is highlighted.'
         password :password, name: 'User Password', required: false, except_on: :forms
         password :password_confirmation, name: 'Password confirmation', required: false
         text 'Is Writer', resolve_using: -> (value) { value.truncate 3 }, hide_on: :edit do |model, resource, view, field|

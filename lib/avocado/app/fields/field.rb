@@ -37,7 +37,7 @@ module Avocado
           computable: false,
           is_array_param: false,
           resolve_using: false,
-          placeholder: '',
+          placeholder: id_or_name.to_s.camelize,
         }
 
         # Set the values in the following order
