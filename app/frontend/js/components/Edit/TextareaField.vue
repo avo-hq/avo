@@ -6,6 +6,7 @@
       :id="field.id"
       :disabled="disabled"
       :rows="rows"
+      :placeholder="field.placeholder"
       v-model="value"
       />
   </edit-field-wrapper>
