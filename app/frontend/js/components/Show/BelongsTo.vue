@@ -4,7 +4,6 @@
       v-if="field.link"
       v-text="field.value"></router-link>
     <div v-else>-</div>
-
   </show-field-wrapper>
 </template>
 
