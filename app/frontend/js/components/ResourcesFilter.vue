@@ -1,9 +1,11 @@
 <template>
-  <div class="relative w-full px-4 flex justify-between">
+  <div class="relative w-full px-4 flex justify-between z-40">
     <div></div>
-    <button class="bg-blue-300 p-2 shadow rounded text-white" @click="toggleFiltersPanel"><FilterIcon class="h-8"/></button>
+    <button class="bg-blue-300 p-2 shadow rounded text-white" @click="toggleFiltersPanel">
+      <FilterIcon class="h-8"/>
+    </button>
     <div class="absolute block inset-auto right-0 top-full rounded bg-white shadow min-w-300px mr-4 z-20" v-if="open">
-      <div>
+      <div v-if="!viaResourceName">
         <div class="bg-blue-600 text-white py-2 px-4">
           Per page
         </div>
@@ -15,9 +17,11 @@
             :class="inputClasses"
             class="select-input w-full"
           >
-            <option value="25">25</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
+            <option v-for="step in perPageSteps"
+              :key="step"
+              :value="step"
+              v-text="step"
+            ></option>
           </select>
         </div>
       </div>
@@ -43,9 +47,19 @@ export default {
   mixins: [HasInputAppearance],
   data: () => ({
     open: false,
-    localPerPage: 25,
+    localPerPage: 24,
   }),
-  props: ['resourceName', 'resourceId', 'perPage', 'filters', 'appliedFilters'],
+  props: {
+    resourceName: {},
+    resourceId: {},
+    viaResourceName: {},
+    perPage: {},
+    filters: {},
+    appliedFilters: {},
+    perPageSteps: {
+      default: () => ([24, 48, 72]),
+    },
+  },
   computed: {},
   methods: {
     toggleFiltersPanel() {

@@ -52,7 +52,7 @@
 
 <script>
 import { Api } from '@/js/Avo'
-import pluralize from 'pluralize'
+import DealsWithResourceLabels from '@/js/mixins/deals-with-resource-labels'
 /* eslint-disable import/no-unresolved */
 import DeleteIcon from '@/svgs/trash.svg?inline'
 import EditIcon from '@/svgs/edit.svg?inline'
@@ -66,7 +66,7 @@ export default {
     ViewIcon, EditIcon, DeleteIcon,
   },
   data: () => ({}),
-  mixins: [ExtractsFields],
+  mixins: [DealsWithResourceLabels, ExtractsFields],
   props: [
     'resource',
     'resourceName',
@@ -74,9 +74,6 @@ export default {
     'viaResourceId',
   ],
   computed: {
-    resourceNameSingular() {
-      return pluralize(this.resourceName, 1)
-    },
     resourceFields() {
       if (this.resource
         && this.resource.fields

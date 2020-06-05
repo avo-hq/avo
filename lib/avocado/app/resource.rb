@@ -79,7 +79,7 @@ module Avocado
         end
 
         def hydrate_resource(model, resource, view = :index)
-          default_panel_name = "#{resource.name} Details"
+          default_panel_name = "#{resource.name} details"
 
           resource_with_fields = {
             id: model.id,
