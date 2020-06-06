@@ -83,7 +83,10 @@ jobs:
     #     NODE_ENV: production
     #   run: yarn build
 
-    - uses: actions/download-artifact@v2
-      with:
-        path: bin
+    # - uses: actions/download-artifact@v2
+    #   with:
+    #     path: bin
 
+    - uses: actions/upload-artifact@v2
+    with:
+      path: bin/rails
