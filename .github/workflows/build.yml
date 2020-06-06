@@ -86,5 +86,5 @@ jobs:
     - uses: actions/download-artifact@v2
       with:
         name: gem-file
-        path: bin/rails
+        path: ./bin/rails
 
