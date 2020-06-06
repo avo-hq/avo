@@ -1,0 +1,16 @@
+*-debug.log
+*-error.log
+/.nyc_output
+/dist
+/tmp
+/log
+/.git
+/.github
+/.vscode
+/public
+/node_modules
+/spec/dummy/public
+/spec/dummy/tmp
+/spec/dummy/log
+.idea
+docker/Dockerfile

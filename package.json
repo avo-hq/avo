@@ -9,7 +9,10 @@
   "scripts": {
     "test": "bundle exec rspec ./spec --tag ~type:system",
     "test-system": "bundle exec rspec ./spec --tag type:system",
-    "test-all": "bundle exec rspec ./spec"
+    "test-all": "bundle exec rspec ./spec",
+    "docker-build": "docker build -t avocado-dev -f docker/Dockerfile .",
+    "docker-clean": "docker rmi avocado-dev",
+    "build": "sh scripts/build.sh ./"
   },
   "dependencies": {
     "@rails/actioncable": "^6.0.2-1",

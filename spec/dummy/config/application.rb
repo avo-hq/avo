@@ -6,7 +6,7 @@ Bundler.require(*Rails.groups)
 require "avocado"
 
 # Tell spring where the new dummy ap is located
-Spring.application_root = 'spec/dummy'
+# Spring.application_root = 'spec/dummy'
 
 module Dummy
   class Application < Rails::Application
@@ -18,7 +18,6 @@ module Dummy
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
 
-    config.factory_bot.definition_file_paths = ["../../db"]
   end
 end
 
