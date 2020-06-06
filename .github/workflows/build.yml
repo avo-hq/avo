@@ -88,5 +88,5 @@ jobs:
     #     path: bin
 
     - uses: actions/upload-artifact@v2
-    with:
-      path: bin/rails
+      with:
+        path: bin/rails
