@@ -3,7 +3,7 @@
     <div v-for="panel in resource.panels" :key="panel.name">
       <panel>
         <template #heading>
-          Create new {{resourceNameSingular}}
+          Create new {{resourceNameSingular | toLowerCase}}
         </template>
 
         <template #content>
