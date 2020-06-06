@@ -75,49 +75,6 @@ jobs:
         RAILS_ENV: test
       run: npm run test-all
 
-    - uses: actions/cache@v1
-      with:
-        path: vendor/bundle_production
-        key: ${{ runner.os }}-production-gems-${{ hashFiles('**/Gemfile.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-production-gems-
-
-    - name: Bundle install
-      env:
-        PGHOST: localhost
-        PGUSER: postgres
-        RAILS_ENV: production
-        NODE_ENV: production
-      run: |
-        bundle config path vendor/bundle_production
-        bundle install --jobs 4 --retry 3
-        bin/rails db:create
-        bin/rails db:migrate
-
-    - name: Get yarn cache directory path
-      id: production-yarn-cache-dir-path
-      run: echo "::set-output name=dir::$(yarn cache dir)"
-
-    - uses: actions/cache@v1
-      id: production-yarn-cache
-      with:
-        path: ${{ steps.production-yarn-cache-dir-path.outputs.dir }}
-        key: ${{ runner.os }}-production-yarn-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-production-yarn-
-
-    - name: Yarn install
-      env:
-        RAILS_ENV: production
-        NODE_ENV: production
-      run: bundle exec rails app:yarn:install
-
-    - name: Bundle assets
-      env:
-        RAILS_ENV: production
-        NODE_ENV: production
-      run: bundle exec rails app:webpacker:compile
-
     - name: Build
       env:
         PGHOST: localhost
