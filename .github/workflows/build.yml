@@ -28,65 +28,61 @@ jobs:
       with:
         ruby-version: 2.6.3
 
-    # - name: Install PostgreSQL 11 client
-    #   run: |
-    #     sudo apt-get -yqq install libpq-dev
+    - name: Install PostgreSQL 11 client
+      run: |
+        sudo apt-get -yqq install libpq-dev
 
-    # - uses: actions/cache@v1
-    #   with:
-    #     path: vendor/bundle
-    #     key: ${{ runner.os }}-test-gems-${{ hashFiles('**/Gemfile.lock') }}
-    #     restore-keys: |
-    #       ${{ runner.os }}-test-gems-
+    - uses: actions/cache@v1
+      with:
+        path: vendor/bundle
+        key: ${{ runner.os }}-test-gems-${{ hashFiles('**/Gemfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-test-gems-
 
-    # - name: Bundle install
-    #   env:
-    #     PGHOST: localhost
-    #     PGUSER: postgres
-    #     RAILS_ENV: test
-    #   run: |
-    #     bundle config path vendor/bundle
-    #     bundle install --jobs 4 --retry 3
-    #     bin/rails db:create
-    #     bin/rails db:migrate
+    - name: Bundle install
+      env:
+        PGHOST: localhost
+        PGUSER: postgres
+        RAILS_ENV: test
+      run: |
+        bundle config path vendor/bundle
+        bundle install --jobs 4 --retry 3
+        bin/rails db:create
+        bin/rails db:migrate
 
-    # - name: Get yarn cache directory path
-    #   id: yarn-cache-dir-path
-    #   run: echo "::set-output name=dir::$(yarn cache dir)"
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo "::set-output name=dir::$(yarn cache dir)"
 
-    # - uses: actions/cache@v1
-    #   id: test-yarn-cache
-    #   with:
-    #     path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-    #     key: ${{ runner.os }}-test-yarn-${{ hashFiles('**/yarn.lock') }}
-    #     restore-keys: |
-    #       ${{ runner.os }}-test-yarn-
+    - uses: actions/cache@v1
+      id: test-yarn-cache
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-test-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-test-yarn-
 
-    # - name: Yarn install
-    #   run: bundle exec rails app:yarn:install
+    - name: Yarn install
+      run: bundle exec rails app:yarn:install
 
-    # - name: Bundle assets
-    #   run: bundle exec rails app:webpacker:compile
+    - name: Bundle assets
+      run: bundle exec rails app:webpacker:compile
 
-    # - name: Run tests
-    #   env:
-    #     PGHOST: localhost
-    #     PGUSER: postgres
-    #     RAILS_ENV: test
-    #   run: npm run test-all
+    - name: Run tests
+      env:
+        PGHOST: localhost
+        PGUSER: postgres
+        RAILS_ENV: test
+      run: npm run test-all
 
-    # - name: Build
-    #   env:
-    #     PGHOST: localhost
-    #     PGUSER: postgres
-    #     RAILS_ENV: production
-    #     NODE_ENV: production
-    #   run: yarn build
-
-    # - uses: actions/download-artifact@v2
-    #   with:
-    #     path: bin
+    - name: Build
+      env:
+        PGHOST: localhost
+        PGUSER: postgres
+        RAILS_ENV: production
+        NODE_ENV: production
+      run: yarn build
 
     - uses: actions/upload-artifact@v2
       with:
-        path: bin/rails
+        path: pkg/*
