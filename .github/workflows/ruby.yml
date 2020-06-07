@@ -69,10 +69,3 @@ jobs:
 
     - name: Run tests
       run: npm run test-all
-
-  rubocop_checks:
-
-    steps:
-    - name: Rubocop checks
-      uses: gimenete/rubocop-action@1.0
-
