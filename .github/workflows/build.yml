@@ -33,7 +33,7 @@ jobs:
 
     - name: Install Spring
       run: |
-        gem nstall spring
+        gem install spring
 
     - name: Bundle install
       run: |
