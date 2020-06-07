@@ -70,11 +70,20 @@ jobs:
     - name: Run tests
       run: npm run test-all
 
-  rubocop_checks:
+  rubocop:
+    name: runner / rubocop
 
     runs-on: ubuntu-latest
 
     steps:
-    - name: Rubocop checks
-      uses: gimenete/rubocop-action@1.0
+      - name: Check out code
+        uses: actions/checkout@v1
+
+      - name: rubocop
+        uses: reviewdog/action-rubocop@v1
+        with:
+          rubocop_version: 0.80.1
+          rubocop_extensions: rubocop-performance:1.5.1 rubocop-minitest
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
 
