@@ -62,6 +62,11 @@ jobs:
       run: |
         echo "::set-output name=tag::$(sed "s|refs/tags/v||" <<< ${{ github.ref }})"
 
+    - uses: release-drafter/release-drafter@v5
+      id: release_drafter
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
