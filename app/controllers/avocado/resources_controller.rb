@@ -135,7 +135,7 @@ module Avocado
     end
 
     def filters
-      avocado_filters = avocado_resource.get_filters
+      avocado_filters =  avocado_resource.get_filters
       filters = []
 
       avocado_filters.each do |filter|
