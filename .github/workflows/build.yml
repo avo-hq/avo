@@ -1,11 +1,9 @@
 name: Build and Generate Ruby Gem on Tag Pushes
 
-# on:
-#   push:
-#     tags:
-#       - 'v*.*.*'
-
-on: push
+on:
+  push:
+    tags:
+      - 'v*.*.*'
 
 jobs:
   build:
@@ -15,12 +13,6 @@ jobs:
       NODE_ENV: production
 
     runs-on: ubuntu-latest
-
-    # services:
-    #   postgres:
-    #     image: postgres:11.5
-    #     ports: ["5432:5432"]
-    #     options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
     - uses: actions/checkout@v2
@@ -32,10 +24,6 @@ jobs:
       with:
         ruby-version: 2.6.3
 
-    # - name: Install PostgreSQL 11 client
-    #   run: |
-    #     sudo apt-get -yqq install libpq-dev
-
     - uses: actions/cache@v1
       with:
         path: vendor/bundle
@@ -44,9 +32,6 @@ jobs:
           ${{ runner.os }}-production-gems-
 
     - name: Bundle install
-      # env:
-      #   PGHOST: localhost
-      #   PGUSER: postgres
       run: |
         bundle config path vendor/bundle
         bundle install --jobs 4 --retry 3
@@ -72,14 +57,36 @@ jobs:
     - name: Build gem
       run: bundle exec rails build
 
-    - name: Upload to release
-      uses: JasonEtco/upload-to-release@master
-      with:
-        args: artifact.zip
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - uses: actions/upload-artifact@v2
       with:
-        name: avocado.gem
-        path: pkg/
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+        asset_path: pkg/
+        asset_name: avocado.gem
+        asset_content_type: application/x-tar
+
+    # - name: Upload to release
+    #   uses: JasonEtco/upload-to-release@master
+    #   with:
+    #     args: artifact.zip
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    # - uses: actions/upload-artifact@v2
+    #   with:
+    #     name: avocado.gem
+    #     path: pkg/
