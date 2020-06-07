@@ -62,6 +62,13 @@ jobs:
       run: |
         echo "::set-output name=tag::$(sed "s|refs/tags/v||" <<< ${{ github.ref }})"
 
+    - uses: release-drafter/release-drafter@v5
+      with:
+        # (Optional) specify config name to use, relative to .github/. Default: release-drafter.yml
+        # config-name: my-config.yml
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -83,15 +90,3 @@ jobs:
         asset_path: pkg/avocado-${{steps.gem_version.outputs.tag}}.gem
         asset_name: avocado.gem
         asset_content_type: application/x-tar
-
-    # - name: Upload to release
-    #   uses: JasonEtco/upload-to-release@master
-    #   with:
-    #     args: artifact.zip
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    # - uses: actions/upload-artifact@v2
-    #   with:
-    #     name: avocado.gem
-    #     path: pkg/
