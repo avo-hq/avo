@@ -1,0 +1,10 @@
+feature: ['feature/*', 'feat/*']
+fix: fix/*
+chore: chore/*
+test: test/*
+docs: docs/*
+refactor: [refactor/*, 'refact/*']
+style: style/*
+ci: ci/*
+perf: perf/*
+fixed-branch: fixed-branch-name

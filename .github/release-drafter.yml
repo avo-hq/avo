@@ -1,7 +1,7 @@
 name-template: 'Next release draft'
 tag-template: 'v$NEXT_PATCH_VERSION'
 categories:
-  - title: '🚀 Features'
+  - title: '🎸 Features'
     labels:
       - 'feature'
       - 'feat'
@@ -11,8 +11,20 @@ categories:
       - 'fix'
       - 'bugfix'
       - 'bug'
-  - title: '🧰 Maintenance'
+  - title: '🤖 Maintenance'
     label: 'chore'
+  - title: '🧪 Test'
+    label: 'test'
+  - title: '✏️ Docs'
+    label: 'docs'
+  - title: '💡 Refactor'
+    label: 'refactor'
+  - title: '💄 Style'
+    label: 'style'
+  - title: '🎡 CI'
+    label: 'ci'
+  - title: '⚡️ Perf'
+    label: 'perf'
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
 version-resolver:
   major:
