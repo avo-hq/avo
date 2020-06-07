@@ -13,7 +13,7 @@
     "docker-build": "docker build -t avocado-dev -f docker/Dockerfile .",
     "docker-clean": "docker rmi avocado-dev",
     "build": "sh scripts/build.sh",
-    "bump": "sh scripts/bump.sh"
+    "release": "sh scripts/release.sh"
   },
   "dependencies": {
     "@rails/actioncable": "^6.0.2-1",
