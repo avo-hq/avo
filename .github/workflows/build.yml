@@ -75,7 +75,8 @@ jobs:
       with:
         tag_name: ${{ github.ref }}
         release_name: Release ${{ github.ref }}
-        body: ${{steps.get_release_notes.outputs.release_notes}}
+        body: |
+          ${{steps.get_release_notes.outputs.release_notes}}
         draft: false
         prerelease: false
 
