@@ -8,7 +8,7 @@ BUMP=$1
 gem bump $BUMP
 gem bump --no-commit
 VERSION=$(bundle exec rails runner 'puts Avocado::VERSION')
-bundle
+bundle install --quiet
 git commit -m "Bump $NAME to $VERSION"
 gem tag
 # git add Gemfile.lock
