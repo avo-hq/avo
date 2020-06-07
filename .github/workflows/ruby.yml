@@ -50,13 +50,13 @@
 #         bin/rails db:migrate
 
 #     - name: Get yarn cache directory path
-#       id: yarn-cache-dir-path
+#       id: test-yarn-cache-dir-path
 #       run: echo "::set-output name=dir::$(yarn cache dir)"
 
 #     - uses: actions/cache@v1
 #       id: test-yarn-cache
 #       with:
-#         path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+#         path: ${{ steps.test-yarn-cache-dir-path.outputs.dir }}
 #         key: ${{ runner.os }}-test-yarn-${{ hashFiles('**/yarn.lock') }}
 #         restore-keys: |
 #           ${{ runner.os }}-test-yarn-

@@ -44,3 +44,9 @@ To start the Webpack dev server you need to have a different seesion running `bi
 
 ## License
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+
+## Building
+
+If you just need a quick development build of the gem, just run `rails build`.
+
+To build for **release** (production mode), you need to run `yarn build`. This will build a docker image that will build the gem using `production` env variables. At the end of the process it will place the new gem under `pkg/` directory.
