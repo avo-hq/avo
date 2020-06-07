@@ -70,7 +70,7 @@ jobs:
       run: bundle exec rails app:webpacker:compile
 
     - name: Build gem
-      run: bundle exec rails build
+      run: bundle exec gem build
 
     - uses: actions/upload-artifact@v2
       with:
