@@ -14,4 +14,4 @@ git commit -m "Bump $NAME to $VERSION"
 gem tag
 # git add Gemfile.lock
 # git tag v$VERSION
-git push --tags
+git push --follow-tags
