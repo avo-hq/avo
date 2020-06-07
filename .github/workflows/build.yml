@@ -10,6 +10,10 @@ on: push
 jobs:
   build:
 
+    env:
+      RAILS_ENV: production
+      NODE_ENV: production
+
     runs-on: ubuntu-latest
 
     services:
@@ -35,15 +39,14 @@ jobs:
     - uses: actions/cache@v1
       with:
         path: vendor/bundle
-        key: ${{ runner.os }}-test-gems-${{ hashFiles('**/Gemfile.lock') }}
+        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
         restore-keys: |
-          ${{ runner.os }}-test-gems-
+          ${{ runner.os }}-gems-
 
     - name: Bundle install
       env:
         PGHOST: localhost
         PGUSER: postgres
-        RAILS_ENV: test
       run: |
         bundle config path vendor/bundle
         bundle install --jobs 4 --retry 3
@@ -55,12 +58,12 @@ jobs:
       run: echo "::set-output name=dir::$(yarn cache dir)"
 
     - uses: actions/cache@v1
-      id: test-yarn-cache
+      id: yarn-cache
       with:
         path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-        key: ${{ runner.os }}-test-yarn-${{ hashFiles('**/yarn.lock') }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
-          ${{ runner.os }}-test-yarn-
+          ${{ runner.os }}-yarn-
 
     - name: Yarn install
       run: bundle exec rails app:yarn:install
@@ -72,17 +75,9 @@ jobs:
       env:
         PGHOST: localhost
         PGUSER: postgres
-        RAILS_ENV: test
-      run: npm run test-all
-
-    - name: Build
-      env:
-        PGHOST: localhost
-        PGUSER: postgres
-        RAILS_ENV: production
-        NODE_ENV: production
-      run: yarn build
+      run: bundle exec rails build
 
     - uses: actions/upload-artifact@v2
       with:
-        path: pkg/*
+        # name: avocado.gem
+        path: pkg/
