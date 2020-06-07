@@ -86,6 +86,7 @@ const Avo = {
   env: '',
 
   init() {
+    
     Avo.env = window.env || 'production'
     if (document.getElementById('app')) {
       Avo.initVue()
