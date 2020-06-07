@@ -43,7 +43,7 @@ You may need to run `rake db:migrate && rake db:test:prepare` for local developm
 To start the Webpack dev server you need to have a different seesion running `bin/webpack-dev-server`.
 
 ## License
-Commercial license
+Commercial license.
 
 ## Building & Releasing
 
