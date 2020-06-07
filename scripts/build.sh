@@ -5,8 +5,7 @@ set -e
 NAME=Avocado
 BUMP=${1:-'patch'}
 
-gem bump $BUMP
-gem bump --no-commit
+gem bump $BUMP --no-commit
 VERSION=$(bundle exec rails runner 'puts Avocado::VERSION')
 bundle install --quiet
 git add .
