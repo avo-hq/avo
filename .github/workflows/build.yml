@@ -59,7 +59,8 @@ jobs:
 
     - name: Get gem version
       id: gem_version
-      run: bundle exec rails runner 'puts Avocado::VERSION'
+      run: |
+        sed "s|refs/tags/v||" <<< ${{ github.ref }}
 
     - name: Create Release
       id: create_release
