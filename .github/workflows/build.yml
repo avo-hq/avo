@@ -31,10 +31,6 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-production-gems-
 
-    - name: Install Spring
-      run: |
-        gem install spring
-
     - name: Bundle install
       run: |
         bundle config path vendor/bundle
