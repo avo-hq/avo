@@ -33,6 +33,7 @@ We use `rspec` to run our tests. To run unit tests use `npm run test`. For syste
 git clone
 cd avocado
 bundle install
+yarn
 bin/rails server
 ```
 
