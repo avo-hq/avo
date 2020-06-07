@@ -65,7 +65,7 @@
 #       run: bundle exec rails app:yarn:install
 
 #     - name: Bundle assets
-#       run: bundle exec rails app:webpacker:compile
+#       run: bin/webpack
 
 #     - name: Run tests
 #       env:
