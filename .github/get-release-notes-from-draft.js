@@ -18,7 +18,7 @@ async function getBody() {
 
   const draftRelease = data.find((release) => release.name === 'Next release draft')
 
-  if (draftRelease) process.stdout.write(draftRelease.body)
+  if (draftRelease) process.stdout.write(JSON.stringify(draftRelease.body))
 }
 
 getBody()
