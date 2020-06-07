@@ -69,6 +69,7 @@ jobs:
 
     - name: Create Release
       id: create_release
+      if: ${{steps.get_release_notes.outputs.release_notes}} != ''
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
