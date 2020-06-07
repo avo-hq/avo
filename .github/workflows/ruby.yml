@@ -71,6 +71,7 @@ jobs:
       run: npm run test-all
 
   update_release_notes:
+    needs: test
 
     runs-on: ubuntu-latest
 
