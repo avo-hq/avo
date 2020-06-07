@@ -69,13 +69,10 @@ jobs:
     - name: Bundle assets
       run: bundle exec rails app:webpacker:compile
 
-    - name: Run tests
-      env:
-        PGHOST: localhost
-        PGUSER: postgres
+    - name: Build gem
       run: bundle exec rails build
 
     - uses: actions/upload-artifact@v2
       with:
-        # name: avocado.gem
+        name: avocado.gem
         path: pkg/
