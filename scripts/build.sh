@@ -14,4 +14,4 @@ git add .
 git tag -am "tag v$VERSION" v$VERSION
 # git add Gemfile.lock
 # git tag v$VERSION
-git push --follow-tags
+git push --tags
