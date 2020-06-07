@@ -2,7 +2,7 @@
 
 set -e
 
-IMAGE_NAME=avocado-dev	NAME=Avocado
+IMAGE_NAME=avocado-dev
 WORKSPACE_DIR=$1	BUMP=${1:-'patch'}
 TAG=$2
 OS=$(node -r os -e 'console.log(os.platform())')
