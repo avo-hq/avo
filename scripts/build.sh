@@ -2,17 +2,16 @@
 
 set -e
 
-IMAGE_NAME=avocado-dev
-WORKSPACE_DIR=$1
-TAG=$2
-OS=$(node -r os -e 'console.log(os.platform())')
+NAME=Avocado
+BUMP=${1:-'patch'}
 
-cd $WORKSPACE_DIR
-
-docker build -t $IMAGE_NAME -f docker/Dockerfile .
-
-CID=$(docker create $IMAGE_NAME)
-
-docker cp ${CID}:/avocado/pkg/. $WORKSPACE_DIR/pkg
-docker rm ${CID}
-
+gem bump $BUMP
+gem bump --no-commit
+VERSION=$(bundle exec rails runner 'puts Avocado::VERSION')
+bundle install --quiet
+git add .
+git commit -m "Bump $NAME to $VERSION"
+gem tag
+# git add Gemfile.lock
+# git tag v$VERSION
+git push --follow-tags
