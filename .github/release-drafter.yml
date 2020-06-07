@@ -25,6 +25,8 @@ version-resolver:
     labels:
       - 'patch'
   default: patch
+references:
+  - master
 template: |
   ## Changes
 
