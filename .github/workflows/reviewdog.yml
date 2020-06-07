@@ -1,0 +1,34 @@
+name: reviewdog
+on: [pull_request]
+jobs:
+  rubocop:
+    name: runner / rubocop
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v1
+
+      - name: rubocop
+        uses: reviewdog/action-rubocop@v1
+        with:
+          rubocop_version: 0.80.1
+          rubocop_extensions: rubocop-performance:1.5.1 rubocop-minitest
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
+
+  eslint:
+    name: runner / eslint
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: eslint
+        uses: reviewdog/action-eslint@v1
+        with:
+          reporter: github-pr-review
+
+
