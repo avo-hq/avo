@@ -1,15 +1,15 @@
-# name: Tests
+name: Tests
 
-# on:
-#   push:
-#     branches: [ master ]
-#   pull_request:
-#     branches: [ master ]
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
-# jobs:
-#   test:
+jobs:
+  test:
 
-#     runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
 
 #     services:
 #       postgres:
