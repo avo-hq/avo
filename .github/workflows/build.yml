@@ -90,3 +90,7 @@ jobs:
         asset_path: pkg/avocado-${{steps.gem_version.outputs.tag}}.gem
         asset_name: avocado.gem
         asset_content_type: application/x-tar
+
+    - name: Delete draft release
+      run: |
+        node .github/delete-release-notes-draft.js ${{github.repository}} ${{secrets.GITHUB_TOKEN}}

@@ -18,7 +18,19 @@ async function handle() {
 
   const draftRelease = data.find((release) => release.name === 'Next release draft')
 
-  if (draftRelease) process.stdout.write(JSON.stringify(draftRelease.body))
+  if (draftRelease) {
+    const deleteUrl = `https://api.github.com/repos/${username}/${repo}/releases/${draftRelease.id}`
+
+    const {data} = await axios.delete(deleteUrl, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      auth: {
+        username,
+        password,
+      }
+    })
+  }
 }
 
 handle()
