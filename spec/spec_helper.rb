@@ -1,6 +1,10 @@
 if ENV['COVERAGE']
   require 'simplecov'
-  SimpleCov.start
+  SimpleCov.start do
+    add_filter '/spec/support/'
+    add_filter '/spec/rails_helper'
+    add_filter '/spec/spec_helper'
+  end
 
   if ENV['CI']
     require 'simplecov-cobertura'
