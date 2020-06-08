@@ -7,6 +7,7 @@
       <option v-for="(option, key) in field.options" :value="key" :key="key">
         {{option}}
       </option>
+      <option v-if="!value" value="" disabled selected>{{field.placeholder}}</option>
     </select>
   </edit-field-wrapper>
 </template>

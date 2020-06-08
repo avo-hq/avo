@@ -2,9 +2,11 @@ const plugin = require('tailwindcss/plugin')
 
 module.exports = {
   purge: [
-    './src/**/*.html',
-    './src/**/*.html.erb',
-    './src/**/*.vue',
+    './app/helpers/**/*.rb',
+    './app/views/**/*.html',
+    './app/views/**/*.html.erb',
+    './app/frontend/**/*.vue',
+    './app/frontend/**/*.js',
   ],
   theme: {
     extend: {

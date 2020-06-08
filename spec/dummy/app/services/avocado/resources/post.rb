@@ -4,14 +4,14 @@ module Avocado
       def initialize
         @title = :name
         @search = [:name, :id]
-        @includes = [:user]
+        @includes = :user
       end
 
       fields do
         id :ID
         text :Name, required: true
         textarea :Body
-        belongs_to :User, searchable: false
+        belongs_to :User, searchable: false, placeholder: '-'
       end
 
       # use_filter Avocado::Filters::IndicatorFilter

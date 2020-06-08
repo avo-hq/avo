@@ -1,4 +1,4 @@
-name: Tests
+name: Test
 
 on:
   push:
@@ -8,6 +8,11 @@ on:
 
 jobs:
   test:
+    env:
+      RAILS_ENV: test
+      PGHOST: localhost
+      PGUSER: postgres
+      COVERAGE: true
 
     runs-on: ubuntu-latest
 
@@ -34,15 +39,11 @@ jobs:
     - uses: actions/cache@v1
       with:
         path: vendor/bundle
-        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+        key: ${{ runner.os }}-test-gems-${{ hashFiles('**/Gemfile.lock') }}
         restore-keys: |
-          ${{ runner.os }}-gems-
+          ${{ runner.os }}-test-gems-
 
     - name: Bundle install
-      env:
-        PGHOST: localhost
-        PGUSER: postgres
-        RAILS_ENV: test
       run: |
         bundle config path vendor/bundle
         bundle install --jobs 4 --retry 3
@@ -50,26 +51,29 @@ jobs:
         bin/rails db:migrate
 
     - name: Get yarn cache directory path
-      id: yarn-cache-dir-path
+      id: test-yarn-cache-dir-path
       run: echo "::set-output name=dir::$(yarn cache dir)"
 
     - uses: actions/cache@v1
-      id: yarn-cache
+      id: test-yarn-cache
       with:
-        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        path: ${{ steps.test-yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-test-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
-          ${{ runner.os }}-yarn-
+          ${{ runner.os }}-test-yarn-
 
     - name: Yarn install
       run: bundle exec rails app:yarn:install
 
     - name: Bundle assets
-      run: bundle exec rails app:webpacker:compile
+      run: bin/webpack
 
     - name: Run tests
-      env:
-        PGHOST: localhost
-        PGUSER: postgres
-        RAILS_ENV: test
       run: npm run test-all
+
+    - uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: ./coverage/coverage.xml
+        name: codecov-umbrella
+

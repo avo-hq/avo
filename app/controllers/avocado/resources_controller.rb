@@ -4,17 +4,10 @@ module Avocado
   class ResourcesController < ApplicationController
     def index
       params[:page] ||= 1
-      params[:per_page] ||= 25
+      params[:per_page] ||= Avocado.config[:per_page]
       params[:sort_by] = params[:sort_by].present? ? params[:sort_by] : :created_at
       params[:sort_direction] = params[:sort_direction].present? ? params[:sort_direction] : :desc
       filters = params[:filters].present? ? JSON.parse(Base64.decode64(params[:filters])) : {}
-
-      query = resource_model.safe_constantize.order("#{params[:sort_by]} #{params[:sort_direction]}")
-      if filters.present?
-        filters.each do |filter_class, filter_value|
-          query = filter_class.safe_constantize.new.apply_query request, query, filter_value
-        end
-      end
 
       if params[:via_resource_name].present? and params[:via_resource_id].present?
         # get the reated resource (via_resource)
@@ -22,7 +15,15 @@ module Avocado
         related_model = related_resource.model
         # fetch the entries
         query = related_model.find(params[:via_resource_id]).public_send(params[:resource_name])
-        params[:per_page] = 5
+        params[:per_page] ||= Avocado.config.via_per_page
+      else
+        query = resource_model.safe_constantize.order("#{params[:sort_by]} #{params[:sort_direction]}")
+      end
+
+      if filters.present?
+        filters.each do |filter_class, filter_value|
+          query = filter_class.safe_constantize.new.apply_query request, query, filter_value
+        end
       end
 
       # Eager load the attachments
@@ -40,7 +41,12 @@ module Avocado
         resources_with_fields << Avocado::Resources::Resource.hydrate_resource(resource, avocado_resource, :index)
       end
 
+      meta = {
+        per_page_steps: ::Avocado.config[:per_page_steps],
+      }
+
       render json: {
+        meta: meta,
         resources: resources_with_fields,
         per_page: params[:per_page],
         total_pages: resources.total_pages,
@@ -162,12 +168,12 @@ module Avocado
         permitted = resource_fields.select(&:updatable).map do |field|
           # If it's a relation
           if field.methods.include? :relation_method
-            database_field_name = avocado_resource.model.reflections[field.relation_method].foreign_key
+            database_id = avocado_resource.model.reflections[field.relation_method].foreign_key
           end
 
-          if database_field_name.present?
-            # Allow the database_field_name for belongs_to relation
-            database_field_name.to_sym
+          if database_id.present?
+            # Allow the database_id for belongs_to relation
+            database_id.to_sym
           elsif field.is_array_param
             # Allow array param if necessary
             { "#{field.id}": [] }
