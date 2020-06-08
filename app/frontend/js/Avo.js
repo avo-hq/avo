@@ -39,6 +39,7 @@ Vue.component('show-select-field',               require('@/js/components/Show/S
 Vue.component('show-datetime-field',             require('@/js/components/Show/DatetimeField.vue').default)
 Vue.component('show-file-field',                 require('@/js/components/Show/FileField.vue').default)
 Vue.component('show-files-field',                require('@/js/components/Show/FilesField.vue').default)
+Vue.component('show-heading-field',              require('@/js/components/Show/HeadingField.vue').default)
 
 Vue.component('edit-field-wrapper',              require('@/js/components/Edit/FieldWrapper.vue').default)
 Vue.component('edit-id-field',                   require('@/js/components/Edit/IdField.vue').default)
@@ -52,6 +53,7 @@ Vue.component('edit-select-field',               require('@/js/components/Edit/S
 Vue.component('edit-datetime-field',             require('@/js/components/Edit/DatetimeField.vue').default)
 Vue.component('edit-file-field',                 require('@/js/components/Edit/FileField.vue').default)
 Vue.component('edit-files-field',                require('@/js/components/Edit/FilesField.vue').default)
+Vue.component('edit-heading-field',              require('@/js/components/Edit/HeadingField.vue').default)
 
 // Form Fields
 Vue.component('input-component',                 require('@/js/components/InputComponent.vue').default)

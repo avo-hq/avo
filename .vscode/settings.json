@@ -1,0 +1,4 @@
+{
+    "ruby.specSaveFile": true,
+    "ruby.specCommand": "HEADFULL=true RAILS_ENV=test bundle exec rspec"
+}
