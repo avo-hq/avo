@@ -4,6 +4,7 @@ module Avocado
       def initialize
         @title = :name
         @search = [:name, :id]
+        @includes = :users
       end
 
       fields do

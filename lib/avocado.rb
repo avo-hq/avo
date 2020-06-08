@@ -20,8 +20,13 @@ module Avocado
       '/avocado'
     end
 
-    def default_timezone
-      'Europe/Bucharest'
+    def config
+      {
+        timezone: 'Europe/Bucharest',
+        per_page: 24,
+        per_page_steps: [24, 48, 72],
+        via_per_page: 8,
+      }
     end
   end
 end

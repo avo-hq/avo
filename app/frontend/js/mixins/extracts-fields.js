@@ -7,7 +7,9 @@ export default {
       return this.resourceFields.filter((field) => !this.hiddenFields.includes(field))
     },
     hiddenFields() {
-      return this.resourceFields.filter((field) => field.is_relation && field.resource_name_plural && field.resource_name_plural.toLowerCase() === this.$route.params.resourceName)
+      return this.resourceFields.filter((field) => field.is_relation)
+        .filter((field) => field.resource_name_plural)
+        .filter((field) => field.resource_name_plural.toLowerCase() === this.$route.params.resourceName)
     },
   },
 }
