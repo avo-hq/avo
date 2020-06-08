@@ -75,6 +75,8 @@ group :development, :test do
   gem 'webdrivers'
   gem 'fuubar'
   gem 'rubocop'
+  gem 'simplecov', require: false
+  gem 'simplecov-cobertura'
 end
 
 gem 'zeitwerk', '~> 2.3'

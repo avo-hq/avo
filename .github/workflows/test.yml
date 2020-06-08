@@ -1,4 +1,4 @@
-name: Tests
+name: Test
 
 on:
   push:
@@ -12,6 +12,7 @@ jobs:
       RAILS_ENV: test
       PGHOST: localhost
       PGUSER: postgres
+      COVERAGE: true
 
     runs-on: ubuntu-latest
 
@@ -69,3 +70,10 @@ jobs:
 
     - name: Run tests
       run: npm run test-all
+
+    - uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: ./coverage/coverage.xml
+        name: codecov-umbrella
+
