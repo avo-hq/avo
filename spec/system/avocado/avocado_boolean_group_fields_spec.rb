@@ -12,7 +12,7 @@ RSpec.describe "BooleanGroupFields", type: :system do
         expect(page).to have_text 'View'
         click_on 'View'
         wait_for_loaded
-        # expect(page).to have_text user.roles[0]
+
         expect(page).to have_text 'Administrator'
         expect(page).to have_text 'Manager'
       end
@@ -41,8 +41,9 @@ RSpec.describe "BooleanGroupFields", type: :system do
         user_id = page.find('[field-id="id"] [data-slot="value"]').text
         expect(current_path).to eql "/avocado/resources/users/#{user_id}"
 
-        expect(page).to have_text '✅'
-        expect(page).to have_text '❌'
+        # TODO replace page.find('[field-id="roles"] [data-slot="value"]').text with method: find_field_value_element('roles') when merging to master (currently unavailable)
+        expect(page.find('[field-id="roles"] [data-slot="value"]').text).to have_text '✅ Administrator'
+        expect(page.find('[field-id="roles"] [data-slot="value"]').text).to have_text '❌ Manager'
       end
     end
   end
