@@ -1,5 +1,7 @@
-name: reviewdog
+name: Reviewdog
+
 on: [pull_request]
+
 jobs:
   rubocop:
     name: runner / rubocop
