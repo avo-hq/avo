@@ -28,7 +28,7 @@ module Avocado
         # The field properties as a hash {property: default_value}
         @field_properties = {
           id: id_or_name.to_s.parameterize.underscore,
-          name: id_or_name.to_s.camelize,
+          name: id_or_name.to_s.humanize,
           block: block,
           component: 'field',
           required: false,
