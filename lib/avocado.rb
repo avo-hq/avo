@@ -1,5 +1,6 @@
 require "avocado/engine"
 require "zeitwerk"
+require_relative 'avocado/configuration'
 
 loader = Zeitwerk::Loader.for_gem
 loader.push_dir(Pathname.new(File.join(__dir__, 'avocado')))
@@ -18,15 +19,6 @@ module Avocado
 
     def root_path
       '/avocado'
-    end
-
-    def config
-      {
-        timezone: 'Europe/Bucharest',
-        per_page: 24,
-        per_page_steps: [24, 48, 72],
-        via_per_page: 8,
-      }
     end
   end
 end
