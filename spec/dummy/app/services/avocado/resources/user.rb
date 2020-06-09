@@ -23,10 +23,10 @@ module Avocado
         select :highlighted, options: { yes: 'Highlighted', no: 'Not Highlighted' }, display_with_value: true, placeholder: 'This shows whether the user is highlighted.'
         password :password, name: 'User Password', required: false, except_on: :forms
         password :password_confirmation, name: 'Password confirmation', required: false
-        text 'Is Writer', resolve_using: -> (value) { value.truncate 3 }, hide_on: :edit do |model, resource, view, field|
+        text 'Is Writer', format_using: -> (value) { value.truncate 3 }, hide_on: :edit do |model, resource, view, field|
           model.posts.to_a.count > 0 ? 'yes' : 'no'
         end
-        textarea :Description, rows: 5, readonly: false, hide_on: :index, resolve_using: -> (value) { value.to_s.truncate 30 }, required: true
+        textarea :Description, rows: 5, readonly: false, hide_on: :index, format_using: -> (value) { value.to_s.truncate 30 }, required: true
         has_many :Projects
         has_many :Posts
       end
