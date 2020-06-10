@@ -4,7 +4,7 @@ module Avocado
   class ResourcesController < ApplicationController
     def index
       params[:page] ||= 1
-      params[:per_page] ||= Avocado.config[:per_page]
+      params[:per_page] ||= Avocado.configuration.per_page
       params[:sort_by] = params[:sort_by].present? ? params[:sort_by] : :created_at
       params[:sort_direction] = params[:sort_direction].present? ? params[:sort_direction] : :desc
       filters = params[:filters].present? ? JSON.parse(Base64.decode64(params[:filters])) : {}
@@ -15,7 +15,7 @@ module Avocado
         related_model = related_resource.model
         # fetch the entries
         query = related_model.find(params[:via_resource_id]).public_send(params[:resource_name])
-        params[:per_page] ||= Avocado.config.via_per_page
+        params[:per_page] ||= Avocado.configuration.via_per_page
       else
         query = resource_model.safe_constantize.order("#{params[:sort_by]} #{params[:sort_direction]}")
       end
@@ -42,7 +42,7 @@ module Avocado
       end
 
       meta = {
-        per_page_steps: ::Avocado.config[:per_page_steps],
+        per_page_steps: Avocado.configuration.per_page_steps,
       }
 
       render json: {

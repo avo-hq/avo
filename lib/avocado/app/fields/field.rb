@@ -13,7 +13,7 @@ module Avocado
       attr_accessor :required
       attr_accessor :readonly
       attr_accessor :nullable
-      attr_accessor :resolve_using
+      attr_accessor :format_using
       attr_accessor :computable
       attr_accessor :is_array_param
       attr_accessor :is_object_param
@@ -29,7 +29,7 @@ module Avocado
         # The field properties as a hash {property: default_value}
         @field_properties = {
           id: id_or_name.to_s.parameterize.underscore,
-          name: id_or_name.to_s.camelize,
+          name: id_or_name.to_s.humanize,
           block: block,
           component: 'field',
           required: false,
@@ -39,8 +39,7 @@ module Avocado
           nullable: false,
           computable: false,
           is_array_param: false,
-          is_object_param: false,
-          resolve_using: false,
+          format_using: false,
           placeholder: id_or_name.to_s.camelize,
         }
 
@@ -81,7 +80,7 @@ module Avocado
         fields[:value] = @block.call model, resource, view, self if computable and @block.present?
 
         # Run the value through resolver if present
-        fields[:value] = @resolve_using.call fields[:value] if @resolve_using.present?
+        fields[:value] = @format_using.call fields[:value] if @format_using.present?
 
         fields
       end
