@@ -185,7 +185,7 @@ module Avocado
           db_query = related_model.find(via_resource_id).public_send(self.resource_name_plural.downcase)
         end
 
-        self.search.each_with_index do |search_by, index|
+        [self.search].flatten.each_with_index do |search_by, index|
           query_string = "text(#{search_by}) ILIKE '%#{query}%'"
 
           if index == 0
@@ -195,7 +195,7 @@ module Avocado
           end
         end
 
-        db_query
+        db_query.select("#{:id}, #{title} as \"name\"")
       end
 
       def model
