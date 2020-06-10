@@ -118,9 +118,7 @@ module Avocado
         end
 
         def show_path(resource)
-          url = resource.class.name.demodulize.downcase.pluralize
-
-          "/resources/#{url}/#{resource.id}"
+          "/resources/#{resource.class.model_name.plural}/#{resource.id}"
         end
 
         def index_path(resource_or_class)

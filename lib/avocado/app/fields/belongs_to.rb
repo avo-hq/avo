@@ -39,7 +39,8 @@ module Avocado
 
         # Populate the options on show and edit
         fields[:options] = []
-        if view == :edit
+
+        if [:edit, :create].include? view
           if self.searchable
             fields[:model] = relation_model
           else
