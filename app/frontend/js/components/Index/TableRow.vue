@@ -4,7 +4,7 @@
     :resource-name="resourceName"
     :resource-id="resource.id"
   >
-    <td>
+    <td class="w-10">
       <div class="flex justify-center h-full">
         <input type="checkbox" class="mx-3" />
       </div>
