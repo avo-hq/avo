@@ -68,7 +68,7 @@ module Avocado
       # end
 
       def get_resources_navigation
-        App.get_resources.map { |resource| { label: resource.resource_name_plural, resource_name: resource.url.pluralize }}.to_json.to_s.html_safe
+        App.get_resources.map { |resource| { label: resource.resource_name_plural.humanize, resource_name: resource.url.pluralize } }.to_json.to_s.html_safe
       end
     end
   end
