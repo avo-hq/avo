@@ -16,6 +16,7 @@ module Avocado
       attr_accessor :format_using
       attr_accessor :computable
       attr_accessor :is_array_param
+      attr_accessor :is_object_param
       attr_accessor :block
       attr_accessor :placeholder
 
