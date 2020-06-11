@@ -18,6 +18,7 @@ module Avocado
         text :email, name: 'User Email', required: true
         number :age, min: 0, max: 120, step: 5
         boolean :availability
+        key_value :meta, key_label: 'Cheie', value_label: 'Valoare', action_text: 'Adauga', delete_text: 'Sterge', disable_editing_keys: false, disable_adding_rows: false, disable_deleting_rows: false
         date :birthday, first_day_of_week: 1, picker_format: 'F J Y', format: 'MMMM Do YYYY', placeholder: 'Feb 24th 1955', required: true
         datetime :starts_on, time_24hr: true
         select :highlighted, options: { yes: 'Highlighted', no: 'Not Highlighted' }, display_with_value: true, placeholder: 'This shows whether the user is highlighted.'

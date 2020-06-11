@@ -78,6 +78,10 @@ module Avocado
           @@fields[self].push Avocado::Fields::FilesField::new(name, **args)
         end
 
+        def key_value(name, **args)
+          @@fields[self].push Avocado::Fields::KeyValueField::new(name, **args)
+        end
+
         def hydrate_resource(model, resource, view = :index)
           default_panel_name = "#{resource.name} details"
 
