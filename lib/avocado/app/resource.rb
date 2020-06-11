@@ -62,6 +62,10 @@ module Avocado
           @@fields[self].push Avocado::Fields::DatetimeField::new(name, **args)
         end
 
+        def boolean_group(name, **args, &block)
+          @@fields[self].push Avocado::Fields::BooleanGroupField::new(name, **args, &block)
+        end
+
         def belongs_to(name, **args)
           @@fields[self].push Avocado::Fields::BelongsToField::new(name, **args)
         end
@@ -118,9 +122,7 @@ module Avocado
         end
 
         def show_path(resource)
-          url = resource.class.name.demodulize.downcase.pluralize
-
-          "/resources/#{url}/#{resource.id}"
+          "/resources/#{resource.class.model_name.plural}/#{resource.id}"
         end
 
         def index_path(resource_or_class)
@@ -187,7 +189,7 @@ module Avocado
           db_query = related_model.find(via_resource_id).public_send(self.resource_name_plural.downcase)
         end
 
-        self.search.each_with_index do |search_by, index|
+        [self.search].flatten.each_with_index do |search_by, index|
           query_string = "text(#{search_by}) ILIKE '%#{query}%'"
 
           if index == 0
@@ -197,7 +199,7 @@ module Avocado
           end
         end
 
-        db_query
+        db_query.select("#{:id}, #{title} as \"name\"")
       end
 
       def model

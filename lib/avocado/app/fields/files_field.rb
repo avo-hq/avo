@@ -4,7 +4,6 @@ module Avocado
   module Fields
     class FilesField < Field
       include Rails.application.routes.url_helpers
-      attr_accessor :is_avatar
       attr_accessor :is_image
 
       def initialize(name, **args, &block)
@@ -15,7 +14,6 @@ module Avocado
         super(name, **args, &block)
         @is_array_param = true
         @file_field = true
-        @is_avatar = args[:is_avatar].present? ? args[:is_avatar] : false
         @is_image = args[:is_image].present? ? args[:is_image] : @is_avatar
       end
 
