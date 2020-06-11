@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "KeyValueFields", type: :system do
+RSpec.describe 'KeyValueFields', type: :system do
   describe 'with regular input' do
     let!(:user) { create :user }
 
