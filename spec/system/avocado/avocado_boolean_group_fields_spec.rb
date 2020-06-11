@@ -10,7 +10,7 @@ RSpec.describe 'BooleanGroupFields', type: :system do
 
         expect(page).to have_text 'ROLES'
         expect(page).to have_text 'View'
-        click_on 'View'
+        find('[field-id="roles"]').find('button').click
         wait_for_loaded
 
         expect(page).to have_text 'Administrator'
