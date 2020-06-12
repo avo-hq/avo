@@ -11,6 +11,7 @@ module Avocado
 
         super(name, **args, &block)
 
+        @is_object_param = true
         # on index we have the option with 'view' button (similar as boolean_group field)
         # if a user wants to hide from index, he can add hide_on: index
 
@@ -21,7 +22,13 @@ module Avocado
 
         @disable_editing_keys = args[:disable_editing_keys].present? ? args[:disable_editing_keys] : false
         # disabling editing keys also disables adding rows (doesn't take into account the value of disable_adding_rows)
-        @disable_adding_rows = args[:disable_editing_keys].present? && args[:disable_editing_keys] == true ? true : args[:disable_adding_rows].present? ? args[:disable_adding_rows] : false
+        if args[:disable_editing_keys].present? && args[:disable_editing_keys] == true
+          @disable_adding_rows = true
+        elsif args[:disable_adding_rows].present?
+          @disable_adding_rows = args[:disable_adding_rows]
+        else
+          @disable_adding_rows = false
+        end
         @disable_deleting_rows = args[:disable_deleting_rows].present? ? args[:disable_deleting_rows] : false
       end
 

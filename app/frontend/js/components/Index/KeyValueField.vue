@@ -1,30 +1,18 @@
 <template>
   <index-field-wrapper :field="field" class="text-center">
-    <template v-if="isVisible">
-      <div class="shadow overflow-hidden rounded" v-if="value">
-        <table class="min-w-full bg-white">
-          <thead class="bg-gray-800 text-white">
-            <tr>
-              <th class="w-1/2 text-left py-3 px-4 uppercase font-semibold text-sm">
-                {{ field.key_label }}
-              </th>
-              <th class="w-1/2 text-left py-3 px-4 uppercase font-semibold text-sm">
-                {{ field.value_label }}
-              </th>
-            </tr>
-          </thead>
-          <tbody class="text-gray-700">
-            <tr v-for="(val, key, index) in value" v-bind:key="index">
-              <td class="w-1/2 text-left py-3 px-4">{{ key }}</td>
-              <td class="w-1/2 text-left py-3 px-4">{{ val }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <template v-else>
-      -
-      </template>
-    </template>
+    <KeyValue
+      v-if="isVisible"
+      :db-value="value"
+      :key-label="field.key_label"
+      :value-label="field.value_label"
+      :read-only=true
+      :action-text="field.action_text"
+      :delete-text="field.delete_text"
+      :disable-editing-keys="field.disable_editing_keys"
+      :disable-adding-rows="field.disable_adding_rows"
+      :disable-deleting-rows="field.disable_deleting_rows"
+      >
+    </KeyValue>
     <button @click="toggleView" v-else>
       View
     </button>
@@ -33,17 +21,19 @@
 
 <script>
 import FormField from '@/js/mixins/form-field'
+/* eslint-disable import/no-unresolved */
+import KeyValue from '@/js/components/KeyValue'
 
 export default {
   mixins: [FormField],
-  props: ['field'],
+  components: { KeyValue },
   data: () => ({
     isVisible: false,
   }),
   methods: {
     setInitialValue() {
       if (this.field.value) {
-        this.value = JSON.parse(this.field.value)
+        this.value = this.field.value
       }
     },
     toggleView() {
