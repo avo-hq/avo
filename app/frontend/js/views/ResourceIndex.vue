@@ -101,6 +101,7 @@ export default {
     page: 0,
     perPage: 25,
     meta: {
+      // eslint-disable-next-line camelcase
       per_page_steps: [],
     },
     sortBy: '',

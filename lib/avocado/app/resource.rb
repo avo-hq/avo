@@ -70,6 +70,10 @@ module Avocado
           @@fields[self].push Avocado::Fields::BelongsToField::new(name, **args)
         end
 
+        def has_one(name, **args)
+          @@fields[self].push Avocado::Fields::HasOneField::new(name, **args)
+        end
+
         def has_many(name, **args)
           @@fields[self].push Avocado::Fields::HasManyField::new(name, **args)
         end
@@ -107,7 +111,7 @@ module Avocado
             furnished_field[:panel_name] = default_panel_name
             furnished_field[:show_on_show] = field.show_on_show
 
-            if ['has-many-field'].include?(furnished_field[:component])
+            if field.has_own_panel?
               furnished_field[:panel_name] = field.name.to_s.pluralize
             end
 
