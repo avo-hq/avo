@@ -11,7 +11,7 @@ module Avocado
       fields do
         id :ID
         text :Name, required: true, placeholder: 'John Doe'
-        heading 'Personal Documentssadasfsfsafsasafsaffssf'
+        heading '<div class="underline text-green-800 uppercase">Personal Documents</div>', as_html: true
         file :cv, name: 'CV'
         file :avatar, is_avatar: true
         files :images, is_image: true
