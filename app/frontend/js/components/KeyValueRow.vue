@@ -1,28 +1,32 @@
 <template>
   <tr>
     <td class="w-4/9 text-left py-3 px-4">
-      <input
-        type="textarea"
-        :value="mapKey"
-        :id="mapKey"
-        :disabled="disabled"
-        :style="disableEditingKeys ? 'cursor: not-allowed;' : ''"
-        @change="updateKey(mapKey, value, $event)"
+      <input-component
+        :value="loopKey"
+        @input="updateKey"
       />
+      <!-- <slot name="key" /> -->
     </td>
     <td class="w-4/9 text-left py-3 px-4">
-      <input
-        type="textarea"
-        :value="value"
-        :disabled="disabled"
-        @change="updateValue(mapKey, $event)"
-        @keyup.enter="addRow"
+      <input-component
+        :value="loopValue"
+        @input="updateValue"
       />
+
+      <!-- <slot name="value" /> -->
+        <!-- :value="loopValue" -->
+      <!-- <input
+        type="text"
+        :disabled="disabled"
+        v-model="loopValue"
+        @keyup.enter="addRow"
+      /> -->
+        <!-- @change="updateValue($event)" -->
     </td>
     <td class="w-1/9 text-left py-3 px-4 float-right">
       <a
         href="javascript:void(0);"
-        @click="deleteRow(mapKey)"
+        @click="deleteRow(loopKey)"
         v-tooltip="deleteText"
         :style="disableDeletingRows ? 'cursor: not-allowed;' : ''"
       >
@@ -39,8 +43,9 @@ import DeleteIcon from '@/svgs/trash.svg?inline'
 
 export default {
   props: {
-    mapKey: String,
-    value: String,
+    loopKey: String,
+    loopValue: String,
+    index: Number,
     readOnly: Boolean,
     deleteText: String,
     disableEditingKeys: Boolean,
@@ -54,7 +59,7 @@ export default {
       if (this.disableEditingKeys) return true
 
       return this.readOnly
-    }
+    },
   },
   methods: {
     // getValue() {
@@ -68,10 +73,19 @@ export default {
     //   this.$set(this.value, newKey, val)
     //   this.$delete(this.value, oldKey)
     // },
-    updateValue(key, e) {
-      const newValue = e.target.value
-      this.$set(this.value, key, newValue)
-      this.$emit('valueUpdated', this.key, newValue)
+    updateValue(value) {
+      this.$emit('value-updated', {
+        index: this.index,
+        value,
+      })
+      cl
+    },
+    updateKey(value) {
+      console.log('updateKey', value)
+      this.$emit('key-updated', {
+        index: this.index,
+        value,
+      })
     },
     // deleteRow(key) {
     //   if (!this.field.disable_deleting_rows) this.$delete(this.value, key)

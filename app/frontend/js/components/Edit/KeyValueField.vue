@@ -4,17 +4,15 @@
       v-model="value"
       :key-label="field.key_label"
       :value-label="field.value_label"
-      :read-only=false
+      :read-only="false"
       :action-text="field.action_text"
       :delete-text="field.delete_text"
       :disable-editing-keys="field.disable_editing_keys"
       :disable-adding-rows="field.disable_adding_rows"
       :disable-deleting-rows="field.disable_deleting_rows"
-    >
-    </KeyValue>
+    />
     <pre>
-
-    {{value}}
+      {{value}}
     </pre>
   </edit-field-wrapper>
 </template>
