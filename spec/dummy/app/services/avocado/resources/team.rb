@@ -10,6 +10,7 @@ module Avocado
         id :ID
         text :name
         textarea :description
+        has_one :admin
         # has_many :memberships
       end
     end

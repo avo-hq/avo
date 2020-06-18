@@ -1,4 +1,9 @@
 class Team < ApplicationRecord
-  has_many :memberships
-  has_many :members, through: :memberships
+  validates :name, presence: true
+
+  has_many :memberships, class_name: 'TeamMembership'
+  has_many :members, through: :memberships, class_name: 'User', source: :user
+
+  has_one :admin_membership, -> { where level: :admin }, class_name: 'TeamMembership', dependent: :destroy
+  has_one :admin, through: :admin_membership, source: :user
 end
