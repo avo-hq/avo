@@ -92,46 +92,4 @@ RSpec.describe 'HasOneField', type: :system do
       end
     end
   end
-
-  context 'create' do
-    let(:url) { '/avocado/resources/teams/new' }
-
-    describe 'without user attached' do
-      it { is_expected.to have_select 'admin', selected: '-' }
-
-      it 'creates a team without an admin attached' do
-        visit url
-
-        fill_in :name, with: 'Google'
-
-        expect {
-          click_on 'Save'
-          wait_for_loaded
-        }.to change(Team, :count).by 1
-
-        team = Team.first
-
-        expect(current_path).to eql "/avocado/resources/teams/#{team.id}"
-        expect(find_field_value_element('admin')).to have_text '-'
-      end
-
-      it 'creates a team with an admin attached' do
-        visit url
-
-        fill_in :name, with: 'Google'
-
-        select user.name, from: 'admin'
-
-        expect {
-          click_on 'Save'
-          wait_for_loaded
-        }.to change(Team, :count).by 1
-
-        team = Team.first
-
-        expect(current_path).to eql "/avocado/resources/teams/#{team.id}"
-        expect(page).to have_link user.name, href: "/avocado/resources/users/#{user.id}"
-      end
-    end
-  end
 end

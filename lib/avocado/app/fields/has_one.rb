@@ -13,6 +13,8 @@ module Avocado
 
         super(name, **args, &block)
 
+        hide_on :create
+
         @placeholder = '-'
 
         @relation_method = name.to_s.parameterize.underscore

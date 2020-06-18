@@ -109,8 +109,8 @@ module Avocado
     end
 
     def create
-      resource = resource_model.safe_constantize.new
-      avocado_resource.fill_model(resource, resource_params).save!
+      resource = resource_model.safe_constantize.new(resource_params)
+      resource.save!
 
       render json: {
         resource: Avocado::Resources::Resource.hydrate_resource(resource, avocado_resource, :create),
