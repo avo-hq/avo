@@ -26,6 +26,10 @@ module Avocado
 
         fields
       end
+
+      def has_own_panel?
+        true
+      end
     end
   end
 end

@@ -45,7 +45,9 @@ module Avocado
       end
 
       def get_resource(resource)
-        @@app[:resources].find { |available_resource| "Avocado::Resources::#{resource}".safe_constantize == available_resource.class }
+        @@app[:resources].find do |available_resource|
+          "Avocado::Resources::#{resource}".safe_constantize == available_resource.class
+        end
       end
 
       def get_resource_by_name(resource)
