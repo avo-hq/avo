@@ -2,33 +2,24 @@
   <tr>
     <td class="w-4/9 text-left py-3 px-4">
       <input-component
+        ref="keyInput"
         :value="loopKey"
         @input="updateKey"
       />
-      <!-- <slot name="key" /> -->
     </td>
     <td class="w-4/9 text-left py-3 px-4">
       <input-component
         :value="loopValue"
         @input="updateValue"
+        @keyup.native.enter="$emit('keyup-enter')"
       />
-
-      <!-- <slot name="value" /> -->
-        <!-- :value="loopValue" -->
-      <!-- <input
-        type="text"
-        :disabled="disabled"
-        v-model="loopValue"
-        @keyup.enter="addRow"
-      /> -->
-        <!-- @change="updateValue($event)" -->
     </td>
     <td class="w-1/9 text-left py-3 px-4 float-right">
       <a
         href="javascript:void(0);"
-        @click="deleteRow(loopKey)"
+        @click="$emit('delete-row', index)"
         v-tooltip="deleteText"
-        :style="disableDeletingRows ? 'cursor: not-allowed;' : ''"
+        :class="{'cursor-not-allowed': disableDeletingRows}"
       >
         <DeleteIcon class="text-gray-400 h-6 hover:text-gray-500" />
       </a>
@@ -62,39 +53,21 @@ export default {
     },
   },
   methods: {
-    // getValue() {
-    //   // console.log(this.value)
-    //   // console.log(JSON.stringify(this.value))
-    //   // TODO prevent saving empty key or value values (when saving will work)
-    //   return this.value
-    // },
-    // updateKey(oldKey, val, e) {
-    //   const newKey = e.target.value
-    //   this.$set(this.value, newKey, val)
-    //   this.$delete(this.value, oldKey)
-    // },
     updateValue(value) {
       this.$emit('value-updated', {
         index: this.index,
         value,
       })
-      cl
     },
     updateKey(value) {
-      console.log('updateKey', value)
       this.$emit('key-updated', {
         index: this.index,
         value,
       })
     },
-    // deleteRow(key) {
-    //   if (!this.field.disable_deleting_rows) this.$delete(this.value, key)
-    // },
-    // addRow() {
-    //   if (!this.field.disable_adding_rows) {
-    //     this.$set(this.value, '', '')
-    //   }
-    // },
+    focus() {
+      this.$refs.keyInput.focus()
+    },
   },
 }
 </script>

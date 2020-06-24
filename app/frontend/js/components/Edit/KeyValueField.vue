@@ -11,9 +11,6 @@
       :disable-adding-rows="field.disable_adding_rows"
       :disable-deleting-rows="field.disable_deleting_rows"
     />
-    <pre>
-      {{value}}
-    </pre>
   </edit-field-wrapper>
 </template>
 

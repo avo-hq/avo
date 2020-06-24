@@ -1,6 +1,7 @@
 <template>
   <textarea
     v-if="type === 'textarea'"
+    ref="textarea"
     :id="id"
     :class="inputClasses"
     :disabled="disabled"
@@ -11,6 +12,7 @@
     ></textarea>
   <input
     v-else
+    ref="input"
     :type="type"
     :class="inputClasses"
     :id="id"
@@ -38,6 +40,15 @@ export default {
     type: {
       type: String,
       default: 'text',
+    },
+  },
+  methods: {
+    focus() {
+      if (this.type === 'textarea') {
+        this.$refs.textarea.focus()
+      } else {
+        this.$refs.input.focus()
+      }
     },
   },
 }

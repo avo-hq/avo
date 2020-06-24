@@ -23,6 +23,7 @@
       <tbody class="text-gray-700">
         <KeyValueRow
           v-for="({value, key}, index) in rows"
+          :ref="'keyValueRow' + index"
           :loop-key="key"
           :loop-value="value"
           :index="index"
@@ -31,26 +32,14 @@
           :delete-text="deleteText"
           :disable-editing-keys="disableEditingKeys"
           :disable-deleting-rows="disableDeletingRows"
+          @delete-row="deleteRow"
           @value-updated="valueUpdated"
           @key-updated="keyUpdated"
+          @keyup-enter="onEnterPress(index)"
         >
-          <!-- <template #key>
-            <input-component
-              v-model="loopKey"
-            />
-          </template>
-          <template #value>
-            <input-component
-              v-model="loopValue"
-            />
-          </template> -->
         </KeyValueRow>
       </tbody>
     </table>
-
-    <pre>
-      {{value}}
-    </pre>
   </div>
   <div v-else>
     -
@@ -80,25 +69,49 @@ export default {
   components: { KeyValueRow, PlusIcon },
   methods: {
     keyUpdated({ index, value }) {
-      console.log('valueUpdated', key)
-      // this.$set(this.value, index, { key: this.key, value })
-      // this.$set(this.value, index, value)
-      // this.$set(this.value, key, value)
-      // this.$emit('input', this.value)
+      this.$set(this.rows[index], 'key', value)
     },
     valueUpdated({ index, value }) {
-      console.log('valueUpdated', index, value)
-      // this.$set(this.value, index, { key: this.key, value })
-      // this.$emit('input', this.value)
+      this.$set(this.rows[index], 'value', value)
+    },
+    onEnterPress(index) {
+      if (this.rows.length - 1 === index) {
+        this.addRow()
+      } else {
+        this.goToNextRow(index)
+      }
     },
     addRow() {
-      console.log('addRow')
+      const length = this.rows.push({ key: '', value: '' })
+
+      setTimeout(() => this.focusRow(length - 1), 1)
+    },
+    goToNextRow(index) {
+      this.focusRow(index + 1)
+    },
+    focusRow(index) {
+      this.$refs[`keyValueRow${index}`][0].focus()
+    },
+    deleteRow(index) {
+      this.$delete(this.rows, index)
+    },
+  },
+  watch: {
+    rows: {
+      handler() {
+        const parsedValue = {}
+
+        this.rows.forEach((row) => {
+          parsedValue[row.key] = row.value
+        })
+
+        this.$emit('input', parsedValue)
+      },
+      deep: true,
     },
   },
   mounted() {
-    // console.log(this.value)
     setTimeout(() => {
-      console.log(this.value)
       Object.keys(this.value).forEach((key) => {
         const value = this.value[key]
 
