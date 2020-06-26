@@ -10,7 +10,7 @@ module Avocado
 
       fields do
         id :ID
-        text :Name, required: true, placeholder: 'John Doe'
+        text :name, required: true, placeholder: 'John Doe'
         file :cv, name: 'CV'
         file :avatar, is_avatar: true
         files :images, is_image: true

@@ -21,6 +21,8 @@
               :via-resource-name="viaResourceName"
               :via-resource-id="viaResourceId"
             ></component>
+
+            <input type="submit" class="hidden">
           </form>
         </template>
 
