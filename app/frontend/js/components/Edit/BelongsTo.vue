@@ -12,10 +12,12 @@
     </div>
     <div v-else>
       <select :name="field.id"
+        ref="field-input"
         :id="field.id"
         :class="inputClasses"
         class="select-input w-full"
         v-model="selectedValue"
+        :disabled="disabled"
       >
         <option value="" v-text="placeholder"></option>
         <option v-for="option in options"
@@ -37,6 +39,7 @@
 import Bus from '@/js/Bus'
 import FormField from '@/js/mixins/form-field'
 import HasInputAppearance from '@/js/mixins/has-input-appearance'
+import isUndefined from 'lodash/isUndefined'
 
 export default {
   mixins: [FormField, HasInputAppearance],
@@ -46,8 +49,16 @@ export default {
     selectedValue: '',
     isLoading: false,
   }),
-  props: ['resourceName', 'field'],
+  props: [
+    'resourceName',
+    'viaResourceName',
+    'viaResourceId',
+    'field',
+  ],
   computed: {
+    disabled() {
+      return !isUndefined(this.viaResourceName)
+    },
     searchable() {
       return this.field.searchable
     },

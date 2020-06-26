@@ -13,6 +13,7 @@ RSpec.describe 'ResourcesControllers', type: :request do
           },
           per_page: 24,
           resources: [],
+          success: true,
           total_pages: 0
         }.deep_stringify_keys)
       end
