@@ -4,7 +4,7 @@ module Avocado
   class ResourcesController < ApplicationController
     def index
       params[:page] ||= 1
-      params[:per_page] ||= Avocado.config[:per_page]
+      params[:per_page] ||= Avocado.configuration.per_page
       params[:sort_by] = params[:sort_by].present? ? params[:sort_by] : :created_at
       params[:sort_direction] = params[:sort_direction].present? ? params[:sort_direction] : :desc
       filters = params[:filters].present? ? JSON.parse(Base64.decode64(params[:filters])) : {}
@@ -15,7 +15,7 @@ module Avocado
         related_model = related_resource.model
         # fetch the entries
         query = related_model.find(params[:via_resource_id]).public_send(params[:resource_name])
-        params[:per_page] ||= Avocado.config.via_per_page
+        params[:per_page] ||= Avocado.configuration.via_per_page
       else
         query = resource_model.safe_constantize.order("#{params[:sort_by]} #{params[:sort_direction]}")
       end
@@ -42,7 +42,7 @@ module Avocado
       end
 
       meta = {
-        per_page_steps: ::Avocado.config[:per_page_steps],
+        per_page_steps: Avocado.configuration.per_page_steps,
       }
 
       render json: {
@@ -90,7 +90,9 @@ module Avocado
       update_file_fields
 
       # Filter out the file params
-      regular_resource_params = resource_params.select { |id, value| !avocado_resource.attached_file_fields.map(&:id).include? id }
+      regular_resource_params = resource_params.select do |id, value|
+        !avocado_resource.attached_file_fields.map(&:id).include? id
+      end
 
       if avocado_resource.has_devise_password and regular_resource_params[:password].blank?
         regular_resource_params.delete(:password_confirmation)
@@ -167,8 +169,8 @@ module Avocado
       def permitted_params
         permitted = resource_fields.select(&:updatable).map do |field|
           # If it's a relation
-          if field.methods.include? :relation_method
-            database_id = avocado_resource.model.reflections[field.relation_method].foreign_key
+          if field.methods.include? :foreign_key
+            database_id = field.foreign_key(avocado_resource.model)
           end
 
           if database_id.present?
@@ -177,6 +179,9 @@ module Avocado
           elsif field.is_array_param
             # Allow array param if necessary
             { "#{field.id}": [] }
+          elsif field.is_object_param
+            # Allow array param if necessary
+            { "#{field.id}": {} }
           else
             field.id.to_sym
           end

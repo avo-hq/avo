@@ -45,7 +45,9 @@ module Avocado
       end
 
       def get_resource(resource)
-        @@app[:resources].find { |available_resource| "Avocado::Resources::#{resource}".safe_constantize == available_resource.class }
+        @@app[:resources].find do |available_resource|
+          "Avocado::Resources::#{resource}".safe_constantize == available_resource.class
+        end
       end
 
       def get_resource_by_name(resource)
@@ -68,7 +70,7 @@ module Avocado
       # end
 
       def get_resources_navigation
-        App.get_resources.map { |resource| { label: resource.resource_name_plural, resource_name: resource.url.pluralize }}.to_json.to_s.html_safe
+        App.get_resources.map { |resource| { label: resource.resource_name_plural.humanize, resource_name: resource.url.pluralize } }.to_json.to_s.html_safe
       end
     end
   end

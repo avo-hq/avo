@@ -39,7 +39,8 @@ module Avocado
 
         # Populate the options on show and edit
         fields[:options] = []
-        if view == :edit
+
+        if [:edit, :create].include? view
           if self.searchable
             fields[:model] = relation_model
           else
@@ -58,7 +59,11 @@ module Avocado
       end
 
       def foreign_key(model)
-        model.class.reflections[@relation_method].foreign_key
+        if model.class == Class
+          model.reflections[@relation_method].foreign_key
+        else
+          model.class.reflections[@relation_method].foreign_key
+        end
       end
     end
   end

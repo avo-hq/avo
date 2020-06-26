@@ -19,15 +19,16 @@ module Avocado
         text :email, name: 'User Email', required: true
         number :age, min: 0, max: 120, step: 5
         boolean :availability
+        boolean_group :roles, options: { admin: 'Administrator', manager: 'Manager', write: 'Writer' }
         date :birthday, first_day_of_week: 1, picker_format: 'F J Y', format: 'MMMM Do YYYY', placeholder: 'Feb 24th 1955', required: true
         datetime :starts_on, time_24hr: true
         select :highlighted, options: { yes: 'Highlighted', no: 'Not Highlighted' }, display_with_value: true, placeholder: 'This shows whether the user is highlighted.'
         password :password, name: 'User Password', required: false, except_on: :forms
         password :password_confirmation, name: 'Password confirmation', required: false
-        text 'Is Writer', resolve_using: -> (value) { value.truncate 3 }, hide_on: :edit do |model, resource, view, field|
+        text :is_writer, format_using: -> (value) { value.truncate 3 }, hide_on: :edit do |model, resource, view, field|
           model.posts.to_a.count > 0 ? 'yes' : 'no'
         end
-        textarea :Description, rows: 5, readonly: false, hide_on: :index, resolve_using: -> (value) { value.to_s.truncate 30 }, required: true
+        textarea :Description, rows: 5, readonly: false, hide_on: :index, format_using: -> (value) { value.to_s.truncate 30 }, required: true
         has_many :Projects
         has_many :Posts
       end
