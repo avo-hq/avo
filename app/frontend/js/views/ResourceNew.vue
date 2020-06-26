@@ -56,7 +56,5 @@ export default {
     'viaResourceName',
     'viaResourceId',
   ],
-  computed: {},
-  methods: {},
 }
 </script>

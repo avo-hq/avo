@@ -48,7 +48,7 @@ RSpec.describe 'HasManyField', type: :system do
 
         find("[data-component='resources-index'][data-resource-name='posts'] [data-control='edit']").click
 
-        expect(page).to have_current_path "/avocado/resources/posts/#{post.id}/edit"
+        expect(page).to have_current_path "/avocado/resources/posts/#{post.id}/edit?viaResourceName=users&viaResourceId=#{user.id}"
       end
 
       it 'deletes a post' do

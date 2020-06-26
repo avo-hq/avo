@@ -13,7 +13,7 @@ export default {
     afterSuccessPath() {
       if (!isUndefined(this.viaResourceName)) return `/resources/${this.viaResourceName}/${this.viaResourceId}`
 
-      return `/resources/${this.resourceName}`
+      return `/resources/${this.resourceName}/${this.resource.id}`
     },
     fields() {
       if (!this.resource || !this.resource.fields || this.resource.fields.length === 0) {
@@ -68,28 +68,28 @@ export default {
     async submitResource() {
       this.isLoading = true
       this.errors = {}
-      let response = {}
 
       try {
-        response = await Api({
+        const { data } = await Api({
           method: this.submitMethod,
           url: this.submitResourceUrl,
           data: this.buildFormData(),
           headers: {
             'Content-Type': 'multipart/form-data',
-            // 'Content-Type': 'application/x-www-form-urlencoded',
           },
         })
+
+        const { success } = data
+        const { resource } = data
+
+        this.resource = resource
+
+        if (success) {
+          this.$router.push(this.afterSuccessPath)
+        }
       } catch (error) {
-        const { errorResponse } = error
-        this.errors = errorResponse.data.errors
-      }
-
-      const { data } = response
-      const { success } = data
-
-      if (success) {
-        this.$router.push(this.afterSuccessPath)
+        const { response } = error
+        this.errors = response.data.errors
       }
 
       this.isLoading = false
