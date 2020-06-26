@@ -1,5 +1,5 @@
 <template>
-  <index-field-wrapper :field="field">
+  <index-field-wrapper :field="field" class="w-12">
     {{field.value}}
   </index-field-wrapper>
 </template>

@@ -1,18 +1,27 @@
 <template>
-  <div class="p-8 w-full h-full flex flex-col">
-    <div class="flex-1 flex items-center justify-center">
+  <div class="w-full h-full flex flex-col justify-between">
+    <div class="p-4 text-xl" v-if="heading">
+      {{ heading }}
+    </div>
+    <div class="flex-1 flex items-center justify-center px-8 text-lg">
       {{ text }}
     </div>
-    <div class="flex justify-center space-x-4">
+    <div class="flex justify-end space-x-4 p-4 bg-gray-200">
       <button
+        v-if="confirmAction"
+        @click="$emit('close')"
+        data-modal-button="cancel"
+      >
+        Cancel
+      </button>
+      <button
+        ref="confirm-button"
         class="button border-red-700 text-red-700"
+        data-modal-button="confirm"
         v-if="confirmAction"
         @click="confirmAction"
       >
-        confirm
-      </button>
-      <button class="button" v-if="confirmAction" @click="$emit('close')">
-        cancel
+        Confirm
       </button>
     </div>
   </div>
@@ -20,6 +29,9 @@
 
 <script>
 export default {
-  props: ['text', 'confirmAction'],
+  props: ['heading', 'text', 'confirmAction'],
+  mounted() {
+    this.$refs['confirm-button'].focus()
+  },
 }
 </script>

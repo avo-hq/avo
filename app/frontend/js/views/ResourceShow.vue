@@ -16,7 +16,7 @@
                   resourceName: resourceName,
                   resourceId: resource.id,
                 },
-              }">edit</router-link>
+              }">Edit</router-link>
           </div>
         </template>
 
@@ -44,8 +44,6 @@
         :resource-name="resourceName"
         :resource-id="resourceId"
       ></component>
-        <!-- :via-resource-name="resourceName"
-        :via-resource-id="resourceId" -->
     </div>
   </div>
 </template>
@@ -68,7 +66,7 @@ export default {
       return this.resource.fields
     },
     hasManyRelations() {
-      return this.fields.filter((field) => field.has_many_relationship)
+      return this.fields.filter((field) => field.relationship === 'has_many')
     },
   },
   methods: {
