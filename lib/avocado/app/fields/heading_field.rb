@@ -7,7 +7,7 @@ module Avocado
         @defaults = {
           # updatable: false,
           component: 'heading-field',
-          id: 'heading'
+          id: 'heading_' + name.to_s.parameterize.underscore,
         }
 
         super(name, **args, &block)

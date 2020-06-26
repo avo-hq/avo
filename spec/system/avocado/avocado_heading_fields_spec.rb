@@ -8,6 +8,7 @@ RSpec.describe 'HeadingFields', type: :system do
       it 'checks for header' do
         visit "/avocado/resources/users/#{user.id}"
 
+        expect(page).to have_text 'PERSONAL DOCUMENTS'
       end
     end
 
@@ -15,6 +16,7 @@ RSpec.describe 'HeadingFields', type: :system do
       it 'checks for header' do
         visit "/avocado/resources/users/#{user.id}/edit"
 
+        expect(page).to have_text 'PERSONAL DOCUMENTS'
       end
     end
   end
