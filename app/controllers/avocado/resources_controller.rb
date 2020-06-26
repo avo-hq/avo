@@ -9,16 +9,29 @@ module Avocado
       params[:sort_direction] = params[:sort_direction].present? ? params[:sort_direction] : :desc
       filters = params[:filters].present? ? JSON.parse(Base64.decode64(params[:filters])) : {}
 
-      if params[:via_resource_name].present? and params[:via_resource_id].present?
+      if params[:via_resource_name].present? and params[:via_resource_id].present? and params[:via_relationship].present?
         # get the reated resource (via_resource)
         related_resource = App.get_resource_by_name(params[:via_resource_name])
         related_model = related_resource.model
         # fetch the entries
-        query = related_model.find(params[:via_resource_id]).public_send(params[:resource_name])
-        params[:per_page] ||= Avocado.configuration.via_per_page
+        query = related_model.find(params[:via_resource_id]).public_send(params[:via_relationship])
+        params[:per_page] = Avocado.configuration.via_per_page
+      elsif params[:for_relation] == 'has_many'
+        resources = resource_model.safe_constantize.select('id', avocado_resource.title).all.map do |model|
+          {
+            value: model.id,
+            label: model[avocado_resource.title],
+          }
+        end
+
+        return render json: {
+          resources: resources
+        }
       else
-        query = resource_model.safe_constantize.order("#{params[:sort_by]} #{params[:sort_direction]}")
+        query = resource_model.safe_constantize
       end
+
+      query = query.order("#{params[:sort_by]} #{params[:sort_direction]}")
 
       if filters.present?
         filters.each do |filter_class, filter_value|
@@ -46,6 +59,7 @@ module Avocado
       }
 
       render json: {
+        success: true,
         meta: meta,
         resources: resources_with_fields,
         per_page: params[:per_page],
@@ -102,20 +116,30 @@ module Avocado
       avocado_resource.fill_model(resource, regular_resource_params).save!
 
       render json: {
+        success: true,
         resource: Avocado::Resources::Resource.hydrate_resource(resource, avocado_resource, :show),
         message: 'Resource updated',
-        redirect_url: Avocado::Resources::Resource.show_path(resource),
       }
     end
 
     def create
-      resource = resource_model.safe_constantize.new(resource_params)
+      create_params = resource_params
+
+      # Update the foreign key for a belongs_to relation from a has_many via creation.
+      if params[:via_relationship].present?
+        relationship_foreign_key = params[:via_resource_name].singularize.camelize.safe_constantize.reflections[params[:via_relationship]].foreign_key
+        if create_params[relationship_foreign_key].blank?
+          create_params[relationship_foreign_key] = params[:via_resource_id]
+        end
+      end
+
+      resource = resource_model.safe_constantize.new(create_params)
       resource.save!
 
       render json: {
+        success: true,
         resource: Avocado::Resources::Resource.hydrate_resource(resource, avocado_resource, :create),
         message: 'Resource created',
-        redirect_url: Avocado::Resources::Resource.show_path(resource),
       }
     end
 
@@ -131,7 +155,6 @@ module Avocado
       resource.destroy!
 
       render json: {
-        redirect_url: Avocado::Resources::Resource.index_path(resource_model),
         message: 'Resource destroyed',
       }
     end
@@ -146,6 +169,28 @@ module Avocado
 
       render json: {
         filters: filters,
+      }
+    end
+
+    def attach
+      attachment_class = App.get_model_class_by_name params[:attachment_name].pluralize 1
+      attachment_model = attachment_class.safe_constantize.find params[:attachment_id]
+      attached = resource.send(params[:attachment_name]) << attachment_model
+
+      render json: {
+        success: true,
+        message: "#{attachment_class} attached.",
+      }
+    end
+
+    def detach
+      attachment_class = App.get_model_class_by_name params[:attachment_name].pluralize 1
+      attachment_model = attachment_class.safe_constantize.find params[:attachment_id]
+      attached = resource.send(params[:attachment_name]) << attachment_model
+
+      render json: {
+        success: true,
+        message: "#{attachment_class} attached.",
       }
     end
 

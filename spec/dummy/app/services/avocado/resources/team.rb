@@ -11,7 +11,7 @@ module Avocado
         text :name
         textarea :description
         has_one :admin
-        # has_many :memberships
+        # has_many_and_belongs_to_many :memberships
       end
     end
   end

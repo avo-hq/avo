@@ -1,5 +1,5 @@
-import pluralize from 'pluralize'
 import lowerCase from 'lodash/lowerCase'
+import pluralize from 'pluralize'
 import upperFirst from 'lodash/upperFirst'
 
 export default {

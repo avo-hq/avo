@@ -1,6 +1,7 @@
 <template>
   <edit-field-wrapper :field="field" :errors="errors" :index="index">
     <select class="select-input w-full"
+      ref="field-input"
       :class="inputClasses"
       v-model="value"
     >

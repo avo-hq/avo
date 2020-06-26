@@ -1,6 +1,7 @@
 <template>
   <edit-field-wrapper :field="field" :errors="errors" :index="index">
     <input-component
+      ref="field-input"
       :id="field.id"
       :class="classes"
       :disabled="disabled"
@@ -22,6 +23,11 @@ export default {
       if (this.hasErrors) classes.push('border-red-600')
 
       return classes.join(' ')
+    },
+  },
+  methods: {
+    focus() {
+      if (this.$refs['field-input']) this.$refs['field-input'].$emit('focus')
     },
   },
 }

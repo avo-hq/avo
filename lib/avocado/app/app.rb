@@ -50,8 +50,18 @@ module Avocado
         end
       end
 
-      def get_resource_by_name(resource)
-        self.get_resource resource.singularize.camelize
+      # This returns the Avocado resource by singular snake_cased name
+      #
+      # get_resource_by_name('user') => Avocado::Resources::User
+      def get_resource_by_name(name)
+        self.get_resource name.singularize.camelize
+      end
+
+      # This returns the Rails model class by singular snake_cased name
+      #
+      # get_model_class_by_name('user') => User
+      def get_model_class_by_name(name)
+        name.to_s.camelize.singularize
       end
 
       # def init_tools

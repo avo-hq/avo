@@ -45,6 +45,9 @@ export default {
     getId() {
       return this.field.id
     },
+    focus() {
+      if (this.$refs['field-input']) this.$refs['field-input'].focus()
+    },
   },
   created() {
     this.setInitialConfig()
@@ -54,5 +57,9 @@ export default {
 
     this.field.getId = this.getId
     this.field.getValue = this.getValue
+
+    if (this.index === 0) {
+      this.focus()
+    }
   },
 }

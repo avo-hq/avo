@@ -8,15 +8,20 @@
 
         <template #content>
           <loading-overlay v-if="isLoading" />
-          <component
-            v-for="(field, index) in fields"
-            :key="field.id"
-            :index="index"
-            :is="`edit-${field.component}`"
-            :field="field"
-            :errors="errors"
-            :field-id="field.id"
-          ></component>
+
+          <form @submit.prevent="submitResource">
+            <component
+              v-for="(field, index) in fields"
+              :key="field.id"
+              :index="index"
+              :is="`edit-${field.component}`"
+              :field="field"
+              :errors="errors"
+              :field-id="field.id"
+              :via-resource-name="viaResourceName"
+              :via-resource-id="viaResourceId"
+            ></component>
+          </form>
         </template>
 
         <template #footer>
@@ -48,7 +53,8 @@ export default {
   }),
   props: [
     'resourceName',
-    'resourceId',
+    'viaResourceName',
+    'viaResourceId',
   ],
   computed: {},
   methods: {},

@@ -21,7 +21,12 @@ const routes = [
     name: 'new',
     path: '/resources/:resourceName/new',
     component: ResourceNew,
-    props: true,
+    props: (route) => ({
+      resourceName: route.params.resourceName,
+      viaRelationship: route.query.viaRelationship,
+      viaResourceName: route.query.viaResourceName,
+      viaResourceId: route.query.viaResourceId,
+    }),
   },
   {
     name: 'show',
@@ -33,7 +38,13 @@ const routes = [
     name: 'edit',
     path: '/resources/:resourceName/:resourceId/edit',
     component: ResourceEdit,
-    props: true,
+    props: (route) => ({
+      resourceName: route.params.resourceName,
+      resourceId: route.params.resourceId,
+      viaRelationship: route.query.viaRelationship,
+      viaResourceName: route.query.viaResourceName,
+      viaResourceId: route.query.viaResourceId,
+    }),
   },
 ]
 

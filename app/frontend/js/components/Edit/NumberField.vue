@@ -1,6 +1,7 @@
 <template>
   <edit-field-wrapper :field="field" :errors="errors" :index="index">
     <input-component
+      ref="field-input"
       type="number"
       :id="field.id"
       :min="min"
@@ -35,6 +36,11 @@ export default {
     },
     step() {
       return this.field.step
+    },
+  },
+  methods: {
+    focus() {
+      if (this.$refs['field-input']) this.$refs['field-input'].$emit('focus')
     },
   },
 }

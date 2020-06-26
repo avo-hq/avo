@@ -23,26 +23,32 @@
           :to="{
             name: 'show',
             params: {
-              resourceName: resourceName,
+              resourceName: resourcePath,
               resourceId: resource.id
             }
           }"
           v-tooltip="`View ${this.resourceNameSingular}`"
+          data-control="view"
           ><ViewIcon class="text-gray-400 h-6 fill-current hover:text-gray-500"
         /></router-link>
         <router-link
-          :to="{
-            name: 'edit',
-            params: {
-              resourceName: resourceName,
-              resourceId: resource.id
-            }
-          }"
+          :to="editActionParams"
           v-tooltip="`Edit ${this.resourceNameSingular}`"
+          data-control="edit"
           ><EditIcon class="text-gray-400 h-6 hover:text-gray-500"
         /></router-link>
-        <a href="javascript:void(0);" @click="openDeleteModal"
+        <a href="javascript:void(0);"
+          @click="openDetachModal"
+          v-tooltip="`Detach ${this.resourceNameSingular}`"
+          data-control="detach"
+          v-if="relationship === 'hasAndBelongsToMany'"
+          ><DeleteIcon class="text-gray-400 h-6 hover:text-gray-500"
+        /></a>
+        <a href="javascript:void(0);"
+          @click="openDeleteModal"
           v-tooltip="`Delete ${this.resourceNameSingular}`"
+          data-control="delete"
+          v-else
           ><DeleteIcon class="text-gray-400 h-6 hover:text-gray-500"
         /></a>
       </div>
@@ -52,6 +58,7 @@
 
 <script>
 import { Api } from '@/js/Avo'
+import DealsWithHasManyRelations from '@/js/mixins/deals-with-has-many-relations'
 import DealsWithResourceLabels from '@/js/mixins/deals-with-resource-labels'
 /* eslint-disable import/no-unresolved */
 import DeleteIcon from '@/svgs/trash.svg?inline'
@@ -60,20 +67,44 @@ import Modal from '@/js/components/Modal'
 import ViewIcon from '@/svgs/eye.svg?inline'
 /* eslint-enable import/no-unresolved */
 import ExtractsFields from '@/js/mixins/extracts-fields'
+import isUndefined from 'lodash/isUndefined'
 
 export default {
   components: {
     ViewIcon, EditIcon, DeleteIcon,
   },
   data: () => ({}),
-  mixins: [DealsWithResourceLabels, ExtractsFields],
+  mixins: [DealsWithResourceLabels, ExtractsFields, DealsWithHasManyRelations],
   props: [
     'resource',
     'resourceName',
     'viaResourceName',
     'viaResourceId',
+    'field',
   ],
   computed: {
+    afterSuccessPath() {
+      if (!isUndefined(this.viaResourceName)) return `/resources/${this.viaResourceName}/${this.viaResourceId}`
+
+      return `/resources/${this.resourceName}`
+    },
+    editActionParams() {
+      const params = {
+        name: 'edit',
+        params: {
+          resourceName: this.resourcePath,
+          resourceId: this.resource.id,
+        },
+        query: {},
+      }
+
+      if (this.viaResourceName) {
+        params.query.viaResourceName = this.viaResourceName
+        params.query.viaResourceId = this.viaResourceId
+      }
+
+      return params
+    },
     resourceFields() {
       if (this.resource
         && this.resource.fields
@@ -84,17 +115,29 @@ export default {
   },
   methods: {
     async deleteResource() {
-      await Api.delete(`/avocado/avocado-api/${this.resourceName}/${this.resource.id}`)
+      await Api.delete(`/avocado/avocado-api/${this.resourcePath}/${this.resource.id}`)
+
+      this.$modal.hideAll()
+
+      this.$emit('resource-deleted')
+    },
+    async detachResource() {
+      await Api.post(`/avocado/avocado-api/${this.viaResourceName}/${this.viaResourceId}/detach/${this.resourcePath}/${this.resource.id}`)
     },
     openDeleteModal() {
       this.$modal.show(Modal, {
+        heading: `Delete ${this.resourceNameSingular}`,
         text: 'Are you sure?',
-        confirmAction: () => this.deleteResource(),
+        confirmAction: this.deleteResource,
+      })
+    },
+    openDetachModal() {
+      this.$modal.show(Modal, {
+        text: `Are you sure you want to detach this ${this.resourceNameSingular}?`,
+        confirmAction: this.detachResource,
       })
     },
   },
   mounted() { },
 }
 </script>
-
-<style lang="postcss"></style>

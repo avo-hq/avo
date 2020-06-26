@@ -118,7 +118,15 @@ const Avo = {
 
     Vue.use(VTooltip)
     Vue.use(VueRouter)
-    Vue.use(VModal, { dynamic: true, injectModalsContainer: false })
+    Vue.use(VModal, {
+      dynamic: true,
+      injectModalsContainer: false,
+      dynamicDefaults: {
+        height: 200,
+        width: 450,
+        styles: 'border-radius: 0.5rem',
+      },
+    })
     Vue.use(PortalVue)
 
     this.vue = new Vue({
