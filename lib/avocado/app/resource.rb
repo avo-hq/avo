@@ -66,6 +66,10 @@ module Avocado
           @@fields[self].push Avocado::Fields::BooleanGroupField::new(name, **args, &block)
         end
 
+        def status(name, **args)
+          @@fields[self].push Avocado::Fields::StatusField::new(name, **args)
+        end
+
         def belongs_to(name, **args)
           @@fields[self].push Avocado::Fields::BelongsToField::new(name, **args)
         end

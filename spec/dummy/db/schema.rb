@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_10_141228) do
+ActiveRecord::Schema.define(version: 2020_06_17_164640) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,6 +42,11 @@ ActiveRecord::Schema.define(version: 2020_06_10_141228) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "migrations", id: :serial, force: :cascade do |t|
+    t.string "migration", limit: 255, null: false
+    t.integer "batch", null: false
+  end
+
   create_table "posts", force: :cascade do |t|
     t.string "name"
     t.text "body"
@@ -56,6 +61,7 @@ ActiveRecord::Schema.define(version: 2020_06_10_141228) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.text "status"
   end
 
   create_table "projects_users", force: :cascade do |t|
@@ -108,8 +114,8 @@ ActiveRecord::Schema.define(version: 2020_06_10_141228) do
     t.datetime "remember_created_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "highlighted", default: "no"
     t.date "birthday"
+    t.string "highlighted", default: "no"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["group_id"], name: "index_users_on_group_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

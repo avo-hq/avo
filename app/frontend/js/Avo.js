@@ -26,6 +26,7 @@ Vue.component('index-datetime-field',            require('@/js/components/Index/
 Vue.component('index-file-field',                require('@/js/components/Index/FileField.vue').default)
 Vue.component('index-files-field',               require('@/js/components/Index/FilesField.vue').default)
 Vue.component('index-boolean-group-field',       require('@/js/components/Index/BooleanGroupField.vue').default)
+Vue.component('index-status-field',              require('@/js/components/Index/StatusField.vue').default)
 
 Vue.component('show-field-wrapper',              require('@/js/components/Show/FieldWrapper.vue').default)
 Vue.component('show-id-field',                   require('@/js/components/Show/IdField.vue').default)
@@ -41,6 +42,7 @@ Vue.component('show-datetime-field',             require('@/js/components/Show/D
 Vue.component('show-file-field',                 require('@/js/components/Show/FileField.vue').default)
 Vue.component('show-files-field',                require('@/js/components/Show/FilesField.vue').default)
 Vue.component('show-boolean-group-field',        require('@/js/components/Show/BooleanGroupField.vue').default)
+Vue.component('show-status-field',               require('@/js/components/Show/StatusField.vue').default)
 
 Vue.component('edit-field-wrapper',              require('@/js/components/Edit/FieldWrapper.vue').default)
 Vue.component('edit-id-field',                   require('@/js/components/Edit/IdField.vue').default)
@@ -55,6 +57,7 @@ Vue.component('edit-datetime-field',             require('@/js/components/Edit/D
 Vue.component('edit-file-field',                 require('@/js/components/Edit/FileField.vue').default)
 Vue.component('edit-files-field',                require('@/js/components/Edit/FilesField.vue').default)
 Vue.component('edit-boolean-group-field',        require('@/js/components/Edit/BooleanGroupField.vue').default)
+Vue.component('edit-status-field',               require('@/js/components/Edit/StatusField.vue').default)
 
 // Form Fields
 Vue.component('input-component',                 require('@/js/components/InputComponent.vue').default)
