@@ -59,7 +59,11 @@ module Avocado
       end
 
       def foreign_key(model)
-        model.class.reflections[@relation_method].foreign_key
+        if model.class == Class
+          model.reflections[@relation_method].foreign_key
+        else
+          model.class.reflections[@relation_method].foreign_key
+        end
       end
     end
   end

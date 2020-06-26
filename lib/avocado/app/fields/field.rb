@@ -100,6 +100,10 @@ module Avocado
         end
       end
 
+      def has_own_panel?
+        false
+      end
+
       private
         def model_or_class(model)
           if model.class == String
