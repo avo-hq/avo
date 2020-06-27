@@ -65,6 +65,10 @@ module Avocado
           @@fields[self].push Avocado::Fields::HasManyField::new(name, **args)
         end
 
+        def has_and_belongs_to_many(name, **args)
+          @@fields[self].push Avocado::Fields::HasAndBelongsToManyField::new(name, **args)
+        end
+
         def file(name, **args)
           @@fields[self].push Avocado::Fields::FileField::new(name, **args)
         end

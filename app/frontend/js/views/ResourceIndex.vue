@@ -15,9 +15,10 @@
         </div>
         <div>
           <a
+            href="javascript:void(0);"
             @click.prevent="showAttachModal"
             class="button cursor-pointer"
-            v-if="relationship === 'hasAndBelongsToMany'"
+            v-if="relationship === 'has_and_belongs_to_many'"
           >Attach {{resourceNameSingular | toLowerCase}}</a>
           <router-link
             :to="createNewParams"
@@ -88,7 +89,7 @@
 
 <script>
 import Api from '@/js/Api'
-import AttachModal from '@/js/components/AttachModal'
+import AttachModal from '@/js/components/AttachModal.vue'
 import DealsWithHasManyRelations from '@/js/mixins/deals-with-has-many-relations'
 import DealsWithResourceLabels from '@/js/mixins/deals-with-resource-labels'
 import URI from 'urijs'
@@ -227,7 +228,7 @@ export default {
       return `No ${this.resourceNamePlural.toLowerCase()} found`
     },
     createNewParams() {
-      const params = {
+      const action = {
         name: 'new',
         params: {
           resourceName: this.resourcePath,
@@ -236,12 +237,12 @@ export default {
       }
 
       if (this.viaResourceName) {
-        params.query.viaRelationship = this.field.id
-        params.query.viaResourceName = this.viaResourceName
-        params.query.viaResourceId = this.viaResourceId
+        action.query.viaRelationship = this.field.id
+        action.query.viaResourceName = this.viaResourceName
+        action.query.viaResourceId = this.viaResourceId
       }
 
-      return params
+      return action
     },
   },
   methods: {
@@ -350,7 +351,7 @@ export default {
       return param
     },
     async getOptions() {
-      const { data } = await Api.get(`/avocado/avocado-api/${this.resourceName}?for_relation=${this.relationship}`)
+      const { data } = await Api.get(`/avocado/avocado-api/${this.resourcePath}?for_relation=${this.relationship}`)
 
       return data.resources
     },
@@ -369,9 +370,13 @@ export default {
     },
     async showAttachModal() {
       this.$modal.show(AttachModal, {
+        heading: `Attach ${this.resourceNameSingular.toLowerCase()}`,
         text: `Select a ${this.resourceNameSingular.toLowerCase()} to attach`,
         getOptions: this.getOptions,
         attachAction: this.attachOption,
+      }, {
+        width: 600,
+        height: 300,
       })
     },
   },
@@ -379,7 +384,7 @@ export default {
     $route: 'getResources',
   },
   async created() {
-    this.getFilters()
+    // this.getFilters()
     this.initQueryParams()
   },
 }

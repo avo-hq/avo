@@ -10,7 +10,7 @@ module Avocado
       fields do
         id :ID
         text :Name, required: true
-        has_many :Users
+        has_and_belongs_to_many :users
       end
 
       # use_filter Avocado::Filters::IndicatorFilter

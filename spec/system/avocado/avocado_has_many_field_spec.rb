@@ -56,7 +56,7 @@ RSpec.describe 'HasManyField', type: :system do
 
         expect {
           find("[data-component='resources-index'][data-resource-name='posts'] [data-control='delete']").click
-          find("[data-modal-button='confirm']").click
+          click_on 'Confirm'
           wait_for_loaded
         }.to change(Post, :count).by -1
 

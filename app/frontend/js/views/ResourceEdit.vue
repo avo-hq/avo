@@ -31,13 +31,7 @@
         <template #footer>
           <router-link
             class="button"
-            :to="{
-              name: 'show',
-              params: {
-                resourceName: resourceName,
-                resourceId: resource.id,
-              },
-            }">Cancel</router-link>
+            :to="cancelActionParams">Cancel</router-link>
           <button class="button" @click="submitResource">Save</button>
         </template>
       </panel>
@@ -63,5 +57,23 @@ export default {
     'viaResourceName',
     'viaResourceId',
   ],
+  computed: {
+    cancelActionParams() {
+      const action = {
+        name: 'show',
+        params: {
+          resourceName: this.resourceName,
+          resourceId: this.resource.id,
+        },
+      }
+
+      if (this.viaResourceName) {
+        action.params.resourceName = this.viaResourceName
+        action.params.resourceId = this.viaResourceId
+      }
+
+      return action
+    },
+  },
 }
 </script>
