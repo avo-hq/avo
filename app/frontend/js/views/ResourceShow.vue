@@ -66,7 +66,7 @@ export default {
       return this.resource.fields
     },
     hasManyRelations() {
-      return this.fields.filter((field) => field.relationship === 'has_many')
+      return this.fields.filter((field) => ['has_and_belongs_to_many', 'has_many'].indexOf(field.relationship) > -1)
     },
   },
   methods: {
