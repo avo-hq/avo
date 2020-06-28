@@ -14,14 +14,16 @@
           />
         </div>
         <div>
+          <a
+            href="javascript:void(0);"
+            @click.prevent="showAttachModal"
+            class="button cursor-pointer"
+            v-if="relationship === 'has_and_belongs_to_many'"
+          >Attach {{resourceNameSingular | toLowerCase}}</a>
           <router-link
-            :to="{
-              name: 'new',
-              params: {
-                resourceName: resourceName,
-              },
-            }"
+            :to="createNewParams"
             class="button"
+            v-else
           >Create new {{resourceNameSingular | toLowerCase}}</router-link>
         </div>
       </div>
@@ -31,13 +33,14 @@
       <template>
         <div class="flex justify-between items-center py-4">
           <resources-filter
-            @change-per-page="changePerPage"
+            v-if="!viaResourceName"
+            :via-resource-name="viaResourceName"
             :per-page="perPage"
             :per-page-steps="perPageSteps"
             :filters="filters"
             :applied-filters="appliedFilters"
             @change-filter="changeFilter"
-            :via-resource-name="viaResourceName"
+            @change-per-page="changePerPage"
           />
         </div>
 
@@ -54,12 +57,11 @@
               :sort-direction="sortDirection"
               :via-resource-name="viaResourceName"
               :via-resource-id="viaResourceId"
+              :field="field"
               @sort="changeSortBy"
+              @resource-deleted="getResources(true)"
               ></resource-table>
-
-              <div class="flex-1 flex items-center justify-center" v-else>
-                No {{resourceNamePlural | toLowerCase}} found
-              </div>
+              <div class="flex-1 flex items-center justify-center" v-text="noResourcesLabel" v-else></div>
           </div>
 
           <paginate
@@ -87,6 +89,8 @@
 
 <script>
 import Api from '@/js/Api'
+import AttachModal from '@/js/components/AttachModal.vue'
+import DealsWithHasManyRelations from '@/js/mixins/deals-with-has-many-relations'
 import DealsWithResourceLabels from '@/js/mixins/deals-with-resource-labels'
 import URI from 'urijs'
 import isNull from 'lodash/isNull'
@@ -94,7 +98,7 @@ import isUndefined from 'lodash/isUndefined'
 
 export default {
   name: 'ResourceIndex',
-  mixins: [DealsWithResourceLabels],
+  mixins: [DealsWithResourceLabels, DealsWithHasManyRelations],
   data: () => ({
     resources: [],
     totalPages: 0,
@@ -115,6 +119,7 @@ export default {
     'resourceName',
     'viaResourceName',
     'viaResourceId',
+    'field',
   ],
   computed: {
     newQueryParams() {
@@ -189,7 +194,7 @@ export default {
     },
     queryUrl() {
       const url = new URI()
-      url.path(`/avocado/avocado-api/${this.resourceName.toLowerCase()}`)
+      url.path(`/avocado/avocado-api/${this.resourcePath}`)
 
       /* eslint-disable camelcase */
       let query = {
@@ -203,6 +208,7 @@ export default {
       if (this.viaResourceName) {
         query = {
           ...query,
+          via_relationship: this.field.id,
           via_resource_name: this.viaResourceName.toLowerCase(),
           via_resource_id: this.viaResourceId,
         }
@@ -215,6 +221,28 @@ export default {
     },
     perPageSteps() {
       return this.meta.per_page_steps
+    },
+    noResourcesLabel() {
+      if (this.viaResourceName) return `No related ${this.resourceNamePlural.toLowerCase()} found`
+
+      return `No ${this.resourceNamePlural.toLowerCase()} found`
+    },
+    createNewParams() {
+      const action = {
+        name: 'new',
+        params: {
+          resourceName: this.resourcePath,
+        },
+        query: {},
+      }
+
+      if (this.viaResourceName) {
+        action.query.viaRelationship = this.field.id
+        action.query.viaResourceName = this.viaResourceName
+        action.query.viaResourceId = this.viaResourceId
+      }
+
+      return action
     },
   },
   methods: {
@@ -233,10 +261,10 @@ export default {
       this.setPage(page)
       this.updateQueryParams()
     },
-    async getResources() {
-      if (this.oldQueryUrl === this.queryUrl) return
-      this.oldQueryUrl = this.queryUrl
+    async getResources(force = false) {
+      if (this.oldQueryUrl === this.queryUrl && !force) return
 
+      this.oldQueryUrl = this.queryUrl
       this.isLoading = true
 
       const { data } = await Api.get(this.queryUrl)
@@ -322,12 +350,41 @@ export default {
 
       return param
     },
+    async getOptions() {
+      const { data } = await Api.get(`/avocado/avocado-api/${this.resourcePath}?for_relation=${this.relationship}`)
+
+      return data.resources
+    },
+    async attachOption(option, another = false) {
+      const { data } = await Api.post(`/avocado/avocado-api/${this.viaResourceName}/${this.viaResourceId}/attach/${this.resourceName}/${option}`)
+
+      const { success } = data
+
+      if (success) {
+        if (!another) {
+          this.$modal.hideAll()
+        }
+
+        await this.getResources(true)
+      }
+    },
+    async showAttachModal() {
+      this.$modal.show(AttachModal, {
+        heading: `Attach ${this.resourceNameSingular.toLowerCase()}`,
+        text: `Select a ${this.resourceNameSingular.toLowerCase()} to attach`,
+        getOptions: this.getOptions,
+        attachAction: this.attachOption,
+      }, {
+        width: 600,
+        height: 300,
+      })
+    },
   },
   watch: {
     $route: 'getResources',
   },
   async created() {
-    this.getFilters()
+    // this.getFilters()
     this.initQueryParams()
   },
 }

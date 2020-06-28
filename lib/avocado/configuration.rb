@@ -4,6 +4,7 @@ module Avocado
     attr_accessor :timezone
     attr_accessor :per_page
     attr_accessor :per_page_steps
+    attr_accessor :via_per_page
 
     def initialize
       @root_path = '/avocado'

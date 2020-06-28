@@ -1,6 +1,7 @@
 <template>
   <edit-field-wrapper :field="field" :errors="errors" :index="index">
     <input-component
+      ref="field-input"
       :id="field.id"
       :class="classes"
       :disabled="disabled"

@@ -36,10 +36,21 @@ RSpec.describe 'UserForms', type: :system do
 
     click_on 'Save'
 
-    expect(page).to have_text("name can't be blank")
-    expect(page).to have_text("email can't be blank")
-    expect(page).to have_text('age is not a number')
-    expect(page).to have_text("description can't be blank")
+    expect(page).to have_text("Name can't be blank")
+    expect(page).to have_text("Email can't be blank")
+    expect(page).to have_text('Age is not a number')
+    expect(page).to have_text("Description can't be blank")
+  end
+
+  it 'submits the form on enter' do
+    visit '/avocado/resources/users/new'
+
+    find("[field-id='name'] [data-slot='value'] input").native.send_keys(:return)
+
+    expect(page).to have_text("Name can't be blank")
+    expect(page).to have_text("Email can't be blank")
+    expect(page).to have_text('Age is not a number')
+    expect(page).to have_text("Description can't be blank")
   end
 
   it 'creates a user' do
