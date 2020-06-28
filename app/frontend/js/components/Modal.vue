@@ -10,14 +10,12 @@
       <button
         v-if="confirmAction"
         @click="$emit('close')"
-        data-modal-button="cancel"
       >
         Cancel
       </button>
       <button
         ref="confirm-button"
         class="button border-red-700 text-red-700"
-        data-modal-button="confirm"
         v-if="confirmAction"
         @click="confirmAction"
       >

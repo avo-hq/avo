@@ -16,7 +16,7 @@ module Avocado
         # fetch the entries
         query = related_model.find(params[:via_resource_id]).public_send(params[:via_relationship])
         params[:per_page] = Avocado.configuration.via_per_page
-      elsif params[:for_relation] == 'has_many'
+      elsif ['has_many', 'has_and_belongs_to_many'].include? params[:for_relation]
         resources = resource_model.safe_constantize.select('id', avocado_resource.title).all.map do |model|
           {
             value: model.id,
@@ -186,7 +186,7 @@ module Avocado
     def detach
       attachment_class = App.get_model_class_by_name params[:attachment_name].pluralize 1
       attachment_model = attachment_class.safe_constantize.find params[:attachment_id]
-      attached = resource.send(params[:attachment_name]) << attachment_model
+      attached = resource.send(params[:attachment_name]).delete attachment_model
 
       render json: {
         success: true,

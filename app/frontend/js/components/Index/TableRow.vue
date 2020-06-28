@@ -41,7 +41,7 @@
           @click="openDetachModal"
           v-tooltip="`Detach ${this.resourceNameSingular}`"
           data-control="detach"
-          v-if="relationship === 'hasAndBelongsToMany'"
+          v-if="relationship === 'has_and_belongs_to_many'"
           ><DeleteIcon class="text-gray-400 h-6 hover:text-gray-500"
         /></a>
         <a href="javascript:void(0);"
@@ -89,7 +89,7 @@ export default {
       return `/resources/${this.resourceName}`
     },
     editActionParams() {
-      const params = {
+      const action = {
         name: 'edit',
         params: {
           resourceName: this.resourcePath,
@@ -99,11 +99,11 @@ export default {
       }
 
       if (this.viaResourceName) {
-        params.query.viaResourceName = this.viaResourceName
-        params.query.viaResourceId = this.viaResourceId
+        action.query.viaResourceName = this.viaResourceName
+        action.query.viaResourceId = this.viaResourceId
       }
 
-      return params
+      return action
     },
     resourceFields() {
       if (this.resource
@@ -123,6 +123,10 @@ export default {
     },
     async detachResource() {
       await Api.post(`/avocado/avocado-api/${this.viaResourceName}/${this.viaResourceId}/detach/${this.resourcePath}/${this.resource.id}`)
+
+      this.$modal.hideAll()
+
+      this.$emit('resource-deleted')
     },
     openDeleteModal() {
       this.$modal.show(Modal, {
@@ -133,7 +137,7 @@ export default {
     },
     openDetachModal() {
       this.$modal.show(Modal, {
-        text: `Are you sure you want to detach this ${this.resourceNameSingular}?`,
+        text: `Are you sure you want to detach this ${this.resourceNameSingular.toLowerCase()}?`,
         confirmAction: this.detachResource,
       })
     },

@@ -3,12 +3,12 @@
     <div class="p-4 text-xl" v-if="heading">
       {{ heading }}
     </div>
-    <div class="flex-1 flex items-center justify-center px-8 text-lg">
+    <div class="flex-1 flex flex-col items-center justify-center px-24 text-lg">
       {{ text }}
       <select name="options"
         id="options"
         :class="inputClasses"
-        class="select-input w-full"
+        class="select-input w-full mt-4"
         v-model="selectedOption"
       >
         <option value="">Choose one</option>
@@ -19,7 +19,7 @@
           ></option>
       </select>
     </div>
-    <div class="flex justify-center space-x-4">
+    <div class="flex justify-end space-x-4 p-4 bg-gray-200">
       <button
         ref="attach-button"
         class="button border-green-700 text-green-700"
@@ -57,6 +57,7 @@ export default {
     selectedOption: '',
   }),
   props: [
+    'heading',
     'text',
     'attachAction',
     'getOptions',
