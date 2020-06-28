@@ -56,7 +56,7 @@ Vue.component('edit-select-field',               require('@/js/components/Edit/S
 Vue.component('edit-datetime-field',             require('@/js/components/Edit/DatetimeField.vue').default)
 Vue.component('edit-file-field',                 require('@/js/components/Edit/FileField.vue').default)
 Vue.component('edit-files-field',                require('@/js/components/Edit/FilesField.vue').default)
-Vue.component('edit-heading-field',              require('@/js/components/Edit/HeadingField.vue').default)
+Vue.component('edit-heading-field',              require('@/js/components/Show/HeadingField.vue').default)
 Vue.component('edit-boolean-group-field',        require('@/js/components/Edit/BooleanGroupField.vue').default)
 Vue.component('edit-belongs-to-field',           require('@/js/components/Edit/BelongsTo.vue').default)
 Vue.component('edit-has-one-field',              require('@/js/components/Edit/HasOne.vue').default)

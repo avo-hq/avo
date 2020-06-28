@@ -12,7 +12,6 @@ module Avocado
 
         super(name, **args, &block)
 
-        @name = name
         hide_on :index
 
         @as_html = args[:as_html].present? ? args[:as_html] : false

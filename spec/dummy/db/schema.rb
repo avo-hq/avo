@@ -42,11 +42,6 @@ ActiveRecord::Schema.define(version: 2020_06_17_164640) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "migrations", id: :serial, force: :cascade do |t|
-    t.string "migration", limit: 255, null: false
-    t.integer "batch", null: false
-  end
-
   create_table "posts", force: :cascade do |t|
     t.string "name"
     t.text "body"
