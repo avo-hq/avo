@@ -7,7 +7,7 @@ module Avocado
       params[:per_page] ||= Avocado.configuration.per_page
       params[:sort_by] = params[:sort_by].present? ? params[:sort_by] : :created_at
       params[:sort_direction] = params[:sort_direction].present? ? params[:sort_direction] : :desc
-      filters = params[:filters].present? ? JSON.parse(Base64.decode64(params[:filters])) : {}
+      filters = get_filters
 
       if params[:via_resource_name].present? and params[:via_resource_id].present? and params[:via_relationship].present?
         # get the reated resource (via_resource)
@@ -309,6 +309,24 @@ module Avocado
             end
           end
         end
+      end
+
+      def get_filters
+        if params[:filters].present?
+          return JSON.parse(Base64.decode64(params[:filters]))
+        end
+
+        filter_defaults = {}
+
+        avocado_resource.get_filters.each do |filter_class|
+          filter = filter_class.new
+
+          if filter.default_value.present?
+            filter_defaults[filter_class.to_s] = filter.default_value
+          end
+        end
+
+        filter_defaults
       end
   end
 end

@@ -2,7 +2,7 @@
   <div class="relative w-full px-4 flex justify-between z-40">
     <div></div>
     <button class="bg-blue-300 p-2 shadow rounded text-white" @click="toggleFiltersPanel">
-      <FilterIcon class="h-8"/>
+      <FilterIcon class="h-8" data-button="resource-filters" />
     </button>
     <div class="absolute block inset-auto right-0 top-full rounded bg-white shadow min-w-300px mr-4 z-20" v-if="open">
       <div v-if="!viaResourceName">
