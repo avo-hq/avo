@@ -8,7 +8,7 @@ module Avocado
       def initialize(name, **args, &block)
         @defaults = {
           component: 'gravatar-field',
-          # id: 'gravatar_' + args[:email].to_s.parameterize.underscore,
+          # id: name,
         }
 
         super(name, **args, &block)
@@ -24,7 +24,7 @@ module Avocado
         # 1. Trim leading and trailing whitespace from an email address
         # 2. Force all characters to lower-case
         # 3. md5 hash the final string
-        @email = args[:email].present? ? (Digest::MD5.hexdigest args[:email].strip.downcase).to_s : ''
+        # @email = args[:email].present? ? (Digest::MD5.hexdigest args[:email].strip.downcase).to_s : ''
       end
 
       def hydrate_resource(model, resource, view)
@@ -33,20 +33,16 @@ module Avocado
           squared: @squared,
           default_url: @default_url,
           size: @size,
-          email: @email,
+          # email: @email,
         }
       end
 
-      # def fetch_for_resource(model, resource, view)
-      #   fields = super(model, resource, view)
-      #   fields[:value] = get_gravatar_image(fields[:value])
-      #   fields
-      # end
-
-      # def get_gravatar_image(value)
-      #   value = 'email'
-      #   value
-      # end
+      def fetch_for_resource(model, resource, view)
+        fields = super(model, resource, view)
+        # abort fields[:value].inspect
+        fields[:value] = Digest::MD5.hexdigest model[id].strip.downcase
+        fields
+      end
     end
   end
 end
