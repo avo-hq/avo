@@ -11,6 +11,7 @@ module Avocado
       fields do
         id :ID
         text :name, required: true, placeholder: 'John Doe'
+        currency :salary, currency: 'EUR', locale: 'de-DE'
         file :cv, name: 'CV'
         file :avatar, is_avatar: true
         files :images, is_image: true
