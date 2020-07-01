@@ -14,9 +14,6 @@ export default {
     defaultUrl: String,
   },
   computed: {
-    // hashedEmail() {
-    //   return this.email.trim().toLowerCase()
-    // },
     gravatarURL() {
       let gravatarURL = 'https://www.gravatar.com/avatar/' + this.hashedEmail
 
@@ -29,8 +26,8 @@ export default {
     classes() {
       const classes = []
 
-      if (this.rounded) classes.push('rounded-avatar')
       if (this.squared) classes.push('squared-avatar')
+      else classes.push('rounded-avatar')
 
       return classes.join(' ')
     },

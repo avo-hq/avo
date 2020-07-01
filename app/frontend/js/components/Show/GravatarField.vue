@@ -2,7 +2,6 @@
   <show-field-wrapper :field="field" :index="index">
     <GravatarComponent
       :hashedEmail="this.field.value"
-      :rounded="this.field.rounded"
       :squared="this.field.squared"
       :size="this.field.size"
       :defaultUrl="this.field.default_url"

@@ -16,7 +16,7 @@ module Avocado
         files :images, is_image: true
         files :docs
         text :email, name: 'User Email', required: true
-        gravatar :email, label: 'Avatar', squared: true, default_url: 'https://d1j8pt39hxlh3d.cloudfront.net/emoji/joypixels/6.0/png/unicode/128/1f951.png?119038208', size: 100
+        gravatar :email, squared: true, default_url: 'https://d1j8pt39hxlh3d.cloudfront.net/emoji/joypixels/6.0/png/unicode/128/1f951.png?119038208', size: 100
         number :age, min: 0, max: 120, step: 5
         boolean :availability
         boolean_group :roles, options: { admin: 'Administrator', manager: 'Manager', write: 'Writer' }
