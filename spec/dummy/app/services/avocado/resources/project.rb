@@ -10,7 +10,7 @@ module Avocado
       fields do
         id :ID
         text :Name, required: true
-        badge :condition, map: { informations: 'info', failure: 'danger', cancelled: 'danger', info: 'success' }
+        badge :condition, map: { informations: 'info', failure: 'danger', cancelled: 'danger' }
         has_and_belongs_to_many :users
       end
 
