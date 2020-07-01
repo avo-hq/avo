@@ -7,7 +7,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test": "bundle exec rspec ./spec --tag ~type:system",
+    "test": "bundle exec rspec ./spec --tag type:system",
     "test-system": "bundle exec rspec ./spec --tag type:system",
     "test-all": "bundle exec rspec ./spec",
     "docker-build": "docker build -t avocado-dev -f docker/Dockerfile .",
