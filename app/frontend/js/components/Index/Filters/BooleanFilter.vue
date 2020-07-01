@@ -5,7 +5,7 @@
     </div>
     <div class="p-4">
       <div class="flex items-center">
-        <div class="space-y-3">
+        <div class="space-y-2">
           <template v-for="(name, value, index) in filter.options">
             <div
               :key="index"
@@ -50,8 +50,6 @@ export default {
       return JSON.stringify(Array.from(this.selected)) === JSON.stringify(Object.keys(this.filter.default))
     },
     filterValue() {
-      if (this.defaultIsSelected) return ''
-
       const value = {}
 
       Object.keys(this.filter.options).forEach((option) => {
@@ -84,15 +82,18 @@ export default {
         }
       })
     },
+    setInitialValue() {
+      const presentFilterValue = this.appliedFilters[this.filterClass]
+
+      if (presentFilterValue) {
+        this.applySelection(presentFilterValue)
+      } else if (this.filter.default) {
+        this.applySelection(this.filter.default)
+      }
+    },
   },
   mounted() {
-    const presentFilterValue = this.appliedFilters[this.filterClass]
-
-    if (presentFilterValue) {
-      this.applySelection(presentFilterValue)
-    } else if (this.filter.default) {
-      this.applySelection(this.filter.default)
-    }
+    this.setInitialValue()
   },
 }
 </script>

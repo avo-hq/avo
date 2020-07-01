@@ -25,15 +25,12 @@ import sortBy from 'lodash/sortBy'
 
 export default {
   components: { GameBoard },
-  data: () => ({}),
   props: ['resources'],
   computed: {
     sortedResources() {
       return sortBy(this.resources, 'resource_name')
     },
   },
-  methods: {},
-  mounted() {},
 }
 </script>
 

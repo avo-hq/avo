@@ -50,7 +50,6 @@ RSpec.describe 'Filters', type: :system do
       expect(page).to have_text 'Unfeatured post'
       expect(page).to have_unchecked_field 'Featured'
       expect(page).to have_unchecked_field 'Unfeatured'
-      expect(current_url).not_to include 'filters='
 
       check 'Featured'
       check 'Unfeatured'
@@ -59,7 +58,6 @@ RSpec.describe 'Filters', type: :system do
       expect(page).to have_text 'Unfeatured post'
       expect(page).to have_checked_field 'Featured'
       expect(page).to have_checked_field 'Unfeatured'
-      expect(current_url).to include 'filters='
     end
   end
 

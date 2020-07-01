@@ -42,8 +42,6 @@ export default {
       return JSON.stringify(this.value) === JSON.stringify(this.filter.default)
     },
     filterValue() {
-      if (this.defaultIsSelected) return ''
-
       return this.value
     },
   },
@@ -51,15 +49,18 @@ export default {
     changeFilter() {
       return this.$emit('change-filter', { [this.filterClass]: this.filterValue })
     },
+    setInitialValue() {
+      const presentFilterValue = this.appliedFilters[this.filterClass]
+
+      if (presentFilterValue) {
+        this.value = presentFilterValue
+      } else if (this.filter.default) {
+        this.value = this.filter.default
+      }
+    },
   },
   mounted() {
-    const presentFilterValue = this.appliedFilters[this.filterClass]
-
-    if (presentFilterValue) {
-      this.value = presentFilterValue
-    } else if (this.filter.default) {
-      this.value = this.filter.default
-    }
+    this.setInitialValue()
   },
 }
 </script>
