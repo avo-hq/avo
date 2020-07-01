@@ -64,6 +64,7 @@ group :development, :test do
   gem 'database_cleaner'
 
   gem 'ruby-debug-ide', require: false
+  gem 'debase'
 end
 
 group :development, :test do
