@@ -64,10 +64,13 @@ Vue.component('view-footer',                         require('@/js/components/Vi
 Vue.component('panel',                               require('@/js/components/Panel.vue').default)
 Vue.component('heading',                             require('@/js/components/Heading.vue').default)
 Vue.component('resources-search',                    require('@/js/components/ResourcesSearch.vue').default)
-Vue.component('resources-filter',                    require('@/js/components/ResourcesFilter.vue').default)
-Vue.component('select-filter',                       require('@/js/components/Index/Filters/SelectFilter.vue').default)
 Vue.component('loading-component',                   require('@/js/components/LoadingComponent.vue').default)
 Vue.component('loading-overlay',                     require('@/js/components/LoadingOverlay.vue').default)
+
+// Filters
+Vue.component('resource-filters',                    require('@/js/components/Index/ResourceFilters.vue').default)
+Vue.component('boolean-filter',                      require('@/js/components/Index/Filters/BooleanFilter.vue').default)
+Vue.component('select-filter',                       require('@/js/components/Index/Filters/SelectFilter.vue').default)
 
 // Sidebar
 Vue.component('resources-navigation',                require('@/js/components/ResourcesNavigation.vue').default)
