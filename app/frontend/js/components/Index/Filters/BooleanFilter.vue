@@ -46,9 +46,6 @@ export default {
 
       return ''
     },
-    defaultIsSelected() {
-      return JSON.stringify(Array.from(this.selected)) === JSON.stringify(Object.keys(this.filter.default))
-    },
     filterValue() {
       const value = {}
 

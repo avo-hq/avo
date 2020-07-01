@@ -21,7 +21,7 @@
             v-if="relationship === 'has_and_belongs_to_many'"
           >Attach {{resourceNameSingular | toLowerCase}}</a>
           <router-link
-            :to="createNewParams"
+            :to="createNewAction"
             class="button"
             v-else
           >Create new {{resourceNameSingular | toLowerCase}}</router-link>
@@ -234,8 +234,8 @@ export default {
 
       return `No ${this.resourceNamePlural.toLowerCase()} found`
     },
-    createNewParams() {
-      const params = {
+    createNewAction() {
+      const action = {
         name: 'new',
         params: {
           resourceName: this.resourcePath,
@@ -244,12 +244,12 @@ export default {
       }
 
       if (this.viaResourceName) {
-        params.query.viaRelationship = this.field.id
-        params.query.viaResourceName = this.viaResourceName
-        params.query.viaResourceId = this.viaResourceId
+        action.query.viaRelationship = this.field.id
+        action.query.viaResourceName = this.viaResourceName
+        action.query.viaResourceId = this.viaResourceId
       }
 
-      return params
+      return action
     },
   },
   methods: {
