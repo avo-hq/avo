@@ -1,21 +1,20 @@
 <template>
   <edit-field-wrapper :field="field" :errors="errors" :index="index">
-    <currency-input
-    v-model="value"
-    :currency="field.currency"
-    :locale="field.locale"
+    <input-component
+      type="currency"
+      v-model="value"
+      :currency="field.currency"
+      :locale="field.locale"
     />
+    {{value}}
   </edit-field-wrapper>
 </template>
 
 <script>
 import FormField from '@/js/mixins/form-field'
-// eslint-disable-next-line sort-imports-es6-autofix/sort-imports-es6
-import { CurrencyInput } from 'vue-currency-input'
 
 export default {
   mixins: [FormField],
-  components: { CurrencyInput },
   computed: {
     classes() {
       const classes = ['w-full']
@@ -26,9 +25,18 @@ export default {
     },
   },
   methods: {
+    setInitialValue() {
+      if (!this.field.value || this.field.value === '') this.value =  0
+
+      this.value = Number(this.field.value)
+      // console.log('this.value->', this.value)
+    },
     focus() {
       if (this.$refs['field-input']) this.$refs['field-input'].$emit('focus')
     },
+  },
+  created() {
+    this.setInitialValue()
   },
 }
 </script>

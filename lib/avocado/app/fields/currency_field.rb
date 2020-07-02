@@ -12,8 +12,8 @@ module Avocado
 
         super(name, **args, &block)
 
-        @currency = args[:currency].present? ? args[:currency].to_s : 'USD'
-        @locale = args[:locale].present? ? args[:locale].to_s : 'en-US'
+        @currency = args[:currency].present? ? args[:currency].to_s : Avocado.configuration.currency
+        @locale = args[:locale].present? ? args[:locale].to_s : Avocado.configuration.locale
       end
 
       def hydrate_resource(model, resource, view)

@@ -1,11 +1,12 @@
 <template>
   <index-field-wrapper :field="field">
     <currency-input
-    v-if="field.value"
-    v-model="field.value"
-    :currency="field.currency"
-    :locale="field.locale"
-    disabled
+      v-if="value"
+      v-model="value"
+      :currency="field.currency"
+      :locale="field.locale"
+      class="bg-transparent"
+      disabled
     />
     <div v-else>
       -
@@ -14,17 +15,25 @@
 </template>
 
 <script>
-// eslint-disable-next-line sort-imports-es6-autofix/sort-imports-es6
 import { CurrencyInput } from 'vue-currency-input'
 
 export default {
   props: ['field'],
   components: { CurrencyInput },
+  data: () => ({
+    value: 0,
+  }),
+  methods: {
+    setInitialValue() {
+      let { value } = this.field
+
+      if (!this.field.value || this.field.value === '') value =  0
+
+      this.value = Number(value, 10)
+    },
+  },
+  mounted() {
+    this.setInitialValue()
+  },
 }
 </script>
-
-<style>
-input:disabled {
-  background: #ffffff;
-}
-</style>
