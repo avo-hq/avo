@@ -8,29 +8,30 @@
 
         <template #content>
           <loading-overlay v-if="isLoading" />
-          <component
-            v-for="(field, index) in fields"
-            :key="field.id"
-            :index="index"
-            :is="`edit-${field.component}`"
-            :field="field"
-            :errors="errors"
-            :resource-name="resourceName"
-            :resource-id="resourceId"
-            :field-id="field.id"
-          ></component>
+
+          <form @submit.prevent="submitResource">
+            <component
+              v-for="(field, index) in fields"
+              :key="field.id"
+              :index="index"
+              :is="`edit-${field.component}`"
+              :field="field"
+              :errors="errors"
+              :resource-name="resourceName"
+              :resource-id="resourceId"
+              :field-id="field.id"
+              :via-resource-name="viaResourceName"
+              :via-resource-id="viaResourceId"
+            ></component>
+
+            <input type="submit" class="hidden">
+          </form>
         </template>
 
         <template #footer>
           <router-link
             class="button"
-            :to="{
-              name: 'show',
-              params: {
-                resourceName: resourceName,
-                resourceId: resource.id,
-              },
-            }">Cancel</router-link>
+            :to="cancelActionParams">Cancel</router-link>
           <button class="button" @click="submitResource">Save</button>
         </template>
       </panel>
@@ -53,6 +54,26 @@ export default {
   props: [
     'resourceName',
     'resourceId',
+    'viaResourceName',
+    'viaResourceId',
   ],
+  computed: {
+    cancelActionParams() {
+      const action = {
+        name: 'show',
+        params: {
+          resourceName: this.resourceName,
+          resourceId: this.resource.id,
+        },
+      }
+
+      if (this.viaResourceName) {
+        action.params.resourceName = this.viaResourceName
+        action.params.resourceId = this.viaResourceId
+      }
+
+      return action
+    },
+  },
 }
 </script>

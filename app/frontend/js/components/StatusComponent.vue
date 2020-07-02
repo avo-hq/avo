@@ -1,0 +1,62 @@
+<template>
+  <div>
+    <div class="spinner" v-if="loading"></div>
+    <div :class="classes">
+        {{ label }}
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    status: String,
+    label: String,
+  },
+  computed: {
+    classes() {
+      const classes = ['inline-block']
+      if (this.status === 'fail') classes.push('text-red-700')
+
+      return classes
+    },
+    loading() {
+      return this.status === 'load'
+    },
+  },
+}
+</script>
+
+<style>
+.spinner {
+  display: inline-block;
+
+  width: 18px;
+  height: 18px;
+  margin: 0px 5px -3px 0px;
+  background-color: #333;
+
+  border-radius: 100%;
+  -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
+  animation: sk-scaleout 1.0s infinite ease-in-out;
+}
+
+@-webkit-keyframes sk-scaleout {
+  0% { -webkit-transform: scale(0) }
+  100% {
+    -webkit-transform: scale(1.0);
+    opacity: 0;
+  }
+}
+
+@keyframes sk-scaleout {
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  } 100% {
+    -webkit-transform: scale(1.0);
+    transform: scale(1.0);
+    opacity: 0;
+  }
+}
+</style>

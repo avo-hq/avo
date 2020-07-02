@@ -53,8 +53,8 @@ module Avocado
           @@fields[self].push Avocado::Fields::BooleanGroupField::new(name, **args, &block)
         end
 
-        def status(name, **args)
-          @@fields[self].push Avocado::Fields::StatusField::new(name, **args)
+        def status(name, **args, &block)
+          @@fields[self].push Avocado::Fields::StatusField::new(name, **args, &block)
         end
 
         def belongs_to(name, **args)
@@ -67,6 +67,10 @@ module Avocado
 
         def has_many(name, **args)
           @@fields[self].push Avocado::Fields::HasManyField::new(name, **args)
+        end
+
+        def has_and_belongs_to_many(name, **args)
+          @@fields[self].push Avocado::Fields::HasAndBelongsToManyField::new(name, **args)
         end
 
         def file(name, **args)
