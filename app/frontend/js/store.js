@@ -1,13 +1,22 @@
-import Vue from 'vue'
+import Vue from 'vue/dist/vue.esm'
 import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-const initialState = {}
+const state = {
+  appliedFilters: {},
+}
 
-export default new Vuex.Store({
-  state: initialState,
+const index = {
+  namespaced: true,
+  state,
   getters: {},
   actions: {},
   mutations: {},
+}
+
+export default new Vuex.Store({
+  modules: {
+    index,
+  },
 })

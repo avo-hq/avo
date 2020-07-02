@@ -9,7 +9,7 @@ module Avocado
       end
 
       fields do
-        id :ID
+        id
         text :name, required: true, placeholder: 'John Doe'
         file :cv, name: 'CV'
         file :avatar, is_avatar: true
@@ -27,13 +27,12 @@ module Avocado
         text :is_writer, format_using: -> (value) { value.truncate 3 }, hide_on: :edit do |model, resource, view, field|
           model.posts.to_a.count > 0 ? 'yes' : 'no'
         end
-        textarea :Description, rows: 5, readonly: false, hide_on: :index, format_using: -> (value) { value.to_s.truncate 30 }, required: true
+        textarea :description, rows: 5, readonly: false, hide_on: :index, format_using: -> (value) { value.to_s.truncate 30 }, required: true
         has_and_belongs_to_many :projects
         has_many :posts
       end
 
-      use_filter Avocado::Filters::AvailableFilter
-      # use_filter Avocado::Filters::FeaturedFilter
+      use_filter Avocado::Filters::AvailabilityFilter
     end
   end
 end

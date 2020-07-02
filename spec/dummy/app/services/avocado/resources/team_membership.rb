@@ -7,10 +7,10 @@ module Avocado
       end
 
       fields do
-        id :ID
+        id
         select :level, options: { rookie: 'Rookie', manager: 'Manager', executive: 'Executive' }
-        belongs_to :User
-        belongs_to :Team
+        belongs_to :user
+        belongs_to :team
       end
     end
   end

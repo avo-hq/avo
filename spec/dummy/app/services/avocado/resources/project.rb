@@ -8,14 +8,11 @@ module Avocado
       end
 
       fields do
-        id :ID
-        text :Name, required: true
+        id
+        text :name, required: true
         badge :condition, map: { informations: 'info', failure: 'danger', cancelled: 'danger' }
         has_and_belongs_to_many :users
       end
-
-      # use_filter Avocado::Filters::IndicatorFilter
-      # use_filter Avocado::Filters::FeaturedFilter
     end
   end
 end
