@@ -1,10 +1,13 @@
 <template>
-  <div class="relative w-full px-4 flex justify-between z-40">
+  <div class="relative w-full px-4 flex justify-between z-30">
     <div></div>
     <button class="bg-blue-300 p-2 shadow rounded text-white" @click="toggleFiltersPanel">
-      <FilterIcon class="h-8"/>
+      <FilterIcon class="h-8" data-button="resource-filters" />
     </button>
-    <div class="absolute block inset-auto right-0 top-full rounded bg-white shadow min-w-300px mr-4 z-20" v-if="open">
+    <div class="absolute block inset-auto right-0 top-full rounded bg-white shadow min-w-300px mr-4 z-20"
+      v-if="open"
+      v-on-clickaway="onClickAway"
+    >
       <div v-if="!viaResourceName">
         <div class="bg-blue-600 text-white py-2 px-4">
           Per page
@@ -38,13 +41,13 @@
 </template>
 
 <script>
-// eslint-disable-next-line import/no-unresolved
+import { mixin as clickaway } from 'vue-clickaway'
 import FilterIcon from '@/svgs/filter.svg?inline'
 import HasInputAppearance from '@/js/mixins/has-input-appearance'
 
 export default {
   components: { FilterIcon },
-  mixins: [HasInputAppearance],
+  mixins: [HasInputAppearance, clickaway],
   data: () => ({
     open: false,
     localPerPage: 24,
@@ -60,7 +63,6 @@ export default {
       default: () => ([24, 48, 72]),
     },
   },
-  computed: {},
   methods: {
     toggleFiltersPanel() {
       this.open = !this.open
@@ -70,6 +72,9 @@ export default {
     },
     changeFilter(args) {
       this.$emit('change-filter', args)
+    },
+    onClickAway() {
+      this.open = false
     },
   },
   mounted() {

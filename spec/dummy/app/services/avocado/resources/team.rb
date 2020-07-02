@@ -7,7 +7,7 @@ module Avocado
       end
 
       fields do
-        id :ID
+        id
         text :name
         textarea :description
         has_one :admin
