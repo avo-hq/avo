@@ -1,5 +1,7 @@
 require_relative 'tools_manager'
 require_relative 'filter'
+require_relative 'filters/select_filter'
+require_relative 'filters/boolean_filter'
 require_relative 'resource'
 require_relative 'tool'
 
