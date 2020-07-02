@@ -77,7 +77,7 @@ module Avocado
         fields[:computed_value] = @block.call model, resource, view, self if computable and @block.present?
 
         # Run each field's custom hydration
-        fields.merge! self.hydrate_field fields, model, resource, view
+        fields.merge! self.hydrate_field(fields, model, resource, view)
 
         # Run the value through resolver if present
         fields[:value] = @format_using.call fields[:value] if @format_using.present?
@@ -92,7 +92,9 @@ module Avocado
           final_value = fields[:computed_value]
         end
 
-        final_value
+        {
+          value: final_value
+        }
       end
 
       def fill_model(model, key, value)
