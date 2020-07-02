@@ -17,7 +17,13 @@ module Avocado
       end
 
       def hydrate_resource(model, resource, view)
-        return {} if [:create, :index].include? view
+        if view === :create
+          return {
+            relationship: :has_many,
+          }
+        end
+
+        return {} if [:index].include? view
 
         fields = {}
 
