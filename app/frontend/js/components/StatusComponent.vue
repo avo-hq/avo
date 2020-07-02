@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="flex flex-shrink-0">
     <div class="spinner" v-if="loading"></div>
     <div :class="classes">
         {{ label }}

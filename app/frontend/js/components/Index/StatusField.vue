@@ -4,8 +4,7 @@
       v-if="value"
       :status="status"
       :label="value"
-      >
-    </StatusComponent>
+    />
     <div v-else>
       -
     </div>
