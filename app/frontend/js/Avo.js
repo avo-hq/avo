@@ -7,7 +7,6 @@ import VTooltip from 'v-tooltip'
 import Vue from 'vue/dist/vue.esm'
 import VueRouter from 'vue-router'
 import router from '@/js/router'
-import store from  '@/js/store'
 
 import '@/js/components'
 
@@ -56,7 +55,6 @@ const Avo = {
 
     this.vue = new Vue({
       router,
-      store,
       el: '#app',
       data: {},
       computed: {
