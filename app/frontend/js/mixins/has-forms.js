@@ -3,7 +3,6 @@ import Api from '@/js/Api'
 import isNull from 'lodash/isNull'
 import isUndefined from 'lodash/isUndefined'
 
-
 export default {
   data: () => ({
     isLoading: false,
@@ -22,7 +21,7 @@ export default {
 
       return this.resource
         .fields
-        .filter((field) => field.updatable)
+        .filter((field) => ['has_and_belongs_to_many', 'has_many'].indexOf(field.relationship) === -1)
         .filter((field) => !field.computed)
     },
     submitResourceUrl() {
@@ -55,9 +54,9 @@ export default {
         formData.via_resource_id = this.viaResourceId
       }
 
-      // eslint-disable-next-line no-return-assign
-      this.fields.forEach((field) => {
+      this.fields.filter((filter) => filter.updatable).forEach((field) => {
         const id = field.getId()
+
         if (id) {
           formData.resource[id] = isNull(field.getValue()) ? '' : field.getValue()
         }
@@ -89,7 +88,12 @@ export default {
         }
       } catch (error) {
         const { response } = error
-        this.errors = response.data.errors
+
+        if (response) {
+          this.errors = response.data.errors
+        } else {
+          throw error
+        }
       }
 
       this.isLoading = false

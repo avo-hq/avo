@@ -57,6 +57,10 @@ module Avocado
           @@fields[self].push Avocado::Fields::StatusField::new(name, **args, &block)
         end
 
+        def heading(name, **args)
+          @@fields[self].push Avocado::Fields::HeadingField::new(name, **args)
+        end
+
         def belongs_to(name, **args)
           @@fields[self].push Avocado::Fields::BelongsToField::new(name, **args)
         end

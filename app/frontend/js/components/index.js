@@ -37,6 +37,7 @@ Vue.component('show-has-one-field',                  require('@/js/components/Sh
 Vue.component('show-has-many-field',                 require('@/js/components/Show/HasMany.vue').default)
 Vue.component('show-has--adn-belongs-to-many-field', require('@/js/components/Show/HasAndBelongsToMany.vue').default)
 Vue.component('show-status-field',                   require('@/js/components/Show/StatusField.vue').default)
+Vue.component('show-heading-field',                  require('@/js/components/Show/HeadingField.vue').default)
 
 Vue.component('edit-field-wrapper',                  require('@/js/components/Edit/FieldWrapper.vue').default)
 Vue.component('edit-id-field',                       require('@/js/components/Edit/IdField.vue').default)
@@ -53,6 +54,7 @@ Vue.component('edit-boolean-group-field',            require('@/js/components/Ed
 Vue.component('edit-belongs-to-field',               require('@/js/components/Edit/BelongsTo.vue').default)
 Vue.component('edit-has-one-field',                  require('@/js/components/Edit/HasOne.vue').default)
 Vue.component('edit-status-field',                   require('@/js/components/Edit/StatusField.vue').default)
+Vue.component('edit-heading-field',                  require('@/js/components/Show/HeadingField.vue').default)
 
 // Form Fields
 Vue.component('input-component',                     require('@/js/components/InputComponent.vue').default)
