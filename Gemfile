@@ -58,7 +58,7 @@ group :development, :test do
   gem 'faker'
 
   # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-  gem 'tzinfo-data'
+  gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
   gem 'devise'
   gem 'database_cleaner'
