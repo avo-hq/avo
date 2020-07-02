@@ -5,7 +5,7 @@ module Avocado
     class HeadingField < Field
       def initialize(name, **args, &block)
         @defaults = {
-          # updatable: false,
+          updatable: false,
           component: 'heading-field',
           id: 'heading_' + name.to_s.parameterize.underscore,
         }

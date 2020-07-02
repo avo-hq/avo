@@ -8,16 +8,15 @@ RSpec.describe 'HeadingFields', type: :system do
       it 'checks for normal header' do
         visit "/avocado/resources/users/#{user.id}"
 
-        expect(find_field_element('heading_age')).to have_text 'AGE'
+        expect(find_field_element('heading_other')).to have_text 'OTHER'
       end
 
       it 'checks for html header' do
         visit "/avocado/resources/users/#{user.id}"
 
-        expect(find_field_element('heading_div_class_underline_text_green_800_uppercase_personal_documents_div')).to have_text 'PERSONAL DOCUMENTS'
-        expect(find_field_element('heading_div_class_underline_text_green_800_uppercase_personal_documents_div')).to have_css '.underline'
-        expect(find_field_element('heading_div_class_underline_text_green_800_uppercase_personal_documents_div')).to have_css '.uppercase'
-        expect(find_field_element('heading_div_class_underline_text_green_800_uppercase_personal_documents_div')).to have_css '.text-green-800'
+        expect(find_field_element('heading_div_class_text_blue_900_uppercase_font_bold_files_div')).to have_text 'FILES'
+        expect(find_field_element('heading_div_class_text_blue_900_uppercase_font_bold_files_div')).to have_css '.uppercase'
+        expect(find_field_element('heading_div_class_text_blue_900_uppercase_font_bold_files_div')).to have_css '.text-blue-900'
       end
     end
 
@@ -25,7 +24,7 @@ RSpec.describe 'HeadingFields', type: :system do
       it 'checks for normal header' do
         visit "/avocado/resources/users/#{user.id}/edit"
 
-        expect(find_field_element('heading_age')).to have_text 'AGE'
+        expect(find_field_element('heading_other')).to have_text 'OTHER'
       end
     end
 
@@ -33,10 +32,9 @@ RSpec.describe 'HeadingFields', type: :system do
       it 'checks for html header' do
         visit "/avocado/resources/users/#{user.id}/edit"
 
-        expect(find_field_element('heading_div_class_underline_text_green_800_uppercase_personal_documents_div')).to have_text 'PERSONAL DOCUMENTS'
-        expect(find_field_element('heading_div_class_underline_text_green_800_uppercase_personal_documents_div')).to have_css '.underline'
-        expect(find_field_element('heading_div_class_underline_text_green_800_uppercase_personal_documents_div')).to have_css '.uppercase'
-        expect(find_field_element('heading_div_class_underline_text_green_800_uppercase_personal_documents_div')).to have_css '.text-green-800'
+        expect(find_field_element('heading_div_class_text_blue_900_uppercase_font_bold_files_div')).to have_text 'FILES'
+        expect(find_field_element('heading_div_class_text_blue_900_uppercase_font_bold_files_div')).to have_css '.uppercase'
+        expect(find_field_element('heading_div_class_text_blue_900_uppercase_font_bold_files_div')).to have_css '.text-blue-900'
       end
     end
   end
