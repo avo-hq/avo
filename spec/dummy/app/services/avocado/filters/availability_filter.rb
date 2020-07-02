@@ -1,6 +1,6 @@
 module Avocado
   module Filters
-    class AvailableFilter < Filter
+    class AvailabilityFilter < SelectFilter
       def name
         'Availability filter'
       end

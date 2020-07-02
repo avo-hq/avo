@@ -37,6 +37,7 @@ Vue.component('show-has-one-field',                  require('@/js/components/Sh
 Vue.component('show-has-many-field',                 require('@/js/components/Show/HasMany.vue').default)
 Vue.component('show-has--adn-belongs-to-many-field', require('@/js/components/Show/HasAndBelongsToMany.vue').default)
 Vue.component('show-gravatar-field',                 require('@/js/components/Show/GravatarField.vue').default)
+Vue.component('show-heading-field',                  require('@/js/components/Show/HeadingField.vue').default)
 
 Vue.component('edit-field-wrapper',                  require('@/js/components/Edit/FieldWrapper.vue').default)
 Vue.component('edit-id-field',                       require('@/js/components/Edit/IdField.vue').default)
@@ -52,7 +53,7 @@ Vue.component('edit-files-field',                    require('@/js/components/Ed
 Vue.component('edit-boolean-group-field',            require('@/js/components/Edit/BooleanGroupField.vue').default)
 Vue.component('edit-belongs-to-field',               require('@/js/components/Edit/BelongsTo.vue').default)
 Vue.component('edit-has-one-field',                  require('@/js/components/Edit/HasOne.vue').default)
-// Vue.component('edit-gravatar-field',                 require('@/js/components/Edit/GravatarField.vue').default)
+Vue.component('edit-heading-field',                  require('@/js/components/Show/HeadingField.vue').default)
 
 // Form Fields
 Vue.component('input-component',                     require('@/js/components/InputComponent.vue').default)
@@ -67,10 +68,13 @@ Vue.component('view-footer',                         require('@/js/components/Vi
 Vue.component('panel',                               require('@/js/components/Panel.vue').default)
 Vue.component('heading',                             require('@/js/components/Heading.vue').default)
 Vue.component('resources-search',                    require('@/js/components/ResourcesSearch.vue').default)
-Vue.component('resources-filter',                    require('@/js/components/ResourcesFilter.vue').default)
-Vue.component('select-filter',                       require('@/js/components/Index/Filters/SelectFilter.vue').default)
 Vue.component('loading-component',                   require('@/js/components/LoadingComponent.vue').default)
 Vue.component('loading-overlay',                     require('@/js/components/LoadingOverlay.vue').default)
+
+// Filters
+Vue.component('resource-filters',                    require('@/js/components/Index/ResourceFilters.vue').default)
+Vue.component('boolean-filter',                      require('@/js/components/Index/Filters/BooleanFilter.vue').default)
+Vue.component('select-filter',                       require('@/js/components/Index/Filters/SelectFilter.vue').default)
 
 // Sidebar
 Vue.component('resources-navigation',                require('@/js/components/ResourcesNavigation.vue').default)
