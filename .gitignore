@@ -51,3 +51,4 @@ config/settings/*.local.yml
 config/environments/*.local.yml
 
 coverage/
+.vscode
