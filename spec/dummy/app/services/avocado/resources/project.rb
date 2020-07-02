@@ -8,9 +8,9 @@ module Avocado
       end
 
       fields do
-        id :ID
-        text :Name, required: true
-        status :Status, failed_when: ['closed', 'reject', 'failed'], loading_when: ['loading', 'running', 'waiting']
+        id
+        text :name, required: true
+        status :status, failed_when: [:closed, :rejected, :failed], loading_when: [:loading, :running, :waiting]
         has_and_belongs_to_many :users
       end
     end
