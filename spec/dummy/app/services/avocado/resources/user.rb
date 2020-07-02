@@ -11,12 +11,12 @@ module Avocado
       fields do
         id
         text :name, required: true, placeholder: 'John Doe'
-        heading '<div class="underline text-green-800 uppercase">Personal Documents</div>', as_html: true
         file :cv, name: 'CV'
+        heading '<div class="text-blue-900 uppercase font-bold">Files</div>', as_html: true
         file :avatar, is_avatar: true
         files :images, is_image: true
+        heading 'Other'
         files :docs
-        heading 'Age'
         text :email, name: 'User Email', required: true
         number :age, min: 0, max: 120, step: 5
         boolean :availability
