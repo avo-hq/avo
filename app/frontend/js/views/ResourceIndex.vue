@@ -21,7 +21,7 @@
             v-if="relationship === 'has_and_belongs_to_many'"
           >Attach {{resourceNameSingular | toLowerCase}}</a>
           <router-link
-            :to="createNewParams"
+            :to="createNewAction"
             class="button"
             v-else
           >Create new {{resourceNameSingular | toLowerCase}}</router-link>
@@ -32,7 +32,7 @@
     <template #content>
       <template>
         <div class="flex justify-between items-center py-4">
-          <resources-filter
+          <resource-filters
             v-if="!viaResourceName"
             :via-resource-name="viaResourceName"
             :per-page="perPage"
@@ -61,7 +61,11 @@
               @sort="changeSortBy"
               @resource-deleted="getResources(true)"
               ></resource-table>
-              <div class="flex-1 flex items-center justify-center" v-text="noResourcesLabel" v-else></div>
+
+              <div class="flex-1 flex items-center justify-center"
+                v-text="noResourcesLabel"
+                v-else
+              />
           </div>
 
           <paginate
@@ -90,6 +94,7 @@
 <script>
 import Api from '@/js/Api'
 import AttachModal from '@/js/components/AttachModal.vue'
+import Bus from '@/js/Bus'
 import DealsWithHasManyRelations from '@/js/mixins/deals-with-has-many-relations'
 import DealsWithResourceLabels from '@/js/mixins/deals-with-resource-labels'
 import URI from 'urijs'
@@ -140,7 +145,7 @@ export default {
 
       if (!this.paramCanBeOmitted(this.page, 1)) {
         if (this.viaResourceName) {
-          params[this.uriParam('apge')] = this.page
+          params[this.uriParam('page')] = this.page
         } else {
           params.page = this.page
         }
@@ -190,6 +195,8 @@ export default {
       return params
     },
     encodedFilters() {
+      if (Object.keys(this.appliedFilters).length === 0) return null
+
       return btoa(JSON.stringify(this.appliedFilters))
     },
     queryUrl() {
@@ -227,7 +234,7 @@ export default {
 
       return `No ${this.resourceNamePlural.toLowerCase()} found`
     },
-    createNewParams() {
+    createNewAction() {
       const action = {
         name: 'new',
         params: {
@@ -273,10 +280,12 @@ export default {
       this.totalPages = data.total_pages
       this.meta = data.meta
 
+      Bus.$emit('resourcesLoaded', this.resources)
+
       this.isLoading = false
     },
     async getFilters() {
-      const { data } = await Api.get(`/avocado/avocado-api/${this.resourceName}/filters`)
+      const { data } = await Api.get(`/avocado/avocado-api/${this.resourcePath}/filters`)
 
       this.filters = data.filters
     },
@@ -322,15 +331,20 @@ export default {
       this.sortDirection = isUndefined(direction) ? '' : direction
     },
     setFilterValue(args) {
-      Object.keys(args).forEach((filterClass) => {
-        const value = args[filterClass]
+      Object.keys(args).forEach((filterClassName) => {
+        const value = args[filterClassName]
 
-        if (value === '' || value === '-') {
-          this.$delete(this.appliedFilters, filterClass)
+        if (this.isDefaultValueForFilter(filterClassName, value)) {
+          this.$delete(this.appliedFilters, filterClassName)
         } else {
-          this.$set(this.appliedFilters, filterClass, value)
+          this.$set(this.appliedFilters, filterClassName, value)
         }
       })
+    },
+    isDefaultValueForFilter(filterClassName, value) {
+      const currentFilter = this.filters.find((filter) => filter.filter_class === filterClassName)
+
+      return JSON.stringify(currentFilter.default) === JSON.stringify(value)
     },
     async initQueryParams() {
       this.setPage(URI(window.location.toString()).query(true)[this.uriParam('page')])
@@ -351,7 +365,7 @@ export default {
       return param
     },
     async getOptions() {
-      const { data } = await Api.get(`/avocado/avocado-api/${this.resourcePath}?for_relation=${this.relationship}`)
+      const { data } = await Api.get(`/avocado/avocado-api/${this.resourceName}?for_relation=${this.relationship}`)
 
       return data.resources
     },
@@ -370,22 +384,27 @@ export default {
     },
     async showAttachModal() {
       this.$modal.show(AttachModal, {
-        heading: `Attach ${this.resourceNameSingular.toLowerCase()}`,
         text: `Select a ${this.resourceNameSingular.toLowerCase()} to attach`,
         getOptions: this.getOptions,
         attachAction: this.attachOption,
-      }, {
-        width: 600,
-        height: 300,
       })
+    },
+    queryFiltersChanged() {
+      const filters = URI(window.location.toString()).query(true)[this.uriParam('filters')]
+      if (filters) {
+        this.setFilterValue(JSON.parse(atob(filters)))
+      } else {
+        this.appliedFilters = {}
+      }
     },
   },
   watch: {
+    '$route.query.filters': 'queryFiltersChanged',
     $route: 'getResources',
   },
   async created() {
-    // this.getFilters()
-    this.initQueryParams()
+    await this.getFilters()
+    await this.initQueryParams()
   },
 }
 </script>
