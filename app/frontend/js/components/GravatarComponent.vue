@@ -1,46 +1,37 @@
 <template>
   <div>
-    <img :src="gravatarURL" :class="classes"/>
+    <img :src="gravatarURL" :class="{'rounded-full': rounded}"/>
   </div>
 </template>
 
 <script>
+import URI from 'urijs'
+
 export default {
   props: {
     hashedEmail: String,
-    rounded: Boolean,
-    squared: Boolean,
-    size: Number,
-    defaultUrl: String,
+    default: {
+      type: String,
+      default: null,
+    },
+    rounded: {
+      type: Boolean,
+      default: false,
+    },
+    size: {
+      type: Number,
+      default: 340,
+    },
   },
   computed: {
     gravatarURL() {
-      let gravatarURL = 'https://www.gravatar.com/avatar/' + this.hashedEmail
+      const gravatarURL = new URI(`https://www.gravatar.com/avatar/${this.hashedEmail}`)
 
-      if (this.defaultUrl !== '') gravatarURL += '?default=' + this.defaultUrl
-      if (this.size > 0 && this.size < 2049) gravatarURL += '?size=' + this.size
-
-      console.log(gravatarURL)
-      return gravatarURL
-    },
-    classes() {
-      const classes = []
-
-      if (this.squared) classes.push('squared-avatar')
-      else classes.push('rounded-avatar')
-
-      return classes.join(' ')
+      return gravatarURL.query({
+        default: this.default,
+        size: this.size,
+      }).toString()
     },
   },
 }
 </script>
-
-<style>
-  .rounded-avatar {
-      border-radius: 50%;
-  }
-
-  .squared-avatar {
-      border-radius: 0%;
-  }
-</style>

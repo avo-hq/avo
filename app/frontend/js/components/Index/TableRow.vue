@@ -11,7 +11,7 @@
     </td>
     <component
       v-for="field in fields"
-      :key="field.id"
+      :key="`${field.name}-${field.id}-${resource.id}`"
       :is="`index-${field.component}`"
       :field="field"
       :field-id="field.id"

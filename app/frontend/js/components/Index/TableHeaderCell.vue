@@ -8,7 +8,7 @@
       :class="{'cursor-pointer': sortable}"
       @click="tryAndSort"
     >
-      {{field.name}}
+      {{fieldName}}
       <component :is="sortComponent"
         v-if="sortable"
         class="inline-block h-4 ml-1 fill-current w-3"
@@ -38,6 +38,11 @@ export default {
       const classes = ['text-left', 'uppercase', 'text-sm', 'p-2']
 
       return classes.join(' ')
+    },
+    fieldName() {
+      if (this.field.component === 'gravatar-field') return ''
+
+      return this.field.name
     },
     key() {
       return `header-${this.resourceName}-${this.field.id}`

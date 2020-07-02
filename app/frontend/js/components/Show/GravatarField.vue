@@ -1,18 +1,14 @@
 <template>
   <show-field-wrapper :field="field" :index="index">
     <GravatarComponent
-      :hashedEmail="this.field.value"
-      :squared="this.field.squared"
-      :size="this.field.size"
-      :defaultUrl="this.field.default_url"
-      >
-    </GravatarComponent>
+      :hashed-email="this.field.value"
+      :default="this.field.default"
+    />
   </show-field-wrapper>
 </template>
 
 <script>
-/* eslint-disable import/no-unresolved */
-import GravatarComponent from '@/js/components/GravatarComponent'
+import GravatarComponent from '@/js/components/GravatarComponent.vue'
 
 export default {
   props: ['field', 'index'],
