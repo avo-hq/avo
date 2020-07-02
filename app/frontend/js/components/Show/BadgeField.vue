@@ -1,6 +1,6 @@
 <template>
   <show-field-wrapper :field="field" :index="index">
-    <span v-if="field.value" :class="classes">{{ field.value }}</span>
+    <span v-if="field.value" :class="classes">{{ badgeLabel }}</span>
     <div v-else>
       -
     </div>
@@ -11,14 +11,23 @@
 export default {
   props: ['field', 'index'],
   computed: {
+    badgeType() {
+      return this.field.value.type
+    },
+    badgeLabel() {
+      return this.field.value.label
+    },
     classes() {
-      const classes = []
-      const value = this.field.map[this.field.value.toLowerCase()]
+      const classes = ['rounded-full', 'uppercase', 'px-2', 'text-xs', 'font-bold', 'text-white']
 
-      if (value === 'info') classes.push('rounded-full bg-blue-500 uppercase px-2 py-1 text-xs font-bold text-white')
-      if (value === 'success') classes.push('rounded-full bg-green-500 uppercase px-2 py-1 text-xs font-bold text-white')
-      if (value === 'danger') classes.push('rounded-full bg-red-500 uppercase px-2 py-1 text-xs font-bold text-white')
-      if (value === 'warning') classes.push('rounded-full bg-yellow-500 uppercase px-2 py-1 text-xs font-bold text-white')
+      const backgrounds = {
+        info: 'blue',
+        success: 'green',
+        danger: 'red',
+        warning: 'yellow',
+      }
+
+      classes.push(`bg-${backgrounds[this.badgeType]}-500`)
 
       return classes.join(' ')
     },

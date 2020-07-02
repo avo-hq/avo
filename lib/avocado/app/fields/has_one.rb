@@ -20,9 +20,7 @@ module Avocado
         @relation_method = name.to_s.parameterize.underscore
       end
 
-      def hydrate_resource(model, resource, view)
-        fields = {}
-
+      def hydrate_field(fields, model, resource, view)
         target_resource = get_related_resource(resource)
         fields[:relation_class] = target_resource.class.to_s
 
