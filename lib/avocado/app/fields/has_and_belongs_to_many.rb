@@ -2,7 +2,7 @@ require_relative 'field'
 
 module Avocado
   module Fields
-    class HasManyField < Field
+    class HasAndBelongsToManyField < Field
       def initialize(name, **args, &block)
         @defaults = {
           updatable: false,
@@ -24,7 +24,7 @@ module Avocado
         target_resource = get_target_resource model
         fields[:relation_class] = target_resource.class.to_s
         fields[:path] = target_resource.url
-        fields[:relationship] = :has_many
+        fields[:relationship] = :has_and_belongs_to_many
 
         fields
       end
@@ -37,8 +37,7 @@ module Avocado
         if @resource.present?
           App.get_resources.find { |r| r.class == @resource }
         else
-          class_name = model._reflections[id].options[:class_name].present? ? model._reflections[id].options[:class_name] : model._reflections[id].name
-          App.get_resources.find { |r| r.class == "Avocado::Resources::#{class_name.to_s.camelcase.singularize}".safe_constantize }
+          App.get_resources.find { |r| r.class == "Avocado::Resources::#{model._reflections[id].plural_name.to_s.camelcase.singularize}".safe_constantize }
         end
       end
     end

@@ -1,6 +1,7 @@
 <template>
   <edit-field-wrapper :field="field" :errors="errors" :index="index">
     <select class="select-input w-full"
+      ref="field-input"
       :class="inputClasses"
       v-model="value"
     >
@@ -13,7 +14,6 @@
 </template>
 
 <script>
-/* eslint-disable max-len */
 import FormField from '@/js/mixins/form-field'
 import HasInputAppearance from '@/js/mixins/has-input-appearance'
 

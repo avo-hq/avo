@@ -1,6 +1,7 @@
 <template>
   <edit-field-wrapper :field="field" :errors="errors" :index="index">
      <flat-pickr
+      ref="field-input"
       class="w-full"
       v-model="value"
       :enable-time="flatpickrConfig.enableTime"
@@ -94,6 +95,9 @@ export default {
       if (this.field.enable_time) return value.toISOString()
 
       return value.format(this.submitFormat)
+    },
+    focus() {
+      // No support for this at the moment.
     },
   },
 }

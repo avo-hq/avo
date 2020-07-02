@@ -2,6 +2,7 @@
   <edit-field-wrapper :field="field" :errors="errors" :index="index">
     <div v-if="searchable">
       <resources-search :resource-name="field.id"
+        ref="field-input"
         :via-resource-name="resourceName"
         :single="true"
         :search-value="field.model"
@@ -12,6 +13,7 @@
     </div>
     <div v-else>
       <select :name="field.id"
+        ref="field-input"
         :id="field.id"
         :class="inputClasses"
         class="select-input w-full"

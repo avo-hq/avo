@@ -27,6 +27,8 @@
           :resource-name="resourceName"
           :via-resource-name="viaResourceName"
           :via-resource-id="viaResourceId"
+          :field="field"
+          @resource-deleted="$emit('resource-deleted')"
         ></tr>
       </tbody>
     </table>
@@ -45,6 +47,7 @@ export default {
     'viaResourceId',
     'sortBy',
     'sortDirection',
+    'field',
   ],
   computed: {
     resourceFields() {

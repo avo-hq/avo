@@ -4,15 +4,18 @@
       {{filter.name}}
     </div>
     <div class="p-4">
-      <select name="per_page"
-        id="per_page"
+      <select :name="filter.id"
+        :id="filter.id"
         @change="changeFilter"
         v-model="value"
         :class="inputClasses"
         class="select-input w-full"
       >
         <option value="">-</option>
-        <option v-for="(value, name) in filter.options" :value="name" v-text="value" :key="name"></option>
+        <option v-for="(value, name) in filter.options"
+          :value="name"
+          v-text="value"
+          :key="name"/>
       </select>
     </div>
   </div>
@@ -35,20 +38,29 @@ export default {
 
       return ''
     },
+    defaultIsSelected() {
+      return JSON.stringify(this.value) === JSON.stringify(this.filter.default)
+    },
+    filterValue() {
+      return this.value
+    },
   },
   methods: {
     changeFilter() {
-      const args = {}
-      args[this.filter.filter_class] = this.value
+      return this.$emit('change-filter', { [this.filterClass]: this.filterValue })
+    },
+    setInitialValue() {
+      const presentFilterValue = this.appliedFilters[this.filterClass]
 
-      this.$emit('change-filter', args)
+      if (presentFilterValue) {
+        this.value = presentFilterValue
+      } else if (this.filter.default) {
+        this.value = this.filter.default
+      }
     },
   },
   mounted() {
-    const newFilterValue = this.appliedFilters[this.filterClass]
-    if (newFilterValue) {
-      this.value = newFilterValue
-    }
+    this.setInitialValue()
   },
 }
 </script>

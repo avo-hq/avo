@@ -7,11 +7,11 @@ module Avocado
       end
 
       fields do
-        id :ID
+        id
         text :name
         textarea :description
         has_one :admin
-        # has_many :memberships
+        has_many :members
       end
     end
   end

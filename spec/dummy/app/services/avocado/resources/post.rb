@@ -8,14 +8,14 @@ module Avocado
       end
 
       fields do
-        id :ID
-        text :Name, required: true
-        textarea :Body
+        id
+        text :name, required: true
+        textarea :body
         belongs_to :user, searchable: false, placeholder: '-'
+        boolean :featured
       end
 
-      # use_filter Avocado::Filters::IndicatorFilter
-      # use_filter Avocado::Filters::FeaturedFilter
+      use_filter Avocado::Filters::FeaturedFilter
     end
   end
 end
