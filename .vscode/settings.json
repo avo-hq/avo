@@ -1,16 +1,15 @@
 {
-    "ruby.specSaveFile": true,
-    "ruby.specCommand": "HEADFULL=true RAILS_ENV=test bundle exec rspec",
-    "workbench.colorCustomizations": {
-        "titleBar.activeBackground": "#42b883",
-        "titleBar.activeForeground": "#15202b",
-        "titleBar.border": "#42b883",
-        "titleBar.inactiveBackground": "#42b88399",
-        "titleBar.inactiveForeground": "#15202b99"
-    },
-    "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": true
-    },
-    "peacock.color": "#42b883"
+  "ruby.specSaveFile": true,
+  "ruby.specCommand": "HEADFULL=true RAILS_ENV=test bundle exec rspec",
+  "workbench.colorCustomizations": {
+    "titleBar.activeBackground": "#42b883",
+    "titleBar.activeForeground": "#15202b",
+    "titleBar.border": "#42b883",
+    "titleBar.inactiveBackground": "#42b88399",
+    "titleBar.inactiveForeground": "#15202b99"
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "peacock.color": "#42b883"
 }
-

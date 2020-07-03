@@ -6,7 +6,7 @@ FactoryBot.define do
     age { rand(18...50) }
     height { Faker::Number.decimal(l_digits: 2, r_digits: 2) }
     currency { 'USD' }
-    country { Faker::Address.country }
+    country { Faker::Address.country_code }
     timezone { 'Romania' }
     availability { Faker::Boolean.boolean }
     description { Faker::Lorem.paragraphs(number: 2) }
