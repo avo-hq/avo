@@ -10,18 +10,6 @@
     cols="30"
     rows="10"
     ></textarea>
-
-  <currency-input
-    ref="field-input"
-    v-else-if="type === 'currency'"
-    :value="value"
-    :currency="currency"
-    :locale="locale"
-    :id="id"
-    :class="inputClasses"
-    :disabled="disabled"
-    @input="emitChanges"
-  />
   <input
     ref="field-input"
     v-else
@@ -38,14 +26,10 @@
 </template>
 
 <script>
-// import { CurrencyDirective } from 'vue-currency-input'
 import HasInputAppearance from '@/js/mixins/has-input-appearance'
 
 export default {
   mixins: [HasInputAppearance],
-  directives: {
-    // currency: CurrencyDirective,
-  },
   props: {
     id: {},
     disabled: {},
@@ -56,20 +40,6 @@ export default {
     type: {
       type: String,
       default: 'text',
-    },
-    currency: {},
-    locale: {},
-  },
-  methods: {
-    emitChanges(value) {
-      // console.log('$event->', $event)
-      const parsedValue = this.$parseCurrency(value, {
-        currency: this.currency,
-        locale: this.locale,
-      })
-
-      console.log('parsedValue->', parsedValue)
-      this.$emit('input', parsedValue)
     },
   },
   mounted() {
