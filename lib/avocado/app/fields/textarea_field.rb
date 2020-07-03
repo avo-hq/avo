@@ -17,7 +17,7 @@ module Avocado
         @rows = args[:rows].present? ? args[:rows].to_i : 5
       end
 
-      def hydrate_resource(model, resource, view)
+      def hydrate_field(fields, model, resource, view)
         {
           rows: @rows
         }

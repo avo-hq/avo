@@ -21,7 +21,7 @@ module Avocado
         @default = args[:default].present? ? ERB::Util.url_encode(args[:default]).to_s : ''
       end
 
-      def hydrate_resource(model, resource, view)
+      def hydrate_field(fields, model, resource, view)
         {
           value: Digest::MD5.hexdigest(model[id].strip.downcase),
           rounded: @rounded,

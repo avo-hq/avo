@@ -5,7 +5,7 @@
           <p v-if="asHtml" v-html="value"></p>
           <div v-else v-text="value" class="font-semibold uppercase"></div>
       </template>
-      <p v-else>-</p>
+      <empty-dash v-else />
     </div>
   </div>
 </template>

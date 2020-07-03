@@ -6,9 +6,7 @@
           <div v-bind:key="index">{{ emoji(val) }} {{ label(key) }}</div>
         </template>
       </div>
-      <template v-else>
-        -
-      </template>
+      <empty-dash v-else />
     </template>
     <button @click="toggleView" v-else>
       View
