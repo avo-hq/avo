@@ -1,7 +1,8 @@
 <template>
   <div class="flex -mb-px">
       <input-component
-        class="w-1/2 text-left flex rounded-b-none rounded-t-none focus:bg-gray-200 border-gray-500 relative -mr-px"
+        class="-mr-px"
+        :class="inputClasses"
         ref="keyInput"
         :value="loopKey"
         :placeholder="keyLabel"
@@ -9,7 +10,7 @@
         @input="updateKey"
       />
       <input-component
-        class="w-1/2 text-left flex rounded-b-none rounded-t-none focus:bg-gray-200 border-gray-500 relative"
+        :class="inputClasses"
         :value="loopValue"
         :placeholder="valueLabel"
         :disabled="readOnly"
@@ -54,6 +55,9 @@ export default {
       if (this.disableEditingKeys) return true
 
       return this.readOnly
+    },
+    inputClasses() {
+      return 'w-1/2 text-left flex rounded-b-none rounded-t-none focus:bg-gray-200 border-gray-500 relative'
     },
   },
   methods: {

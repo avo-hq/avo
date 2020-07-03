@@ -35,6 +35,7 @@ module.exports = {
     display: ['responsive', 'hover', 'focus', 'group-hover'],
     borderColor: ['responsive', 'hover', 'focus', 'disabled'],
     backgroundColor: ['responsive', 'hover', 'focus', 'disabled'],
+    textColor: ['responsive', 'hover', 'focus', 'disabled'],
   },
   plugins: [
     // buttons
