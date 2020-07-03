@@ -5,6 +5,7 @@ import Toasted from 'vue-toasted'
 import VModal from 'vue-js-modal'
 import VTooltip from 'v-tooltip'
 import Vue from 'vue/dist/vue.esm'
+import VueCurrencyInput from 'vue-currency-input'
 import VueRouter from 'vue-router'
 import router from '@/js/router'
 
@@ -42,6 +43,7 @@ const Avo = {
 
     Vue.use(VTooltip)
     Vue.use(VueRouter)
+    Vue.use(VueCurrencyInput)
     Vue.use(VModal, {
       dynamic: true,
       injectModalsContainer: false,
