@@ -11,7 +11,7 @@
         :class="inputClasses"
         class="select-input w-full"
       >
-        <option value="">-</option>
+        <option value="">—</option>
         <option v-for="(value, name) in filter.options"
           :value="name"
           v-text="value"

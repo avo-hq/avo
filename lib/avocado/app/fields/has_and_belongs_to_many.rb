@@ -16,7 +16,7 @@ module Avocado
         @resource = args[:resource]
       end
 
-      def hydrate_resource(model, resource, view)
+      def hydrate_field(fields, model, resource, view)
         if view === :create
           return {
             relationship: :has_many,
@@ -24,8 +24,6 @@ module Avocado
         end
 
         return {} if [:index].include? view
-
-        fields = {}
 
         target_resource = get_target_resource model
         fields[:relation_class] = target_resource.class.to_s

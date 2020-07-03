@@ -17,7 +17,7 @@ module Avocado
         @placeholder = args[:placeholder].present? ? args[:placeholder] : ''
       end
 
-      def hydrate_resource(model, resource, view)
+      def hydrate_field(fields, model, resource, view)
         {
           first_day_of_week: @first_day_of_week,
           picker_format: @picker_format,

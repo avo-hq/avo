@@ -11,7 +11,7 @@
         download
       >Download</a>
     </div>
-    <div v-else>-</div>
+    <empty-dash v-else />
   </show-field-wrapper>
 </template>
 

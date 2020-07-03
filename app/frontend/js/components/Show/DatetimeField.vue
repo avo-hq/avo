@@ -1,6 +1,11 @@
 <template>
   <show-field-wrapper :field="field" :index="index">
-    <div v-text="value"></div>
+    <template v-if="value">
+      <div v-text="value"></div>
+    </template>
+
+    <empty-dash v-else />
+
     <template #extra>
       <span v-if="displayTimezone" class="px-4 items-center flex text-gray-500">({{ timezone }})</span>
     </template>
@@ -21,7 +26,7 @@ export default {
       if (this.field.value) {
         this.value = moment(this.field.value).format(this.field.format)
       } else {
-        this.value = '-'
+        this.value = null
       }
 
       if (this.field.enable_time && this.field.value) {
