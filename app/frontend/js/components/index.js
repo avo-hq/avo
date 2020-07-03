@@ -15,7 +15,6 @@ Vue.component('index-select-field',                  require('@/js/components/In
 Vue.component('index-datetime-field',                require('@/js/components/Index/DatetimeField.vue').default)
 Vue.component('index-file-field',                    require('@/js/components/Index/FileField.vue').default)
 Vue.component('index-files-field',                   require('@/js/components/Index/FilesField.vue').default)
-Vue.component('index-key-value-field',               require('@/js/components/Index/KeyValueField.vue').default)
 Vue.component('index-boolean-group-field',           require('@/js/components/Index/BooleanGroupField.vue').default)
 Vue.component('index-belongs-to-field',              require('@/js/components/Index/BelongsTo.vue').default)
 Vue.component('index-has-one-field',                 require('@/js/components/Index/HasOne.vue').default)

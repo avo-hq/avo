@@ -17,6 +17,7 @@
 <script>
 import FormField from '@/js/mixins/form-field'
 import KeyValue from '@/js/components/KeyValue.vue'
+import pickBy from 'lodash/pickBy'
 
 export default {
   mixins: [FormField],
@@ -28,6 +29,9 @@ export default {
       } else {
         this.value = {}
       }
+    },
+    getValue() {
+      return pickBy(this.value, (value, key) => key !== '')
     },
   },
 }
