@@ -6,7 +6,6 @@
           <div :key="index" @click="toggleOption(name)">
             <input
               type="checkbox"
-              :id="field.id"
               :name="name"
               :checked="value"
               :disabled="disabled"
