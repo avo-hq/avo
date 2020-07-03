@@ -40,7 +40,7 @@ export default {
       return classes.join(' ')
     },
     fieldName() {
-      if (this.field.component === 'gravatar-field') return ''
+      // if (this.field.component === 'gravatar-field') return ''
 
       return this.field.name
     },
