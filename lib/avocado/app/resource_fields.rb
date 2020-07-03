@@ -84,6 +84,10 @@ module Avocado
         def gravatar(name, **args, &block)
           @@fields[self].push Avocado::Fields::GravatarField::new(name, **args, &block)
         end
+        
+        def country(name, **args, &block)
+          @@fields[self].push Avocado::Fields::CountryField::new(name, **args, &block)
+        end
 
         def badge(name, **args, &block)
           @@fields[self].push Avocado::Fields::BadgeField::new(name, **args, &block)
