@@ -12,7 +12,7 @@
           <form @submit.prevent="submitResource">
             <component
               v-for="(field, index) in fields"
-              :key="field.id"
+              :key="uniqueKey(field)"
               :index="index"
               :is="`edit-${field.component}`"
               :field="field"
@@ -22,6 +22,7 @@
               :field-id="field.id"
               :via-resource-name="viaResourceName"
               :via-resource-id="viaResourceId"
+              :field-component="field.component"
             ></component>
 
             <input type="submit" class="hidden">
@@ -42,10 +43,11 @@
 <script>
 import DealsWithResourceLabels from '@/js/mixins/deals-with-resource-labels'
 import HasForms from '@/js/mixins/has-forms'
+import HasUniqueKey from '@/js/mixins/has-unique-key'
 import LoadsResource from '@/js/mixins/loads-resource'
 
 export default {
-  mixins: [HasForms, LoadsResource, DealsWithResourceLabels],
+  mixins: [HasForms, LoadsResource, DealsWithResourceLabels, HasUniqueKey],
   data: () => ({
     resource: null,
     form: {},

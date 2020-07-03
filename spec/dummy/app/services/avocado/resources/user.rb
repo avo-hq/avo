@@ -10,6 +10,7 @@ module Avocado
 
       fields do
         id
+        gravatar :email
         text :name, required: true, placeholder: 'John Doe'
         currency :salary, currency: 'EUR', locale: 'de-DE'
         file :cv, name: 'CV'
