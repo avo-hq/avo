@@ -1,5 +1,5 @@
 <template>
-  <span :class="classes">{{ label }}</span>
+  <span :class="classes" v-text="label"/>
 </template>
 
 <script>
