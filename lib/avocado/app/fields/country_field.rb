@@ -18,12 +18,18 @@ module Avocado
 
       def hydrate_field(fields, model, resource, view)
         if [:show, :index].include? view
+          value = fields[:computed_value] || fields[:value]
+
           # Just return the DB code.
-          return {} if @display_code
+          if @display_code
+            return {
+              value: value
+            }
+          end
 
           # Compute and get the translated value.
           return {
-            value: @countries[fields[:value]],
+            value: @countries[value],
           }
         end
 

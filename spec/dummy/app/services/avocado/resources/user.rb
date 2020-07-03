@@ -10,13 +10,13 @@ module Avocado
 
       fields do
         id
-        country :country
         text :name, required: true, placeholder: 'John Doe'
         file :cv, name: 'CV'
         heading '<div class="text-blue-900 uppercase font-bold">Files</div>', as_html: true
         file :avatar, is_avatar: true
         files :images, is_image: true
         heading 'Other'
+        country :country
         files :docs
         text :email, name: 'User Email', required: true
         number :age, min: 0, max: 120, step: 5
