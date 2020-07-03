@@ -1,6 +1,7 @@
 <template>
   <show-field-wrapper :field="field" :index="index">
-    {{value}}
+    <div v-if="value" v-text="value"/>
+    <empty-dash v-else />
   </show-field-wrapper>
 </template>
 
@@ -17,7 +18,5 @@ export default {
       return this.field.value
     },
   },
-  methods: {},
-  mounted() {},
 }
 </script>

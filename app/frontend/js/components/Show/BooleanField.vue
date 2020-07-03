@@ -1,6 +1,7 @@
 <template>
   <show-field-wrapper :field="field" :index="index">
-    {{value}}
+    <div v-if="value" v-text="value"></div>
+    <empty-dash v-else />
   </show-field-wrapper>
 </template>
 

@@ -17,7 +17,7 @@ module Avocado
         @is_image = args[:is_image].present? ? args[:is_image] : @is_avatar
       end
 
-      def hydrate_resource(model, resource, view)
+      def hydrate_field(fields, model, resource, view)
         storage_field = model.send(id)
 
         field = {

@@ -6,7 +6,7 @@
       v-if="this.field.value"
       download
     ></a>
-    <div v-else>-</div>
+    <empty-dash v-else />
   </index-field-wrapper>
 </template>
 

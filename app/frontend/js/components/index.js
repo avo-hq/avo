@@ -19,6 +19,7 @@ Vue.component('index-boolean-group-field',           require('@/js/components/In
 Vue.component('index-belongs-to-field',              require('@/js/components/Index/BelongsTo.vue').default)
 Vue.component('index-has-one-field',                 require('@/js/components/Index/HasOne.vue').default)
 Vue.component('index-currency-field',                require('@/js/components/Index/CurrencyField.vue').default)
+Vue.component('index-badge-field',                   require('@/js/components/Index/BadgeField.vue').default)
 
 Vue.component('show-field-wrapper',                  require('@/js/components/Show/FieldWrapper.vue').default)
 Vue.component('show-id-field',                       require('@/js/components/Show/IdField.vue').default)
@@ -37,6 +38,7 @@ Vue.component('show-has-one-field',                  require('@/js/components/Sh
 Vue.component('show-has-many-field',                 require('@/js/components/Show/HasMany.vue').default)
 Vue.component('show-has--adn-belongs-to-many-field', require('@/js/components/Show/HasAndBelongsToMany.vue').default)
 Vue.component('show-currency-field',                 require('@/js/components/Show/CurrencyField.vue').default)
+Vue.component('show-badge-field',                    require('@/js/components/Show/BadgeField.vue').default)
 Vue.component('show-heading-field',                  require('@/js/components/Show/HeadingField.vue').default)
 
 Vue.component('edit-field-wrapper',                  require('@/js/components/Edit/FieldWrapper.vue').default)
@@ -71,6 +73,7 @@ Vue.component('heading',                             require('@/js/components/He
 Vue.component('resources-search',                    require('@/js/components/ResourcesSearch.vue').default)
 Vue.component('loading-component',                   require('@/js/components/LoadingComponent.vue').default)
 Vue.component('loading-overlay',                     require('@/js/components/LoadingOverlay.vue').default)
+Vue.component('empty-dash',                          require('@/js/components/EmptyDash.vue').default)
 
 // Filters
 Vue.component('resource-filters',                    require('@/js/components/Index/ResourceFilters.vue').default)
