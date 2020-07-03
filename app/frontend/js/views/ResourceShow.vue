@@ -32,6 +32,7 @@
             :resource-name="resourceName"
             :resource-id="resourceId"
             :field-id="field.id"
+            :field-component="field.component"
           ></component>
         </template>
       </panel>
@@ -43,6 +44,7 @@
         :field="field"
         :resource-name="resourceName"
         :resource-id="resourceId"
+        :field-component="field.component"
       ></component>
     </div>
   </div>

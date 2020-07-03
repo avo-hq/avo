@@ -15,6 +15,7 @@
       :is="`index-${field.component}`"
       :field="field"
       :field-id="field.id"
+      :field-component="field.component"
     ></component>
 
     <td class="text-right p-2">

@@ -22,6 +22,7 @@
               :field-id="field.id"
               :via-resource-name="viaResourceName"
               :via-resource-id="viaResourceId"
+              :field-component="field.component"
             ></component>
 
             <input type="submit" class="hidden">
