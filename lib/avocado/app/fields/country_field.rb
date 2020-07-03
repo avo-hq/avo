@@ -15,7 +15,7 @@ module Avocado
         @display_name = args[:display_name].present? ? args[:display_name] : false
       end
 
-      def hydrate_resource(model, resource, view)
+      def hydrate_field(fields, model, resource, view)
         {
           countries: @countries,
           display_name: @display_name

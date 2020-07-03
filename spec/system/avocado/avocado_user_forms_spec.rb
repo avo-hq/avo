@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe 'UserForms', type: :system do
-
   it 'Shows the empty users page' do
     visit '/avocado/resources/users'
 
@@ -31,7 +30,7 @@ RSpec.describe 'UserForms', type: :system do
     expect(current_path).to eq '/avocado/resources/users'
   end
 
-  it 'displays valdation errors' do
+  it 'displays valdation errors', skip_js_error_detect: true do
     visit '/avocado/resources/users/new'
 
     click_on 'Save'
@@ -42,7 +41,7 @@ RSpec.describe 'UserForms', type: :system do
     expect(page).to have_text("Description can't be blank")
   end
 
-  it 'submits the form on enter' do
+  it 'submits the form on enter', skip_js_error_detect: true do
     visit '/avocado/resources/users/new'
 
     find("[field-id='name'] [data-slot='value'] input").native.send_keys(:return)

@@ -6,9 +6,11 @@
       v-model="value"
     >
       <option value="null" disabled>{{field.placeholder}}</option>
-      <option v-for="(option, key) in field.options" :value="key" :key="key">
-        {{option}}
-      </option>
+      <option v-for="(option, key) in field.options"
+        :value="key"
+        :key="key"
+        v-text="option"
+      />
     </select>
   </edit-field-wrapper>
 </template>

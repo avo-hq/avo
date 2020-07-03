@@ -1,25 +1,25 @@
-require_relative 'text_field'
+require_relative 'field'
 
 module Avocado
   module Fields
-    class TextareaField < TextField
+    class HeadingField < Field
       def initialize(name, **args, &block)
         @defaults = {
-          sortable: true,
-          component: 'textarea-field',
-          computable: true,
+          updatable: false,
+          component: 'heading-field',
+          id: 'heading_' + name.to_s.parameterize.underscore,
         }
 
         super(name, **args, &block)
 
         hide_on :index
 
-        @rows = args[:rows].present? ? args[:rows].to_i : 5
+        @as_html = args[:as_html].present? ? args[:as_html] : false
       end
 
       def hydrate_field(fields, model, resource, view)
         {
-          rows: @rows
+          as_html: @as_html
         }
       end
     end
