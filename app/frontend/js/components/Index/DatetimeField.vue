@@ -13,6 +13,7 @@ export default {
   computed: {
     value() {
       if (this.field.value) return moment(new Date(this.field.value)).format(this.field.format)
+
       return '-'
     },
   },

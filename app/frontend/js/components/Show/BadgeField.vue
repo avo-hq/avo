@@ -1,35 +1,25 @@
 <template>
   <show-field-wrapper :field="field" :index="index">
-    <span v-if="field.value" :class="classes">{{ badgeLabel }}</span>
-    <div v-else>
-      -
-    </div>
+    <Badge v-if="badgeLabel"
+      :type="badgeType"
+      :label="badgeLabel"
+    />
+    <div v-else>-</div>
   </show-field-wrapper>
 </template>
 
 <script>
+import Badge from '@/js/components/BadgeComponent.vue'
+
 export default {
   props: ['field', 'index'],
+  components: { Badge },
   computed: {
     badgeType() {
       return this.field.value.type
     },
     badgeLabel() {
       return this.field.value.label
-    },
-    classes() {
-      const classes = ['rounded-full', 'uppercase', 'px-2', 'text-xs', 'font-bold', 'text-white']
-
-      const backgrounds = {
-        info: 'blue',
-        success: 'green',
-        danger: 'red',
-        warning: 'yellow',
-      }
-
-      classes.push(`bg-${backgrounds[this.badgeType]}-500`)
-
-      return classes.join(' ')
     },
   },
 }

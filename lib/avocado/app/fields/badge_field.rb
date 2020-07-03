@@ -27,11 +27,12 @@ module Avocado
         @map.invert.each do |values, type|
           db_value = model[id] || ''
 
-          if [values].flatten.include? db_value.to_sym
+          if [values].flatten.map { |value| value.to_s }.include? db_value
             value = {
               label: db_value,
               type: type,
             }
+            next
           end
         end
 
