@@ -8,9 +8,7 @@
       class="bg-transparent"
       disabled
     />
-    <div v-else>
-      -
-    </div>
+    <empty-dash v-else />
   </show-field-wrapper>
 </template>
 
