@@ -16,7 +16,7 @@ module Avocado
         @false_value = args[:false_value].present? ? args[:false_value] : false
       end
 
-      def hydrate_resource(model, resource, view)
+      def hydrate_field(fields, model, resource, view)
         {
           value: model[id] == @true_value,
           true_value: @true_value,

@@ -75,7 +75,7 @@ RSpec.describe 'Filters', type: :system do
         expect(page).to have_text 'Availability filter'
         expect(page).to have_text 'Available user'
         expect(page).to have_text 'Unavailable user'
-        expect(page).to have_select 'avocado_filters_availability_filter', selected: '-', options: ['-', 'Available', 'Unavailable']
+        expect(page).to have_select 'avocado_filters_availability_filter', selected: empty_dash, options: [empty_dash, 'Available', 'Unavailable']
       end
 
       it 'changes the filter' do
@@ -88,7 +88,7 @@ RSpec.describe 'Filters', type: :system do
         expect(page).to have_text 'Availability filter'
         expect(page).not_to have_text 'Available user'
         expect(page).to have_text 'Unavailable user'
-        expect(page).to have_select 'avocado_filters_availability_filter', selected: 'Unavailable', options: ['-', 'Available', 'Unavailable']
+        expect(page).to have_select 'avocado_filters_availability_filter', selected: 'Unavailable', options: [empty_dash, 'Available', 'Unavailable']
         expect(current_url).to include 'filters='
       end
 
@@ -102,7 +102,7 @@ RSpec.describe 'Filters', type: :system do
         expect(page).to have_text 'Availability filter'
         expect(page).not_to have_text 'Available user'
         expect(page).to have_text 'Unavailable user'
-        expect(page).to have_select 'avocado_filters_availability_filter', selected: 'Unavailable', options: ['-', 'Available', 'Unavailable']
+        expect(page).to have_select 'avocado_filters_availability_filter', selected: 'Unavailable', options: [empty_dash, 'Available', 'Unavailable']
         expect(current_url).to include 'filters='
 
         visit current_url
@@ -111,7 +111,7 @@ RSpec.describe 'Filters', type: :system do
         expect(page).to have_text 'Availability filter'
         expect(page).not_to have_text 'Available user'
         expect(page).to have_text 'Unavailable user'
-        expect(page).to have_select 'avocado_filters_availability_filter', selected: 'Unavailable', options: ['-', 'Available', 'Unavailable']
+        expect(page).to have_select 'avocado_filters_availability_filter', selected: 'Unavailable', options: [empty_dash, 'Available', 'Unavailable']
       end
     end
 
@@ -131,7 +131,7 @@ RSpec.describe 'Filters', type: :system do
         expect(page).to have_text 'Availability filter'
         expect(page).to have_text 'Available user'
         expect(page).not_to have_text 'Unavailable user'
-        expect(page).to have_select 'avocado_filters_availability_filter', selected: 'Available', options: ['-', 'Available', 'Unavailable']
+        expect(page).to have_select 'avocado_filters_availability_filter', selected: 'Available', options: [empty_dash, 'Available', 'Unavailable']
       end
 
       it 'changes the filter' do
@@ -144,7 +144,7 @@ RSpec.describe 'Filters', type: :system do
         expect(page).to have_text 'Availability filter'
         expect(page).not_to have_text 'Available user'
         expect(page).to have_text 'Unavailable user'
-        expect(page).to have_select 'avocado_filters_availability_filter', selected: 'Unavailable', options: ['-', 'Available', 'Unavailable']
+        expect(page).to have_select 'avocado_filters_availability_filter', selected: 'Unavailable', options: [empty_dash, 'Available', 'Unavailable']
         expect(current_url).to include 'filters='
       end
     end

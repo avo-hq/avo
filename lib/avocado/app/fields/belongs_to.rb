@@ -18,9 +18,7 @@ module Avocado
         super(name, **args, &block)
       end
 
-      def hydrate_resource(model, resource, view)
-        fields = {}
-
+      def hydrate_field(fields, model, resource, view)
         return fields if model_or_class(model) == 'class'
 
         fields[:searchable] = @searchable

@@ -17,7 +17,7 @@ module Avocado
         @as_html = args[:as_html].present? ? args[:as_html] : false
       end
 
-      def hydrate_resource(model, resource, view)
+      def hydrate_field(fields, model, resource, view)
         {
           as_html: @as_html
         }

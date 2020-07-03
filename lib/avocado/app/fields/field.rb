@@ -37,7 +37,7 @@ module Avocado
           updatable: true,
           sortable: false,
           nullable: false,
-          computable: false,
+          computable: true,
           is_array_param: false,
           format_using: false,
           placeholder: id_or_name.to_s.camelize,
@@ -73,16 +73,28 @@ module Avocado
         # Set initial value
         fields[:value] = model[id] if model_or_class(model) == 'model'
 
-        # Run each field's custom hydration
-        fields.merge! self.hydrate_resource model, resource, view if self.methods.include? :hydrate_resource
-
         # Run callback block if present
-        fields[:value] = @block.call model, resource, view, self if computable and @block.present?
+        fields[:computed_value] = @block.call model, resource, view, self if computable and @block.present?
+
+        # Run each field's custom hydration
+        fields.merge! self.hydrate_field(fields, model, resource, view)
 
         # Run the value through resolver if present
         fields[:value] = @format_using.call fields[:value] if @format_using.present?
 
         fields
+      end
+
+      def hydrate_field(fields, model, resource, view)
+        final_value = fields[:value]
+
+        if fields[:computed_value].present?
+          final_value = fields[:computed_value]
+        end
+
+        {
+          value: final_value
+        }
       end
 
       def fill_model(model, key, value)

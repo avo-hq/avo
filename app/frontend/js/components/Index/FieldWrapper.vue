@@ -6,10 +6,6 @@
 
 <script>
 export default {
-  data: () => ({}),
   props: ['field'],
-  computed: {},
-  methods: {},
-  mounted() {},
 }
 </script>
