@@ -37,7 +37,6 @@ Vue.component('show-boolean-group-field',            require('@/js/components/Sh
 Vue.component('show-belongs-to-field',               require('@/js/components/Show/BelongsTo.vue').default)
 Vue.component('show-has-one-field',                  require('@/js/components/Show/HasOne.vue').default)
 Vue.component('show-has-many-field',                 require('@/js/components/Show/HasMany.vue').default)
-Vue.component('show-has--adn-belongs-to-many-field', require('@/js/components/Show/HasAndBelongsToMany.vue').default)
 Vue.component('show-gravatar-field',                 require('@/js/components/Show/GravatarField.vue').default)
 Vue.component('show-country-field',                  require('@/js/components/Show/CountryField.vue').default)
 Vue.component('show-badge-field',                    require('@/js/components/Show/BadgeField.vue').default)
