@@ -13,11 +13,15 @@ module Avocado
         super(name, **args, &block)
 
         @countries = ISO3166::Country.translations.sort_by { |code, name| name }.to_h
-        @display_name = args[:display_name].present? ? args[:display_name] : false
+        @display_code = args[:display_code].present? ? args[:display_code] : false
       end
 
       def hydrate_field(fields, model, resource, view)
         if [:show, :index].include? view
+          # Just return the DB code.
+          return {} if @display_code
+
+          # Compute and get the translated value.
           return {
             value: @countries[fields[:value]],
           }
@@ -25,7 +29,7 @@ module Avocado
 
         {
           countries: @countries,
-          display_name: @display_name
+          display_code: @display_code
         }
       end
     end
