@@ -4,7 +4,6 @@
 
 <script>
 export default {
-  data: () => ({}),
   props: {
     type: String,
     label: String,
