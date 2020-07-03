@@ -5,15 +5,12 @@
       :status="status"
       :label="value"
     />
-    <div v-else>
-      -
-    </div>
+    <empty-dash v-else />
   </index-field-wrapper>
 </template>
 
 <script>
-/* eslint-disable import/no-unresolved */
-import StatusComponent from '@/js/components/StatusComponent'
+import StatusComponent from '@/js/components/StatusComponent.vue'
 
 export default {
   props: ['field'],

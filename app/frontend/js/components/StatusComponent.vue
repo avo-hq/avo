@@ -1,9 +1,7 @@
 <template>
   <div class="flex flex-shrink-0">
-    <div class="spinner" v-if="loading"></div>
-    <div :class="classes">
-        {{ label }}
-    </div>
+    <div class="spinner" v-if="isLoading"/>
+    <div :class="classes" v-text="label"/>
   </div>
 </template>
 
@@ -16,11 +14,12 @@ export default {
   computed: {
     classes() {
       const classes = ['inline-block']
+
       if (this.status === 'fail') classes.push('text-red-700')
 
       return classes
     },
-    loading() {
+    isLoading() {
       return this.status === 'load'
     },
   },

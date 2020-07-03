@@ -1,20 +1,16 @@
 <template>
   <show-field-wrapper :field="field" :index="index">
     <StatusComponent
-      v-if="value"
+      v-if="field.value"
       :status="status"
-      :label="value"
-      >
-    </StatusComponent>
-    <div v-else>
-      -
-    </div>
+      :label="field.value"
+    />
+    <empty-dash v-else />
   </show-field-wrapper>
 </template>
 
 <script>
-/* eslint-disable import/no-unresolved */
-import StatusComponent from '@/js/components/StatusComponent'
+import StatusComponent from '@/js/components/StatusComponent.vue'
 
 export default {
   props: ['field', 'index'],
@@ -31,9 +27,6 @@ export default {
     },
     isLoading() {
       return this.field.loading_when.indexOf(this.field.value) > -1
-    },
-    value() {
-      return this.field.value
     },
   },
 }
