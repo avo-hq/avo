@@ -5,9 +5,7 @@
         <div v-bind:key="index">{{ emoji(val) }} {{ label(key) }}</div>
       </template>
     </div>
-    <template v-else>
-    -
-    </template>
+    <empty-dash v-else />
   </show-field-wrapper>
 </template>
 

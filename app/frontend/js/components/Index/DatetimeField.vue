@@ -9,7 +9,6 @@
 import moment from 'moment'
 
 export default {
-  data: () => ({}),
   props: ['field'],
   computed: {
     value() {
@@ -18,7 +17,5 @@ export default {
       return null
     },
   },
-  methods: {},
-  mounted() {},
 }
 </script>
