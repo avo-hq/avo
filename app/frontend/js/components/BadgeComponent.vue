@@ -10,7 +10,7 @@ export default {
   },
   computed: {
     classes() {
-      const classes = ['rounded-full', 'uppercase', 'px-2', 'text-xs', 'font-bold', 'text-white']
+      const classes = ['whitespace-no-wrap', 'rounded-full', 'uppercase', 'px-2', 'text-xs', 'font-bold', 'text-white']
 
       const backgrounds = {
         info: 'blue',
