@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'CountryFields', type: :system do
+RSpec.describe 'CountryField', type: :system do
   describe 'without a value' do
     let!(:user) { create :user, country: nil }
 
