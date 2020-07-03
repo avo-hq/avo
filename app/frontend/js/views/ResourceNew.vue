@@ -12,7 +12,7 @@
           <form @submit.prevent="submitResource">
             <component
               v-for="(field, index) in fields"
-              :key="field.id"
+              :key="`${field.component}-${field.id}`"
               :index="index"
               :is="`edit-${field.component}`"
               :field="field"
