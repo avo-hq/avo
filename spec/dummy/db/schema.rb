@@ -113,6 +113,7 @@ ActiveRecord::Schema.define(version: 2020_07_02_182037) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "highlighted", default: "no"
     t.date "birthday"
+    t.string "salary"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["group_id"], name: "index_users_on_group_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

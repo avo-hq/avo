@@ -1,5 +1,5 @@
 <template>
-  <td class="px-2 py-2 leading-tight">
+  <td class="px-2 py-2 leading-tight whitespace-no-wrap">
     <slot/>
   </td>
 </template>

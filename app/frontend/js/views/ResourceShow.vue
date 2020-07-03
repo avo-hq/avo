@@ -25,13 +25,14 @@
 
           <component
             v-for="(field, index) in fieldsForPanel(panel)"
-            :key="field.id"
+            :key="uniqueKey(field)"
             :is="`show-${field.component}`"
             :field="field"
             :index="index"
             :resource-name="resourceName"
             :resource-id="resourceId"
             :field-id="field.id"
+            :field-component="field.component"
           ></component>
         </template>
       </panel>
@@ -43,17 +44,19 @@
         :field="field"
         :resource-name="resourceName"
         :resource-id="resourceId"
+        :field-component="field.component"
       ></component>
     </div>
   </div>
 </template>
 
 <script>
+import HasUniqueKey from '@/js/mixins/has-unique-key'
 import LoadsResource from '@/js/mixins/loads-resource'
 
 export default {
   name: 'ResourceShow',
-  mixins: [LoadsResource],
+  mixins: [LoadsResource, HasUniqueKey],
   data: () => ({
     resource: null,
   }),
