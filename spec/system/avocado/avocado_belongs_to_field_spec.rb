@@ -17,7 +17,7 @@ RSpec.describe 'BelongsToField', type: :system do
     describe 'without a related user' do
       let!(:post) { create :post }
 
-      it { is_expected.to have_text '-' }
+      it { is_expected.to have_text empty_dash }
     end
   end
 
@@ -33,7 +33,7 @@ RSpec.describe 'BelongsToField', type: :system do
     describe 'without user attached' do
       let!(:post) { create :post }
 
-      it { is_expected.to have_text '-' }
+      it { is_expected.to have_text empty_dash }
     end
   end
 
@@ -43,11 +43,11 @@ RSpec.describe 'BelongsToField', type: :system do
     describe 'without user attached' do
       let!(:post) { create :post }
 
-      it { is_expected.to have_select 'user', selected: '-' }
+      it { is_expected.to have_select 'user', selected: empty_dash }
 
       it 'changes the user' do
         visit url
-        expect(page).to have_select 'user', selected: '-'
+        expect(page).to have_select 'user', selected: empty_dash
 
         select user.name, from: 'user'
 
@@ -82,13 +82,13 @@ RSpec.describe 'BelongsToField', type: :system do
         visit url
         expect(page).to have_select 'user', selected: user.name
 
-        select '-', from: 'user'
+        select empty_dash, from: 'user'
 
         click_on 'Save'
         wait_for_loaded
 
         expect(current_path).to eql "/avocado/resources/posts/#{post.id}"
-        expect(find_field_value_element('user')).to have_text '-'
+        expect(find_field_value_element('user')).to have_text empty_dash
       end
     end
   end

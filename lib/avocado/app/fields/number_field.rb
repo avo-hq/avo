@@ -17,7 +17,7 @@ module Avocado
         @step = args[:step].present? ? args[:step].to_i : nil
       end
 
-      def hydrate_resource(model, resource, view)
+      def hydrate_field(fields, model, resource, view)
         {
           min: @min,
           max: @max,

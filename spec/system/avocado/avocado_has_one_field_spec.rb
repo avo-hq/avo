@@ -17,7 +17,7 @@ RSpec.describe 'HasOneField', type: :system do
     describe 'without a related user' do
       let!(:team) { create :team }
 
-      it { is_expected.to have_text '-' }
+      it { is_expected.to have_text empty_dash }
     end
   end
 
@@ -33,7 +33,7 @@ RSpec.describe 'HasOneField', type: :system do
     describe 'without user attached' do
       let!(:team) { create :team }
 
-      it { is_expected.to have_text '-' }
+      it { is_expected.to have_text empty_dash }
     end
   end
 
@@ -43,11 +43,11 @@ RSpec.describe 'HasOneField', type: :system do
     describe 'without user attached' do
       let!(:team) { create :team }
 
-      it { is_expected.to have_select 'admin', selected: '-' }
+      it { is_expected.to have_select 'admin', selected: 'Choose an option' }
 
       it 'changes the admin' do
         visit url
-        expect(page).to have_select 'admin', selected: '-'
+        expect(page).to have_select 'admin', selected: 'Choose an option'
 
         select user.name, from: 'admin'
 
@@ -82,13 +82,13 @@ RSpec.describe 'HasOneField', type: :system do
         visit url
         expect(page).to have_select 'admin', selected: user.name
 
-        select '-', from: 'admin'
+        select 'Choose an option', from: 'admin'
 
         click_on 'Save'
         wait_for_loaded
 
         expect(current_path).to eql "/avocado/resources/teams/#{team.id}"
-        expect(find_field_value_element('admin')).to have_text '-'
+        expect(find_field_value_element('admin')).to have_text empty_dash
       end
     end
   end

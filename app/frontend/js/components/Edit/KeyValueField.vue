@@ -16,8 +16,7 @@
 
 <script>
 import FormField from '@/js/mixins/form-field'
-/* eslint-disable import/no-unresolved */
-import KeyValue from '@/js/components/KeyValue'
+import KeyValue from '@/js/components/KeyValue.vue'
 
 export default {
   mixins: [FormField],

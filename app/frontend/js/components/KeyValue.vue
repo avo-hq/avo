@@ -1,4 +1,3 @@
-
 <template>
   <div class="shadow overflow-hidden rounded" v-if="value">
     <table class="min-w-full bg-white">
@@ -47,8 +46,8 @@
 </template>
 
 <script>
-/* eslint-disable import/no-unresolved */
-import KeyValueRow from '@/js/components/KeyValueRow'
+import KeyValueRow from '@/js/components/KeyValueRow.vue'
+// eslint-disable-next-line import/no-unresolved
 import PlusIcon from '@/svgs/plus.svg?inline'
 
 export default {

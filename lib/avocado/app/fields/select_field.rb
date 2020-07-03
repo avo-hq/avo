@@ -15,10 +15,11 @@ module Avocado
         @display_with_value = args[:display_with_value].present? ? args[:display_with_value] : false
       end
 
-      def hydrate_resource(model, resource, view)
+      def hydrate_field(fields, model, resource, view)
         {
           options: @options,
           display_with_value: @display_with_value,
+          placeholder: 'Choose an option',
         }
       end
     end

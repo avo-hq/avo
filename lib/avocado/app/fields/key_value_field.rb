@@ -32,7 +32,7 @@ module Avocado
         @disable_deleting_rows = args[:disable_deleting_rows].present? ? args[:disable_deleting_rows] : false
       end
 
-      def hydrate_resource(model, resource, view)
+      def hydrate_field(fields, model, resource, view)
         {
           key_label: @key_label,
           value_label: @value_label,

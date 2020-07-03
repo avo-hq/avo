@@ -20,6 +20,8 @@ gem 'webpacker', '~> 4.0'
 # SVGs
 gem 'inline_svg'
 
+gem 'countries'
+
 # These are the dummy app's dependencies
 group :development, :test do
   # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -64,6 +66,7 @@ group :development, :test do
   gem 'database_cleaner'
 
   gem 'ruby-debug-ide', require: false
+  gem 'debase'
 end
 
 group :development, :test do

@@ -11,7 +11,7 @@ module Avocado
         id
         text :name, required: true
         textarea :body
-        belongs_to :user, searchable: false, placeholder: '-'
+        belongs_to :user, searchable: false, placeholder: '—'
         boolean :featured
       end
 

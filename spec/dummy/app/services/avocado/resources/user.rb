@@ -12,8 +12,11 @@ module Avocado
         id
         text :name, required: true, placeholder: 'John Doe'
         file :cv, name: 'CV'
+        heading '<div class="text-blue-900 uppercase font-bold">Files</div>', as_html: true
         file :avatar, is_avatar: true
         files :images, is_image: true
+        heading 'Other'
+        country :country
         files :docs
         text :email, name: 'User Email', required: true
         number :age, min: 0, max: 120, step: 5
@@ -22,7 +25,7 @@ module Avocado
         key_value :meta, key_label: 'Meta key', value_label: 'Meta value', action_text: 'New item', delete_text: 'Remove item', disable_editing_keys: false, disable_adding_rows: false, disable_deleting_rows: false
         date :birthday, first_day_of_week: 1, picker_format: 'F J Y', format: 'MMMM Do YYYY', placeholder: 'Feb 24th 1955', required: true
         datetime :starts_on, time_24hr: true
-        select :highlighted, options: { yes: 'Highlighted', no: 'Not Highlighted' }, display_with_value: true, placeholder: 'This shows whether the user is highlighted.'
+        select :highlighted, options: { yes: 'Highlighted', no: 'Not Highlighted' }, display_with_value: true, placeholder: 'This shows whether the user is highlighted'
         password :password, name: 'User Password', required: false, except_on: :forms
         password :password_confirmation, name: 'Password confirmation', required: false
         text :is_writer, format_using: -> (value) { value.truncate 3 }, hide_on: :edit do |model, resource, view, field|
