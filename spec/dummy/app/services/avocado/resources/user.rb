@@ -10,6 +10,7 @@ module Avocado
 
       fields do
         id
+        gravatar :email
         text :name, required: true, placeholder: 'John Doe'
         file :cv, name: 'CV'
         heading '<div class="text-blue-900 uppercase font-bold">Files</div>', as_html: true

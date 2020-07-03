@@ -18,6 +18,7 @@ Vue.component('index-files-field',                   require('@/js/components/In
 Vue.component('index-boolean-group-field',           require('@/js/components/Index/BooleanGroupField.vue').default)
 Vue.component('index-belongs-to-field',              require('@/js/components/Index/BelongsTo.vue').default)
 Vue.component('index-has-one-field',                 require('@/js/components/Index/HasOne.vue').default)
+Vue.component('index-gravatar-field',                require('@/js/components/Index/GravatarField.vue').default)
 Vue.component('index-country-field',                 require('@/js/components/Index/CountryField.vue').default)
 Vue.component('index-badge-field',                   require('@/js/components/Index/BadgeField.vue').default)
 
@@ -37,6 +38,7 @@ Vue.component('show-belongs-to-field',               require('@/js/components/Sh
 Vue.component('show-has-one-field',                  require('@/js/components/Show/HasOne.vue').default)
 Vue.component('show-has-many-field',                 require('@/js/components/Show/HasMany.vue').default)
 Vue.component('show-has--adn-belongs-to-many-field', require('@/js/components/Show/HasAndBelongsToMany.vue').default)
+Vue.component('show-gravatar-field',                 require('@/js/components/Show/GravatarField.vue').default)
 Vue.component('show-country-field',                  require('@/js/components/Show/CountryField.vue').default)
 Vue.component('show-badge-field',                    require('@/js/components/Show/BadgeField.vue').default)
 Vue.component('show-heading-field',                  require('@/js/components/Show/HeadingField.vue').default)
