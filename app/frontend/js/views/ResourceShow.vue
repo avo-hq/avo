@@ -25,7 +25,7 @@
 
           <component
             v-for="(field, index) in fieldsForPanel(panel)"
-            :key="field.id"
+            :key="uniqueKey(field)"
             :is="`show-${field.component}`"
             :field="field"
             :index="index"
@@ -49,11 +49,12 @@
 </template>
 
 <script>
+import HasUniqueKey from '@/js/mixins/has-unique-key'
 import LoadsResource from '@/js/mixins/loads-resource'
 
 export default {
   name: 'ResourceShow',
-  mixins: [LoadsResource],
+  mixins: [LoadsResource, HasUniqueKey],
   data: () => ({
     resource: null,
   }),

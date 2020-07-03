@@ -14,7 +14,7 @@ module Avocado
 
         super(name, **args, &block)
 
-        hide_on :edit
+        hide_on [:edit, :create]
 
         @rounded = args[:rounded].present? ? args[:rounded] : true
         @size = args[:size].present? ? args[:size].to_i : 40
