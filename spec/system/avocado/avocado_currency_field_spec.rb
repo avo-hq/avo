@@ -68,25 +68,25 @@ RSpec.describe 'CurrencyField', type: :system do
       it 'changes the users salary using dot' do
         visit "/avocado/resources/users/#{user.id}/edit"
 
-        fill_in 'salary', with: '100.00'
+        fill_in 'salary', with: '100.1'
 
         click_on 'Save'
         wait_for_loaded
 
         expect(current_path).to eql "/avocado/resources/users/#{user.id}"
-        expect(find_field_element(:salary).find('input').value).to have_text '€100.00'
+        expect(find_field_element(:salary).find('input').value).to have_text '€100.10'
       end
 
       it 'changes the users salary using comma' do
         visit "/avocado/resources/users/#{user.id}/edit"
 
-        fill_in 'salary', with: '100,00'
+        fill_in 'salary', with: '100,1'
 
         click_on 'Save'
         wait_for_loaded
 
         expect(current_path).to eql "/avocado/resources/users/#{user.id}"
-        expect(find_field_element(:salary).find('input').value).to have_text '€100.00'
+        expect(find_field_element(:salary).find('input').value).to have_text '€100.10'
       end
     end
   end
