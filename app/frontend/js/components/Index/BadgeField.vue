@@ -4,7 +4,7 @@
       :type="badgeType"
       :label="badgeLabel"
     />
-    <div v-else>-</div>
+    <empty-dash v-else />
   </index-field-wrapper>
 </template>
 

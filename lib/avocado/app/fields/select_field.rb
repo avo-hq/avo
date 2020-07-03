@@ -19,6 +19,7 @@ module Avocado
         {
           options: @options,
           display_with_value: @display_with_value,
+          placeholder: 'Choose an option',
         }
       end
     end

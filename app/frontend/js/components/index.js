@@ -70,6 +70,7 @@ Vue.component('heading',                             require('@/js/components/He
 Vue.component('resources-search',                    require('@/js/components/ResourcesSearch.vue').default)
 Vue.component('loading-component',                   require('@/js/components/LoadingComponent.vue').default)
 Vue.component('loading-overlay',                     require('@/js/components/LoadingOverlay.vue').default)
+Vue.component('empty-dash',                          require('@/js/components/EmptyDash.vue').default)
 
 // Filters
 Vue.component('resource-filters',                    require('@/js/components/Index/ResourceFilters.vue').default)

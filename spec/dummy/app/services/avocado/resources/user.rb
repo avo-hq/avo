@@ -23,7 +23,7 @@ module Avocado
         boolean_group :roles, options: { admin: 'Administrator', manager: 'Manager', write: 'Writer' }
         date :birthday, first_day_of_week: 1, picker_format: 'F J Y', format: 'MMMM Do YYYY', placeholder: 'Feb 24th 1955', required: true
         datetime :starts_on, time_24hr: true
-        select :highlighted, options: { yes: 'Highlighted', no: 'Not Highlighted' }, display_with_value: true, placeholder: 'This shows whether the user is highlighted.'
+        select :highlighted, options: { yes: 'Highlighted', no: 'Not Highlighted' }, display_with_value: true, placeholder: 'This shows whether the user is highlighted'
         password :password, name: 'User Password', required: false, except_on: :forms
         password :password_confirmation, name: 'Password confirmation', required: false
         text :is_writer, format_using: -> (value) { value.truncate 3 }, hide_on: :edit do |model, resource, view, field|
