@@ -16,7 +16,7 @@ module Avocado
         @options = args[:options].present? ? args[:options] : {}
       end
 
-      def hydrate_resource(model, resource, view)
+      def hydrate_field(fields, model, resource, view)
         {
           options: @options,
         }

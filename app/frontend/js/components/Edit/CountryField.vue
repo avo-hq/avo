@@ -4,19 +4,19 @@
       ref="field-input"
       :class="inputClasses"
       v-model="value"
+      :id="field.id"
     >
-      <option value="null" disabled>{{field.placeholder}}</option>
-      <option v-for="(option, key) in field.options"
-        :value="key"
-        :key="key"
-        v-text="option"
+      <option value="null" v-text="field.placeholder"/>
+      <option v-for="(name, code) in field.countries"
+        :value="code"
+        :key="code"
+        v-text="name"
       />
     </select>
   </edit-field-wrapper>
 </template>
 
 <script>
-/* eslint-disable max-len */
 import FormField from '@/js/mixins/form-field'
 import HasInputAppearance from '@/js/mixins/has-input-appearance'
 

@@ -3,7 +3,7 @@
     <router-link :to="field.link"
       v-if="field.link"
       v-text="field.value"></router-link>
-    <div v-else>-</div>
+    <empty-dash v-else />
   </show-field-wrapper>
 </template>
 
