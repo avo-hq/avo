@@ -15,7 +15,7 @@ module Avocado
         @failed_when = args[:failed_when].present? ? [args[:failed_when]].flatten : [:failed]
       end
 
-      def hydrate_resource(model, resource, view)
+      def hydrate_field(fields, model, resource, view)
         {
           loading_when: @loading_when,
           failed_when: @failed_when,
