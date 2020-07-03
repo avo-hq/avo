@@ -19,12 +19,12 @@
         v-model="selectedValue"
         :disabled="disabled"
       >
-        <option value="" v-text="placeholder"></option>
+        <option value="" v-text="placeholder"/>
         <option v-for="option in options"
           :key="option.value"
           :value="option.value"
           v-text="option.label"
-          ></option>
+        />
       </select>
     </div>
     <template #extra>

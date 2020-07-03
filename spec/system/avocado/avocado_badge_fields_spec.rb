@@ -9,14 +9,14 @@ RSpec.describe 'BadgeField', type: :system do
     context 'index' do
       let!(:url) { '/avocado/resources/projects' }
 
-      it { is_expected.to have_text '-' }
+      it { is_expected.to have_text empty_dash }
       it { is_expected.not_to have_css '.rounded-full' }
     end
 
     context 'show' do
       let!(:url) { "/avocado/resources/projects/#{project.id}" }
 
-      it { is_expected.to have_text '-' }
+      it { is_expected.to have_text empty_dash }
       it { is_expected.not_to have_css '.rounded-full' }
     end
 

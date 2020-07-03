@@ -15,7 +15,7 @@ module Avocado
 
         hide_on :create
 
-        @placeholder = '-'
+        @placeholder = 'Choose an option'
 
         @relation_method = name.to_s.parameterize.underscore
       end
