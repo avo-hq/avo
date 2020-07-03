@@ -8,7 +8,7 @@ RSpec.describe 'StatusField', type: :system do
       it 'displays the empty state status' do
         visit '/avocado/resources/projects'
 
-        expect(find_field_element('status')).to have_text '-'
+        expect(find_field_element('status')).to have_text empty_dash
       end
     end
 
@@ -16,7 +16,7 @@ RSpec.describe 'StatusField', type: :system do
       it 'displays the projects status' do
         visit "/avocado/resources/projects/#{project.id}"
 
-        expect(find_field_value_element('status')).to have_text '-'
+        expect(find_field_value_element('status')).to have_text empty_dash
       end
     end
 
