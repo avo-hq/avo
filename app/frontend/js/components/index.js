@@ -39,7 +39,6 @@ Vue.component('show-boolean-group-field',            require('@/js/components/Sh
 Vue.component('show-belongs-to-field',               require('@/js/components/Show/BelongsTo.vue').default)
 Vue.component('show-has-one-field',                  require('@/js/components/Show/HasOne.vue').default)
 Vue.component('show-has-many-field',                 require('@/js/components/Show/HasMany.vue').default)
-Vue.component('show-has-and-belongs-to-many-field',  require('@/js/components/Show/HasAndBelongsToMany.vue').default)
 Vue.component('show-status-field',                   require('@/js/components/Show/StatusField.vue').default)
 Vue.component('show-currency-field',                 require('@/js/components/Show/CurrencyField.vue').default)
 Vue.component('show-gravatar-field',                 require('@/js/components/Show/GravatarField.vue').default)
