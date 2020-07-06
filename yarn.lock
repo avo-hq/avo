@@ -8252,6 +8252,11 @@ vue-clickaway@^2.2.2:
   dependencies:
     loose-envify "^1.2.0"
 
+vue-currency-input@^1.20.0:
+  version "1.20.0"
+  resolved "https://registry.yarnpkg.com/vue-currency-input/-/vue-currency-input-1.20.0.tgz#2f56f0177b64abd527f26ff66c284ea726768786"
+  integrity sha512-GvOEd4LE6Xik+r0mHk4GJ8do3STKuPSHIHdUu44Jfb+3NI2wYWQ322bjsSlkQgOSG93m1+BbX5JJUxqcrarZ1w==
+
 vue-eslint-parser@^7.0.0:
   version "7.1.0"
   resolved "https://registry.yarnpkg.com/vue-eslint-parser/-/vue-eslint-parser-7.1.0.tgz#9cdbcc823e656b087507a1911732b867ac101e83"

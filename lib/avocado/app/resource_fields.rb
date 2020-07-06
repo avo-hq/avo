@@ -85,6 +85,14 @@ module Avocado
           @@fields[self].push Avocado::Fields::FilesField::new(name, **args)
         end
 
+        def currency(name, **args, &block)
+          @@fields[self].push Avocado::Fields::CurrencyField::new(name, **args, &block)
+        end
+          
+        def gravatar(name, **args, &block)
+          @@fields[self].push Avocado::Fields::GravatarField::new(name, **args, &block)
+        end
+        
         def country(name, **args, &block)
           @@fields[self].push Avocado::Fields::CountryField::new(name, **args, &block)
         end

@@ -11,10 +11,11 @@
     </td>
     <component
       v-for="field in fields"
-      :key="field.id"
+      :key="uniqueKey(field)"
       :is="`index-${field.component}`"
       :field="field"
       :field-id="field.id"
+      :field-component="field.component"
     ></component>
 
     <td class="text-right p-2">
@@ -67,6 +68,7 @@ import Modal from '@/js/components/Modal'
 import ViewIcon from '@/svgs/eye.svg?inline'
 /* eslint-enable import/no-unresolved */
 import ExtractsFields from '@/js/mixins/extracts-fields'
+import HasUniqueKey from '@/js/mixins/has-unique-key'
 import isUndefined from 'lodash/isUndefined'
 
 export default {
@@ -74,7 +76,7 @@ export default {
     ViewIcon, EditIcon, DeleteIcon,
   },
   data: () => ({}),
-  mixins: [DealsWithResourceLabels, ExtractsFields, DealsWithHasManyRelations],
+  mixins: [DealsWithResourceLabels, ExtractsFields, DealsWithHasManyRelations, HasUniqueKey],
   props: [
     'resource',
     'resourceName',
