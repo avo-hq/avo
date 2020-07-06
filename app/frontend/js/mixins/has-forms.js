@@ -56,11 +56,14 @@ export default {
 
       this.fields.filter((filter) => filter.updatable).forEach((field) => {
         const id = field.getId()
+        console.log('this.field', id, field.getValue())
 
         if (id) {
           formData.resource[id] = isNull(field.getValue()) ? '' : field.getValue()
         }
       })
+      console.log('formData->', formData)
+      console.log('formData->', objectToFormData(formData))
 
       return objectToFormData(formData)
     },

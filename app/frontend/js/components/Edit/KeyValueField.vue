@@ -31,6 +31,14 @@ export default {
       }
     },
     getValue() {
+      console.log('this.value->>>', this.value)
+      console.log('Object.keys(this.value)->', Object.keys(this.value))
+      if (Object.keys(this.value).length === 0) {
+        return {}
+      }
+      console.log(typeof this.value)
+      console.log(this.value)
+
       return pickBy(this.value, (value, key) => key !== '')
     },
   },
