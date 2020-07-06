@@ -56,6 +56,10 @@ module Avocado
         def key_value(name, **args)
           @@fields[self].push Avocado::Fields::KeyValueField::new(name, **args)
         end
+        
+        def status(name, **args, &block)
+          @@fields[self].push Avocado::Fields::StatusField::new(name, **args, &block)
+        end
 
         def heading(name, **args)
           @@fields[self].push Avocado::Fields::HeadingField::new(name, **args)
