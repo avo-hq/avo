@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'StatusField', type: :system do
   describe 'without value' do
-    let!(:project) { create :project }
+    let!(:project) { create :project, status: '' }
 
     context 'index' do
       it 'displays the empty state status' do
