@@ -20,7 +20,22 @@ RSpec.describe 'HiddenField', type: :system do
       it 'has the hidden field' do
         visit "/avocado/resources/users/#{user.id}/edit"
 
-        expect(find("[field-id='group_id']", visible: false).find("input[type='hidden']", visible: false).value).to eq "10"
+        expect(find("[field-id='group_id'] input[type='hidden']", visible: false).value).to eq '10'
+      end
+
+      it 'changes the hidden field' do
+        visit "/avocado/resources/users/#{user.id}/edit"
+
+        user.group_id = 11
+        user.save
+
+        click_on 'Save'
+        wait_for_loaded
+
+        expect(current_path).to eql "/avocado/resources/users/#{user.id}"
+
+        visit "/avocado/resources/users/#{user.id}/edit"
+        expect(find("[field-id='group_id'] input[type='hidden']", visible: false).value).to eq '10'
       end
     end
   end
