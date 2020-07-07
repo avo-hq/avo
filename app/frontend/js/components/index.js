@@ -66,6 +66,7 @@ Vue.component('edit-currency-field',                 require('@/js/components/Ed
 Vue.component('edit-country-field',                  require('@/js/components/Edit/CountryField.vue').default)
 Vue.component('edit-heading-field',                  require('@/js/components/Show/HeadingField.vue').default)
 Vue.component('edit-code-field',                     require('@/js/components/Edit/CodeField.vue').default)
+Vue.component('edit-hidden-field',                   require('@/js/components/Edit/HiddenField.vue').default)
 
 // Form Fields
 Vue.component('input-component',                     require('@/js/components/InputComponent.vue').default)

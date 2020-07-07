@@ -104,6 +104,10 @@ module Avocado
         def code(name, **args, &block)
           @@fields[self].push Avocado::Fields::CodeField::new(name, **args, &block)
         end
+        
+        def hidden(name, **args, &block)
+          @@fields[self].push Avocado::Fields::HiddenField::new(name, **args, &block)
+        end
       end
     end
   end
