@@ -8,7 +8,7 @@ RSpec.describe 'HiddenField', type: :system do
       it 'has the hidden field empty' do
         visit "/avocado/resources/users/#{user.id}/edit"
 
-        expect(find("[field-id='group_id']", visible: false).find("input[type='hidden']", visible: false).value).to eq ""
+        expect(find("[field-id='group_id'] input[type='hidden']", visible: false).value).to be_empty
       end
     end
   end
