@@ -53,6 +53,10 @@ module Avocado
           @@fields[self].push Avocado::Fields::BooleanGroupField::new(name, **args, &block)
         end
 
+        def key_value(name, **args)
+          @@fields[self].push Avocado::Fields::KeyValueField::new(name, **args)
+        end
+        
         def status(name, **args, &block)
           @@fields[self].push Avocado::Fields::StatusField::new(name, **args, &block)
         end

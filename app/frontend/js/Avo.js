@@ -1,3 +1,4 @@
+import '@/js/components'
 import Api from '@/js/Api'
 import Bus from '@/js/Bus'
 import PortalVue from 'portal-vue'
@@ -8,8 +9,6 @@ import Vue from 'vue/dist/vue.esm'
 import VueCurrencyInput from 'vue-currency-input'
 import VueRouter from 'vue-router'
 import router from '@/js/router'
-
-import '@/js/components'
 
 const Avo = {
   Bus,

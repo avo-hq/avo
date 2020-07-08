@@ -26,6 +26,7 @@ module Avocado
         boolean :is_admin?, name: 'Is admin', only_on: :index
         boolean :availability
         boolean_group :roles, options: { admin: 'Administrator', manager: 'Manager', write: 'Writer' }
+        key_value :meta, key_label: 'Meta key', value_label: 'Meta value', action_text: 'New item', delete_text: 'Remove item', disable_editing_keys: false, disable_adding_rows: false, disable_deleting_rows: false
         date :birthday, first_day_of_week: 1, picker_format: 'F J Y', format: 'MMMM Do YYYY', placeholder: 'Feb 24th 1955', required: true
         datetime :starts_on, time_24hr: true
         select :highlighted, options: { yes: 'Highlighted', no: 'Not Highlighted' }, display_with_value: true, placeholder: 'This shows whether the user is highlighted'

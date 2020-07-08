@@ -226,7 +226,7 @@ module Avocado
             { "#{field.id}": [] }
           elsif field.is_object_param
             # Allow array param if necessary
-            { "#{field.id}": {} }
+            [:"#{field.id}", "#{field.id}": {} ]
           else
             field.id.to_sym
           end

@@ -16,7 +16,6 @@
 </template>
 
 <script>
-/* eslint-disable max-len */
 import FormField from '@/js/mixins/form-field'
 import HasInputAppearance from '@/js/mixins/has-input-appearance'
 

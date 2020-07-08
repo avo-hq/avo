@@ -42,6 +42,15 @@ export default {
       default: 'text',
     },
   },
+  methods: {
+    focus() {
+      if (this.type === 'textarea') {
+        this.$refs.textarea.focus()
+      } else {
+        this.$refs.input.focus()
+      }
+    },
+  },
   mounted() {
     this.$on('focus', () => this.$refs['field-input'].focus())
   },
