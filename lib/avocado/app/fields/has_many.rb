@@ -42,7 +42,7 @@ module Avocado
         if @resource.present?
           App.get_resources.find { |r| r.class == @resource }
         else
-          class_name = model._reflections[id].options[:class_name].present? ? model._reflections[id].options[:class_name] : model._reflections[id].name
+          class_name = model._reflections[id.to_s].options[:class_name].present? ? model._reflections[id.to_s].options[:class_name] : model._reflections[id.to_s].name
           App.get_resources.find { |r| r.class == "Avocado::Resources::#{class_name.to_s.camelcase.singularize}".safe_constantize }
         end
       end

@@ -18,7 +18,7 @@ module Avocado
 
       def hydrate_field(fields, model, resource, view)
         {
-          value: model[id] == @true_value,
+          value: fields[:value] == @true_value,
           true_value: @true_value,
           false_value: @false_value,
         }

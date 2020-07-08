@@ -55,7 +55,7 @@ module Avocado
         App.get_resources.find { |r| r.class == "Avocado::Resources::#{class_name}".safe_constantize }
       end
 
-      def fill_model(model, key, value)
+      def fill_field(model, key, value)
         if value.blank?
           related_model = nil
         else

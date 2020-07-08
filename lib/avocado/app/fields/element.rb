@@ -6,7 +6,7 @@ module Avocado
       attr_accessor :show_on_create
       attr_accessor :show_on_edit
 
-      def initialize(id_or_name, **args, &block)
+      def initialize(id, **args, &block)
         @show_on_index = @show_on_index.nil? ? true : @show_on_index
         @show_on_show = @show_on_show.nil? ? true : @show_on_show
         @show_on_create = @show_on_create.nil? ? true : @show_on_create

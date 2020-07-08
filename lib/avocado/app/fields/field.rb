@@ -20,16 +20,16 @@ module Avocado
       attr_accessor :block
       attr_accessor :placeholder
 
-      def initialize(id_or_name, **args, &block)
-        super(id_or_name, **args, &block)
+      def initialize(id, **args, &block)
+        super(id, **args, &block)
         @defaults ||= {}
 
         args = @defaults.merge(args).symbolize_keys
 
         # The field properties as a hash {property: default_value}
         @field_properties = {
-          id: id_or_name.to_s.parameterize.underscore,
-          name: id_or_name.to_s.humanize,
+          id: id,
+          name: id.to_s.humanize,
           block: block,
           component: 'field',
           required: false,
@@ -40,7 +40,7 @@ module Avocado
           computable: true,
           is_array_param: false,
           format_using: false,
-          placeholder: id_or_name.to_s.camelize,
+          placeholder: id.to_s.camelize,
         }
 
         # Set the values in the following order
@@ -71,7 +71,7 @@ module Avocado
         end
 
         # Set initial value
-        fields[:value] = model[id] if model_or_class(model) == 'model'
+        fields[:value] = model.send(id) if model_or_class(model) == 'model' and model.methods.include? id
 
         # Run callback block if present
         fields[:computed_value] = @block.call model, resource, view, self if computable and @block.present?
@@ -97,8 +97,10 @@ module Avocado
         }
       end
 
-      def fill_model(model, key, value)
-        model[key] = value
+      def fill_field(model, key, value)
+        return model unless model.methods.include? key.to_sym
+
+        model.send("#{key}=", value)
 
         model
       end

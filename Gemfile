@@ -22,6 +22,9 @@ gem 'inline_svg'
 
 gem 'countries'
 
+# Authorization
+gem "pundit"
+
 # These are the dummy app's dependencies
 group :development, :test do
   # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

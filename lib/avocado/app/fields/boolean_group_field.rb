@@ -22,7 +22,7 @@ module Avocado
         }
       end
 
-      def fill_model(model, key, value)
+      def fill_field(model, key, value)
         return model unless value.is_a? ActionController::Parameters
 
         new_value = {}

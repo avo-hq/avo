@@ -23,6 +23,7 @@ module Avocado
         files :docs
         text :email, name: 'User Email', required: true
         number :age, min: 0, max: 120, step: 5
+        boolean :is_admin?, name: 'Is admin', only_on: :index
         boolean :availability
         boolean_group :roles, options: { admin: 'Administrator', manager: 'Manager', write: 'Writer' }
         date :birthday, first_day_of_week: 1, picker_format: 'F J Y', format: 'MMMM Do YYYY', placeholder: 'Feb 24th 1955', required: true
