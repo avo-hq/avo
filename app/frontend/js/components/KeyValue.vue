@@ -110,7 +110,6 @@ export default {
   },
   mounted() {
     setTimeout(() => {
-      console.log('this.value->', this.value)
       Object.keys(this.value).forEach((key) => {
         const value = this.value[key]
 
