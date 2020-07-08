@@ -57,7 +57,8 @@ ActiveRecord::Schema.define(version: 2020_07_07_090847) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.text "status", default: "running"
+    t.string "status"
+    t.string "stage"
   end
 
   create_table "projects_users", force: :cascade do |t|
