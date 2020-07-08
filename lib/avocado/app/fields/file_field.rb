@@ -21,7 +21,9 @@ module Avocado
       def hydrate_field(fields, model, resource, view)
         storage_field = model.send(id)
 
-        field = {}
+        field = {
+          value: nil
+        }
 
         return field unless storage_field.attached?
 
