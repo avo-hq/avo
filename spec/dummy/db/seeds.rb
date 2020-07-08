@@ -5,6 +5,7 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+require 'open-uri'
 
 Post.delete_all
 Project.delete_all
@@ -24,7 +25,9 @@ users = []
 end
 
 25.times do
-  FactoryBot.create(:post, user_id: users.sample.id)
+  post = FactoryBot.create(:post, user_id: users.sample.id)
+
+  post.cover_photo.attach(io: open('https://source.unsplash.com/random/1200x1200'), filename: 'cover.jpg')
 end
 
 projects = []
