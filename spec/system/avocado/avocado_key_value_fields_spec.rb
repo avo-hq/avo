@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'KeyValueFields', type: :system do
   describe 'without value' do
-    let!(:user) { create :user , meta: ''}
+    let!(:user) { create :user , meta: '' }
 
     context 'show' do
       it 'displays the users empty meta (dash)' do
