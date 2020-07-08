@@ -101,6 +101,10 @@ module Avocado
           @@fields[self].push Avocado::Fields::BadgeField::new(name, **args, &block)
         end
 
+        def code(name, **args, &block)
+          @@fields[self].push Avocado::Fields::CodeField::new(name, **args, &block)
+        end
+        
         def hidden(name, **args, &block)
           @@fields[self].push Avocado::Fields::HiddenField::new(name, **args, &block)
         end

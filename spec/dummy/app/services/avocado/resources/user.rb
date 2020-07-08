@@ -35,6 +35,7 @@ module Avocado
           model.posts.to_a.count > 0 ? 'yes' : 'no'
         end
         textarea :description, rows: 5, readonly: false, hide_on: :index, format_using: -> (value) { value.to_s.truncate 30 }, required: true
+        code :custom_css, theme: 'dracula', language: 'css'
         has_and_belongs_to_many :projects
         has_many :posts
       end

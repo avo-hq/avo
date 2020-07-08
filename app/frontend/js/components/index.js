@@ -45,6 +45,7 @@ Vue.component('show-gravatar-field',                 require('@/js/components/Sh
 Vue.component('show-country-field',                  require('@/js/components/Show/CountryField.vue').default)
 Vue.component('show-badge-field',                    require('@/js/components/Show/BadgeField.vue').default)
 Vue.component('show-heading-field',                  require('@/js/components/Show/HeadingField.vue').default)
+Vue.component('show-code-field',                     require('@/js/components/Show/CodeField.vue').default)
 
 Vue.component('edit-field-wrapper',                  require('@/js/components/Edit/FieldWrapper.vue').default)
 Vue.component('edit-id-field',                       require('@/js/components/Edit/IdField.vue').default)
@@ -64,6 +65,7 @@ Vue.component('edit-status-field',                   require('@/js/components/Ed
 Vue.component('edit-currency-field',                 require('@/js/components/Edit/CurrencyField.vue').default)
 Vue.component('edit-country-field',                  require('@/js/components/Edit/CountryField.vue').default)
 Vue.component('edit-heading-field',                  require('@/js/components/Show/HeadingField.vue').default)
+Vue.component('edit-code-field',                     require('@/js/components/Edit/CodeField.vue').default)
 Vue.component('edit-hidden-field',                   require('@/js/components/Edit/HiddenField.vue').default)
 
 // Form Fields
