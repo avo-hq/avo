@@ -16,4 +16,8 @@ class User < ApplicationRecord
   has_one_attached :avatar
   has_many_attached :images
   has_and_belongs_to_many :teams
+
+  def is_admin?
+    roles['admin'] === true
+  end
 end

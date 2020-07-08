@@ -41,7 +41,7 @@ module Avocado
         if @resource.present?
           App.get_resources.find { |r| r.class == @resource }
         else
-          App.get_resources.find { |r| r.class == "Avocado::Resources::#{model._reflections[id].plural_name.to_s.camelcase.singularize}".safe_constantize }
+          App.get_resources.find { |r| r.class == "Avocado::Resources::#{model._reflections[id.to_s].plural_name.to_s.camelcase.singularize}".safe_constantize }
         end
       end
     end

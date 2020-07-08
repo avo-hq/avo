@@ -142,14 +142,14 @@ module Avocado
 
       def fill_model(model, params)
         # Map the received params to their actual fields
-        fields_by_database_id = self.get_fields.map { |field| [field.database_id(model), field] }.to_h
+        fields_by_database_id = self.get_fields.map { |field| [field.database_id(model).to_s, field] }.to_h
 
         params.each do |key, value|
           field = fields_by_database_id[key]
 
           next unless field
 
-          model = field.fill_model model, key, value
+          model = field.fill_field model, key, value
         end
 
         model
