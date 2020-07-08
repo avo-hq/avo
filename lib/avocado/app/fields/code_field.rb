@@ -5,9 +5,7 @@ module Avocado
     class CodeField < Field
       def initialize(name, **args, &block)
         @defaults = {
-          sortable: true,
           component: 'code-field',
-          computable: true,
         }
 
         hide_on :index

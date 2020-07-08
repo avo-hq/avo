@@ -58,8 +58,6 @@ ActiveRecord::Schema.define(version: 2020_07_07_090847) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.text "status", default: "running"
-    t.text "condition"
-    t.text "code_snippet", default: "<!DOCTYPE html>\n\n    <HTML>\n        <HEAD>\n            <SCRIPT>\n                var name = prompt(\"Enter Your name:\");\n                var msg = \"Welcome \"+name;\n                //alert(msg);\n                document.write(msg);\n            </SCRIPT>\n        </HEAD>\n        <BODY>\n\n        </BODY>\n    </HTML>\n    "
   end
 
   create_table "projects_users", force: :cascade do |t|
@@ -114,7 +112,7 @@ ActiveRecord::Schema.define(version: 2020_07_07_090847) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "highlighted", default: "no"
     t.date "birthday"
-    t.float "salary", default: 1550.25
+    t.string "salary"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["group_id"], name: "index_users_on_group_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
