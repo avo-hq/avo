@@ -12,6 +12,7 @@ Project.delete_all
 Team.delete_all
 User.delete_all
 TeamMembership.delete_all
+ActiveStorage::Attachment.all.each { |attachment| attachment.purge }
 
 teams = []
 teams.push(FactoryBot.create(:team, name: 'Apple'))
@@ -27,7 +28,7 @@ end
 25.times do
   post = FactoryBot.create(:post, user_id: users.sample.id)
 
-  post.cover_photo.attach(io: open('https://source.unsplash.com/random/1200x1200'), filename: 'cover.jpg')
+  post.cover_photo.attach(io: open("https://source.unsplash.com/random/#{[1000, 1100, 1200, 1300].sample}x#{[1000, 1100, 1200, 1300].sample}"), filename: 'cover.jpg')
 end
 
 projects = []
@@ -39,6 +40,8 @@ end
 teams.each do |team|
   users.shuffle[0..10].each do |user|
     team.members << user
+
+    team.memberships.find_by(user_id: user.id).update level: [:beginner, :intermediate, :advanced].sample
   end
 end
 
