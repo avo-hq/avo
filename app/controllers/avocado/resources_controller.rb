@@ -1,7 +1,9 @@
-require_dependency "avocado/application_controller"
+require_dependency 'avocado/application_controller'
 
 module Avocado
   class ResourcesController < ApplicationController
+    include Pundit
+
     def index
       params[:page] ||= 1
       params[:per_page] ||= Avocado.configuration.per_page

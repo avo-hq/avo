@@ -82,7 +82,17 @@ module Avocado
       # end
 
       def get_resources_navigation
-        App.get_resources.map { |resource| { label: resource.resource_name_plural.humanize, resource_name: resource.url.pluralize } }.to_json.to_s.html_safe
+        navigation = App.get_resources.map do |resource|
+          begin
+            if Pundit.policy User.find(1), resource.model
+              Pundit.authorize User.find(1), resource.model, 'index?'
+            end
+            { label: resource.resource_name_plural.humanize, resource_name: resource.url.pluralize }
+          rescue => exception
+          end
+        end
+
+        navigation.reject { |i| i.blank? }.to_json.to_s.html_safe
       end
     end
   end
