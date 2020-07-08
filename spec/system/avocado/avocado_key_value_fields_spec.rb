@@ -191,9 +191,9 @@ RSpec.describe 'KeyValueFields', type: :system do
 
         delete_buttons = page.all('svg[data-icon="trash-alt"]')
 
-        delete_buttons[0].click
+        first('svg[data-icon="trash-alt"]').click
         expect(meta_element).to have_selector('svg[data-icon="trash-alt"]', count: 1)
-        delete_buttons[0].click
+        first('svg[data-icon="trash-alt"]').click
         expect(meta_element).not_to have_selector('svg[data-icon="trash-alt"]')
 
         click_on 'Save'
