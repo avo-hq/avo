@@ -28,8 +28,8 @@ module Avocado
 
         if relation_model.present?
           relation_model = model.public_send(@relation_method)
-          fields[:value] = relation_model[target_resource.title] if relation_model.present?
-          fields[:database_value] = relation_model[:id] if relation_model.present?
+          fields[:value] = relation_model.send(target_resource.title)
+          fields[:database_value] = relation_model[:id]
           fields[:link] = Avocado::Resources::Resource.show_path(relation_model)
         end
 
