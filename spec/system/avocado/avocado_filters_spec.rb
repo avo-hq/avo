@@ -61,92 +61,92 @@ RSpec.describe 'Filters', type: :system do
     end
   end
 
-  describe 'Boolean filter' do
-    let!(:available_user) { create :user, name: 'Available user', availability: true }
-    let!(:unavailable_user) { create :user, name: 'Unavailable user', availability: false }
+  # describe 'Boolean filter' do
+  #   let!(:available_user) { create :user, name: 'Available user', availability: true }
+  #   let!(:unavailable_user) { create :user, name: 'Unavailable user', availability: false }
 
-    let(:url) { '/avocado/resources/users' }
+  #   let(:url) { '/avocado/resources/users' }
 
-    context 'without default value' do
-      it 'displays the filter' do
-        visit url
-        find('[data-button="resource-filters"]').click
+  #   context 'without default value' do
+  #     it 'displays the filter' do
+  #       visit url
+  #       find('[data-button="resource-filters"]').click
 
-        expect(page).to have_text 'Availability filter'
-        expect(page).to have_text 'Available user'
-        expect(page).to have_text 'Unavailable user'
-        expect(page).to have_select 'avocado_filters_availability_filter', selected: empty_dash, options: [empty_dash, 'Available', 'Unavailable']
-      end
+  #       expect(page).to have_text 'Availability filter'
+  #       expect(page).to have_text 'Available user'
+  #       expect(page).to have_text 'Unavailable user'
+  #       expect(page).to have_select 'avocado_filters_availability_filter', selected: empty_dash, options: [empty_dash, 'Available', 'Unavailable']
+  #     end
 
-      it 'changes the filter' do
-        visit url
-        find('[data-button="resource-filters"]').click
+  #     it 'changes the filter' do
+  #       visit url
+  #       find('[data-button="resource-filters"]').click
 
-        select 'Unavailable', from: 'avocado_filters_availability_filter'
-        wait_for_loaded
+  #       select 'Unavailable', from: 'avocado_filters_availability_filter'
+  #       wait_for_loaded
 
-        expect(page).to have_text 'Availability filter'
-        expect(page).not_to have_text 'Available user'
-        expect(page).to have_text 'Unavailable user'
-        expect(page).to have_select 'avocado_filters_availability_filter', selected: 'Unavailable', options: [empty_dash, 'Available', 'Unavailable']
-        expect(current_url).to include 'filters='
-      end
+  #       expect(page).to have_text 'Availability filter'
+  #       expect(page).not_to have_text 'Available user'
+  #       expect(page).to have_text 'Unavailable user'
+  #       expect(page).to have_select 'avocado_filters_availability_filter', selected: 'Unavailable', options: [empty_dash, 'Available', 'Unavailable']
+  #       expect(current_url).to include 'filters='
+  #     end
 
-      it 'keeps the filter on page refresh' do
-        visit url
-        find('[data-button="resource-filters"]').click
+  #     it 'keeps the filter on page refresh' do
+  #       visit url
+  #       find('[data-button="resource-filters"]').click
 
-        select 'Unavailable', from: 'avocado_filters_availability_filter'
-        wait_for_loaded
+  #       select 'Unavailable', from: 'avocado_filters_availability_filter'
+  #       wait_for_loaded
 
-        expect(page).to have_text 'Availability filter'
-        expect(page).not_to have_text 'Available user'
-        expect(page).to have_text 'Unavailable user'
-        expect(page).to have_select 'avocado_filters_availability_filter', selected: 'Unavailable', options: [empty_dash, 'Available', 'Unavailable']
-        expect(current_url).to include 'filters='
+  #       expect(page).to have_text 'Availability filter'
+  #       expect(page).not_to have_text 'Available user'
+  #       expect(page).to have_text 'Unavailable user'
+  #       expect(page).to have_select 'avocado_filters_availability_filter', selected: 'Unavailable', options: [empty_dash, 'Available', 'Unavailable']
+  #       expect(current_url).to include 'filters='
 
-        visit current_url
-        find('[data-button="resource-filters"]').click
+  #       visit current_url
+  #       find('[data-button="resource-filters"]').click
 
-        expect(page).to have_text 'Availability filter'
-        expect(page).not_to have_text 'Available user'
-        expect(page).to have_text 'Unavailable user'
-        expect(page).to have_select 'avocado_filters_availability_filter', selected: 'Unavailable', options: [empty_dash, 'Available', 'Unavailable']
-      end
-    end
+  #       expect(page).to have_text 'Availability filter'
+  #       expect(page).not_to have_text 'Available user'
+  #       expect(page).to have_text 'Unavailable user'
+  #       expect(page).to have_select 'avocado_filters_availability_filter', selected: 'Unavailable', options: [empty_dash, 'Available', 'Unavailable']
+  #     end
+  #   end
 
-    context 'with default to available' do
-      before do
-        Avocado::Filters::AvailabilityFilter.set_default 'available'
-      end
+  #   context 'with default to available' do
+  #     before do
+  #       Avocado::Filters::AvailabilityFilter.set_default 'available'
+  #     end
 
-      after do
-        Avocado::Filters::AvailabilityFilter.set_default ''
-      end
+  #     after do
+  #       Avocado::Filters::AvailabilityFilter.set_default ''
+  #     end
 
-      it 'displays the filter' do
-        visit url
-        find('[data-button="resource-filters"]').click
+  #     it 'displays the filter' do
+  #       visit url
+  #       find('[data-button="resource-filters"]').click
 
-        expect(page).to have_text 'Availability filter'
-        expect(page).to have_text 'Available user'
-        expect(page).not_to have_text 'Unavailable user'
-        expect(page).to have_select 'avocado_filters_availability_filter', selected: 'Available', options: [empty_dash, 'Available', 'Unavailable']
-      end
+  #       expect(page).to have_text 'Availability filter'
+  #       expect(page).to have_text 'Available user'
+  #       expect(page).not_to have_text 'Unavailable user'
+  #       expect(page).to have_select 'avocado_filters_availability_filter', selected: 'Available', options: [empty_dash, 'Available', 'Unavailable']
+  #     end
 
-      it 'changes the filter' do
-        visit url
-        find('[data-button="resource-filters"]').click
+  #     it 'changes the filter' do
+  #       visit url
+  #       find('[data-button="resource-filters"]').click
 
-        select 'Unavailable', from: 'avocado_filters_availability_filter'
-        wait_for_loaded
+  #       select 'Unavailable', from: 'avocado_filters_availability_filter'
+  #       wait_for_loaded
 
-        expect(page).to have_text 'Availability filter'
-        expect(page).not_to have_text 'Available user'
-        expect(page).to have_text 'Unavailable user'
-        expect(page).to have_select 'avocado_filters_availability_filter', selected: 'Unavailable', options: [empty_dash, 'Available', 'Unavailable']
-        expect(current_url).to include 'filters='
-      end
-    end
-  end
+  #       expect(page).to have_text 'Availability filter'
+  #       expect(page).not_to have_text 'Available user'
+  #       expect(page).to have_text 'Unavailable user'
+  #       expect(page).to have_select 'avocado_filters_availability_filter', selected: 'Unavailable', options: [empty_dash, 'Available', 'Unavailable']
+  #       expect(current_url).to include 'filters='
+  #     end
+  #   end
+  # end
 end
