@@ -37,10 +37,10 @@ module Avocado
         fields[:options] = []
 
         if [:edit, :create].include? view
-          fields[:options] = target_resource.model.select(:id, target_resource.title).all.map do |model|
+          fields[:options] = target_resource.model.all.map do |model|
             {
               value: model.id,
-              label: model[target_resource.title]
+              label: model.send(target_resource.title)
             }
           end
         end
