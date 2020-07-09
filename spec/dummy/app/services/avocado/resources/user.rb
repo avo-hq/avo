@@ -30,12 +30,12 @@ module Avocado
         date :birthday, first_day_of_week: 1, picker_format: 'F J Y', format: 'MMMM Do YYYY', placeholder: 'Feb 24th 1955', required: true
         datetime :starts_on, time_24hr: true
         select :highlighted, options: { yes: 'Highlighted', no: 'Not Highlighted' }, display_with_value: true, placeholder: 'This shows whether the user is highlighted'
-        password :password, name: 'User Password', required: false, except_on: :forms
+        password :password, name: 'User Password', required: false, except_on: :forms, help: 'Verify password strength <a href="http://www.passwordmeter.com/">here</a>.'
         password :password_confirmation, name: 'Password confirmation', required: false
         text :is_writer, format_using: -> (value) { value.truncate 3 }, hide_on: :edit do |model, resource, view, field|
           model.posts.to_a.count > 0 ? 'yes' : 'no'
         end
-        textarea :description, rows: 5, readonly: false, hide_on: :index, format_using: -> (value) { value.to_s.truncate 30 }, required: true
+        textarea :description, rows: 5, readonly: false, hide_on: :index, format_using: -> (value) { value.to_s.truncate 30 }, required: true, help: 'Don\'t expose private data.'
         code :custom_css, theme: 'dracula', language: 'css'
         has_and_belongs_to_many :projects
         has_many :posts
