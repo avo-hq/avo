@@ -13,9 +13,14 @@ RSpec.describe 'UserForms', type: :system do
     click_on 'Create new user'
 
     expect(page).to have_text('Create new user')
-    expect(page).to have_text('Name')
-    expect(page).to have_text('Avatar')
-    expect(page).to have_text('Description')
+    expect(page).to have_text('First name')
+    expect(page).to have_text('Last name')
+    expect(page).to have_text('User Email')
+    expect(page).to have_text('CV')
+    expect(page).to have_text('Roles')
+    expect(page).to have_text('Birthday')
+    expect(page).to have_text('User Password')
+    expect(page).to have_text('Password confirmation')
     expect(page).to have_text('Cancel')
     expect(page).to have_text('Save')
   end
@@ -35,44 +40,44 @@ RSpec.describe 'UserForms', type: :system do
 
     click_on 'Save'
 
-    expect(page).to have_text("Name can't be blank")
+    expect(page).to have_text("First name can't be blank")
+    expect(page).to have_text("Last name can't be blank")
     expect(page).to have_text("Email can't be blank")
-    expect(page).to have_text('Age is not a number')
-    expect(page).to have_text("Description can't be blank")
+    expect(page).to have_text("Password can't be blank")
   end
 
   it 'submits the form on enter', skip_js_error_detect: true do
     visit '/avocado/resources/users/new'
 
-    find("[field-id='name'] [data-slot='value'] input").native.send_keys(:return)
+    find("[field-id='first_name'] [data-slot='value'] input").native.send_keys(:return)
 
-    expect(page).to have_text("Name can't be blank")
+    expect(page).to have_text("First name can't be blank")
+    expect(page).to have_text("Last name can't be blank")
     expect(page).to have_text("Email can't be blank")
-    expect(page).to have_text('Age is not a number')
-    expect(page).to have_text("Description can't be blank")
+    expect(page).to have_text("Password can't be blank")
   end
 
   it 'creates a user' do
     visit '/avocado/resources/users/new'
 
-    fill_in 'name', with: 'John Doe'
+    fill_in 'first_name', with: 'John'
+    fill_in 'last_name', with: 'Doe'
     fill_in 'email', with: 'john@doe.com'
-    fill_in 'age', with: '21'
-    fill_in 'description', with: 'Hey there,'
     fill_in 'password', with: 'secret_password'
     fill_in 'password_confirmation', with: 'secret_password'
 
     click_on 'Save'
 
-    expect(page).to have_text('John Doe')
+    expect(page).to have_text('John')
+    expect(page).to have_text('Doe')
     expect(page).to have_text('john@doe.com')
-    expect(page).to have_text('Hey there,')
     user_id = page.find('[field-id="id"] [data-slot="value"]').text
     expect(current_path).to eq "/avocado/resources/users/#{user_id}"
 
     click_on 'Users'
 
-    expect(page).to have_text('John Doe')
+    expect(page).to have_text('John')
+    expect(page).to have_text('Doe')
     expect(current_path).to eq '/avocado/resources/users'
   end
 end

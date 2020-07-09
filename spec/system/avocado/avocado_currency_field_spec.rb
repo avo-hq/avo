@@ -2,12 +2,12 @@ require 'rails_helper'
 
 RSpec.describe 'CurrencyField', type: :system do
   describe 'without input' do
-    let!(:user) { create :user, salary: nil }
+    let!(:project) { create :project, budget: nil }
 
-    subject { visit url; find_field_element(:salary) }
+    subject { visit url; find_field_element(:budget) }
 
     context 'index' do
-      let!(:url) { '/avocado/resources/users' }
+      let!(:url) { '/avocado/resources/projects' }
 
       it {
         is_expected.to have_text empty_dash
@@ -16,7 +16,7 @@ RSpec.describe 'CurrencyField', type: :system do
     end
 
     context 'show' do
-      let!(:url) { "/avocado/resources/users/#{user.id}" }
+      let!(:url) { "/avocado/resources/projects/#{project.id}" }
 
       it {
         is_expected.to have_text empty_dash
@@ -25,68 +25,68 @@ RSpec.describe 'CurrencyField', type: :system do
     end
 
     context 'edit' do
-      it 'has the users salary prefilled' do
-        visit "/avocado/resources/users/#{user.id}/edit"
+      it 'has the projects budget prefilled' do
+        visit "/avocado/resources/projects/#{project.id}/edit"
 
-        expect(find_field_element(:salary).find('input').value).to have_text '€0.00'
+        expect(find_field_element(:budget).find('input').value).to have_text '€0.00'
       end
     end
   end
 
-  describe 'with input: salary = 1000' do
-    let(:monthly_salary) { 1000 }
+  describe 'with input: budget = 1000' do
+    let(:total_budget) { 1000 }
 
-    let!(:user) { create :user, salary: monthly_salary }
+    let!(:project) { create :project, budget: total_budget }
 
-    subject { visit url; find_field_element(:salary) }
+    subject { visit url; find_field_element(:budget) }
 
     context 'index' do
-      it 'displays the users salary on index' do
-        visit "/avocado/resources/users/#{user.id}"
+      it 'displays the projects budget on index' do
+        visit "/avocado/resources/projects/#{project.id}"
 
-        expect(find_field_element(:salary).find('input').value).to have_text '€1,000.00'
-        expect(find_field_element(:salary)).to have_css '.bg-transparent'
+        expect(find_field_element(:budget).find('input').value).to have_text '€1,000.00'
+        expect(find_field_element(:budget)).to have_css '.bg-transparent'
       end
     end
 
     context 'show' do
-      it 'displays the users salary on show' do
-        visit "/avocado/resources/users/#{user.id}"
+      it 'displays the projects budget on show' do
+        visit "/avocado/resources/projects/#{project.id}"
 
-        expect(find_field_element(:salary).find('input').value).to have_text '€1,000.00'
-        expect(find_field_element(:salary)).to have_css '.bg-transparent'
+        expect(find_field_element(:budget).find('input').value).to have_text '€1,000.00'
+        expect(find_field_element(:budget)).to have_css '.bg-transparent'
       end
     end
 
     context 'edit' do
-      it 'has the users salary prefilled' do
-        visit "/avocado/resources/users/#{user.id}/edit"
+      it 'has the projects budget prefilled' do
+        visit "/avocado/resources/projects/#{project.id}/edit"
 
-        expect(find_field_element(:salary).find('input').value).to have_text '€1,000.00'
+        expect(find_field_element(:budget).find('input').value).to have_text '€1,000.00'
       end
 
-      it 'changes the users salary using dot' do
-        visit "/avocado/resources/users/#{user.id}/edit"
+      it 'changes the projects budget using dot' do
+        visit "/avocado/resources/projects/#{project.id}/edit"
 
-        fill_in 'salary', with: '100.1'
+        fill_in 'budget', with: '100.1'
 
         click_on 'Save'
         wait_for_loaded
 
-        expect(current_path).to eql "/avocado/resources/users/#{user.id}"
-        expect(find_field_element(:salary).find('input').value).to have_text '€100.10'
+        expect(current_path).to eql "/avocado/resources/projects/#{project.id}"
+        expect(find_field_element(:budget).find('input').value).to have_text '€100.10'
       end
 
-      it 'changes the users salary using comma' do
-        visit "/avocado/resources/users/#{user.id}/edit"
+      it 'changes the projects budget using comma' do
+        visit "/avocado/resources/projects/#{project.id}/edit"
 
-        fill_in 'salary', with: '100,1'
+        fill_in 'budget', with: '100,1'
 
         click_on 'Save'
         wait_for_loaded
 
-        expect(current_path).to eql "/avocado/resources/users/#{user.id}"
-        expect(find_field_element(:salary).find('input').value).to have_text '€100.10'
+        expect(current_path).to eql "/avocado/resources/projects/#{project.id}"
+        expect(find_field_element(:budget).find('input').value).to have_text '€100.10'
       end
     end
   end

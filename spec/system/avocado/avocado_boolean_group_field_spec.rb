@@ -15,6 +15,7 @@ RSpec.describe 'BooleanGroupFields', type: :system do
 
         expect(page).to have_text 'Administrator'
         expect(page).to have_text 'Manager'
+        expect(page).to have_text 'Writer'
       end
     end
 
@@ -25,6 +26,7 @@ RSpec.describe 'BooleanGroupFields', type: :system do
         expect(page).to have_text 'Roles'
         expect(page).to have_text 'Administrator'
         expect(page).to have_text 'Manager'
+        expect(page).to have_text 'Writer'
       end
     end
 
@@ -34,6 +36,7 @@ RSpec.describe 'BooleanGroupFields', type: :system do
 
         check 'admin'
         uncheck 'manager'
+        uncheck 'writer'
 
         click_on 'Save'
         wait_for_loaded
@@ -43,6 +46,7 @@ RSpec.describe 'BooleanGroupFields', type: :system do
 
         expect(find_field_value_element(:roles)).to have_text '✅ Administrator'
         expect(find_field_value_element(:roles)).to have_text '❌ Manager'
+        expect(find_field_value_element(:roles)).to have_text '❌ Writer'
       end
     end
   end

@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Filters', type: :system do
-  let!(:featured_post) { create :post, name: 'Featured post', featured: true }
-  let!(:unfeatured_post) { create :post, name: 'Unfeatured post', featured: false }
+  let!(:featured_post) { create :post, name: 'Featured post', is_featured: true }
+  let!(:unfeatured_post) { create :post, name: 'Unfeatured post', is_featured: false }
 
   describe 'Boolean filter' do
     let(:url) { '/avocado/resources/posts' }

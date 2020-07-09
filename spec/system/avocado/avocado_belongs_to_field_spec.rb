@@ -41,7 +41,7 @@ RSpec.describe 'BelongsToField', type: :system do
     let(:url) { "/avocado/resources/posts/#{post.id}/edit" }
 
     describe 'without user attached' do
-      let!(:post) { create :post }
+      let!(:post) { create :post, user: null }
 
       it { is_expected.to have_select 'user', selected: empty_dash }
 

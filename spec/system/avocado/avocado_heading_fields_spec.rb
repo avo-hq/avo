@@ -8,15 +8,15 @@ RSpec.describe 'HeadingFields', type: :system do
       it 'checks for normal header' do
         visit "/avocado/resources/users/#{user.id}"
 
-        expect(find_field_element('heading_other')).to have_text 'OTHER'
+        expect(find_field_element('heading_name')).to have_text 'NAME'
       end
 
       it 'checks for html header' do
         visit "/avocado/resources/users/#{user.id}"
 
-        expect(find_field_element('heading_div_class_text_blue_900_uppercase_font_bold_files_div')).to have_text 'FILES'
-        expect(find_field_element('heading_div_class_text_blue_900_uppercase_font_bold_files_div')).to have_css '.uppercase'
-        expect(find_field_element('heading_div_class_text_blue_900_uppercase_font_bold_files_div')).to have_css '.text-blue-900'
+        expect(find_field_element('heading_div_class_text_blue_900_uppercase_font_bold_dev_div')).to have_text 'DEV'
+        expect(find_field_element('heading_div_class_text_blue_900_uppercase_font_bold_dev_div')).to have_css '.uppercase'
+        expect(find_field_element('heading_div_class_text_blue_900_uppercase_font_bold_dev_div')).to have_css '.text-blue-900'
       end
     end
 
@@ -24,7 +24,7 @@ RSpec.describe 'HeadingFields', type: :system do
       it 'checks for normal header' do
         visit "/avocado/resources/users/#{user.id}/edit"
 
-        expect(find_field_element('heading_other')).to have_text 'OTHER'
+        expect(find_field_element('heading_name')).to have_text 'NAME'
       end
     end
 
@@ -32,9 +32,9 @@ RSpec.describe 'HeadingFields', type: :system do
       it 'checks for html header' do
         visit "/avocado/resources/users/#{user.id}/edit"
 
-        expect(find_field_element('heading_div_class_text_blue_900_uppercase_font_bold_files_div')).to have_text 'FILES'
-        expect(find_field_element('heading_div_class_text_blue_900_uppercase_font_bold_files_div')).to have_css '.uppercase'
-        expect(find_field_element('heading_div_class_text_blue_900_uppercase_font_bold_files_div')).to have_css '.text-blue-900'
+        expect(find_field_element('heading_div_class_text_blue_900_uppercase_font_bold_dev_div')).to have_text 'DEV'
+        expect(find_field_element('heading_div_class_text_blue_900_uppercase_font_bold_dev_div')).to have_css '.uppercase'
+        expect(find_field_element('heading_div_class_text_blue_900_uppercase_font_bold_dev_div')).to have_css '.text-blue-900'
       end
     end
   end

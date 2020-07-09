@@ -42,10 +42,10 @@ module Avocado
           if self.searchable
             fields[:model] = relation_model
           else
-            fields[:options] = target_resource.model.select(:id, target_resource.title).all.map do |model|
+            fields[:options] = target_resource.model.all.map do |model|
               {
                 value: model.id,
-                label: model[target_resource.title]
+                label: model.send(target_resource.title)
               }
             end
           end
