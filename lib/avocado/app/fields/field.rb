@@ -13,6 +13,7 @@ module Avocado
       attr_accessor :required
       attr_accessor :readonly
       attr_accessor :nullable
+      attr_accessor :null_values
       attr_accessor :format_using
       attr_accessor :computable
       attr_accessor :is_array_param
@@ -37,6 +38,7 @@ module Avocado
           updatable: true,
           sortable: false,
           nullable: false,
+          null_values: [],
           computable: true,
           is_array_param: false,
           format_using: false,
@@ -100,7 +102,11 @@ module Avocado
       def fill_field(model, key, value)
         return model unless model.methods.include? key.to_sym
 
-        model.send("#{key}=", value)
+        if(nullable && (!value || value === '' || value.in?(null_values)))
+          model.send("#{key}=", nil)
+        else
+          model.send("#{key}=", value)
+        end
 
         model
       end
