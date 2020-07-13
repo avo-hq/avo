@@ -113,7 +113,12 @@ module Avocado
         regular_resource_params.delete(:password)
       end
 
-      avocado_resource.fill_model(resource, regular_resource_params).save!
+      # puts resource
+      # puts regular_resource_params
+      # puts avocado_resource
+
+      casted_params = cast_nullable(regular_resource_params)
+      avocado_resource.fill_model(resource, casted_params).save!
 
       render json: {
         success: true,
@@ -133,7 +138,9 @@ module Avocado
         end
       end
 
-      resource = resource_model.safe_constantize.new(create_params)
+      casted_params = cast_nullable(create_params)
+
+      resource = resource_model.safe_constantize.new(casted_params)
       resource.save!
 
       render json: {
@@ -192,6 +199,27 @@ module Avocado
         success: true,
         message: "#{attachment_class} attached.",
       }
+    end
+
+    def cast_nullable(params)
+      fields = avocado_resource.get_fields
+
+      nullable_fields = Hash.new
+
+      fields.each do | item |
+        if item.nullable === true
+          nullable_fields[item.id] = item.null_values
+        end
+      end
+
+      params.each_pair do | key, value |
+        nullable = nullable_fields[key.to_sym]
+        if nullable && (!value || value === '' || value.in?(nullable))
+          params[key] = nil
+        end
+      end
+
+      params
     end
 
     private

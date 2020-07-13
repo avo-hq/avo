@@ -102,11 +102,7 @@ module Avocado
       def fill_field(model, key, value)
         return model unless model.methods.include? key.to_sym
 
-        if(nullable && (!value || value === '' || value.in?(null_values)))
-          model.send("#{key}=", nil)
-        else
-          model.send("#{key}=", value)
-        end
+        model.send("#{key}=", value)
 
         model
       end
