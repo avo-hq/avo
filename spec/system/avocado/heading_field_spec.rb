@@ -8,7 +8,7 @@ RSpec.describe 'HeadingFields', type: :system do
       it 'checks for normal header' do
         visit "/avocado/resources/users/#{user.id}"
 
-        expect(find_field_element('heading_name')).to have_text 'NAME'
+        expect(find_field_element('heading_user_information')).to have_text 'USER INFORMATION'
       end
 
       it 'checks for html header' do
@@ -24,7 +24,7 @@ RSpec.describe 'HeadingFields', type: :system do
       it 'checks for normal header' do
         visit "/avocado/resources/users/#{user.id}/edit"
 
-        expect(find_field_element('heading_name')).to have_text 'NAME'
+        expect(find_field_element('heading_user_information')).to have_text 'USER INFORMATION'
       end
     end
 
