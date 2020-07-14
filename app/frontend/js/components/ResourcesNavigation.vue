@@ -18,7 +18,8 @@
           params: {
             resourceName: resource.resource_name,
           },
-        }"></sidebar-link>
+        }"
+      />
     </div>
   </div>
 </template>

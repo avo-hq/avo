@@ -4,7 +4,7 @@
     :key="key"
     :class="classes"
   >
-    <div class="inline-flex items-center text-gray-700 leading-tight text-sm font-semibold"
+    <div class="inline-flex items-center text-gray-700 leading-tight text-xs font-semibold"
       :class="{'cursor-pointer': sortable}"
       @click="tryAndSort"
     >

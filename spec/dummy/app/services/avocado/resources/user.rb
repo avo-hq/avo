@@ -11,7 +11,7 @@ module Avocado
       fields do
         id
         gravatar :email
-        heading 'name'
+        heading 'User information'
         text :first_name, required: true, placeholder: 'John'
         text :last_name, required: true, placeholder: 'Doe'
         text :email, name: 'User Email', required: true

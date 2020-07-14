@@ -5,7 +5,7 @@
     </template>
 
     <template #tools>
-      <div class="flex justify-end items-center mb-4 w-full">
+      <div class="flex justify-end items-center mb-4 w-full text-sm">
         <div>
           <a
             href="javascript:void(0);"
@@ -110,7 +110,7 @@ export default {
     resources: [],
     totalPages: 0,
     page: 0,
-    perPage: 25,
+    perPage: 24,
     meta: {
       // eslint-disable-next-line camelcase
       per_page_steps: [],

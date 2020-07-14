@@ -1,5 +1,5 @@
 <template>
-  <div class="application-sidebar flex h-full bg-gray-700 text-white w-56 z-50">
+  <div class="application-sidebar flex h-full bg-gray-700 text-white w-56 z-50 text-sm">
     <div class="w-full">
       <logo-component :logo="logo"/>
 
