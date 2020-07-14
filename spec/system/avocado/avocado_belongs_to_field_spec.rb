@@ -6,7 +6,7 @@ RSpec.describe 'BelongsToField', type: :system do
   context 'index' do
     let(:url) { '/avocado/resources/posts' }
 
-    subject { visit url; find("[resource-id='#{user.id}'] [field-id='user']") }
+    subject { visit url; find("[resource-id='#{post.id}'] [field-id='user']") }
 
     describe 'with a related user' do
       let!(:post) { create :post, user: user }
