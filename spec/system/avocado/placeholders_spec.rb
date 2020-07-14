@@ -8,9 +8,11 @@ RSpec.describe 'Placeholders', type: :system do
       it 'checks for placeholder visibility' do
         visit "/avocado/resources/users/#{user.id}/edit"
 
-        fill_in 'name', with: ''
+        fill_in 'first_name', with: ''
+        fill_in 'last_name', with: ''
 
-        expect(find_field('name')[:placeholder]).to have_text('John Doe')
+        expect(find_field('first_name')[:placeholder]).to have_text('John')
+        expect(find_field('last_name')[:placeholder]).to have_text('Doe')
       end
     end
   end

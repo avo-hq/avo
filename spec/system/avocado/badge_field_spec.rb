@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'BadgeField', type: :system do
   describe 'without a value' do
-    let!(:project) { create :project }
+    let!(:project) { create :project, stage: nil }
 
     subject { visit url; find_field_element(:stage) }
 

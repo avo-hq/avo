@@ -38,10 +38,15 @@ end
 
 # assign users to teams
 teams.each do |team|
-  users.shuffle[0..10].each do |user|
+  users.shuffle[0..10].each_with_index do |user, index|
     team.members << user
 
-    team.memberships.find_by(user_id: user.id).update level: [:beginner, :intermediate, :advanced].sample
+    membership = team.memberships.find_by user_id: user.id
+    membership.update level: [:beginner, :intermediate, :advanced].sample
+
+    if index == 0
+      membership.update level: :admin
+    end
   end
 end
 

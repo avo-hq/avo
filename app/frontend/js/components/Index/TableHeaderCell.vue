@@ -4,7 +4,7 @@
     :key="key"
     :class="classes"
   >
-    <div class="inline-flex items-center text-gray-700 leading-tight text-sm"
+    <div class="inline-flex items-center text-gray-700 leading-tight text-xs font-semibold"
       :class="{'cursor-pointer': sortable}"
       @click="tryAndSort"
     >
@@ -35,7 +35,7 @@ export default {
   ],
   computed: {
     classes() {
-      const classes = ['text-left', 'uppercase', 'text-sm', 'p-2']
+      const classes = ['text-left', 'uppercase', 'px-3', 'py-2']
 
       return classes.join(' ')
     },
