@@ -1,5 +1,8 @@
 <template>
-  <img :src="gravatarURL" :class="{'rounded-full': rounded}" />
+  <img :src="gravatarURL"
+    :class="{'rounded-full': rounded}"
+    class="min-w-10"
+  />
 </template>
 
 <script>

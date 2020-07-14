@@ -6,7 +6,7 @@
 
 html,
 body {
-  @apply antialiased relative h-full bg-gray-300;
+  @apply antialiased relative h-full bg-gray-200;
 }
 
 select.select-input {
