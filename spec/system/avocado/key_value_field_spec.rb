@@ -2,19 +2,19 @@ require 'rails_helper'
 
 RSpec.describe 'KeyValueFields', type: :system do
   describe 'without value' do
-    let!(:user) { create :user , meta: '' }
+    let!(:project) { create :project , meta: '' }
 
     context 'show' do
-      it 'displays the users empty meta (dash)' do
-        visit "/avocado/resources/users/#{user.id}"
+      it 'displays the projects empty meta (dash)' do
+        visit "/avocado/resources/projects/#{project.id}"
 
         expect(find_field_value_element('meta')).to have_text empty_dash
       end
     end
 
     context 'edit' do
-      it 'has the users meta label, table header, add button' do
-        visit "/avocado/resources/users/#{user.id}/edit"
+      it 'has the projects meta label, table header, add button' do
+        visit "/avocado/resources/projects/#{project.id}/edit"
 
         meta_element = find_field_element('meta')
 
@@ -36,7 +36,7 @@ RSpec.describe 'KeyValueFields', type: :system do
       end
 
       it 'adds a row to meta table and input one row with values' do
-        visit "/avocado/resources/users/#{user.id}/edit"
+        visit "/avocado/resources/projects/#{project.id}/edit"
 
         meta_element = find_field_element('meta')
 
@@ -60,7 +60,7 @@ RSpec.describe 'KeyValueFields', type: :system do
         click_on 'Save'
         wait_for_loaded
 
-        expect(current_path).to eql "/avocado/resources/users/#{user.id}"
+        expect(current_path).to eql "/avocado/resources/projects/#{project.id}"
 
         expect(meta_element).to have_selector 'input[type="text"][placeholder="Meta key"][disabled="disabled"]'
         expect(meta_element).to have_selector 'input[type="text"][placeholder="Meta value"][disabled="disabled"]'
@@ -73,7 +73,7 @@ RSpec.describe 'KeyValueFields', type: :system do
       end
 
       it 'adds a row to meta table and no input values' do
-        visit "/avocado/resources/users/#{user.id}/edit"
+        visit "/avocado/resources/projects/#{project.id}/edit"
 
         meta_element = find_field_element('meta')
 
@@ -94,7 +94,7 @@ RSpec.describe 'KeyValueFields', type: :system do
         click_on 'Save'
         wait_for_loaded
 
-        expect(current_path).to eql "/avocado/resources/users/#{user.id}"
+        expect(current_path).to eql "/avocado/resources/projects/#{project.id}"
 
         expect(meta_element).not_to have_selector 'input[type="text"][placeholder="Meta key"][disabled="disabled"]'
         expect(meta_element).not_to have_selector 'input[type="text"][placeholder="Meta value"][disabled="disabled"]'
@@ -104,11 +104,11 @@ RSpec.describe 'KeyValueFields', type: :system do
 
   describe 'with value' do
     let!(:meta_data) { { 'foo': 'bar', 'hey': 'hi' } }
-    let!(:user) { create :user , meta: meta_data }
+    let!(:project) { create :project , meta: meta_data }
 
     context 'show' do
-      it 'displays the users meta' do
-        visit "/avocado/resources/users/#{user.id}"
+      it 'displays the projects meta' do
+        visit "/avocado/resources/projects/#{project.id}"
 
         meta_element = find_field_element('meta')
 
@@ -127,8 +127,8 @@ RSpec.describe 'KeyValueFields', type: :system do
     end
 
     context 'edit' do
-      it 'has the users meta label, table header, table rows (2), buttons' do
-        visit "/avocado/resources/users/#{user.id}/edit"
+      it 'has the projects meta label, table header, table rows (2), buttons' do
+        visit "/avocado/resources/projects/#{project.id}/edit"
 
         meta_element = find_field_element('meta')
 
@@ -162,7 +162,7 @@ RSpec.describe 'KeyValueFields', type: :system do
       end
 
       it 'deletes first row' do
-        visit "/avocado/resources/users/#{user.id}/edit"
+        visit "/avocado/resources/projects/#{project.id}/edit"
 
         delete_buttons = page.all('svg[data-icon="trash-alt"]')
         delete_buttons[0].click
@@ -170,7 +170,7 @@ RSpec.describe 'KeyValueFields', type: :system do
         click_on 'Save'
         wait_for_loaded
 
-        expect(current_path).to eql "/avocado/resources/users/#{user.id}"
+        expect(current_path).to eql "/avocado/resources/projects/#{project.id}"
 
         keys = page.all('input[type="text"][placeholder="Meta key"][disabled="disabled"]')
         values = page.all('input[type="text"][placeholder="Meta value"][disabled="disabled"]')
@@ -183,7 +183,7 @@ RSpec.describe 'KeyValueFields', type: :system do
       end
 
       it 'deletes second row' do
-        visit "/avocado/resources/users/#{user.id}/edit"
+        visit "/avocado/resources/projects/#{project.id}/edit"
 
         meta_element = find_field_element('meta')
 
@@ -199,13 +199,13 @@ RSpec.describe 'KeyValueFields', type: :system do
         click_on 'Save'
         wait_for_loaded
 
-        expect(current_path).to eql "/avocado/resources/users/#{user.id}"
+        expect(current_path).to eql "/avocado/resources/projects/#{project.id}"
 
         expect(find_field_value_element('meta')).to have_text empty_dash
       end
 
       it 'checks for plus and delete tooltips on hover' do
-        visit "/avocado/resources/users/#{user.id}/edit"
+        visit "/avocado/resources/projects/#{project.id}/edit"
 
         add_button = page.find('svg[data-icon="plus-alt"]')
         expect(page).not_to have_text 'New item'
@@ -219,7 +219,7 @@ RSpec.describe 'KeyValueFields', type: :system do
       end
 
       it 'adds a row to meta table with key and value' do
-        visit "/avocado/resources/users/#{user.id}/edit"
+        visit "/avocado/resources/projects/#{project.id}/edit"
 
         meta_element = find_field_element('meta')
 
@@ -237,7 +237,7 @@ RSpec.describe 'KeyValueFields', type: :system do
         click_on 'Save'
         wait_for_loaded
 
-        expect(current_path).to eql "/avocado/resources/users/#{user.id}"
+        expect(current_path).to eql "/avocado/resources/projects/#{project.id}"
 
         keys = page.all('input[type="text"][placeholder="Meta key"][disabled="disabled"]')
         values = page.all('input[type="text"][placeholder="Meta value"][disabled="disabled"]')
@@ -247,7 +247,7 @@ RSpec.describe 'KeyValueFields', type: :system do
       end
 
       it 'adds a row to meta table only with key' do
-        visit "/avocado/resources/users/#{user.id}/edit"
+        visit "/avocado/resources/projects/#{project.id}/edit"
 
         meta_element = find_field_element('meta')
 
@@ -264,7 +264,7 @@ RSpec.describe 'KeyValueFields', type: :system do
         click_on 'Save'
         wait_for_loaded
 
-        expect(current_path).to eql "/avocado/resources/users/#{user.id}"
+        expect(current_path).to eql "/avocado/resources/projects/#{project.id}"
 
         keys = page.all('input[type="text"][placeholder="Meta key"][disabled="disabled"]')
         values = page.all('input[type="text"][placeholder="Meta value"][disabled="disabled"]')

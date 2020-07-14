@@ -11,8 +11,13 @@ module Avocado
         id
         text :name, required: true
         textarea :body
+        file :cover_photo, is_image: true
+        boolean :is_featured
+        boolean :is_published do |model|
+          model.published_at.present?
+        end
+
         belongs_to :user, searchable: false, placeholder: '—'
-        boolean :featured
       end
 
       use_filter Avocado::Filters::FeaturedFilter

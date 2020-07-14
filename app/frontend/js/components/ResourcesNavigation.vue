@@ -1,20 +1,25 @@
 <template>
   <div>
-    <div class="flex items-center font-bold mb-2 uppercase tracking-normal p-2 text-blue-200 text-sm">
-      <GameBoard class="h-4 inline-block mr-2" /> Resources
-    </div>
+    <sidebar-link :large="true">
+      <template #icon>
+        <GameBoard class="h-4 inline-block mr-2" />
+      </template>
+      Resources
+    </sidebar-link>
 
     <div class="resources-links w-full">
       <sidebar-link
         v-for="resource in sortedResources"
         :key="resource.resource_name"
         v-text="resource.label"
+        class="pl-10"
         :to="{
           name: 'index',
           params: {
             resourceName: resource.resource_name,
           },
-        }"></sidebar-link>
+        }"
+      />
     </div>
   </div>
 </template>

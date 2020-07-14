@@ -1,7 +1,7 @@
 export default {
   computed: {
     classes() {
-      const classes = ['flex', 'items-start', 'py-2', 'leading-tight']
+      const classes = ['flex', 'items-start', 'py-1', 'leading-tight']
 
       if (this.index !== 0) classes.push('border-t')
 

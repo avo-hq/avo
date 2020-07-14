@@ -4,20 +4,20 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  validates :name, presence: true
-  validates :description, presence: true
-  validates :age, numericality: { greater_than: 0, less_than: 120 }
+  validates :first_name, presence: true
+  validates :last_name, presence: true
 
   has_many :posts
   has_and_belongs_to_many :projects
+  has_and_belongs_to_many :teams
 
   has_one_attached :cv
-  has_many_attached :docs
-  has_one_attached :avatar
-  has_many_attached :images
-  has_and_belongs_to_many :teams
 
   def is_admin?
     roles['admin'] === true
+  end
+
+  def name
+    "#{first_name} #{last_name}"
   end
 end

@@ -1,11 +1,16 @@
 <template>
-  <div class="application-sidebar flex h-full block bg-gray-700 text-white w-56 z-50">
+  <div class="application-sidebar flex h-full bg-gray-700 text-white w-56 z-50 text-sm">
     <div class="w-full">
       <logo-component :logo="logo"/>
+
       <div class="tools">
-        <div>
-          <sidebar-link to="/" exact>Dashboard</sidebar-link>
-        </div>
+        <sidebar-link to="/"
+          exact
+          class="mt-4 mb-0 pl-10"
+        >
+          Dashboard
+        </sidebar-link>
+
         <resources-navigation :resources="resources"/>
       </div>
     </div>
@@ -22,7 +27,7 @@ export default {
   .application-sidebar {
     .router-link-active:hover,
     .router-link-active {
-      @apply bg-gray-900;
+      @apply font-bold;
     }
   }
 </style>

@@ -74,7 +74,11 @@ module Avocado
         fields[:value] = model.send(id) if model_or_class(model) == 'model' and model.methods.include? id
 
         # Run callback block if present
-        fields[:computed_value] = @block.call model, resource, view, self if computable and @block.present?
+        if computable and @block.present?
+          fields[:computed_value] = @block.call model, resource, view, self
+
+          fields[:value] = fields[:computed_value]
+        end
 
         # Run each field's custom hydration
         fields.merge! self.hydrate_field(fields, model, resource, view)

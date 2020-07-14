@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="bg-blue-600 text-white py-2 px-4">
+    <div class="bg-gray-600 text-white py-2 px-4 text-sm">
       {{filter.name}}
     </div>
     <div class="p-4">

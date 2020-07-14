@@ -5,18 +5,18 @@ RSpec.describe 'TextField', type: :system do
     let!(:user) { create :user }
 
     context 'index' do
-      it 'displays the users name' do
+      it 'displays the users first name' do
         visit '/avocado/resources/users'
 
-        expect(page).to have_text user.name
+        expect(page).to have_text user.first_name
       end
     end
 
     context 'show' do
-      it 'displays the users name' do
+      it 'displays the users first name' do
         visit "/avocado/resources/users/#{user.id}"
 
-        expect(page).to have_text user.name
+        expect(page).to have_text user.first_name
       end
     end
 
@@ -24,13 +24,13 @@ RSpec.describe 'TextField', type: :system do
       it 'has the users name prefilled' do
         visit "/avocado/resources/users/#{user.id}/edit"
 
-        expect(find_field('name').value).to eq user.name
+        expect(find_field('first_name').value).to eq user.first_name
       end
 
       it 'changes the users name' do
         visit "/avocado/resources/users/#{user.id}/edit"
 
-        fill_in 'name', with: 'Jack Jack Jack'
+        fill_in 'first_name', with: 'Jack Jack Jack'
 
         click_on 'Save'
         wait_for_loaded
