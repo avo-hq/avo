@@ -11,13 +11,14 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: '"Mukta", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",  "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
+        sans: '"Noto Sans JP", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",  "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
       },
       inset: {
         full: '100%',
       },
       minWidth: {
         '300px': '300px',
+        10: '2.5rem',
       },
       minHeight: {
         28: '7rem',

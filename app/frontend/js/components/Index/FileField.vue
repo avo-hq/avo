@@ -1,11 +1,15 @@
 <template>
   <index-field-wrapper :field="field">
     <a :href="field.value"
-      v-text="field.filename"
       v-tooltip="`Download ${field.filename}`"
       v-if="this.field.value"
       download
-    ></a>
+    >
+      <img v-if="field.is_image"
+        :src="field.value"
+        />
+      <span v-text="field.filename" v-else />
+    </a>
     <empty-dash v-else />
   </index-field-wrapper>
 </template>

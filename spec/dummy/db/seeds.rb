@@ -5,30 +5,54 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+require 'open-uri'
 
-Group.delete_all
 Post.delete_all
 Project.delete_all
+Team.delete_all
 User.delete_all
+TeamMembership.delete_all
+ActiveStorage::Attachment.all.each { |attachment| attachment.purge }
 
-groups = []
-groups.push(FactoryBot.create(:group, name: 'Workers'))
-groups.push(FactoryBot.create(:group, name: 'Managers'))
-groups.push(FactoryBot.create(:group, name: 'Executives'))
+teams = []
+teams.push(FactoryBot.create(:team, name: 'Apple'))
+teams.push(FactoryBot.create(:team, name: 'Google'))
+teams.push(FactoryBot.create(:team, name: 'Facebook'))
+teams.push(FactoryBot.create(:team, name: 'Amazon'))
 
 users = []
-26.times do
-  users.push(FactoryBot.create(:user, group_id: groups.sample.id))
+38.times do
+  users.push(FactoryBot.create(:user, team_id: teams.sample.id))
 end
 
-19.times do
-  FactoryBot.create(:post, user_id: users.sample.id)
+25.times do
+  post = FactoryBot.create(:post, user_id: users.sample.id)
+
+  post.cover_photo.attach(io: open("https://source.unsplash.com/random/#{[1000, 1100, 1200, 1300].sample}x#{[1000, 1100, 1200, 1300].sample}"), filename: 'cover.jpg')
 end
 
-99.times do
-  project = FactoryBot.create(:project)
-  rand(1...9).times do
-    project.users << users.sample
+projects = []
+30.times do
+  projects.push(FactoryBot.create(:project))
+end
+
+# assign users to teams
+teams.each do |team|
+  users.shuffle[0..10].each_with_index do |user, index|
+    team.members << user
+
+    membership = team.memberships.find_by user_id: user.id
+    membership.update level: [:beginner, :intermediate, :advanced].sample
+
+    if index == 0
+      membership.update level: :admin
+    end
   end
-  project.save
+end
+
+# assign users to projects
+projects.each do |project|
+  users.shuffle[0..10].each do |user|
+    project.users << user
+  end
 end

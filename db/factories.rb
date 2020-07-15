@@ -1,40 +1,34 @@
 FactoryBot.define do
   factory :user do
-    name { Faker::Name.name }
+    first_name { Faker::Name.first_name }
+    last_name { Faker::Name.last_name }
     email { Faker::Internet.email }
     password { Faker::Internet.password }
-    age { rand(18...50) }
-    height { Faker::Number.decimal(l_digits: 2, r_digits: 2) }
-    currency { 'USD' }
-    country { Faker::Address.country_code }
-    timezone { 'Romania' }
-    availability { Faker::Boolean.boolean }
-    description { Faker::Lorem.paragraphs(number: 2) }
-    bio { "<strong>#{Faker::Lorem.paragraphs(number: 5)}<strong>" }
-    story { Faker::Markdown.sandwich(sentences: 5) }
+    roles { { admin: false, manager: [true, false].sample, writer: [true, false].sample } }
+    birthday { Faker::Date.birthday(min_age: 18, max_age: 65) }
     custom_css { ".header {\n  color: red;\n}" }
-    meta { {foo: 'bar', hey: 'hi'} }
-    roles { {admin: true, manager: false } }
-    tags { Faker::Marketing.buzzwords.split(' ') }
-    starts_on { Time.now - rand(10...365).days }
   end
 
-  factory :group do
-    name { 'Users' }
+  factory :team do
+    name { Faker::Company.name }
+    description { Faker::Lorem.paragraph(sentence_count: 4) }
   end
 
   factory :post do
     name { Faker::Quote.famous_last_words }
     body { Faker::Lorem.paragraphs(number: rand(4...10)).join("\n") }
+    is_featured { [true, false].sample }
     published_at { Time.now - rand(10...365).days }
   end
 
   factory :project do
     name { Faker::Hacker.say_something_smart }
-  end
-
-  factory :team do
-    name { Faker::Company.name }
-    description { Faker::Company.catch_phrase }
+    status { [:closed, :rejected, :failed, :loading, :running, :waiting].sample }
+    stage { [:discovery, :ideea, :done, 'on hold', :cancelled].sample }
+    budget { Faker::Number.decimal(l_digits: 4) }
+    country { Faker::Address.country_code }
+    users_required { Faker::Number.between(from: 10, to: 100) }
+    started_at { Time.now - rand(10...365).days }
+    meta { [{ foo: 'bar', hey: 'hi' }, { bar: 'baz' }, { hoho: 'hohoho' }].sample }
   end
 end

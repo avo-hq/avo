@@ -17,10 +17,10 @@ module Avocado
         query = related_model.find(params[:via_resource_id]).public_send(params[:via_relationship])
         params[:per_page] = Avocado.configuration.via_per_page
       elsif ['has_many', 'has_and_belongs_to_many'].include? params[:for_relation]
-        resources = resource_model.safe_constantize.select('id', avocado_resource.title).all.map do |model|
+        resources = resource_model.safe_constantize.all.map do |model|
           {
             value: model.id,
-            label: model[avocado_resource.title],
+            label: model.send(avocado_resource.title),
           }
         end
 

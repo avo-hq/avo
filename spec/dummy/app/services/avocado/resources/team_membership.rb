@@ -8,7 +8,7 @@ module Avocado
 
       fields do
         id
-        select :level, options: { rookie: 'Rookie', manager: 'Manager', executive: 'Executive' }
+        select :level, options: { beginner: 'Beginner', intermediate: 'Intermediate', advanced: 'Advanced' }
         belongs_to :user
         belongs_to :team
       end

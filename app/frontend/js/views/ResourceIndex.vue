@@ -5,14 +5,7 @@
     </template>
 
     <template #tools>
-      <div class="flex justify-between items-center mb-4 w-full">
-        <div>
-          <resources-search
-            :resource-name="resourceName"
-            :via-resource-name="viaResourceName"
-            :via-resource-id="viaResourceId"
-          />
-        </div>
+      <div class="flex justify-end items-center mb-4 w-full text-sm">
         <div>
           <a
             href="javascript:void(0);"
@@ -31,17 +24,26 @@
 
     <template #content>
       <template>
-        <div class="flex justify-between items-center py-4">
-          <resource-filters
-            v-if="!viaResourceName"
-            :via-resource-name="viaResourceName"
-            :per-page="perPage"
-            :per-page-steps="perPageSteps"
-            :filters="filters"
-            :applied-filters="appliedFilters"
-            @change-filter="changeFilter"
-            @change-per-page="changePerPage"
-          />
+        <div class="flex justify-between py-4">
+          <div class="flex items-center px-4 w-64">
+            <resources-search
+              :resource-name="resourceName"
+              :via-resource-name="viaResourceName"
+              :via-resource-id="viaResourceId"
+            />
+          </div>
+          <div class="flex justify-between items-center">
+            <resource-filters
+              v-if="!viaResourceName"
+              :via-resource-name="viaResourceName"
+              :per-page="perPage"
+              :per-page-steps="perPageSteps"
+              :filters="filters"
+              :applied-filters="appliedFilters"
+              @change-filter="changeFilter"
+              @change-per-page="changePerPage"
+            />
+          </div>
         </div>
 
         <div class="w-full overflow-auto min-h-28 flex flex-col">
@@ -108,7 +110,7 @@ export default {
     resources: [],
     totalPages: 0,
     page: 0,
-    perPage: 25,
+    perPage: 24,
     meta: {
       // eslint-disable-next-line camelcase
       per_page_steps: [],

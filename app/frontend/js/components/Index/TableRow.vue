@@ -18,8 +18,8 @@
       :field-component="field.component"
     ></component>
 
-    <td class="text-right p-2">
-      <div class="flex items-center justify-end flex-grow-0 space-x-2 pr-2 h-full w-full">
+    <td class="text-right whitespace-no-wrap px-2">
+      <div class="flex items-center justify-end flex-grow-0 space-x-2 h-full w-full">
         <router-link
           :to="{
             name: 'show',
@@ -30,28 +30,32 @@
           }"
           v-tooltip="`View ${this.resourceNameSingular}`"
           data-control="view"
-          ><ViewIcon class="text-gray-400 h-6 fill-current hover:text-gray-500"
-        /></router-link>
+        >
+          <ViewIcon class="text-gray-500 h-5 fill-current hover:text-gray-600"/>
+        </router-link>
         <router-link
           :to="editActionParams"
           v-tooltip="`Edit ${this.resourceNameSingular}`"
           data-control="edit"
-          ><EditIcon class="text-gray-400 h-6 hover:text-gray-500"
-        /></router-link>
+        >
+          <EditIcon class="text-gray-500 h-5 hover:text-gray-600"/>
+        </router-link>
         <a href="javascript:void(0);"
           @click="openDetachModal"
           v-tooltip="`Detach ${this.resourceNameSingular}`"
           data-control="detach"
           v-if="relationship === 'has_and_belongs_to_many'"
-          ><DeleteIcon class="text-gray-400 h-6 hover:text-gray-500"
-        /></a>
+        >
+          <DeleteIcon class="text-gray-500 h-5 hover:text-gray-600"/>
+        </a>
         <a href="javascript:void(0);"
           @click="openDeleteModal"
           v-tooltip="`Delete ${this.resourceNameSingular}`"
           data-control="delete"
           v-else
-          ><DeleteIcon class="text-gray-400 h-6 hover:text-gray-500"
-        /></a>
+        >
+          <DeleteIcon class="text-gray-500 h-5 hover:text-gray-600"/>
+        </a>
       </div>
     </td>
   </tr>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_07_090847) do
+ActiveRecord::Schema.define(version: 2020_06_10_141228) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,29 +36,28 @@ ActiveRecord::Schema.define(version: 2020_07_07_090847) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "groups", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "posts", force: :cascade do |t|
     t.string "name"
     t.text "body"
-    t.datetime "published_at"
+    t.boolean "is_featured"
     t.bigint "user_id"
+    t.datetime "published_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.boolean "featured", default: false
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
   create_table "projects", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
     t.string "status"
     t.string "stage"
+    t.string "budget"
+    t.string "country"
+    t.integer "users_required"
+    t.datetime "started_at"
+    t.json "meta"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "projects_users", force: :cascade do |t|
@@ -89,34 +88,21 @@ ActiveRecord::Schema.define(version: 2020_07_07_090847) do
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
-    t.string "name"
-    t.integer "age"
-    t.float "height"
-    t.string "currency"
-    t.string "country"
-    t.string "timezone"
-    t.boolean "availability"
-    t.text "description"
-    t.text "bio"
-    t.text "story"
-    t.text "custom_css"
-    t.json "meta"
+    t.string "first_name"
+    t.string "last_name"
     t.json "roles"
-    t.json "tags"
-    t.datetime "starts_on"
-    t.bigint "group_id"
+    t.date "birthday"
+    t.text "custom_css"
+    t.bigint "team_id"
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "highlighted", default: "no"
-    t.date "birthday"
-    t.string "salary"
     t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["group_id"], name: "index_users_on_group_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["team_id"], name: "index_users_on_team_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
