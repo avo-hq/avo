@@ -206,7 +206,7 @@ module Avocado
 
       nullable_fields = fields.filter { |field| field.nullable }.map { |field| [field.id, field.null_values] }.to_h
 
-      params.each_pair do | key, value |
+      params.each do |key, value|
         nullable = nullable_fields[key.to_sym]
         if nullable.present? && value.in?(nullable)
           params[key] = nil
