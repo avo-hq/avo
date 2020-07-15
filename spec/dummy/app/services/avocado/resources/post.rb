@@ -10,7 +10,7 @@ module Avocado
       fields do
         id
         text :name, required: true
-        textarea :body
+        textarea :body, nullable: true
         belongs_to :user, searchable: false, placeholder: '—'
         boolean :featured
       end

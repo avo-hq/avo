@@ -5,7 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   validates :name, presence: true
-  # validates :description, presence: true
+  validates :description, presence: true
   validates :age, numericality: { greater_than: 0, less_than: 120 }
 
   has_many :posts

@@ -214,7 +214,7 @@ module Avocado
 
       params.each_pair do | key, value |
         nullable = nullable_fields[key.to_sym]
-        if nullable && (!value || value === '' || value.in?(nullable))
+        if nullable && value.in?(nullable)
           params[key] = nil
         end
       end

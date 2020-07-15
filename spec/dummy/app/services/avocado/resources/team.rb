@@ -9,7 +9,7 @@ module Avocado
       fields do
         id
         text :name
-        textarea :description
+        textarea :description, nullable: true, null_values: ['', '0', 'null', 'nil']
         has_one :admin
         has_many :members
       end

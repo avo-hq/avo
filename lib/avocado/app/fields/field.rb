@@ -27,6 +27,7 @@ module Avocado
 
         args = @defaults.merge(args).symbolize_keys
 
+        null_values = [nil, '', *args[:null_values]]
         # The field properties as a hash {property: default_value}
         @field_properties = {
           id: id,
@@ -38,7 +39,7 @@ module Avocado
           updatable: true,
           sortable: false,
           nullable: false,
-          null_values: [],
+          null_values: null_values,
           computable: true,
           is_array_param: false,
           format_using: false,
@@ -51,7 +52,7 @@ module Avocado
         # - field option
         @field_properties.each do |name, default_value|
           final_value = args[name.to_sym]
-          self.send("#{name}=", final_value.nil? || !defined?(final_value) ? default_value : final_value)
+          self.send("#{name}=", name != 'null_values' && (final_value.nil? || !defined?(final_value)) ? default_value : final_value)
         end
 
         # Set the visibility
