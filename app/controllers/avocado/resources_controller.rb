@@ -113,10 +113,6 @@ module Avocado
         regular_resource_params.delete(:password)
       end
 
-      # puts resource
-      # puts regular_resource_params
-      # puts avocado_resource
-
       casted_params = cast_nullable(regular_resource_params)
       avocado_resource.fill_model(resource, casted_params).save!
 
@@ -204,10 +200,13 @@ module Avocado
     def cast_nullable(params)
       fields = avocado_resource.get_fields
 
-      nullable_fields = fields.filter { |field| field.nullable }.map { |field| [field.id, field.null_values] }.to_h
+      nullable_fields = fields.filter { |field| field.nullable }
+                              .map { |field| [field.id, field.null_values] }
+                              .to_h
 
       params.each do |key, value|
         nullable = nullable_fields[key.to_sym]
+
         if nullable.present? && value.in?(nullable)
           params[key] = nil
         end
