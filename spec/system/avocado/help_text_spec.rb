@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'HelpText', type: :system do
   describe 'with regular input' do
-    let!(:user) { create :user}
+    let!(:user) { create :user }
 
     context 'edit' do
       it 'checks for help text visibility' do

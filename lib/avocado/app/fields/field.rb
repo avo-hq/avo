@@ -42,7 +42,7 @@ module Avocado
           is_array_param: false,
           format_using: false,
           placeholder: id.to_s.camelize,
-          help: '',
+          help: nil,
         }
 
         # Set the values in the following order
