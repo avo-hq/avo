@@ -204,13 +204,7 @@ module Avocado
     def cast_nullable(params)
       fields = avocado_resource.get_fields
 
-      nullable_fields = Hash.new
-
-      fields.each do | item |
-        if item.nullable === true
-          nullable_fields[item.id] = item.null_values
-        end
-      end
+      nullable_fields = fields.filter { |field| field.nullable }.map { |field| [field.id, field.null_values] }.to_h
 
       params.each_pair do | key, value |
         nullable = nullable_fields[key.to_sym]
