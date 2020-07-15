@@ -10,7 +10,7 @@ module Avocado
       fields do
         id
         text :name, required: true
-        textarea :body
+        textarea :body, nullable: true, null_values: ['0', '', 'null', 'nil']
         file :cover_photo, is_image: true
         boolean :is_featured
         boolean :is_published do |model|

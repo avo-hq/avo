@@ -10,7 +10,7 @@ module Avocado
       fields do
         id
         text :name, required: true
-        status :status, failed_when: [:closed, :rejected, :failed], loading_when: [:loading, :running, :waiting]
+        status :status, failed_when: [:closed, :rejected, :failed], loading_when: [:loading, :running, :waiting], nullable: true
         badge :stage, map: { info: [:discovery, :ideea], success: :done, warning: 'on hold', danger: :cancelled }
         currency :budget, currency: 'EUR', locale: 'de-DE'
         country :country
