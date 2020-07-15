@@ -6,12 +6,12 @@ module Avocado
       end
 
       def apply(request, query, values)
-        return query if values[:featured] && values[:unfeatured]
+        return query if values[:is_featured] && values[:is_unfeatured]
 
-        if values[:featured]
-          query = query.where(featured: true)
-        elsif values[:unfeatured]
-          query = query.where(featured: false)
+        if values[:is_featured]
+          query = query.where(is_featured: true)
+        elsif values[:is_unfeatured]
+          query = query.where(is_featured: false)
         end
 
         query
@@ -19,8 +19,8 @@ module Avocado
 
       def options
         {
-          'featured': 'Featured',
-          'unfeatured': 'Unfeatured',
+          'is_featured': 'Featured',
+          'is_unfeatured': 'Unfeatured',
         }
       end
     end

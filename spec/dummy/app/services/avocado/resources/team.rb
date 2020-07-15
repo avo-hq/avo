@@ -9,7 +9,12 @@ module Avocado
       fields do
         id
         text :name
-        textarea :description
+        textarea :description, rows: 5, readonly: false, hide_on: :index, format_using: -> (value) { value.to_s.truncate 30 }, required: true
+
+        number :members_count do |model|
+          model.members.count
+        end
+
         has_one :admin
         has_many :members
       end

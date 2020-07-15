@@ -3,10 +3,10 @@ require 'rails_helper'
 RSpec.describe 'BelongsToField', type: :system do
   let!(:user) { create :user }
 
-  subject { visit url; page }
-
   context 'index' do
     let(:url) { '/avocado/resources/posts' }
+
+    subject { visit url; find("[resource-id='#{post.id}'] [field-id='user']") }
 
     describe 'with a related user' do
       let!(:post) { create :post, user: user }
@@ -20,6 +20,8 @@ RSpec.describe 'BelongsToField', type: :system do
       it { is_expected.to have_text empty_dash }
     end
   end
+
+  subject { visit url; find_field_value_element('user') }
 
   context 'show' do
     let(:url) { "/avocado/resources/posts/#{post.id}" }
@@ -41,7 +43,7 @@ RSpec.describe 'BelongsToField', type: :system do
     let(:url) { "/avocado/resources/posts/#{post.id}/edit" }
 
     describe 'without user attached' do
-      let!(:post) { create :post }
+      let!(:post) { create :post, user: nil }
 
       it { is_expected.to have_select 'user', selected: empty_dash }
 

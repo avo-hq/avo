@@ -28,22 +28,22 @@ RSpec.describe 'ResourcesControllers', type: :request do
         expect {
           put "/avocado/avocado-api/users/#{user.id}", params: {
             resource: {
-              name: 'John'
+              first_name: 'John'
             }
           }.to_param
         }.not_to raise_error
 
-        expect(user.reload.name).to eql 'John'
+        expect(user.reload.first_name).to eql 'John'
       end
 
       it 'saves resource when valid field send' do
         expect {
           put "/avocado/avocado-api/users/#{user.id}", params: {
               resource: {
-                name: ''
+                first_name: ''
               }
             }.to_param
-          }.to raise_error ActiveRecord::RecordInvalid, "Validation failed: Name can't be blank"
+          }.to raise_error ActiveRecord::RecordInvalid, "Validation failed: First name can't be blank"
       end
     end
   end

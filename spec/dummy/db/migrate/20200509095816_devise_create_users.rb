@@ -3,25 +3,13 @@
 class DeviseCreateUsers < ActiveRecord::Migration[6.0]
   def change
     create_table :users do |t|
-      ## Database authenticatable
       t.string :email, null: false, default: ""
-
-      t.string :name
-      t.integer :age
-      t.float :height
-      t.string :currency
-      t.string :country
-      t.string :timezone
-      t.boolean :availability
-      t.text :description
-      t.text :bio
-      t.text :story
-      t.text :custom_css
-      t.json :meta
+      t.string :first_name
+      t.string :last_name
       t.json :roles
-      t.json :tags
-      t.timestamp :starts_on
-      t.belongs_to :group
+      t.date :birthday
+      t.text :custom_css
+      t.belongs_to :team
 
       ## Trackable
       # t.integer  :sign_in_count, default: 0, null: false
