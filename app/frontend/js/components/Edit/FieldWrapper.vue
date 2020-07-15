@@ -10,6 +10,7 @@
     <div class="flex-1 flex flex-row">
       <div :class="valueSlotClasses" data-slot="value">
         <slot />
+        <div class="text-gray-600 mt-2" v-if="field.help" v-html="field.help"></div>
         <div class="text-red-600 mt-2" v-if="fieldError" v-text="fieldError"></div>
       </div>
       <div class="flex-1 py-4 flex" v-if="!valueSlotFullWidth" data-slot="extra">

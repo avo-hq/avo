@@ -19,6 +19,7 @@ module Avocado
       attr_accessor :is_object_param
       attr_accessor :block
       attr_accessor :placeholder
+      attr_accessor :help
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
@@ -41,6 +42,7 @@ module Avocado
           is_array_param: false,
           format_using: false,
           placeholder: id.to_s.camelize,
+          help: nil,
         }
 
         # Set the values in the following order
