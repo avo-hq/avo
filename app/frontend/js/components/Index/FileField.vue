@@ -7,7 +7,6 @@
     >
       <img v-if="field.is_image"
         :src="field.value"
-        class="mb-2"
         />
       <span v-text="field.filename" v-else />
     </a>
