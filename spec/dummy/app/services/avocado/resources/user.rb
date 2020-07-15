@@ -23,11 +23,11 @@ module Avocado
           model.posts.to_a.count > 0 ? 'yes' : 'no'
         end
 
-        password :password, name: 'User Password', required: false, except_on: :forms
+        password :password, name: 'User Password', required: false, except_on: :forms, help: 'You may verify the password strength <a href="http://www.passwordmeter.com/">here</a>.'
         password :password_confirmation, name: 'Password confirmation', required: false
 
         heading '<div class="text-blue-900 uppercase font-bold">DEV</div>', as_html: true
-        code :custom_css, theme: 'dracula', language: 'css'
+        code :custom_css, theme: 'dracula', language: 'css', help: "This enables you to edit the user's custom styles."
 
         hidden :team_id # For testing purposes
 
