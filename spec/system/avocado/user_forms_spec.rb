@@ -31,7 +31,7 @@ RSpec.describe 'UserForms', type: :system do
     click_on 'Cancel'
 
     expect(page).to have_text 'No users found'
-    expect(page).to have_css 'a.button', text: 'Create new user'
+    expect(page).to have_css 'a', text: 'Create new user'
     expect(current_path).to eq '/avocado/resources/users'
   end
 

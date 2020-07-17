@@ -15,6 +15,7 @@ RSpec.describe 'KeyValueFields', type: :system do
     context 'edit' do
       it 'has the projects meta label, table header, add button' do
         visit "/avocado/resources/projects/#{project.id}/edit"
+        wait_for_loaded
 
         meta_element = find_field_element('meta')
 
@@ -27,16 +28,13 @@ RSpec.describe 'KeyValueFields', type: :system do
         expect(meta_element).to have_css '.bg-gray-800'
         expect(meta_element).to have_css '.shadow'
         expect(meta_element).to have_css '.overflow-hidden'
-        expect(meta_element).to have_css '.rounded-t'
-
-        expect(meta_element).to have_selector 'svg[data-icon="plus-alt"]'
-        expect(meta_element).to have_css '.has-tooltip'
-        expect(meta_element).to have_css '.svg-inline--fa'
-        expect(meta_element).to have_css '.fa-plus-alt'
+        expect(meta_element).to have_css '.rounded-lg'
+        expect(meta_element).to have_selector '[data-button="add-row"]'
       end
 
       it 'adds a row to meta table and input one row with values' do
         visit "/avocado/resources/projects/#{project.id}/edit"
+        wait_for_loaded
 
         meta_element = find_field_element('meta')
 
@@ -44,15 +42,14 @@ RSpec.describe 'KeyValueFields', type: :system do
         expect(meta_element).not_to have_selector 'input[type="text"][placeholder="Meta value"]'
         expect(meta_element).not_to have_css '.appearance-none'
         expect(meta_element).not_to have_css '.bg-white'
-        expect(meta_element).not_to have_selector 'svg[data-icon="trash-alt"]'
+        expect(meta_element).not_to have_selector '[data-button="delete-row"]'
 
-        find("svg[data-icon='plus-alt']").click
+        find('[data-button="add-row"]').click
 
         expect(meta_element).to have_selector 'input[type="text"][placeholder="Meta key"]'
         expect(meta_element).to have_selector 'input[type="text"][placeholder="Meta value"]'
         expect(meta_element).to have_css '.appearance-none'
-        expect(meta_element).to have_css '.bg-white'
-        expect(meta_element).to have_selector 'svg[data-icon="trash-alt"]'
+        expect(meta_element).to have_selector '[data-button="delete-row"]'
 
         find('input[type="text"][placeholder="Meta key"]').set('Test Key')
         find('input[type="text"][placeholder="Meta value"]').set('Test Value')
@@ -74,6 +71,7 @@ RSpec.describe 'KeyValueFields', type: :system do
 
       it 'adds a row to meta table and no input values' do
         visit "/avocado/resources/projects/#{project.id}/edit"
+        wait_for_loaded
 
         meta_element = find_field_element('meta')
 
@@ -81,15 +79,14 @@ RSpec.describe 'KeyValueFields', type: :system do
         expect(meta_element).not_to have_selector 'input[type="text"][placeholder="Meta value"]'
         expect(meta_element).not_to have_css '.appearance-none'
         expect(meta_element).not_to have_css '.bg-white'
-        expect(meta_element).not_to have_selector 'svg[data-icon="trash-alt"]'
+        expect(meta_element).not_to have_selector '[data-button="delete-row"]'
 
-        find("svg[data-icon='plus-alt']").click
+        find("[data-button='add-row']").click
 
         expect(meta_element).to have_selector 'input[type="text"][placeholder="Meta key"]'
         expect(meta_element).to have_selector 'input[type="text"][placeholder="Meta value"]'
         expect(meta_element).to have_css '.appearance-none'
-        expect(meta_element).to have_css '.bg-white'
-        expect(meta_element).to have_selector 'svg[data-icon="trash-alt"]'
+        expect(meta_element).to have_selector '[data-button="delete-row"]'
 
         click_on 'Save'
         wait_for_loaded
@@ -109,6 +106,7 @@ RSpec.describe 'KeyValueFields', type: :system do
     context 'show' do
       it 'displays the projects meta' do
         visit "/avocado/resources/projects/#{project.id}"
+        wait_for_loaded
 
         meta_element = find_field_element('meta')
 
@@ -129,6 +127,7 @@ RSpec.describe 'KeyValueFields', type: :system do
     context 'edit' do
       it 'has the projects meta label, table header, table rows (2), buttons' do
         visit "/avocado/resources/projects/#{project.id}/edit"
+        wait_for_loaded
 
         meta_element = find_field_element('meta')
 
@@ -141,15 +140,10 @@ RSpec.describe 'KeyValueFields', type: :system do
         expect(meta_element).to have_css '.bg-gray-800'
         expect(meta_element).to have_css '.shadow'
         expect(meta_element).to have_css '.overflow-hidden'
-        expect(meta_element).to have_css '.rounded-t'
+        expect(meta_element).to have_css '.rounded-lg'
 
-        expect(meta_element).to have_selector 'svg[data-icon="plus-alt"]'
-        expect(meta_element).to have_css '.has-tooltip'
-        expect(meta_element).to have_css '.svg-inline--fa'
-        expect(meta_element).to have_css '.fa-plus-alt'
-
-        expect(meta_element).to have_selector 'svg[data-icon="trash-alt"]'
-        expect(meta_element).to have_css '.fa-trash-alt'
+        expect(meta_element).to have_selector '[data-button="add-row"]'
+        expect(meta_element).to have_selector '[data-button="delete-row"]'
 
         keys = page.all('input[type="text"][placeholder="Meta key"]')
         values = page.all('input[type="text"][placeholder="Meta value"]')
@@ -163,8 +157,9 @@ RSpec.describe 'KeyValueFields', type: :system do
 
       it 'deletes first row' do
         visit "/avocado/resources/projects/#{project.id}/edit"
+        wait_for_loaded
 
-        delete_buttons = page.all('svg[data-icon="trash-alt"]')
+        delete_buttons = page.all('[data-button="delete-row"]')
         delete_buttons[0].click
 
         click_on 'Save'
@@ -184,17 +179,18 @@ RSpec.describe 'KeyValueFields', type: :system do
 
       it 'deletes second row' do
         visit "/avocado/resources/projects/#{project.id}/edit"
+        wait_for_loaded
 
         meta_element = find_field_element('meta')
 
-        expect(meta_element).to have_selector('svg[data-icon="trash-alt"]', count: 2)
+        expect(meta_element).to have_selector('[data-button="delete-row"]', count: 2)
 
-        delete_buttons = page.all('svg[data-icon="trash-alt"]')
+        delete_buttons = page.all('[data-button="delete-row"]')
 
-        first('svg[data-icon="trash-alt"]').click
-        expect(meta_element).to have_selector('svg[data-icon="trash-alt"]', count: 1)
-        first('svg[data-icon="trash-alt"]').click
-        expect(meta_element).not_to have_selector('svg[data-icon="trash-alt"]')
+        first('[data-button="delete-row"]').click
+        expect(meta_element).to have_selector('[data-button="delete-row"]', count: 1)
+        first('[data-button="delete-row"]').click
+        expect(meta_element).not_to have_selector('[data-button="delete-row"]')
 
         click_on 'Save'
         wait_for_loaded
@@ -206,13 +202,14 @@ RSpec.describe 'KeyValueFields', type: :system do
 
       it 'checks for plus and delete tooltips on hover' do
         visit "/avocado/resources/projects/#{project.id}/edit"
+        wait_for_loaded
 
-        add_button = page.find('svg[data-icon="plus-alt"]')
+        add_button = page.find('[data-button="add-row"]')
         expect(page).not_to have_text 'New item'
         add_button.hover
         expect(page).to have_text 'New item'
 
-        delete_buttons = page.all('svg[data-icon="trash-alt"]')
+        delete_buttons = page.all('[data-button="delete-row"]')
         expect(page).not_to have_text 'Remove item'
         delete_buttons[0].hover
         expect(page).to have_text 'Remove item'
@@ -220,10 +217,11 @@ RSpec.describe 'KeyValueFields', type: :system do
 
       it 'adds a row to meta table with key and value' do
         visit "/avocado/resources/projects/#{project.id}/edit"
+        wait_for_loaded
 
         meta_element = find_field_element('meta')
 
-        find("svg[data-icon='plus-alt']").click
+        find("[data-button='add-row']").click
 
         expect(meta_element).to have_selector 'input[type="text"][placeholder="Meta key"]'
         expect(meta_element).to have_selector 'input[type="text"][placeholder="Meta value"]'
@@ -248,10 +246,11 @@ RSpec.describe 'KeyValueFields', type: :system do
 
       it 'adds a row to meta table only with key' do
         visit "/avocado/resources/projects/#{project.id}/edit"
+        wait_for_loaded
 
         meta_element = find_field_element('meta')
 
-        find("svg[data-icon='plus-alt']").click
+        find("[data-button='add-row']").click
 
         expect(meta_element).to have_selector 'input[type="text"][placeholder="Meta key"]'
         expect(meta_element).to have_selector 'input[type="text"][placeholder="Meta value"]'
@@ -272,7 +271,6 @@ RSpec.describe 'KeyValueFields', type: :system do
         expect(keys[2].value).to eq 'Test Key'
         expect(values[2].value).to eq ''
       end
-
     end
   end
 end

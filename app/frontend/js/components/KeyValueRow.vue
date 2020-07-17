@@ -23,10 +23,9 @@
         href="javascript:void(0);"
         @click="$emit('delete-row', index)"
         v-tooltip="deleteText"
+        data-button="delete-row"
         :class="{'cursor-not-allowed': disableDeletingRows}"
-      >
-        <trash-icon class="text-gray-500 h-5 hover:text-gray-500" />
-      </a>
+      ><trash-icon class="text-gray-500 h-5 hover:text-gray-500" /></a>
     </div>
   </div>
 

@@ -8,13 +8,12 @@
 
         <template #tools>
           <div class="flex justify-end space-x-2">
-            <a-button
-              :to="{
-                name: 'index',
-                params: {
-                  resourceName: resourceName,
-                },
-              }"><arrow-left-icon class="h-4 mr-1"/> Cancel</a-button>
+            <a-button :to="{
+              name: 'index',
+              params: {
+                resourceName: resourceName,
+              },
+            }"><arrow-left-icon class="h-4 mr-1"/> Cancel</a-button>
             <a-button color="green" @click="submitResource"><save-icon class="h-4 mr-1"/> Save</a-button>
           </div>
         </template>

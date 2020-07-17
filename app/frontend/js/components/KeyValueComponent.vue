@@ -14,8 +14,8 @@
             @click="addRow"
             v-tooltip="actionText"
             :style="disableAddingRows ? 'cursor: not-allowed;' : ''"
-          ><plus-circle-icon class="text-gray-400 h-5 hover:text-gray-500"
-          /></a>
+            data-button="add-row"
+          ><plus-circle-icon class="text-gray-400 h-5 hover:text-gray-500"/></a>
         </div>
         </div>
       </div>
