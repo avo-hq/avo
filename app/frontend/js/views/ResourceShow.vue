@@ -1,5 +1,5 @@
 <template>
-  <div v-if="resource" class="text-sm">
+  <div v-if="resource">
     <div v-for="(panel, index) in resource.panels" :key="panel.name">
       <panel>
         <template #heading>
@@ -8,15 +8,15 @@
 
         <template #tools>
           <div class="flex justify-end" v-if="index === 0">
-            <router-link
-              class="button"
+            <a-button
+              color="indigo"
               :to="{
                 name: 'edit',
                 params: {
                   resourceName: resourceName,
                   resourceId: resource.id,
                 },
-              }">Edit</router-link>
+              }"><edit-icon class="h-4 mr-1" /> Edit</a-button>
           </div>
         </template>
 
@@ -33,7 +33,7 @@
             :resource-id="resourceId"
             :field-id="field.id"
             :field-component="field.component"
-          ></component>
+          />
         </template>
       </panel>
 
@@ -45,7 +45,7 @@
         :resource-name="resourceName"
         :resource-id="resourceId"
         :field-component="field.component"
-      ></component>
+      />
     </div>
   </div>
 </template>

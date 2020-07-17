@@ -10,14 +10,14 @@ RSpec.describe 'BadgeField', type: :system do
       let!(:url) { '/avocado/resources/projects' }
 
       it { is_expected.to have_text empty_dash }
-      it { is_expected.not_to have_css '.rounded-full' }
+      it { is_expected.not_to have_css '.rounded-md' }
     end
 
     context 'show' do
       let!(:url) { "/avocado/resources/projects/#{project.id}" }
 
       it { is_expected.to have_text empty_dash }
-      it { is_expected.not_to have_css '.rounded-full' }
+      it { is_expected.not_to have_css '.rounded-md' }
     end
 
     context 'edit' do
@@ -40,7 +40,7 @@ RSpec.describe 'BadgeField', type: :system do
       let!(:url) { '/avocado/resources/projects' }
 
       it { is_expected.to have_text 'DISCOVERY' }
-      it { is_expected.to have_css '.rounded-full' }
+      it { is_expected.to have_css '.rounded-md' }
       it { is_expected.to have_css '.bg-blue-500' }
       it { is_expected.not_to have_css '.bg-red-500' }
     end
@@ -49,7 +49,7 @@ RSpec.describe 'BadgeField', type: :system do
       let!(:url) { "/avocado/resources/projects/#{project.id}" }
 
       it { is_expected.to have_text 'DISCOVERY' }
-      it { is_expected.to have_css '.rounded-full' }
+      it { is_expected.to have_css '.rounded-md' }
       it { is_expected.to have_css '.bg-blue-500' }
       it { is_expected.not_to have_css '.bg-red-500' }
     end
@@ -64,7 +64,7 @@ RSpec.describe 'BadgeField', type: :system do
       let!(:url) { '/avocado/resources/projects' }
 
       it { is_expected.to have_text 'CANCELLED' }
-      it { is_expected.to have_css '.rounded-full' }
+      it { is_expected.to have_css '.rounded-md' }
       it { is_expected.to have_css '.bg-red-500' }
       it { is_expected.not_to have_css '.bg-blue-500' }
     end
@@ -73,7 +73,7 @@ RSpec.describe 'BadgeField', type: :system do
       let!(:url) { "/avocado/resources/projects/#{project.id}" }
 
       it { is_expected.to have_text 'CANCELLED' }
-      it { is_expected.to have_css '.rounded-full' }
+      it { is_expected.to have_css '.rounded-md' }
       it { is_expected.to have_css '.bg-red-500' }
       it { is_expected.not_to have_css '.bg-blue-500' }
     end

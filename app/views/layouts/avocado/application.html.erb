@@ -7,9 +7,9 @@
 
   <%= javascript_pack_tag 'application' %>
   <%= stylesheet_pack_tag 'application', media: 'all' %>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;800&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="bg-gray-200">
 
 <div id="app" class="flex min-h-screen flex-row h-full">
   <application-sidebar :resources='<%= Avocado::App.get_resources_navigation.as_json.html_safe %>'></application-sidebar>
@@ -19,7 +19,7 @@
       <resources-search :global="true" class="w-64">
     </div>
 
-    <div class="content p-8 px-4 pt-20">
+    <div class="content p-8 pt-20">
       <%= yield %>
     </div>
   </div>

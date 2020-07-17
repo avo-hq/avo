@@ -1,22 +1,22 @@
 <template>
-  <div class="w-full" v-if="value">
+  <div class="w-full shadow-lg rounded-lg overflow-hidden" v-if="value">
     <div class="w-full flex flex-col">
       <div class="flex w-full">
-        <div class="flex w-full bg-gray-800 shadow overflow-hidden rounded-t">
-          <div class="w-1/2 py-3 px-4 uppercase font-semibold text-sm text-white">
+        <div class="flex w-full bg-gray-800 shadow overflow-hidden">
+          <div class="w-1/2 py-3 px-3 uppercase font-semibold text-xs text-white border-gray-600 border-r">
             {{ keyLabel }}
           </div>
-          <div class="w-1/2 py-3 px-4 uppercase font-semibold text-sm text-white">
+          <div class="w-1/2 py-3 px-3 uppercase font-semibold text-xs text-white">
             {{ valueLabel }}
           </div>
-        </div>
-        <div class="flex items-center justify-center p-2" v-if="!readOnly">
+        <div class="flex items-center justify-center p-2 px-3 border-l border-gray-600" v-if="!readOnly">
           <a href="javascript:void(0);"
             @click="addRow"
             v-tooltip="actionText"
             :style="disableAddingRows ? 'cursor: not-allowed;' : ''"
-          ><PlusIcon class="text-gray-400 h-5 hover:text-gray-500"
-          /></a>
+            data-button="add-row"
+          ><plus-circle-icon class="text-gray-400 h-5 hover:text-gray-500"/></a>
+        </div>
         </div>
       </div>
       <KeyValueRow
@@ -46,8 +46,6 @@
 
 <script>
 import KeyValueRow from '@/js/components/KeyValueRow.vue'
-// eslint-disable-next-line import/no-unresolved
-import PlusIcon from '@/svgs/plus.svg?inline'
 
 export default {
   props: {
@@ -64,7 +62,7 @@ export default {
   data: () => ({
     rows: [],
   }),
-  components: { KeyValueRow, PlusIcon },
+  components: { KeyValueRow },
   methods: {
     keyUpdated({ index, value }) {
       this.$set(this.rows[index], 'key', value)

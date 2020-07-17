@@ -5,34 +5,37 @@
     </template>
 
     <template #tools>
-      <div class="flex justify-end items-center mb-4 w-full text-sm">
+      <div class="flex justify-end items-center mb-6 w-full">
         <div>
-          <a
+          <a-button
+            color="indigo"
             href="javascript:void(0);"
-            @click.prevent="showAttachModal"
-            class="button cursor-pointer"
+            @click="showAttachModal"
             v-if="relationship === 'has_and_belongs_to_many'"
-          >Attach {{resourceNameSingular | toLowerCase}}</a>
-          <router-link
+          >
+            <view-grid-add-icon class="h-4 mr-1" />Attach {{resourceNameSingular | toLowerCase}}
+          </a-button>
+          <a-button
+            is="a-button"
             :to="createNewAction"
-            class="button"
             v-else
-          >Create new {{resourceNameSingular | toLowerCase}}</router-link>
+          ><plus-icon class="h-4 mr-1"/>Create new {{resourceNameSingular | toLowerCase}}</a-button>
         </div>
       </div>
     </template>
 
     <template #content>
       <template>
-        <div class="flex justify-between py-4">
-          <div class="flex items-center px-4 w-64">
+        <div class="flex justify-between py-6">
+          <div class="flex items-center px-6 w-64">
             <resources-search
               :resource-name="resourceName"
               :via-resource-name="viaResourceName"
               :via-resource-id="viaResourceId"
+              v-if="resources.length > 0"
             />
           </div>
-          <div class="flex justify-between items-center">
+          <div class="flex justify-between items-center px-6">
             <resource-filters
               v-if="!viaResourceName"
               :via-resource-name="viaResourceName"
@@ -79,14 +82,14 @@
             :prev-text="'Prev'"
             :next-text="'Next'"
             :no-li-surround="true"
-            container-class="avo-pagination flex justify-end px-4"
+            container-class="avo-pagination justify-end flex px-4 space-x-2"
             page-class="pagination-button"
-            page-link-class="button select-none rounded-none focus:outline-none"
-            active-class="active"
-            prev-link-class="button rounded-none focus:outline-none"
-            next-link-class="button rounded-none focus:outline-none"
-            class="py-4 select-none"
-          ></paginate>
+            active-class="text-blue-700 bg-gray-400"
+            :page-link-class="`${paginationClasses} select-none`"
+            :next-link-class="`${paginationClasses}`"
+            :prev-link-class="`${paginationClasses}`"
+            class="py-6 select-none"
+          />
         </div>
       </template>
     </template>
@@ -121,6 +124,7 @@ export default {
     filters: [],
     appliedFilters: {},
     oldQueryUrl: '',
+    paginationClasses: 'rounded-lg focus:outline-none px-3 py-1 text-sm text-gray-600 font-semibold bg-gray-300 hover:bg-gray-400 shadow-md',
   }),
   props: [
     'resourceName',
@@ -153,7 +157,7 @@ export default {
         }
       }
 
-      if (!this.paramCanBeOmitted(this.perPage, 25)) {
+      if (!this.paramCanBeOmitted(this.perPage, 24)) {
         if (this.viaResourceName) {
           params[this.uriParam('per_page')] = this.perPage
         } else {
@@ -324,7 +328,7 @@ export default {
       this.page = isUndefined(page) ? 1 : parseInt(page, 10)
     },
     setPerPage(perPage) {
-      this.perPage = isUndefined(perPage) ? 25 : parseInt(perPage, 10)
+      this.perPage = isUndefined(perPage) ? 24 : parseInt(perPage, 10)
     },
     setSortBy(by) {
       this.sortBy = isUndefined(by) ? '' : by
@@ -414,17 +418,17 @@ export default {
 <style slang="postcss">
 /* @todo: fix loaders to support lang= */
 .avo-pagination {
-  a {
+  /* a {
     @apply shadow-md;
   }
   a.active {
     @apply bg-gray-300 border-gray-300;
-  }
+  } */
   a.disabled {
     @apply text-gray-500;
 
     &:hover {
-      @apply bg-white;
+      @apply bg-gray-300;
     }
   }
 }

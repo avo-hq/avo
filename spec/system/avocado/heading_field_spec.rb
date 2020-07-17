@@ -14,9 +14,9 @@ RSpec.describe 'HeadingFields', type: :system do
       it 'checks for html header' do
         visit "/avocado/resources/users/#{user.id}"
 
-        expect(find_field_element('heading_div_class_text_blue_900_uppercase_font_bold_dev_div')).to have_text 'DEV'
-        expect(find_field_element('heading_div_class_text_blue_900_uppercase_font_bold_dev_div')).to have_css '.uppercase'
-        expect(find_field_element('heading_div_class_text_blue_900_uppercase_font_bold_dev_div')).to have_css '.text-blue-900'
+        expect(find_field_element('heading_div_class_text_gray_300_uppercase_font_bold_dev_div')).to have_text 'DEV'
+        expect(find_field_element('heading_div_class_text_gray_300_uppercase_font_bold_dev_div')).to have_css '.uppercase'
+        expect(find_field_element('heading_div_class_text_gray_300_uppercase_font_bold_dev_div')).to have_css '.text-gray-300'
       end
     end
 
@@ -32,9 +32,9 @@ RSpec.describe 'HeadingFields', type: :system do
       it 'checks for html header' do
         visit "/avocado/resources/users/#{user.id}/edit"
 
-        expect(find_field_element('heading_div_class_text_blue_900_uppercase_font_bold_dev_div')).to have_text 'DEV'
-        expect(find_field_element('heading_div_class_text_blue_900_uppercase_font_bold_dev_div')).to have_css '.uppercase'
-        expect(find_field_element('heading_div_class_text_blue_900_uppercase_font_bold_dev_div')).to have_css '.text-blue-900'
+        expect(find_field_element('heading_div_class_text_gray_300_uppercase_font_bold_dev_div')).to have_text 'DEV'
+        expect(find_field_element('heading_div_class_text_gray_300_uppercase_font_bold_dev_div')).to have_css '.uppercase'
+        expect(find_field_element('heading_div_class_text_gray_300_uppercase_font_bold_dev_div')).to have_css '.text-gray-300'
       end
     end
   end

@@ -26,7 +26,7 @@ module Avocado
         password :password, name: 'User Password', required: false, except_on: :forms, help: 'You may verify the password strength <a href="http://www.passwordmeter.com/">here</a>.'
         password :password_confirmation, name: 'Password confirmation', required: false
 
-        heading '<div class="text-blue-900 uppercase font-bold">DEV</div>', as_html: true
+        heading '<div class="text-gray-300 uppercase font-bold">DEV</div>', as_html: true
         code :custom_css, theme: 'dracula', language: 'css', help: "This enables you to edit the user's custom styles."
 
         hidden :team_id # For testing purposes
@@ -34,8 +34,6 @@ module Avocado
         has_and_belongs_to_many :projects
         has_many :posts
       end
-
-      use_filter Avocado::Filters::AvailabilityFilter
     end
   end
 end

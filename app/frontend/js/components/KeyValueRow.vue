@@ -1,40 +1,37 @@
 <template>
   <div class="flex -mb-px">
-      <input-component
-        class="-mr-px"
-        :class="inputClasses"
-        ref="keyInput"
-        :value="loopKey"
-        :placeholder="keyLabel"
-        :disabled="readOnly"
-        @input="updateKey"
-      />
-      <input-component
-        :class="inputClasses"
-        :value="loopValue"
-        :placeholder="valueLabel"
-        :disabled="readOnly"
-        @input="updateValue"
-        @keyup.native.enter="$emit('keyup-enter')"
-      />
-    <div class="flex items-center justify-center px-2" v-if="!readOnly">
+    <input-component
+      :class="inputClasses"
+      class="border-gray-600 border-r border-l-0 border-b-0 border-t-0 focus:border-gray-700"
+      ref="keyInput"
+      :value="loopKey"
+      :placeholder="keyLabel"
+      :disabled="readOnly"
+      @input="updateKey"
+    />
+    <input-component
+      :class="inputClasses"
+      class="border-none"
+      :value="loopValue"
+      :placeholder="valueLabel"
+      :disabled="readOnly"
+      @input="updateValue"
+      @keyup.native.enter="$emit('keyup-enter')"
+    />
+    <div class="flex items-center justify-center px-3 bg-gray-200 border-l border-gray-600" v-if="!readOnly">
       <a
         href="javascript:void(0);"
         @click="$emit('delete-row', index)"
         v-tooltip="deleteText"
+        data-button="delete-row"
         :class="{'cursor-not-allowed': disableDeletingRows}"
-      >
-        <DeleteIcon class="text-gray-400 h-5 hover:text-gray-500" />
-      </a>
+      ><trash-icon class="text-gray-500 h-5 hover:text-gray-500" /></a>
     </div>
   </div>
 
 </template>
 
 <script>
-/* eslint-disable import/no-unresolved */
-import DeleteIcon from '@/svgs/trash.svg?inline'
-
 export default {
   props: {
     loopKey: String,
@@ -47,9 +44,6 @@ export default {
     disableEditingKeys: Boolean,
     disableDeletingRows: Boolean,
   },
-  components: {
-    DeleteIcon,
-  },
   computed: {
     disabled() {
       if (this.disableEditingKeys) return true
@@ -57,7 +51,7 @@ export default {
       return this.readOnly
     },
     inputClasses() {
-      return 'w-1/2 text-left flex rounded-b-none rounded-t-none focus:bg-gray-200 border-gray-500 relative'
+      return 'w-1/2 text-left flex rounded-b-none rounded-t-none focus:bg-gray-400 relative outline-none'
     },
   },
   methods: {
@@ -74,7 +68,6 @@ export default {
       })
     },
     focus() {
-      console.log('focuss')
       this.$refs.keyInput.$el.focus()
     },
   },

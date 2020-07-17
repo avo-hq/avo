@@ -1,18 +1,14 @@
 <template>
-  <div class="relative w-full px-4 flex justify-between z-30">
-    <div></div>
-    <button class="bg-gray-500 p-2 shadow rounded text-white" @click="toggleFiltersPanel">
-      <FilterIcon class="h-8" data-button="resource-filters" />
-    </button>
-    <div class="absolute block inset-auto right-0 top-full rounded bg-white shadow min-w-300px mr-4 z-20"
+  <div class="relative w-full flex justify-between z-30" v-if="hasFilters">
+    <a-button color="gray" class="focus:outline-none" @click="toggleFiltersPanel">
+      <filter-icon class="h-4 mr-2" data-button="resource-filters" /> Filters
+    </a-button>
+    <div v-on-clickaway="onClickAway"
+      class="absolute block inset-auto right-0 top-full bg-white min-w-300px mr-4 z-20 shadow-row rounded-lg overflow-hidden"
       v-if="open"
-      v-on-clickaway="onClickAway"
     >
       <div v-if="!viaResourceName">
-        <div class="bg-gray-600 text-white py-2 px-4 text-sm">
-          Per page
-        </div>
-        <div class="p-4">
+        <filter-wrapper name="Per page">
           <select name="per_page"
             id="per_page"
             @change="changePerPage"
@@ -26,11 +22,12 @@
               v-text="step"
             ></option>
           </select>
-        </div>
+        </filter-wrapper>
       </div>
       <template v-for="(filter, index) in filters">
         <component :key="index"
           :is="filter.component"
+          :index="index"
           :filter="filter"
           :applied-filters="appliedFilters"
           @change-filter="changeFilter"
@@ -42,11 +39,9 @@
 
 <script>
 import { mixin as clickaway } from 'vue-clickaway'
-import FilterIcon from '@/svgs/filter.svg?inline'
 import HasInputAppearance from '@/js/mixins/has-input-appearance'
 
 export default {
-  components: { FilterIcon },
   mixins: [HasInputAppearance, clickaway],
   data: () => ({
     open: false,
@@ -61,6 +56,11 @@ export default {
     appliedFilters: {},
     perPageSteps: {
       default: () => ([24, 48, 72]),
+    },
+  },
+  computed: {
+    hasFilters() {
+      return this.filters.length > 0
     },
   },
   methods: {

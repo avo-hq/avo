@@ -1,3 +1,3 @@
 <template>
-  <div class="text-2xl font-bold pb-4"><slot/></div>
+  <div class="text-2xl tracking-wide font-bold text-gray-900"><slot/></div>
 </template>

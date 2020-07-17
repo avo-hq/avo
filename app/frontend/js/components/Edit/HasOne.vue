@@ -29,7 +29,9 @@
     </div>
     <template #extra>
       <div v-if="searchable">
-        <button @click="removeSelection">remove selection</button>
+        <a-button color="indigo"
+          @click="removeSelection"
+        >Remove selection</a-button>
       </div>
     </template>
   </edit-field-wrapper>

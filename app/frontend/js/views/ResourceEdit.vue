@@ -1,9 +1,16 @@
 <template>
-  <div v-if="resource" class="text-sm">
+  <div v-if="resource">
     <div v-for="panel in resource.panels" :key="panel.name">
       <panel>
         <template #heading>
             Edit {{resourceNameSingular}}
+        </template>
+
+        <template #tools>
+          <div class="flex justify-end space-x-2">
+            <a-button :to="cancelActionParams"><arrow-left-icon class="h-4 mr-1"/> Cancel</a-button>
+            <a-button color="green" @click="submitResource"><save-icon class="h-4 mr-1"/> Save</a-button>
+          </div>
         </template>
 
         <template #content>
@@ -30,10 +37,6 @@
         </template>
 
         <template #footer>
-          <router-link
-            class="button"
-            :to="cancelActionParams">Cancel</router-link>
-          <button class="button" @click="submitResource">Save</button>
         </template>
       </panel>
     </div>

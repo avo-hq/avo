@@ -1,11 +1,7 @@
 <template>
   <edit-field-wrapper :field="field" :errors="errors" :index="index">
     <div v-if="value">
-      <img v-if="field.is_image" :src="value" />
-      <a href="javascript:void(0);"
-        class="my-2 inline-block button bg-indigo-600 text-white hover:bg-indigo-800"
-        @click="deleteFile"
-      >Delete <span class="font-semibold">{{field.filename}}</span></a>
+      <img v-if="field.is_image" :src="value" class="rounded-lg" />
     </div>
     <input type="file"
       :id="field.id"
@@ -13,6 +9,11 @@
       :disabled="disabled"
       @change="fileChanged"
     />
+    <template #extra>
+      <a-button color="indigo"
+        @click="deleteFile"
+      ><trash-icon class="h-4 mr-1" /> Delete {{field.filename}}</a-button>
+    </template>
   </edit-field-wrapper>
 </template>
 
@@ -24,7 +25,7 @@ export default {
   data: () => ({}),
   computed: {
     classes() {
-      const classes = ['w-full']
+      const classes = ['w-full', 'mt-6']
 
       if (this.hasErrors) classes.push('border', 'border-red-600')
 

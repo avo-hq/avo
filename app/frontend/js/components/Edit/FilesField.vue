@@ -1,18 +1,20 @@
 <template>
   <edit-field-wrapper :field="field" :errors="errors" :index="index" :value-slot-full-width="true">
-    <div v-if="hasFiles" class="relative p-2 bg-gray-200 grid grid-cols-3 lg:grid-cols-4 gap-2 mb-2">
+    <div v-if="hasFiles" class="relative p-3 bg-gray-200 grid grid-cols-3 lg:grid-cols-4 gap-3">
       <div v-for="file in allFiles" :key="file.path" class="relative pb-full">
-        <div class="absolute flex z-10 w-full h-full justify-center items-end p-2">
-          <a href="javascript:void(0);"
-            class="block bg-gray-300 px-2 py-1 rounded inset-auto bottom-0 left-"
+        <div class="absolute flex z-10 w-full h-full justify-end items-start p-2">
+          <a-button href="javascript:void(0);"
+            size="xs"
+            variant="outlined"
+            color="red"
             v-tooltip="`Delete ${file.filename}`"
             @click="deleteFile(file)"
-          >Delete</a>
+          ><times-icon class="h-3" /></a-button>
         </div>
         <img
           v-tooltip="`${file.filename}`"
           :src="file.path"
-          class="absolute h-full w-full object-cover object-center"
+          class="absolute h-full w-full object-cover object-center rounded-lg"
           />
       </div>
     </div>
@@ -41,7 +43,7 @@ export default {
   }),
   computed: {
     classes() {
-      const classes = ['w-full']
+      const classes = ['w-full', 'mt-6']
 
       if (this.hasErrors) classes.push('border', 'border-red-600')
 

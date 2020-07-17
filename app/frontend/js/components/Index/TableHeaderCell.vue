@@ -4,28 +4,21 @@
     :key="key"
     :class="classes"
   >
-    <div class="inline-flex items-center text-gray-700 leading-tight text-xs font-semibold"
+    <div class="flex items-center text-gray-700 leading-tight text-xs font-semibold"
       :class="{'cursor-pointer': sortable}"
       @click="tryAndSort"
     >
       {{field.name}}
       <component :is="sortComponent"
         v-if="sortable"
-        class="inline-block h-4 ml-1 fill-current w-3"
-       />
+        class="inline-block fill-current text-gray-500 relative leading-none min-w-4 min-h-full ml-1"
+      />
     </div>
   </th>
 </template>
 
 <script>
-/* eslint-disable import/no-unresolved */
-import Sort from '@/svgs/sort.svg?inline'
-import SortDown from '@/svgs/sort-down.svg?inline'
-import SortUp from '@/svgs/sort-up.svg?inline'
-/* eslint-enable import/no-unresolved */
-
 export default {
-  components: { Sort, SortUp, SortDown },
   data: () => ({}),
   props: [
     'resourceName',
@@ -49,15 +42,15 @@ export default {
       if (this.sortBy === this.field.id) {
         switch (this.sortDirection) {
           case 'asc':
-            return 'SortUp'
+            return 'sort-ascending-icon'
           case 'desc':
-            return 'SortDown'
+            return 'sort-descending-icon'
           default:
-            return 'Sort'
+            return 'selector-icon'
         }
       }
 
-      return 'Sort'
+      return 'selector-icon'
     },
   },
   methods: {

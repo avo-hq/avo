@@ -1,6 +1,6 @@
 <template>
   <tr v-if="resource"
-    class="border-t hover:bg-gray-100"
+    class="border-t hover:bg-gray-100 hover:shadow-row relative z-20"
     :resource-name="resourceName"
     :resource-id="resource.id"
   >
@@ -31,14 +31,14 @@
           v-tooltip="`View ${this.resourceNameSingular}`"
           data-control="view"
         >
-          <ViewIcon class="text-gray-500 h-5 fill-current hover:text-gray-600"/>
+          <eye-icon :class="iconClasses"/>
         </router-link>
         <router-link
           :to="editActionParams"
           v-tooltip="`Edit ${this.resourceNameSingular}`"
           data-control="edit"
         >
-          <EditIcon class="text-gray-500 h-5 hover:text-gray-600"/>
+          <edit-icon :class="iconClasses"/>
         </router-link>
         <a href="javascript:void(0);"
           @click="openDetachModal"
@@ -46,7 +46,7 @@
           data-control="detach"
           v-if="relationship === 'has_and_belongs_to_many'"
         >
-          <DeleteIcon class="text-gray-500 h-5 hover:text-gray-600"/>
+          <trash-icon :class="iconClasses"/>
         </a>
         <a href="javascript:void(0);"
           @click="openDeleteModal"
@@ -54,7 +54,7 @@
           data-control="delete"
           v-else
         >
-          <DeleteIcon class="text-gray-500 h-5 hover:text-gray-600"/>
+          <trash-icon :class="iconClasses"/>
         </a>
       </div>
     </td>
@@ -65,21 +65,15 @@
 import { Api } from '@/js/Avo'
 import DealsWithHasManyRelations from '@/js/mixins/deals-with-has-many-relations'
 import DealsWithResourceLabels from '@/js/mixins/deals-with-resource-labels'
-/* eslint-disable import/no-unresolved */
-import DeleteIcon from '@/svgs/trash.svg?inline'
-import EditIcon from '@/svgs/edit.svg?inline'
-import Modal from '@/js/components/Modal'
-import ViewIcon from '@/svgs/eye.svg?inline'
-/* eslint-enable import/no-unresolved */
 import ExtractsFields from '@/js/mixins/extracts-fields'
 import HasUniqueKey from '@/js/mixins/has-unique-key'
+import Modal from '@/js/components/Modal.vue'
 import isUndefined from 'lodash/isUndefined'
 
 export default {
-  components: {
-    ViewIcon, EditIcon, DeleteIcon,
-  },
-  data: () => ({}),
+  data: () => ({
+    iconClasses: 'text-gray-500 h-6 hover:text-gray-600',
+  }),
   mixins: [DealsWithResourceLabels, ExtractsFields, DealsWithHasManyRelations, HasUniqueKey],
   props: [
     'resource',

@@ -6,43 +6,48 @@
     <div class="flex-1 flex flex-col items-center justify-center px-24 text-lg">
       {{ text }}
       <select name="options"
+        ref="select"
         id="options"
         :class="inputClasses"
         class="select-input w-full mt-4"
         v-model="selectedOption"
+        @keyup.enter="attachOption"
       >
         <option value="">Choose one</option>
         <option v-for="option in options"
           :key="option.value"
           :value="option.value"
           v-text="option.label"
-          ></option>
+        />
       </select>
     </div>
     <div class="flex justify-end space-x-4 p-4 bg-gray-200">
-      <button
+      <a-button
         ref="attach-button"
-        class="button border-green-700 text-green-700"
+        color="green"
         v-if="attachAction"
-        @click="attachOption(selectedOption)"
+        :disabled="nothingSelected"
+        @click="attachOption"
       >
         Attach
-      </button>
-      <button
+      </a-button>
+      <a-button
         ref="attach-another-button"
-        class="button border-green-700 text-green-700"
+        color="green"
+        variant="outlined"
         v-if="attachAction"
-        @click="attachOption(selectedOption, true)"
+        :disabled="nothingSelected"
+        @click="attachOption(true)"
       >
         Attach &amp; Attach another
-      </button>
-      <button class="button"
+      </a-button>
+      <a-button
         ref="cancel-button"
         v-if="attachAction"
         @click="$emit('close')"
       >
         Cancel
-      </button>
+      </a-button>
     </div>
   </div>
 </template>
@@ -62,9 +67,14 @@ export default {
     'attachAction',
     'getOptions',
   ],
+  computed: {
+    nothingSelected() {
+      return this.selectedOption === ''
+    },
+  },
   methods: {
-    attachOption(option, attachAnother = false) {
-      this.attachAction(option, attachAnother)
+    attachOption(attachAnother = false) {
+      this.attachAction(this.selectedOption, attachAnother)
 
       if (attachAnother) {
         this.selectedOption = ''
@@ -73,7 +83,7 @@ export default {
   },
   async mounted() {
     this.options = await this.getOptions()
-    this.$refs['attach-button'].focus()
+    this.$refs.select.focus()
   },
 }
 </script>

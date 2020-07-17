@@ -6,6 +6,18 @@
           Create new {{resourceNameSingular | toLowerCase}}
         </template>
 
+        <template #tools>
+          <div class="flex justify-end space-x-2">
+            <a-button :to="{
+              name: 'index',
+              params: {
+                resourceName: resourceName,
+              },
+            }"><arrow-left-icon class="h-4 mr-1"/> Cancel</a-button>
+            <a-button color="green" @click="submitResource"><save-icon class="h-4 mr-1"/> Save</a-button>
+          </div>
+        </template>
+
         <template #content>
           <loading-overlay v-if="isLoading" />
 
@@ -28,15 +40,6 @@
         </template>
 
         <template #footer>
-          <router-link
-            class="button"
-            :to="{
-              name: 'index',
-              params: {
-                resourceName: resourceName,
-              },
-            }">Cancel</router-link>
-          <button class="button" @click="submitResource">Save</button>
         </template>
       </panel>
     </div>

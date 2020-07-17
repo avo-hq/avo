@@ -1,6 +1,9 @@
 <template>
   <index-field-wrapper :field="field" class="text-center">
-    <div v-if="value" v-text="value"></div>
+    <component :is="component"
+      v-if="component"
+      :class="classes"
+    />
     <empty-dash v-else />
   </index-field-wrapper>
 </template>
@@ -9,10 +12,21 @@
 export default {
   props: ['field'],
   computed: {
-    value() {
-      if (this.field.value) return '✅'
+    classes() {
+      let classes = 'h-6'
 
-      return '❌'
+      if (this.field.value) {
+        classes += ' text-green-600'
+      } else {
+        classes += ' text-red-600'
+      }
+
+      return classes
+    },
+    component() {
+      if (this.field.value) return 'check-circle-icon'
+
+      return 'x-circle-icon'
     },
   },
 }

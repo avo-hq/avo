@@ -8,9 +8,12 @@
       </div>
       <empty-dash v-else />
     </template>
-    <button @click="toggleView" v-else>
+    <a href="javascript:void(0);"
+      @click="toggleView"
+      v-else
+    >
       View
-    </button>
+    </a>
   </index-field-wrapper>
 </template>
 

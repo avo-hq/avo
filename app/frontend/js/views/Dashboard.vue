@@ -1,20 +1,5 @@
 <template>
-  <div>
+  <heading>
     Dashboard
-  </div>
+  </heading>
 </template>
-
-<script lang="ts">
-import Vue from 'vue'
-
-export default Vue.extend({
-  name: 'Dashboard',
-  data: () => ({}),
-  props: {},
-  computed: {},
-  methods: {},
-  mounted() {},
-})
-</script>
-
-<style lang="scss"></style>

@@ -1,7 +1,7 @@
 <template>
-  <div class="w-full text-sm">
-    <table class="w-full px-4">
-      <thead v-if="hasFields" class="bg-gray-200">
+  <div class="w-full">
+    <table class="w-full px-4 border-b border-gray-300">
+      <thead v-if="hasFields" class="bg-gray-200 border-t border-b border-gray-500 pb-1">
         <th>
           <!-- Select cell -->
         </th>
