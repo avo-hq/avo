@@ -1,6 +1,7 @@
 
 import Paginate from 'vuejs-paginate'
 import Vue from 'vue/dist/vue.esm'
+import kebabCase from 'lodash/kebabCase'
 
 Vue.component('paginate', Paginate)
 
@@ -82,6 +83,7 @@ Vue.component('view-header',                         require('@/js/components/Vi
 Vue.component('view-footer',                         require('@/js/components/ViewFooter.vue').default)
 Vue.component('panel',                               require('@/js/components/Panel.vue').default)
 Vue.component('heading',                             require('@/js/components/Heading.vue').default)
+Vue.component('a-button',                            require('@/js/components/Button.vue').default)
 Vue.component('resources-search',                    require('@/js/components/ResourcesSearch.vue').default)
 Vue.component('loading-component',                   require('@/js/components/LoadingComponent.vue').default)
 Vue.component('loading-overlay',                     require('@/js/components/LoadingOverlay.vue').default)
@@ -91,6 +93,7 @@ Vue.component('empty-dash',                          require('@/js/components/Em
 Vue.component('resource-filters',                    require('@/js/components/Index/ResourceFilters.vue').default)
 Vue.component('boolean-filter',                      require('@/js/components/Index/Filters/BooleanFilter.vue').default)
 Vue.component('select-filter',                       require('@/js/components/Index/Filters/SelectFilter.vue').default)
+Vue.component('filter-wrapper',                      require('@/js/components/Index/Filters/FilterWrapper.vue').default)
 
 // Sidebar
 Vue.component('resources-navigation',                require('@/js/components/ResourcesNavigation.vue').default)
@@ -100,3 +103,24 @@ Vue.component('logo-component',                      require('@/js/components/Lo
 
 // Views
 Vue.component('resources-index',                     require('@/js/views/ResourceIndex.vue').default)
+
+// Icons are self imported as ICON_NAME-icon components
+// thumbs-up.svg -> <thumbs-up-icon />
+const requireComponent = require.context('@/svgs/', false, /.*\.svg$/im)
+requireComponent.keys().forEach((fileName) => {
+  // Get kebab-case name of component
+  const iconName = kebabCase(
+    // Gets the file name regardless of folder depth
+    fileName
+      .split('/')
+      .pop()
+      .replace(/\.\w+$/, ''),
+  )
+  const componentName = `${iconName}-icon`
+  /* eslint-disable global-require */
+  // eslint-disable-next-line import/no-dynamic-require
+  const componentConfig = require(`@/svgs/${iconName}.svg?inline`)
+  /* eslint-enable global-require */
+
+  Vue.component(componentName, componentConfig)
+})

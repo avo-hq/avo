@@ -1,24 +1,19 @@
 <template>
-  <div>
-    <div class="bg-gray-600 text-white py-2 px-4 text-sm">
-      {{filter.name}}
-    </div>
-    <div class="p-4">
-      <select :name="filter.id"
-        :id="filter.id"
-        @change="changeFilter"
-        v-model="value"
-        :class="inputClasses"
-        class="select-input w-full"
-      >
-        <option value="">—</option>
-        <option v-for="(value, name) in filter.options"
-          :value="name"
-          v-text="value"
-          :key="name"/>
-      </select>
-    </div>
-  </div>
+  <filter-wrapper :name="filter.name" :index="index">
+    <select :name="filter.id"
+      :id="filter.id"
+      @change="changeFilter"
+      v-model="value"
+      :class="inputClasses"
+      class="select-input w-full mb-0"
+    >
+      <option value="">—</option>
+      <option v-for="(value, name) in filter.options"
+        :value="name"
+        v-text="value"
+        :key="name"/>
+    </select>
+  </filter-wrapper>
 </template>
 
 <script>
@@ -29,7 +24,11 @@ export default {
   data: () => ({
     value: '',
   }),
-  props: ['filter', 'appliedFilters'],
+  props: [
+    'filter',
+    'appliedFilters',
+    'index',
+  ],
   computed: {
     filterClass() {
       if (this.filter && this.filter.filter_class) {

@@ -6,13 +6,13 @@
       </template>
 
       <template #tools>
-        <div class="mb-2">
+        <div class="mb-6">
           <slot name="tools"/>
         </div>
       </template>
     </view-header>
 
-    <div class="relative bg-white rounded shadow-lg mb-8">
+    <div class="relative bg-white rounded-xl shadow-xl mb-8">
       <slot name="content"/>
     </div>
 

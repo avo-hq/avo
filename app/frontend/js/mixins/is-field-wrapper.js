@@ -13,7 +13,7 @@ export default {
       if (this.valueSlotFullWidth) {
         classes.push('flex-1')
       } else {
-        classes.push('w-1/2')
+        classes.push('w-7/12')
       }
 
       return classes.join(' ')

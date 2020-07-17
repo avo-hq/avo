@@ -34,8 +34,6 @@ module Avocado
         has_and_belongs_to_many :projects
         has_many :posts
       end
-
-      use_filter Avocado::Filters::AvailabilityFilter
     end
   end
 end

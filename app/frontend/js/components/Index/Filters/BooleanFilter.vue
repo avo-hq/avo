@@ -1,29 +1,26 @@
 <template>
-  <div>
-    <div class="bg-gray-600 text-white py-2 px-4 text-sm">
-      {{filter.name}}
-    </div>
-    <div class="p-4">
+  <filter-wrapper :name="filter.name" :index="index">
       <div class="flex items-center">
         <div class="space-y-2">
           <template v-for="(name, value, index) in filter.options">
             <div
               :key="index"
+              class="flex items-center"
               @click="toggleOption(value)"
             >
               <input
                 type="checkbox"
+                class="mr-2 text-lg h-4 w-4"
                 :id="name"
                 :name="name"
                 :checked="optionToggled(value)"
               />
-              <label>{{ name }}</label>
+              <label class="font text-gray-700 text-sm">{{ name }}</label>
             </div>
           </template>
         </div>
       </div>
-    </div>
-  </div>
+  </filter-wrapper>
 </template>
 
 <script>
@@ -37,6 +34,7 @@ export default {
   props: [
     'filter',
     'appliedFilters',
+    'index',
   ],
   computed: {
     filterClass() {

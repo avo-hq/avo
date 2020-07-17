@@ -11,13 +11,21 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: '"Noto Sans JP", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",  "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
+        sans: '"Lato", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",  "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
       },
       inset: {
         full: '100%',
       },
+      borderRadius: {
+        xl: '1rem',
+      },
+      boxShadow: {
+        row: '0 0 15px -5px rgba(0, 0, 0, 0.25)',
+        panel: '0 0 20px -5px rgba(0, 0, 0, 0.1)',
+      },
       minWidth: {
         '300px': '300px',
+        4: '1rem',
         10: '2.5rem',
       },
       minHeight: {
@@ -37,6 +45,7 @@ module.exports = {
     borderColor: ['responsive', 'hover', 'focus', 'disabled'],
     backgroundColor: ['responsive', 'hover', 'focus', 'disabled'],
     textColor: ['responsive', 'hover', 'focus', 'disabled'],
+    translate: ['responsive', 'hover', 'focus', 'active'],
   },
   plugins: [
     // buttons

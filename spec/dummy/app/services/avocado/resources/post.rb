@@ -21,6 +21,7 @@ module Avocado
       end
 
       use_filter Avocado::Filters::FeaturedFilter
+      use_filter Avocado::Filters::PublishedFilter
     end
   end
 end

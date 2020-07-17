@@ -1,9 +1,6 @@
 <template>
   <div>
     <sidebar-link :large="true">
-      <template #icon>
-        <GameBoard class="h-4 inline-block mr-2" />
-      </template>
       Resources
     </sidebar-link>
 
@@ -12,7 +9,6 @@
         v-for="resource in sortedResources"
         :key="resource.resource_name"
         v-text="resource.label"
-        class="pl-10"
         :to="{
           name: 'index',
           params: {
@@ -25,11 +21,9 @@
 </template>
 
 <script>
-import GameBoard from '@/svgs/game-board.svg?inline'
 import sortBy from 'lodash/sortBy'
 
 export default {
-  components: { GameBoard },
   props: ['resources'],
   computed: {
     sortedResources() {

@@ -47,9 +47,9 @@ const Avo = {
       dynamic: true,
       injectModalsContainer: false,
       dynamicDefaults: {
-        height: 200,
-        width: 450,
-        styles: 'border-radius: 0.5rem',
+        height: 250,
+        width: 550,
+        styles: 'border-radius: 1rem',
       },
     })
     Vue.use(PortalVue)
