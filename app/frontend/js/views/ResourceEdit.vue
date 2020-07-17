@@ -16,7 +16,7 @@
         <template #content>
           <loading-overlay v-if="isLoading" />
 
-          <form @submit.prevent="submitResource" class="py-4">
+          <form @submit.prevent="submitResource">
             <component
               v-for="(field, index) in fields"
               :key="uniqueKey(field)"
