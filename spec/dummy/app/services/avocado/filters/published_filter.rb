@@ -8,9 +8,9 @@ module Avocado
       def apply(request, query, value)
         case value
         when 'published'
-          return query.where.not(published_at: nil)
+          query.where.not(published_at: nil)
         when 'unpublished'
-          return query.where(published_at: nil)
+          query.where(published_at: nil)
         else
           query
         end
