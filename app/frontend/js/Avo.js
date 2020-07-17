@@ -57,7 +57,6 @@ const Avo = {
     this.vue = new Vue({
       router,
       el: '#app',
-      data: {},
       computed: {
         routerKey() {
           return `${this.$route.name}-${this.$route.params.resourceName || ''}`

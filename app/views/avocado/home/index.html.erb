@@ -1,10 +1,5 @@
-<%# <loading ref="loading"></loading> %>
-
-<router-view :key="routerKey"></router-view>
+<transition name="fade">
+  <router-view :key="routerKey" />
+</transition>
 
 <modals-container />
-<%# <fade-transition>
-
-
-</fade-transition> %>
-<!--<portal-target name="modals" transitieon="fade-transition"></portal-target>-->
