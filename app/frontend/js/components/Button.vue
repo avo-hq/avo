@@ -6,7 +6,7 @@
     :to="to"
     :exact="exact"
     :disabled="disabled"
-    :href="href"
+    :href="realHref"
     @click="$emit('click')"
   >
     <slot />
@@ -87,6 +87,13 @@ export default {
       if (this.href) return 'a'
 
       return 'button'
+    },
+    realHref() {
+      if (this.href) return this.href
+      // eslint-disable-next-line no-script-url
+      if (this.to) return 'javascript:void(0);'
+
+      return null
     },
   },
   methods: {
