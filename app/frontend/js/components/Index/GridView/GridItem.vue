@@ -33,6 +33,7 @@
           :via-resource-name="viaResourceName"
           :via-resource-id="viaResourceId"
           :field="field"
+          @resource-deleted="$emit('resource-deleted')"
         />
       </div>
     </div>

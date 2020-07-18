@@ -4,7 +4,7 @@ RSpec.describe 'BelongsToField', type: :system do
   let!(:user) { create :user }
 
   context 'index' do
-    let(:url) { '/avocado/resources/posts' }
+    let(:url) { '/avocado/resources/posts?view_type=table' }
 
     subject { visit url; find("[resource-id='#{post.id}'] [field-id='user']") }
 

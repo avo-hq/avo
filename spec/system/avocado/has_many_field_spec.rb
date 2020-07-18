@@ -40,7 +40,7 @@ RSpec.describe 'HasManyField', type: :system do
 
         find("[data-component='resources-index'][data-resource-name='posts'] [data-control='view']").click
 
-        expect(page).to have_current_path "/avocado/resources/posts/#{post.id}"
+        expect(page).to have_current_path "/avocado/resources/posts/#{post.id}?viaResourceName=users&viaResourceId=#{user.id}"
       end
 
       it 'navigates to an edit post page' do
