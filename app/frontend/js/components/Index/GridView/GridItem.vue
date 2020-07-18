@@ -19,14 +19,14 @@
       </div>
     </router-link>
     <div class="flex flex-col justify-between p-4 flex-1">
-      <div class="font-semibold">
+      <div class="font-semibold leading-tight mb-2">
         {{title}}
       </div>
-      <div>
+      <div class="mb-2">
         {{body}}
       </div>
       <div class="w-full">
-        <resource-controls
+        <item-controls
           class="flex flex-row justify-around w-full"
           :resource="resource"
           :resource-name="resourceName"

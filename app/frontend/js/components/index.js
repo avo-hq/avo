@@ -85,7 +85,7 @@ Vue.component('resource-grid',                       require('@/js/components/In
 Vue.component('grid-item',                           require('@/js/components/Index/GridView/GridItem.vue').default)
 
 // Common
-Vue.component('resource-controls',                   require('@/js/components/Index/ResourceControls.vue').default)
+Vue.component('item-controls',                       require('@/js/components/Index/ItemControls.vue').default)
 
 // Components
 Vue.component('view-header',                         require('@/js/components/ViewHeader.vue').default)

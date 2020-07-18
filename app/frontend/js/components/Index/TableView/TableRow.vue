@@ -20,7 +20,7 @@
 
     <td class="text-right whitespace-no-wrap px-2">
       <div class="flex items-center justify-end flex-grow-0 h-full w-full">
-        <resource-controls
+        <item-controls
           class="flex flex-row"
           :resource="resource"
           :resource-name="resourceName"
