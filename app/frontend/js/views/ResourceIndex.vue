@@ -71,6 +71,8 @@
           </div>
         </div>
 
+        <loading-overlay class="relative" v-if="viewType === '' && isLoading"/>
+
         <div class="w-full overflow-auto min-h-28 flex flex-col" v-if="viewType === 'table'">
           <loading-overlay class="relative" v-if="resources.length === 0 && isLoading"/>
           <div class="relative flex-1 flex" v-else>
@@ -85,6 +87,7 @@
               :via-resource-name="viaResourceName"
               :via-resource-id="viaResourceId"
               :field="field"
+              :total-pages="totalPages"
               @sort="changeSortBy"
               @resource-deleted="getResources(true)"
             />

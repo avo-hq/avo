@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <table class="w-full px-4 rounded-b-xl overflow-hidden">
+    <table class="w-full px-4 overflow-hidden" :class="{'rounded-b-xl': totalPages === 1}">
       <thead v-if="hasFields" class="bg-gray-200 border-t border-b border-gray-500 pb-1">
         <th>
           <!-- Select cell -->
@@ -22,7 +22,7 @@
         <tr
           is="table-row"
           v-for="(resource, index) in resources"
-          :class="{'border-b': fields.length - 1 !== index}"
+          :class="{'border-b': resources.length - 1 === index ? totalPages > 1 : true}"
           :key="index"
           :resource="resource"
           :resource-name="resourceName"
@@ -49,6 +49,7 @@ export default {
     'sortBy',
     'sortDirection',
     'field',
+    'totalPages',
   ],
   computed: {
     resourceFields() {
