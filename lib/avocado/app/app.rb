@@ -4,6 +4,7 @@ require_relative 'filters/select_filter'
 require_relative 'filters/boolean_filter'
 require_relative 'resource'
 require_relative 'tool'
+require_relative 'fields/field'
 
 module Avocado
   class App

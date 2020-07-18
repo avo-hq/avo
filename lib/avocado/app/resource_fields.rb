@@ -56,7 +56,7 @@ module Avocado
         def key_value(name, **args)
           @@fields[self].push Avocado::Fields::KeyValueField::new(name, **args)
         end
-        
+
         def status(name, **args, &block)
           @@fields[self].push Avocado::Fields::StatusField::new(name, **args, &block)
         end
@@ -108,7 +108,7 @@ module Avocado
         def code(name, **args, &block)
           @@fields[self].push Avocado::Fields::CodeField::new(name, **args, &block)
         end
-        
+
         def hidden(name, **args, &block)
           @@fields[self].push Avocado::Fields::HiddenField::new(name, **args, &block)
         end
