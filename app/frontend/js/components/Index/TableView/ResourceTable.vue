@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <table class="w-full px-4 border-b border-gray-300">
+    <table class="w-full px-4 rounded-b-xl overflow-hidden">
       <thead v-if="hasFields" class="bg-gray-200 border-t border-b border-gray-500 pb-1">
         <th>
           <!-- Select cell -->
@@ -22,6 +22,7 @@
         <tr
           is="table-row"
           v-for="(resource, index) in resources"
+          :class="{'border-b': fields.length - 1 !== index}"
           :key="index"
           :resource="resource"
           :resource-name="resourceName"

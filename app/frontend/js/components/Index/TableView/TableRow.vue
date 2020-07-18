@@ -1,6 +1,6 @@
 <template>
   <tr v-if="resource"
-    class="border-t hover:bg-gray-100 hover:shadow-row relative z-20"
+    class="hover:bg-gray-100 hover:shadow-row relative z-20"
     :resource-name="resourceName"
     :resource-id="resource.id"
   >
