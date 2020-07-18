@@ -79,10 +79,11 @@
               @resource-deleted="getResources(true)"
             />
 
-              <div class="flex-1 flex items-center justify-center"
-                v-text="noResourcesLabel"
-                v-else
-              />
+            <empty-state
+              :resource-name="resourceNamePlural"
+              :via-resource-name="viaResourceName"
+              v-else
+            />
           </div>
 
           <paginate
@@ -120,6 +121,13 @@
           @sort="changeSortBy"
           @resource-deleted="getResources(true)"
         />
+
+        <div class="bg-white rounded-xl shadow-xl" v-else>
+          <empty-state
+            :resource-name="resourceNamePlural"
+            :via-resource-name="viaResourceName"
+          />
+        </div>
 
         <div class="bg-white rounded-lg shadow-xl mt-6">
           <paginate
@@ -289,11 +297,6 @@ export default {
     },
     perPageSteps() {
       return this.meta.per_page_steps
-    },
-    noResourcesLabel() {
-      if (this.viaResourceName) return `No related ${this.resourceNamePlural.toLowerCase()} found`
-
-      return `No ${this.resourceNamePlural.toLowerCase()} found`
     },
     createNewAction() {
       const action = {

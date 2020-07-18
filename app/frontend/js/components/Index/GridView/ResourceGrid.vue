@@ -1,16 +1,18 @@
 <template>
   <div class="w-full grid grid-cols-3 gap-6">
-    <div
-      is="grid-item"
-      v-for="(resource, index) in resources"
-      :key="index"
-      :resource="resource"
-      :resource-name="resourceName"
-      :via-resource-name="viaResourceName"
-      :via-resource-id="viaResourceId"
-      :field="field"
-      @resource-deleted="$emit('resource-deleted')"
-    />
+    <template v-if="resources && resource.length > 0">
+      <div
+        is="grid-item"
+        v-for="(resource, index) in resources"
+        :key="index"
+        :resource="resource"
+        :resource-name="resourceName"
+        :via-resource-name="viaResourceName"
+        :via-resource-id="viaResourceId"
+        :field="field"
+        @resource-deleted="$emit('resource-deleted')"
+      />
+    </template>
   </div>
 </template>
 

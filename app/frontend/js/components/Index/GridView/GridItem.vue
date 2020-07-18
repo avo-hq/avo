@@ -15,7 +15,7 @@
         v-if="preview"
       />
       <div class="absolute bg-gray-100 w-full h-full" v-else>
-        <avocado-icon class="relative transform -translate-x-1/2 -translate-y-1/2 h-20 fill-current text-gray-400 inset-auto top-1/2 left-1/2" />
+        <avocado-icon class="relative transform -translate-x-1/2 -translate-y-1/2 h-20 text-gray-400 inset-auto top-1/2 left-1/2" />
       </div>
     </router-link>
     <div class="flex flex-col justify-between p-4 flex-1">
