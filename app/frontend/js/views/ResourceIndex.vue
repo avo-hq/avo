@@ -17,7 +17,17 @@
           </a-button>
           <a-button
             is="a-button"
-            :to="createNewAction"
+            :to="{
+              name: 'new',
+              params: {
+                resourceName: resourcePath,
+              },
+              query: {
+                viaRelationship: field.id,
+                viaResourceName: viaResourceName,
+                viaResourceId: viaResourceId,
+              },
+            }"
             v-else
           ><plus-icon class="h-4 mr-1"/>Create new {{resourceNameSingular | toLowerCase}}</a-button>
         </div>
@@ -297,23 +307,6 @@ export default {
     },
     perPageSteps() {
       return this.meta.per_page_steps
-    },
-    createNewAction() {
-      const action = {
-        name: 'new',
-        params: {
-          resourceName: this.resourcePath,
-        },
-        query: {},
-      }
-
-      if (this.viaResourceName) {
-        action.query.viaRelationship = this.field.id
-        action.query.viaResourceName = this.viaResourceName
-        action.query.viaResourceId = this.viaResourceId
-      }
-
-      return action
     },
   },
   methods: {

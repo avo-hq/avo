@@ -6,6 +6,10 @@
         params: {
           resourceId: this.resource.id,
           resourceName: this.resourceName,
+        },
+        query:{
+          viaResourceName: viaResourceName,
+          viaResourceId: viaResourceId,
         }
       }"
     >

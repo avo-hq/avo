@@ -18,7 +18,17 @@
       <eye-icon :class="iconClasses"/>
     </router-link>
     <router-link
-      :to="editActionParams"
+      :to="{
+        name: 'edit',
+        params: {
+          resourceName: resourcePath,
+          resourceId: resource.id,
+        },
+        query: {
+          viaResourceName: viaResourceName,
+          viaResourceId: viaResourceId,
+        },
+      }"
       v-tooltip="`Edit ${this.resourceNameSingular}`"
       data-control="edit"
     >
@@ -67,23 +77,6 @@ export default {
       if (!isUndefined(this.viaResourceName)) return `/resources/${this.viaResourceName}/${this.viaResourceId}`
 
       return `/resources/${this.resourceName}`
-    },
-    editActionParams() {
-      const action = {
-        name: 'edit',
-        params: {
-          resourceName: this.resourcePath,
-          resourceId: this.resource.id,
-        },
-        query: {},
-      }
-
-      if (this.viaResourceName) {
-        action.query.viaResourceName = this.viaResourceName
-        action.query.viaResourceId = this.viaResourceId
-      }
-
-      return action
     },
   },
   methods: {
