@@ -13,7 +13,7 @@
           :sort-by="sortBy"
           :sort-direction="sortDirection"
           @sort="$emit('sort', field.id)"
-        ></th>
+        />
         <th class="w-24">
           <!-- Controls cell -->
         </th>
@@ -29,7 +29,7 @@
           :via-resource-id="viaResourceId"
           :field="field"
           @resource-deleted="$emit('resource-deleted')"
-        ></tr>
+        />
       </tbody>
     </table>
   </div>

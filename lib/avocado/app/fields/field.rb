@@ -1,9 +1,9 @@
-require_relative 'element'
+require_relative 'field_extensions/visible_in_different_views'
 
 module Avocado
   module Fields
     class Field
-      include Avocado::Fields::Element
+      include Avocado::Fields::FieldExtensions::VisibleOnDifferentViews
 
       attr_accessor :id
       attr_accessor :name

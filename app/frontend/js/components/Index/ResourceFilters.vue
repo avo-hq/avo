@@ -54,9 +54,7 @@ export default {
     perPage: {},
     filters: {},
     appliedFilters: {},
-    perPageSteps: {
-      default: () => ([24, 48, 72]),
-    },
+    perPageSteps: {},
   },
   computed: {
     hasFilters() {
