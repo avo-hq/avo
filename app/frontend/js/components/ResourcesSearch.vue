@@ -1,6 +1,6 @@
 <template>
   <multiselect
-    class="w-full text-sm"
+    class="text-sm"
     label="name"
     placeholder="Type to search"
     :options="options"

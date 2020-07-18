@@ -4,7 +4,7 @@
       <filter-icon class="h-4 mr-2" data-button="resource-filters" /> Filters
     </a-button>
     <div v-on-clickaway="onClickAway"
-      class="absolute block inset-auto right-0 top-full bg-white min-w-300px mr-4 z-20 shadow-row rounded-lg overflow-hidden"
+      class="absolute block inset-auto right-0 top-full bg-white min-w-300px mt-2 z-20 shadow-row rounded-lg overflow-hidden"
       v-if="open"
     >
       <div v-if="!viaResourceName">

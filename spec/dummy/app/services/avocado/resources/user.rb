@@ -3,7 +3,7 @@ module Avocado
     class User < Resource
       def initialize
         @title = :name
-        @search = [:name, :id, :description]
+        @search = [:id, :first_name, :last_name]
         @includes = :posts
         @has_devise_password = true
       end
