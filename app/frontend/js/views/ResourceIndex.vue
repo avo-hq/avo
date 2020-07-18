@@ -23,7 +23,7 @@
                 resourceName: resourcePath,
               },
               query: {
-                viaRelationship: field.id,
+                viaRelationship: fieldId,
                 viaResourceName: viaResourceName,
                 viaResourceId: viaResourceId,
               },
@@ -294,7 +294,7 @@ export default {
       if (this.viaResourceName) {
         query = {
           ...query,
-          via_relationship: this.field.id,
+          via_relationship: this.fieldId,
           via_resource_name: this.viaResourceName.toLowerCase(),
           via_resource_id: this.viaResourceId,
         }
@@ -307,6 +307,9 @@ export default {
     },
     perPageSteps() {
       return this.meta.per_page_steps
+    },
+    fieldId() {
+      return this.field ? this.field.id : null
     },
   },
   methods: {

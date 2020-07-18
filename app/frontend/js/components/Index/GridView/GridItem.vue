@@ -26,7 +26,7 @@
       <div class="font-semibold leading-tight mb-2">
         {{title}}
       </div>
-      <div class="mb-2">
+      <div class="mb-6">
         {{body}}
       </div>
       <div class="w-full">
