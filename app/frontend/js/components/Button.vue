@@ -25,10 +25,11 @@ export default {
     'disabled',
     'href',
     'size',
+    'active',
   ],
   computed: {
     classes() {
-      let classes = 'transform transition duration-100 active:translate-x-px active:translate-y-px'
+      let classes = 'transform transition duration-100 active:translate-x-px active:translate-y-px cursor-pointer'
 
       if (this.color) {
         if (this.isOutlined) {
@@ -53,15 +54,14 @@ export default {
 
         if (this.disabled) {
           classes += ' bg-gray-300'
+          classes = classes.replace('cursor-pointer', 'cursor-not-allowed')
         } else {
           classes += ' bg-white hover:bg-gray-100'
         }
       }
 
-      if (this.disabled) {
-        classes += ' cursor-not-allowed'
-      } else {
-        classes += ' cursor-pointer'
+      if (this.active) {
+        classes = classes.replace(`bg-${this.color}-500`, `bg-${this.color}-700`)
       }
 
       switch (this.size) {

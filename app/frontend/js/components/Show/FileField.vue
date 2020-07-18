@@ -11,6 +11,7 @@
       <a-button :href="field.value"
         color="indigo"
         v-tooltip="`Download ${field.filename}`"
+        v-if="field.value"
         download
       ><download-icon class="h-4 mr-1" /> Download</a-button>
     </template>

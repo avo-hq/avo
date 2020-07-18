@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <table class="w-full px-4 border-b border-gray-300">
+    <table class="w-full px-4 overflow-hidden" :class="{'rounded-b-xl': totalPages === 1}">
       <thead v-if="hasFields" class="bg-gray-200 border-t border-b border-gray-500 pb-1">
         <th>
           <!-- Select cell -->
@@ -13,7 +13,7 @@
           :sort-by="sortBy"
           :sort-direction="sortDirection"
           @sort="$emit('sort', field.id)"
-        ></th>
+        />
         <th class="w-24">
           <!-- Controls cell -->
         </th>
@@ -22,6 +22,7 @@
         <tr
           is="table-row"
           v-for="(resource, index) in resources"
+          :class="{'border-b': resources.length - 1 === index ? totalPages > 1 : true}"
           :key="index"
           :resource="resource"
           :resource-name="resourceName"
@@ -29,7 +30,7 @@
           :via-resource-id="viaResourceId"
           :field="field"
           @resource-deleted="$emit('resource-deleted')"
-        ></tr>
+        />
       </tbody>
     </table>
   </div>
@@ -48,6 +49,7 @@ export default {
     'sortBy',
     'sortDirection',
     'field',
+    'totalPages',
   ],
   computed: {
     resourceFields() {

@@ -11,7 +11,7 @@ module Avocado
 
         super(name, **args, &block)
 
-        hide_on :edit
+        hide_on [:edit, :create]
 
         default_map = { info: :info, success: :success, danger: :danger, warning: :warning }
         @map = args[:map].present? ? default_map.merge(args[:map]) : default_map

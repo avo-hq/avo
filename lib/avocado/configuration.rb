@@ -7,15 +7,17 @@ module Avocado
     attr_accessor :via_per_page
     attr_accessor :locale
     attr_accessor :currency
+    attr_accessor :default_view_type
 
     def initialize
       @root_path = '/avocado'
       @timezone = 'UTC'
       @per_page = 24
-      @per_page_steps = [24, 48, 72]
+      @per_page_steps = [12, 24, 48, 72]
       @via_per_page = 8
       @locale = 'us-US'
       @currency = 'USD'
+      @default_view_type = :table
     end
   end
 

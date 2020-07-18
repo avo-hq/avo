@@ -74,11 +74,20 @@ Vue.component('edit-hidden-field',                   require('@/js/components/Ed
 // Form Fields
 Vue.component('input-component',                     require('@/js/components/InputComponent.vue').default)
 
-// Components
-Vue.component('resource-table',                      require('@/js/components/Index/ResourceTable.vue').default)
-Vue.component('table-row',                           require('@/js/components/Index/TableRow.vue').default)
-Vue.component('table-header-cell',                   require('@/js/components/Index/TableHeaderCell.vue').default)
+/* View Components */
+// Table
+Vue.component('resource-table',                      require('@/js/components/Index/TableView/ResourceTable.vue').default)
+Vue.component('table-row',                           require('@/js/components/Index/TableView/TableRow.vue').default)
+Vue.component('table-header-cell',                   require('@/js/components/Index/TableView/TableHeaderCell.vue').default)
 
+// Grid
+Vue.component('resource-grid',                       require('@/js/components/Index/GridView/ResourceGrid.vue').default)
+Vue.component('grid-item',                           require('@/js/components/Index/GridView/GridItem.vue').default)
+
+// Common
+Vue.component('item-controls',                       require('@/js/components/Index/ItemControls.vue').default)
+
+// Components
 Vue.component('view-header',                         require('@/js/components/ViewHeader.vue').default)
 Vue.component('view-footer',                         require('@/js/components/ViewFooter.vue').default)
 Vue.component('panel',                               require('@/js/components/Panel.vue').default)
@@ -88,6 +97,7 @@ Vue.component('resources-search',                    require('@/js/components/Re
 Vue.component('loading-component',                   require('@/js/components/LoadingComponent.vue').default)
 Vue.component('loading-overlay',                     require('@/js/components/LoadingOverlay.vue').default)
 Vue.component('empty-dash',                          require('@/js/components/EmptyDash.vue').default)
+Vue.component('empty-state',                         require('@/js/components/EmptyState.vue').default)
 
 // Filters
 Vue.component('resource-filters',                    require('@/js/components/Index/ResourceFilters.vue').default)

@@ -32,7 +32,13 @@ const routes = [
     name: 'show',
     path: '/resources/:resourceName/:resourceId',
     component: ResourceShow,
-    props: true,
+    props: (route) => ({
+      resourceName: route.params.resourceName,
+      resourceId: route.params.resourceId,
+      viaRelationship: route.query.viaRelationship,
+      viaResourceName: route.query.viaResourceName,
+      viaResourceId: route.query.viaResourceId,
+    }),
   },
   {
     name: 'edit',

@@ -1,4 +1,5 @@
 require_relative 'resource_fields'
+require_relative 'resource_grid_fields'
 require_relative 'resource_filters'
 
 module Avocado
@@ -6,6 +7,7 @@ module Avocado
     class Resource
       attr_reader :required
       attr_reader :includes
+      attr_reader :default_view_type
 
       class << self
         def hydrate_resource(model, resource, view = :index)
@@ -17,14 +19,21 @@ module Avocado
             resource_name_plural: resource.resource_name_plural,
             title: model[resource.title],
             fields: [],
+            grid_fields: {},
             panels: [{
               name: default_panel_name,
               component: 'panel',
             }]
           }
 
+          grid_fields = resource.get_grid_fields
+          grid_fields_by_required_field = grid_fields.map{ |grid_field_id, field| [field.id, grid_field_id] }.to_h
+
           resource.get_fields.each do |field|
-            next unless field.send "show_on_#{view.to_s}"
+            field_is_required_in_grid_view = grid_fields.map { |grid_field_id, field| field.id }.include?(field.id)
+            required_in_current_view = field.send("show_on_#{view.to_s}")
+
+            next unless required_in_current_view or field_is_required_in_grid_view
 
             furnished_field = field.fetch_for_resource(model, resource, view)
 
@@ -37,7 +46,14 @@ module Avocado
               furnished_field[:panel_name] = field.name.to_s.pluralize
             end
 
-            resource_with_fields[:fields] << furnished_field
+            if field_is_required_in_grid_view
+              required_field = grid_fields_by_required_field[field.id]
+              resource_with_fields[:grid_fields][required_field] = furnished_field
+            end
+
+            if required_in_current_view
+              resource_with_fields[:fields] << furnished_field
+            end
           end
 
           resource_with_fields
@@ -92,6 +108,14 @@ module Avocado
 
       def get_fields
         self.class.get_fields
+      end
+
+      def get_grid_fields
+        self.class.get_grid_fields
+      end
+
+      def available_view_types
+        get_grid_fields.length > 0 ? [:grid, :table] : [:table]
       end
 
       def get_filters

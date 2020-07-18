@@ -16,6 +16,10 @@
       <slot name="content"/>
     </div>
 
+    <div class="relative mb-8">
+      <slot name="bare-content"/>
+    </div>
+
     <div class="flex justify-end w-full">
       <div>
         <slot name="footer"/>

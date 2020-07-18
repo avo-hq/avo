@@ -1,4 +1,4 @@
-require_dependency "avocado/application_controller"
+require_dependency 'avocado/application_controller'
 
 module Avocado
   class ResourcesController < ApplicationController
@@ -56,6 +56,8 @@ module Avocado
 
       meta = {
         per_page_steps: Avocado.configuration.per_page_steps,
+        available_view_types: avocado_resource.available_view_types,
+        default_view_type: avocado_resource.default_view_type || Avocado.configuration.default_view_type,
       }
 
       render json: {

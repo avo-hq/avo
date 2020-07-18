@@ -9,7 +9,9 @@ RSpec.describe 'ResourcesControllers', type: :request do
         expect(response).to have_http_status(200)
         expect(parsed_response).to eql({
           meta: {
-            per_page_steps: [24, 48, 72]
+            per_page_steps: [12, 24, 48, 72],
+            available_view_types: ['table'],
+            default_view_type: 'table',
           },
           per_page: 24,
           resources: [],
