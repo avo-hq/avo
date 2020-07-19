@@ -1,10 +1,3 @@
-require_relative 'tools_manager'
-require_relative 'filter'
-require_relative 'filters/select_filter'
-require_relative 'filters/boolean_filter'
-require_relative 'resource'
-require_relative 'tool'
-require_relative 'fields/field'
 
 module Avocado
   class App
@@ -43,21 +36,49 @@ module Avocado
       # Avocado::Fields::TextField -> text
       # Avocado::Fields::TextDateTime -> date_time
       def init_fields
-        Avocado::Fields.constants.each do |class_name|
-          next unless class_name.to_s.end_with? 'Field'
+        field_class = nil
+        # if class_name.to_s === 'CustomFields'
+          Avocado::CustomFields.constants.each do |namespace|
+            "Avocado::CustomFields::#{namespace}".safe_constantize.constants.each do |custom_field_class|
+              next unless custom_field_class.to_s.end_with? 'Field' or custom_field_class.to_s == 'Field'
 
-          possible_class = "Avocado::Fields::#{class_name.to_s}".safe_constantize
-          method_name = possible_class.get_def_name
+              field_class = "Avocado::CustomFields::#{namespace}::#{custom_field_class}".safe_constantize
+              method_name = field_class.get_def_name
 
-          Avocado::Resources::Resource::define_singleton_method :"#{method_name}" do |*args, &block|
-            if block.present?
-              field_class = possible_class::new(args[0], **args[1] || {}, &block)
-            else
-              field_class = possible_class::new(args[0], **args[1] || {})
+              load_field method_name, field_class
+
+              puts "guessed class #{field_class}".inspect
             end
-
-            Avocado::Resources::Resource.add_field(self, field_class)
           end
+        # end
+
+        Avocado::Fields.constants.each do |class_name|
+          next unless class_name.to_s.end_with? 'Field' or class_name.to_s == 'Field'
+
+          # puts class_name.to_s.inspect
+          puts "Avocado::Fields::#{class_name.to_s}".inspect
+          # abort possible_class.inspect
+          field_class = "Avocado::Fields::#{class_name.to_s}".safe_constantize
+          method_name = field_class.get_def_name
+
+          next if Avocado::Resources::Resource.method_defined? method_name.to_sym
+
+          load_field method_name, field_class
+        end
+      end
+
+      def load_field(method_name, klass)
+        Avocado::Resources::Resource::define_singleton_method method_name.to_sym do |*args, &block|
+          puts "1---> #{klass.to_s}".inspect
+          if block.present?
+            field_class = klass::new(args[0], **args[1] || {}, &block)
+          else
+            field_class = klass::new(args[0], **args[1] || {})
+          end
+
+          puts "2---> #{field_class.to_s}".inspect
+
+          Avocado::Resources::Resource.add_field(self, field_class)
         end
       end
 
