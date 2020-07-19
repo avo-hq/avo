@@ -20,6 +20,7 @@ module Avocado
         @@app[:root_path] = Pathname.new(File.join(__dir__, '..', '..'))
         # get_tools
         # init_tools
+        init_fields
         init_resources
       end
 
@@ -34,6 +35,31 @@ module Avocado
       # def get_tools
       #   @@app[:tool_classes] = ToolsManager.get_tools
       # end
+
+      # This method will take all fields available in the Avocado::Fields namespace and create a method for them.
+      #
+      # If the field has their `def_method` set up it will folow that convention, if not it will snake_case the name:
+      #
+      # Avocado::Fields::TextField -> text
+      # Avocado::Fields::TextDateTime -> date_time
+      def init_fields
+        Avocado::Fields.constants.each do |class_name|
+          next unless class_name.to_s.end_with? 'Field'
+
+          possible_class = "Avocado::Fields::#{class_name.to_s}".safe_constantize
+          method_name = possible_class.get_def_name
+
+          Avocado::Resources::Resource::define_singleton_method :"#{method_name}" do |*args, &block|
+            if block.present?
+              field_class = possible_class::new(, &block)
+            else
+              field_class = possible_class::new(args[0], **args[1] || {})
+            end
+
+            Avocado::Resources::Resource.add_field(self, field_class)
+          end
+        end
+      end
 
       def init_resources
         @@app[:resources] = Avocado::Resources.constants.select { |r| r != :Resource }.map do |c|

@@ -2,8 +2,9 @@ module Avocado
   module Fields
     class IdField < Field
       def initialize(name, **args, &block)
+        name ||= :id
+
         @defaults = {
-          id: :id,
           readonly: true,
           sortable: true,
           component: 'id-field'

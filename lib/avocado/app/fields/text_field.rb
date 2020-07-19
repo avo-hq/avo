@@ -1,8 +1,6 @@
 module Avocado
   module Fields
     class TextField < Field
-      # def_name 'text_field'
-
       def initialize(name, **args, &block)
         @defaults = {
           sortable: true,

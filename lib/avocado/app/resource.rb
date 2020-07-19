@@ -1,6 +1,7 @@
 require_relative 'resource_fields'
 require_relative 'resource_grid_fields'
 require_relative 'resource_filters'
+require_relative 'fields/field'
 
 module Avocado
   module Resources

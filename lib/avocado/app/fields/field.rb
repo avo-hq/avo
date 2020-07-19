@@ -4,6 +4,7 @@ module Avocado
   module Fields
     class Field
       include Avocado::Fields::FieldExtensions::VisibleOnDifferentViews
+      @@def_name = nil
 
       attr_accessor :id
       attr_accessor :name
@@ -28,7 +29,6 @@ module Avocado
 
         args = @defaults.merge(args).symbolize_keys
 
-        null_values = [nil, '', *args[:null_values]]
         # The field properties as a hash {property: default_value}
         @field_properties = {
           id: id,
@@ -40,7 +40,7 @@ module Avocado
           updatable: true,
           sortable: false,
           nullable: false,
-          null_values: null_values,
+          null_values: [nil, '', *args[:null_values]],
           computable: true,
           is_array_param: false,
           format_using: false,
@@ -127,12 +127,21 @@ module Avocado
         false
       end
 
+      def self.def_name(name)
+        @@def_name = name
+      end
+
+      def self.get_def_name
+        # abort self.to_s.demodulize.underscore.gsub('_field', '').inspect
+        @@def_name or self.to_s.demodulize.underscore.gsub '_field', ''
+      end
+
       private
         def model_or_class(model)
           if model.class == String
-            return 'class'
+            'class'
           else
-            return 'model'
+            'model'
           end
         end
     end
