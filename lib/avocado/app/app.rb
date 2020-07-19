@@ -51,7 +51,7 @@ module Avocado
 
           Avocado::Resources::Resource::define_singleton_method :"#{method_name}" do |*args, &block|
             if block.present?
-              field_class = possible_class::new(, &block)
+              field_class = possible_class::new(args[0], **args[1] || {}, &block)
             else
               field_class = possible_class::new(args[0], **args[1] || {})
             end
