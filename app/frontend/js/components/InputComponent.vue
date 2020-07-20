@@ -9,7 +9,7 @@
     @input="$emit('input', $event.target.value)"
     cols="30"
     rows="10"
-    ></textarea>
+  />
   <input
     ref="field-input"
     v-else
