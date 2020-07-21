@@ -57,6 +57,8 @@ export default {
     },
     valueInput: {
       get() {
+        if (this.value == null) return ''
+
         return this.value
       },
       set(newVal) {
