@@ -23,11 +23,14 @@ export default {
   }),
   methods: {
     setInitialValue() {
-      if (this.field.value) this.value = Number(this.field.value, 10)
-      else this.value = null
+      if (this.field.value) {
+        this.value = Number(this.field.value, 10)
+      } else {
+        this.value = null
+      }
     },
   },
-  created() {
+  mounted() {
     this.setInitialValue()
   },
 }
