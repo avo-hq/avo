@@ -30,9 +30,11 @@ export default {
   },
   methods: {
     setInitialValue() {
-      if (!this.field.value || this.field.value === '') this.value = 0
-
-      this.value = Number(this.field.value)
+      if (this.field.value) {
+        this.value = Number(this.field.value, 10)
+      } else {
+        this.value = null
+      }
     },
     focus() {
       if (this.$refs['field-input']) this.$refs['field-input'].$el.focus()
