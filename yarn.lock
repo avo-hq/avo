@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@AvocadoHQ/avocado-js@^0.1.0":
+  version "0.1.0"
+  resolved "https://npm.pkg.github.com/download/@AvocadoHQ/avocado-js/0.1.0/5e915d0984507281cedabaa68fc3f1f30e25c641d2e7411474111c509af53b24#9258ab51d87009f736403dfcbd4097a895875d2e"
+  integrity sha512-2shtqqjR7SxJnJb78OIzspRQM/wwljg+BFxzFfRHEhPv6LShD7XVhv7gQQcsOymGilf0wfSaBFK6rf4qFnKfVw==
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.1":
   version "7.10.1"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.10.1.tgz#d5481c5095daa1c57e16e54c6f9198443afb49ff"
