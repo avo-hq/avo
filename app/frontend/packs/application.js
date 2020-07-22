@@ -3,6 +3,8 @@ import '@/css/application.css'
 import * as Mousetrap from 'mousetrap'
 import Avo from '@/js/Avo'
 
+Avo.makePublic()
+
 document.addEventListener('DOMContentLoaded', Avo.init)
 
 Mousetrap.bind('r r r', () => Avo.reload())

@@ -23,7 +23,7 @@ module Avocado
       end
     end
 
-    initializer "webpacker.proxy" do |app|
+    initializer 'webpacker.proxy' do |app|
       insert_middleware = begin
                             Avocado.webpacker.config.dev_server.present?
                           rescue

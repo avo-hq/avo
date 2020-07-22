@@ -1,0 +1,18 @@
+<template>
+  <show-field-wrapper :field="field" :index="index">
+    <div v-if="field.value" v-text="field.value"/>
+    <empty-dash v-else />
+  </show-field-wrapper>
+</template>
+
+<script>
+export default {
+  data: () => ({}),
+  props: ['field', 'index'],
+  computed: {},
+  methods: {},
+  mounted() {},
+}
+</script>
+
+<style></style>

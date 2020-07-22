@@ -89,3 +89,6 @@ gem 'zeitwerk', '~> 2.3'
 
 # Pagination
 gem 'kaminari'
+
+# Http client
+gem 'httparty'

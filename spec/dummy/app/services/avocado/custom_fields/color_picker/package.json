@@ -1,0 +1,15 @@
+{
+  "name": "color_picker_field",
+  "private": true,
+  "dependencies": {
+    "@rails/webpacker": "4.2.2",
+    "vite": "^1.0.0-rc.1",
+    "vue": "^2.6.11",
+    "vue-loader": "^15.9.2",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "version": "0.1.0",
+  "devDependencies": {
+    "webpack-dev-server": "^3.11.0"
+  }
+}

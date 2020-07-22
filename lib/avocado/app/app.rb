@@ -8,6 +8,8 @@ module Avocado
       resources: [],
     }
 
+    @@scripts = {}
+
     class << self
       def init
         @@app[:root_path] = Pathname.new(File.join(__dir__, '..', '..'))
@@ -37,27 +39,27 @@ module Avocado
       # Avocado::Fields::TextDateTime -> date_time
       def init_fields
         field_class = nil
-        # if class_name.to_s === 'CustomFields'
-          Avocado::CustomFields.constants.each do |namespace|
-            "Avocado::CustomFields::#{namespace}".safe_constantize.constants.each do |custom_field_class|
-              next unless custom_field_class.to_s.end_with? 'Field' or custom_field_class.to_s == 'Field'
+        Avocado::CustomFields.constants.each do |namespace|
+          tool_provider = "Avocado::CustomFields::#{namespace}::ToolProvider".safe_constantize
 
-              field_class = "Avocado::CustomFields::#{namespace}::#{custom_field_class}".safe_constantize
-              method_name = field_class.get_def_name
+          next unless tool_provider.present?
 
-              load_field method_name, field_class
+          tool_provider.boot
 
-              puts "guessed class #{field_class}".inspect
-            end
+          "Avocado::CustomFields::#{namespace}".safe_constantize.constants.each do |custom_field_class|
+            next unless custom_field_class.to_s.end_with? 'Field' or custom_field_class.to_s == 'Field'
+
+            field_class = "Avocado::CustomFields::#{namespace}::#{custom_field_class}".safe_constantize
+            method_name = field_class.get_def_name
+
+            load_field method_name, field_class
+
           end
-        # end
+        end
 
         Avocado::Fields.constants.each do |class_name|
           next unless class_name.to_s.end_with? 'Field' or class_name.to_s == 'Field'
 
-          # puts class_name.to_s.inspect
-          puts "Avocado::Fields::#{class_name.to_s}".inspect
-          # abort possible_class.inspect
           field_class = "Avocado::Fields::#{class_name.to_s}".safe_constantize
           method_name = field_class.get_def_name
 
@@ -69,14 +71,11 @@ module Avocado
 
       def load_field(method_name, klass)
         Avocado::Resources::Resource::define_singleton_method method_name.to_sym do |*args, &block|
-          puts "1---> #{klass.to_s}".inspect
           if block.present?
             field_class = klass::new(args[0], **args[1] || {}, &block)
           else
             field_class = klass::new(args[0], **args[1] || {})
           end
-
-          puts "2---> #{field_class.to_s}".inspect
 
           Avocado::Resources::Resource.add_field(self, field_class)
         end
@@ -131,6 +130,32 @@ module Avocado
 
       def get_resources_navigation
         App.get_resources.map { |resource| { label: resource.resource_name_plural.humanize, resource_name: resource.url.pluralize } }.to_json.to_s.html_safe
+      end
+
+      def initializing(&block)
+        yield
+      end
+
+      def script(name, directory)
+        @@scripts[name] = directory
+      end
+
+      def get_scripts
+        @@scripts
+      end
+
+      def get_script_path(name)
+        @@scripts[name]
+      end
+
+      def get_script_contents(name)
+        # abort get_script_path(name).inspect
+        # abort [@@scripts, name].inspect
+        File.read "#{get_script_path(name)}/#{name}"
+      end
+
+      def print_scripts
+        @@scripts.map { |name, path| "<script src='/avocado/avocado-api/scripts/#{name}'></script>" }.join("\n")
       end
     end
   end

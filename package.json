@@ -16,14 +16,12 @@
     "release": "sh scripts/release.sh"
   },
   "dependencies": {
+    "@AvocadoHQ/avocado-js": "^0.1.0",
     "@rails/activestorage": "^6.0.2-1",
     "@rails/webpacker": "^4.2.2",
     "autoprefixer": "^9.7.4",
     "axios": "^0.19.2",
     "css-loader": "^3.5.3",
-    "eslint-config-airbnb": "^18.1.0",
-    "eslint-import-resolver-alias": "^1.1.2",
-    "eslint-plugin-sort-imports-es6-autofix": "^0.5.0",
     "lodash": "^4.17.19",
     "moment": "^2.26.0",
     "moment-timezone": "^0.5.31",
@@ -65,6 +63,9 @@
   },
   "devDependencies": {
     "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-plugin-sort-imports-es6-autofix": "^0.5.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-vue": "^6.2.2"

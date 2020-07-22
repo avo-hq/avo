@@ -14,9 +14,16 @@ const Avo = {
   Bus,
   Api,
   env: '',
+  initCallbacks: [],
+
+  makePublic() {
+    window.Avo = Avo
+    Avo.env = window.env || 'production'
+  },
 
   init() {
-    Avo.env = window.env || 'production'
+    Avo.initializeModules()
+
     if (document.getElementById('app')) {
       Avo.initVue()
     }
@@ -90,6 +97,14 @@ const Avo = {
         Bus.$off('error')
       },
     })
+  },
+
+  initializing(callback) {
+    Avo.initCallbacks.push(callback)
+  },
+
+  initializeModules() {
+    Avo.initCallbacks.forEach((callback) => callback(Vue))
   },
 }
 

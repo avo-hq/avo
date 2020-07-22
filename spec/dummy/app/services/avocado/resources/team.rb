@@ -15,6 +15,8 @@ module Avocado
           model.members.count
         end
 
+        color_picker :color
+
         has_one :admin
         has_many :members
       end
