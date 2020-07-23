@@ -50,10 +50,9 @@ module Avocado
             next unless custom_field_class.to_s.end_with? 'Field' or custom_field_class.to_s == 'Field'
 
             field_class = "Avocado::CustomFields::#{namespace}::#{custom_field_class}".safe_constantize
-            method_name = field_class.get_def_name
+            method_name = field_class.get_field_name
 
             load_field method_name, field_class
-
           end
         end
 
@@ -61,7 +60,7 @@ module Avocado
           next unless class_name.to_s.end_with? 'Field' or class_name.to_s == 'Field'
 
           field_class = "Avocado::Fields::#{class_name.to_s}".safe_constantize
-          method_name = field_class.get_def_name
+          method_name = field_class.get_field_name
 
           next if Avocado::Resources::Resource.method_defined? method_name.to_sym
 

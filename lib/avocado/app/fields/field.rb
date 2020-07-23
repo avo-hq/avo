@@ -1,10 +1,11 @@
 require_relative 'field_extensions/visible_in_different_views'
+require_relative 'field_extensions/has_field_name'
 
 module Avocado
   module Fields
     class Field
       include Avocado::Fields::FieldExtensions::VisibleOnDifferentViews
-      @@def_name = nil
+      extend Avocado::Fields::FieldExtensions::HasFieldName
 
       attr_accessor :id
       attr_accessor :name
@@ -125,15 +126,6 @@ module Avocado
 
       def has_own_panel?
         false
-      end
-
-      def self.def_name(name)
-        @@def_name = name
-      end
-
-      def self.get_def_name
-        # abort self.to_s.demodulize.underscore.gsub('_field', '').inspect
-        @@def_name or self.to_s.demodulize.underscore.gsub '_field', ''
       end
 
       private
