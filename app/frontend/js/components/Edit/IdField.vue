@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { IsFormField } from '@AvocadoHQ/avocado-js'
+import { IsFormField } from '@avocadohq/avocado-js'
 
 export default {
   mixins: [IsFormField],

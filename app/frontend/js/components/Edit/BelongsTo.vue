@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { HasInputAppearance, IsFormField } from '@AvocadoHQ/avocado-js'
+import { HasInputAppearance, IsFormField } from '@avocadohq/avocado-js'
 import Bus from '@/js/Bus'
 import isUndefined from 'lodash/isUndefined'
 

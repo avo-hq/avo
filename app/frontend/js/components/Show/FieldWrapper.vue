@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { IsFormField } from '@AvocadoHQ/avocado-js'
+import { IsFormField } from '@avocadohq/avocado-js'
 import IsFieldWrapper from '@/js/mixins/is-field-wrapper'
 
 export default {

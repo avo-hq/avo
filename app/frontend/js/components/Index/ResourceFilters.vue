@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { HasInputAppearance } from '@AvocadoHQ/avocado-js'
+import { HasInputAppearance } from '@avocadohq/avocado-js'
 import { mixin as clickaway } from 'vue-clickaway'
 
 export default {

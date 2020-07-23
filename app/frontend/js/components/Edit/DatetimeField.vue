@@ -16,7 +16,7 @@
 
 <script>
 import '~/flatpickr/dist/flatpickr.css'
-import { HasInputAppearance, IsFormField } from '@AvocadoHQ/avocado-js'
+import { HasInputAppearance, IsFormField } from '@avocadohq/avocado-js'
 import flatPickr from 'vue-flatpickr-component'
 import isNull from 'lodash/isNull'
 import moment from 'moment-timezone'

@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { HasInputAppearance, IsFormField } from '@AvocadoHQ/avocado-js'
+import { HasInputAppearance, IsFormField } from '@avocadohq/avocado-js'
 
 export default {
   data: () => ({
