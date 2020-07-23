@@ -1,7 +1,7 @@
 module Avocado
-  module CustomFields
+  module Fields
     module ColorPicker
-      class ColorPickerField < Avocado::Fields::Field
+      class ColorPickerField < Field
         field_name 'color_picker'
 
         def initialize(name, **args, &block)

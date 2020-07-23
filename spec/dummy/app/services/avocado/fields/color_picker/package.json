@@ -3,6 +3,13 @@
   "private": true,
   "dependencies": {
     "@rails/webpacker": "4.2.2",
+    "postcss": "^7.0.27",
+    "postcss-flexbugs-fixes": "^4.2.0",
+    "postcss-import": "^12.0.1",
+    "postcss-loader": "^3.0.0",
+    "postcss-nested": "^4.2.1",
+    "postcss-nested-ancestors": "^2.0.0",
+    "postcss-preset-env": "^6.7.0",
     "vite": "^1.0.0-rc.1",
     "vue": "^2.6.11",
     "vue-loader": "^15.9.2",

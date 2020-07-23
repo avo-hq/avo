@@ -38,33 +38,36 @@ module Avocado
       # Avocado::Fields::TextField -> text
       # Avocado::Fields::TextDateTime -> date_time
       def init_fields
-        field_class = nil
-        Avocado::CustomFields.constants.each do |namespace|
-          tool_provider = "Avocado::CustomFields::#{namespace}::ToolProvider".safe_constantize
+        Avocado::Fields.constants.each do |class_name|
+          next if class_name.to_s == 'Field'
 
-          next unless tool_provider.present?
+          field_class = method_name = nil
 
-          tool_provider.boot
-
-          "Avocado::CustomFields::#{namespace}".safe_constantize.constants.each do |custom_field_class|
-            next unless custom_field_class.to_s.end_with? 'Field' or custom_field_class.to_s == 'Field'
-
-            field_class = "Avocado::CustomFields::#{namespace}::#{custom_field_class}".safe_constantize
+          if class_name.to_s.end_with? 'Field'
+            field_class = "Avocado::Fields::#{class_name.to_s}".safe_constantize
             method_name = field_class.get_field_name
 
+            next if Avocado::Resources::Resource.method_defined? method_name.to_sym
+          else
+            # Try one level deeper for custom fields
+            namespace = class_name
+            tool_provider = "Avocado::Fields::#{namespace}::ToolProvider".safe_constantize
+
+            next unless tool_provider.present?
+
+            tool_provider.boot
+
+            "Avocado::Fields::#{namespace}".safe_constantize.constants.each do |custom_field_class|
+              next unless custom_field_class.to_s.end_with? 'Field' or custom_field_class.to_s == 'Field'
+
+              field_class = "Avocado::Fields::#{namespace}::#{custom_field_class}".safe_constantize
+              method_name = field_class.get_field_name
+            end
+          end
+
+          if field_class.present? and method_name.present?
             load_field method_name, field_class
           end
-        end
-
-        Avocado::Fields.constants.each do |class_name|
-          next unless class_name.to_s.end_with? 'Field' or class_name.to_s == 'Field'
-
-          field_class = "Avocado::Fields::#{class_name.to_s}".safe_constantize
-          method_name = field_class.get_field_name
-
-          next if Avocado::Resources::Resource.method_defined? method_name.to_sym
-
-          load_field method_name, field_class
         end
       end
 

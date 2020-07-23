@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "es6",
+    "paths": {
+      "@/*": ["./frontend/*"],
+    }
+  },
+  "exclude": ["node_modules", "dist", "spec", ".git"]
+}
