@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@avocadohq/avocado-js@^0.1.0":
+"@avocadohq/avocado-js@^0.1.2":
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/@avocadohq/avocado-js/-/avocado-js-0.1.2.tgz#3fcffbd2ae88d9b2bae348cfdc0aa297cd820b7e"
   integrity sha512-ITkHqz+pfZarr45TZiw4AqaVFn7YbR/tfecJx0Tgz8IZO5RNvdYzAY/3GXyh8enG5lUmrWOpWVBfWsPbsvP9BQ==
