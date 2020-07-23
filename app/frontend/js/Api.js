@@ -52,11 +52,15 @@ Api.interceptors.response.use(
 
 Api.interceptors.request.use((config) => {
   document.querySelector('body').classList.add('axios-loading')
+
   return config
 })
 
 Api.interceptors.response.use((response) => {
-  document.querySelector('body').classList.remove('axios-loading')
+  setTimeout(() => {
+    document.querySelector('body').classList.remove('axios-loading')
+  }, 1)
+
   return response
 })
 
