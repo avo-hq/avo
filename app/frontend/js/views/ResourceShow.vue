@@ -26,7 +26,7 @@
 
           <component
             v-for="(field, index) in fieldsForPanel(panel)"
-            :key="uniqueKey(field)"
+            :key="uniqueKey(field, index)"
             :is="`show-${field.component}`"
             :field="field"
             :index="index"
