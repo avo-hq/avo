@@ -93,6 +93,9 @@ RSpec.describe 'HasOneField', type: :system do
         click_on 'Save'
         wait_for_loaded
 
+        puts page.driver.browser.manage.logs.get(:browser).inspect
+
+
         expect(current_path).to eql "/avocado/resources/teams/#{team.id}"
         expect(find_field_value_element('admin')).to have_text empty_dash
       end
