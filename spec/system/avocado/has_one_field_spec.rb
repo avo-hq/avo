@@ -67,6 +67,8 @@ RSpec.describe 'HasOneField', type: :system do
 
       it 'changes the user' do
         visit url
+        wait_for_loaded
+
         expect(page).to have_select 'admin', selected: user.name
 
         select second_user.name, from: 'admin'
@@ -80,6 +82,7 @@ RSpec.describe 'HasOneField', type: :system do
 
       it 'nullifies the user' do
         visit url
+        wait_for_loaded
         expect(page).to have_select 'admin', selected: user.name
 
         select 'Choose an option', from: 'admin'
