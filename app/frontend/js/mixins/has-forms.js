@@ -80,9 +80,6 @@ export default {
         })
 
         const { success } = data
-        const { resource } = data
-
-        this.resource = resource
 
         if (success) {
           this.$router.push(this.afterSuccessPath)

@@ -72,7 +72,7 @@ router.beforeResolve((to, from, next) => {
 router.afterEach(() => {
   setTimeout(() => {
     document.querySelector('body').classList.remove('route-loading')
-  }, 10)
+  }, 1)
 })
 
 export default router

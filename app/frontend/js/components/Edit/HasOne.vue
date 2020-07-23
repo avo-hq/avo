@@ -24,7 +24,7 @@
           :key="option.value"
           :value="option.value"
           v-text="option.label"
-          ></option>
+        />
       </select>
     </div>
     <template #extra>
