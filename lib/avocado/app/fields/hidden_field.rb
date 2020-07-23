@@ -10,7 +10,7 @@ module Avocado
 
         super(name, **args, &block)
 
-        only_on :edit
+        only_on [:edit, :create]
       end
     end
   end
