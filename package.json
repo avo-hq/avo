@@ -16,7 +16,7 @@
     "release": "sh scripts/release.sh"
   },
   "dependencies": {
-    "@AvocadoHQ/avocado-js": "^0.1.0",
+    "@avocadohq/avocado-js": "^0.1.0",
     "@rails/activestorage": "^6.0.2-1",
     "@rails/webpacker": "^4.2.2",
     "autoprefixer": "^9.7.4",
