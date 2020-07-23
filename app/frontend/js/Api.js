@@ -57,9 +57,7 @@ Api.interceptors.request.use((config) => {
 })
 
 Api.interceptors.response.use((response) => {
-  setTimeout(() => {
-    document.querySelector('body').classList.remove('axios-loading')
-  }, 1)
+  document.querySelector('body').classList.remove('axios-loading')
 
   return response
 })
