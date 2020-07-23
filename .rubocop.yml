@@ -9,6 +9,8 @@ AllCops:
     - '**/vendor/**/*'
     - 'actionpack/lib/action_dispatch/journey/parser.rb'
     - 'spec/dummy/db/schema.rb'
+    - '**/bin/webpack'
+    - '**/bin/webpack-dev-server'
 
 
 # Prefer &&/|| over and/or.
