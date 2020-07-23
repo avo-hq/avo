@@ -5,13 +5,13 @@
 </template>
 
 <script>
-import FormField from '@/js/mixins/form-field'
+import { HasInputAppearance, IsFormField } from '@AvocadoHQ/avocado-js'
 
 export default {
   data: () => ({
     value: '',
   }),
-  mixins: [FormField],
+  mixins: [HasInputAppearance, IsFormField],
   computed: {
     classes() {
       const classes = ['w-full']
@@ -22,8 +22,18 @@ export default {
     },
   },
   methods: {
-    focus() {
-      if (this.$refs['field-input']) this.$refs['field-input'].$emit('focus')
+    /**
+     * Set the value of the field when the page is loaded.
+    */
+    setInitialValue() {
+      this.value = this.field.value
+    },
+
+    /**
+     * Get the value of the field when the form is submitted.
+    */
+    getValue() {
+      return this.value
     },
   },
 }

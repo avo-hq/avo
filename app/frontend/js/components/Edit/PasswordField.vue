@@ -13,10 +13,10 @@
 </template>
 
 <script>
-import FormField from '@/js/mixins/form-field'
+import { IsFormField } from '@AvocadoHQ/avocado-js'
 
 export default {
-  mixins: [FormField],
+  mixins: [IsFormField],
   data: () => ({}),
   computed: {
     classes() {

@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import HasInputAppearance from '@/js/mixins/has-input-appearance'
+import { HasInputAppearance } from '@AvocadoHQ/avocado-js'
 
 export default {
   mixins: [HasInputAppearance],

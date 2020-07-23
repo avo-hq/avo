@@ -15,17 +15,14 @@
 </template>
 
 <script>
-// eslint-disable-next-line import/no-extraneous-dependencies
 import '~/flatpickr/dist/flatpickr.css'
-import FormField from '@/js/mixins/form-field'
-import HasInputAppearance from '@/js/mixins/has-input-appearance'
+import { HasInputAppearance, IsFormField } from '@AvocadoHQ/avocado-js'
 import flatPickr from 'vue-flatpickr-component'
 import isNull from 'lodash/isNull'
 import moment from 'moment-timezone'
 
-
 export default {
-  mixins: [FormField, HasInputAppearance],
+  mixins: [HasInputAppearance, IsFormField],
   components: { flatPickr },
   data: () => ({
     value: '',

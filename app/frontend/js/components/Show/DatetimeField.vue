@@ -13,11 +13,11 @@
 </template>
 
 <script>
-import FormField from '@/js/mixins/form-field'
+import { IsFormField } from '@AvocadoHQ/avocado-js'
 import moment from 'moment'
 
 export default {
-  mixins: [FormField],
+  mixins: [IsFormField],
   data: () => ({
     displayTimezone: false,
   }),

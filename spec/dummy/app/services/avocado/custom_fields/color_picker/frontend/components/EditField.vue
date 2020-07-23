@@ -14,7 +14,7 @@ export default {
   data: () => ({
     value: '',
   }),
-  mixins: [IsFormField, HasInputAppearance],
+  mixins: [HasInputAppearance, IsFormField],
   computed: {
     classes() {
       const classes = ['w-full', 'rounded-md']
