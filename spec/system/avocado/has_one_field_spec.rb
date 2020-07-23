@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'HasOneField', type: :system do
   let!(:user) { create :user }
 
-  subject { visit url; page }
+  subject { visit url; wait_for_loaded; page }
 
   context 'index' do
     let(:url) { '/avocado/resources/teams' }
@@ -47,6 +47,8 @@ RSpec.describe 'HasOneField', type: :system do
 
       it 'changes the admin' do
         visit url
+        wait_for_loaded
+
         expect(page).to have_select 'admin', selected: 'Choose an option'
 
         select user.name, from: 'admin'
@@ -83,6 +85,7 @@ RSpec.describe 'HasOneField', type: :system do
       it 'nullifies the user' do
         visit url
         wait_for_loaded
+
         expect(page).to have_select 'admin', selected: user.name
 
         select 'Choose an option', from: 'admin'
