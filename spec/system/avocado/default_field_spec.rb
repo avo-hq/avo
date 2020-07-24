@@ -1,23 +1,27 @@
 require 'rails_helper'
 
 RSpec.describe 'DefaultField', type: :system do
-  describe 'with a default value (team - name)' do
+  describe 'with a default value (team - description)' do
 
     context 'create' do
-      it 'checks presence of default team name' do
+      it 'checks presence of default team description' do
         visit '/avocado/resources/teams/new'
+        wait_for_loaded
 
-        expect(find_field_element(:name)).to have_text 'Inc.'
+        expect(find("[field-id='description'] [data-slot='value'] textarea").value).to have_text 'This team is wonderful!'
       end
 
-      it 'saves team and checks for default team name value' do
+      it 'saves team and checks for default team description value' do
         visit '/avocado/resources/teams/new'
+        wait_for_loaded
+
+        fill_in 'name', with: 'Joshua Josh'
 
         click_on 'Save'
         wait_for_loaded
 
         expect(current_path).to have_text '/avocado/resources/teams/'
-        expect(find_field_element(:name)).to have_text 'Inc.'
+        expect(find_field_element(:description)).to have_text 'This team is wonderful!'
       end
     end
   end
@@ -29,6 +33,7 @@ RSpec.describe 'DefaultField', type: :system do
     context 'create' do
       it 'checks presence of default team membership level' do
         visit '/avocado/resources/team_memberships/new'
+        wait_for_loaded
 
         if Time.now.hour < 12
           expect(find_field_element(:level)).to have_text 'Advanced'
@@ -39,6 +44,7 @@ RSpec.describe 'DefaultField', type: :system do
 
       it 'saves team membership and checks for default team membership level value' do
         visit '/avocado/resources/team_memberships/new'
+        wait_for_loaded
 
         select 'Mihai Marin', from: :user
         select 'Apple', from: :team

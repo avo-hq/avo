@@ -108,7 +108,6 @@ module Avocado
       end
 
       def hydrate_field(fields, model, resource, view)
-
         final_value = fields[:value]
 
         if fields[:computed_value].present?
