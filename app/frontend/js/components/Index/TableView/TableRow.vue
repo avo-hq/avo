@@ -10,8 +10,8 @@
       </div>
     </td>
     <component
-      v-for="field in fields"
-      :key="uniqueKey(field)"
+      v-for="(field, index) in fields"
+      :key="uniqueKey(field, index)"
       :is="`index-${field.component}`"
       :field="field"
       :field-id="field.id"
