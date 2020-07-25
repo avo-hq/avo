@@ -2,7 +2,10 @@
   <show-field-wrapper :field="field" :index="index">
     <div class="space-y-3" v-if="value">
       <template v-for="(val, key, index) in value">
-        <div v-bind:key="index">{{ emoji(val) }} {{ label(key) }}</div>
+        <div v-bind:key="index">
+          <component :is="component(val)" :class="classes(val)" />
+          <div class="text-lg ml-8">{{ label(key) }}</div>
+        </div>
       </template>
     </div>
     <empty-dash v-else />
@@ -29,15 +32,26 @@ export default {
         this.value = result
       }
     },
-    emoji(booly) {
-      if (booly === true) return '✅'
-
-      return '❌'
-    },
     label(key) {
       if (this.field.options[key]) return this.field.options[key]
 
       return key
+    },
+    classes(value) {
+      let classes = 'h-6 float-left'
+
+      if (value) {
+        classes += ' text-green-600'
+      } else {
+        classes += ' text-red-600'
+      }
+
+      return classes
+    },
+    component(value) {
+      if (value) return 'check-circle-icon'
+
+      return 'x-circle-icon'
     },
   },
 }

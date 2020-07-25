@@ -1,19 +1,21 @@
 <template>
   <index-field-wrapper :field="field" class="text-center">
-    <template v-if="isVisible">
-      <div class="space-y-3" v-if="value">
-        <template v-for="(val, key, index) in value">
-          <div v-bind:key="index">{{ emoji(val) }} {{ label(key) }}</div>
-        </template>
-      </div>
-      <empty-dash v-else />
+    <template v-if="value">
+        <v-popover>
+          <a class="tooltip-target">View</a>
+          <template slot="popover">
+            <div class="space-y-3">
+              <template v-for="(val, key, index) in value">
+                <div v-bind:key="index">
+                  <component :is="component(val)" :class="classes(val)" />
+                  <div class="text-lg ml-8 text-left">{{ label(key) }}</div>
+                </div>
+              </template>
+            </div>
+          </template>
+        </v-popover>
     </template>
-    <a href="javascript:void(0);"
-      @click="toggleView"
-      v-else
-    >
-      View
-    </a>
+    <empty-dash v-else />
   </index-field-wrapper>
 </template>
 
@@ -40,18 +42,26 @@ export default {
         this.value = result
       }
     },
-    emoji(booly) {
-      if (booly === true) return '✅'
-
-      return '❌'
-    },
     label(key) {
       if (this.field.options[key]) return this.field.options[key]
 
       return key
     },
-    toggleView() {
-      this.isVisible = true
+    classes(value) {
+      let classes = 'h-6 float-left'
+
+      if (value) {
+        classes += ' text-green-600'
+      } else {
+        classes += ' text-red-600'
+      }
+
+      return classes
+    },
+    component(value) {
+      if (value) return 'check-circle-icon'
+
+      return 'x-circle-icon'
     },
   },
 }
