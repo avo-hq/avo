@@ -7,7 +7,7 @@ module Avocado
 
         def self.boot
           Avocado::App.initializing do
-            Avocado::App.script '<%= class_name.parameterize %>_field.js', "#{File.dirname(__FILE__)}/frontend"
+            Avocado::App.script '<%= parameter_name %>.js', "#{File.dirname(__FILE__)}/frontend"
           end
         end
       end

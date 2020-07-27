@@ -7,7 +7,7 @@
       :disabled="disabled"
       :placeholder="field.placeholder"
       v-model="value"
-      />
+    />
   </edit-field-wrapper>
 </template>
 

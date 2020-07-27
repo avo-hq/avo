@@ -1,5 +1,5 @@
 {
-  "name": "<%= "#{class_name}_field".parameterize %>",
+  "name": "<%= "#{parameter_name}" %>",
   "private": true,
   "dependencies": {
     "@rails/webpacker": "4.2.2",

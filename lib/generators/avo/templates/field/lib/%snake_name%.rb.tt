@@ -1,0 +1,5 @@
+require "<%= snake_name %>/engine"
+
+module <%= field_class_name %>
+  # Your code goes here...
+end

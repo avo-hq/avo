@@ -1,7 +1,7 @@
 module Avocado
   module Fields
     module <%= class_name %>
-      class <%= class_name %>Field < Field
+      class <%= field_class_name %> < Field
         def initialize(name, **args, &block)
           @defaults = {
             sortable: true,

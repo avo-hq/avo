@@ -1,0 +1,4 @@
+module <%= field_class_name %>
+  class Engine < ::Rails::Engine
+  end
+end
