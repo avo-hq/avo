@@ -82,12 +82,10 @@ module Avocado
 
         # Set default value for create view
         if view === :create
-          if fields[:default].present?
-            if fields[:default].respond_to? :call
-              fields[:value] = fields[:default].call model, resource, view, self
-            else
-              fields[:value] = fields[:default]
-            end
+          if fields[:default].present? and if fields[:default].respond_to? :call
+            fields[:value] = fields[:default].call model, resource, view, self
+          else
+            fields[:value] = fields[:default]
           end
         end
 
