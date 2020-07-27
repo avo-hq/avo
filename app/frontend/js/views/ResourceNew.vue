@@ -24,7 +24,7 @@
           <form @submit.prevent="submitResource">
             <component
               v-for="(field, index) in fields"
-              :key="uniqueKey(field)"
+              :key="uniqueKey(field, index)"
               :index="index"
               :is="`edit-${field.component}`"
               :field="field"
