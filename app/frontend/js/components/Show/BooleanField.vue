@@ -1,33 +1,17 @@
 <template>
   <show-field-wrapper :field="field" :index="index">
-    <component :is="component"
-      v-if="component"
-      :class="classes"
-    />
+    <boolean-check
+      v-if="field.value != null"
+      :checked="field.value" />
     <empty-dash v-else />
   </show-field-wrapper>
 </template>
 
 <script>
+import BooleanCheck from '@/js/components/BooleanCheck.vue'
+
 export default {
   props: ['field', 'index'],
-  computed: {
-    classes() {
-      let classes = 'h-6'
-
-      if (this.field.value) {
-        classes += ' text-green-600'
-      } else {
-        classes += ' text-red-600'
-      }
-
-      return classes
-    },
-    component() {
-      if (this.field.value) return 'check-circle-icon'
-
-      return 'x-circle-icon'
-    },
-  },
+  components: { BooleanCheck },
 }
 </script>

@@ -1,10 +1,10 @@
 <template>
   <show-field-wrapper :field="field" :index="index">
-    <div class="space-y-3" v-if="value">
+    <div class="space-y-2" v-if="value">
       <template v-for="(val, key, index) in value">
         <div v-bind:key="index">
-          <component :is="component(val)" :class="classes(val)" />
-          <div class="text-lg ml-8">{{ label(key) }}</div>
+          <boolean-check :checked="val"/>
+          <div class="ml-6 text-left py-px">{{ label(key) }}</div>
         </div>
       </template>
     </div>
@@ -13,11 +13,13 @@
 </template>
 
 <script>
+import BooleanCheck from '@/js/components/BooleanCheck.vue'
 import FormField from '@/js/mixins/form-field'
 
 export default {
   mixins: [FormField],
   props: ['field', 'index'],
+  components: { BooleanCheck },
   methods: {
     setInitialValue() {
       if (this.field.value) {
@@ -36,22 +38,6 @@ export default {
       if (this.field.options[key]) return this.field.options[key]
 
       return key
-    },
-    classes(value) {
-      let classes = 'h-6 float-left'
-
-      if (value) {
-        classes += ' text-green-600'
-      } else {
-        classes += ' text-red-600'
-      }
-
-      return classes
-    },
-    component(value) {
-      if (value) return 'check-circle-icon'
-
-      return 'x-circle-icon'
     },
   },
 }

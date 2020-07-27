@@ -2,13 +2,13 @@
   <index-field-wrapper :field="field" class="text-center">
     <template v-if="value">
         <v-popover>
-          <a class="tooltip-target">View</a>
+          <a href="javascript:void(0);" class="tooltip-target">View</a>
           <template slot="popover">
-            <div class="space-y-3">
+            <div class="space-y-2">
               <template v-for="(val, key, index) in value">
                 <div v-bind:key="index">
-                  <component :is="component(val)" :class="classes(val)" />
-                  <div class="text-lg ml-8 text-left">{{ label(key) }}</div>
+                  <boolean-check :checked="val"/>
+                  <div class="ml-6 text-left py-px">{{ label(key) }}</div>
                 </div>
               </template>
             </div>
@@ -19,12 +19,21 @@
   </index-field-wrapper>
 </template>
 
+<style>
+  .tooltip-inner, .popover-inner {
+    padding: 1rem !important;
+    background-color: #ffffff !important;
+  }
+</style>
+
 <script>
+import BooleanCheck from '@/js/components/BooleanCheck.vue'
 import FormField from '@/js/mixins/form-field'
 
 export default {
   mixins: [FormField],
   props: ['field'],
+  components: { BooleanCheck },
   data: () => ({
     isVisible: false,
   }),
@@ -46,22 +55,6 @@ export default {
       if (this.field.options[key]) return this.field.options[key]
 
       return key
-    },
-    classes(value) {
-      let classes = 'h-6 float-left'
-
-      if (value) {
-        classes += ' text-green-600'
-      } else {
-        classes += ' text-red-600'
-      }
-
-      return classes
-    },
-    component(value) {
-      if (value) return 'check-circle-icon'
-
-      return 'x-circle-icon'
     },
   },
 }
