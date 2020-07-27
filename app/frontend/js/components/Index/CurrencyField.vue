@@ -1,7 +1,7 @@
 <template>
   <index-field-wrapper :field="field">
     <currency-input
-      v-if="value"
+      v-if="field.value"
       v-model="value"
       :currency="field.currency"
       :locale="field.locale"
@@ -23,11 +23,11 @@ export default {
   }),
   methods: {
     setInitialValue() {
-      let { value } = this.field
-
-      if (!this.field.value || this.field.value === '') value =  0
-
-      this.value = Number(value, 10)
+      if (this.field.value) {
+        this.value = Number(this.field.value, 10)
+      } else {
+        this.value = null
+      }
     },
   },
   mounted() {

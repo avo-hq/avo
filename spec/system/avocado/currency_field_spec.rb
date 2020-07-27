@@ -28,7 +28,7 @@ RSpec.describe 'CurrencyField', type: :system do
       it 'has the projects budget prefilled' do
         visit "/avocado/resources/projects/#{project.id}/edit"
 
-        expect(find_field_element(:budget).find('input').value).to have_text '€0.00'
+        expect(find_field_element(:budget).find('input').value).to have_text ''
       end
     end
   end
