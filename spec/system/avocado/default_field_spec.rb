@@ -15,12 +15,14 @@ RSpec.describe 'DefaultField', type: :system do
         visit '/avocado/resources/teams/new'
         wait_for_loaded
 
+        expect(Team.count).to eql 0
+
         fill_in 'name', with: 'Joshua Josh'
 
         click_on 'Save'
         wait_for_loaded
 
-        expect(current_path).to have_text '/avocado/resources/teams/'
+        expect(current_path).to eql "/avocado/resources/teams/#{Team.last.id}"
         expect(find_field_element(:description)).to have_text 'This team is wonderful!'
       end
     end
@@ -46,18 +48,20 @@ RSpec.describe 'DefaultField', type: :system do
         visit '/avocado/resources/team_memberships/new'
         wait_for_loaded
 
+        expect(TeamMembership.count).to eql 0
+
         select 'Mihai Marin', from: :user
         select 'Apple', from: :team
 
         click_on 'Save'
         wait_for_loaded
 
-        expect(current_path).to have_text '/avocado/resources/team_memberships/'
+        expect(current_path).to eql "/avocado/resources/team_memberships/#{TeamMembership.last.id}"
 
         if Time.now.hour < 12
-          expect(find_field_element(:level)).to have_text 'Advanced'
+          expect(find_field_element(:level)).to have_text 'advanced'
         else
-          expect(find_field_element(:level)).to have_text 'Beginner'
+          expect(find_field_element(:level)).to have_text 'beginner'
         end
 
         expect(find_field_element(:user)).to have_text 'Mihai Marin'
