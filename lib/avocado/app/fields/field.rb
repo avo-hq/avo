@@ -81,12 +81,10 @@ module Avocado
         fields[:value] = model.send(id) if model_or_class(model) == 'model' and model.methods.include? id
 
         # Set default value for create view
-        if view === :create
-          if fields[:default].present? and fields[:default].respond_to? :call
-            fields[:value] = fields[:default].call model, resource, view, self
-          else
-            fields[:value] = fields[:default]
-          end
+        if view === :create and fields[:default].present? and fields[:default].respond_to? :call
+          fields[:value] = fields[:default].call model, resource, view, self
+        else
+          fields[:value] = fields[:default]
         end
 
         # Run callback block if present
