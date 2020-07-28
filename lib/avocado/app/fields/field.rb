@@ -21,6 +21,7 @@ module Avocado
       attr_accessor :block
       attr_accessor :placeholder
       attr_accessor :help
+      attr_accessor :default
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
@@ -46,6 +47,7 @@ module Avocado
           format_using: false,
           placeholder: id.to_s.camelize,
           help: nil,
+          default: nil,
         }
 
         # Set the values in the following order
@@ -77,6 +79,15 @@ module Avocado
 
         # Set initial value
         fields[:value] = model.send(id) if model_or_class(model) == 'model' and model.methods.include? id
+
+        # Set default value for create view
+        if view === :create
+          if fields[:default].present? and fields[:default].respond_to? :call
+            fields[:value] = fields[:default].call model, resource, view, self
+          else
+            fields[:value] = fields[:default]
+          end
+        end
 
         # Run callback block if present
         if computable and @block.present?
