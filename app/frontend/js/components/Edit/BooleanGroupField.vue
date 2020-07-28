@@ -9,8 +9,9 @@
               :name="name"
               :checked="value"
               :disabled="disabled"
+              class="w-3 h-3"
             />
-            <label>{{ labelForOption(name) }}</label>
+            <label class="ml-1">{{ labelForOption(name) }}</label>
           </div>
         </template>
       </div>
