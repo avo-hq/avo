@@ -1,19 +1,17 @@
 <template>
   <show-field-wrapper :field="field" :index="index">
-    <div v-if="value" v-text="value"></div>
+    <boolean-check
+      v-if="field.value != null"
+      :checked="field.value" />
     <empty-dash v-else />
   </show-field-wrapper>
 </template>
 
 <script>
+import BooleanCheck from '@/js/components/BooleanCheck.vue'
+
 export default {
   props: ['field', 'index'],
-  computed: {
-    value() {
-      if (this.field.value) return '✅'
-
-      return '❌'
-    },
-  },
+  components: { BooleanCheck },
 }
 </script>

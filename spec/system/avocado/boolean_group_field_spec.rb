@@ -44,9 +44,12 @@ RSpec.describe 'BooleanGroupFields', type: :system do
         user_id = page.find('[field-id="id"] [data-slot="value"]').text
         expect(current_path).to eql "/avocado/resources/users/#{user_id}"
 
-        expect(find_field_value_element(:roles)).to have_text '✅ Administrator'
-        expect(find_field_value_element(:roles)).to have_text '❌ Manager'
-        expect(find_field_value_element(:roles)).to have_text '❌ Writer'
+        expect(page.all("[field-id='roles'] [data-slot='value'] svg")[0]['class']).to have_text 'text-green-600'
+        expect(find_field_value_element(:roles)).to have_text 'Administrator'
+        expect(page.all("[field-id='roles'] [data-slot='value'] svg")[1]['class']).to have_text 'text-red-600'
+        expect(find_field_value_element(:roles)).to have_text 'Manager'
+        expect(page.all("[field-id='roles'] [data-slot='value'] svg")[2]['class']).to have_text 'text-red-600'
+        expect(find_field_value_element(:roles)).to have_text 'Writer'
       end
     end
   end

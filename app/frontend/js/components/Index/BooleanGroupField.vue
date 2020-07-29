@@ -1,28 +1,39 @@
 <template>
   <index-field-wrapper :field="field" class="text-center">
-    <template v-if="isVisible">
-      <div class="space-y-3" v-if="value">
-        <template v-for="(val, key, index) in value">
-          <div v-bind:key="index">{{ emoji(val) }} {{ label(key) }}</div>
-        </template>
-      </div>
-      <empty-dash v-else />
+    <template v-if="value">
+        <v-popover>
+          <a href="javascript:void(0);" class="tooltip-target">View</a>
+          <template slot="popover">
+            <div class="space-y-2">
+              <template v-for="(val, key, index) in value">
+                <div v-bind:key="index">
+                  <boolean-check :checked="val"/>
+                  <div class="ml-6 text-left py-px">{{ label(key) }}</div>
+                </div>
+              </template>
+            </div>
+          </template>
+        </v-popover>
     </template>
-    <a href="javascript:void(0);"
-      @click="toggleView"
-      v-else
-    >
-      View
-    </a>
+    <empty-dash v-else />
   </index-field-wrapper>
 </template>
 
+<style>
+  .tooltip-inner, .popover-inner {
+    padding: 1rem !important;
+    background-color: #ffffff !important;
+  }
+</style>
+
 <script>
+import BooleanCheck from '@/js/components/BooleanCheck.vue'
 import FormField from '@/js/mixins/form-field'
 
 export default {
   mixins: [FormField],
   props: ['field'],
+  components: { BooleanCheck },
   data: () => ({
     isVisible: false,
   }),
@@ -40,18 +51,10 @@ export default {
         this.value = result
       }
     },
-    emoji(booly) {
-      if (booly === true) return '✅'
-
-      return '❌'
-    },
     label(key) {
       if (this.field.options[key]) return this.field.options[key]
 
       return key
-    },
-    toggleView() {
-      this.isVisible = true
     },
   },
 }

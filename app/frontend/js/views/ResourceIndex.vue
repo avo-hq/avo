@@ -312,7 +312,7 @@ export default {
       return this.meta.per_page_steps
     },
     fieldId() {
-      return this.field ? this.field.id : null
+      return this.field ? this.field.id : undefined
     },
   },
   methods: {
