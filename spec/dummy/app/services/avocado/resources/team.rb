@@ -8,7 +8,8 @@ module Avocado
 
       fields do
         id
-        text :name
+        # text :name
+        title :name, name: 'Nname'
         textarea :description, rows: 5, readonly: false, hide_on: :index, format_using: -> (value) { value.to_s.truncate 30 }, required: true
 
         number :members_count do |model|

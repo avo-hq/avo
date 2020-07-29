@@ -33,7 +33,7 @@ module Avocado
         # The field properties as a hash {property: default_value}
         @field_properties = {
           id: id,
-          name: id.to_s.humanize,
+          name: args[:name] || id.to_s.humanize,
           block: block,
           component: 'field',
           required: false,

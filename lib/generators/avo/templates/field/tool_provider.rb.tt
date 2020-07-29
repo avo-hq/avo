@@ -1,4 +1,3 @@
-
 module Avocado
   module Fields
     module <%= class_name %>

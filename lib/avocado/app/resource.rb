@@ -28,7 +28,7 @@ module Avocado
           }
 
           grid_fields = resource.get_grid_fields
-          grid_fields_by_required_field = grid_fields.map{ |grid_field_id, field| [field.id, grid_field_id] }.to_h
+          grid_fields_by_required_field = grid_fields.map { |grid_field_id, field| [field.id, grid_field_id] }.to_h
 
           resource.get_fields.each do |field|
             field_is_required_in_grid_view = grid_fields.map { |grid_field_id, field| field.id }.include?(field.id)

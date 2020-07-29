@@ -32,18 +32,18 @@ class FieldGenerator < Rails::Generators::NamedBase
     File.open(Rails.root.join('package.json'), 'w') { |file| file.write("#{JSON.pretty_generate(package_json_file)}\n") }
     say_status :update, "#{field_path}/package.json"
 
-    # if options[:force] || yes?('Do you want to run `yarn install` and `bundle install` now? y/n', :cyan)
-    #   inside field_path do
-    #     run 'yarn install'
-    #     run 'bundle install'
-    #   end
-    # end
+    if options[:force] || yes?('Do you want to run `yarn install` and `bundle install` now? y/n', :cyan)
+      inside field_path do
+        run 'yarn install'
+        run 'bundle install'
+      end
+    end
 
-    # if options[:force] || yes?('Do you want to do an initial compilation for your new assets? y/n', :cyan)
-    #   inside Pathname.new(field_path).join('bin') do
-    #     run_ruby_script 'webpack'
-    #   end
-    # end
+    if options[:force] || yes?('Do you want to do an initial compilation for your new assets? y/n', :cyan)
+      inside Pathname.new(field_path).join('bin') do
+        run_ruby_script 'webpack'
+      end
+    end
 
     say "We generated you new field files under #{field_path}. You may edit the component files.", :green
   end
