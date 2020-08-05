@@ -17,4 +17,4 @@ module Avocado
   end
 end
 
-require_relative "avocado/engine" if defined?(Rails)
+require_relative 'avocado/engine' if defined?(Rails)
