@@ -63,8 +63,8 @@ development:
   dev_server:
     https: false
     host: localhost
-    port: 3035
-    public: localhost:3035
+    port: 3039
+    public: localhost:3039
     hmr: true
     # Inline should be set to true if using HMR
     inline: true
@@ -95,7 +95,7 @@ production:
   compile: false
 
   # Extract and emit a css file
-  extract_css: false
+  extract_css: true
 
   # Cache manifest.json for performance
   cache_manifest: true
