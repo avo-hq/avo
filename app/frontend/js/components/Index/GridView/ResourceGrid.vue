@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full grid grid-cols-3 gap-6">
+  <div class="w-full grid grid-cols-3 xl:grid-cols-4 gap-6">
     <div
       is="grid-item"
       v-for="(resource, index) in resources"
