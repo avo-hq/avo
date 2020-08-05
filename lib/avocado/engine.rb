@@ -8,7 +8,7 @@ module Avocado
     isolate_namespace Avocado
 
     initializer 'avocado.init' do |app|
-      avocado_root = Avocado::Engine.root.to_s
+      avocado_root_path = Avocado::Engine.root.to_s
 
       if ['development', 'test'].include? Rails.env
         # Register reloader
@@ -18,8 +18,12 @@ module Avocado
 
         # What to do on file change
         config.to_prepare do
-          Dir.glob(avocado_root + '/lib/avocado/app/**/*.rb'.to_s).each { |c| load(c) }
+          Dir.glob(avocado_root_path + '/lib/avocado/app/**/*.rb'.to_s).each { |c| load(c) }
         end
+      end
+
+      if Rails.env.production?
+        Dir.glob(avocado_root_path + '/lib/avocado/app/**/*.rb'.to_s).each { |c| load(c) }
       end
     end
 
