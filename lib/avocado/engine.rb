@@ -28,25 +28,27 @@ module Avocado
     end
 
     initializer "webpacker.proxy" do |app|
+      app.config.debug_exception_response_format = :api
+      app.config.logger = ::Logger.new(STDOUT)
+
       insert_middleware = begin
                             Avocado.webpacker.config.dev_server.present?
                           rescue
                             nil
                           end
-      next unless insert_middleware
 
-      app.middleware.insert_before(
-        0, Webpacker::DevServerProxy,
-        ssl_verify_none: true,
-        webpacker: Avocado.webpacker
-      )
-      app.config.debug_exception_response_format = :api
-      app.config.logger = ::Logger.new(STDOUT)
+      if insert_middleware
+        app.middleware.insert_before(
+          0, Webpacker::DevServerProxy,
+          ssl_verify_none: true,
+          webpacker: Avocado.webpacker
+        )
+      end
     end
 
     config.app_middleware.use(
       Rack::Static,
-      urls: ["/avocado-packs"], root: Avocado::Engine.root.join("public")
+      urls: ['/avocado-packs'], root: Avocado::Engine.root.join('public')
     )
 
     config.generators do |g|
