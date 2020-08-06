@@ -1,4 +1,3 @@
-require_relative 'field'
 require 'digest'
 require 'erb'
 

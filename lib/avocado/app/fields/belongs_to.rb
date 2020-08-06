@@ -1,5 +1,3 @@
-require_relative 'field'
-
 module Avocado
   module Fields
     class BelongsToField < Field
