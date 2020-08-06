@@ -9,13 +9,13 @@ export default {
     getResourceUrl() {
       if (this.resourceId) {
         if (this.$route.name === 'show') {
-          return `/avocado/avocado-api/${this.resourceName}/${this.resourceId}`
+          return `/avo/avo-api/${this.resourceName}/${this.resourceId}`
         }
 
-        return `/avocado/avocado-api/${this.resourceName}/${this.resourceId}/edit`
+        return `/avo/avo-api/${this.resourceName}/${this.resourceId}/edit`
       }
 
-      return `/avocado/avocado-api/${this.resourceName}/fields`
+      return `/avo/avo-api/${this.resourceName}/fields`
     },
   },
   methods: {

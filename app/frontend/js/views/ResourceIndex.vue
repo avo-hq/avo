@@ -283,7 +283,7 @@ export default {
     },
     queryUrl() {
       const url = new URI()
-      url.path(`/avocado/avocado-api/${this.resourcePath}`)
+      url.path(`/avo/avo-api/${this.resourcePath}`)
 
       /* eslint-disable camelcase */
       let query = {
@@ -358,7 +358,7 @@ export default {
       this.isLoading = false
     },
     async getFilters() {
-      const { data } = await Api.get(`/avocado/avocado-api/${this.resourcePath}/filters`)
+      const { data } = await Api.get(`/avo/avo-api/${this.resourcePath}/filters`)
 
       this.filters = data.filters
     },
@@ -442,12 +442,12 @@ export default {
       return param
     },
     async getOptions() {
-      const { data } = await Api.get(`/avocado/avocado-api/${this.resourceName}?for_relation=${this.relationship}`)
+      const { data } = await Api.get(`/avo/avo-api/${this.resourceName}?for_relation=${this.relationship}`)
 
       return data.resources
     },
     async attachOption(option, another = false) {
-      const { data } = await Api.post(`/avocado/avocado-api/${this.viaResourceName}/${this.viaResourceId}/attach/${this.resourceName}/${option}`)
+      const { data } = await Api.post(`/avo/avo-api/${this.viaResourceName}/${this.viaResourceId}/attach/${this.resourceName}/${option}`)
 
       const { success } = data
 

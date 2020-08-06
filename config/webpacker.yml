@@ -7,7 +7,7 @@ default: &default
   cache_path: tmp/cache/webpacker
   check_yarn_integrity: false
   # use a different sub-folder name
-  public_output_path: avocado-packs
+  public_output_path: avo-packs
   webpack_compile_output: false
   public_root_path: public
 
@@ -77,7 +77,7 @@ development:
       'Access-Control-Allow-Origin': '*'
     watch_options:
       ignored: '**/node_modules/**'
-    env_prefix: "AVOCADO_WEBPACKER_DEV_SERVER"
+    env_prefix: "AVO_WEBPACKER_DEV_SERVER"
 
 
 test:

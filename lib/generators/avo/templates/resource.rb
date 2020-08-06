@@ -1,4 +1,4 @@
-module Avocado
+module Avo
   module Resources
     class <%= class_name %> < Resource
       def initialize

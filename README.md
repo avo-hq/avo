@@ -2,7 +2,7 @@
 ![reviewdog](https://github.com/AvocadoHQ/avocado/workflows/reviewdog/badge.svg)
 [![codecov](https://codecov.io/gh/AvocadoHQ/avocado/branch/master/graph/badge.svg?token=Q2LMFE4989)](https://codecov.io/gh/AvocadoHQ/avocado)
 
-# Avocado
+# Avo
 The missing Ruby on Rails admin
 
 ## Usage
@@ -12,7 +12,7 @@ How to use my plugin.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'avocado'
+gem 'avo'
 ```
 
 And then execute:
@@ -22,7 +22,7 @@ $ bundle
 
 Or install it yourself as:
 ```bash
-$ gem install avocado
+$ gem install avo
 ```
 
 ## Testing
@@ -33,7 +33,7 @@ We use `rspec` to run our tests. To run unit tests use `npm run test`. For syste
 
 ```
 git clone
-cd avocado
+cd avo
 bundle install
 yarn
 bin/rails server
@@ -43,7 +43,7 @@ You may also use the VSCode launcher to take advantage of the debugger.
 
 You may need to run `rake db:migrate && rake db:test:prepare` for local development.
 
-To start the Webpack dev server you need to have a different seesion running `bin/webpack-dev-server`.
+To start the Webpack dev server you need to have a different session running `bin/webpack-dev-server`.
 
 ## License
 Commercial license.

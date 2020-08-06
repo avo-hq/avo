@@ -2,7 +2,7 @@
   <router-link to="/" class="h-16 bg-white p-2 flex justify-center" :active-class="''" exact>
     <template v-if="hasLogo"></template>
     <template v-else>
-      <img src="@/images/logo.png" alt="Avocado" class="h-full">
+      <img src="@/images/logo.png" alt="Avo" class="h-full">
     </template>
   </router-link>
 </template>

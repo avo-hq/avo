@@ -4,12 +4,12 @@ class InstallGenerator < Rails::Generators::Base
   source_root File.expand_path('templates', __dir__)
 
   namespace 'avo:install'
-  desc 'Creates an Avocado initializer adds the route to the routes file.'
-  class_option :path, type: :string, default: 'avocado'
+  desc 'Creates an Avo initializer adds the route to the routes file.'
+  class_option :path, type: :string, default: 'avo'
 
   def create_initializer_file
-    route "mount Avocado::Engine => '/#{options[:path]}'"
+    route "mount Avo::Engine => '/#{options[:path]}'"
 
-    template 'initializer.rb', 'config/initializers/avocado.rb'
+    template 'initializer.rb', 'config/initializers/avo.rb'
   end
 end
