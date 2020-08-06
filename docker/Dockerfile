@@ -26,24 +26,24 @@ RUN gem install bundler -v 2.1.4
 ENV RAILS_ENV=production
 ENV NODE_ENV=production
 
-WORKDIR /avocado/
+WORKDIR /avo/
 
 # gems
-COPY Gemfile* /avocado/
-COPY Rakefile /avocado/
-COPY avocado.gemspec /avocado/
-COPY package.json /avocado/
-COPY ./lib/ /avocado/lib/
+COPY Gemfile* /avo/
+COPY Rakefile /avo/
+COPY avo.gemspec /avo/
+COPY package.json /avo/
+COPY ./lib/ /avo/lib/
 RUN bundle install --jobs 4 --retry 3
 
-COPY yarn.lock /avocado/
+COPY yarn.lock /avo/
 
 RUN yarn install
 RUN yarn check --integrity
 
-COPY . /avocado/
+COPY . /avo/
 
 RUN bin/webpack
 
-RUN ls -la /avocado/public/avocado-packs/
+RUN ls -la /avo/public/avo-packs/
 RUN bin/rails build

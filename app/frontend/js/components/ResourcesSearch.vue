@@ -66,9 +66,9 @@ export default {
       const url = new URI()
 
       if (this.isGlobal) {
-        url.path('/avocado/avocado-api/search')
+        url.path('/avo/avo-api/search')
       } else {
-        url.path(`/avocado/avocado-api/${this.resourceName}/search`)
+        url.path(`/avo/avo-api/${this.resourceName}/search`)
       }
 
       const query = {

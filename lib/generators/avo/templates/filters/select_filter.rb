@@ -1,4 +1,4 @@
-module Avocado
+module Avo
   module Filters
     class <%= class_name.camelize %> < SelectFilter
       def name

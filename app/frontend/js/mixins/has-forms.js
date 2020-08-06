@@ -25,9 +25,9 @@ export default {
         .filter((field) => !field.computed)
     },
     submitResourceUrl() {
-      if (this.resourceId) return `/avocado/avocado-api/${this.resourceName}/${this.resourceId}`
+      if (this.resourceId) return `/avo/avo-api/${this.resourceName}/${this.resourceId}`
 
-      return `/avocado/avocado-api/${this.resourceName}`
+      return `/avo/avo-api/${this.resourceName}`
     },
     submitMethod() {
       if (this.resourceId) return 'put'

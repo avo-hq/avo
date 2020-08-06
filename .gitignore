@@ -39,7 +39,7 @@ vendor/cache/
 /config/master.key
 
 /public/packs
-/public/avocado-packs
+/public/avo-packs
 /public/packs-test
 /node_modules
 /yarn-error.log

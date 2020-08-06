@@ -1,5 +1,5 @@
 {
-  "name": "avocado",
+  "name": "avo",
   "version": "0.0.1",
   "description": "easy admin for rails",
   "main": "index.js",
@@ -10,8 +10,8 @@
     "test": "bundle exec rspec ./spec --tag type:system",
     "test-system": "bundle exec rspec ./spec --tag type:system",
     "test-all": "bundle exec rspec ./spec",
-    "docker-build": "docker build -t avocado-dev -f docker/Dockerfile .",
-    "docker-clean": "docker rmi avocado-dev",
+    "docker-build": "docker build -t avo-dev -f docker/Dockerfile .",
+    "docker-clean": "docker rmi avo-dev",
     "build": "sh scripts/build.sh",
     "release": "sh scripts/release.sh"
   },

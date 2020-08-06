@@ -81,14 +81,14 @@ export default {
   },
   methods: {
     async deleteResource() {
-      await Api.delete(`/avocado/avocado-api/${this.resourcePath}/${this.resource.id}`)
+      await Api.delete(`/avo/avo-api/${this.resourcePath}/${this.resource.id}`)
 
       this.$modal.hideAll()
 
       this.$emit('resource-deleted')
     },
     async detachResource() {
-      await Api.post(`/avocado/avocado-api/${this.viaResourceName}/${this.viaResourceId}/detach/${this.resourcePath}/${this.resource.id}`)
+      await Api.post(`/avo/avo-api/${this.viaResourceName}/${this.viaResourceId}/detach/${this.resourcePath}/${this.resource.id}`)
 
       this.$modal.hideAll()
 
