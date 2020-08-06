@@ -41,11 +41,11 @@ RSpec.describe 'ResourcesControllers', type: :request do
       it 'saves resource when valid field send' do
         expect {
           put "/avo/avo-api/users/#{user.id}", params: {
-              resource: {
-                first_name: ''
-              }
-            }.to_param
-          }.to raise_error ActiveRecord::RecordInvalid, "Validation failed: First name can't be blank"
+            resource: {
+              first_name: ''
+            }
+          }.to_param
+        }.to raise_error ActiveRecord::RecordInvalid, "Validation failed: First name can't be blank"
       end
     end
   end
