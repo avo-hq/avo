@@ -1,4 +1,5 @@
 require_relative 'avocado/configuration'
+require_relative 'avocado/app/fields/field'
 
 module Avocado
   ROOT_PATH = Pathname.new(File.join(__dir__, '..'))
