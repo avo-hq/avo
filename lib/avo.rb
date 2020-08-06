@@ -11,10 +11,6 @@ module Avo
         config_path: ROOT_PATH.join('config/webpacker.yml')
       )
     end
-
-    def root_path
-      '/avo'
-    end
   end
 end
 

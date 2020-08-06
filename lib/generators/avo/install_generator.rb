@@ -8,7 +8,7 @@ class InstallGenerator < Rails::Generators::Base
   class_option :path, type: :string, default: 'avo'
 
   def create_initializer_file
-    route "mount Avo::Engine => '/#{options[:path]}'"
+    route 'mount Avo::Engine => Avo.configuration.root_path'
 
     template 'initializer.rb', 'config/initializers/avo.rb'
   end

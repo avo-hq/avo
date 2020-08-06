@@ -28,6 +28,7 @@
 <script>
 import '~/vue-multiselect/dist/vue-multiselect.min.css'
 import Api from '@/js/Api'
+import Avo from '@/js/Avo'
 import Bus from '@/js/Bus'
 import Multiselect from 'vue-multiselect'
 import URI from 'urijs'
@@ -66,9 +67,9 @@ export default {
       const url = new URI()
 
       if (this.isGlobal) {
-        url.path('/avo/avo-api/search')
+        url.path(`${Avo.rootPath}/avo-api/search`)
       } else {
-        url.path(`/avo/avo-api/${this.resourceName}/search`)
+        url.path(`${Avo.rootPath}/avo-api/${this.resourceName}/search`)
       }
 
       const query = {
