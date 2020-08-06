@@ -197,6 +197,7 @@ export default {
     paginationClasses: 'rounded-lg focus:outline-none px-3 py-1 text-sm text-gray-600 font-semibold bg-gray-300 hover:bg-gray-400 shadow-md',
     viewType: '',
     availableViewTypes: [],
+    rootPath: '/avo',
   }),
   props: [
     'resourceName',
@@ -283,7 +284,7 @@ export default {
     },
     queryUrl() {
       const url = new URI()
-      url.path(`/avo/avo-api/${this.resourcePath}`)
+      url.path(`${this.rootPath}/avo-api/${this.resourcePath}`)
 
       /* eslint-disable camelcase */
       let query = {
@@ -358,7 +359,7 @@ export default {
       this.isLoading = false
     },
     async getFilters() {
-      const { data } = await Api.get(`/avo/avo-api/${this.resourcePath}/filters`)
+      const { data } = await Api.get(`${this.rootPath}/avo-api/${this.resourcePath}/filters`)
 
       this.filters = data.filters
     },
@@ -442,12 +443,12 @@ export default {
       return param
     },
     async getOptions() {
-      const { data } = await Api.get(`/avo/avo-api/${this.resourceName}?for_relation=${this.relationship}`)
+      const { data } = await Api.get(`${this.rootPath}/avo-api/${this.resourceName}?for_relation=${this.relationship}`)
 
       return data.resources
     },
     async attachOption(option, another = false) {
-      const { data } = await Api.post(`/avo/avo-api/${this.viaResourceName}/${this.viaResourceId}/attach/${this.resourceName}/${option}`)
+      const { data } = await Api.post(`${this.rootPath}/avo-api/${this.viaResourceName}/${this.viaResourceId}/attach/${this.resourceName}/${option}`)
 
       const { success } = data
 
@@ -482,6 +483,10 @@ export default {
     },
   },
   async created() {
+    // We need to manually require Avo to avoid a circular dependency
+    // ResourceIndex->Avo->router->ResourceIndex
+    // eslint-disable-next-line global-require
+    this.rootPath = require('@/js/Avo').default.rootPath
     await this.getFilters()
     await this.initQueryParams()
   },

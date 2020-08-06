@@ -1,4 +1,5 @@
 import Api from '@/js/Api'
+import Avo from '@/js/Avo'
 import pluralize from 'pluralize'
 
 export default {
@@ -9,13 +10,13 @@ export default {
     getResourceUrl() {
       if (this.resourceId) {
         if (this.$route.name === 'show') {
-          return `/avo/avo-api/${this.resourceName}/${this.resourceId}`
+          return `${Avo.rootPath}/avo-api/${this.resourceName}/${this.resourceId}`
         }
 
-        return `/avo/avo-api/${this.resourceName}/${this.resourceId}/edit`
+        return `${Avo.rootPath}/avo-api/${this.resourceName}/${this.resourceId}/edit`
       }
 
-      return `/avo/avo-api/${this.resourceName}/fields`
+      return `${Avo.rootPath}/avo-api/${this.resourceName}/fields`
     },
   },
   methods: {

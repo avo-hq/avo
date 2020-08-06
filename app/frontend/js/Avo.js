@@ -14,6 +14,7 @@ const Avo = {
   Bus,
   Api,
   env: '',
+  rootPath: window.rootPath || '/avo',
 
   init() {
     Avo.env = window.env || 'production'

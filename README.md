@@ -1,6 +1,6 @@
-![Tests](https://github.com/AvocadoHQ/avocado/workflows/Tests/badge.svg)
-![reviewdog](https://github.com/AvocadoHQ/avocado/workflows/reviewdog/badge.svg)
-[![codecov](https://codecov.io/gh/AvocadoHQ/avocado/branch/master/graph/badge.svg?token=Q2LMFE4989)](https://codecov.io/gh/AvocadoHQ/avocado)
+![Tests](https://github.com/AvocadoHQ/avo/workflows/Tests/badge.svg)
+![reviewdog](https://github.com/AvocadoHQ/avo/workflows/reviewdog/badge.svg)
+[![codecov](https://codecov.io/gh/AvocadoHQ/avo/branch/master/graph/badge.svg?token=Q2LMFE4989)](https://codecov.io/gh/AvocadoHQ/avo)
 
 # Avo
 The missing Ruby on Rails admin

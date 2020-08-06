@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import { Api } from '@/js/Avo'
+import Avo, { Api } from '@/js/Avo'
 import DealsWithHasManyRelations from '@/js/mixins/deals-with-has-many-relations'
 import DealsWithResourceLabels from '@/js/mixins/deals-with-resource-labels'
 import Modal from '@/js/components/Modal.vue'
@@ -81,14 +81,14 @@ export default {
   },
   methods: {
     async deleteResource() {
-      await Api.delete(`/avo/avo-api/${this.resourcePath}/${this.resource.id}`)
+      await Api.delete(`${Avo.rootPath}/avo-api/${this.resourcePath}/${this.resource.id}`)
 
       this.$modal.hideAll()
 
       this.$emit('resource-deleted')
     },
     async detachResource() {
-      await Api.post(`/avo/avo-api/${this.viaResourceName}/${this.viaResourceId}/detach/${this.resourcePath}/${this.resource.id}`)
+      await Api.post(`${Avo.rootPath}/avo-api/${this.viaResourceName}/${this.viaResourceId}/detach/${this.resourcePath}/${this.resource.id}`)
 
       this.$modal.hideAll()
 

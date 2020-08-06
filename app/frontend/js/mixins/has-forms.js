@@ -1,5 +1,6 @@
 import { objectToFormData } from 'object-to-formdata'
 import Api from '@/js/Api'
+import Avo from '@/js/Avo'
 import isNull from 'lodash/isNull'
 import isUndefined from 'lodash/isUndefined'
 
@@ -25,9 +26,9 @@ export default {
         .filter((field) => !field.computed)
     },
     submitResourceUrl() {
-      if (this.resourceId) return `/avo/avo-api/${this.resourceName}/${this.resourceId}`
+      if (this.resourceId) return `${Avo.rootPath}/avo-api/${this.resourceName}/${this.resourceId}`
 
-      return `/avo/avo-api/${this.resourceName}`
+      return `${Avo.rootPath}/avo-api/${this.resourceName}`
     },
     submitMethod() {
       if (this.resourceId) return 'put'

@@ -4,6 +4,7 @@
   <title>Avo</title>
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
+  <%= render partial: 'layouts/avo/javascript' %>
 
   <%= javascript_pack_tag 'application' %>
   <%= stylesheet_pack_tag 'application', media: 'all' %>
@@ -25,7 +26,6 @@
       <%= yield %>
     </div>
   </div>
-
 </div>
 </body>
 </html>
