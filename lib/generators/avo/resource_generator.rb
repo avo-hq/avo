@@ -4,6 +4,6 @@ class ResourceGenerator < Rails::Generators::NamedBase
   namespace 'avo:resource'
 
   def create_resource_file
-    template 'resource.rb', "app/services/avo/resources/#{singular_name}.rb"
+    template 'resource.rb', "app/avo/resources/#{singular_name}.rb"
   end
 end

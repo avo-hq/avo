@@ -7,6 +7,17 @@ module Avo
   class Engine < ::Rails::Engine
     isolate_namespace Avo
 
+    initializer 'avo.autoload', before: :set_autoload_paths do |app|
+      {
+        'Avo::Resources': ['app', 'avo', 'resources'],
+        'Avo::Filters': ['app', 'avo', 'filters'],
+      }.each do |namespace, path|
+        next unless Rails.root.join(*path).exist?
+
+        Rails.autoloaders.main.push_dir(Rails.root.join(*path), namespace: namespace.to_s.safe_constantize)
+      end
+    end
+
     initializer 'avo.init' do |app|
       avo_root_path = Avo::Engine.root.to_s
 
@@ -27,7 +38,7 @@ module Avo
       end
     end
 
-    initializer "webpacker.proxy" do |app|
+    initializer 'webpacker.proxy' do |app|
       app.config.debug_exception_response_format = :api
       app.config.logger = ::Logger.new(STDOUT)
 
