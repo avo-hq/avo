@@ -21,8 +21,14 @@ module Avo
       end
 
       def hydrate_field(fields, model, resource, view)
+        value = nil
+
+        if model[id].present?
+          value = Digest::MD5.hexdigest(model[id].strip.downcase)
+        end
+
         {
-          value: Digest::MD5.hexdigest(model[id].strip.downcase),
+          value: value,
           rounded: @rounded,
           default: @default,
           size: @size,
