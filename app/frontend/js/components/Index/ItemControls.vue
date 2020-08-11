@@ -12,7 +12,7 @@
           viaResourceId: viaResourceId,
         }
       }"
-      v-tooltip="`View ${this.resourceNameSingular}`"
+      :title="`View ${this.resourceNameSingular}`"
       data-control="view"
     >
       <eye-icon :class="iconClasses"/>
@@ -29,14 +29,14 @@
           viaResourceId: viaResourceId,
         },
       }"
-      v-tooltip="`Edit ${this.resourceNameSingular}`"
+      :title="`Edit ${this.resourceNameSingular}`"
       data-control="edit"
     >
       <edit-icon :class="iconClasses"/>
     </router-link>
     <a href="javascript:void(0);"
       @click="openDetachModal"
-      v-tooltip="`Detach ${this.resourceNameSingular}`"
+      :title="`Detach ${this.resourceNameSingular}`"
       data-control="detach"
       v-if="relationship === 'has_and_belongs_to_many'"
     >
@@ -44,7 +44,7 @@
     </a>
     <a href="javascript:void(0);"
       @click="openDeleteModal"
-      v-tooltip="`Delete ${this.resourceNameSingular}`"
+      :title="`Delete ${this.resourceNameSingular}`"
       data-control="delete"
       v-else
     >
