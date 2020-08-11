@@ -12,7 +12,7 @@ module Avo
         id
         gravatar :email
         heading 'User information'
-        text :first_name, required: true, placeholder: 'John'
+        text :first_name, required: true, placeholder: 'John', as_link_to_resource: true
         text :last_name, required: true, placeholder: 'Doe'
         text :email, name: 'User Email', required: true
         file :cv, name: 'CV'
