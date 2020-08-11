@@ -7,7 +7,7 @@ module Avo
       end
 
       fields do
-        id :ID
+        id
       end
     end
   end
