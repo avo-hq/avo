@@ -41,37 +41,35 @@ RSpec.describe 'ResourceOverview', type: :request do
 
       expect(response).to have_http_status(200)
 
-      expect(parsed_response).to eql({
-        resources: [
-          {
-            count: 0,
-            name: 'Team',
-            url: 'teams',
-          },
-          {
-            count: 0,
-            name: 'Project',
-            url: 'projects',
-          },
-          {
-            count: 0,
-            name: 'Post',
-            url: 'posts',
-          },
-          {
-            count: 0,
-            name: 'Team Membership',
-            url: 'team_memberships',
-          },
-          {
-            count: 0,
-            name: 'User',
-            url: 'users',
-          },
-        ],
-        hidden: false,
-        hide_docs: false,
-      }.deep_stringify_keys)
+      expect(parsed_response['hidden']).to be false
+      expect(parsed_response['hide_docs']).to be false
+      expect(parsed_response['resources']).to match_array([
+        {
+          count: 0,
+          name: 'Team',
+          url: 'teams',
+        },
+        {
+          count: 0,
+          name: 'Project',
+          url: 'projects',
+        },
+        {
+          count: 0,
+          name: 'Post',
+          url: 'posts',
+        },
+        {
+          count: 0,
+          name: 'Team Membership',
+          url: 'team_memberships',
+        },
+        {
+          count: 0,
+          name: 'User',
+          url: 'users',
+        },
+      ].map(&:deep_stringify_keys))
     end
   end
 
@@ -86,37 +84,35 @@ RSpec.describe 'ResourceOverview', type: :request do
 
       expect(response).to have_http_status(200)
 
-      expect(parsed_response).to eql({
-        resources: [
-          {
-            count: 2,
-            name: 'Team',
-            url: 'teams',
-          },
-          {
-            count: 0,
-            name: 'Project',
-            url: 'projects',
-          },
-          {
-            count: 0,
-            name: 'Post',
-            url: 'posts',
-          },
-          {
-            count: 0,
-            name: 'Team Membership',
-            url: 'team_memberships',
-          },
-          {
-            count: 3,
-            name: 'User',
-            url: 'users',
-          },
-        ],
-        hidden: false,
-        hide_docs: false,
-      }.deep_stringify_keys)
+      expect(parsed_response['hidden']).to be false
+      expect(parsed_response['hide_docs']).to be false
+      expect(parsed_response['resources']).to match_array([
+        {
+          count: 2,
+          name: 'Team',
+          url: 'teams',
+        },
+        {
+          count: 0,
+          name: 'Project',
+          url: 'projects',
+        },
+        {
+          count: 0,
+          name: 'Post',
+          url: 'posts',
+        },
+        {
+          count: 0,
+          name: 'Team Membership',
+          url: 'team_memberships',
+        },
+        {
+          count: 3,
+          name: 'User',
+          url: 'users',
+        },
+      ].map(&:deep_stringify_keys))
     end
   end
 end
