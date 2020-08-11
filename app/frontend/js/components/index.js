@@ -91,6 +91,8 @@ Vue.component('item-controls',                       require('@/js/components/In
 Vue.component('view-header',                         require('@/js/components/ViewHeader.vue').default)
 Vue.component('view-footer',                         require('@/js/components/ViewFooter.vue').default)
 Vue.component('panel',                               require('@/js/components/Panel.vue').default)
+Vue.component('pane',                                require('@/js/components/Pane.vue').default)
+Vue.component('resource-overview',                   require('@/js/components/ResourceOverview.vue').default)
 Vue.component('heading',                             require('@/js/components/Heading.vue').default)
 Vue.component('a-button',                            require('@/js/components/Button.vue').default)
 Vue.component('resources-search',                    require('@/js/components/ResourcesSearch.vue').default)

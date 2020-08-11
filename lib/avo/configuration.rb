@@ -8,6 +8,8 @@ module Avo
     attr_accessor :locale
     attr_accessor :currency
     attr_accessor :default_view_type
+    attr_accessor :hide_resource_overview_component
+    attr_accessor :hide_documentation_link
 
     def initialize
       @root_path = '/avo'
@@ -18,6 +20,8 @@ module Avo
       @locale = 'us-US'
       @currency = 'USD'
       @default_view_type = :table
+      @hide_resource_overview_component = false
+      @hide_documentation_link = false
     end
   end
 
