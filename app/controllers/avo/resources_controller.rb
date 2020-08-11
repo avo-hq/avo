@@ -107,7 +107,7 @@ module Avo
 
       # Filter out the file params
       regular_resource_params = resource_params.select do |id, value|
-        !avo_resource.attached_file_fields.map(&:id).include? id
+        !avo_resource.attached_file_fields.map(&:id).to_s.include? id
       end
 
       if avo_resource.has_devise_password and regular_resource_params[:password].blank?
