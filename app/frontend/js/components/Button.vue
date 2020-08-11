@@ -77,6 +77,14 @@ export default {
           break
       }
 
+      // Temporary fix for the button colors to keep them in the bundle in the production build.
+      // Colors: green, indigo, red, gray, blue
+      // hover:border-green-800 border-green-600 text-green-600 hover:text-green-800 bg-green-300 bg-green-500 hover:bg-green-600 bg-green-700
+      // hover:border-indigo-800 border-indigo-600 text-indigo-600 hover:text-indigo-800 bg-indigo-300 bg-indigo-500 hover:bg-indigo-600 bg-indigo-700
+      // hover:border-red-800 border-red-600 text-red-600 hover:text-red-800 bg-red-300 bg-red-500 hover:bg-red-600 bg-red-700
+      // hover:border-gray-800 border-gray-600 text-gray-600 hover:text-gray-800 bg-gray-300 bg-gray-500 hover:bg-gray-600 bg-gray-700
+      // hover:border-blue-800 border-blue-600 text-blue-600 hover:text-blue-800 bg-blue-300 bg-blue-500 hover:bg-blue-600 bg-blue-700
+
       return classes
     },
     isOutlined() {
