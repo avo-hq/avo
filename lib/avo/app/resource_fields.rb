@@ -112,6 +112,10 @@ module Avo
         def hidden(name, **args, &block)
           @@fields[self].push Avo::Fields::HiddenField::new(name, **args, &block)
         end
+
+        def trix(name, **args, &block)
+          @@fields[self].push Avo::Fields::TrixField::new(name, **args, &block)
+        end
       end
     end
   end
