@@ -10,14 +10,14 @@ module Avo
         super(name, **args, &block)
 
         @options = args[:options].present? ? args[:options] : {}
-        @display_with_value = args[:display_with_value].present? ? args[:display_with_value] : false
+        @display_labels = args[:display_labels].present? ? args[:display_labels] : false
         @placeholder = args[:placeholder].present? ? args[:placeholder].to_s : 'Choose an option'
       end
 
       def hydrate_field(fields, model, resource, view)
         {
           options: @options,
-          display_with_value: @display_with_value,
+          display_labels: @display_labels,
           placeholder: @placeholder,
         }
       end
