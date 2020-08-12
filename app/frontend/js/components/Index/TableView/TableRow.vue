@@ -16,6 +16,10 @@
       :field="field"
       :field-id="field.id"
       :field-component="field.component"
+      :resource="resource"
+      :resource-name="resourceName"
+      :via-resource-name="viaResourceName"
+      :via-resource-id="viaResourceId"
     />
 
     <td class="text-right whitespace-no-wrap px-2">

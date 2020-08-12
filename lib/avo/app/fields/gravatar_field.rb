@@ -18,6 +18,7 @@ module Avo
         @rounded = args[:rounded].present? ? args[:rounded] : true
         @size = args[:size].present? ? args[:size].to_i : 40
         @default = args[:default].present? ? ERB::Util.url_encode(args[:default]).to_s : ''
+        @as_link_to_resource = args[:as_link_to_resource].present? ? args[:as_link_to_resource] : false
       end
 
       def hydrate_field(fields, model, resource, view)
@@ -32,6 +33,7 @@ module Avo
           rounded: @rounded,
           default: @default,
           size: @size,
+          as_link_to_resource: @as_link_to_resource,
         }
       end
     end
