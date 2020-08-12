@@ -1,25 +1,11 @@
 <template>
   <index-field-wrapper :field="field">
-    <div v-if="field.as_link_to_resource && field.value">
-      <router-link
-        :to="{
-          name: 'show',
-          params: {
-            resourceName: resourcePath,
-            resourceId: resource.id,
-          },
-          query:{
-            viaResourceName: viaResourceName,
-            viaResourceId: viaResourceId,
-          }
-        }"
-        :title="`View ${this.resourceNameSingular}`"
-        data-control="view"
-      >
-        {{ field.value }}
-      </router-link>
-    </div>
-    <div v-else-if="!field.as_link_to_resource && field.value" v-text="field.value"></div>
+    <div v-if="field.value"
+      v-text="field.value"
+      :is="element"
+      :to="to"
+      :title="title"
+    />
     <empty-dash v-else />
   </index-field-wrapper>
 </template>
@@ -30,7 +16,6 @@ import DealsWithResourceLabels from '@/js/mixins/deals-with-resource-labels'
 
 export default {
   mixins: [DealsWithHasManyRelations, DealsWithResourceLabels],
-
   props: [
     'resource',
     'resourceName',
@@ -38,5 +23,34 @@ export default {
     'viaResourceId',
     'field',
   ],
+  computed: {
+    element() {
+      if (this.field.as_link_to_resource) return 'router-link'
+
+      return 'div'
+    },
+    to() {
+      if (this.field.as_link_to_resource) {
+        return {
+          name: 'show',
+          params: {
+            resourceName: this.resourcePath,
+            resourceId: this.resource.id,
+          },
+          query: {
+            viaResourceName: this.viaResourceName,
+            viaResourceId: this.viaResourceId,
+          },
+        }
+      }
+
+      return null
+    },
+    title() {
+      if (this.field.as_link_to_resource) return `View ${this.resourceNameSingular}`
+
+      return null
+    },
+  },
 }
 </script>

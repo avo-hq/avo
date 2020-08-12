@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'AsLinkToResources', type: :system do
   describe 'for id field' do
-    let!(:project) { create :project}
+    let!(:project) { create :project }
 
     context 'index' do
       it 'displays the projects id as link' do
@@ -22,21 +22,20 @@ RSpec.describe 'AsLinkToResources', type: :system do
     end
   end
 
-  describe 'for text field' do
-    let!(:user) { create :user, first_name: 'Relu' }
+  describe 'for gravatar field' do
+    let!(:user) { create :user }
 
     context 'index' do
-      it 'displays the user first name as link' do
+      it 'displays the user gravatar as link' do
         visit '/avo/resources/users'
 
-        expect(find_field_element('first_name')).to have_text 'Relu'
-        expect(find_field_element('first_name')).to have_selector 'a[title="View User"]'
+        expect(find_field_element_by_component('gravatar-field')).to have_selector 'a[title="View User"]'
       end
 
-      it 'clicks on the user first name' do
+      it 'clicks on the user gravatar' do
         visit '/avo/resources/users'
 
-        find('[field-id="first_name"]').find('a').click
+        find_field_element_by_component('gravatar-field').find('a').click
         wait_for_loaded
 
         expect(current_path).to eql "/avo/resources/users/#{user.id}"
