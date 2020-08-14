@@ -73,6 +73,7 @@ module.exports = {
     backgroundColor: ['responsive', 'hover', 'focus', 'disabled'],
     textColor: ['responsive', 'hover', 'focus', 'disabled'],
     translate: ['responsive', 'hover', 'focus', 'active'],
+    cursor: ['responsive', 'disabled'],
   },
   plugins: [
     // buttons
