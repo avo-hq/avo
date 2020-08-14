@@ -44,7 +44,7 @@ RSpec.describe 'CurrencyField', type: :system do
       it 'displays the projects budget on index' do
         visit "/avo/resources/projects/#{project.id}"
 
-        expect(find_field_element(:budget).find('input').value).to have_text '€1,000.00'
+        expect(find_field_element(:budget).find('input').value).to have_text '1.000,00 €'
         expect(find_field_element(:budget)).to have_css '.bg-transparent'
       end
     end
@@ -53,7 +53,7 @@ RSpec.describe 'CurrencyField', type: :system do
       it 'displays the projects budget on show' do
         visit "/avo/resources/projects/#{project.id}"
 
-        expect(find_field_element(:budget).find('input').value).to have_text '€1,000.00'
+        expect(find_field_element(:budget).find('input').value).to have_text '1.000,00 €'
         expect(find_field_element(:budget)).to have_css '.bg-transparent'
       end
     end
@@ -62,7 +62,7 @@ RSpec.describe 'CurrencyField', type: :system do
       it 'has the projects budget prefilled' do
         visit "/avo/resources/projects/#{project.id}/edit"
 
-        expect(find_field_element(:budget).find('input').value).to have_text '€1,000.00'
+        expect(find_field_element(:budget).find('input').value).to have_text '1.000,00 €'
       end
 
       it 'changes the projects budget using dot' do
@@ -74,7 +74,7 @@ RSpec.describe 'CurrencyField', type: :system do
         wait_for_loaded
 
         expect(current_path).to eql "/avo/resources/projects/#{project.id}"
-        expect(find_field_element(:budget).find('input').value).to have_text '€100.10'
+        expect(find_field_element(:budget).find('input').value).to have_text '100,10 €'
       end
 
       it 'changes the projects budget using comma' do
@@ -86,7 +86,7 @@ RSpec.describe 'CurrencyField', type: :system do
         wait_for_loaded
 
         expect(current_path).to eql "/avo/resources/projects/#{project.id}"
-        expect(find_field_element(:budget).find('input').value).to have_text '€100.10'
+        expect(find_field_element(:budget).find('input').value).to have_text '100,10 €'
       end
     end
   end
