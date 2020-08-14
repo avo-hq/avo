@@ -23,7 +23,6 @@ module Avo
 
         return {} if [:index].include? view
 
-
         target_resource = get_target_resource model
         fields[:relation_class] = target_resource.class.to_s
         fields[:path] = target_resource.url
