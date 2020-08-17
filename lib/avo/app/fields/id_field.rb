@@ -1,9 +1,19 @@
 module Avo
   module Fields
     class IdField < Field
+      DEFAULT_VALUE = 'id'
+
       def initialize(name, **args, &block)
+        if name.nil?
+          @name = name = DEFAULT_VALUE
+        elsif !name.is_a? String and !name.is_a? Symbol
+          args_copy = name
+          @name = name = DEFAULT_VALUE
+          args = args_copy
+        end
+
         @defaults = {
-          id: :id,
+          id: name.to_sym,
           readonly: true,
           sortable: true,
           component: 'id-field'
