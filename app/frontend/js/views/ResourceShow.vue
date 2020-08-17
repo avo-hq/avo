@@ -8,7 +8,7 @@
 
         <template #tools>
           <div class="flex justify-end space-x-2">
-            <resource-actions :resource-name="resourceName" :resource-id="resourceId" :actions="actions" />
+            <resource-actions :resource-name="resourceName" :resource-ids="[resourceId]" :actions="actions" />
             <a-button :to="cancelActionParams"><arrow-left-icon class="h-4 mr-1"/> Back</a-button>
             <a-button
               color="indigo"
@@ -54,11 +54,12 @@
 
 <script>
 import HasUniqueKey from '@/js/mixins/has-unique-key'
+import LoadsActions from '@/js/mixins/loads-actions'
 import LoadsResource from '@/js/mixins/loads-resource'
 
 export default {
   name: 'ResourceShow',
-  mixins: [LoadsResource, HasUniqueKey],
+  mixins: [LoadsResource, LoadsActions, HasUniqueKey],
   data: () => ({
     resource: null,
     actions: [],

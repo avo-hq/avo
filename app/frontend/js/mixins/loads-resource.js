@@ -1,8 +1,10 @@
 import Api from '@/js/Api'
 import Avo from '@/js/Avo'
+import hasLoadingBus from '@/js/mixins/has-loading-bus'
 import pluralize from 'pluralize'
 
 export default {
+  mixins: [hasLoadingBus],
   data: () => ({
     isLoading: false,
   }),
@@ -43,18 +45,8 @@ export default {
       this.resource = resource
       this.isLoading = false
     },
-    async getActions() {
-      if (!this.resourceId) return
-
-      const { data } = await Api.get(`${Avo.rootPath}/avo-api/${this.resourceName}/actions?resource_id=${this.resourceId}`)
-
-      this.actions = data.actions
-    },
   },
-  async mounted() {
-    await Promise.all([
-      this.getResource(),
-      this.getActions(),
-    ])
+  created() {
+    this.addToBus(this.getResource)
   },
 }

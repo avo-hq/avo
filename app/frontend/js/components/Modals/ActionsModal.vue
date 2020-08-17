@@ -12,7 +12,6 @@
         :field="field"
         :errors="errors"
         :resource-name="resourceName"
-        :resource-id="resourceId"
         :field-id="field.id"
         :via-resource-name="viaResourceName"
         :via-resource-id="viaResourceId"
@@ -20,24 +19,22 @@
         displayed-in="modal"
       />
     </div>
-    <div class="flex-1 flex items-center justify-center px-8 text-lg" v-else>
-      {{ text }}
+    <div class="flex-1 flex items-center justify-center px-8 text-lg mt-8 mb-12" v-else>
+      {{ action.message }}
     </div>
     <div class="flex justify-end items-baseline space-x-4 p-4 bg-gray-200">
       <a-button
         size="sm"
         @click="$emit('close')"
-      >
-        Cancel
-      </a-button>
+        v-text="action.cancel_text"
+      />
       <a-button
         ref="confirm-button"
-        color="green"
+        :color="buttonColor"
         size="sm"
         @click="handle"
-      >
-        Run
-      </a-button>
+        v-text="action.confirm_text"
+      />
     </div>
   </div>
 </template>
@@ -45,6 +42,7 @@
 <script>
 import Api from '@/js/Api'
 import Avo from '@/js/Avo'
+import Bus from '@/js/Bus'
 import HasForms from '@/js/mixins/has-forms'
 import HasUniqueKey from '@/js/mixins/has-unique-key'
 
@@ -52,11 +50,10 @@ export default {
   mixins: [HasUniqueKey, HasForms],
   props: [
     'resourceName',
-    'resourceId',
+    'resourceIds',
     'viaResourceName',
     'viaResourceId',
     'heading',
-    'text',
     'action',
   ],
   data: () => ({}),
@@ -70,27 +67,22 @@ export default {
     submitUrl() {
       return `${Avo.rootPath}/avo-api/${this.resourceName}/actions`
     },
+    buttonColor() {
+      switch (this.action.theme) {
+        default:
+        case 'success':
+          return 'green'
+        case 'error':
+          return 'red'
+        case 'warning':
+          return 'orange'
+      }
+    },
   },
   methods: {
     async handle() {
       this.isLoading = true
       this.errors = {}
-      // console.log('this.buildFormData()->', this.buildFormData())
-
-      // const data  = await Api({
-      //   method: 'POST',
-      //   url: this.submitUrl,
-      //   data: this.buildFormData({
-      //     resource_name: this.resourceName,
-      //     resource_id: this.resourceId,
-      //     action_id: this.action.id,
-      //   }),
-      //   headers: {
-      //     'Content-Type': 'multipart/form-data',
-      //   },
-      // })
-      // console.log('data->', data)
-
 
       try {
         const { data } = await Api({
@@ -99,7 +91,7 @@ export default {
           data: this.buildFormData({
             /* eslint-disable camelcase */
             resource_name: this.resourceName,
-            resource_id: this.resourceId,
+            resource_ids: this.resourceIds,
             action_id: this.action.id,
             action_class: this.action.action_class,
             /* eslint-enable camelcase */
@@ -108,16 +100,64 @@ export default {
             'Content-Type': 'multipart/form-data',
           },
         })
-        console.log('data->', data)
 
-        // const { success } = data
-        // const { resource } = data
+        const {
+          resource,
+          success,
+          response,
+        } = data
 
-        // this.resource = resource
+        const {
+          message,
+          message_type: messageType,
+          type,
+          path,
+          filename,
+        } = response
 
-        // if (success) {
-        //   this.$router.push(this.afterSuccessPath)
-        // }
+        this.resource = resource
+
+        if (success) {
+          this.$emit('close')
+
+          if (['success', 'error'].includes(messageType)) {
+            Avo.alert(message, messageType)
+          }
+
+          if (type === 'redirect') {
+            Avo.redirect(path)
+          }
+
+          if (type === 'http_redirect') {
+            window.location = path
+          }
+
+          if (type === 'reload') {
+            Avo.reload()
+          }
+
+          if (type === 'reload_resources') {
+            Bus.$emit('reload-resources')
+          }
+
+          if (type === 'open_in_new_tab') {
+            window.open(path)
+          }
+
+          if (type === 'download') {
+            window.fetch(path, {
+              headers: {
+                'Content-Disposition': 'form-data; name="fieldName"; filename="filename.jpg',
+              },
+            }).then((res) => res.blob())
+              .then((blob) => {
+                const a = document.createElement('a')
+                a.href = URL.createObjectURL(blob)
+                a.setAttribute('download', filename)
+                a.click()
+              })
+          }
+        }
       } catch (error) {
         const { response } = error
 

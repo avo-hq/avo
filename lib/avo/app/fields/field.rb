@@ -177,6 +177,10 @@ module Avo
         false
       end
 
+      def resolve_attribute(value)
+        value
+      end
+
       private
         def model_or_class(model)
           if model.class == String

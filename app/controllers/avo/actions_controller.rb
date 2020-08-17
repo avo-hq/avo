@@ -5,12 +5,13 @@ module Avo
     def index
       avo_actions = avo_resource.get_actions
       actions = []
+
       if params[:resource_id].present?
         model = resource_model.safe_constantize.find params[:resource_id]
       end
 
       avo_actions.each do |action|
-        actions.push(action.new(model).render_response model, avo_resource)
+        actions.push(action.new.render_response model, avo_resource)
       end
 
       render json: {
@@ -19,18 +20,21 @@ module Avo
     end
 
     def handle
-      model = resource_model.safe_constantize.find params[:resource_id]
-      avo_action = params[:action_class].safe_constantize.new
-      response = avo_action.handle request, model, params[:fields]
+      models = resource_model.safe_constantize.find action_params[:resource_ids]
+      avo_action = action_params[:action_class].safe_constantize.new
+      avo_action.handle_action(request, models, action_params[:fields])
 
       render json: {
         success: true,
-        response: response,
-        fields: params[:fields],
+        response: avo_action.response,
       }
     end
 
     private
+      def action_params
+        params.permit(:resource_name, :action_id, :action_class, resource_ids: [], fields: {})
+      end
+
       def resource_model
         params[:resource_name].to_s.camelize.singularize
       end
