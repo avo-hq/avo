@@ -11,5 +11,8 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
-  "peacock.color": "#42b883"
+  "peacock.color": "#42b883",
+  "cSpell.words": [
+    "datetime"
+  ]
 }
