@@ -192,6 +192,7 @@ export default {
     sortDirection: '',
     isLoading: true,
     filters: [],
+    actions: [],
     appliedFilters: {},
     oldQueryUrl: '',
     paginationClasses: 'rounded-lg focus:outline-none px-3 py-1 text-sm text-gray-600 font-semibold bg-gray-300 hover:bg-gray-400 shadow-md',
@@ -363,6 +364,11 @@ export default {
 
       this.filters = data.filters
     },
+    async getActions() {
+      // const { data } = await Api.get(`${this.rootPath}/avo-api/${this.resourcePath}/actions`)
+
+      // this.actions = data.actions
+    },
     changeSortDirection(by) {
       if (this.sortBy !== '' && this.sortBy !== by) {
         this.sortDirection = 'desc'
@@ -488,6 +494,7 @@ export default {
     // eslint-disable-next-line global-require
     this.rootPath = require('@/js/Avo').default.rootPath
     await this.getFilters()
+    await this.getActions()
     await this.initQueryParams()
   },
 }

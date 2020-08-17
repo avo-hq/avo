@@ -7,7 +7,7 @@ export default {
     isLoading: false,
   }),
   computed: {
-    getResourceUrl() {
+    resourceUrl() {
       if (this.resourceId) {
         if (this.$route.name === 'show') {
           return `${Avo.rootPath}/avo-api/${this.resourceName}/${this.resourceId}`
@@ -37,16 +37,24 @@ export default {
     async getResource() {
       this.isLoading = true
 
-      const { data } = await Api.get(this.getResourceUrl)
+      const { data } = await Api.get(this.resourceUrl)
 
       const resource = this.hydrateRelatedResources(data.resource)
-
       this.resource = resource
-
       this.isLoading = false
+    },
+    async getActions() {
+      if (!this.resourceId) return
+
+      const { data } = await Api.get(`${Avo.rootPath}/avo-api/${this.resourceName}/actions?resource_id=${this.resourceId}`)
+
+      this.actions = data.actions
     },
   },
   async mounted() {
-    await this.getResource()
+    await Promise.all([
+      this.getResource(),
+      this.getActions(),
+    ])
   },
 }

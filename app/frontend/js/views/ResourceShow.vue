@@ -8,6 +8,7 @@
 
         <template #tools>
           <div class="flex justify-end space-x-2">
+            <resource-actions :resource-name="resourceName" :resource-id="resourceId" :actions="actions" />
             <a-button :to="cancelActionParams"><arrow-left-icon class="h-4 mr-1"/> Back</a-button>
             <a-button
               color="indigo"
@@ -60,6 +61,7 @@ export default {
   mixins: [LoadsResource, HasUniqueKey],
   data: () => ({
     resource: null,
+    actions: [],
   }),
   props: [
     'resourceName',
