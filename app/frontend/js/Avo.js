@@ -48,7 +48,9 @@ const Avo = {
       dynamic: true,
       injectModalsContainer: false,
       dynamicDefaults: {
-        height: 250,
+        adaptive: true,
+        height: 'auto',
+        minHeight: 250,
         width: 550,
         styles: 'border-radius: 1rem',
       },
