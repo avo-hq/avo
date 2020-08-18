@@ -16,10 +16,22 @@ module Avo
 
       def hydrate_field(fields, model, resource, view)
         {
-          value: fields[:value].present? ? fields[:value] == @true_value : fields[:value],
+          value: resolve_attribute(fields[:value]),
           true_value: @true_value,
           false_value: @false_value,
         }
+      end
+
+      def resolve_attribute(value)
+        value.present? ? value.in?(truthy_values) : value
+      end
+
+      def truthy_values
+        ['true', @true_value]
+      end
+
+      def falsy_values
+        ['false', @false_value]
       end
     end
   end

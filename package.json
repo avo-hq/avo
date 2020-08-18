@@ -59,7 +59,7 @@
     "vue-toasted": "^1.1.28",
     "vue-turbolinks": "^2.1.0",
     "vuejs-paginate": "^2.1.0",
-    "vuex": "^3.1.3",
+    "vuex": "^3.5.1",
     "webpack": "^4.42.0",
     "webpack-dev-server": "^3.10.3"
   },

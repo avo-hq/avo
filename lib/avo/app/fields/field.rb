@@ -1,9 +1,11 @@
 require_relative 'field_extensions/visible_in_different_views'
+require_relative 'field_extensions/has_field_name'
 
 module Avo
   module Fields
     class Field
       include Avo::Fields::FieldExtensions::VisibleOnDifferentViews
+      extend Avo::Fields::FieldExtensions::HasFieldName
 
       attr_accessor :id
       attr_accessor :name
@@ -77,7 +79,7 @@ module Avo
           fields[name] = self.send(name)
         end
 
-        # Set initial value
+        # Set model value
         fields[:value] = model.send(id) if model_or_class(model) == 'model' and model.methods.include? id
 
         # Set default value for create view
@@ -105,7 +107,44 @@ module Avo
         fields
       end
 
-      def hydrate_field(fields, model, resource, view)
+      def fetch_for_action(model, resource)
+        fields = {
+          id: id,
+          # computed: block.present?,
+        }
+
+        # Fill the properties with values
+        @field_properties.each do |name, value|
+          fields[name] = self.send(name)
+        end
+
+        # Set initial value
+        # fields[:value] = model.send(id) if model_or_class(model) == 'model' and model.methods.include? id
+
+        # Set default value for create view
+        if fields[:default].present? and fields[:default].respond_to? :call
+          fields[:value] = fields[:default].call model, resource, self
+        else
+          fields[:value] = fields[:default]
+        end
+
+        # Run callback block if present
+        # if computable and @block.present?
+        #   fields[:computed_value] = @block.call model, resource, self
+
+        #   fields[:value] = fields[:computed_value]
+        # end
+
+        # Run each field's custom hydration
+        fields.merge! self.hydrate_field(fields, model, resource, :create)
+
+        # Run the value through resolver if present
+        fields[:value] = @format_using.call fields[:value] if @format_using.present?
+
+        fields
+      end
+
+      def hydrate_field(fields, model, resource)
         final_value = fields[:value]
 
         if fields[:computed_value].present?
@@ -136,6 +175,10 @@ module Avo
 
       def has_own_panel?
         false
+      end
+
+      def resolve_attribute(value)
+        value
       end
 
       private

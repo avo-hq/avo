@@ -1,5 +1,5 @@
 <template>
-  <edit-field-wrapper :field="field" :errors="errors" :index="index">
+  <edit-field-wrapper :field="field" :errors="errors" :index="index" :displayed-in="displayedIn">
     <div v-if="value">
       <img v-if="field.is_image" :src="value" class="rounded-lg" />
     </div>

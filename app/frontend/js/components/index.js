@@ -103,6 +103,7 @@ Vue.component('empty-state',                         require('@/js/components/Em
 
 // Filters
 Vue.component('resource-filters',                    require('@/js/components/Index/ResourceFilters.vue').default)
+Vue.component('resource-actions',                    require('@/js/components/ResourceActions.vue').default)
 Vue.component('boolean-filter',                      require('@/js/components/Index/Filters/BooleanFilter.vue').default)
 Vue.component('select-filter',                       require('@/js/components/Index/Filters/SelectFilter.vue').default)
 Vue.component('filter-wrapper',                      require('@/js/components/Index/Filters/FilterWrapper.vue').default)

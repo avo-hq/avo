@@ -1,26 +1,22 @@
-import Dashboard from '@/js/views/Dashboard.vue'
-import ResourceEdit from '@/js/views/ResourceEdit.vue'
-import ResourceIndex from '@/js/views/ResourceIndex.vue'
-import ResourceNew from '@/js/views/ResourceNew.vue'
-import ResourceShow from '@/js/views/ResourceShow.vue'
+/* eslint-disable global-require */
 import VueRouter from 'vue-router'
 
 const routes = [
   {
     name: 'dashboard',
     path: '/',
-    component: Dashboard,
+    component: require('@/js/views/Dashboard.vue').default,
   },
   {
     name: 'index',
     path: '/resources/:resourceName',
-    component: ResourceIndex,
+    component: require('@/js/views/ResourceIndex.vue').default,
     props: true,
   },
   {
     name: 'new',
     path: '/resources/:resourceName/new',
-    component: ResourceNew,
+    component: require('@/js/views/ResourceNew.vue').default,
     props: (route) => ({
       resourceName: route.params.resourceName,
       viaRelationship: route.query.viaRelationship,
@@ -31,7 +27,7 @@ const routes = [
   {
     name: 'show',
     path: '/resources/:resourceName/:resourceId',
-    component: ResourceShow,
+    component: require('@/js/views/ResourceShow.vue').default,
     props: (route) => ({
       resourceName: route.params.resourceName,
       resourceId: route.params.resourceId,
@@ -43,7 +39,7 @@ const routes = [
   {
     name: 'edit',
     path: '/resources/:resourceName/:resourceId/edit',
-    component: ResourceEdit,
+    component: require('@/js/views/ResourceEdit.vue').default,
     props: (route) => ({
       resourceName: route.params.resourceName,
       resourceId: route.params.resourceId,

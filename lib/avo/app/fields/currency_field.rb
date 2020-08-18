@@ -14,7 +14,7 @@ module Avo
         @locale = args[:locale].present? ? args[:locale].to_s : Avo.configuration.locale
       end
 
-      def hydrate_resource(model, resource, view)
+      def hydrate_field(fields, model, resource, view)
         {
           currency: @currency,
           locale: @locale,

@@ -1,5 +1,5 @@
 <template>
-  <edit-field-wrapper :field="field" :errors="errors" :index="index">
+  <edit-field-wrapper :field="field" :errors="errors" :index="index" :displayed-in="displayedIn">
     <div v-if="searchable">
       <resources-search :resource-name="field.id"
         :via-resource-name="resourceName"

@@ -12,6 +12,7 @@ module Avo
       tools: [],
       tool_classes: [],
       resources: [],
+      field_names: {},
     }
 
     class << self
@@ -19,6 +20,7 @@ module Avo
         @@app[:root_path] = Pathname.new(File.join(__dir__, '..', '..'))
         # get_tools
         # init_tools
+        init_fields
         init_resources
       end
 
@@ -33,6 +35,67 @@ module Avo
       # def get_tools
       #   @@app[:tool_classes] = ToolsManager.get_tools
       # end
+
+      # This method will take all fields available in the Avo::Fields namespace and create a method for them.
+      #
+      # If the field has their `def_method` set up it will follow that convention, if not it will snake_case the name:
+      #
+      # Avo::Fields::TextField -> text
+      # Avo::Fields::TextDateTime -> date_time
+      def init_fields
+        Avo::Fields.constants.each do |class_name|
+          next if class_name.to_s == 'Field'
+
+          field_class = method_name = nil
+
+          if class_name.to_s.end_with? 'Field'
+            field_class = "Avo::Fields::#{class_name.to_s}".safe_constantize
+            method_name = field_class.get_field_name
+
+            next if Avo::Resources::Resource.method_defined? method_name.to_sym
+          else
+            # Try one level deeper for custom fields
+            namespace = class_name
+            tool_provider = "Avo::Fields::#{namespace}::ToolProvider".safe_constantize
+
+            next unless tool_provider.present?
+
+            tool_provider.boot
+
+            "Avo::Fields::#{namespace}".safe_constantize.constants.each do |custom_field_class|
+              next unless custom_field_class.to_s.end_with? 'Field' or custom_field_class.to_s == 'Field'
+
+              field_class = "Avo::Fields::#{namespace}::#{custom_field_class}".safe_constantize
+              method_name = field_class.get_field_name
+            end
+          end
+
+          if field_class.present? and method_name.present?
+            load_field method_name, field_class
+          end
+        end
+      end
+
+      def load_field(method_name, klass)
+        @@app[:field_names][method_name] = klass
+
+        # Load field to concerned classes
+        [Avo::Resources::Resource, Avo::Actions::Action].each do |klass_entity|
+          klass_entity.define_singleton_method method_name.to_sym do |*args, &block|
+            if block.present?
+              field_class = klass::new(args[0], **args[1] || {}, &block)
+            else
+              field_class = klass::new(args[0], **args[1] || {})
+            end
+
+            klass_entity.add_field(self, field_class)
+          end
+        end
+      end
+
+      def get_field_names
+        @@app[:field_names]
+      end
 
       def init_resources
         @@app[:resources] = Avo::Resources.constants.select { |r| r != :Resource }.map do |c|

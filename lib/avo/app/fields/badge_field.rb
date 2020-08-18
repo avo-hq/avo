@@ -11,8 +11,8 @@ module Avo
 
         hide_on [:edit, :create]
 
-        default_map = { info: :info, success: :success, danger: :danger, warning: :warning }
-        @map = args[:map].present? ? default_map.merge(args[:map]) : default_map
+        default_options = { info: :info, success: :success, danger: :danger, warning: :warning }
+        @options = args[:options].present? ? default_options.merge(args[:options]) : default_options
       end
 
       def hydrate_field(fields, model, resource, view)
@@ -24,7 +24,7 @@ module Avo
 
         value = {}
 
-        @map.invert.each do |values, type|
+        @options.invert.each do |values, type|
           db_value = model[id] || ''
 
           if [values].flatten.map { |value| value.to_s }.include? db_value

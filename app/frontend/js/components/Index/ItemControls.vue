@@ -40,7 +40,7 @@
       data-control="detach"
       v-if="relationship === 'has_and_belongs_to_many'"
     >
-      <trash-icon :class="iconClasses"/>
+      <switch-horizontal-icon :class="iconClasses"/>
     </a>
     <a href="javascript:void(0);"
       @click="openDeleteModal"
