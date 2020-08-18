@@ -5,11 +5,11 @@
       :class="inputClasses"
       v-model="value"
     >
-      <option value="null" disabled>{{field.placeholder}}</option>
+      <option v-if="!value" :value="value" v-text="field.placeholder" disabled selected hidden/>
       <option v-for="(option, key) in field.options"
         :value="key"
         :key="key"
-        v-text="option"
+        v-text="(!field.display_value && option) ? option : key"
       />
     </select>
   </edit-field-wrapper>

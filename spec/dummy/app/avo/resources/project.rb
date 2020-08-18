@@ -8,11 +8,11 @@ module Avo
       end
 
       fields do
-        id as_link_to_resource: true
+        id link_to_resource: true
         text :name, required: true
         status :status, failed_when: [:closed, :rejected, :failed], loading_when: [:loading, :running, :waiting], nullable: true
-        badge :stage, map: { info: [:discovery, :ideea], success: :done, warning: 'on hold', danger: :cancelled }
-        select :stage, hide_on: [:show, :index], options: { discovery: 'Discovery', ideea: 'Ideea', done: 'Done', 'on hold': 'On hold', cancelled: 'Cancelled' }, placeholder: 'Choose the stage.'
+        select :stage, hide_on: [:show, :index], options: { discovery: 'Discovery', ideea: 'Ideea', done: 'Done', 'on hold': 'On hold', cancelled: 'Cancelled' }, placeholder: 'Choose the stage.', display_value: true
+        badge :stage, options: { info: [:discovery, :ideea], success: :done, warning: 'on hold', danger: :cancelled }
         currency :budget, currency: 'EUR', locale: 'de-DE'
         country :country
         number :users_required
