@@ -54,6 +54,25 @@ RSpec.describe 'Actions', type: :system do
         expect(user.reload.active).to be false
         expect(second_user.reload.active).to be false
       end
+
+      describe 'when resources still selected' do
+        it 'runs the action' do
+          visit url
+
+          expect(page).to have_button('Actions', disabled: true)
+
+          find('tr[resource-name=users]:first-child input[type=checkbox]').click
+
+          expect(page).to have_button('Actions', disabled: false)
+
+          click_on 'Posts'
+          wait_for_loaded
+          click_on 'Users'
+          wait_for_loaded
+
+          expect(page).to have_button('Actions', disabled: true)
+        end
+      end
     end
   end
 

@@ -13,6 +13,9 @@ const mutations = {
       state.selectedResources.push(resource.id)
     }
   },
+  clearSelectedResources(state) {
+    state.selectedResources = []
+  },
 }
 
 const actions = {}

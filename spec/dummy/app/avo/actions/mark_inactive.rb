@@ -12,7 +12,7 @@ module Avo
           model.notify fields['message'] if fields['notify_user']
         end
 
-        fail 'Perfect!'
+        succeed 'Perfect!'
         reload_resources
       end
 

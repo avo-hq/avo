@@ -175,7 +175,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 import Api from '@/js/Api'
 import AttachModal from '@/js/components/AttachModal.vue'
 import Avo from '@/js/Avo'
@@ -331,6 +331,9 @@ export default {
     },
   },
   methods: {
+    ...mapMutations('index', [
+      'clearSelectedResources',
+    ]),
     updateQueryParams() {
       this.$router.push(this.newQueryParams)
     },
@@ -501,9 +504,16 @@ export default {
     this.addToBus(this.initQueryParams)
   },
   mounted() {
+    // console.log(this.$store.index.state.selectedResources) // getter
+    // this.$store.index.mutations.udpateSelected(resource, altceva, asdasdas, asdasdad, sda)
+    // actions
+    // mutations
+
     Bus.$on('reload-resources', () => this.getResources(true))
   },
   destroyed() {
+    this.clearSelectedResources()
+
     Bus.$off('reload-resources')
   },
 }
