@@ -38,9 +38,9 @@ RSpec.describe 'DefaultField', type: :system do
         wait_for_loaded
 
         if Time.now.hour < 12
-          expect(find_field_element(:level)).to have_text 'Advanced'
+          expect(find_field_element(:level)).to have_text 'advanced'
         else
-          expect(find_field_element(:level)).to have_text 'Beginner'
+          expect(find_field_element(:level)).to have_text 'beginner'
         end
       end
 
@@ -59,9 +59,9 @@ RSpec.describe 'DefaultField', type: :system do
         expect(current_path).to eql "/avo/resources/team_memberships/#{TeamMembership.last.id}"
 
         if Time.now.hour < 12
-          expect(find_field_element(:level)).to have_text 'Advanced'
+          expect(find_field_element(:level)).to have_text 'advanced'
         else
-          expect(find_field_element(:level)).to have_text 'Beginner'
+          expect(find_field_element(:level)).to have_text 'beginner'
         end
 
         expect(find_field_element(:user)).to have_text 'Mihai Marin'

@@ -9,7 +9,7 @@
       <option v-for="(option, key) in field.options"
         :value="key"
         :key="key"
-        v-text="(field.display_labels && option) ? option : key"
+        v-text="(!field.display_value && option) ? option : key"
       />
     </select>
   </edit-field-wrapper>

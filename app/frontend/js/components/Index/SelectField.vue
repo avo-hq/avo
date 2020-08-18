@@ -14,7 +14,7 @@ export default {
       return this.field.options[this.field.value]
     },
     value() {
-      if (this.field.display_labels && this.label) return this.label
+      if (!this.field.display_value && this.label) return this.label
 
       return this.field.value
     },
