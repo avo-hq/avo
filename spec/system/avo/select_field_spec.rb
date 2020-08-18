@@ -24,7 +24,7 @@ RSpec.describe 'SelectField', type: :system do
         visit "/avo/resources/projects/#{project.id}/edit"
 
         select 'Romania', from: :country
-        find("[field-id='stage'] [data-slot='value'] select").select 'Discovery'
+        find("[field-id='stage'] [data-slot='value'] select").select 'discovery'
 
         click_on 'Save'
         wait_for_loaded
@@ -40,7 +40,7 @@ RSpec.describe 'SelectField', type: :system do
         visit "/avo/resources/projects/#{project.id}/edit"
 
         select 'Romania', from: :country
-        find("[field-id='stage'] [data-slot='value'] select").select 'Cancelled'
+        find("[field-id='stage'] [data-slot='value'] select").select 'cancelled'
 
         click_on 'Save'
         wait_for_loaded
