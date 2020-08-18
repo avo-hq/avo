@@ -1,5 +1,5 @@
 <template>
-  <component :is="component" :class="classes" />
+  <component :is="component" :class="classes" :data-checked="checked ? 1 : 0" />
 </template>
 
 <script>

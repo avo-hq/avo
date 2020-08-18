@@ -1,6 +1,8 @@
 require_relative 'resource_fields'
 require_relative 'resource_grid_fields'
 require_relative 'resource_filters'
+require_relative 'resource_actions'
+require_relative 'fields/field'
 
 module Avo
   module Resources
@@ -27,7 +29,7 @@ module Avo
           }
 
           grid_fields = resource.get_grid_fields
-          grid_fields_by_required_field = grid_fields.map{ |grid_field_id, field| [field.id, grid_field_id] }.to_h
+          grid_fields_by_required_field = grid_fields.map { |grid_field_id, field| [field.id, grid_field_id] }.to_h
 
           resource.get_fields.each do |field|
             field_is_required_in_grid_view = grid_fields.map { |grid_field_id, field| field.id }.include?(field.id)
@@ -120,6 +122,10 @@ module Avo
 
       def get_filters
         self.class.get_filters
+      end
+
+      def get_actions
+        self.class.get_actions
       end
 
       def search

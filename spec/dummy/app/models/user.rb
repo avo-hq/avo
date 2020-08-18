@@ -20,4 +20,8 @@ class User < ApplicationRecord
   def name
     "#{first_name} #{last_name}"
   end
+
+  def notify(text)
+    # notify about text
+  end
 end

@@ -1,5 +1,5 @@
 <template>
-  <edit-field-wrapper :field="field" :errors="errors" :index="index" :value-slot-full-width="true">
+  <edit-field-wrapper :field="field" :errors="errors" :index="index" :displayed-in="displayedIn" :value-slot-full-width="true">
     <code-component
       :value="value"
       :language="field.language"

@@ -2,7 +2,8 @@
   <show-field-wrapper :field="field" :index="index">
     <boolean-check
       v-if="field.value != null"
-      :checked="field.value" />
+      :checked="field.value"
+    />
     <empty-dash v-else />
   </show-field-wrapper>
 </template>
