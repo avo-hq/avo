@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'AsLinkToResources', type: :system do
+RSpec.describe 'LinkToResource', type: :system do
   describe 'for id field' do
     let!(:project) { create :project }
 
