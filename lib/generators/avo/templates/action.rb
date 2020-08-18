@@ -6,11 +6,13 @@ module Avo
       end
 
       def handle(request, models, fields)
-        query
+        models.each do |model|
+          # Do something with your models.
+        end
       end
 
-      def fields
-        {}
+      fields do
+        # Add desired fields here.
       end
     end
   end
