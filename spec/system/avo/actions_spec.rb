@@ -74,6 +74,7 @@ RSpec.describe 'Actions', type: :system do
 
       it 'opens the action modal and executes the action' do
         visit url
+        expect(find_field_value_element('active')).to have_css 'svg[data-checked="1"]'
 
         click_on 'Actions'
         click_on 'Mark inactive'
@@ -87,9 +88,11 @@ RSpec.describe 'Actions', type: :system do
         fill_in 'message', with: 'Your account has been marked as very inactive.'
 
         click_on 'Run'
+        wait_for_loaded
 
         expect(page).to have_text 'Perfect!'
         expect(user.reload.active).to be false
+        expect(find_field_value_element('active')).to have_css 'svg[data-checked="0"]'
       end
     end
 
