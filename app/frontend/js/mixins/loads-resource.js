@@ -1,5 +1,6 @@
 import Api from '@/js/Api'
 import Avo from '@/js/Avo'
+import Bus from '@/js/Bus'
 import hasLoadingBus from '@/js/mixins/has-loading-bus'
 import pluralize from 'pluralize'
 
@@ -48,5 +49,11 @@ export default {
   },
   created() {
     this.addToBus(this.getResource)
+  },
+  mounted() {
+    Bus.$on('reload-resources', this.getResource)
+  },
+  destroyed() {
+    Bus.$off('reload-resources')
   },
 }
