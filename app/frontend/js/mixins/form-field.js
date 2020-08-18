@@ -16,6 +16,9 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    displayedIn: {
+      default: () => 'form',
+    },
   },
   computed: {
     disabled() {

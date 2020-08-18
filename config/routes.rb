@@ -5,6 +5,8 @@ Avo::Engine.routes.draw do
   get '/avo-api/:resource_name/search',   to: 'resources#search'
   get '/avo-api/:resource_name',          to: 'resources#index'
   get '/avo-api/:resource_name/filters',  to: 'resources#filters'
+  get '/avo-api/:resource_name/actions',  to: 'actions#index'
+  post '/avo-api/:resource_name/actions', to: 'actions#handle'
   post '/avo-api/:resource_name',         to: 'resources#create'
   get '/avo-api/:resource_name/fields',   to: 'resources#fields'
   get '/avo-api/:resource_name/:id',      to: 'resources#show'

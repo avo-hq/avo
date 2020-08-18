@@ -11,6 +11,7 @@ module Avo
       {
         'Avo::Resources': ['app', 'avo', 'resources'],
         'Avo::Filters': ['app', 'avo', 'filters'],
+        'Avo::Actions': ['app', 'avo', 'actions'],
       }.each do |namespace, path|
         next unless Rails.root.join(*path).exist?
 

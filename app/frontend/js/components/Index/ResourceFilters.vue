@@ -1,10 +1,10 @@
 <template>
   <div class="relative w-full flex justify-between z-30" v-if="hasFilters">
-    <a-button color="gray" class="focus:outline-none" @click="toggleFiltersPanel">
+    <a-button color="gray" class="focus:outline-none" @click="togglePanel">
       <filter-icon class="h-4 mr-2" data-button="resource-filters" /> Filters
     </a-button>
     <div v-on-clickaway="onClickAway"
-      class="absolute block inset-auto right-0 top-full bg-white min-w-300px mt-2 z-20 shadow-row rounded-xl overflow-hidden"
+      class="absolute block inset-auto right-0 top-full bg-white min-w-300px mt-2 z-20 shadow-context rounded-xl"
       v-if="open"
     >
       <div v-if="!viaResourceName">
@@ -62,7 +62,7 @@ export default {
     },
   },
   methods: {
-    toggleFiltersPanel() {
+    togglePanel() {
       this.open = !this.open
     },
     changePerPage() {

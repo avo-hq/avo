@@ -3,6 +3,7 @@ import Api from '@/js/Api'
 import Avo from '@/js/Avo'
 import isNull from 'lodash/isNull'
 import isUndefined from 'lodash/isUndefined'
+import merge from 'lodash/merge'
 
 export default {
   data: () => ({
@@ -37,10 +38,10 @@ export default {
     },
   },
   methods: {
-    buildFormData() {
-      const formData = {
-        resource: {},
-      }
+    buildFormData(startingData, payloadId = 'resource') {
+      let formData = {}
+      formData[payloadId] = {}
+      formData = merge(startingData, formData)
 
       if (this.viaResourceName) {
         // eslint-disable-next-line camelcase
@@ -60,7 +61,7 @@ export default {
         const value = isNull(field.getValue()) ? '' : field.getValue()
 
         if (id) {
-          formData.resource[id] = value
+          formData[payloadId][id] = value
         }
       })
 

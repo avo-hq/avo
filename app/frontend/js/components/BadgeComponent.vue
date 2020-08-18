@@ -1,5 +1,8 @@
 <template>
-  <span :class="classes" v-text="label"/>
+  <span :class="classes"
+    style="max-width: 120px;"
+    v-text="label"
+  />
 </template>
 
 <script>
@@ -10,7 +13,7 @@ export default {
   },
   computed: {
     classes() {
-      const classes = ['whitespace-no-wrap', 'rounded-md', 'uppercase', 'px-2', 'py-1', 'text-xs', 'font-bold', 'text-white']
+      const classes = ['whitespace-no-wrap', 'rounded-md', 'uppercase', 'px-2', 'py-1', 'text-xs', 'font-bold', 'text-white', 'block', 'text-center', 'truncate']
 
       const backgrounds = {
         info: 'blue',

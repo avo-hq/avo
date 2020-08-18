@@ -6,6 +6,14 @@
 
     <template #tools>
       <div class="flex justify-end items-center mb-6 w-full">
+        <div class="mr-2">
+          <resource-actions
+            :resource-name="resourceName"
+            :resource-ids="selectedResources"
+            :actions="actions"
+            v-if="resources.length > 0"
+          />
+        </div>
         <div>
           <a-button
             color="indigo"
@@ -167,18 +175,21 @@
 </template>
 
 <script>
+import { mapMutations, mapState } from 'vuex'
 import Api from '@/js/Api'
 import AttachModal from '@/js/components/AttachModal.vue'
+import Avo from '@/js/Avo'
 import Bus from '@/js/Bus'
 import DealsWithHasManyRelations from '@/js/mixins/deals-with-has-many-relations'
 import DealsWithResourceLabels from '@/js/mixins/deals-with-resource-labels'
+import LoadsActions from '@/js/mixins/loads-actions'
 import URI from 'urijs'
 import isNull from 'lodash/isNull'
 import isUndefined from 'lodash/isUndefined'
 
 export default {
   name: 'ResourceIndex',
-  mixins: [DealsWithResourceLabels, DealsWithHasManyRelations],
+  mixins: [DealsWithResourceLabels, DealsWithHasManyRelations, LoadsActions],
   data: () => ({
     resources: [],
     totalPages: 0,
@@ -206,6 +217,9 @@ export default {
     'field',
   ],
   computed: {
+    ...mapState('index', [
+      'selectedResources',
+    ]),
     newQueryParams() {
       return {
         name: this.viaResourceName ? 'show' : 'index',
@@ -284,7 +298,7 @@ export default {
     },
     queryUrl() {
       const url = new URI()
-      url.path(`${this.rootPath}/avo-api/${this.resourcePath}`)
+      url.path(`${Avo.rootPath}/avo-api/${this.resourcePath}`)
 
       /* eslint-disable camelcase */
       let query = {
@@ -317,6 +331,9 @@ export default {
     },
   },
   methods: {
+    ...mapMutations('index', [
+      'clearSelectedResources',
+    ]),
     updateQueryParams() {
       this.$router.push(this.newQueryParams)
     },
@@ -359,7 +376,7 @@ export default {
       this.isLoading = false
     },
     async getFilters() {
-      const { data } = await Api.get(`${this.rootPath}/avo-api/${this.resourcePath}/filters`)
+      const { data } = await Api.get(`${Avo.rootPath}/avo-api/${this.resourcePath}/filters`)
 
       this.filters = data.filters
     },
@@ -443,12 +460,12 @@ export default {
       return param
     },
     async getOptions() {
-      const { data } = await Api.get(`${this.rootPath}/avo-api/${this.resourceName}?for_relation=${this.relationship}`)
+      const { data } = await Api.get(`${Avo.rootPath}/avo-api/${this.resourceName}?for_relation=${this.relationship}`)
 
       return data.resources
     },
     async attachOption(option, another = false) {
-      const { data } = await Api.post(`${this.rootPath}/avo-api/${this.viaResourceName}/${this.viaResourceId}/attach/${this.resourceName}/${option}`)
+      const { data } = await Api.post(`${Avo.rootPath}/avo-api/${this.viaResourceName}/${this.viaResourceId}/attach/${this.resourceName}/${option}`)
 
       const { success } = data
 
@@ -483,12 +500,16 @@ export default {
     },
   },
   async created() {
-    // We need to manually require Avo to avoid a circular dependency
-    // ResourceIndex->Avo->router->ResourceIndex
-    // eslint-disable-next-line global-require
-    this.rootPath = require('@/js/Avo').default.rootPath
-    await this.getFilters()
-    await this.initQueryParams()
+    this.addToBus(this.getFilters)
+    this.addToBus(this.initQueryParams)
+  },
+  mounted() {
+    Bus.$on('reload-resources', () => this.getResources(true))
+  },
+  destroyed() {
+    this.clearSelectedResources()
+
+    Bus.$off('reload-resources')
   },
 }
 </script>
@@ -496,12 +517,6 @@ export default {
 <style slang="postcss">
 /* @todo: fix loaders to support lang= */
 .avo-pagination {
-  /* a {
-    @apply shadow-md;
-  }
-  a.active {
-    @apply bg-gray-300 border-gray-300;
-  } */
   a.disabled {
     @apply text-gray-500;
 

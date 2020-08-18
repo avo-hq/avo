@@ -1,13 +1,16 @@
 import Api from '@/js/Api'
 import Avo from '@/js/Avo'
+import Bus from '@/js/Bus'
+import hasLoadingBus from '@/js/mixins/has-loading-bus'
 import pluralize from 'pluralize'
 
 export default {
+  mixins: [hasLoadingBus],
   data: () => ({
     isLoading: false,
   }),
   computed: {
-    getResourceUrl() {
+    resourceUrl() {
       if (this.resourceId) {
         if (this.$route.name === 'show') {
           return `${Avo.rootPath}/avo-api/${this.resourceName}/${this.resourceId}`
@@ -37,16 +40,20 @@ export default {
     async getResource() {
       this.isLoading = true
 
-      const { data } = await Api.get(this.getResourceUrl)
+      const { data } = await Api.get(this.resourceUrl)
 
       const resource = this.hydrateRelatedResources(data.resource)
-
       this.resource = resource
-
       this.isLoading = false
     },
   },
-  async mounted() {
-    await this.getResource()
+  created() {
+    this.addToBus(this.getResource)
+  },
+  mounted() {
+    Bus.$on('reload-resources', this.getResource)
+  },
+  destroyed() {
+    Bus.$off('reload-resources')
   },
 }

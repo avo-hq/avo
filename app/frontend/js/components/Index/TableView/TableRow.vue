@@ -6,7 +6,10 @@
   >
     <td class="w-10">
       <div class="flex justify-center h-full">
-        <input type="checkbox" class="mx-3" />
+        <input type="checkbox"
+          class="mx-3 w-4 h-4"
+          @click="updateSelection(resource)"
+        />
       </div>
     </td>
     <component
@@ -39,6 +42,7 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 import ExtractsFields from '@/js/mixins/extracts-fields'
 import HasUniqueKey from '@/js/mixins/has-unique-key'
 
@@ -59,6 +63,11 @@ export default {
 
       return []
     },
+  },
+  methods: {
+    ...mapMutations('index', [
+      'updateSelection',
+    ]),
   },
 }
 </script>
