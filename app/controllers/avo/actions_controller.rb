@@ -1,4 +1,4 @@
-require_dependency "avo/application_controller"
+require_dependency 'avo/application_controller'
 
 module Avo
   class ActionsController < ApplicationController
