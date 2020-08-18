@@ -5,7 +5,6 @@ module Avo
     class TrixField < Field
       def initialize(name, **args, &block)
         @defaults = {
-          sortable: true,
           component: 'trix-field',
         }
 
@@ -13,12 +12,12 @@ module Avo
 
         hide_on :index
 
-        @rows = args[:rows].present? ? args[:rows].to_i : 5
+        @always_show = args[:always_show].present? ? args[:always_show] : false
       end
 
       def hydrate_field(fields, model, resource, view)
         {
-          rows: @rows
+          always_show: @always_show
         }
       end
     end
