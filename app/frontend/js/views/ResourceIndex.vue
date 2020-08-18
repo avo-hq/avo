@@ -504,11 +504,6 @@ export default {
     this.addToBus(this.initQueryParams)
   },
   mounted() {
-    // console.log(this.$store.index.state.selectedResources) // getter
-    // this.$store.index.mutations.udpateSelected(resource, altceva, asdasdas, asdasdad, sda)
-    // actions
-    // mutations
-
     Bus.$on('reload-resources', () => this.getResources(true))
   },
   destroyed() {
