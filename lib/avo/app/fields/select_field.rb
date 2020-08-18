@@ -10,7 +10,7 @@ module Avo
         super(name, **args, &block)
 
         @options = args[:options].present? ? args[:options] : {}
-        @display_value= args[:display_value].present? ? args[:display_value] : false
+        @display_value = args[:display_value].present? ? args[:display_value] : false
         @placeholder = args[:placeholder].present? ? args[:placeholder].to_s : 'Choose an option'
       end
 
