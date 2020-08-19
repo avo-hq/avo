@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
       'public gem pushes.'
   end
 
-  spec.files = Dir['{bin,app,config,db,lib,public}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md', 'avo.gemspec', 'Gemfile', 'Gemfile.lock']
+  spec.files = Dir['{bin,app,config,db,lib,public}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md', 'avo.gemspec', 'Gemfile', 'Gemfile.lock'].reject { |file| file.start_with? 'app/frontend' }
 
   spec.add_dependency 'rails', '~> 6.0.2', '>= 6.0.2.1'
   spec.add_dependency 'kaminari'
