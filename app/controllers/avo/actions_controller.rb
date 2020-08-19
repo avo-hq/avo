@@ -36,11 +36,11 @@ module Avo
       end
 
       def resource_model
-        params[:resource_name].to_s.camelize.singularize
+        avo_resource.model
       end
 
       def avo_resource
-        App.get_resource resource_model
+        App.get_resource params[:resource_name].to_s.camelize.singularize
       end
   end
 end
