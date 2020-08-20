@@ -36,6 +36,8 @@ module Avo
 
       if Rails.env.production?
         Dir.glob(avo_root_path + '/lib/avo/app/**/*.rb'.to_s).each { |c| load(c) }
+
+        Avo::App.init
       end
     end
 
