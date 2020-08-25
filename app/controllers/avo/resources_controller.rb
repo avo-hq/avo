@@ -35,7 +35,7 @@ module Avo
 
       if filters.present?
         filters.each do |filter_class, filter_value|
-          query = filter_class.new.apply_query request, query, filter_value
+          query = filter_class.safe_constantize.new.apply_query request, query, filter_value
         end
       end
 
