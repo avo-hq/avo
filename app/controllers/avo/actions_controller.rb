@@ -7,7 +7,7 @@ module Avo
       actions = []
 
       if params[:resource_id].present?
-        model = resource_model.safe_constantize.find params[:resource_id]
+        model = resource_model.find params[:resource_id]
       end
 
       avo_actions.each do |action|
@@ -20,7 +20,7 @@ module Avo
     end
 
     def handle
-      models = resource_model.safe_constantize.find action_params[:resource_ids]
+      models = resource_model.find action_params[:resource_ids]
       avo_action = action_params[:action_class].safe_constantize.new
       avo_action.handle_action(request, models, action_params[:fields])
 
@@ -33,14 +33,6 @@ module Avo
     private
       def action_params
         params.permit(:resource_name, :action_id, :action_class, resource_ids: [], fields: {})
-      end
-
-      def resource_model
-        params[:resource_name].to_s.camelize.singularize
-      end
-
-      def avo_resource
-        App.get_resource resource_model
       end
   end
 end

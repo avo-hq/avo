@@ -18,5 +18,14 @@ module Avo
         }, status: ActionDispatch::ExceptionWrapper.status_code_for_exception(exception.class.name) }
       end
     end
+
+    private
+      def resource_model
+        avo_resource.model
+      end
+
+      def avo_resource
+        App.get_resource params[:resource_name].to_s.camelize.singularize
+      end
   end
 end

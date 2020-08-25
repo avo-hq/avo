@@ -108,6 +108,12 @@ module Avo
         'id'
       end
 
+      def model
+        return @model if @model.present?
+
+        underscore_name.to_s.camelize.singularize
+      end
+
       def get_fields
         self.class.get_fields
       end

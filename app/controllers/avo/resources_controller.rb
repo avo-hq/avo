@@ -17,7 +17,7 @@ module Avo
         query = related_model.find(params[:via_resource_id]).public_send(params[:via_relationship])
         params[:per_page] = Avo.configuration.via_per_page
       elsif ['has_many', 'has_and_belongs_to_many'].include? params[:for_relation]
-        resources = resource_model.safe_constantize.all.map do |model|
+        resources = resource_model.all.map do |model|
           {
             value: model.id,
             label: model.send(avo_resource.title),
@@ -28,7 +28,7 @@ module Avo
           resources: resources
         }
       else
-        query = resource_model.safe_constantize
+        query = resource_model
       end
 
       query = query.order("#{params[:sort_by]} #{params[:sort_direction]}")
@@ -138,7 +138,7 @@ module Avo
 
       casted_params = cast_nullable(create_params)
 
-      resource = resource_model.safe_constantize.new(casted_params)
+      resource = resource_model.new(casted_params)
       resource.save!
 
       render json: {
@@ -149,7 +149,7 @@ module Avo
     end
 
     def fields
-      resource = resource_model.safe_constantize.new
+      resource = resource_model.new
 
       render json: {
         resource: Avo::Resources::Resource.hydrate_resource(resource, avo_resource, :create),
@@ -219,23 +219,11 @@ module Avo
 
     private
       def resource
-        eager_load_files(resource_model.safe_constantize).find params[:id]
-      end
-
-      def resource_model
-        params[:resource_name].to_s.camelize.singularize
-      end
-
-      def avo_resource
-        App.get_resource resource_model
-      end
-
-      def resource_fields
-        avo_resource.get_fields
+        eager_load_files(resource_model).find params[:id]
       end
 
       def permitted_params
-        permitted = resource_fields.select(&:updatable).map do |field|
+        permitted = avo_resource.get_fields.select(&:updatable).map do |field|
           # If it's a relation
           if field.methods.include? :foreign_key
             database_id = field.foreign_key(avo_resource.model)
