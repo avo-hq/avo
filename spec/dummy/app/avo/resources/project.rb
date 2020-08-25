@@ -11,7 +11,7 @@ module Avo
         id link_to_resource: true
         text :name, required: true
         status :status, failed_when: [:closed, :rejected, :failed], loading_when: [:loading, :running, :waiting], nullable: true
-        select :stage, hide_on: [:show, :index], options: { discovery: 'Discovery', ideea: 'Ideea', done: 'Done', 'on hold': 'On hold', cancelled: 'Cancelled' }, placeholder: 'Choose the stage.', display_value: true
+        select :stage, hide_on: [:show, :index], options: { discovery: 'Discovery', ideea: 'Ideea', done: 'Done', 'on hold': 'On hold', cancelled: 'Cancelled' }, placeholder: 'Choose the stage.'
         badge :stage, options: { info: [:discovery, :ideea], success: :done, warning: 'on hold', danger: :cancelled }
         currency :budget, currency: 'EUR', locale: 'de-DE'
         country :country
