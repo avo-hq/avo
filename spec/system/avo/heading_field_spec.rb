@@ -13,6 +13,7 @@ RSpec.describe 'HeadingFields', type: :system do
 
       it 'checks for html header' do
         visit "/avo/resources/users/#{user.id}"
+        wait_for_loaded
 
         expect(find_field_element('heading_div_class_text_gray_300_uppercase_font_bold_dev_div')).to have_text 'DEV'
         expect(find_field_element('heading_div_class_text_gray_300_uppercase_font_bold_dev_div')).to have_css '.uppercase'
@@ -23,6 +24,7 @@ RSpec.describe 'HeadingFields', type: :system do
     context 'edit' do
       it 'checks for normal header' do
         visit "/avo/resources/users/#{user.id}/edit"
+        wait_for_loaded
 
         expect(find_field_element('heading_user_information')).to have_text 'USER INFORMATION'
       end
@@ -31,6 +33,7 @@ RSpec.describe 'HeadingFields', type: :system do
     context 'edit' do
       it 'checks for html header' do
         visit "/avo/resources/users/#{user.id}/edit"
+        wait_for_loaded
 
         expect(find_field_element('heading_div_class_text_gray_300_uppercase_font_bold_dev_div')).to have_text 'DEV'
         expect(find_field_element('heading_div_class_text_gray_300_uppercase_font_bold_dev_div')).to have_css '.uppercase'
