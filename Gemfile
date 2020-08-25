@@ -83,6 +83,10 @@ group :development, :test do
   gem 'rubocop'
   gem 'simplecov', require: false
   gem 'simplecov-cobertura'
+
+  # Release helper
+  gem 'bump', require: false
+  gem 'gem-release', require: false
 end
 
 gem 'zeitwerk', '~> 2.3'
