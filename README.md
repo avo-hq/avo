@@ -48,13 +48,22 @@ To start the Webpack dev server you need to have a different session running `bi
 ## License
 Commercial license.
 
-## Building & Releasing
+## Building, Releasing and Publishing
+
+### Build
 
 If you just need a quick development build of the gem, just run `rails build`.
 
 To build for **release** (production mode), you need to run `yarn build`. This will build a docker image that will build the gem using `production` env variables. At the end of the process it will place the new gem under `pkg/` directory.
 
-To release the gem, run `yarn release [patch|minor|major]`. This will increment the version name, cut a tag and push to GitHub. From there, GitHub Actions will take over to build the artifact, create a release and add the artifact to that release.
+### Release
 
-At every PR merge a `Next release draft` release will be auto-filled by [Release drafter](https://github.com/marketplace/actions/release-drafter). When a real release happens (on `yarn release`) The contents body of that release will be moved to the actual release and the draft will be destroyed so it can be refilled on next PR's.
+To release the gem, run `yarn release [patch(default)|minor|major]`. This will increment the version name, cut a tag and push to GitHub. From there, GitHub Actions will take over to build the artifact, create a release and add the artifact to that release.
 
+At every PR merge a `Next release draft` release will be auto-filled by [Release drafter](https://github.com/marketplace/actions/release-drafter). When a real release happens (on `yarn release`). The contents body of that release will be moved to the actual release and the draft will be destroyed so it can be refilled on next PR's.
+
+### Publish
+
+To publish on GitHub package registry you need to run `yarn run publish`. This will publish the current version on their registry.
+
+As a prerequisite you need to have the GitHub token in your `~/.gem/credentials` file. You may run `echo ":github: Bearer GH_TOKEN" >> ~/.gem/credentials`.

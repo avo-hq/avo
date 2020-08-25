@@ -52,3 +52,5 @@ config/environments/*.local.yml
 
 coverage/
 .vscode
+
+avo*.gem

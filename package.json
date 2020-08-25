@@ -13,6 +13,7 @@
     "docker-build": "docker build -t avo-dev -f docker/Dockerfile .",
     "docker-clean": "docker rmi avo-dev",
     "build": "sh scripts/build.sh",
+    "publish": "sh scripts/publish.sh",
     "release": "sh scripts/release.sh"
   },
   "dependencies": {
