@@ -18,6 +18,7 @@
   "dependencies": {
     "@rails/activestorage": "^6.0.2-1",
     "@rails/webpacker": "^4.2.2",
+    "@tailwindcss/typography": "^0.2.0",
     "autoprefixer": "^9.7.4",
     "axios": "^0.19.2",
     "css-loader": "^3.5.3",

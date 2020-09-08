@@ -4,6 +4,20 @@
   </edit-field-wrapper>
 </template>
 
+<style>
+ul {
+  list-style-position: initial !important;
+  list-style-image: initial !important;
+  list-style-type: disc !important;
+}
+
+ol {
+  list-style-position: initial !important;
+  list-style-image: initial !important;
+  list-style-type: decimal !important;
+}
+</style>
+
 <script>
 import FormField from '@/js/mixins/form-field'
 import VueTrix from 'vue-trix'
