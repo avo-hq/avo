@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe "TrixField", type: :system do
+RSpec.describe 'TrixField', type: :system do
   describe 'without value' do
-    let!(:post) { create :post , body: ''}
+    let!(:post) { create :post , body: '' }
 
     context 'show' do
       it 'displays the posts empty body (dash)' do
