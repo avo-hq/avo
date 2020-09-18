@@ -1,20 +1,12 @@
 <template>
   <edit-field-wrapper :field="field" :errors="errors" :index="index" :value-slot-full-width="true">
-      <VueTrix v-model="editorContent" :placeholder="field.placeholder"/>
+      <VueTrix v-model="editorContent" :placeholder="field.placeholder" class="prose prose-sm" inputId="trixEditor"/>
   </edit-field-wrapper>
 </template>
 
-<style>
-ul {
-  list-style-position: initial !important;
-  list-style-image: initial !important;
-  list-style-type: disc !important;
-}
-
-ol {
-  list-style-position: initial !important;
-  list-style-image: initial !important;
-  list-style-type: decimal !important;
+<style scoped>
+.trix-content pre {
+  background-color: #2D3478 !important;
 }
 </style>
 

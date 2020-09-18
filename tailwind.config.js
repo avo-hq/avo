@@ -75,6 +75,7 @@ module.exports = {
     translate: ['responsive', 'hover', 'focus', 'active'],
   },
   plugins: [
+    require('@tailwindcss/typography'),
     // buttons
     plugin(({ addComponents, theme }) => {
       const styles = {
