@@ -95,3 +95,7 @@ jobs:
     - name: Delete draft release
       run: |
         node .github/delete-release-notes-draft.js ${{github.repository}} ${{secrets.GITHUB_TOKEN}}
+
+    - name: Publish release on avohq.io
+      run: |
+        node .github/publish-release-to-avo-hq-io.js
