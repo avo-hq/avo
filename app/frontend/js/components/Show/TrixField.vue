@@ -6,7 +6,7 @@
         v-if="!field.always_show"
         :class="buttonStyle"
         @click="toggleTrix">
-        {{showTrix===true ? 'Hide Trix' : 'Show Trix'}}
+        {{showTrix===true ? 'Hide Content' : 'Show Content'}}
       </a>
     </div>
     <empty-dash v-else />
@@ -35,3 +35,9 @@ export default {
   },
 }
 </script>
+
+<style>
+.prose {
+  max-width: none !important;
+}
+</style>

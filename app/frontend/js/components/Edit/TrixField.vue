@@ -1,14 +1,8 @@
 <template>
   <edit-field-wrapper :field="field" :errors="errors" :index="index" :value-slot-full-width="true">
-      <VueTrix v-model="editorContent" :placeholder="field.placeholder" class="prose prose-sm" inputId="trixEditor"/>
+      <VueTrix v-model="editorContent" :placeholder="field.placeholder" class="w-full prose prose-sm" inputId="trixEditor"/>
   </edit-field-wrapper>
 </template>
-
-<style scoped>
-.trix-content pre {
-  background-color: #2D3478 !important;
-}
-</style>
 
 <script>
 import FormField from '@/js/mixins/form-field'
@@ -38,3 +32,9 @@ export default {
   },
 }
 </script>
+
+<style>
+.trix-content pre {
+  background-color: #2D3648 !important;
+}
+</style>
