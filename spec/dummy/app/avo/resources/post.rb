@@ -11,7 +11,6 @@ module Avo
       fields do
         id
         text :name, required: true
-        # textarea :body, nullable: true, null_values: ['0', '', 'null', 'nil'], format_using: -> (value) { value.to_s.truncate 100 }
         trix :body, placeholder: 'Enter text', always_show: false
         file :cover_photo, is_image: true
         boolean :is_featured

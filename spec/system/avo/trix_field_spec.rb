@@ -32,7 +32,7 @@ RSpec.describe 'TrixField', type: :system do
         click_on 'Save'
         wait_for_loaded
 
-        click_on 'Show Trix'
+        click_on 'Show Content'
 
         expect(find_field_value_element('body')).to have_text 'Works for us!!!'
       end
@@ -47,7 +47,7 @@ RSpec.describe 'TrixField', type: :system do
       it 'displays the posts body' do
         visit "/avo/resources/posts/#{post.id}"
 
-        click_on 'Show Trix'
+        click_on 'Show Content'
 
         expect(find_field_value_element('body')).to have_text body
       end
@@ -76,7 +76,7 @@ RSpec.describe 'TrixField', type: :system do
         click_on 'Save'
         wait_for_loaded
 
-        click_on 'Show Trix'
+        click_on 'Show Content'
 
         expect(find_field_value_element('body')).to have_text 'New example!'
       end
