@@ -19,6 +19,7 @@
   "dependencies": {
     "@rails/activestorage": "^6.0.2-1",
     "@rails/webpacker": "^4.2.2",
+    "@tailwindcss/typography": "^0.2.0",
     "autoprefixer": "^9.7.4",
     "axios": "^0.19.2",
     "css-loader": "^3.5.3",
@@ -26,6 +27,7 @@
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-plugin-sort-imports-es6-autofix": "^0.5.0",
     "lodash": "^4.17.19",
+    "markdown-it": "^11.0.1",
     "moment": "^2.26.0",
     "moment-timezone": "^0.5.31",
     "mousetrap": "^1.6.5",

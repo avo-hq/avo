@@ -11,7 +11,8 @@ module Avo
       fields do
         id
         text :name, required: true
-        textarea :body, nullable: true, null_values: ['0', '', 'null', 'nil'], format_using: -> (value) { value.to_s.truncate 100 }
+        markdown :body
+        # textarea :body, nullable: true, null_values: ['0', '', 'null', 'nil'], format_using: -> (value) { value.to_s.truncate 100 }
         file :cover_photo, is_image: true
         boolean :is_featured
         boolean :is_published do |model|
@@ -31,7 +32,7 @@ module Avo
       use_filter Avo::Filters::FeaturedFilter
       use_filter Avo::Filters::PublishedFilter
 
-      use_action Avo::Actions::TogglePublished
+      # use_action Avo::Actions::TogglePublished
     end
   end
 end

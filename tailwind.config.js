@@ -77,6 +77,7 @@ module.exports = {
     cursor: ['responsive', 'disabled'],
   },
   plugins: [
+    require('@tailwindcss/typography'),
     // buttons
     plugin(({ addComponents, theme }) => {
       const styles = {
