@@ -5,9 +5,9 @@
       <a href="javascript:void(0);"
         v-if="!field.always_show"
         :class="buttonStyle"
-        @click="toggleTrix">
-        {{showTrix===true ? 'Hide Content' : 'Show Content'}}
-      </a>
+        @click="toggleTrix"
+        v-text="linkLabel"
+      />
     </div>
     <empty-dash v-else />
   </show-field-wrapper>
@@ -26,6 +26,9 @@ export default {
       if (this.showTrix) return 'font-bold inline-block mt-6'
 
       return 'font-bold'
+    },
+    linkLabel() {
+      return this.showTrix ? 'Hide Content' : 'Show Content'
     },
   },
   methods: {
