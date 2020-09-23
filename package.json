@@ -19,6 +19,7 @@
   "dependencies": {
     "@rails/activestorage": "^6.0.2-1",
     "@rails/webpacker": "^4.2.2",
+    "@tailwindcss/typography": "^0.2.0",
     "autoprefixer": "^9.7.4",
     "axios": "^0.19.2",
     "css-loader": "^3.5.3",
@@ -58,6 +59,7 @@
     "vue-svg-loader": "^0.16.0",
     "vue-template-compiler": "^2.6.11",
     "vue-toasted": "^1.1.28",
+    "vue-trix": "^1.1.11",
     "vue-turbolinks": "^2.1.0",
     "vuejs-paginate": "^2.1.0",
     "vuex": "^3.5.1",
