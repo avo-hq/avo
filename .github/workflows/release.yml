@@ -1,4 +1,4 @@
-name: Build and Generate Ruby Gem on Tag Pushes
+name: Build, Generate Ruby Gem and Release
 
 on:
   push:
@@ -92,6 +92,13 @@ jobs:
         asset_name: avo-${{steps.gem_version.outputs.tag}}.gem
         asset_content_type: application/x-tar
 
-    - name: Publish release on avohq.io
+    - name: Publish to GitHub Package Registry
+      id: publish-to-github-package-registry
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        node .github/publish-release-to-avo-hq-io.js
+        echo ":github: Bearer ${GITHUB_TOKEN}" >> ~/.gem/credentials
+        npm run publish
+
+    - name: Publish release on avohq.io
+      run: node .github/publish-release-to-avo-hq-io.js
