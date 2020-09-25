@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    avo (0.1.13)
+    avo (0.1.14)
       inline_svg
       kaminari
       rails (~> 6.0.2, >= 6.0.2.1)
