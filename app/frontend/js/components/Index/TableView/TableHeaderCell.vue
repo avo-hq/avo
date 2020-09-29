@@ -11,7 +11,7 @@
       {{field.name}}
       <component :is="sortComponent"
         v-if="sortable"
-        class="inline-block fill-current text-gray-500 relative leading-none min-w-4 min-h-full ml-1"
+        class="inline-block fill-current text-gray-500 relative leading-none min-w-4 min-h-full ml-1 h-4"
       />
     </div>
   </th>
