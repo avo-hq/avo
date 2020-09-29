@@ -2,10 +2,7 @@ PATH
   remote: .
   specs:
     avo (0.1.15)
-<<<<<<< HEAD
-=======
       countries
->>>>>>> b8c34e635782c1454cbf93272c495327e6c4e2ed
       inline_svg
       kaminari
       rails (~> 6.0.2, >= 6.0.2.1)
