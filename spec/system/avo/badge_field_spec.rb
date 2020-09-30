@@ -32,7 +32,7 @@ RSpec.describe 'BadgeField', type: :system do
   end
 
   describe 'with an info status' do
-    let!(:project) { create :project, stage: :discovery }
+    let!(:project) { create :project, stage: 'discovery' }
 
     subject { visit url; find_field_element(:stage) }
 
@@ -56,7 +56,7 @@ RSpec.describe 'BadgeField', type: :system do
   end
 
   describe 'with a danger status' do
-    let!(:project) { create :project, stage: :cancelled }
+    let!(:project) { create :project, stage: 'cancelled' }
 
     subject { visit url; find_field_element(:stage) }
 
