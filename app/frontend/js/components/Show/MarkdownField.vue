@@ -13,12 +13,6 @@
   </show-field-wrapper>
 </template>
 
-<style>
-.prose {
-  max-width: none !important;
-}
-</style>
-
 <script>
 const md = require('markdown-it')()
 
@@ -46,3 +40,9 @@ export default {
   },
 }
 </script>
+
+<style>
+.prose {
+  max-width: none !important;
+}
+</style>
