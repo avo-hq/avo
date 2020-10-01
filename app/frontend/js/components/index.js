@@ -49,6 +49,7 @@ Vue.component('show-badge-field',                    require('@/js/components/Sh
 Vue.component('show-heading-field',                  require('@/js/components/Show/HeadingField.vue').default)
 Vue.component('show-code-field',                     require('@/js/components/Show/CodeField.vue').default)
 Vue.component('show-markdown-field',                 require('@/js/components/Show/MarkdownField.vue').default)
+Vue.component('show-trix-field',                     require('@/js/components/Show/TrixField.vue').default)
 
 Vue.component('edit-field-wrapper',                  require('@/js/components/Edit/FieldWrapper.vue').default)
 Vue.component('edit-id-field',                       require('@/js/components/Edit/IdField.vue').default)
@@ -72,6 +73,7 @@ Vue.component('edit-heading-field',                  require('@/js/components/Sh
 Vue.component('edit-code-field',                     require('@/js/components/Edit/CodeField.vue').default)
 Vue.component('edit-hidden-field',                   require('@/js/components/Edit/HiddenField.vue').default)
 Vue.component('edit-markdown-field',                 require('@/js/components/Edit/MarkdownField.vue').default)
+Vue.component('edit-trix-field',                     require('@/js/components/Edit/TrixField.vue').default)
 
 // Form Fields
 Vue.component('input-component',                     require('@/js/components/InputComponent.vue').default)

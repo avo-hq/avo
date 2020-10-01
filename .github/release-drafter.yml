@@ -40,6 +40,6 @@ version-resolver:
 references:
   - master
 template: |
-  ## Changes
+  ## Release notes
 
   $CHANGES

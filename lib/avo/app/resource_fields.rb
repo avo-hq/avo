@@ -16,6 +16,10 @@ module Avo
         def add_field(resource, field)
           @@fields[resource].push field
         end
+
+        def trix(name, **args, &block)
+          @@fields[self].push Avo::Fields::TrixField::new(name, **args, &block)
+        end
       end
     end
   end

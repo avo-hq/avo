@@ -2,76 +2,76 @@ require 'rails_helper'
 
 RSpec.describe 'NullableField', type: :system do
   describe 'without input (specifying null_values: ["", "0", "null", "nil"])' do
-    let!(:post) { create :post, body: nil }
+    let!(:team) { create :team, description: nil }
 
     context 'show' do
-      it 'displays the posts empty body (dash)' do
-        visit "/avo/resources/post/#{post.id}"
+      it 'displays the teams empty description (dash)' do
+        visit "/avo/resources/teams/#{team.id}"
 
-        expect(find_field_value_element('body')).to have_text empty_dash
+        expect(find_field_value_element('description')).to have_text empty_dash
       end
     end
 
     context 'edit' do
-      it 'has the posts body empty' do
-        visit "/avo/resources/posts/#{post.id}/edit"
+      it 'has the teams description empty' do
+        visit "/avo/resources/teams/#{team.id}/edit"
 
-        expect(find_field('body').value).to eq ''
+        expect(find_field('description').value).to eq ''
       end
     end
   end
 
   describe 'with regular input (specifying null_values: ["", "0", "null", "nil"])' do
-    let!(:post) { create :post, body: 'descr' }
+    let!(:team) { create :team, description: 'descr' }
 
     context 'edit' do
-      it 'has the posts body prefilled' do
-        visit "/avo/resources/posts/#{post.id}/edit"
+      it 'has the teams description prefilled' do
+        visit "/avo/resources/teams/#{team.id}/edit"
 
-        expect(find_field('body').value).to eq 'descr'
+        expect(find_field('description').value).to eq 'descr'
       end
-      it 'changes the posts body to null ("" - empty string)' do
-        visit "/avo/resources/posts/#{post.id}/edit"
+      it 'changes the teams description to null ("" - empty string)' do
+        visit "/avo/resources/teams/#{team.id}/edit"
 
-        fill_in 'body', with: ''
+        fill_in 'description', with: ''
         click_on 'Save'
         wait_for_loaded
 
-        expect(current_path).to eql "/avo/resources/posts/#{post.id}"
-        expect(find_field_value_element('body')).to have_text empty_dash
+        expect(current_path).to eql "/avo/resources/teams/#{team.id}"
+        expect(find_field_value_element('description')).to have_text empty_dash
       end
 
-      it 'changes the posts body to null ("0")' do
-        visit "/avo/resources/posts/#{post.id}/edit"
+      it 'changes the teams description to null ("0")' do
+        visit "/avo/resources/teams/#{team.id}/edit"
 
-        fill_in 'body', with: '0'
+        fill_in 'description', with: '0'
         click_on 'Save'
         wait_for_loaded
 
-        expect(current_path).to eql "/avo/resources/posts/#{post.id}"
-        expect(find_field_value_element('body')).to have_text empty_dash
+        expect(current_path).to eql "/avo/resources/teams/#{team.id}"
+        expect(find_field_value_element('description')).to have_text empty_dash
       end
 
-      it 'changes the posts body to null ("nil")' do
-        visit "/avo/resources/posts/#{post.id}/edit"
+      it 'changes the teams description to null ("nil")' do
+        visit "/avo/resources/teams/#{team.id}/edit"
 
-        fill_in 'body', with: 'nil'
+        fill_in 'description', with: 'nil'
         click_on 'Save'
         wait_for_loaded
 
-        expect(current_path).to eql "/avo/resources/posts/#{post.id}"
-        expect(find_field_value_element('body')).to have_text empty_dash
+        expect(current_path).to eql "/avo/resources/teams/#{team.id}"
+        expect(find_field_value_element('description')).to have_text empty_dash
       end
 
-      it 'changes the postss body to null ("null")' do
-        visit "/avo/resources/posts/#{post.id}/edit"
+      it 'changes the teams description to null ("null")' do
+        visit "/avo/resources/teams/#{team.id}/edit"
 
-        fill_in 'body', with: 'null'
+        fill_in 'description', with: 'null'
         click_on 'Save'
         wait_for_loaded
 
-        expect(current_path).to eql "/avo/resources/posts/#{post.id}"
-        expect(find_field_value_element('body')).to have_text empty_dash
+        expect(current_path).to eql "/avo/resources/teams/#{team.id}"
+        expect(find_field_value_element('description')).to have_text empty_dash
       end
     end
   end
