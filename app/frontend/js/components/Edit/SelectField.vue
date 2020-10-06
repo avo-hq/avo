@@ -37,10 +37,14 @@ export default {
   },
   methods: {
     setInitialValue() {
-      if (this.field.display_value) {
-        this.value = this.field.value
+      if (this.field.enum) {
+        if (this.field.display_value) {
+          this.value = this.field.value
+        } else {
+          this.value = this.field.enum[this.field.value]
+        }
       } else {
-        this.value = this.field.enum[this.field.value]
+        this.value = this.field.value
       }
     },
     optionLabel(label, value) {
