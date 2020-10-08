@@ -11,4 +11,4 @@ bundle install --quiet
 git add .
 git commit -m "Bump $NAME to $VERSION"
 gem tag
-git push --tags
+git push --follow-tags
