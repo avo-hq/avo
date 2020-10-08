@@ -38,8 +38,8 @@
 </template>
 
 <script>
+import { HasInputAppearance } from '@avo-hq/avo-js'
 import { mixin as clickaway } from 'vue-clickaway'
-import HasInputAppearance from '@/js/mixins/has-input-appearance'
 
 export default {
   mixins: [HasInputAppearance, clickaway],

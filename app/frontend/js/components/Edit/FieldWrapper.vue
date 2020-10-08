@@ -21,11 +21,11 @@
 </template>
 
 <script>
-import FormField from '@/js/mixins/form-field'
+import { IsFormField } from '@avo-hq/avo-js'
 import IsFieldWrapper from '@/js/mixins/is-field-wrapper'
 
 export default {
-  mixins: [FormField, IsFieldWrapper],
+  mixins: [IsFormField, IsFieldWrapper],
   props: {
     field: {},
     index: {},

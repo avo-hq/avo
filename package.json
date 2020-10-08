@@ -17,6 +17,7 @@
     "release": "sh scripts/release.sh"
   },
   "dependencies": {
+    "@avo-hq/avo-js": "^0.1.8",
     "@rails/activestorage": "^6.0.2-1",
     "@rails/webpacker": "^4.2.2",
     "@tailwindcss/typography": "^0.2.0",
