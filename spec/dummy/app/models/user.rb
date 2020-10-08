@@ -14,10 +14,14 @@ class User < ApplicationRecord
   has_one_attached :cv
 
   def is_admin?
-    roles['admin'] === true
+    roles.present? and roles['admin'] === true
   end
 
   def name
     "#{first_name} #{last_name}"
+  end
+
+  def notify(text)
+    # notify about text
   end
 end

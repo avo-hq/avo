@@ -9,7 +9,7 @@ class FieldGenerator < Rails::Generators::NamedBase
   class_option :force, type: :boolean
 
   def create_files
-    field_path = Rails.root.join 'app', 'services', 'avocado', 'fields', singular_name
+    field_path = Rails.root.join 'app', 'services', 'avo', 'fields', singular_name
 
     begin
       webpacker_fields = Dir.glob("#{Rails.root}/**/webpacker.yml")

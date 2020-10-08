@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { IsFormField } from '@avocadohq/avocado-js'
+import { IsFormField } from '@avo-hq/avo-js'
 import moment from 'moment'
 
 export default {
@@ -24,7 +24,11 @@ export default {
   methods: {
     setInitialValue() {
       if (this.field.value) {
-        this.value = moment(this.field.value).format(this.field.format)
+        if (this.field.from_now) {
+          this.value = moment(new Date(this.field.value)).fromNow()
+        } else {
+          this.value = moment(this.field.value).format(this.field.format)
+        }
       } else {
         this.value = null
       }

@@ -48,6 +48,7 @@ Vue.component('show-country-field',                  require('@/js/components/Sh
 Vue.component('show-badge-field',                    require('@/js/components/Show/BadgeField.vue').default)
 Vue.component('show-heading-field',                  require('@/js/components/Show/HeadingField.vue').default)
 Vue.component('show-code-field',                     require('@/js/components/Show/CodeField.vue').default)
+Vue.component('show-trix-field',                     require('@/js/components/Show/TrixField.vue').default)
 
 Vue.component('edit-field-wrapper',                  require('@/js/components/Edit/FieldWrapper.vue').default)
 Vue.component('edit-id-field',                       require('@/js/components/Edit/IdField.vue').default)
@@ -70,6 +71,7 @@ Vue.component('edit-country-field',                  require('@/js/components/Ed
 Vue.component('edit-heading-field',                  require('@/js/components/Show/HeadingField.vue').default)
 Vue.component('edit-code-field',                     require('@/js/components/Edit/CodeField.vue').default)
 Vue.component('edit-hidden-field',                   require('@/js/components/Edit/HiddenField.vue').default)
+Vue.component('edit-trix-field',                     require('@/js/components/Edit/TrixField.vue').default)
 
 // Form Fields
 Vue.component('input-component',                     require('@/js/components/InputComponent.vue').default)
@@ -91,6 +93,8 @@ Vue.component('item-controls',                       require('@/js/components/In
 Vue.component('view-header',                         require('@/js/components/ViewHeader.vue').default)
 Vue.component('view-footer',                         require('@/js/components/ViewFooter.vue').default)
 Vue.component('panel',                               require('@/js/components/Panel.vue').default)
+Vue.component('pane',                                require('@/js/components/Pane.vue').default)
+Vue.component('resource-overview',                   require('@/js/components/ResourceOverview.vue').default)
 Vue.component('heading',                             require('@/js/components/Heading.vue').default)
 Vue.component('a-button',                            require('@/js/components/Button.vue').default)
 Vue.component('resources-search',                    require('@/js/components/ResourcesSearch.vue').default)
@@ -101,6 +105,7 @@ Vue.component('empty-state',                         require('@/js/components/Em
 
 // Filters
 Vue.component('resource-filters',                    require('@/js/components/Index/ResourceFilters.vue').default)
+Vue.component('resource-actions',                    require('@/js/components/ResourceActions.vue').default)
 Vue.component('boolean-filter',                      require('@/js/components/Index/Filters/BooleanFilter.vue').default)
 Vue.component('select-filter',                       require('@/js/components/Index/Filters/SelectFilter.vue').default)
 Vue.component('filter-wrapper',                      require('@/js/components/Index/Filters/FilterWrapper.vue').default)

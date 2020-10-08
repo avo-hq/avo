@@ -1,5 +1,5 @@
 <template>
-  <edit-field-wrapper :field="field" :errors="errors" :index="index">
+  <edit-field-wrapper :field="field" :errors="errors" :index="index" :displayed-in="displayedIn">
     <div v-if="value">
       <img v-if="field.is_image" :src="value" class="rounded-lg" />
     </div>
@@ -13,13 +13,13 @@
       <a-button color="indigo"
         @click="deleteFile"
         v-if="value"
-      ><trash-icon class="h-4 mr-1" /> Delete {{field.filename}}</a-button>
+      ><trash-icon class="h-4 mr-1" /> Delete file</a-button>
     </template>
   </edit-field-wrapper>
 </template>
 
 <script>
-import { IsFormField } from '@avocadohq/avocado-js'
+import { IsFormField } from '@avo-hq/avo-js'
 
 export default {
   mixins: [IsFormField],

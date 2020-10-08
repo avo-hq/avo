@@ -1,5 +1,5 @@
 <template>
-  <edit-field-wrapper :field="field" :errors="errors" :index="index">
+  <edit-field-wrapper :field="field" :errors="errors" :index="index" :displayed-in="displayedIn">
      <flat-pickr
       ref="field-input"
       class="w-full"
@@ -16,7 +16,7 @@
 
 <script>
 import '~/flatpickr/dist/flatpickr.css'
-import { HasInputAppearance, IsFormField } from '@avocadohq/avocado-js'
+import { HasInputAppearance, IsFormField } from '@avo-hq/avo-js'
 import flatPickr from 'vue-flatpickr-component'
 import isNull from 'lodash/isNull'
 import moment from 'moment-timezone'

@@ -9,6 +9,6 @@ class FilterGenerator < Rails::Generators::NamedBase
 
     type = 'select' if options[:select]
 
-    template "filters/#{type}_filter.rb", "app/services/avocado/filters/#{singular_name}.rb"
+    template "filters/#{type}_filter.rb", "app/services/avo/filters/#{singular_name}.rb"
   end
 end

@@ -1,5 +1,5 @@
 <template>
-  <edit-field-wrapper :field="field" :errors="errors" :index="index" :value-slot-full-width="true">
+  <edit-field-wrapper :field="field" :errors="errors" :index="index" :displayed-in="displayedIn" :value-slot-full-width="true">
     <KeyValue
       v-model="value"
       :key-label="field.key_label"
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { IsFormField } from '@avocadohq/avocado-js'
+import { IsFormField } from '@avo-hq/avo-js'
 import KeyValue from '@/js/components/KeyValueComponent.vue'
 import pickBy from 'lodash/pickBy'
 

@@ -1,7 +1,9 @@
 import { objectToFormData } from 'object-to-formdata'
 import Api from '@/js/Api'
+import Avo from '@/js/Avo'
 import isNull from 'lodash/isNull'
 import isUndefined from 'lodash/isUndefined'
+import merge from 'lodash/merge'
 
 export default {
   data: () => ({
@@ -25,9 +27,9 @@ export default {
         .filter((field) => !field.computed)
     },
     submitResourceUrl() {
-      if (this.resourceId) return `/avocado/avocado-api/${this.resourceName}/${this.resourceId}`
+      if (this.resourceId) return `${Avo.rootPath}/avo-api/${this.resourceName}/${this.resourceId}`
 
-      return `/avocado/avocado-api/${this.resourceName}`
+      return `${Avo.rootPath}/avo-api/${this.resourceName}`
     },
     submitMethod() {
       if (this.resourceId) return 'put'
@@ -36,10 +38,10 @@ export default {
     },
   },
   methods: {
-    buildFormData() {
-      const formData = {
-        resource: {},
-      }
+    buildFormData(startingData, payloadId = 'resource') {
+      let formData = {}
+      formData[payloadId] = {}
+      formData = merge(startingData, formData)
 
       if (this.viaResourceName) {
         // eslint-disable-next-line camelcase
@@ -59,7 +61,7 @@ export default {
         const value = isNull(field.getValue()) ? '' : field.getValue()
 
         if (id) {
-          formData.resource[id] = value
+          formData[payloadId][id] = value
         }
       })
 

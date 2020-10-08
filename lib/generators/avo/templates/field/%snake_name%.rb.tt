@@ -1,4 +1,4 @@
-module Avocado
+module Avo
   module Fields
     module <%= class_name %>
       class <%= field_class_name %> < Field

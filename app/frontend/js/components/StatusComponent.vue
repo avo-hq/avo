@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-shrink-0">
-    <div class="spinner" v-if="isLoading"/>
     <div :class="classes" v-text="label"/>
+    <div class="spinner ml-1" v-if="isLoading"/>
   </div>
 </template>
 
@@ -28,13 +28,12 @@ export default {
 
 <style>
 .spinner {
+  position: relative;
   display: inline-block;
-
   width: 18px;
   height: 18px;
-  margin: 0px 5px -3px 0px;
+  top: 3px;
   background-color: #333;
-
   border-radius: 100%;
   -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
   animation: sk-scaleout 1.0s infinite ease-in-out;

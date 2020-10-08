@@ -3,7 +3,7 @@ require_relative 'boot'
 require 'rails/all'
 
 Bundler.require(*Rails.groups)
-require 'avocado'
+require 'avo'
 
 # Tell spring where the new dummy ap is located
 Spring.application_root = 'spec/dummy' if Rails.env != 'production'

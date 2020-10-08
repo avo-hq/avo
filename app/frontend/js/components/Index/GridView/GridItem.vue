@@ -23,12 +23,8 @@
       </div>
     </router-link>
     <div class="flex flex-col justify-between p-4 flex-1">
-      <div class="font-semibold leading-tight mb-2">
-        {{title}}
-      </div>
-      <div class="mb-6">
-        {{body}}
-      </div>
+      <div class="font-semibold leading-tight mb-2 text-lg" v-text="title" />
+      <div class="mb-6 text-sm" v-text="body" />
       <div class="w-full">
         <item-controls
           class="flex flex-row justify-around w-full"

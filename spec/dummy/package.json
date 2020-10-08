@@ -3,7 +3,7 @@
   "private": true,
   "dependencies": {
     "@rails/webpacker": "4.2.2",
-    "@avocadohq/avocado-js": "4.2.2",
+    "@avo-hq/avo-js": "4.2.2",
     "vue": "^2.6.11",
     "vue-loader": "^15.9.2",
     "vue-template-compiler": "^2.6.11"

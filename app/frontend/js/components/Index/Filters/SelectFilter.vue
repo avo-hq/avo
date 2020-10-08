@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { HasInputAppearance } from '@avocadohq/avocado-js'
+import { HasInputAppearance } from '@avo-hq/avo-js'
 
 export default {
   mixins: [HasInputAppearance],

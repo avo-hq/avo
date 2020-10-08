@@ -12,7 +12,7 @@
           viaResourceId: viaResourceId,
         }
       }"
-      v-tooltip="`View ${this.resourceNameSingular}`"
+      :title="`View ${this.resourceNameSingular}`"
       data-control="view"
     >
       <eye-icon :class="iconClasses"/>
@@ -29,22 +29,22 @@
           viaResourceId: viaResourceId,
         },
       }"
-      v-tooltip="`Edit ${this.resourceNameSingular}`"
+      :title="`Edit ${this.resourceNameSingular}`"
       data-control="edit"
     >
       <edit-icon :class="iconClasses"/>
     </router-link>
     <a href="javascript:void(0);"
       @click="openDetachModal"
-      v-tooltip="`Detach ${this.resourceNameSingular}`"
+      :title="`Detach ${this.resourceNameSingular}`"
       data-control="detach"
       v-if="relationship === 'has_and_belongs_to_many'"
     >
-      <trash-icon :class="iconClasses"/>
+      <switch-horizontal-icon :class="iconClasses"/>
     </a>
     <a href="javascript:void(0);"
       @click="openDeleteModal"
-      v-tooltip="`Delete ${this.resourceNameSingular}`"
+      :title="`Delete ${this.resourceNameSingular}`"
       data-control="delete"
       v-else
     >
@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import { Api } from '@/js/Avo'
+import Avo, { Api } from '@/js/Avo'
 import DealsWithHasManyRelations from '@/js/mixins/deals-with-has-many-relations'
 import DealsWithResourceLabels from '@/js/mixins/deals-with-resource-labels'
 import Modal from '@/js/components/Modal.vue'
@@ -81,14 +81,14 @@ export default {
   },
   methods: {
     async deleteResource() {
-      await Api.delete(`/avocado/avocado-api/${this.resourcePath}/${this.resource.id}`)
+      await Api.delete(`${Avo.rootPath}/avo-api/${this.resourcePath}/${this.resource.id}`)
 
       this.$modal.hideAll()
 
       this.$emit('resource-deleted')
     },
     async detachResource() {
-      await Api.post(`/avocado/avocado-api/${this.viaResourceName}/${this.viaResourceId}/detach/${this.resourcePath}/${this.resource.id}`)
+      await Api.post(`${Avo.rootPath}/avo-api/${this.viaResourceName}/${this.viaResourceId}/detach/${this.resourcePath}/${this.resource.id}`)
 
       this.$modal.hideAll()
 

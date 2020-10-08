@@ -8,6 +8,8 @@ import VTooltip from 'v-tooltip'
 import Vue from 'vue/dist/vue.esm'
 import VueCurrencyInput from 'vue-currency-input'
 import VueRouter from 'vue-router'
+import Vuex from 'vuex'
+import indexStore from '@/js/stores/index-store'
 import router from '@/js/router'
 
 const Avo = {
@@ -15,6 +17,7 @@ const Avo = {
   Api,
   env: '',
   initCallbacks: [],
+  rootPath: window.rootPath || '/avo',
 
   makePublic() {
     window.Avo = Avo
@@ -29,14 +32,16 @@ const Avo = {
     }
   },
 
-  turbolinksLoad() {
-    if (document.getElementById('app')) {
-      Avo.initVue()
-    }
-  },
-
   reload() {
     this.vue.reload()
+  },
+
+  redirect(path) {
+    this.vue.redirect(path)
+  },
+
+  alert(message, messageType) {
+    this.vue.alert(message, messageType)
   },
 
   initVue() {
@@ -54,15 +59,25 @@ const Avo = {
       dynamic: true,
       injectModalsContainer: false,
       dynamicDefaults: {
-        height: 250,
+        adaptive: true,
+        height: 'auto',
+        minHeight: 250,
         width: 550,
         styles: 'border-radius: 1rem',
       },
     })
     Vue.use(PortalVue)
+    Vue.use(Vuex)
+
+    const store = new Vuex.Store({
+      modules: {
+        index: indexStore,
+      },
+    })
 
     this.vue = new Vue({
       router,
+      store,
       el: '#app',
       computed: {
         routerKey() {
@@ -108,5 +123,5 @@ const Avo = {
   },
 }
 
-export { Api }
+export { Api, Bus }
 export default Avo
