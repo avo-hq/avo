@@ -72,9 +72,6 @@ module Avo
       end
 
       def load_field(method_name, klass)
-        @@app[:field_names][method_name] = klass
-
-        # Load field to concerned classes
         [Avo::Resources::Resource, Avo::Actions::Action].each do |klass_entity|
           klass_entity.define_singleton_method method_name.to_sym do |*args, &block|
             if block.present?
@@ -87,6 +84,23 @@ module Avo
           end
         end
       end
+
+      # def load_field(method_name, klass)
+      #   @@app[:field_names][method_name] = klass
+
+      #   # Load field to concerned classes
+      #   [Avo::Resources::Resource, Avo::Actions::Action].each do |klass_entity|
+      #     klass_entity.define_singleton_method method_name.to_sym do |*args, &block|
+      #       if block.present?
+      #         field_class = klass::new(args[0], **args[1] || {}, &block)
+      #       else
+      #         field_class = klass::new(args[0], **args[1] || {})
+      #       end
+
+      #       klass_entity.add_field(self, field_class)
+      #     end
+      #   end
+      # end
 
       def get_field_names
         @@app[:field_names]
