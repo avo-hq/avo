@@ -26,6 +26,7 @@ module Avo
           enable_time: true,
           time_24hr: @time_24hr,
           timezone: @timezone,
+          from_now: @from_now,
         }
       end
     end

@@ -12,7 +12,11 @@ export default {
   props: ['field'],
   computed: {
     value() {
-      if (this.field.value) return moment(new Date(this.field.value)).format(this.field.format)
+      if (this.field.value) {
+        if (this.field.from_now) return moment(new Date(this.field.value)).fromNow()
+
+        return moment(new Date(this.field.value)).format(this.field.format)
+      }
 
       return null
     },

@@ -15,6 +15,7 @@ module Avo
         @picker_format = args[:picker_format].present? ? args[:picker_format] : 'Y-m-d'
         @format = args[:format].present? ? args[:format] : 'YYYY-MM-DD'
         @placeholder = args[:placeholder].present? ? args[:placeholder] : ''
+        @from_now = args[:from_now].present? ? args[:from_now] : false
       end
 
       def hydrate_field(fields, model, resource, view)
@@ -23,6 +24,7 @@ module Avo
           picker_format: @picker_format,
           format: @format,
           placeholder: @placeholder,
+          from_now: @from_now,
         }
       end
     end
