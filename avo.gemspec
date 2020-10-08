@@ -7,11 +7,11 @@ require 'avo/version'
 Gem::Specification.new do |spec|
   spec.name        = 'avo'
   spec.version     = Avo::VERSION
-  spec.authors     = ['Adrian Marin']
-  spec.email       = ['adrian@adrianthedev.com']
-  spec.homepage    = 'https://adrianthedev.com'
-  spec.summary     = 'Make it easy.'
-  spec.description = 'Easy admin.'
+  spec.authors     = ['Adrian Marin', 'Mihai Marin']
+  spec.email       = ['adrian@avohq.io']
+  spec.homepage    = 'https://avohq.io'
+  spec.summary     = 'Configuration based, no-maintenance, extendable Ruby on Rails admin.'
+  spec.description = 'Avo is a beautiful next-generation framework that empowers you, the developer, to create fantastic admin panels for your Ruby on Rails apps with the flexibility to fit your needs as you grow.'
   spec.license     = 'MIT'
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
