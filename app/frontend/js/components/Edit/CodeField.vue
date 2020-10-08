@@ -11,11 +11,11 @@
 </template>
 
 <script>
+import { IsFormField } from '@avo-hq/avo-js'
 import CodeComponent from '@/js/components/CodeComponent.vue'
-import FormField from '@/js/mixins/form-field'
 
 export default {
-  mixins: [FormField],
+  mixins: [IsFormField],
   components: { CodeComponent },
   methods: {
     valueUpdated(newVal) {

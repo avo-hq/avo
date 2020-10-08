@@ -27,11 +27,11 @@
 </style>
 
 <script>
+import { IsFormField } from '@avo-hq/avo-js'
 import BooleanCheck from '@/js/components/BooleanCheck.vue'
-import FormField from '@/js/mixins/form-field'
 
 export default {
-  mixins: [FormField],
+  mixins: [IsFormField],
   props: ['field'],
   components: { BooleanCheck },
   data: () => ({

@@ -38,12 +38,11 @@
 </template>
 
 <script>
+import { HasInputAppearance, IsFormField } from '@avo-hq/avo-js'
 import Bus from '@/js/Bus'
-import FormField from '@/js/mixins/form-field'
-import HasInputAppearance from '@/js/mixins/has-input-appearance'
 
 export default {
-  mixins: [FormField, HasInputAppearance],
+  mixins: [IsFormField, HasInputAppearance],
   data: () => ({
     options: [],
     value: {},

@@ -17,10 +17,9 @@
 </template>
 
 <script>
-import FormField from '@/js/mixins/form-field'
-import HasInputAppearance from '@/js/mixins/has-input-appearance'
+import { HasInputAppearance, IsFormField } from '@avo-hq/avo-js'
 
 export default {
-  mixins: [FormField, HasInputAppearance],
+  mixins: [IsFormField, HasInputAppearance],
 }
 </script>

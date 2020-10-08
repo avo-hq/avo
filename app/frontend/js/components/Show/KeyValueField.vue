@@ -17,11 +17,11 @@
 </template>
 
 <script>
-import FormField from '@/js/mixins/form-field'
+import { IsFormField } from '@avo-hq/avo-js'
 import KeyValue from '@/js/components/KeyValueComponent.vue'
 
 export default {
-  mixins: [FormField],
+  mixins: [IsFormField],
   components: { KeyValue },
   methods: {
     setInitialValue() {
