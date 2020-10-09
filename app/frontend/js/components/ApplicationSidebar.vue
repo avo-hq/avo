@@ -1,7 +1,9 @@
 <template>
   <div class="application-sidebar flex h-full bg-white text-white w-56 z-50 border-r border-gray-400">
     <div class="w-full">
-      <logo-component :logo="logo"/>
+      <router-link to="/" class="logo-placeholder h-16 bg-white p-2 flex justify-center" :active-class="''" exact>
+        <slot />
+      </router-link>
 
       <div class="tools py-4">
         <sidebar-link to="/"
@@ -18,7 +20,7 @@
 
 <script>
 export default {
-  props: ['logo', 'resources'],
+  props: ['resources'],
 }
 </script>
 
