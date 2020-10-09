@@ -13,7 +13,5 @@
     "webpack-dev-server": "^3.11.0"
   },
   "scripts": {
-    "build-color_field-field": "cd app/services/avo/fields/color_field && rm -rf public/packs && bin/webpack",
-    "dev-color_field-field": "cd app/services/avo/fields/color_field && bin/webpack-dev-server"
   }
 }

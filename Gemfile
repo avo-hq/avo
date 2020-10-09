@@ -97,4 +97,4 @@ gem 'kaminari'
 # Http client
 gem 'httparty'
 
-# gem 'color_picker', path: './spec/dummy/app/avo/fields'
+# gem 'title_field', path: './spec/dummy/app/avo/fields'

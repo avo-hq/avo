@@ -17,9 +17,9 @@ module Avo
           @@grid_fields[self][:preview] = Avo::GridFields::PreviewField::new(name, **args, &block)
         end
 
-        def title(name, **args, &block)
-          @@grid_fields[self][:title] = Avo::GridFields::TitleField::new(name, **args, &block)
-        end
+        # def title(name, **args, &block)
+        #   @@grid_fields[self][:title] = Avo::GridFields::TitleField::new(name, **args, &block)
+        # end
 
         def body(name, **args, &block)
           @@grid_fields[self][:body] = Avo::GridFields::BodyField::new(name, **args, &block)

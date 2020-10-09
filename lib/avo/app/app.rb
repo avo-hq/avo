@@ -72,6 +72,7 @@ module Avo
       end
 
       def load_field(method_name, klass)
+        # puts [method_name, klass].inspect
         [Avo::Resources::Resource, Avo::Actions::Action].each do |klass_entity|
           klass_entity.define_singleton_method method_name.to_sym do |*args, &block|
             if block.present?
@@ -162,6 +163,7 @@ module Avo
       end
 
       def script(name, directory)
+        # abort name.inspect
         @@scripts[name] = directory
       end
 
@@ -181,6 +183,10 @@ module Avo
 
       def print_scripts
         @@scripts.map { |name, path| "<script src='/avo/avo-api/scripts/#{name}'></script>" }.join("\n")
+      end
+
+      def field(name, klass)
+        abort [name, klass].inspect
       end
     end
   end

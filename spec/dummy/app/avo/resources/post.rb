@@ -23,11 +23,12 @@ module Avo
       end
 
       # These fields are a reference on the already configured fields above
-      grid do
-        preview :cover_photo
-        title :name
-        body :body
-      end
+      # grid do
+      #   preview :cover_photo
+      #   title :name
+      #   body :body
+      # end
+
 
       use_filter Avo::Filters::FeaturedFilter
       use_filter Avo::Filters::PublishedFilter
