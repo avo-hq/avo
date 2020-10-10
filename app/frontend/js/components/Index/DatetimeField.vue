@@ -13,7 +13,7 @@ export default {
   computed: {
     value() {
       if (this.field.value) {
-        if (this.field.from_now) return moment(new Date(this.field.value)).fromNow()
+        if (this.field.relative) return moment(new Date(this.field.value)).fromNow()
 
         return moment(new Date(this.field.value)).format(this.field.format)
       }
