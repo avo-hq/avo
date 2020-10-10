@@ -14,7 +14,7 @@ module Avo
 
     def initialize
       @root_path = '/avo'
-      @app_name = Rails.application.class.to_s.split("::").first
+      @app_name = Rails.application.class.to_s.split('::').first
       @timezone = 'UTC'
       @per_page = 24
       @per_page_steps = [12, 24, 48, 72]
