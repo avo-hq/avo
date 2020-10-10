@@ -14,7 +14,7 @@
 
 <div id="app" class="flex min-h-screen flex-row h-full">
   <application-sidebar :resources='<%= Avo::App.get_resources_navigation.as_json.html_safe %>'>
-    <%= render_logo_partial %>
+    <%= render_logo %>
   </application-sidebar>
 
   <div class="flex-1 h-full overflow-auto">
@@ -26,6 +26,7 @@
 
     <div class="content p-8 pt-20">
       <%= yield %>
+      <%= render_footer %>
     </div>
   </div>
 </div>
