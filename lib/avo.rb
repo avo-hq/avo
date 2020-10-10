@@ -1,4 +1,5 @@
 require_relative 'avo/configuration'
+require_relative 'avo/version'
 
 require_relative 'avo/app/fields/field'
 
