@@ -6,8 +6,12 @@ module Avo
       Avo.webpacker
     end
 
-    def render_logo_partial
-      render partial: 'vendor/avo/partials/logo' rescue image_pack_tag 'logo.png', class: 'h-full', title: 'Avo'
+    def render_logo
+      render partial: 'vendor/avo/partials/logo' rescue render partial: 'partials/logo'
+    end
+
+    def render_footer
+      render partial: 'vendor/avo/partials/footer' rescue render partial: 'partials/footer'
     end
   end
 end
