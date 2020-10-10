@@ -24,7 +24,7 @@ export default {
   methods: {
     setInitialValue() {
       if (this.field.value) {
-        if (this.field.from_now) {
+        if (this.field.relative) {
           this.value = moment(new Date(this.field.value)).fromNow()
         } else {
           this.value = moment(this.field.value).format(this.field.format)
