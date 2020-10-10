@@ -13,5 +13,9 @@ module Avo
     def render_footer
       render partial: 'vendor/avo/partials/footer' rescue render partial: 'partials/footer'
     end
+
+    def render_header
+      render partial: 'vendor/avo/partials/header' rescue render partial: 'partials/header'
+    end
   end
 end
