@@ -18,9 +18,14 @@
   </application-sidebar>
 
   <div class="flex-1 h-full overflow-auto">
-    <div class="fixed bg-white p-2 shadow-md h-16 w-full flex items-center z-40">
-      <div class="w-64">
-        <resources-search :global="true">
+    <div class="relative bg-white p-2 shadow-md h-16 w-full flex items-center z-40">
+      <div class="ml-6">
+        <%= render_header %>
+      </div>
+      <div class="flex-1 flex justify-center">
+        <div class="w-64">
+          <resources-search :global="true">
+        </div>
       </div>
     </div>
 
