@@ -16,7 +16,7 @@ module Avo
         currency :budget, currency: 'EUR', locale: 'de-DE'
         country :country
         number :users_required
-        datetime :started_at, name: 'Started', time_24hr: true, from_now: true
+        datetime :started_at, name: 'Started', time_24hr: true, relative: true
         files :files
         key_value :meta, key_label: 'Meta key', value_label: 'Meta value', action_text: 'New item', delete_text: 'Remove item', disable_editing_keys: false, disable_adding_rows: false, disable_deleting_rows: false
 
