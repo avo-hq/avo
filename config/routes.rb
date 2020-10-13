@@ -1,7 +1,8 @@
 Avo::Engine.routes.draw do
   root 'home#index'
 
-  get  '/avo-api/scripts/:script',     to: 'assets#script', format: :js
+  get  '/avo-api/scripts/:script',         to: 'assets#script', format: :js
+  get  '/avo-api/scripts/:script',         to: 'assets#map',    format: 'js.map'
   get  '/avo-api/search',                  to: 'resources#search'
   get  '/avo-api/:resource_name/search',   to: 'resources#search'
   get  '/avo-api/:resource_name',          to: 'resources#index'

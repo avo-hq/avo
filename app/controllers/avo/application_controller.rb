@@ -5,6 +5,7 @@ module Avo
     before_action :init_app
 
     def init_app
+      puts 'AvoController.init_app'.inspect
       Avo::App.init
     end
 
