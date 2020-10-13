@@ -1,0 +1,14 @@
+{
+  "color_picker_field.js": "/packs/js/color_picker_field-f18a74736d3130694f23.js",
+  "color_picker_field.js.map": "/packs/js/color_picker_field-f18a74736d3130694f23.js.map",
+  "entrypoints": {
+    "color_picker_field": {
+      "js": [
+        "/packs/js/color_picker_field-f18a74736d3130694f23.js"
+      ],
+      "js.map": [
+        "/packs/js/color_picker_field-f18a74736d3130694f23.js.map"
+      ]
+    }
+  }
+}

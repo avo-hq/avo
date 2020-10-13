@@ -1,0 +1,13 @@
+import EditField from '@/components/EditField.vue'
+import IndexField from '@/components/IndexField.vue'
+import ShowField from '@/components/ShowField.vue'
+
+import '@/stylesheets/field.css'
+
+if (window.Avo) {
+  window.Avo.initializing((Vue) => {
+    Vue.component('edit-<%= parameter_name %>', EditField)
+    Vue.component('index-<%= parameter_name %>', IndexField)
+    Vue.component('show-<%= parameter_name %>', ShowField)
+  })
+}

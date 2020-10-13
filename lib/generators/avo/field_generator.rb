@@ -8,8 +8,23 @@ class FieldGenerator < Rails::Generators::NamedBase
   class_option :name, type: :string
   class_option :force, type: :boolean
 
+  def name
+    "#{@name.gsub('_field', '')}_field"
+  end
+
+  def simple_name
+    @name.gsub('_field', '')
+  end
+
+  def parameter_name
+    name.parameterize.gsub('_', '-')
+  end
+
   def create_files
-    field_path = Rails.root.join 'app', 'avo', 'fields', singular_name
+    # abort self.inspect
+    # raise Error, "ERROR: #{path} already exists." if File.exist?(path)
+
+    field_path = Rails.root.join 'avo-components', singular_name
 
     begin
       webpacker_fields = Dir.glob("#{Rails.root}/**/webpacker.yml")
@@ -46,17 +61,5 @@ class FieldGenerator < Rails::Generators::NamedBase
     end
 
     say "We generated you new field files under #{field_path}. You may edit the component files.", :green
-  end
-
-  def field_class_name
-    "#{name.classify}Field"
-  end
-
-  def snake_name
-    "#{name}_field".underscore
-  end
-
-  def parameter_name
-    "#{name}_field".parameterize
   end
 end

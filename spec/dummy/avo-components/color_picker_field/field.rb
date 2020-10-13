@@ -1,7 +1,7 @@
 module Avo
-  module Fields
-    module ColorPicker
-      class ColorPickerField < Field
+  module Components
+    module ColorPickerField
+      class Field < Avo::Fields::Field
         field_name 'color_picker'
 
         def initialize(name, **args, &block)

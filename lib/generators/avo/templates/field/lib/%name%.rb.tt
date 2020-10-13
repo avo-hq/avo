@@ -1,0 +1,5 @@
+require_relative "<%= name %>/engine"
+
+module <%= class_name %>
+  # Your code goes here...
+end

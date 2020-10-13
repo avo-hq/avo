@@ -13,5 +13,11 @@
     "webpack-dev-server": "^3.11.0"
   },
   "scripts": {
+    "build-title-field": "cd avo-components/title && rm -rf public/packs && bin/webpack",
+    "dev-title-field": "cd avo-components/title && bin/webpack-dev-server",
+    "build-title_field-field": "cd avo-components/title_field && rm -rf public/packs && bin/webpack",
+    "dev-title_field-field": "cd avo-components/title_field && bin/webpack-dev-server",
+    "build-title_title_field-field": "cd avo-components/title_title_field && rm -rf public/packs && bin/webpack",
+    "dev-title_title_field-field": "cd avo-components/title_title_field && bin/webpack-dev-server"
   }
 }

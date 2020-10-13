@@ -12,9 +12,11 @@ module Avo
 
     class << self
       def init
+        puts 'Avo::App.init'.inspect
         @@app[:root_path] = Pathname.new(File.join(__dir__, '..', '..'))
         # get_tools
         # init_tools
+        init_components
         init_fields
         init_resources
       end
@@ -38,6 +40,7 @@ module Avo
       # Avo::Fields::TextField -> text
       # Avo::Fields::TextDateTime -> date_time
       def init_fields
+        puts 'init_fields'.inspect
         Avo::Fields.constants.each do |class_name|
           next if class_name.to_s == 'Field'
 
@@ -48,21 +51,6 @@ module Avo
             method_name = field_class.get_field_name
 
             next if Avo::Resources::Resource.method_defined? method_name.to_sym
-          else
-            # Try one level deeper for custom fields
-            namespace = class_name
-            tool_provider = "Avo::Fields::#{namespace}::ToolProvider".safe_constantize
-
-            next unless tool_provider.present?
-
-            tool_provider.boot
-
-            "Avo::Fields::#{namespace}".safe_constantize.constants.each do |custom_field_class|
-              next unless custom_field_class.to_s.end_with? 'Field' or custom_field_class.to_s == 'Field'
-
-              field_class = "Avo::Fields::#{namespace}::#{custom_field_class}".safe_constantize
-              method_name = field_class.get_field_name
-            end
           end
 
           if field_class.present? and method_name.present?
@@ -83,6 +71,14 @@ module Avo
 
             klass_entity.add_field(self, field_class)
           end
+        end
+      end
+
+      def init_components
+        puts ['init_components', Avo::Components.constants.inspect].inspect
+        Avo::Components.constants.each do |class_name|
+          puts class_name.inspect
+          "Avo::Components::#{class_name}::Provider".safe_constantize.boot
         end
       end
 

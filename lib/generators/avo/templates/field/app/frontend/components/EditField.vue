@@ -1,6 +1,9 @@
 <template>
   <edit-field-wrapper :field="field" :errors="errors" :index="index">
-    <input type="text" v-model="value" />
+    <input type="text"
+      :class="classes"
+      v-model="value"
+    />
   </edit-field-wrapper>
 </template>
 
@@ -14,7 +17,7 @@ export default {
   mixins: [HasInputAppearance, IsFormField],
   computed: {
     classes() {
-      const classes = ['w-full']
+      const classes = ['w-full', ...this.inputClasses]
 
       if (this.hasErrors) classes.push('border-red-600')
 

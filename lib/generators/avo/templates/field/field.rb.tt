@@ -1,11 +1,11 @@
 module Avo
-  module Fields
+  module Components
     module <%= class_name %>
-      class <%= field_class_name %> < Field
+      class Field < Avo::Fields::Field
         def initialize(name, **args, &block)
           @defaults = {
             sortable: true,
-            component: '<%= name %>-field',
+            component: '<%= simple_name %>-field',
             computable: true,
           }.merge(@defaults || {})
 

@@ -8,10 +8,12 @@ module Avo
     isolate_namespace Avo
 
     initializer 'avo.autoload', before: :set_autoload_paths do |app|
+      puts 'avo.autoload'.inspect
       {
         'Avo::Resources': ['app', 'avo', 'resources'],
         'Avo::Filters': ['app', 'avo', 'filters'],
         'Avo::Actions': ['app', 'avo', 'actions'],
+        'Avo::Components': ['avo-components'],
       }.each do |namespace, path|
         next unless Rails.root.join(*path).exist?
 
@@ -35,12 +37,18 @@ module Avo
       end
 
       if Rails.env.production?
+        puts 'in prod'.inspect
         Dir.glob(avo_root_path + '/lib/avo/app/**/*.rb'.to_s).each { |c| load(c) }
-
+        puts Dir.glob("#{Rails.root.to_s}/avo-components/**/*.rb".to_s).reject { |file| file.include? 'node_modules' }.inspect
+        Dir.glob("#{Rails.root.to_s}/avo-components/**/*.rb".to_s).reject { |file| file.include? 'node_modules' }.each { |c| load(c) }
+        # puts [Rails.root,  + "#{Rails.root.to_s}/avo-components/**/*.rb".to_s].inspect
         Avo::App.init
       end
     end
 
+    config.after_initialize do
+      puts 'config.after_initialize'.inspect
+    end
     initializer 'webpacker.proxy' do |app|
       app.config.debug_exception_response_format = :api
       app.config.logger = ::Logger.new(STDOUT)

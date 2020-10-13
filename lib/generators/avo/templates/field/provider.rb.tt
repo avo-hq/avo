@@ -1,0 +1,16 @@
+module Avo
+  module Components
+    module <%= class_name %>
+      class Provider
+        ROOT_PATH = Pathname.new(File.join(__dir__))
+
+        def self.boot
+          Avo::App.initializing do
+            Avo::App.script '<%= name %>.js', "#{File.dirname(__FILE__)}/frontend"
+          end
+          Avo::App.load_field :<%= simple_name %>, Avo::Components::<%= class_name %>::Field
+        end
+      end
+    end
+  end
+end

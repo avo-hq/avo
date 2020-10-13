@@ -2,6 +2,7 @@
   "name": "<%= "#{parameter_name}" %>",
   "private": true,
   "dependencies": {
+    "@avo-hq/avo-js": "0.1.8",
     "@rails/webpacker": "4.2.2",
     "postcss": "^7.0.27",
     "postcss-flexbugs-fixes": "^4.2.0",

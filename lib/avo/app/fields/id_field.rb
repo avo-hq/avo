@@ -1,7 +1,9 @@
+puts 'in id field'.inspect
 module Avo
   module Fields
     class IdField < Field
       def initialize(name, **args, &block)
+        puts 'id.initialize'.inspect
         if name.nil?
           @name = name = 'id'
         elsif !name.is_a? String and !name.is_a? Symbol
