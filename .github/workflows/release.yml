@@ -101,5 +101,10 @@ jobs:
         chmod 600 ~/.gem/credentials
         gem push --key github --host https://rubygems.pkg.github.com/avo-hq ./pkg/avo-${{steps.gem_version.outputs.tag}}.gem
 
+    - name: Publish to rubygems.org
+      id: publish-to-rubygems-package-registry
+      run: |
+        gem push --host https://rubygems.org/ ./pkg/avo-${{steps.gem_version.outputs.tag}}.gem
+
     - name: Publish release on avohq.io
       run: node .github/publish-release-to-avo-hq-io.js
