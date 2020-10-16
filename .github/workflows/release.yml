@@ -105,7 +105,7 @@ jobs:
       id: publish-to-rubygems-package-registry
       run: |
         echo ":rubygems_api_key: ${secrets.RUBYGEMS_TOKEN}" >> ~/.gem/credentials
-        gem push --key rubygems_api_key --host https://rubygems.org/ ./pkg/avo-${{steps.gem_version.outputs.tag}}.gem
+        gem push --host https://rubygems.org/ ./pkg/avo-${{steps.gem_version.outputs.tag}}.gem
 
     - name: Publish release on avohq.io
       run: node .github/publish-release-to-avo-hq-io.js
