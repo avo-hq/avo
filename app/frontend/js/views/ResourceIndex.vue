@@ -479,7 +479,7 @@ export default {
     },
     async showAttachModal() {
       this.$modal.show(AttachModal, {
-        text: `Select a ${this.resourceNameSingular.toLowerCase()} to attach`,
+        heading: `Select a ${this.resourceNameSingular.toLowerCase()} to attach`,
         getOptions: this.getOptions,
         attachAction: this.attachOption,
       })
