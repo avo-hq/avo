@@ -1,5 +1,6 @@
 import Bus from '@/js/Bus'
 import axios from 'axios'
+import router from '@/js/router'
 
 function getCSRFToken() {
   const metaEl = document.querySelector('meta[name="csrf-token"]')
@@ -39,12 +40,15 @@ Api.interceptors.response.use(
   (error) => {
     const { response } = error
     const { data } = response
+    console.log('data->', [data, error])
 
     if (data && data.message) {
       Bus.$emit('error', data.message)
     } else if (data && data.exception) {
       Bus.$emit('error', /^#<(.*)>$/gm.exec(data.exception)[1])
     }
+
+    if (response && response.status && response.status === 403) return router.push('/403')
 
     return Promise.reject(error)
   },
@@ -61,6 +65,5 @@ Api.interceptors.response.use((response) => {
 
   return response
 })
-
 
 export default Api

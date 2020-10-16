@@ -2,6 +2,7 @@ require_dependency 'avo/application_controller'
 
 module Avo
   class ResourcesController < ApplicationController
+    before_action :authorize_user
     include Pundit
 
     def index
@@ -340,6 +341,24 @@ module Avo
         end
 
         filter_defaults
+      end
+
+      def authorize_user
+        # abort params.inspect
+        actions_map = {
+          index: 'view_any?',
+        }
+        # abort avo_resource.model.inspect
+        # abort [params[:action], actions_map[params[:action].to_sym]].inspect
+        begin
+          if Pundit.policy current_user, avo_resource.model
+            Pundit.authorize current_user, avo_resource.model, actions_map[params[:action].to_sym]
+          end
+        rescue NotAuthorizedError => error
+          return render json: {
+            message: 'Unauthorized'
+          }, status: 403
+        end
       end
   end
 end

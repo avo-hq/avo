@@ -48,6 +48,11 @@ const routes = [
       viaResourceId: route.query.viaResourceId,
     }),
   },
+  {
+    name: '403',
+    path: '/403',
+    component: require('@/js/views/403.vue').default,
+  },
 ]
 
 const router = new VueRouter({

@@ -1,5 +1,6 @@
 class UserPolicy < ApplicationPolicy
-  def index?
-    current_user.is_admin?
+  def view_any?
+    user.is_admin?
+    false
   end
 end
