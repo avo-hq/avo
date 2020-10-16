@@ -21,7 +21,7 @@ And then execute:
 $ bundle install
 ```
 
-Website: [avohq.io](https://avohq.io)
-Docs: [docs.avohq.io](https://docs.avohq.io)
-Twitter: [avo_hq](https://twitter.com/avo_hq)
+Website: [avohq.io](https://avohq.io)\
+Docs: [docs.avohq.io](https://docs.avohq.io)\
+Twitter: [avo_hq](https://twitter.com/avo_hq)\
 Community: [discord](https://discord.gg/pkTF6y8)
