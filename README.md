@@ -3,13 +3,14 @@
 [![codecov](https://codecov.io/gh/avo-hq/avo/branch/master/graph/badge.svg?token=Q2LMFE4989)](https://codecov.io/gh/avo-hq/avo)
 
 # Avo
-The missing Ruby on Rails admin
+Configuration-based, no-maintenance, extendable Ruby on Rails admin
 
-## Usage
-How to use my plugin.
+Avo is a beautiful next-generation framework that empowers you, the developer, to create fantastic admin panels for your Ruby on Rails apps with the flexibility to fit your needs as you grow.
+
+[Get started](https://avohq.io/get-started)
 
 ## Installation
-Add this line to your application's Gemfile:
+Add this line to your application's `Gemfile`:
 
 ```ruby
 gem 'avo'
@@ -17,53 +18,10 @@ gem 'avo'
 
 And then execute:
 ```bash
-$ bundle
+$ bundle install
 ```
 
-Or install it yourself as:
-```bash
-$ gem install avo
-```
-
-## Testing
-
-We use `rspec` to run our tests. To run unit tests use `npm run test`. For system tests `npm run test-system` and to run them all `npm run test-all` or simply `rspec`
-
-## Contributing
-
-```
-git clone
-cd avo
-bundle install
-yarn
-bin/rails server
-```
-
-You may also use the VSCode launcher to take advantage of the debugger.
-
-You may need to run `rake db:migrate && rake db:test:prepare` for local development.
-
-To start the Webpack dev server you need to have a different session running `bin/webpack-dev-server`.
-
-## License
-Commercial license.
-
-## Building, Releasing and Publishing
-
-### Build
-
-If you just need a quick development build of the gem, just run `rails build`.
-
-To build for **release** (production mode), you need to run `yarn build`. This will build a docker image that will build the gem using `production` env variables. At the end of the process it will place the new gem under `pkg/` directory.
-
-### Release
-
-To release the gem, run `yarn release [patch(default)|minor|major]`. This will increment the version name, cut a tag and push to GitHub. From there, GitHub Actions will take over to build the artifact, create a release and add the artifact to that release.
-
-At every PR merge a `Next release draft` release will be auto-filled by [Release drafter](https://github.com/marketplace/actions/release-drafter). When a real release happens (on `yarn release`). The contents body of that release will be moved to the actual release and the draft will be destroyed so it can be refilled on next PR's.
-
-### Publish
-
-To publish on GitHub package registry you need to run `yarn run publish`. This will publish the current version on their registry.
-
-As a prerequisite you need to have the GitHub token in your `~/.gem/credentials` file. You may run `echo ":github: Bearer GH_TOKEN" >> ~/.gem/credentials`.
+Website: [avohq.io](https://avohq.io)
+Docs: [docs.avohq.io](https://docs.avohq.io)
+Twitter: [avo_hq](https://twitter.com/avo_hq)
+Community: [discord](https://discord.gg/pkTF6y8)
