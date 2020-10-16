@@ -1,3 +1,4 @@
+import '@/js/components'
 import Api from '@/js/Api'
 import Bus from '@/js/Bus'
 import PortalVue from 'portal-vue'
@@ -7,14 +8,15 @@ import VTooltip from 'v-tooltip'
 import Vue from 'vue/dist/vue.esm'
 import VueCurrencyInput from 'vue-currency-input'
 import VueRouter from 'vue-router'
+import Vuex from 'vuex'
+import indexStore from '@/js/stores/index-store'
 import router from '@/js/router'
-
-import '@/js/components'
 
 const Avo = {
   Bus,
   Api,
   env: '',
+  rootPath: window.rootPath || '/avo',
 
   init() {
     Avo.env = window.env || 'production'
@@ -23,14 +25,16 @@ const Avo = {
     }
   },
 
-  turbolinksLoad() {
-    if (document.getElementById('app')) {
-      Avo.initVue()
-    }
-  },
-
   reload() {
     this.vue.reload()
+  },
+
+  redirect(path) {
+    this.vue.redirect(path)
+  },
+
+  alert(message, messageType) {
+    this.vue.alert(message, messageType)
   },
 
   initVue() {
@@ -48,17 +52,26 @@ const Avo = {
       dynamic: true,
       injectModalsContainer: false,
       dynamicDefaults: {
-        height: 200,
-        width: 450,
-        styles: 'border-radius: 0.5rem',
+        adaptive: true,
+        height: 'auto',
+        minHeight: 250,
+        width: 550,
+        styles: 'border-radius: 1rem',
       },
     })
     Vue.use(PortalVue)
+    Vue.use(Vuex)
+
+    const store = new Vuex.Store({
+      modules: {
+        index: indexStore,
+      },
+    })
 
     this.vue = new Vue({
       router,
+      store,
       el: '#app',
-      data: {},
       computed: {
         routerKey() {
           return `${this.$route.name}-${this.$route.params.resourceName || ''}`
@@ -95,5 +108,5 @@ const Avo = {
   },
 }
 
-export { Api }
+export { Api, Bus }
 export default Avo

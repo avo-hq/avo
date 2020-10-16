@@ -10,11 +10,12 @@ export default {
   data: () => ({}),
   props: ['field'],
   computed: {
-    displayValue() {
+    label() {
       return this.field.options[this.field.value]
     },
     value() {
-      if (this.field.display_with_value && this.displayValue) return this.displayValue
+      if (!this.field.display_value && this.field.enum) return this.field.enum[this.field.value]
+      if (!this.field.display_value && this.label) return this.label
 
       return this.field.value
     },

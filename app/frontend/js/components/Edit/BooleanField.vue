@@ -1,5 +1,5 @@
 <template>
-<edit-field-wrapper :field="field" :errors="errors" :index="index">
+<edit-field-wrapper :field="field" :errors="errors" :index="index" :displayed-in="displayedIn">
   <div class="h-8 flex items-center">
     <input type="checkbox"
       ref="field-input"
@@ -13,10 +13,10 @@
 </template>
 
 <script>
-import FormField from '@/js/mixins/form-field'
+import { IsFormField } from '@avo-hq/avo-js'
 
 export default {
-  mixins: [FormField],
+  mixins: [IsFormField],
   methods: {
     getValue() {
       switch (this.value) {

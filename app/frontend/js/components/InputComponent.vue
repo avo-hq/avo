@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import HasInputAppearance from '@/js/mixins/has-input-appearance'
+import { HasInputAppearance } from '@avo-hq/avo-js'
 
 export default {
   mixins: [HasInputAppearance],
@@ -40,6 +40,15 @@ export default {
     type: {
       type: String,
       default: 'text',
+    },
+  },
+  methods: {
+    focus() {
+      if (this.type === 'textarea') {
+        this.$refs.textarea.focus()
+      } else {
+        this.$refs.input.focus()
+      }
     },
   },
   mounted() {

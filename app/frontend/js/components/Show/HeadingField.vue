@@ -2,16 +2,16 @@
   <HeadingComponent
     :value="this.field.name"
     :asHtml="this.field.as_html"
+    :class="{'overflow-hidden rounded-t-xl': index === 0}"
     >
   </HeadingComponent>
 </template>
 
 <script>
-/* eslint-disable import/no-unresolved */
-import HeadingComponent from '@/js/components/HeadingComponent'
+import HeadingComponent from '@/js/components/HeadingComponent.vue'
 
 export default {
-  props: ['field'],
+  props: ['field', 'index'],
   components: { HeadingComponent },
 }
 </script>

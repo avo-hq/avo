@@ -6,8 +6,6 @@ import Avo from '@/js/Avo'
 document.addEventListener('DOMContentLoaded', Avo.init)
 
 Mousetrap.bind('r r r', () => Avo.reload())
-// import '@/js/bootstrap'
-// import '@/js/vue'
 
 // Uncomment to copy all static images under ../images to the output folder and reference
 // them with the image_pack_tag helper in views (e.g <%= image_pack_tag 'rails.png' %>)

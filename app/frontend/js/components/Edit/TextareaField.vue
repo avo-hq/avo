@@ -1,5 +1,5 @@
 <template>
-  <edit-field-wrapper :field="field" :errors="errors" :index="index">
+  <edit-field-wrapper :field="field" :errors="errors" :index="index" :displayed-in="displayedIn">
     <input-component
       ref="field-input"
       type="textarea"
@@ -14,10 +14,10 @@
 </template>
 
 <script>
-import FormField from '@/js/mixins/form-field'
+import { IsFormField } from '@avo-hq/avo-js'
 
 export default {
-  mixins: [FormField],
+  mixins: [IsFormField],
   computed: {
     rows() {
       return this.field.rows || 5

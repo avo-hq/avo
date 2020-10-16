@@ -1,5 +1,5 @@
 <template>
-  <edit-field-wrapper :field="field" :errors="errors" :index="index">
+  <edit-field-wrapper :field="field" :errors="errors" :index="index" :displayed-in="displayedIn">
     <div v-if="searchable">
       <resources-search :resource-name="field.id"
         ref="field-input"
@@ -29,19 +29,20 @@
     </div>
     <template #extra>
       <div v-if="searchable">
-        <button @click="removeSelection">remove selection</button>
+        <a-button color="indigo"
+          @click="removeSelection"
+        >Remove selection</a-button>
       </div>
     </template>
   </edit-field-wrapper>
 </template>
 
 <script>
+import { HasInputAppearance, IsFormField } from '@avo-hq/avo-js'
 import Bus from '@/js/Bus'
-import FormField from '@/js/mixins/form-field'
-import HasInputAppearance from '@/js/mixins/has-input-appearance'
 
 export default {
-  mixins: [FormField, HasInputAppearance],
+  mixins: [IsFormField, HasInputAppearance],
   data: () => ({
     options: [],
     value: {},

@@ -1,9 +1,21 @@
 <template>
-  <div v-if="resource">
+  <div v-if="resource" class="text-sm">
     <div v-for="panel in resource.panels" :key="panel.name">
       <panel>
         <template #heading>
           Create new {{resourceNameSingular | toLowerCase}}
+        </template>
+
+        <template #tools>
+          <div class="flex justify-end space-x-2">
+            <a-button :to="{
+              name: 'index',
+              params: {
+                resourceName: resourceName,
+              },
+            }"><arrow-left-icon class="h-4 mr-1"/> Cancel</a-button>
+            <a-button color="green" @click="submitResource"><save-icon class="h-4 mr-1"/> Save</a-button>
+          </div>
         </template>
 
         <template #content>
@@ -12,7 +24,7 @@
           <form @submit.prevent="submitResource">
             <component
               v-for="(field, index) in fields"
-              :key="uniqueKey(field)"
+              :key="uniqueKey(field, index)"
               :index="index"
               :is="`edit-${field.component}`"
               :field="field"
@@ -28,15 +40,6 @@
         </template>
 
         <template #footer>
-          <router-link
-            class="button"
-            :to="{
-              name: 'index',
-              params: {
-                resourceName: resourceName,
-              },
-            }">Cancel</router-link>
-          <button class="button" @click="submitResource">Save</button>
         </template>
       </panel>
     </div>

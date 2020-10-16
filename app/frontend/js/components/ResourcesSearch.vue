@@ -1,38 +1,34 @@
 <template>
-  <div>
-    <multiselect
-      label="name"
-      placeholder="Type to search"
-      :options="options"
-      :searchable="true"
-      :loading="isLoading"
-      :internal-search="false"
-      :clear-on-select="false"
-      :close-on-select="false"
-      :options-limit="300"
-      :limit="3"
-      :limit-text="limitText"
-      :max-height="300"
-      :group-values="groupValues"
-      :group-label="groupLabel"
-      @search-change="asyncFind"
-      @select="select"
-      :value="value"
-      :show-labels="false"
-      :allow-empty="true"
-    >
-      <template slot="tag" slot-scope="{ option, remove }">
-        <span class="custom__tag"><span>11{{ option.name }}</span><span class="custom__remove" @click="remove(option)">❌</span></span
-        >
-      </template>
-      <span slot="noResult">Oops! Nothing found...</span>
-    </multiselect>
-  </div>
+  <multiselect
+    class="text-sm"
+    label="name"
+    placeholder="Type to search"
+    :options="options"
+    :searchable="true"
+    :loading="isLoading"
+    :internal-search="false"
+    :clear-on-select="false"
+    :close-on-select="false"
+    :options-limit="300"
+    :limit="3"
+    :limit-text="limitText"
+    :max-height="300"
+    :group-values="groupValues"
+    :group-label="groupLabel"
+    @search-change="asyncFind"
+    @select="select"
+    :value="value"
+    :show-labels="false"
+    :allow-empty="true"
+  >
+    <span slot="noResult">Oops! Nothing found...</span>
+  </multiselect>
 </template>
 
 <script>
 import '~/vue-multiselect/dist/vue-multiselect.min.css'
 import Api from '@/js/Api'
+import Avo from '@/js/Avo'
 import Bus from '@/js/Bus'
 import Multiselect from 'vue-multiselect'
 import URI from 'urijs'
@@ -71,9 +67,9 @@ export default {
       const url = new URI()
 
       if (this.isGlobal) {
-        url.path('/avocado/avocado-api/search')
+        url.path(`${Avo.rootPath}/avo-api/search`)
       } else {
-        url.path(`/avocado/avocado-api/${this.resourceName}/search`)
+        url.path(`${Avo.rootPath}/avo-api/${this.resourceName}/search`)
       }
 
       const query = {

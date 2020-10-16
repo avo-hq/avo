@@ -75,7 +75,7 @@ development:
       'Access-Control-Allow-Origin': '*'
     watch_options:
       ignored: '**/node_modules/**'
-    env_prefix: "AVOCADO_WEBPACKER_DEV_SERVER"
+    env_prefix: "AVO_WEBPACKER_DEV_SERVER"
 
 
 test:

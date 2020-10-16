@@ -1,5 +1,5 @@
 <template>
-  <edit-field-wrapper :field="field" :errors="errors" :index="index">
+  <edit-field-wrapper :field="field" :errors="errors" :index="index" :displayed-in="displayedIn">
     <div class="flex items-center">
       <div class="space-y-3">
         <template v-for="(value, name, index) in fieldValues">
@@ -9,8 +9,9 @@
               :name="name"
               :checked="value"
               :disabled="disabled"
+              class="w-3 h-3"
             />
-            <label>{{ labelForOption(name) }}</label>
+            <label class="ml-1">{{ labelForOption(name) }}</label>
           </div>
         </template>
       </div>
@@ -19,12 +20,12 @@
 </template>
 
 <script>
-import FormField from '@/js/mixins/form-field'
+import { IsFormField } from '@avo-hq/avo-js'
 import isNull from 'lodash/isNull'
 import isUndefined from 'lodash/isUndefined'
 
 export default {
-  mixins: [FormField],
+  mixins: [IsFormField],
   data: () => ({
     fieldValues: {},
   }),

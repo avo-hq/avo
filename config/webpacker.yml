@@ -7,7 +7,7 @@ default: &default
   cache_path: tmp/cache/webpacker
   check_yarn_integrity: false
   # use a different sub-folder name
-  public_output_path: avocado-packs
+  public_output_path: avo-packs
   webpack_compile_output: false
   public_root_path: public
 
@@ -19,7 +19,7 @@ default: &default
   cache_manifest: false
 
   # Extract and emit a css file
-  extract_css: false
+  extract_css: true
 
   static_assets_extensions:
     - .jpg
@@ -63,8 +63,8 @@ development:
   dev_server:
     https: false
     host: localhost
-    port: 3035
-    public: localhost:3035
+    port: 3039
+    public: localhost:3039
     hmr: true
     # Inline should be set to true if using HMR
     inline: true
@@ -77,7 +77,7 @@ development:
       'Access-Control-Allow-Origin': '*'
     watch_options:
       ignored: '**/node_modules/**'
-    env_prefix: "AVOCADO_WEBPACKER_DEV_SERVER"
+    env_prefix: "AVO_WEBPACKER_DEV_SERVER"
 
 
 test:
@@ -93,9 +93,6 @@ production:
 
   # Production depends on precompilation of packs prior to booting for performance.
   compile: false
-
-  # Extract and emit a css file
-  extract_css: false
 
   # Cache manifest.json for performance
   cache_manifest: true

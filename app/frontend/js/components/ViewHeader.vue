@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mt-3">
     <heading><slot name="heading"/></heading>
 
     <div>

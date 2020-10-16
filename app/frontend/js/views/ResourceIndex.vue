@@ -5,46 +5,83 @@
     </template>
 
     <template #tools>
-      <div class="flex justify-between items-center mb-4 w-full">
-        <div>
-          <resources-search
+      <div class="flex justify-end items-center mb-6 w-full">
+        <div class="mr-2">
+          <resource-actions
             :resource-name="resourceName"
-            :via-resource-name="viaResourceName"
-            :via-resource-id="viaResourceId"
+            :resource-ids="selectedResources"
+            :actions="actions"
+            v-if="resources.length > 0"
           />
         </div>
         <div>
-          <a
+          <a-button
+            color="indigo"
             href="javascript:void(0);"
-            @click.prevent="showAttachModal"
-            class="button cursor-pointer"
+            @click="showAttachModal"
             v-if="relationship === 'has_and_belongs_to_many'"
-          >Attach {{resourceNameSingular | toLowerCase}}</a>
-          <router-link
-            :to="createNewAction"
-            class="button"
+          >
+            <view-grid-add-icon class="h-4 mr-1" />Attach {{resourceNameSingular | toLowerCase}}
+          </a-button>
+          <a-button
+            is="a-button"
+            :to="{
+              name: 'new',
+              params: {
+                resourceName: resourcePath,
+              },
+              query: {
+                viaRelationship: fieldId,
+                viaResourceName: viaResourceName,
+                viaResourceId: viaResourceId,
+              },
+            }"
             v-else
-          >Create new {{resourceNameSingular | toLowerCase}}</router-link>
+          ><plus-icon class="h-4 mr-1"/>Create new {{resourceNameSingular | toLowerCase}}</a-button>
         </div>
       </div>
     </template>
 
     <template #content>
       <template>
-        <div class="flex justify-between items-center py-4">
-          <resource-filters
-            v-if="!viaResourceName"
-            :via-resource-name="viaResourceName"
-            :per-page="perPage"
-            :per-page-steps="perPageSteps"
-            :filters="filters"
-            :applied-filters="appliedFilters"
-            @change-filter="changeFilter"
-            @change-per-page="changePerPage"
-          />
+        <div class="flex justify-between py-6">
+          <div class="flex items-center px-6 w-64">
+            <resources-search
+              :resource-name="resourceName"
+              :via-resource-name="viaResourceName"
+              :via-resource-id="viaResourceId"
+              v-if="resources.length > 0"
+            />
+          </div>
+          <div class="flex justify-end items-center px-6 space-x-3">
+            <a-button @click="changeViewType('table')"
+              color="blue"
+              v-if="availableViewTypes.includes('table') && viewType !== 'table'"
+            >
+              <view-list-icon class="h-4 mr-1" /> Table View
+            </a-button>
+            <a-button @click="changeViewType('grid')"
+              color="blue"
+              v-if="availableViewTypes.includes('grid') && viewType !== 'grid'"
+            >
+              <view-grid-icon class="h-4 mr-1" /> Grid View
+            </a-button>
+            <resource-filters
+              v-if="!viaResourceName"
+              :via-resource-name="viaResourceName"
+              :per-page="perPage"
+              :per-page-steps="perPageSteps"
+              :filters="filters"
+              :applied-filters="appliedFilters"
+              @change-filter="changeFilter"
+              @change-per-page="changePerPage"
+            />
+          </div>
         </div>
 
-        <div class="w-full overflow-auto min-h-28 flex flex-col">
+        <loading-overlay class="relative" v-if="viewType === '' && isLoading"/>
+
+        <div class="w-full overflow-auto min-h-28 flex flex-col" v-if="viewType === 'table'">
           <loading-overlay class="relative" v-if="resources.length === 0 && isLoading"/>
           <div class="relative flex-1 flex" v-else>
             <loading-overlay v-if="isLoading" />
@@ -58,14 +95,16 @@
               :via-resource-name="viaResourceName"
               :via-resource-id="viaResourceId"
               :field="field"
+              :total-pages="totalPages"
               @sort="changeSortBy"
               @resource-deleted="getResources(true)"
-              ></resource-table>
+            />
 
-              <div class="flex-1 flex items-center justify-center"
-                v-text="noResourcesLabel"
-                v-else
-              />
+            <empty-state
+              :resource-name="resourceNamePlural"
+              :via-resource-name="viaResourceName"
+              v-else
+            />
           </div>
 
           <paginate
@@ -77,38 +116,85 @@
             :prev-text="'Prev'"
             :next-text="'Next'"
             :no-li-surround="true"
-            container-class="avo-pagination flex justify-end px-4"
+            container-class="avo-pagination justify-end flex px-4 space-x-2"
             page-class="pagination-button"
-            page-link-class="button select-none rounded-none focus:outline-none"
-            active-class="active"
-            prev-link-class="button rounded-none focus:outline-none"
-            next-link-class="button rounded-none focus:outline-none"
-            class="py-4 select-none"
-          ></paginate>
+            active-class="text-blue-700 bg-gray-400"
+            :page-link-class="`${paginationClasses} select-none`"
+            :next-link-class="`${paginationClasses}`"
+            :prev-link-class="`${paginationClasses}`"
+            class="py-6 select-none"
+          />
         </div>
       </template>
+    </template>
+
+    <template #bare-content>
+      <div v-if="viewType === 'grid'">
+        <resource-grid
+          v-if="resources && resources.length > 0"
+          :resources="resources"
+          :resource-name="resourceName"
+          :sort-by="sortBy"
+          :sort-direction="sortDirection"
+          :via-resource-name="viaResourceName"
+          :via-resource-id="viaResourceId"
+          :field="field"
+          @sort="changeSortBy"
+          @resource-deleted="getResources(true)"
+        />
+
+        <div class="bg-white rounded-xl shadow-xl" v-else>
+          <empty-state
+            :resource-name="resourceNamePlural"
+            :via-resource-name="viaResourceName"
+          />
+        </div>
+
+        <div class="bg-white rounded-lg shadow-xl mt-6">
+          <paginate
+            v-show="totalPages > 1"
+            v-model="page"
+            ref="paginate"
+            :page-count="totalPages"
+            :click-handler="changePageFromPagination"
+            :prev-text="'Prev'"
+            :next-text="'Next'"
+            :no-li-surround="true"
+            container-class="avo-pagination justify-end flex px-4 space-x-2"
+            page-class="pagination-button"
+            active-class="text-blue-700 bg-gray-400"
+            :page-link-class="`${paginationClasses} select-none`"
+            :next-link-class="`${paginationClasses}`"
+            :prev-link-class="`${paginationClasses}`"
+            class="py-6 select-none"
+          />
+        </div>
+      </div>
     </template>
   </panel>
 </template>
 
 <script>
+import { mapMutations, mapState } from 'vuex'
 import Api from '@/js/Api'
 import AttachModal from '@/js/components/AttachModal.vue'
+import Avo from '@/js/Avo'
 import Bus from '@/js/Bus'
 import DealsWithHasManyRelations from '@/js/mixins/deals-with-has-many-relations'
 import DealsWithResourceLabels from '@/js/mixins/deals-with-resource-labels'
+import LoadsActions from '@/js/mixins/loads-actions'
 import URI from 'urijs'
 import isNull from 'lodash/isNull'
 import isUndefined from 'lodash/isUndefined'
 
 export default {
   name: 'ResourceIndex',
-  mixins: [DealsWithResourceLabels, DealsWithHasManyRelations],
+  mixins: [DealsWithResourceLabels, DealsWithHasManyRelations, LoadsActions],
   data: () => ({
     resources: [],
     totalPages: 0,
     page: 0,
-    perPage: 25,
+    perPage: 24,
     meta: {
       // eslint-disable-next-line camelcase
       per_page_steps: [],
@@ -119,6 +205,10 @@ export default {
     filters: [],
     appliedFilters: {},
     oldQueryUrl: '',
+    paginationClasses: 'rounded-lg focus:outline-none px-3 py-1 text-sm text-gray-600 font-semibold bg-gray-300 hover:bg-gray-400 shadow-md',
+    viewType: '',
+    availableViewTypes: [],
+    rootPath: '/avo',
   }),
   props: [
     'resourceName',
@@ -127,6 +217,9 @@ export default {
     'field',
   ],
   computed: {
+    ...mapState('index', [
+      'selectedResources',
+    ]),
     newQueryParams() {
       return {
         name: this.viaResourceName ? 'show' : 'index',
@@ -151,7 +244,7 @@ export default {
         }
       }
 
-      if (!this.paramCanBeOmitted(this.perPage, 25)) {
+      if (!this.paramCanBeOmitted(this.perPage, 24)) {
         if (this.viaResourceName) {
           params[this.uriParam('per_page')] = this.perPage
         } else {
@@ -160,11 +253,6 @@ export default {
         }
       }
 
-      // if (Object.keys(this.appliedFilters).length > 0) {
-      //   params.filters = this.encodedFilters
-      // } else {
-      //   delete params.filters
-      // }
       if (Object.keys(this.appliedFilters).length > 0) {
         if (this.viaResourceName) {
           params[this.uriParam('filters')] = this.encodedFilters
@@ -192,6 +280,15 @@ export default {
         }
       }
 
+      if (this.viewType !== '') {
+        if (this.viaResourceName) {
+          params[this.uriParam('view_type')] = this.viewType
+        } else {
+          // eslint-disable-next-line camelcase
+          params.view_type = this.viewType
+        }
+      }
+
       return params
     },
     encodedFilters() {
@@ -201,7 +298,7 @@ export default {
     },
     queryUrl() {
       const url = new URI()
-      url.path(`/avocado/avocado-api/${this.resourcePath}`)
+      url.path(`${Avo.rootPath}/avo-api/${this.resourcePath}`)
 
       /* eslint-disable camelcase */
       let query = {
@@ -215,7 +312,7 @@ export default {
       if (this.viaResourceName) {
         query = {
           ...query,
-          via_relationship: this.field.id,
+          via_relationship: this.fieldId,
           via_resource_name: this.viaResourceName.toLowerCase(),
           via_resource_id: this.viaResourceId,
         }
@@ -229,30 +326,14 @@ export default {
     perPageSteps() {
       return this.meta.per_page_steps
     },
-    noResourcesLabel() {
-      if (this.viaResourceName) return `No related ${this.resourceNamePlural.toLowerCase()} found`
-
-      return `No ${this.resourceNamePlural.toLowerCase()} found`
-    },
-    createNewAction() {
-      const action = {
-        name: 'new',
-        params: {
-          resourceName: this.resourcePath,
-        },
-        query: {},
-      }
-
-      if (this.viaResourceName) {
-        action.query.viaRelationship = this.field.id
-        action.query.viaResourceName = this.viaResourceName
-        action.query.viaResourceId = this.viaResourceId
-      }
-
-      return action
+    fieldId() {
+      return this.field ? this.field.id : undefined
     },
   },
   methods: {
+    ...mapMutations('index', [
+      'clearSelectedResources',
+    ]),
     updateQueryParams() {
       this.$router.push(this.newQueryParams)
     },
@@ -268,6 +349,12 @@ export default {
       this.setPage(page)
       this.updateQueryParams()
     },
+    changeViewType(viewType) {
+      if (viewType === this.viewType) return
+
+      this.setViewType(viewType)
+      this.updateQueryParams()
+    },
     async getResources(force = false) {
       if (this.oldQueryUrl === this.queryUrl && !force) return
 
@@ -279,13 +366,17 @@ export default {
       this.resources = data.resources
       this.totalPages = data.total_pages
       this.meta = data.meta
+      this.availableViewTypes = data.meta.available_view_types
+
+      // Set this only on first page load
+      if (this.viewType === '') this.setViewType(data.meta.default_view_type)
 
       Bus.$emit('resourcesLoaded', this.resources)
 
       this.isLoading = false
     },
     async getFilters() {
-      const { data } = await Api.get(`/avocado/avocado-api/${this.resourcePath}/filters`)
+      const { data } = await Api.get(`${Avo.rootPath}/avo-api/${this.resourcePath}/filters`)
 
       this.filters = data.filters
     },
@@ -321,8 +412,11 @@ export default {
     setPage(page) {
       this.page = isUndefined(page) ? 1 : parseInt(page, 10)
     },
+    setViewType(viewType) {
+      this.viewType = isUndefined(viewType) ? '' : viewType
+    },
     setPerPage(perPage) {
-      this.perPage = isUndefined(perPage) ? 25 : parseInt(perPage, 10)
+      this.perPage = isUndefined(perPage) ? 24 : parseInt(perPage, 10)
     },
     setSortBy(by) {
       this.sortBy = isUndefined(by) ? '' : by
@@ -351,6 +445,7 @@ export default {
       this.setPerPage(URI(window.location.toString()).query(true)[this.uriParam('per_page')])
       this.setSortBy(URI(window.location.toString()).query(true)[this.uriParam('sort_by')])
       this.setSortDirection(URI(window.location.toString()).query(true)[this.uriParam('sort_direction')])
+      this.setViewType(URI(window.location.toString()).query(true)[this.uriParam('view_type')])
       const filters = URI(window.location.toString()).query(true)[this.uriParam('filters')]
       if (filters) this.setFilterValue(JSON.parse(atob(filters)))
 
@@ -365,12 +460,12 @@ export default {
       return param
     },
     async getOptions() {
-      const { data } = await Api.get(`/avocado/avocado-api/${this.resourceName}?for_relation=${this.relationship}`)
+      const { data } = await Api.get(`${Avo.rootPath}/avo-api/${this.resourceName}?for_relation=${this.relationship}`)
 
       return data.resources
     },
     async attachOption(option, another = false) {
-      const { data } = await Api.post(`/avocado/avocado-api/${this.viaResourceName}/${this.viaResourceId}/attach/${this.resourceName}/${option}`)
+      const { data } = await Api.post(`${Avo.rootPath}/avo-api/${this.viaResourceName}/${this.viaResourceId}/attach/${this.resourceName}/${option}`)
 
       const { success } = data
 
@@ -384,7 +479,7 @@ export default {
     },
     async showAttachModal() {
       this.$modal.show(AttachModal, {
-        text: `Select a ${this.resourceNameSingular.toLowerCase()} to attach`,
+        heading: `Select a ${this.resourceNameSingular.toLowerCase()} to attach`,
         getOptions: this.getOptions,
         attachAction: this.attachOption,
       })
@@ -400,11 +495,21 @@ export default {
   },
   watch: {
     '$route.query.filters': 'queryFiltersChanged',
-    $route: 'getResources',
+    $route() {
+      this.getResources()
+    },
   },
   async created() {
-    await this.getFilters()
-    await this.initQueryParams()
+    this.addToBus(this.getFilters)
+    this.addToBus(this.initQueryParams)
+  },
+  mounted() {
+    Bus.$on('reload-resources', () => this.getResources(true))
+  },
+  destroyed() {
+    this.clearSelectedResources()
+
+    Bus.$off('reload-resources')
   },
 }
 </script>
@@ -412,17 +517,11 @@ export default {
 <style slang="postcss">
 /* @todo: fix loaders to support lang= */
 .avo-pagination {
-  a {
-    @apply shadow-md;
-  }
-  a.active {
-    @apply bg-gray-300 border-gray-300;
-  }
   a.disabled {
     @apply text-gray-500;
 
     &:hover {
-      @apply bg-white;
+      @apply bg-gray-300;
     }
   }
 }

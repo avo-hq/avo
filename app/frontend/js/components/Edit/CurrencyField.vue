@@ -1,5 +1,5 @@
 <template>
-  <edit-field-wrapper :field="field" :errors="errors" :index="index">
+  <edit-field-wrapper :field="field" :errors="errors" :index="index" :displayed-in="displayedIn">
     <currency-input
       ref="field-input"
       :id="field.id"
@@ -14,11 +14,10 @@
 </template>
 
 <script>
-import FormField from '@/js/mixins/form-field'
-import HasInputAppearance from '@/js/mixins/has-input-appearance'
+import { HasInputAppearance, IsFormField } from '@avo-hq/avo-js'
 
 export default {
-  mixins: [FormField, HasInputAppearance],
+  mixins: [IsFormField, HasInputAppearance],
   computed: {
     classes() {
       const classes = ['w-full', this.inputClasses]
@@ -30,9 +29,11 @@ export default {
   },
   methods: {
     setInitialValue() {
-      if (!this.field.value || this.field.value === '') this.value = 0
-
-      this.value = Number(this.field.value)
+      if (this.field.value) {
+        this.value = Number(this.field.value, 10)
+      } else {
+        this.value = null
+      }
     },
     focus() {
       if (this.$refs['field-input']) this.$refs['field-input'].$el.focus()

@@ -1,3 +1,3 @@
-Avocado.configure do |config|
+Avo.configure do |config|
   config.root_path = '/<%= options[:path] %>'
 end

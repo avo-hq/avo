@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-# Declare your gem's dependencies in avocado.gemspec.
+# Declare your gem's dependencies in avo.gemspec.
 # Bundler will treat runtime dependencies like base dependencies, and
 # development dependencies will be added by default to the :development group.
 gemspec
@@ -83,6 +83,10 @@ group :development, :test do
   gem 'rubocop'
   gem 'simplecov', require: false
   gem 'simplecov-cobertura'
+
+  # Release helper
+  gem 'bump', require: false
+  gem 'gem-release', require: false
 end
 
 gem 'zeitwerk', '~> 2.3'

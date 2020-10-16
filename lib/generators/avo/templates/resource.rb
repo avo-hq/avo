@@ -1,4 +1,4 @@
-module Avocado
+module Avo
   module Resources
     class <%= class_name %> < Resource
       def initialize
@@ -7,7 +7,7 @@ module Avocado
       end
 
       fields do
-        id :ID
+        id
       end
     end
   end

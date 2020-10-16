@@ -1,22 +1,24 @@
 <template>
   <div v-if="resource">
-    <div v-for="(panel, index) in resource.panels" :key="panel.name">
+    <div v-for="panel in resource.panels" :key="panel.name">
       <panel>
         <template #heading>
           {{panel.name}}
         </template>
 
         <template #tools>
-          <div class="flex justify-end" v-if="index === 0">
-            <router-link
-              class="button"
+          <div class="flex justify-end space-x-2">
+            <resource-actions :resource-name="resourceName" :resource-ids="[resourceId]" :actions="actions" />
+            <a-button :to="cancelActionParams"><arrow-left-icon class="h-4 mr-1"/> Back</a-button>
+            <a-button
+              color="indigo"
               :to="{
                 name: 'edit',
                 params: {
                   resourceName: resourceName,
                   resourceId: resource.id,
                 },
-              }">Edit</router-link>
+              }"><edit-icon class="h-4 mr-1" /> Edit</a-button>
           </div>
         </template>
 
@@ -25,7 +27,7 @@
 
           <component
             v-for="(field, index) in fieldsForPanel(panel)"
-            :key="uniqueKey(field)"
+            :key="uniqueKey(field, index)"
             :is="`show-${field.component}`"
             :field="field"
             :index="index"
@@ -33,7 +35,7 @@
             :resource-id="resourceId"
             :field-id="field.id"
             :field-component="field.component"
-          ></component>
+          />
         </template>
       </panel>
 
@@ -45,26 +47,46 @@
         :resource-name="resourceName"
         :resource-id="resourceId"
         :field-component="field.component"
-      ></component>
+      />
     </div>
   </div>
 </template>
 
 <script>
 import HasUniqueKey from '@/js/mixins/has-unique-key'
+import LoadsActions from '@/js/mixins/loads-actions'
 import LoadsResource from '@/js/mixins/loads-resource'
 
 export default {
   name: 'ResourceShow',
-  mixins: [LoadsResource, HasUniqueKey],
+  mixins: [LoadsResource, LoadsActions, HasUniqueKey],
   data: () => ({
     resource: null,
+    actions: [],
   }),
   props: [
     'resourceName',
     'resourceId',
+    'viaResourceName',
+    'viaResourceId',
   ],
   computed: {
+    cancelActionParams() {
+      const action = {
+        name: 'index',
+        params: {
+          resourceName: this.resourceName,
+        },
+      }
+
+      if (this.viaResourceName) {
+        action.name = 'show'
+        action.params.resourceName = this.viaResourceName
+        action.params.resourceId = this.viaResourceId
+      }
+
+      return action
+    },
     fields() {
       return this.resource.fields
     },
