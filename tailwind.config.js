@@ -1,13 +1,24 @@
 const plugin = require('tailwindcss/plugin')
 
 module.exports = {
-  purge: [
-    './app/helpers/**/*.rb',
-    './app/views/**/*.html',
-    './app/views/**/*.html.erb',
-    './app/frontend/**/*.vue',
-    './app/frontend/**/*.js',
-  ],
+  future: {
+    purgeLayersByDefault: true,
+    removeDeprecatedGapUtilities: true,
+  },
+  purge: {
+    mode: 'layers',
+    layers: ['components', 'utilities'],
+    content: [
+      './app/helpers/**/*.rb',
+      './app/views/**/*.html',
+      './app/views/**/*.html.erb',
+      './app/frontend/**/*.vue',
+      './app/frontend/**/*.js',
+    ],
+    options: {
+      whitelist: ['appearance-none'],
+    },
+  },
   theme: {
     extend: {
       fontFamily: {

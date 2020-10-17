@@ -1,11 +1,11 @@
 PATH
   remote: .
   specs:
-    avo (0.2.2)
+    avo (0.2.5)
       countries
       inline_svg
       kaminari
-      rails (~> 6.0.2, >= 6.0.2.1)
+      rails (>= 6.0)
       webpacker
       zeitwerk
 
