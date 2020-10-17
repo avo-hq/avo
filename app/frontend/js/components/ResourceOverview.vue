@@ -23,7 +23,7 @@
       <div class="mb-4 text-lg font-bold">
         Current resources
       </div>
-      <div class="grid grid-cols-3 col-gap-6">
+      <div class="grid grid-cols-3 gap-x-6">
         <div v-for="resource in resources" :key="resource.name">
           <pane class="p-6">
             <div class="font-semibold leading-tight mb-2 text-lg">
