@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    avo (0.2.4)
+    avo (0.2.5)
       countries
       inline_svg
       kaminari
