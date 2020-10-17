@@ -9,14 +9,20 @@ module Avo
       params[:per_page] ||= Avo.configuration.per_page
       params[:sort_by] = params[:sort_by].present? ? params[:sort_by] : :created_at
       params[:sort_direction] = params[:sort_direction].present? ? params[:sort_direction] : :desc
-      filters = get_filters
+
+      begin
+        query = policy_scope(resource_model)
+      rescue => exception
+        query = resource_model
+      end
 
       if params[:via_resource_name].present? and params[:via_resource_id].present? and params[:via_relationship].present?
         # get the reated resource (via_resource)
         related_resource = App.get_resource_by_name(params[:via_resource_name])
         related_model = related_resource.model
         # fetch the entries
-        query = related_model.find(params[:via_resource_id]).public_send(params[:via_relationship])
+        real_related_model = related_model._reflections[params[:via_relationship].to_s].class_name.safe_constantize
+        query = policy_scope(related_model.find(params[:via_resource_id]).public_send(params[:via_relationship]))
         params[:per_page] = Avo.configuration.via_per_page
       elsif ['has_many', 'has_and_belongs_to_many'].include? params[:for_relation]
         # search query
@@ -30,12 +36,11 @@ module Avo
         return render json: {
           resources: resources
         }
-      else
-        query = resource_model
       end
 
       query = query.order("#{params[:sort_by]} #{params[:sort_direction]}")
 
+      filters = get_filters
       if filters.present?
         filters.each do |filter_class, filter_value|
           query = filter_class.safe_constantize.new.apply_query request, query, filter_value

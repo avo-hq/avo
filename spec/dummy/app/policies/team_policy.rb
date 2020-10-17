@@ -7,20 +7,19 @@ class TeamPolicy < ApplicationPolicy
   def show?
     # abort [user, record].inspect
     user.is_admin?
-    false
+    true
   end
 
   def create?
-    false
+    true
   end
 
   def update?
-    # abort [user, record].inspect
     !record.name.include? 'Tesla'
-    false
+    true
   end
 
   def destroy?
-    false
+    true
   end
 end

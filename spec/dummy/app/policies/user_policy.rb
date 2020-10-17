@@ -18,4 +18,10 @@ class UserPolicy < ApplicationPolicy
   def destroy?
     true
   end
+
+  class Scope < Scope
+    def resolve
+      scope.where("roles->>'admin' = ?", 'true')
+    end
+  end
 end
