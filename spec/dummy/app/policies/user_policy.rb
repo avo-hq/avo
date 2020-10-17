@@ -1,6 +1,21 @@
 class UserPolicy < ApplicationPolicy
-  def view_any?
+  def index?
     user.is_admin?
-    false
+  end
+
+  def show?
+    user.is_admin?
+  end
+
+  def create?
+    true
+  end
+
+  def update?
+    true
+  end
+
+  def destroy?
+    true
   end
 end

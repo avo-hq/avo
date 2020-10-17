@@ -27,6 +27,7 @@ module Avo
         fields[:relation_class] = target_resource.class.to_s
         fields[:path] = target_resource.url
         fields[:relationship] = :has_and_belongs_to_many
+        fields[:relationship_model] = target_resource.model.name
 
         fields
       end

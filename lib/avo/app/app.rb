@@ -4,6 +4,7 @@ require_relative 'filters/select_filter'
 require_relative 'filters/boolean_filter'
 require_relative 'resource'
 require_relative 'tool'
+require_relative 'authorization_service'
 
 module Avo
   class App
@@ -145,21 +146,13 @@ module Avo
       # end
 
       def get_resources_navigation(user)
-        # abort user.inspect
-        # App.get_resources.map { |resource| { label: resource.resource_name_plural.humanize, resource_name: resource.url.pluralize } }.to_json.to_s.html_safe
-
-        navigation = App.get_resources.map do |resource|
-          begin
-            if Pundit.policy user, resource.model
-              Pundit.authorize user, resource.model, 'view_any?'
-            end
-            { label: resource.resource_name_plural.humanize, resource_name: resource.url.pluralize }
-          rescue => exception
-            # throw exception
-          end
-        end
-
-        navigation.reject { |i| i.blank? }.to_json.to_s.html_safe
+        App.get_resources
+          .select { |resource| AuthorizationService::authorize user, resource.model, 'index?' }
+          .map { |resource| { label: resource.resource_name_plural.humanize, resource_name: resource.url.pluralize } }
+          .reject { |i| i.blank? }
+          .to_json
+          .to_s
+          .html_safe
       end
     end
   end

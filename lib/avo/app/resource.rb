@@ -12,11 +12,12 @@ module Avo
       attr_reader :default_view_type
 
       class << self
-        def hydrate_resource(model, resource, view = :index)
+        def hydrate_resource(model:, resource:, view: :index, user:)
           default_panel_name = "#{resource.name} details"
 
           resource_with_fields = {
             id: model.id,
+            authorization: get_authorization(user, model),
             resource_name_singular: resource.resource_name_singular,
             resource_name_plural: resource.resource_name_plural,
             title: model[resource.title],
@@ -38,6 +39,8 @@ module Avo
             next unless required_in_current_view or field_is_required_in_grid_view
 
             furnished_field = field.fetch_for_resource(model, resource, view)
+
+            next unless field_resource_authorized field, furnished_field, user
 
             next if furnished_field.blank?
 
@@ -73,6 +76,22 @@ module Avo
           end
 
           "/resources/#{url}"
+        end
+
+        def get_authorization(user, model)
+          [:create, :update, :show, :destroy].map do |action|
+            [action, AuthorizationService::authorize_action(user, model, action)]
+          end.to_h
+        end
+
+        def field_resource_authorized(field, furnished_field, user)
+          if [Avo::Fields::HasManyField, Avo::Fields::HasAndBelongsToManyField].include? field.class
+            return true if furnished_field[:relationship_model].nil?
+
+            return AuthorizationService.authorize user, furnished_field[:relationship_model].safe_constantize, 'index?'
+          else
+            true
+          end
         end
       end
 

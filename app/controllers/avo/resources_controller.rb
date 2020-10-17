@@ -3,7 +3,6 @@ require_dependency 'avo/application_controller'
 module Avo
   class ResourcesController < ApplicationController
     before_action :authorize_user
-    include Pundit
 
     def index
       params[:page] ||= 1
@@ -20,6 +19,7 @@ module Avo
         query = related_model.find(params[:via_resource_id]).public_send(params[:via_relationship])
         params[:per_page] = Avo.configuration.via_per_page
       elsif ['has_many', 'has_and_belongs_to_many'].include? params[:for_relation]
+        # search query
         resources = resource_model.all.map do |model|
           {
             value: model.id,
@@ -54,13 +54,19 @@ module Avo
 
       resources_with_fields = []
       resources.each do |resource|
-        resources_with_fields << Avo::Resources::Resource.hydrate_resource(resource, avo_resource, :index)
+        resources_with_fields << Avo::Resources::Resource.hydrate_resource(model: resource, resource: avo_resource, view: :index, user: current_user)
       end
 
       meta = {
         per_page_steps: Avo.configuration.per_page_steps,
         available_view_types: avo_resource.available_view_types,
         default_view_type: avo_resource.default_view_type || Avo.configuration.default_view_type,
+        authorization: {
+          create: AuthorizationService::authorize(current_user, avo_resource.model, 'create?'),
+          update: AuthorizationService::authorize(current_user, avo_resource.model, 'update?'),
+          show: AuthorizationService::authorize(current_user, avo_resource.model, 'show?'),
+          destroy: AuthorizationService::authorize(current_user, avo_resource.model, 'destroy?'),
+        },
       }
 
       render json: {
@@ -95,7 +101,7 @@ module Avo
 
     def show
       render json: {
-        resource: Avo::Resources::Resource.hydrate_resource(resource, avo_resource, @view || :show),
+        resource: Avo::Resources::Resource.hydrate_resource(model: resource, resource: avo_resource, view: @view || :show, user: current_user),
       }
     end
 
@@ -123,7 +129,7 @@ module Avo
 
       render json: {
         success: true,
-        resource: Avo::Resources::Resource.hydrate_resource(resource, avo_resource, :show),
+        resource: Avo::Resources::Resource.hydrate_resource(model: resource, resource: avo_resource, view: :show, user: current_user),
         message: 'Resource updated',
       }
     end
@@ -146,7 +152,7 @@ module Avo
 
       render json: {
         success: true,
-        resource: Avo::Resources::Resource.hydrate_resource(resource, avo_resource, :create),
+        resource: Avo::Resources::Resource.hydrate_resource(model: resource, resource: avo_resource, view: :create, user: current_user),
         message: 'Resource created',
       }
     end
@@ -155,7 +161,7 @@ module Avo
       resource = resource_model.new
 
       render json: {
-        resource: Avo::Resources::Resource.hydrate_resource(resource, avo_resource, :create),
+        resource: Avo::Resources::Resource.hydrate_resource(model: resource, resource: avo_resource, view: :create, user: current_user),
       }
     end
 
@@ -344,21 +350,13 @@ module Avo
       end
 
       def authorize_user
-        # abort params.inspect
-        actions_map = {
-          index: 'view_any?',
-        }
-        # abort avo_resource.model.inspect
-        # abort [params[:action], actions_map[params[:action].to_sym]].inspect
-        begin
-          if Pundit.policy current_user, avo_resource.model
-            Pundit.authorize current_user, avo_resource.model, actions_map[params[:action].to_sym]
-          end
-        rescue NotAuthorizedError => error
-          return render json: {
-            message: 'Unauthorized'
-          }, status: 403
+        model = record = avo_resource.model
+
+        if ['show', 'edit', 'update'].include? params[:action]
+          record = resource
         end
+
+        return render json: { message: 'Unauthorized' }, status: 403 unless AuthorizationService::authorize_action current_user, record, params[:action]
       end
   end
 end

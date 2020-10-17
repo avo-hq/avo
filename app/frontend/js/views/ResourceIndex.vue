@@ -36,7 +36,7 @@
                 viaResourceId: viaResourceId,
               },
             }"
-            v-else
+            v-else-if="canCreate"
           ><plus-icon class="h-4 mr-1"/>Create new {{resourceNameSingular | toLowerCase}}</a-button>
         </div>
       </div>
@@ -328,6 +328,11 @@ export default {
     },
     fieldId() {
       return this.field ? this.field.id : undefined
+    },
+    canCreate() {
+      if (this.meta && this.meta.authorization) return this.meta.authorization.create
+
+      return true
     },
   },
   methods: {

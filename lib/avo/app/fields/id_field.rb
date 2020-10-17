@@ -1,14 +1,14 @@
 module Avo
   module Fields
     class IdField < Field
-      DEFAULT_VALUE = 'id'
-
       def initialize(name, **args, &block)
+        default_value = 'id'
+
         if name.nil?
-          @name = name = DEFAULT_VALUE
+          @name = name = default_value
         elsif !name.is_a? String and !name.is_a? Symbol
           args_copy = name
-          @name = name = DEFAULT_VALUE
+          @name = name = default_value
           args = args_copy
         end
 

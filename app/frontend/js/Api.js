@@ -40,7 +40,6 @@ Api.interceptors.response.use(
   (error) => {
     const { response } = error
     const { data } = response
-    console.log('data->', [data, error])
 
     if (data && data.message) {
       Bus.$emit('error', data.message)
