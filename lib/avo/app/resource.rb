@@ -88,7 +88,7 @@ module Avo
           if [Avo::Fields::HasManyField, Avo::Fields::HasAndBelongsToManyField].include? field.class
             return true if furnished_field[:relationship_model].nil?
 
-            return AuthorizationService.authorize user, furnished_field[:relationship_model].safe_constantize, 'index?'
+            AuthorizationService.authorize user, furnished_field[:relationship_model].safe_constantize, 'index?'
           else
             true
           end
