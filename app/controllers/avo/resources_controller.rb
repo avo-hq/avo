@@ -17,15 +17,23 @@ module Avo
       end
 
       if params[:via_resource_name].present? and params[:via_resource_id].present? and params[:via_relationship].present?
-        # get the reated resource (via_resource)
+        # get the related resource (via_resource)
         related_resource = App.get_resource_by_name(params[:via_resource_name])
         related_model = related_resource.model
+
         # fetch the entries
-        real_related_model = related_model._reflections[params[:via_relationship].to_s].class_name.safe_constantize
-        query = policy_scope(related_model.find(params[:via_resource_id]).public_send(params[:via_relationship]))
+        query = related_model.find(params[:via_resource_id]).public_send(params[:via_relationship])
+
+        # Try and substitute the query with a scoped query if we find a scope for this related model class
+        begin
+          related_model_class = related_model._reflections[params[:via_relationship].to_s].class_name.safe_constantize
+          policy_scope related_model_class
+          query = policy_scope query
+        rescue => exception
+        end
         params[:per_page] = Avo.configuration.via_per_page
       elsif ['has_many', 'has_and_belongs_to_many'].include? params[:for_relation]
-        # search query
+        # has_many searchable query
         resources = resource_model.all.map do |model|
           {
             value: model.id,
@@ -50,7 +58,7 @@ module Avo
       # Eager load the attachments
       query = eager_load_files(query)
 
-      # Eager lood the relations
+      # Eager load the relations
       if avo_resource.includes.present?
         query = query.includes(*avo_resource.includes)
       end
@@ -84,23 +92,25 @@ module Avo
     end
 
     def search
-      if params[:resource_name].present?
-        resources = add_link_to_search_results search_resource(avo_resource)
-      else
-        resources = []
+      resources = []
 
-        resources_to_search_through = App.get_resources.select { |r| r.search.present? }
-        resources_to_search_through.each do |resource_model|
+      resources_to_search_through = App.get_resources.select { |r| r.search.present? }
+        .each do |resource_model|
           found_resources = add_link_to_search_results search_resource(resource_model)
           resources.push({
             label: resource_model.name,
             resources: found_resources
           })
         end
-      end
 
       render json: {
         resources: resources
+      }
+    end
+
+    def resource_search
+      render json: {
+        resources: add_link_to_search_results(search_resource(avo_resource))
       }
     end
 
@@ -213,24 +223,6 @@ module Avo
       }
     end
 
-    def cast_nullable(params)
-      fields = avo_resource.get_fields
-
-      nullable_fields = fields.filter { |field| field.nullable }
-                              .map { |field| [field.id, field.null_values] }
-                              .to_h
-
-      params.each do |key, value|
-        nullable = nullable_fields[key.to_sym]
-
-        if nullable.present? && value.in?(nullable)
-          params[key] = nil
-        end
-      end
-
-      params
-    end
-
     private
       def resource
         eager_load_files(resource_model).find params[:id]
@@ -265,7 +257,7 @@ module Avo
       end
 
       def search_resource(avo_resource)
-        avo_resource.query_search(query: params[:q], via_resource_name: params[:via_resource_name], via_resource_id: params[:via_resource_id])
+        avo_resource.query_search(query: params[:q], via_resource_name: params[:via_resource_name], via_resource_id: params[:via_resource_id], user: current_user)
       end
 
       def add_link_to_search_results(resources)
@@ -354,7 +346,27 @@ module Avo
         filter_defaults
       end
 
+      def cast_nullable(params)
+        fields = avo_resource.get_fields
+
+        nullable_fields = fields.filter { |field| field.nullable }
+                                .map { |field| [field.id, field.null_values] }
+                                .to_h
+
+        params.each do |key, value|
+          nullable = nullable_fields[key.to_sym]
+
+          if nullable.present? && value.in?(nullable)
+            params[key] = nil
+          end
+        end
+
+        params
+      end
+
       def authorize_user
+        return if ['search', 'resource_search'].include? params[:action]
+
         model = record = avo_resource.model
 
         if ['show', 'edit', 'update'].include? params[:action]

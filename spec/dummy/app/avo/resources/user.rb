@@ -2,7 +2,7 @@ module Avo
   module Resources
     class User < Resource
       def initialize
-        @title = :name
+        @title = :first_name
         @search = [:id, :first_name, :last_name]
         @includes = :posts
         @has_devise_password = true

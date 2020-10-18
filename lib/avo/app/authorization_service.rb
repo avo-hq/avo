@@ -7,11 +7,13 @@ module Avo
           filters: 'index?',
           index: 'index?',
           show: 'show?',
-          fields: 'create?',
-          edit: 'update?',
+          fields: 'new?',
+          edit: 'edit?',
           update: 'update?',
           create: 'create?',
           destroy: 'destroy?',
+          search: nil,
+          resource_search: nil,
         }.stringify_keys
       end
 
@@ -31,6 +33,8 @@ module Avo
 
       def authorize_action(user, record, action)
         action = controller_actions_map[action.to_s]
+
+        return true if action.nil?
 
         authorize user, record, action
       end

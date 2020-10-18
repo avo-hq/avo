@@ -1,17 +1,25 @@
 class UserPolicy < ApplicationPolicy
   def index?
-    user.is_admin?
+    true
   end
 
   def show?
-    user.is_admin?
+    true
   end
 
   def create?
     true
   end
 
+  def new?
+    true
+  end
+
   def update?
+    true
+  end
+
+  def edit?
     true
   end
 
@@ -21,7 +29,7 @@ class UserPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      scope.where("roles->>'admin' = ?", 'true')
+      scope.all
     end
   end
 end

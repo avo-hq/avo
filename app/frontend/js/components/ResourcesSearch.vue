@@ -1,7 +1,7 @@
 <template>
   <multiselect
     class="text-sm"
-    label="name"
+    label="search_label"
     placeholder="Type to search"
     :options="options"
     :searchable="true"
