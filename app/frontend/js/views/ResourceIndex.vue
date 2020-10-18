@@ -443,6 +443,8 @@ export default {
     isDefaultValueForFilter(filterClassName, value) {
       const currentFilter = this.filters.find((filter) => filter.filter_class === filterClassName)
 
+      if (!currentFilter) return false
+
       return JSON.stringify(currentFilter.default) === JSON.stringify(value)
     },
     async initQueryParams() {
