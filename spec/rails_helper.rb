@@ -41,6 +41,7 @@ require 'support/controller_routes'
 RSpec.configure do |config|
   config.include TestHelpers::ControllerRoutes, type: :controller
   config.include TestHelpers::DisableAuthentication, type: :system
+  config.include Warden::Test::Helpers
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
