@@ -19,7 +19,7 @@ export default {
         return `${Avo.rootPath}/avo-api/${this.resourceName}/${this.resourceId}/edit`
       }
 
-      return `${Avo.rootPath}/avo-api/${this.resourceName}/fields`
+      return `${Avo.rootPath}/avo-api/${this.resourceName}/new`
     },
   },
   methods: {

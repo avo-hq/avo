@@ -91,29 +91,6 @@ module Avo
       }
     end
 
-    def search
-      resources = []
-
-      resources_to_search_through = App.get_resources.select { |r| r.search.present? }
-        .each do |resource_model|
-          found_resources = add_link_to_search_results(search_resource(resource_model), resource_model)
-          resources.push({
-            label: resource_model.name,
-            resources: found_resources
-          })
-        end
-
-      render json: {
-        resources: resources
-      }
-    end
-
-    def resource_search
-      render json: {
-        resources: add_link_to_search_results(search_resource(avo_resource), avo_resource)
-      }
-    end
-
     def show
       render json: {
         resource: Avo::Resources::Resource.hydrate_resource(model: resource, resource: avo_resource, view: @view || :show, user: current_user),
@@ -172,11 +149,9 @@ module Avo
       }
     end
 
-    def fields
-      resource = resource_model.new
-
+    def new
       render json: {
-        resource: Avo::Resources::Resource.hydrate_resource(model: resource, resource: avo_resource, view: :create, user: current_user),
+        resource: Avo::Resources::Resource.hydrate_resource(model: resource_model.new, resource: avo_resource, view: :create, user: current_user),
       }
     end
 
@@ -185,19 +160,6 @@ module Avo
 
       render json: {
         message: 'Resource destroyed',
-      }
-    end
-
-    def filters
-      avo_filters = avo_resource.get_filters
-      filters = []
-
-      avo_filters.each do |filter|
-        filters.push(filter.new.render_response)
-      end
-
-      render json: {
-        filters: filters,
       }
     end
 
@@ -254,20 +216,6 @@ module Avo
 
       def resource_params
         params.require(:resource).permit(permitted_params)
-      end
-
-      def search_resource(avo_resource)
-        avo_resource.query_search(query: params[:q], via_resource_name: params[:via_resource_name], via_resource_id: params[:via_resource_id], user: current_user)
-      end
-
-      def add_link_to_search_results(resources, avo_resource)
-        resources.map do |model|
-          {
-            id: model.id,
-            search_label: model.send(avo_resource.title),
-            link: "/resources/#{model.class.to_s.singularize.underscore}/#{model.id}",
-          }
-        end
       end
 
       def eager_load_files(query)
@@ -363,18 +311,6 @@ module Avo
         end
 
         params
-      end
-
-      def authorize_user
-        return if ['search', 'resource_search'].include? params[:action]
-
-        model = record = avo_resource.model
-
-        if ['show', 'edit', 'update'].include? params[:action]
-          record = resource
-        end
-
-        return render json: { message: 'Unauthorized' }, status: 403 unless AuthorizationService::authorize_action current_user, record, params[:action]
       end
   end
 end

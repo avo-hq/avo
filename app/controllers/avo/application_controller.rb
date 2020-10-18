@@ -28,5 +28,17 @@ module Avo
       def avo_resource
         App.get_resource params[:resource_name].to_s.camelize.singularize
       end
+
+      def authorize_user
+        return if params[:controller] == 'avo/search'
+
+        model = record = avo_resource.model
+
+        if ['show', 'edit', 'update'].include? params[:action] && params[:controller] == 'avo/resources'
+          record = resource
+        end
+
+        return render json: { message: 'Unauthorized' }, status: 403 unless AuthorizationService::authorize_action current_user, record, params[:action]
+      end
   end
 end
