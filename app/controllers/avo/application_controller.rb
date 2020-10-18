@@ -48,7 +48,7 @@ module Avo
 
         model = record = avo_resource.model
 
-        if ['show', 'edit', 'update'].include? params[:action] && params[:controller] == 'avo/resources'
+        if ['show', 'edit', 'update'].include?(params[:action]) && params[:controller] == 'avo/resources'
           record = resource
         end
 
