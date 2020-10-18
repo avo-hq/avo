@@ -65,7 +65,7 @@ RSpec.describe Avo::ResourcesController, type: :controller do
 
       it 'returns the scoped results' do
         subject
-# abort parsed_response.inspect
+
         resource_ids = parsed_response['resources'].collect { |i| i['id'] }
         expect(resource_ids).to include active_user.id
         expect(resource_ids).not_to include inactive_user.id
