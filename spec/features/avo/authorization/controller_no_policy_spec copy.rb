@@ -1,0 +1,75 @@
+require 'rails_helper'
+
+RSpec.describe Avo::ResourcesController, type: :controller do
+  let(:user) { create :user }
+  let(:dummy_post) { create :post }
+
+  before do
+    sign_in user
+  end
+
+  describe 'index?' do
+    subject { get :index, params: { resource_name: 'posts' } }
+
+    it { is_expected.to have_http_status(200) }
+  end
+
+  describe 'fields?' do
+    subject { get :fields, params: { resource_name: 'posts' } }
+
+    it { is_expected.to have_http_status(200) }
+  end
+
+  describe 'filters?' do
+    subject { get :filters, params: { resource_name: 'posts' } }
+
+    it { is_expected.to have_http_status(200) }
+  end
+
+  describe 'create?' do
+    subject { post :create, params: { resource_name: 'posts', resource: { name: 'All bout avocados'  } } }
+
+    it { is_expected.to have_http_status(200) }
+  end
+
+  describe 'show?' do
+    subject { get :show, params: { resource_name: 'posts', id: dummy_post.id } }
+
+    it { is_expected.to have_http_status(200) }
+  end
+
+  describe 'update?' do
+    subject { put :update, params: { resource_name: 'posts', id: dummy_post.id, resource: { name: 'All bout avocados' } } }
+
+    it { is_expected.to have_http_status(200) }
+  end
+
+  describe 'edit?' do
+    subject { get :edit, params: { resource_name: 'posts', id: dummy_post.id } }
+
+    it { is_expected.to have_http_status(200) }
+  end
+
+  describe 'destroy?' do
+    subject { delete :destroy, params: { resource_name: 'posts', id: dummy_post.id } }
+
+    it { is_expected.to have_http_status(200) }
+    it 'destroys the user' do
+      subject
+
+      expect(User.where(id: dummy_post.id).first).to be nil
+    end
+  end
+
+  describe '.search' do
+    subject { get :search, params: { resource_name: 'posts' } }
+
+    it { is_expected.to have_http_status(200) }
+  end
+
+  describe '.resource_search' do
+    subject { get :search, params: { resource_name: 'posts' } }
+
+    it { is_expected.to have_http_status(200) }
+  end
+end

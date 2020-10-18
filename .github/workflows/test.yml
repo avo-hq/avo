@@ -28,6 +28,7 @@ jobs:
     # uses: ruby/setup-ruby@v1
       uses: ruby/setup-ruby@ec106b438a1ff6ff109590de34ddc62c540232e0
       with:
+        bundler-cache: true
         ruby-version: 2.6.3
 
     - name: Install PostgreSQL 11 client

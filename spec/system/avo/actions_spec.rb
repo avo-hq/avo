@@ -29,7 +29,7 @@ RSpec.describe 'Actions', type: :system do
 
         expect(page).to have_button('Actions', disabled: true)
 
-        find('tr[resource-name=users]:first-child input[type=checkbox]').click
+        find("tr[resource-name=users][resource-id='#{user.id}'] input[type=checkbox]").click
 
         expect(page).to have_button('Actions', disabled: false)
       end
@@ -40,8 +40,8 @@ RSpec.describe 'Actions', type: :system do
         expect(user.active).to be true
         expect(second_user.active).to be true
 
-        find('tr[resource-name=users]:first-child input[type=checkbox]').click
-        find('tr[resource-name=users]:last-child input[type=checkbox]').click
+        find("tr[resource-name=users][resource-id='#{user.id}'] input[type=checkbox]").click
+        find("tr[resource-name=users][resource-id='#{second_user.id}'] input[type=checkbox]").click
 
         expect(page).to have_button('Actions', disabled: false)
 
@@ -61,7 +61,7 @@ RSpec.describe 'Actions', type: :system do
 
           expect(page).to have_button('Actions', disabled: true)
 
-          find('tr[resource-name=users]:first-child input[type=checkbox]').click
+          find("tr[resource-name=users][resource-id='#{user.id}'] input[type=checkbox]").click
 
           expect(page).to have_button('Actions', disabled: false)
 

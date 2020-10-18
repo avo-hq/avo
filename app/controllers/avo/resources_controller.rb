@@ -2,21 +2,38 @@ require_dependency 'avo/application_controller'
 
 module Avo
   class ResourcesController < ApplicationController
+    before_action :authorize_user
+
     def index
       params[:page] ||= 1
       params[:per_page] ||= Avo.configuration.per_page
       params[:sort_by] = params[:sort_by].present? ? params[:sort_by] : :created_at
       params[:sort_direction] = params[:sort_direction].present? ? params[:sort_direction] : :desc
-      filters = get_filters
+
+      begin
+        query = policy_scope(resource_model)
+      rescue => exception
+        query = resource_model
+      end
 
       if params[:via_resource_name].present? and params[:via_resource_id].present? and params[:via_relationship].present?
-        # get the reated resource (via_resource)
+        # get the related resource (via_resource)
         related_resource = App.get_resource_by_name(params[:via_resource_name])
         related_model = related_resource.model
+
         # fetch the entries
         query = related_model.find(params[:via_resource_id]).public_send(params[:via_relationship])
+
+        # Try and substitute the query with a scoped query if we find a scope for this related model class
+        begin
+          related_model_class = related_model._reflections[params[:via_relationship].to_s].class_name.safe_constantize
+          policy_scope related_model_class
+          query = policy_scope query
+        rescue => exception
+        end
         params[:per_page] = Avo.configuration.via_per_page
       elsif ['has_many', 'has_and_belongs_to_many'].include? params[:for_relation]
+        # has_many searchable query
         resources = resource_model.all.map do |model|
           {
             value: model.id,
@@ -27,12 +44,11 @@ module Avo
         return render json: {
           resources: resources
         }
-      else
-        query = resource_model
       end
 
       query = query.order("#{params[:sort_by]} #{params[:sort_direction]}")
 
+      filters = get_filters
       if filters.present?
         filters.each do |filter_class, filter_value|
           query = filter_class.safe_constantize.new.apply_query request, query, filter_value
@@ -42,7 +58,7 @@ module Avo
       # Eager load the attachments
       query = eager_load_files(query)
 
-      # Eager lood the relations
+      # Eager load the relations
       if avo_resource.includes.present?
         query = query.includes(*avo_resource.includes)
       end
@@ -51,13 +67,19 @@ module Avo
 
       resources_with_fields = []
       resources.each do |resource|
-        resources_with_fields << Avo::Resources::Resource.hydrate_resource(resource, avo_resource, :index)
+        resources_with_fields << Avo::Resources::Resource.hydrate_resource(model: resource, resource: avo_resource, view: :index, user: current_user)
       end
 
       meta = {
         per_page_steps: Avo.configuration.per_page_steps,
         available_view_types: avo_resource.available_view_types,
         default_view_type: avo_resource.default_view_type || Avo.configuration.default_view_type,
+        authorization: {
+          create: AuthorizationService::authorize(current_user, avo_resource.model, 'create?'),
+          update: AuthorizationService::authorize(current_user, avo_resource.model, 'update?'),
+          show: AuthorizationService::authorize(current_user, avo_resource.model, 'show?'),
+          destroy: AuthorizationService::authorize(current_user, avo_resource.model, 'destroy?'),
+        },
       }
 
       render json: {
@@ -70,29 +92,31 @@ module Avo
     end
 
     def search
-      if params[:resource_name].present?
-        resources = add_link_to_search_results search_resource(avo_resource)
-      else
-        resources = []
+      resources = []
 
-        resources_to_search_through = App.get_resources.select { |r| r.search.present? }
-        resources_to_search_through.each do |resource_model|
-          found_resources = add_link_to_search_results search_resource(resource_model)
+      resources_to_search_through = App.get_resources.select { |r| r.search.present? }
+        .each do |resource_model|
+          found_resources = add_link_to_search_results(search_resource(resource_model), resource_model)
           resources.push({
             label: resource_model.name,
             resources: found_resources
           })
         end
-      end
 
       render json: {
         resources: resources
       }
     end
 
+    def resource_search
+      render json: {
+        resources: add_link_to_search_results(search_resource(avo_resource), avo_resource)
+      }
+    end
+
     def show
       render json: {
-        resource: Avo::Resources::Resource.hydrate_resource(resource, avo_resource, @view || :show),
+        resource: Avo::Resources::Resource.hydrate_resource(model: resource, resource: avo_resource, view: @view || :show, user: current_user),
       }
     end
 
@@ -120,7 +144,7 @@ module Avo
 
       render json: {
         success: true,
-        resource: Avo::Resources::Resource.hydrate_resource(resource, avo_resource, :show),
+        resource: Avo::Resources::Resource.hydrate_resource(model: resource, resource: avo_resource, view: :show, user: current_user),
         message: 'Resource updated',
       }
     end
@@ -143,7 +167,7 @@ module Avo
 
       render json: {
         success: true,
-        resource: Avo::Resources::Resource.hydrate_resource(resource, avo_resource, :create),
+        resource: Avo::Resources::Resource.hydrate_resource(model: resource, resource: avo_resource, view: :create, user: current_user),
         message: 'Resource created',
       }
     end
@@ -152,7 +176,7 @@ module Avo
       resource = resource_model.new
 
       render json: {
-        resource: Avo::Resources::Resource.hydrate_resource(resource, avo_resource, :create),
+        resource: Avo::Resources::Resource.hydrate_resource(model: resource, resource: avo_resource, view: :create, user: current_user),
       }
     end
 
@@ -199,24 +223,6 @@ module Avo
       }
     end
 
-    def cast_nullable(params)
-      fields = avo_resource.get_fields
-
-      nullable_fields = fields.filter { |field| field.nullable }
-                              .map { |field| [field.id, field.null_values] }
-                              .to_h
-
-      params.each do |key, value|
-        nullable = nullable_fields[key.to_sym]
-
-        if nullable.present? && value.in?(nullable)
-          params[key] = nil
-        end
-      end
-
-      params
-    end
-
     private
       def resource
         eager_load_files(resource_model).find params[:id]
@@ -251,15 +257,16 @@ module Avo
       end
 
       def search_resource(avo_resource)
-        avo_resource.query_search(query: params[:q], via_resource_name: params[:via_resource_name], via_resource_id: params[:via_resource_id])
+        avo_resource.query_search(query: params[:q], via_resource_name: params[:via_resource_name], via_resource_id: params[:via_resource_id], user: current_user)
       end
 
-      def add_link_to_search_results(resources)
+      def add_link_to_search_results(resources, avo_resource)
         resources.map do |model|
-          resource = model.as_json
-          resource[:link] = "/resources/#{model.class.to_s.singularize.underscore}/#{model.id}"
-
-          resource
+          {
+            id: model.id,
+            search_label: model.send(avo_resource.title),
+            link: "/resources/#{model.class.to_s.singularize.underscore}/#{model.id}",
+          }
         end
       end
 
@@ -338,6 +345,36 @@ module Avo
         end
 
         filter_defaults
+      end
+
+      def cast_nullable(params)
+        fields = avo_resource.get_fields
+
+        nullable_fields = fields.filter { |field| field.nullable }
+                                .map { |field| [field.id, field.null_values] }
+                                .to_h
+
+        params.each do |key, value|
+          nullable = nullable_fields[key.to_sym]
+
+          if nullable.present? && value.in?(nullable)
+            params[key] = nil
+          end
+        end
+
+        params
+      end
+
+      def authorize_user
+        return if ['search', 'resource_search'].include? params[:action]
+
+        model = record = avo_resource.model
+
+        if ['show', 'edit', 'update'].include? params[:action]
+          record = resource
+        end
+
+        return render json: { message: 'Unauthorized' }, status: 403 unless AuthorizationService::authorize_action current_user, record, params[:action]
       end
   end
 end

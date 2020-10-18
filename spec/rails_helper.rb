@@ -36,7 +36,13 @@ end
 
 test_driver = ENV['HEADFULL'] ? :selenium_chrome : :selenium_chrome_headless
 
+require 'support/controller_routes'
+
 RSpec.configure do |config|
+  config.include TestHelpers::ControllerRoutes, type: :controller
+  config.include TestHelpers::DisableAuthentication, type: :system
+  config.include Warden::Test::Helpers
+
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
@@ -77,9 +83,9 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
 end
 
-# abort Rails.configuration.database_configuration.inspect
 require 'support/helpers'
 require 'support/factory_bot'
 require 'support/database_cleaner'
 require 'support/wait_for_loaded'
 require 'support/js_error_detector'
+require 'support/devise'

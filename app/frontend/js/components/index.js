@@ -1,4 +1,3 @@
-
 import Paginate from 'vuejs-paginate'
 import Vue from 'vue/dist/vue.esm'
 import kebabCase from 'lodash/kebabCase'
@@ -118,6 +117,9 @@ Vue.component('logo-component',                      require('@/js/components/Lo
 
 // Views
 Vue.component('resources-index',                     require('@/js/views/ResourceIndex.vue').default)
+
+// Layouts
+Vue.component('app-layout',                          require('@/js/views/AppLayout.vue').default)
 
 // Icons are self imported as ICON_NAME-icon components
 // thumbs-up.svg -> <thumbs-up-icon />

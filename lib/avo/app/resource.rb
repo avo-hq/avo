@@ -12,11 +12,12 @@ module Avo
       attr_reader :default_view_type
 
       class << self
-        def hydrate_resource(model, resource, view = :index)
+        def hydrate_resource(model:, resource:, view: :index, user:)
           default_panel_name = "#{resource.name} details"
 
           resource_with_fields = {
             id: model.id,
+            authorization: get_authorization(user, model),
             resource_name_singular: resource.resource_name_singular,
             resource_name_plural: resource.resource_name_plural,
             title: model[resource.title],
@@ -38,6 +39,8 @@ module Avo
             next unless required_in_current_view or field_is_required_in_grid_view
 
             furnished_field = field.fetch_for_resource(model, resource, view)
+
+            next unless field_resource_authorized field, furnished_field, user
 
             next if furnished_field.blank?
 
@@ -73,6 +76,22 @@ module Avo
           end
 
           "/resources/#{url}"
+        end
+
+        def get_authorization(user, model)
+          [:create, :update, :show, :destroy].map do |action|
+            [action, AuthorizationService::authorize_action(user, model, action)]
+          end.to_h
+        end
+
+        def field_resource_authorized(field, furnished_field, user)
+          if [Avo::Fields::HasManyField, Avo::Fields::HasAndBelongsToManyField].include? field.class
+            return true if furnished_field[:relationship_model].nil?
+
+            AuthorizationService.authorize user, furnished_field[:relationship_model].safe_constantize, 'index?'
+          else
+            true
+          end
         end
       end
 
@@ -138,26 +157,30 @@ module Avo
         @search
       end
 
-      def query_search(query: '', via_resource_name: , via_resource_id:)
-        db_query = self.model
+      def query_search(query: '', via_resource_name: , via_resource_id:, user:)
+        model_class = self.model
+
+        if Pundit.policy user, model_class
+          db_query = Pundit.policy_scope(user, model_class)
+        else
+          db_query = model_class
+        end
 
         if via_resource_name.present?
-          related_resource = App.get_resource_by_name(via_resource_name)
-          related_model = related_resource.model
+          related_model = App.get_resource_by_name(via_resource_name).model
+
           db_query = related_model.find(via_resource_id).public_send(self.resource_name_plural.downcase)
         end
 
-        [self.search].flatten.each_with_index do |search_by, index|
-          query_string = "text(#{search_by}) ILIKE '%#{query}%'"
+        new_query = []
 
-          if index == 0
-            db_query = db_query.where query_string
-          else
-            db_query = db_query.or(self.model.where query_string)
-          end
+        [self.search].flatten.each_with_index do |search_by, index|
+          new_query.push 'or' if index != 0
+
+          new_query.push "text(#{search_by}) ILIKE '%#{query}%'"
         end
 
-        db_query.select("#{:id}, #{title} as \"name\"")
+        db_query.where(new_query.join(' '))
       end
 
       def model

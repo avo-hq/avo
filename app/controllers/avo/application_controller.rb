@@ -1,5 +1,6 @@
 module Avo
   class ApplicationController < ActionController::Base
+    include Pundit
     rescue_from ActiveRecord::RecordInvalid, with: :exception_logger
     protect_from_forgery with: :exception
     before_action :init_app

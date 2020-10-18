@@ -1,14 +1,15 @@
 require 'rails_helper'
 
-RSpec.describe 'ResourcesControllers', type: :request do
+RSpec.describe Avo::ResourcesController, type: :controller do
   context '.index' do
     describe 'with empty response' do
       it 'returns empty resources response' do
-        get '/avo/avo-api/users'
+        get :index, params: { resource_name: 'users' }
 
         expect(response).to have_http_status(200)
         expect(parsed_response).to eql({
           meta: {
+            authorization: { create: true, destroy: true, show: true, update: true },
             per_page_steps: [12, 24, 48, 72],
             available_view_types: ['table'],
             default_view_type: 'table',
@@ -22,17 +23,19 @@ RSpec.describe 'ResourcesControllers', type: :request do
     end
   end
 
-  context '.edit' do
+  context '.update' do
     describe 'with empty required field' do
       let!(:user) { create :user }
 
       it 'throws error when empty required field sent' do
         expect {
-          put "/avo/avo-api/users/#{user.id}", params: {
+          put :update, params: {
+            resource_name: 'users',
+            id: user.id,
             resource: {
               first_name: 'John'
             }
-          }.to_param
+          }
         }.not_to raise_error
 
         expect(user.reload.first_name).to eql 'John'
@@ -40,11 +43,13 @@ RSpec.describe 'ResourcesControllers', type: :request do
 
       it 'saves resource when valid field send' do
         expect {
-          put "/avo/avo-api/users/#{user.id}", params: {
+          put :update, params: {
+            resource_name: 'users',
+            id: user.id,
             resource: {
               first_name: ''
             }
-          }.to_param
+          }
         }.to raise_error ActiveRecord::RecordInvalid, "Validation failed: First name can't be blank"
       end
     end

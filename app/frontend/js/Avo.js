@@ -76,6 +76,11 @@ const Avo = {
         routerKey() {
           return `${this.$route.name}-${this.$route.params.resourceName || ''}`
         },
+        layout() {
+          if (this.$route.name === '403') return 'blank'
+
+          return 'application'
+        },
       },
       methods: {
         reload() {

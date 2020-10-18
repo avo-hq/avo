@@ -4,6 +4,7 @@ require_relative 'filters/select_filter'
 require_relative 'filters/boolean_filter'
 require_relative 'resource'
 require_relative 'tool'
+require_relative 'authorization_service'
 
 module Avo
   class App
@@ -144,8 +145,14 @@ module Avo
       #   navigation.join('')
       # end
 
-      def get_resources_navigation
-        App.get_resources.map { |resource| { label: resource.resource_name_plural.humanize, resource_name: resource.url.pluralize } }.to_json.to_s.html_safe
+      def get_resources_navigation(user)
+        App.get_resources
+          .select { |resource| AuthorizationService::authorize user, resource.model, 'index?' }
+          .map { |resource| { label: resource.resource_name_plural.humanize, resource_name: resource.url.pluralize } }
+          .reject { |i| i.blank? }
+          .to_json
+          .to_s
+          .html_safe
       end
     end
   end

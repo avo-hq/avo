@@ -2,7 +2,7 @@ Avo::Engine.routes.draw do
   root 'home#index'
 
   get '/avo-api/search',                  to: 'resources#search'
-  get '/avo-api/:resource_name/search',   to: 'resources#search'
+  get '/avo-api/:resource_name/search',   to: 'resources#resource_search'
   get '/avo-api/:resource_name',          to: 'resources#index'
   get '/avo-api/:resource_name/filters',  to: 'resources#filters'
   get '/avo-api/:resource_name/actions',  to: 'actions#index'
