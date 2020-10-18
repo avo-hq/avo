@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-RSpec.describe 'ResourceOverview', type: :request do
+RSpec.describe Avo::ResourceOverviewController, type: :controller do
   context 'configs' do
     describe 'with false values' do
       it 'returns false values' do
-        get '/avo/avo-tools/resource-overview'
+        get :index
 
         expect(response).to have_http_status(200)
 
@@ -25,7 +25,7 @@ RSpec.describe 'ResourceOverview', type: :request do
       end
 
       it 'returns true values' do
-        get '/avo/avo-tools/resource-overview'
+        get :index
 
         expect(response).to have_http_status(200)
 
@@ -37,7 +37,7 @@ RSpec.describe 'ResourceOverview', type: :request do
 
   describe 'without any resources in the DB' do
     it 'returns empty response' do
-      get '/avo/avo-tools/resource-overview'
+      get :index
 
       expect(response).to have_http_status(200)
 
@@ -80,7 +80,7 @@ RSpec.describe 'ResourceOverview', type: :request do
     end
 
     it 'returns non-empty response' do
-      get '/avo/avo-tools/resource-overview'
+      get :index
 
       expect(response).to have_http_status(200)
 
