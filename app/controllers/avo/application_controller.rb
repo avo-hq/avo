@@ -21,6 +21,20 @@ module Avo
     end
 
     private
+      def resource
+        eager_load_files(resource_model).find params[:id]
+      end
+
+      def eager_load_files(query)
+        if avo_resource.attached_file_fields.present?
+          avo_resource.attached_file_fields.map(&:id).map do |field|
+            query = query.send :"with_attached_#{field}"
+          end
+        end
+
+        query
+      end
+
       def resource_model
         avo_resource.model
       end
