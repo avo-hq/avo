@@ -114,7 +114,6 @@ RSpec.describe Avo::ResourcesController, type: :controller do
   end
 
   describe '.resource_search' do
-    # let(:resource_ids) { parsed_response['resources'].collect { |i| i['id'] } }
     subject { get :resource_search, params: { resource_name: 'users', q: 'active' } }
 
     context 'when user is not admin' do
@@ -143,7 +142,6 @@ RSpec.describe Avo::ResourcesController, type: :controller do
   end
 
   describe '.search' do
-    # let(:resource_ids) { parsed_response['resources'].find { |group| group['label'] == 'User' }['resources'].collect { |i| i['id'] }
     subject { get :search, params: { q: 'active' } }
 
     context 'when user is not admin' do
