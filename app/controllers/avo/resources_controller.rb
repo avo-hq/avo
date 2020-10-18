@@ -96,7 +96,7 @@ module Avo
 
       resources_to_search_through = App.get_resources.select { |r| r.search.present? }
         .each do |resource_model|
-          found_resources = add_link_to_search_results search_resource(resource_model)
+          found_resources = add_link_to_search_results(search_resource(resource_model), resource_model)
           resources.push({
             label: resource_model.name,
             resources: found_resources
@@ -110,7 +110,7 @@ module Avo
 
     def resource_search
       render json: {
-        resources: add_link_to_search_results(search_resource(avo_resource))
+        resources: add_link_to_search_results(search_resource(avo_resource), avo_resource)
       }
     end
 
@@ -260,12 +260,13 @@ module Avo
         avo_resource.query_search(query: params[:q], via_resource_name: params[:via_resource_name], via_resource_id: params[:via_resource_id], user: current_user)
       end
 
-      def add_link_to_search_results(resources)
+      def add_link_to_search_results(resources, avo_resource)
         resources.map do |model|
-          resource = model.as_json
-          resource[:link] = "/resources/#{model.class.to_s.singularize.underscore}/#{model.id}"
-
-          resource
+          {
+            id: model.id,
+            search_label: model.send(avo_resource.title),
+            link: "/resources/#{model.class.to_s.singularize.underscore}/#{model.id}",
+          }
         end
       end
 

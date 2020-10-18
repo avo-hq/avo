@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe 'UserForms', type: :system do
-  it 'Shows the empty users page' do
-    visit '/avo/resources/users'
+  it 'Shows the empty posts page' do
+    visit '/avo/resources/posts'
 
-    expect(page).to have_text('No users found')
+    expect(page).to have_text('No posts found')
   end
 
   it 'accesses the create user page' do
@@ -26,13 +26,13 @@ RSpec.describe 'UserForms', type: :system do
   end
 
   it 'navigates back to the index page' do
-    visit '/avo/resources/users/new'
+    visit '/avo/resources/posts/new'
 
     click_on 'Cancel'
 
-    expect(page).to have_text 'No users found'
-    expect(page).to have_css 'a', text: 'Create new user'
-    expect(current_path).to eq '/avo/resources/users'
+    expect(page).to have_text 'No posts found'
+    expect(page).to have_css 'a', text: 'Create new post'
+    expect(current_path).to eq '/avo/resources/posts'
   end
 
   it 'displays valdation errors', skip_js_error_detect: true do

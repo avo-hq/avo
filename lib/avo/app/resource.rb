@@ -180,7 +180,7 @@ module Avo
           new_query.push "text(#{search_by}) ILIKE '%#{query}%'"
         end
 
-        db_query.where(new_query.join(' ')).select("#{:id}, #{title} as \"search_label\"")
+        db_query.where(new_query.join(' '))
       end
 
       def model
