@@ -19,7 +19,7 @@ module Avo
     end
 
     def render_scripts
-      render partial: 'vendor/avo/partials/scripts' rescue render partial: 'partials/scripts'
+      render partial: 'vendor/avo/partials/scripts' rescue ''
     end
   end
 end
