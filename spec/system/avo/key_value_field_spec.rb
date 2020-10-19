@@ -162,6 +162,7 @@ RSpec.describe 'KeyValueFields', type: :system do
 
         delete_buttons = page.all('[data-button="delete-row"]')
         delete_buttons[0].click
+        wait_for_loaded
 
         click_on 'Save'
         wait_for_loaded
