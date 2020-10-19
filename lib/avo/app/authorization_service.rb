@@ -4,10 +4,9 @@ module Avo
       def controller_actions_map
         {
           actions: 'index?',
-          filters: 'index?',
           index: 'index?',
           show: 'show?',
-          fields: 'new?',
+          new: 'new?',
           edit: 'edit?',
           update: 'update?',
           create: 'create?',
@@ -25,9 +24,6 @@ module Avo
           true
         rescue Pundit::NotAuthorizedError => error
           false
-        rescue NoMethodError => error
-          # If the user hasn't defined an action on the Pundit policy yet we'll allow access
-          true
         end
       end
 

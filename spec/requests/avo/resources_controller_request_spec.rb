@@ -1,18 +1,24 @@
 require 'rails_helper'
 
 RSpec.describe Avo::ResourcesController, type: :controller do
+  let(:user) { create :user }
+
+  before do
+    sign_in user
+  end
+
   context '.index' do
     describe 'with empty response' do
       it 'returns empty resources response' do
-        get :index, params: { resource_name: 'users' }
+        get :index, params: { resource_name: 'posts' }
 
         expect(response).to have_http_status(200)
         expect(parsed_response).to eql({
           meta: {
             authorization: { create: true, destroy: true, show: true, update: true },
             per_page_steps: [12, 24, 48, 72],
-            available_view_types: ['table'],
-            default_view_type: 'table',
+            available_view_types: ['grid', 'table'],
+            default_view_type: 'grid',
           },
           per_page: 24,
           resources: [],

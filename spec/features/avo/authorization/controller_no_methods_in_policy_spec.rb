@@ -17,14 +17,8 @@ RSpec.describe Avo::ResourcesController, type: :controller do
     it { is_expected.to have_http_status(200) }
   end
 
-  describe 'fields?' do
-    subject { get :fields, params: { resource_name: 'posts' } }
-
-    it { is_expected.to have_http_status(200) }
-  end
-
-  describe 'filters?' do
-    subject { get :filters, params: { resource_name: 'posts' } }
+  describe '.new' do
+    subject { get :new, params: { resource_name: 'posts' } }
 
     it { is_expected.to have_http_status(200) }
   end
@@ -63,15 +57,37 @@ RSpec.describe Avo::ResourcesController, type: :controller do
       expect(User.where(id: dummy_post.id).first).to be nil
     end
   end
+end
+
+RSpec.describe Avo::FiltersController, type: :controller do
+  let(:user) { create :user }
+
+  before do
+    sign_in user
+  end
+
+  describe '.index' do
+    subject { get :index, params: { resource_name: 'posts' } }
+
+    it { is_expected.to have_http_status(200) }
+  end
+end
+
+RSpec.describe Avo::SearchController, type: :controller do
+  let(:user) { create :user }
+
+  before do
+    sign_in user
+  end
 
   describe '.search' do
-    subject { get :search, params: { resource_name: 'posts' } }
+    subject { get :index, params: { resource_name: 'posts' } }
 
     it { is_expected.to have_http_status(200) }
   end
 
   describe '.resource_search' do
-    subject { get :search, params: { resource_name: 'posts' } }
+    subject { get :resource, params: { resource_name: 'posts' } }
 
     it { is_expected.to have_http_status(200) }
   end

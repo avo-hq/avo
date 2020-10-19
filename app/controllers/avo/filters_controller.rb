@@ -5,10 +5,9 @@ module Avo
     before_action :authorize_user
 
     def index
-      avo_filters = avo_resource.get_filters
       filters = []
 
-      avo_filters.each do |filter|
+      avo_resource.get_filters.each do |filter|
         filters.push(filter.new.render_response)
       end
 

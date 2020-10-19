@@ -56,23 +56,7 @@ RSpec.describe Avo::ResourcesController, type: :controller do
   end
 
   describe 'fields?' do
-    subject { get :fields, params: { resource_name: 'projects' } }
-
-    context 'when user is not admin' do
-      it { is_expected.to have_http_status(403) }
-    end
-
-    context 'when user is admin' do
-      before do
-        sign_in admin_user
-      end
-
-      it { is_expected.to have_http_status(200) }
-    end
-  end
-
-  describe 'filters?' do
-    subject { get :filters, params: { resource_name: 'projects' } }
+    subject { get :index, params: { resource_name: 'projects' } }
 
     context 'when user is not admin' do
       it { is_expected.to have_http_status(403) }
@@ -176,9 +160,43 @@ RSpec.describe Avo::ResourcesController, type: :controller do
       end
     end
   end
+end
 
-  describe '.search' do
-    subject { get :search, params: { resource_name: 'projects' } }
+RSpec.describe Avo::FiltersController, type: :controller do
+  let(:user) { create :user }
+  let(:admin_user) { create :user, roles: { 'admin': true } }
+
+  before do
+    sign_in user
+  end
+
+  describe 'index' do
+    subject { get :index, params: { resource_name: 'projects' } }
+
+    context 'when user is not admin' do
+      it { is_expected.to have_http_status(403) }
+    end
+
+    context 'when user is admin' do
+      before do
+        sign_in admin_user
+      end
+
+      it { is_expected.to have_http_status(200) }
+    end
+  end
+end
+
+RSpec.describe Avo::SearchController, type: :controller do
+  let(:user) { create :user }
+  let(:admin_user) { create :user, roles: { 'admin': true } }
+
+  before do
+    sign_in user
+  end
+
+  describe '.index' do
+    subject { get :index, params: { resource_name: 'projects' } }
 
     context 'when user is not admin' do
       it { is_expected.to have_http_status(200) }
@@ -193,8 +211,8 @@ RSpec.describe Avo::ResourcesController, type: :controller do
     end
   end
 
-  describe '.resource_search' do
-    subject { get :search, params: { resource_name: 'projects' } }
+  describe '.resource' do
+    subject { get :resource, params: { resource_name: 'projects' } }
 
     context 'when user is not admin' do
       it { is_expected.to have_http_status(200) }
