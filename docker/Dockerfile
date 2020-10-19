@@ -4,13 +4,10 @@ RUN apt-get update -qq && apt-get install -yqq build-essential apt-transport-htt
 
 # Cache nokogiri
 RUN apt-get install -yqq libxml2-dev libxslt1-dev build-essential patch ruby-dev zlib1g-dev liblzma-dev
-RUN gem install nokogiri
-
-# Cache selenium-webdriver
-RUN gem install selenium-webdriver
+RUN gem install nokogiri selenium-webdriver
 
 # node
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
 RUN apt-get install -y nodejs
 
 # yarn
@@ -45,5 +42,4 @@ COPY . /avo/
 
 RUN bin/webpack
 
-RUN ls -la /avo/public/avo-packs/
-RUN bin/rails build
+RUN bundle exec rails build
