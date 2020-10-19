@@ -5,7 +5,7 @@
         {{ field.name }} <span class="text-red-600" v-if="field.required">*</span>
       </slot>
     </div>
-    <div class="flex-1 flex flex-row ">
+    <div class="flex-1 flex flex-row">
       <div :class="valueSlotClasses" data-slot="value">
         <slot />
       </div>

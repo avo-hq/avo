@@ -158,9 +158,11 @@ RSpec.describe 'KeyValueFields', type: :system do
       it 'deletes first row' do
         visit "/avo/resources/projects/#{project.id}/edit"
         wait_for_loaded
+        wait_for_loaded
 
         delete_buttons = page.all('[data-button="delete-row"]')
         delete_buttons[0].click
+        wait_for_loaded
 
         click_on 'Save'
         wait_for_loaded

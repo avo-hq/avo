@@ -112,9 +112,20 @@ RSpec.describe Avo::ResourcesController, type: :controller do
       end
     end
   end
+end
 
-  describe '.resource_search' do
-    subject { get :resource_search, params: { resource_name: 'users', q: 'active' } }
+RSpec.describe Avo::SearchController, type: :controller do
+  let(:regular_user) { create :user }
+  let(:admin_user) { create :user, roles: { admin: true } }
+  let!(:active_user) { create :user, first_name: 'active user', active: true }
+  let!(:inactive_user) { create :user, first_name: 'inactive user', active: false }
+
+  before do
+    sign_in user
+  end
+
+  describe '.resource' do
+    subject { get :resource, params: { resource_name: 'users', q: 'active' } }
 
     context 'when user is not admin' do
       let(:user) { regular_user }
@@ -141,8 +152,8 @@ RSpec.describe Avo::ResourcesController, type: :controller do
     end
   end
 
-  describe '.search' do
-    subject { get :search, params: { q: 'active' } }
+  describe '.index' do
+    subject { get :index, params: { q: 'active' } }
 
     context 'when user is not admin' do
       let(:user) { regular_user }

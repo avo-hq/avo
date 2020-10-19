@@ -14,20 +14,14 @@ RSpec.describe Avo::ResourcesController, type: :controller do
     it { is_expected.to have_http_status(200) }
   end
 
-  describe 'fields?' do
-    subject { get :fields, params: { resource_name: 'posts' } }
-
-    it { is_expected.to have_http_status(200) }
-  end
-
-  describe 'filters?' do
-    subject { get :filters, params: { resource_name: 'posts' } }
+  describe '.new' do
+    subject { get :new, params: { resource_name: 'posts' } }
 
     it { is_expected.to have_http_status(200) }
   end
 
   describe 'create?' do
-    subject { post :create, params: { resource_name: 'posts', resource: { name: 'All bout avocados'  } } }
+    subject { post :create, params: { resource_name: 'posts', resource: { name: 'All bout avocados' } } }
 
     it { is_expected.to have_http_status(200) }
   end
@@ -39,7 +33,7 @@ RSpec.describe Avo::ResourcesController, type: :controller do
   end
 
   describe 'update?' do
-    subject { put :update, params: { resource_name: 'posts', id: dummy_post.id, resource: { name: 'All bout avocados' } } }
+    subject { put :update, params: { resource_name: 'posts', id: dummy_post.id, resource: { name: 'All about avocados' } } }
 
     it { is_expected.to have_http_status(200) }
   end
@@ -60,15 +54,37 @@ RSpec.describe Avo::ResourcesController, type: :controller do
       expect(User.where(id: dummy_post.id).first).to be nil
     end
   end
+end
 
-  describe '.search' do
-    subject { get :search, params: { resource_name: 'posts' } }
+RSpec.describe Avo::FiltersController, type: :controller do
+  let(:user) { create :user }
+
+  before do
+    sign_in user
+  end
+
+  describe '.index' do
+    subject { get :index, params: { resource_name: 'posts' } }
+
+    it { is_expected.to have_http_status(200) }
+  end
+end
+
+RSpec.describe Avo::SearchController, type: :controller do
+  let(:user) { create :user }
+
+  before do
+    sign_in user
+  end
+
+  describe '.index' do
+    subject { get :index, params: { resource_name: 'posts' } }
 
     it { is_expected.to have_http_status(200) }
   end
 
-  describe '.resource_search' do
-    subject { get :search, params: { resource_name: 'posts' } }
+  describe '.resource' do
+    subject { get :resource, params: { resource_name: 'posts' } }
 
     it { is_expected.to have_http_status(200) }
   end
