@@ -1,10 +1,11 @@
 ![Tests](https://github.com/avo-hq/avo/workflows/Tests/badge.svg)
 ![reviewdog](https://github.com/avo-hq/avo/workflows/reviewdog/badge.svg)
 [![codecov](https://codecov.io/gh/avo-hq/avo/branch/master/graph/badge.svg?token=Q2LMFE4989)](https://codecov.io/gh/avo-hq/avo)
+[![Maintainability](https://api.codeclimate.com/v1/badges/676a0afa2cc79f03aa29/maintainability)](https://codeclimate.com/github/avo-hq/avo/maintainability)
 
 ![](https://avohq.io/img/logo-full-stroke-tiny-2x.png)
 
-Configuration-based, no-maintenance, extendable Ruby on Rails admin
+**Configuration-based, no-maintenance, extendable Ruby on Rails admin**
 
 Avo is a beautiful next-generation framework that empowers you, the developer, to create fantastic admin panels for your Ruby on Rails apps with the flexibility to fit your needs as you grow.
 
