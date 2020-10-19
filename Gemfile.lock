@@ -5,6 +5,7 @@ PATH
       countries
       inline_svg
       kaminari
+      pundit
       rails (>= 6.0)
       webpacker
       zeitwerk
