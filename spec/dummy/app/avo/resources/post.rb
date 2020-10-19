@@ -12,6 +12,13 @@ module Avo
         id
         text :name, required: true
         trix :body, placeholder: 'Enter text', always_show: false
+        text :excerpt, hide_on: [:show, :edit, :index] do |model|
+          begin
+            ActionView::Base.full_sanitizer.sanitize(model.body).truncate 130
+          rescue => exception
+            ''
+          end
+        end
         file :cover_photo, is_image: true
         boolean :is_featured
         boolean :is_published do |model|
@@ -25,7 +32,7 @@ module Avo
       grid do
         preview :cover_photo
         title :name
-        body :body
+        body :excerpt
       end
 
       use_filter Avo::Filters::FeaturedFilter
