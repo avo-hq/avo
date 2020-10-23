@@ -1,4 +1,5 @@
 require 'rails_helper'
+WebMock.disable_net_connect!(allow_localhost: true)
 
 RSpec.describe 'BooleanGroupFields', type: :system do
   describe 'with regular input' do

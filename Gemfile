@@ -83,6 +83,7 @@ group :development, :test do
   gem 'rubocop'
   gem 'simplecov', require: false
   gem 'simplecov-cobertura'
+  gem 'webmock'
 
   # Release helper
   gem 'bump', require: false

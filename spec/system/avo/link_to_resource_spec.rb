@@ -1,4 +1,5 @@
 require 'rails_helper'
+WebMock.disable_net_connect!(allow_localhost: true)
 
 RSpec.describe 'LinkToResource', type: :system do
   describe 'for id field' do
