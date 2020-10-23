@@ -10,6 +10,10 @@ module Avo
       @valid = response['valid']
     end
 
+    def valid?
+      valid
+    end
+
     def invalid?
       !valid?
     end
@@ -18,12 +22,12 @@ module Avo
       id == 'pro'
     end
 
-    def invalid_reason
-      @response[:invalid_reason]
+    def error
+      @response['error']
     end
 
     def properties
-      @response.slice 'valid'
+      @response.slice 'valid', 'id', 'error'
     end
 
     def abilities

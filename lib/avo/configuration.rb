@@ -26,7 +26,7 @@ module Avo
       @default_view_type = :table
       @hide_resource_overview_component = false
       @hide_documentation_link = false
-      @license = 'solo'
+      @license = 'community'
       @license_key = nil
     end
   end
