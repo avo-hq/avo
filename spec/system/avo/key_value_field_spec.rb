@@ -1,5 +1,5 @@
 require 'rails_helper'
-WebMock.disable_net_connect!(allow_localhost: true)
+WebMock.disable_net_connect!(allow_localhost: true, allow: 'chromedriver.storage.googleapis.com')
 
 RSpec.describe 'KeyValueFields', type: :system do
   describe 'without value' do
