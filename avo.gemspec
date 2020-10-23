@@ -39,4 +39,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'webpacker'
   spec.add_dependency 'countries'
   spec.add_dependency 'pundit'
+  spec.add_dependency 'httparty'
 end

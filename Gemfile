@@ -23,7 +23,7 @@ gem 'inline_svg'
 gem 'countries'
 
 # Authorization
-gem "pundit"
+gem 'pundit'
 
 # These are the dummy app's dependencies
 group :development, :test do
@@ -93,3 +93,5 @@ gem 'zeitwerk', '~> 2.3'
 
 # Pagination
 gem 'kaminari'
+
+gem 'httparty'

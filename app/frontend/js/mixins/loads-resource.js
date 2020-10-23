@@ -42,7 +42,12 @@ export default {
 
       const { data } = await Api.get(this.resourceUrl)
 
-      const resource = this.hydrateRelatedResources(data.resource)
+      if (!data) return
+      let { resource } = data
+
+      if (!resource) return
+
+      resource = this.hydrateRelatedResources(resource)
       this.resource = resource
       this.isLoading = false
     },

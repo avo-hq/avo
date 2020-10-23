@@ -1,6 +1,6 @@
 <template>
   <div v-if="resource" :resource-id="resourceId">
-    <div v-for="panel in resource.panels" :key="panel.name">
+    <div v-for="panel in panels" :key="panel.name">
       <panel>
         <template #heading>
           {{panel.name}}
@@ -9,7 +9,9 @@
         <template #tools>
           <div class="flex justify-end space-x-2">
             <resource-actions :resource-name="resourceName" :resource-ids="[resourceId]" :actions="actions" />
-            <a-button :to="cancelActionParams"><arrow-left-icon class="h-4 mr-1"/> Back</a-button>
+            <a-button :to="cancelActionParams">
+              <arrow-left-icon class="h-4 mr-1"/> Back
+            </a-button>
             <a-button @click="openDeleteModal"
               color="red"
               variant="outlined"
@@ -28,7 +30,9 @@
                 },
               }"
               v-if="canEdit"
-            ><edit-icon class="h-4 mr-1" /> Edit</a-button>
+            >
+              <edit-icon class="h-4 mr-1" /> Edit
+            </a-button>
           </div>
         </template>
 
@@ -103,6 +107,11 @@ export default {
     },
     fields() {
       return this.resource.fields
+    },
+    panels() {
+      if (!this.resource) return []
+
+      return this.resource.panels
     },
     hasManyRelations() {
       return this.fields.filter((field) => ['has_and_belongs_to_many', 'has_many'].indexOf(field.relationship) > -1)

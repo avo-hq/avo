@@ -11,6 +11,8 @@ require_relative 'avo/app/filters/select_filter'
 
 require_relative 'avo/app/resource'
 
+require_relative 'avo/app/licensing/license_manager'
+
 module Avo
   ROOT_PATH = Pathname.new(File.join(__dir__, '..'))
 

@@ -21,5 +21,9 @@ module Avo
     def render_scripts
       render partial: 'vendor/avo/partials/scripts' rescue ''
     end
+
+    def render_licensing
+      render partial: 'partials/licensing'
+    end
   end
 end
