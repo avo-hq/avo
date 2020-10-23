@@ -89,3 +89,15 @@ require 'support/database_cleaner'
 require 'support/wait_for_loaded'
 require 'support/js_error_detector'
 require 'support/devise'
+
+# Mock the HQ response to valid pro
+module Avo
+  class HQ
+    def response
+      {
+        id: 'pro',
+        valid: true,
+      }.stringify_keys
+    end
+  end
+end

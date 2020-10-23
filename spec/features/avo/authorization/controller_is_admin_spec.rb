@@ -195,6 +195,40 @@ RSpec.describe Avo::SearchController, type: :controller do
     sign_in user
   end
 
+  after :all do
+    # What an ugly solution!
+    # We gotta reset the policy for the next specs
+    class ProjectPolicy < ApplicationPolicy
+      def index?
+        true
+      end
+
+      def show?
+        true
+      end
+
+      def create?
+        true
+      end
+
+      def new?
+        true
+      end
+
+      def update?
+        true
+      end
+
+      def edit?
+        true
+      end
+
+      def destroy?
+        true
+      end
+    end
+  end
+
   describe '.index' do
     subject { get :index, params: { resource_name: 'projects' } }
 

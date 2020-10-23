@@ -14,8 +14,10 @@ module Avo
 
       if params[:via_resource_name].present? and params[:via_resource_id].present? and params[:via_relationship].present?
         # get the related resource (via_resource)
-        related_model_class = App.get_resource_by_name(params[:via_resource_name]).model._reflections[params[:via_relationship].to_s].class_name.safe_constantize
-        query = AuthorizationService.with_policy current_user, related_model_class
+        related_model = App.get_resource_by_name(params[:via_resource_name]).model
+
+        relation = related_model.find(params[:via_resource_id]).public_send(params[:via_relationship])
+        query = AuthorizationService.with_policy current_user, relation
 
         params[:per_page] = Avo.configuration.via_per_page
       elsif ['has_many', 'has_and_belongs_to_many'].include? params[:for_relation]
