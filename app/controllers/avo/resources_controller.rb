@@ -256,10 +256,10 @@ module Avo
           available_view_types: avo_resource.available_view_types,
           default_view_type: avo_resource.default_view_type || Avo.configuration.default_view_type,
           authorization: {
-            create: AuthorizationService::authorize(current_user, avo_resource.model, 'create?'),
-            update: AuthorizationService::authorize(current_user, avo_resource.model, 'update?'),
-            show: AuthorizationService::authorize(current_user, avo_resource.model, 'show?'),
-            destroy: AuthorizationService::authorize(current_user, avo_resource.model, 'destroy?'),
+            create: AuthorizationService::authorize(current_user, avo_resource.model, Avo.configuration.authorization_methods.stringify_keys['create']),
+            update: AuthorizationService::authorize(current_user, avo_resource.model, Avo.configuration.authorization_methods.stringify_keys['update']),
+            show: AuthorizationService::authorize(current_user, avo_resource.model, Avo.configuration.authorization_methods.stringify_keys['show']),
+            destroy: AuthorizationService::authorize(current_user, avo_resource.model, Avo.configuration.authorization_methods.stringify_keys['destroy']),
           },
         }
       end
