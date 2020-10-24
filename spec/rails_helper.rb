@@ -60,6 +60,19 @@ RSpec.configure do |config|
     driven_by test_driver
   end
 
+  config.before(:example) do
+    Rails.cache.clear
+  end
+
+  config.around(:example, type: :system) do |example|
+    # Stub license request for system tests.
+    stub_request(:post, Avo::HQ::ENDPOINT).to_return(status: 200, body: {}.to_json, headers: json_headers)
+    ENV['RUN_WITH_NULL_LICENSE'] = '1'
+    example.run
+    WebMock.reset!
+    ENV['RUN_WITH_NULL_LICENSE'] = '0'
+  end
+
   # You can uncomment this line to turn off ActiveRecord support entirely.
   # config.use_active_record = false
 
@@ -90,15 +103,3 @@ require 'support/database_cleaner'
 require 'support/wait_for_loaded'
 require 'support/js_error_detector'
 require 'support/devise'
-
-# Mock the HQ response to valid pro
-module Avo
-  class HQ
-    def response
-      {
-        id: 'pro',
-        valid: true,
-      }.stringify_keys
-    end
-  end
-end

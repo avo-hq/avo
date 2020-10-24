@@ -20,7 +20,7 @@ module Avo
         @@app[:root_path] = Pathname.new(File.join(__dir__, '..', '..'))
         init_fields
         init_resources
-        @@license = LicenseManager.new(current_request).license
+        @@license = LicenseManager.new(HQ.new(current_request).response).license
       end
 
       def app

@@ -1,9 +1,12 @@
 module Avo
   class NullLicense < License
-    def initialize(response)
+    def initialize(response = nil)
+      response ||= {
+        id: 'community',
+        valid: true,
+      }
+
       super(response)
-      @id = 'community'
-      @valid = true
     end
   end
 end

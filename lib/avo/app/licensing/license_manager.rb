@@ -2,30 +2,23 @@ require_relative 'license'
 require_relative 'community_license'
 require_relative 'pro_license'
 require_relative 'null_license'
-require_relative 'hq'
 
 module Avo
   class LicenseManager
-    attr_accessor :home
-
-    def initialize(current_request)
-      @home = HQ.new current_request
-    end
-
-    def valid?
-      license.valid?
+    def initialize(hq_response)
+      @hq_response = hq_response
     end
 
     def license
-      response = @home.response
+      return NullLicense.new if Rails.env.test? and ENV['RUN_WITH_NULL_LICENSE'] == '1'
 
-      case response['id']
+      case @hq_response['id']
       when 'community'
-        CommunityLicense.new response
+        CommunityLicense.new @hq_response
       when 'pro'
-        ProLicense.new response
+        ProLicense.new @hq_response
       else
-        NullLicense.new response
+        NullLicense.new @hq_response
       end
     end
   end

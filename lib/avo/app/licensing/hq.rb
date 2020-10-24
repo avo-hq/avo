@@ -1,92 +1,85 @@
 module Avo
   class HQ
-    attr_accessor :cache_key
-    attr_accessor :endpoint
-    attr_accessor :timeout
     attr_accessor :current_request
 
+    ENDPOINT = 'https://avohq.io/api/v1/licenses/check'
+    CACHE_KEY = 'avo.hq.response'
+    REQUEST_TIMEOUT = 5 # seconds
+
     def initialize(current_request)
-      @cache_key = 'avo.avohq.response'
-      @endpoint = 'https://avohq.io/api/v1/licenses/check'
-      @timeout = 5
       @current_request = current_request
     end
 
     def response
-      @response or request
+      @hq_response or request
     end
 
-    def request
-      if has_cached_response
-        return cached_response
+    private
+      def request
+        return cached_response if has_cached_response
+
+        begin
+          perform_and_cache_request
+        rescue HTTParty::Error => exception
+          cache_and_return_error 'HTTP client error.', exception.message
+        rescue Net::OpenTimeout => exception
+          cache_and_return_error 'Request timeout.', exception.message
+        rescue SocketError => exception
+          cache_and_return_error 'Connection error.', exception.message
+        end
       end
 
-      begin
-        perform_and_cache_request
-      rescue HTTParty::Error => exception
-        handle_response_exceptions exception
+      def perform_and_cache_request
+        hq_response = perform_request
+
+        return cache_and_return_error 'Avo HQ Internal server error.', hq_response.body if hq_response.code == 500
+
+        cache_response 1.hour.to_i, hq_response.parsed_response if hq_response.code == 200
       end
-    end
 
-    def handle_response_exceptions(exception)
-      return cache_and_return_error if exception.class == SocketError
-    end
+      def cache_response(time, response)
+        response.merge!(
+          expiry: time,
+          **payload,
+        ).stringify_keys!
 
-    def handle_hq_error(response)
-      cache_response 5.minutes, { error: 'Internal server error' }.stringify_keys
-    end
+        Rails.cache.write(CACHE_KEY, response, expires_in: time)
 
-    def cache_and_return_error
-      cache_response 5.minutes, { error: 'Connection error' }.stringify_keys
-    end
+        @hq_response = response
 
-    def perform_and_cache_request
-      hq_response = perform_request
+        response
+      end
 
-      return handle_hq_error hq_response if hq_response.code == 500
+      def perform_request
+        puts 'Performing request to avohq.io API to check license availability.'.inspect if Rails.env.development?
 
-      cache_response 1.hour, hq_response.parsed_response if hq_response.code == 200
-    end
+        HTTParty.post ENDPOINT, body: payload.to_json, headers: { 'Content-type': 'application/json' }, timeout: REQUEST_TIMEOUT
+      end
 
-    def cache_response(time, response)
-      response.merge!(
-        expiry: time,
-        **payload,
-      )
+      def payload
+        {
+          license: Avo.configuration.license,
+          license_key: Avo.configuration.license_key,
+          avo_version: Avo::VERSION,
+          rails_version: Rails::VERSION::STRING,
+          ruby_version: RUBY_VERSION,
+          environment: Rails.env,
+          ip: current_request.ip,
+          host: current_request.host,
+          port: current_request.port,
+        }
+      end
 
-      Rails.cache.write(cache_key, response, expires_in: time)
+      def cache_and_return_error(error, exception_message = '')
+        cache_response 5.minutes.to_i, { error: error, exception_message: exception_message }.stringify_keys
+      end
 
-      @response = response
+      def has_cached_response
+        Rails.cache.exist? CACHE_KEY
+      end
 
-      response
-    end
-
-    def perform_request
-      puts 'Performing request to avohq.io API to check license availability.'.inspect
-
-      HTTParty.post endpoint, body: payload.to_json, headers: { 'Content-type': 'application/json' }, timeout: timeout
-    end
-
-    def payload
-      {
-        license: Avo.configuration.license,
-        license_key: Avo.configuration.license_key,
-        avo_version: Avo::VERSION,
-        rails_version: Rails::VERSION::STRING,
-        ruby_version: RUBY_VERSION,
-        environment: Rails.env,
-        ip: current_request.ip,
-        host: current_request.host,
-        port: current_request.port,
-      }
-    end
-
-    def has_cached_response
-      Rails.cache.exist? cache_key
-    end
-
-    def cached_response
-      Rails.cache.read cache_key
-    end
+      def cached_response
+        Rails.cache.read CACHE_KEY
+      end
   end
 end

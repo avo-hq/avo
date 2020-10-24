@@ -48,6 +48,10 @@ RSpec.describe Avo::ResourcesController, type: :controller do
   let(:dummy_user) { create :user }
   let(:project) { create :project }
 
+  before :each do
+    stub_pro_license_request
+  end
+
   before do
     project.users << active_user
     project.users << inactive_user
@@ -119,6 +123,10 @@ RSpec.describe Avo::SearchController, type: :controller do
   let(:admin_user) { create :user, roles: { admin: true } }
   let!(:active_user) { create :user, first_name: 'active user', active: true }
   let!(:inactive_user) { create :user, first_name: 'inactive user', active: false }
+
+  before :each do
+    stub_pro_license_request
+  end
 
   before do
     sign_in user

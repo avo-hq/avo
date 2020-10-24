@@ -35,6 +35,10 @@ RSpec.describe Avo::ResourcesController, type: :controller do
   let(:admin_user) { create :user, roles: { 'admin': true } }
   let(:project) { create :project }
 
+  before :each do
+    stub_pro_license_request
+  end
+
   before do
     sign_in user
   end
@@ -166,6 +170,10 @@ RSpec.describe Avo::FiltersController, type: :controller do
   let(:user) { create :user }
   let(:admin_user) { create :user, roles: { 'admin': true } }
 
+  before :each do
+    stub_pro_license_request
+  end
+
   before do
     sign_in user
   end
@@ -190,6 +198,10 @@ end
 RSpec.describe Avo::SearchController, type: :controller do
   let(:user) { create :user }
   let(:admin_user) { create :user, roles: { 'admin': true } }
+
+  before :each do
+    stub_pro_license_request
+  end
 
   before do
     sign_in user
