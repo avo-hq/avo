@@ -126,6 +126,8 @@ RSpec.describe 'KeyValueFields', type: :system do
     end
 
     context 'edit' do
+      let!(:project) { create :project , meta: meta_data }
+
       it 'has the projects meta label, table header, table rows (2), buttons' do
         visit "/avo/resources/projects/#{project.id}/edit"
         wait_for_loaded
@@ -162,7 +164,6 @@ RSpec.describe 'KeyValueFields', type: :system do
 
         delete_buttons = page.all('[data-button="delete-row"]')
         delete_buttons[0].click
-        sleep 0.1
 
         click_on 'Save'
         wait_for_loaded
