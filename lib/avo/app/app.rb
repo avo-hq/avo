@@ -19,11 +19,9 @@ module Avo
       def boot
         @@app[:root_path] = Pathname.new(File.join(__dir__, '..', '..'))
         init_fields
-        init_resources
       end
 
       def init(current_request = nil)
-        init_fields
         init_resources
         @@license = LicenseManager.new(HQ.new(current_request).response).license
       end
