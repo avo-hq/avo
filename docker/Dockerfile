@@ -29,18 +29,26 @@ WORKDIR /avo/
 COPY Gemfile* /avo/
 COPY Rakefile /avo/
 COPY avo.gemspec /avo/
-COPY package.json /avo/
 COPY ./lib/avo.rb /avo/lib/avo.rb
 COPY ./lib/avo/version.rb /avo/lib/avo/version.rb
 RUN bundle install --jobs 4 --retry 3
 
+COPY package.json /avo/
 COPY yarn.lock /avo/
 
 RUN yarn install
 RUN yarn check --integrity
 
-COPY . /avo/
+COPY ./bin/ /avo/bin/
+COPY ./app/frontend/ /avo/app/frontend/
+COPY ./config/ /avo/config/
+COPY ./.eslintrc.json /avo/.eslintrc.json
+COPY ./jsconfig.json /avo/jsconfig.json
+COPY ./postcss.config.js /avo/postcss.config.js
+COPY ./tailwind.config.js /avo/tailwind.config.js
 
 RUN bin/webpack
+
+COPY . /avo/
 
 RUN bundle exec rails build
