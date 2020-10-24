@@ -21,3 +21,26 @@ end
 def empty_dash
   '—'
 end
+
+def json_headers
+  { 'Content-Type' => 'application/json' }
+end
+
+def stub_pro_license_request
+  stub_request(:post, Avo::HQ::ENDPOINT).with(body: hash_including({
+    license: 'pro',
+    license_key: 'license_123',
+  }.stringify_keys)).to_return(status: 200, body: { id: 'pro', valid: true }.to_json, headers: json_headers)
+end
+
+class DummyRequest
+  attr_accessor :ip
+  attr_accessor :host
+  attr_accessor :port
+
+  def initialize(ip, host, port)
+    @ip = ip
+    @host = host
+    @port = port
+  end
+end

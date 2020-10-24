@@ -4,6 +4,10 @@ RSpec.describe Avo::ResourcesController, type: :controller do
   let(:user) { create :user }
   let(:dummy_post) { create :post }
 
+  before :each do
+    stub_pro_license_request
+  end
+
   before do
     sign_in user
   end
@@ -59,6 +63,10 @@ end
 RSpec.describe Avo::FiltersController, type: :controller do
   let(:user) { create :user }
 
+  before :each do
+    stub_pro_license_request
+  end
+
   before do
     sign_in user
   end
@@ -72,6 +80,10 @@ end
 
 RSpec.describe Avo::SearchController, type: :controller do
   let(:user) { create :user }
+
+  before :each do
+    stub_pro_license_request
+  end
 
   before do
     sign_in user

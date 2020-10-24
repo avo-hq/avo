@@ -35,6 +35,10 @@ RSpec.describe Avo::ResourcesController, type: :controller do
   let(:admin_user) { create :user, roles: { 'admin': true } }
   let(:project) { create :project }
 
+  before :each do
+    stub_pro_license_request
+  end
+
   before do
     sign_in user
   end
@@ -166,6 +170,10 @@ RSpec.describe Avo::FiltersController, type: :controller do
   let(:user) { create :user }
   let(:admin_user) { create :user, roles: { 'admin': true } }
 
+  before :each do
+    stub_pro_license_request
+  end
+
   before do
     sign_in user
   end
@@ -191,8 +199,46 @@ RSpec.describe Avo::SearchController, type: :controller do
   let(:user) { create :user }
   let(:admin_user) { create :user, roles: { 'admin': true } }
 
+  before :each do
+    stub_pro_license_request
+  end
+
   before do
     sign_in user
+  end
+
+  after :all do
+    # What an ugly solution!
+    # We gotta reset the policy for the next specs
+    class ProjectPolicy < ApplicationPolicy
+      def index?
+        true
+      end
+
+      def show?
+        true
+      end
+
+      def create?
+        true
+      end
+
+      def new?
+        true
+      end
+
+      def update?
+        true
+      end
+
+      def edit?
+        true
+      end
+
+      def destroy?
+        true
+      end
+    end
   end
 
   describe '.index' do

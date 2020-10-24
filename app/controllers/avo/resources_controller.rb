@@ -10,27 +10,15 @@ module Avo
       params[:sort_by] = params[:sort_by].present? ? params[:sort_by] : :created_at
       params[:sort_direction] = params[:sort_direction].present? ? params[:sort_direction] : :desc
 
-      begin
-        query = policy_scope(resource_model)
-      rescue => exception
-        query = resource_model
-      end
+      query = AuthorizationService.with_policy current_user, resource_model
 
       if params[:via_resource_name].present? and params[:via_resource_id].present? and params[:via_relationship].present?
         # get the related resource (via_resource)
-        related_resource = App.get_resource_by_name(params[:via_resource_name])
-        related_model = related_resource.model
+        related_model = App.get_resource_by_name(params[:via_resource_name]).model
 
-        # fetch the entries
-        query = related_model.find(params[:via_resource_id]).public_send(params[:via_relationship])
+        relation = related_model.find(params[:via_resource_id]).public_send(params[:via_relationship])
+        query = AuthorizationService.with_policy current_user, relation
 
-        # Try and substitute the query with a scoped query if we find a scope for this related model class
-        begin
-          related_model_class = related_model._reflections[params[:via_relationship].to_s].class_name.safe_constantize
-          policy_scope related_model_class
-          query = policy_scope query
-        rescue => exception
-        end
         params[:per_page] = Avo.configuration.via_per_page
       elsif ['has_many', 'has_and_belongs_to_many'].include? params[:for_relation]
         # has_many searchable query

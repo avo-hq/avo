@@ -3,6 +3,10 @@ require 'rails_helper'
 RSpec.describe Avo::ResourcesController, type: :controller do
   let(:user) { create :user }
 
+  before :each do
+    stub_pro_license_request
+  end
+
   before do
     sign_in user
   end

@@ -1,12 +1,14 @@
 module Avo
   class ApplicationController < ActionController::Base
-    include Pundit
     rescue_from ActiveRecord::RecordInvalid, with: :exception_logger
     protect_from_forgery with: :exception
     before_action :init_app
 
     def init_app
-      Avo::App.init
+      Avo::App.boot unless Rails.env.production?
+      Avo::App.init request
+
+      @license = Avo::App.license
     end
 
     def exception_logger(exception)

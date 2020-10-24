@@ -3,13 +3,15 @@ require_dependency 'avo/application_controller'
 module Avo
   class ResourceOverviewController < ApplicationController
     def index
-      resources = App.get_resources.map do |resource|
-        {
-          name: resource.name,
-          url: resource.url,
-          count: resource.model.count,
-        }
-      end
+      resources = App.get_resources
+        .select { |resource| AuthorizationService::authorize session_user, resource.model, 'index?' }
+        .map do |resource|
+          {
+            name: resource.name,
+            url: resource.url,
+            count: resource.model.count,
+          }
+        end
 
       render json: {
         resources: resources,
@@ -17,5 +19,10 @@ module Avo
         hide_docs: Avo.configuration.hide_documentation_link,
       }
     end
+
+    private
+      def session_user
+        current_user.present? ? current_user : nil
+      end
   end
 end

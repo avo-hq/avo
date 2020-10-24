@@ -383,7 +383,7 @@ export default {
     async getFilters() {
       const { data } = await Api.get(`${Avo.rootPath}/avo-api/${this.resourcePath}/filters`)
 
-      this.filters = data.filters
+      if (data && data.filters) this.filters = data.filters
     },
     changeSortDirection(by) {
       if (this.sortBy !== '' && this.sortBy !== by) {

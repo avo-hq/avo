@@ -6,7 +6,7 @@ Bundler.require(*Rails.groups)
 require 'avo'
 
 # Tell spring where the new dummy ap is located
-Spring.application_root = 'spec/dummy' if Rails.env != 'production'
+Spring.application_root = 'spec/dummy'
 
 module Dummy
   class Application < Rails::Application

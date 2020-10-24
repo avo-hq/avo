@@ -11,6 +11,8 @@ module Avo
     attr_accessor :default_view_type
     attr_accessor :hide_resource_overview_component
     attr_accessor :hide_documentation_link
+    attr_accessor :license
+    attr_accessor :license_key
 
     def initialize
       @root_path = '/avo'
@@ -24,6 +26,8 @@ module Avo
       @default_view_type = :table
       @hide_resource_overview_component = false
       @hide_documentation_link = false
+      @license = 'community'
+      @license_key = nil
     end
   end
 

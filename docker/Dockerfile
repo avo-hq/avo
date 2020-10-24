@@ -30,7 +30,8 @@ COPY Gemfile* /avo/
 COPY Rakefile /avo/
 COPY avo.gemspec /avo/
 COPY package.json /avo/
-COPY ./lib/ /avo/lib/
+COPY ./lib/avo.rb /avo/lib/avo.rb
+COPY ./lib/avo/version.rb /avo/lib/avo/version.rb
 RUN bundle install --jobs 4 --retry 3
 
 COPY yarn.lock /avo/

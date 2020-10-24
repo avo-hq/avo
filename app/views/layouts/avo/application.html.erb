@@ -20,7 +20,12 @@
   >
     <div>
       <application-sidebar :resources='<%= Avo::App.get_resources_navigation(current_user).as_json.html_safe %>' v-if="layout !== 'blank'">
-        <%= render_logo %>
+        <template #logo>
+          <%= render_logo %>
+        </template>
+        <template #licensing>
+          <license-warnings></license-warnings>
+        </template>
       </application-sidebar>
 
       <div class="flex-1 h-full overflow-auto">

@@ -6,6 +6,7 @@ require_relative "dummy/config/environment"
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
+require 'webmock/rspec'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -57,6 +58,19 @@ RSpec.configure do |config|
 
   config.before(:each, type: :system, js: true) do
     driven_by test_driver
+  end
+
+  config.before(:example) do
+    Rails.cache.clear
+  end
+
+  config.around(:example, type: :system) do |example|
+    # Stub license request for system tests.
+    stub_request(:post, Avo::HQ::ENDPOINT).to_return(status: 200, body: {}.to_json, headers: json_headers)
+    ENV['RUN_WITH_NULL_LICENSE'] = '1'
+    example.run
+    WebMock.reset!
+    ENV['RUN_WITH_NULL_LICENSE'] = '0'
   end
 
   # You can uncomment this line to turn off ActiveRecord support entirely.

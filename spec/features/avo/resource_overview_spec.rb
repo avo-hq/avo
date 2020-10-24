@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Avo::ResourceOverviewController, type: :controller do
+  before :each do
+    stub_pro_license_request
+  end
+
   context 'configs' do
     describe 'with false values' do
       it 'returns false values' do
