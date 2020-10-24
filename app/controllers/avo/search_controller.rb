@@ -7,7 +7,9 @@ module Avo
     def index
       resources = []
 
-      resources_to_search_through = App.get_resources.select { |r| r.search.present? }
+      resources_to_search_through = App.get_resources
+        .select { |resource| resource.search.present? }
+        .select { |resource| AuthorizationService.authorize_action current_user, resource.model, 'index' }
         .each do |resource_model|
           found_resources = add_link_to_search_results(search_resource(resource_model), resource_model)
           resources.push({
@@ -40,6 +42,14 @@ module Avo
 
       def search_resource(avo_resource)
         avo_resource.query_search(query: params[:q], via_resource_name: params[:via_resource_name], via_resource_id: params[:via_resource_id], user: current_user)
+      end
+
+      def authorize_user
+        return if params[:action] == 'index'
+
+        action = params[:action] == 'resource' ? :index : params[:action]
+
+        return render_unauthorized unless AuthorizationService::authorize_action current_user, avo_resource.model, action
       end
   end
 end

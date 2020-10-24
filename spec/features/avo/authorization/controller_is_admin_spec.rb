@@ -245,7 +245,12 @@ RSpec.describe Avo::SearchController, type: :controller do
     subject { get :index, params: { resource_name: 'projects' } }
 
     context 'when user is not admin' do
+      # The request will not be a 403, but the resource should be filtered out from search results.
       it { is_expected.to have_http_status(200) }
+
+      it 'does not return the Project resources' do
+        expect(subject.parsed_body['resources'].pluck('label')).not_to include 'Project'
+      end
     end
 
     context 'when user is admin' do
@@ -261,7 +266,7 @@ RSpec.describe Avo::SearchController, type: :controller do
     subject { get :resource, params: { resource_name: 'projects' } }
 
     context 'when user is not admin' do
-      it { is_expected.to have_http_status(200) }
+      it { is_expected.to have_http_status(403) }
     end
 
     context 'when user is admin' do

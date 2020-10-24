@@ -8,7 +8,7 @@
   "private": true,
   "scripts": {
     "test": "bundle exec rspec ./spec --tag type:system",
-    "test-unit": "bundle exec rspec ./spec --tag type:controller",
+    "test-unit": "bundle exec rspec ./spec --tag type:feature --tag type:controller",
     "test-system": "bundle exec rspec ./spec --tag type:system",
     "test-all": "bundle exec rspec ./spec",
     "docker-build": "docker build -t avo-dev -f docker/Dockerfile .",

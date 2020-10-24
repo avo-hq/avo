@@ -61,6 +61,44 @@ RSpec.describe Avo::ResourcesController, type: :controller do
     sign_in user
   end
 
+  after :all do
+    class UserPolicy < ApplicationPolicy
+      def index?
+        false
+      end
+
+      def show?
+        false
+      end
+
+      def create?
+        false
+      end
+
+      def new?
+        false
+      end
+
+      def update?
+        false
+      end
+
+      def edit?
+        false
+      end
+
+      def destroy?
+        false
+      end
+
+      class Scope < ApplicationPolicy::Scope
+        def resolve
+          scope.all
+        end
+      end
+    end
+  end
+
   describe '.index' do
     subject { get :index, params: { resource_name: 'users' } }
 
@@ -130,6 +168,38 @@ RSpec.describe Avo::SearchController, type: :controller do
 
   before do
     sign_in user
+  end
+
+  before :all do
+    class UserPolicy < ApplicationPolicy
+      def index?
+        true
+      end
+
+      class Scope < ApplicationPolicy::Scope
+        def resolve
+          if user.is_admin?
+            scope.all
+          else
+            scope.where(active: true)
+          end
+        end
+      end
+    end
+  end
+
+  after :all do
+    class UserPolicy < ApplicationPolicy
+      def index?
+        false
+      end
+
+      class Scope < ApplicationPolicy::Scope
+        def resolve
+          scope.all
+        end
+      end
+    end
   end
 
   describe '.resource' do

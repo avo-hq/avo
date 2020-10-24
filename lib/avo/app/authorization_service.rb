@@ -3,7 +3,6 @@ module Avo
     class << self
       def controller_actions_map
         {
-          actions: 'index?',
           index: 'index?',
           show: 'show?',
           new: 'new?',
@@ -11,7 +10,6 @@ module Avo
           update: 'update?',
           create: 'create?',
           destroy: 'destroy?',
-          search: nil,
           resource_search: nil,
         }.stringify_keys
       end
