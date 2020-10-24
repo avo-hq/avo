@@ -4,7 +4,7 @@ module Avo
   class ResourceOverviewController < ApplicationController
     def index
       resources = App.get_resources
-        .select { |resource| AuthorizationService::authorize session_user, resource.model, 'index?' }
+        .select { |resource| AuthorizationService::authorize session_user, resource.model, Avo.configuration.authorization_methods.stringify_keys['index'] }
         .map do |resource|
           {
             name: resource.name,

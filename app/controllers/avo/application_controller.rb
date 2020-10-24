@@ -54,7 +54,11 @@ module Avo
           record = resource
         end
 
-        return render json: { message: 'Unauthorized' }, status: 403 unless AuthorizationService::authorize_action current_user, record, params[:action]
+        return render_unauthorized unless AuthorizationService::authorize_action current_user, record, params[:action]
+      end
+
+      def render_unauthorized
+        render json: { message: 'Unauthorized' }, status: 403
       end
   end
 end

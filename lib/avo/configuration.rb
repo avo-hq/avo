@@ -13,6 +13,7 @@ module Avo
     attr_accessor :hide_documentation_link
     attr_accessor :license
     attr_accessor :license_key
+    attr_accessor :authorization_methods
 
     def initialize
       @root_path = '/avo'
@@ -28,6 +29,15 @@ module Avo
       @hide_documentation_link = false
       @license = 'community'
       @license_key = nil
+      @authorization_methods = {
+        index: 'index?',
+        show: 'show?',
+        edit: 'edit?',
+        new: 'new?',
+        update: 'update?',
+        create: 'create?',
+        destroy: 'destroy?',
+      }
     end
   end
 

@@ -11,6 +11,50 @@ RSpec.describe Avo::ResourcesController, type: :controller do
     sign_in user
   end
 
+  before :all do
+    class UserPolicy < ApplicationPolicy
+      def index?
+        true
+      end
+
+      def update?
+        true
+      end
+    end
+
+    class PostPolicy < ApplicationPolicy
+      def index?
+        true
+      end
+
+      def update?
+        true
+      end
+    end
+  end
+
+  after :all do
+    class UserPolicy < ApplicationPolicy
+      def index?
+        false
+      end
+
+      def update?
+        false
+      end
+    end
+
+    class PostPolicy < ApplicationPolicy
+      def index?
+        false
+      end
+
+      def update?
+        false
+      end
+    end
+  end
+
   context '.index' do
     describe 'with empty response' do
       it 'returns empty resources response' do
@@ -19,7 +63,7 @@ RSpec.describe Avo::ResourcesController, type: :controller do
         expect(response).to have_http_status(200)
         expect(parsed_response).to eql({
           meta: {
-            authorization: { create: true, destroy: true, show: true, update: true },
+            authorization: { create: false, destroy: false, show: false, update: true },
             per_page_steps: [12, 24, 48, 72],
             available_view_types: ['grid', 'table'],
             default_view_type: 'grid',

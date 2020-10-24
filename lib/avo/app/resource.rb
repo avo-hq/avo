@@ -88,7 +88,7 @@ module Avo
           if [Avo::Fields::HasManyField, Avo::Fields::HasAndBelongsToManyField].include? field.class
             return true if furnished_field[:relationship_model].nil?
 
-            AuthorizationService.authorize user, furnished_field[:relationship_model].safe_constantize, 'index?'
+            AuthorizationService.authorize user, furnished_field[:relationship_model].safe_constantize, Avo.configuration.authorization_methods.stringify_keys['index']
           else
             true
           end
@@ -160,11 +160,7 @@ module Avo
       def query_search(query: '', via_resource_name: , via_resource_id:, user:)
         model_class = self.model
 
-        if Pundit.policy user, model_class
-          db_query = Pundit.policy_scope(user, model_class)
-        else
-          db_query = model_class
-        end
+        db_query = AuthorizationService.with_policy(user, model_class)
 
         if via_resource_name.present?
           related_model = App.get_resource_by_name(via_resource_name).model

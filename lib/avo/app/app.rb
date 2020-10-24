@@ -129,7 +129,7 @@ module Avo
 
       def get_resources_navigation(user)
         App.get_resources
-          .select { |resource| AuthorizationService::authorize user, resource.model, 'index?' }
+          .select { |resource| AuthorizationService::authorize user, resource.model, Avo.configuration.authorization_methods.stringify_keys['index'] }
           .map { |resource| { label: resource.resource_name_plural.humanize, resource_name: resource.url.pluralize } }
           .reject { |i| i.blank? }
           .to_json

@@ -5,6 +5,46 @@ RSpec.describe Avo::ResourceOverviewController, type: :controller do
     stub_pro_license_request
   end
 
+  before :all do
+    class UserPolicy < ApplicationPolicy
+      def index?
+        true
+      end
+    end
+
+    class TeamPolicy < ApplicationPolicy
+      def index?
+        true
+      end
+    end
+
+    class PostPolicy < ApplicationPolicy
+      def index?
+        true
+      end
+    end
+  end
+
+  after :all do
+    class UserPolicy < ApplicationPolicy
+      def index?
+        false
+      end
+    end
+
+    class TeamPolicy < ApplicationPolicy
+      def index?
+        false
+      end
+    end
+
+    class PostPolicy < ApplicationPolicy
+      def index?
+        false
+      end
+    end
+  end
+
   context 'configs' do
     describe 'with false values' do
       it 'returns false values' do
