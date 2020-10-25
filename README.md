@@ -29,7 +29,7 @@ Avo is a beautiful next-generation framework that empowers you, the developer, t
   - **Custom fields***- No worries if we missed a field you need. Generate a custom field in a jiffy.
   - **Dashboard widgets and metrics*** - Customize your dashboard with the tools and analytics you need.
   - **Custom tools*** - You need to add a page with something completely new, you've got it!
-  - **Authorization*** - Leverage Pundit policies to build a robust and scalable authorization system.
+  - **Authorization** - Leverage Pundit policies to build a robust and scalable authorization system.
   - **Themable*** - Dress it up into your own colors.
   - **Localization*** - Have it available in any language you need.
 
