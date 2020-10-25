@@ -12,6 +12,12 @@ Permission is hereby granted to any person obtaining a copy of this software (th
 
 5. **Follow the law.** All use of the Software shall not violate any applicable law or regulation, nor infringe the rights of any other person or entity.
 
+The **Community version** of Avo may be used for noncommercial purposes for free. The **Pro, Enterprise and other versions** are commercial products that require a license.
+
+### Personal Uses
+
+Personal use for research, experiment, and testing for the benefit of public knowledge, personal study, private entertainment, hobby projects, amateur pursuits, or religious observance, **without any anticipated commercial application**, doesn't count as use for a commercial purpose.
+
 Failure to comply with the foregoing conditions will automatically and immediately result in termination of the permission granted hereby. This license does not include any right to receive updates to the Software or technical support. Licensees bear all risk related to the quality and
 performance of the Software and any modifications made or obtained to it, including liability for actual and consequential harm, such as loss or corruption of data, and any necessary service, repair, or correction.
 
