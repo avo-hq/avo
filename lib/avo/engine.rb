@@ -30,12 +30,12 @@ module Avo
 
         # What to do on file change
         config.to_prepare do
-          Dir.glob(avo_root_path + '/lib/avo/app/**/*.rb'.to_s).each { |c| require(c) }
+          Dir.glob(avo_root_path + '/lib/avo/app/**/*.rb'.to_s).each { |c| load c }
         end
       end
 
       if Rails.env.production?
-        Dir.glob(avo_root_path + '/lib/avo/app/**/*.rb'.to_s).each { |c| require(c) }
+        Dir.glob(avo_root_path + '/lib/avo/app/**/*.rb'.to_s).each { |c| require c }
 
         Avo::App.boot
       end
