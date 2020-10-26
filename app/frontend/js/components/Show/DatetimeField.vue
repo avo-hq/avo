@@ -13,18 +13,22 @@
 </template>
 
 <script>
-import FormField from '@/js/mixins/form-field'
+import { IsFormField } from '@avo-hq/avo-js'
 import moment from 'moment'
 
 export default {
-  mixins: [FormField],
+  mixins: [IsFormField],
   data: () => ({
     displayTimezone: false,
   }),
   methods: {
     setInitialValue() {
       if (this.field.value) {
-        this.value = moment(this.field.value).format(this.field.format)
+        if (this.field.relative) {
+          this.value = moment(new Date(this.field.value)).fromNow()
+        } else {
+          this.value = moment(this.field.value).format(this.field.format)
+        }
       } else {
         this.value = null
       }

@@ -14,6 +14,7 @@
       }"
       :title="`View ${this.resourceNameSingular}`"
       data-control="view"
+      v-if="canView"
     >
       <eye-icon :class="iconClasses"/>
     </router-link>
@@ -31,6 +32,7 @@
       }"
       :title="`Edit ${this.resourceNameSingular}`"
       data-control="edit"
+      v-if="canEdit"
     >
       <edit-icon :class="iconClasses"/>
     </router-link>
@@ -46,7 +48,7 @@
       @click="openDeleteModal"
       :title="`Delete ${this.resourceNameSingular}`"
       data-control="delete"
-      v-else
+      v-else-if="canDelete"
     >
       <trash-icon :class="iconClasses"/>
     </a>
@@ -77,6 +79,15 @@ export default {
       if (!isUndefined(this.viaResourceName)) return `/resources/${this.viaResourceName}/${this.viaResourceId}`
 
       return `/resources/${this.resourceName}`
+    },
+    canEdit() {
+      return this.resource.authorization.update
+    },
+    canView() {
+      return this.resource.authorization.show
+    },
+    canDelete() {
+      return this.resource.authorization.destroy
     },
   },
   methods: {

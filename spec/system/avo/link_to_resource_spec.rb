@@ -1,4 +1,5 @@
 require 'rails_helper'
+WebMock.disable_net_connect!(allow_localhost: true, allow: 'chromedriver.storage.googleapis.com')
 
 RSpec.describe 'LinkToResource', type: :system do
   describe 'for id field' do
@@ -29,13 +30,13 @@ RSpec.describe 'LinkToResource', type: :system do
       it 'displays the user gravatar as link' do
         visit '/avo/resources/users'
 
-        expect(find_field_element_by_component('gravatar-field')).to have_selector 'a[title="View User"]'
+        expect(find_field_element_by_component('gravatar-field', user.id)).to have_selector 'a[title="View User"]'
       end
 
       it 'clicks on the user gravatar' do
         visit '/avo/resources/users'
 
-        find_field_element_by_component('gravatar-field').find('a').click
+        find_field_element_by_component('gravatar-field', user.id).find('a').click
         wait_for_loaded
 
         expect(current_path).to eql "/avo/resources/users/#{user.id}"

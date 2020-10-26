@@ -16,12 +16,11 @@
 </template>
 
 <script>
-import FormField from '@/js/mixins/form-field'
-import HasInputAppearance from '@/js/mixins/has-input-appearance'
+import { HasInputAppearance, IsFormField } from '@avo-hq/avo-js'
 import invert from 'lodash/invert'
 
 export default {
-  mixins: [FormField, HasInputAppearance],
+  mixins: [IsFormField, HasInputAppearance],
   computed: {
     options() {
       if (this.field.enum) {
@@ -37,10 +36,14 @@ export default {
   },
   methods: {
     setInitialValue() {
-      if (this.field.display_value) {
-        this.value = this.field.value
+      if (this.field.enum) {
+        if (this.field.display_value) {
+          this.value = this.field.value
+        } else {
+          this.value = this.field.enum[this.field.value]
+        }
       } else {
-        this.value = this.field.enum[this.field.value]
+        this.value = this.field.value
       }
     },
     optionLabel(label, value) {

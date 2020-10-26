@@ -81,8 +81,7 @@ export default {
           },
         })
 
-        const { success } = data
-        const { resource } = data
+        const { success, resource } = data
 
         this.resource = resource
 

@@ -2,4 +2,5 @@
   var rootPath = '<%= Avo.configuration.root_path %>';
   var timezone = '<%= Avo.configuration.timezone %>';
   var defaultViewType = '<%= Avo.configuration.default_view_type %>';
+  var license = <%= Avo::App.license.properties.to_json.html_safe %>;
 </script>

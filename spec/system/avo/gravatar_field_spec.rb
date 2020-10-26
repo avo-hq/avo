@@ -1,4 +1,5 @@
 require 'rails_helper'
+WebMock.disable_net_connect!(allow_localhost: true, allow: 'chromedriver.storage.googleapis.com')
 
 RSpec.describe "GravatarFields", type: :system do
   describe 'without gravatar (default image)' do
@@ -8,10 +9,10 @@ RSpec.describe "GravatarFields", type: :system do
       it 'displays the users avatar' do
         visit '/avo/resources/users'
 
-        expect(find_field_element_by_component('gravatar-field')).to have_selector 'img'
-        expect(find_field_element_by_component('gravatar-field')).to have_css '.rounded-full'
-        expect(find_field_element_by_component('gravatar-field').find('img') ['src']).to have_text 'https://www.gravatar.com/avatar/'
-        expect(find_field_element_by_component('gravatar-field').find('img') ['src']).to have_text '?default=&size=40'
+        expect(find_field_element_by_component('gravatar-field', user.id)).to have_selector 'img'
+        expect(find_field_element_by_component('gravatar-field', user.id)).to have_css '.rounded-full'
+        expect(find_field_element_by_component('gravatar-field', user.id).find('img') ['src']).to have_text 'https://www.gravatar.com/avatar/'
+        expect(find_field_element_by_component('gravatar-field', user.id).find('img') ['src']).to have_text '?default=&size=40'
       end
     end
 
@@ -19,10 +20,10 @@ RSpec.describe "GravatarFields", type: :system do
       it 'displays the users name' do
         visit "/avo/resources/users/#{user.id}"
 
-        expect(find_field_element_by_component('gravatar-field')).to have_selector 'img'
-        expect(find_field_element_by_component('gravatar-field')).not_to have_css '.rounded-full'
-        expect(find_field_element_by_component('gravatar-field').find('img') ['src']).to have_text 'https://www.gravatar.com/avatar/'
-        expect(find_field_element_by_component('gravatar-field').find('img') ['src']).to have_text '?default=&size=340'
+        expect(find_field_element_by_component('gravatar-field', user.id)).to have_selector 'img'
+        expect(find_field_element_by_component('gravatar-field', user.id)).not_to have_css '.rounded-full'
+        expect(find_field_element_by_component('gravatar-field', user.id).find('img') ['src']).to have_text 'https://www.gravatar.com/avatar/'
+        expect(find_field_element_by_component('gravatar-field', user.id).find('img') ['src']).to have_text '?default=&size=340'
       end
     end
   end
@@ -34,10 +35,10 @@ RSpec.describe "GravatarFields", type: :system do
       it 'displays the users avatar' do
         visit '/avo/resources/users'
 
-        expect(find_field_element_by_component('gravatar-field')).to have_selector 'img'
-        expect(find_field_element_by_component('gravatar-field')).to have_css '.rounded-full'
-        expect(find_field_element_by_component('gravatar-field').find('img') ['src']).to have_text 'https://www.gravatar.com/avatar/'
-        expect(find_field_element_by_component('gravatar-field').find('img') ['src']).to have_text '?default=&size=40'
+        expect(find_field_element_by_component('gravatar-field', user.id)).to have_selector 'img'
+        expect(find_field_element_by_component('gravatar-field', user.id)).to have_css '.rounded-full'
+        expect(find_field_element_by_component('gravatar-field', user.id).find('img') ['src']).to have_text 'https://www.gravatar.com/avatar/'
+        expect(find_field_element_by_component('gravatar-field', user.id).find('img') ['src']).to have_text '?default=&size=40'
       end
     end
 
@@ -45,10 +46,10 @@ RSpec.describe "GravatarFields", type: :system do
       it 'displays the users name' do
         visit "/avo/resources/users/#{user.id}"
 
-        expect(find_field_element_by_component('gravatar-field')).to have_selector 'img'
-        expect(find_field_element_by_component('gravatar-field')).not_to have_css '.rounded-full'
-        expect(find_field_element_by_component('gravatar-field').find('img') ['src']).to have_text 'https://www.gravatar.com/avatar/'
-        expect(find_field_element_by_component('gravatar-field').find('img') ['src']).to have_text '?default=&size=340'
+        expect(find_field_element_by_component('gravatar-field', user.id)).to have_selector 'img'
+        expect(find_field_element_by_component('gravatar-field', user.id)).not_to have_css '.rounded-full'
+        expect(find_field_element_by_component('gravatar-field', user.id).find('img') ['src']).to have_text 'https://www.gravatar.com/avatar/'
+        expect(find_field_element_by_component('gravatar-field', user.id).find('img') ['src']).to have_text '?default=&size=340'
       end
     end
   end

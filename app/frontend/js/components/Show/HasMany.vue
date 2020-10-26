@@ -9,7 +9,7 @@
       :via-resource-name="resourceName"
       :via-resource-id="resourceId"
       :field="field"
-      ></resources-index>
+    />
   </div>
 </template>
 

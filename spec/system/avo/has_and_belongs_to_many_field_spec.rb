@@ -1,4 +1,5 @@
 require 'rails_helper'
+WebMock.disable_net_connect!(allow_localhost: true, allow: 'chromedriver.storage.googleapis.com')
 
 RSpec.describe 'HasAndBelongsToManyField', type: :system do
   let!(:user) { create :user }

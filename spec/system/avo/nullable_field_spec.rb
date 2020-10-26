@@ -1,4 +1,5 @@
 require 'rails_helper'
+WebMock.disable_net_connect!(allow_localhost: true, allow: 'chromedriver.storage.googleapis.com')
 
 RSpec.describe 'NullableField', type: :system do
   describe 'without input (specifying null_values: ["", "0", "null", "nil"])' do

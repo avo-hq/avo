@@ -1,6 +1,7 @@
 module Avo
   class Configuration
     attr_accessor :root_path
+    attr_accessor :app_name
     attr_accessor :timezone
     attr_accessor :per_page
     attr_accessor :per_page_steps
@@ -10,9 +11,13 @@ module Avo
     attr_accessor :default_view_type
     attr_accessor :hide_resource_overview_component
     attr_accessor :hide_documentation_link
+    attr_accessor :license
+    attr_accessor :license_key
+    attr_accessor :authorization_methods
 
     def initialize
       @root_path = '/avo'
+      @app_name = Rails.application.class.to_s.split('::').first.underscore.humanize
       @timezone = 'UTC'
       @per_page = 24
       @per_page_steps = [12, 24, 48, 72]
@@ -22,6 +27,17 @@ module Avo
       @default_view_type = :table
       @hide_resource_overview_component = false
       @hide_documentation_link = false
+      @license = 'community'
+      @license_key = nil
+      @authorization_methods = {
+        index: 'index?',
+        show: 'show?',
+        edit: 'edit?',
+        new: 'new?',
+        update: 'update?',
+        create: 'create?',
+        destroy: 'destroy?',
+      }
     end
   end
 

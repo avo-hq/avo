@@ -36,7 +36,7 @@
                 viaResourceId: viaResourceId,
               },
             }"
-            v-else
+            v-else-if="canCreate"
           ><plus-icon class="h-4 mr-1"/>Create new {{resourceNameSingular | toLowerCase}}</a-button>
         </div>
       </div>
@@ -329,6 +329,11 @@ export default {
     fieldId() {
       return this.field ? this.field.id : undefined
     },
+    canCreate() {
+      if (this.meta && this.meta.authorization) return this.meta.authorization.create
+
+      return true
+    },
   },
   methods: {
     ...mapMutations('index', [
@@ -378,7 +383,7 @@ export default {
     async getFilters() {
       const { data } = await Api.get(`${Avo.rootPath}/avo-api/${this.resourcePath}/filters`)
 
-      this.filters = data.filters
+      if (data && data.filters) this.filters = data.filters
     },
     changeSortDirection(by) {
       if (this.sortBy !== '' && this.sortBy !== by) {
@@ -438,6 +443,8 @@ export default {
     isDefaultValueForFilter(filterClassName, value) {
       const currentFilter = this.filters.find((filter) => filter.filter_class === filterClassName)
 
+      if (!currentFilter) return false
+
       return JSON.stringify(currentFilter.default) === JSON.stringify(value)
     },
     async initQueryParams() {
@@ -479,7 +486,7 @@ export default {
     },
     async showAttachModal() {
       this.$modal.show(AttachModal, {
-        text: `Select a ${this.resourceNameSingular.toLowerCase()} to attach`,
+        heading: `Select a ${this.resourceNameSingular.toLowerCase()} to attach`,
         getOptions: this.getOptions,
         attachAction: this.attachOption,
       })

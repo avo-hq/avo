@@ -37,7 +37,15 @@ const Avo = {
     this.vue.alert(message, messageType)
   },
 
-  initVue() {
+  store() {
+    return new Vuex.Store({
+      modules: {
+        index: indexStore,
+      },
+    })
+  },
+
+  initPlugins() {
     Vue.use(Toasted, {
       duration: 5000,
       keepOnHover: true,
@@ -61,20 +69,23 @@ const Avo = {
     })
     Vue.use(PortalVue)
     Vue.use(Vuex)
+  },
 
-    const store = new Vuex.Store({
-      modules: {
-        index: indexStore,
-      },
-    })
+  initVue() {
+    Avo.initPlugins()
 
     this.vue = new Vue({
       router,
-      store,
+      store: Avo.store(),
       el: '#app',
       computed: {
         routerKey() {
           return `${this.$route.name}-${this.$route.params.resourceName || ''}`
+        },
+        layout() {
+          if (this.$route.name === '403') return 'blank'
+
+          return 'application'
         },
       },
       methods: {

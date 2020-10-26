@@ -1,5 +1,5 @@
 <template>
-  <div v-if="resource">
+  <div v-if="resource" :resource-id="resourceId">
     <div v-for="panel in resource.panels" :key="panel.name">
       <panel>
         <template #heading>

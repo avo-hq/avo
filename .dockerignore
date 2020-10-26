@@ -8,10 +8,13 @@
 /.github
 /.vscode
 /public
-/node_modules
+/public/avo-packs
+node_modules/
 /spec/dummy/public
+/spec/dummy/node_modules
 /spec/dummy/tmp
 /spec/dummy/log
 .idea
-docker/Dockerfile
+docker/
 coverage/
+pkg/

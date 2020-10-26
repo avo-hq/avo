@@ -2,6 +2,13 @@
 # yarn lockfile v1
 
 
+"@avo-hq/avo-js@^0.1.8":
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/@avo-hq/avo-js/-/avo-js-0.1.8.tgz#79d81cec2c6cde0057b0d7182adfe4fed4b52394"
+  integrity sha512-+VJ6muQHiByahlvL+vDv9su+ZKW2qyVFwsrF4GKWs+tSJT5POUEnfh8nDYvIJU24Ebn5PLWRcK5NTtFbRVaa2g==
+  dependencies:
+    lodash "^4.17.19"
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.4":
   version "7.10.4"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.10.4.tgz#168da1a36e90da68ae8d49c0f1b48c7c6249213a"

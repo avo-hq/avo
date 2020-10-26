@@ -1,4 +1,5 @@
 require_relative 'avo/configuration'
+require_relative 'avo/version'
 
 require_relative 'avo/app/fields/field'
 
@@ -9,6 +10,8 @@ require_relative 'avo/app/filters/boolean_filter'
 require_relative 'avo/app/filters/select_filter'
 
 require_relative 'avo/app/resource'
+
+require_relative 'avo/app/licensing/license_manager'
 
 module Avo
   ROOT_PATH = Pathname.new(File.join(__dir__, '..'))

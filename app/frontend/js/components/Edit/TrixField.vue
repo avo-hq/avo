@@ -9,11 +9,11 @@
 </template>
 
 <script>
-import FormField from '@/js/mixins/form-field'
+import { IsFormField } from '@avo-hq/avo-js'
 import VueTrix from 'vue-trix'
 
 export default {
-  mixins: [FormField],
+  mixins: [IsFormField],
   components: {
     VueTrix,
   },

@@ -8,6 +8,7 @@
   "private": true,
   "scripts": {
     "test": "bundle exec rspec ./spec --tag type:system",
+    "test-unit": "bundle exec rspec ./spec --tag type:feature --tag type:controller",
     "test-system": "bundle exec rspec ./spec --tag type:system",
     "test-all": "bundle exec rspec ./spec",
     "docker-build": "docker build -t avo-dev -f docker/Dockerfile .",
@@ -17,6 +18,7 @@
     "release": "sh scripts/release.sh"
   },
   "dependencies": {
+    "@avo-hq/avo-js": "^0.1.8",
     "@rails/activestorage": "^6.0.2-1",
     "@rails/webpacker": "^4.2.2",
     "@tailwindcss/typography": "^0.2.0",

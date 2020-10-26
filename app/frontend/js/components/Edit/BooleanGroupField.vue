@@ -20,12 +20,12 @@
 </template>
 
 <script>
-import FormField from '@/js/mixins/form-field'
+import { IsFormField } from '@avo-hq/avo-js'
 import isNull from 'lodash/isNull'
 import isUndefined from 'lodash/isUndefined'
 
 export default {
-  mixins: [FormField],
+  mixins: [IsFormField],
   data: () => ({
     fieldValues: {},
   }),

@@ -1,4 +1,5 @@
 require 'rails_helper'
+WebMock.disable_net_connect!(allow_localhost: true, allow: 'chromedriver.storage.googleapis.com')
 
 RSpec.describe 'BooleanGroupFields', type: :system do
   describe 'with regular input' do
@@ -10,7 +11,7 @@ RSpec.describe 'BooleanGroupFields', type: :system do
 
         expect(page).to have_text 'ROLES'
         expect(page).to have_text 'View'
-        find('[field-id="roles"]').find('a', text: 'View').click
+        find("tr[resource-id='#{user.id}'] [field-id='roles']").find('a', text: 'View').click
         wait_for_loaded
 
         expect(page).to have_text 'Administrator'

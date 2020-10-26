@@ -1,15 +1,42 @@
 ![Tests](https://github.com/avo-hq/avo/workflows/Tests/badge.svg)
 ![reviewdog](https://github.com/avo-hq/avo/workflows/reviewdog/badge.svg)
 [![codecov](https://codecov.io/gh/avo-hq/avo/branch/master/graph/badge.svg?token=Q2LMFE4989)](https://codecov.io/gh/avo-hq/avo)
+[![Maintainability](https://api.codeclimate.com/v1/badges/676a0afa2cc79f03aa29/maintainability)](https://codeclimate.com/github/avo-hq/avo/maintainability)
 
-# Avo
-The missing Ruby on Rails admin
+![](https://avohq.io/img/logo-full-stroke-tiny-2x.png)
 
-## Usage
-How to use my plugin.
+**Configuration-based, no-maintenance, extendable Ruby on Rails admin**
 
-## Installation
-Add this line to your application's Gemfile:
+Avo is a beautiful next-generation framework that empowers you, the developer, to create fantastic admin panels for your Ruby on Rails apps with the flexibility to fit your needs as you grow.
+
+## Get started
+
+**Website**: [avohq.io](https://avohq.io)\
+**Documentation**: [docs.avohq.io](https://docs.avohq.io)\
+**Twitter**: [avo_hq](https://twitter.com/avo_hq)\
+**Community chat**: [discord](https://discord.gg/pkTF6y8)\
+**Issue tracker**: [GitHub issues](http://github.com/avo-hq/avo/issues)
+
+## Features
+
+  - **Code driven configuration** - Configure your Rails dashboard entirely by writing Ruby code.
+  - **Resource Management** - Create a CRUD interface for Active Record from one command. No more copy-pasting view and controller files around.
+  - **Active Storage support** - Amazingly easy, **one-line**, single or multi-file integration with **ActiveStorage**.
+  - **Grid view** - Beautiful card layout to showcase your content.
+  - **Actions** - Run custom actions to one or more of your resources with as little as pressing a button 💪
+  - **Filters** - Write your own custom filters to quickly segment your data.
+  - **Keeps your app clean** - You don't need to change your app to use Avo. Drop it in your existing app or add it to a new one and you're done 🙌
+  - **Custom fields***- No worries if we missed a field you need. Generate a custom field in a jiffy.
+  - **Dashboard widgets and metrics*** - Customize your dashboard with the tools and analytics you need.
+  - **Custom tools*** - You need to add a page with something completely new, you've got it!
+  - **Authorization** - Leverage Pundit policies to build a robust and scalable authorization system.
+  - **Themable*** - Dress it up into your own colors.
+  - **Localization*** - Have it available in any language you need.
+
+  *Some features are still under development
+
+# Installation
+Add this line to your application's `Gemfile`:
 
 ```ruby
 gem 'avo'
@@ -17,53 +44,5 @@ gem 'avo'
 
 And then execute:
 ```bash
-$ bundle
+$ bundle install
 ```
-
-Or install it yourself as:
-```bash
-$ gem install avo
-```
-
-## Testing
-
-We use `rspec` to run our tests. To run unit tests use `npm run test`. For system tests `npm run test-system` and to run them all `npm run test-all` or simply `rspec`
-
-## Contributing
-
-```
-git clone
-cd avo
-bundle install
-yarn
-bin/rails server
-```
-
-You may also use the VSCode launcher to take advantage of the debugger.
-
-You may need to run `rake db:migrate && rake db:test:prepare` for local development.
-
-To start the Webpack dev server you need to have a different session running `bin/webpack-dev-server`.
-
-## License
-Commercial license.
-
-## Building, Releasing and Publishing
-
-### Build
-
-If you just need a quick development build of the gem, just run `rails build`.
-
-To build for **release** (production mode), you need to run `yarn build`. This will build a docker image that will build the gem using `production` env variables. At the end of the process it will place the new gem under `pkg/` directory.
-
-### Release
-
-To release the gem, run `yarn release [patch(default)|minor|major]`. This will increment the version name, cut a tag and push to GitHub. From there, GitHub Actions will take over to build the artifact, create a release and add the artifact to that release.
-
-At every PR merge a `Next release draft` release will be auto-filled by [Release drafter](https://github.com/marketplace/actions/release-drafter). When a real release happens (on `yarn release`). The contents body of that release will be moved to the actual release and the draft will be destroyed so it can be refilled on next PR's.
-
-### Publish
-
-To publish on GitHub package registry you need to run `yarn run publish`. This will publish the current version on their registry.
-
-As a prerequisite you need to have the GitHub token in your `~/.gem/credentials` file. You may run `echo ":github: Bearer GH_TOKEN" >> ~/.gem/credentials`.

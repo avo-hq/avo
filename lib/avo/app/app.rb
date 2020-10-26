@@ -4,37 +4,35 @@ require_relative 'filters/select_filter'
 require_relative 'filters/boolean_filter'
 require_relative 'resource'
 require_relative 'tool'
+require_relative 'authorization_service'
 
 module Avo
   class App
     @@app = {
       root_path: '',
-      tools: [],
-      tool_classes: [],
       resources: [],
       field_names: {},
     }
+    @@license = nil
 
     class << self
-      def init
+      def boot
         @@app[:root_path] = Pathname.new(File.join(__dir__, '..', '..'))
-        # get_tools
-        # init_tools
         init_fields
+      end
+
+      def init(current_request = nil)
         init_resources
+        @@license = LicenseManager.new(HQ.new(current_request).response).license
       end
 
       def app
         @@app
       end
 
-      # def tools
-      #   @@app[:tools]
-      # end
-
-      # def get_tools
-      #   @@app[:tool_classes] = ToolsManager.get_tools
-      # end
+      def license
+        @@license
+      end
 
       # This method will take all fields available in the Avo::Fields namespace and create a method for them.
       #
@@ -129,23 +127,14 @@ module Avo
         name.to_s.camelize.singularize
       end
 
-      # def init_tools
-      #   @@app[:tool_classes].each do |tool_class|
-      #     @@app[:tools].push tool_class.new
-      #   end
-      # end
-
-      # def render_navigation
-      #   navigation = []
-      #   @@app[:tools].each do |tool|
-      #     navigation.push(tool.render_navigation) if tool.class.method_defined?(:render_navigation)
-      #   end
-
-      #   navigation.join('')
-      # end
-
-      def get_resources_navigation
-        App.get_resources.map { |resource| { label: resource.resource_name_plural.humanize, resource_name: resource.url.pluralize } }.to_json.to_s.html_safe
+      def get_resources_navigation(user)
+        App.get_resources
+          .select { |resource| AuthorizationService::authorize user, resource.model, Avo.configuration.authorization_methods.stringify_keys['index'] }
+          .map { |resource| { label: resource.resource_name_plural.humanize, resource_name: resource.url.pluralize } }
+          .reject { |i| i.blank? }
+          .to_json
+          .to_s
+          .html_safe
       end
     end
   end

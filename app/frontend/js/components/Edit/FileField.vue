@@ -19,10 +19,10 @@
 </template>
 
 <script>
-import FormField from '@/js/mixins/form-field'
+import { IsFormField } from '@avo-hq/avo-js'
 
 export default {
-  mixins: [FormField],
+  mixins: [IsFormField],
   data: () => ({}),
   computed: {
     classes() {

@@ -19,7 +19,7 @@ export default {
         return `${Avo.rootPath}/avo-api/${this.resourceName}/${this.resourceId}/edit`
       }
 
-      return `${Avo.rootPath}/avo-api/${this.resourceName}/fields`
+      return `${Avo.rootPath}/avo-api/${this.resourceName}/new`
     },
   },
   methods: {
@@ -42,7 +42,12 @@ export default {
 
       const { data } = await Api.get(this.resourceUrl)
 
-      const resource = this.hydrateRelatedResources(data.resource)
+      if (!data) return
+      let { resource } = data
+
+      if (!resource) return
+
+      resource = this.hydrateRelatedResources(resource)
       this.resource = resource
       this.isLoading = false
     },

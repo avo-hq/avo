@@ -1,4 +1,5 @@
 require 'rails_helper'
+WebMock.disable_net_connect!(allow_localhost: true, allow: 'chromedriver.storage.googleapis.com')
 
 RSpec.describe 'KeyValueFields', type: :system do
   describe 'without value' do
@@ -125,6 +126,8 @@ RSpec.describe 'KeyValueFields', type: :system do
     end
 
     context 'edit' do
+      let!(:project) { create :project , meta: meta_data }
+
       it 'has the projects meta label, table header, table rows (2), buttons' do
         visit "/avo/resources/projects/#{project.id}/edit"
         wait_for_loaded
