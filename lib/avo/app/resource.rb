@@ -21,6 +21,7 @@ module Avo
             resource_name_singular: resource.resource_name_singular,
             resource_name_plural: resource.resource_name_plural,
             title: model[resource.title],
+            path: resource.url,
             fields: [],
             grid_fields: {},
             panels: [{

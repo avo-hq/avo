@@ -6,6 +6,10 @@ export default {
       return null
     },
     resourcePath() {
+      if (this.resource && this.resource.path) {
+        return this.resource.path
+      }
+
       if (this.field && this.field.path) {
         return this.field.path
       }
