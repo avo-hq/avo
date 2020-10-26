@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    avo (0.3.1)
+    avo (0.3.2)
       countries
       httparty
       inline_svg
