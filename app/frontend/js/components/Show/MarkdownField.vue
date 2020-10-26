@@ -1,7 +1,20 @@
 <template>
   <show-field-wrapper :field="field" :index="index" :value-slot-full-width="true">
-    <div v-if="field.value">
-      <div v-if="showContent" v-html="content" class="prose prose-sm markdown leading-normal"/>
+    <div v-if="field.value" class="z-10">
+      <mavon-editor
+        v-if="showContent"
+        ref="md"
+        :value="field.value"
+        :subfield = "false"
+        :defaultOpen = "'preview'"
+        :toolbarsFlag = "false"
+        :editable="false"
+        :scrollStyle="true"
+        :ishljs = "true"
+        language="en"
+        codeStyle="atom-one-dark"
+        boxShadowStyle=""
+      ></mavon-editor>
       <a href="javascript:void(0);"
         v-if="!field.always_show"
         :class="buttonStyle"
@@ -14,19 +27,20 @@
 </template>
 
 <script>
-const md = require('markdown-it')()
+import 'mavon-editor/dist/css/index.css'
+import { mavonEditor } from 'mavon-editor'
 
 export default {
   props: ['field', 'index'],
+  components: {
+    mavonEditor,
+  },
   data() {
     return {
       showContent: this.field.always_show,
     }
   },
   computed: {
-    content() {
-      return md.render(this.field.value || '')
-    },
     buttonStyle() {
       if (this.showContent) return 'font-bold inline-block mt-6'
 
@@ -42,7 +56,5 @@ export default {
 </script>
 
 <style>
-.prose {
-  max-width: none !important;
-}
+
 </style>

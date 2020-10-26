@@ -1,81 +1,69 @@
 <template>
-  <edit-field-wrapper
-    :field="field"
-    :errors="errors"
-    :index="index"
-    :displayed-in="displayedIn"
-    :value-slot-full-width="true"
-  >
-    <button
-      class="inline-flex flex-grow-0 items-center font-bold text-sm leading-none fill-current whitespace-no-wrap transition duration-100 rounded-lg shadow-xl transform transition duration-100 active:translate-x-px active:translate-y-px cursor-pointer text-white bg-gray-500 hover:bg-gray-600 p-3 mb-2"
-      :class="{'bg-gray-600 font-extrabold': this.mode == 'write',}"
-      @click.prevent="write()"
-    >
-      Write
-    </button>
-    <button
-      class="inline-flex flex-grow-0 items-center font-bold text-sm leading-none fill-current whitespace-no-wrap transition duration-100 rounded-lg shadow-xl transform transition duration-100 active:translate-x-px active:translate-y-px cursor-pointer text-white bg-green-500 hover:bg-green-600 p-3 mb-2"
-      :class="{'bg-green-600 font-extrabold': this.mode == 'preview',}"
-      @click.prevent="preview()"
-    >
-      Preview
-    </button>
-
-    <div v-show="this.mode == 'write'">
-      <input-component
-        ref="field-input"
-        type="textarea"
-        class="w-full"
-        :id="field.id"
-        :disabled="disabled"
-        :rows="rows"
-        :placeholder="field.placeholder"
-        v-model="value"
+  <edit-field-wrapper :field="field" :errors="errors" :index="index" :displayed-in="displayedIn" :value-slot-full-width="true">
+    <mavon-editor
+      ref="md"
+      style="z-index: 40; list-style-type: decimal;"
+      v-model="value"
+      :placeholder="field.placeholder"
+      language="en"
+      codeStyle="dracula"
+      :toolbars="toolbars"
       />
-    </div>
-
-    <div
-      v-show="this.mode == 'preview'"
-      class="prose prose-sm markdown leading-normal"
-      v-html="this.previewContent"
-    ></div>
   </edit-field-wrapper>
 </template>
 
 <script>
+import 'mavon-editor/dist/css/index.css'
+import { mavonEditor } from 'mavon-editor'
 import FormField from '@/js/mixins/form-field'
-
-const md = require('markdown-it')()
 
 export default {
   mixins: [FormField],
-
-  data: () => ({
-    mode: 'write',
-    previewContent: '',
-  }),
-  computed: {
-    rows() {
-      return this.field.rows || 5
-    },
+  components: {
+    mavonEditor,
   },
-  methods: {
-    focus() {
-      if (this.$refs['field-input']) this.$refs['field-input'].$emit('focus')
-    },
-    write() {
-      this.mode = 'write'
-    },
-    preview() {
-      this.mode = 'preview'
-      this.previewContent = md.render(this.value)
-    },
+  data() {
+    return {
+      toolbars: {
+        bold: true,  // bold
+        italic: true,  // italic
+        header: true,  // title
+        underline: true,  // underline
+        strikethrough: true,  // underline
+        mark: true,  // mark
+        superscript: true,  // superscript
+        subscript: true,  // subscript
+        quote: true,  // quote
+        ol: true,  // ordered list
+        ul: true,  // unordered list
+        link: true,  // link
+        imagelink: false,  // Picture link
+        code: true,  // code
+        table: true,  // table
+        fullscreen: true,  // full screen editing
+        readmodel: false, // immersive reading
+        htmlcode: true,  // display html source code
+        help: true,  // help
+        /* 1.3.5 */
+        undo: true,  // previous step
+        redo: true,  // next step
+        trash: true,  // Clear
+        save: false,  // save (trigger the save event in events)
+        /* 1.4.2 */
+        navigation: false,  // navigation directory
+        /* 2.1.8 */
+        alignleft: true,  // left alignment
+        aligncenter: true, // center
+        alignright: true,  // right align
+        /* 2.2.1 */
+        subfield: true,  // single and double column mode
+        preview: true,  // preview
+      },
+    }
   },
 }
 </script>
 
 <style>
-.prose {
-  max-width: none !important;
-}
+
 </style>
