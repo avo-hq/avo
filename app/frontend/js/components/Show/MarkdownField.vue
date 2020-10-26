@@ -1,6 +1,6 @@
 <template>
   <show-field-wrapper :field="field" :index="index" :value-slot-full-width="true">
-    <div v-if="field.value" class="z-10">
+    <div v-if="field.value">
       <mavon-editor
         v-if="showContent"
         ref="md"
@@ -12,8 +12,7 @@
         :scrollStyle="true"
         :ishljs = "true"
         language="en"
-        codeStyle="atom-one-dark"
-        boxShadowStyle=""
+        codeStyle="dracula"
       ></mavon-editor>
       <a href="javascript:void(0);"
         v-if="!field.always_show"
@@ -56,5 +55,10 @@ export default {
 </script>
 
 <style>
-
+.markdown-body ul {
+  @apply list-disc;
+}
+.markdown-body ol {
+  @apply list-decimal;
+}
 </style>

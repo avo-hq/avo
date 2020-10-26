@@ -2,7 +2,6 @@
   <edit-field-wrapper :field="field" :errors="errors" :index="index" :displayed-in="displayedIn" :value-slot-full-width="true">
     <mavon-editor
       ref="md"
-      style="z-index: 40; list-style-type: decimal;"
       v-model="value"
       :placeholder="field.placeholder"
       language="en"
@@ -65,5 +64,10 @@ export default {
 </script>
 
 <style>
-
+.markdown-body ul {
+  @apply list-disc;
+}
+.markdown-body ol {
+  @apply list-decimal;
+}
 </style>
