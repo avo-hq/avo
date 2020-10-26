@@ -11,8 +11,7 @@ module Avo
       fields do
         id
         text :name, required: true
-        markdown :body
-        # trix :body, placeholder: 'Enter text', always_show: false
+        trix :body, placeholder: 'Enter text', always_show: false
         file :cover_photo, is_image: true
         boolean :is_featured
         boolean :is_published do |model|
