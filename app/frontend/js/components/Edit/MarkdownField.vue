@@ -14,11 +14,11 @@
 
 <script>
 import 'mavon-editor/dist/css/index.css'
+import { IsFormField } from '@avo-hq/avo-js'
 import { mavonEditor } from 'mavon-editor'
-import FormField from '@/js/mixins/form-field'
 
 export default {
-  mixins: [FormField],
+  mixins: [IsFormField],
   components: {
     mavonEditor,
   },
