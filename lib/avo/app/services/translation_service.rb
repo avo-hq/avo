@@ -1,5 +1,7 @@
 module Avo
   class TranslationService
+    FALLBACK_LOCALE_FILE = Rails.root.join('config', 'locales', 'en.yml')
+
     attr_accessor :locale
 
     def initialize(locale = nil)
@@ -15,23 +17,35 @@ module Avo
     end
 
     def javascript_translations
+      en_translation = load_translation_file FALLBACK_LOCALE_FILE
+
       begin
-        YAML.load(localization_content)[locale]
+        translation = load_translation_file localization_content
       rescue => exception
+        return en_translation
       end
+
+      en_translation.merge translation
     end
 
     private
+      def load_translation_file(path)
+        begin
+          translation = YAML.load(File.read(path))
+        rescue => exception
+        end
+      end
+
       def localization_content
         begin
           path = Rails.root.join('config', 'locales', "#{locale}.yml")
 
           if File.exist? path
-            return File.read path
+            return path
           end
 
           self.locale = 'en'
-          File.read(Rails.root.join('config', 'locales', 'en.yml'))
+          FALLBACK_LOCALE_FILE
         rescue => exception
         end
       end

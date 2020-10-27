@@ -7,6 +7,7 @@ import VModal from 'vue-js-modal'
 import VTooltip from 'v-tooltip'
 import Vue from 'vue/dist/vue.esm'
 import VueCurrencyInput from 'vue-currency-input'
+import VueI18n from 'vue-i18n'
 import VueRouter from 'vue-router'
 import Vuex from 'vuex'
 import indexStore from '@/js/stores/index-store'
@@ -17,6 +18,7 @@ const Avo = {
   Api,
   env: '',
   rootPath: window.rootPath || '/avo',
+  i18n: {},
 
   init() {
     Avo.env = window.env || 'production'
@@ -45,6 +47,14 @@ const Avo = {
     })
   },
 
+  initI18n() {
+    Avo.i18n = new VueI18n({
+      locale: 'en',
+      fallbackLocale: 'en',
+      messages: {},
+    })
+  },
+
   initPlugins() {
     Vue.use(Toasted, {
       duration: 5000,
@@ -69,6 +79,8 @@ const Avo = {
     })
     Vue.use(PortalVue)
     Vue.use(Vuex)
+    Vue.use(VueI18n)
+    Avo.initI18n()
   },
 
   initVue() {
@@ -76,6 +88,7 @@ const Avo = {
 
     this.vue = new Vue({
       router,
+      i18n: Avo.i18n,
       store: Avo.store(),
       el: '#app',
       computed: {
@@ -102,8 +115,20 @@ const Avo = {
             this.$toasted.show(message, { type })
           }, 1)
         },
+        setLocales() {
+          // Set the language code.
+          Avo.i18n.locale = window.language_code
+
+          // Update all the available languages.
+          Object.keys(window.translations).forEach((code) => {
+            const translations = window.translations[code]
+
+            Avo.i18n.setLocaleMessage(code, translations)
+          })
+        },
       },
       mounted() {
+        this.setLocales()
         Bus.$on('reload', this.reload)
         Bus.$on('redirect', this.redirect)
         Bus.$on('message', (message) => this.alert(message, 'success'))
