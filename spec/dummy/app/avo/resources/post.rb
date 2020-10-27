@@ -38,7 +38,7 @@ module Avo
       use_filter Avo::Filters::FeaturedFilter
       use_filter Avo::Filters::PublishedFilter
 
-      # use_action Avo::Actions::TogglePublished
+      use_action Avo::Actions::TogglePublished
     end
   end
 end
