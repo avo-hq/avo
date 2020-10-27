@@ -2,6 +2,7 @@
   <edit-field-wrapper :field="field" :errors="errors" :index="index" :displayed-in="displayedIn" :value-slot-full-width="true">
     <mavon-editor
       ref="md"
+      class="break-all"
       v-model="value"
       :placeholder="field.placeholder"
       language="en"
