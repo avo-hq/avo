@@ -4,7 +4,7 @@ require_relative 'filters/select_filter'
 require_relative 'filters/boolean_filter'
 require_relative 'resource'
 require_relative 'tool'
-require_relative 'authorization_service'
+require_relative 'services/authorization_service'
 
 module Avo
   class App
@@ -19,6 +19,7 @@ module Avo
       def boot
         @@app[:root_path] = Pathname.new(File.join(__dir__, '..', '..'))
         init_fields
+        I18n.locale = Avo.configuration.language_code
       end
 
       def init(current_request = nil)

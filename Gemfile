@@ -94,3 +94,5 @@ gem 'zeitwerk', '~> 2.3'
 gem 'kaminari'
 
 gem 'httparty'
+
+gem 'iso'

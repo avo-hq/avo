@@ -22,7 +22,7 @@ module Avo
       @per_page = 24
       @per_page_steps = [12, 24, 48, 72]
       @via_per_page = 8
-      @locale = 'us-US'
+      @locale = 'en-US'
       @currency = 'USD'
       @default_view_type = :table
       @hide_resource_overview_component = false
@@ -38,6 +38,18 @@ module Avo
         create: 'create?',
         destroy: 'destroy?',
       }
+    end
+
+    def locale_tag
+      ISO::Tag.new(locale)
+    end
+
+    def language_code
+      begin
+        locale_tag.language.code
+      rescue => exception
+        'en'
+      end
     end
   end
 
