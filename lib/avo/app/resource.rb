@@ -80,7 +80,7 @@ module Avo
         end
 
         def get_authorization(user, model)
-          [:create, :update, :show, :destroy].map do |action|
+          [:create, :edit, :update, :show, :destroy].map do |action|
             [action, AuthorizationService::authorize_action(user, model, action)]
           end.to_h
         end
