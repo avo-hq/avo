@@ -15,12 +15,16 @@ module Avo
         end
 
         def show_on(*where)
+          return show_on_all if where.include? :all
+
           normalize_views(where).flatten.each do |view|
             show_on_view view
           end
         end
 
         def hide_on(*where)
+          return hide_on_all if where.include? :all
+
           normalize_views(where).flatten.each do |view|
             hide_on_view view
           end

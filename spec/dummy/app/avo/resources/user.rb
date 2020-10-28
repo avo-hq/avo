@@ -25,7 +25,7 @@ module Avo
         end
 
         password :password, name: 'User Password', required: false, except_on: :forms, help: 'You may verify the password strength <a href="http://www.passwordmeter.com/">here</a>.'
-        password :password_confirmation, name: 'Password confirmation', required: false
+        password :password_confirmation, name: 'Password confirmation', required: false, only_on: :create
 
         heading '<div class="text-gray-300 uppercase font-bold">DEV</div>', as_html: true
         code :custom_css, theme: 'dracula', language: 'css', help: "This enables you to edit the user's custom styles."
