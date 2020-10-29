@@ -7,6 +7,7 @@
       :enable-time="flatpickrConfig.enableTime"
       :config="flatpickrConfig"
       :placeholder="field.placeholder"
+      :disabled="disabled"
     />
     <template #extra>
       <span v-if="displayTimezone" class='px-4 items-center flex text-gray-500'>({{timezone}})</span>

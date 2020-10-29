@@ -5,6 +5,7 @@
       :class="inputClasses"
       v-model="value"
       :id="field.id"
+      :disabled="disabled"
     >
       <option value="null" v-text="field.placeholder"/>
       <option v-for="(name, code) in field.countries"

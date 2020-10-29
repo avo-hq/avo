@@ -4,6 +4,7 @@
       ref="field-input"
       :class="inputClasses"
       v-model="value"
+      :disabled="disabled"
     >
       <option v-if="!value" :value="value" v-text="field.placeholder" disabled/>
       <option v-for="(label, value) in options"

@@ -2,6 +2,7 @@
   <edit-field-wrapper :field="field" :errors="errors" :index="index" :value-slot-full-width="true">
     <VueTrix v-model="editorContent"
       :placeholder="field.placeholder"
+      :disabledEditor="disabled"
       class="w-full prose prose-sm"
       inputId="trixEditor"
     />

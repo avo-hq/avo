@@ -4,7 +4,7 @@
       :value="value"
       :language="field.language"
       :theme="field.theme"
-      :editable="true"
+      :editable="!disabled"
       @value-updated="valueUpdated"
     />
   </edit-field-wrapper>
