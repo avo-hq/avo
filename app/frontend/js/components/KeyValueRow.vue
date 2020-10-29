@@ -6,7 +6,7 @@
       ref="keyInput"
       :value="loopKey"
       :placeholder="keyLabel"
-      :disabled="readOnly"
+      :disabled="readOnly || disableEditingKeys"
       @input="updateKey"
     />
     <input-component

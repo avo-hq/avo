@@ -78,9 +78,11 @@ export default {
       }
     },
     addRow() {
-      const length = this.rows.push({ key: '', value: '' })
+      if (!this.disableAddingRows) {
+        const length = this.rows.push({ key: '', value: '' })
 
-      setTimeout(() => this.focusRow(length - 1), 1)
+        setTimeout(() => this.focusRow(length - 1), 1)
+      }
     },
     goToNextRow(index) {
       this.focusRow(index + 1)
@@ -89,7 +91,9 @@ export default {
       this.$refs[`keyValueRow${index}`][0].$emit('focus')
     },
     deleteRow(index) {
-      this.$delete(this.rows, index)
+      if (!this.disableDeletingRows) {
+        this.$delete(this.rows, index)
+      }
     },
   },
   watch: {
