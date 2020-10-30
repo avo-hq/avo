@@ -67,6 +67,7 @@ module Avo
           ip: current_request.ip,
           host: current_request.host,
           port: current_request.port,
+          app_id: Digest::SHA1.hexdigest(Rails.application.class.to_s.split('::').first),
         }
       end
 
