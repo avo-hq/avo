@@ -1,11 +1,9 @@
 <template>
     <codemirror
-      v-if="value || editable"
       v-model="valueInput"
       :options="cmOptions"
       class="rounded-lg overflow-hidden"
     />
-    <empty-dash v-else />
 </template>
 
 <script>
@@ -33,7 +31,6 @@ import 'codemirror/mode/shell/shell'
 import 'codemirror/mode/sql/sql'
 import 'codemirror/mode/vue/vue'
 import 'codemirror/mode/xml/xml'
-
 
 export default {
   components: { codemirror },
