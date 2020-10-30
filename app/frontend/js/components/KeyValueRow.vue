@@ -6,8 +6,9 @@
       ref="keyInput"
       :value="loopKey"
       :placeholder="keyLabel"
-      :disabled="readOnly"
+      :disabled="readOnly || disableEditingKeys"
       @input="updateKey"
+      @keydown.native.enter.prevent=""
     />
     <input-component
       :class="inputClasses"
@@ -17,6 +18,7 @@
       :disabled="readOnly"
       @input="updateValue"
       @keyup.native.enter="$emit('keyup-enter')"
+      @keydown.native.enter.prevent=""
     />
     <div class="flex items-center justify-center px-3 bg-gray-200 border-l border-gray-600" v-if="!readOnly">
       <a
