@@ -1,5 +1,11 @@
 <template>
-  <edit-field-wrapper :field="field" :errors="errors" :index="index" :displayed-in="displayedIn" :value-slot-full-width="true">
+  <edit-field-wrapper
+    :field="field"
+    :errors="errors"
+    :index="index"
+    :displayed-in="displayedIn"
+    :value-slot-full-width="true"
+  >
     <mavon-editor
       ref="md"
       class="break-all"
@@ -8,6 +14,7 @@
       language="en"
       codeStyle="dracula"
       :toolbars="toolbars"
+      default-open="edit"
       />
   </edit-field-wrapper>
 </template>
