@@ -38,12 +38,12 @@ export default {
     value: String,
     language: String,
     theme: String,
-    editable: Boolean,
+    disabled: Boolean,
   },
   computed: {
     cmOptions() {
       return {
-        readOnly: !this.editable,
+        readOnly: this.disabled,
         mode: this.language,
         theme: this.theme,
         tabSize: 4,

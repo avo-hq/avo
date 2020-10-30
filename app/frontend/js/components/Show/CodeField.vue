@@ -4,7 +4,7 @@
       :value="field.value"
       :language="field.language"
       :theme="field.theme"
-      :editable="false"
+      :disabled="true"
     />
   </show-field-wrapper>
 </template>
