@@ -15,7 +15,7 @@
       codeStyle="dracula"
       :toolbars="toolbars"
       default-open="edit"
-      />
+    />
   </edit-field-wrapper>
 </template>
 
