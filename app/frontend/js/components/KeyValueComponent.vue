@@ -35,7 +35,7 @@
         @delete-row="deleteRow"
         @value-updated="valueUpdated"
         @key-updated="keyUpdated"
-        @keyup-enter.stop.prevent="onEnterPress(index)"
+        @keyup-enter="onEnterPress(index)"
       />
     </div>
   </div>
