@@ -7,7 +7,7 @@ module Avo
       def initialize(name, **args, &block)
         @defaults = {
           component: 'belongs-to-field',
-          placeholder: "Choose #{name.downcase}",
+          placeholder: I18n.t('choose_an_option')
         }
 
         @searchable = args[:searchable] == true ? true : false

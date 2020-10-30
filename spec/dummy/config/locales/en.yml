@@ -30,4 +30,6 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  dashboard: 'Dashboard'
+  choose_a_country: 'Choose a country'
+  choose_an_option: 'Choose an option'

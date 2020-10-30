@@ -13,7 +13,7 @@ module Avo
 
         hide_on :create
 
-        @placeholder = 'Choose an option'
+        @placeholder = I18n.t :choose_an_option
 
         @relation_method = name.to_s.parameterize.underscore
       end

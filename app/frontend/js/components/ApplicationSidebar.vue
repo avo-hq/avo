@@ -10,7 +10,7 @@
           <sidebar-link to="/"
             exact
           >
-            Dashboard
+            {{ $t('dashboard') }}
           </sidebar-link>
 
           <resources-navigation :resources="resources"/>
