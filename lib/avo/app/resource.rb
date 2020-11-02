@@ -13,7 +13,7 @@ module Avo
 
       class << self
         def hydrate_resource(model:, resource:, view: :index, user:)
-          default_panel_name = "#{resource.name} details"
+          default_panel_name = I18n.t 'resource_details', name: resource.name
 
           resource_with_fields = {
             id: model.id,
