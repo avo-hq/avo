@@ -1,7 +1,7 @@
 require 'rails_helper'
 WebMock.disable_net_connect!(allow_localhost: true, allow: 'chromedriver.storage.googleapis.com')
 
-RSpec.describe 'MarkdownFields', type: :system do
+RSpec.describe 'MarkdownField', type: :system do
   describe 'without value' do
     let!(:project) { create :project, name: 'Test', users_required: 20 }
 

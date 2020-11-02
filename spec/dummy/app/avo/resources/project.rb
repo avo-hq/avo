@@ -10,7 +10,6 @@ module Avo
       fields do
         id link_to_resource: true
         text :name, required: true
-        markdown :description
         status :status, failed_when: [:closed, :rejected, :failed], loading_when: [:loading, :running, :waiting], nullable: true
         select :stage, hide_on: [:show, :index], enum: ::Project.stages, placeholder: 'Choose the stage.', display_value: true
         badge :stage, options: { info: ['Discovery', 'Ideea'], success: 'Done', warning: 'On hold', danger: 'Cancelled' }
@@ -18,6 +17,7 @@ module Avo
         country :country
         number :users_required
         datetime :started_at, name: 'Started', time_24hr: true, relative: true
+        markdown :description
         files :files
         key_value :meta, key_label: 'Meta key', value_label: 'Meta value', action_text: 'New item', delete_text: 'Remove item', disable_editing_keys: false, disable_adding_rows: false, disable_deleting_rows: false
 
