@@ -1,6 +1,10 @@
 module Avo
   module Actions
     class MarkInactive < Action
+      def no_confirmation
+        true
+      end
+
       def name
         'Mark inactive'
       end
@@ -16,10 +20,10 @@ module Avo
         reload_resources
       end
 
-      fields do
-        boolean :notify_user
-        textarea :message, default: 'Your account has been marked as inactive.'
-      end
+      # fields do
+      #   boolean :notify_user
+      #   textarea :message, default: 'Your account has been marked as inactive.'
+      # end
     end
   end
 end
