@@ -3694,11 +3694,6 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
-github-markdown-css@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/github-markdown-css/-/github-markdown-css-4.0.0.tgz#be9f4caf7a389228d4c368336260ffc909061f35"
-  integrity sha512-mH0bcIKv4XAN0mQVokfTdKo2OD5K8WJE9+lbMdM32/q0Ie5tXgVN/2o+zvToRMxSTUuiTRcLg5hzkFfOyBYreg==
-
 glob-parent@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/glob-parent/-/glob-parent-3.1.0.tgz#9e6af6299d8d3bd2bd40430832bd113df906c5ae"
@@ -3918,11 +3913,6 @@ highlight.js-async-webpack@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/highlight.js-async-webpack/-/highlight.js-async-webpack-1.0.4.tgz#c06b67bf99f049045d62b756e5855b0912ec616c"
   integrity sha1-wGtnv5nwSQRdYrdW5YVbCRLsYWw=
-
-highlight.js@^10.3.1:
-  version "10.3.1"
-  resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-10.3.1.tgz#3ca6bf007377faae347e8135ff25900aac734b9a"
-  integrity sha512-jeW8rdPdhshYKObedYg5XGbpVgb1/DT4AHvDFXhkU7UnGSIjy9kkJ7zHG7qplhFHMitTSzh5/iClKQk3Kb2RFQ==
 
 highlight.js@^9.11.0:
   version "9.18.3"
