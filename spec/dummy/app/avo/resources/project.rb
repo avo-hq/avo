@@ -17,6 +17,7 @@ module Avo
         country :country
         number :users_required
         datetime :started_at, name: 'Started', time_24hr: true, relative: true
+        markdown :description
         files :files
         key_value :meta, key_label: 'Meta key', value_label: 'Meta value', action_text: 'New item', delete_text: 'Remove item', disable_editing_keys: false, disable_adding_rows: false, disable_deleting_rows: false
 
