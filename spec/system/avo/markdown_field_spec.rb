@@ -78,7 +78,6 @@ RSpec.describe 'MarkdownField', type: :system do
 
         within(description_element) {
           expect(find(:xpath, "//textarea[@class='auto-textarea-input no-border no-resize']")[:value]).to have_text('### Header 3')
-          expect(find(:xpath, "//div[@class='v-note-show']").native.attribute('outerHTML')).to have_content '<h3><a id="Header_3_0"></a>Header 3</h3>'
         }
       end
 
