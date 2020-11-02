@@ -117,7 +117,7 @@ export default {
       return this.fields.filter((field) => ['has_and_belongs_to_many', 'has_many'].indexOf(field.relationship) > -1)
     },
     canEdit() {
-      return this.resource.authorization.update
+      return this.resource.authorization.edit
     },
     canDelete() {
       return this.resource.authorization.destroy

@@ -25,12 +25,12 @@ export default {
   ],
   computed: {
     element() {
-      if (this.field.link_to_resource) return 'router-link'
+      if (this.field.link_to_resource && this.canView) return 'router-link'
 
       return 'div'
     },
     to() {
-      if (this.field.link_to_resource) {
+      if (this.field.link_to_resource && this.canView) {
         return {
           name: 'show',
           params: {
@@ -47,9 +47,12 @@ export default {
       return null
     },
     title() {
-      if (this.field.link_to_resource) return `View ${this.resourceNameSingular}`
+      if (this.field.link_to_resource && this.canView) return `View ${this.resourceNameSingular}`
 
       return null
+    },
+    canView() {
+      return this.resource.authorization.show
     },
   },
 }

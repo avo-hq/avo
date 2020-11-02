@@ -63,7 +63,7 @@ RSpec.describe Avo::ResourcesController, type: :controller do
         expect(response).to have_http_status(200)
         expect(parsed_response).to eql({
           meta: {
-            authorization: { create: false, destroy: false, show: false, update: true },
+            authorization: { create: false, edit: true, destroy: false, show: false, update: true },
             per_page_steps: [12, 24, 48, 72],
             available_view_types: ['grid', 'table'],
             default_view_type: 'grid',

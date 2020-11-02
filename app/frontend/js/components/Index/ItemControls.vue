@@ -81,7 +81,7 @@ export default {
       return `/resources/${this.resourceName}`
     },
     canEdit() {
-      return this.resource.authorization.update
+      return this.resource.authorization.edit
     },
     canView() {
       return this.resource.authorization.show
