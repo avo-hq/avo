@@ -4,7 +4,7 @@
       v-model="value"
       :key-label="field.key_label"
       :value-label="field.value_label"
-      :read-only="false"
+      :read-only="disabled"
       :action-text="field.action_text"
       :delete-text="field.delete_text"
       :disable-editing-keys="field.disable_editing_keys"

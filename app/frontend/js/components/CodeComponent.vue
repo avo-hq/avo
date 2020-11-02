@@ -4,6 +4,7 @@
       v-model="valueInput"
       :options="cmOptions"
       class="rounded-lg overflow-hidden"
+      :style="heightStyle"
     />
     <empty-dash v-else />
 </template>
@@ -34,7 +35,6 @@ import 'codemirror/mode/sql/sql'
 import 'codemirror/mode/vue/vue'
 import 'codemirror/mode/xml/xml'
 
-
 export default {
   components: { codemirror },
   props: {
@@ -42,8 +42,14 @@ export default {
     language: String,
     theme: String,
     editable: Boolean,
+    height: String,
   },
   computed: {
+    heightStyle() {
+      return {
+        '--height': this.height,
+      }
+    },
     cmOptions() {
       return {
         readOnly: !this.editable,
@@ -68,3 +74,9 @@ export default {
   },
 }
 </script>
+
+<style>
+.CodeMirror {
+  height: var(--height) !important;
+}
+</style>

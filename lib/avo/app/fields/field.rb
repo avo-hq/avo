@@ -35,7 +35,7 @@ module Avo
         # The field properties as a hash {property: default_value}
         @field_properties = {
           id: id,
-          name: id.to_s.humanize,
+          name: id.to_s.humanize(keep_id_suffix: true),
           block: block,
           component: 'field',
           required: false,

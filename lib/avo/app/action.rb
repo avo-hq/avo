@@ -87,7 +87,7 @@ module Avo
       end
 
       def name
-        self.class.name.demodulize.underscore.humanize
+        self.class.name.demodulize.underscore.humanize(keep_id_suffix: true)
       end
 
       def succeed(text)

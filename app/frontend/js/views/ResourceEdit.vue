@@ -9,7 +9,7 @@
         <template #tools>
           <div class="flex justify-end space-x-2">
             <a-button :to="cancelActionParams"><arrow-left-icon class="h-4 mr-1"/> Cancel</a-button>
-            <a-button color="green" @click="submitResource"><save-icon class="h-4 mr-1"/> Save</a-button>
+            <a-button v-if="canUpdate" color="green" @click="submitResource"><save-icon class="h-4 mr-1"/> Save</a-button>
           </div>
         </template>
 
@@ -77,6 +77,9 @@ export default {
       }
 
       return action
+    },
+    canUpdate() {
+      return this.resource.authorization.update
     },
   },
 }
