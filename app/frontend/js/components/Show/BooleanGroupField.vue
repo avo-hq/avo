@@ -31,7 +31,11 @@ export default {
             result[key] = value
           }
         })
-        this.value = result
+        if (Object.keys(result).length > 0) {
+          this.value = result
+        } else {
+          this.value = null
+        }
       }
     },
     label(key) {
