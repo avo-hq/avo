@@ -12,7 +12,7 @@
         size="sm"
         @click="$emit('close')"
       >
-        Cancel
+        {{ $t('cancel') }}
       </a-button>
       <a-button
         ref="confirm-button"
@@ -22,7 +22,7 @@
         v-if="confirmAction"
         @click="confirmAction"
       >
-        Confirm
+        {{ $t('confirm') }}
       </a-button>
     </div>
   </div>

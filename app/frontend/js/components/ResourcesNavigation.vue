@@ -1,7 +1,7 @@
 <template>
   <div>
     <sidebar-link :large="true">
-      Resources
+      {{ $t('resources') }}
     </sidebar-link>
 
     <div class="resources-links w-full">
@@ -32,5 +32,3 @@ export default {
   },
 }
 </script>
-
-<style slang="postcss"></style>

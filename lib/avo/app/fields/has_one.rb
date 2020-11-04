@@ -43,7 +43,7 @@ module Avo
           end
         end
 
-        fields[:resource_name_plural] = target_resource.resource_name_plural
+        fields[:plural_name] = target_resource.plural_name
 
         fields
       end

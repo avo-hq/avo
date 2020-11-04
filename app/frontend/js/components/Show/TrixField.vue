@@ -28,7 +28,7 @@ export default {
       return 'font-bold'
     },
     linkLabel() {
-      return this.showTrix ? 'Hide Content' : 'Show Content'
+      return this.showTrix ? this.$t('hide_content') : this.$t('show_content')
     },
   },
   methods: {

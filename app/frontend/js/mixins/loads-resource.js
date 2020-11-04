@@ -1,6 +1,7 @@
 import Api from '@/js/Api'
 import Avo from '@/js/Avo'
 import Bus from '@/js/Bus'
+import Resource from '@/js/models/Resource'
 import hasLoadingBus from '@/js/mixins/has-loading-bus'
 import pluralize from 'pluralize'
 
@@ -48,7 +49,7 @@ export default {
       if (!resource) return
 
       resource = this.hydrateRelatedResources(resource)
-      this.resource = resource
+      this.resource = new Resource(resource)
       this.isLoading = false
     },
   },

@@ -18,8 +18,8 @@ module Avo
           resource_with_fields = {
             id: model.id,
             authorization: get_authorization(user, model),
-            resource_name_singular: resource.resource_name_singular,
-            resource_name_plural: resource.resource_name_plural,
+            singular_name: resource.singular_name,
+            plural_name: resource.plural_name,
             title: model[resource.title],
             path: resource.url,
             fields: [],
@@ -102,11 +102,11 @@ module Avo
         self.class.name.demodulize.titlecase
       end
 
-      def resource_name_singular
+      def singular_name
         name
       end
 
-      def resource_name_plural
+      def plural_name
         name.pluralize
       end
 
@@ -166,7 +166,7 @@ module Avo
         if via_resource_name.present?
           related_model = App.get_resource_by_name(via_resource_name).model
 
-          db_query = related_model.find(via_resource_id).public_send(self.resource_name_plural.downcase)
+          db_query = related_model.find(via_resource_id).public_send(self.plural_name.downcase)
         end
 
         new_query = []

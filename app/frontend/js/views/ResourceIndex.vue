@@ -21,7 +21,7 @@
             @click="showAttachModal"
             v-if="relationship === 'has_and_belongs_to_many'"
           >
-            <view-grid-add-icon class="h-4 mr-1" />Attach {{resourceNameSingular | toLowerCase}}
+            <view-grid-add-icon class="h-4 mr-1" /> {{ $t('attach_item', { item: resourceNameSingular.toLowerCase() }) }}
           </a-button>
           <a-button
             is="a-button"
@@ -37,7 +37,7 @@
               },
             }"
             v-else-if="canCreate"
-          ><plus-icon class="h-4 mr-1"/>Create new {{resourceNameSingular | toLowerCase}}</a-button>
+          ><plus-icon class="h-4 mr-1"/>{{ $t('create_new_item', { item: resourceNameSingular.toLowerCase() }) }}</a-button>
         </div>
       </div>
     </template>
@@ -58,13 +58,13 @@
               color="blue"
               v-if="availableViewTypes.includes('table') && viewType !== 'table'"
             >
-              <view-list-icon class="h-4 mr-1" /> Table View
+              <view-list-icon class="h-4 mr-1" /> {{ $t('table_view') }}
             </a-button>
             <a-button @click="changeViewType('grid')"
               color="blue"
               v-if="availableViewTypes.includes('grid') && viewType !== 'grid'"
             >
-              <view-grid-icon class="h-4 mr-1" /> Grid View
+              <view-grid-icon class="h-4 mr-1" /> {{ $t('grid_view') }}
             </a-button>
             <resource-filters
               v-if="!viaResourceName"
@@ -113,8 +113,8 @@
             ref="paginate"
             :page-count="totalPages"
             :click-handler="changePageFromPagination"
-            :prev-text="'Prev'"
-            :next-text="'Next'"
+            :prev-text="$t('prev_page')"
+            :next-text="$t('next_page')"
             :no-li-surround="true"
             container-class="avo-pagination justify-end flex px-4 space-x-2"
             page-class="pagination-button"
@@ -157,8 +157,8 @@
             ref="paginate"
             :page-count="totalPages"
             :click-handler="changePageFromPagination"
-            :prev-text="'Prev'"
-            :next-text="'Next'"
+            :prev-text="$t('prev_page')"
+            :next-text="$t('next_page')"
             :no-li-surround="true"
             container-class="avo-pagination justify-end flex px-4 space-x-2"
             page-class="pagination-button"
@@ -183,6 +183,7 @@ import Bus from '@/js/Bus'
 import DealsWithHasManyRelations from '@/js/mixins/deals-with-has-many-relations'
 import DealsWithResourceLabels from '@/js/mixins/deals-with-resource-labels'
 import LoadsActions from '@/js/mixins/loads-actions'
+import Resource from '@/js/models/Resource'
 import URI from 'urijs'
 import isNull from 'lodash/isNull'
 import isUndefined from 'lodash/isUndefined'
@@ -368,7 +369,7 @@ export default {
 
       const { data } = await Api.get(this.queryUrl)
 
-      this.resources = data.resources
+      this.resources = Resource.parseResources(data.resources)
       this.totalPages = data.total_pages
       this.meta = data.meta
       this.availableViewTypes = data.meta.available_view_types
@@ -486,7 +487,7 @@ export default {
     },
     async showAttachModal() {
       this.$modal.show(AttachModal, {
-        heading: `Select a ${this.resourceNameSingular.toLowerCase()} to attach`,
+        heading: this.$t('select_an_item_to_attach', { item: this.resourceNameSingular.toLowerCase() }),
         getOptions: this.getOptions,
         attachAction: this.attachOption,
       })

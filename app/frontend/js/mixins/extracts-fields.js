@@ -8,8 +8,8 @@ export default {
     },
     hiddenFields() {
       return this.resourceFields.filter((field) => field.is_relation)
-        .filter((field) => field.resource_name_plural)
-        .filter((field) => field.resource_name_plural.toLowerCase() === this.$route.params.resourceName)
+        .filter((field) => field.namePlural)
+        .filter((field) => field.namePlural.toLowerCase() === this.$route.params.resourceName)
     },
   },
 }
