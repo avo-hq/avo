@@ -255,6 +255,7 @@ module Avo
           per_page_steps: Avo.configuration.per_page_steps,
           available_view_types: avo_resource.available_view_types,
           default_view_type: avo_resource.default_view_type || Avo.configuration.default_view_type,
+          translation_key: avo_resource.translation_key,
           authorization: {
             create: AuthorizationService::authorize(current_user, avo_resource.model, Avo.configuration.authorization_methods.stringify_keys['create']),
             edit: AuthorizationService::authorize(current_user, avo_resource.model, Avo.configuration.authorization_methods.stringify_keys['edit']),

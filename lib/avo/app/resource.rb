@@ -21,6 +21,7 @@ module Avo
             singular_name: resource.singular_name,
             plural_name: resource.plural_name,
             title: model[resource.title],
+            translation_key: resource.translation_key,
             path: resource.url,
             fields: [],
             grid_fields: {},
@@ -99,14 +100,20 @@ module Avo
       def name
         return @name if @name.present?
 
+        return I18n.t(@translation_key, count: 1) if @translation_key
+
         self.class.name.demodulize.titlecase
       end
 
       def singular_name
+        return I18n.t(@translation_key, count: 1) if @translation_key
+
         name
       end
 
       def plural_name
+        return I18n.t(@translation_key, count: 2) if @translation_key
+
         name.pluralize
       end
 
@@ -126,6 +133,10 @@ module Avo
         return @title if @title.present?
 
         'id'
+      end
+
+      def translation_key
+        @translation_key
       end
 
       def model

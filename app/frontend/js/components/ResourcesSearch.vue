@@ -22,6 +22,7 @@
     :allow-empty="true"
   >
     <span slot="noResult">{{ $t('oops_nothing_found') }}</span>
+    <span slot="noOptions">{{ $t('list_is_empty') }}</span>
   </multiselect>
 </template>
 

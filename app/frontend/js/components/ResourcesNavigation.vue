@@ -8,7 +8,7 @@
       <sidebar-link
         v-for="resource in sortedResources"
         :key="resource.resource_name"
-        v-text="resource.label"
+        v-text="resourceLabel(resource)"
         :to="{
           name: 'index',
           params: {
@@ -22,12 +22,18 @@
 
 <script>
 import sortBy from 'lodash/sortBy'
+import upperFirst from 'lodash/upperFirst'
 
 export default {
   props: ['resources'],
   computed: {
     sortedResources() {
       return sortBy(this.resources, 'resource_name')
+    },
+  },
+  methods: {
+    resourceLabel(resource) {
+      return upperFirst(this.$tc(resource.label, 2))
     },
   },
 }

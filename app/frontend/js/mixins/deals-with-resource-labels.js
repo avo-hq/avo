@@ -1,5 +1,4 @@
 import lowerCase from 'lodash/lowerCase'
-import pluralize from 'pluralize'
 import upperFirst from 'lodash/upperFirst'
 
 export default {
@@ -10,13 +9,17 @@ export default {
   },
   computed: {
     sentencedCase() {
+      if (this.meta && this.meta.translation_key) return upperFirst(lowerCase(this.$t(this.meta.translation_key)))
+
       return upperFirst(lowerCase(this.resourceName))
     },
     resourceNameSingular() {
-      return pluralize(this.sentencedCase, 1)
+      return this.sentencedCase
     },
     resourceNamePlural() {
-      return this.sentencedCase.charAt(0).toUpperCase() + this.sentencedCase.slice(1)
+      if (this.meta && this.meta.translation_key) return upperFirst(lowerCase(this.$tc(this.meta.translation_key, 2)))
+
+      return this.sentencedCase
     },
   },
 }

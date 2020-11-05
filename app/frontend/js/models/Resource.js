@@ -15,5 +15,6 @@ export default class Resource {
     this.singularName = resource.singular_name
     this.pluralName = resource.plural_name
     this.title = resource.title
+    this.translationKey = resource.translation_key
   }
 }

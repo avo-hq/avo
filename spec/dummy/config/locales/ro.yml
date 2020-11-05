@@ -33,28 +33,37 @@ ro:
   attach_and_attach_another: 'Ataseaza si ataseaza inca unul'
   hide_content: 'Ascunde continutul'
   show_content: 'Arata continutul'
-  no_related_item_found: 'Nu s-au gasit rezultate legate de %{item}'
-  no_item_found: 'Nu s-au gasit rezultate de tipul %{item}'
+  no_related_item_found: 'Nu s-au gasit %{item} asociate'
+  no_item_found: 'Nu s-au gasit %{item}'
   loading: 'Se incarca'
   confirm: 'Confirm'
   actions: 'Actiuni'
   resources: 'Resurse'
   oops_nothing_found: 'Oups! Nu am gasit rezultate...'
-  type_to_search: 'Scrie aici pentru a incepe cautarea'
+  type_to_search: 'Cauta aici...'
   and_x_other_resources: 'plus alte %{count} resources'
   go_back: 'Inapoi'
   home: 'Acasa'
-  attach_item: 'Ataseaza %{item}'
-  select_an_item_to_attach: 'Alege ce %{item} sa atasezi'
+  attach_item: 'Anexeaza %{item}'
+  select_an_item_to_attach: 'Selecteaza pentru anexare'
   create_new_item: 'Creeaza o noua resursa %{item}'
   table_view: 'Vezi sub forma de tabel'
   grid_view: 'Vezi sub forma de grid'
   next_page: 'Pagina urmatoare'
   prev_page: 'Pagina anterioara'
+  list_is_empty: 'Lista este goala'
   # file: 'fisier | fisier | fisiere'
   fields:
-    # file:
-    #   - zero: 'fisiere'
-    #   - one: 'fisier'
-    #   - other: 'fisiere'
+    # file: {
+    #   zero: 'fisiere',
+    #   one: 'fisier',
+    #   other: 'fisiere',
+    # }
     file: 'fisiere | fisier | fisiere'
+  resource_translations:
+    user: {
+      zero: 'utilizatori',
+      one: 'utilizator',
+      other: 'utilizatori',
+    }
+    user: 'utilizatori | utilizator | utilizatori'
