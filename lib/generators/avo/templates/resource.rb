@@ -8,6 +8,10 @@ module Avo
 
       fields do
         id
+        <% if @fieldsHash.present?
+        @fieldsHash.each do |fieldname, fieldtype| %><%= fieldtype %> :<%= fieldname %>
+        <% end
+        end %>
       end
     end
   end
