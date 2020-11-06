@@ -13,6 +13,7 @@
           name: 'index',
           params: {
             resourceName: resource.resource_name,
+            resourceTranslationKey: resource.translation_key,
           },
         }"
       />
@@ -33,7 +34,7 @@ export default {
   },
   methods: {
     resourceLabel(resource) {
-      return upperFirst(this.$tc(resource.label, 2))
+      return upperFirst(resource.label)
     },
   },
 }

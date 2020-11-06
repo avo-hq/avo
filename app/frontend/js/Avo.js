@@ -1,13 +1,13 @@
 import '@/js/components'
 import Api from '@/js/Api'
 import Bus from '@/js/Bus'
+import I18n from 'i18n-js'
 import PortalVue from 'portal-vue'
 import Toasted from 'vue-toasted'
 import VModal from 'vue-js-modal'
 import VTooltip from 'v-tooltip'
 import Vue from 'vue/dist/vue.esm'
 import VueCurrencyInput from 'vue-currency-input'
-import VueI18n from 'vue-i18n'
 import VueRouter from 'vue-router'
 import Vuex from 'vuex'
 import indexStore from '@/js/stores/index-store'
@@ -47,14 +47,6 @@ const Avo = {
     })
   },
 
-  initI18n() {
-    Avo.i18n = new VueI18n({
-      locale: 'en',
-      fallbackLocale: 'en',
-      messages: {},
-    })
-  },
-
   initPlugins() {
     Vue.use(Toasted, {
       duration: 5000,
@@ -79,8 +71,12 @@ const Avo = {
     })
     Vue.use(PortalVue)
     Vue.use(Vuex)
-    Vue.use(VueI18n)
-    Avo.initI18n()
+
+    Vue.use({
+      install(VueInstance) {
+        VueInstance.prototype.$t = (key, options) => I18n.t(key, options)
+      },
+    })
   },
 
   initVue() {
@@ -91,6 +87,9 @@ const Avo = {
       i18n: Avo.i18n,
       store: Avo.store(),
       el: '#app',
+      data: () => ({
+        resources: [],
+      }),
       computed: {
         routerKey() {
           return `${this.$route.name}-${this.$route.params.resourceName || ''}`
@@ -115,20 +114,21 @@ const Avo = {
             this.$toasted.show(message, { type })
           }, 1)
         },
-        setLocales() {
+        setResources() {
+          this.resources = window.avoResources
           // Set the language code.
-          Avo.i18n.locale = window.language_code
+          // Avo.i18n.locale = window.language_code
 
-          // Update all the available languages.
-          Object.keys(window.translations).forEach((code) => {
-            const translations = window.translations[code]
+          // // Update all the available languages.
+          // Object.keys(window.translations).forEach((code) => {
+          //   const translations = window.translations[code]
 
-            Avo.i18n.setLocaleMessage(code, translations)
-          })
+          //   Avo.i18n.setLocaleMessage(code, translations)
+          // })
         },
       },
       mounted() {
-        this.setLocales()
+        this.setResources()
         Bus.$on('reload', this.reload)
         Bus.$on('redirect', this.redirect)
         Bus.$on('message', (message) => this.alert(message, 'success'))

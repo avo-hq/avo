@@ -12,10 +12,10 @@ export default {
     value() {
       if (this.field.value && this.field.value.length > 0) {
         if (this.field.tname) {
-          return this.$tc('number_of_items', this.field.value.length, { item: this.$tc(this.field.tname, this.field.value.length) })
+          return this.$t('number_of_items', { item: this.$t(this.field.tname, { count: this.field.value.length }), count: this.field.value.length })
         }
 
-        return this.$tc('number_of_items', this.field.value.length, { item: this.field.name })
+        return this.$t('number_of_items', { item: this.field.name, count: this.field.value.length })
       }
 
       return null

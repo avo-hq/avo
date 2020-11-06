@@ -24,7 +24,9 @@
 
 <script>
 export default {
-  props: ['resources'],
+  data: () => ({
+    resources: window.avoResources,
+  }),
 }
 </script>
 

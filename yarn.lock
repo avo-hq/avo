@@ -4050,6 +4050,11 @@ https-browserify@^1.0.0:
   resolved "https://registry.yarnpkg.com/https-browserify/-/https-browserify-1.0.0.tgz#ec06c10e0a34c0f2faf199f7fd7fc78fffd03c73"
   integrity sha1-7AbBDgo0wPL68Zn3/X/Hj//QPHM=
 
+i18n-js@^3.8.0:
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/i18n-js/-/i18n-js-3.8.0.tgz#b8fd6b12e1d88cb71f9806c29bca7c31c012e504"
+  integrity sha512-hDsGgPuvw/2P+lXSbOafAwspK8Ste8YrwuuUg17W3wEcO1JkQxBlPgsN1t2+852nTnz4YSYTjZc/1nAA2PC/nw==
+
 iconv-lite@0.4.24, iconv-lite@^0.4.24:
   version "0.4.24"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.24.tgz#2022b4b25fbddc21d2f524974a474aafe733908b"
@@ -8417,11 +8422,6 @@ vue-hot-reload-api@^2.3.0:
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.4.tgz#532955cc1eb208a3d990b3a9f9a70574657e08f2"
   integrity sha512-BXq3jwIagosjgNVae6tkHzzIk6a8MHFtzAdwhnV5VlvPTFxDCvIttgSiHWjdGoTJvXtmRu5HacExfdarRcFhog==
-
-vue-i18n@^8.22.1:
-  version "8.22.1"
-  resolved "https://registry.yarnpkg.com/vue-i18n/-/vue-i18n-8.22.1.tgz#b9dd098a17e1f5adb91bdf9611f0385310da7cb1"
-  integrity sha512-JNgiEJ5a8YPfk5y2lKyfOAGLmkpAVfhaUi+T4wGpSppRYZ3XSyawSDDketY5KV2CsAiBLAGEIO6jO+0l2hQubg==
 
 vue-js-modal@^2.0.0-rc.3:
   version "2.0.0-rc.6"

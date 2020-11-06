@@ -2,8 +2,7 @@
   var rootPath = '<%= Avo.configuration.root_path %>';
   var timezone = '<%= Avo.configuration.timezone %>';
   var locale = '<%= Avo.configuration.locale %>';
-  var language_code = '<%= Avo.configuration.language_code %>';
   var defaultViewType = '<%= Avo.configuration.default_view_type %>';
   var license = <%= Avo::App.license.properties.to_json.html_safe %>;
-  var translations = <%= Avo::TranslationService.new.javascript_translations.to_json.html_safe %>
+  var avoResources = <%= Avo::App.get_available_resources(current_user).as_json.html_safe %>;
 </script>

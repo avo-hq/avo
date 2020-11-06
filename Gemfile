@@ -95,3 +95,5 @@ gem 'kaminari'
 gem 'httparty'
 
 gem 'iso'
+
+gem 'i18n-js'

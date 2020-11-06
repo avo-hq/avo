@@ -20,9 +20,13 @@ ro:
   download_item: 'Descarca %{item}'
   view: 'vezi'
   view_item: 'vezi %{item}'
-  edit_item: 'editeaza %{item}'
+  edit: 'modifica'
+  edit_item: 'modifica %{item}'
   detach_item: 'detaseaza %{item}'
-  number_of_items: '0 %{item} | un %{item} | %{count} %{item}'
+  number_of_items:
+    zero: '0 %{item}'
+    one: 'un %{item}'
+    other: '%{count} %{item}'
   are_you_sure: 'Esti sigur?'
   filters: 'Filtre'
   per_page: 'Pe pagina'
@@ -46,24 +50,19 @@ ro:
   home: 'Acasa'
   attach_item: 'Anexeaza %{item}'
   select_an_item_to_attach: 'Selecteaza pentru anexare'
-  create_new_item: 'Creeaza o noua resursa %{item}'
+  create_new_item: 'Creeaza %{item}'
   table_view: 'Vezi sub forma de tabel'
   grid_view: 'Vezi sub forma de grid'
   next_page: 'Pagina urmatoare'
   prev_page: 'Pagina anterioara'
   list_is_empty: 'Lista este goala'
-  # file: 'fisier | fisier | fisiere'
-  fields:
-    # file: {
-    #   zero: 'fisiere',
-    #   one: 'fisier',
-    #   other: 'fisiere',
-    # }
-    file: 'fisiere | fisier | fisiere'
+  field_translations:
+    file:
+      zero: 'fisiere'
+      one: 'fisier'
+      other: 'fisiere'
   resource_translations:
-    user: {
-      zero: 'utilizatori',
-      one: 'utilizator',
-      other: 'utilizatori',
-    }
-    user: 'utilizatori | utilizator | utilizatori'
+    user:
+      zero: 'utilizatori'
+      one: 'utilizator'
+      other: 'utilizatori'

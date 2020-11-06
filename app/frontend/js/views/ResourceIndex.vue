@@ -37,7 +37,7 @@
               },
             }"
             v-else-if="canCreate"
-          ><plus-icon class="h-4 mr-1"/>{{ $tc('create_new_item', 1, { item: resourceNameSingular.toLowerCase() }) }}</a-button>
+          ><plus-icon class="h-4 mr-1"/>{{ $t('create_new_item', { item: resourceNameSingular.toLowerCase(), count: 1 }) }}</a-button>
         </div>
       </div>
     </template>
@@ -216,6 +216,7 @@ export default {
     'viaResourceName',
     'viaResourceId',
     'field',
+    'resourceTranslationKey',
   ],
   computed: {
     ...mapState('index', [

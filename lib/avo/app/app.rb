@@ -128,10 +128,16 @@ module Avo
         name.to_s.camelize.singularize
       end
 
-      def get_resources_navigation(user)
+      def get_available_resources(user)
         App.get_resources
           .select { |resource| AuthorizationService::authorize user, resource.model, Avo.configuration.authorization_methods.stringify_keys['index'] }
-          .map { |resource| { label: resource.plural_name.humanize(keep_id_suffix: true), resource_name: resource.url.pluralize } }
+          .map do |resource|
+            {
+              label: resource.plural_name.humanize(keep_id_suffix: true),
+              resource_name: resource.url.pluralize,
+              translation_key: resource.translation_key
+            }
+          end
           .reject { |i| i.blank? }
           .to_json
           .to_s

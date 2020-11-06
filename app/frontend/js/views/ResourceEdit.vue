@@ -3,7 +3,7 @@
     <div v-for="panel in resource.panels" :key="panel.name">
       <panel>
         <template #heading>
-          {{ $t('edit_item', { item: resourceNameSingular }) | upperFirst() }}
+          {{ $t('edit_item', { item: resourceNameSingular.toLowerCase() }) | upperFirst() }}
         </template>
 
         <template #tools>

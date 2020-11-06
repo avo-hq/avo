@@ -132,6 +132,8 @@ GEM
       multi_xml (>= 0.5.2)
     i18n (1.8.5)
       concurrent-ruby (~> 1.0)
+    i18n-js (3.8.0)
+      i18n (>= 0.6.6)
     i18n_data (0.10.0)
     inline_svg (1.7.1)
       activesupport (>= 3.0)
@@ -343,6 +345,7 @@ DEPENDENCIES
   fuubar
   gem-release
   httparty
+  i18n-js
   inline_svg
   iso
   jbuilder (~> 2.7)

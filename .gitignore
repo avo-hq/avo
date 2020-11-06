@@ -10,6 +10,7 @@ spec/dummy/node_modules/
 spec/dummy/assets/
 spec/dummy/public/packs/
 spec/dummy/public/packs-test/
+spec/dummy/public/javascripts/
 spec/dummy/tmp/
 vendor/cache/
 

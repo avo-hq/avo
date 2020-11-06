@@ -8,6 +8,7 @@
 
   <%= javascript_pack_tag 'application' %>
   <%= stylesheet_pack_tag 'application', media: 'all' %>
+  <%= render partial: 'layouts/avo/translations' %>
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body class="bg-gray-200">
@@ -19,7 +20,7 @@
     inline-template
   >
     <div>
-      <application-sidebar :resources='<%= Avo::App.get_resources_navigation(current_user).as_json.html_safe %>' v-if="layout !== 'blank'">
+      <application-sidebar v-if="layout !== 'blank'">
         <template #logo>
           <%= render_logo %>
         </template>
