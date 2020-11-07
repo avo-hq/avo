@@ -20,7 +20,6 @@ const Avo = {
   Api,
   env: '',
   rootPath: window.rootPath || '/avo',
-  i18n: {},
 
   init() {
     Avo.env = window.env || 'production'
@@ -87,7 +86,6 @@ const Avo = {
 
     this.vue = new Vue({
       router,
-      i18n: Avo.i18n,
       store: Avo.store(),
       el: '#app',
       data: () => ({
