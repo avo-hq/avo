@@ -49,4 +49,6 @@ Rails.application.configure do
   config.web_console.development_only = false
 
   config.factory_bot.definition_file_paths = ["../../db"]
+
+  config.middleware.use I18n::JS::Middleware
 end
