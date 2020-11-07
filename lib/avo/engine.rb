@@ -22,7 +22,7 @@ module Avo
     initializer 'avo.init' do |app|
       avo_root_path = Avo::Engine.root.to_s
 
-      config.middleware.use I18n::JS::Middleware
+      app.config.middleware.use I18n::JS::Middleware
 
       if ['development', 'test'].include? Rails.env
         # Register reloader
