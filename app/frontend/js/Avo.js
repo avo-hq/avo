@@ -89,9 +89,6 @@ const Avo = {
       router,
       store: Avo.store(),
       el: '#app',
-      data: () => ({
-        resources: [],
-      }),
       computed: {
         routerKey() {
           return `${this.$route.name}-${this.$route.params.resourceName || ''}`
