@@ -22,14 +22,17 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import sortBy from 'lodash/sortBy'
 import upperFirst from 'lodash/upperFirst'
 
 export default {
-  props: ['resources'],
   computed: {
+    ...mapState('app', [
+      'availableResources',
+    ]),
     sortedResources() {
-      return sortBy(this.resources, 'resource_name')
+      return sortBy(this.availableResources, 'resource_name')
     },
   },
   methods: {

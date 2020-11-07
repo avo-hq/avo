@@ -9,7 +9,9 @@ import VTooltip from 'v-tooltip'
 import Vue from 'vue/dist/vue.esm'
 import VueCurrencyInput from 'vue-currency-input'
 import VueRouter from 'vue-router'
-import Vuex from 'vuex'
+import Vuex, { mapMutations } from 'vuex'
+
+import appStore from '@/js/stores/app-store'
 import indexStore from '@/js/stores/index-store'
 import router from '@/js/router'
 
@@ -43,6 +45,7 @@ const Avo = {
     return new Vuex.Store({
       modules: {
         index: indexStore,
+        app: appStore,
       },
     })
   },
@@ -73,8 +76,8 @@ const Avo = {
     Vue.use(Vuex)
 
     Vue.use({
-      install(VueInstance) {
-        VueInstance.prototype.$t = (key, options) => I18n.t(key, options)
+      install(Vue) {
+        Vue.prototype.$t = (key, options) => I18n.t(key, options)
       },
     })
   },
@@ -101,6 +104,9 @@ const Avo = {
         },
       },
       methods: {
+        ...mapMutations('app', [
+          'setAvailableResources',
+        ]),
         reload() {
           this.$router.go()
         },
@@ -114,21 +120,10 @@ const Avo = {
             this.$toasted.show(message, { type })
           }, 1)
         },
-        setResources() {
-          this.resources = window.avoResources
-          // Set the language code.
-          // Avo.i18n.locale = window.language_code
-
-          // // Update all the available languages.
-          // Object.keys(window.translations).forEach((code) => {
-          //   const translations = window.translations[code]
-
-          //   Avo.i18n.setLocaleMessage(code, translations)
-          // })
-        },
       },
       mounted() {
-        this.setResources()
+        this.setAvailableResources(window.avoResources)
+
         Bus.$on('reload', this.reload)
         Bus.$on('redirect', this.redirect)
         Bus.$on('message', (message) => this.alert(message, 'success'))
