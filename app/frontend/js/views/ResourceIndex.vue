@@ -488,7 +488,7 @@ export default {
     },
     async showAttachModal() {
       this.$modal.show(AttachModal, {
-        heading: this.$t('select_an_item_to_attach', { item: this.resourceNameSingular.toLowerCase() }),
+        heading: this.$t('choose_item', { item: this.resourceNameSingular.toLowerCase() }),
         getOptions: this.getOptions,
         attachAction: this.attachOption,
       })

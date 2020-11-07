@@ -1,5 +1,6 @@
 import I18n from 'i18n-js'
 import lowerCase from 'lodash/lowerCase'
+import pluralize from 'pluralize'
 import upperFirst from 'lodash/upperFirst'
 
 export default {
@@ -19,7 +20,7 @@ export default {
     resourceNameSingular() {
       if (this.translationKey) return upperFirst(lowerCase(I18n.t(this.translationKey, { count: 1 })))
 
-      return upperFirst(lowerCase(this.resourceName))
+      return pluralize(upperFirst(lowerCase(this.resourceName)), 1)
     },
     resourceNamePlural() {
       if (this.translationKey) return upperFirst(lowerCase(I18n.t(this.translationKey, { count: 2 })))

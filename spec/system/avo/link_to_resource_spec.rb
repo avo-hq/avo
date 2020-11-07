@@ -9,7 +9,7 @@ RSpec.describe 'LinkToResource', type: :system do
       it 'displays the projects id as link' do
         visit '/avo/resources/projects'
 
-        expect(find_field_element('id')).to have_selector 'a[title="View Project"]'
+        expect(find_field_element('id')).to have_selector 'a[title="View project"]'
       end
 
       it 'clicks on the projects id' do
@@ -30,7 +30,7 @@ RSpec.describe 'LinkToResource', type: :system do
       it 'displays the user gravatar as link' do
         visit '/avo/resources/users'
 
-        expect(find_field_element_by_component('gravatar-field', user.id)).to have_selector 'a[title="View User"]'
+        expect(find_field_element_by_component('gravatar-field', user.id)).to have_selector 'a[title="View user"]'
       end
 
       it 'clicks on the user gravatar' do

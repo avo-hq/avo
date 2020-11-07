@@ -100,19 +100,19 @@ module Avo
       def name
         return @name if @name.present?
 
-        return I18n.t(@translation_key, count: 1) if @translation_key
+        return I18n.t(@translation_key, count: 1).capitalize if @translation_key
 
         self.class.name.demodulize.titlecase
       end
 
       def singular_name
-        return I18n.t(@translation_key, count: 1) if @translation_key
+        return I18n.t(@translation_key, count: 1).capitalize if @translation_key
 
         name
       end
 
       def plural_name
-        return I18n.t(@translation_key, count: 2) if @translation_key
+        return I18n.t(@translation_key, count: 2).capitalize if @translation_key
 
         name.pluralize
       end
