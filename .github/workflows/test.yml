@@ -68,7 +68,7 @@ jobs:
       run: bin/webpack
 
     - name: Export translations
-      run: rake i18n:js:export
+      run: rake app:i18n:js:export
 
     - name: Run tests
       run: npm run test-all
