@@ -74,6 +74,7 @@ const Avo = {
     Vue.use(PortalVue)
     Vue.use(Vuex)
 
+    // Custom i18n plugin
     Vue.use({
       install(Vue) {
         Vue.prototype.$t = (key, options) => I18n.t(key, options)
