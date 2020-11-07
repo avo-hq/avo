@@ -91,16 +91,16 @@ export default {
       return this.resource.authorization.destroy
     },
     viewTooltipLabel() {
-      return upperFirst(this.$t('view_item', { item: this.resourceNameSingular.toLowerCase() }))
+      return upperFirst(this.$t('avo.view_item', { item: this.resourceNameSingular.toLowerCase() }))
     },
     editTooltipLabel() {
-      return upperFirst(this.$t('edit_item', { item: this.resourceNameSingular.toLowerCase() }))
+      return upperFirst(this.$t('avo.edit_item', { item: this.resourceNameSingular.toLowerCase() }))
     },
     detachTooltipLabel() {
-      return upperFirst(this.$t('detach_item', { item: this.resourceNameSingular.toLowerCase() }))
+      return upperFirst(this.$t('avo.detach_item', { item: this.resourceNameSingular.toLowerCase() }))
     },
     deleteTooltipLabel() {
-      return upperFirst(this.$t('delete_item', { item: this.resourceNameSingular.toLowerCase() }))
+      return upperFirst(this.$t('avo.delete_item', { item: this.resourceNameSingular.toLowerCase() }))
     },
   },
   methods: {
@@ -120,15 +120,15 @@ export default {
     },
     openDeleteModal() {
       this.$modal.show(Modal, {
-        heading: upperFirst(this.$t('delete_item', { item: this.resourceNameSingular })),
-        text: upperFirst(this.$t('are_you_sure')),
+        heading: upperFirst(this.$t('avo.delete_item', { item: this.resourceNameSingular })),
+        text: upperFirst(this.$t('avo.are_you_sure')),
         confirmAction: this.deleteResource,
       })
     },
     openDetachModal() {
       this.$modal.show(Modal, {
-        heading: upperFirst(this.$t('detach_item', { item: this.resourceNameSingular.toLowerCase() })),
-        text: upperFirst(this.$t('are_you_sure')),
+        heading: upperFirst(this.$t('avo.detach_item', { item: this.resourceNameSingular.toLowerCase() })),
+        text: upperFirst(this.$t('avo.are_you_sure')),
         confirmAction: this.detachResource,
       })
     },

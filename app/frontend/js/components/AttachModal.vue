@@ -13,7 +13,7 @@
         v-model="selectedOption"
         @keyup.enter="attachOption"
       >
-        <option value="">{{ $t('choose_an_option') }}</option>
+        <option value="">{{ $t('avo.choose_an_option') }}</option>
         <option v-for="option in options"
           :key="option.value"
           :value="option.value"
@@ -29,7 +29,7 @@
         :disabled="nothingSelected"
         @click="attachOption"
       >
-        {{ $t('attach') }}
+        {{ $t('avo.attach') }}
       </a-button>
       <a-button
         ref="attach-another-button"
@@ -39,14 +39,14 @@
         :disabled="nothingSelected"
         @click="attachOption(true)"
       >
-        {{ $t('attach_and_attach_another') }}
+        {{ $t('avo.attach_and_attach_another') }}
       </a-button>
       <a-button
         ref="cancel-button"
         v-if="attachAction"
         @click="$emit('close')"
       >
-        {{ $t('cancel') }}
+        {{ $t('avo.cancel') }}
       </a-button>
     </div>
   </div>

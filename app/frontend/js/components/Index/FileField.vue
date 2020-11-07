@@ -23,7 +23,7 @@ export default {
   props: ['field'],
   methods: {
     downloadTooltipLabel(file) {
-      return upperFirst(this.$t('download_item', { item: file.filename }))
+      return upperFirst(this.$t('avo.download_item', { item: file.filename }))
     },
   },
 }

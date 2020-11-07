@@ -58,10 +58,10 @@ export default {
     placeholder() {
       if (this.field.placeholder) return this.field.placeholder
 
-      return this.$t('choose_an_option')
+      return this.$t('avo.choose_an_option')
     },
     removeSelectionTooltipLabel() {
-      return this.$t('remove_selection')
+      return this.$t('avo.remove_selection')
     },
   },
   methods: {

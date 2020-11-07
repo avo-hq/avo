@@ -2,7 +2,7 @@
   <index-field-wrapper :field="field" class="text-center">
     <template v-if="value">
         <v-popover>
-          <a href="javascript:void(0);" class="tooltip-target">{{ $t('view') | upperFirst() }}</a>
+          <a href="javascript:void(0);" class="tooltip-target">{{ $t('avo.view') | upperFirst() }}</a>
           <template slot="popover">
             <div class="space-y-2">
               <template v-for="(val, key, index) in value">

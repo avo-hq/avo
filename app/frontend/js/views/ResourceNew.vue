@@ -3,7 +3,7 @@
     <div v-for="panel in resource.panels" :key="panel.name">
       <panel>
         <template #heading>
-          {{ $t('create_new_item', { item: resourceNameSingular.toLowerCase() }) | upperFirst() }}
+          {{ $t('avo.create_new_item', { item: resourceNameSingular.toLowerCase() }) | upperFirst() }}
         </template>
 
         <template #tools>
@@ -13,8 +13,8 @@
               params: {
                 resourceName: resourceName,
               },
-            }"><arrow-left-icon class="h-4 mr-1"/> {{ $t('cancel') }}</a-button>
-            <a-button color="green" @click="submitResource"><save-icon class="h-4 mr-1"/> {{ $t('save') }}</a-button>
+            }"><arrow-left-icon class="h-4 mr-1"/> {{ $t('avo.cancel') }}</a-button>
+            <a-button color="green" @click="submitResource"><save-icon class="h-4 mr-1"/> {{ $t('avo.save') }}</a-button>
           </div>
         </template>
 

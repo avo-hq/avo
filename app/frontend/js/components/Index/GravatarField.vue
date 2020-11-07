@@ -55,7 +55,7 @@ export default {
       return null
     },
     title() {
-      if (this.field.linkToResource && this.canView) return upperFirst(this.$t('view_item', { item: this.resourceNameSingular.toLowerCase() }))
+      if (this.field.linkToResource && this.canView) return upperFirst(this.$t('avo.view_item', { item: this.resourceNameSingular.toLowerCase() }))
 
       return null
     },

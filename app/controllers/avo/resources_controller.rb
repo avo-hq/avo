@@ -95,7 +95,7 @@ module Avo
       render json: {
         success: true,
         resource: Avo::Resources::Resource.hydrate_resource(model: resource, resource: avo_resource, view: :show, user: current_user),
-        message: I18n.t('resource_updated'),
+        message: I18n.t('avo.resource_updated'),
       }
     end
 
@@ -118,7 +118,7 @@ module Avo
       render json: {
         success: true,
         resource: Avo::Resources::Resource.hydrate_resource(model: resource, resource: avo_resource, view: :create, user: current_user),
-        message: I18n.t('resource_created'),
+        message: I18n.t('avo.resource_created'),
       }
     end
 
@@ -132,7 +132,7 @@ module Avo
       resource.destroy!
 
       render json: {
-        message: I18n.t('resource_destroyed'),
+        message: I18n.t('avo.resource_destroyed'),
       }
     end
 

@@ -37,14 +37,14 @@ module Avo
 
       def initialize
         @name ||= name
-        @message ||= I18n.t('are_you_sure_you_want_to_run_this_option')
+        @message ||= I18n.t('avo.are_you_sure_you_want_to_run_this_option')
         @default ||= ''
         @fields ||= []
-        @confirm_text = I18n.t('run')
-        @cancel_text = I18n.t('cancel')
+        @confirm_text = I18n.t('avo.run')
+        @cancel_text = I18n.t('avo.cancel')
         @response ||= {}
         @response[:message_type] ||= :success
-        @response[:message] ||= I18n.t('action_ran_successfully')
+        @response[:message] ||= I18n.t('avo.action_ran_successfully')
         @theme ||= 'success'
       end
 

@@ -5,7 +5,7 @@ module Avo
         @defaults = {
           sortable: true,
           component: 'country-field',
-          placeholder: I18n.t('choose_a_country'),
+          placeholder: I18n.t('avo.choose_a_country'),
         }
 
         super(name, **args, &block)

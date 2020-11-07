@@ -14,7 +14,7 @@
           <sidebar-link to="/"
             exact
           >
-            {{ $t('dashboard') }}
+            {{ $t('avo.dashboard') }}
           </sidebar-link>
 
           <resources-navigation />

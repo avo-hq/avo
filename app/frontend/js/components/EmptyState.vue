@@ -38,9 +38,9 @@ export default {
   ],
   computed: {
     label() {
-      if (this.viaResourceName) return this.$t('no_related_item_found', { item: this.resourceName.toLowerCase() })
+      if (this.viaResourceName) return this.$t('avo.no_related_item_found', { item: this.resourceName.toLowerCase() })
 
-      return this.$t('no_related_item_found', { item: this.resourceName.toLowerCase() })
+      return this.$t('avo.no_related_item_found', { item: this.resourceName.toLowerCase() })
     },
   },
 }

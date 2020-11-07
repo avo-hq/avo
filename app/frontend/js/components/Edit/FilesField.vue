@@ -70,7 +70,7 @@ export default {
   },
   methods: {
     deleteTooltipLabel(file) {
-      return upperFirst(this.$t('delete_item', { item: file.filename }))
+      return upperFirst(this.$t('avo.delete_item', { item: file.filename }))
     },
     deleteFile(file) {
       if (file.id) {

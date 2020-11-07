@@ -58,7 +58,7 @@ module Avo
       end
 
       def render_unauthorized
-        render json: { message: I18n.t('unauthorized') }, status: 403
+        render json: { message: I18n.t('avo.unauthorized') }, status: 403
       end
   end
 end

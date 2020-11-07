@@ -10,7 +10,7 @@
           <div class="flex justify-end space-x-2">
             <resource-actions :resource-name="resourceName" :resource-ids="[resourceId]" :actions="actions" />
             <a-button :to="cancelActionParams">
-              <arrow-left-icon class="h-4 mr-1"/> {{ $t('go_back') }}
+              <arrow-left-icon class="h-4 mr-1"/> {{ $t('avo.go_back') }}
             </a-button>
             <a-button @click="openDeleteModal"
               color="red"
@@ -18,7 +18,7 @@
               v-if="canDelete"
             >
               <trash-icon class="text-red-700 h-4 mr-1"/>
-              {{ $t('delete') | upperFirst() }}
+              {{ $t('avo.delete') | upperFirst() }}
             </a-button>
             <a-button
               color="indigo"
@@ -31,7 +31,7 @@
               }"
               v-if="canEdit"
             >
-              <edit-icon class="h-4 mr-1" /> {{ $t('edit') | upperFirst() }}
+              <edit-icon class="h-4 mr-1" /> {{ $t('avo.edit') | upperFirst() }}
             </a-button>
           </div>
         </template>
@@ -137,8 +137,8 @@ export default {
     },
     openDeleteModal() {
       this.$modal.show(Modal, {
-        heading: this.$t('delete_item', { item: this.resourceNameSingular }),
-        text: this.$t('are_you_sure'),
+        heading: this.$t('avo.delete_item', { item: this.resourceNameSingular }),
+        text: this.$t('avo.are_you_sure'),
         confirmAction: this.deleteResource,
       })
     },

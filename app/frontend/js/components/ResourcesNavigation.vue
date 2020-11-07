@@ -1,7 +1,7 @@
 <template>
   <div>
     <sidebar-link :large="true">
-      {{ $t('resources') }}
+      {{ $t('avo.resources') }}
     </sidebar-link>
 
     <div class="resources-links w-full">

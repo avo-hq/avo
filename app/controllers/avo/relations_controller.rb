@@ -9,7 +9,7 @@ module Avo
 
       render json: {
         success: true,
-        message: I18n.t('attachment_class_attached', attachment_class: attachment_class),
+        message: I18n.t('avo.attachment_class_attached', attachment_class: attachment_class),
       }
     end
 
@@ -18,7 +18,7 @@ module Avo
 
       render json: {
         success: true,
-        message: I18n.t('attachment_class_detached', attachment_class: attachment_class),
+        message: I18n.t('avo.attachment_class_detached', attachment_class: attachment_class),
       }
     end
 
