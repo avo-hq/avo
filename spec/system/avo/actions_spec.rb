@@ -2,7 +2,7 @@ require 'rails_helper'
 WebMock.disable_net_connect!(allow_localhost: true, allow: 'chromedriver.storage.googleapis.com')
 
 RSpec.describe 'Actions', type: :system do
-  let!(:user) { create :user, active: true }
+  let!(:user) { create :user, active: true, roles: { 'admin' => false, 'manager' => false, 'writer' => false } }
 
   context 'index' do
     describe 'without actions attached' do
@@ -16,7 +16,7 @@ RSpec.describe 'Actions', type: :system do
     end
 
     describe 'with actions attached' do
-      let!(:second_user) { create :user, active: true }
+      let!(:second_user) { create :user, active: true, roles: { 'admin' => false, 'manager' => false, 'writer' => false } }
       let(:url) { '/avo/resources/users' }
 
       it 'displays the actions button disabled' do
@@ -55,6 +55,27 @@ RSpec.describe 'Actions', type: :system do
         expect(user.reload.active).to be false
         expect(second_user.reload.active).to be false
       end
+
+      # it 'runs the action without confirmation' do
+      #   visit url
+      #   # expect(find_field_value_element('is_admin?')).to have_css 'svg[data-checked="0"]'
+      #   expect(user.is_admin?).to be false
+      #   expect(second_user.is_admin?).to be false
+
+      #   find("tr[resource-name=users][resource-id='#{user.id}'] input[type=checkbox]").click
+      #   find("tr[resource-name=users][resource-id='#{second_user.id}'] input[type=checkbox]").click
+
+      #   expect(page).to have_button('Actions', disabled: false)
+
+      #   click_on 'Actions'
+      #   click_on 'Make admin'
+
+      #   wait_for_loaded
+
+      #   expect(page).to have_text 'New admin(s) on the board!'
+      #   expect(user.roles).to be {"admin": true, "manager": false, "writer": false}
+      #   expect(second_user.roles).to be {"admin": true, "manager": false, "writer": false}
+      # end
 
       describe 'when resources still selected' do
         it 'runs the action' do
