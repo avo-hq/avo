@@ -1,14 +1,11 @@
 <template>
   <show-field-wrapper :field="field" :index="index">
-    <div class="space-y-2" v-if="value">
-      <template v-for="(val, key, index) in value">
-        <div v-bind:key="index">
-          <boolean-check :checked="val"/>
-          <div class="ml-6 text-left py-px">{{ label(key) }}</div>
-        </div>
-      </template>
-    </div>
-    <empty-dash v-else />
+    <template v-for="(val, key, index) in value">
+      <div v-bind:key="index">
+        <boolean-check :checked="val"/>
+        <div class="ml-6 text-left py-px">{{ label(key) }}</div>
+      </div>
+    </template>
   </show-field-wrapper>
 </template>
 
@@ -22,21 +19,11 @@ export default {
   components: { BooleanCheck },
   methods: {
     setInitialValue() {
-      if (this.field.value) {
-        const values = this.field.value
-        const result = {}
-        Object.keys(values).forEach((key) => {
-          const value = values[key]
-          if (value === true || value === false) {
-            result[key] = value
-          }
-        })
-        if (Object.keys(result).length > 0) {
-          this.value = result
-        } else {
-          this.value = null
-        }
-      }
+      const result = {}
+      Object.keys(this.field.options).forEach((key) => {
+        result[key] = (this.field.value && this.field.value[key]) ? this.field.value[key] : false
+      })
+      this.value = result
     },
     label(key) {
       if (this.field.options[key]) return this.field.options[key]

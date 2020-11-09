@@ -1,21 +1,18 @@
 <template>
   <index-field-wrapper :field="field" class="text-center">
-    <template v-if="value">
-        <v-popover>
-          <a href="javascript:void(0);" class="tooltip-target">View</a>
-          <template slot="popover">
-            <div class="space-y-2">
-              <template v-for="(val, key, index) in value">
-                <div v-bind:key="index">
-                  <boolean-check :checked="val"/>
-                  <div class="ml-6 text-left py-px">{{ label(key) }}</div>
-                </div>
-              </template>
+    <v-popover>
+      <a href="javascript:void(0);" class="tooltip-target">View</a>
+      <template slot="popover">
+        <div class="space-y-2">
+          <template v-for="(val, key, index) in value">
+            <div v-bind:key="index">
+              <boolean-check :checked="val"/>
+              <div class="ml-6 text-left py-px">{{ label(key) }}</div>
             </div>
           </template>
-        </v-popover>
-    </template>
-    <empty-dash v-else />
+        </div>
+      </template>
+    </v-popover>
   </index-field-wrapper>
 </template>
 
@@ -39,21 +36,11 @@ export default {
   }),
   methods: {
     setInitialValue() {
-      if (this.field.value) {
-        const values = this.field.value
-        const result = {}
-        Object.keys(values).forEach((key) => {
-          const value = values[key]
-          if (value === true || value === false) {
-            result[key] = value
-          }
-        })
-        if (Object.keys(result).length > 0) {
-          this.value = result
-        } else {
-          this.value = null
-        }
-      }
+      const result = {}
+      Object.keys(this.field.options).forEach((key) => {
+        result[key] = (this.field.value && this.field.value[key]) ? this.field.value[key] : false
+      })
+      this.value = result
     },
     label(key) {
       if (this.field.options[key]) return this.field.options[key]
