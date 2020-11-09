@@ -21,7 +21,7 @@ export default {
     setInitialValue() {
       const result = {}
       Object.keys(this.field.options).forEach((key) => {
-        result[key] = (this.field.value && key in this.field.value && this.field.value[key] !== false)
+        result[key] = (this.field.value && key in this.field.value && this.field.value[key] === true)
       })
       this.value = result
     },
