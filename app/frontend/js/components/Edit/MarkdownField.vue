@@ -15,6 +15,7 @@
       codeStyle="dracula"
       :toolbars="toolbars"
       default-open="edit"
+      :style="{height: field.height}"
     />
   </edit-field-wrapper>
 </template>
