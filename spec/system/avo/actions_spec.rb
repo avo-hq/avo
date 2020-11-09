@@ -2,7 +2,8 @@ require 'rails_helper'
 WebMock.disable_net_connect!(allow_localhost: true, allow: 'chromedriver.storage.googleapis.com')
 
 RSpec.describe 'Actions', type: :system do
-  let!(:user) { create :user, active: true, roles: { 'admin' => false, 'manager' => false, 'writer' => false } }
+  let!(:roles) { { admin: false, manager: false, writer: false } }
+  let!(:user) { create :user, active: true, roles: roles }
 
   context 'index' do
     describe 'without actions attached' do
@@ -16,7 +17,8 @@ RSpec.describe 'Actions', type: :system do
     end
 
     describe 'with actions attached' do
-      let!(:second_user) { create :user, active: true, roles: { 'admin' => false, 'manager' => false, 'writer' => false } }
+      let!(:roles) { { admin: false, manager: false, writer: false } }
+      let!(:second_user) { create :user, active: true, roles: roles }
       let(:url) { '/avo/resources/users' }
 
       it 'displays the actions button disabled' do
@@ -56,26 +58,26 @@ RSpec.describe 'Actions', type: :system do
         expect(second_user.reload.active).to be false
       end
 
-      # it 'runs the action without confirmation' do
-      #   visit url
-      #   # expect(find_field_value_element('is_admin?')).to have_css 'svg[data-checked="0"]'
-      #   expect(user.is_admin?).to be false
-      #   expect(second_user.is_admin?).to be false
+      it 'runs the action without confirmation' do
+        visit url
 
-      #   find("tr[resource-name=users][resource-id='#{user.id}'] input[type=checkbox]").click
-      #   find("tr[resource-name=users][resource-id='#{second_user.id}'] input[type=checkbox]").click
+        expect(user.roles['admin']).to be false
+        expect(second_user.roles['admin']).to be false
 
-      #   expect(page).to have_button('Actions', disabled: false)
+        find("tr[resource-name=users][resource-id='#{user.id}'] input[type=checkbox]").click
+        find("tr[resource-name=users][resource-id='#{second_user.id}'] input[type=checkbox]").click
 
-      #   click_on 'Actions'
-      #   click_on 'Make admin'
+        expect(page).to have_button('Actions', disabled: false)
 
-      #   wait_for_loaded
+        click_on 'Actions'
+        click_on 'Make admin'
 
-      #   expect(page).to have_text 'New admin(s) on the board!'
-      #   expect(user.roles).to be {"admin": true, "manager": false, "writer": false}
-      #   expect(second_user.roles).to be {"admin": true, "manager": false, "writer": false}
-      # end
+        wait_for_loaded
+
+        expect(page).to have_text 'New admin(s) on the board!'
+        expect(user.reload.roles['admin']).to be true
+        expect(second_user.reload.roles['admin']).to be true
+      end
 
       describe 'when resources still selected' do
         it 'runs the action' do
@@ -99,7 +101,8 @@ RSpec.describe 'Actions', type: :system do
   end
 
   context 'show' do
-    let!(:user) { create :user, active: true }
+    let!(:roles) { { admin: false, manager: false, writer: false } }
+    let!(:user) { create :user, active: true, roles: roles }
     let!(:post) { create :post, published_at: nil }
 
     describe 'with fields' do
@@ -134,6 +137,21 @@ RSpec.describe 'Actions', type: :system do
         expect(page).to have_text 'Perfect!'
         expect(user.reload.active).to be false
         expect(find_field_value_element('active')).to have_css 'svg[data-checked="0"]'
+      end
+
+      it 'executes the action without confirmation' do
+        visit url
+
+        expect(find_field_value_element('roles').find('svg', match: :first)['data-checked']).to eq '0'
+
+        click_on 'Actions'
+        click_on 'Make admin'
+
+        wait_for_loaded
+
+        # expect(page).to have_text 'New admin(s) on the board!'
+        expect(user.reload.roles['admin']).to be true
+        expect(find_field_value_element('roles').find('svg', match: :first)['data-checked']).to eq '1'
       end
     end
 

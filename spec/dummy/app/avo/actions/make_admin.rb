@@ -15,7 +15,7 @@ module Avo
         end
 
         succeed 'New admin(s) on the board!'
-        reload_resources
+        reload
       end
     end
   end
