@@ -3,9 +3,11 @@
 class ResourceGenerator < Rails::Generators::NamedBase
   source_root File.expand_path('templates', __dir__)
 
+  desc 'Creates an Avo resource'
+
   argument :additional_fields, type: :hash, required: false
-  class_option :'generate-fields', type: :boolean, required: false, default: false
-  class_option :'model-class', type: :string, required: false
+  class_option :'generate-fields', type: :boolean, required: false, default: false, desc: 'Looks for fields in the model and generates them.'
+  class_option :'model-class', type: :string, required: false, desc: 'The name of the model.'
 
   namespace 'avo:resource'
 
@@ -31,7 +33,6 @@ class ResourceGenerator < Rails::Generators::NamedBase
       begin
         model = @model_class.classify.constantize
         model.columns_hash.each { |k, v| columns_with_type[k] = v.type }
-        puts columns_with_type
       rescue NameError => e
         puts 'Name error occurs. There is no ' + @model_class.classify + ' model.'
       rescue => e
