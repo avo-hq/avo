@@ -1,3 +1,5 @@
+require 'rails/generators/base'
+
 class ResourceGenerator < Rails::Generators::NamedBase
   source_root File.expand_path('templates', __dir__)
   desc 'Creates an Avo resource'
@@ -51,8 +53,8 @@ class ResourceGenerator < Rails::Generators::NamedBase
     }
 
     result = {}
-    if def fields_option
-      def fields_option.each do |fieldname, fieldtype|
+    if fields_option
+      fields_option.each do |fieldname, fieldtype|
         if name_mappings[fieldname]
           result[fieldname] = name_mappings[fieldname]
         elsif field_mappings[fieldtype]
@@ -67,8 +69,8 @@ class ResourceGenerator < Rails::Generators::NamedBase
 
   def model_params
     result = singular_name + ' '
-    if def fields_option
-      def fields_option.each do |key, value|
+    if fields_option
+      fields_option.each do |key, value|
         result = result + key.to_s + ':' + value.to_s + ' '
       end
     end
