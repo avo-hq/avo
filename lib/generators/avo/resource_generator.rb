@@ -1,4 +1,4 @@
-require 'rails/generators/base'
+# require 'rails/generators/base'
 
 class ResourceGenerator < Rails::Generators::NamedBase
   source_root File.expand_path('templates', __dir__)
@@ -15,6 +15,7 @@ class ResourceGenerator < Rails::Generators::NamedBase
 
   def generate_model
     generate 'model', model_params if generate_model_option
+  end
 
   def generate_model_option
     options['generate_model']
