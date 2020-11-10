@@ -2,64 +2,86 @@
 
 class ResourceGenerator < Rails::Generators::NamedBase
   source_root File.expand_path('templates', __dir__)
-  # class_option 'get-fields_from_model', type: :boolean, required: false, default: false, desc: 'Inspects the model and generates fields in resource. Defaults to true.'
-  # class argument
-  argument :generate_fields, default: false, required: false
+
+  argument :additional_fields, type: :hash, required: false
+  class_option :'generate-fields', type: :boolean, required: false, default: false
+  class_option :'model-class', type: :string, required: false
 
   namespace 'avo:resource'
 
-  # class_option :fields, type: :hash, reguired: false, desc: 'Fields that map to Avo field types.'
-  # class_option :generate_model, type: :boolean, reguired: false, default: true, desc: 'Setting for running r generate model. Defaults to true.'
-
   def create_resource_file
-    # puts 'COLUMN NAMES:'
-    # begin
-    #   puts singular_name.classify.constantize.column_names
-    #   @modelFields = singular_name.classify.constantize.column_names
-    #   singular_name.classify.constantize.column_names.each {|k,v| puts "#{k} => #{v.type}"}
-    # rescue NameError => e
-    #   puts 'Name error occurs. There is no model with ' + singular_name.classify + '.'
-    # rescue => e
-    #   puts 'Other error occured.'
-    # end
-    # puts 'COLUMN HASH:'
-    # puts User.attributes
-
-    @fields = generate_fields ? resource_params : {}
+    @model_class = options[:'model-class'] ? options[:'model-class'] : singular_name
+    @fields = fields
     template 'resource.rb', "app/avo/resources/#{singular_name}.rb"
   end
 
-  # def retrieve_model_fields
-
-  # end
-
-  # def generate_model
-  #   generate 'model', model_params if generate_model_option
-  # end
-
-  # def generate_model_option
-  #   options['generate_model']
-  # end
-
-  # def fields_option
-  #   options['fields']
-  # end
-
   private
-    def resource_params
-      model = singular_name.classify.constantize
-      columnTypeHash = {}
+    def fields
+      fields = {}
+      fields = fields.merge(generated_params) if options[:'generate-fields']
+      fields = fields.merge(additional_params) if !additional_fields.nil?
+      fields = fields.except('id') if fields.key?('id')
+
+      puts fields
+      fields
+    end
+
+    def generated_params
+      columns_with_type = {}
       begin
-        # puts singular_name.classify.constantize.columns_hash
-        model.columns_hash.each { |k, v| columnTypeHash[k] = v.type }
-        puts model.columns_hash
-        puts columnTypeHash
+        model = @model_class.classify.constantize
+        model.columns_hash.each { |k, v| columns_with_type[k] = v.type }
+        puts columns_with_type
       rescue NameError => e
-        puts 'Name error occurs. There is no ' + singular_name.classify + ' model.'
+        puts 'Name error occurs. There is no ' + @model_class.classify + ' model.'
       rescue => e
         puts 'Other error occured.'
       end
 
+      result = {}
+      if !columns_with_type.empty?
+        columns_with_type.each do |fieldname, fieldtype|
+          result[fieldname] = field(fieldname, fieldtype)
+        end
+      end
+
+      result
+    end
+
+    def additional_params
+      result = {}
+
+      additional_fields.each do |fieldname, fieldtype|
+        if avo_fields.include? fieldtype
+          result[fieldname] = { field: fieldtype, }
+        else
+          result[fieldname] = field(fieldname, fieldtype)
+        end
+      end
+
+      result
+    end
+
+    def avo_fields
+      avo_fields = []
+
+      avo_fields_files = Dir[Avo::Engine.root.join('lib', 'avo', 'app', 'fields').to_s + '/*.rb']
+
+      avo_fields_files.each do |file|
+        filename = file.match('[^/]*$').to_s
+        if filename.include? 'field'
+          avo_fields.push(filename.first(-9))
+        else
+          avo_fields.push(filename.first(-3))
+        end
+      end
+
+      avo_fields.delete('')
+
+      avo_fields
+    end
+
+    def field(fieldname, fieldtype)
       field_mappings = {
         primary_key: {
           field: 'id',
@@ -100,6 +122,9 @@ class ResourceGenerator < Rails::Generators::NamedBase
         references: {
           field: 'belongs_to',
         },
+        json: {
+          field: 'code',
+        },
       }
 
       name_mappings = {
@@ -132,28 +157,9 @@ class ResourceGenerator < Rails::Generators::NamedBase
         },
       }
 
-      result = {}
-      if !columnTypeHash.empty?
-        columnTypeHash.each do |fieldname, fieldtype|
-          if name_mappings[fieldname]
-            result[fieldname] = name_mappings[fieldname]
-          elsif field_mappings[fieldtype]
-            result[fieldname] = field_mappings[fieldtype]
-          else
-            result[fieldname] = 'text'
-          end
-        end
-      end
-      result
+      return { field: 'password' } if (fieldname.include?('pass') || fieldname.include?('password')) && !fieldname.include?('reset')
+      return name_mappings[fieldname.to_sym] if name_mappings.key?(fieldname.to_sym)
+      return field_mappings[fieldtype.to_sym] if field_mappings.key?(fieldtype.to_sym)
+      { field: 'text', }
     end
-
-  # def model_params
-  #   result = singular_name + ' '
-  #   if fields_option
-  #     fields_option.each do |key, value|
-  #       result = result + key.to_s + ':' + value.to_s + ' '
-  #     end
-  #   end
-  #   result
-  # end
 end
