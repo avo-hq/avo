@@ -10,6 +10,7 @@ class ResourceGenerator < Rails::Generators::NamedBase
   namespace 'avo:resource'
 
   def create_resource_file
+    @model = options[:'model-class']
     @model_class = options[:'model-class'] ? options[:'model-class'] : singular_name
     @fields = fields
     template 'resource.rb', "app/avo/resources/#{singular_name}.rb"
@@ -22,7 +23,6 @@ class ResourceGenerator < Rails::Generators::NamedBase
       fields = fields.merge(additional_params) if !additional_fields.nil?
       fields = fields.except('id') if fields.key?('id')
 
-      puts fields
       fields
     end
 

@@ -4,6 +4,7 @@ module Avo
       def initialize
         @title = :id
         @search = :id
+        <% if !@model.nil? %>@model = <%= @model %><% end %>
       end
 
       fields do
