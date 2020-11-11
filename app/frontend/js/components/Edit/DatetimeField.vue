@@ -55,9 +55,9 @@ export default {
       return 'YYYY-MM-DD'
     },
     nowLabel() {
-      if (this.field.enable_time) { return 'Now' }
+      if (this.field.enable_time) { return 'Set Now' }
 
-      return 'Today'
+      return 'Set Today'
     },
   },
   methods: {
