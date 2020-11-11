@@ -33,6 +33,14 @@
           @change-filter="changeFilter"
         ></component>
       </template>
+      <div class="p-4 border-gray-300 border-t">
+        <a-button color="gray"
+          class="w-full"
+          :disabled="resetDisabled"
+          @click="resetFilters"
+        >Reset filters</a-button>
+      </div>
+
     </div>
   </div>
 </template>
@@ -60,6 +68,11 @@ export default {
     hasFilters() {
       return this.filters.length > 0
     },
+    resetDisabled() {
+      if (this.$route.query.filters === undefined) return true
+
+      return false
+    },
   },
   methods: {
     togglePanel() {
@@ -73,6 +86,10 @@ export default {
     },
     onClickAway() {
       this.open = false
+    },
+    resetFilters() {
+      this.$emit('reset-filters')
+      this.togglePanel()
     },
   },
   mounted() {
