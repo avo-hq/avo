@@ -8,6 +8,7 @@ require_relative 'avo/app/action'
 require_relative 'avo/app/filter'
 require_relative 'avo/app/filters/boolean_filter'
 require_relative 'avo/app/filters/select_filter'
+require_relative 'avo/app/filters/date_filter'
 
 require_relative 'avo/app/resource'
 

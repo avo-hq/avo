@@ -36,6 +36,8 @@ module Avo
         has_many :posts
       end
 
+      use_filter Avo::Filters::BirthdayFilter
+
       use_action Avo::Actions::MarkInactive
     end
   end
