@@ -2,10 +2,10 @@ require 'rails_helper'
 WebMock.disable_net_connect!(allow_localhost: true, allow: 'chromedriver.storage.googleapis.com')
 
 RSpec.describe 'Filters', type: :system do
-  let!(:featured_post) { create :post, name: 'Featured post', is_featured: true }
-  let!(:unfeatured_post) { create :post, name: 'Unfeatured post', is_featured: false }
-
   describe 'Boolean filter' do
+    let!(:featured_post) { create :post, name: 'Featured post', is_featured: true }
+    let!(:unfeatured_post) { create :post, name: 'Unfeatured post', is_featured: false }
+
     let(:url) { '/avo/resources/posts' }
 
     it 'displays the filter' do
@@ -62,92 +62,97 @@ RSpec.describe 'Filters', type: :system do
     end
   end
 
-  # describe 'Boolean filter' do
-  #   let!(:available_user) { create :user, name: 'Available user', availability: true }
-  #   let!(:unavailable_user) { create :user, name: 'Unavailable user', availability: false }
+  describe 'Select filter' do
+    let!(:published_post) { create :post, name: 'Published post', published_at: '2019-12-05 08:27:19.295065' }
+    let!(:unpublished_post) { create :post, name: 'Unpublished post', published_at: nil }
 
-  #   let(:url) { '/avo/resources/users' }
+    let(:url) { '/avo/resources/posts' }
 
-  #   context 'without default value' do
-  #     it 'displays the filter' do
-  #       visit url
-  #       find('[data-button="resource-filters"]').click
+    context 'without default value' do
+      it 'displays the filter' do
+        visit url
+        find('[data-button="resource-filters"]').click
 
-  #       expect(page).to have_text 'Availability filter'
-  #       expect(page).to have_text 'Available user'
-  #       expect(page).to have_text 'Unavailable user'
-  #       expect(page).to have_select 'avo_filters_availability_filter', selected: empty_dash, options: [empty_dash, 'Available', 'Unavailable']
-  #     end
+        expect(page).to have_text 'Published status'
+        expect(page).to have_select 'avo_filters_published_filter', selected: empty_dash, options: [empty_dash, 'Published', 'Unpublished']
+        expect(page).to have_text 'Published post'
+        expect(page).to have_text 'Unpublished post'
+      end
 
-  #     it 'changes the filter' do
-  #       visit url
-  #       find('[data-button="resource-filters"]').click
+      it 'changes the query' do
+        visit url
+        find('[data-button="resource-filters"]').click
 
-  #       select 'Unavailable', from: 'avo_filters_availability_filter'
-  #       wait_for_loaded
+        select 'Published', from: 'avo_filters_published_filter'
+        wait_for_loaded
 
-  #       expect(page).to have_text 'Availability filter'
-  #       expect(page).not_to have_text 'Available user'
-  #       expect(page).to have_text 'Unavailable user'
-  #       expect(page).to have_select 'avo_filters_availability_filter', selected: 'Unavailable', options: [empty_dash, 'Available', 'Unavailable']
-  #       expect(current_url).to include 'filters='
-  #     end
+        expect(page).to have_text 'Published post'
+        expect(page).not_to have_text 'Unpublished post'
+        expect(page).to have_select 'avo_filters_published_filter', selected: 'Published', options: [empty_dash, 'Published', 'Unpublished']
+        expect(current_url).to include 'filters='
+      end
 
-  #     it 'keeps the filter on page refresh' do
-  #       visit url
-  #       find('[data-button="resource-filters"]').click
+      it 'changes the query back' do
+        visit url
+        find('[data-button="resource-filters"]').click
 
-  #       select 'Unavailable', from: 'avo_filters_availability_filter'
-  #       wait_for_loaded
+        select 'Published', from: 'avo_filters_published_filter'
+        wait_for_loaded
 
-  #       expect(page).to have_text 'Availability filter'
-  #       expect(page).not_to have_text 'Available user'
-  #       expect(page).to have_text 'Unavailable user'
-  #       expect(page).to have_select 'avo_filters_availability_filter', selected: 'Unavailable', options: [empty_dash, 'Available', 'Unavailable']
-  #       expect(current_url).to include 'filters='
+        expect(page).to have_text 'Published post'
+        expect(page).not_to have_text 'Unpublished post'
+        expect(page).to have_select 'avo_filters_published_filter', selected: 'Published', options: [empty_dash, 'Published', 'Unpublished']
+        expect(current_url).to include 'filters='
 
-  #       visit current_url
-  #       find('[data-button="resource-filters"]').click
+        select empty_dash, from: 'avo_filters_published_filter'
+        wait_for_loaded
 
-  #       expect(page).to have_text 'Availability filter'
-  #       expect(page).not_to have_text 'Available user'
-  #       expect(page).to have_text 'Unavailable user'
-  #       expect(page).to have_select 'avo_filters_availability_filter', selected: 'Unavailable', options: [empty_dash, 'Available', 'Unavailable']
-  #     end
-  #   end
+        expect(page).to have_text 'Published post'
+        expect(page).to have_text 'Unpublished post'
+        expect(page).to have_select 'avo_filters_published_filter', selected: empty_dash, options: [empty_dash, 'Published', 'Unpublished']
+        expect(current_url).not_to include 'filters='
 
-  #   context 'with default to available' do
-  #     before do
-  #       Avo::Filters::AvailabilityFilter.set_default 'available'
-  #     end
+        select 'Unpublished', from: 'avo_filters_published_filter'
+        wait_for_loaded
 
-  #     after do
-  #       Avo::Filters::AvailabilityFilter.set_default ''
-  #     end
+        expect(page).not_to have_text 'Published post'
+        expect(page).to have_text 'Unpublished post'
+        expect(page).to have_select 'avo_filters_published_filter', selected: 'Unpublished', options: [empty_dash, 'Published', 'Unpublished']
+        expect(current_url).to include 'filters='
+      end
+    end
 
-  #     it 'displays the filter' do
-  #       visit url
-  #       find('[data-button="resource-filters"]').click
+    # context 'with default to published' do
+    #   before :all do
+    #     Avo::Filters::PublishedFilter.set_default 'published'
+    #   end
 
-  #       expect(page).to have_text 'Availability filter'
-  #       expect(page).to have_text 'Available user'
-  #       expect(page).not_to have_text 'Unavailable user'
-  #       expect(page).to have_select 'avo_filters_availability_filter', selected: 'Available', options: [empty_dash, 'Available', 'Unavailable']
-  #     end
+    #   after :all do
+    #     Avo::Filters::PublishedFilter.set_default :''
+    #   end
 
-  #     it 'changes the filter' do
-  #       visit url
-  #       find('[data-button="resource-filters"]').click
+    #   it 'displays the filter' do
+    #     visit url
+    #     find('[data-button="resource-filters"]').click
 
-  #       select 'Unavailable', from: 'avo_filters_availability_filter'
-  #       wait_for_loaded
+    #     expect(page).to have_text 'Published status'
+    #     expect(page).to have_select 'avo_filters_published_filter', selected: 'Published', options: [empty_dash, 'Published', 'Unpublished']
+    #     expect(page).to have_text 'Published post'
+    #     expect(page).not_to have_text 'Unpublished post'
+    #   end
 
-  #       expect(page).to have_text 'Availability filter'
-  #       expect(page).not_to have_text 'Available user'
-  #       expect(page).to have_text 'Unavailable user'
-  #       expect(page).to have_select 'avo_filters_availability_filter', selected: 'Unavailable', options: [empty_dash, 'Available', 'Unavailable']
-  #       expect(current_url).to include 'filters='
-  #     end
-  #   end
-  # end
+      # it 'changes the filter' do
+      #   visit url
+      #   find('[data-button="resource-filters"]').click
+
+      #   select 'Unpublished', from: 'avo_filters_published_filter'
+        # wait_for_loaded
+
+        # expect(page).not_to have_text 'Published post'
+        # expect(page).to have_text 'Unpublished post'
+        # expect(page).to have_select 'avo_filters_published_filter', selected: 'Unpublished', options: [empty_dash, 'Published', 'Unpublished']
+        # expect(current_url).to include 'filters='
+      # end
+    # end
+  end
 end
