@@ -20,7 +20,6 @@ module Avo
       end
 
       use_filter Avo::Filters::MembersFilter
-
     end
   end
 end

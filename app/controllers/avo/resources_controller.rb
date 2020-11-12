@@ -224,8 +224,8 @@ module Avo
         avo_resource.get_filters.each do |filter_class|
           filter = filter_class.new
 
-          if filter.default_value.present?
-            filter_defaults[filter_class.to_s] = filter.default_value
+          if filter.default.present?
+            filter_defaults[filter_class.to_s] = filter.default
           end
         end
 
