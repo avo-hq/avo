@@ -147,7 +147,7 @@ RSpec.describe 'Actions', type: :system do
         click_on 'Actions'
         click_on 'Make admin'
 
-        wait_for_loaded
+        sleep 0.1
 
         # expect(page).to have_text 'New admin(s) on the board!'
         expect(user.reload.roles['admin']).to be true
