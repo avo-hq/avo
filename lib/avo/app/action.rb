@@ -15,6 +15,7 @@ module Avo
       #   filename: String
       # }
       attr_accessor :response
+      attr_accessor :no_confirmation
 
       @@default = nil
 
@@ -46,6 +47,7 @@ module Avo
         @response[:message_type] ||= :success
         @response[:message] ||= 'Action ran successfully!'
         @theme ||= 'success'
+        @no_confirmation ||= false
       end
 
       def render_response(model, resource)
@@ -61,6 +63,7 @@ module Avo
           cancel_text: cancel_text,
           default: default,
           action_class: self.class.to_s,
+          no_confirmation: no_confirmation,
         }
       end
 
