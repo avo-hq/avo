@@ -149,7 +149,6 @@ RSpec.describe 'Actions', type: :system do
 
         sleep 0.1
 
-        # expect(page).to have_text 'New admin(s) on the board!'
         expect(user.reload.roles['admin']).to be true
         expect(find_field_value_element('roles').find('svg', match: :first)['data-checked']).to eq '1'
       end
