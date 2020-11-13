@@ -38,7 +38,8 @@
           class="w-full"
           :disabled="resetDisabled"
           @click="resetFilters"
-        >Reset filters</a-button>
+          v-text="'Reset filters'"
+        />
       </div>
 
     </div>
