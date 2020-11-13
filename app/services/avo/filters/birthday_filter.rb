@@ -17,7 +17,7 @@ module Avo
           else
             date = Date.strptime(value, '%Y-%m-%d')
 
-            query.where('birthday > ?', date)
+            query.where('birthday >= ?', date)
           end
         else
           query
