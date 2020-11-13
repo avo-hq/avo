@@ -62,7 +62,6 @@ export default {
 
         if (this.disabled) {
           classes += ' bg-gray-300'
-          classes = classes.replace('cursor-pointer', 'cursor-not-allowed')
         } else {
           classes += ' bg-white hover:bg-gray-100'
         }
@@ -70,6 +69,10 @@ export default {
 
       if (this.active) {
         classes = classes.replace(`bg-${this.color}-500`, `bg-${this.color}-700`)
+      }
+
+      if (this.disabled) {
+        classes = classes.replace('cursor-pointer', 'cursor-not-allowed')
       }
 
       if (this.fullWidth) {
