@@ -9,11 +9,6 @@
       :placeholder="field.placeholder"
     />
     <template #extra>
-      <a href="javascript:void(0);"
-        class="p-4 inline-flex items-center"
-        @click="setDateNow"
-        v-text="nowLabel"
-      />
       <span v-if="displayTimezone" class='p-4 items-center inline-flex text-gray-500'>({{timezone}})</span>
     </template>
   </edit-field-wrapper>
@@ -53,11 +48,6 @@ export default {
   computed: {
     submitFormat() {
       return 'YYYY-MM-DD'
-    },
-    nowLabel() {
-      if (this.field.enable_time) { return 'Set Now' }
-
-      return 'Set Today'
     },
   },
   methods: {
@@ -106,9 +96,6 @@ export default {
     },
     focus() {
       // No support for this at the moment.
-    },
-    setDateNow() {
-      this.value = Date.now()
     },
   },
 }
