@@ -1,6 +1,6 @@
 <template>
   <edit-field-wrapper :field="field" :errors="errors" :index="index" :displayed-in="displayedIn">
-     <flat-pickr
+    <flat-pickr
       ref="field-input"
       class="w-full"
       v-model="value"
@@ -9,7 +9,7 @@
       :placeholder="field.placeholder"
     />
     <template #extra>
-      <span v-if="displayTimezone" class='px-4 items-center flex text-gray-500'>({{timezone}})</span>
+      <span v-if="displayTimezone" class="px-4 items-center flex text-gray-500">({{timezone}})</span>
     </template>
   </edit-field-wrapper>
 </template>
