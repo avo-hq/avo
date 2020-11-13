@@ -147,7 +147,7 @@ RSpec.describe 'Actions', type: :system do
         click_on 'Actions'
         click_on 'Make admin'
 
-        sleep 0.1
+        wait_for_loaded
 
         expect(user.reload.roles['admin']).to be true
         expect(find_field_value_element('roles').find('svg', match: :first)['data-checked']).to eq '1'
