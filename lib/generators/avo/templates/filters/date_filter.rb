@@ -9,8 +9,17 @@ module Avo
         query
       end
 
-      def options
-        {}
+      def filter_configuration
+        defaults = {
+          range: false,
+          first_day_of_week: 0,
+          picker_format: "Y-m-d",
+          placeholder: "",
+        }
+
+        return configuration.reverse_merge!(defaults) if defined? configuration
+
+        defaults
       end
     end
   end

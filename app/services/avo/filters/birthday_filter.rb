@@ -29,6 +29,7 @@ module Avo
           placeholder: 'Select a range',
           range: true,
           picker_format: 'J M y',
+          first_day_of_week: 1,
         }
       end
     end
