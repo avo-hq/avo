@@ -6,11 +6,30 @@ module Avo
       end
 
       def apply(request, query, value)
-        query
+        if value
+          if value.include? 'to'
+            dates = value.split(' to ').map { |date| Date.strptime(date.strip, '%Y-%m-%d') }
+
+            start_date = dates[0]
+            end_date = dates[1]
+
+            query.where('birthday BETWEEN ? AND ?', start_date, end_date)
+          else
+            date = Date.strptime(value, '%Y-%m-%d')
+
+            query.where('birthday > ?', date)
+          end
+        else
+          query
+        end
       end
 
-      def options
-        {}
+      def configuration
+        {
+          placeholder: 'Select a range',
+          range: true,
+          picker_format: 'J M y',
+        }
       end
     end
   end

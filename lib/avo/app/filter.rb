@@ -17,10 +17,19 @@ module Avo
         id: id,
         name: name,
         options: options,
+        filter_configuration: filter_configuration,
         component: component,
         default: default_value,
         filter_class: self.class.to_s,
       }
+    end
+
+    def options
+      {}
+    end
+
+    def filter_configuration
+      {}
     end
 
     def apply_query(request, query, value)

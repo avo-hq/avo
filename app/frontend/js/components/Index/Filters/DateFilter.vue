@@ -1,25 +1,14 @@
 <template>
   <filter-wrapper :name="filter.name" :index="index">
-    <!-- <select :name="filter.id"
-      :id="filter.id"
-      @change="changeFilter"
-      v-model="value"
-      :class="inputClasses"
-      class="select-input w-full mb-0"
-    >
-      <option value="">—</option>
-      <option v-for="(value, name) in filter.options"
-        :value="name"
-        v-text="value"
-        :key="name"/>
-    </select> -->
     <flat-pickr
+      :name="filter.id"
+      :id="filter.id"
+      @on-change="changeFilter"
       ref="field-input"
       class="w-full"
       v-model="value"
-      :enable-time="flatpickrConfig.enableTime"
       :config="flatpickrConfig"
-      :placeholder="field.placeholder"
+      :placeholder="filter.filter_configuration.placeholder"
     />
   </filter-wrapper>
 </template>
@@ -27,21 +16,16 @@
 <script>
 import '~/flatpickr/dist/flatpickr.css'
 import { HasInputAppearance } from '@avo-hq/avo-js'
+import IsFieldWrapper from '@/js/mixins/is-field-wrapper'
 import flatPickr from 'vue-flatpickr-component'
 
 export default {
-  mixins: [HasInputAppearance],
+  mixins: [HasInputAppearance, IsFieldWrapper],
   components: { flatPickr },
   data: () => ({
     value: '',
-    timezone: '',
-    appTimezone: 'UTC',
-    enableTime: false,
-    displayTimezone: false,
     flatpickrConfig: {
       dateFormat: 'Y-m-d',
-      enableTime: false,
-      enableSeconds: false,
       // eslint-disable-next-line camelcase
       time_24hr: false,
       locale: {
@@ -74,7 +58,11 @@ export default {
   },
   methods: {
     changeFilter() {
-      return this.$emit('change-filter', { [this.filterClass]: this.filterValue })
+      if (this.filterValue !== this.appliedFilters[this.filterClass]) {
+        return this.$emit('change-filter', { [this.filterClass]: this.filterValue })
+      }
+
+      return null
     },
     setInitialValue() {
       const presentFilterValue = this.appliedFilters[this.filterClass]
@@ -85,9 +73,30 @@ export default {
         this.value = this.filter.default
       }
     },
+    setInitialConfig() {
+      // set flatpickr format
+      this.flatpickrConfig.altFormat = this.filter.filter_configuration.picker_format
+
+      // set input styling
+      this.flatpickrConfig.altInputClass += ` ${this.inputClasses}`
+
+      // set first day of the week
+      this.flatpickrConfig.locale.firstDayOfWeek = this.filter.filter_configuration.first_day_of_week
+
+      // set mode to range
+      if (this.filter.filter_configuration.range) {
+        this.flatpickrConfig.mode = 'range'
+      }
+    },
+    focus() {
+      // No support for this at the moment.
+    },
   },
   mounted() {
     this.setInitialValue()
+  },
+  created() {
+    this.setInitialConfig()
   },
 }
 </script>
