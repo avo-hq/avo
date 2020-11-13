@@ -5,6 +5,7 @@
       :language="field.language"
       :theme="field.theme"
       :editable="true"
+      :height="field.height"
       @value-updated="valueUpdated"
     />
   </edit-field-wrapper>

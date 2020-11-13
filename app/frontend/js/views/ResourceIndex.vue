@@ -75,6 +75,7 @@
               :applied-filters="appliedFilters"
               @change-filter="changeFilter"
               @change-per-page="changePerPage"
+              @reset-filters="resetFilters"
             />
           </div>
         </div>
@@ -350,6 +351,10 @@ export default {
       this.setPerPage(perPage)
       this.updateQueryParams()
     },
+    resetFilters() {
+      this.appliedFilters = {}
+      this.updateQueryParams()
+    },
     changePageFromPagination(page) {
       this.setPage(page)
       this.updateQueryParams()
@@ -493,6 +498,7 @@ export default {
     },
     queryFiltersChanged() {
       const filters = URI(window.location.toString()).query(true)[this.uriParam('filters')]
+
       if (filters) {
         this.setFilterValue(JSON.parse(atob(filters)))
       } else {
