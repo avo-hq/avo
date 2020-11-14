@@ -36,6 +36,11 @@ export default {
     },
   },
   computed: {
+    classes() {
+      return this.baseClasses
+        .replace('items-start', 'items-center')
+        .replace('py-1', 'py-0')
+    },
     extraSlotVisible() {
       return !this.valueSlotFullWidth && !this.displayedInModal
     },
