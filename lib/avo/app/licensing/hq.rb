@@ -7,10 +7,16 @@ module Avo
     REQUEST_TIMEOUT = 5 # seconds
 
     def initialize(current_request)
+    # def initialize(current_request, cache_store)
       @current_request = current_request
+      @cache_store = Rails.cache
+      # @cache_store = cache_store
+      # puts 'initializing ----->'.inspect
     end
 
     def response
+      # abort Rails.cache.inspect
+      # abort @cache_store.inspect
       @hq_response or request
     end
 
@@ -43,7 +49,7 @@ module Avo
           **payload,
         ).stringify_keys!
 
-        Rails.cache.write(CACHE_KEY, response, expires_in: time)
+        @cache_store.write(CACHE_KEY, response, expires_in: time)
 
         @hq_response = response
 
@@ -75,11 +81,11 @@ module Avo
       end
 
       def has_cached_response
-        Rails.cache.exist? CACHE_KEY
+        @cache_store.exist? CACHE_KEY
       end
 
       def cached_response
-        Rails.cache.read CACHE_KEY
+        @cache_store.read CACHE_KEY
       end
   end
 end
