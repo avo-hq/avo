@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full flex flex-col justify-between">
+  <div class="w-full h-full flex flex-col justify-between" v-if="!noConfirmation">
     <div class="p-4 my-4 text-lg tracking-wide font-bold text-center text-gray-700" v-if="heading">
       {{ heading }}
     </div>
@@ -55,6 +55,7 @@ export default {
     'viaResourceId',
     'heading',
     'action',
+    'noConfirmation',
   ],
   data: () => ({}),
   computed: {
@@ -172,7 +173,11 @@ export default {
     },
   },
   mounted() {
-    this.$refs['confirm-button'].focus()
+    if (this.noConfirmation) {
+      this.handle()
+    } else {
+      this.$refs['confirm-button'].focus()
+    }
   },
 }
 </script>

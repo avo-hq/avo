@@ -53,6 +53,7 @@ export default {
         heading: action.name,
         resourceName: this.resourceName,
         resourceIds: this.resourceIds,
+        noConfirmation: action.no_confirmation,
       })
     },
   },
