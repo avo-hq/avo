@@ -4,6 +4,7 @@ PATH
     avo (0.3.2)
       countries
       httparty
+      i18n-js
       inline_svg
       kaminari
       pundit
