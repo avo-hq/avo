@@ -17,6 +17,7 @@ RSpec.describe 'Filters', type: :system do
       expect(page).to have_unchecked_field 'Unfeatured'
       expect(page).to have_text 'Featured post'
       expect(page).to have_text 'Unfeatured post'
+      expect(page).to have_button('Reset filters', disabled: true)
     end
 
     it 'changes the query' do
@@ -31,9 +32,10 @@ RSpec.describe 'Filters', type: :system do
       expect(page).to have_checked_field 'Featured'
       expect(page).to have_unchecked_field 'Unfeatured'
       expect(current_url).to include 'filters='
+      expect(page).to have_button('Reset filters', disabled: false)
     end
 
-    it 'changes the query back' do
+    it 'changes the query back also with reset' do
       visit url
       find('[data-button="resource-filters"]').click
 
@@ -43,6 +45,7 @@ RSpec.describe 'Filters', type: :system do
       expect(page).to have_text 'Featured post'
       expect(page).not_to have_text 'Unfeatured post'
       expect(current_url).to include 'filters='
+      expect(page).to have_button('Reset filters', disabled: false)
 
       uncheck 'Featured'
       wait_for_loaded
@@ -51,6 +54,7 @@ RSpec.describe 'Filters', type: :system do
       expect(page).to have_text 'Unfeatured post'
       expect(page).to have_unchecked_field 'Featured'
       expect(page).to have_unchecked_field 'Unfeatured'
+      expect(page).to have_button('Reset filters', disabled: false)
 
       check 'Featured'
       check 'Unfeatured'
@@ -59,6 +63,19 @@ RSpec.describe 'Filters', type: :system do
       expect(page).to have_text 'Unfeatured post'
       expect(page).to have_checked_field 'Featured'
       expect(page).to have_checked_field 'Unfeatured'
+      expect(page).to have_button('Reset filters', disabled: false)
+
+      click_on 'Reset filters'
+      wait_for_loaded
+
+      find('[data-button="resource-filters"]').click
+
+      expect(page).to have_text 'Featured post'
+      expect(page).to have_text 'Unfeatured post'
+      expect(page).to have_unchecked_field 'Featured'
+      expect(page).to have_unchecked_field 'Unfeatured'
+      expect(current_url).not_to include 'filters='
+      expect(page).to have_button('Reset filters', disabled: true)
     end
   end
 
@@ -82,9 +99,10 @@ RSpec.describe 'Filters', type: :system do
       expect(page).to have_checked_field 'Has Members'
       expect(page).not_to have_text 'Without Members'
       expect(page).to have_text 'With Members'
+      expect(page).to have_button('Reset filters', disabled: true)
     end
 
-    it 'changes the query' do
+    it 'changes the query and reset' do
       visit url
       find('[data-button="resource-filters"]').click
 
@@ -95,6 +113,18 @@ RSpec.describe 'Filters', type: :system do
       expect(page).to have_unchecked_field 'Has Members'
       expect(page).to have_text 'Without Members'
       expect(page).to have_text 'With Members'
+      expect(page).to have_button('Reset filters', disabled: false)
+
+      click_on 'Reset filters'
+      wait_for_loaded
+
+      find('[data-button="resource-filters"]').click
+
+      expect(page).to have_text 'Members filter'
+      expect(page).to have_checked_field 'Has Members'
+      expect(page).not_to have_text 'Without Members'
+      expect(page).to have_text 'With Members'
+      expect(page).to have_button('Reset filters', disabled: true)
     end
   end
 
@@ -113,6 +143,7 @@ RSpec.describe 'Filters', type: :system do
         expect(page).to have_select 'avo_filters_published_filter', selected: empty_dash, options: [empty_dash, 'Published', 'Unpublished']
         expect(page).to have_text 'Published post'
         expect(page).to have_text 'Unpublished post'
+        expect(page).to have_button('Reset filters', disabled: true)
       end
 
       it 'changes the query' do
@@ -126,9 +157,10 @@ RSpec.describe 'Filters', type: :system do
         expect(page).not_to have_text 'Unpublished post'
         expect(page).to have_select 'avo_filters_published_filter', selected: 'Published', options: [empty_dash, 'Published', 'Unpublished']
         expect(current_url).to include 'filters='
+        expect(page).to have_button('Reset filters', disabled: false)
       end
 
-      it 'changes the query back' do
+      it 'changes the query back also with reset' do
         visit url
         find('[data-button="resource-filters"]').click
 
@@ -139,6 +171,7 @@ RSpec.describe 'Filters', type: :system do
         expect(page).not_to have_text 'Unpublished post'
         expect(page).to have_select 'avo_filters_published_filter', selected: 'Published', options: [empty_dash, 'Published', 'Unpublished']
         expect(current_url).to include 'filters='
+        expect(page).to have_button('Reset filters', disabled: false)
 
         select empty_dash, from: 'avo_filters_published_filter'
         wait_for_loaded
@@ -147,6 +180,7 @@ RSpec.describe 'Filters', type: :system do
         expect(page).to have_text 'Unpublished post'
         expect(page).to have_select 'avo_filters_published_filter', selected: empty_dash, options: [empty_dash, 'Published', 'Unpublished']
         expect(current_url).not_to include 'filters='
+        expect(page).to have_button('Reset filters', disabled: true)
 
         select 'Unpublished', from: 'avo_filters_published_filter'
         wait_for_loaded
@@ -155,6 +189,18 @@ RSpec.describe 'Filters', type: :system do
         expect(page).to have_text 'Unpublished post'
         expect(page).to have_select 'avo_filters_published_filter', selected: 'Unpublished', options: [empty_dash, 'Published', 'Unpublished']
         expect(current_url).to include 'filters='
+        expect(page).to have_button('Reset filters', disabled: false)
+
+        click_on 'Reset filters'
+        wait_for_loaded
+
+        find('[data-button="resource-filters"]').click
+
+        expect(page).to have_text 'Published status'
+        expect(page).to have_select 'avo_filters_published_filter', selected: empty_dash, options: [empty_dash, 'Published', 'Unpublished']
+        expect(page).to have_text 'Published post'
+        expect(page).to have_text 'Unpublished post'
+        expect(page).to have_button('Reset filters', disabled: true)
       end
     end
   end
