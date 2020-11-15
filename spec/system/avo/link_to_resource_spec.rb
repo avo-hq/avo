@@ -1,5 +1,4 @@
 require 'rails_helper'
-WebMock.disable_net_connect!(allow_localhost: true, allow: 'chromedriver.storage.googleapis.com')
 
 RSpec.describe 'LinkToResource', type: :system do
   describe 'for id field' do

@@ -1,5 +1,4 @@
 require 'rails_helper'
-WebMock.disable_net_connect!(allow_localhost: true, allow: 'chromedriver.storage.googleapis.com')
 
 RSpec.describe 'Filters', type: :system do
   let!(:featured_post) { create :post, name: 'Featured post', is_featured: true }
