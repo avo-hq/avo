@@ -37,7 +37,6 @@ export default {
     enableTime: false,
     displayTimezone: false,
     flatpickrConfig: {
-      dateFormat: 'Y-m-d',
       enableTime: false,
       enableSeconds: false,
       // eslint-disable-next-line camelcase
@@ -46,7 +45,6 @@ export default {
         firstDayOfWeek: 0,
       },
       altInput: true,
-      altFormat: 'Y-m-d',
       altInputClass: 'w-full',
     },
   }),
@@ -86,6 +84,7 @@ export default {
       this.flatpickrConfig.enableTime = this.field.enable_time
       this.flatpickrConfig.enableSeconds = this.field.enable_time
 
+      this.flatpickrConfig.dateFormat = this.field.picker_format
       this.flatpickrConfig.altFormat = this.field.picker_format
       this.flatpickrConfig.altInputClass += ` ${this.inputClasses}`
 
