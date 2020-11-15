@@ -58,13 +58,3 @@ en:
     next_page: 'Next page'
     prev_page: 'Previous page'
     list_is_empty: 'List is empty'
-    field_translations:
-      file:
-        zero: 'files'
-        one: 'file'
-        other: 'files'
-    resource_translations:
-      user:
-        zero: 'users'
-        one: 'user'
-        other: 'users'
