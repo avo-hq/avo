@@ -11,8 +11,8 @@ export default {
   computed: {
     value() {
       if (this.field.value && this.field.value.length > 0) {
-        if (this.field.tname) {
-          return this.$t('avo.number_of_items', { item: this.$t(this.field.tname, { count: this.field.value.length }), count: this.field.value.length })
+        if (this.field.translation_key) {
+          return this.$t('avo.number_of_items', { item: this.$t(this.field.translation_key, { count: this.field.value.length }), count: this.field.value.length })
         }
 
         return this.$t('avo.number_of_items', { item: this.field.name, count: this.field.value.length })
