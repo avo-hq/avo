@@ -10,6 +10,7 @@
     "test": "bundle exec rspec ./spec",
     "test-unit": "bundle exec rspec ./spec --tag type:feature --tag type:controller",
     "test-system": "bundle exec rspec ./spec --tag type:system",
+    "test-all": "bundle exec rspec ./spec",
     "docker-build": "docker build -t avo-dev -f docker/Dockerfile .",
     "docker-clean": "docker rmi avo-dev",
     "build": "sh scripts/build.sh",
