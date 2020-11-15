@@ -1,6 +1,6 @@
 <template>
   <edit-field-wrapper :field="field" :errors="errors" :index="index" :displayed-in="displayedIn">
-     <flat-pickr
+    <flat-pickr
       ref="field-input"
       class="w-full"
       v-model="value"
@@ -14,7 +14,7 @@
         @click="setDateNow"
         v-text="nowLabel"
       />
-      <span v-if="displayTimezone" class='p-4 items-center inline-flex text-gray-500'>({{timezone}})</span>
+      <span v-if="displayTimezone" class="px-4 items-center inline-flex text-gray-500">({{timezone}})</span>
     </template>
   </edit-field-wrapper>
 </template>
@@ -55,9 +55,9 @@ export default {
       return 'YYYY-MM-DD'
     },
     nowLabel() {
-      if (this.field.enable_time) { return 'Now' }
+      if (this.field.enable_time) { return 'Set now' }
 
-      return 'Today'
+      return 'Set today'
     },
   },
   methods: {
