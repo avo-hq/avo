@@ -7,16 +7,11 @@ module Avo
     REQUEST_TIMEOUT = 5 # seconds
 
     def initialize(current_request)
-    # def initialize(current_request, cache_store)
       @current_request = current_request
-      @cache_store = Rails.cache
-      # @cache_store = cache_store
-      # puts 'initializing ----->'.inspect
+      @cache_store = Avo::App.cache_store
     end
 
     def response
-      # abort Rails.cache.inspect
-      # abort @cache_store.inspect
       @hq_response or request
     end
 
