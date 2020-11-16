@@ -12,7 +12,6 @@ class ResourceGenerator < Rails::Generators::NamedBase
   namespace 'avo:resource'
 
   def create_resource_file
-    @model = options[:'model-class']
     @model_class = options[:'model-class'] ? options[:'model-class'] : singular_name
     template 'resource.rb', "app/avo/resources/#{singular_name}.rb"
   end
@@ -21,7 +20,7 @@ class ResourceGenerator < Rails::Generators::NamedBase
     def generate_initializer
       initializerString = ''
 
-      initializerString = "\n        @model = " + @model if @model.present?
+      initializerString = "\n        @model = " + @model_class if options[:'model-class']
 
       initializerString
     end
@@ -29,21 +28,48 @@ class ResourceGenerator < Rails::Generators::NamedBase
     def generate_fields
       fields = {}
       fields = fields.merge(generate_params_from_model) if options[:'generate-fields']
+      fields = fields.merge(generate_select_from_model) if options[:'generate-fields']
       fields = fields.merge(generate_additional_params_from_argument) if !additional_fields.nil?
-      fields = fields.except('id') if fields.key?('id')
-      fields = fields.except('encrypted_password') if fields.key?('encrypted_password')
-      fields = fields.except('reset_password_token') if fields.key?('reset_password_token')
-      fields = fields.except('reset_password_sent_at') if fields.key?('reset_password_sent_at')
-      fields = fields.except('remember_created_at') if fields.key?('remember_created_at')
 
       fieldsString = ''
       if fields.present?
-        fields.each do |field_name, fieldoptions|
-          fieldsString += "\n        " + fieldoptions[:field] + ' :' + field_name
+        fields.each do |field_name, field_options|
+          options = ''
+          if field_options[:options].present?
+            field_options[:options].each { |k, v| options += ', ' + k.to_s + ': ' + v }
+          end
+
+          fieldsString += "\n        " + field_options[:field] + ' :' + field_name + options
         end
       end
 
       fieldsString
+    end
+
+    def generate_select_from_model
+      enums = []
+      begin
+        model = @model_class.classify.safe_constantize
+        model.defined_enums.each { |k, v| enums.push(k) }
+      rescue NameError => e
+        puts 'Name error occurs. There is no ' + @model_class.classify + ' model.'
+      rescue => e
+        puts 'Other error occured.'
+      end
+
+      results = {}
+      if enums.present?
+        enums.each { |enum| results[enum] = {
+          field: 'select',
+          options: {
+            enum: '::' + @model_class.capitalize + '.' + enum.pluralize
+          },
+        } }
+      end
+
+      puts results
+
+      results
     end
 
     def generate_params_from_model
@@ -63,6 +89,15 @@ class ResourceGenerator < Rails::Generators::NamedBase
           result[field_name] = field(field_name, field_type)
         end
       end
+
+      # ignore some fields from model
+      result = result.except('id') if result.key?('id')
+      result = result.except('encrypted_password') if result.key?('encrypted_password')
+      result = result.except('reset_password_token') if result.key?('reset_password_token')
+      result = result.except('reset_password_sent_at') if result.key?('reset_password_sent_at')
+      result = result.except('remember_created_at') if result.key?('remember_created_at')
+      result = result.except('created_at') if result.key?('created_at')
+      result = result.except('updated_at') if result.key?('updated_at')
 
       result
     end
