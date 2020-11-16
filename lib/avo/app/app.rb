@@ -21,12 +21,10 @@ module Avo
         @@app[:root_path] = Pathname.new(File.join(__dir__, '..', '..'))
         init_fields
 
-        if Avo::PACKED
-          if Rails.cache.class == ActiveSupport::Cache::NullStore
-            @@app[:cache_store] ||= ActiveSupport::Cache::MemoryStore.new
-          else
-            @@app[:cache_store] = Rails.cache
-          end
+        if Rails.cache.class == ActiveSupport::Cache::NullStore
+          @@app[:cache_store] ||= ActiveSupport::Cache::MemoryStore.new
+        else
+          @@app[:cache_store] = Rails.cache
         end
       end
 

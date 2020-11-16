@@ -33,6 +33,8 @@ rescue ActiveRecord::PendingMigrationError => e
   exit 1
 end
 
+Avo::App.boot
+
 # ActiveRecord::Migrator.migrate(File.join(Rails.root, 'db/migrate'))
 
 test_driver = ENV['HEADFULL'] ? :selenium_chrome : :selenium_chrome_headless
