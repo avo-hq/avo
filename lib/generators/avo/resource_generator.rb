@@ -14,24 +14,42 @@ class ResourceGenerator < Rails::Generators::NamedBase
   def create_resource_file
     @model = options[:'model-class']
     @model_class = options[:'model-class'] ? options[:'model-class'] : singular_name
-    @fields = fields
     template 'resource.rb', "app/avo/resources/#{singular_name}.rb"
   end
 
   private
-    def fields
-      fields = {}
-      fields = fields.merge(generated_params) if options[:'generate-fields']
-      fields = fields.merge(additional_params) if !additional_fields.nil?
-      fields = fields.except('id') if fields.key?('id')
+    def generate_initializer
+      initializerString = ''
 
-      fields
+      initializerString = "\n        @model = " + @model if @model.present?
+
+      initializerString
     end
 
-    def generated_params
+    def generate_fields
+      fields = {}
+      fields = fields.merge(generate_params_from_model) if options[:'generate-fields']
+      fields = fields.merge(generate_additional_params_from_argument) if !additional_fields.nil?
+      fields = fields.except('id') if fields.key?('id')
+      fields = fields.except('encrypted_password') if fields.key?('encrypted_password')
+      fields = fields.except('reset_password_token') if fields.key?('reset_password_token')
+      fields = fields.except('reset_password_sent_at') if fields.key?('reset_password_sent_at')
+      fields = fields.except('remember_created_at') if fields.key?('remember_created_at')
+
+      fieldsString = ''
+      if fields.present?
+        fields.each do |field_name, fieldoptions|
+          fieldsString += "\n        " + fieldoptions[:field] + ' :' + field_name
+        end
+      end
+
+      fieldsString
+    end
+
+    def generate_params_from_model
       columns_with_type = {}
       begin
-        model = @model_class.classify.constantize
+        model = @model_class.classify.safe_constantize
         model.columns_hash.each { |k, v| columns_with_type[k] = v.type }
       rescue NameError => e
         puts 'Name error occurs. There is no ' + @model_class.classify + ' model.'
@@ -40,23 +58,23 @@ class ResourceGenerator < Rails::Generators::NamedBase
       end
 
       result = {}
-      if !columns_with_type.empty?
-        columns_with_type.each do |fieldname, fieldtype|
-          result[fieldname] = field(fieldname, fieldtype)
+      if columns_with_type.present?
+        columns_with_type.each do |field_name, field_type|
+          result[field_name] = field(field_name, field_type)
         end
       end
 
       result
     end
 
-    def additional_params
+    def generate_additional_params_from_argument
       result = {}
 
-      additional_fields.each do |fieldname, fieldtype|
-        if avo_fields.include? fieldtype
-          result[fieldname] = { field: fieldtype, }
+      additional_fields.each do |field_name, field_type|
+        if avo_fields.include? field_type
+          result[field_name] = { field: field_type, }
         else
-          result[fieldname] = field(fieldname, fieldtype)
+          result[field_name] = field(field_name, field_type)
         end
       end
 
@@ -82,7 +100,7 @@ class ResourceGenerator < Rails::Generators::NamedBase
       avo_fields
     end
 
-    def field(fieldname, fieldtype)
+    def field(field_name, field_type)
       field_mappings = {
         primary_key: {
           field: 'id',
@@ -156,11 +174,13 @@ class ResourceGenerator < Rails::Generators::NamedBase
         money: {
           field: 'currency',
         },
+        country: {
+          field: 'country',
+        },
       }
 
-      return { field: 'password' } if (fieldname.include?('pass') || fieldname.include?('password')) && !fieldname.include?('reset')
-      return name_mappings[fieldname.to_sym] if name_mappings.key?(fieldname.to_sym)
-      return field_mappings[fieldtype.to_sym] if field_mappings.key?(fieldtype.to_sym)
+      return name_mappings[field_name.to_sym] if name_mappings.key?(field_name.to_sym)
+      return field_mappings[field_type.to_sym] if field_mappings.key?(field_type.to_sym)
       { field: 'text', }
     end
 end

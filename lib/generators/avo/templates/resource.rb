@@ -3,16 +3,11 @@ module Avo
     class <%= class_name %> < Resource
       def initialize
         @title = :id
-        @search = :id
-        <% if !@model.nil? %>@model = <%= @model %><% end %>
+        @search = :id<%= generate_initializer %>
       end
 
       fields do
-        id
-        <% if !@fields.empty?
-        @fields.each do |fieldname, fieldoptions| %><%= fieldoptions[:field] %> :<%= fieldname %>
-        <% end
-        end %>
+        id<%= generate_fields %>
       end
     end
   end
