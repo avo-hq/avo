@@ -24,7 +24,7 @@ module Avo
 
       app.config.middleware.use I18n::JS::Middleware
 
-      if ['development', 'test'].include? Rails.env
+      if Avo::IN_DEVELOPMENT
         # Register reloader
         app.reloaders << app.config.file_watcher.new([], {
           Avo::Engine.root.join('lib', 'avo').to_s => ['rb'],
@@ -34,12 +34,10 @@ module Avo
         config.to_prepare do
           Dir.glob(avo_root_path + '/lib/avo/app/**/*.rb'.to_s).each { |c| load c }
         end
-      end
-
-      if Rails.env.production?
+      else
         Dir.glob(avo_root_path + '/lib/avo/app/**/*.rb'.to_s).each { |c| require c }
 
-        Avo::App.boot
+        Avo::App.boot if Avo::PACKED
       end
     end
 

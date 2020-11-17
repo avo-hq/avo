@@ -9,7 +9,12 @@
       :placeholder="field.placeholder"
     />
     <template #extra>
-      <span v-if="displayTimezone" class="px-4 items-center flex text-gray-500">({{timezone}})</span>
+      <a href="javascript:void(0);"
+        class="p-4 inline-flex items-center"
+        @click="setDateNow"
+        v-text="nowLabel"
+      />
+      <span v-if="displayTimezone" class="px-4 items-center inline-flex text-gray-500">({{timezone}})</span>
     </template>
   </edit-field-wrapper>
 </template>
@@ -32,7 +37,6 @@ export default {
     enableTime: false,
     displayTimezone: false,
     flatpickrConfig: {
-      dateFormat: 'Y-m-d',
       enableTime: false,
       enableSeconds: false,
       // eslint-disable-next-line camelcase
@@ -41,13 +45,17 @@ export default {
         firstDayOfWeek: 0,
       },
       altInput: true,
-      altFormat: 'Y-m-d',
       altInputClass: 'w-full',
     },
   }),
   computed: {
     submitFormat() {
       return 'YYYY-MM-DD'
+    },
+    nowLabel() {
+      if (this.field.enable_time) { return 'Set now' }
+
+      return 'Set today'
     },
   },
   methods: {
@@ -76,6 +84,7 @@ export default {
       this.flatpickrConfig.enableTime = this.field.enable_time
       this.flatpickrConfig.enableSeconds = this.field.enable_time
 
+      this.flatpickrConfig.dateFormat = this.field.picker_format
       this.flatpickrConfig.altFormat = this.field.picker_format
       this.flatpickrConfig.altInputClass += ` ${this.inputClasses}`
 
@@ -96,6 +105,9 @@ export default {
     },
     focus() {
       // No support for this at the moment.
+    },
+    setDateNow() {
+      this.value = Date.now()
     },
   },
 }
