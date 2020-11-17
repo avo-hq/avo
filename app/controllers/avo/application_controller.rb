@@ -5,6 +5,7 @@ module Avo
     before_action :init_app
 
     def init_app
+      Avo::App.boot if Avo::IN_DEVELOPMENT
       Avo::App.init request
 
       @license = Avo::App.license
