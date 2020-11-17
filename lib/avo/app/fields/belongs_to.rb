@@ -7,7 +7,7 @@ module Avo
       def initialize(name, **args, &block)
         @defaults = {
           component: 'belongs-to-field',
-          placeholder: "Choose #{name.downcase}",
+          placeholder: I18n.t('avo.choose_an_option')
         }
 
         @searchable = args[:searchable] == true ? true : false
@@ -49,7 +49,7 @@ module Avo
           end
         end
 
-        fields[:resource_name_plural] = target_resource.resource_name_plural
+        fields[:plural_name] = target_resource.plural_name
 
         fields
       end

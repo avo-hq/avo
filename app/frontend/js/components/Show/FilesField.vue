@@ -4,7 +4,7 @@
       <div v-for="file in field.files" :key="file.path" class="relative pb-full">
         <a :href="file.path"
           class="w-full h-full block"
-          v-tooltip="`Download ${file.filename}`"
+          v-tooltip="$t('avo.download_item', { item: file.filename })"
           download
         >
           <img

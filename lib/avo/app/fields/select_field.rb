@@ -12,7 +12,7 @@ module Avo
         @options = args[:options].present? ? args[:options] : {}
         @enum = args[:enum].present? ? args[:enum] : nil
         @display_value = args[:display_value].present? ? args[:display_value] : false
-        @placeholder = args[:placeholder].present? ? args[:placeholder].to_s : 'Choose an option'
+        @placeholder = args[:placeholder].present? ? args[:placeholder].to_s : I18n.t('avo.choose_an_option')
       end
 
       def hydrate_field(fields, model, resource, view)

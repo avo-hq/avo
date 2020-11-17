@@ -67,6 +67,10 @@ jobs:
     - name: Bundle assets
       run: bin/webpack
 
+    - name: Export translations
+      run: bin/rails i18n:js:export
+      working-directory: spec/dummy
+
     - name: Run tests
       run: npm run test-all
 

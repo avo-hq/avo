@@ -9,6 +9,7 @@ module Avo
 
       attr_accessor :id
       attr_accessor :name
+      attr_accessor :translation_key
       attr_accessor :component
       attr_accessor :updatable
       attr_accessor :sortable
@@ -36,6 +37,7 @@ module Avo
         @field_properties = {
           id: id,
           name: id.to_s.humanize(keep_id_suffix: true),
+          translation_key: nil,
           block: block,
           component: 'field',
           required: false,

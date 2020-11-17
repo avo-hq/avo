@@ -5,16 +5,16 @@
         class="h-20 text-gray-400"
       />
       <code-icon :class="centeringClasses"
-        class="h-8 -ml-20  -mt-12"
+        class="h-8 -ml-20 -mt-12"
       />
       <fire-icon :class="centeringClasses"
-        class="h-8 -ml-10  -mt-24"
+        class="h-8 -ml-10 -mt-24"
       />
       <color-swatch-icon :class="centeringClasses"
-        class="h-8 ml-8  -mt-24"
+        class="h-8 ml-8 -mt-24"
       />
       <globe-icon :class="centeringClasses"
-        class="h-8 ml-20  -mt-12"
+        class="h-8 ml-20 -mt-12"
       />
       <library-icon :class="centeringClasses"
         class="h-8 -ml-20 mt-4"
@@ -38,9 +38,9 @@ export default {
   ],
   computed: {
     label() {
-      if (this.viaResourceName) return `No related ${this.resourceName.toLowerCase()} found`
+      if (this.viaResourceName) return this.$t('avo.no_related_item_found', { item: this.resourceName.toLowerCase() })
 
-      return `No ${this.resourceName.toLowerCase()} found`
+      return this.$t('avo.no_related_item_found', { item: this.resourceName.toLowerCase() })
     },
   },
 }

@@ -1,5 +1,4 @@
 require 'rails_helper'
-WebMock.disable_net_connect!(allow_localhost: true, allow: 'chromedriver.storage.googleapis.com')
 
 RSpec.describe 'TrixField', type: :system do
   describe 'without value' do
@@ -33,7 +32,7 @@ RSpec.describe 'TrixField', type: :system do
         click_on 'Save'
         wait_for_loaded
 
-        click_on 'Show Content'
+        click_on 'Show content'
 
         expect(find_field_value_element('body')).to have_text 'Works for us!!!'
       end
@@ -48,7 +47,7 @@ RSpec.describe 'TrixField', type: :system do
       it 'displays the posts body' do
         visit "/avo/resources/posts/#{post.id}"
 
-        click_on 'Show Content'
+        click_on 'Show content'
 
         expect(find_field_value_element('body')).to have_text body
       end
@@ -77,7 +76,7 @@ RSpec.describe 'TrixField', type: :system do
         click_on 'Save'
         wait_for_loaded
 
-        click_on 'Show Content'
+        click_on 'Show content'
 
         expect(find_field_value_element('body')).to have_text 'New example!'
       end

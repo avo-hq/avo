@@ -1,5 +1,5 @@
 require 'rails_helper'
-WebMock.disable_net_connect!(allow_localhost: true, allow: 'chromedriver.storage.googleapis.com')
+
 
 RSpec.describe 'Actions', type: :system do
   let!(:roles) { { admin: false, manager: false, writer: false } }
@@ -147,6 +147,7 @@ RSpec.describe 'Actions', type: :system do
         click_on 'Actions'
         click_on 'Make admin'
 
+        sleep 0.2
         wait_for_loaded
 
         expect(user.reload.roles['admin']).to be true

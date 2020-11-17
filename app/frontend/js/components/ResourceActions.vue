@@ -5,7 +5,7 @@
       :disabled="isDisabled"
       class="js-actions-toggle-button"
     >
-      <arrow-left-icon class="h-4 mr-1 transform -rotate-90"/> Actions
+      <arrow-left-icon class="h-4 mr-1 transform -rotate-90"/> {{ $t('avo.actions') }}
     </a-button>
     <div v-on-clickaway="closePanel"
       class="js-actions-panel absolute block inset-auto right-0 top-full bg-white min-w-300px mt-2 py-4 z-20 shadow-context rounded-xl overflow-hidden"

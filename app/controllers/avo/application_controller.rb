@@ -5,6 +5,7 @@ module Avo
     before_action :init_app
 
     def init_app
+      Avo::App.boot if Avo::IN_DEVELOPMENT
       Avo::App.init request
 
       @license = Avo::App.license
@@ -57,7 +58,7 @@ module Avo
       end
 
       def render_unauthorized
-        render json: { message: 'Unauthorized' }, status: 403
+        render json: { message: I18n.t('avo.unauthorized') }, status: 403
       end
   end
 end

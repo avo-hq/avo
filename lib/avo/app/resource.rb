@@ -13,14 +13,15 @@ module Avo
 
       class << self
         def hydrate_resource(model:, resource:, view: :index, user:)
-          default_panel_name = "#{resource.name} details"
+          default_panel_name = I18n.t 'avo.resource_details', name: resource.name
 
           resource_with_fields = {
             id: model.id,
             authorization: get_authorization(user, model),
-            resource_name_singular: resource.resource_name_singular,
-            resource_name_plural: resource.resource_name_plural,
+            singular_name: resource.singular_name,
+            plural_name: resource.plural_name,
             title: model[resource.title],
+            translation_key: resource.translation_key,
             path: resource.url,
             fields: [],
             grid_fields: {},
@@ -99,14 +100,20 @@ module Avo
       def name
         return @name if @name.present?
 
+        return I18n.t(@translation_key, count: 1).capitalize if @translation_key
+
         self.class.name.demodulize.titlecase
       end
 
-      def resource_name_singular
+      def singular_name
+        return I18n.t(@translation_key, count: 1).capitalize if @translation_key
+
         name
       end
 
-      def resource_name_plural
+      def plural_name
+        return I18n.t(@translation_key, count: 2).capitalize if @translation_key
+
         name.pluralize
       end
 
@@ -126,6 +133,10 @@ module Avo
         return @title if @title.present?
 
         'id'
+      end
+
+      def translation_key
+        @translation_key
       end
 
       def model
@@ -166,7 +177,7 @@ module Avo
         if via_resource_name.present?
           related_model = App.get_resource_by_name(via_resource_name).model
 
-          db_query = related_model.find(via_resource_id).public_send(self.resource_name_plural.downcase)
+          db_query = related_model.find(via_resource_id).public_send(self.plural_name.downcase)
         end
 
         new_query = []

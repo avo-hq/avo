@@ -7,7 +7,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test": "bundle exec rspec ./spec --tag type:system",
+    "test": "bundle exec rspec ./spec",
     "test-unit": "bundle exec rspec ./spec --tag type:feature --tag type:controller",
     "test-system": "bundle exec rspec ./spec --tag type:system",
     "test-all": "bundle exec rspec ./spec",
@@ -28,6 +28,7 @@
     "eslint-config-airbnb": "^18.1.0",
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-plugin-sort-imports-es6-autofix": "^0.5.0",
+    "i18n-js": "^3.8.0",
     "lodash": "^4.17.19",
     "mavon-editor": "^2.9.0",
     "moment": "^2.26.0",

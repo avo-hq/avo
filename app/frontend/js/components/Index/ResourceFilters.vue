@@ -1,14 +1,14 @@
 <template>
   <div class="relative w-full flex justify-between z-30" v-if="hasFilters">
     <a-button color="gray" class="focus:outline-none" @click="togglePanel">
-      <filter-icon class="h-4 mr-2" data-button="resource-filters" /> Filters
+      <filter-icon class="h-4 mr-2" data-button="resource-filters" /> {{ $t('avo.filters') }}
     </a-button>
     <div v-on-clickaway="onClickAway"
       class="absolute block inset-auto right-0 top-full bg-white min-w-300px mt-2 z-20 shadow-context rounded-xl"
       v-if="open"
     >
       <div v-if="!viaResourceName">
-        <filter-wrapper name="Per page">
+        <filter-wrapper :name="$t('avo.per_page')">
           <select name="per_page"
             id="per_page"
             @change="changePerPage"

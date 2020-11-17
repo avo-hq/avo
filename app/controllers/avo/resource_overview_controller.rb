@@ -5,6 +5,7 @@ module Avo
     def index
       resources = App.get_resources
         .select { |resource| AuthorizationService::authorize session_user, resource.model, Avo.configuration.authorization_methods.stringify_keys['index'] }
+        .sort_by(&:name)
         .map do |resource|
           {
             name: resource.name,

@@ -22,6 +22,8 @@ module Avo
     initializer 'avo.init' do |app|
       avo_root_path = Avo::Engine.root.to_s
 
+      app.config.middleware.use I18n::JS::Middleware
+
       if Avo::IN_DEVELOPMENT
         # Register reloader
         app.reloaders << app.config.file_watcher.new([], {

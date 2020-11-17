@@ -40,4 +40,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'countries'
   spec.add_dependency 'pundit'
   spec.add_dependency 'httparty'
+  spec.add_dependency 'i18n-js'
 end

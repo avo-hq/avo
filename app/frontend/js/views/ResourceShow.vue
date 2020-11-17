@@ -10,7 +10,7 @@
           <div class="flex justify-end space-x-2">
             <resource-actions :resource-name="resourceName" :resource-ids="[resourceId]" :actions="actions" />
             <a-button :to="cancelActionParams">
-              <arrow-left-icon class="h-4 mr-1"/> Back
+              <arrow-left-icon class="h-4 mr-1"/> {{ $t('avo.go_back') }}
             </a-button>
             <a-button @click="openDeleteModal"
               color="red"
@@ -18,7 +18,7 @@
               v-if="canDelete"
             >
               <trash-icon class="text-red-700 h-4 mr-1"/>
-              Delete
+              {{ $t('avo.delete') | upperFirst() }}
             </a-button>
             <a-button
               color="indigo"
@@ -31,7 +31,7 @@
               }"
               v-if="canEdit"
             >
-              <edit-icon class="h-4 mr-1" /> Edit
+              <edit-icon class="h-4 mr-1" /> {{ $t('avo.edit') | upperFirst() }}
             </a-button>
           </div>
         </template>
@@ -71,13 +71,14 @@ import Avo, { Api } from '@/js/Avo'
 import DealsWithHasManyRelations from '@/js/mixins/deals-with-has-many-relations'
 import DealsWithResourceLabels from '@/js/mixins/deals-with-resource-labels'
 import HasUniqueKey from '@/js/mixins/has-unique-key'
+import HasUpperFirstFilter from '@/js/mixins/has-upper-first-filter'
 import LoadsActions from '@/js/mixins/loads-actions'
 import LoadsResource from '@/js/mixins/loads-resource'
 import Modal from '@/js/components/Modal.vue'
 
 export default {
   name: 'ResourceShow',
-  mixins: [LoadsResource, LoadsActions, HasUniqueKey, DealsWithResourceLabels, DealsWithHasManyRelations],
+  mixins: [LoadsResource, LoadsActions, HasUniqueKey, DealsWithResourceLabels, DealsWithHasManyRelations, HasUpperFirstFilter],
   data: () => ({
     resource: null,
     actions: [],
@@ -125,7 +126,7 @@ export default {
   },
   methods: {
     fieldsForPanel(panel) {
-      return this.fields.filter((field) => field.panel_name === panel.name)
+      return this.fields.filter((field) => field.panelName === panel.name)
     },
     async deleteResource() {
       await Api.delete(`${Avo.rootPath}/avo-api/${this.resourcePath}/${this.resource.id}`)
@@ -136,8 +137,8 @@ export default {
     },
     openDeleteModal() {
       this.$modal.show(Modal, {
-        heading: `Delete ${this.resourceNameSingular}`,
-        text: 'Are you sure?',
+        heading: this.$t('avo.delete_item', { item: this.resourceNameSingular }),
+        text: this.$t('avo.are_you_sure'),
         confirmAction: this.deleteResource,
       })
     },

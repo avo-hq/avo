@@ -7,7 +7,7 @@
             size="xs"
             variant="outlined"
             color="red"
-            v-tooltip="`Delete ${file.filename}`"
+            v-tooltip="deleteTooltipLabel(file)"
             @click="deleteFile(file)"
           ><times-icon class="h-3" /></a-button>
         </div>
@@ -33,6 +33,7 @@
 
 <script>
 import { IsFormField } from '@avo-hq/avo-js'
+import upperFirst from 'lodash/upperFirst'
 
 export default {
   mixins: [IsFormField],
@@ -68,6 +69,9 @@ export default {
     },
   },
   methods: {
+    deleteTooltipLabel(file) {
+      return upperFirst(this.$t('avo.delete_item', { item: file.filename }))
+    },
     deleteFile(file) {
       if (file.id) {
         this.files = this.files.filter((currentFile) => currentFile.id !== file.id)
@@ -80,6 +84,7 @@ export default {
       this.value = event.target.files
 
       const { files } = event.target
+      // eslint-disable-next-line no-plusplus
       for (let i = 0; i < files.length; i++) {
         this.addFile(files.item(i))
       }

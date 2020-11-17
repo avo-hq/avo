@@ -90,8 +90,8 @@ RSpec.describe Avo::ResourceOverviewController, type: :controller do
       expect(parsed_response['resources']).to match_array([
         {
           count: 0,
-          name: 'Team',
-          url: 'teams',
+          name: 'Post',
+          url: 'posts',
         },
         {
           count: 0,
@@ -100,8 +100,8 @@ RSpec.describe Avo::ResourceOverviewController, type: :controller do
         },
         {
           count: 0,
-          name: 'Post',
-          url: 'posts',
+          name: 'Team',
+          url: 'teams',
         },
         {
           count: 0,
@@ -132,9 +132,9 @@ RSpec.describe Avo::ResourceOverviewController, type: :controller do
       expect(parsed_response['hide_docs']).to be false
       expect(parsed_response['resources']).to match_array([
         {
-          count: 2,
-          name: 'Team',
-          url: 'teams',
+          count: 0,
+          name: 'Post',
+          url: 'posts',
         },
         {
           count: 0,
@@ -142,9 +142,9 @@ RSpec.describe Avo::ResourceOverviewController, type: :controller do
           url: 'projects',
         },
         {
-          count: 0,
-          name: 'Post',
-          url: 'posts',
+          count: 2,
+          name: 'Team',
+          url: 'teams',
         },
         {
           count: 0,

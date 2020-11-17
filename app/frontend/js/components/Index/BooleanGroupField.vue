@@ -1,7 +1,7 @@
 <template>
   <index-field-wrapper :field="field" class="text-center">
     <v-popover>
-      <a href="javascript:void(0);" class="tooltip-target">View</a>
+      <a href="javascript:void(0);" class="tooltip-target">{{ $t('avo.view') | upperFirst() }}</a>
       <template slot="popover">
         <div class="space-y-2">
           <template v-for="(val, key, index) in value">
@@ -16,19 +16,13 @@
   </index-field-wrapper>
 </template>
 
-<style>
-  .tooltip-inner, .popover-inner {
-    padding: 1rem !important;
-    background-color: #ffffff !important;
-  }
-</style>
-
 <script>
 import { IsFormField } from '@avo-hq/avo-js'
 import BooleanCheck from '@/js/components/BooleanCheck.vue'
+import hasUpperFirstFilter from '@/js/mixins/has-upper-first-filter'
 
 export default {
-  mixins: [IsFormField],
+  mixins: [IsFormField, hasUpperFirstFilter],
   props: ['field'],
   components: { BooleanCheck },
   data: () => ({
@@ -50,3 +44,10 @@ export default {
   },
 }
 </script>
+
+<style>
+  .tooltip-inner, .popover-inner {
+    padding: 1rem !important;
+    background-color: #ffffff !important;
+  }
+</style>

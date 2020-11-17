@@ -7,7 +7,6 @@
 
 <script>
 export default {
-  data: () => ({}),
   props: ['field'],
   computed: {
     label() {
@@ -20,7 +19,5 @@ export default {
       return this.field.value
     },
   },
-  methods: {},
-  mounted() {},
 }
 </script>

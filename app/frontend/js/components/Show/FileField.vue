@@ -10,10 +10,10 @@
     <template #extra>
       <a-button :href="field.value"
         color="indigo"
-        v-tooltip="`Download ${field.filename}`"
+        v-tooltip="$t('avo.download_item', { item: field.filename })"
         v-if="field.value"
         download
-      ><download-icon class="h-4 mr-1" /> Download</a-button>
+      ><download-icon class="h-4 mr-1" /> {{ $t('avo.download') }}</a-button>
     </template>
   </show-field-wrapper>
 </template>

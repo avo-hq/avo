@@ -3,6 +3,7 @@ module Avo
     class User < Resource
       def initialize
         @title = :name
+        @translation_key = 'avo.resource_translations.user'
         @search = [:id, :first_name, :last_name]
         @includes = :posts
         @has_devise_password = true

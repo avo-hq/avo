@@ -1,5 +1,4 @@
 require 'rails_helper'
-WebMock.disable_net_connect!(allow_localhost: true, allow: 'chromedriver.storage.googleapis.com')
 
 RSpec.describe 'StatusField', type: :system do
   describe 'without value' do

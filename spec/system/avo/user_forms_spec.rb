@@ -1,11 +1,10 @@
 require 'rails_helper'
-WebMock.disable_net_connect!(allow_localhost: true, allow: 'chromedriver.storage.googleapis.com')
 
 RSpec.describe 'UserForms', type: :system do
   it 'Shows the empty posts page' do
     visit '/avo/resources/posts'
 
-    expect(page).to have_text('No posts found')
+    expect(page).to have_text('No related posts found')
   end
 
   it 'accesses the create user page' do
@@ -31,7 +30,7 @@ RSpec.describe 'UserForms', type: :system do
 
     click_on 'Cancel'
 
-    expect(page).to have_text 'No posts found'
+    expect(page).to have_text 'No related posts found'
     expect(page).to have_css 'a', text: 'Create new post'
     expect(current_path).to eq '/avo/resources/posts'
   end

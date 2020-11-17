@@ -1,5 +1,4 @@
 require 'rails_helper'
-WebMock.disable_net_connect!(allow_localhost: true, allow: 'chromedriver.storage.googleapis.com')
 
 RSpec.describe 'KeyValueFields', type: :system do
   describe 'without value' do
@@ -166,6 +165,7 @@ RSpec.describe 'KeyValueFields', type: :system do
         delete_buttons[0].click
 
         click_on 'Save'
+        sleep 0.2
         wait_for_loaded
 
         expect(current_path).to eql "/avo/resources/projects/#{project.id}"

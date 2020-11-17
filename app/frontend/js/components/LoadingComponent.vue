@@ -7,7 +7,7 @@
       <path id="steamL" d="M17 1C17 1 17 4.5 14 6.5C11 8.5 11 12 11 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="var(--secondary)"></path>
       <path id="steamR" d="M21 6C21 6 21 8.22727 19 9.5C17 10.7727 17 13 17 13" stroke="var(--secondary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
     </svg>
-    <div class="font-bold mt-2">Loading</div>
+    <div class="font-bold mt-2">{{ $t('avo.loading') }}</div>
   </div>
 </template>
 

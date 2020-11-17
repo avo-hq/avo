@@ -2,7 +2,7 @@
   <multiselect
     class="text-sm"
     label="search_label"
-    placeholder="Type to search"
+    :placeholder="$t('avo.type_to_search')"
     :options="options"
     :searchable="true"
     :loading="isLoading"
@@ -21,7 +21,8 @@
     :show-labels="false"
     :allow-empty="true"
   >
-    <span slot="noResult">Oops! Nothing found...</span>
+    <span slot="noResult">{{ $t('avo.oops_nothing_found') }}</span>
+    <span slot="noOptions">{{ $t('avo.list_is_empty') }}</span>
   </multiselect>
 </template>
 
@@ -94,7 +95,7 @@ export default {
   },
   methods: {
     limitText(count) {
-      return `and ${count} other resources`
+      return this.$t('avo.and_x_other_resources', { count })
     },
     asyncFind: debounce(function (query) {
       const vm = this
