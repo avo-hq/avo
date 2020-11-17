@@ -5,7 +5,6 @@ module Avo
     before_action :init_app
 
     def init_app
-      Avo::App.boot unless Rails.env.production?
       Avo::App.init request
 
       @license = Avo::App.license

@@ -12,6 +12,7 @@ module Avo
       root_path: '',
       resources: [],
       field_names: {},
+      cache_store: nil
     }
     @@license = nil
 
@@ -19,6 +20,12 @@ module Avo
       def boot
         @@app[:root_path] = Pathname.new(File.join(__dir__, '..', '..'))
         init_fields
+
+        if Rails.cache.class == ActiveSupport::Cache::NullStore
+          @@app[:cache_store] ||= ActiveSupport::Cache::MemoryStore.new
+        else
+          @@app[:cache_store] = Rails.cache
+        end
       end
 
       def init(current_request = nil)
@@ -32,6 +39,10 @@ module Avo
 
       def license
         @@license
+      end
+
+      def cache_store
+        @@app[:cache_store]
       end
 
       # This method will take all fields available in the Avo::Fields namespace and create a method for them.

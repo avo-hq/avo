@@ -15,6 +15,8 @@ require_relative 'avo/app/licensing/license_manager'
 
 module Avo
   ROOT_PATH = Pathname.new(File.join(__dir__, '..'))
+  IN_DEVELOPMENT = ENV['AVO_IN_DEVELOPMENT'] == '1'
+  PACKED = !IN_DEVELOPMENT
 
   class << self
     def webpacker

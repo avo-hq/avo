@@ -8,6 +8,7 @@ module Avo
 
     def initialize(current_request)
       @current_request = current_request
+      @cache_store = Avo::App.cache_store
     end
 
     def response
@@ -43,7 +44,7 @@ module Avo
           **payload,
         ).stringify_keys!
 
-        Rails.cache.write(CACHE_KEY, response, expires_in: time)
+        @cache_store.write(CACHE_KEY, response, expires_in: time)
 
         @hq_response = response
 
@@ -75,11 +76,11 @@ module Avo
       end
 
       def has_cached_response
-        Rails.cache.exist? CACHE_KEY
+        @cache_store.exist? CACHE_KEY
       end
 
       def cached_response
-        Rails.cache.read CACHE_KEY
+        @cache_store.read CACHE_KEY
       end
   end
 end
