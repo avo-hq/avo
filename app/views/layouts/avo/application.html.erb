@@ -30,8 +30,8 @@
         </template>
       </application-sidebar>
 
-      <div class="flex-1 h-full overflow-auto">
-        <div class="relative bg-white p-2 shadow-md h-16 w-full flex items-center z-50" v-if="layout !== 'blank'">
+      <div class="flex-1 flex flex-col h-full overflow-auto">
+        <div class="relative bg-white p-2 shadow-md h-16 w-full flex flex-shrink-0 items-center z-50" v-if="layout !== 'blank'">
           <div class="ml-6">
             <%= render_header %>
           </div>
@@ -46,7 +46,7 @@
           <%= yield %>
         </div>
 
-        <div class="content p-8" v-else>
+        <div class="content p-8 flex-1 flex flex-col justify-between items-stretch" v-else>
           <%= yield %>
           <%= render_footer %>
         </div>
