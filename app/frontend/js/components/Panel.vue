@@ -12,7 +12,7 @@
       </template>
     </view-header>
 
-    <div class="relative bg-white rounded-xl shadow-xl mb-8">
+    <div class="relative bg-white rounded-xl shadow-xl mb-8 min-h-28">
       <slot name="content"/>
     </div>
 
