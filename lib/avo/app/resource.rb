@@ -13,7 +13,6 @@ module Avo
 
       class << self
         def hydrate_resource(model:, resource:, view: :index, user:)
-
           case view
           when :show
             panel_name = I18n.t 'avo.resource_details', name: resource.name.downcase.upcase_first
