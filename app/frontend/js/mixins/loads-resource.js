@@ -4,6 +4,7 @@ import Bus from '@/js/Bus'
 import Resource from '@/js/models/Resource'
 import hasLoadingBus from '@/js/mixins/has-loading-bus'
 import pluralize from 'pluralize'
+import replace from 'lodash/replace'
 
 export default {
   mixins: [hasLoadingBus],
@@ -21,6 +22,11 @@ export default {
       }
 
       return `${Avo.rootPath}/avo-api/${this.resourceName}/new`
+    },
+    resourceNameFromURL() {
+      if (!this.resource) return replace(pluralize(this.resourceName, 1), '_', ' ')
+
+      return this.resource.singular_name
     },
   },
   methods: {

@@ -1,5 +1,5 @@
 <template>
-  <div class="relative w-full flex justify-between z-30" v-if="hasFilters">
+  <div class="relative w-full flex justify-between z-30">
     <a-button color="gray" class="focus:outline-none" @click="togglePanel">
       <filter-icon class="h-4 mr-2" data-button="resource-filters" /> {{ $t('avo.filters') }}
     </a-button>
@@ -34,14 +34,13 @@
         ></component>
       </template>
       <div class="p-4 border-gray-300 border-t">
-        <a-button color="gray"
+        <a-button
+          color="gray"
           class="w-full"
           :disabled="resetDisabled"
           @click="resetFilters"
-          v-text="'Reset filters'"
-        />
+        >Reset filters</a-button>
       </div>
-
     </div>
   </div>
 </template>
@@ -66,9 +65,6 @@ export default {
     perPageSteps: {},
   },
   computed: {
-    hasFilters() {
-      return this.filters.length > 0
-    },
     resetDisabled() {
       if (this.$route.query.filters === undefined) return true
 

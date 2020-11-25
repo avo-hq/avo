@@ -9,16 +9,15 @@
     :href="realHref"
     @click="$emit('click')"
   >
-    <div class="text-center w-full" v-if="fullWidth">
+    <span class="text-center w-full" v-if="fullWidth">
       <slot />
-    </div>
+    </span>
     <slot v-else />
   </button>
 </template>
 
 <script>
 export default {
-  data: () => ({}),
   props: [
     'to',
     'exact',

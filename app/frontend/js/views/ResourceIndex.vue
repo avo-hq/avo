@@ -50,7 +50,6 @@
               :resource-name="resourceName"
               :via-resource-name="viaResourceName"
               :via-resource-id="viaResourceId"
-              v-if="resources.length > 0"
             />
           </div>
           <div class="flex justify-end items-center px-6 space-x-3">
@@ -83,8 +82,7 @@
         <loading-overlay class="relative" v-if="viewType === '' && isLoading"/>
 
         <div class="w-full overflow-auto min-h-28 flex flex-col" v-if="viewType === 'table'">
-          <loading-overlay class="relative" v-if="resources.length === 0 && isLoading"/>
-          <div class="relative flex-1 flex" v-else>
+          <div class="relative flex-1 flex">
             <loading-overlay v-if="isLoading" />
 
             <resource-table

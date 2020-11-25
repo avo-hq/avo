@@ -13,7 +13,14 @@ module Avo
 
       class << self
         def hydrate_resource(model:, resource:, view: :index, user:)
-          default_panel_name = I18n.t 'avo.resource_details', name: resource.name
+          case view
+          when :show
+            panel_name = I18n.t 'avo.resource_details', name: resource.name.downcase.upcase_first
+          when :edit
+            panel_name = I18n.t('avo.edit_item', item: resource.name.downcase).upcase_first
+          when :create
+            panel_name = I18n.t('avo.create_new_item', item: resource.name.downcase).upcase_first
+          end
 
           resource_with_fields = {
             id: model.id,
@@ -26,7 +33,7 @@ module Avo
             fields: [],
             grid_fields: {},
             panels: [{
-              name: default_panel_name,
+              name: panel_name,
               component: 'panel',
             }]
           }
@@ -46,7 +53,7 @@ module Avo
 
             next if furnished_field.blank?
 
-            furnished_field[:panel_name] = default_panel_name
+            furnished_field[:panel_name] = panel_name
             furnished_field[:show_on_show] = field.show_on_show
 
             if field.has_own_panel?

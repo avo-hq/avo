@@ -1,5 +1,5 @@
 <template>
-  <div v-if="resource" :resource-id="resourceId">
+  <div :resource-id="resourceId">
     <div v-for="panel in panels" :key="panel.name">
       <panel>
         <template #heading>
@@ -75,6 +75,7 @@ import HasUpperFirstFilter from '@/js/mixins/has-upper-first-filter'
 import LoadsActions from '@/js/mixins/loads-actions'
 import LoadsResource from '@/js/mixins/loads-resource'
 import Modal from '@/js/components/Modal.vue'
+import upperFirst from 'lodash/upperFirst'
 
 export default {
   name: 'ResourceShow',
@@ -107,10 +108,12 @@ export default {
       return action
     },
     fields() {
+      if (!this.resource) return []
+
       return this.resource.fields
     },
     panels() {
-      if (!this.resource) return []
+      if (!this.resource) return [{ name: this.$t('avo.resource_details', { name: upperFirst(this.resourceNameFromURL) }) }]
 
       return this.resource.panels
     },
@@ -118,9 +121,13 @@ export default {
       return this.fields.filter((field) => ['has_and_belongs_to_many', 'has_many'].indexOf(field.relationship) > -1)
     },
     canEdit() {
+      if (!this.resource) return false
+
       return this.resource.authorization.edit
     },
     canDelete() {
+      if (!this.resource) return false
+
       return this.resource.authorization.destroy
     },
   },

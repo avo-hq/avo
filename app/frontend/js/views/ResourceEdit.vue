@@ -1,9 +1,9 @@
 <template>
-  <div v-if="resource" :resource-id="resourceId">
-    <div v-for="panel in resource.panels" :key="panel.name">
+  <div :resource-id="resourceId">
+    <div v-for="panel in panels" :key="panel.name">
       <panel>
         <template #heading>
-          {{ $t('avo.edit_item', { item: resourceNameSingular.toLowerCase() }) | upperFirst() }}
+          {{panel.name}}
         </template>
 
         <template #tools>
@@ -48,6 +48,7 @@ import HasForms from '@/js/mixins/has-forms'
 import HasUniqueKey from '@/js/mixins/has-unique-key'
 import LoadsResource from '@/js/mixins/loads-resource'
 import hasUpperFirstFilter from '@/js/mixins/has-upper-first-filter'
+import upperFirst from 'lodash/upperFirst'
 
 export default {
   mixins: [HasForms, LoadsResource, DealsWithResourceLabels, HasUniqueKey, hasUpperFirstFilter],
@@ -62,12 +63,17 @@ export default {
     'viaResourceId',
   ],
   computed: {
+    panels() {
+      if (!this.resource) return [{ name: upperFirst(this.$t('avo.edit_item', { item: this.resourceNameFromURL })) }]
+
+      return this.resource.panels
+    },
     cancelActionParams() {
       const action = {
         name: 'show',
         params: {
           resourceName: this.resourceName,
-          resourceId: this.resource.id,
+          resourceId: this.resourceId,
         },
       }
 
@@ -79,6 +85,8 @@ export default {
       return action
     },
     canUpdate() {
+      if (!this.resource) return false
+
       return this.resource.authorization.update
     },
   },
