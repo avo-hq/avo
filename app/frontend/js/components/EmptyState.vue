@@ -40,7 +40,7 @@ export default {
     label() {
       if (this.viaResourceName) return this.$t('avo.no_related_item_found', { item: this.resourceName.toLowerCase() })
 
-      return this.$t('avo.no_related_item_found', { item: this.resourceName.toLowerCase() })
+      return this.$t('avo.no_item_found', { item: this.resourceName.toLowerCase() })
     },
   },
 }
