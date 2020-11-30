@@ -4,8 +4,6 @@ module Avo
     attr_accessor :component
     attr_accessor :default
 
-    @@default = nil
-
     def initialize
       @name ||= 'Filter'
       @component ||= 'boolean-filter'
@@ -18,7 +16,7 @@ module Avo
         name: name,
         options: options,
         component: component,
-        default: default_value,
+        default: default,
         filter_class: self.class.to_s,
       }
     end
@@ -31,15 +29,6 @@ module Avo
 
     def id
       self.class.name.underscore.gsub('/', '_')
-    end
-
-    # These methods helps us set a default value in the testing environment
-    def default_value
-      @@default || default
-    end
-
-    def self.set_default(value)
-      @@default = value
     end
   end
 end
