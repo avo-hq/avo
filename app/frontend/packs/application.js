@@ -2,6 +2,9 @@ import '@/css/application.css'
 
 import * as Mousetrap from 'mousetrap'
 import Avo from '@/js/Avo'
+import I18n from 'i18n-js'
+
+window.I18n = I18n
 
 document.addEventListener('DOMContentLoaded', Avo.init)
 

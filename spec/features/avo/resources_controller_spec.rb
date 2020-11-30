@@ -67,6 +67,7 @@ RSpec.describe Avo::ResourcesController, type: :controller do
             per_page_steps: [12, 24, 48, 72],
             available_view_types: ['grid', 'table'],
             default_view_type: 'grid',
+            translation_key: nil,
           },
           per_page: 24,
           resources: [],

@@ -5,7 +5,7 @@ require_relative 'filters/boolean_filter'
 require_relative 'filters/date_filter'
 require_relative 'resource'
 require_relative 'tool'
-require_relative 'authorization_service'
+require_relative 'services/authorization_service'
 
 module Avo
   class App
@@ -13,6 +13,7 @@ module Avo
       root_path: '',
       resources: [],
       field_names: {},
+      cache_store: nil
     }
     @@license = nil
 
@@ -20,6 +21,13 @@ module Avo
       def boot
         @@app[:root_path] = Pathname.new(File.join(__dir__, '..', '..'))
         init_fields
+        I18n.locale = Avo.configuration.language_code
+
+        if Rails.cache.class == ActiveSupport::Cache::NullStore
+          @@app[:cache_store] ||= ActiveSupport::Cache::MemoryStore.new
+        else
+          @@app[:cache_store] = Rails.cache
+        end
       end
 
       def init(current_request = nil)
@@ -33,6 +41,10 @@ module Avo
 
       def license
         @@license
+      end
+
+      def cache_store
+        @@app[:cache_store]
       end
 
       # This method will take all fields available in the Avo::Fields namespace and create a method for them.
@@ -128,10 +140,16 @@ module Avo
         name.to_s.camelize.singularize
       end
 
-      def get_resources_navigation(user)
+      def get_available_resources(user)
         App.get_resources
           .select { |resource| AuthorizationService::authorize user, resource.model, Avo.configuration.authorization_methods.stringify_keys['index'] }
-          .map { |resource| { label: resource.resource_name_plural.humanize(keep_id_suffix: true), resource_name: resource.url.pluralize } }
+          .map do |resource|
+            {
+              label: resource.plural_name.humanize(keep_id_suffix: true),
+              resource_name: resource.url.pluralize,
+              translation_key: resource.translation_key
+            }
+          end
           .reject { |i| i.blank? }
           .to_json
           .to_s

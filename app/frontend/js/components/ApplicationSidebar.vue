@@ -1,7 +1,11 @@
 <template>
   <div class="application-sidebar flex h-full bg-white text-white w-56 z-50 border-r border-gray-400">
     <div class="flex flex-col w-full">
-      <router-link to="/" class="logo-placeholder h-16 bg-white p-2 flex justify-center" :active-class="''" exact>
+      <router-link to="/"
+        class="logo-placeholder h-16 bg-white p-2 flex justify-center"
+        :active-class="''"
+        exact
+      >
         <slot name="logo"/>
       </router-link>
 
@@ -10,10 +14,10 @@
           <sidebar-link to="/"
             exact
           >
-            Dashboard
+            {{ $t('avo.dashboard') }}
           </sidebar-link>
 
-          <resources-navigation :resources="resources"/>
+          <resources-navigation />
         </div>
 
         <slot name="licensing"/>
@@ -21,12 +25,6 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  props: ['resources'],
-}
-</script>
 
 <style slang="postcss">
   .application-sidebar {

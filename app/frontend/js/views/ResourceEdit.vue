@@ -1,15 +1,15 @@
 <template>
-  <div v-if="resource" :resource-id="resourceId">
-    <div v-for="panel in resource.panels" :key="panel.name">
+  <div :resource-id="resourceId">
+    <div v-for="panel in panels" :key="panel.name">
       <panel>
         <template #heading>
-            Edit {{resourceNameSingular}}
+          {{panel.name}}
         </template>
 
         <template #tools>
           <div class="flex justify-end space-x-2">
-            <a-button :to="cancelActionParams"><arrow-left-icon class="h-4 mr-1"/> Cancel</a-button>
-            <a-button v-if="canUpdate" color="green" @click="submitResource"><save-icon class="h-4 mr-1"/> Save</a-button>
+            <a-button :to="cancelActionParams"><arrow-left-icon class="h-4 mr-1"/> {{ $t('avo.cancel') | upperFirst() }} </a-button>
+            <a-button v-if="canUpdate" color="green" @click="submitResource"><save-icon class="h-4 mr-1"/> {{ $t('avo.save') | upperFirst() }}</a-button>
           </div>
         </template>
 
@@ -36,8 +36,7 @@
           </form>
         </template>
 
-        <template #footer>
-        </template>
+        <template #footer/>
       </panel>
     </div>
   </div>
@@ -48,9 +47,11 @@ import DealsWithResourceLabels from '@/js/mixins/deals-with-resource-labels'
 import HasForms from '@/js/mixins/has-forms'
 import HasUniqueKey from '@/js/mixins/has-unique-key'
 import LoadsResource from '@/js/mixins/loads-resource'
+import hasUpperFirstFilter from '@/js/mixins/has-upper-first-filter'
+import upperFirst from 'lodash/upperFirst'
 
 export default {
-  mixins: [HasForms, LoadsResource, DealsWithResourceLabels, HasUniqueKey],
+  mixins: [HasForms, LoadsResource, DealsWithResourceLabels, HasUniqueKey, hasUpperFirstFilter],
   data: () => ({
     resource: null,
     form: {},
@@ -62,12 +63,17 @@ export default {
     'viaResourceId',
   ],
   computed: {
+    panels() {
+      if (!this.resource) return [{ name: upperFirst(this.$t('avo.edit_item', { item: this.resourceNameFromURL })) }]
+
+      return this.resource.panels
+    },
     cancelActionParams() {
       const action = {
         name: 'show',
         params: {
           resourceName: this.resourceName,
-          resourceId: this.resource.id,
+          resourceId: this.resourceId,
         },
       }
 
@@ -79,6 +85,8 @@ export default {
       return action
     },
     canUpdate() {
+      if (!this.resource) return false
+
       return this.resource.authorization.update
     },
   },

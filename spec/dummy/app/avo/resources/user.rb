@@ -3,6 +3,7 @@ module Avo
     class User < Resource
       def initialize
         @title = :name
+        @translation_key = 'avo.resource_translations.user'
         @search = [:id, :first_name, :last_name]
         @includes = :posts
         @has_devise_password = true
@@ -39,6 +40,7 @@ module Avo
       use_filter Avo::Filters::BirthdayFilter
 
       use_action Avo::Actions::MarkInactive
+      use_action Avo::Actions::MakeAdmin
     end
   end
 end

@@ -1,14 +1,14 @@
 <template>
-  <div class="relative w-full flex justify-between z-30" v-if="hasFilters">
+  <div class="relative w-full flex justify-between z-30">
     <a-button color="gray" class="focus:outline-none" @click="togglePanel">
-      <filter-icon class="h-4 mr-2" data-button="resource-filters" /> Filters
+      <filter-icon class="h-4 mr-2" data-button="resource-filters" /> {{ $t('avo.filters') }}
     </a-button>
     <div v-on-clickaway="onClickAway"
       class="absolute block inset-auto right-0 top-full bg-white min-w-300px mt-2 z-20 shadow-context rounded-xl"
       v-if="open"
     >
       <div v-if="!viaResourceName">
-        <filter-wrapper name="Per page">
+        <filter-wrapper :name="$t('avo.per_page')">
           <select name="per_page"
             id="per_page"
             @change="changePerPage"
@@ -33,6 +33,14 @@
           @change-filter="changeFilter"
         ></component>
       </template>
+      <div class="p-4 border-gray-300 border-t">
+        <a-button
+          color="gray"
+          class="w-full"
+          :disabled="resetDisabled"
+          @click="resetFilters"
+        >Reset filters</a-button>
+      </div>
     </div>
   </div>
 </template>
@@ -63,8 +71,10 @@ export default {
     perPageSteps: {},
   },
   computed: {
-    hasFilters() {
-      return this.filters.length > 0
+    resetDisabled() {
+      if (this.$route.query.filters === undefined) return true
+
+      return false
     },
   },
   methods: {
@@ -85,6 +95,10 @@ export default {
       } catch (error) {}
 
       this.open = false
+    },
+    resetFilters() {
+      this.$emit('reset-filters')
+      this.togglePanel()
     },
   },
   mounted() {

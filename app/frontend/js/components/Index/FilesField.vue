@@ -6,14 +6,16 @@
 </template>
 
 <script>
-import pluralize from 'pluralize'
-
 export default {
   props: ['field'],
   computed: {
     value() {
       if (this.field.value && this.field.value.length > 0) {
-        return `${this.field.value.length} ${pluralize(this.field.name, this.field.value.length)}`
+        if (this.field.translation_key) {
+          return this.$t('avo.number_of_items', { item: this.$t(this.field.translation_key, { count: this.field.value.length }), count: this.field.value.length })
+        }
+
+        return this.$t('avo.number_of_items', { item: this.field.name, count: this.field.value.length })
       }
 
       return null

@@ -12,10 +12,10 @@
       v-model="value"
       :placeholder="field.placeholder"
       language="en"
-      codeStyle="dracula"
       :toolbars="toolbars"
       default-open="edit"
       :style="{height: field.height}"
+      :autofocus="false"
     />
   </edit-field-wrapper>
 </template>

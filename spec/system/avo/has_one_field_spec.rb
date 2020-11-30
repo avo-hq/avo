@@ -1,5 +1,4 @@
 require 'rails_helper'
-WebMock.disable_net_connect!(allow_localhost: true, allow: 'chromedriver.storage.googleapis.com')
 
 RSpec.describe 'HasOneField', type: :system do
   let!(:user) { create :user }
@@ -18,7 +17,16 @@ RSpec.describe 'HasOneField', type: :system do
     describe 'without a related user' do
       let!(:team) { create :team }
 
-      it { is_expected.to have_text empty_dash }
+      it 'looks for team without related user' do
+        visit url
+        find('[data-button="resource-filters"]').click
+
+        uncheck 'Has Members'
+        wait_for_loaded
+
+        expect(page).to have_text empty_dash
+
+      end
     end
   end
 

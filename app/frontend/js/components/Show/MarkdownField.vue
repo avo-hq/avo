@@ -11,7 +11,6 @@
       :scrollStyle="true"
       :ishljs="true"
       language="en"
-      codeStyle="dracula"
     />
     <a href="javascript:void(0);"
       v-if="!field.always_show && field.value"

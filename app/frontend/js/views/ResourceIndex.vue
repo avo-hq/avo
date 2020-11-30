@@ -21,7 +21,7 @@
             @click="showAttachModal"
             v-if="relationship === 'has_and_belongs_to_many'"
           >
-            <view-grid-add-icon class="h-4 mr-1" />Attach {{resourceNameSingular | toLowerCase}}
+            <view-grid-add-icon class="h-4 mr-1" /> {{ $t('avo.attach_item', { item: resourceNameSingular.toLowerCase() }) }}
           </a-button>
           <a-button
             is="a-button"
@@ -37,7 +37,7 @@
               },
             }"
             v-else-if="canCreate"
-          ><plus-icon class="h-4 mr-1"/>Create new {{resourceNameSingular | toLowerCase}}</a-button>
+          ><plus-icon class="h-4 mr-1"/>{{ $t('avo.create_new_item', { item: resourceNameSingular.toLowerCase(), count: 1 }) }}</a-button>
         </div>
       </div>
     </template>
@@ -50,7 +50,6 @@
               :resource-name="resourceName"
               :via-resource-name="viaResourceName"
               :via-resource-id="viaResourceId"
-              v-if="resources.length > 0"
             />
           </div>
           <div class="flex justify-end items-center px-6 space-x-3">
@@ -58,13 +57,13 @@
               color="blue"
               v-if="availableViewTypes.includes('table') && viewType !== 'table'"
             >
-              <view-list-icon class="h-4 mr-1" /> Table View
+              <view-list-icon class="h-4 mr-1" /> {{ $t('avo.table_view') }}
             </a-button>
             <a-button @click="changeViewType('grid')"
               color="blue"
               v-if="availableViewTypes.includes('grid') && viewType !== 'grid'"
             >
-              <view-grid-icon class="h-4 mr-1" /> Grid View
+              <view-grid-icon class="h-4 mr-1" /> {{ $t('avo.grid_view') }}
             </a-button>
             <resource-filters
               v-if="!viaResourceName"
@@ -75,6 +74,7 @@
               :applied-filters="appliedFilters"
               @change-filter="changeFilter"
               @change-per-page="changePerPage"
+              @reset-filters="resetFilters"
             />
           </div>
         </div>
@@ -82,8 +82,7 @@
         <loading-overlay class="relative" v-if="viewType === '' && isLoading"/>
 
         <div class="w-full overflow-auto min-h-28 flex flex-col" v-if="viewType === 'table'">
-          <loading-overlay class="relative" v-if="resources.length === 0 && isLoading"/>
-          <div class="relative flex-1 flex" v-else>
+          <div class="relative flex-1 flex">
             <loading-overlay v-if="isLoading" />
 
             <resource-table
@@ -113,8 +112,8 @@
             ref="paginate"
             :page-count="totalPages"
             :click-handler="changePageFromPagination"
-            :prev-text="'Prev'"
-            :next-text="'Next'"
+            :prev-text="$t('avo.prev_page')"
+            :next-text="$t('avo.next_page')"
             :no-li-surround="true"
             container-class="avo-pagination justify-end flex px-4 space-x-2"
             page-class="pagination-button"
@@ -157,8 +156,8 @@
             ref="paginate"
             :page-count="totalPages"
             :click-handler="changePageFromPagination"
-            :prev-text="'Prev'"
-            :next-text="'Next'"
+            :prev-text="$t('avo.prev_page')"
+            :next-text="$t('avo.next_page')"
             :no-li-surround="true"
             container-class="avo-pagination justify-end flex px-4 space-x-2"
             page-class="pagination-button"
@@ -183,6 +182,7 @@ import Bus from '@/js/Bus'
 import DealsWithHasManyRelations from '@/js/mixins/deals-with-has-many-relations'
 import DealsWithResourceLabels from '@/js/mixins/deals-with-resource-labels'
 import LoadsActions from '@/js/mixins/loads-actions'
+import Resource from '@/js/models/Resource'
 import URI from 'urijs'
 import isNull from 'lodash/isNull'
 import isUndefined from 'lodash/isUndefined'
@@ -215,6 +215,7 @@ export default {
     'viaResourceName',
     'viaResourceId',
     'field',
+    'resourceTranslationKey',
   ],
   computed: {
     ...mapState('index', [
@@ -350,6 +351,10 @@ export default {
       this.setPerPage(perPage)
       this.updateQueryParams()
     },
+    resetFilters() {
+      this.appliedFilters = {}
+      this.updateQueryParams()
+    },
     changePageFromPagination(page) {
       this.setPage(page)
       this.updateQueryParams()
@@ -368,7 +373,7 @@ export default {
 
       const { data } = await Api.get(this.queryUrl)
 
-      this.resources = data.resources
+      this.resources = Resource.parseResources(data.resources)
       this.totalPages = data.total_pages
       this.meta = data.meta
       this.availableViewTypes = data.meta.available_view_types
@@ -486,13 +491,14 @@ export default {
     },
     async showAttachModal() {
       this.$modal.show(AttachModal, {
-        heading: `Select a ${this.resourceNameSingular.toLowerCase()} to attach`,
+        heading: this.$t('avo.choose_item', { item: this.resourceNameSingular.toLowerCase() }),
         getOptions: this.getOptions,
         attachAction: this.attachOption,
       })
     },
     queryFiltersChanged() {
       const filters = URI(window.location.toString()).query(true)[this.uriParam('filters')]
+
       if (filters) {
         this.setFilterValue(JSON.parse(atob(filters)))
       } else {

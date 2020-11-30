@@ -19,6 +19,7 @@
 import DealsWithHasManyRelations from '@/js/mixins/deals-with-has-many-relations'
 import DealsWithResourceLabels from '@/js/mixins/deals-with-resource-labels'
 import GravatarComponent from '@/js/components/GravatarComponent.vue'
+import upperFirst from 'lodash/upperFirst'
 
 export default {
   components: { GravatarComponent },
@@ -32,12 +33,12 @@ export default {
   ],
   computed: {
     element() {
-      if (this.field.link_to_resource && this.canView) return 'router-link'
+      if (this.field.linkToResource && this.canView) return 'router-link'
 
       return 'div'
     },
     to() {
-      if (this.field.link_to_resource && this.canView) {
+      if (this.field.linkToResource && this.canView) {
         return {
           name: 'show',
           params: {
@@ -54,7 +55,7 @@ export default {
       return null
     },
     title() {
-      if (this.field.link_to_resource && this.canView) return `View ${this.resourceNameSingular}`
+      if (this.field.linkToResource && this.canView) return upperFirst(this.$t('avo.view_item', { item: this.resourceNameSingular.toLowerCase() }))
 
       return null
     },

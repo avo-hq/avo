@@ -1,3 +1,4 @@
+import I18n from 'i18n-js'
 import lowerCase from 'lodash/lowerCase'
 import pluralize from 'pluralize'
 import upperFirst from 'lodash/upperFirst'
@@ -9,14 +10,22 @@ export default {
     },
   },
   computed: {
-    sentencedCase() {
-      return upperFirst(lowerCase(this.resourceName))
+    translationKey() {
+      if (this.resourceTranslationKey) return this.resourceTranslationKey
+      if (this.meta && this.meta.translation_key) return this.meta.translation_key
+      if (this.resource && this.resource.translationKey) return this.resource.translationKey
+
+      return null
     },
     resourceNameSingular() {
-      return pluralize(this.sentencedCase, 1)
+      if (this.translationKey) return upperFirst(lowerCase(I18n.t(this.translationKey, { count: 1 })))
+
+      return pluralize(upperFirst(lowerCase(this.resourceName)), 1)
     },
     resourceNamePlural() {
-      return this.sentencedCase.charAt(0).toUpperCase() + this.sentencedCase.slice(1)
+      if (this.translationKey) return upperFirst(lowerCase(I18n.t(this.translationKey, { count: 2 })))
+
+      return upperFirst(lowerCase(this.resourceName))
     },
   },
 }

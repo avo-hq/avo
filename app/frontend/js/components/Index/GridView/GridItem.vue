@@ -67,13 +67,13 @@ export default {
       return this.resource.authorization.show
     },
     preview() {
-      return this.resource.grid_fields.preview.value
+      return this.resource.gridFields.preview.value
     },
     title() {
-      return this.resource.grid_fields.title.value
+      return this.resource.gridFields.title.value
     },
     body() {
-      return this.resource.grid_fields.body.value
+      return this.resource.gridFields.body.value
     },
   },
 }
