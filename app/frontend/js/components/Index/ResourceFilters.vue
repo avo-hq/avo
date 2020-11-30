@@ -41,6 +41,12 @@
 import { HasInputAppearance } from '@avo-hq/avo-js'
 import { mixin as clickaway } from 'vue-clickaway'
 
+function hasSomeParentTheClass(element, classname) {
+  if (element.className.split(' ').indexOf(classname) >= 0) return true
+
+  return element.parentNode && hasSomeParentTheClass(element.parentNode, classname)
+}
+
 export default {
   mixins: [HasInputAppearance, clickaway],
   data: () => ({
@@ -71,7 +77,13 @@ export default {
     changeFilter(args) {
       this.$emit('change-filter', args)
     },
-    onClickAway() {
+    onClickAway(event) {
+      // Don't close the pop-up if the user clicks on the calendar inputs
+      try {
+        if (hasSomeParentTheClass(event.target, 'flatpickr-calendar')) return
+      // eslint-disable-next-line no-empty
+      } catch (error) {}
+
       this.open = false
     },
   },
