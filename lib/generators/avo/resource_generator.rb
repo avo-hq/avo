@@ -29,6 +29,7 @@ class ResourceGenerator < Rails::Generators::NamedBase
       fields = {}
       fields = fields.merge(generate_params_from_model) if options[:'generate-fields']
       fields = fields.merge(generate_select_from_model) if options[:'generate-fields']
+      fields = fields.merge(generate_attachements_from_model) if options[:'generate-fields']
       fields = fields.merge(generate_additional_params_from_argument) if !additional_fields.nil?
 
       fieldsString = ''
@@ -44,6 +45,21 @@ class ResourceGenerator < Rails::Generators::NamedBase
       end
 
       fieldsString
+    end
+
+    def generate_attachements_from_model
+      begin
+        model = @model_class.classify.safe_constantize
+        puts '---------------------------model.reflections'
+        puts model.reflections
+        # model.defined_enums.each { |k, v| enums.push(k) }
+      rescue NameError => e
+        puts 'Name error occurs. There is no ' + @model_class.classify + ' model.'
+      rescue => e
+        puts 'Other error occured.'
+      end
+
+      {}
     end
 
     def generate_select_from_model
