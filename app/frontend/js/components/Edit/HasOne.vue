@@ -31,7 +31,8 @@
       <div v-if="searchable">
         <a-button color="indigo"
           @click="removeSelection"
-        >Remove selection</a-button>
+          v-text="removeSelectionTooltipLabel"
+        />
       </div>
     </template>
   </edit-field-wrapper>
@@ -57,7 +58,10 @@ export default {
     placeholder() {
       if (this.field.placeholder) return this.field.placeholder
 
-      return `Choose ${this.field.id}`
+      return this.$t('avo.choose_an_option')
+    },
+    removeSelectionTooltipLabel() {
+      return this.$t('avo.remove_selection')
     },
   },
   methods: {

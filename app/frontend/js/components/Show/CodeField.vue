@@ -5,6 +5,7 @@
       :language="field.language"
       :theme="field.theme"
       :editable="false"
+      :height="field.height"
     />
   </show-field-wrapper>
 </template>

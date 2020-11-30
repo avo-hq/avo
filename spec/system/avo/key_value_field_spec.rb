@@ -125,6 +125,8 @@ RSpec.describe 'KeyValueFields', type: :system do
     end
 
     context 'edit' do
+      let!(:project) { create :project , meta: meta_data }
+
       it 'has the projects meta label, table header, table rows (2), buttons' do
         visit "/avo/resources/projects/#{project.id}/edit"
         wait_for_loaded
@@ -163,6 +165,7 @@ RSpec.describe 'KeyValueFields', type: :system do
         delete_buttons[0].click
 
         click_on 'Save'
+        sleep 0.2
         wait_for_loaded
 
         expect(current_path).to eql "/avo/resources/projects/#{project.id}"

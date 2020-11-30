@@ -1,13 +1,25 @@
 const plugin = require('tailwindcss/plugin')
 
 module.exports = {
-  purge: [
-    './app/helpers/**/*.rb',
-    './app/views/**/*.html',
-    './app/views/**/*.html.erb',
-    './app/frontend/**/*.vue',
-    './app/frontend/**/*.js',
-  ],
+  future: {
+    purgeLayersByDefault: true,
+    removeDeprecatedGapUtilities: true,
+    standardFontWeights: true,
+  },
+  purge: {
+    mode: 'layers',
+    layers: ['components', 'utilities'],
+    content: [
+      './app/helpers/**/*.rb',
+      './app/views/**/*.html',
+      './app/views/**/*.html.erb',
+      './app/frontend/**/*.vue',
+      './app/frontend/**/*.js',
+    ],
+    options: {
+      whitelist: ['appearance-none'],
+    },
+  },
   theme: {
     extend: {
       fontFamily: {
@@ -70,6 +82,7 @@ module.exports = {
   },
   variants: {
     display: ['responsive', 'hover', 'focus', 'group-hover'],
+    padding: ['responsive', 'group-hover'],
     borderColor: ['responsive', 'hover', 'focus', 'disabled'],
     backgroundColor: ['responsive', 'hover', 'focus', 'disabled'],
     textColor: ['responsive', 'hover', 'focus', 'disabled'],

@@ -1,7 +1,7 @@
 <template>
   <div>
     <heading class="pt-4 mb-8">
-      Dashboard
+      {{ $t('avo.dashboard') }}
     </heading>
     <resource-overview />
   </div>

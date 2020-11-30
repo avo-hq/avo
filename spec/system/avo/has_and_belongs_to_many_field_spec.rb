@@ -20,8 +20,8 @@ RSpec.describe 'HasAndBelongsToManyField', type: :system do
 
         click_on 'Attach user'
 
-        expect(page).to have_text 'Select a user to attach'
-        expect(page).to have_select 'options', selected: 'Choose one'
+        expect(page).to have_text 'Choose user'
+        expect(page).to have_select 'options', selected: 'Choose an option'
 
         select user.name, from: 'options'
 
@@ -31,7 +31,7 @@ RSpec.describe 'HasAndBelongsToManyField', type: :system do
         }.to change(project.users, :count).by 1
 
         expect(current_path).to eql "/avo/resources/projects/#{project.id}"
-        expect(page).not_to have_text 'Select a user to attach'
+        expect(page).not_to have_text 'Choose user'
         expect(page).not_to have_text 'No related users found'
       end
 
@@ -42,8 +42,8 @@ RSpec.describe 'HasAndBelongsToManyField', type: :system do
 
         click_on 'Attach user'
 
-        expect(page).to have_text 'Select a user to attach'
-        expect(page).to have_select 'options', selected: 'Choose one'
+        expect(page).to have_text 'Choose user'
+        expect(page).to have_select 'options', selected: 'Choose an option'
 
         select user.name, from: 'options'
 
@@ -53,7 +53,7 @@ RSpec.describe 'HasAndBelongsToManyField', type: :system do
         }.not_to change(project.users, :count)
 
         expect(current_path).to eql "/avo/resources/projects/#{project.id}"
-        expect(page).not_to have_text 'Select a user to attach'
+        expect(page).not_to have_text 'Choose user'
         expect(page).to have_text 'No related users found'
       end
 
@@ -64,8 +64,8 @@ RSpec.describe 'HasAndBelongsToManyField', type: :system do
 
         click_on 'Attach user'
 
-        expect(page).to have_text 'Select a user to attach'
-        expect(page).to have_select 'options', selected: 'Choose one'
+        expect(page).to have_text 'Choose user'
+        expect(page).to have_select 'options', selected: 'Choose an option'
 
         select user.name, from: 'options'
 
@@ -74,8 +74,8 @@ RSpec.describe 'HasAndBelongsToManyField', type: :system do
           wait_for_loaded
         }.to change(project.users, :count).by 1
 
-        expect(page).to have_text 'Select a user to attach'
-        expect(page).to have_select 'options', selected: 'Choose one'
+        expect(page).to have_text 'Choose user'
+        expect(page).to have_select 'options', selected: 'Choose an option'
 
         select user.name, from: 'options'
 
@@ -85,7 +85,7 @@ RSpec.describe 'HasAndBelongsToManyField', type: :system do
         }.to change(project.users, :count).by 1
 
         expect(current_path).to eql "/avo/resources/projects/#{project.id}"
-        expect(page).not_to have_text 'Select a user to attach'
+        expect(page).not_to have_text 'Choose user'
         expect(page).not_to have_text 'No related users found'
       end
     end
@@ -104,7 +104,7 @@ RSpec.describe 'HasAndBelongsToManyField', type: :system do
 
         find("[resource-name='users'][resource-id='#{user.id}'] [data-control='detach']").click
 
-        expect(page).to have_text 'Are you sure you want to detach this user?'
+        expect(page).to have_text 'Are you sure?'
 
         expect {
           click_on 'Confirm'

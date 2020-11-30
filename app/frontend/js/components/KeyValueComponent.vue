@@ -13,7 +13,7 @@
           <a href="javascript:void(0);"
             @click="addRow"
             v-tooltip="actionText"
-            :style="disableAddingRows ? 'cursor: not-allowed;' : ''"
+            :class="{'cursor-not-allowed': disableAddingRows}"
             data-button="add-row"
           ><plus-circle-icon class="text-gray-400 h-5 hover:text-gray-500"/></a>
         </div>
@@ -35,7 +35,7 @@
         @delete-row="deleteRow"
         @value-updated="valueUpdated"
         @key-updated="keyUpdated"
-        @keyup-enter.stop.prevent="onEnterPress(index)"
+        @keyup-enter="onEnterPress(index)"
       />
     </div>
   </div>
@@ -78,9 +78,11 @@ export default {
       }
     },
     addRow() {
-      const length = this.rows.push({ key: '', value: '' })
+      if (!this.disableAddingRows) {
+        const length = this.rows.push({ key: '', value: '' })
 
-      setTimeout(() => this.focusRow(length - 1), 1)
+        setTimeout(() => this.focusRow(length - 1), 1)
+      }
     },
     goToNextRow(index) {
       this.focusRow(index + 1)
@@ -89,7 +91,9 @@ export default {
       this.$refs[`keyValueRow${index}`][0].$emit('focus')
     },
     deleteRow(index) {
-      this.$delete(this.rows, index)
+      if (!this.disableDeletingRows) {
+        this.$delete(this.rows, index)
+      }
     },
   },
   watch: {

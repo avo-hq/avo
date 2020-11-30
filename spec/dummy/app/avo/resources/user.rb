@@ -3,6 +3,7 @@ module Avo
     class User < Resource
       def initialize
         @title = :name
+        @translation_key = 'avo.resource_translations.user'
         @search = [:id, :first_name, :last_name]
         @includes = :posts
         @has_devise_password = true
@@ -25,10 +26,10 @@ module Avo
         end
 
         password :password, name: 'User Password', required: false, except_on: :forms, help: 'You may verify the password strength <a href="http://www.passwordmeter.com/">here</a>.'
-        password :password_confirmation, name: 'Password confirmation', required: false
+        password :password_confirmation, name: 'Password confirmation', required: false, only_on: :create
 
         heading '<div class="text-gray-300 uppercase font-bold">DEV</div>', as_html: true
-        code :custom_css, theme: 'dracula', language: 'css', help: "This enables you to edit the user's custom styles."
+        code :custom_css, theme: 'dracula', language: 'css', help: "This enables you to edit the user's custom styles.", height: '125px'
 
         hidden :team_id, default: 0 # For testing purposes
 
@@ -37,6 +38,7 @@ module Avo
       end
 
       use_action Avo::Actions::MarkInactive
+      use_action Avo::Actions::MakeAdmin
     end
   end
 end

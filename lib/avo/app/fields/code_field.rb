@@ -12,12 +12,14 @@ module Avo
 
         @language = args[:language].present? ? args[:language].to_s : 'javascript'
         @theme = args[:theme].present? ? args[:theme].to_s : 'material-darker'
+        @height = args[:height].present? ? args[:height].to_s : 'auto'
       end
 
       def hydrate_field(fields, model, resource, view)
         {
           language: @language,
           theme: @theme,
+          height: @height,
         }
       end
     end

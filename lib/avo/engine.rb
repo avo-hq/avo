@@ -24,7 +24,12 @@ module Avo
     initializer 'avo.init' do |app|
       avo_root_path = Avo::Engine.root.to_s
 
-      if ['development', 'test'].include? Rails.env
+      app.config.middleware.use I18n::JS::Middleware
+
+      avo_component_files = Dir.glob("#{Rails.root.to_s}/avo-components/**/*.rb".to_s).reject { |file| file.include? 'node_modules' }
+      puts avo_component_files.inspect
+
+      if Avo::IN_DEVELOPMENT
         # Register reloader
         app.reloaders << app.config.file_watcher.new([], {
           Avo::Engine.root.join('lib', 'avo').to_s => ['rb'],
@@ -32,23 +37,20 @@ module Avo
 
         # What to do on file change
         config.to_prepare do
-          Dir.glob(avo_root_path + '/lib/avo/app/**/*.rb'.to_s).each { |c| load(c) }
+          Dir.glob(avo_root_path + '/lib/avo/app/**/*.rb'.to_s).each { |c| load c }
+          avo_component_files.each { |c| load(c) }
         end
-      end
+      else
+        Dir.glob(avo_root_path + '/lib/avo/app/**/*.rb'.to_s).each { |c| require c }
 
-      if Rails.env.production?
-        puts 'in prod'.inspect
-        Dir.glob(avo_root_path + '/lib/avo/app/**/*.rb'.to_s).each { |c| load(c) }
-        puts Dir.glob("#{Rails.root.to_s}/avo-components/**/*.rb".to_s).reject { |file| file.include? 'node_modules' }.inspect
-        Dir.glob("#{Rails.root.to_s}/avo-components/**/*.rb".to_s).reject { |file| file.include? 'node_modules' }.each { |c| load(c) }
-        # puts [Rails.root,  + "#{Rails.root.to_s}/avo-components/**/*.rb".to_s].inspect
-        Avo::App.init
+        Avo::App.boot if Avo::PACKED
       end
     end
 
     config.after_initialize do
       puts 'config.after_initialize'.inspect
     end
+
     initializer 'webpacker.proxy' do |app|
       app.config.debug_exception_response_format = :api
       app.config.logger = ::Logger.new(STDOUT)

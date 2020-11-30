@@ -1,9 +1,9 @@
 <template>
-  <div v-if="resource" class="text-sm">
-    <div v-for="panel in resource.panels" :key="panel.name">
+  <div>
+    <div v-for="panel in panels" :key="panel.name">
       <panel>
         <template #heading>
-          Create new {{resourceNameSingular | toLowerCase}}
+          {{panel.name}}
         </template>
 
         <template #tools>
@@ -13,8 +13,12 @@
               params: {
                 resourceName: resourceName,
               },
-            }"><arrow-left-icon class="h-4 mr-1"/> Cancel</a-button>
-            <a-button color="green" @click="submitResource"><save-icon class="h-4 mr-1"/> Save</a-button>
+            }"><arrow-left-icon class="h-4 mr-1"/> {{ $t('avo.cancel') }}</a-button>
+            <a-button
+              color="green"
+              @click="submitResource"
+              v-if="resource"
+            ><save-icon class="h-4 mr-1"/> {{ $t('avo.save') }}</a-button>
           </div>
         </template>
 
@@ -35,7 +39,7 @@
               :field-component="field.component"
             ></component>
 
-            <input type="submit" class="hidden">
+            <input type="submit" class="hidden" />
           </form>
         </template>
 
@@ -55,7 +59,7 @@ import LoadsResource from '@/js/mixins/loads-resource'
 export default {
   mixins: [HasForms, LoadsResource, DealsWithResourceLabels, HasUniqueKey],
   data: () => ({
-    resource: {},
+    resource: null,
     form: {},
   }),
   props: [
@@ -63,5 +67,12 @@ export default {
     'viaResourceName',
     'viaResourceId',
   ],
+  computed: {
+    panels() {
+      if (!this.resource) return [{ name: (this.$t('avo.create_new_item', { item: this.resourceNameFromURL })) }]
+
+      return this.resource.panels
+    },
+  },
 }
 </script>

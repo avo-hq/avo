@@ -23,11 +23,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Set up Ruby
-    # To automatically get bug fixes and new Ruby versions for ruby/setup-ruby,
-    # change this to (see https://github.com/ruby/setup-ruby#versioning):
-    # uses: ruby/setup-ruby@v1
-      uses: ruby/setup-ruby@ec106b438a1ff6ff109590de34ddc62c540232e0
+      uses: ruby/setup-ruby@v1
       with:
+        bundler-cache: true
         ruby-version: 2.6.3
 
     - name: Install PostgreSQL 11 client
@@ -65,6 +63,10 @@ jobs:
 
     - name: Bundle assets
       run: bin/webpack
+
+    - name: Export translations
+      run: bin/rails i18n:js:export
+      working-directory: spec/dummy
 
     - name: Run tests
       run: npm run test-all

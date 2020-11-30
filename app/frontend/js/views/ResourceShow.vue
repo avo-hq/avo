@@ -1,6 +1,6 @@
 <template>
-  <div v-if="resource">
-    <div v-for="panel in resource.panels" :key="panel.name">
+  <div :resource-id="resourceId">
+    <div v-for="panel in panels" :key="panel.name">
       <panel>
         <template #heading>
           {{panel.name}}
@@ -9,7 +9,17 @@
         <template #tools>
           <div class="flex justify-end space-x-2">
             <resource-actions :resource-name="resourceName" :resource-ids="[resourceId]" :actions="actions" />
-            <a-button :to="cancelActionParams"><arrow-left-icon class="h-4 mr-1"/> Back</a-button>
+            <a-button :to="cancelActionParams">
+              <arrow-left-icon class="h-4 mr-1"/> {{ $t('avo.go_back') }}
+            </a-button>
+            <a-button @click="openDeleteModal"
+              color="red"
+              variant="outlined"
+              v-if="canDelete"
+            >
+              <trash-icon class="text-red-700 h-4 mr-1"/>
+              {{ $t('avo.delete') | upperFirst() }}
+            </a-button>
             <a-button
               color="indigo"
               :to="{
@@ -18,7 +28,11 @@
                   resourceName: resourceName,
                   resourceId: resource.id,
                 },
-              }"><edit-icon class="h-4 mr-1" /> Edit</a-button>
+              }"
+              v-if="canEdit"
+            >
+              <edit-icon class="h-4 mr-1" /> {{ $t('avo.edit') | upperFirst() }}
+            </a-button>
           </div>
         </template>
 
@@ -53,13 +67,19 @@
 </template>
 
 <script>
+import Avo, { Api } from '@/js/Avo'
+import DealsWithHasManyRelations from '@/js/mixins/deals-with-has-many-relations'
+import DealsWithResourceLabels from '@/js/mixins/deals-with-resource-labels'
 import HasUniqueKey from '@/js/mixins/has-unique-key'
+import HasUpperFirstFilter from '@/js/mixins/has-upper-first-filter'
 import LoadsActions from '@/js/mixins/loads-actions'
 import LoadsResource from '@/js/mixins/loads-resource'
+import Modal from '@/js/components/Modal.vue'
+import upperFirst from 'lodash/upperFirst'
 
 export default {
   name: 'ResourceShow',
-  mixins: [LoadsResource, LoadsActions, HasUniqueKey],
+  mixins: [LoadsResource, LoadsActions, HasUniqueKey, DealsWithResourceLabels, DealsWithHasManyRelations, HasUpperFirstFilter],
   data: () => ({
     resource: null,
     actions: [],
@@ -88,15 +108,46 @@ export default {
       return action
     },
     fields() {
+      if (!this.resource) return []
+
       return this.resource.fields
+    },
+    panels() {
+      if (!this.resource) return [{ name: this.$t('avo.resource_details', { name: upperFirst(this.resourceNameFromURL) }) }]
+
+      return this.resource.panels
     },
     hasManyRelations() {
       return this.fields.filter((field) => ['has_and_belongs_to_many', 'has_many'].indexOf(field.relationship) > -1)
     },
+    canEdit() {
+      if (!this.resource) return false
+
+      return this.resource.authorization.edit
+    },
+    canDelete() {
+      if (!this.resource) return false
+
+      return this.resource.authorization.destroy
+    },
   },
   methods: {
     fieldsForPanel(panel) {
-      return this.fields.filter((field) => field.panel_name === panel.name)
+      return this.fields.filter((field) => field.panelName === panel.name)
+    },
+    async deleteResource() {
+      await Api.delete(`${Avo.rootPath}/avo-api/${this.resourcePath}/${this.resource.id}`)
+
+      this.$modal.hideAll()
+
+      Avo.redirect(`/resources/${this.resourcePath}`)
+    },
+    openDeleteModal() {
+      this.$modal.show(Modal, {
+        heading: this.$t('avo.delete_item', { item: this.resourceNameSingular }),
+        text: this.$t('avo.are_you_sure'),
+        confirmAction: this.deleteResource,
+      })
     },
   },
 }

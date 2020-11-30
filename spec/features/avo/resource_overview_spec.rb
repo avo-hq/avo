@@ -1,10 +1,54 @@
 require 'rails_helper'
 
-RSpec.describe 'ResourceOverview', type: :request do
+RSpec.describe Avo::ResourceOverviewController, type: :controller do
+  before :each do
+    stub_pro_license_request
+  end
+
+  before :all do
+    class UserPolicy < ApplicationPolicy
+      def index?
+        true
+      end
+    end
+
+    class TeamPolicy < ApplicationPolicy
+      def index?
+        true
+      end
+    end
+
+    class PostPolicy < ApplicationPolicy
+      def index?
+        true
+      end
+    end
+  end
+
+  after :all do
+    class UserPolicy < ApplicationPolicy
+      def index?
+        false
+      end
+    end
+
+    class TeamPolicy < ApplicationPolicy
+      def index?
+        false
+      end
+    end
+
+    class PostPolicy < ApplicationPolicy
+      def index?
+        false
+      end
+    end
+  end
+
   context 'configs' do
     describe 'with false values' do
       it 'returns false values' do
-        get '/avo/avo-tools/resource-overview'
+        get :index
 
         expect(response).to have_http_status(200)
 
@@ -25,7 +69,7 @@ RSpec.describe 'ResourceOverview', type: :request do
       end
 
       it 'returns true values' do
-        get '/avo/avo-tools/resource-overview'
+        get :index
 
         expect(response).to have_http_status(200)
 
@@ -37,7 +81,7 @@ RSpec.describe 'ResourceOverview', type: :request do
 
   describe 'without any resources in the DB' do
     it 'returns empty response' do
-      get '/avo/avo-tools/resource-overview'
+      get :index
 
       expect(response).to have_http_status(200)
 
@@ -46,8 +90,8 @@ RSpec.describe 'ResourceOverview', type: :request do
       expect(parsed_response['resources']).to match_array([
         {
           count: 0,
-          name: 'Team',
-          url: 'teams',
+          name: 'Post',
+          url: 'posts',
         },
         {
           count: 0,
@@ -56,8 +100,8 @@ RSpec.describe 'ResourceOverview', type: :request do
         },
         {
           count: 0,
-          name: 'Post',
-          url: 'posts',
+          name: 'Team',
+          url: 'teams',
         },
         {
           count: 0,
@@ -80,7 +124,7 @@ RSpec.describe 'ResourceOverview', type: :request do
     end
 
     it 'returns non-empty response' do
-      get '/avo/avo-tools/resource-overview'
+      get :index
 
       expect(response).to have_http_status(200)
 
@@ -88,9 +132,9 @@ RSpec.describe 'ResourceOverview', type: :request do
       expect(parsed_response['hide_docs']).to be false
       expect(parsed_response['resources']).to match_array([
         {
-          count: 2,
-          name: 'Team',
-          url: 'teams',
+          count: 0,
+          name: 'Post',
+          url: 'posts',
         },
         {
           count: 0,
@@ -98,9 +142,9 @@ RSpec.describe 'ResourceOverview', type: :request do
           url: 'projects',
         },
         {
-          count: 0,
-          name: 'Post',
-          url: 'posts',
+          count: 2,
+          name: 'Team',
+          url: 'teams',
         },
         {
           count: 0,

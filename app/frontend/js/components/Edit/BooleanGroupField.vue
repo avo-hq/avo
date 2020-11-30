@@ -1,7 +1,7 @@
 <template>
   <edit-field-wrapper :field="field" :errors="errors" :index="index" :displayed-in="displayedIn">
     <div class="flex items-center">
-      <div class="space-y-3">
+      <div class="space-y-2">
         <template v-for="(value, name, index) in fieldValues">
           <div :key="index" @click="toggleOption(name)">
             <input

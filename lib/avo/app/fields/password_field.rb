@@ -8,9 +8,11 @@ module Avo
           component: 'password-field',
         }
 
+        show_on :forms
+
         super(name, **args, &block)
 
-        only_on :forms
+        hide_on [:index, :show]
       end
     end
   end

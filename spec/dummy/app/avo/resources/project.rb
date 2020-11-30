@@ -17,7 +17,8 @@ module Avo
         country :country
         number :users_required
         datetime :started_at, name: 'Started', time_24hr: true, relative: true
-        files :files
+        markdown :description, height: '350px'
+        files :files, translation_key: 'avo.field_translations.file'
         key_value :meta, key_label: 'Meta key', value_label: 'Meta value', action_text: 'New item', delete_text: 'Remove item', disable_editing_keys: false, disable_adding_rows: false, disable_deleting_rows: false
 
         has_and_belongs_to_many :users

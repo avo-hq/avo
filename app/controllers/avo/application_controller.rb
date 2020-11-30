@@ -5,8 +5,10 @@ module Avo
     before_action :init_app
 
     def init_app
-      puts 'AvoController.init_app'.inspect
-      Avo::App.init
+      Avo::App.boot if Avo::IN_DEVELOPMENT
+      Avo::App.init request
+
+      @license = Avo::App.license
     end
 
     def exception_logger(exception)
@@ -21,12 +23,42 @@ module Avo
     end
 
     private
+      def resource
+        eager_load_files(resource_model).find params[:id]
+      end
+
+      def eager_load_files(query)
+        if avo_resource.attached_file_fields.present?
+          avo_resource.attached_file_fields.map(&:id).map do |field|
+            query = query.send :"with_attached_#{field}"
+          end
+        end
+
+        query
+      end
+
       def resource_model
         avo_resource.model
       end
 
       def avo_resource
         App.get_resource params[:resource_name].to_s.camelize.singularize
+      end
+
+      def authorize_user
+        return if params[:controller] == 'avo/search'
+
+        model = record = avo_resource.model
+
+        if ['show', 'edit', 'update'].include?(params[:action]) && params[:controller] == 'avo/resources'
+          record = resource
+        end
+
+        return render_unauthorized unless AuthorizationService::authorize_action current_user, record, params[:action]
+      end
+
+      def render_unauthorized
+        render json: { message: I18n.t('avo.unauthorized') }, status: 403
       end
   end
 end

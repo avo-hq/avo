@@ -1,4 +1,3 @@
-
 import Paginate from 'vuejs-paginate'
 import Vue from 'vue/dist/vue.esm'
 import kebabCase from 'lodash/kebabCase'
@@ -48,6 +47,7 @@ Vue.component('show-country-field',                  require('@/js/components/Sh
 Vue.component('show-badge-field',                    require('@/js/components/Show/BadgeField.vue').default)
 Vue.component('show-heading-field',                  require('@/js/components/Show/HeadingField.vue').default)
 Vue.component('show-code-field',                     require('@/js/components/Show/CodeField.vue').default)
+Vue.component('show-markdown-field',                 require('@/js/components/Show/MarkdownField.vue').default)
 Vue.component('show-trix-field',                     require('@/js/components/Show/TrixField.vue').default)
 
 Vue.component('edit-field-wrapper',                  require('@/js/components/Edit/FieldWrapper.vue').default)
@@ -71,6 +71,7 @@ Vue.component('edit-country-field',                  require('@/js/components/Ed
 Vue.component('edit-heading-field',                  require('@/js/components/Show/HeadingField.vue').default)
 Vue.component('edit-code-field',                     require('@/js/components/Edit/CodeField.vue').default)
 Vue.component('edit-hidden-field',                   require('@/js/components/Edit/HiddenField.vue').default)
+Vue.component('edit-markdown-field',                 require('@/js/components/Edit/MarkdownField.vue').default)
 Vue.component('edit-trix-field',                     require('@/js/components/Edit/TrixField.vue').default)
 
 // Form Fields
@@ -115,9 +116,14 @@ Vue.component('resources-navigation',                require('@/js/components/Re
 Vue.component('sidebar-link',                        require('@/js/components/SidebarLink.vue').default)
 Vue.component('application-sidebar',                 require('@/js/components/ApplicationSidebar.vue').default)
 Vue.component('logo-component',                      require('@/js/components/LogoComponent.vue').default)
+Vue.component('license-warnings',                    require('@/js/components/LicenseWarnings.vue').default)
+Vue.component('license-warning',                     require('@/js/components/LicenseWarning.vue').default)
 
 // Views
 Vue.component('resources-index',                     require('@/js/views/ResourceIndex.vue').default)
+
+// Layouts
+Vue.component('app-layout',                          require('@/js/views/AppLayout.vue').default)
 
 // Icons are self imported as ICON_NAME-icon components
 // thumbs-up.svg -> <thumbs-up-icon />

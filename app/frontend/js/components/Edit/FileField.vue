@@ -13,7 +13,7 @@
       <a-button color="indigo"
         @click="deleteFile"
         v-if="value"
-      ><trash-icon class="h-4 mr-1" /> Delete file</a-button>
+      ><trash-icon class="h-4 mr-1" /> {{ $t('avo.delete_file') }}</a-button>
     </template>
   </edit-field-wrapper>
 </template>

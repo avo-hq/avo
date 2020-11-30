@@ -9,6 +9,7 @@ module Avo
 
       attr_accessor :id
       attr_accessor :name
+      attr_accessor :translation_key
       attr_accessor :component
       attr_accessor :updatable
       attr_accessor :sortable
@@ -34,7 +35,8 @@ module Avo
         # The field properties as a hash {property: default_value}
         @field_properties = {
           id: id,
-          name: args[:name] || id.to_s.humanize,
+          name: id.to_s.humanize(keep_id_suffix: true),
+          translation_key: nil,
           block: block,
           component: 'field',
           required: false,

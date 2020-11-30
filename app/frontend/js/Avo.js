@@ -1,6 +1,7 @@
 import '@/js/components'
 import Api from '@/js/Api'
 import Bus from '@/js/Bus'
+import I18n from 'i18n-js'
 import PortalVue from 'portal-vue'
 import Toasted from 'vue-toasted'
 import VModal from 'vue-js-modal'
@@ -8,7 +9,9 @@ import VTooltip from 'v-tooltip'
 import Vue from 'vue/dist/vue.esm'
 import VueCurrencyInput from 'vue-currency-input'
 import VueRouter from 'vue-router'
-import Vuex from 'vuex'
+import Vuex, { mapMutations } from 'vuex'
+
+import appStore from '@/js/stores/app-store'
 import indexStore from '@/js/stores/index-store'
 import router from '@/js/router'
 
@@ -44,7 +47,16 @@ const Avo = {
     this.vue.alert(message, messageType)
   },
 
-  initVue() {
+  store() {
+    return new Vuex.Store({
+      modules: {
+        index: indexStore,
+        app: appStore,
+      },
+    })
+  },
+
+  initPlugins() {
     Vue.use(Toasted, {
       duration: 5000,
       keepOnHover: true,
@@ -69,22 +81,35 @@ const Avo = {
     Vue.use(PortalVue)
     Vue.use(Vuex)
 
-    const store = new Vuex.Store({
-      modules: {
-        index: indexStore,
+    // Custom i18n plugin
+    Vue.use({
+      install(Vue) {
+        Vue.prototype.$t = (key, options) => I18n.t(key, options)
       },
     })
+  },
+
+  initVue() {
+    Avo.initPlugins()
 
     this.vue = new Vue({
       router,
-      store,
+      store: Avo.store(),
       el: '#app',
       computed: {
         routerKey() {
           return `${this.$route.name}-${this.$route.params.resourceName || ''}`
         },
+        layout() {
+          if (this.$route.name === '403') return 'blank'
+
+          return 'application'
+        },
       },
       methods: {
+        ...mapMutations('app', [
+          'setAvailableResources',
+        ]),
         reload() {
           this.$router.go()
         },
@@ -100,6 +125,8 @@ const Avo = {
         },
       },
       mounted() {
+        this.setAvailableResources(window.avoResources)
+
         Bus.$on('reload', this.reload)
         Bus.$on('redirect', this.redirect)
         Bus.$on('message', (message) => this.alert(message, 'success'))

@@ -1,6 +1,7 @@
 import { objectToFormData } from 'object-to-formdata'
 import Api from '@/js/Api'
 import Avo from '@/js/Avo'
+import Resource from '@/js/models/Resource'
 import isNull from 'lodash/isNull'
 import isUndefined from 'lodash/isUndefined'
 import merge from 'lodash/merge'
@@ -81,10 +82,9 @@ export default {
           },
         })
 
-        const { success } = data
-        const { resource } = data
+        const { success, resource } = data
 
-        this.resource = resource
+        this.resource = new Resource(resource)
 
         if (success) {
           this.$router.push(this.afterSuccessPath)

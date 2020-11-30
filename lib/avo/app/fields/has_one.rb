@@ -13,7 +13,7 @@ module Avo
 
         hide_on :create
 
-        @placeholder = 'Choose an option'
+        @placeholder = I18n.t 'avo.choose_an_option'
 
         @relation_method = name.to_s.parameterize.underscore
       end
@@ -43,7 +43,7 @@ module Avo
           end
         end
 
-        fields[:resource_name_plural] = target_resource.resource_name_plural
+        fields[:plural_name] = target_resource.plural_name
 
         fields
       end

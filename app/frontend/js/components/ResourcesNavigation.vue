@@ -1,18 +1,19 @@
 <template>
   <div>
     <sidebar-link :large="true">
-      Resources
+      {{ $t('avo.resources') }}
     </sidebar-link>
 
     <div class="resources-links w-full">
       <sidebar-link
         v-for="resource in sortedResources"
         :key="resource.resource_name"
-        v-text="resource.label"
+        v-text="resourceLabel(resource)"
         :to="{
           name: 'index',
           params: {
             resourceName: resource.resource_name,
+            resourceTranslationKey: resource.translation_key,
           },
         }"
       />
@@ -21,16 +22,23 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import sortBy from 'lodash/sortBy'
+import upperFirst from 'lodash/upperFirst'
 
 export default {
-  props: ['resources'],
   computed: {
+    ...mapState('app', [
+      'availableResources',
+    ]),
     sortedResources() {
-      return sortBy(this.resources, 'resource_name')
+      return sortBy(this.availableResources, 'resource_name')
+    },
+  },
+  methods: {
+    resourceLabel(resource) {
+      return upperFirst(resource.label)
     },
   },
 }
 </script>
-
-<style slang="postcss"></style>

@@ -12,8 +12,9 @@
           viaResourceId: viaResourceId,
         }
       }"
-      :title="`View ${this.resourceNameSingular}`"
+      :title="viewTooltipLabel"
       data-control="view"
+      v-if="canView"
     >
       <eye-icon :class="iconClasses"/>
     </router-link>
@@ -29,14 +30,15 @@
           viaResourceId: viaResourceId,
         },
       }"
-      :title="`Edit ${this.resourceNameSingular}`"
+      :title="editTooltipLabel"
       data-control="edit"
+      v-if="canEdit"
     >
       <edit-icon :class="iconClasses"/>
     </router-link>
     <a href="javascript:void(0);"
       @click="openDetachModal"
-      :title="`Detach ${this.resourceNameSingular}`"
+      :title="detachTooltipLabel"
       data-control="detach"
       v-if="relationship === 'has_and_belongs_to_many'"
     >
@@ -44,9 +46,9 @@
     </a>
     <a href="javascript:void(0);"
       @click="openDeleteModal"
-      :title="`Delete ${this.resourceNameSingular}`"
+      :title="deleteTooltipLabel"
       data-control="delete"
-      v-else
+      v-else-if="canDelete"
     >
       <trash-icon :class="iconClasses"/>
     </a>
@@ -59,6 +61,7 @@ import DealsWithHasManyRelations from '@/js/mixins/deals-with-has-many-relations
 import DealsWithResourceLabels from '@/js/mixins/deals-with-resource-labels'
 import Modal from '@/js/components/Modal.vue'
 import isUndefined from 'lodash/isUndefined'
+import upperFirst from 'lodash/upperFirst'
 
 export default {
   mixins: [DealsWithHasManyRelations, DealsWithResourceLabels],
@@ -78,6 +81,27 @@ export default {
 
       return `/resources/${this.resourceName}`
     },
+    canEdit() {
+      return this.resource.authorization.edit
+    },
+    canView() {
+      return this.resource.authorization.show
+    },
+    canDelete() {
+      return this.resource.authorization.destroy
+    },
+    viewTooltipLabel() {
+      return upperFirst(this.$t('avo.view_item', { item: this.resourceNameSingular.toLowerCase() }))
+    },
+    editTooltipLabel() {
+      return upperFirst(this.$t('avo.edit_item', { item: this.resourceNameSingular.toLowerCase() }))
+    },
+    detachTooltipLabel() {
+      return upperFirst(this.$t('avo.detach_item', { item: this.resourceNameSingular.toLowerCase() }))
+    },
+    deleteTooltipLabel() {
+      return upperFirst(this.$t('avo.delete_item', { item: this.resourceNameSingular.toLowerCase() }))
+    },
   },
   methods: {
     async deleteResource() {
@@ -96,14 +120,15 @@ export default {
     },
     openDeleteModal() {
       this.$modal.show(Modal, {
-        heading: `Delete ${this.resourceNameSingular}`,
-        text: 'Are you sure?',
+        heading: upperFirst(this.$t('avo.delete_item', { item: this.resourceNameSingular })),
+        text: upperFirst(this.$t('avo.are_you_sure')),
         confirmAction: this.deleteResource,
       })
     },
     openDetachModal() {
       this.$modal.show(Modal, {
-        text: `Are you sure you want to detach this ${this.resourceNameSingular.toLowerCase()}?`,
+        heading: upperFirst(this.$t('avo.detach_item', { item: this.resourceNameSingular.toLowerCase() })),
+        text: upperFirst(this.$t('avo.are_you_sure')),
         confirmAction: this.detachResource,
       })
     },

@@ -31,7 +31,7 @@
       <div v-if="searchable">
         <a-button color="indigo"
           @click="removeSelection"
-        >Remove selection</a-button>
+        >{{ $t('avo.remove_selection') }}</a-button>
       </div>
     </template>
   </edit-field-wrapper>
