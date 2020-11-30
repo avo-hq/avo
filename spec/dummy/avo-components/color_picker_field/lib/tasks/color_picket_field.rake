@@ -50,7 +50,7 @@ def enhance_assets_precompile
   Rake::Task['assets:precompile'].enhance(deps) do
     puts 999333.inspect
     # Rake::Task["avocado:webpacker:compile"].invoke
-    Rake::Task["stats"].invoke
+    Rake::Task['stats'].invoke
   end
 end
 
