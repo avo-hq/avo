@@ -44,10 +44,10 @@ end
 def enhance_assets_precompile
   # yarn:install was added in Rails 5.1
   puts 999444.inspect
-  deps = yarn_install_available? ? [] : [""]
+  deps = yarn_install_available? ? [] : ['']
   puts 999555.inspect
   puts deps.inspect
-  Rake::Task["assets:precompile"].enhance(deps) do
+  Rake::Task['assets:precompile'].enhance(deps) do
     puts 999333.inspect
     # Rake::Task["avocado:webpacker:compile"].invoke
     Rake::Task["stats"].invoke
@@ -55,14 +55,14 @@ def enhance_assets_precompile
 end
 
 # Compile packs after we've compiled all other assets during precompilation
-skip_webpacker_precompile = %w(no false n f).include?(ENV["WEBPACKER_PRECOMPILE"])
+skip_webpacker_precompile = %w(no false n f).include?(ENV['WEBPACKER_PRECOMPILE'])
 
 unless skip_webpacker_precompile
-  if Rake::Task.task_defined?("assets:precompile")
+  if Rake::Task.task_defined?('assets:precompile')
     puts 999111.inspect
     enhance_assets_precompile
   else
     puts 999222.inspect
-    Rake::Task.define_task("assets:precompile" => "color_picker_field:webpacker:compile")
+    Rake::Task.define_task('assets:precompile' => 'color_picker_field:webpacker:compile')
   end
 end

@@ -17,7 +17,7 @@ export default {
   mixins: [HasInputAppearance, IsFormField],
   computed: {
     classes() {
-      const classes = ['w-full', ...this.inputClasses]
+      const classes = ['w-full', this.inputClasses]
 
       if (this.hasErrors) classes.push('border-red-600')
 

@@ -10,7 +10,6 @@ module Avo
             Avo::App.script 'color_picker_field.js', "#{File.dirname(__FILE__)}/frontend"
             Avo::App.load_field :color_picker, Avo::Components::ColorPickerField::Field
           end
-
         end
       end
     end
