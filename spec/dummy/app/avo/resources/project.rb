@@ -23,6 +23,8 @@ module Avo
 
         has_and_belongs_to_many :users
       end
+
+      use_filter Avo::Filters::StartedFilter
     end
   end
 end
