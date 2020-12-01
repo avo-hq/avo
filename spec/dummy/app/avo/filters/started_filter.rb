@@ -19,8 +19,8 @@ module Avo
         defaults = {
           range: false,
           first_day_of_week: 0,
-          picker_format: "Y-m-d",
-          placeholder: "Select a date",
+          picker_format: 'Y-m-d',
+          placeholder: 'Select a date',
         }
 
         return configuration.reverse_merge!(defaults) if defined? configuration
