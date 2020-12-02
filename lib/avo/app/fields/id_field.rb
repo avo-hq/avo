@@ -1,4 +1,3 @@
-puts 'in id field'.inspect
 module Avo
   module Fields
     class IdField < Field

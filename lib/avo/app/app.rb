@@ -56,7 +56,7 @@ module Avo
       # Avo::Fields::TextField -> text
       # Avo::Fields::TextDateTime -> date_time
       def init_fields
-        puts 'init_fields'.inspect
+        puts ['init_fields', Avo::Fields.constants].inspect
         Avo::Fields.constants.each do |class_name|
           next if class_name.to_s == 'Field'
 
@@ -91,7 +91,7 @@ module Avo
       end
 
       def init_components
-        puts ['init_components', Avo::Components.constants.inspect].inspect
+        puts ['init_components', Avo::Components.constants].inspect
         Avo::Components.constants.each do |class_name|
           puts class_name.inspect
           "Avo::Components::#{class_name}::Provider".safe_constantize.boot
@@ -142,6 +142,16 @@ module Avo
       # get_resource_by_name('user') => Avo::Resources::User
       def get_resource_by_name(name)
         self.get_resource name.singularize.camelize
+      end
+
+      # This returns the Avo resource by singular snake_cased name
+      #
+      # get_resource_by_name('User') => Avo::Resources::User
+      # get_resource_by_name(User) => Avo::Resources::User
+      def get_resource_by_model_name(name)
+        get_resources.find do |resource|
+          resource.class.name.demodulize == name.to_s
+        end
       end
 
       # This returns the Rails model class by singular snake_cased name

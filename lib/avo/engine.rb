@@ -42,13 +42,14 @@ module Avo
         end
       else
         Dir.glob(avo_root_path + '/lib/avo/app/**/*.rb'.to_s).each { |c| require c }
+        if Rails.env.production?
+          avo_component_files.each { |c| require(c) }
+        else
+          avo_component_files.each { |c| load(c) }
+        end
 
         Avo::App.boot if Avo::PACKED
       end
-    end
-
-    config.after_initialize do
-      puts 'config.after_initialize'.inspect
     end
 
     initializer 'webpacker.proxy' do |app|
