@@ -252,7 +252,7 @@ module Avo
 
       def build_meta
         {
-          per_page_steps: Avo.configuration.per_page_steps,
+          per_page_steps: [*Avo.configuration.per_page_steps, Avo.configuration.per_page.to_i].sort.uniq,
           available_view_types: avo_resource.available_view_types,
           default_view_type: avo_resource.default_view_type || Avo.configuration.default_view_type,
           translation_key: avo_resource.translation_key,

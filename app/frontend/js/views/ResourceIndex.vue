@@ -374,6 +374,7 @@ export default {
       const { data } = await Api.get(this.queryUrl)
 
       this.resources = Resource.parseResources(data.resources)
+      this.setPerPage(data.per_page)
       this.totalPages = data.total_pages
       this.meta = data.meta
       this.availableViewTypes = data.meta.available_view_types
@@ -426,7 +427,7 @@ export default {
       this.viewType = isUndefined(viewType) ? '' : viewType
     },
     setPerPage(perPage) {
-      this.perPage = isUndefined(perPage) ? 24 : parseInt(perPage, 10)
+      this.perPage = isUndefined(perPage) ? null : parseInt(perPage, 10)
     },
     setSortBy(by) {
       this.sortBy = isUndefined(by) ? '' : by
