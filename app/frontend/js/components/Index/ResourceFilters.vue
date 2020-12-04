@@ -89,8 +89,10 @@ export default {
       this.togglePanel()
     },
   },
-  mounted() {
-    this.localPerPage = this.perPage
+  watch: {
+    perPage() {
+      this.localPerPage = this.perPage
+    },
   },
 }
 </script>
