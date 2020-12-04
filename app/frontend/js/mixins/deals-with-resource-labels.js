@@ -11,6 +11,7 @@ export default {
   },
   computed: {
     translationKey() {
+      if (this.hasManyThrough) return this.field.translation_key
       if (this.resourceTranslationKey) return this.resourceTranslationKey
       if (this.meta && this.meta.translation_key) return this.meta.translation_key
       if (this.resource && this.resource.translationKey) return this.resource.translationKey

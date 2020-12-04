@@ -28,7 +28,7 @@ module Avo
       end
 
       def attachment_model
-        attachment_class.safe_constantize.find params[:attachment_id]
+        resource._reflections[params[:attachment_name].to_s].klass.find params[:attachment_id]
       end
   end
 end
