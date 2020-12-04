@@ -107,7 +107,7 @@
           </div>
 
           <paginate
-            v-show="totalPages > 1"
+            v-show="paginationVisible"
             v-model="page"
             ref="paginate"
             :page-count="totalPages"
@@ -151,7 +151,7 @@
 
         <div class="bg-white rounded-lg shadow-xl mt-6">
           <paginate
-            v-show="totalPages > 1"
+            v-show="paginationVisible"
             v-model="page"
             ref="paginate"
             :page-count="totalPages"
@@ -332,6 +332,12 @@ export default {
     },
     canCreate() {
       if (this.meta && this.meta.authorization) return this.meta.authorization.create
+
+      return true
+    },
+    paginationVisible() {
+      if (this.page > this.totalPages) return true
+      if (this.totalPages === 1) return false
 
       return true
     },
