@@ -1,33 +1,41 @@
 <template>
-  <button class="inline-flex flex-grow-0 items-center text-sm font-bold leading-none fill-current whitespace-no-wrap transition duration-100 rounded-lg shadow-xl"
-    ref="button"
-    :is="element"
-    :class="classes"
-    :to="to"
-    :exact="exact"
-    :disabled="disabled"
-    :href="realHref"
-    @click="$emit('click')"
+  <router-link
+    :to="realTo"
+    v-slot="{ href, navigate }"
   >
-    <span class="text-center w-full" v-if="fullWidth">
-      <slot />
-    </span>
-    <slot v-else />
-  </button>
+    <button
+      class="inline-flex flex-grow-0 items-center text-sm font-bold leading-none fill-current whitespace-no-wrap transition duration-100 rounded-lg shadow-xl"
+      ref="button"
+      :class="classes"
+      :exact="exact"
+      :disabled="disabled"
+      @click="onClick($event, navigate)"
+      :is="element"
+      :href="realHref(href)"
+      :download="download"
+    >
+      <span class="text-center w-full" v-if="fullWidth">
+        <slot />
+      </span>
+      <slot v-else />
+    </button>
+  </router-link>
 </template>
 
 <script>
+import isUndefined from 'lodash/isUndefined'
+
 export default {
   props: [
     'to',
     'exact',
-    'onClick',
     'color',
     'variant',
     'disabled',
     'href',
     'size',
     'active',
+    'download',
   ],
   computed: {
     fullWidth() {
@@ -106,20 +114,47 @@ export default {
       return this.variant === 'outlined'
     },
     element() {
-      if (this.to) return 'router-link'
+      if (this.to) return 'a'
       if (this.href) return 'a'
 
       return 'button'
     },
-    realHref() {
-      if (this.href) return this.href
-      // eslint-disable-next-line no-script-url
-      if (this.to) return 'javascript:void(0);'
+    routerLinkElement() {
+      if (this.to) return 'router-link'
 
-      return null
+      return 'a'
+    },
+    realTo() {
+      if (this.href) return this.href
+      if (this.to) return this.to
+
+      // eslint-disable-next-line no-script-url
+      return 'javascript:void(0);'
+    },
+    shouldNavigate() {
+      if (isUndefined(this.download)) {
+        if (this.realTo === 'javascript:void(0);') return false
+      } else {
+        return false
+      }
+
+      return true
     },
   },
   methods: {
+    onClick(event, navigate) {
+      this.$emit('click')
+
+      if (this.shouldNavigate) {
+        navigate(event)
+      }
+    },
+    realHref(href) {
+      if (this.href) return this.href
+      if (this.to && href) return href
+
+      return null
+    },
     focus() {
       this.$refs.button.focus()
     },

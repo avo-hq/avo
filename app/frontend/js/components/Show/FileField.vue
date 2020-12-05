@@ -8,7 +8,8 @@
     </div>
     <empty-dash v-else />
     <template #extra>
-      <a-button :href="field.value"
+      <a-button
+        :href="field.value"
         color="indigo"
         v-tooltip="$t('avo.download_item', { item: field.filename })"
         v-if="field.value"

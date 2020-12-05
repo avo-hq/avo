@@ -1,6 +1,10 @@
 <template>
   <div class="relative w-full flex justify-between z-30">
-    <a-button color="gray" class="focus:outline-none" @click="togglePanel">
+    <a-button
+      color="gray"
+      class="focus:outline-none"
+      @click="togglePanel"
+    >
       <filter-icon class="h-4 mr-2" data-button="resource-filters" /> {{ $t('avo.filters') }}
     </a-button>
     <div v-on-clickaway="onClickAway"

@@ -17,7 +17,6 @@
         <div>
           <a-button
             color="indigo"
-            href="javascript:void(0);"
             @click="showAttachModal"
             v-if="relationship === 'has_and_belongs_to_many'"
           >
@@ -53,13 +52,15 @@
             />
           </div>
           <div class="flex justify-end items-center px-6 space-x-3">
-            <a-button @click="changeViewType('table')"
+            <a-button
+              @click="changeViewType('table')"
               color="blue"
               v-if="availableViewTypes.includes('table') && viewType !== 'table'"
             >
               <view-list-icon class="h-4 mr-1" /> {{ $t('avo.table_view') }}
             </a-button>
-            <a-button @click="changeViewType('grid')"
+            <a-button
+              @click="changeViewType('grid')"
               color="blue"
               v-if="availableViewTypes.includes('grid') && viewType !== 'grid'"
             >
