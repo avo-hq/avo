@@ -54,7 +54,7 @@
         </template>
       </panel>
 
-      <!-- <component
+      <component
         v-for="field in hasManyRelations"
         :key="field.id"
         :is="`show-${field.component}`"
@@ -62,7 +62,7 @@
         :resource-name="resourceName"
         :resource-id="resourceId"
         :field-component="field.component"
-      /> -->
+      />
     </div>
   </div>
 </template>
