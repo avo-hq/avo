@@ -17,7 +17,6 @@
         <div>
           <a-button
             color="indigo"
-            href="javascript:void(0);"
             @click="showAttachModal"
             v-if="canAttachResources"
           >
@@ -54,13 +53,15 @@
             />
           </div>
           <div class="flex justify-end items-center px-6 space-x-3">
-            <a-button @click="changeViewType('table')"
+            <a-button
+              @click="changeViewType('table')"
               color="blue"
               v-if="availableViewTypes.includes('table') && viewType !== 'table'"
             >
               <view-list-icon class="h-4 mr-1" /> {{ $t('avo.table_view') }}
             </a-button>
-            <a-button @click="changeViewType('grid')"
+            <a-button
+              @click="changeViewType('grid')"
               color="blue"
               v-if="availableViewTypes.includes('grid') && viewType !== 'grid'"
             >
@@ -108,7 +109,7 @@
           </div>
 
           <paginate
-            v-show="totalPages > 1"
+            v-show="paginationVisible"
             v-model="page"
             ref="paginate"
             :page-count="totalPages"
@@ -152,7 +153,7 @@
 
         <div class="bg-white rounded-lg shadow-xl mt-6">
           <paginate
-            v-show="totalPages > 1"
+            v-show="paginationVisible"
             v-model="page"
             ref="paginate"
             :page-count="totalPages"
@@ -336,6 +337,12 @@ export default {
 
       return true
     },
+    paginationVisible() {
+      if (this.page > this.totalPages) return true
+      if (this.totalPages === 1) return false
+
+      return true
+    },
   },
   methods: {
     ...mapMutations('index', [
@@ -375,6 +382,7 @@ export default {
       const { data } = await Api.get(this.queryUrl)
 
       this.resources = Resource.parseResources(data.resources)
+      this.setPerPage(data.per_page)
       this.totalPages = data.total_pages
       this.meta = data.meta
       this.availableViewTypes = data.meta.available_view_types
@@ -427,7 +435,7 @@ export default {
       this.viewType = isUndefined(viewType) ? '' : viewType
     },
     setPerPage(perPage) {
-      this.perPage = isUndefined(perPage) ? 24 : parseInt(perPage, 10)
+      this.perPage = isUndefined(perPage) ? null : parseInt(perPage, 10)
     },
     setSortBy(by) {
       this.sortBy = isUndefined(by) ? '' : by

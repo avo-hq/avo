@@ -29,7 +29,8 @@
     </div>
     <template #extra>
       <div v-if="searchable">
-        <a-button color="indigo"
+        <a-button
+          color="indigo"
           @click="removeSelection"
           v-text="removeSelectionTooltipLabel"
         />

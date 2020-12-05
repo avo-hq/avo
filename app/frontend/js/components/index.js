@@ -97,7 +97,7 @@ Vue.component('panel',                               require('@/js/components/Pa
 Vue.component('pane',                                require('@/js/components/Pane.vue').default)
 Vue.component('resource-overview',                   require('@/js/components/ResourceOverview.vue').default)
 Vue.component('heading',                             require('@/js/components/Heading.vue').default)
-Vue.component('a-button',                            require('@/js/components/Button.vue').default)
+Vue.component('a-button',                            require('@/js/components/AButton.vue').default)
 Vue.component('resources-search',                    require('@/js/components/ResourcesSearch.vue').default)
 Vue.component('loading-component',                   require('@/js/components/LoadingComponent.vue').default)
 Vue.component('loading-overlay',                     require('@/js/components/LoadingOverlay.vue').default)

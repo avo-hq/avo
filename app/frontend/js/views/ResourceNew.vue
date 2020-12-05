@@ -8,12 +8,7 @@
 
         <template #tools>
           <div class="flex justify-end space-x-2">
-            <a-button :to="{
-              name: 'index',
-              params: {
-                resourceName: resourceName,
-              },
-            }"><arrow-left-icon class="h-4 mr-1"/> {{ $t('avo.cancel') }}</a-button>
+            <a-button :to="backActionParams"><arrow-left-icon class="h-4 mr-1"/> {{ $t('avo.cancel') }}</a-button>
             <a-button
               color="green"
               @click="submitResource"
@@ -68,6 +63,24 @@ export default {
     'viaResourceId',
   ],
   computed: {
+    backActionParams() {
+      if (this.viaResourceName && this.viaResourceId) {
+        return {
+          name: 'show',
+          params: {
+            resourceName: this.viaResourceName,
+            resourceId: this.viaResourceId,
+          },
+        }
+      }
+
+      return {
+        name: 'index',
+        params: {
+          resourceName: this.resourceName,
+        },
+      }
+    },
     panels() {
       if (!this.resource) return [{ name: (this.$t('avo.create_new_item', { item: this.resourceNameFromURL })) }]
 

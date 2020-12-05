@@ -1,9 +1,10 @@
 <template>
   <div class="relative z-30" v-if="actions.length > 0">
-    <a-button @click="open = !open"
+    <a-button
+      @click="open = !open"
       color="blue"
-      :disabled="isDisabled"
       class="js-actions-toggle-button"
+      :disabled="isDisabled"
     >
       <arrow-left-icon class="h-4 mr-1 transform -rotate-90"/> {{ $t('avo.actions') }}
     </a-button>

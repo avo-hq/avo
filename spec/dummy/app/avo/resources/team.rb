@@ -18,6 +18,8 @@ module Avo
         has_one :admin
         has_many :members, through: :memberships
       end
+
+      use_filter Avo::Filters::MembersFilter
     end
   end
 end

@@ -12,10 +12,11 @@
             <a-button :to="cancelActionParams">
               <arrow-left-icon class="h-4 mr-1"/> {{ $t('avo.go_back') }}
             </a-button>
-            <a-button @click="openDeleteModal"
+            <a-button
               color="red"
               variant="outlined"
               v-if="canDelete"
+              @click="openDeleteModal"
             >
               <trash-icon class="text-red-700 h-4 mr-1"/>
               {{ $t('avo.delete') | upperFirst() }}
