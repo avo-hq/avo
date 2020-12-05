@@ -1,0 +1,46 @@
+require 'rails_helper'
+
+RSpec.feature 'AButton', type: :system do
+  describe 'with to attribute' do
+    it 'navigates to the requested path' do
+      visit '/avo/resources/posts'
+
+      click_on 'Create new post'
+      wait_for_loaded
+
+      expect(current_path).to eq '/avo/resources/posts/new'
+    end
+  end
+
+  describe 'with @click attribute' do
+    let!(:post) { create :post }
+
+    it 'navigates to the requested path' do
+      visit "/avo/resources/posts/#{post.id}"
+
+      click_on 'Delete'
+      click_on 'Confirm'
+      wait_for_loaded
+
+      expect(current_path).to eq '/avo/resources/posts'
+    end
+  end
+
+  describe 'with href attribute' do
+    let!(:post) { create :post }
+
+    before do
+      post.cover_photo.attach(io: File.open(Avo::ROOT_PATH.join('app', 'frontend', 'images', 'logo.png')), filename: 'logo.png', content_type: 'image/png')
+    end
+
+    it 'navigates to the requested path' do
+      visit "/avo/resources/posts/#{post.id}"
+
+      wait_for_loaded
+      click_on 'Download'
+      wait_for_loaded
+
+      expect(current_path).to eq "/avo/resources/posts/#{post.id}"
+    end
+  end
+end
