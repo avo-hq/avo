@@ -3,7 +3,7 @@
     <div v-if="hasFiles" class="relative p-3 bg-gray-200 grid grid-cols-3 lg:grid-cols-4 gap-3">
       <div v-for="file in allFiles" :key="file.path" class="relative pb-full">
         <div class="absolute flex z-10 w-full h-full justify-end items-start p-2">
-          <a-button href="javascript:void(0);"
+          <a-button
             size="xs"
             variant="outlined"
             color="red"

@@ -9,7 +9,11 @@
         <template #tools>
           <div class="flex justify-end space-x-2">
             <a-button :to="cancelActionParams"><arrow-left-icon class="h-4 mr-1"/> {{ $t('avo.cancel') | upperFirst() }} </a-button>
-            <a-button v-if="canUpdate" color="green" @click="submitResource"><save-icon class="h-4 mr-1"/> {{ $t('avo.save') | upperFirst() }}</a-button>
+            <a-button
+              v-if="canUpdate"
+              color="green"
+              @click="submitResource"
+            ><save-icon class="h-4 mr-1"/> {{ $t('avo.save') | upperFirst() }}</a-button>
           </div>
         </template>
 
