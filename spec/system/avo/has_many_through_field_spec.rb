@@ -29,16 +29,6 @@ RSpec.describe 'HasManyField', type: :system do
         expect(page).to have_text project.name
 
         expect(user.projects.pluck('id')).to include project.id
-
-        sleep 15
-        click_on "tr[resource-id='#{project.id}'] a[data-control='detach']"
-
-        expect(page).to have_text 'Detach project'
-
-        click_on 'Confirm'
-        wait_for_loaded
-
-        expect(page).not_to have_text project.name
       end
     end
   end
