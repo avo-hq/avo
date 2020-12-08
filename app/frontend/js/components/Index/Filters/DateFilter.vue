@@ -36,11 +36,7 @@ export default {
       altInputClass: 'w-full',
     },
   }),
-  props: [
-    'filter',
-    'appliedFilters',
-    'index',
-  ],
+  props: ['filter', 'appliedFilters', 'index'],
   computed: {
     filterClass() {
       if (this.filter && this.filter.filter_class) {
@@ -57,9 +53,15 @@ export default {
     },
   },
   methods: {
-    changeFilter() {
-      if (this.filterValue !== this.appliedFilters[this.filterClass]) {
-        return this.$emit('change-filter', { [this.filterClass]: this.filterValue })
+    changeFilter(dates) {
+      if (
+        ((dates.length > 1 && this.filter.filter_configuration.range)
+          || !this.filter.filter_configuration.range)
+        && this.filterValue !== this.appliedFilters[this.filterClass]
+      ) {
+        return this.$emit('change-filter', {
+          [this.filterClass]: this.filterValue,
+        })
       }
 
       return null
@@ -78,7 +80,7 @@ export default {
       this.flatpickrConfig.altFormat = this.filter.filter_configuration.picker_format
 
       // set input styling
-      this.flatpickrConfig.altInputClass += ` ${this.inputClasses}`
+      this.flatpickrConfig.altInputClass += ` ${this.inputClasses} js-flatpickr-input`
 
       // set first day of the week
       this.flatpickrConfig.locale.firstDayOfWeek = this.filter.filter_configuration.first_day_of_week
