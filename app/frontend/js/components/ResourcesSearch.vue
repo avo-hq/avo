@@ -49,6 +49,7 @@ export default {
     'resourceName',
     'viaResourceName',
     'viaResourceId',
+    'viaPath',
     'global',
     'single',
     'searchValue',
@@ -64,14 +65,16 @@ export default {
     isGlobal() {
       return !isUndefined(this.global)
     },
+    path() {
+      if (this.viaPath) return `${Avo.rootPath}/avo-api/${this.viaPath}/search`
+      if (this.isGlobal) return `${Avo.rootPath}/avo-api/search`
+
+      return `${Avo.rootPath}/avo-api/${this.resourceName}/search`
+    },
     queryUrl() {
       const url = new URI()
 
-      if (this.isGlobal) {
-        url.path(`${Avo.rootPath}/avo-api/search`)
-      } else {
-        url.path(`${Avo.rootPath}/avo-api/${this.resourceName}/search`)
-      }
+      url.path(this.path)
 
       const query = {
         q: this.query,
@@ -113,9 +116,15 @@ export default {
         this.value = resource
         this.$emit('select', resource)
       } else {
-        setTimeout(() => {
-          this.$router.push(resource.link)
-        }, 1)
+        document.activeElement.blur()
+
+        let path = resource.link
+
+        if (this.viaResourceName) {
+          path = `${path}?viaResourceName=${this.viaResourceName}&viaResourceId=${this.viaResourceId}`
+        }
+
+        this.$router.push(path)
       }
     },
     clearSelection() {

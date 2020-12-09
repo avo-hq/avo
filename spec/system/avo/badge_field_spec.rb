@@ -26,7 +26,7 @@ RSpec.describe 'BadgeField', type: :system do
       it 'is hidden' do
         visit url
 
-        expect(page).to have_no_selector "[field-id='stage']"
+        expect(page).to have_no_selector "[field-id='stage'][field-component='badge']"
       end
     end
   end

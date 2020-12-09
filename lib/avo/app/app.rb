@@ -132,6 +132,16 @@ module Avo
         self.get_resource name.singularize.camelize
       end
 
+      # This returns the Avo resource by singular snake_cased name
+      #
+      # get_resource_by_name('User') => Avo::Resources::User
+      # get_resource_by_name(User) => Avo::Resources::User
+      def get_resource_by_model_name(name)
+        get_resources.find do |resource|
+          resource.class.name.demodulize == name.to_s
+        end
+      end
+
       # This returns the Rails model class by singular snake_cased name
       #
       # get_model_class_by_name('user') => User

@@ -40,7 +40,7 @@
       @click="openDetachModal"
       :title="detachTooltipLabel"
       data-control="detach"
-      v-if="relationship === 'has_and_belongs_to_many'"
+      v-if="canAttachResources"
     >
       <switch-horizontal-icon :class="iconClasses"/>
     </a>
@@ -112,7 +112,8 @@ export default {
       this.$emit('resource-deleted')
     },
     async detachResource() {
-      await Api.post(`${Avo.rootPath}/avo-api/${this.viaResourceName}/${this.viaResourceId}/detach/${this.resourcePath}/${this.resource.id}`)
+      const resourcePath = this.hasManyThrough ? this.field.id : this.resourcePath
+      await Api.post(`${Avo.rootPath}/avo-api/${this.viaResourceName}/${this.viaResourceId}/detach/${resourcePath}/${this.resource.id}`)
 
       this.$modal.hideAll()
 

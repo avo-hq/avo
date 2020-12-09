@@ -16,7 +16,7 @@ module Avo
         end
 
         has_one :admin
-        has_many :members
+        has_many :members, through: :memberships
       end
 
       use_filter Avo::Filters::MembersFilter

@@ -18,7 +18,7 @@
           <a-button
             color="indigo"
             @click="showAttachModal"
-            v-if="relationship === 'has_and_belongs_to_many'"
+            v-if="canAttachResources"
           >
             <view-grid-add-icon class="h-4 mr-1" /> {{ $t('avo.attach_item', { item: resourceNameSingular.toLowerCase() }) }}
           </a-button>
@@ -47,6 +47,7 @@
           <div class="flex items-center px-6 w-64">
             <resources-search
               :resource-name="resourceName"
+              :via-path="resourcePath"
               :via-resource-name="viaResourceName"
               :via-resource-id="viaResourceId"
             />
@@ -480,7 +481,7 @@ export default {
       return param
     },
     async getOptions() {
-      const { data } = await Api.get(`${Avo.rootPath}/avo-api/${this.resourceName}?for_relation=${this.relationship}`)
+      const { data } = await Api.get(`${Avo.rootPath}/avo-api/${this.resourcePath}?for_relation=${this.relationship}`)
 
       return data.resources
     },
@@ -502,6 +503,7 @@ export default {
         heading: this.$t('avo.choose_item', { item: this.resourceNameSingular.toLowerCase() }),
         getOptions: this.getOptions,
         attachAction: this.attachOption,
+        viaPath: this.resourcePath,
       })
     },
     queryFiltersChanged() {
