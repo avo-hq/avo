@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    avo (0.4.2)
+    avo (0.4.3)
       countries
       httparty
       i18n-js
