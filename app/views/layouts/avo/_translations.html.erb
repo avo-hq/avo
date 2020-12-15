@@ -1,5 +1,5 @@
-<script>
+<%= javascript_tag nonce: true do %>
   I18n.defaultLocale = 'en';
   I18n.locale = "<%= Avo.configuration.language_code %>";
-</script>
+<% end %>
 <%= javascript_include_tag 'translations', skip_pipeline: true %>
