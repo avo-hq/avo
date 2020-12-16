@@ -1,8 +1,8 @@
-<script>
+<%= javascript_tag nonce: true do %>
   var rootPath = '<%= Avo.configuration.root_path %>';
   var timezone = '<%= Avo.configuration.timezone %>';
   var locale = '<%= Avo.configuration.locale %>';
   var defaultViewType = '<%= Avo.configuration.default_view_type %>';
   var license = <%= Avo::App.license.properties.to_json.html_safe %>;
   var avoResources = <%= Avo::App.get_available_resources(current_user).as_json.html_safe %>;
-</script>
+<% end %>
