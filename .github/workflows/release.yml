@@ -7,7 +7,6 @@ on:
 
 jobs:
   build:
-
     env:
       RAILS_ENV: production
       NODE_ENV: production
@@ -108,3 +107,12 @@ jobs:
 
     - name: Publish release on avohq.io
       run: node .github/publish-release-to-avo-hq-io.js
+
+    comment:
+      - name: Comment on released PRs
+        runs-on: ubuntu-latest
+        steps:
+          - name: Comment on released PRs
+            uses: rdlf0/comment-released-prs-action@v2
+            with:
+              repo-token: ${{ secrets.GITHUB_TOKEN }}
