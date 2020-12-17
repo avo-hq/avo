@@ -22,7 +22,8 @@ module Avo
         fields[:searchable] = @searchable
         fields[:is_relation] = true
         fields[:database_id] = foreign_key model
-        target_resource = App.get_resources.find { |r| r.class == "Avo::Resources::#{name}".safe_constantize }
+
+        target_resource = get_target_resource model
 
         relation_model = model.public_send(@relation_method)
 
@@ -59,6 +60,16 @@ module Avo
           model.reflections[@relation_method].foreign_key
         else
           model.class.reflections[@relation_method].foreign_key
+        end
+      end
+
+      def get_target_resource(model)
+        if model._reflections[id.to_s].klass.present?
+          App.get_resource_by_model_name model._reflections[id.to_s].klass.to_s
+        elsif model._reflections[id.to_s].options[:class_name].present?
+          App.get_resource_by_model_name model._reflections[id.to_s].options[:class_name]
+        else
+          App.get_resource_by_name class_name.to_s
         end
       end
     end
