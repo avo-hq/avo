@@ -4,7 +4,7 @@ module Avo
   class ResourceOverviewController < ApplicationController
     def index
       resources = App.get_resources
-        .select { |resource| AuthorizationService::authorize session_user, resource.model, Avo.configuration.authorization_methods.stringify_keys['index'] }
+        .select { |resource| AuthorizationService::authorize _current_user, resource.model, Avo.configuration.authorization_methods.stringify_keys['index'] }
         .sort_by(&:name)
         .map do |resource|
           {
@@ -20,10 +20,5 @@ module Avo
         hide_docs: Avo.configuration.hide_documentation_link,
       }
     end
-
-    private
-      def session_user
-        current_user.present? ? current_user : nil
-      end
   end
 end

@@ -14,6 +14,8 @@ module Avo
     attr_accessor :license
     attr_accessor :license_key
     attr_accessor :authorization_methods
+    attr_accessor :authenticate
+    attr_accessor :current_user
 
     def initialize
       @root_path = '/avo'
@@ -29,6 +31,8 @@ module Avo
       @hide_documentation_link = false
       @license = 'community'
       @license_key = nil
+      @current_user = proc {}
+      @authenticate = proc {}
       @authorization_methods = {
         index: 'index?',
         show: 'show?',
@@ -50,6 +54,14 @@ module Avo
       rescue => exception
         'en'
       end
+    end
+
+    def current_user_method(&block)
+      @current_user = block if block.present?
+    end
+
+    def authenticate_with(&block)
+      @authenticate = block if block.present?
     end
   end
 

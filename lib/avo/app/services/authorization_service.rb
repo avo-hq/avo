@@ -3,6 +3,7 @@ module Avo
     class << self
       def authorize(user, record, action)
         return true if skip_authorization
+        return true if user.nil?
 
         begin
           if Pundit.policy user, record
@@ -24,6 +25,7 @@ module Avo
 
       def with_policy(user, model)
         return model if skip_authorization
+        return model if user.nil?
 
         begin
           Pundit.policy_scope! user, model
@@ -34,6 +36,12 @@ module Avo
 
       def skip_authorization
         Avo::App.license.lacks :authorization
+      end
+
+      def authorized_methods(user, record)
+        [:create, :edit, :update, :show, :destroy].map do |method|
+          [method, authorize(user, record, Avo.configuration.authorization_methods[method])]
+        end.to_h
       end
     end
   end
