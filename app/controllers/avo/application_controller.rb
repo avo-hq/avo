@@ -3,6 +3,9 @@ module Avo
     rescue_from ActiveRecord::RecordInvalid, with: :exception_logger
     protect_from_forgery with: :exception
     before_action :init_app
+    before_action :_authenticate!
+
+    helper_method :_current_user
 
     def init_app
       Avo::App.boot if Avo::IN_DEVELOPMENT
@@ -20,6 +23,10 @@ module Avo
           traces: exception.backtrace,
         }, status: ActionDispatch::ExceptionWrapper.status_code_for_exception(exception.class.name) }
       end
+    end
+
+    def _current_user
+      instance_eval(&Avo.configuration.current_user)
     end
 
     private
@@ -54,11 +61,15 @@ module Avo
           record = resource
         end
 
-        return render_unauthorized unless AuthorizationService::authorize_action current_user, record, params[:action]
+        return render_unauthorized unless AuthorizationService::authorize_action _current_user, record, params[:action]
       end
 
       def render_unauthorized
         render json: { message: I18n.t('avo.unauthorized') }, status: 403
+      end
+
+      def _authenticate!
+        instance_eval(&Avo.configuration.authenticate)
       end
   end
 end

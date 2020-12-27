@@ -10,14 +10,14 @@ module Avo
       params[:sort_by] = params[:sort_by].present? ? params[:sort_by] : :created_at
       params[:sort_direction] = params[:sort_direction].present? ? params[:sort_direction] : :desc
 
-      query = AuthorizationService.with_policy current_user, resource_model
+      query = AuthorizationService.with_policy _current_user, resource_model
 
       if params[:via_resource_name].present? and params[:via_resource_id].present? and params[:via_relationship].present?
         # get the related resource (via_resource)
         related_model = App.get_resource_by_name(params[:via_resource_name]).model
 
         relation = related_model.find(params[:via_resource_id]).public_send(params[:via_relationship])
-        query = AuthorizationService.with_policy current_user, relation
+        query = AuthorizationService.with_policy _current_user, relation
 
         params[:per_page] = Avo.configuration.via_per_page
       elsif ['has_many', 'has_and_belongs_to_many'].include? params[:for_relation]
@@ -52,7 +52,7 @@ module Avo
 
       resources_with_fields = []
       resources.each do |resource|
-        resources_with_fields << Avo::Resources::Resource.hydrate_resource(model: resource, resource: avo_resource, view: :index, user: current_user)
+        resources_with_fields << Avo::Resources::Resource.hydrate_resource(model: resource, resource: avo_resource, view: :index, user: _current_user)
       end
 
       render json: {
@@ -66,7 +66,7 @@ module Avo
 
     def show
       render json: {
-        resource: Avo::Resources::Resource.hydrate_resource(model: resource, resource: avo_resource, view: @view || :show, user: current_user),
+        resource: Avo::Resources::Resource.hydrate_resource(model: resource, resource: avo_resource, view: @view || :show, user: _current_user),
       }
     end
 
@@ -94,7 +94,7 @@ module Avo
 
       render json: {
         success: true,
-        resource: Avo::Resources::Resource.hydrate_resource(model: resource, resource: avo_resource, view: :show, user: current_user),
+        resource: Avo::Resources::Resource.hydrate_resource(model: resource, resource: avo_resource, view: :show, user: _current_user),
         message: I18n.t('avo.resource_updated'),
       }
     end
@@ -117,14 +117,14 @@ module Avo
 
       render json: {
         success: true,
-        resource: Avo::Resources::Resource.hydrate_resource(model: resource, resource: avo_resource, view: :create, user: current_user),
+        resource: Avo::Resources::Resource.hydrate_resource(model: resource, resource: avo_resource, view: :create, user: _current_user),
         message: I18n.t('avo.resource_created'),
       }
     end
 
     def new
       render json: {
-        resource: Avo::Resources::Resource.hydrate_resource(model: resource_model.new, resource: avo_resource, view: :create, user: current_user),
+        resource: Avo::Resources::Resource.hydrate_resource(model: resource_model.new, resource: avo_resource, view: :create, user: _current_user),
       }
     end
 
@@ -256,13 +256,7 @@ module Avo
           available_view_types: avo_resource.available_view_types,
           default_view_type: avo_resource.default_view_type || Avo.configuration.default_view_type,
           translation_key: avo_resource.translation_key,
-          authorization: {
-            create: AuthorizationService::authorize(current_user, avo_resource.model, Avo.configuration.authorization_methods.stringify_keys['create']),
-            edit: AuthorizationService::authorize(current_user, avo_resource.model, Avo.configuration.authorization_methods.stringify_keys['edit']),
-            update: AuthorizationService::authorize(current_user, avo_resource.model, Avo.configuration.authorization_methods.stringify_keys['update']),
-            show: AuthorizationService::authorize(current_user, avo_resource.model, Avo.configuration.authorization_methods.stringify_keys['show']),
-            destroy: AuthorizationService::authorize(current_user, avo_resource.model, Avo.configuration.authorization_methods.stringify_keys['destroy']),
-          },
+          authorization: AuthorizationService::authorized_methods(_current_user, avo_resource.model)
         }
       end
   end
