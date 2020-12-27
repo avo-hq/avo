@@ -7,7 +7,7 @@ Avo.configure do |config|
   # config.license_key = ENV['AVO_LICENSE_KEY']
 
   ## == Authentication ==
-  config.current_user_method(&:current_user)
+  # config.current_user_method(&:current_user)
   # config.authenticate_with do
   #   warden.authenticate! scope: :user
   # end
