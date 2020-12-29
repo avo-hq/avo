@@ -4,5 +4,8 @@ module Avo
   class HomeController < ApplicationController
     def index
     end
+
+    def hotwire
+    end
   end
 end

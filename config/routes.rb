@@ -1,4 +1,6 @@
 Avo::Engine.routes.draw do
+  get 'hotwire', to: 'home#hotwire'
+
   root 'home#index'
 
   get '/avo-api/:resource_name/filters',  to: 'filters#index'
