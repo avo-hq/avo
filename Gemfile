@@ -97,3 +97,5 @@ gem 'httparty'
 gem 'iso'
 
 gem 'i18n-js'
+
+gem 'turbo-rails'

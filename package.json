@@ -19,6 +19,8 @@
   },
   "dependencies": {
     "@avo-hq/avo-js": "^0.1.8",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@hotwired/turbo-rails": "^7.0.0-beta.2",
     "@rails/activestorage": "^6.0.2-1",
     "@rails/webpacker": "^4.2.2",
     "@tailwindcss/typography": "^0.2.0",
@@ -45,6 +47,7 @@
     "postcss-nested": "^4.2.1",
     "postcss-nested-ancestors": "^2.0.0",
     "postcss-preset-env": "^6.7.0",
+    "stimulus": "^2.0.0",
     "tailwindcss": "^1.4.6",
     "turbolinks": "^5.2.0",
     "urijs": "^1.19.2",
