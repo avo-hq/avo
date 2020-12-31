@@ -45,7 +45,7 @@ module Avo
     end
 
     def locale_tag
-      ISO::Tag.new(locale)
+      ::ISO::Tag.new(locale)
     end
 
     def language_code
