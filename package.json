@@ -47,7 +47,7 @@
     "postcss-preset-env": "^6.7.0",
     "tailwindcss": "^1.4.6",
     "turbolinks": "^5.2.0",
-    "urijs": "^1.19.2",
+    "urijs": "^1.19.4",
     "v-tooltip": "^2.0.3",
     "vue": "^2.6.11",
     "vue-clickaway": "^2.2.2",
