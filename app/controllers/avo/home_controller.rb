@@ -7,5 +7,8 @@ module Avo
 
     def hotwire
     end
+
+    def hotwire_2
+    end
   end
 end

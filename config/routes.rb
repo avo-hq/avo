@@ -1,5 +1,6 @@
 Avo::Engine.routes.draw do
   get 'hotwire', to: 'home#hotwire'
+  get 'hotwire_2', to: 'home#hotwire_2'
 
   root 'home#index'
 

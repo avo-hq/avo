@@ -1,8 +1,9 @@
 import '@/css/application.css'
 
-import '@hotwired/turbo-rails'
+import 'regenerator-runtime/runtime'
 import * as Mousetrap from 'mousetrap'
 import { Application } from 'stimulus'
+import { Turbo, cable } from '@hotwired/turbo-rails'
 import { definitionsFromContext } from 'stimulus/webpack-helpers'
 import Avo from '@/js/hotwire/Avo'
 import I18n from 'i18n-js'
@@ -13,7 +14,6 @@ const context = require.context('./../js/hotwire/controllers', true, /\.js$/)
 application.load(definitionsFromContext(context))
 
 window.I18n = I18n
-console.log(I18n)
 
 document.addEventListener('DOMContentLoaded', Avo.init)
 

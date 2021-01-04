@@ -128,6 +128,10 @@ GEM
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     hashdiff (1.0.1)
+    hotwire-rails (0.1.2)
+      rails (>= 6.0.0)
+      stimulus-rails
+      turbo-rails
     httparty (0.18.1)
       mime-types (~> 3.0)
       multi_xml (>= 0.5.2)
@@ -294,10 +298,12 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    stimulus-rails (0.1.2)
+      rails (>= 6.0.0)
     thor (1.0.1)
     thread_safe (0.3.6)
     tilt (2.0.10)
-    turbo-rails (0.5.1)
+    turbo-rails (0.5.2)
       rails (>= 6.0.0)
     tzinfo (1.2.7)
       thread_safe (~> 0.1)
@@ -347,6 +353,7 @@ DEPENDENCIES
   faker
   fuubar
   gem-release
+  hotwire-rails
   httparty
   i18n-js
   inline_svg
@@ -367,7 +374,6 @@ DEPENDENCIES
   simplecov-cobertura
   spring
   spring-watcher-listen (~> 2.0.0)
-  turbo-rails
   tzinfo-data
   web-console (>= 3.3.0)
   webdrivers
