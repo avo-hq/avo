@@ -50,3 +50,10 @@ select.select-input {
 .fade-leave-to {
   @apply opacity-0 translate-y-1;
 }
+
+.application-sidebar {
+  .active:hover,
+  .active {
+    @apply bg-gray-200;
+  }
+}

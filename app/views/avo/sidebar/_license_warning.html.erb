@@ -1,0 +1,12 @@
+<div class="w-10/12 ml-1/12 inset-auto bottom-0 z-50 my-4 opacity-50 hover:opacity-100 transition-opacity duration-150 group">
+  <a href="https://avohq.io/pricing" target="_blank" class="rounded bg-teal-700 text-white py-2 px-4 text-sm block group-hover:pt-4">
+    <% if icon.present? %>
+      <div class="h-6 inline mr-1 text-bold" :is="iconElement" v-if="icon">
+        <%= title %>
+      </div>
+    <% end %>
+    <div class="group-hover:block hidden py-2">
+      <%= message %> <arrow-circle-right-icon class="h-6 inline float-right"></arrow-circle-right-icon>
+    </div>
+  </a>
+</div>

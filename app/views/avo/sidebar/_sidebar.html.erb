@@ -1,0 +1,17 @@
+<div class="application-sidebar flex h-full bg-white text-white w-56 z-50 border-r border-gray-400">
+  <div class="flex flex-col w-full">
+    <%= link_to root_path, class: 'logo-placeholder h-16 bg-white p-2 flex justify-center' do %>
+      <%= render_logo %>
+    <% end %>
+
+    <div class="flex-1 flex flex-col justify-between">
+      <div class="tools py-4">
+        <%= sidebar_link t('avo.dashboard'), '/avo', active: :exclusive %>
+
+        <%= render_resource_navigation %>
+      </div>
+
+      <%= render_license_warnings %>
+    </div>
+  </div>
+</div>

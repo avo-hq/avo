@@ -1,0 +1,7 @@
+<%= sidebar_link t('avo.resources'), nil, large: true %>
+
+<div class="w-full">
+  <% resources.each do |resource| %>
+    <%= sidebar_link resource[:label], resource_path(resource[:resource_name]) %>
+  <% end %>
+</div>

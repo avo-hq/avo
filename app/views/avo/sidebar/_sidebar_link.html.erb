@@ -1,0 +1,9 @@
+<% if options[:large] %>
+  <div class="flex items-center my-2 p-3 text-gray-500 font-bold text-sm -mb-1 leading-none">
+    <div class="w-4"></div> <%= label %>
+  </div>
+<% else %>
+  <%= active_link_to link, class: 'text-gray-800 py-2 px-4 block font-normal hover:bg-gray-100 rounded-md mb-1 mx-3 text-sm leading-none', active: active do %>
+    <div class="w-4"></div> <%= label %>
+  <% end %>
+<% end %>

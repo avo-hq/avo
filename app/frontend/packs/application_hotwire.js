@@ -8,6 +8,8 @@ import { definitionsFromContext } from 'stimulus/webpack-helpers'
 import Avo from '@/js/hotwire/Avo'
 import I18n from 'i18n-js'
 
+Mousetrap.bind('r r r', () => Turbo.visit(window.location.href))
+
 const application = Application.start()
 
 const context = require.context('./../js/hotwire/controllers', true, /\.js$/)

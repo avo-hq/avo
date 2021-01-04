@@ -151,7 +151,9 @@ module Avo
 
       def get_available_resources(user)
         App.get_resources
-          .select { |resource| AuthorizationService::authorize user, resource.model, Avo.configuration.authorization_methods.stringify_keys['index'] }
+          .select do |resource|
+            AuthorizationService::authorize user, resource.model, Avo.configuration.authorization_methods.stringify_keys['index']
+          end
           .map do |resource|
             {
               label: resource.plural_name.humanize(keep_id_suffix: true),
@@ -160,9 +162,7 @@ module Avo
             }
           end
           .reject { |i| i.blank? }
-          .to_json
-          .to_s
-          .html_safe
+          .sort_by { |r| r[:label]}
       end
     end
   end

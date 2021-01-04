@@ -112,12 +112,7 @@ Vue.component('select-filter',                       require('@/js/components/In
 Vue.component('filter-wrapper',                      require('@/js/components/Index/Filters/FilterWrapper.vue').default)
 
 // Sidebar
-Vue.component('resources-navigation',                require('@/js/components/ResourcesNavigation.vue').default)
-Vue.component('sidebar-link',                        require('@/js/components/SidebarLink.vue').default)
-Vue.component('application-sidebar',                 require('@/js/components/ApplicationSidebar.vue').default)
 Vue.component('logo-component',                      require('@/js/components/LogoComponent.vue').default)
-Vue.component('license-warnings',                    require('@/js/components/LicenseWarnings.vue').default)
-Vue.component('license-warning',                     require('@/js/components/LicenseWarning.vue').default)
 
 // Views
 Vue.component('resources-index',                     require('@/js/views/ResourceIndex.vue').default)
