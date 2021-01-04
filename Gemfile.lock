@@ -6,6 +6,7 @@ PATH
       httparty
       i18n-js
       inline_svg
+      iso
       kaminari
       pundit
       rails (>= 6.0)
