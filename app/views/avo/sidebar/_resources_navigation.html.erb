@@ -2,6 +2,10 @@
 
 <div class="w-full">
   <% resources.each do |resource| %>
-    <%= sidebar_link resource[:label], resource_path(resource[:resource_name]) %>
+    <%#= resource.inspect %>
+        <%#= sidebar_link resource[:label], resource_path(resource[:resource_name]) %>
+
+    <%= sidebar_link resource.plural_name.humanize(keep_id_suffix: true), resources_projects_path %>
+    <%#= sidebar_link resource[:label], resource_path(resource[:resource_name]) %>
   <% end %>
 </div>

@@ -30,6 +30,13 @@ module Avo
     end
 
     private
+      def resource_name
+        request.path
+          .match(/\/?#{Avo.configuration.root_path.gsub('/', '')}\/resources\/([a-z1-9-_]*)\/?/mi)
+          .captures
+          .first
+      end
+
       def resource
         eager_load_files(resource_model).find params[:id]
       end
@@ -49,7 +56,7 @@ module Avo
       end
 
       def avo_resource
-        App.get_resource params[:resource_name].to_s.camelize.singularize
+        App.get_resource resource_name.to_s.camelize.singularize
       end
 
       def authorize_user

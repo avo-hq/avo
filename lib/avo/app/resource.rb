@@ -11,6 +11,18 @@ module Avo
       attr_reader :includes
       attr_reader :default_view_type
 
+      # attr_accessor :model
+      # attr_accessor :id
+      # attr_accessor :authorization
+      # attr_accessor :singular_name
+      # attr_accessor :plural_name
+      # attr_accessor :title
+      # attr_accessor :translation_key
+      # attr_accessor :path
+      # attr_accessor :fields
+      # attr_accessor :grid_fields
+      # attr_accessor :panels
+
       class << self
         def hydrate_resource(model:, resource:, view: :index, user:)
           case view
@@ -35,7 +47,8 @@ module Avo
             panels: [{
               name: panel_name,
               component: 'panel',
-            }]
+            }],
+            model: model
           }
 
           grid_fields = resource.get_grid_fields
@@ -70,6 +83,8 @@ module Avo
             end
           end
 
+          # abort self.inspect
+          # self.new resource_with_fields
           resource_with_fields
         end
 
@@ -104,6 +119,10 @@ module Avo
         end
       end
 
+      # def initialize(hash)
+      #   hash.each {|k,v| public_send("#{k}=",v)}
+      # end
+
       def name
         return @name if @name.present?
 
@@ -134,6 +153,11 @@ module Avo
         return @url if @url.present?
 
         self.class.name.demodulize.underscore.pluralize
+      end
+
+      def model_path
+        # Rails.application.routes.url_helpers.resource_path(model.name.underscore.pluralize)
+        Avo::Engine.routes.url_helpers.resource_path(model.name.underscore.pluralize)
       end
 
       def title

@@ -108,11 +108,15 @@ module Avo
       end
 
       def init_resources
-        @@app[:resources] = Avo::Resources.constants.select { |r| r != :Resource }.map do |c|
-          if Avo::Resources.const_get(c).is_a? Class
-            "Avo::Resources::#{c}".safe_constantize.new
+        @@app[:resources] = Avo::Resources.constants
+          .select do |r|
+            r != :Resource
           end
-        end
+          .map do |c|
+            if Avo::Resources.const_get(c).is_a? Class
+              "Avo::Resources::#{c}".safe_constantize.new
+            end
+          end
       end
 
       def get_resources
@@ -149,20 +153,25 @@ module Avo
         name.to_s.camelize.singularize
       end
 
-      def get_available_resources(user)
+      def get_available_resources(user = nil)
         App.get_resources
+          .select do |resource|
+            # @todo: remove this filter
+            resource.name === 'Project'
+          end
           .select do |resource|
             AuthorizationService::authorize user, resource.model, Avo.configuration.authorization_methods.stringify_keys['index']
           end
-          .map do |resource|
-            {
-              label: resource.plural_name.humanize(keep_id_suffix: true),
-              resource_name: resource.url.pluralize,
-              translation_key: resource.translation_key
-            }
-          end
-          .reject { |i| i.blank? }
-          .sort_by { |r| r[:label]}
+          # .map do |resource|
+          #   {
+          #     label: resource.plural_name.humanize(keep_id_suffix: true),
+          #     resource_name: resource.url.pluralize,
+          #     translation_key: resource.translation_key,
+          #     resource: resource,
+          #   }
+          # end
+          # .reject { |r| r.blank? }
+          # .sort_by { |r| r.name }
       end
     end
   end

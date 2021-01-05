@@ -23,9 +23,7 @@ module Avo
     end
 
     def render_resource_navigation
-      resources = Avo::App.get_available_resources(_current_user)
-
-      render partial: 'avo/sidebar/resources_navigation', locals: {resources: resources}
+      render partial: 'avo/sidebar/resources_navigation', locals: {resources: Avo::App.get_available_resources(_current_user)}
     end
 
     def sidebar_link(label, link, **options)
@@ -51,6 +49,15 @@ module Avo
         message: message,
         icon: icon,
       }
+    end
+
+    def panel(&block)
+      # abort @view_flow.inspect
+      # abort content_for?(:heading).inspect
+      # abort capture(&block).inspect
+      render layout: 'layouts/avo/panel' do
+        capture(&block)
+      end
     end
   end
 end

@@ -1,0 +1,7 @@
+<td class="px-4 py-2 leading-tight whitespace-no-wrap h-12 <%= classes %>">
+  <% if !field[:value] and dash_if_empty %>
+    —
+  <% else %>
+    <%= yield %>
+  <% end %>
+</td>

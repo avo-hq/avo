@@ -5,10 +5,23 @@ Avo::Engine.routes.draw do
   # root 'home#index'
   root 'home#hotwire'
 
-  # resources :user
+  # puts ['->', Avo::App.get_available_resources].inspect
+  # Avo::App.get_available_resources.each do |resource|
+  #   # abort resource[:resource_name].to_sym.inspect
+  #   puts '-><-'
+  #   puts resource.url.pluralize.to_sym.inspect
+  #   scope 'resources', as: 'resources' do
+  #     resources resource.url.pluralize.to_sym, controller: 'resources'
+  #   end
+  # end
+
+  scope 'resources', as: 'resources' do
+    resources :projects, controller: 'resources'
+    resources :users, controller: 'resources'
+  end
 
 
-  get '/resources/:resource_name',          to: 'resources#index', as: 'resource'
+  # get '/resources/:resource_name',          to: 'resources#index', as: 'resource'
   # post '/avo-api/:resource_name',         to: 'resources#create'
   # get '/avo-api/:resource_name/new',      to: 'resources#new'
   # get '/avo-api/:resource_name/:id',      to: 'resources#show'
