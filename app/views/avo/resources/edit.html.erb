@@ -1,26 +1,28 @@
 <div :resource-id="resourceId">
-  <%= panel do %>
-    <% content_for :heading do %>
-      <%= @heading %>
-    <% end %>
+  <%= form_with model: @model, url: resources_project_path(@model), method: :put do |form| %>
+    <%= panel do %>
+      <% content_for :heading do %>
+        <%= @heading %>
+      <% end %>
 
-    <% content_for :tools do %>
-      <div class="flex justify-end space-x-2">
-        <%= a_button resources_path(@model.class) do %>
-          <%= svg 'media/svgs/arrow-left.svg' %> <%= t('avo.go_back') %>
-        <% end %>
-        <%= a_button resource_path(@model), color: 'red', variant: 'outlined', method: :delete do %>
-          <%= svg 'media/svgs/trash.svg' %> <%= t('avo.delete').capitalize %>
-        <% end %>
-        <%= a_button edit_resource_path(@model, ), color: 'indigo' do %>
-          <%= svg 'media/svgs/edit.svg' %> <%= t('avo.edit').capitalize %>
-        <% end %>
-      </div>
-      <%#= tools %>
-    <% end %>
+      <% content_for :tools do %>
+        <div class="flex justify-end space-x-2">
+          <%= a_button resource_path(@model) do %>
+            <% # @todo: also go back to via resource %>
+            <%= svg 'media/svgs/arrow-left.svg' %> <%= t('avo.cancel').capitalize %>
+          <% end %>
 
-    <% @resource[:fields].each_with_index do |field, index| %>
-      <%= show_field field, index %>
+          <% if true %>
+            <%= a_button resource_path(@model), button: true, color: 'red', variant: 'outlined', type: :submit do %>
+              <%= svg 'media/svgs/save.svg' %> <%= t('avo.save').capitalize %>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+
+      <% @resource[:fields].each_with_index do |field, index| %>
+        <%= edit_field field, index, form %>
+      <% end %>
     <% end %>
   <% end %>
 

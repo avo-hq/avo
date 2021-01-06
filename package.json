@@ -22,6 +22,7 @@
     "@babel/plugin-proposal-class-properties": "^7.12.1",
     "@hotwired/turbo-rails": "^7.0.0-beta.2",
     "@rails/activestorage": "^6.0.2-1",
+    "@rails/ujs": "^6.1.0",
     "@rails/webpacker": "^4.2.2",
     "@tailwindcss/typography": "^0.2.0",
     "autoprefixer": "^9.7.4",

@@ -52,12 +52,45 @@ module Avo
     end
 
     def panel(&block)
-      # abort @view_flow.inspect
-      # abort content_for?(:heading).inspect
-      # abort capture(&block).inspect
       render layout: 'layouts/avo/panel' do
         capture(&block)
       end
+    end
+
+    def a_button(label, url = nil, button: false, color: nil, variant: nil, **args, &block)
+      # @todo: color variant options
+      if block.present?
+        url = label
+      end
+
+      # @todo: rename this to soemthing else (helper, method)
+      element = button ? 'button_to' : 'link_to'
+
+      if block_given?
+        render layout: 'layouts/avo/button', locals: {
+          classes: 'inline-flex flex-grow-0 items-center text-sm font-bold leading-none fill-current whitespace-no-wrap transition duration-100 rounded-lg shadow-xl transform transition duration-100 active:translate-x-px active:translate-y-px cursor-pointer bg-blue-500 hover:bg-blue-600 p-4 text-white',
+          label: label,
+          url: url,
+          args: args,
+          element: element,
+        } do
+          capture(&block)
+        end
+      else
+        render partial: 'layouts/avo/button', locals: {
+          classes: 'inline-flex flex-grow-0 items-center text-sm font-bold leading-none fill-current whitespace-no-wrap transition duration-100 rounded-lg shadow-xl transform transition duration-100 active:translate-x-px active:translate-y-px cursor-pointer bg-blue-500 hover:bg-blue-600 p-4 text-white',
+          label: label,
+          url: url,
+          args: args,
+          element: element,
+        }
+      end
+    end
+
+    def svg(path, **args)
+      classes = args[:class].present? ? args[:class] : 'h-4 mr-1'
+
+      inline_svg_pack_tag path, **args, class: classes
     end
   end
 end

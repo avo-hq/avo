@@ -1,4 +1,3 @@
 <div class="space-x-2">
-  <%#= @todo: fix resources_project_path below %>
-  <%= link_to t('avo.view_item', { item: resource[:name] }), resources_project_path(resource[:model]) %>
+  <%= link_to t('avo.view_item', { item: resource[:name] }), resource_path(resource[:model]) %>
 </div>

@@ -5,7 +5,7 @@ module Avo
     before_action :init_app
     before_action :_authenticate!
 
-    helper_method :_current_user
+    helper_method :_current_user, :resources_path, :resource_path, :new_resource_path, :edit_resource_path
 
     def init_app
       Avo::App.boot if Avo::IN_DEVELOPMENT
@@ -29,10 +29,30 @@ module Avo
       instance_eval(&Avo.configuration.current_user)
     end
 
+    def resources_path(model)
+      send :"resources_#{model.model_name.route_key}_path"
+    end
+
+    def resource_path(model)
+      send :"resources_#{model.model_name.route_key.singularize}_path", model
+    end
+
+    def new_resource_path(model)
+      send :"new_resources_#{model.model_name.route_key.singularize}_path"
+    end
+
+    def edit_resource_path(model)
+      send :"edit_resources_#{model.model_name.route_key.singularize}_path", model
+    end
+
     private
+      def set_model
+        @model = resource_model.find params[:id]
+      end
+
       def resource_name
         request.path
-          .match(/\/?#{Avo.configuration.root_path.gsub('/', '')}\/resources\/([a-z1-9-_]*)\/?/mi)
+          .match(/\/?#{Avo.configuration.root_path.gsub('/', '')}\/resources\/([a-z1-9\-_]*)\/?/mi)
           .captures
           .first
       end

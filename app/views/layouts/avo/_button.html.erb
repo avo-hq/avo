@@ -1,0 +1,7 @@
+<% if (block = yield).empty? %>
+  <%= send element, label, url, **args, class: classes %>
+<% else %>
+  <%= send element, url, **args, class: classes do %>
+    <%= block %>
+  <% end %>
+<% end %>

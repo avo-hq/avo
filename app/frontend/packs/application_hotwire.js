@@ -7,6 +7,9 @@ import { Turbo, cable } from '@hotwired/turbo-rails'
 import { definitionsFromContext } from 'stimulus/webpack-helpers'
 import Avo from '@/js/hotwire/Avo'
 import I18n from 'i18n-js'
+import Rails from '@rails/ujs'
+
+Rails.start()
 
 Mousetrap.bind('r r r', () => Turbo.visit(window.location.href))
 

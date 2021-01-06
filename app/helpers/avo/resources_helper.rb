@@ -27,11 +27,37 @@ module Avo
       }
     end
 
-    def index_field_wrapper(dash_if_empty: true, **args, &block)
+    def edit_field(field, index, form)
+      partial_path = "avo/fields/edit/#{field[:component]}"
+
+      render partial: partial_path, locals: {
+        field: field,
+        index: index,
+        form: form,
+      }
+    end
+
+    def index_field_wrapper(dash_if_empty: true, field: {}, **args, &block)
       classes = args[:class].present? ? args[:class] : ''
-      field = args[:field].present? ? args[:field] : ''
 
       render layout: 'layouts/avo/index_field_wrapper', locals: {
+        classes: classes,
+        field: field,
+        dash_if_empty: dash_if_empty,
+      } do
+        capture(&block)
+      end
+    end
+
+    def show_field_wrapper(dash_if_empty: true, field: {}, index: nil, displayed_in_modal: false, **args, &block)
+      classes = args[:class].present? ? args[:class] : ''
+
+      if index != 0 or displayed_in_modal
+        classes += ' border-t'
+      end
+
+
+      render layout: 'layouts/avo/show_field_wrapper', locals: {
         classes: classes,
         field: field,
         dash_if_empty: dash_if_empty,
