@@ -1,0 +1,22 @@
+<tr
+  class="hover:bg-gray-100 hover:shadow-row relative z-20"
+  :resource-name="resourceName"
+  :resource-id="resource.id"
+>
+  <td class="w-10">
+    <div class="flex justify-center h-full">
+      <input type="checkbox"
+        class="mx-3 w-4 h-4"
+        @click="updateSelection(resource)"
+      />
+    </div>
+  </td>
+  <% resource[:fields].each_with_index do |field, index| %>
+    <%= index_field field, index %>
+  <% end %>
+  <td class="text-right whitespace-no-wrap px-2">
+    <div class="flex items-center justify-end flex-grow-0 h-full w-full">
+      <%= item_controls resource %>
+    </div>
+  </td>
+</tr>

@@ -22,7 +22,7 @@ FactoryBot.define do
   end
 
   factory :project do
-    name { Faker::Hacker.say_something_smart }
+    name { Faker::App.name }
     status { [:closed, :rejected, :failed, :loading, :running, :waiting].sample }
     stage { ['Discovery', 'Ideea', 'Done', 'On hold', 'Cancelled'].sample }
     budget { Faker::Number.decimal(l_digits: 4) }
