@@ -44,6 +44,7 @@ module.exports = {
       },
       minHeight: {
         28: '7rem',
+        24: '6rem',
       },
       spacing: {
         full: '100%',
