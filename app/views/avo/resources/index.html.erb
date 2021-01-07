@@ -6,8 +6,8 @@
   <% content_for :tools do %>
     <%# actions %>
     <%# attach button %>
-    <%= a_button new_resource_path(@resources.first[:model]) do %>
-      <%= svg 'media/svgs/plus.svg' %> <%= t('avo.create_new_item', { item: @resources.first[:model].model_name.human.downcase }) %>
+    <%= a_button new_resource_path(@resource_model) do %>
+      <%= svg 'media/svgs/plus.svg' %> <%= t('avo.create_new_item', { item: @resource_model.model_name.human.downcase }) %>
     <% end %>
   <% end %>
 
@@ -17,7 +17,7 @@
     </div>
     <div class="flex justify-end items-center px-6 space-x-3">
       <%# grid view %>
-      <%# filters %>
+      <%= render 'filters' %>
     </div>
   </div>
   <div class="w-full overflow-auto min-h-28 flex flex-col">

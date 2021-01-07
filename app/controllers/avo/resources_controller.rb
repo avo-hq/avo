@@ -4,6 +4,7 @@ module Avo
   class ResourcesController < ApplicationController
     before_action :authorize_user
     before_action :set_per_page, only: :index
+    before_action :set_filters, only: :index
     before_action :set_model, only: [:show, :edit, :destroy, :update]
 
     def index
@@ -12,13 +13,20 @@ module Avo
       params[:sort_by] = params[:sort_by].present? ? params[:sort_by] : :created_at
       params[:sort_direction] = params[:sort_direction].present? ? params[:sort_direction] : :desc
 
-      model = resource_model
+      # @todo: remove this
+      @resource_model = resource_model
+      query = resource_model
 
       if params[:sort_by]
-        model = model.order("#{params[:sort_by]} #{params[:sort_direction]}")
+        query = query.order("#{params[:sort_by]} #{params[:sort_direction]}")
       end
 
-      @models = model.page(params[:page]).per(@per_page)
+      # abort applied_filters.inspect
+      applied_filters.each do |filter_class, filter_value|
+        query = filter_class.safe_constantize.new.apply_query request, query, filter_value
+      end
+
+      @models = query.page(params[:page]).per(@per_page)
       @resources = @models.map do |resource|
         Avo::Resources::Resource.hydrate_resource(model: resource, resource: avo_resource, view: :index, user: _current_user)
       end
@@ -127,6 +135,28 @@ module Avo
         if params[:per_page].present?
           cookies[:per_page] = params[:per_page]
         end
+      end
+
+      def set_filters
+        @filters = avo_resource.get_filters.map(&:new)
+      end
+
+      def applied_filters
+        if params[:filters].present?
+          return JSON.parse(Base64.decode64(params[:filters]))
+        end
+
+        filter_defaults = {}
+
+        avo_resource.get_filters.each do |filter_class|
+          filter = filter_class.new
+
+          if filter.default.present?
+            filter_defaults[filter_class.to_s] = filter.default
+          end
+        end
+
+        filter_defaults
       end
   end
 end

@@ -69,4 +69,5 @@ en:
         one: 'user'
         other: 'users'
     showing_x_results: 'Showing %{from} to %{to} of %{count} results'
+    reset_filters: 'Reset filters'
 

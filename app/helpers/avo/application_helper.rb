@@ -58,6 +58,7 @@ module Avo
     end
 
     def a_button(label, url = nil, button: false, color: nil, variant: nil, **args, &block)
+      classes = "#{button_classes} #{args[:class]}"
       # @todo: color variant options
       if block.present?
         url = label
@@ -67,8 +68,8 @@ module Avo
       element = button ? 'button_to' : 'link_to'
 
       if block_given?
-        render layout: 'layouts/avo/button', locals: {
-          classes: 'inline-flex flex-grow-0 items-center text-sm font-bold leading-none fill-current whitespace-no-wrap transition duration-100 rounded-lg shadow-xl transform transition duration-100 active:translate-x-px active:translate-y-px cursor-pointer bg-blue-500 hover:bg-blue-600 p-4 text-white',
+        render layout: 'layouts/avo/a_button', locals: {
+          classes: classes,
           label: label,
           url: url,
           args: args,
@@ -77,14 +78,18 @@ module Avo
           capture(&block)
         end
       else
-        render partial: 'layouts/avo/button', locals: {
-          classes: 'inline-flex flex-grow-0 items-center text-sm font-bold leading-none fill-current whitespace-no-wrap transition duration-100 rounded-lg shadow-xl transform transition duration-100 active:translate-x-px active:translate-y-px cursor-pointer bg-blue-500 hover:bg-blue-600 p-4 text-white',
+        render partial: 'layouts/avo/a_button', locals: {
+          classes: classes,
           label: label,
           url: url,
           args: args,
           element: element,
         }
       end
+    end
+
+    def button_classes
+      'inline-flex flex-grow-0 items-center text-sm font-bold leading-none fill-current whitespace-no-wrap transition duration-100 rounded-lg shadow-xl transform transition duration-100 active:translate-x-px active:translate-y-px cursor-pointer bg-blue-500 hover:bg-blue-600 p-4 text-white justify-center'
     end
 
     def svg(path, **args)

@@ -1,0 +1,19 @@
+<%
+  begin
+    decoded_filters_param = JSON.parse(Base64.decode64(params[:filters]))
+    set_value = decoded_filters_param[filter.class.to_s]
+  rescue => exception
+    set_value = filter.default
+  end
+%>
+<div data-controller="select-filter">
+  <%= filter_wrapper name: filter.name, index: index do %>
+    <%= select_tag filter.id, options_for_select(filter.options.invert, set_value),
+      class: input_classes('select-input w-full mb-0'),
+      include_blank: '—',
+      'data-filter-class': filter.class,
+      'data-select-filter-target': 'selector',
+      'data-action': "change->select-filter#changeFilter"
+    %>
+  <% end %>
+</div>

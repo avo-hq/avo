@@ -1,0 +1,51 @@
+<%
+  begin
+    decoded_filters_param = JSON.parse(Base64.decode64(params[:filters]))
+    set_value = decoded_filters_param[filter.class.to_s]
+  rescue => exception
+    set_value = filter.default.stringify_keys
+  end
+  set_value = {} if set_value.nil?
+%>
+<div data-controller="boolean-filter">
+  <%= filter_wrapper name: filter.name, index: index do %>
+    <div class="flex items-center">
+      <div class="space-y-2">
+        <% filter.options.each do |value, label| %>
+          <label class="flex items-center text-gray-700 text-sm">
+            <%= check_box_tag filter.id, value, set_value[value.to_s],
+              class: 'mr-2 text-lg h-4 w-4',
+              'data-filter-class': filter.class,
+              'data-boolean-filter-target': 'option',
+              'data-action': 'input->boolean-filter#changeFilter'
+            %>
+            <%= label %>
+          </label>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+  <filter-wrapper :name="filter.name" :index="index">
+      <div class="flex items-center">
+        <div class="space-y-2">
+          <template v-for="(name, value, index) in filter.options">
+            <div
+              :key="index"
+              class="flex items-center"
+              @click="toggleOption(value)"
+            >
+              <input
+                type="checkbox"
+                class="mr-2 text-lg h-4 w-4"
+                :id="name"
+                :name="name"
+                :checked="optionToggled(value)"
+              />
+              <label class="font text-gray-700 text-sm">{{ name }}</label>
+            </div>
+          </template>
+        </div>
+      </div>
+  </filter-wrapper>

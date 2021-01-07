@@ -81,5 +81,14 @@ module Avo
         capture(&block)
       end
     end
+
+    def filter_wrapper(name: nil, index: nil, **args, &block)
+      render layout: 'layouts/avo/filter_wrapper', locals: {
+        name: name,
+        index: index,
+      } do
+        capture(&block)
+      end
+    end
   end
 end

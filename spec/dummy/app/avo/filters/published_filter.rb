@@ -22,6 +22,10 @@ module Avo
           'unpublished': 'Unpublished',
         }
       end
+
+      def default
+        'unpublished'
+      end
     end
   end
 end

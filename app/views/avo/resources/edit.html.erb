@@ -13,7 +13,7 @@
           <% end %>
 
           <% if true %>
-            <%= a_button resource_path(@model), button: true, color: 'red', variant: 'outlined', type: :submit do %>
+            <%= a_button resource_path(@model), element: :button, color: 'red', variant: 'outlined', type: :submit do %>
               <%= svg 'media/svgs/save.svg' %> <%= t('avo.save').capitalize %>
             <% end %>
           <% end %>
