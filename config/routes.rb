@@ -16,6 +16,7 @@ Avo::Engine.routes.draw do
   # end
 
   scope 'resources', as: 'resources' do
+    resources :posts, controller: 'resources', as: 'posts'
     resources :projects, controller: 'resources', as: 'projects'
     resources :users, controller: 'resources', as: 'users'
   end

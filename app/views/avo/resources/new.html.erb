@@ -14,7 +14,7 @@
           <% end %>
 
           <% if true %>
-            <%= a_button resources_path(@model), element: :button, color: 'green', type: :submit do %>
+            <%= a_button resources_path(@model), button: true, color: 'green', type: :submit do %>
               <%= svg 'media/svgs/save.svg' %> <%= t('avo.save').capitalize %>
             <% end %>
           <% end %>

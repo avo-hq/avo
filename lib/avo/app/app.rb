@@ -157,7 +157,7 @@ module Avo
         App.get_resources
           .select do |resource|
             # @todo: remove this filter
-            resource.name === 'Project'
+            resource.name === 'Project' or resource.name === 'Post'
           end
           .select do |resource|
             AuthorizationService::authorize user, resource.model, Avo.configuration.authorization_methods.stringify_keys['index']

@@ -3,7 +3,11 @@
     decoded_filters_param = JSON.parse(Base64.decode64(params[:filters]))
     set_value = decoded_filters_param[filter.class.to_s]
   rescue => exception
-    set_value = filter.default.stringify_keys
+    if filter.default.present?
+      set_value = filter.default.stringify_keys
+    else
+      set_value = {}
+    end
   end
   set_value = {} if set_value.nil?
 %>
