@@ -1,0 +1,42 @@
+<%
+  # @todo: add avo styling to paginator
+  index_from = (@models.prev_page || 0) * @models.limit_value + 1
+  index_to = [index_from + @models.limit_value - 1, @models.total_count].min
+  total_count = @models.total_count
+  per_page_options = [*Avo.configuration.per_page_steps, Avo.configuration.per_page.to_i].sort.uniq
+%>
+
+<div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+  <div class="hidden sm:flex-2 sm:flex sm:items-center sm:justify-between">
+    <div>
+      <div class="text-sm leading-5 text-gray-700 flex items-center">
+        <div class="mr-2"><%= t 'avo.showing_x_results', from: index_from, to: index_to, count: total_count %></div>
+
+        <div data-controller="per-page">
+          <div class="flex items-center">
+            <%= select_tag 'per_page', options_for_select(per_page_options, @per_page), class: 'select-input appearance-none inline-flex bg-gray-200 disabled:bg-gray-400 disabled:cursor-not-allowed focus:bg-white text-gray-700 disabled:text-gray-600 rounded-md py-1 px-2 leading-tight border border-gray-300 outline-none focus:border-gray-400 outline w-16 mr-1', 'data-per-page-target': 'selector', 'data-action': 'change->per-page#reload' %> <%= t('avo.per_page').downcase %>
+          </div>
+
+          <% per_page_options.each do |option| %>
+            <%= link_to "Change to #{option} items per page", request.params.merge(per_page: option), class: 'hidden', 'data-per-page-option': option %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<%= paginator.render do -%>
+  <div class="flex">
+    <div class="flex-2 sm:flex sm:items-center sm:justify-between">
+      <span class="relative z-0 inline-flex shadow-sm">
+        <%# @todo: add first & last page. make the first and last buttons rounded %>
+        <%#= first_page_tag unless current_page.first? %>
+        <%= prev_page_tag -%>
+        <% each_page.select(&:inside_window?).each do |page| %><%= page_tag page -%><% end %>
+        <%= next_page_tag -%>
+        <%#= last_page_tag unless current_page.last? %>
+      </span>
+    </div>
+  </div>
+<% end %>
+</div>

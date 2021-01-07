@@ -3,19 +3,23 @@ require_dependency 'avo/application_controller'
 module Avo
   class ResourcesController < ApplicationController
     before_action :authorize_user
+    before_action :set_per_page, only: :index
     before_action :set_model, only: [:show, :edit, :destroy, :update]
 
     def index
       @heading = resource_model.model_name.collection.capitalize
+      params[:page] ||= 1
+      params[:sort_by] = params[:sort_by].present? ? params[:sort_by] : :created_at
+      params[:sort_direction] = params[:sort_direction].present? ? params[:sort_direction] : :desc
 
       model = resource_model
-      limit = 24
 
       if params[:sort_by]
         model = model.order("#{params[:sort_by]} #{params[:sort_direction]}")
       end
 
-      @resources = model.limit(limit).all.map do |resource|
+      @models = model.page(params[:page]).per(@per_page)
+      @resources = @models.map do |resource|
         Avo::Resources::Resource.hydrate_resource(model: resource, resource: avo_resource, view: :index, user: _current_user)
       end
     end
@@ -107,6 +111,22 @@ module Avo
         end
 
         permitted
+      end
+
+      def set_per_page
+        @per_page = Avo.configuration.per_page
+
+        if cookies[:per_page].present?
+          @per_page = cookies[:per_page]
+        end
+
+        if params[:per_page].present?
+          @per_page = params[:per_page]
+        end
+
+        if params[:per_page].present?
+          cookies[:per_page] = params[:per_page]
+        end
       end
   end
 end

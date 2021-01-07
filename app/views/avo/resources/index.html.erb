@@ -24,5 +24,6 @@
     <div class="relative flex-1 flex">
       <%= resource_table @resources %>
     </div>
+    <%= paginate @models, class: 'avo-pagination justify-end flex px-4 space-x-2' %>
   </div>
 <% end %>
