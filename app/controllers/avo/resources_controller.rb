@@ -5,6 +5,7 @@ module Avo
     before_action :authorize_user
     before_action :set_per_page, only: :index
     before_action :set_filters, only: :index
+    before_action :set_actions, only: :index
     before_action :set_model, only: [:show, :edit, :destroy, :update]
 
     def index
@@ -82,15 +83,23 @@ module Avo
 
     private
       def render(*arguments)
-        if @_action_name == 'show'
-          set_heading
+        resource_name = resource_model.model_name.human.downcase
+
+        case @_action_name
+        when 'show'
+          @heading = t 'avo.resource_details', item: resource_name
+        when 'edit'
+          @heading = t 'avo.edit_item', item: resource_name
+        when 'new'
+          @heading = t 'avo.create_new_item', item: resource_name
         end
+
+        @heading = @heading.upcase_first
 
         super(*arguments)
       end
 
       def set_heading
-        @heading = "#{@resource[:singular_name]} details"
       end
 
       def model_params
@@ -139,6 +148,26 @@ module Avo
 
       def set_filters
         @filters = avo_resource.get_filters.map(&:new)
+      end
+
+      def set_actions
+        avo_actions = avo_resource.get_actions
+        actions = []
+
+        if params[:resource_id].present?
+          model = resource_model.find params[:resource_id]
+        end
+
+        avo_actions.each do |action|
+          action = action.new
+
+          action.set_model model
+          action.set_resource avo_resource
+
+          actions.push(action)
+        end
+
+        @actions = actions
       end
 
       def applied_filters

@@ -114,7 +114,7 @@ export default {
       return this.resource.fields
     },
     panels() {
-      if (!this.resource) return [{ name: this.$t('avo.resource_details', { name: upperFirst(this.resourceNameFromURL) }) }]
+      if (!this.resource) return [{ name: this.$t('avo.resource_details', { item: upperFirst(this.resourceNameFromURL) }) }]
 
       return this.resource.panels
     },

@@ -16,6 +16,8 @@ module Avo
       # }
       attr_accessor :response
       attr_accessor :no_confirmation
+      attr_accessor :model
+      attr_accessor :resource
 
       @@default = nil
 
@@ -50,7 +52,7 @@ module Avo
         @no_confirmation ||= false
       end
 
-      def render_response(model, resource)
+      def render_response
         fields = get_fields.map { |field| field.fetch_for_action(model, resource) }
 
         {
@@ -65,6 +67,14 @@ module Avo
           action_class: self.class.to_s,
           no_confirmation: no_confirmation,
         }
+      end
+
+      def set_model(model)
+        @model = model
+      end
+
+      def set_resource(resource)
+        @resource = resource
       end
 
       def handle_action(request, models, raw_fields)

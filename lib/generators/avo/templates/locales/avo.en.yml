@@ -7,7 +7,7 @@ en:
     run: 'Run'
     cancel: 'Cancel'
     action_ran_successfully: 'Action ran successfully!'
-    resource_details: "%{name} details"
+    resource_details: "%{item} details"
     unauthorized: 'Unauthorized'
     attachment_class_attached: '%{attachment_class} attached.'
     attachment_class_detached: '%{attachment_class} detached.'
@@ -58,3 +58,5 @@ en:
     next_page: 'Next page'
     prev_page: 'Previous page'
     list_is_empty: 'List is empty'
+    showing_x_results: 'Showing %{from} to %{to} of %{count} results'
+    reset_filters: 'Reset filters'

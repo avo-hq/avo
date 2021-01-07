@@ -27,7 +27,7 @@ module Avo
         def hydrate_resource(model:, resource:, view: :index, user:)
           case view
           when :show
-            panel_name = I18n.t 'avo.resource_details', name: resource.name.downcase.upcase_first
+            panel_name = I18n.t 'avo.resource_details', item: resource.name.downcase.upcase_first
           when :edit
             panel_name = I18n.t('avo.edit_item', item: resource.name.downcase).upcase_first
           when :new

@@ -1,14 +1,14 @@
-<div data-controller="filters">
+<div data-controller="toggle-panel">
   <div class="relative w-full flex justify-between z-30">
     <button
       class="<%= button_classes %> focus:outline-none"
       color="gray"
-      data-action="click->filters#togglePanel"
+      data-action="click->toggle-panel#togglePanel"
     ><%= svg 'media/svgs/filter.svg' %> <%= t 'avo.filters' %></button>
 
     <div
       class="absolute block inset-auto right-0 top-full bg-white min-w-300px mt-2 z-20 shadow-context rounded-xl hidden"
-      data-filters-target="panel"
+      data-toggle-panel-target="panel"
     >
       <%
         @filters.each_with_index do |filter, index|

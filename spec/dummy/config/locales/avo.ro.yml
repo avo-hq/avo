@@ -7,7 +7,7 @@ ro:
     run: 'Ruleaza'
     cancel: 'Anuleaza'
     action_ran_successfully: 'Actiunea a rulat cu succes!'
-    resource_details: 'Detalii %{name}'
+    resource_details: 'Detalii %{item}'
     unauthorized: 'Neautorizat'
     attachment_class_attached: '%{attachment_class} anexat.'
     attachment_class_detached: '%{attachment_class} separat.'
