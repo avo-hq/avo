@@ -81,11 +81,5 @@ module Avo
         capture(&block)
       end
     end
-
-    def item_controls(resource)
-      render partial: 'avo/resources/item_controls', locals: {
-        resource: resource,
-      }
-    end
   end
 end

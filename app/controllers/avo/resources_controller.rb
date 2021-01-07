@@ -8,7 +8,14 @@ module Avo
     def index
       @heading = resource_model.model_name.collection.capitalize
 
-      @resources = resource_model.order('created_at desc').all.map do |resource|
+      model = resource_model
+      limit = 24
+
+      if params[:sort_by]
+        model = model.order("#{params[:sort_by]} #{params[:sort_direction]}")
+      end
+
+      @resources = model.limit(limit).all.map do |resource|
         Avo::Resources::Resource.hydrate_resource(model: resource, resource: avo_resource, view: :index, user: _current_user)
       end
     end
