@@ -56,11 +56,27 @@ module Avo
         classes += ' border-t'
       end
 
-
       render layout: 'layouts/avo/show_field_wrapper', locals: {
         classes: classes,
         field: field,
         dash_if_empty: dash_if_empty,
+      } do
+        capture(&block)
+      end
+    end
+
+    def edit_field_wrapper(dash_if_empty: true, field: {}, index: nil, displayed_in_modal: false, form: nil, **args, &block)
+      classes = args[:class].present? ? args[:class] : ''
+
+      if index != 0 or displayed_in_modal
+        classes += ' border-t'
+      end
+
+      render layout: 'layouts/avo/edit_field_wrapper', locals: {
+        classes: classes,
+        field: field,
+        dash_if_empty: dash_if_empty,
+        form: form,
       } do
         capture(&block)
       end

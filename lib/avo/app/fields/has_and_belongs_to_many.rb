@@ -15,7 +15,7 @@ module Avo
       end
 
       def hydrate_field(fields, model, resource, view)
-        if view === :create
+        if view === :new
           return {
             relationship: :has_many,
           }

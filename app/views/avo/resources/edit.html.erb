@@ -1,5 +1,5 @@
 <div :resource-id="resourceId">
-  <%= form_with model: @model, url: resources_project_path(@model), method: :put do |form| %>
+  <%= form_with model: @model, url: resource_path(@model), method: :put do |form| %>
     <%= panel do %>
       <% content_for :heading do %>
         <%= @heading %>

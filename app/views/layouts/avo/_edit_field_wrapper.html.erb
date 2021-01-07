@@ -1,0 +1,14 @@
+<div class="flex items-start py-1 leading-tight <%= classes %>">
+  <div class="w-48 md:w-64 p-4 px-6 h-full flex" data-slot="label">
+    <%= form.label field[:id], field[:name] %> <% if field[:required] %> <span class="text-red-600">*</span> <% end %>
+  </div>
+  <div class="flex-1 flex flex-row">
+    <div class="p-3 self-center w-7/12" data-slot="value">
+      <% if !field[:value] and dash_if_empty and action_name != 'new' %>
+        —
+      <% else %>
+        <%= yield %>
+      <% end %>
+    </div>
+  </div>
+</div>

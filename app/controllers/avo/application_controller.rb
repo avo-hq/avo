@@ -29,20 +29,20 @@ module Avo
       instance_eval(&Avo.configuration.current_user)
     end
 
-    def resources_path(model)
-      send :"resources_#{model.model_name.route_key}_path"
+    def resources_path(model, **args)
+      send :"resources_#{model.model_name.route_key}_path", **args
     end
 
-    def resource_path(model)
-      send :"resources_#{model.model_name.route_key.singularize}_path", model
+    def resource_path(model, **args)
+      send :"resources_#{model.model_name.route_key.singularize}_path", model, **args
     end
 
-    def new_resource_path(model)
-      send :"new_resources_#{model.model_name.route_key.singularize}_path"
+    def new_resource_path(model, **args)
+      send :"new_resources_#{model.model_name.route_key.singularize}_path", **args
     end
 
-    def edit_resource_path(model)
-      send :"edit_resources_#{model.model_name.route_key.singularize}_path", model
+    def edit_resource_path(model, **args)
+      send :"edit_resources_#{model.model_name.route_key.singularize}_path", model, **args
     end
 
     private

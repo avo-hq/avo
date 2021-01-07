@@ -30,7 +30,7 @@ module Avo
             panel_name = I18n.t 'avo.resource_details', name: resource.name.downcase.upcase_first
           when :edit
             panel_name = I18n.t('avo.edit_item', item: resource.name.downcase).upcase_first
-          when :create
+          when :new
             panel_name = I18n.t('avo.create_new_item', item: resource.name.downcase).upcase_first
           end
 
@@ -103,7 +103,7 @@ module Avo
         end
 
         def get_authorization(user, model)
-          [:create, :edit, :update, :show, :destroy].map do |action|
+          [:new, :edit, :update, :show, :destroy].map do |action|
             [action, AuthorizationService::authorize_action(user, model, action)]
           end.to_h
         end

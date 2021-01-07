@@ -6,7 +6,9 @@ module Avo
     before_action :set_model, only: [:show, :edit, :destroy, :update]
 
     def index
-      @resources = resource_model.all.map do |resource|
+      @heading = resource_model.model_name.collection.capitalize
+
+      @resources = resource_model.order('created_at desc').all.map do |resource|
         Avo::Resources::Resource.hydrate_resource(model: resource, resource: avo_resource, view: :index, user: _current_user)
       end
     end
@@ -15,15 +17,33 @@ module Avo
       @resource = Avo::Resources::Resource.hydrate_resource(model: @model, resource: avo_resource, view: :show, user: _current_user)
     end
 
+    def new
+      @model = resource_model.new
+      @resource = Avo::Resources::Resource.hydrate_resource(model: @model, resource: avo_resource, view: :new, user: _current_user)
+    end
+
     def edit
-      @resource = Avo::Resources::Resource.hydrate_resource(model: @model, resource: avo_resource, view: :show, user: _current_user)
+      @resource = Avo::Resources::Resource.hydrate_resource(model: @model, resource: avo_resource, view: :edit, user: _current_user)
+    end
+
+    def create
+      @model = resource_model.new(model_params)
+
+      respond_to do |format|
+        if @model.save
+          format.html { redirect_to resource_path(@model), notice: "#{@model.class.name} was successfully created." }
+          format.json { render :show, status: :created, location: @model }
+        else
+          format.html { render :new }
+          format.json { render json: @model.errors, status: :unprocessable_entity }
+        end
+      end
     end
 
     def update
-      # abort model_params.inspect
       respond_to do |format|
         if @model.update(model_params)
-          format.html { redirect_to resource_path(@model), notice: "#{@model.class.name} was successfully destroyed." }
+          format.html { redirect_to resource_path(@model), notice: "#{@model.class.name} was successfully updated." }
           format.json { render :show, status: :ok, location: @post }
         else
           format.html { render :edit }
@@ -55,7 +75,7 @@ module Avo
       end
 
       def model_params
-        params.require(@model.model_name.route_key.singularize).permit(permitted_params)
+        params.require(resource_model.model_name.route_key.singularize).permit(permitted_params)
       end
 
       def permitted_params

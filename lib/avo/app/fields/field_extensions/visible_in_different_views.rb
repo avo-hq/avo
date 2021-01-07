@@ -4,13 +4,13 @@ module Avo
       module VisibleOnDifferentViews
         attr_accessor :show_on_index
         attr_accessor :show_on_show
-        attr_accessor :show_on_create
+        attr_accessor :show_on_new
         attr_accessor :show_on_edit
 
         def initialize(id, **args, &block)
           @show_on_index = @show_on_index.nil? ? true : @show_on_index
           @show_on_show = @show_on_show.nil? ? true : @show_on_show
-          @show_on_create = @show_on_create.nil? ? true : @show_on_create
+          @show_on_new = @show_on_new.nil? ? true : @show_on_new
           @show_on_edit = @show_on_edit.nil? ? true : @show_on_edit
         end
 
@@ -67,14 +67,14 @@ module Avo
             @show_on_index = true
             @show_on_show = true
             @show_on_edit = true
-            @show_on_create = true
+            @show_on_new = true
           end
 
           def hide_on_all
             @show_on_index = false
             @show_on_show = false
             @show_on_edit = false
-            @show_on_create = false
+            @show_on_new = false
           end
 
           def normalize_views(*views_and_groups)
@@ -82,7 +82,7 @@ module Avo
 
             if forms.present?
               views_and_groups = views_and_groups - forms
-              views_and_groups = views_and_groups + [:create, :edit]
+              views_and_groups = views_and_groups + [:new, :edit]
             end
 
             views_and_groups.flatten.uniq

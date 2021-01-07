@@ -11,7 +11,7 @@ module Avo
 
         super(name, **args, &block)
 
-        hide_on :create
+        hide_on :new
 
         @placeholder = I18n.t 'avo.choose_an_option'
 
@@ -34,7 +34,7 @@ module Avo
         # Populate the options on show and edit
         fields[:options] = []
 
-        if [:edit, :create].include? view
+        if [:edit, :new].include? view
           fields[:options] = target_resource.model.all.map do |model|
             {
               value: model.id,

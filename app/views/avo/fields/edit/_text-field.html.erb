@@ -1,4 +1,3 @@
-<%= show_field_wrapper field: field, index: index do %>
-  <%= form.label field[:id], field[:name] %>
-  <%= form.text_field field[:id] %>
+<%= edit_field_wrapper field: field, index: index, form: form do %>
+  <%= form.text_field field[:id], class: input_classes('w-full') %>
 <% end %>

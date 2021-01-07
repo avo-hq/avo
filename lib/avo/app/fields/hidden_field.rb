@@ -10,7 +10,7 @@ module Avo
 
         super(name, **args, &block)
 
-        only_on [:edit, :create]
+        only_on [:edit, :new]
       end
     end
   end

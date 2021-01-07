@@ -19,7 +19,7 @@ module Avo
           component: 'id-field'
         }
 
-        hide_on [:edit, :create]
+        hide_on [:edit, :new]
 
         super(name, **args, &block)
 

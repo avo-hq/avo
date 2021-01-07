@@ -1,1 +1,28 @@
-<%= resource_table @resources %>
+<%= panel do %>
+  <% content_for :heading do %>
+    <%= @heading %>
+  <% end %>
+
+  <% content_for :tools do %>
+    <%# actions %>
+    <%# attach button %>
+    <%= a_button new_resource_path(@resources.first[:model]) do %>
+      <%= svg 'media/svgs/plus.svg' %> <%= t('avo.create_new_item', { item: @resources.first[:model].model_name.human.downcase }) %>
+    <% end %>
+  <% end %>
+
+  <div class="flex justify-between py-6">
+    <div class="flex items-center px-6 w-64">
+      <%# search %>
+    </div>
+    <div class="flex justify-end items-center px-6 space-x-3">
+      <%# grid view %>
+      <%# filters %>
+    </div>
+  </div>
+  <div class="w-full overflow-auto min-h-28 flex flex-col">
+    <div class="relative flex-1 flex">
+      <%= resource_table @resources %>
+    </div>
+  </div>
+<% end %>

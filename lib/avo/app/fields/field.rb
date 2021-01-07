@@ -85,7 +85,7 @@ module Avo
         fields[:value] = model.send(id) if model_or_class(model) == 'model' and model.methods.include? id
 
         # Set default value for create view
-        if view === :create
+        if view === :new
           if fields[:default].present? and fields[:default].respond_to? :call
             fields[:value] = fields[:default].call model, resource, view, self
           else
@@ -138,7 +138,7 @@ module Avo
         # end
 
         # Run each field's custom hydration
-        fields.merge! self.hydrate_field(fields, model, resource, :create)
+        fields.merge! self.hydrate_field(fields, model, resource, :new)
 
         # Run the value through resolver if present
         fields[:value] = @format_using.call fields[:value] if @format_using.present?

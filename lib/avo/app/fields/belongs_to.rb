@@ -37,7 +37,7 @@ module Avo
         # Populate the options on show and edit
         fields[:options] = []
 
-        if [:edit, :create].include? view
+        if [:edit, :new].include? view
           if self.searchable
             fields[:model] = relation_model
           else

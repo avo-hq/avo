@@ -39,7 +39,7 @@ module Avo
       end
 
       def authorized_methods(user, record)
-        [:create, :edit, :update, :show, :destroy].map do |method|
+        [:new, :edit, :update, :show, :destroy].map do |method|
           [method, authorize(user, record, Avo.configuration.authorization_methods[method])]
         end.to_h
       end

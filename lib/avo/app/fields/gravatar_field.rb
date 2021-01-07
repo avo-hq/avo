@@ -13,7 +13,7 @@ module Avo
 
         super(name, **args, &block)
 
-        hide_on [:edit, :create]
+        hide_on [:edit, :new]
 
         @rounded = args[:rounded].present? ? args[:rounded] : true
         @size = args[:size].present? ? args[:size].to_i : 40

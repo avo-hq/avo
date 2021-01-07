@@ -43,15 +43,6 @@
           <td class="text-right whitespace-no-wrap px-2">
             <div class="flex items-center justify-end flex-grow-0 h-full w-full">
               <%= item_controls resource %>
-              <item-controls
-                class="flex flex-row"
-                :resource="resource"
-                :resource-name="resourceName"
-                :via-resource-name="viaResourceName"
-                :via-resource-id="viaResourceId"
-                :field="field"
-                @resource-deleted="$emit('resource-deleted')"
-              />
             </div>
           </td>
         </tr>
