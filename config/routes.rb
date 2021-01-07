@@ -51,7 +51,4 @@ Avo::Engine.routes.draw do
 
   # Tools
   get '/avo-tools/resource-overview', to: 'resource_overview#index'
-
-  # Catch them all
-  get '/:view/(:tool)/(:resource_name)/(:option)', to: 'home#index'
 end
