@@ -24,6 +24,8 @@ export default class extends Controller {
   set currentIds(value) {
     document.querySelector(`[data-selected-resources-name="${this.resourceName}"]`).dataset.selectedResources = JSON.stringify(value)
 
+    console.log('value->', value)
+
     if (value.length > 0) {
       this.enableActionsPanel()
     } else {

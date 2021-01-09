@@ -22,8 +22,8 @@
         <% end %>
 
         <% content_for :controls, flush: true do %>
-          <%= a_button @action.cancel_text, 'data-action': 'click->modal#close', 'color': 'gray', 'size': 'sm' %>
-          <%= a_button @action.confirm_text, type: :submit %>
+          <%= a_button @action.cancel_text, 'data-action': 'click->modal#close', size: :sm %>
+          <%= a_button @action.confirm_text, type: :submit, color: :green, size: :sm %>
         <% end %>
       </div>
     <% end %>

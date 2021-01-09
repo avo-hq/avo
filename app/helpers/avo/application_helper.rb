@@ -59,13 +59,8 @@ module Avo
       end
     end
 
-    def a_button(label, color: nil, variant: nil, **args, &block)
-      # @todo: color variant options
-      if block.present?
-        args = label
-      end
-
-      args[:class] = "#{button_classes} #{args[:class]}"
+    def a_button(label = nil, **args, &block)
+      args[:class] = button_classes(args[:class], color: args[:color], variant: args[:variant], size: args[:size])
 
       locals = {
         label: label,
@@ -81,16 +76,12 @@ module Avo
       end
     end
 
-    def a_link(label, url = nil, color: nil, variant: nil, **args, &block)
-      args[:class] = "#{button_classes} #{args[:class]}"
-      # @todo: color variant options
+    def a_link(label, url = nil, **args, &block)
+      args[:class] = button_classes(args[:class], color: args[:color], variant: args[:variant], size: args[:size])
+
       if block_given?
-        # abort [url, label].inspect/
         url = label
       end
-
-      # @todo: rename this to something else (helper, method)
-      # element = button ? 'button_tag' : 'link_to'
 
       locals = {
         label: label,
@@ -107,8 +98,34 @@ module Avo
       end
     end
 
-    def button_classes
-      'inline-flex flex-grow-0 items-center text-sm font-bold leading-none fill-current whitespace-no-wrap transition duration-100 rounded-lg shadow-xl transform transition duration-100 active:translate-x-px active:translate-y-px cursor-pointer bg-blue-500 hover:bg-blue-600 p-4 text-white justify-center disabled:border-gray-300 disabled:bg-blue-300 disabled:cursor-not-allowed'
+    def button_classes(extra_classes = nil, color: nil, variant: nil, size: :md)
+      classes = "inline-flex flex-grow-0 items-center text-sm font-bold leading-none fill-current whitespace-no-wrap transition duration-100 rounded-lg shadow-xl transform transition duration-100 active:translate-x-px active:translate-y-px cursor-pointer disabled:cursor-not-allowed #{extra_classes}"
+
+      if color.present?
+        if variant.present? and variant.to_sym == :outlined
+          classes += ' bg-white border'
+
+          classes += " hover:border-#{color}-800 border-#{color}-600 text-#{color}-600 hover:text-#{color}-800 disabled:border-gray-300 disabled:text-gray-600"
+        else
+          classes += " text-white bg-#{color}-500 hover:bg-#{color}-600 disabled:bg-#{color}-300"
+        end
+      else
+        classes += ' text-gray-800 bg-white hover:bg-gray-100 disabled:bg-gray-300'
+      end
+
+      size = size.present? ? size.to_sym : :md
+      case size
+      when :xs
+        classes += ' p-2 py-1'
+      when :sm
+        classes += ' p-3'
+      when :md
+        classes += ' p-4'
+      else
+        classes += ' p-4'
+      end
+
+      classes
     end
 
     def svg(path, **args)
