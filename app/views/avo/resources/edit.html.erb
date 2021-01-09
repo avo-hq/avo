@@ -21,7 +21,7 @@
       <% end %>
 
       <% @resource[:fields].each_with_index do |field, index| %>
-        <%= edit_field field, index, form %>
+        <%= edit_field field, index, form unless field[:computed] %>
       <% end %>
     <% end %>
   <% end %>

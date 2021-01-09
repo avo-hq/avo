@@ -22,10 +22,6 @@ module Avo
       render partial: 'vendor/avo/partials/scripts' rescue ''
     end
 
-    def render_resource_navigation
-      render partial: 'avo/sidebar/resources_navigation', locals: {resources: Avo::App.get_available_resources(_current_user)}
-    end
-
     def sidebar_link(label, link, **options)
       active = options[:active].present? ? options[:active] : :inclusive
 
@@ -64,13 +60,12 @@ module Avo
     end
 
     def a_button(label, color: nil, variant: nil, **args, &block)
-      args[:class] = "#{button_classes} #{args[:class]}"
       # @todo: color variant options
       if block.present?
-        url = label
+        args = label
       end
 
-      # @todo: rename this to something else (helper, method)
+      args[:class] = "#{button_classes} #{args[:class]}"
 
       locals = {
         label: label,
@@ -113,7 +108,7 @@ module Avo
     end
 
     def button_classes
-      'inline-flex flex-grow-0 items-center text-sm font-bold leading-none fill-current whitespace-no-wrap transition duration-100 rounded-lg shadow-xl transform transition duration-100 active:translate-x-px active:translate-y-px cursor-pointer bg-blue-500 hover:bg-blue-600 p-4 text-white justify-center'
+      'inline-flex flex-grow-0 items-center text-sm font-bold leading-none fill-current whitespace-no-wrap transition duration-100 rounded-lg shadow-xl transform transition duration-100 active:translate-x-px active:translate-y-px cursor-pointer bg-blue-500 hover:bg-blue-600 p-4 text-white justify-center disabled:border-gray-300 disabled:bg-blue-300 disabled:cursor-not-allowed'
     end
 
     def svg(path, **args)

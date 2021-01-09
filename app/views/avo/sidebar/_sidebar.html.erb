@@ -8,7 +8,7 @@
       <div class="tools py-4">
         <%= sidebar_link t('avo.dashboard'), '/avo', active: :exclusive %>
 
-        <%= render_resource_navigation %>
+        <%= render partial: 'avo/sidebar/resources_navigation', locals: {resources: Avo::App.get_available_resources(_current_user)} %>
       </div>
 
       <%= render_license_warnings %>

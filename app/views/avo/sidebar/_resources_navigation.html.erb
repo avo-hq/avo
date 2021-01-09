@@ -2,9 +2,7 @@
 
 <div class="w-full">
   <% resources.each do |resource| %>
-        <%#= sidebar_link resource[:label], resource_path(resource[:resource_name]) %>
-
+    <% # @todo: maybe cache this partial ? %>
     <%= sidebar_link resource.plural_name.humanize(keep_id_suffix: true), resources_path(resource.model) %>
-    <%#= sidebar_link resource[:label], resource_path(resource[:resource_name]) %>
   <% end %>
 </div>

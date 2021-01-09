@@ -2,6 +2,8 @@ require_dependency 'avo/application_controller'
 
 module Avo
   class ActionsController < ApplicationController
+    before_action :set_action, only: [:show, :handle]
+
     def index
       # abort [avo_resource, params].inspect
       set_actions
@@ -17,15 +19,12 @@ module Avo
       # abort [1, params].inspect
 
       @resource_model = resource_model
-      action_class = params[:action_id].gsub('avo_actions_', '').classify
-      action_name = "Avo::Actions::#{action_class}"
-      action = action_name.safe_constantize
       # abort action.inspect
 
       model = nil
       # abort action.new.inspect
 
-      fields = action.get_fields.map { |field| field.fetch_for_action(model, avo_resource) }
+      fields = @action.get_fields.map { |field| field.fetch_for_action(model, avo_resource) }
       # abort [fields].inspect
 
         # {
@@ -87,20 +86,60 @@ module Avo
     end
 
     def handle
-      abort resource_model.inspect
-      models = resource_model.find action_params[:resource_ids]
-      avo_action = action_params[:action_class].safe_constantize.new
-      avo_action.handle_action(request, models, action_params[:fields])
+      # abort action_params.inspect
+      resource_ids = action_params[:fields][:resource_ids].split(',').map(&:to_i)
+      fields = action_params[:fields].select { |key| key != 'resource_ids' }
+      # abort fields.inspect
+      # abort resource_ids.inspect
+      models = resource_model.find resource_ids
+      avo_action = @action.new
+      # abort avo_action.inspect
+      performed_action = avo_action.handle_action(request, models, fields)
 
-      render json: {
-        success: true,
-        response: avo_action.response,
-      }
+      # abort performed_action.inspect
+
+      response = performed_action.response
+
+      respond response
     end
 
     private
       def action_params
-        params.permit(:resource_name, :action_id, :action_class, resource_ids: [], fields: {})
+        params.permit(:resource_name, :action_id, fields: {})
+      end
+
+      def set_action
+        action_class = params[:action_id].gsub('avo_actions_', '').classify
+        action_name = "Avo::Actions::#{action_class}"
+        @action = action_name.safe_constantize
+      end
+
+      def respond(response)
+        response[:type] ||= :reload
+        response[:message_type] ||= :notice
+        response[:message] ||= I18n.t('avo.action_ran_successfully')
+
+        if response[:type] == :download
+          return send_data response[:path], filename: response[:filename]
+        end
+
+        abort response.inspect
+
+        respond_to do |format|
+          format.html do
+            if response[:type] == :redirect
+              path = response[:path]
+
+              if path.respond_to? :call
+                path = instance_eval &path
+              end
+
+              redirect_to path, "#{response[:message_type]}": response[:message]
+            elsif response[:type] == :reload
+              redirect_back fallback_location: resources_path(resource_model), "#{response[:message_type]}": response[:message]
+            end
+          end
+        end
       end
   end
 end

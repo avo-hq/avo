@@ -1,6 +1,7 @@
 module Avo
   module Actions
     class Action
+      # @todo: add redirect helpers to actions responses
       attr_accessor :name
       attr_accessor :message
       attr_accessor :default
@@ -46,7 +47,7 @@ module Avo
         @confirm_text = I18n.t('avo.run')
         @cancel_text = I18n.t('avo.cancel')
         @response ||= {}
-        @response[:message_type] ||= :success
+        @response[:message_type] ||= :notice
         @response[:message] ||= I18n.t('avo.action_ran_successfully')
         @theme ||= 'success'
         @no_confirmation ||= false
@@ -104,48 +105,32 @@ module Avo
       end
 
       def succeed(text)
-        self.response[:message_type] = :success
+        self.response[:message_type] = :notice
         self.response[:message] = text
 
         self
       end
 
       def fail(text)
-        self.response[:message_type] = :error
+        self.response[:message_type] = :alert
         self.response[:message] = text
 
         self
       end
 
-      def redirect(path)
+      def redirect_to(path = nil, &block)
         self.response[:type] = :redirect
-        self.response[:path] = path
-
-        self
-      end
-
-      def http_redirect(path)
-        self.response[:type] = :http_redirect
-        self.response[:path] = path
+        if block.present?
+          self.response[:path] = block
+        else
+          self.response[:path] = path
+        end
 
         self
       end
 
       def reload
         self.response[:type] = :reload
-
-        self
-      end
-
-      def reload_resources
-        self.response[:type] = :reload_resources
-
-        self
-      end
-
-      def open_in_new_tab(path)
-        self.response[:type] = :open_in_new_tab
-        self.response[:path] = path
 
         self
       end

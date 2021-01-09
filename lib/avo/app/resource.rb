@@ -48,7 +48,9 @@ module Avo
               name: panel_name,
               component: 'panel',
             }],
-            model: model
+            model: model,
+            hash: 'hash', # md5 of the file to break the cache
+            # @todo: update hash
           }
 
           grid_fields = resource.get_grid_fields

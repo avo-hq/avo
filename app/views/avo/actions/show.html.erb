@@ -1,5 +1,5 @@
 <%= turbo_frame_tag "actions_show" do %>
-  <%= form_with url: "/avo/resources/#{@resource_model.model_name.route_key}/actions/#{@action.id}" do |form| %>
+  <%= form_with scope: 'fields', url: "/avo/resources/#{@resource_model.model_name.route_key}/actions/#{@action.id}", data: {'turbo-frame': "_top"} do |form| %>
     <% modal do %>
       <div
         data-controller="action"

@@ -10,6 +10,7 @@ module Avo
       end
 
       def handle(request, models, fields)
+        puts fields.inspect
         models.each do |model|
           if model.published_at.present?
             model.update published_at: nil
@@ -19,11 +20,13 @@ module Avo
         end
 
         succeed 'Perfect!'
-        redirect '/resources/posts'
+        # reload
+        # redirect '/avo/resources/posts'
+        # redirect_to { resources_path(models.first.class) }
       end
 
       fields do
-        boolean :notify_user
+        boolean :notify_user, default: true
         text :message, default: 'Your account has been marked as inactive.'
       end
 

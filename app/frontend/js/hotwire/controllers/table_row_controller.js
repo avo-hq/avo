@@ -23,6 +23,12 @@ export default class extends Controller {
 
   set currentIds(value) {
     document.querySelector(`[data-selected-resources-name="${this.resourceName}"]`).dataset.selectedResources = JSON.stringify(value)
+
+    if (value.length > 0) {
+      this.enableActionsPanel()
+    } else {
+      this.disableActionsPanel()
+    }
   }
 
   addToSelected() {
@@ -45,5 +51,13 @@ export default class extends Controller {
     } else {
       this.removeFromSelected()
     }
+  }
+
+  enableActionsPanel() {
+    document.querySelector('.js-actions-dropdown-button').disabled = false
+  }
+
+  disableActionsPanel() {
+    document.querySelector('.js-actions-dropdown-button').disabled = true
   }
 }

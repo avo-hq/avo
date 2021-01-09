@@ -21,9 +21,9 @@ module Avo
         # end
         # file :cover_photo, is_image: true
         boolean :is_featured
-        # boolean :is_published do |model|
-        #   model.published_at.present?
-        # end
+        boolean :is_published do |model|
+          model.published_at.present?
+        end
 
         # belongs_to :user, searchable: false, placeholder: '—'
       end
