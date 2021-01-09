@@ -123,8 +123,6 @@ module Avo
           return send_data response[:path], filename: response[:filename]
         end
 
-        abort response.inspect
-
         respond_to do |format|
           format.html do
             if response[:type] == :redirect

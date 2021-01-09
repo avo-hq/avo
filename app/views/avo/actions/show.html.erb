@@ -11,6 +11,10 @@
           <%= @action.name %>
         <% end %>
 
+        <div class="flex-1 flex items-center justify-center px-8 text-lg mt-8 mb-12">
+          <%= @action.message %>
+        </div>
+
         <%= form.hidden_field :resource_ids, value: params[:resource_ids], 'data-action-target': 'resourceIds' %>
 
         <% @fields.each_with_index do |field, index| %>
@@ -18,8 +22,8 @@
         <% end %>
 
         <% content_for :controls, flush: true do %>
-          <%= a_button t('avo.cancel'), 'data-action': 'click->modal#close', 'color': 'gray', 'size': 'sm' %>
-          <%= a_button t('avo.run'), type: :submit %>
+          <%= a_button @action.cancel_text, 'data-action': 'click->modal#close', 'color': 'gray', 'size': 'sm' %>
+          <%= a_button @action.confirm_text, type: :submit %>
         <% end %>
       </div>
     <% end %>

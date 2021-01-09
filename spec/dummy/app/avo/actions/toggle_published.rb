@@ -10,7 +10,6 @@ module Avo
       end
 
       def handle(request, models, fields)
-        puts fields.inspect
         models.each do |model|
           if model.published_at.present?
             model.update published_at: nil
@@ -19,7 +18,7 @@ module Avo
           end
         end
 
-        succeed 'Perfect!'
+        # succeed 'Perfect!'
         # reload
         # redirect '/avo/resources/posts'
         # redirect_to { resources_path(models.first.class) }
