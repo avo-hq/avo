@@ -25,7 +25,7 @@
           </div>
           <div class="flex-1 flex justify-center">
             <div class="w-64">
-              <resources-search :global="true">
+              <%# <resources-search :global="true"> %>
             </div>
           </div>
         </div>
@@ -39,7 +39,11 @@
           <%= render_footer %>
         </div>
       </div>
-  </app-layout>
+  </div>
+  <%#= render partial: 'layouts/avo/modals' %>
+  <%= turbo_frame_tag "actions_show" do %><% end %>
+
+
 </div>
 
 <%= render_scripts %>

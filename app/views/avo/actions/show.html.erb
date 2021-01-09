@@ -1,0 +1,63 @@
+<%= turbo_frame_tag "actions_show" do %>
+  <%= form_with url: "/avo/resources/#{@resource_model.model_name.route_key}/actions/#{@action.id}" do |form| %>
+    <% modal do %>
+      <div
+        data-controller="action"
+        data-action-target="controllerDiv"
+        data-resource-name="<%= @resource_model.model_name.route_key %>"
+        data-resource-id="<%= params[:id] %>"
+      >
+        <% content_for :heading do %>
+          <%= @action.name %>
+        <% end %>
+
+        <%= form.hidden_field :resource_ids, value: params[:resource_ids], 'data-action-target': 'resourceIds' %>
+
+        <% @fields.each_with_index do |field, index| %>
+          <%= edit_field field, index, form, displayed_in_modal: true %>
+        <% end %>
+
+        <% content_for :controls, flush: true do %>
+          <%= a_button t('avo.cancel'), 'data-action': 'click->modal#close', 'color': 'gray', 'size': 'sm' %>
+          <%= a_button t('avo.run'), type: :submit %>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>
+
+<%#
+      <div v-if="hasFields">
+        <component
+          v-for="(field, index) in fields"
+          :key="uniqueKey(field, index)"
+          :index="index"
+          :is="`edit-${field.component}`"
+          :field="field"
+          :errors="errors"
+          :resource-name="resourceName"
+          :field-id="field.id"
+          :via-resource-name="viaResourceName"
+          :via-resource-id="viaResourceId"
+          :field-component="field.component"
+          displayed-in="modal"
+        />
+      </div>
+      <div class="flex-1 flex items-center justify-center px-8 text-lg mt-8 mb-12" v-else>
+        {{ action.message }}
+      </div>
+      <div class="flex justify-end items-baseline space-x-4 p-4 bg-gray-200">
+        <a-button
+          size="sm"
+          @click="$emit('close')"
+          v-text="action.cancel_text"
+        />
+        <a-button
+          ref="confirm-button"
+          :color="buttonColor"
+          size="sm"
+          @click="handle"
+          v-text="action.confirm_text"
+        />
+    </div>
+      </div> %>

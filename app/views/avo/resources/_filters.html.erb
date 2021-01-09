@@ -23,7 +23,7 @@
       <% end %>
 
       <div class="p-4 border-gray-300 border-t">
-        <%= a_button t('avo.reset_filters'), request.params.merge(filters: nil), color: 'gray', class: 'w-full' %>
+        <%= a_link t('avo.reset_filters'), resources_path(@resource_model, filters: nil), color: 'gray', class: 'w-full' %>
       </div>
     </div>
   </div>

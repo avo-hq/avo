@@ -8,13 +8,13 @@
 
       <% content_for :tools do %>
         <div class="flex justify-end space-x-2">
-          <%= a_button resources_path(@model) do %>
+          <%= a_link resources_path(@model) do %>
             <% # @todo: also go back to via resource %>
             <%= svg 'media/svgs/arrow-left.svg' %> <%= t('avo.cancel').capitalize %>
           <% end %>
 
           <% if true %>
-            <%= a_button resources_path(@model), button: true, color: 'green', type: :submit do %>
+            <%= a_button t('avo.save').capitalize, color: 'green', type: :submit do %>
               <%= svg 'media/svgs/save.svg' %> <%= t('avo.save').capitalize %>
             <% end %>
           <% end %>

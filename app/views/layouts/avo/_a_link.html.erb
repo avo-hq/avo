@@ -1,7 +1,7 @@
 <% if (block = yield).empty? %>
-  <%= button_tag label, **args %>
+  <%= link_to label, url, **args %>
 <% else %>
-  <%= button_tag **args do %>
+  <%= link_to url, **args do %>
     <%= yield %>
   <% end %>
 <% end %>

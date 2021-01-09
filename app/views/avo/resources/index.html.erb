@@ -9,7 +9,7 @@
         <%= render 'actions' %>
       </div>
       <%# @todo: Attach button  %>
-      <%= a_button new_resource_path(@resource_model) do %>
+      <%= a_link new_resource_path(@resource_model) do %>
         <%= svg 'media/svgs/plus.svg' %> <%= t('avo.create_new_item', { item: @resource_model.model_name.human.downcase }) %>
       <% end %>
     </div>
@@ -28,7 +28,7 @@
   </div>
   <div class="w-full overflow-auto min-h-28 flex flex-col">
     <div class="relative flex-1 flex">
-      <%= resource_table @resources %>
+      <%= resource_table @resources, @resource_model.model_name.route_key %>
     </div>
     <%= paginate @models, class: 'avo-pagination justify-end flex px-4 space-x-2' %>
   </div>

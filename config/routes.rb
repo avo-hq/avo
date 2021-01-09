@@ -15,6 +15,13 @@ Avo::Engine.routes.draw do
   #   end
   # end
 
+  # get '/resources/:resource_name(/:id)/actions/', to: 'actions#index'
+  get '/resources/:resource_name(/:id)/actions/:action_id/show', to: 'actions#show'
+  post '/resources/:resource_name(/:id)/actions/:action_id/show', to: 'actions#show'
+  get '/resources/:resource_name(/:id)/actions/:action_id', to: 'actions#show'
+  post '/resources/:resource_name(/:id)/actions/:action_id', to: 'actions#handle'
+  # get '/actions/:action_id', to: 'actions#frame'
+
   scope 'resources', as: 'resources' do
     resources :posts, controller: 'resources', as: 'posts'
     resources :projects, controller: 'resources', as: 'projects'

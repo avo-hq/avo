@@ -30,7 +30,7 @@
       end
   %>
     <th class="text-left uppercase px-3 py-2">
-      <%= link_to request.params.merge(sort_by: sort_by, sort_direction: sort_direction), class: "flex items-center text-gray-700 leading-tight text-xs font-semibold #{'cursor-pointer' if field[:sortable]}" do %>
+      <%= link_to resources_path(@resource_model, sort_by: sort_by, sort_direction: sort_direction), class: "flex items-center text-gray-700 leading-tight text-xs font-semibold #{'cursor-pointer' if field[:sortable]}" do %>
         <%= field[:name] %>
         <% if field[:sortable] %>
           <%= render partial: 'sortable_component', locals: {field: field} %>

@@ -22,6 +22,11 @@ module Avo
         redirect '/resources/posts'
       end
 
+      fields do
+        boolean :notify_user
+        text :message, default: 'Your account has been marked as inactive.'
+      end
+
       def confirm_text
         'Toggle'
       end

@@ -27,12 +27,14 @@
         }],
         // "sort-imports": ["error"],
         "semi": ["error", "never"],
+        "no-empty": ["error", { "allowEmptyCatch": true }],
         "no-multi-spaces": 0,
         "no-shadow": 0,
         "no-param-reassign": 0,
         "camelcase": ["error", {"ignoreDestructuring": true}],
         "newline-before-return": 1,
-        "max-len": ["error", { "code": 180 }]
+        "max-len": ["error", { "code": 180 }],
+        "class-methods-use-this": 0
     },
     "settings": {
         "import/resolver": {

@@ -1,5 +1,5 @@
 <div class="w-full">
-  <table class="w-full px-4 overflow-hidden">
+  <table class="w-full px-4 overflow-hidden" data-selected-resources-name="<%= resource_model %>" data-selected-resources="[]">
     <%= render partial: 'table_header', locals: {fields: fields} %>
     <tbody>
       <% resources.each_with_index do |resource, index| %>

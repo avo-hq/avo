@@ -57,34 +57,58 @@ module Avo
       end
     end
 
-    def a_button(label, url = nil, button: false, color: nil, variant: nil, **args, &block)
-      classes = "#{button_classes} #{args[:class]}"
+    def modal(&block)
+      render layout: 'layouts/avo/modal' do
+        capture(&block)
+      end
+    end
+
+    def a_button(label, color: nil, variant: nil, **args, &block)
+      args[:class] = "#{button_classes} #{args[:class]}"
       # @todo: color variant options
       if block.present?
         url = label
       end
 
-      # @todo: rename this to soemthing else (helper, method)
-      element = button ? 'button_to' : 'link_to'
+      # @todo: rename this to something else (helper, method)
+
+      locals = {
+        label: label,
+        args: args,
+      }
 
       if block_given?
-        render layout: 'layouts/avo/a_button', locals: {
-          classes: classes,
-          label: label,
-          url: url,
-          args: args,
-          element: element,
-        } do
+        render layout: 'layouts/avo/a_button', locals: locals do
           capture(&block)
         end
       else
-        render partial: 'layouts/avo/a_button', locals: {
-          classes: classes,
-          label: label,
-          url: url,
-          args: args,
-          element: element,
-        }
+        render partial: 'layouts/avo/a_button', locals: locals
+      end
+    end
+
+    def a_link(label, url = nil, color: nil, variant: nil, **args, &block)
+      args[:class] = "#{button_classes} #{args[:class]}"
+      # @todo: color variant options
+      if block_given?
+        # abort [url, label].inspect/
+        url = label
+      end
+
+      # @todo: rename this to something else (helper, method)
+      # element = button ? 'button_tag' : 'link_to'
+
+      locals = {
+        label: label,
+        url: url,
+        args: args,
+      }
+
+      if block_given?
+        render layout: 'layouts/avo/a_link', locals: locals do
+          capture(&block)
+        end
+      else
+        render partial: 'layouts/avo/a_link', locals: locals
       end
     end
 
@@ -94,6 +118,7 @@ module Avo
 
     def svg(path, **args)
       classes = args[:class].present? ? args[:class] : 'h-4 mr-1'
+      classes += args[:extra_class].present? ? " #{args[:extra_class]}" : ''
 
       inline_svg_pack_tag path, **args, class: classes
     end

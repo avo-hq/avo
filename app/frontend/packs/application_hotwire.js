@@ -1,9 +1,10 @@
 import '@/css/application.css'
 
+// eslint-disable-next-line import/no-extraneous-dependencies
 import 'regenerator-runtime/runtime'
 import * as Mousetrap from 'mousetrap'
 import { Application } from 'stimulus'
-import { Turbo, cable } from '@hotwired/turbo-rails'
+import { Turbo } from '@hotwired/turbo-rails'
 import { definitionsFromContext } from 'stimulus/webpack-helpers'
 import Avo from '@/js/hotwire/Avo'
 import I18n from 'i18n-js'
@@ -21,6 +22,7 @@ application.load(definitionsFromContext(context))
 window.I18n = I18n
 
 document.addEventListener('DOMContentLoaded', Avo.init)
+document.addEventListener('turbo:load', (event) => console.log('turbo:load', event))
 
 // Mousetrap.bind('r r r', () => Avo.reload())
 

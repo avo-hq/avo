@@ -1,10 +1,11 @@
 module Avo
   module ResourcesHelper
-    def resource_table(resources)
+    def resource_table(resources, resource_model)
       fields = resources.length > 0 ? resources.first[:fields] : []
 
       render partial: 'avo/resources/table', locals: {
         resources: resources,
+        resource_model: resource_model,
         fields: fields,
       }
     end
@@ -27,13 +28,14 @@ module Avo
       }
     end
 
-    def edit_field(field, index, form)
+    def edit_field(field, index, form, displayed_in_modal: false)
       partial_path = "avo/fields/edit/#{field[:component]}"
 
       render partial: partial_path, locals: {
         field: field,
         index: index,
         form: form,
+        displayed_in_modal: displayed_in_modal,
       }
     end
 
@@ -77,6 +79,7 @@ module Avo
         field: field,
         dash_if_empty: dash_if_empty,
         form: form,
+        displayed_in_modal: displayed_in_modal,
       } do
         capture(&block)
       end
