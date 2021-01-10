@@ -29,8 +29,16 @@ module Avo
       instance_eval(&Avo.configuration.current_user)
     end
 
-    def resources_path(model, **args)
-      send :"resources_#{model.model_name.route_key}_path", **args
+    def resources_path(model, keep_query_params: false, **args)
+      existing_params = {}
+
+      begin
+        if keep_query_params
+          existing_params = Addressable::URI.parse(request.fullpath).query_values.symbolize_keys
+        end
+      rescue;end
+
+      send :"resources_#{model.model_name.route_key}_path", **existing_params, **args
     end
 
     def resource_path(model, **args)
