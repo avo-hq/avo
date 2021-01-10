@@ -19,6 +19,9 @@ const application = Application.start()
 const context = require.context('./../js/hotwire/controllers', true, /\.js$/)
 application.load(definitionsFromContext(context))
 
+const componentsContext = require.context('./../js/hotwire/controllers/components', true, /\.js$/)
+application.load(definitionsFromContext(componentsContext))
+
 window.I18n = I18n
 
 document.addEventListener('DOMContentLoaded', Avo.init)

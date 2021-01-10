@@ -18,17 +18,19 @@ module Avo
       }
     end
 
-    def show_field(field, index)
+    def show_field(field, index, resource)
       render partial: "avo/fields/show/#{field[:component]}", locals: {
         field: field,
         index: index,
+        resource: resource,
       }
     end
 
-    def edit_field(field, index, form, displayed_in_modal: false)
+    def edit_field(field, index, resource, form, displayed_in_modal: false)
       render partial: "avo/fields/edit/#{field[:component]}", locals: {
         field: field,
         index: index,
+        resource: resource,
         form: form,
         displayed_in_modal: displayed_in_modal,
       }

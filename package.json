@@ -48,6 +48,7 @@
     "postcss-nested": "^4.2.1",
     "postcss-nested-ancestors": "^2.0.0",
     "postcss-preset-env": "^6.7.0",
+    "simplemde": "^1.11.2",
     "stimulus": "^2.0.0",
     "tailwindcss": "^1.4.6",
     "turbolinks": "^5.2.0",
