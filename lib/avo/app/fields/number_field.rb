@@ -5,7 +5,6 @@ module Avo
     class NumberField < TextField
       def initialize(name, **args, &block)
         @defaults = {
-          sortable: true,
           component: 'number-field',
           computable: true,
         }

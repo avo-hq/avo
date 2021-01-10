@@ -3,7 +3,6 @@ module Avo
     class BooleanField < Field
       def initialize(name, **args, &block)
         @defaults = {
-          sortable: true,
           component: 'boolean-field',
           computable: true,
         }

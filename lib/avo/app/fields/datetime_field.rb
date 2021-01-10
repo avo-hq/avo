@@ -5,7 +5,6 @@ module Avo
     class DatetimeField < DateField
       def initialize(name, **args, &block)
         @defaults = {
-          sortable: true,
           component: 'datetime-field',
         }
 

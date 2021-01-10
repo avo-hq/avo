@@ -30,11 +30,15 @@
       end
   %>
     <th class="text-left uppercase px-3 py-2">
-      <%= link_to resources_path(@resource_model, sort_by: sort_by, sort_direction: sort_direction, keep_query_params: true), class: "flex items-center text-gray-700 leading-tight text-xs font-semibold #{'cursor-pointer' if field[:sortable]}" do %>
-        <%= field[:name] %>
-        <% if field[:sortable] %>
+      <% if field[:sortable] %>
+        <%= link_to resources_path(@resource_model, sort_by: sort_by, sort_direction: sort_direction, keep_query_params: true), class: "flex items-center text-gray-700 leading-tight text-xs font-semibold #{'cursor-pointer' if field[:sortable]}" do %>
+          <%= field[:name] %>
           <%= render partial: 'sortable_component', locals: {field: field} %>
         <% end %>
+      <% else %>
+          <div class="flex items-center text-gray-700 leading-tight text-xs font-semibold">
+            <%= field[:name] %>
+          </div>
       <% end %>
     </th>
   <% end %>

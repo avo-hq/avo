@@ -3,7 +3,6 @@ module Avo
     class BadgeField < Field
       def initialize(name, **args, &block)
         @defaults = {
-          sortable: true,
           component: 'badge-field',
         }
 

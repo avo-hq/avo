@@ -3,7 +3,6 @@ module Avo
     class StatusField < Field
       def initialize(name, **args, &block)
         @defaults = {
-          sortable: true,
           component: 'status-field',
         }
 

@@ -94,8 +94,8 @@ module Avo
         end
 
         # Run callback block if present
-        if computable and @block.present?
-          fields[:computed_value] = @block.call model, resource, view, self
+        if computable and block.present?
+          fields[:computed_value] = block.call model, resource, view, self
 
           fields[:value] = fields[:computed_value]
         end

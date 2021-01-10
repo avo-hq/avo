@@ -3,7 +3,6 @@ module Avo
     class SelectField < Field
       def initialize(name, **args, &block)
         @defaults = {
-          sortable: true,
           component: 'select-field',
         }
 
