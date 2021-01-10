@@ -35,7 +35,12 @@
         </div> %>
 
         <div class="content p-8 flex-1 flex flex-col justify-between items-stretch" v-else>
+          <% # @todo: make the alerts floating %>
+          <%= render partial: 'avo/partials/alert', locals: {type: :notice, message: flash.notice} if flash.notice.present? %>
+          <%= render partial: 'avo/partials/alert', locals: {type: :alert, message: flash.alert} if flash.alert.present? %>
+
           <%= yield %>
+
           <%= render_footer %>
         </div>
       </div>
