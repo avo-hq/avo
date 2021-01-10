@@ -49,8 +49,7 @@ module Avo
               component: 'panel',
             }],
             model: model,
-            hash: 'hash', # md5 of the file to break the cache
-            # @todo: update hash
+            hash: file_hash(resource), # md5 of the file to break the cache
           }
 
           grid_fields = resource.get_grid_fields
@@ -118,6 +117,12 @@ module Avo
           else
             true
           end
+        end
+
+        def file_hash(resource)
+          path = Rails.root.join('app', 'avo', 'resources', "#{resource.name.underscore}.rb").to_s
+
+          Digest::MD5.hexdigest(File.read(path)) if File.file? path
         end
       end
 
