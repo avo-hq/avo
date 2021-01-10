@@ -10,10 +10,6 @@ module Avo
       # @model = resource_model
     end
 
-    def post
-      abort params.inspect
-    end
-
     def show
       set_actions
       # abort [1, params].inspect

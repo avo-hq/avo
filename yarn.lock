@@ -984,17 +984,17 @@
     purgecss "^2.3.0"
 
 "@hotwired/turbo-rails@^7.0.0-beta.2":
-  version "7.0.0-beta.2"
-  resolved "https://registry.yarnpkg.com/@hotwired/turbo-rails/-/turbo-rails-7.0.0-beta.2.tgz#f481a5979916311dc1c9d5502a2c5444b0d8d0aa"
-  integrity sha512-g79cjM+rW9zF73DsP0o3XAvXjvIj52B4FYXOL4gO48rWV+0P2sfrOvE04GlvN0C4FsWNbrd6zGDo5Dd7siQZQg==
+  version "7.0.0-beta.3"
+  resolved "https://registry.yarnpkg.com/@hotwired/turbo-rails/-/turbo-rails-7.0.0-beta.3.tgz#478aa47682465713d0b2e48858be9dfcd43a0e8e"
+  integrity sha512-hoYEawFwkr1MdrkqRTivAnXPDHZ+Hk4m1FrjmbO3eMBUs8Xw3L+a3U7aeH8RPtUBo4k93qc9CivlR9yTxZsZkA==
   dependencies:
-    "@hotwired/turbo" "^7.0.0-beta.1"
+    "@hotwired/turbo" "^7.0.0-beta.2"
     "@rails/actioncable" "^6.1.0"
 
-"@hotwired/turbo@^7.0.0-beta.1":
-  version "7.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@hotwired/turbo/-/turbo-7.0.0-beta.1.tgz#0111db8a80a7bb308c4cfdd2720112d06bf25c33"
-  integrity sha512-V7hhELbDkYUGaHw/Yw4tu9pDUT1WE4t3A7tRs7Zh0Uwtk2vaJnmykNZ2uq20BnLjofufA1+MLJZ6AXJ3B/Il5A==
+"@hotwired/turbo@^7.0.0-beta.2":
+  version "7.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@hotwired/turbo/-/turbo-7.0.0-beta.2.tgz#0f20c1f5b67fe07472a5f1eda2e3f79146324512"
+  integrity sha512-3YyWDaImtkU8MJ+//qV8nmV8KeFInN/nptqwJo1Bl5UjROmixPr3w9tPHyA499Mo1mBJOur8jiXVowbX6VWLUg==
 
 "@npmcli/move-file@^1.0.1":
   version "1.0.1"
@@ -1004,9 +1004,9 @@
     mkdirp "^1.0.4"
 
 "@rails/actioncable@^6.1.0":
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/@rails/actioncable/-/actioncable-6.1.0.tgz#f336f25450b1bc43b99bc60557a70b6e6bb1d3d2"
-  integrity sha512-eDgy+vcKN9RIzxmMBfSAe77rTj2cp6kJALiVQyKrW2O9EK2MdostOmP+99At/Dit3ur5+77NVnruxD7y14ZYFA==
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/@rails/actioncable/-/actioncable-6.1.1.tgz#e980b2ea1c62cae17bcddad37deb6ba88d498b63"
+  integrity sha512-A8toxvSuzK/wX9uMwyV6T1EYzlqzIJNrO8XiNCSNsmKresdX2cbAjxFdMu9haaPJPjl3aC2FKRJeVCUWVtLPAQ==
 
 "@rails/activestorage@^6.0.2-1":
   version "6.0.3"

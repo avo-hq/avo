@@ -15,7 +15,7 @@
     </div>
   </td>
   <% resource[:fields].each_with_index do |field, index| %>
-    <%= index_field field, index %>
+    <%= index_field field, index, resource %>
   <% end %>
   <td class="text-right whitespace-no-wrap px-2">
     <div class="flex items-center justify-end flex-grow-0 h-full w-full">

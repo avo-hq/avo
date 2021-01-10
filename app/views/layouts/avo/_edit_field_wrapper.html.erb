@@ -1,13 +1,16 @@
-<div class="flex items-start py-1 leading-tight <%= classes %>">
-  <div class="w-48 md:w-64 p-4 px-6 h-full flex" data-slot="label">
+<div class="flex items-center py-0 leading-tight <%= classes %>">
+  <div class="<% if displayed_in_modal %>md:w-48<% else %>md:w-64<% end %> p-4 w-48 px-8 h-full flex self-start" data-slot="label">
     <%= form.label field[:id], field[:name] %> <% if field[:required] %> <span class="text-red-600">*</span> <% end %>
   </div>
   <div class="flex-1 flex flex-row">
     <div class="p-3 px-6 self-center <% if displayed_in_modal %> w-full <% else %> w-8/12 <% end %>" data-slot="value">
-      <% if !field[:value] and dash_if_empty and action_name != 'new' %>
-        —
-      <% else %>
-        <%= yield %>
+      <%= yield %>
+
+      <% if @model.present? and @model.errors.include? field[:id] %>
+        <div class="text-red-600 mt-2"><%= @model.errors.full_messages_for(field[:id]).to_sentence %></div>
+      <% end %>
+      <% if field[:help] %>
+        <div class="text-gray-600 mt-2 text-sm"><%= field[:help] %></div>
       <% end %>
     </div>
   </div>

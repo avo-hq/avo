@@ -57,3 +57,7 @@ select.select-input {
     @apply bg-gray-200;
   }
 }
+
+.turbo-progress-bar {
+  @apply bg-green-500;
+}

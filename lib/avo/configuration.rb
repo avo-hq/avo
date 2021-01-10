@@ -16,6 +16,7 @@ module Avo
     attr_accessor :authorization_methods
     attr_accessor :authenticate
     attr_accessor :current_user
+    attr_accessor :id_links_to_resource
 
     def initialize
       @root_path = '/avo'
@@ -42,6 +43,7 @@ module Avo
         create: 'create?',
         destroy: 'destroy?',
       }
+      @id_links_to_resource = false
     end
 
     def locale_tag

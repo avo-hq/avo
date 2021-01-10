@@ -54,7 +54,8 @@ module Avo
           format.html { redirect_to resource_path(@model), notice: "#{@model.class.name} was successfully created." }
           format.json { render :show, status: :created, location: @model }
         else
-          format.html { render :new }
+          @resource = Avo::Resources::Resource.hydrate_resource(model: @model, resource: avo_resource, view: :new, user: _current_user)
+          format.html { render :new, status: :unprocessable_entity }
           format.json { render json: @model.errors, status: :unprocessable_entity }
         end
       end
@@ -62,11 +63,12 @@ module Avo
 
     def update
       respond_to do |format|
-        if @model.update(model_params)
+        if @model.update(cast_nullable(model_params))
           format.html { redirect_to resource_path(@model), notice: "#{@model.class.name} was successfully updated." }
           format.json { render :show, status: :ok, location: @post }
         else
-          format.html { render :edit }
+          @resource = Avo::Resources::Resource.hydrate_resource(model: @model, resource: avo_resource, view: :edit, user: _current_user)
+          format.html { render :edit, status: :unprocessable_entity }
           format.json { render json: @post.errors, status: :unprocessable_entity }
         end
       end
@@ -88,13 +90,13 @@ module Avo
         case @_action_name
         when 'show'
           @heading = t 'avo.resource_details', item: resource_name
-        when 'edit'
+        when 'edit', 'update'
           @heading = t 'avo.edit_item', item: resource_name
-        when 'new'
+        when 'new', 'create'
           @heading = t 'avo.create_new_item', item: resource_name
         end
 
-        @heading = @heading.upcase_first
+        @heading = @heading.upcase_first if @heading.present?
 
         super(*arguments)
       end
@@ -186,6 +188,28 @@ module Avo
         end
 
         filter_defaults
+      end
+
+      def cast_nullable(params)
+        fields = avo_resource.get_fields
+
+        nullable_fields = fields.filter do |field|
+          field.nullable
+        end
+        .map do |field|
+          [field.id, field.null_values]
+        end
+        .to_h
+
+        params.each do |key, value|
+          nullable = nullable_fields[key.to_sym]
+
+          if nullable.present? && value.in?(nullable)
+            params[key] = nil
+          end
+        end
+
+        params
       end
   end
 end
