@@ -24,6 +24,7 @@
     "@rails/activestorage": "^6.0.2-1",
     "@rails/ujs": "^6.1.0",
     "@rails/webpacker": "^4.2.2",
+    "@stimulus/mutation-observers": "^2.0.0",
     "@tailwindcss/typography": "^0.2.0",
     "autoprefixer": "^9.7.4",
     "axios": "^0.19.2",

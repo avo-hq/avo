@@ -1,3 +1,4 @@
+import { AttributeObserver } from '@stimulus/mutation-observers'
 import { Controller } from 'stimulus'
 
 export default class extends Controller {
@@ -32,6 +33,12 @@ export default class extends Controller {
 
     this.disableTarget()
 
-    document.addEventListener('actions-modal:close', () => this.enableTarget(this.target))
+    const observer = new AttributeObserver(document.querySelector('turbo-frame#actions_show'), 'busy', {
+      elementUnmatchedAttribute: () => {
+        this.enableTarget(this.target)
+        if (observer) observer.stop()
+      },
+    })
+    observer.start()
   }
 }
