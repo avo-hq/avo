@@ -25,7 +25,9 @@ gem 'countries'
 # Authorization
 gem 'pundit'
 
+#
 # Dependencies for dummy_app
+#
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.2', '>= 6.0.2.2'
 # Use postgresql as the database for Active Record
@@ -68,9 +70,13 @@ gem 'database_cleaner'
 
 gem 'ruby-debug-ide', require: false
 gem 'debase'
+#
+# END Dependencies for dummy_app
+#
 
 group :development, :test do
   gem 'rspec-rails', '~> 4.0.0'
+  gem 'rails-controller-testing'
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '>= 2.15'
   gem 'selenium-webdriver'
@@ -85,6 +91,8 @@ group :development, :test do
   # Release helper
   gem 'bump', require: false
   gem 'gem-release', require: false
+
+  gem 'spring-commands-rspec'
 end
 
 gem 'zeitwerk', '~> 2.3'

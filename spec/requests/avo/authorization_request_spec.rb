@@ -1,8 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe "Authorizations", type: :request do
+  let(:user) { create :user }
+
+  before do
+    login_as user
+  end
+
   it "creates a Widget and redirects to the Widget's page" do
-    get "/resources/users"
+    get "/avo/resources/users"
     expect(response).to render_template(:index)
 
     # post "/widgets", :params => { :widget => {:name => "My Widget"} }
