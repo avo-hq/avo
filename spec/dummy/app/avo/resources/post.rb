@@ -10,7 +10,8 @@ module Avo
 
       fields do
         id
-        text :name, required: true
+        text :name, required: true, link_to_resource: true
+        textarea :body, rows: 10
         # trix :body, placeholder: 'Enter text', always_show: false
         # text :excerpt, hide_on: [:show, :edit, :index] do |model|
         #   begin
