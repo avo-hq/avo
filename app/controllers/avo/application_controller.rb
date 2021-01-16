@@ -115,7 +115,13 @@ module Avo
         if !exception.is_a? Pundit::NotDefinedError
           flash[:notice] = t 'avo.not_authorized'
 
-          redirect_to(request.referrer || root_path)
+          redirect_url = if request.referrer.blank? or request.referrer == request.url
+            root_url
+          else
+            request.referrer
+          end
+
+          redirect_to(redirect_url)
         end
       end
 
