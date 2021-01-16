@@ -13,6 +13,7 @@ RSpec.describe 'Home', type: :request do
 
   it 'renders the homepage' do
     get '/avo'
+
     expect(response).to render_template('avo/home/hotwire')
     expect(response.body).to include 'Avocadelicious', 'hey hotwire', 'Hotwire 2'
   end
