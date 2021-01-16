@@ -1,0 +1,160 @@
+require 'rails_helper'
+
+class ProjectPolicy < ApplicationPolicy
+  def index?
+    user.is_admin?
+  end
+
+  def show?
+    user.is_admin?
+  end
+
+  def create?
+    user.is_admin?
+  end
+
+  def new?
+    user.is_admin?
+  end
+
+  def update?
+    user.is_admin?
+  end
+
+  def edit?
+    user.is_admin?
+  end
+
+  def destroy?
+    user.is_admin?
+  end
+end
+
+# RSpec.describe Avo::ResourcesController, type: :controller do
+RSpec.describe 'ProjectsController is_admin? policy', type: :request do
+  let(:user) { create :user }
+  let(:admin_user) { create :user, roles: { 'admin': true } }
+  let(:project) { create :project }
+
+  before :each do
+    stub_pro_license_request
+  end
+
+  before do
+    login_as user
+  end
+
+  describe 'index?' do
+    # subject { get :index, params: { resource_name: 'projects' } }
+    subject { get '/avo/resources/projects' }
+
+    context 'when user is not admin' do
+      it 'will not find the avo route' do
+        expect { subject }.to raise_error ActionController::RoutingError
+      end
+    end
+
+    context 'when user is admin' do
+      before do
+        login_as admin_user
+      end
+
+      it { is_expected.to render_template('avo/resources/index') }
+    end
+  end
+
+  describe 'create?' do
+    subject { post '/avo/resources/projects', params: { project: { name: 'Avocado peeling', users_required: 10 } } }
+
+    context 'when user is not admin' do
+      it 'fails' do
+        expect { subject }.to raise_error ActionController::RoutingError
+      end
+    end
+
+    context 'when user is admin' do
+      before do
+        login_as admin_user
+      end
+
+      it { is_expected.to redirect_to("/avo/resources/projects/#{Project.first.id}") }
+    end
+  end
+
+  describe 'show?' do
+    subject { get "/avo/resources/projects/#{project.id}" }
+
+    context 'when user is not admin' do
+      it 'fails' do
+        expect { subject }.to raise_error ActionController::RoutingError
+      end
+    end
+
+    context 'when user is admin' do
+      before do
+        login_as admin_user
+      end
+
+      it { is_expected.to render_template('avo/resources/show') }
+    end
+  end
+
+  describe 'update?' do
+    subject { put "/avo/resources/projects/#{project.id}", params: { project: { name: 'Avocado peeling', users_required: 10 } } }
+
+    context 'when user is not admin' do
+      it 'fails' do
+        expect { subject }.to raise_error ActionController::RoutingError
+      end
+    end
+
+    context 'when user is admin' do
+      before do
+        login_as admin_user
+      end
+
+      it { is_expected.to redirect_to("/avo/resources/projects/#{project.id}") }
+    end
+  end
+
+  describe 'edit?' do
+    subject { get "/avo/resources/projects/#{project.id}" }
+
+    context 'when user is not admin' do
+      it 'fails' do
+        expect { subject }.to raise_error ActionController::RoutingError
+      end
+    end
+
+    context 'when user is admin' do
+      before do
+        login_as admin_user
+      end
+
+      it { is_expected.to render_template('avo/resources/show') }
+    end
+  end
+
+  describe 'destroy?' do
+    subject { delete "/avo/resources/projects/#{project.id}" }
+
+    context 'when user is not admin' do
+      it 'fails' do
+        expect { subject }.to raise_error ActionController::RoutingError
+      end
+    end
+
+    context 'when user is admin' do
+      before do
+        login_as admin_user
+      end
+
+      it { is_expected.to redirect_to('/avo/resources/projects') }
+      it 'destroys the user' do
+        subject
+
+        expect(Project.where(id: project.id).first).to be nil
+      end
+    end
+  end
+end

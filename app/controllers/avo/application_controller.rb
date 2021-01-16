@@ -63,10 +63,14 @@ module Avo
       end
 
       def resource_name
-        request.path
+        begin
+          request.path
           .match(/\/?#{Avo.configuration.root_path.gsub('/', '')}\/resources\/([a-z1-9\-_]*)\/?/mi)
           .captures
           .first
+        rescue => exception
+          params[:resource_name]
+        end
       end
 
       def resource

@@ -1,6 +1,6 @@
 {
   "ruby.specSaveFile": true,
-  "ruby.specCommand": "HEADFULL=true RAILS_ENV=test COVERAGE=true rspec",
+  "ruby.specCommand": "HEADFULL=true RAILS_ENV=test rspec",
   "workbench.colorCustomizations": {
     "titleBar.activeBackground": "#42b883",
     "titleBar.activeForeground": "#15202b",

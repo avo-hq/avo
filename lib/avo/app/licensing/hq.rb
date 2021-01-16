@@ -2,9 +2,9 @@ module Avo
   class HQ
     attr_accessor :current_request
 
-    ENDPOINT = 'https://avohq.io/api/v1/licenses/check'
-    CACHE_KEY = 'avo.hq.response'
-    REQUEST_TIMEOUT = 5 # seconds
+    ENDPOINT = 'https://avohq.io/api/v1/licenses/check' unless const_defined?(:ENDPOINT)
+    CACHE_KEY = 'avo.hq.response' unless const_defined?(:CACHE_KEY)
+    REQUEST_TIMEOUT = 5 unless const_defined?(:REQUEST_TIMEOUT) # seconds
 
     def initialize(current_request)
       @current_request = current_request
