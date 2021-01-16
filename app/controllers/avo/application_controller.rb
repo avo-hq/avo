@@ -1,9 +1,13 @@
 module Avo
-  class ApplicationController < ActionController::Base
-    rescue_from ActiveRecord::RecordInvalid, with: :exception_logger
+  class ApplicationController < ::ActionController::Base
+    include Pundit
     protect_from_forgery with: :exception
     before_action :init_app
+    before_action :set_authorization
     before_action :_authenticate!
+
+    rescue_from Pundit::NotAuthorizedError, with: :render_unauthorized
+    rescue_from ActiveRecord::RecordInvalid, with: :exception_logger
 
     helper_method :_current_user, :resources_path, :resource_path, :new_resource_path, :edit_resource_path
 
@@ -87,24 +91,32 @@ module Avo
         App.get_resource resource_name.to_s.camelize.singularize
       end
 
-      def authorize_user
-        return if params[:controller] == 'avo/search'
+      # def authorize_user
+      #   return if params[:controller] == 'avo/search'
 
-        model = record = avo_resource.model
+      #   model = record = avo_resource.model
 
-        if ['show', 'edit', 'update'].include?(params[:action]) && params[:controller] == 'avo/resources'
-          record = resource
-        end
+      #   if ['show', 'edit', 'update'].include?(params[:action]) && params[:controller] == 'avo/resources'
+      #     record = resource
+      #   end
 
-        return render_unauthorized unless AuthorizationService::authorize_action _current_user, record, params[:action]
-      end
-
-      def render_unauthorized
-        render json: { message: I18n.t('avo.unauthorized') }, status: 403
-      end
+      #   # AuthorizationService::authorize_action _current_user, record, params[:action] return render_unauthorized unless
+      # end
 
       def _authenticate!
         instance_eval(&Avo.configuration.authenticate)
+      end
+
+      def render_unauthorized(exception)
+        if !exception.is_a? Pundit::NotDefinedError
+          flash[:notice] = t 'avo.not_authorized'
+
+          redirect_to(request.referrer || root_path)
+        end
+      end
+
+      def set_authorization
+        @authorization = AuthorizationService.new _current_user
       end
   end
 end

@@ -36,7 +36,7 @@ module Avo
 
           resource_with_fields = {
             id: model.id,
-            authorization: get_authorization(user, model),
+            authorization: AuthorizationService.new(user, model),
             singular_name: resource.singular_name,
             plural_name: resource.plural_name,
             title: model[resource.title],
@@ -120,9 +120,20 @@ module Avo
         end
 
         def file_hash(resource)
-          path = Rails.root.join('app', 'avo', 'resources', "#{resource.name.underscore}.rb").to_s
+          content_to_be_hashed = ''
+          # resource file hash
+          resource_path = Rails.root.join('app', 'avo', 'resources', "#{resource.name.underscore}.rb").to_s
+          if File.file? resource_path
+            content_to_be_hashed += File.read(resource_path)
+          end
 
-          Digest::MD5.hexdigest(File.read(path)) if File.file? path
+          # policy file hash
+          policy_path = Rails.root.join('app', 'policies', "#{resource.name.underscore}_policy.rb").to_s
+          if File.file? policy_path
+            content_to_be_hashed += File.read(policy_path)
+          end
+
+          Digest::MD5.hexdigest(content_to_be_hashed)
         end
       end
 
@@ -258,6 +269,10 @@ module Avo
         end
 
         model
+      end
+
+      def authorization(user)
+        AuthorizationService.new(user, model)
       end
     end
   end

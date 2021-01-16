@@ -11,7 +11,7 @@
       <%# @todo: Attach button  %>
       <%= a_link new_resource_path(@resource_model) do %>
         <%= svg 'media/svgs/plus.svg' %> <%= t('avo.create_new_item', { item: @resource_model.model_name.human.downcase }) %>
-      <% end %>
+      <% end if @authorization.set_record(@resource_model).authorize_action :create, raise_exception: false %>
     </div>
     <%# actions %>
     <%# attach button %>

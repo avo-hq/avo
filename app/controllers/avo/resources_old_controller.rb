@@ -2,7 +2,7 @@ require_dependency 'avo/application_controller'
 
 module Avo
   class ResourcesOldController < ApplicationController
-    before_action :authorize_user
+    # before_action :authorize_user
 
     def index
       params[:page] ||= 1

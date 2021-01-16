@@ -2,7 +2,6 @@ require_dependency 'avo/application_controller'
 
 module Avo
   class ResourcesController < ApplicationController
-    before_action :authorize_user
     before_action :set_per_page, only: :index
     before_action :set_filters, only: :index
     before_action :set_actions, only: :index
@@ -16,6 +15,8 @@ module Avo
 
       # @todo: remove this
       @resource_model = resource_model
+      @avo_resource = avo_resource
+      @authorization.set_record(@resource_model).authorize_action :index
       query = resource_model
 
       if params[:sort_by]
@@ -34,20 +35,24 @@ module Avo
     end
 
     def show
+      @authorization.set_record(@model).authorize_action :show
       @resource = Avo::Resources::Resource.hydrate_resource(model: @model, resource: avo_resource, view: :show, user: _current_user)
     end
 
     def new
       @model = resource_model.new
+      @authorization.set_record(@model).authorize_action :new
       @resource = Avo::Resources::Resource.hydrate_resource(model: @model, resource: avo_resource, view: :new, user: _current_user)
     end
 
     def edit
+      @authorization.set_record(@model).authorize_action :edit
       @resource = Avo::Resources::Resource.hydrate_resource(model: @model, resource: avo_resource, view: :edit, user: _current_user)
     end
 
     def create
       @model = resource_model.new(model_params)
+      @authorization.set_record(@model).authorize_action :create
 
       respond_to do |format|
         if @model.save
@@ -62,6 +67,7 @@ module Avo
     end
 
     def update
+      @authorization.set_record(@model).authorize_action :update
       respond_to do |format|
         if @model.update(cast_nullable(model_params))
           format.html { redirect_to resource_path(@model), notice: "#{@model.class.name} was successfully updated." }
@@ -75,6 +81,7 @@ module Avo
     end
 
     def destroy
+      @authorization.set_record(@model).authorize_action :destroy
       @model.destroy!
 
       respond_to do |format|

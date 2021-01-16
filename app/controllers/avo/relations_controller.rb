@@ -2,7 +2,7 @@ require_dependency 'avo/application_controller'
 
 module Avo
   class RelationsController < ApplicationController
-    before_action :authorize_user
+    # before_action :authorize_user
 
     def attach
       resource.send(params[:attachment_name]) << attachment_model
