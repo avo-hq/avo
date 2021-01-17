@@ -46,7 +46,7 @@ module Avo
       end
     end
 
-    def show_field_wrapper(dash_if_empty: true, field: {}, index: nil, displayed_in_modal: false, **args, &block)
+    def show_field_wrapper(dash_if_empty: true, field: {}, index: nil, displayed_in_modal: false, full_width: false, **args, &block)
       classes = args[:class].present? ? args[:class] : ''
 
       if index != 0 or displayed_in_modal
@@ -57,12 +57,13 @@ module Avo
         classes: classes,
         field: field,
         dash_if_empty: dash_if_empty,
-      } do
+        full_width: full_width,
+        } do
         capture(&block)
       end
     end
 
-    def edit_field_wrapper(dash_if_empty: true, field: {}, index: nil, displayed_in_modal: false, form: nil, **args, &block)
+    def edit_field_wrapper(dash_if_empty: true, field: {}, index: nil, displayed_in_modal: false, full_width: false, form: nil, **args, &block)
       classes = args[:class].present? ? args[:class] : ''
 
       if index != 0 or displayed_in_modal
@@ -75,6 +76,7 @@ module Avo
         dash_if_empty: dash_if_empty,
         form: form,
         displayed_in_modal: displayed_in_modal,
+        full_width: full_width,
       } do
         capture(&block)
       end
