@@ -160,16 +160,7 @@ module Avo
             resource.name === 'Project' or resource.name === 'Post' or resource.name === 'User'
           end
           .select do |resource|
-            begin
-              AuthorizationService::authorize user, resource.model, Avo.configuration.authorization_methods.stringify_keys['index']
-
-              true
-            rescue Pundit::NotDefinedError => exception
-              true
-            rescue StandardError => exception
-              puts exception.inspect.inspect
-              false
-            end
+            AuthorizationService::authorize user, resource.model, Avo.configuration.authorization_methods.stringify_keys['index'], raise_exception: false
           end
           # .map do |resource|
           #   {
