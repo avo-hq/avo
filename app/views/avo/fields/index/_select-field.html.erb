@@ -1,0 +1,11 @@
+<%
+  if field[:display_with_value] && !field[:options].nil? && field[:options][field[:value]]
+    value = field[:options][field[:value]]
+  else
+    value = field[:value]
+  end
+%>
+
+<%= index_field_wrapper field: field do %>
+  <%= value %>
+<% end %>
