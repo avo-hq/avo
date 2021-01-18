@@ -6,7 +6,8 @@
 
     <% content_for :tools do %>
       <div class="flex justify-end space-x-2">
-        <%= a_link resources_path(@model.class) do %>
+        <% back_path = params[:via_resource_name].present? ? resource_path(to_resource_name: params[:via_resource_name], to_resource_id: params[:via_resource_id], keep_query_params: false) : resources_path(@model.class) %>
+        <%= a_link back_path do %>
           <%= svg 'media/svgs/arrow-left.svg' %> <%= t('avo.go_back') %>
         <% end %>
         <%= a_link resource_path(@model), color: 'red', variant: 'outlined', method: :delete, data: {confirm: 'Are you sure?'} do %>
