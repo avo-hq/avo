@@ -10,6 +10,7 @@ module Avo
     rescue_from ActiveRecord::RecordInvalid, with: :exception_logger
 
     helper_method :_current_user, :resources_path, :resource_path, :new_resource_path, :edit_resource_path
+    add_flash_types :info, :warning, :success, :error
 
     def init_app
       Avo::App.boot if Avo::IN_DEVELOPMENT

@@ -1,9 +1,12 @@
+@import './../../../node_modules/simplemde/dist/simplemde.min.css';
+@import './../../../node_modules/toastr/build/toastr.css';
+
 @import './tailwindcss/base.css';
 @import './typography.css';
 @import './tooltips.css';
+@import './alerts.css';
 @import './tailwindcss/components.css';
 @import './tailwindcss/utilities.css';
-@import './../../../node_modules/simplemde/dist/simplemde.min.css';
 
 html,
 body {
