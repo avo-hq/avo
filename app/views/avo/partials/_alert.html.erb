@@ -1,15 +1,1 @@
-<%
-  icon_class = type == :notice ? 'text-blue-500' : 'text-red-600'
-  border_class = type == :notice ? 'border-blue-300' : 'border-red-300'
-%>
-
-<div class="rounded-md bg-white <%= border_class %> border mb-4">
-  <div class="p-2 flex">
-    <%= svg 'media/svgs/information-circle.svg', class: "w-4 h-4 #{icon_class} mr-3 flex flex-shrink-0" %>
-    <div class="flex-1 flex justify-between">
-      <p class="text-sm text-gray-800">
-        <%= message %>
-      </p>
-    </div>
-  </div>
-</div>
+<div data-controller="alerts" data-alerts-target="container" data-alert-type="<%= type %>" class="hidden"><%= message %></div>

@@ -52,6 +52,7 @@
     "simplemde": "^1.11.2",
     "stimulus": "^2.0.0",
     "tailwindcss": "^1.4.6",
+    "toastr": "^2.1.4",
     "turbolinks": "^5.2.0",
     "urijs": "^1.19.2",
     "v-tooltip": "^2.0.3",
