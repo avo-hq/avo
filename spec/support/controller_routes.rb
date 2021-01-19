@@ -1,3 +1,5 @@
+require 'test_prof/recipes/rspec/before_all'
+
 module TestHelpers
   module ControllerRoutes
     extend ActiveSupport::Concern
@@ -9,10 +11,17 @@ module TestHelpers
   module DisableAuthentication
     extend ActiveSupport::Concern
     included do
-      let(:signed_in_admin_user) { create :user, roles: { admin: true } }
+      before_all do
+        login_as admin
+      end
+    end
+  end
 
-      before :each do
-        login_as signed_in_admin_user
+  module DisableHQRequest
+    extend ActiveSupport::Concern
+    included do
+      before_all do
+        stub_pro_license_request
       end
     end
   end

@@ -310,6 +310,7 @@ GEM
       sprockets (>= 3.0.0)
     stimulus-rails (0.1.2)
       rails (>= 6.0.0)
+    test-prof (0.12.2)
     thor (1.0.1)
     thread_safe (0.3.6)
     tilt (2.0.10)
@@ -387,6 +388,7 @@ DEPENDENCIES
   spring
   spring-commands-rspec
   spring-watcher-listen (~> 2.0.0)
+  test-prof
   tzinfo-data
   web-console (>= 3.3.0)
   webdrivers
