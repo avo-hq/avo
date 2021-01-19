@@ -24,6 +24,7 @@ Avo::Engine.routes.draw do
 
   get 'resources', to: redirect('/avo')
   scope 'resources', as: 'resources' do
+    resources :teams, controller: 'resources', as: 'teams'
     resources :posts, controller: 'resources', as: 'posts'
     resources :projects, controller: 'resources', as: 'projects'
     resources :users, controller: 'resources', as: 'users'
@@ -38,25 +39,25 @@ Avo::Engine.routes.draw do
   # put '/avo-api/:resource_name/:id',      to: 'resources#update'
   # delete '/avo-api/:resource_name/:id',   to: 'resources#destroy'
 
-  get '/avo-api/:resource_name/filters',  to: 'filters#index'
+  # get '/avo-api/:resource_name/filters',  to: 'filters#index'
 
-  get '/avo-api/:resource_name/actions',  to: 'actions#index'
-  post '/avo-api/:resource_name/actions', to: 'actions#handle'
+  # get '/avo-api/:resource_name/actions',  to: 'actions#index'
+  # post '/avo-api/:resource_name/actions', to: 'actions#handle'
 
-  get '/avo-api/search',                  to: 'search#index'
-  get '/avo-api/:resource_name/search',   to: 'search#resource'
+  # get '/avo-api/search',                  to: 'search#index'
+  # get '/avo-api/:resource_name/search',   to: 'search#resource'
 
-  get '/avo-api/:resource_name',          to: 'resources_old#index'
-  post '/avo-api/:resource_name',         to: 'resources_old#create'
-  get '/avo-api/:resource_name/new',      to: 'resources_old#new'
-  get '/avo-api/:resource_name/:id',      to: 'resources_old#show'
-  get '/avo-api/:resource_name/:id/edit', to: 'resources_old#edit'
-  put '/avo-api/:resource_name/:id',      to: 'resources_old#update'
-  delete '/avo-api/:resource_name/:id',   to: 'resources_old#destroy'
+  # get '/avo-api/:resource_name',          to: 'resources_old#index'
+  # post '/avo-api/:resource_name',         to: 'resources_old#create'
+  # get '/avo-api/:resource_name/new',      to: 'resources_old#new'
+  # get '/avo-api/:resource_name/:id',      to: 'resources_old#show'
+  # get '/avo-api/:resource_name/:id/edit', to: 'resources_old#edit'
+  # put '/avo-api/:resource_name/:id',      to: 'resources_old#update'
+  # delete '/avo-api/:resource_name/:id',   to: 'resources_old#destroy'
 
-  post '/avo-api/:resource_name/:id/attach/:attachment_name/:attachment_id', to: 'relations#attach'
-  post '/avo-api/:resource_name/:id/detach/:attachment_name/:attachment_id', to: 'relations#detach'
+  # post '/avo-api/:resource_name/:id/attach/:attachment_name/:attachment_id', to: 'relations#attach'
+  # post '/avo-api/:resource_name/:id/detach/:attachment_name/:attachment_id', to: 'relations#detach'
 
-  # Tools
-  get '/avo-tools/resource-overview', to: 'resource_overview#index'
+  # # Tools
+  # get '/avo-tools/resource-overview', to: 'resource_overview#index'
 end

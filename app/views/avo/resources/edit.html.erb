@@ -95,4 +95,6 @@
   </div>
 </div>
 
-<%= @resource.inspect %>
+<pre>
+<%= JSON.pretty_generate(JSON.parse(@resource.to_json)) %>
+</pre>

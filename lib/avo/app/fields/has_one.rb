@@ -21,11 +21,12 @@ module Avo
       def hydrate_field(fields, model, resource, view)
         target_resource = get_related_resource(resource)
         fields[:relation_class] = target_resource.class.to_s
+        fields[:database_id] = id
 
         relation_model = model.public_send(@relation_method)
 
         if relation_model.present?
-          relation_model = model.public_send(@relation_method)
+          fields[:relation_model] = relation_model
           fields[:value] = relation_model.send(target_resource.title)
           fields[:database_value] = relation_model[:id]
         end

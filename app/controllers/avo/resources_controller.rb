@@ -68,8 +68,9 @@ module Avo
 
     def update
       @authorization.set_record(@model).authorize_action :update
+
       respond_to do |format|
-        if @model.update(cast_nullable(model_params))
+        if avo_resource.fill_model(@model, cast_nullable(model_params)).save!
           format.html { redirect_to resource_path(@model), notice: "#{@model.class.name} was successfully updated." }
           format.json { render :show, status: :ok, location: @post }
         else
