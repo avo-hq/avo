@@ -1,15 +1,13 @@
 <%
-  classes = 'inline-block '
-  status == 'fail' ? classes += 'text-red-700'
-
-  status == 'load' ? is_loading = true
+  classes = "inline-block "
+  classes += "text-red-700" if status == 'fail'
 %>
 <div class="flex flex-shrink-0">
-    <div class=<%= classes %>><%= label %></div>
-    <% if is_loading %>
-      <div class="spinner ml-1"/>
+    <div class="<%= classes %>"><%= label %></div>
+    <% if status == 'load' %>
+      <div class="spinner ml-1"></div>
     <% end %>
-  </div>
+</div>
 
 <style>
 .spinner {
