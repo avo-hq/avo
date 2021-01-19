@@ -1,45 +1,5 @@
 require 'rails_helper'
 
-class UserPolicy < ApplicationPolicy
-  def index?
-    true
-  end
-
-  def show?
-    true
-  end
-
-  def create?
-    true
-  end
-
-  def new?
-    true
-  end
-
-  def update?
-    true
-  end
-
-  def edit?
-    true
-  end
-
-  def destroy?
-    true
-  end
-
-  class Scope < ApplicationPolicy::Scope
-    def resolve
-      if user.is_admin?
-        scope.all
-      else
-        scope.where(active: true)
-      end
-    end
-  end
-end
-
 RSpec.describe Avo::ResourcesController, type: :controller do
   let(:regular_user) { create :user }
   let(:admin_user) { create :user, roles: { admin: true } }
@@ -48,10 +8,6 @@ RSpec.describe Avo::ResourcesController, type: :controller do
   let(:dummy_user) { create :user }
   let(:project) { create :project }
 
-  before :each do
-    stub_pro_license_request
-  end
-
   before do
     project.users << active_user
     project.users << inactive_user
@@ -59,6 +15,48 @@ RSpec.describe Avo::ResourcesController, type: :controller do
 
   before :each do
     sign_in user
+  end
+
+  before :all do
+    class UserPolicy < ApplicationPolicy
+      def index?
+        true
+      end
+
+      def show?
+        true
+      end
+
+      def create?
+        true
+      end
+
+      def new?
+        true
+      end
+
+      def update?
+        true
+      end
+
+      def edit?
+        true
+      end
+
+      def destroy?
+        true
+      end
+
+      class Scope < ApplicationPolicy::Scope
+        def resolve
+          if user.is_admin?
+            scope.all
+          else
+            scope.where(active: true)
+          end
+        end
+      end
+    end
   end
 
   after :all do

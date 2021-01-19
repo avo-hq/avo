@@ -30,22 +30,16 @@ class ProjectPolicy < ApplicationPolicy
   end
 end
 
-# RSpec.describe Avo::ResourcesController, type: :controller do
 RSpec.describe 'ProjectsController is_admin? policy', type: :request do
   let(:user) { create :user }
   let(:admin_user) { create :user, roles: { 'admin': true } }
   let(:project) { create :project }
-
-  before :each do
-    stub_pro_license_request
-  end
 
   before do
     login_as user
   end
 
   describe 'index?' do
-    # subject { get :index, params: { resource_name: 'projects' } }
     subject { get '/avo/resources/projects' }
 
     context 'when user is not admin' do

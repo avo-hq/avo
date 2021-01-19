@@ -25,7 +25,7 @@ module Avo
           model.published_at.present?
         end
 
-        # belongs_to :user, searchable: false, placeholder: '—'
+        belongs_to :user, searchable: false, placeholder: '—'
       end
 
       # These fields are a reference on the already configured fields above
