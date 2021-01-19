@@ -1,4 +1,4 @@
-<% if @actions.count > 0 %>
+<% if actions.count > 0 %>
   <div class="relative z-30" data-controller="toggle-panel actions-picker">
     <%= a_button class: "js-actions-dropdown-button focus:outline-none",
       color: "blue",
@@ -12,7 +12,7 @@
       data-toggle-panel-target="panel"
     >
       <%
-        @actions.each_with_index do |action, index|
+        actions.each_with_index do |action, index|
           case action.class.superclass.to_s
           when Avo::Filters::SelectFilter.to_s
             template = 'select_action'

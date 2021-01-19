@@ -10,6 +10,10 @@ module Avo
       }
     end
 
+    def resource_index(**args)
+      render partial: 'avo/resources/index', locals: args
+    end
+
     def index_field(field, index, resource)
       render partial: "avo/fields/index/#{field[:component]}", locals: {
         field: field,
