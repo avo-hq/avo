@@ -13,21 +13,6 @@ RSpec.describe 'HasOneField', type: :feature do
 
       it { is_expected.to have_text admin.name }
     end
-
-    describe 'without a related user' do
-      let!(:team) { create :team }
-
-      # it 'looks for team without related user' do
-      #   visit url
-      #   find('[data-button="resource-filters"]').click
-
-      #   uncheck 'Has Members'
-      #   wait_for_loaded
-
-      #   expect(page).to have_text empty_dash
-
-      # end
-    end
   end
 
   context 'show' do
