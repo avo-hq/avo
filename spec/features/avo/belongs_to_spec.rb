@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 RSpec.feature 'belongs_to', type: :feature do
-  include_context 'admin'
-
   context 'index' do
     describe 'with a related user' do
       let!(:post) { create :post, user: admin }

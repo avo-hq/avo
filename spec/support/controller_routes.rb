@@ -11,7 +11,9 @@ module TestHelpers
   module DisableAuthentication
     extend ActiveSupport::Concern
     included do
-      before_all do
+      include_context 'has_admin_user'
+
+      before do
         login_as admin
       end
     end
@@ -20,7 +22,7 @@ module TestHelpers
   module DisableHQRequest
     extend ActiveSupport::Concern
     included do
-      before_all do
+      before do
         stub_pro_license_request
       end
     end

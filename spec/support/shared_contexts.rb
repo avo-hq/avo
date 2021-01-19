@@ -1,9 +1,3 @@
-RSpec.shared_context 'admin', admin: true do
-  using TestProf::AnyFixture::DSL
-
-  before(:all) do
-    fixture(:admin) { create :user, roles: { admin: true } }
-  end
-
-  let(:admin) { fixture(:admin) }
+shared_context 'has_admin_user' do
+  let(:admin) { create :user, roles: { admin: true } }
 end

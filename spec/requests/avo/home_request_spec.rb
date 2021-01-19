@@ -3,10 +3,6 @@ require 'rails_helper'
 RSpec.describe 'Home', type: :request do
   let(:admin_user) { create :user, roles: { 'admin': true } }
 
-  before :each do
-    stub_pro_license_request
-  end
-
   before do
     login_as admin_user
   end

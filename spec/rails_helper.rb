@@ -36,7 +36,7 @@ require 'test_prof/any_fixture/dsl'
 #   exit 1
 # end
 
-# Avo::App.boot
+Avo::App.boot
 
 # ActiveRecord::Migrator.migrate(File.join(Rails.root, 'db/migrate'))
 
@@ -46,9 +46,9 @@ require 'support/controller_routes'
 
 RSpec.configure do |config|
   config.include TestHelpers::ControllerRoutes, type: :controller
-  config.include TestHelpers::DisableAuthentication, type: :system
-  config.include TestHelpers::DisableHQRequest, type: :feature
-  config.include Warden::Test::Helpers, type: :system
+  config.include TestHelpers::DisableAuthentication, type: :feature
+  config.include TestHelpers::DisableHQRequest
+  config.include Warden::Test::Helpers
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   # config.fixture_path = "#{::Rails.root}/spec/fixtures"
@@ -66,7 +66,7 @@ RSpec.configure do |config|
     driven_by test_driver
   end
 
-  config.before(:example, type: :system) do
+  config.before(:example) do
     Rails.cache.clear
   end
 
