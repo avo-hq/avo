@@ -1,0 +1,121 @@
+require 'rails_helper'
+
+RSpec.describe 'number', type: :feature do
+
+  context 'index' do
+    let(:url) { "/avo/resources/projects" }
+
+    subject { visit url; find("[data-resource-id='#{project.id}'] [data-field-id='users_required']") }
+
+    describe 'with value' do
+      let(:users_required) { 10 }
+      let!(:project) { create :project, users_required: users_required }
+
+      it { is_expected.to have_text users_required }
+    end
+
+    describe 'without value' do
+      let!(:project) { create :project, users_required: nil }
+
+      it { is_expected.to have_text empty_dash }
+    end
+  end
+
+  context 'show' do
+    let(:url) { "/avo/resources/projects/#{project.id}" }
+
+    subject { visit url; find_field_element('users_required') }
+
+    describe 'with value' do
+      let(:users_required) { 50 }
+      let!(:project) { create :project, users_required: users_required }
+
+      it { is_expected.to have_text users_required }
+    end
+
+    # describe 'without value' do
+    #   let!(:project) { create :project, users_required: nil }
+
+    #   it { is_expected.to have_text empty_dash }
+    # end
+  end
+
+  context 'edit' do
+    let(:url) { "/avo/resources/projects/#{project.id}/edit" }
+
+    subject { visit url; find_field_element('users_required') }
+
+    describe 'with value' do
+      let(:users_required) { 50 }
+      let(:new_users_required) { 100 }
+      let(:under_min_users_required) { 9 }
+      let(:over_max_users_required) { 1000001 }
+      let!(:project) { create :project, users_required: users_required }
+
+      it { is_expected.to have_xpath "//input[@id='project_users_required'][@type='number'][@placeholder='UsersRequired'][@min='10.0'][@max='1000000.0'][@step='1.0'][@value='#{users_required}']" }
+
+      it 'changes the users_required to correct value' do
+        is_expected.to have_xpath "//input[@id='project_users_required'][@type='number'][@placeholder='UsersRequired'][@min='10.0'][@max='1000000.0'][@step='1.0'][@value='#{users_required}']"
+
+        fill_in 'project_users_required', with: new_users_required
+
+        click_on 'Save'
+
+        expect(current_path).to eql "/avo/resources/projects/#{project.id}"
+        is_expected.to have_text new_users_required
+      end
+
+      it 'changes the users_required to value under minimum' do
+        is_expected.to have_xpath "//input[@id='project_users_required'][@type='number'][@placeholder='UsersRequired'][@min='10.0'][@max='1000000.0'][@step='1.0'][@value='#{users_required}']"
+
+        fill_in 'project_users_required', with: under_min_users_required
+
+        click_on 'Save'
+
+        expect(current_path).to eql "/avo/resources/projects/#{project.id}"
+        is_expected.to have_text 'Users required must be greater than 9'
+      end
+
+      it 'changes the users_required to value over maximum' do
+        is_expected.to have_xpath "//input[@id='project_users_required'][@type='number'][@placeholder='UsersRequired'][@min='10.0'][@max='1000000.0'][@step='1.0'][@value='#{users_required}']"
+
+        fill_in 'project_users_required', with: over_max_users_required
+
+        click_on 'Save'
+
+        expect(current_path).to eql "/avo/resources/projects/#{project.id}"
+        is_expected.to have_text 'Users required must be less than 1000000'
+      end
+
+      it 'cleares the users_required' do
+        is_expected.to have_xpath "//input[@id='project_users_required'][@type='number'][@placeholder='UsersRequired'][@min='10.0'][@max='1000000.0'][@step='1.0'][@value='#{users_required}']"
+
+        fill_in 'project_users_required', with: nil
+
+        click_on 'Save'
+
+        expect(current_path).to eql "/avo/resources/projects/#{project.id}"
+        is_expected.to have_text 'Users required is not a number'
+      end
+    end
+
+  #   describe 'without value' do
+  #     let(:new_users_required) { 'Lorem ipsum nostrum' }
+  #     let!(:project) { create :project, users_required: nil }
+
+  #     it { is_expected.to have_field type: 'textarea', id: 'project_users_required', placeholder: 'users_required', text: nil }
+
+  #     it 'sets the users_required' do
+  #       is_expected.to have_field type: 'textarea', id: 'project_users_required', placeholder: 'users_required', text: nil
+
+  #       fill_in 'project_users_required', with: new_users_required
+
+  #       click_on 'Save'
+
+  #       expect(current_path).to eql "/avo/resources/projects/#{project.id}"
+  #       is_expected.to have_text new_users_required
+  #     end
+  #   end
+  end
+
+end

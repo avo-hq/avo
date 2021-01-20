@@ -15,7 +15,7 @@ module Avo
         # badge :stage, options: { info: ['Discovery', 'Ideea'], success: 'Done', warning: 'On hold', danger: 'Cancelled' }
         # currency :budget, currency: 'EUR', locale: 'de-DE'
         # country :country
-        number :users_required
+        number :users_required, min: 10, max: 1000000, step: 1
         # datetime :started_at, name: 'Started', time_24hr: true, relative: true
         markdown :description, height: '350px'
         # files :files, translation_key: 'avo.field_translations.file'
