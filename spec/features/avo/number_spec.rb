@@ -15,10 +15,10 @@ RSpec.describe 'number', type: :feature do
     end
   end
 
+  subject { visit url; find_field_element('users_required') }
+
   context 'show' do
     let(:url) { "/avo/resources/projects/#{project.id}" }
-
-    subject { visit url; find_field_element('users_required') }
 
     describe 'with value' do
       let(:users_required) { 50 }
@@ -30,8 +30,6 @@ RSpec.describe 'number', type: :feature do
 
   context 'edit' do
     let(:url) { "/avo/resources/projects/#{project.id}/edit" }
-
-    subject { visit url; find_field_element('users_required') }
 
     describe 'with value' do
       let(:users_required) { 50 }
