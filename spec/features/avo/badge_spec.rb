@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'badge', type: :feature do
 
   context 'index' do
-    let(:url) { "/avo/resources/projects" }
+    let(:url) { '/avo/resources/projects' }
 
     subject { visit url; find("[data-resource-id='#{project.id}'] [data-field-id='stage']") }
 
