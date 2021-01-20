@@ -82,7 +82,7 @@ RSpec.describe 'select', type: :feature do
     end
   end
 
-  let(:stages_without_placeholder) { ["discovery", "ideea", "done", "on hold", "cancelled"] }
+  let(:stages_without_placeholder) { ['discovery', 'ideea', 'done', 'on hold', 'cancelled'] }
   let(:placeholder) { 'Choose the stage.' }
   let(:stages_with_placeholder) { stages_without_placeholder.push(placeholder) }
 
@@ -131,7 +131,7 @@ RSpec.describe 'select', type: :feature do
   end
 
   context 'create' do
-    let(:url) { "/avo/resources/projects/new" }
+    let(:url) { '/avo/resources/projects/new' }
 
     describe 'creates new project with stage discovery' do
       it 'checks placeholder' do
