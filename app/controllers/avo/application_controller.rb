@@ -46,7 +46,25 @@ module Avo
       send :"resources_#{model.model_name.route_key}_path", **existing_params, **args
     end
 
-    def resource_path(model, **args)
+    def resource_path(model = nil, keep_query_params: false, **args)
+      existing_params = {}
+
+      begin
+        if keep_query_params
+          existing_params = Addressable::URI.parse(request.fullpath).query_values.symbolize_keys
+        end
+      rescue;end
+
+
+      if args[:to_resource_name].present?
+        to_resource_name = args[:to_resource_name]
+        to_resource_id = args[:to_resource_id]
+        args.delete :to_resource_name
+        args.delete :to_resource_id
+
+        return send :"resources_#{to_resource_name.singularize}_path", to_resource_id, **existing_params, **args
+      end
+
       send :"resources_#{model.model_name.route_key.singularize}_path", model, **args
     end
 

@@ -7,10 +7,6 @@ RSpec.describe 'TeamsController is_admin? policy', type: :request do
   let(:user) { create :user }
   let(:team) { create :team }
 
-  before :each do
-    stub_pro_license_request
-  end
-
   before do
     login_as user
   end
