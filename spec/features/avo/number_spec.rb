@@ -13,12 +13,6 @@ RSpec.describe 'number', type: :feature do
 
       it { is_expected.to have_text users_required }
     end
-
-    describe 'without value' do
-      let!(:project) { create :project, users_required: nil }
-
-      it { is_expected.to have_text empty_dash }
-    end
   end
 
   context 'show' do
@@ -32,12 +26,6 @@ RSpec.describe 'number', type: :feature do
 
       it { is_expected.to have_text users_required }
     end
-
-    # describe 'without value' do
-    #   let!(:project) { create :project, users_required: nil }
-
-    #   it { is_expected.to have_text empty_dash }
-    # end
   end
 
   context 'edit' do
@@ -98,24 +86,6 @@ RSpec.describe 'number', type: :feature do
         is_expected.to have_text 'Users required is not a number'
       end
     end
-
-  #   describe 'without value' do
-  #     let(:new_users_required) { 'Lorem ipsum nostrum' }
-  #     let!(:project) { create :project, users_required: nil }
-
-  #     it { is_expected.to have_field type: 'textarea', id: 'project_users_required', placeholder: 'users_required', text: nil }
-
-  #     it 'sets the users_required' do
-  #       is_expected.to have_field type: 'textarea', id: 'project_users_required', placeholder: 'users_required', text: nil
-
-  #       fill_in 'project_users_required', with: new_users_required
-
-  #       click_on 'Save'
-
-  #       expect(current_path).to eql "/avo/resources/projects/#{project.id}"
-  #       is_expected.to have_text new_users_required
-  #     end
-  #   end
   end
 
 end
