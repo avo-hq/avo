@@ -34,6 +34,7 @@ Avo.configure do |config|
   # config.per_page_steps = [12, 24, 48, 72]
   # config.via_per_page = 8
   # config.default_view_type = :table
+  # config.id_links_to_resource = false
 
   ## == Beta version ==
   # config.hide_resource_overview_component = false

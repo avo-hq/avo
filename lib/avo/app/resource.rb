@@ -89,10 +89,6 @@ module Avo
           resource_with_fields
         end
 
-        def show_path(resource)
-          "/resources/#{resource.class.model_name.plural}/#{resource.id}"
-        end
-
         def index_path(resource_or_class)
           if resource_or_class.class == String
             url = resource_or_class.underscore.pluralize
