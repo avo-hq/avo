@@ -6,7 +6,7 @@
   </div>
   <div class="flex-1 flex flex-row h-full ml-2 min-h-inherit">
     <div class="px-6 self-center <% if full_width %> w-full <% else %> w-8/12 <% end %>" data-slot="value">
-      <% if !field[:value] and dash_if_empty %>
+      <% if field[:value].blank? and dash_if_empty %>
         —
       <% else %>
         <%= yield %>
