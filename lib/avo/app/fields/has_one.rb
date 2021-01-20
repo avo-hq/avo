@@ -28,7 +28,6 @@ module Avo
           relation_model = model.public_send(@relation_method)
           fields[:value] = relation_model.send(target_resource.title)
           fields[:database_value] = relation_model[:id]
-          fields[:link] = Avo::Resources::Resource.show_path(relation_model)
         end
 
         # Populate the options on show and edit

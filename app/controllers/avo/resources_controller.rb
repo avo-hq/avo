@@ -17,7 +17,7 @@ module Avo
       @resource_model = resource_model
       @avo_resource = avo_resource
       @authorization.set_record(@resource_model).authorize_action :index
-      query = resource_model
+      query = AuthorizationService.with_policy _current_user, resource_model
 
       if params[:sort_by]
         query = query.order("#{params[:sort_by]} #{params[:sort_direction]}")

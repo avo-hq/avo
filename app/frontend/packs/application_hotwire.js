@@ -10,6 +10,9 @@ import Avo from '@/js/hotwire/Avo'
 import I18n from 'i18n-js'
 import Rails from '@rails/ujs'
 
+// Toastr alerts
+import '../js/hotwire/toastr'
+
 Rails.start()
 
 Mousetrap.bind('r r r', () => Turbo.visit(window.location.href))

@@ -56,6 +56,8 @@ module.exports = {
         168: '42rem',
       },
       minHeight: {
+        inherit: 'inherit',
+        16: '4rem',
         28: '7rem',
         24: '6rem',
         '1/2': '50%',
