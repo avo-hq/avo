@@ -1,5 +1,4 @@
 <div :resource-id="resourceId">
-  <%= @model.errors.inspect %>
   <%= form_with model: @model, url: resources_path(@model), local: true do |form| %>
     <%= panel do %>
       <% content_for :heading do %>
@@ -29,4 +28,3 @@
     <%#= has many panel %>
   </div>
 </div>
-<%= @resource.inspect %>

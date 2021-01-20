@@ -10,6 +10,7 @@ module Avo
     rescue_from ActiveRecord::RecordInvalid, with: :exception_logger
 
     helper_method :_current_user, :resources_path, :resource_path, :new_resource_path, :edit_resource_path
+    add_flash_types :info, :warning, :success, :error
 
     def init_app
       Avo::App.boot if Avo::IN_DEVELOPMENT
@@ -45,7 +46,25 @@ module Avo
       send :"resources_#{model.model_name.route_key}_path", **existing_params, **args
     end
 
-    def resource_path(model, **args)
+    def resource_path(model = nil, keep_query_params: false, **args)
+      existing_params = {}
+
+      begin
+        if keep_query_params
+          existing_params = Addressable::URI.parse(request.fullpath).query_values.symbolize_keys
+        end
+      rescue;end
+
+
+      if args[:to_resource_name].present?
+        to_resource_name = args[:to_resource_name]
+        to_resource_id = args[:to_resource_id]
+        args.delete :to_resource_name
+        args.delete :to_resource_id
+
+        return send :"resources_#{to_resource_name.singularize}_path", to_resource_id, **existing_params, **args
+      end
+
       send :"resources_#{model.model_name.route_key.singularize}_path", model, **args
     end
 
@@ -63,10 +82,14 @@ module Avo
       end
 
       def resource_name
-        request.path
+        begin
+          request.path
           .match(/\/?#{Avo.configuration.root_path.gsub('/', '')}\/resources\/([a-z1-9\-_]*)\/?/mi)
           .captures
           .first
+        rescue => exception
+          params[:resource_name]
+        end
       end
 
       def resource
@@ -111,7 +134,13 @@ module Avo
         if !exception.is_a? Pundit::NotDefinedError
           flash[:notice] = t 'avo.not_authorized'
 
-          redirect_to(request.referrer || root_path)
+          redirect_url = if request.referrer.blank? or request.referrer == request.url
+            root_url
+          else
+            request.referrer
+          end
+
+          redirect_to(redirect_url)
         end
       end
 

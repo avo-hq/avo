@@ -34,10 +34,7 @@
           <%= yield >
         </div> %>
 
-        <div class="content p-8 flex-1 flex flex-col justify-between items-stretch" v-else>
-          <% # @todo: make the alerts floating %>
-          <%= render partial: 'avo/partials/alert', locals: {type: :notice, message: flash.notice} if flash.notice.present? %>
-          <%= render partial: 'avo/partials/alert', locals: {type: :alert, message: flash.alert} if flash.alert.present? %>
+        <div class="content p-8 flex-1 flex flex-col justify-between items-stretch">
 
           <%= yield %>
 
@@ -46,9 +43,11 @@
       </div>
   </div>
   <%#= render partial: 'layouts/avo/modals' %>
-  <%= turbo_frame_tag "actions_show" do %><% end %>
+  <%= turbo_frame_tag 'actions_show' do %><% end %>
 
-
+  <% flash.each do |type, message| %>
+    <%= render partial: 'avo/partials/alert', locals: {type: type.to_sym, message: message} %>
+  <% end %>
 </div>
 
 <%= render_scripts %>
