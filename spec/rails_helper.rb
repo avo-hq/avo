@@ -2,11 +2,14 @@
 require 'spec_helper'
 ENV['RAILS_ENV'] = 'test'
 
-require_relative "dummy/config/environment"
+require_relative 'dummy/config/environment'
 # Prevent database truncation if the environment is production
-abort("The Rails environment is running in production mode!") if Rails.env.production?
+abort('The Rails environment is running in production mode!') if Rails.env.production?
 require 'rspec/rails'
 require 'webmock/rspec'
+
+require 'test_prof/any_fixture'
+require 'test_prof/any_fixture/dsl'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -26,12 +29,12 @@ require 'webmock/rspec'
 
 # Checks for pending migrations and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove these lines.
-begin
-  ActiveRecord::Migration.maintain_test_schema!
-rescue ActiveRecord::PendingMigrationError => e
-  puts e.to_s.strip
-  exit 1
-end
+# begin
+#   ActiveRecord::Migration.maintain_test_schema!
+# rescue ActiveRecord::PendingMigrationError => e
+#   puts e.to_s.strip
+#   exit 1
+# end
 
 Avo::App.boot
 
@@ -43,11 +46,12 @@ require 'support/controller_routes'
 
 RSpec.configure do |config|
   config.include TestHelpers::ControllerRoutes, type: :controller
-  config.include TestHelpers::DisableAuthentication, type: :system
+  config.include TestHelpers::DisableAuthentication, type: :feature
+  config.include TestHelpers::DisableHQRequest
   config.include Warden::Test::Helpers
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  config.fixture_path = "#{::Rails.root}/spec/fixtures"
+  # config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
@@ -107,3 +111,4 @@ require 'support/database_cleaner'
 require 'support/wait_for_loaded'
 require 'support/js_error_detector'
 require 'support/devise'
+require 'support/shared_contexts'

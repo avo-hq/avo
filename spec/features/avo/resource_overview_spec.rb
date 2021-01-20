@@ -1,9 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Avo::ResourceOverviewController, type: :controller do
-  before :each do
-    stub_pro_license_request
-  end
 
   before :all do
     class UserPolicy < ApplicationPolicy

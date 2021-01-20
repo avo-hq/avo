@@ -22,6 +22,7 @@ Avo::Engine.routes.draw do
   post '/resources/:resource_name(/:id)/actions/:action_id', to: 'actions#handle'
   # get '/actions/:action_id', to: 'actions#frame'
 
+  get 'resources', to: redirect('/avo')
   scope 'resources', as: 'resources' do
     resources :posts, controller: 'resources', as: 'posts'
     resources :projects, controller: 'resources', as: 'projects'

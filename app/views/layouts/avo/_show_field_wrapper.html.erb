@@ -1,9 +1,11 @@
-<div class="flex items-start py-1 leading-tight <%= classes %>">
-  <div class="w-48 md:w-64 p-4 px-8 h-full flex" data-slot="label">
-    <%= field[:name] %> <% if field[:required] %> <span class="text-red-600">*</span> <% end %>
+<div class="flex items-start leading-tight <%= classes %> min-h-16" data-field-id="<%= field[:id] %>">
+  <div class="h-16 flex self-start items-center">
+    <div class="w-48 md:w-64 px-8" data-slot="label">
+      <%= field[:name] %> <% if field[:required] %> <span class="text-red-600">*</span> <% end %>
+    </div>
   </div>
-  <div class="flex-1 flex flex-row">
-    <div class="p-3 px-8 self-center w-7/12" data-slot="value">
+  <div class="flex-1 flex flex-row h-full ml-2 min-h-inherit">
+    <div class="px-6 self-center <% if full_width %> w-full <% else %> w-8/12 <% end %>" data-slot="value">
       <% if !field[:value] and dash_if_empty %>
         —
       <% else %>
