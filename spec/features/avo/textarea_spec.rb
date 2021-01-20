@@ -34,25 +34,29 @@ RSpec.describe 'textarea', type: :feature do
       it { is_expected.to have_field type: 'textarea', id: 'post_body', placeholder: 'Body', text: body }
 
       it 'changes the body' do
-        is_expected.to have_field type: 'textarea', id: 'post_body', placeholder: 'Body', text: body
+        visit url
+
+        expect(page).to have_field type: 'textarea', id: 'post_body', placeholder: 'Body', text: body
 
         fill_in 'post_body', with: new_body
 
         click_on 'Save'
 
         expect(current_path).to eql "/avo/resources/posts/#{post.id}"
-        is_expected.to have_text new_body
+        expect(page).to have_text new_body
       end
 
       it 'cleares the body' do
-        is_expected.to have_field type: 'textarea', id: 'post_body', placeholder: 'Body', text: body
+        visit url
+
+        expect(page).to have_field type: 'textarea', id: 'post_body', placeholder: 'Body', text: body
 
         fill_in 'post_body', with: nil
 
         click_on 'Save'
 
         expect(current_path).to eql "/avo/resources/posts/#{post.id}"
-        is_expected.to have_text ''
+        expect(find_field_value_element('body')).to have_text empty_dash
       end
     end
 
@@ -63,14 +67,16 @@ RSpec.describe 'textarea', type: :feature do
       it { is_expected.to have_field type: 'textarea', id: 'post_body', placeholder: 'Body', text: nil }
 
       it 'sets the body' do
-        is_expected.to have_field type: 'textarea', id: 'post_body', placeholder: 'Body', text: nil
+        visit url
+
+        expect(page).to have_field type: 'textarea', id: 'post_body', placeholder: 'Body', text: nil
 
         fill_in 'post_body', with: new_body
 
         click_on 'Save'
 
         expect(current_path).to eql "/avo/resources/posts/#{post.id}"
-        is_expected.to have_text new_body
+        expect(page).to have_text new_body
       end
     end
   end
