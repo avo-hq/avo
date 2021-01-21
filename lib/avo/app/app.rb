@@ -15,9 +15,11 @@ module Avo
       cache_store: nil
     }
     @@license = nil
+    @@fields = []
 
     class << self
       def boot
+        puts 'App.boot'.inspect
         @@app[:root_path] = Pathname.new(File.join(__dir__, '..', '..'))
         init_fields
         I18n.locale = Avo.configuration.language_code
@@ -30,12 +32,16 @@ module Avo
       end
 
       def init(current_request = nil)
-        init_resources
+        init_resources current_request
         @@license = LicenseManager.new(HQ.new(current_request).response).license
       end
 
       def app
         @@app
+      end
+
+      def fields
+        @@fields
       end
 
       def license
@@ -51,19 +57,22 @@ module Avo
       # If the field has their `def_method` set up it will follow that convention, if not it will snake_case the name:
       #
       # Avo::Fields::TextField -> text
-      # Avo::Fields::TextDateTime -> date_time
+      # Avo::Fields::DateTimeField -> date_time
       def init_fields
+        puts ['init_fields', Avo::Fields.constants].inspect
         Avo::Fields.constants.each do |class_name|
           next if class_name.to_s == 'Field'
 
           field_class = method_name = nil
 
           if class_name.to_s.end_with? 'Field'
+            # puts 'in if'.inspect
             field_class = "Avo::Fields::#{class_name.to_s}".safe_constantize
             method_name = field_class.get_field_name
 
-            next if Avo::Resources::Resource.method_defined? method_name.to_sym
+            # next if Avo::Resources::Resource.method_defined? method_name.to_sym
           else
+            # puts 'in else'.inspect
             # Try one level deeper for custom fields
             namespace = class_name
             tool_provider = "Avo::Fields::#{namespace}::ToolProvider".safe_constantize
@@ -76,6 +85,7 @@ module Avo
               next unless custom_field_class.to_s.end_with? 'Field' or custom_field_class.to_s == 'Field'
 
               field_class = "Avo::Fields::#{namespace}::#{custom_field_class}".safe_constantize
+              # puts ['field_class', field_class].inspect
               method_name = field_class.get_field_name
             end
           end
@@ -83,40 +93,54 @@ module Avo
           if field_class.present? and method_name.present?
             load_field method_name, field_class
           end
+
+          # abort @@fields.inspect
         end
       end
 
+      # @todo: somehow fields get loaded twice
       def load_field(method_name, klass)
         @@app[:field_names][method_name] = klass
 
-        # Load field to concerned classes
-        [Avo::Resources::Resource, Avo::Actions::Action].each do |klass_entity|
-          klass_entity.define_singleton_method method_name.to_sym do |*args, &block|
-            if block.present?
-              field_class = klass::new(args[0], **args[1] || {}, &block)
-            else
-              field_class = klass::new(args[0], **args[1] || {})
-            end
+        # puts ['klass->', klass].inspect
 
-            klass_entity.add_field(self, field_class)
-          end
-        end
+        # Load field to concerned classes
+        # [Avo::Resources::Resource, Avo::Actions::Action].each do |klass_entity|
+
+        # abort [method_name, klass, self].inspect
+          # klass_entity.define_singleton_method method_name.to_sym do |*args, &block|
+            # if block.present?
+            #   field_object = klass::new(args[0], **args[1] || {}, &block)
+            # else
+            #   field_object = klass::new(args[0], **args[1] || {})
+            # end
+
+            # puts [klass_entity, field_class].inspect
+            @@fields.push(
+              name: method_name,
+              class: klass,
+            )
+            # klass_entity.add_field_declaration(self, field_class)
+
+        #   end
+        # end
       end
 
       def get_field_names
         @@app[:field_names]
       end
 
-      def init_resources
+      def init_resources(request)
         @@app[:resources] = Avo::Resources.constants
           .select do |r|
             r != :Resource
           end
           .map do |c|
             if Avo::Resources.const_get(c).is_a? Class
-              "Avo::Resources::#{c}".safe_constantize.new
+              "Avo::Resources::#{c}".safe_constantize.new request
             end
           end
+        # puts ['in init_resources =>>', @@app[:resources].map(&:get_fields)].inspect
       end
 
       def get_resources

@@ -25,6 +25,12 @@ module Avo
       app.config.middleware.use I18n::JS::Middleware
 
       if Avo::IN_DEVELOPMENT
+        # config.eager_load_paths
+        # config.eager_load_paths += ["#{avo_root_path}/lib"]
+        # config.autoload_paths += ["#{avo_root_path}/lib"]
+        # config.autoload_paths
+
+
         # Register reloader
         app.reloaders << app.config.file_watcher.new([], {
           Avo::Engine.root.join('lib', 'avo').to_s => ['rb'],
@@ -33,7 +39,13 @@ module Avo
         # What to do on file change
         config.to_prepare do
           Dir.glob(avo_root_path + '/lib/avo/app/**/*.rb'.to_s).each { |c| load c }
+          puts 'in to_prepare'.inspect
+          Avo::App.boot
         end
+        # @todo: temporary. remove these lines below
+        Dir.glob(avo_root_path + '/lib/avo/app/**/*.rb'.to_s).each { |c| require c }
+        # Avo::App.boot
+        # Avo::App.boot_fields
       else
         Dir.glob(avo_root_path + '/lib/avo/app/**/*.rb'.to_s).each { |c| require c }
 

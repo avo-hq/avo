@@ -1,21 +1,28 @@
 module Avo
   module Resources
     class User < Resource
-      def initialize
+      def init
         @title = :name
         @translation_key = 'avo.resource_translations.user'
         @search = [:id, :first_name, :last_name]
         @includes = :posts
         @has_devise_password = true
+        # @name = 'usy'
       end
 
-      fields do
-        id
+      def fields(request)
+        f.id :id, link_to_resource: true
+        f.text :first_name, required: true, placeholder: 'John', default: 'default'
+
+
+        # field :id, name: id, link_to_resource: true
+
         # gravatar :email, link_to_resource: true
+
+
         # heading 'User information'
-        text :first_name, required: true, placeholder: 'John', default: 'default'
-        text :last_name, required: true, placeholder: 'Doe'
-        text :email, name: 'User Email', required: true
+        # text :last_name, required: true, placeholder: 'Doe'
+        # text :email, name: 'User Email', required: true
         # boolean :active, name: 'Is active', show_on: :show
         # file :cv, name: 'CV'
         # boolean :is_admin?, name: 'Is admin', only_on: :index
@@ -25,8 +32,8 @@ module Avo
         #   model.posts.to_a.count > 0 ? 'yes' : 'no'
         # end
 
-        password :password, name: 'User Password', required: false, except_on: :forms, help: 'You may verify the password strength <a href="http://www.passwordmeter.com/">here</a>.'
-        password :password_confirmation, name: 'Password confirmation', required: false, only_on: :new
+        # password :password, name: 'User Password', required: false, except_on: :forms, help: 'You may verify the password strength <a href="http://www.passwordmeter.com/">here</a>.'
+        # password :password_confirmation, name: 'Password confirmation', required: false, only_on: :new
 
         # heading '<div class="text-gray-300 uppercase font-bold">DEV</div>', as_html: true
         # code :custom_css, theme: 'dracula', language: 'css', help: "This enables you to edit the user's custom styles.", height: '125px'
@@ -37,8 +44,8 @@ module Avo
         # has_many :posts
       end
 
-      use_action Avo::Actions::MarkInactive
-      use_action Avo::Actions::MakeAdmin
+      # use_action Avo::Ac1tions::MarkInactive
+      # use_action Avo::Actions::MakeAdmin
     end
   end
 end

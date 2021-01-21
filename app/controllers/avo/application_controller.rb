@@ -14,6 +14,7 @@ module Avo
 
     def init_app
       Avo::App.boot if Avo::IN_DEVELOPMENT
+      # Avo::App.boot
       Avo::App.init request
 
       @license = Avo::App.license
@@ -81,6 +82,19 @@ module Avo
         @model = resource_model.find params[:id]
       end
 
+      def set_resource_name
+        @resource_name = resource_name
+      end
+
+      def set_avo_resource
+        @avo_resource = avo_resource
+      end
+
+      # @todo: rename to model_class
+      def set_resource_model
+        @resource_model = resource_model
+      end
+
       def resource_name
         begin
           request.path
@@ -90,6 +104,14 @@ module Avo
         rescue => exception
           params[:resource_name]
         end
+      end
+
+      def resource_model
+        avo_resource.model_class
+      end
+
+      def avo_resource
+        App.get_resource resource_name.to_s.camelize.singularize
       end
 
       def resource
@@ -106,13 +128,6 @@ module Avo
         query
       end
 
-      def resource_model
-        avo_resource.model
-      end
-
-      def avo_resource
-        App.get_resource resource_name.to_s.camelize.singularize
-      end
 
       # def authorize_user
       #   return if params[:controller] == 'avo/search'

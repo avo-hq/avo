@@ -3,9 +3,9 @@
     <%= render partial: 'table_header', locals: {fields: fields} %>
     <tbody>
       <% resources.each_with_index do |resource, index| %>
-        <% cache [resource[:model], resource[:hash]] do %>
+        <%# cache [resource[:model], resource[:hash]] do %>
           <%= render partial: 'table_row', locals: {resource: resource, index: index, resources_count: resources.count} %>
-        <% end %>
+        <%# end %>
       <% end %>
     </tbody>
   </table>

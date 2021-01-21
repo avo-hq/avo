@@ -1,6 +1,11 @@
+require_relative 'fields_loader'
+
+
 module Avo
   module Actions
     class Action
+      extend Avo::FieldsLoader
+
       # @todo: add redirect helpers to actions responses
       attr_accessor :name
       attr_accessor :message
@@ -21,23 +26,6 @@ module Avo
       attr_accessor :resource
 
       @@default = nil
-
-      class << self
-        @@fields = {}
-
-        def fields(&block)
-          @@fields[self] ||= []
-          yield
-        end
-
-        def get_fields
-          @@fields[self] or []
-        end
-
-        def add_field(action, field)
-          @@fields[action].push field
-        end
-      end
 
       def initialize
         @name ||= name

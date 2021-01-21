@@ -18,7 +18,9 @@ module Avo
       attr_accessor :nullable
       attr_accessor :null_values
       attr_accessor :format_using
-      attr_accessor :computable
+      attr_accessor :computed # if block is present
+      attr_accessor :computable # if allowed to be computable
+      attr_accessor :computed_value # the value after computation
       attr_accessor :is_array_param
       attr_accessor :is_object_param
       attr_accessor :block
@@ -47,6 +49,8 @@ module Avo
           nullable: false,
           null_values: null_values,
           computable: true,
+          computed: block.present?,
+          computed_value: false,
           is_array_param: false,
           format_using: false,
           placeholder: id.to_s.camelize,
@@ -68,6 +72,77 @@ module Avo
         hide_on args[:hide_on] if args[:hide_on].present?
         only_on args[:only_on] if args[:only_on].present?
         except_on args[:except_on] if args[:except_on].present?
+      end
+
+      def hydrate(model:, resource:, view:)
+        @model = model
+        @view = view
+        @resource = resource
+
+        self
+      end
+
+      def value
+        value = @model.send(id) if model_or_class(@model) == 'model' and @model.methods.include? id
+
+        if @view === :new
+          if self.default.present? and self.default.respond_to? :call
+            value = self.default.call @model, @resource, @view, self
+          else
+            value = self.default
+          end
+        end
+
+        # Run callback block if present
+        if computable and block.present?
+          self.computed_value = block.call @model, @resource, @view, self
+
+          value = self.computed_value
+        end
+
+        # Run the value through resolver if present
+        value = @format_using.call value if @format_using.present?
+
+        value
+      end
+
+      def fetch
+        fields = {
+          id: id,
+          computed: block.present?,
+        }
+
+        # Fill the properties with values
+        @field_properties.each do |name, value|
+          fields[name] = self.send(name)
+        end
+
+        # Set model value
+        fields[:value] = @model.send(id) if model_or_class(@model) == 'model' and @model.methods.include? id
+
+        # Set default value for create view
+        if view === :new
+          if fields[:default].present? and fields[:default].respond_to? :call
+            fields[:value] = fields[:default].call @model, @resource, @view, self
+          else
+            fields[:value] = fields[:default]
+          end
+        end
+
+        # Run callback block if present
+        if computable and block.present?
+          fields[:computed_value] = block.call @model, @resource, @view, self
+
+          fields[:value] = fields[:computed_value]
+        end
+
+        # Run each field's custom hydration
+        fields.merge! self.hydrate_field(fields, @model, @resource, @view)
+
+        # Run the value through resolver if present
+        fields[:value] = @format_using.call fields[:value] if @format_using.present?
+
+        fields
       end
 
       def fetch_for_resource(model, resource, view)

@@ -18,8 +18,8 @@
         </div>
       <% end %>
 
-      <% @resource[:fields].each_with_index do |field, index| %>
-        <%= edit_field field, index, @resource, form unless field[:computed] %>
+      <% @resource.get_fields.each_with_index do |field, index| %>
+        <%= edit_field field, index, @resource, form unless field.computed %>
       <% end %>
     <% end %>
   <% end %>

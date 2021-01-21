@@ -6,16 +6,23 @@ module Avo
     before_action :set_filters, only: :index
     before_action :set_actions, only: :index
     before_action :set_model, only: [:show, :edit, :destroy, :update]
+    before_action :set_resource_name
+    before_action :set_avo_resource
+    before_action :set_resource_model
 
     def index
+      # @avo_resource.new @model
+      # abort [@resource_name, @avo_resource, @resource_model].inspect
+      # abort @avo_resource.inspect
+
+
       @heading = resource_model.model_name.collection.capitalize
+      @heading = @avo_resource.name
       params[:page] ||= 1
       params[:sort_by] = params[:sort_by].present? ? params[:sort_by] : :created_at
       params[:sort_direction] = params[:sort_direction].present? ? params[:sort_direction] : :desc
 
       # @todo: remove this
-      @resource_model = resource_model
-      @avo_resource = avo_resource
       @authorization.set_record(@resource_model).authorize_action :index
       query = AuthorizationService.with_policy _current_user, resource_model
 
@@ -29,14 +36,20 @@ module Avo
       end
 
       @models = query.page(params[:page]).per(@per_page)
-      @resources = @models.map do |resource|
-        Avo::Resources::Resource.hydrate_resource(model: resource, resource: avo_resource, view: :index, user: _current_user)
+      @resources = @models.map do |model|
+        @avo_resource.hydrate(model: model, view: :index, user: _current_user)
+        # .hydrate_resource(model: resource, resource: avo_resource, view: :index, user: _current_user)
       end
     end
 
     def show
+      @resource = @avo_resource.hydrate(model: @model, view: :show, user: _current_user)
+      # abort @avo_resource.inspect
+      # abort [@resource_name, @avo_resource, @resource_model].inspect
+      # @avo_resource.new @model
+
       @authorization.set_record(@model).authorize_action :show
-      @resource = Avo::Resources::Resource.hydrate_resource(model: @model, resource: avo_resource, view: :show, user: _current_user)
+      # @resource = Avo::Resources::Resource.hydrate_resource(model: @model, resource: @avo_resource, view: :show, user: _current_user)
     end
 
     def new
@@ -47,7 +60,8 @@ module Avo
 
     def edit
       @authorization.set_record(@model).authorize_action :edit
-      @resource = Avo::Resources::Resource.hydrate_resource(model: @model, resource: avo_resource, view: :edit, user: _current_user)
+      @resource = @avo_resource.hydrate(model: @model, view: :edit, user: _current_user)
+      # @resource = Avo::Resources::Resource.hydrate_resource(model: @model, resource: avo_resource, view: :edit, user: _current_user)
     end
 
     def create

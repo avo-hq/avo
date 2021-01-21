@@ -20,7 +20,8 @@ module Avo
       model = nil
       # abort action.new.inspect
 
-      fields = @action.get_fields.map { |field| field.fetch_for_action(model, avo_resource) }
+      fields = []
+      # fields = @action.get_fields.map { |field| field.fetch_for_action(model, avo_resource) }
       # abort [fields].inspect
 
         # {

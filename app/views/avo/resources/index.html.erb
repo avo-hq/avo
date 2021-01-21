@@ -28,7 +28,7 @@
   </div>
   <div class="w-full overflow-auto min-h-28 flex flex-col">
     <div class="relative flex-1 flex">
-      <%= resource_table @resources, @resource_model.model_name.route_key %>
+      <%= resource_table @resources, @avo_resource %>
     </div>
     <%= paginate @models, class: 'avo-pagination justify-end flex px-4 space-x-2' %>
   </div>

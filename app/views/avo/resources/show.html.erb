@@ -19,7 +19,7 @@
       </div>
     <% end %>
 
-    <% @resource[:fields].each_with_index do |field, index| %>
+    <% @resource.get_fields.each_with_index do |field, index| %>
       <%= show_field field, index, @resource %>
     <% end %>
   <% end %>

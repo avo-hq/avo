@@ -1,0 +1,106 @@
+require 'rails_helper'
+
+module Avo
+  module Resources
+    class DummyUser < Resource
+      def initialize
+        @title = :name
+        @translation_key = 'avo.resource_translations.user'
+        @search = [:id, :first_name, :last_name]
+        @includes = :posts
+        @has_devise_password = true
+      end
+
+      fields do |f|
+        f.id :iddd, link_to_resource: true do |q,w,e|
+          # abort ['qwe'].inspect
+          123
+        end
+      end
+    end
+  end
+end
+
+module Avo
+  module Resources
+    class DummyUser < Resource
+      def initialize
+        @title = :name
+        @translation_key = 'avo.resource_translations.user'
+        @search = [:id, :first_name, :last_name]
+        @includes = :posts
+        @has_devise_password = true
+      end
+
+      fields do |f|
+        f.id :iddd, link_to_resource: true do |q,w,e|
+          # abort ['qwe'].inspect
+          123
+        end
+      end
+    end
+  end
+end
+module Avo
+  module Actions
+    class MarkInactive < Action
+      def name
+        'Mark inactive'
+      end
+
+      def handle(request, models, fields)
+        models.each do |model|
+          model.update active: false
+
+          model.notify fields['message'] if fields['notify_user']
+        end
+
+        succeed 'Perfect!'
+        reload_resources
+      end
+
+      fields do |f|
+        f.boolean :notify_user
+        f.textarea :message, default: 'Your account has been marked as inactive.'
+      end
+    end
+  end
+end
+
+
+
+RSpec.feature 'FieldsLoader', type: :feature do
+  describe 'Resource' do
+    context 'initialized once' do
+      let(:resource) { Avo::Resources::DummyUser.new }
+
+      subject { resource.get_fields }
+
+      it { is_expected.to be_a Array }
+      specify { expect(subject.first.class).to be Avo::Fields::IdField }
+      specify { expect(subject.first.id).to be :iddd }
+      specify { expect(subject.count).to be 1 }
+    end
+
+    context 'initialized twice' do
+      let(:resource) { Avo::Resources::DummyUser.new; Avo::Resources::DummyUser.new }
+
+      subject { resource.get_fields }
+
+      it { is_expected.to be_a Array }
+      specify { expect(subject.first.class).to be Avo::Fields::IdField }
+      specify { expect(subject.first.id).to be :iddd }
+      specify { expect(subject.count).to be 1 }
+    end
+  end
+
+  # describe 'Action' do
+  #   let(:resource) { Avo::Resources::User.new }
+
+  #   subject { resource.get_fields }
+
+  #   it { is_expected.to be_a Array }
+  #   specify { expect(subject.first.class).to be Avo::Fields::IdField }
+  #   specify { expect(subject.first.id).to be :iddd }
+  # end
+end

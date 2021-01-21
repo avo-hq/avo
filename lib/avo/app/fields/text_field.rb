@@ -1,6 +1,8 @@
 module Avo
   module Fields
     class TextField < Field
+      attr_accessor :link_to_resource
+
       def initialize(name, **args, &block)
         @defaults = {
           component: 'text-field',

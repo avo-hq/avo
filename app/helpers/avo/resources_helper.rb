@@ -1,17 +1,17 @@
 module Avo
   module ResourcesHelper
-    def resource_table(resources, resource_model)
-      fields = resources.length > 0 ? resources.first[:fields] : []
+    def resource_table(resources, resource)
+      fields = resource.get_fields
 
       render partial: 'avo/resources/table', locals: {
         resources: resources,
-        resource_model: resource_model,
+        resource_model: resource.model_class,
         fields: fields,
       }
     end
 
     def index_field(field, index, resource)
-      render partial: "avo/fields/index/#{field[:component]}", locals: {
+      render partial: "avo/fields/index/#{field.component}", locals: {
         field: field,
         index: index,
         resource: resource,
@@ -19,7 +19,7 @@ module Avo
     end
 
     def show_field(field, index, resource)
-      render partial: "avo/fields/show/#{field[:component]}", locals: {
+      render partial: "avo/fields/show/#{field.component}", locals: {
         field: field,
         index: index,
         resource: resource,
@@ -27,7 +27,7 @@ module Avo
     end
 
     def edit_field(field, index, resource, form, displayed_in_modal: false)
-      render partial: "avo/fields/edit/#{field[:component]}", locals: {
+      render partial: "avo/fields/edit/#{field.component}", locals: {
         field: field,
         index: index,
         resource: resource,

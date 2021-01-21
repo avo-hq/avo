@@ -1,6 +1,8 @@
 module Avo
   module Fields
     class IdField < Field
+      attr_accessor :link_to_resource
+
       def initialize(name, **args, &block)
         default_value = 'id'
 

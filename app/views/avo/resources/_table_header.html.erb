@@ -5,11 +5,11 @@
   </th>
   <%
     fields.each_with_index do |field, index|
-      if params[:sort_by] == field[:id].to_s
+      if params[:sort_by] == field.id.to_s
         if params[:sort_direction] == 'asc'
           sort_by = nil
         else
-          sort_by = field[:id]
+          sort_by = field.id
         end
 
         if sort_by.present?
@@ -25,19 +25,19 @@
           sort_direction = nil
         end
       else
-        sort_by = field[:id]
+        sort_by = field.id
         sort_direction = 'desc'
       end
   %>
     <th class="text-left uppercase px-3 py-2">
-      <% if field[:sortable] %>
-        <%= link_to resources_path(@resource_model, sort_by: sort_by, sort_direction: sort_direction, keep_query_params: true), class: "flex items-center text-gray-700 leading-tight text-xs font-semibold #{'cursor-pointer' if field[:sortable]}" do %>
-          <%= field[:name] %>
+      <% if field.sortable %>
+        <%= link_to resources_path(@resource_model, sort_by: sort_by, sort_direction: sort_direction, keep_query_params: true), class: "flex items-center text-gray-700 leading-tight text-xs font-semibold #{'cursor-pointer' if field.sortable}" do %>
+          <%= field.name %>
           <%= render partial: 'sortable_component', locals: {field: field} %>
         <% end %>
       <% else %>
           <div class="flex items-center text-gray-700 leading-tight text-xs font-semibold">
-            <%= field[:name] %>
+            <%= field.name %>
           </div>
       <% end %>
     </th>
