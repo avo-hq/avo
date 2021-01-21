@@ -1,47 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Avo::ResourceOverviewController, type: :controller do
-
-  before :all do
-    class UserPolicy < ApplicationPolicy
-      def index?
-        true
-      end
-    end
-
-    class TeamPolicy < ApplicationPolicy
-      def index?
-        true
-      end
-    end
-
-    class PostPolicy < ApplicationPolicy
-      def index?
-        true
-      end
-    end
-  end
-
-  after :all do
-    class UserPolicy < ApplicationPolicy
-      def index?
-        false
-      end
-    end
-
-    class TeamPolicy < ApplicationPolicy
-      def index?
-        false
-      end
-    end
-
-    class PostPolicy < ApplicationPolicy
-      def index?
-        false
-      end
-    end
-  end
-
   context 'configs' do
     describe 'with false values' do
       it 'returns false values' do
