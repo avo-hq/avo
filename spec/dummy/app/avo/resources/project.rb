@@ -12,7 +12,7 @@ module Avo
         text :name, required: true
         # status :status, failed_when: [:closed, :rejected, :failed], loading_when: [:loading, :running, :waiting], nullable: true
         # select :stage, hide_on: [:show, :index], enum: ::Project.stages, placeholder: 'Choose the stage.', display_value: true
-        # badge :stage, options: { info: ['Discovery', 'Ideea'], success: 'Done', warning: 'On hold', danger: 'Cancelled' }
+        badge :stage, options: { info: ['Discovery', 'Ideea'], success: 'Done', warning: 'On hold', danger: 'Cancelled' }
         # currency :budget, currency: 'EUR', locale: 'de-DE'
         # country :country
         number :users_required, min: 10, max: 1000000, step: 1

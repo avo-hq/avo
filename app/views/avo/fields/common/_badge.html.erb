@@ -1,0 +1,13 @@
+<%
+  backgrounds = {
+    info: 'blue',
+    success: 'green',
+    danger: 'red',
+    warning: 'yellow',
+  }
+
+  classes = 'whitespace-no-wrap rounded-md uppercase px-2 py-1 text-xs font-bold text-black block text-center truncate '
+
+  classes += "bg-#{backgrounds[type]}-500 text-white" if backgrounds[type]
+%>
+<span class="<%= classes %>" style="max-width: 120px;"><%= label %></span>
