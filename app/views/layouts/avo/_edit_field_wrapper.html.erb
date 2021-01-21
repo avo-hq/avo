@@ -12,7 +12,7 @@
         <div class="text-red-600 mt-2 text-sm"><%= @model.errors.full_messages_for(field[:id]).to_sentence %></div>
       <% end %>
       <% if field[:help] %>
-        <div class="text-gray-600 mt-2 text-sm"><%= field[:help] %></div>
+        <div class="text-gray-600 mt-2 text-sm"><%== field[:help] %></div>
       <% end %>
     </div>
   </div>
