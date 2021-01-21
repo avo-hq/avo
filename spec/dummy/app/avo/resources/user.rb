@@ -12,7 +12,7 @@ module Avo
       fields do
         id
         # gravatar :email, link_to_resource: true
-        # heading 'User information'
+        heading 'User Information'
         text :first_name, required: true, placeholder: 'John', default: 'default'
         text :last_name, required: true, placeholder: 'Doe'
         text :email, name: 'User Email', required: true
