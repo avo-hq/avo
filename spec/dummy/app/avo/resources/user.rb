@@ -12,7 +12,7 @@ module Avo
       fields do
         id
         # gravatar :email, link_to_resource: true
-        # heading 'User information'
+        heading 'User Information'
         text :first_name, required: true, placeholder: 'John', default: 'default'
         text :last_name, required: true, placeholder: 'Doe'
         text :email, name: 'User Email', required: true
@@ -28,7 +28,7 @@ module Avo
         password :password, name: 'User Password', required: false, except_on: :forms, help: 'You may verify the password strength <a href="http://www.passwordmeter.com/">here</a>.'
         password :password_confirmation, name: 'Password confirmation', required: false, only_on: :new
 
-        # heading '<div class="text-gray-300 uppercase font-bold">DEV</div>', as_html: true
+        heading '<div class="text-gray-300 uppercase font-bold">DEV</div>', as_html: true
         # code :custom_css, theme: 'dracula', language: 'css', help: "This enables you to edit the user's custom styles.", height: '125px'
 
         # hidden :team_id, default: 0 # For testing purposes
