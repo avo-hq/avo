@@ -17,12 +17,10 @@ RSpec.describe 'hidden', type: :feature do
     describe 'with input' do
       let!(:user) { create :user, team_id: 10 }
 
-      context 'edit' do
-        it 'has the hidden field' do
-          visit "/avo/resources/users/#{user.id}/edit"
+      it 'has the hidden field' do
+        visit "/avo/resources/users/#{user.id}/edit"
 
-          expect(find("[data-field-id='team_id'] input[type='hidden']", visible: false).value).to eq '10'
-        end
+        expect(find("[data-field-id='team_id'] input[type='hidden']", visible: false).value).to eq '10'
       end
     end
   end
