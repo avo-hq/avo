@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe 'textarea', type: :feature do
-
   context 'show' do
     let(:url) { "/avo/resources/posts/#{post.id}" }
 
@@ -80,5 +79,4 @@ RSpec.describe 'textarea', type: :feature do
       end
     end
   end
-
 end

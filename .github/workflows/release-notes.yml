@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - refactor/hotwire
 
 jobs:
   update_release_notes:
