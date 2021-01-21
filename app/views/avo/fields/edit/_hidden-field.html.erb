@@ -1,0 +1,4 @@
+<div data-field-id="<%= field[:id] %>">
+  <%= form.hidden_field field[:id],
+    value: @model.present? ? @model[field[:id]] : field[:value] %>
+</div>

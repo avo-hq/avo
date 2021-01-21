@@ -31,7 +31,7 @@ module Avo
         # heading '<div class="text-gray-300 uppercase font-bold">DEV</div>', as_html: true
         # code :custom_css, theme: 'dracula', language: 'css', help: "This enables you to edit the user's custom styles.", height: '125px'
 
-        # hidden :team_id, default: 0 # For testing purposes
+        hidden :team_id, default: 0 # For testing purposes
 
         # has_and_belongs_to_many :projects
         # has_many :posts
