@@ -1,5 +1,5 @@
 <%= edit_field_wrapper field: field, index: index, form: form, displayed_in_modal: displayed_in_modal do %>
-  <%= form.select field.database_id, options_for_select(field.options.map { |o| [o[:label], o[:value]] }, field.database_value),
+  <%= form.select field.foreign_key, options_for_select(field.options.map { |o| [o[:label], o[:value]] }, field.value.present? ? field.value.id : nil),
     {
       include_blank: field.placeholder,
     },

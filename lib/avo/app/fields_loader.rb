@@ -27,17 +27,17 @@ module Avo
       # def initialize(resource_class)
       def initialize
         # @resource_class = resource_class
-        puts ['Loader.initialize', @fields_bag].inspect
+        # puts ['Loader.initialize', @fields_bag].inspect
         @fields_bag = []
       end
 
       def method_missing(method, *args, &block)
-        puts ['method_missing->', method, args, 'self.fields_bag.keys.count'].inspect
+        # puts ['method_missing->', method, args, 'self.fields_bag.keys.count'].inspect
         matched_fields = Avo::App.fields.select do |field|
           field[:name].to_s == method.to_s
         end
 
-        puts [matched_fields].inspect
+        # puts [matched_fields].inspect
 
         if matched_fields.present? and matched_fields.first[:class].present?
           klass = matched_fields.first[:class]
@@ -47,7 +47,7 @@ module Avo
           else
             field = klass::new(args[0], **args[1] || {})
           end
-puts ['before add_field', field].inspect
+          # puts ['before add_field', field].inspect
           add_field field
         end
 
@@ -56,7 +56,7 @@ puts ['before add_field', field].inspect
           # puts ['add_field->', resource_class, field.class, @fields_bag[resource_class].count].inspect
           # @fields_bag[resource_class].push field
           # puts ['after add_field->', resource_class, field.class, @fields_bag[resource_class].count].inspect
-          puts ['add_field->', resource_class, field.class].inspect
+          # puts ['add_field->', resource_class, field.class].inspect
           @fields_bag.push field
         end
 
@@ -65,7 +65,7 @@ puts ['before add_field', field].inspect
           # puts ['get_fields_bag->', resource_class, count,  @fields_bag].inspect
           # @fields_bag[resource_class] || []
           count = @fields_bag.present? ? @fields_bag.count : nil
-          puts ['get_fields_bag->', resource_class, count, '@fields_bag'].inspect
+          # puts ['get_fields_bag->', resource_class, count, '@fields_bag'].inspect
           @fields_bag
         end
       end

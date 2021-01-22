@@ -20,7 +20,7 @@ module Avo
       #   # badge :stage, options: { info: ['Discovery', 'Ideea'], success: 'Done', warning: 'On hold', danger: 'Cancelled' }
       #   # currency :budget, currency: 'EUR', locale: 'de-DE'
       #   # country :country
-      #   # number :users_required
+        f.text :users_required
       #   text :users_required
       #   # datetime :started_at, name: 'Started', time_24hr: true, relative: true
       #   markdown :description, height: '350px'

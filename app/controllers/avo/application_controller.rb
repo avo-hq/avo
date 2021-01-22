@@ -14,7 +14,6 @@ module Avo
 
     def init_app
       Avo::App.boot if Avo::IN_DEVELOPMENT
-      # Avo::App.boot
       Avo::App.init request
 
       @license = Avo::App.license
@@ -36,6 +35,8 @@ module Avo
     end
 
     def resources_path(model, keep_query_params: false, **args)
+      return if model.nil?
+
       existing_params = {}
 
       begin
@@ -66,6 +67,7 @@ module Avo
         return send :"resources_#{to_resource_name.singularize}_path", to_resource_id, **existing_params, **args
       end
 
+      # abort model.inspect
       send :"resources_#{model.model_name.route_key.singularize}_path", model, **args
     end
 
@@ -84,11 +86,6 @@ module Avo
 
       def set_resource
         @resource = resource
-      end
-
-      # @todo: rename to model_class
-      def set_model_class
-        @model_class = model_class
       end
 
       def set_model

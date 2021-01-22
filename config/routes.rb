@@ -28,6 +28,7 @@ Avo::Engine.routes.draw do
     resources :projects, controller: 'resources', as: 'projects'
     resources :users, controller: 'resources', as: 'users'
     resources :teams, controller: 'resources', as: 'teams'
+    resources :team_memberships, controller: 'resources', as: 'team_memberships'
   end
 
 

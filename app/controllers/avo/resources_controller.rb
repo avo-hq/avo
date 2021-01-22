@@ -37,10 +37,6 @@ module Avo
 
     def show
       @resource = @resource.hydrate(model: @model, view: :show, user: _current_user)
-      # abort @resource.inspect
-      # abort [@resource_name, @resource, @resource.model_class].inspect
-      # @resource.new @model
-
       @authorization.set_record(@model).authorize_action :show
     end
 
@@ -48,7 +44,6 @@ module Avo
       @model = @resource.model_class.new
       @authorization.set_record(@model).authorize_action :new
       @resource = @resource.hydrate(model: @model, view: :new, user: _current_user)
-      # abort @resource.inspect
     end
 
     def edit
@@ -105,7 +100,7 @@ module Avo
         permitted = @resource.get_field_definitions.select(&:updatable).map do |field|
           # If it's a relation
           if field.methods.include? :foreign_key
-            database_id = field.foreign_key(@resource.model)
+            database_id = field.foreign_key
           end
 
           if database_id.present?

@@ -77,7 +77,9 @@ module Avo
       end
 
       def get_field_definitions
-        @field_loader.fields_bag
+        @field_loader.fields_bag.map do |field|
+          field.hydrate(resource: self)
+        end
       end
 
       def get_fields_for_all_views

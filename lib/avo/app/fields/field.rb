@@ -77,10 +77,10 @@ module Avo
         except_on args[:except_on] if args[:except_on].present?
       end
 
-      def hydrate(model:, resource:, view:)
-        @model = model
-        @view = view
-        @resource = resource
+      def hydrate(model: nil, resource: nil, view: nil)
+        @model = model if model.present?
+        @view = view if view.present?
+        @resource = resource if resource.present?
 
         self
       end

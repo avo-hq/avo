@@ -3,7 +3,7 @@ require 'rails_helper'
 module Avo
   module Resources
     class DummyUser < Resource
-      def initialize
+      def init
         @title = :name
         @translation_key = 'avo.resource_translations.user'
         @search = [:id, :first_name, :last_name]
@@ -11,10 +11,10 @@ module Avo
         @has_devise_password = true
       end
 
-      fields do |f|
+      def fields(request)
         f.id :iddd, link_to_resource: true do |q,w,e|
           # abort ['qwe'].inspect
-          123
+          '123'
         end
       end
     end
@@ -24,7 +24,7 @@ end
 module Avo
   module Resources
     class DummyUser < Resource
-      def initialize
+      def init
         @title = :name
         @translation_key = 'avo.resource_translations.user'
         @search = [:id, :first_name, :last_name]
@@ -32,7 +32,7 @@ module Avo
         @has_devise_password = true
       end
 
-      fields do |f|
+      def fields(request)
         f.id :iddd, link_to_resource: true do |q,w,e|
           # abort ['qwe'].inspect
           123
@@ -59,7 +59,7 @@ module Avo
         reload_resources
       end
 
-      fields do |f|
+      def fields(request)
         f.boolean :notify_user
         f.textarea :message, default: 'Your account has been marked as inactive.'
       end
@@ -74,7 +74,7 @@ RSpec.feature 'FieldsLoader', type: :feature do
     context 'initialized once' do
       let(:resource) { Avo::Resources::DummyUser.new }
 
-      subject { resource.get_fields }
+      subject { resource.get_field_definitions }
 
       it { is_expected.to be_a Array }
       specify { expect(subject.first.class).to be Avo::Fields::IdField }
@@ -85,7 +85,7 @@ RSpec.feature 'FieldsLoader', type: :feature do
     context 'initialized twice' do
       let(:resource) { Avo::Resources::DummyUser.new; Avo::Resources::DummyUser.new }
 
-      subject { resource.get_fields }
+      subject { resource.get_field_definitions }
 
       it { is_expected.to be_a Array }
       specify { expect(subject.first.class).to be Avo::Fields::IdField }
@@ -93,14 +93,4 @@ RSpec.feature 'FieldsLoader', type: :feature do
       specify { expect(subject.count).to be 1 }
     end
   end
-
-  # describe 'Action' do
-  #   let(:resource) { Avo::Resources::User.new }
-
-  #   subject { resource.get_fields }
-
-  #   it { is_expected.to be_a Array }
-  #   specify { expect(subject.first.class).to be Avo::Fields::IdField }
-  #   specify { expect(subject.first.id).to be :iddd }
-  # end
 end
