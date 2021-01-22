@@ -1,0 +1,29 @@
+<%
+  values = {}
+
+  if field[:value].present?
+    field[:value].each do |key, value|
+      if field[:value][key] === true || field[:value][key] === false
+        values[key] = value
+      end
+    end
+  end
+%>
+
+<%= index_field_wrapper field: field do %>
+  <% if values.present? %>
+    <div class="space-y-2 py-3">
+      <% values.each do |k, v| %>
+        <div>
+          <%= render partial: 'avo/fields/common/boolean_check', locals: {checked: v} %>
+          <div class="ml-6 text-left py-px">
+            <%= field[:options].present? && field[:options].has_key?(k.to_sym) ? field[:options][k.to_sym] : k %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    —
+  <% end %>
+<% end %>
+

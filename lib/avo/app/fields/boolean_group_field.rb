@@ -11,7 +11,7 @@ module Avo
 
         @is_object_param = true
 
-        @options = args[:options].present? ? args[:options] : {}
+        @options = args[:options].present? ? args[:options] : nil
       end
 
       def hydrate_field(fields, model, resource, view)

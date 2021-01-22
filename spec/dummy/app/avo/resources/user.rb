@@ -19,7 +19,7 @@ module Avo
         # boolean :active, name: 'Is active', show_on: :show
         # file :cv, name: 'CV'
         # boolean :is_admin?, name: 'Is admin', only_on: :index
-        # boolean_group :roles, options: { admin: 'Administrator', manager: 'Manager', writer: 'Writer' }
+        boolean_group :roles, options: { admin: 'Administrator', manager: 'Manager', writer: 'Writer' }
         # date :birthday, first_day_of_week: 1, picker_format: 'F J Y', format: 'MMMM Do YYYY', placeholder: 'Feb 24th 1955', required: true
         # text :is_writer, format_using: -> (value) { value.truncate 3 }, hide_on: :edit do |model, resource, view, field|
         #   model.posts.to_a.count > 0 ? 'yes' : 'no'
