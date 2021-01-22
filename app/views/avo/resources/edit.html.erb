@@ -1,5 +1,5 @@
 <div data-model-id="<%= @model.id %>">
-  <% @avo_resource.panels.each do |resource_panel| %>
+  <% @resource.panels.each do |resource_panel| %>
     <%= form_with model: @model, url: resource_path(@model), method: :put do |form| %>
       <%= panel do %>
         <% content_for :heading do %>

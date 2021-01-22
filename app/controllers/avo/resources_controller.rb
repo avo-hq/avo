@@ -2,25 +2,23 @@ require_dependency 'avo/application_controller'
 
 module Avo
   class ResourcesController < ApplicationController
+    before_action :set_resource_name
+    before_action :set_resource
+    before_action :set_model, only: [:show, :edit, :destroy, :update]
     before_action :set_per_page, only: :index
     before_action :set_filters, only: :index
     before_action :set_actions, only: :index
-    before_action :set_model, only: [:show, :edit, :destroy, :update]
-    before_action :set_resource_name
-    before_action :set_avo_resource
-    before_action :set_resource_model
 
     def index
-      @heading = resource_model.model_name.collection.capitalize
-      @heading = @avo_resource.plural_name
+      @heading = @resource.plural_name
 
       params[:page] ||= 1
       params[:sort_by] = params[:sort_by].present? ? params[:sort_by] : :created_at
       params[:sort_direction] = params[:sort_direction].present? ? params[:sort_direction] : :desc
 
       # @todo: remove this
-      @authorization.set_record(@resource_model).authorize_action :index
-      query = AuthorizationService.with_policy _current_user, resource_model
+      @authorization.set_record(@resource.model_class).authorize_action :index
+      query = AuthorizationService.with_policy _current_user, @resource.model_class
 
       if params[:sort_by]
         query = query.order("#{params[:sort_by]} #{params[:sort_direction]}")
@@ -30,36 +28,36 @@ module Avo
         query = filter_class.safe_constantize.new.apply_query request, query, filter_value
       end
 
-      @avo_resource.hydrate(view: :index, user: _current_user)
+      @resource.hydrate(view: :index, user: _current_user)
       @models = query.page(params[:page]).per(@per_page)
       @resources = @models.map do |model|
-        @avo_resource.hydrate(model: model).dup
+        @resource.hydrate(model: model).dup
       end
     end
 
     def show
-      @resource = @avo_resource.hydrate(model: @model, view: :show, user: _current_user)
-      # abort @avo_resource.inspect
-      # abort [@resource_name, @avo_resource, @resource_model].inspect
-      # @avo_resource.new @model
+      @resource = @resource.hydrate(model: @model, view: :show, user: _current_user)
+      # abort @resource.inspect
+      # abort [@resource_name, @resource, @resource.model_class].inspect
+      # @resource.new @model
 
       @authorization.set_record(@model).authorize_action :show
     end
 
     def new
-      @model = resource_model.new
+      @model = @resource.model_class.new
       @authorization.set_record(@model).authorize_action :new
-      @resource = @avo_resource.hydrate(model: @model, view: :new, user: _current_user)
+      @resource = @resource.hydrate(model: @model, view: :new, user: _current_user)
       # abort @resource.inspect
     end
 
     def edit
       @authorization.set_record(@model).authorize_action :edit
-      @resource = @avo_resource.hydrate(model: @model, view: :edit, user: _current_user)
+      @resource = @resource.hydrate(model: @model, view: :edit, user: _current_user)
     end
 
     def create
-      @model = resource_model.new(model_params)
+      @model = @resource.model_class.new(model_params)
       @authorization.set_record(@model).authorize_action :create
 
       respond_to do |format|
@@ -67,7 +65,7 @@ module Avo
           format.html { redirect_to resource_path(@model), notice: "#{@model.class.name} was successfully created." }
           format.json { render :show, status: :created, location: @model }
         else
-          @resource = @avo_resource.hydrate(model: @model, view: :new, user: _current_user)
+          @resource = @resource.hydrate(model: @model, view: :new, user: _current_user)
           format.html { render :new, status: :unprocessable_entity }
           format.json { render json: @model.errors, status: :unprocessable_entity }
         end
@@ -81,7 +79,7 @@ module Avo
           format.html { redirect_to resource_path(@model), notice: "#{@model.class.name} was successfully updated." }
           format.json { render :show, status: :ok, location: @post }
         else
-          @resource = @avo_resource.hydrate(model: @model, view: :edit, user: _current_user)
+          @resource = @resource.hydrate(model: @model, view: :edit, user: _current_user)
           format.html { render :edit, status: :unprocessable_entity }
           format.json { render json: @post.errors, status: :unprocessable_entity }
         end
@@ -99,35 +97,15 @@ module Avo
     end
 
     private
-      # def render(*arguments)
-      #   resource_name = resource_model.model_name.human.downcase
-
-      #   case @_action_name
-      #   when 'show'
-      #     @heading = t 'avo.resource_details', item: resource_name
-      #   when 'edit', 'update'
-      #     @heading = t 'avo.edit_item', item: resource_name
-      #   when 'new', 'create'
-      #     @heading = t 'avo.create_new_item', item: resource_name
-      #   end
-
-      #   @heading = @heading.upcase_first if @heading.present?
-
-      #   super(*arguments)
-      # end
-
-      def set_heading
-      end
-
       def model_params
-        params.require(resource_model.model_name.route_key.singularize).permit(permitted_params)
+        params.require(@resource.model_class.model_name.route_key.singularize).permit(permitted_params)
       end
 
       def permitted_params
-        permitted = avo_resource.get_field_definitions.select(&:updatable).map do |field|
+        permitted = @resource.get_field_definitions.select(&:updatable).map do |field|
           # If it's a relation
           if field.methods.include? :foreign_key
-            database_id = field.foreign_key(avo_resource.model)
+            database_id = field.foreign_key(@resource.model)
           end
 
           if database_id.present?
@@ -164,22 +142,22 @@ module Avo
       end
 
       def set_filters
-        @filters = avo_resource.get_filters.map(&:new)
+        @filters = @resource.get_filters.map(&:new)
       end
 
       def set_actions
-        avo_actions = avo_resource.get_actions
+        avo_actions = @resource.get_actions
         actions = []
 
         if params[:resource_id].present?
-          model = resource_model.find params[:resource_id]
+          model = @resource.model_class.find params[:resource_id]
         end
 
         avo_actions.each do |action|
           action = action.new
 
           action.set_model model
-          action.set_resource avo_resource
+          action.set_resource @resource
 
           actions.push(action)
         end
@@ -194,7 +172,7 @@ module Avo
 
         filter_defaults = {}
 
-        avo_resource.get_filters.each do |filter_class|
+        @resource.get_filters.each do |filter_class|
           filter = filter_class.new
 
           if filter.default.present?
@@ -206,7 +184,7 @@ module Avo
       end
 
       def cast_nullable(params)
-        fields = avo_resource.get_field_definitions
+        fields = @resource.get_field_definitions
 
         nullable_fields = fields.filter do |field|
           field.nullable

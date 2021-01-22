@@ -9,9 +9,9 @@
         <%= render 'actions' %>
       </div>
       <%# @todo: Attach button  %>
-      <%= a_link new_resource_path(@resource_model) do %>
-        <%= svg 'media/svgs/plus.svg' %> <%= t('avo.create_new_item', { item: @resource_model.model_name.human.downcase }) %>
-      <% end if @authorization.set_record(@resource_model).authorize_action :create, raise_exception: false %>
+      <%= a_link new_resource_path(@resource.model_class) do %>
+        <%= svg 'media/svgs/plus.svg' %> <%= t('avo.create_new_item', { item: @resource.model_class.model_name.human.downcase }) %>
+      <% end if @authorization.set_record(@resource.model_class).authorize_action :create, raise_exception: false %>
     </div>
     <%# attach button %>
   <% end %>
@@ -27,7 +27,7 @@
   </div>
   <div class="w-full overflow-auto min-h-28 flex flex-col">
     <div class="relative flex-1 flex">
-      <%= resource_table @resources, @avo_resource %>
+      <%= resource_table @resources, @resource %>
     </div>
     <%= paginate @models, class: 'avo-pagination justify-end flex px-4 space-x-2' %>
   </div>

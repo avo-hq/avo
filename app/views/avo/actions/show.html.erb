@@ -1,10 +1,10 @@
 <%= turbo_frame_tag "actions_show" do %>
-  <%= form_with scope: 'fields', url: "/avo/resources/#{@resource_model.model_name.route_key}/actions/#{@action.id}", data: {'turbo-frame': '_top'} do |form| %>
+  <%= form_with scope: 'fields', url: "/avo/resources/#{@resource.model_class.model_name.route_key}/actions/#{@action.id}", data: {'turbo-frame': '_top'} do |form| %>
     <% modal do %>
       <div
         data-controller="action"
         data-action-target="controllerDiv"
-        data-resource-name="<%= @resource_model.model_name.route_key %>"
+        data-resource-name="<%= @resource.model_class.model_name.route_key %>"
         data-resource-id="<%= params[:id] %>"
       >
         <% content_for :heading do %>

@@ -44,7 +44,7 @@ module Avo
         # has_many :posts
       end
 
-      # use_action Avo::Ac1tions::MarkInactive
+      use_action Avo::Actions::MarkInactive
       # use_action Avo::Actions::MakeAdmin
     end
   end

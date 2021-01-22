@@ -214,7 +214,7 @@ module Avo
       end
 
       def attached_file_fields
-        get_fields.select do |field|
+        get_field_definitions.select do |field|
           [Avo::Fields::FileField, Avo::Fields::FilesField].include? field.class
         end
       end

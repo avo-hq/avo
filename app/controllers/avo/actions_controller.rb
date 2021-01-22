@@ -13,7 +13,7 @@ module Avo
       set_actions
       # abort [1, params].inspect
 
-      @resource_model = resource_model
+      # @resource_model = resource_model
       # abort action.inspect
 
       model = nil
