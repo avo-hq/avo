@@ -5,7 +5,6 @@ module Avo
     before_action :set_action, only: [:show, :handle]
 
     def index
-      # abort [avo_resource, params].inspect
       set_actions
       # @model = resource_model
     end

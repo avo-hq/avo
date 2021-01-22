@@ -11,13 +11,9 @@ module Avo
     before_action :set_resource_model
 
     def index
-      # @avo_resource.new @model
-      # abort [@resource_name, @avo_resource, @resource_model].inspect
-      # abort @avo_resource.inspect
-
-
       @heading = resource_model.model_name.collection.capitalize
-      @heading = @avo_resource.name
+      @heading = @avo_resource.plural_name
+
       params[:page] ||= 1
       params[:sort_by] = params[:sort_by].present? ? params[:sort_by] : :created_at
       params[:sort_direction] = params[:sort_direction].present? ? params[:sort_direction] : :desc
@@ -30,15 +26,14 @@ module Avo
         query = query.order("#{params[:sort_by]} #{params[:sort_direction]}")
       end
 
-      # abort applied_filters.inspect
       applied_filters.each do |filter_class, filter_value|
         query = filter_class.safe_constantize.new.apply_query request, query, filter_value
       end
 
+      @avo_resource.hydrate(view: :index, user: _current_user)
       @models = query.page(params[:page]).per(@per_page)
       @resources = @models.map do |model|
-        @avo_resource.hydrate(model: model, view: :index, user: _current_user)
-        # .hydrate_resource(model: resource, resource: avo_resource, view: :index, user: _current_user)
+        @avo_resource.hydrate(model: model).dup
       end
     end
 
@@ -49,19 +44,18 @@ module Avo
       # @avo_resource.new @model
 
       @authorization.set_record(@model).authorize_action :show
-      # @resource = Avo::Resources::Resource.hydrate_resource(model: @model, resource: @avo_resource, view: :show, user: _current_user)
     end
 
     def new
       @model = resource_model.new
       @authorization.set_record(@model).authorize_action :new
-      @resource = Avo::Resources::Resource.hydrate_resource(model: @model, resource: avo_resource, view: :new, user: _current_user)
+      @resource = @avo_resource.hydrate(model: @model, view: :new, user: _current_user)
+      # abort @resource.inspect
     end
 
     def edit
       @authorization.set_record(@model).authorize_action :edit
       @resource = @avo_resource.hydrate(model: @model, view: :edit, user: _current_user)
-      # @resource = Avo::Resources::Resource.hydrate_resource(model: @model, resource: avo_resource, view: :edit, user: _current_user)
     end
 
     def create
@@ -73,7 +67,7 @@ module Avo
           format.html { redirect_to resource_path(@model), notice: "#{@model.class.name} was successfully created." }
           format.json { render :show, status: :created, location: @model }
         else
-          @resource = Avo::Resources::Resource.hydrate_resource(model: @model, resource: avo_resource, view: :new, user: _current_user)
+          @resource = @avo_resource.hydrate(model: @model, view: :new, user: _current_user)
           format.html { render :new, status: :unprocessable_entity }
           format.json { render json: @model.errors, status: :unprocessable_entity }
         end
@@ -87,7 +81,7 @@ module Avo
           format.html { redirect_to resource_path(@model), notice: "#{@model.class.name} was successfully updated." }
           format.json { render :show, status: :ok, location: @post }
         else
-          @resource = Avo::Resources::Resource.hydrate_resource(model: @model, resource: avo_resource, view: :edit, user: _current_user)
+          @resource = @avo_resource.hydrate(model: @model, view: :edit, user: _current_user)
           format.html { render :edit, status: :unprocessable_entity }
           format.json { render json: @post.errors, status: :unprocessable_entity }
         end
@@ -105,22 +99,22 @@ module Avo
     end
 
     private
-      def render(*arguments)
-        resource_name = resource_model.model_name.human.downcase
+      # def render(*arguments)
+      #   resource_name = resource_model.model_name.human.downcase
 
-        case @_action_name
-        when 'show'
-          @heading = t 'avo.resource_details', item: resource_name
-        when 'edit', 'update'
-          @heading = t 'avo.edit_item', item: resource_name
-        when 'new', 'create'
-          @heading = t 'avo.create_new_item', item: resource_name
-        end
+      #   case @_action_name
+      #   when 'show'
+      #     @heading = t 'avo.resource_details', item: resource_name
+      #   when 'edit', 'update'
+      #     @heading = t 'avo.edit_item', item: resource_name
+      #   when 'new', 'create'
+      #     @heading = t 'avo.create_new_item', item: resource_name
+      #   end
 
-        @heading = @heading.upcase_first if @heading.present?
+      #   @heading = @heading.upcase_first if @heading.present?
 
-        super(*arguments)
-      end
+      #   super(*arguments)
+      # end
 
       def set_heading
       end
@@ -130,7 +124,7 @@ module Avo
       end
 
       def permitted_params
-        permitted = avo_resource.get_fields.select(&:updatable).map do |field|
+        permitted = avo_resource.get_field_definitions.select(&:updatable).map do |field|
           # If it's a relation
           if field.methods.include? :foreign_key
             database_id = field.foreign_key(avo_resource.model)
@@ -212,7 +206,7 @@ module Avo
       end
 
       def cast_nullable(params)
-        fields = avo_resource.get_fields
+        fields = avo_resource.get_field_definitions
 
         nullable_fields = fields.filter do |field|
           field.nullable

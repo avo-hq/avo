@@ -1,12 +1,9 @@
 module Avo
   module ResourcesHelper
     def resource_table(resources, resource)
-      fields = resource.get_fields
-
       render partial: 'avo/resources/table', locals: {
         resources: resources,
-        resource_model: resource.model_class,
-        fields: fields,
+        resource: resource,
       }
     end
 

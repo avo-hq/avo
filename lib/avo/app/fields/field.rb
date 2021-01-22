@@ -27,6 +27,9 @@ module Avo
       attr_accessor :placeholder
       attr_accessor :help
       attr_accessor :default
+      attr_accessor :model
+      attr_accessor :view
+      attr_accessor :user
 
       def initialize(id, **args, &block)
         super(id, **args, &block)

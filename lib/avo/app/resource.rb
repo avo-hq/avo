@@ -59,24 +59,25 @@ module Avo
         fields request
       end
 
-      def hydrate(model:, view:, user:)
-        @model = model
-        @view = view
-        @user = user
+      def hydrate(model: nil, view: nil, user: nil)
+        @model = model if model.present?
+        @view = view if view.present?
+        @user = user if user.present?
 
         self
       end
 
-      def get_fields
-        # get_field_definitions
-        # get_fields_for_all_views[:fields]
-        get_field_definitions
+      def get_fields(view_type: :table)
+        get_field_definitions.select do |field|
+          field.send("show_on_#{@view.to_s}")
+        end
+        .map do |field|
+          field.hydrate(model: @model, view: @view, resource: self)
+        end
       end
 
       def get_field_definitions
-        @field_loader.fields_bag.map do |field|
-          field.hydrate(model: @model, view: @view, resource: self)
-        end
+        @field_loader.fields_bag
       end
 
       def get_fields_for_all_views
@@ -84,15 +85,6 @@ module Avo
           fields: [],
           grid_fields: [],
         }
-
-        case @view
-        when :show
-          panel_name = I18n.t 'avo.resource_details', item: resource.name.downcase.upcase_first
-        when :edit
-          panel_name = I18n.t('avo.edit_item', item: resource.name.downcase).upcase_first
-        when :new
-          panel_name = I18n.t('avo.create_new_item', item: resource.name.downcase).upcase_first
-        end
 
         # abort [@view, @user].inspect
         # grid_fields = get_grid_fields
@@ -111,7 +103,7 @@ module Avo
 
           next if furnished_field.blank?
 
-          furnished_field[:panel_name] = panel_name
+          furnished_field[:panel_name] = default_panel_name
           furnished_field[:show_on_show] = field.show_on_show
 
           if field.has_own_panel?
@@ -130,10 +122,33 @@ module Avo
         fields
       end
 
+      def default_panel_name
+        case @view
+        when :show
+          I18n.t('avo.resource_details', item: self.name.downcase, title: model_title).upcase_first
+        when :edit
+          I18n.t('avo.update_item', item: self.name.downcase, title: model_title).upcase_first
+        when :new
+          I18n.t('avo.create_new_item', item: self.name.downcase).upcase_first
+        end
+      end
+
+      def panels
+        [{
+          name: default_panel_name,
+        }]
+      end
+
       def model_class
         return @model.class if @model.present?
 
         self.class.name.demodulize.safe_constantize
+      end
+
+      def model_title
+        return @model[title] if @model.present?
+
+        name
       end
 
       def name
@@ -145,8 +160,6 @@ module Avo
       end
 
       def singular_name
-        return I18n.t(@translation_key, count: 1).capitalize if @translation_key
-
         name
       end
 
@@ -225,17 +238,17 @@ module Avo
         AuthorizationService.new(user, model)
       end
 
-      def file_hash(resource)
+      def file_hash
         content_to_be_hashed = ''
 
         # resource file hash
-        resource_path = Rails.root.join('app', 'avo', 'resources', "#{resource.name.underscore}.rb").to_s
+        resource_path = Rails.root.join('app', 'avo', 'resources', "#{@resource.name.underscore}.rb").to_s
         if File.file? resource_path
           content_to_be_hashed += File.read(resource_path)
         end
 
         # policy file hash
-        policy_path = Rails.root.join('app', 'policies', "#{resource.name.underscore}_policy.rb").to_s
+        policy_path = Rails.root.join('app', 'policies', "#{@resource.name.underscore}_policy.rb").to_s
         if File.file? policy_path
           content_to_be_hashed += File.read(policy_path)
         end
@@ -247,7 +260,7 @@ module Avo
         def hydrate_resource(model:, resource:, view: :index, user:)
           case view
           when :show
-            panel_name = I18n.t 'avo.resource_details', item: resource.name.downcase.upcase_first
+            panel_name = I18n.t('avo.resource_details', item: resource.name.downcase).upcase_first
           when :edit
             panel_name = I18n.t('avo.edit_item', item: resource.name.downcase).upcase_first
           when :new
@@ -255,21 +268,21 @@ module Avo
           end
 
           resource_with_fields = {
-            id: model.id,
-            authorization: AuthorizationService.new(user, model),
-            singular_name: resource.singular_name,
-            plural_name: resource.plural_name,
-            title: model[resource.title],
-            translation_key: resource.translation_key,
-            path: resource.url,
-            fields: [],
-            grid_fields: {},
-            panels: [{
-              name: panel_name,
-              component: 'panel',
-            }],
-            model: model,
-            hash: file_hash(resource), # md5 of the file to break the cache
+            # id: model.id,
+            # authorization: AuthorizationService.new(user, model),
+            # singular_name: resource.singular_name,
+            # plural_name: resource.plural_name,
+            # title: model[resource.title],
+            # translation_key: resource.translation_key,
+            # path: resource.url,
+            # fields: [],
+            # grid_fields: {},
+            # panels: [{
+            #   name: panel_name,
+            #   component: 'panel',
+            # }],
+            # model: model,
+            # hash: file_hash(resource), # md5 of the file to break the cache
           }
 
           grid_fields = resource.get_grid_fields

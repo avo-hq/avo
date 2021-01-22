@@ -1,25 +1,27 @@
-<div :resource-id="resourceId">
-  <%= form_with model: @model, url: resources_path(@model), local: true do |form| %>
-    <%= panel do %>
-      <% content_for :heading do %>
-        <%= @heading %>
-      <% end %>
+<div data-model-id="<%= @model.id %>">
+  <% @avo_resource.panels.each do |resource_panel| %>
+    <%= form_with model: @model, url: resources_path(@model), local: true do |form| %>
+      <%= panel do %>
+        <% content_for :heading do %>
+          <%= resource_panel[:name] %>
+        <% end %>
 
-      <% content_for :tools do %>
-        <div class="flex justify-end space-x-2">
-          <%= a_link resources_path(@model) do %>
-            <% # @todo: also go back to via resource %>
-            <%= svg 'media/svgs/arrow-left.svg' %> <%= t('avo.cancel').capitalize %>
-          <% end %>
+        <% content_for :tools do %>
+          <div class="flex justify-end space-x-2">
+            <%= a_link resources_path(@model) do %>
+              <% # @todo: also go back to via resource %>
+              <%= svg 'media/svgs/arrow-left.svg' %> <%= t('avo.cancel').capitalize %>
+            <% end %>
 
-          <%= a_button t('avo.save').capitalize, color: 'green', type: :submit do %>
-            <%= svg 'media/svgs/save.svg' %> <%= t('avo.save').capitalize %>
-          <% end if @authorization.set_record(@model).authorize_action :create, raise_exception: false %>
-        </div>
-      <% end %>
+            <%= a_button t('avo.save').capitalize, color: 'green', type: :submit do %>
+              <%= svg 'media/svgs/save.svg' %> <%= t('avo.save').capitalize %>
+            <% end if @authorization.set_record(@model).authorize_action :create, raise_exception: false %>
+          </div>
+        <% end %>
 
-      <% @resource.get_fields.each_with_index do |field, index| %>
-        <%= edit_field field, index, @resource, form unless field[:computed] %>
+        <% @resource.get_fields.each_with_index do |field, index| %>
+          <%= edit_field field, index, @resource, form unless field.computed %>
+        <% end %>
       <% end %>
     <% end %>
   <% end %>

@@ -8,13 +8,13 @@ module Avo
       end
 
       def fields(request)
-        if request.controller_class == Avo::ResourcesController
-          f.id link_to_resource: true
-        else
-          f.text :name, required: true
-        end
+        f.id link_to_resource: true
+        # if request.controller_class == Avo::ResourcesController
+        # else
+        #   f.text :name, required: true
+        # end
         f.text :name, required: true
-        field.text :name, required: true
+        # field.text :name, required: true
       #   # status :status, failed_when: [:closed, :rejected, :failed], loading_when: [:loading, :running, :waiting], nullable: true
       #   # select :stage, hide_on: [:show, :index], enum: ::Project.stages, placeholder: 'Choose the stage.', display_value: true
       #   # badge :stage, options: { info: ['Discovery', 'Ideea'], success: 'Done', warning: 'On hold', danger: 'Cancelled' }
