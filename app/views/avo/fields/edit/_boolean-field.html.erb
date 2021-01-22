@@ -3,7 +3,8 @@
     <% # @todo: has_errors & field reference options %>
     <%= form.check_box field.id,
       class: 'mx-2 text-lg h-4 w-4',
-      disabled: field.readonly
+      disabled: field.readonly,
+      checked: field.value
     %>
   </div>
 <% end %>

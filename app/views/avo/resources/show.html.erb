@@ -7,6 +7,7 @@
 
       <% content_for :tools do %>
         <div class="flex justify-end space-x-2">
+          <%= render 'actions' %>
           <% back_path = params[:via_resource_name].present? ? resource_path(to_resource_name: params[:via_resource_name], to_resource_id: params[:via_resource_id], keep_query_params: false) : resources_path(@model.class) %>
           <%= a_link back_path do %>
             <%= svg 'media/svgs/arrow-left.svg' %> <%= t('avo.go_back') %>

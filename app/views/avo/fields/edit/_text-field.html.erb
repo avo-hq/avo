@@ -3,5 +3,5 @@
     class: input_classes('w-full', has_error: (@model.present? and @model.errors.include?(field.id))),
     placeholder: field.placeholder,
     disabled: field.readonly,
-    value: @model.present? ? @model[field.id] : field.value %>
+    value: field.value %>
 <% end %>

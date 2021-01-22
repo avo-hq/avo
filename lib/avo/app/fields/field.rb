@@ -30,6 +30,7 @@ module Avo
       attr_accessor :model
       attr_accessor :view
       attr_accessor :user
+      attr_accessor :action
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
@@ -77,10 +78,11 @@ module Avo
         except_on args[:except_on] if args[:except_on].present?
       end
 
-      def hydrate(model: nil, resource: nil, view: nil)
+      def hydrate(model: nil, resource: nil, action: nil, view: nil)
         @model = model if model.present?
         @view = view if view.present?
         @resource = resource if resource.present?
+        @action = action if action.present?
 
         self
       end
@@ -88,19 +90,17 @@ module Avo
       def value
         value = @model.send(id) if model_or_class(@model) == 'model' and @model.methods.include? id
 
-        if @view === :new
-          if self.default.present? and self.default.respond_to? :call
-            value = self.default.call @model, @resource, @view, self
+        if @view === :new or @action.present?
+          if default.present? and default.respond_to? :call
+            value = default.call @model, @resource, @view, self
           else
-            value = self.default
+            value = default
           end
         end
 
         # Run callback block if present
         if computable and block.present?
-          self.computed_value = block.call @model, @resource, @view, self
-
-          value = self.computed_value
+          value = block.call @model, @resource, @view, self
         end
 
         # Run the value through resolver if present

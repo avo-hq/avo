@@ -1,6 +1,6 @@
 <tr
   class="hover:bg-gray-100 hover:shadow-row relative z-20 border-b"
-  data-resource-name="<%= resource.singular_name.downcase %>"
+  data-resource-name="<%= resource.plural_name.downcase %>"
   data-resource-id="<%= resource.model.id %>"
   data-controller="table-row"
 >
@@ -9,8 +9,6 @@
       <input type="checkbox"
         class="mx-3 w-4 h-4"
         data-action="input->table-row#toggle"
-        data-resource-name="<%= resource.plural_name %>"
-        data-resource-id="<%= resource.model.id %>"
       />
     </div>
   </td>

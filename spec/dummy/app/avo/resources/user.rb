@@ -23,7 +23,7 @@ module Avo
         # heading 'User information'
         # text :last_name, required: true, placeholder: 'Doe'
         # text :email, name: 'User Email', required: true
-        # boolean :active, name: 'Is active', show_on: :show
+        f.boolean :active, name: 'Is active', show_on: :show
         # file :cv, name: 'CV'
         # boolean :is_admin?, name: 'Is admin', only_on: :index
         # boolean_group :roles, options: { admin: 'Administrator', manager: 'Manager', writer: 'Writer' }

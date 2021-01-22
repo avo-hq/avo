@@ -13,7 +13,7 @@
               <%= svg 'media/svgs/arrow-left.svg' %> <%= t('avo.cancel').capitalize %>
             <% end %>
 
-            <%= a_button color: 'red', variant: 'outlined', type: :submit do %>
+            <%= a_button color: 'green', variant: 'outlined', type: :submit do %>
               <%= svg 'media/svgs/save.svg' %> <%= t('avo.save').capitalize %>
             <% end if @authorization.set_record(@model).authorize_action :update, raise_exception: false %>
           </div>

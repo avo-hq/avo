@@ -7,7 +7,7 @@ module Avo
     before_action :set_model, only: [:show, :edit, :destroy, :update]
     before_action :set_per_page, only: :index
     before_action :set_filters, only: :index
-    before_action :set_actions, only: :index
+    before_action :set_actions, only: [:index, :show]
 
     def index
       @heading = @resource.plural_name
@@ -141,23 +141,19 @@ module Avo
       end
 
       def set_actions
-        avo_actions = @resource.get_actions
-        actions = []
-
         if params[:resource_id].present?
           model = @resource.model_class.find params[:resource_id]
         end
 
-        avo_actions.each do |action|
+        @actions = @resource.get_actions.map do |action|
           action = action.new
 
           action.set_model model
           action.set_resource @resource
+          action.boot_fields request
 
-          actions.push(action)
+          action
         end
-
-        @actions = actions
       end
 
       def applied_filters

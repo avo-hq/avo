@@ -4,16 +4,13 @@
   <% end %>
 
   <% content_for :tools do %>
-    <div class="flex justify-end items-center mb-6 w-full">
-      <div class="mr-2">
-        <%= render 'actions' %>
-      </div>
+    <div class="flex justify-end items-center mb-6 w-full space-x-2">
+      <%= render 'actions' %>
       <%# @todo: Attach button  %>
       <%= a_link new_resource_path(@resource.model_class) do %>
         <%= svg 'media/svgs/plus.svg' %> <%= t('avo.create_new_item', { item: @resource.model_class.model_name.human.downcase }) %>
       <% end if @authorization.set_record(@resource.model_class).authorize_action :create, raise_exception: false %>
     </div>
-    <%# attach button %>
   <% end %>
 
   <div class="flex justify-between py-6 min-h-24">

@@ -4,8 +4,6 @@ require_relative 'fields_loader'
 module Avo
   module Actions
     class Action
-      extend Avo::FieldsLoader
-
       # @todo: add redirect helpers to actions responses
       attr_accessor :name
       attr_accessor :message
@@ -25,6 +23,11 @@ module Avo
       attr_accessor :model
       attr_accessor :resource
 
+      attr_accessor :field_loader
+
+      alias :field :field_loader
+      alias :f :field
+
       @@default = nil
 
       def initialize
@@ -39,6 +42,23 @@ module Avo
         @response[:message] ||= I18n.t('avo.action_ran_successfully')
         @theme ||= 'success'
         @no_confirmation ||= false
+      end
+
+      def boot_fields(request)
+        @field_loader = Avo::FieldsLoader::Loader.new
+        fields request
+      end
+
+      def get_fields(view_type: :table)
+        get_field_definitions.map do |field|
+          field.hydrate(action: self, model: @model)
+        end
+      end
+
+      def get_field_definitions
+        @field_loader.fields_bag.map do |field|
+          field.hydrate(action: self)
+        end
       end
 
       def render_response
@@ -60,6 +80,10 @@ module Avo
 
       def set_model(model)
         @model = model
+      end
+
+      def get_model
+        @model
       end
 
       def set_resource(resource)
@@ -84,7 +108,7 @@ module Avo
         self
       end
 
-      def id
+      def param_id
         self.class.name.underscore.gsub '/', '_'
       end
 
@@ -131,8 +155,8 @@ module Avo
         self
       end
 
-      def get_fields
-        self.class.get_fields
+      def self.param_id
+        self.name.underscore.gsub '/', '_'
       end
     end
   end
