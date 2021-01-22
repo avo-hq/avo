@@ -8,6 +8,8 @@
 @import './tailwindcss/components.css';
 @import './tailwindcss/utilities.css';
 
+@import './components/status.css';
+
 html,
 body {
   @apply antialiased relative h-full;
