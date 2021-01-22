@@ -1,5 +1,5 @@
 <%
-  if field[:display_with_value] && !field[:options].nil? && field[:options][field[:value]]
+  if field[:display_with_value] && field[:options].present? && field[:options][field[:value]]
     value = field[:options][field[:value]]
   else
     value = field[:value]

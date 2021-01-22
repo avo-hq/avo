@@ -1,22 +1,22 @@
 <%
-  if !field[:options].nil?
+  if field[:options].present?
     if field[:display_with_value]
+      initial_value = field[:options][field[:value]]
       options = field[:options].invert
-      options.each {|key, value| options[key] = value }
-      initialValue = field[:value]
+      options.each {|key, value| options[key] = key }
     else
       options = field[:options]
-      initialValue = options[field[:value]]
+      initial_value = options[field[:value]]
     end
   else
     options = {}
-    initialValue = field[:value] if !field[:value].nil?
-    options[initialValue] = initialValue if !field[:value].nil?
+    initial_value = field[:value] if field[:value].present?
+    options[initial_value] = initial_value if field[:value].present?
   end
 %>
 
 <%= edit_field_wrapper field: field, index: index, form: form, displayed_in_modal: displayed_in_modal do %>
-  <%= form.select field[:id], options, { selected: initialValue, prompt: field[:placeholder] }, {
+  <%= form.select field[:id], options, { selected: initial_value, prompt: field[:placeholder] }, {
       class: input_classes('select-input w-full', has_error: (@model.present? and @model.errors.include?(field[:id]))),
       disabled: field[:readonly],
       value: @model.present? ? @model[field[:id]] : field[:value] } %>
