@@ -11,15 +11,16 @@ module Avo
       def fields(request)
         f.id
         f.text :name, required: true
-        # trix :body, placeholder: 'Enter text', always_show: false
-        # text :excerpt, hide_on: [:show, :edit, :index] do |model|
+        f.textarea :body, rows: 10
+        # f.trix :body, placeholder: 'Enter text', always_show: false
+        # f.text :excerpt, hide_on: [:show, :edit, :index] do |model|
         #   begin
         #     ActionView::Base.full_sanitizer.sanitize(model.body).truncate 130
         #   rescue => exception
         #     ''
         #   end
         # end
-        # file :cover_photo, is_image: true
+        # f.file :cover_photo, is_image: true
         f.boolean :is_featured, can_see: -> () { user.is_admin? }
         f.boolean :is_published do |model|
           model.published_at.present?
