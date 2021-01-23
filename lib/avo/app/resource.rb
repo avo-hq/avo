@@ -6,9 +6,6 @@ require_relative 'fields/field'
 module Avo
   module Resources
     class Resource
-      # include Avo::FieldsLoader
-      # extend Avo::FieldsLoader
-
       attr_writer :model_class
       attr_writer :name
 
@@ -22,21 +19,7 @@ module Avo
       attr_accessor :view
       attr_accessor :model
       attr_accessor :user
-
-      # attr_accessor :model
-      # attr_accessor :id
-      # attr_accessor :fields
-      # attr_accessor :authorization
-      # attr_accessor :singular_name
-      # attr_accessor :plural_name
-      # attr_accessor :includes
-      # attr_accessor :path
-      # attr_accessor :fields
-      # attr_accessor :grid_fields
-      # attr_accessor :panels
-      # attr_accessor :fields
       attr_accessor :field_loader
-      # attr_accessor :request
 
       alias :field :field_loader
       alias :f :field
@@ -50,7 +33,7 @@ module Avo
         @default_view_type = :table
         @has_devise_password = false
 
-        init
+        configure
         boot_fields request
       end
 
@@ -98,44 +81,6 @@ module Avo
         @field_loader.fields_bag.map do |field|
           field.hydrate(resource: self)
         end
-      end
-
-      def get_fields_for_all_views
-        fields = {
-          fields: [],
-          grid_fields: [],
-        }
-
-        get_field_definitions.each do |field|
-          # abort field.inspect
-          # field_is_required_in_grid_view = grid_fields.map { |grid_field_id, field| field.id }.include?(field.id)
-          required_in_current_view = field.send("show_on_#{@view.to_s}")
-
-          next unless required_in_current_view or field_is_required_in_grid_view
-
-          furnished_field = field.fetch_for_resource(@model, self, @view)
-
-          # next unless field_resource_authorized field, furnished_field, user
-
-          next if furnished_field.blank?
-
-          furnished_field[:panel_name] = default_panel_name
-          furnished_field[:show_on_show] = field.show_on_show
-
-          if field.has_own_panel?
-            furnished_field[:panel_name] = field.name.to_s.pluralize
-          end
-
-          # if field_is_required_in_grid_view
-          #   required_field = grid_fields_by_required_field[field.id]
-          #   fields[:grid_fields][required_field] = furnished_field
-          # end
-
-          if required_in_current_view
-            fields[:fields] << furnished_field
-          end
-        end
-        fields
       end
 
       def default_panel_name
@@ -266,83 +211,6 @@ module Avo
         end
 
         Digest::MD5.hexdigest(content_to_be_hashed)
-      end
-
-      class << self
-        def hydrate_resource(model:, resource:, view: :index, user:)
-          case view
-          when :show
-            panel_name = I18n.t('avo.resource_details', item: resource.name.downcase).upcase_first
-          when :edit
-            panel_name = I18n.t('avo.edit_item', item: resource.name.downcase).upcase_first
-          when :new
-            panel_name = I18n.t('avo.create_new_item', item: resource.name.downcase).upcase_first
-          end
-
-          resource_with_fields = {
-            # id: model.id,
-            # authorization: AuthorizationService.new(user, model),
-            # singular_name: resource.singular_name,
-            # plural_name: resource.plural_name,
-            # title: model[resource.title],
-            # translation_key: resource.translation_key,
-            # path: resource.url,
-            # fields: [],
-            # grid_fields: {},
-            # panels: [{
-            #   name: panel_name,
-            #   component: 'panel',
-            # }],
-            # model: model,
-            # hash: file_hash(resource), # md5 of the file to break the cache
-          }
-
-          grid_fields = resource.get_grid_fields
-          grid_fields_by_required_field = grid_fields.map { |grid_field_id, field| [field.id, grid_field_id] }.to_h
-
-          resource.get_fields.each do |field|
-            field_is_required_in_grid_view = grid_fields.map { |grid_field_id, field| field.id }.include?(field.id)
-            required_in_current_view = field.send("show_on_#{view.to_s}")
-
-            next unless required_in_current_view or field_is_required_in_grid_view
-
-            furnished_field = field.fetch_for_resource(model, resource, view)
-
-            next unless field_resource_authorized field, furnished_field, user
-
-            next if furnished_field.blank?
-
-            furnished_field[:panel_name] = panel_name
-            furnished_field[:show_on_show] = field.show_on_show
-
-            if field.has_own_panel?
-              furnished_field[:panel_name] = field.name.to_s.pluralize
-            end
-
-            if field_is_required_in_grid_view
-              required_field = grid_fields_by_required_field[field.id]
-              resource_with_fields[:grid_fields][required_field] = furnished_field
-            end
-
-            if required_in_current_view
-              resource_with_fields[:fields] << furnished_field
-            end
-          end
-
-          # abort self.inspect
-          # self.new resource_with_fields
-          resource_with_fields
-        end
-
-        # def field_resource_authorized(field, furnished_field, user)
-        #   if [Avo::Fields::HasManyField, Avo::Fields::HasAndBelongsToManyField].include? field.class
-        #     return true if furnished_field[:relationship_model].nil?
-
-        #     AuthorizationService.authorize user, furnished_field[:relationship_model].safe_constantize, Avo.configuration.authorization_methods.stringify_keys['index']
-        #   else
-        #     true
-        #   end
-        # end
       end
     end
   end

@@ -1,7 +1,7 @@
 module Avo
   module Resources
     class Project < Resource
-      def init
+      def configure
         @title = :name
         @search = [:name, :id]
         @includes = :users

@@ -1,7 +1,7 @@
 module Avo
   module Resources
     class TeamMembership < Resource
-      def init
+      def configure
         @title = :id
         @search = :id
       end

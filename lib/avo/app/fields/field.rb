@@ -92,6 +92,7 @@ module Avo
       end
 
       def value
+        # Get model value
         value = @model.send(id) if model_or_class(@model) == 'model' and @model.methods.include? id
 
         if @view === :new or @action.present?
@@ -107,137 +108,13 @@ module Avo
           value = block.call @model, @resource, @view, self
         end
 
+        # Run each field's custom hydration
+        # fields.merge! self.hydrate_field(fields, @model, @resource, @view)
+
         # Run the value through resolver if present
         value = @format_using.call value if @format_using.present?
 
         value
-      end
-
-      def fetch
-        fields = {
-          id: id,
-          computed: block.present?,
-        }
-
-        # Fill the properties with values
-        @field_properties.each do |name, value|
-          fields[name] = self.send(name)
-        end
-
-        # Set model value
-        fields[:value] = @model.send(id) if model_or_class(@model) == 'model' and @model.methods.include? id
-
-        # Set default value for create view
-        if view === :new
-          if fields[:default].present? and fields[:default].respond_to? :call
-            fields[:value] = fields[:default].call @model, @resource, @view, self
-          else
-            fields[:value] = fields[:default]
-          end
-        end
-
-        # Run callback block if present
-        if computable and block.present?
-          fields[:computed_value] = block.call @model, @resource, @view, self
-
-          fields[:value] = fields[:computed_value]
-        end
-
-        # Run each field's custom hydration
-        fields.merge! self.hydrate_field(fields, @model, @resource, @view)
-
-        # Run the value through resolver if present
-        fields[:value] = @format_using.call fields[:value] if @format_using.present?
-
-        fields
-      end
-
-      def fetch_for_resource(model, resource, view)
-        fields = {
-          id: id,
-          computed: block.present?,
-        }
-
-        # Fill the properties with values
-        @field_properties.each do |name, value|
-          fields[name] = self.send(name)
-        end
-
-        # Set model value
-        fields[:value] = model.send(id) if model_or_class(model) == 'model' and model.methods.include? id
-
-        # Set default value for create view
-        if view === :new
-          if fields[:default].present? and fields[:default].respond_to? :call
-            fields[:value] = fields[:default].call model, resource, view, self
-          else
-            fields[:value] = fields[:default]
-          end
-        end
-
-        # Run callback block if present
-        if computable and block.present?
-          fields[:computed_value] = block.call model, resource, view, self
-
-          fields[:value] = fields[:computed_value]
-        end
-
-        # Run each field's custom hydration
-        fields.merge! self.hydrate_field(fields, model, resource, view)
-
-        # Run the value through resolver if present
-        fields[:value] = @format_using.call fields[:value] if @format_using.present?
-
-        fields
-      end
-
-      def fetch_for_action(model, resource)
-        fields = {
-          id: id,
-          # computed: block.present?,
-        }
-
-        # Fill the properties with values
-        @field_properties.each do |name, value|
-          fields[name] = self.send(name)
-        end
-
-        # Set initial value
-        # fields[:value] = model.send(id) if model_or_class(model) == 'model' and model.methods.include? id
-
-        # Set default value for create view
-        if fields[:default].present? and fields[:default].respond_to? :call
-          fields[:value] = fields[:default].call model, resource, self
-        else
-          fields[:value] = fields[:default]
-        end
-
-        # Run callback block if present
-        # if computable and @block.present?
-        #   fields[:computed_value] = @block.call model, resource, self
-
-        #   fields[:value] = fields[:computed_value]
-        # end
-
-        # Run each field's custom hydration
-        fields.merge! self.hydrate_field(fields, model, resource, :new)
-
-        # Run the value through resolver if present
-        fields[:value] = @format_using.call fields[:value] if @format_using.present?
-
-        fields
-      end
-
-      def hydrate_field(fields, model, resource)
-        final_value = fields[:value]
-
-        if fields[:computed_value].present?
-          final_value = fields[:computed_value]
-        end
-
-        {
-          value: final_value
-        }
       end
 
       def fill_field(model, key, value)

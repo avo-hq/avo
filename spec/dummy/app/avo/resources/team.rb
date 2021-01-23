@@ -1,7 +1,7 @@
 module Avo
   module Resources
     class Team < Resource
-      def init
+      def configure
         @title = :name
         @search = [:id, :name]
       end
