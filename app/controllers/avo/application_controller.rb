@@ -67,7 +67,6 @@ module Avo
         return send :"resources_#{to_resource_name.singularize}_path", to_resource_id, **existing_params, **args
       end
 
-      # abort model.inspect
       send :"resources_#{model.model_name.route_key.singularize}_path", model, **args
     end
 
