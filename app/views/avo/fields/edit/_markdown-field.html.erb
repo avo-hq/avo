@@ -2,7 +2,7 @@
   <div data-controller="simple-mde">
     <%= form.text_area field.id,
       class: input_classes('w-full js-has-simple-mde-editor', has_error: (@model.present? and @model.errors.include?(field.id))),
-      placeholder: field[:placeholder],
+      placeholder: field.placeholder,
       disabled: field.readonly,
       'data-simple-mde-target': 'element',
       'data-view': :edit do %>
