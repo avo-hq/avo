@@ -1,15 +1,20 @@
 #!/bin/bash -e
 
-function header {
-  local bold=$(tput bold)
-  local normal=$(tput sgr0)
+# Check to see if the user intentionally disabled Docker or if it's already running
+if [[ -z "$AVO_DISABLE_DOCKER" ]] && [[ -z `docker-compose ps | awk '$4 == "Up" {print $1}' | grep avo_db_1` ]]; then
+  use_docker=true
+fi;
 
-  printf "\n${bold}$1${normal}"
-  printf "\n${bold}==========================${normal}\n\n"  
-}
+if [[ $use_docker ]]; then
+  docker-compose up -d
+fi
 
-header "Running Unit Tests"
-bin/test-unit
+if [[ $WEBPACK ]]; then
+  bin/webpack
+fi;
 
-header "Running System Tests"
-bin/test-system
+bundle exec rspec "$@"
+
+if [[ $use_docker ]]; then
+  docker-compose stop
+fi

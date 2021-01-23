@@ -1,16 +1,5 @@
 #!/bin/bash -e
+. helpers
 
-# Check to see if the user intentionally disabled Docker or if it's already running
-if [[ -z "$DISABLE_DOCKER" ]] && [[ -z `docker-compose ps | awk '$4 == "Up" {print $1}' | grep avo_db_1` ]]; then
-  use_docker=true
-fi;
-
-if [[ $use_docker ]]; then
-  docker-compose up -d
-fi
-
-bundle exec rspec ./spec --tag type:feature --tag type:controller
-
-if [[ $use_docker ]]; then
-  docker-compose stop
-fi
+header "Running Unit Tests"
+bin/test ./spec --tag type:feature --tag type:controller

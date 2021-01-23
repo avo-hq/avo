@@ -7,12 +7,16 @@ bundle install
 yarn
 
 # Create & run Docker images
-docker volume create --name=avo-db-data
-docker-compose up -d
+if [[ -z "$AVO_DISABLE_DOCKER" ]]; then
+  docker volume create --name=avo-db-data
+  docker-compose up -d
+fi;
 
 # Create & migrate the database
 rails db:create
 rails db:migrate
 
 # Stop Docker images
-docker-compose stop
+if [[ -z "$AVO_DISABLE_DOCKER" ]]; then
+  docker-compose stop
+fi;
