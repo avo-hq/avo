@@ -1,0 +1,18 @@
+#!/bin/bash -e
+
+# Install gems
+bundle install
+
+# Install packages
+yarn
+
+# Create & run Docker images
+docker volume create --name=avo-db-data
+docker-compose up -d
+
+# Create & migrate the database
+rails db:create
+rails db:migrate
+
+# Stop Docker images
+docker-compose stop
