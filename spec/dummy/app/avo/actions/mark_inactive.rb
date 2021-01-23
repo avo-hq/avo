@@ -17,7 +17,7 @@ module Avo
 
       def fields(request)
         f.boolean :notify_user, default: true
-        f.textarea :message, default: 'Your account has been marked as inactive.'
+        f.text :message, default: 'Your account has been marked as inactive.'
       end
     end
   end

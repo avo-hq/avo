@@ -22,6 +22,7 @@ module Avo
       attr_accessor :no_confirmation
       attr_accessor :model
       attr_accessor :resource
+      attr_accessor :user
 
       attr_accessor :field_loader
 
@@ -53,6 +54,9 @@ module Avo
         get_field_definitions.map do |field|
           field.hydrate(action: self, model: @model)
         end
+        .select do |field|
+          field.can_see.present? ? field.can_see.call : true
+        end
       end
 
       def get_field_definitions
@@ -78,16 +82,12 @@ module Avo
         }
       end
 
-      def set_model(model)
-        @model = model
-      end
+      def hydrate(model: nil, resource: nil, user: nil)
+        @model = model if model.present?
+        @resource = resource if resource.present?
+        @user = user if user.present?
 
-      def get_model
-        @model
-      end
-
-      def set_resource(resource)
-        @resource = resource
+        self
       end
 
       def handle_action(request, models, raw_fields)

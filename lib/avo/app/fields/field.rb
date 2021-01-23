@@ -27,6 +27,7 @@ module Avo
       attr_accessor :placeholder
       attr_accessor :help
       attr_accessor :default
+      attr_accessor :can_see
       attr_accessor :model
       attr_accessor :view
       attr_accessor :user
@@ -60,6 +61,7 @@ module Avo
           placeholder: id.to_s.camelize,
           help: nil,
           default: nil,
+          can_see: nil,
         }
 
         # Set the values in the following order

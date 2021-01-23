@@ -20,7 +20,7 @@ module Avo
         #   end
         # end
         # file :cover_photo, is_image: true
-        f.boolean :is_featured
+        f.boolean :is_featured, can_see: -> () { user.is_admin? }
         f.boolean :is_published do |model|
           model.published_at.present?
         end

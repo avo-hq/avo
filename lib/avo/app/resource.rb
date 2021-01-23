@@ -71,6 +71,9 @@ module Avo
         get_field_definitions.select do |field|
           field.send("show_on_#{@view.to_s}")
         end
+        .select do |field|
+          field.can_see.present? ? field.can_see.call : true
+        end
         .map do |field|
           field.hydrate(model: @model, view: @view, resource: self)
         end

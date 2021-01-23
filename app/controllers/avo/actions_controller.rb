@@ -35,9 +35,7 @@ module Avo
         end
 
         @action = action_name.safe_constantize.new
-
-        @action.set_model model
-        @action.set_resource @resource
+        @action.hydrate(model: model, resource: resource, user: _current_user)
         @action.boot_fields request
       end
 
