@@ -12,6 +12,9 @@ module Avo
     def index
       @heading = @resource.plural_name
 
+      @available_view_types = @resource.available_view_types
+      @view_type = params[:view_type] || @resource.default_view_type || Avo.configuration.default_view_type
+
       params[:page] ||= 1
       params[:sort_by] = params[:sort_by].present? ? params[:sort_by] : :created_at
       params[:sort_direction] = params[:sort_direction].present? ? params[:sort_direction] : :desc

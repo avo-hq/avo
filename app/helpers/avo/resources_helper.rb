@@ -7,6 +7,13 @@ module Avo
       }
     end
 
+    def resource_grid(resources, resource)
+      render partial: 'avo/resources/grid', locals: {
+        resources: resources,
+        resource: resource,
+      }
+    end
+
     def index_field(field, index, resource)
       render partial: "avo/fields/index/#{field.component}", locals: {
         field: field,

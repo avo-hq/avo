@@ -68,15 +68,30 @@ module Avo
       end
 
       def get_fields(view_type: :table)
-        get_field_definitions.select do |field|
-          field.send("show_on_#{@view.to_s}")
+        fields = get_field_definitions
+
+        case view_type.to_sym
+        when :table
+          fields = fields.select do |field|
+            field.send("show_on_#{@view.to_s}")
+          end
+          .select do |field|
+            field.show_on_grid.blank?
+          end
+          .select do |field|
+            field.can_see.present? ? field.can_see.call : true
+          end
+        when :grid
+          fields = fields.select do |field|
+            field.show_on_grid.present?
+          end
         end
-        .select do |field|
-          field.can_see.present? ? field.can_see.call : true
-        end
-        .map do |field|
+
+        fields = fields.map do |field|
           field.hydrate(model: @model, view: @view, resource: self)
         end
+
+        fields
       end
 
       def get_field_definitions
@@ -90,10 +105,6 @@ module Avo
           fields: [],
           grid_fields: [],
         }
-
-        # abort [@view, @user].inspect
-        # grid_fields = get_grid_fields
-        # grid_fields_by_required_field = grid_fields.map { |grid_field_id, field| [field.id, grid_field_id] }.to_h
 
         get_field_definitions.each do |field|
           # abort field.inspect
@@ -180,12 +191,8 @@ module Avo
         self.class.name.demodulize.underscore
       end
 
-      def get_grid_fields
-        self.class.get_grid_fields
-      end
-
       def available_view_types
-        get_grid_fields.length > 0 ? [:grid, :table] : [:table]
+        get_fields(view_type: :grid).length > 0 ? [:grid, :table] : [:table]
       end
 
       def get_filters

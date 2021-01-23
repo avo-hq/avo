@@ -5,7 +5,7 @@ module Avo
         @title = :name
         @search = [:name, :id]
         @includes = :user
-        # @default_view_type = :grid
+        @default_view_type = :grid
       end
 
       def fields(request)
@@ -26,14 +26,12 @@ module Avo
         end
 
         f.belongs_to :user, searchable: false, placeholder: '—'
-      end
 
-      # # These fields are a reference on the already configured fields above
-      # grid do
-      #   preview :cover_photo
-      #   title :name
-      #   body :excerpt
-      # end
+        # Grid view
+        f.text :name, required: true, show_on_grid: :preview
+        f.text :name, required: true, show_on_grid: :title
+        f.text :name, required: true, show_on_grid: :body
+      end
 
       # # use_filter Avo::Filters::FeaturedFilter
       # # use_filter Avo::Filters::PublishedFilter

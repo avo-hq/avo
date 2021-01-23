@@ -1,4 +1,4 @@
-<div class="flex flex-row space-x-2">
+<div class="space-x-2 flex flex-row justify-around w-full">
   <%# add via_resource_name and via_resource_id params  %>
   <% if @authorization.set_record(resource.model).authorize_action(:show, raise_exception: false) %>
     <%= link_to svg('media/svgs/eye.svg', class: 'text-gray-500 h-6 hover:text-gray-600'),

@@ -32,6 +32,7 @@ module Avo
       attr_accessor :view
       attr_accessor :user
       attr_accessor :action
+      attr_accessor :show_on_grid
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
@@ -62,6 +63,7 @@ module Avo
           help: nil,
           default: nil,
           can_see: nil,
+          show_on_grid: false,
         }
 
         # Set the values in the following order

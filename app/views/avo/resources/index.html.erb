@@ -18,14 +18,27 @@
       <%# search %>
     </div>
     <div class="flex justify-end items-center px-6 space-x-3">
-      <%# grid view %>
+      <%= render 'view_toggle_button' %>
       <%= render 'filters' if @filters.present? %>
     </div>
   </div>
+  <% if @view_type.to_sym == :table %>
   <div class="w-full overflow-auto min-h-28 flex flex-col">
     <div class="relative flex-1 flex">
       <%= resource_table @resources, @resource %>
     </div>
-    <%= paginate @models, class: 'avo-pagination justify-end flex px-4 space-x-2' %>
+
+    <div class="py-4">
+      <%= paginate @models %>
+    </div>
   </div>
+  <% elsif @view_type.to_sym == :grid %>
+    <% content_for :bare_content, flush: true do %>
+      <%= resource_grid @resources, @resource %>
+
+      <div class="bg-white rounded-xl shadow-xl mt-8 py-6">
+        <%= paginate @models %>
+      </div>
+    <% end %>
+  <% end %>
 <% end %>
