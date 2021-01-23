@@ -1,8 +1,35 @@
+version: '3.2'
+
 volumes:
   avo-db-data:
     external: true
 
 services:
+  app:
+    build: 
+      context: .
+      dockerfile: docker/Dockerfile
+​
+    environment:
+      # Convey which port Capybara should be starting test servers on; fail loudly
+      # if we've neglected to configure it.
+      CAPYBARA_SERVER_PORT: "${CAPYBARA_SERVER_PORT:-3434}"
+      # The test server WILL NOT BE AVAILABLE from outside the container if it binds 
+      # to 127.0.0.1. It must bind to 0.0.0.0 to be exposed to the outside world.
+      CAPYBARA_SERVER_HOST: "${CAPYBARA_SERVER_HOST:-0.0.0.0}"
+    
+    volumes:
+      - type: bind
+        source: ..
+        target: /workspace
+        consistency: cached
+​
+    ports:
+      # Expose the test server port. Fail loudly if CAPYBARA_SERVER_PORT isn't set.
+      - "${CAPYBARA_SERVER_PORT:-3434}:${CAPYBARA_SERVER_PORT:-3434}"
+      # Also expose the usual app port
+      - "3000:3000"
+
   db:
     image: postgres:11.5
     volumes:

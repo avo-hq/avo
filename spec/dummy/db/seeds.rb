@@ -28,7 +28,7 @@ end
 25.times do
   post = FactoryBot.create(:post, user_id: users.sample.id)
 
-  post.cover_photo.attach(io: open("https://source.unsplash.com/random/#{[1000, 1100, 1200, 1300].sample}x#{[1000, 1100, 1200, 1300].sample}"), filename: 'cover.jpg')
+  post.cover_photo.attach(io: URI.open("https://source.unsplash.com/random/#{[1000, 1100, 1200, 1300].sample}x#{[1000, 1100, 1200, 1300].sample}"), filename: 'cover.jpg')
 end
 
 projects = []
