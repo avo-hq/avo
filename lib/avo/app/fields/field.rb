@@ -33,6 +33,9 @@ module Avo
       attr_accessor :user
       attr_accessor :action
       attr_accessor :show_on_grid
+      attr_accessor :meta
+
+      @meta = {}
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
@@ -64,6 +67,7 @@ module Avo
           default: nil,
           can_see: nil,
           show_on_grid: false,
+          meta: {},
         }
 
         # Set the values in the following order
@@ -88,6 +92,11 @@ module Avo
         @resource = resource if resource.present?
         @action = action if action.present?
 
+        # Run each field's custom hydration
+        if self.respond_to? :build_meta
+          @meta.merge! self.build_meta(model: @model, resource: @resource, view: @view)
+        end
+
         self
       end
 
@@ -107,9 +116,6 @@ module Avo
         if computable and block.present?
           value = block.call @model, @resource, @view, self
         end
-
-        # Run each field's custom hydration
-        # fields.merge! self.hydrate_field(fields, @model, @resource, @view)
 
         # Run the value through resolver if present
         value = @format_using.call value if @format_using.present?

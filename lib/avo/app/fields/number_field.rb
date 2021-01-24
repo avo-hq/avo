@@ -11,16 +11,10 @@ module Avo
 
         super(name, **args, &block)
 
-        @min = args[:min].present? ? args[:min].to_f : nil
-        @max = args[:max].present? ? args[:max].to_f : nil
-        @step = args[:step].present? ? args[:step].to_f : nil
-      end
-
-      def hydrate_field(fields, model, resource, view)
-        {
-          min: @min,
-          max: @max,
-          step: @step,
+        @meta = {
+          min: args[:min].present? ? args[:min].to_f : nil,
+          max: args[:max].present? ? args[:max].to_f : nil,
+          step: args[:step].present? ? args[:step].to_f : nil,
         }
       end
     end

@@ -1,8 +1,8 @@
 <%= edit_field_wrapper field: field, index: index, form: form, displayed_in_modal: displayed_in_modal do %>
-  <%= form.text_area field[:id],
-    class: input_classes('w-full', has_error: (@model.present? and @model.errors.include?(field[:id]))),
-    placeholder: field[:placeholder],
-    disabled: field[:readonly],
-    value: @model.present? ? @model[field[:id]] : field[:value],
-    rows: field[:rows] %>
+  <%= form.text_area field.id,
+    class: input_classes('w-full', has_error: (@model.present? and @model.errors.include?(field.id))),
+    placeholder: field.placeholder,
+    disabled: field.readonly,
+    value: @model.present? ? @model[field.id] : field.value,
+    rows: field.meta[:rows] %>
 <% end %>

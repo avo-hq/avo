@@ -1,19 +1,16 @@
 module Avo
   module Fields
     class BelongsToField < Field
-      attr_accessor :searchable
-      attr_accessor :relation_method
-
       def initialize(name, **args, &block)
         @defaults = {
           component: 'belongs-to-field',
           placeholder: I18n.t('avo.choose_an_option')
         }
 
-        @searchable = args[:searchable] == true ? true : false
-        @relation_method = name.to_s.parameterize.underscore
-
         super(name, **args, &block)
+
+        @meta[:searchable] = args[:searchable] == true ? true : false
+        @meta[:relation_method] = name.to_s.parameterize.underscore
       end
 
       def options
@@ -32,12 +29,12 @@ module Avo
       def foreign_key
         if @model.present?
           if @model.class == Class
-            @model.reflections[@relation_method].foreign_key
+            @model.reflections[@meta[:relation_method]].foreign_key
           else
-            @model.class.reflections[@relation_method].foreign_key
+            @model.class.reflections[@meta[:relation_method]].foreign_key
           end
         elsif @resource.present?
-          @resource.model_class.reflections[@relation_method].foreign_key
+          @resource.model_class.reflections[@meta[:relation_method]].foreign_key
         end
       end
 

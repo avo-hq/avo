@@ -26,7 +26,7 @@ module Avo
           model.published_at.present?
         end
 
-        f.belongs_to :user, searchable: false, placeholder: '—'
+        f.belongs_to :user, meta: {searchable: false}, placeholder: '—'
 
         # Grid view
         f.text :name, required: true, show_on_grid: :preview
