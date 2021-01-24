@@ -3,7 +3,7 @@ require 'rails_helper'
 module Avo
   module Resources
     class DummyUser < Resource
-      def init
+      def configure
         @title = :name
         @translation_key = 'avo.resource_translations.user'
         @search = [:id, :first_name, :last_name]
@@ -12,7 +12,7 @@ module Avo
       end
 
       def fields(request)
-        f.id :iddd, link_to_resource: true do |q,w,e|
+        f.id :iddd, link_to_resource: true do |model, resource, view, field|
           # abort ['qwe'].inspect
           '123'
         end
@@ -24,7 +24,7 @@ end
 module Avo
   module Resources
     class DummyUser < Resource
-      def init
+      def configure
         @title = :name
         @translation_key = 'avo.resource_translations.user'
         @search = [:id, :first_name, :last_name]
@@ -33,7 +33,7 @@ module Avo
       end
 
       def fields(request)
-        f.id :iddd, link_to_resource: true do |q,w,e|
+        f.id :iddd, link_to_resource: true do |model, resource, view, field|
           # abort ['qwe'].inspect
           123
         end

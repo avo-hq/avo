@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 RSpec.feature 'password', type: :feature do
-
-
   context 'edit' do
     let(:url) { "/avo/resources/users/#{user.id}/edit" }
 
