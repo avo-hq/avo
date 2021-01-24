@@ -11,10 +11,10 @@ module Avo
     @@app = {
       root_path: '',
       resources: [],
-      field_names: {},
       cache_store: nil
     }
     @@license = nil
+    @@fields = []
 
     class << self
       def boot
@@ -30,12 +30,16 @@ module Avo
       end
 
       def init(current_request = nil)
-        init_resources
+        init_resources current_request
         @@license = LicenseManager.new(HQ.new(current_request).response).license
       end
 
       def app
         @@app
+      end
+
+      def fields
+        @@fields
       end
 
       def license
@@ -46,12 +50,13 @@ module Avo
         @@app[:cache_store]
       end
 
-      # This method will take all fields available in the Avo::Fields namespace and create a method for them.
+      # This method will find all fields available in the Avo::Fields namespace and add them to a @@fields array
+      # so later we can instantiate them on our resources.
       #
       # If the field has their `def_method` set up it will follow that convention, if not it will snake_case the name:
       #
       # Avo::Fields::TextField -> text
-      # Avo::Fields::TextDateTime -> date_time
+      # Avo::Fields::DateTimeField -> date_time
       def init_fields
         Avo::Fields.constants.each do |class_name|
           next if class_name.to_s == 'Field'
@@ -61,8 +66,6 @@ module Avo
           if class_name.to_s.end_with? 'Field'
             field_class = "Avo::Fields::#{class_name.to_s}".safe_constantize
             method_name = field_class.get_field_name
-
-            next if Avo::Resources::Resource.method_defined? method_name.to_sym
           else
             # Try one level deeper for custom fields
             namespace = class_name
@@ -87,34 +90,20 @@ module Avo
       end
 
       def load_field(method_name, klass)
-        @@app[:field_names][method_name] = klass
-
-        # Load field to concerned classes
-        [Avo::Resources::Resource, Avo::Actions::Action].each do |klass_entity|
-          klass_entity.define_singleton_method method_name.to_sym do |*args, &block|
-            if block.present?
-              field_class = klass::new(args[0], **args[1] || {}, &block)
-            else
-              field_class = klass::new(args[0], **args[1] || {})
-            end
-
-            klass_entity.add_field(self, field_class)
-          end
-        end
+        @@fields.push(
+          name: method_name,
+          class: klass,
+        )
       end
 
-      def get_field_names
-        @@app[:field_names]
-      end
-
-      def init_resources
+      def init_resources(request)
         @@app[:resources] = Avo::Resources.constants
           .select do |r|
             r != :Resource
           end
           .map do |c|
             if Avo::Resources.const_get(c).is_a? Class
-              "Avo::Resources::#{c}".safe_constantize.new
+              "Avo::Resources::#{c}".safe_constantize.new request
             end
           end
       end
@@ -129,14 +118,14 @@ module Avo
         end
       end
 
-      # This returns the Avo resource by singular snake_cased name
+      # Returns the Avo resource by singular snake_cased name
       #
       # get_resource_by_name('user') => Avo::Resources::User
       def get_resource_by_name(name)
         self.get_resource name.singularize.camelize
       end
 
-      # This returns the Avo resource by singular snake_cased name
+      # Returns the Avo resource by singular snake_cased name
       #
       # get_resource_by_name('User') => Avo::Resources::User
       # get_resource_by_name(User) => Avo::Resources::User
@@ -146,7 +135,7 @@ module Avo
         end
       end
 
-      # This returns the Rails model class by singular snake_cased name
+      # Returns the Rails model class by singular snake_cased name
       #
       # get_model_class_by_name('user') => User
       def get_model_class_by_name(name)
@@ -156,22 +145,9 @@ module Avo
       def get_available_resources(user = nil)
         App.get_resources
           .select do |resource|
-            # @todo: remove this filter
-            resource.name === 'Project' or resource.name === 'Post' or resource.name === 'User'
-          end
-          .select do |resource|
             AuthorizationService::authorize user, resource.model, Avo.configuration.authorization_methods.stringify_keys['index'], raise_exception: false
           end
-          # .map do |resource|
-          #   {
-          #     label: resource.plural_name.humanize(keep_id_suffix: true),
-          #     resource_name: resource.url.pluralize,
-          #     translation_key: resource.translation_key,
-          #     resource: resource,
-          #   }
-          # end
-          # .reject { |r| r.blank? }
-          # .sort_by { |r| r.name }
+          .sort_by { |r| r.name }
       end
     end
   end

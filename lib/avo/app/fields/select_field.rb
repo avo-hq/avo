@@ -3,7 +3,7 @@ module Avo
     class SelectField < Field
       def initialize(name, **args, &block)
         @defaults = {
-          component: 'select-field',
+          partial_name: 'select-field',
         }
 
         super(name, **args, &block)

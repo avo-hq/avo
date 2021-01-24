@@ -6,7 +6,7 @@ module Avo
     class GravatarField < Field
       def initialize(name, **args, &block)
         @defaults = {
-          component: 'gravatar-field',
+          partial_name: 'gravatar-field',
           name: 'Avatar',
           id: args[:id].present? ? args[:id] : 'email',
         }

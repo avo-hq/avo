@@ -7,7 +7,8 @@ en:
     run: 'Run'
     cancel: 'Cancel'
     action_ran_successfully: 'Action ran successfully!'
-    resource_details: "%{item} details"
+    resource_details: "%{item} details: %{title}"
+    update_item: 'update %{item}: %{title}'
     unauthorized: 'Unauthorized'
     attachment_class_attached: '%{attachment_class} attached.'
     attachment_class_detached: '%{attachment_class} detached.'

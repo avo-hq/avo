@@ -25,7 +25,7 @@
 
       <div class="p-4 border-gray-300 border-t">
         <% # @todo: disable if filters not modified  %>
-        <%= a_link t('avo.reset_filters'), resources_path(@resource_model, filters: nil, keep_query_params: true), color: :gray, class: 'w-full justify-center' %>
+        <%= a_link t('avo.reset_filters'), resources_path(@resource.model_class, filters: nil, keep_query_params: true), color: :gray, class: 'w-full justify-center' %>
       </div>
     </div>
   </div>

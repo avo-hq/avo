@@ -1,45 +1,43 @@
 module Avo
   module Resources
     class Post < Resource
-      def initialize
+      def configure
         @title = :name
         @search = [:name, :id]
         @includes = :user
-        # @default_view_type = :grid
+        @default_view_type = :grid
       end
 
-      fields do
-        id
-        text :name, required: true, link_to_resource: true
-        textarea :body, rows: 10
-        # trix :body, placeholder: 'Enter text', always_show: false
-        # text :excerpt, hide_on: [:show, :edit, :index] do |model|
+      def fields(request)
+        f.id
+        f.text :name, required: true
+        f.textarea :body, rows: 10
+        # f.trix :body, placeholder: 'Enter text', always_show: false
+        # f.text :excerpt, hide_on: [:show, :edit, :index] do |model|
         #   begin
         #     ActionView::Base.full_sanitizer.sanitize(model.body).truncate 130
         #   rescue => exception
         #     ''
         #   end
         # end
-        # file :cover_photo, is_image: true
-        boolean :is_featured
-        boolean :is_published do |model|
+        # f.file :cover_photo, is_image: true
+        f.boolean :is_featured, can_see: -> () { user.is_admin? }
+        f.boolean :is_published do |model|
           model.published_at.present?
         end
 
-        belongs_to :user, searchable: false, placeholder: '—'
+        f.belongs_to :user, meta: { searchable: false }, placeholder: '—'
+
+        # Grid view
+        f.text :name, required: true, show_on_grid: :preview
+        f.text :name, required: true, show_on_grid: :title
+        f.text :name, required: true, show_on_grid: :body
       end
 
-      # These fields are a reference on the already configured fields above
-      grid do
-        preview :cover_photo
-        title :name
-        body :excerpt
-      end
+      # # use_filter Avo::Filters::FeaturedFilter
+      # # use_filter Avo::Filters::PublishedFilter
 
-      # use_filter Avo::Filters::FeaturedFilter
-      # use_filter Avo::Filters::PublishedFilter
-
-      use_action Avo::Actions::TogglePublished
+      # use_action Avo::Actions::TogglePublished
     end
   end
 end

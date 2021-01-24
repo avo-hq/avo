@@ -35,6 +35,8 @@ module Avo
     end
 
     def resources_path(model, keep_query_params: false, **args)
+      return if model.nil?
+
       existing_params = {}
 
       begin
@@ -77,28 +79,47 @@ module Avo
     end
 
     private
-      def set_model
-        @model = resource_model.find params[:id]
+      def set_resource_name
+        @resource_name = resource_name
       end
 
+      def set_resource
+        @resource = resource
+      end
+
+      def set_model
+        @model = eager_load_files(@resource.model_class, @resource).find params[:id]
+      end
+
+      # Get the pluralized resource name for this request
+      # Ex: projects, teams, users
+      # @todo: figure out a better way of getting this
       def resource_name
         begin
           request.path
-          .match(/\/?#{Avo.configuration.root_path.gsub('/', '')}\/resources\/([a-z1-9\-_]*)\/?/mi)
-          .captures
-          .first
+            .match(/\/?#{Avo.configuration.root_path.gsub('/', '')}\/resources\/([a-z1-9\-_]*)\/?/mi)
+            .captures
+            .first
         rescue => exception
           params[:resource_name]
         end
       end
 
+      # Gets the Avo resource for this request based on the request from the `resource_name` "param"
+      # Ex: Avo::Resources::Project, Avo::Resources::Team, Avo::Resources::User
       def resource
-        eager_load_files(resource_model).find params[:id]
+        App.get_resource @resource_name.to_s.camelize.singularize
       end
 
-      def eager_load_files(query)
-        if avo_resource.attached_file_fields.present?
-          avo_resource.attached_file_fields.map(&:id).map do |field|
+      # Gets the Active Record model class for this request
+      # Ex: ::Project, ::Team, ::User
+      # def model_class
+      #   @resource.model_class
+      # end
+
+      def eager_load_files(query, resource)
+        if resource.attached_file_fields.present?
+          resource.attached_file_fields.map(&:id).map do |field|
             query = query.send :"with_attached_#{field}"
           end
         end
@@ -106,18 +127,11 @@ module Avo
         query
       end
 
-      def resource_model
-        avo_resource.model
-      end
-
-      def avo_resource
-        App.get_resource resource_name.to_s.camelize.singularize
-      end
 
       # def authorize_user
       #   return if params[:controller] == 'avo/search'
 
-      #   model = record = avo_resource.model
+      #   model = record = resource.model
 
       #   if ['show', 'edit', 'update'].include?(params[:action]) && params[:controller] == 'avo/resources'
       #     record = resource

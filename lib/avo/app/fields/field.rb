@@ -10,7 +10,8 @@ module Avo
       attr_accessor :id
       attr_accessor :name
       attr_accessor :translation_key
-      attr_accessor :component
+      attr_accessor :partial_name
+      attr_accessor :partial_path
       attr_accessor :updatable
       attr_accessor :sortable
       attr_accessor :required
@@ -18,13 +19,24 @@ module Avo
       attr_accessor :nullable
       attr_accessor :null_values
       attr_accessor :format_using
-      attr_accessor :computable
+      attr_accessor :computed # if block is present
+      attr_accessor :computable # if allowed to be computable
+      attr_accessor :computed_value # the value after computation
       attr_accessor :is_array_param
       attr_accessor :is_object_param
       attr_accessor :block
       attr_accessor :placeholder
       attr_accessor :help
       attr_accessor :default
+      attr_accessor :can_see
+      attr_accessor :model
+      attr_accessor :view
+      attr_accessor :user
+      attr_accessor :action
+      attr_accessor :show_on_grid
+      attr_accessor :meta
+
+      @meta = {}
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
@@ -39,7 +51,7 @@ module Avo
           name: id.to_s.humanize(keep_id_suffix: true),
           translation_key: nil,
           block: block,
-          component: 'field',
+          partial_name: 'field',
           required: false,
           readonly: false,
           updatable: true,
@@ -47,11 +59,16 @@ module Avo
           nullable: false,
           null_values: null_values,
           computable: true,
+          computed: block.present?,
+          computed_value: false,
           is_array_param: false,
           format_using: false,
           placeholder: id.to_s.camelize,
           help: nil,
           default: nil,
+          can_see: nil,
+          show_on_grid: false,
+          meta: {},
         }
 
         # Set the values in the following order
@@ -68,94 +85,47 @@ module Avo
         hide_on args[:hide_on] if args[:hide_on].present?
         only_on args[:only_on] if args[:only_on].present?
         except_on args[:except_on] if args[:except_on].present?
+
+        if args[:use_partials].present?
+          @custom_partials = args[:use_partials]
+        end
       end
 
-      def fetch_for_resource(model, resource, view)
-        fields = {
-          id: id,
-          computed: block.present?,
-        }
+      def hydrate(model: nil, resource: nil, action: nil, view: nil)
+        @model = model if model.present?
+        @view = view if view.present?
+        @resource = resource if resource.present?
+        @action = action if action.present?
 
-        # Fill the properties with values
-        @field_properties.each do |name, value|
-          fields[name] = self.send(name)
+        # Run each field's custom hydration
+        if self.respond_to? :build_meta
+          @meta.merge! self.build_meta(model: @model, resource: @resource, view: @view)
         end
 
-        # Set model value
-        fields[:value] = model.send(id) if model_or_class(model) == 'model' and model.methods.include? id
+        self
+      end
 
-        # Set default value for create view
-        if view === :new
-          if fields[:default].present? and fields[:default].respond_to? :call
-            fields[:value] = fields[:default].call model, resource, view, self
+      def value
+        # Get model value
+        value = @model.send(id) if model_or_class(@model) == 'model' and @model.methods.include? id
+
+        if @view === :new or @action.present?
+          if default.present? and default.respond_to? :call
+            value = default.call @model, @resource, @view, self
           else
-            fields[:value] = fields[:default]
+            value = default
           end
         end
 
         # Run callback block if present
         if computable and block.present?
-          fields[:computed_value] = block.call model, resource, view, self
-
-          fields[:value] = fields[:computed_value]
+          value = block.call @model, @resource, @view, self
         end
-
-        # Run each field's custom hydration
-        fields.merge! self.hydrate_field(fields, model, resource, view)
 
         # Run the value through resolver if present
-        fields[:value] = @format_using.call fields[:value] if @format_using.present?
+        value = @format_using.call value if @format_using.present?
 
-        fields
-      end
-
-      def fetch_for_action(model, resource)
-        fields = {
-          id: id,
-          # computed: block.present?,
-        }
-
-        # Fill the properties with values
-        @field_properties.each do |name, value|
-          fields[name] = self.send(name)
-        end
-
-        # Set initial value
-        # fields[:value] = model.send(id) if model_or_class(model) == 'model' and model.methods.include? id
-
-        # Set default value for create view
-        if fields[:default].present? and fields[:default].respond_to? :call
-          fields[:value] = fields[:default].call model, resource, self
-        else
-          fields[:value] = fields[:default]
-        end
-
-        # Run callback block if present
-        # if computable and @block.present?
-        #   fields[:computed_value] = @block.call model, resource, self
-
-        #   fields[:value] = fields[:computed_value]
-        # end
-
-        # Run each field's custom hydration
-        fields.merge! self.hydrate_field(fields, model, resource, :new)
-
-        # Run the value through resolver if present
-        fields[:value] = @format_using.call fields[:value] if @format_using.present?
-
-        fields
-      end
-
-      def hydrate_field(fields, model, resource)
-        final_value = fields[:value]
-
-        if fields[:computed_value].present?
-          final_value = fields[:computed_value]
-        end
-
-        {
-          value: final_value
-        }
+        value
       end
 
       def fill_field(model, key, value)
@@ -164,6 +134,12 @@ module Avo
         model.send("#{key}=", value)
 
         model
+      end
+
+      def partial_path_for(view)
+        return @custom_partials[view] if @custom_partials.present? and @custom_partials[view].present?
+
+        "avo/fields/#{view}/#{partial_name}"
       end
 
       # Try to see if the field has a different database ID than it's name

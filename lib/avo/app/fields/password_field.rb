@@ -5,7 +5,7 @@ module Avo
     class PasswordField < TextField
       def initialize(name, **args, &block)
         @defaults = {
-          component: 'password-field',
+          partial_name: 'password-field',
         }
 
         show_on :forms

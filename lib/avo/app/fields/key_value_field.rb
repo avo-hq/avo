@@ -5,7 +5,7 @@ module Avo
     class KeyValueField < Field
       def initialize(name, **args, &block)
         @defaults = {
-          component: 'key-value-field',
+          partial_name: 'key-value-field',
         }
 
         super(name, **args, &block)

@@ -5,7 +5,7 @@ module Avo
     class DatetimeField < DateField
       def initialize(name, **args, &block)
         @defaults = {
-          component: 'datetime-field',
+          partial_name: 'datetime-field',
         }
 
         super(name, **args, &block)

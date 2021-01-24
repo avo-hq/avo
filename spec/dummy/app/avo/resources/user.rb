@@ -1,22 +1,23 @@
 module Avo
   module Resources
     class User < Resource
-      def initialize
+      def configure
         @title = :name
         @translation_key = 'avo.resource_translations.user'
         @search = [:id, :first_name, :last_name]
         @includes = :posts
         @has_devise_password = true
+        # @name = 'usy'
       end
 
-      fields do
-        id
+      def fields(request)
+        f.id :id, link_to_resource: true
         # gravatar :email, link_to_resource: true
-        heading 'User Information'
-        text :first_name, required: true, placeholder: 'John', default: 'default'
-        text :last_name, required: true, placeholder: 'Doe'
-        text :email, name: 'User Email', required: true
-        # boolean :active, name: 'Is active', show_on: :show
+        f.heading 'User Information'
+        f.text :first_name, required: true, placeholder: 'John', default: 'default'
+        f.text :last_name, required: true, placeholder: 'Doe'
+        f.text :email, name: 'User Email', required: true
+        f.boolean :active, name: 'Is active', show_on: :show
         # file :cv, name: 'CV'
         # boolean :is_admin?, name: 'Is admin', only_on: :index
         # boolean_group :roles, options: { admin: 'Administrator', manager: 'Manager', writer: 'Writer' }
@@ -25,10 +26,10 @@ module Avo
         #   model.posts.to_a.count > 0 ? 'yes' : 'no'
         # end
 
-        password :password, name: 'User Password', required: false, except_on: :forms, help: 'You may verify the password strength <a href="http://www.passwordmeter.com/">here</a>.'
-        password :password_confirmation, name: 'Password confirmation', required: false, only_on: :new
+        f.password :password, name: 'User Password', required: false, except_on: :forms, help: 'You may verify the password strength <a href="http://www.passwordmeter.com/">here</a>.'
+        f.password :password_confirmation, name: 'Password confirmation', required: false, only_on: :new
 
-        heading '<div class="text-gray-300 uppercase font-bold">DEV</div>', as_html: true
+        f.heading '<div class="text-gray-300 uppercase font-bold">DEV</div>', as_html: true
         # code :custom_css, theme: 'dracula', language: 'css', help: "This enables you to edit the user's custom styles.", height: '125px'
 
         # hidden :team_id, default: 0 # For testing purposes
@@ -38,7 +39,7 @@ module Avo
       end
 
       use_action Avo::Actions::MarkInactive
-      use_action Avo::Actions::MakeAdmin
+      # use_action Avo::Actions::MakeAdmin
     end
   end
 end

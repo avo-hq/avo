@@ -28,7 +28,9 @@ application.load(definitionsFromContext(componentsContext))
 window.I18n = I18n
 
 document.addEventListener('DOMContentLoaded', Avo.init)
-document.addEventListener('turbo:load', (event) => console.log('turbo:load', event))
+document.addEventListener('turbo:load', () => document.body.classList.remove('turbo-loading'))
+document.addEventListener('turbo:visit', () => document.body.classList.add('turbo-loading'))
+document.addEventListener('turbo:submit-start', () => document.body.classList.add('turbo-loading'))
 
 // Mousetrap.bind('r r r', () => Avo.reload())
 

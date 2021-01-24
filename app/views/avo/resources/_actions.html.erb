@@ -3,7 +3,7 @@
     <%= a_button class: "js-actions-dropdown-button focus:outline-none",
       color: "blue",
       'data-action': "click->toggle-panel#togglePanel",
-      disabled: true do
+      disabled: action_name != 'show' do
     %>
       <%= svg 'media/svgs/arrow-left.svg', class: 'h-4 mr-1 transform -rotate-90' %> <%= t 'avo.actions' %>
     <% end %>
@@ -19,24 +19,14 @@
           when Avo::Filters::BooleanFilter.to_s
             template = 'boolean_action'
           end
+          link = action_name == 'show' ? "/avo/resources/#{@resource.model_class.model_name.route_key}/#{@model.id}/actions/#{action.param_id}" : "/avo/resources/#{@resource.model_class.model_name.route_key}/actions/#{action.param_id}"
       %>
-        <%= link_to "/avo/resources/#{@resource_model.model_name.route_key}/actions/#{action.id}",
+        <%= link_to link,
           'data-turbo-frame': 'actions_show',
           'data-action': 'click->actions-picker#visitAction',
           class: 'flex items-center w-full py-2 px-4 font-bold text-gray-700 hover:text-white hover:bg-blue-500' do %>
           <%= svg 'media/svgs/play.svg', extra_class: 'inline' %> <%= action.name %>
         <% end %>
-        <%#= form_with url: "/avo/resources/#{@resource_model.model_name.route_key}/actions/#{action.id}/show" do |form| %>
-          <%#= form.hidden_field :resource_ids, value: [], 'data-actions-target': 'resourceIds' %>
-
-          <%#= form.button type: :submit,
-             class: 'flex items-center w-full py-2 px-4 font-bold text-gray-700 hover:text-white hover:bg-blue-500',
-            'data-turbo-frame': 'actions_show',
-            'data-resource-name': @resource_model.model_name.route_key,
-            'data-action': 'click->actions#visitAction' do %>
-            <%#= svg 'media/svgs/play.svg', extra_class: 'inline' %> <%#= action.name %>
-          <%# end %>
-        <%# end %>
       <% end %>
     </div>
   </div>

@@ -3,10 +3,10 @@
   index_from = (@models.prev_page || 0) * @models.limit_value + 1
   index_to = [index_from + @models.limit_value - 1, @models.total_count].min
   total_count = @models.total_count
-  per_page_options = [*Avo.configuration.per_page_steps, Avo.configuration.per_page.to_i].sort.uniq
+  per_page_options = [*Avo.configuration.per_page_steps, Avo.configuration.per_page.to_i, @per_page.to_i].sort.uniq
 %>
 
-<div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+<div class="bg-white px-4 flex items-center justify-between aborder-t aborder-gray-200 sm:px-6 rounded-xl">
   <div class="hidden sm:flex-2 sm:flex sm:items-center sm:justify-between">
     <div>
       <div class="text-sm leading-5 text-gray-700 flex items-center">
@@ -18,7 +18,7 @@
           </div>
 
           <% per_page_options.each do |option| %>
-            <%= link_to "Change to #{option} items per page", resources_path(@resource_model, per_page: option, keep_query_params: true), class: 'hidden', 'data-per-page-option': option %>
+            <%= link_to "Change to #{option} items per page", resources_path(@resource.model_class, per_page: option, keep_query_params: true), class: 'hidden', 'data-per-page-option': option %>
           <% end %>
         </div>
       </div>

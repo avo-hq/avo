@@ -3,7 +3,7 @@ module Avo
     class CountryField < Field
       def initialize(name, **args, &block)
         @defaults = {
-          component: 'country-field',
+          partial_name: 'country-field',
           placeholder: I18n.t('avo.choose_a_country'),
         }
 

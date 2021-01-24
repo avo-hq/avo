@@ -33,6 +33,7 @@ module Avo
         # What to do on file change
         config.to_prepare do
           Dir.glob(avo_root_path + '/lib/avo/app/**/*.rb'.to_s).each { |c| load c }
+          Avo::App.boot
         end
       else
         Dir.glob(avo_root_path + '/lib/avo/app/**/*.rb'.to_s).each { |c| require c }

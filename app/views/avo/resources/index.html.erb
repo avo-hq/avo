@@ -4,17 +4,13 @@
   <% end %>
 
   <% content_for :tools do %>
-    <div class="flex justify-end items-center mb-6 w-full">
-      <div class="mr-2">
-        <%= render 'actions' %>
-      </div>
+    <div class="flex justify-end items-center mb-6 w-full space-x-2">
+      <%= render 'actions' %>
       <%# @todo: Attach button  %>
-      <%= a_link new_resource_path(@resource_model) do %>
-        <%= svg 'media/svgs/plus.svg' %> <%= t('avo.create_new_item', { item: @resource_model.model_name.human.downcase }) %>
-      <% end if @authorization.set_record(@resource_model).authorize_action :create, raise_exception: false %>
+      <%= a_link new_resource_path(@resource.model_class) do %>
+        <%= svg 'media/svgs/plus.svg' %> <%= t('avo.create_new_item', { item: @resource.model_class.model_name.human.downcase }) %>
+      <% end if @authorization.set_record(@resource.model_class).authorize_action :create, raise_exception: false %>
     </div>
-    <%# actions %>
-    <%# attach button %>
   <% end %>
 
   <div class="flex justify-between py-6 min-h-24">
@@ -22,14 +18,27 @@
       <%# search %>
     </div>
     <div class="flex justify-end items-center px-6 space-x-3">
-      <%# grid view %>
+      <%= render 'view_toggle_button' %>
       <%= render 'filters' if @filters.present? %>
     </div>
   </div>
+  <% if @view_type.to_sym == :table %>
   <div class="w-full overflow-auto min-h-28 flex flex-col">
     <div class="relative flex-1 flex">
-      <%= resource_table @resources, @resource_model.model_name.route_key %>
+      <%= resource_table @resources, @resource %>
     </div>
-    <%= paginate @models, class: 'avo-pagination justify-end flex px-4 space-x-2' %>
+
+    <div class="py-4">
+      <%= paginate @models %>
+    </div>
   </div>
+  <% elsif @view_type.to_sym == :grid %>
+    <% content_for :bare_content, flush: true do %>
+      <%= resource_grid @resources, @resource %>
+
+      <div class="bg-white rounded-xl shadow-xl mt-8 py-6">
+        <%= paginate @models %>
+      </div>
+    <% end %>
+  <% end %>
 <% end %>

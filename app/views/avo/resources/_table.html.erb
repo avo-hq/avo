@@ -1,12 +1,16 @@
 <div class="w-full">
-  <table class="w-full px-4 overflow-hidden" data-selected-resources-name="<%= resource_model %>" data-selected-resources="[]">
-    <%= render partial: 'table_header', locals: {fields: fields} %>
-    <tbody>
-      <% resources.each_with_index do |resource, index| %>
-        <% cache [resource[:model], resource[:hash]] do %>
-          <%= render partial: 'table_row', locals: {resource: resource, index: index, resources_count: resources.count} %>
+  <% if resources.present?%>
+    <table class="w-full px-4 overflow-hidden" data-selected-resources-name="<%= resource.plural_name.downcase %>" data-selected-resources="[]">
+      <%= render partial: 'table_header', locals: {fields: resource.get_fields(view_type: :table)} %>
+      <tbody>
+        <% resources.each_with_index do |resource, index| %>
+          <%# cache_if Avo::PACKED, [resource.model, resource.file_hash] do %>
+            <%= render partial: 'table_row', locals: {resource: resource, index: index, resources_count: resources.count} %>
+          <%# end %>
         <% end %>
-      <% end %>
-    </tbody>
-  </table>
+      </tbody>
+    </table>
+  <% else %>
+    <%= render partial: 'avo/partials/empty_state', locals: {resource: resource} %>
+  <% end %>
 </div>
