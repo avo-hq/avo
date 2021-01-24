@@ -15,7 +15,7 @@ module Avo
     end
 
     def index_field(field, index, resource)
-      render partial: "avo/fields/index/#{field.component}", locals: {
+      render partial: field.partial_path_for(:index), locals: {
         field: field,
         index: index,
         resource: resource,
@@ -23,7 +23,7 @@ module Avo
     end
 
     def show_field(field, index, resource)
-      render partial: "avo/fields/show/#{field.component}", locals: {
+      render partial: field.partial_path_for(:show), locals: {
         field: field,
         index: index,
         resource: resource,
@@ -31,7 +31,7 @@ module Avo
     end
 
     def edit_field(field, index, resource, form, displayed_in_modal: false)
-      render partial: "avo/fields/edit/#{field.component}", locals: {
+      render partial: field.partial_path_for(:edit), locals: {
         field: field,
         index: index,
         resource: resource,

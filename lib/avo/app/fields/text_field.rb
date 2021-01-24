@@ -5,7 +5,7 @@ module Avo
 
       def initialize(name, **args, &block)
         @defaults = {
-          component: 'text-field',
+          partial_name: 'text-field',
           computable: true,
         }.merge(@defaults || {})
 

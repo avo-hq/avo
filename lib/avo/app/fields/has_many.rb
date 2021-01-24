@@ -4,7 +4,7 @@ module Avo
       def initialize(name, **args, &block)
         @defaults = {
           updatable: false,
-          component: 'has-many-field'
+          partial_name: 'has-many-field'
         }
         @through = args[:through]
 

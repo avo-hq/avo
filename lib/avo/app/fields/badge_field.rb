@@ -3,8 +3,7 @@ module Avo
     class BadgeField < Field
       def initialize(name, **args, &block)
         @defaults = {
-          component: 'badge-field',
-          # component: 'badge-field', name this partial and add the full path so we can override it
+          partial_name: 'badge-field',
         }
 
         super(name, **args, &block)

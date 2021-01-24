@@ -3,7 +3,7 @@ module Avo
     class CurrencyField < Field
       def initialize(name, **args, &block)
         @defaults = {
-          component: 'currency-field',
+          partial_name: 'currency-field',
           computable: true,
         }
 

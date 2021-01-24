@@ -5,7 +5,7 @@ module Avo
     class TextareaField < TextField
       def initialize(name, **args, &block)
         @defaults = {
-          component: 'textarea-field',
+          partial_name: 'textarea-field',
           computable: true,
         }
 

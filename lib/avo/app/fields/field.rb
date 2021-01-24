@@ -10,7 +10,8 @@ module Avo
       attr_accessor :id
       attr_accessor :name
       attr_accessor :translation_key
-      attr_accessor :component
+      attr_accessor :partial_name
+      attr_accessor :partial_path
       attr_accessor :updatable
       attr_accessor :sortable
       attr_accessor :required
@@ -50,7 +51,7 @@ module Avo
           name: id.to_s.humanize(keep_id_suffix: true),
           translation_key: nil,
           block: block,
-          component: 'field',
+          partial_name: 'field',
           required: false,
           readonly: false,
           updatable: true,
@@ -84,6 +85,10 @@ module Avo
         hide_on args[:hide_on] if args[:hide_on].present?
         only_on args[:only_on] if args[:only_on].present?
         except_on args[:except_on] if args[:except_on].present?
+
+        if args[:use_partials].present?
+          @custom_partials = args[:use_partials]
+        end
       end
 
       def hydrate(model: nil, resource: nil, action: nil, view: nil)
@@ -129,6 +134,12 @@ module Avo
         model.send("#{key}=", value)
 
         model
+      end
+
+      def partial_path_for(view)
+        return @custom_partials[view] if @custom_partials.present? and @custom_partials[view].present?
+
+        "avo/fields/#{view}/#{partial_name}"
       end
 
       # Try to see if the field has a different database ID than it's name
