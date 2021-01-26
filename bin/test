@@ -1,20 +1,21 @@
 #!/bin/bash -e
 
-# Check to see if the user intentionally disabled Docker or if it's already running
-if [[ -z "$AVO_DISABLE_DOCKER" ]] && [[ -z `docker-compose ps | awk '$4 == "Up" {print $1}' | grep avo_db_1` ]]; then
-  use_docker=true
+export RAILS_ENV="test"
+export NODE_ENV="test"
+
+# Run unit tests
+if [[ -z "$1" ]] || [[ "$1" == "unit" ]]; then
+  bundle exec rspec ./spec --tag type:feature
+  bundle exec rspec ./spec --tag type:controller
 fi;
 
-if [[ $use_docker ]]; then
-  docker-compose up -d
-fi
-
-if [[ $WEBPACK ]]; then
+# Run system tests
+if [[ -z "$1" ]] || [[ "$1" == "system" ]]; then
   bin/webpack
+  bundle exec rspec ./spec --tag type:system
 fi;
 
-bundle exec rspec "$@"
-
-if [[ $use_docker ]]; then
-  docker-compose stop
-fi
+# Run open-ended test paths
+if [[ "$@" ]] && [[ "$1" != "unit" ]] && [[ "$1" != "system" ]]; then
+  bundle exec rspec $@
+fi;

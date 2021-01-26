@@ -1,9 +1,0 @@
-#!/bin/bash -e
-
-function header {
-  local bold=$(tput bold)
-  local normal=$(tput sgr0)
-
-  printf "\n${bold}$1${normal}"
-  printf "\n${bold}==========================${normal}\n\n"  
-}

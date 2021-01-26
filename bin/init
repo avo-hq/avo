@@ -1,22 +1,35 @@
-#!/bin/bash -e
+#!/usr/bin/env ruby
 
-# Install gems
-bundle install
+require_relative 'helpers'
 
-# Install packages
-yarn
+app_root do
+  use_docker = ask(
+    question: 'Would you like to use Docker Compose for Postgres?',
+    valid_answers: ['y','N']
+  )
 
-# Create & run Docker images
-if [[ -z "$AVO_DISABLE_DOCKER" ]]; then
-  docker volume create --name=avo-db-data
-  docker-compose up -d
-fi;
+  header 'Configuring git'
+  run! 'git remote add upstream https://github.com/avo-hq/avo.git'
 
-# Create & migrate the database
-rails db:create
-rails db:migrate
+  header 'Installing gems'
+  run! 'bundle install'
 
-# Stop Docker images
-if [[ -z "$AVO_DISABLE_DOCKER" ]]; then
-  docker-compose stop
-fi;
+  header 'Installing Yarn packages'
+  run! 'yarn'
+
+  if use_docker
+    header 'Creating the Docker volume'
+    run! 'docker volume create --name=avo-db-data'
+
+    header 'Creating and running the Docker image'
+    run! 'docker-compose up -d'
+  end
+
+  header 'Preparing the database'
+  run! 'bin/rails db:setup'
+
+  if use_docker
+    header 'Stopping the Docker image'
+    run! 'docker-compose stop'
+  end
+end

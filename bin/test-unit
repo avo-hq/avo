@@ -1,5 +1,0 @@
-#!/bin/bash -e
-. helpers
-
-header "Running Unit Tests"
-bin/test ./spec --tag type:feature --tag type:controller
