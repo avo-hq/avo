@@ -49,9 +49,9 @@ $ bundle install
 
 # Contributing
 
-If you happened to come accross a bug or want to suggest a feature, feel free to [say something](https://github.com/avo-hq/avo/issues/new)! 
+If you happened to come across a bug or want to suggest a feature, feel free to [say something](https://github.com/avo-hq/avo/issues/new)! 
 
-If you'd like to contribute code, the steps below will help you to get up and running.
+If you'd like to contribute code, the steps below will help you get up and running.
 
 ## Forking & branches
 
@@ -65,7 +65,7 @@ Once you pull the code down to your machine, running `bin/init` will get you up-
 
 ## Running the Database
 
-If you chose to continue with Docker, you'll be able to run it with one of the following commands:
+If you chose to continue with Docker, you'd be able to run it with one of the following commands:
 
 - Run in the foreground: `docker-compose up`
 - Run in the background: `docker-compose up -d`
