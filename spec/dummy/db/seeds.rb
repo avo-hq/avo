@@ -5,13 +5,14 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+require 'securerandom'
 require 'open-uri'
 
 Post.delete_all
 Project.delete_all
+TeamMembership.delete_all
 Team.delete_all
 User.delete_all
-TeamMembership.delete_all
 ActiveStorage::Attachment.all.each { |attachment| attachment.purge }
 
 teams = []
@@ -19,6 +20,18 @@ teams.push(FactoryBot.create(:team, name: 'Apple'))
 teams.push(FactoryBot.create(:team, name: 'Google'))
 teams.push(FactoryBot.create(:team, name: 'Facebook'))
 teams.push(FactoryBot.create(:team, name: 'Amazon'))
+
+User.create(
+  first_name: 'Avo',
+  last_name: 'Admin',
+  email: 'admin@avohq.io',
+  password: (ENV['AVO_ADMIN_PASSWORD'] or SecureRandom.hex),
+  roles: {
+    admin: true,
+    manager: false,
+    writer: false
+  }
+)
 
 users = []
 38.times do
