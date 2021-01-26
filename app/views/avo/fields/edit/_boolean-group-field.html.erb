@@ -1,0 +1,40 @@
+<%
+  values = {}
+
+  if field[:value].present?
+    field[:value].each do |key, value|
+      if field[:value][key] === true || field[:value][key] === false
+        values[key] = value
+      else
+        values[key] = false
+      end
+    end
+  end
+%>
+
+<%= edit_field_wrapper field: field, index: index, form: form, displayed_in_modal: displayed_in_modal do %>
+  <div class="h-8 flex items-center">
+    <% # @todo: has_errors & field reference options %>
+    <%= form.check_box field[:id],
+      class: 'mx-2 text-lg h-4 w-4',
+      disabled: field[:readonly]
+    %>
+
+    <div class="flex items-center">
+      <div class="space-y-2">
+        <template v-for="(value, name, index) in fieldValues">
+          <div :key="index" @click="toggleOption(name)">
+            <input
+              type="checkbox"
+              :name="name"
+              :checked="value"
+              :disabled="disabled"
+              class="w-3 h-3"
+            />
+            <label class="ml-1">{{ labelForOption(name) }}</label>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+<% end %>

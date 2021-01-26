@@ -12,16 +12,19 @@
 
 <%= index_field_wrapper field: field do %>
   <% if values.present? %>
-    <div class="space-y-2 py-3">
-      <% values.each do |k, v| %>
-        <div>
-          <%= render partial: 'avo/fields/common/boolean_check', locals: {checked: v} %>
-          <div class="ml-6 text-left py-px">
-            <%= field[:options].present? && field[:options].has_key?(k.to_sym) ? field[:options][k.to_sym] : k %>
-          </div>
+  <div data-controller="boolean-group">
+    <a data-boolean-group-target="trigger" href="javascript:void(0);">View</a>
+    <div data-boolean-group-target="content" class="p-3 space-y-2 bg-white rounded-lg shadow-xl text-xs z-10">
+    <% values.each do |k, v| %>
+      <div>
+        <%= render partial: 'avo/fields/common/boolean_check', locals: {checked: v} %>
+        <div class="ml-6 text-left py-px">
+          <%= field[:options].present? && field[:options].has_key?(k.to_sym) ? field[:options][k.to_sym] : k %>
         </div>
-      <% end %>
+      </div>
+    <% end %>
     </div>
+  </div>
   <% else %>
     —
   <% end %>
