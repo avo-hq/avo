@@ -1,0 +1,51 @@
+<%#= abort params.inspect %>
+<%= render(Avo::PanelComponent.new(title: @title, body_classes: 'py-4')) do |component| %>
+  <% component.with :tools do %>
+    <div class="flex justify-end items-center mb-6 w-full space-x-2">
+      <%= render 'actions' %>
+      <%# @todo: Attach button  %>
+      <%= a_link helpers.new_resource_path(@resource.model_class) do %>
+        <%= svg 'media/svgs/plus.svg' %> <%= t('avo.create_new_item', { item: @resource.model_class.model_name.human.downcase }) %>
+      <%# end if @resourceauthorization.authorize_action :create, raise_exception: false %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% component.with :body do %>
+    <% unless @via_relation == 'has_one' %>
+      <div class="flex justify-between py-6 min-h-24">
+        <div class="flex items-center px-6 w-64">
+          <%# search %>
+        </div>
+        <div class="flex justify-end items-center px-6 space-x-3">
+          <%= render 'view_toggle_button' %>
+          <%= render 'filters' if @filters.present? %>
+        </div>
+      </div>
+    <% end %>
+
+    <% if @view_type.to_sym == :table %>
+      <div class="w-full overflow-auto flex flex-col">
+        <div class="relative flex-1 flex">
+          <%= resource_table @resources, @resource %>
+        </div>
+
+        <% unless @via_relation == 'has_one' %>
+          <div class="py-4">
+            <%= paginate @models %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <% if @view_type.to_sym == :grid %>
+    <% component.with :bare_content do %>
+      <%= resource_grid @resources, @resource %>
+
+      <div class="bg-white rounded-xl shadow-xl mt-8 py-6">
+        <%= paginate @models %>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

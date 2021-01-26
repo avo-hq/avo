@@ -47,9 +47,9 @@ module Avo
       }
     end
 
-    def panel(&block)
-      render layout: 'layouts/avo/panel' do
-        capture(&block)
+    def panel(**args, &block)
+      render(Avo::PanelComponent.new(**args)) do |component|
+        capture(component, &block)
       end
     end
 

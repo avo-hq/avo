@@ -15,7 +15,7 @@ module Avo
         #   model.members.count
         # end
 
-        # f.has_one :admin
+        f.has_one :admin, display: :show
         # f.has_many :members, through: :memberships
       end
 

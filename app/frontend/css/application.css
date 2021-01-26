@@ -5,6 +5,7 @@
 @import './typography.css';
 @import './tooltips.css';
 @import './alerts.css';
+@import './loader.css';
 @import './tailwindcss/components.css';
 @import './tailwindcss/utilities.css';
 

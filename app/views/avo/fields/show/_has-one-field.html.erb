@@ -1,0 +1,6 @@
+<%= field.frame_name %>
+<br>
+<%= field.frame_url %>
+<turbo-frame id="<%= field.frame_name %>" src="<%= field.frame_url %>" target="_top">
+  <%= render(Avo::LoadingComponent.new(title: field.name)) %>
+</turbo-frame>

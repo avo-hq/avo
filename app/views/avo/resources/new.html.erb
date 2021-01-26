@@ -1,12 +1,12 @@
 <div data-model-id="<%= @model.id %>">
   <% @resource.panels.each do |resource_panel| %>
     <%= form_with model: @model, url: resources_path(@model), local: true do |form| %>
-      <%= panel do %>
-        <% content_for :heading do %>
+      <%= panel(title: resource_panel[:name]) do |component| %>
+        <% component.with :heading do %>
           <%= resource_panel[:name] %>
         <% end %>
 
-        <% content_for :tools do %>
+        <% component.with :tools do %>
           <div class="flex justify-end space-x-2">
             <%= a_link resources_path(@model) do %>
               <% # @todo: also go back to via resource %>
@@ -19,8 +19,10 @@
           </div>
         <% end %>
 
-        <% @resource.get_fields.each_with_index do |field, index| %>
-          <%= edit_field field, index, @resource, form unless field.computed %>
+        <% component.with :body do %>
+          <% @resource.get_fields.each_with_index do |field, index| %>
+            <%= edit_field field, index, @resource, form unless field.computed %>
+          <% end %>
         <% end %>
       <% end %>
     <% end %>

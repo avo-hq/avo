@@ -1,7 +1,7 @@
 module Avo
   module ResourcesHelper
     def resource_table(resources, resource)
-      render partial: 'avo/resources/table', locals: {
+      render partial: 'avo/resources/resource_table', locals: {
         resources: resources,
         resource: resource,
       }

@@ -50,8 +50,9 @@ module Avo
         self
       end
 
-      def get_fields(view_type: :table)
+      def get_fields(panel: nil, view_type: :table)
         fields = get_field_definitions
+        # abort fields.map { |f| [f.id, f.panel_name] }.inspect
 
         case view_type.to_sym
         when :table
@@ -70,6 +71,14 @@ module Avo
           end
         end
 
+        if panel.present?
+          fields = fields.select do |field|
+            field.panel_name == panel
+          end
+        end
+
+        # abort fields.map { |f| [f.id, f.panel_name] }.inspect
+
         fields = fields.map do |field|
           field.hydrate(model: @model, view: @view, resource: self)
         end
@@ -79,7 +88,7 @@ module Avo
 
       def get_field_definitions
         @field_loader.fields_bag.map do |field|
-          field.hydrate(resource: self)
+          field.hydrate(resource: self, panel_name: default_panel_name, user: user)
         end
       end
 
@@ -95,9 +104,29 @@ module Avo
       end
 
       def panels
-        [{
-          name: default_panel_name,
-        }]
+        panels = [
+          {
+            name: default_panel_name,
+            type: :fields,
+            in_panel: true,
+          }
+        ]
+
+        # abort get_field_definitions.map(&:class).inspect
+
+        has_one_panels = get_field_definitions.select do |field|
+          field.class.to_s.include? 'HasOneField'
+        end
+        .map do |field|
+          {
+            name: field.name,
+            type: :has_one_relation,
+            in_panel: false,
+          }
+        end
+        has_many_panels = []
+
+        panels + has_one_panels + has_many_panels
       end
 
       def model_class
@@ -178,10 +207,11 @@ module Avo
 
       def fill_model(model, params)
         # Map the received params to their actual fields
-        fields_by_database_id = self.get_fields.map { |field| [field.database_id(model).to_s, field] }.to_h
+        fields_by_database_id = self.get_field_definitions.map { |field| [field.database_id(model).to_s, field] }.to_h
 
         params.each do |key, value|
           field = fields_by_database_id[key]
+          puts ['field->', key, field].inspect
 
           next unless field
 
