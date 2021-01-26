@@ -14,6 +14,10 @@ module Avo
         @options = args[:options].present? ? args[:options] : nil
       end
 
+      def options
+        abort value.inspect
+      end
+
       def hydrate_field(fields, model, resource, view)
         {
           options: @options,
@@ -21,7 +25,12 @@ module Avo
       end
 
       def fill_field(model, key, value)
-        return model unless value.is_a? ActionController::Parameters
+
+        # return model unless value.is_a? ActionController::Parameters
+
+        value = JSON.parse(value) if value.is_a? String
+
+        # abort value.inspect
 
         new_value = {}
 

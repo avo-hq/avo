@@ -1,40 +1,47 @@
 <%
+  require 'json'
+
   values = {}
 
-  if field[:value].present?
-    field[:value].each do |key, value|
-      if field[:value][key] === true || field[:value][key] === false
-        values[key] = value
+  # field[:value] = JSON.parse(field[:value]) if field[:value].is_a? String
+
+  if field[:options].present?
+    field[:options].each do |key, label|
+      if field[:value].present? && field[:value].has_key?(key.to_s) && field[:value][key.to_s] === true
+        values[key] = true
       else
         values[key] = false
       end
     end
   end
+
+  # abort field[:id].inspect
 %>
 
 <%= edit_field_wrapper field: field, index: index, form: form, displayed_in_modal: displayed_in_modal do %>
-  <div class="h-8 flex items-center">
-    <% # @todo: has_errors & field reference options %>
-    <%= form.check_box field[:id],
-      class: 'mx-2 text-lg h-4 w-4',
-      disabled: field[:readonly]
-    %>
+  <% # @todo: has_errors & field reference options %>
+  <div class="space-y-2">
+    <%= form.hidden_field field[:id], value: values.to_json %>
 
-    <div class="flex items-center">
-      <div class="space-y-2">
-        <template v-for="(value, name, index) in fieldValues">
-          <div :key="index" @click="toggleOption(name)">
-            <input
-              type="checkbox"
-              :name="name"
-              :checked="value"
-              :disabled="disabled"
-              class="w-3 h-3"
-            />
-            <label class="ml-1">{{ labelForOption(name) }}</label>
-          </div>
-        </template>
+    <% values.each do |key, value| %>
+      <div>
+        <%= check_box_tag "#{field[:id]}", key, value, id: "#{field[:id]}_#{key}", class: 'w-3 h-3' %>
+        <%= label_tag "#{field[:id]}_#{key}", field[:options][key], class: 'ml-1' %>
+        <%# abort field[:id].inspect %>
+
+        <%#= form.check_box field[:id],
+              { class: 'w-3 h-3',
+                # id: "#{field[:id]}[]",
+                # name: "#{field[:id]}[#{field[:id]}]",
+                checked: value },
+              true,
+              false
+        %>
+
+
+        <%#=<label class="ml-1"><%= field[:options][key] %><%#</label>%>
+
       </div>
-    </div>
+    <% end %>
   </div>
 <% end %>
