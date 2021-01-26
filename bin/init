@@ -5,7 +5,7 @@ require_relative 'helpers'
 app_root do
   use_docker = ask(
     question: 'Would you like to use Docker Compose for Postgres?',
-    valid_answers: ['y','N']
+    valid_answers: ['y', 'N']
   )
 
   header 'Configuring git'

@@ -13,7 +13,7 @@ def run!(*args)
 end
 
 def header(msg)
-  divider = "=" * msg.length
+  divider = '=' * msg.length
 
   puts "\n\e\u001b[1m#{divider}\e[0m"
   puts "\u001b[1m#{msg}\e[0m"
