@@ -57,9 +57,9 @@ If you'd like to contribute code, the steps below will help you to get up and ru
 
 Please fork Avo and create a descriptive branch for your feature or fix.
 
-## Getting you local environment set up
+## Getting your local environment set up
 
-NOTE: We're using `docker-compose` to run Postres. While we find this to be incredibly helpful, it's not a requirement, but you'll have to BYOD (Bring Your Own Database).
+NOTE: We're using `docker-compose` to run Postres. While we find this incredibly helpful, it's not a requirement, but you'll have to BYOD (Bring Your Own Database).
 
 Once you pull the code down to your machine, running `bin/init` will get you up-and-running.
 
@@ -69,6 +69,13 @@ If you chose to continue with Docker, you'll be able to run it with one of the f
 
 - Run in the foreground: `docker-compose up`
 - Run in the background: `docker-compose up -d`
+
+If you chose to run your own database, if need be, you'll be able to set the following environment variables:
+
+- Host: `PGHOST` (Default: `localhost`)
+- Port: `PGPORT` (Default: `5433`)
+- Username: `PGUSERNAME` (Default:`postgres`)
+- Password: `PGPASSWORD` (Default:`nil`)
 
 ## Running tests
 
