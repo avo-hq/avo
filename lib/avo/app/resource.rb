@@ -20,6 +20,7 @@ module Avo
       attr_accessor :model
       attr_accessor :user
       attr_accessor :field_loader
+      attr_accessor :params
 
       alias :field :field_loader
       alias :f :field
@@ -42,10 +43,11 @@ module Avo
         fields request
       end
 
-      def hydrate(model: nil, view: nil, user: nil)
+      def hydrate(model: nil, view: nil, user: nil, params: nil)
         @model = model if model.present?
         @view = view if view.present?
         @user = user if user.present?
+        @params = params if params.present?
 
         self
       end
@@ -93,6 +95,8 @@ module Avo
       end
 
       def default_panel_name
+        return @params[:via_relation_param].capitalize if @params[:via_relation] == 'has_one'
+
         case @view
         when :show
           I18n.t('avo.resource_details', item: self.name.downcase, title: model_title).upcase_first
@@ -112,21 +116,26 @@ module Avo
           }
         ]
 
+        # return panels if @params[:via_relation_param] == 'has_one'
+
         # abort get_field_definitions.map(&:class).inspect
 
-        has_one_panels = get_field_definitions.select do |field|
-          field.class.to_s.include? 'HasOneField'
-        end
-        .map do |field|
-          {
-            name: field.name,
-            type: :has_one_relation,
-            in_panel: false,
-          }
-        end
-        has_many_panels = []
+        # has_one_panels = get_field_definitions.select do |field|
+        #   field.class.to_s.include? 'HasOneField'
+        # end
+        # .map do |field|
+        #   {
+        #     name: field.name,
+        #     type: :has_one_relation,
+        #     in_panel: false,
+        #   }
+        # end
 
-        panels + has_one_panels + has_many_panels
+        # has_many_panels = []
+
+        # panels + has_one_panels + has_many_panels
+
+        panels
       end
 
       def model_class

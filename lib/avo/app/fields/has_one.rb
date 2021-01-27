@@ -17,7 +17,7 @@ module Avo
         @placeholder = I18n.t 'avo.choose_an_option'
 
         @relation_method = name.to_s.parameterize.underscore
-        @display = args[:display].present? ? args[:display] : :index
+        @display = args[:display].present? ? args[:display] : :show
       end
 
       def has_own_panel?
@@ -42,23 +42,23 @@ module Avo
       end
 
       def frame_url
-        if @display == :index
-          "#{Avo.configuration.root_path}/resources/#{target_resource.model_class.model_name.route_key}?frame_name=#{frame_name}&via_relation=has_one&via_relationship=#{id}&via_resource_name=#{@resource.model_class}&via_resource_id=#{@model.id}"
+        if @display == :show
+          "#{Avo.configuration.root_path}/resources/#{target_resource.model_class.model_name.route_key}/#{value.id}?frame_name=#{frame_name}&via_relation=has_one&via_resource_name=#{@model.model_name.route_key}&via_resource_id=#{@model.id}&via_relation_param=#{id}"
         else
-          "#{Avo.configuration.root_path}/resources/#{target_resource.model_class.model_name.route_key}/#{value.id}?frame_name=#{frame_name}&via_relation=has_one&via_relationship=#{id}"
+          "#{Avo.configuration.root_path}/resources/#{target_resource.model_class.model_name.route_key}?frame_name=#{frame_name}&via_relation=has_one&via_relation_param=#{id}&via_resource_name=#{@resource.model_class}&via_resource_id=#{@model.id}"
         end
       end
 
-      private
-        def target_resource
-          if @model._reflections[id.to_s].klass.present?
-            App.get_resource_by_model_name @model._reflections[id.to_s].klass.to_s
-          elsif @model._reflections[id.to_s].options[:class_name].present?
-            App.get_resource_by_model_name @model._reflections[id.to_s].options[:class_name]
-          else
-            App.get_resource_by_name id.to_s
-          end
+      def target_resource
+        if @model._reflections[id.to_s].klass.present?
+          App.get_resource_by_model_name @model._reflections[id.to_s].klass.to_s
+        elsif @model._reflections[id.to_s].options[:class_name].present?
+          App.get_resource_by_model_name @model._reflections[id.to_s].options[:class_name]
+        else
+          App.get_resource_by_name id.to_s
         end
+      end
+      private
 
 
 

@@ -9,7 +9,7 @@ module Avo
     rescue_from Pundit::NotAuthorizedError, with: :render_unauthorized
     rescue_from ActiveRecord::RecordInvalid, with: :exception_logger
 
-    helper_method :_current_user, :resources_path, :resource_path, :new_resource_path, :edit_resource_path
+    helper_method :_current_user, :resources_path, :resource_path, :new_resource_path, :edit_resource_path, :resource_attach_path
     add_flash_types :info, :warning, :success, :error
 
     def init_app
@@ -70,6 +70,14 @@ module Avo
       send :"resources_#{model.model_name.route_key.singularize}_path", model, **args
     end
 
+    def resource_attach_path(model_name, model_id, attachment_name, attachment_id = nil)
+      path = "#{Avo.configuration.root_path}/resources/#{model_name}/#{model_id}/#{attachment_name}"
+
+      path += "/#{attachment_id}" if attachment_id.present?
+
+      path
+    end
+
     def new_resource_path(model, **args)
       send :"new_resources_#{model.model_name.route_key.singularize}_path", **args
     end
@@ -84,7 +92,7 @@ module Avo
       end
 
       def set_resource
-        @resource = resource
+        @resource = resource.hydrate(params: params)
       end
 
       def set_model

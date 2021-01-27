@@ -29,7 +29,14 @@ Avo::Engine.routes.draw do
     resources :users, controller: 'resources', as: 'users'
     resources :teams, controller: 'resources', as: 'teams'
     resources :team_memberships, controller: 'resources', as: 'team_memberships'
+
+    get    '/:resource_name/:id/:attachment_name', to: 'relations#show'
+    post   '/:resource_name/:id/:attachment_name', to: 'relations#attach'
+    # post   '/:resource_name/:id/:attachment_name/:attachment_id', to: 'relations#attach'
+    delete '/:resource_name/:id/:attachment_name/:attachment_id', to: 'relations#detach'
+    # delete '/teams/:id/admin/:attachment_id', to: 'relations#detach'
   end
+
 
 
   # get '/avo-api/:resource_name/filters',  to: 'filters#index'

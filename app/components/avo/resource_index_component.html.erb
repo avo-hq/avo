@@ -1,18 +1,20 @@
 <%#= abort params.inspect %>
-<%= render(Avo::PanelComponent.new(title: @title, body_classes: 'py-4')) do |component| %>
+<%= panel(title: @title, body_classes: 'py-4') do |component| %>
   <% component.with :tools do %>
-    <div class="flex justify-end items-center mb-6 w-full space-x-2">
-      <%= render 'actions' %>
-      <%# @todo: Attach button  %>
-      <%= a_link helpers.new_resource_path(@resource.model_class) do %>
-        <%= svg 'media/svgs/plus.svg' %> <%= t('avo.create_new_item', { item: @resource.model_class.model_name.human.downcase }) %>
-      <%# end if @resourceauthorization.authorize_action :create, raise_exception: false %>
-      <% end %>
-    </div>
+    <%= render 'actions' %>
+    <%# @todo: Attach button  %>
+    <%= a_link helpers.new_resource_path(@resource.model_class) do %>
+      <%= svg 'media/svgs/plus.svg' %> <%= t('avo.create_new_item', { item: @resource.model_class.model_name.human.downcase }) %>
+    <%# end if @resourceauthorization.authorize_action :create, raise_exception: false %>
+    <% end unless params[:via_relation] == 'has_one' %>
+    <%#= abort resource_attach_path(params[:via_resource_name], params[:via_resource_id], params[:via_relation_param], @models.first.id).inspect %>
+    <%= a_link helpers.resource_attach_path(params[:via_resource_name], params[:via_resource_id], params[:via_relation_param], @models.first.id), color: 'indigo', method: :delete, data: { confirm: "Are you sure you want to detach this #{@resource.singular_name}." } do %>
+      <%= svg 'media/svgs/trash.svg' %> <%= t('avo.detach_item', { item: @resource.singular_name }).capitalize %>
+    <% end if params[:via_relation] == 'has_one' and @models.present? %>
   <% end %>
 
   <% component.with :body do %>
-    <% unless @via_relation == 'has_one' %>
+    <% unless params[:via_relation] == 'has_one' %>
       <div class="flex justify-between py-6 min-h-24">
         <div class="flex items-center px-6 w-64">
           <%# search %>
@@ -30,7 +32,7 @@
           <%= resource_table @resources, @resource %>
         </div>
 
-        <% unless @via_relation == 'has_one' %>
+        <% unless params[:via_relation] == 'has_one' %>
           <div class="py-4">
             <%= paginate @models %>
           </div>

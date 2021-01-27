@@ -59,6 +59,18 @@ module Avo
       end
     end
 
+    def empty_state(resource_name)
+      render partial: 'avo/partials/empty_state', locals: { resource_name: resource_name }
+    end
+
+    def turbo_frame_start(name)
+      "<turbo-frame id=\"#{name}\">".html_safe if name.present?
+    end
+
+    def turbo_frame_end(name)
+      '</turbo-frame>'.html_safe if name.present?
+    end
+
     def a_button(label = nil, **args, &block)
       args[:class] = button_classes(args[:class], color: args[:color], variant: args[:variant], size: args[:size])
 

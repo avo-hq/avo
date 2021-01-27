@@ -43,7 +43,8 @@
       </div>
   </div>
   <%#= render partial: 'layouts/avo/modals' %>
-  <%= turbo_frame_tag 'actions_show' do %><% end %>
+  <%= turbo_frame_tag 'actions_show' %>
+  <%= turbo_frame_tag 'attach_modal' %>
 
   <% flash.each do |type, message| %>
     <%= render partial: 'avo/partials/alert', locals: {type: type.to_sym, message: message} %>

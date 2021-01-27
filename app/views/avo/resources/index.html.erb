@@ -1,15 +1,10 @@
-<% if params[:frame_name].present? %>
-  <turbo-frame id="<%= params[:frame_name] %>">
-<% end %>
-  <%= render(Avo::ResourceIndexComponent.new(
-    title: @resource.plural_name,
-    resource: @resource,
-    resources: @resources,
-    models: @models,
-    view_type: @view_type,
-    via_relation: @via_relation,
-  )) %>
-
-<% if params[:frame_name].present? %>
-  </turbo-frame>
-<% end %>
+<%= turbo_frame_start params[:frame_name] %>
+<%= render(Avo::ResourceIndexComponent.new(
+  title: @heading,
+  resource: @resource,
+  resources: @resources,
+  models: @models,
+  view_type: @view_type,
+  params: params,
+)) %>
+<%= turbo_frame_start params[:frame_name] %>

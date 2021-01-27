@@ -5,21 +5,15 @@ module Avo
     include Avo::ResourcesHelper
     include Avo::ApplicationHelper
 
-    def initialize(title: nil, resource: nil, resources: nil, models: nil, view_type: :table, via_relation: nil)
+    attr_reader :params
+
+    def initialize(title: nil, resource: nil, resources: nil, models: nil, view_type: :table, params: nil)
       @title = title if title.present?
       @resource = resource if resource.present?
       @resources = resources if resources.present?
       @models = models if models.present?
       @view_type = view_type if view_type.present?
-      @via_relation = via_relation if via_relation.present?
-    end
-
-    def params
-      @params
-    end
-
-    def request
-      @request
+      @params = params if params.present?
     end
   end
 end

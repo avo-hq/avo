@@ -8,6 +8,6 @@
 </div>
   <% else %>
     <div class="bg-white rounded-xl shadow-xl">
-      <%= render partial: 'avo/partials/empty_state', locals: {resource: resource} %>
+      <%= empty_state resource.name.downcase %>
     </div>
   <% end %>

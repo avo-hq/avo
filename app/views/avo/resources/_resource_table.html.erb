@@ -11,6 +11,6 @@
       </tbody>
     </table>
   <% else %>
-    <%= render partial: 'avo/partials/empty_state', locals: {resource: resource} %>
+    <%= empty_state resource.resource.name.downcase %>
   <% end %>
 </div>

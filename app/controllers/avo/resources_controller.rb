@@ -10,7 +10,11 @@ module Avo
     before_action :set_actions, only: [:index, :show]
 
     def index
-      @heading = @resource.plural_name
+      if params[:via_relation] == 'has_one'
+        @heading = params[:via_relation_param].capitalize
+      else
+        @heading = @resource.plural_name
+      end
 
       @available_view_types = @resource.available_view_types
       @view_type = params[:view_type] || @resource.default_view_type || Avo.configuration.default_view_type
@@ -22,7 +26,7 @@ module Avo
       # @todo: remove this
       @authorization.set_record(@resource.model_class).authorize_action :index
 
-      if params[:via_relation] == 'has_one' and params[:via_resource_name].present? and params[:via_resource_id].present? and params[:via_relationship].present?
+      if params[:via_relation] == 'has_one' and params[:via_resource_name].present? and params[:via_resource_id].present? and params[:via_relation_param].present?
         @via_relation = 'has_one'
         # get the related resource (via_resource)
         related_model = App.get_resource_by_name(params[:via_resource_name]).model_class
@@ -30,7 +34,7 @@ module Avo
         # abort related_model.inspect
 
         query = AuthorizationService.with_policy _current_user, related_model
-        @model = query.find(params[:via_resource_id]).public_send(params[:via_relationship])
+        @model = query.find(params[:via_resource_id]).public_send(params[:via_relation_param])
       else
         query = AuthorizationService.with_policy _current_user, @resource.model_class
       end
@@ -51,13 +55,14 @@ module Avo
       end
 
       @resources = @models.map do |model|
-        @resource.hydrate(model: model).dup
+        @resource.hydrate(model: model, params: params).dup
       end
     end
 
     def show
-      @resource = @resource.hydrate(model: @model, view: :show, user: _current_user)
       @authorization.set_record(@model).authorize_action :show
+      # ResourceViewController
+      @resource = @resource.hydrate(model: @model, view: :show, user: _current_user, params: params)
     end
 
     def new
@@ -90,7 +95,7 @@ module Avo
     def update
       @authorization.set_record(@model).authorize_action :update
       @model = @resource.fill_model(@model, cast_nullable(model_params))
-      # abort @model.inspect
+
       respond_to do |format|
         if @model.save
           format.html { redirect_to resource_path(@model), notice: "#{@model.class.name} was successfully updated." }

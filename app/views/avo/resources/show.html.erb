@@ -1,41 +1,72 @@
-<% if params[:frame_name].present? %>
-  <turbo-frame id="<%= params[:frame_name] %>">
-<% end %>
+<%= turbo_frame_start params[:frame_name] %>
+
+<%
+  fields_by_panel = {}
+  has_one_panels = []
+  has_many_panels = []
+
+  @resource.get_fields.each do |field|
+    if field.is_a? Avo::Fields::HasOneField
+      has_one_panels << field
+    else
+      # next if field.has_own_panel?
+
+      fields_by_panel[field.panel_name] ||= []
+      fields_by_panel[field.panel_name] << field
+    end
+  end
+  # abort fields_by_panel.inspect
+%>
+
 <div data-model-id="<%= @model.id %>">
   <% @resource.panels.each do |resource_panel| %>
-    <% if resource_panel[:in_panel] %>
-      <%= panel(title: resource_panel[:name]) do |component| %>
-        <% component.with :tools do %>
-          <% if resource_panel[:name] == @resource.default_panel_name %>
-            <div class="flex justify-end space-x-2">
-              <%= render 'actions' %>
-              <% back_path = params[:via_resource_name].present? ? resource_path(to_resource_name: params[:via_resource_name], to_resource_id: params[:via_resource_id], keep_query_params: false) : resources_path(@model.class) %>
-              <%= a_link back_path do %>
-                <%= svg 'media/svgs/arrow-left.svg' %> <%= t('avo.go_back') %>
-              <% end %>
-              <%= a_link resource_path(@model), color: 'red', variant: 'outlined', method: :delete, data: {confirm: 'Are you sure?'} do %>
-                <%= svg 'media/svgs/trash.svg' %> <%= t('avo.delete').capitalize %>
-              <% end if @authorization.set_record(@model).authorize_action :destroy, raise_exception: false %>
-              <%= a_link edit_resource_path(@model), color: 'indigo' do %>
-                <%= svg 'media/svgs/edit.svg' %> <%= t('avo.edit').capitalize %>
-              <% end if @authorization.set_record(@model).authorize_action :edit, raise_exception: false %>
-            </div>
+    <%= panel(title: resource_panel[:name]) do |c| %>
+      <% c.with :tools do %>
+        <% if resource_panel[:name] == @resource.default_panel_name %>
+          <%= render 'actions' %>
+          <% unless params[:via_relation] == 'has_one' %>
+            <% back_path = params[:via_resource_name].present? ? resource_path(to_resource_name: params[:via_resource_name], to_resource_id: params[:via_resource_id], keep_query_params: false) : resources_path(@model.class) %>
+            <%= a_link back_path do %>
+              <%= svg 'media/svgs/arrow-left.svg' %> <%= t('avo.go_back') %>
+            <% end %>
           <% end %>
-        <% end %>
 
-        <% component.with :body do %>
-          <% @resource.get_fields(panel: resource_panel[:name]).each_with_index do |field, index| %>
+          <%= a_link resource_path(@model), color: 'red', variant: 'outlined', method: :delete, data: {confirm: 'Are you sure?'} do %>
+            <%= svg 'media/svgs/trash.svg' %> <%= t('avo.delete').capitalize %>
+          <% end if @authorization.set_record(@model).authorize_action(:destroy, raise_exception: false) and !params[:via_relation] == 'has_one' %>
+
+          <%= a_link edit_resource_path(@model), color: 'indigo' do %>
+            <%= svg 'media/svgs/edit.svg' %> <%= t('avo.edit').capitalize %>
+          <% end if @authorization.set_record(@model).authorize_action(:edit, raise_exception: false) and !params[:via_relation] == 'has_one' %>
+
+          <%= a_link resource_attach_path(params[:via_resource_name], params[:via_resource_id], params[:via_relation_param], @model.id), color: 'indigo', method: :delete, data: { confirm: "Are you sure you want to detach this #{@resource.singular_name}." } do %>
+            <%= svg 'media/svgs/trash.svg' %> <%= t('avo.detach_item', { item: @resource.singular_name }).capitalize %>
+          <% end if params[:via_relation] == 'has_one' and @model.present? %>
+        <% end %>
+      <% end %>
+
+      <% c.with :body do %>
+        <% if fields_by_panel[resource_panel[:name]].present? %>
+          <% fields_by_panel[resource_panel[:name]].each_with_index do |field, index| %>
             <%= show_field field, index, @resource %>
           <% end %>
         <% end %>
       <% end %>
-    <% else %>
-      <% @resource.get_fields(panel: resource_panel[:name]).each_with_index do |field, index| %>
-        <%= show_field field, index, @resource %>
-      <% end %>
+    <% end %>
+
+    <%# @resource.get_fields(panel: resource_panel[:name]).each_with_index do |field, index| %>
+      <%#= show_field field, index, @resource %>
+    <%# end %>
+  <% end %>
+
+<%#= abort has_one_panels.inspect %>
+  <% if has_one_panels.present? %>
+    <% has_one_panels.each_with_index do |field, index| %>
+      <%= show_field field, index, @resource %>
+      <%# fields.each_with_index do |field, index| %>
+      <%# end %>
     <% end %>
   <% end %>
 </div>
-<% if params[:frame_name].present? %>
-  </turbo-frame>
-<% end %>
+
+<%= turbo_frame_start params[:frame_name] %>
