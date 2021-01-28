@@ -6,11 +6,13 @@
     <%= a_link helpers.new_resource_path(@resource.model_class) do %>
       <%= svg 'media/svgs/plus.svg' %> <%= t('avo.create_new_item', { item: @resource.model_class.model_name.human.downcase }) %>
     <%# end if @resourceauthorization.authorize_action :create, raise_exception: false %>
-    <% end unless params[:via_relation] == 'has_one' %>
-    <%#= abort resource_attach_path(params[:via_resource_name], params[:via_resource_id], params[:via_relation_param], @models.first.id).inspect %>
+    <% end unless params[:via_relation].in?(['has_one', 'has_many']) %>
     <%= a_link helpers.resource_attach_path(params[:via_resource_name], params[:via_resource_id], params[:via_relation_param], @models.first.id), color: 'indigo', method: :delete, data: { confirm: "Are you sure you want to detach this #{@resource.singular_name}." } do %>
       <%= svg 'media/svgs/trash.svg' %> <%= t('avo.detach_item', { item: @resource.singular_name }).capitalize %>
     <% end if params[:via_relation] == 'has_one' and @models.present? %>
+    <%= a_link helpers.resource_attach_path(params[:via_resource_name], params[:via_resource_id], params[:via_relation_param]), color: 'indigo', 'data-turbo-frame': 'attach_modal' do %>
+      <%= svg 'media/svgs/view-grid-add.svg' %> <%= t('avo.attach_item', { item: @resource.singular_name }).capitalize %>
+    <% end if params[:via_relation] == 'has_many' and @models.present? %>
   <% end %>
 
   <% component.with :body do %>
@@ -32,7 +34,7 @@
           <%= resource_table @resources, @resource %>
         </div>
 
-        <% unless params[:via_relation] == 'has_one' %>
+        <% if @models.present? and params[:via_relation] != 'has_one' %>
           <div class="py-4">
             <%= paginate @models %>
           </div>

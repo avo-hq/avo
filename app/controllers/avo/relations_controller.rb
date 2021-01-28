@@ -22,8 +22,14 @@ module Avo
     end
 
     def attach
+      # abort [params[:attachment_name], @model._reflections].inspect
+      if @model._reflections[params[:attachment_name]].class.name.demodulize.to_s.in? ['ThroughReflection', 'HasManyReflection']
+        @model.send("#{params[:attachment_name]}") << @attachment_model
+      else
+        @model.send("#{params[:attachment_name]}=", @attachment_model)
+      end
       # @team.admin = @attachment_model
-      @model.send("#{params[:attachment_name]}=", @attachment_model)
+      # @model.send("#{params[:attachment_name]}=", @attachment_model)
 
       respond_to do |format|
         if @model.save
@@ -37,7 +43,11 @@ module Avo
     end
 
     def detach
-      @model.send("#{params[:attachment_name]}=", nil)
+      if @model._reflections[params[:attachment_name]].class.name.demodulize.to_s.include? 'ThroughReflection'
+        @model.send("#{params[:attachment_name]}").delete @attachment_model
+      else
+        @model.send("#{params[:attachment_name]}=", nil)
+      end
 
       respond_to do |format|
         format.html { redirect_to resource_path(@model), notice: t('avo.attachment_class_detached', attachment_class: @attachment_class) }

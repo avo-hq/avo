@@ -4,10 +4,16 @@
   fields_by_panel = {}
   has_one_panels = []
   has_many_panels = []
+  has_as_belongs_to_many_panels = []
 
+  # abort @resource.get_fields.inspect
   @resource.get_fields.each do |field|
     if field.is_a? Avo::Fields::HasOneField
       has_one_panels << field
+    elsif field.is_a? Avo::Fields::HasManyField
+      has_many_panels << field
+    elsif field.is_a? Avo::Fields::HasAndBelongsToManyField
+      has_as_belongs_to_many_panels << field
     else
       # next if field.has_own_panel?
 
@@ -63,10 +69,20 @@
   <% if has_one_panels.present? %>
     <% has_one_panels.each_with_index do |field, index| %>
       <%= show_field field, index, @resource %>
-      <%# fields.each_with_index do |field, index| %>
-      <%# end %>
+    <% end %>
+  <% end %>
+
+  <% if has_many_panels.present? %>
+    <% has_many_panels.each_with_index do |field, index| %>
+      <%= show_field field, index, @resource %>
+    <% end %>
+  <% end %>
+
+  <% if has_as_belongs_to_many_panels.present? %>
+    <% has_as_belongs_to_many_panels.each_with_index do |field, index| %>
+      <%= show_field field, index, @resource %>
     <% end %>
   <% end %>
 </div>
 
-<%= turbo_frame_start params[:frame_name] %>
+<%= turbo_frame_end params[:frame_name] %>

@@ -23,7 +23,7 @@ module Avo
         # files :files, translation_key: 'avo.field_translations.file'
         # key_value :meta, key_label: 'Meta key', value_label: 'Meta value', action_text: 'New item', delete_text: 'Remove item', disable_editing_keys: false, disable_adding_rows: false, disable_deleting_rows: false
 
-        # has_and_belongs_to_many :users
+        f.has_and_belongs_to_many :users
         # use_filter Avo::Filters::PeopleFilter
         # use_filter Avo::Filters::People2Filter
         # use_filter Avo::Filters::PublishedFilter

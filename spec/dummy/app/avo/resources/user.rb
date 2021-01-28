@@ -34,8 +34,8 @@ module Avo
 
         # hidden :team_id, default: 0 # For testing purposes
 
-        # has_and_belongs_to_many :projects
-        # has_many :posts
+        f.has_and_belongs_to_many :projects
+        f.has_many :posts
       end
 
       use_action Avo::Actions::MarkInactive

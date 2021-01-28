@@ -12,6 +12,8 @@ module Avo
     def index
       if params[:via_relation] == 'has_one'
         @heading = params[:via_relation_param].capitalize
+      elsif params[:via_relation] == 'has_many'
+        @heading = params[:via_relation_param].capitalize
       else
         @heading = @resource.plural_name
       end
@@ -27,7 +29,6 @@ module Avo
       @authorization.set_record(@resource.model_class).authorize_action :index
 
       if params[:via_relation] == 'has_one' and params[:via_resource_name].present? and params[:via_resource_id].present? and params[:via_relation_param].present?
-        @via_relation = 'has_one'
         # get the related resource (via_resource)
         related_model = App.get_resource_by_name(params[:via_resource_name]).model_class
         # abort params[:via_resource_name].inspect
@@ -35,6 +36,16 @@ module Avo
 
         query = AuthorizationService.with_policy _current_user, related_model
         @model = query.find(params[:via_resource_id]).public_send(params[:via_relation_param])
+      elsif params[:via_relation] == 'has_many' and params[:via_resource_name].present? and params[:via_resource_id].present? and params[:via_relation_param].present?
+        # get the related resource (via_resource)
+        related_model = App.get_resource_by_name(params[:via_resource_name]).model_class
+        # abort params[:via_resource_name].inspect
+        # abort Team.members.inspect
+        # abort related_model.inspect
+        # abort params[:via_relation_param].inspect
+
+        query = AuthorizationService.with_policy _current_user, related_model
+        query = query.find(params[:via_resource_id]).public_send(params[:via_relation_param])
       else
         query = AuthorizationService.with_policy _current_user, @resource.model_class
       end
@@ -48,10 +59,11 @@ module Avo
       end
 
       @resource.hydrate(view: :index, user: _current_user)
-      if @model.present?
+      if params[:via_relation] == 'has_one'
         @models = Kaminari.paginate_array([@model]).page(1).per(1)
       else
         @models = query.page(params[:page]).per(@per_page)
+        # abort @models.inspect
       end
 
       @resources = @models.map do |model|

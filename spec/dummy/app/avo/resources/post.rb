@@ -29,7 +29,7 @@ module Avo
         f.belongs_to :user, meta: { searchable: false }, placeholder: '—'
 
         # Grid view
-        f.text :name, required: true, show_on_grid: :preview
+        # f.text :name, required: true, show_on_grid: :preview
         f.text :name, required: true, show_on_grid: :title
         f.text :name, required: true, show_on_grid: :body
       end
