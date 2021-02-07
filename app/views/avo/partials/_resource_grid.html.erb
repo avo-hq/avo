@@ -1,13 +1,13 @@
 <% if resources.present?%>
   <div class="w-full grid grid-cols-3 xl:grid-cols-4 gap-6">
     <% resources.each_with_index do |resource, index| %>
-      <%# cache_if Avo::PACKED, [resource.model, resource.file_hash] do %>
-        <%= render partial: 'avo/partials/grid_item', locals: {resource: resource, index: index, resources_count: resources.count} %>
-      <%# end %>
+      <% cache_if Avo::PACKED, [resource.model, resource.file_hash] do %>
+        <%= render(Avo::GridItemComponent.new(resource: resource)) %>
+      <% end %>
     <% end %>
-</div>
-  <% else %>
-    <div class="bg-white rounded-xl shadow-xl">
-      <%= empty_state resource.name.downcase %>
-    </div>
-  <% end %>
+  </div>
+<% else %>
+  <div class="bg-white rounded-xl shadow-xl">
+    <%= empty_state resource.name.downcase %>
+  </div>
+<% end %>

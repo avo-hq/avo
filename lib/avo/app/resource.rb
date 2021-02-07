@@ -242,13 +242,13 @@ module Avo
         content_to_be_hashed = ''
 
         # resource file hash
-        resource_path = Rails.root.join('app', 'avo', 'resources', "#{@resource.name.underscore}.rb").to_s
+        resource_path = Rails.root.join('app', 'avo', 'resources', "#{name.underscore}.rb").to_s
         if File.file? resource_path
           content_to_be_hashed += File.read(resource_path)
         end
 
         # policy file hash
-        policy_path = Rails.root.join('app', 'policies', "#{@resource.name.underscore}_policy.rb").to_s
+        policy_path = Rails.root.join('app', 'policies', "#{name.underscore}_policy.rb").to_s
         if File.file? policy_path
           content_to_be_hashed += File.read(policy_path)
         end

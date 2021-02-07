@@ -4,9 +4,9 @@
       <%= render partial: 'avo/partials/table_header', locals: {fields: resource.get_fields(view_type: :table)} %>
       <tbody>
         <% resources.each_with_index do |resource, index| %>
-          <%# cache_if Avo::PACKED, [resource.model, resource.file_hash] do %>
-            <%= render partial: 'avo/partials/table_row', locals: {resource: resource, index: index, resources_count: resources.count} %>
-          <%# end %>
+          <% cache_if Avo::PACKED, [resource.model, resource.file_hash] do %>
+            <%= render(Avo::TableRowComponent.new(resource: resource)) %>
+          <% end %>
         <% end %>
       </tbody>
     </table>
