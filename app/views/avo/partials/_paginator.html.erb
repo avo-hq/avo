@@ -15,7 +15,7 @@
           </div>
 
           <% per_page_options.each do |option| %>
-            <%= link_to "Change to #{option} items per page", resources_path(@resource.model_class, per_page: option, keep_query_params: true), class: 'hidden', 'data-per-page-option': option %>
+            <%= link_to "Change to #{option} items per page", resources_path(@resource.model_class, per_page: option, keep_query_params: true), class: 'hidden', 'data-per-page-option': option, 'data-turbo-frame': frame_name %>
           <% end %>
         </div>
       </div>
