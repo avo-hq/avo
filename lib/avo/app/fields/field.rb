@@ -99,12 +99,7 @@ module Avo
         @resource = resource if resource.present?
         @action = action if action.present?
         @user = user if user.present?
-
-        if has_own_panel?
-          @panel_name = name
-        elsif panel_name.present?
-          @panel_name = panel_name
-        end
+        @panel_name = panel_name if panel_name.present?
 
         # Run each field's custom hydration
         if self.respond_to? :build_meta

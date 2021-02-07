@@ -1,96 +1,22 @@
-require_dependency 'avo/application_controller'
+require_dependency 'avo/base_controller'
 
 module Avo
-  class ResourcesController < ApplicationController
-    before_action :set_resource_name
-    before_action :set_resource
-    before_action :set_model, only: [:show, :edit, :destroy, :update]
-    before_action :set_per_page, only: :index
-    before_action :set_filters, only: :index
-    before_action :set_actions, only: [:index, :show]
-
-    def index
-      if params[:via_relation] == 'has_one'
-        @heading = params[:via_relation_param].capitalize
-      elsif params[:via_relation] == 'has_many'
-        @heading = params[:via_relation_param].capitalize
-      else
-        @heading = @resource.plural_name
-      end
-
-      @available_view_types = @resource.available_view_types
-      @view_type = params[:view_type] || @resource.default_view_type || Avo.configuration.default_view_type
-
-      params[:page] ||= 1
-      params[:sort_by] = params[:sort_by].present? ? params[:sort_by] : :created_at
-      params[:sort_direction] = params[:sort_direction].present? ? params[:sort_direction] : :desc
-
-      # @todo: remove this
-      @authorization.set_record(@resource.model_class).authorize_action :index
-
-      if params[:via_relation] == 'has_one' and params[:via_resource_name].present? and params[:via_resource_id].present? and params[:via_relation_param].present?
-        # get the related resource (via_resource)
-        related_model = App.get_resource_by_name(params[:via_resource_name]).model_class
-        # abort params[:via_resource_name].inspect
-        # abort related_model.inspect
-
-        query = AuthorizationService.with_policy _current_user, related_model
-        @model = query.find(params[:via_resource_id]).public_send(params[:via_relation_param])
-      elsif params[:via_relation] == 'has_many' and params[:via_resource_name].present? and params[:via_resource_id].present? and params[:via_relation_param].present?
-        # get the related resource (via_resource)
-        related_model = App.get_resource_by_name(params[:via_resource_name]).model_class
-        # abort params[:via_resource_name].inspect
-        # abort Team.members.inspect
-        # abort related_model.inspect
-        # abort params[:via_relation_param].inspect
-
-        query = AuthorizationService.with_policy _current_user, related_model
-        query = query.find(params[:via_resource_id]).public_send(params[:via_relation_param])
-      else
-        query = AuthorizationService.with_policy _current_user, @resource.model_class
-      end
-
-      if params[:sort_by]
-        query = query.order("#{params[:sort_by]} #{params[:sort_direction]}")
-      end
-
-      applied_filters.each do |filter_class, filter_value|
-        query = filter_class.safe_constantize.new.apply_query request, query, filter_value
-      end
-
-      @resource.hydrate(view: :index, user: _current_user)
-      if params[:via_relation] == 'has_one'
-        @models = Kaminari.paginate_array([@model]).page(1).per(1)
-      else
-        @models = query.page(params[:page]).per(@per_page)
-        # abort @models.inspect
-      end
-
-      @resources = @models.map do |model|
-        @resource.hydrate(model: model, params: params).dup
-      end
-    end
-
-    def show
-      @authorization.set_record(@model).authorize_action :show
-      # ResourceViewController
-      @resource = @resource.hydrate(model: @model, view: :show, user: _current_user, params: params)
-    end
+  class ResourcesController < BaseController
+    # def index
+    #   super
+    # end
 
     def new
       @model = @resource.model_class.new
-      @authorization.set_record(@model).authorize_action :new
       @resource = @resource.hydrate(model: @model, view: :new, user: _current_user)
     end
 
     def edit
-      @authorization.set_record(@model).authorize_action :edit
       @resource = @resource.hydrate(model: @model, view: :edit, user: _current_user)
     end
 
     def create
       @model = @resource.model_class.new(model_params)
-      @authorization.set_record(@model).authorize_action :create
 
       respond_to do |format|
         if @model.save
@@ -105,7 +31,6 @@ module Avo
     end
 
     def update
-      @authorization.set_record(@model).authorize_action :update
       @model = @resource.fill_model(@model, cast_nullable(model_params))
 
       respond_to do |format|
@@ -121,7 +46,6 @@ module Avo
     end
 
     def destroy
-      @authorization.set_record(@model).authorize_action :destroy
       @model.destroy!
 
       respond_to do |format|
@@ -157,59 +81,6 @@ module Avo
         end
 
         permitted
-      end
-
-      def set_per_page
-        @per_page = Avo.configuration.per_page
-
-        if cookies[:per_page].present?
-          @per_page = cookies[:per_page]
-        end
-
-        if params[:per_page].present?
-          @per_page = params[:per_page]
-        end
-
-        if params[:per_page].present?
-          cookies[:per_page] = params[:per_page]
-        end
-      end
-
-      def set_filters
-        @filters = @resource.get_filters.map(&:new)
-      end
-
-      def set_actions
-        if params[:resource_id].present?
-          model = @resource.model_class.find params[:resource_id]
-        end
-
-        @actions = @resource.get_actions.map do |action|
-          action = action.new
-
-          action.hydrate(model: model, resource: @resource)
-          action.boot_fields request
-
-          action
-        end
-      end
-
-      def applied_filters
-        if params[:filters].present?
-          return JSON.parse(Base64.decode64(params[:filters]))
-        end
-
-        filter_defaults = {}
-
-        @resource.get_filters.each do |filter_class|
-          filter = filter_class.new
-
-          if filter.default.present?
-            filter_defaults[filter_class.to_s] = filter.default
-          end
-        end
-
-        filter_defaults
       end
 
       def cast_nullable(params)

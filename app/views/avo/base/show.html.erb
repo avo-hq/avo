@@ -8,20 +8,17 @@
 
   # abort @resource.get_fields.inspect
   @resource.get_fields.each do |field|
-    if field.is_a? Avo::Fields::HasOneField
+    if field.is_a? Avo::Fields::HasOneField and @reflection.blank?
       has_one_panels << field
-    elsif field.is_a? Avo::Fields::HasManyField
+    elsif field.is_a? Avo::Fields::HasManyField and @reflection.blank?
       has_many_panels << field
-    elsif field.is_a? Avo::Fields::HasAndBelongsToManyField
+    elsif field.is_a? Avo::Fields::HasAndBelongsToManyField and @reflection.blank?
       has_as_belongs_to_many_panels << field
     else
-      # next if field.has_own_panel?
-
       fields_by_panel[field.panel_name] ||= []
       fields_by_panel[field.panel_name] << field
     end
   end
-  # abort fields_by_panel.inspect
 %>
 
 <div data-model-id="<%= @model.id %>">
@@ -30,24 +27,28 @@
       <% c.with :tools do %>
         <% if resource_panel[:name] == @resource.default_panel_name %>
           <%= render 'actions' %>
-          <% unless params[:via_relation] == 'has_one' %>
-            <% back_path = params[:via_resource_name].present? ? resource_path(to_resource_name: params[:via_resource_name], to_resource_id: params[:via_resource_id], keep_query_params: false) : resources_path(@model.class) %>
-            <%= a_link back_path do %>
+
+          <% if @reflection.present? && @model.present? %>
+            <%= a_link resource_detach_path(params[:resource_name], params[:id], params[:related_name], params[:related_id]), color: 'indigo', method: :delete, data: { confirm: "Are you sure you want to detach this #{@resource.singular_name}." } do %>
+              <%= svg 'media/svgs/trash.svg' %> <%= t('avo.detach_item', { item: @resource.singular_name }).capitalize %>
+            <% end %>
+          <% else %>
+            <%= a_link url_for(:back) do %>
               <%= svg 'media/svgs/arrow-left.svg' %> <%= t('avo.go_back') %>
             <% end %>
+
+            <% if @authorization.set_record(@model).authorize_action(:destroy, raise_exception: false) %>
+              <%= a_link resource_path(@model), color: 'red', variant: 'outlined', method: :delete, data: {confirm: 'Are you sure?'} do %>
+                <%= svg 'media/svgs/trash.svg' %> <%= t('avo.delete').capitalize %>
+              <% end %>
+            <% end %>
+
+            <% if @authorization.set_record(@model).authorize_action(:edit, raise_exception: false) %>
+              <%= a_link edit_resource_path(@model), color: 'indigo' do %>
+                <%= svg 'media/svgs/edit.svg' %> <%= t('avo.edit').capitalize %>
+              <% end %>
+            <% end %>
           <% end %>
-
-          <%= a_link resource_path(@model), color: 'red', variant: 'outlined', method: :delete, data: {confirm: 'Are you sure?'} do %>
-            <%= svg 'media/svgs/trash.svg' %> <%= t('avo.delete').capitalize %>
-          <% end if @authorization.set_record(@model).authorize_action(:destroy, raise_exception: false) and !params[:via_relation] == 'has_one' %>
-
-          <%= a_link edit_resource_path(@model), color: 'indigo' do %>
-            <%= svg 'media/svgs/edit.svg' %> <%= t('avo.edit').capitalize %>
-          <% end if @authorization.set_record(@model).authorize_action(:edit, raise_exception: false) and !params[:via_relation] == 'has_one' %>
-
-          <%= a_link resource_attach_path(params[:via_resource_name], params[:via_resource_id], params[:via_relation_param], @model.id), color: 'indigo', method: :delete, data: { confirm: "Are you sure you want to detach this #{@resource.singular_name}." } do %>
-            <%= svg 'media/svgs/trash.svg' %> <%= t('avo.detach_item', { item: @resource.singular_name }).capitalize %>
-          <% end if params[:via_relation] == 'has_one' and @model.present? %>
         <% end %>
       <% end %>
 
@@ -65,7 +66,6 @@
     <%# end %>
   <% end %>
 
-<%#= abort has_one_panels.inspect %>
   <% if has_one_panels.present? %>
     <% has_one_panels.each_with_index do |field, index| %>
       <%= show_field field, index, @resource %>

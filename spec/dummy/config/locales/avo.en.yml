@@ -70,6 +70,5 @@ en:
         zero: 'users'
         one: 'user'
         other: 'users'
-    showing_x_results: 'Showing %{from} to %{to} of %{count} results'
     reset_filters: 'Reset filters'
     not_authorized: 'You are not authorized to perform this action.'

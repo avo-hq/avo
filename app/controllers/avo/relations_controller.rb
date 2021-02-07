@@ -1,17 +1,38 @@
-require_dependency 'avo/application_controller'
+require_dependency 'avo/base_controller'
 
 module Avo
-  class RelationsController < ApplicationController
-    before_action :set_resource_name
-    before_action :set_resource
-    before_action :set_model
+  class RelationsController < BaseController
+    before_action :set_model, only: [:show, :index, :new, :create, :destroy]
+    before_action :set_related_resource_name
+    before_action :set_related_resource
+    before_action :hydrate_related_resource
+    before_action :set_related_model, only: [:show]
     before_action :set_attachment_class
     before_action :set_attachment_resource
-    before_action :set_attachment_model, except: :show
-    # before_action :authorize_user
+    before_action :set_attachment_model, only: [:create]
+    before_action :set_reflection, only: [:index]
+
+    def index
+      @parent_resource = @resource.dup
+      # abort @parent_resource.inspect
+      @resource = @related_resource
+      @parent_model = @parent_resource.model_class.find(params[:id])
+      @query = @parent_model.public_send(params[:related_name])
+      # abort @query.inspect
+      # related_model.find(params[:via_resource_id]).public_send(params[:via_relationship])
+
+      super
+    end
 
     def show
-      query = AuthorizationService.with_policy _current_user, @attachment_class
+      @reflection = params[:related_name]
+      @resource, @model = @related_resource, @related_model
+
+      super
+    end
+
+    def new
+      query = @authorization.apply_policy @attachment_class
 
       @options = query.all.map do |model|
         {
@@ -21,15 +42,12 @@ module Avo
       end
     end
 
-    def attach
-      # abort [params[:attachment_name], @model._reflections].inspect
-      if @model._reflections[params[:attachment_name]].class.name.demodulize.to_s.in? ['ThroughReflection', 'HasManyReflection']
-        @model.send("#{params[:attachment_name]}") << @attachment_model
+    def create
+      if @model._reflections[params[:related_name]].class.name.demodulize.to_s.in? ['ThroughReflection', 'HasManyReflection']
+        @model.send("#{params[:related_name]}") << @attachment_model
       else
-        @model.send("#{params[:attachment_name]}=", @attachment_model)
+        @model.send("#{params[:related_name]}=", @attachment_model)
       end
-      # @team.admin = @attachment_model
-      # @model.send("#{params[:attachment_name]}=", @attachment_model)
 
       respond_to do |format|
         if @model.save
@@ -42,11 +60,11 @@ module Avo
       end
     end
 
-    def detach
-      if @model._reflections[params[:attachment_name]].class.name.demodulize.to_s.include? 'ThroughReflection'
-        @model.send("#{params[:attachment_name]}").delete @attachment_model
+    def destroy
+      if @model._reflections[params[:related_name]].class.name.demodulize.to_s.include? 'ThroughReflection'
+        @model.send("#{params[:related_name]}").delete @attachment_model
       else
-        @model.send("#{params[:attachment_name]}=", nil)
+        @model.send("#{params[:related_name]}=", nil)
       end
 
       respond_to do |format|
@@ -57,7 +75,7 @@ module Avo
 
     private
       def set_attachment_class
-        @attachment_class = @model._reflections[params[:attachment_name].to_s].klass
+        @attachment_class = @model._reflections[params[:related_name].to_s].klass
       end
 
       def set_attachment_resource
@@ -65,11 +83,15 @@ module Avo
       end
 
       def set_attachment_model
-        @attachment_model = @model._reflections[params[:attachment_name].to_s].klass.find attachment_id
+        @attachment_model = @model._reflections[params[:related_name].to_s].klass.find attachment_id
+      end
+
+      def set_reflection
+        @reflection = @model._reflections[params[:related_name].to_s]
       end
 
       def attachment_id
-        params[:attachment_id] or params.require(:fields).permit(:attachment_id)[:attachment_id]
+        params[:related_id] or params.require(:fields).permit(:related_id)[:related_id]
       end
   end
 end

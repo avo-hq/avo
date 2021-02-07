@@ -2,7 +2,7 @@
   <div class="w-full grid grid-cols-3 xl:grid-cols-4 gap-6">
     <% resources.each_with_index do |resource, index| %>
       <%# cache_if Avo::PACKED, [resource.model, resource.file_hash] do %>
-        <%= render partial: 'grid_item', locals: {resource: resource, index: index, resources_count: resources.count} %>
+        <%= render partial: 'avo/partials/grid_item', locals: {resource: resource, index: index, resources_count: resources.count} %>
       <%# end %>
     <% end %>
 </div>

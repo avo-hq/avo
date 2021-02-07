@@ -14,20 +14,12 @@ module Avo
         @resource = args[:resource]
       end
 
-      def has_own_panel?
-        true
-      end
-
       def frame_name
         "#{self.class.name.demodulize.to_s.underscore}_#{id}_#{target_resource.model_class.to_s.underscore}"
       end
 
       def frame_url
-        if @display == :show
-          "#{Avo.configuration.root_path}/resources/#{target_resource.model_class.model_name.route_key}/#{value.id}?frame_name=#{frame_name}&via_relation=has_one&via_resource_name=#{@model.model_name.route_key}&via_resource_id=#{@model.id}&via_relation_param=#{id}"
-        else
-          "#{Avo.configuration.root_path}/resources/#{target_resource.model_class.model_name.route_key}?frame_name=#{frame_name}&via_relation=has_many&via_relation_param=#{id}&via_resource_name=#{@resource.model_class}&via_resource_id=#{@model.id}"
-        end
+        "#{Avo.configuration.root_path}/resources/#{@model.model_name.route_key}/#{@model.id}/#{id}?frame_name=#{frame_name}"
       end
 
       def target_resource

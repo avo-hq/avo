@@ -2,11 +2,12 @@
 @import './../../../node_modules/toastr/build/toastr.css';
 
 @import './tailwindcss/base.css';
+@import './tailwindcss/components.css';
 @import './typography.css';
 @import './tooltips.css';
 @import './alerts.css';
 @import './loader.css';
-@import './tailwindcss/components.css';
+@import './pagination.css';
 @import './tailwindcss/utilities.css';
 
 html,

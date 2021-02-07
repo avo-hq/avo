@@ -33,7 +33,7 @@ Gem::Specification.new do |spec|
     .reject { |file| file.start_with? 'app/frontend' }
 
   spec.add_dependency 'rails', '>= 6.0'
-  spec.add_dependency 'kaminari'
+  spec.add_dependency 'pagy'
   spec.add_dependency 'zeitwerk'
   spec.add_dependency 'inline_svg'
   spec.add_dependency 'webpacker'

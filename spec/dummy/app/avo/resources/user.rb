@@ -5,7 +5,7 @@ module Avo
         @title = :name
         @translation_key = 'avo.resource_translations.user'
         @search = [:id, :first_name, :last_name]
-        @includes = :posts
+        @includes = [:posts, :post]
         @has_devise_password = true
         # @name = 'usy'
       end
@@ -34,8 +34,10 @@ module Avo
 
         # hidden :team_id, default: 0 # For testing purposes
 
-        f.has_and_belongs_to_many :projects
+        f.has_one :post
         f.has_many :posts
+        f.has_and_belongs_to_many :projects
+        f.has_and_belongs_to_many :teams
       end
 
       use_action Avo::Actions::MarkInactive

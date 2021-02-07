@@ -60,6 +60,5 @@ en:
     next_page: 'Next page'
     prev_page: 'Previous page'
     list_is_empty: 'List is empty'
-    showing_x_results: 'Showing %{from} to %{to} of %{count} results'
     reset_filters: 'Reset filters'
     not_authorized: 'You are not authorized to perform this action.'

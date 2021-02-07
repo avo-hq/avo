@@ -1,54 +1,58 @@
-<%#= abort params.inspect %>
-<%= panel(title: @title, body_classes: 'py-4') do |component| %>
+<%= panel title: title, body_classes: 'py-4' do |component| %>
   <% component.with :tools do %>
     <%= render 'actions' %>
-    <%# @todo: Attach button  %>
-    <%= a_link helpers.new_resource_path(@resource.model_class) do %>
-      <%= svg 'media/svgs/plus.svg' %> <%= t('avo.create_new_item', { item: @resource.model_class.model_name.human.downcase }) %>
-    <%# end if @resourceauthorization.authorize_action :create, raise_exception: false %>
-    <% end unless params[:via_relation].in?(['has_one', 'has_many']) %>
-    <%= a_link helpers.resource_attach_path(params[:via_resource_name], params[:via_resource_id], params[:via_relation_param], @models.first.id), color: 'indigo', method: :delete, data: { confirm: "Are you sure you want to detach this #{@resource.singular_name}." } do %>
-      <%= svg 'media/svgs/trash.svg' %> <%= t('avo.detach_item', { item: @resource.singular_name }).capitalize %>
-    <% end if params[:via_relation] == 'has_one' and @models.present? %>
-    <%= a_link helpers.resource_attach_path(params[:via_resource_name], params[:via_resource_id], params[:via_relation_param]), color: 'indigo', 'data-turbo-frame': 'attach_modal' do %>
-      <%= svg 'media/svgs/view-grid-add.svg' %> <%= t('avo.attach_item', { item: @resource.singular_name }).capitalize %>
-    <% end if params[:via_relation] == 'has_many' and @models.present? %>
+
+    <% if @resource.authorization.authorize_action(:create, raise_exception: false) && @reflection.blank? %>
+      <%= a_link helpers.new_resource_path(@resource.model_class) do %>
+        <%= svg 'media/svgs/plus.svg' %> <%= t('avo.create_new_item', { item: @resource.model_class.model_name.human.downcase }) %>
+      <% end %>
+    <% end %>
+
+    <% if can_detach? %>
+      <%= a_link helpers.resource_detach_path(via_resource_name, via_resource_id, via_relation_param, @models.first.id), color: 'indigo', method: :delete, data: { confirm: "Are you sure you want to detach this #{@resource.singular_name}." } do %>
+        <%= svg 'media/svgs/trash.svg' %> <%= t('avo.detach_item', { item: @resource.singular_name }).capitalize %>
+      <% end %>
+    <% end %>
+
+    <% if can_attach? %>
+      <%= a_link "#{Avo.configuration.root_path}/#{request.env['PATH_INFO']}/new", color: 'indigo', 'data-turbo-frame': 'attach_modal' do %>
+        <%= svg 'media/svgs/view-grid-add.svg' %> <%= t('avo.attach_item', { item: @resource.singular_name }).capitalize %>
+      <% end %>
+    <% end %>
   <% end %>
 
   <% component.with :body do %>
-    <% unless params[:via_relation] == 'has_one' %>
-      <div class="flex justify-between py-6 min-h-24">
-        <div class="flex items-center px-6 w-64">
-          <%# search %>
-        </div>
-        <div class="flex justify-end items-center px-6 space-x-3">
-          <%= render 'view_toggle_button' %>
-          <%= render 'filters' if @filters.present? %>
-        </div>
+    <div class="flex justify-between py-6 min-h-24">
+      <div class="flex items-center px-6 w-64">
+        <%# search %>
       </div>
-    <% end %>
+      <div class="flex justify-end items-center px-6 space-x-3">
+        <%= render partial: 'view_toggle_button', locals: { available_view_types: available_view_types, view_type: view_type, frame_name: @frame_name } %>
+        <%= render 'filters' if @filters.present? %>
+      </div>
+    </div>
 
-    <% if @view_type.to_sym == :table %>
+    <% if view_type.to_sym == :table %>
       <div class="w-full overflow-auto flex flex-col">
         <div class="relative flex-1 flex">
           <%= resource_table @resources, @resource %>
         </div>
 
-        <% if @models.present? and params[:via_relation] != 'has_one' %>
+        <% if @models.present? %>
           <div class="py-4">
-            <%= paginate @models %>
+            <%= render partial: 'avo/partials/paginator', locals: { pagy: @pagy, models: @models, frame_name: @frame_name } %>
           </div>
         <% end %>
       </div>
     <% end %>
   <% end %>
 
-  <% if @view_type.to_sym == :grid %>
+  <% if view_type.to_sym == :grid %>
     <% component.with :bare_content do %>
       <%= resource_grid @resources, @resource %>
 
       <div class="bg-white rounded-xl shadow-xl mt-8 py-6">
-        <%= paginate @models %>
+        <%= render partial: 'avo/partials/paginator', locals: { pagy: @pagy, models: @models, frame_name: @frame_name } %>
       </div>
     <% end %>
   <% end %>

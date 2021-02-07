@@ -1,14 +1,14 @@
 module Avo
   module ResourcesHelper
     def resource_table(resources, resource)
-      render partial: 'avo/resources/resource_table', locals: {
+      render partial: 'avo/partials/resource_table', locals: {
         resources: resources,
         resource: resource,
       }
     end
 
     def resource_grid(resources, resource)
-      render partial: 'avo/resources/grid', locals: {
+      render partial: 'avo/partials/resource_grid', locals: {
         resources: resources,
         resource: resource,
       }

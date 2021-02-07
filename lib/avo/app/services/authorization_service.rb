@@ -28,6 +28,10 @@ module Avo
       self.class.authorize_action(user, record, action, **args)
     end
 
+    def apply_policy(model)
+      self.class.apply_policy(user, model)
+    end
+
     class << self
       def authorize(user, record, action, **args)
         return true if skip_authorization
@@ -77,7 +81,7 @@ module Avo
         authorize user, record, action, **args
       end
 
-      def with_policy(user, model)
+      def apply_policy(user, model)
         return model if skip_authorization
         return model if user.nil?
 

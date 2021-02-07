@@ -95,7 +95,7 @@ module Avo
       end
 
       def default_panel_name
-        return @params[:via_relation_param].capitalize if @params[:via_relation] == 'has_one'
+        return @params[:related_name].capitalize if @params[:related_name].present?
 
         case @view
         when :show
@@ -186,10 +186,14 @@ module Avo
         self.class.get_actions
       end
 
+      def route_key
+        model_class.model_name.route_key
+      end
+
       def query_search(query: '', via_resource_name: , via_resource_id:, user:)
         model_class = self.model
 
-        db_query = AuthorizationService.with_policy(user, model_class)
+        db_query = AuthorizationService.apply_policy(user, model_class)
 
         if via_resource_name.present?
           related_model = App.get_resource_by_name(via_resource_name).model
@@ -230,7 +234,7 @@ module Avo
         model
       end
 
-      def authorization(user)
+      def authorization
         AuthorizationService.new(user, model)
       end
 

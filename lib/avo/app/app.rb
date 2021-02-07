@@ -149,6 +149,22 @@ module Avo
           end
           .sort_by { |r| r.name }
       end
+
+      def draw_routes
+        Proc.new do
+          Avo::Resources.constants
+            .select do |r|
+              r != :Resource
+            end
+            .map do |c|
+              if Avo::Resources.const_get(c).is_a? Class
+                plural_name = c.to_s.underscore.downcase.pluralize
+
+                resources plural_name.to_sym, controller: 'resources', as: plural_name.to_s
+              end
+            end
+        end
+      end
     end
   end
 end

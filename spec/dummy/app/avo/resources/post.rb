@@ -5,7 +5,7 @@ module Avo
         @title = :name
         @search = [:name, :id]
         @includes = :user
-        @default_view_type = :grid
+        # @default_view_type = :grid
       end
 
       def fields(request)
@@ -37,7 +37,7 @@ module Avo
       # # use_filter Avo::Filters::FeaturedFilter
       # # use_filter Avo::Filters::PublishedFilter
 
-      # use_action Avo::Actions::TogglePublished
+      use_action Avo::Actions::TogglePublished
     end
   end
 end

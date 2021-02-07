@@ -4,6 +4,7 @@ module Avo
       def configure
         @title = :id
         @search = :id
+        @includes = [:user, :team]
       end
 
       def fields(request)

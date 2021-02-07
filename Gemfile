@@ -101,7 +101,7 @@ end
 gem 'zeitwerk', '~> 2.3'
 
 # Pagination
-gem 'kaminari'
+gem 'pagy'
 
 gem 'httparty'
 
