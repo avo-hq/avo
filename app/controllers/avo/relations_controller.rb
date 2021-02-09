@@ -9,17 +9,14 @@ module Avo
     before_action :set_related_model, only: [:show]
     before_action :set_attachment_class
     before_action :set_attachment_resource
-    before_action :set_attachment_model, only: [:create]
+    before_action :set_attachment_model, only: [:create, :destroy]
     before_action :set_reflection, only: [:index]
 
     def index
       @parent_resource = @resource.dup
-      # abort @parent_resource.inspect
       @resource = @related_resource
       @parent_model = @parent_resource.model_class.find(params[:id])
       @query = @parent_model.public_send(params[:related_name])
-      # abort @query.inspect
-      # related_model.find(params[:via_resource_id]).public_send(params[:via_relationship])
 
       super
     end
@@ -61,7 +58,7 @@ module Avo
     end
 
     def destroy
-      if @model._reflections[params[:related_name]].class.name.demodulize.to_s.include? 'ThroughReflection'
+      if @model._reflections[params[:related_name]].class.in? [ActiveRecord::Reflection::HasManyReflection, ActiveRecord::Reflection::ThroughReflection]
         @model.send("#{params[:related_name]}").delete @attachment_model
       else
         @model.send("#{params[:related_name]}=", nil)

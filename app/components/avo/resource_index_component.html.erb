@@ -35,7 +35,7 @@
     <% if view_type.to_sym == :table %>
       <div class="w-full overflow-auto flex flex-col">
         <div class="relative flex-1 flex">
-          <%= resource_table @resources, @resource %>
+          <%= render(Avo::ResourceTableComponent.new(resources: @resources, resource: @resource, reflection: @reflection)) %>
         </div>
 
         <% if @models.present? %>
@@ -49,7 +49,7 @@
 
   <% if view_type.to_sym == :grid %>
     <% component.with :bare_content do %>
-      <%= resource_grid @resources, @resource %>
+      <%= render(Avo::ResourceGridComponent.new(resources: @resources, resource: @resource, reflection: @reflection)) %>
 
       <div class="bg-white rounded-xl shadow-xl mt-8 py-6">
         <%= render partial: 'avo/partials/paginator', locals: { pagy: @pagy, models: @models, frame_name: @frame_name } %>

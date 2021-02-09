@@ -13,9 +13,9 @@
       data_control: :edit %>
   <% end %>
 
-  <% if params[:via_relation] == 'has_many' %>
+  <% if can_detach? %>
     <%= link_to helpers.svg('media/svgs/trash-sm.svg', class: 'text-gray-500 h-6 hover:text-gray-600'),
-      resource_detach_path(params[:resource_name], params[:id], params[:related_name], params[:related_id]),
+      helpers.resource_detach_path(params[:resource_name], params[:id], params[:related_name], resource.model.id),
       title: t('avo.detach_item', { item: resource.model.model_name.name.downcase }).capitalize,
       method: :delete,
       data: { confirm: t('avo.are_you_sure_detach_item', { item: resource.model.model_name.name.downcase }) },

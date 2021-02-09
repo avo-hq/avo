@@ -5,12 +5,12 @@
       <tbody>
         <% resources.each_with_index do |resource, index| %>
           <% cache_if Avo::PACKED, [resource.model, resource.file_hash] do %>
-            <%= render(Avo::TableRowComponent.new(resource: resource)) %>
+            <%= render(Avo::TableRowComponent.new(resource: resource, reflection: @reflection)) %>
           <% end %>
         <% end %>
       </tbody>
     </table>
   <% else %>
-    <%= empty_state @resource.name.downcase %>
+    <%= helpers.empty_state @resource.name.downcase %>
   <% end %>
 </div>

@@ -17,7 +17,7 @@
   <% end %>
   <td class="text-right whitespace-no-wrap px-2">
     <div class="flex items-center justify-end flex-grow-0 h-full w-full">
-      <%= render(Avo::ResourceControlsComponent.new(resource: resource)) %>
+      <%= render(Avo::ResourceControlsComponent.new(resource: resource, reflection: reflection)) %>
     </div>
   </td>
 </tr>

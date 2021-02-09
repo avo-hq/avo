@@ -5,7 +5,6 @@ module Avo
     include Avo::ResourcesHelper
     include Avo::ApplicationHelper
 
-    attr_reader :params
     attr_reader :view_type
     attr_reader :available_view_types
     attr_reader :via_resource_name

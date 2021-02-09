@@ -3,10 +3,12 @@
 module Avo
   class GridItemComponent < ViewComponent::Base
     attr_reader :resource
+    attr_reader :reflection
     attr_reader :grid_fields
 
-    def initialize(resource: resource)
+    def initialize(resource: resource, reflection: reflection)
       @resource = resource
+      @reflection = reflection
       @grid_fields = resource.get_fields(view_type: :grid)
     end
 

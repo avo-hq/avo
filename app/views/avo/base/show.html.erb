@@ -6,13 +6,13 @@
   has_many_panels = []
   has_as_belongs_to_many_panels = []
 
-  # abort @resource.get_fields.inspect
   @resource.get_fields.each do |field|
-    if field.is_a? Avo::Fields::HasOneField and @reflection.blank?
+    case field.class.to_s
+    when 'Avo::Fields::HasOneField'
       has_one_panels << field
-    elsif field.is_a? Avo::Fields::HasManyField and @reflection.blank?
+    when 'Avo::Fields::HasManyField'
       has_many_panels << field
-    elsif field.is_a? Avo::Fields::HasAndBelongsToManyField and @reflection.blank?
+    when 'Avo::Fields::HasAndBelongsToManyField'
       has_as_belongs_to_many_panels << field
     else
       fields_by_panel[field.panel_name] ||= []
@@ -66,21 +66,23 @@
     <%# end %>
   <% end %>
 
-  <% if has_one_panels.present? %>
-    <% has_one_panels.each_with_index do |field, index| %>
-      <%= show_field field, index, @resource %>
+  <% if @reflection.blank? %>
+    <% if has_one_panels.present? %>
+      <% has_one_panels.each_with_index do |field, index| %>
+        <%= show_field field, index, @resource %>
+      <% end %>
     <% end %>
-  <% end %>
 
-  <% if has_many_panels.present? %>
-    <% has_many_panels.each_with_index do |field, index| %>
-      <%= show_field field, index, @resource %>
+    <% if has_many_panels.present? %>
+      <% has_many_panels.each_with_index do |field, index| %>
+        <%= show_field field, index, @resource %>
+      <% end %>
     <% end %>
-  <% end %>
 
-  <% if has_as_belongs_to_many_panels.present? %>
-    <% has_as_belongs_to_many_panels.each_with_index do |field, index| %>
-      <%= show_field field, index, @resource %>
+    <% if has_as_belongs_to_many_panels.present? %>
+      <% has_as_belongs_to_many_panels.each_with_index do |field, index| %>
+        <%= show_field field, index, @resource %>
+      <% end %>
     <% end %>
   <% end %>
 </div>
