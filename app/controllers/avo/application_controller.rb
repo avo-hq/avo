@@ -170,7 +170,7 @@ module Avo
           end
         end
 
-        return resource.model_class
+        resource.model_class
       end
 
 
