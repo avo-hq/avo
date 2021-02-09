@@ -47,7 +47,7 @@ module Avo
 
       def boot_fields(request)
         @field_loader = Avo::FieldsLoader::Loader.new
-        fields request
+        fields request if self.respond_to? :fields
       end
 
       def get_fields(view_type: :table)

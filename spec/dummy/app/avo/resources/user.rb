@@ -41,7 +41,7 @@ module Avo
       end
 
       use_action Avo::Actions::MarkInactive
-      # use_action Avo::Actions::MakeAdmin
+      use_action Avo::Actions::MakeAdmin
     end
   end
 end
