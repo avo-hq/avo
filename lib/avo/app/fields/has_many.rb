@@ -10,7 +10,8 @@ module Avo
 
         super(name, **args, &block)
 
-        hide_on :index
+        hide_on :all
+        show_on :show
 
         @resource = args[:resource]
       end
