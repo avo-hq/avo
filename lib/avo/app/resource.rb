@@ -53,15 +53,13 @@ module Avo
       end
 
       def get_fields(panel: nil, view_type: :table)
-        fields = get_field_definitions
-        # abort fields.map { |f| [f.id, f.panel_name] }.inspect
+        fields = get_field_definitions.select do |field|
+          field.send("show_on_#{@view.to_s}")
+        end
 
         case view_type.to_sym
         when :table
           fields = fields.select do |field|
-            field.send("show_on_#{@view.to_s}")
-          end
-          .select do |field|
             field.show_on_grid.blank?
           end
           .select do |field|
