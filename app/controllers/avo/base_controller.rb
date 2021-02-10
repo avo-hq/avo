@@ -16,7 +16,8 @@ module Avo
       set_filters
       set_actions
 
-      if @query.blank?
+      # If we don't get a query object predefined from a child controller like relations, just spin one up
+      unless defined? @query
         @query = @authorization.apply_policy @resource.model_class
       end
 
