@@ -2,7 +2,7 @@
   <% component.with :tools do %>
     <%= render 'actions' %>
 
-    <% if @resource.authorization.authorize_action(:create, raise_exception: false) && @reflection.blank? %>
+    <% if @resource.authorization.authorize_action(:create, raise_exception: false) %>
       <%= a_link helpers.new_resource_path(@resource.model_class) do %>
         <%= svg 'media/svgs/plus.svg' %> <%= t('avo.create_new_item', { item: @resource.model_class.model_name.human.downcase }) %>
       <% end %>
