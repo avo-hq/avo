@@ -3,6 +3,7 @@
 
 @import './tailwindcss/base.css';
 @import './tailwindcss/components.css';
+@import './fonts.css';
 @import './typography.css';
 @import './tooltips.css';
 @import './alerts.css';

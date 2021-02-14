@@ -9,13 +9,16 @@
   <%= javascript_pack_tag 'application_hotwire' %>
   <%= stylesheet_pack_tag 'application', media: 'all' %>
   <%= render partial: 'layouts/avo/translations' %>
-  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+
+  <%#= preload_pack_asset 'fonts/nunito-v16-latin-regular.eot' %>
+  <%# <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet"> %>
 </head>
 
 <body class="bg-gray-200">
 
 <div id="app" class="flex min-h-screen flex-row h-full">
   <div class="flex flex-1 w-full">
+  <%= link_to('yo', params.permit!.merge(view_type: :grid, resource: 'posts')) %>
       <%= render partial: 'avo/sidebar/sidebar' %>
 
       <div class="flex-1 flex flex-col h-full overflow-auto">
