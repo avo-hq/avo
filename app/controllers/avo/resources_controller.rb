@@ -2,10 +2,6 @@ require_dependency 'avo/base_controller'
 
 module Avo
   class ResourcesController < BaseController
-    # def index
-    #   super
-    # end
-
     def new
       @model = @resource.model_class.new
       @resource = @resource.hydrate(model: @model, view: :new, user: _current_user)

@@ -1,6 +1,7 @@
 # require 'rails_helper'
 
-# RSpec.describe 'HasManyField', type: :system do
+# # RSpec.describe 'HasManyField', type: :system do
+# RSpec.feature 'HasManyField', type: :feature do
 #   let!(:user) { create :user }
 
 #   subject { visit url; page }
@@ -9,7 +10,7 @@
 #     let(:url) { "/avo/resources/users/#{user.id}" }
 
 #     describe 'without a related post' do
-#       it { is_expected.to have_text 'No related posts found' }
+#       it { is_expected.to have_text 'No posts found' }
 
 #       it 'creates a post' do
 #         visit url

@@ -156,11 +156,21 @@ module Avo
             .select do |r|
               r != :Resource
             end
-            .map do |c|
-              if Avo::Resources.const_get(c).is_a? Class
-                plural_name = c.to_s.underscore.downcase.pluralize
+            .each do |r|
+              # Generate dummy controllers for each resource that extend the ResourcesController
+              klass_name = "#{r.to_s.pluralize}Controller"
+              eval <<RUBY
+class Avo::#{klass_name} < Avo::ResourcesController
+end
+RUBY
+            end
+            .map do |r|
+              if Avo::Resources.const_get(r).is_a? Class
+                plural_name = r.to_s.underscore.downcase.pluralize
 
-                resources plural_name.to_sym, controller: 'resources', as: plural_name.to_s
+                # resources plural_name.to_sym, controller: 'resources', as: plural_name.to_s, path: plural_name.to_s, defaults: { resource: plural_name.to_s }
+                # resources plural_name.to_sym, controller: "#{plural_name}"
+                resources plural_name.to_sym
               end
             end
         end

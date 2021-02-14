@@ -11,7 +11,7 @@
       translation_key = 'avo.table_view'
     end
 %>
-  <%= a_link resources_path(@resource.model_class, view_type: new_view_type, keep_query_params: true), color: :blue, 'data-turbo-frame': frame_name do %>
+  <%= a_link params.permit!.merge(view_type: new_view_type), color: :blue, 'data-turbo-frame': frame_name do %>
     <%= svg "media/svgs/#{new_icon}.svg" %> <%= t(translation_key, { item: @resource.model_class.model_name.human.downcase }) %>
   <% end if @authorization.set_record(@resource.model_class).authorize_action :create, raise_exception: false %>
 <% end %>
