@@ -40,7 +40,7 @@ module Avo
         if @resource.present?
           App.get_resources.find { |r| r.class == @resource }
         else
-          App.get_resources.find { |r| r.class == "Avo::Resources::#{model._reflections[id.to_s].plural_name.to_s.camelcase.singularize}".safe_constantize }
+          App.get_resource_by_model_name model._reflections[id.to_s].options[:class_name].present? ? model._reflections[id.to_s].options[:class_name] : model._reflections[id.to_s].klass.name
         end
       end
     end
