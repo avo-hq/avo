@@ -138,7 +138,7 @@ module Avo
       # get_resource_by_name(User) => Avo::Resources::User
       def get_resource_by_model_name(name)
         get_resources.find do |resource|
-          resource.class.name.demodulize == name.to_s
+          resource.model.model_name.name == name.to_s
         end
       end
 
