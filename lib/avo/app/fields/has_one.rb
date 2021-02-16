@@ -12,7 +12,7 @@ module Avo
 
         super(name, **args, &block)
 
-        hide_on :new
+        hide_on :new, :edit
 
         @placeholder = I18n.t 'avo.choose_an_option'
 

@@ -3,6 +3,6 @@
 <div class="w-full">
   <% resources.each do |resource| %>
     <% # @todo: maybe cache this partial ? %>
-    <%= sidebar_link resource.plural_name.humanize(keep_id_suffix: true), resources_path(resource.model_class) %>
+    <%= sidebar_link resource.name.pluralize.humanize, resources_path(resource.model_class) %>
   <% end %>
 </div>

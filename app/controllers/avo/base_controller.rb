@@ -51,7 +51,9 @@ module Avo
         pagy: @pagy,
         index_params: @index_params,
         reflection: @reflection,
-        frame_name: params[:frame_name]
+        frame_name: params[:frame_name],
+        parent_resource: @parent_resource,
+        parent_model: @parent_model
       )
     end
 
@@ -59,6 +61,7 @@ module Avo
       set_actions
 
       @resource = @resource.hydrate(model: @model, view: :show, user: _current_user, params: params)
+      @component = Avo::ResourceShowComponent.new(resource: @resource)
     end
 
     private

@@ -5,10 +5,15 @@ module Avo
     def new
       @model = @resource.model_class.new
       @resource = @resource.hydrate(model: @model, view: :new, user: _current_user)
+      @component = ResourceNewComponent.new(
+        resource: @resource,
+        model: @model
+      )
     end
 
     def edit
       @resource = @resource.hydrate(model: @model, view: :edit, user: _current_user)
+      @component = Avo::ResourceEditComponent.new(resource: @resource)
     end
 
     def create

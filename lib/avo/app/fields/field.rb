@@ -149,7 +149,7 @@ module Avo
       # Try to see if the field has a different database ID than it's name
       def database_id(model)
         begin
-          foreign_key(model)
+          foreign_key
         rescue => exception
           id
         end

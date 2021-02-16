@@ -44,10 +44,15 @@ module Avo
       end
 
       def hydrate(model: nil, view: nil, user: nil, params: nil)
-        @model = model if model.present?
         @view = view if view.present?
         @user = user if user.present?
         @params = params if params.present?
+
+        if model.present?
+          @model = model
+
+          hydrate_model_with_defaults if @view == :new
+        end
 
         self
       end
@@ -222,7 +227,6 @@ module Avo
 
         params.each do |key, value|
           field = fields_by_database_id[key]
-          puts ['field->', key, field].inspect
 
           next unless field
 
@@ -252,6 +256,30 @@ module Avo
         end
 
         Digest::MD5.hexdigest(content_to_be_hashed)
+      end
+
+      # For :new views we're hydrating the model with the values from the resource's default attribute.
+      # We will not overwrite any attributes that come pre-filled in the model.
+      def hydrate_model_with_defaults
+        default_values = get_fields.select do |field|
+          !field.computed
+        end
+        .map do |field|
+          id = field.id
+          id = field.foreign_key if field.respond_to? :foreign_key
+
+          [id, field.value]
+        end
+        .to_h
+        .select do |id, value|
+          value.present?
+        end
+
+        default_values.each do |id, value|
+          if @model.send(id).nil?
+            @model.send("#{id}=", value)
+          end
+        end
       end
     end
   end

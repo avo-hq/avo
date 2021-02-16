@@ -3,7 +3,6 @@
     class: input_classes('w-full', has_error: (@model.present? and @model.errors.include?(field.id))),
     placeholder: field.placeholder,
     disabled: field.readonly,
-    value: @model.present? ? @model[field.id] : field.value,
     min: field.meta[:min],
     max: field.meta[:max],
     step: field.meta[:step] %>

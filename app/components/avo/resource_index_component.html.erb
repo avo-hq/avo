@@ -1,27 +1,27 @@
-<%= panel title: title, body_classes: 'py-4' do |component| %>
-  <% component.with :tools do %>
+<%= panel title: title, body_classes: 'py-4' do |c| %>
+  <% c.with :tools do %>
     <%= render 'actions' %>
 
-    <% if @resource.authorization.authorize_action(:create, raise_exception: false) %>
-      <%= a_link helpers.new_resource_path(@resource.model_class) do %>
+    <% if can_create? %>
+      <%= a_link create_path do %>
         <%= svg 'media/svgs/plus.svg' %> <%= t('avo.create_new_item', { item: @resource.model_class.model_name.human.downcase }) %>
       <% end %>
     <% end %>
 
     <% if can_detach? %>
-      <%= a_link helpers.resource_detach_path(via_resource_name, via_resource_id, via_relation_param, @models.first.id), color: 'indigo', method: :delete, data: { confirm: "Are you sure you want to detach this #{@resource.singular_name}." } do %>
+      <%= a_link detach_path, color: 'indigo', method: :delete, data: { confirm: "Are you sure you want to detach this #{@resource.singular_name}." } do %>
         <%= svg 'media/svgs/trash.svg' %> <%= t('avo.detach_item', { item: @resource.singular_name }).capitalize %>
       <% end %>
     <% end %>
 
     <% if can_attach? %>
-      <%= a_link "#{Avo.configuration.root_path}/#{request.env['PATH_INFO']}/new", color: 'indigo', 'data-turbo-frame': 'attach_modal' do %>
+      <%= a_link attach_path, color: 'indigo', 'data-turbo-frame': 'attach_modal' do %>
         <%= svg 'media/svgs/view-grid-add.svg' %> <%= t('avo.attach_item', { item: @resource.singular_name }).capitalize %>
       <% end %>
     <% end %>
   <% end %>
 
-  <% component.with :body do %>
+  <% c.with :body do %>
     <div class="flex justify-between py-6 min-h-24">
       <div class="flex items-center px-6 w-64">
         <%# search %>
@@ -48,7 +48,7 @@
   <% end %>
 
   <% if view_type.to_sym == :grid %>
-    <% component.with :bare_content do %>
+    <% c.with :bare_content do %>
       <%= render(Avo::ResourceGridComponent.new(resources: @resources, resource: @resource, reflection: @reflection)) %>
 
       <div class="bg-white rounded-xl shadow-xl mt-8 py-6">
