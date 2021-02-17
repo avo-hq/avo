@@ -14,7 +14,7 @@ class Avo::ResourceNewComponent < ViewComponent::Base
 
   def back_path
     if creates_via_resource
-      helpers.resource_path(params[:via_resource_name].safe_constantize, resource_id: params[:via_resource_id])
+      helpers.resource_path(params[:via_relation_class].safe_constantize, resource_id: params[:via_resource_id])
     else
       helpers.resources_path(@resource.model)
     end
@@ -22,6 +22,6 @@ class Avo::ResourceNewComponent < ViewComponent::Base
 
   private
     def creates_via_resource
-      params[:via_resource_name].present? and params[:via_resource_id].present?
+      params[:via_relation_class].present? and params[:via_resource_id].present?
     end
 end

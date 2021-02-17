@@ -62,7 +62,7 @@ module Avo
       set_actions
 
       @resource = @resource.hydrate(model: @model, view: :show, user: _current_user, params: params)
-      @component = Avo::ResourceShowComponent.new(resource: @resource)
+      @component = Avo::ResourceShowComponent.new(resource: @resource, reflection: @reflection)
     end
 
     private

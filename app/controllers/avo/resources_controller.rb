@@ -21,7 +21,13 @@ module Avo
 
       respond_to do |format|
         if @model.save
-          format.html { redirect_to resource_path(@model), notice: "#{@model.class.name} was successfully created." }
+          if params[:via_relation_class].present? && params[:via_resource_id].present?
+            redirect_path = resource_path(params[:via_relation_class].safe_constantize, resource_id: params[:via_resource_id])
+          else
+            redirect_path = resource_path(@model)
+          end
+
+          format.html { redirect_to redirect_path, notice: "#{@model.class.name} was successfully created." }
           format.json { render :show, status: :created, location: @model }
         else
           # @todo: better way to handle this

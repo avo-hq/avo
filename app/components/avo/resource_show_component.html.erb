@@ -15,7 +15,7 @@
             <% end %>
 
             <% if @resource.authorization.authorize_action(:destroy, raise_exception: false) %>
-              <%= a_link 'destroy_path', color: 'red', variant: 'outlined', method: :delete, data: {confirm: 'Are you sure?'} do %>
+              <%= a_link destroy_path, color: 'red', variant: 'outlined', method: :delete, data: {confirm: 'Are you sure?'} do %>
                 <%= svg 'media/svgs/trash.svg' %> <%= t('avo.delete').capitalize %>
               <% end %>
             <% end %>

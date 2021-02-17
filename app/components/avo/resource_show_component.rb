@@ -6,8 +6,9 @@ class Avo::ResourceShowComponent < ViewComponent::Base
 
   attr_reader :fields_by_panel, :has_one_panels, :has_many_panels, :has_as_belongs_to_many_panels
 
-  def initialize(resource: nil)
+  def initialize(resource: nil, reflection: nil)
     @resource = resource
+    @reflection = reflection
 
     split_panel_fields
   end
@@ -22,6 +23,14 @@ class Avo::ResourceShowComponent < ViewComponent::Base
 
   def edit_path
     helpers.edit_resource_path(@resource.model)
+  end
+
+  def detach_path
+    helpers.resource_detach_path(params[:resource_name], params[:id], @resource.model_class.model_name.route_key, @resource.model.id)
+  end
+
+  def destroy_path
+    helpers.resource_path(@resource.model)
   end
 
   private

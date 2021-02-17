@@ -45,11 +45,15 @@ class Avo::ResourceIndexComponent < ViewComponent::Base
   end
 
   def can_create?
-    @resource.authorization.authorize_action(:create, raise_exception: false)
+    @resource.authorization.authorize_action(:create, raise_exception: false) && simple_relation?
   end
 
   def can_attach?
-    @reflection.present? && @reflection.is_a?(::ActiveRecord::Reflection::HasManyReflection) && @models.present?
+    puts [@reflection.class, @parent_model.class].inspect
+    klass = @reflection
+    klass = @reflection.through_reflection if klass.is_a? ::ActiveRecord::Reflection::ThroughReflection
+
+    @reflection.present? && klass.is_a?(::ActiveRecord::Reflection::HasManyReflection)
   end
 
   def can_detach?
@@ -58,7 +62,16 @@ class Avo::ResourceIndexComponent < ViewComponent::Base
 
   def create_path
     if @reflection.present?
-      helpers.new_resource_path(@resource.model_class, via_resource_name: @parent_resource.model_class, via_resource_id: @parent_model.id)
+      path_args = {
+        via_relation_class: @parent_model.model_name,
+        via_resource_id: @parent_model.id
+      }
+
+      if @reflection.inverse_of.present?
+        path_args[:via_relation] = @reflection.inverse_of.name
+      end
+
+      helpers.new_resource_path(@resource.model_class, **path_args)
     else
       helpers.new_resource_path(@resource.model_class)
     end
@@ -71,4 +84,9 @@ class Avo::ResourceIndexComponent < ViewComponent::Base
   def detach_path
     helpers.resource_detach_path(via_resource_name, via_resource_id, via_relation_param, @models.first.id)
   end
+
+  private
+    def simple_relation?
+      @reflection.is_a? ::ActiveRecord::Reflection::HasManyReflection
+    end
 end

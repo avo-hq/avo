@@ -49,7 +49,7 @@ module Avo
       send :"resources_#{model.model_name.route_key}_path", **existing_params, **args
     end
 
-    def resource_path(model = nil, resource_id: nil,keep_query_params: false, **args)
+    def resource_path(model = nil, resource_id: nil, keep_query_params: false, **args)
       existing_params = {}
 
       begin
