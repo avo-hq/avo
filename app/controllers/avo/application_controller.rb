@@ -18,7 +18,7 @@ module Avo
       respond_to do |format|
         format.html { raise exception }
         format.json { render json: {
-          errors: exception.record.present? ? exception.record.errors : [],
+          errors: exception.respond_to?(:record) && exception.record.present? ? exception.record.errors : [],
           message: exception.message,
           traces: exception.backtrace,
         }, status: ActionDispatch::ExceptionWrapper.status_code_for_exception(exception.class.name) }
