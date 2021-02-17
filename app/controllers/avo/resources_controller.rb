@@ -24,7 +24,9 @@ module Avo
           format.html { redirect_to resource_path(@model), notice: "#{@model.class.name} was successfully created." }
           format.json { render :show, status: :created, location: @model }
         else
+          # @todo: better way to handle this
           @resource = @resource.hydrate(model: @model, view: :new, user: _current_user)
+          @component = Avo::ResourceEditComponent.new(resource: @resource)
           format.html { render :new, status: :unprocessable_entity }
           format.json { render json: @model.errors, status: :unprocessable_entity }
         end
@@ -39,7 +41,9 @@ module Avo
           format.html { redirect_to resource_path(@model), notice: "#{@model.class.name} was successfully updated." }
           format.json { render :show, status: :ok, location: @post }
         else
+          # @todo: better way to handle this
           @resource = @resource.hydrate(model: @model, view: :edit, user: _current_user)
+          @component = Avo::ResourceEditComponent.new(resource: @resource)
           format.html { render :edit, status: :unprocessable_entity }
           format.json { render json: @post.errors, status: :unprocessable_entity }
         end

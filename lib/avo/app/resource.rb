@@ -1,12 +1,10 @@
 require_relative 'resource_grid_fields'
 require_relative 'resource_filters'
-require_relative 'resource_actions'
 require_relative 'fields/field'
 
 module Avo
   module Resources
     class Resource
-      attr_writer :model_class
       attr_writer :name
 
       attr_accessor :id
@@ -19,11 +17,16 @@ module Avo
       attr_accessor :view
       attr_accessor :model
       attr_accessor :user
-      attr_accessor :field_loader
+      attr_accessor :fields_loader
+      attr_accessor :actions_loader
+      attr_accessor :filters_loader
       attr_accessor :params
 
-      alias :field :field_loader
+      alias :field :fields_loader
       alias :f :field
+      alias :action :actions_loader
+      alias :a :action
+      alias :filter :filters_loader
 
       def initialize(request = nil)
         @id = :id
@@ -39,8 +42,14 @@ module Avo
       end
 
       def boot_fields(request)
-        @field_loader = Avo::FieldsLoader::Loader.new
+        @fields_loader = Avo::FieldsLoader.new
         fields request
+
+        @actions_loader = Avo::ActionsLoader.new
+        actions request if self.respond_to? :actions
+
+        @filters_loader = Avo::ActionsLoader.new
+        filters request if self.respond_to? :filters
       end
 
       def hydrate(model: nil, view: nil, user: nil, params: nil)
@@ -92,7 +101,7 @@ module Avo
       end
 
       def get_field_definitions
-        @field_loader.fields_bag.map do |field|
+        @fields_loader.bag.map do |field|
           field.hydrate(resource: self, panel_name: default_panel_name, user: user)
         end
       end
@@ -182,11 +191,11 @@ module Avo
       end
 
       def get_filters
-        self.class.get_filters
+        @filters_loader.bag
       end
 
       def get_actions
-        self.class.get_actions
+        @actions_loader.bag
       end
 
       def route_key
@@ -194,7 +203,7 @@ module Avo
       end
 
       def query_search(query: '', via_resource_name: , via_resource_id:, user:)
-        model_class = self.model
+        # model_class = self.model
 
         db_query = AuthorizationService.apply_policy(user, model_class)
 

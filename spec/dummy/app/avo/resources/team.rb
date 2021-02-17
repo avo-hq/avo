@@ -20,7 +20,9 @@ module Avo
         f.has_many :members, through: :memberships
       end
 
-      use_filter Avo::Filters::MembersFilter
+      def filters(request)
+        filter.use Avo::Filters::MembersFilter
+      end
     end
   end
 end

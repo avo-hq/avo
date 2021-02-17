@@ -50,6 +50,7 @@ module Avo
         models: @models,
         pagy: @pagy,
         index_params: @index_params,
+        filters: @filters,
         reflection: @reflection,
         frame_name: params[:frame_name],
         parent_resource: @parent_resource,

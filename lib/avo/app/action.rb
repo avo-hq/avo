@@ -46,7 +46,7 @@ module Avo
       end
 
       def boot_fields(request)
-        @field_loader = Avo::FieldsLoader::Loader.new
+        @field_loader = Avo::FieldsLoader.new
         fields request if self.respond_to? :fields
       end
 
@@ -60,7 +60,7 @@ module Avo
       end
 
       def get_field_definitions
-        @field_loader.fields_bag.map do |field|
+        @field_loader.bag.map do |field|
           field.hydrate(action: self)
         end
       end

@@ -40,7 +40,7 @@ module Avo
     end
 
     def create
-      if @model._reflections[params[:related_name]].class.name.demodulize.to_s.in? ['ThroughReflection', 'HasManyReflection']
+      if reflection_class == 'HasManyReflection'
         @model.send("#{params[:related_name]}") << @attachment_model
       else
         @model.send("#{params[:related_name]}=", @attachment_model)
@@ -58,7 +58,7 @@ module Avo
     end
 
     def destroy
-      if @model._reflections[params[:related_name]].class.in? [ActiveRecord::Reflection::HasManyReflection, ActiveRecord::Reflection::ThroughReflection]
+      if reflection_class == 'HasManyReflection'
         @model.send("#{params[:related_name]}").delete @attachment_model
       else
         @model.send("#{params[:related_name]}=", nil)
@@ -89,6 +89,15 @@ module Avo
 
       def attachment_id
         params[:related_id] or params.require(:fields).permit(:related_id)[:related_id]
+      end
+
+      def reflection_class
+        reflection = @model._reflections[params[:related_name]]
+
+        klass = @model._reflections[params[:related_name]].class.name.demodulize.to_s
+        klass = @model._reflections[params[:related_name]].through_reflection.class.name.demodulize.to_s if klass == 'ThroughReflection'
+
+        klass
       end
   end
 end

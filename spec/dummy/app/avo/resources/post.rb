@@ -34,10 +34,14 @@ module Avo
         f.text :name, required: true, show_on_grid: :body
       end
 
-      # # use_filter Avo::Filters::FeaturedFilter
-      # # use_filter Avo::Filters::PublishedFilter
+      def filters(request)
+        filter.use Avo::Filters::FeaturedFilter
+        filter.use Avo::Filters::PublishedFilter
+      end
 
-      use_action Avo::Actions::TogglePublished
+      def actions(request)
+        a.use Avo::Actions::TogglePublished
+      end
     end
   end
 end

@@ -40,8 +40,10 @@ module Avo
         f.has_and_belongs_to_many :teams
       end
 
-      use_action Avo::Actions::MarkInactive
-      use_action Avo::Actions::MakeAdmin
+      def actions(request)
+        a.use Avo::Actions::MarkInactive
+        a.use Avo::Actions::MakeAdmin
+      end
     end
   end
 end

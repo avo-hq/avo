@@ -24,11 +24,13 @@ module Avo
         # key_value :meta, key_label: 'Meta key', value_label: 'Meta value', action_text: 'New item', delete_text: 'Remove item', disable_editing_keys: false, disable_adding_rows: false, disable_deleting_rows: false
 
         f.has_and_belongs_to_many :users
-        # use_filter Avo::Filters::PeopleFilter
-        # use_filter Avo::Filters::People2Filter
-        # use_filter Avo::Filters::PublishedFilter
-        # use_filter Avo::Filters::FeaturedFilter
-        # use_filter Avo::Filters::MembersFilter
+      end
+
+      def filters(request)
+        filter.use Avo::Filters::PeopleFilter
+        filter.use Avo::Filters::People2Filter
+        filter.use Avo::Filters::FeaturedFilter
+        filter.use Avo::Filters::MembersFilter
       end
     end
   end
