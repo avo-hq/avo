@@ -1,5 +1,4 @@
 require_relative 'resource_grid_fields'
-require_relative 'resource_filters'
 require_relative 'fields/field'
 
 module Avo
@@ -275,9 +274,19 @@ module Avo
         end
         .map do |field|
           id = field.id
-          id = field.foreign_key if field.respond_to? :foreign_key
+          value = field.value
 
-          [id, field.value]
+          if field.respond_to? :foreign_key
+            id = field.foreign_key.to_sym
+
+            reflection = @model._reflections[@params[:via_relation]]
+
+            if reflection.present? && reflection.foreign_key.present?
+              value = @params[:via_resource_id]
+            end
+          end
+
+          [id, value]
         end
         .to_h
         .select do |id, value|

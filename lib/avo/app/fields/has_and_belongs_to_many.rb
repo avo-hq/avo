@@ -16,7 +16,7 @@ module Avo
       end
 
       def frame_name
-        "#{self.class.name.demodulize.to_s.underscore}_#{id}_#{target_resource.model_class.to_s.underscore}"
+        "#{self.class.name.demodulize.to_s.underscore}_#{id}"
       end
 
       def frame_url
