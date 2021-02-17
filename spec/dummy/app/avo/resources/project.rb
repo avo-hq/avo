@@ -27,10 +27,10 @@ module Avo
       end
 
       def filters(request)
-        filter.use Avo::Filters::PeopleFilter
-        filter.use Avo::Filters::People2Filter
-        filter.use Avo::Filters::FeaturedFilter
-        filter.use Avo::Filters::MembersFilter
+        # filter.use Avo::Filters::PeopleFilter
+        # filter.use Avo::Filters::People2Filter
+        # filter.use Avo::Filters::FeaturedFilter
+        # filter.use Avo::Filters::MembersFilter
       end
     end
   end

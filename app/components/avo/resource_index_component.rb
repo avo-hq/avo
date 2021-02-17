@@ -49,7 +49,6 @@ class Avo::ResourceIndexComponent < ViewComponent::Base
   end
 
   def can_attach?
-    puts [@reflection.class, @parent_model.class].inspect
     klass = @reflection
     klass = @reflection.through_reflection if klass.is_a? ::ActiveRecord::Reflection::ThroughReflection
 
