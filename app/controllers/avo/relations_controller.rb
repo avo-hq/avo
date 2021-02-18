@@ -16,6 +16,7 @@ module Avo
       @parent_resource = @resource.dup
       @resource = @related_resource
       @parent_model = @parent_resource.model_class.find(params[:id])
+      params[:parent_model] = @parent_resource.model_class.find(params[:id])
       @parent_resource.hydrate(model: @parent_model)
       @query = @parent_model.public_send(params[:related_name])
 
@@ -65,17 +66,7 @@ module Avo
         @model.send("#{params[:related_name]}=", nil)
       end
 
-
-      # request.referrer
-
-      # flash[:notice] = t('avo.attachment_class_detached', attachment_class: @attachment_class)
-
-      # puts ['request.referrer', request.referrer].inspect
-
-      # redirect_to redirect_path
-      redirect_to (params[:referrer] || resources_path(@model)), notice: t('avo.attachment_class_detached', attachment_class: @attachment_class)
-      # redirect_back(fallback_location: 'resource_path(@model)')
-      # render :index, notice: t('avo.attachment_class_detached', attachment_class: @attachment_class)
+      redirect_to params[:referrer] || resources_path(@model), notice: t('avo.attachment_class_detached', attachment_class: @attachment_class)
     end
 
     private

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::ResourceIndexComponent < ViewComponent::Base
+class Avo::ResourceIndexComponent < Avo::ResourceComponent
   include Avo::ResourcesHelper
   include Avo::ApplicationHelper
 
@@ -14,8 +14,7 @@ class Avo::ResourceIndexComponent < ViewComponent::Base
     actions: [],
     reflection: nil,
     frame_name: '',
-    parent_resource: nil,
-    parent_model: nil
+    parent_resource: nil
   )
     @resource = resource
     @resources = resources
@@ -27,7 +26,6 @@ class Avo::ResourceIndexComponent < ViewComponent::Base
     @reflection = reflection
     @frame_name = frame_name
     @parent_resource = parent_resource
-    @parent_model = parent_model
   end
 
   def title
@@ -46,10 +44,6 @@ class Avo::ResourceIndexComponent < ViewComponent::Base
     @index_params[:available_view_types]
   end
 
-  def can_create?
-    @resource.authorization.authorize_action(:create, raise_exception: false) && simple_relation?
-  end
-
   def can_attach?
     klass = @reflection
     klass = @reflection.through_reflection if klass.is_a? ::ActiveRecord::Reflection::ThroughReflection
@@ -64,8 +58,8 @@ class Avo::ResourceIndexComponent < ViewComponent::Base
   def create_path
     if @reflection.present?
       path_args = {
-        via_relation_class: @parent_model.model_name,
-        via_resource_id: @parent_model.id
+        via_relation_class: params[:parent_model].model_name,
+        via_resource_id: params[:parent_model].id
       }
 
       if @reflection.inverse_of.present?

@@ -1,10 +1,12 @@
 <div data-model-id="<%= @resource.model.id %>">
   <% @resource.panels.each do |resource_panel| %>
     <%= form_with model: @resource.model, url: helpers.resource_path(@resource.model), method: :put do |form| %>
+      <%= hidden_field_tag :referrer, back_path %>
+
       <%= panel(title: resource_panel[:name]) do |component| %>
         <% component.with :tools do %>
           <div class="flex justify-end space-x-2">
-            <%= a_link helpers.resource_path(@resource.model) do %>
+            <%= a_link back_path do %>
               <%= helpers.svg 'media/svgs/arrow-left.svg' %> <%= t('avo.cancel').capitalize %>
             <% end %>
 

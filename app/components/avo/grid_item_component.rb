@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 class Avo::GridItemComponent < ViewComponent::Base
-  attr_reader :resource
-  attr_reader :reflection
-  attr_reader :grid_fields
-
   def initialize(resource: resource, reflection: reflection)
     @resource = resource
     @reflection = reflection
@@ -13,19 +9,19 @@ class Avo::GridItemComponent < ViewComponent::Base
 
   private
     def preview
-      grid_fields.detect do |field|
+      @grid_fields.detect do |field|
         field.show_on_grid == :preview
       end
     end
 
     def title
-      grid_fields.detect do |field|
+      @grid_fields.detect do |field|
         field.show_on_grid == :title
       end
     end
 
     def body
-      grid_fields.detect do |field|
+      @grid_fields.detect do |field|
         field.show_on_grid == :body
       end
     end

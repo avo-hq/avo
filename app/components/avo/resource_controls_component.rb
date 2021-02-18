@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::ResourceControlsComponent < ViewComponent::Base
-  attr_reader :resource
-  attr_reader :reflection
-
+class Avo::ResourceControlsComponent < Avo::ResourceComponent
   def initialize(resource: resource, reflection: reflection)
     @resource = resource
     @reflection = reflection
@@ -15,7 +12,19 @@ class Avo::ResourceControlsComponent < ViewComponent::Base
     (@reflection.is_a?(::ActiveRecord::Reflection::HasManyReflection) || @reflection.is_a?(::ActiveRecord::Reflection::ThroughReflection))
   end
 
-  def can_delete?
-    @resource.authorization.authorize_action(:destroy, raise_exception: false)
+  def show_path
+    if params[:parent_model].present?
+      helpers.resource_path(@resource.model, via_resource_class: params[:parent_model].class, via_resource_id: params[:parent_model].id)
+    else
+      helpers.resource_path(@resource.model)
+    end
+  end
+
+  def edit_path
+    if params[:parent_model].present?
+      helpers.edit_resource_path(@resource.model, via_resource_class: params[:parent_model].class, via_resource_id: params[:parent_model].id)
+    else
+      helpers.edit_resource_path(@resource.model)
+    end
   end
 end

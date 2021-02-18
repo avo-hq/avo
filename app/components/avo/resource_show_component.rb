@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::ResourceShowComponent < ViewComponent::Base
+class Avo::ResourceShowComponent < Avo::ResourceComponent
   include Avo::ResourcesHelper
   include Avo::ApplicationHelper
 
@@ -14,7 +14,7 @@ class Avo::ResourceShowComponent < ViewComponent::Base
   end
 
   def back_path
-    if creates_via_resource
+    if via_resource?
       helpers.resource_path(params[:via_resource_class].safe_constantize, resource_id: params[:via_resource_id])
     else
       helpers.resources_path(@resource.model)
@@ -22,7 +22,11 @@ class Avo::ResourceShowComponent < ViewComponent::Base
   end
 
   def edit_path
-    helpers.edit_resource_path(@resource.model)
+    if via_resource?
+      helpers.edit_resource_path(@resource.model, via_resource_class: params[:via_resource_class], via_resource_id: params[:via_resource_id])
+    else
+      helpers.edit_resource_path(@resource.model)
+    end
   end
 
   def detach_path
@@ -34,7 +38,7 @@ class Avo::ResourceShowComponent < ViewComponent::Base
   end
 
   private
-    def creates_via_resource
+    def via_resource?
       params[:via_resource_class].present? and params[:via_resource_id].present?
     end
 

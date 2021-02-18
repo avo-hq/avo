@@ -1,17 +1,17 @@
 <%= turbo_frame_start params[:frame_name] %>
-<%= render Avo::ResourceIndexComponent.new(
-  resource: @resource,
-  resources: @resources,
-  models: @models,
-  pagy: @pagy,
-  index_params: @index_params,
-  filters: @filters,
-  actions: @actions,
-  reflection: @reflection,
-  frame_name: params[:frame_name],
-  parent_resource: @parent_resource,
-  parent_model: @parent_model
-) %>
+  <%= render Avo::ResourceIndexComponent.new(
+      resource: @resource,
+      resources: @resources,
+      models: @models,
+      pagy: @pagy,
+      index_params: @index_params,
+      filters: @filters,
+      actions: @actions,
+      reflection: @reflection,
+      frame_name: params[:frame_name],
+      parent_resource: @parent_resource,
+    )
+  %>
 <%= turbo_frame_end params[:frame_name] %>
 
 <%= turbo_frame_start 'alerts' %>
