@@ -14,4 +14,8 @@ class Avo::ResourceControlsComponent < ViewComponent::Base
     @resource.model.present? &&
     (@reflection.is_a?(::ActiveRecord::Reflection::HasManyReflection) || @reflection.is_a?(::ActiveRecord::Reflection::ThroughReflection))
   end
+
+  def can_delete?
+    @resource.authorization.authorize_action(:destroy, raise_exception: false)
+  end
 end

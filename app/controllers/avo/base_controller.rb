@@ -42,20 +42,6 @@ module Avo
       @resources = @models.map do |model|
         @resource.hydrate(model: model, params: params).dup
       end
-
-      # Create a ResourceIndexComponent instance
-      @component = Avo::ResourceIndexComponent.new(
-        resource: @resource,
-        resources: @resources,
-        models: @models,
-        pagy: @pagy,
-        index_params: @index_params,
-        filters: @filters,
-        reflection: @reflection,
-        frame_name: params[:frame_name],
-        parent_resource: @parent_resource,
-        parent_model: @parent_model
-      )
     end
 
     def show

@@ -65,10 +65,17 @@ module Avo
         @model.send("#{params[:related_name]}=", nil)
       end
 
-      respond_to do |format|
-        format.html { redirect_to resource_path(@model), notice: t('avo.attachment_class_detached', attachment_class: @attachment_class) }
-        format.json { render :show, status: :created, location: resource_path(@model) }
-      end
+
+      # request.referrer
+
+      # flash[:notice] = t('avo.attachment_class_detached', attachment_class: @attachment_class)
+
+      # puts ['request.referrer', request.referrer].inspect
+
+      # redirect_to redirect_path
+      redirect_to (params[:referrer] || resources_path(@model)), notice: t('avo.attachment_class_detached', attachment_class: @attachment_class)
+      # redirect_back(fallback_location: 'resource_path(@model)')
+      # render :index, notice: t('avo.attachment_class_detached', attachment_class: @attachment_class)
     end
 
     private

@@ -1,6 +1,6 @@
 <%= panel title: title, body_classes: 'py-4' do |c| %>
   <% c.with :tools do %>
-    <%= render 'actions' %>
+    <%= render 'actions' if @actions.present? %>
 
     <% if can_create? %>
       <%= a_link create_path do %>

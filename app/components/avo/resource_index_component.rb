@@ -11,6 +11,7 @@ class Avo::ResourceIndexComponent < ViewComponent::Base
     pagy: nil,
     index_params: {},
     filters: [],
+    actions: [],
     reflection: nil,
     frame_name: '',
     parent_resource: nil,
@@ -22,6 +23,7 @@ class Avo::ResourceIndexComponent < ViewComponent::Base
     @pagy = pagy
     @index_params = index_params
     @filters = filters
+    @actions = actions
     @reflection = reflection
     @frame_name = frame_name
     @parent_resource = parent_resource
