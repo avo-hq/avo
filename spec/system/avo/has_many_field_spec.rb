@@ -44,12 +44,43 @@ RSpec.feature 'HasManyField', type: :feature do
         expect(page).to have_current_path "/avo/resources/posts/new?via_relation=user&via_relation_class=User&via_resource_id=#{user.id}"
       end
 
-      it 'navigates to an edit post page' do
+      it 'displays valid links to resources' do
         visit url
 
-        find("[data-component='resources-index'][data-resource-name='posts'] [data-control='edit']").click
+        # grid view button
+        expect(page).to have_link('Grid view', href: "/avo/resources/users/#{user.id}/posts?frame_name=has_many_field_posts&view_type=grid")
 
-        expect(page).to have_current_path "/avo/resources/posts/#{post.id}/edit?viaResourceName=users&viaResourceId=#{user.id}"
+        # create new button
+        expect(page).to have_link('Create new post', href: "/avo/resources/posts/new?via_relation=user&via_relation_class=User&via_resource_id=#{user.id}")
+
+        # attach button
+        expect(page).to have_link('Attach post', href: "/avo/resources/users/#{user.id}/posts/new")
+
+        ## Table Rows
+        # show link
+        show_path = "/avo/resources/posts/#{post.id}?via_resource_class=User&via_resource_id=#{user.id}"
+        expect(page).to have_selector("a[data-control='show'][href='#{show_path}']")
+
+        # id field show link
+        expect(field_element_by_resource_id('id', post.id).native).to have_css("a[href='#{show_path}']")
+
+        # edit link
+        edit_path = "/avo/resources/posts/#{post.id}/edit?via_resource_class=User&via_resource_id=#{user.id}"
+        expect(page).to have_selector("[data-component='resources-index'] a[data-control='edit'][data-resource-id='#{post.id}'][href='#{edit_path}']")
+
+        # detach form
+        form = "form[action='/avo/resources/users/#{user.id}/posts/#{post.id}'][data-turbo-frame='has_many_field_posts']"
+        expect(page).to have_selector("[data-component='resources-index'] #{form}")
+        expect(page).to have_selector(:css, "#{form} input[type='hidden'][name='_method'][value='delete']", visible: false)
+        expect(page).to have_selector(:css, "#{form} input#referrer_detach_#{post.id}[value='/avo/resources/users/#{user.id}/posts?frame_name=has_many_field_posts']", visible: false)
+        expect(page).to have_selector("[data-component='resources-index'] #{form} button[data-control='detach'][data-resource-id='#{post.id}']")
+
+        # destroy form
+        form = "form[action='/avo/resources/posts/#{post.id}'][data-turbo-frame='has_many_field_posts']"
+        expect(page).to have_selector("[data-component='resources-index'] #{form}")
+        expect(page).to have_selector("#{form} input[type='hidden'][name='_method'][value='delete']", visible: false)
+        expect(page).to have_selector("#{form} input#referrer_destroy_#{post.id}[value='/avo/resources/users/#{user.id}/posts?frame_name=has_many_field_posts']", visible: false)
+        expect(page).to have_selector("[data-component='resources-index'] #{form} button[data-control='destroy'][data-resource-id='#{post.id}']")
       end
 
       it 'deletes a post' do
@@ -59,7 +90,18 @@ RSpec.feature 'HasManyField', type: :feature do
           find("tr[data-resource-id='#{post.id}'] [data-control='destroy']").click
         }.to change(Post, :count).by -1
 
-        expect(page).to have_current_path "/avo/resources/users/#{user.id}"
+        expect(page).to have_current_path url
+        expect(page).not_to have_text post.name
+      end
+
+      it 'detaches a post' do
+        visit url
+
+        expect {
+          find("tr[data-resource-id='#{post.id}'] [data-control='detach']").click
+        }.to change(user.posts, :count).by -1
+
+        expect(page).to have_current_path url
         expect(page).not_to have_text post.name
       end
     end

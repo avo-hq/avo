@@ -2,7 +2,7 @@ module Avo
   module Resources
     class User < Resource
       def configure
-        @title = :first_name
+        @title = :name
         @translation_key = 'avo.resource_translations.user'
         @search = [:id, :first_name, :last_name]
         @includes = [:posts, :post]

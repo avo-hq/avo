@@ -10,11 +10,11 @@ def find_field_value_element(field_id)
   find("[data-field-id='#{field_id}'] [data-slot='value']")
 end
 
-def find_field_element_by_component(field_component, resource_id = nil)
+def field_element_by_resource_id(field_id, resource_id = nil)
   if resource_id.present?
-    find("[data-resource-id='#{resource_id}'] [data-field-component='#{field_component}']")
+    find("[data-resource-id='#{resource_id}'] [data-field-id='#{field_id}']")
   else
-    find("[data-field-component='#{field_component}']")
+    find("[data-field-id='#{field_id}']")
   end
 end
 

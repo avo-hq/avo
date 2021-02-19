@@ -65,7 +65,7 @@ module Avo
         self
       end
 
-      def get_fields(panel: nil, view_type: :table)
+      def get_fields(panel: nil, view_type: :table, reflection: nil)
         fields = get_field_definitions.select do |field|
           field.send("show_on_#{@view.to_s}")
         end
@@ -77,6 +77,15 @@ module Avo
           end
           .select do |field|
             field.can_see.present? ? field.can_see.call : true
+          end
+          .select do |field|
+            unless field.respond_to?(:foreign_key) &&
+              reflection.present? &&
+              reflection.respond_to?(:foreign_key) &&
+              reflection.foreign_key == field.foreign_key
+              true
+            end
+
           end
         when :grid
           fields = fields.select do |field|

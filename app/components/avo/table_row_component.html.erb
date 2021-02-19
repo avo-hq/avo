@@ -12,7 +12,7 @@
       />
     </div>
   </td>
-  <% @resource.get_fields(view_type: :table).each_with_index do |field, index| %>
+  <% @resource.get_fields(view_type: :table, reflection: @reflection).each_with_index do |field, index| %>
     <%= helpers.index_field field, index, @resource %>
   <% end %>
   <td class="text-right whitespace-no-wrap px-2">
