@@ -2,7 +2,7 @@
   <div class="w-full grid grid-cols-3 xl:grid-cols-4 gap-6">
     <% @resources.each_with_index do |resource, index| %>
       <% cache_if Avo::PACKED, [resource.model, resource.file_hash] do %>
-        <%= render(Avo::GridItemComponent.new(resource: resource, reflection: @reflection)) %>
+        <%= render(Avo::GridItemComponent.new(resource: resource, reflection: @reflection, parent_model: @parent_model)) %>
       <% end %>
     <% end %>
   </div>

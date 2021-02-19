@@ -5,7 +5,7 @@
       <tbody>
         <% @resources.each_with_index do |resource, index| %>
           <% cache_if Avo::PACKED, [resource.model, resource.file_hash] do %>
-            <%= render(Avo::TableRowComponent.new(resource: resource, reflection: @reflection)) %>
+            <%= render(Avo::TableRowComponent.new(resource: resource, reflection: @reflection, parent_model: @parent_model)) %>
           <% end %>
         <% end %>
       </tbody>

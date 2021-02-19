@@ -1,4 +1,4 @@
-<%= panel title: title, body_classes: 'py-4' do |c| %>
+<%= panel title: title, body_classes: 'py-4', data: {component: 'resources-index'} do |c| %>
   <% c.with :tools do %>
     <%= render 'actions' if @actions.present? %>
 
@@ -35,7 +35,7 @@
     <% if view_type.to_sym == :table %>
       <div class="w-full overflow-auto flex flex-col">
         <div class="relative flex-1 flex">
-          <%= render(Avo::ResourceTableComponent.new(resources: @resources, resource: @resource, reflection: @reflection)) %>
+          <%= render(Avo::ResourceTableComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_model: @parent_model)) %>
         </div>
 
         <% if @models.present? %>
@@ -49,7 +49,7 @@
 
   <% if view_type.to_sym == :grid %>
     <% c.with :bare_content do %>
-      <%= render(Avo::ResourceGridComponent.new(resources: @resources, resource: @resource, reflection: @reflection)) %>
+      <%= render(Avo::ResourceGridComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_model: @parent_model)) %>
 
       <div class="bg-white rounded-xl shadow-xl mt-8 py-6">
         <%= render partial: 'avo/partials/paginator', locals: { pagy: @pagy, models: @models, frame_name: @frame_name } %>

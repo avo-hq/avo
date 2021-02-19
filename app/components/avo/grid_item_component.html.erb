@@ -19,7 +19,7 @@
       <%= body.value %>
     </div>
     <div class="w-full">
-      <%= render(Avo::ResourceControlsComponent.new(resource: @resource, reflection: @reflection)) %>
+      <%= render(Avo::ResourceControlsComponent.new(resource: @resource, reflection: @reflection, parent_model: @parent_model)) %>
     </div>
   </div>
 </div>

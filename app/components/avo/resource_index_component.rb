@@ -14,7 +14,7 @@ class Avo::ResourceIndexComponent < Avo::ResourceComponent
     actions: [],
     reflection: nil,
     frame_name: '',
-    parent_resource: nil
+    parent_model: nil
   )
     @resource = resource
     @resources = resources
@@ -25,7 +25,7 @@ class Avo::ResourceIndexComponent < Avo::ResourceComponent
     @actions = actions
     @reflection = reflection
     @frame_name = frame_name
-    @parent_resource = parent_resource
+    @parent_model = parent_model
   end
 
   def title
@@ -58,8 +58,8 @@ class Avo::ResourceIndexComponent < Avo::ResourceComponent
   def create_path
     if @reflection.present?
       path_args = {
-        via_relation_class: params[:parent_model].model_name,
-        via_resource_id: params[:parent_model].id
+        via_relation_class: @parent_model.model_name,
+        via_resource_id: @parent_model.id,
       }
 
       if @reflection.inverse_of.present?
