@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe ResourceGridComponent, type: :component do
+RSpec.describe Avo::ResourceGridComponent, type: :component do
   pending "add some examples to (or delete) #{__FILE__}"
 
   # it "renders something useful" do
