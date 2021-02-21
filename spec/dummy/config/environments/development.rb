@@ -63,4 +63,7 @@ Rails.application.configure do
   config.factory_bot.definition_file_paths = ["../../db"]
 
   config.action_mailer.default_url_options = { host: 'localhost', port: 3030 }
+
+  # @todo: temporary. remove this
+  config.action_view.logger = nil
 end

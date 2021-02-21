@@ -1,10 +1,10 @@
 <%= turbo_frame_tag "actions_show" do %>
-  <%= form_with scope: 'fields', url: "/avo/resources/#{@resource_model.model_name.route_key}/actions/#{@action.id}", data: {'turbo-frame': '_top'} do |form| %>
+  <%= form_with scope: 'fields', url: "/avo/resources/#{@resource.model_class.model_name.route_key}/actions/#{@action.param_id}", data: {'turbo-frame': '_top'} do |form| %>
     <% modal do %>
       <div
         data-controller="action"
         data-action-target="controllerDiv"
-        data-resource-name="<%= @resource_model.model_name.route_key %>"
+        data-resource-name="<%= @resource.model_class.model_name.route_key %>"
         data-resource-id="<%= params[:id] %>"
       >
         <% content_for :heading do %>
@@ -17,8 +17,10 @@
 
         <%= form.hidden_field :resource_ids, value: params[:resource_ids], 'data-action-target': 'resourceIds' %>
 
-        <% @fields.each_with_index do |field, index| %>
-          <%= edit_field field, index, nil, form, displayed_in_modal: true %>
+        <% if @action.get_fields.present? %>
+          <% @action.get_fields.each_with_index do |field, index| %>
+            <%= edit_field field, index, nil, form, displayed_in_modal: true %>
+          <% end %>
         <% end %>
 
         <% content_for :controls, flush: true do %>

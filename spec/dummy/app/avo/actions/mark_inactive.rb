@@ -9,16 +9,15 @@ module Avo
         models.each do |model|
           model.update active: false
 
-          model.notify fields['message'] if fields['notify_user']
+          model.notify fields[:message] if fields[:notify_user]
         end
 
         succeed 'Perfect!'
-        reload_resources
       end
 
-      fields do
-        boolean :notify_user
-        textarea :message, default: 'Your account has been marked as inactive.'
+      def fields(request)
+        f.boolean :notify_user, default: true
+        f.text :message, default: 'Your account has been marked as inactive.'
       end
     end
   end

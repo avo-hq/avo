@@ -1,6 +1,8 @@
 module Avo
   module Fields
     class IdField < Field
+      attr_accessor :link_to_resource
+
       def initialize(name, **args, &block)
         default_value = 'id'
 
@@ -16,7 +18,7 @@ module Avo
           id: name.to_sym,
           readonly: true,
           sortable: true,
-          component: 'id-field'
+          partial_name: 'id-field'
         }
 
         hide_on [:edit, :new]

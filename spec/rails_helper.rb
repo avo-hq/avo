@@ -46,6 +46,7 @@ require 'support/controller_routes'
 
 RSpec.configure do |config|
   config.include TestHelpers::ControllerRoutes, type: :controller
+  config.include TestHelpers::DisableAuthentication, type: :system
   config.include TestHelpers::DisableAuthentication, type: :feature
   config.include TestHelpers::DisableHQRequest
   config.include Warden::Test::Helpers

@@ -1,16 +1,17 @@
 module Avo
   module Resources
     class TeamMembership < Resource
-      def initialize
+      def configure
         @title = :id
         @search = :id
+        @includes = [:user, :team]
       end
 
-      fields do
-        id
-        select :level, options: { beginner: 'Beginner', intermediate: 'Intermediate', advanced: 'Advanced' }, display_value: true, default: -> (model, resource, view, field) { Time.now.hour < 12 ? 'advanced' : 'beginner' }
-        belongs_to :user
-        belongs_to :team
+      def fields(request)
+        f.id
+        # f.select :level, options: { beginner: 'Beginner', intermediate: 'Intermediate', advanced: 'Advanced' }, display_value: true, default: -> (model, resource, view, field) { Time.now.hour < 12 ? 'advanced' : 'beginner' }
+        f.belongs_to :user
+        f.belongs_to :team
       end
     end
   end

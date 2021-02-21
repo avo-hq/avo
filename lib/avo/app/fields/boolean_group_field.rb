@@ -3,7 +3,7 @@ module Avo
     class BooleanGroupField < Field
       def initialize(name, **args, &block)
         @defaults = {
-          component: 'boolean-group-field',
+          partial_name: 'boolean-group-field',
           computable: true,
         }
 

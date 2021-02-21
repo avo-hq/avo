@@ -1,0 +1,17 @@
+<%
+  if available_view_types.count > 1
+    case view_type.to_sym
+    when :table
+      new_view_type = 'grid'
+      new_icon = 'view-grid'
+      translation_key = 'avo.grid_view'
+    when :grid
+      new_view_type = 'table'
+      new_icon = 'view-list'
+      translation_key = 'avo.table_view'
+    end
+%>
+  <%= a_link params.permit!.merge(view_type: new_view_type), color: :blue, 'data-turbo-frame': frame_name, title: "Switch to #{new_view_type} view" do %>
+    <%= svg "media/svgs/#{new_icon}.svg" %> <%= t(translation_key, { item: @resource.model_class.model_name.human.downcase }) %>
+  <% end if @authorization.set_record(@resource.model_class).authorize_action :create, raise_exception: false %>
+<% end %>
