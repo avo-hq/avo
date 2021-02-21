@@ -4,6 +4,7 @@ module Avo
       def configure
         @title = :name
         @search = [:id, :name]
+        @includes = :admin
       end
 
       def fields(request)
@@ -15,11 +16,13 @@ module Avo
         #   model.members.count
         # end
 
-        # f.has_one :admin
-        # f.has_many :members, through: :memberships
+        f.has_one :admin
+        f.has_many :members, through: :memberships
       end
 
-      use_filter Avo::Filters::MembersFilter
+      def filters(request)
+        filter.use Avo::Filters::MembersFilter
+      end
     end
   end
 end

@@ -101,7 +101,7 @@ end
 gem 'zeitwerk', '~> 2.3'
 
 # Pagination
-gem 'kaminari'
+gem 'pagy'
 
 gem 'httparty'
 
@@ -112,3 +112,5 @@ gem 'i18n-js'
 gem 'hotwire-rails'
 
 gem 'active_link_to'
+
+gem 'view_component', require: 'view_component/engine'

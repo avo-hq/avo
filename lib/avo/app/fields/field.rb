@@ -35,6 +35,7 @@ module Avo
       attr_accessor :action
       attr_accessor :show_on_grid
       attr_accessor :meta
+      attr_accessor :panel_name
 
       @meta = {}
 
@@ -69,6 +70,7 @@ module Avo
           can_see: nil,
           show_on_grid: false,
           meta: {},
+          panel_name: nil,
         }
 
         # Set the values in the following order
@@ -91,11 +93,13 @@ module Avo
         end
       end
 
-      def hydrate(model: nil, resource: nil, action: nil, view: nil)
+      def hydrate(model: nil, resource: nil, action: nil, view: nil, panel_name: nil, user: nil)
         @model = model if model.present?
         @view = view if view.present?
         @resource = resource if resource.present?
         @action = action if action.present?
+        @user = user if user.present?
+        @panel_name = panel_name if panel_name.present?
 
         # Run each field's custom hydration
         if self.respond_to? :build_meta
@@ -145,7 +149,7 @@ module Avo
       # Try to see if the field has a different database ID than it's name
       def database_id(model)
         begin
-          foreign_key(model)
+          foreign_key
         rescue => exception
           id
         end

@@ -1,6 +1,7 @@
 module Avo
   module ApplicationHelper
     include ::Webpacker::Helper
+    include ::Pagy::Frontend
 
     def current_webpacker_instance
       Avo.webpacker
@@ -47,9 +48,9 @@ module Avo
       }
     end
 
-    def panel(&block)
-      render layout: 'layouts/avo/panel' do
-        capture(&block)
+    def panel(**args, &block)
+      render(Avo::PanelComponent.new(**args)) do |component|
+        capture(component, &block)
       end
     end
 
@@ -57,6 +58,18 @@ module Avo
       render layout: 'layouts/avo/modal' do
         capture(&block)
       end
+    end
+
+    def empty_state(resource_name)
+      render partial: 'avo/partials/empty_state', locals: { resource_name: resource_name }
+    end
+
+    def turbo_frame_start(name)
+      "<turbo-frame id=\"#{name}\">".html_safe if name.present?
+    end
+
+    def turbo_frame_end(name)
+      '</turbo-frame>'.html_safe if name.present?
     end
 
     def a_button(label = nil, **args, &block)

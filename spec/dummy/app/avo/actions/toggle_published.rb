@@ -24,9 +24,9 @@ module Avo
         # redirect_to { resources_path(models.first.class) }
       end
 
-      fields do
-        boolean :notify_user, default: true
-        text :message, default: 'Your account has been marked as inactive.'
+      def fields(request)
+        f.boolean :notify_user, default: true
+        f.text :message, default: 'Your account has been marked as inactive.'
       end
 
       def confirm_text
