@@ -8,7 +8,6 @@ RSpec.feature 'HasManyField', type: :feature do
   context 'show' do
     # Test the frame directly
     let(:url) { "/avo/resources/users/#{user.id}/posts?frame_name=has_many_field_posts" }
-    # let(:url) { "/avo/resources/users/#{user.id}" }
 
     describe 'without a related post' do
       it { is_expected.to have_text 'No related posts found' }
