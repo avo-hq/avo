@@ -31,7 +31,7 @@
           'resource-id': @resource.model.id,
         }
       %>
-      <%= hidden_field_tag :referrer, request.fullpath, id: "referrer_detach_#{@resource.model.id}" %>
+      <%= hidden_field_tag :referrer, request.fullpath, id: "referrer_detach_#{@resource.model.id}" if params[:via_resource_class] %>
     <% end %>
   <% end %>
 
@@ -46,7 +46,7 @@
           'resource-id': @resource.model.id,
         }
       %>
-      <%= form.hidden_field :referrer, value: request.fullpath, id: "referrer_destroy_#{@resource.model.id}" %>
+      <%= form.hidden_field :referrer, value: request.fullpath, id: "referrer_destroy_#{@resource.model.id}" if params[:via_resource_class] %>
     <% end %>
   <% end %>
 </div>
