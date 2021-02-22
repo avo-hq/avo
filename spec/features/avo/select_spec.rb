@@ -1,7 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'select', type: :feature do
-
+RSpec.describe 'SelectField', type: :feature do
   context 'index' do
     let(:url) { '/avo/resources/projects' }
 
@@ -17,28 +16,28 @@ RSpec.describe 'select', type: :feature do
       let(:stage) { 'discovery' }
       let!(:project) { create :project, users_required: 15, stage: stage }
 
-      it { is_expected.to have_text stage }
+      it { is_expected.to have_text stage.humanize }
     end
 
     describe 'with idea stage' do
-      let(:stage) { 'ideea' }
+      let(:stage) { 'idea' }
       let!(:project) { create :project, users_required: 15, stage: stage }
 
-      it { is_expected.to have_text stage }
+      it { is_expected.to have_text stage.humanize }
     end
 
     describe 'with done stage' do
       let(:stage) { 'done' }
       let!(:project) { create :project, users_required: 15, stage: stage }
 
-      it { is_expected.to have_text stage }
+      it { is_expected.to have_text stage.humanize }
     end
 
     describe 'with on hold stage' do
       let(:stage) { 'on hold' }
       let!(:project) { create :project, users_required: 15, stage: stage }
 
-      it { is_expected.to have_text stage }
+      it { is_expected.to have_text stage.humanize }
     end
   end
 
@@ -57,32 +56,32 @@ RSpec.describe 'select', type: :feature do
       let(:stage) { 'discovery' }
       let!(:project) { create :project, users_required: 15, stage: stage }
 
-      it { is_expected.to have_text stage }
+      it { is_expected.to have_text stage.humanize }
     end
 
     describe 'with idea stage' do
-      let(:stage) { 'ideea' }
+      let(:stage) { 'idea' }
       let!(:project) { create :project, users_required: 15, stage: stage }
 
-      it { is_expected.to have_text stage }
+      it { is_expected.to have_text stage.humanize }
     end
 
     describe 'with done stage' do
       let(:stage) { 'done' }
       let!(:project) { create :project, users_required: 15, stage: stage }
 
-      it { is_expected.to have_text stage }
+      it { is_expected.to have_text stage.humanize }
     end
 
     describe 'with on hold stage' do
       let(:stage) { 'on hold' }
       let!(:project) { create :project, users_required: 15, stage: stage }
 
-      it { is_expected.to have_text stage }
+      it { is_expected.to have_text stage.humanize }
     end
   end
 
-  let(:stages_without_placeholder) { ['discovery', 'ideea', 'done', 'on hold', 'cancelled'] }
+  let(:stages_without_placeholder) { ['discovery', 'idea', 'done', 'on hold', 'cancelled'] }
   let(:placeholder) { 'Choose the stage.' }
   let(:stages_with_placeholder) { stages_without_placeholder.push(placeholder) }
 
@@ -91,13 +90,13 @@ RSpec.describe 'select', type: :feature do
 
     describe 'without stage' do
       let!(:project) { create :project, users_required: 15, stage: nil }
-      let(:new_stage) { 'ideea' }
+      let(:new_stage) { 'idea' }
 
       it { is_expected.to have_select 'project_stage', selected: nil, options: stages_with_placeholder }
 
       it 'sets the stage to idea' do
-
         visit url
+
         expect(page).to have_select 'project_stage', selected: nil, options: stages_with_placeholder
 
         select new_stage, from: 'project_stage'
@@ -105,7 +104,7 @@ RSpec.describe 'select', type: :feature do
         click_on 'Save'
 
         expect(current_path).to eql "/avo/resources/projects/#{project.id}"
-        expect(page).to have_text new_stage
+        expect(page).to have_text new_stage.humanize
       end
     end
 
@@ -125,7 +124,7 @@ RSpec.describe 'select', type: :feature do
         click_on 'Save'
 
         expect(current_path).to eql "/avo/resources/projects/#{project.id}"
-        expect(page).to have_text new_stage
+        expect(page).to have_text new_stage.humanize
       end
     end
   end
@@ -151,9 +150,8 @@ RSpec.describe 'select', type: :feature do
 
         expect(current_path).to eql "/avo/resources/projects/#{Project.last.id}"
         expect(page).to have_text 'Project X'
-        expect(page).to have_text 'discovery'
+        expect(page).to have_text 'Discovery'
       end
     end
   end
-
 end
