@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'status', type: :feature do
+RSpec.describe 'StatusField', type: :feature do
 
   context 'index' do
     let(:url) { '/avo/resources/projects' }
