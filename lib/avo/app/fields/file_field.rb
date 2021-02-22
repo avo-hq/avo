@@ -7,7 +7,7 @@ module Avo
 
       def initialize(name, **args, &block)
         @defaults = {
-          component: 'file-field',
+          partial_name: 'file-field',
         }.merge(@defaults || {})
 
         super(name, **args, &block)

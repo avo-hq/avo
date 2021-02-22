@@ -4,46 +4,33 @@ module Avo
       def initialize(name, **args, &block)
         @defaults = {
           updatable: false,
-          component: 'has-many-field'
+          partial_name: 'has-many-field'
         }
         @through = args[:through]
 
         super(name, **args, &block)
 
-        hide_on :index
+        hide_on :all
+        show_on :show
 
         @resource = args[:resource]
       end
 
-      def hydrate_field(fields, model, resource, view)
-        if view === :new
-          return {
-            relationship: :has_many,
-          }
-        end
-
-        return {} if [:index].include? view
-
-        target_resource = get_target_resource model
-        fields[:relation_class] = target_resource.class.to_s
-        fields[:path] = target_resource.url
-        fields[:relationship] = :has_many
-        fields[:through] = @through
-        fields[:relationship_model] = target_resource.model.name
-
-        fields
+      def frame_name
+        "#{self.class.name.demodulize.to_s.underscore}_#{id}"
       end
 
-      def has_own_panel?
-        true
+      def frame_url
+        "#{Avo.configuration.root_path}/resources/#{@model.model_name.route_key}/#{@model.id}/#{id}?frame_name=#{frame_name}"
       end
 
-      def get_target_resource(model)
-        if @resource.present?
-          App.get_resources.find { |r| r.class == @resource }
+      def target_resource
+        if @model._reflections[id.to_s].klass.present?
+          App.get_resource_by_model_name @model._reflections[id.to_s].klass.to_s
+        elsif @model._reflections[id.to_s].options[:class_name].present?
+          App.get_resource_by_model_name @model._reflections[id.to_s].options[:class_name]
         else
-          class_name = model._reflections[id.to_s].options[:class_name].present? ? model._reflections[id.to_s].options[:class_name] : model._reflections[id.to_s].klass.name
-          App.get_resource_by_model_name class_name
+          App.get_resource_by_name id.to_s
         end
       end
     end

@@ -3,7 +3,7 @@ module Avo
     class CodeField < Field
       def initialize(name, **args, &block)
         @defaults = {
-          component: 'code-field',
+          partial_name: 'code-field',
         }
 
         hide_on :index

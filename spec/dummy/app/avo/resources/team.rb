@@ -1,25 +1,28 @@
 module Avo
   module Resources
     class Team < Resource
-      def initialize
+      def configure
         @title = :name
         @search = [:id, :name]
+        @includes = :admin
       end
 
-      fields do
-        id
-        text :name
-        textarea :description, rows: 5, readonly: false, hide_on: :index, format_using: -> (value) { value.to_s.truncate 30 }, default: 'This team is wonderful!', nullable: true, null_values: ['0', '', 'null', 'nil']
+      def fields(request)
+        f.id
+        f.text :name
+        f.textarea :description, rows: 5, readonly: false, hide_on: :index, format_using: -> (value) { value.to_s.truncate 30 }, default: 'This team is wonderful!', nullable: true, null_values: ['0', '', 'null', 'nil']
 
-        number :members_count do |model|
-          model.members.count
-        end
+        # f.number :members_count do |model|
+        #   model.members.count
+        # end
 
-        has_one :admin
-        has_many :members, through: :memberships
+        f.has_one :admin
+        f.has_many :members, through: :memberships
       end
 
-      use_filter Avo::Filters::MembersFilter
+      def filters(request)
+        filter.use Avo::Filters::MembersFilter
+      end
     end
   end
 end

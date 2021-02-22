@@ -1,0 +1,26 @@
+<div class="relative bg-white rounded-xl shadow-xl flex flex-col">
+  <div class="relative w-full pb-3/4 rounded-t-xl overflow-hidden">
+    <% if preview.present? %>
+      <img src="<%= preview.value %>"
+        alt="<%= title.value %>"
+        class="absolute h-full w-full object-cover"
+      />
+    <% else %>
+      <div class="absolute bg-gray-100 w-full h-full">
+        <%= helpers.svg 'media/svgs/avocado.svg', class: 'relative transform -translate-x-1/2 -translate-y-1/2 h-20 text-gray-400 inset-auto top-1/2 left-1/2' %>
+    </div>
+    <% end %>
+  </div>
+  <div class="flex flex-col justify-between p-4 flex-1">
+    <div class="font-semibold leading-tight mb-2 text-lg">
+      <%= title.value %>
+    </div>
+    <div class="mb-6 text-sm">
+      <%= body.value %>
+    </div>
+    <div class="w-full">
+      <%= render(Avo::ResourceControlsComponent.new(resource: @resource, reflection: @reflection, parent_model: @parent_model)) %>
+    </div>
+  </div>
+</div>
+

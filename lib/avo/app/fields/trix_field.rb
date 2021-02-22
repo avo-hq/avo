@@ -5,7 +5,7 @@ module Avo
     class TrixField < Field
       def initialize(name, **args, &block)
         @defaults = {
-          component: 'trix-field',
+          partial_name: 'trix-field',
         }
 
         super(name, **args, &block)

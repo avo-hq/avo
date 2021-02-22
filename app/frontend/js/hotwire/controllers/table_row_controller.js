@@ -6,11 +6,11 @@ export default class extends Controller {
   target = {}
 
   get resourceName() {
-    return this.target.dataset.resourceName
+    return this.target.closest('tr').dataset.resourceName
   }
 
   get resourceId() {
-    return this.target.dataset.resourceId
+    return this.target.closest('tr').dataset.resourceId
   }
 
   get currentIds() {
@@ -21,13 +21,19 @@ export default class extends Controller {
     }
   }
 
+  get actionsPanelPresent() {
+    return document.querySelector('.js-actions-dropdown-button') !== null
+  }
+
   set currentIds(value) {
     document.querySelector(`[data-selected-resources-name="${this.resourceName}"]`).dataset.selectedResources = JSON.stringify(value)
 
-    if (value.length > 0) {
-      this.enableActionsPanel()
-    } else {
-      this.disableActionsPanel()
+    if (this.actionsPanelPresent) {
+      if (value.length > 0) {
+        this.enableActionsPanel()
+      } else {
+        this.disableActionsPanel()
+      }
     }
   }
 

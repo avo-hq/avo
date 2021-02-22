@@ -1,0 +1,51 @@
+.pagy-nav,
+.pagy-nav-js,
+.pagy-combo-nav-js {
+  @apply relative z-0 flex shadow-sm;
+}
+.pagy-nav.pagination,
+.pagy-nav-js.pagination,
+.pagy-combo-nav-js.pagination {
+  /* @apply .border .border-gray-600 .rounded-sm; */
+}
+.pagy-nav .page,
+.pagy-nav-js .page,
+.pagy-combo-nav-js .page,
+.pagy-combo-nav-js .pagy-combo-input {
+  @apply inline-flex -ml-px relative items-center px-4 py-2 border bg-gray-100 text-sm leading-5 font-medium text-gray-700 z-10 outline-none transition ease-in-out duration-150;
+
+  &:focus{
+    @apply border-blue-300 outline-none;
+  }
+
+  &:hover{
+    @apply text-gray-500;
+  }
+
+  &:active{
+    @apply bg-gray-100 text-gray-700;
+  }
+}
+.pagy-nav .page:hover,
+.pagy-nav-js .page:hover {
+  /* @apply .text-gray-900; */
+}
+.pagy-nav .disabled,
+.pagy-nav-js .disabled,
+.pagy-combo-nav-js .disabled {
+  /* @apply .cursor-not-allowed; */
+}
+.pagy-nav .active,
+.pagy-nav-js .active {
+  /* @apply .text-blue-500; */
+}
+.pagy-nav .prev,
+.pagy-nav-js .prev,
+.pagy-combo-nav-js .prev {
+  /* @apply .text-gray-900; */
+}
+.pagy-nav .next,
+ .pagy-nav-js .next,
+ .pagy-combo-nav-js .next {
+  /* @apply .text-gray-900 .border-r .border-transparent; */
+}

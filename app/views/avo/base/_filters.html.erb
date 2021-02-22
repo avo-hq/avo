@@ -1,0 +1,32 @@
+<div data-controller="toggle-panel">
+  <div class="relative w-full flex justify-between z-30">
+    <%= a_button class: 'focus:outline-none',
+      color: 'gray',
+      'data-action': 'click->toggle-panel#togglePanel' do
+    %>
+      <%= svg 'media/svgs/filter.svg' %> <%= t 'avo.filters' %>
+    <% end %>
+
+    <div
+      class="absolute block inset-auto right-0 top-full bg-white min-w-300px mt-2 z-20 shadow-context rounded-xl hidden"
+      data-toggle-panel-target="panel"
+    >
+      <%
+        @filters.each_with_index do |filter, index|
+          case filter.class.superclass.to_s
+          when Avo::Filters::SelectFilter.to_s
+            template = 'select_filter'
+          when Avo::Filters::BooleanFilter.to_s
+            template = 'boolean_filter'
+          end
+      %>
+        <%= render partial: template, locals: {filter: filter, index: index} %>
+      <% end %>
+
+      <div class="p-4 border-gray-300 border-t">
+        <% # @todo: disable if filters not modified  %>
+        <%= a_link t('avo.reset_filters'), resources_path(@resource.model_class, filters: nil, keep_query_params: true), color: :gray, class: 'w-full justify-center' %>
+      </div>
+    </div>
+  </div>
+</div>

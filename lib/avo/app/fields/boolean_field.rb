@@ -3,7 +3,7 @@ module Avo
     class BooleanField < Field
       def initialize(name, **args, &block)
         @defaults = {
-          component: 'boolean-field',
+          partial_name: 'boolean-field',
           computable: true,
         }
 
@@ -26,11 +26,11 @@ module Avo
       end
 
       def truthy_values
-        ['true', @true_value]
+        ['true', '1', @true_value]
       end
 
       def falsy_values
-        ['false', @false_value]
+        ['false', '0', @false_value]
       end
     end
   end

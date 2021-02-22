@@ -1,141 +1,174 @@
-require_relative 'resource_fields'
 require_relative 'resource_grid_fields'
-require_relative 'resource_filters'
-require_relative 'resource_actions'
 require_relative 'fields/field'
 
 module Avo
   module Resources
     class Resource
-      attr_reader :required
-      attr_reader :includes
-      attr_reader :default_view_type
+      attr_writer :name
 
-      # attr_accessor :model
-      # attr_accessor :id
-      # attr_accessor :authorization
-      # attr_accessor :singular_name
-      # attr_accessor :plural_name
-      # attr_accessor :title
-      # attr_accessor :translation_key
-      # attr_accessor :path
-      # attr_accessor :fields
-      # attr_accessor :grid_fields
-      # attr_accessor :panels
+      attr_accessor :id
+      attr_accessor :title
+      attr_accessor :search
+      attr_accessor :includes
+      attr_accessor :translation_key
+      attr_accessor :default_view_type
+      attr_accessor :has_devise_password
+      attr_accessor :view
+      attr_accessor :model
+      attr_accessor :user
+      attr_accessor :fields_loader
+      attr_accessor :actions_loader
+      attr_accessor :filters_loader
+      attr_accessor :params
 
-      class << self
-        def hydrate_resource(model:, resource:, view: :index, user:)
-          case view
-          when :show
-            panel_name = I18n.t 'avo.resource_details', item: resource.name.downcase.upcase_first
-          when :edit
-            panel_name = I18n.t('avo.edit_item', item: resource.name.downcase).upcase_first
-          when :new
-            panel_name = I18n.t('avo.create_new_item', item: resource.name.downcase).upcase_first
+      alias :field :fields_loader
+      alias :f :field
+      alias :action :actions_loader
+      alias :a :action
+      alias :filter :filters_loader
+
+      def initialize(request = nil)
+        @id = :id
+        @title = 'Resource'
+        @search = []
+        @includes = []
+        @translation_key = nil
+        @default_view_type = :table
+        @has_devise_password = false
+
+        configure
+        boot_fields request
+      end
+
+      def boot_fields(request)
+        @fields_loader = Avo::FieldsLoader.new
+        fields request
+
+        @actions_loader = Avo::ActionsLoader.new
+        actions request if self.respond_to? :actions
+
+        @filters_loader = Avo::ActionsLoader.new
+        filters request if self.respond_to? :filters
+      end
+
+      def hydrate(model: nil, view: nil, user: nil, params: nil)
+        @view = view if view.present?
+        @user = user if user.present?
+        @params = params if params.present?
+
+        if model.present?
+          @model = model
+
+          hydrate_model_with_defaults if @view == :new
+        end
+
+        self
+      end
+
+      def get_fields(panel: nil, view_type: :table, reflection: nil)
+        fields = get_field_definitions.select do |field|
+          field.send("show_on_#{@view.to_s}")
+        end
+
+        case view_type.to_sym
+        when :table
+          fields = fields.select do |field|
+            field.show_on_grid.blank?
           end
-
-          resource_with_fields = {
-            id: model.id,
-            authorization: AuthorizationService.new(user, model),
-            singular_name: resource.singular_name,
-            plural_name: resource.plural_name,
-            title: model[resource.title],
-            translation_key: resource.translation_key,
-            path: resource.url,
-            fields: [],
-            grid_fields: {},
-            panels: [{
-              name: panel_name,
-              component: 'panel',
-            }],
-            model: model,
-            hash: file_hash(resource), # md5 of the file to break the cache
-          }
-
-          grid_fields = resource.get_grid_fields
-          grid_fields_by_required_field = grid_fields.map { |grid_field_id, field| [field.id, grid_field_id] }.to_h
-
-          resource.get_fields.each do |field|
-            field_is_required_in_grid_view = grid_fields.map { |grid_field_id, field| field.id }.include?(field.id)
-            required_in_current_view = field.send("show_on_#{view.to_s}")
-
-            next unless required_in_current_view or field_is_required_in_grid_view
-
-            furnished_field = field.fetch_for_resource(model, resource, view)
-
-            next unless field_resource_authorized field, furnished_field, user
-
-            next if furnished_field.blank?
-
-            furnished_field[:panel_name] = panel_name
-            furnished_field[:show_on_show] = field.show_on_show
-
-            if field.has_own_panel?
-              furnished_field[:panel_name] = field.name.to_s.pluralize
+          .select do |field|
+            field.can_see.present? ? field.can_see.call : true
+          end
+          .select do |field|
+            unless field.respond_to?(:foreign_key) &&
+              reflection.present? &&
+              reflection.respond_to?(:foreign_key) &&
+              reflection.foreign_key == field.foreign_key
+              true
             end
 
-            if field_is_required_in_grid_view
-              required_field = grid_fields_by_required_field[field.id]
-              resource_with_fields[:grid_fields][required_field] = furnished_field
-            end
-
-            if required_in_current_view
-              resource_with_fields[:fields] << furnished_field
-            end
           end
-
-          # abort self.inspect
-          # self.new resource_with_fields
-          resource_with_fields
-        end
-
-        def index_path(resource_or_class)
-          if resource_or_class.class == String
-            url = resource_or_class.underscore.pluralize
-          else
-            url = resource_or_class.class.name.demodulize.underscore.pluralize
-          end
-
-          "/resources/#{url}"
-        end
-
-        def get_authorization(user, model)
-          [:new, :edit, :update, :show, :destroy].map do |action|
-            [action, AuthorizationService::authorize_action(user, model, action)]
-          end.to_h
-        end
-
-        def field_resource_authorized(field, furnished_field, user)
-          if [Avo::Fields::HasManyField, Avo::Fields::HasAndBelongsToManyField].include? field.class
-            return true if furnished_field[:relationship_model].nil?
-
-            AuthorizationService.authorize user, furnished_field[:relationship_model].safe_constantize, Avo.configuration.authorization_methods.stringify_keys['index']
-          else
-            true
+        when :grid
+          fields = fields.select do |field|
+            field.show_on_grid.present?
           end
         end
 
-        def file_hash(resource)
-          content_to_be_hashed = ''
-          # resource file hash
-          resource_path = Rails.root.join('app', 'avo', 'resources', "#{resource.name.underscore}.rb").to_s
-          if File.file? resource_path
-            content_to_be_hashed += File.read(resource_path)
+        if panel.present?
+          fields = fields.select do |field|
+            field.panel_name == panel
           end
+        end
 
-          # policy file hash
-          policy_path = Rails.root.join('app', 'policies', "#{resource.name.underscore}_policy.rb").to_s
-          if File.file? policy_path
-            content_to_be_hashed += File.read(policy_path)
-          end
+        # abort fields.map { |f| [f.id, f.panel_name] }.inspect
 
-          Digest::MD5.hexdigest(content_to_be_hashed)
+        fields = fields.map do |field|
+          field.hydrate(model: @model, view: @view, resource: self)
+        end
+
+        fields
+      end
+
+      def get_field_definitions
+        @fields_loader.bag.map do |field|
+          field.hydrate(resource: self, panel_name: default_panel_name, user: user)
         end
       end
 
-      # def initialize(hash)
-      #   hash.each {|k,v| public_send("#{k}=",v)}
-      # end
+      def default_panel_name
+        return @params[:related_name].capitalize if @params[:related_name].present?
+
+        case @view
+        when :show
+          I18n.t('avo.resource_details', item: self.name.downcase, title: model_title).upcase_first
+        when :edit
+          I18n.t('avo.update_item', item: self.name.downcase, title: model_title).upcase_first
+        when :new
+          I18n.t('avo.create_new_item', item: self.name.downcase).upcase_first
+        end
+      end
+
+      def panels
+        panels = [
+          {
+            name: default_panel_name,
+            type: :fields,
+            in_panel: true,
+          }
+        ]
+
+        # return panels if @params[:via_relation_param] == 'has_one'
+
+        # abort get_field_definitions.map(&:class).inspect
+
+        # has_one_panels = get_field_definitions.select do |field|
+        #   field.class.to_s.include? 'HasOneField'
+        # end
+        # .map do |field|
+        #   {
+        #     name: field.name,
+        #     type: :has_one_relation,
+        #     in_panel: false,
+        #   }
+        # end
+
+        # has_many_panels = []
+
+        # panels + has_one_panels + has_many_panels
+
+        panels
+      end
+
+      def model_class
+        return @model.class if @model.present?
+
+        self.class.name.demodulize.safe_constantize
+      end
+
+      def model_title
+        return @model[title] if @model.present?
+
+        name
+      end
 
       def name
         return @name if @name.present?
@@ -146,8 +179,6 @@ module Avo
       end
 
       def singular_name
-        return I18n.t(@translation_key, count: 1).capitalize if @translation_key
-
         name
       end
 
@@ -163,61 +194,26 @@ module Avo
         self.class.name.demodulize.underscore
       end
 
-      def url
-        return @url if @url.present?
-
-        self.class.name.demodulize.underscore.pluralize
-      end
-
-      def model_path
-        # Rails.application.routes.url_helpers.resource_path(model.name.underscore.pluralize)
-        Avo::Engine.routes.url_helpers.resource_path(model.name.underscore.pluralize)
-      end
-
-      def title
-        return @title if @title.present?
-
-        'id'
-      end
-
-      def translation_key
-        @translation_key
-      end
-
-      def model
-        return @model if @model.present?
-
-        underscore_name.to_s.camelize.singularize
-      end
-
-      def get_fields
-        self.class.get_fields
-      end
-
-      def get_grid_fields
-        self.class.get_grid_fields
-      end
-
       def available_view_types
-        get_grid_fields.length > 0 ? [:grid, :table] : [:table]
+        get_fields(view_type: :grid).length > 0 ? [:grid, :table] : [:table]
       end
 
       def get_filters
-        self.class.get_filters
+        @filters_loader.bag
       end
 
       def get_actions
-        self.class.get_actions
+        @actions_loader.bag
       end
 
-      def search
-        @search
+      def route_key
+        model_class.model_name.route_key
       end
 
       def query_search(query: '', via_resource_name: , via_resource_id:, user:)
-        model_class = self.model
+        # model_class = self.model
 
-        db_query = AuthorizationService.with_policy(user, model_class)
+        db_query = AuthorizationService.apply_policy(user, model_class)
 
         if via_resource_name.present?
           related_model = App.get_resource_by_name(via_resource_name).model
@@ -236,25 +232,15 @@ module Avo
         db_query.where(new_query.join(' '))
       end
 
-      def model
-        return @model if @model.present?
-
-        self.class.name.demodulize.safe_constantize
-      end
-
       def attached_file_fields
-        get_fields.select do |field|
+        get_field_definitions.select do |field|
           [Avo::Fields::FileField, Avo::Fields::FilesField].include? field.class
         end
       end
 
-      def has_devise_password
-        @has_devise_password or false
-      end
-
       def fill_model(model, params)
         # Map the received params to their actual fields
-        fields_by_database_id = self.get_fields.map { |field| [field.database_id(model).to_s, field] }.to_h
+        fields_by_database_id = self.get_field_definitions.map { |field| [field.database_id(model).to_s, field] }.to_h
 
         params.each do |key, value|
           field = fields_by_database_id[key]
@@ -267,8 +253,60 @@ module Avo
         model
       end
 
-      def authorization(user)
+      def authorization
         AuthorizationService.new(user, model)
+      end
+
+      def file_hash
+        content_to_be_hashed = ''
+
+        # resource file hash
+        resource_path = Rails.root.join('app', 'avo', 'resources', "#{name.underscore}.rb").to_s
+        if File.file? resource_path
+          content_to_be_hashed += File.read(resource_path)
+        end
+
+        # policy file hash
+        policy_path = Rails.root.join('app', 'policies', "#{name.underscore}_policy.rb").to_s
+        if File.file? policy_path
+          content_to_be_hashed += File.read(policy_path)
+        end
+
+        Digest::MD5.hexdigest(content_to_be_hashed)
+      end
+
+      # For :new views we're hydrating the model with the values from the resource's default attribute.
+      # We will not overwrite any attributes that come pre-filled in the model.
+      def hydrate_model_with_defaults
+        default_values = get_fields.select do |field|
+          !field.computed
+        end
+        .map do |field|
+          id = field.id
+          value = field.value
+
+          if field.respond_to? :foreign_key
+            id = field.foreign_key.to_sym
+
+            reflection = @model._reflections[@params[:via_relation]]
+
+            if reflection.present? && reflection.foreign_key.present?
+              value = @params[:via_resource_id]
+            end
+          end
+
+          [id, value]
+        end
+        .to_h
+        .select do |id, value|
+          value.present?
+        end
+
+        default_values.each do |id, value|
+          if @model.send(id).nil?
+            @model.send("#{id}=", value)
+          end
+        end
       end
     end
   end

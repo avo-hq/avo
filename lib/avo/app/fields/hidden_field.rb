@@ -5,7 +5,7 @@ module Avo
     class HiddenField < TextField
       def initialize(name, **args, &block)
         @defaults = {
-          component: 'hidden-field',
+          partial_name: 'hidden-field',
         }
 
         super(name, **args, &block)
