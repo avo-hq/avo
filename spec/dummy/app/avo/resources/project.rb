@@ -12,8 +12,8 @@ module Avo
         f.text :name, required: true
         # field.text :name, required: true
         f.status :status, failed_when: [:closed, :rejected, :failed], loading_when: [:loading, :running, :waiting], nullable: true
-        # select :stage, hide_on: [:show, :index], enum: ::Project.stages, placeholder: 'Choose the stage.', display_value: true
-        f.badge :stage, options: { info: ['Discovery', 'Ideea'], success: 'Done', warning: 'On hold', danger: 'Cancelled' }
+        f.select :stage, hide_on: [:show, :index], enum: ::Project.stages, placeholder: 'Choose the stage.', display_value: true
+        f.badge :stage, options: { info: ['Discovery', 'Idea'], success: 'Done', warning: 'On hold', danger: 'Cancelled' }
         # currency :budget, currency: 'EUR', locale: 'de-DE'
         # country :country
         f.number :users_required, min: 10, max: 1000000, step: 1
