@@ -12,7 +12,7 @@ class Avo::ResourceEditComponent < ViewComponent::Base
     if via_resource?
       helpers.resource_path(params[:via_resource_class].safe_constantize, resource_id: params[:via_resource_id])
     else
-      helpers.resources_path(@resource.model)
+      helpers.resource_path(@resource.model)
     end
   end
 

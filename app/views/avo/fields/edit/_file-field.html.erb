@@ -1,0 +1,9 @@
+<%= edit_field_wrapper field: field, index: index, form: form, displayed_in_modal: displayed_in_modal do %>
+  <% if field.value.present? %>
+    <div class="mb-2">
+      <%= render partial: 'avo/fields/common/file_item', locals: { id: field.id, attachment: field.value.attachment, is_image: field.is_image, button_size: :md } %>
+    </div>
+  <% end %>
+
+  <%= form.file_field field.id, disabled: field.readonly %>
+<% end %>

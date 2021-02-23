@@ -26,9 +26,12 @@ module Avo
         @query = @query.includes(*@resource.includes)
       end
 
+      # Eager load the active storage attachments
+      @query = eager_load_files(@resource, @query)
+
       # Sort the items
       if @index_params[:sort_by].present?
-        @query = @query.order("#{@index_params[:sort_by]} #{@index_params[:sort_direction]}")
+        @query = @query.order("#{@resource.model_class.table_name}.#{@index_params[:sort_by]} #{@index_params[:sort_direction]}")
       end
 
       # Apply filters
@@ -120,27 +123,7 @@ module Avo
       end
 
       def permitted_params
-        permitted = @resource.get_field_definitions.select(&:updatable).map do |field|
-          # If it's a relation
-          if field.methods.include? :foreign_key
-            database_id = field.foreign_key
-          end
-
-          if database_id.present?
-            # Allow the database_id for belongs_to relation
-            database_id.to_sym
-          elsif field.is_array_param
-            # Allow array param if necessary
-            { "#{field.id}": [] }
-          elsif field.is_object_param
-            # Allow array param if necessary
-            [:"#{field.id}", "#{field.id}": {} ]
-          else
-            field.id.to_sym
-          end
-        end
-
-        permitted
+        @resource.get_field_definitions.select(&:updatable).map(&:to_permitted_param)
       end
 
       def cast_nullable(params)

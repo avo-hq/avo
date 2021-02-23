@@ -1,0 +1,5 @@
+<%= edit_field_wrapper field: field, index: index, form: form, displayed_in_modal: displayed_in_modal, full_width: true do %>
+  <%= render partial: 'avo/fields/common/files_list', locals: { field: field } %>
+
+  <%= form.file_field field.id, disabled: field.readonly, multiple: true %>
+<% end %>

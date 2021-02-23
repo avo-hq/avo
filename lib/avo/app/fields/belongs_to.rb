@@ -46,6 +46,10 @@ module Avo
         value.send(target_resource.title)
       end
 
+      def to_permitted_param
+        foreign_key.to_sym
+      end
+
       private
         def target_resource
           if @model._reflections[id.to_s].klass.present?
