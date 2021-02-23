@@ -31,6 +31,9 @@ module Avo
       end
 
       def init(current_request = nil)
+        # Set the current host for ActiveStorage
+        ActiveStorage::Current.host = current_request.base_url
+
         init_resources current_request
         @@license = LicenseManager.new(HQ.new(current_request).response).license
       end

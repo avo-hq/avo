@@ -1,0 +1,7 @@
+<%= a_link main_app.url_for(attachment), color: 'indigo', download: true, class: '', size: button_size || :xs do %>
+  <%= svg 'media/svgs/download.svg' %> <%= t('avo.download_file') %>
+<% end %>
+<%= a_link "/avo/resources/#{@resource.model.model_name.route_key}/#{@resource.model.id
+}/active_storage_attachments/#{id}/#{attachment.id}", color: :red, variant: :outlined, size: button_size || :xs, class: '', 'data-turbo-frame': 'destroy_attachment_form', data: { confirm: t('avo.are_you_sure')} do %>
+  <%= svg 'media/svgs/trash.svg' %> <%= t('avo.delete_file', { item: attachment.filename }) %>
+<% end %>

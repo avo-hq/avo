@@ -1,6 +1,6 @@
 <div data-model-id="<%= @resource.model.id %>">
   <% @resource.panels.each do |resource_panel| %>
-    <%= form_with model: @resource.model, url: helpers.resource_path(@resource.model), method: :put do |form| %>
+    <%= form_with model: @resource.model, url: helpers.resource_path(@resource.model), method: :put, multipart: true do |form| %>
       <%= hidden_field_tag :referrer, back_path if params[:via_resource_class] %>
 
       <%= panel(title: resource_panel[:name]) do |component| %>

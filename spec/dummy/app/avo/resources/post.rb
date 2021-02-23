@@ -5,7 +5,7 @@ module Avo
         @title = :name
         @search = [:name, :id]
         @includes = :user
-        # @default_view_type = :grid
+        @default_view_type = :grid
       end
 
       def fields(request)
@@ -20,7 +20,7 @@ module Avo
         #     ''
         #   end
         # end
-        # f.file :cover_photo, is_image: true
+        f.file :cover_photo, is_image: true, link_to_resource: true
         f.boolean :is_featured, can_see: -> () { user.is_admin? }
         f.boolean :is_published do |model|
           model.published_at.present?
@@ -29,8 +29,8 @@ module Avo
         f.belongs_to :user, meta: { searchable: false }, placeholder: '—'
 
         # Grid view
-        # f.text :name, required: true, show_on_grid: :preview
-        f.text :name, required: true, show_on_grid: :title
+        f.file :cover_photo, required: true, show_on_grid: :preview, link_to_resource: true
+        f.text :name, required: true, show_on_grid: :title, link_to_resource: true
         f.text :name, required: true, show_on_grid: :body
       end
 

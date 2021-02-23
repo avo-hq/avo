@@ -165,14 +165,26 @@ module Avo
         App.get_resource_by_model_name reflected_model
       end
 
-      def eager_load_files(resource)
+      def eager_load_files(resource, query)
         if resource.attached_file_fields.present?
-          resource.attached_file_fields.map(&:id).map do |field|
-            return resource.model_class.send :"with_attached_#{field}"
+          resource.attached_file_fields.map do |field|
+            # abort "#{field.pluralize}".inspect
+            # abort field.class.inspect
+            attachment = case field.class.to_s
+            when 'Avo::Fields::FileField'
+              'attachment'
+            when 'Avo::Fields::FilesField'
+              'attachments'
+            else
+              'attachment'
+            end
+
+            return query.eager_load "#{field.id}_#{attachment}": :blob
+            # return query.send :"with_attached_#{field}"
           end
         end
 
-        resource.model_class
+        query
       end
 
 

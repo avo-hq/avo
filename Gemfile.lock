@@ -6,6 +6,7 @@ PATH
       countries
       httparty
       i18n-js
+      image_processing
       inline_svg
       pagy
       pundit
@@ -144,6 +145,9 @@ GEM
     i18n-js (3.8.0)
       i18n (>= 0.6.6)
     i18n_data (0.10.0)
+    image_processing (1.12.1)
+      mini_magick (>= 4.9.5, < 5)
+      ruby-vips (>= 2.0.17, < 3)
     inline_svg (1.7.1)
       activesupport (>= 3.0)
       nokogiri (>= 1.6)
@@ -167,6 +171,7 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2020.0512)
     mimemagic (0.3.5)
+    mini_magick (4.11.0)
     mini_mime (1.0.2)
     mini_portile2 (2.4.0)
     minitest (5.14.2)
@@ -262,6 +267,8 @@ GEM
     ruby-debug-ide (0.7.2)
       rake (>= 0.8.1)
     ruby-progressbar (1.10.1)
+    ruby-vips (2.0.17)
+      ffi (~> 1.9)
     ruby_dep (1.5.0)
     rubyzip (2.3.0)
     sass-rails (6.0.0)
@@ -356,6 +363,7 @@ DEPENDENCIES
   hotwire-rails
   httparty
   i18n-js
+  image_processing (~> 1.2)
   inline_svg
   iso
   jbuilder (~> 2.7)

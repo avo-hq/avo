@@ -9,8 +9,6 @@ module Avo
 
         super(name, **args, &block)
 
-        @is_object_param = true
-
         @options = args[:options].present? ? args[:options] : {}
       end
 
@@ -18,6 +16,10 @@ module Avo
         {
           options: @options,
         }
+      end
+
+      def to_permitted_param
+        [:"#{id}", "#{id}": {} ]
       end
 
       def fill_field(model, key, value)

@@ -22,8 +22,6 @@ module Avo
       attr_accessor :computed # if block is present
       attr_accessor :computable # if allowed to be computable
       attr_accessor :computed_value # the value after computation
-      attr_accessor :is_array_param
-      attr_accessor :is_object_param
       attr_accessor :block
       attr_accessor :placeholder
       attr_accessor :help
@@ -62,7 +60,6 @@ module Avo
           computable: true,
           computed: block.present?,
           computed_value: false,
-          is_array_param: false,
           format_using: false,
           placeholder: id.to_s.camelize,
           help: nil,
@@ -111,7 +108,7 @@ module Avo
 
       def value
         # Get model value
-        value = @model.send(id) if model_or_class(@model) == 'model' and @model.methods.include? id
+        value = @model.send(id) if model_or_class(@model) == 'model' and @model.respond_to? id
 
         if @view === :new or @action.present?
           if default.present? and default.respond_to? :call
@@ -161,6 +158,10 @@ module Avo
 
       def resolve_attribute(value)
         value
+      end
+
+      def to_permitted_param
+        id.to_sym
       end
 
       private

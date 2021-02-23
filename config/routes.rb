@@ -4,6 +4,10 @@ Avo::Engine.routes.draw do
   get 'resources', to: redirect('/avo')
 
   scope 'resources', as: 'resources' do
+    # Attachments
+    get    '/:resource_name/:id/active_storage_attachments/:attachment_name/:signed_attachment_id', to: 'attachments#show'
+    delete '/:resource_name/:id/active_storage_attachments/:attachment_name/:signed_attachment_id', to: 'attachments#destroy'
+
     # Actions
     get  '/:resource_name(/:id)/actions/:action_id', to: 'actions#show'
     post '/:resource_name(/:id)/actions/:action_id', to: 'actions#handle'
