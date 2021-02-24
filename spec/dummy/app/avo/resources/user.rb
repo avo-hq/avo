@@ -30,7 +30,7 @@ module Avo
         f.password :password_confirmation, name: 'Password confirmation', required: false, only_on: :new
 
         f.heading '<div class="text-gray-300 uppercase font-bold">DEV</div>', as_html: true
-        # code :custom_css, theme: 'dracula', language: 'css', help: "This enables you to edit the user's custom styles.", height: '125px'
+        f.code :custom_css, theme: 'dracula', language: 'css', help: "This enables you to edit the user's custom styles.", height: '125px'
 
         # hidden :team_id, default: 0 # For testing purposes
 

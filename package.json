@@ -28,6 +28,7 @@
     "@tailwindcss/typography": "^0.2.0",
     "autoprefixer": "^9.7.4",
     "axios": "^0.19.2",
+    "codemirror": "^5.59.3",
     "css-loader": "^3.5.3",
     "eslint-config-airbnb": "^18.1.0",
     "eslint-import-resolver-alias": "^1.1.2",
