@@ -1,4 +1,5 @@
 import { Controller } from 'stimulus'
+import { castBoolean } from '@/js/helpers/cast_boolean'
 import CodeMirror from 'codemirror'
 
 export default class extends Controller {
@@ -6,12 +7,12 @@ export default class extends Controller {
 
   connect() {
     const options = {
-      readOnly: Boolean(parseInt(this.elementTarget.dataset.readOnly, 10)),
+      readOnly: castBoolean(this.elementTarget.dataset.readOnly),
       mode: this.elementTarget.dataset.language,
       theme: this.elementTarget.dataset.theme,
       tabSize: this.elementTarget.dataset.tabSize,
-      indentWithTabs: Boolean(parseInt(this.elementTarget.dataset.indentWithTabs, 10)),
-      lineWrapping: Boolean(parseInt(this.elementTarget.dataset.lineWrapping, 10)),
+      indentWithTabs: castBoolean(this.elementTarget.dataset.indentWithTabs),
+      lineWrapping: castBoolean(this.elementTarget.dataset.lineWrapping),
       lineNumbers: true,
     }
 

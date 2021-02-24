@@ -99,11 +99,6 @@ module Avo
         @user = user if user.present?
         @panel_name = panel_name if panel_name.present?
 
-        # Run each field's custom hydration
-        if self.respond_to? :build_meta
-          @meta.merge! self.build_meta(model: @model, resource: @resource, view: @view)
-        end
-
         self
       end
 
