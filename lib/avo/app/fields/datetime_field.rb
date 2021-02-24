@@ -3,30 +3,31 @@ require_relative 'date_field'
 module Avo
   module Fields
     class DatetimeField < DateField
-      def initialize(name, **args, &block)
-        @defaults = {
-          partial_name: 'datetime-field',
-        }
+      attr_reader :format
+      attr_reader :time_24hr
+      attr_reader :timezone
 
+      def initialize(name, **args, &block)
         super(name, **args, &block)
 
+        @partial_name = 'datetime-field'
         @picker_format = args[:picker_format].present? ? args[:picker_format] : 'Y-m-d H:i:S'
-        @format = args[:format].present? ? args[:format] : 'YYYY-MM-DD hh:mm:ss A'
         @time_24hr = args[:time_24hr].present? ? args[:time_24hr] : false
         @timezone = args[:timezone].present? ? args[:timezone] : Rails.application.config.time_zone
       end
 
-      def hydrate_field(fields, model, resource, view)
-        {
-          first_day_of_week: @first_day_of_week,
-          picker_format: @picker_format,
-          format: @format,
-          placeholder: @placeholder,
-          enable_time: true,
-          time_24hr: @time_24hr,
-          timezone: @timezone,
-          relative: @relative,
-        }
+      def formatted_value
+        if @format.is_a?(Symbol)
+          value.to_time.in_time_zone(timezone).to_s(@format)
+        else
+          value.to_time.in_time_zone(timezone).strftime(@format)
+        end
+      end
+
+      def fill_field(model, key, value)
+        model[id] = value.to_time.in_time_zone(Rails.application.config.time_zone)
+
+        model
       end
     end
   end

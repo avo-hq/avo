@@ -25,15 +25,6 @@ module Avo
           value
         end
       end
-
-      # def hydrate_field(fields, model, resource, view)
-      #   {
-      #     options: @options,
-      #     # enum: @enum,
-      #     display_value: @display_value,
-      #     placeholder: @placeholder,
-      #   }
-      # end
     end
   end
 end
