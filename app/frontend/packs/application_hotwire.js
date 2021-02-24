@@ -22,8 +22,8 @@ const application = Application.start()
 const context = require.context('./../js/hotwire/controllers', true, /\.js$/)
 application.load(definitionsFromContext(context))
 
-const componentsContext = require.context('./../js/hotwire/controllers/components', true, /\.js$/)
-application.load(definitionsFromContext(componentsContext))
+const fieldsContext = require.context('./../js/hotwire/controllers/fields', true, /\.js$/)
+application.load(definitionsFromContext(fieldsContext))
 
 window.I18n = I18n
 

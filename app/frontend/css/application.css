@@ -3,15 +3,18 @@
 
 @import './tailwindcss/base.css';
 @import './tailwindcss/components.css';
+
 @import './fonts.css';
 @import './typography.css';
 @import './tooltips.css';
 @import './alerts.css';
 @import './loader.css';
 @import './pagination.css';
-@import './tailwindcss/utilities.css';
 
 @import './components/status.css';
+@import './components/code.css';
+
+@import './tailwindcss/utilities.css';
 
 html,
 body {
