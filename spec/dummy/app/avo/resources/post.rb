@@ -11,8 +11,8 @@ module Avo
       def fields(request)
         f.id
         f.text :name, required: true
-        f.textarea :body, rows: 10
-        # f.trix :body, placeholder: 'Enter text', always_show: false
+        # f.textarea :body, rows: 10
+        f.trix :body, placeholder: 'Enter text', always_show: false
         # f.text :excerpt, hide_on: [:show, :edit, :index] do |model|
         #   begin
         #     ActionView::Base.full_sanitizer.sanitize(model.body).truncate 130
