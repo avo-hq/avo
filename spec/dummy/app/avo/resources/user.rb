@@ -12,7 +12,7 @@ module Avo
 
       def fields(request)
         f.id :id, link_to_resource: true
-        # gravatar :email, link_to_resource: true
+        f.gravatar :email, link_to_resource: true
         f.heading 'User Information'
         f.text :first_name, required: true, placeholder: 'John', default: 'default'
         f.text :last_name, required: true, placeholder: 'Doe'

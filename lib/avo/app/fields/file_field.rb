@@ -4,7 +4,6 @@ module Avo
       include Rails.application.routes.url_helpers
       attr_accessor :is_avatar
       attr_accessor :is_image
-      attr_accessor :link_to_resource
 
       def initialize(name, **args, &block)
         @defaults = {
