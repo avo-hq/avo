@@ -34,6 +34,7 @@ module Avo
       attr_accessor :show_on_grid
       attr_accessor :meta
       attr_accessor :panel_name
+      attr_accessor :link_to_resource
 
       @meta = {}
 

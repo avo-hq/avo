@@ -4,6 +4,10 @@ require 'erb'
 module Avo
   module Fields
     class GravatarField < Field
+      attr_reader :size
+      attr_reader :rounded
+      attr_reader :default
+
       def initialize(name, **args, &block)
         @defaults = {
           partial_name: 'gravatar-field',
@@ -21,20 +25,8 @@ module Avo
         @link_to_resource = args[:link_to_resource].present? ? args[:link_to_resource] : false
       end
 
-      def hydrate_field(fields, model, resource, view)
-        value = nil
-
-        if model[id].present?
-          value = Digest::MD5.hexdigest(model[id].strip.downcase)
-        end
-
-        {
-          value: value,
-          rounded: @rounded,
-          default: @default,
-          size: @size,
-          link_to_resource: @link_to_resource,
-        }
+      def md5
+        Digest::MD5.hexdigest(value.strip.downcase)
       end
     end
   end
