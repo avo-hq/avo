@@ -1,6 +1,9 @@
 module Avo
   module Fields
     class BooleanField < Field
+      attr_reader :true_value
+      attr_reader :false_value
+
       def initialize(name, **args, &block)
         @defaults = {
           partial_name: 'boolean-field',
@@ -13,12 +16,8 @@ module Avo
         @false_value = args[:false_value].present? ? args[:false_value] : false
       end
 
-      def hydrate_field(fields, model, resource, view)
-        {
-          value: resolve_attribute(fields[:value]),
-          true_value: @true_value,
-          false_value: @false_value,
-        }
+      def value
+        resolve_attribute super
       end
 
       def resolve_attribute(value)
