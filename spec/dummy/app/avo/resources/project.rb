@@ -14,7 +14,7 @@ module Avo
         f.select :stage, hide_on: [:show, :index], enum: ::Project.stages, placeholder: 'Choose the stage.', display_value: true
         f.badge :stage, options: { info: ['Discovery', 'Idea'], success: 'Done', warning: 'On hold', danger: 'Cancelled' }
         # currency :budget, currency: 'EUR', locale: 'de-DE'
-        # country :country
+        f.country :country
         f.number :users_required, min: 10, max: 1000000, step: 1
         # text :users_required
         f.datetime :started_at, name: 'Started', time_24hr: true, relative: true, timezone: 'EET'

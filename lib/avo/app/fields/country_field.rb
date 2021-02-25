@@ -1,6 +1,9 @@
 module Avo
   module Fields
     class CountryField < Field
+      attr_reader :countries
+      attr_reader :display_code
+
       def initialize(name, **args, &block)
         @defaults = {
           partial_name: 'country-field',
@@ -13,27 +16,16 @@ module Avo
         @display_code = args[:display_code].present? ? args[:display_code] : false
       end
 
-      def hydrate_field(fields, model, resource, view)
-        if [:show, :index].include? view
-          value = fields[:computed_value] || fields[:value]
-
-          # Just return the DB code.
-          if @display_code
-            return {
-              value: value
-            }
+      def select_options
+        if @display_code
+          countries.map do |code, name|
+            [code, code]
           end
-
-          # Compute and get the translated value.
-          return {
-            value: @countries[value],
-          }
+        else
+          countries.map do |code, name|
+            [name, code]
+          end
         end
-
-        {
-          countries: @countries,
-          display_code: @display_code
-        }
       end
     end
   end
