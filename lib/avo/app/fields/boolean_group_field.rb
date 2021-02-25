@@ -1,6 +1,8 @@
 module Avo
   module Fields
     class BooleanGroupField < Field
+      attr_reader :options
+
       def initialize(name, **args, &block)
         @defaults = {
           partial_name: 'boolean-group-field',
@@ -10,12 +12,6 @@ module Avo
         super(name, **args, &block)
 
         @options = args[:options].present? ? args[:options] : {}
-      end
-
-      def hydrate_field(fields, model, resource, view)
-        {
-          options: @options,
-        }
       end
 
       def to_permitted_param
