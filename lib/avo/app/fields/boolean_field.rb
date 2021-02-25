@@ -1,6 +1,9 @@
 module Avo
   module Fields
     class BooleanField < Field
+      attr_reader :true_value
+      attr_reader :false_value
+
       def initialize(name, **args, &block)
         @defaults = {
           partial_name: 'boolean-field',
