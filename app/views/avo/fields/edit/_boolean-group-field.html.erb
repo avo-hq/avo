@@ -1,0 +1,14 @@
+<%= edit_field_wrapper field: field, index: index, form: form, displayed_in_modal: displayed_in_modal do %>
+  <div class="flex items-center">
+    <div class="space-y-2">
+      <% model_scope = model_name_from_record_or_class(@model).param_key %>
+      <%= check_box_tag "#{model_name_from_record_or_class(@model).param_key}[#{field.id}][]", '', true, { class: "hidden" } %>
+      <% field.options.each do |id, label| %>
+        <% checked = params[model_scope].present? && params[model_scope][field.id.to_s].present? ? params[model_scope][field.id.to_s].include?(id.to_s) : field.value[id.to_s] %>
+        <label class="block">
+          <%= check_box_tag "#{model_name_from_record_or_class(@model).param_key}[#{field.id}][]", id, checked, { class: "w-3 h-3", disabled: field.readonly } %> <%= label %>
+        </label>
+      <% end %>
+    </div>
+  </div>
+<% end %>
