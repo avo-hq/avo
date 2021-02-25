@@ -15,16 +15,15 @@ module Avo
       end
 
       def to_permitted_param
-        [:"#{id}", "#{id}": {} ]
+        ["#{id}": [] ]
       end
 
       def fill_field(model, key, value)
-        return model unless value.is_a? ActionController::Parameters
-
         new_value = {}
 
-        value.each do |key, value|
-          new_value[key] = ActiveModel::Type::Boolean.new.cast value
+        # Cast values to booleans
+        options.each do |id, label|
+          new_value[id] = value.include? id.to_s
         end
 
         model[id] = new_value
