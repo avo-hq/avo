@@ -40,9 +40,7 @@
   <%= turbo_frame_tag 'destroy_attachment_form' %>
 
   <%= turbo_frame_tag 'alerts' do %>
-    <% flash.each do |type, message| %>
-      <%= render partial: 'avo/partials/alert', locals: {type: type.to_sym, message: message} %>
-    <% end %>
+    <%= render partial: 'avo/partials/alerts' %>
   <% end %>
 </div>
 

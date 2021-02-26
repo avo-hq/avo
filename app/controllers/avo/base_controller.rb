@@ -112,7 +112,7 @@ module Avo
       @model.destroy!
 
       respond_to do |format|
-        format.html { redirect_to params[:referrer] || resources_path(@model), notice: "#{@model.class.name} was successfully destroyed." }
+        format.html { redirect_to params[:referrer] || resources_path(@model), notice: t('avo.resource_destroyed', attachment_class: @attachment_class) }
         format.json { head :no_content }
       end
     end
