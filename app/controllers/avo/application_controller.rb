@@ -130,9 +130,10 @@ module Avo
 
       # Get the pluralized resource name for this request
       # Ex: projects, teams, users
-      # @todo: figure out a better way of getting this
       def resource_name
         return params[:resource_name] if params[:resource_name].present?
+
+        return controller_name if controller_name.present?
 
         begin
           request.path
