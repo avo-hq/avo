@@ -16,6 +16,7 @@ en:
     resource_updated: 'Resource updated'
     resource_created: 'Resource created'
     resource_destroyed: 'Resource destroyed'
+    switch_to_view: "Switch to %{view_type} view"
     attachment_destroyed: 'Attachment destroyed'
     failed_to_find_attachment: 'Failed to find attachment'
     remove_selection: 'Remove selection'

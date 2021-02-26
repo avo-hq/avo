@@ -22,7 +22,6 @@ class Avo::Resources::User < Avo::Resources::Resource
     f.date :birthday, first_day_of_week: 1, picker_format: 'F J Y', format: '%Y-%m-%d', placeholder: 'Feb 24th 1955', required: true
     f.text :is_writer, format_using: -> (value) { value.truncate 3 }, hide_on: :edit do |model, resource, view, field|
       model.posts.to_a.count > 0 ? 'yes' : 'no'
-
     end
 
     f.password :password, name: 'User Password', required: false, except_on: :forms, help: 'You may verify the password strength <a href="http://www.passwordmeter.com/" target="_blank">here</a>.'

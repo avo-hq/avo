@@ -44,6 +44,10 @@ class Avo::ResourceIndexComponent < Avo::ResourceComponent
     @index_params[:available_view_types]
   end
 
+  def can_create?
+    @resource.authorization.authorize_action(:create, raise_exception: false) && simple_relation?
+  end
+
   def can_attach?
     klass = @reflection
     klass = @reflection.through_reflection if klass.is_a? ::ActiveRecord::Reflection::ThroughReflection
@@ -82,6 +86,8 @@ class Avo::ResourceIndexComponent < Avo::ResourceComponent
 
   private
     def simple_relation?
-      @reflection.is_a? ::ActiveRecord::Reflection::HasManyReflection
+      return @reflection.is_a? ::ActiveRecord::Reflection::HasManyReflection if @reflection.present?
+
+      true
     end
 end
