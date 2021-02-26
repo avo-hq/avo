@@ -13,9 +13,3 @@
     )
   %>
 <%= turbo_frame_end params[:frame_name] %>
-
-<%= turbo_frame_start 'alerts' %>
-<% flash.each do |type, message| %>
-  <%= render partial: 'avo/partials/alert', locals: {type: type.to_sym, message: message} %>
-<% end %>
-<%= turbo_frame_end 'alerts' %>

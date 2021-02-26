@@ -65,7 +65,9 @@ module Avo
         @model.send("#{params[:related_name]}=", nil)
       end
 
-      redirect_to params[:referrer] || resources_path(@model), notice: t('avo.attachment_class_detached', attachment_class: @attachment_class)
+      respond_to do |format|
+        format.html { redirect_to params[:referrer] || resources_path(@model), notice: t('avo.attachment_class_detached', attachment_class: @attachment_class) }
+      end
     end
 
     private
