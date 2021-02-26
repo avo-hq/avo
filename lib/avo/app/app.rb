@@ -160,38 +160,6 @@ module Avo
         end
       end
 
-#       def init_controllers
-#         Avo::Resources.constants
-#         .select do |r|
-#           r != :Resource
-#         end
-#         .each do |r|
-#           # Generate dummy controllers for each resource that extend the ResourcesController
-#           klass_name = "#{r.to_s.pluralize}Controller"
-#           # klass_name = "Avo::#{r.to_s.pluralize}Controller"
-#           unless Avo.const_defined? klass_name and false
-#             puts ['dada', klass_name].inspect
-#             klass = Class.new(::Avo::ResourcesController)
-#             Avo.const_set klass_name, klass
-#             # Avo.send(:const_set, klass_name, klass)
-#           end
-#           # abort 'self'.inspect
-#           # if Avo.const_defined? klass_name and false
-#           #   abort 'self'.inspect
-#           #   Avo.send(:remove_const, klass_name)
-#           # end
-
-
-#           # Object.const_set klass_name, klass
-# #               unless Avo.const_defined? klass_name and false
-# #                 eval <<RUBY
-# # class #{klass_name} < Avo::ResourcesController
-# # end
-# # RUBY
-#           # end
-#         end
-#       end
-
       def draw_routes
         Proc.new do
           Avo::Resources.constants
