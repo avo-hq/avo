@@ -9,6 +9,7 @@ import { definitionsFromContext } from 'stimulus/webpack-helpers'
 import Avo from '@/js/hotwire/Avo'
 import I18n from 'i18n-js'
 import Rails from '@rails/ujs'
+import tippy from 'tippy.js'
 
 // Toastr alerts
 import '../js/hotwire/toastr'
@@ -28,7 +29,19 @@ application.load(definitionsFromContext(fieldsContext))
 window.I18n = I18n
 
 document.addEventListener('DOMContentLoaded', Avo.init)
-document.addEventListener('turbo:load', () => document.body.classList.remove('turbo-loading'))
+document.addEventListener('turbo:load', () => {
+  document.body.classList.remove('turbo-loading')
+
+  tippy('[data-tippy="tooltip"]', {
+    theme: 'light',
+    content(reference) {
+      const title = reference.getAttribute('title')
+      reference.removeAttribute('title')
+
+      return title
+    },
+  })
+})
 document.addEventListener('turbo:visit', () => document.body.classList.add('turbo-loading'))
 document.addEventListener('turbo:submit-start', () => document.body.classList.add('turbo-loading'))
 

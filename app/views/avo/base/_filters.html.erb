@@ -2,7 +2,9 @@
   <div class="relative w-full flex justify-between z-30">
     <%= a_button class: 'focus:outline-none',
       color: 'gray',
-      'data-action': 'click->toggle-panel#togglePanel' do
+      title: t('avo.click_to_reveal_filters'),
+      'data-action': 'click->toggle-panel#togglePanel',
+      'data-tippy': 'tooltip' do
     %>
       <%= svg 'media/svgs/filter.svg' %> <%= t 'avo.filters' %>
     <% end %>
