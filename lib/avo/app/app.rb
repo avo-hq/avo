@@ -154,6 +154,12 @@ module Avo
           .sort_by { |r| r.name }
       end
 
+      def get_navigation_items(user = nil)
+        get_available_resources(user).select do |resource|
+          resource.model_class.present?
+        end
+      end
+
 #       def init_controllers
 #         Avo::Resources.constants
 #         .select do |r|
@@ -194,11 +200,7 @@ module Avo
             end
             .map do |r|
               if Avo::Resources.const_get(r).is_a? Class
-                plural_name = r.to_s.underscore.downcase.pluralize
-
-                # resources plural_name.to_sym, controller: 'resources', as: plural_name.to_s, path: plural_name.to_s, defaults: { resource: plural_name.to_s }
-                # resources plural_name.to_sym, controller: "#{plural_name}"
-                resources plural_name.to_sym
+                resources r.to_s.underscore.downcase.pluralize.to_sym
               end
             end
         end
