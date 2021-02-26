@@ -39,8 +39,8 @@ ActiveRecord::Schema.define(version: 2020_10_26_153236) do
   create_table "posts", force: :cascade do |t|
     t.string "name"
     t.text "body"
-    t.boolean "is_featured"
     t.bigint "user_id"
+    t.boolean "is_featured"
     t.datetime "published_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -85,7 +85,6 @@ ActiveRecord::Schema.define(version: 2020_10_26_153236) do
     t.text "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "color"
   end
 
   create_table "users", force: :cascade do |t|

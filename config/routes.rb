@@ -12,8 +12,8 @@ Avo::Engine.routes.draw do
     get  '/:resource_name(/:id)/actions/:action_id', to: 'actions#show'
     post '/:resource_name(/:id)/actions/:action_id', to: 'actions#handle'
 
-    # Resources as below:
-    # resources :posts, controller: 'resources', as: 'posts'
+    # Generate resource routes as below:
+    # resources :posts
     instance_eval(&Avo::App.draw_routes)
 
     # Relations
