@@ -4,7 +4,6 @@ require_relative 'fields_loader'
 module Avo
   module Actions
     class Action
-      # @todo: add redirect helpers to actions responses
       attr_accessor :name
       attr_accessor :message
       attr_accessor :default

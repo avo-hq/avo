@@ -18,10 +18,7 @@ module Avo
           end
         end
 
-        # succeed 'Perfect!'
-        # reload
-        # redirect '/avo/resources/posts'
-        # redirect_to { resources_path(models.first.class) }
+        succeed 'Purrrfect!'
       end
 
       def fields(request)

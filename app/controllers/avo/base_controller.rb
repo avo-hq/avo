@@ -174,8 +174,6 @@ module Avo
       end
 
       def set_actions
-        # @todo: if the controller is relations, then replace the @resource with the @related_resource before this call
-        # abort @resource.inspect
         if params[:resource_id].present?
           model = @resource.model_class.find params[:resource_id]
         end
