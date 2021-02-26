@@ -13,7 +13,7 @@ class Avo::ResourceIndexComponent < Avo::ResourceComponent
     filters: [],
     actions: [],
     reflection: nil,
-    frame_name: '',
+    turbo_frame: '',
     parent_model: nil
   )
     @resource = resource
@@ -24,7 +24,7 @@ class Avo::ResourceIndexComponent < Avo::ResourceComponent
     @filters = filters
     @actions = actions
     @reflection = reflection
-    @frame_name = frame_name
+    @turbo_frame = turbo_frame
     @parent_model = parent_model
   end
 

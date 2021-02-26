@@ -7,7 +7,7 @@ RSpec.feature 'HasManyField', type: :feature do
 
   context 'show' do
     # Test the frame directly
-    let(:url) { "/avo/resources/users/#{user.id}/posts?frame_name=has_many_field_posts" }
+    let(:url) { "/avo/resources/users/#{user.id}/posts?turbo_frame=has_many_field_posts" }
 
     describe 'without a related post' do
       it { is_expected.to have_text 'No related posts found' }
@@ -47,7 +47,7 @@ RSpec.feature 'HasManyField', type: :feature do
         visit url
 
         # grid view button
-        expect(page).to have_link('Grid view', href: "/avo/resources/users/#{user.id}/posts?frame_name=has_many_field_posts&view_type=grid")
+        expect(page).to have_link('Grid view', href: "/avo/resources/users/#{user.id}/posts?turbo_frame=has_many_field_posts&view_type=grid")
 
         # create new button
         expect(page).to have_link('Create new post', href: "/avo/resources/posts/new?via_relation=user&via_relation_class=User&via_resource_id=#{user.id}")
@@ -71,14 +71,14 @@ RSpec.feature 'HasManyField', type: :feature do
         form = "form[action='/avo/resources/users/#{user.id}/posts/#{post.id}'][data-turbo-frame='has_many_field_posts']"
         expect(page).to have_selector("[data-component='resources-index'] #{form}")
         expect(page).to have_selector(:css, "#{form} input[type='hidden'][name='_method'][value='delete']", visible: false)
-        expect(page).to have_selector(:css, "#{form} input#referrer_detach_#{post.id}[value='/avo/resources/users/#{user.id}/posts?frame_name=has_many_field_posts']", visible: false)
+        expect(page).to have_selector(:css, "#{form} input#referrer_detach_#{post.id}[value='/avo/resources/users/#{user.id}/posts?turbo_frame=has_many_field_posts']", visible: false)
         expect(page).to have_selector("[data-component='resources-index'] #{form} button[data-control='detach'][data-resource-id='#{post.id}']")
 
         # destroy form
         form = "form[action='/avo/resources/posts/#{post.id}'][data-turbo-frame='has_many_field_posts']"
         expect(page).to have_selector("[data-component='resources-index'] #{form}")
         expect(page).to have_selector("#{form} input[type='hidden'][name='_method'][value='delete']", visible: false)
-        expect(page).to have_selector("#{form} input#referrer_destroy_#{post.id}[value='/avo/resources/users/#{user.id}/posts?frame_name=has_many_field_posts']", visible: false)
+        expect(page).to have_selector("#{form} input#referrer_destroy_#{post.id}[value='/avo/resources/users/#{user.id}/posts?turbo_frame=has_many_field_posts']", visible: false)
         expect(page).to have_selector("[data-component='resources-index'] #{form} button[data-control='destroy'][data-resource-id='#{post.id}']")
       end
 

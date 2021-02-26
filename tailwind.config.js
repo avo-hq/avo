@@ -110,7 +110,7 @@ module.exports = {
     },
   },
   variants: {
-    display: ['responsive', 'hover', 'focus', 'group-hover'],
+    display: ['responsive', 'hover', 'focus', 'group-hover', 'checked'],
     padding: ['responsive', 'group-hover'],
     borderColor: ['responsive', 'hover', 'focus', 'disabled'],
     backgroundColor: ['responsive', 'hover', 'focus', 'disabled'],

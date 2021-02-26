@@ -36,7 +36,7 @@ module Avo
         @query = filter_class.safe_constantize.new.apply_query request, @query, filter_value
       end
 
-      @pagy, @models = pagy(@query, items: @index_params[:per_page], link_extra: "data-turbo-frame=\"#{params[:frame_name]}\"")
+      @pagy, @models = pagy(@query, items: @index_params[:per_page], link_extra: "data-turbo-frame=\"#{params[:turbo_frame]}\"")
 
       # Create resources for each model
       @resources = @models.map do |model|

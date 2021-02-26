@@ -1,8 +1,9 @@
 <% if @actions.count > 0 %>
   <div class="relative z-30" data-controller="toggle-panel actions-picker">
-    <%= a_button class: "js-actions-dropdown-button focus:outline-none",
+    <%= a_button class: "focus:outline-none",
       color: "blue",
       'data-action': "click->toggle-panel#togglePanel",
+      'data-actions-dropdown-button': @resource.plural_name.downcase,
       disabled: action_name != 'show' do
     %>
       <%= svg 'media/svgs/arrow-left.svg', class: 'h-4 mr-1 transform -rotate-90' %> <%= t 'avo.actions' %>

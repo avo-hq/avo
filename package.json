@@ -54,6 +54,7 @@
     "postcss-preset-env": "^6.7.0",
     "simplemde": "^1.11.2",
     "stimulus": "^2.0.0",
+    "stimulus-use": "^0.23.0",
     "tailwindcss": "^1.4.6",
     "tippy.js": "^6.3.0",
     "toastr": "^2.1.4",

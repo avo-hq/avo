@@ -1,11 +1,14 @@
-<div class="relative bg-white rounded-xl shadow-xl flex flex-col">
+<div class="relative bg-white rounded-xl shadow-xl flex flex-col group"
+  <%= render partial: 'avo/partials/item_selector_controller_init', locals: { resource: @resource } %>
+>
   <div class="relative w-full pb-3/4 rounded-t-xl overflow-hidden">
+    <%= render partial: 'avo/partials/item_selector_controller_input', locals: { floating: true, size: :lg } %>
     <% if preview.value.attached? && preview.value.representable? %>
       <%= link_to_if preview.link_to_resource, image_tag(preview.variant(resize_to_limit: [480, 480]), class: 'absolute h-full w-full object-cover'), helpers.resource_path(@resource.model), class: 'absolute h-full w-full object-cover', title: title.value %>
     <% else %>
       <div class="absolute bg-gray-100 w-full h-full">
         <%= helpers.svg 'media/svgs/avocado.svg', class: 'relative transform -translate-x-1/2 -translate-y-1/2 h-20 text-gray-400 inset-auto top-1/2 left-1/2' %>
-    </div>
+      </div>
     <% end %>
   </div>
   <div class="flex flex-col justify-between p-4 flex-1">

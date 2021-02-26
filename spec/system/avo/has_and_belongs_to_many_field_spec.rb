@@ -8,7 +8,7 @@ RSpec.describe 'HasAndBelongsToManyField', type: :system do
   subject { visit url; page }
 
   context 'show' do
-    let(:url) { "/avo/resources/projects/#{project.id}/users?frame_name=has_and_belongs_to_many_field_projects" }
+    let(:url) { "/avo/resources/projects/#{project.id}/users?turbo_frame=has_and_belongs_to_many_field_projects" }
 
     describe 'without a related user' do
       it { is_expected.to have_text 'No related users found' }

@@ -5,28 +5,20 @@ export default class extends Controller {
 
   target = {}
 
-  get resourceName() {
-    return this.target.closest('tr').dataset.resourceName
-  }
-
-  get resourceId() {
-    return this.target.closest('tr').dataset.resourceId
+  get actionsPanelPresent() {
+    return this.actionsButtonElement !== null
   }
 
   get currentIds() {
     try {
-      return JSON.parse(document.querySelector(`[data-selected-resources-name="${this.resourceName}"]`).dataset.selectedResources)
+      return JSON.parse(this.stateHolderElement.dataset.selectedResources)
     } catch (error) {
       return []
     }
   }
 
-  get actionsPanelPresent() {
-    return document.querySelector('.js-actions-dropdown-button') !== null
-  }
-
   set currentIds(value) {
-    document.querySelector(`[data-selected-resources-name="${this.resourceName}"]`).dataset.selectedResources = JSON.stringify(value)
+    this.stateHolderElement.dataset.selectedResources = JSON.stringify(value)
 
     if (this.actionsPanelPresent) {
       if (value.length > 0) {
@@ -35,6 +27,14 @@ export default class extends Controller {
         this.disableActionsPanel()
       }
     }
+  }
+
+  connect() {
+    this.resourceName = this.element.dataset.resourceName
+    this.resourceId = this.element.dataset.resourceId
+    // this.parent
+    this.actionsButtonElement = document.querySelector(`[data-actions-dropdown-button="${this.resourceName}"]`)
+    this.stateHolderElement = document.querySelector(`[data-selected-resources-name="${this.resourceName}"]`)
   }
 
   addToSelected() {
@@ -54,16 +54,17 @@ export default class extends Controller {
 
     if (this.target.checked) {
       this.addToSelected()
+      this.addToSelected()
     } else {
       this.removeFromSelected()
     }
   }
 
   enableActionsPanel() {
-    document.querySelector('.js-actions-dropdown-button').disabled = false
+    this.actionsButtonElement.disabled = false
   }
 
   disableActionsPanel() {
-    document.querySelector('.js-actions-dropdown-button').disabled = true
+    this.actionsButtonElement.disabled = true
   }
 }

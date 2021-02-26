@@ -22,12 +22,15 @@
   <% end %>
 
   <% c.with :body do %>
-    <div class="flex justify-between py-6 min-h-24">
+    <div class="flex justify-between py-6 min-h-24"
+      data-selected-resources-name="<%= @resource.plural_name.downcase %>"
+      data-selected-resources="[]"
+    >
       <div class="flex items-center px-6 w-64">
         <%# search %>
       </div>
       <div class="flex justify-end items-center px-6 space-x-3">
-        <%= render partial: 'view_toggle_button', locals: { available_view_types: available_view_types, view_type: view_type, frame_name: @frame_name } %>
+        <%= render partial: 'view_toggle_button', locals: { available_view_types: available_view_types, view_type: view_type, turbo_frame: @turbo_frame } %>
         <%= render 'filters' if @filters.present? %>
       </div>
     </div>
@@ -40,7 +43,7 @@
 
         <% if @models.present? %>
           <div class="py-4">
-            <%= render partial: 'avo/partials/paginator', locals: { pagy: @pagy, models: @models, frame_name: @frame_name } %>
+            <%= render partial: 'avo/partials/paginator', locals: { pagy: @pagy, models: @models, turbo_frame: @turbo_frame } %>
           </div>
         <% end %>
       </div>
@@ -52,7 +55,7 @@
       <%= render(Avo::ResourceGridComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_model: @parent_model)) %>
 
       <div class="bg-white rounded-xl shadow-xl mt-8 py-6">
-        <%= render partial: 'avo/partials/paginator', locals: { pagy: @pagy, models: @models, frame_name: @frame_name } %>
+        <%= render partial: 'avo/partials/paginator', locals: { pagy: @pagy, models: @models, turbo_frame: @turbo_frame } %>
       </div>
     <% end %>
   <% end %>

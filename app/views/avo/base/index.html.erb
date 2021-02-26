@@ -1,4 +1,4 @@
-<%= turbo_frame_start params[:frame_name] %>
+<%= turbo_frame_start params[:turbo_frame] %>
   <%= render Avo::ResourceIndexComponent.new(
       resource: @resource,
       resources: @resources,
@@ -8,8 +8,8 @@
       filters: @filters,
       actions: @actions,
       reflection: @reflection,
-      frame_name: params[:frame_name],
+      turbo_frame: params[:turbo_frame],
       parent_model: @parent_model,
     )
   %>
-<%= turbo_frame_end params[:frame_name] %>
+<%= turbo_frame_end params[:turbo_frame] %>

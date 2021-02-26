@@ -15,12 +15,12 @@ module Avo
         @resource = args[:resource]
       end
 
-      def frame_name
+      def turbo_frame
         "#{self.class.name.demodulize.to_s.underscore}_#{id}"
       end
 
       def frame_url
-        "#{Avo.configuration.root_path}/resources/#{@model.model_name.route_key}/#{@model.id}/#{id}?frame_name=#{frame_name}"
+        "#{Avo.configuration.root_path}/resources/#{@model.model_name.route_key}/#{@model.id}/#{id}?turbo_frame=#{turbo_frame}"
       end
 
       def target_resource

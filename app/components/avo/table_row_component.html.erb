@@ -1,15 +1,10 @@
 <tr
   class="hover:bg-gray-100 hover:shadow-row relative z-20 border-b"
-  data-resource-name="<%= @resource.plural_name.downcase %>"
-  data-resource-id="<%= @resource.model.id %>"
-  data-controller="table-row"
+  <%= render partial: 'avo/partials/item_selector_controller_init', locals: { resource: @resource } %>
 >
   <td class="w-10">
     <div class="flex justify-center h-full">
-      <input type="checkbox"
-        class="mx-3 w-4 h-4"
-        data-action="input->table-row#toggle"
-      />
+      <%= render partial: 'avo/partials/item_selector_controller_input', locals: { floating: false } %>
     </div>
   </td>
   <% @resource.get_fields(view_type: :table, reflection: @reflection).each_with_index do |field, index| %>
