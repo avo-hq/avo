@@ -99,8 +99,6 @@ module Avo
           end
         end
 
-        # abort fields.map { |f| [f.id, f.panel_name] }.inspect
-
         fields = fields.map do |field|
           field.hydrate(model: @model, view: @view, resource: self)
         end
@@ -136,25 +134,6 @@ module Avo
           }
         ]
 
-        # return panels if @params[:via_relation_param] == 'has_one'
-
-        # abort get_field_definitions.map(&:class).inspect
-
-        # has_one_panels = get_field_definitions.select do |field|
-        #   field.class.to_s.include? 'HasOneField'
-        # end
-        # .map do |field|
-        #   {
-        #     name: field.name,
-        #     type: :has_one_relation,
-        #     in_panel: false,
-        #   }
-        # end
-
-        # has_many_panels = []
-
-        # panels + has_one_panels + has_many_panels
-
         panels
       end
 
@@ -165,7 +144,7 @@ module Avo
       end
 
       def model_title
-        return @model[title] if @model.present?
+        return @model.send title if @model.present?
 
         name
       end
