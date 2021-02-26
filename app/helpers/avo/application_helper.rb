@@ -81,11 +81,11 @@ module Avo
       }
 
       if block_given?
-        render layout: 'layouts/avo/a_button', locals: locals do
+        render layout: 'avo/partials/a_button', locals: locals do
           capture(&block)
         end
       else
-        render partial: 'layouts/avo/a_button', locals: locals
+        render partial: 'avo/partials/a_button', locals: locals
       end
     end
 
@@ -103,11 +103,11 @@ module Avo
       }
 
       if block_given?
-        render layout: 'layouts/avo/a_link', locals: locals do
+        render layout: 'avo/partials/a_link', locals: locals do
           capture(&block)
         end
       else
-        render partial: 'layouts/avo/a_link', locals: locals
+        render partial: 'avo/partials/a_link', locals: locals
       end
     end
 

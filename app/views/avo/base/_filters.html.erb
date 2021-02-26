@@ -17,9 +17,9 @@
         @filters.each_with_index do |filter, index|
           case filter.class.superclass.to_s
           when Avo::Filters::SelectFilter.to_s
-            template = 'select_filter'
+            template = 'avo/base/select_filter'
           when Avo::Filters::BooleanFilter.to_s
-            template = 'boolean_filter'
+            template = 'avo/base/boolean_filter'
           end
       %>
         <%= render partial: template, locals: {filter: filter, index: index} %>

@@ -30,7 +30,7 @@
         <%# search %>
       </div>
       <div class="flex justify-end items-center px-6 space-x-3">
-        <%= render partial: 'view_toggle_button', locals: { available_view_types: available_view_types, view_type: view_type, turbo_frame: @turbo_frame } %>
+        <%= render partial: 'avo/partials/view_toggle_button', locals: { available_view_types: available_view_types, view_type: view_type, turbo_frame: @turbo_frame } %>
         <%= render 'filters' if @filters.present? %>
       </div>
     </div>

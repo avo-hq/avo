@@ -4,11 +4,11 @@
   <title>Avo Hotwire</title>
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
-  <%= render partial: 'layouts/avo/javascript' %>
+  <%= render partial: 'avo/partials/javascript' %>
 
   <%= javascript_pack_tag 'application_hotwire' %>
   <%= stylesheet_pack_tag 'application', media: 'all' %>
-  <%= render partial: 'layouts/avo/translations' %>
+  <%= render partial: 'avo/partials/translations' %>
 </head>
 
 <body class="bg-gray-200">
