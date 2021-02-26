@@ -4,7 +4,8 @@
       show_path,
       title: t('avo.view_item', { item: @resource.model.model_name.name.downcase }).capitalize,
       data: {
-        control: :show
+        control: :show,
+        'tippy': 'tooltip',
       }
       %>
   <% end %>
@@ -16,6 +17,7 @@
       data: {
         control: :edit,
         'resource-id': @resource.model.id,
+        'tippy': 'tooltip',
       }
       %>
   <% end %>
@@ -29,6 +31,7 @@
           confirm: t('avo.are_you_sure_detach_item', { item: @resource.model.model_name.name.downcase }),
           control: :detach,
           'resource-id': @resource.model.id,
+          'tippy': 'tooltip',
         }
       %>
       <%= hidden_field_tag :referrer, request.fullpath, id: "referrer_detach_#{@resource.model.id}" if params[:via_resource_class] %>
@@ -44,6 +47,7 @@
           confirm: t('avo.are_you_sure', { item: @resource.model.model_name.name.downcase }),
           control: :destroy,
           'resource-id': @resource.model.id,
+          'tippy': 'tooltip',
         }
       %>
       <%= form.hidden_field :referrer, value: request.fullpath, id: "referrer_destroy_#{@resource.model.id}" if params[:via_resource_class] %>
