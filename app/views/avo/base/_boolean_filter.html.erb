@@ -30,26 +30,3 @@
     </div>
   <% end %>
 </div>
-
-  <filter-wrapper :name="filter.name" :index="index">
-      <div class="flex items-center">
-        <div class="space-y-2">
-          <template v-for="(name, value, index) in filter.options">
-            <div
-              :key="index"
-              class="flex items-center"
-              @click="toggleOption(value)"
-            >
-              <input
-                type="checkbox"
-                class="mr-2 text-lg h-4 w-4"
-                :id="name"
-                :name="name"
-                :checked="optionToggled(value)"
-              />
-              <label class="font text-gray-700 text-sm">{{ name }}</label>
-            </div>
-          </template>
-        </div>
-      </div>
-  </filter-wrapper>

@@ -2,7 +2,9 @@
   <div class="relative w-full flex justify-between z-30">
     <%= a_button class: 'focus:outline-none',
       color: 'gray',
-      'data-action': 'click->toggle-panel#togglePanel' do
+      title: t('avo.click_to_reveal_filters'),
+      'data-action': 'click->toggle-panel#togglePanel',
+      'data-tippy': 'tooltip' do
     %>
       <%= svg 'media/svgs/filter.svg' %> <%= t 'avo.filters' %>
     <% end %>
@@ -24,8 +26,11 @@
       <% end %>
 
       <div class="p-4 border-gray-300 border-t">
-        <% # @todo: disable if filters not modified  %>
-        <%= a_link t('avo.reset_filters'), resources_path(@resource.model_class, filters: nil, keep_query_params: true), color: :gray, class: 'w-full justify-center' %>
+        <% if params[:filters].present? %>
+          <%= a_link t('avo.reset_filters'), resources_path(@resource.model_class, filters: nil, keep_query_params: true), color: :gray, class: 'w-full justify-center' %>
+        <% else %>
+          <%= a_button t('avo.reset_filters'), color: :gray, class: 'w-full justify-center', disabled: true %>
+        <% end %>
       </div>
     </div>
   </div>

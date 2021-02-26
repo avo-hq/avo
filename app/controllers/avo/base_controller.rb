@@ -7,9 +7,6 @@ module Avo
     before_action :hydrate_resource
     before_action :authorize_action
     before_action :set_model, only: [:show, :edit, :destroy, :update]
-    # before_action :set_filters, only: :index
-    # before_action :set_actions, only: [:index, :show]
-    # before_action :set_index_params, only: :index
 
     def index
       set_index_params
@@ -51,7 +48,6 @@ module Avo
       set_actions
 
       @resource = @resource.hydrate(model: @model, view: :show, user: _current_user, params: params)
-      @component = Avo::ResourceShowComponent.new(resource: @resource, reflection: @reflection)
     end
 
     def new
@@ -65,14 +61,15 @@ module Avo
 
     def edit
       @resource = @resource.hydrate(model: @model, view: :edit, user: _current_user)
-      @component = Avo::ResourceEditComponent.new(resource: @resource)
     end
 
     def create
       @model = @resource.model_class.new(model_params)
+      saved = @model.save
+      @resource.hydrate(model: @model, view: :new, user: _current_user)
 
       respond_to do |format|
-        if @model.save
+        if saved
           if params[:via_relation_class].present? && params[:via_resource_id].present?
             redirect_path = resource_path(params[:via_relation_class].safe_constantize, resource_id: params[:via_resource_id])
           else
@@ -82,9 +79,6 @@ module Avo
           format.html { redirect_to redirect_path, notice: "#{@model.class.name} was successfully created." }
           format.json { render :show, status: :created, location: @model }
         else
-          # @todo: better way to handle this
-          @resource = @resource.hydrate(model: @model, view: :new, user: _current_user)
-          @component = Avo::ResourceEditComponent.new(resource: @resource)
           format.html { render :new, status: :unprocessable_entity }
           format.json { render json: @model.errors, status: :unprocessable_entity }
         end
@@ -93,15 +87,14 @@ module Avo
 
     def update
       @model = @resource.fill_model(@model, cast_nullable(model_params))
+      saved = @model.save
+      @resource = @resource.hydrate(model: @model, view: :edit, user: _current_user)
 
       respond_to do |format|
-        if @model.save
+        if saved
           format.html { redirect_to params[:referrer] || resource_path(@model), notice: "#{@model.class.name} was successfully updated." }
           format.json { render :show, status: :ok, location: @post }
         else
-          # @todo: better way to handle this
-          @resource = @resource.hydrate(model: @model, view: :edit, user: _current_user)
-          @component = Avo::ResourceEditComponent.new(resource: @resource)
           format.html { render :edit, status: :unprocessable_entity }
           format.json { render json: @post.errors, status: :unprocessable_entity }
         end
@@ -154,28 +147,25 @@ module Avo
         # Pagination
         @index_params[:page] = params[:page] || 1
         @index_params[:per_page] = Avo.configuration.per_page
-        # if cookies[:per_page].present?
-        #   @index_params[:per_page] = cookies[:per_page]
-        # end
+
+        if cookies[:per_page].present?
+          @index_params[:per_page] = cookies[:per_page]
+        end
 
         if params[:per_page].present?
           @index_params[:per_page] = params[:per_page]
         end
 
         if params[:per_page].present?
-          # cookies[:per_page] = params[:per_page]
+          cookies[:per_page] = params[:per_page]
         end
-
-        # @index_params[:per_page] = 4
 
         # Sorting
         @index_params[:sort_by] = params[:sort_by] || :created_at
         @index_params[:sort_direction] = params[:sort_direction] || :desc
 
         # View types
-        # abort @resource.inspect
         @index_params[:view_type] = params[:view_type] || @resource.default_view_type || Avo.configuration.default_view_type
-        # abort @index_params[:view_type].inspect
         @index_params[:available_view_types] = @resource.available_view_types
       end
 

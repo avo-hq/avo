@@ -35,8 +35,8 @@ module Avo
       end
 
       def filters(request)
-        # filter.use Avo::Filters::FeaturedFilter
-        # filter.use Avo::Filters::PublishedFilter
+        filter.use Avo::Filters::FeaturedFilter
+        filter.use Avo::Filters::PublishedFilter
       end
 
       def actions(request)
