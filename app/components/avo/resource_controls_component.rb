@@ -13,6 +13,14 @@ class Avo::ResourceControlsComponent < Avo::ResourceComponent
     (@reflection.is_a?(::ActiveRecord::Reflection::HasManyReflection) || @reflection.is_a?(::ActiveRecord::Reflection::ThroughReflection))
   end
 
+  def can_edit?
+    @resource.authorization.authorize_action(:edit, raise_exception: false)
+  end
+
+  def can_view?
+    @resource.authorization.authorize_action(:show, raise_exception: false)
+  end
+
   def show_path
     if @parent_model.present?
       helpers.resource_path(@resource.model, via_resource_class: @parent_model.class, via_resource_id: @parent_model.id)

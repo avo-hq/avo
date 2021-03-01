@@ -5,11 +5,11 @@
         <% component.with :tools do %>
           <div class="flex justify-end space-x-2">
             <%= a_link back_path do %>
-              <%= svg 'media/svgs/arrow-left.svg' %> <%= t('avo.cancel').capitalize %>
+              <%= svg 'arrow-left' %> <%= t('avo.cancel').capitalize %>
             <% end %>
 
             <%= a_button color: 'green', type: :submit do %>
-              <%= svg 'media/svgs/save.svg' %> <%= t('avo.save').capitalize %>
+              <%= svg 'save' %> <%= t('avo.save').capitalize %>
             <% end if @resource.authorization.authorize_action :create, raise_exception: false %>
           </div>
         <% end %>
