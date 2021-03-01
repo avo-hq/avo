@@ -161,7 +161,7 @@ module Avo
       end
 
       def component_name(view = :index)
-        "Avo::#{view.to_s.classify}::#{partial_name.gsub('-field', '').underscore.camelize}FieldComponent"
+        "Avo::#{view.to_s.classify}::Fields::#{partial_name.gsub('-field', '').underscore.camelize}FieldComponent"
       end
 
       private

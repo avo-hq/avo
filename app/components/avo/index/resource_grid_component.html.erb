@@ -1,0 +1,13 @@
+<% if @resources.present?%>
+  <div class="w-full grid grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-6">
+    <% @resources.each_with_index do |resource, index| %>
+      <% cache_if Avo::PACKED, [resource.model, resource.file_hash] do %>
+        <%= render(Avo::Index::GridItemComponent.new(resource: resource, reflection: @reflection, parent_model: @parent_model)) %>
+      <% end %>
+    <% end %>
+  </div>
+<% else %>
+  <div class="bg-white rounded-xl shadow-xl">
+    <%= helpers.empty_state @resource.name.downcase %>
+  </div>
+<% end %>

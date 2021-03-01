@@ -1,5 +1,5 @@
 <%= turbo_frame_start params[:turbo_frame] %>
-  <%= render Avo::ResourceIndexComponent.new(
+  <%= render Avo::Views::ResourceIndexComponent.new(
       resource: @resource,
       resources: @resources,
       models: @models,
