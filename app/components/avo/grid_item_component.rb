@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Avo::GridItemComponent < ViewComponent::Base
+  include Avo::ResourcesHelper
+
   def initialize(resource: resource, reflection: reflection, parent_model: nil)
     @resource = resource
     @reflection = reflection

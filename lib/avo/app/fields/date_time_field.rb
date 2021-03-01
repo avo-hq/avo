@@ -2,7 +2,7 @@ require_relative 'date_field'
 
 module Avo
   module Fields
-    class DatetimeField < DateField
+    class DateTimeField < DateField
       attr_reader :format
       attr_reader :time_24hr
       attr_reader :timezone
@@ -10,13 +10,15 @@ module Avo
       def initialize(name, **args, &block)
         super(name, **args, &block)
 
-        @partial_name = 'datetime-field'
+        @partial_name = 'date-time-field'
         @picker_format = args[:picker_format].present? ? args[:picker_format] : 'Y-m-d H:i:S'
         @time_24hr = args[:time_24hr].present? ? args[:time_24hr] : false
         @timezone = args[:timezone].present? ? args[:timezone] : Rails.application.config.time_zone
       end
 
       def formatted_value
+        return nil if value.nil?
+
         if @format.is_a?(Symbol)
           value.to_time.in_time_zone(timezone).to_s(@format)
         else

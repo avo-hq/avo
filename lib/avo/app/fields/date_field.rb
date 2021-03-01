@@ -24,6 +24,8 @@ module Avo
       end
 
       def formatted_value
+        return if value.blank?
+
         if @format.is_a?(Symbol)
           value.to_s(@format)
         else

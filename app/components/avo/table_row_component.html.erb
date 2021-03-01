@@ -1,14 +1,14 @@
 <tr
   class="hover:bg-gray-100 hover:shadow-row relative z-20 border-b"
-  <%= render partial: 'avo/partials/item_selector_controller_init', locals: { resource: @resource } %>
+  <%== item_selector_init @resource %>
 >
   <td class="w-10">
     <div class="flex justify-center h-full">
-      <%= render partial: 'avo/partials/item_selector_controller_input', locals: { floating: false } %>
+      <%== item_selector_input floating: false %>
     </div>
   </td>
   <% @resource.get_fields(view_type: :table, reflection: @reflection).each_with_index do |field, index| %>
-    <%= helpers.index_field field, index, @resource %>
+    <%= index_field field, index, @resource %>
   <% end %>
   <td class="text-right whitespace-no-wrap px-2">
     <div class="flex items-center justify-end flex-grow-0 h-full w-full">

@@ -160,6 +160,10 @@ module Avo
         id.to_sym
       end
 
+      def component_name(view = :index)
+        "Avo::#{view.to_s.classify}::#{partial_name.gsub('-field', '').underscore.camelize}FieldComponent"
+      end
+
       private
         def model_or_class(model)
           if model.class == String

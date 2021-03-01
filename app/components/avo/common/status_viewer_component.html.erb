@@ -1,0 +1,10 @@
+<%
+  classes = "inline-block"
+  classes += " text-red-700" if @status == 'failed'
+%>
+<div class="flex flex-shrink-0">
+  <div class="<%= classes %>"><%= @label %></div>
+  <% if @status == 'loading' %>
+    <div class="spinner ml-1"></div>
+  <% end %>
+</div>
