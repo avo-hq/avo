@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Index::DateFieldComponent, type: :component do
+RSpec.describe Avo::Index::Fields::DateFieldComponent, type: :component do
   pending "add some examples to (or delete) #{__FILE__}"
 
   # it "renders something useful" do
