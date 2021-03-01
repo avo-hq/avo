@@ -40,6 +40,6 @@ class Avo::Resources::User < Avo::Resources::Resource
 
   def actions(request)
     a.use Avo::Actions::MarkInactive
-    a.use Avo::Actions::MakeAdmin
+    a.use Avo::Actions::ToggleAdmin
   end
 end
