@@ -11,7 +11,6 @@ module Avo
 
       def handle(request, models, fields)
         models.each do |model|
-          puts ['model.roles->', model.roles].inspect
           if model.roles['admin']
             model.update roles: model.roles.merge!({ "admin": false })
           else

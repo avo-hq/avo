@@ -1,13 +1,15 @@
 <%= turbo_frame_tag "actions_show" do %>
-  <%= form_with scope: 'fields', url: "/avo/resources/#{@resource.model_class.model_name.route_key}/actions/#{@action.param_id}", data: {'turbo-frame': '_top'} do |form| %>
-    <% modal do %>
-      <div
-        data-controller="action"
-        data-action-target="controllerDiv"
-        data-resource-name="<%= @resource.model_class.model_name.route_key %>"
-        data-resource-id="<%= params[:id] %>"
-      >
-        <% content_for :heading do %>
+  <div
+    data-controller="action"
+    data-no-confirmation="<%= @action.no_confirmation %>"
+    data-action-target="controllerDiv"
+    data-resource-name="<%= @resource.model_class.model_name.route_key %>"
+    data-resource-id="<%= params[:id] %>"
+    class="hidden"
+  >
+    <%= form_with scope: 'fields', url: "/avo/resources/#{@resource.model_class.model_name.route_key}/actions/#{@action.param_id}", data: {'turbo-frame': '_top', 'action-target': 'form'} do |form| %>
+      <%= render Avo::ModalComponent.new do |c| %>
+        <% c.with :heading do %>
           <%= @action.name %>
         <% end %>
 
@@ -23,13 +25,13 @@
           <% end %>
         <% end %>
 
-        <% content_for :controls, flush: true do %>
+        <% c.with :controls do %>
           <%= a_button @action.cancel_text, 'data-action': 'click->modal#close', size: :sm %>
           <%= a_button @action.confirm_text, type: :submit, color: :green, size: :sm %>
         <% end %>
-      </div>
+      <% end %>
     <% end %>
-  <% end %>
+  </div>
 <% end %>
 
 <%#

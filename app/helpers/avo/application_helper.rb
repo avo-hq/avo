@@ -43,12 +43,6 @@ module Avo
       end
     end
 
-    def modal(&block)
-      render layout: 'layouts/avo/modal' do
-        capture(&block)
-      end
-    end
-
     def empty_state(resource_name)
       render partial: 'avo/partials/empty_state', locals: { resource_name: resource_name }
     end
