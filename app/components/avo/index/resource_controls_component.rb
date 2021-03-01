@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::ResourceControlsComponent < Avo::ResourceComponent
+class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   def initialize(resource: resource, reflection: reflection, parent_model: nil)
     @resource = resource
     @reflection = reflection
