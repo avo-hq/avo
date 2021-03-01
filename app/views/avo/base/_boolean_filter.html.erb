@@ -27,6 +27,7 @@
           </label>
         <% end %>
       </div>
+      <%= link_to 'url_redirect', request.url, data: { 'boolean-filter-target': 'urlRedirect', 'turbo-frame': params[:turbo_frame] }, style: 'hidden', class: 'hidden' %>
     </div>
   <% end %>
 </div>
