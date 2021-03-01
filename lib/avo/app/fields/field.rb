@@ -167,9 +167,9 @@ module Avo
       private
         def model_or_class(model)
           if model.class == String
-            return 'class'
+            'class'
           else
-            return 'model'
+            'model'
           end
         end
     end
