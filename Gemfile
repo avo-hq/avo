@@ -80,13 +80,13 @@ group :development do
   gem 'bump', require: false
   gem 'gem-release', require: false
 
-  gem 'rack-mini-profiler'
-  gem 'memory_profiler'
-  gem 'stackprof'
-  gem 'ruby-prof'
+  # gem 'rack-mini-profiler'
+  # gem 'memory_profiler'
+  # gem 'stackprof'
+  # gem 'ruby-prof'
 
 
-  gem 'pry-rails'
+  # gem 'pry-rails'
 end
 
 group :test do
