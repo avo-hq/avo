@@ -6,9 +6,15 @@
 
     <div class="flex-1 flex flex-col justify-between">
       <div class="tools py-4">
-        <%= sidebar_link t('avo.dashboard'), '/avo', active: :exclusive %>
+        <%= render Avo::NavigationLinkComponent.new label: t('avo.dashboard'), path: '/avo', active: :exclusive %>
+        <%= render Avo::NavigationHeadingComponent.new label: t('avo.resources') %>
 
-        <%= render partial: 'avo/sidebar/resources_navigation', locals: {resources: Avo::App.get_navigation_items(_current_user)} %>
+        <div class="w-full">
+          <% Avo::App.get_navigation_items(_current_user).each do |resource| %>
+            <%= render Avo::NavigationLinkComponent.new label: resource.name.pluralize.humanize, path: resources_path(resource.model_class) %>
+          <% end %>
+        </div>
+
       </div>
 
       <%= render_license_warnings %>

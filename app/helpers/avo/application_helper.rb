@@ -23,17 +23,6 @@ module Avo
       render partial: 'vendor/avo/partials/scripts' rescue ''
     end
 
-    def sidebar_link(label, link, **options)
-      active = options[:active].present? ? options[:active] : :inclusive
-
-      render partial: 'avo/sidebar/sidebar_link', locals: {
-        label: label,
-        link: link,
-        active: active,
-        options: options
-      }
-    end
-
     def render_license_warnings
       render partial: 'avo/sidebar/license_warnings', locals: {
         license: Avo::App.license.properties,
