@@ -27,11 +27,15 @@ module Avo
     end
 
     def show_field(field, index, resource)
-      render partial: field.partial_path_for(:show), locals: {
-        field: field,
-        index: index,
-        resource: resource,
-      }
+      if Object.const_defined? field.component_name(:show)
+        render field.component_name(:show).safe_constantize.new(field: field, resource: resource, index: index)
+      else
+        render partial: field.partial_path_for(:show), locals: {
+          field: field,
+          index: index,
+          resource: resource,
+        }
+      end
     end
 
     def edit_field(field, index, resource, form, displayed_in_modal: false)

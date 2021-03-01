@@ -1,1 +1,3 @@
-<div>Add Show::Fields::HasManyField template here</div>
+<turbo-frame id="<%= @field.turbo_frame %>" src="<%= @field.frame_url %>" target="_top">
+  <%= render(Avo::LoadingComponent.new(title: @field.name)) %>
+</turbo-frame>
