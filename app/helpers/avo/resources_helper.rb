@@ -58,52 +58,20 @@ module Avo
       end
     end
 
-    def index_field_wrapper(dash_if_blank: true, field: nil, class: '', **args, &block)
-      # response = "<td class='px-4 py-2 leading-tight whitespace-no-wrap h-12 #{args[:class]}' data-field-id='#{field.id}'>"
-      # if field.value.blank? and dash_if_blank
-      #   response += '—'
-      # else
-      #   response += block.call.to_s
-      # end
-      # response += '</td>'
-      # return response.html_safe
-      render Index::FieldWrapperComponent.new(dash_if_blank: dash_if_blank, field: field, classes: args[:class], **args) do
+    def index_field_wrapper(**args, &block)
+      render Index::FieldWrapperComponent.new(**args) do
         capture(&block)
       end
     end
 
-    def show_field_wrapper(dash_if_blank: true, field: {}, index: nil, displayed_in_modal: false, full_width: false, **args, &block)
-      classes = args[:class].present? ? args[:class] : ''
-
-      if index != 0 or displayed_in_modal
-        classes += ' border-t'
-      end
-
-      render layout: 'layouts/avo/show_field_wrapper', locals: {
-        classes: classes,
-        field: field,
-        dash_if_blank: dash_if_blank,
-        full_width: full_width,
-        } do
+    def show_field_wrapper(**args, &block)
+      render Show::FieldWrapperComponent.new(**args) do
         capture(&block)
       end
     end
 
-    def edit_field_wrapper(dash_if_blank: true, field: {}, index: nil, displayed_in_modal: false, full_width: false, form: nil, **args, &block)
-      classes = args[:class].present? ? args[:class] : ''
-
-      if index != 0 or displayed_in_modal
-        classes += ' border-t'
-      end
-
-      render layout: 'layouts/avo/edit_field_wrapper', locals: {
-        classes: classes,
-        field: field,
-        dash_if_blank: dash_if_blank,
-        form: form,
-        displayed_in_modal: displayed_in_modal,
-        full_width: full_width,
-      } do
+    def edit_field_wrapper(**args, &block)
+      render Edit::FieldWrapperComponent.new(**args) do
         capture(&block)
       end
     end
