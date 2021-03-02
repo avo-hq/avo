@@ -3,6 +3,8 @@ import { Turbo } from '@hotwired/turbo-rails'
 import URI from 'urijs'
 
 export default class extends Controller {
+  static targets = ['urlRedirect']
+
   // eslint-disable-next-line class-methods-use-this
   uriParams() {
     return URI(window.location.toString()).query(true)
@@ -35,9 +37,7 @@ export default class extends Controller {
     filters[filterClass] = value
     const encodedFilters = btoa(JSON.stringify(filters))
 
-    URI(window.location.toString()).query(true)
-
-    const url = new URI()
+    const url = new URI(this.urlRedirectTarget.href)
 
     const query = {
       ...url.query(true),
@@ -46,6 +46,7 @@ export default class extends Controller {
 
     url.query(query)
 
-    Turbo.visit(url.toString())
+    this.urlRedirectTarget.href = url
+    this.urlRedirectTarget.click()
   }
 }

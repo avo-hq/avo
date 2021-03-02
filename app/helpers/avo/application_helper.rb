@@ -23,17 +23,6 @@ module Avo
       render partial: 'vendor/avo/partials/scripts' rescue ''
     end
 
-    def sidebar_link(label, link, **options)
-      active = options[:active].present? ? options[:active] : :inclusive
-
-      render partial: 'avo/sidebar/sidebar_link', locals: {
-        label: label,
-        link: link,
-        active: active,
-        options: options
-      }
-    end
-
     def render_license_warnings
       render partial: 'avo/sidebar/license_warnings', locals: {
         license: Avo::App.license.properties,
@@ -51,12 +40,6 @@ module Avo
     def panel(**args, &block)
       render(Avo::PanelComponent.new(**args)) do |component|
         capture(component, &block)
-      end
-    end
-
-    def modal(&block)
-      render layout: 'layouts/avo/modal' do
-        capture(&block)
       end
     end
 
@@ -141,11 +124,41 @@ module Avo
       classes
     end
 
-    def svg(path, **args)
-      classes = args[:class].present? ? args[:class] : 'h-4 mr-1'
-      classes += args[:extra_class].present? ? " #{args[:extra_class]}" : ''
+    def svg(file_name, **args)
+      options = {}
+      options[:class]  = args[:class].present? ? args[:class] : 'h-4 mr-1'
+      options[:class] += args[:extra_class].present? ? " #{args[:extra_class]}" : ''
 
-      inline_svg_pack_tag path, **args, class: classes
+      # Create the path to the svgs directory
+      file_path = "#{Avo::Engine.root}/app/frontend/svgs/#{file_name}"
+      file_path = "#{file_path}.svg" unless file_path.end_with? '.svg'
+
+      # Create a cache hash
+      hash = Digest::MD5.hexdigest "#{file_path.underscore}_#{options.to_s}"
+
+      svg_content = Avo::App.cache_store.fetch "svg_file_#{hash}", expires_in: 1.year, cache_nils: false do
+        if File.exists?(file_path)
+          file = File.read(file_path)
+
+          # parse svg
+          doc = Nokogiri::HTML::DocumentFragment.parse file
+          svg = doc.at_css 'svg'
+
+          # attach options
+          options.each do |attr, value|
+            svg[attr.to_s] = value
+          end
+
+          # cast to html
+          doc.to_html.html_safe
+        else
+          nil
+        end
+      end
+
+      return '(not found)' if svg_content.to_s.blank?
+
+      svg_content
     end
 
     def input_classes(extra_classes = '', has_error: false)

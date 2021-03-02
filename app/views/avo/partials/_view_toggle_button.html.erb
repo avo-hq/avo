@@ -12,6 +12,6 @@
     end
 %>
   <%= a_link params.permit!.merge(view_type: new_view_type), color: :blue, 'data-turbo-frame': turbo_frame, title: t('avo.switch_to_view', { view_type: new_view_type }), 'data-tippy': 'tooltip' do %>
-    <%= svg "media/svgs/#{new_icon}.svg" %> <%= t(translation_key, { item: @resource.model_class.model_name.human.downcase }) %>
+    <%= svg new_icon %> <%= t(translation_key, { item: @resource.model_class.model_name.human.downcase }) %>
   <% end %>
 <% end %>

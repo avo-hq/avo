@@ -1,7 +1,0 @@
-<%= sidebar_link t('avo.resources'), nil, large: true %>
-
-<div class="w-full">
-  <% resources.each do |resource| %>
-    <%= sidebar_link resource.name.pluralize.humanize, resources_path(resource.model_class) %>
-  <% end %>
-</div>

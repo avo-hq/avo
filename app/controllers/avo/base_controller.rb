@@ -53,10 +53,6 @@ module Avo
     def new
       @model = @resource.model_class.new
       @resource = @resource.hydrate(model: @model, view: :new, user: _current_user)
-      @component = ResourceNewComponent.new(
-        resource: @resource,
-        model: @model
-      )
     end
 
     def edit

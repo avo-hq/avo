@@ -32,7 +32,7 @@ class Avo::Resources::User < Avo::Resources::Resource
 
     f.hidden :team_id, default: 0 # For testing purposes
 
-    # f.has_one :post
+    f.has_one :post
     f.has_many :posts
     f.has_and_belongs_to_many :projects
     f.has_and_belongs_to_many :teams
@@ -40,6 +40,6 @@ class Avo::Resources::User < Avo::Resources::Resource
 
   def actions(request)
     a.use Avo::Actions::MarkInactive
-    a.use Avo::Actions::MakeAdmin
+    a.use Avo::Actions::ToggleAdmin
   end
 end

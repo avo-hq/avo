@@ -15,7 +15,7 @@ gemspec
 # gem 'byebug', group: [:development, :test]
 
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-gem 'webpacker', '~> 4.0'
+gem 'webpacker', '~> 5.x'
 
 # SVGs
 gem 'inline_svg'
@@ -73,12 +73,20 @@ gem 'debase'
 # END Dependencies for dummy_app
 #
 
-group :development, :test do
+group :development do
   gem 'rubocop'
 
   # Release helper
   gem 'bump', require: false
   gem 'gem-release', require: false
+
+  # gem 'rack-mini-profiler'
+  # gem 'memory_profiler'
+  # gem 'stackprof'
+  # gem 'ruby-prof'
+
+
+  # gem 'pry-rails'
 end
 
 group :test do

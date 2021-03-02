@@ -15,5 +15,6 @@
       'data-select-filter-target': 'selector',
       'data-action': "change->select-filter#changeFilter"
     %>
+    <%= link_to 'url_redirect', request.url, data: { 'select-filter-target': 'urlRedirect', 'turbo-frame': params[:turbo_frame] }, style: 'hidden', class: 'hidden' %>
   <% end %>
 </div>

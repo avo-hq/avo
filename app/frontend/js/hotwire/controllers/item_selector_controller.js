@@ -3,7 +3,7 @@ import { Controller } from 'stimulus'
 export default class extends Controller {
   static targets = ['panel']
 
-  target = {}
+  checkbox = {}
 
   get actionsPanelPresent() {
     return this.actionsButtonElement !== null
@@ -32,7 +32,6 @@ export default class extends Controller {
   connect() {
     this.resourceName = this.element.dataset.resourceName
     this.resourceId = this.element.dataset.resourceId
-    // this.parent
     this.actionsButtonElement = document.querySelector(`[data-actions-dropdown-button="${this.resourceName}"]`)
     this.stateHolderElement = document.querySelector(`[data-selected-resources-name="${this.resourceName}"]`)
   }
@@ -50,10 +49,9 @@ export default class extends Controller {
   }
 
   toggle(event) {
-    this.target = event.target
+    this.checkbox = event.target
 
-    if (this.target.checked) {
-      this.addToSelected()
+    if (this.checkbox.checked) {
       this.addToSelected()
     } else {
       this.removeFromSelected()

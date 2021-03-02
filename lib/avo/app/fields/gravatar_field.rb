@@ -26,6 +26,8 @@ module Avo
       end
 
       def md5
+        return if value.blank?
+
         Digest::MD5.hexdigest(value.strip.downcase)
       end
     end

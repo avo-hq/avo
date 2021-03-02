@@ -1,0 +1,14 @@
+<%= show_field_wrapper field: @field, index: @index do %>
+  <%
+    content_classes = 'prose prose-sm'
+    content_classes << ' hidden' unless @field.always_show
+  %>
+  <div data-controller="hidden-input">
+    <% unless @field.always_show %>
+      <%= link_to t('avo.show_content'), 'javascript:void(0);', class: 'font-bold inline-block', data: { action: 'click->hidden-input#showContent' } %>
+    <% end %>
+    <div class="<%= content_classes %> " data-hidden-input-target="content">
+      <%== @field.value %>
+    </div>
+  </div>
+<% end %>

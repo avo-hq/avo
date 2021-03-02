@@ -4,6 +4,7 @@ PATH
     avo (0.4.6)
       active_link_to
       countries
+      hotwire-rails
       httparty
       i18n-js
       image_processing
@@ -11,6 +12,7 @@ PATH
       pagy
       pundit
       rails (>= 6.0)
+      view_component
       webpacker
       zeitwerk
 
@@ -94,6 +96,7 @@ GEM
       regexp_parser (~> 1.5)
       xpath (~> 3.2)
     childprocess (3.0.0)
+    coderay (1.1.3)
     concurrent-ruby (1.1.8)
     countries (3.0.1)
       i18n_data (~> 0.10.0)
@@ -148,7 +151,7 @@ GEM
     image_processing (1.12.1)
       mini_magick (>= 4.9.5, < 5)
       ruby-vips (>= 2.0.17, < 3)
-    inline_svg (1.7.1)
+    inline_svg (1.7.2)
       activesupport (>= 3.0)
       nokogiri (>= 1.6)
     iso (0.3.0)
@@ -166,6 +169,7 @@ GEM
       mini_mime (>= 0.1.1)
     marcel (0.3.3)
       mimemagic (~> 0.3.2)
+    memory_profiler (1.0.0)
     method_source (1.0.0)
     mime-types (3.3.1)
       mime-types-data (~> 3.2015)
@@ -187,6 +191,11 @@ GEM
     parser (2.7.1.5)
       ast (~> 2.4.1)
     pg (1.2.3)
+    pry (0.14.0)
+      coderay (~> 1.1)
+      method_source (~> 1.0)
+    pry-rails (0.3.9)
+      pry (>= 0.10.4)
     public_suffix (4.0.6)
     puma (4.3.6)
       nio4r (~> 2.0)
@@ -194,6 +203,8 @@ GEM
       activesupport (>= 3.0.0)
     racc (1.5.2)
     rack (2.2.3)
+    rack-mini-profiler (2.3.1)
+      rack (>= 1.2.0)
     rack-proxy (0.6.5)
       rack
     rack-test (1.1.0)
@@ -268,6 +279,7 @@ GEM
       parser (>= 2.7.1.5)
     ruby-debug-ide (0.7.2)
       rake (>= 0.8.1)
+    ruby-prof (1.4.3)
     ruby-progressbar (1.10.1)
     ruby-vips (2.0.17)
       ffi (~> 1.9)
@@ -286,6 +298,7 @@ GEM
     selenium-webdriver (3.142.7)
       childprocess (>= 0.5, < 4.0)
       rubyzip (>= 1.2.2)
+    semantic_range (2.3.1)
     simplecov (0.19.0)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
@@ -303,6 +316,7 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    stackprof (0.2.16)
     stimulus-rails (0.2.3)
       rails (>= 6.0.0)
     test-prof (0.12.2)
@@ -332,10 +346,11 @@ GEM
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
-    webpacker (4.3.0)
-      activesupport (>= 4.2)
+    webpacker (5.2.1)
+      activesupport (>= 5.2)
       rack-proxy (>= 0.6.1)
-      railties (>= 4.2)
+      railties (>= 5.2)
+      semantic_range (>= 2.3.0)
     websocket-driver (0.7.3)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -370,28 +385,33 @@ DEPENDENCIES
   iso
   jbuilder (~> 2.7)
   listen (>= 3.0.5, < 3.2)
+  memory_profiler
   pagy
   pg (>= 0.18, < 2.0)
+  pry-rails
   puma (~> 4.3.5)
   pundit
+  rack-mini-profiler
   rails (~> 6.0.2, >= 6.0.2.2)
   rails-controller-testing
   rspec-rails (~> 4.0.0)
   rubocop
   ruby-debug-ide
+  ruby-prof
   sass-rails (>= 6)
   selenium-webdriver
   simplecov
   simplecov-cobertura
   spring
   spring-commands-rspec
+  stackprof
   test-prof
   tzinfo-data
   view_component
   web-console (>= 3.3.0)
   webdrivers
   webmock
-  webpacker (~> 4.0)
+  webpacker (~> 5.x)
   zeitwerk (~> 2.3)
 
 BUNDLED WITH

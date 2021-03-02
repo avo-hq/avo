@@ -46,7 +46,7 @@ teams.each do |team|
     membership.update level: [:beginner, :intermediate, :advanced].sample
 
     if index == 0
-      membership.update level: :admin
+      membership.update level: :advanced
     end
   end
 end

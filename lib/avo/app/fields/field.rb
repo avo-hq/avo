@@ -62,7 +62,7 @@ module Avo
           computed: block.present?,
           computed_value: false,
           format_using: false,
-          placeholder: id.to_s.camelize,
+          placeholder: id.to_s.humanize,
           help: nil,
           default: nil,
           can_see: nil,
@@ -160,12 +160,16 @@ module Avo
         id.to_sym
       end
 
+      def component_name(view = :index)
+        "Avo::#{view.to_s.classify}::Fields::#{partial_name.gsub('-field', '').underscore.camelize}FieldComponent"
+      end
+
       private
         def model_or_class(model)
           if model.class == String
-            return 'class'
+            'class'
           else
-            return 'model'
+            'model'
           end
         end
     end

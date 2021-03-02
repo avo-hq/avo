@@ -1,7 +1,0 @@
-<div class="relative p-3 bg-gray-200 grid grid-cols-3 lg:grid-cols-4 gap-3">
-  <% field.value.attachments.each do |attachment| %>
-    <div class="flex">
-      <%= render partial: 'avo/fields/common/file_item', locals: { id: field.id, attachment: attachment, is_image: field.is_image, button_size: :xs } %>
-    </div>
-  <% end %>
-</div>
