@@ -4,7 +4,17 @@
       <% model_scope = model_name_from_record_or_class(@resource.model).param_key %>
       <%= check_box_tag "#{model_name_from_record_or_class(@resource.model).param_key}[#{@field.id}][]", '', true, { class: "hidden" } %>
       <% @field.options.each do |id, label| %>
-        <% checked = params[model_scope].present? && params[model_scope][@field.id.to_s].present? ? params[model_scope][@field.id.to_s].include?(@id.to_s) : @field.value[@id.to_s] %>
+        <%
+          checked = false
+
+          if params[model_scope].present? && params[model_scope][@field.id.to_s].present?
+            checked = params[model_scope][@field.id.to_s].include?(@id.to_s)
+          else
+            if @field.value.present?
+              checked = @field.value[@id.to_s]
+            end
+          end
+        %>
         <label class="block">
           <%= check_box_tag "#{model_name_from_record_or_class(@resource.model).param_key}[#{@field.id}][]", id, checked, { class: "w-3 h-3", disabled: @field.readonly } %> <%= label %>
         </label>

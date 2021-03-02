@@ -62,7 +62,7 @@ module Avo
           computed: block.present?,
           computed_value: false,
           format_using: false,
-          placeholder: id.to_s.camelize,
+          placeholder: id.to_s.humanize,
           help: nil,
           default: nil,
           can_see: nil,
