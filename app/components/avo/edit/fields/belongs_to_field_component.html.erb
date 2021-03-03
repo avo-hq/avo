@@ -5,7 +5,7 @@
       include_blank: @field.placeholder,
     },
     {
-      class: helpers.input_classes('w-full select-input', has_error: (@resource.model.present? and @resource.model.errors.include?(@field.id))),
+      class: helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)),
       disabled: disabled
     }
     %>

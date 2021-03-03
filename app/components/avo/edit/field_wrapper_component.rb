@@ -9,7 +9,7 @@ class Avo::Edit::FieldWrapperComponent < ViewComponent::Base
     @displayed_in_modal = displayed_in_modal
     @form = form
     @resource = resource
-    @model = resource.model
+    @model = resource.present? ? resource.model : nil
 
     if @index != 0 or @displayed_in_modal
       @classes += ' border-t'

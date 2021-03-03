@@ -95,18 +95,18 @@ module Avo
     end
 
     def button_classes(extra_classes = nil, color: nil, variant: nil, size: :md)
-      classes = "inline-flex flex-grow-0 items-center text-sm font-bold leading-none fill-current whitespace-no-wrap transition duration-100 rounded-lg shadow-xl transform transition duration-100 active:translate-x-px active:translate-y-px cursor-pointer disabled:cursor-not-allowed #{extra_classes}"
+      classes = "inline-flex flex-grow-0 items-center text-sm font-bold leading-none fill-current whitespace-nowrap transition duration-100 rounded-lg shadow-xl transform transition duration-100 active:translate-x-px active:translate-y-px cursor-pointer disabled:cursor-not-allowed #{extra_classes}"
 
       if color.present?
         if variant.present? and variant.to_sym == :outlined
           classes += ' bg-white border'
 
-          classes += " hover:border-#{color}-800 border-#{color}-600 text-#{color}-600 hover:text-#{color}-800 disabled:border-gray-300 disabled:text-gray-600"
+          classes += " hover:border-#{color}-700 border-#{color}-600 text-#{color}-600 hover:text-#{color}-700 disabled:border-gray-300 disabled:text-gray-600"
         else
           classes += " text-white bg-#{color}-500 hover:bg-#{color}-600 disabled:bg-#{color}-300"
         end
       else
-        classes += ' text-gray-800 bg-white hover:bg-gray-100 disabled:bg-gray-300'
+        classes += ' text-gray-700 bg-white hover:bg-gray-100 disabled:bg-gray-300'
       end
 
       size = size.present? ? size.to_sym : :md
@@ -162,12 +162,12 @@ module Avo
     end
 
     def input_classes(extra_classes = '', has_error: false)
-      classes = 'appearance-none inline-flex bg-gray-200 disabled:bg-gray-400 disabled:cursor-not-allowed focus:bg-white text-gray-700 disabled:text-gray-600 rounded-md py-2 px-3 leading-tight border outline-none outline'
+      classes = 'appearance-none inline-flex bg-blue-gray-100 disabled:bg-blue-gray-300 disabled:cursor-not-allowed focus:bg-white text-blue-gray-700 disabled:text-blue-gray-700 rounded-md py-2 px-3 leading-tight border outline-none outline'
 
       if has_error
-        classes += ' border-red-600 focus:border-red-700'
+        classes += ' border-red-600'
       else
-        classes += ' border-gray-300 focus:border-gray-400'
+        classes += ' border-blue-gray-300'
       end
 
       classes += " #{extra_classes}"

@@ -28,6 +28,7 @@ module Avo
       attr_accessor :default
       attr_accessor :can_see
       attr_accessor :model
+      attr_accessor :resource
       attr_accessor :view
       attr_accessor :user
       attr_accessor :action
@@ -162,6 +163,12 @@ module Avo
 
       def component_name(view = :index)
         "Avo::#{view.to_s.classify}::Fields::#{partial_name.gsub('-field', '').underscore.camelize}FieldComponent"
+      end
+
+      def model_errors
+        return {} if model.nil?
+
+        model.errors
       end
 
       private
