@@ -6,6 +6,7 @@ module Avo
     before_action :init_app
     before_action :set_authorization
     before_action :_authenticate!
+    before_action :set_container_classes
 
     rescue_from Pundit::NotAuthorizedError, with: :render_unauthorized
     rescue_from ActiveRecord::RecordInvalid, with: :exception_logger
@@ -221,6 +222,13 @@ module Avo
 
       def set_authorization
         @authorization = AuthorizationService.new _current_user
+      end
+
+      def set_container_classes
+        contain = !Avo.configuration.full_width_container
+        contain = false if Avo.configuration.full_width_index_view && action_name.to_sym == :index && self.class.superclass.to_s == 'Avo::ResourcesController'
+
+        @container_classes = contain ? '2xl:container 2xl:mx-auto' : ''
       end
   end
 end
