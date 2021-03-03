@@ -59,7 +59,7 @@ module Avo
         if model.present?
           @model = model
 
-          hydrate_model_with_defaults if @view == :new
+          hydrate_model_with_default_values if @view == :new
         end
 
         self
@@ -256,7 +256,7 @@ module Avo
 
       # For :new views we're hydrating the model with the values from the resource's default attribute.
       # We will not overwrite any attributes that come pre-filled in the model.
-      def hydrate_model_with_defaults
+      def hydrate_model_with_default_values
         default_values = get_fields.select do |field|
           !field.computed
         end
