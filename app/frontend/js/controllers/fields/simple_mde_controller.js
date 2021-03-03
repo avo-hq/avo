@@ -15,6 +15,7 @@ export default class extends Controller {
 
     if (this.view === 'show') {
       options.toolbar = false
+      options.status = false
     }
 
     const simpleMde = new SimpleMDE(options)
