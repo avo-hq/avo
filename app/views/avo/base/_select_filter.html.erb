@@ -9,7 +9,7 @@
 <div data-controller="select-filter">
   <%= filter_wrapper name: filter.name, index: index do %>
     <%= select_tag filter.id, options_for_select(filter.options.invert, set_value),
-      class: input_classes('select-input w-full mb-0'),
+      class: input_classes('w-full mb-0'),
       include_blank: '—',
       'data-filter-class': filter.class,
       'data-select-filter-target': 'selector',

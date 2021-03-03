@@ -1,4 +1,5 @@
 const plugin = require('tailwindcss/plugin')
+const colors = require('tailwindcss/colors')
 
 module.exports = {
   future: {
@@ -15,6 +16,8 @@ module.exports = {
       './app/views/**/*.html.erb',
       './app/frontend/**/*.vue',
       './app/frontend/**/*.js',
+      './app/components/**/*.html.erb',
+      './app/components/**/*.rb',
     ],
     options: {
       whitelist: ['appearance-none'],
@@ -22,6 +25,11 @@ module.exports = {
   },
   theme: {
     extend: {
+      colors: {
+        'blue-gray': colors.blueGray,
+        'light-blue': colors.lightBlue,
+        teal: colors.teal,
+      },
       fontFamily: {
         sans: '"Nunito", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",  "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
       },
@@ -119,6 +127,7 @@ module.exports = {
     cursor: ['responsive', 'disabled'],
   },
   plugins: [
+    require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
     // buttons
     plugin(({ addComponents, theme }) => {

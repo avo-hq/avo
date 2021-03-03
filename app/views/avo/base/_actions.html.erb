@@ -1,7 +1,7 @@
 <% if @actions.count > 0 %>
   <div class="relative z-30" data-controller="toggle-panel actions-picker">
     <%= a_button class: "focus:outline-none",
-      color: "blue",
+      color: 'light-blue',
       'data-action': "click->toggle-panel#togglePanel",
       'data-actions-dropdown-button': @resource.plural_name.downcase,
       disabled: action_name != 'show' do

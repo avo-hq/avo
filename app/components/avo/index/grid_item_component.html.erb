@@ -11,14 +11,16 @@
       </div>
     <% end %>
   </div>
-  <div class="flex flex-col justify-between p-4 flex-1">
-    <div class="font-semibold leading-tight mb-2 text-lg">
-      <%= link_to_if preview.link_to_resource, title.value, helpers.resource_path(@resource.model) if title.present? %>
+  <div class="grid grid-cols-1 place-content-between p-4 h-full">
+    <div class="mb-4">
+      <div class="grid font-semibold leading-tight text-lg mb-2">
+        <%= link_to_if preview.link_to_resource, title.value, helpers.resource_path(@resource.model) if title.present? %>
+      </div>
+      <div class="text-sm break-words">
+        <%= body.value if body.present? %>
+      </div>
     </div>
-    <div class="mb-6 text-sm">
-      <%= body.value if body.present? %>
-    </div>
-    <div class="w-full">
+    <div class="w-full place-self-end">
       <%= render(Avo::Index::ResourceControlsComponent.new(resource: @resource, reflection: @reflection, parent_model: @parent_model)) %>
     </div>
   </div>
