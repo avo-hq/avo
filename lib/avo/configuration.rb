@@ -17,6 +17,8 @@ module Avo
     attr_accessor :authenticate
     attr_accessor :current_user
     attr_accessor :id_links_to_resource
+    attr_accessor :full_width_container
+    attr_accessor :full_width_index_view
 
     def initialize
       @root_path = '/avo'
@@ -44,6 +46,8 @@ module Avo
         destroy: 'destroy?',
       }
       @id_links_to_resource = false
+      @full_width_container = false
+      @full_width_index_view = false
     end
 
     def locale_tag
