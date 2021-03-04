@@ -19,11 +19,12 @@ module Avo
         end
 
         f.belongs_to :user, meta: { searchable: false }, placeholder: '—'
+      end
 
-        # Grid view
-        f.file :cover_photo, required: true, show_on_grid: :preview, link_to_resource: true
-        f.text :name, required: true, show_on_grid: :title, link_to_resource: true
-        f.text :excerpt, show_on_grid: :body do |model|
+      def grid(request)
+        g.file :cover_photo, required: true, grid_position: :preview, link_to_resource: true
+        g.text :name, required: true, grid_position: :title, link_to_resource: true
+        g.text :excerpt, grid_position: :body do |model|
           begin
             ActionView::Base.full_sanitizer.sanitize(model.body).truncate 130
           rescue => exception

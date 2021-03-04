@@ -13,19 +13,19 @@ class Avo::Index::GridItemComponent < ViewComponent::Base
   private
     def preview
       @grid_fields.detect do |field|
-        field.show_on_grid == :preview
+        field.grid_position == :preview
       end
     end
 
     def title
       @grid_fields.detect do |field|
-        field.show_on_grid == :title
+        field.grid_position == :title
       end
     end
 
     def body
       @grid_fields.detect do |field|
-        field.show_on_grid == :body
+        field.grid_position == :body
       end
     end
 end

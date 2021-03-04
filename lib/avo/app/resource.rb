@@ -17,12 +17,14 @@ module Avo
       attr_accessor :model
       attr_accessor :user
       attr_accessor :fields_loader
+      attr_accessor :grid_loader
       attr_accessor :actions_loader
       attr_accessor :filters_loader
       attr_accessor :params
 
       alias :field :fields_loader
       alias :f :field
+      alias :g :grid_loader
       alias :action :actions_loader
       alias :a :action
       alias :filter :filters_loader
@@ -43,6 +45,9 @@ module Avo
       def boot_fields(request)
         @fields_loader = Avo::FieldsLoader.new
         fields request
+
+        @grid_loader = Avo::FieldsLoader.new
+        grid request if self.respond_to? :grid
 
         @actions_loader = Avo::ActionsLoader.new
         actions request if self.respond_to? :actions
@@ -66,14 +71,10 @@ module Avo
       end
 
       def get_fields(panel: nil, view_type: :table, reflection: nil)
-        fields = get_field_definitions.select do |field|
-          field.send("show_on_#{@view.to_s}")
-        end
-
         case view_type.to_sym
         when :table
-          fields = fields.select do |field|
-            field.show_on_grid.blank?
+          fields = get_field_definitions.select do |field|
+            field.send("show_on_#{@view.to_s}")
           end
           .select do |field|
             field.can_see.present? ? field.can_see.call : true
@@ -88,9 +89,7 @@ module Avo
 
           end
         when :grid
-          fields = fields.select do |field|
-            field.show_on_grid.present?
-          end
+          fields = @grid_loader.bag
         end
 
         if panel.present?

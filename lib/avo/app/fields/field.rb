@@ -32,7 +32,7 @@ module Avo
       attr_accessor :view
       attr_accessor :user
       attr_accessor :action
-      attr_accessor :show_on_grid
+      attr_accessor :grid_position
       attr_accessor :meta
       attr_accessor :panel_name
       attr_accessor :link_to_resource
@@ -67,7 +67,7 @@ module Avo
           help: nil,
           default: nil,
           can_see: nil,
-          show_on_grid: false,
+          grid_position: false,
           meta: {},
           panel_name: nil,
         }
