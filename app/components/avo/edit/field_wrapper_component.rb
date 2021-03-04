@@ -10,6 +10,7 @@ class Avo::Edit::FieldWrapperComponent < ViewComponent::Base
     @form = form
     @resource = resource
     @model = resource.present? ? resource.model : nil
+    @full_width = full_width
 
     if @index != 0 or @displayed_in_modal
       @classes += ' border-t'

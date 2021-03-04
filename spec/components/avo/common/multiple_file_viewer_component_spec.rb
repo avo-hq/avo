@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Edit::Fields::FilesComponent, type: :component do
+RSpec.describe Common::MultipleFileViewerComponent, type: :component do
   pending "add some examples to (or delete) #{__FILE__}"
 
   # it "renders something useful" do

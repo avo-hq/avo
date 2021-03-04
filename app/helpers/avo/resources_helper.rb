@@ -93,6 +93,8 @@ module Avo
       "<input type='checkbox'
         class='mx-3 #{'absolute inset-auto left-0 mt-2 z-10 hidden group-hover:block checked:block' if floating} #{size.to_sym == :lg ? 'w-5 h-5' : 'w-4 h-4'}'
         data-action='input->item-selector#toggle'
+        title='#{t 'avo.select_item' }'
+        data-tippy='tooltip'
       />"
     end
   end

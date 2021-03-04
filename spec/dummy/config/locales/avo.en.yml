@@ -21,6 +21,7 @@ en:
     attachment_destroyed: 'Attachment destroyed'
     failed_to_find_attachment: 'Failed to find attachment'
     remove_selection: 'Remove selection'
+    select_item: 'Select item'
     delete_file: 'Delete file'
     delete: 'delete'
     delete_item: 'Delete %{item}'

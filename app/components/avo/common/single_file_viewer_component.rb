@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-class Avo::Common::FileViewerComponent < ViewComponent::Base
+class Avo::Common::SingleFileViewerComponent < ViewComponent::Base
+  include Avo::ApplicationHelper
+
   def initialize(id:, file:, is_image:, button_size: :md, resource:)
     @id = id
     @file = file
