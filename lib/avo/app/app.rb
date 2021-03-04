@@ -116,6 +116,9 @@ module Avo
         @@app[:resources]
       end
 
+      # Returns the Avo resource by camelized name
+      #
+      # get_resource_by_name('User') => Avo::Resources::User
       def get_resource(resource)
         @@app[:resources].find do |available_resource|
           "Avo::Resources::#{resource}".safe_constantize == available_resource.class

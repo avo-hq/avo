@@ -171,6 +171,10 @@ module Avo
         model.errors
       end
 
+      def type
+        self.class.name.demodulize.to_s.underscore
+      end
+
       private
         def model_or_class(model)
           if model.class == String

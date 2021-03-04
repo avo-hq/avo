@@ -83,7 +83,7 @@ RSpec.describe 'SelectField', type: :feature do
 
   let(:stages_without_placeholder) { ['discovery', 'idea', 'done', 'on hold', 'cancelled'] }
   let(:placeholder) { 'Choose the stage.' }
-  let(:stages_with_placeholder) { stages_without_placeholder.push(placeholder) }
+  let(:stages_with_placeholder) { stages_without_placeholder.prepend(placeholder) }
 
   context 'edit' do
     let(:url) { "/avo/resources/projects/#{project.id}/edit" }

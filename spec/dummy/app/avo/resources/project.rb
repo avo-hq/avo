@@ -11,7 +11,7 @@ module Avo
         f.id link_to_resource: true
         f.text :name, required: true
         f.status :status, failed_when: [:closed, :rejected, :failed], loading_when: [:loading, :running, :waiting], nullable: true
-        f.select :stage, hide_on: [:show, :index], enum: ::Project.stages, placeholder: 'Choose the stage.', display_value: true
+        f.select :stage, hide_on: [:show, :index], enum: ::Project.stages, placeholder: 'Choose the stage'
         f.badge :stage, options: { info: ['Discovery', 'Idea'], success: 'Done', warning: 'On hold', danger: 'Cancelled' }
         # currency :budget, currency: 'EUR', locale: 'de-DE'
         f.country :country
