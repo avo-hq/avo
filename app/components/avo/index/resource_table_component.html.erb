@@ -11,6 +11,6 @@
       </tbody>
     </table>
   <% else %>
-    <%= helpers.empty_state @resource.name.downcase %>
+    <%= helpers.empty_state @resource.name.downcase.pluralize %>
   <% end %>
 </div>
