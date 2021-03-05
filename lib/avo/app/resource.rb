@@ -12,7 +12,7 @@ module Avo
       attr_accessor :includes
       attr_accessor :translation_key
       attr_accessor :default_view_type
-      attr_accessor :has_devise_password
+      attr_accessor :devise_password_optional
       attr_accessor :view
       attr_accessor :model
       attr_accessor :user
@@ -36,7 +36,7 @@ module Avo
         @includes = []
         @translation_key = nil
         @default_view_type = :table
-        @has_devise_password = false
+        @devise_password_optional = false
 
         configure
         boot_fields request

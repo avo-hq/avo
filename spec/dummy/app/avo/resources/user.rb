@@ -4,8 +4,7 @@ class Avo::Resources::User < Avo::Resources::Resource
     @translation_key = 'avo.resource_translations.user'
     @search = [:id, :first_name, :last_name]
     @includes = [:posts, :post]
-    @has_devise_password = true
-    # @name = 'usy'
+    @devise_password_optional = true
   end
 
   def fields(request)

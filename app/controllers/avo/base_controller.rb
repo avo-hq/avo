@@ -109,8 +109,19 @@ module Avo
     end
 
     private
+      def model_route_key
+        @resource.model_class.model_name.route_key.singularize
+      end
+
       def model_params
-        params.require(@resource.model_class.model_name.route_key.singularize).permit(permitted_params)
+        request_params = params.require(model_route_key).permit(permitted_params)
+
+        if @resource.devise_password_optional and request_params[:password].blank? and request_params[:password_confirmation].blank?
+          request_params.delete(:password_confirmation)
+          request_params.delete(:password)
+        end
+
+        request_params
       end
 
       def permitted_params

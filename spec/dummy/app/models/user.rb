@@ -15,7 +15,7 @@ class User < ApplicationRecord
   has_one_attached :cv
 
   def is_admin?
-    roles.present? and roles['admin'] == true
+    roles.present? and roles['admin'].present?
   end
 
   def name

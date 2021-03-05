@@ -8,7 +8,7 @@ module Avo
         @translation_key = 'avo.resource_translations.user'
         @search = [:id, :first_name, :last_name]
         @includes = :posts
-        @has_devise_password = true
+        @devise_password_optional = true
       end
 
       def fields(request)
@@ -29,7 +29,7 @@ module Avo
         @translation_key = 'avo.resource_translations.user'
         @search = [:id, :first_name, :last_name]
         @includes = :posts
-        @has_devise_password = true
+        @devise_password_optional = true
       end
 
       def fields(request)
