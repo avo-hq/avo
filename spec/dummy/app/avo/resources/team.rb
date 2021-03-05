@@ -13,7 +13,7 @@ module Avo
         f.text :url
         f.external_image :logo do |model|
           if model.url
-            "//logo.clearbit.com/#{URI.parse(model.url).host}"
+            "//logo.clearbit.com/#{URI.parse(model.url).host}?size=180"
           else
             nil
           end
@@ -26,6 +26,18 @@ module Avo
 
         f.has_one :admin
         f.has_many :members, through: :memberships
+      end
+
+      def grid(request)
+        g.external_image :logo, grid_position: :preview, link_to_resource: true do |model|
+          if model.url
+            "//logo.clearbit.com/#{URI.parse(model.url).host}?size=180"
+          else
+            nil
+          end
+        end
+        g.text :name, grid_position: :title, link_to_resource: true
+        g.text :url, grid_position: :body
       end
 
       def filters(request)
