@@ -3,15 +3,16 @@ const aliases = require('./aliases')
 
 environment.config.merge(aliases)
 
-environment.loaders
-  .map((rule) => rule.value.use)
-  .flat()
-  .filter(({ loader }) => loader === 'postcss-loader')
-  .forEach((item) => {
-    if (item.options) {
-      item.options.postcssOptions = { from: item.options.config.path }
-      delete item.options.config
+// Fix the post-css loader config format
+environment.loaders.keys().forEach(loaderName => {
+  let loader = environment.loaders.get(loaderName);
+  loader.use.forEach(loaderConfig => {
+    if (loaderConfig.options && loaderConfig.options.config) {
+      loaderConfig.options.postcssOptions = loaderConfig.options.config;
+      delete loaderConfig.options.config;
     }
-  })
+  });
+});
+
 
 module.exports = environment

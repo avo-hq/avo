@@ -51,32 +51,19 @@ default: &default
     - .jpeg
     - .jpg
 
+# We override the development env. when packed.
+# Avo needs to be packed and compiled for when the dev uses it in his development env.
 development:
   <<: *default
-  compile: true
 
-  # Verifies that correct packages and versions are installed by inspecting package.json, yarn.lock, and node_modules
-  check_yarn_integrity: true
+  # Production depends on precompilation of packs prior to booting for performance.
+  compile: false
 
-  # Reference: https://webpack.js.org/configuration/dev-server/
-  dev_server:
-    https: false
-    host: localhost
-    port: 3039
-    public: localhost:3039
-    hmr: true
-    # Inline should be set to true if using HMR
-    inline: true
-    overlay: true
-    compress: true
-    disable_host_check: true
-    use_local_ip: false
-    quiet: false
-    headers:
-      'Access-Control-Allow-Origin': '*'
-    watch_options:
-      ignored: '**/node_modules/**'
-    env_prefix: "AVO_WEBPACKER_DEV_SERVER"
+  # Extract and emit a css file
+  extract_css: true
+
+  # Cache manifest.json for performance
+  cache_manifest: true
 
 test:
   <<: *default

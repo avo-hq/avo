@@ -2,6 +2,8 @@
 @import './../../../node_modules/toastr/build/toastr.css';
 @import './../../../node_modules/tippy.js/dist/tippy.css';
 @import './../../../node_modules/tippy.js/themes/light.css';
+@import './../../../node_modules/trix/dist/trix.css';
+@import './../../../node_modules/flatpickr/dist/flatpickr.css';
 
 @import './tailwindcss/base.css';
 @import './tailwindcss/components.css';
