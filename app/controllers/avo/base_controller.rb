@@ -75,6 +75,7 @@ module Avo
           format.html { redirect_to redirect_path, notice: "#{@model.class.name} was successfully created." }
           format.json { render :show, status: :created, location: @model }
         else
+          flash[:error] = t 'avo.you_missed_something_check_form'
           format.html { render :new, status: :unprocessable_entity }
           format.json { render json: @model.errors, status: :unprocessable_entity }
         end
@@ -89,10 +90,11 @@ module Avo
       respond_to do |format|
         if saved
           format.html { redirect_to params[:referrer] || resource_path(@model), notice: "#{@model.class.name} was successfully updated." }
-          format.json { render :show, status: :ok, location: @post }
+          format.json { render :show, status: :ok, location: @model }
         else
+          flash[:error] = t 'avo.you_missed_something_check_form'
           format.html { render :edit, status: :unprocessable_entity }
-          format.json { render json: @post.errors, status: :unprocessable_entity }
+          format.json { render json: @model.errors, status: :unprocessable_entity }
         end
       end
     end
