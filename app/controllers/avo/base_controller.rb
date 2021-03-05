@@ -60,7 +60,7 @@ module Avo
     end
 
     def create
-      @model = @resource.model_class.new(model_params)
+      @model = @resource.fill_model(@resource.model_class.new, cast_nullable(model_params))
       saved = @model.save
       @resource.hydrate(model: @model, view: :new, user: _current_user)
 
