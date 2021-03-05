@@ -20,6 +20,7 @@ en:
     click_to_reveal_filters: "Click to reveal filters"
     attachment_destroyed: 'Attachment destroyed'
     failed_to_find_attachment: 'Failed to find attachment'
+    you_missed_something_check_form: 'You might have missed something. Please check the form.'
     remove_selection: 'Remove selection'
     select_item: 'Select item'
     delete_file: 'Delete file'

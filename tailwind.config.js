@@ -1,27 +1,26 @@
 const plugin = require('tailwindcss/plugin')
 const colors = require('tailwindcss/colors')
 
+// Dynamically built buttons need these classes in prod.
+const buttonClasses = ['hover:border-${color}-700', 'hover:border-${color}-600', 'bg-${color}-500', 'hover:bg-${color}-600', 'disabled:bg-${color}-300', 'hover:text-${color}-700', 'text-${color}-600']
+const ignoredButtonClasses = Object.keys(colors).map((color) => buttonClasses.map(buttonClass => buttonClass.replace('${color}', color)))
+
 module.exports = {
-  future: {
-    purgeLayersByDefault: true,
-    removeDeprecatedGapUtilities: true,
-    standardFontWeights: true,
-  },
+  future: {},
   purge: {
-    mode: 'layers',
-    layers: ['components', 'utilities'],
     content: [
       './app/helpers/**/*.rb',
-      './app/views/**/*.html',
       './app/views/**/*.html.erb',
-      './app/frontend/**/*.vue',
       './app/frontend/**/*.js',
-      './app/components/**/*.html.erb',
-      './app/components/**/*.rb',
+      './app/components/avo/**/*.html.erb',
+      './app/components/avo/**/*.rb',
+      './app/controllers/avo/**/*.rb',
     ],
     options: {
-      whitelist: ['appearance-none'],
-    },
+      safelist: [
+        ...ignoredButtonClasses.flat(),
+      ],
+    }
   },
   theme: {
     extend: {

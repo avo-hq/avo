@@ -64,7 +64,8 @@ module Avo
 
     config.app_middleware.use(
       Rack::Static,
-      urls: ['/avo-packs'], root: Avo::Engine.root.join('public')
+      urls: ['/avo-packs'],
+      root: Avo::Engine.root.join('public')
     )
 
     config.generators do |g|
