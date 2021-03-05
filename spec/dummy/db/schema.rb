@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_26_153236) do
+ActiveRecord::Schema.define(version: 2021_03_05_082639) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,9 +39,9 @@ ActiveRecord::Schema.define(version: 2020_10_26_153236) do
   create_table "posts", force: :cascade do |t|
     t.string "name"
     t.text "body"
-    t.bigint "user_id"
     t.boolean "is_featured"
     t.datetime "published_at"
+    t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_posts_on_user_id"
@@ -85,6 +85,7 @@ ActiveRecord::Schema.define(version: 2020_10_26_153236) do
     t.text "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "url"
   end
 
   create_table "users", force: :cascade do |t|
