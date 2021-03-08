@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe NavigationLinkComponent, type: :component do
+RSpec.describe Avo::NavigationLinkComponent, type: :component do
   pending "add some examples to (or delete) #{__FILE__}"
 
   # it "renders something useful" do

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Show::Fields::BooleanGroupFieldComponent, type: :component do
+RSpec.describe Avo::Show::Fields::BooleanGroupFieldComponent, type: :component do
   pending "add some examples to (or delete) #{__FILE__}"
 
   # it "renders something useful" do

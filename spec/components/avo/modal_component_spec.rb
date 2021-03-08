@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe ModalComponent, type: :component do
+RSpec.describe Avo::ModalComponent, type: :component do
   pending "add some examples to (or delete) #{__FILE__}"
 
   # it "renders something useful" do

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Edit::Fields::FileFieldComponent, type: :component do
+RSpec.describe Avo::Edit::Fields::FileFieldComponent, type: :component do
   pending "add some examples to (or delete) #{__FILE__}"
 
   # it "renders something useful" do

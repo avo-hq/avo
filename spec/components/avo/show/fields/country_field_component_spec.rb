@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Show::Fields::CountryFieldComponent, type: :component do
+RSpec.describe Avo::Show::Fields::CountryFieldComponent, type: :component do
   pending "add some examples to (or delete) #{__FILE__}"
 
   # it "renders something useful" do
