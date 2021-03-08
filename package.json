@@ -6,17 +6,6 @@
   "author": "Adrian Marin <adrian@adrianthedev.com>",
   "license": "Commercial",
   "private": true,
-  "scripts": {
-    "test": "bundle exec rspec ./spec",
-    "test-unit": "bundle exec rspec ./spec --tag type:feature --tag type:controller",
-    "test-system": "bundle exec rspec ./spec --tag type:system",
-    "test-all": "bundle exec rspec ./spec",
-    "docker-build": "docker build -t avo-dev -f docker/Dockerfile .",
-    "docker-clean": "docker rmi avo-dev",
-    "build": "sh scripts/build.sh",
-    "publish": "sh scripts/publish.sh",
-    "release": "sh scripts/release.sh"
-  },
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.12.1",
     "@hotwired/turbo-rails": "^7.0.0-beta.2",
