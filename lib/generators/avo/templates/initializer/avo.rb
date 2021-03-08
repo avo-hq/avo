@@ -37,8 +37,4 @@ Avo.configure do |config|
   # config.id_links_to_resource = false
   # config.full_width_container = false
   # config.full_width_index_view = false
-
-  ## == Beta version ==
-  # config.hide_resource_overview_component = false
-  # config.hide_documentation_link = false
 end
