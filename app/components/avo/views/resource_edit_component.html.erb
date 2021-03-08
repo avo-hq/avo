@@ -1,0 +1,29 @@
+<div data-model-id="<%= @resource.model.id %>">
+  <% @resource.panels.each do |resource_panel| %>
+    <%= form_with model: @resource.model, url: helpers.resource_path(@resource.model), method: :put, multipart: true do |form| %>
+      <%= hidden_field_tag :referrer, back_path if params[:via_resource_class] %>
+
+      <%= panel(title: resource_panel[:name]) do |component| %>
+        <% component.with :tools do %>
+          <div class="flex justify-end space-x-2">
+            <%= a_link back_path do %>
+              <%= helpers.svg 'arrow-left' %> <%= t('avo.cancel').capitalize %>
+            <% end %>
+
+            <% if @resource.authorization.authorize_action :update, raise_exception: false %>
+              <%= a_button color: 'green', variant: 'outlined', type: :submit do %>
+                <%= helpers.svg 'save' %> <%= t('avo.save').capitalize %>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
+
+        <% component.with :body do %>
+          <% @resource.get_fields.each_with_index do |field, index| %>
+            <%= edit_field field, index, @resource, form unless field.computed %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>

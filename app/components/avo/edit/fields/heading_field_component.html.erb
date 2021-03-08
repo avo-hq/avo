@@ -1,0 +1,3 @@
+<div <% if @index == 0 %> class="overflow-hidden rounded-t-xl" <% end %> data-field-id="<%= @field.id %>">
+  <%= render Avo::Common::HeadingComponent.new value: @field.name, as_html: @field.meta[:as_html] %>
+</div>

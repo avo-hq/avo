@@ -18,8 +18,12 @@ module Avo
           end
         end
 
-        succeed 'Perfect!'
-        redirect '/resources/posts'
+        succeed 'Purrrfect!'
+      end
+
+      def fields(request)
+        f.boolean :notify_user, default: true
+        f.text :message, default: 'Your account has been marked as inactive.'
       end
 
       def confirm_text

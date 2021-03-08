@@ -3,8 +3,7 @@ module Avo
     class StatusField < Field
       def initialize(name, **args, &block)
         @defaults = {
-          sortable: true,
-          component: 'status-field',
+          partial_name: 'status-field',
         }
 
         super(name, **args, &block)
@@ -13,11 +12,14 @@ module Avo
         @failed_when = args[:failed_when].present? ? [args[:failed_when]].flatten : [:failed]
       end
 
-      def hydrate_field(fields, model, resource, view)
-        {
-          loading_when: @loading_when,
-          failed_when: @failed_when,
-        }
+      def status
+        status = 'success'
+        if value.present?
+          status = 'failed' if @failed_when.include? value.to_sym
+          status = 'loading' if @loading_when.include? value.to_sym
+        end
+
+        status
       end
     end
   end

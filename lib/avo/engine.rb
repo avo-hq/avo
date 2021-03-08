@@ -2,6 +2,7 @@
 Gem.loaded_specs['avo'].dependencies.each do |d|
   require d.name
 end
+require 'view_component/engine'
 
 module Avo
   class Engine < ::Rails::Engine
@@ -33,6 +34,7 @@ module Avo
         # What to do on file change
         config.to_prepare do
           Dir.glob(avo_root_path + '/lib/avo/app/**/*.rb'.to_s).each { |c| load c }
+          Avo::App.boot
         end
       else
         Dir.glob(avo_root_path + '/lib/avo/app/**/*.rb'.to_s).each { |c| require c }
@@ -62,7 +64,8 @@ module Avo
 
     config.app_middleware.use(
       Rack::Static,
-      urls: ['/avo-packs'], root: Avo::Engine.root.join('public')
+      urls: ['/avo-packs'],
+      root: Avo::Engine.root.join('public')
     )
 
     config.generators do |g|

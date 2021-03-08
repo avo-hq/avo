@@ -3,9 +3,11 @@ require_relative 'field'
 module Avo
   module Fields
     class TrixField < Field
+      attr_reader :always_show
+
       def initialize(name, **args, &block)
         @defaults = {
-          component: 'trix-field',
+          partial_name: 'trix-field',
         }
 
         super(name, **args, &block)
@@ -13,12 +15,6 @@ module Avo
         hide_on :index
 
         @always_show = args[:always_show].present? ? args[:always_show] : false
-      end
-
-      def hydrate_field(fields, model, resource, view)
-        {
-          always_show: @always_show
-        }
       end
     end
   end

@@ -1,0 +1,19 @@
+<%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal do %>
+  <% disabled = @field.readonly || params[:via_resource_id] %>
+  <%= @form.select @field.foreign_key, @field.options.map { |o| [o[:label], o[:value]] },
+    {
+      include_blank: @field.placeholder,
+    },
+    {
+      class: helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)),
+      disabled: disabled
+    }
+    %>
+  <%
+    # If the select field is disabled, no value will be sent. It's how HTML works.
+    # Thus the extra hidden field to actually send the related id to the server.
+    if disabled
+  %>
+    <%= @form.hidden_field @field.foreign_key %>
+  <% end %>
+<% end %>

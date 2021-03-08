@@ -1,77 +1,65 @@
 module Avo
   module Fields
     class BelongsToField < Field
-      attr_accessor :searchable
-      attr_accessor :relation_method
-
       def initialize(name, **args, &block)
         @defaults = {
-          component: 'belongs-to-field',
+          partial_name: 'belongs-to-field',
           placeholder: I18n.t('avo.choose_an_option')
         }
 
-        @searchable = args[:searchable] == true ? true : false
-        @relation_method = name.to_s.parameterize.underscore
-
         super(name, **args, &block)
+
+        @meta[:searchable] = args[:searchable] == true ? true : false
+        @meta[:relation_method] = name.to_s.parameterize.underscore
       end
 
-      def hydrate_field(fields, model, resource, view)
-        return fields if model_or_class(model) == 'class'
-
-        fields[:searchable] = @searchable
-        fields[:is_relation] = true
-        fields[:database_id] = foreign_key model
-
-        target_resource = get_target_resource model
-
-        relation_model = model.public_send(@relation_method)
-
-        if relation_model.present?
-          relation_model = model.public_send(@relation_method)
-          fields[:value] = relation_model.send(target_resource.title) if relation_model.present?
-          fields[:database_value] = relation_model[:id] if relation_model.present?
-          fields[:link] = Avo::Resources::Resource.show_path(relation_model)
+      def options
+        target_resource.model_class.all.map do |model|
+          {
+            value: model.id,
+            label: model.send(target_resource.title)
+          }
         end
+      end
 
-        # Populate the options on show and edit
-        fields[:options] = []
+      def database_value
+        target_resource.id
+      end
 
-        if [:edit, :create].include? view
-          if self.searchable
-            fields[:model] = relation_model
+      def foreign_key
+        if @model.present?
+          if @model.class == Class
+            @model.reflections[@meta[:relation_method]].foreign_key
           else
-            fields[:options] = target_resource.model.all.map do |model|
-              {
-                value: model.id,
-                label: model.send(target_resource.title)
-              }
-            end
+            @model.class.reflections[@meta[:relation_method]].foreign_key
+          end
+        elsif @resource.present?
+          @resource.model_class.reflections[@meta[:relation_method]].foreign_key
+        end
+      end
+
+      def relation_model_class
+        @resource.model_class
+      end
+
+      def label
+        value.send(target_resource.title)
+      end
+
+      def to_permitted_param
+        foreign_key.to_sym
+      end
+
+      private
+        def target_resource
+          if @model._reflections[id.to_s].klass.present?
+            App.get_resource_by_model_name @model._reflections[id.to_s].klass.to_s
+          elsif @model._reflections[id.to_s].options[:class_name].present?
+            App.get_resource_by_model_name @model._reflections[id.to_s].options[:class_name]
+          else
+            App.get_resource_by_name id.to_s
           end
         end
-
-        fields[:plural_name] = target_resource.plural_name
-
-        fields
-      end
-
-      def foreign_key(model)
-        if model.class == Class
-          model.reflections[@relation_method].foreign_key
-        else
-          model.class.reflections[@relation_method].foreign_key
-        end
-      end
-
-      def get_target_resource(model)
-        if model._reflections[id.to_s].klass.present?
-          App.get_resource_by_model_name model._reflections[id.to_s].klass.to_s
-        elsif model._reflections[id.to_s].options[:class_name].present?
-          App.get_resource_by_model_name model._reflections[id.to_s].options[:class_name]
-        else
-          App.get_resource_by_name class_name.to_s
-        end
-      end
     end
   end
 end

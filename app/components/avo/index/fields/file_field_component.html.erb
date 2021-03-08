@@ -1,0 +1,11 @@
+<%= index_field_wrapper field: @field do %>
+  <% if @field.value.present? %>
+    <% if @field.value.attached? && @field.value.representable? && @field.is_image %>
+      <%= link_to_if @field.link_to_resource, image_tag(@field.variant, class: 'max-h-full'), helpers.resource_path(@resource.model), class: 'block h-8' %>
+    <% else %>
+      <%= @field.value.filename %>
+    <% end %>
+  <% else %>
+    —
+  <% end %>
+<% end %>

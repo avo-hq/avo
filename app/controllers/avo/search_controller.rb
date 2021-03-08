@@ -2,9 +2,10 @@ require_dependency 'avo/application_controller'
 
 module Avo
   class SearchController < ApplicationController
-    before_action :authorize_user
+    # before_action :authorize_user
 
     def index
+      @authorization.set_record(resource_model).authorize_action :index
       resources = []
 
       resources_to_search_through = App.get_resources
@@ -44,12 +45,12 @@ module Avo
         avo_resource.query_search(query: params[:q], via_resource_name: params[:via_resource_name], via_resource_id: params[:via_resource_id], user: _current_user)
       end
 
-      def authorize_user
-        return if params[:action] == 'index'
+      # def authorize_user
+      #   return if params[:action] == 'index'
 
-        action = params[:action] == 'resource' ? :index : params[:action]
+      #   action = params[:action] == 'resource' ? :index : params[:action]
 
-        return render_unauthorized unless AuthorizationService::authorize_action _current_user, avo_resource.model, action
-      end
+      #   return render_unauthorized unless AuthorizationService::authorize_action _current_user, avo_resource.model, action
+      # end
   end
 end

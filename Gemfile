@@ -15,7 +15,7 @@ gemspec
 # gem 'byebug', group: [:development, :test]
 
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-gem 'webpacker', '~> 4.0'
+gem 'webpacker', '~> 5.x'
 
 # SVGs
 gem 'inline_svg'
@@ -25,7 +25,9 @@ gem 'countries'
 # Authorization
 gem 'pundit'
 
+#
 # Dependencies for dummy_app
+#
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.2', '>= 6.0.2.2'
 # Use postgresql as the database for Active Record
@@ -44,7 +46,7 @@ gem 'jbuilder', '~> 2.7'
 # gem 'bcrypt', '~> 3.1.7'
 
 # Use Active Storage variant
-# gem 'image_processing', '~> 1.2'
+gem 'image_processing', '~> 1.2'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
@@ -56,7 +58,6 @@ gem 'web-console', '>= 3.3.0'
 gem 'listen', '>= 3.0.5', '< 3.2'
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 gem 'spring'
-gem 'spring-watcher-listen', '~> 2.0.0'
 
 gem 'factory_bot_rails'
 gem 'faker', require: false
@@ -68,9 +69,29 @@ gem 'database_cleaner'
 
 gem 'ruby-debug-ide', require: false
 gem 'debase'
+#
+# END Dependencies for dummy_app
+#
 
-group :development, :test do
+group :development do
+  gem 'rubocop'
+
+  # Release helper
+  gem 'bump', require: false
+  gem 'gem-release', require: false
+
+  # gem 'rack-mini-profiler'
+  # gem 'memory_profiler'
+  # gem 'stackprof'
+  # gem 'ruby-prof'
+
+
+  # gem 'pry-rails'
+end
+
+group :test do
   gem 'rspec-rails', '~> 4.0.0'
+  gem 'rails-controller-testing'
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '>= 2.15'
   gem 'selenium-webdriver'
@@ -78,23 +99,27 @@ group :development, :test do
   gem 'webdrivers'
   gem 'faker'
   gem 'fuubar'
-  gem 'rubocop'
   gem 'simplecov', require: false
   gem 'simplecov-cobertura'
   gem 'webmock'
+  gem 'spring-commands-rspec'
 
-  # Release helper
-  gem 'bump', require: false
-  gem 'gem-release', require: false
+  gem 'test-prof'
 end
 
 gem 'zeitwerk', '~> 2.3'
 
 # Pagination
-gem 'kaminari'
+gem 'pagy'
 
 gem 'httparty'
 
 gem 'iso'
 
 gem 'i18n-js'
+
+gem 'hotwire-rails'
+
+gem 'active_link_to'
+
+gem 'view_component', require: 'view_component/engine'

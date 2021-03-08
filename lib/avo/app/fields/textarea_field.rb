@@ -5,8 +5,7 @@ module Avo
     class TextareaField < TextField
       def initialize(name, **args, &block)
         @defaults = {
-          sortable: true,
-          component: 'textarea-field',
+          partial_name: 'textarea-field',
           computable: true,
         }
 
@@ -14,13 +13,7 @@ module Avo
 
         hide_on :index
 
-        @rows = args[:rows].present? ? args[:rows].to_i : 5
-      end
-
-      def hydrate_field(fields, model, resource, view)
-        {
-          rows: @rows
-        }
+        @meta[:rows] = args[:rows].present? ? args[:rows].to_i : 5
       end
     end
   end

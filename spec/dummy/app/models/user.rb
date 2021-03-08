@@ -7,6 +7,7 @@ class User < ApplicationRecord
   validates :first_name, presence: true
   validates :last_name, presence: true
 
+  has_one :post
   has_many :posts
   has_and_belongs_to_many :projects
   has_and_belongs_to_many :teams, join_table: :team_memberships
@@ -14,7 +15,7 @@ class User < ApplicationRecord
   has_one_attached :cv
 
   def is_admin?
-    roles.present? and roles['admin'] === true
+    roles.present? and roles['admin'].present?
   end
 
   def name

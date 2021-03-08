@@ -1,3 +1,6 @@
+require_relative 'fields_loader'
+
+
 module Avo
   module Actions
     class Action
@@ -16,25 +19,16 @@ module Avo
       # }
       attr_accessor :response
       attr_accessor :no_confirmation
+      attr_accessor :model
+      attr_accessor :resource
+      attr_accessor :user
+
+      attr_accessor :field_loader
+
+      alias :field :field_loader
+      alias :f :field
 
       @@default = nil
-
-      class << self
-        @@fields = {}
-
-        def fields(&block)
-          @@fields[self] ||= []
-          yield
-        end
-
-        def get_fields
-          @@fields[self] or []
-        end
-
-        def add_field(action, field)
-          @@fields[action].push field
-        end
-      end
 
       def initialize
         @name ||= name
@@ -44,13 +38,33 @@ module Avo
         @confirm_text = I18n.t('avo.run')
         @cancel_text = I18n.t('avo.cancel')
         @response ||= {}
-        @response[:message_type] ||= :success
+        @response[:message_type] ||= :notice
         @response[:message] ||= I18n.t('avo.action_ran_successfully')
         @theme ||= 'success'
         @no_confirmation ||= false
       end
 
-      def render_response(model, resource)
+      def boot_fields(request)
+        @field_loader = Avo::FieldsLoader.new
+        fields request if self.respond_to? :fields
+      end
+
+      def get_fields(view_type: :table)
+        get_field_definitions.map do |field|
+          field.hydrate(action: self, model: @model)
+        end
+        .select do |field|
+          field.can_see.present? ? field.can_see.call : true
+        end
+      end
+
+      def get_field_definitions
+        @field_loader.bag.map do |field|
+          field.hydrate(action: self)
+        end
+      end
+
+      def render_response
         fields = get_fields.map { |field| field.fetch_for_action(model, resource) }
 
         {
@@ -65,6 +79,14 @@ module Avo
           action_class: self.class.to_s,
           no_confirmation: no_confirmation,
         }
+      end
+
+      def hydrate(model: nil, resource: nil, user: nil)
+        @model = model if model.present?
+        @resource = resource if resource.present?
+        @user = user if user.present?
+
+        self
       end
 
       def handle_action(request, models, raw_fields)
@@ -85,7 +107,7 @@ module Avo
         self
       end
 
-      def id
+      def param_id
         self.class.name.underscore.gsub '/', '_'
       end
 
@@ -94,48 +116,32 @@ module Avo
       end
 
       def succeed(text)
-        self.response[:message_type] = :success
+        self.response[:message_type] = :notice
         self.response[:message] = text
 
         self
       end
 
       def fail(text)
-        self.response[:message_type] = :error
+        self.response[:message_type] = :alert
         self.response[:message] = text
 
         self
       end
 
-      def redirect(path)
+      def redirect_to(path = nil, &block)
         self.response[:type] = :redirect
-        self.response[:path] = path
-
-        self
-      end
-
-      def http_redirect(path)
-        self.response[:type] = :http_redirect
-        self.response[:path] = path
+        if block.present?
+          self.response[:path] = block
+        else
+          self.response[:path] = path
+        end
 
         self
       end
 
       def reload
         self.response[:type] = :reload
-
-        self
-      end
-
-      def reload_resources
-        self.response[:type] = :reload_resources
-
-        self
-      end
-
-      def open_in_new_tab(path)
-        self.response[:type] = :open_in_new_tab
-        self.response[:path] = path
 
         self
       end
@@ -148,8 +154,8 @@ module Avo
         self
       end
 
-      def get_fields
-        self.class.get_fields
+      def self.param_id
+        self.name.underscore.gsub '/', '_'
       end
     end
   end

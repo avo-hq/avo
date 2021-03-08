@@ -16,20 +16,14 @@ module Avo
           id: name.to_sym,
           readonly: true,
           sortable: true,
-          component: 'id-field'
+          partial_name: 'id-field'
         }
 
-        hide_on [:edit, :create]
+        hide_on [:edit, :new]
 
         super(name, **args, &block)
 
         @link_to_resource = args[:link_to_resource].present? ? args[:link_to_resource] : false
-      end
-
-      def hydrate_field(fields, model, resource, view)
-        {
-          link_to_resource: @link_to_resource,
-        }
       end
     end
   end

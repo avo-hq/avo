@@ -27,7 +27,7 @@ module Avo
     end
 
     def properties
-      @response.slice 'valid', 'id', 'error'
+      @response.slice('valid', 'id', 'error').symbolize_keys
     end
 
     def abilities

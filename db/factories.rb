@@ -22,11 +22,12 @@ FactoryBot.define do
   end
 
   factory :project do
-    name { Faker::Hacker.say_something_smart }
+    name { Faker::App.name }
     status { [:closed, :rejected, :failed, :loading, :running, :waiting].sample }
-    stage { ['Discovery', 'Ideea', 'Done', 'On hold', 'Cancelled'].sample }
+    stage { ['Discovery', 'Idea', 'Done', 'On hold', 'Cancelled'].sample }
     budget { Faker::Number.decimal(l_digits: 4) }
     country { Faker::Address.country_code }
+    description { Faker::Markdown.sandwich(sentences: 5) }
     users_required { Faker::Number.between(from: 10, to: 100) }
     started_at { Time.now - rand(10...365).days }
     meta { [{ foo: 'bar', hey: 'hi' }, { bar: 'baz' }, { hoho: 'hohoho' }].sample }

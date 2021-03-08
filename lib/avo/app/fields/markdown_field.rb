@@ -5,7 +5,7 @@ module Avo
     class MarkdownField < Field
       def initialize(name, **args, &block)
         @defaults = {
-          component: 'markdown-field',
+          partial_name: 'markdown-field',
         }
 
         super(name, **args, &block)

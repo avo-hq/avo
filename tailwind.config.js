@@ -1,29 +1,37 @@
+const kebabCase = require('lodash/kebabCase')
 const plugin = require('tailwindcss/plugin')
+const colors = require('tailwindcss/colors')
+
+// Dynamically built buttons need these classes in prod.
+const buttonClasses = ['hover:border-${color}-700', 'hover:border-${color}-600', 'bg-${color}-500', 'hover:bg-${color}-600', 'disabled:bg-${color}-300', 'hover:text-${color}-700', 'text-${color}-600']
+const ignoredButtonClasses = Object.keys(colors).map((color) => buttonClasses.map(buttonClass => buttonClass.replace('${color}', kebabCase(color))))
 
 module.exports = {
-  future: {
-    purgeLayersByDefault: true,
-    removeDeprecatedGapUtilities: true,
-    standardFontWeights: true,
-  },
+  future: {},
   purge: {
-    mode: 'layers',
-    layers: ['components', 'utilities'],
     content: [
       './app/helpers/**/*.rb',
-      './app/views/**/*.html',
       './app/views/**/*.html.erb',
-      './app/frontend/**/*.vue',
       './app/frontend/**/*.js',
+      './app/components/avo/**/*.html.erb',
+      './app/components/avo/**/*.rb',
+      './app/controllers/avo/**/*.rb',
     ],
     options: {
-      whitelist: ['appearance-none'],
-    },
+      safelist: [
+        ...ignoredButtonClasses.flat(),
+      ],
+    }
   },
   theme: {
     extend: {
+      colors: {
+        'blue-gray': colors.blueGray,
+        'light-blue': colors.lightBlue,
+        teal: colors.teal,
+      },
       fontFamily: {
-        sans: '"Lato", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",  "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
+        sans: '"Nunito", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",  "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
       },
       inset: {
         '1/2': '50%',
@@ -41,9 +49,38 @@ module.exports = {
         '300px': '300px',
         4: '1rem',
         10: '2.5rem',
+        '1/2': '50%',
+        '1/3': '33.333333%',
+        '2/3': '66.666667%',
+        '1/4': '25%',
+        '2/4': '50%',
+        '3/4': '75%',
+        '1/5': '20%',
+        '2/5': '40%',
+        '3/5': '60%',
+        '4/5': '80%',
+      },
+      maxWidth: {
+        168: '42rem',
       },
       minHeight: {
-        28: '7rem',
+        inherit: 'inherit',
+        16: '4rem',
+        24: '6rem',
+        48: '12rem',
+        '1/2': '50%',
+        '1/3': '33.333333%',
+        '2/3': '66.666667%',
+        '1/4': '25%',
+        '2/4': '50%',
+        '3/4': '75%',
+        '1/5': '20%',
+        '2/5': '40%',
+        '3/5': '60%',
+        '4/5': '80%',
+      },
+      maxHeight: {
+        168: '42rem',
       },
       spacing: {
         full: '100%',
@@ -81,7 +118,7 @@ module.exports = {
     },
   },
   variants: {
-    display: ['responsive', 'hover', 'focus', 'group-hover'],
+    display: ['responsive', 'hover', 'focus', 'group-hover', 'checked'],
     padding: ['responsive', 'group-hover'],
     borderColor: ['responsive', 'hover', 'focus', 'disabled'],
     backgroundColor: ['responsive', 'hover', 'focus', 'disabled'],
@@ -90,6 +127,7 @@ module.exports = {
     cursor: ['responsive', 'disabled'],
   },
   plugins: [
+    require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
     // buttons
     plugin(({ addComponents, theme }) => {

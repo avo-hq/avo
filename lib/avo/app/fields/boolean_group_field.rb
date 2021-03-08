@@ -1,32 +1,34 @@
 module Avo
   module Fields
     class BooleanGroupField < Field
+      attr_reader :options
+
       def initialize(name, **args, &block)
         @defaults = {
-          component: 'boolean-group-field',
+          partial_name: 'boolean-group-field',
           computable: true,
         }
 
         super(name, **args, &block)
 
-        @is_object_param = true
-
         @options = args[:options].present? ? args[:options] : {}
       end
 
-      def hydrate_field(fields, model, resource, view)
-        {
-          options: @options,
-        }
+      def to_permitted_param
+        ["#{id}": [] ]
       end
 
       def fill_field(model, key, value)
-        return model unless value.is_a? ActionController::Parameters
-
         new_value = {}
 
-        value.each do |key, value|
-          new_value[key] = ActiveModel::Type::Boolean.new.cast value
+        # Filter out the empty ("") value boolean group generates
+        value = value.filter do |arr_value|
+          arr_value.present?
+        end
+
+        # Cast values to booleans
+        options.each do |id, label|
+          new_value[id] = value.include? id.to_s
         end
 
         model[id] = new_value

@@ -3,13 +3,12 @@
 default: &default
   source_path: app/frontend
   source_entry_path: packs
-  # public_root_path: public
+  public_root_path: public
   cache_path: tmp/cache/webpacker
   check_yarn_integrity: false
   # use a different sub-folder name
   public_output_path: avo-packs
-  webpack_compile_output: false
-  public_root_path: public
+  webpack_compile_output: true
 
   # Additional paths webpack should lookup modules
   # ['app/assets', 'engine/foo/app/assets']
@@ -79,7 +78,6 @@ development:
       ignored: '**/node_modules/**'
     env_prefix: "AVO_WEBPACKER_DEV_SERVER"
 
-
 test:
   <<: *default
   compile: true
@@ -93,6 +91,9 @@ production:
 
   # Production depends on precompilation of packs prior to booting for performance.
   compile: false
+
+  # Extract and emit a css file
+  extract_css: true
 
   # Cache manifest.json for performance
   cache_manifest: true

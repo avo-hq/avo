@@ -1,10 +1,12 @@
 module Avo
   module Fields
     class BooleanField < Field
+      attr_reader :true_value
+      attr_reader :false_value
+
       def initialize(name, **args, &block)
         @defaults = {
-          sortable: true,
-          component: 'boolean-field',
+          partial_name: 'boolean-field',
           computable: true,
         }
 
@@ -14,12 +16,8 @@ module Avo
         @false_value = args[:false_value].present? ? args[:false_value] : false
       end
 
-      def hydrate_field(fields, model, resource, view)
-        {
-          value: resolve_attribute(fields[:value]),
-          true_value: @true_value,
-          false_value: @false_value,
-        }
+      def value
+        resolve_attribute super
       end
 
       def resolve_attribute(value)
@@ -27,11 +25,11 @@ module Avo
       end
 
       def truthy_values
-        ['true', @true_value]
+        ['true', '1', @true_value]
       end
 
       def falsy_values
-        ['false', @false_value]
+        ['false', '0', @false_value]
       end
     end
   end

@@ -5,4 +5,6 @@ Avo.configure do |config|
   config.locale = 'en-US'
   config.license_key = ENV['AVO_LICENSE_KEY']
   config.current_user_method(&:current_user)
+  config.id_links_to_resource = true
+  config.full_width_container = true
 end

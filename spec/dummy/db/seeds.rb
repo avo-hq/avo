@@ -7,6 +7,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 require 'securerandom'
 require 'open-uri'
+require 'faker'
 
 Post.delete_all
 Project.delete_all
@@ -58,7 +59,7 @@ teams.each do |team|
     membership.update level: [:beginner, :intermediate, :advanced].sample
 
     if index == 0
-      membership.update level: :admin
+      membership.update level: :advanced
     end
   end
 end

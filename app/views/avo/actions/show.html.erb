@@ -1,0 +1,71 @@
+<%= turbo_frame_tag "actions_show" do %>
+  <div
+    data-controller="action"
+    data-no-confirmation="<%= @action.no_confirmation %>"
+    data-action-target="controllerDiv"
+    data-resource-name="<%= @resource.model_class.model_name.route_key %>"
+    data-resource-id="<%= params[:id] %>"
+    class="hidden text-blue-gray-800"
+  >
+    <%= form_with scope: 'fields', url: "/avo/resources/#{@resource.model_class.model_name.route_key}/actions/#{@action.param_id}", data: {'turbo-frame': '_top', 'action-target': 'form'} do |form| %>
+      <%= render Avo::ModalComponent.new do |c| %>
+        <% c.with :heading do %>
+          <%= @action.name %>
+        <% end %>
+
+        <div class="flex-1 flex items-center justify-center px-8 text-lg mt-8 mb-12">
+          <%= @action.message %>
+        </div>
+
+        <%= form.hidden_field :resource_ids, value: params[:resource_ids], 'data-action-target': 'resourceIds' %>
+
+        <% if @action.get_fields.present? %>
+          <% @action.get_fields.each_with_index do |field, index| %>
+            <%= edit_field field, index, nil, form, displayed_in_modal: true %>
+          <% end %>
+        <% end %>
+
+        <% c.with :controls do %>
+          <%= a_button @action.cancel_text, 'data-action': 'click->modal#close', size: :sm %>
+          <%= a_button @action.confirm_text, type: :submit, color: :green, size: :sm %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
+
+<%#
+      <div v-if="hasFields">
+        <component
+          v-for="(field, index) in fields"
+          :key="uniqueKey(field, index)"
+          :index="index"
+          :is="`edit-${field.component}`"
+          :field="field"
+          :errors="errors"
+          :resource-name="resourceName"
+          :field-id="field.id"
+          :via-resource-name="viaResourceName"
+          :via-resource-id="viaResourceId"
+          :field-component="field.component"
+          displayed-in="modal"
+        />
+      </div>
+      <div class="flex-1 flex items-center justify-center px-8 text-lg mt-8 mb-12" v-else>
+        {{ action.message }}
+      </div>
+      <div class="flex justify-end items-baseline space-x-4 p-4 bg-gray-200">
+        <a-button
+          size="sm"
+          @click="$emit('close')"
+          v-text="action.cancel_text"
+        />
+        <a-button
+          ref="confirm-button"
+          :color="buttonColor"
+          size="sm"
+          @click="handle"
+          v-text="action.confirm_text"
+        />
+    </div>
+      </div> %>

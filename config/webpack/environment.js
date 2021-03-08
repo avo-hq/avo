@@ -1,14 +1,18 @@
 const { environment } = require('@rails/webpacker')
-const { VueLoaderPlugin } = require('vue-loader')
-
 const aliases = require('./aliases')
-const vue = require('./loaders/vue')
-const vueSvg = require('./loaders/vue-svg')
-// const vueCss = require('./loaders/vue-post-css')
 
-environment.loaders.append('vueSvg', vueSvg)
-environment.plugins.append('VueLoaderPlugin', new VueLoaderPlugin())
-environment.loaders.append('vue', vue)
-// environment.loaders.append('vueCss', vueCss)
 environment.config.merge(aliases)
+
+// Fix the post-css loader config format
+environment.loaders.keys().forEach(loaderName => {
+  let loader = environment.loaders.get(loaderName);
+  loader.use.forEach(loaderConfig => {
+    if (loaderConfig.options && loaderConfig.options.config) {
+      loaderConfig.options.postcssOptions = loaderConfig.options.config;
+      delete loaderConfig.options.config;
+    }
+  });
+});
+
+
 module.exports = environment

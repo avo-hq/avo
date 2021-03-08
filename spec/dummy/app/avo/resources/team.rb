@@ -1,25 +1,48 @@
 module Avo
   module Resources
     class Team < Resource
-      def initialize
+      def configure
         @title = :name
         @search = [:id, :name]
+        @includes = :admin
       end
 
-      fields do
-        id
-        text :name
-        textarea :description, rows: 5, readonly: false, hide_on: :index, format_using: -> (value) { value.to_s.truncate 30 }, default: 'This team is wonderful!', nullable: true, null_values: ['0', '', 'null', 'nil']
+      def fields(request)
+        f.id
+        f.text :name
+        f.text :url
+        f.external_image :logo do |model|
+          if model.url
+            "//logo.clearbit.com/#{URI.parse(model.url).host}?size=180"
+          else
+            nil
+          end
+        end
+        f.textarea :description, rows: 5, readonly: false, hide_on: :index, format_using: -> (value) { value.to_s.truncate 30 }, default: 'This team is wonderful!', nullable: true, null_values: ['0', '', 'null', 'nil']
 
-        number :members_count do |model|
+        f.number :members_count do |model|
           model.members.count
         end
 
-        has_one :admin
-        has_many :members, through: :memberships
+        f.has_one :admin
+        f.has_many :members, through: :memberships
       end
 
-      use_filter Avo::Filters::MembersFilter
+      def grid(request)
+        g.external_image :logo, grid_position: :preview, link_to_resource: true do |model|
+          if model.url
+            "//logo.clearbit.com/#{URI.parse(model.url).host}?size=180"
+          else
+            nil
+          end
+        end
+        g.text :name, grid_position: :title, link_to_resource: true
+        g.text :url, grid_position: :body
+      end
+
+      def filters(request)
+        filter.use Avo::Filters::MembersFilter
+      end
     end
   end
 end

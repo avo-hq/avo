@@ -1,44 +1,46 @@
 module Avo
   module Resources
     class Post < Resource
-      def initialize
+      def configure
         @title = :name
         @search = [:name, :id]
         @includes = :user
         @default_view_type = :grid
       end
 
-      fields do
-        id
-        text :name, required: true
-        trix :body, placeholder: 'Enter text', always_show: false
-        text :excerpt, hide_on: [:show, :edit, :index] do |model|
+      def fields(request)
+        f.id
+        f.text :name, required: true
+        f.trix :body, placeholder: 'Enter text', always_show: false
+        f.file :cover_photo, is_image: true, link_to_resource: true
+        f.boolean :is_featured, can_see: -> () { user.is_admin? }
+        f.boolean :is_published do |model|
+          model.published_at.present?
+        end
+
+        f.belongs_to :user, meta: { searchable: false }, placeholder: '—'
+      end
+
+      def grid(request)
+        g.file :cover_photo, required: true, grid_position: :preview, link_to_resource: true
+        g.text :name, required: true, grid_position: :title, link_to_resource: true
+        g.text :excerpt, grid_position: :body do |model|
           begin
             ActionView::Base.full_sanitizer.sanitize(model.body).truncate 130
           rescue => exception
             ''
           end
         end
-        file :cover_photo, is_image: true
-        boolean :is_featured
-        boolean :is_published do |model|
-          model.published_at.present?
-        end
-
-        belongs_to :user, searchable: false, placeholder: '—'
       end
 
-      # These fields are a reference on the already configured fields above
-      grid do
-        preview :cover_photo
-        title :name
-        body :excerpt
+      def filters(request)
+        filter.use Avo::Filters::FeaturedFilter
+        filter.use Avo::Filters::PublishedFilter
       end
 
-      use_filter Avo::Filters::FeaturedFilter
-      use_filter Avo::Filters::PublishedFilter
-
-      use_action Avo::Actions::TogglePublished
+      def actions(request)
+        a.use Avo::Actions::TogglePublished
+      end
     end
   end
 end

@@ -30,10 +30,9 @@ Gem::Specification.new do |spec|
   spec.post_install_message = "Thank you for using Avo! Docs are available at https://docs.avohq.io"
 
   spec.files = Dir['{bin,app,config,db,lib,public}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md', 'avo.gemspec', 'Gemfile', 'Gemfile.lock']
-    .reject { |file| file.start_with? 'app/frontend' }
 
   spec.add_dependency 'rails', '>= 6.0'
-  spec.add_dependency 'kaminari'
+  spec.add_dependency 'pagy'
   spec.add_dependency 'zeitwerk'
   spec.add_dependency 'inline_svg'
   spec.add_dependency 'webpacker'
@@ -41,5 +40,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'pundit'
   spec.add_dependency 'httparty'
   spec.add_dependency 'i18n-js'
-  spec.add_dependency 'iso'
+  spec.add_dependency 'active_link_to'
+  spec.add_dependency 'image_processing'
+  spec.add_dependency 'view_component'
+  spec.add_dependency 'hotwire-rails'
 end

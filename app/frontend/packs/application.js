@@ -1,14 +1,41 @@
 import '@/css/application.css'
 
+import 'regenerator-runtime/runtime'
+import 'trix'
 import * as Mousetrap from 'mousetrap'
-import Avo from '@/js/Avo'
-import I18n from 'i18n-js'
+import { Application } from 'stimulus'
+import { Turbo } from '@hotwired/turbo-rails'
+import { definitionsFromContext } from 'stimulus/webpack-helpers'
+import tippy from 'tippy.js'
 
-window.I18n = I18n
+// Toastr alerts
+import '../js/toastr'
 
-document.addEventListener('DOMContentLoaded', Avo.init)
+Mousetrap.bind('r r r', () => Turbo.visit(window.location.href))
 
-Mousetrap.bind('r r r', () => Avo.reload())
+const application = Application.start()
+
+const context = require.context('./../js/controllers', true, /\.js$/)
+application.load(definitionsFromContext(context))
+
+const fieldsContext = require.context('./../js/controllers/fields', true, /\.js$/)
+application.load(definitionsFromContext(fieldsContext))
+
+document.addEventListener('turbo:load', () => {
+  document.body.classList.remove('turbo-loading')
+
+  tippy('[data-tippy="tooltip"]', {
+    theme: 'light',
+    content(reference) {
+      const title = reference.getAttribute('title')
+      reference.removeAttribute('title')
+
+      return title
+    },
+  })
+})
+document.addEventListener('turbo:visit', () => document.body.classList.add('turbo-loading'))
+document.addEventListener('turbo:submit-start', () => document.body.classList.add('turbo-loading'))
 
 // Uncomment to copy all static images under ../images to the output folder and reference
 // them with the image_pack_tag helper in views (e.g <%= image_pack_tag 'rails.png' %>)
@@ -16,5 +43,3 @@ Mousetrap.bind('r r r', () => Avo.reload())
 //
 const images = require.context('../images', true)
 const imagePath = (name) => images(name, true)
-const svgs = require.context('../svgs', true)
-const svgPath = (name) => svgs(name, true)

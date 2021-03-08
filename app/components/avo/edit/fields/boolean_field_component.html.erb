@@ -1,0 +1,9 @@
+<%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, dash_if_blank: false, displayed_in_modal: @displayed_in_modal do %>
+  <div class="h-8 flex items-center">
+    <%= @form.check_box @field.id,
+      class: 'mx-2 text-lg h-4 w-4',
+      disabled: @field.readonly,
+      checked: @field.value
+    %>
+  </div>
+<% end %>

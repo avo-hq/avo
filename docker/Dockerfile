@@ -1,4 +1,4 @@
-FROM ruby:2.5
+FROM ruby:2.6.4
 
 RUN apt-get update -qq && apt-get install -yqq build-essential apt-transport-https apt-utils
 
@@ -18,7 +18,7 @@ RUN apt-get update -qq && apt-get install -y yarn
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN gem install bundler -v 2.1.4
+RUN gem install bundler -v 2.2.5
 
 ENV RAILS_ENV=production
 ENV NODE_ENV=production
@@ -39,16 +39,20 @@ COPY yarn.lock /avo/
 RUN yarn install
 RUN yarn check --integrity
 
-COPY ./bin/ /avo/bin/
-COPY ./app/frontend/ /avo/app/frontend/
-COPY ./config/ /avo/config/
-COPY ./.eslintrc.json /avo/.eslintrc.json
-COPY ./jsconfig.json /avo/jsconfig.json
-COPY ./postcss.config.js /avo/postcss.config.js
-COPY ./tailwind.config.js /avo/tailwind.config.js
+COPY ./bin/                        /avo/bin/
+COPY ./app/frontend/               /avo/app/frontend/
+COPY ./config/                     /avo/config/
+# We add a custom development env for the packed version in order to not start the webpacker process when using Avo in your development env.
+COPY ./config/webpacker_packed.yml /avo/config/webpacker.yml
+COPY ./.eslintrc.json              /avo/.eslintrc.json
+COPY ./jsconfig.json               /avo/jsconfig.json
+COPY ./postcss.config.js           /avo/postcss.config.js
+COPY ./tailwind.config.js          /avo/tailwind.config.js
+COPY ./babel.config.js             /avo/babel.config.js
+
+# Copy the files needed by PurgeCSS
+COPY . /avo/
 
 RUN bin/webpack
-
-COPY . /avo/
 
 RUN bundle exec rails build
