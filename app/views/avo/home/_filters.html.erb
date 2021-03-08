@@ -1,0 +1,16 @@
+<div>
+  <h3>Filters</h3>
+
+  <div class="mt-2" data-controller="hidden-input">
+    Filters allow you to better scope the index queries for records you are looking for.
+
+    <strong class="cursor-pointer block mt-2" data-action="click->hidden-input#showContent">Generate filter 👇</strong>
+
+    <div class="mt-2 hidden" data-hidden-input-target="content">
+      <code class="text-lg">Published filter</code>
+      <div>
+        <code class="p-1 rounded bg-light-blue-500 text-white">bin/rails generate avo:filter published_filter</code>
+      </div>
+    </div>
+  </div>
+</div>
