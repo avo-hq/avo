@@ -18,7 +18,13 @@ FactoryBot.define do
     name { Faker::Quote.famous_last_words }
     body { Faker::Lorem.paragraphs(number: rand(4...10)).join("\n") }
     is_featured { [true, false].sample }
-    published_at { Time.now - rand(10...365).days }
+    published_at do
+      if [false, true].sample
+        Time.now - rand(10...365).days
+      else
+        nil
+      end
+    end
   end
 
   factory :project do

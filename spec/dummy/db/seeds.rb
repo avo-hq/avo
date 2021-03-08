@@ -5,21 +5,38 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+require 'securerandom'
 require 'open-uri'
 require 'faker'
 
 Post.delete_all
 Project.delete_all
+TeamMembership.delete_all
 Team.delete_all
 User.delete_all
-TeamMembership.delete_all
 ActiveStorage::Attachment.all.each { |attachment| attachment.purge }
+['active_storage_blobs', 'active_storage_attachments', 'posts', 'projects', 'projects_users', 'team_memberships', 'teams', 'users'].each do |table_name|
+  ActiveRecord::Base.connection.execute("TRUNCATE #{table_name} RESTART IDENTITY CASCADE")
+end
 
 teams = []
-teams.push(FactoryBot.create(:team, name: 'Apple'))
-teams.push(FactoryBot.create(:team, name: 'Google'))
-teams.push(FactoryBot.create(:team, name: 'Facebook'))
-teams.push(FactoryBot.create(:team, name: 'Amazon'))
+teams.push(FactoryBot.create(:team, name: 'Apple', url: 'https://apple.com'))
+teams.push(FactoryBot.create(:team, name: 'Google', url: 'https://google.com'))
+teams.push(FactoryBot.create(:team, name: 'Facebook', url: 'https://facebook.com'))
+teams.push(FactoryBot.create(:team, name: 'Amazon', url: 'https://amazon.com'))
+
+User.create(
+  first_name: 'Avo',
+  last_name: 'Cado',
+  email: 'avo@avohq.io',
+  password: (ENV['AVO_ADMIN_PASSWORD'] or SecureRandom.hex),
+  birthday: '2020-03-28',
+  roles: {
+    admin: true,
+    manager: false,
+    writer: false
+  }
+)
 
 users = []
 38.times do
@@ -29,7 +46,7 @@ end
 25.times do
   post = FactoryBot.create(:post, user_id: users.sample.id)
 
-  post.cover_photo.attach(io: open("https://source.unsplash.com/random/#{[1000, 1100, 1200, 1300].sample}x#{[1000, 1100, 1200, 1300].sample}"), filename: 'cover.jpg')
+  post.cover_photo.attach(io: URI.open("https://source.unsplash.com/random/#{[1000, 1100, 1200, 1300].sample}x#{[1000, 1100, 1200, 1300].sample}"), filename: 'cover.jpg')
 end
 
 projects = []
