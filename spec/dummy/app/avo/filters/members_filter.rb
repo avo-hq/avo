@@ -1,8 +1,8 @@
 module Avo
   module Filters
     class MembersFilter < BooleanFilter
-      def name
-        'Members filter'
+      def configure
+        @name = 'Members filter'
       end
 
       def apply(request, query, value)

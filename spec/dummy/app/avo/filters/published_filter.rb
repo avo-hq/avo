@@ -1,8 +1,8 @@
 module Avo
   module Filters
     class PublishedFilter < SelectFilter
-      def name
-        'Published status'
+      def configure
+        @name = 'Published status'
       end
 
       def apply(request, query, value)

@@ -1,8 +1,8 @@
 module Avo
   module Actions
     class <%= class_name.camelize %> < Action
-      def name
-        '<%= name.underscore.humanize %>'
+      def configure
+        @name = '<%= name.underscore.humanize %>'
       end
 
       def handle(request, models, fields)
@@ -11,7 +11,7 @@ module Avo
         end
       end
 
-      fields do
+      def fields(request)
         # Add desired fields here.
       end
     end

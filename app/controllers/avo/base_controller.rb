@@ -179,7 +179,13 @@ module Avo
       end
 
       def set_filters
-        @filters = @resource.get_filters.map(&:new)
+        @filters = @resource.get_filters.map do |filter_class|
+          filter = filter_class.new
+
+          filter.configure
+
+          filter
+        end
       end
 
       def set_actions
@@ -206,6 +212,7 @@ module Avo
 
         @resource.get_filters.each do |filter_class|
           filter = filter_class.new
+          filter.configure
 
           if filter.default.present?
             filter_defaults[filter_class.to_s] = filter.default

@@ -10,17 +10,6 @@ module Avo
       @default ||= ''
     end
 
-    def render_response
-      {
-        id: id,
-        name: name,
-        options: options,
-        component: component,
-        default: default,
-        filter_class: self.class.to_s,
-      }
-    end
-
     def apply_query(request, query, value)
       value.symbolize_keys! if value.is_a? Hash
 

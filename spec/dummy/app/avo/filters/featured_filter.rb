@@ -1,8 +1,8 @@
 module Avo
   module Filters
     class FeaturedFilter < BooleanFilter
-      def name
-        'Featured status'
+      def configure
+        @name = 'Featured status'
       end
 
       def apply(request, query, values)
