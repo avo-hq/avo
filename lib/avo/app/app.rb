@@ -166,12 +166,14 @@ module Avo
       def draw_routes
         Proc.new do
           Avo::Resources.constants
-            .select do |r|
-              r != :Resource
+            .select do |resource|
+              resource != :Resource
             end
-            .map do |r|
-              if Avo::Resources.const_get(r).is_a? Class
-                resources r.to_s.underscore.downcase.pluralize.to_sym
+            .map do |resource|
+              if Avo::Resources.const_get(resource).is_a? Class
+                route_key = resource.to_s.underscore.downcase.pluralize.to_sym
+
+                resources route_key
               end
             end
         end
