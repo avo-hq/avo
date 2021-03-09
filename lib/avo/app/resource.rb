@@ -253,6 +253,14 @@ module Avo
         Digest::MD5.hexdigest(content_to_be_hashed)
       end
 
+      def cache_hash(parent_model)
+        if parent_model.present?
+          [self.model, self.file_hash, parent_model]
+        else
+          [self.model, self.file_hash]
+        end
+      end
+
       # For :new views we're hydrating the model with the values from the resource's default attribute.
       # We will not overwrite any attributes that come pre-filled in the model.
       def hydrate_model_with_default_values
