@@ -14,9 +14,10 @@ module Avo
         super(name, **args, &block)
 
         @link_to_resource = args[:link_to_resource].present? ? args[:link_to_resource] : false
-        @width = 32
-        @height = 32
-        @radius = 0
+
+        @width = args[:width].present? ? args[:width] : 32
+        @height = args[:height].present? ? args[:height] : 32
+        @radius = args[:radius].present? ? args[:radius] : 0
       end
     end
   end
