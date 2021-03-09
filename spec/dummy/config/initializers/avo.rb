@@ -7,4 +7,5 @@ Avo.configure do |config|
   config.current_user_method(&:current_user)
   config.id_links_to_resource = true
   config.full_width_container = true
+  config.cache_resources_on_index_view = true
 end

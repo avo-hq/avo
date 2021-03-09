@@ -19,6 +19,7 @@ module Avo
     attr_accessor :id_links_to_resource
     attr_accessor :full_width_container
     attr_accessor :full_width_index_view
+    attr_accessor :cache_resources_on_index_view
 
     def initialize
       @root_path = '/avo'
@@ -48,6 +49,7 @@ module Avo
       @id_links_to_resource = false
       @full_width_container = false
       @full_width_index_view = false
+      @cache_resources_on_index_view = Avo::PACKED
     end
 
     def locale_tag

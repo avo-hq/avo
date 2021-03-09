@@ -1,7 +1,7 @@
 <% if @resources.present?%>
   <div class="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-6">
     <% @resources.each_with_index do |resource, index| %>
-      <% cache_if Avo::PACKED, [resource.model, resource.file_hash] do %>
+      <% cache_if Avo.configuration.cache_resources_on_index_view, [resource.model, resource.file_hash] do %>
         <%= render(Avo::Index::GridItemComponent.new(resource: resource, reflection: @reflection, parent_model: @parent_model)) %>
       <% end %>
     <% end %>
