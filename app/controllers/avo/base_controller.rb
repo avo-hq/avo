@@ -169,6 +169,10 @@ module Avo
           cookies[:per_page] = params[:per_page]
         end
 
+        if @parent_model.present?
+          @index_params[:per_page] = Avo.configuration.via_per_page
+        end
+
         # Sorting
         @index_params[:sort_by] = params[:sort_by] || :created_at
         @index_params[:sort_direction] = params[:sort_direction] || :desc
