@@ -35,8 +35,8 @@ module Avo
         @message ||= I18n.t('avo.are_you_sure_you_want_to_run_this_option')
         @default ||= ''
         @fields ||= []
-        @confirm_text = I18n.t('avo.run')
-        @cancel_text = I18n.t('avo.cancel')
+        @confirm_text ||= I18n.t('avo.run')
+        @cancel_text ||= I18n.t('avo.cancel')
         @response ||= {}
         @response[:message_type] ||= :notice
         @response[:message] ||= I18n.t('avo.action_ran_successfully')
@@ -62,23 +62,6 @@ module Avo
         @field_loader.bag.map do |field|
           field.hydrate(action: self)
         end
-      end
-
-      def render_response
-        fields = get_fields.map { |field| field.fetch_for_action(model, resource) }
-
-        {
-          id: id,
-          name: name,
-          fields: fields,
-          message: message,
-          theme: theme,
-          confirm_text: confirm_text,
-          cancel_text: cancel_text,
-          default: default,
-          action_class: self.class.to_s,
-          no_confirmation: no_confirmation,
-        }
       end
 
       def hydrate(model: nil, resource: nil, user: nil)

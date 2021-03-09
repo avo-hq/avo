@@ -1,13 +1,17 @@
 module Avo
   module Actions
-    class MarkInactive < Action
-      def name
-        'Mark inactive'
+    class ToggleInactive < Action
+      def configure
+        @name = 'Toggle inactive'
       end
 
       def handle(request, models, fields)
         models.each do |model|
-          model.update active: false
+          if model.active
+            model.update active: false
+          else
+            model.update active: true
+          end
 
           model.notify fields[:message] if fields[:notify_user]
         end

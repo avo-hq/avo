@@ -1,12 +1,11 @@
 module Avo
   module Actions
     class TogglePublished < Action
-      def name
-        'Toggle post published'
-      end
-
-      def message
-        'Are you sure, sure?'
+      def configure
+        @name = 'Toggle post published'
+        @message = 'Are you sure, sure?'
+        @confirm_text = 'Toggle'
+        @cancel_text = "Don't toggle yet"
       end
 
       def handle(request, models, fields)
@@ -24,14 +23,6 @@ module Avo
       def fields(request)
         f.boolean :notify_user, default: true
         f.text :message, default: 'Your account has been marked as inactive.'
-      end
-
-      def confirm_text
-        'Toggle'
-      end
-
-      def cancel_text
-        "Don't toggle yet"
       end
     end
   end
