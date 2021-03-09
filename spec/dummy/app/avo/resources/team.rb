@@ -30,10 +30,8 @@ module Avo
 
       def grid(request)
         g.external_image :logo, grid_position: :preview, link_to_resource: true do |model|
-          if model.url
+          if model.url.present?
             "//logo.clearbit.com/#{URI.parse(model.url).host}?size=180"
-          else
-            nil
           end
         end
         g.text :name, grid_position: :title, link_to_resource: true
