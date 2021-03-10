@@ -129,7 +129,7 @@ module Avo
       def model_class
         return @model.class if @model.present?
 
-        self.class.name.demodulize.safe_constantize
+        self.class.name.demodulize.chomp('Resource').safe_constantize
       end
 
       def model_title
@@ -143,7 +143,7 @@ module Avo
 
         return I18n.t(@translation_key, count: 1).capitalize if @translation_key
 
-        self.class.name.demodulize.titlecase
+        self.class.name.demodulize.chomp('Resource').titlecase
       end
 
       def singular_name

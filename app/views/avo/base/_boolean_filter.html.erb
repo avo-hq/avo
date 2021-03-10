@@ -12,7 +12,7 @@
   set_value = {} if set_value.nil?
 %>
 <div data-controller="boolean-filter">
-  <%= filter_wrapper name: filter.name, index: index do %>
+  <%= filter_wrapper name: filter.name do %>
     <div class="flex items-center">
       <div class="space-y-2">
         <% filter.options.each do |value, label| %>

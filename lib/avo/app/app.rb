@@ -18,7 +18,6 @@ module Avo
 
     class << self
       def boot
-        # init_controllers
         @@app[:root_path] = Pathname.new(File.join(__dir__, '..', '..'))
         init_fields
         I18n.locale = Avo.configuration.language_code
@@ -101,13 +100,13 @@ module Avo
       end
 
       def init_resources(request)
-        @@app[:resources] = Avo::Resources.constants
-          .select do |r|
-            r != :Resource
+        @@app[:resources] = ::BaseResource.descendants
+          .select do |resource|
+            resource != BaseResource
           end
-          .map do |c|
-            if Avo::Resources.const_get(c).is_a? Class
-              "Avo::Resources::#{c}".safe_constantize.new request
+          .map do |resource|
+            if resource.is_a? Class
+              resource.new request
             end
           end
       end
@@ -121,7 +120,7 @@ module Avo
       # get_resource_by_name('User') => Avo::Resources::User
       def get_resource(resource)
         @@app[:resources].find do |available_resource|
-          "Avo::Resources::#{resource}".safe_constantize == available_resource.class
+          "#{resource}Resource".safe_constantize == available_resource.class
         end
       end
 
@@ -164,14 +163,15 @@ module Avo
       end
 
       def draw_routes
+        Rails.application.eager_load!
         Proc.new do
-          Avo::Resources.constants
+          ::BaseResource.descendants
             .select do |resource|
               resource != :Resource
             end
             .map do |resource|
-              if Avo::Resources.const_get(resource).is_a? Class
-                route_key = resource.to_s.underscore.downcase.pluralize.to_sym
+              if resource.is_a? Class
+                route_key = resource.to_s.underscore.gsub('_resource', '').downcase.pluralize.to_sym
 
                 resources route_key
               end

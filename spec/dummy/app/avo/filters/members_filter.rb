@@ -1,25 +1,21 @@
-module Avo
-  module Filters
-    class MembersFilter < BooleanFilter
-      self.name = 'Members filter'
+class MembersFilter < BooleanFilter
+  self.name = 'Members filter'
 
-      def apply(request, query, value)
-        return query.where(id: Team.joins(:memberships).group('teams.id').count.keys) if value[:has_members]
+  def apply(request, query, value)
+    return query.where(id: Team.joins(:memberships).group('teams.id').count.keys) if value[:has_members]
 
-        query
-      end
+    query
+  end
 
-      def default
-        {
-          has_members: true
-        }
-      end
+  def default
+    {
+      has_members: true
+    }
+  end
 
-      def options
-        {
-          'has_members': 'Has Members'
-        }
-      end
-    end
+  def options
+    {
+      'has_members': 'Has Members'
+    }
   end
 end

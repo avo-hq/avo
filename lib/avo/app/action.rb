@@ -1,6 +1,5 @@
 require_relative 'fields_loader'
 
-
 module Avo
   module Actions
     class Action
