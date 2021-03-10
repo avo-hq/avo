@@ -17,7 +17,7 @@ module Avo
         target_resource.model_class.all.map do |model|
           {
             value: model.id,
-            label: model.send(target_resource.title)
+            label: model.send(target_resource.class.title)
           }
         end
       end
@@ -43,7 +43,7 @@ module Avo
       end
 
       def label
-        value.send(target_resource.title)
+        value.send(target_resource.class.title)
       end
 
       def to_permitted_param

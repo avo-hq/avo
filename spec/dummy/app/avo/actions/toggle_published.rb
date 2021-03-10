@@ -1,12 +1,10 @@
 module Avo
   module Actions
     class TogglePublished < Action
-      def configure
-        @name = 'Toggle post published'
-        @message = 'Are you sure, sure?'
-        @confirm_text = 'Toggle'
-        @cancel_text = "Don't toggle yet"
-      end
+      self.name = 'Toggle post published'
+      self.message = 'Are you sure, sure?'
+      self.confirm_text = 'Toggle'
+      self.cancel_text = "Don't toggle yet"
 
       def handle(request, models, fields)
         models.each do |model|

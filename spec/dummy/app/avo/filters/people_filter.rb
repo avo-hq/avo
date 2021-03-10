@@ -1,9 +1,7 @@
 module Avo
   module Filters
     class PeopleFilter < SelectFilter
-      def configure
-        @name = 'People status (temporary)'
-      end
+      self.name = 'People status (temporary)'
 
       def apply(request, query, value)
         case value

@@ -1,12 +1,10 @@
 module Avo
   module Resources
     class Post < Resource
-      def configure
-        @title = :name
-        @search = [:name, :id]
-        @includes = :user
-        @default_view_type = :grid
-      end
+      self.title = :name
+      self.search = [:name, :id]
+      self.includes = :user
+      self.default_view_type = :grid
 
       def fields(request)
         f.id

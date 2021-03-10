@@ -4,15 +4,6 @@ require_relative 'fields/field'
 module Avo
   module Resources
     class Resource
-      attr_writer :name
-
-      attr_accessor :id
-      attr_accessor :title
-      attr_accessor :search
-      attr_accessor :includes
-      attr_accessor :translation_key
-      attr_accessor :default_view_type
-      attr_accessor :devise_password_optional
       attr_accessor :view
       attr_accessor :model
       attr_accessor :user
@@ -29,16 +20,15 @@ module Avo
       alias :a :action
       alias :filter :filters_loader
 
-      def initialize(request = nil)
-        @id = :id
-        @title = 'Resource'
-        @search = []
-        @includes = []
-        @translation_key = nil
-        @default_view_type = :table
-        @devise_password_optional = false
+      class_attribute :id, default: :id
+      class_attribute :title, default: :id
+      class_attribute :search, default: [:id]
+      class_attribute :includes, default: []
+      class_attribute :translation_key
+      class_attribute :default_view_type, default: :table
+      class_attribute :devise_password_optional, default: false
 
-        configure
+      def initialize(request = nil)
         boot_fields request
       end
 

@@ -1,9 +1,7 @@
 module Avo
   module Filters
     class People2Filter < BooleanFilter
-      def configure
-        @name = 'People 2 status (temporary)'
-      end
+      self.name = 'People 2 status (temporary)'
 
       def apply(request, query, value = {})
         if value[:a_lot]

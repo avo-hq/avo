@@ -1,10 +1,8 @@
 module Avo
   module Actions
     class ToggleAdmin < Action
-      def configure
-        @name = 'Toggle admin'
-        @no_confirmation = true
-      end
+      self.name = 'Toggle admin'
+      self.no_confirmation = true
 
       def handle(request, models, fields)
         models.each do |model|

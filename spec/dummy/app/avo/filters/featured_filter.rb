@@ -1,9 +1,7 @@
 module Avo
   module Filters
     class FeaturedFilter < BooleanFilter
-      def configure
-        @name = 'Featured status'
-      end
+      self.name = 'Featured status'
 
       def apply(request, query, values)
         return query if values[:is_featured] && values[:is_unfeatured]

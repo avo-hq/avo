@@ -1,11 +1,9 @@
 class Avo::Resources::User < Avo::Resources::Resource
-  def configure
-    @title = :name
-    @translation_key = 'avo.resource_translations.user'
-    @search = [:id, :first_name, :last_name]
-    @includes = [:posts, :post]
-    @devise_password_optional = true
-  end
+  self.title = :name
+  self.translation_key = 'avo.resource_translations.user'
+  self.search = [:id, :first_name, :last_name]
+  self.includes = [:posts, :post]
+  self.devise_password_optional = true
 
   def fields(request)
     f.id :id, link_to_resource: true

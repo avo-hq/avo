@@ -35,7 +35,7 @@ module Avo
       @options = query.all.map do |model|
         {
           value: model.id,
-          label: model.send(@attachment_resource.title)
+          label: model.send(@attachment_resource.class.title)
         }
       end
     end

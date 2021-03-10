@@ -35,7 +35,7 @@ module Avo
         resources.map do |model|
           {
             id: model.id,
-            search_label: model.send(avo_resource.title),
+            search_label: model.send(avo_resource.class.title),
             link: "/resources/#{model.class.to_s.singularize.underscore}/#{model.id}",
           }
         end
