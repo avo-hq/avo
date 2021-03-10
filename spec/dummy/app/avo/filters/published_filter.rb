@@ -1,29 +1,25 @@
-module Avo
-  module Filters
-    class PublishedFilter < SelectFilter
-      self.name = 'Published status'
+class PublishedFilter < SelectFilter
+  self.name = 'Published status'
 
-      def apply(request, query, value)
-        case value
-        when 'published'
-          query.where.not(published_at: nil)
-        when 'unpublished'
-          query.where(published_at: nil)
-        else
-          query
-        end
-      end
-
-      def options
-        {
-          'published': 'Published',
-          'unpublished': 'Unpublished',
-        }
-      end
-
-      def default
-        'unpublished'
-      end
+  def apply(request, query, value)
+    case value
+    when 'published'
+      query.where.not(published_at: nil)
+    when 'unpublished'
+      query.where(published_at: nil)
+    else
+      query
     end
+  end
+
+  def options
+    {
+      'published': 'Published',
+      'unpublished': 'Unpublished',
+    }
+  end
+
+  def default
+    'unpublished'
   end
 end

@@ -1,4 +1,4 @@
-class Avo::Resources::User < Avo::Resources::Resource
+class UserResource < BaseResource
   self.title = :name
   self.translation_key = 'avo.resource_translations.user'
   self.search = [:id, :first_name, :last_name]
@@ -42,7 +42,7 @@ class Avo::Resources::User < Avo::Resources::Resource
   end
 
   def actions(request)
-    a.use Avo::Actions::ToggleInactive
-    a.use Avo::Actions::ToggleAdmin
+    a.use ToggleInactive
+    a.use ToggleAdmin
   end
 end

@@ -27,14 +27,13 @@ module Avo
       end
 
       def set_action
-        action_class = params[:action_id].gsub('avo_actions_', '').classify
-        action_name = "Avo::Actions::#{action_class}"
+        action_class = params[:action_id].gsub('avo_actions_', '').classify.safe_constantize
 
         if params[:id].present?
           model = @resource.model_class.find params[:id]
         end
 
-        @action = action_name.safe_constantize.new
+        @action = action_class.new
         @action.hydrate(model: model, resource: resource, user: _current_user)
         @action.boot_fields request
       end

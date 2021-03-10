@@ -10,19 +10,11 @@
     <% end %>
 
     <div
-      class="absolute block inset-auto right-0 top-full bg-white min-w-300px mt-2 z-20 shadow-context rounded-xl hidden"
+      class="absolute block inset-auto right-0 top-full bg-white min-w-300px mt-2 z-20 shadow-context rounded-xl hidden divide-y divide-gray-300"
       data-toggle-panel-target="panel"
     >
-      <%
-        @filters.each_with_index do |filter, index|
-          case filter.class.superclass.to_s
-          when Avo::Filters::SelectFilter.to_s
-            template = 'avo/base/select_filter'
-          when Avo::Filters::BooleanFilter.to_s
-            template = 'avo/base/boolean_filter'
-          end
-      %>
-        <%= render partial: template, locals: {filter: filter, index: index} %>
+      <% @filters.each do |filter| %>
+        <%= render partial: filter.class.template, locals: {filter: filter} %>
       <% end %>
 
       <div class="p-4 border-gray-300 border-t">

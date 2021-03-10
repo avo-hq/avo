@@ -9,15 +9,9 @@ module Avo
     isolate_namespace Avo
 
     initializer 'avo.autoload', before: :set_autoload_paths do |app|
-      {
-        'Avo::Resources': ['app', 'avo', 'resources'],
-        'Avo::Filters': ['app', 'avo', 'filters'],
-        'Avo::Actions': ['app', 'avo', 'actions'],
-      }.each do |namespace, path|
-        next unless Rails.root.join(*path).exist?
-
-        Rails.autoloaders.main.push_dir(Rails.root.join(*path), namespace: namespace.to_s.safe_constantize)
-      end
+      Rails.autoloaders.main.push_dir(Rails.root.join('app', 'avo', 'filters'))
+      Rails.autoloaders.main.push_dir(Rails.root.join('app', 'avo', 'actions'))
+      Rails.autoloaders.main.push_dir(Rails.root.join('app', 'avo', 'resources'))
     end
 
     initializer 'avo.init' do |app|
@@ -41,6 +35,16 @@ module Avo
 
         Avo::App.boot if Avo::PACKED
       end
+
+      # if Rails.env.development?
+      #   path_to_eager_load = 'app/avo/**/*.rb'
+
+      #   config.eager_load_paths += Dir[path_to_eager_load]
+      #   config.to_prepare do
+      #     Dir[path_to_eager_load].each {|file| load file}
+      #   end
+
+      # end
     end
 
     initializer 'webpacker.proxy' do |app|
