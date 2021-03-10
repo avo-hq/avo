@@ -4,21 +4,13 @@ require_relative 'fields_loader'
 module Avo
   module Actions
     class Action
-      attr_accessor :name
-      attr_accessor :message
-      attr_accessor :default
-      attr_accessor :theme
-      attr_accessor :confirm_text
-      attr_accessor :cancel_text
-      # response: {
-      #   message: String
-      #   message_type: success | error
-      #   type: reload | reload_resources | redirect | http_redirect | open_in_new_tab | download
-      #   path: String
-      #   filename: String
-      # }
+      class_attribute :name, default: self.class.to_s.demodulize.underscore.humanize(keep_id_suffix: true)
+      class_attribute :message, default: I18n.t('avo.are_you_sure_you_want_to_run_this_option')
+      class_attribute :confirm_text, default: I18n.t('avo.run')
+      class_attribute :cancel_text, default: I18n.t('avo.cancel')
+      class_attribute :no_confirmation, default: false
+
       attr_accessor :response
-      attr_accessor :no_confirmation
       attr_accessor :model
       attr_accessor :resource
       attr_accessor :user
@@ -28,20 +20,11 @@ module Avo
       alias :field :field_loader
       alias :f :field
 
-      @@default = nil
-
       def initialize
-        @name ||= name
-        @message ||= I18n.t('avo.are_you_sure_you_want_to_run_this_option')
-        @default ||= ''
         @fields ||= []
-        @confirm_text ||= I18n.t('avo.run')
-        @cancel_text ||= I18n.t('avo.cancel')
         @response ||= {}
         @response[:message_type] ||= :notice
         @response[:message] ||= I18n.t('avo.action_ran_successfully')
-        @theme ||= 'success'
-        @no_confirmation ||= false
       end
 
       def boot_fields(request)
@@ -91,11 +74,7 @@ module Avo
       end
 
       def param_id
-        self.class.name.underscore.gsub '/', '_'
-      end
-
-      def name
-        self.class.name.demodulize.underscore.humanize(keep_id_suffix: true)
+        self.class.to_s.demodulize.underscore.gsub '/', '_'
       end
 
       def succeed(text)
@@ -135,10 +114,6 @@ module Avo
         self.response[:filename] = filename
 
         self
-      end
-
-      def self.param_id
-        self.name.underscore.gsub '/', '_'
       end
     end
   end

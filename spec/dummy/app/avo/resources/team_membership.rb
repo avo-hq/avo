@@ -1,11 +1,9 @@
 module Avo
   module Resources
     class TeamMembership < Resource
-      def configure
-        @title = :id
-        @search = :id
-        @includes = [:user, :team]
-      end
+      self.title = :id
+      self.search = :id
+      self.includes = [:user, :team]
 
       def fields(request)
         f.id

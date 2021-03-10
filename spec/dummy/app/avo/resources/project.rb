@@ -1,11 +1,9 @@
 module Avo
   module Resources
     class Project < Resource
-      def configure
-        @title = :name
-        @search = [:name, :id]
-        @includes = :users
-      end
+      self.title = :name
+      self.search = [:name, :id]
+      self.includes = :users
 
       def fields(request)
         f.id link_to_resource: true

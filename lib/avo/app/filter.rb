@@ -1,14 +1,8 @@
 module Avo
   class Filter
-    attr_accessor :name
-    attr_accessor :component
-    attr_accessor :default
-
-    def initialize
-      @name ||= 'Filter'
-      @component ||= 'boolean-filter'
-      @default ||= ''
-    end
+    class_attribute :name, default: 'Filter'
+    class_attribute :component, default: 'boolean-filter'
+    class_attribute :default, default: ''
 
     def apply_query(request, query, value)
       value.symbolize_keys! if value.is_a? Hash

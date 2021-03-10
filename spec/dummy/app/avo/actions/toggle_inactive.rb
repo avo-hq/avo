@@ -1,9 +1,7 @@
 module Avo
   module Actions
     class ToggleInactive < Action
-      def configure
-        @name = 'Toggle inactive'
-      end
+      self.name = 'Toggle inactive'
 
       def handle(request, models, fields)
         models.each do |model|

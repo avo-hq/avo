@@ -1,9 +1,7 @@
 module Avo
   module Filters
     class MembersFilter < BooleanFilter
-      def configure
-        @name = 'Members filter'
-      end
+      self.name = 'Members filter'
 
       def apply(request, query, value)
         return query.where(id: Team.joins(:memberships).group('teams.id').count.keys) if value[:has_members]
