@@ -35,8 +35,6 @@ class Avo::Resources::User < Avo::Resources::Resource
     f.has_and_belongs_to_many :teams
   end
 
-  # filter :admins, use_scope: :admins
-
   def grid(request)
     g.gravatar :email, grid_position: :preview, link_to_resource: true
     g.text :name, grid_position: :title, link_to_resource: true
