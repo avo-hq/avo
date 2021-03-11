@@ -16,7 +16,7 @@ module Avo
 
     def init_app
       Avo::App.boot if Avo::IN_DEVELOPMENT
-      Avo::App.init request
+      Avo::App.init request: request, context: context
 
       @license = Avo::App.license
     end
@@ -34,6 +34,10 @@ module Avo
 
     def _current_user
       instance_eval(&Avo.configuration.current_user)
+    end
+
+    def context
+      instance_eval(&Avo.configuration.context)
     end
 
     def resources_path(model, keep_query_params: false, **args)

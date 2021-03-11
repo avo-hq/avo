@@ -1,59 +1,50 @@
 require_relative 'tools_manager'
 require_relative 'filter'
-require_relative 'filters/select_filter'
-require_relative 'filters/boolean_filter'
 require_relative 'resource'
 require_relative 'tool'
 require_relative 'services/authorization_service'
 
 module Avo
   class App
-    @@app = {
+    class_attribute :app, default: {
       root_path: '',
       resources: [],
       cache_store: nil
     }
-    @@license = nil
-    @@fields = []
+    class_attribute :fields, default: []
+    class_attribute :request, default: nil
+    class_attribute :context, default: nil
+    class_attribute :license, default: nil
 
     class << self
       def boot
-        @@app[:root_path] = Pathname.new(File.join(__dir__, '..', '..'))
+        self.app[:root_path] = Pathname.new(File.join(__dir__, '..', '..'))
         init_fields
         I18n.locale = Avo.configuration.language_code
 
         if Rails.cache.class == ActiveSupport::Cache::NullStore
-          @@app[:cache_store] ||= ActiveSupport::Cache::MemoryStore.new
+          self.app[:cache_store] ||= ActiveSupport::Cache::MemoryStore.new
         else
-          @@app[:cache_store] = Rails.cache
+          self.app[:cache_store] = Rails.cache
         end
       end
 
-      def init(current_request = nil)
+      def init(request:, context:)
+        self.request = request
+        self.context = context
+
         # Set the current host for ActiveStorage
-        ActiveStorage::Current.host = current_request.base_url
+        ActiveStorage::Current.host = request.base_url
 
-        init_resources current_request
-        @@license = LicenseManager.new(HQ.new(current_request).response).license
-      end
-
-      def app
-        @@app
-      end
-
-      def fields
-        @@fields
-      end
-
-      def license
-        @@license
+        init_resources
+        self.license = LicenseManager.new(HQ.new(request).response).license
       end
 
       def cache_store
-        @@app[:cache_store]
+        self.app[:cache_store]
       end
 
-      # This method will find all fields available in the Avo::Fields namespace and add them to a @@fields array
+      # This method will find all fields available in the Avo::Fields namespace and add them to the fields class_variable array
       # so later we can instantiate them on our resources.
       #
       # If the field has their `def_method` set up it will follow that convention, if not it will snake_case the name:
@@ -93,33 +84,33 @@ module Avo
       end
 
       def load_field(method_name, klass)
-        @@fields.push(
+        self.fields.push(
           name: method_name,
           class: klass,
         )
       end
 
-      def init_resources(request)
-        @@app[:resources] = ::BaseResource.descendants
+      def init_resources
+        self.app[:resources] = ::BaseResource.descendants
           .select do |resource|
             resource != BaseResource
           end
           .map do |resource|
             if resource.is_a? Class
-              resource.new request
+              resource.new
             end
           end
       end
 
       def get_resources
-        @@app[:resources]
+        self.app[:resources]
       end
 
       # Returns the Avo resource by camelized name
       #
       # get_resource_by_name('User') => Avo::Resources::User
       def get_resource(resource)
-        @@app[:resources].find do |available_resource|
+        self.app[:resources].find do |available_resource|
           "#{resource}Resource".safe_constantize == available_resource.class
         end
       end
