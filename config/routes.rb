@@ -14,6 +14,7 @@ Avo::Engine.routes.draw do
 
     # Generate resource routes as below:
     # resources :posts
+    # puts Avo::App.class.inspect
     instance_eval(&Avo::App.draw_routes)
 
     # Relations

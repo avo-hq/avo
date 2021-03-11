@@ -1,7 +1,6 @@
 require_relative 'tools_manager'
 require_relative 'filter'
 require_relative 'resource'
-require_relative 'tool'
 require_relative 'services/authorization_service'
 
 module Avo
@@ -37,7 +36,7 @@ module Avo
         ActiveStorage::Current.host = request.base_url
 
         init_resources
-        self.license = LicenseManager.new(HQ.new(request).response).license
+        self.license = Licensing::LicenseManager.new(Licensing::HQ.new(request).response).license
       end
 
       def cache_store
@@ -142,7 +141,7 @@ module Avo
       def get_available_resources(user = nil)
         App.get_resources
           .select do |resource|
-            AuthorizationService::authorize user, resource.model, Avo.configuration.authorization_methods.stringify_keys['index'], raise_exception: false
+            Services::AuthorizationService.authorize user, resource.model, Avo.configuration.authorization_methods.stringify_keys['index'], raise_exception: false
           end
           .sort_by { |r| r.name }
       end

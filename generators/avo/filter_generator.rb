@@ -1,4 +1,4 @@
-class FilterGenerator < Rails::Generators::NamedBase
+class Generators::Avo::FilterGenerator < ::Rails::Generators::NamedBase
   source_root File.expand_path('templates', __dir__)
   class_option :select, type: :boolean
 

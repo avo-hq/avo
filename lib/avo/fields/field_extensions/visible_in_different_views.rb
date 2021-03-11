@@ -1,7 +1,7 @@
 module Avo
   module Fields
     module FieldExtensions
-      module VisibleOnDifferentViews
+      module VisibleInDifferentViews
         attr_accessor :show_on_index
         attr_accessor :show_on_show
         attr_accessor :show_on_new

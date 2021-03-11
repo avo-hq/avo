@@ -225,7 +225,7 @@ module Avo
       end
 
       def set_authorization
-        @authorization = AuthorizationService.new _current_user
+        @authorization = Services::AuthorizationService.new _current_user
       end
 
       def set_container_classes

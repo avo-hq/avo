@@ -1,4 +1,4 @@
-class ResourceGenerator < Rails::Generators::NamedBase
+class Generators::ResourceGenerator < ::Rails::Generators::NamedBase
   source_root File.expand_path('templates', __dir__)
 
   namespace 'avo:resource'

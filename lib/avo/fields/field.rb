@@ -4,7 +4,7 @@ require_relative 'field_extensions/has_field_name'
 module Avo
   module Fields
     class Field
-      include Avo::Fields::FieldExtensions::VisibleOnDifferentViews
+      include Avo::Fields::FieldExtensions::VisibleInDifferentViews
       extend Avo::Fields::FieldExtensions::HasFieldName
 
       attr_accessor :id

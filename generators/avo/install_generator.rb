@@ -1,6 +1,6 @@
 require 'rails/generators/base'
 
-class InstallGenerator < Rails::Generators::Base
+class Generators::InstallGenerator < Rails::Generators::Base
   source_root File.expand_path('templates', __dir__)
 
   namespace 'avo:install'

@@ -1,4 +1,4 @@
-class PartialsGenerator < Rails::Generators::Base
+class Generators::PartialsGenerator < ::Rails::Generators::Base
   source_root File.expand_path('templates', __dir__)
   namespace 'avo:partials'
 

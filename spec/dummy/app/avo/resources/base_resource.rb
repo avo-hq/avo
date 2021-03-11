@@ -1,3 +1,3 @@
-class BaseResource < Avo::Resources::Resource
+class BaseResource < Avo::Resource
 
 end
