@@ -33,7 +33,7 @@ module Avo
 
       def boot_fields
         @fields_loader = Avo::FieldsLoader.new
-        fields @fields_loader if self.respond_to? :fields
+        fields if self.respond_to? :fields
 
         @grid_loader = Avo::FieldsLoader.new
         grid if self.respond_to? :grid
