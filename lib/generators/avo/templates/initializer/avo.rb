@@ -6,6 +6,11 @@ Avo.configure do |config|
   config.license = 'community'
   # config.license_key = ENV['AVO_LICENSE_KEY']
 
+  ## == Set the context ==
+  config.set_context do
+    # Return a context object that gets evaluated in Avo::ApplicationController
+  end
+
   ## == Authentication ==
   # config.current_user_method(&:current_user)
   # config.authenticate_with do
