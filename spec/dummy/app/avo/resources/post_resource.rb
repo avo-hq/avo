@@ -17,7 +17,7 @@ class PostResource < BaseResource
     f.belongs_to :user, meta: { searchable: false }, placeholder: '—'
   end
 
-  def grid(request)
+  def grid
     g.file :cover_photo, required: true, grid_position: :preview, link_to_resource: true
     g.text :name, required: true, grid_position: :title, link_to_resource: true
     g.text :excerpt, grid_position: :body do |model|
@@ -29,12 +29,12 @@ class PostResource < BaseResource
     end
   end
 
-  def filters(request)
+  def filters
     filter.use FeaturedFilter
     filter.use PublishedFilter
   end
 
-  def actions(request)
+  def actions
     a.use TogglePublished
   end
 end

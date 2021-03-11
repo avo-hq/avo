@@ -35,13 +35,13 @@ class UserResource < BaseResource
     f.has_and_belongs_to_many :teams
   end
 
-  def grid(request)
+  def grid
     g.gravatar :email, grid_position: :preview, link_to_resource: true
     g.text :name, grid_position: :title, link_to_resource: true
     g.text :url, grid_position: :body
   end
 
-  def actions(request)
+  def actions
     a.use ToggleInactive
     a.use ToggleAdmin
   end

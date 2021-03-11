@@ -24,7 +24,7 @@ class TeamResource < BaseResource
     f.has_many :members, through: :memberships
   end
 
-  def grid(request)
+  def grid
     g.external_image :logo, grid_position: :preview, link_to_resource: true do |model|
       if model.url.present?
         "//logo.clearbit.com/#{URI.parse(model.url).host}?size=180"
@@ -34,7 +34,7 @@ class TeamResource < BaseResource
     g.text :url, grid_position: :body
   end
 
-  def filters(request)
+  def filters
     filter.use MembersFilter
   end
 end
