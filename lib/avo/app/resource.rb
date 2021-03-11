@@ -33,16 +33,16 @@ module Avo
 
       def boot_fields
         @fields_loader = Avo::FieldsLoader.new
-        fields @fields_loader
+        fields @fields_loader if self.respond_to? :fields
 
         @grid_loader = Avo::FieldsLoader.new
-        grid nil if self.respond_to? :grid
+        grid if self.respond_to? :grid
 
         @actions_loader = Avo::ActionsLoader.new
-        actions nil if self.respond_to? :actions
+        actions if self.respond_to? :actions
 
         @filters_loader = Avo::ActionsLoader.new
-        filters nil if self.respond_to? :filters
+        filters if self.respond_to? :filters
       end
 
       def hydrate(model: nil, view: nil, user: nil, params: nil)
