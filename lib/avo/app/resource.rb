@@ -28,6 +28,7 @@ module Avo
       class_attribute :default_view_type, default: :table
       class_attribute :devise_password_optional, default: false
 
+
       def initialize(request = nil)
         boot_fields request
       end
