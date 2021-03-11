@@ -49,7 +49,7 @@ module Avo
 
     initializer 'webpacker.proxy' do |app|
       app.config.debug_exception_response_format = :api
-      app.config.logger = ::Logger.new(STDOUT)
+      # app.config.logger = ::Logger.new(STDOUT)
 
       insert_middleware = begin
                             Avo.webpacker.config.dev_server.present?

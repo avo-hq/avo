@@ -3,6 +3,16 @@ class ProjectResource < BaseResource
   self.search = [:name, :id]
   self.includes = :users
 
+  # field :id, as: :id, link_to_resource: true
+  # field :name, as: :text, required: true
+  # field :stage, as: :badge, options: { info: ['Discovery', 'Idea'], success: 'Done', warning: 'On hold', danger: 'Cancelled' }
+
+  # fields do |f|
+  #   f.id link_to_resource: true
+  #   f.text :name, required: true
+  #   f.badge :stage, options: { info: ['Discovery', 'Idea'], success: 'Done', warning: 'On hold', danger: 'Cancelled' }
+  # end
+
   def fields
     f.id link_to_resource: true
     f.text :name, required: true

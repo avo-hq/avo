@@ -60,7 +60,6 @@ gem 'listen', '>= 3.0.5', '< 3.2'
 gem 'spring'
 
 gem 'factory_bot_rails'
-gem 'faker', require: false
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
@@ -79,6 +78,7 @@ group :development do
   # Release helper
   gem 'bump', require: false
   gem 'gem-release', require: false
+  gem 'faker', require: false
 
   # gem 'rack-mini-profiler'
   # gem 'memory_profiler'
@@ -97,7 +97,7 @@ group :test do
   gem 'selenium-webdriver'
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'webdrivers'
-  gem 'faker'
+  # gem 'faker'
   gem 'fuubar'
   gem 'simplecov', require: false
   gem 'simplecov-cobertura'

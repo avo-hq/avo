@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    avo (0.4.8)
+    avo (0.5.0.beta4)
       active_link_to
       countries
       hotwire-rails
