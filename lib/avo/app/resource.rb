@@ -1,4 +1,3 @@
-require_relative 'resource_grid_fields'
 require_relative 'fields/field'
 
 module Avo
@@ -28,23 +27,22 @@ module Avo
       class_attribute :default_view_type, default: :table
       class_attribute :devise_password_optional, default: false
 
-
-      def initialize(request = nil)
-        boot_fields request
+      def initialize
+        boot_fields
       end
 
-      def boot_fields(request)
+      def boot_fields
         @fields_loader = Avo::FieldsLoader.new
-        fields request
+        fields @fields_loader
 
         @grid_loader = Avo::FieldsLoader.new
-        grid request if self.respond_to? :grid
+        grid nil if self.respond_to? :grid
 
         @actions_loader = Avo::ActionsLoader.new
-        actions request if self.respond_to? :actions
+        actions nil if self.respond_to? :actions
 
         @filters_loader = Avo::ActionsLoader.new
-        filters request if self.respond_to? :filters
+        filters nil if self.respond_to? :filters
       end
 
       def hydrate(model: nil, view: nil, user: nil, params: nil)
@@ -177,6 +175,14 @@ module Avo
 
       def route_key
         model_class.model_name.route_key
+      end
+
+      def context
+        App.context
+      end
+
+      def fields
+        raise Error.new 'NotImplemented'
       end
 
       def query_search(query: '', via_resource_name: , via_resource_id:, user:)

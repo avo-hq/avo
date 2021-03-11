@@ -5,7 +5,7 @@ class UserResource < BaseResource
   self.includes = [:posts, :post]
   self.devise_password_optional = true
 
-  def fields(request)
+  def fields
     f.id :id, link_to_resource: true
     f.gravatar :email, link_to_resource: true
     f.heading 'User Information'

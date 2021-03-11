@@ -3,7 +3,7 @@ class ProjectResource < BaseResource
   self.search = [:name, :id]
   self.includes = :users
 
-  def fields(request)
+  def fields
     f.id link_to_resource: true
     f.text :name, required: true
     f.status :status, failed_when: [:closed, :rejected, :failed], loading_when: [:loading, :running, :waiting], nullable: true

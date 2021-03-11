@@ -4,7 +4,7 @@ class PostResource < BaseResource
   self.includes = :user
   self.default_view_type = :grid
 
-  def fields(request)
+  def fields
     f.id
     f.text :name, required: true
     f.trix :body, placeholder: 'Enter text', always_show: false
