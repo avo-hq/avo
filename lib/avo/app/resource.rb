@@ -178,6 +178,10 @@ module Avo
         model_class.model_name.route_key
       end
 
+      def context
+        App.context
+      end
+
       def query_search(query: '', via_resource_name: , via_resource_id:, user:)
         # model_class = self.model
 
