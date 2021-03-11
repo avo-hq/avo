@@ -6,8 +6,6 @@ require_relative 'avo/app/fields/field'
 require_relative 'avo/app/action'
 
 require_relative 'avo/app/filter'
-require_relative 'avo/app/filters/boolean_filter'
-require_relative 'avo/app/filters/select_filter'
 
 require_relative 'avo/app/fields_loader'
 require_relative 'avo/app/actions_loader'
