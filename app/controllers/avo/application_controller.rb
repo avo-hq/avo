@@ -15,7 +15,6 @@ module Avo
     add_flash_types :info, :warning, :success, :error
 
     def init_app
-      Avo::App.boot if Avo::IN_DEVELOPMENT
       Avo::App.init request: request, context: context
 
       @license = Avo::App.license

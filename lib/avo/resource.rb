@@ -1,5 +1,3 @@
-require_relative 'fields/field'
-
 module Avo
   class Resource
     attr_accessor :view
@@ -25,28 +23,26 @@ module Avo
     class_attribute :translation_key
     class_attribute :default_view_type, default: :table
     class_attribute :devise_password_optional, default: false
-    # class_attribute :fields_bagg
-    # class_attribute :fields_bagg, default: {}
-    # class_attribute :fields, default: []
+    class_attribute :fields_loader
 
     class << self
-      def fields
-
+      def fields(&block)
+        self.fields_loader ||= Avo::FieldsLoader.new
+        yield(fields_loader)
       end
-    end # self << class
+
+      def context
+        App.context
+      end
+    end
 
     def initialize
       boot_fields
     end
 
-    def self.field
-
-      boot_fields
-    end
-
     def boot_fields
-      @fields_loader = Avo::FieldsLoader.new
-      fields if self.respond_to? :fields
+      # @fields_loader = Avo::FieldsLoader.new
+      # fields if self.respond_to? :fields
 
       @grid_loader = Avo::FieldsLoader.new
       grid if self.respond_to? :grid
@@ -108,7 +104,7 @@ module Avo
     end
 
     def get_field_definitions
-      @fields_loader.bag.map do |field|
+      self.class.fields_loader.bag.map do |field|
         field.hydrate(resource: self, panel_name: default_panel_name, user: user)
       end
     end

@@ -3,7 +3,7 @@ class TeamResource < BaseResource
   self.search = [:id, :name]
   self.includes = :admin
 
-  def fields
+  fields do |f|
     f.id
     f.text :name
     f.text :url

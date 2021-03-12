@@ -1,7 +1,10 @@
 require_relative 'tools_manager'
-require_relative 'filter'
 require_relative 'resource'
 require_relative 'services/authorization_service'
+
+# Require all fields
+require_relative 'fields/base_field'
+Dir[Pathname.new(File.join(__dir__, 'fields', '*.rb'))].each {|file| require file }
 
 module Avo
   class App
@@ -51,33 +54,11 @@ module Avo
       # Avo::Fields::TextField -> text
       # Avo::Fields::DateTimeField -> date_time
       def init_fields
-        Avo::Fields.constants.each do |class_name|
-          next if class_name.to_s == 'Field'
-
-          field_class = method_name = nil
+        Avo::Fields::BaseField.descendants.each do |class_name|
+          next if class_name.to_s == 'BaseField'
 
           if class_name.to_s.end_with? 'Field'
-            field_class = "Avo::Fields::#{class_name.to_s}".safe_constantize
-            method_name = field_class.get_field_name
-          else
-            # Try one level deeper for custom fields
-            namespace = class_name
-            tool_provider = "Avo::Fields::#{namespace}::ToolProvider".safe_constantize
-
-            next unless tool_provider.present?
-
-            tool_provider.boot
-
-            "Avo::Fields::#{namespace}".safe_constantize.constants.each do |custom_field_class|
-              next unless custom_field_class.to_s.end_with? 'Field' or custom_field_class.to_s == 'Field'
-
-              field_class = "Avo::Fields::#{namespace}::#{custom_field_class}".safe_constantize
-              method_name = field_class.get_field_name
-            end
-          end
-
-          if field_class.present? and method_name.present?
-            load_field method_name, field_class
+            load_field class_name.get_field_name, class_name
           end
         end
       end
@@ -153,6 +134,7 @@ module Avo
       end
 
       def draw_routes
+        # We should eager load all the classes so we find all descendants
         Rails.application.eager_load!
         Proc.new do
           ::BaseResource.descendants

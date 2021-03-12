@@ -69,7 +69,7 @@ class UserResource < BaseResource
     field.text :first_name, required: true, placeholder: 'John', default: 'default'
     field.text :last_name, required: true, placeholder: 'Doe'
     field.text :email, name: 'User Email', required: true
-    field.boolean :active, name: 'Is active', show_on: [:show, :forms]
+    field.boolean :active, name: 'Is active', show_on: :show
     field.file :cv, name: 'CV'
     field.boolean :is_admin?, name: 'Is admin', only_on: :index
     field.boolean_group :roles, options: { admin: 'Administrator', manager: 'Manager', writer: 'Writer' }

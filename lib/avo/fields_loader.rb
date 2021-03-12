@@ -18,9 +18,9 @@ class Avo::FieldsLoader
       klass = matched_field[:class]
 
       if block.present?
-        field = klass::new(args[0], **args[1] || {}, &block)
+        field = klass.new(args[0], **args[1] || {}, &block)
       else
-        field = klass::new(args[0], **args[1] || {})
+        field = klass.new(args[0], **args[1] || {})
       end
 
       add_field field

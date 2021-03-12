@@ -4,12 +4,12 @@ class PostResource < BaseResource
   self.includes = :user
   self.default_view_type = :grid
 
-  def fields
+  fields do |f|
     f.id
     f.text :name, required: true
     f.trix :body, placeholder: 'Enter text', always_show: false
     f.file :cover_photo, is_image: true, link_to_resource: true
-    f.boolean :is_featured, can_see: -> () { user.is_admin? }
+    f.boolean :is_featured, can_see: -> () { context[:user].is_admin? }
     f.boolean :is_published do |model|
       model.published_at.present?
     end

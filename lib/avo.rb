@@ -1,17 +1,17 @@
 require_relative 'avo/configuration'
 require_relative 'avo/version'
+require_relative 'avo/app'
 
-require_relative 'avo/fields/field'
+require_relative 'avo/fields/base_field'
 
 require_relative 'avo/action'
 
-require_relative 'avo/filter'
+require_relative 'avo/filters/base_filter'
 require_relative 'avo/filters/boolean_filter'
 require_relative 'avo/filters/select_filter'
 
 require_relative 'avo/fields_loader'
 require_relative 'avo/actions_loader'
-# require_relative 'avo/fields_loader_helper'
 require_relative 'avo/resource'
 
 require_relative 'avo/licensing/license_manager'
