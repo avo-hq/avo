@@ -1,6 +1,6 @@
 module Avo
   module Fields
-    class TextField < Field
+    class TextField < BaseField
       def initialize(name, **args, &block)
         @defaults = {
           partial_name: 'text-field',

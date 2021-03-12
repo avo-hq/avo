@@ -65,32 +65,18 @@ class UserResource < BaseResource
   fields do |field|
     field.id :id, link_to_resource: true
     field.gravatar :email, link_to_resource: true
-
-    # column do
-    #   field.gravatar :email, link_to_resource: true
-    # end
-  end
-
-  # stage 1
-  def fields # index, show, forms
-
-
-    # field.heading 'User Information'
-
-    # panel 'User Information' do
-      field.text :first_name, required: true, placeholder: 'John', default: 'default'
-      field.text :last_name, required: true, placeholder: 'Doe'
-      field.text :email, name: 'User Email', required: true
-      field.boolean :active, name: 'Is active', show_on: [:show, :forms]
-      field.file :cv, name: 'CV'
-      field.boolean :is_admin?, name: 'Is admin', only_on: :index
-      field.boolean_group :roles, options: { admin: 'Administrator', manager: 'Manager', writer: 'Writer' }
-      field.date :birthday, first_day_of_week: 1, picker_format: 'F J Y', format: '%Y-%m-%d', placeholder: 'Feb 24th 1955', required: true
-      field.text :is_writer, format_using: -> (value) { value.truncate 3 }, hide_on: :edit do |model, resource, view, field|
-        model.posts.to_a.count > 0 ? 'yes' : 'no'
-      end
-      field.text :excerpt, hide_on: [:index, :show, :forms]
-    # end
+    field.heading 'User Information'
+    field.text :first_name, required: true, placeholder: 'John', default: 'default'
+    field.text :last_name, required: true, placeholder: 'Doe'
+    field.text :email, name: 'User Email', required: true
+    field.boolean :active, name: 'Is active', show_on: [:show, :forms]
+    field.file :cv, name: 'CV'
+    field.boolean :is_admin?, name: 'Is admin', only_on: :index
+    field.boolean_group :roles, options: { admin: 'Administrator', manager: 'Manager', writer: 'Writer' }
+    field.date :birthday, first_day_of_week: 1, picker_format: 'F J Y', format: '%Y-%m-%d', placeholder: 'Feb 24th 1955', required: true
+    field.text :is_writer, format_using: -> (value) { value.truncate 3 }, hide_on: :edit do |model, resource, view, field|
+      model.posts.to_a.count > 0 ? 'yes' : 'no'
+    end
 
     field.password :password, name: 'User Password', required: false, except_on: :forms, help: 'You may verify the password strength <a href="http://www.passwordmeter.com/" target="_blank">here</a>.'
     field.password :password_confirmation, name: 'Password confirmation', required: false, only_on: :new

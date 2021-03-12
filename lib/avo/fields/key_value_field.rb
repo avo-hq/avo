@@ -2,7 +2,7 @@ require 'json'
 
 module Avo
   module Fields
-    class KeyValueField < Field
+    class KeyValueField < BaseField
       def initialize(name, **args, &block)
         @defaults = {
           partial_name: 'key-value-field',

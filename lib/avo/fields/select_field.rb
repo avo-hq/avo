@@ -1,6 +1,6 @@
 module Avo
   module Fields
-    class SelectField < Field
+    class SelectField < BaseField
       attr_reader :options
       attr_reader :enum
       attr_reader :display_value

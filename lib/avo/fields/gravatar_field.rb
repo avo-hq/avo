@@ -3,7 +3,7 @@ require 'erb'
 
 module Avo
   module Fields
-    class GravatarField < Field
+    class GravatarField < BaseField
       attr_reader :size
       attr_reader :rounded
       attr_reader :default

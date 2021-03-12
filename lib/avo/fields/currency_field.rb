@@ -1,6 +1,6 @@
 module Avo
   module Fields
-    class CurrencyField < Field
+    class CurrencyField < BaseField
       def initialize(name, **args, &block)
         @defaults = {
           partial_name: 'currency-field',

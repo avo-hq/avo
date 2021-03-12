@@ -1,6 +1,6 @@
 module Avo
   module Fields
-    class StatusField < Field
+    class StatusField < BaseField
       def initialize(name, **args, &block)
         @defaults = {
           partial_name: 'status-field',

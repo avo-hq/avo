@@ -1,8 +1,6 @@
-require_relative 'field'
-
 module Avo
   module Fields
-    class MarkdownField < Field
+    class MarkdownField < BaseField
       def initialize(name, **args, &block)
         @defaults = {
           partial_name: 'markdown-field',

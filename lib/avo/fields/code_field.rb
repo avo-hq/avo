@@ -1,6 +1,6 @@
 module Avo
   module Fields
-    class CodeField < Field
+    class CodeField < BaseField
       attr_reader :height
       attr_reader :language
       attr_reader :theme

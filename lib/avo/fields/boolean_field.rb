@@ -1,6 +1,6 @@
 module Avo
   module Fields
-    class BooleanField < Field
+    class BooleanField < BaseField
       attr_reader :true_value
       attr_reader :false_value
 

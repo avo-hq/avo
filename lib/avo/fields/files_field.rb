@@ -1,7 +1,6 @@
 module Avo
   module Fields
-    class FilesField < Field
-      include Rails.application.routes.url_helpers
+    class FilesField < BaseField
       attr_accessor :is_image
 
       def initialize(name, **args, &block)

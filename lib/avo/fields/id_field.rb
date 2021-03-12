@@ -1,6 +1,6 @@
 module Avo
   module Fields
-    class IdField < Field
+    class IdField < BaseField
       def initialize(name, **args, &block)
         default_value = 'id'
 

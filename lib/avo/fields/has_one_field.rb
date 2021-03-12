@@ -1,6 +1,6 @@
 module Avo
   module Fields
-    class HasOneField < Field
+    class HasOneField < BaseField
       attr_accessor :relation_method
       attr_accessor :display
 

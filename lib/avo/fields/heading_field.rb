@@ -1,6 +1,6 @@
 module Avo
   module Fields
-    class HeadingField < Field
+    class HeadingField < BaseField
       def initialize(name, **args, &block)
         @defaults = {
           updatable: false,

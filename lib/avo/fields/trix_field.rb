@@ -1,8 +1,6 @@
-require_relative 'field'
-
 module Avo
   module Fields
-    class TrixField < Field
+    class TrixField < BaseField
       attr_reader :always_show
 
       def initialize(name, **args, &block)

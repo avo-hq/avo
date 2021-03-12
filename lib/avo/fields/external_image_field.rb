@@ -1,6 +1,6 @@
 module Avo
   module Fields
-    class ExternalImageField < Field
+    class ExternalImageField < BaseField
       attr_reader :width
       attr_reader :height
       attr_reader :radius

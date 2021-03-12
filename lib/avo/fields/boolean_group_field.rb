@@ -1,6 +1,6 @@
 module Avo
   module Fields
-    class BooleanGroupField < Field
+    class BooleanGroupField < BaseField
       attr_reader :options
 
       def initialize(name, **args, &block)

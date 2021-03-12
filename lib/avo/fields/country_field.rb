@@ -1,6 +1,6 @@
 module Avo
   module Fields
-    class CountryField < Field
+    class CountryField < BaseField
       attr_reader :countries
       attr_reader :display_code
 

@@ -3,7 +3,7 @@ require_relative 'field_extensions/has_field_name'
 
 module Avo
   module Fields
-    class Field
+    class BaseField
       include Avo::Fields::FieldExtensions::VisibleInDifferentViews
       extend Avo::Fields::FieldExtensions::HasFieldName
 

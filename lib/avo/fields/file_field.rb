@@ -1,7 +1,6 @@
 module Avo
   module Fields
-    class FileField < Field
-      include Rails.application.routes.url_helpers
+    class FileField < BaseField
       attr_accessor :is_avatar
       attr_accessor :is_image
 

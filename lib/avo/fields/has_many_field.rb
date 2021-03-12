@@ -1,6 +1,6 @@
 module Avo
   module Fields
-    class HasManyField < Field
+    class HasManyField < BaseField
       def initialize(name, **args, &block)
         @defaults = {
           updatable: false,
