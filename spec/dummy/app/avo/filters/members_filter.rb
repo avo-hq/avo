@@ -1,4 +1,4 @@
-class MembersFilter < BooleanFilter
+class MembersFilter < Avo::Filters::BooleanFilter
   self.name = 'Members filter'
 
   def apply(request, query, value)

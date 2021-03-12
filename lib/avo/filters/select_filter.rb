@@ -1,8 +1,6 @@
-require_relative '../filter'
-
 module Avo
   module Filters
-    class SelectFilter < Avo::Filter
+    class SelectFilter < BaseFilter
       self.template = 'avo/base/select_filter'
     end
   end
