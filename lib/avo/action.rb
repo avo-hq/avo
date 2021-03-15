@@ -26,7 +26,7 @@ module Avo
     end
 
     def boot_fields(request)
-      @field_loader = Avo::FieldsLoader.new
+      @field_loader = Avo::Loaders::FieldsLoader.new
       fields request if self.respond_to? :fields
     end
 

@@ -23,24 +23,27 @@ module Avo
 
     class << self
       def fields(&block)
-        self.fields_loader ||= Avo::FieldsLoader.new
+        self.fields_loader ||= Avo::Loaders::FieldsLoader.new
+
         yield(fields_loader)
       end
 
       def actions(&block)
-        self.actions_loader ||= Avo::ActionsLoader.new
+        self.actions_loader ||= Avo::Loaders::ActionsLoader.new
+
         yield(actions_loader)
       end
 
       def filters(&block)
-        self.filters_loader ||= Avo::ActionsLoader.new
+        self.filters_loader ||= Avo::Loaders::FiltersLoader.new
+
         yield(filters_loader)
       end
 
       def grid(&block)
-        self.grid_cover_loader ||= Avo::FieldsLoader.new
-        self.grid_title_loader ||= Avo::FieldsLoader.new
-        self.grid_body_loader ||= Avo::FieldsLoader.new
+        self.grid_cover_loader ||= Avo::Loaders::FieldsLoader.new
+        self.grid_title_loader ||= Avo::Loaders::FieldsLoader.new
+        self.grid_body_loader ||= Avo::Loaders::FieldsLoader.new
 
         yield(grid_cover_loader, grid_title_loader, grid_body_loader)
       end
