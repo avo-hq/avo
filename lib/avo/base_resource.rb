@@ -5,18 +5,7 @@ module Avo
     attr_accessor :view
     attr_accessor :model
     attr_accessor :user
-    attr_accessor :fields_loader
-    attr_accessor :grid_loader
-    attr_accessor :actions_loader
-    attr_accessor :filters_loader
     attr_accessor :params
-
-    alias :field :fields_loader
-    alias :f :field
-    alias :g :grid_loader
-    alias :action :actions_loader
-    alias :a :action
-    alias :filter :filters_loader
 
     class_attribute :id, default: :id
     class_attribute :title, default: :id
@@ -26,7 +15,9 @@ module Avo
     class_attribute :default_view_type, default: :table
     class_attribute :devise_password_optional, default: false
     class_attribute :fields_loader
-    class_attribute :grid_grid_loader
+    class_attribute :actions_loader
+    class_attribute :filters_loader
+    class_attribute :grid_cover_loader
     class_attribute :grid_title_loader
     class_attribute :grid_body_loader
 
@@ -36,34 +27,27 @@ module Avo
         yield(fields_loader)
       end
 
+      def actions(&block)
+        self.actions_loader ||= Avo::ActionsLoader.new
+        yield(actions_loader)
+      end
+
+      def filters(&block)
+        self.filters_loader ||= Avo::ActionsLoader.new
+        yield(filters_loader)
+      end
+
       def grid(&block)
-        self.grid_grid_loader ||= Avo::FieldsLoader.new
+        self.grid_cover_loader ||= Avo::FieldsLoader.new
         self.grid_title_loader ||= Avo::FieldsLoader.new
         self.grid_body_loader ||= Avo::FieldsLoader.new
-        yield(grid_grid_loader, grid_title_loader, grid_body_loader)
+
+        yield(grid_cover_loader, grid_title_loader, grid_body_loader)
       end
 
       def context
         App.context
       end
-    end
-
-    def initialize
-      boot_fields
-    end
-
-    def boot_fields
-      # @fields_loader = Avo::FieldsLoader.new
-      # fields if self.respond_to? :fields
-
-      # @grid_loader = Avo::FieldsLoader.new
-      # grid if self.respond_to? :grid
-
-      @actions_loader = Avo::ActionsLoader.new
-      actions if self.respond_to? :actions
-
-      @filters_loader = Avo::ActionsLoader.new
-      filters if self.respond_to? :filters
     end
 
     def hydrate(model: nil, view: nil, user: nil, params: nil)
@@ -80,28 +64,21 @@ module Avo
       self
     end
 
-    def get_fields(panel: nil, view_type: :table, reflection: nil)
-      case view_type.to_sym
-      when :table
-        fields = get_field_definitions.select do |field|
-          field.send("show_on_#{@view.to_s}")
-        end
-        .select do |field|
-          field.can_see.present? ? field.can_see.call : true
-        end
-        .select do |field|
-          unless field.respond_to?(:foreign_key) &&
-            reflection.present? &&
-            reflection.respond_to?(:foreign_key) &&
-            reflection.foreign_key == field.foreign_key
-            true
-          end
-
-        end
-      when :grid
-        # fields = [*self.class.grid_grid_loader.bag, *self.class.grid_title_loader.bag, *self.class.grid_body_loader.bag]
+    def get_fields(panel: nil, reflection: nil)
+      fields = get_field_definitions.select do |field|
+        field.send("show_on_#{@view.to_s}")
       end
-
+      .select do |field|
+        field.can_see.present? ? field.can_see.call : true
+      end
+      .select do |field|
+        unless field.respond_to?(:foreign_key) &&
+          reflection.present? &&
+          reflection.respond_to?(:foreign_key) &&
+          reflection.foreign_key == field.foreign_key
+          true
+        end
+      end
 
       if panel.present?
         fields = fields.select do |field|
@@ -117,14 +94,31 @@ module Avo
     end
 
     def get_grid_fields
+      return if self.class.grid_title_loader.blank?
 
-      fields = [*self.class.grid_grid_loader.bag, *self.class.grid_title_loader.bag, *self.class.grid_body_loader.bag]
-      abort 'fields'.inspect
-      abort fields.inspect
-      fields = fields.map do |field|
-        field.hydrate(model: @model, view: @view, resource: self)
+      card = {
+        cover: [*self.class.grid_cover_loader.bag],
+        title: [*self.class.grid_title_loader.bag],
+        body: [*self.class.grid_body_loader.bag],
+      }
+
+      card.each do |section, fields|
+        fields = fields.map do |field|
+          field.hydrate(model: @model, view: @view, resource: self)
+        end
       end
+    end
 
+    def get_filters
+      return [] if self.class.filters_loader.blank?
+
+      self.class.filters_loader.bag
+    end
+
+    def get_actions
+      return [] if self.class.actions_loader.blank?
+
+      self.class.actions_loader.bag
     end
 
     def get_field_definitions
@@ -195,17 +189,11 @@ module Avo
     end
 
     def available_view_types
-      [:table]
-      # [:table]
-      # get_fields(view_type: :grid).length > 0 ? [:grid, :table] : [:table]
-    end
+      view_types = [:table]
 
-    def get_filters
-      @filters_loader.bag
-    end
+      view_types << :grid if get_grid_fields.present?
 
-    def get_actions
-      @actions_loader.bag
+      view_types
     end
 
     def route_key

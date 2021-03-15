@@ -18,9 +18,9 @@ class PostResource < Avo::BaseResource
   end
 
   grid do |cover, title, body|
-    cover.file :cover_photo, required: true, grid_position: :preview, link_to_resource: true
-    title.text :name, required: true, grid_position: :title, link_to_resource: true
-    body.text :excerpt, grid_position: :body do |model|
+    cover.file :cover_photo, required: true, link_to_resource: true
+    title.text :name, required: true, link_to_resource: true
+    body.text :excerpt do |model|
       begin
         ActionView::Base.full_sanitizer.sanitize(model.body).truncate 130
       rescue => exception
@@ -29,24 +29,12 @@ class PostResource < Avo::BaseResource
     end
   end
 
-  # def grid
-  #   g.file :cover_photo, required: true, grid_position: :preview, link_to_resource: true
-  #   g.text :name, required: true, grid_position: :title, link_to_resource: true
-  #   g.text :excerpt, grid_position: :body do |model|
-  #     begin
-  #       ActionView::Base.full_sanitizer.sanitize(model.body).truncate 130
-  #     rescue => exception
-  #       ''
-  #     end
-  #   end
-  # end
-
-  def filters
-    filter.use FeaturedFilter
-    filter.use PublishedFilter
+  filters do |f|
+    f.use FeaturedFilter
+    f.use PublishedFilter
   end
 
-  def actions
+  actions do |a|
     a.use TogglePublished
   end
 end

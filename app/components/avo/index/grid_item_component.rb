@@ -6,27 +6,20 @@ class Avo::Index::GridItemComponent < ViewComponent::Base
   def initialize(resource: resource, reflection: reflection, parent_model: nil)
     @resource = resource
     @reflection = reflection
-    # @grid_fields = resource.get_fields(view_type: :grid)
     @grid_fields = resource.get_grid_fields
     @parent_model = parent_model
   end
 
   private
-    def preview
-      @grid_fields.detect do |field|
-        field.grid_position == :preview
-      end
+    def cover
+      @grid_fields[:cover].first
     end
 
     def title
-      @grid_fields.detect do |field|
-        field.grid_position == :title
-      end
+      @grid_fields[:title].first
     end
 
     def body
-      @grid_fields.detect do |field|
-        field.grid_position == :body
-      end
+      @grid_fields[:body].first
     end
 end

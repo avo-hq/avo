@@ -20,7 +20,7 @@ class ProjectResource < Avo::BaseResource
     f.has_and_belongs_to_many :users
   end
 
-  def filters
+  filters do |filter|
     # filter.use PeopleFilter
     # filter.use People2Filter
     # filter.use FeaturedFilter
