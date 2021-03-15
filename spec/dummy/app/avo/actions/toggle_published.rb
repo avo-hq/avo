@@ -1,4 +1,4 @@
-class TogglePublished < BaseAction
+class TogglePublished < Avo::Action
   self.name = 'Toggle post published'
   self.message = 'Are you sure, sure?'
   self.confirm_text = 'Toggle'

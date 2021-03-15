@@ -1,2 +1,0 @@
-class Avo::<%= plural_name.humanize %>Controller < Avo::ResourcesController
-end

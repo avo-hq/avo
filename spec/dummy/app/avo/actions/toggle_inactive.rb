@@ -1,4 +1,4 @@
-class ToggleInactive < BaseAction
+class ToggleInactive < Avo::Action
   self.name = 'Toggle inactive'
 
   def handle(request, models, fields)
