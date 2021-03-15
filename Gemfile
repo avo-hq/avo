@@ -78,7 +78,6 @@ group :development do
   # Release helper
   gem 'bump', require: false
   gem 'gem-release', require: false
-  gem 'faker', require: false
 
   # gem 'rack-mini-profiler'
   # gem 'memory_profiler'
@@ -89,6 +88,10 @@ group :development do
   # gem 'pry-rails'
 end
 
+group :development, :test do
+  gem 'faker', require: false
+end
+
 group :test do
   gem 'rspec-rails', '~> 4.0.0'
   gem 'rails-controller-testing'
@@ -97,7 +100,6 @@ group :test do
   gem 'selenium-webdriver'
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'webdrivers'
-  # gem 'faker'
   gem 'fuubar'
   gem 'simplecov', require: false
   gem 'simplecov-cobertura'
