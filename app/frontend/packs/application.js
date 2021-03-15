@@ -11,7 +11,7 @@ import tippy from 'tippy.js'
 // Toastr alerts
 import '../js/toastr'
 
-Mousetrap.bind('r r r', () => Turbo.visit(window.location.href))
+Mousetrap.bind('r r r', () => Turbo.visit(window.location.href, { action: "replace" }))
 
 const application = Application.start()
 

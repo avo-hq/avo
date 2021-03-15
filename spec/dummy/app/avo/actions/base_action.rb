@@ -1,3 +1,3 @@
-class BaseAction < Avo::Actions::Action
+class BaseAction < Avo::Action
 
 end

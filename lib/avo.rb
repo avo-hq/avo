@@ -1,20 +1,9 @@
-require_relative 'avo/configuration'
+require 'zeitwerk'
 require_relative 'avo/version'
+require_relative 'avo/engine' if defined?(Rails)
 
-require_relative 'avo/app/fields/field'
-
-require_relative 'avo/app/action'
-
-require_relative 'avo/app/filter'
-require_relative 'avo/app/filters/boolean_filter'
-require_relative 'avo/app/filters/select_filter'
-
-require_relative 'avo/app/fields_loader'
-require_relative 'avo/app/actions_loader'
-# require_relative 'avo/app/fields_loader_helper'
-require_relative 'avo/app/resource'
-
-require_relative 'avo/app/licensing/license_manager'
+loader = Zeitwerk::Loader.for_gem
+loader.setup
 
 module Avo
   ROOT_PATH = Pathname.new(File.join(__dir__, '..'))
@@ -31,4 +20,4 @@ module Avo
   end
 end
 
-require_relative 'avo/engine' if defined?(Rails)
+loader.eager_load

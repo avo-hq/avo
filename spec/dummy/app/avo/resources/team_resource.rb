@@ -1,9 +1,9 @@
-class TeamResource < BaseResource
+class TeamResource < Avo::BaseResource
   self.title = :name
   self.search = [:id, :name]
   self.includes = :admin
 
-  def fields(request)
+  fields do |f|
     f.id
     f.text :name
     f.text :url
@@ -24,17 +24,17 @@ class TeamResource < BaseResource
     f.has_many :members, through: :memberships
   end
 
-  def grid(request)
-    g.external_image :logo, grid_position: :preview, link_to_resource: true do |model|
+  grid do |cover, title, body|
+    cover.external_image :logo, link_to_resource: true do |model|
       if model.url.present?
         "//logo.clearbit.com/#{URI.parse(model.url).host}?size=180"
       end
     end
-    g.text :name, grid_position: :title, link_to_resource: true
-    g.text :url, grid_position: :body
+    title.text :name, link_to_resource: true
+    body.text :url
   end
 
-  def filters(request)
+  filters do |filter|
     filter.use MembersFilter
   end
 end

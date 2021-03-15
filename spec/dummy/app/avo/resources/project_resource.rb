@@ -1,9 +1,9 @@
-class ProjectResource < BaseResource
+class ProjectResource < Avo::BaseResource
   self.title = :name
   self.search = [:name, :id]
   self.includes = :users
 
-  def fields(request)
+  fields do |f|
     f.id link_to_resource: true
     f.text :name, required: true
     f.status :status, failed_when: [:closed, :rejected, :failed], loading_when: [:loading, :running, :waiting], nullable: true
@@ -20,7 +20,7 @@ class ProjectResource < BaseResource
     f.has_and_belongs_to_many :users
   end
 
-  def filters(request)
+  filters do |filter|
     # filter.use PeopleFilter
     # filter.use People2Filter
     # filter.use FeaturedFilter

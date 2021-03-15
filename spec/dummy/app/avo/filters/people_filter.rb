@@ -1,4 +1,4 @@
-class PeopleFilter < SelectFilter
+class PeopleFilter < Avo::Filters::SelectFilter
   self.name = 'People status (temporary)'
 
   def apply(request, query, value)
