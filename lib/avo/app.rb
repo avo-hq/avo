@@ -133,7 +133,7 @@ module Avo
         Rails.application.eager_load!
 
         Proc.new do
-          ::Avo::BaseResource.descendants
+          BaseResource.descendants
             .select do |resource|
               resource != :Resource
             end
