@@ -1,11 +1,9 @@
-require_relative 'field_extensions/visible_in_different_views'
-require_relative 'field_extensions/has_field_name'
-
 module Avo
   module Fields
     class BaseField
-      include Avo::Fields::FieldExtensions::VisibleInDifferentViews
+      extend ActiveSupport::DescendantsTracker
       extend Avo::Fields::FieldExtensions::HasFieldName
+      include Avo::Fields::FieldExtensions::VisibleInDifferentViews
 
       attr_accessor :id
       attr_accessor :name

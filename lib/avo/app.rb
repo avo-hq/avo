@@ -1,12 +1,9 @@
 
 # Require all fields
-require_relative 'fields/base_field'
-Dir[Pathname.new(File.join(__dir__, 'fields', '*.rb'))].each {|file| require file }
 
 module Avo
   class App
     class_attribute :app, default: {
-      root_path: '',
       resources: [],
       cache_store: nil
     }
@@ -17,8 +14,8 @@ module Avo
 
     class << self
       def boot
-        self.app[:root_path] = Pathname.new(File.join(__dir__, '..', '..'))
         init_fields
+
         I18n.locale = Avo.configuration.language_code
 
         if Rails.cache.class == ActiveSupport::Cache::NullStore

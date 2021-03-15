@@ -1,5 +1,3 @@
-require_relative 'text_field'
-
 module Avo
   module Fields
     class PasswordField < TextField

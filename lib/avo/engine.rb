@@ -8,13 +8,7 @@ module Avo
   class Engine < ::Rails::Engine
     isolate_namespace Avo
 
-    # Add the lib directory to autoloaders
-    config.autoload_paths << File.expand_path('../', __dir__)
-
-
     config.after_initialize do
-      # Load all the fields so we can register their definitions
-      Dir[Rails.root.join('app', 'avo', 'resources', '*.rb')].each {|file| require file }
       # Boot Avo
       ::Avo::App.boot
     end

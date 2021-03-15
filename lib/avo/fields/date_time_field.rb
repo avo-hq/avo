@@ -1,5 +1,3 @@
-require_relative 'date_field'
-
 module Avo
   module Fields
     class DateTimeField < DateField
