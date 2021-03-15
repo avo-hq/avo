@@ -8,11 +8,6 @@
 
   <%= render partial: 'avo/partials/javascript' %>
 
-  <% if Avo::PACKED %>
-    <%= stylesheet_link_tag 'application', media: 'all', "data-turbo-track": "reload" %>
-    <%= javascript_include_tag 'avo-packs/application', "data-turbo-track": "reload" %>
-  <% else %>
-  <% end %>
   <%= javascript_pack_tag 'application' %>
   <%= stylesheet_pack_tag 'application', media: 'all' %>
 </head>
