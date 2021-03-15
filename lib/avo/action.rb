@@ -1,5 +1,3 @@
-# require_relative 'fields_loader'
-
 module Avo
   class Action
     class_attribute :name, default: self.class.to_s.demodulize.underscore.humanize(keep_id_suffix: true)
