@@ -1,6 +1,3 @@
-
-# Require all fields
-
 module Avo
   class App
     class_attribute :app, default: {
