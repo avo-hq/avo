@@ -1,14 +1,14 @@
-require_relative 'avo/configuration'
+require 'zeitwerk'
 require_relative 'avo/version'
-require_relative 'avo/app'
-
 require_relative 'avo/engine' if defined?(Rails)
+
+loader = Zeitwerk::Loader.for_gem
+loader.setup
 
 module Avo
   ROOT_PATH = Pathname.new(File.join(__dir__, '..'))
   IN_DEVELOPMENT = ENV['AVO_IN_DEVELOPMENT'] == '1'
   PACKED = !IN_DEVELOPMENT
-  # PACKED = true
 
   class << self
     def webpacker
@@ -20,4 +20,4 @@ module Avo
   end
 end
 
-# loader.eager_load # optionally
+loader.eager_load
