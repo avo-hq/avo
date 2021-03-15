@@ -1,5 +1,7 @@
 module Avo
-  class Resource
+  class BaseResource
+    extend ActiveSupport::DescendantsTracker
+
     attr_accessor :view
     attr_accessor :model
     attr_accessor :user
@@ -24,11 +26,21 @@ module Avo
     class_attribute :default_view_type, default: :table
     class_attribute :devise_password_optional, default: false
     class_attribute :fields_loader
+    class_attribute :grid_grid_loader
+    class_attribute :grid_title_loader
+    class_attribute :grid_body_loader
 
     class << self
       def fields(&block)
         self.fields_loader ||= Avo::FieldsLoader.new
         yield(fields_loader)
+      end
+
+      def grid(&block)
+        self.grid_grid_loader ||= Avo::FieldsLoader.new
+        self.grid_title_loader ||= Avo::FieldsLoader.new
+        self.grid_body_loader ||= Avo::FieldsLoader.new
+        yield(grid_grid_loader, grid_title_loader, grid_body_loader)
       end
 
       def context
@@ -44,8 +56,8 @@ module Avo
       # @fields_loader = Avo::FieldsLoader.new
       # fields if self.respond_to? :fields
 
-      @grid_loader = Avo::FieldsLoader.new
-      grid if self.respond_to? :grid
+      # @grid_loader = Avo::FieldsLoader.new
+      # grid if self.respond_to? :grid
 
       @actions_loader = Avo::ActionsLoader.new
       actions if self.respond_to? :actions
@@ -87,8 +99,9 @@ module Avo
 
         end
       when :grid
-        fields = @grid_loader.bag
+        # fields = [*self.class.grid_grid_loader.bag, *self.class.grid_title_loader.bag, *self.class.grid_body_loader.bag]
       end
+
 
       if panel.present?
         fields = fields.select do |field|
@@ -101,6 +114,17 @@ module Avo
       end
 
       fields
+    end
+
+    def get_grid_fields
+
+      fields = [*self.class.grid_grid_loader.bag, *self.class.grid_title_loader.bag, *self.class.grid_body_loader.bag]
+      abort 'fields'.inspect
+      abort fields.inspect
+      fields = fields.map do |field|
+        field.hydrate(model: @model, view: @view, resource: self)
+      end
+
     end
 
     def get_field_definitions
@@ -171,7 +195,9 @@ module Avo
     end
 
     def available_view_types
-      get_fields(view_type: :grid).length > 0 ? [:grid, :table] : [:table]
+      [:table]
+      # [:table]
+      # get_fields(view_type: :grid).length > 0 ? [:grid, :table] : [:table]
     end
 
     def get_filters

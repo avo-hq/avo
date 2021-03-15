@@ -6,7 +6,8 @@ class Avo::Index::GridItemComponent < ViewComponent::Base
   def initialize(resource: resource, reflection: reflection, parent_model: nil)
     @resource = resource
     @reflection = reflection
-    @grid_fields = resource.get_fields(view_type: :grid)
+    # @grid_fields = resource.get_fields(view_type: :grid)
+    @grid_fields = resource.get_grid_fields
     @parent_model = parent_model
   end
 

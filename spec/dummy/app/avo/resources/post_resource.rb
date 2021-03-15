@@ -1,4 +1,4 @@
-class PostResource < BaseResource
+class PostResource < Avo::BaseResource
   self.title = :name
   self.search = [:name, :id]
   self.includes = :user
@@ -17,10 +17,10 @@ class PostResource < BaseResource
     f.belongs_to :user, meta: { searchable: false }, placeholder: '—'
   end
 
-  def grid
-    g.file :cover_photo, required: true, grid_position: :preview, link_to_resource: true
-    g.text :name, required: true, grid_position: :title, link_to_resource: true
-    g.text :excerpt, grid_position: :body do |model|
+  grid do |cover, title, body|
+    cover.file :cover_photo, required: true, grid_position: :preview, link_to_resource: true
+    title.text :name, required: true, grid_position: :title, link_to_resource: true
+    body.text :excerpt, grid_position: :body do |model|
       begin
         ActionView::Base.full_sanitizer.sanitize(model.body).truncate 130
       rescue => exception
@@ -28,6 +28,18 @@ class PostResource < BaseResource
       end
     end
   end
+
+  # def grid
+  #   g.file :cover_photo, required: true, grid_position: :preview, link_to_resource: true
+  #   g.text :name, required: true, grid_position: :title, link_to_resource: true
+  #   g.text :excerpt, grid_position: :body do |model|
+  #     begin
+  #       ActionView::Base.full_sanitizer.sanitize(model.body).truncate 130
+  #     rescue => exception
+  #       ''
+  #     end
+  #   end
+  # end
 
   def filters
     filter.use FeaturedFilter

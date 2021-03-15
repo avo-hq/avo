@@ -1,4 +1,4 @@
-require_relative 'fields_loader'
+# require_relative 'fields_loader'
 
 module Avo
   class Action

@@ -1,4 +1,4 @@
-class ProjectResource < BaseResource
+class ProjectResource < Avo::BaseResource
   self.title = :name
   self.search = [:name, :id]
   self.includes = :users

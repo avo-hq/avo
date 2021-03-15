@@ -1,7 +1,7 @@
-require_relative 'license'
-require_relative 'community_license'
-require_relative 'pro_license'
-require_relative 'null_license'
+# require_relative 'license'
+# require_relative 'community_license'
+# require_relative 'pro_license'
+# require_relative 'null_license'
 
 module Avo
   module Licensing
