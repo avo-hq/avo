@@ -38,40 +38,21 @@ module Avo
           return true if skip_authorization
           return true if user.nil?
 
-          # puts '----->'.inspect
-
           begin
             if Pundit.policy user, record
               Pundit.authorize user, record, action
             end
 
-            # puts 'true authorize'.inspect
             true
           rescue Pundit::NotDefinedError => error
-            # puts 'not_defined'.inspect
             false
           rescue => error
-            # puts ['general raise', args].inspect
             if args[:raise_exception] == false
-              # puts 1.inspect
               false
             else
-              # puts 2.inspect
               raise error
             end
           end
-
-
-          # abort action.inspect
-
-          #   return true
-          # end
-
-          # false
-          # begin
-          # rescue Pundit::NotAuthorizedError => error
-          #   false
-          # end
         end
 
         def authorize_action(user, record, action, **args)
