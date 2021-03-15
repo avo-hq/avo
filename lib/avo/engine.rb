@@ -13,32 +13,11 @@ module Avo
 
 
     config.after_initialize do
-      # Rails.autoloaders.log!
       # Load all the fields so we can register their definitions
       Dir[Rails.root.join('app', 'avo', 'resources', '*.rb')].each {|file| require file }
       # Boot Avo
       ::Avo::App.boot
     end
-
-    # initializer 'avo.init' do |app|
-    #   avo_root_path = Avo::Engine.root.to_s
-
-    #   if Avo::IN_DEVELOPMENT
-    #     # Register reloader
-    #     # app.reloaders << app.config.file_watcher.new([], {
-    #     #   Avo::Engine.root.join('lib', 'avo').to_s => ['rb'],
-    #     # }) {}
-
-    #     # What to do on file change
-    #     config.to_prepare do
-    #       Dir.glob(avo_root_path + '/lib/avo/app/*.rb'.to_s).each { |c| load c }
-    #     end
-    #   # else
-    #   #   Dir.glob(avo_root_path + '/lib/avo/app/**/*.rb'.to_s).each { |c| require c }
-
-    #   #   Avo::App.boot if Avo::PACKED
-    #   end
-    # end
 
     initializer 'avo.autoload', before: :set_autoload_paths do |app|
       Rails.autoloaders.main.push_dir(Rails.root.join('app', 'avo', 'filters'))

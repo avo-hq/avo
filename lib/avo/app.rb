@@ -1,7 +1,3 @@
-# require_relative 'tools_manager'
-# require_relative 'resource'
-# require_relative 'services/authorization_service'
-# require_relative 'licensing/h_q'
 
 # Require all fields
 require_relative 'fields/base_field'
@@ -18,21 +14,16 @@ module Avo
     class_attribute :request, default: nil
     class_attribute :context, default: nil
     class_attribute :license, default: nil
-    puts 'in Avo.App'.inspect
 
     class << self
       def boot
-        puts 'Avo::App.boot |||||||||'.inspect
         self.app[:root_path] = Pathname.new(File.join(__dir__, '..', '..'))
         init_fields
         I18n.locale = Avo.configuration.language_code
-        puts Rails.cache.inspect
 
         if Rails.cache.class == ActiveSupport::Cache::NullStore
-          puts '111'.inspect
           self.app[:cache_store] ||= ActiveSupport::Cache::MemoryStore.new
         else
-          puts '222'.inspect
           self.app[:cache_store] = Rails.cache
         end
       end
@@ -78,9 +69,6 @@ module Avo
       end
 
       def init_resources
-        Rails.application.eager_load!
-
-        puts ['in init_resources', BaseResource.descendants].inspect
         self.app[:resources] = BaseResource.descendants
           .select do |resource|
             resource != BaseResource
@@ -90,7 +78,6 @@ module Avo
               resource.new
             end
           end
-        puts ['self.app[:resources]->', self.app[:resources]].inspect
       end
 
       def get_resources
@@ -101,7 +88,6 @@ module Avo
       #
       # get_resource_by_name('User') => Avo::Resources::User
       def get_resource(resource)
-        puts ['in get_resource: self.app[:resources]->', self.app[:resources]].inspect
         self.app[:resources].find do |available_resource|
           "#{resource}Resource".safe_constantize == available_resource.class
         end
@@ -149,10 +135,7 @@ module Avo
         # We should eager load all the classes so we find all descendants
         Rails.application.eager_load!
 
-        # puts ['in draw_routes: BaseResource.ancestors->', ::Avo::BaseResource.ancestors].inspect
-        puts ['in draw_routes: BaseResource.descendants->', ::Avo::BaseResource.descendants].inspect
         Proc.new do
-          puts ['in block of draw_routes: BaseResource.descendants->', ::Avo::BaseResource.descendants].inspect
           ::Avo::BaseResource.descendants
             .select do |resource|
               resource != :Resource
