@@ -4,7 +4,7 @@ RUN apt-get update -qq && apt-get install -yqq build-essential apt-transport-htt
 
 # Cache nokogiri
 RUN apt-get install -yqq libxml2-dev libxslt1-dev build-essential patch ruby-dev zlib1g-dev liblzma-dev
-RUN gem install nokogiri selenium-webdriver
+RUN gem install nokogiri selenium-webdriver ffi ruby-debug-ide tilt
 
 # node
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
@@ -22,6 +22,7 @@ RUN gem install bundler -v 2.2.5
 
 ENV RAILS_ENV=production
 ENV NODE_ENV=production
+ENV BUNDLE_WITHOUT=development:test
 
 WORKDIR /avo/
 
