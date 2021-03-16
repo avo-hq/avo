@@ -11,7 +11,7 @@ module Avo
     rescue_from Pundit::NotAuthorizedError, with: :render_unauthorized
     rescue_from ActiveRecord::RecordInvalid, with: :exception_logger
 
-    helper_method :_current_user, :resources_path, :resource_path, :new_resource_path, :edit_resource_path, :resource_attach_path, :resource_detach_path
+    helper_method :_current_user, :resources_path, :resource_path, :new_resource_path, :edit_resource_path, :resource_attach_path, :resource_detach_path, :related_resources_path
     add_flash_types :info, :warning, :success, :error
 
     def init_app
@@ -51,6 +51,22 @@ module Avo
       rescue;end
 
       send :"resources_#{model.model_name.route_key}_path", **existing_params, **args
+    end
+
+    def related_resources_path(parent_model, model, keep_query_params: false, **args)
+      return if model.nil?
+
+      existing_params = {}
+
+      begin
+        if keep_query_params
+          existing_params = Addressable::URI.parse(request.fullpath).query_values.symbolize_keys
+        end
+      rescue;end
+
+      Addressable::Template.new("#{Avo.configuration.root_path}/resources/#{@parent_resource.model.model_name.route_key}/#{@parent_resource.model.id}/#{@resource.route_key}{?query*}")
+        .expand({query: {**existing_params, **args}})
+        .to_str
     end
 
     def resource_path(model = nil, resource_id: nil, keep_query_params: false, **args)
