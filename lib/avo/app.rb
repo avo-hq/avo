@@ -80,7 +80,7 @@ module Avo
 
       # Returns the Avo resource by camelized name
       #
-      # get_resource_by_name('User') => Avo::Resources::User
+      # get_resource_by_name('User') => UserResource
       def get_resource(resource)
         self.app[:resources].find do |available_resource|
           "#{resource}Resource".safe_constantize == available_resource.class
@@ -89,18 +89,28 @@ module Avo
 
       # Returns the Avo resource by singular snake_cased name
       #
-      # get_resource_by_name('user') => Avo::Resources::User
+      # get_resource_by_name('user') => UserResource
       def get_resource_by_name(name)
         self.get_resource name.singularize.camelize
       end
 
       # Returns the Avo resource by singular snake_cased name
       #
-      # get_resource_by_name('User') => Avo::Resources::User
-      # get_resource_by_name(User) => Avo::Resources::User
+      # get_resource_by_name('User') => UserResource
+      # get_resource_by_name(User) => UserResource
       def get_resource_by_model_name(name)
         get_resources.find do |resource|
           resource.model_class.model_name.name == name.to_s
+        end
+      end
+
+      # Returns the Avo resource by singular snake_cased name
+      #
+      # get_resource_by_controller_name('delayed_backend_active_record_jobs') => DelayedJobResource
+      # get_resource_by_controller_name('users') => UserResource
+      def get_resource_by_controller_name(name)
+        get_resources.find do |resource|
+          resource.model_class.to_s.pluralize.underscore.gsub('/', '_') == name.to_s
         end
       end
 
@@ -132,11 +142,15 @@ module Avo
         Proc.new do
           BaseResource.descendants
             .select do |resource|
-              resource != :Resource
+              resource != :BaseResource
             end
             .map do |resource|
               if resource.is_a? Class
-                route_key = resource.to_s.underscore.gsub('_resource', '').downcase.pluralize.to_sym
+                if resource.model_class.present?
+                  route_key = resource.model_class.model_name.route_key
+                else
+                  route_key = resource.to_s.underscore.gsub('_resource', '').downcase.pluralize.to_sym
+                end
 
                 resources route_key
               end

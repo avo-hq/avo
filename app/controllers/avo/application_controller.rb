@@ -155,7 +155,12 @@ module Avo
       # Gets the Avo resource for this request based on the request from the `resource_name` "param"
       # Ex: Avo::Resources::Project, Avo::Resources::Team, Avo::Resources::User
       def resource
-        App.get_resource @resource_name.to_s.camelize.singularize
+
+        resource = App.get_resource @resource_name.to_s.camelize.singularize
+
+        return resource if resource.present?
+
+        App.get_resource_by_controller_name @resource_name
       end
 
       def related_resource

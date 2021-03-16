@@ -11,6 +11,7 @@ module Avo
     class_attribute :title, default: :id
     class_attribute :search, default: [:id]
     class_attribute :includes, default: []
+    class_attribute :model_class
     class_attribute :translation_key
     class_attribute :default_view_type, default: :table
     class_attribute :devise_password_optional, default: false
@@ -158,6 +159,8 @@ module Avo
     end
 
     def model_class
+      return self.class.model_class if self.class.model_class.present?
+
       return @model.class if @model.present?
 
       self.class.name.demodulize.chomp('Resource').safe_constantize
