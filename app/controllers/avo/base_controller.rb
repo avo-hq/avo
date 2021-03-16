@@ -196,12 +196,7 @@ module Avo
         end
 
         @actions = @resource.get_actions.map do |action|
-          action = action.new
-
-          action.hydrate(model: model, resource: @resource)
-          action.boot_fields request
-
-          action
+          action.new.hydrate(model: model, resource: @resource)
         end
       end
 

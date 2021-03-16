@@ -35,7 +35,6 @@ module Avo
 
         @action = action_class.new
         @action.hydrate(model: model, resource: resource, user: _current_user)
-        @action.boot_fields request
       end
 
       def respond(response)

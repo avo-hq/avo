@@ -15,7 +15,7 @@ class ToggleInactive < Avo::BaseAction
     succeed 'Perfect!'
   end
 
-  def fields(request)
+  fields do |f|
     f.boolean :notify_user, default: true
     f.text :message, default: 'Your account has been marked as inactive.'
   end

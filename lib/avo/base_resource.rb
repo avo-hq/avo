@@ -125,6 +125,8 @@ module Avo
     end
 
     def get_field_definitions
+      return [] if self.class.fields_loader.blank?
+
       self.class.fields_loader.bag.map do |field|
         field.hydrate(resource: self, panel_name: default_panel_name, user: user)
       end

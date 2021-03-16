@@ -1,31 +1,37 @@
 module Avo
   class BaseAction
     class_attribute :name, default: self.class.to_s.demodulize.underscore.humanize(keep_id_suffix: true)
-    class_attribute :message, default: I18n.t('avo.are_you_sure_you_want_to_run_this_option')
-    class_attribute :confirm_text, default: I18n.t('avo.run')
-    class_attribute :cancel_text, default: I18n.t('avo.cancel')
+    class_attribute :message
+    class_attribute :confirm_text
+    class_attribute :cancel_text
     class_attribute :no_confirmation, default: false
+    class_attribute :fields_loader
 
     attr_accessor :response
     attr_accessor :model
     attr_accessor :resource
     attr_accessor :user
 
-    attr_accessor :field_loader
+    class << self
+      def fields(&block)
+        self.fields_loader ||= Avo::Loaders::FieldsLoader.new
 
-    alias :field :field_loader
-    alias :f :field
+        yield(fields_loader)
+      end
+
+      def context
+        App.context
+      end
+    end
 
     def initialize
-      @fields ||= []
+      self.class.message ||= I18n.t('avo.are_you_sure_you_want_to_run_this_option')
+      self.class.confirm_text ||= I18n.t('avo.run')
+      self.class.cancel_text ||= I18n.t('avo.cancel')
+
       @response ||= {}
       @response[:message_type] ||= :notice
       @response[:message] ||= I18n.t('avo.action_ran_successfully')
-    end
-
-    def boot_fields(request)
-      @field_loader = Avo::Loaders::FieldsLoader.new
-      fields request if self.respond_to? :fields
     end
 
     def get_fields(view_type: :table)
@@ -38,7 +44,9 @@ module Avo
     end
 
     def get_field_definitions
-      @field_loader.bag.map do |field|
+      return [] if self.class.fields_loader.blank?
+
+      self.class.fields_loader.bag.map do |field|
         field.hydrate(action: self)
       end
     end
