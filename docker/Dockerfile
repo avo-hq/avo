@@ -42,8 +42,6 @@ RUN yarn check --integrity
 COPY ./bin/                        /avo/bin/
 COPY ./app/frontend/               /avo/app/frontend/
 COPY ./config/                     /avo/config/
-# We add a custom development env for the packed version in order to not start the webpacker process when using Avo in your development env.
-COPY ./config/webpacker_packed.yml /avo/config/webpacker.yml
 COPY ./.eslintrc.json              /avo/.eslintrc.json
 COPY ./jsconfig.json               /avo/jsconfig.json
 COPY ./postcss.config.js           /avo/postcss.config.js
@@ -52,6 +50,12 @@ COPY ./babel.config.js             /avo/babel.config.js
 
 # Copy the files needed by PurgeCSS
 COPY . /avo/
+
+# Remove webpacker.yml config files
+RUN rm /avo/config/webpacker.yml
+RUN rm /avo/config/webpacker_packed.yml
+# Add a custom development env for the packed version in order to not start the webpacker process when using Avo in your app's development env.
+COPY ./config/webpacker_packed.yml /avo/config/webpacker.yml
 
 RUN bin/webpack
 
