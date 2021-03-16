@@ -2,8 +2,8 @@ module Avo
   class BaseAction
     class_attribute :name, default: self.class.to_s.demodulize.underscore.humanize(keep_id_suffix: true)
     class_attribute :message
-    class_attribute :confirm_text
-    class_attribute :cancel_text
+    class_attribute :confirm_button_label
+    class_attribute :cancel_button_label
     class_attribute :no_confirmation, default: false
     class_attribute :fields_loader
 
@@ -26,8 +26,8 @@ module Avo
 
     def initialize
       self.class.message ||= I18n.t('avo.are_you_sure_you_want_to_run_this_option')
-      self.class.confirm_text ||= I18n.t('avo.run')
-      self.class.cancel_text ||= I18n.t('avo.cancel')
+      self.class.confirm_button_label ||= I18n.t('avo.run')
+      self.class.cancel_button_label ||= I18n.t('avo.cancel')
 
       @response ||= {}
       @response[:message_type] ||= :notice

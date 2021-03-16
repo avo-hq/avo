@@ -26,46 +26,10 @@
         <% end %>
 
         <% c.with :controls do %>
-          <%= a_button @action.cancel_text, 'data-action': 'click->modal#close', size: :sm %>
-          <%= a_button @action.confirm_text, type: :submit, color: :green, size: :sm %>
+          <%= a_button @action.cancel_button_label, 'data-action': 'click->modal#close', size: :sm %>
+          <%= a_button @action.confirm_button_label, type: :submit, color: :green, size: :sm %>
         <% end %>
       <% end %>
     <% end %>
   </div>
 <% end %>
-
-<%#
-      <div v-if="hasFields">
-        <component
-          v-for="(field, index) in fields"
-          :key="uniqueKey(field, index)"
-          :index="index"
-          :is="`edit-${field.component}`"
-          :field="field"
-          :errors="errors"
-          :resource-name="resourceName"
-          :field-id="field.id"
-          :via-resource-name="viaResourceName"
-          :via-resource-id="viaResourceId"
-          :field-component="field.component"
-          displayed-in="modal"
-        />
-      </div>
-      <div class="flex-1 flex items-center justify-center px-8 text-lg mt-8 mb-12" v-else>
-        {{ action.message }}
-      </div>
-      <div class="flex justify-end items-baseline space-x-4 p-4 bg-gray-200">
-        <a-button
-          size="sm"
-          @click="$emit('close')"
-          v-text="action.cancel_text"
-        />
-        <a-button
-          ref="confirm-button"
-          :color="buttonColor"
-          size="sm"
-          @click="handle"
-          v-text="action.confirm_text"
-        />
-    </div>
-      </div> %>
