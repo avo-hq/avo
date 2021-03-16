@@ -66,7 +66,7 @@ module Avo
       end
 
       respond_to do |format|
-        format.html { redirect_to params[:referrer] || resources_path(@model), notice: t('avo.attachment_class_detached', attachment_class: @attachment_class) }
+        format.html { redirect_to params[:referrer] || resource_path(@model), notice: t('avo.attachment_class_detached', attachment_class: @attachment_class) }
       end
     end
 
