@@ -161,16 +161,13 @@ module Avo
           @index_params[:per_page] = cookies[:per_page]
         end
 
-        if params[:per_page].present?
-          @index_params[:per_page] = params[:per_page]
-        end
-
-        if params[:per_page].present?
-          cookies[:per_page] = params[:per_page]
-        end
-
         if @parent_model.present?
           @index_params[:per_page] = Avo.configuration.via_per_page
+        end
+
+        if params[:per_page].present?
+          @index_params[:per_page] = params[:per_page]
+          cookies[:per_page] = params[:per_page]
         end
 
         # Sorting

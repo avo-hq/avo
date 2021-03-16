@@ -123,3 +123,5 @@ gem 'hotwire-rails'
 gem 'active_link_to'
 
 gem 'view_component', require: 'view_component/engine'
+
+gem 'addressable'
