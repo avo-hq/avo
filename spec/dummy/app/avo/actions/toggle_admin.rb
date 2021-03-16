@@ -1,4 +1,4 @@
-class ToggleAdmin < Avo::Action
+class ToggleAdmin < Avo::BaseAction
   self.name = 'Toggle admin'
   self.no_confirmation = true
 

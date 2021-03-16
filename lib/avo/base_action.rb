@@ -1,5 +1,5 @@
 module Avo
-  class Action
+  class BaseAction
     class_attribute :name, default: self.class.to_s.demodulize.underscore.humanize(keep_id_suffix: true)
     class_attribute :message, default: I18n.t('avo.are_you_sure_you_want_to_run_this_option')
     class_attribute :confirm_text, default: I18n.t('avo.run')
