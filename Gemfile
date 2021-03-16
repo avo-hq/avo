@@ -118,8 +118,6 @@ gem 'httparty'
 
 gem 'iso'
 
-gem 'i18n-js'
-
 gem 'hotwire-rails'
 
 gem 'active_link_to'
