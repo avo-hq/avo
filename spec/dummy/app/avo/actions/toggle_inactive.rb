@@ -1,7 +1,7 @@
 class ToggleInactive < Avo::BaseAction
   self.name = 'Toggle inactive'
 
-  def handle(request, models, fields)
+  def handle(models:, fields:)
     models.each do |model|
       if model.active
         model.update active: false

@@ -2,7 +2,7 @@ class ToggleAdmin < Avo::BaseAction
   self.name = 'Toggle admin'
   self.no_confirmation = true
 
-  def handle(request, models, fields)
+  def handle(models:, fields:)
     models.each do |model|
       if model.roles['admin']
         model.update roles: model.roles.merge!({ "admin": false })

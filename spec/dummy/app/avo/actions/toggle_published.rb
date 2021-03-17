@@ -4,7 +4,7 @@ class TogglePublished < Avo::BaseAction
   self.confirm_button_label = 'Toggle'
   self.cancel_button_label = "Don't toggle yet"
 
-  def handle(request, models, fields)
+  def handle(models:, fields:)
     models.each do |model|
       if model.published_at.present?
         model.update published_at: nil

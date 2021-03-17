@@ -34,6 +34,10 @@ module Avo
       @response[:message] ||= I18n.t('avo.action_ran_successfully')
     end
 
+    def context
+      self.class.context
+    end
+
     def get_fields(view_type: :table)
       get_field_definitions.map do |field|
         field.hydrate(action: self, model: @model)
@@ -59,20 +63,20 @@ module Avo
       self
     end
 
-    def handle_action(request, models, raw_fields)
+    def handle_action(models:, fields:)
       avo_fields = get_fields.map { |field| [field.id, field] }.to_h
 
-      if raw_fields.present?
-        fields = raw_fields.to_unsafe_h.map do |name, value|
+      if fields.present?
+        processed_fields = fields.to_unsafe_h.map do |name, value|
           [name, avo_fields[name.to_sym].resolve_attribute(value)]
         end
 
-        fields = fields.to_h
+        processed_fields = processed_fields.to_h
       else
-        fields = {}
+        processed_fields = {}
       end
 
-      result = self.handle request, models, fields
+      result = self.handle models: models, fields: processed_fields
 
       self
     end

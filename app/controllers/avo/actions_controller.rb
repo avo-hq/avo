@@ -16,7 +16,7 @@ module Avo
         key != 'resource_ids'
       end
 
-      performed_action = @action.handle_action(request, models, fields)
+      performed_action = @action.handle_action(models: models, fields: fields)
 
       respond performed_action.response
     end

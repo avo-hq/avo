@@ -3,14 +3,14 @@ module Avo
     class <%= class_name.camelize %> < Action
       self.name = '<%= name.underscore.humanize %>'
 
-      def handle(request, models, fields)
+      def handle(models:, fields:)
         models.each do |model|
           # Do something with your models.
         end
       end
 
       fields do |fields|
-        # Add desired fields here.
+        # Add fields here.
       end
     end
   end
