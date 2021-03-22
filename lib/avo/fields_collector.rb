@@ -23,5 +23,9 @@ module Avo
         field
       end
     end
+
+    def heading(body, **args)
+      self.fields << Avo::Fields::HeadingField.new(body, **args)
+    end
   end
 end
