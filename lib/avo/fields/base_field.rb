@@ -24,7 +24,7 @@ module Avo
       attr_accessor :placeholder
       attr_accessor :help
       attr_accessor :default
-      attr_accessor :can_see
+      attr_accessor :visible
       attr_accessor :model
       attr_accessor :resource
       attr_accessor :view
@@ -33,6 +33,8 @@ module Avo
       attr_accessor :meta
       attr_accessor :panel_name
       attr_accessor :link_to_resource
+
+      class_attribute :field_name_attribute
 
       @meta = {}
 
@@ -63,7 +65,7 @@ module Avo
           placeholder: id.to_s.humanize,
           help: nil,
           default: nil,
-          can_see: nil,
+          visible: true,
           meta: {},
           panel_name: nil,
         }
@@ -99,27 +101,35 @@ module Avo
         self
       end
 
+      def visible?
+        if visible.present? and visible.respond_to? :call
+          visible.call
+        else
+          visible
+        end
+      end
+
       def value
         # Get model value
-        value = @model.send(id) if model_or_class(@model) == 'model' and @model.respond_to? id
+        final_value = @model.send(id) if model_or_class(@model) == 'model' and @model.respond_to? id
 
         if @view === :new or @action.present?
           if default.present? and default.respond_to? :call
-            value = default.call @model, @resource, @view, self
+            final_value = default.call
           else
-            value = default
+            final_value = default
           end
         end
 
         # Run callback block if present
         if computable and block.present?
-          value = block.call @model, @resource, @view, self
+          final_value = block.call @model, @resource, @view, self
         end
 
         # Run the value through resolver if present
-        value = @format_using.call value if @format_using.present?
+        final_value = @format_using.call final_value if @format_using.present?
 
-        value
+        final_value
       end
 
       def fill_field(model, key, value)
