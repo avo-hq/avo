@@ -39,7 +39,7 @@ module Avo
 
         query = options.map { |key, value| "#{key}=#{value}" }.join('&')
 
-        URI::HTTP.build(host: "www.gravatar.com", path: "/avatar/#{md5}", query: query).to_s
+        URI::HTTPS.build(host: "www.gravatar.com", path: "/avatar/#{md5}", query: query).to_s
       end
     end
   end

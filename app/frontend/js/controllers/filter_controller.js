@@ -1,5 +1,4 @@
 import { Controller } from 'stimulus'
-import { Turbo } from '@hotwired/turbo-rails'
 import URI from 'urijs'
 
 export default class extends Controller {
@@ -35,13 +34,30 @@ export default class extends Controller {
     }
 
     filters[filterClass] = value
-    const encodedFilters = btoa(JSON.stringify(filters))
+
+    const filtered = Object.keys(filters)
+    .filter(key => filters[key] !== '')
+    .reduce((obj, key) => {
+      obj[key] = filters[key];
+      return obj;
+    }, {});
+
+    let encodedFilters;
+
+    if (filtered && Object.keys(filtered).length > 0) {
+      encodedFilters = btoa(JSON.stringify(filtered))
+    }
 
     const url = new URI(this.urlRedirectTarget.href)
 
     const query = {
       ...url.query(true),
-      filters: encodedFilters,
+    }
+
+    if (encodedFilters) {
+      query['filters'] = encodedFilters
+    } else {
+      delete query['filters']
     }
 
     url.query(query)

@@ -178,7 +178,7 @@ module Avo
       end
 
       def type
-        self.class.name.demodulize.to_s.underscore
+        self.class.name.demodulize.to_s.underscore.gsub('_field', '')
       end
 
       private

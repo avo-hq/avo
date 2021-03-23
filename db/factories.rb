@@ -12,6 +12,7 @@ FactoryBot.define do
   factory :team do
     name { Faker::Company.name }
     description { Faker::Lorem.paragraph(sentence_count: 4) }
+    url { Faker::Internet.url }
   end
 
   factory :post do
