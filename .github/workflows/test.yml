@@ -13,6 +13,9 @@ jobs:
       PGHOST: localhost
       PGUSER: postgres
       PGPORT: 5432
+      POSTGRES_HOST: localhost
+      POSTGRES_USERNAME: postgres
+      POSTGRES_PORT: 5432
       COVERAGE: true
 
     runs-on: ubuntu-latest
