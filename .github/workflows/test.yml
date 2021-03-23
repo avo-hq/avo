@@ -71,7 +71,7 @@ jobs:
       run: yarn global add webpack-cli
 
     - name: output
-      run: ls -la node_modules/.bin/
+      run: ls -la node_modules/
 
     - name: Bundle assets
       run: bin/webpack
