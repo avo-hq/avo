@@ -67,8 +67,11 @@ jobs:
     - name: Yarn install
       run: bundle exec rails app:yarn:install
 
+    - name: Add webpack cli
+      run: npm i -g webpack-cli
+
     - name: Bundle assets
-      run: bundle exec bin/webpack
+      run: bin/webpack
 
     - name: Run tests
       run: npm run test-all
