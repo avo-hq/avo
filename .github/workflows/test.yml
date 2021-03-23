@@ -9,6 +9,7 @@ on:
 jobs:
   test:
     env:
+      NODE_ENV: test
       RAILS_ENV: test
       PGHOST: localhost
       PGUSER: postgres
@@ -68,7 +69,7 @@ jobs:
       run: bundle exec rails app:yarn:install
 
     - name: Bundle assets
-      run: bin/rails assets:precompile
+      run: bin/rails bin/webpack
 
     - name: Export translations
       run: bin/rails i18n:js:export
