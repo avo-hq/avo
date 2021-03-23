@@ -81,8 +81,8 @@ RSpec.describe 'SelectField', type: :feature do
     end
   end
 
-  let(:stages_without_placeholder) { ['discovery', 'idea', 'done', 'on hold', 'cancelled'] }
-  let(:placeholder) { 'Choose the stage.' }
+  let(:stages_without_placeholder) { ['Discovery', 'Idea', 'Done', 'On hold', 'Cancelled'] }
+  let(:placeholder) { 'Choose the stage' }
   let(:stages_with_placeholder) { stages_without_placeholder.prepend(placeholder) }
 
   context 'edit' do
@@ -90,7 +90,7 @@ RSpec.describe 'SelectField', type: :feature do
 
     describe 'without stage' do
       let!(:project) { create :project, users_required: 15, stage: nil }
-      let(:new_stage) { 'idea' }
+      let(:new_stage) { 'Idea' }
 
       it { is_expected.to have_select 'project_stage', selected: nil, options: stages_with_placeholder }
 
@@ -109,8 +109,8 @@ RSpec.describe 'SelectField', type: :feature do
     end
 
     describe 'with stage' do
-      let(:stage) { 'discovery' }
-      let(:new_stage) { 'on hold' }
+      let(:stage) { 'Discovery' }
+      let(:new_stage) { 'On hold' }
       let!(:project) { create :project, users_required: 15, stage: stage }
 
       it { is_expected.to have_select 'project_stage', selected: stage, options: stages_without_placeholder }
@@ -144,7 +144,7 @@ RSpec.describe 'SelectField', type: :feature do
 
         fill_in 'project_name', with: 'Project X'
         fill_in 'project_users_required', with: 15
-        select 'discovery', from: 'project_stage'
+        select 'Discovery', from: 'project_stage'
 
         click_on 'Save'
 

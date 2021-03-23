@@ -8,7 +8,7 @@ class UserResource < Avo::BaseResource
   field :id,         as: :id, link_to_resource: true
   field :email,      as: :gravatar, link_to_resource: true
   heading 'User Information'
-  field :first_name, as: :text, required: true, placeholder: 'John', default: 'default first name for resource'
+  field :first_name, as: :text, required: true, placeholder: 'John'
   field :last_name,  as: :text, required: true, placeholder: 'Doe'
   field :email,      as: :text, name: 'User Email', required: true
   field :active,     as: :boolean, name: 'Is active', show_on: :show

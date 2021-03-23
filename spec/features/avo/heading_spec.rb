@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe 'heading', type: :feature do
-
   context 'show' do
     let(:url) { "/avo/resources/users/#{user.id}" }
 

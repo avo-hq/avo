@@ -17,12 +17,6 @@ RSpec.feature 'FullWidthContainer', type: :feature do
         Avo.configuration.full_width_index_view = true
       end
 
-      context '/avo' do
-        let(:url) { '/avo' }
-
-        it { is_not_contained }
-      end
-
       context '.index' do
         let(:url) { '/avo/resources/users' }
 
@@ -39,12 +33,6 @@ RSpec.feature 'FullWidthContainer', type: :feature do
     describe 'full_width_index_view = false' do
       before do
         Avo.configuration.full_width_index_view = false
-      end
-
-      context '/avo' do
-        let(:url) { '/avo' }
-
-        it { is_not_contained }
       end
 
       context '.index' do
@@ -71,12 +59,6 @@ RSpec.feature 'FullWidthContainer', type: :feature do
         Avo.configuration.full_width_index_view = false
       end
 
-      context '/avo' do
-        let(:url) { '/avo' }
-
-        it { is_contained }
-      end
-
       context '.index' do
         let(:url) { '/avo/resources/users' }
 
@@ -93,12 +75,6 @@ RSpec.feature 'FullWidthContainer', type: :feature do
     describe 'full_width_index_view = true' do
       before do
         Avo.configuration.full_width_index_view = true
-      end
-
-      context '/avo' do
-        let(:url) { '/avo' }
-
-        it { is_contained }
       end
 
       context '.index' do

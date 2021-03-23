@@ -1,10 +1,10 @@
 require 'rails_helper'
 WebMock.disable_net_connect!
 
-RSpec.feature 'Avo::HQ', type: :feature do
+RSpec.feature 'Avo::Licensing::HQ', type: :feature do
   describe '.response' do
     let(:request) { DummyRequest.new '127.0.0.1', 'avodemo.herokuapp.test', 3001 }
-    subject(:response) { Avo::HQ.new(request).response }
+    subject(:response) { Avo::Licensing::HQ.new(request).response }
 
     context 'with community license' do
       before do
@@ -15,7 +15,7 @@ RSpec.feature 'Avo::HQ', type: :feature do
 
       context 'with valid response' do
         before do
-          stub_request(:post, Avo::HQ::ENDPOINT).with(body: hash_including({
+          stub_request(:post, Avo::Licensing::HQ::ENDPOINT).with(body: hash_including({
             license: 'community',
           }.stringify_keys)).to_return(status: 200, body: { id: 'community', valid: true }.to_json, headers: json_headers)
         end
@@ -23,11 +23,11 @@ RSpec.feature 'Avo::HQ', type: :feature do
         it { is_expected.to include({ id: 'community', valid: true, expiry: 1.hour, license: 'community', license_key: 'license_123', environment: 'test', ip: '127.0.0.1', host: 'avodemo.herokuapp.test', port: 3001 }.as_json) }
 
         it 'caches the result' do
-          expect(Rails.cache.read Avo::HQ::CACHE_KEY).to be nil
+          expect(Rails.cache.read Avo::Licensing::HQ::CACHE_KEY).to be nil
 
           subject
 
-          expect(Rails.cache.read Avo::HQ::CACHE_KEY).not_to be nil
+          expect(Rails.cache.read Avo::Licensing::HQ::CACHE_KEY).not_to be nil
         end
 
         describe 'when runs multiple times' do
@@ -36,7 +36,7 @@ RSpec.feature 'Avo::HQ', type: :feature do
             subject
             subject
 
-            expect(stub_request(:post, Avo::HQ::ENDPOINT).with(body: hash_including({
+            expect(stub_request(:post, Avo::Licensing::HQ::ENDPOINT).with(body: hash_including({
               license: 'community',
             }.stringify_keys))).to have_been_made.once
           end
@@ -45,52 +45,52 @@ RSpec.feature 'Avo::HQ', type: :feature do
 
       context 'with 500 response' do
         before do
-          stub_request(:post, Avo::HQ::ENDPOINT).with(body: hash_including({
+          stub_request(:post, Avo::Licensing::HQ::ENDPOINT).with(body: hash_including({
             license: 'community',
           }.stringify_keys)).to_return({ status: 500, body: 'HQ Internal Server Error.' }.as_json)
         end
 
         it 'caches the error' do
-          expect(Rails.cache.read Avo::HQ::CACHE_KEY).to be nil
+          expect(Rails.cache.read Avo::Licensing::HQ::CACHE_KEY).to be nil
 
           subject
 
-          expect(Rails.cache.read Avo::HQ::CACHE_KEY).to include({ error: 'Avo HQ Internal server error.', exception_message: 'HQ Internal Server Error.', expiry: 5.minutes }.as_json)
-          expect(Rails.cache.read Avo::HQ::CACHE_KEY).not_to include :valid
+          expect(Rails.cache.read Avo::Licensing::HQ::CACHE_KEY).to include({ error: 'Avo HQ Internal server error.', exception_message: 'HQ Internal Server Error.', expiry: 5.minutes }.as_json)
+          expect(Rails.cache.read Avo::Licensing::HQ::CACHE_KEY).not_to include :valid
         end
       end
 
       context 'with connection timeout error' do
         before do
-          stub_request(:post, Avo::HQ::ENDPOINT).with(body: hash_including({
+          stub_request(:post, Avo::Licensing::HQ::ENDPOINT).with(body: hash_including({
             license: 'community',
           }.stringify_keys)).to_timeout
         end
 
         it 'caches the error' do
-          expect(Rails.cache.read Avo::HQ::CACHE_KEY).to be nil
+          expect(Rails.cache.read Avo::Licensing::HQ::CACHE_KEY).to be nil
 
           subject
 
-          expect(Rails.cache.read Avo::HQ::CACHE_KEY).to include({ error: 'Request timeout.', exception_message: 'execution expired', expiry: 5.minutes }.as_json)
-          expect(Rails.cache.read Avo::HQ::CACHE_KEY).not_to include :valid
+          expect(Rails.cache.read Avo::Licensing::HQ::CACHE_KEY).to include({ error: 'Request timeout.', exception_message: 'execution expired', expiry: 5.minutes }.as_json)
+          expect(Rails.cache.read Avo::Licensing::HQ::CACHE_KEY).not_to include :valid
         end
       end
 
       context 'with connection error' do
         before do
-          stub_request(:post, Avo::HQ::ENDPOINT).with(body: hash_including({
+          stub_request(:post, Avo::Licensing::HQ::ENDPOINT).with(body: hash_including({
             license: 'community',
           }.stringify_keys)).to_raise SocketError.new 'Connection error!'
         end
 
         it 'caches the error' do
-          expect(Rails.cache.read Avo::HQ::CACHE_KEY).to be nil
+          expect(Rails.cache.read Avo::Licensing::HQ::CACHE_KEY).to be nil
 
           subject
 
-          expect(Rails.cache.read Avo::HQ::CACHE_KEY).to include({ error: 'Connection error.', exception_message: 'Connection error!', expiry: 5.minutes }.as_json)
-          expect(Rails.cache.read Avo::HQ::CACHE_KEY).not_to include :valid
+          expect(Rails.cache.read Avo::Licensing::HQ::CACHE_KEY).to include({ error: 'Connection error.', exception_message: 'Connection error!', expiry: 5.minutes }.as_json)
+          expect(Rails.cache.read Avo::Licensing::HQ::CACHE_KEY).not_to include :valid
         end
       end
     end
@@ -104,7 +104,7 @@ RSpec.feature 'Avo::HQ', type: :feature do
 
       context 'with valid response' do
         before do
-          stub_request(:post, Avo::HQ::ENDPOINT).with(body: hash_including({
+          stub_request(:post, Avo::Licensing::HQ::ENDPOINT).with(body: hash_including({
             license: 'pro',
             license_key: 'license_123',
           }.stringify_keys)).to_return(status: 200, body: { id: 'pro', valid: true }.to_json, headers: json_headers)
@@ -115,7 +115,7 @@ RSpec.feature 'Avo::HQ', type: :feature do
 
       context 'with invalid response' do
         before do
-          stub_request(:post, Avo::HQ::ENDPOINT).with(body: hash_including({
+          stub_request(:post, Avo::Licensing::HQ::ENDPOINT).with(body: hash_including({
             license: 'pro',
             license_key: 'license_123',
           }.stringify_keys)).to_return(status: 200, body: { id: 'pro', valid: false }.to_json, headers: json_headers)

@@ -98,14 +98,13 @@ RSpec.describe 'HasAndBelongsToManyField', type: :system do
 
       it 'detaches the user' do
         visit url
-
         wait_for_loaded
 
         expect(page).not_to have_text 'No related users found'
 
         expect {
           find("[data-resource-name='users'][data-resource-id='#{user.id}'] [data-control='detach']").click
-          page.driver.browser.switch_to.alert.accept
+          # page.driver.browser.switch_to.alert.accept
           sleep 0.1
         }.to change(project.users, :count).by -1
 

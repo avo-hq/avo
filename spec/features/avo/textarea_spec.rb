@@ -2,80 +2,80 @@ require 'rails_helper'
 
 RSpec.describe 'textarea', type: :feature do
   context 'show' do
-    let(:url) { "/avo/resources/posts/#{post.id}" }
+    let(:url) { "/avo/resources/teams/#{team.id}" }
 
-    subject { visit url; find_field_element('body') }
+    subject { visit url; find_field_element('description') }
 
     describe 'with value' do
-      let(:body) { 'Lorem ipsum' }
-      let!(:post) { create :post, body: body }
+      let(:description) { 'Lorem ipsum' }
+      let!(:team) { create :team, description: description }
 
-      it { is_expected.to have_text body }
+      it { is_expected.to have_text description }
     end
 
     describe 'without value' do
-      let!(:post) { create :post, body: nil }
+      let!(:team) { create :team, description: nil }
 
       it { is_expected.to have_text empty_dash }
     end
   end
 
   context 'edit' do
-    let(:url) { "/avo/resources/posts/#{post.id}/edit" }
+    let(:url) { "/avo/resources/teams/#{team.id}/edit" }
 
-    subject { visit url; find_field_element('body') }
+    subject { visit url; find_field_element('description') }
 
     describe 'with value' do
-      let(:body) { 'Lorem ipsum' }
-      let(:new_body) { 'Lorem ipsum nostrum' }
-      let!(:post) { create :post, body: body }
+      let(:description) { 'Lorem ipsum' }
+      let(:new_description) { 'Lorem ipsum nostrum' }
+      let!(:team) { create :team, description: description }
 
-      it { is_expected.to have_field type: 'textarea', id: 'post_body', placeholder: 'Body', text: body }
+      it { is_expected.to have_field type: 'textarea', id: 'team_description', placeholder: 'Description', text: description }
 
-      it 'changes the body' do
+      it 'changes the description' do
         visit url
 
-        expect(page).to have_field type: 'textarea', id: 'post_body', placeholder: 'Body', text: body
+        expect(page).to have_field type: 'textarea', id: 'team_description', placeholder: 'Description', text: description
 
-        fill_in 'post_body', with: new_body
+        fill_in 'team_description', with: new_description
 
         click_on 'Save'
 
-        expect(current_path).to eql "/avo/resources/posts/#{post.id}"
-        expect(page).to have_text new_body
+        expect(current_path).to eql "/avo/resources/teams/#{team.id}"
+        expect(page).to have_text new_description
       end
 
-      it 'cleares the body' do
+      it 'cleares the description' do
         visit url
 
-        expect(page).to have_field type: 'textarea', id: 'post_body', placeholder: 'Body', text: body
+        expect(page).to have_field type: 'textarea', id: 'team_description', placeholder: 'Description', text: description
 
-        fill_in 'post_body', with: nil
+        fill_in 'team_description', with: nil
 
         click_on 'Save'
 
-        expect(current_path).to eql "/avo/resources/posts/#{post.id}"
-        expect(find_field_value_element('body')).to have_text empty_dash
+        expect(current_path).to eql "/avo/resources/teams/#{team.id}"
+        expect(find_field_value_element('description')).to have_text empty_dash
       end
     end
 
     describe 'without value' do
-      let(:new_body) { 'Lorem ipsum nostrum' }
-      let!(:post) { create :post, body: nil }
+      let(:new_description) { 'Lorem ipsum nostrum' }
+      let!(:team) { create :team, description: nil }
 
-      it { is_expected.to have_field type: 'textarea', id: 'post_body', placeholder: 'Body', text: nil }
+      it { is_expected.to have_field type: 'textarea', id: 'team_description', placeholder: 'Description', text: nil }
 
-      it 'sets the body' do
+      it 'sets the description' do
         visit url
 
-        expect(page).to have_field type: 'textarea', id: 'post_body', placeholder: 'Body', text: nil
+        expect(page).to have_field type: 'textarea', id: 'team_description', placeholder: 'Description', text: nil
 
-        fill_in 'post_body', with: new_body
+        fill_in 'team_description', with: new_description
 
         click_on 'Save'
 
-        expect(current_path).to eql "/avo/resources/posts/#{post.id}"
-        expect(page).to have_text new_body
+        expect(current_path).to eql "/avo/resources/teams/#{team.id}"
+        expect(page).to have_text new_description
       end
     end
   end

@@ -73,7 +73,7 @@ RSpec.configure do |config|
 
   config.around(:example, type: :system) do |example|
     # Stub license request for system tests.
-    stub_request(:post, Avo::HQ::ENDPOINT).to_return(status: 200, body: {}.to_json, headers: json_headers)
+    stub_request(:post, Avo::Licensing::HQ::ENDPOINT).to_return(status: 200, body: {}.to_json, headers: json_headers)
     ENV['RUN_WITH_NULL_LICENSE'] = '1'
     WebMock.disable_net_connect!(allow_localhost: true, allow: 'chromedriver.storage.googleapis.com')
     example.run
