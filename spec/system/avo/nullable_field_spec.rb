@@ -6,7 +6,6 @@ RSpec.describe 'NullableField', type: :system do
 
     context 'show' do
       it 'displays the teams empty description (dash)' do
-        abort team.inspect
         visit "/avo/resources/teams/#{team.id}"
 
         expect(find_field_value_element('description')).to have_text empty_dash
