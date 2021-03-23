@@ -70,7 +70,7 @@ jobs:
       run: bin/webpack
 
     - name: Run tests
-      run: bin/rspec
+      run: bundle exec rspec
 
     - uses: codecov/codecov-action@v1
       with:
