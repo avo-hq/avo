@@ -53,7 +53,7 @@ RSpec.feature 'password', type: :feature do
         visit url
 
         expect(page).to have_field type: 'password', id: 'user_password', placeholder: 'Password', text: nil
-        expect(page).to have_field type: 'password', id: 'user_password_confirmation', placeholder: 'PasswordConfirmation', text: nil
+        expect(page).to have_field type: 'password', id: 'user_password_confirmation', placeholder: 'Password confirmation', text: nil
       end
 
       it 'saves the resource with password' do
@@ -61,7 +61,7 @@ RSpec.feature 'password', type: :feature do
         visit url
 
         expect(page).to have_field type: 'password', id: 'user_password', placeholder: 'Password', text: nil
-        expect(page).to have_field type: 'password', id: 'user_password_confirmation', placeholder: 'PasswordConfirmation', text: nil
+        expect(page).to have_field type: 'password', id: 'user_password_confirmation', placeholder: 'Password confirmation', text: nil
 
         fill_in 'user_first_name', with: 'John'
         fill_in 'user_last_name', with: 'Doe'

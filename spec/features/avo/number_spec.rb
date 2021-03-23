@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe 'number', type: :feature do
-
   context 'index' do
     let(:url) { '/avo/resources/projects' }
 
@@ -38,10 +37,10 @@ RSpec.describe 'number', type: :feature do
       let(:over_max_users_required) { 1000001 }
       let!(:project) { create :project, users_required: users_required }
 
-      it { is_expected.to have_xpath "//input[@id='project_users_required'][@type='number'][@placeholder='UsersRequired'][@min='10.0'][@max='1000000.0'][@step='1.0'][@value='#{users_required}']" }
+      it { is_expected.to have_xpath "//input[@id='project_users_required'][@type='number'][@placeholder='Users required'][@min='10.0'][@max='1000000.0'][@step='1.0'][@value='#{users_required}']" }
 
       it 'changes the users_required to correct value' do
-        is_expected.to have_xpath "//input[@id='project_users_required'][@type='number'][@placeholder='UsersRequired'][@min='10.0'][@max='1000000.0'][@step='1.0'][@value='#{users_required}']"
+        is_expected.to have_xpath "//input[@id='project_users_required'][@type='number'][@placeholder='Users required'][@min='10.0'][@max='1000000.0'][@step='1.0'][@value='#{users_required}']"
 
         fill_in 'project_users_required', with: new_users_required
 
@@ -52,7 +51,7 @@ RSpec.describe 'number', type: :feature do
       end
 
       it 'changes the users_required to value under minimum' do
-        is_expected.to have_xpath "//input[@id='project_users_required'][@type='number'][@placeholder='UsersRequired'][@min='10.0'][@max='1000000.0'][@step='1.0'][@value='#{users_required}']"
+        is_expected.to have_xpath "//input[@id='project_users_required'][@type='number'][@placeholder='Users required'][@min='10.0'][@max='1000000.0'][@step='1.0'][@value='#{users_required}']"
 
         fill_in 'project_users_required', with: under_min_users_required
 
@@ -63,7 +62,7 @@ RSpec.describe 'number', type: :feature do
       end
 
       it 'changes the users_required to value over maximum' do
-        is_expected.to have_xpath "//input[@id='project_users_required'][@type='number'][@placeholder='UsersRequired'][@min='10.0'][@max='1000000.0'][@step='1.0'][@value='#{users_required}']"
+        is_expected.to have_xpath "//input[@id='project_users_required'][@type='number'][@placeholder='Users required'][@min='10.0'][@max='1000000.0'][@step='1.0'][@value='#{users_required}']"
 
         fill_in 'project_users_required', with: over_max_users_required
 
@@ -74,7 +73,7 @@ RSpec.describe 'number', type: :feature do
       end
 
       it 'cleares the users_required' do
-        is_expected.to have_xpath "//input[@id='project_users_required'][@type='number'][@placeholder='UsersRequired'][@min='10.0'][@max='1000000.0'][@step='1.0'][@value='#{users_required}']"
+        is_expected.to have_xpath "//input[@id='project_users_required'][@type='number'][@placeholder='Users required'][@min='10.0'][@max='1000000.0'][@step='1.0'][@value='#{users_required}']"
 
         fill_in 'project_users_required', with: nil
 

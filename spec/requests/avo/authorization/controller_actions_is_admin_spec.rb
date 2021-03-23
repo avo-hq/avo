@@ -53,7 +53,7 @@ RSpec.describe 'ProjectsController is_admin? policy', type: :request do
         login_as admin_user
       end
 
-      it { is_expected.to render_template('avo/resources/index') }
+      it { is_expected.to be 200 }
     end
   end
 
@@ -89,7 +89,7 @@ RSpec.describe 'ProjectsController is_admin? policy', type: :request do
         login_as admin_user
       end
 
-      it { is_expected.to render_template('avo/resources/show') }
+      it { is_expected.to be 200 }
     end
   end
 
@@ -125,7 +125,7 @@ RSpec.describe 'ProjectsController is_admin? policy', type: :request do
         login_as admin_user
       end
 
-      it { is_expected.to render_template('avo/resources/show') }
+      it { is_expected.to be 200 }
     end
   end
 

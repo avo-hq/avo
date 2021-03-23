@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Avo::ResourcesController, type: :controller do
+RSpec.describe Avo::UsersController, type: :controller do
   let(:regular_user) { create :user }
   let(:admin_user) { create :user, roles: { admin: true } }
   let!(:active_user) { create :user, first_name: 'active user', active: true }
@@ -98,7 +98,7 @@ RSpec.describe Avo::ResourcesController, type: :controller do
   end
 
   describe '.index' do
-    subject { get :index, params: { resource_name: 'users' } }
+    subject { get :index }
 
     context 'when user is not admin' do
       let(:user) { regular_user }
@@ -125,7 +125,7 @@ RSpec.describe Avo::ResourcesController, type: :controller do
     end
 
     describe 'with via_resource_name' do
-      subject { get :index, params: { resource_name: 'users', via_resource_name: 'projects', via_resource_id: project.id, via_relationship: 'users' } }
+      subject { get :index, params: { via_resource_name: 'projects', via_resource_id: project.id, via_relationship: 'users' } }
 
       context 'when user is not admin' do
         let(:user) { regular_user }
