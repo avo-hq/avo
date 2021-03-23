@@ -9,7 +9,6 @@ on:
 jobs:
   test:
     env:
-      NODE_ENV: test
       RAILS_ENV: test
       PGHOST: localhost
       PGUSER: postgres
