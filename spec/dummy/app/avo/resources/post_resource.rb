@@ -4,23 +4,20 @@ class PostResource < Avo::BaseResource
   self.includes = :user
   self.default_view_type = :grid
 
-  fields do |f|
-    f.id
-    f.text :name, required: true
-    f.trix :body, placeholder: 'Enter text', always_show: false
-    f.file :cover_photo, is_image: true, link_to_resource: true
-    f.boolean :is_featured, can_see: -> () { context[:user].is_admin? }
-    f.boolean :is_published do |model|
-      model.published_at.present?
-    end
-
-    f.belongs_to :user, meta: { searchable: false }, placeholder: '—'
+  field :id, as: :id
+  field :name, as: :text, required: true
+  field :body, as: :trix, placeholder: 'Enter text', always_show: false
+  field :cover_photo, as: :file, is_image: true, link_to_resource: true
+  field :is_featured, as: :boolean, visible: -> () { context[:user].is_admin? }
+  field :is_published, as: :boolean do |model|
+    model.published_at.present?
   end
+  field :user, as: :belongs_to, meta: { searchable: false }, placeholder: '—'
 
-  grid do |cover, title, body|
-    cover.file :cover_photo, required: true, link_to_resource: true
-    title.text :name, required: true, link_to_resource: true
-    body.text :excerpt do |model|
+  grid do
+    cover :cover_photo, as: :file, link_to_resource: true
+    title :name, as: :text, required: true, link_to_resource: true
+    body :excerpt, as: :text do |model|
       begin
         ActionView::Base.full_sanitizer.sanitize(model.body).truncate 130
       rescue => exception
@@ -29,12 +26,8 @@ class PostResource < Avo::BaseResource
     end
   end
 
-  filters do |f|
-    f.use FeaturedFilter
-    f.use PublishedFilter
-  end
+  filter FeaturedFilter
+  filter PublishedFilter
 
-  actions do |a|
-    a.use TogglePublished
-  end
+  action TogglePublished
 end

@@ -193,7 +193,7 @@ module Avo
         end
 
         @actions = @resource.get_actions.map do |action|
-          action.new.hydrate(model: model, resource: @resource)
+          action.new(model: model, resource: @resource)
         end
       end
 

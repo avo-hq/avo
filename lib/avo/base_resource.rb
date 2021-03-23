@@ -1,6 +1,8 @@
 module Avo
   class BaseResource
     extend ActiveSupport::DescendantsTracker
+    extend FieldsCollector
+    extend HasContext
 
     attr_accessor :view
     attr_accessor :model
@@ -15,42 +17,29 @@ module Avo
     class_attribute :translation_key
     class_attribute :default_view_type, default: :table
     class_attribute :devise_password_optional, default: false
-    class_attribute :fields_loader
     class_attribute :actions_loader
     class_attribute :filters_loader
-    class_attribute :grid_cover_loader
-    class_attribute :grid_title_loader
-    class_attribute :grid_body_loader
+    class_attribute :fields
+    class_attribute :grid_loader
 
     class << self
-      def fields(&block)
-        self.fields_loader ||= Avo::Loaders::FieldsLoader.new
-
-        yield(fields_loader)
-      end
-
-      def actions(&block)
-        self.actions_loader ||= Avo::Loaders::ActionsLoader.new
-
-        yield(actions_loader)
-      end
-
-      def filters(&block)
-        self.filters_loader ||= Avo::Loaders::FiltersLoader.new
-
-        yield(filters_loader)
-      end
-
       def grid(&block)
-        self.grid_cover_loader ||= Avo::Loaders::FieldsLoader.new
-        self.grid_title_loader ||= Avo::Loaders::FieldsLoader.new
-        self.grid_body_loader ||= Avo::Loaders::FieldsLoader.new
+        grid_collector = GridCollector.new
+        grid_collector.instance_eval(&block)
 
-        yield(grid_cover_loader, grid_title_loader, grid_body_loader)
+        self.grid_loader = grid_collector
       end
 
-      def context
-        App.context
+      def action(action_class)
+        self.actions_loader ||= Avo::Loaders::Loader.new
+
+        self.actions_loader.use action_class
+      end
+
+      def filter(filter_class)
+        self.filters_loader ||= Avo::Loaders::Loader.new
+
+        self.filters_loader.use filter_class
       end
     end
 
@@ -68,12 +57,20 @@ module Avo
       self
     end
 
+    def get_field_definitions
+      return [] if self.class.fields.blank?
+
+      self.class.fields.map do |field|
+        field.hydrate(resource: self, panel_name: default_panel_name, user: user)
+      end
+    end
+
     def get_fields(panel: nil, reflection: nil)
       fields = get_field_definitions.select do |field|
         field.send("show_on_#{@view.to_s}")
       end
       .select do |field|
-        field.can_see.present? ? field.can_see.call : true
+        field.visible?
       end
       .select do |field|
         unless field.respond_to?(:foreign_key) &&
@@ -98,19 +95,9 @@ module Avo
     end
 
     def get_grid_fields
-      return if self.class.grid_title_loader.blank?
+      return if self.class.grid_loader.blank?
 
-      card = {
-        cover: [*self.class.grid_cover_loader.bag],
-        title: [*self.class.grid_title_loader.bag],
-        body: [*self.class.grid_body_loader.bag],
-      }
-
-      card.each do |section, fields|
-        fields = fields.map do |field|
-          field.hydrate(model: @model, view: @view, resource: self)
-        end
-      end
+      self.class.grid_loader.hydrate(model: @model, view: @view, resource: self)
     end
 
     def get_filters
@@ -123,14 +110,6 @@ module Avo
       return [] if self.class.actions_loader.blank?
 
       self.class.actions_loader.bag
-    end
-
-    def get_field_definitions
-      return [] if self.class.fields_loader.blank?
-
-      self.class.fields_loader.bag.map do |field|
-        field.hydrate(resource: self, panel_name: default_panel_name, user: user)
-      end
     end
 
     def default_panel_name
@@ -209,12 +188,8 @@ module Avo
     end
 
     def context
-      App.context
+      self.class.context
     end
-
-    # def fields
-    #   raise NotImplementedError
-    # end
 
     def query_search(query: '', via_resource_name: , via_resource_id:, user:)
       # model_class = self.model
