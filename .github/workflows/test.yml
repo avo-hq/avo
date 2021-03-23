@@ -9,6 +9,7 @@ on:
 jobs:
   test:
     env:
+      RAILS_ENV: test
       PGHOST: localhost
       PGUSER: postgres
       PGPORT: 5432
