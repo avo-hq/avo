@@ -9,7 +9,6 @@ on:
 jobs:
   test:
     env:
-      RAILS_ENV: test
       PGHOST: localhost
       PGUSER: postgres
       PGPORT: 5432
@@ -67,17 +66,11 @@ jobs:
     - name: Yarn install
       run: yarn
 
-    # - name: Add webpack cli
-    #   run: yarn global add webpack-cli
-
-    # - name: output
-    #   run: ls -la node_modules/
-
     - name: Bundle assets
       run: bin/webpack
 
     - name: Run tests
-      run: npm run test-all
+      run: rspec
 
     - uses: codecov/codecov-action@v1
       with:
