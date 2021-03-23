@@ -11,6 +11,7 @@
     <%= select_tag filter.id, options_for_select(filter.options.invert, set_value),
       class: input_classes('w-full mb-0'),
       include_blank: '—',
+      id: "avo_filters_#{filter.id.parameterize.underscore}",
       'data-filter-class': filter.class,
       'data-select-filter-target': 'selector',
       'data-action': "change->select-filter#changeFilter"
