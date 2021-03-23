@@ -6,7 +6,9 @@ module Avo
     before_action :set_resource
     before_action :set_action, only: [:show, :handle]
 
-    def show; end
+    def show
+      @model = ActionModel.new @action.get_attributes_for_action
+    end
 
     def handle
       resource_ids = action_params[:fields][:resource_ids].split(',').map(&:to_i)
@@ -33,8 +35,7 @@ module Avo
           model = @resource.model_class.find params[:id]
         end
 
-        @action = action_class.new
-        @action.hydrate(model: model, resource: resource, user: _current_user)
+        @action = action_class.new(model: model, resource: resource, user: _current_user)
       end
 
       def respond(response)

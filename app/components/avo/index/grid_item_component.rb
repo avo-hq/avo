@@ -12,14 +12,14 @@ class Avo::Index::GridItemComponent < ViewComponent::Base
 
   private
     def cover
-      @grid_fields[:cover].first
+      @grid_fields.cover_field
     end
 
     def title
-      @grid_fields[:title].first
+      @grid_fields.title_field
     end
 
     def body
-      @grid_fields[:body].first
+      @grid_fields.body_field
     end
 end

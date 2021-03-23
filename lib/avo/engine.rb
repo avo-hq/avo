@@ -24,6 +24,22 @@ module Avo
       ::Avo::App.init_fields
     end
 
+    initializer 'avo.reload_avo_files' do |app|
+      if Avo::IN_DEVELOPMENT && ENV['RELOAD_AVO_FILES']
+        avo_root_path = Avo::Engine.root.to_s
+        # Register reloader
+        app.reloaders << app.config.file_watcher.new([], {
+          Avo::Engine.root.join('lib', 'avo').to_s => ['rb'],
+        }) {}
+
+        # What to do on file change
+        config.to_prepare do
+          Dir.glob(avo_root_path + '/lib/avo/**/*.rb'.to_s).each { |c| load c }
+          Avo::App.boot
+        end
+      end
+    end
+
     initializer 'webpacker.proxy' do |app|
       app.config.debug_exception_response_format = :api
       # app.config.logger = ::Logger.new(STDOUT)
