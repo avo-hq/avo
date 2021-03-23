@@ -68,7 +68,7 @@ jobs:
       run: bundle exec rails app:yarn:install
 
     - name: Bundle assets
-      run: ruby bin/webpack
+      run: bin/rails assets:precompile
 
     - name: Export translations
       run: bin/rails i18n:js:export
