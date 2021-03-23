@@ -17,7 +17,20 @@ def wait_for_route_loaded(time = Capybara.default_max_wait_time)
 end
 
 def wait_for_turbo_loaded(time = Capybara.default_max_wait_time)
-  Timeout.timeout(time) { sleep(0.01) until !page.find('body')[:class].include?('turbo-loading') }
+  Timeout.timeout(time) do
+    if page.present? &&
+      page.find('body').present? &&
+      page.find('body')[:class].present? &&
+      page.find('body')[:class].is_a?(String)
+
+      sleep(0.01) until page.present? and
+        page.find('body').present? and
+        page.find('body')[:class].present? and
+        !page.find('body')[:class].to_s.include?('turbo-loading')
+    else
+      sleep 0.3
+    end
+  end
 end
 
 def wait_for_loaded

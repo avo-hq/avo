@@ -13,6 +13,9 @@ jobs:
       PGHOST: localhost
       PGUSER: postgres
       PGPORT: 5432
+      POSTGRES_HOST: localhost
+      POSTGRES_USERNAME: postgres
+      POSTGRES_PORT: 5432
       COVERAGE: true
 
     runs-on: ubuntu-latest
@@ -65,11 +68,7 @@ jobs:
       run: bundle exec rails app:yarn:install
 
     - name: Bundle assets
-      run: bin/webpack
-
-    - name: Export translations
-      run: bin/rails i18n:js:export
-      working-directory: spec/dummy
+      run: bundle exec bin/webpack
 
     - name: Run tests
       run: npm run test-all

@@ -18,8 +18,4 @@ class PublishedFilter < Avo::Filters::SelectFilter
       'unpublished': 'Unpublished',
     }
   end
-
-  def default
-    'unpublished'
-  end
 end
