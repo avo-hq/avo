@@ -16,7 +16,7 @@ RSpec.describe 'NullableField', type: :system do
       it 'has the teams description empty' do
         visit "/avo/resources/teams/#{team.id}/edit"
 
-        expect(find_field('description').value).to eq ''
+        expect(find_field('team_description').value).to eq ''
       end
     end
   end
@@ -25,11 +25,12 @@ RSpec.describe 'NullableField', type: :system do
     let!(:team) { create :team, description: 'descr' }
 
     context 'edit' do
-      it 'has the teams description prefilled' do
+      it 'has the teams description pre-filled' do
         visit "/avo/resources/teams/#{team.id}/edit"
 
-        expect(find_field('description').value).to eq 'descr'
+        expect(find_field('team_description').value).to eq 'descr'
       end
+
       it 'changes the teams description to null ("" - empty string)' do
         visit "/avo/resources/teams/#{team.id}/edit"
 
@@ -81,7 +82,7 @@ RSpec.describe 'NullableField', type: :system do
 
     context 'show' do
       it 'displays the projects empty status (dash)' do
-        visit "/avo/resources/project/#{project.id}"
+        visit "/avo/resources/projects/#{project.id}"
 
         expect(find_field_value_element('status')).to have_text empty_dash
       end
@@ -91,7 +92,7 @@ RSpec.describe 'NullableField', type: :system do
       it 'has the projects status empty' do
         visit "/avo/resources/projects/#{project.id}/edit"
 
-        expect(find_field('status').value).to eq ''
+        expect(find_field('project_status').value).to eq ''
       end
     end
   end
@@ -100,15 +101,16 @@ RSpec.describe 'NullableField', type: :system do
     let!(:project) { create :project, status: 'rejected' }
 
     context 'edit' do
-      it 'has the projects status prefilled' do
+      it 'has the projects status pre-filled' do
         visit "/avo/resources/projects/#{project.id}/edit"
 
-        expect(find_field('status').value).to eq 'rejected'
+        expect(find_field('project_status').value).to eq 'rejected'
       end
+
       it 'changes the projects status to null ("" - empty string)' do
         visit "/avo/resources/projects/#{project.id}/edit"
 
-        fill_in 'poject_status', with: ''
+        fill_in 'project_status', with: ''
         click_on 'Save'
         wait_for_loaded
 
