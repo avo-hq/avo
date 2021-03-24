@@ -1,14 +1,6 @@
-module Avo
-  module Resources
-    class Project < Resource
-      def configure
-        @title = :name
-        @search = [:name, :id]
-      end
+class ProjectResource < Avo::BaseResource
+  self.title = :name
+  self.search = [:name, :id]
 
-      def fields(request)
-        f.select :stage, hide_on: [:index], enum: ::Project.stages, placeholder: 'Choose the stage', display_value: false
-      end
-    end
-  end
+  field :stage, as: :select, hide_on: [:index], enum: ::Project.stages, placeholder: 'Choose the stage', display_value: true
 end

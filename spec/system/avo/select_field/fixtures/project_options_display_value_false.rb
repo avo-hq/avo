@@ -1,14 +1,6 @@
-module Avo
-  module Resources
-    class Project < Resource
-      def configure
-        @title = :name
-        @search = [:name, :id]
-      end
+class ProjectResource < Avo::BaseResource
+  self.title = :name
+  self.search = [:name, :id]
 
-      def fields(request)
-        f.select :country, options: { 'Romania': 'RO', 'Canada': 'CA', 'India': 'IN' }, display_value: false
-      end
-    end
-  end
+  field :country, as: :select, options: { 'Romania': 'RO', 'Canada': 'CA', 'India': 'IN' }, display_value: false
 end
