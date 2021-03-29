@@ -1,5 +1,3 @@
-import '@/css/application.css'
-
 import 'regenerator-runtime/runtime'
 import 'trix'
 import * as Mousetrap from 'mousetrap'
@@ -7,6 +5,9 @@ import { Application } from 'stimulus'
 import { Turbo } from '@hotwired/turbo-rails'
 import { definitionsFromContext } from 'stimulus/webpack-helpers'
 import tippy from 'tippy.js'
+import Rails from '@rails/ujs';
+
+Rails.start();
 
 // Toastr alerts
 import '../js/toastr'

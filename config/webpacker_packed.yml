@@ -1,8 +1,8 @@
 # Note: You must restart bin/webpack-dev-server for changes to take effect
 
 default: &default
-  source_path: app/frontend
-  source_entry_path: packs
+  source_path: app/packs
+  source_entry_path: entrypoints
   public_root_path: public
   cache_path: tmp/cache/webpacker
   check_yarn_integrity: false
@@ -12,44 +12,10 @@ default: &default
 
   # Additional paths webpack should lookup modules
   # ['app/assets', 'engine/foo/app/assets']
-  resolved_paths: []
+  additional_paths_paths: []
 
   # Reload manifest.json on all requests so we reload latest compiled packs
   cache_manifest: false
-
-  # Extract and emit a css file
-  extract_css: true
-
-  static_assets_extensions:
-    - .jpg
-    - .jpeg
-    - .png
-    - .gif
-    - .tiff
-    - .ico
-    - .svg
-    - .eot
-    - .otf
-    - .ttf
-    - .woff
-    - .woff2
-
-  extensions:
-    - .ts
-    - .vue
-    - .mjs
-    - .js
-    - .sass
-    - .scss
-    - .css
-    - .module.sass
-    - .module.scss
-    - .module.css
-    - .png
-    - .svg
-    - .gif
-    - .jpeg
-    - .jpg
 
 # We override the development env. when packed.
 # Avo needs to be packed and compiled for when the dev uses it in his development env.
@@ -58,9 +24,6 @@ development:
 
   # Production depends on precompilation of packs prior to booting for performance.
   compile: false
-
-  # Extract and emit a css file
-  extract_css: true
 
   # Cache manifest.json for performance
   cache_manifest: true
@@ -78,9 +41,6 @@ production:
 
   # Production depends on precompilation of packs prior to booting for performance.
   compile: false
-
-  # Extract and emit a css file
-  extract_css: true
 
   # Cache manifest.json for performance
   cache_manifest: true

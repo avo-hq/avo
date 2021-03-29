@@ -41,7 +41,7 @@
         "import/resolver": {
             "alias": {
                 "map": [
-                    ["@", "./app/frontend"],
+                    ["@", "./app/packs"],
                     ["~", "./node_modules"]
                 ]
             }

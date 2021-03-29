@@ -41,7 +41,7 @@ RUN yarn install
 RUN yarn check --integrity
 
 COPY ./bin/                        /avo/bin/
-COPY ./app/frontend/               /avo/app/frontend/
+COPY ./app/packs/                  /avo/app/packs/
 COPY ./config/                     /avo/config/
 COPY ./.eslintrc.json              /avo/.eslintrc.json
 COPY ./jsconfig.json               /avo/jsconfig.json

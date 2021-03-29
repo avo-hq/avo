@@ -130,7 +130,7 @@ module Avo
       options[:class] += args[:extra_class].present? ? " #{args[:extra_class]}" : ''
 
       # Create the path to the svgs directory
-      file_path = "#{Avo::Engine.root}/app/frontend/svgs/#{file_name}"
+      file_path = "#{Avo::Engine.root}/app/packs/svgs/#{file_name}"
       file_path = "#{file_path}.svg" unless file_path.end_with? '.svg'
 
       # Create a cache hash
