@@ -18,8 +18,10 @@
             <% end %>
 
             <% if @resource.authorization.authorize_action(:destroy, raise_exception: false) %>
-              <%= form_with url: helpers.resource_path(@resource.model), method: :delete, html: {'data-turbo-frame': params[:turbo_frame]} do |form| %>
-                <%= form.button title: t('avo.delete_item', { item: @resource.model.model_name.name.downcase }).capitalize,
+              <%= form_with url: helpers.resource_path(@resource.model), method: :delete, html: { 'data-turbo-frame': params[:turbo_frame] } do |form| %>
+                <%= a_button title: t('avo.delete_item', { item: @resource.model.model_name.name.downcase }).capitalize,
+                  color: 'red',
+                  variant: 'outlined',
                   type: :submit,
                   data: {
                     confirm: t('avo.are_you_sure', { item: @resource.model.model_name.name.downcase }),
@@ -30,11 +32,7 @@
                 %>
                   <%= svg 'trash' %> <%= t('avo.delete').capitalize %>
                 <% end %>
-                <%#= form.hidden_field :referrer, value: request.fullpath, id: "referrer_destroy_#{@resource.model.id}" if params[:via_resource_class] %>
               <% end %>
-
-              <%#= a_link destroy_path, color: 'red', variant: 'outlined', method: :delete, data: {confirm: 'Are you sure?'} do %>
-              <%# end %>
             <% end %>
 
             <% if @resource.authorization.authorize_action(:edit, raise_exception: false) %>
