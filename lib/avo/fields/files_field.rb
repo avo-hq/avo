@@ -5,7 +5,7 @@ module Avo
 
       def initialize(name, **args, &block)
         @defaults = {
-          partial_name: 'files-field',
+          partial_name: "files-field"
         }.merge(@defaults || {})
 
         super(name, **args, &block)
@@ -16,7 +16,7 @@ module Avo
       end
 
       def to_permitted_param
-        { "#{id}": [] }
+        {"#{id}": []}
       end
 
       def fill_field(model, key, value)

@@ -1,12 +1,12 @@
 class PeopleFilter < Avo::Filters::SelectFilter
-  self.name = 'People status (temporary)'
+  self.name = "People status (temporary)"
 
   def apply(request, query, value)
     case value
-    when 'a_lot'
-      query.where('users_required > ?', 30)
-    when 'few'
-      query.where('users_required <= ?', 30)
+    when "a_lot"
+      query.where("users_required > ?", 30)
+    when "few"
+      query.where("users_required <= ?", 30)
     else
       query
     end
@@ -14,12 +14,12 @@ class PeopleFilter < Avo::Filters::SelectFilter
 
   def options
     {
-      'a_lot': 'A lot',
-      'few': 'Few (< 30)',
+      'a_lot': "A lot",
+      'few': "Few (< 30)"
     }
   end
 
   def default
-    'few'
+    "few"
   end
 end

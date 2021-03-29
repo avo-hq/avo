@@ -10,13 +10,13 @@ module Avo
           field[:name].to_s == method.to_s
         end
 
-        if matched_field.present? and matched_field[:class].present?
+        if matched_field.present? && matched_field[:class].present?
           klass = matched_field[:class]
 
-          if block.present?
-            field = klass.new(args[0], **args[1] || {}, &block)
+          field = if block.present?
+            klass.new(args[0], **args[1] || {}, &block)
           else
-            field = klass.new(args[0], **args[1] || {})
+            klass.new(args[0], **args[1] || {})
           end
 
           add_field field

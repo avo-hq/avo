@@ -7,8 +7,8 @@ module Avo
 
       def initialize(name, **args, &block)
         @defaults = {
-          partial_name: 'external-image-field',
-          computable: true,
+          partial_name: "external-image-field",
+          computable: true
         }.merge(@defaults || {})
 
         super(name, **args, &block)

@@ -8,32 +8,40 @@ module Avo
     end
 
     def render_logo
-      render partial: 'vendor/avo/partials/logo' rescue render partial: 'avo/partials/logo'
+      render partial: "vendor/avo/partials/logo"
+    rescue
+      render partial: "avo/partials/logo"
     end
 
     def render_header
-      render partial: 'vendor/avo/partials/header' rescue render partial: 'avo/partials/header'
+      render partial: "vendor/avo/partials/header"
+    rescue
+      render partial: "avo/partials/header"
     end
 
     def render_footer
-      render partial: 'vendor/avo/partials/footer' rescue render partial: 'avo/partials/footer'
+      render partial: "vendor/avo/partials/footer"
+    rescue
+      render partial: "avo/partials/footer"
     end
 
     def render_scripts
-      render partial: 'vendor/avo/partials/scripts' rescue ''
+      render partial: "vendor/avo/partials/scripts"
+    rescue
+      ""
     end
 
     def render_license_warnings
-      render partial: 'avo/sidebar/license_warnings', locals: {
-        license: Avo::App.license.properties,
+      render partial: "avo/sidebar/license_warnings", locals: {
+        license: Avo::App.license.properties
       }
     end
 
-    def render_license_warning(title: '', message: '', icon: 'exclamation')
-      render partial: 'avo/sidebar/license_warning', locals: {
+    def render_license_warning(title: "", message: "", icon: "exclamation")
+      render partial: "avo/sidebar/license_warning", locals: {
         title: title,
         message: message,
-        icon: icon,
+        icon: icon
       }
     end
 
@@ -44,7 +52,7 @@ module Avo
     end
 
     def empty_state(resource_name)
-      render partial: 'avo/partials/empty_state', locals: { resource_name: resource_name }
+      render partial: "avo/partials/empty_state", locals: {resource_name: resource_name}
     end
 
     def turbo_frame_start(name)
@@ -52,7 +60,7 @@ module Avo
     end
 
     def turbo_frame_end(name)
-      '</turbo-frame>'.html_safe if name.present?
+      "</turbo-frame>".html_safe if name.present?
     end
 
     def a_button(label = nil, **args, &block)
@@ -60,37 +68,37 @@ module Avo
 
       locals = {
         label: label,
-        args: args,
+        args: args
       }
 
-      if block_given?
-        render layout: 'avo/partials/a_button', locals: locals do
+      if block
+        render layout: "avo/partials/a_button", locals: locals do
           capture(&block)
         end
       else
-        render partial: 'avo/partials/a_button', locals: locals
+        render partial: "avo/partials/a_button", locals: locals
       end
     end
 
     def a_link(label, url = nil, **args, &block)
       args[:class] = button_classes(args[:class], color: args[:color], variant: args[:variant], size: args[:size])
 
-      if block_given?
+      if block
         url = label
       end
 
       locals = {
         label: label,
         url: url,
-        args: args,
+        args: args
       }
 
-      if block_given?
-        render layout: 'avo/partials/a_link', locals: locals do
+      if block
+        render layout: "avo/partials/a_link", locals: locals do
           capture(&block)
         end
       else
-        render partial: 'avo/partials/a_link', locals: locals
+        render partial: "avo/partials/a_link", locals: locals
       end
     end
 
@@ -98,27 +106,27 @@ module Avo
       classes = "inline-flex flex-grow-0 items-center text-sm font-bold leading-none fill-current whitespace-nowrap transition duration-100 rounded-lg shadow-xl transform transition duration-100 active:translate-x-px active:translate-y-px cursor-pointer disabled:cursor-not-allowed #{extra_classes}"
 
       if color.present?
-        if variant.present? and variant.to_sym == :outlined
-          classes += ' bg-white border'
+        if variant.present? && (variant.to_sym == :outlined)
+          classes += " bg-white border"
 
           classes += " hover:border-#{color}-700 border-#{color}-600 text-#{color}-600 hover:text-#{color}-700 disabled:border-gray-300 disabled:text-gray-600"
         else
           classes += " text-white bg-#{color}-500 hover:bg-#{color}-600 disabled:bg-#{color}-300"
         end
       else
-        classes += ' text-gray-700 bg-white hover:bg-gray-100 disabled:bg-gray-300'
+        classes += " text-gray-700 bg-white hover:bg-gray-100 disabled:bg-gray-300"
       end
 
       size = size.present? ? size.to_sym : :md
-      case size
+      classes += case size
       when :xs
-        classes += ' p-2 py-1'
+        " p-2 py-1"
       when :sm
-        classes += ' p-3'
+        " p-3"
       when :md
-        classes += ' p-4'
+        " p-4"
       else
-        classes += ' p-4'
+        " p-4"
       end
 
       classes
@@ -126,23 +134,23 @@ module Avo
 
     def svg(file_name, **args)
       options = {}
-      options[:class]  = args[:class].present? ? args[:class] : 'h-4 mr-1'
-      options[:class] += args[:extra_class].present? ? " #{args[:extra_class]}" : ''
+      options[:class] = args[:class].present? ? args[:class] : "h-4 mr-1"
+      options[:class] += args[:extra_class].present? ? " #{args[:extra_class]}" : ""
 
       # Create the path to the svgs directory
       file_path = "#{Avo::Engine.root}/app/packs/svgs/#{file_name}"
-      file_path = "#{file_path}.svg" unless file_path.end_with? '.svg'
+      file_path = "#{file_path}.svg" unless file_path.end_with? ".svg"
 
       # Create a cache hash
-      hash = Digest::MD5.hexdigest "#{file_path.underscore}_#{options.to_s}"
+      hash = Digest::MD5.hexdigest "#{file_path.underscore}_#{options}"
 
       svg_content = Avo::App.cache_store.fetch "svg_file_#{hash}", expires_in: 1.year, cache_nils: false do
-        if File.exists?(file_path)
+        if File.exist?(file_path)
           file = File.read(file_path)
 
           # parse svg
           doc = Nokogiri::HTML::DocumentFragment.parse file
-          svg = doc.at_css 'svg'
+          svg = doc.at_css "svg"
 
           # attach options
           options.each do |attr, value|
@@ -151,23 +159,21 @@ module Avo
 
           # cast to html
           doc.to_html.html_safe
-        else
-          nil
         end
       end
 
-      return '(not found)' if svg_content.to_s.blank?
+      return "(not found)" if svg_content.to_s.blank?
 
       svg_content
     end
 
-    def input_classes(extra_classes = '', has_error: false)
-      classes = 'appearance-none inline-flex bg-blue-gray-100 disabled:bg-blue-gray-300 disabled:cursor-not-allowed focus:bg-white text-blue-gray-700 disabled:text-blue-gray-700 rounded-md py-2 px-3 leading-tight border outline-none outline'
+    def input_classes(extra_classes = "", has_error: false)
+      classes = "appearance-none inline-flex bg-blue-gray-100 disabled:bg-blue-gray-300 disabled:cursor-not-allowed focus:bg-white text-blue-gray-700 disabled:text-blue-gray-700 rounded-md py-2 px-3 leading-tight border outline-none outline"
 
-      if has_error
-        classes += ' border-red-600'
+      classes += if has_error
+        " border-red-600"
       else
-        classes += ' border-blue-gray-300'
+        " border-blue-gray-300"
       end
 
       classes += " #{extra_classes}"

@@ -67,16 +67,16 @@ module Avo
 
     def get_fields(panel: nil, reflection: nil)
       fields = get_field_definitions.select do |field|
-        field.send("show_on_#{@view.to_s}")
+        field.send("show_on_#{@view}")
       end
-      .select do |field|
-        field.visible?
-      end
-      .select do |field|
+        .select do |field|
+                 field.visible?
+               end
+        .select do |field|
         unless field.respond_to?(:foreign_key) &&
-          reflection.present? &&
-          reflection.respond_to?(:foreign_key) &&
-          reflection.foreign_key == field.foreign_key
+            reflection.present? &&
+            reflection.respond_to?(:foreign_key) &&
+            reflection.foreign_key == field.foreign_key
           true
         end
       end
@@ -87,11 +87,9 @@ module Avo
         end
       end
 
-      fields = fields.map do |field|
+      fields.map do |field|
         field.hydrate(model: @model, view: @view, resource: self)
       end
-
-      fields
     end
 
     def get_grid_fields
@@ -117,24 +115,22 @@ module Avo
 
       case @view
       when :show
-        I18n.t('avo.resource_details', item: self.name.downcase, title: model_title).upcase_first
+        I18n.t("avo.resource_details", item: name.downcase, title: model_title).upcase_first
       when :edit
-        I18n.t('avo.update_item', item: self.name.downcase, title: model_title).upcase_first
+        I18n.t("avo.update_item", item: name.downcase, title: model_title).upcase_first
       when :new
-        I18n.t('avo.create_new_item', item: self.name.downcase).upcase_first
+        I18n.t("avo.create_new_item", item: name.downcase).upcase_first
       end
     end
 
     def panels
-      panels = [
+      [
         {
           name: default_panel_name,
           type: :fields,
-          in_panel: true,
+          in_panel: true
         }
       ]
-
-      panels
     end
 
     def model_class
@@ -142,7 +138,7 @@ module Avo
 
       return @model.class if @model.present?
 
-      self.class.name.demodulize.chomp('Resource').safe_constantize
+      self.class.name.demodulize.chomp("Resource").safe_constantize
     end
 
     def model_title
@@ -156,7 +152,7 @@ module Avo
 
       return I18n.t(@translation_key, count: 1).capitalize if @translation_key
 
-      self.class.name.demodulize.chomp('Resource').titlecase
+      self.class.name.demodulize.chomp("Resource").titlecase
     end
 
     def singular_name
@@ -191,7 +187,7 @@ module Avo
       self.class.context
     end
 
-    def query_search(query: '', via_resource_name: , via_resource_id:, user:)
+    def query_search(via_resource_name:, via_resource_id:, user:, query: "")
       # model_class = self.model
 
       db_query = AuthorizationService.apply_policy(user, model_class)
@@ -199,18 +195,18 @@ module Avo
       if via_resource_name.present?
         related_model = App.get_resource_by_name(via_resource_name).model
 
-        db_query = related_model.find(via_resource_id).public_send(self.plural_name.downcase)
+        db_query = related_model.find(via_resource_id).public_send(plural_name.downcase)
       end
 
       new_query = []
 
-      [self.search].flatten.each_with_index do |search_by, index|
-        new_query.push 'or' if index != 0
+      [search].flatten.each_with_index do |search_by, index|
+        new_query.push "or" if index != 0
 
         new_query.push "text(#{search_by}) ILIKE '%#{query}%'"
       end
 
-      db_query.where(new_query.join(' '))
+      db_query.where(new_query.join(" "))
     end
 
     def attached_file_fields
@@ -221,7 +217,7 @@ module Avo
 
     def fill_model(model, params)
       # Map the received params to their actual fields
-      fields_by_database_id = self.get_field_definitions.map { |field| [field.database_id(model).to_s, field] }.to_h
+      fields_by_database_id = get_field_definitions.map { |field| [field.database_id(model).to_s, field] }.to_h
 
       params.each do |key, value|
         field = fields_by_database_id[key]
@@ -239,16 +235,16 @@ module Avo
     end
 
     def file_hash
-      content_to_be_hashed = ''
+      content_to_be_hashed = ""
 
       # resource file hash
-      resource_path = Rails.root.join('app', 'avo', 'resources', "#{name.underscore}.rb").to_s
+      resource_path = Rails.root.join("app", "avo", "resources", "#{name.underscore}.rb").to_s
       if File.file? resource_path
         content_to_be_hashed += File.read(resource_path)
       end
 
       # policy file hash
-      policy_path = Rails.root.join('app', 'policies', "#{name.underscore}_policy.rb").to_s
+      policy_path = Rails.root.join("app", "policies", "#{name.underscore}_policy.rb").to_s
       if File.file? policy_path
         content_to_be_hashed += File.read(policy_path)
       end
@@ -258,9 +254,9 @@ module Avo
 
     def cache_hash(parent_model)
       if parent_model.present?
-        [self.model, self.file_hash, parent_model]
+        [model, file_hash, parent_model]
       else
-        [self.model, self.file_hash]
+        [model, file_hash]
       end
     end
 
@@ -270,24 +266,24 @@ module Avo
       default_values = get_fields.select do |field|
         !field.computed
       end
-      .map do |field|
-        id = field.id
-        value = field.value
+        .map do |field|
+                         id = field.id
+                         value = field.value
 
-        if field.respond_to? :foreign_key
-          id = field.foreign_key.to_sym
+                         if field.respond_to? :foreign_key
+                           id = field.foreign_key.to_sym
 
-          reflection = @model._reflections[@params[:via_relation]]
+                           reflection = @model._reflections[@params[:via_relation]]
 
-          if reflection.present? && reflection.foreign_key.present?
-            value = @params[:via_resource_id]
-          end
-        end
+                           if reflection.present? && reflection.foreign_key.present?
+                             value = @params[:via_resource_id]
+                           end
+                         end
 
-        [id, value]
-      end
-      .to_h
-      .select do |id, value|
+                         [id, value]
+                       end
+        .to_h
+        .select do |id, value|
         value.present?
       end
 

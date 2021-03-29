@@ -30,7 +30,7 @@ m = Module.new do
       if update_index && update_index.succ == i && a =~ Gem::Version::ANCHORED_VERSION_PATTERN
         bundler_version = a
       end
-      next unless a =~ /\A--bundler(?:[= ](#{Gem::Version::VERSION_PATTERN}))?\z/
+      next unless a =~ /\A--bundler(?:[= ](#{Gem::Version::VERSION_PATTERN}))?\z/o
       bundler_version = $1
       update_index = i
     end
@@ -56,14 +56,14 @@ m = Module.new do
   def lockfile_version
     return unless File.file?(lockfile)
     lockfile_contents = File.read(lockfile)
-    return unless lockfile_contents =~ /\n\nBUNDLED WITH\n\s{2,}(#{Gem::Version::VERSION_PATTERN})\n/
+    return unless lockfile_contents =~ /\n\nBUNDLED WITH\n\s{2,}(#{Gem::Version::VERSION_PATTERN})\n/o
     Regexp.last_match(1)
   end
 
   def bundler_version
     @bundler_version ||=
       env_var_version || cli_arg_version ||
-        lockfile_version
+      lockfile_version
   end
 
   def bundler_requirement

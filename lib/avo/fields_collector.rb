@@ -11,16 +11,15 @@ module Avo
         field[:name].to_s == as.to_s
       end
 
-      if matched_field.present? and matched_field[:class].present?
+      if matched_field.present? && matched_field[:class].present?
         klass = matched_field[:class]
 
-        if block_given?
-          field = klass.new(field_name, **args || {}, &block)
+        if block
+          klass.new(field_name, **args || {}, &block)
         else
-          field = klass.new(field_name, **args || {})
+          klass.new(field_name, **args || {})
         end
 
-        field
       end
     end
 

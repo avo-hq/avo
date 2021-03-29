@@ -1,5 +1,5 @@
 class FeaturedFilter < Avo::Filters::BooleanFilter
-  self.name = 'Featured status'
+  self.name = "Featured status"
 
   def apply(request, query, values)
     return query if values[:is_featured] && values[:is_unfeatured]
@@ -15,8 +15,8 @@ class FeaturedFilter < Avo::Filters::BooleanFilter
 
   def options
     {
-      'is_featured': 'Featured',
-      'is_unfeatured': 'Unfeatured',
+      'is_featured': "Featured",
+      'is_unfeatured': "Unfeatured"
     }
   end
 end

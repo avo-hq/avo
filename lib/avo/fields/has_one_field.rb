@@ -7,14 +7,14 @@ module Avo
       def initialize(name, **args, &block)
         @defaults = {
           updatable: true,
-          partial_name: 'has-one-field',
+          partial_name: "has-one-field"
         }
 
         super(name, **args, &block)
 
         hide_on :new, :edit
 
-        @placeholder = I18n.t 'avo.choose_an_option'
+        @placeholder = I18n.t "avo.choose_an_option"
 
         @relation_method = name.to_s.parameterize.underscore
         @display = args[:display].present? ? args[:display] : :show

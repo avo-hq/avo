@@ -1,4 +1,4 @@
-require_dependency 'avo/application_controller'
+require_dependency "avo/application_controller"
 
 module Avo
   class ActionsController < ApplicationController
@@ -11,11 +11,11 @@ module Avo
     end
 
     def handle
-      resource_ids = action_params[:fields][:resource_ids].split(',').map(&:to_i)
+      resource_ids = action_params[:fields][:resource_ids].split(",").map(&:to_i)
       models = @resource.model_class.find resource_ids
 
       fields = action_params[:fields].select do |key, value|
-        key != 'resource_ids'
+        key != "resource_ids"
       end
 
       performed_action = @action.handle_action(models: models, fields: fields)
@@ -24,44 +24,45 @@ module Avo
     end
 
     private
-      def action_params
-        params.permit(:resource_name, :action_id, fields: {})
+
+    def action_params
+      params.permit(:resource_name, :action_id, fields: {})
+    end
+
+    def set_action
+      action_class = params[:action_id].gsub("avo_actions_", "").classify.safe_constantize
+
+      if params[:id].present?
+        model = @resource.model_class.find params[:id]
       end
 
-      def set_action
-        action_class = params[:action_id].gsub('avo_actions_', '').classify.safe_constantize
+      @action = action_class.new(model: model, resource: resource, user: _current_user)
+    end
 
-        if params[:id].present?
-          model = @resource.model_class.find params[:id]
-        end
+    def respond(response)
+      response[:type] ||= :reload
+      response[:message_type] ||= :notice
+      response[:message] ||= I18n.t("avo.action_ran_successfully")
 
-        @action = action_class.new(model: model, resource: resource, user: _current_user)
+      if response[:type] == :download
+        return send_data response[:path], filename: response[:filename]
       end
 
-      def respond(response)
-        response[:type] ||= :reload
-        response[:message_type] ||= :notice
-        response[:message] ||= I18n.t('avo.action_ran_successfully')
+      respond_to do |format|
+        format.html do
+          if response[:type] == :redirect
+            path = response[:path]
 
-        if response[:type] == :download
-          return send_data response[:path], filename: response[:filename]
-        end
-
-        respond_to do |format|
-          format.html do
-            if response[:type] == :redirect
-              path = response[:path]
-
-              if path.respond_to? :call
-                path = instance_eval &path
-              end
-
-              redirect_to path, "#{response[:message_type]}": response[:message]
-            elsif response[:type] == :reload
-              redirect_back fallback_location: resources_path(@resource.model_class), "#{response[:message_type]}": response[:message]
+            if path.respond_to? :call
+              path = instance_eval(&path)
             end
+
+            redirect_to path, "#{response[:message_type]}": response[:message]
+          elsif response[:type] == :reload
+            redirect_back fallback_location: resources_path(@resource.model_class), "#{response[:message_type]}": response[:message]
           end
         end
       end
+    end
   end
 end

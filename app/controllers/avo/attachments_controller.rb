@@ -1,4 +1,4 @@
-require_dependency 'avo/application_controller'
+require_dependency "avo/application_controller"
 
 module Avo
   class AttachmentsController < ApplicationController
@@ -16,9 +16,9 @@ module Avo
       if attachment.present?
         attachment.destroy
 
-        redirect_to params[:referrer] || resource_path(@model), notice: t('avo.attachment_destroyed')
+        redirect_to params[:referrer] || resource_path(@model), notice: t("avo.attachment_destroyed")
       else
-        redirect_back fallback_location: resource_path(@model), notice: t('avo.failed_to_find_attachment')
+        redirect_back fallback_location: resource_path(@model), notice: t("avo.failed_to_find_attachment")
       end
     end
   end

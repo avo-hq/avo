@@ -15,10 +15,10 @@ module Avo
 
         I18n.locale = Avo.configuration.language_code
 
-        if Rails.cache.class == ActiveSupport::Cache::NullStore
-          self.app[:cache_store] ||= ActiveSupport::Cache::MemoryStore.new
+        if Rails.cache.instance_of?(ActiveSupport::Cache::NullStore)
+          app[:cache_store] ||= ActiveSupport::Cache::MemoryStore.new
         else
-          self.app[:cache_store] = Rails.cache
+          app[:cache_store] = Rails.cache
         end
       end
 
@@ -35,7 +35,7 @@ module Avo
       end
 
       def cache_store
-        self.app[:cache_store]
+        app[:cache_store]
       end
 
       # This method will find all fields available in the Avo::Fields namespace and add them to the fields class_variable array
@@ -47,23 +47,23 @@ module Avo
       # Avo::Fields::DateTimeField -> date_time
       def init_fields
         Avo::Fields::BaseField.descendants.each do |class_name|
-          next if class_name.to_s == 'BaseField'
+          next if class_name.to_s == "BaseField"
 
-          if class_name.to_s.end_with? 'Field'
+          if class_name.to_s.end_with? "Field"
             load_field class_name.get_field_name, class_name
           end
         end
       end
 
       def load_field(method_name, klass)
-        self.fields.push(
+        fields.push(
           name: method_name,
-          class: klass,
+          class: klass
         )
       end
 
       def init_resources
-        self.app[:resources] = BaseResource.descendants
+        app[:resources] = BaseResource.descendants
           .select do |resource|
             resource != BaseResource
           end
@@ -75,14 +75,14 @@ module Avo
       end
 
       def get_resources
-        self.app[:resources]
+        app[:resources]
       end
 
       # Returns the Avo resource by camelized name
       #
       # get_resource_by_name('User') => UserResource
       def get_resource(resource)
-        self.app[:resources].find do |available_resource|
+        app[:resources].find do |available_resource|
           "#{resource}Resource".safe_constantize == available_resource.class
         end
       end
@@ -91,7 +91,7 @@ module Avo
       #
       # get_resource_by_name('user') => UserResource
       def get_resource_by_name(name)
-        self.get_resource name.singularize.camelize
+        get_resource name.singularize.camelize
       end
 
       # Returns the Avo resource by singular snake_cased name
@@ -110,7 +110,7 @@ module Avo
       # get_resource_by_controller_name('users') => UserResource
       def get_resource_by_controller_name(name)
         get_resources.find do |resource|
-          resource.model_class.to_s.pluralize.underscore.gsub('/', '_') == name.to_s
+          resource.model_class.to_s.pluralize.underscore.tr("/", "_") == name.to_s
         end
       end
 
@@ -124,7 +124,7 @@ module Avo
       def get_available_resources(user = nil)
         App.get_resources
           .select do |resource|
-            Services::AuthorizationService.authorize user, resource.model, Avo.configuration.authorization_methods.stringify_keys['index'], raise_exception: false
+            Services::AuthorizationService.authorize user, resource.model, Avo.configuration.authorization_methods.stringify_keys["index"], raise_exception: false
           end
           .sort_by { |r| r.name }
       end
@@ -139,17 +139,17 @@ module Avo
         # We should eager load all the classes so we find all descendants
         Rails.application.eager_load!
 
-        Proc.new do
+        proc do
           BaseResource.descendants
             .select do |resource|
               resource != :BaseResource
             end
             .map do |resource|
               if resource.is_a? Class
-                if resource.model_class.present?
-                  route_key = resource.model_class.model_name.route_key
+                route_key = if resource.model_class.present?
+                  resource.model_class.model_name.route_key
                 else
-                  route_key = resource.to_s.underscore.gsub('_resource', '').downcase.pluralize.to_sym
+                  resource.to_s.underscore.gsub("_resource", "").downcase.pluralize.to_sym
                 end
 
                 resources route_key

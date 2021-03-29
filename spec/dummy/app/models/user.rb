@@ -2,7 +2,7 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+    :recoverable, :rememberable, :validatable
 
   validates :first_name, presence: true
   validates :last_name, presence: true
@@ -15,7 +15,7 @@ class User < ApplicationRecord
   has_one_attached :cv
 
   def is_admin?
-    roles.present? and roles['admin'].present?
+    roles.present? && roles["admin"].present?
   end
 
   def name

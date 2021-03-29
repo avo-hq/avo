@@ -5,8 +5,8 @@ module Avo
 
       def initialize(name, **args, &block)
         @defaults = {
-          partial_name: 'boolean-group-field',
-          computable: true,
+          partial_name: "boolean-group-field",
+          computable: true
         }
 
         super(name, **args, &block)
@@ -15,7 +15,7 @@ module Avo
       end
 
       def to_permitted_param
-        ["#{id}": [] ]
+        ["#{id}": []]
       end
 
       def fill_field(model, key, value)

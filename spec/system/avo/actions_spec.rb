@@ -1,6 +1,5 @@
 # require 'rails_helper'
 
-
 # RSpec.describe 'Actions', type: :system do
 #   let!(:roles) { { admin: false, manager: false, writer: false } }
 #   let!(:user) { create :user, active: true, roles: roles }

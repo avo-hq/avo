@@ -44,7 +44,7 @@ module Avo
             end
 
             true
-          rescue Pundit::NotDefinedError => error
+          rescue Pundit::NotDefinedError
             false
           rescue => error
             if args[:raise_exception] == false
@@ -69,7 +69,7 @@ module Avo
 
           begin
             Pundit.policy_scope! user, model
-          rescue => exception
+          rescue
             model
           end
         end

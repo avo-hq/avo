@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 # class DummyUser < Resource
 #   def configure
@@ -59,8 +59,6 @@ require 'rails_helper'
 #     end
 #   end
 # end
-
-
 
 # RSpec.feature 'FieldsLoader', type: :feature do
 #   describe 'Resource' do

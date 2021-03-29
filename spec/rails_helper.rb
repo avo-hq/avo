@@ -1,15 +1,15 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
-require 'spec_helper'
-ENV['RAILS_ENV'] = 'test'
+require "spec_helper"
+ENV["RAILS_ENV"] = "test"
 
-require_relative 'dummy/config/environment'
+require_relative "dummy/config/environment"
 # Prevent database truncation if the environment is production
-abort('The Rails environment is running in production mode!') if Rails.env.production?
-require 'rspec/rails'
-require 'webmock/rspec'
+abort("The Rails environment is running in production mode!") if Rails.env.production?
+require "rspec/rails"
+require "webmock/rspec"
 
-require 'test_prof/any_fixture'
-require 'test_prof/any_fixture/dsl'
+require "test_prof/any_fixture"
+require "test_prof/any_fixture/dsl"
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -40,9 +40,9 @@ Avo::App.boot
 
 # ActiveRecord::Migrator.migrate(File.join(Rails.root, 'db/migrate'))
 
-test_driver = ENV['HEADFULL'] ? :selenium_chrome : :selenium_chrome_headless
+test_driver = ENV["HEADFULL"] ? :selenium_chrome : :selenium_chrome_headless
 
-require 'support/controller_routes'
+require "support/controller_routes"
 
 RSpec.configure do |config|
   config.include TestHelpers::ControllerRoutes, type: :controller
@@ -74,12 +74,12 @@ RSpec.configure do |config|
   config.around(:example, type: :system) do |example|
     # Stub license request for system tests.
     stub_request(:post, Avo::Licensing::HQ::ENDPOINT).to_return(status: 200, body: {}.to_json, headers: json_headers)
-    ENV['RUN_WITH_NULL_LICENSE'] = '1'
-    WebMock.disable_net_connect!(allow_localhost: true, allow: 'chromedriver.storage.googleapis.com')
+    ENV["RUN_WITH_NULL_LICENSE"] = "1"
+    WebMock.disable_net_connect!(allow_localhost: true, allow: "chromedriver.storage.googleapis.com")
     example.run
     WebMock.allow_net_connect!
     WebMock.reset!
-    ENV['RUN_WITH_NULL_LICENSE'] = '0'
+    ENV["RUN_WITH_NULL_LICENSE"] = "0"
   end
 
   # You can uncomment this line to turn off ActiveRecord support entirely.
@@ -106,10 +106,10 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
 end
 
-require 'support/helpers'
-require 'support/factory_bot'
-require 'support/database_cleaner'
-require 'support/wait_for_loaded'
-require 'support/js_error_detector'
-require 'support/devise'
-require 'support/shared_contexts'
+require "support/helpers"
+require "support/factory_bot"
+require "support/database_cleaner"
+require "support/wait_for_loaded"
+require "support/js_error_detector"
+require "support/devise"
+require "support/shared_contexts"

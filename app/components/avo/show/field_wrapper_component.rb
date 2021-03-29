@@ -4,12 +4,12 @@ class Avo::Show::FieldWrapperComponent < ViewComponent::Base
   def initialize(field: nil, dash_if_blank: true, full_width: false, **args)
     @field = field
     @dash_if_blank = dash_if_blank
-    @classes = args[:class].present? ? args[:class] : ''
+    @classes = args[:class].present? ? args[:class] : ""
     @args = args
     @full_width = full_width
 
-    if @index != 0 or @displayed_in_modal
-      @classes += ' border-t'
+    if (@index != 0) || @displayed_in_modal
+      @classes += " border-t"
     end
   end
 end

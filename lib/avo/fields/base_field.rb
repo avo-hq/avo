@@ -44,14 +44,14 @@ module Avo
 
         args = @defaults.merge(args).symbolize_keys
 
-        null_values = [nil, '', *args[:null_values]]
+        null_values = [nil, "", *args[:null_values]]
         # The field properties as a hash {property: default_value}
         @field_properties = {
           id: id,
           name: id.to_s.humanize(keep_id_suffix: true),
           translation_key: nil,
           block: block,
-          partial_name: 'field',
+          partial_name: "field",
           required: false,
           readonly: false,
           updatable: true,
@@ -67,7 +67,7 @@ module Avo
           default: nil,
           visible: true,
           meta: {},
-          panel_name: nil,
+          panel_name: nil
         }
 
         # Set the values in the following order
@@ -76,7 +76,7 @@ module Avo
         # - field option
         @field_properties.each do |name, default_value|
           final_value = args[name.to_sym]
-          self.send("#{name}=", name != 'null_values' && (final_value.nil? || !defined?(final_value)) ? default_value : final_value)
+          send("#{name}=", name != "null_values" && (final_value.nil? || !defined?(final_value)) ? default_value : final_value)
         end
 
         # Set the visibility
@@ -102,7 +102,7 @@ module Avo
       end
 
       def visible?
-        if visible.present? and visible.respond_to? :call
+        if visible.present? && visible.respond_to?(:call)
           visible.call
         else
           visible
@@ -111,18 +111,18 @@ module Avo
 
       def value
         # Get model value
-        final_value = @model.send(id) if model_or_class(@model) == 'model' and @model.respond_to? id
+        final_value = @model.send(id) if (model_or_class(@model) == "model") && @model.respond_to?(id)
 
-        if @view === :new or @action.present?
-          if default.present? and default.respond_to? :call
-            final_value = default.call
+        if (@view === :new) || @action.present?
+          final_value = if default.present? && default.respond_to?(:call)
+            default.call
           else
-            final_value = default
+            default
           end
         end
 
         # Run callback block if present
-        if computable and block.present?
+        if computable && block.present?
           final_value = block.call @model, @resource, @view, self
         end
 
@@ -141,18 +141,16 @@ module Avo
       end
 
       def partial_path_for(view)
-        return @custom_partials[view] if @custom_partials.present? and @custom_partials[view].present?
+        return @custom_partials[view] if @custom_partials.present? && @custom_partials[view].present?
 
         "avo/fields/#{view}/#{partial_name}"
       end
 
       # Try to see if the field has a different database ID than it's name
       def database_id(model)
-        begin
-          foreign_key
-        rescue => exception
-          id
-        end
+        foreign_key
+      rescue
+        id
       end
 
       def has_own_panel?
@@ -168,7 +166,7 @@ module Avo
       end
 
       def component_name(view = :index)
-        "Avo::#{view.to_s.classify}::Fields::#{partial_name.gsub('-field', '').underscore.camelize}FieldComponent"
+        "Avo::#{view.to_s.classify}::Fields::#{partial_name.gsub("-field", "").underscore.camelize}FieldComponent"
       end
 
       def model_errors
@@ -178,17 +176,18 @@ module Avo
       end
 
       def type
-        self.class.name.demodulize.to_s.underscore.gsub('_field', '')
+        self.class.name.demodulize.to_s.underscore.gsub("_field", "")
       end
 
       private
-        def model_or_class(model)
-          if model.class == String
-            'class'
-          else
-            'model'
-          end
+
+      def model_or_class(model)
+        if model.instance_of?(String)
+          "class"
+        else
+          "model"
         end
+      end
     end
   end
 end

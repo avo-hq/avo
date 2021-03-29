@@ -7,7 +7,7 @@ module Avo
 
       def initialize(name, **args, &block)
         @defaults = {
-          partial_name: 'select-field',
+          partial_name: "select-field"
         }
 
         super(name, **args, &block)
@@ -16,7 +16,7 @@ module Avo
         @options = ActiveSupport::HashWithIndifferentAccess.new @options
         @enum = args[:enum].present? ? args[:enum] : nil
         @display_value = args[:display_value].present? ? args[:display_value] : false
-        @placeholder = args[:placeholder].present? ? args[:placeholder].to_s : I18n.t('avo.choose_an_option')
+        @placeholder = args[:placeholder].present? ? args[:placeholder].to_s : I18n.t("avo.choose_an_option")
       end
 
       def options_for_select
@@ -26,24 +26,20 @@ module Avo
           else
             options.map { |label, value| [label, label] }.to_h
           end
+        elsif display_value
+          options.map { |label, value| [value, value] }.to_h
         else
-          if display_value
-            options.map { |label, value| [value, value] }.to_h
-          else
-            options
-          end
+          options
         end
       end
 
       def label
         if display_value
           value
+        elsif enum.present?
+          options[value]
         else
-          if enum.present?
-            options[value]
-          else
-            options.invert[value]
-          end
+          options.invert[value]
         end
       end
     end

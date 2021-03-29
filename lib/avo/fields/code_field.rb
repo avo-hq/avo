@@ -10,16 +10,16 @@ module Avo
 
       def initialize(name, **args, &block)
         @defaults = {
-          partial_name: 'code-field',
+          partial_name: "code-field"
         }
 
         hide_on :index
 
         super(name, **args, &block)
 
-        @language = args[:language].present? ? args[:language].to_s : 'javascript'
-        @theme = args[:theme].present? ? args[:theme].to_s : 'material-darker'
-        @height = args[:height].present? ? args[:height].to_s : 'auto'
+        @language = args[:language].present? ? args[:language].to_s : "javascript"
+        @theme = args[:theme].present? ? args[:theme].to_s : "material-darker"
+        @height = args[:height].present? ? args[:height].to_s : "auto"
         @tab_size = args[:tab_size].present? ? args[:tab_size] : 2
         @indent_with_tabs = args[:indent_with_tabs].present? ? args[:indent_with_tabs] : false
         @line_wrapping = args[:line_wrapping].present? ? args[:line_wrapping] : true

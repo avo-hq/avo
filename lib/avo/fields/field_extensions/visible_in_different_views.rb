@@ -45,48 +45,49 @@ module Avo
         end
 
         private
-          def show_on_view(view)
-            self.send("show_on_#{view.to_s}=", true)
+
+        def show_on_view(view)
+          send("show_on_#{view}=", true)
+        end
+
+        def hide_on_view(view)
+          send("show_on_#{view}=", false)
+        end
+
+        def only_on_view(view)
+          hide_on_all
+          show_on_view view
+        end
+
+        def except_on_view(view)
+          show_on_all
+          hide_on_view view
+        end
+
+        def show_on_all
+          @show_on_index = true
+          @show_on_show = true
+          @show_on_edit = true
+          @show_on_new = true
+        end
+
+        def hide_on_all
+          @show_on_index = false
+          @show_on_show = false
+          @show_on_edit = false
+          @show_on_new = false
+        end
+
+        def normalize_views(*views_and_groups)
+          forms = views_and_groups.flatten! & [:forms]
+
+          if forms.present?
+            views_and_groups -= forms
+            views_and_groups += [:new, :edit]
           end
 
-          def hide_on_view(view)
-            self.send("show_on_#{view.to_s}=", false)
-          end
-
-          def only_on_view(view)
-            hide_on_all
-            show_on_view view
-          end
-
-          def except_on_view(view)
-            show_on_all
-            hide_on_view view
-          end
-
-          def show_on_all
-            @show_on_index = true
-            @show_on_show = true
-            @show_on_edit = true
-            @show_on_new = true
-          end
-
-          def hide_on_all
-            @show_on_index = false
-            @show_on_show = false
-            @show_on_edit = false
-            @show_on_new = false
-          end
-
-          def normalize_views(*views_and_groups)
-            forms = views_and_groups.flatten! & [:forms]
-
-            if forms.present?
-              views_and_groups = views_and_groups - forms
-              views_and_groups = views_and_groups + [:new, :edit]
-            end
-
-            views_and_groups.flatten.uniq
-          end
+          views_and_groups.flatten.uniq
+        end
       end
     end
   end

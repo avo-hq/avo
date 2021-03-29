@@ -5,25 +5,24 @@
 
 def ensure_log_goes_to_stdout
   old_logger = Webpacker.logger
-  Webpacker.logger = ActiveSupport::Logger.new(STDOUT)
+  Webpacker.logger = ActiveSupport::Logger.new($stdout)
   yield
 ensure
   Webpacker.logger = old_logger
 end
 
-
 namespace :avo do
   namespace :webpacker do
-    desc 'Install deps with yarn'
+    desc "Install deps with yarn"
     task :yarn_install do
-      Dir.chdir(File.join(__dir__, '../..')) do
-        system 'yarn install --no-progress --production'
+      Dir.chdir(File.join(__dir__, "../..")) do
+        system "yarn install --no-progress --production"
       end
     end
 
-    desc 'Compile JavaScript packs using webpack for production with digests'
+    desc "Compile JavaScript packs using webpack for production with digests"
     task compile: [:yarn_install, :environment] do
-      Webpacker.with_node_env('production') do
+      Webpacker.with_node_env("production") do
         ensure_log_goes_to_stdout do
           if Avo.webpacker.commands.compile
             # Successful compilation!
@@ -46,19 +45,19 @@ end
 
 def enhance_assets_precompile
   # yarn:install was added in Rails 5.1
-  deps = yarn_install_available? ? [] : ['avo:webpacker:yarn_install']
-  # Rake::Task['assets:precompile'].enhance(deps) do
-  #   Rake::Task['avo:webpacker:compile'].invoke
-  # end
+  deps = yarn_install_available? ? [] : ["avo:webpacker:yarn_install"]
+  Rake::Task["assets:precompile"].enhance(deps) do
+    Rake::Task["avo:webpacker:compile"].invoke
+  end
 end
 
 # Compile packs after we've compiled all other assets during precompilation
-skip_webpacker_precompile = %w(no false n f).include?(ENV['WEBPACKER_PRECOMPILE'])
+skip_webpacker_precompile = %w[no false n f].include?(ENV["WEBPACKER_PRECOMPILE"])
 
 unless skip_webpacker_precompile
-  if Rake::Task.task_defined?('assets:precompile')
+  if Rake::Task.task_defined?("assets:precompile")
     enhance_assets_precompile
   else
-    Rake::Task.define_task('assets:precompile' => 'avo:webpacker:compile')
+    Rake::Task.define_task("assets:precompile" => "avo:webpacker:compile")
   end
 end

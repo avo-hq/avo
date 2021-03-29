@@ -1,11 +1,11 @@
-require 'rails_helper'
+require "rails_helper"
 
-RSpec.describe 'HiddenField', type: :system do
-  describe 'without input' do
+RSpec.describe "HiddenField", type: :system do
+  describe "without input" do
     let!(:user) { create :user }
 
-    context 'edit' do
-      it 'has the hidden field empty' do
+    context "edit" do
+      it "has the hidden field empty" do
         visit "/avo/resources/users/#{user.id}/edit"
 
         expect(find("input#user_team_id[type='hidden']", visible: false).value).to be_empty
@@ -13,14 +13,14 @@ RSpec.describe 'HiddenField', type: :system do
     end
   end
 
-  describe 'with regular input' do
+  describe "with regular input" do
     let!(:user) { create :user, team_id: 10 }
 
-    context 'edit' do
-      it 'has the hidden field' do
+    context "edit" do
+      it "has the hidden field" do
         visit "/avo/resources/users/#{user.id}/edit"
 
-        expect(find("input#user_team_id[type='hidden']", visible: false).value).to eq '10'
+        expect(find("input#user_team_id[type='hidden']", visible: false).value).to eq "10"
       end
     end
   end

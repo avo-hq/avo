@@ -1,8 +1,8 @@
 # requires all dependencies
-Gem.loaded_specs['avo'].dependencies.each do |d|
+Gem.loaded_specs["avo"].dependencies.each do |d|
   require d.name
 end
-require 'view_component/engine'
+require "view_component/engine"
 
 module Avo
   class Engine < ::Rails::Engine
@@ -13,42 +13,42 @@ module Avo
       ::Avo::App.boot
     end
 
-    initializer 'avo.autoload', before: :set_autoload_paths do |app|
-      Rails.autoloaders.main.push_dir(Rails.root.join('app', 'avo', 'filters'))
-      Rails.autoloaders.main.push_dir(Rails.root.join('app', 'avo', 'actions'))
-      Rails.autoloaders.main.push_dir(Rails.root.join('app', 'avo', 'resources'))
+    initializer "avo.autoload", before: :set_autoload_paths do |app|
+      Rails.autoloaders.main.push_dir(Rails.root.join("app", "avo", "filters"))
+      Rails.autoloaders.main.push_dir(Rails.root.join("app", "avo", "actions"))
+      Rails.autoloaders.main.push_dir(Rails.root.join("app", "avo", "resources"))
     end
 
-    initializer 'avo.init_fields' do |app|
+    initializer "avo.init_fields" do |app|
       # Init the fields
       ::Avo::App.init_fields
     end
 
-    initializer 'avo.reload_avo_files' do |app|
-      if Avo::IN_DEVELOPMENT && ENV['RELOAD_AVO_FILES']
+    initializer "avo.reload_avo_files" do |app|
+      if Avo::IN_DEVELOPMENT && ENV["RELOAD_AVO_FILES"]
         avo_root_path = Avo::Engine.root.to_s
         # Register reloader
         app.reloaders << app.config.file_watcher.new([], {
-          Avo::Engine.root.join('lib', 'avo').to_s => ['rb'],
+          Avo::Engine.root.join("lib", "avo").to_s => ["rb"]
         }) {}
 
         # What to do on file change
         config.to_prepare do
-          Dir.glob(avo_root_path + '/lib/avo/**/*.rb'.to_s).each { |c| load c }
+          Dir.glob(avo_root_path + "/lib/avo/**/*.rb".to_s).each { |c| load c }
           Avo::App.boot
         end
       end
     end
 
-    initializer 'webpacker.proxy' do |app|
+    initializer "webpacker.proxy" do |app|
       app.config.debug_exception_response_format = :api
       # app.config.logger = ::Logger.new(STDOUT)
 
       insert_middleware = begin
-                            Avo.webpacker.config.dev_server.present?
-                          rescue
-                            nil
-                          end
+        Avo.webpacker.config.dev_server.present?
+      rescue
+        nil
+      end
 
       if insert_middleware
         app.middleware.insert_before(
@@ -61,8 +61,8 @@ module Avo
 
     config.app_middleware.use(
       Rack::Static,
-      urls: ['/avo-packs'],
-      root: Avo::Engine.root.join('public')
+      urls: ["/avo-packs"],
+      root: Avo::Engine.root.join("public")
     )
 
     config.generators do |g|

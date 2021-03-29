@@ -6,8 +6,8 @@ module Avo
 
       def initialize(name, **args, &block)
         @defaults = {
-          partial_name: 'boolean-field',
-          computable: true,
+          partial_name: "boolean-field",
+          computable: true
         }
 
         super(name, **args, &block)
@@ -25,11 +25,11 @@ module Avo
       end
 
       def truthy_values
-        ['true', '1', @true_value]
+        ["true", "1", @true_value]
       end
 
       def falsy_values
-        ['false', '0', @false_value]
+        ["false", "0", @false_value]
       end
     end
   end

@@ -1,4 +1,4 @@
-require_dependency 'avo/application_controller'
+require_dependency "avo/application_controller"
 
 module Avo
   class BaseController < ApplicationController
@@ -66,16 +66,16 @@ module Avo
 
       respond_to do |format|
         if saved
-          if params[:via_relation_class].present? && params[:via_resource_id].present?
-            redirect_path = resource_path(params[:via_relation_class].safe_constantize, resource_id: params[:via_resource_id])
+          redirect_path = if params[:via_relation_class].present? && params[:via_resource_id].present?
+            resource_path(params[:via_relation_class].safe_constantize, resource_id: params[:via_resource_id])
           else
-            redirect_path = resource_path(@model)
+            resource_path(@model)
           end
 
           format.html { redirect_to redirect_path, notice: "#{@model.class.name} was successfully created." }
           format.json { render :show, status: :created, location: @model }
         else
-          flash[:error] = t 'avo.you_missed_something_check_form'
+          flash[:error] = t "avo.you_missed_something_check_form"
           format.html { render :new, status: :unprocessable_entity }
           format.json { render json: @model.errors, status: :unprocessable_entity }
         end
@@ -92,7 +92,7 @@ module Avo
           format.html { redirect_to params[:referrer] || resource_path(@model), notice: "#{@model.class.name} was successfully updated." }
           format.json { render :show, status: :ok, location: @model }
         else
-          flash[:error] = t 'avo.you_missed_something_check_form'
+          flash[:error] = t "avo.you_missed_something_check_form"
           format.html { render :edit, status: :unprocessable_entity }
           format.json { render json: @model.errors, status: :unprocessable_entity }
         end
@@ -103,116 +103,117 @@ module Avo
       @model.destroy!
 
       respond_to do |format|
-        format.html { redirect_to params[:referrer] || resources_path(@model, turbo_frame: params[:turbo_frame], view_type: params[:view_type]), notice: t('avo.resource_destroyed', attachment_class: @attachment_class) }
+        format.html { redirect_to params[:referrer] || resources_path(@model, turbo_frame: params[:turbo_frame], view_type: params[:view_type]), notice: t("avo.resource_destroyed", attachment_class: @attachment_class) }
         format.json { head :no_content }
       end
     end
 
     private
-      def model_route_key
-        @resource.model_class.model_name.route_key.singularize
+
+    def model_route_key
+      @resource.model_class.model_name.route_key.singularize
+    end
+
+    def model_params
+      request_params = params.require(model_route_key).permit(permitted_params)
+
+      if @resource.devise_password_optional && request_params[:password].blank? && request_params[:password_confirmation].blank?
+        request_params.delete(:password_confirmation)
+        request_params.delete(:password)
       end
 
-      def model_params
-        request_params = params.require(model_route_key).permit(permitted_params)
+      request_params
+    end
 
-        if @resource.devise_password_optional and request_params[:password].blank? and request_params[:password_confirmation].blank?
-          request_params.delete(:password_confirmation)
-          request_params.delete(:password)
-        end
+    def permitted_params
+      @resource.get_field_definitions.select(&:updatable).map(&:to_permitted_param)
+    end
 
-        request_params
+    def cast_nullable(params)
+      fields = @resource.get_field_definitions
+
+      nullable_fields = fields.filter do |field|
+        field.nullable
       end
-
-      def permitted_params
-        @resource.get_field_definitions.select(&:updatable).map(&:to_permitted_param)
-      end
-
-      def cast_nullable(params)
-        fields = @resource.get_field_definitions
-
-        nullable_fields = fields.filter do |field|
-          field.nullable
-        end
         .map do |field|
-          [field.id, field.null_values]
-        end
+        [field.id, field.null_values]
+      end
         .to_h
 
-        params.each do |key, value|
-          nullable = nullable_fields[key.to_sym]
+      params.each do |key, value|
+        nullable = nullable_fields[key.to_sym]
 
-          if nullable.present? && value.in?(nullable)
-            params[key] = nil
-          end
-        end
-
-        params
-      end
-
-      def set_index_params
-        @index_params = {}
-
-        # Pagination
-        @index_params[:page] = params[:page] || 1
-        @index_params[:per_page] = Avo.configuration.per_page
-
-        if cookies[:per_page].present?
-          @index_params[:per_page] = cookies[:per_page]
-        end
-
-        if @parent_model.present?
-          @index_params[:per_page] = Avo.configuration.via_per_page
-        end
-
-        if params[:per_page].present?
-          @index_params[:per_page] = params[:per_page]
-          cookies[:per_page] = params[:per_page]
-        end
-
-        # Sorting
-        @index_params[:sort_by] = params[:sort_by] || :created_at
-        @index_params[:sort_direction] = params[:sort_direction] || :desc
-
-        # View types
-        @index_params[:view_type] = params[:view_type] || @resource.default_view_type || Avo.configuration.default_view_type
-        @index_params[:available_view_types] = @resource.available_view_types
-      end
-
-      def set_filters
-        @filters = @resource.get_filters.map do |filter_class|
-          filter = filter_class.new
-
-          filter
+        if nullable.present? && value.in?(nullable)
+          params[key] = nil
         end
       end
 
-      def set_actions
-        if params[:resource_id].present?
-          model = @resource.model_class.find params[:resource_id]
-        end
+      params
+    end
 
-        @actions = @resource.get_actions.map do |action|
-          action.new(model: model, resource: @resource)
+    def set_index_params
+      @index_params = {}
+
+      # Pagination
+      @index_params[:page] = params[:page] || 1
+      @index_params[:per_page] = Avo.configuration.per_page
+
+      if cookies[:per_page].present?
+        @index_params[:per_page] = cookies[:per_page]
+      end
+
+      if @parent_model.present?
+        @index_params[:per_page] = Avo.configuration.via_per_page
+      end
+
+      if params[:per_page].present?
+        @index_params[:per_page] = params[:per_page]
+        cookies[:per_page] = params[:per_page]
+      end
+
+      # Sorting
+      @index_params[:sort_by] = params[:sort_by] || :created_at
+      @index_params[:sort_direction] = params[:sort_direction] || :desc
+
+      # View types
+      @index_params[:view_type] = params[:view_type] || @resource.default_view_type || Avo.configuration.default_view_type
+      @index_params[:available_view_types] = @resource.available_view_types
+    end
+
+    def set_filters
+      @filters = @resource.get_filters.map do |filter_class|
+        filter = filter_class.new
+
+        filter
+      end
+    end
+
+    def set_actions
+      if params[:resource_id].present?
+        model = @resource.model_class.find params[:resource_id]
+      end
+
+      @actions = @resource.get_actions.map do |action|
+        action.new(model: model, resource: @resource)
+      end
+    end
+
+    def applied_filters
+      if params[:filters].present?
+        return JSON.parse(Base64.decode64(params[:filters]))
+      end
+
+      filter_defaults = {}
+
+      @resource.get_filters.each do |filter_class|
+        filter = filter_class.new
+
+        if filter.default.present?
+          filter_defaults[filter_class.to_s] = filter.default
         end
       end
 
-      def applied_filters
-        if params[:filters].present?
-          return JSON.parse(Base64.decode64(params[:filters]))
-        end
-
-        filter_defaults = {}
-
-        @resource.get_filters.each do |filter_class|
-          filter = filter_class.new
-
-          if filter.default.present?
-            filter_defaults[filter_class.to_s] = filter.default
-          end
-        end
-
-        filter_defaults
-      end
+      filter_defaults
+    end
   end
 end

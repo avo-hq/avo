@@ -10,11 +10,12 @@ class Avo::PanelComponent < ViewComponent::Base
   end
 
   private
-    def data_attributes
-      return if @data.blank?
 
-      @data.map do |key, value|
-        " data-#{key}=\"#{value}\""
-      end.join
-    end
+  def data_attributes
+    return if @data.blank?
+
+    @data.map do |key, value|
+      " data-#{key}=\"#{value}\""
+    end.join
+  end
 end

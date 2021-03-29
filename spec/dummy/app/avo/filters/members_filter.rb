@@ -1,8 +1,8 @@
 class MembersFilter < Avo::Filters::BooleanFilter
-  self.name = 'Members filter'
+  self.name = "Members filter"
 
   def apply(request, query, value)
-    return query.where(id: Team.joins(:memberships).group('teams.id').count.keys) if value[:has_members]
+    return query.where(id: Team.joins(:memberships).group("teams.id").count.keys) if value[:has_members]
 
     query
   end
@@ -15,7 +15,7 @@ class MembersFilter < Avo::Filters::BooleanFilter
 
   def options
     {
-      'has_members': 'Has Members'
+      'has_members': "Has Members"
     }
   end
 end

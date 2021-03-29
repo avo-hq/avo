@@ -13,7 +13,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     filters: [],
     actions: [],
     reflection: nil,
-    turbo_frame: '',
+    turbo_frame: "",
     parent_model: nil
   )
     @resource = resource
@@ -63,7 +63,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     if @reflection.present?
       path_args = {
         via_relation_class: @parent_model.model_name,
-        via_resource_id: @parent_model.id,
+        via_resource_id: @parent_model.id
       }
 
       if @reflection.inverse_of.present?
@@ -77,7 +77,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def attach_path
-    "#{Avo.configuration.root_path}#{request.env['PATH_INFO']}/new"
+    "#{Avo.configuration.root_path}#{request.env["PATH_INFO"]}/new"
   end
 
   def detach_path
@@ -85,9 +85,10 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   private
-    def simple_relation?
-      return @reflection.is_a? ::ActiveRecord::Reflection::HasManyReflection if @reflection.present?
 
-      true
-    end
+  def simple_relation?
+    return @reflection.is_a? ::ActiveRecord::Reflection::HasManyReflection if @reflection.present?
+
+    true
+  end
 end

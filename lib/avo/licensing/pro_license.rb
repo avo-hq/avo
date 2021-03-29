@@ -3,7 +3,7 @@ module Avo
     class ProLicense < License
       def abilities
         [
-          :authorization,
+          :authorization
         ]
       end
     end

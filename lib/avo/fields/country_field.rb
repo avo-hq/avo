@@ -6,8 +6,8 @@ module Avo
 
       def initialize(name, **args, &block)
         @defaults = {
-          partial_name: 'country-field',
-          placeholder: I18n.t('avo.choose_a_country'),
+          partial_name: "country-field",
+          placeholder: I18n.t("avo.choose_a_country")
         }
 
         super(name, **args, &block)

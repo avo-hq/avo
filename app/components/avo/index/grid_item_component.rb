@@ -11,15 +11,16 @@ class Avo::Index::GridItemComponent < ViewComponent::Base
   end
 
   private
-    def cover
-      @grid_fields.cover_field
-    end
 
-    def title
-      @grid_fields.title_field
-    end
+  def cover
+    @grid_fields.cover_field
+  end
 
-    def body
-      @grid_fields.body_field
-    end
+  def title
+    @grid_fields.title_field
+  end
+
+  def body
+    @grid_fields.body_field
+  end
 end

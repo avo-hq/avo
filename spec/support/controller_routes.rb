@@ -1,4 +1,4 @@
-require 'test_prof/recipes/rspec/before_all'
+require "test_prof/recipes/rspec/before_all"
 
 module TestHelpers
   module ControllerRoutes
@@ -11,7 +11,7 @@ module TestHelpers
   module DisableAuthentication
     extend ActiveSupport::Concern
     included do
-      include_context 'has_admin_user'
+      include_context "has_admin_user"
 
       before do
         login_as admin

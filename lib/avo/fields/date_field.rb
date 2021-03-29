@@ -9,15 +9,15 @@ module Avo
 
       def initialize(name, **args, &block)
         @defaults = {
-          partial_name: 'date-field',
+          partial_name: "date-field"
         }
 
         super(name, **args, &block)
 
         @first_day_of_week = args[:first_day_of_week].present? ? args[:first_day_of_week].to_i : 0
-        @picker_format = args[:picker_format].present? ? args[:picker_format] : 'Y-m-d'
+        @picker_format = args[:picker_format].present? ? args[:picker_format] : "Y-m-d"
         @format = args[:format].present? ? args[:format] : :long
-        @placeholder = args[:placeholder].present? ? args[:placeholder] : ''
+        @placeholder = args[:placeholder].present? ? args[:placeholder] : ""
         @relative = args[:relative].present? ? args[:relative] : false
       end
 

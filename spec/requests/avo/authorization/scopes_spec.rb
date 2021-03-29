@@ -1,10 +1,10 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe Avo::UsersController, type: :controller do
   let(:regular_user) { create :user }
-  let(:admin_user) { create :user, roles: { admin: true } }
-  let!(:active_user) { create :user, first_name: 'active user', active: true }
-  let!(:inactive_user) { create :user, first_name: 'inactive user', active: false }
+  let(:admin_user) { create :user, roles: {admin: true} }
+  let!(:active_user) { create :user, first_name: "active user", active: true }
+  let!(:inactive_user) { create :user, first_name: "inactive user", active: false }
   let(:dummy_user) { create :user }
   let(:project) { create :project }
 
@@ -97,13 +97,13 @@ RSpec.describe Avo::UsersController, type: :controller do
     end
   end
 
-  describe '.index' do
+  describe ".index" do
     subject { get :index }
 
-    context 'when user is not admin' do
+    context "when user is not admin" do
       let(:user) { regular_user }
 
-      it 'returns the scoped results' do
+      it "returns the scoped results" do
         subject
 
         resource_ids = assigns(:models).collect { |i| i.id }
@@ -112,10 +112,10 @@ RSpec.describe Avo::UsersController, type: :controller do
       end
     end
 
-    context 'when user is admin' do
+    context "when user is admin" do
       let(:user) { admin_user }
 
-      it 'returns the scoped results' do
+      it "returns the scoped results" do
         subject
 
         resource_ids = assigns(:models).collect { |i| i.id }
@@ -124,13 +124,13 @@ RSpec.describe Avo::UsersController, type: :controller do
       end
     end
 
-    describe 'with via_resource_name' do
-      subject { get :index, params: { via_resource_name: 'projects', via_resource_id: project.id, via_relationship: 'users' } }
+    describe "with via_resource_name" do
+      subject { get :index, params: {via_resource_name: "projects", via_resource_id: project.id, via_relationship: "users"} }
 
-      context 'when user is not admin' do
+      context "when user is not admin" do
         let(:user) { regular_user }
 
-        it 'returns the scoped results' do
+        it "returns the scoped results" do
           subject
 
           resource_ids = assigns(:models).collect { |i| i.id }
@@ -139,10 +139,10 @@ RSpec.describe Avo::UsersController, type: :controller do
         end
       end
 
-      context 'when user is admin' do
+      context "when user is admin" do
         let(:user) { admin_user }
 
-        it 'returns the scoped results' do
+        it "returns the scoped results" do
           subject
 
           resource_ids = assigns(:models).collect { |i| i.id }

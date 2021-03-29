@@ -1,4 +1,4 @@
-require_dependency 'avo/base_controller'
+require_dependency "avo/base_controller"
 
 module Avo
   class RelationsController < BaseController
@@ -41,15 +41,15 @@ module Avo
     end
 
     def create
-      if reflection_class == 'HasManyReflection'
-        @model.send("#{params[:related_name]}") << @attachment_model
+      if reflection_class == "HasManyReflection"
+        @model.send(params[:related_name].to_s) << @attachment_model
       else
         @model.send("#{params[:related_name]}=", @attachment_model)
       end
 
       respond_to do |format|
         if @model.save
-          format.html { redirect_to resource_path(@model), notice: t('avo.attachment_class_attached', attachment_class: @attachment_class) }
+          format.html { redirect_to resource_path(@model), notice: t("avo.attachment_class_attached", attachment_class: @attachment_class) }
           format.json { render :show, status: :created, location: resource_path(@model) }
         else
           format.html { render :new }
@@ -59,45 +59,46 @@ module Avo
     end
 
     def destroy
-      if reflection_class == 'HasManyReflection'
-        @model.send("#{params[:related_name]}").delete @attachment_model
+      if reflection_class == "HasManyReflection"
+        @model.send(params[:related_name].to_s).delete @attachment_model
       else
         @model.send("#{params[:related_name]}=", nil)
       end
 
       respond_to do |format|
-        format.html { redirect_to params[:referrer] || resource_path(@model), notice: t('avo.attachment_class_detached', attachment_class: @attachment_class) }
+        format.html { redirect_to params[:referrer] || resource_path(@model), notice: t("avo.attachment_class_detached", attachment_class: @attachment_class) }
       end
     end
 
     private
-      def set_attachment_class
-        @attachment_class = @model._reflections[params[:related_name].to_s].klass
-      end
 
-      def set_attachment_resource
-        @attachment_resource = App.get_resource_by_model_name @attachment_class
-      end
+    def set_attachment_class
+      @attachment_class = @model._reflections[params[:related_name].to_s].klass
+    end
 
-      def set_attachment_model
-        @attachment_model = @model._reflections[params[:related_name].to_s].klass.find attachment_id
-      end
+    def set_attachment_resource
+      @attachment_resource = App.get_resource_by_model_name @attachment_class
+    end
 
-      def set_reflection
-        @reflection = @model._reflections[params[:related_name].to_s]
-      end
+    def set_attachment_model
+      @attachment_model = @model._reflections[params[:related_name].to_s].klass.find attachment_id
+    end
 
-      def attachment_id
-        params[:related_id] or params.require(:fields).permit(:related_id)[:related_id]
-      end
+    def set_reflection
+      @reflection = @model._reflections[params[:related_name].to_s]
+    end
 
-      def reflection_class
-        reflection = @model._reflections[params[:related_name]]
+    def attachment_id
+      params[:related_id] || params.require(:fields).permit(:related_id)[:related_id]
+    end
 
-        klass = @model._reflections[params[:related_name]].class.name.demodulize.to_s
-        klass = @model._reflections[params[:related_name]].through_reflection.class.name.demodulize.to_s if klass == 'ThroughReflection'
+    def reflection_class
+      reflection = @model._reflections[params[:related_name]]
 
-        klass
-      end
+      klass = reflection.class.name.demodulize.to_s
+      klass = reflection.through_reflection.class.name.demodulize.to_s if klass == "ThroughReflection"
+
+      klass
+    end
   end
 end

@@ -25,7 +25,7 @@ module InlineSvg
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
       http.request(Net::HTTP::Get.new(file_path)).body
-    rescue StandardError => e
+    rescue => e
       Rails.logger.error "[inline_svg] Error fetching #{@filename} from webpack-dev-server: #{e}"
       raise
     end

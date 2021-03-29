@@ -17,7 +17,8 @@ class Avo::Views::ResourceEditComponent < ViewComponent::Base
   end
 
   private
-    def via_resource?
-      params[:via_resource_class].present? and params[:via_resource_id].present?
-    end
+
+  def via_resource?
+    params[:via_resource_class].present? && params[:via_resource_id].present?
+  end
 end

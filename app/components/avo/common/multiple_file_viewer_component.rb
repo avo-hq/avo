@@ -3,7 +3,7 @@
 class Avo::Common::MultipleFileViewerComponent < ViewComponent::Base
   include Avo::ApplicationHelper
 
-  def initialize(id:, file:, is_image:, button_size: :md, resource:)
+  def initialize(id:, file:, is_image:, resource:, button_size: :md)
     @id = id
     @file = file
     @is_image = is_image

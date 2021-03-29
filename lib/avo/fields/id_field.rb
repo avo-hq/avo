@@ -2,11 +2,11 @@ module Avo
   module Fields
     class IdField < BaseField
       def initialize(name, **args, &block)
-        default_value = 'id'
+        default_value = "id"
 
         if name.nil?
           @name = name = default_value
-        elsif !name.is_a? String and !name.is_a? Symbol
+        elsif !name.is_a?(String) && !name.is_a?(Symbol)
           args_copy = name
           @name = name = default_value
           args = args_copy
@@ -16,7 +16,7 @@ module Avo
           id: name.to_sym,
           readonly: true,
           sortable: true,
-          partial_name: 'id-field'
+          partial_name: "id-field"
         }
 
         hide_on [:edit, :new]

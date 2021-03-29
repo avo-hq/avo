@@ -21,7 +21,8 @@ class Avo::Views::ResourceNewComponent < ViewComponent::Base
   end
 
   private
-    def via_resource?
-      params[:via_relation_class].present? and params[:via_resource_id].present?
-    end
+
+  def via_resource?
+    params[:via_relation_class].present? && params[:via_resource_id].present?
+  end
 end

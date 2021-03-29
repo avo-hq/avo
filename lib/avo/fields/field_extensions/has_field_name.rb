@@ -9,9 +9,9 @@ module Avo
 
         # Get the field name
         def get_field_name
-          return self.field_name_attribute if self.field_name_attribute.present?
+          return field_name_attribute if field_name_attribute.present?
 
-          self.to_s.demodulize.underscore.gsub '_field', ''
+          to_s.demodulize.underscore.gsub "_field", ""
         end
       end
     end

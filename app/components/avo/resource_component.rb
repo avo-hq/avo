@@ -8,7 +8,8 @@ class Avo::ResourceComponent < ViewComponent::Base
   end
 
   private
-    def simple_relation?
-      @reflection.is_a? ::ActiveRecord::Reflection::HasManyReflection
-    end
+
+  def simple_relation?
+    @reflection.is_a? ::ActiveRecord::Reflection::HasManyReflection
+  end
 end

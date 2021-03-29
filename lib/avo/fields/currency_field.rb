@@ -3,8 +3,8 @@ module Avo
     class CurrencyField < BaseField
       def initialize(name, **args, &block)
         @defaults = {
-          partial_name: 'currency-field',
-          computable: true,
+          partial_name: "currency-field",
+          computable: true
         }
 
         super(name, **args, &block)
@@ -16,7 +16,7 @@ module Avo
       def hydrate_field(fields, model, resource, view)
         {
           currency: @currency,
-          locale: @locale,
+          locale: @locale
         }
       end
     end

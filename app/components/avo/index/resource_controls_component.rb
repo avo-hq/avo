@@ -9,8 +9,8 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
 
   def can_detach?
     @reflection.present? &&
-    @resource.model.present? &&
-    (@reflection.is_a?(::ActiveRecord::Reflection::HasManyReflection) || @reflection.is_a?(::ActiveRecord::Reflection::ThroughReflection))
+      @resource.model.present? &&
+      (@reflection.is_a?(::ActiveRecord::Reflection::HasManyReflection) || @reflection.is_a?(::ActiveRecord::Reflection::ThroughReflection))
   end
 
   def can_edit?

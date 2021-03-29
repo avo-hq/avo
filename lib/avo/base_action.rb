@@ -25,13 +25,13 @@ module Avo
       self.class.resource = resource if resource.present?
       self.class.user = user if user.present?
 
-      self.class.message ||= I18n.t('avo.are_you_sure_you_want_to_run_this_option')
-      self.class.confirm_button_label ||= I18n.t('avo.run')
-      self.class.cancel_button_label ||= I18n.t('avo.cancel')
+      self.class.message ||= I18n.t("avo.are_you_sure_you_want_to_run_this_option")
+      self.class.confirm_button_label ||= I18n.t("avo.run")
+      self.class.cancel_button_label ||= I18n.t("avo.cancel")
 
       @response ||= {}
       @response[:message_type] ||= :notice
-      @response[:message] ||= I18n.t('avo.action_ran_successfully')
+      @response[:message] ||= I18n.t("avo.action_ran_successfully")
     end
 
     def context
@@ -50,7 +50,7 @@ module Avo
       get_field_definitions.map do |field|
         field.hydrate(action: self, model: @model)
       end
-      .select do |field|
+        .select do |field|
         field.visible?
       end
     end
@@ -59,7 +59,7 @@ module Avo
       get_fields.map do |field|
         [field.id, field.value]
       end
-      .to_h
+        .to_h
     end
 
     def handle_action(models:, fields:)
@@ -75,50 +75,50 @@ module Avo
         processed_fields = {}
       end
 
-      result = self.handle models: models, fields: processed_fields
+      handle models: models, fields: processed_fields
 
       self
     end
 
     def param_id
-      self.class.to_s.demodulize.underscore.gsub '/', '_'
+      self.class.to_s.demodulize.underscore.tr "/", "_"
     end
 
     def succeed(text)
-      self.response[:message_type] = :notice
-      self.response[:message] = text
+      response[:message_type] = :notice
+      response[:message] = text
 
       self
     end
 
     def fail(text)
-      self.response[:message_type] = :alert
-      self.response[:message] = text
+      response[:message_type] = :alert
+      response[:message] = text
 
       self
     end
 
     def redirect_to(path = nil, &block)
-      self.response[:type] = :redirect
-      if block.present?
-        self.response[:path] = block
+      response[:type] = :redirect
+      response[:path] = if block.present?
+        block
       else
-        self.response[:path] = path
+        path
       end
 
       self
     end
 
     def reload
-      self.response[:type] = :reload
+      response[:type] = :reload
 
       self
     end
 
     def download(path, filename)
-      self.response[:type] = :download
-      self.response[:path] = path
-      self.response[:filename] = filename
+      response[:type] = :download
+      response[:path] = path
+      response[:filename] = filename
 
       self
     end

@@ -1,12 +1,12 @@
-require_relative 'boot'
+require_relative "boot"
 
-require 'rails/all'
+require "rails/all"
 
 Bundler.require(*Rails.groups)
-require 'avo'
+require "avo"
 
 # Tell spring where the new dummy ap is located
-Spring.application_root = '.'
+Spring.application_root = "."
 
 module Dummy
   class Application < Rails::Application

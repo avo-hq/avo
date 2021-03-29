@@ -1,1 +1,1 @@
-require 'pagy/extras/trim'
+require "pagy/extras/trim"

@@ -4,8 +4,8 @@ module Avo
       def initialize(name, **args, &block)
         @defaults = {
           updatable: false,
-          partial_name: 'heading-field',
-          id: 'heading_' + name.to_s.parameterize.underscore,
+          partial_name: "heading-field",
+          id: "heading_" + name.to_s.parameterize.underscore
         }
 
         super(name, **args, &block)

@@ -7,8 +7,8 @@ module Avo
 
       def initialize(response)
         @response = response
-        @id = response['id']
-        @valid = response['valid']
+        @id = response["id"]
+        @valid = response["valid"]
       end
 
       def valid?
@@ -20,15 +20,15 @@ module Avo
       end
 
       def pro?
-        id == 'pro'
+        id == "pro"
       end
 
       def error
-        @response['error']
+        @response["error"]
       end
 
       def properties
-        @response.slice('valid', 'id', 'error').symbolize_keys
+        @response.slice("valid", "id", "error").symbolize_keys
       end
 
       def abilities

@@ -3,7 +3,7 @@ module Avo
     class StatusField < BaseField
       def initialize(name, **args, &block)
         @defaults = {
-          partial_name: 'status-field',
+          partial_name: "status-field"
         }
 
         super(name, **args, &block)
@@ -13,10 +13,10 @@ module Avo
       end
 
       def status
-        status = 'success'
+        status = "success"
         if value.present?
-          status = 'failed' if @failed_when.include? value.to_sym
-          status = 'loading' if @loading_when.include? value.to_sym
+          status = "failed" if @failed_when.include? value.to_sym
+          status = "loading" if @loading_when.include? value.to_sym
         end
 
         status

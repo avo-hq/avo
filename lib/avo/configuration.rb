@@ -21,27 +21,27 @@ module Avo
     attr_accessor :context
 
     def initialize
-      @root_path = '/avo'
-      @app_name = Rails.application.class.to_s.split('::').first.underscore.humanize(keep_id_suffix: true)
-      @timezone = 'UTC'
+      @root_path = "/avo"
+      @app_name = Rails.application.class.to_s.split("::").first.underscore.humanize(keep_id_suffix: true)
+      @timezone = "UTC"
       @per_page = 24
       @per_page_steps = [12, 24, 48, 72]
       @via_per_page = 8
-      @locale = 'en-US'
-      @currency = 'USD'
+      @locale = "en-US"
+      @currency = "USD"
       @default_view_type = :table
-      @license = 'community'
+      @license = "community"
       @license_key = nil
       @current_user = proc {}
       @authenticate = proc {}
       @authorization_methods = {
-        index: 'index?',
-        show: 'show?',
-        edit: 'edit?',
-        new: 'new?',
-        update: 'update?',
-        create: 'create?',
-        destroy: 'destroy?',
+        index: "index?",
+        show: "show?",
+        edit: "edit?",
+        new: "new?",
+        update: "update?",
+        create: "create?",
+        destroy: "destroy?"
       }
       @id_links_to_resource = false
       @full_width_container = false
@@ -55,11 +55,9 @@ module Avo
     end
 
     def language_code
-      begin
-        locale_tag.language.code
-      rescue => exception
-        'en'
-      end
+      locale_tag.language.code
+    rescue
+      "en"
     end
 
     def current_user_method(&block)
