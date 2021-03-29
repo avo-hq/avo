@@ -3,5 +3,7 @@ module.exports = {
   plugins: {
     '@tailwindcss/jit': {},
     autoprefixer: {},
+    'postcss-nested': {},
+    'postcss-nested-ancestors': {},
   }
 }

@@ -9,6 +9,7 @@ default: &default
   # use a different sub-folder name
   public_output_path: avo-packs
   webpack_compile_output: true
+  extract_css: true
 
   # Additional paths webpack should lookup modules
   # ['app/assets', 'engine/foo/app/assets']
@@ -23,7 +24,7 @@ development:
   <<: *default
 
   # Production depends on precompilation of packs prior to booting for performance.
-  compile: false
+  compile: true
 
   # Cache manifest.json for performance
   cache_manifest: true

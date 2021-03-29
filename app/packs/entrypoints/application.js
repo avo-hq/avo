@@ -1,4 +1,5 @@
 import 'regenerator-runtime/runtime'
+import 'core-js/stable'
 import 'trix'
 import * as Mousetrap from 'mousetrap'
 import { Application } from 'stimulus'
@@ -8,6 +9,8 @@ import tippy from 'tippy.js'
 import Rails from '@rails/ujs';
 
 Rails.start();
+
+window.Turbolinks = Turbo
 
 // Toastr alerts
 import '../js/toastr'
