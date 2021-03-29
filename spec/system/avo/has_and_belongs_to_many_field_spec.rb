@@ -104,7 +104,7 @@ RSpec.describe 'HasAndBelongsToManyField', type: :system do
 
         expect {
           find("[data-resource-name='users'][data-resource-id='#{user.id}'] [data-control='detach']").click
-          # page.driver.browser.switch_to.alert.accept
+          page.driver.browser.switch_to.alert.accept
           sleep 0.1
         }.to change(project.users, :count).by -1
 
