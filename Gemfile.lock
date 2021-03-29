@@ -79,7 +79,7 @@ GEM
       zeitwerk (~> 2.2, >= 2.2.2)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
-    ast (2.4.1)
+    ast (2.4.2)
     bcrypt (3.1.16)
     bindex (0.8.1)
     bootsnap (1.4.8)
@@ -183,8 +183,8 @@ GEM
       racc (~> 1.4)
     orm_adapter (0.5.0)
     pagy (3.10.0)
-    parallel (1.19.2)
-    parser (2.7.1.5)
+    parallel (1.20.1)
+    parser (3.0.0.0)
       ast (~> 2.4.1)
     pg (1.2.3)
     public_suffix (4.0.6)
@@ -255,17 +255,20 @@ GEM
       rspec-mocks (~> 3.9)
       rspec-support (~> 3.9)
     rspec-support (3.9.3)
-    rubocop (0.92.0)
+    rubocop (1.11.0)
       parallel (~> 1.10)
-      parser (>= 2.7.1.5)
+      parser (>= 3.0.0.0)
       rainbow (>= 2.2.2, < 4.0)
-      regexp_parser (>= 1.7)
+      regexp_parser (>= 1.8, < 3.0)
       rexml
-      rubocop-ast (>= 0.5.0)
+      rubocop-ast (>= 1.2.0, < 2.0)
       ruby-progressbar (~> 1.7)
-      unicode-display_width (>= 1.4.0, < 2.0)
-    rubocop-ast (0.7.1)
+      unicode-display_width (>= 1.4.0, < 3.0)
+    rubocop-ast (1.4.1)
       parser (>= 2.7.1.5)
+    rubocop-performance (1.10.1)
+      rubocop (>= 0.90.0, < 2.0)
+      rubocop-ast (>= 0.4.0)
     ruby-debug-ide (0.7.2)
       rake (>= 0.8.1)
     ruby-progressbar (1.10.1)
@@ -304,6 +307,9 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    standard (1.0.4)
+      rubocop (= 1.11.0)
+      rubocop-performance (= 1.10.1)
     stimulus-rails (0.2.3)
       rails (>= 6.0.0)
     test-prof (0.12.2)
@@ -314,7 +320,7 @@ GEM
       rails (>= 6.0.0)
     tzinfo (1.2.9)
       thread_safe (~> 0.1)
-    unicode-display_width (1.7.0)
+    unicode-display_width (2.0.0)
     unicode_utils (1.4.0)
     view_component (2.28.0)
       activesupport (>= 5.0.0, < 7.0)
@@ -379,7 +385,6 @@ DEPENDENCIES
   rails (~> 6.0.2, >= 6.0.2.2)
   rails-controller-testing
   rspec-rails (~> 4.0.0)
-  rubocop
   ruby-debug-ide
   sass-rails (>= 6)
   selenium-webdriver
@@ -387,6 +392,7 @@ DEPENDENCIES
   simplecov-cobertura
   spring
   spring-commands-rspec
+  standard
   test-prof
   tzinfo-data
   view_component

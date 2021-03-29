@@ -73,7 +73,7 @@ gem 'debase'
 #
 
 group :development do
-  gem 'rubocop'
+  gem 'standard'
 
   # Release helper
   gem 'bump', require: false
