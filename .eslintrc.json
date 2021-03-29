@@ -16,7 +16,6 @@
         "sourceType": "module"
     },
     "plugins": [
-        "vue",
         "sort-imports-es6-autofix"
     ],
     "rules": {
