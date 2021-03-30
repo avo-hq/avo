@@ -17,9 +17,6 @@ gemspec
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
 gem "webpacker", "6.0.0.beta.6"
 
-# SVGs
-gem "inline_svg"
-
 gem "countries"
 
 # Authorization
