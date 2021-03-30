@@ -29,6 +29,38 @@ development:
   # Cache manifest.json for performance
   cache_manifest: true
 
+  # Even though Avo does not use the dev_server when packed we still need to add the info here.
+  # The packed version of Avo will pick up the parent's app information.
+  # Reference: https://webpack.js.org/configuration/dev-server/
+  dev_server:
+    https: false
+    host: localhost
+    port: 3039
+    public: localhost:3039
+    # Inject browserside javascript that required by both HMR and Live(full) reload
+    inject_client: true
+    # Hot Module Replacement updates modules while the application is running without a full reload
+    hmr: true
+    # Inline should be set to true if using HMR; it inserts a script to take care of live reloading
+    inline: true
+    # Should we show a full-screen overlay in the browser when there are compiler errors or warnings?
+    overlay: true
+    # Should we use gzip compression?
+    compress: true
+    # Note that apps that do not check the host are vulnerable to DNS rebinding attacks
+    disable_host_check: true
+    # This option lets the browser open with your local IP
+    use_local_ip: false
+    # When enabled, nothing except the initial startup information will be written to the console.
+    # This also means that errors or warnings from webpack are not visible.
+    quiet: false
+    pretty: true
+    headers:
+      'Access-Control-Allow-Origin': '*'
+    watch_options:
+      ignored: '**/node_modules/**'
+    env_prefix: "AVO_WEBPACKER_DEV_SERVER"
+
 test:
   <<: *default
   compile: true
