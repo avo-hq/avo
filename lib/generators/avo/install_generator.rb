@@ -12,7 +12,7 @@ module Generators
       def create_initializer_file
         route "mount Avo::Engine => Avo.configuration.root_path"
 
-        template "initializer/avo.rb", "config/initializers/avo.rb"
+        template "initializer/avo.tt", "config/initializers/avo.rb"
         template "locales/avo.en.yml", "config/locales/avo.en.yml"
       end
     end

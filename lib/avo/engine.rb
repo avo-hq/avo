@@ -14,9 +14,17 @@ module Avo
     end
 
     initializer "avo.autoload", before: :set_autoload_paths do |app|
-      Rails.autoloaders.main.push_dir(Rails.root.join("app", "avo", "filters"))
-      Rails.autoloaders.main.push_dir(Rails.root.join("app", "avo", "actions"))
-      Rails.autoloaders.main.push_dir(Rails.root.join("app", "avo", "resources"))
+      [
+        ["app", "avo", "filters"],
+        ["app", "avo", "actions"],
+        ["app", "avo", "resources"]
+      ].each do |path_params|
+        path = Rails.root.join(*path_params)
+
+        if File.directory? path.to_s
+          Rails.autoloaders.main.push_dir path
+        end
+      end
     end
 
     initializer "avo.init_fields" do |app|
