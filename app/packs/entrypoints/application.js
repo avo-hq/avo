@@ -1,21 +1,23 @@
-import 'regenerator-runtime/runtime'
+// eslint-disable-next-line import/no-extraneous-dependencies
 import 'core-js/stable'
+// eslint-disable-next-line import/no-extraneous-dependencies
+import 'regenerator-runtime/runtime'
 import 'trix'
 import * as Mousetrap from 'mousetrap'
 import { Application } from 'stimulus'
 import { Turbo } from '@hotwired/turbo-rails'
 import { definitionsFromContext } from 'stimulus/webpack-helpers'
+import Rails from '@rails/ujs'
 import tippy from 'tippy.js'
-import Rails from '@rails/ujs';
-
-Rails.start();
-
-window.Turbolinks = Turbo
 
 // Toastr alerts
 import '../js/toastr'
 
-Mousetrap.bind('r r r', () => Turbo.visit(window.location.href, { action: "replace" }))
+Rails.start()
+
+window.Turbolinks = Turbo
+
+Mousetrap.bind('r r r', () => Turbo.visit(window.location.href, { action: 'replace' }))
 
 const application = Application.start()
 
