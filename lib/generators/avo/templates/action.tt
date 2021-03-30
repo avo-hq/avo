@@ -8,10 +8,6 @@ module Avo
           # Do something with your models.
         end
       end
-
-      fields do |fields|
-        # Add fields here.
-      end
     end
   end
 end

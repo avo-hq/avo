@@ -1,17 +1,7 @@
 class <%= resource_class %> < Avo::BaseResource
   self.title = :id
-  self.includes = [:posts, :post]
+  self.includes = []
 
-  fields do |field|
-    field.id
-    # add fields here
-  end
-
-  actions do |action|
-    # add actions here
-  end
-
-  filters do |filter|
-    # add filters here
-  end
+  field :id, as: :id
+  # add fields here
 end
