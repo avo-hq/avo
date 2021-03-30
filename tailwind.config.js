@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 const plugin = require('tailwindcss/plugin')
 const colors = require('tailwindcss/colors')
 
