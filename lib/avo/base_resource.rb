@@ -238,7 +238,7 @@ module Avo
       content_to_be_hashed = ""
 
       # resource file hash
-      resource_path = Rails.root.join("app", "avo", "resources", "#{self.class.name.underscore}_resource.rb").to_s
+      resource_path = Rails.root.join("app", "avo", "resources", "#{self.class.name.underscore}.rb").to_s
       if File.file? resource_path
         content_to_be_hashed += File.read(resource_path)
       end
