@@ -36,13 +36,14 @@ export default class extends Controller {
     filters[filterClass] = value
 
     const filtered = Object.keys(filters)
-    .filter(key => filters[key] !== '')
-    .reduce((obj, key) => {
-      obj[key] = filters[key];
-      return obj;
-    }, {});
+      .filter((key) => filters[key] !== '')
+      .reduce((obj, key) => {
+        obj[key] = filters[key]
 
-    let encodedFilters;
+        return obj
+      }, {})
+
+    let encodedFilters
 
     if (filtered && Object.keys(filtered).length > 0) {
       encodedFilters = btoa(JSON.stringify(filtered))
@@ -55,9 +56,9 @@ export default class extends Controller {
     }
 
     if (encodedFilters) {
-      query['filters'] = encodedFilters
+      query.filters = encodedFilters
     } else {
-      delete query['filters']
+      delete query.filters
     }
 
     url.query(query)
