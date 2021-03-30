@@ -5,5 +5,5 @@ module.exports = {
     autoprefixer: {},
     'postcss-nested': {},
     'postcss-nested-ancestors': {},
-  }
+  },
 }

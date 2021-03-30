@@ -3,8 +3,8 @@ const aliases = require('./aliases')
 
 const customConfig = {
   resolve: {
-    extensions: ['.css']
-  }
+    extensions: ['.css'],
+  },
 }
 
 const config = merge(webpackConfig, aliases, customConfig)

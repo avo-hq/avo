@@ -1,3 +1,4 @@
+// eslint-disable-next-line func-names
 module.exports = function (api) {
   const validEnv = ['development', 'test', 'production']
   const currentEnv = api.env()
