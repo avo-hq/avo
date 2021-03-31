@@ -103,9 +103,6 @@ GEM
     crack (0.4.4)
     crass (1.0.6)
     database_cleaner (1.8.5)
-    debase (0.2.4.1)
-      debase-ruby_core_source (>= 0.10.2)
-    debase-ruby_core_source (0.10.11)
     devise (4.7.3)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -151,10 +148,9 @@ GEM
       i18n
     jbuilder (2.10.1)
       activesupport (>= 5.0.0)
-    listen (3.1.5)
-      rb-fsevent (~> 0.9, >= 0.9.4)
-      rb-inotify (~> 0.9, >= 0.9.7)
-      ruby_dep (~> 1.2)
+    listen (3.5.1)
+      rb-fsevent (~> 0.10, >= 0.10.3)
+      rb-inotify (~> 0.9, >= 0.9.10)
     loofah (2.9.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -272,7 +268,6 @@ GEM
     ruby-progressbar (1.10.1)
     ruby-vips (2.0.17)
       ffi (~> 1.9)
-    ruby_dep (1.5.0)
     rubyzip (2.3.0)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
@@ -362,7 +357,6 @@ DEPENDENCIES
   capybara (>= 2.15)
   countries
   database_cleaner
-  debase
   devise
   dotenv-rails
   factory_bot_rails
@@ -374,7 +368,7 @@ DEPENDENCIES
   image_processing (~> 1.2)
   iso
   jbuilder (~> 2.7)
-  listen (>= 3.0.5, < 3.2)
+  listen (>= 3.3.0)
   pagy
   pg (>= 0.18, < 2.0)
   puma (~> 4.3.5)
@@ -400,4 +394,4 @@ DEPENDENCIES
   zeitwerk (~> 2.3)
 
 BUNDLED WITH
-   2.2.5
+   2.2.15
