@@ -6,7 +6,7 @@
   <%= panel(title: @field.id.capitalize) do |c| %>
     <% c.with :tools do %>
       <%= a_link helpers.resource_attach_path(@resource.model.model_name.route_key, @resource.model.id, @field.id), color: 'indigo', 'data-turbo-frame': 'attach_modal' do %>
-        <%= svg 'view-grid-add' %> <%= t('avo.attach_item', { item: @field.id }).capitalize %>
+        <%= svg 'view-grid-add' %> <%= t('avo.attach_item', item: @field.id).capitalize %>
       <% end %>
     <% end %>
 

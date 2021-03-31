@@ -4,19 +4,19 @@
 
     <% if can_create? %>
       <%= a_link create_path do %>
-        <%= svg 'plus' %> <%= t('avo.create_new_item', { item: @resource.model_class.model_name.human.downcase }) %>
+        <%= svg 'plus' %> <%= t('avo.create_new_item', item: @resource.model_class.model_name.human.downcase ) %>
       <% end %>
     <% end %>
 
     <% if can_detach? %>
       <%= a_link detach_path, color: 'indigo', method: :delete, data: { confirm: "Are you sure you want to detach this #{@resource.singular_name}." } do %>
-        <%= svg 'trash' %> <%= t('avo.detach_item', { item: @resource.singular_name }).capitalize %>
+        <%= svg 'trash' %> <%= t('avo.detach_item', item: @resource.singular_name).capitalize %>
       <% end %>
     <% end %>
 
     <% if can_attach? %>
       <%= a_link attach_path, color: 'indigo', 'data-turbo-frame': 'attach_modal' do %>
-        <%= svg 'view-grid-add' %> <%= t('avo.attach_item', { item: @resource.singular_name }).capitalize %>
+        <%= svg 'view-grid-add' %> <%= t('avo.attach_item', item: @resource.singular_name).capitalize %>
       <% end %>
     <% end %>
   <% end %>
