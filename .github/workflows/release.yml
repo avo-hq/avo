@@ -46,7 +46,7 @@ jobs:
           ${{ runner.os }}-production-yarn-
 
     - name: Yarn install
-      run: bundle exec rails app:yarn:install
+      run: yarn
 
     - name: Bundle assets
       run: bin/webpack
