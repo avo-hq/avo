@@ -372,7 +372,6 @@ DEPENDENCIES
   hotwire-rails
   httparty
   image_processing (~> 1.2)
-  inline_svg
   iso
   jbuilder (~> 2.7)
   listen (>= 3.0.5, < 3.2)
