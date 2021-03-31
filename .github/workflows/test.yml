@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  test:
+  Test:
     strategy:
       matrix:
         ruby: ['2.6', '2.7', '3.0']
