@@ -11,7 +11,7 @@
       translation_key = 'avo.table_view'
     end
 %>
-  <%= a_link params.permit!.merge(view_type: new_view_type), color: :blue, 'data-turbo-frame': turbo_frame, title: t('avo.switch_to_view', { view_type: new_view_type }), 'data-tippy': 'tooltip' do %>
-    <%= svg new_icon %> <%= t(translation_key, { item: @resource.model_class.model_name.human.downcase }) %>
+  <%= a_link params.permit!.merge(view_type: new_view_type), color: :blue, 'data-turbo-frame': turbo_frame, title: t('avo.switch_to_view', view_type: new_view_type), 'data-tippy': 'tooltip' do %>
+    <%= svg new_icon %> <%= t translation_key, item: @resource.model_class.model_name.human.downcase %>
   <% end %>
 <% end %>

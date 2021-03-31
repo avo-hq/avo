@@ -19,7 +19,7 @@
       <% end %>
       <%= a_link "/avo/resources/#{@resource.model.model_name.route_key}/#{@resource.model.id
       }/active_storage_attachments/#{@id}/#{@file.id}", color: :red, variant: :outlined, size: :md, class: '', 'data-turbo-frame': 'destroy_attachment_form', data: { confirm: t('avo.are_you_sure')} do %>
-        <%= helpers.svg 'trash' %> <%= t('avo.delete_file', { item: @file.filename }) %>
+        <%= helpers.svg 'trash' %> <%= t 'avo.delete_file', item: @file.filename %>
       <% end %>
     </div>
   <% else %>

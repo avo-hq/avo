@@ -6,7 +6,7 @@
     rounded: @field.rounded,
     link_to_resource: @field.link_to_resource,
     link: helpers.resource_path(@resource.model),
-    title: t('avo.view_item', { item: @resource.name}).humanize
+    title: t('avo.view_item', item: @resource.name).humanize
   )
   %>
 <% end %>
