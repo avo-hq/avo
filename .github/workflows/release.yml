@@ -59,6 +59,9 @@ jobs:
       run: |
         echo "::set-output name=tag::$(sed "s|refs/tags/v||" <<< ${{ github.ref }})"
 
+    - name: Axios install
+      run: yarn global add axios
+
     - name: Get release notes
       id: get_release_notes
       run: |
