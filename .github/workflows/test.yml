@@ -50,7 +50,7 @@ jobs:
       run: yarn global add webpack
 
     - name: Yarn install
-      run: bundle exec rails app:yarn:install
+      run: bundle exec rails yarn:install
 
     - name: Bundle assets
       run: bin/webpack
