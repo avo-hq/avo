@@ -25,6 +25,12 @@ module Avo
       end
 
       def fill_field(model, key, value)
+        if value.nil?
+          model[id] = nil
+
+          return model
+        end
+
         return model if value.blank?
 
         model[id] = value.to_time.in_time_zone(Rails.application.config.time_zone)

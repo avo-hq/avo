@@ -222,7 +222,7 @@ module Avo
       params.each do |key, value|
         field = fields_by_database_id[key]
 
-        next unless field
+        next unless field.present?
 
         model = field.fill_field model, key, value
       end
