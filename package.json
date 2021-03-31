@@ -1,7 +1,6 @@
 {
   "name": "avo",
-  "version": "0.0.1",
-  "description": "easy admin for rails",
+  "description": "The most beautiful, easy-to-use Ruby on Rails admin framework",
   "main": "index.js",
   "author": "Adrian Marin <adrian@adrianthedev.com>",
   "license": "Commercial",
