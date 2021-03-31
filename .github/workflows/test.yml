@@ -8,6 +8,9 @@ on:
 
 jobs:
   test:
+    strategy:
+      matrix:
+        ruby: ['2.6', '2.7', '3.0']
     env:
       RAILS_ENV: test
       PGHOST: localhost
@@ -32,7 +35,7 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         bundler-cache: true
-        ruby-version: 2.6.3
+        ruby-version: ${{ matrix.ruby }}
 
     - name: Install PostgreSQL 11 client
       run: |
