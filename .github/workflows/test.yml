@@ -2,7 +2,9 @@ name: Test
 
 on:
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
+      - refactor/hotwire
 
 jobs:
   test:
@@ -10,6 +12,10 @@ jobs:
       RAILS_ENV: test
       PGHOST: localhost
       PGUSER: postgres
+      PGPORT: 5432
+      POSTGRES_HOST: localhost
+      POSTGRES_USERNAME: postgres
+      POSTGRES_PORT: 5432
       COVERAGE: true
 
     runs-on: ubuntu-latest
@@ -59,17 +65,13 @@ jobs:
           ${{ runner.os }}-test-yarn-
 
     - name: Yarn install
-      run: bundle exec rails app:yarn:install
+      run: yarn
 
     - name: Bundle assets
       run: bin/webpack
 
-    - name: Export translations
-      run: bin/rails i18n:js:export
-      working-directory: spec/dummy
-
     - name: Run tests
-      run: npm run test-all
+      run: bundle exec rspec
 
     - uses: codecov/codecov-action@v1
       with:

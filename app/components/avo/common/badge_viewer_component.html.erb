@@ -1,0 +1,24 @@
+<%
+  backgrounds = {
+    info: 'bg-blue-500',
+    success: 'bg-green-500',
+    danger: 'bg-red-500',
+    warning: 'bg-yellow-500',
+  }
+
+  label = @value
+  background = :info
+
+  @options.invert.each do |values, type|
+    if [values].flatten.map { |value| value.to_s }.include? @value
+      label = @value
+      background = type.to_sym
+      next
+    end
+  end
+
+  classes = 'whitespace-nowrap rounded-md uppercase px-2 py-1 text-xs font-bold block text-center truncate '
+
+  classes += "#{backgrounds[background]} text-white" if backgrounds[background].present?
+%>
+<span class="<%= classes %>" style="max-width: 120px;"><%= label %></span>

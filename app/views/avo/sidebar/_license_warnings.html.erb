@@ -1,0 +1,6 @@
+<% if license[:id] == 'pro' and license[:valid] == false %>
+  <%= render_license_warning title: 'Trial Mode', message: 'You are experiencing paid features that need to be licensed before deploying this site. Enjoy!' %>
+<% end %>
+<% if license[:error].present? %>
+  <%= render_license_warning title: 'Avo HQ Error', message: "#{license[:error]}. Checking back every 5 minutes." %>
+<% end %>

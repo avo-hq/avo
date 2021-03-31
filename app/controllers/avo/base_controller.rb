@@ -1,0 +1,219 @@
+require_dependency "avo/application_controller"
+
+module Avo
+  class BaseController < ApplicationController
+    before_action :set_resource_name
+    before_action :set_resource
+    before_action :hydrate_resource
+    before_action :authorize_action
+    before_action :set_model, only: [:show, :edit, :destroy, :update]
+
+    def index
+      set_index_params
+      set_filters
+      set_actions
+
+      # If we don't get a query object predefined from a child controller like relations, just spin one up
+      unless defined? @query
+        @query = @authorization.apply_policy @resource.model_class
+      end
+
+      # Eager load the relations
+      if @resource.includes.present?
+        @query = @query.includes(*@resource.includes)
+      end
+
+      # Eager load the active storage attachments
+      @query = eager_load_files(@resource, @query)
+
+      # Sort the items
+      if @index_params[:sort_by].present?
+        @query = @query.order("#{@resource.model_class.table_name}.#{@index_params[:sort_by]} #{@index_params[:sort_direction]}")
+      end
+
+      # Apply filters
+      applied_filters.each do |filter_class, filter_value|
+        @query = filter_class.safe_constantize.new.apply_query request, @query, filter_value
+      end
+
+      @pagy, @models = pagy(@query, items: @index_params[:per_page], link_extra: "data-turbo-frame=\"#{params[:turbo_frame]}\"", size: [1, 2, 2, 1])
+
+      # Create resources for each model
+      @resources = @models.map do |model|
+        @resource.hydrate(model: model, params: params).dup
+      end
+    end
+
+    def show
+      set_actions
+
+      @resource = @resource.hydrate(model: @model, view: :show, user: _current_user, params: params)
+    end
+
+    def new
+      @model = @resource.model_class.new
+      @resource = @resource.hydrate(model: @model, view: :new, user: _current_user)
+    end
+
+    def edit
+      @resource = @resource.hydrate(model: @model, view: :edit, user: _current_user)
+    end
+
+    def create
+      @model = @resource.fill_model(@resource.model_class.new, cast_nullable(model_params))
+      saved = @model.save
+      @resource.hydrate(model: @model, view: :new, user: _current_user)
+
+      respond_to do |format|
+        if saved
+          redirect_path = if params[:via_relation_class].present? && params[:via_resource_id].present?
+            resource_path(params[:via_relation_class].safe_constantize, resource_id: params[:via_resource_id])
+          else
+            resource_path(@model)
+          end
+
+          format.html { redirect_to redirect_path, notice: "#{@model.class.name} was successfully created." }
+          format.json { render :show, status: :created, location: @model }
+        else
+          flash[:error] = t "avo.you_missed_something_check_form"
+          format.html { render :new, status: :unprocessable_entity }
+          format.json { render json: @model.errors, status: :unprocessable_entity }
+        end
+      end
+    end
+
+    def update
+      @model = @resource.fill_model(@model, cast_nullable(model_params))
+      saved = @model.save
+      @resource = @resource.hydrate(model: @model, view: :edit, user: _current_user)
+
+      respond_to do |format|
+        if saved
+          format.html { redirect_to params[:referrer] || resource_path(@model), notice: "#{@model.class.name} was successfully updated." }
+          format.json { render :show, status: :ok, location: @model }
+        else
+          flash[:error] = t "avo.you_missed_something_check_form"
+          format.html { render :edit, status: :unprocessable_entity }
+          format.json { render json: @model.errors, status: :unprocessable_entity }
+        end
+      end
+    end
+
+    def destroy
+      @model.destroy!
+
+      respond_to do |format|
+        format.html { redirect_to params[:referrer] || resources_path(@model, turbo_frame: params[:turbo_frame], view_type: params[:view_type]), notice: t("avo.resource_destroyed", attachment_class: @attachment_class) }
+        format.json { head :no_content }
+      end
+    end
+
+    private
+
+    def model_route_key
+      @resource.model_class.model_name.route_key.singularize
+    end
+
+    def model_params
+      request_params = params.require(model_route_key).permit(permitted_params)
+
+      if @resource.devise_password_optional && request_params[:password].blank? && request_params[:password_confirmation].blank?
+        request_params.delete(:password_confirmation)
+        request_params.delete(:password)
+      end
+
+      request_params
+    end
+
+    def permitted_params
+      @resource.get_field_definitions.select(&:updatable).map(&:to_permitted_param)
+    end
+
+    def cast_nullable(params)
+      fields = @resource.get_field_definitions
+
+      nullable_fields = fields.filter do |field|
+        field.nullable
+      end
+        .map do |field|
+        [field.id, field.null_values]
+      end
+        .to_h
+
+      params.each do |key, value|
+        nullable = nullable_fields[key.to_sym]
+
+        if nullable.present? && value.in?(nullable)
+          params[key] = nil
+        end
+      end
+
+      params
+    end
+
+    def set_index_params
+      @index_params = {}
+
+      # Pagination
+      @index_params[:page] = params[:page] || 1
+      @index_params[:per_page] = Avo.configuration.per_page
+
+      if cookies[:per_page].present?
+        @index_params[:per_page] = cookies[:per_page]
+      end
+
+      if @parent_model.present?
+        @index_params[:per_page] = Avo.configuration.via_per_page
+      end
+
+      if params[:per_page].present?
+        @index_params[:per_page] = params[:per_page]
+        cookies[:per_page] = params[:per_page]
+      end
+
+      # Sorting
+      @index_params[:sort_by] = params[:sort_by] || :created_at
+      @index_params[:sort_direction] = params[:sort_direction] || :desc
+
+      # View types
+      @index_params[:view_type] = params[:view_type] || @resource.default_view_type || Avo.configuration.default_view_type
+      @index_params[:available_view_types] = @resource.available_view_types
+    end
+
+    def set_filters
+      @filters = @resource.get_filters.map do |filter_class|
+        filter = filter_class.new
+
+        filter
+      end
+    end
+
+    def set_actions
+      if params[:resource_id].present?
+        model = @resource.model_class.find params[:resource_id]
+      end
+
+      @actions = @resource.get_actions.map do |action|
+        action.new(model: model, resource: @resource)
+      end
+    end
+
+    def applied_filters
+      if params[:filters].present?
+        return JSON.parse(Base64.decode64(params[:filters]))
+      end
+
+      filter_defaults = {}
+
+      @resource.get_filters.each do |filter_class|
+        filter = filter_class.new
+
+        if filter.default.present?
+          filter_defaults[filter_class.to_s] = filter.default
+        end
+      end
+
+      filter_defaults
+    end
+  end
+end

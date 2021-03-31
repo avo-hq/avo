@@ -1,0 +1,12 @@
+<%
+  classes = 'h-5 float-left'
+
+  if @checked
+    classes += ' text-teal-600'
+    icon = 'check-circle'
+  else
+    classes += ' text-red-500'
+    icon = 'x-circle'
+  end
+%>
+<%= helpers.svg "#{icon}.svg", class: classes %>

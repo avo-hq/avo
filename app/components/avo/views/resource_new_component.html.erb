@@ -1,0 +1,25 @@
+<div>
+  <% @resource.panels.each do |resource_panel| %>
+    <%= form_with model: @resource.model, url: helpers.resources_path(@resource.model, via_relation_class: params[:via_relation_class], via_resource_id: params[:via_resource_id]), local: true, multipart: true do |form| %>
+      <%= panel(title: resource_panel[:name]) do |component| %>
+        <% component.with :tools do %>
+          <div class="flex justify-end space-x-2">
+            <%= a_link back_path do %>
+              <%= svg 'arrow-left' %> <%= t('avo.cancel').capitalize %>
+            <% end %>
+
+            <%= a_button color: 'green', type: :submit do %>
+              <%= svg 'save' %> <%= t('avo.save').capitalize %>
+            <% end if @resource.authorization.authorize_action :create, raise_exception: false %>
+          </div>
+        <% end %>
+
+        <% component.with :body do %>
+          <% @resource.get_fields.each_with_index do |field, index| %>
+            <%= edit_field field, index, @resource, form unless field.computed %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>

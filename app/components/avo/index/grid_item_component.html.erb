@@ -1,0 +1,41 @@
+<div class="relative bg-white rounded-xl shadow-xl flex flex-col group"
+  <%== item_selector_init @resource %>
+>
+  <div class="relative w-full pb-3/4 rounded-t-xl overflow-hidden">
+    <%== item_selector_input floating: true, size: :lg %>
+
+    <% if cover.respond_to? :to_image %>
+      <%= link_to_if cover.link_to_resource, image_tag(cover.to_image, class: 'absolute h-full w-full object-cover'), helpers.resource_path(@resource.model), class: 'absolute h-full w-full object-cover', title: title.value %>
+    <% elsif cover.type == 'file' %>
+      <% if cover.value.attached? && cover.value.representable? %>
+        <%= link_to_if cover.link_to_resource, image_tag(cover.variant(resize_to_limit: [480, 480]), class: 'absolute h-full w-full object-cover'), helpers.resource_path(@resource.model), class: 'absolute h-full w-full object-cover', title: title.value %>
+      <% else %>
+        <div class="absolute bg-gray-100 w-full h-full">
+          <%= helpers.svg 'avocado', class: 'relative transform -translate-x-1/2 -translate-y-1/2 h-20 text-gray-400 inset-auto top-1/2 left-1/2' %>
+        </div>
+      <% end %>
+    <% else %>
+      <% if cover.value.present? %>
+        <%= link_to_if cover.link_to_resource, image_tag(cover.value, class: 'absolute h-full w-full object-cover'), helpers.resource_path(@resource.model), class: 'absolute h-full w-full object-cover', title: title.value %>
+      <% else %>
+        <div class="absolute bg-gray-100 w-full h-full">
+          <%= helpers.svg 'avocado', class: 'relative transform -translate-x-1/2 -translate-y-1/2 h-20 text-gray-400 inset-auto top-1/2 left-1/2' %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="grid grid-cols-1 place-content-between p-4 h-full">
+    <div class="mb-4">
+      <div class="grid font-semibold leading-tight text-lg mb-2">
+        <%= link_to_if title.link_to_resource, title.value, helpers.resource_path(@resource.model) if title.present? %>
+      </div>
+      <div class="text-sm break-words">
+        <%= body.value if body.present? %>
+      </div>
+    </div>
+    <div class="w-full place-self-end">
+      <%= render(Avo::Index::ResourceControlsComponent.new(resource: @resource, reflection: @reflection, parent_model: @parent_model)) %>
+    </div>
+  </div>
+</div>
+

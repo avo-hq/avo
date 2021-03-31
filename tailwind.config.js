@@ -1,29 +1,37 @@
+/* eslint-disable global-require */
 const plugin = require('tailwindcss/plugin')
+const colors = require('tailwindcss/colors')
 
 module.exports = {
-  future: {
-    purgeLayersByDefault: true,
-    removeDeprecatedGapUtilities: true,
-    standardFontWeights: true,
-  },
+  future: {},
   purge: {
-    mode: 'layers',
-    layers: ['components', 'utilities'],
     content: [
+      './safelist.txt',
       './app/helpers/**/*.rb',
-      './app/views/**/*.html',
-      './app/views/**/*.html.erb',
-      './app/frontend/**/*.vue',
-      './app/frontend/**/*.js',
+      './app/views/**/*.erb',
+      './app/packs/**/*.js',
+      './app/components/avo/**/*.erb',
+      './app/components/avo/**/*.rb',
+      './app/controllers/avo/**/*.rb',
     ],
-    options: {
-      whitelist: ['appearance-none'],
-    },
+    // Enable options below when @tailwindcss/jit supports PurgeCSS options
+    // options: {
+    //   safelist: [
+    //     ...ignoredButtonClasses.flat(),
+    //   ],
+    // }
   },
   theme: {
     extend: {
+      colors: {
+        'blue-gray': colors.blueGray,
+        'light-blue': colors.lightBlue,
+        teal: colors.teal,
+        indigo: colors.indigo,
+      },
       fontFamily: {
-        sans: '"Lato", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",  "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
+        // eslint-disable-next-line max-len
+        sans: '"Nunito", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",  "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
       },
       inset: {
         '1/2': '50%',
@@ -41,9 +49,38 @@ module.exports = {
         '300px': '300px',
         4: '1rem',
         10: '2.5rem',
+        '1/2': '50%',
+        '1/3': '33.333333%',
+        '2/3': '66.666667%',
+        '1/4': '25%',
+        '2/4': '50%',
+        '3/4': '75%',
+        '1/5': '20%',
+        '2/5': '40%',
+        '3/5': '60%',
+        '4/5': '80%',
+      },
+      maxWidth: {
+        168: '42rem',
       },
       minHeight: {
-        28: '7rem',
+        inherit: 'inherit',
+        16: '4rem',
+        24: '6rem',
+        48: '12rem',
+        '1/2': '50%',
+        '1/3': '33.333333%',
+        '2/3': '66.666667%',
+        '1/4': '25%',
+        '2/4': '50%',
+        '3/4': '75%',
+        '1/5': '20%',
+        '2/5': '40%',
+        '3/5': '60%',
+        '4/5': '80%',
+      },
+      maxHeight: {
+        168: '42rem',
       },
       spacing: {
         full: '100%',
@@ -81,7 +118,7 @@ module.exports = {
     },
   },
   variants: {
-    display: ['responsive', 'hover', 'focus', 'group-hover'],
+    display: ['responsive', 'hover', 'focus', 'group-hover', 'checked'],
     padding: ['responsive', 'group-hover'],
     borderColor: ['responsive', 'hover', 'focus', 'disabled'],
     backgroundColor: ['responsive', 'hover', 'focus', 'disabled'],
@@ -90,69 +127,8 @@ module.exports = {
     cursor: ['responsive', 'disabled'],
   },
   plugins: [
+    require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
-    // buttons
-    plugin(({ addComponents, theme }) => {
-      const styles = {
-        display: 'inline-flex',
-        flexGrow: 0,
-        alignItems: 'center',
-        fontSize: theme('fontSize.md'),
-        fontWeight: theme('fontWeight.semibold'),
-        lineHeight: 1,
-        padding: `${theme('spacing.2')} ${theme('spacing.4')}`,
-        fill: 'currentColor',
-        whiteSpace: 'nowrap',
-        backgroundColor: theme('colors.white'),
-        color: theme('colors.gray.900'),
-        border: `1px solid ${theme('colors.gray.100')}`,
-        transitionProperty: theme('transitionProperty.default'),
-        transitionDuration: theme('transitionDuration.100'),
-        borderRadius: theme('borderRadius.default'),
-        boxShadow: theme('boxShadow.default'),
-        '&:hover': {
-          backgroundColor: theme('colors.gray.100'),
-        },
-        '&:active': {
-          backgroundColor: theme('colors.gray.200'),
-        },
-      }
-      const buttons = {
-        '@variants responsive': {
-          '.button': {
-            ...styles,
-            '&.button-lg': {
-              padding: `${theme('spacing.3')} ${theme('spacing.6')}`,
-              fontSize: theme('fontSize.lg'),
-            },
-            '&.button-sm': {
-              padding: `${theme('spacing.1')} ${theme('spacing.2')}`,
-              fontSize: theme('fontSize.sm'),
-            },
-            '&.button-xl': {
-              padding: `${theme('spacing.4')} ${theme('spacing.10')}`,
-              fontSize: theme('fontSize.2xl'),
-            },
-          },
-          '.button-indigo': {
-            ...styles,
-            color: theme('colors.white'),
-            backgroundColor: theme('colors.indigo.600'),
-            '&:hover': {
-              backgroundColor: theme('colors.indigo.700'),
-            },
-            '&:active': {
-              backgroundColor: theme('colors.indigo.800'),
-            },
-            '&1active': {
-              backgroundColor: theme('colors.indigo.800'),
-            },
-          },
-        },
-      }
-
-      addComponents(buttons)
-    }),
     plugin(({ addUtilities }) => {
       const newUtilities = {
         '.backface-hidden': {

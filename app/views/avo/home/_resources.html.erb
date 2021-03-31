@@ -1,0 +1,28 @@
+<%
+  models = ApplicationRecord.descendants
+%>
+<div>
+  <h3>Resources</h3>
+
+  <div>The primary goal of Avo is to administer your database records. To do that Avo, uses the concept of a <strong>Resource</strong>. Each Avo <strong>Resource</strong> corresponds to a <strong>Rails Model</strong>.</div>
+
+  <% if models.present? %>
+    <div class="mt-2" data-controller="hidden-input">
+      It seems you already have <%= models.count %> <%= 'model'.pluralize models.count %> in your app. You can generate resources for each one with the following commands.
+
+      <strong class="cursor-pointer block mt-2" data-action="click->hidden-input#showContent">Generate resources 👇</strong>
+
+      <div class="mt-2 hidden" data-hidden-input-target="content">
+        <% models.each do |model| %>
+          <code class="text-lg"><%= model.to_s %></code>
+          <div>
+            <code class="p-1 rounded bg-light-blue-500 text-white">bin/rails generate avo:resource <%= model.to_s %></code>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% else %>
+
+  <% end %>
+</div>
+

@@ -1,0 +1,10 @@
+fix: true               # default: false
+parallel: true          # default: false
+format: progress        # default: Standard::Formatter
+default_ignores: true   # default: true
+
+ignore:                 # default: []
+  - 'lib/avo/loaders/fields_loader.rb':
+    - Style/MissingRespondToMissing
+  - 'spec/requests/avo/authorization/scopes_spec.rb':
+    - Lint/ConstantDefinitionInBlock

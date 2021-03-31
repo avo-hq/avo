@@ -1,0 +1,25 @@
+<%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal do %>
+  <div class="flex items-center">
+    <div class="space-y-2">
+      <% model_param_key = model_name_from_record_or_class(@resource.model).param_key %>
+      <%= check_box_tag "#{model_name_from_record_or_class(@resource.model).param_key}[#{@field.id}][]", '', true, { class: "hidden" } %>
+      <% @field.options.each do |id, label| %>
+        <%
+          checked = false
+
+          # Get the state of the checkboxes from either the form that returns a validation error or from the model itself.
+          if params[model_param_key].present? && params[model_param_key][@field.id.to_s].present?
+            checked = params[model_param_key][@field.id.to_s].include?(id.to_s)
+          else
+            if @field.value.present?
+              checked = @field.value[id.to_s]
+            end
+          end
+        %>
+        <label class="block">
+          <%= check_box_tag "#{model_param_key}[#{@field.id}][]", id, checked, { class: "w-3 h-3", disabled: @field.readonly, id: "#{model_param_key}_#{@field.id}_#{id}" } %> <%= label %>
+        </label>
+      <% end %>
+    </div>
+  </div>
+<% end %>

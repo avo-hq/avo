@@ -1,0 +1,16 @@
+<div class="w-full">
+  <% if @resources.present?%>
+    <table class="w-full px-4 overflow-hidden">
+      <%= render partial: 'avo/partials/table_header', locals: {fields: @resource.get_fields(reflection: @reflection)} %>
+      <tbody>
+        <% @resources.each_with_index do |resource, index| %>
+          <% cache_if Avo.configuration.cache_resources_on_index_view, resource.cache_hash(@parent_model) do %>
+            <%= render Avo::Index::TableRowComponent.new(resource: resource, reflection: @reflection, parent_model: @parent_model) %>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <%= helpers.empty_state @resource.name.downcase.pluralize %>
+  <% end %>
+</div>

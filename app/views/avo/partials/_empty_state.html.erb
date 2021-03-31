@@ -1,0 +1,17 @@
+<%
+  classes = 'absolute inset-auto left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2'
+  translation_tag = params[:related_name].present? ? 'avo.no_related_item_found' : 'avo.no_item_found'
+  label = t translation_tag, { item: resource_name }
+%>
+<div class="relative flex-1 py-12">
+  <div class="relative block text-gray-300 h-64 w-full">
+    <%= svg 'avocado', class: "#{classes} h-20 text-gray-400" %>
+    <%= svg 'code', class: "#{classes} h-8 -ml-20 -mt-12" %>
+    <%= svg 'fire', class: "#{classes} h-8 -ml-10 -mt-24" %>
+    <%= svg 'color-swatch', class: "#{classes} h-8 ml-8 -mt-24" %>
+    <%= svg 'globe', class: "#{classes} h-8 ml-20 -mt-12" %>
+    <%= svg 'library', class: "#{classes} h-8 -ml-20 mt-4" %>
+    <%= svg 'photograph', class: "#{classes} h-8 ml-20 mt-4" %>
+  </div>
+  <div class="relative block text-center text-lg text-gray-400 font-semibold -mt-10"><%= label %></div>
+</div>

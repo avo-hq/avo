@@ -1,0 +1,11 @@
+<%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal do %>
+  <% trix_id = "trix_#{@resource.name.underscore}_#{@field.id}" %>
+  <trix-editor input="<%= trix_id %>" value="<%= @field.value %>" placeholder="<%= @field.placeholder %>"><%== @field.value %></trix-editor>
+  <%= @form.text_area @field.id,
+    id: trix_id,
+    class: helpers.input_classes('w-full hidden', has_error: (@resource.model.present? and @resource.model.errors.include?(@field.id))),
+    placeholder: @field.placeholder,
+    disabled: @field.readonly,
+    rows: @field.meta[:rows]
+  %>
+<% end %>

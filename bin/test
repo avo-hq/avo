@@ -1,0 +1,21 @@
+#!/bin/bash -e
+
+export RAILS_ENV="test"
+export NODE_ENV="test"
+
+# Run unit tests
+if [[ -z "$1" ]] || [[ "$1" == "unit" ]]; then
+  bundle exec rspec ./spec --tag type:feature
+  bundle exec rspec ./spec --tag type:controller
+fi;
+
+# Run system tests
+if [[ -z "$1" ]] || [[ "$1" == "system" ]]; then
+  bin/webpack
+  bundle exec rspec ./spec --tag type:system
+fi;
+
+# Run open-ended test paths
+if [[ "$@" ]] && [[ "$1" != "unit" ]] && [[ "$1" != "system" ]]; then
+  bundle exec rspec $@
+fi;

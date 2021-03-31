@@ -1,0 +1,30 @@
+<% if @actions.count > 0 %>
+  <div class="relative z-30" data-controller="toggle-panel actions-picker">
+    <%= a_button class: "focus:outline-none",
+      color: 'light-blue',
+      'data-action': "click->toggle-panel#togglePanel",
+      'data-actions-dropdown-button': @resource.plural_name.downcase,
+      disabled: action_name != 'show' do
+    %>
+      <%= svg 'arrow-left', class: 'h-4 mr-1 transform -rotate-90' %> <%= t 'avo.actions' %>
+    <% end %>
+    <div
+      class="absolute block inset-auto right-0 top-full bg-white min-w-300px mt-2 py-4 z-20 shadow-context rounded-xl overflow-hidden hidden"
+      data-toggle-panel-target="panel"
+    >
+      <%
+        @actions.each_with_index do |action, index|
+          path = action_name == 'show' ?
+            "/avo/resources/#{@resource.model_class.model_name.route_key}/#{@model.id}/actions/#{action.param_id}" :
+            "/avo/resources/#{@resource.model_class.model_name.route_key}/actions/#{action.param_id}"
+      %>
+        <%= link_to path,
+          'data-turbo-frame': 'actions_show',
+          'data-action': 'click->actions-picker#visitAction',
+          class: 'flex items-center w-full py-2 px-4 font-bold text-gray-700 hover:text-white hover:bg-blue-500' do %>
+          <%= svg 'play', class: 'h-5 mr-1 inline' %> <%= action.name %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

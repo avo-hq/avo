@@ -1,0 +1,16 @@
+<div class="flex items-start leading-tight <%= @classes %> min-h-16" data-field-id="<%= @field.id %>" data-field-type="<%= @field.type %>">
+  <div class="h-16 flex self-start items-center text-blue-gray-800">
+    <div class="w-48 md:w-64 px-8" data-slot="label">
+      <%= @field.name %> <% if @field.required %> <span class="text-red-600">*</span> <% end %>
+    </div>
+  </div>
+  <div class="flex-1 flex flex-row h-full ml-2 min-h-inherit">
+    <div class="px-6 py-3 self-center <% if @full_width %> w-full <% else %> w-8/12 <% end %>" data-slot="value">
+      <% if @field.value.blank? and @dash_if_blank %>
+        —
+      <% else %>
+        <%= content %>
+      <% end %>
+    </div>
+  </div>
+</div>

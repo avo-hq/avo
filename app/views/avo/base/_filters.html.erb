@@ -1,0 +1,30 @@
+<div data-controller="toggle-panel">
+  <div class="relative w-full flex justify-between z-30">
+    <%= a_button class: 'focus:outline-none',
+      color: 'blue-gray',
+      title: t('avo.click_to_reveal_filters'),
+      'data-button': 'resource-filters',
+      'data-action': 'click->toggle-panel#togglePanel',
+      'data-tippy': 'tooltip' do
+    %>
+      <%= svg 'filter' %> <%= t 'avo.filters' %>
+    <% end %>
+
+    <div
+      class="absolute block inset-auto right-0 top-full bg-white min-w-300px mt-2 z-20 shadow-context rounded-xl hidden divide-y divide-gray-300"
+      data-toggle-panel-target="panel"
+    >
+      <% @filters.each do |filter| %>
+        <%= render partial: filter.class.template, locals: {filter: filter} %>
+      <% end %>
+
+      <div class="p-4 border-gray-300 border-t">
+        <% if params[:filters].present? %>
+          <%= a_link t('avo.reset_filters'), resources_path(@resource.model_class, filters: nil, keep_query_params: true), color: 'blue-gray', class: 'w-full justify-center' %>
+        <% else %>
+          <%= a_button t('avo.reset_filters'), color: 'blue-gray', class: 'w-full justify-center', disabled: true %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

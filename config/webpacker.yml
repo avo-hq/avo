@@ -1,63 +1,24 @@
 # Note: You must restart bin/webpack-dev-server for changes to take effect
 
 default: &default
-  source_path: app/frontend
-  source_entry_path: packs
-  # public_root_path: public
+  source_path: app/packs
+  source_entry_path: entrypoints
+  public_root_path: public
   cache_path: tmp/cache/webpacker
-  check_yarn_integrity: false
   # use a different sub-folder name
   public_output_path: avo-packs
-  webpack_compile_output: false
-  public_root_path: public
+  webpack_compile_output: true
 
   # Additional paths webpack should lookup modules
   # ['app/assets', 'engine/foo/app/assets']
-  resolved_paths: []
+  additional_paths: []
 
   # Reload manifest.json on all requests so we reload latest compiled packs
   cache_manifest: false
 
-  # Extract and emit a css file
-  extract_css: true
-
-  static_assets_extensions:
-    - .jpg
-    - .jpeg
-    - .png
-    - .gif
-    - .tiff
-    - .ico
-    - .svg
-    - .eot
-    - .otf
-    - .ttf
-    - .woff
-    - .woff2
-
-  extensions:
-    - .ts
-    - .vue
-    - .mjs
-    - .js
-    - .sass
-    - .scss
-    - .css
-    - .module.sass
-    - .module.scss
-    - .module.css
-    - .png
-    - .svg
-    - .gif
-    - .jpeg
-    - .jpg
-
 development:
   <<: *default
   compile: true
-
-  # Verifies that correct packages and versions are installed by inspecting package.json, yarn.lock, and node_modules
-  check_yarn_integrity: true
 
   # Reference: https://webpack.js.org/configuration/dev-server/
   dev_server:
@@ -65,20 +26,29 @@ development:
     host: localhost
     port: 3039
     public: localhost:3039
+    # Inject browserside javascript that required by both HMR and Live(full) reload
+    inject_client: true
+    # Hot Module Replacement updates modules while the application is running without a full reload
     hmr: true
-    # Inline should be set to true if using HMR
+    # Inline should be set to true if using HMR; it inserts a script to take care of live reloading
     inline: true
+    # Should we show a full-screen overlay in the browser when there are compiler errors or warnings?
     overlay: true
+    # Should we use gzip compression?
     compress: true
+    # Note that apps that do not check the host are vulnerable to DNS rebinding attacks
     disable_host_check: true
+    # This option lets the browser open with your local IP
     use_local_ip: false
+    # When enabled, nothing except the initial startup information will be written to the console.
+    # This also means that errors or warnings from webpack are not visible.
     quiet: false
+    pretty: true
     headers:
       'Access-Control-Allow-Origin': '*'
     watch_options:
       ignored: '**/node_modules/**'
     env_prefix: "AVO_WEBPACKER_DEV_SERVER"
-
 
 test:
   <<: *default
