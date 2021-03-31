@@ -1,4 +1,4 @@
-name: [TRYOUT]Build, Generate Ruby Gem and Release
+name: "[TRYOUT]Build, Generate Ruby Gem and Release"
 
 on:
   pull_request:
