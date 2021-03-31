@@ -6,5 +6,5 @@
       path = helpers.resource_path(@resource.model)
     end
   %>
-  <% link_to_if (@field.link_to_resource or Avo.configuration.id_links_to_resource), @field.value, path, title: t('avo.view_item', { item: @resource.name}).humanize %>
+  <% link_to_if (@field.link_to_resource or Avo.configuration.id_links_to_resource), @field.value, path, title: t('avo.view_item', item: @resource.name).humanize %>
 <% end %>
