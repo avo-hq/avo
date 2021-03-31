@@ -148,9 +148,9 @@ GEM
       i18n
     jbuilder (2.10.1)
       activesupport (>= 5.0.0)
-    listen (3.0.8)
-      rb-fsevent (~> 0.9, >= 0.9.4)
-      rb-inotify (~> 0.9, >= 0.9.7)
+    listen (3.5.1)
+      rb-fsevent (~> 0.10, >= 0.10.3)
+      rb-inotify (~> 0.9, >= 0.9.10)
     loofah (2.9.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -364,7 +364,7 @@ DEPENDENCIES
   image_processing (~> 1.2)
   iso
   jbuilder (~> 2.7)
-  listen (>= 3.0.5, < 3.2)
+  listen (>= 3.3.0)
   pagy
   pg (>= 0.18, < 2.0)
   puma (~> 4.3.5)
