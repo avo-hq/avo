@@ -64,7 +64,7 @@ gem "devise"
 gem "database_cleaner"
 
 gem "ruby-debug-ide", require: false
-gem "debase"
+# gem "debase"
 #
 # END Dependencies for dummy_app
 #
