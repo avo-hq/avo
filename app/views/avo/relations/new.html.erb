@@ -6,7 +6,7 @@
     } do |form| %>
     <%= render Avo::ModalComponent.new do |c| %>
       <% c.with :heading do %>
-        <%= t('avo.choose_item', { item: params[:related_name].downcase }) %>
+        <%= t 'avo.choose_item', item: params[:related_name].downcase %>
       <% end %>
 
       <div class="flex-1 flex items-center justify-center px-8 text-lg mt-8 mb-12">

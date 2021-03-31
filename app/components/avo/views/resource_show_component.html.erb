@@ -10,7 +10,7 @@
 
           <% if @reflection.present? && @resource.model.present? %>
             <%= a_link detach_path, color: 'indigo', method: :delete, data: { confirm: "Are you sure you want to detach this #{@resource.singular_name}." } do %>
-              <%= svg 'trash' %> <%= t('avo.detach_item', { item: @resource.singular_name }).capitalize %>
+              <%= svg 'trash' %> <%= t('avo.detach_item', item: @resource.singular_name).capitalize %>
             <% end %>
           <% else %>
             <%= a_link back_path do %>
@@ -19,12 +19,12 @@
 
             <% if @resource.authorization.authorize_action(:destroy, raise_exception: false) %>
               <%= form_with url: helpers.resource_path(@resource.model), method: :delete, html: { 'data-turbo-frame': params[:turbo_frame] } do |form| %>
-                <%= a_button title: t('avo.delete_item', { item: @resource.model.model_name.name.downcase }).capitalize,
+                <%= a_button title: t('avo.delete_item', item: @resource.model.model_name.name.downcase).capitalize,
                   color: 'red',
                   variant: 'outlined',
                   type: :submit,
                   data: {
-                    confirm: t('avo.are_you_sure', { item: @resource.model.model_name.name.downcase }),
+                    confirm: t('avo.are_you_sure', item: @resource.model.model_name.name.downcase),
                     control: :destroy,
                     'resource-id': @resource.model.id,
                     'tippy': 'tooltip',
