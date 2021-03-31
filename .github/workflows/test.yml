@@ -47,10 +47,7 @@ jobs:
           ${{ runner.os }}-production-yarn-
 
     - name: Yarn install
-      run: yarn global add webpack
-
-    - name: Yarn install
-      run: bundle exec rails yarn:install
+      run: yarn
 
     - name: Bundle assets
       run: bin/webpack
