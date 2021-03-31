@@ -1,0 +1,7 @@
+class <%= resource_class %> < Avo::BaseResource
+  self.title = :id
+  self.includes = []
+
+  field :id, as: :id
+  # add fields here
+end

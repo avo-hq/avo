@@ -1,0 +1,64 @@
+<div class="space-x-2 flex flex-row justify-around w-full">
+  <% if can_view? %>
+    <%= link_to helpers.svg('eye', class: 'text-gray-400 h-6 hover:text-gray-600'),
+      show_path,
+      title: t('avo.view_item', { item: @resource.model.model_name.name.downcase }).capitalize,
+      data: {
+        control: :show,
+        'tippy': 'tooltip',
+      }
+      %>
+  <% end %>
+
+  <% if can_edit? %>
+    <%= link_to helpers.svg('edit', class: 'text-gray-400 h-6 hover:text-gray-600'),
+      edit_path,
+      title: t('avo.edit_item', { item: @resource.model.model_name.name.downcase }).capitalize,
+      data: {
+        control: :edit,
+        'resource-id': @resource.model.id,
+        'tippy': 'tooltip',
+      }
+      %>
+  <% end %>
+
+  <% if can_detach? %>
+    <%= form_with url: helpers.resource_detach_path(params[:resource_name], params[:id], params[:related_name], @resource.model.id), method: :delete, html: {
+        'data-turbo-frame': params[:turbo_frame]
+      } do |form| %>
+      <%= form.button helpers.svg('trash-sm', class: 'text-gray-400 h-6 hover:text-gray-600'),
+        title: t('avo.detach_item', { item: @resource.model.model_name.name.downcase }).capitalize,
+        type: :submit,
+        data: {
+          confirm: t('avo.are_you_sure_detach_item', { item: @resource.model.model_name.name.downcase }),
+          control: :detach,
+          'resource-id': @resource.model.id,
+          'tippy': 'tooltip',
+        }
+      %>
+      <%= hidden_field_tag :turbo_frame, params[:turbo_frame], id: "turbo_frame_destroy_#{@resource.model.id}" if params[:turbo_frame] %>
+      <%= hidden_field_tag :referrer, request.fullpath, id: "referrer_destroy_#{@resource.model.id}" if params[:turbo_frame] %>
+      <%#= hidden_field_tag :referrer, request.fullpath, id: "referrer_detach_#{@resource.model.id}" if params[:via_resource_class] %>
+    <% end %>
+  <% end %>
+
+  <% if can_delete? %>
+    <%= form_with url: helpers.resource_path(@resource.model), method: :delete, html: {
+        'data-turbo-frame': params[:turbo_frame]
+      } do |form| %>
+      <%= form.button helpers.svg('trash', class: 'text-gray-400 h-6 hover:text-gray-600'),
+        title: t('avo.delete_item', { item: @resource.model.model_name.name.downcase }).capitalize,
+        type: :submit,
+        data: {
+          confirm: t('avo.are_you_sure', { item: @resource.model.model_name.name.downcase }),
+          control: :destroy,
+          'resource-id': @resource.model.id,
+          'tippy': 'tooltip',
+        }
+      %>
+      <%= form.hidden_field :view_type, value: params[:view_type], id: "turbo_view_type_#{@resource.model.id}" if params[:view_type] %>
+      <%= form.hidden_field :turbo_frame, value: params[:turbo_frame], id: "turbo_frame_destroy_#{@resource.model.id}" if params[:turbo_frame] %>
+      <%= form.hidden_field :referrer, value: request.fullpath, id: "referrer_destroy_#{@resource.model.id}" if params[:turbo_frame] %>
+    <% end %>
+  <% end %>
+</div>

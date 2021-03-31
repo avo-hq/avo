@@ -1,55 +1,62 @@
 # requires all dependencies
-Gem.loaded_specs['avo'].dependencies.each do |d|
+Gem.loaded_specs["avo"].dependencies.each do |d|
   require d.name
 end
+require "view_component/engine"
 
 module Avo
   class Engine < ::Rails::Engine
     isolate_namespace Avo
 
-    initializer 'avo.autoload', before: :set_autoload_paths do |app|
-      {
-        'Avo::Resources': ['app', 'avo', 'resources'],
-        'Avo::Filters': ['app', 'avo', 'filters'],
-        'Avo::Actions': ['app', 'avo', 'actions'],
-      }.each do |namespace, path|
-        next unless Rails.root.join(*path).exist?
+    config.after_initialize do
+      # Boot Avo
+      ::Avo::App.boot
+    end
 
-        Rails.autoloaders.main.push_dir(Rails.root.join(*path), namespace: namespace.to_s.safe_constantize)
+    initializer "avo.autoload", before: :set_autoload_paths do |app|
+      [
+        ["app", "avo", "filters"],
+        ["app", "avo", "actions"],
+        ["app", "avo", "resources"]
+      ].each do |path_params|
+        path = Rails.root.join(*path_params)
+
+        if File.directory? path.to_s
+          Rails.autoloaders.main.push_dir path
+        end
       end
     end
 
-    initializer 'avo.init' do |app|
-      avo_root_path = Avo::Engine.root.to_s
+    initializer "avo.init_fields" do |app|
+      # Init the fields
+      ::Avo::App.init_fields
+    end
 
-      app.config.middleware.use I18n::JS::Middleware
-
-      if Avo::IN_DEVELOPMENT
+    initializer "avo.reload_avo_files" do |app|
+      if Avo::IN_DEVELOPMENT && ENV["RELOAD_AVO_FILES"]
+        avo_root_path = Avo::Engine.root.to_s
         # Register reloader
         app.reloaders << app.config.file_watcher.new([], {
-          Avo::Engine.root.join('lib', 'avo').to_s => ['rb'],
+          Avo::Engine.root.join("lib", "avo").to_s => ["rb"]
         }) {}
 
         # What to do on file change
         config.to_prepare do
-          Dir.glob(avo_root_path + '/lib/avo/app/**/*.rb'.to_s).each { |c| load c }
+          Dir.glob(avo_root_path + "/lib/avo/**/*.rb".to_s).each { |c| load c }
+          Avo::App.boot
         end
-      else
-        Dir.glob(avo_root_path + '/lib/avo/app/**/*.rb'.to_s).each { |c| require c }
-
-        Avo::App.boot if Avo::PACKED
       end
     end
 
-    initializer 'webpacker.proxy' do |app|
+    initializer "webpacker.proxy" do |app|
       app.config.debug_exception_response_format = :api
-      app.config.logger = ::Logger.new(STDOUT)
+      # app.config.logger = ::Logger.new(STDOUT)
 
       insert_middleware = begin
-                            Avo.webpacker.config.dev_server.present?
-                          rescue
-                            nil
-                          end
+        Avo.webpacker.config.dev_server.present?
+      rescue
+        nil
+      end
 
       if insert_middleware
         app.middleware.insert_before(
@@ -62,7 +69,8 @@ module Avo
 
     config.app_middleware.use(
       Rack::Static,
-      urls: ['/avo-packs'], root: Avo::Engine.root.join('public')
+      urls: ["/avo-packs"],
+      root: Avo::Engine.root.join("public")
     )
 
     config.generators do |g|

@@ -1,0 +1,13 @@
+module Avo
+  module Actions
+    class <%= class_name.camelize %> < Action
+      self.name = '<%= name.underscore.humanize %>'
+
+      def handle(models:, fields:)
+        models.each do |model|
+          # Do something with your models.
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,12 @@
+<%
+  options = {
+    default: '',
+    size: 340,
+  }
+  options[:default] = @default if @default.present?
+  options[:size] = @size if @size.present?
+  query = options.map { |key, value| "#{key}=#{value}" }.join('&')
+  url = URI::HTTPS.build(host: "www.gravatar.com", path: "/avatar/#{@md5}", query: query)
+  classes = @rounded ? 'min-w-10 rounded-full' : 'min-w-10'
+%>
+<%= link_to_if @link_to_resource.present?, image_tag(url.to_s, class: classes), @link, title: @title %>

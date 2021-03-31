@@ -1,0 +1,11 @@
+@import 'codemirror/lib/codemirror.css';
+
+/* themes */
+@import 'codemirror/theme/dracula.css';
+@import 'codemirror/theme/eclipse.css';
+@import 'codemirror/theme/material-darker.css';
+
+.CodeMirror {
+  height: var(--height) !important;
+  min-height: auto;
+}

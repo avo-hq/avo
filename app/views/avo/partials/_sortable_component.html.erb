@@ -1,0 +1,14 @@
+<%
+  icon = 'selector'
+
+  if params[:sort_by] == field.id.to_s
+    case params[:sort_direction]
+      when 'asc'
+        icon = 'sort-ascending'
+      when 'desc'
+        icon = 'sort-descending'
+      end
+  end
+%>
+
+<%= svg icon, class: 'inline-block fill-current text-gray-500 relative leading-none min-w-4 min-h-full ml-1 h-4' %>

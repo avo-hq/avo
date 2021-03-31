@@ -1,38 +1,68 @@
-require_dependency 'avo/application_controller'
+require_dependency "avo/application_controller"
 
 module Avo
   class ActionsController < ApplicationController
-    def index
-      avo_actions = avo_resource.get_actions
-      actions = []
+    before_action :set_resource_name
+    before_action :set_resource
+    before_action :set_action, only: [:show, :handle]
 
-      if params[:resource_id].present?
-        model = resource_model.find params[:resource_id]
-      end
-
-      avo_actions.each do |action|
-        actions.push(action.new.render_response model, avo_resource)
-      end
-
-      render json: {
-        actions: actions,
-      }
+    def show
+      @model = ActionModel.new @action.get_attributes_for_action
     end
 
     def handle
-      models = resource_model.find action_params[:resource_ids]
-      avo_action = action_params[:action_class].safe_constantize.new
-      avo_action.handle_action(request, models, action_params[:fields])
+      resource_ids = action_params[:fields][:resource_ids].split(",").map(&:to_i)
+      models = @resource.model_class.find resource_ids
 
-      render json: {
-        success: true,
-        response: avo_action.response,
-      }
+      fields = action_params[:fields].select do |key, value|
+        key != "resource_ids"
+      end
+
+      performed_action = @action.handle_action(models: models, fields: fields)
+
+      respond performed_action.response
     end
 
     private
-      def action_params
-        params.permit(:resource_name, :action_id, :action_class, resource_ids: [], fields: {})
+
+    def action_params
+      params.permit(:resource_name, :action_id, fields: {})
+    end
+
+    def set_action
+      action_class = params[:action_id].gsub("avo_actions_", "").classify.safe_constantize
+
+      if params[:id].present?
+        model = @resource.model_class.find params[:id]
       end
+
+      @action = action_class.new(model: model, resource: resource, user: _current_user)
+    end
+
+    def respond(response)
+      response[:type] ||= :reload
+      response[:message_type] ||= :notice
+      response[:message] ||= I18n.t("avo.action_ran_successfully")
+
+      if response[:type] == :download
+        return send_data response[:path], filename: response[:filename]
+      end
+
+      respond_to do |format|
+        format.html do
+          if response[:type] == :redirect
+            path = response[:path]
+
+            if path.respond_to? :call
+              path = instance_eval(&path)
+            end
+
+            redirect_to path, "#{response[:message_type]}": response[:message]
+          elsif response[:type] == :reload
+            redirect_back fallback_location: resources_path(@resource.model_class), "#{response[:message_type]}": response[:message]
+          end
+        end
+      end
+    end
   end
 end

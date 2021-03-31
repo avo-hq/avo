@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+
+require_relative 'helpers'
+
+app_root do
+  use_docker = ask(
+    question: 'Would you like to use Docker Compose for Postgres?',
+    valid_answers: ['y', 'N']
+  )
+
+  header 'Configuring git'
+  run! 'git remote add upstream https://github.com/avo-hq/avo.git'
+
+  header 'Installing gems'
+  run! 'bundle install'
+
+  header 'Installing Yarn packages'
+  run! 'yarn'
+
+  if use_docker
+    header 'Creating the Docker volume'
+    run! 'docker volume create --name=avo-db-data'
+
+    header 'Creating and running the Docker image'
+    run! 'docker-compose up -d'
+  end
+
+  header 'Preparing the database'
+  run! 'bin/rails db:setup'
+
+  if use_docker
+    header 'Stopping the Docker image'
+    run! 'docker-compose stop'
+  end
+end

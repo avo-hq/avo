@@ -1,0 +1,13 @@
+<div class="flex items-start py-1 leading-tight border-t bg-blue-gray-600 text-white text-xs">
+  <div class="p-3 pl-6 h-full w-full">
+    <% if @value.present? %>
+      <% if @as_html %>
+        <%== @value %>
+      <% else %>
+        <div class="font-semibold uppercase"><%= @value %></div>
+      <% end %>
+    <% else %>
+      —
+    <% end %>
+  </div>
+</div>

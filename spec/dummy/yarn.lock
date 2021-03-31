@@ -843,10 +843,28 @@
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
   integrity sha512-5a6wqoJV/xEdbRNKVo6I4hO3VjyDq//8q2f9I6PBAvMesJHFauXDorcNCsr9RzvsZnaWi5NYCcfyqP1QeFHFbw==
 
+"@hotwired/turbo-rails@^7.0.0-beta.2":
+  version "7.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@hotwired/turbo-rails/-/turbo-rails-7.0.0-beta.2.tgz#f481a5979916311dc1c9d5502a2c5444b0d8d0aa"
+  integrity sha512-g79cjM+rW9zF73DsP0o3XAvXjvIj52B4FYXOL4gO48rWV+0P2sfrOvE04GlvN0C4FsWNbrd6zGDo5Dd7siQZQg==
+  dependencies:
+    "@hotwired/turbo" "^7.0.0-beta.1"
+    "@rails/actioncable" "^6.1.0"
+
+"@hotwired/turbo@^7.0.0-beta.1":
+  version "7.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/@hotwired/turbo/-/turbo-7.0.0-beta.1.tgz#0111db8a80a7bb308c4cfdd2720112d06bf25c33"
+  integrity sha512-V7hhELbDkYUGaHw/Yw4tu9pDUT1WE4t3A7tRs7Zh0Uwtk2vaJnmykNZ2uq20BnLjofufA1+MLJZ6AXJ3B/Il5A==
+
 "@rails/actioncable@^6.0.0":
   version "6.0.3"
   resolved "https://registry.yarnpkg.com/@rails/actioncable/-/actioncable-6.0.3.tgz#722b4b639936129307ddbab3a390f6bcacf3e7bc"
   integrity sha512-I01hgqxxnOgOtJTGlq0ZsGJYiTEEiSGVEGQn3vimZSqEP1HqzyFNbzGTq14Xdyeow2yGJjygjoFF1pmtE+SQaw==
+
+"@rails/actioncable@^6.1.0":
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/@rails/actioncable/-/actioncable-6.1.0.tgz#f336f25450b1bc43b99bc60557a70b6e6bb1d3d2"
+  integrity sha512-eDgy+vcKN9RIzxmMBfSAe77rTj2cp6kJALiVQyKrW2O9EK2MdostOmP+99At/Dit3ur5+77NVnruxD7y14ZYFA==
 
 "@rails/activestorage@^6.0.0":
   version "6.0.3"
@@ -7109,11 +7127,6 @@ tunnel-agent@^0.6.0:
   integrity sha1-J6XeoGs2sEoKmWZ3SykIaPD8QP0=
   dependencies:
     safe-buffer "^5.0.1"
-
-turbolinks@^5.2.0:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/turbolinks/-/turbolinks-5.2.0.tgz#e6877a55ea5c1cb3bb225f0a4ae303d6d32ff77c"
-  integrity sha512-pMiez3tyBo6uRHFNNZoYMmrES/IaGgMhQQM+VFF36keryjb5ms0XkVpmKHkfW/4Vy96qiGW3K9bz0tF5sK9bBw==
 
 tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   version "0.14.5"

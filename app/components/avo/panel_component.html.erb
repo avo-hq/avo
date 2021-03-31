@@ -1,0 +1,27 @@
+<div <%== data_attributes %>>
+  <div class="mb-6">
+    <div class="text-2xl tracking-normal font-bold text-gray-800 truncate mb-3">
+      <%= @title %>
+    </div>
+
+    <div>
+      <div class="flex justify-end space-x-2 mb-6">
+        <%= tools %>
+      </div>
+    </div>
+  </div>
+
+  <div class="relative bg-white rounded-xl shadow-xl mb-8 <%= @body_classes %>">
+    <%= body %>
+  </div>
+
+  <div class="relative mb-8">
+    <%= bare_content %>
+  </div>
+
+  <div class="flex justify-end w-full">
+    <div>
+      <%= footer %>
+    </div>
+  </div>
+</div>

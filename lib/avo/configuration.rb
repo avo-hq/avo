@@ -9,39 +9,45 @@ module Avo
     attr_accessor :locale
     attr_accessor :currency
     attr_accessor :default_view_type
-    attr_accessor :hide_resource_overview_component
-    attr_accessor :hide_documentation_link
     attr_accessor :license
     attr_accessor :license_key
     attr_accessor :authorization_methods
     attr_accessor :authenticate
     attr_accessor :current_user
+    attr_accessor :id_links_to_resource
+    attr_accessor :full_width_container
+    attr_accessor :full_width_index_view
+    attr_accessor :cache_resources_on_index_view
+    attr_accessor :context
 
     def initialize
-      @root_path = '/avo'
-      @app_name = Rails.application.class.to_s.split('::').first.underscore.humanize(keep_id_suffix: true)
-      @timezone = 'UTC'
+      @root_path = "/avo"
+      @app_name = Rails.application.class.to_s.split("::").first.underscore.humanize(keep_id_suffix: true)
+      @timezone = "UTC"
       @per_page = 24
       @per_page_steps = [12, 24, 48, 72]
       @via_per_page = 8
-      @locale = 'en-US'
-      @currency = 'USD'
+      @locale = "en-US"
+      @currency = "USD"
       @default_view_type = :table
-      @hide_resource_overview_component = false
-      @hide_documentation_link = false
-      @license = 'community'
+      @license = "community"
       @license_key = nil
       @current_user = proc {}
       @authenticate = proc {}
       @authorization_methods = {
-        index: 'index?',
-        show: 'show?',
-        edit: 'edit?',
-        new: 'new?',
-        update: 'update?',
-        create: 'create?',
-        destroy: 'destroy?',
+        index: "index?",
+        show: "show?",
+        edit: "edit?",
+        new: "new?",
+        update: "update?",
+        create: "create?",
+        destroy: "destroy?"
       }
+      @id_links_to_resource = false
+      @full_width_container = false
+      @full_width_index_view = false
+      @cache_resources_on_index_view = Avo::PACKED
+      @context = proc {}
     end
 
     def locale_tag
@@ -49,11 +55,9 @@ module Avo
     end
 
     def language_code
-      begin
-        locale_tag.language.code
-      rescue => exception
-        'en'
-      end
+      locale_tag.language.code
+    rescue
+      "en"
     end
 
     def current_user_method(&block)
@@ -62,6 +66,10 @@ module Avo
 
     def authenticate_with(&block)
       @authenticate = block if block.present?
+    end
+
+    def set_context(&block)
+      @context = block if block.present?
     end
   end
 

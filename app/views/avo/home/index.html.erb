@@ -1,3 +1,54 @@
-<transition name="fade">
-  <router-view :key="routerKey" />
-</transition>
+<div class="flex flex-col">
+  <%= panel title: 'Welcome to Avo' do |c| %>
+    <% c.with :tools do %>
+      <div class="text-sm italic">This page is visible only in development. It will be hidden in other environments.</div>
+    <% end %>
+
+    <% c.with :body do %>
+      <div class="flex flex-col justify-between py-6 min-h-24">
+        <div class="px-6 space-y-4">
+          <h3>About</h3>
+
+          <p>
+            <strong>Avo</strong>'s mission is to make it easy for you to manage your content and build tools that are ready to deploy, all while using your favorite framework, Ruby on Rails.
+          </p>
+
+          <h3>Vision</h3>
+
+          <p>
+            We have big plans for Avo to make it the default starting point of your application. We'll be releasing features as soon as their ready.
+
+            <ul class="grid sm:grid-cols-2 max-w-168">
+              <li><span class="mr-2">👍</span> Built with Hotwire</li>
+              <li><span class="mr-2">👍</span> Resources</li>
+              <li><span class="mr-2">👍</span> Ordering</li>
+              <li><span class="mr-2">👍</span> Filters</li>
+              <li><span class="mr-2">👍</span> Actions</li>
+              <li><span class="mr-2">👍</span> Grid view</li>
+              <li><span class="mr-2">👍</span> Authorization</li>
+              <li><span class="mr-2">👍</span> Localization</li>
+              <li><span class="mr-2">⏳</span> Custom tools</li>
+              <li><span class="mr-2">⏳</span> Custom fields</li>
+              <li><span class="mr-2">⏳</span> Search</li>
+              <li><span class="mr-2">🕐</span> Dashboards</li>
+              <li><span class="mr-2">🕐</span> Themes</li>
+            </ul>
+          </p>
+
+        </div>
+
+        <div class="px-6 mt-8">
+          <div class="space">
+            <%= render partial: 'resources' %>
+            <hr class="my-6">
+            <%= render partial: 'filters' %>
+            <hr class="my-6">
+            <%= render partial: 'actions' %>
+            <hr class="my-6">
+            <%= render partial: 'docs' %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>

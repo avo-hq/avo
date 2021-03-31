@@ -1,0 +1,50 @@
+
+<thead class="bg-blue-gray-100 border-t border-b border-gray-300 pb-1">
+  <th>
+    <!-- Select cell -->
+  </th>
+  <%
+    fields.each_with_index do |field, index|
+      if params[:sort_by] == field.id.to_s
+        if params[:sort_direction] == 'asc'
+          sort_by = nil
+        else
+          sort_by = field.id
+        end
+
+        if sort_by.present?
+          case params[:sort_direction]
+            when nil
+              sort_direction = 'desc'
+            when 'desc'
+              sort_direction = 'asc'
+            when 'asc'
+              sort_direction = nil
+            end
+        else
+          sort_direction = nil
+        end
+      else
+        sort_by = field.id
+        sort_direction = 'desc'
+      end
+      classes = "text-blue-gray-600 tracking-tight leading-tight text-xs font-semibold"
+  %>
+    <th class="text-left uppercase px-3 py-2 whitespace-nowrap">
+      <% if field.sortable %>
+        <%= link_to params.permit!.merge(sort_by: sort_by, sort_direction: sort_direction), class: "flex items-center #{classes} #{'cursor-pointer' if field.sortable}", 'data-turbo-frame': params[:turbo_frame] do %>
+          <%= field.name %>
+          <%= render partial: 'avo/partials/sortable_component', locals: {field: field} %>
+        <% end %>
+      <% else %>
+          <div class="flex items-center <%= classes %>">
+            <%= field.name %>
+          </div>
+      <% end %>
+    </th>
+  <% end %>
+
+  <th class="w-24">
+    <!-- Controls cell -->
+  </th>
+</thead>

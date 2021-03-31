@@ -1,28 +1,32 @@
 Avo::Engine.routes.draw do
-  root 'home#index'
+  root "home#index"
 
-  get '/avo-api/:resource_name/filters',  to: 'filters#index'
+  get "resources", to: redirect("/avo")
 
-  get '/avo-api/:resource_name/actions',  to: 'actions#index'
-  post '/avo-api/:resource_name/actions', to: 'actions#handle'
+  scope "resources", as: "resources" do
+    # Attachments
+    get "/:resource_name/:id/active_storage_attachments/:attachment_name/:signed_attachment_id", to: "attachments#show"
+    delete "/:resource_name/:id/active_storage_attachments/:attachment_name/:signed_attachment_id", to: "attachments#destroy"
 
-  get '/avo-api/search',                  to: 'search#index'
-  get '/avo-api/:resource_name/search',   to: 'search#resource'
+    # Actions
+    get "/:resource_name(/:id)/actions/:action_id", to: "actions#show"
+    post "/:resource_name(/:id)/actions/:action_id", to: "actions#handle"
 
-  get '/avo-api/:resource_name',          to: 'resources#index'
-  post '/avo-api/:resource_name',         to: 'resources#create'
-  get '/avo-api/:resource_name/new',      to: 'resources#new'
-  get '/avo-api/:resource_name/:id',      to: 'resources#show'
-  get '/avo-api/:resource_name/:id/edit', to: 'resources#edit'
-  put '/avo-api/:resource_name/:id',      to: 'resources#update'
-  delete '/avo-api/:resource_name/:id',   to: 'resources#destroy'
+    # Generate resource routes as below:
+    # resources :posts
+    instance_eval(&Avo::App.draw_routes)
 
-  post '/avo-api/:resource_name/:id/attach/:attachment_name/:attachment_id', to: 'relations#attach'
-  post '/avo-api/:resource_name/:id/detach/:attachment_name/:attachment_id', to: 'relations#detach'
+    # Relations
+    get "/:resource_name/:id/:related_name/new", to: "relations#new"
+    get "/:resource_name/:id/:related_name/", to: "relations#index"
+    get "/:resource_name/:id/:related_name/:related_id", to: "relations#show"
+    post "/:resource_name/:id/:related_name", to: "relations#create"
+    delete "/:resource_name/:id/:related_name/:related_id", to: "relations#destroy"
+  end
+
+  # get '/avo-api/search',                  to: 'search#index'
+  # get '/avo-api/:resource_name/search',   to: 'search#resource'
 
   # Tools
-  get '/avo-tools/resource-overview', to: 'resource_overview#index'
-
-  # Catch them all
-  get '/:view/(:tool)/(:resource_name)/(:option)', to: 'home#index'
+  # get '/avo-tools/resource-overview', to: 'resource_overview#index'
 end

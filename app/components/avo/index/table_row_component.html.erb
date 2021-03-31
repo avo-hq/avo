@@ -1,0 +1,18 @@
+<tr
+  class="hover:bg-light-blue-50 hover:shadow-row relative z-20 border-b"
+  <%== item_selector_init @resource %>
+>
+  <td class="w-10">
+    <div class="flex justify-center h-full">
+      <%== item_selector_input floating: false %>
+    </div>
+  </td>
+  <% @resource.get_fields(reflection: @reflection).each_with_index do |field, index| %>
+    <%= index_field field, index, @resource %>
+  <% end %>
+  <td class="text-right whitespace-nowrap px-2">
+    <div class="flex items-center justify-end flex-grow-0 h-full w-full">
+      <%= render(Avo::Index::ResourceControlsComponent.new(resource: @resource, reflection: @reflection, parent_model: @parent_model)) %>
+    </div>
+  </td>
+</tr>

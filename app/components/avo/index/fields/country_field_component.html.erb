@@ -1,0 +1,7 @@
+<%= index_field_wrapper field: @field do %>
+  <% if @field.display_code %>
+    <%= @field.value %>
+  <% else %>
+    <%= @field.countries[@field.value] %>
+  <% end %>
+<% end %>

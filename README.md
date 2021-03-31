@@ -46,3 +46,11 @@ And then execute:
 ```bash
 $ bundle install
 ```
+
+# Contributing
+
+Please read [CONTRIBUTING.MD](./CONTRIBUTING.MD)
+
+# Upgrade guide
+
+Please read the [UPGRADE_GUIDE.MD](https://docs.avohq.io/0.5.x/upgrade.html)

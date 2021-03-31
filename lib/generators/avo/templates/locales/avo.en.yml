@@ -4,21 +4,30 @@ en:
     choose_a_country: 'Choose a country'
     choose_an_option: 'Choose an option'
     are_you_sure_you_want_to_run_this_option: 'Are you sure you want to run this action?'
+    are_you_sure_detach_item: 'Are you sure you want to detach this %{item}.'
     run: 'Run'
     cancel: 'Cancel'
     action_ran_successfully: 'Action ran successfully!'
-    resource_details: "%{name} details"
+    resource_details: "%{item} details: %{title}"
+    update_item: 'update %{item}: %{title}'
     unauthorized: 'Unauthorized'
     attachment_class_attached: '%{attachment_class} attached.'
     attachment_class_detached: '%{attachment_class} detached.'
     resource_updated: 'Resource updated'
     resource_created: 'Resource created'
     resource_destroyed: 'Resource destroyed'
+    switch_to_view: "Switch to %{view_type} view"
+    click_to_reveal_filters: "Click to reveal filters"
+    attachment_destroyed: 'Attachment destroyed'
+    failed_to_find_attachment: 'Failed to find attachment'
+    you_missed_something_check_form: 'You might have missed something. Please check the form.'
     remove_selection: 'Remove selection'
+    select_item: 'Select item'
     delete_file: 'Delete file'
     delete: 'delete'
     delete_item: 'Delete %{item}'
     download_item: 'Download %{item}'
+    download_file: 'Download file'
     download: 'Download'
     view: 'View'
     view_item: 'view %{item}'
@@ -58,3 +67,15 @@ en:
     next_page: 'Next page'
     prev_page: 'Previous page'
     list_is_empty: 'List is empty'
+    field_translations:
+      file:
+        zero: 'files'
+        one: 'file'
+        other: 'files'
+    resource_translations:
+      user:
+        zero: 'users'
+        one: 'user'
+        other: 'users'
+    reset_filters: 'Reset filters'
+    not_authorized: 'You are not authorized to perform this action.'

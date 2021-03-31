@@ -1,0 +1,9 @@
+<%= index_field_wrapper field: @field do %>
+  <% if @field.value.present? %>
+    <%= image_tag @field.value,
+      height: @field.height,
+      width: @field.width,
+      style: "border-radius: #{@field.radius}px"
+    %>
+  <% end %>
+<% end %>
