@@ -65,10 +65,10 @@ jobs:
     - name: Build gem
       run: bundle exec rails build
 
-    - name: Get gem version
+    - name: Get tag
       id: gem_version
       run: |
-        echo "::set-output name=tag::$(sed "s|refs/tags/v||" <<< ${{ github.ref }})"
+        echo "::set-output name=tag::1.1.1"
 
     - name: Get release notes
       id: get_release_notes
