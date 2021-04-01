@@ -9,7 +9,12 @@ jobs:
   Test:
     strategy:
       matrix:
-        ruby: ['2.6', '2.7', '3.0']
+        ruby:
+          - 2.6
+          - 2.7
+          - 3.0
+        gemfile:
+          - rails_6
     env:
       RAILS_ENV: test
       PGHOST: localhost
@@ -19,6 +24,8 @@ jobs:
       POSTGRES_USERNAME: postgres
       POSTGRES_PORT: 5432
       COVERAGE: true
+      BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/${{ matrix.gemfile }}_ruby_${{ matrix.ruby }}.gemfile
+      BUNDLE_PATH_RELATIVE_TO_CWD: true
 
     runs-on: ubuntu-latest
 
