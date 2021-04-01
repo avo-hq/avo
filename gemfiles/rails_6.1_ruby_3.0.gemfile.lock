@@ -379,7 +379,7 @@ DEPENDENCIES
   iso
   jbuilder (~> 2.7)
   listen (>= 3.3.0)
-  pagy (4.1.0)
+  pagy
   pg (>= 0.18, < 2.0)
   puma (~> 4.3.5)
   pundit
