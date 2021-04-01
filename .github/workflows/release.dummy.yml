@@ -79,8 +79,8 @@ jobs:
       run: |
         ls -la ./pkg
 
-    - name: 'Download artifact'
-      uses: actions/download-artifact@v2
+    - name: 'Upload artifact'
+      uses: actions/upload-artifact@v2
       with:
         name: avo-${{steps.gem_version.outputs.tag}}.gem
         path: ./pkg/avo-${{steps.gem_version.outputs.tag}}.gem
