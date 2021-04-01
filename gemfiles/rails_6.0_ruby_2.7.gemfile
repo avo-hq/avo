@@ -23,7 +23,7 @@ gem "devise"
 gem "database_cleaner"
 gem "ruby-debug-ide", require: false
 gem "zeitwerk", "~> 2.3"
-gem "pagy", ">=4.0"
+gem "pagy"
 gem "httparty"
 gem "iso"
 gem "hotwire-rails"
