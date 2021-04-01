@@ -43,7 +43,7 @@
 
         <% if @models.present? %>
           <div class="py-4">
-            <%= render partial: 'avo/partials/paginator', locals: { pagy: @pagy, turbo_frame: @turbo_frame } %>
+            <%= render partial: 'avo/partials/paginator', locals: { pagy: @pagy, turbo_frame: @turbo_frame || 'none' } %>
           </div>
         <% end %>
       </div>
@@ -55,7 +55,7 @@
       <%= render Avo::Index::ResourceGridComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_model: @parent_model) %>
 
       <div class="bg-white rounded-xl shadow-xl mt-8 py-6">
-        <%= render partial: 'avo/partials/paginator', locals: { pagy: @pagy, turbo_frame: @turbo_frame } %>
+        <%= render partial: 'avo/partials/paginator', locals: { pagy: @pagy, turbo_frame: @turbo_frame || 'none' } %>
       </div>
     <% end %>
   <% end %>
