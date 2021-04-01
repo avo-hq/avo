@@ -107,7 +107,7 @@ end
 gem "zeitwerk", "~> 2.3"
 
 # Pagination
-gem "pagy"
+gem "pagy", ">= 4.0"
 
 gem "httparty"
 
