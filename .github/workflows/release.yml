@@ -11,6 +11,7 @@ jobs:
     env:
       RAILS_ENV: production
       NODE_ENV: production
+      BUNDLE_WITHOUT: development:test
 
     runs-on: ubuntu-latest
 
@@ -46,7 +47,15 @@ jobs:
           ${{ runner.os }}-production-yarn-
 
     - name: Yarn install
-      run: yarn
+      run: yarn install
+
+    - name: Yarn check integrity
+      run: yarn check --integrity
+
+    - name: Replace packed webpacker config
+      run: |
+        rm ./config/webpacker.yml
+        mv ./config/webpacker_packed.yml ./config/webpacker.yml
 
     - name: Bundle assets
       run: bin/webpack
@@ -58,9 +67,6 @@ jobs:
       id: gem_version
       run: |
         echo "::set-output name=tag::$(sed "s|refs/tags/v||" <<< ${{ github.ref }})"
-
-    - name: Axios install
-      run: yarn global add axios
 
     - name: Get release notes
       id: get_release_notes
