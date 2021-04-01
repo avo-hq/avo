@@ -23,7 +23,7 @@ gem "devise"
 gem "database_cleaner"
 gem "ruby-debug-ide", require: false
 gem "zeitwerk", "~> 2.3"
-gem "pagy"
+gem "pagy", ">=4.0"
 gem "httparty"
 gem "iso"
 gem "hotwire-rails"
@@ -31,7 +31,6 @@ gem "active_link_to"
 gem "view_component", require: "view_component/engine"
 gem "addressable"
 gem "appraisal"
-gem "nokogiri", "1.11.2"
 
 group :development do
   gem "standard"

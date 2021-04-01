@@ -31,7 +31,6 @@ gem "active_link_to"
 gem "view_component", require: "view_component/engine"
 gem "addressable"
 gem "appraisal"
-gem "nokogiri", "1.11.2"
 
 group :development do
   gem "standard"
