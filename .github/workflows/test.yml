@@ -37,6 +37,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Peek
+      run: |
+        ls -la ./
+        ls -la ./gemfiles
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
@@ -56,8 +60,6 @@ jobs:
 
     - name: Bundle install
       run: |
-        ls -la ./
-        ls -la ./gemfiles
         bundle config path vendor/bundle
         bundle install --jobs 4 --retry 3
         bin/rails db:create
