@@ -8,7 +8,7 @@ PATH
       hotwire-rails
       httparty
       image_processing
-      pagy (>= 3.5, < 4.0)
+      pagy
       pundit
       rails (>= 6.0)
       view_component
