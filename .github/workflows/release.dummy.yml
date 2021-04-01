@@ -65,10 +65,10 @@ jobs:
     - name: Build gem
       run: bundle exec rails build
 
-    - name: Get tag
+    - name: Get gem version
       id: gem_version
       run: |
-        echo "::set-output name=tag::1.1.1"
+        echo "::set-output name=tag::$(sed "s|refs/tags/v||" <<< ${{ github.ref }})"
 
     - name: Get release notes
       id: get_release_notes
@@ -82,8 +82,8 @@ jobs:
     - name: 'Upload artifact'
       uses: actions/upload-artifact@v2
       with:
-        name: avo-${{steps.gem_version.outputs.tag}}.gem
-        path: pkg/avo-${{steps.gem_version.outputs.tag}}.gem
+        name: avo-1.0.2.gem.gem
+        path: pkg/avo-1.0.2.gem.gem
 
     # - name: Create Release
     #   id: create_release
