@@ -10,9 +10,9 @@ jobs:
     strategy:
       matrix:
         ruby:
-          - 2.6
-          - 2.7
-          - 3.0
+          - '2.6'
+          - '2.7'
+          - '3.0'
         gemfile:
           - rails_6
     env:
