@@ -9,6 +9,5 @@
 
   appraise "rails-#{rails_version}-ruby-3.0" do
     gem "rails", "~> #{rails_version}.0"
-    gem "pagy", ">= 4.0"
   end
 end
