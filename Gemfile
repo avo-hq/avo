@@ -106,7 +106,6 @@ end
 
 gem "zeitwerk", "~> 2.3"
 
-# Pagination
 gem "pagy"
 
 gem "httparty"
@@ -122,4 +121,3 @@ gem "view_component", require: "view_component/engine"
 gem "addressable"
 
 gem "appraisal"
-gem "nokogiri"
