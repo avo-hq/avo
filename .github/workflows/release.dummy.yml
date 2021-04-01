@@ -82,8 +82,8 @@ jobs:
     - name: 'Upload artifact'
       uses: actions/upload-artifact@v2
       with:
-        name: avo-1.0.2.gem.gem
-        path: pkg/avo-1.0.2.gem.gem
+        name: avo-1.0.2.gem
+        path: pkg/avo-1.0.2.gem
 
     # - name: Create Release
     #   id: create_release
