@@ -7,14 +7,19 @@ BUMP=${1:-'patch'}
 
 # Initial bump
 gem bump --no-commit
-VERSION=$(bundle exec rails runner 'puts Avo::VERSION')
 
 # update the appraisal gemspecs
 bundle exec appraisal install
 
-# Get the version again
+# Get the version
 VERSION=$(bundle exec rails runner 'puts Avo::VERSION')
 
-gem bump -v $VERSION
+git add ./gemfiles
+git add ./version
+git add ./Gemfile.lock
+
+# echo "Bump $NAME to v$VERSION"
+git commit -m "Bump $NAME to v$VERSION"
+git tag v$VERSION
 
 # git push --follow-tags
