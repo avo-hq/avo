@@ -106,8 +106,6 @@ end
 
 gem "zeitwerk", "~> 2.3"
 
-# gem "pagy"
-
 gem "httparty"
 
 gem "iso"
