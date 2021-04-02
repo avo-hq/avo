@@ -4,12 +4,20 @@ on:
   pull_request:
     branches:
       - master
+  push:
+    branches:
+      - master
 
 jobs:
   Test:
     strategy:
       matrix:
-        ruby: ['2.6', '2.7', '3.0']
+        ruby:
+          - '2.6'
+          - '2.7'
+        rails:
+          - '6.0'
+          - '6.1'
     env:
       RAILS_ENV: test
       PGHOST: localhost
@@ -19,6 +27,8 @@ jobs:
       POSTGRES_USERNAME: postgres
       POSTGRES_PORT: 5432
       COVERAGE: true
+      BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}.gemfile
+      BUNDLE_PATH_RELATIVE_TO_CWD: true
 
     runs-on: ubuntu-latest
 
@@ -30,10 +40,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
         bundler-cache: true
+        bundler: default
         ruby-version: ${{ matrix.ruby }}
 
     - name: Install PostgreSQL 11 client
@@ -75,7 +87,9 @@ jobs:
     - name: Run tests
       run: bundle exec rspec
 
-    - uses: codecov/codecov-action@v1
+    - name: Generate coverage
+      uses: codecov/codecov-action@v1
+      if: ${{ matrix.rails == '6.1' && matrix.ruby == '2.7' }}
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         file: ./coverage/coverage.xml
