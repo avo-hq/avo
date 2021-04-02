@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    avo (1.0.2)
+    avo (1.0.4)
       active_link_to
       addressable
       countries
@@ -173,11 +173,13 @@ GEM
     mime-types-data (3.2021.0225)
     mini_magick (4.11.0)
     mini_mime (1.0.3)
+    mini_portile2 (2.5.0)
     minitest (5.14.4)
     msgpack (1.4.2)
     multi_xml (0.6.0)
     nio4r (2.5.7)
-    nokogiri (1.11.2-x86_64-darwin)
+    nokogiri (1.11.2)
+      mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
     orm_adapter (0.5.0)
     pagy (3.12.0)
@@ -400,4 +402,4 @@ DEPENDENCIES
   zeitwerk (~> 2.3)
 
 BUNDLED WITH
-   2.1.4
+   2.2.5
