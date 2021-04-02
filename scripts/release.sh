@@ -15,7 +15,7 @@ bundle exec appraisal install
 VERSION=$(bundle exec rails runner 'puts Avo::VERSION')
 
 git add ./gemfiles
-git add ./version.rb
+git add ./lib/avo/version.rb
 git add ./Gemfile.lock
 
 # echo "Bump $NAME to v$VERSION"
