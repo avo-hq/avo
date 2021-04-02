@@ -23,4 +23,4 @@ git add ./Gemfile.lock
 git commit -m "$MESSAGE"
 git tag -a -m "$MESSAGE" $TAG
 
-# git push --follow-tags
+git push --follow-tags
