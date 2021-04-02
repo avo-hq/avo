@@ -6,8 +6,10 @@ If you'd like to contribute code, the steps below will help you get up and runni
 
 ## Elements naming
 
-`Resource`or `@resource`: instantiated `Avo::Resource` object.
+`Resource` or `@resource` is an instantiated `Avo::Resource` object.
+
 `resource_name`: Pluralized, machine name, snake cased version of a resource. Ex: `resource_name` for `/avo/resources/team_memberships` path is going to be `TeamMemberships`.
+
 `Model` or `@model`: Active Record `Model` object.
 
 ## Forking & branches
