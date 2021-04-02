@@ -50,8 +50,6 @@ module Avo
         foreign_key.to_sym
       end
 
-      private
-
       def target_resource
         if @model._reflections[id.to_s].klass.present?
           App.get_resource_by_model_name @model._reflections[id.to_s].klass.to_s
