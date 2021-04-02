@@ -20,7 +20,7 @@ git add ./gemfiles
 git add ./lib/avo/version.rb
 git add ./Gemfile.lock
 
-git commit -m MESSAGE
-git tag -a -m MESSAGE TAG
+git commit -m $MESSAGE
+git tag -a -m $MESSAGE $TAG
 
 # git push --follow-tags
