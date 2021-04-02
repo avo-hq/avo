@@ -13,13 +13,14 @@ bundle exec appraisal install
 
 # Get the version
 VERSION=$(bundle exec rails runner 'puts Avo::VERSION')
+MESSAGE="Bump $NAME to v$VERSION"
+TAG="v$VERSION"
 
 git add ./gemfiles
 git add ./lib/avo/version.rb
 git add ./Gemfile.lock
 
-# echo "Bump $NAME to v$VERSION"
-git commit -m "Bump $NAME to v$VERSION"
-git tag v$VERSION
+git commit -m MESSAGE
+git tag -a -m MESSAGE TAG
 
 # git push --follow-tags
