@@ -5,8 +5,7 @@
 #   let(:resource) { Avo::App.get_resource 'Project' }
 #   def _current_user
 #   end
-#   # pending "add some examples to (or delete) #{__FILE__}"
-
+#   #
 #   it "renders something useful" do
 #     Avo::App.init_fields
 #     Avo::App.init_resources(nil)
