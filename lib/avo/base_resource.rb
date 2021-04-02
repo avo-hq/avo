@@ -260,28 +260,27 @@ module Avo
       end
     end
 
-    # For :new views we're hydrating the model with the values from the resource's default attribute.
     # We will not overwrite any attributes that come pre-filled in the model.
     def hydrate_model_with_default_values
       default_values = get_fields.select do |field|
         !field.computed
       end
         .map do |field|
-                         id = field.id
-                         value = field.value
+          id = field.id
+          value = field.value
 
-                         if field.respond_to? :foreign_key
-                           id = field.foreign_key.to_sym
+          if field.respond_to? :foreign_key
+            id = field.foreign_key.to_sym
 
-                           reflection = @model._reflections[@params[:via_relation]]
+            reflection = @model._reflections[@params[:via_relation]]
 
-                           if reflection.present? && reflection.foreign_key.present?
-                             value = @params[:via_resource_id]
-                           end
-                         end
+            if reflection.present? && reflection.foreign_key.present? && field.id.to_s == @params[:via_relation].to_s
+              value = @params[:via_resource_id]
+            end
+          end
 
-                         [id, value]
-                       end
+          [id, value]
+        end
         .to_h
         .select do |id, value|
         value.present?
