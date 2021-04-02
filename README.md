@@ -15,10 +15,12 @@ Avo is a beautiful next-generation framework that empowers you, the developer, t
 **Documentation**: [docs.avohq.io](https://docs.avohq.io)\
 **Twitter**: [avo_hq](https://twitter.com/avo_hq)\
 **Community chat**: [discord](https://discord.gg/pkTF6y8)\
-**Issue tracker**: [GitHub issues](http://github.com/avo-hq/avo/issues)
+**Issue tracker**: [GitHub issues](http://github.com/avo-hq/avo/issues)\
+**Discussions and feature requests**: [GitHub issues](http://github.com/avo-hq/avo/discussions)
 
 ## Features
 
+  - **Powered by Hotwire** - Rails ❤️  Hotwire
   - **Code driven configuration** - Configure your Rails dashboard entirely by writing Ruby code.
   - **Resource Management** - Create a CRUD interface for Active Record from one command. No more copy-pasting view and controller files around.
   - **Active Storage support** - Amazingly easy, **one-line**, single or multi-file integration with **ActiveStorage**.
