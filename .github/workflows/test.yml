@@ -40,13 +40,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Peek
-      run: |
-        ls -la ./
-        ls -la ./gemfiles
-
-    - name: Bundle update pagy
-      run: bundle update pagy
 
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
@@ -94,7 +87,8 @@ jobs:
     - name: Run tests
       run: bundle exec rspec
 
-    - uses: codecov/codecov-action@v1
+    - name: Generate coverage
+      uses: codecov/codecov-action@v1
       if: ${{ matrix.rails == '6.1' && matrix.ruby == '2.7' }}
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
