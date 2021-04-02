@@ -17,4 +17,4 @@ VERSION=$(bundle exec rails runner 'puts Avo::VERSION')
 
 gem bump -v $VERSION
 
-git push --follow-tags
+# git push --follow-tags
