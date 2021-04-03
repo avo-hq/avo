@@ -10,8 +10,17 @@
         <%= render Avo::NavigationHeadingComponent.new label: t('avo.resources') %>
 
         <div class="w-full">
-          <% Avo::App.get_navigation_items(_current_user).each do |resource| %>
+          <% Avo::App.resources_navigation(_current_user).each do |resource| %>
             <%= render Avo::NavigationLinkComponent.new label: resource.name.pluralize.humanize, path: resources_path(resource.model_class) %>
+          <% end %>
+
+          <% sidebar_partials = Avo::App.get_sidebar_partials %>
+          <% if sidebar_partials.present? %>
+            <%= render Avo::NavigationHeadingComponent.new label: t('avo.tools') %>
+
+            <% sidebar_partials.each do |partial| %>
+              <%= render partial: "/avo/sidebar/items/#{partial}" %>
+            <% end %>
           <% end %>
         </div>
 

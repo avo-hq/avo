@@ -51,7 +51,7 @@ module Avo
           existing_params = Addressable::URI.parse(request.fullpath).query_values.symbolize_keys
         end
       rescue; end
-      send :"resources_#{model.model_name.route_key}_path", **existing_params, **args
+      avo.send :"resources_#{model.model_name.route_key}_path", **existing_params, **args
     end
 
     def related_resources_path(parent_model, model, keep_query_params: false, **args)
@@ -70,9 +70,9 @@ module Avo
     end
 
     def resource_path(model = nil, resource_id: nil, keep_query_params: false, **args)
-      return send :"resources_#{model.model_name.route_key.singularize}_path", resource_id, **args if resource_id.present?
+      return avo.send :"resources_#{model.model_name.route_key.singularize}_path", resource_id, **args if resource_id.present?
 
-      send :"resources_#{model.model_name.route_key.singularize}_path", model, **args
+      avo.send :"resources_#{model.model_name.route_key.singularize}_path", model, **args
     end
 
     def resource_attach_path(model_name, model_id, related_name, related_id = nil)
@@ -92,11 +92,11 @@ module Avo
     end
 
     def new_resource_path(model, **args)
-      send :"new_resources_#{model.model_name.route_key.singularize}_path", **args
+      avo.send :"new_resources_#{model.model_name.route_key.singularize}_path", **args
     end
 
     def edit_resource_path(model, **args)
-      send :"edit_resources_#{model.model_name.route_key.singularize}_path", model, **args
+      avo.send :"edit_resources_#{model.model_name.route_key.singularize}_path", model, **args
     end
 
     private
@@ -110,6 +110,8 @@ module Avo
     end
 
     def set_resource
+      raise ActionController::RoutingError.new "No route matches" if resource.nil?
+
       @resource = resource.hydrate(params: params)
     end
 
@@ -182,8 +184,6 @@ module Avo
     def eager_load_files(resource, query)
       if resource.attached_file_fields.present?
         resource.attached_file_fields.map do |field|
-          # abort "#{field.pluralize}".inspect
-          # abort field.class.inspect
           attachment = case field.class.to_s
           when "Avo::Fields::FileField"
             "attachment"
@@ -194,7 +194,6 @@ module Avo
           end
 
           return query.eager_load "#{field.id}_#{attachment}": :blob
-          # return query.send :"with_attached_#{field}"
         end
       end
 

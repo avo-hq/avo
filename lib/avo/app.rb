@@ -129,10 +129,23 @@ module Avo
           .sort_by { |r| r.name }
       end
 
-      def get_navigation_items(user = nil)
+      def resources_navigation(user = nil)
         get_available_resources(user).select do |resource|
           resource.model_class.present?
         end
+      end
+
+      # Insert any partials that we find in app/views/avo/sidebar/items.
+      def get_sidebar_partials
+        Dir.glob(Rails.root.join("app", "views", "avo", "sidebar", "items", "*.html.erb"))
+          .map do |path|
+            File.basename path
+          end
+          .map do |filename|
+            # remove the leading underscore (_)
+            filename[0] = ""
+            filename
+          end
       end
 
       def draw_routes
