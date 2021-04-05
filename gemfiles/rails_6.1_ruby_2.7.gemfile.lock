@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    avo (1.1.0.pre.1)
+    avo (1.1.0)
       active_link_to
       addressable
       countries
