@@ -5,7 +5,7 @@
       'turbo-frame': '_top'
     } do |form| %>
     <%= render Avo::ModalComponent.new do |c| %>
-      <% c.with :heading do %>
+      <% c.heading do %>
         <%= t 'avo.choose_item', item: params[:related_name].downcase %>
       <% end %>
 
@@ -24,7 +24,7 @@
 
       <%#= form.hidden_field :resource_ids, value: params[:resource_ids], 'data-action-target': 'resourceIds' %>
 
-      <% c.with :controls do %>
+      <% c.controls do %>
         <%= a_button t('avo.cancel'), 'data-action': 'click->modal#close', size: :sm %>
         <%= a_button t('avo.attach'), type: :submit, color: :green, size: :sm %>
       <% end %>

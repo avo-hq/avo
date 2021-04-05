@@ -1,10 +1,10 @@
 <div class="flex flex-col">
   <%%= panel title: '<%= human_name %>' do |c| %>
-    <%% c.with :tools do %>
+    <%% c.tools do %>
       <div class="text-sm italic">This is the panels tools section.</div>
     <%% end %>
 
-    <%% c.with :body do %>
+    <%% c.body do %>
       <div class="flex flex-col justify-between py-6 min-h-24">
         <div class="px-6 space-y-4">
           <h3>What a nice new tool 👋</h3>
