@@ -2,6 +2,7 @@ class TeamMembershipResource < Avo::BaseResource
   self.title = :id
   self.search = :id
   self.includes = [:user, :team]
+  self.visible_on_sidebar = false
 
   field :id, as: :id
   field :level, as: :select, options: {'Beginner': :beginner, 'Intermediate': :intermediate, 'Advanced': :advanced}, display_value: true, default: -> { Time.now.hour < 12 ? "advanced" : "beginner" }
