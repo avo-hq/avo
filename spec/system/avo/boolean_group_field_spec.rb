@@ -51,6 +51,7 @@ RSpec.describe "BooleanGroupFields", type: :system do
         user_id = page.find('[data-field-id="id"] [data-slot="value"]').text
         expect(current_path).to eql "/avo/resources/users/#{user_id}"
 
+        visit "/avo/resources/users/#{user_id}"
         show_roles_popup
         sleep 0.1
 
