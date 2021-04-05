@@ -23,7 +23,6 @@ module Generators
         # Add controller method
         inject_into_class controller_path, 'Avo::ToolsController' do
           <<-METHOD
-
   def #{file_name}
   end
           METHOD
