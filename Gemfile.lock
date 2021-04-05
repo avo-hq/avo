@@ -372,7 +372,7 @@ DEPENDENCIES
   image_processing (~> 1.2)
   iso
   jbuilder (~> 2.7)
-  listen (>= 3.3.0)
+  listen (>= 3.5.1)
   pg (>= 0.18, < 2.0)
   puma (~> 4.3.5)
   pundit
