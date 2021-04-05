@@ -1,5 +1,5 @@
 <%= panel title: title, body_classes: 'py-4', data: { component: 'resources-index' } do |c| %>
-  <% c.with :tools do %>
+  <% c.tools do %>
     <%= render 'actions' if @actions.present? %>
 
     <% if can_create? %>
@@ -21,7 +21,7 @@
     <% end %>
   <% end %>
 
-  <% c.with :body do %>
+  <% c.body do %>
     <div class="flex justify-between py-6 min-h-24"
       data-selected-resources-name="<%= @resource.plural_name.downcase %>"
       data-selected-resources="[]"
@@ -51,7 +51,7 @@
   <% end %>
 
   <% if view_type.to_sym == :grid %>
-    <% c.with :bare_content do %>
+    <% c.bare_content do %>
       <%= render Avo::Index::ResourceGridComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_model: @parent_model) %>
 
       <div class="bg-white rounded-xl shadow-xl mt-8 py-6">

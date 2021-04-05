@@ -4,7 +4,7 @@
 >
   <% @resource.panels.each do |resource_panel| %>
     <%= render(Avo::PanelComponent.new(title: resource_panel[:name])) do |c| %>
-      <% c.with :tools do %>
+      <% c.tools do %>
         <% if resource_panel[:name] == @resource.default_panel_name %>
           <%= render 'actions' %>
 
@@ -44,7 +44,7 @@
         <% end %>
       <% end %>
 
-      <% c.with :body do %>
+      <% c.body do %>
         <% if fields_by_panel[resource_panel[:name]].present? %>
           <% fields_by_panel[resource_panel[:name]].each_with_index do |field, index| %>
             <%= show_field field, index, @resource %>
