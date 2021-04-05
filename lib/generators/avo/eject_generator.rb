@@ -11,7 +11,11 @@ module Generators
       namespace "avo:eject"
 
       TEMPLATES = {
-        sidebar: "app/views/avo/sidebar/_sidebar.html.erb"
+        sidebar: "app/views/avo/sidebar/_sidebar.html.erb",
+        logo: "app/views/avo/partials/logo.html.erb",
+        header: "app/views/avo/partials/header.html.erb",
+        footer: "app/views/avo/partials/footer.html.erb",
+        scripts: "app/views/avo/partials/scripts.html.erb"
       }
 
       def handle

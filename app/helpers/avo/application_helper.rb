@@ -7,30 +7,6 @@ module Avo
       Avo.webpacker
     end
 
-    def render_logo
-      render partial: "vendor/avo/partials/logo"
-    rescue
-      render partial: "avo/partials/logo"
-    end
-
-    def render_header
-      render partial: "vendor/avo/partials/header"
-    rescue
-      render partial: "avo/partials/header"
-    end
-
-    def render_footer
-      render partial: "vendor/avo/partials/footer"
-    rescue
-      render partial: "avo/partials/footer"
-    end
-
-    def render_scripts
-      render partial: "vendor/avo/partials/scripts"
-    rescue
-      ""
-    end
-
     def render_license_warnings
       render partial: "avo/sidebar/license_warnings", locals: {
         license: Avo::App.license.properties
