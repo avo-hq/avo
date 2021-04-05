@@ -6,7 +6,7 @@ NAME=Avo
 BUMP=${1:-'patch'}
 
 # Initial bump
-gem bump --no-commit
+gem bump --version $BUMP --no-commit
 
 # update the appraisal gemspecs
 bundle exec appraisal install
