@@ -31,10 +31,10 @@ If you chose to continue with Docker, you'd be able to run it with one of the fo
 
 If you chose to run your own database, if need be, you'll be able to set the following environment variables:
 
-- Host: `PGHOST` (Default: `localhost`)
-- Port: `PGPORT` (Default: `5433`)
-- Username: `PGUSERNAME` (Default:`postgres`)
-- Password: `PGPASSWORD` (Default:`nil`)
+- Host: `POSTGRES_HOST` (Default: `localhost`)
+- Port: `POSTGRES_PORT` (Default: `5433`)
+- Username: `POSTGRES_USERNAME` (Default:`postgres`)
+- Password: `POSTGRES_PASSWORD` (Default:`nil`)
 
 ## Running tests
 
