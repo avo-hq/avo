@@ -147,6 +147,8 @@ module Avo
           .map do |filename|
             # remove the leading underscore (_)
             filename[0] = ""
+            # remove the extension
+            filename.gsub!('.html.erb', '')
             filename
           end
       end
