@@ -133,6 +133,9 @@ module Avo
         get_available_resources(user).select do |resource|
           resource.model_class.present?
         end
+          .select do |resource|
+            resource.visible_on_sidebar
+          end
       end
 
       # Insert any partials that we find in app/views/avo/sidebar/items.
@@ -157,16 +160,17 @@ module Avo
             .select do |resource|
               resource != :BaseResource
             end
+            .select do |resource|
+              resource.is_a? Class
+            end
             .map do |resource|
-              if resource.is_a? Class
-                route_key = if resource.model_class.present?
-                  resource.model_class.model_name.route_key
-                else
-                  resource.to_s.underscore.gsub("_resource", "").downcase.pluralize.to_sym
-                end
-
-                resources route_key
+              route_key = if resource.model_class.present?
+                resource.model_class.model_name.route_key
+              else
+                resource.to_s.underscore.gsub("_resource", "").downcase.pluralize.to_sym
               end
+
+              resources route_key
             end
         end
       end

@@ -21,6 +21,7 @@ module Avo
     class_attribute :filters_loader
     class_attribute :fields
     class_attribute :grid_loader
+    class_attribute :visible_on_sidebar, default: true
 
     class << self
       def grid(&block)
