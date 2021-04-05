@@ -1,0 +1,27 @@
+<div class="flex flex-col">
+  <%%= panel title: '<%= human_name %>' do |c| %>
+    <%% c.with :tools do %>
+      <div class="text-sm italic">This is the panels tools section.</div>
+    <%% end %>
+
+    <%% c.with :body do %>
+      <div class="flex flex-col justify-between py-6 min-h-24">
+        <div class="px-6 space-y-4">
+          <h3>What a nice new tool 👋</h3>
+
+          <p>
+            You can edit this file here <%= in_code "app/views/avo/tools/#{file_name}.html.erb" %>.
+          </p>
+
+          <p>
+            For this tool we created the <%= in_code file_name %> method in the <%= in_code "Avo::ToolsController" %>. You may delete it or move it to your own controller.
+          </p>
+
+          <p>
+            A new <%= in_code human_name %> item should have been added to the sidebar. Edit it in <%= in_code "app/views/avo/sidebar/items/_#{file_name}.html.erb" %>
+          </p>
+        </div>
+      </div>
+    <%% end %>
+  <%% end %>
+</div>

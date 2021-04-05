@@ -11,6 +11,7 @@ RSpec.describe "BooleanGroupFields", type: :system do
         expect(page).to have_text "ROLES"
         expect(page).to have_text "View"
         find("tr[data-resource-id='#{user.id}'] [data-field-id='roles']").find("a", text: "View").hover
+        sleep 0.1
         wait_for_loaded
 
         expect(page).to have_text "Administrator"
@@ -24,6 +25,7 @@ RSpec.describe "BooleanGroupFields", type: :system do
         visit "/avo/resources/users/#{user.id}"
 
         show_roles_popup
+        sleep 0.1
 
         expect(page).to have_text "Roles"
         expect(page).to have_text "Administrator"
@@ -50,6 +52,7 @@ RSpec.describe "BooleanGroupFields", type: :system do
         expect(current_path).to eql "/avo/resources/users/#{user_id}"
 
         show_roles_popup
+        sleep 0.1
 
         expect(page).to have_text "Roles"
         expect(page).to have_text "Administrator"
