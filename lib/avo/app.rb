@@ -38,6 +38,12 @@ module Avo
         app[:cache_store]
       end
 
+      def app_name
+        ::Rails.application.class.module_parent_name
+      rescue
+        "Avo"
+      end
+
       # This method will find all fields available in the Avo::Fields namespace and add them to the fields class_variable array
       # so later we can instantiate them on our resources.
       #
