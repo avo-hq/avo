@@ -8,6 +8,7 @@ PATH
       hotwire-rails
       httparty
       image_processing
+      meta-tags
       pagy
       pundit
       rails (>= 6.0)
@@ -161,6 +162,8 @@ GEM
     mail (2.7.1)
       mini_mime (>= 0.1.1)
     marcel (1.0.0)
+    meta-tags (2.14.0)
+      actionpack (>= 3.2.0, < 6.2)
     method_source (1.0.0)
     mime-types (3.3.1)
       mime-types-data (~> 3.2015)
@@ -373,6 +376,7 @@ DEPENDENCIES
   iso
   jbuilder (~> 2.7)
   listen (>= 3.5.1)
+  meta-tags
   pg (>= 0.18, < 2.0)
   puma (~> 4.3.5)
   pundit

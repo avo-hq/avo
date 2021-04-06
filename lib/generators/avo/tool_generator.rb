@@ -24,6 +24,7 @@ module Generators
         inject_into_class controller_path, 'Avo::ToolsController' do
           <<-METHOD
   def #{file_name}
+    @page_title = "#{human_name}"
   end
           METHOD
         end

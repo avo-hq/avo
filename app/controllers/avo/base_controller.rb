@@ -9,6 +9,7 @@ module Avo
     before_action :set_model, only: [:show, :edit, :destroy, :update]
 
     def index
+      @page_title = resource_name.humanize
       set_index_params
       set_filters
       set_actions
@@ -48,15 +49,18 @@ module Avo
       set_actions
 
       @resource = @resource.hydrate(model: @model, view: :show, user: _current_user, params: params)
+      @page_title = @resource.default_panel_name
     end
 
     def new
       @model = @resource.model_class.new
       @resource = @resource.hydrate(model: @model, view: :new, user: _current_user)
+      @page_title = @resource.default_panel_name
     end
 
     def edit
       @resource = @resource.hydrate(model: @model, view: :edit, user: _current_user)
+      @page_title = @resource.default_panel_name
     end
 
     def create
