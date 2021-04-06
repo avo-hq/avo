@@ -1,5 +1,5 @@
 <div class="flex flex-col">
-  <%= panel title: 'Custom tool' do |c| %>
+  <%= render Avo::PanelComponent.new title: 'Custom tool' do |c| %>
     <% c.tools do %>
       <div class="text-sm italic">This is the panels tools section.</div>
     <% end %>

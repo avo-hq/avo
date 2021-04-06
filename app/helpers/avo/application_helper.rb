@@ -21,12 +21,6 @@ module Avo
       }
     end
 
-    def panel(**args, &block)
-      render(Avo::PanelComponent.new(**args)) do |component|
-        capture(component, &block)
-      end
-    end
-
     def empty_state(resource_name)
       render partial: "avo/partials/empty_state", locals: {resource_name: resource_name}
     end
