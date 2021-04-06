@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { Controller } from 'stimulus'
 import { castBoolean } from '@/js/helpers/cast_boolean'
 
