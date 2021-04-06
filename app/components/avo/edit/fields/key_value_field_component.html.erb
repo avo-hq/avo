@@ -1,0 +1,29 @@
+<%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal do %>
+  <div class="w-full shadow-lg rounded-lg overflow-hidden" data-controller="key-value">
+    <div class="w-full flex flex-col">
+      <div class="flex w-full">
+        <div class="flex w-full bg-gray-800 shadow overflow-hidden">
+          <div class="w-1/2 py-3 px-3 uppercase font-semibold text-xs text-white border-gray-600 border-r">
+            <%= @field.key_label %>
+          </div>
+          <div class="w-1/2 py-3 px-3 uppercase font-semibold text-xs text-white">
+            <%= @field.value_label %>
+          </div>
+        <div class="flex items-center justify-center p-2 px-3 border-l border-gray-600" v-if="!readOnly">
+          <a href="javascript:void(0);"
+            <%# @click="addRow" %>
+            title="<%= @field.action_text %>"
+            data-tippy="tooltip"
+            data-button="add-row"
+            data-action="click->key-value#addRow"
+            :class="{'cursor-not-allowed': disableAddingRows}"
+          >
+            <%= svg 'plus-circle', class: 'text-gray-400 h-5 hover:text-gray-500' %>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% end %>
