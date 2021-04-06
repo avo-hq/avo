@@ -121,3 +121,5 @@ gem "addressable"
 gem "appraisal"
 
 gem 'meta-tags'
+
+gem 'breadcrumbs'

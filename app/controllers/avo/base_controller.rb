@@ -10,6 +10,8 @@ module Avo
 
     def index
       @page_title = resource_name.humanize
+      breadcrumbs.add resource_name.humanize
+
       set_index_params
       set_filters
       set_actions
@@ -49,18 +51,28 @@ module Avo
       set_actions
 
       @resource = @resource.hydrate(model: @model, view: :show, user: _current_user, params: params)
+
       @page_title = @resource.default_panel_name
+      breadcrumbs.add resource_name.humanize, resources_path(@resource.model_class)
+      breadcrumbs.add @resource.model_title
     end
 
     def new
       @model = @resource.model_class.new
       @resource = @resource.hydrate(model: @model, view: :new, user: _current_user)
+
       @page_title = @resource.default_panel_name
+      breadcrumbs.add resource_name.humanize, resources_path(@resource.model_class)
+      breadcrumbs.add t("avo.new").humanize
     end
 
     def edit
       @resource = @resource.hydrate(model: @model, view: :edit, user: _current_user)
+
       @page_title = @resource.default_panel_name
+      breadcrumbs.add resource_name.humanize, resources_path(@resource.model_class)
+      breadcrumbs.add @resource.model_title, resource_path(@resource.model)
+      breadcrumbs.add t("avo.edit").humanize
     end
 
     def create

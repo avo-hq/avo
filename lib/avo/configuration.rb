@@ -19,6 +19,7 @@ module Avo
     attr_accessor :full_width_index_view
     attr_accessor :cache_resources_on_index_view
     attr_accessor :context
+    attr_accessor :display_breadcrumbs
 
     def initialize
       @root_path = "/avo"
@@ -48,6 +49,7 @@ module Avo
       @full_width_index_view = false
       @cache_resources_on_index_view = Avo::PACKED
       @context = proc {}
+      @display_breadcrumbs = true
     end
 
     def locale_tag
