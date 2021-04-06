@@ -16,7 +16,7 @@ gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
 gem "dotenv-rails"
 gem "web-console", ">= 3.3.0"
 gem "listen", ">= 3.5.1"
-gem "spring", group: :development
+gem "spring"
 gem "factory_bot_rails"
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "devise"
