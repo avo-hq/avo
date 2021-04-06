@@ -25,13 +25,13 @@ module Generators
           <<-METHOD
   def #{file_name}
     @page_title = "#{human_name}"
-    breadcrumbs.add "#{human_name}"
+    add_breadcrumb "#{human_name}"
   end
           METHOD
         end
 
         # Add view file
-        template "tool/view.tt", "app/views/avo/tools/#{file_name}.html.erb"
+        template "tool/view.tt", 'app/views/avo/tools/#{file_name}.html.erb'
 
         route <<-ROUTE
 namespace :#{::Avo.configuration.root_path.gsub('/', '')} do

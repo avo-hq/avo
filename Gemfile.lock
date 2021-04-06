@@ -4,7 +4,7 @@ PATH
     avo (1.1.0)
       active_link_to
       addressable
-      breadcrumbs
+      breadcrumbs_on_rails
       countries
       hotwire-rails
       httparty
@@ -89,10 +89,8 @@ GEM
     bindex (0.8.1)
     bootsnap (1.4.8)
       msgpack (~> 1.0)
-    breadcrumbs (0.2.0)
-      actionview
-      activesupport
-      i18n
+    breadcrumbs_on_rails (4.0.0)
+      rails (>= 5.0)
     builder (3.2.4)
     bump (0.9.0)
     byebug (11.1.3)
@@ -364,7 +362,7 @@ DEPENDENCIES
   appraisal
   avo!
   bootsnap (>= 1.4.2)
-  breadcrumbs
+  breadcrumbs_on_rails
   bump
   byebug
   capybara (>= 2.15)

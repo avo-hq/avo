@@ -51,7 +51,7 @@ module Avo
       @cache_resources_on_index_view = Avo::PACKED
       @context = proc {}
       @initial_breadcrumbs = proc {
-        breadcrumbs.add "Home", root_path
+        add_breadcrumb "Home", avo.root_path
       }
       @display_breadcrumbs = true
     end

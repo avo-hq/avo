@@ -122,4 +122,4 @@ gem "appraisal"
 
 gem 'meta-tags'
 
-gem 'breadcrumbs'
+gem 'breadcrumbs_on_rails'
