@@ -31,7 +31,7 @@ module Generators
         end
 
         # Add view file
-        template "tool/view.tt", 'app/views/avo/tools/#{file_name}.html.erb'
+        template "tool/view.tt", "app/views/avo/tools/#{file_name}.html.erb"
 
         route <<-ROUTE
 namespace :#{::Avo.configuration.root_path.gsub('/', '')} do
