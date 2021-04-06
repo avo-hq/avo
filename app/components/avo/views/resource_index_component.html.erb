@@ -1,4 +1,4 @@
-<%= panel title: title, body_classes: 'py-4', data: { component: 'resources-index' } do |c| %>
+<%= render Avo::PanelComponent.new title: title, body_classes: 'py-4', data: { component: 'resources-index' } do |c| %>
   <% c.tools do %>
     <%= render 'actions' if @actions.present? %>
 

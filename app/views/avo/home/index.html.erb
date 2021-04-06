@@ -1,5 +1,5 @@
 <div class="flex flex-col">
-  <%= panel title: 'Welcome to Avo' do |c| %>
+  <%= render Avo::PanelComponent.new title: 'Welcome to Avo' do |c| %>
     <% c.tools do %>
       <div class="text-sm italic">This page is visible only in development. It will be hidden in other environments.</div>
     <% end %>
