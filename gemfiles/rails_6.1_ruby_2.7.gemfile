@@ -15,8 +15,8 @@ gem "bootsnap", ">= 1.4.2", require: false
 gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
 gem "dotenv-rails"
 gem "web-console", ">= 3.3.0"
-gem "listen", ">= 3.3.0"
-gem "spring"
+gem "listen", ">= 3.5.1"
+gem "spring", group: :development
 gem "factory_bot_rails"
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "devise"
@@ -30,6 +30,8 @@ gem "active_link_to"
 gem "view_component", require: "view_component/engine"
 gem "addressable"
 gem "appraisal"
+gem "meta-tags"
+gem "breadcrumbs_on_rails"
 
 group :development do
   gem "standard"

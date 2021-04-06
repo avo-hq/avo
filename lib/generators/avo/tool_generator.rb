@@ -21,9 +21,11 @@ module Generators
         end
 
         # Add controller method
-        inject_into_class controller_path, 'Avo::ToolsController' do
+        inject_into_class controller_path, "Avo::ToolsController" do
           <<-METHOD
   def #{file_name}
+    @page_title = "#{human_name}"
+    add_breadcrumb "#{human_name}"
   end
           METHOD
         end

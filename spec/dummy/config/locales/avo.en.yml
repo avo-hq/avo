@@ -59,6 +59,7 @@ en:
     and_x_other_resources: 'and %{count} other resources'
     go_back: 'Go back'
     home: 'Home'
+    new: 'new'
     attach_item: 'Attach %{item}'
     choose_item: 'Choose %{item}'
     create_new_item: 'Create new %{item}'

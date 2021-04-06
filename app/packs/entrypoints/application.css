@@ -14,6 +14,7 @@
 @import './../stylesheets/alerts.css';
 @import './../stylesheets/loader.css';
 @import './../stylesheets/pagination.css';
+@import './../stylesheets/breadcrumbs.css';
 
 @import './../stylesheets/components/status.css';
 @import './../stylesheets/components/code.css';

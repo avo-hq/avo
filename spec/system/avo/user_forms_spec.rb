@@ -74,7 +74,9 @@ RSpec.describe "UserForms", type: :system do
     user_id = page.find('[data-field-id="id"] [data-slot="value"]').text
     expect(current_path).to eq "/avo/resources/users/#{user_id}"
 
-    click_on "Users"
+    within(".application-sidebar") do
+      click_on "Users"
+    end
 
     expect(page).to have_text("John")
     expect(page).to have_text("Doe")

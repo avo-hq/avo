@@ -119,3 +119,7 @@ gem "view_component", require: "view_component/engine"
 gem "addressable"
 
 gem "appraisal"
+
+gem 'meta-tags'
+
+gem 'breadcrumbs_on_rails'
