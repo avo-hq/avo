@@ -20,6 +20,7 @@ module Avo
     attr_accessor :cache_resources_on_index_view
     attr_accessor :context
     attr_accessor :display_breadcrumbs
+    attr_accessor :initial_breadcrumbs
 
     def initialize
       @root_path = "/avo"
@@ -49,6 +50,9 @@ module Avo
       @full_width_index_view = false
       @cache_resources_on_index_view = Avo::PACKED
       @context = proc {}
+      @initial_breadcrumbs = proc {
+        breadcrumbs.add "Home", root_path
+      }
       @display_breadcrumbs = true
     end
 
@@ -72,6 +76,10 @@ module Avo
 
     def set_context(&block)
       @context = block if block.present?
+    end
+
+    def set_initial_breadcrumbs(&block)
+      @initial_breadcrumbs = block if block.present?
     end
   end
 

@@ -243,7 +243,7 @@ module Avo
     end
 
     def add_initial_breadcrumbs
-      breadcrumbs.add "Home", root_path
+      instance_eval(&Avo.configuration.initial_breadcrumbs) if Avo.configuration.initial_breadcrumbs.present?
     end
   end
 end
