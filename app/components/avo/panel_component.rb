@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 class Avo::PanelComponent < ViewComponent::Base
-  with_content_areas :tools, :body, :bare_content, :footer
+  renders_one :tools
+  renders_one :body
+  renders_one :bare_content
+  renders_one :footer
 
   def initialize(title: nil, body_classes: nil, data: {})
     @title = title

@@ -31,10 +31,10 @@ If you chose to continue with Docker, you'd be able to run it with one of the fo
 
 If you chose to run your own database, if need be, you'll be able to set the following environment variables:
 
-- Host: `PGHOST` (Default: `localhost`)
-- Port: `PGPORT` (Default: `5433`)
-- Username: `PGUSERNAME` (Default:`postgres`)
-- Password: `PGPASSWORD` (Default:`nil`)
+- Host: `POSTGRES_HOST` (Default: `localhost`)
+- Port: `POSTGRES_PORT` (Default: `5433`)
+- Username: `POSTGRES_USERNAME` (Default:`postgres`)
+- Password: `POSTGRES_PASSWORD` (Default:`nil`)
 
 ## Running tests
 
@@ -48,3 +48,7 @@ We've set up a few helpers to get you going:
 ## Seeding the database
 
 Run `AVO_ADMIN_PASSWORD=secret bin/rails db:seed` to seed the database with dummy data and create a user for yourself with the email `admin@avohq.io` and password `secret`.
+
+## Update appraisal gemfiles
+
+We use [appraisal](https://github.com/thoughtbot/appraisal) to run tests against multiple versions of rails. When the gemfile gets updated you must also run `bundle exec appraisal install` to update the versioned ones and commit them to the repo.

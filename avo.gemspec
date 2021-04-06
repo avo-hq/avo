@@ -43,4 +43,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "view_component"
   spec.add_dependency "hotwire-rails"
   spec.add_dependency "addressable"
+  spec.add_dependency "meta-tags"
+  spec.add_dependency "breadcrumbs_on_rails"
 end

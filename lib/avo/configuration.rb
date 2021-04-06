@@ -19,10 +19,12 @@ module Avo
     attr_accessor :full_width_index_view
     attr_accessor :cache_resources_on_index_view
     attr_accessor :context
+    attr_accessor :display_breadcrumbs
+    attr_accessor :initial_breadcrumbs
 
     def initialize
       @root_path = "/avo"
-      @app_name = Rails.application.class.to_s.split("::").first.underscore.humanize(keep_id_suffix: true)
+      @app_name = ::Rails.application.class.to_s.split("::").first.underscore.humanize(keep_id_suffix: true)
       @timezone = "UTC"
       @per_page = 24
       @per_page_steps = [12, 24, 48, 72]
@@ -48,6 +50,10 @@ module Avo
       @full_width_index_view = false
       @cache_resources_on_index_view = Avo::PACKED
       @context = proc {}
+      @initial_breadcrumbs = proc {
+        add_breadcrumb I18n.t("avo.home").humanize, avo.root_path
+      }
+      @display_breadcrumbs = true
     end
 
     def locale_tag
@@ -70,6 +76,10 @@ module Avo
 
     def set_context(&block)
       @context = block if block.present?
+    end
+
+    def set_initial_breadcrumbs(&block)
+      @initial_breadcrumbs = block if block.present?
     end
   end
 

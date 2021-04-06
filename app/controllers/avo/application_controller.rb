@@ -7,6 +7,7 @@ module Avo
     before_action :set_authorization
     before_action :_authenticate!
     before_action :set_container_classes
+    before_action :add_initial_breadcrumbs
 
     rescue_from Pundit::NotAuthorizedError, with: :render_unauthorized
     rescue_from ActiveRecord::RecordInvalid, with: :exception_logger
@@ -239,6 +240,10 @@ module Avo
       contain = false if Avo.configuration.full_width_index_view && action_name.to_sym == :index && self.class.superclass.to_s == "Avo::ResourcesController"
 
       @container_classes = contain ? "2xl:container 2xl:mx-auto" : ""
+    end
+
+    def add_initial_breadcrumbs
+      instance_eval(&Avo.configuration.initial_breadcrumbs) if Avo.configuration.initial_breadcrumbs.present?
     end
   end
 end
