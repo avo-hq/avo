@@ -27,7 +27,7 @@ module Avo
     def hydrate(model:, view:, resource:)
       cover_field.hydrate(model: model, view: view, resource: resource) if cover_field.present?
       title_field.hydrate(model: model, view: view, resource: resource) if title_field.present?
-      body_field.hydrate(model: model, view: view, resource: resource) if title_field.present?
+      body_field.hydrate(model: model, view: view, resource: resource) if body_field.present?
 
       self
     end

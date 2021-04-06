@@ -4,7 +4,9 @@
   <div class="relative w-full pb-3/4 rounded-t-xl overflow-hidden">
     <%== item_selector_input floating: true, size: :lg %>
 
-    <% if cover.respond_to? :to_image %>
+    <% if cover.blank? %>
+      <%= render Avo::Index::GridCoverEmptyStateComponent.new %>
+    <% elsif cover.respond_to? :to_image %>
       <%= link_to_if cover.link_to_resource, image_tag(cover.to_image, class: 'absolute h-full w-full object-cover'), helpers.resource_path(@resource.model), class: 'absolute h-full w-full object-cover', title: title.value %>
     <% elsif cover.type == 'file' %>
       <% if cover.value.attached? && cover.value.representable? %>
@@ -18,9 +20,7 @@
       <% if cover.value.present? %>
         <%= link_to_if cover.link_to_resource, image_tag(cover.value, class: 'absolute h-full w-full object-cover'), helpers.resource_path(@resource.model), class: 'absolute h-full w-full object-cover', title: title.value %>
       <% else %>
-        <div class="absolute bg-gray-100 w-full h-full">
-          <%= helpers.svg 'avocado', class: 'relative transform -translate-x-1/2 -translate-y-1/2 h-20 text-gray-400 inset-auto top-1/2 left-1/2' %>
-        </div>
+        <%= render Avo::Index::GridCoverEmptyStateComponent.new %>
       <% end %>
     <% end %>
   </div>
