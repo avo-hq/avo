@@ -257,7 +257,7 @@ RSpec.describe "KeyValueFields", type: :system do
         expect(meta_element).to have_selector 'input[type="text"][placeholder="Meta value"]'
 
         keys = page.all('input[type="text"][placeholder="Meta key"]')
-        values = page.all('input[type="text"][placeholder="Meta value"]')
+        page.all('input[type="text"][placeholder="Meta value"]')
 
         keys[2].set("Test Key")
 
