@@ -1,16 +1,16 @@
 <div>
   <h3>Actions</h3>
 
-  <div class="mt-2" data-controller="hidden-input">
+  <div class="mt-2">
     Avo actions allow you to perform specific tasks on one or more of your records. For example, you might want to mark a user as inactive and optionally send a message that may be customized by the person that wants to run the action.
 
-    <strong class="cursor-pointer block mt-2" data-action="click->hidden-input#showContent">Generate action 👇</strong>
-
-    <div class="mt-2 hidden" data-hidden-input-target="content">
+    <div class="mt-2">
       <code class="text-lg">Toggle published</code>
-      <div>
+      <div class="mt-1">
         <code class="p-1 rounded bg-light-blue-500 text-white">bin/rails generate avo:action toggle_published</code>
       </div>
     </div>
+
+    <a href="https://docs.avohq.io/1.0/actions.html" target="_blank" title="Avo Actions documentation" class="text-bold cursor-pointer block mt-2">Actions in the docs 👉</a>
   </div>
 </div>
