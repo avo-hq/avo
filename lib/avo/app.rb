@@ -26,6 +26,8 @@ module Avo
         self.request = request
         self.context = context
 
+        self.license = Licensing::LicenseManager.new(Licensing::HQ.new(request).response).license
+
         # Set the current host for ActiveStorage
         begin
           ActiveStorage::Current.host = request.base_url
@@ -34,8 +36,6 @@ module Avo
         end
 
         init_resources
-
-        self.license = Licensing::LicenseManager.new(Licensing::HQ.new(request).response).license
       end
 
       def cache_store
