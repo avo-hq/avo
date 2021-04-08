@@ -9,3 +9,8 @@
   height: var(--height) !important;
   min-height: auto;
 }
+
+/* overlay CodeMirror fullscreen & Preview on small screens */
+.CodeMirror-fullscreen, .editor-preview-active-side {
+  z-index: 50;
+}
