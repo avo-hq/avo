@@ -12,13 +12,13 @@ RSpec.feature "Breadcrumbs", type: :feature do
 
   describe "with breadcrumbs" do
     it { is_expected.to have_css ".breadcrumbs" }
-    it { is_expected.to have_text "Home\n  \n\nProjects\n  \n\n#{project.name}\n  \n\nEdit\n" }
+    it { is_expected.to have_text "Dashboard\n  \n\nProjects\n  \n\n#{project.name}\n  \n\nEdit\n" }
   end
 
   describe "on a custom tool" do
-    let!(:url) { "/avo/custom_tool" }
+    let!(:url) { "/avo/dashboard" }
 
     it { is_expected.to have_css ".breadcrumbs" }
-    it { is_expected.to have_text "Home\n  \n\nCustom tool\n" }
+    it { is_expected.to have_text "Dashboard\n  \n\nDashboard\n" }
   end
 end

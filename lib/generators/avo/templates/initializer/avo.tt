@@ -29,10 +29,10 @@ Avo.configure do |config|
   # }
 
   ## == Localization ==
+  # config.locale = 'en-US'
 
   ## == Customization ==
   # config.app_name = 'Avocadelicious'
-  # config.locale = 'en-US'
   # config.timezone = 'UTC'
   # config.currency = 'USD'
   # config.per_page = 24
@@ -43,4 +43,13 @@ Avo.configure do |config|
   # config.full_width_container = false
   # config.full_width_index_view = false
   # config.cache_resources_on_index_view = true
+
+  # Where should the user be redirected when he hits the `/<%= options[:path] %>` url
+  # config.home_path = nil
+
+  ## == Breadcrumbs ==
+  # config.display_breadcrumbs = true
+  # config.set_initial_breadcrumbs do
+  #   add_breadcrumb "Home", '/<%= options[:path] %>'
+  # end
 end

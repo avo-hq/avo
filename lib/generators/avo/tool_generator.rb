@@ -34,7 +34,7 @@ module Generators
         template "tool/view.tt", "app/views/avo/tools/#{file_name}.html.erb"
 
         route <<-ROUTE
-scope :#{::Avo.configuration.root_path.gsub('/', '')} do
+scope :#{::Avo.configuration.namespace} do
   get "#{file_name}", to: "avo/tools##{file_name}"
 end
         ROUTE
