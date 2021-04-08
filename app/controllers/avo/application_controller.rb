@@ -38,7 +38,7 @@ module Avo
     def render(*args)
       raise Avo::LicenseTinkeredError, "License verification mechanism tinkered with." unless method(:check_avo_license).source_location.first.match?(/.*\/app\/controllers\/avo\/application_controller\.rb/)
 
-      super
+      super(*args)
     end
 
     def check_avo_license
