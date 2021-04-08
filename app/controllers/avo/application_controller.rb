@@ -4,6 +4,7 @@ module Avo
     include Pagy::Backend
     protect_from_forgery with: :exception
     before_action :init_app
+    before_action :check_avo_license
     before_action :set_authorization
     before_action :_authenticate!
     before_action :set_container_classes
@@ -31,6 +32,20 @@ module Avo
             traces: exception.backtrace
           }, status: ActionDispatch::ExceptionWrapper.status_code_for_exception(exception.class.name)
         }
+      end
+    end
+
+    def render(*args)
+      raise Avo::LicenseTinkeredError, "License verification mechanism tinkered with." unless method(:check_avo_license).source_location.first.match?(/.*\/app\/controllers\/avo\/application_controller\.rb/)
+
+      super(*args)
+    end
+
+    def check_avo_license
+      unless request.original_url.match?(/.*\/avo\/resources\/.*/)
+        if !Rails.env.development? && (@license.invalid? || @license.lacks(:custom_tools))
+          raise Avo::LicenseInvalidError, "Your license is invalid."
+        end
       end
     end
 

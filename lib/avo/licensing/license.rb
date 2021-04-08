@@ -4,11 +4,13 @@ module Avo
       attr_accessor :id
       attr_accessor :response
       attr_accessor :valid
+      attr_accessor :payload
 
       def initialize(response)
         @response = response
         @id = response["id"]
         @valid = response["valid"]
+        @payload = response["payload"]
       end
 
       def valid?

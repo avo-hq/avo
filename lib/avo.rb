@@ -10,6 +10,10 @@ module Avo
   IN_DEVELOPMENT = ENV["AVO_IN_DEVELOPMENT"] == "1"
   PACKED = !IN_DEVELOPMENT
 
+  class LicenseTinkeredError < StandardError; end
+
+  class LicenseInvalidError < StandardError; end
+
   class << self
     def webpacker
       @webpacker ||= ::Webpacker::Instance.new(
