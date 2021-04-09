@@ -43,8 +43,12 @@ module Avo
 
     def check_avo_license
       unless request.original_url.match?(/.*\/avo\/resources\/.*/)
-        if !Rails.env.development? && (@license.invalid? || @license.lacks(:custom_tools))
-          raise Avo::LicenseInvalidError, "Your license is invalid."
+        if @license.invalid? || @license.lacks(:custom_tools)
+          if Rails.env.development?
+            @custom_tools_alert_visible = true
+          else
+            raise Avo::LicenseInvalidError, "Your license is invalid."
+          end
         end
       end
     end
