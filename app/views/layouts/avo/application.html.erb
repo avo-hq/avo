@@ -30,8 +30,12 @@
       </div>
 
       <div class="content p-8 flex-1 flex flex-col justify-between items-stretch <%= @container_classes %>">
-        <%= yield %>
-        <%= render partial: "avo/partials/footer" %>
+        <%= render partial: "avo/partials/custom_tools_alert" if @custom_tools_alert_visible %>
+
+        <div class="flex flex-1 flex-col justify-between items-stretch">
+          <%= yield %>
+          <%= render partial: "avo/partials/footer" %>
+        </div>
       </div>
     </div>
   </div>

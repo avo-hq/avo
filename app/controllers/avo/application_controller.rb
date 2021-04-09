@@ -36,15 +36,19 @@ module Avo
     end
 
     def render(*args)
-      raise Avo::LicenseTinkeredError, "License verification mechanism tinkered with." unless method(:check_avo_license).source_location.first.match?(/.*\/app\/controllers\/avo\/application_controller\.rb/)
+      raise Avo::LicenseVerificationTemperedError, "License verification mechanism tempered with." unless method(:check_avo_license).source_location.first.match?(/.*\/app\/controllers\/avo\/application_controller\.rb/)
 
       super(*args)
     end
 
     def check_avo_license
       unless request.original_url.match?(/.*\/avo\/resources\/.*/)
-        if !Rails.env.development? && (@license.invalid? || @license.lacks(:custom_tools))
-          raise Avo::LicenseInvalidError, "Your license is invalid."
+        if @license.invalid? || @license.lacks(:custom_tools)
+          if Rails.env.development?
+            @custom_tools_alert_visible = true
+          else
+            raise Avo::LicenseInvalidError, "Your license is invalid or doesn't support custom tools."
+          end
         end
       end
     end
