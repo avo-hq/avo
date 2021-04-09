@@ -10,7 +10,7 @@ module Avo
   IN_DEVELOPMENT = ENV["AVO_IN_DEVELOPMENT"] == "1"
   PACKED = !IN_DEVELOPMENT
 
-  class LicenseTinkeredError < StandardError; end
+  class LicenseVerificationTemperedError < StandardError; end
 
   class LicenseInvalidError < StandardError; end
 
