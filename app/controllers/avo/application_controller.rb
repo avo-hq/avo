@@ -47,7 +47,7 @@ module Avo
           if Rails.env.development?
             @custom_tools_alert_visible = true
           else
-            raise Avo::LicenseInvalidError, "Your license is invalid."
+            raise Avo::LicenseInvalidError, "Your license is invalid or doesn't support custom tools."
           end
         end
       end
