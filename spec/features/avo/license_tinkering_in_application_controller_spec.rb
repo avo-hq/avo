@@ -31,7 +31,7 @@ RSpec.feature "LicenseTinkeringInApplicationController", type: :feature do
       it "with tinkering" do
         expect {
           visit "/avo/dashboard"
-        }.to raise_error Avo::LicenseTinkeredError
+        }.to raise_error Avo::LicenseVerificationTemperedError
       end
     end
   end
