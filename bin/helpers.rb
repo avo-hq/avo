@@ -23,7 +23,7 @@ end
 def ask(question:, valid_answers: [])
   puts "\n#{question} (#{valid_answers.join('/')})"
 
-  input = gets.downcase.chomp
+  input = gets.chomp
 
   while !valid_answers.include?(input)
     puts 'Invalid input, please try again.'
