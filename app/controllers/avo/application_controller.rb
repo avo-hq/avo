@@ -42,7 +42,7 @@ module Avo
     end
 
     def check_avo_license
-      unless request.original_url.match?(/.*\/avo\/resources\/.*/)
+      unless request.original_url.match?(/.*\/#{Avo.configuration.namespace}\/resources\/.*/)
         if @license.invalid? || @license.lacks(:custom_tools)
           if Rails.env.development?
             @custom_tools_alert_visible = true
