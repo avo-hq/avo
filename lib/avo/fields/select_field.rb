@@ -34,12 +34,10 @@ module Avo
       end
 
       def label
-        if display_value
+        if display_value || enum.present?
           value
-        elsif enum.present?
-          options[value]
         else
-          options.invert[value]
+          options[value]
         end
       end
     end
