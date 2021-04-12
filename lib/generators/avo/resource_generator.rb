@@ -10,8 +10,6 @@ module Generators
       def create
         template "resource/resource.tt", "app/avo/resources/#{resource_name}.rb"
         template "resource/controller.tt", "app/controllers/avo/#{controller_name}.rb"
-
-
       end
 
       def resource_class
