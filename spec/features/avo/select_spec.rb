@@ -1,161 +1,666 @@
 require "rails_helper"
 
 RSpec.describe "SelectField", type: :feature do
-  context "index" do
-    let(:url) { "/avo/resources/projects" }
+  describe "array enum display_value: true" do
+    before do
+      replace_field_declaration Post, :stage do
+        field :status, as: :select, enum: ::Post.statuses, display_value: true
+      end
+    end
+
+    after do
+      revert_to_original Post
+    end
+
+    context "index" do
+      let(:url) { "/avo/resources/projects" }
+
+      subject do
+        visit url
+        find("[data-resource-id='#{project.id}'] [data-field-id='stage']")
+      end
+
+      describe "without stage" do
+        let!(:project) { create :project, users_required: 15, stage: nil }
+
+        it { is_expected.to have_text empty_dash }
+      end
+
+      describe "with discovery stage" do
+        let(:stage) { "discovery" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
+
+        it { is_expected.to have_text stage.humanize }
+      end
+
+      describe "with idea stage" do
+        let(:stage) { "idea" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
+
+        it { is_expected.to have_text stage.humanize }
+      end
+
+      describe "with done stage" do
+        let(:stage) { "done" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
+
+        it { is_expected.to have_text stage.humanize }
+      end
+
+      describe "with on hold stage" do
+        let(:stage) { "on hold" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
+
+        it { is_expected.to have_text stage.humanize }
+      end
+    end
 
     subject do
       visit url
-      find("[data-resource-id='#{project.id}'] [data-field-id='stage']")
+      find_field_value_element("stage")
     end
 
-    describe "without stage" do
-      let!(:project) { create :project, users_required: 15, stage: nil }
+    context "show" do
+      let(:url) { "/avo/resources/projects/#{project.id}" }
 
-      it { is_expected.to have_text empty_dash }
-    end
+      describe "without stage" do
+        let!(:project) { create :project, users_required: 15, stage: nil }
 
-    describe "with discovery stage" do
-      let(:stage) { "discovery" }
-      let!(:project) { create :project, users_required: 15, stage: stage }
+        it { is_expected.to have_text empty_dash }
+      end
 
-      it { is_expected.to have_text stage.humanize }
-    end
+      describe "with discovery stage" do
+        let(:stage) { "discovery" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
 
-    describe "with idea stage" do
-      let(:stage) { "idea" }
-      let!(:project) { create :project, users_required: 15, stage: stage }
+        it { is_expected.to have_text stage.humanize }
+      end
 
-      it { is_expected.to have_text stage.humanize }
-    end
+      describe "with idea stage" do
+        let(:stage) { "idea" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
 
-    describe "with done stage" do
-      let(:stage) { "done" }
-      let!(:project) { create :project, users_required: 15, stage: stage }
+        it { is_expected.to have_text stage.humanize }
+      end
 
-      it { is_expected.to have_text stage.humanize }
-    end
+      describe "with done stage" do
+        let(:stage) { "done" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
 
-    describe "with on hold stage" do
-      let(:stage) { "on hold" }
-      let!(:project) { create :project, users_required: 15, stage: stage }
+        it { is_expected.to have_text stage.humanize }
+      end
 
-      it { is_expected.to have_text stage.humanize }
-    end
-  end
+      describe "with on hold stage" do
+        let(:stage) { "on hold" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
 
-  subject do
-    visit url
-    find_field_value_element("stage")
-  end
-
-  context "show" do
-    let(:url) { "/avo/resources/projects/#{project.id}" }
-
-    describe "without stage" do
-      let!(:project) { create :project, users_required: 15, stage: nil }
-
-      it { is_expected.to have_text empty_dash }
-    end
-
-    describe "with discovery stage" do
-      let(:stage) { "discovery" }
-      let!(:project) { create :project, users_required: 15, stage: stage }
-
-      it { is_expected.to have_text stage.humanize }
-    end
-
-    describe "with idea stage" do
-      let(:stage) { "idea" }
-      let!(:project) { create :project, users_required: 15, stage: stage }
-
-      it { is_expected.to have_text stage.humanize }
-    end
-
-    describe "with done stage" do
-      let(:stage) { "done" }
-      let!(:project) { create :project, users_required: 15, stage: stage }
-
-      it { is_expected.to have_text stage.humanize }
-    end
-
-    describe "with on hold stage" do
-      let(:stage) { "on hold" }
-      let!(:project) { create :project, users_required: 15, stage: stage }
-
-      it { is_expected.to have_text stage.humanize }
-    end
-  end
-
-  let(:stages_without_placeholder) { ["Discovery", "Idea", "Done", "On hold", "Cancelled"] }
-  let(:placeholder) { "Choose the stage" }
-  let(:stages_with_placeholder) { stages_without_placeholder.prepend(placeholder) }
-
-  context "edit" do
-    let(:url) { "/avo/resources/projects/#{project.id}/edit" }
-
-    describe "without stage" do
-      let!(:project) { create :project, users_required: 15, stage: nil }
-      let(:new_stage) { "Idea" }
-
-      it { is_expected.to have_select "project_stage", selected: nil, options: stages_with_placeholder }
-
-      it "sets the stage to idea" do
-        visit url
-
-        expect(page).to have_select "project_stage", selected: nil, options: stages_with_placeholder
-
-        select new_stage, from: "project_stage"
-
-        click_on "Save"
-
-        expect(current_path).to eql "/avo/resources/projects/#{project.id}"
-        expect(page).to have_text new_stage.humanize
+        it { is_expected.to have_text stage.humanize }
       end
     end
 
-    describe "with stage" do
-      let(:stage) { "Discovery" }
-      let(:new_stage) { "On hold" }
-      let!(:project) { create :project, users_required: 15, stage: stage }
+    let(:stages_without_placeholder) { ["discovery", "idea", "done", "on hold", "cancelled"] }
+    let(:placeholder) { "Choose the stage" }
+    let(:stages_with_placeholder) { stages_without_placeholder.prepend(placeholder) }
 
-      it { is_expected.to have_select "project_stage", selected: stage, options: stages_without_placeholder }
+    context "edit" do
+      let(:url) { "/avo/resources/projects/#{project.id}/edit" }
 
-      it "changes the stage to on hold" do
-        visit url
-        expect(page).to have_select "project_stage", selected: stage, options: stages_without_placeholder
+      describe "without stage" do
+        let!(:project) { create :project, users_required: 15, stage: nil }
+        let(:new_stage) { "idea" }
 
-        select new_stage, from: "project_stage"
+        it { is_expected.to have_select "project_stage", selected: nil, options: stages_with_placeholder }
 
-        click_on "Save"
+        it "sets the stage to idea" do
+          visit url
 
-        expect(current_path).to eql "/avo/resources/projects/#{project.id}"
-        expect(page).to have_text new_stage.humanize
+          expect(page).to have_select "project_stage", selected: nil, options: stages_with_placeholder
+
+          select new_stage, from: "project_stage"
+
+          click_on "Save"
+
+          expect(current_path).to eql "/avo/resources/projects/#{project.id}"
+          expect(page).to have_text new_stage.humanize
+        end
+      end
+
+      describe "with stage" do
+        let(:stage) { "discovery" }
+        let(:new_stage) { "on hold" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
+
+        it { is_expected.to have_select "project_stage", selected: stage, options: stages_without_placeholder }
+
+        it "changes the stage to on hold" do
+          visit url
+          expect(page).to have_select "project_stage", selected: stage, options: stages_without_placeholder
+
+          select new_stage, from: "project_stage"
+
+          click_on "Save"
+
+          expect(current_path).to eql "/avo/resources/projects/#{project.id}"
+          expect(page).to have_text new_stage.humanize
+        end
+      end
+    end
+
+    context "create" do
+      let(:url) { "/avo/resources/projects/new" }
+
+      describe "creates new project with stage discovery" do
+        it "checks placeholder" do
+          is_expected.to have_select "project_stage", selected: nil, options: stages_with_placeholder
+        end
+
+        it "saves the resource with stage discovery" do
+          visit url
+          expect(page).to have_select "project_stage", selected: nil, options: stages_with_placeholder
+
+          fill_in "project_name", with: "Project X"
+          fill_in "project_users_required", with: 15
+          select "discovery", from: "project_stage"
+
+          click_on "Save"
+
+          expect(current_path).to eql "/avo/resources/projects/#{Project.last.id}"
+          expect(page).to have_text "Project X"
+          expect(page).to have_text "Discovery"
+        end
       end
     end
   end
 
-  context "create" do
-    let(:url) { "/avo/resources/projects/new" }
+  describe "array enum display_value: false" do
+    context "index" do
+      let(:url) { "/avo/resources/posts" }
 
-    describe "creates new project with stage discovery" do
-      it "checks placeholder" do
-        is_expected.to have_select "project_stage", selected: nil, options: stages_with_placeholder
+      subject do
+        visit url
+        find("[data-resource-id='#{project.id}'] [data-field-id='stage']")
       end
 
-      it "saves the resource with stage discovery" do
+      describe "without stage" do
+        let!(:project) { create :project, users_required: 15, stage: nil }
+
+        it { is_expected.to have_text empty_dash }
+      end
+
+      describe "with discovery stage" do
+        let(:stage) { "discovery" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
+
+        it { is_expected.to have_text stage.humanize }
+      end
+
+      describe "with idea stage" do
+        let(:stage) { "idea" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
+
+        it { is_expected.to have_text stage.humanize }
+      end
+
+      describe "with done stage" do
+        let(:stage) { "done" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
+
+        it { is_expected.to have_text stage.humanize }
+      end
+
+      describe "with on hold stage" do
+        let(:stage) { "on hold" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
+
+        it { is_expected.to have_text stage.humanize }
+      end
+    end
+
+    subject do
+      visit url
+      find_field_value_element("stage")
+    end
+
+    context "show" do
+      let(:url) { "/avo/resources/posts/#{project.id}" }
+
+      describe "without stage" do
+        let!(:project) { create :project, users_required: 15, stage: nil }
+
+        it { is_expected.to have_text empty_dash }
+      end
+
+      describe "with discovery stage" do
+        let(:stage) { "discovery" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
+
+        it { is_expected.to have_text stage.humanize }
+      end
+
+      describe "with idea stage" do
+        let(:stage) { "idea" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
+
+        it { is_expected.to have_text stage.humanize }
+      end
+
+      describe "with done stage" do
+        let(:stage) { "done" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
+
+        it { is_expected.to have_text stage.humanize }
+      end
+
+      describe "with on hold stage" do
+        let(:stage) { "on hold" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
+
+        it { is_expected.to have_text stage.humanize }
+      end
+    end
+
+    let(:stages_without_placeholder) { ["discovery", "idea", "done", "on hold", "cancelled"] }
+    let(:placeholder) { "Choose the stage" }
+    let(:stages_with_placeholder) { stages_without_placeholder.prepend(placeholder) }
+
+    context "edit" do
+      let(:url) { "/avo/resources/posts/#{project.id}/edit" }
+
+      describe "without stage" do
+        let!(:project) { create :project, users_required: 15, stage: nil }
+        let(:new_stage) { "idea" }
+
+        it { is_expected.to have_select "project_stage", selected: nil, options: stages_with_placeholder }
+
+        it "sets the stage to idea" do
+          visit url
+
+          expect(page).to have_select "project_stage", selected: nil, options: stages_with_placeholder
+
+          select new_stage, from: "project_stage"
+
+          click_on "Save"
+
+          expect(current_path).to eql "/avo/resources/posts/#{project.id}"
+          expect(page).to have_text new_stage.humanize
+        end
+      end
+
+      describe "with stage" do
+        let(:stage) { "discovery" }
+        let(:new_stage) { "on hold" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
+
+        it { is_expected.to have_select "project_stage", selected: stage, options: stages_without_placeholder }
+
+        it "changes the stage to on hold" do
+          visit url
+          expect(page).to have_select "project_stage", selected: stage, options: stages_without_placeholder
+
+          select new_stage, from: "project_stage"
+
+          click_on "Save"
+
+          expect(current_path).to eql "/avo/resources/posts/#{project.id}"
+          expect(page).to have_text new_stage.humanize
+        end
+      end
+    end
+
+    context "create" do
+      let(:url) { "/avo/resources/posts/new" }
+
+      describe "creates new project with stage discovery" do
+        it "checks placeholder" do
+          is_expected.to have_select "project_stage", selected: nil, options: stages_with_placeholder
+        end
+
+        it "saves the resource with stage discovery" do
+          visit url
+          expect(page).to have_select "project_stage", selected: nil, options: stages_with_placeholder
+
+          fill_in "project_name", with: "Project X"
+          fill_in "project_users_required", with: 15
+          select "discovery", from: "project_stage"
+
+          click_on "Save"
+
+          expect(current_path).to eql "/avo/resources/posts/#{Project.last.id}"
+          expect(page).to have_text "Project X"
+          expect(page).to have_text "Discovery"
+        end
+      end
+    end
+  end
+
+  describe "hash enum display_value: true" do
+    before do
+      replace_field_declaration ProjectResource, :stage do
+        field :stage, as: :select, hide_on: [], enum: ::Project.stages, placeholder: "Choose the stage", display_value: true
+      end
+    end
+
+    after do
+      revert_to_original ProjectResource
+    end
+
+    context "index" do
+      let(:url) { "/avo/resources/projects" }
+
+      subject do
         visit url
-        expect(page).to have_select "project_stage", selected: nil, options: stages_with_placeholder
+        find("[data-resource-id='#{project.id}'] [data-field-id='stage']")
+      end
 
-        fill_in "project_name", with: "Project X"
-        fill_in "project_users_required", with: 15
-        select "Discovery", from: "project_stage"
+      describe "without stage" do
+        let!(:project) { create :project, users_required: 15, stage: nil }
 
-        click_on "Save"
+        it { is_expected.to have_text empty_dash }
+      end
 
-        expect(current_path).to eql "/avo/resources/projects/#{Project.last.id}"
-        expect(page).to have_text "Project X"
-        expect(page).to have_text "Discovery"
+      describe "with discovery stage" do
+        let(:stage) { "discovery" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
+
+        it { is_expected.to have_text stage.humanize }
+      end
+
+      describe "with idea stage" do
+        let(:stage) { "idea" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
+
+        it { is_expected.to have_text stage.humanize }
+      end
+
+      describe "with done stage" do
+        let(:stage) { "done" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
+
+        it { is_expected.to have_text stage.humanize }
+      end
+
+      describe "with on hold stage" do
+        let(:stage) { "on hold" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
+
+        it { is_expected.to have_text stage.humanize }
+      end
+    end
+
+    subject do
+      visit url
+      find_field_value_element("stage")
+    end
+
+    context "show" do
+      let(:url) { "/avo/resources/projects/#{project.id}" }
+
+      describe "without stage" do
+        let!(:project) { create :project, users_required: 15, stage: nil }
+
+        it { is_expected.to have_text empty_dash }
+      end
+
+      describe "with discovery stage" do
+        let(:stage) { "discovery" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
+
+        it { is_expected.to have_text stage.humanize }
+      end
+
+      describe "with idea stage" do
+        let(:stage) { "idea" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
+
+        it { is_expected.to have_text stage.humanize }
+      end
+
+      describe "with done stage" do
+        let(:stage) { "done" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
+
+        it { is_expected.to have_text stage.humanize }
+      end
+
+      describe "with on hold stage" do
+        let(:stage) { "on hold" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
+
+        it { is_expected.to have_text stage.humanize }
+      end
+    end
+
+    let(:stages_without_placeholder) { ["discovery", "idea", "done", "on hold", "cancelled"] }
+    let(:placeholder) { "Choose the stage" }
+    let(:stages_with_placeholder) { stages_without_placeholder.prepend(placeholder) }
+
+    context "edit" do
+      let(:url) { "/avo/resources/projects/#{project.id}/edit" }
+
+      describe "without stage" do
+        let!(:project) { create :project, users_required: 15, stage: nil }
+        let(:new_stage) { "idea" }
+
+        it { is_expected.to have_select "project_stage", selected: nil, options: stages_with_placeholder }
+
+        it "sets the stage to idea" do
+          visit url
+
+          expect(page).to have_select "project_stage", selected: nil, options: stages_with_placeholder
+
+          select new_stage, from: "project_stage"
+
+          click_on "Save"
+
+          expect(current_path).to eql "/avo/resources/projects/#{project.id}"
+          expect(page).to have_text new_stage.humanize
+        end
+      end
+
+      describe "with stage" do
+        let(:stage) { "discovery" }
+        let(:new_stage) { "on hold" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
+
+        it { is_expected.to have_select "project_stage", selected: stage, options: stages_without_placeholder }
+
+        it "changes the stage to on hold" do
+          visit url
+          expect(page).to have_select "project_stage", selected: stage, options: stages_without_placeholder
+
+          select new_stage, from: "project_stage"
+
+          click_on "Save"
+
+          expect(current_path).to eql "/avo/resources/projects/#{project.id}"
+          expect(page).to have_text new_stage.humanize
+        end
+      end
+    end
+
+    context "create" do
+      let(:url) { "/avo/resources/projects/new" }
+
+      describe "creates new project with stage discovery" do
+        it "checks placeholder" do
+          is_expected.to have_select "project_stage", selected: nil, options: stages_with_placeholder
+        end
+
+        it "saves the resource with stage discovery" do
+          visit url
+          expect(page).to have_select "project_stage", selected: nil, options: stages_with_placeholder
+
+          fill_in "project_name", with: "Project X"
+          fill_in "project_users_required", with: 15
+          select "discovery", from: "project_stage"
+
+          click_on "Save"
+
+          expect(current_path).to eql "/avo/resources/projects/#{Project.last.id}"
+          expect(page).to have_text "Project X"
+          expect(page).to have_text "Discovery"
+        end
+      end
+    end
+  end
+
+  describe "hash enum display_value: false" do
+    context "index" do
+      let(:url) { "/avo/resources/projects" }
+
+      subject do
+        visit url
+        find("[data-resource-id='#{project.id}'] [data-field-id='stage']")
+      end
+
+      describe "without stage" do
+        let!(:project) { create :project, users_required: 15, stage: nil }
+
+        it { is_expected.to have_text empty_dash }
+      end
+
+      describe "with discovery stage" do
+        let(:stage) { "discovery" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
+
+        it { is_expected.to have_text stage.humanize }
+      end
+
+      describe "with idea stage" do
+        let(:stage) { "idea" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
+
+        it { is_expected.to have_text stage.humanize }
+      end
+
+      describe "with done stage" do
+        let(:stage) { "done" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
+
+        it { is_expected.to have_text stage.humanize }
+      end
+
+      describe "with on hold stage" do
+        let(:stage) { "on hold" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
+
+        it { is_expected.to have_text stage.humanize }
+      end
+    end
+
+    subject do
+      visit url
+      find_field_value_element("stage")
+    end
+
+    context "show" do
+      let(:url) { "/avo/resources/projects/#{project.id}" }
+
+      describe "without stage" do
+        let!(:project) { create :project, users_required: 15, stage: nil }
+
+        it { is_expected.to have_text empty_dash }
+      end
+
+      describe "with discovery stage" do
+        let(:stage) { "discovery" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
+
+        it { is_expected.to have_text stage.humanize }
+      end
+
+      describe "with idea stage" do
+        let(:stage) { "idea" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
+
+        it { is_expected.to have_text stage.humanize }
+      end
+
+      describe "with done stage" do
+        let(:stage) { "done" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
+
+        it { is_expected.to have_text stage.humanize }
+      end
+
+      describe "with on hold stage" do
+        let(:stage) { "on hold" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
+
+        it { is_expected.to have_text stage.humanize }
+      end
+    end
+
+    let(:stages_without_placeholder) { ["Discovery", "Idea", "Done", "On hold", "Cancelled"] }
+    let(:placeholder) { "Choose the stage" }
+    let(:stages_with_placeholder) { stages_without_placeholder.prepend(placeholder) }
+
+    context "edit" do
+      let(:url) { "/avo/resources/projects/#{project.id}/edit" }
+
+      describe "without stage" do
+        let!(:project) { create :project, users_required: 15, stage: nil }
+        let(:new_stage) { "Idea" }
+
+        it { is_expected.to have_select "project_stage", selected: nil, options: stages_with_placeholder }
+
+        it "sets the stage to idea" do
+          visit url
+
+          expect(page).to have_select "project_stage", selected: nil, options: stages_with_placeholder
+
+          select new_stage, from: "project_stage"
+
+          click_on "Save"
+
+          expect(current_path).to eql "/avo/resources/projects/#{project.id}"
+          expect(page).to have_text new_stage.humanize
+        end
+      end
+
+      describe "with stage" do
+        let(:stage) { "Discovery" }
+        let(:new_stage) { "On hold" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
+
+        it { is_expected.to have_select "project_stage", selected: stage, options: stages_without_placeholder }
+
+        it "changes the stage to on hold" do
+          visit url
+          expect(page).to have_select "project_stage", selected: stage, options: stages_without_placeholder
+
+          select new_stage, from: "project_stage"
+
+          click_on "Save"
+
+          expect(current_path).to eql "/avo/resources/projects/#{project.id}"
+          expect(page).to have_text new_stage.humanize
+        end
+      end
+    end
+
+    context "create" do
+      let(:url) { "/avo/resources/projects/new" }
+
+      describe "creates new project with stage discovery" do
+        it "checks placeholder" do
+          is_expected.to have_select "project_stage", selected: nil, options: stages_with_placeholder
+        end
+
+        it "saves the resource with stage discovery" do
+          visit url
+          expect(page).to have_select "project_stage", selected: nil, options: stages_with_placeholder
+
+          fill_in "project_name", with: "Project X"
+          fill_in "project_users_required", with: 15
+          select "Discovery", from: "project_stage"
+
+          click_on "Save"
+
+          expect(current_path).to eql "/avo/resources/projects/#{Project.last.id}"
+          expect(page).to have_text "Project X"
+          expect(page).to have_text "Discovery"
+        end
       end
     end
   end
