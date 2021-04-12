@@ -42,7 +42,7 @@ module Avo
     end
 
     def check_avo_license
-      unless request.original_url.match?(/.*\/#{Avo.configuration.namespace}\/resources\/.*/)
+      unless on_root_path || on_resources_path
         if @license.invalid? || @license.lacks(:custom_tools)
           if Rails.env.development?
             @custom_tools_alert_visible = true
@@ -263,6 +263,14 @@ module Avo
 
     def add_initial_breadcrumbs
       instance_eval(&Avo.configuration.initial_breadcrumbs) if Avo.configuration.initial_breadcrumbs.present?
+    end
+
+    def on_root_path
+      [Avo.configuration.root_path, "#{Avo.configuration.root_path}/"].include?(request.original_fullpath)
+    end
+
+    def on_resources_path
+      request.original_url.match?(/.*\/#{Avo.configuration.namespace}\/resources\/.*/)
     end
   end
 end
