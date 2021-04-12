@@ -2,6 +2,8 @@ require_dependency "avo/application_controller"
 
 module Avo
   class BaseController < ApplicationController
+    include Pagy::Backend
+
     before_action :set_resource_name
     before_action :set_resource
     before_action :hydrate_resource
@@ -31,7 +33,7 @@ module Avo
 
       # Sort the items
       if @index_params[:sort_by].present?
-        @query = @query.order("#{@resource.model_class.table_name}.#{@index_params[:sort_by]} #{@index_params[:sort_direction]}")
+        @query = @query.order("#{@resource.model_table_name}.#{@index_params[:sort_by]} #{@index_params[:sort_direction]}")
       end
 
       # Apply filters
@@ -230,6 +232,19 @@ module Avo
       end
 
       filter_defaults
+    end
+
+    # Override this for mongoid support
+    # https://ddnexus.github.io/pagy/api/backend.html
+    def pagy_get_vars(collection, vars)
+      # @todo: dynamic switch here
+      # if AR
+      #   vars[:count] ||= (c = collection.count(:all)).is_a?(Hash) ? c.size : c
+      # elsif MONGOID
+        vars[:count] ||= (c = collection.count).is_a?(Hash) ? c.size : c
+      # end
+      vars[:page] ||= params[vars[:page_param]]
+      vars
     end
   end
 end

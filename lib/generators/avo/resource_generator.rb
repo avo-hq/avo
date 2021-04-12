@@ -32,9 +32,11 @@ module Generators
       end
 
       def current_models
-        ActiveRecord::Base.connection.tables.map do |model|
-          model.capitalize.singularize.camelize
-        end
+        # ActiveRecord::Base.connection.tables.map do |model|
+        #   model.capitalize.singularize.camelize
+        # end
+        # @todo: detect mongoid models here
+        []
       end
     end
   end

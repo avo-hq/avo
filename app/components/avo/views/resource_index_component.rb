@@ -50,7 +50,8 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
   def can_attach?
     klass = @reflection
-    klass = @reflection.through_reflection if klass.is_a? ::ActiveRecord::Reflection::ThroughReflection
+    # @todo: handle mongoid associations
+    # klass = @reflection.through_reflection if klass.is_a? ::ActiveRecord::Reflection::ThroughReflection
 
     @reflection.present? && klass.is_a?(::ActiveRecord::Reflection::HasManyReflection)
   end

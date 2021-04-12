@@ -148,6 +148,15 @@ module Avo
       name
     end
 
+    def model_table_name
+      # @todo:  Have a dynamic (AR/mongoid) switch here
+      if false
+        model_class.table_name
+      else
+        model_class.collection.name
+      end
+    end
+
     def name
       return @name if @name.present?
 
