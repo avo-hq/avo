@@ -12,10 +12,10 @@ module Generators
 
       TEMPLATES = {
         sidebar: "app/views/avo/sidebar/_sidebar.html.erb",
-        logo: "app/views/avo/partials/logo.html.erb",
-        header: "app/views/avo/partials/header.html.erb",
-        footer: "app/views/avo/partials/footer.html.erb",
-        scripts: "app/views/avo/partials/scripts.html.erb"
+        logo: "app/views/avo/partials/_logo.html.erb",
+        header: "app/views/avo/partials/_header.html.erb",
+        footer: "app/views/avo/partials/_footer.html.erb",
+        scripts: "app/views/avo/partials/_scripts.html.erb"
       }
 
       def handle
