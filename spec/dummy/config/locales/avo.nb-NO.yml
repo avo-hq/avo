@@ -78,4 +78,4 @@ nb:
         one: 'bruker'
         other: 'brukere'
     reset_filters: 'Nullstill filter'
-    not_authorized: 'Du er ikke autorisert til å gjøre denne handlingen .'
+    not_authorized: 'Du er ikke autorisert til å gjøre denne handlingen.'
