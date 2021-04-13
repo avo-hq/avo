@@ -21,6 +21,13 @@ module Avo
         config_path: ROOT_PATH.join("config/webpacker.yml")
       )
     end
+
+    def manifester
+      @manifester ||= ::Manifester::Instance.new(
+        root_path: ROOT_PATH,
+        config_path: ROOT_PATH.join("config/manifester.yml")
+      )
+    end
   end
 end
 

@@ -7,9 +7,10 @@
   <%= csp_meta_tag %>
 
   <%= render partial: 'avo/partials/javascript' %>
+  <%= render partial: 'avo/partials/head' %>
 
-  <%= javascript_pack_tag 'application' %>
-  <%= stylesheet_pack_tag 'application', media: 'all' %>
+  <%= avo_javascript_tag 'application' %>
+  <%= avo_stylesheet_tag 'application', media: 'all' %>
 </head>
 <body class="bg-blue-gray-200">
 

@@ -7,6 +7,22 @@ module Avo
       Avo.webpacker
     end
 
+    def current_manifester_instance
+      Avo.manifester
+    end
+
+    def avo_javascript_tag(name, **options)
+      return javascript_manifest_tag(name, **options) if Avo::PACKED
+
+      javascript_pack_tag(name, **options)
+    end
+
+    def avo_stylesheet_tag(name, **options)
+      return stylesheet_manifest_tag(name, **options) if Avo::PACKED
+
+      stylesheet_pack_tag(name, **options)
+    end
+
     def render_license_warnings
       render partial: "avo/sidebar/license_warnings", locals: {
         license: Avo::App.license.properties
