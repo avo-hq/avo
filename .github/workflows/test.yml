@@ -85,12 +85,16 @@ jobs:
       run: |
         rm ./config/webpacker.yml
         mv ./config/webpacker_packed.yml ./config/webpacker.yml
-        ls -la ./public
-        ls -la ./public/avo-packs
-        cat ./public/avo-packs/manifest.json
 
     - name: Bundle assets
       run: bin/webpack
+
+    - name: Peek public
+      run: |
+        ls -la ./
+        ls -la ./public
+        ls -la ./public/avo-packs
+        cat ./public/avo-packs/manifest.json
 
     - name: Run tests
       run: bundle exec rspec
