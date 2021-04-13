@@ -58,11 +58,7 @@ COPY ./tailwind.config.js          /avo/tailwind.config.js
 COPY ./babel.config.js             /avo/babel.config.js
 
 # Copy the files needed by PurgeCSS
-COPY . /avo/helpers
-COPY . /avo/views
-COPY . /avo/packs
-COPY . /avo/components
-COPY . /avo/controllers
+COPY . /avo
 
 # Remove webpacker.yml config files
 RUN rm /avo/config/webpacker.yml
