@@ -1,10 +1,12 @@
 module Avo
   module ApplicationHelper
-    include ::Webpacker::Helper
+    include ::Webpacker::Helper if Avo::IN_DEVELOPMENT
     include ::Pagy::Frontend
 
     def current_webpacker_instance
-      Avo.webpacker
+      return Avo.webpacker if Avo::IN_DEVELOPMENT
+
+      super
     end
 
     def current_manifester_instance
