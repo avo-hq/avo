@@ -88,9 +88,14 @@ jobs:
 
     - name: Bundle assets
       run: bin/webpack
+      env:
+        RAILS_ENV: production
+        NODE_ENV: production
 
     - name: Peek public
       run: |
+        ls -la ./config
+        cat ./config/webpacker.yml
         ls -la ./
         ls -la ./public
         ls -la ./public/avo-packs
