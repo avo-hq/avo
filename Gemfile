@@ -124,4 +124,4 @@ gem 'meta-tags'
 
 gem 'breadcrumbs_on_rails'
 
-gem 'manifester'
+gem 'manifester', '0.1.4'
