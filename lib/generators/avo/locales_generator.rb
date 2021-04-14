@@ -6,10 +6,10 @@ module Generators
       source_root File.expand_path("templates", __dir__)
 
       namespace "avo:locales"
-      desc "Creates an Avo initializer adds the route to the routes file."
+      desc "Add Avo locale files to your project."
 
       def create_files
-        template "locales/avo.en.yml", "config/locales/avo.en.yml"
+        directory File.join(__dir__, "templates", "locales"), "config/locales"
       end
     end
   end
