@@ -25,7 +25,9 @@ module Avo
     def manifester
       @manifester ||= ::Manifester::Instance.new(
         root_path: ROOT_PATH,
-        config_path: ROOT_PATH.join("config/manifester.yml")
+        public_output_dir: "avo-packs",
+        cache_manifest: Rails.env.production?,
+        fallback_to_webpacker: -> { Avo::IN_DEVELOPMENT }
       )
     end
   end

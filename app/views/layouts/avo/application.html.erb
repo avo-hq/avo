@@ -9,8 +9,8 @@
   <%= render partial: 'avo/partials/javascript' %>
   <%= render partial: 'avo/partials/head' %>
 
-  <%= avo_javascript_tag 'application' %>
-  <%= avo_stylesheet_tag 'application', media: 'all' %>
+  <%= javascript_manifest_tag 'application' %>
+  <%= stylesheet_manifest_tag 'application', media: 'all' %>
 </head>
 <body class="bg-blue-gray-200">
 

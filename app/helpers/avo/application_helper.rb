@@ -1,29 +1,10 @@
 module Avo
   module ApplicationHelper
-    include ::Webpacker::Helper if Avo::IN_DEVELOPMENT
-    include ::Manifester::ApplicationHelper if Avo::PACKED
+    include ::Manifester::ApplicationHelper
     include ::Pagy::Frontend
-
-    def current_webpacker_instance
-      return Avo.webpacker if Avo::IN_DEVELOPMENT
-
-      super
-    end
 
     def current_manifester_instance
       Avo.manifester
-    end
-
-    def avo_javascript_tag(name, **options)
-      return javascript_manifest_tag(name, **options) if Avo::PACKED
-
-      javascript_pack_tag(name, **options)
-    end
-
-    def avo_stylesheet_tag(name, **options)
-      return stylesheet_manifest_tag(name, **options) if Avo::PACKED
-
-      stylesheet_pack_tag(name, **options)
     end
 
     def render_license_warnings
