@@ -30,7 +30,6 @@ RSpec.describe "CodeField", type: :system do
         visit "/avo/resources/users/#{user.id}/edit"
         wait_for_loaded
 
-        sleep 0.1
         fill_in_editor_field "Hello World"
 
         click_on "Save"
@@ -81,6 +80,8 @@ RSpec.describe "CodeField", type: :system do
   end
 
   def fill_in_editor_field(text)
+    sleep 0.1
+
     within ".CodeMirror" do
       current_scope.click
       field = current_scope.find("textarea", visible: false)
