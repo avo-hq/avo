@@ -1,6 +1,6 @@
 module Avo
   module ApplicationHelper
-    include ::Manifester::ApplicationHelper
+    include ::Manifester::Helper
     include ::Pagy::Frontend
 
     def current_manifester_instance
