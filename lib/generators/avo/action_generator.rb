@@ -7,7 +7,7 @@ module Generators
       namespace "avo:action"
 
       def create_resource_file
-        template "action.rb", "app/avo/actions/#{singular_name}.rb"
+        template "action.tt", "app/avo/actions/#{singular_name}.rb"
       end
     end
   end
