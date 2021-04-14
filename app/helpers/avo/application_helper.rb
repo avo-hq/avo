@@ -3,6 +3,12 @@ module Avo
     include ::Manifester::Helper
     include ::Pagy::Frontend
 
+    def current_webpacker_instance
+      return Avo.webpacker if Avo::IN_DEVELOPMENT || Rails.env.test?
+
+      super
+    end
+
     def current_manifester_instance
       Avo.manifester
     end
