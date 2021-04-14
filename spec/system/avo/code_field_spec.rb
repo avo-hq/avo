@@ -30,6 +30,7 @@ RSpec.describe "CodeField", type: :system do
         visit "/avo/resources/users/#{user.id}/edit"
         wait_for_loaded
 
+        sleep 0.1
         fill_in_editor_field "Hello World"
 
         click_on "Save"
