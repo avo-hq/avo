@@ -36,7 +36,7 @@ Avo is a beautiful next-generation framework that empowers you, the developer, t
   - **Localization*** - Have it available in any language you need.
   - **No asset pipeline pollution** - Bring your own asset pipeline.
 
-*Features are still under development
+*Features still under development
 
 # Installation
 Add this line to your application's `Gemfile`:

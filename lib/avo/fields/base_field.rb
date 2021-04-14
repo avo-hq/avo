@@ -33,6 +33,7 @@ module Avo
       attr_accessor :meta
       attr_accessor :panel_name
       attr_accessor :link_to_resource
+      attr_accessor :options
 
       class_attribute :field_name_attribute
 
@@ -67,7 +68,8 @@ module Avo
           default: nil,
           visible: true,
           meta: {},
-          panel_name: nil
+          panel_name: nil,
+          options: {}
         }
 
         # Set the values in the following order
