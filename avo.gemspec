@@ -34,7 +34,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "rails", ">= 6.0"
   spec.add_dependency "pagy"
   spec.add_dependency "zeitwerk"
-  spec.add_dependency "webpacker"
   spec.add_dependency "countries"
   spec.add_dependency "pundit"
   spec.add_dependency "httparty"
@@ -45,4 +44,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "addressable"
   spec.add_dependency "meta-tags"
   spec.add_dependency "breadcrumbs_on_rails"
+  spec.add_dependency "manifester"
 end

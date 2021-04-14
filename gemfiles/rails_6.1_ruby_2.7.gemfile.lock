@@ -9,12 +9,12 @@ PATH
       hotwire-rails
       httparty
       image_processing
+      manifester
       meta-tags
       pagy
       pundit
       rails (>= 6.0)
       view_component
-      webpacker
       zeitwerk
 
 GEM
@@ -174,6 +174,9 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.7.1)
       mini_mime (>= 0.1.1)
+    manifester (0.1.6)
+      rails (>= 6.0)
+      zeitwerk
     marcel (1.0.0)
     meta-tags (2.14.0)
       actionpack (>= 3.2.0, < 6.2)
@@ -388,6 +391,7 @@ DEPENDENCIES
   iso
   jbuilder (~> 2.7)
   listen (>= 3.5.1)
+  manifester
   meta-tags
   pg (>= 0.18, < 2.0)
   puma (~> 4.3.5)
@@ -413,4 +417,4 @@ DEPENDENCIES
   zeitwerk (~> 2.3)
 
 BUNDLED WITH
-   2.2.5
+   2.2.11
