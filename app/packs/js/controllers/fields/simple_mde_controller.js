@@ -11,6 +11,7 @@ export default class extends Controller {
   connect() {
     const options = {
       element: this.elementTarget,
+      spellChecker: false,
     }
 
     if (this.view === 'show') {
