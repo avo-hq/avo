@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    avo (1.2.10)
+    avo (1.2.11.pre.3)
       active_link_to
       addressable
       breadcrumbs_on_rails
@@ -164,7 +164,7 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.7.1)
       mini_mime (>= 0.1.1)
-    manifester (0.1.5)
+    manifester (0.1.6)
       rails (>= 6.0)
       zeitwerk
     marcel (1.0.1)
@@ -383,7 +383,7 @@ DEPENDENCIES
   iso
   jbuilder (~> 2.7)
   listen (>= 3.5.1)
-  manifester (= 0.1.5)
+  manifester (= 0.1.6)
   meta-tags
   pg (>= 0.18, < 2.0)
   puma (~> 4.3.5)
