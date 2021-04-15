@@ -19,6 +19,19 @@ window.Turbolinks = Turbo
 
 Mousetrap.bind('r r r', () => Turbo.visit(window.location.href, { action: 'replace' }))
 
+function initTippy() {
+  tippy('[data-tippy="tooltip"]', {
+    theme: 'light',
+    content(reference) {
+      const title = reference.getAttribute('title')
+      reference.removeAttribute('title')
+
+      return title
+    },
+  })
+}
+window.initTippy = initTippy
+
 const application = Application.start()
 
 const context = require.context('./../js/controllers', true, /\.js$/)
@@ -29,16 +42,7 @@ application.load(definitionsFromContext(fieldsContext))
 
 document.addEventListener('turbo:load', () => {
   document.body.classList.remove('turbo-loading')
-
-  tippy('[data-tippy="tooltip"]', {
-    theme: 'light',
-    content(reference) {
-      const title = reference.getAttribute('title')
-      reference.removeAttribute('title')
-
-      return title
-    },
-  })
+  initTippy()
 })
 document.addEventListener('turbo:visit', () => document.body.classList.add('turbo-loading'))
 document.addEventListener('turbo:submit-start', () => document.body.classList.add('turbo-loading'))

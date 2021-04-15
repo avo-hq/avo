@@ -3,6 +3,11 @@ require "json"
 module Avo
   module Fields
     class KeyValueField < BaseField
+      attr_reader :key_label
+      attr_reader :value_label
+      attr_reader :action_text
+      attr_reader :disable_adding_rows
+
       def initialize(name, **args, &block)
         @defaults = {
           partial_name: "key-value-field"
@@ -33,7 +38,13 @@ module Avo
         [:"#{id}", "#{id}": {}]
       end
 
-      def hydrate_field(fields, model, resource, view)
+      def parsed_value
+        value.to_json
+      rescue
+        {}
+      end
+
+      def options
         {
           key_label: @key_label,
           value_label: @value_label,
@@ -43,6 +54,18 @@ module Avo
           disable_adding_rows: @disable_adding_rows,
           disable_deleting_rows: @disable_deleting_rows
         }
+      end
+
+      def fill_field(model, key, value)
+        begin
+          new_value = JSON.parse(value)
+        rescue
+          new_value = {}
+        end
+
+        model[key] = new_value
+
+        model
       end
     end
   end
