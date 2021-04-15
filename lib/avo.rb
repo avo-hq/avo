@@ -10,11 +10,24 @@ module Avo
   IN_DEVELOPMENT = ENV["AVO_IN_DEVELOPMENT"] == "1"
   PACKED = !IN_DEVELOPMENT
 
+  class LicenseVerificationTemperedError < StandardError; end
+
+  class LicenseInvalidError < StandardError; end
+
   class << self
     def webpacker
       @webpacker ||= ::Webpacker::Instance.new(
         root_path: ROOT_PATH,
         config_path: ROOT_PATH.join("config/webpacker.yml")
+      )
+    end
+
+    def manifester
+      @manifester ||= ::Manifester::Instance.new(
+        root_path: ROOT_PATH,
+        public_output_dir: "avo-packs",
+        cache_manifest: Rails.env.production?,
+        fallback_to_webpacker: -> { Avo::IN_DEVELOPMENT || Rails.env.test?}
       )
     end
   end

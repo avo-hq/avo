@@ -26,12 +26,16 @@ module Avo
         self.request = request
         self.context = context
 
+        self.license = Licensing::LicenseManager.new(Licensing::HQ.new(request).response).license
+
         # Set the current host for ActiveStorage
-        ActiveStorage::Current.host = request.base_url
+        begin
+          ActiveStorage::Current.host = request.base_url
+        rescue => exception
+          Rails.logger.debug "[Avo] Failed to set ActiveStorage::Current.host, #{exception.inspect}"
+        end
 
         init_resources
-
-        self.license = Licensing::LicenseManager.new(Licensing::HQ.new(request).response).license
       end
 
       def cache_store

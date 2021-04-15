@@ -4,6 +4,7 @@ module Avo
     include Pagy::Backend
     protect_from_forgery with: :exception
     before_action :init_app
+    before_action :check_avo_license
     before_action :set_authorization
     before_action :_authenticate!
     before_action :set_container_classes
@@ -31,6 +32,24 @@ module Avo
             traces: exception.backtrace
           }, status: ActionDispatch::ExceptionWrapper.status_code_for_exception(exception.class.name)
         }
+      end
+    end
+
+    def render(*args)
+      raise Avo::LicenseVerificationTemperedError, "License verification mechanism tempered with." unless method(:check_avo_license).source_location.first.match?(/.*\/app\/controllers\/avo\/application_controller\.rb/)
+
+      super(*args)
+    end
+
+    def check_avo_license
+      unless on_root_path || on_resources_path
+        if @license.invalid? || @license.lacks(:custom_tools)
+          if Rails.env.development?
+            @custom_tools_alert_visible = true
+          else
+            raise Avo::LicenseInvalidError, "Your license is invalid or doesn't support custom tools."
+          end
+        end
       end
     end
 
@@ -244,6 +263,14 @@ module Avo
 
     def add_initial_breadcrumbs
       instance_eval(&Avo.configuration.initial_breadcrumbs) if Avo.configuration.initial_breadcrumbs.present?
+    end
+
+    def on_root_path
+      [Avo.configuration.root_path, "#{Avo.configuration.root_path}/"].include?(request.original_fullpath)
+    end
+
+    def on_resources_path
+      request.original_url.match?(/.*\/#{Avo.configuration.namespace}\/resources\/.*/)
     end
   end
 end

@@ -7,9 +7,10 @@
   <%= csp_meta_tag %>
 
   <%= render partial: 'avo/partials/javascript' %>
+  <%= render partial: 'avo/partials/head' %>
 
-  <%= javascript_pack_tag 'application' %>
-  <%= stylesheet_pack_tag 'application', media: 'all' %>
+  <%= javascript_manifest_tag 'application' %>
+  <%= stylesheet_manifest_tag 'application', media: 'all' %>
 </head>
 <body class="bg-blue-gray-200">
 
@@ -30,8 +31,12 @@
       </div>
 
       <div class="content p-8 flex-1 flex flex-col justify-between items-stretch <%= @container_classes %>">
-        <%= yield %>
-        <%= render partial: "avo/partials/footer" %>
+        <%= render partial: "avo/partials/custom_tools_alert" if @custom_tools_alert_visible %>
+
+        <div class="flex flex-1 flex-col justify-between items-stretch">
+          <%= yield %>
+          <%= render partial: "avo/partials/footer" %>
+        </div>
       </div>
     </div>
   </div>

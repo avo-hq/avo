@@ -6,10 +6,11 @@ class Avo::PanelComponent < ViewComponent::Base
   renders_one :bare_content
   renders_one :footer
 
-  def initialize(title: nil, body_classes: nil, data: {})
+  def initialize(title: nil, body_classes: nil, data: {}, show_breadcrumbs: true)
     @title = title
     @body_classes = body_classes
     @data = data
+    @show_breadcrumbs = show_breadcrumbs
   end
 
   private
@@ -20,5 +21,9 @@ class Avo::PanelComponent < ViewComponent::Base
     @data.map do |key, value|
       " data-#{key}=\"#{value}\""
     end.join
+  end
+
+  def show_breadcrumbs?
+    @show_breadcrumbs
   end
 end

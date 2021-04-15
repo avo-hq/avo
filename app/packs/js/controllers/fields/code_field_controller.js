@@ -12,6 +12,7 @@ import 'codemirror/mode/shell/shell'
 import 'codemirror/mode/sql/sql'
 import 'codemirror/mode/vue/vue'
 import 'codemirror/mode/xml/xml'
+
 import { Controller } from 'stimulus'
 import { castBoolean } from '@/js/helpers/cast_boolean'
 import CodeMirror from 'codemirror'
@@ -30,6 +31,8 @@ export default class extends Controller {
       lineNumbers: true,
     }
 
-    CodeMirror.fromTextArea(this.elementTarget, options)
+    setTimeout(() => {
+      CodeMirror.fromTextArea(this.elementTarget, options)
+    }, 1)
   }
 }

@@ -6,8 +6,8 @@ Rails.application.routes.draw do
   authenticate :user, ->(user) { user.is_admin? } do
     mount Avo::Engine => Avo.configuration.root_path
 
-    namespace :avo do
-      get "custom_tool", to: "tools#custom_tool"
+    scope :avo do
+      get "dashboard", to: "avo/tools#dashboard"
     end
   end
 end

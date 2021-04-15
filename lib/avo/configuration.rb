@@ -21,6 +21,7 @@ module Avo
     attr_accessor :context
     attr_accessor :display_breadcrumbs
     attr_accessor :initial_breadcrumbs
+    attr_accessor :home_path
 
     def initialize
       @root_path = "/avo"
@@ -54,6 +55,7 @@ module Avo
         add_breadcrumb I18n.t("avo.home").humanize, avo.root_path
       }
       @display_breadcrumbs = true
+      @home_path = nil
     end
 
     def locale_tag
@@ -80,6 +82,10 @@ module Avo
 
     def set_initial_breadcrumbs(&block)
       @initial_breadcrumbs = block if block.present?
+    end
+
+    def namespace
+      root_path.delete "/"
     end
   end
 

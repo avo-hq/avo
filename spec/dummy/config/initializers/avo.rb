@@ -14,4 +14,8 @@ Avo.configure do |config|
       params: request.params
     }
   end
+  config.home_path = "/avo/dashboard"
+  config.set_initial_breadcrumbs do
+    add_breadcrumb "Dashboard", "/avo/dashboard"
+  end
 end

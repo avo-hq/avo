@@ -3,8 +3,8 @@ module Avo
     class HQ
       attr_accessor :current_request
 
-      ENDPOINT = "https://avohq.io/api/v1/licenses/check" unless const_defined?(:ENDPOINT)
-      CACHE_KEY = "avo.hq.response" unless const_defined?(:CACHE_KEY)
+      ENDPOINT = "https://avohq.io/api/v1/licenses/check".freeze unless const_defined?(:ENDPOINT)
+      CACHE_KEY = "avo.hq.response".freeze unless const_defined?(:CACHE_KEY)
       REQUEST_TIMEOUT = 5 unless const_defined?(:REQUEST_TIMEOUT) # seconds
 
       def initialize(current_request)
@@ -54,7 +54,7 @@ module Avo
       end
 
       def perform_request
-        puts "Performing request to avohq.io API to check license availability.".inspect if Rails.env.development?
+        ::Rails.logger.debug "[Avo] Performing request to avohq.io API to check license availability." if Rails.env.development?
 
         HTTParty.post ENDPOINT, body: payload.to_json, headers: {'Content-type': "application/json"}, timeout: REQUEST_TIMEOUT
       end
