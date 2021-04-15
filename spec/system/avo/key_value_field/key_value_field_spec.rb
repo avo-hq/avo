@@ -38,32 +38,32 @@ RSpec.describe "KeyValueFields", type: :system do
 
         meta_element = find_field_element("meta")
 
-        expect(meta_element).not_to have_selector 'input[type="text"][placeholder="Meta key"]'
-        expect(meta_element).not_to have_selector 'input[type="text"][placeholder="Meta value"]'
+        expect(meta_element).not_to have_selector 'input[placeholder="Meta key"]'
+        expect(meta_element).not_to have_selector 'input[placeholder="Meta value"]'
         expect(meta_element).not_to have_css ".appearance-none"
         expect(meta_element).not_to have_css ".bg-white"
         expect(meta_element).not_to have_selector '[data-button="delete-row"]'
 
         find('[data-button="add-row"]').click
 
-        expect(meta_element).to have_selector 'input[type="text"][placeholder="Meta key"]'
-        expect(meta_element).to have_selector 'input[type="text"][placeholder="Meta value"]'
+        expect(meta_element).to have_selector 'input[placeholder="Meta key"]'
+        expect(meta_element).to have_selector 'input[placeholder="Meta value"]'
         expect(meta_element).to have_css ".appearance-none"
         expect(meta_element).to have_selector '[data-button="delete-row"]'
 
-        find('input[type="text"][placeholder="Meta key"]').set("Test Key")
-        find('input[type="text"][placeholder="Meta value"]').set("Test Value")
+        find('input[placeholder="Meta key"]').set("Test Key")
+        find('input[placeholder="Meta value"]').set("Test Value")
 
         click_on "Save"
         wait_for_loaded
 
         expect(current_path).to eql "/avo/resources/projects/#{project.id}"
 
-        expect(meta_element).to have_selector 'input[type="text"][placeholder="Meta key"][disabled="disabled"]'
-        expect(meta_element).to have_selector 'input[type="text"][placeholder="Meta value"][disabled="disabled"]'
+        expect(meta_element).to have_selector 'input[placeholder="Meta key"][disabled="disabled"]'
+        expect(meta_element).to have_selector 'input[placeholder="Meta value"][disabled="disabled"]'
 
-        keys = page.all('input[type="text"][placeholder="Meta key"][disabled="disabled"]')
-        values = page.all('input[type="text"][placeholder="Meta value"][disabled="disabled"]')
+        keys = page.all('input[placeholder="Meta key"][disabled="disabled"]')
+        values = page.all('input[placeholder="Meta value"][disabled="disabled"]')
 
         expect(keys[0].value).to eq "Test Key"
         expect(values[0].value).to eq "Test Value"
@@ -75,16 +75,16 @@ RSpec.describe "KeyValueFields", type: :system do
 
         meta_element = find_field_element("meta")
 
-        expect(meta_element).not_to have_selector 'input[type="text"][placeholder="Meta key"]'
-        expect(meta_element).not_to have_selector 'input[type="text"][placeholder="Meta value"]'
+        expect(meta_element).not_to have_selector 'input[placeholder="Meta key"]'
+        expect(meta_element).not_to have_selector 'input[placeholder="Meta value"]'
         expect(meta_element).not_to have_css ".appearance-none"
         expect(meta_element).not_to have_css ".bg-white"
         expect(meta_element).not_to have_selector '[data-button="delete-row"]'
 
         find("[data-button='add-row']").click
 
-        expect(meta_element).to have_selector 'input[type="text"][placeholder="Meta key"]'
-        expect(meta_element).to have_selector 'input[type="text"][placeholder="Meta value"]'
+        expect(meta_element).to have_selector 'input[placeholder="Meta key"]'
+        expect(meta_element).to have_selector 'input[placeholder="Meta value"]'
         expect(meta_element).to have_css ".appearance-none"
         expect(meta_element).to have_selector '[data-button="delete-row"]'
 
@@ -93,8 +93,8 @@ RSpec.describe "KeyValueFields", type: :system do
 
         expect(current_path).to eql "/avo/resources/projects/#{project.id}"
 
-        expect(meta_element).not_to have_selector 'input[type="text"][placeholder="Meta key"][disabled="disabled"]'
-        expect(meta_element).not_to have_selector 'input[type="text"][placeholder="Meta value"][disabled="disabled"]'
+        expect(meta_element).not_to have_selector 'input[placeholder="Meta key"][disabled="disabled"]'
+        expect(meta_element).not_to have_selector 'input[placeholder="Meta value"][disabled="disabled"]'
       end
     end
   end
@@ -110,11 +110,11 @@ RSpec.describe "KeyValueFields", type: :system do
 
         meta_element = find_field_element("meta")
 
-        expect(meta_element).to have_selector 'input[type="text"][placeholder="Meta key"][disabled="disabled"]'
-        expect(meta_element).to have_selector 'input[type="text"][placeholder="Meta value"][disabled="disabled"]'
+        expect(meta_element).to have_selector 'input[placeholder="Meta key"][disabled="disabled"]'
+        expect(meta_element).to have_selector 'input[placeholder="Meta value"][disabled="disabled"]'
 
-        keys = page.all('input[type="text"][placeholder="Meta key"][disabled="disabled"]')
-        values = page.all('input[type="text"][placeholder="Meta value"][disabled="disabled"]')
+        keys = page.all('input[placeholder="Meta key"][disabled="disabled"]')
+        values = page.all('input[placeholder="Meta value"][disabled="disabled"]')
 
         expect(keys[0].value).to eq "foo"
         expect(values[0].value).to eq "bar"
@@ -147,8 +147,8 @@ RSpec.describe "KeyValueFields", type: :system do
         expect(meta_element).to have_selector '[data-button="add-row"]'
         expect(meta_element).to have_selector '[data-button="delete-row"]'
 
-        keys = page.all('input[type="text"][placeholder="Meta key"]')
-        values = page.all('input[type="text"][placeholder="Meta value"]')
+        keys = page.all('input[placeholder="Meta key"]')
+        values = page.all('input[placeholder="Meta value"]')
 
         expect(keys[0].value).to eq "foo"
         expect(values[0].value).to eq "bar"
@@ -170,8 +170,8 @@ RSpec.describe "KeyValueFields", type: :system do
 
         expect(current_path).to eql "/avo/resources/projects/#{project.id}"
 
-        keys = page.all('input[type="text"][placeholder="Meta key"][disabled="disabled"]')
-        values = page.all('input[type="text"][placeholder="Meta value"][disabled="disabled"]')
+        keys = page.all('input[placeholder="Meta key"][disabled="disabled"]')
+        values = page.all('input[placeholder="Meta value"][disabled="disabled"]')
 
         expect(keys[0].value).to eq "hey"
         expect(values[0].value).to eq "hi"
@@ -224,11 +224,11 @@ RSpec.describe "KeyValueFields", type: :system do
 
         find("[data-button='add-row']").click
 
-        expect(meta_element).to have_selector 'input[type="text"][placeholder="Meta key"]'
-        expect(meta_element).to have_selector 'input[type="text"][placeholder="Meta value"]'
+        expect(meta_element).to have_selector 'input[placeholder="Meta key"]'
+        expect(meta_element).to have_selector 'input[placeholder="Meta value"]'
 
-        keys = page.all('input[type="text"][placeholder="Meta key"]')
-        values = page.all('input[type="text"][placeholder="Meta value"]')
+        keys = page.all('input[placeholder="Meta key"]')
+        values = page.all('input[placeholder="Meta value"]')
 
         keys[2].set("Test Key")
         values[2].set("Test Value")
@@ -238,8 +238,8 @@ RSpec.describe "KeyValueFields", type: :system do
 
         expect(current_path).to eql "/avo/resources/projects/#{project.id}"
 
-        keys = page.all('input[type="text"][placeholder="Meta key"][disabled="disabled"]')
-        values = page.all('input[type="text"][placeholder="Meta value"][disabled="disabled"]')
+        keys = page.all('input[placeholder="Meta key"][disabled="disabled"]')
+        values = page.all('input[placeholder="Meta value"][disabled="disabled"]')
 
         expect(keys[2].value).to eq "Test Key"
         expect(values[2].value).to eq "Test Value"
@@ -253,11 +253,11 @@ RSpec.describe "KeyValueFields", type: :system do
 
         find("[data-button='add-row']").click
 
-        expect(meta_element).to have_selector 'input[type="text"][placeholder="Meta key"]'
-        expect(meta_element).to have_selector 'input[type="text"][placeholder="Meta value"]'
+        expect(meta_element).to have_selector 'input[placeholder="Meta key"]'
+        expect(meta_element).to have_selector 'input[placeholder="Meta value"]'
 
-        keys = page.all('input[type="text"][placeholder="Meta key"]')
-        page.all('input[type="text"][placeholder="Meta value"]')
+        keys = page.all('input[placeholder="Meta key"]')
+        page.all('input[placeholder="Meta value"]')
 
         keys[2].set("Test Key")
 
@@ -266,8 +266,8 @@ RSpec.describe "KeyValueFields", type: :system do
 
         expect(current_path).to eql "/avo/resources/projects/#{project.id}"
 
-        keys = page.all('input[type="text"][placeholder="Meta key"][disabled="disabled"]')
-        values = page.all('input[type="text"][placeholder="Meta value"][disabled="disabled"]')
+        keys = page.all('input[placeholder="Meta key"][disabled="disabled"]')
+        values = page.all('input[placeholder="Meta value"][disabled="disabled"]')
 
         expect(keys[2].value).to eq "Test Key"
         expect(values[2].value).to eq ""
