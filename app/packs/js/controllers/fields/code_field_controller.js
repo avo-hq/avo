@@ -12,6 +12,7 @@ import 'codemirror/mode/shell/shell'
 import 'codemirror/mode/sql/sql'
 import 'codemirror/mode/vue/vue'
 import 'codemirror/mode/xml/xml'
+import 'codemirror/mode/yaml/yaml'
 
 import { Controller } from 'stimulus'
 import { castBoolean } from '@/js/helpers/cast_boolean'
