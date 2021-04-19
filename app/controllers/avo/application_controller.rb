@@ -42,7 +42,7 @@ module Avo
     end
 
     def check_avo_license
-      unless on_root_path || on_resources_path
+      unless on_root_path || on_resources_path || on_api_path
         if @license.invalid? || @license.lacks(:custom_tools)
           if Rails.env.development?
             @custom_tools_alert_visible = true
@@ -271,6 +271,10 @@ module Avo
 
     def on_resources_path
       request.original_url.match?(/.*\/#{Avo.configuration.namespace}\/resources\/.*/)
+    end
+
+    def on_api_path
+      request.original_url.match?(/.*\/#{Avo.configuration.namespace}\/avo_api\/.*/)
     end
   end
 end

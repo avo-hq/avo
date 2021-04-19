@@ -33,7 +33,7 @@ export default class extends Controller {
 
     // enable timezone display
     if (enableTime) {
-      currentValue = DateTime.fromISO(this.inputTarget.value, { zone: window.timezone })
+      currentValue = DateTime.fromISO(this.inputTarget.value, { zone: window.Avo.configuration.timezone })
       currentValue = currentValue.setZone(this.inputTarget.dataset.timezone)
       currentValue = currentValue.toISO()
 
