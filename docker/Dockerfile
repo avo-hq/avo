@@ -18,7 +18,7 @@ RUN apt-get update -qq && apt-get install -y yarn
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN gem install bundler -v 2.2.5
+RUN gem install bundler -v 2.2.11
 
 ENV RAILS_ENV=production
 ENV NODE_ENV=production
