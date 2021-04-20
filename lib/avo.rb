@@ -27,7 +27,7 @@ module Avo
         root_path: ROOT_PATH,
         public_output_dir: "avo-packs",
         cache_manifest: Rails.env.production?,
-        fallback_to_webpacker: -> { Avo::IN_DEVELOPMENT || Rails.env.test?}
+        fallback_to_webpacker: -> { Avo::IN_DEVELOPMENT }
       )
     end
   end
