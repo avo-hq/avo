@@ -1,3 +1,5 @@
+# require "active_support/inflector"
+
 module Avo
   module FieldsCollector
     def field(field_name, as:, **args, &block)
@@ -7,6 +9,11 @@ module Avo
     end
 
     def parse_field(field_name, as:, **args, &block)
+      class_name = as.to_s.classify
+      # Discover & autoload custom field classes
+      Object.const_defined? "#{class_name}::#{class_name}Field"
+
+      # try and find the field in the base fields
       matched_field = Avo::App.fields.find do |field|
         field[:name].to_s == as.to_s
       end

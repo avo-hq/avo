@@ -13,6 +13,7 @@ FactoryBot.define do
     name { Faker::Company.name }
     description { Faker::Lorem.paragraph(sentence_count: 4) }
     url { Faker::Internet.url }
+    color { Faker::Color.hex_color }
   end
 
   factory :post do
