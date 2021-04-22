@@ -167,8 +167,14 @@ module Avo
         id.to_sym
       end
 
+      def view_component_name
+        "#{type.classify}Field"
+      end
+
       def component_name(view = :index)
-        "Avo::#{view.to_s.classify}::Fields::#{partial_name.gsub("-field", "").underscore.camelize}FieldComponent"
+        # "Avo::#{view.to_s.classify}::Fields::#{partial_name.gsub("-field", "").underscore.camelize}FieldComponent"
+        # puts ['"Avo::Fields::#{type.classify}Field::#{view.to_s.classify}Component"->', "Avo::Fields::#{type.classify}Field::#{view.to_s.classify}Component"].inspect
+        "Avo::Fields::#{view_component_name}::#{view.to_s.classify}Component"
       end
 
       def model_errors

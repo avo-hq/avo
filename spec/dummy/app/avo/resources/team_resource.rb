@@ -7,6 +7,7 @@ class TeamResource < Avo::BaseResource
   field :name, as: :text
   field :color, as: :invalid_field
   field :color, as: :color_picker
+  field :name, as: :progress_bar
   field :color, as: ::ColorPickerField
   # field :url, as: :text
   # field :logo, as: :external_image do |model|

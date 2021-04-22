@@ -15,6 +15,10 @@ module Avo
         @resource = args[:resource]
       end
 
+      def view_component_name
+        "HasManyField"
+      end
+
       def turbo_frame
         "#{self.class.name.demodulize.to_s.underscore}_#{id}"
       end
