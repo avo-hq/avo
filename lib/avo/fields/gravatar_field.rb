@@ -10,7 +10,6 @@ module Avo
 
       def initialize(name, **args, &block)
         @defaults = {
-          partial_name: "gravatar-field",
           name: "Avatar",
           id: args[:id].present? ? args[:id] : "email"
         }

@@ -8,7 +8,6 @@ module Avo
       attr_accessor :id
       attr_accessor :name
       attr_accessor :translation_key
-      attr_accessor :partial_name
       attr_accessor :partial_path
       attr_accessor :updatable
       attr_accessor :sortable
@@ -52,7 +51,6 @@ module Avo
           name: id.to_s.humanize(keep_id_suffix: true),
           translation_key: nil,
           block: block,
-          partial_name: "field",
           required: false,
           readonly: false,
           updatable: true,
@@ -86,10 +84,6 @@ module Avo
         hide_on args[:hide_on] if args[:hide_on].present?
         only_on args[:only_on] if args[:only_on].present?
         except_on args[:except_on] if args[:except_on].present?
-
-        if args[:use_partials].present?
-          @custom_partials = args[:use_partials]
-        end
       end
 
       def hydrate(model: nil, resource: nil, action: nil, view: nil, panel_name: nil, user: nil)
@@ -142,12 +136,6 @@ module Avo
         model
       end
 
-      def partial_path_for(view)
-        return @custom_partials[view] if @custom_partials.present? && @custom_partials[view].present?
-
-        "avo/fields/#{view}/#{partial_name}"
-      end
-
       # Try to see if the field has a different database ID than it's name
       def database_id(model)
         foreign_key
@@ -171,10 +159,9 @@ module Avo
         "#{type.classify}Field"
       end
 
-      def component_name(view = :index)
-        # "Avo::#{view.to_s.classify}::Fields::#{partial_name.gsub("-field", "").underscore.camelize}FieldComponent"
-        # puts ['"Avo::Fields::#{type.classify}Field::#{view.to_s.classify}Component"->', "Avo::Fields::#{type.classify}Field::#{view.to_s.classify}Component"].inspect
-        "Avo::Fields::#{view_component_name}::#{view.to_s.classify}Component"
+      def component_for_view(view = :index)
+        # puts ['component_for_view->', "Avo::Fields::#{type.classify}Field::#{view.to_s.classify}Component"].inspect
+        "Avo::Fields::#{view_component_name}::#{view.to_s.classify}Component".safe_constantize
       end
 
       def model_errors

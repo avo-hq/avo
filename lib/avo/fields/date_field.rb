@@ -9,7 +9,6 @@ module Avo
 
       def initialize(name, **args, &block)
         @defaults = {
-          partial_name: "date-field"
         }
 
         super(name, **args, &block)

@@ -16,7 +16,6 @@ module Avo
           id: name.to_sym,
           readonly: true,
           sortable: true,
-          partial_name: "id-field"
         }
 
         hide_on [:edit, :new]

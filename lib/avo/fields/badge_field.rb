@@ -3,7 +3,6 @@ module Avo
     class BadgeField < BaseField
       def initialize(name, **args, &block)
         @defaults = {
-          partial_name: "badge-field"
         }
 
         super(name, **args, &block)

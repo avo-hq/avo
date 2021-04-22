@@ -3,7 +3,6 @@ module Avo
     class TextField < BaseField
       def initialize(name, **args, &block)
         @defaults = {
-          partial_name: "text-field",
           computable: true
         }.merge(@defaults || {})
 

@@ -7,7 +7,6 @@ module Avo
       def initialize(name, **args, &block)
         @defaults = {
           updatable: true,
-          partial_name: "has-one-field"
         }
 
         super(name, **args, &block)

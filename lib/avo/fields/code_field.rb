@@ -10,7 +10,6 @@ module Avo
 
       def initialize(name, **args, &block)
         @defaults = {
-          partial_name: "code-field"
         }
 
         hide_on :index

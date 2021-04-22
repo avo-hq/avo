@@ -3,7 +3,6 @@ module Avo
     class BelongsToField < BaseField
       def initialize(name, **args, &block)
         @defaults = {
-          partial_name: "belongs-to-field",
           placeholder: I18n.t("avo.choose_an_option")
         }
 

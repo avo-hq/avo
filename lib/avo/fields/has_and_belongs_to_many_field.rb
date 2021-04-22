@@ -4,7 +4,6 @@ module Avo
       def initialize(name, **args, &block)
         @defaults = {
           updatable: false,
-          partial_name: "has-many-field"
         }
 
         super(name, **args, &block)

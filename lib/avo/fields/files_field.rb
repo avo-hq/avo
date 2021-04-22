@@ -5,7 +5,6 @@ module Avo
 
       def initialize(name, **args, &block)
         @defaults = {
-          partial_name: "files-field"
         }.merge(@defaults || {})
 
         super(name, **args, &block)

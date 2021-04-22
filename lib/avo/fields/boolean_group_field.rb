@@ -5,7 +5,6 @@ module Avo
 
       def initialize(name, **args, &block)
         @defaults = {
-          partial_name: "boolean-group-field",
           computable: true
         }
 

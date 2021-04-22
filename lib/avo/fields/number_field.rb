@@ -3,7 +3,6 @@ module Avo
     class NumberField < TextField
       def initialize(name, **args, &block)
         @defaults = {
-          partial_name: "number-field",
           computable: true
         }
 

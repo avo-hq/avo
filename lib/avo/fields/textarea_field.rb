@@ -3,7 +3,6 @@ module Avo
     class TextareaField < TextField
       def initialize(name, **args, &block)
         @defaults = {
-          partial_name: "textarea-field",
           computable: true
         }
 

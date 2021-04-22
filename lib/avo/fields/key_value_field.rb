@@ -10,7 +10,6 @@ module Avo
 
       def initialize(name, **args, &block)
         @defaults = {
-          partial_name: "key-value-field"
         }
 
         super(name, **args, &block)

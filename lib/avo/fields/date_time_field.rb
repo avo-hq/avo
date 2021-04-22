@@ -8,7 +8,6 @@ module Avo
       def initialize(name, **args, &block)
         super(name, **args, &block)
 
-        @partial_name = "date-time-field"
         @picker_format = args[:picker_format].present? ? args[:picker_format] : "Y-m-d H:i:S"
         @time_24hr = args[:time_24hr].present? ? args[:time_24hr] : false
         @timezone = args[:timezone].present? ? args[:timezone] : Rails.application.config.time_zone
