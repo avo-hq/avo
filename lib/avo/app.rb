@@ -6,8 +6,6 @@ module Avo
     class_attribute :request, default: nil
     class_attribute :context, default: nil
     class_attribute :license, default: nil
-    class_attribute :providers, default: []
-    class_attribute :providers_booted, default: false
 
     class << self
       def boot
