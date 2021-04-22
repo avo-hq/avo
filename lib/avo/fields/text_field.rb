@@ -4,8 +4,6 @@ module Avo
       attr_reader :link_to_resource
 
       def initialize(id, **args, &block)
-        args[:computable] = true
-
         super(id, **args, &block)
 
         @link_to_resource = args[:link_to_resource].present? ? args[:link_to_resource] : false

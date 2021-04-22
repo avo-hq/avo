@@ -4,8 +4,6 @@ module Avo
       attr_reader :rows
 
       def initialize(id, **args, &block)
-        args[:computable] = true
-
         super(id, **args, &block)
 
         hide_on :index

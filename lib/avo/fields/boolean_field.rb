@@ -5,8 +5,6 @@ module Avo
       attr_reader :false_value
 
       def initialize(id, **args, &block)
-        args[:computable] = true
-
         super(id, **args, &block)
 
         @true_value = args[:true_value].present? ? args[:true_value] : true

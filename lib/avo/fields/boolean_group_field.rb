@@ -4,8 +4,6 @@ module Avo
       attr_reader :options
 
       def initialize(id, **args, &block)
-        args[:computable] = true
-
         super(id, **args, &block)
 
         @options = args[:options].present? ? args[:options] : {}
