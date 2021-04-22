@@ -1,17 +1,13 @@
 module Avo
   module Fields
     class HasAndBelongsToManyField < BaseField
-      def initialize(name, **args, &block)
-        @defaults = {
-          updatable: false,
-        }
+      def initialize(id, **args, &block)
+        args[:updatable] = false
 
-        super(name, **args, &block)
+        super(id, **args, &block)
 
         hide_on :all
         show_on :show
-
-        @resource = args[:resource]
       end
 
       def view_component_name

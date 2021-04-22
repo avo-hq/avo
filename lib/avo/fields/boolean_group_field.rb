@@ -3,12 +3,10 @@ module Avo
     class BooleanGroupField < BaseField
       attr_reader :options
 
-      def initialize(name, **args, &block)
-        @defaults = {
-          computable: true
-        }
+      def initialize(id, **args, &block)
+        args[:computable] = true
 
-        super(name, **args, &block)
+        super(id, **args, &block)
 
         @options = args[:options].present? ? args[:options] : {}
       end

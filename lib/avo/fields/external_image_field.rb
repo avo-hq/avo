@@ -5,12 +5,8 @@ module Avo
       attr_reader :height
       attr_reader :radius
 
-      def initialize(name, **args, &block)
-        @defaults = {
-          computable: true
-        }.merge(@defaults || {})
-
-        super(name, **args, &block)
+      def initialize(id, **args, &block)
+        super(id, **args, &block)
 
         @link_to_resource = args[:link_to_resource].present? ? args[:link_to_resource] : false
 

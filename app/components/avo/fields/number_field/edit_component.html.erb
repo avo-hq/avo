@@ -3,7 +3,7 @@
     class: helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)),
     placeholder: @field.placeholder,
     disabled: @field.readonly,
-    min: @field.meta[:min],
-    max: @field.meta[:max],
-    step: @field.meta[:step] %>
+    min: @field.min,
+    max: @field.max,
+    step: @field.step %>
 <% end %>

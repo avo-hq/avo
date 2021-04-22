@@ -1,13 +1,10 @@
 module Avo
   module Fields
     class PasswordField < TextField
-      def initialize(name, **args, &block)
-        @defaults = {
-        }
-
+      def initialize(id, **args, &block)
         show_on :forms
 
-        super(name, **args, &block)
+        super(id, **args, &block)
 
         hide_on [:index, :show]
       end

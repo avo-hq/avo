@@ -1,22 +1,14 @@
 module Avo
   module Fields
     class CurrencyField < BaseField
-      def initialize(name, **args, &block)
-        @defaults = {
-          computable: true
-        }
+      attr_reader :currency
+      attr_reader :locale
 
-        super(name, **args, &block)
+      def initialize(id, **args, &block)
+        super(id, **args, &block)
 
         @currency = args[:currency].present? ? args[:currency].to_s : Avo.configuration.currency
         @locale = args[:locale].present? ? args[:locale].to_s : Avo.configuration.locale
-      end
-
-      def hydrate_field(fields, model, resource, view)
-        {
-          currency: @currency,
-          locale: @locale
-        }
       end
     end
   end

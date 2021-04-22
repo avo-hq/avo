@@ -3,5 +3,5 @@
     class: helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)),
     placeholder: @field.placeholder,
     disabled: @field.readonly,
-    rows: @field.meta[:rows] %>
+    rows: @field.rows %>
 <% end %>

@@ -1,12 +1,12 @@
 module Avo
   module Fields
     class TextField < BaseField
-      def initialize(name, **args, &block)
-        @defaults = {
-          computable: true
-        }.merge(@defaults || {})
+      attr_reader :link_to_resource
 
-        super(name, **args, &block)
+      def initialize(id, **args, &block)
+        args[:computable] = true
+
+        super(id, **args, &block)
 
         @link_to_resource = args[:link_to_resource].present? ? args[:link_to_resource] : false
       end
