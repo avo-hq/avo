@@ -2,7 +2,6 @@ class ColorPickerField < Avo::Fields::BaseField
   def initialize(name, **args, &block)
     @defaults = {
       sortable: true,
-      partial_name: "color-picker-field",
       computable: true
     }.merge(@defaults || {})
 

@@ -47,7 +47,7 @@
       <% c.body do %>
         <% if fields_by_panel[resource_panel[:name]].present? %>
           <% fields_by_panel[resource_panel[:name]].each_with_index do |field, index| %>
-            <%= show_field field, index, @resource %>
+            <%= render field.component_for_view(:show).new(field: field, resource: @resource, index: index) %>
           <% end %>
         <% end %>
       <% end %>
@@ -57,19 +57,19 @@
   <% if @reflection.blank? %>
     <% if has_one_panels.present? %>
       <% has_one_panels.each_with_index do |field, index| %>
-        <%= show_field field, index, @resource %>
+        <%= render field.component_for_view(:show).new(field: field, resource: @resource, index: index) %>
       <% end %>
     <% end %>
 
     <% if has_many_panels.present? %>
       <% has_many_panels.each_with_index do |field, index| %>
-        <%= show_field field, index, @resource %>
+        <%= render field.component_for_view(:show).new(field: field, resource: @resource, index: index) %>
       <% end %>
     <% end %>
 
     <% if has_as_belongs_to_many_panels.present? %>
       <% has_as_belongs_to_many_panels.each_with_index do |field, index| %>
-        <%= show_field field, index, @resource %>
+        <%= render field.component_for_view(:show).new(field: field, resource: @resource, index: index) %>
       <% end %>
     <% end %>
   <% end %>
