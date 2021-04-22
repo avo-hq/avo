@@ -171,10 +171,6 @@ module Avo
         "Avo::#{view.to_s.classify}::Fields::#{partial_name.gsub("-field", "").underscore.camelize}FieldComponent"
       end
 
-      def custom_component_name(view = :index)
-        "#{type.classify}::Views::#{view.to_s.classify}::#{type.classify}FieldComponent"
-      end
-
       def model_errors
         return {} if model.nil?
 
@@ -183,6 +179,12 @@ module Avo
 
       def type
         self.class.name.demodulize.to_s.underscore.gsub("_field", "")
+      end
+
+      def custom?
+        !method(:initialize).source_location.first.include?("lib/avo/field")
+      rescue
+        true
       end
 
       private

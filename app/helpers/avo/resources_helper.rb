@@ -16,12 +16,9 @@ module Avo
 
     def index_field(field, index, resource)
       component_name = field.component_name(:index)
-      custom_component_name = field.custom_component_name(:index)
 
       if Object.const_defined? component_name
         render component_name.safe_constantize.new(field: field, resource: resource, index: index)
-      elsif Object.const_defined? custom_component_name
-        render custom_component_name.safe_constantize.new(field: field, resource: resource, index: index)
       else
         render partial: field.partial_path_for(:index), locals: {
           field: field,
@@ -33,12 +30,9 @@ module Avo
 
     def show_field(field, index, resource)
       component_name = field.component_name(:show)
-      custom_component_name = field.custom_component_name(:show)
 
       if Object.const_defined? component_name
         render component_name.safe_constantize.new(field: field, resource: resource, index: index)
-      elsif Object.const_defined? custom_component_name
-        render custom_component_name.safe_constantize.new(field: field, resource: resource, index: index)
       else
         render partial: field.partial_path_for(:show), locals: {
           field: field,
@@ -50,12 +44,9 @@ module Avo
 
     def edit_field(field, index, resource, form, displayed_in_modal: false)
       component_name = field.component_name(:edit)
-      custom_component_name = field.custom_component_name(:edit)
 
       if Object.const_defined? component_name
         render component_name.safe_constantize.new(field: field, resource: resource, index: index, form: form, displayed_in_modal: displayed_in_modal)
-      elsif Object.const_defined? custom_component_name
-        render custom_component_name.safe_constantize.new(field: field, resource: resource, index: index, form: form, displayed_in_modal: displayed_in_modal)
       else
         render partial: field.partial_path_for(:edit), locals: {
           field: field,

@@ -9,6 +9,7 @@
 /.vscode
 /pkg
 /public
+/scripts
 /public/avo-packs
 node_modules/
 /spec/dummy/public

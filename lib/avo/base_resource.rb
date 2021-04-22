@@ -61,9 +61,17 @@ module Avo
     def get_field_definitions
       return [] if self.class.fields.blank?
 
-      self.class.fields.map do |field|
+      fields = self.class.fields.map do |field|
         field.hydrate(resource: self, panel_name: default_panel_name, user: user)
       end
+
+      if Avo::App.license.invalid? || Avo::App.license.lacks(:custom_fields)
+        fields = fields.reject do |field|
+          field.custom?
+        end
+      end
+
+      fields
     end
 
     def get_fields(panel: nil, reflection: nil)
