@@ -1,3 +1,4 @@
+[![Gem Version](https://badge.fury.io/rb/avo.svg)](https://badge.fury.io/rb/avo)
 ![Tests](https://github.com/avo-hq/avo/workflows/Tests/badge.svg)
 ![reviewdog](https://github.com/avo-hq/avo/workflows/reviewdog/badge.svg)
 [![codecov](https://codecov.io/gh/avo-hq/avo/branch/master/graph/badge.svg?token=Q2LMFE4989)](https://codecov.io/gh/avo-hq/avo)
