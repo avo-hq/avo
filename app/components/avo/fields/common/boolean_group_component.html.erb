@@ -7,7 +7,7 @@
           checked = @value.present? && @value[id.to_s].present?
       %>
       <div>
-        <%= render Avo::Common::BooleanCheckComponent.new checked: checked %>
+        <%= render Avo::Fields::Common::BooleanCheckComponent.new checked: checked %>
           <div class="ml-6 text-left py-px"><%= label %></div>
         </div>
       <% end %>

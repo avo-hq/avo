@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::Common::MultipleFileViewerComponent < ViewComponent::Base
+class Avo::Fields::Common::SingleFileViewerComponent < ViewComponent::Base
   include Avo::ApplicationHelper
 
   def initialize(id:, file:, is_image:, resource:, button_size: :md)
