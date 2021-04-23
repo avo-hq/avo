@@ -18,6 +18,7 @@
 
 @import './../stylesheets/components/status.css';
 @import './../stylesheets/components/code.css';
+@import './../stylesheets/components/progress.css';
 @import './../stylesheets/tailwindcss/components.css';
 
 @import './../stylesheets/tailwindcss/utilities.css';
