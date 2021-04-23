@@ -39,8 +39,6 @@ module Avo
       def initialize(id, _options: {}, **args, &block)
         super(id, **args, &block)
 
-        null_values = [nil, "", *args[:null_values]]
-
         @id = id
         @name = args[:name] || id.to_s.humanize(keep_id_suffix: true)
         @translation_key = args[:translation_key]
@@ -49,7 +47,7 @@ module Avo
         @readonly = args[:readonly] || false
         @sortable = args[:sortable] || false
         @nullable = args[:nullable] || false
-        @null_values = args[:null_values] || null_values
+        @null_values = args[:null_values] || [nil, ""]
         @format_using = args[:format_using] || nil
         @placeholder = args[:placeholder] || id.to_s.humanize(keep_id_suffix: true)
         @help = args[:help] || nil
