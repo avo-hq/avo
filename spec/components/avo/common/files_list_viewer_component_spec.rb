@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Avo::Common::FilesListViewerComponent, type: :component do
+RSpec.describe Avo::Fields::Common::FilesListViewerComponent, type: :component do
 
   # it "renders something useful" do
   #   expect(

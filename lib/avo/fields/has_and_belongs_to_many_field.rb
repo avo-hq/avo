@@ -1,18 +1,17 @@
 module Avo
   module Fields
     class HasAndBelongsToManyField < BaseField
-      def initialize(name, **args, &block)
-        @defaults = {
-          updatable: false,
-          partial_name: "has-many-field"
-        }
+      def initialize(id, **args, &block)
+        args[:updatable] = false
 
-        super(name, **args, &block)
+        super(id, **args, &block)
 
         hide_on :all
         show_on :show
+      end
 
-        @resource = args[:resource]
+      def view_component_name
+        "HasManyField"
       end
 
       def turbo_frame

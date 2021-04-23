@@ -4,7 +4,8 @@ module Avo
       def abilities
         [
           :authorization,
-          :custom_tools
+          :custom_tools,
+          :custom_fields
         ]
       end
     end

@@ -1,0 +1,3 @@
+<%= show_field_wrapper field: @field, full_width: true do %>
+  <%= render Avo::Fields::Common::FilesListViewerComponent.new(field: @field, resource: @resource) if @field.value.present? %>
+<% end %>

@@ -36,9 +36,8 @@
           'tippy': 'tooltip',
         }
       %>
-      <%= hidden_field_tag :turbo_frame, params[:turbo_frame], id: "turbo_frame_destroy_#{@resource.model.id}" if params[:turbo_frame] %>
-      <%= hidden_field_tag :referrer, request.fullpath, id: "referrer_destroy_#{@resource.model.id}" if params[:turbo_frame] %>
-      <%#= hidden_field_tag :referrer, request.fullpath, id: "referrer_detach_#{@resource.model.id}" if params[:via_resource_class] %>
+      <%= hidden_field_tag :turbo_frame, params[:turbo_frame], id: "turbo_frame_detach_#{@resource.model.id}" if params[:turbo_frame] %>
+      <%= hidden_field_tag :referrer, request.fullpath, id: "referrer_detach_#{@resource.model.id}" if params[:turbo_frame] %>
     <% end %>
   <% end %>
 

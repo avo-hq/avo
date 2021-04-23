@@ -4,20 +4,14 @@ module Avo
       attr_reader :first_day_of_week
       attr_reader :picker_format
       attr_reader :format
-      attr_reader :placeholder
       attr_reader :relative
 
-      def initialize(name, **args, &block)
-        @defaults = {
-          partial_name: "date-field"
-        }
-
-        super(name, **args, &block)
+      def initialize(id, **args, &block)
+        super(id, **args, &block)
 
         @first_day_of_week = args[:first_day_of_week].present? ? args[:first_day_of_week].to_i : 0
         @picker_format = args[:picker_format].present? ? args[:picker_format] : "Y-m-d"
         @format = args[:format].present? ? args[:format] : :long
-        @placeholder = args[:placeholder].present? ? args[:placeholder] : ""
         @relative = args[:relative].present? ? args[:relative] : false
       end
 

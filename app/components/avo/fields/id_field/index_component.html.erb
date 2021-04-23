@@ -1,0 +1,3 @@
+<%= index_field_wrapper field: @field do %>
+  <% link_to_if (@field.link_to_resource or Avo.configuration.id_links_to_resource), @field.value, resource_path, title: t('avo.view_item', item: @resource.name).humanize %>
+<% end %>

@@ -1,0 +1,5 @@
+<div class="relative p-3 bg-blue-gray-200 grid grid-cols-3 xl:grid-cols-4 gap-3 rounded-xl">
+  <% @field.value.attachments.each do |file| %>
+    <%= render Avo::Fields::Common::MultipleFileViewerComponent.new id: @field.id, file: file, is_image: @field.is_image, button_size: :xs, resource: @resource %>
+  <% end %>
+</div>

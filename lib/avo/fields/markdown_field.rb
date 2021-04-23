@@ -1,12 +1,10 @@
 module Avo
   module Fields
     class MarkdownField < BaseField
-      def initialize(name, **args, &block)
-        @defaults = {
-          partial_name: "markdown-field"
-        }
+      attr_reader :options
 
-        super(name, **args, &block)
+      def initialize(id, **args, &block)
+        super(id, **args, &block)
 
         hide_on :index
 

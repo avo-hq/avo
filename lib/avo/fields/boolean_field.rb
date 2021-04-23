@@ -4,13 +4,8 @@ module Avo
       attr_reader :true_value
       attr_reader :false_value
 
-      def initialize(name, **args, &block)
-        @defaults = {
-          partial_name: "boolean-field",
-          computable: true
-        }
-
-        super(name, **args, &block)
+      def initialize(id, **args, &block)
+        super(id, **args, &block)
 
         @true_value = args[:true_value].present? ? args[:true_value] : true
         @false_value = args[:false_value].present? ? args[:false_value] : false

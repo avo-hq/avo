@@ -1,0 +1,16 @@
+<div data-controller="tippy">
+  <%= link_to t('avo.view').humanize, 'javascript:void(0);', data: { 'tippy-target': 'source' } %>
+  <div class="hidden" data-tippy-target="content">
+    <div class="p-2 space-y-2">
+      <%
+        @options.each do |id, label|
+          checked = @value.present? && @value[id.to_s].present?
+      %>
+      <div>
+        <%= render Avo::Fields::Common::BooleanCheckComponent.new checked: checked %>
+          <div class="ml-6 text-left py-px"><%= label %></div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
