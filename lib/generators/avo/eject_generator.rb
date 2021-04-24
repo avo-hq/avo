@@ -15,6 +15,7 @@ module Generators
         logo: "app/views/avo/partials/_logo.html.erb",
         head: "app/views/avo/partials/_head.html.erb",
         header: "app/views/avo/partials/_header.html.erb",
+        profile_dropdown: "app/views/avo/partials/_profile_dropdown.html.erb",
         footer: "app/views/avo/partials/_footer.html.erb",
         scripts: "app/views/avo/partials/_scripts.html.erb"
       }
