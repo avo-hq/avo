@@ -1,19 +1,16 @@
 module Avo
   module Fields
     class NumberField < TextField
-      def initialize(name, **args, &block)
-        @defaults = {
-          partial_name: "number-field",
-          computable: true
-        }
+      attr_reader :min
+      attr_reader :max
+      attr_reader :step
 
-        super(name, **args, &block)
+      def initialize(id, **args, &block)
+        super(id, **args, &block)
 
-        @meta = {
-          min: args[:min].present? ? args[:min].to_f : nil,
-          max: args[:max].present? ? args[:max].to_f : nil,
-          step: args[:step].present? ? args[:step].to_f : nil
-        }
+        @min = args[:min].present? ? args[:min].to_f : nil
+        @max = args[:max].present? ? args[:max].to_f : nil
+        @step = args[:step].present? ? args[:step].to_f : nil
       end
     end
   end

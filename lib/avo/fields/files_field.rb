@@ -3,16 +3,14 @@ module Avo
     class FilesField < BaseField
       attr_accessor :is_image
 
-      def initialize(name, **args, &block)
-        @defaults = {
-          partial_name: "files-field"
-        }.merge(@defaults || {})
+      def initialize(id, **args, &block)
+        super(id, **args, &block)
 
-        super(name, **args, &block)
-
-        @is_array_param = true
-        @file_field = true
         @is_image = args[:is_image].present? ? args[:is_image] : @is_avatar
+      end
+
+      def view_component_name
+        "FilesField"
       end
 
       def to_permitted_param

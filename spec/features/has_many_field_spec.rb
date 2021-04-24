@@ -64,7 +64,7 @@ RSpec.feature "HasManyField", type: :feature do
         expect(page).to have_css("a[data-control='show'][href='#{show_path}']")
 
         # id field show link
-        expect(field_element_by_resource_id("id", post.id).native).to have_css("a[href='/avo/resources/posts/#{post.id}']")
+        expect(field_element_by_resource_id("id", post.id)).to have_css("a[href='/avo/resources/posts/#{post.id}?via_resource_class=User&via_resource_id=#{user.id}']")
 
         # edit link
         edit_path = "/avo/resources/posts/#{post.id}/edit?via_resource_class=User&via_resource_id=#{user.id}"

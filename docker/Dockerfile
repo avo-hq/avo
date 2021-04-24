@@ -26,12 +26,16 @@ ENV BUNDLE_WITHOUT=development:test
 
 WORKDIR /avo/
 
-# gems
-COPY Gemfile* /avo/
+# Install gems
+COPY Gemfile /avo/Gemfile
 COPY Rakefile /avo/
 COPY avo.gemspec /avo/
 COPY ./lib/avo.rb /avo/lib/avo.rb
-COPY ./lib/avo/version.rb /avo/lib/avo/version.rb
+RUN mkdir /avo/lib/avo
+
+# Cache the bundle install command with a fake version
+COPY ./tmp/Gemfile_v1.lock /avo/Gemfile.lock
+COPY ./tmp/version_v1.rb /avo/lib/avo/version.rb
 RUN bundle install --jobs 4 --retry 3
 
 COPY package.json /avo/
@@ -39,6 +43,10 @@ COPY yarn.lock /avo/
 
 RUN yarn install
 RUN yarn check --integrity
+
+# re-run bundle install with the appropriate version number
+COPY ./lib/avo/version.rb /avo/lib/avo/version.rb
+RUN bundle install --jobs 4 --retry 3
 
 COPY ./bin/                        /avo/bin/
 COPY ./app/packs/                  /avo/app/packs/
@@ -50,7 +58,7 @@ COPY ./tailwind.config.js          /avo/tailwind.config.js
 COPY ./babel.config.js             /avo/babel.config.js
 
 # Copy the files needed by PurgeCSS
-COPY . /avo/
+COPY . /avo
 
 # Remove webpacker.yml config files
 RUN rm /avo/config/webpacker.yml

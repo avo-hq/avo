@@ -1,17 +1,14 @@
 module Avo
   module Fields
     class TextareaField < TextField
-      def initialize(name, **args, &block)
-        @defaults = {
-          partial_name: "textarea-field",
-          computable: true
-        }
+      attr_reader :rows
 
-        super(name, **args, &block)
+      def initialize(id, **args, &block)
+        super(id, **args, &block)
 
         hide_on :index
 
-        @meta[:rows] = args[:rows].present? ? args[:rows].to_i : 5
+        @rows = args[:rows].present? ? args[:rows].to_i : 5
       end
     end
   end

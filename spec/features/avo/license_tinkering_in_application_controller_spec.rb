@@ -10,7 +10,7 @@ RSpec.feature "LicenseTinkeringInApplicationController", type: :feature do
       end
     end
 
-    context "without tinkering" do
+    context "with tinkering" do
       before do
         Avo::ToolsController.define_method :check_avo_license do
           ""

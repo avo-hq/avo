@@ -5,18 +5,15 @@ module Avo
       attr_reader :enum
       attr_reader :display_value
 
-      def initialize(name, **args, &block)
-        @defaults = {
-          partial_name: "select-field"
-        }
+      def initialize(id, **args, &block)
+        args[:placeholder] ||= I18n.t("avo.choose_an_option")
 
-        super(name, **args, &block)
+        super(id, **args, &block)
 
-        @options = args[:options].present? ? args[:options] : args[:enum]
-        @options = ActiveSupport::HashWithIndifferentAccess.new @options
+        options = args[:options].present? ? args[:options] : args[:enum]
+        @options = ActiveSupport::HashWithIndifferentAccess.new options
         @enum = args[:enum].present? ? args[:enum] : nil
         @display_value = args[:display_value].present? ? args[:display_value] : false
-        @placeholder = args[:placeholder].present? ? args[:placeholder].to_s : I18n.t("avo.choose_an_option")
       end
 
       def options_for_select

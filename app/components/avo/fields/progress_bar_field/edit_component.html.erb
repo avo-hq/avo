@@ -1,0 +1,26 @@
+<%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal do %>
+  <% if @field.display_value %>
+    <div class="text-center text-sm font-semibold w-full leading-none mb-1">
+      <span class="js-progress-bar-value-<%= @field.id %>"><%= @field.value %></span><%= @field.value_suffix if @field.value_suffix.present? %>
+    </div>
+  <% end %>
+  <%= @form.range_field @field.id,
+    min: 0,
+    max: @field.max,
+    step: @field.step,
+    class: 'w-full',
+    placeholder: @field.placeholder,
+    disabled: @field.readonly %>
+<% end %>
+
+
+<script>
+var input = document.getElementById('project_progress');
+var log = document.querySelector('.js-progress-bar-value-<%= @field.id %>');
+
+input.addEventListener('input', updateValue);
+
+function updateValue(e) {
+  log.textContent = e.target.value;
+}
+</script>

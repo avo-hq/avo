@@ -25,4 +25,16 @@ class User < ApplicationRecord
   def notify(text)
     # notify about text
   end
+
+  def avatar
+    options = {
+      default: "",
+      size: 100
+    }
+
+    query = options.map { |key, value| "#{key}=#{value}" }.join("&")
+    md5 = Digest::MD5.hexdigest(email.strip.downcase)
+
+    URI::HTTPS.build(host: "www.gravatar.com", path: "/avatar/#{md5}", query: query).to_s
+  end
 end

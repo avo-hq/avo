@@ -1,16 +1,16 @@
 module Avo
   module Fields
     class BelongsToField < BaseField
-      def initialize(name, **args, &block)
-        @defaults = {
-          partial_name: "belongs-to-field",
-          placeholder: I18n.t("avo.choose_an_option")
-        }
+      attr_reader :searchable
+      attr_reader :relation_method
 
-        super(name, **args, &block)
+      def initialize(id, **args, &block)
+        args[:placeholder] ||= I18n.t("avo.choose_an_option")
 
-        @meta[:searchable] = args[:searchable] == true
-        @meta[:relation_method] = name.to_s.parameterize.underscore
+        super(id, **args, &block)
+
+        @searchable = args[:searchable] == true
+        @relation_method = name.to_s.parameterize.underscore
       end
 
       def options
@@ -29,12 +29,12 @@ module Avo
       def foreign_key
         if @model.present?
           if @model.instance_of?(Class)
-            @model.reflections[@meta[:relation_method]].foreign_key
+            @model.reflections[@relation_method].foreign_key
           else
-            @model.class.reflections[@meta[:relation_method]].foreign_key
+            @model.class.reflections[@relation_method].foreign_key
           end
         elsif @resource.present?
-          @resource.model_class.reflections[@meta[:relation_method]].foreign_key
+          @resource.model_class.reflections[@relation_method].foreign_key
         end
       end
 

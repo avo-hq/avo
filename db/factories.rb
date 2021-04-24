@@ -13,6 +13,7 @@ FactoryBot.define do
     name { Faker::Company.name }
     description { Faker::Lorem.paragraph(sentence_count: 4) }
     url { Faker::Internet.url }
+    color { Faker::Color.hex_color }
   end
 
   factory :post do
@@ -37,5 +38,6 @@ FactoryBot.define do
     users_required { Faker::Number.between(from: 10, to: 100) }
     started_at { Time.now - rand(10...365).days }
     meta { [{foo: "bar", hey: "hi"}, {bar: "baz"}, {hoho: "hohoho"}].sample }
+    progress { Faker::Number.between(from: 0, to: 100) }
   end
 end

@@ -1,0 +1,3 @@
+<%= show_field_wrapper field: @field, index: @index, dash_if_blank: false do %>
+  <%= render Avo::Fields::Common::BooleanCheckComponent.new checked: @field.value %>
+<% end %>

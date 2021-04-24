@@ -4,13 +4,10 @@ module Avo
       attr_reader :countries
       attr_reader :display_code
 
-      def initialize(name, **args, &block)
-        @defaults = {
-          partial_name: "country-field",
-          placeholder: I18n.t("avo.choose_a_country")
-        }
+      def initialize(id, **args, &block)
+        args[:placeholder] ||= I18n.t("avo.choose_a_country")
 
-        super(name, **args, &block)
+        super(id, **args, &block)
 
         @countries = ISO3166::Country.translations.sort_by { |code, name| name }.to_h
         @display_code = args[:display_code].present? ? args[:display_code] : false

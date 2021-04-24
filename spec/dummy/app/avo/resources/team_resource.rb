@@ -11,6 +11,8 @@ class TeamResource < Avo::BaseResource
       "//logo.clearbit.com/#{URI.parse(model.url).host}?size=180"
     end
   end
+  field :color, as: ::ColorPickerField
+  field :invalid, as: :invalid_field
   field :description, as: :textarea, rows: 5, readonly: false, hide_on: :index, format_using: ->(value) { value.to_s.truncate 30 }, default: "This is a wonderful team!", nullable: true, null_values: ["0", "", "null", "nil"]
 
   field :members_count, as: :number do |model|

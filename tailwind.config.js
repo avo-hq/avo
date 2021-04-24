@@ -3,6 +3,7 @@ const plugin = require('tailwindcss/plugin')
 const colors = require('tailwindcss/colors')
 
 module.exports = {
+  mode: 'jit',
   future: {},
   purge: {
     content: [

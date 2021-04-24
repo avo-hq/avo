@@ -1,0 +1,4 @@
+# frozen_string_literal: true
+
+class Avo::Fields::<%= class_name %>Field::EditComponent < Avo::Fields::EditComponent
+end

@@ -1,0 +1,3 @@
+<%= index_field_wrapper field: @field do %>
+  <%= render Avo::Fields::Common::StatusViewerComponent.new label: @field.value, status: @field.status %>
+<% end %>
