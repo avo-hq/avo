@@ -1,4 +1,4 @@
-<%= render Avo::PanelComponent.new title: title, body_classes: 'py-4', data: { component: 'resources-index' }, display_breadcrumbs: @reflection.blank? do |c| %>
+<%= render Avo::PanelComponent.new(title: title, body_classes: 'py-4', data: { component: 'resources-index' }, display_breadcrumbs: @reflection.blank?) do |c| %>
   <% c.tools do %>
     <%= render 'actions' if @actions.present? %>
 
@@ -50,8 +50,8 @@
     <% end %>
   <% end %>
 
-  <% if view_type.to_sym == :grid %>
-    <% c.bare_content do %>
+  <% c.bare_content do %>
+    <% if view_type.to_sym == :grid %>
       <%= render Avo::Index::ResourceGridComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_model: @parent_model) %>
 
       <div class="bg-white rounded-xl shadow-xl mt-8 py-6">
