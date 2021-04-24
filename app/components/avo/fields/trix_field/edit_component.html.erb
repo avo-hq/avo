@@ -13,8 +13,7 @@
       id: trix_id,
       class: helpers.input_classes('w-full hidden', has_error: (@resource.model.present? and @resource.model.errors.include?(@field.id))),
       placeholder: @field.placeholder,
-      disabled: @field.readonly,
-      rows: @field.meta[:rows]
+      disabled: @field.readonly
     %>
   </div>
 <% end %>
