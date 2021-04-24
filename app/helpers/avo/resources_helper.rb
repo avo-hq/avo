@@ -14,50 +14,6 @@ module Avo
       }
     end
 
-    def index_field(field, index, resource)
-      component = field.component_name(:index)
-
-      if Object.const_defined? component
-        render component.safe_constantize.new(field: field, resource: resource, index: index)
-      else
-        render partial: field.partial_path_for(:index), locals: {
-          field: field,
-          index: index,
-          resource: resource
-        }
-      end
-    end
-
-    def show_field(field, index, resource)
-      component = field.component_name(:show)
-
-      if Object.const_defined? component
-        render component.safe_constantize.new(field: field, resource: resource, index: index)
-      else
-        render partial: field.partial_path_for(:show), locals: {
-          field: field,
-          index: index,
-          resource: resource
-        }
-      end
-    end
-
-    def edit_field(field, index, resource, form, displayed_in_modal: false)
-      component = field.component_name(:edit)
-
-      if Object.const_defined? component
-        render component.safe_constantize.new(field: field, resource: resource, index: index, form: form, displayed_in_modal: displayed_in_modal)
-      else
-        render partial: field.partial_path_for(:edit), locals: {
-          field: field,
-          index: index,
-          resource: resource,
-          form: form,
-          displayed_in_modal: displayed_in_modal
-        }
-      end
-    end
-
     def index_field_wrapper(**args, &block)
       render Index::FieldWrapperComponent.new(**args) do
         capture(&block)

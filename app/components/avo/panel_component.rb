@@ -6,11 +6,11 @@ class Avo::PanelComponent < ViewComponent::Base
   renders_one :bare_content
   renders_one :footer
 
-  def initialize(title: nil, body_classes: nil, data: {}, show_breadcrumbs: true)
+  def initialize(title: nil, body_classes: nil, data: {}, display_breadcrumbs: false)
     @title = title
     @body_classes = body_classes
     @data = data
-    @show_breadcrumbs = show_breadcrumbs
+    @display_breadcrumbs = display_breadcrumbs
   end
 
   private
@@ -23,7 +23,7 @@ class Avo::PanelComponent < ViewComponent::Base
     end.join
   end
 
-  def show_breadcrumbs?
-    @show_breadcrumbs
+  def display_breadcrumbs?
+    @display_breadcrumbs
   end
 end

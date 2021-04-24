@@ -1,12 +1,8 @@
 module Avo
   module Fields
     class StatusField < BaseField
-      def initialize(name, **args, &block)
-        @defaults = {
-          partial_name: "status-field"
-        }
-
-        super(name, **args, &block)
+      def initialize(id, **args, &block)
+        super(id, **args, &block)
 
         @loading_when = args[:loading_when].present? ? [args[:loading_when]].flatten : [:waiting, :running]
         @failed_when = args[:failed_when].present? ? [args[:failed_when]].flatten : [:failed]

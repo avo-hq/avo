@@ -1,9 +1,7 @@
 module Avo
   class App
-    class_attribute :app, default: {
-      resources: [],
-      cache_store: nil
-    }
+    class_attribute :resources, default: []
+    class_attribute :cache_store, default: nil
     class_attribute :fields, default: []
     class_attribute :request, default: nil
     class_attribute :context, default: nil
@@ -16,9 +14,9 @@ module Avo
         I18n.locale = Avo.configuration.language_code
 
         if Rails.cache.instance_of?(ActiveSupport::Cache::NullStore)
-          app[:cache_store] ||= ActiveSupport::Cache::MemoryStore.new
+          self.cache_store ||= ActiveSupport::Cache::MemoryStore.new
         else
-          app[:cache_store] = Rails.cache
+          self.cache_store = Rails.cache
         end
       end
 
@@ -36,10 +34,6 @@ module Avo
         end
 
         init_resources
-      end
-
-      def cache_store
-        app[:cache_store]
       end
 
       # This method will find all fields available in the Avo::Fields namespace and add them to the fields class_variable array
@@ -67,7 +61,7 @@ module Avo
       end
 
       def init_resources
-        app[:resources] = BaseResource.descendants
+        self.resources = BaseResource.descendants
           .select do |resource|
             resource != BaseResource
           end
@@ -78,15 +72,11 @@ module Avo
           end
       end
 
-      def get_resources
-        app[:resources]
-      end
-
       # Returns the Avo resource by camelized name
       #
       # get_resource_by_name('User') => UserResource
       def get_resource(resource)
-        app[:resources].find do |available_resource|
+        resources.find do |available_resource|
           "#{resource}Resource".safe_constantize == available_resource.class
         end
       end
@@ -103,7 +93,7 @@ module Avo
       # get_resource_by_name('User') => UserResource
       # get_resource_by_name(User) => UserResource
       def get_resource_by_model_name(name)
-        get_resources.find do |resource|
+        resources.find do |resource|
           resource.model_class.model_name.name == name.to_s
         end
       end
@@ -113,7 +103,7 @@ module Avo
       # get_resource_by_controller_name('delayed_backend_active_record_jobs') => DelayedJobResource
       # get_resource_by_controller_name('users') => UserResource
       def get_resource_by_controller_name(name)
-        get_resources.find do |resource|
+        resources.find do |resource|
           resource.model_class.to_s.pluralize.underscore.tr("/", "_") == name.to_s
         end
       end
@@ -126,8 +116,7 @@ module Avo
       end
 
       def get_available_resources(user = nil)
-        App.get_resources
-          .select do |resource|
+        resources.select do |resource|
             Services::AuthorizationService.authorize user, resource.model, Avo.configuration.authorization_methods.stringify_keys["index"], raise_exception: false
           end
           .sort_by { |r| r.name }

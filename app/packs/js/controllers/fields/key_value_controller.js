@@ -116,7 +116,6 @@ export default class extends Controller {
   data-index="${index}"
   ${this[`${id}InputDisabled`] ? "disabled='disabled'" : ''}
   value="${id === 'key' ? key : value}"
-  autofocus
 />`
   }
 

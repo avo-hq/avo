@@ -6,14 +6,12 @@ module Avo
       attr_reader :key_label
       attr_reader :value_label
       attr_reader :action_text
+      attr_reader :delete_text
+      attr_reader :disable_editing_keys
       attr_reader :disable_adding_rows
 
-      def initialize(name, **args, &block)
-        @defaults = {
-          partial_name: "key-value-field"
-        }
-
-        super(name, **args, &block)
+      def initialize(id, **args, &block)
+        super(id, **args, &block)
 
         hide_on :index
 

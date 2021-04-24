@@ -15,6 +15,7 @@ module Avo
 
     initializer "avo.autoload", before: :set_autoload_paths do |app|
       [
+        ["app", "avo", "fields"],
         ["app", "avo", "filters"],
         ["app", "avo", "actions"],
         ["app", "avo", "resources"]

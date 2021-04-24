@@ -16,7 +16,7 @@
 
         <% c.body do %>
           <% @resource.get_fields.each_with_index do |field, index| %>
-            <%= edit_field field, index, @resource, form unless field.computed %>
+            <%= render field.component_for_view(:edit).new(field: field, resource: @resource, index: index, form: form) unless field.computed %>
           <% end %>
         <% end %>
       <% end %>

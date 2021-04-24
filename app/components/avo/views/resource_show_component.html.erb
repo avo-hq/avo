@@ -3,7 +3,7 @@
   data-selected-resources="[<%= @resource.model.id %>]"
 >
   <% @resource.panels.each do |resource_panel| %>
-    <%= render Avo::PanelComponent.new(title: resource_panel[:name], show_breadcrumbs: @reflection.blank?) do |c| %>
+    <%= render Avo::PanelComponent.new(title: resource_panel[:name], display_breadcrumbs: @reflection.blank?) do |c| %>
       <% c.tools do %>
         <% if resource_panel[:name] == @resource.default_panel_name %>
           <%= render 'actions' %>
@@ -47,7 +47,7 @@
       <% c.body do %>
         <% if fields_by_panel[resource_panel[:name]].present? %>
           <% fields_by_panel[resource_panel[:name]].each_with_index do |field, index| %>
-            <%= show_field field, index, @resource %>
+            <%= render field.component_for_view(:show).new(field: field, resource: @resource, index: index) %>
           <% end %>
         <% end %>
       <% end %>
@@ -57,19 +57,19 @@
   <% if @reflection.blank? %>
     <% if has_one_panels.present? %>
       <% has_one_panels.each_with_index do |field, index| %>
-        <%= show_field field, index, @resource %>
+        <%= render field.component_for_view(:show).new(field: field, resource: @resource, index: index) %>
       <% end %>
     <% end %>
 
     <% if has_many_panels.present? %>
       <% has_many_panels.each_with_index do |field, index| %>
-        <%= show_field field, index, @resource %>
+        <%= render field.component_for_view(:show).new(field: field, resource: @resource, index: index) %>
       <% end %>
     <% end %>
 
     <% if has_as_belongs_to_many_panels.present? %>
       <% has_as_belongs_to_many_panels.each_with_index do |field, index| %>
-        <%= show_field field, index, @resource %>
+        <%= render field.component_for_view(:show).new(field: field, resource: @resource, index: index) %>
       <% end %>
     <% end %>
   <% end %>

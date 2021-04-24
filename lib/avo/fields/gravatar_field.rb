@@ -4,25 +4,22 @@ require "erb"
 module Avo
   module Fields
     class GravatarField < BaseField
-      attr_reader :size
+      attr_reader :link_to_resource
       attr_reader :rounded
+      attr_reader :size
       attr_reader :default
 
-      def initialize(name, **args, &block)
-        @defaults = {
-          partial_name: "gravatar-field",
-          name: "Avatar",
-          id: args[:id].present? ? args[:id] : "email"
-        }
+      def initialize(id, **args, &block)
+        args[:name] ||= "Avatar"
 
-        super(name, **args, &block)
+        super(id, **args, &block)
 
         hide_on [:edit, :new]
 
+        @link_to_resource = args[:link_to_resource].present? ? args[:link_to_resource] : false
         @rounded = args[:rounded].present? ? args[:rounded] : true
         @size = args[:size].present? ? args[:size].to_i : 40
         @default = args[:default].present? ? ERB::Util.url_encode(args[:default]).to_s : ""
-        @link_to_resource = args[:link_to_resource].present? ? args[:link_to_resource] : false
       end
 
       def md5

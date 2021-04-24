@@ -1,7 +1,7 @@
 <div <%== data_attributes %>>
   <div class="mb-6">
     <div>
-      <% if show_breadcrumbs? %>
+      <% if display_breadcrumbs? %>
         <div class="breadcrumbs">
           <%= helpers.render_breadcrumbs(separator: helpers.svg('chevron-right', class: 'inline-block h-3 stroke-current relative top-[-1px] ml-1' )) if Avo.configuration.display_breadcrumbs %>
         </div>

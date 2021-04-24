@@ -53,7 +53,19 @@ module Avo
       @resource = @resource.hydrate(model: @model, view: :show, user: _current_user, params: params)
 
       @page_title = @resource.default_panel_name
-      add_breadcrumb resource_name.humanize, resources_path(@resource.model_class)
+
+      # If we're accessing this resource via another resource add the parent to the breadcrumbs.
+      if params[:via_resource_class].present? && params[:via_resource_id].present?
+        via_resource = Avo::App.get_resource_by_model_name params[:via_resource_class]
+        via_model = via_resource.model_class.find params[:via_resource_id]
+        via_resource.hydrate model: via_model
+
+        add_breadcrumb via_resource.plural_name, resources_path(via_resource.model_class)
+        add_breadcrumb via_resource.model_title, resource_path(via_model)
+      else
+        add_breadcrumb resource_name.humanize, resources_path(@resource.model_class)
+      end
+
       add_breadcrumb @resource.model_title
     end
 
@@ -70,7 +82,19 @@ module Avo
       @resource = @resource.hydrate(model: @model, view: :edit, user: _current_user)
 
       @page_title = @resource.default_panel_name
-      add_breadcrumb resource_name.humanize, resources_path(@resource.model_class)
+
+      # If we're accessing this resource via another resource add the parent to the breadcrumbs.
+      if params[:via_resource_class].present? && params[:via_resource_id].present?
+        via_resource = Avo::App.get_resource_by_model_name params[:via_resource_class]
+        via_model = via_resource.model_class.find params[:via_resource_id]
+        via_resource.hydrate model: via_model
+
+        add_breadcrumb via_resource.plural_name, resources_path(via_resource.model_class)
+        add_breadcrumb via_resource.model_title, resource_path(via_model)
+      else
+        add_breadcrumb resource_name.humanize, resources_path(@resource.model_class)
+      end
+
       add_breadcrumb @resource.model_title, resource_path(@resource.model)
       add_breadcrumb t("avo.edit").humanize
     end

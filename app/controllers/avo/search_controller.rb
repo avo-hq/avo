@@ -8,7 +8,7 @@ module Avo
       @authorization.set_record(resource_model).authorize_action :index
       resources = []
 
-      App.get_resources
+      App.resources
         .select { |resource| resource.search.present? }
         .select { |resource| AuthorizationService.authorize_action _current_user, resource.model, "index" }
         .each do |resource_model|

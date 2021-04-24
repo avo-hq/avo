@@ -5,12 +5,8 @@ module Avo
       attr_reader :attachments_disabled
       attr_reader :attachment_key
 
-      def initialize(name, **args, &block)
-        @defaults = {
-          partial_name: "trix-field"
-        }
-
-        super(name, **args, &block)
+      def initialize(id, **args, &block)
+        super(id, **args, &block)
 
         hide_on :index
 

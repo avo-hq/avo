@@ -1,0 +1,8 @@
+<%= index_field_wrapper field: @field do %>
+  <% if @field.display_value %>
+    <div class="text-center text-sm font-semibold w-full leading-none mb-1">
+      <%= @field.value %><%= @field.value_suffix if @field.value_suffix.present? %>
+    </div>
+  <% end %>
+  <progress min="0" max="<%= @field.max %>" value="<%= @field.value %>" class="block w-24"></progress>
+<% end %>
