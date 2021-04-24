@@ -6,7 +6,7 @@ class PostResource < Avo::BaseResource
 
   field :id, as: :id
   field :name, as: :text, required: true
-  field :body, as: :trix, placeholder: "Enter text", always_show: false
+  field :body, as: :trix, placeholder: "Enter text", always_show: false, attachment_key: :attachments
   field :cover_photo, as: :file, is_image: true, link_to_resource: true
   field :is_featured, as: :boolean, visible: ->(resource:) { context[:user].is_admin? }
   field :is_published, as: :boolean do |model|

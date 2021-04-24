@@ -1,3 +1,5 @@
 <%= javascript_tag nonce: true do %>
-  var timezone = '<%= Avo.configuration.timezone %>';
+  window.Avo = window.Avo || { configuration: {} }
+  Avo.configuration.timezone = '<%= Avo.configuration.timezone %>'
+  Avo.configuration.root_path = '<%= Avo.configuration.root_path %>'
 <% end %>

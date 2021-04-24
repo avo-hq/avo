@@ -2,7 +2,6 @@
 import 'core-js/stable'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'regenerator-runtime/runtime'
-import 'trix'
 import * as Mousetrap from 'mousetrap'
 import { Application } from 'stimulus'
 import { Turbo } from '@hotwired/turbo-rails'

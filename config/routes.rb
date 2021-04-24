@@ -3,6 +3,10 @@ Avo::Engine.routes.draw do
 
   get "resources", to: redirect("/avo")
 
+  scope "avo_api", as: "avo_api" do
+    post "/resources/:resource_name/:id/attachments/", to: "attachments#create"
+  end
+
   scope "resources", as: "resources" do
     # Attachments
     get "/:resource_name/:id/active_storage_attachments/:attachment_name/:signed_attachment_id", to: "attachments#show"
