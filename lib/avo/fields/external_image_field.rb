@@ -4,6 +4,7 @@ module Avo
       attr_reader :width
       attr_reader :height
       attr_reader :radius
+      attr_reader :link_to_resource
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
