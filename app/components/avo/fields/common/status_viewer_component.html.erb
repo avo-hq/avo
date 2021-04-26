@@ -1,10 +1,18 @@
 <%
   classes = "inline-block"
-  classes += " text-red-700" if @status == 'failed'
+  classes += " text-red-600" if @status == 'failed'
+  classes += " text-green-600" if @status == 'success'
 %>
-<div class="flex flex-shrink-0">
-  <div class="<%= classes %>"><%= @label %></div>
-  <% if @status == 'loading' %>
-    <div class="spinner ml-1"></div>
+<div class="flex flex-shrink-0 <%= classes %> items-center">
+  <% if @status == 'success' %>
+    <%= helpers.svg 'check-circle-sm', class: 'h-4' %>
+  <% elsif @status == 'failed' %>
+    <%= helpers.svg 'x-circle-sm', class: 'h-4' %>
+  <% elsif @status == 'loading' %>
+    <div class="spinner">
+      <div class="double-bounce1 bg-gray-600"></div>
+      <div class="double-bounce2 bg-gray-800"></div>
+    </div>
   <% end %>
+  <span class="ml-1"><%= @label %></span>
 </div>
