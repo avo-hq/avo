@@ -1,23 +1,12 @@
 require "rails_helper"
 
 RSpec.describe "SelectField", type: :feature do
-  describe "array enum display_value: true" do
-    before do
-      replace_field_declaration PostResource, :status do
-        field :status, as: :select, enum: ::Post.statuses, display_value: true
-      end
-    end
-
-    after do
-      revert_to_original PostResource
-    end
-
+  describe "enum array display_value: false" do
     context "index" do
       let(:url) { "/avo/resources/posts?view_type=table" }
-
       subject do
         visit url
-        find("[data-resource-id='#{post.id}'] [data-field-id='status']")
+        field_element_by_resource_id "status", post.id
       end
 
       describe "without status" do
@@ -27,27 +16,24 @@ RSpec.describe "SelectField", type: :feature do
       end
 
       describe "with draft status" do
-        let(:status_id) { 0 }
         let(:status) { "draft" }
-        let!(:post) { create :post, status: status_id }
+        let!(:post) { create :post, status: 0 }
 
-        it { is_expected.to have_text status_id }
+        it { is_expected.to have_text status }
       end
 
       describe "with published status" do
-        let(:status_id) { 1 }
-        let(:status) { 'published' }
-        let!(:post) { create :post, status: status }
+        let(:status) { "published" }
+        let!(:post) { create :post, status: 1 }
 
-        it { is_expected.to have_text status_id }
+        it { is_expected.to have_text status }
       end
 
       describe "with archived status" do
-        let(:status_id) { 2 }
         let(:status) { "archived" }
-        let!(:post) { create :post, status: status }
+        let!(:post) { create :post, status: 2 }
 
-        it { is_expected.to have_text status_id }
+        it { is_expected.to have_text status }
       end
     end
 
@@ -66,45 +52,41 @@ RSpec.describe "SelectField", type: :feature do
       end
 
       describe "with draft status" do
-        let(:status_id) { 0 }
         let(:status) { "draft" }
-        let!(:post) { create :post, status: status_id }
+        let!(:post) { create :post, status: 0 }
 
-        it { is_expected.to have_text status_id }
+        it { is_expected.to have_text status }
       end
 
       describe "with published status" do
-        let(:status_id) { 1 }
         let(:status) { "published" }
-        let!(:post) { create :post, status: status_id }
+        let!(:post) { create :post, status: 1 }
 
-        it { is_expected.to have_text status_id }
+        it { is_expected.to have_text status }
       end
 
       describe "with archived status" do
-        let(:status_id) { 2 }
         let(:status) { "archived" }
-        let!(:post) { create :post, status: status_id }
+        let!(:post) { create :post, status: 2 }
 
-        it { is_expected.to have_text status_id }
+        it { is_expected.to have_text status }
       end
     end
 
     let(:statuses_without_placeholder) { ["draft", "published", "archived"] }
     let(:placeholder) { "Choose an option" }
-    let(:statuses_with_placeholder) { statuses_without_placeholder.dup.prepend(placeholder) }
+    let(:statuses_with_placeholder) { statuses_without_placeholder.prepend(placeholder) }
 
     context "edit" do
       let(:url) { "/avo/resources/posts/#{post.id}/edit" }
 
       describe "without status" do
-        let(:status_id) { 0 }
         let!(:post) { create :post, status: nil }
-        let(:new_status) { "draft" }
+        let(:new_status) { "published" }
 
         it { is_expected.to have_select "post_status", selected: nil, options: statuses_with_placeholder }
 
-        it "sets the status to draft" do
+        it "sets the status to idea" do
           visit url
 
           expect(page).to have_select "post_status", selected: nil, options: statuses_with_placeholder
@@ -115,24 +97,19 @@ RSpec.describe "SelectField", type: :feature do
 
           expect(current_path).to eql "/avo/resources/posts/#{post.id}"
           expect(page).to have_text new_status
-
-          click_on "Edit"
-          expect(page).to have_select "post_status", selected: status_id, options: statuses_without_placeholder
         end
       end
 
       describe "with status" do
-        let(:status_id) { 0 }
         let(:status) { "draft" }
-        let(:new_status_id) { 1 }
         let(:new_status) { "published" }
-        let!(:post) { create :post, status: status_id }
+        let!(:post) { create :post, status: status }
 
-        it { is_expected.to have_select "post_status", selected: status_id, options: statuses_without_placeholder }
+        it { is_expected.to have_select "post_status", selected: status, options: statuses_without_placeholder }
 
-        it "changes the status to on hold" do
+        it "changes the status to published" do
           visit url
-          expect(page).to have_select "post_status", selected: status_id, options: statuses_without_placeholder
+          expect(page).to have_select "post_status", selected: status, options: statuses_without_placeholder
 
           select new_status, from: "post_status"
 
@@ -140,15 +117,13 @@ RSpec.describe "SelectField", type: :feature do
 
           expect(current_path).to eql "/avo/resources/posts/#{post.id}"
           expect(page).to have_text new_status
-
-          click_on "Edit"
-          expect(page).to have_select "post_status", selected: new_status_id, options: statuses_without_placeholder
         end
       end
     end
 
     context "create" do
       let(:url) { "/avo/resources/posts/new" }
+      let(:new_status) { "published" }
 
       describe "creates new post with status published" do
         it "checks placeholder" do
@@ -160,13 +135,13 @@ RSpec.describe "SelectField", type: :feature do
           expect(page).to have_select "post_status", selected: nil, options: statuses_with_placeholder
 
           fill_in "post_name", with: "Post X"
-          select "published", from: "post_status"
+          select new_status, from: "post_status"
 
           click_on "Save"
 
           expect(current_path).to eql "/avo/resources/posts/#{Post.last.id}"
           expect(page).to have_text "Post X"
-          expect(page).to have_text status_id
+          expect(page).to have_text "published"
         end
       end
     end

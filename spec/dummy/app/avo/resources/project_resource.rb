@@ -7,7 +7,7 @@ class ProjectResource < Avo::BaseResource
   field :name, as: :text, required: true
   field :progress, as: :progress_bar, value_suffix: "%", display_value: true
   field :status, as: :status, failed_when: [:closed, :rejected, :failed], loading_when: [:loading, :running, :waiting], nullable: true
-  field :stage, as: :select, hide_on: [:show, :index], enum: ::Project.stages, placeholder: "Choose the stage"
+  field :stage, as: :select, hide_on: [:show, :index], enum: ::Project.stages, placeholder: "Choose the stage", display_value: true
   field :stage, as: :badge, options: {info: ["Discovery", "Idea"], success: "Done", warning: "On hold", danger: "Cancelled"}
   # currency :budget, currency: 'EUR', locale: 'de-DE'
   field :country, as: :country
