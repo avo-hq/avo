@@ -22,7 +22,7 @@ RSpec.describe "StatusField", type: :feature do
 
       it {
         is_expected.to have_text status
-        is_expected.to have_css ".text-red-700"
+        is_expected.to have_css ".text-red-600"
       }
     end
 
@@ -64,7 +64,7 @@ RSpec.describe "StatusField", type: :feature do
 
       it {
         is_expected.to have_text status
-        is_expected.to have_css ".text-red-700"
+        is_expected.to have_css ".text-red-600"
       }
     end
 
@@ -106,7 +106,7 @@ RSpec.describe "StatusField", type: :feature do
 
         expect(current_path).to eql "/avo/resources/projects/#{project.id}"
         expect(find_field_value_element("status")).to have_text fail_status
-        expect(find_field_value_element("status")).to have_css ".text-red-700"
+        expect(find_field_value_element("status")).to have_css ".text-red-600"
       end
 
       it "changes the status to load value" do
