@@ -43,14 +43,12 @@ Avo::App.boot
 test_driver = ENV["HEADFULL"] ? :selenium_chrome : :selenium_chrome_headless
 
 require "support/controller_routes"
-require "support/resource_fields"
 
 RSpec.configure do |config|
   config.include TestHelpers::ControllerRoutes, type: :controller
   config.include TestHelpers::DisableAuthentication, type: :system
   config.include TestHelpers::DisableAuthentication, type: :feature
   config.include TestHelpers::DisableHQRequest
-  config.include TestHelpers::ResourceFields
   config.include Warden::Test::Helpers
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
