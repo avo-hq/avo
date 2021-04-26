@@ -45,16 +45,6 @@ module Avo
       self.fields << Avo::Fields::HeadingField.new(body, **args)
     end
 
-    def replace_field_declaration(id, &block)
-      self.fields = self.fields.select do |field|
-        field.id != id
-      end
-
-      if block_given?
-        class_eval(&block)
-      end
-    end
-
     private
 
     def instantiate_field(field_name, klass:, **args, &block)
