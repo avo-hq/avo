@@ -13,6 +13,7 @@ class PostResource < Avo::BaseResource
     model.published_at.present?
   end
   field :user, as: :belongs_to, meta: {searchable: false}, placeholder: "—"
+  field :status, as: :select, enum: ::Post.statuses, display_value: false
 
   grid do
     cover :cover_photo, as: :file, link_to_resource: true
@@ -26,6 +27,7 @@ class PostResource < Avo::BaseResource
 
   filter FeaturedFilter
   filter PublishedFilter
+  filter PostStatusFilter
 
   action TogglePublished
 end

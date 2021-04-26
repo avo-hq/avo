@@ -25,6 +25,7 @@ FactoryBot.define do
         Time.now - rand(10...365).days
       end
     end
+    status { 0 }
   end
 
   factory :project do

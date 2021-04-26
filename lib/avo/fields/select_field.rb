@@ -31,12 +31,16 @@ module Avo
       end
 
       def label
-        if display_value
+        if enum.present?
+          if display_value
+            options[value]
+          else
+            value
+          end
+        elsif display_value
           value
-        elsif enum.present?
-          options[value]
         else
-          options.invert[value]
+          options.invert.stringify_keys[value]
         end
       end
     end
