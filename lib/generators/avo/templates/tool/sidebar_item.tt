@@ -1,1 +1,1 @@
-<%%= render Avo::NavigationLinkComponent.new label: '<%= human_name %>', path: '/avo/<%= file_name %>' %>
+<%%= render Avo::NavigationLinkComponent.new label: '<%= human_name %>', path: "#{Avo.configuration.root_path}/<%= file_name %>" %>
