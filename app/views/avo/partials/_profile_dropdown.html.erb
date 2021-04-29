@@ -1,19 +1,23 @@
 <div data-controller="toggle-panel">
   <a href="javascript:void(0);" class="flex items-center cursor-pointer font-semibold text-gray-700" data-action="click->toggle-panel#togglePanel">
-    <% if _current_user.respond_to? 'avatar' %>
-      <%= image_tag _current_user.avatar, class: "h-12 rounded-full border-4 border-white mr-1" if _current_user.avatar.present? %>
+    <% if _current_user.respond_to?(:avatar) &&  _current_user.avatar.present? %>
+      <%= image_tag _current_user.avatar, class: "h-12 rounded-full border-4 border-white mr-1" %>
     <% end %>
-    <% if _current_user.name.present? %>
+    <% if _current_user.respond_to?(:name) && _current_user.name.present? %>
       <%= _current_user.name %>
-    <% elsif _current_user.email.present? %>
+    <% elsif _current_user.respond_to?(:email) && _current_user.email.present? %>
       <%= _current_user.email %>
     <% else %>
       Avo user
     <% end %>
-    <%= svg 'chevron-down', class: "ml-1 h-4" %>
+    <% if main_app.respond_to?(:destroy_user_session_path) %>
+      <%= svg 'chevron-down', class: "ml-1 h-4" %>
+    <% end %>
   </a>
 
-  <div class="hidden absolute inset-auto inset-auto right-0 mr-6 mt-0 py-4 bg-white rounded-xl min-w-[200px] shadow-context" data-toggle-panel-target="panel">
-    <%= button_to "Sign out", main_app.destroy_user_session_path, method: :delete, form: { "data-turbo" => "false" }, class: "appearance-none bg-white text-left cursor-pointer text-green-600 font-semibold hover:text-white hover:bg-green-500 block px-4 py-1 w-full" %>
-  </div>
+  <% if main_app.respond_to?(:destroy_user_session_path) %>
+    <div class="hidden absolute inset-auto inset-auto right-0 mr-6 mt-0 py-4 bg-white rounded-xl min-w-[200px] shadow-context" data-toggle-panel-target="panel">
+      <%= button_to "Sign out", main_app.destroy_user_session_path, method: :delete, form: { "data-turbo" => "false" }, class: "appearance-none bg-white text-left cursor-pointer text-green-600 font-semibold hover:text-white hover:bg-green-500 block px-4 py-1 w-full" %>
+    </div>
+  <% end %>
 </div>
