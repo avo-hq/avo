@@ -10,7 +10,9 @@
     <% else %>
       Avo user
     <% end %>
-    <%= svg 'chevron-down', class: "ml-1 h-4" %>
+    <% if main_app.respond_to?(:destroy_user_session_path) %>
+      <%= svg 'chevron-down', class: "ml-1 h-4" %>
+    <% end %>
   </a>
 
   <% if main_app.respond_to?(:destroy_user_session_path) %>
