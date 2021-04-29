@@ -1,6 +1,6 @@
 class TeamResource < Avo::BaseResource
   self.title = :name
-  self.search = [:id, :name]
+  # self.search = [:id, :name]
   self.includes = [:admin, :members]
 
   field :id, as: :id

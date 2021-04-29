@@ -1,7 +1,11 @@
 class UserResource < Avo::BaseResource
   self.title = :name
   self.translation_key = "avo.resource_translations.user"
-  self.search = [:id, :first_name, :last_name]
+  # self.search = [:id, :first_name, :last_name]
+  # self.search = [:first_name, :last_name]
+  self.ransack_query = ->(params:) do
+    User.ransack(id: params[:q], first_name_cont: params[:q], last_name_cont: params[:q], m: "or").result(distinct: false)
+  end
   self.includes = [:posts, :post]
   self.devise_password_optional = true
 

@@ -1,6 +1,6 @@
 class ProjectResource < Avo::BaseResource
   self.title = :name
-  self.search = [:name, :id]
+  # self.search = [:name, :id]
   self.includes = :users
 
   field :id, as: :id, link_to_resource: true

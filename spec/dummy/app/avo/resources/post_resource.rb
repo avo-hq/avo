@@ -1,6 +1,9 @@
 class PostResource < Avo::BaseResource
   self.title = :name
-  self.search = [:name, :id]
+  # self.search = [:name, :id]
+  self.ransack_query = ->(params:) do
+    Post.ransack(name_cont: params[:q], body_cont: params[:q], m: "or").result(distinct: false)
+  end
   self.includes = :user
   self.default_view_type = :grid
 

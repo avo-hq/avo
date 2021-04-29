@@ -11,7 +11,7 @@ module Avo
 
     class_attribute :id, default: :id
     class_attribute :title, default: :id
-    class_attribute :search, default: [:id]
+    class_attribute :ransack_query, default: nil
     class_attribute :includes, default: []
     class_attribute :model_class
     class_attribute :translation_key
@@ -300,6 +300,10 @@ module Avo
           @model.send("#{id}=", value)
         end
       end
+    end
+
+    def avo_path
+      "#{Avo.configuration.root_path}/resources/#{model_class.model_name.route_key}/#{model.id}"
     end
   end
 end

@@ -1,0 +1,34 @@
+.aa-DetachedSearchButton:focus,
+.aa-DetachedSearchButton {
+  border: none !important;
+}
+
+.aa-SourceHeader {
+  @apply uppercase text-xs font-semibold;
+}
+
+.aa-DetachedFormContainer,
+.aa-DetachedContainer .aa-Panel {
+  @apply bg-blue-gray-100 border-b-0;
+}
+.aa-DetachedContainer {
+  .aa-PanelLayout {
+    @apply pt-0 space-y-3;
+  }
+
+  .aa-Source {
+    /* @apply mb-4 mt-0; */
+
+    .aa-List {
+      @apply space-y-1;
+
+      .aa-Item {
+        @apply bg-white rounded-md px-3 py-4 shadow;
+
+        &[aria-selected=true]{
+          @apply bg-blue-700 text-white;
+        }
+      }
+    }
+  }
+}

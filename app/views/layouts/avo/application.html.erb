@@ -23,9 +23,9 @@
         <div>
           <%= render partial: "avo/partials/header" %>
         </div>
-        <div class="flex-1 flex justify-center">
+        <div class="flex-1 flex ml-4 pl-4">
           <div class="w-64 flex">
-            <%# <resources-search :global="true"> %>
+            <%= render partial: "avo/partials/search", locals: { global: true } %>
           </div>
         </div>
         <div class="align-end">

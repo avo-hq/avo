@@ -2,6 +2,40 @@
 # yarn lockfile v1
 
 
+"@algolia/autocomplete-core@1.0.0-alpha.46":
+  version "1.0.0-alpha.46"
+  resolved "https://registry.yarnpkg.com/@algolia/autocomplete-core/-/autocomplete-core-1.0.0-alpha.46.tgz#cf7e0ebb31b3d18b6156244cbcd792ce85402863"
+  integrity sha512-FU3mLWugGGWD8v0xKqQdB1gVbds1f62L6D4N0Gva0uiVBUU57tJqRaJyPW2yg+j5qd8wN7effg258KYHtO9p+Q==
+  dependencies:
+    "@algolia/autocomplete-shared" "1.0.0-alpha.46"
+
+"@algolia/autocomplete-js@^1.0.0-alpha.46":
+  version "1.0.0-alpha.46"
+  resolved "https://registry.yarnpkg.com/@algolia/autocomplete-js/-/autocomplete-js-1.0.0-alpha.46.tgz#4b8a555eb80e10d006b0af53fce74165650c099d"
+  integrity sha512-/nU8y4GDL0R/8oShEElc7DaWw5cxMjw5hlqmXzjlAZO8YMZhIVt3adDLoCL9fatPaJyZcVH0L0NvBNblwwkbaA==
+  dependencies:
+    "@algolia/autocomplete-core" "1.0.0-alpha.46"
+    "@algolia/autocomplete-preset-algolia" "1.0.0-alpha.46"
+    "@algolia/autocomplete-shared" "1.0.0-alpha.46"
+    preact "^10.0.0"
+
+"@algolia/autocomplete-preset-algolia@1.0.0-alpha.46":
+  version "1.0.0-alpha.46"
+  resolved "https://registry.yarnpkg.com/@algolia/autocomplete-preset-algolia/-/autocomplete-preset-algolia-1.0.0-alpha.46.tgz#61720f0e801f31d10062fac1519351657b3da050"
+  integrity sha512-QyzVJ0cV2WBbS0K+L4xPxg5ngTGdl5U26i6nv7yuKLgSuLlrK/JyWRvS1F2migTdiiNKsDE/VKf8/pQpon99cw==
+  dependencies:
+    "@algolia/autocomplete-shared" "1.0.0-alpha.46"
+
+"@algolia/autocomplete-shared@1.0.0-alpha.46":
+  version "1.0.0-alpha.46"
+  resolved "https://registry.yarnpkg.com/@algolia/autocomplete-shared/-/autocomplete-shared-1.0.0-alpha.46.tgz#24257e9ab1c3dbc2d374a0c905f48b0d0385f96e"
+  integrity sha512-ES6Wv/CAeAHTYBgsEgRJL2t9eoE2MbcT2g6H7w8nCyiOhY3/uqOTBKypVKToqzu/mwRblGZ0FT4xxtkrJTA8uQ==
+
+"@algolia/autocomplete-theme-classic@^1.0.0-alpha.46":
+  version "1.0.0-alpha.46"
+  resolved "https://registry.yarnpkg.com/@algolia/autocomplete-theme-classic/-/autocomplete-theme-classic-1.0.0-alpha.46.tgz#0f363cbd26f7bc5eaeda3f492d5b04d54f4cacf4"
+  integrity sha512-a1VkiRBoCjDpiU/Bv2FnWOfagBk+hPQ3bzbSgTExQdxRwZLvD41XjgBVbtkxID6KyzKoVYVUq7zcWoGTCa2e2w==
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.12.13":
   version "7.12.13"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.12.13.tgz#dcfc826beef65e75c50e21d3837d7d95798dd658"
@@ -5982,6 +6016,11 @@ postcss@^8.2.8:
     colorette "^1.2.2"
     nanoid "^3.1.20"
     source-map "^0.6.1"
+
+preact@^10.0.0:
+  version "10.5.13"
+  resolved "https://registry.yarnpkg.com/preact/-/preact-10.5.13.tgz#85f6c9197ecd736ce8e3bec044d08fd1330fa019"
+  integrity sha512-q/vlKIGNwzTLu+jCcvywgGrt+H/1P/oIRSD6mV4ln3hmlC+Aa34C7yfPI4+5bzW8pONyVXYS7SvXosy2dKKtWQ==
 
 prelude-ls@~1.1.2:
   version "1.1.2"

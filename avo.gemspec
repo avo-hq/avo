@@ -45,4 +45,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "meta-tags"
   spec.add_dependency "breadcrumbs_on_rails"
   spec.add_dependency "manifester"
+  spec.add_dependency "ransack"
 end
