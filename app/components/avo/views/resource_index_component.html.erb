@@ -22,12 +22,12 @@
   <% end %>
 
   <% c.body do %>
-    <div class="flex justify-between py-6 min-h-24"
+    <div class="flex justify-between pt-2 pb-6 min-h-24"
       data-selected-resources-name="<%= @resource.plural_name.downcase %>"
       data-selected-resources="[]"
     >
       <div class="flex items-center px-6 w-64">
-        <%# search %>
+        <%= render partial: 'avo/partials/resource_search', locals: {resource: @resource.route_key} if @resource.ransack_query.present? %>
       </div>
       <div class="flex justify-end items-center px-6 space-x-3">
         <%= render partial: 'avo/partials/view_toggle_button', locals: { available_view_types: available_view_types, view_type: view_type, turbo_frame: @turbo_frame } if @models.present? %>

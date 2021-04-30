@@ -4,8 +4,8 @@ Avo::Engine.routes.draw do
   get "resources", to: redirect("/avo")
 
   scope "avo_api", as: "avo_api" do
-    get "/resources/search", to: "search#index"
-    get "/resources/:resource_name/search", to: "search#resource_search"
+    get "/search", to: "search#index"
+    get "/:resource_name/search", to: "search#show"
     post "/resources/:resource_name/:id/attachments/", to: "attachments#create"
   end
 
@@ -29,10 +29,4 @@ Avo::Engine.routes.draw do
     post "/:resource_name/:id/:related_name", to: "relations#create"
     delete "/:resource_name/:id/:related_name/:related_id", to: "relations#destroy"
   end
-
-  # get '/avo-api/search',                  to: 'search#index'
-  # get '/avo-api/:resource_name/search',   to: 'search#resource'
-
-  # Tools
-  # get '/avo-tools/resource-overview', to: 'resource_overview#index'
 end

@@ -17,7 +17,7 @@ module Avo
     add_flash_types :info, :warning, :success, :error
 
     def init_app
-      Avo::App.init request: request, context: context
+      Avo::App.init request: request, context: context, current_user: _current_user
 
       @license = Avo::App.license
     end
@@ -157,9 +157,9 @@ module Avo
 
     def authorize_action
       if @model.present?
-        @authorization.set_record(@model).authorize_action :index
+        @authorization.set_record(@model).authorize_action action_name.to_sym
       else
-        @authorization.set_record(@resource.model_class).authorize_action :index
+        @authorization.set_record(@resource.model_class).authorize_action action_name.to_sym
       end
     end
 

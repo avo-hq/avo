@@ -42,6 +42,18 @@ module Avo
 
         self.filters_loader.use filter_class
       end
+
+      def scope
+        authorization.apply_policy model_class
+      end
+
+      def authorization
+        Avo::Services::AuthorizationService.new Avo::App.current_user
+      end
+    end
+
+    def initialize
+      self.class.model_class = model_class
     end
 
     def hydrate(model: nil, view: nil, user: nil, params: nil)
@@ -96,9 +108,9 @@ module Avo
         end
       end
 
-      fields.map do |field|
-        field.hydrate(model: @model, view: @view, resource: self)
-      end
+      hydrate_fields(model: @model, view: @view)
+
+      fields
     end
 
     def get_grid_fields
@@ -119,8 +131,16 @@ module Avo
       self.class.actions_loader.bag
     end
 
+    def hydrate_fields(model: nil, view: nil)
+      fields.map do |field|
+        field.hydrate(model: @model, view: @view, resource: self)
+      end
+
+      self
+    end
+
     def default_panel_name
-      return @params[:related_name].capitalize if @params[:related_name].present?
+      return @params[:related_name].capitalize if @params.present? && @params[:related_name].present?
 
       case @view
       when :show
@@ -304,6 +324,22 @@ module Avo
 
     def avo_path
       "#{Avo.configuration.root_path}/resources/#{model_class.model_name.route_key}/#{model.id}"
+    end
+
+    def avatar_field
+      get_field_definitions.find do |field|
+        field.as_avatar.present?
+      end
+    rescue
+      nil
+    end
+
+    def description_field
+      get_field_definitions.find do |field|
+        field.as_description.present?
+      end
+    rescue
+      nil
     end
   end
 end

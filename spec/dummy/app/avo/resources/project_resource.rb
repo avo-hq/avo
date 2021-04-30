@@ -1,6 +1,9 @@
 class ProjectResource < Avo::BaseResource
   self.title = :name
   # self.search = [:name, :id]
+  self.ransack_query = ->(params:) do
+    scope.ransack(id_eq: params[:q], name_cont: params[:q], country_cont: params[:q], m: "or").result(distinct: false)
+  end
   self.includes = :users
 
   field :id, as: :id, link_to_resource: true
