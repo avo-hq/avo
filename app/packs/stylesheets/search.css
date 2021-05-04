@@ -17,7 +17,7 @@
   }
 
   .aa-DetachedSearchButton {
-    @apply rounded border-gray-300;
+    @apply rounded-full border-gray-300;
   }
 }
 
