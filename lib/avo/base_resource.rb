@@ -246,7 +246,11 @@ module Avo
 
     def fill_model(model, params)
       # Map the received params to their actual fields
-      fields_by_database_id = get_field_definitions.map { |field| [field.database_id(model).to_s, field] }.to_h
+      fields_by_database_id = get_field_definitions
+        .reject do |field|
+          field.computed
+        end
+        .map { |field| [field.database_id(model).to_s, field] }.to_h
 
       params.each do |key, value|
         field = fields_by_database_id[key]
