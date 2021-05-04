@@ -3,11 +3,11 @@ import * as Mousetrap from 'mousetrap'
 import { Controller } from 'stimulus'
 import { Turbo } from '@hotwired/turbo-rails'
 import { autocomplete } from '@algolia/autocomplete-js'
+import debouncePromise from '@/js/helpers/debounce_promise'
 
 function addSource(resourceName, data, translationKeys) {
   return {
     sourceId: resourceName,
-    debounce: 400,
     getItems: () => data.results,
     onSelect({ item }) {
       Turbo.visit(item._url, { action: 'replace' })
@@ -56,6 +56,8 @@ function addSource(resourceName, data, translationKeys) {
   }
 }
 
+const debouncedFetch = debouncePromise(fetch, 300)
+
 export default class extends Controller {
   static targets = ['autocomplete', 'button']
 
@@ -100,11 +102,12 @@ export default class extends Controller {
       placeholder: 'Search',
       openOnFocus: true,
       detachedMediaQuery: '',
-      async getSources({ query }) {
-        const response = await fetch(`${that.searchUrl}?q=${query}`)
-        const data = await response.json()
+      getSources: ({ query }) => {
+        const endpoint = `${that.searchUrl}?q=${query}`
 
-        return Object.keys(data).map((resourceName) => addSource(resourceName, data[resourceName], that.translationKeys))
+        return debouncedFetch(endpoint)
+          .then((response) => response.json())
+          .then((data) => Object.keys(data).map((resourceName) => addSource(resourceName, data[resourceName], that.translationKeys)))
       },
     })
   }
