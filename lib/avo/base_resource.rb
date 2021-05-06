@@ -330,6 +330,20 @@ module Avo
       "#{Avo.configuration.root_path}/resources/#{model_class.model_name.route_key}/#{model.id}"
     end
 
+    def label_field
+      get_field_definitions.find do |field|
+        field.as_label.present?
+      end
+    rescue
+      nil
+    end
+
+    def label
+      label_field.value || model_title
+    rescue
+      model_title
+    end
+
     def avatar_field
       get_field_definitions.find do |field|
         field.as_avatar.present?
@@ -338,10 +352,28 @@ module Avo
       nil
     end
 
+    def avatar
+      avatar_field.to_image
+    rescue
+      nil
+    end
+
+    def avatar_type
+      avatar_field.as_avatar
+    rescue
+      nil
+    end
+
     def description_field
       get_field_definitions.find do |field|
         field.as_description.present?
       end
+    rescue
+      nil
+    end
+
+    def description
+      description_field.value
     rescue
       nil
     end

@@ -1,6 +1,5 @@
 class PostResource < Avo::BaseResource
   self.title = :name
-  # self.search = [:name, :id]
   self.ransack_query = ->(params:) do
     scope.ransack(name_cont: params[:q], body_cont: params[:q], m: "or").result(distinct: false)
   end
@@ -25,7 +24,7 @@ class PostResource < Avo::BaseResource
   field :status, as: :select, enum: ::Post.statuses, display_value: false
 
   grid do
-    cover :cover_photo, as: :file, link_to_resource: true
+    cover :cover_photo, as: :file, is_image: true, link_to_resource: true
     title :name, as: :text, required: true, link_to_resource: true
     body :excerpt, as: :text do |model|
       ActionView::Base.full_sanitizer.sanitize(model.body).truncate 130

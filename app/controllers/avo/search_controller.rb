@@ -50,23 +50,13 @@ module Avo
       models.map do |model|
         resource = avo_resource.dup.hydrate(model: model).hydrate_fields(model: model)
 
-        if resource.avatar_field.present?
-          avatar = resource.avatar_field.to_image
-          avatar_type = resource.avatar_field.as_avatar
-        end
-
-        begin
-          description = resource.description_field.value
-        rescue; end
-
         {
           _id: model.id,
-          _label: resource.model_title,
-          _description: description,
+          _label: resource.label,
+          _description: resource.description,
           _url: resource.avo_path,
-          _avatar: avatar,
-          _avatar_type: avatar_type,
-          resource: resource,
+          _avatar: resource.avatar,
+          _avatar_type: resource.avatar_type,
           model: model
         }
       end
