@@ -48,7 +48,7 @@ module Avo
     def check_avo_license
       unless on_root_path || on_resources_path || on_api_path
         if @license.has_with_trial(:custom_tools)
-          if Rails.env.development?
+          if Rails.env.development? || Rails.env.test?
             @custom_tools_alert_visible = true
           else
             raise Avo::LicenseInvalidError, "Your license is invalid or doesn't support custom tools."
