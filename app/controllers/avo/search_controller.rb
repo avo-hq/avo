@@ -19,8 +19,8 @@ module Avo
       resources.map do |resource|
         # Apply authorization
         next unless @authorization.set_record(resource.model_class).authorize_action(:index, raise_exception: false)
-        # Filter out the models without a ransack_query
-        next if resource.ransack_query.nil?
+        # Filter out the models without a search_query
+        next if resource.search_query.nil?
 
         search_resource resource
       end
@@ -35,7 +35,7 @@ module Avo
     end
 
     def search_resource(resource)
-      results = apply_search_metadata(resource.ransack_query.call(params: params).limit(8), resource)
+      results = apply_search_metadata(resource.search_query.call(params: params).limit(8), resource)
 
       result_object = {
         header: resource.name.pluralize,

@@ -18,5 +18,5 @@ Avo.configure do |config|
   config.set_initial_breadcrumbs do
     add_breadcrumb "Dashboard", "/avo/dashboard"
   end
-  config.search_debounce = 0
+  config.search_debounce = 100
 end
