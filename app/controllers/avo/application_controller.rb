@@ -38,12 +38,16 @@ module Avo
     def render(*args)
       raise Avo::LicenseVerificationTemperedError, "License verification mechanism tempered with." unless method(:check_avo_license).source_location.first.match?(/.*\/app\/controllers\/avo\/application_controller\.rb/)
 
+      if params[:controller] == "avo/search" && params[:action] == "index"
+        raise Avo::LicenseVerificationTemperedError, "License verification mechanism tempered with." unless method(:index).source_location.first.match?(/.*\/app\/controllers\/avo\/search_controller\.rb/)
+      end
+
       super(*args)
     end
 
     def check_avo_license
       unless on_root_path || on_resources_path || on_api_path
-        if @license.invalid? || @license.lacks(:custom_tools)
+        if @license.has_with_trial(:custom_tools)
           if Rails.env.development?
             @custom_tools_alert_visible = true
           else

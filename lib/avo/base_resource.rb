@@ -77,7 +77,7 @@ module Avo
         field.hydrate(resource: self, panel_name: default_panel_name, user: user)
       end
 
-      if Avo::App.license.invalid? || Avo::App.license.lacks(:custom_fields)
+      if Avo::App.license.has_with_trial(:custom_fields)
         fields = fields.reject do |field|
           field.custom?
         end

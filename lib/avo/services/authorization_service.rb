@@ -75,7 +75,7 @@ module Avo
         end
 
         def skip_authorization
-          Avo::App.license.lacks :authorization
+          Avo::App.license.lacks_with_trial :authorization
         end
 
         def authorized_methods(user, record)

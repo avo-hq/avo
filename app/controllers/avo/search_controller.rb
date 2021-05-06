@@ -6,6 +6,8 @@ module Avo
     before_action :set_resource, only: [:show]
 
     def index
+      raise ActionController::BadRequest.new("This feature requires the pro license https://avohq.io/purchase/pro") if App.license.lacks_with_trial(:global_search)
+
       render json: search_resources(Avo::App.resources)
     end
 
@@ -50,15 +52,20 @@ module Avo
       models.map do |model|
         resource = avo_resource.dup.hydrate(model: model).hydrate_fields(model: model)
 
-        {
+        result = {
           _id: model.id,
           _label: resource.label,
-          _description: resource.description,
           _url: resource.avo_path,
-          _avatar: resource.avatar,
-          _avatar_type: resource.avatar_type,
           model: model
         }
+
+        if App.license.has_with_trial(:enhanced_search_results)
+          result[:_description] = resource.description
+          result[:_avatar] = resource.avatar
+          result[:_avatar_type] = resource.avatar_type
+        end
+
+        result
       end
     end
   end
