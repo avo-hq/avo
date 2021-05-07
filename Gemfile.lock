@@ -157,6 +157,8 @@ GEM
       i18n
     jbuilder (2.10.1)
       activesupport (>= 5.0.0)
+    launchy (2.5.0)
+      addressable (~> 2.7)
     listen (3.5.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -387,6 +389,7 @@ DEPENDENCIES
   image_processing (~> 1.2)
   iso
   jbuilder (~> 2.7)
+  launchy
   listen (>= 3.5.1)
   manifester
   meta-tags

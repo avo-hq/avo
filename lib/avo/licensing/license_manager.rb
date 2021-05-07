@@ -6,8 +6,6 @@ module Avo
       end
 
       def license
-        return NullLicense.new if Rails.env.test? && (ENV["RUN_WITH_NULL_LICENSE"] == "1")
-
         case @hq_response["id"]
         when "community"
           CommunityLicense.new @hq_response

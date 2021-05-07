@@ -60,41 +60,41 @@ RSpec.describe Avo::UsersController, type: :controller do
   end
 
   after :all do
-    class UserPolicy < ApplicationPolicy
-      def index?
-        false
-      end
+    # class UserPolicy < ApplicationPolicy
+    #   def index?
+    #     false
+    #   end
 
-      def show?
-        false
-      end
+    #   def show?
+    #     false
+    #   end
 
-      def create?
-        false
-      end
+    #   def create?
+    #     false
+    #   end
 
-      def new?
-        false
-      end
+    #   def new?
+    #     false
+    #   end
 
-      def update?
-        false
-      end
+    #   def update?
+    #     false
+    #   end
 
-      def edit?
-        false
-      end
+    #   def edit?
+    #     false
+    #   end
 
-      def destroy?
-        false
-      end
+    #   def destroy?
+    #     false
+    #   end
 
-      class Scope < ApplicationPolicy::Scope
-        def resolve
-          scope.all
-        end
-      end
-    end
+    #   class Scope < ApplicationPolicy::Scope
+    #     def resolve
+    #       scope.all
+    #     end
+    #   end
+    # end
   end
 
   describe ".index" do

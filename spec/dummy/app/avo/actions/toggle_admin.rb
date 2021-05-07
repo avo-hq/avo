@@ -4,7 +4,7 @@ class ToggleAdmin < Avo::BaseAction
 
   def handle(models:, fields:)
     models.each do |model|
-      if model.roles["admin"]
+      if model.roles["admin"].present?
         model.update roles: model.roles.merge!({"admin": false})
       else
         model.update roles: model.roles.merge!({"admin": true})
