@@ -4,20 +4,20 @@ module Avo
       attr_reader :width
       attr_reader :height
       attr_reader :radius
+      attr_reader :link_to_resource
 
-      def initialize(name, **args, &block)
-        @defaults = {
-          partial_name: "external-image-field",
-          computable: true
-        }.merge(@defaults || {})
-
-        super(name, **args, &block)
+      def initialize(id, **args, &block)
+        super(id, **args, &block)
 
         @link_to_resource = args[:link_to_resource].present? ? args[:link_to_resource] : false
 
         @width = args[:width].present? ? args[:width] : 32
         @height = args[:height].present? ? args[:height] : 32
         @radius = args[:radius].present? ? args[:radius] : 0
+      end
+
+      def to_image
+        value
       end
     end
   end

@@ -7,9 +7,10 @@
   <%= csp_meta_tag %>
 
   <%= render partial: 'avo/partials/javascript' %>
+  <%= render partial: 'avo/partials/head' %>
 
-  <%= javascript_pack_tag 'application' %>
-  <%= stylesheet_pack_tag 'application', media: 'all' %>
+  <%= javascript_manifest_tag 'application' %>
+  <%= stylesheet_manifest_tag 'application', media: 'all' %>
 </head>
 <body class="bg-blue-gray-200">
 
@@ -18,14 +19,15 @@
     <%= render partial: 'avo/sidebar/sidebar' %>
 
     <div class="flex-1 flex flex-col h-full overflow-auto">
-      <div class="relative bg-white p-2 shadow-md h-16 w-full flex flex-shrink-0 items-center z-50" v-if="layout !== 'blank'">
-        <div class="ml-6">
+      <div class="relative bg-white p-2 shadow-md h-16 w-full flex flex-shrink-0 items-center z-50 px-6" v-if="layout !== 'blank'">
+        <div>
           <%= render partial: "avo/partials/header" %>
         </div>
-        <div class="flex-1 flex justify-center">
-          <div class="w-64">
-            <%# <resources-search :global="true"> %>
-          </div>
+        <div class="flex-1 flex ml-4 pl-4">
+          <%= render partial: "avo/partials/global_search" if ::Avo::App.license.has_with_trial(:global_search) %>
+        </div>
+        <div class="align-end">
+          <%= render partial: "avo/partials/profile_dropdown" %>
         </div>
       </div>
 

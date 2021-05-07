@@ -2,9 +2,20 @@ require_dependency "avo/application_controller"
 
 module Avo
   class AttachmentsController < ApplicationController
-    before_action :set_resource_name, only: :destroy
-    before_action :set_resource, only: :destroy
-    before_action :set_model, only: :destroy
+    before_action :set_resource_name, only: [:destroy, :create]
+    before_action :set_resource, only: [:destroy, :create]
+    before_action :set_model, only: [:destroy, :create]
+
+    def create
+      blob = ActiveStorage::Blob.create_and_upload! io: params[:file], filename: params[:filename]
+
+      @model.send(params[:attachment_key]).attach blob
+
+      render json: {
+        url: main_app.url_for(blob),
+        href: main_app.url_for(blob)
+      }
+    end
 
     def show
     end

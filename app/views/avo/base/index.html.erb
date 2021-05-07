@@ -1,4 +1,4 @@
-<%= turbo_frame_start params[:turbo_frame] %>
+<%= turbo_frame_wrap(params[:turbo_frame]) do %>
   <%= render Avo::Views::ResourceIndexComponent.new(
       resource: @resource,
       resources: @resources,
@@ -12,4 +12,4 @@
       parent_model: @parent_model,
     )
   %>
-<%= turbo_frame_end params[:turbo_frame] %>
+<% end %>

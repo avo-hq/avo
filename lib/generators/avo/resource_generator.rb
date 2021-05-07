@@ -10,9 +10,6 @@ module Generators
       def create
         template "resource/resource.tt", "app/avo/resources/#{resource_name}.rb"
         template "resource/controller.tt", "app/controllers/avo/#{controller_name}.rb"
-
-        # Show a warning if the model doesn't exists
-        say("We couldn't find the #{class_name} model in your codebase. You should have one present for Avo to display the resource.", :yellow) unless current_models.include? class_name
       end
 
       def resource_class
@@ -20,7 +17,7 @@ module Generators
       end
 
       def controller_class
-        "Avo::#{plural_name.humanize}Controller"
+        "Avo::#{class_name.camelize.pluralize}Controller"
       end
 
       def resource_name

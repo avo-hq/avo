@@ -75,7 +75,7 @@ RSpec.describe "StatusField", type: :system do
         expect(current_path).to eql "/avo/resources/projects/#{project.id}"
 
         expect(find_field_element("status")).to have_text "normal"
-        expect(find_field_element("status")).not_to have_css ".text-red-700"
+        expect(find_field_element("status")).not_to have_css ".text-red-600"
         expect(find_field_element("status")).not_to have_css ".spinner"
       end
 
@@ -89,7 +89,7 @@ RSpec.describe "StatusField", type: :system do
 
         expect(current_path).to eql "/avo/resources/projects/#{project.id}"
         expect(find_field_value_element("status")).to have_text "failed"
-        expect(find_field_element("status")).to have_css ".text-red-700"
+        expect(find_field_element("status")).to have_css ".text-red-600"
         expect(find_field_element("status")).not_to have_css ".spinner"
       end
 
@@ -105,7 +105,7 @@ RSpec.describe "StatusField", type: :system do
 
         expect(find_field_element("status")).to have_text "waiting"
         expect(find_field_element("status")).to have_css ".spinner"
-        expect(find_field_element("status")).not_to have_css ".text-red-700"
+        expect(find_field_element("status")).not_to have_css ".text-red-600"
       end
     end
   end

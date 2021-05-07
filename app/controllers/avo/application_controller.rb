@@ -18,7 +18,7 @@ module Avo
     add_flash_types :info, :warning, :success, :error
 
     def init_app
-      Avo::App.init request: request, context: context
+      Avo::App.init request: request, context: context, current_user: _current_user
 
       @license = Avo::App.license
     end
@@ -39,18 +39,25 @@ module Avo
     def render(*args)
       raise Avo::LicenseVerificationTemperedError, "License verification mechanism tempered with." unless method(:check_avo_license).source_location.first.match?(/.*\/app\/controllers\/avo\/application_controller\.rb/)
 
+      if params[:controller] == "avo/search" && params[:action] == "index"
+        raise Avo::LicenseVerificationTemperedError, "License verification mechanism tempered with." unless method(:index).source_location.first.match?(/.*\/app\/controllers\/avo\/search_controller\.rb/)
+      end
+
       super(*args)
     end
 
     def check_avo_license
-      unless request.original_url.match?(/.*\/#{Avo.configuration.namespace}\/resources\/.*/)
-        if @license.invalid? || @license.lacks(:custom_tools)
-          if Rails.env.development?
+      # Check to see if the path is on a custom tool
+      unless on_root_path || on_resources_path || on_api_path
+        # Display alert on custom tool page if in development.
+        if @license.lacks(:custom_tools) || @license.invalid?
+          if Rails.env.development? || Rails.env.test?
             @custom_tools_alert_visible = true
-          else
-            raise Avo::LicenseInvalidError, "Your license is invalid or doesn't support custom tools."
           end
         end
+
+        # Raise error in non-development environments.
+        raise Avo::LicenseInvalidError, "Your license is invalid or doesn't support custom tools." if @license.lacks_with_trial(:custom_tools)
       end
     end
 
@@ -158,9 +165,9 @@ module Avo
 
     def authorize_action
       if @model.present?
-        @authorization.set_record(@model).authorize_action :index
+        @authorization.set_record(@model).authorize_action action_name.to_sym
       else
-        @authorization.set_record(@resource.model_class).authorize_action :index
+        @authorization.set_record(@resource.model_class).authorize_action action_name.to_sym
       end
     end
 
@@ -264,6 +271,18 @@ module Avo
 
     def add_initial_breadcrumbs
       instance_eval(&Avo.configuration.initial_breadcrumbs) if Avo.configuration.initial_breadcrumbs.present?
+    end
+
+    def on_root_path
+      [Avo.configuration.root_path, "#{Avo.configuration.root_path}/"].include?(request.original_fullpath)
+    end
+
+    def on_resources_path
+      request.original_url.match?(/.*\/#{Avo.configuration.namespace}\/resources\/.*/)
+    end
+
+    def on_api_path
+      request.original_url.match?(/.*\/#{Avo.configuration.namespace}\/avo_api\/.*/)
     end
   end
 end

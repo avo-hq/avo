@@ -1,7 +1,7 @@
 /* eslint-disable global-require */
 module.exports = {
   plugins: {
-    '@tailwindcss/jit': {},
+    tailwindcss: {},
     autoprefixer: {},
     'postcss-nested': {},
     'postcss-nested-ancestors': {},

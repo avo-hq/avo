@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    avo (1.2.8)
+    avo (1.5.3)
       active_link_to
       addressable
       breadcrumbs_on_rails
@@ -9,12 +9,13 @@ PATH
       hotwire-rails
       httparty
       image_processing
+      manifester
       meta-tags
       pagy
       pundit
       rails (>= 6.0)
+      ransack
       view_component
-      webpacker
       zeitwerk
 
 GEM
@@ -166,6 +167,8 @@ GEM
       i18n
     jbuilder (2.11.2)
       activesupport (>= 5.0.0)
+    launchy (2.5.0)
+      addressable (~> 2.7)
     listen (3.5.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -174,6 +177,9 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.7.1)
       mini_mime (>= 0.1.1)
+    manifester (0.1.6)
+      rails (>= 6.0)
+      zeitwerk
     marcel (1.0.0)
     meta-tags (2.14.0)
       actionpack (>= 3.2.0, < 6.2)
@@ -192,7 +198,7 @@ GEM
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
     orm_adapter (0.5.0)
-    pagy (3.12.0)
+    pagy (3.13.0)
     parallel (1.20.1)
     parser (3.0.0.0)
       ast (~> 2.4.1)
@@ -240,6 +246,10 @@ GEM
       thor (~> 1.0)
     rainbow (3.0.0)
     rake (13.0.3)
+    ransack (2.4.2)
+      activerecord (>= 5.2.4)
+      activesupport (>= 5.2.4)
+      i18n
     rb-fsevent (0.10.4)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
@@ -387,13 +397,16 @@ DEPENDENCIES
   image_processing (~> 1.2)
   iso
   jbuilder (~> 2.7)
+  launchy
   listen (>= 3.5.1)
+  manifester
   meta-tags
   pg (>= 0.18, < 2.0)
   puma (~> 4.3.5)
   pundit
   rails (~> 6.1.0)
   rails-controller-testing
+  ransack
   rspec-rails (~> 4.0.0)
   ruby-debug-ide
   sass-rails (>= 6)
@@ -413,4 +426,4 @@ DEPENDENCIES
   zeitwerk (~> 2.3)
 
 BUNDLED WITH
-   2.2.5
+   2.2.17

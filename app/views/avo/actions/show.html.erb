@@ -21,7 +21,7 @@
 
         <% if @action.get_fields.present? %>
           <% @action.get_fields.each_with_index do |field, index| %>
-            <%= edit_field field, index, nil, form, displayed_in_modal: true %>
+            <%= render field.component_for_view(:edit).new field: field, resource: @resource, index: index, form: form, displayed_in_modal: true %>
           <% end %>
         <% end %>
 

@@ -44,7 +44,7 @@ jobs:
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
-        bundler-cache: true
+        # bundler-cache: true
         bundler: default
         ruby-version: ${{ matrix.ruby }}
 
@@ -81,8 +81,16 @@ jobs:
     - name: Yarn install
       run: yarn
 
+    - name: Replace packed webpacker config
+      run: |
+        rm ./config/webpacker.yml
+        mv ./config/webpacker_packed.yml ./config/webpacker.yml
+
     - name: Bundle assets
       run: bin/webpack
+      env:
+        RAILS_ENV: production
+        NODE_ENV: production
 
     - name: Run tests
       run: bundle exec rspec

@@ -1,10 +1,16 @@
 module Avo
   module ApplicationHelper
-    include ::Webpacker::Helper
+    include ::Manifester::Helper
     include ::Pagy::Frontend
 
     def current_webpacker_instance
-      Avo.webpacker
+      return Avo.webpacker if Avo::IN_DEVELOPMENT
+
+      super
+    end
+
+    def current_manifester_instance
+      Avo.manifester
     end
 
     def render_license_warnings
@@ -25,12 +31,10 @@ module Avo
       render partial: "avo/partials/empty_state", locals: {resource_name: resource_name}
     end
 
-    def turbo_frame_start(name)
-      "<turbo-frame id=\"#{name}\">".html_safe if name.present?
-    end
-
-    def turbo_frame_end(name)
-      "</turbo-frame>".html_safe if name.present?
+    def turbo_frame_wrap(name, &block)
+      render layout: "avo/partials/turbo_frame_wrap", locals: {name: name} do
+        capture(&block)
+      end
     end
 
     def a_button(label = nil, **args, &block)

@@ -13,7 +13,7 @@ module Generators
 
         type = "select" if options[:select]
 
-        template "filters/#{type}_filter.tt", "app/services/avo/filters/#{singular_name}.rb"
+        template "filters/#{type}_filter.tt", "app/avo/filters/#{singular_name}.rb"
       end
     end
   end

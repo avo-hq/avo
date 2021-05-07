@@ -1,21 +1,17 @@
 module Avo
   module Fields
     class CodeField < BaseField
-      attr_reader :height
       attr_reader :language
       attr_reader :theme
+      attr_reader :height
       attr_reader :tab_size
       attr_reader :indent_with_tabs
       attr_reader :line_wrapping
 
-      def initialize(name, **args, &block)
-        @defaults = {
-          partial_name: "code-field"
-        }
-
+      def initialize(id, **args, &block)
         hide_on :index
 
-        super(name, **args, &block)
+        super(id, **args, &block)
 
         @language = args[:language].present? ? args[:language].to_s : "javascript"
         @theme = args[:theme].present? ? args[:theme].to_s : "material-darker"

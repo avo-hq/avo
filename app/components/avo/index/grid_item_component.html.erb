@@ -6,7 +6,7 @@
 
     <% if cover.blank? %>
       <%= render Avo::Index::GridCoverEmptyStateComponent.new %>
-    <% elsif cover.respond_to? :to_image %>
+    <% elsif cover.respond_to?(:to_image) && cover.to_image.present? %>
       <%= link_to_if cover.link_to_resource, image_tag(cover.to_image, class: 'absolute h-full w-full object-cover'), helpers.resource_path(@resource.model), class: 'absolute h-full w-full object-cover', title: title.value %>
     <% elsif cover.type == 'file' %>
       <% if cover.value.attached? && cover.value.representable? %>

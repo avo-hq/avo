@@ -8,9 +8,18 @@ export default class extends Controller {
     return this.elementTarget.dataset.view
   }
 
+  get componentOptions() {
+    try {
+      return JSON.parse(this.elementTarget.dataset.componentOptions)
+    } catch (error) {
+      return {}
+    }
+  }
+
   connect() {
     const options = {
       element: this.elementTarget,
+      spellChecker: this.componentOptions.spell_checker,
     }
 
     if (this.view === 'show') {

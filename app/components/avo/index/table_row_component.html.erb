@@ -8,7 +8,7 @@
     </div>
   </td>
   <% @resource.get_fields(reflection: @reflection).each_with_index do |field, index| %>
-    <%= index_field field, index, @resource %>
+    <%= render field.component_for_view(:index).new(field: field, resource: @resource, index: index, parent_model: @parent_model) %>
   <% end %>
   <td class="text-right whitespace-nowrap px-2">
     <div class="flex items-center justify-end flex-grow-0 h-full w-full">
