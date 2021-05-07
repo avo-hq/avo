@@ -1,9 +1,12 @@
 require "rails_helper"
 
 RSpec.feature "Search", type: :system do
-  let(:url) { '/avo/resources/users' }
+  let(:url) { "/avo/resources/users" }
 
-  subject { visit url; page }
+  subject do
+    visit url
+    page
+  end
 
   describe "global" do
     context "when doing ctrl+k" do
