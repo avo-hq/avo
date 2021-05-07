@@ -1,0 +1,17 @@
+<div data-controller="search" class="global-search" data-turbo-remove-before-cache>
+  <div class="inline-block"
+    data-search-target="autocomplete"
+    data-search-resource="global"
+    data-translation-keys='{"no_item_found": "<%= I18n.translate 'avo.no_item_found' %>"}'
+    data-debounce-timeout='<%= Avo.configuration.search_debounce %>'
+  >
+  </div>
+  <div class="relative top-[-5px] inline-flex text-gray-400 text-sm leading-5 py-0.5 px-1.5 border border-gray-300 rounded-md cursor-pointer"
+    data-search-target="button"
+  >
+    <span class="sr-only">Press </span>
+    <kbd class="font-sans"><abbr title="Command" class="no-underline">⌘</abbr></kbd>
+    <span class="sr-only"> and </span>
+    <kbd class="font-sans">K</kbd><span class="sr-only"> to search</span>
+  </div>
+</div>

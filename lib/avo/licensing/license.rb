@@ -47,6 +47,16 @@ module Avo
 
       alias_method :has, :can
       alias_method :lacks, :cant
+
+      # Returns if has ability and if is a valid license or app is in development.
+      def has_with_trial(ability)
+        can(ability) && (valid? || Rails.env.development? || Rails.env.test?)
+      end
+
+      # Returns if lacks ability and if is a valid license or app is in development.
+      def lacks_with_trial(ability)
+        !can(ability) && (valid? || Rails.env.development? || Rails.env.test?)
+      end
     end
   end
 end

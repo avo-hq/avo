@@ -2,56 +2,71 @@ require_dependency "avo/application_controller"
 
 module Avo
   class SearchController < ApplicationController
-    # before_action :authorize_user
+    before_action :set_resource_name, only: [:show]
+    before_action :set_resource, only: [:show]
 
     def index
-      @authorization.set_record(resource_model).authorize_action :index
-      resources = []
+      raise ActionController::BadRequest.new("This feature requires the pro license https://avohq.io/purchase/pro") if App.license.lacks_with_trial(:global_search)
 
-      App.resources
-        .select { |resource| resource.search.present? }
-        .select { |resource| AuthorizationService.authorize_action _current_user, resource.model, "index" }
-        .each do |resource_model|
-          found_resources = add_link_to_search_results(search_resource(resource_model), resource_model)
-          resources.push({
-            label: resource_model.name,
-            resources: found_resources
-          })
-        end
-
-      render json: {
-        resources: resources
-      }
+      render json: search_resources(Avo::App.resources)
     end
 
-    def resource
-      render json: {
-        resources: add_link_to_search_results(search_resource(avo_resource), avo_resource)
-      }
+    def show
+      render json: search_resources([resource])
     end
 
     private
 
-    def add_link_to_search_results(resources, avo_resource)
-      resources.map do |model|
-        {
-          id: model.id,
-          search_label: model.send(avo_resource.class.title),
-          link: "/resources/#{model.class.to_s.singularize.underscore}/#{model.id}"
+    def search_resources(resources)
+      resources.map do |resource|
+        # Apply authorization
+        next unless @authorization.set_record(resource.model_class).authorize_action(:index, raise_exception: false)
+        # Filter out the models without a search_query
+        next if resource.search_query.nil?
+
+        search_resource resource
+      end
+        .select do |payload|
+          payload.present?
+        end
+        .sort do |payload|
+          payload.last[:count]
+        end
+        .reverse
+        .to_h
+    end
+
+    def search_resource(resource)
+      results = apply_search_metadata(resource.search_query.call(params: params).limit(8), resource)
+
+      result_object = {
+        header: resource.name.pluralize,
+        results: results,
+        count: results.length
+      }
+
+      [resource.name.pluralize.downcase, result_object]
+    end
+
+    def apply_search_metadata(models, avo_resource)
+      models.map do |model|
+        resource = avo_resource.dup.hydrate(model: model).hydrate_fields(model: model)
+
+        result = {
+          _id: model.id,
+          _label: resource.label,
+          _url: resource.avo_path,
+          model: model
         }
+
+        if App.license.has_with_trial(:enhanced_search_results)
+          result[:_description] = resource.description
+          result[:_avatar] = resource.avatar
+          result[:_avatar_type] = resource.avatar_type
+        end
+
+        result
       end
     end
-
-    def search_resource(avo_resource)
-      avo_resource.query_search(query: params[:q], via_resource_name: params[:via_resource_name], via_resource_id: params[:via_resource_id], user: _current_user)
-    end
-
-    # def authorize_user
-    #   return if params[:action] == 'index'
-
-    #   action = params[:action] == 'resource' ? :index : params[:action]
-
-    #   return render_unauthorized unless AuthorizationService::authorize_action _current_user, avo_resource.model, action
-    # end
   end
 end

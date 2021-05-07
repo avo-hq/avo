@@ -13,7 +13,7 @@ RSpec.feature "Avo::Licensing::LicenseManager", type: :feature do
         ENV["RUN_WITH_NULL_LICENSE"] = "0"
       end
 
-      it { is_expected.to be_a Avo::Licensing::NullLicense }
+      it { is_expected.to be_a Avo::Licensing::CommunityLicense }
     end
 
     context "with community license" do

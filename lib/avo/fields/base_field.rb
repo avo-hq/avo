@@ -19,6 +19,9 @@ module Avo
       attr_reader :help
       attr_reader :default
       attr_reader :visible
+      attr_reader :as_label
+      attr_reader :as_avatar
+      attr_reader :as_description
 
       # Private options
       attr_reader :updatable
@@ -53,6 +56,9 @@ module Avo
         @help = args[:help] || nil
         @default = args[:default] || nil
         @visible = args[:visible] || true
+        @as_label = args[:as_label] || false
+        @as_avatar = args[:as_avatar] || false
+        @as_description = args[:as_description] || false
 
         @updatable = true
         @computable = true

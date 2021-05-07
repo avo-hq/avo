@@ -23,10 +23,8 @@
         <div>
           <%= render partial: "avo/partials/header" %>
         </div>
-        <div class="flex-1 flex justify-center">
-          <div class="w-64 flex">
-            <%# <resources-search :global="true"> %>
-          </div>
+        <div class="flex-1 flex ml-4 pl-4">
+          <%= render partial: "avo/partials/global_search" if ::Avo::App.license.has_with_trial(:global_search) %>
         </div>
         <div class="align-end">
           <%= render partial: "avo/partials/profile_dropdown" %>

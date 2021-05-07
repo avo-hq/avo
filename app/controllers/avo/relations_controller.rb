@@ -17,7 +17,7 @@ module Avo
       @resource = @related_resource
       @parent_model = @parent_resource.model_class.find(params[:id])
       @parent_resource.hydrate(model: @parent_model)
-      @query = @parent_model.public_send(params[:related_name])
+      @query = @authorization.apply_policy @parent_model.public_send(params[:related_name])
 
       super
     end

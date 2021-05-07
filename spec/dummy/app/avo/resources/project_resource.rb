@@ -1,10 +1,12 @@
 class ProjectResource < Avo::BaseResource
   self.title = :name
-  self.search = [:name, :id]
+  self.search_query = ->(params:) do
+    scope.ransack(id_eq: params[:q], name_cont: params[:q], country_cont: params[:q], m: "or").result(distinct: false)
+  end
   self.includes = :users
 
   field :id, as: :id, link_to_resource: true
-  field :name, as: :text, required: true
+  field :name, as: :text, required: true, as_label: true
   field :progress, as: :progress_bar, value_suffix: "%", display_value: true
   field :status, as: :status, failed_when: [:closed, :rejected, :failed], loading_when: [:loading, :running, :waiting], nullable: true
   field :stage, as: :select, hide_on: [:show, :index], enum: ::Project.stages, placeholder: "Choose the stage", display_value: true

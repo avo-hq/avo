@@ -22,6 +22,7 @@ module Avo
     attr_accessor :display_breadcrumbs
     attr_accessor :initial_breadcrumbs
     attr_accessor :home_path
+    attr_accessor :search_debounce
 
     def initialize
       @root_path = "/avo"
@@ -56,6 +57,7 @@ module Avo
       }
       @display_breadcrumbs = true
       @home_path = nil
+      @search_debounce = 300
     end
 
     def locale_tag

@@ -14,6 +14,7 @@ PATH
       pagy
       pundit
       rails (>= 6.0)
+      ransack
       view_component
       zeitwerk
 
@@ -156,6 +157,8 @@ GEM
       i18n
     jbuilder (2.10.1)
       activesupport (>= 5.0.0)
+    launchy (2.5.0)
+      addressable (~> 2.7)
     listen (3.5.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -235,6 +238,10 @@ GEM
       thor (>= 0.20.3, < 2.0)
     rainbow (3.0.0)
     rake (13.0.3)
+    ransack (2.4.2)
+      activerecord (>= 5.2.4)
+      activesupport (>= 5.2.4)
+      i18n
     rb-fsevent (0.10.4)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
@@ -382,6 +389,7 @@ DEPENDENCIES
   image_processing (~> 1.2)
   iso
   jbuilder (~> 2.7)
+  launchy
   listen (>= 3.5.1)
   manifester
   meta-tags
@@ -390,6 +398,7 @@ DEPENDENCIES
   pundit
   rails (~> 6.0.2, >= 6.0.2.2)
   rails-controller-testing
+  ransack
   rspec-rails (~> 4.0.0)
   ruby-debug-ide
   sass-rails (>= 6)

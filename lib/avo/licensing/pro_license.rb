@@ -5,7 +5,9 @@ module Avo
         [
           :authorization,
           :custom_tools,
-          :custom_fields
+          :custom_fields,
+          :global_search,
+          :enhanced_search_results
         ]
       end
     end

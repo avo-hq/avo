@@ -6,6 +6,8 @@
   "license": "Commercial",
   "private": true,
   "dependencies": {
+    "@algolia/autocomplete-js": "^1.0.0-alpha.46",
+    "@algolia/autocomplete-theme-classic": "^1.0.0-alpha.46",
     "@babel/plugin-proposal-class-properties": "^7.12.1",
     "@hotwired/turbo-rails": "^7.0.0-beta.2",
     "@rails/activestorage": "^6.0.2-1",

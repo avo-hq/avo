@@ -1,0 +1,79 @@
+:root {
+  --aa-primary-color: --tw-ring-color;
+  --aa-selected-color: --tw-ring-color;
+  --aa-primary-color-rgb: 5, 150, 105;
+}
+
+.global-search {
+  .aa-DetachedSearchButton:focus,
+  .aa-DetachedSearchButton {
+    border: none !important;
+  }
+}
+
+.resource-search {
+  .aa-Autocomplete {
+    @apply w-full;
+  }
+
+  .aa-DetachedSearchButton {
+    @apply rounded-full border-gray-300;
+  }
+}
+
+.aa-SourceHeader {
+  @apply uppercase text-xs font-semibold;
+}
+
+.aa-DetachedFormContainer,
+.aa-DetachedContainer .aa-Panel {
+  @apply bg-blue-gray-100 border-b-0;
+}
+
+.aa-Form {
+  &:focus-within {
+    @apply ring-0 !important;
+  }
+
+  input {
+    @apply focus:ring-0 !important;
+  }
+  &:focus-within {
+    .aa-InputWrapperPrefix{
+      .aa-SubmitButton {
+        @apply ring-0;
+      }
+    }
+  }
+}
+.aa-Input {
+  @apply focus:ring-green-600;
+}
+
+.aa-DetachedContainer {
+  .aa-PanelLayout {
+    @apply pt-0 space-y-3;
+  }
+
+  .aa-Source {
+    .aa-List {
+      @apply space-y-1;
+
+      .aa-Item {
+        @apply bg-white rounded-md px-3 py-4 shadow;
+
+        .aa-ItemDescription {
+          @apply text-gray-500 text-sm;
+        }
+
+        &[aria-selected=true]{
+          @apply bg-blue-700 text-white;
+
+          .aa-ItemDescription {
+            @apply text-white;
+          }
+        }
+      }
+    }
+  }
+}

@@ -11,7 +11,7 @@ module Avo
 
     class_attribute :id, default: :id
     class_attribute :title, default: :id
-    class_attribute :search, default: [:id]
+    class_attribute :search_query, default: nil
     class_attribute :includes, default: []
     class_attribute :model_class
     class_attribute :translation_key
@@ -42,6 +42,18 @@ module Avo
 
         self.filters_loader.use filter_class
       end
+
+      def scope
+        authorization.apply_policy model_class
+      end
+
+      def authorization
+        Avo::Services::AuthorizationService.new Avo::App.current_user
+      end
+    end
+
+    def initialize
+      self.class.model_class = model_class
     end
 
     def hydrate(model: nil, view: nil, user: nil, params: nil)
@@ -65,7 +77,7 @@ module Avo
         field.hydrate(resource: self, panel_name: default_panel_name, user: user)
       end
 
-      if Avo::App.license.invalid? || Avo::App.license.lacks(:custom_fields)
+      if Avo::App.license.has_with_trial(:custom_fields)
         fields = fields.reject do |field|
           field.custom?
         end
@@ -96,9 +108,9 @@ module Avo
         end
       end
 
-      fields.map do |field|
-        field.hydrate(model: @model, view: @view, resource: self)
-      end
+      hydrate_fields(model: @model, view: @view)
+
+      fields
     end
 
     def get_grid_fields
@@ -119,8 +131,16 @@ module Avo
       self.class.actions_loader.bag
     end
 
+    def hydrate_fields(model: nil, view: nil)
+      fields.map do |field|
+        field.hydrate(model: @model, view: @view, resource: self)
+      end
+
+      self
+    end
+
     def default_panel_name
-      return @params[:related_name].capitalize if @params[:related_name].present?
+      return @params[:related_name].capitalize if @params.present? && @params[:related_name].present?
 
       case @view
       when :show
@@ -226,7 +246,11 @@ module Avo
 
     def fill_model(model, params)
       # Map the received params to their actual fields
-      fields_by_database_id = get_field_definitions.map { |field| [field.database_id(model).to_s, field] }.to_h
+      fields_by_database_id = get_field_definitions
+        .reject do |field|
+          field.computed
+        end
+        .map { |field| [field.database_id(model).to_s, field] }.to_h
 
       params.each do |key, value|
         field = fields_by_database_id[key]
@@ -300,6 +324,58 @@ module Avo
           @model.send("#{id}=", value)
         end
       end
+    end
+
+    def avo_path
+      "#{Avo.configuration.root_path}/resources/#{model_class.model_name.route_key}/#{model.id}"
+    end
+
+    def label_field
+      get_field_definitions.find do |field|
+        field.as_label.present?
+      end
+    rescue
+      nil
+    end
+
+    def label
+      label_field.value || model_title
+    rescue
+      model_title
+    end
+
+    def avatar_field
+      get_field_definitions.find do |field|
+        field.as_avatar.present?
+      end
+    rescue
+      nil
+    end
+
+    def avatar
+      avatar_field.to_image
+    rescue
+      nil
+    end
+
+    def avatar_type
+      avatar_field.as_avatar
+    rescue
+      nil
+    end
+
+    def description_field
+      get_field_definitions.find do |field|
+        field.as_description.present?
+      end
+    rescue
+      nil
+    end
+
+    def description
+      description_field.value
+    rescue
+      nil
     end
   end
 end
