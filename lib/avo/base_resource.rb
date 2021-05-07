@@ -353,7 +353,9 @@ module Avo
     end
 
     def avatar
-      avatar_field.to_image
+      return avatar_field.to_image if avatar_field.respond_to? :to_image
+
+      avatar_field.value
     rescue
       nil
     end
