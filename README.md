@@ -24,6 +24,7 @@ Avo is a beautiful next-generation framework that empowers you, the developer, t
   - **Powered by Hotwire** - Rails ❤️  Hotwire
   - **Code driven configuration** - Configure your Rails dashboard entirely by writing Ruby code.
   - **Resource Management** - Create a CRUD interface for Active Record from one command. No more copy-pasting view and controller files around.
+  - **Resource Search** - Quickly run a search through one or more resources at once.
   - **Active Storage support** - Amazingly easy, **one-line**, single or multi-file integration with **ActiveStorage**.
   - **Grid view** - Beautiful card layout to showcase your content.
   - **Actions** - Run custom actions to one or more of your resources with as little as pressing a button 💪
