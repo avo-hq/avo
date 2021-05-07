@@ -15,6 +15,10 @@ module Avo
         @height = args[:height].present? ? args[:height] : 32
         @radius = args[:radius].present? ? args[:radius] : 0
       end
+
+      def to_image
+        value
+      end
     end
   end
 end
