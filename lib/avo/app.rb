@@ -119,7 +119,7 @@ module Avo
 
       def get_available_resources(user = nil)
         resources.select do |resource|
-            Services::AuthorizationService.authorize user, resource.model, Avo.configuration.authorization_methods.stringify_keys["index"], raise_exception: false
+            Services::AuthorizationService.authorize user, resource.model_class, Avo.configuration.authorization_methods.stringify_keys["index"], raise_exception: false
           end
           .sort_by { |r| r.name }
       end
