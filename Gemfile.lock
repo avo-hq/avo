@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    avo (1.4.4)
+    avo (1.5.0)
       active_link_to
       addressable
       breadcrumbs_on_rails
@@ -418,4 +418,4 @@ DEPENDENCIES
   zeitwerk (~> 2.3)
 
 BUNDLED WITH
-   2.2.11
+   2.2.17

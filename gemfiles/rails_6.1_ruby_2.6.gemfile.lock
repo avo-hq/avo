@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    avo (1.4.4)
+    avo (1.5.0)
       active_link_to
       addressable
       breadcrumbs_on_rails
@@ -14,6 +14,7 @@ PATH
       pagy
       pundit
       rails (>= 6.0)
+      ransack
       view_component
       zeitwerk
 
@@ -166,6 +167,8 @@ GEM
       i18n
     jbuilder (2.11.2)
       activesupport (>= 5.0.0)
+    launchy (2.5.0)
+      addressable (~> 2.7)
     listen (3.5.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -243,6 +246,10 @@ GEM
       thor (~> 1.0)
     rainbow (3.0.0)
     rake (13.0.3)
+    ransack (2.4.2)
+      activerecord (>= 5.2.4)
+      activesupport (>= 5.2.4)
+      i18n
     rb-fsevent (0.10.4)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
@@ -390,6 +397,7 @@ DEPENDENCIES
   image_processing (~> 1.2)
   iso
   jbuilder (~> 2.7)
+  launchy
   listen (>= 3.5.1)
   manifester
   meta-tags
@@ -398,6 +406,7 @@ DEPENDENCIES
   pundit
   rails (~> 6.1.0)
   rails-controller-testing
+  ransack
   rspec-rails (~> 4.0.0)
   ruby-debug-ide
   sass-rails (>= 6)
@@ -417,4 +426,4 @@ DEPENDENCIES
   zeitwerk (~> 2.3)
 
 BUNDLED WITH
-   2.2.11
+   2.2.17
