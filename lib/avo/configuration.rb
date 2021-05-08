@@ -36,7 +36,7 @@ module Avo
       @default_view_type = :table
       @license = "community"
       @license_key = nil
-      @current_user = proc { current_user }
+      @current_user = proc {  }
       @authenticate = proc {}
       @authorization_methods = {
         index: "index?",
