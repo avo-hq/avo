@@ -12,11 +12,11 @@
 /scripts
 /public/avo-packs
 node_modules/
-/spec/dummy/public
-/spec/dummy/node_modules
-/spec/dummy/tmp
-/spec/dummy/log
-/spec/dummy/storage
+/spec/dummy*/public
+/spec/dummy*/node_modules
+/spec/dummy*/tmp
+/spec/dummy*/log
+/spec/dummy*/storage
 .idea
 docker/
 coverage/
