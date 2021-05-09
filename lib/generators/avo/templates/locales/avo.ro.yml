@@ -34,7 +34,6 @@ ro:
     per_page: 'Pe pagina'
     more: 'Mai multe'
     attach: 'Ataseaza'
-    cancel: 'Renunta'
     save: 'Salveaza'
     attach_and_attach_another: 'Ataseaza si ataseaza inca unul'
     hide_content: 'Ascunde continutul'
