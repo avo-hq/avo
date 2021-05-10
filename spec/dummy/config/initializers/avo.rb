@@ -1,5 +1,5 @@
 Avo.configure do |config|
-  config.root_path = "/avo"
+  config.root_path = "/admin"
   config.app_name = "Avocadelicious"
   config.license = "pro"
   config.locale = "en-US"
