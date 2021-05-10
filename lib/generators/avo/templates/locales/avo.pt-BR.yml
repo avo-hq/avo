@@ -1,4 +1,4 @@
-pt:
+pt-BR:
   avo:
     dashboard: 'Painel'
     choose_a_country: 'Escolha um país'
@@ -43,7 +43,6 @@ pt:
     per_page: 'Por página'
     more: 'Mais'
     attach: 'Anexar'
-    cancel: 'Cancelar'
     save: 'Salvar'
     attach_and_attach_another: 'Anexar & anexar outro'
     hide_content: 'Esconder conteúdo'

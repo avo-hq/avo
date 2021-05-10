@@ -1,4 +1,4 @@
-nb:
+nb-NO:
   avo:
     dashboard: 'Dashboard'
     choose_a_country: 'Velg et land'
@@ -43,7 +43,6 @@ nb:
     per_page: 'Per side'
     more: 'Mer'
     attach: 'Legg til'
-    cancel: 'Avslutt'
     save: 'Lagre'
     attach_and_attach_another: 'Legg til & Legg til ny'
     hide_content: 'Skjul innhold'
