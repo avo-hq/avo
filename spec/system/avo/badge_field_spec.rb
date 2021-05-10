@@ -10,21 +10,21 @@ RSpec.describe "BadgeField", type: :system do
     }
 
     context "index" do
-      let!(:url) { "/avo/resources/projects" }
+      let!(:url) { "/admin/resources/projects" }
 
       it { is_expected.to have_text empty_dash }
       it { is_expected.not_to have_css ".rounded-md" }
     end
 
     context "show" do
-      let!(:url) { "/avo/resources/projects/#{project.id}" }
+      let!(:url) { "/admin/resources/projects/#{project.id}" }
 
       it { is_expected.to have_text empty_dash }
       it { is_expected.not_to have_css ".rounded-md" }
     end
 
     context "edit" do
-      let!(:url) { "/avo/resources/projects/#{project.id}/edit" }
+      let!(:url) { "/admin/resources/projects/#{project.id}/edit" }
 
       it "is hidden" do
         visit url
@@ -43,7 +43,7 @@ RSpec.describe "BadgeField", type: :system do
     }
 
     context "index" do
-      let!(:url) { "/avo/resources/projects" }
+      let!(:url) { "/admin/resources/projects" }
 
       it { is_expected.to have_text "DISCOVERY" }
       it { is_expected.to have_css ".rounded-md" }
@@ -52,7 +52,7 @@ RSpec.describe "BadgeField", type: :system do
     end
 
     context "show" do
-      let!(:url) { "/avo/resources/projects/#{project.id}" }
+      let!(:url) { "/admin/resources/projects/#{project.id}" }
 
       it { is_expected.to have_text "DISCOVERY" }
       it { is_expected.to have_css ".rounded-md" }
@@ -70,7 +70,7 @@ RSpec.describe "BadgeField", type: :system do
     }
 
     context "index" do
-      let!(:url) { "/avo/resources/projects" }
+      let!(:url) { "/admin/resources/projects" }
 
       it { is_expected.to have_text "CANCELLED" }
       it { is_expected.to have_css ".rounded-md" }
@@ -79,7 +79,7 @@ RSpec.describe "BadgeField", type: :system do
     end
 
     context "show" do
-      let!(:url) { "/avo/resources/projects/#{project.id}" }
+      let!(:url) { "/admin/resources/projects/#{project.id}" }
 
       it { is_expected.to have_text "CANCELLED" }
       it { is_expected.to have_css ".rounded-md" }

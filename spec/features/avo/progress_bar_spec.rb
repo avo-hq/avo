@@ -11,14 +11,14 @@ RSpec.feature "ProgressBar", type: :system do
 
   describe "field" do
     context "index" do
-      let(:url) { "/avo/resources/projects/" }
+      let(:url) { "/admin/resources/projects/" }
 
       it { is_expected.to have_css "progress[min='0'][max='100'][value='27']" }
       it { is_expected.to have_text "27%" }
     end
 
     context "show" do
-      let(:url) { "/avo/resources/projects/#{project.id}" }
+      let(:url) { "/admin/resources/projects/#{project.id}" }
       subject { find_field_value_element "progress" }
 
       it { is_expected.to have_css "progress[min='0'][max='100'][value='27']" }
@@ -26,7 +26,7 @@ RSpec.feature "ProgressBar", type: :system do
     end
 
     context "edit" do
-      let(:url) { "/avo/resources/projects/#{project.id}/edit" }
+      let(:url) { "/admin/resources/projects/#{project.id}/edit" }
       subject { find_field_value_element "progress" }
 
       it { is_expected.to have_css "input[type='range'][min='0'][max='100'][value='27']" }

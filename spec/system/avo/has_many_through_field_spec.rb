@@ -7,7 +7,7 @@
 #   subject { visit url; page }
 
 #   context 'show' do
-#     let(:url) { "/avo/resources/users/#{user.id}" }
+#     let(:url) { "/admin/resources/users/#{user.id}" }
 
 #     describe 'without a related project' do
 #       it 'attaches a project' do
@@ -34,7 +34,7 @@
 #   end
 
 #   context 'show' do
-#     let(:url) { "/avo/resources/users/#{user.id}" }
+#     let(:url) { "/admin/resources/users/#{user.id}" }
 
 #     describe 'with a related project' do
 #       it 'detaches the project' do

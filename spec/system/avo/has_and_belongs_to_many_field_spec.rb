@@ -11,11 +11,11 @@ RSpec.describe "HasAndBelongsToManyField", type: :system do
   end
 
   context "show" do
-    let(:url) { "/avo/resources/projects/#{project.id}/users?turbo_frame=has_and_belongs_to_many_field_projects" }
+    let(:url) { "/admin/resources/projects/#{project.id}/users?turbo_frame=has_and_belongs_to_many_field_projects" }
 
     describe "without a related user" do
       it { is_expected.to have_text "No related users found" }
-      it { is_expected.to have_link "Attach user", href: "/avo/resources/projects/#{project.id}/users/new" }
+      it { is_expected.to have_link "Attach user", href: "/admin/resources/projects/#{project.id}/users/new" }
 
       it "displays valid links" do
         visit url
@@ -34,7 +34,7 @@ RSpec.describe "HasAndBelongsToManyField", type: :system do
           wait_for_loaded
         }.to change(project.users, :count).by 1
 
-        expect(current_path).to eql "/avo/resources/projects/#{project.id}"
+        expect(current_path).to eql "/admin/resources/projects/#{project.id}"
         expect(page).not_to have_text "Choose user"
         expect(page).not_to have_text "No related users found"
       end
@@ -56,7 +56,7 @@ RSpec.describe "HasAndBelongsToManyField", type: :system do
           wait_for_loaded
         }.not_to change(project.users, :count)
 
-        expect(current_path).to eql "/avo/resources/projects/#{project.id}/users"
+        expect(current_path).to eql "/admin/resources/projects/#{project.id}/users"
         expect(page).not_to have_text "Choose user"
         expect(page).to have_text "No related users found"
       end
@@ -88,7 +88,7 @@ RSpec.describe "HasAndBelongsToManyField", type: :system do
       #     wait_for_loaded
       #   }.to change(project.users, :count).by 1
 
-      #   expect(current_path).to eql "/avo/resources/projects/#{project.id}"
+      #   expect(current_path).to eql "/admin/resources/projects/#{project.id}"
       #   expect(page).not_to have_text 'Choose user'
       #   expect(page).not_to have_text 'No related users found'
       # end
@@ -111,7 +111,7 @@ RSpec.describe "HasAndBelongsToManyField", type: :system do
           sleep 0.1
         }.to change(project.users, :count).by(-1)
 
-        expect(current_path).to eql "/avo/resources/projects/#{project.id}/users"
+        expect(current_path).to eql "/admin/resources/projects/#{project.id}/users"
         expect(page).to have_text "No related users found"
       end
     end

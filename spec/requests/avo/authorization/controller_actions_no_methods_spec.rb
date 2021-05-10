@@ -12,7 +12,7 @@
 #   end
 
 #   describe 'index?' do
-#     subject { get '/avo/resources/teams' }
+#     subject { get '/admin/resources/teams' }
 
 #     it 'fails' do
 #       expect { subject }.to raise_error ActionController::RoutingError
@@ -20,7 +20,7 @@
 #   end
 
 #   describe '.new' do
-#     subject { get '/avo/resources/teams/new' }
+#     subject { get '/admin/resources/teams/new' }
 
 #     it 'fails' do
 #       expect { subject }.to raise_error ActionController::RoutingError
@@ -28,7 +28,7 @@
 #   end
 
 #   describe 'create?' do
-#     subject { post '/avo/resources/teams', params: { resource: { name: 'Avocado team' } } }
+#     subject { post '/admin/resources/teams', params: { resource: { name: 'Avocado team' } } }
 
 #     it 'fails' do
 #       expect { subject }.to raise_error ActionController::RoutingError
@@ -36,7 +36,7 @@
 #   end
 
 #   describe 'show?' do
-#     subject { get "/avo/resources/teams/#{team.id}" }
+#     subject { get "/admin/resources/teams/#{team.id}" }
 
 #     it 'fails' do
 #       expect { subject }.to raise_error ActionController::RoutingError
@@ -44,7 +44,7 @@
 #   end
 
 #   describe 'update?' do
-#     subject { put "/avo/resources/teams/#{team.id}", params: { team: { name: 'Avocado team' } } }
+#     subject { put "/admin/resources/teams/#{team.id}", params: { team: { name: 'Avocado team' } } }
 
 #     it 'fails' do
 #       expect { subject }.to raise_error ActionController::RoutingError
@@ -52,7 +52,7 @@
 #   end
 
 #   describe 'edit?' do
-#     subject { get "/avo/resources/teams/#{team.id}/edit" }
+#     subject { get "/admin/resources/teams/#{team.id}/edit" }
 
 #     it 'fails' do
 #       expect { subject }.to raise_error ActionController::RoutingError
@@ -60,7 +60,7 @@
 #   end
 
 #   describe 'destroy?' do
-#     subject { delete "/avo/resources/teams/#{team.id}" }
+#     subject { delete "/admin/resources/teams/#{team.id}" }
 
 #     it 'fails' do
 #       expect { subject }.to raise_error ActionController::RoutingError

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.feature "Breadcrumbs", type: :feature do
   let!(:project) { create :project }
-  let!(:url) { "/avo/resources/projects/#{project.id}/edit" }
+  let!(:url) { "/admin/resources/projects/#{project.id}/edit" }
 
   before do
     visit url
@@ -16,7 +16,7 @@ RSpec.feature "Breadcrumbs", type: :feature do
   end
 
   describe "on a custom tool" do
-    let!(:url) { "/avo/dashboard" }
+    let!(:url) { "/admin/dashboard" }
 
     it { is_expected.to have_css ".breadcrumbs" }
     it { is_expected.to have_text "Dashboard\n  \n\nDashboard\n" }

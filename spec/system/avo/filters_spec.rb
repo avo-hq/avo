@@ -5,7 +5,7 @@ RSpec.describe "Filters", type: :system do
     let!(:featured_post) { create :post, name: "Featured post", is_featured: true, published_at: nil }
     let!(:unfeatured_post) { create :post, name: "Unfeatured post", is_featured: false, published_at: nil }
 
-    let(:url) { "/avo/resources/posts?view_type=table" }
+    let(:url) { "/admin/resources/posts?view_type=table" }
 
     it "displays the filter" do
       visit url
@@ -94,7 +94,7 @@ RSpec.describe "Filters", type: :system do
       team_with_members.members << user
     end
 
-    let(:url) { "/avo/resources/teams?view_type=table" }
+    let(:url) { "/admin/resources/teams?view_type=table" }
 
     it "displays the filter" do
       visit url
@@ -138,7 +138,7 @@ RSpec.describe "Filters", type: :system do
     let!(:published_post) { create :post, name: "Published post", published_at: "2019-12-05 08:27:19.295065" }
     let!(:unpublished_post) { create :post, name: "Unpublished post", published_at: nil }
 
-    let(:url) { "/avo/resources/posts?view_type=table" }
+    let(:url) { "/admin/resources/posts?view_type=table" }
 
     context "without default value" do
       it "displays the filter" do

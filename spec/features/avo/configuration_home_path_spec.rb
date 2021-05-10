@@ -6,7 +6,7 @@ RSpec.feature "Avo.configuration", type: :feature do
       it "redirects to that path" do
         visit "/avo"
 
-        expect(current_path).to eql "/avo/dashboard"
+        expect(current_path).to eql "/admin/dashboard"
       end
     end
   end

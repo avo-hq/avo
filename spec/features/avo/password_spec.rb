@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.feature "password", type: :feature do
   context "edit" do
-    let(:url) { "/avo/resources/users/#{user.id}/edit" }
+    let(:url) { "/admin/resources/users/#{user.id}/edit" }
 
     subject do
       visit url
@@ -24,7 +24,7 @@ RSpec.feature "password", type: :feature do
 
         click_on "Save"
 
-        expect(current_path).to eql "/avo/resources/users/#{user.id}"
+        expect(current_path).to eql "/admin/resources/users/#{user.id}"
         expect(page).to have_text "Johnny"
 
         expect(user.valid_password?(old_password)).to be(true)
@@ -40,7 +40,7 @@ RSpec.feature "password", type: :feature do
 
         wait_for_loaded
 
-        expect(current_path).to eql "/avo/resources/users/#{user.id}"
+        expect(current_path).to eql "/admin/resources/users/#{user.id}"
 
         expect(User.last.valid_password?(old_password)).to be(false)
         expect(User.last.valid_password?(new_password)).to be(true)
@@ -49,7 +49,7 @@ RSpec.feature "password", type: :feature do
   end
 
   context "create" do
-    let(:url) { "/avo/resources/users/new" }
+    let(:url) { "/admin/resources/users/new" }
 
     describe "new user with password" do
       it "checks placeholder" do
@@ -73,7 +73,7 @@ RSpec.feature "password", type: :feature do
 
         click_on "Save"
 
-        expect(current_path).to eql "/avo/resources/users/#{User.last.id}"
+        expect(current_path).to eql "/admin/resources/users/#{User.last.id}"
         expect(page).to have_text "John"
         expect(page).to have_text "Doe"
         expect(User.last.valid_password?("passwordtest")).to be(true)

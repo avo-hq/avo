@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe "SelectField", type: :feature do
   describe "enum hash display_value: true" do
     context "index" do
-      let(:url) { "/avo/resources/projects" }
+      let(:url) { "/admin/resources/projects" }
 
       subject do
         visit url
@@ -51,7 +51,7 @@ RSpec.describe "SelectField", type: :feature do
     end
 
     context "show" do
-      let(:url) { "/avo/resources/projects/#{project.id}" }
+      let(:url) { "/admin/resources/projects/#{project.id}" }
 
       describe "without stage" do
         let!(:project) { create :project, users_required: 15, stage: nil }
@@ -93,7 +93,7 @@ RSpec.describe "SelectField", type: :feature do
     let(:stages_with_placeholder) { stages_without_placeholder.prepend(placeholder) }
 
     context "edit" do
-      let(:url) { "/avo/resources/projects/#{project.id}/edit" }
+      let(:url) { "/admin/resources/projects/#{project.id}/edit" }
 
       describe "without stage" do
         let!(:project) { create :project, users_required: 15, stage: nil }
@@ -110,7 +110,7 @@ RSpec.describe "SelectField", type: :feature do
 
           click_on "Save"
 
-          expect(current_path).to eql "/avo/resources/projects/#{project.id}"
+          expect(current_path).to eql "/admin/resources/projects/#{project.id}"
           expect(page).to have_text new_stage.humanize
         end
       end
@@ -130,14 +130,14 @@ RSpec.describe "SelectField", type: :feature do
 
           click_on "Save"
 
-          expect(current_path).to eql "/avo/resources/projects/#{project.id}"
+          expect(current_path).to eql "/admin/resources/projects/#{project.id}"
           expect(page).to have_text new_stage.humanize
         end
       end
     end
 
     context "create" do
-      let(:url) { "/avo/resources/projects/new" }
+      let(:url) { "/admin/resources/projects/new" }
       let(:new_stage) { "discovery" }
 
       describe "creates new project with stage discovery" do
@@ -155,7 +155,7 @@ RSpec.describe "SelectField", type: :feature do
 
           click_on "Save"
 
-          expect(current_path).to eql "/avo/resources/projects/#{Project.last.id}"
+          expect(current_path).to eql "/admin/resources/projects/#{Project.last.id}"
           expect(page).to have_text "Project X"
 
           # Has different casing because it's the badge field.

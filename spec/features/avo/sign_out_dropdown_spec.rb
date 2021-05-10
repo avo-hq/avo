@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.feature "SignOutDropdown", type: :system do
   context "when signed in" do
     it "signs out the user" do
-      visit "/avo/resources/posts"
+      visit "/admin/resources/posts"
       expect(page.body).to have_text admin.name
       expect(page.body).to have_button "Sign out", visible: false
 

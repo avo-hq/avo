@@ -6,7 +6,7 @@ RSpec.describe "TrixField", type: :system do
 
     context "show" do
       it "displays the posts empty body (dash)" do
-        visit "/avo/resources/posts/#{post.id}"
+        visit "/admin/resources/posts/#{post.id}"
 
         expect(find_field_element("body")).to have_text empty_dash
       end
@@ -14,7 +14,7 @@ RSpec.describe "TrixField", type: :system do
 
     context "edit" do
       it "has the posts body label and empty trix editor and placeholder" do
-        visit "/avo/resources/posts/#{post.id}/edit"
+        visit "/admin/resources/posts/#{post.id}/edit"
 
         body_element = find_field_element("body")
 
@@ -25,7 +25,7 @@ RSpec.describe "TrixField", type: :system do
       end
 
       it "change the posts body text" do
-        visit "/avo/resources/posts/#{post.id}/edit"
+        visit "/admin/resources/posts/#{post.id}/edit"
 
         fill_in_trix_editor "trix_post_body", with: "Works for us!!!"
 
@@ -43,7 +43,7 @@ RSpec.describe "TrixField", type: :system do
 
     context "show" do
       it "displays the posts body" do
-        visit "/avo/resources/posts/#{post.id}"
+        visit "/admin/resources/posts/#{post.id}"
 
         click_on "Show content"
 
@@ -53,7 +53,7 @@ RSpec.describe "TrixField", type: :system do
 
     context "edit" do
       it "has the posts body label" do
-        visit "/avo/resources/posts/#{post.id}/edit"
+        visit "/admin/resources/posts/#{post.id}/edit"
 
         body_element = find_field_element("body")
 
@@ -61,13 +61,13 @@ RSpec.describe "TrixField", type: :system do
       end
 
       it "has filled simple text in trix editor" do
-        visit "/avo/resources/posts/#{post.id}/edit"
+        visit "/admin/resources/posts/#{post.id}/edit"
 
         expect(find("#trix_post_body", visible: false).value).to eq(body)
       end
 
       it "change the posts body trix to another simple text value" do
-        visit "/avo/resources/posts/#{post.id}/edit"
+        visit "/admin/resources/posts/#{post.id}/edit"
 
         fill_in_trix_editor "trix_post_body", with: "New example!"
 

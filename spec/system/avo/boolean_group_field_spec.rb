@@ -6,7 +6,7 @@ RSpec.describe "BooleanGroupFields", type: :system do
 
     context "index" do
       it "displays the users name" do
-        visit "/avo/resources/users"
+        visit "/admin/resources/users"
 
         expect(page).to have_text "ROLES"
         expect(page).to have_text "View"
@@ -22,7 +22,7 @@ RSpec.describe "BooleanGroupFields", type: :system do
 
     context "show" do
       it "displays the users roles" do
-        visit "/avo/resources/users/#{user.id}"
+        visit "/admin/resources/users/#{user.id}"
 
         show_roles_popup
         sleep 0.1
@@ -39,7 +39,7 @@ RSpec.describe "BooleanGroupFields", type: :system do
 
     context "edit" do
       it "changes the users roles" do
-        visit "/avo/resources/users/#{user.id}/edit"
+        visit "/admin/resources/users/#{user.id}/edit"
 
         check "user_roles_admin"
         uncheck "user_roles_manager"
@@ -49,9 +49,9 @@ RSpec.describe "BooleanGroupFields", type: :system do
         wait_for_loaded
 
         user_id = page.find('[data-field-id="id"] [data-slot="value"]').text
-        expect(current_path).to eql "/avo/resources/users/#{user_id}"
+        expect(current_path).to eql "/admin/resources/users/#{user_id}"
 
-        visit "/avo/resources/users/#{user_id}"
+        visit "/admin/resources/users/#{user_id}"
         show_roles_popup
         sleep 0.1
 

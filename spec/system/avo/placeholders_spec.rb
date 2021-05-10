@@ -6,7 +6,7 @@ RSpec.describe "Placeholders", type: :system do
 
     context "edit" do
       it "checks for placeholder visibility" do
-        visit "/avo/resources/users/#{user.id}/edit"
+        visit "/admin/resources/users/#{user.id}/edit"
 
         fill_in "user_first_name", with: ""
         fill_in "user_last_name", with: ""
