@@ -21,6 +21,8 @@ Avo::Engine.routes.draw do
     # Generate resource routes as below:
     # resources :posts
     instance_eval(&Avo::App.draw_routes)
+    # resources :
+    get "/:resource_name/segments/:segment_id", to: "segments#index"
 
     # Relations
     get "/:resource_name/:id/:related_name/new", to: "relations#new"

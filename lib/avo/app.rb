@@ -36,6 +36,7 @@ module Avo
         end
 
         init_resources
+        # init_segments
       end
 
       # This method will find all fields available in the Avo::Fields namespace and add them to the fields class_variable array
@@ -73,6 +74,18 @@ module Avo
             end
           end
       end
+
+      # def init_segments
+      #   self.segments = BaseLens.descendants
+      #     .select do |resource|
+      #       resource != BaseResource
+      #     end
+      #     .map do |resource|
+      #       if resource.is_a? Class
+      #         resource.new
+      #       end
+      #     end
+      # end
 
       # Returns the Avo resource by camelized name
       #
@@ -125,12 +138,40 @@ module Avo
       end
 
       def resources_navigation(user = nil)
-        get_available_resources(user).select do |resource|
-          resource.model_class.present?
-        end
+        items = []
+
+        get_available_resources(user)
+          .select do |resource|
+            resource.model_class.present?
+          end
           .select do |resource|
             resource.visible_on_sidebar
           end
+          .map do |resource|
+            items << resource
+          end
+
+        items
+      end
+
+      def navigation_items(user = nil)
+        items = []
+
+        resources_navigation(user)
+          .map do |resource|
+            item = {
+              resource: resource,
+              segments: []
+            }
+
+            if resource.class.segments_loader.present?
+              item[:segments] = resource.class.segments_loader.bag
+            end
+
+            items << item
+          end
+
+        items
       end
 
       # Insert any partials that we find in app/views/avo/sidebar/items.

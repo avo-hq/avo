@@ -10,7 +10,7 @@ module Avo
 
     def index
       @page_title = resource_name.humanize
-      add_breadcrumb resource_name.humanize
+      add_breadcrumb resource_name.humanize, resources_path(@resource.model_class)
 
       set_index_params
       set_filters

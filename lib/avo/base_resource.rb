@@ -19,6 +19,7 @@ module Avo
     class_attribute :devise_password_optional, default: false
     class_attribute :actions_loader
     class_attribute :filters_loader
+    class_attribute :segments_loader
     class_attribute :fields
     class_attribute :grid_loader
     class_attribute :visible_on_sidebar, default: true
@@ -41,6 +42,12 @@ module Avo
         self.filters_loader ||= Avo::Loaders::Loader.new
 
         self.filters_loader.use filter_class
+      end
+
+      def segment(segment_class)
+        self.segments_loader ||= Avo::Loaders::SegmentsLoader.new
+
+        self.segments_loader.use segment_class, self
       end
 
       def scope

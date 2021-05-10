@@ -7,7 +7,7 @@
       <%== item_selector_input floating: false %>
     </div>
   </td>
-  <% @resource.get_fields(reflection: @reflection).each_with_index do |field, index| %>
+  <% @fields.each_with_index do |field, index| %>
     <%= render field.component_for_view(:index).new(field: field, resource: @resource, index: index, parent_model: @parent_model) %>
   <% end %>
   <td class="text-right whitespace-nowrap px-2">
