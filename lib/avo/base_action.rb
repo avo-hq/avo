@@ -3,7 +3,7 @@ module Avo
     extend FieldsCollector
     extend HasContext
 
-    class_attribute :name, default: self.class.to_s.demodulize.underscore.humanize(keep_id_suffix: true)
+    class_attribute :name, default: nil
     class_attribute :message
     class_attribute :confirm_button_label
     class_attribute :cancel_button_label
@@ -19,6 +19,12 @@ module Avo
     attr_accessor :resource
     attr_accessor :user
     attr_accessor :fields_loader
+
+    def action_name
+      return name if name.present?
+
+      self.class.to_s.demodulize.underscore.humanize(keep_id_suffix: true)
+    end
 
     def initialize(model: nil, resource: nil, user: nil)
       self.class.model = model if model.present?

@@ -15,14 +15,14 @@
       <%
         @actions.each_with_index do |action, index|
           path = action_name == 'show' ?
-            "/avo/resources/#{@resource.model_class.model_name.route_key}/#{@model.id}/actions/#{action.param_id}" :
-            "/avo/resources/#{@resource.model_class.model_name.route_key}/actions/#{action.param_id}"
+            "#{Avo.configuration.root_path}/resources/#{@resource.model_class.model_name.route_key}/#{@model.id}/actions/#{action.param_id}" :
+            "#{Avo.configuration.root_path}/resources/#{@resource.model_class.model_name.route_key}/actions/#{action.param_id}"
       %>
         <%= link_to path,
           'data-turbo-frame': 'actions_show',
           'data-action': 'click->actions-picker#visitAction',
           class: 'flex items-center w-full py-2 px-4 font-bold text-gray-700 hover:text-white hover:bg-blue-500' do %>
-          <%= svg 'play', class: 'h-5 mr-1 inline' %> <%= action.name %>
+          <%= svg 'play', class: 'h-5 mr-1 inline' %> <%= action.action_name %>
         <% end %>
       <% end %>
     </div>
