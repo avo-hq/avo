@@ -277,11 +277,11 @@ module Avo
     end
 
     def on_resources_path
-      request.original_url.match?(/.*#{Avo.configuration.namespace}\/resources\/.*/)
+      request.original_url.match?(/.*#{Avo.configuration.root_path}\/resources\/.*/)
     end
 
     def on_api_path
-      request.original_url.match?(/.*#{Avo.configuration.namespace}\/avo_api\/.*/)
+      request.original_url.match?(/.*#{Avo.configuration.root_path}\/avo_api\/.*/)
     end
   end
 end
