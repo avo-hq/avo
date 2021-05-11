@@ -74,6 +74,10 @@ module Avo
       @current_user = block if block.present?
     end
 
+    def current_user_method=(method)
+      @current_user = method if method.present?
+    end
+
     def authenticate_with(&block)
       @authenticate = block if block.present?
     end
