@@ -6,7 +6,7 @@
 
 #   context 'index' do
 #     describe 'without actions attached' do
-#       let(:url) { '/avo/resources/teams' }
+#       let(:url) { '/admin/resources/teams' }
 
 #       it 'does not display the actions button' do
 #         visit url
@@ -18,7 +18,7 @@
 #     describe 'with actions attached' do
 #       let!(:roles) { { admin: false, manager: false, writer: false } }
 #       let!(:second_user) { create :user, active: true, roles: roles }
-#       let(:url) { '/avo/resources/users' }
+#       let(:url) { '/admin/resources/users' }
 
 #       it 'displays the actions button disabled' do
 #         visit url
@@ -105,7 +105,7 @@
 #     let!(:post) { create :post, published_at: nil }
 
 #     describe 'with fields' do
-#       let(:url) { "/avo/resources/users/#{user.id}" }
+#       let(:url) { "/admin/resources/users/#{user.id}" }
 
 #       it 'lists the action' do
 #         visit url
@@ -155,7 +155,7 @@
 #     end
 
 #     describe 'without fields' do
-#       let(:url) { "/avo/resources/posts/#{post.id}" }
+#       let(:url) { "/admin/resources/posts/#{post.id}" }
 
 #       it 'lists the action with a custom name' do
 #         visit url
@@ -180,7 +180,7 @@
 
 #         expect(page).to have_text 'Perfect!'
 #         expect(post.reload.published_at).not_to be nil
-#         expect(current_path).to eq '/avo/resources/posts'
+#         expect(current_path).to eq '/admin/resources/posts'
 #       end
 #     end
 #   end

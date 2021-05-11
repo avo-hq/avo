@@ -6,7 +6,7 @@ RSpec.describe "HiddenField", type: :system do
 
     context "edit" do
       it "has the hidden field empty" do
-        visit "/avo/resources/users/#{user.id}/edit"
+        visit "/admin/resources/users/#{user.id}/edit"
 
         expect(find("input#user_team_id[type='hidden']", visible: false).value).to be_empty
       end
@@ -18,7 +18,7 @@ RSpec.describe "HiddenField", type: :system do
 
     context "edit" do
       it "has the hidden field" do
-        visit "/avo/resources/users/#{user.id}/edit"
+        visit "/admin/resources/users/#{user.id}/edit"
 
         expect(find("input#user_team_id[type='hidden']", visible: false).value).to eq "10"
       end

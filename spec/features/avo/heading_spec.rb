@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "heading", type: :feature do
   context "show" do
-    let(:url) { "/avo/resources/users/#{user.id}" }
+    let(:url) { "/admin/resources/users/#{user.id}" }
 
     describe "with value" do
       let!(:user) { create :user }
@@ -24,7 +24,7 @@ RSpec.describe "heading", type: :feature do
   end
 
   context "edit" do
-    let(:url) { "/avo/resources/users/#{user.id}/edit" }
+    let(:url) { "/admin/resources/users/#{user.id}/edit" }
 
     describe "with value" do
       let!(:user) { create :user }

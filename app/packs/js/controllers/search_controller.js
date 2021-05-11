@@ -34,7 +34,7 @@ export default class extends Controller {
   }
 
   get searchUrl() {
-    return this.isGlobalSearch ? '/avo/avo_api/search' : `/avo/avo_api/${this.searchResource}/search`
+    return this.isGlobalSearch ? `${window.Avo.configuration.root_path}/avo_api/search` : `${window.Avo.configuration.root_path}/avo_api/${this.searchResource}/search`
   }
 
   addSource(resourceName, data) {

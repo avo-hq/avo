@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe "SelectField", type: :feature do
   describe "enum array display_value: false" do
     context "index" do
-      let(:url) { "/avo/resources/posts?view_type=table" }
+      let(:url) { "/admin/resources/posts?view_type=table" }
       subject do
         visit url
         field_element_by_resource_id "status", post.id
@@ -43,7 +43,7 @@ RSpec.describe "SelectField", type: :feature do
     end
 
     context "show" do
-      let(:url) { "/avo/resources/posts/#{post.id}" }
+      let(:url) { "/admin/resources/posts/#{post.id}" }
 
       describe "without status" do
         let!(:post) { create :post, status: nil }
@@ -78,7 +78,7 @@ RSpec.describe "SelectField", type: :feature do
     let(:statuses_with_placeholder) { statuses_without_placeholder.prepend(placeholder) }
 
     context "edit" do
-      let(:url) { "/avo/resources/posts/#{post.id}/edit" }
+      let(:url) { "/admin/resources/posts/#{post.id}/edit" }
 
       describe "without status" do
         let!(:post) { create :post, status: nil }
@@ -95,7 +95,7 @@ RSpec.describe "SelectField", type: :feature do
 
           click_on "Save"
 
-          expect(current_path).to eql "/avo/resources/posts/#{post.id}"
+          expect(current_path).to eql "/admin/resources/posts/#{post.id}"
           expect(page).to have_text new_status
         end
       end
@@ -115,14 +115,14 @@ RSpec.describe "SelectField", type: :feature do
 
           click_on "Save"
 
-          expect(current_path).to eql "/avo/resources/posts/#{post.id}"
+          expect(current_path).to eql "/admin/resources/posts/#{post.id}"
           expect(page).to have_text new_status
         end
       end
     end
 
     context "create" do
-      let(:url) { "/avo/resources/posts/new" }
+      let(:url) { "/admin/resources/posts/new" }
       let(:new_status) { "published" }
 
       describe "creates new post with status published" do
@@ -139,7 +139,7 @@ RSpec.describe "SelectField", type: :feature do
 
           click_on "Save"
 
-          expect(current_path).to eql "/avo/resources/posts/#{Post.last.id}"
+          expect(current_path).to eql "/admin/resources/posts/#{Post.last.id}"
           expect(page).to have_text "Post X"
           expect(page).to have_text "published"
         end

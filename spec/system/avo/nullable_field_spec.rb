@@ -6,7 +6,7 @@ RSpec.describe "NullableField", type: :system do
 
     context "show" do
       it "displays the teams empty description (dash)" do
-        visit "/avo/resources/teams/#{team.id}"
+        visit "/admin/resources/teams/#{team.id}"
 
         expect(find_field_value_element("description")).to have_text empty_dash
       end
@@ -14,7 +14,7 @@ RSpec.describe "NullableField", type: :system do
 
     context "edit" do
       it "has the teams description empty" do
-        visit "/avo/resources/teams/#{team.id}/edit"
+        visit "/admin/resources/teams/#{team.id}/edit"
 
         expect(find_field("team_description").value).to eq ""
       end
@@ -26,52 +26,52 @@ RSpec.describe "NullableField", type: :system do
 
     context "edit" do
       it "has the teams description pre-filled" do
-        visit "/avo/resources/teams/#{team.id}/edit"
+        visit "/admin/resources/teams/#{team.id}/edit"
 
         expect(find_field("team_description").value).to eq "descr"
       end
 
       it 'changes the teams description to null ("" - empty string)' do
-        visit "/avo/resources/teams/#{team.id}/edit"
+        visit "/admin/resources/teams/#{team.id}/edit"
 
         fill_in "team_description", with: ""
         click_on "Save"
         wait_for_loaded
 
-        expect(current_path).to eql "/avo/resources/teams/#{team.id}"
+        expect(current_path).to eql "/admin/resources/teams/#{team.id}"
         expect(find_field_value_element("description")).to have_text empty_dash
       end
 
       it 'changes the teams description to null ("0")' do
-        visit "/avo/resources/teams/#{team.id}/edit"
+        visit "/admin/resources/teams/#{team.id}/edit"
 
         fill_in "team_description", with: "0"
         click_on "Save"
         wait_for_loaded
 
-        expect(current_path).to eql "/avo/resources/teams/#{team.id}"
+        expect(current_path).to eql "/admin/resources/teams/#{team.id}"
         expect(find_field_value_element("description")).to have_text empty_dash
       end
 
       it 'changes the teams description to null ("nil")' do
-        visit "/avo/resources/teams/#{team.id}/edit"
+        visit "/admin/resources/teams/#{team.id}/edit"
 
         fill_in "team_description", with: "nil"
         click_on "Save"
         wait_for_loaded
 
-        expect(current_path).to eql "/avo/resources/teams/#{team.id}"
+        expect(current_path).to eql "/admin/resources/teams/#{team.id}"
         expect(find_field_value_element("description")).to have_text empty_dash
       end
 
       it 'changes the teams description to null ("null")' do
-        visit "/avo/resources/teams/#{team.id}/edit"
+        visit "/admin/resources/teams/#{team.id}/edit"
 
         fill_in "team_description", with: "null"
         click_on "Save"
         wait_for_loaded
 
-        expect(current_path).to eql "/avo/resources/teams/#{team.id}"
+        expect(current_path).to eql "/admin/resources/teams/#{team.id}"
         expect(find_field_value_element("description")).to have_text empty_dash
       end
     end
@@ -82,7 +82,7 @@ RSpec.describe "NullableField", type: :system do
 
     context "show" do
       it "displays the projects empty status (dash)" do
-        visit "/avo/resources/projects/#{project.id}"
+        visit "/admin/resources/projects/#{project.id}"
 
         expect(find_field_value_element("status")).to have_text empty_dash
       end
@@ -90,7 +90,7 @@ RSpec.describe "NullableField", type: :system do
 
     context "edit" do
       it "has the projects status empty" do
-        visit "/avo/resources/projects/#{project.id}/edit"
+        visit "/admin/resources/projects/#{project.id}/edit"
 
         expect(find_field("project_status").value).to eq ""
       end
@@ -102,19 +102,19 @@ RSpec.describe "NullableField", type: :system do
 
     context "edit" do
       it "has the projects status pre-filled" do
-        visit "/avo/resources/projects/#{project.id}/edit"
+        visit "/admin/resources/projects/#{project.id}/edit"
 
         expect(find_field("project_status").value).to eq "rejected"
       end
 
       it 'changes the projects status to null ("" - empty string)' do
-        visit "/avo/resources/projects/#{project.id}/edit"
+        visit "/admin/resources/projects/#{project.id}/edit"
 
         fill_in "project_status", with: ""
         click_on "Save"
         wait_for_loaded
 
-        expect(current_path).to eql "/avo/resources/projects/#{project.id}"
+        expect(current_path).to eql "/admin/resources/projects/#{project.id}"
         expect(find_field_value_element("status")).to have_text empty_dash
       end
     end

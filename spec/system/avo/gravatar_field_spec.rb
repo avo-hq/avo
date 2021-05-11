@@ -6,7 +6,7 @@ RSpec.describe "GravatarFields", type: :system do
 
     context "index" do
       it "displays the users avatar" do
-        visit "/avo/resources/users"
+        visit "/admin/resources/users"
 
         expect(first('[data-field-type="gravatar"]')).to have_selector "img"
         expect(first('[data-field-type="gravatar"]')).to have_css ".rounded-full"
@@ -17,7 +17,7 @@ RSpec.describe "GravatarFields", type: :system do
 
     context "show" do
       it "displays the users name" do
-        visit "/avo/resources/users/#{user.id}"
+        visit "/admin/resources/users/#{user.id}"
 
         expect(first('[data-field-type="gravatar"]')).to have_selector "img"
         expect(first('[data-field-type="gravatar"]')).not_to have_css ".rounded-full"
@@ -32,7 +32,7 @@ RSpec.describe "GravatarFields", type: :system do
 
     context "index" do
       it "displays the users avatar" do
-        visit "/avo/resources/users"
+        visit "/admin/resources/users"
 
         expect(first('[data-field-type="gravatar"]')).to have_selector "img"
         expect(first('[data-field-type="gravatar"]')).to have_css ".rounded-full"
@@ -43,7 +43,7 @@ RSpec.describe "GravatarFields", type: :system do
 
     context "show" do
       it "displays the users name" do
-        visit "/avo/resources/users/#{user.id}"
+        visit "/admin/resources/users/#{user.id}"
 
         expect(first('[data-field-type="gravatar"]')).to have_selector "img"
         expect(first('[data-field-type="gravatar"]')).not_to have_css ".rounded-full"

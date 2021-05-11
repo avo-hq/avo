@@ -6,7 +6,7 @@
 #   subject { visit url; page }
 
 #   context 'index' do
-#     let(:url) { '/avo/resources/teams' }
+#     let(:url) { '/admin/resources/teams' }
 
 #     describe 'with a related user' do
 #       let!(:team) { create :team, admin: user }
@@ -31,12 +31,12 @@
 #   end
 
 #   context 'show' do
-#     let(:url) { "/avo/resources/teams/#{team.id}" }
+#     let(:url) { "/admin/resources/teams/#{team.id}" }
 
 #     describe 'with user attached' do
 #       let!(:team) { create :team, admin: user }
 
-#       it { is_expected.to have_link user.name, href: "/avo/resources/users/#{user.id}" }
+#       it { is_expected.to have_link user.name, href: "/admin/resources/users/#{user.id}" }
 #     end
 
 #     describe 'without user attached' do
@@ -47,7 +47,7 @@
 #   end
 
 #   context 'edit' do
-#     let(:url) { "/avo/resources/teams/#{team.id}/edit" }
+#     let(:url) { "/admin/resources/teams/#{team.id}/edit" }
 
 #     describe 'without user attached' do
 #       let!(:team) { create :team }
@@ -63,8 +63,8 @@
 #         click_on 'Save'
 #         wait_for_loaded
 
-#         expect(current_path).to eql "/avo/resources/teams/#{team.id}"
-#         expect(page).to have_link user.name, href: "/avo/resources/users/#{user.id}"
+#         expect(current_path).to eql "/admin/resources/teams/#{team.id}"
+#         expect(page).to have_link user.name, href: "/admin/resources/users/#{user.id}"
 #       end
 #     end
 
@@ -83,8 +83,8 @@
 #         click_on 'Save'
 #         wait_for_loaded
 
-#         expect(current_path).to eql "/avo/resources/teams/#{team.id}"
-#         expect(page).to have_link second_user.name, href: "/avo/resources/users/#{second_user.id}"
+#         expect(current_path).to eql "/admin/resources/teams/#{team.id}"
+#         expect(page).to have_link second_user.name, href: "/admin/resources/users/#{second_user.id}"
 #       end
 
 #       it 'nullifies the user' do
@@ -96,7 +96,7 @@
 #         click_on 'Save'
 #         wait_for_loaded
 
-#         expect(current_path).to eql "/avo/resources/teams/#{team.id}"
+#         expect(current_path).to eql "/admin/resources/teams/#{team.id}"
 #         expect(find_field_value_element('admin')).to have_text empty_dash
 #       end
 #     end

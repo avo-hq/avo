@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "textarea", type: :feature do
   context "show" do
-    let(:url) { "/avo/resources/teams/#{team.id}" }
+    let(:url) { "/admin/resources/teams/#{team.id}" }
 
     subject do
       visit url
@@ -24,7 +24,7 @@ RSpec.describe "textarea", type: :feature do
   end
 
   context "edit" do
-    let(:url) { "/avo/resources/teams/#{team.id}/edit" }
+    let(:url) { "/admin/resources/teams/#{team.id}/edit" }
 
     subject do
       visit url
@@ -47,7 +47,7 @@ RSpec.describe "textarea", type: :feature do
 
         click_on "Save"
 
-        expect(current_path).to eql "/avo/resources/teams/#{team.id}"
+        expect(current_path).to eql "/admin/resources/teams/#{team.id}"
         expect(page).to have_text new_description
       end
 
@@ -60,7 +60,7 @@ RSpec.describe "textarea", type: :feature do
 
         click_on "Save"
 
-        expect(current_path).to eql "/avo/resources/teams/#{team.id}"
+        expect(current_path).to eql "/admin/resources/teams/#{team.id}"
         expect(find_field_value_element("description")).to have_text empty_dash
       end
     end
@@ -80,7 +80,7 @@ RSpec.describe "textarea", type: :feature do
 
         click_on "Save"
 
-        expect(current_path).to eql "/avo/resources/teams/#{team.id}"
+        expect(current_path).to eql "/admin/resources/teams/#{team.id}"
         expect(page).to have_text new_description
       end
     end

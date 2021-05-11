@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "StatusField", type: :feature do
   context "index" do
-    let(:url) { "/avo/resources/projects" }
+    let(:url) { "/admin/resources/projects" }
 
     subject do
       visit url
@@ -49,7 +49,7 @@ RSpec.describe "StatusField", type: :feature do
   end
 
   context "show" do
-    let(:url) { "/avo/resources/projects/#{project.id}" }
+    let(:url) { "/admin/resources/projects/#{project.id}" }
 
     describe "with any value" do
       let(:status) { "anything" }
@@ -86,7 +86,7 @@ RSpec.describe "StatusField", type: :feature do
   end
 
   context "edit" do
-    let(:url) { "/avo/resources/projects/#{project.id}/edit" }
+    let(:url) { "/admin/resources/projects/#{project.id}/edit" }
 
     describe "with value" do
       let(:status) { "anything" }
@@ -104,7 +104,7 @@ RSpec.describe "StatusField", type: :feature do
 
         click_on "Save"
 
-        expect(current_path).to eql "/avo/resources/projects/#{project.id}"
+        expect(current_path).to eql "/admin/resources/projects/#{project.id}"
         expect(find_field_value_element("status")).to have_text fail_status
         expect(find_field_value_element("status")).to have_css ".text-red-600"
       end
@@ -117,7 +117,7 @@ RSpec.describe "StatusField", type: :feature do
 
         click_on "Save"
 
-        expect(current_path).to eql "/avo/resources/projects/#{project.id}"
+        expect(current_path).to eql "/admin/resources/projects/#{project.id}"
         expect(find_field_value_element("status")).to have_text load_status
         expect(find_field_value_element("status")).to have_css ".spinner"
       end
@@ -130,7 +130,7 @@ RSpec.describe "StatusField", type: :feature do
 
         click_on "Save"
 
-        expect(current_path).to eql "/avo/resources/projects/#{project.id}"
+        expect(current_path).to eql "/admin/resources/projects/#{project.id}"
         expect(find_field_value_element("status")).to have_text empty_dash
       end
     end
@@ -149,7 +149,7 @@ RSpec.describe "StatusField", type: :feature do
 
         click_on "Save"
 
-        expect(current_path).to eql "/avo/resources/projects/#{project.id}"
+        expect(current_path).to eql "/admin/resources/projects/#{project.id}"
         expect(find_field_value_element("status")).to have_text status
       end
     end

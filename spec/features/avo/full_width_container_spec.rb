@@ -21,13 +21,13 @@ RSpec.feature "FullWidthContainer", type: :feature do
       end
 
       context ".index" do
-        let(:url) { "/avo/resources/users" }
+        let(:url) { "/admin/resources/users" }
 
         it { is_not_contained }
       end
 
       context ".show" do
-        let(:url) { "/avo/resources/users/#{user.id}" }
+        let(:url) { "/admin/resources/users/#{user.id}" }
 
         it { is_not_contained }
       end
@@ -39,13 +39,13 @@ RSpec.feature "FullWidthContainer", type: :feature do
       end
 
       context ".index" do
-        let(:url) { "/avo/resources/users" }
+        let(:url) { "/admin/resources/users" }
 
         it { is_not_contained }
       end
 
       context ".show" do
-        let(:url) { "/avo/resources/users/#{user.id}" }
+        let(:url) { "/admin/resources/users/#{user.id}" }
 
         it { is_not_contained }
       end
@@ -63,13 +63,13 @@ RSpec.feature "FullWidthContainer", type: :feature do
       end
 
       context ".index" do
-        let(:url) { "/avo/resources/users" }
+        let(:url) { "/admin/resources/users" }
 
         it { is_contained }
       end
 
       context ".show" do
-        let(:url) { "/avo/resources/users/#{user.id}" }
+        let(:url) { "/admin/resources/users/#{user.id}" }
 
         it { is_contained }
       end
@@ -81,13 +81,13 @@ RSpec.feature "FullWidthContainer", type: :feature do
       end
 
       context ".index" do
-        let(:url) { "/avo/resources/users" }
+        let(:url) { "/admin/resources/users" }
 
         it { is_not_contained }
       end
 
       context ".show" do
-        let(:url) { "/avo/resources/users/#{user.id}" }
+        let(:url) { "/admin/resources/users/#{user.id}" }
 
         it { is_contained }
       end

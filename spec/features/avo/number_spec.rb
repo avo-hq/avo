@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "number", type: :feature do
   context "index" do
-    let(:url) { "/avo/resources/projects" }
+    let(:url) { "/admin/resources/projects" }
 
     subject do
       visit url
@@ -23,7 +23,7 @@ RSpec.describe "number", type: :feature do
   end
 
   context "show" do
-    let(:url) { "/avo/resources/projects/#{project.id}" }
+    let(:url) { "/admin/resources/projects/#{project.id}" }
 
     describe "with value" do
       let(:users_required) { 50 }
@@ -34,7 +34,7 @@ RSpec.describe "number", type: :feature do
   end
 
   context "edit" do
-    let(:url) { "/avo/resources/projects/#{project.id}/edit" }
+    let(:url) { "/admin/resources/projects/#{project.id}/edit" }
 
     describe "with value" do
       let(:users_required) { 50 }
@@ -52,7 +52,7 @@ RSpec.describe "number", type: :feature do
 
         click_on "Save"
 
-        expect(current_path).to eql "/avo/resources/projects/#{project.id}"
+        expect(current_path).to eql "/admin/resources/projects/#{project.id}"
         is_expected.to have_text new_users_required
       end
 
@@ -63,7 +63,7 @@ RSpec.describe "number", type: :feature do
 
         click_on "Save"
 
-        expect(current_path).to eql "/avo/resources/projects/#{project.id}"
+        expect(current_path).to eql "/admin/resources/projects/#{project.id}"
         is_expected.to have_text "Users required must be greater than 9"
       end
 
@@ -74,7 +74,7 @@ RSpec.describe "number", type: :feature do
 
         click_on "Save"
 
-        expect(current_path).to eql "/avo/resources/projects/#{project.id}"
+        expect(current_path).to eql "/admin/resources/projects/#{project.id}"
         is_expected.to have_text "Users required must be less than 1000000"
       end
 
@@ -85,7 +85,7 @@ RSpec.describe "number", type: :feature do
 
         click_on "Save"
 
-        expect(current_path).to eql "/avo/resources/projects/#{project.id}"
+        expect(current_path).to eql "/admin/resources/projects/#{project.id}"
         is_expected.to have_text "Users required is not a number"
       end
     end

@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.feature "Search", type: :system do
-  let(:url) { "/avo/resources/users" }
+  let(:url) { "/admin/resources/users" }
 
   subject do
     visit url
@@ -77,7 +77,7 @@ RSpec.feature "Search", type: :system do
 
         sleep 0.2
 
-        expect(current_path).to eql "/avo/resources/users/#{user.id}"
+        expect(current_path).to eql "/admin/resources/users/#{user.id}"
       end
     end
   end

@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "badge", type: :feature do
   context "index" do
-    let(:url) { "/avo/resources/projects" }
+    let(:url) { "/admin/resources/projects" }
 
     subject do
       visit url
@@ -64,7 +64,7 @@ RSpec.describe "badge", type: :feature do
   end
 
   context "show" do
-    let(:url) { "/avo/resources/projects/#{project.id}" }
+    let(:url) { "/admin/resources/projects/#{project.id}" }
 
     subject do
       visit url

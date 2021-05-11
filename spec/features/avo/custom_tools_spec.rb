@@ -3,12 +3,12 @@ require "rails_helper"
 RSpec.feature "CustomTools", type: :feature do
   describe "custom tool" do
     before do
-      visit "/avo"
+      visit "/admin"
     end
 
     subject { page.body }
 
-    it { is_expected.to have_link "Dashboard", href: "/avo/dashboard" }
+    it { is_expected.to have_link "Dashboard", href: "/admin/dashboard" }
 
     it "navigates to the custom tool page" do
       subject

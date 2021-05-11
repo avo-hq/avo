@@ -2,13 +2,13 @@ require "rails_helper"
 
 RSpec.describe "UserForms", type: :system do
   it "Shows the empty posts page" do
-    visit "/avo/resources/posts"
+    visit "/admin/resources/posts"
 
     expect(page).to have_text("No posts found")
   end
 
   it "accesses the create user page" do
-    visit "/avo/resources/users"
+    visit "/admin/resources/users"
 
     click_on "Create new user"
 
@@ -26,17 +26,17 @@ RSpec.describe "UserForms", type: :system do
   end
 
   it "navigates back to the index page" do
-    visit "/avo/resources/posts/new"
+    visit "/admin/resources/posts/new"
 
     click_on "Cancel"
 
     expect(page).to have_text "No posts found"
     expect(page).to have_css "a", text: "Create new post"
-    expect(current_path).to eq "/avo/resources/posts"
+    expect(current_path).to eq "/admin/resources/posts"
   end
 
   it "displays valdation errors", skip_js_error_detect: true do
-    visit "/avo/resources/users/new"
+    visit "/admin/resources/users/new"
 
     click_on "Save"
 
@@ -47,7 +47,7 @@ RSpec.describe "UserForms", type: :system do
   end
 
   it "submits the form on enter", skip_js_error_detect: true do
-    visit "/avo/resources/users/new"
+    visit "/admin/resources/users/new"
 
     find("[data-field-id='first_name'] [data-slot='value'] input").native.send_keys(:return)
 
@@ -58,7 +58,7 @@ RSpec.describe "UserForms", type: :system do
   end
 
   it "creates a user" do
-    visit "/avo/resources/users/new"
+    visit "/admin/resources/users/new"
 
     fill_in "user_first_name", with: "John"
     fill_in "user_last_name", with: "Doe"
@@ -72,7 +72,7 @@ RSpec.describe "UserForms", type: :system do
     expect(page).to have_text("Doe")
     expect(page).to have_text("john@doe.com")
     user_id = page.find('[data-field-id="id"] [data-slot="value"]').text
-    expect(current_path).to eq "/avo/resources/users/#{user_id}"
+    expect(current_path).to eq "/admin/resources/users/#{user_id}"
 
     within(".application-sidebar") do
       click_on "Users"
@@ -80,6 +80,6 @@ RSpec.describe "UserForms", type: :system do
 
     expect(page).to have_text("John")
     expect(page).to have_text("Doe")
-    expect(current_path).to eq "/avo/resources/users"
+    expect(current_path).to eq "/admin/resources/users"
   end
 end

@@ -6,7 +6,7 @@ RSpec.describe "KeyValueFields", type: :system do
 
     context "show" do
       it "displays the projects empty meta (dash)" do
-        visit "/avo/resources/projects/#{project.id}"
+        visit "/admin/resources/projects/#{project.id}"
 
         expect(find_field_value_element("meta")).to have_text empty_dash
       end
@@ -14,7 +14,7 @@ RSpec.describe "KeyValueFields", type: :system do
 
     context "edit" do
       it "has the projects meta label, table header, add button" do
-        visit "/avo/resources/projects/#{project.id}/edit"
+        visit "/admin/resources/projects/#{project.id}/edit"
         wait_for_loaded
 
         meta_element = find_field_element("meta")
@@ -33,7 +33,7 @@ RSpec.describe "KeyValueFields", type: :system do
       end
 
       it "adds a row to meta table and input one row with values" do
-        visit "/avo/resources/projects/#{project.id}/edit"
+        visit "/admin/resources/projects/#{project.id}/edit"
         wait_for_loaded
 
         meta_element = find_field_element("meta")
@@ -57,7 +57,7 @@ RSpec.describe "KeyValueFields", type: :system do
         click_on "Save"
         wait_for_loaded
 
-        expect(current_path).to eql "/avo/resources/projects/#{project.id}"
+        expect(current_path).to eql "/admin/resources/projects/#{project.id}"
 
         expect(meta_element).to have_selector 'input[placeholder="Meta key"][disabled="disabled"]'
         expect(meta_element).to have_selector 'input[placeholder="Meta value"][disabled="disabled"]'
@@ -70,7 +70,7 @@ RSpec.describe "KeyValueFields", type: :system do
       end
 
       it "adds a row to meta table and no input values" do
-        visit "/avo/resources/projects/#{project.id}/edit"
+        visit "/admin/resources/projects/#{project.id}/edit"
         wait_for_loaded
 
         meta_element = find_field_element("meta")
@@ -91,7 +91,7 @@ RSpec.describe "KeyValueFields", type: :system do
         click_on "Save"
         wait_for_loaded
 
-        expect(current_path).to eql "/avo/resources/projects/#{project.id}"
+        expect(current_path).to eql "/admin/resources/projects/#{project.id}"
 
         expect(meta_element).not_to have_selector 'input[placeholder="Meta key"][disabled="disabled"]'
         expect(meta_element).not_to have_selector 'input[placeholder="Meta value"][disabled="disabled"]'
@@ -105,7 +105,7 @@ RSpec.describe "KeyValueFields", type: :system do
 
     context "show" do
       it "displays the projects meta" do
-        visit "/avo/resources/projects/#{project.id}"
+        visit "/admin/resources/projects/#{project.id}"
         wait_for_loaded
 
         meta_element = find_field_element("meta")
@@ -128,7 +128,7 @@ RSpec.describe "KeyValueFields", type: :system do
       let!(:project) { create :project, meta: meta_data }
 
       it "has the projects meta label, table header, table rows (2), buttons" do
-        visit "/avo/resources/projects/#{project.id}/edit"
+        visit "/admin/resources/projects/#{project.id}/edit"
         wait_for_loaded
 
         meta_element = find_field_element("meta")
@@ -158,7 +158,7 @@ RSpec.describe "KeyValueFields", type: :system do
       end
 
       it "deletes first row" do
-        visit "/avo/resources/projects/#{project.id}/edit"
+        visit "/admin/resources/projects/#{project.id}/edit"
         wait_for_loaded
 
         delete_buttons = page.all('[data-button="delete-row"]')
@@ -168,7 +168,7 @@ RSpec.describe "KeyValueFields", type: :system do
         sleep 0.2
         wait_for_loaded
 
-        expect(current_path).to eql "/avo/resources/projects/#{project.id}"
+        expect(current_path).to eql "/admin/resources/projects/#{project.id}"
 
         keys = page.all('input[placeholder="Meta key"][disabled="disabled"]')
         values = page.all('input[placeholder="Meta value"][disabled="disabled"]')
@@ -181,7 +181,7 @@ RSpec.describe "KeyValueFields", type: :system do
       end
 
       it "deletes second row" do
-        visit "/avo/resources/projects/#{project.id}/edit"
+        visit "/admin/resources/projects/#{project.id}/edit"
         wait_for_loaded
 
         meta_element = find_field_element("meta")
@@ -196,13 +196,13 @@ RSpec.describe "KeyValueFields", type: :system do
         click_on "Save"
         wait_for_loaded
 
-        expect(current_path).to eql "/avo/resources/projects/#{project.id}"
+        expect(current_path).to eql "/admin/resources/projects/#{project.id}"
 
         expect(find_field_value_element("meta")).to have_text empty_dash
       end
 
       it "checks for plus and delete tooltips on hover" do
-        visit "/avo/resources/projects/#{project.id}/edit"
+        visit "/admin/resources/projects/#{project.id}/edit"
         wait_for_loaded
 
         add_button = page.find('[data-button="add-row"]')
@@ -217,7 +217,7 @@ RSpec.describe "KeyValueFields", type: :system do
       end
 
       it "adds a row to meta table with key and value" do
-        visit "/avo/resources/projects/#{project.id}/edit"
+        visit "/admin/resources/projects/#{project.id}/edit"
         wait_for_loaded
 
         meta_element = find_field_element("meta")
@@ -236,7 +236,7 @@ RSpec.describe "KeyValueFields", type: :system do
         click_on "Save"
         wait_for_loaded
 
-        expect(current_path).to eql "/avo/resources/projects/#{project.id}"
+        expect(current_path).to eql "/admin/resources/projects/#{project.id}"
 
         keys = page.all('input[placeholder="Meta key"][disabled="disabled"]')
         values = page.all('input[placeholder="Meta value"][disabled="disabled"]')
@@ -246,7 +246,7 @@ RSpec.describe "KeyValueFields", type: :system do
       end
 
       it "adds a row to meta table only with key" do
-        visit "/avo/resources/projects/#{project.id}/edit"
+        visit "/admin/resources/projects/#{project.id}/edit"
         wait_for_loaded
 
         meta_element = find_field_element("meta")
@@ -264,7 +264,7 @@ RSpec.describe "KeyValueFields", type: :system do
         click_on "Save"
         wait_for_loaded
 
-        expect(current_path).to eql "/avo/resources/projects/#{project.id}"
+        expect(current_path).to eql "/admin/resources/projects/#{project.id}"
 
         keys = page.all('input[placeholder="Meta key"][disabled="disabled"]')
         values = page.all('input[placeholder="Meta value"][disabled="disabled"]')

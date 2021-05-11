@@ -6,7 +6,7 @@ RSpec.describe "CodeField", type: :system do
 
     context "show" do
       it "displays the projects empty custom_css (dash)" do
-        visit "/avo/resources/users/#{user.id}"
+        visit "/admin/resources/users/#{user.id}"
         wait_for_loaded
 
         expect(find_field_value_element("custom_css")).to have_text empty_dash
@@ -15,7 +15,7 @@ RSpec.describe "CodeField", type: :system do
 
     context "edit" do
       it "has the projects custom_css label and empty code editor" do
-        visit "/avo/resources/users/#{user.id}/edit"
+        visit "/admin/resources/users/#{user.id}/edit"
         wait_for_loaded
 
         custom_css_element = find_field_element("custom_css")
@@ -27,7 +27,7 @@ RSpec.describe "CodeField", type: :system do
       end
 
       it "change the projects custom_css code" do
-        visit "/avo/resources/users/#{user.id}/edit"
+        visit "/admin/resources/users/#{user.id}/edit"
         wait_for_loaded
 
         fill_in_editor_field "Hello World"
@@ -46,7 +46,7 @@ RSpec.describe "CodeField", type: :system do
 
     context "edit" do
       it "has the projects custom_css label and filled code editor" do
-        visit "/avo/resources/users/#{user.id}/edit"
+        visit "/admin/resources/users/#{user.id}/edit"
 
         custom_css_element = find_field_element("custom_css")
 
@@ -57,7 +57,7 @@ RSpec.describe "CodeField", type: :system do
       end
 
       it "change the projects custom_css code to another value" do
-        visit "/avo/resources/users/#{user.id}/edit"
+        visit "/admin/resources/users/#{user.id}/edit"
         wait_for_loaded
 
         fill_in_editor_field ".input { background: #ffffff; }"
@@ -71,7 +71,7 @@ RSpec.describe "CodeField", type: :system do
 
     context "show" do
       it "displays the projects custom_css" do
-        visit "/avo/resources/users/#{user.id}"
+        visit "/admin/resources/users/#{user.id}"
         wait_for_loaded
 
         expect(page).to have_editor_display text: css

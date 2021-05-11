@@ -6,7 +6,7 @@
 
 #     context 'show' do
 #       it 'displays the projects empty description (dash)' do
-#         visit "/avo/resources/projects/#{project.id}"
+#         visit "/admin/resources/projects/#{project.id}"
 
 #         expect(find_field_element('description')).to have_text empty_dash
 #       end
@@ -14,7 +14,7 @@
 
 #     context 'edit' do
 #       it 'has the projects description label and empty markdown editor and placeholder' do
-#         visit "/avo/resources/projects/#{project.id}/edit"
+#         visit "/admin/resources/projects/#{project.id}/edit"
 
 #         description_element = find_field_element('description')
 #         expect(description_element).to have_text 'Description'
@@ -26,7 +26,7 @@
 #       end
 
 #       it 'change the projects description' do
-#         visit "/avo/resources/projects/#{project.id}/edit"
+#         visit "/admin/resources/projects/#{project.id}/edit"
 
 #         textarea_markdown = find(:xpath, "//textarea[@class='auto-textarea-input no-border no-resize']")
 #         textarea_markdown.fill_in with: 'Works for us!!! \n Hello'
@@ -52,7 +52,7 @@
 
 #     context 'show' do
 #       it 'displays the projects description' do
-#         visit "/avo/resources/projects/#{project.id}"
+#         visit "/admin/resources/projects/#{project.id}"
 
 #         click_on 'Show Content'
 
@@ -63,7 +63,7 @@
 
 #     context 'edit' do
 #       it 'has the projects description label' do
-#         visit "/avo/resources/projects/#{project.id}/edit"
+#         visit "/admin/resources/projects/#{project.id}/edit"
 
 #         description_element = find_field_element('description')
 
@@ -71,7 +71,7 @@
 #       end
 
 #       it 'has filled simple header in markdown editor' do
-#         visit "/avo/resources/projects/#{project.id}/edit"
+#         visit "/admin/resources/projects/#{project.id}/edit"
 
 #         description_element = find_field_element('description')
 
@@ -81,7 +81,7 @@
 #       end
 
 #       it 'change the projects description markdown to more complicated markdown language' do
-#         visit "/avo/resources/projects/#{project.id}/edit"
+#         visit "/admin/resources/projects/#{project.id}/edit"
 
 #         find("button[class='op-icon fa fa-mavon-trash-o']").click
 

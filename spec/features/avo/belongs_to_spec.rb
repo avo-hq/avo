@@ -8,7 +8,7 @@ RSpec.feature "belongs_to", type: :feature do
   end
 
   context "index" do
-    let(:url) { "/avo/resources/posts?view_type=table" }
+    let(:url) { "/admin/resources/posts?view_type=table" }
 
     subject do
       visit url
@@ -33,12 +33,12 @@ RSpec.feature "belongs_to", type: :feature do
   end
 
   context "show" do
-    let(:url) { "/avo/resources/posts/#{post.id}" }
+    let(:url) { "/admin/resources/posts/#{post.id}" }
 
     describe "with user attached" do
       let!(:post) { create :post, user: admin }
 
-      it { is_expected.to have_link admin.name, href: "/avo/resources/users/#{admin.id}?via_resource_class=Post&via_resource_id=#{post.id}" }
+      it { is_expected.to have_link admin.name, href: "/admin/resources/users/#{admin.id}?via_resource_class=Post&via_resource_id=#{post.id}" }
     end
 
     describe "without user attached" do
@@ -49,7 +49,7 @@ RSpec.feature "belongs_to", type: :feature do
   end
 
   context "edit" do
-    let(:url) { "/avo/resources/posts/#{post.id}/edit" }
+    let(:url) { "/admin/resources/posts/#{post.id}/edit" }
 
     describe "without user attached" do
       let!(:post) { create :post, user: nil }
@@ -64,8 +64,8 @@ RSpec.feature "belongs_to", type: :feature do
 
         click_on "Save"
 
-        expect(current_path).to eql "/avo/resources/posts/#{post.id}"
-        expect(page).to have_link admin.name, href: "/avo/resources/users/#{admin.id}?via_resource_class=Post&via_resource_id=#{post.id}"
+        expect(current_path).to eql "/admin/resources/posts/#{post.id}"
+        expect(page).to have_link admin.name, href: "/admin/resources/users/#{admin.id}?via_resource_class=Post&via_resource_id=#{post.id}"
       end
     end
 
@@ -83,8 +83,8 @@ RSpec.feature "belongs_to", type: :feature do
 
         click_on "Save"
 
-        expect(current_path).to eql "/avo/resources/posts/#{post.id}"
-        expect(page).to have_link second_user.name, href: "/avo/resources/users/#{second_user.id}?via_resource_class=Post&via_resource_id=#{post.id}"
+        expect(current_path).to eql "/admin/resources/posts/#{post.id}"
+        expect(page).to have_link second_user.name, href: "/admin/resources/users/#{second_user.id}?via_resource_class=Post&via_resource_id=#{post.id}"
       end
 
       it "nullifies the user" do
@@ -95,14 +95,14 @@ RSpec.feature "belongs_to", type: :feature do
 
         click_on "Save"
 
-        expect(current_path).to eql "/avo/resources/posts/#{post.id}"
+        expect(current_path).to eql "/admin/resources/posts/#{post.id}"
         expect(find_field_value_element("user")).to have_text empty_dash
       end
     end
   end
 
   context "new" do
-    let(:url) { "/avo/resources/posts/new?via_relation=user&via_relation_class=User&via_resource_id=#{admin.id}" }
+    let(:url) { "/admin/resources/posts/new?via_relation=user&via_relation_class=User&via_resource_id=#{admin.id}" }
 
     it { is_expected.to have_select "post_user_id", selected: admin.name, options: [empty_dash, admin.name], disabled: true }
   end
