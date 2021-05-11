@@ -33,11 +33,17 @@ module Generators
         # Add view file
         template "tool/view.tt", "app/views/avo/tools/#{file_name}.html.erb"
 
-        route <<-ROUTE
+        if ::Avo.configuration.root_path == ""
+          route <<-ROUTE
+  get "#{file_name}", to: "avo/tools##{file_name}"
+          ROUTE
+        else
+          route <<-ROUTE
 scope :#{::Avo.configuration.namespace} do
   get "#{file_name}", to: "avo/tools##{file_name}"
 end
-        ROUTE
+          ROUTE
+        end
       end
 
       no_tasks do

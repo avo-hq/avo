@@ -52,11 +52,11 @@ module Avo
         if @license.lacks(:custom_tools) || @license.invalid?
           if Rails.env.development? || Rails.env.test?
             @custom_tools_alert_visible = true
+          elsif @license.lacks_with_trial(:custom_tools)
+            # Raise error in non-development environments.
+            raise Avo::LicenseInvalidError, "Your license is invalid or doesn't support custom tools."
           end
         end
-
-        # Raise error in non-development environments.
-        raise Avo::LicenseInvalidError, "Your license is invalid or doesn't support custom tools." if @license.lacks_with_trial(:custom_tools)
       end
     end
 
@@ -277,11 +277,11 @@ module Avo
     end
 
     def on_resources_path
-      request.original_url.match?(/.*\/#{Avo.configuration.namespace}\/resources\/.*/)
+      request.original_url.match?(/.*#{Avo.configuration.root_path}\/resources\/.*/)
     end
 
     def on_api_path
-      request.original_url.match?(/.*\/#{Avo.configuration.namespace}\/avo_api\/.*/)
+      request.original_url.match?(/.*#{Avo.configuration.root_path}\/avo_api\/.*/)
     end
   end
 end
