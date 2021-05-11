@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.feature "CustomTools", type: :feature do
   describe "custom tool" do
     before do
-      visit "/avo"
+      visit "/admin"
     end
 
     subject { page.body }
@@ -16,8 +16,8 @@ RSpec.feature "CustomTools", type: :feature do
       click_on "Dashboard"
 
       expect(page.body).to have_text "What a nice new tool"
-      expect(page.body).to have_text "app/views/admin/tools/dashboard.html.erb"
-      expect(page.body).to have_text "app/views/admin/sidebar/items/_dashboard.html.erb"
+      expect(page.body).to have_text "app/views/avo/tools/dashboard.html.erb"
+      expect(page.body).to have_text "app/views/avo/sidebar/items/_dashboard.html.erb"
       expect(find(".text-2xl.tracking-normal.font-bold.text-gray-800.truncate")).to have_text "Dashboard"
       expect(find(".breadcrumbs")).to have_text "Dashboard"
     end

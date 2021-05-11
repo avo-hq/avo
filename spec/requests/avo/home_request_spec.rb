@@ -8,7 +8,7 @@ RSpec.describe "Home", type: :request do
   end
 
   it "renders the homepage" do
-    get "/avo"
+    get "/admin"
 
     expect(response).to have_http_status(:redirect)
   end

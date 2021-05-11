@@ -44,5 +44,5 @@ class UserResource < Avo::BaseResource
   end
 
   action ToggleInactive
-  action ToggleActiveMilestoneTemplateAction
+  action ToggleAdmin
 end

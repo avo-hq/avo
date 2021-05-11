@@ -14,9 +14,9 @@ Avo.configure do |config|
       params: request.params
     }
   end
-  config.home_path = "/avo/dashboard"
+  config.home_path = "/admin/dashboard"
   config.set_initial_breadcrumbs do
-    add_breadcrumb "Dashboard", "/avo/dashboard"
+    add_breadcrumb "Dashboard", "/admin/dashboard"
   end
   config.search_debounce = 100
 end

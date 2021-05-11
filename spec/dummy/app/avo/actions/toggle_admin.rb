@@ -1,6 +1,6 @@
-class ToggleActiveMilestoneTemplateAction < Avo::BaseAction
+class ToggleAdmin < Avo::BaseAction
   self.name = "Toggle admin"
-  # self.no_confirmation = true
+  self.no_confirmation = true
 
   def handle(models:, fields:)
     models.each do |model|
