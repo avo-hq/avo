@@ -36,7 +36,7 @@ module Avo
       @default_view_type = :table
       @license = "community"
       @license_key = nil
-      @current_user = proc { current_user }
+      @current_user = proc {}
       @authenticate = proc {}
       @authorization_methods = {
         index: "index?",
@@ -72,6 +72,10 @@ module Avo
 
     def current_user_method(&block)
       @current_user = block if block.present?
+    end
+
+    def current_user_method=(method)
+      @current_user = method if method.present?
     end
 
     def authenticate_with(&block)
