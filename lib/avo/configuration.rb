@@ -1,6 +1,6 @@
 module Avo
   class Configuration
-    attr_accessor :root_path
+    attr_writer :root_path
     attr_accessor :app_name
     attr_accessor :timezone
     attr_accessor :per_page
@@ -92,6 +92,12 @@ module Avo
 
     def namespace
       root_path.delete "/"
+    end
+
+    def root_path
+      return "" if @root_path === "/"
+
+      @root_path
     end
   end
 
