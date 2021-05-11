@@ -19,6 +19,6 @@ RSpec.feature "Breadcrumbs", type: :feature do
     let!(:url) { "/admin/dashboard" }
 
     it { is_expected.to have_css ".breadcrumbs" }
-    it { is_expected.to have_text "Dashboard\n  \n\nDashboard\n" }
+    it { is_expected.to have_text "Dashboard\n" }
   end
 end
