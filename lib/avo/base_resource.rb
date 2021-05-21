@@ -97,7 +97,7 @@ module Avo
         .select do |field|
           if field.respond_to?(:polymorphic_for) &&
               field.polymorphic_for.present? &&
-              field.polymorphic_for.to_s != field.get_model.commentable_type.to_s
+              field.polymorphic_for.to_s != field.get_model["#{field.polymorphic_as}_type"].to_s
             next
           end
           if !field.respond_to?(:polymorphic_for) &&
