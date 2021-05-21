@@ -87,20 +87,29 @@ module Avo
     end
 
     def get_fields(panel: nil, reflection: nil)
-      fields = get_field_definitions.select do |field|
-        field.send("show_on_#{@view}")
-      end
+      fields = get_field_definitions
         .select do |field|
-                 field.visible?
-               end
+          field.send("show_on_#{@view}")
+        end
         .select do |field|
-        unless field.respond_to?(:foreign_key) &&
-            reflection.present? &&
-            reflection.respond_to?(:foreign_key) &&
-            reflection.foreign_key == field.foreign_key
+          field.visible?
+        end
+        .select do |field|
+          if field.respond_to?(:polymorphic_for) &&
+              field.polymorphic_for.present? &&
+              field.polymorphic_for.to_s != field.get_model.commentable_type.to_s
+            next
+          end
+          if !field.respond_to?(:polymorphic_for) &&
+              field.respond_to?(:foreign_key) &&
+              reflection.present? &&
+              reflection.respond_to?(:foreign_key) &&
+              reflection.foreign_key != field.foreign_key
+            next
+          end
+
           true
         end
-      end
 
       if panel.present?
         fields = fields.select do |field|

@@ -9,6 +9,7 @@ require "securerandom"
 require "open-uri"
 require "faker"
 
+Comment.delete_all
 Post.delete_all
 Project.delete_all
 TeamMembership.delete_all
@@ -47,6 +48,10 @@ end
   post = FactoryBot.create(:post, user_id: users.sample.id)
 
   post.cover_photo.attach(io: URI.open("https://source.unsplash.com/random/#{[1000, 1100, 1200, 1300].sample}x#{[1000, 1100, 1200, 1300].sample}"), filename: "cover.jpg")
+
+  rand(0..15).times do
+    post.comments << FactoryBot.create(:comment, user_id: users.sample.id)
+  end
 end
 
 projects = []
@@ -72,5 +77,9 @@ end
 projects.each do |project|
   users.sample(11).each do |user|
     project.users << user
+  end
+
+  rand(0..15).times do
+    project.comments << FactoryBot.create(:comment, user_id: users.sample.id)
   end
 end
