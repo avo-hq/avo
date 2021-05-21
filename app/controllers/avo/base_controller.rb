@@ -22,7 +22,7 @@ module Avo
       end
 
       # Remove default_scope for index view
-      if @resource.unscope_queries_on_index
+      if @resource.unscoped_queries_on_index
         @query = @query.unscoped
       end
 
