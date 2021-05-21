@@ -37,6 +37,8 @@ module Avo
       end
 
       def foreign_key
+        return polymorphic_as if polymorphic_as.present?
+
         if @model.present?
           get_model_class(@model).reflections[@relation_method].foreign_key
         elsif @resource.present? && @resource.model_class.reflections[@relation_method].present?
