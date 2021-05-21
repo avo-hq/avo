@@ -56,6 +56,6 @@ $ bundle install
 
 Please read [CONTRIBUTING.MD](./CONTRIBUTING.MD)
 
-# Upgrade guide
+# Upgrade Guide
 
-Please read the [UPGRADE_GUIDE.MD](https://docs.avohq.io/0.5.x/upgrade.html)
+Please read the [UPGRADE_GUIDE.MD](https://docs.avohq.io/1.0/upgrade.html)
