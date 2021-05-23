@@ -3,8 +3,8 @@ module Avo
     class BelongsToField < BaseField
       attr_reader :searchable
       attr_reader :polymorphic_as
-      attr_reader :polymorphic_for
       attr_reader :relation_method
+      attr_reader :types
 
       def initialize(id, **args, &block)
         args[:placeholder] ||= I18n.t("avo.choose_an_option")
@@ -13,10 +13,8 @@ module Avo
 
         @searchable = args[:searchable] == true
         @polymorphic_as = args[:polymorphic_as]
-        @polymorphic_for = args[:polymorphic_for]
+        @types = args[:types]
         @relation_method = name.to_s.parameterize.underscore
-
-        hide_on(:edit, :new) if polymorphic_as.present?
       end
 
       def value
@@ -29,6 +27,13 @@ module Avo
             value: model.id,
             label: model.send(target_resource.class.title)
           }
+        end
+      end
+
+      def values_for_type(type)
+        puts ['type->', type].inspect
+        type.all.map do |model|
+          [model.send(target_resource.class.title), model.id]
         end
       end
 
@@ -61,11 +66,44 @@ module Avo
       end
 
       def to_permitted_param
+        if polymorphic_as.present?
+          return ["#{polymorphic_as}_type".to_sym, "#{polymorphic_as}_id".to_sym]
+        end
+
         foreign_key.to_sym
       end
 
+      def fill_field(model, key, value, params)
+        return model unless model.methods.include? key.to_sym
+
+        if polymorphic_as.present?
+          model.send("#{polymorphic_as}_type=", params["#{polymorphic_as}_type"])
+
+          # If the type is blank, reset the id too.
+          if params["#{polymorphic_as}_type"].blank?
+            model.send("#{polymorphic_as}_id=", nil)
+          else
+            model.send("#{polymorphic_as}_id=", params["#{polymorphic_as}_id"])
+          end
+        else
+          model.send("#{key}=", value)
+        end
+
+        model
+      end
+
+      def database_id(model)
+        # If the field is a polymorphic value, return the polymorphic_type as key and pre-fill the _id in fill_field.
+        return "#{polymorphic_as}_type" if polymorphic_as.present?
+
+        foreign_key
+      rescue
+        id
+      end
+
       def target_resource
-        return App.get_resource_by_model_name(polymorphic_for) if polymorphic_for.present?
+        # return App.get_resource_by_model_name(polymorphic_for) if polymorphic_for.present?
+        return nil if polymorphic_as.present?
 
         reflection_key = polymorphic_as || id
 

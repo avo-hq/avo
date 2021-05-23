@@ -95,18 +95,20 @@ module Avo
           field.visible?
         end
         .select do |field|
-          if field.respond_to?(:polymorphic_for) &&
-              field.polymorphic_for.present? &&
-              field.polymorphic_for.to_s != field.get_model["#{field.polymorphic_as}_type"].to_s
+          # Strip out the reflection field in index queries with a parent association.
+          if reflection.present? &&
+              reflection.options.present? &&
+              field.respond_to?(:polymorphic_as) &&
+              field.polymorphic_as.to_s == reflection.options[:as].to_s
             next
           end
-          if !field.respond_to?(:polymorphic_for) &&
-              field.respond_to?(:foreign_key) &&
-              reflection.present? &&
-              reflection.respond_to?(:foreign_key) &&
-              reflection.foreign_key != field.foreign_key
-            next
-          end
+          # if !field.respond_to?(:polymorphic_as) &&
+          #     field.respond_to?(:foreign_key) &&
+          #     reflection.present? &&
+          #     reflection.respond_to?(:foreign_key) &&
+          #     reflection.foreign_key != field.foreign_key
+          #   next
+          # end
 
           true
         end
@@ -259,14 +261,17 @@ module Avo
         .reject do |field|
           field.computed
         end
-        .map { |field| [field.database_id(model).to_s, field] }.to_h
+        .map do |field|
+          [field.database_id(model).to_s, field]
+        end
+        .to_h
 
       params.each do |key, value|
         field = fields_by_database_id[key]
 
         next unless field.present?
 
-        model = field.fill_field model, key, value
+        model = field.fill_field model, key, value, params
       end
 
       model
@@ -304,19 +309,22 @@ module Avo
 
     # We will not overwrite any attributes that come pre-filled in the model.
     def hydrate_model_with_default_values
-      default_values = get_fields.select do |field|
-        !field.computed
-      end
+      default_values = get_fields
+        .select do |field|
+          !field.computed
+        end
         .map do |field|
           id = field.id
           value = field.value
 
-          if field.respond_to? :foreign_key
+          if field.type == "belongs_to"
             id = field.foreign_key.to_sym
 
             reflection = @model._reflections[@params[:via_relation]]
 
-            if reflection.present? && reflection.foreign_key.present? && field.id.to_s == @params[:via_relation].to_s
+            if field.polymorphic_as.present? && field.types.map(&:to_s).include?(@params["via_relation_class"])
+              value = @params["via_relation_class"].safe_constantize.find(@params[:via_resource_id])
+            elsif reflection.present? && reflection.foreign_key.present? && field.id.to_s == @params[:via_relation].to_s
               value = @params[:via_resource_id]
             end
           end
@@ -325,8 +333,8 @@ module Avo
         end
         .to_h
         .select do |id, value|
-        value.present?
-      end
+          value.present?
+        end
 
       default_values.each do |id, value|
         if @model.send(id).nil?

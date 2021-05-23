@@ -167,6 +167,14 @@ module Avo
 
     def permitted_params
       @resource.get_field_definitions.select(&:updatable).map(&:to_permitted_param)
+      # ppp = []
+
+      # @resource.get_field_definitions.select(&:updatable).each do |param|
+      #   ppp.push(*param.to_permitted_param)
+      # end
+      # # abort ppp.inspect
+      # puts [':ppp ->', ppp].inspect
+      # ppp
     end
 
     def cast_nullable(params)

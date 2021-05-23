@@ -1,5 +1,3 @@
-# require "active_support/inflector"
-
 module Avo
   module FieldsCollector
     def field(field_name, as:, **args, &block)

@@ -116,7 +116,7 @@ module Avo
         final_value
       end
 
-      def fill_field(model, key, value)
+      def fill_field(model, key, value, params)
         return model unless model.methods.include? key.to_sym
 
         model.send("#{key}=", value)

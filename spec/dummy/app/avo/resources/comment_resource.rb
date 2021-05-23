@@ -14,6 +14,5 @@ class CommentResource < Avo::BaseResource
   end
 
   field :user, as: :belongs_to
-  field :post, as: :belongs_to, polymorphic_as: :commentable, polymorphic_for: ::Post
-  field :project, as: :belongs_to, polymorphic_as: :commentable, polymorphic_for: ::Project
+  field :commentable, as: :belongs_to, polymorphic_as: :commentable, types: [::Post, ::Project]
 end
