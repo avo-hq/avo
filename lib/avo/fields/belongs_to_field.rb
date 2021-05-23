@@ -102,8 +102,7 @@ module Avo
       end
 
       def target_resource
-        # return App.get_resource_by_model_name(polymorphic_for) if polymorphic_for.present?
-        return nil if polymorphic_as.present?
+        return App.get_resource_by_model_name(value.class) if polymorphic_as.present? && value.present?
 
         reflection_key = polymorphic_as || id
 
