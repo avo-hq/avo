@@ -31,9 +31,8 @@ module Avo
       end
 
       def values_for_type(type)
-        puts ['type->', type].inspect
         type.all.map do |model|
-          [model.send(target_resource.class.title), model.id]
+          [model.send(App.get_resource_by_model_name(type).class.title), model.id]
         end
       end
 
@@ -102,7 +101,13 @@ module Avo
       end
 
       def target_resource
-        return App.get_resource_by_model_name(value.class) if polymorphic_as.present? && value.present?
+        if polymorphic_as.present?
+          if value.present?
+            return App.get_resource_by_model_name(value.class)
+          else
+            return nil
+          end
+        end
 
         reflection_key = polymorphic_as || id
 

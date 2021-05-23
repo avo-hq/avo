@@ -26,16 +26,6 @@ RSpec.feature "belongs_to", type: :feature do
 
       it { is_expected.to have_text empty_dash }
     end
-
-    describe "with a polymorphic relation" do
-      let!(:post) { create(:post).comments << create(:comment) }
-
-      it "displays the commentable label" do
-        visit "/admin/resources/comments"
-
-        expect(page.body).to have_text "Commentable"
-      end
-    end
   end
 
   subject do
@@ -56,16 +46,6 @@ RSpec.feature "belongs_to", type: :feature do
       let!(:post) { create :post }
 
       it { is_expected.to have_text empty_dash }
-
-      describe "with a polymorphic relation" do
-        let(:comment) { post.comments << create(:comment); post.comments.first }
-
-        it "displays the commentable label" do
-          visit "/admin/resources/comments/#{comment.id}"
-
-          expect(find_field_value_element("post")).to have_text post.name
-        end
-      end
     end
   end
 
