@@ -41,7 +41,7 @@ module Avo
         end
       end
 
-      def fill_field(model, key, value)
+      def fill_field(model, key, value, params)
         if value.blank?
           related_model = nil
         else

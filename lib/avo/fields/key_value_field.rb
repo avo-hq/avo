@@ -54,7 +54,7 @@ module Avo
         }
       end
 
-      def fill_field(model, key, value)
+      def fill_field(model, key, value, params)
         begin
           new_value = JSON.parse(value)
         rescue
