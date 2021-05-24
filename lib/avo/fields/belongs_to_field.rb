@@ -22,7 +22,7 @@ module Avo
       end
 
       def options
-        target_resource.model_class.all.map do |model|
+        ::Avo::Services::AuthorizationService.apply_policy(user, target_resource.model_class).all.map do |model|
           {
             value: model.id,
             label: model.send(target_resource.class.title)
@@ -31,7 +31,7 @@ module Avo
       end
 
       def values_for_type(type)
-        type.all.map do |model|
+        ::Avo::Services::AuthorizationService.apply_policy(user, type).all.map do |model|
           [model.send(App.get_resource_by_model_name(type).class.title), model.id]
         end
       end

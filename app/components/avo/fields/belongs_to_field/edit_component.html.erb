@@ -1,7 +1,7 @@
 <% if @field.types.present? %>
   <div data-controller="belongs-to-field">
     <%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal do %>
-      <%= @form.select "#{@field.foreign_key}_type", @field.types.map { |type| [type.to_s.humanize, type.to_s] },
+      <%= @form.select "#{@field.foreign_key}_type", @field.types.map { |type| [type.to_s.underscore.humanize, type.to_s] },
         {
           include_blank: @field.placeholder,
         },
@@ -25,7 +25,7 @@
         data-belongs-to-field-target="type"
         data-type="<%= type %>"
       >
-        <%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal, label: type.to_s do %>
+        <%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal, label: type.to_s.underscore.humanize do %>
           <%= @form.select "#{@field.foreign_key}_id", @field.values_for_type(type),
             {
               include_blank: @field.placeholder,
