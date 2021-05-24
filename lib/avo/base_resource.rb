@@ -22,6 +22,7 @@ module Avo
     class_attribute :fields
     class_attribute :grid_loader
     class_attribute :visible_on_sidebar, default: true
+    class_attribute :unscoped_queries_on_index, default: false
 
     class << self
       def grid(&block)

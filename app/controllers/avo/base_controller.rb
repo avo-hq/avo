@@ -21,6 +21,11 @@ module Avo
         @query = @authorization.apply_policy @resource.model_class
       end
 
+      # Remove default_scope for index view
+      if @resource.unscoped_queries_on_index
+        @query = @query.unscoped
+      end
+
       # Eager load the relations
       if @resource.includes.present?
         @query = @query.includes(*@resource.includes)

@@ -10,14 +10,21 @@ module Avo
 
         super(id, **args, &block)
 
-        options = args[:options].present? ? args[:options] : args[:enum]
-        @options = ActiveSupport::HashWithIndifferentAccess.new options
+        @options = args[:options].present? ? args[:options] : args[:enum]
+        @options = ActiveSupport::HashWithIndifferentAccess.new @options if @options.is_a? Hash
         @enum = args[:enum].present? ? args[:enum] : nil
         @display_value = args[:display_value].present? ? args[:display_value] : false
       end
 
       def options_for_select
-        if enum.present?
+        if options.respond_to? :call
+          computed_options = options.call model: model, resource: resource, view: view, field: self
+          if display_value
+            computed_options.map { |label, value| [value, value] }.to_h
+          else
+            computed_options
+          end
+        elsif enum.present?
           if display_value
             options.invert
           else
@@ -31,7 +38,13 @@ module Avo
       end
 
       def label
-        if enum.present?
+        if options.respond_to? :call
+          computed_options = options.call model: model, resource: resource, view: view, field: self
+
+          return value if display_value
+
+          computed_options.invert.stringify_keys[value]
+        elsif enum.present?
           if display_value
             options[value]
           else
