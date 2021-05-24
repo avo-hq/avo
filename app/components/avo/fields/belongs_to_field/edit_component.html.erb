@@ -1,18 +1,68 @@
-<%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal do %>
-  <%= @form.select @field.foreign_key, @field.options.map { |o| [o[:label], o[:value]] },
-    {
-      include_blank: @field.placeholder,
-    },
-    {
-      class: helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)),
-      disabled: disabled
-    }
+<% if @field.types.present? %>
+  <div data-controller="belongs-to-field">
+    <%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal do %>
+      <%= @form.select "#{@field.foreign_key}_type", @field.types.map { |type| [type.to_s.underscore.humanize, type.to_s] },
+        {
+          include_blank: @field.placeholder,
+        },
+        {
+          class: helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)),
+          disabled: disabled,
+          'data-belongs-to-field-target': "select",
+          'data-action': 'change->belongs-to-field#changedType'
+        }
+        %>
+      <%
+        # If the select field is disabled, no value will be sent. It's how HTML works.
+        # Thus the extra hidden field to actually send the related id to the server.
+        if disabled
+      %>
+        <%= @form.hidden_field "#{@field.foreign_key}_type" %>
+      <% end %>
+    <% end %>
+    <% @field.types.each do |type| %>
+      <div class="hidden"
+        data-belongs-to-field-target="type"
+        data-type="<%= type %>"
+      >
+        <%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal, label: type.to_s.underscore.humanize do %>
+          <%= @form.select "#{@field.foreign_key}_id", @field.values_for_type(type),
+            {
+              include_blank: @field.placeholder,
+            },
+            {
+              class: helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)),
+              disabled: disabled
+            }
+            %>
+          <%
+            # If the select field is disabled, no value will be sent. It's how HTML works.
+            # Thus the extra hidden field to actually send the related id to the server.
+            if disabled
+          %>
+            <%= @form.hidden_field "#{@field.foreign_key}_id" %>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal do %>
+    <%= @form.select @field.foreign_key, @field.options.map { |o| [o[:label], o[:value]] },
+      {
+        include_blank: @field.placeholder,
+      },
+      {
+        class: helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)),
+        disabled: disabled
+      }
+      %>
+    <%
+      # If the select field is disabled, no value will be sent. It's how HTML works.
+      # Thus the extra hidden field to actually send the related id to the server.
+      if disabled
     %>
-  <%
-    # If the select field is disabled, no value will be sent. It's how HTML works.
-    # Thus the extra hidden field to actually send the related id to the server.
-    if disabled
-  %>
-    <%= @form.hidden_field @field.foreign_key %>
+      <%= @form.hidden_field @field.foreign_key %>
+    <% end %>
   <% end %>
 <% end %>

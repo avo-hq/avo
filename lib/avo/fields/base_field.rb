@@ -91,9 +91,11 @@ module Avo
         end
       end
 
-      def value
+      def value(property = nil)
+        property ||= id
+
         # Get model value
-        final_value = @model.send(id) if (model_or_class(@model) == "model") && @model.respond_to?(id)
+        final_value = @model.send(property) if (model_or_class(@model) == "model") && @model.respond_to?(property)
 
         if (@view === :new) || @action.present?
           final_value = if default.present? && default.respond_to?(:call)
@@ -114,7 +116,7 @@ module Avo
         final_value
       end
 
-      def fill_field(model, key, value)
+      def fill_field(model, key, value, params)
         return model unless model.methods.include? key.to_sym
 
         model.send("#{key}=", value)

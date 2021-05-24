@@ -1,7 +1,7 @@
 <div class="flex items-center py-0 leading-tight <%= @classes %> min-h-16" data-field-id="<%= @field.id %>" data-field-type="<%= @field.type %>">
   <div class="h-16 flex self-start items-center text-blue-gray-800">
     <div class="<% if @displayed_in_modal %> md:w-48 <% else %> md:w-64 <% end %> w-48 px-8 flex" data-slot="label">
-      <%= @form.label @field.id, @field.name %> <% if @field.required %> <span class="text-red-600">*</span> <% end %>
+      <%= @form.label @field.id, label %> <% if @field.required %> <span class="text-red-600">*</span> <% end %>
     </div>
   </div>
   <div class="flex-1 flex flex-row min-h-inherit">

@@ -40,4 +40,8 @@ FactoryBot.define do
     meta { [{foo: "bar", hey: "hi"}, {bar: "baz"}, {hoho: "hohoho"}].sample }
     progress { Faker::Number.between(from: 0, to: 100) }
   end
+
+  factory :comment do
+    body { Faker::Lorem.paragraphs(number: rand(4...10)).join("\n") }
+  end
 end

@@ -17,7 +17,7 @@ module Avo
         {"#{id}": []}
       end
 
-      def fill_field(model, key, value)
+      def fill_field(model, key, value, params)
         return model unless model.methods.include? key.to_sym
 
         value.each do |file|

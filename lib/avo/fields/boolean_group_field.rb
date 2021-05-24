@@ -13,7 +13,7 @@ module Avo
         ["#{id}": []]
       end
 
-      def fill_field(model, key, value)
+      def fill_field(model, key, value, params)
         new_value = {}
 
         # Filter out the empty ("") value boolean group generates

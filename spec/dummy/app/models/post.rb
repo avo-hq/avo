@@ -6,4 +6,5 @@ class Post < ApplicationRecord
   has_many_attached :attachments
 
   belongs_to :user, optional: true
+  has_many :comments, as: :commentable
 end

@@ -27,6 +27,7 @@ RSpec.feature "belongs_to", type: :feature do
       it { is_expected.to have_text empty_dash }
     end
   end
+
   subject do
     visit url
     find_field_value_element("user")

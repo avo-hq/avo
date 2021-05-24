@@ -88,20 +88,30 @@ module Avo
     end
 
     def get_fields(panel: nil, reflection: nil)
-      fields = get_field_definitions.select do |field|
-        field.send("show_on_#{@view}")
-      end
+      fields = get_field_definitions
         .select do |field|
-                 field.visible?
-               end
+          field.send("show_on_#{@view}")
+        end
         .select do |field|
-        unless field.respond_to?(:foreign_key) &&
-            reflection.present? &&
-            reflection.respond_to?(:foreign_key) &&
-            reflection.foreign_key == field.foreign_key
+          field.visible?
+        end
+        .select do |field|
+          # Strip out the reflection field in index queries with a parent association.
+          if reflection.present? &&
+              reflection.options.present? &&
+              field.respond_to?(:polymorphic_as) &&
+              field.polymorphic_as.to_s == reflection.options[:as].to_s
+            next
+          end
+          if field.respond_to?(:foreign_key) &&
+              reflection.present? &&
+              reflection.respond_to?(:foreign_key) &&
+              reflection.foreign_key != field.foreign_key
+            next
+          end
+
           true
         end
-      end
 
       if panel.present?
         fields = fields.select do |field|
@@ -217,28 +227,6 @@ module Avo
       self.class.context
     end
 
-    def query_search(via_resource_name:, via_resource_id:, user:, query: "")
-      # model_class = self.model
-
-      db_query = AuthorizationService.apply_policy(user, model_class)
-
-      if via_resource_name.present?
-        related_model = App.get_resource_by_name(via_resource_name).model
-
-        db_query = related_model.find(via_resource_id).public_send(plural_name.downcase)
-      end
-
-      new_query = []
-
-      [search].flatten.each_with_index do |search_by, index|
-        new_query.push "or" if index != 0
-
-        new_query.push "text(#{search_by}) ILIKE '%#{query}%'"
-      end
-
-      db_query.where(new_query.join(" "))
-    end
-
     def attached_file_fields
       get_field_definitions.select do |field|
         [Avo::Fields::FileField, Avo::Fields::FilesField].include? field.class
@@ -251,14 +239,17 @@ module Avo
         .reject do |field|
           field.computed
         end
-        .map { |field| [field.database_id(model).to_s, field] }.to_h
+        .map do |field|
+          [field.database_id(model).to_s, field]
+        end
+        .to_h
 
       params.each do |key, value|
         field = fields_by_database_id[key]
 
         next unless field.present?
 
-        model = field.fill_field model, key, value
+        model = field.fill_field model, key, value, params
       end
 
       model
@@ -296,19 +287,22 @@ module Avo
 
     # We will not overwrite any attributes that come pre-filled in the model.
     def hydrate_model_with_default_values
-      default_values = get_fields.select do |field|
-        !field.computed
-      end
+      default_values = get_fields
+        .select do |field|
+          !field.computed
+        end
         .map do |field|
           id = field.id
           value = field.value
 
-          if field.respond_to? :foreign_key
+          if field.type == "belongs_to"
             id = field.foreign_key.to_sym
 
             reflection = @model._reflections[@params[:via_relation]]
 
-            if reflection.present? && reflection.foreign_key.present? && field.id.to_s == @params[:via_relation].to_s
+            if field.polymorphic_as.present? && field.types.map(&:to_s).include?(@params["via_relation_class"])
+              value = @params["via_relation_class"].safe_constantize.find(@params[:via_resource_id])
+            elsif reflection.present? && reflection.foreign_key.present? && field.id.to_s == @params[:via_relation].to_s
               value = @params[:via_resource_id]
             end
           end
@@ -317,8 +311,8 @@ module Avo
         end
         .to_h
         .select do |id, value|
-        value.present?
-      end
+          value.present?
+        end
 
       default_values.each do |id, value|
         if @model.send(id).nil?
