@@ -8,7 +8,7 @@ class CommentResource < Avo::BaseResource
   field :id, as: :id
   field :body, as: :textarea
   field :excerpt, as: :text, only_on: :index, as_description: true do |model|
-    ActionView::Base.full_sanitizer.sanitize(model.body).truncate 60
+    ActionView::Base.full_sanitizer.sanitize(model.body.to_s).truncate 60
   rescue
     ""
   end

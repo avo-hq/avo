@@ -103,13 +103,12 @@ module Avo
               field.polymorphic_as.to_s == reflection.options[:as].to_s
             next
           end
-          # if !field.respond_to?(:polymorphic_as) &&
-          #     field.respond_to?(:foreign_key) &&
-          #     reflection.present? &&
-          #     reflection.respond_to?(:foreign_key) &&
-          #     reflection.foreign_key != field.foreign_key
-          #   next
-          # end
+          if field.respond_to?(:foreign_key) &&
+              reflection.present? &&
+              reflection.respond_to?(:foreign_key) &&
+              reflection.foreign_key != field.foreign_key
+            next
+          end
 
           true
         end
@@ -226,28 +225,6 @@ module Avo
 
     def context
       self.class.context
-    end
-
-    def query_search(via_resource_name:, via_resource_id:, user:, query: "")
-      # model_class = self.model
-
-      db_query = AuthorizationService.apply_policy(user, model_class)
-
-      if via_resource_name.present?
-        related_model = App.get_resource_by_name(via_resource_name).model
-
-        db_query = related_model.find(via_resource_id).public_send(plural_name.downcase)
-      end
-
-      new_query = []
-
-      [search].flatten.each_with_index do |search_by, index|
-        new_query.push "or" if index != 0
-
-        new_query.push "text(#{search_by}) ILIKE '%#{query}%'"
-      end
-
-      db_query.where(new_query.join(" "))
     end
 
     def attached_file_fields
