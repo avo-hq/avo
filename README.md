@@ -59,3 +59,10 @@ Please read [CONTRIBUTING.MD](./CONTRIBUTING.MD)
 # Upgrade Guide
 
 Please read the [UPGRADE_GUIDE.MD](https://docs.avohq.io/1.0/upgrade.html)
+
+# ✨ Contributors
+
+<a href="https://github.com/avo-hq/avo/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=avo-hq/avo" />
+</a>
+<!--  https://contrib.rocks -->
