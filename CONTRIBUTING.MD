@@ -36,6 +36,10 @@ If you chose to run your own database, if need be, you'll be able to set the fol
 - Username: `POSTGRES_USERNAME` (Default:`postgres`)
 - Password: `POSTGRES_PASSWORD` (Default:`nil`)
 
+### Migrate the Database
+
+Make sure you have the latest migrations on the database layer too by running `RAILS_ENV=test r db:migrate`. This applies the migrations to the docker container that holds the database.
+
 ## Running tests
 
 We've set up a few helpers to get you going:
