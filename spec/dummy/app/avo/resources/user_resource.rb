@@ -4,8 +4,8 @@ class UserResource < Avo::BaseResource
   self.search_query = ->(params:) do
     scope.ransack(id_eq: params[:q], first_name_cont: params[:q], last_name_cont: params[:q], m: "or").result(distinct: false)
   end
-  self.model_scope = ->(scope:) do
-    scope.friendly
+  self.resolve_scope = ->(model_class:) do
+    model_class.friendly
   end
   self.includes = [:posts, :post]
   self.devise_password_optional = true

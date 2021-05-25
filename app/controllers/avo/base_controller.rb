@@ -18,7 +18,7 @@ module Avo
 
       # If we don't get a query object predefined from a child controller like relations, just spin one up
       unless defined? @query
-        @query = @authorization.apply_policy @resource.model_class
+        @query = @resource.scope
       end
 
       # Remove default_scope for index view

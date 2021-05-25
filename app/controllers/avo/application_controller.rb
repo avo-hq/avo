@@ -147,8 +147,7 @@ module Avo
     end
 
     def set_model
-      # @model = eager_load_files(@resource, @resource.model_class.friendly).find params[:id]
-      @model = eager_load_files(@resource, @resource.model_class).find params[:id]
+      @model = eager_load_files(@resource, @resource.scope).find params[:id]
     end
 
     def set_related_model

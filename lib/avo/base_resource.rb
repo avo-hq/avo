@@ -23,7 +23,7 @@ module Avo
     class_attribute :grid_loader
     class_attribute :visible_on_sidebar, default: true
     class_attribute :unscoped_queries_on_index, default: false
-    class_attribute :model_scope
+    class_attribute :resolve_scope
 
     class << self
       def grid(&block)
@@ -46,7 +46,9 @@ module Avo
       end
 
       def scope
-        authorization.apply_policy model_class
+        final_scope = resolve_scope.present? ? resolve_scope.call(model_class: model_class) : model_class
+
+        authorization.apply_policy final_scope
       end
 
       def authorization
@@ -182,10 +184,8 @@ module Avo
       self.class.name.demodulize.chomp("Resource").safe_constantize
     end
 
-    def model_scope
-      return self.class.model_scope.call(scope: scope) if self.class.model_scope.present?
-
-      model_class
+    def scope
+      self.class.scope
     end
 
     def model_title
