@@ -23,6 +23,7 @@ module Avo
     class_attribute :grid_loader
     class_attribute :visible_on_sidebar, default: true
     class_attribute :unscoped_queries_on_index, default: false
+    class_attribute :model_scope
 
     class << self
       def grid(&block)
@@ -179,6 +180,12 @@ module Avo
       return @model.class if @model.present?
 
       self.class.name.demodulize.chomp("Resource").safe_constantize
+    end
+
+    def model_scope
+      return self.class.model_scope.call(scope: scope) if self.class.model_scope.present?
+
+      model_class
     end
 
     def model_title
