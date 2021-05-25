@@ -10,7 +10,7 @@
   background = :info
 
   @options.invert.each do |values, type|
-    if [values].flatten.map { |value| value.to_s }.include? @value
+    if [values].flatten.map { |value| value }.include? @value
       label = @value
       background = type.to_sym
       next
