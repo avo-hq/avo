@@ -38,7 +38,7 @@ RSpec.describe "LinkToResource", type: :system do
         first('[data-field-type="gravatar"]').find("a").click
         wait_for_loaded
 
-        expect(current_path).to eql "/admin/resources/users/#{user.id}"
+        expect(current_path).to eql "/admin/resources/users/#{user.slug}"
       end
     end
   end

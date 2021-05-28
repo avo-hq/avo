@@ -35,7 +35,7 @@ RSpec.describe "TextField", type: :system do
         click_on "Save"
         wait_for_loaded
 
-        expect(current_path).to eql "/admin/resources/users/#{user.id}"
+        expect(current_path).to eql "/admin/resources/users/#{user.slug}"
         expect(page).to have_text "Jack Jack Jack"
       end
     end
