@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.feature "password", type: :feature do
   context "edit" do
-    let(:url) { "/admin/resources/users/#{user.id}/edit" }
+    let(:url) { "/admin/resources/users/#{user.slug}/edit" }
 
     subject do
       visit url
@@ -24,7 +24,7 @@ RSpec.feature "password", type: :feature do
 
         click_on "Save"
 
-        expect(current_path).to eql "/admin/resources/users/#{user.id}"
+        expect(current_path).to eql "/admin/resources/users/#{user.slug}"
         expect(page).to have_text "Johnny"
 
         expect(user.valid_password?(old_password)).to be(true)
@@ -40,7 +40,7 @@ RSpec.feature "password", type: :feature do
 
         wait_for_loaded
 
-        expect(current_path).to eql "/admin/resources/users/#{user.id}"
+        expect(current_path).to eql "/admin/resources/users/#{user.slug}"
 
         expect(User.last.valid_password?(old_password)).to be(false)
         expect(User.last.valid_password?(new_password)).to be(true)
@@ -73,7 +73,7 @@ RSpec.feature "password", type: :feature do
 
         click_on "Save"
 
-        expect(current_path).to eql "/admin/resources/users/#{User.last.id}"
+        expect(current_path).to eql "/admin/resources/users/#{User.last.slug}"
         expect(page).to have_text "John"
         expect(page).to have_text "Doe"
         expect(User.last.valid_password?("passwordtest")).to be(true)

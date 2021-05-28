@@ -27,7 +27,7 @@ RSpec.feature "FullWidthContainer", type: :feature do
       end
 
       context ".show" do
-        let(:url) { "/admin/resources/users/#{user.id}" }
+        let(:url) { "/admin/resources/users/#{user.slug}" }
 
         it { is_not_contained }
       end
@@ -45,7 +45,7 @@ RSpec.feature "FullWidthContainer", type: :feature do
       end
 
       context ".show" do
-        let(:url) { "/admin/resources/users/#{user.id}" }
+        let(:url) { "/admin/resources/users/#{user.slug}" }
 
         it { is_not_contained }
       end
@@ -69,7 +69,7 @@ RSpec.feature "FullWidthContainer", type: :feature do
       end
 
       context ".show" do
-        let(:url) { "/admin/resources/users/#{user.id}" }
+        let(:url) { "/admin/resources/users/#{user.slug}" }
 
         it { is_contained }
       end
@@ -87,7 +87,7 @@ RSpec.feature "FullWidthContainer", type: :feature do
       end
 
       context ".show" do
-        let(:url) { "/admin/resources/users/#{user.id}" }
+        let(:url) { "/admin/resources/users/#{user.slug}" }
 
         it { is_contained }
       end
