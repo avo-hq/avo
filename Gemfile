@@ -85,6 +85,7 @@ end
 
 group :development, :test do
   gem "faker", require: false
+  gem 'friendly_id', '~> 5.4.0'
 end
 
 group :test do
@@ -128,5 +129,3 @@ gem 'breadcrumbs_on_rails'
 gem 'manifester'
 
 gem 'ransack'
-
-gem 'friendly_id', '~> 5.4.0'
