@@ -6,7 +6,6 @@ PATH
       addressable
       breadcrumbs_on_rails
       countries
-      friendly_id (~> 5.4.0)
       hotwire-rails
       httparty
       image_processing
