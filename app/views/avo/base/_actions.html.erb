@@ -15,8 +15,8 @@
       <%
         @actions.each_with_index do |action, index|
           path = action_name == 'show' ?
-            "#{Avo.configuration.root_path}/resources/#{@resource.model_class.model_name.route_key}/#{@model.id}/actions/#{action.param_id}" :
-            "#{Avo.configuration.root_path}/resources/#{@resource.model_class.model_name.route_key}/actions/#{action.param_id}"
+            "#{avo.root_path}resources/#{@resource.model_class.model_name.route_key}/#{@model.id}/actions/#{action.param_id}" :
+            "#{avo.root_path}resources/#{@resource.model_class.model_name.route_key}/actions/#{action.param_id}"
       %>
         <%= link_to path,
           'data-turbo-frame': 'actions_show',

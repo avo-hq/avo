@@ -1,5 +1,5 @@
 <%= turbo_frame_tag 'destroy_attachment_form' do %>
-  <%= form_with url: "#{Avo.configuration.root_path}/resources/#{params[:resource_name]}/#{params[:id]
+  <%= form_with url: "#{avo.root_path}resources/#{params[:resource_name]}/#{params[:id]
     }/active_storage_attachments/#{params[:attachment_name]}/#{params[:signed_attachment_id]}",
     method: :delete,
     html: {

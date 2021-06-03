@@ -1,5 +1,5 @@
 Avo.configure do |config|
-  config.root_path = "/admin/admin"
+  config.root_path = "/admin"
   config.app_name = "Avocadelicious"
   config.license = "pro"
   config.locale = "en-US"
@@ -14,7 +14,7 @@ Avo.configure do |config|
       params: request.params
     }
   end
-  config.home_path = "/admin/dashboard"
+  config.home_path = "/admin/admin/dashboard"
   config.set_initial_breadcrumbs do
     add_breadcrumb "Dashboard", "/admin/dashboard"
   end

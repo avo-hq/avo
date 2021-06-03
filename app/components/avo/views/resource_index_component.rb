@@ -77,7 +77,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def attach_path
-    "#{Avo.configuration.root_path}#{request.env["PATH_INFO"]}/new"
+    "#{Avo::App.root_path}#{request.env["PATH_INFO"]}/new"
   end
 
   def detach_path

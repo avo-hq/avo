@@ -17,7 +17,7 @@ module Avo
     add_flash_types :info, :warning, :success, :error
 
     def init_app
-      Avo::App.init request: request, context: context, current_user: _current_user
+      Avo::App.init request: request, context: context, root_path: avo.root_path.delete_suffix("/"), current_user: _current_user
 
       @license = Avo::App.license
     end
@@ -78,6 +78,7 @@ module Avo
           existing_params = Addressable::URI.parse(request.fullpath).query_values.symbolize_keys
         end
       rescue; end
+
       avo.send :"resources_#{model.model_name.route_key}_path", **existing_params, **args
     end
 
@@ -91,7 +92,7 @@ module Avo
           existing_params = Addressable::URI.parse(request.fullpath).query_values.symbolize_keys
         end
       rescue; end
-      Addressable::Template.new("#{Avo.configuration.root_path}/resources/#{@parent_resource.model.model_name.route_key}/#{@parent_resource.model.id}/#{@resource.route_key}{?query*}")
+      Addressable::Template.new("#{Avo::App.root_path}/resources/#{@parent_resource.model.model_name.route_key}/#{@parent_resource.model.id}/#{@resource.route_key}{?query*}")
         .expand({query: {**existing_params, **args}})
         .to_str
     end
@@ -103,7 +104,7 @@ module Avo
     end
 
     def resource_attach_path(model_name, model_id, related_name, related_id = nil)
-      path = "#{Avo.configuration.root_path}/resources/#{model_name}/#{model_id}/#{related_name}/new"
+      path = "#{Avo::App.root_path}/resources/#{model_name}/#{model_id}/#{related_name}/new"
 
       path += "/#{related_id}" if related_id.present?
 
@@ -111,7 +112,7 @@ module Avo
     end
 
     def resource_detach_path(model_name, model_id, related_name, related_id = nil)
-      path = "#{Avo.configuration.root_path}/resources/#{model_name}/#{model_id}/#{related_name}"
+      path = "#{Avo::App.root_path}/resources/#{model_name}/#{model_id}/#{related_name}"
 
       path += "/#{related_id}" if related_id.present?
 
@@ -147,7 +148,8 @@ module Avo
     end
 
     def set_model
-      @model = eager_load_files(@resource, @resource.model_class).find params[:id]
+      # @model = eager_load_files(@resource, @resource.model_class).find params[:id]
+      @model = @resource.model_class.find params[:id]
     end
 
     def set_related_model
@@ -179,7 +181,7 @@ module Avo
 
       begin
         request.path
-          .match(/\/?#{Avo.configuration.root_path.delete('/')}\/resources\/([a-z1-9\-_]*)\/?/mi)
+          .match(/\/?#{Avo::App.root_path.delete('/')}\/resources\/([a-z1-9\-_]*)\/?/mi)
           .captures
           .first
       rescue
@@ -273,15 +275,15 @@ module Avo
     end
 
     def on_root_path
-      [Avo.configuration.root_path, "#{Avo.configuration.root_path}/"].include?(request.original_fullpath)
+      [Avo::App.root_path, "#{Avo::App.root_path}/"].include?(request.original_fullpath)
     end
 
     def on_resources_path
-      request.original_url.match?(/.*#{Avo.configuration.root_path}\/resources\/.*/)
+      request.original_url.match?(/.*#{Avo::App.root_path}\/resources\/.*/)
     end
 
     def on_api_path
-      request.original_url.match?(/.*#{Avo.configuration.root_path}\/avo_api\/.*/)
+      request.original_url.match?(/.*#{Avo::App.root_path}\/avo_api\/.*/)
     end
   end
 end
