@@ -14,7 +14,7 @@ RSpec.describe "TextField", type: :system do
 
     context "show" do
       it "displays the users first name" do
-        visit "/admin/resources/users/#{user.slug}"
+        visit "/admin/resources/users/#{user.id}"
 
         expect(page).to have_text user.first_name
       end
@@ -22,13 +22,13 @@ RSpec.describe "TextField", type: :system do
 
     context "edit" do
       it "has the users name pre-filled" do
-        visit "/admin/resources/users/#{user.slug}/edit"
+        visit "/admin/resources/users/#{user.id}/edit"
 
         expect(find_field("user_first_name").value).to eq user.first_name
       end
 
       it "changes the users name" do
-        visit "/admin/resources/users/#{user.slug}/edit"
+        visit "/admin/resources/users/#{user.id}/edit"
 
         fill_in "user_first_name", with: "Jack Jack Jack"
 
