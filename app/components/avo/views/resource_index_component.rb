@@ -8,17 +8,20 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     resource: nil,
     resources: nil,
     models: [],
+    fields: nil,
     pagy: nil,
     index_params: {},
     filters: [],
     actions: [],
     reflection: nil,
     turbo_frame: "",
-    parent_model: nil
+    parent_model: nil,
+    title: nil
   )
     @resource = resource
     @resources = resources
     @models = models
+    @fields = fields || @resource.get_fields(reflection: @reflection)
     @pagy = pagy
     @index_params = index_params
     @filters = filters
@@ -26,9 +29,12 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     @reflection = reflection
     @turbo_frame = turbo_frame
     @parent_model = parent_model
+    @title = title
   end
 
   def title
+    return @title if @title.present?
+
     if @reflection.present?
       @reflection.plural_name.capitalize
     else

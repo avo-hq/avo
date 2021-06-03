@@ -1,0 +1,17 @@
+<%= turbo_frame_wrap(params[:turbo_frame]) do %>
+  <%= render Avo::Views::ResourceIndexComponent.new(
+      resource: @resource,
+      resources: @resources,
+      models: @models,
+      fields: @fields,
+      pagy: @pagy,
+      index_params: @index_params,
+      filters: @filters,
+      actions: @actions,
+      reflection: @reflection,
+      turbo_frame: params[:turbo_frame],
+      parent_model: @parent_model,
+      title: @segment.name,
+    )
+  %>
+<% end %>

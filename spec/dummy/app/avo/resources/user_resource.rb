@@ -4,7 +4,7 @@ class UserResource < Avo::BaseResource
   self.search_query = ->(params:) do
     scope.ransack(id_eq: params[:q], first_name_cont: params[:q], last_name_cont: params[:q], m: "or").result(distinct: false)
   end
-  self.includes = [:posts, :post]
+  # self.includes = [:posts, :post]
   self.devise_password_optional = true
 
   field :id, as: :id, link_to_resource: true
@@ -45,4 +45,6 @@ class UserResource < Avo::BaseResource
 
   action ToggleInactive
   action ToggleAdmin
+
+  segment MostActiveUsers
 end
