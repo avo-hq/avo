@@ -23,6 +23,7 @@ module Avo
     attr_accessor :initial_breadcrumbs
     attr_accessor :home_path
     attr_accessor :search_debounce
+    attr_accessor :view_component_path
 
     def initialize
       @root_path = "/avo"
@@ -58,6 +59,7 @@ module Avo
       @display_breadcrumbs = true
       @home_path = nil
       @search_debounce = 300
+      @view_component_path = "app/components"
     end
 
     def locale_tag
@@ -91,13 +93,17 @@ module Avo
     end
 
     def namespace
-      root_path.delete "/"
+      computed_root_path.delete "/"
     end
 
     def root_path
       return "" if @root_path === "/"
 
       @root_path
+    end
+
+    def computed_root_path
+      Avo::App.root_path
     end
   end
 

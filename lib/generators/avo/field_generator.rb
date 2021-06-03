@@ -9,7 +9,7 @@ module Generators
       desc "Add a custom Avo field to your project."
 
       def handle
-        directory "field/components", "app/components/avo/fields/#{singular_name}_field"
+        directory "field/components", "#{::Avo.configuration.view_component_path}/avo/fields/#{singular_name}_field"
         template "field/%singular_name%_field.rb.tt", "app/avo/fields/#{singular_name}_field.rb"
       end
     end

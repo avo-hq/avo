@@ -21,6 +21,18 @@ export default class extends Controller {
     return castBoolean(this.controllerTarget.dataset.attachmentsDisabled)
   }
 
+  get hideAttachmentFilename() {
+    return castBoolean(this.controllerTarget.dataset.hideAttachmentFilename)
+  }
+
+  get hideAttachmentFilesize() {
+    return castBoolean(this.controllerTarget.dataset.hideAttachmentFilesize)
+  }
+
+  get hideAttachmentUrl() {
+    return castBoolean(this.controllerTarget.dataset.hideAttachmentUrl)
+  }
+
   get uploadUrl() {
     return `${window.location.origin}${window.Avo.configuration.root_path}/avo_api/resources/${this.resourceName}/${this.resourceId}/attachments`
   }
@@ -101,6 +113,10 @@ export default class extends Controller {
           url: response.url,
           href: response.href,
         }
+
+        if (this.hideAttachmentFilename) attributes.filename = null
+        if (this.hideAttachmentFilesize) attributes.filesize = null
+        if (this.hideAttachmentUrl) attributes.href = null
 
         successCallback(attributes)
       }
