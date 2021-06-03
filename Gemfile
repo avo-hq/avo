@@ -26,7 +26,7 @@ gem "pundit"
 # Dependencies for dummy_app
 #
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem "rails", "~> 6.0.2", ">= 6.0.2.2"
+gem "rails", "~> 6.1.0"
 # Use postgresql as the database for Active Record
 gem "pg", ">= 0.18", "< 2.0"
 # Use Puma as the app server

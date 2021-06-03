@@ -7,6 +7,7 @@ module Avo
     class_attribute :context, default: nil
     class_attribute :license, default: nil
     class_attribute :current_user, default: nil
+    class_attribute :root_path, default: nil
 
     class << self
       def boot
@@ -21,10 +22,11 @@ module Avo
         end
       end
 
-      def init(request:, context:, current_user:)
+      def init(request:, context:, current_user:, root_path:)
         self.request = request
         self.context = context
         self.current_user = current_user
+        self.root_path = root_path
 
         self.license = Licensing::LicenseManager.new(Licensing::HQ.new(request).response).license
 

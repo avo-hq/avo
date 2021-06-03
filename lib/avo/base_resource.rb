@@ -322,7 +322,7 @@ module Avo
     end
 
     def avo_path
-      "#{Avo.configuration.root_path}/resources/#{model_class.model_name.route_key}/#{model.id}"
+      "#{Avo::App.root_path}/resources/#{model_class.model_name.route_key}/#{model.id}"
     end
 
     def label_field
