@@ -16,14 +16,6 @@ module Avo
       def path
         rails_blob_url value
       end
-
-      def variant(resize_to_limit: [128, 128])
-        value.variant(resize_to_limit: resize_to_limit).processed.service_url
-      end
-
-      def to_image
-        return variant(resize_to_limit: [320, 320]) if is_image
-      end
     end
   end
 end
