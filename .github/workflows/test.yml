@@ -94,6 +94,9 @@ jobs:
         RAILS_ENV: production
         NODE_ENV: production
 
+    - name: Stop Spring
+      run: bundle exec spring stop
+
     - name: Run tests
       run: bundle exec rspec
 
