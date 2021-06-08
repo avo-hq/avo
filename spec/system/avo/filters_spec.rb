@@ -226,6 +226,7 @@ RSpec.describe "Filters", type: :system do
         click_on "Filters"
         wait_for_loaded
         check "Featured"
+        
         expect(page).to have_css ".page.next"
         expect(page).to have_css ".page.active"
         expect(find(".page.active")).to have_text "1"
