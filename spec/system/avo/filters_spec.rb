@@ -223,6 +223,7 @@ RSpec.describe "Filters", type: :system do
       it "resets the pagination" do
         visit url
         click_on "3"
+        wait_for_loaded
         click_on "Filters"
         wait_for_loaded
         check "Featured"
