@@ -213,6 +213,28 @@ RSpec.describe "Filters", type: :system do
       end
     end
   end
+
+  describe "pagination resets when filters change" do
+    let!(:published_posts) { create_list(:post, 40, published_at: rand((DateTime.now - 3.months)..DateTime.now)) }
+    let!(:unpublished_post) { create :post, name: "Unpublished post", published_at: nil }
+    let(:url) { "/admin/resources/posts?view_type=table&per_page=12" }
+
+    context "with pagination set" do
+      it "resets the pagination" do
+        visit url
+        click_on "3"
+        wait_for_loaded
+        click_on "Filters"
+        wait_for_loaded
+        check "Featured"
+
+        expect(page).to have_css ".page.next"
+        expect(page).to have_css ".page.active"
+        expect(find(".page.active")).to have_text "1"
+        expect(find(".page.active")).not_to have_text "2"
+      end
+    end
+  end
 end
 
 def open_filters_menu
