@@ -128,3 +128,5 @@ gem 'breadcrumbs_on_rails'
 gem 'manifester'
 
 gem 'ransack'
+
+gem "aws-sdk-s3", require: false

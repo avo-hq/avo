@@ -350,6 +350,8 @@ module Avo
     def avatar
       return avatar_field.to_image if avatar_field.respond_to? :to_image
 
+      return avatar_field.value.variant(resize_to_limit: [480, 480]) if avatar_field.type == "file"
+
       avatar_field.value
     rescue
       nil
