@@ -221,8 +221,6 @@ RSpec.describe "Filters", type: :system do
 
     context "with pagination set" do
       it "resets the pagination" do
-
-
         visit url
         click_on "3"
         click_on "Filters"
