@@ -1,62 +1,64 @@
-<%= render Avo::PanelComponent.new(title: title, body_classes: 'py-4', data: { component: 'resources-index' }, display_breadcrumbs: @reflection.blank?) do |c| %>
-  <% c.tools do %>
-    <%= render 'actions' if @actions.present? %>
+<div>
+  <%= render Avo::PanelComponent.new(title: title, body_classes: 'py-4', data: { component: 'resources-index' }, display_breadcrumbs: @reflection.blank?) do |c| %>
+    <% c.tools do %>
+      <%= render 'actions' if @actions.present? %>
 
-    <% if can_create? %>
-      <%= a_link create_path do %>
-        <%= svg 'plus' %> <%= t('avo.create_new_item', item: @resource.model_class.model_name.human.downcase ) %>
-      <% end %>
-    <% end %>
-
-    <% if can_detach? %>
-      <%= a_link detach_path, color: 'indigo', method: :delete, data: { confirm: "Are you sure you want to detach this #{@resource.singular_name}." } do %>
-        <%= svg 'trash' %> <%= t('avo.detach_item', item: @resource.singular_name).capitalize %>
-      <% end %>
-    <% end %>
-
-    <% if can_attach? %>
-      <%= a_link attach_path, color: 'indigo', 'data-turbo-frame': 'attach_modal' do %>
-        <%= svg 'view-grid-add' %> <%= t('avo.attach_item', item: @resource.singular_name).capitalize %>
-      <% end %>
-    <% end %>
-  <% end %>
-
-  <% c.body do %>
-    <div class="flex justify-between pt-2 pb-2 min-h-16"
-      data-selected-resources-name="<%= @resource.plural_name.downcase %>"
-      data-selected-resources="[]"
-    >
-      <div class="flex items-center px-6 w-64">
-        <%= render partial: 'avo/partials/resource_search', locals: {resource: @resource.route_key} if @resource.search_query.present? %>
-      </div>
-      <div class="flex justify-end items-center px-6 space-x-3">
-        <%= render partial: 'avo/partials/view_toggle_button', locals: { available_view_types: available_view_types, view_type: view_type, turbo_frame: @turbo_frame } if @models.present? %>
-        <%= render 'filters' if @filters.present? %>
-      </div>
-    </div>
-
-    <% if view_type.to_sym == :table %>
-      <div class="w-full overflow-auto flex flex-col mt-4">
-        <div class="relative flex-1 flex">
-          <%= render(Avo::Index::ResourceTableComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_model: @parent_model)) %>
-        </div>
-
-        <% if @models.present? %>
-          <div class="py-4">
-            <%= render partial: 'avo/partials/paginator', locals: { pagy: @pagy, turbo_frame: @turbo_frame || 'none' } %>
-          </div>
+      <% if can_create? %>
+        <%= a_link create_path do %>
+          <%= svg 'plus' %> <%= t('avo.create_new_item', item: @resource.model_class.model_name.human.downcase ) %>
         <% end %>
+      <% end %>
+
+      <% if can_detach? %>
+        <%= a_link detach_path, color: 'indigo', method: :delete, data: { confirm: "Are you sure you want to detach this #{@resource.singular_name}." } do %>
+          <%= svg 'trash' %> <%= t('avo.detach_item', item: @resource.singular_name).capitalize %>
+        <% end %>
+      <% end %>
+
+      <% if can_attach? %>
+        <%= a_link attach_path, color: 'indigo', 'data-turbo-frame': 'attach_modal' do %>
+          <%= svg 'view-grid-add' %> <%= t('avo.attach_item', item: @resource.singular_name).capitalize %>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <% c.body do %>
+      <div class="flex justify-between pt-2 pb-2 min-h-16"
+        data-selected-resources-name="<%= @resource.plural_name.downcase %>"
+        data-selected-resources="[]"
+      >
+        <div class="flex items-center px-6 w-64">
+          <%= render partial: 'avo/partials/resource_search', locals: {resource: @resource.route_key} if @resource.search_query.present? %>
+        </div>
+        <div class="flex justify-end items-center px-6 space-x-3">
+          <%= render partial: 'avo/partials/view_toggle_button', locals: { available_view_types: available_view_types, view_type: view_type, turbo_frame: @turbo_frame } if @models.present? %>
+          <%= render 'filters' if @filters.present? %>
+        </div>
       </div>
+
+      <% if view_type.to_sym == :table %>
+        <div class="w-full overflow-auto flex flex-col mt-4">
+          <div class="relative flex-1 flex">
+            <%= render(Avo::Index::ResourceTableComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_model: @parent_model)) %>
+          </div>
+
+          <% if @models.present? %>
+            <div class="py-4">
+              <%= render partial: 'avo/partials/paginator', locals: { pagy: @pagy, turbo_frame: @turbo_frame || 'none' } %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+
+    <% c.bare_content do %>
+      <% if view_type.to_sym == :grid %>
+        <%= render Avo::Index::ResourceGridComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_model: @parent_model) %>
+
+        <div class="bg-white rounded-xl shadow-xl mt-8 py-6">
+          <%= render partial: 'avo/partials/paginator', locals: { pagy: @pagy, turbo_frame: @turbo_frame || 'none' } %>
+        </div>
+      <% end %>
     <% end %>
   <% end %>
-
-  <% c.bare_content do %>
-    <% if view_type.to_sym == :grid %>
-      <%= render Avo::Index::ResourceGridComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_model: @parent_model) %>
-
-      <div class="bg-white rounded-xl shadow-xl mt-8 py-6">
-        <%= render partial: 'avo/partials/paginator', locals: { pagy: @pagy, turbo_frame: @turbo_frame || 'none' } %>
-      </div>
-    <% end %>
-  <% end %>
-<% end %>
+</div>
