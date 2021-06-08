@@ -7,6 +7,8 @@ module Avo
     before_action :hydrate_resource
     before_action :authorize_action
     before_action :set_model, only: [:show, :edit, :destroy, :update]
+    before_action :reset_pagination_if_filters_changed, only: :index
+    before_action :cache_applied_filters, only: :index
 
     def index
       @page_title = resource_name.humanize
@@ -259,6 +261,20 @@ module Avo
       end
 
       filter_defaults
+    end
+
+    def cache_applied_filters
+      ::Avo::App.cache_store.delete applied_filters_cache_key if params[:filters].nil?
+
+      ::Avo::App.cache_store.write(applied_filters_cache_key, params[:filters], expires_in: 7.days)
+    end
+
+    def reset_pagination_if_filters_changed
+      params[:page] = 1 if params[:filters] != ::Avo::App.cache_store.read(applied_filters_cache_key)
+    end
+
+    def applied_filters_cache_key
+      "avo.base_controller.#{@resource.route_key}.applied_filters"
     end
   end
 end
