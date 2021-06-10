@@ -22,7 +22,7 @@ module Avo
       end
 
       def options
-        ::Avo::Services::AuthorizationService.apply_policy(user, target_resource.model_class).all.map do |model|
+        ::Avo::Services::AuthorizationService.apply_policy(user, target_resource.class.query_scope).all.map do |model|
           {
             value: model.id,
             label: model.send(target_resource.class.title)
