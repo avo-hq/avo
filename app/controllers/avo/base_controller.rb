@@ -91,7 +91,7 @@ module Avo
       # If we're accessing this resource via another resource add the parent to the breadcrumbs.
       if params[:via_resource_class].present? && params[:via_resource_id].present?
         via_resource = Avo::App.get_resource_by_model_name params[:via_resource_class]
-        via_model = via_resource.scope.find params[:via_resource_id]
+        via_model = via_resource.class_find_scope.find params[:via_resource_id]
         via_resource.hydrate model: via_model
 
         add_breadcrumb via_resource.plural_name, resources_path(via_resource.model_class)
@@ -235,7 +235,7 @@ module Avo
 
     def set_actions
       if params[:resource_id].present?
-        model = @resource.scope.find params[:resource_id]
+        model = @resource.class.find_scope.find params[:resource_id]
       end
 
       @actions = @resource.get_actions.map do |action|
