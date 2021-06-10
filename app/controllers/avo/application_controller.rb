@@ -148,12 +148,11 @@ module Avo
     end
 
     def set_model
-      # @model = eager_load_files(@resource, @resource.model_class).find params[:id]
-      @model = @resource.model_class.find params[:id]
+      @model = eager_load_files(@resource, @resource.class.find_scope).find params[:id]
     end
 
     def set_related_model
-      @related_model = eager_load_files(@related_resource, @related_resource.model_class).find params[:related_id]
+      @related_model = eager_load_files(@related_resource, @related_resource.class.find_scope).find params[:related_id]
     end
 
     def hydrate_resource

@@ -20,14 +20,15 @@ module Avo
     private
 
     def search_resources(resources)
-      resources.map do |resource|
-        # Apply authorization
-        next unless @authorization.set_record(resource.model_class).authorize_action(:index, raise_exception: false)
-        # Filter out the models without a search_query
-        next if resource.search_query.nil?
+      resources
+        .map do |resource|
+          # Apply authorization
+          next unless @authorization.set_record(resource.model_class).authorize_action(:index, raise_exception: false)
+          # Filter out the models without a search_query
+          next if resource.search_query.nil?
 
-        search_resource resource
-      end
+          search_resource resource
+        end
         .select do |payload|
           payload.present?
         end

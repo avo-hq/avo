@@ -23,6 +23,8 @@ module Avo
     class_attribute :grid_loader
     class_attribute :visible_on_sidebar, default: true
     class_attribute :unscoped_queries_on_index, default: false
+    class_attribute :resolve_query_scope
+    class_attribute :resolve_find_scope
 
     class << self
       def grid(&block)
@@ -44,8 +46,24 @@ module Avo
         self.filters_loader.use filter_class
       end
 
+      # This is the search_query scope
+      # This should be removed and passed to the search block
       def scope
-        authorization.apply_policy model_class
+        self.query_scope
+      end
+
+      # This resolves the scope when doing "where" queries (not find queries)
+      def query_scope
+        final_scope = resolve_query_scope.present? ? resolve_query_scope.call(model_class: model_class) : model_class
+
+        authorization.apply_policy final_scope
+      end
+
+      # This resolves the scope when finding records (not "where" queries)
+      def find_scope
+        final_scope = resolve_find_scope.present? ? resolve_find_scope.call(model_class: model_class) : model_class
+
+        authorization.apply_policy final_scope
       end
 
       def authorization

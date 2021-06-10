@@ -16,7 +16,7 @@ RSpec.feature "belongs_to", type: :system do
         click_on "Save"
 
         expect(find_field_value_element("body")).to have_text "Sample comment"
-        expect(find_field_value_element("user")).to have_link user.name, href: "/admin/resources/users/#{user.id}?via_resource_class=Comment&via_resource_id=#{Comment.last.id}"
+        expect(find_field_value_element("user")).to have_link user.name, href: "/admin/resources/users/#{user.slug}?via_resource_class=Comment&via_resource_id=#{Comment.last.id}"
         expect(find_field_value_element("commentable")).to have_text empty_dash
       end
     end
@@ -139,7 +139,7 @@ RSpec.feature "belongs_to", type: :system do
         click_on comment.id.to_s
 
         expect(find_field_value_element("body")).to have_text "hey there"
-        expect(find_field_value_element("user")).to have_link user.name, href: "/admin/resources/users/#{user.id}?via_resource_class=Comment&via_resource_id=#{comment.id}"
+        expect(find_field_value_element("user")).to have_link user.name, href: "/admin/resources/users/#{user.slug}?via_resource_class=Comment&via_resource_id=#{comment.id}"
         expect(find_field_value_element("commentable")).to have_link project.name, href: "/admin/resources/projects/#{project.id}?via_resource_class=Comment&via_resource_id=#{comment.id}"
 
         click_on "Edit"

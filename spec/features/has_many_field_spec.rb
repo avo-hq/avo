@@ -74,14 +74,14 @@ RSpec.feature "HasManyField", type: :feature do
         form = "form[action='/admin/resources/users/#{user.id}/posts/#{post.id}'][data-turbo-frame='has_many_field_posts']"
         expect(page).to have_selector("[data-component='resources-index'] #{form}")
         expect(page).to have_selector(:css, "#{form} input[type='hidden'][name='_method'][value='delete']", visible: false)
-        # expect(page).to have_selector(:css, "#{form} input#referrer_detach_#{post.id}[value='/admin/resources/users/#{user.id}/posts?turbo_frame=has_many_field_posts']", visible: false)
+        # expect(page).to have_selector(:css, "#{form} input#referrer_detach_#{post.id}[value='/admin/resources/users/#{user.slug}/posts?turbo_frame=has_many_field_posts']", visible: false)
         expect(page).to have_selector("[data-component='resources-index'] #{form} button[data-control='detach'][data-resource-id='#{post.id}']")
 
         # destroy form
         form = "form[action='/admin/resources/posts/#{post.id}'][data-turbo-frame='has_many_field_posts']"
         expect(page).to have_selector("[data-component='resources-index'] #{form}")
         expect(page).to have_selector("#{form} input[type='hidden'][name='_method'][value='delete']", visible: false)
-        # expect(page).to have_selector("#{form} input#referrer_destroy_#{post.id}[value='/admin/resources/users/#{user.id}/posts?turbo_frame=has_many_field_posts']", visible: false)
+        # expect(page).to have_selector("#{form} input#referrer_destroy_#{post.id}[value='/admin/resources/users/#{user.slug}/posts?turbo_frame=has_many_field_posts']", visible: false)
         expect(page).to have_selector("[data-component='resources-index'] #{form} button[data-control='destroy'][data-resource-id='#{post.id}']")
       end
 

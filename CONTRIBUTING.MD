@@ -36,6 +36,10 @@ If you chose to run your own database, if need be, you'll be able to set the fol
 - Username: `POSTGRES_USERNAME` (Default:`postgres`)
 - Password: `POSTGRES_PASSWORD` (Default:`nil`)
 
+### Initialize the Database
+
+Make sure you setup the database by running `RAILS_ENV=test bin/rails db:setup` and have the latest migrations on the database layer too by running `RAILS_ENV=test bin/rails db:migrate`. This creates the database and applies the migrations to the docker container that holds the database.
+
 ## Running tests
 
 We've set up a few helpers to get you going:
@@ -43,7 +47,7 @@ We've set up a few helpers to get you going:
 - Run all tests (slow): `bin/test`
 - Run unit tests (fast): `bin/test unit`
 - Run system tests (slow): `bin/test system`
-- Run a particular spec file/test (fast): `bin/test ./spec/features/hq_spec.rb:10`
+- Run a particular spec file/test (fast): `bin/test ./spec/features/hq_spec.rb`
 
 ## Seeding the database
 

@@ -12,7 +12,7 @@ module Avo
 
     def handle
       resource_ids = action_params[:fields][:resource_ids].split(",").map(&:to_i)
-      models = @resource.model_class.find resource_ids
+      models = @resource.class.find_scope.find resource_ids
 
       fields = action_params[:fields].select do |key, value|
         key != "resource_ids"
@@ -33,7 +33,7 @@ module Avo
       action_class = params[:action_id].gsub("avo_actions_", "").classify.safe_constantize
 
       if params[:id].present?
-        model = @resource.model_class.find params[:id]
+        model = @resource.class.find_scope.find params[:id]
       end
 
       @action = action_class.new(model: model, resource: resource, user: _current_user)

@@ -154,7 +154,9 @@ GEM
       railties (>= 5.0.0)
     faker (2.17.0)
       i18n (>= 1.6, < 2)
-    ffi (1.15.1)
+    ffi (1.15.0)
+    friendly_id (5.4.2)
+      activerecord (>= 4.0.0)
     fuubar (2.5.1)
       rspec-core (~> 3.0)
       ruby-progressbar (~> 1.4)
@@ -386,6 +388,7 @@ GEM
     zeitwerk (2.4.2)
 
 PLATFORMS
+  ruby
   x86_64-darwin-20
 
 DEPENDENCIES
@@ -405,6 +408,7 @@ DEPENDENCIES
   dotenv-rails
   factory_bot_rails
   faker
+  friendly_id (~> 5.4.0)
   fuubar
   gem-release
   hotwire-rails

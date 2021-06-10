@@ -72,7 +72,8 @@ RSpec.describe "UserForms", type: :system do
     expect(page).to have_text("Doe")
     expect(page).to have_text("john@doe.com")
     user_id = page.find('[data-field-id="id"] [data-slot="value"]').text
-    expect(current_path).to eq "/admin/resources/users/#{user_id}"
+    user_slug = User.find(user_id).slug
+    expect(current_path).to eq "/admin/resources/users/#{user_slug}"
 
     within(".application-sidebar") do
       click_on "Users"

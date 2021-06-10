@@ -153,6 +153,8 @@ GEM
     faker (2.14.0)
       i18n (>= 1.6, < 2)
     ffi (1.15.0)
+    friendly_id (5.4.2)
+      activerecord (>= 4.0.0)
     fuubar (2.5.0)
       rspec-core (~> 3.0)
       ruby-progressbar (~> 1.4)
@@ -403,6 +405,7 @@ DEPENDENCIES
   dotenv-rails
   factory_bot_rails
   faker
+  friendly_id (~> 5.4.0)
   fuubar
   gem-release
   hotwire-rails
