@@ -4,7 +4,10 @@ class UserResource < Avo::BaseResource
   self.search_query = ->(params:) do
     scope.ransack(id_eq: params[:q], first_name_cont: params[:q], last_name_cont: params[:q], m: "or").result(distinct: false)
   end
-  self.resolve_scope = ->(model_class:) do
+  self.resolve_query_scope = ->(model_class:) do
+    model_class.sort_by
+  end
+  self.resolve_find_scope = ->(model_class:) do
     model_class.friendly
   end
   self.includes = [:posts, :post]
