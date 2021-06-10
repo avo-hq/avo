@@ -2,9 +2,9 @@ require "rails_helper"
 
 RSpec.describe "QueryScope", type: :system do
   describe "for user order by last name" do
+    let!(:user_c) { create :user, last_name: 'Aandy' }
     let!(:user_a) { create :user, last_name: 'Aaaandy' }
     let!(:user_b) { create :user, last_name: 'Aaandy' }
-    let!(:user_c) { create :user, last_name: 'Aandy' }
 
     context "index" do
       it "displays the users in ascending order by last_name" do
