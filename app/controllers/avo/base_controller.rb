@@ -235,7 +235,7 @@ module Avo
 
     def set_actions
       if params[:resource_id].present?
-        model = @resource.slug.find params[:resource_id]
+        model = @resource.scope.find params[:resource_id]
       end
 
       @actions = @resource.get_actions.map do |action|

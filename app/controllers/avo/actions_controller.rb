@@ -13,7 +13,6 @@ module Avo
     def handle
       resource_ids = action_params[:fields][:resource_ids].split(",").map(&:to_i)
       models = @resource.scope.find resource_ids
-      # where all
 
       fields = action_params[:fields].select do |key, value|
         key != "resource_ids"
