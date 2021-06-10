@@ -5,7 +5,7 @@ class UserResource < Avo::BaseResource
     scope.ransack(id_eq: params[:q], first_name_cont: params[:q], last_name_cont: params[:q], m: "or").result(distinct: false)
   end
   self.resolve_query_scope = ->(model_class:) do
-    model_class.sort_by
+    model_class.order(last_name: :asc)
   end
   self.resolve_find_scope = ->(model_class:) do
     model_class.friendly
