@@ -35,10 +35,13 @@ RSpec.describe "LinkToResource", type: :system do
       it "clicks on the user gravatar" do
         visit "/admin/resources/users"
 
+        user_id = page.find('[data-field-type="id"] [data-slot="value"]', match: :first).text
+        user_slug = User.find(user_id).slug
+
         first('[data-field-type="gravatar"]').find("a").click
         wait_for_loaded
 
-        expect(current_path).to eql "/admin/resources/users/#{user.slug}"
+        expect(current_path).to eql "/admin/resources/users/#{user_slug}"
       end
     end
   end
