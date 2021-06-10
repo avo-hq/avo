@@ -130,3 +130,5 @@ gem 'manifester'
 gem 'ransack'
 
 gem 'friendly_id', '~> 5.4.0'
+
+gem "aws-sdk-s3", require: false

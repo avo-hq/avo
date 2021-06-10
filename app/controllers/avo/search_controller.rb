@@ -2,6 +2,8 @@ require_dependency "avo/application_controller"
 
 module Avo
   class SearchController < ApplicationController
+    include Rails.application.routes.url_helpers
+
     before_action :set_resource_name, only: [:show]
     before_action :set_resource, only: [:show]
 
@@ -62,7 +64,7 @@ module Avo
 
         if App.license.has_with_trial(:enhanced_search_results)
           result[:_description] = resource.description
-          result[:_avatar] = resource.avatar
+          result[:_avatar] = resource.avatar.present? ? main_app.url_for(resource.avatar) : nil
           result[:_avatar_type] = resource.avatar_type
         end
 
