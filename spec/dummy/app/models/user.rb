@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  extend FriendlyId
+  # extend FriendlyId
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -15,7 +15,7 @@ class User < ApplicationRecord
 
   has_one_attached :cv
 
-  friendly_id :name, use: :slugged
+  # friendly_id :name, use: :slugged
 
   def is_admin?
     roles.present? && roles["admin"].present?
