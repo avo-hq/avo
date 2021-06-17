@@ -219,7 +219,12 @@ module Avo
       end
 
       # Sorting
-      @index_params[:sort_by] = params[:sort_by] || :created_at
+      if params[:sort_by].present?
+        @index_params[:sort_by] = params[:sort_by]
+      elsif @resource.model_class.present? && @resource.model_class.column_names.include?("created_at")
+        @index_params[:sort_by] = :created_at
+      end
+
       @index_params[:sort_direction] = params[:sort_direction] || :desc
 
       # View types
