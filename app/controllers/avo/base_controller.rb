@@ -38,6 +38,9 @@ module Avo
 
       # Sort the items
       if @index_params[:sort_by].present?
+        if not @index_params[:sort_by].eql? :created_at
+          @query = @query.unscoped
+        end
         @query = @query.order("#{@resource.model_class.table_name}.#{@index_params[:sort_by]} #{@index_params[:sort_direction]}")
       end
 
