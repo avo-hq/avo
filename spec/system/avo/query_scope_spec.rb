@@ -22,5 +22,17 @@ RSpec.describe "QueryScope", type: :system do
         expect(third_user_lastname).to eq user_c.last_name
       end
     end
+
+    it "displays the users in ascending order by id" do
+      visit "/admin/resources/users?sort_by=id&sort_direction=asc"
+
+      first_user_id = all('[data-field-type="id"]')[0].find("a").text
+      second_user_id = all('[data-field-type="id"]')[1].find("a").text
+      third_user_id = all('[data-field-type="id"]')[2].find("a").text
+
+      expect(first_user_id).to eq User.all[0].id.to_s
+      expect(second_user_id).to eq User.all[1].id.to_s
+      expect(third_user_id).to eq User.all[2].id.to_s
+    end
   end
 end
