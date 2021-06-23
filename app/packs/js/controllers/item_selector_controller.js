@@ -59,7 +59,7 @@ export default class extends Controller {
   }
 
   enableResourceActions() {
-    (document.querySelectorAll('.js-actions-dropdown a[data-actions-picker-target]'))
+    (document.querySelectorAll('.js-actions-dropdown a[data-actions-picker-target="resourceAction"]'))
       .forEach((link) => {
         link.classList.add('text-gray-700')
         link.classList.remove('text-gray-500')
@@ -69,7 +69,7 @@ export default class extends Controller {
   }
 
   disableResourceActions() {
-    (document.querySelectorAll('.js-actions-dropdown a[data-actions-picker-target]'))
+    (document.querySelectorAll('.js-actions-dropdown a[data-actions-picker-target="resourceAction"]'))
       .forEach((link) => {
         link.classList.remove('text-gray-700')
         link.classList.add('text-gray-500')
