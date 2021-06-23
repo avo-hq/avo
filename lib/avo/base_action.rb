@@ -13,6 +13,7 @@ module Avo
     class_attribute :user
     class_attribute :resource
     class_attribute :fields
+    class_attribute :standalone, default: false
 
     attr_accessor :response
     attr_accessor :model
@@ -68,7 +69,8 @@ module Avo
         .to_h
     end
 
-    def handle_action(models:, fields:)
+    def handle_action(**args)
+      models, fields = args.values_at(:models, :fields)
       avo_fields = get_fields.map { |field| [field.id, field] }.to_h
 
       if fields.present?
@@ -81,7 +83,13 @@ module Avo
         processed_fields = {}
       end
 
-      handle models: models, fields: processed_fields
+      args = {
+        fields: processed_fields
+      }
+
+      args[:models] = models unless standalone
+
+      handle(**args)
 
       self
     end

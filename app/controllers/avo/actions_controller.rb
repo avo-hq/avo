@@ -18,7 +18,13 @@ module Avo
         key != "resource_ids"
       end
 
-      performed_action = @action.handle_action(models: models, fields: fields)
+      args = {
+        fields: fields
+      }
+
+      args[:models] = models unless @action.standalone
+
+      performed_action = @action.handle_action(**args)
 
       respond performed_action.response
     end

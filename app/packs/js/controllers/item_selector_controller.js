@@ -22,9 +22,9 @@ export default class extends Controller {
 
     if (this.actionsPanelPresent) {
       if (value.length > 0) {
-        this.enableActionsPanel()
+        this.enableResourceActions()
       } else {
-        this.disableActionsPanel()
+        this.disableResourceActions()
       }
     }
   }
@@ -58,11 +58,23 @@ export default class extends Controller {
     }
   }
 
-  enableActionsPanel() {
-    this.actionsButtonElement.disabled = false
+  enableResourceActions() {
+    (document.querySelectorAll('.js-actions-dropdown a[data-actions-picker-target="resourceAction"]'))
+      .forEach((link) => {
+        link.classList.add('text-gray-700')
+        link.classList.remove('text-gray-500')
+        link.setAttribute('data-href', link.getAttribute('href'))
+        link.dataset.disabled = false
+      })
   }
 
-  disableActionsPanel() {
-    this.actionsButtonElement.disabled = true
+  disableResourceActions() {
+    (document.querySelectorAll('.js-actions-dropdown a[data-actions-picker-target="resourceAction"]'))
+      .forEach((link) => {
+        link.classList.remove('text-gray-700')
+        link.classList.add('text-gray-500')
+        link.setAttribute('href', link.getAttribute('data-href'))
+        link.dataset.disabled = true
+      })
   }
 }
