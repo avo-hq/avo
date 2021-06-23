@@ -14,7 +14,6 @@ PATH
       pagy
       pundit
       rails (>= 6.0)
-      ransack
       view_component
       zeitwerk
 
