@@ -1,4 +1,4 @@
-<div data-controller="toggle-panel">
+<div <% if main_app.respond_to?(:destroy_user_session_path) %> data-controller="toggle-panel" <% end %>>
   <a href="javascript:void(0);" class="flex items-center cursor-pointer font-semibold text-gray-700" data-action="click->toggle-panel#togglePanel">
     <% if _current_user.respond_to?(:avatar) &&  _current_user.avatar.present? %>
       <%= image_tag _current_user.avatar, class: "h-12 rounded-full border-4 border-white mr-1" %>
