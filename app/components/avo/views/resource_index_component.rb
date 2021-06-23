@@ -45,21 +45,21 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def can_create?
-    @resource.authorization.authorize_action(:create, raise_exception: false) && simple_relation? && !is_field_read_only
+    @resource.authorization.authorize_action(:create, raise_exception: false) && simple_relation? && !has_reflection_and_is_read_only
   end
 
   def can_attach?
     klass = @reflection
     klass = @reflection.through_reflection if klass.is_a? ::ActiveRecord::Reflection::ThroughReflection
 
-    @reflection.present? && klass.is_a?(::ActiveRecord::Reflection::HasManyReflection) && !is_field_read_only
+    @reflection.present? && klass.is_a?(::ActiveRecord::Reflection::HasManyReflection) && !has_reflection_and_is_read_only
   end
 
   def can_detach?
-    @reflection.present? && @reflection.is_a?(::ActiveRecord::Reflection::HasOneReflection) && @models.present? && !is_field_read_only
+    @reflection.present? && @reflection.is_a?(::ActiveRecord::Reflection::HasOneReflection) && @models.present? && !has_reflection_and_is_read_only
   end
 
-  def is_field_read_only
+  def has_reflection_and_is_read_only
     fields = ::Avo::App.get_resource_by_model_name(@reflection.active_record.name).get_field_definitions
     filtered_fields = fields.filter{ |f| f.id == @reflection.name}
     if filtered_fields
