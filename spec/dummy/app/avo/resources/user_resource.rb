@@ -51,4 +51,5 @@ class UserResource < Avo::BaseResource
 
   action ToggleInactive
   action ToggleAdmin
+  action DummyAction
 end

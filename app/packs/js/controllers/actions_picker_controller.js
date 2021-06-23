@@ -2,6 +2,8 @@ import { AttributeObserver } from '@stimulus/mutation-observers'
 import { Controller } from 'stimulus'
 
 export default class extends Controller {
+  static targets = ['resourceAction', 'standaloneAction']
+
   target = {}
 
   enableTarget() {
