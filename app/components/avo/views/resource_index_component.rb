@@ -60,8 +60,13 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def has_reflection_and_is_read_only
-    fields = ::Avo::App.get_resource_by_model_name(@reflection.active_record.name).get_field_definitions
-    filtered_fields = fields.filter{ |f| f.id == @reflection.name}
+    if @reflection.present? && @reflection.active_record.name && @reflection.name
+      fields = ::Avo::App.get_resource_by_model_name(@reflection.active_record.name).get_field_definitions
+      filtered_fields = fields.filter{ |f| f.id == @reflection.name}
+    else
+      return false
+    end
+
     if filtered_fields
       is_field_read_only = filtered_fields.filter{ |f| f.id == @reflection.name}[0].readonly
     else
