@@ -45,18 +45,30 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def can_create?
-    @resource.authorization.authorize_action(:create, raise_exception: false) && simple_relation?
+    @resource.authorization.authorize_action(:create, raise_exception: false) && simple_relation? && !is_field_read_only
   end
 
   def can_attach?
     klass = @reflection
     klass = @reflection.through_reflection if klass.is_a? ::ActiveRecord::Reflection::ThroughReflection
 
-    @reflection.present? && klass.is_a?(::ActiveRecord::Reflection::HasManyReflection)
+    @reflection.present? && klass.is_a?(::ActiveRecord::Reflection::HasManyReflection) && !is_field_read_only
   end
 
   def can_detach?
-    @reflection.present? && @reflection.is_a?(::ActiveRecord::Reflection::HasOneReflection) && @models.present?
+    @reflection.present? && @reflection.is_a?(::ActiveRecord::Reflection::HasOneReflection) && @models.present? && !is_field_read_only
+  end
+
+  def is_field_read_only
+    fields = ::Avo::App.get_resource_by_model_name(@reflection.active_record.name).get_field_definitions
+    filtered_fields = fields.filter{ |f| f.id == @reflection.name}
+    if filtered_fields
+      is_field_read_only = filtered_fields.filter{ |f| f.id == @reflection.name}[0].readonly
+    else
+      is_field_read_only = false
+    end
+
+    is_field_read_only
   end
 
   def create_path
