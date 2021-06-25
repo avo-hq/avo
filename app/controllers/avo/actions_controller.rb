@@ -11,7 +11,7 @@ module Avo
     end
 
     def handle
-      resource_ids = action_params[:fields][:resource_ids].split(",").map(&:to_i)
+      resource_ids = action_params[:fields][:resource_ids].split(",")
       models = @resource.class.find_scope.find resource_ids
 
       fields = action_params[:fields].select do |key, value|
