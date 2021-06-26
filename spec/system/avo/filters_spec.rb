@@ -8,7 +8,6 @@ RSpec.describe "Filters", type: :system do
     let(:url) { "/admin/resources/posts?view_type=table" }
 
     it "displays the filter" do
-      puts ["Rails.application.config.eager_load->", Rails.application.config.eager_load, ENV["CI"]].inspect
       visit url
       open_filters_menu
 
