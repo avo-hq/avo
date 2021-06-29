@@ -24,7 +24,7 @@
 
     <% c.body do %>
       <div class="flex justify-between pt-2 pb-2 min-h-16"
-        data-selected-resources-name="<%= @resource.plural_name.downcase %>"
+        data-selected-resources-name="<%= @resource.model_class.model_name.route_key %>"
         data-selected-resources="[]"
       >
         <div class="flex items-center px-6 w-64">

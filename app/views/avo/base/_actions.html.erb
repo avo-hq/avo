@@ -3,7 +3,7 @@
     <%= a_button class: "focus:outline-none",
       color: 'light-blue',
       'data-action': "click->toggle-panel#togglePanel",
-      'data-actions-dropdown-button': @resource.plural_name.downcase do
+      'data-actions-dropdown-button': @resource.model_class.model_name.route_key do
     %>
       <%= svg 'arrow-left', class: 'h-4 mr-1 transform -rotate-90' %> <%= t 'avo.actions' %>
     <% end %>
