@@ -10,7 +10,7 @@ module Avo
     before_action :set_attachment_class
     before_action :set_attachment_resource
     before_action :set_attachment_model, only: [:create, :destroy]
-    before_action :set_reflection, only: [:index]
+    before_action :set_reflection, only: [:index, :show]
 
     def index
       @parent_resource = @resource.dup
@@ -23,7 +23,6 @@ module Avo
     end
 
     def show
-      @reflection = params[:related_name]
       @resource, @model = @related_resource, @related_model
 
       super

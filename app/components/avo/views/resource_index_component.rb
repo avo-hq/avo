@@ -52,11 +52,11 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     klass = @reflection
     klass = @reflection.through_reflection if klass.is_a? ::ActiveRecord::Reflection::ThroughReflection
 
-    @reflection.present? && klass.is_a?(::ActiveRecord::Reflection::HasManyReflection) && !has_reflection_and_is_read_only
+    @reflection.present? && klass.is_a?(::ActiveRecord::Reflection::HasManyReflection) && !has_reflection_and_is_read_only && get_association_policy('attach')
   end
 
   def can_detach?
-    @reflection.present? && @reflection.is_a?(::ActiveRecord::Reflection::HasOneReflection) && @models.present? && !has_reflection_and_is_read_only
+    @reflection.present? && @reflection.is_a?(::ActiveRecord::Reflection::HasOneReflection) && @models.present? && !has_reflection_and_is_read_only && get_association_policy('detach')
   end
 
   def has_reflection_and_is_read_only

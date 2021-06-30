@@ -37,6 +37,10 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
     helpers.resource_path(@resource.model)
   end
 
+  def can_detach?
+    get_association_policy('detach')
+  end
+
   private
 
   def via_resource?

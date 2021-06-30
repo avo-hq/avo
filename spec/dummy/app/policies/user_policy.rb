@@ -27,6 +27,30 @@ class UserPolicy < ApplicationPolicy
     true
   end
 
+  def attach_post?
+    true
+  end
+
+  def detach_post?
+    true
+  end
+
+  def attach_project?
+    true
+  end
+
+  def detach_project?
+    true
+  end
+
+  def attach_team?
+    true
+  end
+
+  def detach_team?
+    true
+  end
+
   class Scope < Scope
     def resolve
       scope.all
