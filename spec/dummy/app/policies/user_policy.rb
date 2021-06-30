@@ -35,19 +35,27 @@ class UserPolicy < ApplicationPolicy
     true
   end
 
-  def attach_project?
+  def attach_posts?
     true
   end
 
-  def detach_project?
+  def detach_posts?
     true
   end
 
-  def attach_team?
+  def attach_projects?
     true
   end
 
-  def detach_team?
+  def detach_projects?
+    true
+  end
+
+  def attach_teams?
+    true
+  end
+
+  def detach_teams?
     true
   end
 

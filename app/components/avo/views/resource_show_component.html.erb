@@ -11,8 +11,8 @@
 
           <% if @reflection.present? && @resource.model.present? %>
             <% if can_detach? %>
-              <%= a_link detach_path, color: 'indigo', method: :delete, data: { confirm: "Are you sure you want to detach this #{@resource.singular_name}." } do %>
-                <%= svg 'trash' %> <%= t('avo.detach_item', item: @resource.singular_name).capitalize %>
+              <%= a_link detach_path, color: 'indigo', method: :delete, data: { confirm: "Are you sure you want to detach this #{@reflection.name.to_s}." } do %>
+                <%= svg 'trash' %> <%= t('avo.detach_item', item: @reflection.name.to_s).capitalize %>
               <% end %>
             <% end %>
           <% else %>

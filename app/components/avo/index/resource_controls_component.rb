@@ -37,4 +37,12 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
       helpers.edit_resource_path(@resource.model)
     end
   end
+
+  def singular_resource_name
+    if @reflection.present?
+      @reflection.name.to_s.downcase.singularize
+    else
+      @resource.model.model_name.name.downcase
+    end
+  end
 end
