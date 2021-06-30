@@ -38,7 +38,7 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
   end
 
   def can_detach?
-    get_association_policy('detach')
+    authorize_association_for('detach')
   end
 
   private
