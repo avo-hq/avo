@@ -32,11 +32,11 @@ module Avo
         .select do |payload|
           payload.present?
         end
-      puts ['resources->', resources].inspect
-      resources = resources.sort do |payload|
+        .sort do |payload|
           payload.last[:count]
         end
-        .reverse
+        puts ['resources->', resources].inspect
+      resources = resources.reverse
         .to_h
     end
 
