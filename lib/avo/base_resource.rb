@@ -274,7 +274,7 @@ module Avo
     end
 
     def authorization
-      Avo::Services::AuthorizationService.new(user, model)
+      Avo::Services::AuthorizationService.new(user, model || model_class)
     end
 
     def file_hash

@@ -52,11 +52,11 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     klass = @reflection
     klass = @reflection.through_reflection if klass.is_a? ::ActiveRecord::Reflection::ThroughReflection
 
-    @reflection.present? && klass.is_a?(::ActiveRecord::Reflection::HasManyReflection) && !has_reflection_and_is_read_only
+    @reflection.present? && klass.is_a?(::ActiveRecord::Reflection::HasManyReflection) && !has_reflection_and_is_read_only && authorize_association_for('attach')
   end
 
   def can_detach?
-    @reflection.present? && @reflection.is_a?(::ActiveRecord::Reflection::HasOneReflection) && @models.present? && !has_reflection_and_is_read_only
+    @reflection.present? && @reflection.is_a?(::ActiveRecord::Reflection::HasOneReflection) && @models.present? && !has_reflection_and_is_read_only && authorize_association_for('detach')
   end
 
   def has_reflection_and_is_read_only
@@ -99,6 +99,14 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
   def detach_path
     helpers.resource_detach_path(via_resource_name, via_resource_id, via_relation_param, @models.first.id)
+  end
+
+  def singular_resource_name
+    if @reflection.present?
+      @reflection.name.to_s.downcase.singularize
+    else
+      @resource.singular_name.present? ? @resource.singular_name : @resource.model_class.model_name.name.downcase
+    end
   end
 
   private

@@ -30,11 +30,15 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
   end
 
   def detach_path
-    helpers.resource_detach_path(params[:resource_name], params[:id], @resource.model_class.model_name.route_key, @resource.model.id)
+    helpers.resource_detach_path(params[:resource_name], params[:id], @reflection.name.to_s, @resource.model.id)
   end
 
   def destroy_path
     helpers.resource_path(@resource.model)
+  end
+
+  def can_detach?
+    authorize_association_for('detach')
   end
 
   private

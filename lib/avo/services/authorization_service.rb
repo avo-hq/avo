@@ -33,6 +33,10 @@ module Avo
         self.class.apply_policy(user, model)
       end
 
+      def defined_methods(model, **args)
+        self.class.defined_methods(user, model, **args)
+      end
+
       class << self
         def authorize(user, record, action, **args)
           return true if skip_authorization
@@ -56,7 +60,7 @@ module Avo
         end
 
         def authorize_action(user, record, action, **args)
-          action = Avo.configuration.authorization_methods.stringify_keys[action.to_s]
+          action = Avo.configuration.authorization_methods.stringify_keys[action.to_s] || action
 
           return true if action.nil?
 
@@ -86,6 +90,18 @@ module Avo
 
         def get_policy(user, record)
           Pundit.policy user, record
+        end
+
+        def defined_methods(user, record, **args)
+          begin
+            Pundit.policy!(user, record).methods
+          rescue => error
+            if args[:raise_exception] == false
+              false
+            else
+              raise error
+            end
+          end
         end
       end
     end

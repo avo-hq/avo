@@ -10,7 +10,8 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   def can_detach?
     @reflection.present? &&
       @resource.model.present? &&
-      (@reflection.is_a?(::ActiveRecord::Reflection::HasManyReflection) || @reflection.is_a?(::ActiveRecord::Reflection::ThroughReflection))
+      (@reflection.is_a?(::ActiveRecord::Reflection::HasManyReflection) || @reflection.is_a?(::ActiveRecord::Reflection::ThroughReflection)) &&
+      authorize_association_for('detach')
   end
 
   def can_edit?
@@ -34,6 +35,14 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
       helpers.edit_resource_path(@resource.model, via_resource_class: @parent_model.class, via_resource_id: @parent_model.id)
     else
       helpers.edit_resource_path(@resource.model)
+    end
+  end
+
+  def singular_resource_name
+    if @reflection.present?
+      @reflection.name.to_s.downcase.singularize
+    else
+      @resource.singular_name.present? ? @resource.singular_name : @resource.model_class.model_name.name.downcase
     end
   end
 end

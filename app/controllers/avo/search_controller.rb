@@ -32,7 +32,7 @@ module Avo
         .select do |payload|
           payload.present?
         end
-        .sort do |payload|
+        .sort_by do |payload|
           payload.last[:count]
         end
         .reverse
