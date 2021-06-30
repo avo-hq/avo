@@ -74,8 +74,8 @@ RSpec.feature "Search", type: :system do
 
         sleep 0.2
 
-        find('.aa-Input').send_keys :arrow_down
-        find('.aa-Input').send_keys :return
+        find(".aa-Input").send_keys :arrow_down
+        find(".aa-Input").send_keys :return
 
         sleep 0.2
 
