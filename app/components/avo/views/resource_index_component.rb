@@ -67,7 +67,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
       return false
     end
 
-    if filtered_fields
+    if filtered_fields.present?
       is_field_read_only = filtered_fields.filter{ |f| f.id == @reflection.name}[0].readonly
     else
       is_field_read_only = false
