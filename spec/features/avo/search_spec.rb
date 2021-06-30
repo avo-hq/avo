@@ -46,6 +46,7 @@ RSpec.feature "Search", type: :system do
     context "with results" do
       let!(:post) { create :post, name: "New hehe post", body: 'New hehe post description.'}
       let!(:user) { create :user, first_name: "Hehe", last_name: "user", roles: {admin: true, manager: true, writer: true}}
+      let!(:user2) { create :user, first_name: "Hehehi", last_name: "user", roles: {admin: true, manager: true, writer: true}}
 
       it "opens the search" do
         visit url

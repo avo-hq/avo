@@ -20,7 +20,7 @@ module Avo
     private
 
     def search_resources(resources)
-      resources = resources
+      resources
         .map do |resource|
           # Apply authorization
           next unless @authorization.set_record(resource.model_class).authorize_action(:index, raise_exception: false)
@@ -32,11 +32,10 @@ module Avo
         .select do |payload|
           payload.present?
         end
-        .sort do |payload|
+        .sort_by do |payload|
           payload.last[:count]
         end
-        puts ['resources->', resources].inspect
-      resources = resources.reverse
+        .reverse
         .to_h
     end
 
