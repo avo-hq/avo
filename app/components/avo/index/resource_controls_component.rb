@@ -42,7 +42,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     if @reflection.present?
       @reflection.name.to_s.downcase.singularize
     else
-      @resource.model.model_name.name.downcase
+      @resource.singular_name.present? ? @resource.singular_name : @resource.model_class.model_name.name.downcase
     end
   end
 end

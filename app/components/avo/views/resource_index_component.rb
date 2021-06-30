@@ -101,6 +101,14 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     helpers.resource_detach_path(via_resource_name, via_resource_id, via_relation_param, @models.first.id)
   end
 
+  def singular_resource_name
+    if @reflection.present?
+      @reflection.name.to_s.downcase.singularize
+    else
+      @resource.singular_name.present? ? @resource.singular_name : @resource.model_class.model_name.name.downcase
+    end
+  end
+
   private
 
   def simple_relation?
