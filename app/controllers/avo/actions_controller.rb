@@ -36,7 +36,7 @@ module Avo
     end
 
     def set_action
-      action_class = params[:action_id].gsub("avo_actions_", "").classify.safe_constantize
+      action_class = params[:action_id].gsub("avo_actions_", "").camelize.safe_constantize
 
       if params[:id].present?
         model = @resource.class.find_scope.find params[:id]
