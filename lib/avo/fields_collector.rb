@@ -23,7 +23,7 @@ module Avo
           instantiate_field(field_name, klass: field_class, **args, &block)
         else
           # The symbol can be transformed to a class and found.
-          class_name = as.to_s.classify
+          class_name = as.to_s.camelize
           field_class = "#{class_name}Field"
 
           # Discover & load custom field classes

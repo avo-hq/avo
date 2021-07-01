@@ -144,12 +144,11 @@ module Avo
       end
 
       def view_component_name
-        "#{type.classify}Field"
+        "#{type.camelize}Field"
       end
 
       def component_for_view(view = :index)
-        # puts ['component_for_view->', "Avo::Fields::#{type.classify}Field::#{view.to_s.classify}Component"].inspect
-        "Avo::Fields::#{view_component_name}::#{view.to_s.classify}Component".safe_constantize
+        "Avo::Fields::#{view_component_name}::#{view.to_s.camelize}Component".safe_constantize
       end
 
       def model_errors
