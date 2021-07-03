@@ -78,7 +78,6 @@ module Avo
           existing_params = Addressable::URI.parse(request.fullpath).query_values.symbolize_keys
         end
       rescue; end
-
       avo.send :"resources_#{model.model_name.route_key}_path", **existing_params, **args
     end
 
@@ -221,7 +220,7 @@ module Avo
             "attachment"
           end
 
-          return query.eager_load "#{field.id}_#{attachment}": :blob
+          return query.includes "#{field.id}_#{attachment}": :blob
         end
       end
 
