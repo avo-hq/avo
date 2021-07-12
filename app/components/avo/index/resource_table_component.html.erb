@@ -1,6 +1,6 @@
 <div class="w-full">
   <% if @resources.present?%>
-    <table class="w-full px-4 overflow-hidden">
+    <table class="w-full px-4 overflow-hidden" data-resource-name='<%= @resource.model_class.model_name.route_key %>' data-controller='item-select-all'>
       <%= render partial: 'avo/partials/table_header', locals: {fields: @resource.get_fields(reflection: @reflection)} %>
       <tbody>
         <% @resources.each_with_index do |resource, index| %>

@@ -48,8 +48,21 @@ module Avo
     def item_selector_input(floating: false, size: :md)
       "<input type='checkbox'
         class='mx-3 #{"absolute inset-auto left-0 mt-2 z-10 hidden group-hover:block checked:block" if floating} #{size.to_sym == :lg ? "w-5 h-5" : "w-4 h-4"}'
-        data-action='input->item-selector#toggle'
+        data-action='input->item-selector#toggle input->item-select-all#update'
+        data-item-select-all-target='itemCheckbox'
+        name='#{t "avo.select_item"}'
         title='#{t "avo.select_item"}'
+        data-tippy='tooltip'
+      />"
+    end
+
+    def item_select_all_input
+      "<input type='checkbox'
+        class='mx-3 w-4 h-4'
+        data-action='input->item-select-all#toggle'
+        data-item-select-all-target='checkbox'
+        name='#{t "avo.select_all"}'
+        title='#{t "avo.select_all"}'
         data-tippy='tooltip'
       />"
     end

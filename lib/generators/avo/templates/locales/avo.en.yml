@@ -23,6 +23,7 @@ en:
     you_missed_something_check_form: 'You might have missed something. Please check the form.'
     remove_selection: 'Remove selection'
     select_item: 'Select item'
+    select_all: 'Select all on page'
     delete_file: 'Delete file'
     delete: 'delete'
     delete_item: 'Delete %{item}'
