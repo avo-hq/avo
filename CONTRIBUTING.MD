@@ -49,6 +49,19 @@ We've set up a few helpers to get you going:
 - Run system tests (slow): `bin/test system`
 - Run a particular spec file/test (fast): `bin/test ./spec/features/hq_spec.rb`
 
+### Running tests without using the docker container
+
+You may want to run the tests on your local database (not on your docker container). To do that, update your `.env.test` file with valid credentials for your local installation.
+
+```
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_USERNAME=postgres
+POSTGRES_PASSWORD=
+```
+
+You'll probably need to update your `POSTGRES_PORT` to `5432` (`5433` is used for the docker container), **but check your local credentials**.
+
 ## Seeding the database
 
 Run `AVO_ADMIN_PASSWORD=secret bin/rails db:seed` to seed the database with dummy data and create a user for yourself with the email `admin@avohq.io` and password `secret`.
