@@ -1,6 +1,6 @@
 <div data-model-id="<%= @resource.model.id %>"
   data-selected-resources-name="<%= @resource.model.model_name.route_key %>"
-  data-selected-resources="[<%= @resource.model.id %>]"
+  data-selected-resources='["<%= @resource.model.id %>"]'
 >
   <% @resource.panels.each do |resource_panel| %>
     <%= render Avo::PanelComponent.new(title: resource_panel[:name], display_breadcrumbs: @reflection.blank?) do |c| %>
