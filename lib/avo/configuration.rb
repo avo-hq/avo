@@ -93,7 +93,11 @@ module Avo
     end
 
     def namespace
-      computed_root_path.delete "/" if computed_root_path.present?
+      if computed_root_path.present?
+        computed_root_path.delete "/"
+      else
+        root_path.delete "/"
+      end
     end
 
     def root_path
