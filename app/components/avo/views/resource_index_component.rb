@@ -101,7 +101,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
   def singular_resource_name
     if @reflection.present?
-      ::Avo::App.get_resource_by_model_name(@reflection.class_name).plural_name
+      ::Avo::App.get_resource_by_model_name(@reflection.class_name).name
     else
       @resource.singular_name.present? ? @resource.singular_name : @resource.model_class.model_name.name.downcase
     end
