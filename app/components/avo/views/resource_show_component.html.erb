@@ -8,7 +8,6 @@
         <% if resource_panel[:name] == @resource.default_panel_name %>
           <%= render 'actions' %>
 
-
           <% if @reflection.present? && @resource.model.present? %>
             <% if can_detach? %>
               <%= a_link detach_path, color: 'indigo', method: :delete, data: { confirm: "Are you sure you want to detach this #{@reflection.name.to_s}." } do %>
