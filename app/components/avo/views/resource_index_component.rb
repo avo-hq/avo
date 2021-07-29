@@ -30,7 +30,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
   def title
     if @reflection.present?
-      @reflection.plural_name.capitalize
+      ::Avo::App.get_resource_by_model_name(@reflection.class_name).plural_name
     else
       @resource.plural_name
     end
@@ -52,11 +52,11 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     klass = @reflection
     klass = @reflection.through_reflection if klass.is_a? ::ActiveRecord::Reflection::ThroughReflection
 
-    @reflection.present? && klass.is_a?(::ActiveRecord::Reflection::HasManyReflection) && !has_reflection_and_is_read_only && authorize_association_for('attach')
+    @reflection.present? && klass.is_a?(::ActiveRecord::Reflection::HasManyReflection) && !has_reflection_and_is_read_only && authorize_association_for("attach")
   end
 
   def can_detach?
-    @reflection.present? && @reflection.is_a?(::ActiveRecord::Reflection::HasOneReflection) && @models.present? && !has_reflection_and_is_read_only && authorize_association_for('detach')
+    @reflection.present? && @reflection.is_a?(::ActiveRecord::Reflection::HasOneReflection) && @models.present? && !has_reflection_and_is_read_only && authorize_association_for("detach")
   end
 
   def has_reflection_and_is_read_only
@@ -68,12 +68,10 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     end
 
     if filtered_fields.present?
-      is_field_read_only = filtered_fields.filter{ |f| f.id == @reflection.name}[0].readonly
+      filtered_fields.find { |f| f.id == @reflection.name }.readonly
     else
-      is_field_read_only = false
+      false
     end
-
-    is_field_read_only
   end
 
   def create_path
@@ -103,7 +101,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
   def singular_resource_name
     if @reflection.present?
-      @reflection.name.to_s.downcase.singularize
+      ::Avo::App.get_resource_by_model_name(@reflection.class_name).name
     else
       @resource.singular_name.present? ? @resource.singular_name : @resource.model_class.model_name.name.downcase
     end

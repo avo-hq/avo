@@ -5,7 +5,7 @@
 
       <% if can_create? %>
         <%= a_link create_path do %>
-          <%= svg 'plus' %> <%= t('avo.create_new_item', item: @resource.model_class.model_name.human.downcase ) %>
+          <%= svg 'plus' %> <%= t('avo.create_new_item', item: singular_resource_name.downcase ) %>
         <% end %>
       <% end %>
 

@@ -1,7 +1,7 @@
 Avo::Engine.routes.draw do
   root "home#index"
 
-  get "resources", to: redirect("/avo")
+  get "resources", to: redirect("/admin")
 
   scope "avo_api", as: "avo_api" do
     get "/search", to: "search#index"
