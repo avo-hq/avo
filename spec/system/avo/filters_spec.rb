@@ -214,6 +214,57 @@ RSpec.describe "Filters", type: :system do
     end
   end
 
+  describe "Multiple select filter" do
+    let!(:draft) { create :post, name: "draft post", status: "draft" }
+    let!(:published) { create :post, name: "draft post", status: "published" }
+    let!(:archived) { create :post, name: "draft post", status: "archived" }
+
+    let(:url) { "/admin/resources/posts?view_type=table" }
+
+    context "without default value" do
+      it "displays the filter" do
+        visit url
+        open_filters_menu
+
+        expect(page).to have_text "Status"
+        expect(page).to have_select "avo_filters_status", selected: ["draft", "published", "archived"], options: ["draft", "published", "archived"]
+        expect(page).to have_button("Reset filters", disabled: true)
+      end
+
+      it "changes the query" do
+        visit url
+        open_filters_menu
+
+        select "draft", from: "avo_filters_status"
+        unselect "published", from: "avo_filters_status"
+        unselect "archived", from: "avo_filters_status"
+        click_on "Filter by Status"
+        wait_for_loaded
+
+        expect(page).to have_text("Displaying 1 item")
+
+        open_filters_menu
+
+        expect(page).to have_select "avo_filters_status", selected: ["draft"], options: ["draft", "published", "archived"]
+        expect(current_url).to include "filters="
+        expect(page).to have_link("Reset filters")
+      end
+
+      it "allows multiple selections" do
+        visit url
+        open_filters_menu
+
+        select "draft", from: "avo_filters_status"
+        select "published", from: "avo_filters_status"
+        unselect "archived", from: "avo_filters_status"
+        click_on "Filter by Status"
+        wait_for_loaded
+
+        expect(page).to have_text("Displaying 2 items")
+      end
+    end
+  end
+
   describe "pagination resets when filters change" do
     let!(:published_posts) { create_list(:post, 40, published_at: rand((DateTime.now - 3.months)..DateTime.now)) }
     let!(:unpublished_post) { create :post, name: "Unpublished post", published_at: nil }

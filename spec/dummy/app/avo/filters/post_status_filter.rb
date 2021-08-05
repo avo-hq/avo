@@ -1,8 +1,8 @@
-class PostStatusFilter < Avo::Filters::SelectFilter
+class PostStatusFilter < Avo::Filters::MultipleSelectFilter
   self.name = "Status"
 
   def apply(request, query, value)
-    query.where(status: value)
+    query.where(status: value.map(&:to_i))
   end
 
   def options
