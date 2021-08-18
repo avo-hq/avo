@@ -45,6 +45,8 @@ Avo.configure do |config|
   # config.cache_resources_on_index_view = true
   # config.search_debounce = 300
   # config.view_component_path = "app/components"
+  # config.display_license_request_timeout_error = true
+
 
   # Where should the user be redirected when he hits the `/<%= options[:path] %>` url
   # config.home_path = nil

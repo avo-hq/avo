@@ -24,6 +24,7 @@ module Avo
     attr_accessor :home_path
     attr_accessor :search_debounce
     attr_accessor :view_component_path
+    attr_accessor :display_license_request_timeout_error
 
     def initialize
       @root_path = "/avo"
@@ -60,6 +61,7 @@ module Avo
       @home_path = nil
       @search_debounce = 300
       @view_component_path = "app/components"
+      @display_license_request_timeout_error = true
     end
 
     def locale_tag

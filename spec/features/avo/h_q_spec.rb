@@ -75,7 +75,68 @@ RSpec.feature "Avo::Licensing::HQ", type: :feature do
           expect(Rails.cache.read(Avo::Licensing::HQ::CACHE_KEY)).to include({error: "Request timeout.", exception_message: "execution expired", expiry: 5.minutes}.as_json)
           expect(Rails.cache.read(Avo::Licensing::HQ::CACHE_KEY)).not_to include :valid
         end
+
+        describe "when config for display is false" do
+          let(:url) { "/admin/dashboard/" }
+
+          before do
+            Avo.configure do |config|
+              config.display_license_request_timeout_error = false
+            end
+          end
+
+          it "does not display the error" do
+            expect(Rails.cache.read(Avo::Licensing::HQ::CACHE_KEY)).to be nil
+
+            subject
+
+            expect(Rails.cache.read(Avo::Licensing::HQ::CACHE_KEY)).to include({error: "Request timeout.", exception_message: "execution expired", expiry: 5.minutes}.as_json)
+            expect(Rails.cache.read(Avo::Licensing::HQ::CACHE_KEY)).not_to include :valid
+
+            visit url
+
+            expect(page).not_to have_text "Avo HQ Error"
+            expect(page).not_to have_text "Request timeout."
+            expect(page).not_to have_text "Checking back every 5 minutes."
+          end
+        end
+
+        describe "when config for display is true" do
+          let(:url) { "/admin/dashboard/" }
+
+          before do
+            Avo.configure do |config|
+              config.display_license_request_timeout_error = true
+            end
+          end
+
+          it "does not display the error" do
+            expect(Rails.cache.read(Avo::Licensing::HQ::CACHE_KEY)).to be nil
+
+            subject
+
+            expect(Rails.cache.read(Avo::Licensing::HQ::CACHE_KEY)).to include({error: "Request timeout.", exception_message: "execution expired", expiry: 5.minutes}.as_json)
+            expect(Rails.cache.read(Avo::Licensing::HQ::CACHE_KEY)).not_to include :valid
+
+            visit url
+
+            expect(page).to have_text "Avo HQ Error"
+            expect(page).to have_text "Request timeout."
+            expect(page).to have_text "Checking back every 5 minutes."
+          end
+        end
+
+        it "caches the error" do
+          expect(Rails.cache.read(Avo::Licensing::HQ::CACHE_KEY)).to be nil
+
+          subject
+
+          expect(Rails.cache.read(Avo::Licensing::HQ::CACHE_KEY)).to include({error: "Request timeout.", exception_message: "execution expired", expiry: 5.minutes}.as_json)
+          expect(Rails.cache.read(Avo::Licensing::HQ::CACHE_KEY)).not_to include :valid
+        end
+
       end
+
 
       context "with connection error" do
         before do
