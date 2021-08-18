@@ -48,7 +48,7 @@ export default class extends Controller {
       },
       templates: {
         header() {
-          return data.header
+          return `${data.header.toUpperCase()} ${data.help}`
         },
         item({ item, createElement }) {
           let element = ''

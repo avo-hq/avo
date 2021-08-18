@@ -12,6 +12,7 @@ module Avo
     class_attribute :id, default: :id
     class_attribute :title, default: :id
     class_attribute :search_query, default: nil
+    class_attribute :search_query_help, default: ''
     class_attribute :includes, default: []
     class_attribute :model_class
     class_attribute :translation_key

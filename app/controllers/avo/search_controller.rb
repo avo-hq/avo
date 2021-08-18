@@ -44,6 +44,7 @@ module Avo
 
       result_object = {
         header: resource.name.pluralize,
+        help: resource.class.search_query_help,
         results: results,
         count: results.length
       }
