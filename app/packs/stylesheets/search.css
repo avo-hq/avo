@@ -22,7 +22,7 @@
 }
 
 .aa-SourceHeader {
-  @apply uppercase text-xs font-semibold;
+  @apply text-xs font-semibold;
 }
 
 .aa-DetachedFormContainer,
