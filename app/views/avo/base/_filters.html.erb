@@ -7,7 +7,7 @@
       'data-action': 'click->toggle-panel#togglePanel',
       'data-tippy': 'tooltip' do
     %>
-    <% applied_filters =  %>
+
       <%= svg 'filter' %> <%= t 'avo.filters' %>
       <% if params[:filters].present? %>
         <div class="ml-1">(<%=JSON.parse(Base64.decode64(params[:filters])).count%> applied)</div>
