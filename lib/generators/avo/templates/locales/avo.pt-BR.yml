@@ -79,3 +79,6 @@ pt-BR:
         other: 'usuários'
     reset_filters: 'Limpar filtros'
     not_authorized: 'Você não está autorizado à executar essa ação.'
+    search:
+      placeholder: 'Procurar'
+      cancel_button: 'Cancelar'

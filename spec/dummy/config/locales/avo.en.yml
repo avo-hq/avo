@@ -80,3 +80,6 @@ en:
         other: 'users'
     reset_filters: 'Reset filters'
     not_authorized: 'You are not authorized to perform this action.'
+    search:
+      placeholder: 'Search'
+      cancel_button: 'Cancel'
