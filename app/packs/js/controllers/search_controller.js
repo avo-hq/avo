@@ -105,7 +105,10 @@ export default class extends Controller {
 
     autocomplete({
       container: this.autocompleteTarget,
-      placeholder: 'Search',
+      placeholder: this.translationKeys.placeholder,
+      translations: {
+        detachedCancelButtonText: this.translationKeys.cancel_button,
+      },
       openOnFocus: true,
       detachedMediaQuery: '',
       getSources: ({ query }) => {
