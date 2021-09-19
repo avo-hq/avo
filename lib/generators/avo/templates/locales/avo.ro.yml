@@ -67,3 +67,6 @@ ro:
         zero: 'utilizatori'
         one: 'utilizator'
         other: 'utilizatori'
+    search:
+      placeholder: 'Cauta'
+      cancel_button: 'Anulare'

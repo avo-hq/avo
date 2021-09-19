@@ -78,3 +78,5 @@ nb-NO:
         other: 'brukere'
     reset_filters: 'Nullstill filter'
     not_authorized: 'Du er ikke autorisert til å gjøre denne handlingen.'
+    search_placeholder: 'Søk'
+    search_cancel_button: 'Avbryt'
