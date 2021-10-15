@@ -40,6 +40,7 @@ module Avo
     end
 
     def heading(body, **args)
+      self.fields ||= []
       self.fields << Avo::Fields::HeadingField.new(body, **args)
     end
 
