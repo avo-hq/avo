@@ -5,5 +5,7 @@
     </div>
   <% end %>
 
-  <%= @form.file_field @field.id, disabled: @field.readonly %>
+  <% if @resource.authorization.authorize_action(:upload_attachments?, raise_exception: false) %>
+    <%= @form.file_field @field.id, disabled: @field.readonly %>
+  <% end %>
 <% end %>

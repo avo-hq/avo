@@ -14,13 +14,20 @@
     <% end %>
 
     <div class="flex justify-between lg:flex-col lg:space-y-2 2xl:flex-row 2xl:space-y-0">
-      <%= a_link helpers.main_app.url_for(@file), color: 'indigo', download: true, class: 'text-center', size: :xs do %>
-        <%= helpers.svg 'download' %> <span class="hidden lg:block lg:flex-1"><%= t('avo.download_file') %></span>
-      <% end %>
-      <%= a_link "#{Avo::App.root_path}/resources/#{@resource.model.model_name.route_key}/#{@resource.model.id
-      }/active_storage_attachments/#{@id}/#{@file.id}", color: :red, variant: :outlined, size: :xs, class: 'text-center', 'data-turbo-frame': 'destroy_attachment_form', data: { confirm: t('avo.are_you_sure')} do %>
-        <%= helpers.svg 'trash' %> <span class="hidden lg:block lg:flex-1"><%= t 'avo.delete_file', item: @file.filename %></span>
-      <% end %>
+      <div>
+        <% if @resource.authorization.authorize_action(:download_attachments?, raise_exception: false) %>
+          <%= a_link helpers.main_app.url_for(@file), color: 'indigo', download: true, class: 'text-center', size: :xs do %>
+            <%= helpers.svg 'download' %> <span class="hidden lg:block lg:flex-1"><%= t('avo.download_file') %></span>
+          <% end %>
+        <% end %>
+      </div>
+      <div>
+        <% if @resource.authorization.authorize_action(:delete_attachments?, raise_exception: false) %>
+          <%= a_link "#{Avo::App.root_path}/resources/#{@resource.model.model_name.route_key}/#{@resource.model.id}/active_storage_attachments/#{@id}/#{@file.id}", color: :red, variant: :outlined, size: :xs, class: 'text-center', 'data-turbo-frame': 'destroy_attachment_form', data: { confirm: t('avo.are_you_sure')} do %>
+            <%= helpers.svg 'trash' %> <span class="hidden lg:block lg:flex-1"><%= t 'avo.delete_file', item: @file.filename %></span>
+          <% end %>
+        <% end %>
+      </div>
     </div>
   <% end %>
 </div>
