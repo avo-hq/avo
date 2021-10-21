@@ -66,14 +66,14 @@ module Avo
 
       def init_resources
         self.resources = BaseResource.descendants
-          .select do |resource|
-            resource != BaseResource
+                                     .select do |resource|
+          resource != BaseResource
+        end
+                                     .map do |resource|
+          if resource.is_a? Class
+            resource.new
           end
-          .map do |resource|
-            if resource.is_a? Class
-              resource.new
-            end
-          end
+        end
       end
 
       # Returns the Avo resource by camelized name
@@ -121,33 +121,33 @@ module Avo
 
       def get_available_resources(user = nil)
         resources.select do |resource|
-            Services::AuthorizationService.authorize user, resource.model_class, Avo.configuration.authorization_methods.stringify_keys["index"], raise_exception: false
-          end
-          .sort_by { |r| r.name }
+          Services::AuthorizationService.authorize user, resource.model_class, Avo.configuration.authorization_methods.stringify_keys["index"], raise_exception: false
+        end
+                 .sort_by { |r| r.name }
       end
 
       def resources_navigation(user = nil)
         get_available_resources(user).select do |resource|
           resource.model_class.present?
         end
-          .select do |resource|
-            resource.visible_on_sidebar
-          end
+                                     .select do |resource|
+          resource.visible_on_sidebar
+        end
       end
 
       # Insert any partials that we find in app/views/avo/sidebar/items.
       def get_sidebar_partials
         Dir.glob(Rails.root.join("app", "views", "avo", "sidebar", "items", "*.html.erb"))
-          .map do |path|
-            File.basename path
-          end
-          .map do |filename|
-            # remove the leading underscore (_)
-            filename[0] = ""
-            # remove the extension
-            filename.gsub!('.html.erb', '')
-            filename
-          end
+           .map do |path|
+          File.basename path
+        end
+           .map do |filename|
+          # remove the leading underscore (_)
+          filename[0] = ""
+          # remove the extension
+          filename.gsub!('.html.erb', '')
+          filename
+        end
       end
 
       def draw_routes
@@ -156,21 +156,24 @@ module Avo
 
         proc do
           BaseResource.descendants
-            .select do |resource|
-              resource != :BaseResource
-            end
-            .select do |resource|
-              resource.is_a? Class
-            end
-            .map do |resource|
-              route_key = if resource.model_class.present?
-                resource.model_class.model_name.route_key
-              else
-                resource.to_s.underscore.gsub("_resource", "").downcase.pluralize.to_sym
-              end
+                      .select do |resource|
+            resource != :BaseResource
+          end
+                      .select do |resource|
+            resource.is_a? Class
+          end
+                      .map do |resource|
+            route_key = if resource.model_class.present?
+                          resource.model_class.model_name.route_key
+                        else
+                          resource.to_s.underscore.gsub("_resource", "").downcase.pluralize
+                        end
 
-              resources route_key
-            end
+            # Handle uncountable routes
+            route_key = route_key.gsub("_index", "").to_sym
+
+            resources route_key
+          end
         end
       end
     end

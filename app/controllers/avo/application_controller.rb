@@ -97,9 +97,9 @@ module Avo
     end
 
     def resource_path(model = nil, resource_id: nil, keep_query_params: false, **args)
-      return avo.send :"resources_#{model.model_name.route_key.singularize}_path", resource_id, **args if resource_id.present?
+      return avo.send :"resources_#{model.model_name.singular_route_key}_path", resource_id, **args if resource_id.present?
 
-      avo.send :"resources_#{model.model_name.route_key.singularize}_path", model, **args
+      avo.send :"resources_#{model.model_name.singular_route_key}_path", model, **args
     end
 
     def resource_attach_path(model_name, model_id, related_name, related_id = nil)
@@ -119,11 +119,11 @@ module Avo
     end
 
     def new_resource_path(model, **args)
-      avo.send :"new_resources_#{model.model_name.route_key.singularize}_path", **args
+      avo.send :"new_resources_#{model.model_name.route_key.singular_route_key}_path", **args
     end
 
     def edit_resource_path(model, **args)
-      avo.send :"edit_resources_#{model.model_name.route_key.singularize}_path", model, **args
+      avo.send :"edit_resources_#{model.model_name.singular_route_key}_path", model, **args
     end
 
     private
