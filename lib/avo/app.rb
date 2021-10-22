@@ -170,7 +170,7 @@ module Avo
               end
 
               # Handle uncountable routes
-              route_key = route_key.gsub("_index", "").to_sym
+              route_key = route_key.to_sym
               resources route_key
             end
         end
