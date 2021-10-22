@@ -166,11 +166,11 @@ module Avo
               route_key = if resource.model_class.present?
                 resource.model_class.model_name.route_key
               else
-                resource.to_s.underscore.gsub("_resource", "").downcase.pluralize.to_sym
+                resource.to_s.underscore.gsub("_resource", "").downcase.pluralize
               end
 
               # Handle uncountable routes
-              route_key = route_key.gsub("_index", "").to_sym
+              route_key = route_key.to_s.gsub("_index", "").to_sym
               resources route_key
             end
         end

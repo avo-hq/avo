@@ -119,7 +119,7 @@ module Avo
     end
 
     def new_resource_path(model, **args)
-      avo.send :"new_resources_#{model.model_name.route_key.singular_route_key}_path", **args
+      avo.send :"new_resources_#{model.model_name.singular_route_key}_path", **args
     end
 
     def edit_resource_path(model, **args)
