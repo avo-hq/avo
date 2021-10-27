@@ -24,7 +24,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
 
   def show_path
     if @parent_model.present?
-      helpers.resource_path(@resource.model, via_resource_class: @parent_model.class, via_resource_id: @parent_model.id)
+      helpers.resource_path(@resource.model, via_resource_class: @parent_model.class.base_class, via_resource_id: @parent_model.id)
     else
       helpers.resource_path(@resource.model)
     end
@@ -32,7 +32,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
 
   def edit_path
     if @parent_model.present?
-      helpers.edit_resource_path(@resource.model, via_resource_class: @parent_model.class, via_resource_id: @parent_model.id)
+      helpers.edit_resource_path(@resource.model, via_resource_class: @parent_model.class.base_class, via_resource_id: @parent_model.id)
     else
       helpers.edit_resource_path(@resource.model)
     end
