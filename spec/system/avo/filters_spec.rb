@@ -265,6 +265,48 @@ RSpec.describe "Filters", type: :system do
     end
   end
 
+  describe "Text filter" do
+    let!(:user) { create :user }
+
+    let!(:team_without_members) { create :team, name: "Without Members" }
+    let!(:team_with_members) { create :team, name: "With Members" }
+
+    before do
+      team_with_members.members << user
+      team_without_members.members << user
+    end
+
+    let(:url) { "/admin/resources/teams?view_type=table" }
+
+    context "without default value" do
+      it 'displays the filter' do
+        visit url
+        open_filters_menu
+
+        expect(page).to have_text "Name filter"
+      end
+
+      it 'filters by name' do
+        visit url
+        expect(page).to have_text("Displaying 2 item")
+
+        open_filters_menu
+        fill_in 'avo_filters_name_filter', with: 'With Members'
+        click_on "Filter by name"
+        wait_for_loaded
+        expect(page).to have_text("Displaying 1 item")
+
+        open_filters_menu
+        expect(page).to have_text "With Members"
+        expect(page).to have_link("Reset filters")
+
+        click_on "Reset filters"
+        wait_for_loaded
+        expect(page).to have_text("Displaying 2 item")
+      end
+    end
+  end
+
   describe "pagination resets when filters change" do
     let!(:published_posts) { create_list(:post, 40, published_at: rand((DateTime.now - 3.months)..DateTime.now)) }
     let!(:unpublished_post) { create :post, name: "Unpublished post", published_at: nil }

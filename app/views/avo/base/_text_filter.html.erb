@@ -1,0 +1,23 @@
+<%
+  begin
+    decoded_filters_param = JSON.parse(Base64.decode64(params[:filters]))
+    set_value = decoded_filters_param[filter.class.to_s]
+  rescue => exception
+    set_value = filter.default
+  end
+%>
+<div data-controller="text-filter">
+  <%= filter_wrapper name: filter.name do %>
+    <%= text_field_tag filter.id, set_value,
+      class: input_classes('w-full mb-0'),
+      id: "avo_filters_#{filter.id.parameterize.underscore}",
+      'data-filter-class': filter.class.to_s,
+      'data-text-filter-target': 'text',
+      'data-action': 'keypress->text-filter#tryToSubmit'
+    %>
+    <div class="flex justify-end">
+      <%= a_button filter.button_label || "Filter by #{filter.name}", class: 'mt-4', color: 'blue', data: { action: "text-filter#changeFilter" }, size:   :sm %>
+    </div>
+    <%= link_to 'url_redirect', request.url, data: { 'text-filter-target': 'urlRedirect', 'turbo-frame': params[:turbo_frame] }, style: 'hidden', class: 'hidden' %>
+  <% end %>
+</div>
