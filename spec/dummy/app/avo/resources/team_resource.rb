@@ -32,6 +32,7 @@ class TeamResource < Avo::BaseResource
   end
 
   filter MembersFilter
+  filter NameFilter
 
   action DummyAction
 end
