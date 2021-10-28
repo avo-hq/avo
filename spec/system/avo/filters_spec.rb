@@ -292,7 +292,7 @@ RSpec.describe "Filters", type: :system do
 
         open_filters_menu
         fill_in 'avo_filters_name_filter', with: 'With Members'
-        click_on "Filter by Name filter"
+        click_on "Filter by name"
         wait_for_loaded
         expect(page).to have_text("Displaying 1 item")
 
