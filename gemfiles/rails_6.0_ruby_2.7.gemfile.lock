@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    avo (1.14.0)
+    avo (1.15.0)
       active_link_to
       addressable
       breadcrumbs_on_rails
@@ -210,8 +210,6 @@ GEM
     nio4r (2.5.7)
     nokogiri (1.11.7)
       mini_portile2 (~> 2.5.0)
-      racc (~> 1.4)
-    nokogiri (1.11.7-x86_64-darwin)
       racc (~> 1.4)
     orm_adapter (0.5.0)
     pagy (4.11.0)
@@ -446,4 +444,4 @@ DEPENDENCIES
   zeitwerk (~> 2.3)
 
 BUNDLED WITH
-   2.2.17
+   2.2.29
