@@ -169,6 +169,8 @@ module Avo
                 resource.to_s.underscore.gsub("_resource", "").downcase.pluralize.to_sym
               end
 
+              # Handle uncountable routes
+              route_key = route_key.to_sym
               resources route_key
             end
         end

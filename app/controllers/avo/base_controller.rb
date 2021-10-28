@@ -161,7 +161,7 @@ module Avo
     private
 
     def model_route_key
-      @resource.model_class.model_name.route_key.singularize
+      singular_name @resource.model_class
     end
 
     def model_params

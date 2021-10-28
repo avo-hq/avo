@@ -97,9 +97,9 @@ module Avo
     end
 
     def resource_path(model = nil, resource_id: nil, keep_query_params: false, **args)
-      return avo.send :"resources_#{model.model_name.route_key.singularize}_path", resource_id, **args if resource_id.present?
+      return avo.send :"resources_#{singular_name(model)}_path", resource_id, **args if resource_id.present?
 
-      avo.send :"resources_#{model.model_name.route_key.singularize}_path", model, **args
+      avo.send :"resources_#{singular_name(model)}_path", model, **args
     end
 
     def resource_attach_path(model_name, model_id, related_name, related_id = nil)
@@ -119,11 +119,11 @@ module Avo
     end
 
     def new_resource_path(model, **args)
-      avo.send :"new_resources_#{model.model_name.route_key.singularize}_path", **args
+      avo.send :"new_resources_#{singular_name(model)}_path", **args
     end
 
     def edit_resource_path(model, **args)
-      avo.send :"edit_resources_#{model.model_name.route_key.singularize}_path", model, **args
+      avo.send :"edit_resources_#{singular_name(model)}_path", model.id, **args
     end
 
     private
@@ -282,6 +282,24 @@ module Avo
 
     def on_api_path
       request.original_url.match?(/.*#{Avo::App.root_path}\/avo_api\/.*/)
+    end
+
+    def get_model_class(model)
+      if model.instance_of?(Class)
+        model
+      else
+        model.class
+      end
+    end
+
+    def singular_name(model_or_class)
+      model_class = get_model_class model_or_class
+
+      if ActiveModel::Naming.uncountable? model_class
+        model_class.model_name.route_key.singularize.gsub('_index', '')
+      else
+        model_class.model_name.route_key.singularize
+      end
     end
   end
 end
