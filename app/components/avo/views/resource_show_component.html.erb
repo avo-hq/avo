@@ -14,6 +14,11 @@
                 <%= svg 'trash' %> <%= t('avo.detach_item', item: @reflection.name.to_s).capitalize %>
               <% end %>
             <% end %>
+            <% if @resource.authorization.authorize_action(:edit, raise_exception: false) %>
+              <%= a_link edit_path, color: 'indigo' do %>
+                <%= svg 'edit' %> <%= t('avo.edit').capitalize %>
+              <% end %>
+            <% end %>
           <% else %>
             <%= a_link back_path do %>
               <%= svg 'arrow-left' %> <%= t('avo.go_back') %>
