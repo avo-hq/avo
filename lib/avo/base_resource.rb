@@ -230,6 +230,10 @@ module Avo
       self.class.name.demodulize.underscore
     end
 
+    def navigation_label
+      plural_name.humanize
+    end
+
     def available_view_types
       view_types = [:table]
 

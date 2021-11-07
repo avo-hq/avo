@@ -11,8 +11,8 @@
         <%= render Avo::NavigationHeadingComponent.new label: t('avo.resources') %>
 
         <div class="w-full">
-          <% Avo::App.resources_navigation(_current_user).each do |resource| %>
-            <%= render Avo::NavigationLinkComponent.new label: resource.plural_name.humanize, path: resources_path(resource.model_class) %>
+          <% Avo::App.resources_navigation(_current_user).sort_by { |r| r.navigation_label }.each do |resource| %>
+            <%= render Avo::NavigationLinkComponent.new label: resource.navigation_label, path: resources_path(resource.model_class) %>
           <% end %>
 
           <% sidebar_partials = Avo::App.get_sidebar_partials %>
