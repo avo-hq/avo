@@ -85,7 +85,7 @@ module Avo
 
       def visible?
         if visible.present? && visible.respond_to?(:call)
-          visible.call resource: resource
+          visible.call resource: @resource
         else
           visible
         end

@@ -82,3 +82,4 @@ pt-BR:
     search:
       placeholder: 'Procurar'
       cancel_button: 'Cancelar'
+    sign_out: 'sair'
