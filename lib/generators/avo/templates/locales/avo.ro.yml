@@ -70,3 +70,4 @@ ro:
     search:
       placeholder: 'Cauta'
       cancel_button: 'Anulare'
+    sign_out: 'Delogare'
