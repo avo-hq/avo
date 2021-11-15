@@ -6,8 +6,6 @@ module Avo
       include Avo::Fields::FieldExtensions::VisibleInDifferentViews
 
       attr_reader :id
-      attr_reader :name
-      attr_reader :translation_key
       attr_reader :block
       attr_reader :required
       attr_reader :readonly
