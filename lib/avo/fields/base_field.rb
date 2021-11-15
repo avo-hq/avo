@@ -6,8 +6,6 @@ module Avo
       include Avo::Fields::FieldExtensions::VisibleInDifferentViews
 
       attr_reader :id
-      attr_reader :name
-      attr_reader :translation_key
       attr_reader :block
       attr_reader :required
       attr_reader :readonly
@@ -43,8 +41,9 @@ module Avo
         super(id, **args, &block)
 
         @id = id
-        @name = args[:name] || id.to_s.humanize(keep_id_suffix: true)
+        @name = args[:name]
         @translation_key = args[:translation_key]
+        @translation_enabled = false
         @block = block
         @required = args[:required] || false
         @readonly = args[:readonly] || false
@@ -72,15 +71,30 @@ module Avo
         except_on args[:except_on] if args[:except_on].present?
       end
 
-      def hydrate(model: nil, resource: nil, action: nil, view: nil, panel_name: nil, user: nil)
+      def hydrate(model: nil, resource: nil, action: nil, view: nil, panel_name: nil, user: nil, translation_enabled: nil)
         @model = model if model.present?
         @view = view if view.present?
         @resource = resource if resource.present?
         @action = action if action.present?
         @user = user if user.present?
         @panel_name = panel_name if panel_name.present?
+        @translation_enabled = translation_enabled if translation_enabled.present?
 
         self
+      end
+
+      def translation_key
+        return "avo.field_translations.#{@id}" if @translation_enabled
+
+        @translation_key
+      end
+
+      def name
+        return @name if @name.present?
+
+        return I18n.t(translation_key, count: 1).capitalize if translation_key
+
+        @id.to_s.humanize(keep_id_suffix: true)
       end
 
       def visible?

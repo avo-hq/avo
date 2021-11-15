@@ -16,6 +16,7 @@ module Avo
     class_attribute :includes, default: []
     class_attribute :model_class
     class_attribute :translation_key
+    class_attribute :translation_enabled
     class_attribute :default_view_type, default: :table
     class_attribute :devise_password_optional, default: false
     class_attribute :actions_loader
@@ -94,7 +95,7 @@ module Avo
       return [] if self.class.fields.blank?
 
       fields = self.class.fields.map do |field|
-        field.hydrate(resource: self, panel_name: default_panel_name, user: user)
+        field.hydrate(resource: self, panel_name: default_panel_name, user: user, translation_enabled: translation_enabled)
       end
 
       if Avo::App.license.lacks_with_trial(:custom_fields)
@@ -192,12 +193,16 @@ module Avo
       ]
     end
 
+    def class_name_without_resource
+      self.class.name.demodulize.chomp("Resource")
+    end
+
     def model_class
       return self.class.model_class if self.class.model_class.present?
 
       return @model.class if @model.present?
 
-      self.class.name.demodulize.chomp("Resource").safe_constantize
+      class_name_without_resource.safe_constantize
     end
 
     def model_title
@@ -206,12 +211,18 @@ module Avo
       name
     end
 
+    def translation_key
+      return "avo.resource_translations.#{class_name_without_resource.underscore}" if self.class.translation_enabled
+
+      self.class.translation_key
+    end
+
     def name
       return @name if @name.present?
 
-      return I18n.t(self.class.translation_key, count: 1).capitalize if self.class.translation_key
+      return I18n.t(translation_key, count: 1).capitalize if translation_key
 
-      self.class.name.demodulize.chomp("Resource").titlecase
+      class_name_without_resource.titlecase
     end
 
     def singular_name
@@ -219,7 +230,7 @@ module Avo
     end
 
     def plural_name
-      return I18n.t(self.class.translation_key, count: 2).capitalize if self.class.translation_key
+      return I18n.t(translation_key, count: 2).capitalize if translation_key
 
       name.pluralize
     end
