@@ -19,7 +19,9 @@ module Avo
       end
 
       args = {
-        fields: fields
+        fields: fields,
+        current_user: _current_user,
+        resource: resource,
       }
 
       args[:models] = models unless @action.standalone

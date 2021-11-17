@@ -70,7 +70,7 @@ module Avo
     end
 
     def handle_action(**args)
-      models, fields = args.values_at(:models, :fields)
+      models, fields, current_user, resource = args.values_at(:models, :fields, :current_user, :resource)
       avo_fields = get_fields.map { |field| [field.id, field] }.to_h
 
       if fields.present?
@@ -84,7 +84,9 @@ module Avo
       end
 
       args = {
-        fields: processed_fields
+        fields: processed_fields,
+        current_user: current_user,
+        resource: resource,
       }
 
       args[:models] = models unless standalone

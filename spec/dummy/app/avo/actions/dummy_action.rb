@@ -2,7 +2,7 @@ class DummyAction < Avo::BaseAction
   self.name = "Dummy action"
   self.standalone = true
 
-  def handle(fields:)
+  def handle(**args)
     # Do something here
     succeed 'Yup'
   end
