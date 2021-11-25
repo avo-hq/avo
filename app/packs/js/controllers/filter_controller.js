@@ -21,6 +21,23 @@ export default class extends Controller {
     return param
   }
 
+  b64EncodeUnicode(str) {
+    // first we use encodeURIComponent to get percent-encoded UTF-8,
+    // then we convert the percent encodings into raw bytes which
+    // can be fed into btoa.
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
+      function toSolidBytes(match, p1) {
+        return String.fromCharCode('0x' + p1);
+      }));
+  }
+
+  b64DecodeUnicode(str) {
+    // Going backwards: from bytestream, to percent-encoding, to original string.
+    return decodeURIComponent(atob(str).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+  }
+
   changeFilter() {
     const value = this.getFilterValue()
     const filterClass = this.getFilterClass()
@@ -28,7 +45,7 @@ export default class extends Controller {
     let filters = this.uriParams()[this.uriParam('filters')]
 
     if (filters) {
-      filters = JSON.parse(atob(filters))
+      filters = JSON.parse(this.b64DecodeUnicode(filters))
     } else {
       filters = {}
     }
@@ -46,7 +63,7 @@ export default class extends Controller {
     let encodedFilters
 
     if (filtered && Object.keys(filtered).length > 0) {
-      encodedFilters = btoa(JSON.stringify(filtered))
+      encodedFilters = this.b64EncodeUnicode(JSON.stringify(filtered))
     }
 
     const url = new URI(this.urlRedirectTarget.href)
