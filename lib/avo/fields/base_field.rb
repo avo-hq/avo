@@ -57,7 +57,7 @@ module Avo
         @nullable = args[:nullable] || false
         @null_values = args[:null_values] || [nil, ""]
         @format_using = args[:format_using] || nil
-        @placeholder = args[:placeholder] || id.to_s.humanize(keep_id_suffix: true)
+        @placeholder = args[:placeholder]
         @help = args[:help] || nil
         @default = args[:default] || nil
         @visible = args[:visible] || true
@@ -101,6 +101,12 @@ module Avo
         return I18n.t(translation_key, count: 1).capitalize if translation_key
 
         @id.to_s.humanize(keep_id_suffix: true)
+      end
+
+      def placeholder
+        return @placeholder if @placeholder.present?
+
+        name
       end
 
       def visible?
