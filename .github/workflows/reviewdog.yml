@@ -20,6 +20,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - name: Get yarn cache directory path
+        id: production-yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v1
+        id: production-yarn-cache
+        with:
+          path: ${{ steps.production-yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-production-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-production-yarn-
+
+      - name: Yarn install
+        run: yarn install
       - name: eslint
         uses: reviewdog/action-eslint@v1
         with:
