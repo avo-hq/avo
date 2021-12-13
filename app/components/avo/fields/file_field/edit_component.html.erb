@@ -6,6 +6,6 @@
   <% end %>
 
   <% if @resource.authorization.authorize_action(:upload_attachments?, raise_exception: false) %>
-    <%= @form.file_field @field.id, disabled: @field.readonly %>
+    <%= @form.file_field @field.id, disabled: @field.readonly, direct_upload: @field.direct_upload %>
   <% end %>
 <% end %>
