@@ -127,7 +127,7 @@ module Avo
             resource_path(model: @model, resource: @resource)
           end
 
-          format.html { redirect_to redirect_path, notice: "#{@model.class.name} was successfully created." }
+          format.html { redirect_to redirect_path, notice: "#{@model.class.name} #{t("avo.was_successfully_created")}." }
           format.json { render :show, status: :created, location: @model }
         else
           flash[:error] = t "avo.you_missed_something_check_form"
@@ -144,7 +144,7 @@ module Avo
 
       respond_to do |format|
         if saved
-          format.html { redirect_to params[:referrer] || resource_path(model: @model, resource: @resource), notice: "#{@model.class.name} was successfully updated." }
+          format.html { redirect_to params[:referrer] || resource_path(model: @model, resource: @resource), notice: "#{@model.class.name} #{t("avo.was_successfully_updated")}." }
           format.json { render :show, status: :ok, location: @model }
         else
           flash[:error] = t "avo.you_missed_something_check_form"
