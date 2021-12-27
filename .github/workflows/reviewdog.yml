@@ -21,6 +21,6 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: eslint
-        uses: reviewdog/action-eslint@v1
+        uses: reviewdog/action-eslint@latest
         with:
           reporter: github-pr-review
