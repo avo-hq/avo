@@ -3,7 +3,7 @@ name: Build release notes
 on:
   push:
     branches:
-      - master
+      - main
       - refactor/hotwire
 
 jobs:
