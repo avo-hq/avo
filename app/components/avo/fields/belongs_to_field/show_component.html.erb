@@ -1,3 +1,6 @@
 <%= show_field_wrapper field: @field, index: @index do %>
   <%= link_to @field.label, helpers.resource_path(@field.value, via_resource_class: @resource.model_class, via_resource_id: @resource.model.id) %>
+  <% if @field.polymorphic_as === :commentable %>
+    (<%= @field.model.commentable_type %>)
+  <% end %>
 <% end %>
