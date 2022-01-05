@@ -134,7 +134,7 @@ RSpec.feature "belongs_to", type: :system do
         visit "/admin/resources/projects/#{project.id}"
 
         expect(find('turbo-frame[id="has_many_field_comments"]')).not_to have_text "Commentable"
-        expect(find('turbo-frame[id="has_many_field_comments"]')).to have_link comment.id, href: "/admin/resources/comments/#{comment.id}?via_resource_class=Project&via_resource_id=#{project.id}"
+        expect(find('turbo-frame[id="has_many_field_comments"]')).to have_link comment.id.to_s, href: "/admin/resources/comments/#{comment.id}?via_resource_class=Project&via_resource_id=#{project.id}"
 
         click_on comment.id.to_s
 

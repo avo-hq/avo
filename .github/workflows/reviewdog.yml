@@ -20,6 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - run: yarn
       - name: eslint
         uses: reviewdog/action-eslint@v1
         with:

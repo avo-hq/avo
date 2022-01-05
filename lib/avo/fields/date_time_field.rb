@@ -17,7 +17,7 @@ module Avo
         return nil if value.nil?
 
         if @format.is_a?(Symbol)
-          value.to_time.in_time_zone(timezone).to_s(@format)
+          value.to_time.in_time_zone(timezone).to_formatted_s(@format)
         else
           value.to_time.in_time_zone(timezone).strftime(@format)
         end

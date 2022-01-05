@@ -32,9 +32,9 @@ module Avo
 
         # Set the current host for ActiveStorage
         begin
-          ActiveStorage::Current.host = request.base_url
+          ActiveStorage::Current.url_options = request.base_url
         rescue => exception
-          Rails.logger.debug "[Avo] Failed to set ActiveStorage::Current.host, #{exception.inspect}"
+          Rails.logger.debug "[Avo] Failed to set ActiveStorage::Current.url_options, #{exception.inspect}"
         end
 
         init_resources
