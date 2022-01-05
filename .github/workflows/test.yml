@@ -3,21 +3,21 @@ name: Tests
 on:
   pull_request:
     branches:
-      - master
+      - main
   push:
     branches:
-      - master
+      - main
 
 jobs:
   Test:
     strategy:
       matrix:
         ruby:
-          - '2.6'
-          - '2.7'
+          - '3.0.3'
         rails:
           - '6.0'
           - '6.1'
+          - '7.0'
     env:
       RAILS_ENV: test
       PGHOST: localhost
