@@ -26,7 +26,7 @@ module Avo
           # Skip empty values
           next unless file.present?
           # Keep only String values
-          next if file.class === String
+          next unless file.class === String
 
           model.send(key).attach file
         end
