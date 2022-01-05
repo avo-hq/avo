@@ -18,12 +18,12 @@ module Avo
       end
 
       def fill_field(model, key, value, params)
-        puts [model, key, value, params].inspect
         return model unless model.methods.include? key.to_sym
 
         value.each do |file|
           # Skip empty values
           next unless file.present?
+          # Skip Capybara Nil files in tests
           next unless file.class === Capybara::RackTest::Form::NilUploadedFile
 
           model.send(key).attach file
