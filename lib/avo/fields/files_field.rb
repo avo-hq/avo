@@ -24,6 +24,7 @@ module Avo
         value.each do |file|
           # Skip empty values
           next unless file.present?
+          next unless file.class === Capybara::RackTest::Form::NilUploadedFile
 
           model.send(key).attach file
         end
