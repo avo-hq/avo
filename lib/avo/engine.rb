@@ -2,7 +2,6 @@
 Gem.loaded_specs["avo"].dependencies.each do |d|
   require d.name
 end
-require "view_component/engine"
 
 module Avo
   class Engine < ::Rails::Engine
