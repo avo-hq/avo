@@ -11,6 +11,7 @@ import Rails from '@rails/ujs'
 import tippy from 'tippy.js'
 
 // Toastr alerts
+import '../js/active-storage'
 import '../js/toastr'
 
 Rails.start()

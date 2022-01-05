@@ -25,8 +25,8 @@ module Avo
         value.each do |file|
           # Skip empty values
           next unless file.present?
-          # Skip Capybara Nil files in tests
-          next unless file.class === Capybara::RackTest::Form::NilUploadedFile
+          # Keep only String values
+          next if file.class === String
 
           model.send(key).attach file
         end
