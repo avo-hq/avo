@@ -22,6 +22,9 @@ module Avo
         return model unless model.methods.include? key.to_sym
 
         value.each do |file|
+          # Skip empty values
+          next unless file.present?
+
           model.send(key).attach file
         end
 
