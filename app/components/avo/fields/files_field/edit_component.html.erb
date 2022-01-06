@@ -2,6 +2,8 @@
   <%= render Avo::Fields::Common::FilesListViewerComponent.new(field: @field, resource: @resource) if @field.value.present? %>
 
   <% if @resource.authorization.authorize_action(:upload_attachments?, raise_exception: false) %>
-    <%= @form.file_field @field.id, disabled: @field.readonly, multiple: true %>
+    <div class="mt-2">
+      <%= @form.file_field @field.id, disabled: @field.readonly, multiple: true, direct_upload: @field.direct_upload %>
+    </div>
   <% end %>
 <% end %>

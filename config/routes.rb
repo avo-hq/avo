@@ -2,6 +2,7 @@ Avo::Engine.routes.draw do
   root "home#index"
 
   get "resources", to: redirect("/admin")
+  post "/rails/active_storage/direct_uploads", to: "/active_storage/direct_uploads#create"
 
   scope "avo_api", as: "avo_api" do
     get "/search", to: "search#index"

@@ -2,11 +2,13 @@ module Avo
   module Fields
     class FilesField < BaseField
       attr_accessor :is_image
+      attr_accessor :direct_upload
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
 
         @is_image = args[:is_image].present? ? args[:is_image] : @is_avatar
+        @direct_upload = args[:direct_upload].present? ? args[:direct_upload] : false
       end
 
       def view_component_name
@@ -23,8 +25,8 @@ module Avo
         value.each do |file|
           # Skip empty values
           next unless file.present?
-          # Skip Capybara Nil files in tests
-          next unless file.class === Capybara::RackTest::Form::NilUploadedFile
+          # Keep only String values
+          next unless file.class === String
 
           model.send(key).attach file
         end

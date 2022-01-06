@@ -3,6 +3,11 @@ Gem.loaded_specs["avo"].dependencies.each do |d|
   require d.name
 end
 
+# In development we should load the engine so we get the autoload for components
+if ENV["RAILS_ENV"] === "development"
+  require "view_component/engine"
+end
+
 module Avo
   class Engine < ::Rails::Engine
     isolate_namespace Avo

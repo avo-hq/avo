@@ -2,6 +2,7 @@
 import 'core-js/stable'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'regenerator-runtime/runtime'
+import * as ActiveStorage from '@rails/activestorage'
 import * as Mousetrap from 'mousetrap'
 import { Application } from 'stimulus'
 import { Turbo } from '@hotwired/turbo-rails'
@@ -10,6 +11,7 @@ import Rails from '@rails/ujs'
 import tippy from 'tippy.js'
 
 // Toastr alerts
+import '../js/active-storage'
 import '../js/toastr'
 
 Rails.start()
@@ -32,6 +34,7 @@ function initTippy() {
 window.initTippy = initTippy
 
 const application = Application.start()
+ActiveStorage.start()
 
 const context = require.context('./../js/controllers', true, /\.js$/)
 application.load(definitionsFromContext(context))
