@@ -21,7 +21,8 @@ module Avo
     end
 
     def destroy
-      attachment = ActiveStorage::Attachment.find(params[:signed_attachment_id])
+      blob = ActiveStorage::Blob.find(params[:signed_attachment_id])
+      attachment = blob.attachments.find_by record_id: params[:id], record_type: @model.class.to_s
 
       if attachment.present?
         attachment.destroy
