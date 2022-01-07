@@ -25,8 +25,6 @@ module Avo
         value.each do |file|
           # Skip empty values
           next unless file.present?
-          # Keep only String values
-          next unless file.class === String
 
           model.send(key).attach file
         end
