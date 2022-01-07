@@ -11,7 +11,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     @reflection.present? &&
       @resource.model.present? &&
       (@reflection.is_a?(::ActiveRecord::Reflection::HasManyReflection) || @reflection.is_a?(::ActiveRecord::Reflection::ThroughReflection)) &&
-      authorize_association_for('detach')
+      authorize_association_for("detach")
   end
 
   def can_edit?
