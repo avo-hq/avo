@@ -1,6 +1,6 @@
 <div data-model-id="<%= @resource.model.id %>">
   <% @resource.panels.each do |resource_panel| %>
-    <%= form_with model: @resource.model, url: helpers.resource_path(@resource.model), method: :put, multipart: true do |form| %>
+    <%= form_with model: @resource.model, scope: @resource.form_scope, url: helpers.resource_path(@resource.model), method: :put, multipart: true do |form| %>
       <%= hidden_field_tag :referrer, back_path if params[:via_resource_class] %>
 
       <%= render Avo::PanelComponent.new(title: resource_panel[:name], display_breadcrumbs: true) do |c| %>
