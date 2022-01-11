@@ -1,4 +1,6 @@
-<div <% if main_app.respond_to?(:destroy_user_session_path) %> data-controller="toggle-panel" <% end %>>
+<% destroy_user_session_path = "destroy_#{Avo.configuration.current_user_resource_name}_session_path".to_sym %>
+
+<div <% if main_app.respond_to?(destroy_user_session_path) %> data-controller="toggle-panel" <% end %>>
   <a href="javascript:void(0);" class="flex items-center cursor-pointer font-semibold text-gray-700" data-action="click->toggle-panel#togglePanel">
     <% if _current_user.respond_to?(:avatar) &&  _current_user.avatar.present? %>
       <%= image_tag _current_user.avatar, class: "h-12 rounded-full border-4 border-white mr-1" %>
@@ -10,14 +12,14 @@
     <% else %>
       Avo user
     <% end %>
-    <% if main_app.respond_to?(:destroy_user_session_path) %>
+    <% if main_app.respond_to?(destroy_user_session_path) %>
       <%= svg 'chevron-down', class: "ml-1 h-4" %>
     <% end %>
   </a>
 
-  <% if main_app.respond_to?(:destroy_user_session_path) %>
-    <div class="hidden absolute inset-auto inset-auto right-0 mr-6 mt-0 py-4 bg-white rounded-xl min-w-[200px] shadow-context" data-toggle-panel-target="panel">
-      <%= button_to t('avo.sign_out'), main_app.destroy_user_session_path, method: :delete, form: { "data-turbo" => "false" }, class: "appearance-none bg-white text-left cursor-pointer text-green-600 font-semibold hover:text-white hover:bg-green-500 block px-4 py-1 w-full" %>
+  <% if main_app.respond_to?(destroy_user_session_path) %>
+    <div class="hidden absolute inset-auto right-0 mr-6 mt-0 py-4 bg-white rounded-xl min-w-[200px] shadow-context" data-toggle-panel-target="panel">
+      <%= button_to t('avo.sign_out'), main_app.send(:destroy_user_session_path), method: :delete, form: { "data-turbo" => "false" }, class: "appearance-none bg-white text-left cursor-pointer text-green-600 font-semibold hover:text-white hover:bg-green-500 block px-4 py-1 w-full" %>
     </div>
   <% end %>
 </div>
