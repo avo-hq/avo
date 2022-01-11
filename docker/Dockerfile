@@ -1,4 +1,4 @@
-FROM ruby:2.6.4
+FROM ruby:3.1.0
 
 RUN apt-get update -qq && apt-get install -yqq build-essential apt-transport-https apt-utils
 
@@ -18,7 +18,7 @@ RUN apt-get update -qq && apt-get install -y yarn
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN gem install bundler -v 2.2.11
+RUN gem install bundler -v 2.2.32
 
 ENV RAILS_ENV=production
 ENV NODE_ENV=production
