@@ -30,7 +30,7 @@
     "luxon": "^1.26.0",
     "mini-css-extract-plugin": "^1.4.0",
     "mousetrap": "^1.6.5",
-    "postcss": "^8.2.10",
+    "postcss": "^8.2.13",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-import": "^14.0.0",
     "postcss-loader": "^5.2.0",
