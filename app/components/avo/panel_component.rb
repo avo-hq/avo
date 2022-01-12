@@ -6,8 +6,9 @@ class Avo::PanelComponent < ViewComponent::Base
   renders_one :bare_content
   renders_one :footer
 
-  def initialize(title: nil, body_classes: nil, data: {}, display_breadcrumbs: false)
+  def initialize(title: nil, description: nil, body_classes: nil, data: {}, display_breadcrumbs: false)
     @title = title
+    @description = description
     @body_classes = body_classes
     @data = data
     @display_breadcrumbs = display_breadcrumbs

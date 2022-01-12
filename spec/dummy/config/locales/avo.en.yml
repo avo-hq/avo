@@ -84,3 +84,4 @@ en:
       placeholder: 'Search'
       cancel_button: 'Cancel'
     sign_out: 'Sign out'
+    dashboards: 'Dashboards'

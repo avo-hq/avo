@@ -1,0 +1,13 @@
+
+<%= render Avo::PanelComponent.new(title: @dashboard.name, description: @dashboard.description, display_breadcrumbs: @reflection.blank?) do |c| %>
+      <% c.body do %>
+      <div class="flex flex-col justify-between p-6 min-h-24">
+        <%# <div class="px-6 space-y-4"> %>
+          <%# <h3>About</h3> %>
+hey
+  <%# </div> %>
+  </div>
+<%# Dashboard:
+<%= @dashboard.name.inspect %> %>
+<% end %>
+<% end %>

@@ -24,7 +24,8 @@ module Avo
         ["app", "avo", "fields"],
         ["app", "avo", "filters"],
         ["app", "avo", "actions"],
-        ["app", "avo", "resources"]
+        ["app", "avo", "resources"],
+        ["app", "avo", "dashboards"]
       ].each do |path_params|
         path = Rails.root.join(*path_params)
 
