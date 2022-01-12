@@ -1,9 +1,6 @@
 name: Build, Generate Ruby Gem and Release
 
-on:
-  push:
-    tags:
-      - 'v*.*.*'
+on: push
 
 jobs:
   build:
@@ -20,7 +17,7 @@ jobs:
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 2.6.3
+        ruby-version: 3.1.0
 
     - uses: actions/cache@v1
       with:
