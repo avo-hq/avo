@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    avo (1.18.2)
+    avo (1.18.3)
       active_link_to
       addressable
       breadcrumbs_on_rails
@@ -228,7 +228,7 @@ GEM
       mini_portile2 (~> 2.7.0)
       racc (~> 1.4)
     orm_adapter (0.5.0)
-    pagy (5.7.1)
+    pagy (5.7.3)
     parallel (1.21.0)
     parser (3.1.0.0)
       ast (~> 2.4.1)
