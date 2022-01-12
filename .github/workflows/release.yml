@@ -1,6 +1,9 @@
 name: Build, Generate Ruby Gem and Release
 
-on: push
+on:
+  push:
+    tags:
+      - 'v*.*.*'
 
 jobs:
   build:
