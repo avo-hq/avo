@@ -32,7 +32,11 @@ module Avo
 
         # Set the current host for ActiveStorage
         begin
-          ActiveStorage::Current.url_options = request.base_url
+          if Rails::VERSION::MAJOR === 6
+            ActiveStorage::Current.host = request.base_url
+          elsif Rails::VERSION::MAJOR === 7
+            ActiveStorage::Current.url_options = request.base_url
+          end
         rescue => exception
           Rails.logger.debug "[Avo] Failed to set ActiveStorage::Current.url_options, #{exception.inspect}"
         end
@@ -121,8 +125,8 @@ module Avo
 
       def get_available_resources(user = nil)
         resources.select do |resource|
-            Services::AuthorizationService.authorize user, resource.model_class, Avo.configuration.authorization_methods.stringify_keys["index"], raise_exception: false
-          end
+          Services::AuthorizationService.authorize user, resource.model_class, Avo.configuration.authorization_methods.stringify_keys["index"], raise_exception: false
+        end
           .sort_by { |r| r.name }
       end
 
@@ -145,7 +149,7 @@ module Avo
             # remove the leading underscore (_)
             filename[0] = ""
             # remove the extension
-            filename.gsub!('.html.erb', '')
+            filename.gsub!(".html.erb", "")
             filename
           end
       end
