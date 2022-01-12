@@ -3,12 +3,19 @@ require "rails_helper"
 RSpec.describe "TextField", type: :system do
   describe "with regular input" do
     let!(:user) { create :user }
+    let!(:person) { create :person }
 
     context "index" do
       it "displays the users first name" do
         visit "/admin/resources/users"
 
         expect(page).to have_text user.first_name
+      end
+
+      it "displays the html for a computed text field" do
+        visit "/admin/resources/people"
+
+        expect(page).to have_link person.name, href: "https://avohq.io"
       end
     end
 
@@ -17,6 +24,12 @@ RSpec.describe "TextField", type: :system do
         visit "/admin/resources/users/#{user.id}"
 
         expect(page).to have_text user.first_name
+      end
+
+      it "displays the html for a computed text field" do
+        visit "/admin/resources/people"
+
+        expect(page).to have_link person.name, href: "https://avohq.io"
       end
     end
 

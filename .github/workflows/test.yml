@@ -17,7 +17,6 @@ jobs:
         rails:
           - '6.0'
           - '6.1'
-          - '7.0'
     env:
       RAILS_ENV: test
       PGHOST: localhost
