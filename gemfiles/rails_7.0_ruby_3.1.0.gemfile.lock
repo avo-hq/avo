@@ -1,5 +1,5 @@
 PATH
-  remote: .
+  remote: ..
   specs:
     avo (1.18.2)
       active_link_to
@@ -20,40 +20,47 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    actioncable (6.1.4.4)
-      actionpack (= 6.1.4.4)
-      activesupport (= 6.1.4.4)
+    actioncable (7.0.1)
+      actionpack (= 7.0.1)
+      activesupport (= 7.0.1)
       nio4r (~> 2.0)
       websocket-driver (>= 0.6.1)
-    actionmailbox (6.1.4.4)
-      actionpack (= 6.1.4.4)
-      activejob (= 6.1.4.4)
-      activerecord (= 6.1.4.4)
-      activestorage (= 6.1.4.4)
-      activesupport (= 6.1.4.4)
+    actionmailbox (7.0.1)
+      actionpack (= 7.0.1)
+      activejob (= 7.0.1)
+      activerecord (= 7.0.1)
+      activestorage (= 7.0.1)
+      activesupport (= 7.0.1)
       mail (>= 2.7.1)
-    actionmailer (6.1.4.4)
-      actionpack (= 6.1.4.4)
-      actionview (= 6.1.4.4)
-      activejob (= 6.1.4.4)
-      activesupport (= 6.1.4.4)
+      net-imap
+      net-pop
+      net-smtp
+    actionmailer (7.0.1)
+      actionpack (= 7.0.1)
+      actionview (= 7.0.1)
+      activejob (= 7.0.1)
+      activesupport (= 7.0.1)
       mail (~> 2.5, >= 2.5.4)
+      net-imap
+      net-pop
+      net-smtp
       rails-dom-testing (~> 2.0)
-    actionpack (6.1.4.4)
-      actionview (= 6.1.4.4)
-      activesupport (= 6.1.4.4)
-      rack (~> 2.0, >= 2.0.9)
+    actionpack (7.0.1)
+      actionview (= 7.0.1)
+      activesupport (= 7.0.1)
+      rack (~> 2.0, >= 2.2.0)
       rack-test (>= 0.6.3)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.2.0)
-    actiontext (6.1.4.4)
-      actionpack (= 6.1.4.4)
-      activerecord (= 6.1.4.4)
-      activestorage (= 6.1.4.4)
-      activesupport (= 6.1.4.4)
+    actiontext (7.0.1)
+      actionpack (= 7.0.1)
+      activerecord (= 7.0.1)
+      activestorage (= 7.0.1)
+      activesupport (= 7.0.1)
+      globalid (>= 0.6.0)
       nokogiri (>= 1.8.5)
-    actionview (6.1.4.4)
-      activesupport (= 6.1.4.4)
+    actionview (7.0.1)
+      activesupport (= 7.0.1)
       builder (~> 3.1)
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
@@ -61,27 +68,26 @@ GEM
     active_link_to (1.0.5)
       actionpack
       addressable
-    activejob (6.1.4.4)
-      activesupport (= 6.1.4.4)
+    activejob (7.0.1)
+      activesupport (= 7.0.1)
       globalid (>= 0.3.6)
-    activemodel (6.1.4.4)
-      activesupport (= 6.1.4.4)
-    activerecord (6.1.4.4)
-      activemodel (= 6.1.4.4)
-      activesupport (= 6.1.4.4)
-    activestorage (6.1.4.4)
-      actionpack (= 6.1.4.4)
-      activejob (= 6.1.4.4)
-      activerecord (= 6.1.4.4)
-      activesupport (= 6.1.4.4)
-      marcel (~> 1.0.0)
+    activemodel (7.0.1)
+      activesupport (= 7.0.1)
+    activerecord (7.0.1)
+      activemodel (= 7.0.1)
+      activesupport (= 7.0.1)
+    activestorage (7.0.1)
+      actionpack (= 7.0.1)
+      activejob (= 7.0.1)
+      activerecord (= 7.0.1)
+      activesupport (= 7.0.1)
+      marcel (~> 1.0)
       mini_mime (>= 1.1.0)
-    activesupport (6.1.4.4)
+    activesupport (7.0.1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
-      zeitwerk (~> 2.3)
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
     appraisal (2.4.1)
@@ -107,7 +113,7 @@ GEM
       aws-eventstream (~> 1, >= 1.0.2)
     bcrypt (3.1.16)
     bindex (0.8.1)
-    bootsnap (1.9.3)
+    bootsnap (1.9.4)
       msgpack (~> 1.0)
     breadcrumbs_on_rails (4.1.0)
       railties (>= 5.0)
@@ -125,7 +131,7 @@ GEM
       xpath (~> 3.2)
     childprocess (4.1.0)
     concurrent-ruby (1.1.9)
-    countries (4.1.3)
+    countries (4.2.1)
       i18n_data (~> 0.15.0)
       sixarm_ruby_unaccent (~> 1.1)
     crack (0.4.5)
@@ -212,10 +218,17 @@ GEM
     mime-types-data (3.2022.0105)
     mini_magick (4.11.0)
     mini_mime (1.1.2)
-    mini_portile2 (2.7.1)
     minitest (5.15.0)
     msgpack (1.4.2)
     multi_xml (0.6.0)
+    net-imap (0.2.2)
+      digest
+      net-protocol
+      strscan
+    net-pop (0.1.1)
+      digest
+      net-protocol
+      timeout
     net-protocol (0.1.2)
       io-wait
       timeout
@@ -224,11 +237,10 @@ GEM
       net-protocol
       timeout
     nio4r (2.5.8)
-    nokogiri (1.13.0)
-      mini_portile2 (~> 2.7.0)
+    nokogiri (1.13.0-x86_64-darwin)
       racc (~> 1.4)
     orm_adapter (0.5.0)
-    pagy (5.7.1)
+    pagy (5.7.3)
     parallel (1.21.0)
     parser (3.1.0.0)
       ast (~> 2.4.1)
@@ -244,21 +256,20 @@ GEM
       rack
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
-    rails (6.1.4.4)
-      actioncable (= 6.1.4.4)
-      actionmailbox (= 6.1.4.4)
-      actionmailer (= 6.1.4.4)
-      actionpack (= 6.1.4.4)
-      actiontext (= 6.1.4.4)
-      actionview (= 6.1.4.4)
-      activejob (= 6.1.4.4)
-      activemodel (= 6.1.4.4)
-      activerecord (= 6.1.4.4)
-      activestorage (= 6.1.4.4)
-      activesupport (= 6.1.4.4)
+    rails (7.0.1)
+      actioncable (= 7.0.1)
+      actionmailbox (= 7.0.1)
+      actionmailer (= 7.0.1)
+      actionpack (= 7.0.1)
+      actiontext (= 7.0.1)
+      actionview (= 7.0.1)
+      activejob (= 7.0.1)
+      activemodel (= 7.0.1)
+      activerecord (= 7.0.1)
+      activestorage (= 7.0.1)
+      activesupport (= 7.0.1)
       bundler (>= 1.15.0)
-      railties (= 6.1.4.4)
-      sprockets-rails (>= 2.0.0)
+      railties (= 7.0.1)
     rails-controller-testing (1.0.5)
       actionpack (>= 5.0.1.rc1)
       actionview (>= 5.0.1.rc1)
@@ -268,13 +279,14 @@ GEM
       nokogiri (>= 1.6)
     rails-html-sanitizer (1.4.2)
       loofah (~> 2.3)
-    railties (6.1.4.4)
-      actionpack (= 6.1.4.4)
-      activesupport (= 6.1.4.4)
+    railties (7.0.1)
+      actionpack (= 7.0.1)
+      activesupport (= 7.0.1)
       method_source
-      rake (>= 0.13)
+      rake (>= 12.2)
       thor (~> 1.0)
-    rainbow (3.0.0)
+      zeitwerk (~> 2.5)
+    rainbow (3.1.1)
     rake (13.0.6)
     ransack (2.5.0)
       activerecord (>= 5.2.4)
@@ -366,6 +378,7 @@ GEM
       rubocop-performance (= 1.13.1)
     stimulus-rails (1.0.2)
       railties (>= 6.0.0)
+    strscan (3.0.1)
     test-prof (1.0.7)
     thor (1.2.1)
     tilt (2.0.10)
@@ -407,8 +420,7 @@ GEM
     zeitwerk (2.5.3)
 
 PLATFORMS
-  ruby
-  x86_64-linux
+  x86_64-darwin-21
 
 DEPENDENCIES
   active_link_to
@@ -443,7 +455,7 @@ DEPENDENCIES
   pg (>= 0.18, < 2.0)
   puma (~> 5.5.1)
   pundit
-  rails (~> 6.1.0)
+  rails (~> 7.0.0)
   rails-controller-testing
   ransack
   rspec-rails (~> 4.0.0)

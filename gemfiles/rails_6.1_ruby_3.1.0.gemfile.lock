@@ -1,5 +1,5 @@
 PATH
-  remote: .
+  remote: ..
   specs:
     avo (1.18.2)
       active_link_to
@@ -107,7 +107,7 @@ GEM
       aws-eventstream (~> 1, >= 1.0.2)
     bcrypt (3.1.16)
     bindex (0.8.1)
-    bootsnap (1.9.3)
+    bootsnap (1.9.4)
       msgpack (~> 1.0)
     breadcrumbs_on_rails (4.1.0)
       railties (>= 5.0)
@@ -125,7 +125,7 @@ GEM
       xpath (~> 3.2)
     childprocess (4.1.0)
     concurrent-ruby (1.1.9)
-    countries (4.1.3)
+    countries (4.2.1)
       i18n_data (~> 0.15.0)
       sixarm_ruby_unaccent (~> 1.1)
     crack (0.4.5)
@@ -212,7 +212,6 @@ GEM
     mime-types-data (3.2022.0105)
     mini_magick (4.11.0)
     mini_mime (1.1.2)
-    mini_portile2 (2.7.1)
     minitest (5.15.0)
     msgpack (1.4.2)
     multi_xml (0.6.0)
@@ -224,11 +223,10 @@ GEM
       net-protocol
       timeout
     nio4r (2.5.8)
-    nokogiri (1.13.0)
-      mini_portile2 (~> 2.7.0)
+    nokogiri (1.13.0-x86_64-darwin)
       racc (~> 1.4)
     orm_adapter (0.5.0)
-    pagy (5.7.1)
+    pagy (5.7.3)
     parallel (1.21.0)
     parser (3.1.0.0)
       ast (~> 2.4.1)
@@ -274,7 +272,7 @@ GEM
       method_source
       rake (>= 0.13)
       thor (~> 1.0)
-    rainbow (3.0.0)
+    rainbow (3.1.1)
     rake (13.0.6)
     ransack (2.5.0)
       activerecord (>= 5.2.4)
@@ -407,8 +405,7 @@ GEM
     zeitwerk (2.5.3)
 
 PLATFORMS
-  ruby
-  x86_64-linux
+  x86_64-darwin-21
 
 DEPENDENCIES
   active_link_to
