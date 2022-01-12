@@ -8,4 +8,7 @@ class PersonResource < Avo::BaseResource
 
   field :name, as: :text, link_to_resource: true
   field :type, as: :select, name: "Type", options: { Spouse: "Spouse" }
+  field :link, as: :text, as_html: true do |model, &args|
+    "<a href='https://avohq.io'>#{model.name}</a>"
+  end
 end

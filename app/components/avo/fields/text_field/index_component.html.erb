@@ -1,3 +1,7 @@
 <%= index_field_wrapper field: @field do %>
-  <%= link_to_if @field.link_to_resource, @field.value, resource_path %>
+  <% if @field.as_html %>
+    <%== @field.value %>
+  <% else %>
+    <%= link_to_if @field.link_to_resource, @field.value, resource_path %>
+  <% end %>
 <% end %>
