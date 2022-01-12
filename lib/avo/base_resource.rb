@@ -74,7 +74,7 @@ module Avo
     end
 
     def initialize
-      self.class.model_class = model_class
+      self.class.model_class = model_class.base_class
     end
 
     def hydrate(model: nil, view: nil, user: nil, params: nil)
@@ -198,10 +198,13 @@ module Avo
     end
 
     def model_class
+      # get the model class off of the static property
       return self.class.model_class if self.class.model_class.present?
 
-      return @model.class if @model.present?
+      # get the model class off of the model
+      return @model.base_class if @model.present?
 
+      # generate a model class
       class_name_without_resource.safe_constantize
     end
 
@@ -409,6 +412,10 @@ module Avo
       description_field.value
     rescue
       nil
+    end
+
+    def form_scope
+      model.class.base_class.to_s.downcase
     end
   end
 end

@@ -98,7 +98,7 @@ jobs:
 
     - name: Generate coverage
       uses: codecov/codecov-action@v1
-      if: ${{ matrix.rails == '6.1' && matrix.ruby == '2.7' }}
+      if: ${{ matrix.rails == '6.1' && matrix.ruby == '3.0.3' }}
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         file: ./coverage/coverage.xml

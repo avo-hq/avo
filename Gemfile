@@ -15,7 +15,7 @@ gemspec
 # gem 'byebug', group: [:development, :test]
 
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-gem "webpacker", "6.0.0.beta.6"
+gem "webpacker", "6.0.0.rc.6"
 
 gem "countries"
 
@@ -131,4 +131,6 @@ gem 'ransack'
 
 gem 'friendly_id', '~> 5.4.0'
 
-gem "aws-sdk-s3", require: false
+gem 'aws-sdk-s3', require: false
+
+gem 'net-smtp', require: false

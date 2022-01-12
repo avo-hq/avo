@@ -2,6 +2,8 @@ module Avo
   class ApplicationController < ::ActionController::Base
     include Pundit
     include Pagy::Backend
+    include Avo::ApplicationHelper
+
     protect_from_forgery with: :exception
     before_action :init_app
     before_action :check_avo_license
@@ -71,6 +73,8 @@ module Avo
     def resources_path(model, keep_query_params: false, **args)
       return if model.nil?
 
+      model_class = get_model_class model
+
       existing_params = {}
 
       begin
@@ -78,7 +82,7 @@ module Avo
           existing_params = Addressable::URI.parse(request.fullpath).query_values.symbolize_keys
         end
       rescue; end
-      avo.send :"resources_#{model.model_name.route_key}_path", **existing_params, **args
+      avo.send :"resources_#{model_class.base_class.model_name.route_key}_path", **existing_params, **args
     end
 
     def related_resources_path(parent_model, model, keep_query_params: false, **args)
@@ -282,24 +286,6 @@ module Avo
 
     def on_api_path
       request.original_url.match?(/.*#{Avo::App.root_path}\/avo_api\/.*/)
-    end
-
-    def get_model_class(model)
-      if model.instance_of?(Class)
-        model
-      else
-        model.class
-      end
-    end
-
-    def singular_name(model_or_class)
-      model_class = get_model_class model_or_class
-
-      if ActiveModel::Naming.uncountable? model_class
-        model_class.model_name.route_key.singularize.gsub('_index', '')
-      else
-        model_class.model_name.route_key.singularize
-      end
     end
   end
 end

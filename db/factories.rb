@@ -44,4 +44,13 @@ FactoryBot.define do
   factory :comment do
     body { Faker::Lorem.paragraphs(number: rand(4...10)).join("\n") }
   end
+
+  factory :person do
+    name { "#{Faker::Name.first_name} #{Faker::Name.last_name}" }
+  end
+
+  factory :spouse do
+    name { "#{Faker::Name.first_name} #{Faker::Name.last_name}" }
+    type { "Spouse" }
+  end
 end
