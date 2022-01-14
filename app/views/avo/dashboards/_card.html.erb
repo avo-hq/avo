@@ -1,0 +1,5 @@
+<%= content_tag(:div, class: "relative bg-white rounded-xl shadow-xl space-y-2 #{card.card_classes} h-36") do %>
+  <turbo-frame id="<%= card.turbo_frame %>" src="<%= card.frame_url(range: @range) %>" target="_top">
+    <%= render(Avo::LoadingComponent.new(title: card.label)) %>
+  </turbo-frame>
+<% end %>

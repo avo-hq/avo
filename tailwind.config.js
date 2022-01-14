@@ -5,23 +5,18 @@ const colors = require('tailwindcss/colors')
 module.exports = {
   mode: 'jit',
   future: {},
-  purge: {
-    content: [
-      './safelist.txt',
-      './app/helpers/**/*.rb',
-      './app/views/**/*.erb',
-      './app/packs/**/*.js',
-      './app/components/avo/**/*.erb',
-      './app/components/avo/**/*.rb',
-      './app/controllers/avo/**/*.rb',
-    ],
-    // Enable options below when @tailwindcss/jit supports PurgeCSS options
-    // options: {
-    //   safelist: [
-    //     ...ignoredButtonClasses.flat(),
-    //   ],
-    // }
-  },
+  purge: [
+    './safelist.txt',
+    './app/helpers/**/*.rb',
+    './app/views/**/*.html.erb',
+    './app/views/**/*.erb',
+    './app/packs/**/*.js',
+    './app/components/avo/**/*.erb',
+    './app/components/avo/**/*.rb',
+    './app/controllers/avo/**/*.rb',
+    './lib/avo/**/*.rb',
+  ],
+
   theme: {
     extend: {
       colors: {

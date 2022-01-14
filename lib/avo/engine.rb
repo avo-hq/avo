@@ -43,6 +43,8 @@ module Avo
     initializer "avo.reload_avo_files" do |app|
       if Avo::IN_DEVELOPMENT && ENV["RELOAD_AVO_FILES"]
         avo_root_path = Avo::Engine.root.to_s
+        # This should only be happening when ENV["RELOAD_AVO_FILES"] is true because it loads all the files into memory on every change and makes rails sluggish.
+        app.config.autoload_paths += [Avo::Engine.root.join("lib", "avo").to_s]
         # Register reloader
         app.reloaders << app.config.file_watcher.new([], {
           Avo::Engine.root.join("lib", "avo").to_s => ["rb"]

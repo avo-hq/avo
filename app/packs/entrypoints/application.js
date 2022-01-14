@@ -1,3 +1,4 @@
+import 'chartkick/chart.js/chart.esm'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'core-js/stable'
 // eslint-disable-next-line import/no-extraneous-dependencies

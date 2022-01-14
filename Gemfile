@@ -15,7 +15,7 @@ gemspec
 # gem 'byebug', group: [:development, :test]
 
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-gem "webpacker", "6.0.0.rc.6"
+gem "webpacker", "6.0.0.rc.2"
 
 gem "countries"
 
@@ -134,3 +134,8 @@ gem 'friendly_id', '~> 5.4.0'
 gem 'aws-sdk-s3', require: false
 
 gem 'net-smtp', require: false
+
+gem "chartkick"
+gem 'groupdate'
+gem 'hightop'
+gem 'active_median'

@@ -1,0 +1,34 @@
+<%= turbo_frame_wrap(params[:turbo_frame]) do %>
+  <% if @card %>
+    <div class="p-4">
+      <div class="flex justify-between items-center min-h-6">
+        <div class="text-base font-bold text-gray-700 leading-none">
+          <%= @card.label %> - <%= @range %>
+        </div>
+        <div data-controller="select">
+          <% if @card.ranges.present? %>
+            <%= select_tag 'period', options_for_select(@card.ranges, @range),
+              class: 'appearance-none inline-flex bg-blue-gray-100 disabled:bg-blue-gray-300 disabled:cursor-not-allowed focus:bg-white text-sm text-blue-gray-700 disabled:text-blue-gray-700 leading-none rounded-md py-px px-2 leading-tight border outline-none outline w-24',
+              'data-target': 'select',
+              'data-action': 'change->select#onChange'
+            %>
+          <% end %>
+        </div>
+      </div>
+
+      <% if @card.block.present? %>
+        <%= instance_eval(&@card.block) %>
+      <% elsif @card.partial.present? %>
+        <%= render @card.partial %>
+      <% elsif @card.metric.present? %>
+        <div class="flex mt-4 items-end">
+          <span class="text-3xl"><%= @card.prefix %></span>
+          <span class="text-5xl"><%= @card.value dashboard: @dashboard, range: @range %></span>
+          <span class="text-3xl"><%= @card.suffix %></span>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    No card found.
+  <% end %>
+<% end %>

@@ -64,6 +64,8 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = {host: "localhost", port: 3030}
 
+  config.autoload_paths += [Avo::Engine.root.join("lib", "avo").to_s]
+
   # @todo: temporary. remove this
   # config.action_view.logger = nil
 end
