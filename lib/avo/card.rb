@@ -70,24 +70,20 @@ module Avo
       end
     end
 
+    def type
+      return :metric if metric.class == Class && metric.superclass == Avo::BaseMetric
+
+      :string
+    end
+
     def value(dashboard:, range:)
-      if metric.respond_to? :call
-        metric.call context: Avo::App.context,
+      if type == :metric
+        metric.new.value context: Avo::App.context,
                     dashboard: dashboard,
                     card: self,
                     range: range
       else
         metric
-      end
-    end
-
-    def ranges
-      @ranges.map do |range|
-        if range.kind_of? Integer
-          ["#{range} days", range.to_s]
-        else
-          [range, range.to_s]
-        end
       end
     end
   end

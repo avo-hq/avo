@@ -6,8 +6,8 @@
           <%= @card.label %> - <%= @range %>
         </div>
         <div data-controller="select">
-          <% if @card.ranges.present? %>
-            <%= select_tag 'period', options_for_select(@card.ranges, @range),
+          <% if @card.type == :metric && @card.metric.parsed_ranges.present? %>
+            <%= select_tag 'period', options_for_select(@card.metric.parsed_ranges, @range),
               class: 'appearance-none inline-flex bg-blue-gray-100 disabled:bg-blue-gray-300 disabled:cursor-not-allowed focus:bg-white text-sm text-blue-gray-700 disabled:text-blue-gray-700 leading-none rounded-md py-px px-2 leading-tight border outline-none outline w-24',
               'data-target': 'select',
               'data-action': 'change->select#onChange'
