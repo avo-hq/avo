@@ -28,6 +28,7 @@
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-plugin-sort-imports-es6-autofix": "^0.5.0",
     "flatpickr": "^4.6.9",
+    "heroicons": "^1.0.5",
     "lodash": "^4.17.21",
     "luxon": "^1.26.0",
     "mini-css-extract-plugin": "^1.4.0",

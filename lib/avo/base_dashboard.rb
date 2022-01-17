@@ -12,22 +12,23 @@ module Avo
       def card(id, **args, &block)
         self.cards ||= []
 
-        self.cards << ::Avo::Card.new(id: id, **args, dashboard: self, block: block)
+        self.cards <<
+          ::Avo::Card.new(id: id, **args, dashboard: self, block: block)
       end
     end
 
     def classes
       case self.class.grid_cols
       when 3
-        "grid-cols-3"
+        'grid-cols-3'
       when 4
-        "grid-cols-4"
+        'grid-cols-4'
       when 5
-        "grid-cols-5"
+        'grid-cols-5'
       when 6
-        "grid-cols-6"
+        'grid-cols-6'
       else
-        "grid-cols-3"
+        'grid-cols-3'
       end
     end
 

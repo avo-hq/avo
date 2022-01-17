@@ -1,30 +1,30 @@
-Chartkick.options = {
-  height: '100px',
-  colors: %w[#0B8AE2 #34C683 #2AB1EE #34C6A8],
-  library: {
-    discrete: false,
-    points: false,
-    animation: true,
-    scales: {
-      x: {
-        # grid: {
-        #   display: false,
-        # },
-        # display: false,
-        # stacked: true
-        grid: {
-          display: false
-        }
-      },
-      y: {
-        grid: {
-          display: false
-        }
-        # display: false,
-      }
-    }
-  }
-}
+# Chartkick.options = {
+#   height: '100px',
+#   colors: %w[#0B8AE2 #34C683 #2AB1EE #34C6A8],
+#   library: {
+#     discrete: false,
+#     points: false,
+#     animation: true,
+#     scales: {
+#       x: {
+#         # grid: {
+#         #   display: false,
+#         # },
+#         # display: false,
+#         # stacked: true
+#         grid: {
+#           display: false
+#         }
+#       },
+#       y: {
+#         grid: {
+#           display: false
+#         }
+#         # display: false,
+#       }
+#     }
+#   }
+# }
 
 # const
 
@@ -35,19 +35,94 @@ class Dashy < Avo::BaseDashboard
   self.grid_cols = 3
 
   card :Metric, metric: UsersMetric
+  card :Users_area, chartkick: UsersChart
+  card 'Custom card content', partial: CustomPartial
 
-  card :Users, cols: 2, description: '' do
-    area_chart User.group_by_day(:created_at).count, id: 'users'
-  end
+  # card :Users_area,
+  #      cols: 2,
+  #      description: '',
+  #      chart_type: :area_chart,
+  #      query:
+  #        Proc.new {
+  #         #  abort [
+  #         #   User.group_by_year(:birthday).count.map { |key, value| [key, value] },
+  #         #   User.group_by_year(:birthday).count.map { |key, value| [key, value] }.shuffle
+  #         #  ].inspect
+  #          [
+  #            {
+  #              name: 'Users birthday',
+  #              data: User.group_by_year(:birthday).count
+  #            },
+  #            {
+  #              name: 'Other users',
+  #              data: User.group_by_year(:birthday).count.map { |key, value| [key, rand(0..4)] }.to_h
+  #            },
+  #            {
+  #              name: 'Some more users',
+  #              data: User.group_by_year(:birthday).count.map { |key, value| [key, rand(0..3)] }.to_h
+  #            }
+  #          ]
+  #        },
+  #        chart_options: {
+  #          library: {
+  #            plugins: {
+  #              legend: {
+  #                display: false
+  #              }
+  #            }
+  #          }
+  #        }
+  # card :Users_line,
+  #      cols: 2,
+  #      description: 'hehehe',
+  #      chart_type: :line_chart,
+  #      query: Proc.new { User.group_by_year(:birthday).count },
+  #      chart_options: {
+  #        library: {
+  #          scales: {
+  #            x: {
+  #              display: true
+  #            },
+  #            y: {
+  #              display: true
+  #            }
+  #          }
+  #        }
+  #      },
+  #      omit_position_offset: true
+  # card :Project_bar,
+  #      cols: 1,
+  #      description: '',
+  #      chart_type: :bar_chart,
+  #      query: Proc.new { Project.unscoped.group(:progress).count }
+  # card :Users_scatter,
+  #      cols: 3,
+  #      description: '',
+  #      chart_type: :scatter_chart,
+  #      query: Proc.new { User.group_by_year(:birthday).count }
+  # card :Projects_column,
+  #      cols: 1,
+  #      chart_type: :column_chart,
+  #      query: Proc.new { Project.unscoped.group(:progress).count }
 
-  card :Projects, cols: 2 do
-    column_chart Project.unscoped.group(:progress).count, id: 'projects'
-  end
+  # # card :Projects, cols: 3, chartkick: Proc.new { column_chart Project.unscoped.group(:progress).count, id: 'projects' }
+  # card :Posts_pie,
+  #      cols: 1,
+  #      chart_type: :pie_chart,
+  #      query: Proc.new { Post.group(:is_featured).count },
+  #      refresh_every: 10.minutes
 
-  card :Posts, cols: 2 do
-    pie_chart Post.group(:is_featured).count, id: 'posts'
-  end
-
+  # when :line_chart
+  #   # default.merge(no_scales)
+  # # when :pie_chart
+  #   # default.merge(no_scales)
+  # # when :column_chart
+  #   # default.merge(no_scales)
+  # when :bar_chart
+  #   # default.merge(no_scales)
+  # # when :area_chart
+  #   # default.merge(no_scales)
+  # when :scatter_chart
 
   # card :Metric,
   #      cols: 3,
@@ -78,6 +153,4 @@ class Dashy < Avo::BaseDashboard
   #      ranges: [7, 30, 60, 365, 'Today', 'YTD']
   # card :posts, cols: 2, metric: 75, suffix: '%'
   # card :posts_2, label: 'New posts', cols: 2, metric: 12, prefix: '$'
-
-  card 'Custom card content', partial: 'avo/cards/custom_card'
 end

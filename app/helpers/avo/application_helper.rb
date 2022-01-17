@@ -110,10 +110,19 @@ module Avo
       options = {}
       options[:class] = args[:class].present? ? args[:class] : "h-4 mr-1"
       options[:class] += args[:extra_class].present? ? " #{args[:extra_class]}" : ""
+      options[:'data-tippy'] = args[:'data-tippy'].present? ? "#{args[:'data-tippy']}" : ""
+      options[:title] = args[:title].present? ? "#{args[:title]}" : ""
+      puts ['args->', args].inspect
 
       # Create the path to the svgs directory
-      file_path = "#{Avo::Engine.root}/app/packs/svgs/#{file_name}"
-      file_path = "#{file_path}.svg" unless file_path.end_with? ".svg"
+      if args[:pack].present?
+        # file_path = "#{Avo::Engine.root}/app/packs/svgs/#{file_name}"
+        file_path = Avo::Engine.root.join "node_modules", args[:pack], file_name
+      else
+        file_path = "#{Avo::Engine.root}/app/packs/svgs/#{file_name}"
+      end
+
+      file_path = "#{file_path}.svg" unless file_path.to_s.end_with? ".svg"
 
       # Create a cache hash
       hash = Digest::MD5.hexdigest "#{file_path.underscore}_#{options}"
@@ -139,6 +148,10 @@ module Avo
       return "(not found)" if svg_content.to_s.blank?
 
       svg_content
+    end
+
+    def heroicon(name, **args)
+      svg name, **args, pack: 'heroicons'
     end
 
     def input_classes(extra_classes = "", has_error: false)

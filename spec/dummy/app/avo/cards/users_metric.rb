@@ -1,8 +1,11 @@
 class UsersMetric < Avo::BaseMetric
-  # self.label = 'Users count'
-  # self.cols = 3
-  # self.range = 30
-  # self.ranges = [7, 30, 60, 365, 'Today', 'YTD']
+  self.label = 'Users count'
+  self.description = 'Users description'
+  self.cols = 1
+  self.range = 30
+  self.ranges = [7, 30, 60, 365, 'Today', 'YTD']
+  self.prefix = '$'
+  self.suffix = '%'
 
   def value(context:, range:, dashboard:, card:)
     from = Date.today.midnight - 1.week

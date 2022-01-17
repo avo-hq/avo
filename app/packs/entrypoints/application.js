@@ -1,4 +1,5 @@
 import 'chartkick/chart.js/chart.esm'
+
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'core-js/stable'
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -45,6 +46,9 @@ application.load(definitionsFromContext(fieldsContext))
 
 document.addEventListener('turbo:load', () => {
   document.body.classList.remove('turbo-loading')
+  initTippy()
+})
+document.addEventListener('turbo:frame-load', () => {
   initTippy()
 })
 document.addEventListener('turbo:visit', () => document.body.classList.add('turbo-loading'))
