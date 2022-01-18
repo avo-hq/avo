@@ -46,6 +46,13 @@ document.addEventListener('turbo:load', () => {
   document.body.classList.remove('turbo-loading')
   initTippy()
 })
+
+document.addEventListener('turbo:before-fetch-response', (e) => {
+  if (e.detail.fetchResponse.response.status === 500) {
+    const id = e.srcElement.getAttribute('id')
+    e.srcElement.src = `${window.Avo.configuration.root_path}/failed_to_load?turbo_frame=${id}`
+  }
+})
 document.addEventListener('turbo:visit', () => document.body.classList.add('turbo-loading'))
 document.addEventListener('turbo:submit-start', () => document.body.classList.add('turbo-loading'))
 document.addEventListener('turbo:before-cache', () => {

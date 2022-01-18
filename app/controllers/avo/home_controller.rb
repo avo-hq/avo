@@ -10,5 +10,8 @@ module Avo
         redirect_to resources_path Avo::App.resources.min_by { |resource| resource.route_key }.model_class
       end
     end
+
+    def failed_to_load
+    end
   end
 end
