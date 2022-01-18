@@ -14,6 +14,7 @@ module Avo
     class_attribute :resource
     class_attribute :fields
     class_attribute :standalone, default: false
+    class_attribute :visible
 
     attr_accessor :response
     attr_accessor :model
@@ -27,10 +28,11 @@ module Avo
       self.class.to_s.demodulize.underscore.humanize(keep_id_suffix: true)
     end
 
-    def initialize(model: nil, resource: nil, user: nil)
+    def initialize(model: nil, resource: nil, user: nil, view: nil)
       self.class.model = model if model.present?
       self.class.resource = resource if resource.present?
       self.class.user = user if user.present?
+      self.class.view = view if view.present?
 
       self.class.message ||= I18n.t("avo.are_you_sure_you_want_to_run_this_option")
       self.class.confirm_button_label ||= I18n.t("avo.run")
@@ -94,6 +96,12 @@ module Avo
       handle(**args)
 
       self
+    end
+
+    def visible_in_view
+      return true unless visible.present?
+
+      instance_exec(resource: self.class.resource, view: view, &visible)
     end
 
     def param_id
