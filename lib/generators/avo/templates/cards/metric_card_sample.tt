@@ -8,7 +8,7 @@ class <%= class_name.camelize %> < Avo::Dashboards::MetricCard
   # self.prefix = ''
   # self.suffix = ''
 
-  def value(context:, range:, dashboard:, card:)
+  def query(context:, range:, dashboard:, card:)
     # from = Date.today.midnight - 1.week
     # to = DateTime.current
 

@@ -137,7 +137,6 @@ gem 'aws-sdk-s3', require: false
 gem 'net-smtp', require: false
 
 # Dashboard charts
-gem "chartkick"
 gem "groupdate"
 gem "hightop"
 gem "active_median"

@@ -7,8 +7,9 @@ class UsersMetric < Avo::Dashboards::MetricCard
   self.ranges = [7, 30, 60, 365, 'TODAY', 'MTD', 'QTD', 'YTD', 'ALL']
   self.prefix = '$'
   self.suffix = '%'
+  self.refresh_every = 10.minutes
 
-  def value(context:, range:, dashboard:, card:)
+  def query(context:, range:, dashboard:, card:)
     from = Date.today.midnight - 1.week
     to = DateTime.current
 
@@ -31,7 +32,7 @@ class UsersMetric < Avo::Dashboards::MetricCard
       end
     end
 
-    Post.where('created_at >= :from AND created_at < :to', from: from, to: to)
+    User.where('created_at >= :from AND created_at < :to', from: from, to: to)
       .count
   end
 end
