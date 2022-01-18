@@ -8,6 +8,6 @@
   </div>
 <% else %>
   <div class="bg-white rounded-xl shadow-xl">
-    <%= helpers.empty_state @resource.name.downcase.pluralize %>
+    <%= helpers.empty_state resource_name: @resource.name.downcase.pluralize %>
   </div>
 <% end %>

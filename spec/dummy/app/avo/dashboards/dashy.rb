@@ -1,42 +1,14 @@
-# Chartkick.options = {
-#   height: '100px',
-#   colors: %w[#0B8AE2 #34C683 #2AB1EE #34C6A8],
-#   library: {
-#     discrete: false,
-#     points: false,
-#     animation: true,
-#     scales: {
-#       x: {
-#         # grid: {
-#         #   display: false,
-#         # },
-#         # display: false,
-#         # stacked: true
-#         grid: {
-#           display: false
-#         }
-#       },
-#       y: {
-#         grid: {
-#           display: false
-#         }
-#         # display: false,
-#       }
-#     }
-#   }
-# }
-
-# const
-
-class Dashy < Avo::BaseDashboard
+class Dashy < Avo::Dashboards::BaseDashboard
   self.id = 'dashy'
   self.name = 'Dashy'
   self.description = 'The first dashbaord'
   self.grid_cols = 3
 
-  card :Metric, metric: UsersMetric
-  card :Users_area, chartkick: UsersChart
-  card 'Custom card content', partial: CustomPartial
+  card UsersMetric
+  card UserSignups
+  card CustomPartial
+
+
 
   # card :Users_area,
   #      cols: 2,

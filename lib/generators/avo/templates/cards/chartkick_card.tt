@@ -1,0 +1,22 @@
+class <%= class_name.camelize %> < Avo::Dashboards::ChartkickCard
+  self.id = '<%= name.underscore %>'
+  self.label = '<%= name.underscore.humanize %>'
+  self.chart_type = :area_chart
+
+  def query(context:, range:, dashboard:, card:)
+    [
+      {
+        name: 'batch 1',
+        data: [[1, 2], [2, 7], [3, 3], [4, 5], [5, 1], [6, 8]]
+      },
+      {
+        name: 'batch 1',
+        data: [[1, 3], [2, 2], [3, 1], [4, 7], [5, 1], [6, 2]]
+      },
+      {
+        name: 'batch 1',
+        data: [[1, 5], [2, 3], [3, 6], [4, 1], [5, 2], [6, 1]]
+      }
+    ]
+  end
+end

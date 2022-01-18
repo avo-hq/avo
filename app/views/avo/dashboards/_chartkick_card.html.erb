@@ -1,4 +1,3 @@
-<%#= @card.instance_options %>
 <div class="flex-1 flex flex-col justify-end <%= @card.instance.chartkick_classes %>">
   <%= send(@card.instance.chart_type, @card.instance.query(context: Avo::App.context, range: @range, dashboard: @dashboard, card: @card), **@card.instance.chartkick_options) %>
 </div>

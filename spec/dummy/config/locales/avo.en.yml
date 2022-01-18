@@ -85,3 +85,4 @@ en:
       cancel_button: 'Cancel'
     sign_out: 'Sign out'
     dashboards: 'Dashboards'
+    no_cards_present: 'No cards present'

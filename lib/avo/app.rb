@@ -83,14 +83,9 @@ module Avo
       end
 
       def init_dashboards
-        self.dashboards = BaseDashboard.descendants
+        self.dashboards = Dashboards::BaseDashboard.descendants
           .select do |dashboard|
-            dashboard != BaseDashboard
-          end
-          .map do |dashboard|
-            if dashboard.is_a? Class
-              dashboard.new
-            end
+            dashboard != Dashboards::BaseDashboard
           end
       end
 

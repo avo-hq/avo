@@ -1,25 +1,32 @@
-class UsersMetric < Avo::BaseMetric
+class UsersMetric < Avo::Dashboards::MetricCard
+  self.id = 'users_metric'
   self.label = 'Users count'
   self.description = 'Users description'
   self.cols = 1
   self.range = 30
-  self.ranges = [7, 30, 60, 365, 'Today', 'YTD']
+  self.ranges = [7, 30, 60, 365, 'TODAY', 'MTD', 'QTD', 'YTD', 'ALL']
   self.prefix = '$'
   self.suffix = '%'
 
   def value(context:, range:, dashboard:, card:)
     from = Date.today.midnight - 1.week
-    to = Date.today.midnight
+    to = DateTime.current
 
     if range.present?
       if range.to_s == range.to_i.to_s
-        from = Date.today.midnight - range.to_i.days
-        to = Date.today.midnight
+        from = DateTime.current - range.to_i.days
       else
         case range
-        when 'Today'
-          from = Date.today.midnight - 1.day
-          to = Date.today.midnight
+        when 'TODAY'
+          from = DateTime.current.beginning_of_day
+        when 'MTD'
+          from = DateTime.current.beginning_of_month
+        when 'QTD'
+          from = DateTime.current.beginning_of_quarter
+        when 'YTD'
+          from = DateTime.current.beginning_of_year
+        when 'ALL'
+          from = Time.at(0)
         end
       end
     end

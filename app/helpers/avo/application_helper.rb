@@ -27,8 +27,8 @@ module Avo
       }
     end
 
-    def empty_state(resource_name)
-      render partial: "avo/partials/empty_state", locals: {resource_name: resource_name}
+    def empty_state(resource_name: nil, text: nil)
+      render partial: "avo/partials/empty_state", locals: {resource_name: resource_name, text: text}
     end
 
     def turbo_frame_wrap(name, &block)
@@ -112,7 +112,6 @@ module Avo
       options[:class] += args[:extra_class].present? ? " #{args[:extra_class]}" : ""
       options[:'data-tippy'] = args[:'data-tippy'].present? ? "#{args[:'data-tippy']}" : ""
       options[:title] = args[:title].present? ? "#{args[:title]}" : ""
-      puts ['args->', args].inspect
 
       # Create the path to the svgs directory
       if args[:pack].present?

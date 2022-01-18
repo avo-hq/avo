@@ -1,12 +1,29 @@
 
 <%= render Avo::PanelComponent.new(title: @dashboard.name, description: @dashboard.description) do |c| %>
   <% c.bare_content do %>
-    <div class="min-h-24 grid-cols-6">
-      <%= content_tag(:div, class: "grid gap-4 #{@dashboard.classes}") do %>
-        <% @dashboard.cards.each do |card| %>
-          <%= render 'card', card: card %>
+    <% if @dashboard.cards.present? %>
+      <div class="min-h-24 grid-cols-6">
+        <%= content_tag(:div, class: "grid gap-4 #{@dashboard.classes}") do %>
+          <% @dashboard.cards.each do |card| %>
+            <%= render 'card', card: card %>
+          <% end %>
         <% end %>
-      <% end %>
-    </div>
+      </div>
+    <% else %>
+      <div class="w-full h-full">
+        <%= empty_state text: t('avo.no_cards_present') %>
+
+        <% if Rails.env.development? %>
+          <%= render Avo::PanelComponent.new do |c| %>
+            <% c.body do %>
+              <div class="p-6">
+                <% # @todo: rephrase this and add link %>
+                You can add cards to this dashboard following this tutorial
+              </div>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
   <% end %>
 <% end %>
