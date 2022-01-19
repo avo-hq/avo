@@ -97,7 +97,7 @@ jobs:
       run: bundle exec rspec
 
     - uses: actions/upload-artifact@v2
-      if: steps.run_tests.outcome == 'failure'
+      if: always() && steps.run_tests.outcome == 'failure'
       with:
         name: my-artifact
         path: ./spec/dummy/tmp/screenshots
