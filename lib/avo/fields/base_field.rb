@@ -3,8 +3,8 @@ module Avo
     class BaseField
       extend ActiveSupport::DescendantsTracker
       extend Avo::Fields::FieldExtensions::HasFieldName
-      include ActionView::Helpers::UrlHelper
 
+      include ActionView::Helpers::UrlHelper
       include Avo::Fields::FieldExtensions::VisibleInDifferentViews
 
       delegate :view_context, to: 'Avo::App'
