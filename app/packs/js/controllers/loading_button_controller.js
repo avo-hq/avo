@@ -6,18 +6,17 @@ export default class extends Controller {
   <div class="double-bounce2"></div>
 </div>`;
 
-  onClick(e) {
-    const button = e.target
+  connect() {
+    const button = this.context.scope.element
+    this.context.scope.element.addEventListener('click', () => {
+      button.style.width = `${button.getBoundingClientRect().width}px`
+      button.style.height = `${button.getBoundingClientRect().height}px`
+      button.innerHTML = this.spinnerMarkup
+      button.classList.add('justify-center')
 
-    button.style.width = `${button.getBoundingClientRect().width}px`
-    button.style.height = `${button.getBoundingClientRect().height}px`
-    button.innerHTML = this.spinnerMarkup
-    button.classList.add('justify-center')
-
-    button.click()
-
-    setTimeout(() => {
-      button.setAttribute('disabled', 'disabled')
-    }, 1)
+      setTimeout(() => {
+        button.setAttribute('disabled', 'disabled')
+      }, 1)
+    })
   }
 }
