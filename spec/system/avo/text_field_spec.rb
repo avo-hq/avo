@@ -32,12 +32,12 @@ RSpec.describe "TextField", type: :system do
         expect(page).to have_link person.name, href: "https://avohq.io"
       end
 
-      it "displays the the link to a route from the main app" do
+      it "displays the link to a route from the main app" do
         visit "/admin/resources/users/#{user.id}"
 
-        base_url = Capybara.current_session.current_url.gsub("admin/resources/users/#{user.id}", '')
+        base_url = Capybara.current_session.current_url.gsub("admin/resources/users/#{user.id}", "")
 
-        expect(page).to have_link 'hey', href: "#{base_url}hey"
+        expect(page).to have_link "hey", href: "#{base_url}hey"
       end
     end
 
