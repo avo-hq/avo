@@ -84,3 +84,5 @@ en:
       placeholder: 'Search'
       cancel_button: 'Cancel'
     sign_out: 'Sign out'
+    failed: 'Failed'
+    failed_to_load: 'Failed to load'
