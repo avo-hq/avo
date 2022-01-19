@@ -17,6 +17,7 @@
 @import './../stylesheets/breadcrumbs.css';
 @import './../stylesheets/search.css';
 @import './../stylesheets/active-storage.css';
+@import './../stylesheets/spinner.css';
 
 @import './../stylesheets/components/status.css';
 @import './../stylesheets/components/code.css';
