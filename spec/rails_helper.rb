@@ -40,7 +40,27 @@ Avo::App.boot
 
 # ActiveRecord::Migrator.migrate(File.join(Rails.root, 'db/migrate'))
 
-test_driver = ENV["HEADFULL"] ? :selenium_chrome : :selenium_chrome_headless
+Capybara.register_driver :chrome_headless do |app|
+  Capybara::Selenium::Driver.new app,
+  browser: :chrome,
+  clear_session_storage: true,
+  clear_local_storage: true,
+  capabilities: [Selenium::WebDriver::Chrome::Options.new(
+    args: %w[headless disable-gpu no-sandbox window-size=1024,768],
+    )]
+end
+
+Capybara.register_driver :chrome do |app|
+  Capybara::Selenium::Driver.new app,
+  browser: :chrome,
+  clear_session_storage: true,
+  clear_local_storage: true,
+  capabilities: [Selenium::WebDriver::Chrome::Options.new(
+    args: %w[disable-gpu no-sandbox window-size=1024,768],
+    )]
+end
+
+test_driver = ENV["HEADFULL"] ? :chrome : :chrome_headless
 
 require "support/controller_routes"
 
@@ -75,9 +95,11 @@ RSpec.configure do |config|
     # Stub license request for system tests.
     stub_request(:post, Avo::Licensing::HQ::ENDPOINT).to_return(status: 200, body: {}.to_json, headers: json_headers)
     ENV["RUN_WITH_NULL_LICENSE"] = "1"
+
     WebMock.disable_net_connect!(allow_localhost: true, allow: "chromedriver.storage.googleapis.com")
     example.run
-    WebMock.allow_net_connect!
+    # WebMock.allow_net_connect!
+    WebMock.allow_net_connect!(net_http_connect_on_start: true)
     WebMock.reset!
     ENV["RUN_WITH_NULL_LICENSE"] = "0"
   end
