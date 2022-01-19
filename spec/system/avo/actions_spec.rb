@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Actions', type: :system do
   let!(:user) { create :user }
-  let!(:project) { create :project }
+  let!(:person) { create :person }
 
   describe 'action visibility option' do
     context 'index' do
@@ -29,7 +29,7 @@ RSpec.describe 'Actions', type: :system do
   describe 'action button should be hidden if no actions present' do
     context 'index' do
       it 'does not see the actions button' do
-        visit '/admin/resources/projects'
+        visit '/admin/resources/people'
 
         expect(page).not_to have_button 'Actions'
       end
@@ -37,7 +37,7 @@ RSpec.describe 'Actions', type: :system do
 
     context 'show' do
       it 'does not see the actions button' do
-        visit "/admin/resources/projects/#{project.id}"
+        visit "/admin/resources/people/#{person.id}"
 
         expect(page).not_to have_button 'Actions'
       end

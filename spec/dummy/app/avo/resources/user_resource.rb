@@ -38,6 +38,10 @@ class UserResource < Avo::BaseResource
   field :custom_css, as: :code, theme: "dracula", language: "css", help: "This enables you to edit the user's custom styles.", height: "250px"
   field :team_id, as: :hidden, default: 0 # For testing purposes
 
+  field :outside_link, as: :text, only_on: [:show], format_using: ->(url) { link_to("hey", url, target: "_blank") } do |model, *args|
+    main_app.hey_url
+  end
+
   field :post, as: :has_one
   field :posts, as: :has_many
   field :projects, as: :has_and_belongs_to_many

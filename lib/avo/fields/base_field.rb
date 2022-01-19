@@ -3,7 +3,13 @@ module Avo
     class BaseField
       extend ActiveSupport::DescendantsTracker
       extend Avo::Fields::FieldExtensions::HasFieldName
+
+      include ActionView::Helpers::UrlHelper
       include Avo::Fields::FieldExtensions::VisibleInDifferentViews
+
+      delegate :view_context, to: 'Avo::App'
+      delegate :main_app, to: :view_context
+      delegate :avo, to: :view_context
 
       attr_reader :id
       attr_reader :block
@@ -121,11 +127,11 @@ module Avo
 
         # Run callback block if present
         if computable && block.present?
-          final_value = block.call @model, @resource, @view, self
+          final_value = instance_exec(@model, @resource, @view, self, &block)
         end
 
         # Run the value through resolver if present
-        final_value = @format_using.call final_value if @format_using.present?
+        final_value = instance_exec(final_value, &@format_using) if @format_using.present?
 
         final_value
       end
