@@ -10,6 +10,8 @@ Avo::Engine.routes.draw do
     post "/resources/:resource_name/:id/attachments/", to: "attachments#create"
   end
 
+  get "failed_to_load", to: "home#failed_to_load"
+
   scope "resources", as: "resources" do
     # Attachments
     get "/:resource_name/:id/active_storage_attachments/:attachment_name/:signed_attachment_id", to: "attachments#show"
