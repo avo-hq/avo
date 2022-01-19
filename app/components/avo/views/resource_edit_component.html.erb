@@ -11,7 +11,7 @@
             <% end %>
 
             <% if @resource.authorization.authorize_action :update, raise_exception: false %>
-              <%= a_button color: 'green', variant: 'outlined', type: :submit do %>
+              <%= a_button color: 'green', variant: 'outlined', spinner: true, type: :submit do %>
                 <%= helpers.svg 'save' %> <%= t('avo.save').capitalize %>
               <% end %>
             <% end %>

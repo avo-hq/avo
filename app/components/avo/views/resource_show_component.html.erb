@@ -27,6 +27,7 @@
             <% if @resource.authorization.authorize_action(:destroy, raise_exception: false) %>
               <%= form_with url: helpers.resource_path(@resource.model), method: :delete, html: { 'data-turbo-frame': params[:turbo_frame] } do |form| %>
                 <%= a_button title: t('avo.delete_item', item: @resource.model.model_name.name.downcase).capitalize,
+                  spinner: true,
                   color: 'red',
                   variant: 'outlined',
                   type: :submit,

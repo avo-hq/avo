@@ -93,7 +93,14 @@ jobs:
         NODE_ENV: production
 
     - name: Run tests
+      id: run_tests
       run: bundle exec rspec
+
+    - uses: actions/upload-artifact@v2
+      if: always() && steps.run_tests.outcome == 'failure'
+      with:
+        name: rspec_failed_screenshots
+        path: ./spec/dummy/tmp/screenshots
 
     - name: Generate coverage
       uses: codecov/codecov-action@v1
