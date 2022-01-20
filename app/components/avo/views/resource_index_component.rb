@@ -55,10 +55,6 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     @reflection.present? && klass.is_a?(::ActiveRecord::Reflection::HasManyReflection) && !has_reflection_and_is_read_only && authorize_association_for("attach")
   end
 
-  def can_detach?
-    @reflection.present? && @reflection.is_a?(::ActiveRecord::Reflection::HasOneReflection) && @models.present? && !has_reflection_and_is_read_only && authorize_association_for("detach")
-  end
-
   def has_reflection_and_is_read_only
     if @reflection.present? && @reflection.active_record.name && @reflection.name
       fields = ::Avo::App.get_resource_by_model_name(@reflection.active_record.name).get_field_definitions
@@ -85,18 +81,14 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
         path_args[:via_relation] = @reflection.inverse_of.name
       end
 
-      helpers.new_resource_path(@resource.model_class, **path_args)
+      helpers.new_resource_path(@resource.model_class, for_resource: @resource, **path_args)
     else
-      helpers.new_resource_path(@resource.model_class)
+      helpers.new_resource_path(@resource.model_class, for_resource: @resource)
     end
   end
 
   def attach_path
     "#{Avo::App.root_path}#{request.env["PATH_INFO"]}/new"
-  end
-
-  def detach_path
-    helpers.resource_detach_path(via_resource_name, via_resource_id, via_relation_param, @models.first.id)
   end
 
   def singular_resource_name

@@ -1,4 +1,4 @@
-<% url = resources_path(@resource.model_class, page: page, keep_query_params: true) %>
+<% url = resources_path(@resource.model_class, for_resource: @resource, page: page, keep_query_params: true) %>
 <% if page.current? %>
   <button type="button" class="hidden md:inline-flex -ml-px relative items-center px-4 py-2 border bg-gray-100 text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 z-10 outline-none border-primary-300 active:bg-gray-100 transition ease-in-out duration-150">
     <%= page %>

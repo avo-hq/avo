@@ -20,7 +20,7 @@ module Avo
       end
 
       def resource
-        target_resource
+        Avo::App.get_resource_by_model_name @model.class
       end
 
       def turbo_frame
@@ -28,7 +28,7 @@ module Avo
       end
 
       def frame_url
-        "#{Avo::App.root_path}/resources/#{@model.model_name.route_key}/#{@model.id}/#{id}/#{value.id}?turbo_frame=#{turbo_frame}"
+        "#{Avo::App.root_path}/resources/#{resource.model_class.model_name.route_key}/#{@model.id}/#{id}/#{value.id}?turbo_frame=#{turbo_frame}"
       end
 
       def target_resource

@@ -76,6 +76,9 @@ Capybara.register_driver :chrome do |app|
 end
 
 test_driver = ENV['HEADFULL'] ? :chrome : :chrome_headless
+require 'capybara/apparition'
+Capybara.javascript_driver = :apparition
+
 
 require 'support/controller_routes'
 

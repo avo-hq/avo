@@ -163,7 +163,7 @@ module Avo
       if model.instance_of?(Class)
         model
       else
-        model.class.base_class
+        model.class
       end
     end
 
@@ -171,9 +171,9 @@ module Avo
       model_class = get_model_class model_or_class
 
       if ActiveModel::Naming.uncountable? model_class
-        model_class.base_class.model_name.route_key.singularize.gsub('_index', '')
+        model_class.model_name.route_key.singularize.gsub('_index', '')
       else
-        model_class.base_class.model_name.route_key.singularize
+        model_class.model_name.route_key.singularize
       end
     end
   end

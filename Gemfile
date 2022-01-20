@@ -92,7 +92,9 @@ group :test do
   gem "rails-controller-testing"
   # Adds support for Capybara system testing and selenium driver
   gem "capybara", "3.36"
-  gem "selenium-webdriver"
+  # gem "selenium-webdriver"
+  gem 'apparition'
+
   # Easy installation and use of web drivers to run system tests with browsers
   gem "webdrivers"
   gem "fuubar"

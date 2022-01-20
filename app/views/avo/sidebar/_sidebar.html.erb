@@ -1,3 +1,4 @@
+<%#= Avo::App.resources_navigation(_current_user).map(&:model_class) %>
 <div class="application-sidebar flex h-full bg-white text-white w-56 z-50 border-r border-gray-300">
   <div class="flex flex-col w-full">
     <%= link_to root_path, class: 'logo-placeholder h-16 bg-white p-2 flex justify-center' do %>
@@ -12,7 +13,7 @@
 
         <div class="w-full">
           <% Avo::App.resources_navigation(_current_user).sort_by { |r| r.navigation_label }.each do |resource| %>
-            <%= render Avo::NavigationLinkComponent.new label: resource.navigation_label, path: resources_path(resource.model_class) %>
+            <%= render Avo::NavigationLinkComponent.new label: resource.model_class, path: resources_path(resource.model_class, for_resource: resource) %>
           <% end %>
 
           <% sidebar_partials = Avo::App.get_sidebar_partials %>
