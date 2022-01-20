@@ -1,0 +1,7 @@
+<% @results.each do |result| %>
+  <li class="autocomplete-item py-1 " role="option" data-autocomplete-value="<%= result[:value] %>" data-autocomplete-label="<%= result[:value] %>">
+    <%= result[:label] %>
+  </li>
+<% end %>
+
+

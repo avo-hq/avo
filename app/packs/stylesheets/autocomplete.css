@@ -1,0 +1,3 @@
+.autocomplete-item.active {
+  @apply bg-blue-600 text-white;
+}

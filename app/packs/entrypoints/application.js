@@ -5,6 +5,7 @@ import 'regenerator-runtime/runtime'
 import * as ActiveStorage from '@rails/activestorage'
 import * as Mousetrap from 'mousetrap'
 import { Application } from 'stimulus'
+import { Autocomplete } from './../js/controllers/stimulus-autocomplete'
 import { Turbo } from '@hotwired/turbo-rails'
 import { definitionsFromContext } from 'stimulus/webpack-helpers'
 import Rails from '@rails/ujs'
@@ -34,6 +35,8 @@ function initTippy() {
 window.initTippy = initTippy
 
 const application = Application.start()
+application.register('autocomplete', Autocomplete)
+
 ActiveStorage.start()
 
 const context = require.context('./../js/controllers', true, /\.js$/)

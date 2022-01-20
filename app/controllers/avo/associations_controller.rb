@@ -1,16 +1,17 @@
 require_dependency "avo/base_controller"
 
 module Avo
-  class RelationsController < BaseController
+  class AssociationsController < BaseController
     before_action :set_model, only: [:show, :index, :new, :create, :destroy]
-    before_action :set_related_resource_name
-    before_action :set_related_resource
-    before_action :hydrate_related_resource
+    before_action :set_related_resource_name, only: [:show, :index, :new, :create, :destroy]
+    before_action :set_related_resource, only: [:show, :index, :new, :create, :destroy]
+    before_action :hydrate_related_resource, only: [:show, :index, :new, :create, :destroy]
     before_action :set_related_model, only: [:show]
-    before_action :set_attachment_class
+    before_action :set_attachment_class, only: [:show, :index, :new, :create, :destroy]
     before_action :set_attachment_resource
     before_action :set_attachment_model, only: [:create, :destroy]
     before_action :set_reflection, only: [:index, :show]
+    layout false, only: [:search]
 
     def index
       @parent_resource = @resource.dup
@@ -67,6 +68,25 @@ module Avo
       respond_to do |format|
         format.html { redirect_to params[:referrer] || resource_path(@model), notice: t("avo.attachment_class_detached", attachment_class: @attachment_class) }
       end
+    end
+
+    def search
+      @model = @resource.model_class.find params[:id]
+      @resource.hydrate model: @model
+      # Try and find the appropiate field
+      @field = @resource.fields.find do |field|
+        # puts ['field->', field].inspect
+        field.id.to_s == params[:related_name]
+      end
+
+      @field.hydrate model: @model
+
+      @results = @field.options
+
+      # abort [@resource, @field, @field.options].inspect
+      # render json: {
+      #   hey: params[:q]
+      # }
     end
 
     private

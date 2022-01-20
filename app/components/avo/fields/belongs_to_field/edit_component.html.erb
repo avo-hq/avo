@@ -15,8 +15,7 @@
       <%
         # If the select field is disabled, no value will be sent. It's how HTML works.
         # Thus the extra hidden field to actually send the related id to the server.
-        if disabled
-      %>
+        if disabled %>
         <%= @form.hidden_field "#{@field.foreign_key}_type" %>
       <% end %>
     <% end %>
@@ -27,19 +26,18 @@
       >
         <%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal, label: type.to_s.underscore.humanize do %>
           <%= @form.select "#{@field.foreign_key}_id", @field.values_for_type(type),
-            {
-              include_blank: @field.placeholder,
-            },
-            {
-              class: helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)),
-              disabled: disabled
-            }
-            %>
+          {
+            include_blank: @field.placeholder,
+          },
+          {
+            class: helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)),
+            disabled: disabled
+          }
+        %>
           <%
-            # If the select field is disabled, no value will be sent. It's how HTML works.
-            # Thus the extra hidden field to actually send the related id to the server.
-            if disabled
-          %>
+          # If the select field is disabled, no value will be sent. It's how HTML works.
+          # Thus the extra hidden field to actually send the related id to the server.
+          if disabled %>
             <%= @form.hidden_field "#{@field.foreign_key}_id" %>
           <% end %>
         <% end %>
@@ -48,21 +46,44 @@
   </div>
 <% else %>
   <%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal do %>
-    <%= @form.select @field.foreign_key, @field.options.map { |o| [o[:label], o[:value]] },
-      {
-        include_blank: @field.placeholder,
-      },
-      {
-        class: helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)),
-        disabled: disabled
-      }
-      %>
-    <%
-      # If the select field is disabled, no value will be sent. It's how HTML works.
-      # Thus the extra hidden field to actually send the related id to the server.
-      if disabled
-    %>
-      <%= @form.hidden_field @field.foreign_key %>
+    <% if @field.autocomplete %>
+      <div class="relative w-full"
+        data-controller="autocomplete"
+        data-autocomplete-url-value="/admin/resources/posts/25/search/user"
+        autocomplete="off"
+      >
+        <input type="text"
+          data-autocomplete-target="input"
+          class="<%= helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)) %>"
+          autocomplete="off"
+          allow-1password="no"
+          data-autocomplete="off"
+        />
+        <input type="hidden"
+          name="bird_id"
+          data-acmp-target="hidden"
+          autocomplete="off"
+        />
+        <ul class="absolute w-full bg-white border rounded-xl overflow-auto h-40 space-y-1"
+          data-autocomplete-target="results"
+        ></ul>
+      </div>
+    <% else %>
+      <%= @form.select @field.foreign_key, @field.options.map { |o| [o[:label], o[:value]] },
+        {
+          include_blank: @field.placeholder,
+        },
+        {
+          class: helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)),
+          disabled: disabled
+        }
+        %>
+      <%
+        # If the select field is disabled, no value will be sent. It's how HTML works.
+        # Thus the extra hidden field to actually send the related id to the server.
+        if disabled %>
+        <%= @form.hidden_field @field.foreign_key %>
+      <% end %>
     <% end %>
   <% end %>
 <% end %>
