@@ -12,7 +12,7 @@ module Avo
           existing_params =
             Addressable::URI.parse(request.fullpath).query_values.symbolize_keys
         end
-      rescue StandardError
+      rescue
       end
       avo.send :"resources_#{class_name}_path", **existing_params, **args
     end
@@ -32,7 +32,7 @@ module Avo
           existing_params =
             Addressable::URI.parse(request.fullpath).query_values.symbolize_keys
         end
-      rescue e
+      rescue
       end
 
       avo.resources_associations_index_path(@parent_resource.model_class.model_name.route_key, @parent_resource.model.id, **existing_params, **args )
@@ -45,8 +45,7 @@ module Avo
       keep_query_params: false,
       **args
     )
-    class_name = singular_resource_name(model, for_resource)
-    # puts ['model, for_resource->', model, for_resource].inspect
+      class_name = singular_resource_name(model, for_resource)
 
       if resource_id.present?
         return avo.send :"resources_#{class_name}_path", resource_id, **args
@@ -70,7 +69,7 @@ module Avo
     def resource_attach_path(resource, model_id, related_name, related_id = nil)
       class_name = helpers.singular_resource_name(nil, resource)
 
-    helpers.avo.resources_associations_new_path(class_name, model_id, related_name)
+      helpers.avo.resources_associations_new_path(class_name, model_id, related_name)
     end
 
     def resource_detach_path(

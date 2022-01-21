@@ -425,9 +425,5 @@ module Avo
     def form_scope
       model.class.base_class.to_s.downcase
     end
-
-    def record_path
-      main_app.resource_path
-    end
   end
 end
