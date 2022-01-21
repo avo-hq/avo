@@ -4,7 +4,7 @@ class ProjectResource < Avo::BaseResource
     scope.ransack(id_eq: params[:q], name_cont: params[:q], country_cont: params[:q], m: "or").result(distinct: false)
   end
   self.includes = :users
-  # self.unscoped_queries_on_index = true
+  self.unscoped_queries_on_index = true
 
   field :id, as: :id, link_to_resource: true
   field :name, as: :text, required: true, as_label: true, sortable: true
