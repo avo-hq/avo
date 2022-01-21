@@ -24,17 +24,17 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
 
   def show_path
     if @parent_model.present?
-      helpers.resource_path(@resource.model, via_resource_class: @parent_model.class.base_class, via_resource_id: @parent_model.id)
+      helpers.resource_path(@resource.model, for_resource: @resource, via_resource_class: parent_resource.model_class, via_resource_id: @parent_model.id)
     else
-      helpers.resource_path(@resource.model)
+      helpers.resource_path(@resource.model, for_resource: @resource)
     end
   end
 
   def edit_path
     if @parent_model.present?
-      helpers.edit_resource_path(@resource.model, via_resource_class: @parent_model.class.base_class, via_resource_id: @parent_model.id)
+      helpers.edit_resource_path(@resource.model, for_resource: @resource, via_resource_class: parent_resource.model_class, via_resource_id: @parent_model.id)
     else
-      helpers.edit_resource_path(@resource.model)
+      helpers.edit_resource_path(@resource.model, for_resource: @resource)
     end
   end
 
@@ -44,5 +44,11 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     else
       @resource.singular_name.present? ? @resource.singular_name : @resource.model_class.model_name.name.downcase
     end
+  end
+
+  def parent_resource
+    return nil if @parent_model.blank?
+
+    ::Avo::App.get_resource_by_model_name @parent_model.class
   end
 end

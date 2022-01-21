@@ -3,6 +3,7 @@ module Avo
     include Pundit
     include Pagy::Backend
     include Avo::ApplicationHelper
+    include Avo::UrlHelpers
 
     protect_from_forgery with: :exception
     before_action :init_app
@@ -15,7 +16,7 @@ module Avo
     rescue_from Pundit::NotAuthorizedError, with: :render_unauthorized
     rescue_from ActiveRecord::RecordInvalid, with: :exception_logger
 
-    helper_method :_current_user, :resources_path, :resource_path, :new_resource_path, :edit_resource_path, :resource_attach_path, :resource_detach_path, :related_resources_path
+    helper_method :_current_user, :resources_path, :resource_path, :new_resource_path, :edit_resource_path, :resource_attach_path, :resource_detach_path, :related_resources_path, :singular_resource_name, :plural_resource_name
     add_flash_types :info, :warning, :success, :error
 
     def init_app
@@ -68,66 +69,6 @@ module Avo
 
     def context
       instance_eval(&Avo.configuration.context)
-    end
-
-    def resources_path(model, keep_query_params: false, **args)
-      return if model.nil?
-
-      model_class = get_model_class model
-
-      existing_params = {}
-
-      begin
-        if keep_query_params
-          existing_params = Addressable::URI.parse(request.fullpath).query_values.symbolize_keys
-        end
-      rescue; end
-      avo.send :"resources_#{model_class.base_class.model_name.route_key}_path", **existing_params, **args
-    end
-
-    def related_resources_path(parent_model, model, keep_query_params: false, **args)
-      return if model.nil?
-
-      existing_params = {}
-
-      begin
-        if keep_query_params
-          existing_params = Addressable::URI.parse(request.fullpath).query_values.symbolize_keys
-        end
-      rescue; end
-      Addressable::Template.new("#{Avo::App.root_path}/resources/#{@parent_resource.model.model_name.route_key}/#{@parent_resource.model.id}/#{@resource.route_key}{?query*}")
-        .expand({query: {**existing_params, **args}})
-        .to_str
-    end
-
-    def resource_path(model = nil, resource_id: nil, keep_query_params: false, **args)
-      return avo.send :"resources_#{singular_name(model)}_path", resource_id, **args if resource_id.present?
-
-      avo.send :"resources_#{singular_name(model)}_path", model, **args
-    end
-
-    def resource_attach_path(model_name, model_id, related_name, related_id = nil)
-      path = "#{Avo::App.root_path}/resources/#{model_name}/#{model_id}/#{related_name}/new"
-
-      path += "/#{related_id}" if related_id.present?
-
-      path
-    end
-
-    def resource_detach_path(model_name, model_id, related_name, related_id = nil)
-      path = "#{Avo::App.root_path}/resources/#{model_name}/#{model_id}/#{related_name}"
-
-      path += "/#{related_id}" if related_id.present?
-
-      path
-    end
-
-    def new_resource_path(model, **args)
-      avo.send :"new_resources_#{singular_name(model)}_path", **args
-    end
-
-    def edit_resource_path(model, **args)
-      avo.send :"edit_resources_#{singular_name(model)}_path", model.id, **args
     end
 
     private

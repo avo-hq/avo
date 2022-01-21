@@ -21,7 +21,6 @@ RSpec.feature "HasManyField", type: :feature do
         click_on "Create new post"
 
         expect(page).to have_current_path "/admin/resources/posts/new?via_relation=user&via_relation_class=User&via_resource_id=#{user.id}"
-
         expect(page).to have_select "post_user_id", selected: user.name, disabled: true
 
         fill_in "post_name", with: "New post name"

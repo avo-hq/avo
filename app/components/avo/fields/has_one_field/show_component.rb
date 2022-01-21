@@ -17,4 +17,10 @@ class Avo::Fields::HasOneField::ShowComponent < Avo::Fields::ShowComponent
     end
     attach_policy
   end
+
+  def attach_path
+    class_name = helpers.singular_resource_name(nil, @resource)
+
+    helpers.avo.resources_associations_new_path(class_name, @resource.model.id, @field.id)
+  end
 end

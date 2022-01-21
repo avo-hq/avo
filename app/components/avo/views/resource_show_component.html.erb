@@ -2,8 +2,8 @@
   data-selected-resources-name="<%= @resource.model.model_name.route_key %>"
   data-selected-resources='["<%= @resource.model.id %>"]'
 >
-  <% @resource.panels.each do |resource_panel| %>
-    <%= render Avo::PanelComponent.new(title: resource_panel[:name], display_breadcrumbs: @reflection.blank?) do |c| %>
+  <% @resource.panels.each_with_index do |resource_panel, index| %>
+    <%= render Avo::PanelComponent.new(title: resource_panel[:name], display_breadcrumbs: @reflection.blank?, index: index) do |c| %>
       <% c.tools do %>
         <% if resource_panel[:name] == @resource.default_panel_name %>
           <%= render 'actions' %>
@@ -25,7 +25,7 @@
             <% end %>
 
             <% if @resource.authorization.authorize_action(:destroy, raise_exception: false) %>
-              <%= form_with url: helpers.resource_path(@resource.model), method: :delete, html: { 'data-turbo-frame': params[:turbo_frame] } do |form| %>
+              <%= form_with url: helpers.resource_path(@resource.model, for_resource: @resource), method: :delete, html: { 'data-turbo-frame': params[:turbo_frame] } do |form| %>
                 <%= a_button title: t('avo.delete_item', item: @resource.model.model_name.name.downcase).capitalize,
                   spinner: true,
                   color: 'red',

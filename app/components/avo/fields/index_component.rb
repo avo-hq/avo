@@ -12,9 +12,9 @@ class Avo::Fields::IndexComponent < ViewComponent::Base
 
   def resource_path
     if @parent_model.present?
-      helpers.resource_path(@resource.model, via_resource_class: @parent_model.class, via_resource_id: @parent_model.id)
+      helpers.resource_path(@resource.model, for_resource: @resource, via_resource_class: @parent_model.class, via_resource_id: @parent_model.id)
     else
-      helpers.resource_path(@resource.model)
+      helpers.resource_path(@resource.model, for_resource: @resource)
     end
   end
 end

@@ -15,17 +15,17 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
 
   def back_path
     if via_resource?
-      helpers.resource_path(params[:via_resource_class].safe_constantize, resource_id: params[:via_resource_id])
+      helpers.resource_path(params[:via_resource_class].safe_constantize, for_resource: relation_resource, resource_id: params[:via_resource_id])
     else
-      helpers.resources_path(@resource.model)
+      helpers.resources_path(@resource.model, for_resource: @resource)
     end
   end
 
   def edit_path
     if via_resource?
-      helpers.edit_resource_path(@resource.model, via_resource_class: params[:via_resource_class], via_resource_id: params[:via_resource_id])
+      helpers.edit_resource_path(@resource.model, for_resource: @resource, via_resource_class: params[:via_resource_class], via_resource_id: params[:via_resource_id])
     else
-      helpers.edit_resource_path(@resource.model)
+      helpers.edit_resource_path(@resource.model, for_resource: @resource)
     end
   end
 
@@ -34,7 +34,7 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
   end
 
   def destroy_path
-    helpers.resource_path(@resource.model)
+    helpers.resource_path(@resource.model, for_resource: @resource)
   end
 
   def can_detach?

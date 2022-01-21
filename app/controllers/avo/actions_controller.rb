@@ -67,7 +67,7 @@ module Avo
 
             redirect_to path, "#{response[:message_type]}": response[:message]
           elsif response[:type] == :reload
-            redirect_back fallback_location: resources_path(@resource.model_class), "#{response[:message_type]}": response[:message]
+            redirect_back fallback_location: resources_path(@resource.model_class, for_resource: @resource), "#{response[:message_type]}": response[:message]
           end
         end
       end

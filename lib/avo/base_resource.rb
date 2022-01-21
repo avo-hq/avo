@@ -4,6 +4,12 @@ module Avo
     extend FieldsCollector
     extend HasContext
 
+    include ActionView::Helpers::UrlHelper
+
+    delegate :view_context, to: 'Avo::App'
+    delegate :main_app, to: :view_context
+    delegate :avo, to: :view_context
+
     attr_accessor :view
     attr_accessor :model
     attr_accessor :user
@@ -74,7 +80,9 @@ module Avo
     end
 
     def initialize
-      self.class.model_class = model_class.base_class
+      unless self.class.model_class.present?
+        self.class.model_class = model_class.base_class
+      end
     end
 
     def hydrate(model: nil, view: nil, user: nil, params: nil)

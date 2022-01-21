@@ -72,10 +72,10 @@ module Avo
         via_model = via_resource.class.find_scope.find params[:via_resource_id]
         via_resource.hydrate model: via_model
 
-        add_breadcrumb via_resource.plural_name, resources_path(via_resource.model_class)
-        add_breadcrumb via_resource.model_title, resource_path(via_model)
+        add_breadcrumb via_resource.plural_name, resources_path(via_resource.model_class, for_resource: via_resource)
+        add_breadcrumb via_resource.model_title, resource_path(via_model, for_resource: via_resource)
       else
-        add_breadcrumb resource_name.humanize, resources_path(@resource.model_class)
+        add_breadcrumb resource_name.humanize, resources_path(@resource.model_class, for_resource: @resource)
       end
 
       add_breadcrumb @resource.model_title
@@ -87,7 +87,7 @@ module Avo
       @resource = @resource.hydrate(model: @model, view: :new, user: _current_user)
 
       @page_title = @resource.default_panel_name
-      add_breadcrumb resource_name.humanize, resources_path(@resource.model_class)
+      add_breadcrumb resource_name.humanize, resources_path(@resource.model_class, for_resource: @resource)
       add_breadcrumb t("avo.new").humanize
     end
 
@@ -103,13 +103,13 @@ module Avo
         via_model = via_resource.class.find_scope.find params[:via_resource_id]
         via_resource.hydrate model: via_model
 
-        add_breadcrumb via_resource.plural_name, resources_path(via_resource.model_class)
-        add_breadcrumb via_resource.model_title, resource_path(via_model)
+        add_breadcrumb via_resource.plural_name, resources_path(via_resource.model_class, for_resource: @resource)
+        add_breadcrumb via_resource.model_title, resource_path(via_model, for_resource: via_resource)
       else
-        add_breadcrumb resource_name.humanize, resources_path(@resource.model_class)
+        add_breadcrumb resource_name.humanize, resources_path(@resource.model_class, for_resource: @resource)
       end
 
-      add_breadcrumb @resource.model_title, resource_path(@resource.model)
+      add_breadcrumb @resource.model_title, resource_path(@resource.model, for_resource: @resource)
       add_breadcrumb t("avo.edit").humanize
     end
 
@@ -121,9 +121,10 @@ module Avo
       respond_to do |format|
         if saved
           redirect_path = if params[:via_relation_class].present? && params[:via_resource_id].present?
-            resource_path(params[:via_relation_class].safe_constantize, resource_id: params[:via_resource_id])
+            parent_resource = ::Avo::App.get_resource_by_model_name params[:via_relation_class].safe_constantize
+            resource_path(params[:via_relation_class].safe_constantize, for_resource: parent_resource, resource_id: params[:via_resource_id])
           else
-            resource_path(@model)
+            resource_path(@model, for_resource: @resource)
           end
 
           format.html { redirect_to redirect_path, notice: "#{@model.class.name} was successfully created." }
@@ -143,7 +144,7 @@ module Avo
 
       respond_to do |format|
         if saved
-          format.html { redirect_to params[:referrer] || resource_path(@model), notice: "#{@model.class.name} was successfully updated." }
+          format.html { redirect_to params[:referrer] || resource_path(@model, for_resource: @resource), notice: "#{@model.class.name} was successfully updated." }
           format.json { render :show, status: :ok, location: @model }
         else
           flash[:error] = t "avo.you_missed_something_check_form"
@@ -157,7 +158,7 @@ module Avo
       @model.destroy!
 
       respond_to do |format|
-        format.html { redirect_to params[:referrer] || resources_path(@model, turbo_frame: params[:turbo_frame], view_type: params[:view_type]), notice: t("avo.resource_destroyed", attachment_class: @attachment_class) }
+        format.html { redirect_to params[:referrer] || resources_path(@model, for_resource: @resource, turbo_frame: params[:turbo_frame], view_type: params[:view_type]), notice: t("avo.resource_destroyed", attachment_class: @attachment_class) }
         format.json { head :no_content }
       end
     end

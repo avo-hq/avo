@@ -26,10 +26,10 @@ Avo::Engine.routes.draw do
     instance_eval(&Avo::App.draw_routes)
 
     # Relations
-    get "/:resource_name/:id/:related_name/new", to: "relations#new"
-    get "/:resource_name/:id/:related_name/", to: "relations#index"
-    get "/:resource_name/:id/:related_name/:related_id", to: "relations#show"
-    post "/:resource_name/:id/:related_name", to: "relations#create"
-    delete "/:resource_name/:id/:related_name/:related_id", to: "relations#destroy"
+    get "/:resource_name/:id/:related_name/new", to: "relations#new", as: "associations_new"
+    get "/:resource_name/:id/:related_name/", to: "relations#index", as: "associations_index"
+    get "/:resource_name/:id/:related_name/:related_id", to: "relations#show", as: "associations_show"
+    post "/:resource_name/:id/:related_name", to: "relations#create", as: "associations_create"
+    delete "/:resource_name/:id/:related_name/:related_id", to: "relations#destroy", as: "associations_destroy"
   end
 end

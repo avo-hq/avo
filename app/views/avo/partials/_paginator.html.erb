@@ -29,9 +29,9 @@
 
           <% per_page_options.each do |option| %>
             <% if @parent_resource.present? %>
-              <%= link_to "Change to #{option} items per page", related_resources_path(@parent_resource.model, @resource.model_class, per_page: option, keep_query_params: true), class: 'hidden', 'data-per-page-option': option, 'data-turbo-frame': turbo_frame %>
+              <%= link_to "Change to #{option} items per page", related_resources_path(@parent_resource.model_class, @resource.model_class, per_page: option, keep_query_params: true), class: 'hidden', 'data-per-page-option': option, 'data-turbo-frame': turbo_frame %>
             <% else %>
-              <%= link_to "Change to #{option} items per page", resources_path(@resource.model_class, per_page: option, keep_query_params: true), class: 'hidden', 'data-per-page-option': option, 'data-turbo-frame': turbo_frame %>
+              <%= link_to "Change to #{option} items per page", resources_path(@resource.model_class, for_resource: @resource, per_page: option, keep_query_params: true), class: 'hidden', 'data-per-page-option': option, 'data-turbo-frame': turbo_frame %>
             <% end %>
           <% end %>
         </div>

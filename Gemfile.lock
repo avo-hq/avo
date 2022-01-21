@@ -227,8 +227,6 @@ GEM
     nokogiri (1.13.1)
       mini_portile2 (~> 2.7.0)
       racc (~> 1.4)
-    nokogiri (1.13.1-x86_64-linux)
-      racc (~> 1.4)
     orm_adapter (0.5.0)
     pagy (5.7.3)
     parallel (1.21.0)
