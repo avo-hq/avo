@@ -2,8 +2,8 @@
   data-selected-resources-name="<%= @resource.model.model_name.route_key %>"
   data-selected-resources='["<%= @resource.model.id %>"]'
 >
-  <% @resource.panels.each do |resource_panel| %>
-    <%= render Avo::PanelComponent.new(title: resource_panel[:name], display_breadcrumbs: @reflection.blank?) do |c| %>
+  <% @resource.panels.each_with_index do |resource_panel, index| %>
+    <%= render Avo::PanelComponent.new(title: resource_panel[:name], display_breadcrumbs: @reflection.blank?, index: index) do |c| %>
       <% c.tools do %>
         <% if resource_panel[:name] == @resource.default_panel_name %>
           <%= render 'actions' %>

@@ -121,7 +121,8 @@ module Avo
       respond_to do |format|
         if saved
           redirect_path = if params[:via_relation_class].present? && params[:via_resource_id].present?
-            resource_path(params[:via_relation_class].safe_constantize, for_resource: @resource, resource_id: params[:via_resource_id])
+            parent_resource = ::Avo::App.get_resource_by_model_name params[:via_relation_class].safe_constantize
+            resource_path(params[:via_relation_class].safe_constantize, for_resource: parent_resource, resource_id: params[:via_resource_id])
           else
             resource_path(@model, for_resource: @resource)
           end

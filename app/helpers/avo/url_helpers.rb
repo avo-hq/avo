@@ -1,5 +1,5 @@
 module Avo
-  module UrlHelper
+  module UrlHelpers
     def resources_path(model, for_resource:, keep_query_params: false, **args)
       return if model.nil?
 
@@ -45,7 +45,8 @@ module Avo
       keep_query_params: false,
       **args
     )
-      class_name = singular_resource_name(model, for_resource)
+    class_name = singular_resource_name(model, for_resource)
+    # puts ['model, for_resource->', model, for_resource].inspect
 
       if resource_id.present?
         return avo.send :"resources_#{class_name}_path", resource_id, **args
@@ -63,13 +64,13 @@ module Avo
     def edit_resource_path(model, for_resource:, **args)
       class_name = singular_resource_name(model, for_resource)
 
-      avo.send :"edit_resources_#{class_name}_path", model.id, **args
+      avo.send :"edit_resources_#{class_name}_path", model, **args
     end
 
     def resource_attach_path(resource, model_id, related_name, related_id = nil)
-      class_name = singular_resource_name(nil, resource)
+      class_name = helpers.singular_resource_name(nil, resource)
 
-      avo.resources_associations_attach_path(class_name, model_id, related_name, related_id)
+    helpers.avo.resources_associations_new_path(class_name, model_id, related_name)
     end
 
     def resource_detach_path(
@@ -78,7 +79,7 @@ module Avo
       related_name, # admin
       related_id = nil
     )
-      avo.resources_associations_detach_path(model_name, model_id, related_name, related_id)
+      avo.resources_associations_destroy_path(model_name, model_id, related_name, related_id)
     end
 
     private

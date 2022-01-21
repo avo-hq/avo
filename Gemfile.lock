@@ -84,9 +84,6 @@ GEM
       zeitwerk (~> 2.3)
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
-    apparition (0.6.0)
-      capybara (~> 3.13, < 4)
-      websocket-driver (>= 0.6.5)
     appraisal (2.4.1)
       bundler
       rake
@@ -416,7 +413,6 @@ PLATFORMS
 DEPENDENCIES
   active_link_to
   addressable
-  apparition
   appraisal
   avo!
   aws-sdk-s3
@@ -453,6 +449,7 @@ DEPENDENCIES
   rspec-rails (~> 4.0.0)
   ruby-debug-ide
   sass-rails (>= 6)
+  selenium-webdriver
   simplecov
   simplecov-cobertura
   spring

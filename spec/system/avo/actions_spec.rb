@@ -19,7 +19,9 @@ RSpec.describe 'Actions', type: :system do
       it 'does not find an action on show' do
         visit "/admin/resources/users/#{user.id}"
 
-        click_on 'Actions'
+        within "[data-panel-index=\"0\"]" do
+          click_on 'Actions'
+        end
 
         expect(page).not_to have_link 'Dummy action'
       end

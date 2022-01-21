@@ -30,6 +30,6 @@ Avo::Engine.routes.draw do
     get "/:resource_name/:id/:related_name/", to: "relations#index", as: "associations_index"
     get "/:resource_name/:id/:related_name/:related_id", to: "relations#show", as: "associations_show"
     post "/:resource_name/:id/:related_name", to: "relations#create", as: "associations_create"
-    delete "/:resource_name/:id/:related_name/:related_id", to: "relations#destroy", as: "associations_detach"
+    delete "/:resource_name/:id/:related_name/:related_id", to: "relations#destroy", as: "associations_destroy"
   end
 end
