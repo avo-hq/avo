@@ -41,7 +41,7 @@ class ProjectPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      scope.none
+      scope.all
     end
   end
 end
