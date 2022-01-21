@@ -48,8 +48,10 @@ module Avo
             end
 
             true
-          rescue Pundit::NotDefinedError
-            false
+          rescue Pundit::NotDefinedError => e
+            return false unless Avo.configuration.raise_error_on_missing_policy
+
+            raise e
           rescue => error
             if args[:raise_exception] == false
               false
@@ -73,8 +75,10 @@ module Avo
 
           begin
             Pundit.policy_scope! user, model
-          rescue
-            model
+          rescue Pundit::NotDefinedError => e
+            return model unless Avo.configuration.raise_error_on_missing_policy
+
+            raise e
           end
         end
 
