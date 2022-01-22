@@ -23,19 +23,29 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   end
 
   def show_path
+    args = {}
+
     if @parent_model.present?
-      helpers.resource_path(@resource.model, for_resource: @resource, via_resource_class: parent_resource.model_class, via_resource_id: @parent_model.id)
-    else
-      helpers.resource_path(@resource.model, for_resource: @resource)
+      args = {
+        via_resource_class: parent_resource.model_class,
+        via_resource_id: @parent_model.id
+      }
     end
+
+    helpers.resource_path(model: @resource.model, resource: @resource, **args)
   end
 
   def edit_path
+    args = {}
+
     if @parent_model.present?
-      helpers.edit_resource_path(@resource.model, for_resource: @resource, via_resource_class: parent_resource.model_class, via_resource_id: @parent_model.id)
-    else
-      helpers.edit_resource_path(@resource.model, for_resource: @resource)
+      args = {
+        via_resource_class: parent_resource.model_class,
+        via_resource_id: @parent_model.id
+      }
     end
+
+    helpers.edit_resource_path(model: @resource.model, resource: @resource, **args)
   end
 
   def singular_resource_name

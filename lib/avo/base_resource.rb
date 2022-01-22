@@ -9,6 +9,8 @@ module Avo
     delegate :view_context, to: 'Avo::App'
     delegate :main_app, to: :view_context
     delegate :avo, to: :view_context
+    delegate :resource_path, to: :view_context
+    delegate :resources_path, to: :view_context
 
     attr_accessor :view
     attr_accessor :model
@@ -264,10 +266,6 @@ module Avo
       view_types
     end
 
-    def route_key
-      model_class.model_name.route_key
-    end
-
     def context
       self.class.context
     end
@@ -366,8 +364,28 @@ module Avo
       end
     end
 
-    def avo_path
-      "#{Avo::App.root_path}/resources/#{model_class.model_name.route_key}/#{model.id}"
+    def route_key
+      model_class.model_name.route_key
+    end
+
+    # This is used as the model class ID
+    # We use this instead of the route_key to maintain compatibility with uncountable models
+    # With uncountable models route key appends an _index suffix (Fish->fish_index)
+    # Example: User->users, MediaItem->medie_items, Fish->fish
+    def model_key
+      model_class.model_name.plural
+    end
+
+    def singular_model_key
+      model_class.model_name.singular
+    end
+
+    def record_path
+      resource_path(model: model, resource: self)
+    end
+
+    def records_path
+      resources_path(resource: self)
     end
 
     def label_field

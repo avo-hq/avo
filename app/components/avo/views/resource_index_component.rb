@@ -71,20 +71,20 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def create_path
+    args = {}
+
     if @reflection.present?
-      path_args = {
+      args = {
         via_relation_class: @parent_model.model_name,
         via_resource_id: @parent_model.id
       }
 
       if @reflection.inverse_of.present?
-        path_args[:via_relation] = @reflection.inverse_of.name
+        args[:via_relation] = @reflection.inverse_of.name
       end
-
-      helpers.new_resource_path(@resource.model_class, for_resource: @resource, **path_args)
-    else
-      helpers.new_resource_path(@resource.model_class, for_resource: @resource)
     end
+
+    helpers.new_resource_path(model: @resource.model_class, resource: @resource, **args)
   end
 
   def attach_path
@@ -95,7 +95,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     if @reflection.present?
       ::Avo::App.get_resource_by_model_name(@reflection.class_name).name
     else
-      @resource.singular_name.present? ? @resource.singular_name : @resource.model_class.model_name.name.downcase
+      @resource.singular_name || @resource.model_class.model_name.name.downcase
     end
   end
 

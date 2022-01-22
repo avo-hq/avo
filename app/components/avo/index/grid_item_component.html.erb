@@ -7,17 +7,17 @@
     <% if cover.blank? %>
       <%= render Avo::Index::GridCoverEmptyStateComponent.new %>
     <% elsif cover.respond_to?(:to_image) && cover.to_image.present? %>
-      <%= link_to_if cover.link_to_resource, image_tag(cover.to_image, class: 'absolute h-full w-full object-cover'), helpers.resource_path(@resource.model, for_resource: @resource), class: 'absolute h-full w-full object-cover', title: title.value %>
+      <%= link_to_if cover.link_to_resource, image_tag(cover.to_image, class: 'absolute h-full w-full object-cover'), helpers.resource_path(model: @resource.model, resource: @resource), class: 'absolute h-full w-full object-cover', title: title.value %>
     <% elsif cover.type == 'file' %>
       <% if cover.value.attached? && cover.value.representable? %>
-        <%= link_to_if cover.link_to_resource, image_tag(helpers.main_app.url_for(cover.value.variant(resize_to_limit: [480, 480])), class: 'absolute h-full w-full object-cover'), helpers.resource_path(@resource.model, for_resource: @resource), class: 'absolute h-full w-full object-cover', title: title.value %>
+        <%= link_to_if cover.link_to_resource, image_tag(helpers.main_app.url_for(cover.value.variant(resize_to_limit: [480, 480])), class: 'absolute h-full w-full object-cover'), helpers.resource_path(model: @resource.model, resource: @resource), class: 'absolute h-full w-full object-cover', title: title.value %>
       <% else %>
         <div class="absolute bg-gray-100 w-full h-full">
           <%= helpers.svg 'avocado', class: 'relative transform -translate-x-1/2 -translate-y-1/2 h-20 text-gray-400 inset-auto top-1/2 left-1/2' %>
         </div>
       <% end %>
     <% elsif cover.value.present? %>
-      <%= link_to_if cover.link_to_resource, image_tag(cover.value, class: 'absolute h-full w-full object-cover'), helpers.resource_path(@resource.model, for_resource: @resource), class: 'absolute h-full w-full object-cover', title: title.value %>
+      <%= link_to_if cover.link_to_resource, image_tag(cover.value, class: 'absolute h-full w-full object-cover'), helpers.resource_path(model: @resource.model, resource: @resource), class: 'absolute h-full w-full object-cover', title: title.value %>
     <% else %>
       <%= render Avo::Index::GridCoverEmptyStateComponent.new %>
     <% end %>
@@ -25,7 +25,7 @@
   <div class="grid grid-cols-1 place-content-between p-4 h-full">
     <div class="mb-4">
       <div class="grid font-semibold leading-tight text-lg mb-2">
-        <%= link_to_if title.link_to_resource, title.value, helpers.resource_path(@resource.model, for_resource: @resource) if title.present? %>
+        <%= link_to_if title.link_to_resource, title.value, helpers.resource_path(model: @resource.model, resource: @resource) if title.present? %>
       </div>
       <div class="text-sm break-words">
         <%= body.value if body.present? %>

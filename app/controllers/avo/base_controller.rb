@@ -72,10 +72,10 @@ module Avo
         via_model = via_resource.class.find_scope.find params[:via_resource_id]
         via_resource.hydrate model: via_model
 
-        add_breadcrumb via_resource.plural_name, resources_path(via_resource.model_class, for_resource: via_resource)
-        add_breadcrumb via_resource.model_title, resource_path(via_model, for_resource: via_resource)
+        add_breadcrumb via_resource.plural_name, resources_path(resource: via_resource)
+        add_breadcrumb via_resource.model_title, resource_path(model: via_model, resource: via_resource)
       else
-        add_breadcrumb resource_name.humanize, resources_path(@resource.model_class, for_resource: @resource)
+        add_breadcrumb resource_name.humanize, resources_path(resource: @resource)
       end
 
       add_breadcrumb @resource.model_title
@@ -87,7 +87,7 @@ module Avo
       @resource = @resource.hydrate(model: @model, view: :new, user: _current_user)
 
       @page_title = @resource.default_panel_name
-      add_breadcrumb resource_name.humanize, resources_path(@resource.model_class, for_resource: @resource)
+      add_breadcrumb resource_name.humanize, resources_path(resource: @resource)
       add_breadcrumb t("avo.new").humanize
     end
 
@@ -103,13 +103,13 @@ module Avo
         via_model = via_resource.class.find_scope.find params[:via_resource_id]
         via_resource.hydrate model: via_model
 
-        add_breadcrumb via_resource.plural_name, resources_path(via_resource.model_class, for_resource: @resource)
-        add_breadcrumb via_resource.model_title, resource_path(via_model, for_resource: via_resource)
+        add_breadcrumb via_resource.plural_name, resources_path(resource: @resource)
+        add_breadcrumb via_resource.model_title, resource_path(model: via_model, resource: via_resource)
       else
-        add_breadcrumb resource_name.humanize, resources_path(@resource.model_class, for_resource: @resource)
+        add_breadcrumb resource_name.humanize, resources_path(resource: @resource)
       end
 
-      add_breadcrumb @resource.model_title, resource_path(@resource.model, for_resource: @resource)
+      add_breadcrumb @resource.model_title, resource_path(model: @resource.model, resource: @resource)
       add_breadcrumb t("avo.edit").humanize
     end
 
@@ -122,9 +122,9 @@ module Avo
         if saved
           redirect_path = if params[:via_relation_class].present? && params[:via_resource_id].present?
             parent_resource = ::Avo::App.get_resource_by_model_name params[:via_relation_class].safe_constantize
-            resource_path(params[:via_relation_class].safe_constantize, for_resource: parent_resource, resource_id: params[:via_resource_id])
+            resource_path(model: params[:via_relation_class].safe_constantize, resource: parent_resource, resource_id: params[:via_resource_id])
           else
-            resource_path(@model, for_resource: @resource)
+            resource_path(model: @model, resource: @resource)
           end
 
           format.html { redirect_to redirect_path, notice: "#{@model.class.name} was successfully created." }
@@ -144,7 +144,7 @@ module Avo
 
       respond_to do |format|
         if saved
-          format.html { redirect_to params[:referrer] || resource_path(@model, for_resource: @resource), notice: "#{@model.class.name} was successfully updated." }
+          format.html { redirect_to params[:referrer] || resource_path(model: @model, resource: @resource), notice: "#{@model.class.name} was successfully updated." }
           format.json { render :show, status: :ok, location: @model }
         else
           flash[:error] = t "avo.you_missed_something_check_form"
@@ -158,19 +158,17 @@ module Avo
       @model.destroy!
 
       respond_to do |format|
-        format.html { redirect_to params[:referrer] || resources_path(@model, for_resource: @resource, turbo_frame: params[:turbo_frame], view_type: params[:view_type]), notice: t("avo.resource_destroyed", attachment_class: @attachment_class) }
+        format.html { redirect_to params[:referrer] || resources_path(resource: @resource, turbo_frame: params[:turbo_frame], view_type: params[:view_type]), notice: t("avo.resource_destroyed", attachment_class: @attachment_class) }
         format.json { head :no_content }
       end
     end
 
     private
 
-    def model_route_key
-      singular_name @resource.model_class
-    end
-
     def model_params
-      request_params = params.require(model_route_key).permit(permitted_params)
+      model_param_key = @resource.singular_model_key
+
+      request_params = params.require(model_param_key).permit(permitted_params)
 
       if @resource.devise_password_optional && request_params[:password].blank? && request_params[:password_confirmation].blank?
         request_params.delete(:password_confirmation)
@@ -291,7 +289,7 @@ module Avo
     end
 
     def applied_filters_cache_key
-      "avo.base_controller.#{@resource.route_key}.applied_filters"
+      "avo.base_controller.#{@resource.model_key}.applied_filters"
     end
   end
 end

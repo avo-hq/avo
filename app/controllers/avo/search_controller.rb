@@ -59,7 +59,7 @@ module Avo
         result = {
           _id: model.id,
           _label: resource.label,
-          _url: resource.avo_path,
+          _url: resource.record_path,
           model: model
         }
 

@@ -24,7 +24,7 @@
 
       <div class="p-4 border-gray-300 border-t">
         <% if params[:filters].present? %>
-          <%= a_link t('avo.reset_filters'), resources_path(@resource.model_class, for_resource: @resource, filters: nil, keep_query_params: true), color: 'blue-gray', class: 'w-full justify-center' %>
+          <%= a_link t('avo.reset_filters'), resources_path(resource: @resource, filters: nil, keep_query_params: true), color: 'blue-gray', class: 'w-full justify-center' %>
         <% else %>
           <%= a_button t('avo.reset_filters'), color: 'blue-gray', class: 'w-full justify-center', disabled: true %>
         <% end %>

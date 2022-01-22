@@ -39,6 +39,14 @@ class ProjectPolicy < ApplicationPolicy
     true
   end
 
+  def attach_comments?
+    true
+  end
+
+  def detach_comments?
+    true
+  end
+
   class Scope < Scope
     def resolve
       scope.all

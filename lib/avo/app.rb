@@ -169,13 +169,7 @@ module Avo
               resource.is_a? Class
             end
             .map do |resource|
-              route_key = if resource.model_class.present?
-                resource.model_class.model_name.plural.to_sym
-              else
-                resource.to_s.underscore.gsub("_resource", "").downcase.pluralize.to_sym
-              end
-
-              resources route_key
+              resources resource.new.model_key
             end
         end
       end

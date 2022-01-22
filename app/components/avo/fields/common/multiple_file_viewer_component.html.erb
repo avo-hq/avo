@@ -23,7 +23,7 @@
       </div>
       <div>
         <% if @resource.authorization.authorize_action(:delete_attachments?, raise_exception: false) %>
-          <%= a_link "#{Avo::App.root_path}/resources/#{@resource.model.model_name.route_key}/#{@resource.model.id}/active_storage_attachments/#{@id}/#{@file.id}", color: :red, variant: :outlined, size: :xs, class: 'text-center', 'data-turbo-frame': 'destroy_attachment_form', data: { confirm: t('avo.are_you_sure')} do %>
+          <%= a_link "#{@resource.record_path}/active_storage_attachments/#{@id}/#{@file.id}", color: :red, variant: :outlined, size: :xs, class: 'text-center', 'data-turbo-frame': 'destroy_attachment_form', data: { confirm: t('avo.are_you_sure')} do %>
             <%= helpers.svg 'trash' %> <span class="hidden lg:block lg:flex-1"><%= t 'avo.delete_file', item: @file.filename %></span>
           <% end %>
         <% end %>

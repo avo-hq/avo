@@ -42,7 +42,7 @@
   <% end %>
 
   <% if can_delete? %>
-    <%= form_with url: helpers.resource_path(@resource.model, for_resource: @resource), method: :delete, html: {
+    <%= form_with url: helpers.resource_path(model: @resource.model, resource: @resource), method: :delete, html: {
         'data-turbo-frame': params[:turbo_frame]
       } do |form| %>
       <%= form.button helpers.svg('trash', class: 'text-gray-400 h-6 hover:text-gray-600'),

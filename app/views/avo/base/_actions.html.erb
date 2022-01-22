@@ -3,7 +3,7 @@
     <%= a_button class: "focus:outline-none",
       color: 'light-blue',
       'data-action': "click->toggle-panel#togglePanel",
-      'data-actions-dropdown-button': @resource.model_class.model_name.route_key do
+      'data-actions-dropdown-button': @resource.model_key do
     %>
       <%= svg 'arrow-left', class: 'h-4 mr-1 transform -rotate-90' %> <%= t 'avo.actions' %>
     <% end %>
@@ -14,8 +14,8 @@
       <%
         @actions.each_with_index do |action, index|
           path = action_name == 'show' ?
-            "#{avo.root_path}resources/#{@resource.model_class.model_name.route_key}/#{@model.id}/actions/#{action.param_id}" :
-            "#{avo.root_path}resources/#{@resource.model_class.model_name.route_key}/actions/#{action.param_id}"
+            "#{@resource.record_path}/actions/#{action.param_id}" :
+            "#{@resource.records_path}/actions/#{action.param_id}"
           if action_name == 'show' || action.standalone
             disabled = false
           else

@@ -1,5 +1,5 @@
 <div data-model-id="<%= @resource.model.id %>"
-  data-selected-resources-name="<%= @resource.model.model_name.route_key %>"
+  data-selected-resources-name="<%= @resource.model_key %>"
   data-selected-resources='["<%= @resource.model.id %>"]'
 >
   <% @resource.panels.each_with_index do |resource_panel, index| %>
@@ -25,7 +25,7 @@
             <% end %>
 
             <% if @resource.authorization.authorize_action(:destroy, raise_exception: false) %>
-              <%= form_with url: helpers.resource_path(@resource.model, for_resource: @resource), method: :delete, html: { 'data-turbo-frame': params[:turbo_frame] } do |form| %>
+              <%= form_with url: helpers.resource_path(model: @resource.model, resource: @resource), method: :delete, html: { 'data-turbo-frame': params[:turbo_frame] } do |form| %>
                 <%= a_button title: t('avo.delete_item', item: @resource.model.model_name.name.downcase).capitalize,
                   spinner: true,
                   color: 'red',

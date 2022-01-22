@@ -7,8 +7,8 @@ module Avo
         redirect_to Avo.configuration.home_path
       elsif !Rails.env.development?
         @page_title = "Get started"
-        resource = Avo::App.resources.min_by { |resource| resource.route_key }
-        redirect_to resources_path(resource.model_class, for_resource: resource)
+        resource = Avo::App.resources.min_by { |resource| resource.model_key }
+        redirect_to resources_path(resource: resource)
       end
     end
 
