@@ -2,7 +2,6 @@ module Avo
   module Fields
     class HasOneField < HasBaseField
       attr_accessor :relation_method
-      attr_accessor :display
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
@@ -12,7 +11,6 @@ module Avo
         @placeholder ||= I18n.t "avo.choose_an_option"
 
         @relation_method = name.to_s.parameterize.underscore
-        @display = args[:display].present? ? args[:display] : :show
       end
 
       def label
@@ -21,6 +19,10 @@ module Avo
 
       def resource
         Avo::App.get_resource_by_model_name @model.class
+      end
+
+      def frame_url
+        "#{@resource.record_path}/#{id}/#{value.id}?turbo_frame=#{turbo_frame}"
       end
 
       def fill_field(model, key, value, params)

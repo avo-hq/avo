@@ -1,6 +1,14 @@
 module Avo
   module Fields
     class HasBaseField < BaseField
+      attr_accessor :display
+
+      def initialize(id, **args, &block)
+        super(id, **args, &block)
+
+        @display = args[:display].present? ? args[:display] : :show
+      end
+
       def resource
         Avo::App.get_resource_by_model_name @model.class
       end
@@ -10,7 +18,7 @@ module Avo
       end
 
       def frame_url
-        "#{@resource.record_path}/#{id}/#{value.id}?turbo_frame=#{turbo_frame}"
+        "#{@resource.record_path}/#{id}?turbo_frame=#{turbo_frame}"
       end
 
       def target_resource
