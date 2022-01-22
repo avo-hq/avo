@@ -5,6 +5,9 @@ class DummyAction < Avo::BaseAction
 
   def handle(**args)
     # Do something here
+
+    puts 'DummyAction triggered'
+
     succeed 'Yup'
   end
 end

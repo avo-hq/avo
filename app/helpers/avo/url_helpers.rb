@@ -1,12 +1,11 @@
 module Avo
   module UrlHelpers
     def resources_path(model, for_resource:, keep_query_params: false, **args)
-      return if model.nil?
+      return if model.nil? && for_resource.nil?
 
       class_name = plural_resource_name(model, for_resource)
 
       existing_params = {}
-
       begin
         if keep_query_params
           existing_params =
@@ -14,6 +13,7 @@ module Avo
         end
       rescue
       end
+
       avo.send :"resources_#{class_name}_path", **existing_params, **args
     end
 

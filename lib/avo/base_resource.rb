@@ -376,6 +376,10 @@ module Avo
       model_class.model_name.plural
     end
 
+    def singular_model_key
+      model_class.model_name.plural
+    end
+
     def record_path
       resource_path(model, for_resource: self)
     end

@@ -165,12 +165,10 @@ module Avo
 
     private
 
-    def model_route_key
-      singular_name @resource.model_class
-    end
-
     def model_params
-      request_params = params.require(model_route_key).permit(permitted_params)
+      model_param_key = @resource.singular_model_key
+
+      request_params = params.require(model_param_key).permit(permitted_params)
 
       if @resource.devise_password_optional && request_params[:password].blank? && request_params[:password_confirmation].blank?
         request_params.delete(:password_confirmation)
