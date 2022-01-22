@@ -291,7 +291,7 @@ module Avo
     end
 
     def applied_filters_cache_key
-      "avo.base_controller.#{@resource.route_key}.applied_filters"
+      "avo.base_controller.#{@resource.model_key}.applied_filters"
     end
   end
 end

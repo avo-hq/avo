@@ -7,4 +7,6 @@ class FishResource < Avo::BaseResource
 
   field :id, as: :id
   field :name, as: :text
+
+  action DummyAction
 end

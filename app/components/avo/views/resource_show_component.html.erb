@@ -1,5 +1,5 @@
 <div data-model-id="<%= @resource.model.id %>"
-  data-selected-resources-name="<%= @resource.model.model_name.route_key %>"
+  data-selected-resources-name="<%= @resource.model_key %>"
   data-selected-resources='["<%= @resource.model.id %>"]'
 >
   <% @resource.panels.each_with_index do |resource_panel, index| %>
