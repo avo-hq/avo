@@ -91,3 +91,5 @@ en:
       value: 'Value'
       add_row: 'Add row'
       delete_row: 'Delete row'
+    was_successfully_created: 'was successfully created'
+    was_successfully_updated: 'was successfully updated'
