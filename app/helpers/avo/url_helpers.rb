@@ -37,7 +37,6 @@ module Avo
     end
 
     def edit_resource_path(model:, resource:, **args)
-      # abort args.inspect
       avo.send :"edit_resources_#{resource.singular_model_key}_path", model, **args
     end
 
