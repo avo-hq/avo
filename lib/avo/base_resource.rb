@@ -377,15 +377,15 @@ module Avo
     end
 
     def singular_model_key
-      model_class.model_name.plural
+      model_class.model_name.singular
     end
 
     def record_path
-      resource_path(model, for_resource: self)
+      resource_path(model: model, resource: self)
     end
 
     def records_path
-      resources_path(model, for_resource: self)
+      resources_path(resource: self)
     end
 
     def label_field

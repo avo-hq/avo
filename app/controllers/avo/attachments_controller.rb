@@ -23,13 +23,14 @@ module Avo
     def destroy
       blob = ActiveStorage::Blob.find(params[:signed_attachment_id])
       attachment = blob.attachments.find_by record_id: params[:id], record_type: @model.class.to_s
+      path = resource_path(model: @model, resource: @resource)
 
       if attachment.present?
         attachment.destroy
 
-        redirect_to params[:referrer] || resource_path(@model, for_resource: @resource), notice: t("avo.attachment_destroyed")
+        redirect_to params[:referrer] || path, notice: t("avo.attachment_destroyed")
       else
-        redirect_back fallback_location: resource_path(@model, for_resource: @resource), notice: t("avo.failed_to_find_attachment")
+        redirect_back fallback_location: path, notice: t("avo.failed_to_find_attachment")
       end
     end
   end

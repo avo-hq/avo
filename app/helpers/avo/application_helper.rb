@@ -166,15 +166,5 @@ module Avo
         model.class
       end
     end
-
-    def singular_name(model_or_class)
-      model_class = get_model_class model_or_class
-
-      if ActiveModel::Naming.uncountable? model_class
-        model_class.model_name.route_key.singularize.gsub('_index', '')
-      else
-        model_class.model_name.route_key.singularize
-      end
-    end
   end
 end

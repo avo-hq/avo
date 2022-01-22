@@ -48,8 +48,8 @@ module Avo
 
       respond_to do |format|
         if @model.save
-          format.html { redirect_to resource_path(@model, for_resource: @resource), notice: t("avo.attachment_class_attached", attachment_class: @attachment_class) }
-          format.json { render :show, status: :created, location: resource_path(@model, for_resource: @resource) }
+          format.html { redirect_to resource_path(model: @model, resource: @resource), notice: t("avo.attachment_class_attached", attachment_class: @attachment_class) }
+          format.json { render :show, status: :created, location: resource_path(model: @model, resource: @resource) }
         else
           format.html { render :new }
           format.json { render json: @model.errors, status: :unprocessable_entity }
@@ -65,7 +65,7 @@ module Avo
       end
 
       respond_to do |format|
-        format.html { redirect_to params[:referrer] || resource_path(@model, for_resource: @resource), notice: t("avo.attachment_class_detached", attachment_class: @attachment_class) }
+        format.html { redirect_to params[:referrer] || resource_path(model: @model, resource: @resource), notice: t("avo.attachment_class_detached", attachment_class: @attachment_class) }
       end
     end
 

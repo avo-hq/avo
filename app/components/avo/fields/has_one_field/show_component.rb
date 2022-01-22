@@ -20,8 +20,6 @@ class Avo::Fields::HasOneField::ShowComponent < Avo::Fields::ShowComponent
   end
 
   def attach_path
-    class_name = helpers.singular_resource_name(nil, @resource)
-
-    helpers.avo.resources_associations_new_path(class_name, @resource.model.id, @field.id)
+    helpers.avo.resources_associations_new_path(@resource.singular_model_key, @resource.model.id, @field.id)
   end
 end
