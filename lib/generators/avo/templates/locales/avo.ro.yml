@@ -71,3 +71,10 @@ ro:
       placeholder: 'Cauta'
       cancel_button: 'Anulare'
     sign_out: 'Delogare'
+    key_value_field:
+      key: 'Cheie'
+      value: 'Valoare'
+      add_row: 'Adauga rand'
+      delete_row: 'Sterge rand'
+    was_successfully_created: 'a fost creat'
+    was_successfully_updated: 'a fost actualizat'
