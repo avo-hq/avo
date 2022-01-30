@@ -19,7 +19,6 @@ module Avo
       attr_reader :nullable
       attr_reader :null_values
       attr_reader :format_using
-      attr_reader :placeholder
       attr_reader :help
       attr_reader :default
       attr_reader :visible
