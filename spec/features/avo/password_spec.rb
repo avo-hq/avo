@@ -14,11 +14,11 @@ RSpec.feature "password", type: :feature do
       let(:new_password) { "new_foobar" }
       let!(:user) { create :user, password: old_password }
 
-      it { is_expected.to have_field type: "password", id: "user_password", placeholder: "Password", text: nil }
+      it { is_expected.to have_field type: "password", id: "user_password", placeholder: "User Password", text: nil }
 
       it "does not change the password" do
         visit url
-        expect(page).to have_field type: "password", id: "user_password", placeholder: "Password", text: nil
+        expect(page).to have_field type: "password", id: "user_password", placeholder: "User Password", text: nil
 
         fill_in "user_first_name", with: "Johnny"
 
@@ -32,7 +32,7 @@ RSpec.feature "password", type: :feature do
 
       it "changes the password" do
         visit url
-        expect(page).to have_field type: "password", id: "user_password", placeholder: "Password", text: nil
+        expect(page).to have_field type: "password", id: "user_password", placeholder: "User Password", text: nil
 
         fill_in "user_password", with: new_password
 
@@ -55,14 +55,14 @@ RSpec.feature "password", type: :feature do
       it "checks placeholder" do
         visit url
 
-        expect(page).to have_field type: "password", id: "user_password", placeholder: "Password", text: nil
+        expect(page).to have_field type: "password", id: "user_password", placeholder: "User Password", text: nil
         expect(page).to have_field type: "password", id: "user_password_confirmation", placeholder: "Password confirmation", text: nil
       end
 
       it "saves the resource with password" do
         visit url
 
-        expect(page).to have_field type: "password", id: "user_password", placeholder: "Password", text: nil
+        expect(page).to have_field type: "password", id: "user_password", placeholder: "User Password", text: nil
         expect(page).to have_field type: "password", id: "user_password_confirmation", placeholder: "Password confirmation", text: nil
 
         fill_in "user_first_name", with: "John"

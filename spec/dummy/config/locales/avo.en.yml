@@ -86,3 +86,10 @@ en:
     sign_out: 'Sign out'
     failed: 'Failed'
     failed_to_load: 'Failed to load'
+    key_value_field:
+      key: 'Key'
+      value: 'Value'
+      add_row: 'Add row'
+      delete_row: 'Delete row'
+    was_successfully_created: 'was successfully created'
+    was_successfully_updated: 'was successfully updated'
