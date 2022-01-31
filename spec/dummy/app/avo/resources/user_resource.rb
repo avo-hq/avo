@@ -44,6 +44,9 @@ class UserResource < Avo::BaseResource
 
   field :post, as: :has_one
   field :posts, as: :has_many
+  field :people, as: :has_many
+  field :spouses, as: :has_many # STI has_many resource
+  field :comments, as: :has_many
   field :projects, as: :has_and_belongs_to_many
   field :teams, as: :has_and_belongs_to_many
 

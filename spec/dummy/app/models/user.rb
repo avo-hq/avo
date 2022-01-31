@@ -10,6 +10,9 @@ class User < ApplicationRecord
 
   has_one :post
   has_many :posts
+  has_many :people
+  has_many :spouses
+  has_many :comments, as: :commentable
   has_and_belongs_to_many :projects
   has_and_belongs_to_many :teams, join_table: :team_memberships
 
