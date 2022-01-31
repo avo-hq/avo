@@ -14,7 +14,7 @@
                 <%= svg 'trash' %> <%= t('avo.detach_item', item: @reflection.name.to_s).capitalize %>
               <% end %>
             <% end %>
-            <% if @resource.authorization.authorize_action(:edit, raise_exception: false) %>
+            <% if can_see_the_edit_button? %>
               <%= a_link edit_path, color: 'indigo' do %>
                 <%= svg 'edit' %> <%= t('avo.edit').capitalize %>
               <% end %>
@@ -24,7 +24,7 @@
               <%= svg 'arrow-left' %> <%= t('avo.go_back') %>
             <% end %>
 
-            <% if @resource.authorization.authorize_action(:destroy, raise_exception: false) %>
+            <% if can_see_the_destroy_button? %>
               <%= form_with url: helpers.resource_path(model: @resource.model, resource: @resource), method: :delete, html: { 'data-turbo-frame': params[:turbo_frame] } do |form| %>
                 <%= a_button title: t('avo.delete_item', item: @resource.model.model_name.name.downcase).capitalize,
                   spinner: true,

@@ -3,7 +3,7 @@
     <% c.tools do %>
       <%= render 'actions' if @actions.present? %>
 
-      <% if can_create? %>
+      <% if can_see_the_create_button? %>
         <%= a_link create_path do %>
           <%= svg 'plus' %> <%= t('avo.create_new_item', item: singular_resource_name.downcase ) %>
         <% end %>

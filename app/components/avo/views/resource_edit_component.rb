@@ -16,6 +16,12 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
     end
   end
 
+  # The save button is dependent on the edit? policy method.
+  # The update? method should be called only when the user clicks the Save button so the developer gets access to the params from the form.
+  def can_see_the_save_button?
+    @resource.authorization.authorize_action :edit, raise_exception: false
+  end
+
   private
 
   def via_resource?

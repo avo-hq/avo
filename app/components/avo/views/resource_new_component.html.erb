@@ -8,9 +8,11 @@
               <%= svg 'arrow-left' %> <%= t('avo.cancel').capitalize %>
             <% end %>
 
-            <%= a_button color: 'green', spinner: true, type: :submit do %>
-              <%= svg 'save' %> <%= t('avo.save').capitalize %>
-            <% end if @resource.authorization.authorize_action :create, raise_exception: false %>
+            <% if can_see_the_save_button? %>
+              <%= a_button color: 'green', spinner: true, type: :submit do %>
+                <%= svg 'save' %> <%= t('avo.save').capitalize %>
+              <% end %>
+            <% end %>
           </div>
         <% end %>
 

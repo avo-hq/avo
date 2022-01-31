@@ -43,7 +43,15 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
   end
 
   def can_detach?
-    authorize_association_for('detach')
+    authorize_association_for("detach")
+  end
+
+  def can_see_the_edit_button?
+    @resource.authorization.authorize_action(:edit, raise_exception: false)
+  end
+
+  def can_see_the_destroy_button?
+    @resource.authorization.authorize_action(:destroy, raise_exception: false)
   end
 
   private

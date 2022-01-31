@@ -102,7 +102,7 @@ module Avo
     end
 
     def set_view
-      @view = params[:action].to_sym
+      @view = action_name.to_sym
     end
 
     def set_model_to_fill
