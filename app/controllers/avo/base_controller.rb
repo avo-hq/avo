@@ -7,7 +7,6 @@ module Avo
     before_action :hydrate_resource
     before_action :set_model, only: [:show, :edit, :destroy, :update]
     before_action :set_model_to_fill
-    before_action :fill_model, only: [:create, :update]
     before_action :authorize_action
     before_action :reset_pagination_if_filters_changed, only: :index
     before_action :cache_applied_filters, only: :index
@@ -25,8 +24,8 @@ module Avo
         @query = @resource.class.query_scope
       end
 
-      # Remove default_scope for index view
-      if @resource.unscoped_queries_on_index
+      # Remove default_scope for index view if no parent_resource present
+      if @resource.unscoped_queries_on_index && @parent_resource.blank?
         @query = @query.unscoped
       end
 
@@ -112,7 +111,8 @@ module Avo
     end
 
     def create
-      # model gets instantiated and filled in the fill_model before_action
+      # model gets instantiated and filled in the fill_model method
+      fill_model
       saved = @model.save
       @resource.hydrate(model: @model, view: :new, user: _current_user)
 
@@ -136,7 +136,8 @@ module Avo
     end
 
     def update
-      # model gets instantiated and filled in the fill_model before_action
+      # model gets instantiated and filled in the fill_model method
+      fill_model
       saved = @model.save
       @resource = @resource.hydrate(model: @model, view: :edit, user: _current_user)
 
