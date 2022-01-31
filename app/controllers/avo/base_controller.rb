@@ -5,8 +5,8 @@ module Avo
     before_action :set_resource_name
     before_action :set_resource
     before_action :hydrate_resource
-    before_action :authorize_action
     before_action :set_model, only: [:show, :edit, :destroy, :update]
+    before_action :authorize_action
     before_action :reset_pagination_if_filters_changed, only: :index
     before_action :cache_applied_filters, only: :index
 
