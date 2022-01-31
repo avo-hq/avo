@@ -12,6 +12,8 @@ module Avo
     before_action :_authenticate!
     before_action :set_container_classes
     before_action :add_initial_breadcrumbs
+    before_action :set_view
+    before_action :set_model_to_fill
 
     rescue_from Pundit::NotAuthorizedError, with: :render_unauthorized
     rescue_from ActiveRecord::RecordInvalid, with: :exception_logger
@@ -97,6 +99,19 @@ module Avo
 
     def set_related_model
       @related_model = eager_load_files(@related_resource, @related_resource.class.find_scope).find params[:related_id]
+    end
+
+    def set_view
+      @view = action_name.to_sym
+    end
+
+    def set_model_to_fill
+      @model_to_fill = @resource.model_class.new if @view == :create
+      @model_to_fill = @model if @view == :update
+    end
+
+    def fill_model
+      @model = @resource.fill_model(@model_to_fill, cast_nullable(model_params))
     end
 
     def hydrate_resource

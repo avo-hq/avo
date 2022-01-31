@@ -10,7 +10,7 @@
               <%= helpers.svg 'arrow-left' %> <%= t('avo.cancel').capitalize %>
             <% end %>
 
-            <% if @resource.authorization.authorize_action :update, raise_exception: false %>
+            <% if can_see_the_save_button? %>
               <%= a_button color: 'green', variant: 'outlined', spinner: true, type: :submit do %>
                 <%= helpers.svg 'save' %> <%= t('avo.save').capitalize %>
               <% end %>

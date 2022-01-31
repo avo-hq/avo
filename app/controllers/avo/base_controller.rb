@@ -5,13 +5,13 @@ module Avo
     before_action :set_resource_name
     before_action :set_resource
     before_action :hydrate_resource
-    before_action :authorize_action
     before_action :set_model, only: [:show, :edit, :destroy, :update]
+    before_action :set_model_to_fill
+    before_action :authorize_action
     before_action :reset_pagination_if_filters_changed, only: :index
     before_action :cache_applied_filters, only: :index
 
     def index
-      @view = :index
       @page_title = resource_name.humanize
       add_breadcrumb resource_name.humanize
 
@@ -24,8 +24,8 @@ module Avo
         @query = @resource.class.query_scope
       end
 
-      # Remove default_scope for index view
-      if @resource.unscoped_queries_on_index
+      # Remove default_scope for index view if no parent_resource present
+      if @resource.unscoped_queries_on_index && @parent_resource.blank?
         @query = @query.unscoped
       end
 
@@ -59,7 +59,6 @@ module Avo
     end
 
     def show
-      @view = :show
       set_actions
 
       @resource = @resource.hydrate(model: @model, view: :show, user: _current_user, params: params)
@@ -82,7 +81,6 @@ module Avo
     end
 
     def new
-      @view = :new
       @model = @resource.model_class.new
       @resource = @resource.hydrate(model: @model, view: :new, user: _current_user)
 
@@ -92,7 +90,6 @@ module Avo
     end
 
     def edit
-      @view = :edit
       @resource = @resource.hydrate(model: @model, view: :edit, user: _current_user)
 
       @page_title = @resource.default_panel_name
@@ -114,7 +111,8 @@ module Avo
     end
 
     def create
-      @model = @resource.fill_model(@resource.model_class.new, cast_nullable(model_params))
+      # model gets instantiated and filled in the fill_model method
+      fill_model
       saved = @model.save
       @resource.hydrate(model: @model, view: :new, user: _current_user)
 
@@ -138,7 +136,8 @@ module Avo
     end
 
     def update
-      @model = @resource.fill_model(@model, cast_nullable(model_params))
+      # model gets instantiated and filled in the fill_model method
+      fill_model
       saved = @model.save
       @resource = @resource.hydrate(model: @model, view: :edit, user: _current_user)
 

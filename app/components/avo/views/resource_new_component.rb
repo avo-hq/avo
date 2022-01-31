@@ -20,6 +20,12 @@ class Avo::Views::ResourceNewComponent < ViewComponent::Base
     end
   end
 
+  # The create button is dependent on the new? policy method.
+  # The create? should be called only when the user clicks the Save button so the developers gets access to the params from the form.
+  def can_see_the_save_button?
+    @resource.authorization.authorize_action :new, raise_exception: false
+  end
+
   private
 
   def via_resource?
