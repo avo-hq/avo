@@ -56,3 +56,5 @@ coverage/
 .vscode
 
 avo*.gem
+
+.env.test
