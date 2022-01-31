@@ -44,8 +44,10 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     @index_params[:available_view_types]
   end
 
-  def can_create?
-    @resource.authorization.authorize_action(:create, raise_exception: false) && simple_relation? && !has_reflection_and_is_read_only
+  # The Create button is dependent on the new? policy method.
+  # The create? should be called only when the user clicks the Save button so the developers gets access to the params from the form.
+  def can_see_the_create_button?
+    @resource.authorization.authorize_action(:new, raise_exception: false) && simple_relation? && !has_reflection_and_is_read_only
   end
 
   def can_attach?
@@ -53,10 +55,6 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     klass = @reflection.through_reflection if klass.is_a? ::ActiveRecord::Reflection::ThroughReflection
 
     @reflection.present? && klass.is_a?(::ActiveRecord::Reflection::HasManyReflection) && !has_reflection_and_is_read_only && authorize_association_for("attach")
-  end
-
-  def can_detach?
-    @reflection.present? && @reflection.is_a?(::ActiveRecord::Reflection::HasOneReflection) && @models.present? && !has_reflection_and_is_read_only && authorize_association_for("detach")
   end
 
   def has_reflection_and_is_read_only
@@ -75,35 +73,31 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def create_path
+    args = {}
+
     if @reflection.present?
-      path_args = {
+      args = {
         via_relation_class: @parent_model.model_name,
         via_resource_id: @parent_model.id
       }
 
       if @reflection.inverse_of.present?
-        path_args[:via_relation] = @reflection.inverse_of.name
+        args[:via_relation] = @reflection.inverse_of.name
       end
-
-      helpers.new_resource_path(@resource.model_class, **path_args)
-    else
-      helpers.new_resource_path(@resource.model_class)
     end
+
+    helpers.new_resource_path(model: @resource.model_class, resource: @resource, **args)
   end
 
   def attach_path
     "#{Avo::App.root_path}#{request.env["PATH_INFO"]}/new"
   end
 
-  def detach_path
-    helpers.resource_detach_path(via_resource_name, via_resource_id, via_relation_param, @models.first.id)
-  end
-
   def singular_resource_name
     if @reflection.present?
       ::Avo::App.get_resource_by_model_name(@reflection.class_name).name
     else
-      @resource.singular_name.present? ? @resource.singular_name : @resource.model_class.model_name.name.downcase
+      @resource.singular_name || @resource.model_class.model_name.name.downcase
     end
   end
 

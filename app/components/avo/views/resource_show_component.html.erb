@@ -1,9 +1,9 @@
 <div data-model-id="<%= @resource.model.id %>"
-  data-selected-resources-name="<%= @resource.model.model_name.route_key %>"
+  data-selected-resources-name="<%= @resource.model_key %>"
   data-selected-resources='["<%= @resource.model.id %>"]'
 >
-  <% @resource.panels.each do |resource_panel| %>
-    <%= render Avo::PanelComponent.new(title: resource_panel[:name], display_breadcrumbs: @reflection.blank?) do |c| %>
+  <% @resource.panels.each_with_index do |resource_panel, index| %>
+    <%= render Avo::PanelComponent.new(title: resource_panel[:name], display_breadcrumbs: @reflection.blank?, index: index) do |c| %>
       <% c.tools do %>
         <% if resource_panel[:name] == @resource.default_panel_name %>
           <%= render 'actions' %>
@@ -14,7 +14,7 @@
                 <%= svg 'trash' %> <%= t('avo.detach_item', item: @reflection.name.to_s).capitalize %>
               <% end %>
             <% end %>
-            <% if @resource.authorization.authorize_action(:edit, raise_exception: false) %>
+            <% if can_see_the_edit_button? %>
               <%= a_link edit_path, color: 'indigo' do %>
                 <%= svg 'edit' %> <%= t('avo.edit').capitalize %>
               <% end %>
@@ -24,8 +24,8 @@
               <%= svg 'arrow-left' %> <%= t('avo.go_back') %>
             <% end %>
 
-            <% if @resource.authorization.authorize_action(:destroy, raise_exception: false) %>
-              <%= form_with url: helpers.resource_path(@resource.model), method: :delete, html: { 'data-turbo-frame': params[:turbo_frame] } do |form| %>
+            <% if can_see_the_destroy_button? %>
+              <%= form_with url: helpers.resource_path(model: @resource.model, resource: @resource), method: :delete, html: { 'data-turbo-frame': params[:turbo_frame] } do |form| %>
                 <%= a_button title: t('avo.delete_item', item: @resource.model.model_name.name.downcase).capitalize,
                   spinner: true,
                   color: 'red',

@@ -15,10 +15,10 @@ module Avo
 
         hide_on :index
 
-        @key_label = args[:key_label].present? ? args[:key_label].to_s : "Key"
-        @value_label = args[:value_label].present? ? args[:value_label].to_s : "Value"
-        @action_text = args[:action_text].present? ? args[:action_text].to_s : "Add row"
-        @delete_text = args[:delete_text].present? ? args[:delete_text].to_s : "Delete row"
+        @key_label = args[:key_label].present? ? args[:key_label].to_s : I18n.translate('avo.key_value_field.key')
+        @value_label = args[:value_label].present? ? args[:value_label].to_s : I18n.translate('avo.key_value_field.value')
+        @action_text = args[:action_text].present? ? args[:action_text].to_s : I18n.translate('avo.key_value_field.add_row')
+        @delete_text = args[:delete_text].present? ? args[:delete_text].to_s : I18n.translate('avo.key_value_field.delete_row')
 
         @disable_editing_keys = args[:disable_editing_keys].present? ? args[:disable_editing_keys] : false
         # disabling editing keys also disables adding rows (doesn't take into account the value of disable_adding_rows)

@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    avo (1.18.2)
+    avo (1.19.0)
       active_link_to
       addressable
       breadcrumbs_on_rails
@@ -392,7 +392,7 @@ GEM
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
-    webpacker (6.0.0.rc.6)
+    webpacker (6.0.0.rc.2)
       activesupport (>= 5.2)
       rack-proxy (>= 0.6.1)
       railties (>= 5.2)
@@ -417,7 +417,7 @@ DEPENDENCIES
   breadcrumbs_on_rails
   bump
   byebug
-  capybara (>= 2.15)
+  capybara (= 3.36)
   countries
   database_cleaner
   devise
@@ -458,8 +458,8 @@ DEPENDENCIES
   web-console (>= 3.3.0)
   webdrivers
   webmock
-  webpacker (= 6.0.0.rc.6)
+  webpacker (= 6.0.0.rc.2)
   zeitwerk (~> 2.3)
 
 BUNDLED WITH
-   2.2.32
+   2.3.5

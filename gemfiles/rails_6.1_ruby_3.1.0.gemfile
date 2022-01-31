@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-gem "webpacker", "6.0.0.rc.6"
+gem "webpacker", "6.0.0.rc.2"
 gem "countries"
 gem "pundit"
 gem "rails", "~> 6.1.0"
@@ -51,7 +51,7 @@ end
 group :test do
   gem "rspec-rails", "~> 4.0.0"
   gem "rails-controller-testing"
-  gem "capybara", ">= 2.15"
+  gem "capybara", "3.36"
   gem "selenium-webdriver"
   gem "webdrivers"
   gem "fuubar"

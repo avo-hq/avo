@@ -15,18 +15,23 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
 
   def back_path
     if via_resource?
-      helpers.resource_path(params[:via_resource_class].safe_constantize, resource_id: params[:via_resource_id])
+      helpers.resource_path(model: params[:via_resource_class].safe_constantize, resource: relation_resource, resource_id: params[:via_resource_id])
     else
-      helpers.resources_path(@resource.model)
+      helpers.resources_path(resource: @resource)
     end
   end
 
   def edit_path
+    args = {}
+
     if via_resource?
-      helpers.edit_resource_path(@resource.model, via_resource_class: params[:via_resource_class], via_resource_id: params[:via_resource_id])
-    else
-      helpers.edit_resource_path(@resource.model)
+      args = {
+        via_resource_class: params[:via_resource_class],
+        via_resource_id: params[:via_resource_id]
+      }
     end
+
+    helpers.edit_resource_path(model: @resource.model, resource: @resource, **args)
   end
 
   def detach_path
@@ -34,11 +39,19 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
   end
 
   def destroy_path
-    helpers.resource_path(@resource.model)
+    helpers.resource_path(model: @resource.model, resource: @resource)
   end
 
   def can_detach?
-    authorize_association_for('detach')
+    authorize_association_for("detach")
+  end
+
+  def can_see_the_edit_button?
+    @resource.authorization.authorize_action(:edit, raise_exception: false)
+  end
+
+  def can_see_the_destroy_button?
+    @resource.authorization.authorize_action(:destroy, raise_exception: false)
   end
 
   private

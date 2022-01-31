@@ -12,6 +12,8 @@ spec/dummy/public/packs/
 spec/dummy/public/packs-test/
 spec/dummy/public/javascripts/
 spec/dummy/tmp/
+spec/dummy/.env
+spec/dummy/.env.test
 vendor/cache/
 public/javascripts/
 

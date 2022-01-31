@@ -3,15 +3,9 @@
     <% c.tools do %>
       <%= render 'actions' if @actions.present? %>
 
-      <% if can_create? %>
+      <% if can_see_the_create_button? %>
         <%= a_link create_path do %>
           <%= svg 'plus' %> <%= t('avo.create_new_item', item: singular_resource_name.downcase ) %>
-        <% end %>
-      <% end %>
-
-      <% if can_detach? %>
-        <%= a_link detach_path, color: 'indigo', method: :delete, data: { confirm: "Are you sure you want to detach this #{@resource.singular_name}." } do %>
-          <%= svg 'trash' %> <%= t('avo.detach_item', item: singular_resource_name).capitalize %>
         <% end %>
       <% end %>
 
@@ -24,11 +18,11 @@
 
     <% c.body do %>
       <div class="flex justify-between pt-2 pb-2 min-h-16"
-        data-selected-resources-name="<%= @resource.model_class.model_name.route_key %>"
+        data-selected-resources-name="<%= @resource.model_key %>"
         data-selected-resources="[]"
       >
         <div class="flex items-center px-6 w-64">
-          <%= render partial: 'avo/partials/resource_search', locals: {resource: @resource.route_key} if @resource.search_query.present? %>
+          <%= render partial: 'avo/partials/resource_search', locals: {resource: @resource.model_class.model_name.plural} if @resource.search_query.present? %>
         </div>
         <div class="flex justify-end items-center px-6 space-x-3">
           <%= render partial: 'avo/partials/view_toggle_button', locals: { available_view_types: available_view_types, view_type: view_type, turbo_frame: @turbo_frame } if @models.present? %>
