@@ -6,12 +6,13 @@ module Avo
     before_action :set_resource
     before_action :hydrate_resource
     before_action :set_model, only: [:show, :edit, :destroy, :update]
+    before_action :set_model_to_fill
+    before_action :fill_model, only: [:create, :update]
     before_action :authorize_action
     before_action :reset_pagination_if_filters_changed, only: :index
     before_action :cache_applied_filters, only: :index
 
     def index
-      @view = :index
       @page_title = resource_name.humanize
       add_breadcrumb resource_name.humanize
 
@@ -59,7 +60,6 @@ module Avo
     end
 
     def show
-      @view = :show
       set_actions
 
       @resource = @resource.hydrate(model: @model, view: :show, user: _current_user, params: params)
@@ -82,7 +82,6 @@ module Avo
     end
 
     def new
-      @view = :new
       @model = @resource.model_class.new
       @resource = @resource.hydrate(model: @model, view: :new, user: _current_user)
 
@@ -92,7 +91,6 @@ module Avo
     end
 
     def edit
-      @view = :edit
       @resource = @resource.hydrate(model: @model, view: :edit, user: _current_user)
 
       @page_title = @resource.default_panel_name
@@ -114,7 +112,7 @@ module Avo
     end
 
     def create
-      @model = @resource.fill_model(@resource.model_class.new, cast_nullable(model_params))
+      # model gets instantiated and filled in the fill_model before_action
       saved = @model.save
       @resource.hydrate(model: @model, view: :new, user: _current_user)
 
@@ -138,7 +136,7 @@ module Avo
     end
 
     def update
-      @model = @resource.fill_model(@model, cast_nullable(model_params))
+      # model gets instantiated and filled in the fill_model before_action
       saved = @model.save
       @resource = @resource.hydrate(model: @model, view: :edit, user: _current_user)
 
