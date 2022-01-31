@@ -42,11 +42,15 @@ Make sure you setup the database by running `RAILS_ENV=test bin/rails db:setup` 
 
 ## Running tests
 
-When running tests you have two options. Running on your local database or to use a database in a docker environment
+When running tests you have two options. Running on your local database or to use a database in a docker environment.
+
+Copy the `.env.test.sample` (`cp spec/dummy/.env.test.sample spec/dummy/.env.test`) and update it with the proper credentials for your local database.
+
+Run the migration script `bin/rails db:migrate`. Now you'll be able to run the test scripts below:
 
 ### Running tests with local database
 
-Copy the `.env.test.sample` (`cp .env.test.sample .env.test`) and update it with the proper credentials for your local database. Run the migration script `bin/rails db:migrate`. Now you'll be able to run the test scripts below:
+Copy the `.env.test.sample` (`cp spec/dummy/.env.test.sample spec/dummy/.env.test`) and update it with the proper credentials for your local database. Run the migration script `bin/rails db:migrate`. Now you'll be able to run the test scripts below:
 
 We've set up a few helpers to get you going:
 
