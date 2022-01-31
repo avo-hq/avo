@@ -42,6 +42,16 @@ Make sure you setup the database by running `RAILS_ENV=test bin/rails db:setup` 
 
 ## Running tests
 
+When running tests you have two options. Running on your local database or to use a database in a docker environment.
+
+Copy the `.env.test.sample` (`cp spec/dummy/.env.test.sample spec/dummy/.env.test`) and update it with the proper credentials for your local database.
+
+Run the migration script `bin/rails db:migrate`. Now you'll be able to run the test scripts below:
+
+### Running tests with local database
+
+Copy the `.env.test.sample` (`cp spec/dummy/.env.test.sample spec/dummy/.env.test`) and update it with the proper credentials for your local database. Run the migration script `bin/rails db:migrate`. Now you'll be able to run the test scripts below:
+
 We've set up a few helpers to get you going:
 
 - Run all tests (slow): `bin/test`
@@ -49,18 +59,16 @@ We've set up a few helpers to get you going:
 - Run system tests (slow): `bin/test system`
 - Run a particular spec file/test (fast): `bin/test ./spec/features/hq_spec.rb`
 
-### Running tests without using the docker container
+### Running tests using the docker container
 
-You may want to run the tests on your local database (not on your docker container). To do that, update your `.env.test` file with valid credentials for your local installation.
+You may want to run the tests on your docker container. To do that, update your `.env.test` file with valid credentials for the docker setup like below. You'll then be able to run the migration script and the testing commands.
 
 ```
 POSTGRES_HOST=localhost
-POSTGRES_PORT=5432
+POSTGRES_PORT=5433
 POSTGRES_USERNAME=postgres
 POSTGRES_PASSWORD=
 ```
-
-You'll probably need to update your `POSTGRES_PORT` to `5432` (`5433` is used for the docker container), **but check your local credentials**.
 
 ## Seeding the database
 
