@@ -70,3 +70,6 @@ Please read the [UPGRADE_GUIDE.MD](https://docs.avohq.io/1.0/upgrade.html)
   <img src="https://contrib.rocks/image?repo=avo-hq/avo" />
 </a>
 <!--  https://contrib.rocks -->
+
+
+![Alt](https://repobeats.axiom.co/api/embed/1481a6a259064f02a7936470d12a50802a9c98a4.svg "Repobeats analytics image")
