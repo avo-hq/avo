@@ -16,6 +16,7 @@ RSpec.feature 'create_through_record', type: :feature do
 
       post = Post.first
       expect(post.user).to eq admin
+      expect(current_path).to eq "/admin/resources/users/#{admin.id}"
     end
   end
 
@@ -33,15 +34,16 @@ RSpec.feature 'create_through_record', type: :feature do
 
       comment = Comment.last
       expect(comment.user).to eq admin
+      expect(current_path).to eq "/admin/resources/users/#{admin.id}"
     end
   end
 
   # create person on spouse
   describe 'has_many' do
     let!(:person) { create :person }
-    let(:url) { "/admin/resources/spouses/new?via_relation=spouses&via_relation_class=Person&via_resource_id=#{admin.id}" }
+    let(:url) { "/admin/resources/spouses/new?via_relation=spouses&via_relation_class=Person&via_resource_id=#{person.id}" }
 
-    it 'attaches the spouse to the other spouse' do
+    it 'attaches the spouse to a person' do
       expect(Person.count).to eq 1
       expect(person.spouses.first).to be nil
       visit url
@@ -53,6 +55,7 @@ RSpec.feature 'create_through_record', type: :feature do
 
       spouse = Spouse.last
       expect(person.spouses.first).to eq spouse
+      expect(current_path).to eq "/admin/resources/people/#{person.id}"
     end
   end
 
@@ -76,6 +79,7 @@ RSpec.feature 'create_through_record', type: :feature do
 
       user = User.last
       expect(user.teams.first).to eq team
+      expect(current_path).to eq "/admin/resources/teams/#{team.id}"
     end
   end
 
@@ -95,6 +99,7 @@ RSpec.feature 'create_through_record', type: :feature do
 
       project = Project.last
       expect(project.users.first).to eq admin
+      expect(current_path).to eq "/admin/resources/users/#{admin.id}"
     end
   end
 
@@ -115,6 +120,7 @@ RSpec.feature 'create_through_record', type: :feature do
       comment = Comment.first
       expect(comment.commentable).to eq project
       expect(project.comments.first).to eq comment
+      expect(current_path).to eq "/admin/resources/projects/#{project.id}"
     end
   end
 end

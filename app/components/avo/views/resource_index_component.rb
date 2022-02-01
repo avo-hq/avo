@@ -77,7 +77,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
     if @reflection.present?
       args = {
-        via_relation_class: @parent_model.model_name,
+        via_relation_class: reflection_model_class,
         via_resource_id: @parent_model.id,
       }
 
@@ -111,5 +111,11 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     else
       @resource.singular_name || @resource.model_class.model_name.name.downcase
     end
+  end
+
+  private
+
+  def reflection_model_class
+    @reflection.active_record.to_s
   end
 end
