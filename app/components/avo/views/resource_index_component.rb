@@ -85,6 +85,10 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
         args[:via_relation] = params[:resource_name]
       end
 
+      if @reflection.is_a? ActiveRecord::Reflection::HasManyReflection
+        args[:via_relation] = @reflection.name
+      end
+
       if @reflection.parent_reflection.present? && @reflection.parent_reflection.inverse_of.present?
         args[:via_relation] = @reflection.parent_reflection.inverse_of.name
       end

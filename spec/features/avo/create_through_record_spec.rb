@@ -36,6 +36,26 @@ RSpec.feature 'create_through_record', type: :feature do
     end
   end
 
+  # create person on spouse
+  describe 'has_many' do
+    let!(:person) { create :person }
+    let(:url) { "/admin/resources/spouses/new?via_relation=spouses&via_relation_class=Person&via_resource_id=#{admin.id}" }
+
+    it 'attaches the spouse to the other spouse' do
+      expect(Person.count).to eq 1
+      expect(person.spouses.first).to be nil
+      visit url
+
+      fill_in 'spouse_name', with: 'Mary'
+      click_on 'Save'
+
+      wait_for_loaded
+
+      spouse = Spouse.last
+      expect(person.spouses.first).to eq spouse
+    end
+  end
+
   # create user on team
   describe 'has_many through' do
     let!(:team) { create :team }
