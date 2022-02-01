@@ -47,6 +47,22 @@
 <% else %>
   <%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal do %>
     <% if @field.autocomplete %>
+      <div data-controller="search" class="resource-search flex items-center h-full w-full" data-turbo-remove-before-cache>
+        <div class="w-full hidden"
+          data-search-target="autocomplete"
+          data-search-resource="belongs_to"
+          data-search-path="/admin/resources/posts/<%= @resource.model.id %>/search/user"
+          data-translation-keys='{"no_item_found": "<%= I18n.translate 'avo.no_item_found' %>"}'
+          data-debounce-timeout='<%= Avo.configuration.search_debounce %>'
+        ></div>
+
+        <%= @form.hidden_field @field.foreign_key, 'data-search-target': 'hiddenId' %>
+
+        <div class="relative w-full" autocomplete="off">
+          <%= @form.text_field @field.foreign_key, value: @field.value, class: helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)), 'data-search-target': 'button' %>
+        </div>
+      </div>
+
       <div class="relative w-full"
         data-controller="autocomplete"
         data-autocomplete-url-value="/admin/resources/posts/25/search/user"

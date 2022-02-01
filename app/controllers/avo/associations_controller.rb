@@ -81,7 +81,19 @@ module Avo
 
       @field.hydrate model: @model
 
-      @results = @field.options
+      @results = @field.options.map do |item|
+        {
+          _id: item[:value],
+          _label: item[:label],
+        }
+      end
+
+      render json: {
+        belongs_to: {
+          header: 'hey',
+          results: @results
+        }
+      }
 
       # abort [@resource, @field, @field.options].inspect
       # render json: {
