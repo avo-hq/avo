@@ -14,8 +14,8 @@ gemspec
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
 
-# Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-gem "webpacker", "6.0.0.rc.2"
+gem 'jsbundling-rails'
+gem 'cssbundling-rails'
 
 gem "countries"
 

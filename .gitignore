@@ -58,3 +58,6 @@ coverage/
 .vscode
 
 avo*.gem
+
+
+app/assets/builds

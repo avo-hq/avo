@@ -4,15 +4,17 @@ import 'core-js/stable'
 import 'regenerator-runtime/runtime'
 import * as ActiveStorage from '@rails/activestorage'
 import * as Mousetrap from 'mousetrap'
-import { Application } from 'stimulus'
+// import { Application } from 'stimulus'
 import { Turbo } from '@hotwired/turbo-rails'
-import { definitionsFromContext } from 'stimulus/webpack-helpers'
+// import { definitionsFromContext } from 'stimulus/webpack-helpers'
 import Rails from '@rails/ujs'
 import tippy from 'tippy.js'
 
 // Toastr alerts
-import '../js/active-storage'
-import '../js/toastr'
+import './js/active-storage'
+import './js/controllers.js'
+import './js/toastr'
+import {application} from './js/application'
 
 Rails.start()
 
@@ -33,14 +35,13 @@ function initTippy() {
 }
 window.initTippy = initTippy
 
-const application = Application.start()
 ActiveStorage.start()
 
-const context = require.context('./../js/controllers', true, /\.js$/)
-application.load(definitionsFromContext(context))
+// const context = require.context('./../js/controllers', true, /\.js$/)
+// application.load(definitionsFromContext(context))
 
-const fieldsContext = require.context('./../js/controllers/fields', true, /\.js$/)
-application.load(definitionsFromContext(fieldsContext))
+// const fieldsContext = require.context('./../js/controllers/fields', true, /\.js$/)
+// application.load(definitionsFromContext(fieldsContext))
 
 document.addEventListener('turbo:load', () => {
   document.body.classList.remove('turbo-loading')
