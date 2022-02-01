@@ -116,15 +116,31 @@ module Avo
       saved = @model.save
       @resource.hydrate(model: @model, view: :new, user: _current_user)
 
-      # In the case of has_many through associations we want to also attach the related record
-      if params[:via_relation].present?
-        # find the record
-        via_resource = ::Avo::App.get_resource_by_model_name params[:via_relation_class]
-        @related_model = via_resource.model_class.find params[:via_resource_id]
+      # This means that the record has been created through another parent record and we need to attach it somehow.
+      if params[:via_resource_id].present?
+        @reflection = @model._reflections[params[:via_relation]]
+        # Figure out what kind of association does the record have with the parent record
 
-        # We need to weed belongs_to associations out
-        unless @model._reflections[params[:via_relation]].is_a? ActiveRecord::Reflection::BelongsToReflection
-          @model.send(params[:via_relation]) << @related_model
+        # belongs_to
+        # Get the foreign key and set it to the id we got in the params
+        if @reflection.is_a? ActiveRecord::Reflection::BelongsToReflection
+          foreign_key = @reflection.foreign_key
+          @model.send("#{foreign_key}=", params[:via_resource_id])
+        end
+
+        # has_one
+        # has_one_through
+
+        # has_many
+        # has_many_through
+        # has_and_belongs_to_many
+        # polymorphic
+        if @reflection.is_a? ActiveRecord::Reflection::ThroughReflection
+          # find the record
+          via_resource = ::Avo::App.get_resource_by_model_name params[:via_relation_class]
+          @related_record = via_resource.model_class.find params[:via_resource_id]
+
+          @model.send(params[:via_relation]) << @related_record
         end
       end
 
