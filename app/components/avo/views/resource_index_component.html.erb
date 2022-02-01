@@ -3,6 +3,8 @@
     <% c.tools do %>
       <%= render 'actions' if @actions.present? %>
 
+      <%= create_path %>
+      <br>
       <% if can_see_the_create_button? %>
         <%= a_link create_path do %>
           <%= svg 'plus' %> <%= t('avo.create_new_item', item: singular_resource_name.downcase ) %>
@@ -17,6 +19,9 @@
     <% end %>
 
     <% c.body do %>
+      <% if @reflection.present? %>
+        @reflection.: <%= @reflection.inspect %>
+      <% end %>
       <div class="flex justify-between pt-2 pb-2 min-h-16"
         data-selected-resources-name="<%= @resource.model_key %>"
         data-selected-resources="[]"

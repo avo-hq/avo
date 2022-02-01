@@ -116,13 +116,25 @@ module Avo
       saved = @model.save
       @resource.hydrate(model: @model, view: :new, user: _current_user)
 
+      # In the case of has_many through associations we want to also attach the related record
+      if params[:via_relation].present?
+        # find the record
+        via_resource = ::Avo::App.get_resource_by_model_name params[:via_relation_class]
+        @related_model = via_resource.model_class.find params[:via_resource_id]
+
+        # We need to weed belongs_to associations out
+        unless @model._reflections[params[:via_relation]].is_a? ActiveRecord::Reflection::BelongsToReflection
+          @model.send(params[:via_relation]) << @related_model
+        end
+      end
+
       respond_to do |format|
         if saved
-          redirect_path = if params[:via_relation_class].present? && params[:via_resource_id].present?
+          redirect_path = resource_path(model: @model, resource: @resource)
+
+          if params[:via_relation_class].present? && params[:via_resource_id].present?
             parent_resource = ::Avo::App.get_resource_by_model_name params[:via_relation_class].safe_constantize
-            resource_path(model: params[:via_relation_class].safe_constantize, resource: parent_resource, resource_id: params[:via_resource_id])
-          else
-            resource_path(model: @model, resource: @resource)
+            redirect_path = resource_path(model: params[:via_relation_class].safe_constantize, resource: parent_resource, resource_id: params[:via_resource_id])
           end
 
           format.html { redirect_to redirect_path, notice: "#{@model.class.name} #{t("avo.was_successfully_created")}." }
