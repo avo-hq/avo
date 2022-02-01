@@ -104,10 +104,10 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
+        mkdir ~/.gem
         touch ~/.gem/credentials
         echo ":github: Bearer ${GITHUB_TOKEN}" >> ~/.gem/credentials
         chmod 600 ~/.gem/credentials
-        gem push --key github --host https://rubygems.pkg.github.com/avo-hq ./pkg/avo-${{steps.gem_version.outputs.tag}}.gem
 
     # - name: Publish to rubygems.org
     #   id: publish-to-rubygems-package-registry
