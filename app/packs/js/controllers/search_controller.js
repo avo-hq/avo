@@ -6,9 +6,9 @@ import { autocomplete } from '@algolia/autocomplete-js'
 import debouncePromise from '@/js/helpers/debounce_promise'
 
 export default class extends Controller {
-  static targets = ['autocomplete', 'button']
+  static targets = ['autocomplete', 'button', 'hiddenId', 'visibleLabel'];
 
-  debouncedFetch = debouncePromise(fetch, this.debounceTimeout)
+  debouncedFetch = debouncePromise(fetch, this.debounceTimeout);
 
   get translationKeys() {
     let keys
@@ -29,12 +29,41 @@ export default class extends Controller {
     return this.autocompleteTarget.dataset.searchResource
   }
 
+  get searchPath() {
+    return this.autocompleteTarget.dataset.searchPath
+  }
+
   get isGlobalSearch() {
     return this.searchResource === 'global'
   }
 
+  get isBelongsToSearch() {
+    return this.searchResource === 'belongs_to'
+  }
+
   get searchUrl() {
-    return this.isGlobalSearch ? `${window.Avo.configuration.root_path}/avo_api/search` : `${window.Avo.configuration.root_path}/avo_api/${this.searchResource}/search`
+    console.log(this.isBelongsToSearch, this.searchPath)
+    if (this.isGlobalSearch) {
+      return `${window.Avo.configuration.root_path}/avo_api/search`
+    }
+
+    if (this.isBelongsToSearch) {
+      return this.searchPath
+    }
+
+    return `${window.Avo.configuration.root_path}/avo_api/${this.searchResource}/search`
+  }
+
+  handleOnSelect({ item }) {
+    console.log('this->', this, this.isBelongsToSearch)
+    if (this.isBelongsToSearch) {
+      console.log('items->', item, this.hiddenIdTarget)
+      this.hiddenIdTarget.setAttribute('value', item._id)
+      this.buttonTarget.setAttribute('value', item._label)
+      return
+    }
+
+    return Turbo.visit(item._url, { action: 'replace' })
   }
 
   addSource(resourceName, data) {
@@ -43,9 +72,7 @@ export default class extends Controller {
     return {
       sourceId: resourceName,
       getItems: () => data.results,
-      onSelect({ item }) {
-        Turbo.visit(item._url, { action: 'replace' })
-      },
+      onSelect: that.handleOnSelect.bind(that),
       templates: {
         header() {
           return `${data.header.toUpperCase()} ${data.help}`
@@ -84,7 +111,10 @@ export default class extends Controller {
           })
         },
         noResults() {
-          return that.translationKeys.no_item_found.replace('%{item}', resourceName)
+          return that.translationKeys.no_item_found.replace(
+            '%{item}',
+            resourceName,
+          )
         },
       },
     }
@@ -96,6 +126,7 @@ export default class extends Controller {
 
   connect() {
     const that = this
+    console.log('this.debounceTimeout->', this.debounceTimeout)
 
     this.buttonTarget.onclick = () => this.showSearchPanel()
 
@@ -114,7 +145,8 @@ export default class extends Controller {
       getSources: ({ query }) => {
         const endpoint = `${that.searchUrl}?q=${query}`
 
-        return that.debouncedFetch(endpoint)
+        return that
+          .debouncedFetch(endpoint)
           .then((response) => response.json())
           .then((data) => Object.keys(data).map((resourceName) => that.addSource(resourceName, data[resourceName])))
       },
