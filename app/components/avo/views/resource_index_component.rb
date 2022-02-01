@@ -47,7 +47,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   # The Create button is dependent on the new? policy method.
   # The create? should be called only when the user clicks the Save button so the developers gets access to the params from the form.
   def can_see_the_create_button?
-    @resource.authorization.authorize_action(:new, raise_exception: false) && simple_relation? && !has_reflection_and_is_read_only
+    @resource.authorization.authorize_action(:new, raise_exception: false) && !has_reflection_and_is_read_only
   end
 
   def can_attach?
@@ -60,7 +60,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   def has_reflection_and_is_read_only
     if @reflection.present? && @reflection.active_record.name && @reflection.name
       fields = ::Avo::App.get_resource_by_model_name(@reflection.active_record.name).get_field_definitions
-      filtered_fields = fields.filter{ |f| f.id == @reflection.name}
+      filtered_fields = fields.filter { |f| f.id == @reflection.name }
     else
       return false
     end
@@ -77,9 +77,21 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
     if @reflection.present?
       args = {
-        via_relation_class: @parent_model.model_name,
-        via_resource_id: @parent_model.id
+        via_relation_class: reflection_model_class,
+        via_resource_id: @parent_model.id,
       }
+
+      if @reflection.is_a? ActiveRecord::Reflection::ThroughReflection
+        args[:via_relation] = params[:resource_name]
+      end
+
+      if @reflection.is_a? ActiveRecord::Reflection::HasManyReflection
+        args[:via_relation] = @reflection.name
+      end
+
+      if @reflection.parent_reflection.present? && @reflection.parent_reflection.inverse_of.present?
+        args[:via_relation] = @reflection.parent_reflection.inverse_of.name
+      end
 
       if @reflection.inverse_of.present?
         args[:via_relation] = @reflection.inverse_of.name
@@ -103,9 +115,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
   private
 
-  def simple_relation?
-    return @reflection.is_a? ::ActiveRecord::Reflection::HasManyReflection if @reflection.present?
-
-    true
+  def reflection_model_class
+    @reflection.active_record.to_s
   end
 end

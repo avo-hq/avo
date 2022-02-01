@@ -343,8 +343,9 @@ module Avo
 
             reflection = @model._reflections[@params[:via_relation]]
 
-            if field.polymorphic_as.present? && field.types.map(&:to_s).include?(@params["via_relation_class"])
-              value = @params["via_relation_class"].safe_constantize.find(@params[:via_resource_id])
+            if field.polymorphic_as.present? && field.types.map(&:to_s).include?(@params[:via_relation_class])
+              # set the value to the actual record
+              value = @params[:via_relation_class].safe_constantize.find(@params[:via_resource_id])
             elsif reflection.present? && reflection.foreign_key.present? && field.id.to_s == @params[:via_relation].to_s
               value = @params[:via_resource_id]
             end

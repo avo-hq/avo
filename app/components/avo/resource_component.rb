@@ -25,10 +25,6 @@ class Avo::ResourceComponent < ViewComponent::Base
 
   private
 
-  def simple_relation?
-    @reflection.is_a? ::ActiveRecord::Reflection::HasManyReflection
-  end
-
   def relation_resource
     ::Avo::App.get_resource_by_model_name params[:via_resource_class].safe_constantize
   end

@@ -116,13 +116,42 @@ module Avo
       saved = @model.save
       @resource.hydrate(model: @model, view: :new, user: _current_user)
 
+      # This means that the record has been created through another parent record and we need to attach it somehow.
+      if params[:via_resource_id].present?
+        @reflection = @model._reflections[params[:via_relation]]
+        # Figure out what kind of association does the record have with the parent record
+
+        # belongs_to
+        # has_many
+        # Get the foreign key and set it to the id we received in the params
+        if @reflection.is_a?(ActiveRecord::Reflection::BelongsToReflection) || @reflection.is_a?(ActiveRecord::Reflection::HasManyReflection)
+          foreign_key = @reflection.foreign_key
+          @model.send("#{foreign_key}=", params[:via_resource_id])
+          @model.save
+        end
+
+        # has_one
+        # has_one_through
+
+        # has_many_through
+        # has_and_belongs_to_many
+        # polymorphic
+        if @reflection.is_a? ActiveRecord::Reflection::ThroughReflection
+          # find the record
+          via_resource = ::Avo::App.get_resource_by_model_name params[:via_relation_class]
+          @related_record = via_resource.model_class.find params[:via_resource_id]
+
+          @model.send(params[:via_relation]) << @related_record
+        end
+      end
+
       respond_to do |format|
         if saved
-          redirect_path = if params[:via_relation_class].present? && params[:via_resource_id].present?
+          redirect_path = resource_path(model: @model, resource: @resource)
+
+          if params[:via_relation_class].present? && params[:via_resource_id].present?
             parent_resource = ::Avo::App.get_resource_by_model_name params[:via_relation_class].safe_constantize
-            resource_path(model: params[:via_relation_class].safe_constantize, resource: parent_resource, resource_id: params[:via_resource_id])
-          else
-            resource_path(model: @model, resource: @resource)
+            redirect_path = resource_path(model: params[:via_relation_class].safe_constantize, resource: parent_resource, resource_id: params[:via_resource_id])
           end
 
           format.html { redirect_to redirect_path, notice: "#{@model.class.name} #{t("avo.was_successfully_created")}." }
