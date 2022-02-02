@@ -32,7 +32,7 @@ jobs:
       BUNDLE_PATH_RELATIVE_TO_CWD: true
       AVO_LICENSE_KEY: license_123
       SHOULD_NOT_RUN: ${{ matrix.rails == '6.0' && matrix.ruby == '3.1.0' }}
-      SHOULD_RUN: ${{ (matrix.rails == '6.0' && matrix.ruby == '3.1.0') == false }}
+      SHOULD_RUN: ${{ env.SHOULD_NOT_RUN == false }}
 
     runs-on: ubuntu-latest
 
@@ -44,7 +44,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      if: env.SHOULD_RUN
+      if: env.SHOULD_RUN == false
 
     - name: Set up Ruby
       if: env.SHOULD_RUN
