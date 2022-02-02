@@ -76,7 +76,7 @@ module Avo
 
     config.app_middleware.use(
       Rack::Static,
-      urls: ["/avo-packs"],
+      urls: ["/avo-assets"],
       root: Avo::Engine.root.join("public")
     )
 

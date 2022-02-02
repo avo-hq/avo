@@ -48,24 +48,10 @@ RUN yarn check --integrity
 COPY ./lib/avo/version.rb /avo/lib/avo/version.rb
 RUN bundle install --jobs 4 --retry 3
 
-COPY ./bin/                        /avo/bin/
-COPY ./app/packs/                  /avo/app/packs/
-COPY ./config/                     /avo/config/
-COPY ./.eslintrc.json              /avo/.eslintrc.json
-COPY ./jsconfig.json               /avo/jsconfig.json
-COPY ./postcss.config.js           /avo/postcss.config.js
-COPY ./tailwind.config.js          /avo/tailwind.config.js
-COPY ./babel.config.js             /avo/babel.config.js
-
-# Copy the files needed by PurgeCSS
+# Copy the files
 COPY . /avo
 
-# Remove webpacker.yml config files
-RUN rm /avo/config/webpacker.yml
-RUN rm /avo/config/webpacker_packed.yml
-# Add a custom development env for the packed version in order to not start the webpacker process when using Avo in your app's development env.
-COPY ./config/webpacker_packed.yml /avo/config/webpacker.yml
-
-RUN bin/webpack
+RUN yarn prod:build
+RUN yarn prod:build:css
 
 RUN bundle exec rails build
