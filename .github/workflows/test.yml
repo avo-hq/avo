@@ -33,7 +33,7 @@ jobs:
       AVO_LICENSE_KEY: license_123
 
     runs-on: ubuntu-latest
-    
+
     if: ${{ matrix.rails != '6.0' && matrix.ruby != '3.1.0' }}
 
     services:
