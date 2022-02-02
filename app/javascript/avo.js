@@ -19,6 +19,17 @@ window.Turbolinks = Turbo
 
 Mousetrap.bind('r r r', () => Turbo.visit(window.location.href, { action: 'replace' }))
 
+function isMac() {
+  const isMac = window.navigator.userAgent.indexOf('Mac OS X')
+
+  if (isMac) {
+    document.body.classList.add('os-mac')
+    document.body.classList.remove('os-pc')
+  } else {
+    document.body.classList.add('os-pc')
+    document.body.classList.remove('os-mac')
+  }
+}
 function initTippy() {
   tippy('[data-tippy="tooltip"]', {
     theme: 'light',
@@ -37,6 +48,7 @@ ActiveStorage.start()
 document.addEventListener('turbo:load', () => {
   document.body.classList.remove('turbo-loading')
   initTippy()
+  isMac()
 })
 
 document.addEventListener('turbo:before-fetch-response', (e) => {
