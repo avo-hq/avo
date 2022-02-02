@@ -27,6 +27,7 @@ module Avo
     attr_accessor :display_license_request_timeout_error
     attr_accessor :current_user_resource_name
     attr_accessor :raise_error_on_missing_policy
+    attr_accessor :disabled_features
 
     def initialize
       @root_path = "/avo"
@@ -66,6 +67,7 @@ module Avo
       @display_license_request_timeout_error = true
       @current_user_resource_name = "user"
       @raise_error_on_missing_policy = false
+      @disabled_features = []
     end
 
     def locale_tag
@@ -114,6 +116,10 @@ module Avo
 
     def computed_root_path
       Avo::App.root_path
+    end
+
+    def feature_enabled?(feature)
+      !@disabled_features.map(&:to_sym).include?(feature.to_sym)
     end
   end
 
