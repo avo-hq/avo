@@ -76,3 +76,11 @@ body {
 .turbo-progress-bar {
   @apply bg-green-500;
 }
+
+body.os-mac .mac\:hidden {
+  display: none;
+}
+
+body.os-pc .pc\:hidden {
+  display: none;
+}
