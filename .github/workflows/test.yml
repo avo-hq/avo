@@ -34,7 +34,7 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    if: matrix.rails != '6.0' && matrix.ruby != '3.1.0'
+    if: ${{ !(matrix.rails == '6.0' && matrix.ruby == '3.1.0') }}
 
     services:
       postgres:
