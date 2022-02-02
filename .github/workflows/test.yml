@@ -94,6 +94,7 @@ jobs:
         ls -la app/assets/builds
         ls -la public
         ls -la public/avo-assets
+        cat spec/dummy/app/assets/config/manifest.js
 
     - name: Run tests
       id: run_tests
