@@ -153,3 +153,5 @@ require 'support/wait_for_loaded'
 require 'support/js_error_detector'
 require 'support/devise'
 require 'support/shared_contexts'
+
+Rails.application.config.assets.precompile += [Avo::Engine.root.join('app', 'assets', 'config', 'avo_manifest.js').to_s]

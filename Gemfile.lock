@@ -187,9 +187,6 @@ GEM
     io-wait (0.2.1)
     iso (0.4.0)
       i18n
-    jbuilder (2.11.5)
-      actionview (>= 5.0.0)
-      activesupport (>= 5.0.0)
     jmespath (1.5.0)
     jsbundling-rails (1.0.0)
       railties (>= 6.0.0)
@@ -329,16 +326,6 @@ GEM
     ruby-vips (2.1.4)
       ffi (~> 1.12)
     rubyzip (2.3.2)
-    sass-rails (6.0.0)
-      sassc-rails (~> 2.1, >= 2.1.1)
-    sassc (2.4.0)
-      ffi (~> 1.9)
-    sassc-rails (2.1.2)
-      railties (>= 4.0.0)
-      sassc (>= 2.0)
-      sprockets (> 3.0)
-      sprockets-rails
-      tilt
     selenium-webdriver (4.1.0)
       childprocess (>= 0.5, < 5.0)
       rexml (~> 3.2, >= 3.2.5)
@@ -371,7 +358,6 @@ GEM
       railties (>= 6.0.0)
     test-prof (1.0.7)
     thor (1.2.1)
-    tilt (2.0.10)
     timeout (0.2.0)
     turbo-rails (1.0.0)
       actionpack (>= 6.0.0)
@@ -433,7 +419,6 @@ DEPENDENCIES
   httparty
   image_processing (~> 1.2)
   iso
-  jbuilder (~> 2.7)
   jsbundling-rails
   launchy
   listen (>= 3.5.1)
@@ -448,7 +433,6 @@ DEPENDENCIES
   ransack
   rspec-rails (~> 4.0.0)
   ruby-debug-ide
-  sass-rails (>= 6)
   selenium-webdriver
   simplecov
   simplecov-cobertura

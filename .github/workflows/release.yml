@@ -57,8 +57,10 @@ jobs:
         rm ./config/webpacker.yml
         mv ./config/webpacker_packed.yml ./config/webpacker.yml
 
-    - name: Bundle assets
-      run: bin/webpack
+    - name: Build assets
+      run: |
+        yarn prod:build
+        yarn prod:build:css
 
     - name: Build gem
       run: bundle exec rails build
