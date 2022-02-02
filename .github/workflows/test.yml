@@ -13,6 +13,7 @@ jobs:
     strategy:
       matrix:
         ruby:
+          - '3.0.3'
           - '3.1.0'
         rails:
           - '6.0'
@@ -25,7 +26,7 @@ jobs:
       POSTGRES_HOST: localhost
       POSTGRES_USERNAME: postgres
       POSTGRES_PORT: 5432
-      COVERAGE: ${{ matrix.rails == '6.1' && matrix.ruby == '3.0.3' }}
+      COVERAGE: ${{ matrix.rails == '6.1' && matrix.ruby == '3.1.0' }}
       RAILS_VERSION: ${{matrix.rails}}
       BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}.gemfile
       BUNDLE_PATH_RELATIVE_TO_CWD: true
@@ -41,6 +42,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
+    - name: Stop if not required
+      if: ${{ matrix.rails == '6.0' && matrix.ruby == '3.1.0' }}
+      run: exit 0
 
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
