@@ -1,0 +1,8 @@
+class <%= class_name.camelize %> < Avo::Filters::TextFilter
+  self.name = '<%= name.underscore.humanize %>'
+  self.button_label = 'Filter by <%= class_name.underscore.humanize.downcase.gsub(' filter', '') %>'
+
+  def apply(request, query, value)
+    query
+  end
+end
