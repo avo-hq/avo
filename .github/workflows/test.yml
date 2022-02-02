@@ -31,11 +31,10 @@ jobs:
       BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}.gemfile
       BUNDLE_PATH_RELATIVE_TO_CWD: true
       AVO_LICENSE_KEY: license_123
-      SHOULD_NOT_RUN: ${{ matrix.rails == '6.0' && matrix.ruby == '3.1.0' }}
 
     runs-on: ubuntu-latest
 
-    if: ${{ !env.SHOULD_NOT_RUN }}
+    if: matrix.rails != '6.0' && matrix.ruby != '3.1.0'
 
     services:
       postgres:
