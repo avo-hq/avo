@@ -9,7 +9,6 @@ PATH
       hotwire-rails
       httparty
       image_processing
-      manifester
       meta-tags
       pagy
       pundit
