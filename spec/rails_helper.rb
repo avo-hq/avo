@@ -7,6 +7,9 @@ require_relative 'dummy/config/environment'
 if Rails.env.production?
   abort('The Rails environment is running in production mode!')
 end
+
+Rails.application.config.assets.precompile += [Avo::Engine.root.join('app', 'assets', 'config', 'avo_manifest.js').to_s]
+
 require 'rspec/rails'
 require 'webmock/rspec'
 
@@ -153,5 +156,3 @@ require 'support/wait_for_loaded'
 require 'support/js_error_detector'
 require 'support/devise'
 require 'support/shared_contexts'
-
-Rails.application.config.assets.precompile += [Avo::Engine.root.join('app', 'assets', 'config', 'avo_manifest.js').to_s]
