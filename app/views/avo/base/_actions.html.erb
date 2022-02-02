@@ -1,7 +1,7 @@
 <% if @actions.count > 0 %>
   <div class="relative z-40 js-actions-dropdown" data-controller="toggle-panel actions-picker">
     <%= a_button class: "focus:outline-none",
-      color: 'light-blue',
+      color: 'sky',
       'data-action': "click->toggle-panel#togglePanel",
       'data-actions-dropdown-button': @resource.model_key do
     %>
