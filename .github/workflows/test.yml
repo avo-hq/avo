@@ -87,6 +87,8 @@ jobs:
         RAILS_ENV: production
         NODE_ENV: production
       run: |
+        yarn build
+        yarn build:css
         yarn prod:build
         yarn prod:build:css
 
