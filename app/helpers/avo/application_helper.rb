@@ -1,17 +1,6 @@
 module Avo
   module ApplicationHelper
-    include ::Manifester::Helper
     include ::Pagy::Frontend
-
-    def current_webpacker_instance
-      return Avo.webpacker if Avo::IN_DEVELOPMENT
-
-      super
-    end
-
-    def current_manifester_instance
-      Avo.manifester
-    end
 
     def render_license_warnings
       render partial: "avo/sidebar/license_warnings", locals: {

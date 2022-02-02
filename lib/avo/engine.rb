@@ -55,7 +55,7 @@ module Avo
       end
     end
 
-    initializer "webpacker.proxy" do |app|
+    initializer "debug_exception_response_format" do |app|
       app.config.debug_exception_response_format = :api
       # app.config.logger = ::Logger.new(STDOUT)
     end

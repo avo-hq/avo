@@ -13,24 +13,6 @@ module Avo
   class LicenseVerificationTemperedError < StandardError; end
 
   class LicenseInvalidError < StandardError; end
-
-  class << self
-    def webpacker
-      @webpacker ||= ::Webpacker::Instance.new(
-        root_path: ROOT_PATH,
-        config_path: ROOT_PATH.join("config/webpacker.yml")
-      )
-    end
-
-    def manifester
-      @manifester ||= ::Manifester::Instance.new(
-        root_path: ROOT_PATH,
-        public_output_dir: "avo-packs",
-        cache_manifest: Rails.env.production?,
-        fallback_to_webpacker: -> { Avo::IN_DEVELOPMENT }
-      )
-    end
-  end
 end
 
 loader.eager_load
