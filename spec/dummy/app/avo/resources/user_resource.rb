@@ -59,4 +59,6 @@ class UserResource < Avo::BaseResource
   action ToggleInactive
   action ToggleAdmin
   action DummyAction
+
+  filter UserNamesFilter
 end
