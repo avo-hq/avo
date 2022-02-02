@@ -52,11 +52,6 @@ jobs:
     - name: Yarn check integrity
       run: yarn check --integrity
 
-    - name: Replace packed webpacker config
-      run: |
-        rm ./config/webpacker.yml
-        mv ./config/webpacker_packed.yml ./config/webpacker.yml
-
     - name: Build assets
       run: |
         yarn prod:build
