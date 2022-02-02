@@ -14,7 +14,6 @@ jobs:
       matrix:
         ruby:
           - '3.0.3'
-          - '3.1.0'
         rails:
           - '6.0'
           - '6.1'
@@ -26,13 +25,11 @@ jobs:
       POSTGRES_HOST: localhost
       POSTGRES_USERNAME: postgres
       POSTGRES_PORT: 5432
-      COVERAGE: ${{ matrix.rails == '6.1' && matrix.ruby == '3.1.0' }}
+      COVERAGE: ${{ matrix.rails == '6.1' && matrix.ruby == '3.0.3' }}
       RAILS_VERSION: ${{matrix.rails}}
       BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}.gemfile
       BUNDLE_PATH_RELATIVE_TO_CWD: true
       AVO_LICENSE_KEY: license_123
-      SHOULD_NOT_RUN: ${{ matrix.rails == '6.0' && matrix.ruby == '3.1.0' }}
-      SHOULD_RUN: ${{ !(matrix.rails == '6.0' && matrix.ruby == '3.1.0') }}
 
     runs-on: ubuntu-latest
 
@@ -44,10 +41,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      if: env.SHOULD_RUN == false
 
     - name: Set up Ruby
-      if: env.SHOULD_RUN
       uses: ruby/setup-ruby@v1
       with:
         # bundler-cache: true
@@ -55,12 +50,10 @@ jobs:
         ruby-version: ${{ matrix.ruby }}
 
     - name: Install PostgreSQL 11 client
-      if: env.SHOULD_RUN
       run: |
         sudo apt-get -yqq install libpq-dev
 
     - uses: actions/cache@v1
-      if: env.SHOULD_RUN
       with:
         path: vendor/bundle
         key: ${{ runner.os }}-test-gems-${{ hashFiles('**/Gemfile.lock') }}
@@ -68,7 +61,6 @@ jobs:
           ${{ runner.os }}-test-gems-
 
     - name: Bundle install
-      if: env.SHOULD_RUN
       run: |
         bundle config path vendor/bundle
         bundle install --jobs 4 --retry 3
@@ -76,12 +68,10 @@ jobs:
         bin/rails db:migrate
 
     - name: Get yarn cache directory path
-      if: env.SHOULD_RUN
       id: test-yarn-cache-dir-path
       run: echo "::set-output name=dir::$(yarn cache dir)"
 
     - uses: actions/cache@v1
-      if: env.SHOULD_RUN
       id: test-yarn-cache
       with:
         path: ${{ steps.test-yarn-cache-dir-path.outputs.dir }}
@@ -90,11 +80,9 @@ jobs:
           ${{ runner.os }}-test-yarn-
 
     - name: Yarn install
-      if: env.SHOULD_RUN
       run: yarn
 
     - name: Build assets
-      if: env.SHOULD_RUN
       env:
         RAILS_ENV: production
         NODE_ENV: production
@@ -103,19 +91,18 @@ jobs:
         yarn build:css
 
     - name: Run tests
-      if: env.SHOULD_RUN
       id: run_tests
       run: bundle exec rspec
 
     - uses: actions/upload-artifact@v2
-      if: env.SHOULD_RUN && always() && steps.run_tests.outcome == 'failure'
+      if: always() && steps.run_tests.outcome == 'failure'
       with:
         name: rspec_failed_screenshots
         path: ./spec/dummy/tmp/screenshots
 
     - name: Generate coverage
-      if: env.SHOULD_RUN && env.COVERAGE
       uses: codecov/codecov-action@v1
+      if: ${{ env.COVERAGE }}
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         file: ./coverage/coverage.xml
