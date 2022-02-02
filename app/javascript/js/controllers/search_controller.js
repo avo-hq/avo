@@ -3,7 +3,7 @@ import * as Mousetrap from 'mousetrap'
 import { Controller } from 'stimulus'
 import { Turbo } from '@hotwired/turbo-rails'
 import { autocomplete } from '@algolia/autocomplete-js'
-import debouncePromise from '@/js/helpers/debounce_promise'
+import debouncePromise from '../helpers/debounce_promise'
 
 export default class extends Controller {
   static targets = ['autocomplete', 'button']

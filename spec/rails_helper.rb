@@ -7,6 +7,7 @@ require_relative 'dummy/config/environment'
 if Rails.env.production?
   abort('The Rails environment is running in production mode!')
 end
+
 require 'rspec/rails'
 require 'webmock/rspec'
 

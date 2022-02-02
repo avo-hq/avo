@@ -52,13 +52,10 @@ jobs:
     - name: Yarn check integrity
       run: yarn check --integrity
 
-    - name: Replace packed webpacker config
+    - name: Build assets
       run: |
-        rm ./config/webpacker.yml
-        mv ./config/webpacker_packed.yml ./config/webpacker.yml
-
-    - name: Bundle assets
-      run: bin/webpack
+        yarn prod:build
+        yarn prod:build:css
 
     - name: Build gem
       run: bundle exec rails build

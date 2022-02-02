@@ -55,28 +55,14 @@ module Avo
       end
     end
 
-    initializer "webpacker.proxy" do |app|
+    initializer "debug_exception_response_format" do |app|
       app.config.debug_exception_response_format = :api
       # app.config.logger = ::Logger.new(STDOUT)
-
-      insert_middleware = begin
-        Avo.webpacker.config.dev_server.present?
-      rescue
-        nil
-      end
-
-      if insert_middleware
-        app.middleware.insert_before(
-          0, Webpacker::DevServerProxy,
-          ssl_verify_none: true,
-          webpacker: Avo.webpacker
-        )
-      end
     end
 
     config.app_middleware.use(
       Rack::Static,
-      urls: ["/avo-packs"],
+      urls: ["/avo-assets"],
       root: Avo::Engine.root.join("public")
     )
 

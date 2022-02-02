@@ -6,25 +6,26 @@
 @import './../../../node_modules/flatpickr/dist/flatpickr.css';
 @import './../../../node_modules/@algolia/autocomplete-theme-classic/dist/theme.css';
 
-@import './../stylesheets/tailwindcss/base.css';
+@import 'tailwindcss/base';
 
-@import './../stylesheets/fonts.css';
-@import './../stylesheets/typography.css';
-@import './../stylesheets/tooltips.css';
-@import './../stylesheets/alerts.css';
-@import './../stylesheets/loader.css';
-@import './../stylesheets/pagination.css';
-@import './../stylesheets/breadcrumbs.css';
-@import './../stylesheets/search.css';
-@import './../stylesheets/active-storage.css';
-@import './../stylesheets/spinner.css';
+@import './css/fonts.css';
+@import './css/typography.css';
+@import './css/tooltips.css';
+@import './css/alerts.css';
+@import './css/loader.css';
+@import './css/pagination.css';
+@import './css/breadcrumbs.css';
+@import './css/search.css';
+@import './css/active-storage.css';
+@import './css/spinner.css';
 
-@import './../stylesheets/components/status.css';
-@import './../stylesheets/components/code.css';
-@import './../stylesheets/components/progress.css';
-@import './../stylesheets/tailwindcss/components.css';
+@import './css/components/status.css';
+@import './css/components/code.css';
+@import './css/components/progress.css';
 
-@import './../stylesheets/tailwindcss/utilities.css';
+@import 'tailwindcss/components';
+
+@import 'tailwindcss/utilities';
 
 html,
 body {
@@ -67,11 +68,9 @@ body {
   @apply opacity-0 translate-y-1;
 }
 
-.application-sidebar {
-  .active:hover,
-  .active {
-    @apply bg-gray-200;
-  }
+.application-sidebar .active:hover,
+.application-sidebar .active {
+  @apply bg-gray-200;
 }
 
 .turbo-progress-bar {

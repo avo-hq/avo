@@ -9,8 +9,13 @@
   <%= render partial: 'avo/partials/javascript' %>
   <%= render partial: 'avo/partials/head' %>
 
-  <%= javascript_manifest_tag 'application' %>
-  <%= stylesheet_manifest_tag 'application', media: 'all' %>
+  <% if Avo::PACKED %>
+    <%= javascript_include_tag "/avo-assets/avo", "data-turbo-track": "reload", defer: true %>
+    <%= stylesheet_link_tag "/avo-assets/avo", "data-turbo-track": "reload", defer: true %>
+  <% else %>
+    <%= javascript_include_tag "avo", "data-turbo-track": "reload", defer: true %>
+    <%= stylesheet_link_tag "avo", "data-turbo-track": "reload", defer: true %>
+  <% end %>
 </head>
 <body class="bg-blue-gray-200">
 

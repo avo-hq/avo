@@ -43,7 +43,8 @@ public/javascripts/
 /config/master.key
 
 /public/packs
-/public/avo-packs
+/public/avo-assets
+!/public/avo-assets/fonts
 /public/packs-test
 /node_modules
 /yarn-error.log
@@ -58,3 +59,5 @@ coverage/
 .vscode
 
 avo*.gem
+
+app/assets/builds

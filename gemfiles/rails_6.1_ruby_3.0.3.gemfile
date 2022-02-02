@@ -2,14 +2,13 @@
 
 source "https://rubygems.org"
 
-gem "webpacker", "6.0.0.beta.6"
+gem "jsbundling-rails"
+gem "cssbundling-rails"
 gem "countries"
 gem "pundit"
 gem "rails", "~> 6.1.0"
 gem "pg", ">= 0.18", "< 2.0"
 gem "puma", "~> 5.5.1"
-gem "sass-rails", ">= 6"
-gem "jbuilder", "~> 2.7"
 gem "image_processing", "~> 1.2"
 gem "bootsnap", ">= 1.4.2", require: false
 gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
@@ -36,6 +35,7 @@ gem "manifester"
 gem "ransack"
 gem "friendly_id", "~> 5.4.0"
 gem "aws-sdk-s3", require: false
+gem "net-smtp", require: false
 
 group :development do
   gem "standard"
@@ -50,7 +50,7 @@ end
 group :test do
   gem "rspec-rails", "~> 4.0.0"
   gem "rails-controller-testing"
-  gem "capybara", ">= 2.15"
+  gem "capybara", "3.36"
   gem "selenium-webdriver"
   gem "webdrivers"
   gem "fuubar"

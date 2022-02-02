@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { Controller } from 'stimulus'
-import { castBoolean } from '@/js/helpers/cast_boolean'
+import { castBoolean } from '../../helpers/cast_boolean'
 
 export default class extends Controller {
   static targets = ['input', 'controller', 'rows']

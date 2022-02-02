@@ -2,14 +2,13 @@
 
 source "https://rubygems.org"
 
-gem "webpacker", "6.0.0.rc.2"
+gem "jsbundling-rails"
+gem "cssbundling-rails"
 gem "countries"
 gem "pundit"
 gem "rails", "~> 6.1.0"
 gem "pg", ">= 0.18", "< 2.0"
 gem "puma", "~> 5.5.1"
-gem "sass-rails", ">= 6"
-gem "jbuilder", "~> 2.7"
 gem "image_processing", "~> 1.2"
 gem "bootsnap", ">= 1.4.2", require: false
 gem "byebug", platforms: [:mri, :mingw, :x64_mingw]

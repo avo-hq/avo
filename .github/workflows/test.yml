@@ -25,7 +25,7 @@ jobs:
       POSTGRES_HOST: localhost
       POSTGRES_USERNAME: postgres
       POSTGRES_PORT: 5432
-      COVERAGE: true
+      COVERAGE: ${{ matrix.rails == '6.1' && matrix.ruby == '3.0.3' }}
       RAILS_VERSION: ${{matrix.rails}}
       BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}.gemfile
       BUNDLE_PATH_RELATIVE_TO_CWD: true
@@ -82,16 +82,13 @@ jobs:
     - name: Yarn install
       run: yarn
 
-    - name: Replace packed webpacker config
-      run: |
-        rm ./config/webpacker.yml
-        mv ./config/webpacker_packed.yml ./config/webpacker.yml
-
-    - name: Bundle assets
-      run: bin/webpack
+    - name: Build assets
       env:
         RAILS_ENV: production
         NODE_ENV: production
+      run: |
+        yarn build:js
+        yarn build:css
 
     - name: Run tests
       id: run_tests
@@ -105,7 +102,7 @@ jobs:
 
     - name: Generate coverage
       uses: codecov/codecov-action@v1
-      if: ${{ matrix.rails == '6.1' && matrix.ruby == '3.0.3' }}
+      if: ${{ env.COVERAGE }}
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         file: ./coverage/coverage.xml

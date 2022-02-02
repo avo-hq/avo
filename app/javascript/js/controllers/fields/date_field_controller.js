@@ -1,6 +1,6 @@
 import { Controller } from 'stimulus'
 import { DateTime } from 'luxon'
-import { castBoolean } from '@/js/helpers/cast_boolean'
+import { castBoolean } from '../../helpers/cast_boolean'
 import flatpickr from 'flatpickr'
 
 export default class extends Controller {

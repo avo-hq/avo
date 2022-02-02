@@ -27,7 +27,7 @@ Gem::Specification.new do |spec|
       "public gem pushes."
   end
 
-  spec.post_install_message = "Thank you for using Avo! Docs are available at https://docs.avohq.io"
+  spec.post_install_message = "Thank you for using Avo 💪  Docs are available at https://docs.avohq.io"
 
   spec.files = Dir["{bin,app,config,db,lib,public}/**/*", "MIT-LICENSE", "Rakefile", "README.md", "avo.gemspec", "Gemfile", "Gemfile.lock"]
 
@@ -44,5 +44,4 @@ Gem::Specification.new do |spec|
   spec.add_dependency "addressable"
   spec.add_dependency "meta-tags"
   spec.add_dependency "breadcrumbs_on_rails"
-  spec.add_dependency "manifester"
 end
