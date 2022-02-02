@@ -8,7 +8,7 @@ if Rails.env.production?
   abort('The Rails environment is running in production mode!')
 end
 
-Rails.application.config.assets.precompile += [Avo::Engine.root.join('app', 'assets', 'config', 'avo_manifest.js').to_s]
+# Rails.application.config.assets.precompile += [Avo::Engine.root.join('app', 'assets', 'config', 'avo_manifest.js').to_s]
 
 require 'rspec/rails'
 require 'webmock/rspec'
