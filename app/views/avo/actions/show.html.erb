@@ -5,7 +5,7 @@
     data-action-target="controllerDiv"
     data-resource-name="<%= @resource.model_key %>"
     data-resource-id="<%= params[:id] %>"
-    class="hidden text-blue-gray-800"
+    class="hidden text-slate-800"
   >
     <%= form_with model: @model, scope: 'fields', url: "#{@resource.records_path}/actions/#{@action.param_id}", data: {'turbo-frame': '_top', 'action-target': 'form'} do |form| %>
       <%= render Avo::ModalComponent.new do |c| %>

@@ -8,17 +8,17 @@
   per_page_options = per_page_options.sort.uniq
 %>
 
-<div class="bg-white px-4 flex items-center justify-between aborder-t aborder-blue-gray-200 sm:px-6 rounded-xl">
+<div class="bg-white px-4 flex items-center justify-between aborder-t aborder-slate-200 sm:px-6 rounded-xl">
   <div class="hidden sm:flex-2 sm:flex sm:items-center sm:justify-between">
     <div>
-      <div class="text-sm leading-5 text-blue-gray-600 flex items-center">
+      <div class="text-sm leading-5 text-slate-600 flex items-center">
         <div class="mr-2"><%== pagy_info @pagy %></div>
 
         <div data-controller="per-page">
           <div class="flex items-center">
             <%= select_tag 'per_page',
               options_for_select(per_page_options, @index_params[:per_page]),
-              class: 'appearance-none inline-flex bg-blue-gray-100 disabled:bg-blue-gray-400 disabled:cursor-not-allowed focus:bg-white text-blue-gray-700 disabled:text-blue-gray-600 rounded-md py-1 px-2 leading-tight border border-blue-gray-300 outline-none focus:border-blue-gray-400 outline w-16 mr-1 text-sm',
+              class: 'appearance-none inline-flex bg-slate-100 disabled:bg-slate-400 disabled:cursor-not-allowed focus:bg-white text-slate-700 disabled:text-slate-600 rounded-md py-1 px-2 leading-tight border border-slate-300 outline-none focus:border-slate-400 outline w-16 mr-1 text-sm',
               data: {
                 'turbo-frame': turbo_frame,
                 'per-page-target': 'selector',

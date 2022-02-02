@@ -135,12 +135,12 @@ module Avo
     end
 
     def input_classes(extra_classes = "", has_error: false)
-      classes = "appearance-none inline-flex bg-blue-gray-100 disabled:bg-blue-gray-300 disabled:cursor-not-allowed focus:bg-white text-blue-gray-700 disabled:text-blue-gray-700 rounded-md py-2 px-3 leading-tight border outline-none outline"
+      classes = "appearance-none inline-flex bg-slate-100 disabled:bg-slate-300 disabled:cursor-not-allowed focus:bg-white text-slate-700 disabled:text-slate-700 rounded-md py-2 px-3 leading-tight border outline-none outline"
 
       classes += if has_error
         " border-red-600"
       else
-        " border-blue-gray-300"
+        " border-slate-300"
       end
 
       classes += " #{extra_classes}"

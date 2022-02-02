@@ -1,7 +1,7 @@
 <div data-controller="toggle-panel">
   <div class="relative w-full flex justify-between z-30">
     <%= a_button class: 'focus:outline-none',
-      color: 'blue-gray',
+      color: 'slate',
       title: t('avo.click_to_reveal_filters'),
       'data-button': 'resource-filters',
       'data-action': 'click->toggle-panel#togglePanel',
@@ -24,9 +24,9 @@
 
       <div class="p-4 border-gray-300 border-t">
         <% if params[:filters].present? %>
-          <%= a_link t('avo.reset_filters'), resources_path(resource: @resource, filters: nil, keep_query_params: true), color: 'blue-gray', class: 'w-full justify-center' %>
+          <%= a_link t('avo.reset_filters'), resources_path(resource: @resource, filters: nil, keep_query_params: true), color: 'slate', class: 'w-full justify-center' %>
         <% else %>
-          <%= a_button t('avo.reset_filters'), color: 'blue-gray', class: 'w-full justify-center', disabled: true %>
+          <%= a_button t('avo.reset_filters'), color: 'slate', class: 'w-full justify-center', disabled: true %>
         <% end %>
       </div>
     </div>
