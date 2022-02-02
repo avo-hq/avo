@@ -6,9 +6,9 @@
   "license": "Commercial",
   "private": true,
   "scripts": {
-    "build": "esbuild app/javascript/*.js --bundle --sourcemap --outdir=app/assets/builds",
+    "build:js": "esbuild app/javascript/*.js --bundle --sourcemap --outdir=app/assets/builds",
     "build:css": "tailwindcss -i ./app/assets/stylesheets/avo.css -o ./app/assets/builds/avo.css --postcss",
-    "prod:build": "esbuild app/javascript/*.js --bundle --sourcemap --outdir=public/avo-assets",
+    "prod:build:js": "esbuild app/javascript/*.js --bundle --sourcemap --outdir=public/avo-assets",
     "prod:build:css": "tailwindcss -i ./app/assets/stylesheets/avo.css -o ./public/avo-assets/avo.css --postcss"
   },
   "dependencies": {
