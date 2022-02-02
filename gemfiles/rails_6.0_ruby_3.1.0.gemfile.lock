@@ -103,8 +103,8 @@ GEM
       aws-eventstream (~> 1, >= 1.0.2)
     bcrypt (3.1.16)
     bindex (0.8.1)
-    bootsnap (1.9.4)
-      msgpack (~> 1.0)
+    bootsnap (1.10.2)
+      msgpack (~> 1.2)
     breadcrumbs_on_rails (4.1.0)
       railties (>= 5.0)
     builder (3.2.4)
@@ -173,7 +173,7 @@ GEM
     httparty (0.20.0)
       mime-types (~> 3.0)
       multi_xml (>= 0.5.2)
-    i18n (1.8.11)
+    i18n (1.9.1)
       concurrent-ruby (~> 1.0)
     i18n_data (0.15.0)
       simple_po_parser (~> 1.1)
@@ -210,7 +210,7 @@ GEM
     mini_magick (4.11.0)
     mini_mime (1.1.2)
     minitest (5.15.0)
-    msgpack (1.4.2)
+    msgpack (1.4.4)
     multi_xml (0.6.0)
     net-protocol (0.1.2)
       io-wait
@@ -220,10 +220,11 @@ GEM
       net-protocol
       timeout
     nio4r (2.5.8)
-    nokogiri (1.13.0-x86_64-darwin)
+    nokogiri (1.13.1-x86_64-darwin)
       racc (~> 1.4)
     orm_adapter (0.5.0)
-    pagy (5.7.3)
+    pagy (5.9.3)
+      activesupport
     parallel (1.21.0)
     parser (3.1.0.0)
       ast (~> 2.4.1)
@@ -352,13 +353,13 @@ GEM
     thor (1.2.1)
     thread_safe (0.3.6)
     timeout (0.2.0)
-    turbo-rails (1.0.0)
+    turbo-rails (1.0.1)
       actionpack (>= 6.0.0)
       railties (>= 6.0.0)
     tzinfo (1.2.9)
       thread_safe (~> 0.1)
     unicode-display_width (2.1.0)
-    view_component (2.47.0)
+    view_component (2.48.0)
       activesupport (>= 5.0.0, < 8.0)
       method_source (~> 1.0)
     warden (1.2.9)
@@ -381,7 +382,7 @@ GEM
     websocket-extensions (0.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.5.3)
+    zeitwerk (2.5.4)
 
 PLATFORMS
   x86_64-darwin-21
