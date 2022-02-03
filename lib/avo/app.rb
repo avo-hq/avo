@@ -155,24 +155,6 @@ module Avo
             filename
           end
       end
-
-      def draw_routes
-        # We should eager load all the classes so we find all descendants
-        Rails.application.eager_load!
-
-        proc do
-          BaseResource.descendants
-            .select do |resource|
-              resource != :BaseResource
-            end
-            .select do |resource|
-              resource.is_a? Class
-            end
-            .map do |resource|
-              resources resource.new.model_key
-            end
-        end
-      end
     end
   end
 end
