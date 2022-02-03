@@ -43,8 +43,9 @@ public/javascripts/
 /config/master.key
 
 /public/packs
-/public/avo-assets
-!/public/avo-assets/fonts
+/public/avo-assets/avo.css
+/public/avo-assets/avo.js
+/public/avo-assets/avo.js.map
 /public/packs-test
 /node_modules
 /yarn-error.log
