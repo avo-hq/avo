@@ -54,7 +54,7 @@ jobs:
 
     - name: Build assets
       run: |
-        yarn prod:build
+        yarn prod:build:js
         yarn prod:build:css
 
     - name: Build gem

@@ -8,7 +8,6 @@
 /.github
 /.vscode
 /pkg
-/public
 /scripts
 /public/avo-assets/avo.css
 /public/avo-assets/avo.js
