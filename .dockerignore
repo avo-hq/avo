@@ -27,5 +27,3 @@ pkg/
 # Allow v1.0.0 files from tmp in docker
 !tmp/Gemfile_v1.lock
 !tmp/version_v1.rb
-
-!/public/avo-assets/fonts
