@@ -29,8 +29,7 @@ module Avo
     def a_button(label = nil, **args, &block)
       args[:class] = button_classes(args[:class], color: args[:color], variant: args[:variant], size: args[:size])
       if args[:spinner]
-        args["data-controller"] = "loading-button"
-        # args["data-action"] = "click->loading-button#onClick"
+        args[:"data-controller"] = "loading-button"
       end
 
       locals = {
