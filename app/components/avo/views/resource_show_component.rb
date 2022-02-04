@@ -6,11 +6,22 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
 
   attr_reader :fields_by_panel, :has_one_panels, :has_many_panels, :has_as_belongs_to_many_panels
 
-  def initialize(resource: nil, reflection: nil, parent_model: nil)
+  def initialize(resource: nil, reflection: nil, parent_model: nil, resource_panel: nil)
     @resource = resource
     @reflection = reflection
+    @resource_panel = resource_panel
 
     split_panel_fields
+  end
+
+  def title
+    if @reflection.present?
+      return field.name if field.present?
+
+      ::Avo::App.get_resource_by_model_name(@reflection.class_name).name
+    else
+      @resource.panels.first[:name]
+    end
   end
 
   def back_path
