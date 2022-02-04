@@ -28,7 +28,7 @@ class Avo::ResourceComponent < ViewComponent::Base
   # Figure out what is the corresponding field for this @reflection
   def field
     fields = ::Avo::App.get_resource_by_model_name(@reflection.active_record.name).get_field_definitions
-    filtered_fields = fields.find { |f| f.id == @reflection.name }
+    fields.find { |f| f.id == @reflection.name }
   rescue
     nil
   end
