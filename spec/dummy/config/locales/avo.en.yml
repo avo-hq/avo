@@ -73,6 +73,10 @@ en:
         zero: 'files'
         one: 'file'
         other: 'files'
+      people:
+        zero: 'peeps'
+        one: 'peep'
+        other: 'peeps'
     resource_translations:
       user:
         zero: 'users'

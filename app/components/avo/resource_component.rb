@@ -25,6 +25,14 @@ class Avo::ResourceComponent < ViewComponent::Base
 
   private
 
+  # Figure out what is the corresponding field for this @reflection
+  def field
+    fields = ::Avo::App.get_resource_by_model_name(@reflection.active_record.name).get_field_definitions
+    fields.find { |f| f.id == @reflection.name }
+  rescue
+    nil
+  end
+
   def relation_resource
     ::Avo::App.get_resource_by_model_name params[:via_resource_class].safe_constantize
   end

@@ -102,6 +102,12 @@ module Avo
         @id.to_s.humanize(keep_id_suffix: true)
       end
 
+      def plural_name
+        return I18n.t(translation_key, count: 2).capitalize if translation_key
+
+        name.pluralize
+      end
+
       def placeholder
         return @placeholder if @placeholder.present?
 
