@@ -2,11 +2,13 @@ module Avo
   module Fields
     class HasBaseField < BaseField
       attr_accessor :display
+      attr_accessor :scope
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
 
         @display = args[:display].present? ? args[:display] : :show
+        @scope = args[:scope].present? ? args[:scope] : nil
       end
 
       def resource

@@ -154,6 +154,12 @@ module Avo
       fields
     end
 
+    def get_field(id)
+      get_field_definitions.find do |f|
+        f.id == id.to_sym
+      end
+    end
+
     def get_grid_fields
       return if self.class.grid_loader.blank?
 
