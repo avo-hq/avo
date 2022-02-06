@@ -1,5 +1,6 @@
 class PersonResource < Avo::BaseResource
   self.title = :name
+  self.description = 'People on the app'
   self.includes = []
 
   # self.search_query = ->(params:) do

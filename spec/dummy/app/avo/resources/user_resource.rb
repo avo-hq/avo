@@ -1,5 +1,8 @@
 class UserResource < Avo::BaseResource
   self.title = :name
+  self.description = -> () {
+    "These are the users of the app. view: #{view}"
+  }
   self.translation_key = "avo.resource_translations.user"
   self.search_query = ->(params:) do
     scope.ransack(id_eq: params[:q], first_name_cont: params[:q], last_name_cont: params[:q], m: "or").result(distinct: false)
