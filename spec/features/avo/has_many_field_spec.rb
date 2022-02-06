@@ -107,4 +107,17 @@ RSpec.feature "HasManyField", type: :feature do
       end
     end
   end
+
+  describe "scope" do
+    let!(:regular_comment) { create :comment, user: user, body: 'Hey comment' }
+    let!(:a_comment) { create :comment, user: user, body: 'A comment that starts with the letter A'}
+
+    subject do
+      visit "/admin/resources/users/#{user.id}/comments?turbo_frame=has_many_field_show_comments"
+      page
+    end
+
+    it { is_expected.to have_text "A comment that starts with the letter A" }
+    it { is_expected.not_to have_text "Hey comment" }
+  end
 end

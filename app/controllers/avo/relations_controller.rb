@@ -18,6 +18,11 @@ module Avo
       @parent_model = @parent_resource.class.find_scope.find(params[:id])
       @parent_resource.hydrate(model: @parent_model)
       @query = @authorization.apply_policy @parent_model.public_send(params[:related_name])
+      @association_field = @parent_resource.get_field params[:related_name]
+
+      if @association_field.present? && @association_field.scope.present?
+        @query = @query.instance_exec(&@association_field.scope)
+      end
 
       super
     end
