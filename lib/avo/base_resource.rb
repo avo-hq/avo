@@ -19,6 +19,7 @@ module Avo
 
     class_attribute :id, default: :id
     class_attribute :title, default: :id
+    class_attribute :description, default: :id
     class_attribute :search_query, default: nil
     class_attribute :search_query_help, default: ''
     class_attribute :includes, default: []
@@ -228,6 +229,16 @@ module Avo
       return @model.send title if @model.present?
 
       name
+    end
+
+    def resource_description
+      return instance_exec(&self.class.description) if self.class.description.respond_to? :call
+
+      # Show the description only on the resource index view.
+      # If the user wants to conditionally it on all pages, they should use a block.
+      if view == :index
+        return self.class.description if self.class.description.is_a? String
+      end
     end
 
     def translation_key

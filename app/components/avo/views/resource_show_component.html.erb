@@ -3,7 +3,7 @@
   data-selected-resources='["<%= @resource.model.id %>"]'
 >
   <% @resource.panels.each_with_index do |resource_panel, index| %>
-    <%= render Avo::PanelComponent.new(title: title, display_breadcrumbs: @reflection.blank?, index: index) do |c| %>
+    <%= render Avo::PanelComponent.new(title: title, description: @resource.resource_description, display_breadcrumbs: @reflection.blank?, index: index) do |c| %>
       <% c.tools do %>
         <% if resource_panel[:name] == @resource.default_panel_name %>
           <%= render 'actions' %>
