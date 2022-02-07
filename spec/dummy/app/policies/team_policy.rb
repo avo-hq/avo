@@ -66,7 +66,7 @@ class TeamPolicy < ApplicationPolicy
   end
 
   def act_on_team_members?
-    true
+    false
   end
 
   # Actions
