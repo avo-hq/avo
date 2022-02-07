@@ -91,7 +91,7 @@ RSpec.describe "Filters", type: :system do
     let!(:team_with_members) { create :team, name: "With Members" }
 
     before do
-      team_with_members.members << user
+      team_with_members.team_members << user
     end
 
     let(:url) { "/admin/resources/teams?view_type=table" }
@@ -272,8 +272,8 @@ RSpec.describe "Filters", type: :system do
     let!(:team_with_members) { create :team, name: "With Members" }
 
     before do
-      team_with_members.members << user
-      team_without_members.members << user
+      team_with_members.team_members << user
+      team_without_members.team_members << user
     end
 
     let(:url) { "/admin/resources/teams?view_type=table" }
