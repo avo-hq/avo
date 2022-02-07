@@ -5,7 +5,7 @@ RSpec.feature "multiple names model", type: :feature do
   let!(:user) { create :user }
 
   before do
-    team.members << user
+    team.team_members << user
   end
 
   subject(:team_membership) {

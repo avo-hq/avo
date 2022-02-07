@@ -1,16 +1,18 @@
 <div>
   <%= render Avo::PanelComponent.new(title: title, description: @resource.resource_description, body_classes: 'py-4', data: { component: 'resources-index' }, display_breadcrumbs: @reflection.blank?) do |c| %>
     <% c.tools do %>
-      <%= render 'actions' if @actions.present? %>
+      <% if can_see_the_actions_button? %>
+        <%= render 'actions' %>
+      <% end %>
 
       <% if can_see_the_create_button? %>
-        <%= a_link create_path do %>
+        <%= a_link create_path, 'data-target': 'create' do %>
           <%= svg 'plus' %> <%= t('avo.create_new_item', item: singular_resource_name.downcase ) %>
         <% end %>
       <% end %>
 
       <% if can_attach? %>
-        <%= a_link attach_path, color: 'indigo', 'data-turbo-frame': 'attach_modal' do %>
+        <%= a_link attach_path, color: 'indigo', 'data-turbo-frame': 'attach_modal', 'data-target': 'attach' do %>
           <%= svg 'view-grid-add' %> <%= t('avo.attach_item', item: singular_resource_name).capitalize %>
         <% end %>
       <% end %>

@@ -10,15 +10,19 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   def can_detach?
     @reflection.present? &&
       @resource.model.present? &&
-      (@reflection.is_a?(::ActiveRecord::Reflection::HasManyReflection) || @reflection.is_a?(::ActiveRecord::Reflection::ThroughReflection)) &&
+      is_has_many_association &&
       authorize_association_for("detach")
   end
 
   def can_edit?
+    return authorize_association_for(:edit) if @reflection.present?
+
     @resource.authorization.authorize_action(:edit, raise_exception: false)
   end
 
   def can_view?
+    return authorize_association_for(:view) if @reflection.present?
+
     @resource.authorization.authorize_action(:show, raise_exception: false)
   end
 
@@ -60,5 +64,9 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     return nil if @parent_model.blank?
 
     ::Avo::App.get_resource_by_model_name @parent_model.class
+  end
+
+  def is_has_many_association
+    @reflection.is_a?(::ActiveRecord::Reflection::HasManyReflection) || @reflection.is_a?(::ActiveRecord::Reflection::ThroughReflection)
   end
 end

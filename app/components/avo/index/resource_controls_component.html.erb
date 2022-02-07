@@ -4,6 +4,7 @@
       show_path,
       title: t('avo.view_item',  item: singular_resource_name).capitalize,
       data: {
+        target: 'control:view',
         control: :show,
         'tippy': 'tooltip',
       }
@@ -15,6 +16,7 @@
       edit_path,
       title: t('avo.edit_item', item: singular_resource_name).capitalize,
       data: {
+        target: 'control:edit',
         control: :edit,
         'resource-id': @resource.model.id,
         'tippy': 'tooltip',
@@ -30,6 +32,7 @@
         title: t('avo.detach_item', item: singular_resource_name).capitalize,
         type: :submit,
         data: {
+          target: 'control:detach',
           confirm: t('avo.are_you_sure_detach_item', item: singular_resource_name),
           control: :detach,
           'resource-id': @resource.model.id,
@@ -49,6 +52,7 @@
         title: t('avo.delete_item',  item: singular_resource_name).capitalize,
         type: :submit,
         data: {
+          target: 'control:destroy',
           confirm: t('avo.are_you_sure',  item: singular_resource_name),
           control: :destroy,
           'resource-id': @resource.model.id,
