@@ -1,43 +1,43 @@
 require "rails_helper"
 
 def set_policy(result)
-  eval <<-HEREDOC, __FILE__, __LINE__ + 1
-  class TeamPolicy < ApplicationPolicy
-    # Team members association
-    def create_team_members?
-      #{result}
-    end
+  eval <<-HEREDOC
+    class TeamPolicy < ApplicationPolicy
+      # Team members association
+      def create_team_members?
+        #{result}
+      end
 
-    def destroy_team_members?
-      #{result}
-    end
+      def destroy_team_members?
+        #{result}
+      end
 
-    def view_team_members?
-      #{result}
-    end
+      def view_team_members?
+        #{result}
+      end
 
-    def edit_team_members?
-      #{result}
-    end
+      def edit_team_members?
+        #{result}
+      end
 
-    def attach_team_members?
-      #{result}
-    end
+      def attach_team_members?
+        #{result}
+      end
 
-    def detach_team_members?
-      #{result}
-    end
+      def detach_team_members?
+        #{result}
+      end
 
-    def act_on_team_members?
-      #{result}
-    end
+      def act_on_team_members?
+        #{result}
+      end
 
-    class Scope < ApplicationPolicy::Scope
-      def resolve
-        scope.all
+      class Scope < ApplicationPolicy::Scope
+        def resolve
+          scope.all
+        end
       end
     end
-  end
   HEREDOC
 end
 
