@@ -1,4 +1,4 @@
-class CreateCourseLinks < ActiveRecord::Migration[6.1]
+class CreateCourseLinks < ActiveRecord::Migration[6.0]
   def change
     create_table :course_links do |t|
       t.string :link
