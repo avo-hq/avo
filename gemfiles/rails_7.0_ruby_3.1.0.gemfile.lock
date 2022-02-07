@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    avo (1.19.0)
+    avo (1.20.0)
       active_link_to
       addressable
       breadcrumbs_on_rails
@@ -242,7 +242,7 @@ GEM
     nokogiri (1.13.1-x86_64-darwin)
       racc (~> 1.4)
     orm_adapter (0.5.0)
-    pagy (5.9.3)
+    pagy (5.10.1)
       activesupport
     parallel (1.21.0)
     parser (3.1.0.0)
