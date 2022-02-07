@@ -36,4 +36,11 @@ class Avo::ResourceComponent < ViewComponent::Base
   def relation_resource
     ::Avo::App.get_resource_by_model_name params[:via_resource_class].safe_constantize
   end
+
+  # Get the resource for the resource using the klass attribute so we get the namespace too
+  def reflection_resource
+    ::Avo::App.get_resource_by_model_name(@reflection.klass.to_s)
+  rescue
+    nil
+  end
 end

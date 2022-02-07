@@ -53,4 +53,12 @@ FactoryBot.define do
     name { "#{Faker::Name.first_name} #{Faker::Name.last_name}" }
     type { "Spouse" }
   end
+
+  factory :course do
+    name { Faker::Company.name }
+  end
+
+  factory :link do
+    name { Faker::Internet.url }
+  end
 end

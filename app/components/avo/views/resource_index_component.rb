@@ -32,7 +32,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     if @reflection.present?
       return field.plural_name if field.present?
 
-      ::Avo::App.get_resource_by_model_name(@reflection.class_name).plural_name
+      reflection_resource.plural_name
     else
       @resource.plural_name
     end
@@ -109,7 +109,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
   def singular_resource_name
     if @reflection.present?
-      ::Avo::App.get_resource_by_model_name(@reflection.class_name).name
+      reflection_resource.name
     else
       @resource.singular_name || @resource.model_class.model_name.name.downcase
     end
