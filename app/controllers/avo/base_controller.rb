@@ -194,7 +194,7 @@ module Avo
     private
 
     def model_params
-      model_param_key = @resource.singular_model_key
+      model_param_key = @resource.form_scope
 
       request_params = params.require(model_param_key).permit(permitted_params)
 

@@ -1,6 +1,13 @@
 <div>
   <% @resource.panels.each do |resource_panel| %>
-    <%= form_with model: @resource.model, url: helpers.resources_path(resource: @resource, via_relation_class: params[:via_relation_class], via_relation: params[:via_relation], via_resource_id: params[:via_resource_id]), local: true, multipart: true do |form| %>
+    <%= form_with model: @resource.model,
+                  scope: @resource.form_scope,
+                  url: helpers.resources_path(resource: @resource,
+                                              via_relation_class: params[:via_relation_class],
+                                              via_relation: params[:via_relation],
+                                              via_resource_id: params[:via_resource_id]),
+                  local: true,
+                  multipart: true do |form| %>
       <%= render Avo::PanelComponent.new(title: resource_panel[:name], description: @resource.resource_description, display_breadcrumbs: true) do |c| %>
         <% c.tools do %>
           <div class="flex justify-end space-x-2">
