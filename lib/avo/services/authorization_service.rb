@@ -37,6 +37,10 @@ module Avo
         self.class.defined_methods(user, model, **args)
       end
 
+      def has_method?(method, **args)
+        self.class.defined_methods(user, record, **args).include? method.to_sym
+      end
+
       class << self
         def authorize(user, record, action, **args)
           return true if skip_authorization
