@@ -1,5 +1,5 @@
 <div>
-  <%= render Avo::PanelComponent.new(title: title, description: @resource.resource_description, body_classes: 'py-4', data: { component: 'resources-index' }, display_breadcrumbs: @reflection.blank?) do |c| %>
+  <%= render Avo::PanelComponent.new(title: title, description: description, body_classes: 'py-4', data: { component: 'resources-index' }, display_breadcrumbs: @reflection.blank?) do |c| %>
     <% c.tools do %>
       <% if can_see_the_actions_button? %>
         <%= render 'actions' %>
