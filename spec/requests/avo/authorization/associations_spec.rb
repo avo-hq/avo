@@ -1,7 +1,7 @@
 require "rails_helper"
 
 def set_policy(result)
-  eval <<-eoc
+  eval <<-eoc, __FILE__, __LINE__ + 1
   class TeamPolicy < ApplicationPolicy
     # Team members association
     def create_team_members?
