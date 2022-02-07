@@ -83,6 +83,8 @@ GEM
       zeitwerk (~> 2.3)
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
+    ap (0.1.1)
+      httparty (>= 0.7.7)
     appraisal (2.4.1)
       bundler
       rake
@@ -226,7 +228,7 @@ GEM
     nokogiri (1.13.1-x86_64-darwin)
       racc (~> 1.4)
     orm_adapter (0.5.0)
-    pagy (5.9.3)
+    pagy (5.10.1)
       activesupport
     parallel (1.21.0)
     parser (3.1.0.0)
@@ -392,6 +394,7 @@ PLATFORMS
 DEPENDENCIES
   active_link_to
   addressable
+  ap
   appraisal
   avo!
   aws-sdk-s3

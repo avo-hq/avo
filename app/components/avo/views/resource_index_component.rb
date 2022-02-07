@@ -125,6 +125,12 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     end
   end
 
+  def description
+    return if @reflection.present?
+
+    @resource.resource_description
+  end
+
   private
 
   def reflection_model_class
