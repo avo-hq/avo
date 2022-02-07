@@ -68,6 +68,9 @@ module Avo
         def authorize_action(user, record, action, **args)
           action = Avo.configuration.authorization_methods.stringify_keys[action.to_s] || action
 
+          # Add the question mark if it's missing
+          action = "#{action}?" unless action.end_with? '?'
+
           return true if action.nil?
 
           authorize user, record, action, **args
