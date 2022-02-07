@@ -18,7 +18,7 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
     if @reflection.present?
       return field.name if field.present?
 
-      ::Avo::App.get_resource_by_model_name(@reflection.class_name).name
+      reflection_resource.name
     else
       @resource.panels.first[:name]
     end
