@@ -48,7 +48,7 @@ RSpec.feature 'create_through_record', type: :feature do
       expect(person.spouses.first).to be nil
       visit url
 
-      fill_in 'spouse_name', with: 'Mary'
+      fill_in 'person_name', with: 'Mary'
       click_on 'Save'
 
       wait_for_loaded
