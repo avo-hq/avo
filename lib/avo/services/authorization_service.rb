@@ -101,7 +101,7 @@ module Avo
             Pundit.policy!(user, record).methods
           rescue => error
             if args[:raise_exception] == false
-              false
+              []
             else
               raise error
             end
