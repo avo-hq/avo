@@ -459,7 +459,7 @@ module Avo
     end
 
     def form_scope
-      model.class.base_class.to_s.underscore.downcase
+      model_class.base_class.to_s.underscore.downcase
     end
   end
 end
