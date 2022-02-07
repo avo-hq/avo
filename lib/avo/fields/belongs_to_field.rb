@@ -4,7 +4,8 @@ module Avo
       attr_reader :searchable
       attr_reader :polymorphic_as
       attr_reader :relation_method
-      attr_reader :types
+      attr_reader :types # for Polymorphic associations
+      attr_reader :searchable
 
       def initialize(id, **args, &block)
         args[:placeholder] ||= I18n.t("avo.choose_an_option")
@@ -15,6 +16,7 @@ module Avo
         @polymorphic_as = args[:polymorphic_as]
         @types = args[:types]
         @relation_method = name.to_s.parameterize.underscore
+        @searchable = args[:searchable]
       end
 
       def value

@@ -8,6 +8,7 @@ class PostResource < Avo::BaseResource
   self.default_view_type = :grid
 
   field :id, as: :id
+  field :user, as: :belongs_to, meta: {searchable: false}, placeholder: "—", autocomplete: true
   field :name, as: :text, required: true
   field :body, as: :trix, placeholder: "Enter text", always_show: false, attachment_key: :attachments, hide_attachment_url: true, hide_attachment_filename: true, hide_attachment_filesize: true
   field :cover_photo, as: :file, is_image: true, as_avatar: :rounded
@@ -21,7 +22,6 @@ class PostResource < Avo::BaseResource
   field :is_published, as: :boolean do |model|
     model.published_at.present?
   end
-  field :user, as: :belongs_to, meta: {searchable: false}, placeholder: "—"
   field :status, as: :select, enum: ::Post.statuses, display_value: false
   field :comments, as: :has_many
 

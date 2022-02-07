@@ -74,6 +74,37 @@ module Avo
       end
     end
 
+    def search
+      @model = @resource.model_class.find params[:id]
+      @resource.hydrate model: @model
+      # Try and find the appropiate field
+      @field = @resource.fields.find do |field|
+        # puts ['field->', field].inspect
+        field.id.to_s == params[:related_name]
+      end
+
+      @field.hydrate model: @model
+
+      @results = @field.options.map do |item|
+        {
+          _id: item[:value],
+          _label: item[:label],
+        }
+      end
+
+      render json: {
+        belongs_to: {
+          header: 'hey',
+          results: @results
+        }
+      }
+
+      # abort [@resource, @field, @field.options].inspect
+      # render json: {
+      #   hey: params[:q]
+      # }
+    end
+
     private
 
     def set_attachment_class
