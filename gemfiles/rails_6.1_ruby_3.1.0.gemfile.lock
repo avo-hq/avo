@@ -83,6 +83,8 @@ GEM
       zeitwerk (~> 2.3)
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
+    ap (0.1.1)
+      httparty (>= 0.7.7)
     appraisal (2.4.1)
       bundler
       rake
