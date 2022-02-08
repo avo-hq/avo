@@ -23,6 +23,20 @@ module Avo
         super(polymorphic_as)
       end
 
+      # The value
+      def field_value
+        value.send(database_value)
+      rescue
+        nil
+      end
+
+      # What the user sees in the text field
+      def field_label
+        value.send(target_resource.class.title)
+      rescue
+        nil
+      end
+
       def options
         ::Avo::Services::AuthorizationService.apply_policy(user, target_resource.class.query_scope).all.map do |model|
           {
