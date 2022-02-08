@@ -10,7 +10,8 @@ import debouncePromise from '../helpers/debounce_promise'
  * The search controller is used in three places.
  * 1. Global search (on the top navbar) and can search through multiple resources.
  * 2. Resource search (on the Index page on top of the table panel) and will search one resource
- * 3. belongs_to field. This requires a bit more cleanup because the user will not navigate away from the page. It will replace the id and label in some fields on the page and also needs a "clear" button which clears the information so the user can submit the form without a value.
+ * 3. belongs_to field. This requires a bit more cleanup because the user will not navigate away from the page.
+ * It will replace the id and label in some fields on the page and also needs a "clear" button which clears the information so the user can submit the form without a value.
  */
 export default class extends Controller {
   static targets = [
