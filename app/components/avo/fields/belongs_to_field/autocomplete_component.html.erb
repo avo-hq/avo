@@ -7,7 +7,7 @@
   ></div>
   <div class="relative w-full" autocomplete="off">
     <%= @form.text_field @field.foreign_key,
-      value: @field.value&.class == @type ? @field.field_label : nil,
+      value: field_label,
       class: helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)), 'data-search-target': 'button clearValue',
       placeholder: @field.placeholder,
       disabled: true %>
@@ -18,5 +18,5 @@
       data-action="click->search#clearValue"
       ><%= helpers.svg 'x', class: 'h-4' %></div>
   </div>
-  <%= @form.hidden_field @foreign_key, value: @field.value&.class == @type ? @field.field_value : nil, 'data-search-target': 'hiddenId clearValue' %>
+  <%= @form.hidden_field @foreign_key, value: field_value, 'data-search-target': 'hiddenId clearValue' %>
 </div>

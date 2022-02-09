@@ -13,6 +13,6 @@ class ReviewResource < Avo::BaseResource
     ""
   end
 
-  field :user, as: :belongs_to
+  field :user, as: :belongs_to, searchable: true
   field :reviewable, as: :belongs_to, polymorphic_as: :reviewable, types: [::Fish, ::Post, ::Project, ::Team], searchable: true
 end
