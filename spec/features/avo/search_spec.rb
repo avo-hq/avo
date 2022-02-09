@@ -46,7 +46,7 @@ RSpec.feature "Search", type: :system do
     context "with results" do
       let!(:post) { create :post, name: "New hehe post", body: 'New hehe post description.'}
       let!(:user) { create :user, first_name: "Hehe", last_name: "user", roles: {admin: true, manager: true, writer: true}}
-      let!(:user2) { create :user, first_name: "Hehehi", last_name: "user", roles: {admin: true, manager: true, writer: true}}
+      let!(:user2) { create :user, first_name: "Hehe ahi", last_name: "user", roles: {admin: true, manager: true, writer: true}}
 
       it "opens the search" do
         visit url
@@ -78,16 +78,12 @@ RSpec.feature "Search", type: :system do
         find(".aa-Input").send_keys :arrow_down
         find(".aa-Input").send_keys :return
 
-        sleep 0.2
+        sleep 0.4
 
         expect(current_path).to eql "/admin/resources/users/#{user.slug}"
       end
     end
   end
-end
-
-def write_in_search(input)
-  find('input.aa-Input').set(input)
 end
 
 def open_global_search_box

@@ -4,6 +4,8 @@ RSpec.feature "belongs_to searchable", type: :system do
   let!(:amber) { create :user, first_name: 'Amber', last_name: 'Johnes' }
   let!(:alicia) { create :user, first_name: 'Alicia', last_name: 'Johnes' }
   let!(:post) { create :post, name: 'Avocados are the best' }
+  let!(:team) { create :team, name: 'Apple' }
+  let!(:second_post) { create :post, name: 'Artichokes are good too' }
 
   before do
     # Update admin so it doesn't come up in the search
@@ -12,24 +14,27 @@ RSpec.feature "belongs_to searchable", type: :system do
 
   context 'new' do
     it 'searches for a user' do
-      visit "/admin/resources/comments/new"
+      visit "/admin/resources/reviews/new"
 
-      expect(page).to have_field "comment_user_id"
-      expect(page).to have_select "comment_commentable_type", selected: 'Choose an option', options: ['Choose an option', 'Post', 'Project']
-      expect(page).to have_select "comment_commentable_id", selected: 'Choose an option', options: ['Choose an option', post.name], visible: false
+      expect(page).to have_field "review_user_id"
+      expect(page).to have_select "review_reviewable_type", selected: 'Choose an option', options: ['Choose an option', 'Fish', 'Post', 'Project', 'Team']
 
-      fill_in 'comment_body', with: 'Yup'
-      select 'Post', from: 'comment_commentable_type'
-      find('#comment_user_id').click
+      select 'Post', from: 'review_reviewable_type'
+
+      expect(page).to have_field "review_reviewable", placeholder: 'Choose an option'
+
+      fill_in 'review_body', with: 'Yup'
+      find('#review_reviewable').click
 
       write_in_search('A')
 
       sleep 0.5
 
-      expect(find('.aa-Panel')).to have_content "Amber Johnes"
-      expect(find('.aa-Panel')).to have_content "Alicia Johnes"
+      expect(find('.aa-Panel')).to have_content "Avocados"
+      expect(find('.aa-Panel')).to have_content "Artichokes"
+      expect(find('.aa-Panel')).not_to have_content "TEAMS"
 
-      write_in_search('Amber')
+      write_in_search('Avocado')
 
       sleep 0.5
 
@@ -38,64 +43,68 @@ RSpec.feature "belongs_to searchable", type: :system do
 
       sleep 0.5
 
-      text_input = find '[name="comment[user_id]"][type="text"]', visible: true
-      expect(text_input.value).to eq 'Amber Johnes'
+      text_input = find '[name="review[reviewable]"][type="text"]', visible: true
+      expect(text_input.value).to eq 'Avocados are the best'
 
       click_on 'Save'
 
       wait_for_loaded
 
-      comment = Comment.first
+      review = Review.first
 
-      expect(comment.user_id).to eq amber.id
+      expect(review.reviewable).to eq post
     end
 
     context 'edit' do
-      let!(:comment) { create :comment, body: 'Avo rules', commentable: post, user: amber }
+      let!(:review) { create :review, body: 'Avo rules', reviewable: post, user: amber }
 
-      it 'changes the user' do
-        visit "/admin/resources/comments/#{comment.id}/edit"
+      it 'changes the reviewable item' do
+        visit "/admin/resources/reviews/#{review.id}/edit"
 
-        expect(page).to have_field "comment_user_id", with: amber.name
-        expect(page).to have_select "comment_commentable_type", selected: 'Post', options: ['Choose an option', 'Post', 'Project']
-        expect(page).to have_select "comment_commentable_id", selected: post.name, options: ['Choose an option', post.name], visible: false
+        expect(page).to have_select "review_user_id", selected: amber.name
+        expect(page).to have_field "review_reviewable", with: post.name
+        expect(page).to have_select "review_reviewable_type", selected: 'Post', options: ['Choose an option', 'Fish', 'Post', 'Project', 'Team']
+        expect(page).to have_field type: 'text', name: "review[reviewable]", with: post.name
+        expect(page).to have_field type: 'hidden', name: "review[reviewable_id]", with: post.id, visible: false
 
-        fill_in 'comment_body', with: 'Avo rules!'
-        find('#comment_user_id').click
+        fill_in 'review_body', with: 'Avo rules!'
+        find('#review_reviewable').click
 
-        write_in_search('Alicia')
+        write_in_search('Artichokes')
 
         sleep 0.5
 
-        expect(find('.aa-Panel')).not_to have_content "Amber Johnes"
-        expect(find('.aa-Panel')).to have_content "Alicia Johnes"
+        expect(find('.aa-Panel')).not_to have_content "Avocados"
+        expect(find('.aa-Panel')).to have_content "Artichokes"
 
         find(".aa-Input").send_keys :arrow_down
         find(".aa-Input").send_keys :return
 
         sleep 0.5
 
-        text_input = find '[name="comment[user_id]"][type="text"]', visible: true
-        expect(text_input.value).to eq 'Alicia Johnes'
+        expect(page).to have_field type: 'text', name: "review[reviewable]", with: second_post.name
+        expect(page).to have_field type: 'hidden', name: "review[reviewable_id]", with: second_post.id, visible: false
 
         click_on 'Save'
 
         wait_for_loaded
 
-        comment.reload
+        review.reload
 
-        expect(comment.user_id).to eq alicia.id
-        expect(comment.body).to eq 'Avo rules!'
+        expect(review.reviewable).to eq second_post
+        expect(review.body).to eq 'Avo rules!'
       end
 
-      it 'nullifies the user' do
-        visit "/admin/resources/comments/#{comment.id}/edit"
+      it 'nullifies the reviewable item' do
+        visit "/admin/resources/reviews/#{review.id}/edit"
 
-        expect(page).to have_field "comment_user_id", with: amber.name
-        expect(page).to have_select "comment_commentable_type", selected: 'Post', options: ['Choose an option', 'Post', 'Project']
-        expect(page).to have_select "comment_commentable_id", selected: post.name, options: ['Choose an option', post.name], visible: false
+        expect(page).to have_select "review_user_id", selected: amber.name
+        expect(page).to have_field "review_reviewable", with: post.name
+        expect(page).to have_select "review_reviewable_type", selected: 'Post', options: ['Choose an option', 'Fish', 'Post', 'Project', 'Team']
+        expect(page).to have_field type: 'text', name: "review[reviewable]", with: post.name
+        expect(page).to have_field type: 'hidden', name: "review[reviewable_id]", with: post.id, visible: false
 
-        fill_in 'comment_body', with: 'Avo rules!'
+        fill_in 'review_body', with: 'Avo rules!'
         find('[data-action="click->search#clearValue"]').click
         expect(page).not_to have_selector '[data-action="click->search#clearValue"]'
 
@@ -103,9 +112,86 @@ RSpec.feature "belongs_to searchable", type: :system do
 
         wait_for_loaded
 
-        comment.reload
+        review.reload
 
-        expect(comment.user_id).to be nil
+        expect(review.reviewable).to be nil
+      end
+
+      it 'toggles the reviewable item' do
+        visit "/admin/resources/reviews/#{review.id}/edit"
+
+        expect(page).to have_select "review_user_id", selected: amber.name
+        expect(page).to have_field "review_reviewable", with: post.name
+        expect(page).to have_select "review_reviewable_type", selected: 'Post', options: ['Choose an option', 'Fish', 'Post', 'Project', 'Team']
+        expect(page).to have_field type: 'text', name: "review[reviewable]", with: post.name
+        expect(page).to have_field type: 'hidden', name: "review[reviewable_id]", with: post.id, visible: false
+
+        # Change reviewable to Team and check for empty inputs
+        select 'Team', from: 'review_reviewable_type'
+
+        expect(page).to have_field type: 'text', name: "review[reviewable]", with: ''
+        expect(page).to have_field type: 'hidden', name: "review[reviewable_id]", with: '', visible: false
+
+        find('#review_reviewable').click
+        write_in_search('Apple')
+
+        sleep 0.5
+
+        expect(find('.aa-Panel')).to have_content "Apple"
+
+        find(".aa-Input").send_keys :arrow_down
+        find(".aa-Input").send_keys :return
+
+        sleep 0.5
+
+        expect(page).to have_field type: 'text', name: "review[reviewable]", with: 'Apple'
+        expect(page).to have_field type: 'hidden', name: "review[reviewable_id]", with: team.id, visible: false
+
+        # Change reviewable to Fish and check for empty inputs
+        select 'Fish', from: 'review_reviewable_type'
+
+        expect(page).to have_field type: 'text', name: "review[reviewable]", with: ''
+        expect(page).to have_field type: 'hidden', name: "review[reviewable_id]", with: '', visible: false
+
+        # Change reviewable to Post and check for inputs filled with the post details
+        select 'Post', from: 'review_reviewable_type'
+
+        expect(page).to have_field type: 'text', name: "review[reviewable]", with: post.name
+        expect(page).to have_field type: 'hidden', name: "review[reviewable_id]", with: post.id, visible: false
+
+        # Change reviewable to Team and check for inputs filled with the team details
+        select 'Team', from: 'review_reviewable_type'
+
+        expect(page).to have_field type: 'text', name: "review[reviewable]", with: 'Apple'
+        expect(page).to have_field type: 'hidden', name: "review[reviewable_id]", with: team.id, visible: false
+
+        click_on 'Save'
+
+        wait_for_loaded
+
+        review.reload
+
+        expect(review.reviewable).to eq team
+      end
+
+      it 'nullifies the reviewable type' do
+        visit "/admin/resources/reviews/#{review.id}/edit"
+
+        expect(page).to have_select "review_user_id", selected: amber.name
+        expect(page).to have_field "review_reviewable", with: post.name
+        expect(page).to have_select "review_reviewable_type", selected: 'Post', options: ['Choose an option', 'Fish', 'Post', 'Project', 'Team']
+        expect(page).to have_field type: 'text', name: "review[reviewable]", with: post.name
+        expect(page).to have_field type: 'hidden', name: "review[reviewable_id]", with: post.id, visible: false
+
+        select 'Choose an option', from: 'review_reviewable_type'
+
+        click_on 'Save'
+
+        wait_for_loaded
+
+        review.reload
+
+        expect(review.reviewable).to be nil
       end
     end
   end

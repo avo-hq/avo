@@ -7,6 +7,7 @@ class Project < ApplicationRecord
   has_many_attached :files
 
   has_many :comments, as: :commentable
+  has_many :reviews, as: :reviewable
   has_and_belongs_to_many :users
 
   default_scope { order(name: :asc) }

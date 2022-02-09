@@ -4,11 +4,11 @@ module Avo
   class RelationsController < BaseController
     before_action :set_model, only: [:show, :index, :new, :create, :destroy]
     before_action :set_related_resource_name
-    before_action :set_related_resource
-    before_action :hydrate_related_resource
+    before_action :set_related_resource, only: [:show, :index, :new, :create, :destroy]
+    before_action :hydrate_related_resource, only: [:show, :index, :new, :create, :destroy]
     before_action :set_related_model, only: [:show]
-    before_action :set_attachment_class
-    before_action :set_attachment_resource
+    before_action :set_attachment_class, only: [:show, :index, :new, :create, :destroy]
+    before_action :set_attachment_resource, only: [:show, :index, :new, :create, :destroy]
     before_action :set_attachment_model, only: [:create, :destroy]
     before_action :set_reflection, only: [:index, :show]
 
