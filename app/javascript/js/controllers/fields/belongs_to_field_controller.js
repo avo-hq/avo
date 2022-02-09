@@ -114,10 +114,15 @@ export default class extends Controller {
    */
   invalidateTarget(target) {
     if (this.isSearchable) {
-      target.querySelector('input[type="text"]').setAttribute('name', '')
-      target.querySelector('input[type="hidden"]').setAttribute('name', '')
+      // Wrapping it in a try/catch to counter turbo's cache system (going back to the edit page after initial save)
+      try {
+        target.querySelector('input[type="text"]').setAttribute('name', '')
+        target.querySelector('input[type="hidden"]').setAttribute('name', '')
+      } catch {}
     } else if (target) {
-      target.querySelector('select').setAttribute('name', '')
+      try {
+        target.querySelector('select').setAttribute('name', '')
+      } catch (error) {}
     }
   }
 }
