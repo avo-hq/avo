@@ -74,7 +74,6 @@ RSpec.feature "belongs_to searchable", type: :system do
         it 'changes the reviewable item' do
           visit "/admin/resources/reviews/#{review.id}/edit"
 
-          expect(page).to have_select "review_user_id", selected: amber.name
           expect(page).to have_field "review_reviewable", with: post.name
           expect(page).to have_select "review_reviewable_type", selected: 'Post', options: ['Choose an option', 'Fish', 'Post', 'Project', 'Team']
           expect(page).to have_field type: 'text', name: "review[reviewable]", with: post.name
@@ -112,15 +111,14 @@ RSpec.feature "belongs_to searchable", type: :system do
       it 'nullifies the reviewable item' do
         visit "/admin/resources/reviews/#{review.id}/edit"
 
-        expect(page).to have_select "review_user_id", selected: amber.name
         expect(page).to have_field "review_reviewable", with: post.name
         expect(page).to have_select "review_reviewable_type", selected: 'Post', options: ['Choose an option', 'Fish', 'Post', 'Project', 'Team']
         expect(page).to have_field type: 'text', name: "review[reviewable]", with: post.name
         expect(page).to have_field type: 'hidden', name: "review[reviewable_id]", with: post.id, visible: false
 
         fill_in 'review_body', with: 'Avo rules!'
-        find('[data-action="click->search#clearValue"]').click
-        expect(page).not_to have_selector '[data-action="click->search#clearValue"]'
+        find('[data-type="Post"] [data-field-id="reviewable"] [data-action="click->search#clearValue"]').click
+        expect(find('[data-type="Post"] [data-field-id="reviewable"]', visible: true)).not_to have_selector '[data-action="click->search#clearValue"]'
 
         click_on 'Save'
 
@@ -134,7 +132,6 @@ RSpec.feature "belongs_to searchable", type: :system do
       it 'toggles the reviewable item' do
         visit "/admin/resources/reviews/#{review.id}/edit"
 
-        expect(page).to have_select "review_user_id", selected: amber.name
         expect(page).to have_field "review_reviewable", with: post.name
         expect(page).to have_select "review_reviewable_type", selected: 'Post', options: ['Choose an option', 'Fish', 'Post', 'Project', 'Team']
         expect(page).to have_field type: 'text', name: "review[reviewable]", with: post.name
@@ -191,7 +188,6 @@ RSpec.feature "belongs_to searchable", type: :system do
       it 'nullifies the reviewable type' do
         visit "/admin/resources/reviews/#{review.id}/edit"
 
-        expect(page).to have_select "review_user_id", selected: amber.name
         expect(page).to have_field "review_reviewable", with: post.name
         expect(page).to have_select "review_reviewable_type", selected: 'Post', options: ['Choose an option', 'Fish', 'Post', 'Project', 'Team']
         expect(page).to have_field type: 'text', name: "review[reviewable]", with: post.name
