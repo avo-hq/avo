@@ -1,7 +1,6 @@
 module Avo
   module Fields
     class BelongsToField < BaseField
-      attr_reader :searchable
       attr_reader :polymorphic_as
       attr_reader :relation_method
       attr_reader :types # for Polymorphic associations
@@ -15,6 +14,10 @@ module Avo
         @polymorphic_as = args[:polymorphic_as]
         @types = args[:types]
         @relation_method = name.to_s.parameterize.underscore
+      end
+
+      def searchable
+        @searchable && ::Avo::App.license.has_with_trial(:searchable_belongs_to)
       end
 
       def value
