@@ -11,6 +11,7 @@ class PostResource < Avo::BaseResource
   field :name, as: :text, required: true
   field :body, as: :trix, placeholder: "Enter text", always_show: false, attachment_key: :attachments, hide_attachment_url: true, hide_attachment_filename: true, hide_attachment_filesize: true
   field :cover_photo, as: :file, is_image: true, as_avatar: :rounded
+  field :audio, as: :file, is_audio: true
   field :excerpt, as: :text, hide_on: :all, as_description: true do |model|
     ActionView::Base.full_sanitizer.sanitize(model.body).truncate 130
   rescue
