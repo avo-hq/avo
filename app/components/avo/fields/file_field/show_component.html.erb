@@ -1,3 +1,3 @@
 <%= show_field_wrapper field: @field do %>
-  <%= render Avo::Fields::Common::SingleFileViewerComponent.new resource: @resource, id: @field.id, file: @field.value.attachment, is_image: @field.is_image, button_size: :md %>
+  <%= render Avo::Fields::Common::SingleFileViewerComponent.new resource: @resource, id: @field.id, file: @field.value.attachment, is_image: @field.is_image, is_audio: @field.is_audio,  button_size: :md %>
 <% end %>

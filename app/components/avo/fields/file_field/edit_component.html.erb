@@ -1,7 +1,7 @@
 <%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal do %>
   <% if @field.value.present? %>
     <div class="mb-2">
-      <%= render Avo::Fields::Common::SingleFileViewerComponent.new resource: @resource, id: @field.id, file: @field.value, is_image: @field.is_image, button_size: :md %>
+      <%= render Avo::Fields::Common::SingleFileViewerComponent.new resource: @resource, id: @field.id, file: @field.value, is_image: @field.is_image, is_audio: @field.is_audio, button_size: :md %>
     </div>
   <% end %>
 

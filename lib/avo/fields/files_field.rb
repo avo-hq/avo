@@ -8,6 +8,7 @@ module Avo
         super(id, **args, &block)
 
         @is_image = args[:is_image].present? ? args[:is_image] : @is_avatar
+        @is_audio = args[:is_audio].present? ? args[:is_audio] : false
         @direct_upload = args[:direct_upload].present? ? args[:direct_upload] : false
       end
 
