@@ -3,17 +3,40 @@ import * as Mousetrap from 'mousetrap'
 import { Controller } from 'stimulus'
 import { Turbo } from '@hotwired/turbo-rails'
 import { autocomplete } from '@algolia/autocomplete-js'
+import URI from 'urijs'
 import debouncePromise from '../helpers/debounce_promise'
 
+/**
+ * The search controller is used in three places.
+ * 1. Global search (on the top navbar) and can search through multiple resources.
+ * 2. Resource search (on the Index page on top of the table panel) and will search one resource
+ * 3. belongs_to field. This requires a bit more cleanup because the user will not navigate away from the page.
+ * It will replace the id and label in some fields on the page and also needs a "clear" button which clears the information so the user can submit the form without a value.
+ */
 export default class extends Controller {
-  static targets = ['autocomplete', 'button']
+  static targets = [
+    'autocomplete',
+    'button',
+    'hiddenId',
+    'visibleLabel',
+    'clearValue',
+    'clearButton',
+  ];
 
-  debouncedFetch = debouncePromise(fetch, this.debounceTimeout)
+  debouncedFetch = debouncePromise(fetch, this.searchDebounce);
+
+  get dataset() {
+    return this.autocompleteTarget.dataset
+  }
+
+  get searchDebounce() {
+    return window.Avo.configuration.search_debounce
+  }
 
   get translationKeys() {
     let keys
     try {
-      keys = JSON.parse(this.autocompleteTarget.dataset.translationKeys)
+      keys = JSON.parse(this.dataset.translationKeys)
     } catch (error) {
       keys = {}
     }
@@ -21,20 +44,48 @@ export default class extends Controller {
     return keys
   }
 
-  get debounceTimeout() {
-    return this.autocompleteTarget.dataset.debounceTimeout
-  }
-
-  get searchResource() {
-    return this.autocompleteTarget.dataset.searchResource
+  get isBelongsToSearch() {
+    return this.dataset.viaAssociation === 'belongs_to'
   }
 
   get isGlobalSearch() {
-    return this.searchResource === 'global'
+    return this.dataset.searchResource === 'global'
   }
 
-  get searchUrl() {
-    return this.isGlobalSearch ? `${window.Avo.configuration.root_path}/avo_api/search` : `${window.Avo.configuration.root_path}/avo_api/${this.searchResource}/search`
+  searchUrl(query) {
+    const url = URI()
+
+    let params = { q: query }
+    let segments = [
+      window.Avo.configuration.root_path,
+      'avo_api',
+      this.dataset.searchResource,
+      'search',
+    ]
+
+    if (this.isGlobalSearch) {
+      segments = [window.Avo.configuration.root_path, 'avo_api', 'search']
+    }
+
+    if (this.isBelongsToSearch) {
+      // eslint-disable-next-line camelcase
+      params = { ...params, via_association: this.dataset.viaAssociation }
+    }
+
+    return url.segment(segments).search(params).toString()
+  }
+
+  handleOnSelect({ item }) {
+    if (this.isBelongsToSearch) {
+      this.hiddenIdTarget.setAttribute('value', item._id)
+      this.buttonTarget.setAttribute('value', item._label)
+
+      document.querySelector('.aa-DetachedOverlay').remove()
+
+      this.clearButtonTarget.classList.remove('hidden')
+    } else {
+      Turbo.visit(item._url, { action: 'advance' })
+    }
   }
 
   addSource(resourceName, data) {
@@ -43,9 +94,7 @@ export default class extends Controller {
     return {
       sourceId: resourceName,
       getItems: () => data.results,
-      onSelect({ item }) {
-        Turbo.visit(item._url, { action: 'replace' })
-      },
+      onSelect: that.handleOnSelect.bind(that),
       templates: {
         header() {
           return `${data.header.toUpperCase()} ${data.help}`
@@ -84,7 +133,10 @@ export default class extends Controller {
           })
         },
         noResults() {
-          return that.translationKeys.no_item_found.replace('%{item}', resourceName)
+          return that.translationKeys.no_item_found.replace(
+            '%{item}',
+            resourceName,
+          )
         },
       },
     }
@@ -94,10 +146,21 @@ export default class extends Controller {
     this.autocompleteTarget.querySelector('button').click()
   }
 
+  clearValue() {
+    this.clearValueTargets.map((e) => e.setAttribute('value', ''))
+    this.clearButtonTarget.classList.add('hidden')
+  }
+
   connect() {
     const that = this
 
     this.buttonTarget.onclick = () => this.showSearchPanel()
+
+    this.clearValueTargets.forEach((target) => {
+      if (target.getAttribute('value')) {
+        this.clearButtonTarget.classList.remove('hidden')
+      }
+    })
 
     if (this.isGlobalSearch) {
       Mousetrap.bind(['command+k', 'ctrl+k'], () => this.showSearchPanel())
@@ -112,12 +175,15 @@ export default class extends Controller {
       openOnFocus: true,
       detachedMediaQuery: '',
       getSources: ({ query }) => {
-        const endpoint = `${that.searchUrl}?q=${query}`
+        const endpoint = that.searchUrl(query)
 
-        return that.debouncedFetch(endpoint)
+        return that
+          .debouncedFetch(endpoint)
           .then((response) => response.json())
           .then((data) => Object.keys(data).map((resourceName) => that.addSource(resourceName, data[resourceName])))
       },
     })
+
+    this.buttonTarget.removeAttribute('disabled')
   }
 }

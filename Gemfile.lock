@@ -175,6 +175,7 @@ GEM
       rails (>= 6.0.0)
       stimulus-rails
       turbo-rails
+    htmlbeautifier (1.4.1)
     httparty (0.20.0)
       mime-types (~> 3.0)
       multi_xml (>= 0.5.2)
@@ -417,6 +418,7 @@ DEPENDENCIES
   fuubar
   gem-release
   hotwire-rails
+  htmlbeautifier
   httparty
   image_processing (~> 1.2)
   iso

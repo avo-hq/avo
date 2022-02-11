@@ -1,6 +1,6 @@
-class CommentResource < Avo::BaseResource
-  self.title = :tiny_name
-  self.includes = [:user, :commentable]
+class ReviewResource < Avo::BaseResource
+  self.title = :id
+  self.includes = []
   # self.search_query = ->(params:) do
   #   scope.ransack(id_eq: params[:q], m: "or").result(distinct: false)
   # end
@@ -13,6 +13,6 @@ class CommentResource < Avo::BaseResource
     ""
   end
 
-  field :user, as: :belongs_to
-  field :commentable, as: :belongs_to, polymorphic_as: :commentable, types: [::Post, ::Project]
+  field :user, as: :belongs_to, searchable: true
+  field :reviewable, as: :belongs_to, polymorphic_as: :reviewable, types: [::Fish, ::Post, ::Project, ::Team], searchable: true
 end

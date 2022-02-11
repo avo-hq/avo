@@ -53,10 +53,13 @@
     "urijs": "^1.19.7"
   },
   "devDependencies": {
+    "@prettier/plugin-ruby": "^2.0.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
-    "eslint-plugin-import": "^2.20.2"
+    "eslint-plugin-import": "^2.20.2",
+    "prettier": "^2.5.1",
+    "prettier-plugin-erb": "^0.4.0"
   },
   "browserslist": [
     "last 3 and_chr versions",

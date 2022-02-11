@@ -21,7 +21,7 @@ class PostResource < Avo::BaseResource
   field :is_published, as: :boolean do |model|
     model.published_at.present?
   end
-  field :user, as: :belongs_to, meta: {searchable: false}, placeholder: "—"
+  field :user, as: :belongs_to, placeholder: "—"
   field :status, as: :select, enum: ::Post.statuses, display_value: false
   field :comments, as: :has_many
 

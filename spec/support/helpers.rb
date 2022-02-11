@@ -33,6 +33,10 @@ def stub_pro_license_request
   }.stringify_keys)).to_return(status: 200, body: {id: "pro", valid: true}.to_json, headers: json_headers)
 end
 
+def write_in_search(input)
+  find('input.aa-Input').set(input)
+end
+
 class DummyRequest
   attr_accessor :ip
   attr_accessor :host

@@ -60,7 +60,6 @@ module Avo
           _id: model.id,
           _label: resource.label,
           _url: resource.record_path,
-          model: model
         }
 
         if App.license.has_with_trial(:enhanced_search_results)

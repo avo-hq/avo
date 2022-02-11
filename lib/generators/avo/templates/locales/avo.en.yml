@@ -93,3 +93,4 @@ en:
       delete_row: 'Delete row'
     was_successfully_created: 'was successfully created'
     was_successfully_updated: 'was successfully updated'
+    clear_value: "Clear value"

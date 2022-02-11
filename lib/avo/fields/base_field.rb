@@ -136,7 +136,7 @@ module Avo
           end
         end
 
-        # Run callback block if present
+        # Run computable callback block if present
         if computable && block.present?
           final_value = instance_exec(@model, @resource, @view, self, &block)
         end

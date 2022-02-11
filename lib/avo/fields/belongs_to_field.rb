@@ -1,10 +1,9 @@
 module Avo
   module Fields
     class BelongsToField < BaseField
-      attr_reader :searchable
       attr_reader :polymorphic_as
       attr_reader :relation_method
-      attr_reader :types
+      attr_reader :types # for Polymorphic associations
 
       def initialize(id, **args, &block)
         args[:placeholder] ||= I18n.t("avo.choose_an_option")
@@ -17,8 +16,26 @@ module Avo
         @relation_method = name.to_s.parameterize.underscore
       end
 
+      def searchable
+        @searchable && ::Avo::App.license.has_with_trial(:searchable_belongs_to)
+      end
+
       def value
         super(polymorphic_as)
+      end
+
+      # The value
+      def field_value
+        value.send(database_value)
+      rescue
+        nil
+      end
+
+      # What the user sees in the text field
+      def field_label
+        value.send(target_resource.class.title)
+      rescue
+        nil
       end
 
       def options

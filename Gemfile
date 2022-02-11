@@ -77,6 +77,8 @@ group :development do
   # gem 'ruby-prof'
 
   # gem 'pry-rails'
+
+  gem 'htmlbeautifier'
 end
 
 group :development, :test do
