@@ -8,7 +8,7 @@ gem "countries"
 gem "pundit"
 gem "rails", "~> 6.1.0"
 gem "pg", ">= 0.18", "< 2.0"
-gem "puma", "~> 5.5.1"
+gem "puma", "~> 5.6.2"
 gem "image_processing", "~> 1.2"
 gem "bootsnap", ">= 1.4.2", require: false
 gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
@@ -41,6 +41,7 @@ group :development do
   gem "standard"
   gem "bump", require: false
   gem "gem-release", require: false
+  gem "htmlbeautifier"
 end
 
 group :development, :test do
