@@ -110,10 +110,12 @@ module Avo
       @model_to_fill = @model if @view == :update
     end
 
-    # In BaseController we need to fill the model with the form params
-    # This action should be skipped in RelationsController
     def fill_model
-      if controller_name == 'base'
+      # We have to skip filling the the model if this is an attach action
+      is_attach_action = params[model_param_key].blank? && params[:related_name].present? && params[:fields].present?
+      # puts ['fill_model->', is_attach_action, model_param_key].inspect
+
+      unless is_attach_action
         @model = @resource.fill_model(@model_to_fill, cast_nullable(model_params))
       end
     end
@@ -234,6 +236,10 @@ module Avo
 
     def on_api_path
       request.original_url.match?(/.*#{Avo::App.root_path}\/avo_api\/.*/)
+    end
+
+    def model_param_key
+      @resource.form_scope
     end
   end
 end

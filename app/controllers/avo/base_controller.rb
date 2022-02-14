@@ -193,8 +193,6 @@ module Avo
     private
 
     def model_params
-      model_param_key = @resource.form_scope
-
       request_params = params.require(model_param_key).permit(permitted_params)
 
       if @resource.devise_password_optional && request_params[:password].blank? && request_params[:password_confirmation].blank?
