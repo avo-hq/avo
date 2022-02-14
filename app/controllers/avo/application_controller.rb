@@ -110,8 +110,12 @@ module Avo
       @model_to_fill = @model if @view == :update
     end
 
+    # In BaseController we need to fill the model with the form params
+    # This action should be skipped in RelationsController
     def fill_model
-      @model = @resource.fill_model(@model_to_fill, cast_nullable(model_params))
+      if controller_name == 'base'
+        @model = @resource.fill_model(@model_to_fill, cast_nullable(model_params))
+      end
     end
 
     def hydrate_resource
@@ -186,18 +190,6 @@ module Avo
 
       query
     end
-
-    # def authorize_user
-    #   return if params[:controller] == 'avo/search'
-
-    #   model = record = resource.model
-
-    #   if ['show', 'edit', 'update'].include?(params[:action]) && params[:controller] == 'avo/resources'
-    #     record = resource
-    #   end
-
-    #   # AuthorizationService::authorize_action _current_user, record, params[:action] return render_unauthorized unless
-    # end
 
     def _authenticate!
       instance_eval(&Avo.configuration.authenticate)
