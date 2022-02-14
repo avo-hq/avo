@@ -51,7 +51,7 @@ RUN bundle install --jobs 4 --retry 3
 # Copy the files
 COPY . /avo
 
-RUN yarn prod:build:css
 RUN yarn prod:build:js
+RUN yarn prod:build:css
 
 RUN bundle exec rails build
