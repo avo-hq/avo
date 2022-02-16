@@ -1,5 +1,5 @@
 class CourseLinkResource < Avo::BaseResource
-  self.title = :id
+  self.title = :link
   self.includes = [:course]
   self.model_class = Course::Link
   # self.search_query = ->(params:) do

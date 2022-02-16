@@ -59,7 +59,7 @@ FactoryBot.define do
   end
 
   factory :course do
-    name { Faker::Company.name }
+    name { Faker::Educator.course_name }
   end
 
   factory :link do
