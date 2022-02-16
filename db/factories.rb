@@ -10,7 +10,7 @@ FactoryBot.define do
   end
 
   factory :team do
-    name { Faker::Company.name }
+    name { Faker::Company.unique.name }
     description { Faker::Lorem.paragraph(sentence_count: 4) }
     url { Faker::Internet.url }
     color { Faker::Color.hex_color }
@@ -29,7 +29,7 @@ FactoryBot.define do
   end
 
   factory :project do
-    name { Faker::App.name }
+    name { Faker::App.unique.name }
     status { [:closed, :rejected, :failed, :loading, :running, :waiting].sample }
     stage { ["Discovery", "Idea", "Done", "On hold", "Cancelled"].sample }
     budget { Faker::Number.decimal(l_digits: 4) }
@@ -59,7 +59,7 @@ FactoryBot.define do
   end
 
   factory :course do
-    name { Faker::Company.name }
+    name { Faker::Educator.unique.course_name }
   end
 
   factory :link do
