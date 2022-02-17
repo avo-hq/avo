@@ -58,7 +58,7 @@ jobs:
         path: vendor/bundle
         key: ${{ runner.os }}-test-gems-${{ hashFiles('**/Gemfile.lock') }}
         restore-keys: |
-          ${{ runner.os }}-test-gems-
+          ${{ runner.os }}-test-gems-${{ hashFiles('**/Gemfile.lock') }}
 
     - name: Bundle install
       run: |
@@ -77,7 +77,7 @@ jobs:
         path: ${{ steps.test-yarn-cache-dir-path.outputs.dir }}
         key: ${{ runner.os }}-test-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
-          ${{ runner.os }}-test-yarn-
+          ${{ runner.os }}-test-yarn-${{ hashFiles('**/yarn.lock') }}
 
     - name: Yarn install
       run: yarn
