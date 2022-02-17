@@ -114,5 +114,6 @@ jobs:
       env:
         CC_TEST_REPORTER_ID: ${{ env.CC_TEST_REPORTER_ID }}
       with:
+        coverageCommand: ls -la
         coverageLocations: simplecov
 
