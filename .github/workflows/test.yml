@@ -108,3 +108,9 @@ jobs:
         file: ./coverage/coverage.xml
         name: codecov-umbrella
 
+    - name: Test & publish code coverage
+      uses: paambaati/codeclimate-action@v3.0.0
+      if: ${{ env.COVERAGE }}
+      env:
+        CC_TEST_REPORTER_ID: ${{ env.CC_TEST_REPORTER_ID }}
+
