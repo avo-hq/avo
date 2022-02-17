@@ -4,6 +4,7 @@ import flatpickr from 'flatpickr'
 
 import { castBoolean } from '../../helpers/cast_boolean'
 
+// Get the DateTime with the TZ offset applied.
 function universalTimestamp(timestampStr) {
   return new Date(new Date(timestampStr).getTime() + (new Date(timestampStr).getTimezoneOffset() * 60 * 1000))
 }
@@ -48,6 +49,8 @@ export default class extends Controller {
       // this.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
       options.appTimezone = this.inputTarget.dataset.timezone
     } else {
+      // Because the browser treats the date like a timestamp and updates it ot 00:00 hour, when on a western timezone the date will be converted with one day offset.
+      // Ex: 2022-01-30 will render as 2022-01-29 on an American timezone
       currentValue = universalTimestamp(this.inputTarget.value)
     }
 
