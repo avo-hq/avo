@@ -11,6 +11,8 @@
       class: helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)),
       placeholder: @field.placeholder,
       'data-search-target': 'button clearValue',
+      # This instructs the search_controller if it should enable/disabled this field when the user switches polymorphic associations
+      # It should not enable the field if the record is being created through an association
       'data-should-be-disabled': @disabled,
       disabled: true %>
     <% unless @disabled %>
