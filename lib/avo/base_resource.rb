@@ -128,18 +128,19 @@ module Avo
         end
         .select do |field|
           # Strip out the reflection field in index queries with a parent association.
-          if reflection.present? &&
-              reflection.options.present? &&
-              field.respond_to?(:polymorphic_as) &&
-              field.polymorphic_as.to_s == reflection.options[:as].to_s
-            next
-          end
-          if field.respond_to?(:foreign_key) &&
-              reflection.present? &&
-              reflection.respond_to?(:foreign_key) &&
-              reflection.foreign_key != field.foreign_key &&
-              @params[:resource_name] == field.resource.model_key
-            next
+          if reflection.present?
+            if reflection.options.present? &&
+                field.respond_to?(:polymorphic_as) &&
+                field.polymorphic_as.to_s == reflection.options[:as].to_s
+              next
+            end
+
+            if field.respond_to?(:foreign_key) &&
+                reflection.respond_to?(:foreign_key) &&
+                reflection.foreign_key != field.foreign_key &&
+                @params[:resource_name] == field.resource.model_key
+              next
+            end
           end
 
           true
