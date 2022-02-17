@@ -1,7 +1,12 @@
 import { Controller } from 'stimulus'
 import { DateTime } from 'luxon'
-import { castBoolean } from '../../helpers/cast_boolean'
 import flatpickr from 'flatpickr'
+
+import { castBoolean } from '../../helpers/cast_boolean'
+
+function universalTimestamp(timestampStr) {
+  return new Date(new Date(timestampStr).getTime() + (new Date(timestampStr).getTimezoneOffset() * 60 * 1000))
+}
 
 export default class extends Controller {
   static targets = ['input']
@@ -43,7 +48,7 @@ export default class extends Controller {
       // this.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
       options.appTimezone = this.inputTarget.dataset.timezone
     } else {
-      currentValue = new Date(this.inputTarget.value)
+      currentValue = universalTimestamp(this.inputTarget.value)
     }
 
     options.defaultDate = currentValue
