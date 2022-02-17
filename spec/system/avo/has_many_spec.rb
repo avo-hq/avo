@@ -13,7 +13,7 @@ RSpec.feature "HasManyField", type: :system do
         it "displays the other fields" do
           visit "/admin/resources/posts/#{post.id}/comments?turbo_frame=has_many_field_show_comments"
 
-          row = find("[data-resource-name='comments'][data-resource-id='#{post.id}']")
+          row = find("[data-resource-name='comments'][data-resource-id='#{comment.id}']")
 
           expect(row.find('[data-field-id="user"]').text).to eq user.name
         end
@@ -29,7 +29,7 @@ RSpec.feature "HasManyField", type: :system do
         it "displays the other fields" do
           visit "/admin/resources/teams/#{team.id}/reviews?turbo_frame=has_many_field_show_reviews"
 
-          row = find("[data-resource-name='reviews'][data-resource-id='#{team.id}']")
+          row = find("[data-resource-name='reviews'][data-resource-id='#{review.id}']")
 
           expect(row.find('[data-field-id="user"]').text).to eq user.name
         end
