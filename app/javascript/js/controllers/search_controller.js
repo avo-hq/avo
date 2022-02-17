@@ -82,7 +82,9 @@ export default class extends Controller {
 
       document.querySelector('.aa-DetachedOverlay').remove()
 
-      this.clearButtonTarget.classList.remove('hidden')
+      if (this.hasClearButtonTarget) {
+        this.clearButtonTarget.classList.remove('hidden')
+      }
     } else {
       Turbo.visit(item._url, { action: 'advance' })
     }
@@ -157,7 +159,7 @@ export default class extends Controller {
     this.buttonTarget.onclick = () => this.showSearchPanel()
 
     this.clearValueTargets.forEach((target) => {
-      if (target.getAttribute('value')) {
+      if (target.getAttribute('value') && this.hasClearButtonTarget) {
         this.clearButtonTarget.classList.remove('hidden')
       }
     })
@@ -184,6 +186,9 @@ export default class extends Controller {
       },
     })
 
-    this.buttonTarget.removeAttribute('disabled')
+    // When using search for belongs-to
+    if (this.buttonTarget.dataset.shouldBeDisabled !== 'true') {
+      this.buttonTarget.removeAttribute('disabled')
+    }
   }
 }

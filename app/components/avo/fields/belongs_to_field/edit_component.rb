@@ -8,4 +8,8 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
 
     false
   end
+
+  def is_polymorphic?
+    @field.types.present?
+  end
 end
