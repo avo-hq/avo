@@ -45,11 +45,13 @@
             model_key: model_keys[type.to_s],
             foreign_key: "#{@field.foreign_key}_id",
             resource: @resource,
-            disabled: disabled
+            disabled: disabled,
+            polymorphic_record: polymorphic_record
           %>
         <% else %>
-          <%= @form.select "#{@field.foreign_key}_id", options_for_select(@field.values_for_type(type), @field.value&.class == type ? @field.field_value : nil),
+          <%= @form.select "#{@field.foreign_key}_id", options_for_select(@field.values_for_type(type), @resource.present? && @resource.model.present? ? @resource.model["#{@field.foreign_key}_id"] : nil),
             {
+              value: @resource.model["#{@field.foreign_key}_id"].to_s,
               include_blank: @field.placeholder,
             },
             {

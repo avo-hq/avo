@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Avo::Fields::BelongsToField::AutocompleteComponent < ViewComponent::Base
-  def initialize(form:, field:, model_key:, foreign_key:, disabled:, type: nil, resource: nil)
+  def initialize(form:, field:, model_key:, foreign_key:, disabled:, type: nil, resource: nil, polymorphic_record: nil)
     @form = form
     @field = field
     @type = type
@@ -9,13 +9,14 @@ class Avo::Fields::BelongsToField::AutocompleteComponent < ViewComponent::Base
     @foreign_key = foreign_key
     @resource = resource
     @disabled = disabled
+    @polymorphic_record = polymorphic_record
   end
 
   def field_label
     if searchable?
       # New records won't have the value (instantiated model) present but the polymorphic_type and polymorphic_id prefilled
       if new_record? && has_polymorphic_association?
-        polymorphic_record.send(polymorphic_fields[:label])
+        @polymorphic_record.send(polymorphic_fields[:label])
       else
         @field.value&.class == @type ? @field.field_label : nil
       end
@@ -28,7 +29,7 @@ class Avo::Fields::BelongsToField::AutocompleteComponent < ViewComponent::Base
     if searchable?
       # New records won't have the value (instantiated model) present but the polymorphic_type and polymorphic_id prefilled
       if new_record? && has_polymorphic_association?
-        polymorphic_record.send(polymorphic_fields[:id])
+        @polymorphic_record.send(polymorphic_fields[:id])
       else
         @field.value&.class == @type ? @field.field_value : nil
       end
@@ -66,14 +67,10 @@ class Avo::Fields::BelongsToField::AutocompleteComponent < ViewComponent::Base
     ::Avo::App.get_resource_by_model_name polymorphic_class
   end
 
-  # Get the actual resource
-  def polymorphic_record
-    polymorphic_class.safe_constantize.find polymorphic_id
-  end
-
+  # Extract the needed fields to identify the record for polymorphic associations
   def polymorphic_fields
     {
-      id: :id,
+      id: polymorphic_resource.id,
       label: polymorphic_resource.title
     }
   end
