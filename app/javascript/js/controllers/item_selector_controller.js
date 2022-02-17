@@ -1,9 +1,9 @@
 import { Controller } from 'stimulus'
 
 export default class extends Controller {
-  static targets = ['panel']
+  static targets = ['panel'];
 
-  checkbox = {}
+  checkbox = {};
 
   get actionsPanelPresent() {
     return this.actionsButtonElement !== null
@@ -15,6 +15,12 @@ export default class extends Controller {
     } catch (error) {
       return []
     }
+  }
+
+  get actionLinks() {
+    return document.querySelectorAll(
+      '.js-actions-dropdown a[data-actions-picker-target="resourceAction"]',
+    )
   }
 
   set currentIds(value) {
@@ -32,8 +38,12 @@ export default class extends Controller {
   connect() {
     this.resourceName = this.element.dataset.resourceName
     this.resourceId = this.element.dataset.resourceId
-    this.actionsButtonElement = document.querySelector(`[data-actions-dropdown-button="${this.resourceName}"]`)
-    this.stateHolderElement = document.querySelector(`[data-selected-resources-name="${this.resourceName}"]`)
+    this.actionsButtonElement = document.querySelector(
+      `[data-actions-dropdown-button="${this.resourceName}"]`,
+    )
+    this.stateHolderElement = document.querySelector(
+      `[data-selected-resources-name="${this.resourceName}"]`,
+    )
   }
 
   addToSelected() {
@@ -45,7 +55,9 @@ export default class extends Controller {
   }
 
   removeFromSelected() {
-    this.currentIds = this.currentIds.filter((item) => item.toString() !== this.resourceId)
+    this.currentIds = this.currentIds.filter(
+      (item) => item.toString() !== this.resourceId,
+    )
   }
 
   toggle(event) {
@@ -59,22 +71,20 @@ export default class extends Controller {
   }
 
   enableResourceActions() {
-    (document.querySelectorAll('.js-actions-dropdown a[data-actions-picker-target="resourceAction"]'))
-      .forEach((link) => {
-        link.classList.add('text-gray-700')
-        link.classList.remove('text-gray-500')
-        link.setAttribute('data-href', link.getAttribute('href'))
-        link.dataset.disabled = false
-      })
+    this.actionLinks.forEach((link) => {
+      link.classList.add('text-gray-700')
+      link.classList.remove('text-gray-500')
+      link.setAttribute('data-href', link.getAttribute('href'))
+      link.dataset.disabled = false
+    })
   }
 
   disableResourceActions() {
-    (document.querySelectorAll('.js-actions-dropdown a[data-actions-picker-target="resourceAction"]'))
-      .forEach((link) => {
-        link.classList.remove('text-gray-700')
-        link.classList.add('text-gray-500')
-        link.setAttribute('href', link.getAttribute('data-href'))
-        link.dataset.disabled = true
-      })
+    this.actionLinks.forEach((link) => {
+      link.classList.remove('text-gray-700')
+      link.classList.add('text-gray-500')
+      link.setAttribute('href', link.getAttribute('data-href'))
+      link.dataset.disabled = true
+    })
   }
 }
