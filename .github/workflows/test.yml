@@ -111,6 +111,8 @@ jobs:
     - name: Publish coverage to Code Climate
       uses: paambaati/codeclimate-action@v3.0.0
       if: ${{ env.COVERAGE }}
+      env:
+        CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
       with:
         debug: true
         coverageCommand: ls -la
