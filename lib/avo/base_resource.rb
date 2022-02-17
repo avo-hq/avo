@@ -6,7 +6,7 @@ module Avo
 
     include ActionView::Helpers::UrlHelper
 
-    delegate :view_context, to: 'Avo::App'
+    delegate :view_context, to: "Avo::App"
     delegate :main_app, to: :view_context
     delegate :avo, to: :view_context
     delegate :resource_path, to: :view_context
@@ -21,7 +21,7 @@ module Avo
     class_attribute :title, default: :id
     class_attribute :description, default: :id
     class_attribute :search_query, default: nil
-    class_attribute :search_query_help, default: ''
+    class_attribute :search_query_help, default: ""
     class_attribute :includes, default: []
     class_attribute :model_class
     class_attribute :translation_key
@@ -60,7 +60,7 @@ module Avo
       # This is the search_query scope
       # This should be removed and passed to the search block
       def scope
-        self.query_scope
+        query_scope
       end
 
       # This resolves the scope when doing "where" queries (not find queries)
@@ -137,7 +137,8 @@ module Avo
           if field.respond_to?(:foreign_key) &&
               reflection.present? &&
               reflection.respond_to?(:foreign_key) &&
-              reflection.foreign_key != field.foreign_key
+              reflection.foreign_key != field.foreign_key &&
+              @params[:resource_name] == field.resource.model_key
             next
           end
 
