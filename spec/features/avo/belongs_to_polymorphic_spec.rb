@@ -125,6 +125,17 @@ RSpec.feature "belongs_to", type: :system do
     end
   end
 
+  context "new" do
+    let!(:project) { create :project }
+
+    it "has the associated record details prefilled" do
+      visit "/admin/resources/comments/new?via_relation=commentable&via_relation_class=Project&via_resource_id=#{project.id}"
+
+      expect(find("#comment_commentable_type").value).to eq "Project"
+      expect(find("#comment_commentable_id").value).to eq project.id.to_s
+    end
+  end
+
   describe "within a parent model" do
     let!(:project) { create :project }
     let!(:comment) { create :comment, body: "hey there", user: user, commentable: project }

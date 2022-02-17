@@ -205,4 +205,14 @@ RSpec.feature "belongs_to searchable", type: :system do
       end
     end
   end
+
+  describe "with associated record" do
+    it "prefills the associated record details" do
+      visit "/admin/resources/reviews/new?via_relation=reviewable&via_relation_class=Team&via_resource_id=#{team.id}"
+
+      expect(find("#review_reviewable_type").value).to eq "Team"
+      expect(find("[data-type='Team'] #review_reviewable").value).to eq team.name
+      expect(find("[data-type='Team'] #review_reviewable_id", visible: false).value).to eq team.id.to_s
+    end
+  end
 end

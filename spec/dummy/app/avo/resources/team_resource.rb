@@ -23,6 +23,7 @@ class TeamResource < Avo::BaseResource
 
   field :admin, as: :has_one
   field :team_members, as: :has_many, through: :memberships
+  field :reviews, as: :has_many
 
   grid do
     cover :logo, as: :external_image, link_to_resource: true do |model|

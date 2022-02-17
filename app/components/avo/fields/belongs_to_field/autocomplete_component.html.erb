@@ -8,15 +8,22 @@
   <div class="relative w-full" autocomplete="off">
     <%= @form.text_field @field.foreign_key,
       value: field_label,
-      class: helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)), 'data-search-target': 'button clearValue',
+      class: helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)),
       placeholder: @field.placeholder,
+      'data-search-target': 'button clearValue',
+      # This instructs the search_controller if it should enable/disabled this field when the user switches polymorphic associations
+      # It should not enable the field if the record is being created through an association
+      'data-should-be-disabled': @disabled,
       disabled: true %>
-    <div class="absolute top-1/2 left-auto right-3 mr-px -mt-2 cursor-pointer hidden text-gray-500"
-      data-tippy="tooltip"
-      data-search-target="clearButton"
-      title="<%= I18n.translate 'avo.clear_value' %>"
-      data-action="click->search#clearValue"
-      ><%= helpers.svg 'x', class: 'h-4' %></div>
+    <% unless @disabled %>
+      <div class="absolute top-1/2 left-auto right-3 mr-px -mt-2 cursor-pointer hidden text-gray-500"
+        data-tippy="tooltip"
+        data-search-target="clearButton"
+        title="<%= I18n.translate 'avo.clear_value' %>"
+        data-action="click->search#clearValue"
+        ><%= helpers.svg 'x', class: 'h-4' %>
+      </div>
+    <% end %>
   </div>
   <%= @form.hidden_field @foreign_key, value: field_value, 'data-search-target': 'hiddenId clearValue' %>
 </div>

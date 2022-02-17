@@ -1,5 +1,5 @@
 <%
-  if @field.types.present? # It's a polymorphic association
+  if is_polymorphic?
 
   # Set the model keys so we can pass them over
   model_keys = @field.types.map do |type|
@@ -39,10 +39,19 @@
       >
       <%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal, label: type.to_s.underscore.humanize do %>
         <% if @field.searchable %>
-          <%= render Avo::Fields::BelongsToField::AutocompleteComponent.new form: @form, field: @field, type: type, model_key: model_keys[type.to_s], foreign_key: "#{@field.foreign_key}_id" %>
+          <%= render Avo::Fields::BelongsToField::AutocompleteComponent.new form: @form,
+            field: @field,
+            type: type,
+            model_key: model_keys[type.to_s],
+            foreign_key: "#{@field.foreign_key}_id",
+            resource: @resource,
+            disabled: disabled,
+            polymorphic_record: polymorphic_record
+          %>
         <% else %>
-          <%= @form.select "#{@field.foreign_key}_id", options_for_select(@field.values_for_type(type), @field.value&.class == type ? @field.field_value : nil),
+          <%= @form.select "#{@field.foreign_key}_id", options_for_select(@field.values_for_type(type), @resource.present? && @resource.model.present? ? @resource.model["#{@field.foreign_key}_id"] : nil),
             {
+              value: @resource.model["#{@field.foreign_key}_id"].to_s,
               include_blank: @field.placeholder,
             },
             {
@@ -58,7 +67,13 @@
 <% else %>
   <%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal do %>
     <% if @field.searchable %>
-      <%= render Avo::Fields::BelongsToField::AutocompleteComponent.new form: @form, field: @field, model_key: @field.target_resource&.model_key, foreign_key: @field.foreign_key %>
+      <%= render Avo::Fields::BelongsToField::AutocompleteComponent.new form: @form,
+        field: @field,
+        model_key: @field.target_resource&.model_key,
+        foreign_key: @field.foreign_key,
+        resource: @resource,
+        disabled: disabled
+      %>
     <% else %>
       <%= @form.select @field.foreign_key, @field.options.map { |o| [o[:label], o[:value]] },
         {
