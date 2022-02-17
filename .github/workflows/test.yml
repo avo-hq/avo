@@ -116,5 +116,5 @@ jobs:
       with:
         debug: true
         coverageCommand: ls -la
-        coverageLocations: coverage
+        coverageLocations: coverage/coverage.xml
 
