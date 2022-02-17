@@ -106,20 +106,6 @@ RSpec.feature "HasManyField", type: :feature do
         expect(page).not_to have_text post.name
       end
     end
-
-    # Fixes https://github.com/avo-hq/avo/issues/668
-    describe "displays has other association fields" do
-      let!(:post) { create :post }
-      let!(:comment) { create :comment, commentable: post, user: user }
-
-      it "displays the other fields" do
-        visit "/admin/resources/posts/#{post.id}/comments?turbo_frame=has_many_field_show_comments"
-
-        row = find("[data-resource-name='comments'][data-resource-id='#{post.id}']")
-
-        expect(row.find('[data-field-id="user"]').text).to eq user.name
-      end
-    end
   end
 
   describe "scope" do
