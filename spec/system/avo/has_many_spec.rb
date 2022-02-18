@@ -47,9 +47,10 @@ RSpec.feature "HasManyField", type: :system do
         expect {
           find("[data-resource-id='#{comments.first.id}'] [data-control='destroy']").click
           page.driver.browser.switch_to.alert.accept
+          sleep 0.1
           find("[data-resource-id='#{comments.third.id}'] [data-control='destroy']").click
           page.driver.browser.switch_to.alert.accept
-          sleep 0.2
+          sleep 0.1
         }.to change(Comment, :count).by(-2)
 
         expect(page).to have_current_path url
