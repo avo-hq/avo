@@ -1,13 +1,14 @@
 :root {
   --aa-primary-color: --tw-ring-color;
   --aa-selected-color: --tw-ring-color;
-  --aa-primary-color-rgb: 5, 150, 105;
+  --aa-primary-color-rgb: 117, 125, 138;
 }
 
 .global-search {
   .aa-DetachedSearchButton:focus,
   .aa-DetachedSearchButton {
     border: none !important;
+    @apply text-gray-500;
   }
 }
 
@@ -17,7 +18,7 @@
   }
 
   .aa-DetachedSearchButton {
-    @apply rounded-full border-gray-300;
+    @apply rounded-full border-gray-300 ;
   }
 }
 

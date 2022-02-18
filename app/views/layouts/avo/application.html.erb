@@ -21,20 +21,10 @@
 
 <div id="app" class="flex min-h-screen flex-row h-full">
   <div class="flex flex-1 w-full">
-    <%= render partial: 'avo/sidebar/sidebar' %>
+    <%= render partial: 'avo/partials/sidebar' %>
 
     <div class="flex-1 flex flex-col h-full overflow-auto">
-      <div class="relative bg-white p-2 shadow-md h-16 w-full flex flex-shrink-0 items-center z-50 px-6" v-if="layout !== 'blank'">
-        <div>
-          <%= render partial: "avo/partials/header" %>
-        </div>
-        <div class="flex-1 flex ml-4 pl-4">
-          <%= render partial: "avo/partials/global_search" if ::Avo::App.license.has_with_trial(:global_search) && ::Avo.configuration.feature_enabled?(:global_search) %>
-        </div>
-        <div class="align-end">
-          <%= render partial: "avo/partials/profile_dropdown" %>
-        </div>
-      </div>
+      <%= render partial: "avo/partials/navbar" %>
 
       <div class="content p-8 flex-1 flex flex-col justify-between items-stretch <%= @container_classes %>">
         <%= render partial: "avo/partials/custom_tools_alert" if @custom_tools_alert_visible %>

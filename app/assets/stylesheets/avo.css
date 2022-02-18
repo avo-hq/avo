@@ -70,7 +70,7 @@ body {
 
 .application-sidebar .active:hover,
 .application-sidebar .active {
-  @apply bg-gray-200;
+  @apply bg-blue-100 text-blue-500;
 }
 
 .turbo-progress-bar {

@@ -1,0 +1,28 @@
+<div class="text-black border-t border-gray-200 p-4 flex">
+  <div class="flex-1 flex space-x-4">
+    <div class="relative aspect-square w-10 h-10 overflow-hidden rounded">
+      <%= image_tag avatar, class: "object-cover min-w-full min-h-full h-full" %>
+    </div>
+    <div class="flex flex-col">
+      <div class="font-medium">
+        <%= name %>
+      </div>
+      <div class="text-xs text-gray-500 uppercase">
+        <%= title %>
+      </div>
+    </div>
+  </div>
+  <div>
+    <% if can_destroy_user? %>
+      <a class="flex items-center h-full cursor-pointer">
+        <%= helpers.svg 'three-dots' %>
+      </a>
+
+      <%# if main_app.respond_to?(destroy_user_session_path)
+        <div class="hidden absolute inset-auto right-0 mr-6 mt-0 py-4 bg-white rounded-xl min-w-[200px] shadow-context" data-toggle-panel-target="panel">
+          <%= button_to t('avo.sign_out'), main_app.send(:destroy_user_session_path), method: :delete, form: { "data-turbo" => "false" }, class: "appearance-none bg-white text-left cursor-pointer text-green-600 font-semibold hover:text-white hover:bg-green-500 block px-4 py-1 w-full"
+        </div>
+      <%# end %>
+    <% end %>
+  </div>
+</div>
