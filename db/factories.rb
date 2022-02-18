@@ -58,11 +58,15 @@ FactoryBot.define do
     type { "Spouse" }
   end
 
-  factory :course do
-    name { Faker::Educator.course_name }
+  factory :fish do
+    name { %w[Tilapia Salmon Trout Catfish Pangasius Carp].sample }
   end
 
-  factory :link do
-    name { Faker::Internet.url }
+  factory :course do
+    name { Faker::Educator.unique.course_name }
+  end
+
+  factory :course_link, class: "Course::Link" do
+    link { Faker::Internet.url }
   end
 end

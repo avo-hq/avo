@@ -7,6 +7,6 @@ class Comment < ApplicationRecord
   scope :starts_with, -> (prefix) { where('LOWER(body) LIKE ?', "#{prefix}%") }
 
   def tiny_name
-    ActionView::Base.full_sanitizer.sanitize(body.to_s).truncate 30
+    ActionView::Base.full_sanitizer.sanitize(body.to_s).truncate 60
   end
 end

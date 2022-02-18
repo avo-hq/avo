@@ -35,5 +35,33 @@ RSpec.feature "HasManyField", type: :system do
         end
       end
     end
+
+    describe "delete notification visible" do
+      let!(:project) { create :project }
+      let!(:comments) { create_list :comment, 3, commentable: project }
+      let(:url) { "/admin/resources/projects/#{project.id}" }
+
+      it "shows the notification" do
+        visit url
+
+        expect {
+          find("[data-resource-id='#{comments.first.id}'] [data-control='destroy']").click
+          page.driver.browser.switch_to.alert.accept
+          sleep 0.1
+          find("[data-resource-id='#{comments.third.id}'] [data-control='destroy']").click
+          page.driver.browser.switch_to.alert.accept
+          sleep 0.1
+        }.to change(Comment, :count).by(-2)
+
+        expect(page).to have_current_path url
+
+        expect(page).not_to have_text comments.first.tiny_name.to_s
+        expect(page).not_to have_text comments.third.tiny_name.to_s
+        expect(page).to have_text comments.second.tiny_name.to_s
+
+        sleep 0.1
+        expect(page).to have_text("Resource destroyed").twice
+      end
+    end
   end
 end

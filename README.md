@@ -54,7 +54,7 @@ $ bundle install
 
 # Quick Purchase
 
-Use [this](https://buy.stripe.com/9AQ6rX0uIbLF2CQdQQ) link to quickly purchase a Pro license to support this project. Thank you 🙏
+Use [this](https://avohq.io/purchase/pro) link to quickly purchase a Pro license to support this project. Thank you 🙏
 
 # Contributing
 
