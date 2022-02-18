@@ -1,12 +1,12 @@
 <div>
-  <%= render Avo::PanelComponent.new(title: title, description: description, body_classes: 'py-4', data: { component: 'resources-index' }, display_breadcrumbs: @reflection.blank?) do |c| %>
+  <%= render Avo::PanelComponent.new(title: title, description: description, body_classes: 'py-2', data: { component: 'resources-index' }, display_breadcrumbs: @reflection.blank?) do |c| %>
     <% c.tools do %>
       <% if can_see_the_actions_button? %>
         <%= render 'actions' %>
       <% end %>
 
       <% if can_see_the_create_button? %>
-        <%= a_link create_path, 'data-target': 'create' do %>
+        <%= a_link create_path, 'data-target': 'create', color: :primary, variant: :outlined do %>
           <%= svg 'plus' %> <%= t('avo.create_new_item', item: singular_resource_name.downcase ) %>
         <% end %>
       <% end %>
@@ -19,7 +19,7 @@
     <% end %>
 
     <% c.body do %>
-      <div class="flex justify-between pt-2 pb-2 min-h-16"
+      <div class="flex justify-between min-h-16"
         data-selected-resources-name="<%= @resource.model_key %>"
         data-selected-resources="[]"
       >
@@ -27,11 +27,14 @@
           <%= render partial: 'avo/partials/resource_search', locals: {resource: @resource.model_key} if @resource.search_query.present? %>
         </div>
         <div class="flex justify-end items-center px-6 space-x-3">
-          <%= render partial: 'avo/partials/view_toggle_button', locals: { available_view_types: available_view_types, view_type: view_type, turbo_frame: @turbo_frame } if @models.present? %>
           <%= render 'filters' if @filters.present? %>
+
+          <%= render partial: 'avo/partials/view_toggle_button', locals: { available_view_types: available_view_types, view_type: view_type, turbo_frame: @turbo_frame } if @models.present? %>
         </div>
       </div>
+    <% end %>
 
+    <% c.bare_content do %>
       <% if view_type.to_sym == :table %>
         <div class="w-full overflow-auto flex flex-col mt-4">
           <div class="relative flex-1 flex">
@@ -45,13 +48,11 @@
           <% end %>
         </div>
       <% end %>
-    <% end %>
 
-    <% c.bare_content do %>
       <% if view_type.to_sym == :grid %>
         <%= render Avo::Index::ResourceGridComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_model: @parent_model) %>
 
-        <div class="bg-white rounded-xl shadow-xl mt-8 py-6">
+        <div class="mt-8 py-6">
           <%= render partial: 'avo/partials/paginator', locals: { pagy: @pagy, turbo_frame: @turbo_frame || 'none' } %>
         </div>
       <% end %>

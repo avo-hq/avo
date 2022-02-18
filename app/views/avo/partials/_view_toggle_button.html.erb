@@ -1,17 +1,23 @@
-<%
-  if available_view_types.count > 1
-    case view_type.to_sym
-    when :table
-      new_view_type = 'grid'
-      new_icon = 'view-grid'
-      translation_key = 'avo.grid_view'
-    when :grid
-      new_view_type = 'table'
-      new_icon = 'view-list'
-      translation_key = 'avo.table_view'
-    end
-%>
-  <%= a_link params.permit!.merge(view_type: new_view_type), color: :blue, 'data-turbo-frame': turbo_frame, title: t('avo.switch_to_view', view_type: new_view_type), 'data-tippy': 'tooltip' do %>
-    <%= svg new_icon %> <%= t translation_key, item: @resource.model_class.model_name.human.downcase %>
-  <% end %>
+<% if available_view_types.count > 1 %>
+  <%
+    info = {
+      table: {
+        new_view_type: 'grid',
+        new_icon: 'view-grid',
+        translation_key: 'avo.grid_view',
+      },
+      grid: {
+        new_view_type: 'table',
+        new_icon: 'view-list',
+        translation_key: 'avo.table_view',
+      },
+    }
+  %>
+  <div class="flex">
+    <% available_view_types.each do |type| %>
+      <%= a_link params.permit!.merge(view_type: type), color: :secondary, variant: :outlined, class: view_type.to_s == type.to_s ? 'bg-gray-200' : '', 'data-turbo-frame': turbo_frame, title: t('avo.switch_to_view', view_type: type), 'data-tippy': 'tooltip' do %>
+        <%= svg info[type][:new_icon] %>
+      <% end %>
+    <% end %>
+  </div>
 <% end %>

@@ -1,7 +1,9 @@
 <div data-controller="toggle-panel">
   <div class="relative w-full flex justify-between z-30">
     <%= a_button class: 'focus:outline-none',
-      color: 'slate',
+      color: 'secondary',
+      variant: 'outlined',
+      size: :sm,
       title: t('avo.click_to_reveal_filters'),
       'data-button': 'resource-filters',
       'data-action': 'click->toggle-panel#togglePanel',

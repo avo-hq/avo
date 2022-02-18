@@ -2,6 +2,22 @@
 const plugin = require('tailwindcss/plugin')
 const colors = require('tailwindcss/colors')
 
+const gray = {
+  50: '#FFFFFF',
+  100: '#F9FAFA',
+  150: '#E9EAEC',
+  200: '#D8DBDE',
+  300: '#B7BBC2',
+  400: '#969CA6',
+  500: '#757D8A',
+  600: '#575D66',
+  700: '#383C42',
+  750: '#292C30',
+  800: '#1A1C1E',
+  850: '#0B0B0C',
+  900: '#000000',
+}
+
 module.exports = {
   mode: 'jit',
   future: {},
@@ -36,21 +52,8 @@ module.exports = {
           850: '#000000',
           900: '#000000',
         },
-        gray: {
-          50: '#FFFFFF',
-          100: '#F9FAFA',
-          150: '#E9EAEC',
-          200: '#D8DBDE',
-          300: '#B7BBC2',
-          400: '#969CA6',
-          500: '#757D8A',
-          600: '#575D66',
-          700: '#383C42',
-          750: '#292C30',
-          800: '#1A1C1E',
-          850: '#0B0B0C',
-          900: '#000000',
-        },
+        ternary: gray,
+        gray,
       },
       fontFamily: {
         // eslint-disable-next-line max-len

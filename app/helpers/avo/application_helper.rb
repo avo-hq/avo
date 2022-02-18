@@ -68,14 +68,14 @@ module Avo
       end
     end
 
-    def button_classes(extra_classes = nil, color: nil, variant: nil, size: :md)
-      classes = "inline-flex flex-grow-0 items-center text-sm font-bold leading-none fill-current whitespace-nowrap transition duration-100 rounded-lg shadow-xl transform transition duration-100 active:translate-x-px active:translate-y-px cursor-pointer disabled:cursor-not-allowed #{extra_classes}"
+    def button_classes(extra_classes = nil, color: nil, variant: nil, size: :md, active: false)
+      classes = "inline-flex flex-grow-0 items-center text-sm font-semibold leading-6 fill-current whitespace-nowrap transition duration-100 rounded transform transition duration-100 active:translate-x-px active:translate-y-px cursor-pointer disabled:cursor-not-allowed #{extra_classes}"
 
       if color.present?
         if variant.present? && (variant.to_sym == :outlined)
           classes += " bg-white border"
 
-          classes += " hover:border-#{color}-700 border-#{color}-600 text-#{color}-600 hover:text-#{color}-700 disabled:border-gray-300 disabled:text-gray-600"
+          classes += " hover:border-#{color}-700 border-#{color}-500 text-#{color}-600 hover:text-#{color}-700 disabled:border-gray-300 disabled:text-gray-600"
         else
           classes += " text-white bg-#{color}-500 hover:bg-#{color}-600 disabled:bg-#{color}-300"
         end
@@ -88,9 +88,11 @@ module Avo
       when :xs
         " p-2 py-1"
       when :sm
-        " p-3"
+        " py-1 px-4"
       when :md
-        " p-4"
+        " py-2 px-4"
+      when :xl
+        " py-3 px-4"
       else
         " p-4"
       end
