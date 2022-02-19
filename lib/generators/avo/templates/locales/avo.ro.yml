@@ -78,3 +78,4 @@ ro:
       delete_row: 'Sterge rand'
     was_successfully_created: 'a fost creat'
     was_successfully_updated: 'a fost actualizat'
+    tools: Instrumente
