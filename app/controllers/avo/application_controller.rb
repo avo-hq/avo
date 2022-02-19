@@ -113,7 +113,6 @@ module Avo
     def fill_model
       # We have to skip filling the the model if this is an attach action
       is_attach_action = params[model_param_key].blank? && params[:related_name].present? && params[:fields].present?
-      # puts ['fill_model->', is_attach_action, model_param_key].inspect
 
       unless is_attach_action
         @model = @resource.fill_model(@model_to_fill, cast_nullable(model_params))
