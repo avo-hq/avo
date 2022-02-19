@@ -24,15 +24,15 @@
               <%= svg 'arrow-left' %> <%= t('avo.go_back') %>
             <% end %>
 
-            --
+            <%# -- %>
 
-            <%= render Avo::ButtonComponent.new(icon: svg('arrow-left'), is_link: true, href: back_path) do %>
-              <%= t('avo.go_back') %>
-            <% end %>
+            <%#= render Avo::ButtonComponent.new(icon: svg('arrow-left'), is_link: true, href: back_path) do %>
+              <%#= t('avo.go_back') %>
+            <%# end %>
 
-            <%= render Avo::ButtonComponent.new(color: 'green', spinner: true, type: :submit, icon: svg('save')) do %>
-              <%= t('avo.save').capitalize %>
-            <% end %>
+            <%#= render Avo::ButtonComponent.new(color: 'green', spinner: true, type: :submit, icon: svg('save')) do %>
+              <%#= t('avo.save').capitalize %>
+            <%# end %>
 
             <% if can_see_the_destroy_button? %>
               <%= form_with url: helpers.resource_path(model: @resource.model, resource: @resource), method: :delete, html: { 'data-turbo-frame': params[:turbo_frame] } do |form| %>

@@ -12,7 +12,7 @@ class Avo::ButtonComponent < ViewComponent::Base
 
   def args
     if @args[:spinner]
-      args[:"data-controller"] = "loading-button"
+      @args[:"data-controller"] = "loading-button"
     end
 
     @args
