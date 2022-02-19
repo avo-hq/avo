@@ -1,3 +1,3 @@
-<%= active_link_to @path, class: 'text-gray-800 py-2 px-4 block font-normal hover:bg-gray-100 rounded-md mb-1 mx-3 text-sm leading-none', active: @active do %>
+<%= active_link_to @path, class: 'text-gray-800 py-2 px-4 block font-normal hover:bg-gray-100 rounded-md mb-1 mx-3 text-sm leading-none', active: @active, target: @target do %>
   <div class="w-4"></div> <%= @label %>
 <% end %>
