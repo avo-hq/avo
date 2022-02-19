@@ -111,7 +111,12 @@ module Avo
     end
 
     def fill_model
-      @model = @resource.fill_model(@model_to_fill, cast_nullable(model_params))
+      # We have to skip filling the the model if this is an attach action
+      is_attach_action = params[model_param_key].blank? && params[:related_name].present? && params[:fields].present?
+
+      unless is_attach_action
+        @model = @resource.fill_model(@model_to_fill, cast_nullable(model_params))
+      end
     end
 
     def hydrate_resource
@@ -187,18 +192,6 @@ module Avo
       query
     end
 
-    # def authorize_user
-    #   return if params[:controller] == 'avo/search'
-
-    #   model = record = resource.model
-
-    #   if ['show', 'edit', 'update'].include?(params[:action]) && params[:controller] == 'avo/resources'
-    #     record = resource
-    #   end
-
-    #   # AuthorizationService::authorize_action _current_user, record, params[:action] return render_unauthorized unless
-    # end
-
     def _authenticate!
       instance_eval(&Avo.configuration.authenticate)
     end
@@ -242,6 +235,10 @@ module Avo
 
     def on_api_path
       request.original_url.match?(/.*#{Avo::App.root_path}\/avo_api\/.*/)
+    end
+
+    def model_param_key
+      @resource.form_scope
     end
   end
 end

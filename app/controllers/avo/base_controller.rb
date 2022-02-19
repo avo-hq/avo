@@ -7,6 +7,7 @@ module Avo
     before_action :hydrate_resource
     before_action :set_model, only: [:show, :edit, :destroy, :update]
     before_action :set_model_to_fill
+    before_action :fill_model, only: [:create, :update]
     before_action :authorize_action
     before_action :reset_pagination_if_filters_changed, only: :index
     before_action :cache_applied_filters, only: :index
@@ -112,7 +113,6 @@ module Avo
 
     def create
       # model gets instantiated and filled in the fill_model method
-      fill_model
       saved = @model.save
       @resource.hydrate(model: @model, view: :new, user: _current_user)
 
@@ -166,7 +166,6 @@ module Avo
 
     def update
       # model gets instantiated and filled in the fill_model method
-      fill_model
       saved = @model.save
       @resource = @resource.hydrate(model: @model, view: :edit, user: _current_user)
 
@@ -194,8 +193,6 @@ module Avo
     private
 
     def model_params
-      model_param_key = @resource.form_scope
-
       request_params = params.require(model_param_key).permit(permitted_params)
 
       if @resource.devise_password_optional && request_params[:password].blank? && request_params[:password_confirmation].blank?
