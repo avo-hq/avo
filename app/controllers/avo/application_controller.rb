@@ -1,6 +1,11 @@
 module Avo
   class ApplicationController < ::ActionController::Base
-    include Pundit::Authorization
+    if defined?(Pundit::Authorization)
+      include Pundit::Authorization
+    else
+      include Pundit
+    end
+
     include Pagy::Backend
     include Avo::ApplicationHelper
     include Avo::UrlHelpers
