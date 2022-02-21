@@ -23,10 +23,13 @@ RSpec.feature "belongs_to", type: :system do
 
     context "with a polymorphic association" do
       let!(:post) { create :post }
+      # making more posts so we're certain that we check for the right record
+      let!(:other_posts) { create_list :post, 10 }
       let!(:project) { create :project }
 
       describe "creating a polymorphic association" do
         it "creates the comment" do
+          expect(Comment.count).to eq 0
           visit "/admin/resources/comments/new"
 
           expect(page).to have_select "comment_commentable_type", options: ["Choose an option", "Post", "Project"], selected: "Choose an option"
@@ -35,6 +38,12 @@ RSpec.feature "belongs_to", type: :system do
           select "Post", from: "comment_commentable_type"
           select post.name, from: "comment_commentable_id"
           click_on "Save"
+          wait_for_loaded
+
+          expect(Comment.count).to eq 1
+          comment = Comment.first
+
+          expect(current_path).to eq "/admin/resources/comments/#{comment.id}"
 
           expect(find_field_value_element("body")).to have_text "Sample comment"
           expect(page).to have_link post.name, href: "/admin/resources/posts/#{post.id}?via_resource_class=Comment&via_resource_id=#{Comment.last.id}"
@@ -42,23 +51,25 @@ RSpec.feature "belongs_to", type: :system do
           click_on "Edit"
 
           expect(page).to have_select "comment_commentable_type", options: ["Choose an option", "Post", "Project"], selected: "Post"
-          expect(page).to have_select "comment_commentable_id", options: ["Choose an option", post.name], selected: post.name
+          expect(page).to have_select "comment_commentable_id", options: ["Choose an option", post.name, *other_posts.map(&:name)], selected: post.name
 
           # Switch between types and check that values are kept for each one.
           select "Project", from: "comment_commentable_type"
           expect(page).to have_select "comment_commentable_id", options: ["Choose an option", project.name], selected: "Choose an option"
           select "Post", from: "comment_commentable_type"
-          expect(page).to have_select "comment_commentable_id", options: ["Choose an option", post.name], selected: post.name
+          expect(page).to have_select "comment_commentable_id", options: ["Choose an option", post.name, *other_posts.map(&:name)], selected: post.name
 
           # Switch to Project, select one and save
           select "Project", from: "comment_commentable_type"
           select project.name, from: "comment_commentable_id"
+          select "Post", from: "comment_commentable_type"
+          select other_posts.last.name, from: "comment_commentable_id"
 
           click_on "Save"
           wait_for_loaded
 
-          expect(Comment.last.commentable_type).to eql "Project"
-          expect(Comment.last.commentable_id).to eql project.id
+          expect(Comment.last.commentable_type).to eql "Post"
+          expect(Comment.last.commentable_id).to eql other_posts.last.id
         end
       end
     end
@@ -159,6 +170,16 @@ RSpec.feature "belongs_to", type: :system do
         expect(find_field("comment_user_id").value).to eql user.id.to_s
         expect(page).to have_select "comment_commentable_type", options: ["Choose an option", "Post", "Project"], selected: "Project", disabled: true
         expect(page).to have_select "comment_commentable_id", options: ["Choose an option", project.name], selected: project.name, disabled: true
+
+        click_on 'Save'
+        wait_for_loaded
+
+        expect(current_path).to eq "/admin/resources/projects/#{project.id}"
+
+        comment.reload
+
+        expect(comment.commentable_type).to eq 'Project'
+        expect(comment.commentable.id).to eq project.id
       end
     end
   end

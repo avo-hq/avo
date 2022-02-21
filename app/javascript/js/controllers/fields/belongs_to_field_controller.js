@@ -74,6 +74,13 @@ export default class extends Controller {
         if (select) {
           select.setAttribute('valid-name', select.getAttribute('name'))
         }
+        const hiddenInput = target.querySelector('input[type="hidden"]')
+        if (hiddenInput) {
+          hiddenInput.setAttribute(
+            'valid-name',
+            hiddenInput.getAttribute('name'),
+          )
+        }
 
         if (this.selectedType !== type) {
           select.selectedIndex = 0
@@ -105,7 +112,9 @@ export default class extends Controller {
       hiddenInput.setAttribute('name', hiddenInput.getAttribute('valid-name'))
     } else {
       const select = target.querySelector('select')
+      const hiddenInput = target.querySelector('input[type="hidden"]')
       select.setAttribute('name', select.getAttribute('valid-name'))
+      hiddenInput.setAttribute('name', hiddenInput.getAttribute('valid-name'))
     }
   }
 
@@ -122,6 +131,7 @@ export default class extends Controller {
     } else if (target) {
       try {
         target.querySelector('select').setAttribute('name', '')
+        target.querySelector('input[type="hidden"]').setAttribute('name', '')
       } catch (error) {}
     }
   }

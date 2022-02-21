@@ -59,6 +59,12 @@
               disabled: disabled
             }
           %>
+          <%
+            # If the select field is disabled, no value will be sent. It's how HTML works.
+            # Thus the extra hidden field to actually send the related id to the server.
+            if disabled %>
+              <%= @form.hidden_field "#{@field.foreign_key}_id" %>
+            <% end %>
         <% end %>
       <% end %>
     </div>
@@ -78,6 +84,7 @@
       <%= @form.select @field.foreign_key, @field.options.map { |o| [o[:label], o[:value]] },
         {
           include_blank: @field.placeholder,
+          value: @field.value
         },
         {
           class: helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)),
