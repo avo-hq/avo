@@ -9,7 +9,7 @@
         </div>
 
         <div class="w-full">
-          <%= render Avo::NavigationHeadingComponent.new label: t('avo.resources'), icon: svg('resources-icon') %>
+          <%= render Avo::NavigationHeadingComponent.new label: t('avo.resources'), icon: svg('resources-icon', class: 'h-4') %>
           <% Avo::App.resources_navigation(_current_user).sort_by { |r| r.navigation_label }.each do |resource| %>
             <%= render Avo::NavigationLinkComponent.new label: resource.navigation_label, path: resources_path(resource: resource) %>
           <% end %>
@@ -19,7 +19,7 @@
           <% tools = Avo::App.get_sidebar_partials %>
 
           <% if tools.present? %>
-            <%= render Avo::NavigationHeadingComponent.new label: t('avo.tools'), icon: svg('tools-icon') %>
+            <%= render Avo::NavigationHeadingComponent.new label: t('avo.tools'), icon: svg('tools-icon', class: 'h-4') %>
 
             <% tools.each do |partial| %>
               <%= render partial: "/avo/sidebar/items/#{partial}" %>

@@ -11,28 +11,36 @@
           <% if @reflection.present? && @resource.model.present? %>
             <% if can_detach? %>
               <%= a_link detach_path, color: 'indigo', method: :delete, data: { confirm: "Are you sure you want to detach this #{@reflection.name.to_s}." } do %>
-                <%= svg 'trash' %> <%= t('avo.detach_item', item: @reflection.name.to_s).capitalize %>
+                <%= svg 'trash', class: 'h-4' %> <%= t('avo.detach_item', item: @reflection.name.to_s).capitalize %>
               <% end %>
             <% end %>
             <% if can_see_the_edit_button? %>
               <%= a_link edit_path, color: 'indigo' do %>
-                <%= svg 'edit' %> <%= t('avo.edit').capitalize %>
+                <%= svg 'edit', class: 'h-4' %> <%= t('avo.edit').capitalize %>
               <% end %>
             <% end %>
           <% else %>
             <%= a_link back_path do %>
-              <%= svg 'arrow-left' %> <%= t('avo.go_back') %>
+              <%= svg 'arrow-left', class: 'h-4' %> <%= t('avo.go_back') %>
             <% end %>
 
-            <%# -- %>
+            --
 
-            <%#= render Avo::ButtonComponent.new(icon: svg('arrow-left'), is_link: true, href: back_path) do %>
-              <%#= t('avo.go_back') %>
-            <%# end %>
+            <%= render Avo::ButtonComponent.new(icon: 'arrow-left', type: :primary, is_link: true, href: back_path) do %>
+              Primary
+            <% end %>
 
-            <%#= render Avo::ButtonComponent.new(color: 'green', spinner: true, type: :submit, icon: svg('save')) do %>
-              <%#= t('avo.save').capitalize %>
-            <%# end %>
+            <%= render Avo::ButtonComponent.new(icon: 'arrow-left', type: :secondary, is_link: true, href: back_path) do %>
+              Secondary
+            <% end %>
+
+            <%= render Avo::ButtonComponent.new(icon: 'arrow-left', type: :ternary, is_link: true, href: back_path) do %>
+              Ternary
+            <% end %>
+
+            <%= render Avo::ButtonComponent.new(color: 'green', spinner: true, type: :submit, icon: 'save') do %>
+              <%= t('avo.save').capitalize %>
+            <% end %>
 
             <% if can_see_the_destroy_button? %>
               <%= form_with url: helpers.resource_path(model: @resource.model, resource: @resource), method: :delete, html: { 'data-turbo-frame': params[:turbo_frame] } do |form| %>
@@ -41,6 +49,7 @@
                   color: 'red',
                   variant: 'outlined',
                   type: :submit,
+                  icon: 'trash',
                   data: {
                     confirm: t('avo.are_you_sure', item: @resource.model.model_name.name.downcase),
                     control: :destroy,
@@ -48,14 +57,14 @@
                     'tippy': 'tooltip',
                   } do
                 %>
-                  <%= svg 'trash' %> <%= t('avo.delete').capitalize %>
+                  <%= t('avo.delete').capitalize %>
                 <% end %>
               <% end %>
             <% end %>
 
             <% if @resource.authorization.authorize_action(:edit, raise_exception: false) %>
               <%= a_link edit_path, color: 'indigo' do %>
-                <%= svg 'edit' %> <%= t('avo.edit').capitalize %>
+                <%= svg 'edit', class: 'h-4' %> <%= t('avo.edit').capitalize %>
               <% end %>
             <% end %>
           <% end %>

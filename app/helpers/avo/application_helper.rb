@@ -26,45 +26,15 @@ module Avo
       end
     end
 
-    def a_button(label = nil, **args, &block)
-      args[:class] = button_classes(args[:class], color: args[:color], variant: args[:variant], size: args[:size])
-      if args[:spinner]
-        args[:"data-controller"] = "loading-button"
-      end
-
-      locals = {
-        label: label,
-        args: args
-      }
-
-      if block
-        render layout: "avo/partials/a_button", locals: locals do
-          capture(&block)
-        end
-      else
-        render partial: "avo/partials/a_button", locals: locals
+    def a_button(**args, &block)
+      render Avo::ButtonComponent.new(is_link: false, **args) do
+        capture(&block) if block_given?
       end
     end
 
-    def a_link(label, url = nil, **args, &block)
-      args[:class] = button_classes(args[:class], color: args[:color], variant: args[:variant], size: args[:size])
-
-      if block
-        url = label
-      end
-
-      locals = {
-        label: label,
-        url: url,
-        args: args
-      }
-
-      if block
-        render layout: "avo/partials/a_link", locals: locals do
-          capture(&block)
-        end
-      else
-        render partial: "avo/partials/a_link", locals: locals
+    def a_link(path = nil, **args, &block)
+      render Avo::ButtonComponent.new(path, is_link: true, **args) do
+        capture(&block) if block_given?
       end
     end
 
@@ -102,7 +72,7 @@ module Avo
 
     def svg(file_name, **args)
       options = {}
-      options[:class] = args[:class].present? ? args[:class] : "h-4 mr-1"
+      options[:class] = args[:class].present? ? args[:class] : ""
       options[:class] += args[:extra_class].present? ? " #{args[:extra_class]}" : ""
 
       # Create the path to the svgs directory

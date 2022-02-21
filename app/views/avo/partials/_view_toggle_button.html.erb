@@ -16,7 +16,7 @@
   <div class="flex">
     <% available_view_types.each do |type| %>
       <%= a_link params.permit!.merge(view_type: type), color: :secondary, variant: :outlined, class: view_type.to_s == type.to_s ? 'bg-gray-200' : '', 'data-turbo-frame': turbo_frame, title: t('avo.switch_to_view', view_type: type), 'data-tippy': 'tooltip' do %>
-        <%= svg info[type][:new_icon] %>
+        <%= svg info[type][:new_icon], class: 'h-4' %>
       <% end %>
     <% end %>
   </div>

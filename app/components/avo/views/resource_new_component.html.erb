@@ -12,12 +12,12 @@
         <% c.tools do %>
           <div class="flex justify-end space-x-2">
             <%= a_link back_path do %>
-              <%= svg 'arrow-left' %> <%= t('avo.cancel').capitalize %>
+              <%= svg 'arrow-left', class: 'h-4' %> <%= t('avo.cancel').capitalize %>
             <% end %>
 
             <% if can_see_the_save_button? %>
-              <%= a_button color: 'green', spinner: true, type: :submit do %>
-                <%= svg 'save' %> <%= t('avo.save').capitalize %>
+              <%= a_button color: 'green', spinner: true, type: :submit, icon: 'save' do %>
+                <%= t('avo.save').capitalize %>
               <% end %>
             <% end %>
           </div>

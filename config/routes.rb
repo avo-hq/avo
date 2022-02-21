@@ -32,4 +32,10 @@ Avo::Engine.routes.draw do
     post "/:resource_name/:id/:related_name", to: "relations#create", as: "associations_create"
     delete "/:resource_name/:id/:related_name/:related_id", to: "relations#destroy", as: "associations_destroy"
   end
+
+  if Rails.env.development? or Rails.env.staging?
+    scope "avo_private", as: "avo_private" do
+      get "/design", to: 'private#design'
+    end
+  end
 end

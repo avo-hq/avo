@@ -1,0 +1,54 @@
+<%
+  entities = [:link, :button]
+  sizes = [:lg, :md, :sm]
+  styles = [:primary, :secondary, :ternary]
+  states = [:regular, :hover, :disabled, :active]
+%>
+
+<div class="px-6 space-y-4">
+  <% entities.each do |entity| %>
+    <h3><%= entity.to_s.humanize.capitalize.pluralize %></h3>
+
+    <div class="flex flex-col space-y-4">
+      <% sizes.each do |size| %>
+        <div class="flex flex-col space-y-1">
+          <% styles.each do |style| %>
+            <div class="flex space-x-1">
+                <% states.each do |state| %>
+                <%
+                  extra_classes = ""
+                  case state
+                  when :active
+                    extra_classes += " active"
+                  when :hover
+                    extra_classes += " hover"
+                  end
+                %>
+                  <%
+                    method = "a_#{entity}"
+                    args = {icon: 'arrow-left', style: style, size: size, class: extra_classes, disabled: state == :disabled}
+                  %>
+                  <% if entity == :link %>
+                    <div>
+                      <%= send method, '/admin/design', **args do %>
+                        <%= entity.to_s.humanize.capitalize %> <%= state %>
+                      <% end %>
+                    </div>
+                  <% else %>
+                    <div>
+                      <%= send method, **args do %>
+                        <%= entity.to_s.humanize.capitalize %> <%= state %>
+                      <% end %>
+                    </div>
+                    <div>
+                      <%= a_button icon: 'bell', style: style, size: size, class: extra_classes, disabled: state == :disabled %>
+                    </div>
+                  <% end %>
+                <% end %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
