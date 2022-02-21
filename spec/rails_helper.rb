@@ -54,7 +54,7 @@ Capybara.register_driver :chrome_headless do |app|
                                        headless
                                        disable-gpu
                                        no-sandbox
-                                       window-size=1024,768
+                                       window-size=1440,1024
                                      ]
                                    )
                                  ]
@@ -70,7 +70,7 @@ Capybara.register_driver :chrome do |app|
                                      args: %w[
                                        disable-gpu
                                        no-sandbox
-                                       window-size=1024,768
+                                       window-size=1440,1024
                                      ]
                                    )
                                  ]
