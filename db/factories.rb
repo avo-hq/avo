@@ -17,7 +17,7 @@ FactoryBot.define do
   end
 
   factory :post do
-    name { Faker::Quote.unique.famous_last_words }
+    name { Faker::Quote.famous_last_words }
     body { Faker::Lorem.paragraphs(number: rand(4...10)).join("\n") }
     is_featured { [true, false].sample }
     published_at do

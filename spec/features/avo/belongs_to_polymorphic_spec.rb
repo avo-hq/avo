@@ -24,7 +24,9 @@ RSpec.feature "belongs_to", type: :system do
     context "with a polymorphic association" do
       let!(:post) { create :post }
       # making more posts so we're certain that we check for the right record
-      let!(:other_posts) { create_list :post, 10 }
+      let!(:other_posts) { create_list(:post, 10) do |post, i|
+        post.update(name: "#{Faker::Company.name} - #{i}")
+      end }
       let!(:project) { create :project }
 
       describe "creating a polymorphic association" do
