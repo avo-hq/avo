@@ -59,6 +59,7 @@ document.addEventListener('turbo:before-fetch-response', (e) => {
 })
 document.addEventListener('turbo:visit', () => document.body.classList.add('turbo-loading'))
 document.addEventListener('turbo:submit-start', () => document.body.classList.add('turbo-loading'))
+document.addEventListener('turbo:submit-end', () => document.body.classList.remove('turbo-loading'))
 document.addEventListener('turbo:before-cache', () => {
   document.querySelectorAll('[data-turbo-remove-before-cache]').forEach((element) => element.remove())
 })
