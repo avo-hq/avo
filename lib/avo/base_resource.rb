@@ -119,12 +119,6 @@ module Avo
     end
 
     def get_fields(panel: nil, reflection: nil)
-      if reflection.present? && reflection.active_record.present?
-        # Get the field ID for the reflection
-        reflection_resource = App.get_resource_by_model_name reflection.active_record.to_s
-        reflection_resource.get_field reflection.name
-      end
-
       fields = get_field_definitions
         .select do |field|
           field.send("show_on_#{@view}")
