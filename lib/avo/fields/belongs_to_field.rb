@@ -163,13 +163,6 @@ module Avo
         nil
       end
 
-      # Get the model class of the field reflection
-      def reflection_class
-        get_model_class(reflection.active_record)
-      rescue
-        nil
-      end
-
       def relation_model_class
         @resource.model_class
       end
