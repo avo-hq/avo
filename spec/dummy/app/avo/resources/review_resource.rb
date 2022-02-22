@@ -1,5 +1,5 @@
 class ReviewResource < Avo::BaseResource
-  self.title = :id
+  self.title = :tiny_name
   self.includes = []
   # self.search_query = ->(params:) do
   #   scope.ransack(id_eq: params[:q], m: "or").result(distinct: false)

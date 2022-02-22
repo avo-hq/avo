@@ -37,10 +37,7 @@ module Avo
       query = @authorization.apply_policy @attachment_class
 
       @options = query.all.map do |model|
-        {
-          value: model.id,
-          label: model.send(@attachment_resource.class.title)
-        }
+        [model.send(@attachment_resource.class.title), model.id]
       end
     end
 

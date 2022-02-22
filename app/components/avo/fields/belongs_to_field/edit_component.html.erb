@@ -1,3 +1,7 @@
+foreign_key: <%= @field.foreign_key %>
+<br>
+is_polymorphic?: <%= is_polymorphic? %>
+<br>
 <%
   if is_polymorphic?
 
@@ -13,7 +17,7 @@
     data-association-class="<%= @field&.target_resource&.model_class || nil %>"
   >
   <%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal do %>
-    <%= @form.select "#{@field.foreign_key}_type", @field.types.map { |type| [type.to_s.underscore.humanize, type.to_s] },
+    <%= @form.select @field.type_input_foreign_key, @field.types.map { |type| [type.to_s.underscore.humanize, type.to_s] },
       {
         value: @field.value,
         include_blank: @field.placeholder,
@@ -29,7 +33,7 @@
         # If the select field is disabled, no value will be sent. It's how HTML works.
         # Thus the extra hidden field to actually send the related id to the server.
         if disabled %>
-      <%= @form.hidden_field "#{@field.foreign_key}_type" %>
+      <%= @form.hidden_field @field.type_input_foreign_key %>
     <% end %>
   <% end %>
   <% @field.types.each do |type| %>
@@ -43,15 +47,16 @@
             field: @field,
             type: type,
             model_key: model_keys[type.to_s],
-            foreign_key: "#{@field.foreign_key}_id",
+            foreign_key: @field.id_input_foreign_key,
             resource: @resource,
             disabled: disabled,
             polymorphic_record: polymorphic_record
           %>
         <% else %>
-          <%= @form.select "#{@field.foreign_key}_id", options_for_select(@field.values_for_type(type), @resource.present? && @resource.model.present? ? @resource.model["#{@field.foreign_key}_id"] : nil),
+          <%= @form.select @field.id_input_foreign_key,
+            options_for_select(@field.values_for_type(type), @resource.present? && @resource.model.present? ? @resource.model[@field.id_input_foreign_key] : nil),
             {
-              value: @resource.model["#{@field.foreign_key}_id"].to_s,
+              value: @resource.model[@field.id_input_foreign_key].to_s,
               include_blank: @field.placeholder,
             },
             {
@@ -63,7 +68,7 @@
             # If the select field is disabled, no value will be sent. It's how HTML works.
             # Thus the extra hidden field to actually send the related id to the server.
             if disabled %>
-              <%= @form.hidden_field "#{@field.foreign_key}_id" %>
+              <%= @form.hidden_field @field.id_input_foreign_key %>
             <% end %>
         <% end %>
       <% end %>
@@ -76,12 +81,12 @@
       <%= render Avo::Fields::BelongsToField::AutocompleteComponent.new form: @form,
         field: @field,
         model_key: @field.target_resource&.model_key,
-        foreign_key: @field.foreign_key,
+        foreign_key: @field.id_input_foreign_key,
         resource: @resource,
         disabled: disabled
       %>
     <% else %>
-      <%= @form.select @field.foreign_key, @field.options.map { |o| [o[:label], o[:value]] },
+      <%= @form.select @field.id_input_foreign_key, @field.options,
         {
           include_blank: @field.placeholder,
           value: @field.value
@@ -95,7 +100,7 @@
         # If the select field is disabled, no value will be sent. It's how HTML works.
         # Thus the extra hidden field to actually send the related id to the server.
         if disabled %>
-        <%= @form.hidden_field @field.foreign_key %>
+        <%= @form.hidden_field @field.id_input_foreign_key %>
       <% end %>
     <% end %>
   <% end %>

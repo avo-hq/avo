@@ -34,6 +34,7 @@ export default class extends Controller {
   // Private
 
   hideAllTypes() {
+    console.log('this.typeTargets->', this.typeTargets)
     this.typeTargets.forEach((target) => {
       target.classList.add('hidden')
 
@@ -107,6 +108,7 @@ export default class extends Controller {
     if (this.isSearchable) {
       const textInput = target.querySelector('input[type="text"]')
       const hiddenInput = target.querySelector('input[type="hidden"]')
+      console.log('target->', target, textInput, hiddenInput)
 
       textInput.setAttribute('name', textInput.getAttribute('valid-name'))
       hiddenInput.setAttribute('name', hiddenInput.getAttribute('valid-name'))
@@ -127,7 +129,10 @@ export default class extends Controller {
       try {
         target.querySelector('input[type="text"]').setAttribute('name', '')
         target.querySelector('input[type="hidden"]').setAttribute('name', '')
-      } catch {}
+        console.log(target.querySelector('input[type="hidden"]'))
+      } catch (e) {
+        console.log('e->', e)
+      }
     } else if (target) {
       try {
         target.querySelector('select').setAttribute('name', '')
