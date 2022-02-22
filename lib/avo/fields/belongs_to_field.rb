@@ -87,36 +87,6 @@ module Avo
         end
       end
 
-      # Returns the title of the associated record
-      # eg: "Hello" from value of <Post id: 101, title: "Hello", created_at: nil, updated_at: nil>
-      def polymorphic_label
-      end
-
-      # Returns the ID of the associated record
-      # eg: 101 from value of <Post id: 101, title: "Hello", created_at: nil, updated_at: nil>
-      def polymorphic_value
-      end
-
-      # This is used when selecting the type of the poly association
-      # eg: "Post" from value of <Post id: 101, title: "Hello", created_at: nil, updated_at: nil>
-      def polymorphic_type_key
-      end
-
-      # This is used when seleting the type of the poly association
-      # eg: "Hello" from value of <Post id: 101, title: "Hello", created_at: nil, updated_at: nil>
-      def polymorphic_label_key
-      end
-
-      # Returns the ID of the associated record
-      # eg: 101 from value of <Post id: 101, title: "Hello", created_at: nil, updated_at: nil>
-      def polymorphic_id_key
-        polymorphic_value
-      end
-
-      def value_field_disabled?
-        false
-      end
-
       # The value
       def field_value
         value.send(database_value)
