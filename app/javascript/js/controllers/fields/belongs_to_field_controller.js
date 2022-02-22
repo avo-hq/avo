@@ -114,7 +114,7 @@ export default class extends Controller {
       const select = target.querySelector('select')
       const hiddenInput = target.querySelector('input[type="hidden"]')
       select.setAttribute('name', select.getAttribute('valid-name'))
-      hiddenInput.setAttribute('name', hiddenInput.getAttribute('valid-name'))
+      if (hiddenInput) hiddenInput.setAttribute('name', hiddenInput.getAttribute('valid-name'))
     }
   }
 
