@@ -129,10 +129,7 @@ export default class extends Controller {
       try {
         target.querySelector('input[type="text"]').setAttribute('name', '')
         target.querySelector('input[type="hidden"]').setAttribute('name', '')
-        console.log(target.querySelector('input[type="hidden"]'))
-      } catch (e) {
-        console.log('e->', e)
-      }
+      } catch {}
     } else if (target) {
       try {
         target.querySelector('select').setAttribute('name', '')
