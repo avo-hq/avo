@@ -16,7 +16,7 @@ class Avo::Fields::BelongsToField::AutocompleteComponent < ViewComponent::Base
     result = @field.field_label
 
     # New records won't have the value (instantiated model) present but the polymorphic_type and polymorphic_id prefilled
-    if @field.is_polymorphic? && searchable? && !(new_record? && has_polymorphic_association?)
+    if should_prefill?
       result = @field.value&.class == @type ? @field.field_label : nil
     end
 
@@ -27,7 +27,7 @@ class Avo::Fields::BelongsToField::AutocompleteComponent < ViewComponent::Base
     result = @field.field_value
 
     # New records won't have the value (instantiated model) present but the polymorphic_type and polymorphic_id prefilled
-    if @field.is_polymorphic? && searchable? && !(new_record? && has_polymorphic_association?)
+    if should_prefill?
       result = @field.value&.class == @type ? @field.field_value : nil
     end
 
@@ -35,6 +35,10 @@ class Avo::Fields::BelongsToField::AutocompleteComponent < ViewComponent::Base
   end
 
   private
+
+  def should_prefill?
+    @field.is_polymorphic? && searchable? && !(new_record? && has_polymorphic_association?)
+  end
 
   def searchable?
     @field.searchable
