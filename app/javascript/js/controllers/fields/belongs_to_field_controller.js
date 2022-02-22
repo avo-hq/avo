@@ -58,22 +58,16 @@ export default class extends Controller {
 
       if (this.isSearchable) {
         const textInput = target.querySelector('input[type="text"]')
-        if (textInput) {
-          textInput.setAttribute('valid-name', textInput.getAttribute('name'))
-        }
+        if (textInput) this.nameToValidName(textInput)
 
         const hiddenInput = target.querySelector('input[type="hidden"]')
-        if (hiddenInput) {
-          hiddenInput.setAttribute(
-            'valid-name',
-            hiddenInput.getAttribute('name'),
-          )
-        }
+        if (hiddenInput) this.nameToValidName(hiddenInput)
       } else {
         const select = target.querySelector('select')
-        if (select) {
-          select.setAttribute('valid-name', select.getAttribute('name'))
-        }
+        if (select) this.nameToValidName(select)
+
+        const hiddenInput = target.querySelector('input[type="hidden"]')
+        if (hiddenInput) this.nameToValidName(hiddenInput)
 
         if (this.selectedType !== type) {
           select.selectedIndex = 0
@@ -101,11 +95,16 @@ export default class extends Controller {
       const textInput = target.querySelector('input[type="text"]')
       const hiddenInput = target.querySelector('input[type="hidden"]')
 
-      textInput.setAttribute('name', textInput.getAttribute('valid-name'))
-      hiddenInput.setAttribute('name', hiddenInput.getAttribute('valid-name'))
+      this.validNameToName(textInput)
+      this.validNameToName(hiddenInput)
     } else {
       const select = target.querySelector('select')
-      select.setAttribute('name', select.getAttribute('valid-name'))
+      const hiddenInput = target.querySelector('input[type="hidden"]')
+      this.validNameToName(select)
+
+      if (hiddenInput) {
+        this.validNameToName(hiddenInput)
+      }
     }
   }
 
@@ -122,7 +121,16 @@ export default class extends Controller {
     } else if (target) {
       try {
         target.querySelector('select').setAttribute('name', '')
+        target.querySelector('input[type="hidden"]').setAttribute('name', '')
       } catch (error) {}
     }
+  }
+
+  validNameToName(target) {
+    target.setAttribute('name', target.getAttribute('valid-name'))
+  }
+
+  nameToValidName(target) {
+    target.setAttribute('valid-name', target.getAttribute('name'))
   }
 }

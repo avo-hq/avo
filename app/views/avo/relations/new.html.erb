@@ -11,7 +11,7 @@
 
       <div class="flex-1 flex items-center justify-center px-8 text-lg mt-8 mb-12">
         <div class="flex-1 flex flex-col items-center justify-center px-24 text-base">
-          <%= form.select :related_id, options_for_select(@options.map { |o| [o[:label], o[:value]] }, nil),
+          <%= form.select :related_id, options_for_select(@options, nil),
             {
               include_blank: t('avo.choose_an_option'),
             },

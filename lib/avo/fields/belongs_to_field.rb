@@ -1,5 +1,62 @@
 module Avo
   module Fields
+
+    # The field can be in multiple scenarios where it needs different types of data and displays the state differently.
+    # For example the non-polymorphic, non-searchable variant is the easiest to support. You only need to populate a simple select with the ID of the associated record and the list of records.
+    # For the searchable polymorphic variant you need to provide the type of the association (Post, Project, Team), the label of the associated record ("Cool post title") and the ID of that record.
+    # Furthermore, the way Avo works, it needs to do some queries on the back-end to fetch the required information.
+    #
+    # Field scenarios:
+    # 1. Create new record
+    #   List of records
+    # 2. Create new record as association
+    #   List of records, the ID
+    # 3. Create new searchable record
+    #   Nothing really. The records will be fetched from the search API
+    # 4. Create new searchable record as association
+    #   The associated record label and ID. The records will be fetched from the search API
+    # 5. Create new polymorphic record
+    #   Type & ID
+    # 6. Create new polymorphic record as association
+    #   Type, list of records, and ID
+    # 7. Create new polymorphic searchable record
+    #   Type, Label and ID
+    # 8. Create new polymorphic searchable record as association
+    #   Type, Label and ID
+    # 9. Edit a record
+    #   List of records & ID
+    # 10. Edit a record as searchable
+    #   Label and ID
+    # 11. Edit a record as an association
+    #   List and ID
+    # 12. Edit a record as an searchable association
+    #   Label and ID
+    # 13. Edit a polymorphic record
+    #   Type, List of records & ID
+    # 14. Edit a polymorphic record as searchable
+    #   Type, Label and ID
+    # 15. Edit a polymorphic record as an association
+    #   Type, List and ID
+    # 16. Edit a polymorphic record as an searchable association
+    #   Type, Label and ID
+    # Also all of the above with a namespaced model `Course/Link`
+
+    # Variants
+    # 1. Select belongs to
+    # 2. Searchable belongs to
+    # 3. Select Polymorphic belongs to
+    # 4. Searchable Polymorphic belongs to
+
+    # Requirements
+    # - list
+    # - ID
+    # - label
+    # - Type
+    # - foreign_key
+    # - foreign_key for poly type
+    # - foreign_key for poly id
+    # - is_disabled?
+
     class BelongsToField < BaseField
       attr_reader :polymorphic_as
       attr_reader :relation_method
@@ -21,7 +78,13 @@ module Avo
       end
 
       def value
-        super(polymorphic_as)
+        if is_polymorphic?
+          # Get the value from the pre-filled assoociation record
+          super(polymorphic_as)
+        else
+          # Get the value from the pre-filled assoociation record
+          super(relation_method)
+        end
       end
 
       # The value
@@ -39,22 +102,40 @@ module Avo
       end
 
       def options
-        ::Avo::Services::AuthorizationService.apply_policy(user, target_resource.class.query_scope).all.map do |model|
-          {
-            value: model.id,
-            label: model.send(target_resource.class.title)
-          }
-        end
+        values_for_type
       end
 
-      def values_for_type(type)
-        ::Avo::Services::AuthorizationService.apply_policy(user, type).all.map do |model|
-          [model.send(App.get_resource_by_model_name(type).class.title), model.id]
+      def values_for_type(model = nil)
+        resource = target_resource
+        resource = App.get_resource_by_model_name model if model.present?
+
+        ::Avo::Services::AuthorizationService.apply_policy(user, resource.class.query_scope).all.map do |model|
+          [model.send(resource.class.title), model.id]
         end
       end
 
       def database_value
         target_resource.id
+      rescue
+        nil
+      end
+
+      def type_input_foreign_key
+        if is_polymorphic?
+          "#{foreign_key}_type"
+        end
+      end
+
+      def id_input_foreign_key
+        if is_polymorphic?
+          "#{foreign_key}_id"
+        else
+          foreign_key
+        end
+      end
+
+      def is_polymorphic?
+        polymorphic_as.present?
       end
 
       def foreign_key
@@ -118,7 +199,7 @@ module Avo
       end
 
       def target_resource
-        if polymorphic_as.present?
+        if is_polymorphic?
           if value.present?
             return App.get_resource_by_model_name(value.class)
           else

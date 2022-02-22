@@ -22,6 +22,7 @@ class ProjectResource < Avo::BaseResource
 
   field :users, as: :has_and_belongs_to_many
   field :comments, as: :has_many
+  field :reviews, as: :has_many
 
   # filter PeopleFilter
   # filter People2Filter
