@@ -26,28 +26,4 @@
     <% end %>
   </div>
   <%= @form.hidden_field @foreign_key, value: field_value, 'data-search-target': 'hiddenId clearValue' %>
-  <div>
-    field_value: <%= @field.field_value %>
-    <br>
-    field_label: <%= @field.field_label %>
-    <br>
-    database_value: <%= @field.database_value %>
-    <br>
-    field_value: <%= field_value %>
-    <br>
-    target_resource.class.title: <%#= @field.target_resource.class.title %>
-    <br>
-    @resource.model.new_record?: <%= @resource.model.new_record? %>
-    <br>
-    @resource.model: <%#= @resource.model.send(@field.relation_method) %>
-    <br>
-    <% if @resource.model.new_record? %>
-      <%#= abort @resource.inspect %>
-    <% end %>
-    <br>
-    value: <%= @field.value.inspect %>
-    <br>
-    <%= @resource.model.inspect %>
-    <%= @foreign_key %>
-  </div>
 </div>

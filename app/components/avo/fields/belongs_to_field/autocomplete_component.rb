@@ -13,42 +13,22 @@ class Avo::Fields::BelongsToField::AutocompleteComponent < ViewComponent::Base
   end
 
   def field_label
-    if searchable?
-      # New records won't have the value (instantiated model) present but the polymorphic_type and polymorphic_id prefilled
-      if @field.is_polymorphic?
-        if new_record? && has_polymorphic_association?
-          # @polymorphic_record.send(polymorphic_fields[:label])
-          @field.field_label
-        else
-          @field.value&.class == @type ? @field.field_label : nil
-        end
-      else
-        @field.field_label
-      end
-    else
-      @field.field_label
+    result = @field.field_label
+
+    # New records won't have the value (instantiated model) present but the polymorphic_type and polymorphic_id prefilled
+    if @field.is_polymorphic? && searchable? && !(new_record? && has_polymorphic_association?)
+      result = @field.value&.class == @type ? @field.field_label : nil
     end
+
+    result
   end
 
   def field_value
     result = @field.field_value
-    # abort searchable?.inspect
-    if searchable?
-      # abort [new_record?].inspect
-      # New records won't have the value (instantiated model) present but the polymorphic_type and polymorphic_id prefilled
-      if @field.is_polymorphic?
-        if new_record? && has_polymorphic_association?
-          # abort polymorphic_fields[:id].inspect
-          # @polymorphic_record.send(polymorphic_fields[:id])
-          result = @field.field_value
-        else
-          # abort @field.field_value.inspect
-          result = @field.value&.class == @type ? @field.field_value : nil
-        end
-      end
-    else
-      # abort @field.field_value.inspect
-      result = @field.field_value
+
+    # New records won't have the value (instantiated model) present but the polymorphic_type and polymorphic_id prefilled
+    if @field.is_polymorphic? && searchable? && !(new_record? && has_polymorphic_association?)
+      result = @field.value&.class == @type ? @field.field_value : nil
     end
 
     result
