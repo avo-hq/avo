@@ -136,6 +136,8 @@ module Avo
 
       def is_polymorphic?
         polymorphic_as.present?
+      rescue
+        false
       end
 
       def foreign_key
@@ -150,6 +152,13 @@ module Avo
 
       def reflection_for_key(key)
         get_model_class(get_model).reflections[key.to_s]
+      rescue
+        nil
+      end
+
+      # Get the model reflection instance
+      def reflection
+        reflection_for_key(id)
       rescue
         nil
       end

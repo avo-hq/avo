@@ -42,11 +42,11 @@ FactoryBot.define do
   end
 
   factory :comment do
-    body { Faker::Lorem.paragraphs(number: rand(4...10)) }
+    body { Faker::Lorem.paragraphs(number: rand(4...10)).join(' ') }
   end
 
   factory :review do
-    body { Faker::Lorem.paragraphs(number: rand(4...10)) }
+    body { Faker::Lorem.paragraphs(number: rand(4...10)).join(' ') }
   end
 
   factory :person do
