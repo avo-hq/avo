@@ -17,9 +17,17 @@
     <% end %>
   </a>
 
+  <% classes = "appearance-none bg-white text-left cursor-pointer text-green-600 font-semibold hover:text-white hover:bg-green-500 block px-4 py-1 w-full" %>
+
   <% if main_app.respond_to?(destroy_user_session_path) %>
     <div class="hidden absolute inset-auto right-0 mr-6 mt-0 py-4 bg-white rounded-xl min-w-[200px] shadow-context" data-toggle-panel-target="panel">
-      <%= button_to t('avo.sign_out'), main_app.send(:destroy_user_session_path), method: :delete, form: { "data-turbo" => "false" }, class: "appearance-none bg-white text-left cursor-pointer text-green-600 font-semibold hover:text-white hover:bg-green-500 block px-4 py-1 w-full" %>
+      <% if I18n.locale == :en %>
+        <%= link_to "Switch to Portuguese", { locale: 'pt-BR' }, class: classes %>
+      <% else %>
+        <%= link_to "Switch to English", { locale: 'en' }, class: classes %>
+      <%end%>
+
+      <%= button_to t('avo.sign_out'), main_app.send(:destroy_user_session_path), method: :delete, form: { "data-turbo" => "false" }, class: classes %>
     </div>
   <% end %>
 </div>
