@@ -39,7 +39,7 @@ export default class extends Controller {
 
   deleteRow(event) {
     if (this.options.disable_deleting_rows || !this.options.editable) return
-    const { index } = event.target.dataset
+    const { index } = event.params
     this.fieldValue.splice(index, 1)
     this.updateTextareaInput()
     this.updateKeyValueComponent()
@@ -93,7 +93,7 @@ export default class extends Controller {
     if (this.options.editable) {
       result += `<a
   href="javascript:void(0);"
-  data-index="${index}"
+  data-key-value-index-param="${index}"
   data-action="click->key-value#deleteRow"
   title="${this.options.delete_text}"
   data-tippy="tooltip"
