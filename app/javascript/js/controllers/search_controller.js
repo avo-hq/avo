@@ -177,11 +177,16 @@ export default class extends Controller {
       openOnFocus: true,
       detachedMediaQuery: '',
       getSources: ({ query }) => {
+        document.body.classList.add('search-loading')
         const endpoint = that.searchUrl(query)
 
         return that
           .debouncedFetch(endpoint)
-          .then((response) => response.json())
+          .then((response) => {
+            document.body.classList.remove('search-loading')
+
+            return response.json()
+          })
           .then((data) => Object.keys(data).map((resourceName) => that.addSource(resourceName, data[resourceName])))
       },
     })

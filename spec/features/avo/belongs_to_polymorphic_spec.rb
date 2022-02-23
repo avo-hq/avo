@@ -236,7 +236,7 @@ RSpec.feature "belongs_to", type: :system do
 
           write_in_search 'A'
 
-          sleep 0.5
+          wait_for_search_loaded
 
           expect(find('.aa-Panel')).to have_content "Avocados"
           expect(find('.aa-Panel')).to have_content "Artichokes"
@@ -244,7 +244,7 @@ RSpec.feature "belongs_to", type: :system do
 
           write_in_search 'Avocado'
 
-          sleep 0.5
+          wait_for_search_loaded
 
           select_first_result_in_search
 
@@ -294,7 +294,7 @@ RSpec.feature "belongs_to", type: :system do
 
             write_in_search 'Artichokes'
 
-            sleep 0.5
+            wait_for_search_loaded
 
             expect(find('.aa-Panel')).not_to have_content "Avocados"
             expect(find('.aa-Panel')).to have_content "Artichokes"
@@ -355,7 +355,7 @@ RSpec.feature "belongs_to", type: :system do
           find('#review_reviewable').click
           write_in_search 'Apple'
 
-          sleep 0.5
+          wait_for_search_loaded
 
           expect(find('.aa-Panel')).to have_content "Apple"
 
