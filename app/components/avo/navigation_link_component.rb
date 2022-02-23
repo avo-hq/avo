@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Avo::NavigationLinkComponent < ViewComponent::Base
-  def initialize(label: nil, path: nil, active: :inclusive, size: :md, target: "_self")
+  def initialize(label: nil, path: nil, active: :inclusive, size: :md, target: nil)
     @label = label
     @path = path
     @active = active

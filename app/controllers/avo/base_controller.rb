@@ -84,7 +84,6 @@ module Avo
     def new
       @model = @resource.model_class.new
       @resource = @resource.hydrate(model: @model, view: :new, user: _current_user)
-      # abort @model.course.inspect
 
       @page_title = @resource.default_panel_name
       add_breadcrumb resource_name.humanize, resources_path(resource: @resource)
