@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import * as Mousetrap from 'mousetrap'
-import { Controller } from 'stimulus'
+import { Controller } from '@hotwired/stimulus'
 import { Turbo } from '@hotwired/turbo-rails'
 import { autocomplete } from '@algolia/autocomplete-js'
 import URI from 'urijs'

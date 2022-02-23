@@ -14,7 +14,7 @@ import 'codemirror/mode/vue/vue'
 import 'codemirror/mode/xml/xml'
 import 'codemirror/mode/yaml/yaml'
 
-import { Controller } from 'stimulus'
+import { Controller } from '@hotwired/stimulus'
 import CodeMirror from 'codemirror'
 
 import { castBoolean } from '../../helpers/cast_boolean'
