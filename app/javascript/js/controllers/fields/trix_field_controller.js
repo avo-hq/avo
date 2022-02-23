@@ -1,5 +1,5 @@
 import 'trix'
-import { Controller } from 'stimulus'
+import { Controller } from '@hotwired/stimulus'
 import { castBoolean } from '../../helpers/cast_boolean'
 
 export default class extends Controller {
