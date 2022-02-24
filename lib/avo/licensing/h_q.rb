@@ -93,27 +93,17 @@ module Avo
         field_definitions = resources.map(&:get_field_definitions)
         fields_count = field_definitions.map(&:count).sum
         fields_per_resource = sprintf("%0.01f", fields_count / (resources.count + 0.0))
-        custom_fields_count = 0
 
         field_types = {}
+        custom_fields_count = 0
         field_definitions.each do |fields|
           fields.each do |field|
             field_types[field.type] ||= 0
             field_types[field.type] += 1
 
-            if field.custom?
-              custom_fields_count += 1
-            end
+            custom_fields_count += 1 if field.custom?
           end
         end
-
-        resources_actions = resources.map(&:get_actions)
-        actions_count = resources_actions.flatten.uniq.count
-        actions_per_resource = sprintf("%0.01f", resources_actions.map(&:count).sum / (resources.count + 0.0))
-
-        resources_filters = resources.map(&:get_filters)
-        filters_count = resources_filters.flatten.uniq.count
-        filters_per_resource = sprintf("%0.01f", resources_filters.map(&:count).sum / (resources.count + 0.0))
 
         {
           resources_count: resources.count,
@@ -121,10 +111,34 @@ module Avo
           fields_per_resource: fields_per_resource,
           custom_fields_count: custom_fields_count,
           field_types: field_types,
+          **actions_metadata,
+          **filters_metadata,
+        }
+      end
+
+      def actions_metadata
+        resources = App.resources
+
+        resources_actions = resources.map(&:get_actions)
+        actions_count = resources_actions.flatten.uniq.count
+        actions_per_resource = sprintf("%0.01f", resources_actions.map(&:count).sum / (resources.count + 0.0))
+
+        {
           actions_count: actions_count,
           actions_per_resource: actions_per_resource,
+        }
+      end
+
+      def actions_metadata
+        resources = App.resources
+
+        resources_filters = resources.map(&:get_filters)
+        filters_count = resources_filters.flatten.uniq.count
+        filters_per_resource = sprintf("%0.01f", resources_filters.map(&:count).sum / (resources.count + 0.0))
+
+        {
           filters_count: filters_count,
-          filters_per_resource: filters_per_resource,
+          filters_per_resource: filters_per_resource
         }
       end
 
