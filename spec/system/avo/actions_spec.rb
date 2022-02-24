@@ -66,7 +66,7 @@ RSpec.describe 'Actions', type: :system do
       end
     end
 
-    context "without File.open().read" do
+    context "with File.open().read" do
       let(:content) { "Dummy content from the file.\n" }
       let(:file_name) { "dummy-file.txt" }
 
