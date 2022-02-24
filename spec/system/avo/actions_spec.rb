@@ -46,6 +46,47 @@ RSpec.describe 'Actions', type: :system do
     end
   end
 
+  describe "downloading files" do
+    context "without File.open().read" do
+      let(:content) { "On the fly dummy content." }
+      let(:file_name) { "dummy-content.txt" }
+
+      it "downloads the file and closes the modal" do
+        visit "/admin/resources/users"
+
+        click_on "Actions"
+        click_on "Download file"
+        click_on "Run"
+
+        wait_for_download
+
+        expect(downloaded?).to be true
+        expect(download_content).to eq content
+        expect(download.split('/').last).to eq file_name
+      end
+    end
+
+    context "with File.open().read" do
+      let(:content) { "Dummy content from the file.\n" }
+      let(:file_name) { "dummy-file.txt" }
+
+      it "downloads the file and closes the modal" do
+        visit "/admin/resources/users"
+
+        click_on "Actions"
+        click_on "Download file"
+        check "fields[read_from_file]"
+        click_on "Run"
+
+        wait_for_download
+
+        expect(downloaded?).to be true
+        expect(download_content).to eq content
+        expect(download.split('/').last).to eq file_name
+      end
+    end
+  end
+
   #   let!(:roles) { { admin: false, manager: false, writer: false } }
   #   let!(:user) { create :user, active: true, roles: roles }
 
