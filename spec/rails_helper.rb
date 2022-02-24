@@ -43,6 +43,8 @@ Avo::App.boot
 
 # ActiveRecord::Migrator.migrate(File.join(Rails.root, 'db/migrate'))
 
+require 'support/download_helpers'
+
 Capybara.register_driver :chrome_headless do |app|
   Capybara::Selenium::Driver.new app,
                                  browser: :chrome,
@@ -55,7 +57,10 @@ Capybara.register_driver :chrome_headless do |app|
                                        disable-gpu
                                        no-sandbox
                                        window-size=1440,1024
-                                     ]
+                                     ],
+                                     'prefs' => {
+                                      'download.default_directory' => DownloadHelpers::PATH.to_s
+                                     }
                                    )
                                  ]
 end
@@ -71,7 +76,10 @@ Capybara.register_driver :chrome do |app|
                                        disable-gpu
                                        no-sandbox
                                        window-size=1440,1024
-                                     ]
+                                     ],
+                                     'prefs' => {
+                                      'download.default_directory' => DownloadHelpers::PATH.to_s
+                                     }
                                    )
                                  ]
 end
@@ -86,6 +94,7 @@ RSpec.configure do |config|
   config.include TestHelpers::DisableAuthentication, type: :feature
   config.include TestHelpers::DisableHQRequest
   config.include Warden::Test::Helpers
+  config.include DownloadHelpers
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   # config.fixture_path = "#{::Rails.root}/spec/fixtures"
@@ -100,6 +109,9 @@ RSpec.configure do |config|
   config.before(:each, type: :system, js: true) { driven_by test_driver }
 
   config.before(:example) { Rails.cache.clear }
+
+  config.before(:example) { clear_downloads }
+  config.after(:example) { clear_downloads }
 
   config.around(:example, type: :system) do |example|
     # Stub license request for system tests.
