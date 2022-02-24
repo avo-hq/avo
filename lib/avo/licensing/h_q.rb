@@ -129,7 +129,7 @@ module Avo
         }
       end
 
-      def actions_metadata
+      def filters_metadata
         resources = App.resources
 
         resources_filters = resources.map(&:get_filters)
