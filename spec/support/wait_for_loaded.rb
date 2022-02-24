@@ -36,7 +36,7 @@ def wait_for_body_class_missing(klass = 'turbo-loading', time = Capybara.default
           page.find("body")[:class].present? &&
           !page.find("body")[:class].to_s.include?(klass)
     else
-      sleep 0.3
+      sleep 0.1
     end
   end
 end

@@ -13,6 +13,7 @@ module Avo
     protect_from_forgery with: :exception
     before_action :init_app
     before_action :check_avo_license
+    before_action :set_locale
     before_action :set_authorization
     before_action :_authenticate!
     before_action :set_container_classes
@@ -244,6 +245,12 @@ module Avo
 
     def model_param_key
       @resource.form_scope
+    end
+
+    def set_locale
+      I18n.locale = params[:locale] || I18n.default_locale
+
+      I18n.default_locale = I18n.locale
     end
   end
 end
