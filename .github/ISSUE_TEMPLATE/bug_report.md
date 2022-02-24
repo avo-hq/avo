@@ -34,3 +34,18 @@ Steps to reproduce the behavior:
 
 ### Additional context
 <!-- Add any other context about the problem here. -->
+
+### How much are you impacted by this issue
+<!-- Please set a level for Impact and Urgency -->
+
+#### Impact
+
+ - [ ] High impact
+ - [ ] Medium impact
+ - [ ] Low impact
+
+#### Urgency
+
+ - [ ] High urgency
+ - [ ] Medium urgency
+ - [ ] low urgency

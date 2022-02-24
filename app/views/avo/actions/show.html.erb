@@ -7,7 +7,11 @@
     data-resource-id="<%= params[:id] %>"
     class="hidden text-slate-800"
   >
-    <%= form_with model: @model, scope: 'fields', url: "#{@resource.records_path}/actions/#{@action.param_id}", data: {'turbo-frame': '_top', 'action-target': 'form'} do |form| %>
+    <%= form_with model: @model,
+      scope: 'fields',
+      url: "#{@resource.records_path}/actions/#{@action.param_id}",
+      data: @action.class.form_data_attributes do |form|
+    %>
       <%= render Avo::ModalComponent.new do |c| %>
         <% c.heading do %>
           <%= @action.action_name %>
@@ -26,8 +30,8 @@
         <% end %>
 
         <% c.controls do %>
-          <%= a_button @action.cancel_button_label, 'data-action': 'click->modal#close', size: :sm %>
-          <%= a_button @action.confirm_button_label, type: :submit, color: :green, size: :sm %>
+          <%= a_button @action.cancel_button_label, data: { action: 'click->modal#close' }, size: :sm %>
+          <%= a_button @action.confirm_button_label, type: :submit, color: :green, size: :sm, data: @action.class.submit_button_data_attributes %>
         <% end %>
       <% end %>
     <% end %>

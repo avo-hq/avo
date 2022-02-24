@@ -15,12 +15,33 @@ module Avo
     class_attribute :fields
     class_attribute :standalone, default: false
     class_attribute :visible
+    class_attribute :may_download_file, default: false
 
     attr_accessor :response
     attr_accessor :model
     attr_accessor :resource
     attr_accessor :user
     attr_accessor :fields_loader
+
+    class << self
+      def form_data_attributes
+        # We can't respond with a file download from Turbo se we disable it on the form
+        if may_download_file
+          { 'turbo': false }
+        else
+          { 'turbo-frame': '_top', 'action-target': 'form' }
+        end
+      end
+
+      # We can't respond with a file download from Turbo se we disable close the modal manually after a while (it's a hack, we know)
+      def submit_button_data_attributes
+        if may_download_file
+          { action: 'click->modal#delayedClose' }
+        else
+          {}
+        end
+      end
+    end
 
     def action_name
       return name if name.present?

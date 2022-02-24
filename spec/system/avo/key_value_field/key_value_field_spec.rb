@@ -188,8 +188,17 @@ RSpec.describe "KeyValueFields", type: :system do
 
         expect(meta_element).to have_selector('[data-button="delete-row"]', count: 2)
 
-        first('[data-button="delete-row"]').click
+        # Delete the first row
+        all('[data-button="delete-row"]')[1].click
+
+        # check how many delete buttons are present
         expect(meta_element).to have_selector('[data-button="delete-row"]', count: 1)
+
+        # Check the values to be the ones on the first row
+        expect(page.first('input[placeholder="Meta key"]').value).to eq "foo"
+        expect(page.first('input[placeholder="Meta value"]').value).to eq "bar"
+
+        # Delete the second row
         first('[data-button="delete-row"]').click
         expect(meta_element).not_to have_selector('[data-button="delete-row"]')
 

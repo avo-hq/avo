@@ -83,3 +83,4 @@ pt-BR:
       placeholder: 'Procurar'
       cancel_button: 'Cancelar'
     sign_out: 'sair'
+    tools: Ferramentas

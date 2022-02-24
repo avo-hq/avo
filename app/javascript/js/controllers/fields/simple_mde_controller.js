@@ -1,4 +1,4 @@
-import { Controller } from 'stimulus'
+import { Controller } from '@hotwired/stimulus'
 import SimpleMDE from 'simplemde'
 
 export default class extends Controller {

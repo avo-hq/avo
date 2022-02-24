@@ -13,35 +13,35 @@ class Avo::Fields::BelongsToField::AutocompleteComponent < ViewComponent::Base
   end
 
   def field_label
-    if searchable?
-      # New records won't have the value (instantiated model) present but the polymorphic_type and polymorphic_id prefilled
-      if new_record? && has_polymorphic_association?
-        @polymorphic_record.send(polymorphic_fields[:label])
-      else
-        @field.value&.class == @type ? @field.field_label : nil
-      end
-    else
-      @field.field_label
+    result = @field.field_label
+
+    # New records won't have the value (instantiated model) present but the polymorphic_type and polymorphic_id prefilled
+    if should_prefill?
+      result = @field.value&.class == @type ? @field.field_label : nil
     end
+
+    result
   end
 
   def field_value
-    if searchable?
-      # New records won't have the value (instantiated model) present but the polymorphic_type and polymorphic_id prefilled
-      if new_record? && has_polymorphic_association?
-        @polymorphic_record.send(polymorphic_fields[:id])
-      else
-        @field.value&.class == @type ? @field.field_value : nil
-      end
-    else
-      @field.field_value
+    result = @field.field_value
+
+    # New records won't have the value (instantiated model) present but the polymorphic_type and polymorphic_id prefilled
+    if should_prefill?
+      result = @field.value&.class == @type ? @field.field_value : nil
     end
+
+    result
   end
 
   private
 
+  def should_prefill?
+    @field.is_polymorphic? && searchable? && !(new_record? && has_polymorphic_association?)
+  end
+
   def searchable?
-    @type.present?
+    @field.searchable
   end
 
   def new_record?

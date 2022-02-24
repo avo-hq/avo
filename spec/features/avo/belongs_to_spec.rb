@@ -107,29 +107,59 @@ RSpec.feature "belongs_to", type: :feature do
 
     it { is_expected.to have_select "post_user_id", selected: admin.name, options: [empty_dash, admin.name], disabled: true }
   end
-end
 
-RSpec.feature "belongs_to", type: :system do
-  context "new" do
-    describe "with belongs_to foreign key field disabled" do
-      let!(:course) { create :course }
+  describe "hidden columns if current association" do
+    let!(:user) { create :user }
+    let!(:comment) { create :comment, body: 'a comment', user: user }
 
-      it "saves the related comment" do
-        expect(Course::Link.count).to be 0
+    it "hides the User column" do
+      visit "/admin/resources/users/#{user.id}/comments?turbo_frame=has_many_field_show_comments"
 
-        visit "/admin/resources/course_links/new?via_relation=course&via_relation_class=Course&via_resource_id=#{course.id}"
+      expect(find('thead')).to have_text 'Id'
+      expect(find('thead')).to have_text 'Tiny name'
+      expect(find('thead')).to have_text 'Commentable'
+      expect(find('thead')).not_to have_text 'User'
+      expect(page).to have_text comment.id
+      expect(page).to have_text 'a comment'
+      expect(page).not_to have_text user.name
+    end
+  end
 
-        fill_in "course_link_link", with: "https://avo.cool"
+  describe "hidden columns if current polymorphic association" do
+    let!(:user) { create :user }
+    let!(:project) { create :project, name: 'Haha project' }
+    let!(:comment) { create :comment, body: 'a comment', user: user, commentable: project }
 
-        click_on "Save"
-        wait_for_loaded
+    it "hides the Commentable column" do
+      visit "/admin/resources/projects/#{project.id}/comments?turbo_frame=has_many_field_show_comments"
 
-        # When the validation fails for any reason, the user is redirected to this weird `/new` path with the newly created model populating the form
-        # This test is valid only as a system test. The feature test does not cover this edge-case
-        expect(current_path).not_to eq "/admin/resources/course_links/new"
-        expect(Course::Link.count).to be 1
-        expect(Course::Link.first.course_id).to eq course.id
-      end
+      expect(find('thead')).to have_text 'Id'
+      expect(find('thead')).to have_text 'Tiny name'
+      expect(find('thead')).to have_text 'User'
+      expect(find('thead')).not_to have_text 'Commentable'
+      expect(page).to have_text comment.id
+      expect(page).to have_text 'a comment'
+      expect(page).to have_text user.name
+      expect(page).not_to have_text project.name
+    end
+  end
+
+  describe "hidden columns if current polymorphic association" do
+    let!(:user) { create :user }
+    let!(:team) { create :team, name: 'Haha team' }
+    let!(:review) { create :review, body: 'a review', user: user, reviewable: team }
+
+    it "hides the Reviewable column" do
+      visit "/admin/resources/teams/#{team.id}/reviews?turbo_frame=has_many_field_show_reviews"
+
+      expect(find('thead')).to have_text 'Id'
+      expect(find('thead')).to have_text 'Excerpt'
+      expect(find('thead')).to have_text 'User'
+      expect(find('thead')).not_to have_text 'Reviewable'
+      expect(page).to have_text review.id
+      expect(page).to have_text 'a review'
+      expect(page).to have_text user.name
+      expect(page).not_to have_text team.name
     end
   end
 end

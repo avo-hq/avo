@@ -37,6 +37,15 @@ def write_in_search(input)
   find('input.aa-Input').set(input)
 end
 
+def confirm_alert
+  page.driver.browser.switch_to.alert.accept
+end
+
+def select_first_result_in_search
+  find(".aa-Input").send_keys :arrow_down
+  find(".aa-Input").send_keys :return
+end
+
 class DummyRequest
   attr_accessor :ip
   attr_accessor :host

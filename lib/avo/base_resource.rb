@@ -127,23 +127,29 @@ module Avo
           field.visible?
         end
         .select do |field|
+          is_valid = true
+
           # Strip out the reflection field in index queries with a parent association.
           if reflection.present?
-            if reflection.options.present? &&
-                field.respond_to?(:polymorphic_as) &&
-                field.polymorphic_as.to_s == reflection.options[:as].to_s
-              next
-            end
+            # regular non-polymorphic association
+            # we're matching the reflection inverse_of foriegn key with the field's foreign_key
+            if field.is_a?(Avo::Fields::BelongsToField)
+              if field.respond_to?(:foreign_key) &&
+                reflection.inverse_of.foreign_key == field.foreign_key
+                is_valid = false
+              end
 
-            if field.respond_to?(:foreign_key) &&
-                reflection.respond_to?(:foreign_key) &&
-                reflection.foreign_key != field.foreign_key &&
-                @params[:resource_name] == field.resource.model_key
-              next
+              # polymorphic association
+              if field.respond_to?(:foreign_key) &&
+                field.is_polymorphic? &&
+                reflection.respond_to?(:polymorphic?) &&
+                reflection.inverse_of.foreign_key == field.reflection.foreign_key
+                is_valid = false
+              end
             end
           end
 
-          true
+          is_valid
         end
 
       if panel.present?

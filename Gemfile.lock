@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    avo (1.21.0)
+    avo (1.22.4)
       active_link_to
       addressable
       breadcrumbs_on_rails
@@ -215,7 +215,7 @@ GEM
     mime-types-data (3.2022.0105)
     mini_magick (4.11.0)
     mini_mime (1.1.2)
-    mini_portile2 (2.7.1)
+    mini_portile2 (2.8.0)
     minitest (5.15.0)
     msgpack (1.4.4)
     multi_xml (0.6.0)
@@ -227,10 +227,8 @@ GEM
       net-protocol
       timeout
     nio4r (2.5.8)
-    nokogiri (1.13.1)
-      mini_portile2 (~> 2.7.0)
-      racc (~> 1.4)
-    nokogiri (1.13.1-x86_64-linux)
+    nokogiri (1.13.3)
+      mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     orm_adapter (0.5.0)
     pagy (5.10.1)

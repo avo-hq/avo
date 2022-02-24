@@ -128,11 +128,14 @@ module Avo
         # Get model value
         final_value = @model.send(property) if (model_or_class(@model) == "model") && @model.respond_to?(property)
 
+        # On new views and actions modals we need to prefill the fields
         if (@view === :new) || @action.present?
-          final_value = if default.present? && default.respond_to?(:call)
-            default.call
-          else
-            default
+          if default.present?
+            final_value = if default.respond_to?(:call)
+              default.call
+            else
+              default
+            end
           end
         end
 
