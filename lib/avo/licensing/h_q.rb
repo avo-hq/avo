@@ -111,34 +111,21 @@ module Avo
           fields_per_resource: fields_per_resource,
           custom_fields_count: custom_fields_count,
           field_types: field_types,
-          **actions_metadata,
-          **filters_metadata,
+          **other_metadata(:actions),
+          **other_metadata(:filters),
         }
       end
 
-      def actions_metadata
+      def other_metadata(type = :actions)
         resources = App.resources
 
-        resources_actions = resources.map(&:get_actions)
-        actions_count = resources_actions.flatten.uniq.count
-        actions_per_resource = sprintf("%0.01f", resources_actions.map(&:count).sum / (resources.count + 0.0))
+        types = resources.map(&:"get_#{type}")
+        type_count = types.flatten.uniq.count
+        type_per_resource = sprintf("%0.01f", types.map(&:count).sum / (resources.count + 0.0))
 
         {
-          actions_count: actions_count,
-          actions_per_resource: actions_per_resource,
-        }
-      end
-
-      def filters_metadata
-        resources = App.resources
-
-        resources_filters = resources.map(&:get_filters)
-        filters_count = resources_filters.flatten.uniq.count
-        filters_per_resource = sprintf("%0.01f", resources_filters.map(&:count).sum / (resources.count + 0.0))
-
-        {
-          filters_count: filters_count,
-          filters_per_resource: filters_per_resource
+          "#{type}_count": type_count,
+          "#{type}_per_resource": type_per_resource,
         }
       end
 
