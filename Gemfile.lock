@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    avo (1.22.3)
+    avo (1.22.4)
       active_link_to
       addressable
       breadcrumbs_on_rails
@@ -229,8 +229,6 @@ GEM
     nio4r (2.5.8)
     nokogiri (1.13.3)
       mini_portile2 (~> 2.8.0)
-      racc (~> 1.4)
-    nokogiri (1.13.3-x86_64-linux)
       racc (~> 1.4)
     orm_adapter (0.5.0)
     pagy (5.10.1)
