@@ -146,6 +146,9 @@ module.exports = {
         '10/12': '83.333333%',
         '11/12': '91.666667%',
       },
+      transitionTimingFunction: {
+        pop: 'cubic-bezier(.23,2,.73,.55)',
+      },
     },
   },
   variants: {
