@@ -28,7 +28,7 @@
 
 .aa-DetachedFormContainer,
 .aa-DetachedContainer .aa-Panel {
-  @apply bg-slate-100 border-b-0;
+  @apply bg-gray-100 border-b-0;
 }
 
 .aa-Form {
@@ -47,6 +47,12 @@
     }
   }
 }
+
+button.aa-DetachedCancelButton {
+  border: 1px solid #757D8A !important;
+  @apply bg-white;
+}
+
 .aa-Input {
   @apply focus:ring-green-600;
 }
@@ -58,7 +64,7 @@
 
   .aa-Source {
     .aa-List {
-      @apply space-y-1;
+      @apply space-y-2;
 
       .aa-Item {
         @apply bg-white rounded-md px-3 py-4 shadow;
