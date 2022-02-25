@@ -30,8 +30,12 @@
         <% end %>
 
         <% c.controls do %>
-          <%= a_button @action.cancel_button_label, data: { action: 'click->modal#close' }, size: :sm %>
-          <%= a_button @action.confirm_button_label, type: :submit, color: :green, size: :sm, data: @action.class.submit_button_data_attributes %>
+          <%= a_button data: { action: 'click->modal#close' }, size: :sm do %>
+            <%= @action.cancel_button_label %>
+          <% end %>
+          <%= a_button type: :submit, color: :green, size: :sm, data: @action.class.submit_button_data_attributes do %>
+            <%= @action.confirm_button_label %>
+          <% end %>
         <% end %>
       <% end %>
     <% end %>

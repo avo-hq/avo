@@ -34,19 +34,21 @@ class Avo::ButtonComponent < ViewComponent::Base
     button_classes
   end
 
-
   def button_classes
-    classes = "inline-flex flex-grow-0 items-center text-sm font-semibold leading-6 fill-current whitespace-nowrap transition duration-100 rounded transform transition duration-100 active:translate-x-px active:translate-y-px cursor-pointer disabled:cursor-not-allowed border #{@class}"
+    classes = "button-component inline-flex flex-grow-0 items-center text-sm font-semibold leading-6 fill-current whitespace-nowrap transition duration-100 rounded transform transition duration-100 cursor-pointer disabled:cursor-not-allowed disabled:opacity-30 border #{@class}"
+
+    # press effect on click
+    classes += " active:translate-x-px active:translate-y-px disabled:active:translate-x-0 disabled:active:translate-y-0" if false
 
     classes += " space-x-1" if content.present? && @icon.present?
 
     classes += case @style
     when :primary
-      " bg-blue-500 text-white border-blue-500 disabled:bg-blue-600"
+      " component-variant-primary bg-primary-500 text-white border-primary-500 hover:bg-primary-600 hover:border-primary-600"
     when :secondary
-      " bg-white text-blue-500 border-blue-500"
+      " component-variant-secondary bg-white text-primary-500 border-primary-500 hover:bg-primary-100"
     when :ternary
-      " bg-white text-gray-500 border-gray-300"
+      " component-variant-ternary bg-white text-gray-500 border-gray-300 hover:text-gray-700 hover:border-gray-500"
     else
       ""
     end
@@ -70,7 +72,7 @@ class Avo::ButtonComponent < ViewComponent::Base
     @is_link
   end
 
-  def the_content
+  def full_content
     result = ""
     icon_classes = @icon_class
 
@@ -107,13 +109,13 @@ class Avo::ButtonComponent < ViewComponent::Base
 
   def output_link
     link_to @path, **args do
-      the_content
+      full_content
     end
   end
 
   def output_button
     button_tag **args do
-      the_content
+      full_content
     end
   end
 end

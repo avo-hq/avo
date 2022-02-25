@@ -9,6 +9,7 @@
 @import 'tailwindcss/base';
 
 @import './css/fonts.css';
+@import './css/buttons.css';
 @import './css/typography.css';
 @import './css/tooltips.css';
 @import './css/alerts.css';

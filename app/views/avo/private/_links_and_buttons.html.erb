@@ -25,18 +25,18 @@
                   end
                 %>
                   <%
-                    method = "a_#{entity}"
+                    a_button_or_link = "a_#{entity}"
                     args = {icon: 'arrow-left', style: style, size: size, class: extra_classes, disabled: state == :disabled}
                   %>
                   <% if entity == :link %>
                     <div>
-                      <%= send method, '/admin/design', **args do %>
+                      <%= send a_button_or_link, '/admin/avo_private/design', **args do %>
                         <%= entity.to_s.humanize.capitalize %> <%= state %>
                       <% end %>
                     </div>
                   <% else %>
                     <div>
-                      <%= send method, **args do %>
+                      <%= send a_button_or_link, **args do %>
                         <%= entity.to_s.humanize.capitalize %> <%= state %>
                       <% end %>
                     </div>

@@ -24,20 +24,6 @@
               <%= svg 'arrow-left', class: 'h-4' %> <%= t('avo.go_back') %>
             <% end %>
 
-            --
-
-            <%= render Avo::ButtonComponent.new(icon: 'arrow-left', type: :primary, is_link: true, href: back_path) do %>
-              Primary
-            <% end %>
-
-            <%= render Avo::ButtonComponent.new(icon: 'arrow-left', type: :secondary, is_link: true, href: back_path) do %>
-              Secondary
-            <% end %>
-
-            <%= render Avo::ButtonComponent.new(icon: 'arrow-left', type: :ternary, is_link: true, href: back_path) do %>
-              Ternary
-            <% end %>
-
             <%= render Avo::ButtonComponent.new(color: 'green', spinner: true, type: :submit, icon: 'save') do %>
               <%= t('avo.save').capitalize %>
             <% end %>

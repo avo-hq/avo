@@ -15,7 +15,9 @@
       'data-filter-class': filter.class.to_s,
       'data-multiple-select-filter-target': 'selector'
     %>
-    <%= a_button "Filter by #{filter.name}", class: 'mt-4', color: 'blue', data: { action: "multiple-select-filter#changeFilter" } %>
+    <%= a_button class: 'mt-4', color: 'blue', data: { action: "multiple-select-filter#changeFilter" } do %>
+      Filter by <%=filter.name %>
+    <% end %>
     <%= link_to 'url_redirect', request.url, data: { 'multiple-select-filter-target': 'urlRedirect', 'turbo-frame': params[:turbo_frame] }, style: 'hidden', class: 'hidden' %>
   <% end %>
 </div>

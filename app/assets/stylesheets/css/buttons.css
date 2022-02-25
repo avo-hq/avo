@@ -1,0 +1,47 @@
+.button-component {
+  &.disabled {
+    @apply cursor-not-allowed opacity-30;
+  }
+
+  &:active ,
+  &.active {
+    @apply outline outline-1;
+
+  }
+
+  &.component-variant-primary {
+    &:hover ,
+    &.hover {
+      @apply bg-primary-600 border-primary-600;
+    }
+
+    &:active ,
+    &.active {
+      @apply bg-primary-600 border-primary-700 outline-primary-700;
+    }
+  }
+
+  &.component-variant-secondary {
+    &:hover ,
+    &.hover {
+      @apply bg-primary-100;
+    }
+
+    &:active ,
+    &.active {
+      @apply bg-primary-100 border-primary-500 outline-primary-500;
+    }
+  }
+
+  &.component-variant-ternary {
+    &:hover ,
+    &.hover {
+      @apply text-gray-700 border-gray-500;
+    }
+
+    &:active ,
+    &.active {
+      @apply bg-gray-100 outline-gray-300;
+    }
+  }
+}

@@ -23,8 +23,12 @@
       </div>
 
       <% c.controls do %>
-        <%= a_button t('avo.cancel'), 'data-action': 'click->modal#close', size: :sm %>
-        <%= a_button t('avo.attach'), type: :submit, color: :green, size: :sm %>
+        <%= a_button 'data-action': 'click->modal#close', size: :sm do %>
+          <%= t('avo.cancel') %>
+        <% end %>
+        <%= a_button type: :submit, color: :green, size: :sm do %>
+          <%= t('avo.attach') %>
+        <% end %>
       <% end %>
     <% end %>
   <% end %>
