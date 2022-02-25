@@ -10,18 +10,18 @@
 
           <% if @reflection.present? && @resource.model.present? %>
             <% if can_detach? %>
-              <%= a_link detach_path, color: 'indigo', method: :delete, data: { confirm: "Are you sure you want to detach this #{@reflection.name.to_s}." } do %>
-                <%= svg 'trash', class: 'h-4' %> <%= t('avo.detach_item', item: @reflection.name.to_s).capitalize %>
+              <%= a_link detach_path, icon: 'trash', color: 'indigo', method: :delete, data: { confirm: "Are you sure you want to detach this #{@reflection.name.to_s}." } do %>
+                <%= t('avo.detach_item', item: @reflection.name.to_s).capitalize %>
               <% end %>
             <% end %>
             <% if can_see_the_edit_button? %>
-              <%= a_link edit_path, color: 'indigo' do %>
-                <%= svg 'edit', class: 'h-4' %> <%= t('avo.edit').capitalize %>
+              <%= a_link edit_path, icon: 'edit', color: 'indigo' do %>
+                <%= t('avo.edit').capitalize %>
               <% end %>
             <% end %>
           <% else %>
-            <%= a_link back_path do %>
-              <%= svg 'arrow-left', class: 'h-4' %> <%= t('avo.go_back') %>
+            <%= a_link back_path, icon: 'arrow-left' do %>
+              <%= t('avo.go_back') %>
             <% end %>
 
             <%= render Avo::ButtonComponent.new(color: 'green', spinner: true, type: :submit, icon: 'save') do %>
@@ -49,8 +49,8 @@
             <% end %>
 
             <% if @resource.authorization.authorize_action(:edit, raise_exception: false) %>
-              <%= a_link edit_path, color: 'indigo' do %>
-                <%= svg 'edit', class: 'h-4' %> <%= t('avo.edit').capitalize %>
+              <%= a_link edit_path, icon: 'edit', color: 'indigo' do %>
+                <%= t('avo.edit').capitalize %>
               <% end %>
             <% end %>
           <% end %>

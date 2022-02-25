@@ -1,8 +1,8 @@
 <% if @actions.count > 0 %>
   <div class="relative z-40 js-actions-dropdown" data-controller="toggle-panel actions-picker">
     <%= a_button class: "focus:outline-none",
-      color: 'primary',
-      size: :xl,
+      style: :primary,
+      size: :lg,
       icon: 'arrow-circle-right',
       icon_class: 'transform rotate-90',
       'data-action': "click->toggle-panel#togglePanel",
@@ -11,29 +11,32 @@
       <%= t 'avo.actions' %>
     <% end %>
     <div
-      class="absolute block inset-auto right-0 top-full bg-white min-w-300px mt-2 py-4 z-20 shadow-context rounded-xl overflow-hidden hidden"
+      class="absolute block inset-auto right-0 top-full bg-white min-w-300px mt-2 z-20 shadow-modals rounded overflow-hidden hidden"
       data-toggle-panel-target="panel"
     >
-      <%
-        @actions.each_with_index do |action, index|
-          path = action_name == 'show' ?
-            "#{@resource.record_path}/actions/#{action.param_id}" :
-            "#{@resource.records_path}/actions/#{action.param_id}"
-          if action_name == 'show' || action.standalone
-            disabled = false
-          else
-            disabled = true
-          end
-      %>
-        <%= link_to path,
-          'data-turbo-frame': 'actions_show',
-          'data-action': 'click->actions-picker#visitAction',
-          'data-actions-picker-target': action.standalone ? 'standaloneAction' : 'resourceAction',
-          class: "flex items-center w-full py-2 px-4 font-semibold text-gray-700 hover:text-white hover:bg-blue-500 #{disabled ? 'text-gray-500' : 'text-gray-700'}",
-          'data-disabled': disabled do %>
-          <%= svg 'play', class: 'h-5 mr-1 inline' %> <%= action.action_name %>
+      <div class="mx-4 space divide-y">
+        <%
+          @actions.each_with_index do |action, index|
+            path = action_name == 'show' ?
+              "#{@resource.record_path}/actions/#{action.param_id}" :
+              "#{@resource.records_path}/actions/#{action.param_id}"
+            if action_name == 'show' || action.standalone
+              disabled = false
+            else
+              disabled = true
+            end
+        %>
+          <%= link_to path, data: {
+              'turbo-frame': 'actions_show',
+              'action': 'click->actions-picker#visitAction',
+              'actions-picker-target': action.standalone ? 'standaloneAction' : 'resourceAction',
+              'disabled': disabled
+            },
+            class: "flex items-center py-4 w-full font-semibold text-gray-700 hover:text-white hover:bg-blue-500 #{disabled ? 'text-gray-500' : 'text-gray-700'}" do %>
+            <%= svg 'play', class: 'h-5 mr-1 inline' %> <%= action.action_name %>
+          <% end %>
         <% end %>
-      <% end %>
+      </div>
     </div>
   </div>
 <% end %>

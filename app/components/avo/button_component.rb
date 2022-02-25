@@ -2,9 +2,9 @@
 
 # A button/link can have the following settings:
 # style: primary/secondary/ternary
-# size: :sm, :md, :lg
+# size: :xs :sm, :md, :lg
 class Avo::ButtonComponent < ViewComponent::Base
-  def initialize(path = nil, size: :md, style: :secondary, icon: nil, icon_class: "", is_link: false, **args)
+  def initialize(path = nil, size: :md, style: :secondary, icon: nil, icon_class: "", is_link: false, rounded: true, **args)
     # Main settings
     @size = size
     @style = style
@@ -13,6 +13,7 @@ class Avo::ButtonComponent < ViewComponent::Base
     @path = path
     @icon = icon
     @icon_class = icon_class
+    @rounded = rounded
 
     # Other settings
     @class = args[:class]
@@ -35,10 +36,12 @@ class Avo::ButtonComponent < ViewComponent::Base
   end
 
   def button_classes
-    classes = "button-component inline-flex flex-grow-0 items-center text-sm font-semibold leading-6 fill-current whitespace-nowrap transition duration-100 rounded transform transition duration-100 cursor-pointer disabled:cursor-not-allowed disabled:opacity-30 border #{@class}"
+    classes = "button-component inline-flex flex-grow-0 items-center text-sm font-semibold leading-6 fill-current whitespace-nowrap transition duration-100 transform transition duration-100 cursor-pointer disabled:cursor-not-allowed disabled:opacity-30 border #{@class}"
 
     # press effect on click
     classes += " active:translate-x-px active:translate-y-px disabled:active:translate-x-0 disabled:active:translate-y-0" if false
+
+    classes += " rounded" if @rounded.present?
 
     classes += " space-x-1" if content.present? && @icon.present?
 
@@ -55,6 +58,8 @@ class Avo::ButtonComponent < ViewComponent::Base
 
     classes += " px-4" # Same horizontal padding on all sizes
     classes += case @size.to_sym
+    when :xs
+      " py-0"
     when :sm
       " py-1"
     when :md
@@ -77,6 +82,10 @@ class Avo::ButtonComponent < ViewComponent::Base
     icon_classes = @icon_class
 
     case @size
+    when :xs
+      icon_classes += " h-4"
+      # When icon is solo we need to add an offset
+      icon_classes += " my-1" if content.blank?
     when :sm
       icon_classes += " h-4"
       # When icon is solo we need to add an offset

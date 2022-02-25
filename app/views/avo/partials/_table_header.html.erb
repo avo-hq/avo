@@ -1,6 +1,6 @@
 
 <thead class="bg-white border-b border-gray-200 pb-1">
-  <th>
+  <th class="rounded-lg">
     <%== item_select_all_input %>
   </th>
   <%
@@ -30,7 +30,7 @@
       end
       classes = "text-gray-500 tracking-tight leading-tight text-sm font-semibold"
   %>
-    <th class="text-left uppercase px-3 py-6 whitespace-nowrap">
+    <th class="text-left uppercase px-3 py-6 whitespace-nowrap rounded-l">
       <% if field.sortable %>
         <%= link_to params.permit!.merge(sort_by: sort_by, sort_direction: sort_direction), class: "flex items-center #{classes} #{'cursor-pointer' if field.sortable}", 'data-turbo-frame': params[:turbo_frame] do %>
           <%= field.name %>

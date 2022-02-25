@@ -18,15 +18,15 @@
     <div class="flex justify-between">
       <div>
         <% if @resource.authorization.authorize_action(:download_attachments?, raise_exception: false) %>
-          <%= a_link helpers.main_app.url_for(@file), color: 'indigo', download: true, class: '', size: :md do %>
-            <%= helpers.svg 'download', class: 'h-4' %> <%= t('avo.download_file') %>
+          <%= a_link helpers.main_app.url_for(@file), icon: 'download', color: 'indigo', download: true, class: '', size: :md do %>
+            <%= t('avo.download_file') %>
           <% end %>
         <% end %>
       </div>
       <div>
         <% if @resource.authorization.authorize_action(:delete_attachments?, raise_exception: false) %>
-          <%= a_link "#{@resource.record_path}/active_storage_attachments/#{@id}/#{@file.blob_id}", color: :red, variant: :outlined, size: :md, class: '', 'data-turbo-frame': 'destroy_attachment_form', data: { confirm: t('avo.are_you_sure')} do %>
-            <%= helpers.svg 'trash', class: 'h-4' %> <%= t 'avo.delete_file', item: @file.filename %>
+          <%= a_link "#{@resource.record_path}/active_storage_attachments/#{@id}/#{@file.blob_id}", icon: 'trash', color: :red, variant: :outlined, size: :md, class: '', 'data-turbo-frame': 'destroy_attachment_form', data: { confirm: t('avo.are_you_sure')} do %>
+            <%= t 'avo.delete_file', item: @file.filename %>
           <% end %>
         <% end %>
       </div>

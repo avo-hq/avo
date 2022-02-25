@@ -1,7 +1,0 @@
-<% if (block = yield).empty? %>
-  <%= button_tag label, **args %>
-<% else %>
-  <%= button_tag **args do %>
-    <%= yield %>
-  <% end %>
-<% end %>
