@@ -3,7 +3,7 @@
     # When rendering the frames the flashed content gets lost.
     # By including the alerts partial, the stimulus will pick them up and display them to the user.
   %>
-  <%= render partial: 'avo/partials/alerts' if flash.present? && name.present? %>
+  <%= render Avo::AlertsComponent.new if helpers.flash.present? && name.present? %>
 
-  <%= yield %>
+  <%= content %>
 <% if name.present? %></turbo-frame><% end %>

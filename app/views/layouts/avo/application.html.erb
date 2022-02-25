@@ -51,7 +51,7 @@
   <%= turbo_frame_tag 'destroy_attachment_form' %>
 
   <%= turbo_frame_tag 'alerts' do %>
-    <%= render partial: 'avo/partials/alerts' %>
+    <%= render Avo::AlertsComponent.new %>
   <% end %>
 </div>
 
