@@ -73,3 +73,9 @@ Please read the [UPGRADE_GUIDE.MD](https://docs.avohq.io/1.0/upgrade.html)
 
 
 ![Alt](https://repobeats.axiom.co/api/embed/1481a6a259064f02a7936470d12a50802a9c98a4.svg "Repobeats analytics image")
+
+# Shoutouts
+
+[Get a box of waffles and some of the best app monitoring from Appsignal](https://appsignal.com/r/93dbe69bfb) 🧇
+
+[Get $100 in credits from Digital Ocean](https://www.digitalocean.com/?refcode=efc1fe881d74&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge) 💸
