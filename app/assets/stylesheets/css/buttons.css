@@ -33,6 +33,18 @@
     }
   }
 
+  &.component-variant-danger {
+    &:hover ,
+    &.hover {
+      @apply bg-red-100;
+    }
+
+    &:active ,
+    &.active {
+      @apply bg-red-100 border-red-500 outline-red-500;
+    }
+  }
+
   &.component-variant-ternary {
     &:hover ,
     &.hover {
@@ -59,3 +71,6 @@
   }
 }
 
+form.button_to {
+  @apply flex;
+}

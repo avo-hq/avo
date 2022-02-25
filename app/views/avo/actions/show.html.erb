@@ -24,9 +24,11 @@
         <%= form.hidden_field :resource_ids, value: params[:resource_ids], 'data-action-target': 'resourceIds' %>
 
         <% if @action.get_fields.present? %>
-          <% @action.get_fields.each_with_index do |field, index| %>
-            <%= render field.component_for_view(:edit).new field: field, resource: @resource, index: index, form: form, displayed_in_modal: true %>
-          <% end %>
+          <div class="divide-y">
+            <% @action.get_fields.each_with_index do |field, index| %>
+              <%= render field.component_for_view(:edit).new field: field, resource: @resource, index: index, form: form, displayed_in_modal: true %>
+            <% end %>
+          </div>
         <% end %>
 
         <% c.controls do %>

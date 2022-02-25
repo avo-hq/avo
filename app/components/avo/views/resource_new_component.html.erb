@@ -24,9 +24,11 @@
         <% end %>
 
         <% c.body do %>
-          <% @resource.get_fields.each_with_index do |field, index| %>
-            <%= render field.component_for_view(:edit).new(field: field, resource: @resource, index: index, form: form) unless field.computed %>
-          <% end %>
+          <div class="divide-y">
+            <% @resource.get_fields.each_with_index do |field, index| %>
+              <%= render field.component_for_view(:edit).new(field: field, resource: @resource, index: index, form: form) unless field.computed %>
+            <% end %>
+          </div>
         <% end %>
       <% end %>
     <% end %>

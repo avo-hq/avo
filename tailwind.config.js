@@ -2,6 +2,22 @@
 const plugin = require('tailwindcss/plugin')
 const colors = require('tailwindcss/colors')
 
+const primary = {
+  50: '#FBFDFF',
+  100: '#DDF0FE',
+  150: '#BFE4FD',
+  200: '#A2D7FC',
+  300: '#67BDFA',
+  400: '#2CA4F7',
+  500: '#0886DE',
+  600: '#065F9E',
+  700: '#03395E',
+  750: '#02253E',
+  800: '#01121E',
+  850: '#000000',
+  900: '#000000',
+}
+
 const gray = {
   50: '#FFFFFF',
   100: '#F9FAFA',
@@ -29,6 +45,7 @@ module.exports = {
     './app/components/avo/**/*.erb',
     './app/components/avo/**/*.rb',
     './app/controllers/avo/**/*.rb',
+    './spec/dummy/app/avo/resources/**/*.rb',
   ],
   theme: {
     extend: {
@@ -37,21 +54,8 @@ module.exports = {
         sky: colors.sky,
         teal: colors.teal,
         indigo: colors.indigo,
-        primary: {
-          50: '#FBFDFF',
-          100: '#DDF0FE',
-          150: '#BFE4FD',
-          200: '#A2D7FC',
-          300: '#67BDFA',
-          400: '#2CA4F7',
-          500: '#0886DE',
-          600: '#065F9E',
-          700: '#03395E',
-          750: '#02253E',
-          800: '#01121E',
-          850: '#000000',
-          900: '#000000',
-        },
+        blue: primary,
+        primary,
         ternary: gray,
         gray,
       },

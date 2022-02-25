@@ -36,11 +36,15 @@
 
     <% c.bare_content do %>
       <% if view_type.to_sym == :table %>
-        <div class="w-full overflow-auto flex flex-col mt-4 shadow-panel rounded-lg">
-          <div class="relative flex-1 flex">
-            <%= render(Avo::Index::ResourceTableComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_model: @parent_model)) %>
+        <% if @resources.present? %>
+          <div class="w-full overflow-auto flex flex-col mt-4 shadow-panel rounded-lg">
+            <div class="relative flex-1 flex">
+              <%= render(Avo::Index::ResourceTableComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_model: @parent_model)) %>
+            </div>
           </div>
-        </div>
+        <% else %>
+          <%= helpers.empty_state @resource.name.downcase.pluralize %>
+        <% end %>
 
         <% if @models.present? %>
           <div class="py-4">

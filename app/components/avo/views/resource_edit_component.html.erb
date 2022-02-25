@@ -10,7 +10,7 @@
       <%= render Avo::PanelComponent.new(title: resource_panel[:name], description: @resource.resource_description, display_breadcrumbs: true) do |c| %>
         <% c.tools do %>
           <div class="flex justify-end space-x-2">
-            <%= a_link back_path, icon: 'arrow-left' do %>
+            <%= a_link back_path, icon: 'arrow-left', style: :ternary do %>
               <%= t('avo.cancel').capitalize %>
             <% end %>
 
@@ -23,9 +23,11 @@
         <% end %>
 
         <% c.body do %>
-          <% @resource.get_fields.each_with_index do |field, index| %>
-            <%= render field.component_for_view(:edit).new(field: field, resource: @resource, index: index, form: form) unless field.computed %>
-          <% end %>
+          <div class="divide-y">
+            <% @resource.get_fields.each_with_index do |field, index| %>
+              <%= render field.component_for_view(:edit).new(field: field, resource: @resource, index: index, form: form) unless field.computed %>
+            <% end %>
+          </div>
         <% end %>
       <% end %>
     <% end %>

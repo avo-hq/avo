@@ -6,7 +6,6 @@ class CourseLinkResource < Avo::BaseResource
   #   scope.ransack(id_eq: params[:q], m: "or").result(distinct: false)
   # end
 
-  field :id, as: :id
   field :link, as: :text
   field :course, as: :belongs_to, searchable: true
 end

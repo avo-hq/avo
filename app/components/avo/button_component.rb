@@ -50,6 +50,8 @@ class Avo::ButtonComponent < ViewComponent::Base
       " component-variant-primary bg-primary-500 text-white border-primary-500 hover:bg-primary-600 hover:border-primary-600"
     when :secondary
       " component-variant-secondary bg-white text-primary-500 border-primary-500 hover:bg-primary-100"
+    when :danger
+      " component-variant-danger bg-white text-red-500 border-red-500 hover:bg-red-100"
     when :ternary
       " component-variant-ternary bg-white text-gray-500 border-gray-300 hover:text-gray-700 hover:border-gray-500"
     else
@@ -123,8 +125,14 @@ class Avo::ButtonComponent < ViewComponent::Base
   end
 
   def output_button
-    button_tag **args do
-      full_content
+    if @args[:method].present?
+      button_to @args[:url], **args do
+        full_content
+      end
+    else
+      button_tag **args do
+        full_content
+      end
     end
   end
 end
