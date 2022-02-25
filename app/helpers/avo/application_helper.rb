@@ -21,7 +21,7 @@ module Avo
     end
 
     def turbo_frame_wrap(name, &block)
-      render layout: "avo/partials/turbo_frame_wrap", locals: {name: name} do
+      render Avo::TurboFrameWrapperComponent.new name do
         capture(&block)
       end
     end
