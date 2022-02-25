@@ -1,5 +1,5 @@
 module Avo
-  class ApplicationController < ::ActionController::Base
+  class ApplicationController < Avo.configuration.parent_controller
     if defined?(Pundit::Authorization)
       include Pundit::Authorization
     else

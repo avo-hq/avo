@@ -28,6 +28,7 @@ module Avo
     attr_accessor :current_user_resource_name
     attr_accessor :raise_error_on_missing_policy
     attr_accessor :disabled_features
+    attr_writer :parent_controller
 
     def initialize
       @root_path = "/avo"
@@ -120,6 +121,12 @@ module Avo
 
     def feature_enabled?(feature)
       !@disabled_features.map(&:to_sym).include?(feature.to_sym)
+    end
+
+    # The class representing the configured base controller.
+    # In the default configuration, this is the `::ActionController::Base` class.
+    def parent_controller
+      (@parent_controller || "::ActionController::Base").to_s.constantize
     end
   end
 

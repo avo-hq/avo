@@ -12,6 +12,10 @@ Avo.configure do |config|
     # Return a context object that gets evaluated in Avo::ApplicationController
   end
 
+  ## == Set the base controller used for all Avo controllers ==
+  ## By default, it uses '::ActionController::Base'
+  # config.parent_controller = 'ApplicationController'
+
   ## == Authentication ==
   # config.current_user_method = {}
   # config.authenticate_with = {}
