@@ -21,14 +21,14 @@
 .pagy-nav-js .page a,
 .pagy-combo-nav-js .page a,
 .pagy-combo-nav-js .pagy-combo-input a {
-  @apply rounded-lg px-3 py-1 text-sm text-gray-500 font-semibold bg-white shadow-md;
+  @apply rounded px-3 py-1 text-sm text-gray-500 font-semibold bg-white shadow-md border border-gray-300;
 
   &:focus{
     @apply border-blue-300;
   }
 
   &:hover{
-    @apply bg-gray-200;
+    @apply bg-gray-150;
   }
 
   &:active{
@@ -55,7 +55,7 @@
 
 .pagy-nav .page.active,
 .pagy-nav-js .page.active {
-  @apply text-white cursor-default bg-gray-500;
+  @apply text-white cursor-default bg-gray-500 border-gray-500;
 
   &:hover {
     @apply text-white bg-gray-500;
