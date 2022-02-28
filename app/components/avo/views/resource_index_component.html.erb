@@ -19,7 +19,7 @@
     <% end %>
 
     <% c.body do %>
-      <% if @resource.search_query.present? || @filters.present? || @models.present? %>
+      <% if @resource.search_query.present? || @filters.present? || available_view_types.count > 1 %>
         <div class="flex flex-col xs:flex-row xs:justify-between space-y-2 xs:space-y-0 py-4"
           data-selected-resources-name="<%= @resource.model_key %>"
           data-selected-resources="[]"
@@ -32,11 +32,11 @@
             <%# Offset for the space-y-2 property when the serach is missing %>
             <div class="-mb-2"></div>
           <% end %>
-          <% if @filters.present? || @models.present? %>
+          <% if @filters.present? || available_view_types.count > 1 %>
             <div class="justify-self-end flex justify-start xs:justify-end items-center px-6 space-x-3">
               <%= render 'filters' if @filters.present? %>
 
-              <%= render partial: 'avo/partials/view_toggle_button', locals: { available_view_types: available_view_types, view_type: view_type, turbo_frame: @turbo_frame } if @models.present? %>
+              <%= render partial: 'avo/partials/view_toggle_button', locals: { available_view_types: available_view_types, view_type: view_type, turbo_frame: @turbo_frame } if available_view_types.count > 1 %>
             </div>
           <% end %>
         </div>
@@ -57,7 +57,7 @@
 
         <% if @models.present? %>
           <div class="py-4">
-            <%= render partial: 'avo/partials/paginator', locals: { pagy: @pagy, turbo_frame: @turbo_frame || 'none' } %>
+            <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: @turbo_frame || 'none', index_params: @index_params, resource: @resource, parent_resource: @parent_resource %>
           </div>
         <% end %>
       <% end %>
@@ -66,7 +66,7 @@
         <%= render Avo::Index::ResourceGridComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_model: @parent_model) %>
 
         <div class="mt-8 py-6">
-          <%= render partial: 'avo/partials/paginator', locals: { pagy: @pagy, turbo_frame: @turbo_frame || 'none' } %>
+          <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: @turbo_frame || 'none', index_params: @index_params, resource: @resource, parent_resource: @parent_resource %>
         </div>
       <% end %>
     <% end %>

@@ -1,7 +1,7 @@
 <%
-  per_page_options = [*Avo.configuration.per_page_steps, Avo.configuration.per_page.to_i, @index_params[:per_page].to_i]
+  per_page_options = [*Avo.configuration.per_page_steps, Avo.configuration.per_page.to_i, index_params[:per_page].to_i]
 
-  if @parent_resource.present?
+  if parent_resource.present?
     per_page_options.prepend Avo.configuration.via_per_page
   end
 
@@ -15,7 +15,7 @@
         <div data-controller="per-page">
           <div class="flex items-center">
             <%= select_tag 'per_page',
-              options_for_select(per_page_options, @index_params[:per_page]),
+              options_for_select(per_page_options, index_params[:per_page]),
               class: 'appearance-none inline-flex bg-slate-100 disabled:bg-slate-400 disabled:cursor-not-allowed focus:bg-white text-slate-700 disabled:text-slate-600 rounded-md py-1 px-2 leading-tight border border-slate-300 outline-none focus:border-slate-400 outline w-16 mr-1 text-sm',
               data: {
                 'turbo-frame': turbo_frame,
@@ -26,10 +26,10 @@
           </div>
 
           <% per_page_options.each do |option| %>
-            <% if @parent_resource.present? %>
-              <%= link_to "Change to #{option} items per page", related_resources_path(@parent_resource.model_class, @resource.model_class, per_page: option, keep_query_params: true), class: 'hidden', 'data-per-page-option': option, 'data-turbo-frame': turbo_frame %>
+            <% if parent_resource.present? %>
+              <%= link_to "Change to #{option} items per page", helpers.related_resources_path(parent_resource.model_class, resource.model_class, per_page: option, keep_query_params: true), class: 'hidden', 'data-per-page-option': option, 'data-turbo-frame': turbo_frame %>
             <% else %>
-              <%= link_to "Change to #{option} items per page", resources_path(resource: @resource, per_page: option, keep_query_params: true), class: 'hidden', 'data-per-page-option': option, 'data-turbo-frame': turbo_frame %>
+              <%= link_to "Change to #{option} items per page", helpers.resources_path(resource: resource, per_page: option, keep_query_params: true), class: 'hidden', 'data-per-page-option': option, 'data-turbo-frame': turbo_frame %>
             <% end %>
           <% end %>
         </div>
@@ -37,13 +37,12 @@
     </div>
   </div>
   <div class="flex">
-
     <div class="flex-2 sm:flex sm:items-center sm:justify-between">
-      <div class="mr-4"><%== pagy_info @pagy %></div>
+      <div class="mr-4"><%== helpers.pagy_info @pagy %></div>
 
       <%# @todo: add first & last page. make the first and last buttons rounded %>
       <% if @pagy.pages > 1 %>
-        <%== pagy_nav @pagy %>
+        <%== helpers.pagy_nav @pagy %>
       <% end %>
     </div>
   </div>
