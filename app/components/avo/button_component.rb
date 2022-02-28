@@ -50,6 +50,8 @@ class Avo::ButtonComponent < ViewComponent::Base
       " component-variant-primary bg-primary-500 text-white border-primary-500 hover:bg-primary-600 hover:border-primary-600"
     when :secondary
       " component-variant-secondary bg-white text-primary-500 border-primary-500 hover:bg-primary-100"
+    when :success
+      " component-variant-success bg-white text-green-500 border-green-500 hover:bg-green-100"
     when :danger
       " component-variant-danger bg-white text-red-500 border-red-500 hover:bg-red-100"
     when :ternary

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <%= display_meta_tags site: Avo.configuration.app_name, reverse: true, separator: "—" %>
 
   <%= csrf_meta_tags %>
@@ -20,20 +21,22 @@
 <body class="bg-[#EEF2F6] os-mac">
 
 <div id="app" class="flex min-h-screen flex-row h-full">
-  <div class="flex flex-1 w-full">
+  <div class="flex flex-1 w-full" data-controller="mobile">
     <%= render partial: 'avo/partials/sidebar' %>
 
-    <div class="flex-1 flex flex-col h-full overflow-auto">
+    <div class="flex-1 flex flex-col h-full overflow-y-auto">
       <%= render partial: "avo/partials/navbar" %>
 
-      <div class="content p-8 flex-1 flex flex-col justify-between items-stretch <%= @container_classes %>">
-        <%= render partial: "avo/partials/custom_tools_alert" if @custom_tools_alert_visible %>
+      <%# <div class="flex w-full overflow-x-auto"> %>
+        <div class="content p-8 flex-1 flex flex-col justify-between items-stretch  <%= @container_classes %>">
+          <%= render partial: "avo/partials/custom_tools_alert" if @custom_tools_alert_visible %>
 
-        <div class="flex flex-1 flex-col justify-between items-stretch">
-          <%= yield %>
-          <%= render partial: "avo/partials/footer" %>
+          <div class="flex flex-1 flex-col justify-between items-stretch">
+            <%= yield %>
+            <%= render partial: "avo/partials/footer" %>
+          </div>
         </div>
-      </div>
+      <%# </div> %>
     </div>
   </div>
   <%= turbo_frame_tag 'actions_show' %>

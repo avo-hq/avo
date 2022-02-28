@@ -41,6 +41,7 @@
                 style: :danger,
                 type: :submit,
                 icon: 'trash',
+                form_class: 'flex flex-col sm:flex-row sm:inline-flex',
                 data: {
                   confirm: t('avo.are_you_sure', item: @resource.model.model_name.name.downcase),
                   control: :destroy,

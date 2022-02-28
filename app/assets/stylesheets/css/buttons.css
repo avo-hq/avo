@@ -45,6 +45,18 @@
     }
   }
 
+  &.component-variant-success {
+    &:hover ,
+    &.hover {
+      @apply bg-green-100;
+    }
+
+    &:active ,
+    &.active {
+      @apply bg-green-100 border-green-500 outline-green-500;
+    }
+  }
+
   &.component-variant-ternary {
     &:hover ,
     &.hover {
@@ -72,5 +84,5 @@
 }
 
 form.button_to {
-  @apply flex;
+  @apply inline-flex;
 }

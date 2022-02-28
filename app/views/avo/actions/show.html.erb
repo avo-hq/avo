@@ -17,14 +17,14 @@
           <%= @action.action_name %>
         <% end %>
 
-        <div class="flex-1 flex items-center justify-center px-8 text-lg mt-8 mb-12">
+        <div class="flex-1 flex">
           <%= @action.message %>
         </div>
 
         <%= form.hidden_field :resource_ids, value: params[:resource_ids], 'data-action-target': 'resourceIds' %>
 
         <% if @action.get_fields.present? %>
-          <div class="divide-y">
+          <div class="mt-4">
             <% @action.get_fields.each_with_index do |field, index| %>
               <%= render field.component_for_view(:edit).new field: field, resource: @resource, index: index, form: form, displayed_in_modal: true %>
             <% end %>
@@ -32,10 +32,15 @@
         <% end %>
 
         <% c.controls do %>
-          <%= a_button data: { action: 'click->modal#close' }, size: :sm do %>
+          <%= a_button data: { action: 'click->modal#close' },
+            style: :ternary,
+            size: :sm do %>
             <%= @action.cancel_button_label %>
           <% end %>
-          <%= a_button type: :submit, color: :green, size: :sm, data: @action.class.submit_button_data_attributes do %>
+          <%= a_button type: :submit,
+            style: :success,
+            size: :sm,
+            data: @action.class.submit_button_data_attributes do %>
             <%= @action.confirm_button_label %>
           <% end %>
         <% end %>
