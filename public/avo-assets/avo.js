@@ -88425,6 +88425,9 @@
     initTippy();
     isMac();
   });
+  document.addEventListener("turbo:frame-load", () => {
+    initTippy();
+  });
   document.addEventListener("turbo:before-fetch-response", (e2) => {
     if (e2.detail.fetchResponse.response.status === 500) {
       const id = e2.srcElement.getAttribute("id");
