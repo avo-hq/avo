@@ -51,6 +51,10 @@ document.addEventListener('turbo:load', () => {
   isMac()
 })
 
+document.addEventListener('turbo:frame-load', () => {
+  initTippy()
+})
+
 document.addEventListener('turbo:before-fetch-response', (e) => {
   if (e.detail.fetchResponse.response.status === 500) {
     const id = e.srcElement.getAttribute('id')

@@ -8,7 +8,11 @@
   .aa-DetachedSearchButton:focus,
   .aa-DetachedSearchButton {
     border: none !important;
-    @apply text-gray-500;
+    @apply text-gray-500 cursor-pointer;
+
+    .aa-DetachedSearchButtonPlaceholder {
+      @apply hidden sm:block;
+    }
   }
 }
 
@@ -18,7 +22,7 @@
   }
 
   .aa-DetachedSearchButton {
-    @apply rounded border-gray-300 ;
+    @apply rounded border-gray-300 h-[34px];
   }
 }
 

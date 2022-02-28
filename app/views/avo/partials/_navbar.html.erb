@@ -1,12 +1,11 @@
 <div class="relative bg-white p-2 h-20 w-full flex flex-shrink-0 items-center z-50 px-6 border-b space-x-4" v-if="layout !== 'blank'">
   <%= a_button class: 'md:hidden', icon: 'menu', style: :ternary, data: { action: 'click->mobile#toggleSidebar' } %>
-  <div>
-    <%= render partial: "avo/partials/header" %>
-  </div>
-  <div class="flex-1 flex ml-4 pl-4">
-    <%= render partial: "avo/partials/global_search" if ::Avo::App.license.has_with_trial(:global_search) && ::Avo.configuration.feature_enabled?(:global_search) %>
-  </div>
-  <div class="align-end">
-    <% # Notifications %>
+  <div class="flex-1 flex items-center justify-between md:justify-start">
+    <div>
+      <%= render partial: "avo/partials/header" %>
+    </div>
+    <div class="flex ml-4 pl-4">
+      <%= render partial: "avo/partials/global_search" if ::Avo::App.license.has_with_trial(:global_search) && ::Avo.configuration.feature_enabled?(:global_search) %>
+    </div>
   </div>
 </div>

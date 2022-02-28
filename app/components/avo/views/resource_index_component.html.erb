@@ -1,5 +1,5 @@
 <div>
-  <%= render Avo::PanelComponent.new(title: title, description: description, body_classes: 'py-2', data: { component: 'resources-index' }, display_breadcrumbs: @reflection.blank?) do |c| %>
+  <%= render Avo::PanelComponent.new(title: title, description: description, data: { component: 'resources-index' }, display_breadcrumbs: @reflection.blank?) do |c| %>
     <% c.tools do %>
       <% if can_see_the_actions_button? %>
         <%= render 'actions' %>
@@ -19,19 +19,28 @@
     <% end %>
 
     <% c.body do %>
-      <div class="flex justify-between min-h-16"
-        data-selected-resources-name="<%= @resource.model_key %>"
-        data-selected-resources="[]"
-      >
-        <div class="flex items-center px-6 w-64">
-          <%= render partial: 'avo/partials/resource_search', locals: {resource: @resource.model_key} if @resource.search_query.present? %>
-        </div>
-        <div class="flex justify-end items-center px-6 space-x-3">
-          <%= render 'filters' if @filters.present? %>
+      <% if @resource.search_query.present? || @filters.present? || @models.present? %>
+        <div class="flex flex-col xs:flex-row xs:justify-between space-y-2 xs:space-y-0 py-4"
+          data-selected-resources-name="<%= @resource.model_key %>"
+          data-selected-resources="[]"
+        >
+          <% if @resource.search_query.present? %>
+            <div class="flex items-center px-6 w-64">
+              <%= render partial: 'avo/partials/resource_search', locals: {resource: @resource.model_key} %>
+            </div>
+          <% else %>
+            <%# Offset for the space-y-2 property when the serach is missing %>
+            <div class="-mb-2"></div>
+          <% end %>
+          <% if @filters.present? || @models.present? %>
+            <div class="justify-self-end flex justify-start xs:justify-end items-center px-6 space-x-3">
+              <%= render 'filters' if @filters.present? %>
 
-          <%= render partial: 'avo/partials/view_toggle_button', locals: { available_view_types: available_view_types, view_type: view_type, turbo_frame: @turbo_frame } if @models.present? %>
+              <%= render partial: 'avo/partials/view_toggle_button', locals: { available_view_types: available_view_types, view_type: view_type, turbo_frame: @turbo_frame } if @models.present? %>
+            </div>
+          <% end %>
         </div>
-      </div>
+      <% end %>
     <% end %>
 
     <% c.bare_content do %>
