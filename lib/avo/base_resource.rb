@@ -135,6 +135,7 @@ module Avo
             # we're matching the reflection inverse_of foriegn key with the field's foreign_key
             if field.is_a?(Avo::Fields::BelongsToField)
               if field.respond_to?(:foreign_key) &&
+                reflection.inverse_of.present? &&
                 reflection.inverse_of.foreign_key == field.foreign_key
                 is_valid = false
               end
