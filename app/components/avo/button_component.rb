@@ -55,7 +55,7 @@ class Avo::ButtonComponent < ViewComponent::Base
     when :danger
       " component-variant-danger bg-white text-red-500 border-red-500 hover:bg-red-100"
     when :ternary
-      " component-variant-ternary bg-white text-gray-500 border-gray-300 hover:text-gray-700 hover:border-gray-500"
+      " component-variant-ternary bg-white text-gray-500 border-gray-300 hover:text-gray-700 hover:bg-gray-100"
     else
       ""
     end

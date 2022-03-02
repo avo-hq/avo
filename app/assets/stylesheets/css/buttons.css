@@ -60,7 +60,7 @@
   &.component-variant-ternary {
     &:hover ,
     &.hover {
-      @apply text-gray-700 border-gray-500;
+      @apply text-gray-700 bg-gray-100;
     }
 
     &:active ,
