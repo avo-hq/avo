@@ -191,10 +191,11 @@ module Avo
     end
 
     def order
-      if params[:direction].present?
-        if @resource.class.order_actions[params[:direction].to_sym].present?
-          @resource.class.order_actions[params[:direction].to_sym].call(@model)
-        end
+      direction = params[:direction].to_sym
+      order_actions = @resource.class.order_actions
+
+      if direction.present? && order_actions[direction].present?
+        order_actions[direction].call(@model)
       end
 
       respond_to do |format|
