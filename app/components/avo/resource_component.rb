@@ -1,4 +1,4 @@
-class Avo::ResourceComponent < ViewComponent::Base
+class Avo::ResourceComponent < Avo::BaseComponent
   def can_create?
     return authorize_association_for(:create) if @reflection.present?
 

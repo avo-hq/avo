@@ -77,6 +77,8 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
       zeitwerk (~> 2.2, >= 2.2.2)
+    acts_as_list (1.0.4)
+      activerecord (>= 4.2)
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
     ap (0.1.1)
@@ -391,6 +393,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_link_to
+  acts_as_list
   addressable
   ap
   appraisal
@@ -445,4 +448,4 @@ DEPENDENCIES
   zeitwerk (~> 2.3)
 
 BUNDLED WITH
-   2.3.5
+   2.3.7

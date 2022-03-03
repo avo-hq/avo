@@ -1,0 +1,10 @@
+<%= button_to order_path(direction: direction, referrer: request.fullpath),
+  title: t("avo.order.#{direction}").capitalize,
+  method: :patch,
+  class: 'flex items-center',
+  data: {
+    target: "order:#{direction}",
+    'tippy': 'tooltip',
+  } do %>
+  <%= helpers.svg(svg, class: 'text-gray-400 h-6 hover:text-gray-600') %>
+<% end %>
