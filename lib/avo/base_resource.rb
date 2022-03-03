@@ -36,6 +36,7 @@ module Avo
     class_attribute :unscoped_queries_on_index, default: false
     class_attribute :resolve_query_scope
     class_attribute :resolve_find_scope
+    class_attribute :ordering
 
     class << self
       def grid(&block)
@@ -79,6 +80,12 @@ module Avo
 
       def authorization
         Avo::Services::AuthorizationService.new Avo::App.current_user
+      end
+
+      def order_actions
+        return {} if ordering.blank?
+
+        ordering.dig(:actions) || {}
       end
     end
 

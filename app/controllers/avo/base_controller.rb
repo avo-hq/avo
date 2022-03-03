@@ -5,7 +5,7 @@ module Avo
     before_action :set_resource_name
     before_action :set_resource
     before_action :hydrate_resource
-    before_action :set_model, only: [:show, :edit, :destroy, :update]
+    before_action :set_model, only: [:show, :edit, :destroy, :update, :order]
     before_action :set_model_to_fill
     before_action :fill_model, only: [:create, :update]
     before_action :authorize_action
@@ -187,6 +187,18 @@ module Avo
       respond_to do |format|
         format.html { redirect_to params[:referrer] || resources_path(resource: @resource, turbo_frame: params[:turbo_frame], view_type: params[:view_type]), notice: t("avo.resource_destroyed", attachment_class: @attachment_class) }
         format.json { head :no_content }
+      end
+    end
+
+    def order
+      if params[:direction].present?
+        if @resource.class.order_actions[params[:direction].to_sym].present?
+          @resource.class.order_actions[params[:direction].to_sym].call(@model)
+        end
+      end
+
+      respond_to do |format|
+        format.html { redirect_to params[:referrer] || resources_path(resource: @resource) }
       end
     end
 

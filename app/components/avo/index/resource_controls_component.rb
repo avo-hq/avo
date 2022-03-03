@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
-  def initialize(resource: nil, reflection: nil, parent_model: nil)
+  def initialize(resource: nil, reflection: nil, parent_model: nil, view_type: :table)
     @resource = resource
     @reflection = reflection
     @parent_model = parent_model
+    @view_type = view_type
   end
 
   def can_detach?
@@ -68,5 +69,9 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
 
   def is_has_many_association
     @reflection.is_a?(::ActiveRecord::Reflection::HasManyReflection) || @reflection.is_a?(::ActiveRecord::Reflection::ThroughReflection)
+  end
+
+  def view_is_table?
+    @view_type == :table
   end
 end
