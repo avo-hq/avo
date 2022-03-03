@@ -74,18 +74,6 @@ ActiveRecord::Schema.define(version: 2022_03_02_214148) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "mobility_text_translations", force: :cascade do |t|
-    t.string "locale", null: false
-    t.string "key", null: false
-    t.text "value"
-    t.string "translatable_type"
-    t.bigint "translatable_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["translatable_id", "translatable_type", "key"], name: "index_mobility_text_translations_on_translatable_attribute"
-    t.index ["translatable_id", "translatable_type", "locale", "key"], name: "index_mobility_text_translations_on_keys", unique: true
-  end
-
   create_table "people", force: :cascade do |t|
     t.string "name"
     t.string "type"
