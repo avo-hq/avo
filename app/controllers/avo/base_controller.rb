@@ -192,10 +192,12 @@ module Avo
 
     def order
       direction = params[:direction].to_sym
-      order_actions = @resource.class.order_actions
 
-      if direction.present? && order_actions[direction].present?
-        order_actions[direction].call(@model)
+      if direction.present?
+        @resource
+          .hydrate(model: @model, params: params)
+          .ordering_host
+          .order direction
       end
 
       respond_to do |format|

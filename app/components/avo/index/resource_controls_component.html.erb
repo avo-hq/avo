@@ -1,7 +1,5 @@
 <div class="space-x-2 flex flex-row justify-around items-center w-full">
-  <% if view_is_table? && has_with_trial(:resource_ordering) %>
-    <%= render Avo::Index::Ordering::ButtonsComponent.new resource: @resource %>
-  <% end %>
+  <%= render Avo::Index::Ordering::ButtonsComponent.new resource: @resource, reflection: @reflection, view_type: @view_type %>
 
   <% if can_view? %>
     <%= link_to helpers.svg('eye', class: 'text-gray-400 h-6 hover:text-gray-600'),

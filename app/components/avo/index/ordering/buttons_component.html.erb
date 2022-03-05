@@ -1,5 +1,12 @@
 <div class="flex items-center justify-center">
-  <% unless always_visible? %>
+  <% if display_inline? %>
+    <div class="flex max-w-xs rounded">
+      <%= render Avo::Index::Ordering::ButtonComponent.new resource: @resource, reflection: @reflection, direction: :higher, svg: 'arrow-up' %>
+      <%= render Avo::Index::Ordering::ButtonComponent.new resource: @resource, reflection: @reflection, direction: :lower, svg: 'arrow-down' %>
+      <%= render Avo::Index::Ordering::ButtonComponent.new resource: @resource, reflection: @reflection, direction: :to_top, svg: 'download-solid-reversed' %>
+      <%= render Avo::Index::Ordering::ButtonComponent.new resource: @resource, reflection: @reflection, direction: :to_bottom, svg: 'download-solid' %>
+    </div>
+  <% else %>
     <div class="popover inline-block"
       data-controller="popover"
       data-popover-translate-x="-100%"
@@ -15,16 +22,11 @@
       %>
       <%= helpers.svg('switch-vertical', class: 'text-gray-400 h-6 hover:text-gray-600') %>
     <% end %>
-  <% end %>
-  <% if always_visible? %>
-    <div class="flex max-w-xs rounded">
-    <% else %>
-      <div class="flex hidden absolute max-w-xs bg-white rounded p-2 z-40" data-popover-target="content">
-    <% end %>
-    <%= render Avo::Index::Ordering::ButtonComponent.new resource: @resource, direction: :higher, svg: 'arrow-up' %>
-    <%= render Avo::Index::Ordering::ButtonComponent.new resource: @resource, direction: :lower, svg: 'arrow-down' %>
-    <%= render Avo::Index::Ordering::ButtonComponent.new resource: @resource, direction: :to_top, svg: 'download-solid-reversed' %>
-    <%= render Avo::Index::Ordering::ButtonComponent.new resource: @resource, direction: :to_bottom, svg: 'download-solid' %>
+    <div class="flex hidden absolute max-w-xs bg-white rounded p-2 z-40" data-popover-target="content">
+      <%= render Avo::Index::Ordering::ButtonComponent.new resource: @resource, reflection: @reflection, direction: :higher, svg: 'arrow-up' %>
+      <%= render Avo::Index::Ordering::ButtonComponent.new resource: @resource, reflection: @reflection, direction: :lower, svg: 'arrow-down' %>
+      <%= render Avo::Index::Ordering::ButtonComponent.new resource: @resource, reflection: @reflection, direction: :to_top, svg: 'download-solid-reversed' %>
+      <%= render Avo::Index::Ordering::ButtonComponent.new resource: @resource, reflection: @reflection, direction: :to_bottom, svg: 'download-solid' %>
     </div>
-  </div>
+  <% end %>
 </div>

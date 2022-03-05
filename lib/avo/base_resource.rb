@@ -14,6 +14,7 @@ module Avo
 
     attr_accessor :view
     attr_accessor :model
+    attr_accessor :reflection
     attr_accessor :user
     attr_accessor :params
 
@@ -476,6 +477,10 @@ module Avo
 
     def form_scope
       model_class.base_class.to_s.underscore.downcase
+    end
+
+    def ordering_host(**args)
+      Avo::Hosts::Ordering.new resource: self, options: self.class.ordering, **args
     end
   end
 end

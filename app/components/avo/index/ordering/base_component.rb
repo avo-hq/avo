@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::Index::Ordering::BaseComponent < ViewComponent::Base
+class Avo::Index::Ordering::BaseComponent < Avo::BaseComponent
   private
 
   def order_actions

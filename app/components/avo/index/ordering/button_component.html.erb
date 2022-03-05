@@ -4,6 +4,7 @@
   class: 'flex items-center',
   data: {
     target: "order:#{direction}",
+    'turbo-frame': params[:turbo_frame],
     'tippy': 'tooltip',
   } do %>
   <%= helpers.svg(svg, class: 'text-gray-400 h-6 hover:text-gray-600') %>

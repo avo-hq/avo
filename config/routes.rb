@@ -19,6 +19,7 @@ Avo::Engine.routes.draw do
 
     # Ordering
     patch "/:resource_name/:id/order", to: "resources#order"
+    patch "/:resource_name/:id/:related_name/:related_id/order", to: "relations#order", as: "associations_order"
 
     # Actions
     get "/:resource_name(/:id)/actions/:action_id", to: "actions#show"

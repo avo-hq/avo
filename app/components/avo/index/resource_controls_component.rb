@@ -70,8 +70,4 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   def is_has_many_association
     @reflection.is_a?(::ActiveRecord::Reflection::HasManyReflection) || @reflection.is_a?(::ActiveRecord::Reflection::ThroughReflection)
   end
-
-  def view_is_table?
-    @view_type == :table
-  end
 end

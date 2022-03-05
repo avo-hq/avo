@@ -2,15 +2,15 @@ require_dependency "avo/base_controller"
 
 module Avo
   class RelationsController < BaseController
-    before_action :set_model, only: [:show, :index, :new, :create, :destroy]
+    before_action :set_model, only: [:show, :index, :new, :create, :destroy, :order]
     before_action :set_related_resource_name
-    before_action :set_related_resource, only: [:show, :index, :new, :create, :destroy]
-    before_action :hydrate_related_resource, only: [:show, :index, :new, :create, :destroy]
-    before_action :set_related_model, only: [:show]
-    before_action :set_attachment_class, only: [:show, :index, :new, :create, :destroy]
-    before_action :set_attachment_resource, only: [:show, :index, :new, :create, :destroy]
-    before_action :set_attachment_model, only: [:create, :destroy]
-    before_action :set_reflection, only: [:index, :show]
+    before_action :set_related_resource, only: [:show, :index, :new, :create, :destroy, :order]
+    before_action :hydrate_related_resource, only: [:show, :index, :new, :create, :destroy, :order]
+    before_action :set_related_model, only: [:show, :order]
+    before_action :set_attachment_class, only: [:show, :index, :new, :create, :destroy, :order]
+    before_action :set_attachment_resource, only: [:show, :index, :new, :create, :destroy, :order]
+    before_action :set_attachment_model, only: [:create, :destroy, :order]
+    before_action :set_reflection, only: [:index, :show, :order]
 
     def index
       @parent_resource = @resource.dup
@@ -69,6 +69,13 @@ module Avo
       respond_to do |format|
         format.html { redirect_to params[:referrer] || resource_path(model: @model, resource: @resource), notice: t("avo.attachment_class_detached", attachment_class: @attachment_class) }
       end
+    end
+
+    def order
+      @parent_resource = @resource.dup
+      @resource, @model = @related_resource, @related_model
+
+      super
     end
 
     private
