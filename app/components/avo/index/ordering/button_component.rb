@@ -19,8 +19,6 @@ class Avo::Index::Ordering::ButtonComponent < Avo::Index::Ordering::BaseComponen
 
   def order_path(args)
     if reflection.present?
-      parent_resource = Avo::App.get_resource_by_model_name reflection.class
-
       path = "#{::Avo::App.root_path}/resources/#{reflection_parent_resource.route_key}/#{params[:id]}/#{field.id}/#{resource.model.id}/order"
     else
       path = "#{::Avo::App.root_path}/resources/#{resource.route_key}/#{resource.model.id}/order"
