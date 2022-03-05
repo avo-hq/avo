@@ -11,6 +11,8 @@ class Avo::Index::Ordering::ButtonsComponent < Avo::Index::Ordering::BaseCompone
     has_with_trial(:resource_ordering) && can_order_any? && view_type_is_table? && enabled_in_view?
   end
 
+  private
+
   def can_order_any?
     order_actions.present?
   end
@@ -20,11 +22,7 @@ class Avo::Index::Ordering::ButtonsComponent < Avo::Index::Ordering::BaseCompone
   end
 
   def display_inline?
-    @resource.class.ordering[:display_inline]
-  end
-
-  def visible_in_view?
-    @resource.class.ordering[:display_inline]
+    ordering[:display_inline]
   end
 
   def enabled_in_view?
@@ -38,6 +36,10 @@ class Avo::Index::Ordering::ButtonsComponent < Avo::Index::Ordering::BaseCompone
   end
 
   def visible_on_option
-    [@resource.class.ordering[:visible_on]].flatten
+    [ordering[:visible_on]].flatten
+  end
+
+  def ordering
+    @resource.class.ordering
   end
 end
