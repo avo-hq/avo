@@ -1,11 +1,12 @@
 PATH
   remote: ..
   specs:
-    avo (1.24.1)
+    avo (1.24.2)
       active_link_to
       addressable
       breadcrumbs_on_rails
       countries
+      dry-initializer
       hotwire-rails
       httparty
       image_processing
@@ -155,6 +156,7 @@ GEM
     dotenv-rails (2.7.6)
       dotenv (= 2.7.6)
       railties (>= 3.2)
+    dry-initializer (3.1.1)
     erubi (1.10.0)
     factory_bot (6.2.0)
       activesupport (>= 5.0.0)
