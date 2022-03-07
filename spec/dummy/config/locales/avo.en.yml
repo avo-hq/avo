@@ -99,3 +99,9 @@ en:
     was_successfully_updated: 'was successfully updated'
     clear_value: "Clear value"
     tools: Tools
+    order:
+      reorder_record: Reorder record
+      higher: Move record higher
+      lower: Move record lower
+      to_top: Move record to top
+      to_bottom: Move record to bottom

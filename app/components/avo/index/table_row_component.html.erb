@@ -12,7 +12,7 @@
   <% end %>
   <td class="text-right whitespace-nowrap px-2">
     <div class="flex items-center justify-end flex-grow-0 h-full w-full">
-      <%= render(Avo::Index::ResourceControlsComponent.new(resource: @resource, reflection: @reflection, parent_model: @parent_model)) %>
+      <%= render(Avo::Index::ResourceControlsComponent.new(resource: @resource, reflection: @reflection, parent_model: @parent_model, view_type: :table)) %>
     </div>
   </td>
 </tr>

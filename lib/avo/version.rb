@@ -1,3 +1,3 @@
 module Avo
-  VERSION = "1.22.4"
+  VERSION = "1.24.2"
 end

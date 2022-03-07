@@ -9,7 +9,7 @@ class User < ApplicationRecord
   validates :last_name, presence: true
 
   has_one :post
-  has_many :posts
+  has_many :posts, inverse_of: :user
   has_many :people
   has_many :spouses
   has_many :comments

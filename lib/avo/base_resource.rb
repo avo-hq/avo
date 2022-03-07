@@ -14,6 +14,7 @@ module Avo
 
     attr_accessor :view
     attr_accessor :model
+    attr_accessor :reflection
     attr_accessor :user
     attr_accessor :params
 
@@ -36,6 +37,7 @@ module Avo
     class_attribute :unscoped_queries_on_index, default: false
     class_attribute :resolve_query_scope
     class_attribute :resolve_find_scope
+    class_attribute :ordering
 
     class << self
       def grid(&block)
@@ -79,6 +81,12 @@ module Avo
 
       def authorization
         Avo::Services::AuthorizationService.new Avo::App.current_user
+      end
+
+      def order_actions
+        return {} if ordering.blank?
+
+        ordering.dig(:actions) || {}
       end
     end
 
@@ -135,6 +143,7 @@ module Avo
             # we're matching the reflection inverse_of foriegn key with the field's foreign_key
             if field.is_a?(Avo::Fields::BelongsToField)
               if field.respond_to?(:foreign_key) &&
+                reflection.inverse_of.present? &&
                 reflection.inverse_of.foreign_key == field.foreign_key
                 is_valid = false
               end
@@ -468,6 +477,10 @@ module Avo
 
     def form_scope
       model_class.base_class.to_s.underscore.downcase
+    end
+
+    def ordering_host(**args)
+      Avo::Hosts::Ordering.new resource: self, options: self.class.ordering, **args
     end
   end
 end
