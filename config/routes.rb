@@ -14,8 +14,7 @@ Avo::Engine.routes.draw do
 
   scope "resources", as: "resources" do
     # Attachments
-    get "/:resource_name/:id/active_storage_attachments/:attachment_name/:signed_attachment_id", to: "attachments#show"
-    delete "/:resource_name/:id/active_storage_attachments/:attachment_name/:signed_attachment_id", to: "attachments#destroy"
+    delete "/:resource_name/:id/active_storage_attachments/:attachment_name/:attachment_id", to: "attachments#destroy"
 
     # Ordering
     patch "/:resource_name/:id/order", to: "resources#order"
@@ -27,7 +26,7 @@ Avo::Engine.routes.draw do
 
     # Generate resource routes as below:
     # resources :posts
-    Avo::DynamicRouter::routes(self)
+    Avo::DynamicRouter.routes(self)
 
     # Relations
     get "/:resource_name/:id/:related_name/new", to: "relations#new", as: "associations_new"

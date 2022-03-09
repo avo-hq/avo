@@ -14,7 +14,6 @@
         </div>
       </div>
     <% end %>
-
     <div class="flex flex-col xs:flex-row xs:justify-between space-y-2 xs:space-y-0">
       <div class="flex">
         <% if @resource.authorization.authorize_action(:download_attachments?, raise_exception: false) %>
@@ -30,7 +29,8 @@
       </div>
       <div>
         <% if @resource.authorization.authorize_action(:delete_attachments?, raise_exception: false) %>
-          <%= a_link "#{@resource.record_path}/active_storage_attachments/#{@id}/#{@file.blob_id}",
+          <%= a_button url: "#{Avo.configuration.root_path}/resources/#{@resource.route_key}/#{@resource.model.id}/active_storage_attachments/#{@id}/#{@file.id}",
+            method: :delete,
             icon: 'trash',
             color: :red,
             variant: :outlined,
@@ -38,7 +38,6 @@
             class: 'w-full xs:w-auto',
             data: {
               confirm: t('avo.are_you_sure'),
-              'turbo-frame': 'destroy_attachment_form'
             } do %>
             <%= t 'avo.delete_file', item: @file.filename %>
           <% end %>

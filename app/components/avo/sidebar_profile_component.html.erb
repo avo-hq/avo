@@ -12,17 +12,25 @@
       </div>
     </div>
   </div>
-  <div>
+  <div class="relative" data-controller="toggle-panel">
     <% if can_destroy_user? %>
-      <a class="flex items-center h-full cursor-pointer">
+      <a class="flex items-center h-full cursor-pointer" data-action="click->toggle-panel#togglePanel">
         <%= helpers.svg 'three-dots', class: 'h-4' %>
       </a>
-
-      <%# if main_app.respond_to?(destroy_user_session_path)
-        <div class="hidden absolute inset-auto right-0 mr-6 mt-0 py-4 bg-white rounded-xl min-w-[200px] shadow-context" data-toggle-panel-target="panel">
-          <%= button_to t('avo.sign_out'), main_app.send(:destroy_user_session_path), method: :delete, form: { "data-turbo" => "false" }, class: "appearance-none bg-white text-left cursor-pointer text-green-600 font-semibold hover:text-white hover:bg-green-500 block px-4 py-1 w-full"
-        </div>
-      <%# end %>
+      <div
+        class="hidden absolute flex flex-col inset-auto right-0 -mt-12 bg-white rounded min-w-[200px] shadow-context -translate-y-full"
+        data-toggle-panel-target="panel"
+      >
+        <%# Example link below %>
+        <%#= render Avo::ProfileItemComponent.new label: 'Profile', path: '/profile', icon: helpers.svg('user-circle', class: 'h-4 mr-1') %>
+        <%= button_to helpers.main_app.send(:destroy_user_session_path),
+          method: :delete,
+          form: { "data-turbo" => "false" },
+          class: "flex-1 flex items-center justify-center bg-white text-left cursor-pointer text-red-600 font-semibold hover:bg-red-100 block px-4 py-1 w-full py-3 text-center rounded w-full",
+          form_class: 'flex-1' do %>
+          <%= helpers.svg 'logout', class: 'h-4 mr-1' %> <%= t('avo.sign_out') %>
+        <% end %>
+      </div>
     <% end %>
   </div>
 </div>

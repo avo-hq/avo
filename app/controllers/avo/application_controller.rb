@@ -210,7 +210,7 @@ module Avo
 
     def render_unauthorized(exception)
       if !exception.is_a? Pundit::NotDefinedError
-        flash[:notice] = t "avo.not_authorized"
+        flash.now[:notice] = t "avo.not_authorized"
 
         redirect_url = if request.referrer.blank? || (request.referrer == request.url)
           root_url
