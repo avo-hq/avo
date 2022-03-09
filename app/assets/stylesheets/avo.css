@@ -85,3 +85,8 @@ body.os-mac .mac\:hidden {
 body.os-pc .pc\:hidden {
   display: none;
 }
+
+trix-editor {
+  max-height: 320px !important;
+  overflow-y: auto;
+}

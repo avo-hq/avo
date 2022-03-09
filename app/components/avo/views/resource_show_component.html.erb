@@ -23,7 +23,7 @@
             <% end %>
 
             <% if can_see_the_edit_button? %>
-              <%= a_link edit_path, icon: 'edit', color: 'indigo' do %>
+              <%= a_link edit_path, icon: 'edit' do %>
                 <%= t('avo.edit').capitalize %>
               <% end %>
             <% end %>
@@ -55,7 +55,7 @@
             <% end %>
 
             <% if @resource.authorization.authorize_action(:edit, raise_exception: false) %>
-              <%= a_link edit_path, icon: 'edit', color: 'indigo' do %>
+              <%= a_link edit_path, icon: 'edit' do %>
                 <%= t('avo.edit').capitalize %>
               <% end %>
             <% end %>

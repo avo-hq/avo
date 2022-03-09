@@ -36,7 +36,7 @@ class Avo::ButtonComponent < ViewComponent::Base
   end
 
   def button_classes
-    classes = "button-component inline-flex flex-grow-0 items-center text-sm font-semibold leading-6 fill-current whitespace-nowrap transition duration-100 transform transition duration-100 cursor-pointer disabled:cursor-not-allowed disabled:opacity-30 border #{@class}"
+    classes = "button-component inline-flex flex-grow-0 items-center text-sm font-semibold leading-6 fill-current whitespace-nowrap transition duration-100 transform transition duration-100 cursor-pointer disabled:cursor-not-allowed disabled:opacity-30 border justify-center #{@class}"
 
     # press effect on click
     classes += " active:translate-x-px active:translate-y-px disabled:active:translate-x-0 disabled:active:translate-y-0" if false

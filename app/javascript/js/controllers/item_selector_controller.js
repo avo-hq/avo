@@ -73,6 +73,7 @@ export default class extends Controller {
   enableResourceActions() {
     this.actionLinks.forEach((link) => {
       link.classList.add('text-gray-700')
+      link.classList.add('hover:bg-blue-100')
       link.classList.remove('text-gray-500')
       link.setAttribute('data-href', link.getAttribute('href'))
       link.dataset.disabled = false
@@ -82,6 +83,7 @@ export default class extends Controller {
   disableResourceActions() {
     this.actionLinks.forEach((link) => {
       link.classList.remove('text-gray-700')
+      link.classList.remove('hover:bg-blue-100')
       link.classList.add('text-gray-500')
       link.setAttribute('href', link.getAttribute('data-href'))
       link.dataset.disabled = true

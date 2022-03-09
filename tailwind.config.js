@@ -75,7 +75,7 @@ module.exports = {
         row: '0 0 15px -5px rgba(0, 0, 0, 0.25)',
         context: '0 20px 25px -5px rgba(0, 0, 0, 0.25), 0 0 25px -5px rgba(0, 0, 0, 0.1)',
         panel: '0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 2px rgba(0, 0, 0, 0.06), 0px 0px 1px rgba(0, 0, 0, 0.04)',
-        modals: ' 0px 24px 32px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04)',
+        modal: ' 0px 24px 32px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04)',
       },
       minWidth: {
         '300px': '300px',
@@ -154,6 +154,14 @@ module.exports = {
     screens: {
       xs: '495px',
       ...defaultTheme.screens,
+      // 'sm': '640px',
+      // 'tablet': '768px',
+      // 'laptop': '1024px',
+      // 'desktop': '1280px',
+      // // => @media (min-width: 1280px) { ... }
+
+      // '2xl': '1536px',
+      // // => @media (min-width: 1536px) { ... }
     },
   },
   variants: {

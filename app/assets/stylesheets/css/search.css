@@ -78,11 +78,7 @@ button.aa-DetachedCancelButton {
         }
 
         &[aria-selected=true]{
-          @apply bg-blue-700 text-white;
-
-          .aa-ItemDescription {
-            @apply text-white;
-          }
+          @apply bg-blue-100;
         }
       }
     }

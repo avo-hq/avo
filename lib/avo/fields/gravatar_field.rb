@@ -17,8 +17,8 @@ module Avo
         hide_on [:edit, :new]
 
         @link_to_resource = args[:link_to_resource].present? ? args[:link_to_resource] : false
-        @rounded = args[:rounded].present? ? args[:rounded] : true
-        @size = args[:size].present? ? args[:size].to_i : 40
+        @rounded = args[:rounded].nil? ? true : args[:rounded]
+        @size = args[:size].present? ? args[:size].to_i : 32
         @default = args[:default].present? ? ERB::Util.url_encode(args[:default]).to_s : ""
       end
 

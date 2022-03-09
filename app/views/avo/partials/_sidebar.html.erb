@@ -1,10 +1,10 @@
-<div class="fixed md:relative z-[60] application-sidebar hidden md:flex h-full bg-white text-white w-72 border-r" data-target="mobile.sidebar">
+<div class="fixed lg:relative z-[60] application-sidebar hidden lg:flex h-full bg-white text-white w-72 border-r" data-mobile-target="sidebar">
   <div class="flex flex-col w-full h-full">
     <div class="flex justify-between">
       <%= render partial: "avo/partials/logo" %>
 
       <div class="flex items-center mr-4">
-        <%= a_button class: 'md:hidden', icon: 'menu-back', style: :ternary, data: { action: 'click->mobile#toggleSidebar' } %>
+        <%= a_button class: "lg:hidden", icon: 'menu-back', style: :ternary, data: { action: 'click->mobile#toggleSidebar' } %>
       </div>
     </div>
 
@@ -16,9 +16,6 @@
 
         <div class="w-full">
           <%= render Avo::NavigationHeadingComponent.new label: t('avo.resources'), icon: svg('resources-icon', class: 'h-4') %>
-          <% Avo::App.resources_navigation(_current_user).sort_by { |r| r.navigation_label }.each do |resource| %>
-            <%= render Avo::NavigationLinkComponent.new label: resource.navigation_label, path: resources_path(resource: resource) %>
-          <% end %>
           <% Avo::App.resources_navigation(_current_user).sort_by { |r| r.navigation_label }.each do |resource| %>
             <%= render Avo::NavigationLinkComponent.new label: resource.navigation_label, path: resources_path(resource: resource) %>
           <% end %>

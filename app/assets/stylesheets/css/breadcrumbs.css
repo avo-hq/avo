@@ -7,7 +7,7 @@
 
   a,
   span {
-    @apply inline-block;
+    @apply inline-block text-sm lg:text-base;
   }
 
   a {
