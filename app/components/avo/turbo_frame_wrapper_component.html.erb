@@ -1,11 +1,11 @@
-<% if name.present? %><turbo-frame id="<%= name %>"><% end %>
+<%= turbo_frame_tag(*args, **kwargs) do %>
   <%
     # When rendering the frames the flashed content gets lost.
     # By including the alerts partial, the stimulus will pick them up and display them to the user.
   %>
   <% if helpers.turbo_frame_request? %>
-    <%= render Avo::AlertsComponent.new if helpers.flash.present? && name.present? %>
+    <%= render Avo::AlertsComponent.new if helpers.flash.present? %>
   <% end %>
 
   <%= content %>
-<% if name.present? %></turbo-frame><% end %>
+<% end %>

@@ -20,10 +20,8 @@ module Avo
       render partial: "avo/partials/empty_state", locals: {resource_name: resource_name}
     end
 
-    def turbo_frame_wrap(name, &block)
-      render Avo::TurboFrameWrapperComponent.new name do
-        capture(&block)
-      end
+    def turbo_frame_wrap(*args, **kwargs, &block)
+      render(Avo::TurboFrameWrapperComponent.new(*args, **kwargs), &block)
     end
 
     def a_button(label = nil, **args, &block)
