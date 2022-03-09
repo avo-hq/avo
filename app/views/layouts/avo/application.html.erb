@@ -22,7 +22,7 @@
 
 <div id="app" class="flex min-h-screen flex-row h-full">
   <div class="flex flex-1 w-full" data-controller="mobile">
-    <%= render partial: 'avo/partials/sidebar' %>
+    <%= render Avo::SidebarComponent.new %>
 
     <div class="flex-1 flex flex-col h-full overflow-y-auto">
       <%= render partial: "avo/partials/navbar" %>
