@@ -1,5 +1,5 @@
 .breadcrumbs {
-  @apply relative text-base text-black;
+  @apply relative text-sm text-black;
 
   svg {
     @apply text-gray-500;
@@ -7,7 +7,7 @@
 
   a,
   span {
-    @apply inline-block text-sm lg:text-base;
+    @apply inline-block text-sm;
   }
 
   a {
