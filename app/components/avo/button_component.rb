@@ -120,7 +120,7 @@ class Avo::ButtonComponent < ViewComponent::Base
         full_content
       end
     else
-      button_tag **args do
+      button_tag(**args) do
         full_content
       end
     end
