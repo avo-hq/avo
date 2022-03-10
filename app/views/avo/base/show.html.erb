@@ -1,3 +1,3 @@
 <%= turbo_frame_wrap(params[:turbo_frame]) do %>
-  <%= render Avo::Views::ResourceShowComponent.new(resource: @resource, reflection: @reflection) %>
+  <%= render Avo::Views::ResourceShowComponent.new(resource: @resource, reflection: @reflection, actions: @actions) %>
 <% end %>

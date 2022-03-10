@@ -71,14 +71,18 @@ button.aa-DetachedCancelButton {
       @apply space-y-2;
 
       .aa-Item {
-        @apply bg-white rounded-md px-3 py-4 shadow;
+        @apply bg-white rounded px-3 py-4 shadow font-medium;
 
         .aa-ItemDescription {
-          @apply text-gray-500 text-sm;
+          @apply text-gray-500 text-sm font-normal mt-1;
         }
 
         &[aria-selected=true]{
-          @apply bg-blue-100;
+          @apply bg-blue-500 text-white;
+
+          .aa-ItemDescription {
+            @apply text-white;
+          }
         }
       }
     }

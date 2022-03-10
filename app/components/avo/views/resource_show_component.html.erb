@@ -7,7 +7,7 @@
       <% c.tools do %>
         <% if resource_panel[:name] == @resource.default_panel_name %>
           <% if @reflection.present? && @resource.model.present? %>
-            <%= render 'actions' %>
+            <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource %>
             <% if can_detach? %>
               <%= a_button url: detach_path,
                 icon: 'detach',
@@ -28,7 +28,7 @@
             <%= a_link back_path, icon: 'arrow-left' do %>
               <%= t('avo.go_back') %>
             <% end %>
-            <%= render 'actions' %>
+            <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource %>
             <% if can_see_the_destroy_button? %>
               <%= a_button url: helpers.resource_path(model: @resource.model, resource: @resource),
                 method: :delete,

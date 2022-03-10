@@ -2,7 +2,7 @@
   <%= render Avo::PanelComponent.new(title: title, description: description, data: { component: 'resources-index' }, display_breadcrumbs: @reflection.blank?) do |c| %>
     <% c.tools do %>
       <% if can_see_the_actions_button? %>
-        <%= render 'actions' %>
+        <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource %>
       <% end %>
       <% if can_see_the_create_button? %>
         <%= a_link create_path, icon: 'heroicons/outline/plus', 'data-target': 'create', color: :primary do %>
@@ -31,7 +31,7 @@
           <% end %>
           <% if @filters.present? || available_view_types.count > 1 %>
             <div class="justify-self-end flex justify-start xs:justify-end items-center px-6 space-x-3">
-              <%= render 'filters' if @filters.present? %>
+              <%= render Avo::FiltersComponent.new filters: @filters, resource: @resource %>
               <%= render partial: 'avo/partials/view_toggle_button', locals: { available_view_types: available_view_types, view_type: view_type, turbo_frame: @turbo_frame } if available_view_types.count > 1 %>
             </div>
           <% end %>

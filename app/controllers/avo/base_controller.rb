@@ -62,7 +62,7 @@ module Avo
     def show
       set_actions
 
-      @resource = @resource.hydrate(model: @model, view: :show, user: _current_user, params: params)
+      @resource.hydrate(model: @model, view: :show, user: _current_user, params: params)
 
       @page_title = @resource.default_panel_name
 
@@ -287,13 +287,13 @@ module Avo
         model = @resource.class.find_scope.find params[:resource_id]
       end
 
-      @actions =
-        @resource
-          .get_actions
-          .map do |action|
-            action.new(model: model, resource: @resource, view: @view)
-          end
-          .select { |action| action.visible_in_view }
+      @actions = @resource
+        .get_actions
+        .map do |action|
+          action.new(model: model, resource: @resource, view: @view)
+        end
+        .select { |action| action.visible_in_view }
+        puts ['@actions->', @actions].inspect
     end
 
     def applied_filters
