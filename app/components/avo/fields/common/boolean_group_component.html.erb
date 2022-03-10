@@ -6,9 +6,9 @@
         @options.each do |id, label|
           checked = @value.present? && @value[id.to_s].present?
       %>
-      <div>
+      <div class="flex flex-nowrap">
         <%= render Avo::Fields::Common::BooleanCheckComponent.new checked: checked %>
-          <div class="ml-6 text-left py-px"><%= label %></div>
+          <div class="ml-px text-left py-px"><%= label %></div>
         </div>
       <% end %>
     </div>

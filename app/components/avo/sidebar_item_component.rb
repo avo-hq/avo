@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::NavigationLinkComponent < ViewComponent::Base
+class Avo::SidebarItemComponent < ViewComponent::Base
   def initialize(label: nil, path: nil, active: :inclusive, target: nil)
     @label = label
     @path = path

@@ -9,18 +9,18 @@
     <div class="flex-1 flex flex-col justify-between overflow-auto">
       <div class="space-y-2">
         <div class="w-full">
-          <%= render Avo::NavigationLinkComponent.new label: 'Get started', path: avo.root_path, active: :exclusive if Rails.env.development? && Avo.configuration.home_path.nil?  %>
+          <%= render Avo::SidebarItemComponent.new label: 'Get started', path: avo.root_path, active: :exclusive if Rails.env.development? && Avo.configuration.home_path.nil?  %>
         </div>
-        <div class="w-full">
-          <%= render Avo::NavigationHeadingComponent.new label: t('avo.resources'), icon: helpers.svg('resources-icon', class: 'h-4') %>
+        <div class="w-full space-y-1">
+          <%= render Avo::SidebarHeadingComponent.new label: t('avo.resources'), icon: helpers.svg('resources-icon', class: 'h-4') %>
           <% Avo::App.resources_navigation(helpers._current_user).sort_by { |r| r.navigation_label }.each do |resource| %>
-            <%= render Avo::NavigationLinkComponent.new label: resource.navigation_label, path: helpers.resources_path(resource: resource) %>
+            <%= render Avo::SidebarItemComponent.new label: resource.navigation_label, path: helpers.resources_path(resource: resource) %>
           <% end %>
         </div>
         <div class="w-full">
           <% tools = Avo::App.get_sidebar_partials %>
           <% if tools.present? %>
-            <%= render Avo::NavigationHeadingComponent.new label: t('avo.tools'), icon: helpers.svg('tools-icon', class: 'h-4') %>
+            <%= render Avo::SidebarHeadingComponent.new label: t('avo.tools'), icon: helpers.svg('tools-icon', class: 'h-4') %>
             <% tools.each do |partial| %>
               <%= render partial: "/avo/sidebar/items/#{partial}" %>
             <% end %>

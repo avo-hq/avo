@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Avo::NavigationLinkComponent, type: :component do
+RSpec.describe Avo::SidebarHeadingComponent, type: :component do
 
   # it "renders something useful" do
   #   expect(

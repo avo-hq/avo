@@ -6747,8 +6747,8 @@ progress[value]::-moz-progress-bar{
   margin-top:-0.5rem
 }
 
-.ml-6{
-  margin-left:1.5rem
+.ml-px{
+  margin-left:1px
 }
 
 .mb-1{
@@ -7018,6 +7018,10 @@ progress[value]::-moz-progress-bar{
 
 .flex-col{
   flex-direction:column
+}
+
+.flex-nowrap{
+  flex-wrap:nowrap
 }
 
 .place-content-between{
@@ -8187,6 +8191,11 @@ trix-editor {
 .hover\:bg-primary-600:hover{
   --tw-bg-opacity:1;
   background-color:rgb(6 95 158 / var(--tw-bg-opacity))
+}
+
+.hover\:bg-gray-150:hover{
+  --tw-bg-opacity:1;
+  background-color:rgb(233 234 236 / var(--tw-bg-opacity))
 }
 
 .hover\:bg-blue-50:hover{
