@@ -41,6 +41,7 @@ function initTippy() {
     content(reference) {
       const title = reference.getAttribute('title')
       reference.removeAttribute('title')
+      reference.removeAttribute('data-tippy')
 
       return title
     },

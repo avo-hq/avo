@@ -4,7 +4,7 @@
 # style: primary/secondary/ternary
 # size: :xs :sm, :md, :lg
 class Avo::ButtonComponent < ViewComponent::Base
-  def initialize(path = nil, size: :md, style: :outline, color: :gray, icon: nil, icon_class: "", is_link: false, rounded: true, **args)
+  def initialize(path = nil, size: :md, style: :outline, color: :gray, icon: nil, icon_class: "", is_link: false, rounded: true, compact: false, **args)
     # Main settings
     @size = size
     @style = style
@@ -15,6 +15,7 @@ class Avo::ButtonComponent < ViewComponent::Base
     @icon = icon
     @icon_class = icon_class
     @rounded = rounded
+    @compact = compact
 
     # Other settings
     @class = args[:class]
@@ -48,7 +49,7 @@ class Avo::ButtonComponent < ViewComponent::Base
       ""
     end
 
-    classes += " px-4" # Same horizontal padding on all sizes
+    classes += @compact ? " px-1" : " px-4" # Same horizontal padding on all sizes
     classes += case @size.to_sym
     when :xs
       " py-0"
