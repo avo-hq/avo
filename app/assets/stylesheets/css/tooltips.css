@@ -1,7 +1,3 @@
-.tippy-box[data-placement^=top]>.tippy-arrow {
-  left: -2px;
-}
-
 .tooltip {
   display: block !important;
   z-index: 10000;
