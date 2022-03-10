@@ -24,9 +24,12 @@
           rounded: false,
           size: :sm,
           class: is_active_view ? 'z-20' : ' bg-gray-100 border-gray-300',
-          'data-turbo-frame': turbo_frame,
           title: t('avo.switch_to_view', view_type: type),
-          'data-tippy': 'tooltip'
+          data: {
+            tippy: 'tooltip',
+            'turbo-frame': turbo_frame,
+            control: "view-type-toggle-#{type}"
+          }
         %>
       <% end %>
     </div>

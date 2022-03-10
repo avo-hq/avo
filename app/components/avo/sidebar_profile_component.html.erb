@@ -14,7 +14,7 @@
   </div>
   <div class="relative" data-controller="toggle-panel">
     <% if can_destroy_user? %>
-      <a class="flex items-center h-full cursor-pointer" data-action="click->toggle-panel#togglePanel">
+      <a class="flex items-center h-full cursor-pointer" data-control="profile-dots" data-action="click->toggle-panel#togglePanel">
         <%= helpers.svg 'three-dots', class: 'h-4' %>
       </a>
       <div

@@ -16,9 +16,10 @@ RSpec.describe "heading", type: :feature do
       it "checks for html heading" do
         visit url
 
-        expect(find_field_element("heading_div_class_text_gray_300_uppercase_font_bold_dev_div")).to have_text "dev"
-        expect(find_field_element("heading_div_class_text_gray_300_uppercase_font_bold_dev_div")).to have_css ".uppercase"
-        expect(find_field_element("heading_div_class_text_gray_300_uppercase_font_bold_dev_div")).to have_css ".text-gray-300"
+        expect(find_field_element("heading_div_class_underline_uppercase_font_bold_dev_div")).to have_text "dev"
+        expect(find_field_element("heading_div_class_underline_uppercase_font_bold_dev_div")).to have_css ".uppercase"
+        expect(find_field_element("heading_div_class_underline_uppercase_font_bold_dev_div")).to have_css ".underline"
+        expect(find_field_element("heading_div_class_underline_uppercase_font_bold_dev_div")).to have_css ".font-bold"
       end
     end
   end
@@ -38,9 +39,10 @@ RSpec.describe "heading", type: :feature do
       it "checks for html heading" do
         visit url
 
-        expect(find_field_element("heading_div_class_text_gray_300_uppercase_font_bold_dev_div")).to have_text "dev"
-        expect(find_field_element("heading_div_class_text_gray_300_uppercase_font_bold_dev_div")).to have_css ".uppercase"
-        expect(find_field_element("heading_div_class_text_gray_300_uppercase_font_bold_dev_div")).to have_css ".text-gray-300"
+        expect(find_field_element("heading_div_class_underline_uppercase_font_bold_dev_div")).to have_text "dev"
+        expect(find_field_element("heading_div_class_underline_uppercase_font_bold_dev_div")).to have_css ".uppercase"
+        expect(find_field_element("heading_div_class_underline_uppercase_font_bold_dev_div")).to have_css ".underline"
+        expect(find_field_element("heading_div_class_underline_uppercase_font_bold_dev_div")).to have_css ".font-bold"
       end
     end
   end

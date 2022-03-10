@@ -27,7 +27,7 @@ RSpec.describe "BooleanGroupFields", type: :system do
         show_roles_popup
         sleep 0.1
 
-        expect(page).to have_text "Roles"
+        expect(page).to have_text "ROLES"
         expect(page).to have_text "Administrator"
         expect(page).to have_text "Manager"
         expect(page).to have_text "Writer"
@@ -56,11 +56,11 @@ RSpec.describe "BooleanGroupFields", type: :system do
         show_roles_popup
         sleep 0.1
 
-        expect(page).to have_text "Roles"
+        expect(page).to have_text "ROLES"
         expect(page).to have_text "Administrator"
         expect(page).to have_text "Manager"
         expect(page).to have_text "Writer"
-        expect(page.all(".tippy-content svg")[0][:class]).to have_text "text-teal-600"
+        expect(page.all(".tippy-content svg")[0][:class]).to have_text "text-green-600"
         expect(page.all(".tippy-content svg")[1][:class]).to have_text "text-red-500"
         expect(page.all(".tippy-content svg")[2][:class]).to have_text "text-red-500"
       end
