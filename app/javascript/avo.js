@@ -19,6 +19,7 @@ window.Turbolinks = Turbo
 
 let scrollTop = 0
 Mousetrap.bind('r r r', () => {
+  // Cpture scroll position
   scrollTop = document.scrollingElement.scrollTop
 
   Turbo.visit(window.location.href, { action: 'replace' })
@@ -56,9 +57,12 @@ document.addEventListener('turbo:load', () => {
   initTippy()
   isMac()
 
+  // Restore scroll position after r r r turbo reload
   if (scrollTop) {
-    document.scrollingElement.scrollTo(0, scrollTop)
-    scrollTop = 0
+    setTimeout(() => {
+      document.scrollingElement.scrollTo(0, scrollTop)
+      scrollTop = 0
+    }, 50)
   }
 })
 
