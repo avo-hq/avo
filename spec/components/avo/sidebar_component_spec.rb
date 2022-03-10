@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe SidebarComponent, type: :component do
+RSpec.describe Avo::SidebarComponent, type: :component do
   pending "add some examples to (or delete) #{__FILE__}"
 
   # it "renders something useful" do

@@ -7,7 +7,7 @@ const colors = require('tailwindcss/colors')
 const buttonClasses = ['text-${color}-500', 'border-${color}-500', 'hover:bg-${color}-100', 'active:bg-${color}-100', 'active:border-${color}-500', 'active:outline-${color}-500']
 
 const buttonColors = Object.keys(colors)
-buttonColors.push('primary', 'secondary', 'ternary')
+buttonColors.push('primary')
 
 const ignoredButtonClasses = buttonColors.map((color) => buttonClasses.map((buttonClass) => buttonClass.replace('${color}', kebabCase(color))))
 
