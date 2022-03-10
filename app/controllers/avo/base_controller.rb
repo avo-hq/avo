@@ -293,7 +293,6 @@ module Avo
           action.new(model: model, resource: @resource, view: @view)
         end
         .select { |action| action.visible_in_view }
-        puts ['@actions->', @actions].inspect
     end
 
     def applied_filters
