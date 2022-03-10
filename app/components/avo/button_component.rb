@@ -27,13 +27,9 @@ class Avo::ButtonComponent < ViewComponent::Base
       @args[:"data-controller"] = "loading-button"
     end
 
-    @args[:class] = classes
+    @args[:class] = button_classes
 
     @args
-  end
-
-  def classes
-    button_classes
   end
 
   def button_classes
