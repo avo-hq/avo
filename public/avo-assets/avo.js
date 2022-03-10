@@ -76430,10 +76430,10 @@
   function getWindowScroll(node) {
     var win = getWindow(node);
     var scrollLeft = win.pageXOffset;
-    var scrollTop = win.pageYOffset;
+    var scrollTop2 = win.pageYOffset;
     return {
       scrollLeft,
-      scrollTop
+      scrollTop: scrollTop2
     };
   }
 
@@ -84096,11 +84096,7 @@
 
   // app/javascript/js/controllers/mobile_controller.js
   var mobile_controller_default = class extends Controller {
-    connect() {
-      console.log("mobile_controller", this.sidebarTarget);
-    }
     toggleSidebar() {
-      console.log("toggleSidebar");
       this.sidebarTarget.classList.toggle("hidden");
     }
   };
@@ -88658,7 +88654,11 @@
   // app/javascript/avo.js
   import_ujs.default.start();
   window.Turbolinks = turbo_es2017_esm_exports;
-  Mousetrap2.bind("r r r", () => turbo_es2017_esm_exports.visit(window.location.href, { action: "replace" }));
+  var scrollTop = 0;
+  Mousetrap2.bind("r r r", () => {
+    scrollTop = document.scrollingElement.scrollTop;
+    turbo_es2017_esm_exports.visit(window.location.href, { action: "replace" });
+  });
   function isMac() {
     const isMac2 = window.navigator.userAgent.indexOf("Mac OS X");
     if (isMac2) {
@@ -88685,6 +88685,10 @@
     document.body.classList.remove("turbo-loading");
     initTippy();
     isMac();
+    if (scrollTop) {
+      document.scrollingElement.scrollTo(0, scrollTop);
+      scrollTop = 0;
+    }
   });
   document.addEventListener("turbo:frame-load", () => {
     initTippy();
