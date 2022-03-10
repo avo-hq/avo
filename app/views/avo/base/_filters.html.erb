@@ -1,8 +1,7 @@
 <div data-controller="toggle-panel">
   <div class="relative w-full flex justify-between z-30">
     <%= a_button class: 'focus:outline-none',
-      color: 'secondary',
-      variant: 'outlined',
+      color: :primary,
       size: :sm,
       icon: 'filter',
       title: t('avo.click_to_reveal_filters'),
@@ -12,7 +11,7 @@
     %>
       <%= t 'avo.filters' %>
       <% if params[:filters].present? %>
-        <div class="ml-1">(<%=JSON.parse(Base64.decode64(params[:filters])).count%> applied)</div>
+        <span class="ml-1">(<%=JSON.parse(Base64.decode64(params[:filters])).count%> applied)</span>
       <% end %>
     <% end %>
 
@@ -23,14 +22,15 @@
       <% @filters.each do |filter| %>
         <%= render partial: filter.class.template, locals: {filter: filter} %>
       <% end %>
+      <%# @todo: fix them on mobile  %>
 
       <div class="p-4 border-gray-300 border-t">
         <% if params[:filters].present? %>
-          <%= a_link resources_path(resource: @resource, filters: nil, keep_query_params: true), color: 'slate', class: 'w-full justify-center' do %>
+          <%= a_link resources_path(resource: @resource, filters: nil, keep_query_params: true), color: :gray, size: :sm, class: 'w-full justify-center' do %>
             <%= t('avo.reset_filters') %>
           <% end %>
         <% else %>
-          <%= a_button color: 'slate', class: 'w-full justify-center', disabled: true do %>
+          <%= a_button class: 'w-full justify-center', disabled: true do %>
             <%= t('avo.reset_filters') %>
           <% end %>
         <% end %>

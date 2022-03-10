@@ -20,11 +20,10 @@
 
         <%= a_link url_for(params.permit!.merge(view_type: type)).to_s,
           icon: info[type][:new_icon],
-          style: is_active_view ? :secondary : :ternary,
-          variant: :outlined,
+          color: is_active_view ? :primary : :gray,
           rounded: false,
           size: :sm,
-          class: is_active_view ? 'z-20' : ' bg-gray-100',
+          class: is_active_view ? 'z-20' : ' bg-gray-100 border-gray-300',
           'data-turbo-frame': turbo_frame,
           title: t('avo.switch_to_view', view_type: type),
           'data-tippy': 'tooltip'

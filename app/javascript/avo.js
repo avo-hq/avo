@@ -17,7 +17,12 @@ Rails.start()
 
 window.Turbolinks = Turbo
 
-Mousetrap.bind('r r r', () => Turbo.visit(window.location.href, { action: 'replace' }))
+let scrollTop = 0
+Mousetrap.bind('r r r', () => {
+  scrollTop = document.scrollingElement.scrollTop
+
+  Turbo.visit(window.location.href, { action: 'replace' })
+})
 
 function isMac() {
   const isMac = window.navigator.userAgent.indexOf('Mac OS X')
@@ -49,6 +54,11 @@ document.addEventListener('turbo:load', () => {
   document.body.classList.remove('turbo-loading')
   initTippy()
   isMac()
+
+  if (scrollTop) {
+    document.scrollingElement.scrollTo(0, scrollTop)
+    scrollTop = 0
+  }
 })
 
 document.addEventListener('turbo:frame-load', () => {

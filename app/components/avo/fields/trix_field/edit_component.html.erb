@@ -9,6 +9,7 @@
     data-hide-attachment-filename="<%= @field.hide_attachment_filename %>"
     data-hide-attachment-filesize="<%= @field.hide_attachment_filesize %>"
     data-hide-attachment-url="<%= @field.hide_attachment_url %>"
+    class="relative block overflow-x-auto max-w-full"
   >
     <% trix_id = "trix_#{@resource.name.underscore}_#{@field.id}" %>
     <trix-editor data-trix-field-target="editor" input="<%= trix_id %>" placeholder="<%= @field.placeholder %>"><%== @field.value %></trix-editor>

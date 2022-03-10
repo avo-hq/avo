@@ -4,10 +4,11 @@
 # style: primary/secondary/ternary
 # size: :xs :sm, :md, :lg
 class Avo::ButtonComponent < ViewComponent::Base
-  def initialize(path = nil, size: :md, style: :secondary, icon: nil, icon_class: "", is_link: false, rounded: true, **args)
+  def initialize(path = nil, size: :md, style: :outline, color: :gray, icon: nil, icon_class: "", is_link: false, rounded: true, **args)
     # Main settings
     @size = size
     @style = style
+    @color = color
 
     # Other things that appear in the button
     @path = path
@@ -36,7 +37,7 @@ class Avo::ButtonComponent < ViewComponent::Base
   end
 
   def button_classes
-    classes = "button-component inline-flex flex-grow-0 items-center text-sm font-semibold leading-6 fill-current whitespace-nowrap transition duration-100 transform transition duration-100 cursor-pointer disabled:cursor-not-allowed disabled:opacity-30 border justify-center #{@class}"
+    classes = "button-component inline-flex flex-grow-0 items-center text-sm font-semibold leading-6 fill-current whitespace-nowrap transition duration-100 transform transition duration-100 cursor-pointer disabled:cursor-not-allowed disabled:opacity-30 border justify-center active:outline active:outline-1 #{@class}"
 
     # press effect on click
     classes += " active:translate-x-px active:translate-y-px disabled:active:translate-x-0 disabled:active:translate-y-0" if false
@@ -47,15 +48,9 @@ class Avo::ButtonComponent < ViewComponent::Base
 
     classes += case @style
     when :primary
-      " component-variant-primary bg-primary-500 text-white border-primary-500 hover:bg-primary-600 hover:border-primary-600"
-    when :secondary
-      " component-variant-secondary bg-white text-primary-500 border-primary-500 hover:bg-primary-100"
-    when :success
-      " component-variant-success bg-white text-green-500 border-green-500 hover:bg-green-100"
-    when :danger
-      " component-variant-danger bg-white text-red-500 border-red-500 hover:bg-red-100"
-    when :ternary
-      " component-variant-ternary bg-white text-gray-500 border-gray-300 hover:text-gray-700 hover:bg-gray-100"
+      " bg-primary-500 text-white border-primary-500 hover:bg-primary-600 hover:border-primary-600 active:border-primary-700 active:outline-primary-700 active:bg-primary-600"
+    when :outline
+      " bg-white text-#{@color}-500 border-#{@color}-500 hover:bg-#{@color}-100 active:bg-#{@color}-100 active:border-#{@color}-500 active:outline-#{@color}-500"
     else
       ""
     end

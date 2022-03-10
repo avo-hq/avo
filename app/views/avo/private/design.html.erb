@@ -1,16 +1,20 @@
 <div class="flex flex-col">
   <%= render Avo::PanelComponent.new title: 'Welcome to Avo', description: 'This page is visible only in development. It will be hidden in other environments.' do |c| %>
     <% c.tools do %>
-      <%= a_link('/admin', icon: 'arrow-left', type: :primary, is_link: true) do %>
+      <%= a_link('/admin', icon: 'arrow-left', style: :primary, is_link: true) do %>
         Primary
       <% end %>
 
-      <%= a_link('/admin', icon: 'arrow-left', type: :secondary, is_link: true) do %>
+      <%= a_link('/admin', icon: 'arrow-left', style: :outline, is_link: true) do %>
         Secondary
       <% end %>
 
-      <%= a_link('/admin', icon: 'arrow-left', type: :ternary, is_link: true) do %>
-        Ternary
+      <%= a_link('/admin', icon: 'arrow-left', style: :outline, color: :red, is_link: true) do %>
+        Red
+      <% end %>
+
+      <%= a_link('/admin', icon: 'arrow-left', style: :outline, color: :orange, is_link: true) do %>
+        Red
       <% end %>
     <% end %>
 
