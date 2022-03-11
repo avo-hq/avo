@@ -109,9 +109,6 @@ module.exports = {
         '3/5': '60%',
         '4/5': '80%',
       },
-      maxHeight: {
-        168: '42rem',
-      },
       spacing: {
         full: '100%',
         72: '18rem',

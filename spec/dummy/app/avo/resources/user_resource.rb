@@ -1,6 +1,6 @@
 class UserResource < Avo::BaseResource
   self.title = :name
-  self.description = -> () {
+  self.description = -> {
     "These are the users of the app. view: #{view}"
   }
   self.translation_key = "avo.resource_translations.user"

@@ -13,8 +13,8 @@ module Avo
     before_action :cache_applied_filters, only: :index
 
     def index
-      @page_title = resource_name.humanize
-      add_breadcrumb resource_name.humanize
+      @page_title = @resource.plural_name.humanize
+      add_breadcrumb @resource.plural_name.humanize
 
       set_index_params
       set_filters
@@ -75,7 +75,7 @@ module Avo
         add_breadcrumb via_resource.plural_name, resources_path(resource: via_resource)
         add_breadcrumb via_resource.model_title, resource_path(model: via_model, resource: via_resource)
       else
-        add_breadcrumb resource_name.humanize, resources_path(resource: @resource)
+        add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
       end
 
       add_breadcrumb @resource.model_title
@@ -86,7 +86,7 @@ module Avo
       @resource = @resource.hydrate(model: @model, view: :new, user: _current_user)
 
       @page_title = @resource.default_panel_name
-      add_breadcrumb resource_name.humanize, resources_path(resource: @resource)
+      add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
       add_breadcrumb t("avo.new").humanize
     end
 
@@ -104,7 +104,7 @@ module Avo
         add_breadcrumb via_resource.plural_name, resources_path(resource: @resource)
         add_breadcrumb via_resource.model_title, resource_path(model: via_model, resource: via_resource)
       else
-        add_breadcrumb resource_name.humanize, resources_path(resource: @resource)
+        add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
       end
 
       add_breadcrumb @resource.model_title, resource_path(model: @resource.model, resource: @resource)
