@@ -16,8 +16,8 @@ module Avo
       }
     end
 
-    def empty_state(resource_name)
-      render partial: "avo/partials/empty_state", locals: {resource_name: resource_name}
+    def empty_state(**args)
+      render Avo::EmptyStateComponent.new **args
     end
 
     def turbo_frame_wrap(name, &block)

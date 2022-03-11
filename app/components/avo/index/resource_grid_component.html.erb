@@ -7,7 +7,7 @@
     <% end %>
   </div>
 <% else %>
-  <div class="bg-white rounded-xl shadow-xl">
-    <%= helpers.empty_state @resource.name.downcase.pluralize %>
+  <div class="bg-white rounded shadow-panel">
+    <%= helpers.empty_state resource_name: @resource.name.downcase.pluralize, view_type: :grid %>
   </div>
 <% end %>

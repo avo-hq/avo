@@ -47,7 +47,7 @@
             </div>
           </div>
         <% else %>
-          <%= helpers.empty_state @resource.name.downcase.pluralize %>
+          <%= helpers.empty_state resource_name: @resource.name.downcase.pluralize, view_type: view_type, add_background: true %>
         <% end %>
         <% if @models.present? %>
           <div class="py-4 mt-4">
