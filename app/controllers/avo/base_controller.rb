@@ -79,6 +79,7 @@ module Avo
       end
 
       add_breadcrumb @resource.model_title
+      add_breadcrumb I18n.t("avo.details").upcase_first
     end
 
     def new
