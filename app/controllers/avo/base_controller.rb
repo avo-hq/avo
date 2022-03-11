@@ -64,7 +64,7 @@ module Avo
 
       @resource.hydrate(model: @model, view: :show, user: _current_user, params: params)
 
-      @page_title = @resource.default_panel_name
+      @page_title = @resource.default_panel_name.to_s
 
       # If we're accessing this resource via another resource add the parent to the breadcrumbs.
       if params[:via_resource_class].present? && params[:via_resource_id].present?
@@ -86,7 +86,7 @@ module Avo
       @model = @resource.model_class.new
       @resource = @resource.hydrate(model: @model, view: :new, user: _current_user)
 
-      @page_title = @resource.default_panel_name
+      @page_title = @resource.default_panel_name.to_s
       add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
       add_breadcrumb t("avo.new").humanize
     end
@@ -94,7 +94,7 @@ module Avo
     def edit
       @resource = @resource.hydrate(model: @model, view: :edit, user: _current_user)
 
-      @page_title = @resource.default_panel_name
+      @page_title = @resource.default_panel_name.to_s
 
       # If we're accessing this resource via another resource add the parent to the breadcrumbs.
       if params[:via_resource_class].present? && params[:via_resource_id].present?
