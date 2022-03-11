@@ -18,6 +18,8 @@ h5 {
   @apply text-lg;
 }
 
-a {
-  @apply text-blue-600;
+@layer base {
+  a {
+    @apply text-primary-500;
+  }
 }

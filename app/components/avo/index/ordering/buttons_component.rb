@@ -36,6 +36,8 @@ class Avo::Index::Ordering::ButtonsComponent < Avo::Index::Ordering::BaseCompone
   end
 
   def visible_on_option
+    return [] if ordering.nil?
+
     [ordering[:visible_on]].flatten
   end
 

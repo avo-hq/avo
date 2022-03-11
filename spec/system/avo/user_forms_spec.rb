@@ -13,14 +13,14 @@ RSpec.describe "UserForms", type: :system do
     click_on "Create new user"
 
     expect(page).to have_text("Create new user")
-    expect(page).to have_text("First name")
-    expect(page).to have_text("Last name")
-    expect(page).to have_text("User Email")
+    expect(page).to have_text("FIRST NAME")
+    expect(page).to have_text("LAST NAME")
+    expect(page).to have_text("USER EMAIL")
     expect(page).to have_text("CV")
-    expect(page).to have_text("Roles")
-    expect(page).to have_text("Birthday")
-    expect(page).to have_text("User Password")
-    expect(page).to have_text("Password confirmation")
+    expect(page).to have_text("ROLES")
+    expect(page).to have_text("BIRTHDAY")
+    expect(page).to have_text("USER PASSWORD")
+    expect(page).to have_text("PASSWORD CONFIRMATION")
     expect(page).to have_text("Cancel")
     expect(page).to have_text("Save")
   end

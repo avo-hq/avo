@@ -4,12 +4,12 @@ module Avo
       return if resource.nil?
 
       existing_params = {}
-      begin
-        if keep_query_params
+      if keep_query_params
+        begin
           existing_params =
             Addressable::URI.parse(request.fullpath).query_values.symbolize_keys
+        rescue
         end
-      rescue
       end
 
       # This entry uses `route_key` instead of `model_key` because it's rails that needs `fish_index` to build the correct path

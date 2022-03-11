@@ -6,26 +6,28 @@
           <%= helpers.render_breadcrumbs(separator: helpers.svg('chevron-right', class: 'inline-block h-3 stroke-current relative top-[-1px] ml-1' )) if Avo.configuration.display_breadcrumbs %>
         </div>
       <% end %>
-      <div class="text-2xl tracking-normal font-bold text-gray-800 truncate" data-target="title">
+
+      <div class="text-2xl tracking-normal font-semibold text-gray-800 truncate" data-target="title">
         <%= @title %>
       </div>
-      <div class="text-sm tracking-normal text-gray-600" data-target="description">
+
+      <div class="text-base tracking-normal font-medium text-gray-600" data-target="description">
         <%== description %>
       </div>
     </div>
 
     <div>
-      <div class="flex justify-end space-x-2 mb-6">
+      <div class="flex flex-col sm:flex-row sm:justify-end space-y-2 sm:space-y-0 sm:space-x-2 mb-6 mt-4 sm:mt-0">
         <%= tools %>
       </div>
     </div>
   </div>
 
-  <div class="relative bg-white rounded-xl shadow-xl mb-8 <%= @body_classes %>">
+  <div class="relative bg-white rounded shadow-panel <%= @body_classes %>">
     <%= body %>
   </div>
 
-  <div class="relative mb-8">
+  <div class="relative">
     <%= bare_content %>
   </div>
 

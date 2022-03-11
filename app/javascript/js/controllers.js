@@ -14,6 +14,7 @@ import ItemSelectAllController from './controllers/item_select_all_controller'
 import ItemSelectorController from './controllers/item_selector_controller'
 import KeyValueController from './controllers/fields/key_value_controller'
 import LoadingButtonController from './controllers/loading_button_controller'
+import MobileController from './controllers/mobile_controller'
 import ModalController from './controllers/modal_controller'
 import MultipleSelectFilterController from './controllers/multiple_select_filter_controller'
 import PerPageController from './controllers/per_page_controller'
@@ -35,6 +36,7 @@ application.register('hidden-input', HiddenInputController)
 application.register('item-select-all', ItemSelectAllController)
 application.register('item-selector', ItemSelectorController)
 application.register('loading-button', LoadingButtonController)
+application.register('mobile', MobileController)
 application.register('modal', ModalController)
 application.register('multiple-select-filter', MultipleSelectFilterController)
 application.register('per-page', PerPageController)

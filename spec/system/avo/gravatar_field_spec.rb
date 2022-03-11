@@ -11,7 +11,7 @@ RSpec.describe "GravatarFields", type: :system do
         expect(first('[data-field-type="gravatar"]')).to have_selector "img"
         expect(first('[data-field-type="gravatar"]')).to have_css ".rounded-full"
         expect(first('[data-field-type="gravatar"]').find("img") ["src"]).to have_text "https://www.gravatar.com/avatar/"
-        expect(first('[data-field-type="gravatar"]').find("img") ["src"]).to have_text "?default=&size=40"
+        expect(first('[data-field-type="gravatar"]').find("img") ["src"]).to have_text "?default=&size=32"
       end
     end
 
@@ -37,7 +37,7 @@ RSpec.describe "GravatarFields", type: :system do
         expect(first('[data-field-type="gravatar"]')).to have_selector "img"
         expect(first('[data-field-type="gravatar"]')).to have_css ".rounded-full"
         expect(first('[data-field-type="gravatar"]').find("img") ["src"]).to have_text "https://www.gravatar.com/avatar/"
-        expect(first('[data-field-type="gravatar"]').find("img") ["src"]).to have_text "?default=&size=40"
+        expect(first('[data-field-type="gravatar"]').find("img") ["src"]).to have_text "?default=&size=32"
       end
     end
 

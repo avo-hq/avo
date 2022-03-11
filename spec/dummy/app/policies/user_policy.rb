@@ -63,6 +63,18 @@ class UserPolicy < ApplicationPolicy
     true
   end
 
+  def upload_attachments?
+    true
+  end
+
+  def download_attachments?
+    true
+  end
+
+  def delete_attachments?
+    true
+  end
+
   class Scope < Scope
     def resolve
       scope.all

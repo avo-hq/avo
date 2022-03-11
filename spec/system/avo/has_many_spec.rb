@@ -47,10 +47,10 @@ RSpec.feature "HasManyField", type: :system do
         expect {
           find("[data-resource-id='#{comments.first.id}'] [data-control='destroy']").click
           page.driver.browser.switch_to.alert.accept
-          sleep 0.1
+          sleep 0.2
           find("[data-resource-id='#{comments.third.id}'] [data-control='destroy']").click
           page.driver.browser.switch_to.alert.accept
-          sleep 0.1
+          sleep 0.2
         }.to change(Comment, :count).by(-2)
 
         expect(page).to have_current_path url
@@ -59,7 +59,7 @@ RSpec.feature "HasManyField", type: :system do
         expect(page).not_to have_text comments.third.tiny_name.to_s
         expect(page).to have_text comments.second.tiny_name.to_s
 
-        sleep 0.1
+        sleep 0.2
         expect(page).to have_text("Resource destroyed").twice
       end
     end

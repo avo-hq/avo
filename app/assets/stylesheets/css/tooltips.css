@@ -6,6 +6,7 @@
 .tooltip .tooltip-inner {
   display: block;
   filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.1));
+
   @apply bg-white text-gray-700 px-3 py-0 rounded text-xs;
 }
 

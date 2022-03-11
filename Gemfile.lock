@@ -234,6 +234,8 @@ GEM
     nokogiri (1.13.3)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
+    nokogiri (1.13.3-x86_64-linux)
+      racc (~> 1.4)
     orm_adapter (0.5.0)
     pagy (5.10.1)
       activesupport
@@ -325,6 +327,8 @@ GEM
     rubocop-performance (1.13.2)
       rubocop (>= 1.7.0, < 2.0)
       rubocop-ast (>= 0.4.0)
+    rubocop-shopify (2.5.0)
+      rubocop (~> 1.25)
     ruby-debug-ide (0.7.3)
       rake (>= 0.8.1)
     ruby-progressbar (1.11.0)
@@ -440,6 +444,8 @@ DEPENDENCIES
   rails-controller-testing
   ransack
   rspec-rails (~> 4.0.0)
+  rubocop
+  rubocop-shopify
   ruby-debug-ide
   selenium-webdriver
   simplecov

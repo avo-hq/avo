@@ -1,5 +1,4 @@
 @import './../../../node_modules/simplemde/dist/simplemde.min.css';
-@import './../../../node_modules/toastr/build/toastr.css';
 @import './../../../node_modules/tippy.js/dist/tippy.css';
 @import './../../../node_modules/tippy.js/themes/light.css';
 @import './../../../node_modules/trix/dist/trix.css';
@@ -9,6 +8,7 @@
 @import 'tailwindcss/base';
 
 @import './css/fonts.css';
+@import './css/buttons.css';
 @import './css/typography.css';
 @import './css/tooltips.css';
 @import './css/alerts.css';
@@ -70,7 +70,7 @@ body {
 
 .application-sidebar .active:hover,
 .application-sidebar .active {
-  @apply bg-gray-200;
+  @apply bg-blue-100 text-blue-500;
 }
 
 .turbo-progress-bar {
@@ -83,4 +83,9 @@ body.os-mac .mac\:hidden {
 
 body.os-pc .pc\:hidden {
   display: none;
+}
+
+trix-editor {
+  max-height: 320px !important;
+  overflow-y: auto;
 }

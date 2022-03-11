@@ -12,28 +12,33 @@
       url: "#{@resource.records_path}/actions/#{@action.param_id}",
       data: @action.class.form_data_attributes do |form|
     %>
-      <%= render Avo::ModalComponent.new do |c| %>
-        <% c.heading do %>
-          <%= @action.action_name %>
-        <% end %>
-
-        <div class="flex-1 flex items-center justify-center px-8 text-lg mt-8 mb-12">
-          <%= @action.message %>
-        </div>
-
-        <%= form.hidden_field :resource_ids, value: params[:resource_ids], 'data-action-target': 'resourceIds' %>
-
-        <% if @action.get_fields.present? %>
+    <%= render Avo::ModalComponent.new do |c| %>
+      <% c.heading do %>
+        <%= @action.action_name %>
+      <% end %>
+      <div class="flex-1 flex">
+        <%= @action.message %>
+      </div>
+      <%= form.hidden_field :resource_ids, value: params[:resource_ids], 'data-action-target': 'resourceIds' %>
+      <% if @action.get_fields.present? %>
+        <div class="mt-4">
           <% @action.get_fields.each_with_index do |field, index| %>
             <%= render field.component_for_view(:edit).new field: field, resource: @resource, index: index, form: form, displayed_in_modal: true %>
           <% end %>
+        </div>
+      <% end %>
+      <% c.controls do %>
+        <%= a_button data: { action: 'click->modal#close' }, size: :sm do %>
+          <%= @action.cancel_button_label %>
         <% end %>
-
-        <% c.controls do %>
-          <%= a_button @action.cancel_button_label, data: { action: 'click->modal#close' }, size: :sm %>
-          <%= a_button @action.confirm_button_label, type: :submit, color: :green, size: :sm, data: @action.class.submit_button_data_attributes %>
+        <%= a_button type: :submit,
+            color: :green,
+            size: :sm,
+            data: @action.class.submit_button_data_attributes do %>
+          <%= @action.confirm_button_label %>
         <% end %>
       <% end %>
     <% end %>
-  </div>
+  <% end %>
+</div>
 <% end %>

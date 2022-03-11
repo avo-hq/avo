@@ -11,13 +11,18 @@ import tippy from 'tippy.js'
 // Toastr alerts
 import './js/active-storage'
 import './js/controllers'
-import './js/toastr'
 
 Rails.start()
 
 window.Turbolinks = Turbo
 
-Mousetrap.bind('r r r', () => Turbo.visit(window.location.href, { action: 'replace' }))
+let scrollTop = 0
+Mousetrap.bind('r r r', () => {
+  // Cpture scroll position
+  scrollTop = document.scrollingElement.scrollTop
+
+  Turbo.visit(window.location.href, { action: 'replace' })
+})
 
 function isMac() {
   const isMac = window.navigator.userAgent.indexOf('Mac OS X')
@@ -36,6 +41,7 @@ function initTippy() {
     content(reference) {
       const title = reference.getAttribute('title')
       reference.removeAttribute('title')
+      reference.removeAttribute('data-tippy')
 
       return title
     },
@@ -49,6 +55,18 @@ document.addEventListener('turbo:load', () => {
   document.body.classList.remove('turbo-loading')
   initTippy()
   isMac()
+
+  // Restore scroll position after r r r turbo reload
+  if (scrollTop) {
+    setTimeout(() => {
+      document.scrollingElement.scrollTo(0, scrollTop)
+      scrollTop = 0
+    }, 50)
+  }
+})
+
+document.addEventListener('turbo:frame-load', () => {
+  initTippy()
 })
 
 document.addEventListener('turbo:before-fetch-response', (e) => {

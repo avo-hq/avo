@@ -1,32 +1,34 @@
 <div>
   <% @resource.panels.each do |resource_panel| %>
     <%= form_with model: @resource.model,
-                  scope: @resource.form_scope,
-                  url: helpers.resources_path(resource: @resource,
-                                              via_relation_class: params[:via_relation_class],
-                                              via_relation: params[:via_relation],
-                                              via_resource_id: params[:via_resource_id]),
-                  local: true,
-                  multipart: true do |form| %>
+      scope: @resource.form_scope,
+      url: helpers.resources_path(
+        resource: @resource,
+        via_relation_class: params[:via_relation_class],
+        via_relation: params[:via_relation],
+        via_resource_id: params[:via_resource_id]
+      ),
+      local: true,
+      multipart: true do |form| %>
       <%= render Avo::PanelComponent.new(title: resource_panel[:name], description: @resource.resource_description, display_breadcrumbs: true) do |c| %>
         <% c.tools do %>
           <div class="flex justify-end space-x-2">
-            <%= a_link back_path do %>
-              <%= svg 'arrow-left' %> <%= t('avo.cancel').capitalize %>
+            <%= a_link back_path, icon: 'arrow-left' do %>
+              <%= t('avo.cancel').capitalize %>
             <% end %>
-
             <% if can_see_the_save_button? %>
-              <%= a_button color: 'green', spinner: true, type: :submit do %>
-                <%= svg 'save' %> <%= t('avo.save').capitalize %>
+              <%= a_button color: 'green', spinner: true, type: :submit, icon: 'save' do %>
+                <%= t('avo.save').capitalize %>
               <% end %>
             <% end %>
           </div>
         <% end %>
-
         <% c.body do %>
-          <% @resource.get_fields.each_with_index do |field, index| %>
-            <%= render field.component_for_view(:edit).new(field: field, resource: @resource, index: index, form: form) unless field.computed %>
-          <% end %>
+          <div class="divide-y">
+            <% @resource.get_fields.each_with_index do |field, index| %>
+              <%= render field.component_for_view(:edit).new(field: field, resource: @resource, index: index, form: form) unless field.computed %>
+            <% end %>
+          </div>
         <% end %>
       <% end %>
     <% end %>

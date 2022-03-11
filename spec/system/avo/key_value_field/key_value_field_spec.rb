@@ -19,7 +19,7 @@ RSpec.describe "KeyValueFields", type: :system do
 
         meta_element = find_field_element("meta")
 
-        expect(meta_element).to have_text "Meta"
+        expect(meta_element).to have_text "META"
 
         expect(meta_element).to have_text "META KEY"
         expect(meta_element).to have_text "META VALUE"
@@ -133,7 +133,7 @@ RSpec.describe "KeyValueFields", type: :system do
 
         meta_element = find_field_element("meta")
 
-        expect(meta_element).to have_text "Meta"
+        expect(meta_element).to have_text "META"
 
         expect(meta_element).to have_text "META KEY"
         expect(meta_element).to have_text "META VALUE"

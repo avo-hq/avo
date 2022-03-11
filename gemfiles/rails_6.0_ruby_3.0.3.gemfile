@@ -21,6 +21,8 @@ gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "devise"
 gem "database_cleaner"
 gem "ruby-debug-ide", require: false
+gem "rubocop"
+gem "rubocop-shopify", require: false
 gem "zeitwerk", "~> 2.3"
 gem "httparty"
 gem "iso"

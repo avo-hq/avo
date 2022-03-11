@@ -4,30 +4,32 @@ import { Controller } from '@hotwired/stimulus'
 export default class extends Controller {
   static targets = ['resourceAction', 'standaloneAction']
 
+  static classes = ['enabled', 'disabled']
+
   target = {}
 
+  get targetIsDisabled() {
+    return this.target.dataset.disabled === 'true'
+  }
+
   enableTarget() {
-    if (this.targetIsDisabled(this.target)) {
-      this.target.classList.remove('cursor-wait', 'text-gray-500', 'hover:bg-blue-300')
-      this.target.classList.add('text-gray-700', 'hover:bg-blue-500')
+    if (this.targetIsDisabled) {
+      this.target.classList.remove(...this.disabledClasses)
+      this.target.classList.add(...this.enabledClasses)
       this.target.dataset.disabled = false
     }
   }
 
   disableTarget() {
-    this.target.classList.add('cursor-wait', 'text-gray-500', 'hover:bg-blue-300')
-    this.target.classList.remove('text-gray-700', 'hover:bg-blue-500')
+    this.target.classList.remove(...this.enabledClasses)
+    this.target.classList.add(...this.disabledClasses)
     this.target.dataset.disabled = true
-  }
-
-  targetIsDisabled() {
-    return this.target.dataset.disabled === 'true'
   }
 
   visitAction(event) {
     this.target = event.target
 
-    if (this.targetIsDisabled()) {
+    if (this.targetIsDisabled) {
       event.preventDefault()
 
       return

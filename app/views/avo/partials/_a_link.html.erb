@@ -1,7 +1,0 @@
-<% if (block = yield).empty? %>
-  <%= link_to label, url, **args %>
-<% else %>
-  <%= link_to url, **args do %>
-    <%= yield %>
-  <% end %>
-<% end %>

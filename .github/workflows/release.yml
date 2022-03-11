@@ -17,6 +17,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        ref: '2.x'
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:

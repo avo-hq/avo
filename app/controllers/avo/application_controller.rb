@@ -210,7 +210,7 @@ module Avo
 
     def render_unauthorized(exception)
       if !exception.is_a? Pundit::NotDefinedError
-        flash[:notice] = t "avo.not_authorized"
+        flash.now[:notice] = t "avo.not_authorized"
 
         redirect_url = if request.referrer.blank? || (request.referrer == request.url)
           root_url
@@ -227,8 +227,13 @@ module Avo
     end
 
     def set_container_classes
-      contain = !Avo.configuration.full_width_container
-      contain = false if Avo.configuration.full_width_index_view && action_name.to_sym == :index && self.class.superclass.to_s == "Avo::ResourcesController"
+      contain = true
+
+      if Avo.configuration.full_width_container
+        contain = false
+      elsif Avo.configuration.full_width_index_view && action_name.to_sym == :index && self.class.superclass.to_s == "Avo::ResourcesController"
+        contain = false
+      end
 
       @container_classes = contain ? "2xl:container 2xl:mx-auto" : ""
     end

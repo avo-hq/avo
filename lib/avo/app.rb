@@ -133,9 +133,10 @@ module Avo
       end
 
       def resources_navigation(user = nil)
-        get_available_resources(user).select do |resource|
-          resource.model_class.present?
-        end
+        get_available_resources(user)
+          .select do |resource|
+            resource.model_class.present?
+          end
           .select do |resource|
             resource.visible_on_sidebar
           end

@@ -8,8 +8,7 @@ pt-BR:
     run: 'Executar'
     cancel: 'Cancelar'
     action_ran_successfully: 'Ação executada com sucesso!'
-    resource_details: "Detalhe %{item}: %{title}"
-    update_item: 'atualizar %{item}: %{title}'
+    details: "detalhe"
     unauthorized: 'Não autorizado'
     attachment_class_attached: '%{attachment_class} anexado.'
     attachment_class_detached: '%{attachment_class} separado.'

@@ -12,13 +12,5 @@ class Avo::Edit::FieldWrapperComponent < ViewComponent::Base
     @model = resource.present? ? resource.model : nil
     @full_width = full_width
     @label = label
-
-    if (@index != 0) || @displayed_in_modal
-      @classes += " border-t"
-    end
-  end
-
-  def label
-    @label || @field.name
   end
 end

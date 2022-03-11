@@ -21,18 +21,18 @@
 .pagy-nav-js .page a,
 .pagy-combo-nav-js .page a,
 .pagy-combo-nav-js .pagy-combo-input a {
-  @apply rounded-lg px-3 py-1 text-sm text-gray-500 font-semibold bg-gray-200 shadow-md;
+  @apply rounded px-3 py-1 text-sm text-gray-500 font-semibold bg-white shadow-md border border-gray-300;
 
   &:focus{
     @apply border-blue-300;
   }
 
   &:hover{
-    @apply bg-gray-300;
+    @apply bg-gray-150;
   }
 
   &:active{
-    @apply bg-gray-400 text-white;
+    @apply bg-gray-200;
   }
 }
 
@@ -42,26 +42,26 @@
 .pagy-nav .page.next.disabled,
 .pagy-nav-js .page.next.disabled,
 .pagy-combo-nav-js .page.next.disabled {
-  @apply text-gray-400 cursor-default;
+  @apply text-gray-300 cursor-default;
 
   &:hover {
-    @apply text-gray-400 bg-gray-200;
+    @apply text-gray-300 bg-white;
   }
 
   &:active {
-    @apply text-gray-400 bg-gray-200;
+    @apply text-gray-300 bg-white;
   }
 }
 
 .pagy-nav .page.active,
 .pagy-nav-js .page.active {
-  @apply text-white cursor-default bg-gray-400;
+  @apply text-white cursor-default bg-gray-500 border-gray-500;
 
   &:hover {
-    @apply text-white bg-gray-400;
+    @apply text-white bg-gray-500;
   }
 
   &:active {
-    @apply bg-gray-400 text-white;
+    @apply bg-gray-500 text-white;
   }
 }

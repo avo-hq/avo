@@ -104,6 +104,9 @@ group :test do
   gem "test-prof"
 end
 
+gem "rubocop"
+gem "rubocop-shopify", require: false
+
 gem "zeitwerk", "~> 2.3"
 
 gem "httparty"
