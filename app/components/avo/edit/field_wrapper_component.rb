@@ -13,8 +13,4 @@ class Avo::Edit::FieldWrapperComponent < ViewComponent::Base
     @full_width = full_width
     @label = label
   end
-
-  def label
-    @label || @field.name
-  end
 end
