@@ -13,7 +13,7 @@ module Avo
         def card(klass)
           self.card_holder ||= []
 
-          self.card_holder << ::Avo::Dashboards::Card.new(klass: klass, dashboard: self)
+          self.card_holder << klass.new(dashboard: self)
         end
 
         def cards
@@ -23,15 +23,15 @@ module Avo
         def classes
           case grid_cols
           when 3
-            'grid-cols-3'
+            "grid-cols-3"
           when 4
-            'grid-cols-4'
+            "grid-cols-4"
           when 5
-            'grid-cols-5'
+            "grid-cols-5"
           when 6
-            'grid-cols-6'
+            "grid-cols-6"
           else
-            'grid-cols-3'
+            "grid-cols-3"
           end
         end
 

@@ -5,13 +5,17 @@
       <div class="min-h-24 grid-cols-6">
         <%= content_tag(:div, class: "grid gap-4 #{@dashboard.classes}") do %>
           <% @dashboard.cards.each do |card| %>
-            <%= render 'card', card: card %>
+            <%= content_tag(:div, class: "relative bg-white rounded shadow-panel space-y-2 #{card.card_classes} overflow-hidden") do %>
+              <turbo-frame id="<%= card.turbo_frame %>" src="<%= card.frame_url(enforced_range: @range) %>" target="_top">
+                <%= render(Avo::LoadingComponent.new(title: card.label)) %>
+              </turbo-frame>
+            <% end %>
           <% end %>
         <% end %>
       </div>
     <% else %>
       <div class="w-full h-full">
-        <%= empty_state text: t('avo.no_cards_present') %>
+        <%= empty_state message: t('avo.no_cards_present') %>
 
         <% if Rails.env.development? %>
           <%= render Avo::PanelComponent.new do |c| %>

@@ -1,6 +1,7 @@
 class <%= class_name.camelize %> < Avo::Dashboards::PartialCard
-  self.id = '<%= name.underscore %>'
-  self.label = '<%= name.underscore.humanize %>'
-  self.partial = 'avo/cards/<%= name.underscore %>'
-  self.cols = 3
+  self.id = "<%= name.underscore %>"
+  self.label = "<%= name.underscore.humanize %>"
+  self.partial = "avo/cards/<%= name.underscore %>"
+  self.empty = false
+  self.cols = 2
 end

@@ -1,12 +1,12 @@
 class UsersMetric < Avo::Dashboards::MetricCard
-  self.id = 'users_metric'
-  self.label = 'Users count'
-  self.description = 'Users description'
+  self.id = "users_metric"
+  self.label = "Users count"
+  self.description = "Users description"
   self.cols = 1
   self.range = 30
-  self.ranges = [7, 30, 60, 365, 'TODAY', 'MTD', 'QTD', 'YTD', 'ALL']
-  self.prefix = '$'
-  self.suffix = '%'
+  self.ranges = [7, 30, 60, 365, "TODAY", "MTD", "QTD", "YTD", "ALL"]
+  self.prefix = "$"
+  self.suffix = "%"
   self.refresh_every = 10.minutes
 
   def query(context:, range:, dashboard:, card:)
@@ -18,21 +18,22 @@ class UsersMetric < Avo::Dashboards::MetricCard
         from = DateTime.current - range.to_i.days
       else
         case range
-        when 'TODAY'
+        when "TODAY"
           from = DateTime.current.beginning_of_day
-        when 'MTD'
+        when "MTD"
           from = DateTime.current.beginning_of_month
-        when 'QTD'
+        when "QTD"
           from = DateTime.current.beginning_of_quarter
-        when 'YTD'
+        when "YTD"
           from = DateTime.current.beginning_of_year
-        when 'ALL'
+        when "ALL"
           from = Time.at(0)
         end
       end
     end
 
-    User.where('created_at >= :from AND created_at < :to', from: from, to: to)
+    # User.where(created_at: from..to)
+    User.where("created_at >= :from AND created_at < :to", from: from, to: to)
       .count
   end
 end

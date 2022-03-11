@@ -41,7 +41,7 @@
     <% c.bare_content do %>
       <% if view_type.to_sym == :table %>
         <% if @resources.present? %>
-          <div class="w-full overflow-auto flex flex-col mt-4 shadow-panel rounded-lg">
+          <div class="w-full overflow-auto flex flex-col mt-4 shadow-panel rounded">
             <div class="relative flex-1 flex">
               <%= render(Avo::Index::ResourceTableComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_model: @parent_model)) %>
             </div>

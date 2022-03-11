@@ -1,14 +1,14 @@
 class Dashy < Avo::Dashboards::BaseDashboard
-  self.id = 'dashy'
-  self.name = 'Dashy'
-  self.description = 'The first dashbaord'
+  self.id = "dashy"
+  self.name = "Dashy"
+  self.description = "The first dashbaord"
   self.grid_cols = 3
 
   card UsersMetric
   card UserSignups
+  card Scatter
+  card MapCard
   card CustomPartial
-
-
 
   # card :Users_area,
   #      cols: 2,

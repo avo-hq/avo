@@ -1,12 +1,12 @@
 class <%= class_name.camelize %> < Avo::Dashboards::MetricCard
-  self.id = '<%= name.underscore %>'
-  self.label = '<%= name.underscore.humanize %>'
-  # self.description = 'Some description'
+  self.id = "<%= name.underscore %>"
+  self.label = "<%= name.underscore.humanize %>"
+  # self.description = "Some description"
   # self.cols = 1
   # self.range = 30
-  # self.ranges = [7, 30, 60, 365, 'TODAY', 'MTD', 'QTD', 'YTD', 'ALL']
-  # self.prefix = ''
-  # self.suffix = ''
+  # self.ranges = [7, 30, 60, 365, "TODAY", "MTD", "QTD", "YTD", "ALL"]
+  # self.prefix = ""
+  # self.suffix = ""
 
   def query(context:, range:, dashboard:, card:)
     # from = Date.today.midnight - 1.week
@@ -17,21 +17,21 @@ class <%= class_name.camelize %> < Avo::Dashboards::MetricCard
     #     from = DateTime.current - range.to_i.days
     #   else
     #     case range
-    #     when 'TODAY'
+    #     when "TODAY"
     #       from = DateTime.current.beginning_of_day
-    #     when 'MTD'
+    #     when "MTD"
     #       from = DateTime.current.beginning_of_month
-    #     when 'QTD'
+    #     when "QTD"
     #       from = DateTime.current.beginning_of_quarter
-    #     when 'YTD'
+    #     when "YTD"
     #       from = DateTime.current.beginning_of_year
-    #     when 'ALL'
+    #     when "ALL"
     #       from = Time.at(0)
     #     end
     #   end
     # end
 
-    # User.where('created_at >= :from AND created_at < :to', from: from, to: to).count
+    # User.where("created_at >= :from AND created_at < :to", from: from, to: to).count
 
     101
   end

@@ -1,7 +1,8 @@
-class <%= class_name.camelize %> < Avo::Dashboards::ChartkickCard
-  self.id = "<%= name.underscore %>"
-  self.label = "<%= name.underscore.humanize %>"
-  self.chart_type = :area_chart
+class Scatter < Avo::Dashboards::ChartkickCard
+  self.id = "scatter"
+  self.label = "Scatter"
+  self.chart_type = :scatter_chart
+  self.cols = 2
 
   def query(context:, range:, dashboard:, card:)
     [

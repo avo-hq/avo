@@ -6,9 +6,9 @@ module Avo
 
       def computed_value(range:)
         query context: Avo::App.context,
-              dashboard: dashboard,
-              card: self,
-              range: range
+          dashboard: dashboard,
+          card: self,
+          range: range
       end
     end
   end
