@@ -2,8 +2,8 @@
   <% if file.present? %>
     <div class="flex flex-col justify-between h-full">
       <% if file.representable? && is_image? %>
-        <div class="max-h-[42rem]">
-          <%= image_tag helpers.main_app.url_for(file), class: 'rounded-lg' %>
+        <div class="max-h-[42rem] flex">
+          <%= image_tag helpers.main_app.url_for(file), class: 'rounded-lg object-cover' %>
         </div>
       <% elsif is_audio? %>
         <%= audio_tag(helpers.main_app.url_for(file), controls: true, preload: false, class: 'w-full') %>
