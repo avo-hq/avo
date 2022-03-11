@@ -7,9 +7,11 @@
   "private": true,
   "scripts": {
     "js:visualize": "esbuild-visualizer",
+    "build": "yarn build:js && yarn build:css",
     "build:js": "esbuild app/javascript/*.js --bundle --sourcemap --minify --outdir=app/assets/builds",
     "build:css": "tailwindcss -i ./app/assets/stylesheets/avo.css -o ./app/assets/builds/avo.css --postcss",
-    "prod:build:js": "esbuild app/javascript/*.js --bundle --minify --sourcemap --outdir=public/avo-assets",
+    "prod:build": "yarn prod:build:js && yarn prod:build:css",
+    "prod:build:js": "esbuild app/javascript/*.js --bundle --sourcemap --minify --outdir=public/avo-assets",
     "prod:build:css": "tailwindcss -i ./app/assets/stylesheets/avo.css -o ./public/avo-assets/avo.css --postcss",
     "export": "yarn export:heroicons && yarn export:tailwind-safelist",
     "export:heroicons": "node scripts/export-heroicons.js",
