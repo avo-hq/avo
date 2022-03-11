@@ -9,7 +9,10 @@
     "build:js": "esbuild app/javascript/*.js --bundle --sourcemap --outdir=app/assets/builds",
     "build:css": "tailwindcss -i ./app/assets/stylesheets/avo.css -o ./app/assets/builds/avo.css --postcss",
     "prod:build:js": "esbuild app/javascript/*.js --bundle --sourcemap --outdir=public/avo-assets",
-    "prod:build:css": "tailwindcss -i ./app/assets/stylesheets/avo.css -o ./public/avo-assets/avo.css --postcss"
+    "prod:build:css": "tailwindcss -i ./app/assets/stylesheets/avo.css -o ./public/avo-assets/avo.css --postcss",
+    "export": "yarn export:heroicons && yarn export:tailwind-safelist",
+    "export:heroicons": "node scripts/export-heroicons.js",
+    "export:tailwind-safelist": "node scripts/export-tailwind-safelist.js"
   },
   "dependencies": {
     "@algolia/autocomplete-js": "^1.0.0-alpha.46",
@@ -33,6 +36,7 @@
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-plugin-sort-imports-es6-autofix": "^0.5.0",
     "flatpickr": "^4.6.9",
+    "heroicons": "^1.0.6",
     "lodash": "^4.17.21",
     "luxon": "^1.26.0",
     "mousetrap": "^1.6.5",
