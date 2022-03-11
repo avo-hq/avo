@@ -9,9 +9,9 @@
         <%= t 'avo.choose_item', item: params[:related_name].downcase %>
       <% end %>
 
-      <div class="flex-1 flex items-center justify-center px-8 text-lg mt-8 mb-12">
-        <div class="flex-1 flex flex-col items-center justify-center px-24 text-base">
-          <%= form.select :related_id, options_for_select(@options.map { |o| [o[:label], o[:value]] }, nil),
+      <div class="flex-1 flex items-center justify-center px-0 lg:px-8 text-lg mt-8 mb-12">
+        <div class="flex-1 flex flex-col items-center justify-center px-0 md:px-24 text-base">
+          <%= form.select :related_id, options_for_select(@options, nil),
             {
               include_blank: t('avo.choose_an_option'),
             },
@@ -22,11 +22,13 @@
         </div>
       </div>
 
-      <%#= form.hidden_field :resource_ids, value: params[:resource_ids], 'data-action-target': 'resourceIds' %>
-
       <% c.controls do %>
-        <%= a_button t('avo.cancel'), 'data-action': 'click->modal#close', size: :sm %>
-        <%= a_button t('avo.attach'), type: :submit, color: :green, size: :sm %>
+        <%= a_button 'data-action': 'click->modal#close', size: :sm do %>
+          <%= t('avo.cancel') %>
+        <% end %>
+        <%= a_button type: :submit, color: :green, size: :sm do %>
+          <%= t('avo.attach') %>
+        <% end %>
       <% end %>
     <% end %>
   <% end %>

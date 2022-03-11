@@ -14,8 +14,8 @@ gemspec
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
 
-# Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-gem "webpacker", "6.0.0.rc.2"
+gem 'jsbundling-rails'
+gem 'cssbundling-rails'
 
 gem "countries"
 
@@ -30,13 +30,9 @@ gem "rails", "~> 6.1.0"
 # Use postgresql as the database for Active Record
 gem "pg", ">= 0.18", "< 2.0"
 # Use Puma as the app server
-gem "puma", "~> 5.5.1"
-# Use SCSS for stylesheets
-gem "sass-rails", ">= 6"
-# Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
-# gem 'turbolinks', '~> 5'
+gem "puma", "~> 5.6.2"
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem "jbuilder", "~> 2.7"
+# gem "jbuilder", "~> 2.7"
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
@@ -81,9 +77,12 @@ group :development do
   # gem 'ruby-prof'
 
   # gem 'pry-rails'
+
+  gem 'htmlbeautifier'
 end
 
 group :development, :test do
+  gem 'ap'
   gem "faker", require: false
 end
 
@@ -91,7 +90,7 @@ group :test do
   gem "rspec-rails", "~> 4.0.0"
   gem "rails-controller-testing"
   # Adds support for Capybara system testing and selenium driver
-  gem "capybara", ">= 2.15"
+  gem "capybara", "3.36"
   gem "selenium-webdriver"
   # Easy installation and use of web drivers to run system tests with browsers
   gem "webdrivers"
@@ -104,6 +103,9 @@ group :test do
 
   gem "test-prof"
 end
+
+gem "rubocop"
+gem "rubocop-shopify", require: false
 
 gem "zeitwerk", "~> 2.3"
 
@@ -140,3 +142,5 @@ gem 'net-smtp', require: false
 gem "groupdate"
 gem "hightop"
 gem "active_median"
+
+gem 'acts_as_list'

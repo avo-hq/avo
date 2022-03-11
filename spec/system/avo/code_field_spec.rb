@@ -20,7 +20,7 @@ RSpec.describe "CodeField", type: :system do
 
         custom_css_element = find_field_element("custom_css")
 
-        expect(custom_css_element).to have_text "Custom css"
+        expect(custom_css_element).to have_text "CUSTOM CSS"
 
         expect(custom_css_element).to have_css ".CodeMirror"
         expect(page).to have_editor_display text: ""
@@ -50,7 +50,7 @@ RSpec.describe "CodeField", type: :system do
 
         custom_css_element = find_field_element("custom_css")
 
-        expect(custom_css_element).to have_text "Custom css"
+        expect(custom_css_element).to have_text "CUSTOM CSS"
 
         expect(custom_css_element).to have_css ".CodeMirror"
         expect(page).to have_editor_display text: css

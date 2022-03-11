@@ -3,7 +3,13 @@ module Avo
     class BaseField
       extend ActiveSupport::DescendantsTracker
       extend Avo::Fields::FieldExtensions::HasFieldName
+
+      include ActionView::Helpers::UrlHelper
       include Avo::Fields::FieldExtensions::VisibleInDifferentViews
+
+      delegate :view_context, to: 'Avo::App'
+      delegate :main_app, to: :view_context
+      delegate :avo, to: :view_context
 
       attr_reader :id
       attr_reader :block
@@ -13,7 +19,6 @@ module Avo
       attr_reader :nullable
       attr_reader :null_values
       attr_reader :format_using
-      attr_reader :placeholder
       attr_reader :help
       attr_reader :default
       attr_reader :visible
@@ -51,7 +56,7 @@ module Avo
         @nullable = args[:nullable] || false
         @null_values = args[:null_values] || [nil, ""]
         @format_using = args[:format_using] || nil
-        @placeholder = args[:placeholder] || id.to_s.humanize(keep_id_suffix: true)
+        @placeholder = args[:placeholder]
         @help = args[:help] || nil
         @default = args[:default] || nil
         @visible = args[:visible] || true
@@ -97,6 +102,18 @@ module Avo
         @id.to_s.humanize(keep_id_suffix: true)
       end
 
+      def plural_name
+        return I18n.t(translation_key, count: 2).capitalize if translation_key
+
+        name.pluralize
+      end
+
+      def placeholder
+        return @placeholder if @placeholder.present?
+
+        name
+      end
+
       def visible?
         if visible.present? && visible.respond_to?(:call)
           visible.call resource: @resource
@@ -111,21 +128,24 @@ module Avo
         # Get model value
         final_value = @model.send(property) if (model_or_class(@model) == "model") && @model.respond_to?(property)
 
+        # On new views and actions modals we need to prefill the fields
         if (@view === :new) || @action.present?
-          final_value = if default.present? && default.respond_to?(:call)
-            default.call
-          else
-            default
+          if default.present?
+            final_value = if default.respond_to?(:call)
+              default.call
+            else
+              default
+            end
           end
         end
 
-        # Run callback block if present
+        # Run computable callback block if present
         if computable && block.present?
-          final_value = block.call @model, @resource, @view, self
+          final_value = instance_exec(@model, @resource, @view, self, &block)
         end
 
         # Run the value through resolver if present
-        final_value = @format_using.call final_value if @format_using.present?
+        final_value = instance_exec(final_value, &@format_using) if @format_using.present?
 
         final_value
       end

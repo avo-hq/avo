@@ -9,6 +9,7 @@ module Avo
     class_attribute :license, default: nil
     class_attribute :current_user, default: nil
     class_attribute :root_path, default: nil
+    class_attribute :view_context, default: nil
 
     class << self
       def boot
@@ -23,11 +24,12 @@ module Avo
         end
       end
 
-      def init(request:, context:, current_user:, root_path:)
+      def init(request:, context:, current_user:, root_path:, view_context:)
         self.request = request
         self.context = context
         self.current_user = current_user
         self.root_path = root_path
+        self.view_context = view_context
 
         self.license = Licensing::LicenseManager.new(Licensing::HQ.new(request).response).license
 
@@ -151,9 +153,10 @@ module Avo
       end
 
       def resources_navigation(user = nil)
-        get_available_resources(user).select do |resource|
-          resource.model_class.present?
-        end
+        get_available_resources(user)
+          .select do |resource|
+            resource.model_class.present?
+          end
           .select do |resource|
             resource.visible_on_sidebar
           end
@@ -176,30 +179,6 @@ module Avo
             filename.gsub!(".html.erb", "")
             filename
           end
-      end
-
-      def draw_routes
-        # We should eager load all the classes so we find all descendants
-        Rails.application.eager_load!
-
-        proc do
-          BaseResource.descendants
-            .select do |resource|
-              resource != :BaseResource
-            end
-            .select do |resource|
-              resource.is_a? Class
-            end
-            .map do |resource|
-              route_key = if resource.model_class.present?
-                resource.model_class.model_name.plural.to_sym
-              else
-                resource.to_s.underscore.gsub("_resource", "").downcase.pluralize.to_sym
-              end
-
-              resources route_key
-            end
-        end
       end
     end
   end

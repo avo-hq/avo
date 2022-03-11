@@ -1,187 +1,273 @@
-# require 'rails_helper'
+require 'rails_helper'
 
-# RSpec.describe 'Actions', type: :system do
-#   let!(:roles) { { admin: false, manager: false, writer: false } }
-#   let!(:user) { create :user, active: true, roles: roles }
+RSpec.describe 'Actions', type: :system do
+  let!(:user) { create :user }
+  let!(:person) { create :person }
 
-#   context 'index' do
-#     describe 'without actions attached' do
-#       let(:url) { '/admin/resources/teams' }
+  describe 'action visibility option' do
+    context 'index' do
+      it 'finds an action on index' do
+        visit '/admin/resources/users'
 
-#       it 'does not display the actions button' do
-#         visit url
+        click_on 'Actions'
 
-#         expect(page).not_to have_text 'Actions'
-#       end
-#     end
+        expect(page).to have_link 'Dummy action'
+      end
+    end
 
-#     describe 'with actions attached' do
-#       let!(:roles) { { admin: false, manager: false, writer: false } }
-#       let!(:second_user) { create :user, active: true, roles: roles }
-#       let(:url) { '/admin/resources/users' }
+    context 'show' do
+      it 'does not find an action on show' do
+        visit "/admin/resources/users/#{user.id}"
 
-#       it 'displays the actions button disabled' do
-#         visit url
+        within "[data-panel-index=\"0\"]" do
+          click_on 'Actions'
+        end
 
-#         expect(page).to have_button('Actions', disabled: true)
-#       end
+        expect(page).not_to have_link 'Dummy action'
+      end
+    end
+  end
 
-#       it 'enables the button when selecting a record' do
-#         visit url
+  describe 'action button should be hidden if no actions present' do
+    context 'index' do
+      it 'does not see the actions button' do
+        visit '/admin/resources/people'
 
-#         expect(page).to have_button('Actions', disabled: true)
+        expect(page).not_to have_button 'Actions'
+      end
+    end
 
-#         find("tr[resource-name=users][resource-id='#{user.id}'] input[type=checkbox]").click
+    context 'show' do
+      it 'does not see the actions button' do
+        visit "/admin/resources/people/#{person.id}"
 
-#         expect(page).to have_button('Actions', disabled: false)
-#       end
+        expect(page).not_to have_button 'Actions'
+      end
+    end
+  end
 
-#       it 'runs the action' do
-#         visit url
+  describe "downloading files" do
+    context "without File.open().read" do
+      let(:content) { "On the fly dummy content." }
+      let(:file_name) { "dummy-content.txt" }
 
-#         expect(user.active).to be true
-#         expect(second_user.active).to be true
+      it "downloads the file and closes the modal" do
+        visit "/admin/resources/users"
 
-#         find("tr[resource-name=users][resource-id='#{user.id}'] input[type=checkbox]").click
-#         find("tr[resource-name=users][resource-id='#{second_user.id}'] input[type=checkbox]").click
+        click_on "Actions"
+        click_on "Download file"
+        click_on "Run"
 
-#         expect(page).to have_button('Actions', disabled: false)
+        wait_for_download
 
-#         click_on 'Actions'
-#         click_on 'Mark inactive'
-#         click_on 'Run'
+        expect(downloaded?).to be true
+        expect(download_content).to eq content
+        expect(download.split('/').last).to eq file_name
+      end
+    end
 
-#         wait_for_loaded
+    context "with File.open().read" do
+      let(:content) { "Dummy content from the file.\n" }
+      let(:file_name) { "dummy-file.txt" }
 
-#         expect(user.reload.active).to be false
-#         expect(second_user.reload.active).to be false
-#       end
+      it "downloads the file and closes the modal" do
+        visit "/admin/resources/users"
 
-#       it 'runs the action without confirmation' do
-#         visit url
+        click_on "Actions"
+        click_on "Download file"
+        check "fields[read_from_file]"
+        click_on "Run"
 
-#         expect(user.roles['admin']).to be false
-#         expect(second_user.roles['admin']).to be false
+        wait_for_download
 
-#         find("tr[resource-name=users][resource-id='#{user.id}'] input[type=checkbox]").click
-#         find("tr[resource-name=users][resource-id='#{second_user.id}'] input[type=checkbox]").click
+        expect(downloaded?).to be true
+        expect(download_content).to eq content
+        expect(download.split('/').last).to eq file_name
+      end
+    end
+  end
 
-#         expect(page).to have_button('Actions', disabled: false)
+  #   let!(:roles) { { admin: false, manager: false, writer: false } }
+  #   let!(:user) { create :user, active: true, roles: roles }
 
-#         click_on 'Actions'
-#         click_on 'Make admin'
+  #   context 'index' do
+  #     describe 'without actions attached' do
+  #       let(:url) { '/admin/resources/teams' }
 
-#         wait_for_loaded
+  #       it 'does not display the actions button' do
+  #         visit url
 
-#         # expect(page).to have_text 'New admin(s) on the board!'
-#         expect(user.reload.roles['admin']).to be true
-#         expect(second_user.reload.roles['admin']).to be true
-#       end
+  #         expect(page).not_to have_text 'Actions'
+  #       end
+  #     end
 
-#       describe 'when resources still selected' do
-#         it 'runs the action' do
-#           visit url
+  #     describe 'with actions attached' do
+  #       let!(:roles) { { admin: false, manager: false, writer: false } }
+  #       let!(:second_user) { create :user, active: true, roles: roles }
+  #       let(:url) { '/admin/resources/users' }
 
-#           expect(page).to have_button('Actions', disabled: true)
+  #       it 'displays the actions button disabled' do
+  #         visit url
 
-#           find("tr[resource-name=users][resource-id='#{user.id}'] input[type=checkbox]").click
+  #         expect(page).to have_button('Actions', disabled: true)
+  #       end
 
-#           expect(page).to have_button('Actions', disabled: false)
+  #       it 'enables the button when selecting a record' do
+  #         visit url
 
-#           click_on 'Posts'
-#           wait_for_loaded
-#           click_on 'Users'
-#           wait_for_loaded
+  #         expect(page).to have_button('Actions', disabled: true)
 
-#           expect(page).to have_button('Actions', disabled: true)
-#         end
-#       end
-#     end
-#   end
+  #         find("tr[resource-name=users][resource-id='#{user.id}'] input[type=checkbox]").click
 
-#   context 'show' do
-#     let!(:roles) { { admin: false, manager: false, writer: false } }
-#     let!(:user) { create :user, active: true, roles: roles }
-#     let!(:post) { create :post, published_at: nil }
+  #         expect(page).to have_button('Actions', disabled: false)
+  #       end
 
-#     describe 'with fields' do
-#       let(:url) { "/admin/resources/users/#{user.id}" }
+  #       it 'runs the action' do
+  #         visit url
 
-#       it 'lists the action' do
-#         visit url
+  #         expect(user.active).to be true
+  #         expect(second_user.active).to be true
 
-#         click_on 'Actions'
+  #         find("tr[resource-name=users][resource-id='#{user.id}'] input[type=checkbox]").click
+  #         find("tr[resource-name=users][resource-id='#{second_user.id}'] input[type=checkbox]").click
 
-#         expect(find('.js-actions-panel')).to have_text 'Mark inactive'
-#       end
+  #         expect(page).to have_button('Actions', disabled: false)
 
-#       it 'opens the action modal and executes the action' do
-#         visit url
-#         expect(find_field_value_element('active')).to have_css 'svg[data-checked="1"]'
+  #         click_on 'Actions'
+  #         click_on 'Mark inactive'
+  #         click_on 'Run'
 
-#         click_on 'Actions'
-#         click_on 'Mark inactive'
+  #         wait_for_loaded
 
-#         expect(find('.vm--modal')).to have_text 'Mark inactive'
-#         expect(find('.vm--modal')).to have_text 'Notify user'
-#         expect(find('.vm--modal')).to have_text 'Message'
-#         expect(find('.vm--modal #message').value).to eq 'Your account has been marked as inactive.'
+  #         expect(user.reload.active).to be false
+  #         expect(second_user.reload.active).to be false
+  #       end
 
-#         check 'notify_user'
-#         fill_in 'message', with: 'Your account has been marked as very inactive.'
+  #       it 'runs the action without confirmation' do
+  #         visit url
 
-#         click_on 'Run'
-#         wait_for_loaded
+  #         expect(user.roles['admin']).to be false
+  #         expect(second_user.roles['admin']).to be false
 
-#         expect(page).to have_text 'Perfect!'
-#         expect(user.reload.active).to be false
-#         expect(find_field_value_element('active')).to have_css 'svg[data-checked="0"]'
-#       end
+  #         find("tr[resource-name=users][resource-id='#{user.id}'] input[type=checkbox]").click
+  #         find("tr[resource-name=users][resource-id='#{second_user.id}'] input[type=checkbox]").click
 
-#       it 'executes the action without confirmation' do
-#         visit url
+  #         expect(page).to have_button('Actions', disabled: false)
 
-#         expect(find_field_value_element('roles').find('svg', match: :first)['data-checked']).to eq '0'
+  #         click_on 'Actions'
+  #         click_on 'Make admin'
 
-#         click_on 'Actions'
-#         click_on 'Make admin'
+  #         wait_for_loaded
 
-#         sleep 0.2
-#         wait_for_loaded
+  #         # expect(page).to have_text 'New admin(s) on the board!'
+  #         expect(user.reload.roles['admin']).to be true
+  #         expect(second_user.reload.roles['admin']).to be true
+  #       end
 
-#         expect(user.reload.roles['admin']).to be true
-#         expect(find_field_value_element('roles').find('svg', match: :first)['data-checked']).to eq '1'
-#       end
-#     end
+  #       describe 'when resources still selected' do
+  #         it 'runs the action' do
+  #           visit url
 
-#     describe 'without fields' do
-#       let(:url) { "/admin/resources/posts/#{post.id}" }
+  #           expect(page).to have_button('Actions', disabled: true)
 
-#       it 'lists the action with a custom name' do
-#         visit url
+  #           find("tr[resource-name=users][resource-id='#{user.id}'] input[type=checkbox]").click
 
-#         click_on 'Actions'
+  #           expect(page).to have_button('Actions', disabled: false)
 
-#         expect(find('.js-actions-panel')).to have_text 'Toggle post published'
-#       end
+  #           click_on 'Posts'
+  #           wait_for_loaded
+  #           click_on 'Users'
+  #           wait_for_loaded
 
-#       it 'opens the action modal and executes the action' do
-#         visit url
+  #           expect(page).to have_button('Actions', disabled: true)
+  #         end
+  #       end
+  #     end
+  #   end
 
-#         click_on 'Actions'
-#         click_on 'Toggle post published'
+  #   context 'show' do
+  #     let!(:roles) { { admin: false, manager: false, writer: false } }
+  #     let!(:user) { create :user, active: true, roles: roles }
+  #     let!(:post) { create :post, published_at: nil }
 
-#         expect(find('.vm--modal')).to have_text 'Toggle post published'
-#         expect(find('.vm--modal')).to have_text 'Are you sure, sure?'
-#         expect(find('.vm--modal')).to have_text 'Toggle'
-#         expect(find('.vm--modal')).to have_text "Don't toggle yet"
+  #     describe 'with fields' do
+  #       let(:url) { "/admin/resources/users/#{user.id}" }
 
-#         click_on 'Toggle'
+  #       it 'lists the action' do
+  #         visit url
 
-#         expect(page).to have_text 'Perfect!'
-#         expect(post.reload.published_at).not_to be nil
-#         expect(current_path).to eq '/admin/resources/posts'
-#       end
-#     end
-#   end
-# end
+  #         click_on 'Actions'
+
+  #         expect(find('.js-actions-panel')).to have_text 'Mark inactive'
+  #       end
+
+  #       it 'opens the action modal and executes the action' do
+  #         visit url
+  #         expect(find_field_value_element('active')).to have_css 'svg[data-checked="1"]'
+
+  #         click_on 'Actions'
+  #         click_on 'Mark inactive'
+
+  #         expect(find('.vm--modal')).to have_text 'Mark inactive'
+  #         expect(find('.vm--modal')).to have_text 'Notify user'
+  #         expect(find('.vm--modal')).to have_text 'Message'
+  #         expect(find('.vm--modal #message').value).to eq 'Your account has been marked as inactive.'
+
+  #         check 'notify_user'
+  #         fill_in 'message', with: 'Your account has been marked as very inactive.'
+
+  #         click_on 'Run'
+  #         wait_for_loaded
+
+  #         expect(page).to have_text 'Perfect!'
+  #         expect(user.reload.active).to be false
+  #         expect(find_field_value_element('active')).to have_css 'svg[data-checked="0"]'
+  #       end
+
+  #       it 'executes the action without confirmation' do
+  #         visit url
+
+  #         expect(find_field_value_element('roles').find('svg', match: :first)['data-checked']).to eq '0'
+
+  #         click_on 'Actions'
+  #         click_on 'Make admin'
+
+  #         sleep 0.2
+  #         wait_for_loaded
+
+  #         expect(user.reload.roles['admin']).to be true
+  #         expect(find_field_value_element('roles').find('svg', match: :first)['data-checked']).to eq '1'
+  #       end
+  #     end
+
+  #     describe 'without fields' do
+  #       let(:url) { "/admin/resources/posts/#{post.id}" }
+
+  #       it 'lists the action with a custom name' do
+  #         visit url
+
+  #         click_on 'Actions'
+
+  #         expect(find('.js-actions-panel')).to have_text 'Toggle post published'
+  #       end
+
+  #       it 'opens the action modal and executes the action' do
+  #         visit url
+
+  #         click_on 'Actions'
+  #         click_on 'Toggle post published'
+
+  #         expect(find('.vm--modal')).to have_text 'Toggle post published'
+  #         expect(find('.vm--modal')).to have_text 'Are you sure, sure?'
+  #         expect(find('.vm--modal')).to have_text 'Toggle'
+  #         expect(find('.vm--modal')).to have_text "Don't toggle yet"
+
+  #         click_on 'Toggle'
+
+  #         expect(page).to have_text 'Perfect!'
+  #         expect(post.reload.published_at).not_to be nil
+  #         expect(current_path).to eq '/admin/resources/posts'
+  #       end
+  #     end
+  #   end
+end

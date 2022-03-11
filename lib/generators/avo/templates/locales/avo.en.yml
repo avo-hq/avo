@@ -8,16 +8,15 @@ en:
     run: 'Run'
     cancel: 'Cancel'
     action_ran_successfully: 'Action ran successfully!'
-    resource_details: "%{item} details: %{title}"
-    update_item: 'update %{item}: %{title}'
+    details: 'details'
     unauthorized: 'Unauthorized'
     attachment_class_attached: '%{attachment_class} attached.'
     attachment_class_detached: '%{attachment_class} detached.'
     resource_updated: 'Resource updated'
     resource_created: 'Resource created'
     resource_destroyed: 'Resource destroyed'
-    switch_to_view: "Switch to %{view_type} view"
-    click_to_reveal_filters: "Click to reveal filters"
+    switch_to_view: 'Switch to %{view_type} view'
+    click_to_reveal_filters: 'Click to reveal filters'
     attachment_destroyed: 'Attachment destroyed'
     failed_to_find_attachment: 'Failed to find attachment'
     you_missed_something_check_form: 'You might have missed something. Please check the form.'
@@ -85,3 +84,20 @@ en:
       cancel_button: 'Cancel'
     sign_out: 'Sign out'
     no_cards_present: 'No cards present'
+    failed: 'Failed'
+    failed_to_load: 'Failed to load'
+    key_value_field:
+      key: 'Key'
+      value: 'Value'
+      add_row: 'Add row'
+      delete_row: 'Delete row'
+    was_successfully_created: 'was successfully created'
+    was_successfully_updated: 'was successfully updated'
+    clear_value: "Clear value"
+    tools: Tools
+    order:
+      reorder_record: Reorder record
+      higher: Move record higher
+      lower: Move record lower
+      to_top: Move record to top
+      to_bottom: Move record to bottom

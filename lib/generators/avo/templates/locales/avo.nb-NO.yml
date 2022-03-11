@@ -8,8 +8,7 @@ nb-NO:
     run: 'Kjør'
     cancel: 'Avslutt'
     action_ran_successfully: 'Suksess!'
-    resource_details: "%{item} detaljer: %{title}"
-    update_item: 'Oppdatert %{item}: %{title}'
+    details: "detaljer"
     unauthorized: 'Ikke autorisert'
     attachment_class_attached: '%{attachment_class} lagt til.'
     attachment_class_detached: '%{attachment_class} fjernet.'
@@ -81,3 +80,4 @@ nb-NO:
     search_placeholder: 'Søk'
     search_cancel_button: 'Avbryt'
     sign_out: 'Logg ut'
+    tools: Redskapene

@@ -1,17 +1,6 @@
 module Avo
   module ApplicationHelper
-    include ::Manifester::Helper
     include ::Pagy::Frontend
-
-    def current_webpacker_instance
-      return Avo.webpacker if Avo::IN_DEVELOPMENT
-
-      super
-    end
-
-    def current_manifester_instance
-      Avo.manifester
-    end
 
     def render_license_warnings
       render partial: "avo/sidebar/license_warnings", locals: {
@@ -27,63 +16,36 @@ module Avo
       }
     end
 
-    def empty_state(resource_name: nil, text: nil)
-      render partial: "avo/partials/empty_state", locals: {resource_name: resource_name, text: text}
+    def empty_state(**args)
+      render Avo::EmptyStateComponent.new **args
     end
 
     def turbo_frame_wrap(name, &block)
-      render layout: "avo/partials/turbo_frame_wrap", locals: {name: name} do
+      render Avo::TurboFrameWrapperComponent.new name do
         capture(&block)
       end
     end
 
-    def a_button(label = nil, **args, &block)
-      args[:class] = button_classes(args[:class], color: args[:color], variant: args[:variant], size: args[:size])
-
-      locals = {
-        label: label,
-        args: args
-      }
-
-      if block
-        render layout: "avo/partials/a_button", locals: locals do
-          capture(&block)
-        end
-      else
-        render partial: "avo/partials/a_button", locals: locals
+    def a_button(**args, &block)
+      render Avo::ButtonComponent.new(is_link: false, **args) do
+        capture(&block) if block_given?
       end
     end
 
-    def a_link(label, url = nil, **args, &block)
-      args[:class] = button_classes(args[:class], color: args[:color], variant: args[:variant], size: args[:size])
-
-      if block
-        url = label
-      end
-
-      locals = {
-        label: label,
-        url: url,
-        args: args
-      }
-
-      if block
-        render layout: "avo/partials/a_link", locals: locals do
-          capture(&block)
-        end
-      else
-        render partial: "avo/partials/a_link", locals: locals
+    def a_link(path = nil, **args, &block)
+      render Avo::ButtonComponent.new(path, is_link: true, **args) do
+        capture(&block) if block_given?
       end
     end
 
-    def button_classes(extra_classes = nil, color: nil, variant: nil, size: :md)
-      classes = "inline-flex flex-grow-0 items-center text-sm font-bold leading-none fill-current whitespace-nowrap transition duration-100 rounded-lg shadow-xl transform transition duration-100 active:translate-x-px active:translate-y-px cursor-pointer disabled:cursor-not-allowed #{extra_classes}"
+    def button_classes(extra_classes = nil, color: nil, variant: nil, size: :md, active: false)
+      classes = "inline-flex flex-grow-0 items-center text-sm font-semibold leading-6 fill-current whitespace-nowrap transition duration-100 rounded transform transition duration-100 active:translate-x-px active:translate-y-px cursor-pointer disabled:cursor-not-allowed #{extra_classes}"
 
       if color.present?
         if variant.present? && (variant.to_sym == :outlined)
           classes += " bg-white border"
 
-          classes += " hover:border-#{color}-700 border-#{color}-600 text-#{color}-600 hover:text-#{color}-700 disabled:border-gray-300 disabled:text-gray-600"
+          classes += " hover:border-#{color}-700 border-#{color}-500 text-#{color}-600 hover:text-#{color}-700 disabled:border-gray-300 disabled:text-gray-600"
         else
           classes += " text-white bg-#{color}-500 hover:bg-#{color}-600 disabled:bg-#{color}-300"
         end
@@ -96,9 +58,11 @@ module Avo
       when :xs
         " p-2 py-1"
       when :sm
-        " p-3"
+        " py-1 px-4"
       when :md
-        " p-4"
+        " py-2 px-4"
+      when :xl
+        " py-3 px-4"
       else
         " p-4"
       end
@@ -108,20 +72,14 @@ module Avo
 
     def svg(file_name, **args)
       options = {}
-      options[:class] = args[:class].present? ? args[:class] : "h-4 mr-1"
+      options[:class] = args[:class].present? ? args[:class] : ""
       options[:class] += args[:extra_class].present? ? " #{args[:extra_class]}" : ""
       options[:'data-tippy'] = args[:'data-tippy'].present? ? "#{args[:'data-tippy']}" : ""
       options[:title] = args[:title].present? ? "#{args[:title]}" : ""
 
       # Create the path to the svgs directory
-      if args[:pack].present?
-        # file_path = "#{Avo::Engine.root}/app/packs/svgs/#{file_name}"
-        file_path = Avo::Engine.root.join "node_modules", args[:pack], file_name
-      else
-        file_path = "#{Avo::Engine.root}/app/packs/svgs/#{file_name}"
-      end
-
-      file_path = "#{file_path}.svg" unless file_path.to_s.end_with? ".svg"
+      file_path = "#{Avo::Engine.root}/app/assets/svgs/#{file_name}"
+      file_path = "#{file_path}.svg" unless file_path.end_with? ".svg"
 
       # Create a cache hash
       hash = Digest::MD5.hexdigest "#{file_path.underscore}_#{options}"
@@ -149,17 +107,13 @@ module Avo
       svg_content
     end
 
-    def heroicon(name, **args)
-      svg name, **args, pack: 'heroicons'
-    end
-
     def input_classes(extra_classes = "", has_error: false)
-      classes = "appearance-none inline-flex bg-blue-gray-100 disabled:bg-blue-gray-300 disabled:cursor-not-allowed focus:bg-white text-blue-gray-700 disabled:text-blue-gray-700 rounded-md py-2 px-3 leading-tight border outline-none outline"
+      classes = "appearance-none inline-flex bg-gray-100 disabled:cursor-not-allowed text-gray-600 disabled:opacity-50 rounded py-3 px-3 leading-tight border focus:border-gray-600 focus-visible:ring-0 focus:text-gray-700"
 
       classes += if has_error
         " border-red-600"
       else
-        " border-blue-gray-300"
+        " border-gray-200"
       end
 
       classes += " #{extra_classes}"
@@ -171,17 +125,7 @@ module Avo
       if model.instance_of?(Class)
         model
       else
-        model.class.base_class
-      end
-    end
-
-    def singular_name(model_or_class)
-      model_class = get_model_class model_or_class
-
-      if ActiveModel::Naming.uncountable? model_class
-        model_class.base_class.model_name.route_key.singularize.gsub('_index', '')
-      else
-        model_class.base_class.model_name.route_key.singularize
+        model.class
       end
     end
   end

@@ -2,15 +2,15 @@ require_dependency "avo/base_controller"
 
 module Avo
   class RelationsController < BaseController
-    before_action :set_model, only: [:show, :index, :new, :create, :destroy]
+    before_action :set_model, only: [:show, :index, :new, :create, :destroy, :order]
     before_action :set_related_resource_name
-    before_action :set_related_resource
-    before_action :hydrate_related_resource
-    before_action :set_related_model, only: [:show]
-    before_action :set_attachment_class
-    before_action :set_attachment_resource
-    before_action :set_attachment_model, only: [:create, :destroy]
-    before_action :set_reflection, only: [:index, :show]
+    before_action :set_related_resource, only: [:show, :index, :new, :create, :destroy, :order]
+    before_action :hydrate_related_resource, only: [:show, :index, :new, :create, :destroy, :order]
+    before_action :set_related_model, only: [:show, :order]
+    before_action :set_attachment_class, only: [:show, :index, :new, :create, :destroy, :order]
+    before_action :set_attachment_resource, only: [:show, :index, :new, :create, :destroy, :order]
+    before_action :set_attachment_model, only: [:create, :destroy, :order]
+    before_action :set_reflection, only: [:index, :show, :order]
 
     def index
       @parent_resource = @resource.dup
@@ -18,6 +18,11 @@ module Avo
       @parent_model = @parent_resource.class.find_scope.find(params[:id])
       @parent_resource.hydrate(model: @parent_model)
       @query = @authorization.apply_policy @parent_model.public_send(params[:related_name])
+      @association_field = @parent_resource.get_field params[:related_name]
+
+      if @association_field.present? && @association_field.scope.present?
+        @query = @query.instance_exec(&@association_field.scope)
+      end
 
       super
     end
@@ -32,10 +37,7 @@ module Avo
       query = @authorization.apply_policy @attachment_class
 
       @options = query.all.map do |model|
-        {
-          value: model.id,
-          label: model.send(@attachment_resource.class.title)
-        }
+        [model.send(@attachment_resource.class.title), model.id]
       end
     end
 
@@ -48,11 +50,9 @@ module Avo
 
       respond_to do |format|
         if @model.save
-          format.html { redirect_to resource_path(@model), notice: t("avo.attachment_class_attached", attachment_class: @attachment_class) }
-          format.json { render :show, status: :created, location: resource_path(@model) }
+          format.html { redirect_to resource_path(model: @model, resource: @resource), notice: t("avo.attachment_class_attached", attachment_class: @attachment_class) }
         else
           format.html { render :new }
-          format.json { render json: @model.errors, status: :unprocessable_entity }
         end
       end
     end
@@ -65,8 +65,15 @@ module Avo
       end
 
       respond_to do |format|
-        format.html { redirect_to params[:referrer] || resource_path(@model), notice: t("avo.attachment_class_detached", attachment_class: @attachment_class) }
+        format.html { redirect_to params[:referrer] || resource_path(model: @model, resource: @resource), notice: t("avo.attachment_class_detached", attachment_class: @attachment_class) }
       end
+    end
+
+    def order
+      @parent_resource = @resource.dup
+      @resource, @model = @related_resource, @related_model
+
+      super
     end
 
     private

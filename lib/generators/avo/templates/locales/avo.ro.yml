@@ -7,7 +7,7 @@ ro:
     run: 'Ruleaza'
     cancel: 'Anuleaza'
     action_ran_successfully: 'Actiunea a rulat cu succes!'
-    resource_details: 'Detalii %{item}'
+    details: "detalii"
     unauthorized: 'Neautorizat'
     attachment_class_attached: '%{attachment_class} anexat.'
     attachment_class_detached: '%{attachment_class} separat.'
@@ -71,3 +71,11 @@ ro:
       placeholder: 'Cauta'
       cancel_button: 'Anulare'
     sign_out: 'Delogare'
+    key_value_field:
+      key: 'Cheie'
+      value: 'Valoare'
+      add_row: 'Adauga rand'
+      delete_row: 'Sterge rand'
+    was_successfully_created: 'a fost creat'
+    was_successfully_updated: 'a fost actualizat'
+    tools: Instrumente

@@ -127,12 +127,12 @@ RSpec.describe "SelectField", type: :feature do
 
       describe "creates new post with status published" do
         it "checks placeholder" do
-          is_expected.to have_select "post_status", selected: nil, options: statuses_with_placeholder
+          is_expected.to have_select "post_status", selected: 'draft', options: statuses_without_placeholder
         end
 
         it "saves the resource with status published" do
           visit url
-          expect(page).to have_select "post_status", selected: nil, options: statuses_with_placeholder
+          expect(page).to have_select "post_status", selected: 'draft', options: statuses_without_placeholder
 
           fill_in "post_name", with: "Post X"
           select new_status, from: "post_status"

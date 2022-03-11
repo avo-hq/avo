@@ -59,8 +59,7 @@ module Avo
         result = {
           _id: model.id,
           _label: resource.label,
-          _url: resource.avo_path,
-          model: model
+          _url: resource.record_path,
         }
 
         if App.license.has_with_trial(:enhanced_search_results)

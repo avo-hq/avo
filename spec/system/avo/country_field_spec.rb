@@ -27,7 +27,7 @@ RSpec.describe "CountryField", type: :system do
       it "displays the placeholder" do
         visit url
 
-        expect(page).to have_select "Country", selected: "Choose a country"
+        expect(page).to have_select "project_country", selected: "Choose a country"
       end
     end
   end

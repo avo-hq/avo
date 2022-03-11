@@ -1,15 +1,16 @@
 PATH
   remote: ..
   specs:
-    avo (1.18.2)
+    avo (1.24.2)
       active_link_to
       addressable
       breadcrumbs_on_rails
+      chartkick
       countries
+      dry-initializer
       hotwire-rails
       httparty
       image_processing
-      manifester
       meta-tags
       pagy
       pundit
@@ -20,47 +21,47 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    actioncable (7.0.1)
-      actionpack (= 7.0.1)
-      activesupport (= 7.0.1)
+    actioncable (7.0.2.2)
+      actionpack (= 7.0.2.2)
+      activesupport (= 7.0.2.2)
       nio4r (~> 2.0)
       websocket-driver (>= 0.6.1)
-    actionmailbox (7.0.1)
-      actionpack (= 7.0.1)
-      activejob (= 7.0.1)
-      activerecord (= 7.0.1)
-      activestorage (= 7.0.1)
-      activesupport (= 7.0.1)
+    actionmailbox (7.0.2.2)
+      actionpack (= 7.0.2.2)
+      activejob (= 7.0.2.2)
+      activerecord (= 7.0.2.2)
+      activestorage (= 7.0.2.2)
+      activesupport (= 7.0.2.2)
       mail (>= 2.7.1)
       net-imap
       net-pop
       net-smtp
-    actionmailer (7.0.1)
-      actionpack (= 7.0.1)
-      actionview (= 7.0.1)
-      activejob (= 7.0.1)
-      activesupport (= 7.0.1)
+    actionmailer (7.0.2.2)
+      actionpack (= 7.0.2.2)
+      actionview (= 7.0.2.2)
+      activejob (= 7.0.2.2)
+      activesupport (= 7.0.2.2)
       mail (~> 2.5, >= 2.5.4)
       net-imap
       net-pop
       net-smtp
       rails-dom-testing (~> 2.0)
-    actionpack (7.0.1)
-      actionview (= 7.0.1)
-      activesupport (= 7.0.1)
+    actionpack (7.0.2.2)
+      actionview (= 7.0.2.2)
+      activesupport (= 7.0.2.2)
       rack (~> 2.0, >= 2.2.0)
       rack-test (>= 0.6.3)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.2.0)
-    actiontext (7.0.1)
-      actionpack (= 7.0.1)
-      activerecord (= 7.0.1)
-      activestorage (= 7.0.1)
-      activesupport (= 7.0.1)
+    actiontext (7.0.2.2)
+      actionpack (= 7.0.2.2)
+      activerecord (= 7.0.2.2)
+      activestorage (= 7.0.2.2)
+      activesupport (= 7.0.2.2)
       globalid (>= 0.6.0)
       nokogiri (>= 1.8.5)
-    actionview (7.0.1)
-      activesupport (= 7.0.1)
+    actionview (7.0.2.2)
+      activesupport (= 7.0.2.2)
       builder (~> 3.1)
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
@@ -68,53 +69,59 @@ GEM
     active_link_to (1.0.5)
       actionpack
       addressable
-    activejob (7.0.1)
-      activesupport (= 7.0.1)
+    active_median (0.3.3)
+      activesupport (>= 5.2)
+    activejob (7.0.2.2)
+      activesupport (= 7.0.2.2)
       globalid (>= 0.3.6)
-    activemodel (7.0.1)
-      activesupport (= 7.0.1)
-    activerecord (7.0.1)
-      activemodel (= 7.0.1)
-      activesupport (= 7.0.1)
-    activestorage (7.0.1)
-      actionpack (= 7.0.1)
-      activejob (= 7.0.1)
-      activerecord (= 7.0.1)
-      activesupport (= 7.0.1)
+    activemodel (7.0.2.2)
+      activesupport (= 7.0.2.2)
+    activerecord (7.0.2.2)
+      activemodel (= 7.0.2.2)
+      activesupport (= 7.0.2.2)
+    activestorage (7.0.2.2)
+      actionpack (= 7.0.2.2)
+      activejob (= 7.0.2.2)
+      activerecord (= 7.0.2.2)
+      activesupport (= 7.0.2.2)
       marcel (~> 1.0)
       mini_mime (>= 1.1.0)
-    activesupport (7.0.1)
+    activesupport (7.0.2.2)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
+    acts_as_list (1.0.4)
+      activerecord (>= 4.2)
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
+    ap (0.1.1)
+      httparty (>= 0.7.7)
     appraisal (2.4.1)
       bundler
       rake
       thor (>= 0.14.0)
     ast (2.4.2)
     aws-eventstream (1.2.0)
-    aws-partitions (1.547.0)
-    aws-sdk-core (3.125.2)
+    aws-partitions (1.552.0)
+    aws-sdk-core (3.126.0)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.525.0)
       aws-sigv4 (~> 1.1)
       jmespath (~> 1.0)
-    aws-sdk-kms (1.53.0)
-      aws-sdk-core (~> 3, >= 3.125.0)
+    aws-sdk-kms (1.54.0)
+      aws-sdk-core (~> 3, >= 3.126.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-s3 (1.111.1)
-      aws-sdk-core (~> 3, >= 3.125.0)
+    aws-sdk-s3 (1.112.0)
+      aws-sdk-core (~> 3, >= 3.126.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.4)
     aws-sigv4 (1.4.0)
       aws-eventstream (~> 1, >= 1.0.2)
     bcrypt (3.1.16)
     bindex (0.8.1)
-    bootsnap (1.9.4)
-      msgpack (~> 1.0)
+    bootsnap (1.10.3)
+      msgpack (~> 1.2)
     breadcrumbs_on_rails (4.1.0)
       railties (>= 5.0)
     builder (3.2.4)
@@ -129,6 +136,7 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
+    chartkick (4.1.2)
     childprocess (4.1.0)
     concurrent-ruby (1.1.9)
     countries (4.2.1)
@@ -137,6 +145,8 @@ GEM
     crack (0.4.5)
       rexml
     crass (1.0.6)
+    cssbundling-rails (1.0.0)
+      railties (>= 6.0.0)
     database_cleaner (2.0.1)
       database_cleaner-active_record (~> 2.0.0)
     database_cleaner-active_record (2.0.1)
@@ -156,6 +166,7 @@ GEM
     dotenv-rails (2.7.6)
       dotenv (= 2.7.6)
       railties (>= 3.2)
+    dry-initializer (3.1.1)
     erubi (1.10.0)
     factory_bot (6.2.0)
       activesupport (>= 5.0.0)
@@ -173,15 +184,20 @@ GEM
     gem-release (2.2.2)
     globalid (1.0.0)
       activesupport (>= 5.0)
+    groupdate (6.0.1)
+      activesupport (>= 5.2)
     hashdiff (1.0.1)
+    hightop (0.3.0)
+      activesupport (>= 5.2)
     hotwire-rails (0.1.3)
       rails (>= 6.0.0)
       stimulus-rails
       turbo-rails
+    htmlbeautifier (1.4.1)
     httparty (0.20.0)
       mime-types (~> 3.0)
       multi_xml (>= 0.5.2)
-    i18n (1.8.11)
+    i18n (1.10.0)
       concurrent-ruby (~> 1.0)
     i18n_data (0.15.0)
       simple_po_parser (~> 1.1)
@@ -191,16 +207,15 @@ GEM
     io-wait (0.2.1)
     iso (0.4.0)
       i18n
-    jbuilder (2.11.5)
-      actionview (>= 5.0.0)
-      activesupport (>= 5.0.0)
     jmespath (1.5.0)
+    jsbundling-rails (1.0.0)
+      railties (>= 6.0.0)
     launchy (2.5.0)
       addressable (~> 2.7)
-    listen (3.7.0)
+    listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
-    loofah (2.13.0)
+    loofah (2.14.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -219,9 +234,9 @@ GEM
     mini_magick (4.11.0)
     mini_mime (1.1.2)
     minitest (5.15.0)
-    msgpack (1.4.2)
+    msgpack (1.4.4)
     multi_xml (0.6.0)
-    net-imap (0.2.2)
+    net-imap (0.2.3)
       digest
       net-protocol
       strscan
@@ -237,39 +252,38 @@ GEM
       net-protocol
       timeout
     nio4r (2.5.8)
-    nokogiri (1.13.0-x86_64-darwin)
+    nokogiri (1.13.1-x86_64-darwin)
       racc (~> 1.4)
     orm_adapter (0.5.0)
-    pagy (5.7.3)
+    pagy (5.10.1)
+      activesupport
     parallel (1.21.0)
     parser (3.1.0.0)
       ast (~> 2.4.1)
-    pg (1.2.3)
+    pg (1.3.1)
     public_suffix (4.0.6)
-    puma (5.5.2)
+    puma (5.6.2)
       nio4r (~> 2.0)
-    pundit (2.1.1)
+    pundit (2.2.0)
       activesupport (>= 3.0.0)
     racc (1.6.0)
     rack (2.2.3)
-    rack-proxy (0.7.2)
-      rack
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
-    rails (7.0.1)
-      actioncable (= 7.0.1)
-      actionmailbox (= 7.0.1)
-      actionmailer (= 7.0.1)
-      actionpack (= 7.0.1)
-      actiontext (= 7.0.1)
-      actionview (= 7.0.1)
-      activejob (= 7.0.1)
-      activemodel (= 7.0.1)
-      activerecord (= 7.0.1)
-      activestorage (= 7.0.1)
-      activesupport (= 7.0.1)
+    rails (7.0.2.2)
+      actioncable (= 7.0.2.2)
+      actionmailbox (= 7.0.2.2)
+      actionmailer (= 7.0.2.2)
+      actionpack (= 7.0.2.2)
+      actiontext (= 7.0.2.2)
+      actionview (= 7.0.2.2)
+      activejob (= 7.0.2.2)
+      activemodel (= 7.0.2.2)
+      activerecord (= 7.0.2.2)
+      activestorage (= 7.0.2.2)
+      activesupport (= 7.0.2.2)
       bundler (>= 1.15.0)
-      railties (= 7.0.1)
+      railties (= 7.0.2.2)
     rails-controller-testing (1.0.5)
       actionpack (>= 5.0.1.rc1)
       actionview (>= 5.0.1.rc1)
@@ -279,9 +293,9 @@ GEM
       nokogiri (>= 1.6)
     rails-html-sanitizer (1.4.2)
       loofah (~> 2.3)
-    railties (7.0.1)
-      actionpack (= 7.0.1)
-      activesupport (= 7.0.1)
+    railties (7.0.2.2)
+      actionpack (= 7.0.2.2)
+      activesupport (= 7.0.2.2)
       method_source
       rake (>= 12.2)
       thor (~> 1.0)
@@ -300,12 +314,12 @@ GEM
       actionpack (>= 5.0)
       railties (>= 5.0)
     rexml (3.2.5)
-    rspec-core (3.10.1)
+    rspec-core (3.10.2)
       rspec-support (~> 3.10.0)
-    rspec-expectations (3.10.1)
+    rspec-expectations (3.10.2)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.10.0)
-    rspec-mocks (3.10.2)
+    rspec-mocks (3.10.3)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.10.0)
     rspec-rails (4.0.2)
@@ -317,9 +331,9 @@ GEM
       rspec-mocks (~> 3.10)
       rspec-support (~> 3.10)
     rspec-support (3.10.3)
-    rubocop (1.24.1)
+    rubocop (1.25.0)
       parallel (~> 1.10)
-      parser (>= 3.0.0.0)
+      parser (>= 3.1.0.0)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 1.8, < 3.0)
       rexml
@@ -328,30 +342,21 @@ GEM
       unicode-display_width (>= 1.4.0, < 3.0)
     rubocop-ast (1.15.1)
       parser (>= 3.0.1.1)
-    rubocop-performance (1.13.1)
+    rubocop-performance (1.13.2)
       rubocop (>= 1.7.0, < 2.0)
       rubocop-ast (>= 0.4.0)
+    rubocop-shopify (2.5.0)
+      rubocop (~> 1.25)
     ruby-debug-ide (0.7.3)
       rake (>= 0.8.1)
     ruby-progressbar (1.11.0)
     ruby-vips (2.1.4)
       ffi (~> 1.12)
     rubyzip (2.3.2)
-    sass-rails (6.0.0)
-      sassc-rails (~> 2.1, >= 2.1.1)
-    sassc (2.4.0)
-      ffi (~> 1.9)
-    sassc-rails (2.1.2)
-      railties (>= 4.0.0)
-      sassc (>= 2.0)
-      sprockets (> 3.0)
-      sprockets-rails
-      tilt
     selenium-webdriver (4.1.0)
       childprocess (>= 0.5, < 5.0)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2)
-    semantic_range (3.0.0)
     simple_po_parser (1.1.5)
     simplecov (0.21.2)
       docile (~> 1.1)
@@ -366,30 +371,22 @@ GEM
     spring (4.0.0)
     spring-commands-rspec (1.0.4)
       spring (>= 0.9.1)
-    sprockets (4.0.2)
-      concurrent-ruby (~> 1.0)
-      rack (> 1, < 3)
-    sprockets-rails (3.4.2)
-      actionpack (>= 5.2)
-      activesupport (>= 5.2)
-      sprockets (>= 3.0.0)
-    standard (1.6.0)
-      rubocop (= 1.24.1)
-      rubocop-performance (= 1.13.1)
+    standard (1.7.0)
+      rubocop (= 1.25.0)
+      rubocop-performance (= 1.13.2)
     stimulus-rails (1.0.2)
       railties (>= 6.0.0)
     strscan (3.0.1)
     test-prof (1.0.7)
     thor (1.2.1)
-    tilt (2.0.10)
     timeout (0.2.0)
-    turbo-rails (1.0.0)
+    turbo-rails (1.0.1)
       actionpack (>= 6.0.0)
       railties (>= 6.0.0)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.1.0)
-    view_component (2.47.0)
+    view_component (2.49.0)
       activesupport (>= 5.0.0, < 8.0)
       method_source (~> 1.0)
     warden (1.2.9)
@@ -407,24 +404,22 @@ GEM
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
-    webpacker (6.0.0.rc.6)
-      activesupport (>= 5.2)
-      rack-proxy (>= 0.6.1)
-      railties (>= 5.2)
-      semantic_range (>= 2.3.0)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.5.3)
+    zeitwerk (2.5.4)
 
 PLATFORMS
   x86_64-darwin-21
 
 DEPENDENCIES
   active_link_to
+  active_median
+  acts_as_list
   addressable
+  ap
   appraisal
   avo!
   aws-sdk-s3
@@ -432,8 +427,9 @@ DEPENDENCIES
   breadcrumbs_on_rails
   bump
   byebug
-  capybara (>= 2.15)
+  capybara (= 3.36)
   countries
+  cssbundling-rails
   database_cleaner
   devise
   dotenv-rails
@@ -442,25 +438,29 @@ DEPENDENCIES
   friendly_id (~> 5.4.0)
   fuubar
   gem-release
+  groupdate
+  hightop
   hotwire-rails
+  htmlbeautifier
   httparty
   image_processing (~> 1.2)
   iso
-  jbuilder (~> 2.7)
+  jsbundling-rails
   launchy
   listen (>= 3.5.1)
   manifester
   meta-tags
   net-smtp
   pg (>= 0.18, < 2.0)
-  puma (~> 5.5.1)
+  puma (~> 5.6.2)
   pundit
   rails (~> 7.0.0)
   rails-controller-testing
   ransack
   rspec-rails (~> 4.0.0)
+  rubocop
+  rubocop-shopify
   ruby-debug-ide
-  sass-rails (>= 6)
   selenium-webdriver
   simplecov
   simplecov-cobertura
@@ -473,8 +473,7 @@ DEPENDENCIES
   web-console (>= 3.3.0)
   webdrivers
   webmock
-  webpacker (= 6.0.0.rc.6)
   zeitwerk (~> 2.3)
 
 BUNDLED WITH
-   2.3.5
+   2.3.7

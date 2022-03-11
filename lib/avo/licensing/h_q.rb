@@ -23,6 +23,12 @@ module Avo
 
         begin
           perform_and_cache_request
+        rescue Errno::EHOSTUNREACH => exception
+          cache_and_return_error "HTTP host not reachable error.", exception.message
+        rescue Errno::ECONNRESET => exception
+          cache_and_return_error "HTTP connection reset error.", exception.message
+        rescue Errno::ECONNREFUSED => exception
+          cache_and_return_error "HTTP connection refused error.", exception.message
         rescue HTTParty::Error => exception
           cache_and_return_error "HTTP client error.", exception.message
         rescue Net::OpenTimeout => exception
@@ -71,7 +77,55 @@ module Avo
           environment: Rails.env,
           ip: current_request.ip,
           host: current_request.host,
-          port: current_request.port
+          port: current_request.port,
+          app_name: app_name
+        }
+      end
+
+      def app_name
+        Rails.application.class.to_s.split("::").first
+      rescue
+        nil
+      end
+
+      def avo_metadata
+        resources = App.resources
+        field_definitions = resources.map(&:get_field_definitions)
+        fields_count = field_definitions.map(&:count).sum
+        fields_per_resource = sprintf("%0.01f", fields_count / (resources.count + 0.0))
+
+        field_types = {}
+        custom_fields_count = 0
+        field_definitions.each do |fields|
+          fields.each do |field|
+            field_types[field.type] ||= 0
+            field_types[field.type] += 1
+
+            custom_fields_count += 1 if field.custom?
+          end
+        end
+
+        {
+          resources_count: resources.count,
+          fields_count: fields_count,
+          fields_per_resource: fields_per_resource,
+          custom_fields_count: custom_fields_count,
+          field_types: field_types,
+          **other_metadata(:actions),
+          **other_metadata(:filters),
+        }
+      end
+
+      def other_metadata(type = :actions)
+        resources = App.resources
+
+        types = resources.map(&:"get_#{type}")
+        type_count = types.flatten.uniq.count
+        type_per_resource = sprintf("%0.01f", types.map(&:count).sum / (resources.count + 0.0))
+
+        {
+          "#{type}_count": type_count,
+          "#{type}_per_resource": type_per_resource,
         }
       end
 

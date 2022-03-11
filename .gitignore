@@ -12,8 +12,13 @@ spec/dummy/public/packs/
 spec/dummy/public/packs-test/
 spec/dummy/public/javascripts/
 spec/dummy/tmp/
+spec/dummy/.env
+spec/dummy/.env.test
 vendor/cache/
 public/javascripts/
+
+js_bundle_stats.html
+js_bundle_metadata.json
 
 # See https://help.github.com/articles/ignoring-files for more about ignoring files.
 #
@@ -41,7 +46,9 @@ public/javascripts/
 /config/master.key
 
 /public/packs
-/public/avo-packs
+/public/avo-assets/avo.css
+/public/avo-assets/avo.js
+/public/avo-assets/avo.js.map
 /public/packs-test
 /node_modules
 /yarn-error.log
@@ -56,3 +63,5 @@ coverage/
 .vscode
 
 avo*.gem
+
+app/assets/builds

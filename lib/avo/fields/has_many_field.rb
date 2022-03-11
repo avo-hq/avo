@@ -1,6 +1,6 @@
 module Avo
   module Fields
-    class HasManyField < BaseField
+    class HasManyField < HasBaseField
       def initialize(id, **args, &block)
         args[:updatable] = false
 
@@ -8,24 +8,6 @@ module Avo
 
         hide_on :all
         show_on :show
-      end
-
-      def turbo_frame
-        "#{self.class.name.demodulize.to_s.underscore}_#{id}"
-      end
-
-      def frame_url
-        "#{Avo::App.root_path}/resources/#{@model.model_name.route_key}/#{@model.id}/#{id}?turbo_frame=#{turbo_frame}"
-      end
-
-      def target_resource
-        if @model._reflections[id.to_s].klass.present?
-          Avo::App.get_resource_by_model_name @model._reflections[id.to_s].klass.to_s
-        elsif @model._reflections[id.to_s].options[:class_name].present?
-          Avo::App.get_resource_by_model_name @model._reflections[id.to_s].options[:class_name]
-        else
-          Avo::App.get_resource_by_name id.to_s
-        end
       end
     end
   end

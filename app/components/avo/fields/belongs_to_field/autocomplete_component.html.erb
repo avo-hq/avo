@@ -1,0 +1,29 @@
+<div data-controller="search" class="resource-search flex items-center h-full w-full" data-turbo-remove-before-cache>
+  <div class="w-full hidden"
+    data-search-target="autocomplete"
+    data-search-resource="<%= @model_key %>"
+    data-translation-keys='{"no_item_found": "<%= I18n.translate 'avo.no_item_found' %>"}'
+    data-via-association="belongs_to"
+  ></div>
+  <div class="relative w-full" autocomplete="off">
+    <%= @form.text_field @field.foreign_key,
+      value: field_label,
+      class: helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)),
+      placeholder: @field.placeholder,
+      'data-search-target': 'button clearValue',
+      # This instructs the search_controller if it should enable/disabled this field when the user switches polymorphic associations
+      # It should not enable the field if the record is being created through an association
+      'data-should-be-disabled': @disabled,
+      disabled: true %>
+    <% unless @disabled %>
+      <div class="absolute top-1/2 left-auto right-3 mr-px -mt-2 cursor-pointer hidden text-gray-500"
+        data-tippy="tooltip"
+        data-search-target="clearButton"
+        title="<%= I18n.translate 'avo.clear_value' %>"
+        data-action="click->search#clearValue"
+        ><%= helpers.svg 'x', class: 'h-4' %>
+      </div>
+    <% end %>
+  </div>
+  <%= @form.hidden_field @foreign_key, value: field_value, 'data-search-target': 'hiddenId clearValue' %>
+</div>

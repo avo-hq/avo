@@ -9,14 +9,21 @@ require "securerandom"
 require "open-uri"
 require "faker"
 
-Comment.delete_all
-Post.delete_all
-Project.delete_all
+ActiveStorage::Attachment.all.each { |attachment| attachment.purge }
+Person.delete_all
+Review.delete_all
+Fish.delete_all
+Course.delete_all
+Course::Link.delete_all
+Fish.delete_all
 TeamMembership.delete_all
 Team.delete_all
+Comment.delete_all
+Post.delete_all
+# ProjectUser.delete_all
+Project.delete_all
 User.delete_all
-ActiveStorage::Attachment.all.each { |attachment| attachment.purge }
-["active_storage_blobs", "active_storage_attachments", "posts", "projects", "projects_users", "team_memberships", "teams", "users"].each do |table_name|
+['active_storage_blobs', 'active_storage_attachments', 'posts', 'projects', 'projects_users', 'team_memberships', 'teams', 'users', 'comments', 'people', 'reviews', 'courses', 'course_links', 'fish'].each do |table_name|
   ActiveRecord::Base.connection.execute("TRUNCATE #{table_name} RESTART IDENTITY CASCADE")
 end
 
@@ -44,6 +51,22 @@ users = []
   users.push(FactoryBot.create(:user, team_id: teams.sample.id))
 end
 
+# People and Spouses
+people = FactoryBot.create_list(:person, 12)
+people.each do |person|
+  person.spouses << FactoryBot.create(:spouse)
+end
+
+reviews = FactoryBot.create_list(:review, 32)
+reviews.each do |review|
+  reviewable = [:fish, :post, :project, :team].sample
+  review.reviewable = FactoryBot.create(reviewable, created_at: Time.now - 1.day)
+
+  review.user = users.sample
+
+  review.save
+end
+
 25.times do
   post = FactoryBot.create(:post, user_id: users.sample.id)
 
@@ -62,7 +85,7 @@ end
 # assign users to teams
 teams.each do |team|
   users.sample(11).each_with_index do |user, index|
-    team.members << user
+    team.team_members << user
 
     membership = team.memberships.find_by user_id: user.id
     membership.update level: [:beginner, :intermediate, :advanced].sample
@@ -82,4 +105,10 @@ projects.each do |project|
   rand(0..15).times do
     project.comments << FactoryBot.create(:comment, user_id: users.sample.id)
   end
+end
+
+# Courses and links
+courses = FactoryBot.create_list(:course, 28)
+courses.each do |course|
+  FactoryBot.create_list(:course_link, 3, course: course)
 end

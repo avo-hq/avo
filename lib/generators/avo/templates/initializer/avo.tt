@@ -1,9 +1,10 @@
+# For more information regaring these settings check out our docs https://docs.avohq.io
 Avo.configure do |config|
   ## == Routing ==
   config.root_path = '/<%= options[:path] %>'
 
   ## == Licensing ==
-  config.license = 'community'
+  config.license = 'community' # change this to 'pro' when you add the license key
   # config.license_key = ENV['AVO_LICENSE_KEY']
 
   ## == Set the context ==
@@ -12,10 +13,8 @@ Avo.configure do |config|
   end
 
   ## == Authentication ==
-  # config.current_user_method = :current_user
-  # config.authenticate_with do
-  #   warden.authenticate! scope: :user
-  # end
+  # config.current_user_method = {}
+  # config.authenticate_with = {}
 
   ## == Authorization ==
   # config.authorization_methods = {

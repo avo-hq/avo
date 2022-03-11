@@ -1,0 +1,57 @@
+<%
+  entities = [:button, :link]
+  sizes = [:lg, :md, :sm, :xs]
+  styles = [:primary, :outline]
+  colors = [:primary, :gray, :red, :orange, :green]
+  states = [:regular, :hover, :disabled, :active]
+%>
+<div class="px-6 space-y-4">
+  <% entities.each do |entity| %>
+    <h3><%= entity.to_s.humanize.capitalize.pluralize %></h3>
+    <div class="flex flex-col space-y-4">
+      <% sizes.each do |size| %>
+        <div class="text-lg">size: <%= size %></div>
+        <div class="flex flex-col space-y-1">
+          <% styles.each do |style| %>
+            <% colors.each do |color| %>
+              <% next if style == :primary && color != :primary %>
+              <div class="flex space-x-1">
+                <% states.each do |state| %>
+                  <%
+                    extra_classes = ""
+                    case state
+                    when :active
+                      extra_classes += " active"
+                    when :hover
+                      extra_classes += " hover"
+                    end
+                  %>
+                  <%
+                    a_button_or_link = "a_#{entity}"
+                    args = {icon: 'arrow-left', style: style, color: color, size: size, class: extra_classes, disabled: state == :disabled}
+                  %>
+                  <% if entity == :link %>
+                    <div>
+                      <%= send a_button_or_link, '/admin/avo_private/design', **args do %>
+                        <%= entity.to_s.humanize.capitalize %> <%= state %>
+                      <% end %>
+                    </div>
+                  <% else %>
+                    <div>
+                      <%= send a_button_or_link, **args do %>
+                        <%= entity.to_s.humanize.capitalize %> <%= state %>
+                      <% end %>
+                    </div>
+                    <div>
+                      <%= a_button icon: 'bell', style: style, color: color, size: size, class: extra_classes, disabled: state == :disabled %>
+                    </div>
+                  <% end %>
+                <% end %>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

@@ -11,7 +11,8 @@ fi;
 
 # Run system tests
 if [[ -z "$1" ]] || [[ "$1" == "system" ]]; then
-  bin/webpack
+  yarn build:js
+  yarn build:css
   bundle exec rspec ./spec --tag type:system
 fi;
 

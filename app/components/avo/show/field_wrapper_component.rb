@@ -7,9 +7,5 @@ class Avo::Show::FieldWrapperComponent < ViewComponent::Base
     @classes = args[:class].present? ? args[:class] : ""
     @args = args
     @full_width = full_width
-
-    if (@index != 0) || @displayed_in_modal
-      @classes += " border-t"
-    end
   end
 end

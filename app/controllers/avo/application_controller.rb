@@ -1,25 +1,34 @@
 module Avo
   class ApplicationController < ::ActionController::Base
-    include Pundit
+    if defined?(Pundit::Authorization)
+      include Pundit::Authorization
+    else
+      include Pundit
+    end
+
     include Pagy::Backend
     include Avo::ApplicationHelper
+    include Avo::UrlHelpers
 
     protect_from_forgery with: :exception
     before_action :init_app
     before_action :check_avo_license
+    before_action :set_locale
     before_action :set_authorization
     before_action :_authenticate!
     before_action :set_container_classes
     before_action :add_initial_breadcrumbs
+    before_action :set_view
+    before_action :set_model_to_fill
 
     rescue_from Pundit::NotAuthorizedError, with: :render_unauthorized
     rescue_from ActiveRecord::RecordInvalid, with: :exception_logger
 
-    helper_method :_current_user, :resources_path, :resource_path, :new_resource_path, :edit_resource_path, :resource_attach_path, :resource_detach_path, :related_resources_path
+    helper_method :_current_user, :resources_path, :resource_path, :new_resource_path, :edit_resource_path, :resource_attach_path, :resource_detach_path, :related_resources_path, :turbo_frame_request?
     add_flash_types :info, :warning, :success, :error
 
     def init_app
-      Avo::App.init request: request, context: context, root_path: avo.root_path.delete_suffix("/"), current_user: _current_user
+      Avo::App.init request: request, context: context, root_path: avo.root_path.delete_suffix("/"), current_user: _current_user, view_context: view_context
 
       @license = Avo::App.license
     end
@@ -70,64 +79,10 @@ module Avo
       instance_eval(&Avo.configuration.context)
     end
 
-    def resources_path(model, keep_query_params: false, **args)
-      return if model.nil?
-
-      model_class = get_model_class model
-
-      existing_params = {}
-
-      begin
-        if keep_query_params
-          existing_params = Addressable::URI.parse(request.fullpath).query_values.symbolize_keys
-        end
-      rescue; end
-      avo.send :"resources_#{model_class.base_class.model_name.route_key}_path", **existing_params, **args
-    end
-
-    def related_resources_path(parent_model, model, keep_query_params: false, **args)
-      return if model.nil?
-
-      existing_params = {}
-
-      begin
-        if keep_query_params
-          existing_params = Addressable::URI.parse(request.fullpath).query_values.symbolize_keys
-        end
-      rescue; end
-      Addressable::Template.new("#{Avo::App.root_path}/resources/#{@parent_resource.model.model_name.route_key}/#{@parent_resource.model.id}/#{@resource.route_key}{?query*}")
-        .expand({query: {**existing_params, **args}})
-        .to_str
-    end
-
-    def resource_path(model = nil, resource_id: nil, keep_query_params: false, **args)
-      return avo.send :"resources_#{singular_name(model)}_path", resource_id, **args if resource_id.present?
-
-      avo.send :"resources_#{singular_name(model)}_path", model, **args
-    end
-
-    def resource_attach_path(model_name, model_id, related_name, related_id = nil)
-      path = "#{Avo::App.root_path}/resources/#{model_name}/#{model_id}/#{related_name}/new"
-
-      path += "/#{related_id}" if related_id.present?
-
-      path
-    end
-
-    def resource_detach_path(model_name, model_id, related_name, related_id = nil)
-      path = "#{Avo::App.root_path}/resources/#{model_name}/#{model_id}/#{related_name}"
-
-      path += "/#{related_id}" if related_id.present?
-
-      path
-    end
-
-    def new_resource_path(model, **args)
-      avo.send :"new_resources_#{singular_name(model)}_path", **args
-    end
-
-    def edit_resource_path(model, **args)
-      avo.send :"edit_resources_#{singular_name(model)}_path", model.id, **args
+    # This is coming from Turbo::Frames::FrameRequest module.
+    # Exposing it as public method
+    def turbo_frame_request?
+      super
     end
 
     private
@@ -156,6 +111,24 @@ module Avo
 
     def set_related_model
       @related_model = eager_load_files(@related_resource, @related_resource.class.find_scope).find params[:related_id]
+    end
+
+    def set_view
+      @view = action_name.to_sym
+    end
+
+    def set_model_to_fill
+      @model_to_fill = @resource.model_class.new if @view == :create
+      @model_to_fill = @model if @view == :update
+    end
+
+    def fill_model
+      # We have to skip filling the the model if this is an attach action
+      is_attach_action = params[model_param_key].blank? && params[:related_name].present? && params[:fields].present?
+
+      unless is_attach_action
+        @model = @resource.fill_model(@model_to_fill, cast_nullable(model_params))
+      end
     end
 
     def hydrate_resource
@@ -231,25 +204,13 @@ module Avo
       query
     end
 
-    # def authorize_user
-    #   return if params[:controller] == 'avo/search'
-
-    #   model = record = resource.model
-
-    #   if ['show', 'edit', 'update'].include?(params[:action]) && params[:controller] == 'avo/resources'
-    #     record = resource
-    #   end
-
-    #   # AuthorizationService::authorize_action _current_user, record, params[:action] return render_unauthorized unless
-    # end
-
     def _authenticate!
       instance_eval(&Avo.configuration.authenticate)
     end
 
     def render_unauthorized(exception)
       if !exception.is_a? Pundit::NotDefinedError
-        flash[:notice] = t "avo.not_authorized"
+        flash.now[:notice] = t "avo.not_authorized"
 
         redirect_url = if request.referrer.blank? || (request.referrer == request.url)
           root_url
@@ -266,8 +227,13 @@ module Avo
     end
 
     def set_container_classes
-      contain = !Avo.configuration.full_width_container
-      contain = false if Avo.configuration.full_width_index_view && action_name.to_sym == :index && self.class.superclass.to_s == "Avo::ResourcesController"
+      contain = true
+
+      if Avo.configuration.full_width_container
+        contain = false
+      elsif Avo.configuration.full_width_index_view && action_name.to_sym == :index && self.class.superclass.to_s == "Avo::ResourcesController"
+        contain = false
+      end
 
       @container_classes = contain ? "2xl:container 2xl:mx-auto" : ""
     end
@@ -286,6 +252,16 @@ module Avo
 
     def on_api_path
       request.original_url.match?(/.*#{Avo::App.root_path}\/avo_api\/.*/)
+    end
+
+    def model_param_key
+      @resource.form_scope
+    end
+
+    def set_locale
+      I18n.locale = params[:locale] || I18n.default_locale
+
+      I18n.default_locale = I18n.locale
     end
   end
 end

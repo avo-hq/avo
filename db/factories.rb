@@ -42,7 +42,11 @@ FactoryBot.define do
   end
 
   factory :comment do
-    body { Faker::Lorem.paragraphs(number: rand(4...10)).join("\n") }
+    body { Faker::Lorem.paragraphs(number: rand(4...10)).join(' ') }
+  end
+
+  factory :review do
+    body { Faker::Lorem.paragraphs(number: rand(4...10)).join(' ') }
   end
 
   factory :person do
@@ -52,5 +56,17 @@ FactoryBot.define do
   factory :spouse do
     name { "#{Faker::Name.first_name} #{Faker::Name.last_name}" }
     type { "Spouse" }
+  end
+
+  factory :fish do
+    name { %w[Tilapia Salmon Trout Catfish Pangasius Carp].sample }
+  end
+
+  factory :course do
+    name { Faker::Educator.unique.course_name }
+  end
+
+  factory :course_link, class: "Course::Link" do
+    link { Faker::Internet.url }
   end
 end

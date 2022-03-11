@@ -31,7 +31,7 @@
       <% end %>
       <% if @card.description %>
         <div class="absolute inset-auto bottom-0 right-0 mb-4 mr-4">
-          <%= heroicon 'solid/information-circle', class: 'h-4 text-gray-500 cursor-pointer', 'data-tippy': 'tooltip', title: @card.description %>
+          <%= svg 'heroicons/solid/information-circle', class: 'h-4 text-gray-500 cursor-pointer', 'data-tippy': 'tooltip', title: @card.description %>
         </div>
       <% end %>
     <% else %>

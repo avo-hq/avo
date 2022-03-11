@@ -37,6 +37,10 @@ module Avo
         self.class.defined_methods(user, model, **args)
       end
 
+      def has_method?(method, **args)
+        self.class.defined_methods(user, record, **args).include? method.to_sym
+      end
+
       class << self
         def authorize(user, record, action, **args)
           return true if skip_authorization
@@ -48,8 +52,10 @@ module Avo
             end
 
             true
-          rescue Pundit::NotDefinedError
-            false
+          rescue Pundit::NotDefinedError => e
+            return false unless Avo.configuration.raise_error_on_missing_policy
+
+            raise e
           rescue => error
             if args[:raise_exception] == false
               false
@@ -62,6 +68,9 @@ module Avo
         def authorize_action(user, record, action, **args)
           action = Avo.configuration.authorization_methods.stringify_keys[action.to_s] || action
 
+          # Add the question mark if it's missing
+          action = "#{action}?" unless action.end_with? '?'
+
           return true if action.nil?
 
           authorize user, record, action, **args
@@ -73,8 +82,10 @@ module Avo
 
           begin
             Pundit.policy_scope! user, model
-          rescue
-            model
+          rescue Pundit::NotDefinedError => e
+            return model unless Avo.configuration.raise_error_on_missing_policy
+
+            raise e
           end
         end
 
@@ -97,7 +108,7 @@ module Avo
             Pundit.policy!(user, record).methods
           rescue => error
             if args[:raise_exception] == false
-              false
+              []
             else
               raise error
             end

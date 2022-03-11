@@ -27,6 +27,10 @@ class UserPolicy < ApplicationPolicy
     true
   end
 
+  def act_on?
+    true
+  end
+
   def attach_post?
     true
   end
@@ -56,6 +60,18 @@ class UserPolicy < ApplicationPolicy
   end
 
   def detach_teams?
+    true
+  end
+
+  def upload_attachments?
+    true
+  end
+
+  def download_attachments?
+    true
+  end
+
+  def delete_attachments?
     true
   end
 

@@ -21,7 +21,6 @@ RSpec.feature "HasManyField", type: :feature do
         click_on "Create new post"
 
         expect(page).to have_current_path "/admin/resources/posts/new?via_relation=user&via_relation_class=User&via_resource_id=#{user.id}"
-
         expect(page).to have_select "post_user_id", selected: user.name, disabled: true
 
         fill_in "post_name", with: "New post name"
@@ -50,7 +49,7 @@ RSpec.feature "HasManyField", type: :feature do
         visit url
 
         # grid view button
-        expect(page).to have_link("Grid view", href: "/admin/resources/users/#{user.id}/posts?turbo_frame=has_many_field_posts&view_type=grid")
+        expect(page).to have_selector "[data-control='view-type-toggle-grid'][href='/admin/resources/users/#{user.id}/posts?turbo_frame=has_many_field_posts&view_type=grid']"
 
         # create new button
         expect(page).to have_link("Create new post", href: "/admin/resources/posts/new?via_relation=user&via_relation_class=User&via_resource_id=#{user.id}")
@@ -106,6 +105,43 @@ RSpec.feature "HasManyField", type: :feature do
         expect(page).to have_current_path url
         expect(page).not_to have_text post.name
       end
+    end
+  end
+
+  describe "scope" do
+    let!(:regular_comment) { create :comment, user: user, body: 'Hey comment' }
+    let!(:a_comment) { create :comment, user: user, body: 'A comment that starts with the letter A' }
+
+    subject do
+      visit "/admin/resources/users/#{user.id}/comments?turbo_frame=has_many_field_show_comments"
+      page
+    end
+
+    it { is_expected.to have_text "A comment that starts with the letter A" }
+    it { is_expected.not_to have_text "Hey comment" }
+  end
+
+  describe "namespaced models" do
+    let!(:course) { create :course }
+
+    it 'creates and updates the course' do
+      expect(Course::Link.count).to be 0
+      visit "/admin/resources/course_links/new?via_relation=course&via_relation_class=Course&via_resource_id=#{course.id}"
+
+      fill_in 'course_link_link', with: 'https://google.com'
+      click_on 'Save'
+
+      link = Course::Link.last
+      expect(Course::Link.count).to be 1
+      expect(link.link).to eq 'https://google.com'
+      expect(link.course.id).to eq course.id
+
+      visit "/admin/resources/course_links/#{link.id}/edit?via_resource_class=Course&via_resource_id=#{course.id}"
+      fill_in 'course_link_link', with: 'https://apple.com'
+      click_on 'Save'
+      link.reload
+      expect(link.link).to eq 'https://apple.com'
+      expect(link.course.id).to eq course.id
     end
   end
 end

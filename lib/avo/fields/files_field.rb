@@ -1,12 +1,14 @@
 module Avo
   module Fields
     class FilesField < BaseField
+      attr_accessor :is_audio
       attr_accessor :is_image
       attr_accessor :direct_upload
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
 
+        @is_audio = args[:is_audio].present? ? args[:is_audio] : false
         @is_image = args[:is_image].present? ? args[:is_image] : @is_avatar
         @direct_upload = args[:direct_upload].present? ? args[:direct_upload] : false
       end

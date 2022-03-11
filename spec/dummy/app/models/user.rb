@@ -9,7 +9,10 @@ class User < ApplicationRecord
   validates :last_name, presence: true
 
   has_one :post
-  has_many :posts
+  has_many :posts, inverse_of: :user
+  has_many :people
+  has_many :spouses
+  has_many :comments
   has_and_belongs_to_many :projects
   has_and_belongs_to_many :teams, join_table: :team_memberships
 
@@ -39,5 +42,9 @@ class User < ApplicationRecord
     md5 = Digest::MD5.hexdigest(email.strip.downcase)
 
     URI::HTTPS.build(host: "www.gravatar.com", path: "/avatar/#{md5}", query: query).to_s
+  end
+
+  def avo_title
+    is_admin? ? "Admin" : "Member"
   end
 end

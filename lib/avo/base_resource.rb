@@ -4,15 +4,25 @@ module Avo
     extend FieldsCollector
     extend HasContext
 
+    include ActionView::Helpers::UrlHelper
+
+    delegate :view_context, to: "Avo::App"
+    delegate :main_app, to: :view_context
+    delegate :avo, to: :view_context
+    delegate :resource_path, to: :view_context
+    delegate :resources_path, to: :view_context
+
     attr_accessor :view
     attr_accessor :model
+    attr_accessor :reflection
     attr_accessor :user
     attr_accessor :params
 
     class_attribute :id, default: :id
     class_attribute :title, default: :id
+    class_attribute :description, default: :id
     class_attribute :search_query, default: nil
-    class_attribute :search_query_help, default: ''
+    class_attribute :search_query_help, default: ""
     class_attribute :includes, default: []
     class_attribute :model_class
     class_attribute :translation_key
@@ -27,6 +37,7 @@ module Avo
     class_attribute :unscoped_queries_on_index, default: false
     class_attribute :resolve_query_scope
     class_attribute :resolve_find_scope
+    class_attribute :ordering
 
     class << self
       def grid(&block)
@@ -51,7 +62,7 @@ module Avo
       # This is the search_query scope
       # This should be removed and passed to the search block
       def scope
-        self.query_scope
+        query_scope
       end
 
       # This resolves the scope when doing "where" queries (not find queries)
@@ -71,10 +82,18 @@ module Avo
       def authorization
         Avo::Services::AuthorizationService.new Avo::App.current_user
       end
+
+      def order_actions
+        return {} if ordering.blank?
+
+        ordering.dig(:actions) || {}
+      end
     end
 
     def initialize
-      self.class.model_class = model_class.base_class
+      unless self.class.model_class.present?
+        self.class.model_class = model_class.base_class
+      end
     end
 
     def hydrate(model: nil, view: nil, user: nil, params: nil)
@@ -116,21 +135,30 @@ module Avo
           field.visible?
         end
         .select do |field|
+          is_valid = true
+
           # Strip out the reflection field in index queries with a parent association.
-          if reflection.present? &&
-              reflection.options.present? &&
-              field.respond_to?(:polymorphic_as) &&
-              field.polymorphic_as.to_s == reflection.options[:as].to_s
-            next
-          end
-          if field.respond_to?(:foreign_key) &&
-              reflection.present? &&
-              reflection.respond_to?(:foreign_key) &&
-              reflection.foreign_key != field.foreign_key
-            next
+          if reflection.present?
+            # regular non-polymorphic association
+            # we're matching the reflection inverse_of foriegn key with the field's foreign_key
+            if field.is_a?(Avo::Fields::BelongsToField)
+              if field.respond_to?(:foreign_key) &&
+                reflection.inverse_of.present? &&
+                reflection.inverse_of.foreign_key == field.foreign_key
+                is_valid = false
+              end
+
+              # polymorphic association
+              if field.respond_to?(:foreign_key) &&
+                field.is_polymorphic? &&
+                reflection.respond_to?(:polymorphic?) &&
+                reflection.inverse_of.foreign_key == field.reflection.foreign_key
+                is_valid = false
+              end
+            end
           end
 
-          true
+          is_valid
         end
 
       if panel.present?
@@ -142,6 +170,12 @@ module Avo
       hydrate_fields(model: @model, view: @view)
 
       fields
+    end
+
+    def get_field(id)
+      get_field_definitions.find do |f|
+        f.id == id.to_sym
+      end
     end
 
     def get_grid_fields
@@ -175,9 +209,9 @@ module Avo
 
       case @view
       when :show
-        I18n.t("avo.resource_details", item: name.downcase, title: model_title).upcase_first
+        model_title
       when :edit
-        I18n.t("avo.update_item", item: name.downcase, title: model_title).upcase_first
+        model_title
       when :new
         I18n.t("avo.create_new_item", item: name.downcase).upcase_first
       end
@@ -212,6 +246,16 @@ module Avo
       return @model.send title if @model.present?
 
       name
+    end
+
+    def resource_description
+      return instance_exec(&self.class.description) if self.class.description.respond_to? :call
+
+      # Show the description only on the resource index view.
+      # If the user wants to conditionally it on all pages, they should use a block.
+      if view == :index
+        return self.class.description if self.class.description.is_a? String
+      end
     end
 
     def translation_key
@@ -254,10 +298,6 @@ module Avo
       view_types << :grid if get_grid_fields.present?
 
       view_types
-    end
-
-    def route_key
-      model_class.model_name.route_key
     end
 
     def context
@@ -337,8 +377,9 @@ module Avo
 
             reflection = @model._reflections[@params[:via_relation]]
 
-            if field.polymorphic_as.present? && field.types.map(&:to_s).include?(@params["via_relation_class"])
-              value = @params["via_relation_class"].safe_constantize.find(@params[:via_resource_id])
+            if field.polymorphic_as.present? && field.types.map(&:to_s).include?(@params[:via_relation_class])
+              # set the value to the actual record
+              value = @params[:via_relation_class].safe_constantize.find(@params[:via_resource_id])
             elsif reflection.present? && reflection.foreign_key.present? && field.id.to_s == @params[:via_relation].to_s
               value = @params[:via_resource_id]
             end
@@ -358,8 +399,28 @@ module Avo
       end
     end
 
-    def avo_path
-      "#{Avo::App.root_path}/resources/#{model_class.model_name.route_key}/#{model.id}"
+    def route_key
+      model_class.model_name.route_key
+    end
+
+    # This is used as the model class ID
+    # We use this instead of the route_key to maintain compatibility with uncountable models
+    # With uncountable models route key appends an _index suffix (Fish->fish_index)
+    # Example: User->users, MediaItem->medie_items, Fish->fish
+    def model_key
+      model_class.model_name.plural
+    end
+
+    def singular_model_key
+      model_class.model_name.singular
+    end
+
+    def record_path
+      resource_path(model: model, resource: self)
+    end
+
+    def records_path
+      resources_path(resource: self)
     end
 
     def label_field
@@ -415,7 +476,11 @@ module Avo
     end
 
     def form_scope
-      model.class.base_class.to_s.downcase
+      model_class.base_class.to_s.underscore.downcase
+    end
+
+    def ordering_host(**args)
+      Avo::Hosts::Ordering.new resource: self, options: self.class.ordering, **args
     end
   end
 end

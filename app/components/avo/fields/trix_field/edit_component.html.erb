@@ -2,13 +2,14 @@
   <div
     data-controller="trix-field"
     data-trix-field-target="controller"
-    data-resource-name="<%= @resource.model_class.model_name.route_key %>"
+    data-resource-name="<%= @resource.model_key %>"
     data-resource-id="<%= @resource.model.id %>"
     data-attachments-disabled="<%= @field.attachments_disabled %>"
     data-attachment-key="<%= @field.attachment_key %>"
     data-hide-attachment-filename="<%= @field.hide_attachment_filename %>"
     data-hide-attachment-filesize="<%= @field.hide_attachment_filesize %>"
     data-hide-attachment-url="<%= @field.hide_attachment_url %>"
+    class="relative block overflow-x-auto max-w-full"
   >
     <% trix_id = "trix_#{@resource.name.underscore}_#{@field.id}" %>
     <trix-editor data-trix-field-target="editor" input="<%= trix_id %>" placeholder="<%= @field.placeholder %>"><%== @field.value %></trix-editor>

@@ -13,10 +13,15 @@ Avo::Engine.routes.draw do
     post "/resources/:resource_name/:id/attachments/", to: "attachments#create"
   end
 
+  get "failed_to_load", to: "home#failed_to_load"
+
   scope "resources", as: "resources" do
     # Attachments
-    get "/:resource_name/:id/active_storage_attachments/:attachment_name/:signed_attachment_id", to: "attachments#show"
-    delete "/:resource_name/:id/active_storage_attachments/:attachment_name/:signed_attachment_id", to: "attachments#destroy"
+    delete "/:resource_name/:id/active_storage_attachments/:attachment_name/:attachment_id", to: "attachments#destroy"
+
+    # Ordering
+    patch "/:resource_name/:id/order", to: "resources#order"
+    patch "/:resource_name/:id/:related_name/:related_id/order", to: "relations#order", as: "associations_order"
 
     # Actions
     get "/:resource_name(/:id)/actions/:action_id", to: "actions#show"
@@ -24,13 +29,19 @@ Avo::Engine.routes.draw do
 
     # Generate resource routes as below:
     # resources :posts
-    instance_eval(&Avo::App.draw_routes)
+    Avo::DynamicRouter.routes(self)
 
     # Relations
-    get "/:resource_name/:id/:related_name/new", to: "relations#new"
-    get "/:resource_name/:id/:related_name/", to: "relations#index"
-    get "/:resource_name/:id/:related_name/:related_id", to: "relations#show"
-    post "/:resource_name/:id/:related_name", to: "relations#create"
-    delete "/:resource_name/:id/:related_name/:related_id", to: "relations#destroy"
+    get "/:resource_name/:id/:related_name/new", to: "relations#new", as: "associations_new"
+    get "/:resource_name/:id/:related_name/", to: "relations#index", as: "associations_index"
+    get "/:resource_name/:id/:related_name/:related_id", to: "relations#show", as: "associations_show"
+    post "/:resource_name/:id/:related_name", to: "relations#create", as: "associations_create"
+    delete "/:resource_name/:id/:related_name/:related_id", to: "relations#destroy", as: "associations_destroy"
+  end
+
+  if Rails.env.development? or Rails.env.staging?
+    scope "avo_private", as: "avo_private" do
+      get "/design", to: 'private#design'
+    end
   end
 end
