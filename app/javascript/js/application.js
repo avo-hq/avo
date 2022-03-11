@@ -1,13 +1,14 @@
+import { Alert, Popover } from 'tailwindcss-stimulus-components'
 import { Application } from '@hotwired/stimulus'
-import { Popover } from 'tailwindcss-stimulus-components'
 
 const application = Application.start()
 
 // Configure Stimulus development experience
-application.debug = false
+application.debug = true
 window.Stimulus = application
 
 // Register stimulus-components controller
+application.register('alert', Alert)
 application.register('popover', Popover)
 
 export { application }
