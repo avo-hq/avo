@@ -14,7 +14,7 @@
 
     <% c.body do %>
       <div class="py-8 flex justify-center items-center">
-        <%= empty_state resource_name: @field.id %>
+        <%= empty_state resource_name: @field.id, related_name: params[:related_name] %>
       </div>
     <% end %>
   <% end %>
