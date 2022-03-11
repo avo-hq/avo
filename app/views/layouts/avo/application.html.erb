@@ -28,7 +28,7 @@
     <div class="content py-4 lg:py-8 px-4 lg:px-8 flex-1 flex flex-col justify-between items-stretch <%= @container_classes %>">
       <%= render partial: "avo/partials/custom_tools_alert" if @custom_tools_alert_visible %>
 
-      <div class="flex flex-1 flex-col justify-between items-stretch">
+      <div class="flex flex-1 flex-col justify-between items-stretch space-y-8">
         <%= yield %>
         <%= render partial: "avo/partials/footer" %>
       </div>

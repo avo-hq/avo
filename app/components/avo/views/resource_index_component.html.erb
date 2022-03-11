@@ -50,14 +50,15 @@
           <%= helpers.empty_state resource_name: @resource.name.downcase.pluralize, view_type: view_type, add_background: true %>
         <% end %>
         <% if @models.present? %>
-          <div class="py-4 mt-4">
+          <div class="mt-8">
             <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: @turbo_frame || 'none', index_params: @index_params, resource: @resource, parent_resource: @parent_resource %>
           </div>
         <% end %>
       <% end %>
+
       <% if view_type.to_sym == :grid %>
         <%= render Avo::Index::ResourceGridComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_model: @parent_model) %>
-        <div class="mt-8 py-6">
+        <div class="mt-14">
           <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: @turbo_frame || 'none', index_params: @index_params, resource: @resource, parent_resource: @parent_resource %>
         </div>
       <% end %>
