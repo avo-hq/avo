@@ -55,7 +55,7 @@ class Avo::ButtonComponent < ViewComponent::Base
   def full_content
     result = ""
     icon_classes = @icon_class
-    icon_classes = full_content_icon_classes
+    icon_classes += full_content_icon_classes
 
     result += helpers.svg(@icon, class: icon_classes) if @icon.present?
     result += "<span>#{content}</span>" if content.present?
