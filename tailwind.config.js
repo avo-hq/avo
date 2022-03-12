@@ -1,6 +1,7 @@
 /* eslint-disable global-require */
 const plugin = require('tailwindcss/plugin')
 const colors = require('tailwindcss/colors')
+const defaultTheme = require('tailwindcss/defaultTheme')
 
 const primary = {
   50: '#FBFDFF',
@@ -148,9 +149,10 @@ module.exports = {
       transitionTimingFunction: {
         pop: 'cubic-bezier(.23,2,.73,.55)',
       },
-      screens: {
-        xs: '495px',
-      },
+    },
+    screens: {
+      xs: '495px',
+      ...defaultTheme.screens,
     },
   },
   variants: {
