@@ -10,7 +10,7 @@
       <div class="space-y-2">
         <%= render Avo::SidebarItemComponent.new label: 'Get started', path: helpers.avo.root_path, active: :exclusive if Rails.env.development? && Avo.configuration.home_path.nil?  %>
 
-        <%= render Avo::SidebarHeadingComponent.new label: t('avo.dashboards') %>
+        <%= render Avo::SidebarHeadingComponent.new label: t('avo.dashboards'), icon: helpers.svg('dashboards-icon', class: 'h-4') %>
 
         <div class="w-full">
           <% Avo::App.dashboards_navigation(helpers._current_user).sort_by { |r| r.navigation_label }.each do |dashboard| %>
