@@ -10,6 +10,7 @@ module Generators
       namespace "avo:card"
       desc "Add an Avo card for your dashboard."
 
+
       def handle
         type = case options[:type]
         when "metric"
