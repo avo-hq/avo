@@ -35,13 +35,14 @@ module Avo
 
     def new
       @resource.hydrate(model: @model)
+
       begin
         @field = @resource.get_field_definitions.find { |f| f.id == @related_resource_name.to_sym }
         @field.hydrate(resource: @resource, model: @model, view: :new)
       rescue
       end
 
-      unless @field.searchable
+      if @field.present? && !@field.searchable
         query = @authorization.apply_policy @attachment_class
 
         @options = query.all.map do |model|

@@ -41,7 +41,7 @@ class Avo::Fields::BelongsToField::AutocompleteComponent < ViewComponent::Base
     is_polymorphic = true
 
     # if this is a field that can be polymorphic (belongs_to)
-    @field.respond_to? :is_polymorphic?
+    if @field.respond_to? :is_polymorphic?
       is_polymorphic = @field.is_polymorphic?
     end
 
