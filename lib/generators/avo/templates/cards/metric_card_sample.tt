@@ -31,7 +31,7 @@ class <%= class_name.camelize %> < Avo::Dashboards::MetricCard
     #   end
     # end
 
-    # User.where("created_at >= :from AND created_at < :to", from: from, to: to).count
+    # User.where(created_at: from..to).count
 
     101
   end

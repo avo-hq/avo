@@ -6,7 +6,8 @@ class Dashy < Avo::Dashboards::BaseDashboard
 
   card UsersMetric
   card UserSignups
-  card Scatter
+  card ScatterChart
+  card LineChart
   card MapCard
   card CustomPartial
 
