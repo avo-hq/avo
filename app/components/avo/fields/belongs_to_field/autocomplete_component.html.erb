@@ -6,7 +6,7 @@
     data-via-association="belongs_to"
   ></div>
   <div class="relative w-full" autocomplete="off">
-    <%= @form.text_field @field.foreign_key,
+    <%= @form.text_field @foreign_key,
       value: field_label,
       class: helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)),
       placeholder: @field.placeholder,

@@ -7,8 +7,13 @@ module Avo
       def initialize(id, **args, &block)
         super(id, **args, &block)
 
-        @display = args[:display].present? ? args[:display] : :show
         @scope = args[:scope].present? ? args[:scope] : nil
+        @display = args[:display].present? ? args[:display] : :show
+        @searchable = args[:searchable] == true
+      end
+
+      def searchable
+        @searchable && ::Avo::App.license.has_with_trial(:searchable_belongs_to)
       end
 
       def resource
@@ -21,6 +26,20 @@ module Avo
 
       def frame_url
         "#{@resource.record_path}/#{id}?turbo_frame=#{turbo_frame}"
+      end
+
+      # The value
+      def field_value
+        value.send(database_value)
+      rescue
+        nil
+      end
+
+      # What the user sees in the text field
+      def field_label
+        value.send(target_resource.class.title)
+      rescue
+        nil
       end
 
       def target_resource
