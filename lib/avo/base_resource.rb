@@ -143,16 +143,16 @@ module Avo
             # we're matching the reflection inverse_of foriegn key with the field's foreign_key
             if field.is_a?(Avo::Fields::BelongsToField)
               if field.respond_to?(:foreign_key) &&
-                reflection.inverse_of.present? &&
-                reflection.inverse_of.foreign_key == field.foreign_key
+                  reflection.inverse_of.present? &&
+                  reflection.inverse_of.foreign_key == field.foreign_key
                 is_valid = false
               end
 
               # polymorphic association
               if field.respond_to?(:foreign_key) &&
-                field.is_polymorphic? &&
-                reflection.respond_to?(:polymorphic?) &&
-                reflection.inverse_of.foreign_key == field.reflection.foreign_key
+                  field.is_polymorphic? &&
+                  reflection.respond_to?(:polymorphic?) &&
+                  reflection.inverse_of.foreign_key == field.reflection.foreign_key
                 is_valid = false
               end
             end

@@ -109,8 +109,8 @@ RSpec.feature "HasManyField", type: :feature do
   end
 
   describe "scope" do
-    let!(:regular_comment) { create :comment, user: user, body: 'Hey comment' }
-    let!(:a_comment) { create :comment, user: user, body: 'A comment that starts with the letter A' }
+    let!(:regular_comment) { create :comment, user: user, body: "Hey comment" }
+    let!(:a_comment) { create :comment, user: user, body: "A comment that starts with the letter A" }
 
     subject do
       visit "/admin/resources/users/#{user.id}/comments?turbo_frame=has_many_field_show_comments"
@@ -124,23 +124,23 @@ RSpec.feature "HasManyField", type: :feature do
   describe "namespaced models" do
     let!(:course) { create :course }
 
-    it 'creates and updates the course' do
+    it "creates and updates the course" do
       expect(Course::Link.count).to be 0
       visit "/admin/resources/course_links/new?via_relation=course&via_relation_class=Course&via_resource_id=#{course.id}"
 
-      fill_in 'course_link_link', with: 'https://google.com'
-      click_on 'Save'
+      fill_in "course_link_link", with: "https://google.com"
+      click_on "Save"
 
       link = Course::Link.last
       expect(Course::Link.count).to be 1
-      expect(link.link).to eq 'https://google.com'
+      expect(link.link).to eq "https://google.com"
       expect(link.course.id).to eq course.id
 
       visit "/admin/resources/course_links/#{link.id}/edit?via_resource_class=Course&via_resource_id=#{course.id}"
-      fill_in 'course_link_link', with: 'https://apple.com'
-      click_on 'Save'
+      fill_in "course_link_link", with: "https://apple.com"
+      click_on "Save"
       link.reload
-      expect(link.link).to eq 'https://apple.com'
+      expect(link.link).to eq "https://apple.com"
       expect(link.course.id).to eq course.id
     end
   end
