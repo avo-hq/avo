@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v2
       # - uses: release-drafter/release-drafter@v5
       #   id: release_drafter
       #   with:
@@ -24,6 +25,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          configuration: ".github/workflows/configuration.json"
+          configuration: "release-notes-configuration.json"
       - name: What
         run: echo ${{steps.github_release.outputs.changelog}}
