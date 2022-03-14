@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    avo (1.24.2)
+    avo (1.25.0)
       active_link_to
       addressable
       breadcrumbs_on_rails
@@ -419,7 +419,7 @@ DEPENDENCIES
   hotwire-rails
   htmlbeautifier
   httparty
-  image_processing (~> 1.2)
+  image_processing (~> 1.12)
   iso
   jsbundling-rails
   launchy
