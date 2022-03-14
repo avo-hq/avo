@@ -38,7 +38,7 @@ version-resolver:
       - 'patch'
   default: patch
 references:
-  - main
+  - 1.x
 template: |
   ## Release notes
 
