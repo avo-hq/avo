@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Avo::Fields::BelongsToField::AutocompleteComponent < ViewComponent::Base
-  def initialize(form:, field:, model_key:, foreign_key:, disabled:, type: nil, resource: nil, polymorphic_record: nil)
+  def initialize(form:, field:, model_key:, foreign_key:, disabled: false, type: nil, resource: nil, polymorphic_record: nil)
     @form = form
     @field = field
     @type = type
@@ -37,7 +37,15 @@ class Avo::Fields::BelongsToField::AutocompleteComponent < ViewComponent::Base
   private
 
   def should_prefill?
-    @field.is_polymorphic? && searchable? && !(new_record? && has_polymorphic_association?)
+    # default this conditional to true
+    is_polymorphic = true
+
+    # if this is a field that can be polymorphic (belongs_to)
+    if @field.respond_to? :is_polymorphic?
+      is_polymorphic = @field.is_polymorphic?
+    end
+
+    is_polymorphic && searchable? && !(new_record? && has_polymorphic_association?)
   end
 
   def searchable?

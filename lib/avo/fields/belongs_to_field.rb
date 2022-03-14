@@ -74,7 +74,7 @@ module Avo
       end
 
       def searchable
-        @searchable && ::Avo::App.license.has_with_trial(:searchable_belongs_to)
+        @searchable && ::Avo::App.license.has_with_trial(:searchable_associations)
       end
 
       def value
