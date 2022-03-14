@@ -24,6 +24,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          configuration: ".github/workflows/release-notes-configuration.json"
+          configuration: ".github/workflows/configuration.json"
       - name: What
         run: echo ${{steps.github_release.outputs.changelog}}
