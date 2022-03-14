@@ -69,7 +69,7 @@ RSpec.feature "HasManyField", type: :system do
     let(:course) { create :course }
     let(:second_course) { create :course }
     let(:link_link) { "https://google.com" }
-    let!(:link) { create :course_link, course: course, link: 'https://apple.com' }
+    let!(:link) { create :course_link, course: course, link: "https://apple.com" }
     let!(:second_link) { create :course_link, course: second_course, link: link_link }
     let(:new_path) { "/admin/resources/courses/#{course.id}/links/new" }
 
