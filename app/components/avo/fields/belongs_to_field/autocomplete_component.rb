@@ -36,7 +36,8 @@ class Avo::Fields::BelongsToField::AutocompleteComponent < ViewComponent::Base
 
   private
 
-  def should_prefill?    # default this conditional to true
+  def should_prefill?
+    # default this conditional to true
     is_polymorphic = true
 
     # if this is a field that can be polymorphic (belongs_to)
