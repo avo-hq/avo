@@ -1,4 +1,4 @@
-name-template: 'Next release draft $MAJOR.x'
+name-template: 'Next release draft 1.x'
 tag-template: 'v$NEXT_PATCH_VERSION'
 categories:
   - title: '🎸 Features'
