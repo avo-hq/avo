@@ -64,4 +64,45 @@ RSpec.feature "HasManyField", type: :system do
       end
     end
   end
+
+  describe "searchable" do
+    let(:course) { create :course }
+    let(:link_link) { "https://google.com" }
+    let!(:link) { create :course_link, course: course, link: link_link }
+    let(:new_path) { "/admin/resources/courses/#{course.id}/links/new" }
+
+    it "shows the placeholder" do
+      visit new_path
+
+      expect(find("input#fields_related_id[placeholder='Click to choose a link']").value).to eql ""
+    end
+
+    it "selects a record in search" do
+      visit new_path
+
+      find("#fields_related_id").click
+
+      write_in_search "google"
+
+      wait_for_search_loaded
+
+      expect(find(".aa-Panel")).to have_content link_link
+
+      select_first_result_in_search
+      wait_for_search_to_dissapear
+
+      expect(find("#fields_related_id[type='text']").value).to eql link_link
+      expect(find("#fields_related_id[type='hidden']", visible: false).value).to eql link.id.to_s
+
+      puts course.reload.links.count.inspect
+      expect {
+        click_on "Attach"
+        wait_for_loaded
+        sleep 0.5
+        # course.reload
+      }.to change(course.reload.links, :count).by 1
+
+      expect(course.links.first.id).to eq link.id
+    end
+  end
 end

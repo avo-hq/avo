@@ -51,6 +51,10 @@ module Avo
           Avo::App.get_resource_by_name id.to_s
         end
       end
+
+      def placeholder
+        @placeholder || I18n.t("avo.choose_an_option")
+      end
     end
   end
 end

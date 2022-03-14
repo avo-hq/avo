@@ -249,8 +249,7 @@ RSpec.feature "belongs_to", type: :system do
           wait_for_search_loaded
 
           select_first_result_in_search
-
-          sleep 0.5
+          wait_for_search_to_dissapear
 
           text_input = find '[name="review[reviewable_id]"][type="text"]', visible: true
           expect(text_input.value).to eq "Avocados are the best"
@@ -302,8 +301,7 @@ RSpec.feature "belongs_to", type: :system do
             expect(find(".aa-Panel")).to have_content "Artichokes"
 
             select_first_result_in_search
-
-            sleep 0.5
+            wait_for_search_to_dissapear
 
             expect(page).to have_field type: "text", name: "review[reviewable_id]", with: second_post.name
             expect(page).to have_field type: "hidden", name: "review[reviewable_id]", with: second_post.id, visible: false
