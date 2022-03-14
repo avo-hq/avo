@@ -67,8 +67,10 @@ RSpec.feature "HasManyField", type: :system do
 
   describe "searchable" do
     let(:course) { create :course }
+    let(:second_course) { create :course }
     let(:link_link) { "https://google.com" }
-    let!(:link) { create :course_link, course: course, link: link_link }
+    let!(:link) { create :course_link, course: course, link: 'https://apple.com' }
+    let!(:second_link) { create :course_link, course: second_course, link: link_link }
     let(:new_path) { "/admin/resources/courses/#{course.id}/links/new" }
 
     it "shows the placeholder" do
@@ -83,7 +85,6 @@ RSpec.feature "HasManyField", type: :system do
       find("#fields_related_id").click
 
       write_in_search "google"
-
       wait_for_search_loaded
 
       expect(find(".aa-Panel")).to have_content link_link
@@ -92,17 +93,14 @@ RSpec.feature "HasManyField", type: :system do
       wait_for_search_to_dissapear
 
       expect(find("#fields_related_id[type='text']").value).to eql link_link
-      expect(find("#fields_related_id[type='hidden']", visible: false).value).to eql link.id.to_s
+      expect(find("#fields_related_id[type='hidden']", visible: false).value).to eql second_link.id.to_s
 
-      puts course.reload.links.count.inspect
       expect {
         click_on "Attach"
         wait_for_loaded
-        sleep 0.5
-        # course.reload
-      }.to change(course.reload.links, :count).by 1
+      }.to change(Course.find(course.id).links, :count).by 1
 
-      expect(course.links.first.id).to eq link.id
+      expect(page).to have_text "Course Link attached."
     end
   end
 end

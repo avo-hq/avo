@@ -60,7 +60,7 @@ module Avo
 
       respond_to do |format|
         if @model.save
-          format.html { redirect_to resource_path(model: @model, resource: @resource), notice: t("avo.attachment_class_attached", attachment_class: @attachment_class) }
+          format.html { redirect_to resource_path(model: @model, resource: @resource), notice: t("avo.attachment_class_attached", attachment_class: @related_resource.name) }
           format.json { render :show, status: :created, location: resource_path(model: @model, resource: @resource) }
         else
           format.html { render :new }
