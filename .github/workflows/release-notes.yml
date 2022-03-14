@@ -5,7 +5,6 @@ on:
     branches:
       - 1.x
 
-
 jobs:
   update_release_notes:
 
