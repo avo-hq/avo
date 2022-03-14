@@ -14,27 +14,27 @@
     },
     {
       "title": "🤖 Maintenance",
-      "label": "chore"
+      "label": ["chore"]
     },
     {
       "title": "✏️ Docs",
-      "label": "docs"
+      "label": ["docs"]
     },
     {
       "title": "💡 Refactor",
-      "label": "refactor"
+      "label": ["refactor"]
     },
     {
       "title": "💄 Style",
-      "label": "style"
+      "label": ["style"]
     },
     {
       "title": "🎡 CI",
-      "label": "ci"
+      "label": ["ci"]
     },
     {
       "title": "⚡️ Perf",
-      "label": "perf"
+      "label": ["perf"]
     }
   ],
   "ignore_labels": [],
