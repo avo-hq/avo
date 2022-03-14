@@ -6,22 +6,25 @@
     } do |form| %>
     <%= render Avo::ModalComponent.new do |c| %>
       <% c.heading do %>
-        <%= t 'avo.choose_item', item: params[:related_name].downcase %>
+        <%= t 'avo.choose_item', item: @related_resource.name.downcase %>
       <% end %>
-
       <div class="flex-1 flex items-center justify-center px-8 text-lg mt-8 mb-12">
-        <div class="flex-1 flex flex-col items-center justify-center px-24 text-base">
-          <%= form.select :related_id, options_for_select(@options, nil),
-            {
-              include_blank: t('avo.choose_an_option'),
-            },
-            {
-              class: input_classes('w-full'),
-            }
+        <% if @field.searchable %>
+          <%= render Avo::Fields::BelongsToField::AutocompleteComponent.new form: form,
+            field: @field,
+            model_key: @field.target_resource&.model_key,
+            foreign_key: 'related_id',
+            resource: @resource
           %>
-        </div>
+        <% else %>
+          <div class="flex-1 flex flex-col items-center justify-center px-24 text-base">
+            <%= form.select :related_id, options_for_select(@options, nil),
+              { include_blank: t('avo.choose_an_option') },
+              { class: input_classes('w-full') }
+            %>
+          </div>
+        <% end %>
       </div>
-
       <% c.controls do %>
         <%= a_button t('avo.cancel'), 'data-action': 'click->modal#close', size: :sm %>
         <%= a_button t('avo.attach'), type: :submit, color: :green, size: :sm %>

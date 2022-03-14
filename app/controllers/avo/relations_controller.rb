@@ -34,10 +34,20 @@ module Avo
     end
 
     def new
-      query = @authorization.apply_policy @attachment_class
+      @resource.hydrate(model: @model)
 
-      @options = query.all.map do |model|
-        [model.send(@attachment_resource.class.title), model.id]
+      begin
+        @field = @resource.get_field_definitions.find { |f| f.id == @related_resource_name.to_sym }
+        @field.hydrate(resource: @resource, model: @model, view: :new)
+      rescue
+      end
+
+      if @field.present? && !@field.searchable
+        query = @authorization.apply_policy @attachment_class
+
+        @options = query.all.map do |model|
+          [model.send(@attachment_resource.class.title), model.id]
+        end
       end
     end
 
@@ -50,7 +60,7 @@ module Avo
 
       respond_to do |format|
         if @model.save
-          format.html { redirect_to resource_path(model: @model, resource: @resource), notice: t("avo.attachment_class_attached", attachment_class: @attachment_class) }
+          format.html { redirect_to resource_path(model: @model, resource: @resource), notice: t("avo.attachment_class_attached", attachment_class: @related_resource.name) }
           format.json { render :show, status: :created, location: resource_path(model: @model, resource: @resource) }
         else
           format.html { render :new }

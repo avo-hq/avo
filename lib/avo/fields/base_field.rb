@@ -7,7 +7,7 @@ module Avo
       include ActionView::Helpers::UrlHelper
       include Avo::Fields::FieldExtensions::VisibleInDifferentViews
 
-      delegate :view_context, to: 'Avo::App'
+      delegate :view_context, to: "Avo::App"
       delegate :main_app, to: :view_context
       delegate :avo, to: :view_context
 

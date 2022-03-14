@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - refactor/hotwire
+      - 1.x
 
 jobs:
   update_release_notes:
