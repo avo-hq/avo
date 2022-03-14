@@ -7,8 +7,13 @@ module Avo
       def initialize(id, **args, &block)
         super(id, **args, &block)
 
-        @display = args[:display].present? ? args[:display] : :show
         @scope = args[:scope].present? ? args[:scope] : nil
+        @display = args[:display].present? ? args[:display] : :show
+        @searchable = args[:searchable] == true
+      end
+
+      def searchable
+        @searchable && ::Avo::App.license.has_with_trial(:searchable_associations)
       end
 
       def resource
@@ -23,6 +28,20 @@ module Avo
         "#{@resource.record_path}/#{id}?turbo_frame=#{turbo_frame}"
       end
 
+      # The value
+      def field_value
+        value.send(database_value)
+      rescue
+        nil
+      end
+
+      # What the user sees in the text field
+      def field_label
+        value.send(target_resource.class.title)
+      rescue
+        nil
+      end
+
       def target_resource
         if @model._reflections[id.to_s].klass.present?
           Avo::App.get_resource_by_model_name @model._reflections[id.to_s].klass.to_s
@@ -31,6 +50,10 @@ module Avo
         else
           Avo::App.get_resource_by_name id.to_s
         end
+      end
+
+      def placeholder
+        @placeholder || I18n.t("avo.choose_an_option")
       end
     end
   end
