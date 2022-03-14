@@ -19,9 +19,9 @@
         <% else %>
           <div class="flex-1 flex flex-col items-center justify-center px-24 text-base">
             <%= form.select :related_id, options_for_select(@options, nil),
-            { include_blank: t('avo.choose_an_option') },
-            { class: input_classes('w-full') }
-          %>
+              { include_blank: t('avo.choose_an_option') },
+              { class: input_classes('w-full') }
+            %>
           </div>
         <% end %>
       </div>
