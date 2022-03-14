@@ -187,7 +187,7 @@ GEM
       concurrent-ruby (~> 1.0)
     i18n_data (0.15.0)
       simple_po_parser (~> 1.1)
-    image_processing (1.12.1)
+    image_processing (1.12.2)
       mini_magick (>= 4.9.5, < 5)
       ruby-vips (>= 2.0.17, < 3)
     io-wait (0.2.1)
@@ -425,7 +425,7 @@ DEPENDENCIES
   hotwire-rails
   htmlbeautifier
   httparty
-  image_processing (~> 1.2)
+  image_processing (~> 1.12)
   iso
   jsbundling-rails
   launchy
