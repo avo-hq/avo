@@ -73,6 +73,12 @@ RSpec.feature "HasManyField", type: :system do
     let!(:second_link) { create :course_link, course: second_course, link: link_link }
     let(:new_path) { "/admin/resources/courses/#{course.id}/links/new" }
 
+    it "shows the modal title" do
+      visit new_path
+
+      expect(page).to have_text "Choose course link"
+    end
+
     it "shows the placeholder" do
       visit new_path
 
