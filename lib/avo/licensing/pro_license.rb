@@ -9,7 +9,8 @@ module Avo
           :global_search,
           :enhanced_search_results,
           :searchable_associations,
-          :resource_ordering
+          :resource_ordering,
+          :dashboards
         ]
       end
     end

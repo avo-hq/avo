@@ -10,13 +10,16 @@
       <div class="space-y-2">
         <%= render Avo::SidebarItemComponent.new label: 'Get started', path: helpers.avo.root_path, active: :exclusive if Rails.env.development? && Avo.configuration.home_path.nil?  %>
 
-        <%= render Avo::SidebarHeadingComponent.new label: t('avo.dashboards'), icon: helpers.svg('dashboards-icon', class: 'h-4') %>
+        <% if dashboards.present? %>
+          <%= render Avo::SidebarHeadingComponent.new label: t('avo.dashboards'), icon: helpers.svg('dashboards-icon', class: 'h-4') %>
 
-        <div class="w-full">
-          <% Avo::App.dashboards_navigation(helpers._current_user).sort_by { |r| r.navigation_label }.each do |dashboard| %>
-            <%= render Avo::SidebarItemComponent.new label: dashboard.navigation_label, path: dashboard.navigation_path %>
-          <% end %>
-        </div>
+          <div class="w-full">
+            <% dashboards.sort_by { |r| r.navigation_label }.each do |dashboard| %>
+              <%= render Avo::SidebarItemComponent.new label: dashboard.navigation_label, path: dashboard.navigation_path %>
+            <% end %>
+          </div>
+        <% end %>
+
 
         <div class="w-full space-y-1">
           <%= render Avo::SidebarHeadingComponent.new label: t('avo.resources'), icon: helpers.svg('resources-icon', class: 'h-4') %>
@@ -24,15 +27,16 @@
             <%= render Avo::SidebarItemComponent.new label: resource.navigation_label, path: helpers.resources_path(resource: resource) %>
           <% end %>
         </div>
-        <div class="w-full">
-          <% tools = Avo::App.get_sidebar_partials %>
-          <% if tools.present? %>
-            <%= render Avo::SidebarHeadingComponent.new label: t('avo.tools'), icon: helpers.svg('tools-icon', class: 'h-4') %>
+
+        <% if tools.present? %>
+          <%= render Avo::SidebarHeadingComponent.new label: t('avo.tools'), icon: helpers.svg('tools-icon', class: 'h-4') %>
+
+          <div class="w-full">
             <% tools.each do |partial| %>
               <%= render partial: "/avo/sidebar/items/#{partial}" %>
             <% end %>
-          <% end %>
-        </div>
+          </div>
+        <% end %>
       </div>
     </div>
     <%= helpers.render_license_warnings %>

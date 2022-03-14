@@ -162,7 +162,9 @@ module Avo
           end
       end
 
-      def dashboards_navigation(user = nil)
+      def get_dashboards(user = nil)
+        return [] unless App.license.has_with_trial(:resource_ordering)
+
         get_available_dashboards(user)
       end
 
