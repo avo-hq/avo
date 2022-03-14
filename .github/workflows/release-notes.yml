@@ -3,8 +3,7 @@ name: Build release notes
 on:
   pull_request:
     branches:
-      - 1.x
-
+      - main
 
 jobs:
   update_release_notes:
@@ -12,7 +11,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
       - uses: release-drafter/release-drafter@v5
         id: release_drafter
         with:
