@@ -37,7 +37,7 @@ version-resolver:
     labels:
       - 'patch'
   default: patch
-commitish:
+references:
   - refs/heads/1.x
 template: |
   ## Release notes
