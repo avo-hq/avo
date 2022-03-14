@@ -18,3 +18,7 @@ jobs:
           config-name: release-drafter.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Release Changelog Builder
+        uses: mikepenz/release-changelog-builder-action@v2.9.0
+      - name: What
+        run: echo ${{steps.github_release.outputs.changelog}}
