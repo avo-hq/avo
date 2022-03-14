@@ -1,9 +1,8 @@
 name: Build release notes
 
 on:
-  push:
+  pull_request:
     branches:
-      - main
       - 1.x
 
 jobs:
@@ -12,9 +11,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v2
       - uses: release-drafter/release-drafter@v5
         id: release_drafter
         with:
-          config-name: release-drafter.yml
+          config-name: release-drafter-1x.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
