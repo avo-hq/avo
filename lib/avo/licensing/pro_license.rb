@@ -8,7 +8,7 @@ module Avo
           :custom_fields,
           :global_search,
           :enhanced_search_results,
-          :searchable_belongs_to,
+          :searchable_associations,
           :resource_ordering,
         ]
       end
