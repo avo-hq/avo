@@ -1,14 +1,17 @@
-
 <%= render Avo::PanelComponent.new(title: @dashboard.name, description: @dashboard.description) do |c| %>
   <% c.bare_content do %>
-    <% if @dashboard.cards.present? %>
-      <div class="min-h-24 grid-cols-6">
+    <% if @dashboard.items.present? %>
+      <div class="min-h-24">
         <%= content_tag(:div, class: "grid gap-y-4 sm:gap-x-4 grid-cols-1 #{@dashboard.classes}") do %>
-          <% @dashboard.cards.each do |card| %>
-            <%= content_tag(:div, class: "relative bg-white rounded shadow-panel space-y-2 #{card.card_classes} overflow-hidden") do %>
-              <turbo-frame id="<%= card.turbo_frame %>" src="<%= card.frame_url(enforced_range: @range) %>" target="_top">
-                <%= render(Avo::LoadingComponent.new(title: card.label)) %>
-              </turbo-frame>
+          <% @dashboard.items.each do |item| %>
+            <% if item.is_divider? %>
+              <%= render Avo::Dashboards::DividerComponent.new(divider: item) %>
+            <% elsif item.is_card? %>
+              <%= content_tag(:div, class: "relative bg-white rounded shadow-panel space-y-2 #{item.card_classes} overflow-hidden") do %>
+                <turbo-frame id="<%= item.turbo_frame %>" src="<%= item.frame_url(enforced_range: @range) %>" target="_top">
+                  <%= render(Avo::LoadingComponent.new(title: item.label)) %>
+                </turbo-frame>
+              <% end %>
             <% end %>
           <% end %>
         <% end %>

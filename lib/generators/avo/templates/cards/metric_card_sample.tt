@@ -8,7 +8,7 @@ class <%= class_name.camelize %> < Avo::Dashboards::MetricCard
   # self.prefix = ""
   # self.suffix = ""
 
-  def query(context:, range:, dashboard:, card:)
+  query do
     # from = Date.today.midnight - 1.week
     # to = DateTime.current
 
@@ -31,8 +31,8 @@ class <%= class_name.camelize %> < Avo::Dashboards::MetricCard
     #   end
     # end
 
-    # User.where(created_at: from..to).count
+    # result User.where(created_at: from..to).count
 
-    101
+    result 101
   end
 end

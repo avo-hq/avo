@@ -1,4 +1,4 @@
-class UsersMetric < Avo::Dashboards::MetricCard
+class ExampleMetric < Avo::Dashboards::MetricCard
   self.id = "users_metric"
   self.label = "Users count"
   self.description = "Users description"
@@ -9,7 +9,8 @@ class UsersMetric < Avo::Dashboards::MetricCard
   self.suffix = "%"
   self.refresh_every = 10.minutes
 
-  def query(context:, range:, dashboard:, card:)
+  # You have access to context, params, range, current dashboard, and current card
+  query do
     from = Date.today.midnight - 1.week
     to = DateTime.current
 
@@ -32,8 +33,6 @@ class UsersMetric < Avo::Dashboards::MetricCard
       end
     end
 
-    # User.where(created_at: from..to)
-    User.where("created_at >= :from AND created_at < :to", from: from, to: to)
-      .count
+    result User.where(created_at: from..to).count
   end
 end

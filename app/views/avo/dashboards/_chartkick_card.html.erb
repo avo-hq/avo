@@ -1,5 +1,3 @@
-<div class="flex-1 flex flex-col justify-end <%= @card.chartkick_classes %>">
-<%#= [@card.chartkick_classes, @card.chartkick_options].inspect %>
-  <%#= send(@card.chart_type, @card.query(context: Avo::App.context, range: @range, dashboard: @dashboard, card: @card), **@card.chartkick_options) %>
-  <%= send(@card.chart_type, @card.query(context: Avo::App.context, range: @range, dashboard: @dashboard, card: @card), **@card.chartkick_options) %>
+<div class="relative flex flex-col <%= @card.chartkick_classes %>">
+  <%= send(@card.chart_type, @card.compute_result.result_data, **@card.chartkick_options) %>
 </div>

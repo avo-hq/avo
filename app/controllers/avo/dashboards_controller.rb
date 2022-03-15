@@ -8,10 +8,14 @@ module Avo
 
     def card
       @dashboard = Avo::App.get_dashboard_by_id params[:dashboard_id]
-      @card = @dashboard.cards.find do |card|
-        card.id.to_s == params[:card_id]
+      @card = @dashboard.items.find do |item|
+        next unless item.is_card?
+
+        item.id.to_s == params[:card_id]
       end
-      @range = params[:range] || @card.ranges.first
+      if @card.present?
+        @card.hydrate(dashboard: @dashboard, params: params)
+      end
     end
   end
 end

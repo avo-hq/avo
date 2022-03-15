@@ -6,18 +6,24 @@ module Avo
       class_attribute :id
       class_attribute :name
       class_attribute :description
-      class_attribute :card_holder
+      class_attribute :items_holder
       class_attribute :grid_cols, default: 3
 
       class << self
         def card(klass)
-          self.card_holder ||= []
+          self.items_holder ||= []
 
-          self.card_holder << klass.new(dashboard: self)
+          self.items_holder << klass.new(dashboard: self)
         end
 
-        def cards
-          self.card_holder
+        def divider(**args)
+          self.items_holder ||= []
+
+          self.items_holder << BaseDivider.new(**args)
+        end
+
+        def items
+          self.items_holder
         end
 
         def classes

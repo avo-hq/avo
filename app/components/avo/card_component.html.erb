@@ -1,4 +1,4 @@
-<div class="flex flex-col h-full" data-controller="dashboard-card" data-dashboard-card-target="card" data-refresh-every="<%= @card.refresh_every %>">
+<div class="relative flex-1 flex flex-col justify-between h-full" data-controller="dashboard-card" data-dashboard-card-target="card" data-refresh-every="<%= @card.refresh_every %>">
   <% if @card.type == :partial && @card.class.empty == true %>
     <div class="flex-1 flex">
       <%= render @card.class.partial %>
@@ -11,10 +11,12 @@
         </div>
         <div data-controller="select">
           <% if @card.type == :metric && @card.parsed_ranges.present? %>
-            <%= select_tag 'period', options_for_select(@card.parsed_ranges, @range),
+            <%= select_tag 'period', options_for_select(@card.parsed_ranges, @card.range),
               class: 'appearance-none inline-flex bg-blue-gray-100 disabled:bg-blue-gray-300 disabled:cursor-not-allowed focus:bg-white text-sm text-blue-gray-700 disabled:text-blue-gray-700 leading-none rounded-md py-px px-2 leading-tight border outline-none outline w-24',
-              'data-target': 'select',
-              'data-action': 'change->select#onChange'
+              data: {
+                target: 'select',
+                action: 'change->select#onChange'
+              }
             %>
           <% end %>
         </div>

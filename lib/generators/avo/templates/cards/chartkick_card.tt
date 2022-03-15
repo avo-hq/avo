@@ -3,20 +3,14 @@ class <%= class_name.camelize %> < Avo::Dashboards::ChartkickCard
   self.label = "<%= name.underscore.humanize %>"
   self.chart_type = :area_chart
 
-  def query(context:, range:, dashboard:, card:)
-    [
+  query do
+    data = 3.times.map do |index|
       {
-        name: "batch 1",
-        data: 16.times.map { |i| [i + 1, Random.rand(32)] },
-      },
-      {
-        name: "batch 1",
-        data: 16.times.map { |i| [i + 1, Random.rand(32)] },
-      },
-      {
-        name: "batch 1",
-        data: 16.times.map { |i| [i + 1, Random.rand(32)] },
+        name: "Batch #{index}",
+        data: 17.times.map { |i| [i, Random.rand(32)] }
       }
-    ]
+    end
+
+    result data
   end
 end

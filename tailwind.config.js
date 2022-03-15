@@ -64,6 +64,7 @@ module.exports = {
         primary,
         ternary: gray,
         gray,
+        application: '#e5ebf0',
       },
       fontFamily: {
         // eslint-disable-next-line max-len

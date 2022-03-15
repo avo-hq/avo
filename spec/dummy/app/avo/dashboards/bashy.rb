@@ -5,5 +5,5 @@ class Bashy < Avo::Dashboards::BaseDashboard
   self.grid_cols = 6
 
   # cards go here
-  card UsersSomething
+  # card UsersSomething
 end

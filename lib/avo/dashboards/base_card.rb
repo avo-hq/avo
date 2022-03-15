@@ -1,8 +1,6 @@
 module Avo
   module Dashboards
     class BaseCard
-      attr_reader :dashboard
-
       class_attribute :id
       class_attribute :label
       class_attribute :description
@@ -11,6 +9,19 @@ module Avo
       class_attribute :range
       class_attribute :ranges, default: []
       class_attribute :refresh_every
+      class_attribute :result_data
+      class_attribute :query_block
+
+      attr_accessor :dashboard
+      attr_accessor :params
+
+      delegate :context, to: ::Avo::App
+
+      class << self
+        def query(&block)
+          self.query_block = block
+        end
+      end
 
       def initialize(dashboard:)
         @dashboard = dashboard
@@ -96,6 +107,40 @@ module Avo
         return :metric if self.class.superclass == ::Avo::Dashboards::MetricCard
         return :chartkick if self.class.superclass == ::Avo::Dashboards::ChartkickCard
         return :partial if self.class.superclass == ::Avo::Dashboards::PartialCard
+      end
+
+      def compute_result
+        Avo::Hosts::DashboardCard.new(card: self, dashboard: dashboard, params: params, context: context, range: range)
+          .compute_result
+
+        self
+      end
+
+      def hydrate(dashboard: nil, params: nil)
+        @dashboard = dashboard if dashboard.present?
+        @params = params if params.present?
+
+        self
+      end
+
+      def range
+        return params[:range] if params.present? && params[:range].present?
+
+        ranges.first
+      end
+
+      def result(data)
+        self.result_data = data
+
+        self
+      end
+
+      def is_card?
+        true
+      end
+
+      def is_divider?
+        false
       end
     end
   end
