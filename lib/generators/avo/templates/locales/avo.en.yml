@@ -101,3 +101,4 @@ en:
       lower: Move record lower
       to_top: Move record to top
       to_bottom: Move record to bottom
+    empty_dashboard_message: Add cards to this dashboard

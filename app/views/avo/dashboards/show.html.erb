@@ -18,18 +18,17 @@
       </div>
     <% else %>
       <div class="w-full h-full">
-        <%= empty_state message: t('avo.no_cards_present') %>
-
         <% if Rails.env.development? %>
           <%= render Avo::PanelComponent.new do |c| %>
             <% c.body do %>
               <div class="p-6">
-                <% # @todo: rephrase this and add link %>
-                You can add cards to this dashboard following this tutorial
+                <%= t 'avo.empty_dashboard_message' %>. <%= link_to 'Docs', 'https://docs.avohq.io/2.0/dashboards.html', target: '_blank' %>
               </div>
             <% end %>
           <% end %>
         <% end %>
+
+        <%= empty_state message: t('avo.no_cards_present') %>
       </div>
     <% end %>
   <% end %>

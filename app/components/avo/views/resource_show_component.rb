@@ -17,8 +17,6 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
 
   def title
     if @reflection.present?
-      return field.name if field.present?
-
       reflection_resource.name
     else
       @resource.panels.first[:name]

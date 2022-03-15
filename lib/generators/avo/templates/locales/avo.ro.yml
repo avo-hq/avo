@@ -79,3 +79,4 @@ ro:
     was_successfully_created: 'a fost creat'
     was_successfully_updated: 'a fost actualizat'
     tools: Instrumente
+    empty_dashboard_message: Adauga carduri in acest dashboard

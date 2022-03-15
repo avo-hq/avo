@@ -24,12 +24,16 @@ class Avo::PanelComponent < ViewComponent::Base
   end
 
   def display_breadcrumbs?
-    @display_breadcrumbs
+    @display_breadcrumbs == true && Avo.configuration.display_breadcrumbs == true
   end
 
   def description
     return @description if @description.present?
 
-    '&nbsp;'
+    ""
+  end
+
+  def render_header?
+    @title.present? || description.present? || tools.present? || display_breadcrumbs?
   end
 end

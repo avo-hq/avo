@@ -17,7 +17,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
     if @reflection.present?
       reflection_resource = ::Avo::App.get_resource_by_model_name(@reflection.active_record.name)
       reflection_resource.hydrate(model: @parent_model) if @parent_model.present?
-      association_name = params['related_name']
+      association_name = params["related_name"]
 
       if association_name.present?
         method_name = "#{policy_method}_#{association_name}?".to_sym
