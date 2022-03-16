@@ -43,7 +43,7 @@ Avo is a beautiful next-generation framework that empowers you, the developer, t
   - **No asset pipeline pollution** - Bring your own asset pipeline. [docs](https://docs.avohq.io/2.0/custom-asset-pipeline.html)
   - **Mobile interface** - Check your data on the go from any mobile device.
 
-## Some more features we're going focusing on next
+## Some of the things we're going focusing on next
 
 Theming ⭐️  &nbsp;notifications ⭐️  &nbsp;Resource segmentation ⭐️  &nbsp;filterable fields ⭐️  &nbsp;inline editing ⭐️  &nbsp;multilingual records ⭐️  &nbsp;associations in tabs ⭐️  &nbsp;keyboard shortcuts ⭐️  &nbsp;track resource changes ⭐️  &nbsp;smart resource generation ⭐️  &nbsp;sidebar editor ⭐️  &nbsp;live resources ⭐️  &nbsp;tags field ⭐️  &nbsp;columns view ⭐️  &nbsp;list view ⭐️  &nbsp;custom action items
 
