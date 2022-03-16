@@ -45,7 +45,7 @@ module Avo
         end
 
         init_resources
-        init_dashboards
+        init_dashboards if license.has_with_trial(:dashboards)
       end
 
       # This method will find all fields available in the Avo::Fields namespace and add them to the fields class_variable array
