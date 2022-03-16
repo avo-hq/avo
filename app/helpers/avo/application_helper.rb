@@ -74,8 +74,16 @@ module Avo
       options = {}
       options[:class] = args[:class].present? ? args[:class] : ""
       options[:class] += args[:extra_class].present? ? " #{args[:extra_class]}" : ""
-      options[:'data-tippy'] = args[:'data-tippy'].present? ? "#{args[:'data-tippy']}" : ""
-      options[:title] = args[:title].present? ? "#{args[:title]}" : ""
+
+      if args[:'data-target'].present?
+        options[:'data-target'] = args[:'data-target']
+      end
+      if args[:'data-tippy'].present?
+        options[:'data-tippy'] = args[:'data-tippy']
+      end
+      if args[:'title'].present?
+        options[:'title'] = args[:'title']
+      end
 
       # Create the path to the svgs directory
       file_path = "#{Avo::Engine.root}/app/assets/svgs/#{file_name}"
@@ -84,7 +92,7 @@ module Avo
       # Create a cache hash
       hash = Digest::MD5.hexdigest "#{file_path.underscore}_#{options}"
 
-      svg_content = Avo::App.cache_store.fetch "svg_file_#{hash}", expires_in: 1.year, cache_nils: false do
+      svg_content = Avo::App.cache_store.fetch "svg_file_#{hash}", expires_in: 1.week, cache_nils: false do
         if File.exist?(file_path)
           file = File.read(file_path)
 

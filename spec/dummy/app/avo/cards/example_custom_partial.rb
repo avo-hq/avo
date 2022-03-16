@@ -3,4 +3,5 @@ class ExampleCustomPartial < Avo::Dashboards::PartialCard
   self.cols = 1
   self.rows = 4
   self.partial = "avo/cards/custom_card"
+  self.description = "This card has been loaded from a custom partial."
 end
