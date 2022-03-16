@@ -43,8 +43,11 @@ Avo is a beautiful next-generation framework that empowers you, the developer, t
   - **No asset pipeline pollution** - Bring your own asset pipeline. [docs](https://docs.avohq.io/2.0/custom-asset-pipeline.html)
   - **Mobile interface** - Check your data on the go from any mobile device.
 
-Some more features we're going focusing on next:
-Theming, notifications, Resource segmentation, filterable fields, inline editing, multilingual records, associations in tabs, keyboard shortcuts, track resource changes, smart resource generation, sidebar editor, live resources, tags field, columns view, list view, [custom action items](https://github.com/avo-hq/avo/discussions/604)
+## Some more features we're going focusing on next
+
+Theming ⭐️  &nbsp;notifications ⭐️  &nbsp;Resource segmentation ⭐️  &nbsp;filterable fields ⭐️  &nbsp;inline editing ⭐️  &nbsp;multilingual records ⭐️  &nbsp;associations in tabs ⭐️  &nbsp;keyboard shortcuts ⭐️  &nbsp;track resource changes ⭐️  &nbsp;smart resource generation ⭐️  &nbsp;sidebar editor ⭐️  &nbsp;live resources ⭐️  &nbsp;tags field ⭐️  &nbsp;columns view ⭐️  &nbsp;list view ⭐️  &nbsp;custom action items
+
+For more up-to-date info check out our 🗺 [Roadmap](https://github.com/orgs/avo-hq/projects/3).
 
 # Installation
 Add this line to your application's `Gemfile`:
