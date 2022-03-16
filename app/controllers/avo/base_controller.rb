@@ -20,7 +20,7 @@ module Avo
       set_filters
       set_actions
 
-      # If we don't get a query object predefined from a child controller like relations, just spin one up
+      # If we don't get a query object predefined from a child controller like associations, just spin one up
       unless defined? @query
         @query = @resource.class.query_scope
       end
@@ -30,7 +30,7 @@ module Avo
         @query = @query.unscoped
       end
 
-      # Eager load the relations
+      # Eager load the associations
       if @resource.includes.present?
         @query = @query.includes(*@resource.includes)
       end

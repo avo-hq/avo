@@ -22,23 +22,27 @@ Avo is a beautiful next-generation framework that empowers you, the developer, t
 ## Features
 
   - **Powered by Hotwire** - Rails ❤️  Hotwire
-  - **Code driven configuration** - Configure your Rails dashboard entirely by writing Ruby code.
+  - **Code driven configuration** - Configure your Rails dashboard entirely by writing Ruby code. [docs](https://docs.avohq.io/2.0/resources.html#defining-resources)
   - **Resource Management** - Create a CRUD interface for Active Record from one command. No more copy-pasting view and controller files around.
-  - **Resource Search** - Quickly run a search through one or more resources at once.
-  - **Active Storage support** - Amazingly easy, **one-line**, single or multi-file integration with **ActiveStorage**.
-  - **Grid view** - Beautiful card layout to showcase your content.
-  - **Actions** - Run custom actions to one or more of your resources with as little as pressing a button 💪
-  - **Filters** - Write your own custom filters to quickly segment your data.
-  - **Keeps your app clean** - You don't need to change your app to use Avo. Drop it in your existing app or add it to a new one and you're done 🙌
-  - **Custom fields**- No worries if we missed a field you need. Generate a custom field in a jiffy.
-  - **Custom tools** - You need to add a page with something completely new, you've got it!
-  - **Authorization** - Leverage Pundit policies to build a robust and scalable authorization system.
-  - **Localization** - Have it available in any language you need.
-  - **No asset pipeline pollution** - Bring your own asset pipeline.
-  - **Dashboard widgets and metrics*** - Customize your dashboard with the tools and analytics you need.
-  - **Themable*** - Dress it up into your own colors.
+  - **Dashboard widgets and metrics** - Create metrics, charts, and custom cards amazingly fast. [docs](https://docs.avohq.io/2.0/dashboards.html)
+  - **Resource Search** - Quickly run a search through one or more resources at once. [docs](https://docs.avohq.io/2.0/resources.html#filters)
+  - **Associations enabled** - Link your models together with all types of associations (belongs_to, has_many, polymorphic, etc.). [docs](https://docs.avohq.io/2.0/associations.html)
+  - **Fuzzy-searchable associations** - Do you have a ton of records and don't want to scroll through a big dropdown? Avo's got you covered. [docs](https://docs.avohq.io/2.0/associations.html#searchable-belongs-to)
+  - **Active Storage support** - Amazingly easy, **one-line**, single or multi-file integration with **ActiveStorage**. [docs](https://docs.avohq.io/2.0/fields.html#file)
+  - **Records Ordering** - Sorting records is a breeze. [docs](https://docs.avohq.io/2.0/resources.html#records-ordering)
+  - **Grid view** - Beautiful card layout to showcase your content. [docs](https://docs.avohq.io/2.0/grid-view.html)
+  - **Actions** - Run custom actions to one or more of your resources with as little as pressing a button 💪 &nbsp; [docs](https://docs.avohq.io/2.0/actions.html)
+  - **Filters** - Write your own custom filters to quickly segment your data. [docs](https://docs.avohq.io/2.0/filters.html)
+  - **Keeps your app clean** - You don't need to change your app to use Avo. Drop it in your existing app or add it to a new one and you're done 🙌 [docs](https://docs.avohq.io/2.0/installation.html)
+  - **Custom fields**- No worries if we missed a field you need. Generate a custom field in a jiffy. [docs](https://docs.avohq.io/2.0/custom-fields.html)
+  - **Custom tools** - Break out of the CRUD. Do you need to add a page with something completely new? You've got it! [docs](https://docs.avohq.io/2.0/custom-tools.html)
+  - **Authorization** - Leverage Pundit policies to build a robust and scalable authorization system. [docs](https://docs.avohq.io/2.0/authorization.html)
+  - **Localization** - Have it available in any language you need. [docs](https://docs.avohq.io/2.0/localization.html)
+  - **No asset pipeline pollution** - Bring your own asset pipeline. [docs](https://docs.avohq.io/2.0/custom-asset-pipeline.html)
+  - **Mobile interface** - Check your data on the go from any mobile device.
 
-*Features still under development
+Some more features we're going focusing on next:
+Theming, notifications, Resource segmentation, filterable fields, inline editing, multilingual records, associations in tabs, keyboard shortcuts, track resource changes, smart resource generation, sidebar editor, live resources, tags field, columns view, list view, [custom action items](https://github.com/avo-hq/avo/discussions/604)
 
 # Installation
 Add this line to your application's `Gemfile`:
@@ -62,7 +66,7 @@ Please read [CONTRIBUTING.MD](./CONTRIBUTING.MD)
 
 # Upgrade Guide
 
-Please read the [UPGRADE_GUIDE.MD](https://docs.avohq.io/1.0/upgrade.html)
+Please read the [UPGRADE_GUIDE.MD](https://docs.avohq.io/2.0/upgrade.html)
 
 # ✨ Contributors
 
