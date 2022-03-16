@@ -1,14 +1,10 @@
 <div class="relative flex-1 flex flex-col justify-between h-full" data-controller="dashboard-card" data-dashboard-card-target="card" data-refresh-every="<%= @card.refresh_every %>">
-  <% if @card.type == :partial && @card.class.empty == true %>
-    <div class="flex-1 flex">
-      <%= render @card.class.partial %>
-    </div>
-  <% else %>
+  <% if @card.class.display_header %>
     <div class="px-4 pt-4">
       <div class="flex justify-between items-center min-h-6">
-        <div class="text-base font-bold text-gray-700 leading-none">
-          <%= @card.label %>
-        </div>
+          <div class="text-base font-bold text-gray-700 leading-none">
+            <%= @card.label %>
+          </div>
         <div data-controller="select">
           <% if @card.type == :metric && @card.parsed_ranges.present? %>
             <%= select_tag 'period', options_for_select(@card.parsed_ranges, @card.range),
@@ -22,19 +18,19 @@
         </div>
       </div>
     </div>
-    <% if @card.type == :chartkick %>
-      <%= render 'chartkick_card', card: @card %>
-    <% elsif @card.type === :partial %>
-      <%= render @card.class.partial %>
-    <% elsif @card.type === :metric %>
-      <div class="flex-1 flex px-4 pb-4">
-        <%= render 'metric_card', card: @card %>
-      </div>
-    <% end %>
-    <% if @card.description %>
-      <div class="absolute inset-auto bottom-0 right-0 mb-4 mr-4">
-        <%= helpers.svg 'heroicons/solid/information-circle', class: 'h-4 text-gray-500 cursor-pointer', 'data-tippy': 'tooltip', title: @card.description %>
-      </div>
-    <% end %>
+  <% end %>
+  <% if @card.type == :chartkick %>
+    <%= render 'chartkick_card', card: @card %>
+  <% elsif @card.type === :partial %>
+    <%= render @card.class.partial %>
+  <% elsif @card.type === :metric %>
+    <div class="flex-1 flex px-4 pb-4">
+      <%= render 'metric_card', card: @card %>
+    </div>
+  <% end %>
+  <% if @card.description %>
+    <div class="absolute inset-auto bottom-0 right-0 mb-4 mr-4">
+      <%= helpers.svg 'heroicons/solid/information-circle', class: 'h-4 text-gray-500 cursor-pointer', 'data-tippy': 'tooltip', title: @card.description %>
+    </div>
   <% end %>
 </div>

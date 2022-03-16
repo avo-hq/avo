@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Avo::PanelComponent < ViewComponent::Base
+  attr_reader :title
+
   renders_one :tools
   renders_one :body
   renders_one :bare_content

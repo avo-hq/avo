@@ -4,7 +4,7 @@ class ExampleAreaChart < Avo::Dashboards::ChartkickCard
   self.chart_type = :area_chart
   self.description = "Some tiny description"
   self.cols = 2
-  self.range = 30
+  self.initial_range = 30
   self.ranges = [7, 30, 60, 365, "TODAY", "MTD", "QTD", "YTD", "ALL"]
   # @todo: fix ranges👆
 

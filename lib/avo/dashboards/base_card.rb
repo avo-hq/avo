@@ -6,9 +6,11 @@ module Avo
       class_attribute :description
       class_attribute :cols, default: 1
       class_attribute :rows, default: 1
-      class_attribute :range
+      class_attribute :initial_range
       class_attribute :ranges, default: []
       class_attribute :refresh_every
+      class_attribute :display_header, default: true
+      # private
       class_attribute :result_data
       class_attribute :query_block
 
@@ -61,7 +63,7 @@ module Avo
       end
 
       def frame_url(enforced_range: nil)
-        enforced_range ||= range || ranges.first
+        enforced_range ||= initial_range || ranges.first
         "#{Avo::App.root_path}/dashboards/#{dashboard.id}/cards/#{id}?turbo_frame=#{turbo_frame}&range=#{enforced_range}"
       end
 
@@ -125,6 +127,8 @@ module Avo
 
       def range
         return params[:range] if params.present? && params[:range].present?
+
+        return initial_range if initial_range.present?
 
         ranges.first
       end
