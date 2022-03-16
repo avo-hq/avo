@@ -6,7 +6,7 @@ class ExampleAreaChart < Avo::Dashboards::ChartkickCard
   self.cols = 2
   self.initial_range = 30
   self.ranges = [7, 30, 60, 365, "TODAY", "MTD", "QTD", "YTD", "ALL"]
-  # @todo: fix ranges👆
+  # @todo: fix ranges for chartkick👆
 
   # self.chart_options = {library: {plugins: {legend: {display: true}}}}
   # self.flush = true
