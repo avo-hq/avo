@@ -1,0 +1,3 @@
+<div class="relative flex flex-col <%= @card.chartkick_classes %>">
+  <%= send(@card.chart_type, @card.compute_result.result_data, **@card.chartkick_options) %>
+</div>

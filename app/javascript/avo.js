@@ -8,6 +8,8 @@ import { Turbo } from '@hotwired/turbo-rails'
 import Rails from '@rails/ujs'
 import tippy from 'tippy.js'
 
+import 'chartkick/chart.js/chart.esm'
+
 // Toastr alerts
 import './js/active-storage'
 import './js/controllers'

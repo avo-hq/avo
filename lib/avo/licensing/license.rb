@@ -50,12 +50,14 @@ module Avo
 
       # Returns if has ability and if is a valid license or app is in development.
       def has_with_trial(ability)
-        can(ability) && (valid? || Rails.env.development? || Rails.env.test?)
+        return can(ability) && valid? if Rails.env.production?
+
+        true
       end
 
       # Returns if lacks ability and if is a valid license or app is in development.
       def lacks_with_trial(ability)
-        !can(ability) && (valid? || Rails.env.development? || Rails.env.test?)
+        !has_with_trial ability
       end
     end
   end

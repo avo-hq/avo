@@ -1,27 +1,29 @@
 <div <%== data_attributes %>>
-  <div class="mb-6">
-    <div>
-      <% if display_breadcrumbs? %>
-        <div class="breadcrumbs">
-          <%= helpers.render_breadcrumbs(separator: helpers.svg('chevron-right', class: 'inline-block h-3 stroke-current relative top-[-1px] ml-1' )) if Avo.configuration.display_breadcrumbs %>
+  <% if render_header? %>
+    <div class="mb-6">
+      <div>
+        <% if display_breadcrumbs? %>
+          <div class="breadcrumbs">
+            <%= helpers.render_breadcrumbs(separator: helpers.svg('chevron-right', class: 'inline-block h-3 stroke-current relative top-[-1px] ml-1' )) if Avo.configuration.display_breadcrumbs %>
+          </div>
+        <% end %>
+
+        <div class="text-2xl tracking-normal font-semibold text-gray-800 truncate" data-target="title">
+          <%= @title %>
         </div>
-      <% end %>
 
-      <div class="text-2xl tracking-normal font-semibold text-gray-800 truncate" data-target="title">
-        <%= @title %>
+        <div class="text-base tracking-normal font-medium text-gray-600" data-target="description">
+          <%== description %>
+        </div>
       </div>
 
-      <div class="text-base tracking-normal font-medium text-gray-600" data-target="description">
-        <%== description %>
-      </div>
-    </div>
-
-    <div>
-      <div class="flex flex-col sm:flex-row sm:justify-end space-y-2 sm:space-y-0 sm:space-x-2 mb-6 mt-4 sm:mt-0">
-        <%= tools %>
+      <div>
+        <div class="flex flex-col sm:flex-row sm:justify-end space-y-2 sm:space-y-0 sm:space-x-2 mb-6 mt-4 sm:mt-0">
+          <%= tools %>
+        </div>
       </div>
     </div>
-  </div>
+  <% end %>
 
   <div class="relative bg-white rounded shadow-panel <%= @body_classes %>">
     <%= body %>

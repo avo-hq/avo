@@ -75,6 +75,16 @@ module Avo
       options[:class] = args[:class].present? ? args[:class] : ""
       options[:class] += args[:extra_class].present? ? " #{args[:extra_class]}" : ""
 
+      if args[:'data-target'].present?
+        options[:'data-target'] = args[:'data-target']
+      end
+      if args[:'data-tippy'].present?
+        options[:'data-tippy'] = args[:'data-tippy']
+      end
+      if args[:title].present?
+        options[:title] = args[:title]
+      end
+
       # Create the path to the svgs directory
       file_path = "#{Avo::Engine.root}/app/assets/svgs/#{file_name}"
       file_path = "#{file_path}.svg" unless file_path.end_with? ".svg"
@@ -82,7 +92,7 @@ module Avo
       # Create a cache hash
       hash = Digest::MD5.hexdigest "#{file_path.underscore}_#{options}"
 
-      svg_content = Avo::App.cache_store.fetch "svg_file_#{hash}", expires_in: 1.year, cache_nils: false do
+      svg_content = Avo::App.cache_store.fetch "svg_file_#{hash}", expires_in: 1.week, cache_nils: false do
         if File.exist?(file_path)
           file = File.read(file_path)
 
@@ -106,7 +116,7 @@ module Avo
     end
 
     def input_classes(extra_classes = "", has_error: false)
-      classes = "appearance-none inline-flex bg-gray-100 disabled:cursor-not-allowed text-gray-600 disabled:opacity-50 rounded py-3 px-3 leading-tight border focus:border-gray-600 focus-visible:ring-0 focus:text-gray-700"
+      classes = "appearance-none inline-flex bg-gray-100 disabled:cursor-not-allowed text-gray-600 disabled:opacity-50 rounded py-2 px-3 leading-tight border focus:border-gray-600 focus-visible:ring-0 focus:text-gray-700"
 
       classes += if has_error
         " border-red-600"

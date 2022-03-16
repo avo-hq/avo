@@ -1,0 +1,8 @@
+<div class="flex-1 flex p-4">
+  <div class="place-self-end">
+    Dashboard ID: <%%= @dashboard.id %>
+    <br />
+    <br />
+    Customize this partial under <code class='p-1 rounded bg-gray-500 text-white text-sm'>app/views/avo/cards/_<%= name.underscore %>.html.erb</code>
+  </div>
+</div>

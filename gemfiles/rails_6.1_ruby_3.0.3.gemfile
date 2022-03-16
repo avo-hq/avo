@@ -38,6 +38,9 @@ gem "ransack"
 gem "friendly_id", "~> 5.4.0"
 gem "aws-sdk-s3", require: false
 gem "net-smtp", require: false
+gem "groupdate"
+gem "hightop"
+gem "active_median"
 gem "acts_as_list"
 
 group :development do

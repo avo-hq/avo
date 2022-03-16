@@ -40,15 +40,19 @@ module.exports = {
   future: {},
   content: [
     './safelist.txt',
+    './lib/avo/**/*.rb',
+
     './app/helpers/**/*.rb',
     './app/views/**/*.erb',
     './app/packs/**/*.js',
     './app/components/avo/**/*.erb',
     './app/components/avo/**/*.rb',
     './app/controllers/avo/**/*.rb',
+
     './spec/dummy/app/avo/resources/**/*.rb',
     './spec/dummy/app/views/**/*.erb',
   ],
+
   theme: {
     extend: {
       colors: {
@@ -60,6 +64,7 @@ module.exports = {
         primary,
         ternary: gray,
         gray,
+        application: '#e5ebf0',
       },
       fontFamily: {
         // eslint-disable-next-line max-len

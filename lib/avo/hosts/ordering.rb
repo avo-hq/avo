@@ -1,4 +1,4 @@
-require 'dry-initializer'
+require "dry-initializer"
 
 module Avo
   module Hosts

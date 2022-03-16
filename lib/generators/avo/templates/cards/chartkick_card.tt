@@ -1,0 +1,16 @@
+class <%= class_name.camelize %> < Avo::Dashboards::ChartkickCard
+  self.id = "<%= name.underscore %>"
+  self.label = "<%= name.underscore.humanize %>"
+  self.chart_type = :area_chart
+
+  query do
+    data = 3.times.map do |index|
+      {
+        name: "Batch #{index}",
+        data: 17.times.map { |i| [i, Random.rand(32)] }
+      }
+    end
+
+    result data
+  end
+end

@@ -1,0 +1,3 @@
+<%= turbo_frame_wrap(params[:turbo_frame]) do %>
+  <%= render Avo::CardComponent.new card: @card %>
+<% end %>

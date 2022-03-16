@@ -129,6 +129,7 @@ gem 'breadcrumbs_on_rails'
 
 gem 'manifester'
 
+# Search
 gem 'ransack'
 
 gem 'friendly_id', '~> 5.4.0'
@@ -136,5 +137,10 @@ gem 'friendly_id', '~> 5.4.0'
 gem 'aws-sdk-s3', require: false
 
 gem 'net-smtp', require: false
+
+# Dashboard charts
+gem "groupdate"
+gem "hightop"
+gem "active_median"
 
 gem 'acts_as_list'
