@@ -1,6 +1,7 @@
 en:
   avo:
     dashboard: 'Dashboard'
+    dashboards: 'Dashboards'
     choose_a_country: 'Choose a country'
     choose_an_option: 'Choose an option'
     are_you_sure_you_want_to_run_this_option: 'Are you sure you want to run this action?'

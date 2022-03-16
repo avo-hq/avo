@@ -1,6 +1,7 @@
 pt-BR:
   avo:
     dashboard: 'Painel'
+    dashboards: 'Painéis'
     choose_a_country: 'Escolha um país'
     choose_an_option: 'Escolha uma opção'
     are_you_sure_you_want_to_run_this_option: 'Você tem certeza que deseja executar esta ação?'

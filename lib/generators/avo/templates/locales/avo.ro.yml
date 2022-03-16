@@ -1,6 +1,7 @@
 ro:
   avo:
     dashboard: 'Panou de control'
+    dashboards: 'Panouri de control'
     choose_a_country: 'Alege o tara'
     choose_an_option: 'Alege o optiune'
     are_you_sure_you_want_to_run_this_option: 'Esti sigur ca vrei sa rulezi aceasta actiune?'
