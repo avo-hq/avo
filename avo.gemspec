@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.authors = ["Adrian Marin", "Mihai Marin"]
   spec.email = ["avo@avohq.io"]
   spec.homepage = "https://avohq.io"
-  spec.summary = "Configuration-based, robust, extendable Ruby on Rails admin panel framework."
+  spec.summary = "Configuration-based, no-maintenance, extendable Ruby on Rails admin panel framework."
   spec.description = "Avo abstracts away the common parts of building apps, letting your engineers work on your app's essential components. The result is a full-featured admin panel that works out of the box, ready to give to your end-users."
   spec.license = "Commercial"
 
