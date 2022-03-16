@@ -82,3 +82,5 @@ nb-NO:
     sign_out: 'Logg ut'
     tools: Redskapene
     empty_dashboard_message: Legg til kort i dette dashbordet
+    no_cards_present: 'Ingen kort til stede'
+
