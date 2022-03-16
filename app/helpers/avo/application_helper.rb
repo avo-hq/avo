@@ -81,8 +81,8 @@ module Avo
       if args[:'data-tippy'].present?
         options[:'data-tippy'] = args[:'data-tippy']
       end
-      if args[:'title'].present?
-        options[:'title'] = args[:'title']
+      if args[:title].present?
+        options[:title] = args[:title]
       end
 
       # Create the path to the svgs directory
