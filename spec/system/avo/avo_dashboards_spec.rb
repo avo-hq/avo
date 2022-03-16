@@ -45,7 +45,7 @@ RSpec.describe "Dashboards", type: :system do
 
       it do
         is_expected.to have_text "Users count"
-        is_expected.to have_text "$\n11\n%" # test prefix and suffix. 10 new users + admin
+        is_expected.to have_text "11" # test prefix and suffix. 10 new users + admin
         description_tooltip_has_text "Users description"
       end
 
@@ -53,7 +53,26 @@ RSpec.describe "Dashboards", type: :system do
         subject
 
         select "ALL", from: "#{card_id}_range"
-        expect(card).to have_text "$\n12\n%"
+        expect(card).to have_text "12"
+      end
+    end
+
+    describe "prefix metric card" do
+      let(:card_id) { "amount_raised" }
+
+      it do
+        is_expected.to have_text "Amount raised"
+        is_expected.to have_text "$\n9001" # test prefix and suffix. 10 new users + admin
+      end
+    end
+
+    describe "suffix metric card" do
+      let(:card_id) { "percent_done" }
+
+      it do
+        is_expected.to have_text "Percent done"
+        is_expected.to have_text "42\n%" # test prefix and suffix. 10 new users + admin
+        description_tooltip_has_text "This is the progress we made so far..."
       end
     end
 
