@@ -83,7 +83,6 @@ en:
       placeholder: 'Search'
       cancel_button: 'Cancel'
     sign_out: 'Sign out'
-    no_cards_present: 'No cards present'
     failed: 'Failed'
     failed_to_load: 'Failed to load'
     key_value_field:
@@ -102,3 +101,4 @@ en:
       to_top: Move record to top
       to_bottom: Move record to bottom
     empty_dashboard_message: Add cards to this dashboard
+    no_cards_present: 'No cards present'
