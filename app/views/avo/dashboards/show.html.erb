@@ -2,7 +2,7 @@
   <% c.bare_content do %>
     <% if @dashboard.items.present? %>
       <div class="min-h-24">
-        <%= content_tag(:div, class: "grid gap-y-4 sm:gap-x-4 grid-cols-1 #{@dashboard.classes}") do %>
+        <%= content_tag(:div, class: "grid gap-4 grid-cols-1 #{@dashboard.classes}") do %>
           <% @dashboard.items.each do |item| %>
             <% if item.is_divider? %>
               <%= render Avo::Dashboards::DividerComponent.new(divider: item) %>

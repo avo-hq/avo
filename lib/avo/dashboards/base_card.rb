@@ -72,19 +72,19 @@ module Avo
 
         result += case self.class.cols.to_i
         when 1
-          " col-span-1"
+          " sm:col-span-1"
         when 2
-          " col-span-2"
+          " sm:col-span-2"
         when 3
-          " col-span-3"
+          " sm:col-span-3"
         when 4
-          " col-span-4"
+          " sm:col-span-4"
         when 5
-          " col-span-5"
+          " sm:col-span-5"
         when 6
-          " col-span-6"
+          " sm:col-span-6"
         else
-          " col-span-1"
+          " sm:col-span-1"
         end
 
         result += case self.class.rows.to_i
