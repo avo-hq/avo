@@ -12,9 +12,8 @@ module Avo
         next unless item.is_card?
 
         item.id.to_s == params[:card_id]
-      end
-      if @card.present?
-        @card.hydrate(dashboard: @dashboard, params: params)
+      end.tap do |card|
+        card.hydrate(dashboard: @dashboard, params: params)
       end
     end
   end
