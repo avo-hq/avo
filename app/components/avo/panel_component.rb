@@ -32,7 +32,7 @@ class Avo::PanelComponent < ViewComponent::Base
   def description
     return @description if @description.present?
 
-    ""
+    "&nbsp;"
   end
 
   def render_header?
