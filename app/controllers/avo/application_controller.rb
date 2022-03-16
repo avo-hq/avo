@@ -53,8 +53,12 @@ module Avo
         raise Avo::LicenseVerificationTemperedError, "License verification mechanism tempered with." unless method(:index).source_location.first.match?(/.*\/app\/controllers\/avo\/search_controller\.rb/)
       end
 
-      if params[:controller] == "avo/dashboards"
+      if params[:controller] == "avo/dashboards" && params[:action] == "show"
         raise Avo::LicenseVerificationTemperedError, "License verification mechanism tempered with." unless method(:show).source_location.first.match?(/.*\/app\/controllers\/avo\/dashboards_controller\.rb/)
+      end
+
+      if params[:controller] == "avo/dashboards" && params[:action] == "card"
+        raise Avo::LicenseVerificationTemperedError, "License verification mechanism tempered with." unless method(:card).source_location.first.match?(/.*\/app\/controllers\/avo\/dashboards_controller\.rb/)
       end
 
       super(*args)
