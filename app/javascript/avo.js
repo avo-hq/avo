@@ -18,7 +18,7 @@ Rails.start()
 
 window.Turbolinks = Turbo
 
-let scrollTop = 0
+let scrollTop = null
 Mousetrap.bind('r r r', () => {
   // Cpture scroll position
   scrollTop = document.scrollingElement.scrollTop

@@ -92,7 +92,9 @@ module Avo
 
     def initialize
       unless self.class.model_class.present?
-        self.class.model_class = model_class.base_class
+        if model_class.present?
+          self.class.model_class = model_class.base_class
+        end
       end
     end
 
