@@ -22,7 +22,7 @@
           data-selected-resources="[]"
         >
           <% if @resource.search_query.present? %>
-            <div class="flex items-center px-6 w-64">
+            <div class="flex items-center px-4 w-64">
               <%= render partial: 'avo/partials/resource_search', locals: {resource: @resource.model_key} %>
             </div>
           <% else %>
@@ -30,18 +30,16 @@
             <div class="-mb-2"></div>
           <% end %>
           <% if @filters.present? || available_view_types.count > 1 %>
-            <div class="justify-self-end flex justify-start xs:justify-end items-center px-6 space-x-3">
+            <div class="justify-self-end flex justify-start xs:justify-end items-center px-4 space-x-3">
               <%= render Avo::FiltersComponent.new filters: @filters, resource: @resource %>
               <%= render partial: 'avo/partials/view_toggle_button', locals: { available_view_types: available_view_types, view_type: view_type, turbo_frame: @turbo_frame } if available_view_types.count > 1 %>
             </div>
           <% end %>
         </div>
       <% end %>
-    <% end %>
-    <% c.bare_content do %>
       <% if view_type.to_sym == :table %>
         <% if @resources.present? %>
-          <div class="w-full overflow-auto flex flex-col mt-4 shadow-panel rounded">
+          <div class="w-full overflow-auto flex flex-col mt-0">
             <div class="relative flex-1 flex">
               <%= render(Avo::Index::ResourceTableComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_model: @parent_model)) %>
             </div>
@@ -49,6 +47,10 @@
         <% else %>
           <%= helpers.empty_state resource_name: @resource.name.downcase.pluralize, related_name: params[:related_name], view_type: view_type, add_background: true %>
         <% end %>
+      <% end %>
+    <% end %>
+    <% c.bare_content do %>
+      <% if view_type.to_sym == :table %>
         <% if @models.present? %>
           <div class="mt-8">
             <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: @turbo_frame || 'none', index_params: @index_params, resource: @resource, parent_resource: @parent_resource %>
