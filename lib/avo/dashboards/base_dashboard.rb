@@ -8,6 +8,7 @@ module Avo
       class_attribute :description
       class_attribute :items_holder
       class_attribute :grid_cols, default: 3
+      class_attribute :visible, default: true
 
       class << self
         def card(klass)
@@ -47,6 +48,22 @@ module Avo
 
         def navigation_path
           "#{Avo::App.root_path}/dashboards/#{id}"
+        end
+
+        def is_visible?
+          # Default is true
+          return true if visible == true
+
+          # Hide if false
+          return false if visible == false
+
+          if visible.respond_to? :call
+            ::Avo::Hosts::DashboardVisibility.new(block: visible, dashboard: self).handle
+          end
+        end
+
+        def is_hidden?
+          !is_visible?
         end
       end
     end

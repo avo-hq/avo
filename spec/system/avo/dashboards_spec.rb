@@ -152,6 +152,31 @@ RSpec.describe "Dashboards", type: :system do
   end
 end
 
+RSpec.describe "Dashboards", type: :feature do
+  describe "dashboards visibility" do
+    subject {
+      visit url
+      page
+    }
+
+    describe "visible dashboard" do
+      let(:url) { "/admin/dashboards/dashy" }
+
+      it { is_expected.to have_text "The first dashbaord" }
+    end
+
+    describe "hidden dashboard" do
+      let(:url) { "/admin/dashboards/hidden_dash" }
+
+      it "returns 404" do
+        expect {
+          visit url
+        }.to raise_error ActionController::RoutingError
+      end
+    end
+  end
+end
+
 def description_tooltip_has_text(text = "")
   subject
 
