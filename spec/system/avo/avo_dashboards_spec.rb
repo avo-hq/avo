@@ -6,10 +6,10 @@ RSpec.describe "Dashboards", type: :system do
 
   describe "empty dashboard" do
     it "shows the empty screen" do
-      visit "/admin/dashboards/bashy"
+      visit "/admin/dashboards/sales"
 
       content = page.find(".content")
-      expect(content).to have_text "Bashy"
+      expect(content).to have_text "Sales"
       expect(content).to have_text "Tiny dashboard description"
       expect(content).to have_text "No cards present"
       expect(content).to have_css "[data-target='table-empty-state-svg']"
