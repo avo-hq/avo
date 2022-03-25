@@ -38,8 +38,6 @@ class Avo::ButtonComponent < ViewComponent::Base
 
     classes += " rounded" if @rounded.present?
 
-    classes += " space-x-1" if content.present? && @icon.present?
-
     classes += style_classes
 
     classes += @compact ? " px-1" : " px-4" # Same horizontal padding on all sizes
@@ -58,7 +56,10 @@ class Avo::ButtonComponent < ViewComponent::Base
     icon_classes += full_content_icon_classes
 
     result += helpers.svg(@icon, class: icon_classes) if @icon.present?
-    result += "<span>#{content}</span>" if content.present?
+    result += "<span class='w-0 m-0'>&nbsp;</span>"
+    if content.present?
+      result += "<span>#{content}</span>"
+    end
 
     result.html_safe
   end

@@ -30,7 +30,9 @@ RSpec.describe "HasAndBelongsToManyField", type: :system do
         select user.name, from: "fields_related_id"
 
         expect {
-          click_on "Attach"
+          within '[aria-modal="true"]' do
+            click_on "Attach"
+          end
           wait_for_loaded
         }.to change(project.users, :count).by 1
 

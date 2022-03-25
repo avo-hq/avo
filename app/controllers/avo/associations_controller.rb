@@ -1,7 +1,7 @@
 require_dependency "avo/base_controller"
 
 module Avo
-  class RelationsController < BaseController
+  class AssociationsController < BaseController
     before_action :set_model, only: [:show, :index, :new, :create, :destroy, :order]
     before_action :set_related_resource_name
     before_action :set_related_resource, only: [:show, :index, :new, :create, :destroy, :order]
