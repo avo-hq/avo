@@ -110,35 +110,35 @@ RSpec.feature "belongs_to", type: :feature do
 
   describe "hidden columns if current association" do
     let!(:user) { create :user }
-    let!(:comment) { create :comment, body: 'a comment', user: user }
+    let!(:comment) { create :comment, body: "a comment", user: user }
 
     it "hides the User column" do
       visit "/admin/resources/users/#{user.id}/comments?turbo_frame=has_many_field_show_comments"
 
-      expect(find('thead')).to have_text 'Id'
-      expect(find('thead')).to have_text 'Tiny name'
-      expect(find('thead')).to have_text 'Commentable'
-      expect(find('thead')).not_to have_text 'User'
+      expect(find("thead")).to have_text "Id"
+      expect(find("thead")).to have_text "Tiny name"
+      expect(find("thead")).to have_text "Commentable"
+      expect(find("thead")).not_to have_text "User"
       expect(page).to have_text comment.id
-      expect(page).to have_text 'a comment'
+      expect(page).to have_text "a comment"
       expect(page).not_to have_text user.name
     end
   end
 
   describe "hidden columns if current polymorphic association" do
     let!(:user) { create :user }
-    let!(:project) { create :project, name: 'Haha project' }
-    let!(:comment) { create :comment, body: 'a comment', user: user, commentable: project }
+    let!(:project) { create :project, name: "Haha project" }
+    let!(:comment) { create :comment, body: "a comment", user: user, commentable: project }
 
     it "hides the Commentable column" do
       visit "/admin/resources/projects/#{project.id}/comments?turbo_frame=has_many_field_show_comments"
 
-      expect(find('thead')).to have_text 'Id'
-      expect(find('thead')).to have_text 'Tiny name'
-      expect(find('thead')).to have_text 'User'
-      expect(find('thead')).not_to have_text 'Commentable'
+      expect(find("thead")).to have_text "Id"
+      expect(find("thead")).to have_text "Tiny name"
+      expect(find("thead")).to have_text "User"
+      expect(find("thead")).not_to have_text "Commentable"
       expect(page).to have_text comment.id
-      expect(page).to have_text 'a comment'
+      expect(page).to have_text "a comment"
       expect(page).to have_text user.name
       expect(page).not_to have_text project.name
     end
@@ -146,18 +146,18 @@ RSpec.feature "belongs_to", type: :feature do
 
   describe "hidden columns if current polymorphic association" do
     let!(:user) { create :user }
-    let!(:team) { create :team, name: 'Haha team' }
-    let!(:review) { create :review, body: 'a review', user: user, reviewable: team }
+    let!(:team) { create :team, name: "Haha team" }
+    let!(:review) { create :review, body: "a review", user: user, reviewable: team }
 
     it "hides the Reviewable column" do
       visit "/admin/resources/teams/#{team.id}/reviews?turbo_frame=has_many_field_show_reviews"
 
-      expect(find('thead')).to have_text 'Id'
-      expect(find('thead')).to have_text 'Excerpt'
-      expect(find('thead')).to have_text 'User'
-      expect(find('thead')).not_to have_text 'Reviewable'
+      expect(find("thead")).to have_text "Id"
+      expect(find("thead")).to have_text "Excerpt"
+      expect(find("thead")).to have_text "User"
+      expect(find("thead")).not_to have_text "Reviewable"
       expect(page).to have_text review.id
-      expect(page).to have_text 'a review'
+      expect(page).to have_text "a review"
       expect(page).to have_text user.name
       expect(page).not_to have_text team.name
     end

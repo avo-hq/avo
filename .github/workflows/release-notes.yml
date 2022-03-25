@@ -1,10 +1,9 @@
 name: Build release notes
 
 on:
-  push:
+  pull_request:
     branches:
       - main
-      - 2.x
 
 jobs:
   update_release_notes:
@@ -15,6 +14,6 @@ jobs:
       - uses: release-drafter/release-drafter@v5
         id: release_drafter
         with:
-          config-name: release-drafter.yml
+          config-name: release-drafter-1x.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

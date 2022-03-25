@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    avo (1.24.2)
+    avo (1.25.0)
       active_link_to
       addressable
       breadcrumbs_on_rails
@@ -195,7 +195,7 @@ GEM
       concurrent-ruby (~> 1.0)
     i18n_data (0.15.0)
       simple_po_parser (~> 1.1)
-    image_processing (1.12.1)
+    image_processing (1.12.2)
       mini_magick (>= 4.9.5, < 5)
       ruby-vips (>= 2.0.17, < 3)
     io-wait (0.2.1)
@@ -380,7 +380,7 @@ GEM
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.1.0)
-    view_component (2.48.0)
+    view_component (2.49.1)
       activesupport (>= 5.0.0, < 8.0)
       method_source (~> 1.0)
     warden (1.2.9)
@@ -438,7 +438,7 @@ DEPENDENCIES
   hotwire-rails
   htmlbeautifier
   httparty
-  image_processing (~> 1.2)
+  image_processing (~> 1.12)
   iso
   jsbundling-rails
   launchy

@@ -1,4 +1,4 @@
-name-template: 'Next release draft'
+name-template: 'Next release draft 1.x'
 tag-template: 'v$NEXT_PATCH_VERSION'
 categories:
   - title: '🎸 Features'
@@ -38,7 +38,7 @@ version-resolver:
       - 'patch'
   default: patch
 references:
-  - main
+  - 1.x
 template: |
   ## Release notes
 

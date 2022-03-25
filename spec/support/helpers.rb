@@ -34,7 +34,7 @@ def stub_pro_license_request
 end
 
 def write_in_search(input)
-  find('input.aa-Input').set(input)
+  find("input.aa-Input").set(input)
 end
 
 def confirm_alert

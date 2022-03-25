@@ -17,11 +17,11 @@ def wait_for_route_loaded(time = Capybara.default_max_wait_time)
 end
 
 def wait_for_turbo_loaded(time = Capybara.default_max_wait_time)
-  wait_for_body_class_missing('turbo-loading', time)
+  wait_for_body_class_missing("turbo-loading", time)
 end
 
 def wait_for_search_loaded(time = Capybara.default_max_wait_time)
-  wait_for_body_class_missing('search-loading', time)
+  wait_for_body_class_missing("search-loading", time)
 end
 
 def wait_for_search_to_dissapear(time = Capybara.default_max_wait_time)
