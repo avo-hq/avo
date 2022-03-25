@@ -1,6 +1,7 @@
 pt-BR:
   avo:
     dashboard: 'Painel'
+    dashboards: 'Painéis'
     choose_a_country: 'Escolha um país'
     choose_an_option: 'Escolha uma opção'
     are_you_sure_you_want_to_run_this_option: 'Você tem certeza que deseja executar esta ação?'
@@ -8,8 +9,7 @@ pt-BR:
     run: 'Executar'
     cancel: 'Cancelar'
     action_ran_successfully: 'Ação executada com sucesso!'
-    resource_details: "Detalhe %{item}: %{title}"
-    update_item: 'atualizar %{item}: %{title}'
+    details: "detalhe"
     unauthorized: 'Não autorizado'
     attachment_class_attached: '%{attachment_class} anexado.'
     attachment_class_detached: '%{attachment_class} separado.'
@@ -84,3 +84,5 @@ pt-BR:
       cancel_button: 'Cancelar'
     sign_out: 'sair'
     tools: Ferramentas
+    empty_dashboard_message: Adicionar cartões a este painel
+    no_cards_present: 'Nenhum cartão presente'

@@ -17,12 +17,8 @@ module Avo
       }
     end
 
-    def show
-    end
-
     def destroy
-      blob = ActiveStorage::Blob.find(params[:signed_attachment_id])
-      attachment = blob.attachments.find_by record_id: params[:id], record_type: @model.class.to_s
+      attachment = ActiveStorage::Attachment.find(params[:attachment_id])
       path = resource_path(model: @model, resource: @resource)
 
       if attachment.present?

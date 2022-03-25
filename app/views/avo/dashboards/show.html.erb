@@ -1,0 +1,35 @@
+<%= render Avo::PanelComponent.new(title: @dashboard.name, description: @dashboard.description) do |c| %>
+  <% c.bare_content do %>
+    <% if @dashboard.items.present? %>
+      <div class="min-h-24">
+        <%= content_tag(:div, class: "grid gap-4 grid-cols-1 #{@dashboard.classes}") do %>
+          <% @dashboard.items.each do |item| %>
+            <% if item.is_divider? %>
+              <%= render Avo::Dashboards::DividerComponent.new(divider: item) %>
+            <% elsif item.is_card? %>
+              <%= content_tag(:div, class: "relative bg-white rounded shadow-panel space-y-2 #{item.card_classes} overflow-hidden") do %>
+                <turbo-frame id="<%= item.turbo_frame %>" src="<%= item.frame_url(enforced_range: @range) %>">
+                  <%= render(Avo::LoadingComponent.new(title: item.label)) %>
+                </turbo-frame>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="w-full h-full">
+        <% if Rails.env.development? %>
+          <%= render Avo::PanelComponent.new do |c| %>
+            <% c.body do %>
+              <div class="p-6">
+                <%= t 'avo.empty_dashboard_message' %>. <%= link_to 'Docs', 'https://docs.avohq.io/2.0/dashboards.html', target: '_blank' %>
+              </div>
+            <% end %>
+          <% end %>
+        <% end %>
+
+        <%= empty_state message: t('avo.no_cards_present') %>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

@@ -46,7 +46,6 @@ RSpec.describe 'Avo::TeamsController', type: :system do
   let!(:user) { create :user }
   let!(:team_member) { team.team_members << user }
 
-
   before do
     set_policy has_access
   end

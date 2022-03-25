@@ -1,31 +1,35 @@
 <div <%== data_attributes %>>
-  <div class="mb-6">
-    <div>
-      <% if display_breadcrumbs? %>
-        <div class="breadcrumbs">
-          <%= helpers.render_breadcrumbs(separator: helpers.svg('chevron-right', class: 'inline-block h-3 stroke-current relative top-[-1px] ml-1' )) if Avo.configuration.display_breadcrumbs %>
-        </div>
-      <% end %>
-      <div class="text-2xl tracking-normal font-bold text-gray-800 truncate" data-target="title">
-        <%= @title %>
-      </div>
-      <div class="text-sm tracking-normal text-gray-600" data-target="description">
-        <%== description %>
-      </div>
-    </div>
+  <% if render_header? %>
+    <div class="bg-white rounded shadow p-4 flex-1 flex flex-col xl:flex-row justify-between mb-6">
+      <div class="overflow-hidden mr-4">
+        <% if display_breadcrumbs? %>
+          <div class="breadcrumbs truncate mb-2">
+            <%= helpers.render_breadcrumbs(separator: helpers.svg('chevron-right', class: 'inline-block h-3 stroke-current relative top-[-1px] ml-1' )) if Avo.configuration.display_breadcrumbs %>
+          </div>
+        <% end %>
 
-    <div>
-      <div class="flex justify-end space-x-2 mb-6">
+        <div class="text-2xl tracking-normal font-semibold text-gray-800 truncate" data-target="title">
+          <%= @title %>
+        </div>
+
+        <% if description.present? %>
+        <div class="text-base tracking-normal font-medium text-gray-600 truncate" data-target="description">
+          <%== description %>
+        </div>
+        <% end %>
+      </div>
+
+      <div class="flex-1 w-full flex flex-col sm:flex-row xl:justify-end sm:items-end space-y-2 sm:space-y-0 sm:space-x-2 mt-4 xl:mt-0">
         <%= tools %>
       </div>
     </div>
-  </div>
+  <% end %>
 
-  <div class="relative bg-white rounded-xl shadow-xl mb-8 <%= @body_classes %>">
+  <div class="relative bg-white rounded shadow <%= @body_classes %>">
     <%= body %>
   </div>
 
-  <div class="relative mb-8">
+  <div class="relative">
     <%= bare_content %>
   </div>
 

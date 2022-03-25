@@ -49,7 +49,7 @@ RSpec.feature "HasManyField", type: :feature do
         visit url
 
         # grid view button
-        expect(page).to have_link("Grid view", href: "/admin/resources/users/#{user.id}/posts?turbo_frame=has_many_field_posts&view_type=grid")
+        expect(page).to have_selector "[data-control='view-type-toggle-grid'][href='/admin/resources/users/#{user.id}/posts?turbo_frame=has_many_field_posts&view_type=grid']"
 
         # create new button
         expect(page).to have_link("Create new post", href: "/admin/resources/posts/new?via_relation=user&via_relation_class=User&via_resource_id=#{user.id}")

@@ -5,9 +5,9 @@
 %>
 <div class="flex flex-shrink-0 <%= classes %> items-center">
   <% if @status == 'success' %>
-    <%= helpers.svg 'check-circle-sm', class: 'h-4' %>
+    <%= helpers.svg 'heroicons/solid/check-circle', class: 'h-4' %>
   <% elsif @status == 'failed' %>
-    <%= helpers.svg 'x-circle-sm', class: 'h-4' %>
+    <%= helpers.svg 'heroicons/solid/x-circle', class: 'h-4' %>
   <% elsif @status == 'loading' %>
     <div class="spinner">
       <div class="double-bounce1 bg-gray-600"></div>

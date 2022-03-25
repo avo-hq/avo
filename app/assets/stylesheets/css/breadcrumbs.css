@@ -1,9 +1,13 @@
 .breadcrumbs {
-  @apply relative text-sm text-gray-400 font-bold;
+  @apply relative text-sm text-black;
+
+  svg {
+    @apply text-gray-500;
+  }
 
   a,
   span {
-    @apply inline-block text-gray-400;
+    @apply inline-block text-sm;
   }
 
   a {

@@ -13,14 +13,14 @@ module Avo
     before_action :cache_applied_filters, only: :index
 
     def index
-      @page_title = resource_name.humanize
-      add_breadcrumb resource_name.humanize
+      @page_title = @resource.plural_name.humanize
+      add_breadcrumb @resource.plural_name.humanize
 
       set_index_params
       set_filters
       set_actions
 
-      # If we don't get a query object predefined from a child controller like relations, just spin one up
+      # If we don't get a query object predefined from a child controller like associations, just spin one up
       unless defined? @query
         @query = @resource.class.query_scope
       end
@@ -30,7 +30,7 @@ module Avo
         @query = @query.unscoped
       end
 
-      # Eager load the relations
+      # Eager load the associations
       if @resource.includes.present?
         @query = @query.includes(*@resource.includes)
       end
@@ -62,9 +62,9 @@ module Avo
     def show
       set_actions
 
-      @resource = @resource.hydrate(model: @model, view: :show, user: _current_user, params: params)
+      @resource.hydrate(model: @model, view: :show, user: _current_user, params: params)
 
-      @page_title = @resource.default_panel_name
+      @page_title = @resource.default_panel_name.to_s
 
       # If we're accessing this resource via another resource add the parent to the breadcrumbs.
       if params[:via_resource_class].present? && params[:via_resource_id].present?
@@ -75,25 +75,26 @@ module Avo
         add_breadcrumb via_resource.plural_name, resources_path(resource: via_resource)
         add_breadcrumb via_resource.model_title, resource_path(model: via_model, resource: via_resource)
       else
-        add_breadcrumb resource_name.humanize, resources_path(resource: @resource)
+        add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
       end
 
       add_breadcrumb @resource.model_title
+      add_breadcrumb I18n.t("avo.details").upcase_first
     end
 
     def new
       @model = @resource.model_class.new
       @resource = @resource.hydrate(model: @model, view: :new, user: _current_user)
 
-      @page_title = @resource.default_panel_name
-      add_breadcrumb resource_name.humanize, resources_path(resource: @resource)
+      @page_title = @resource.default_panel_name.to_s
+      add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
       add_breadcrumb t("avo.new").humanize
     end
 
     def edit
       @resource = @resource.hydrate(model: @model, view: :edit, user: _current_user)
 
-      @page_title = @resource.default_panel_name
+      @page_title = @resource.default_panel_name.to_s
 
       # If we're accessing this resource via another resource add the parent to the breadcrumbs.
       if params[:via_resource_class].present? && params[:via_resource_id].present?
@@ -104,7 +105,7 @@ module Avo
         add_breadcrumb via_resource.plural_name, resources_path(resource: @resource)
         add_breadcrumb via_resource.model_title, resource_path(model: via_model, resource: via_resource)
       else
-        add_breadcrumb resource_name.humanize, resources_path(resource: @resource)
+        add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
       end
 
       add_breadcrumb @resource.model_title, resource_path(model: @resource.model, resource: @resource)
@@ -155,11 +156,9 @@ module Avo
           end
 
           format.html { redirect_to redirect_path, notice: "#{@model.class.name} #{t("avo.was_successfully_created")}." }
-          format.json { render :show, status: :created, location: @model }
         else
-          flash[:error] = t "avo.you_missed_something_check_form"
+          flash.now[:error] = t "avo.you_missed_something_check_form"
           format.html { render :new, status: :unprocessable_entity }
-          format.json { render json: @model.errors, status: :unprocessable_entity }
         end
       end
     end
@@ -172,11 +171,9 @@ module Avo
       respond_to do |format|
         if saved
           format.html { redirect_to params[:referrer] || resource_path(model: @model, resource: @resource), notice: "#{@model.class.name} #{t("avo.was_successfully_updated")}." }
-          format.json { render :show, status: :ok, location: @model }
         else
-          flash[:error] = t "avo.you_missed_something_check_form"
+          flash.now[:error] = t "avo.you_missed_something_check_form"
           format.html { render :edit, status: :unprocessable_entity }
-          format.json { render json: @model.errors, status: :unprocessable_entity }
         end
       end
     end
@@ -291,13 +288,12 @@ module Avo
         model = @resource.class.find_scope.find params[:resource_id]
       end
 
-      @actions =
-        @resource
-          .get_actions
-          .map do |action|
-            action.new(model: model, resource: @resource, view: @view)
-          end
-          .select { |action| action.visible_in_view }
+      @actions = @resource
+        .get_actions
+        .map do |action|
+          action.new(model: model, resource: @resource, view: @view)
+        end
+        .select { |action| action.visible_in_view }
     end
 
     def applied_filters

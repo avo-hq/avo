@@ -43,4 +43,8 @@ class User < ApplicationRecord
 
     URI::HTTPS.build(host: "www.gravatar.com", path: "/avatar/#{md5}", query: query).to_s
   end
+
+  def avo_title
+    is_admin? ? "Admin" : "Member"
+  end
 end

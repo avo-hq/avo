@@ -5,6 +5,7 @@ set -e
 VERSION=$(bundle exec rails runner 'puts Avo::VERSION')
 
 # Create v1.0.0 versions of the Gemfile and version file for better caching on the docker layer
+mkdir -p tmp
 cp ./Gemfile.lock ./tmp/Gemfile_v1.lock
 sed -i '' 's/avo \(.*\)/avo (1.0.0)/' ./tmp/Gemfile_v1.lock
 cp ./lib/avo/version.rb ./tmp/version_v1.rb

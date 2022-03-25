@@ -1,20 +1,11 @@
-<div class="flex items-center py-0 leading-tight <%= @classes %> min-h-16" data-field-id="<%= @field.id %>" data-field-type="<%= @field.type %>">
-  <div class="h-16 flex self-start items-center text-slate-800">
-    <div class="<% if @displayed_in_modal %> md:w-48 <% else %> md:w-64 <% end %> w-48 px-8 flex" data-slot="label">
-      <%= @form.label @field.id, label %> <% if @field.required %> <span class="text-red-600">*</span> <% end %>
-    </div>
+<%= render Avo::CommonFieldWrapperComponent.new(field: @field, resource: @resource, index: @index, form: @form, displayed_in_modal: @displayed_in_modal, label: @label) do %>
+  <div class="self-center <% if @displayed_in_modal or @full_width %> w-full <% else %> w-full md:w-8/12 <% end %>" data-slot="value">
+    <%= content %>
+    <% if @model.present? and @model.errors.include? @field.id %>
+      <div class="text-red-600 mt-2 text-sm"><%= @model.errors.full_messages_for(@field.id).to_sentence %></div>
+    <% end %>
+    <% if @field.help %>
+      <div class="text-gray-600 mt-2 text-sm"><%== @field.help %></div>
+    <% end %>
   </div>
-  <div class="flex-1 flex flex-row min-h-inherit">
-    <div class="px-6 py-3 self-center <% if @displayed_in_modal or @full_width %> w-full <% else %> w-8/12 <% end %>" data-slot="value">
-      <%= content %>
-
-      <% if @model.present? and @model.errors.include? @field.id %>
-        <div class="text-red-600 mt-2 text-sm"><%= @model.errors.full_messages_for(@field.id).to_sentence %></div>
-      <% end %>
-
-      <% if @field.help %>
-        <div class="text-gray-600 mt-2 text-sm"><%== @field.help %></div>
-      <% end %>
-    </div>
-  </div>
-</div>
+<% end %>

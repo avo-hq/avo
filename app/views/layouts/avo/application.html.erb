@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <%= display_meta_tags site: Avo.configuration.app_name, reverse: true, separator: "—" %>
 
   <%= csrf_meta_tags %>
@@ -17,43 +18,31 @@
     <%= stylesheet_link_tag "avo", "data-turbo-track": "reload", defer: true %>
   <% end %>
 </head>
-<body class="bg-slate-200 os-mac">
+<body class="bg-application os-mac">
+<div class="relative flex flex-1 w-full min-h-full" data-controller="mobile">
+  <%= render Avo::SidebarComponent.new %>
 
-<div id="app" class="flex min-h-screen flex-row h-full">
-  <div class="flex flex-1 w-full">
-    <%= render partial: 'avo/sidebar/sidebar' %>
+  <div class="lg:pl-64 flex-1 flex flex-col min-h-full max-w-full">
+    <%= render partial: "avo/partials/navbar" %>
 
-    <div class="flex-1 flex flex-col h-full overflow-auto">
-      <div class="relative bg-white p-2 shadow-md h-16 w-full flex flex-shrink-0 items-center z-50 px-6" v-if="layout !== 'blank'">
-        <div>
-          <%= render partial: "avo/partials/header" %>
-        </div>
-        <div class="flex-1 flex ml-4 pl-4">
-          <%= render partial: "avo/partials/global_search" if ::Avo::App.license.has_with_trial(:global_search) && ::Avo.configuration.feature_enabled?(:global_search) %>
-        </div>
-        <div class="align-end">
-          <%= render partial: "avo/partials/profile_dropdown" %>
-        </div>
-      </div>
+    <div class="content py-4 lg:py-8 px-4 lg:px-8 flex-1 flex flex-col justify-between items-stretch <%= @container_classes %>">
+      <%= render partial: "avo/partials/custom_tools_alert" if @custom_tools_alert_visible %>
 
-      <div class="content p-8 flex-1 flex flex-col justify-between items-stretch <%= @container_classes %>">
-        <%= render partial: "avo/partials/custom_tools_alert" if @custom_tools_alert_visible %>
-
-        <div class="flex flex-1 flex-col justify-between items-stretch">
-          <%= yield %>
-          <%= render partial: "avo/partials/footer" %>
-        </div>
+      <div class="flex flex-1 flex-col justify-between items-stretch space-y-8">
+        <%= yield %>
+        <%= render partial: "avo/partials/footer" %>
       </div>
     </div>
   </div>
-  <%= turbo_frame_tag 'actions_show' %>
-  <%= turbo_frame_tag 'attach_modal' %>
-  <%= turbo_frame_tag 'destroy_attachment_form' %>
-
-  <%= turbo_frame_tag 'alerts' do %>
-    <%= render Avo::AlertsComponent.new %>
-  <% end %>
 </div>
+
+<%= turbo_frame_tag 'actions_show' %>
+<%= turbo_frame_tag 'attach_modal' %>
+<%= turbo_frame_tag 'destroy_attachment_form' %>
+
+<%= turbo_frame_tag 'alerts', class: "fixed inset-0 bottom-0 flex flex-col space-y-4 items-end justify-right px-4 py-6 sm:p-6 justify-end z-50 pointer-events-none" do %>
+  <%= render Avo::FlashAlertsComponent.new flashes: flash %>
+<% end %>
 
 <%= render partial: "avo/partials/scripts" %>
 <!-- Avo version: <%= Avo::VERSION %> -->

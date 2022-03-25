@@ -21,6 +21,8 @@ gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "devise"
 gem "database_cleaner"
 gem "ruby-debug-ide", require: false
+gem "rubocop"
+gem "rubocop-shopify", require: false
 gem "zeitwerk", "~> 2.3"
 gem "httparty"
 gem "iso"
@@ -36,6 +38,9 @@ gem "ransack"
 gem "friendly_id", "~> 5.4.0"
 gem "aws-sdk-s3", require: false
 gem "net-smtp", require: false
+gem "groupdate"
+gem "hightop"
+gem "active_median"
 gem "acts_as_list"
 
 group :development do

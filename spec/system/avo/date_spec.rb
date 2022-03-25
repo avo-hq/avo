@@ -1,18 +1,18 @@
-require 'rails_helper'
+require "rails_helper"
 
-RSpec.describe 'Date field', type: :system do
-  let!(:user) { create :user, birthday: Date.new(1988, 02, 10) }
+RSpec.describe "Date field", type: :system do
+  let!(:user) { create :user, birthday: Date.new(1988, 0o2, 10) }
 
   describe "in a western (negative) Timezone" do
     before do
-      ENV['TZ'] = 'America/Chicago'
+      ENV["TZ"] = "America/Chicago"
     end
 
-    context 'edit' do
-      it 'sets the proper date without the TZ modifications' do
+    context "edit" do
+      it "sets the proper date without the TZ modifications" do
         visit "/admin/resources/users/#{user.id}"
 
-        click_on 'Edit'
+        click_on "Edit"
         wait_for_loaded
 
         hidden_input = find '[data-controller="date-field"] input[type="hidden"]', visible: false
@@ -26,14 +26,14 @@ RSpec.describe 'Date field', type: :system do
 
   describe "in an eastern (positive) Timezone" do
     before do
-      ENV['TZ'] = 'Europe/Bucharest'
+      ENV["TZ"] = "Europe/Bucharest"
     end
 
-    context 'edit' do
-      it 'sets the proper date without' do
+    context "edit" do
+      it "sets the proper date without" do
         visit "/admin/resources/users/#{user.id}"
 
-        click_on 'Edit'
+        click_on "Edit"
         wait_for_loaded
 
         hidden_input = find '[data-controller="date-field"] input[type="hidden"]', visible: false

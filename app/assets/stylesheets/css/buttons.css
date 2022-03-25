@@ -1,0 +1,16 @@
+.button-group {
+  @apply flex;
+  .button-component {
+    &:first-child {
+      @apply rounded-l -mr-px;
+    }
+
+    &:last-child {
+      @apply rounded-r;
+    }
+  }
+}
+
+form.button_to {
+  @apply inline-flex;
+}

@@ -92,7 +92,9 @@ module Avo
 
     def initialize
       unless self.class.model_class.present?
-        self.class.model_class = model_class.base_class
+        if model_class.present?
+          self.class.model_class = model_class.base_class
+        end
       end
     end
 
@@ -209,9 +211,9 @@ module Avo
 
       case @view
       when :show
-        I18n.t("avo.resource_details", item: name.downcase, title: model_title).upcase_first
+        model_title
       when :edit
-        I18n.t("avo.update_item", item: name.downcase, title: model_title).upcase_first
+        model_title
       when :new
         I18n.t("avo.create_new_item", item: name.downcase).upcase_first
       end

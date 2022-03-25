@@ -3,7 +3,7 @@
     <%= image_tag @field.value,
       height: @field.height,
       width: @field.width,
-      style: "border-radius: #{@field.radius}px"
+      style: "border-radius: #{@field.radius}px; max-height: #{@field.height}#{@field.height.to_s&.ends_with?('px') ? '' : 'px'};"
     %>
   <% end %>
 <% end %>

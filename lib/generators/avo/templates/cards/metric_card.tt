@@ -1,0 +1,8 @@
+class <%= class_name.camelize %> < Avo::Dashboards::MetricCard
+  self.id = "<%= name.underscore %>"
+  self.label = "<%= name.underscore.humanize %>"
+
+  query do
+    result 101
+  end
+end

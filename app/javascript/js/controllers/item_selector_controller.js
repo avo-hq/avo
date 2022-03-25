@@ -5,6 +5,10 @@ export default class extends Controller {
 
   checkbox = {};
 
+  enabledClasses = ['text-black', 'hover:bg-blue-500', 'hover:text-white']
+
+  disabledClasses = ['text-gray-500']
+
   get actionsPanelPresent() {
     return this.actionsButtonElement !== null
   }
@@ -72,8 +76,8 @@ export default class extends Controller {
 
   enableResourceActions() {
     this.actionLinks.forEach((link) => {
-      link.classList.add('text-gray-700')
-      link.classList.remove('text-gray-500')
+      link.classList.add(...this.enabledClasses)
+      link.classList.remove(...this.disabledClasses)
       link.setAttribute('data-href', link.getAttribute('href'))
       link.dataset.disabled = false
     })
@@ -81,8 +85,8 @@ export default class extends Controller {
 
   disableResourceActions() {
     this.actionLinks.forEach((link) => {
-      link.classList.remove('text-gray-700')
-      link.classList.add('text-gray-500')
+      link.classList.remove(...this.enabledClasses)
+      link.classList.add(...this.disabledClasses)
       link.setAttribute('href', link.getAttribute('data-href'))
       link.dataset.disabled = true
     })

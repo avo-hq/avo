@@ -1,20 +1,24 @@
-<div class="relative bg-white rounded-xl shadow-xl flex flex-col group"
+<div
+  class="relative bg-white rounded shadow-modal flex flex-col group"
   <%== item_selector_init @resource %>
 >
-  <div class="relative w-full pb-3/4 rounded-t-xl overflow-hidden">
+  <div class="relative w-full pb-3/4 rounded-t overflow-hidden">
     <%== item_selector_input floating: true, size: :lg %>
-
     <% if cover.blank? %>
-      <%= render Avo::Index::GridCoverEmptyStateComponent.new %>
+      <%= link_to cover.link_to_resource do %>
+        <%= render Avo::Index::GridCoverEmptyStateComponent.new %>
+      <% end %>
     <% elsif cover.respond_to?(:to_image) && cover.to_image.present? %>
       <%= link_to_if cover.link_to_resource, image_tag(cover.to_image, class: 'absolute h-full w-full object-cover'), helpers.resource_path(model: @resource.model, resource: @resource), class: 'absolute h-full w-full object-cover', title: title.value %>
     <% elsif cover.type == 'file' %>
       <% if cover.value.attached? && cover.value.representable? %>
         <%= link_to_if cover.link_to_resource, image_tag(helpers.main_app.url_for(cover.value.variant(resize_to_limit: [480, 480])), class: 'absolute h-full w-full object-cover'), helpers.resource_path(model: @resource.model, resource: @resource), class: 'absolute h-full w-full object-cover', title: title.value %>
       <% else %>
-        <div class="absolute bg-gray-100 w-full h-full">
-          <%= helpers.svg 'avocado', class: 'relative transform -translate-x-1/2 -translate-y-1/2 h-20 text-gray-400 inset-auto top-1/2 left-1/2' %>
-        </div>
+        <%= link_to @resource.record_path do %>
+          <div class="absolute bg-gray-100 w-full h-full">
+            <%= helpers.svg 'avocado', class: 'relative transform -translate-x-1/2 -translate-y-1/2 h-20 text-gray-400 inset-auto top-1/2 left-1/2' %>
+          </div>
+        <% end %>
       <% end %>
     <% elsif cover.value.present? %>
       <%= link_to_if cover.link_to_resource, image_tag(cover.value, class: 'absolute h-full w-full object-cover'), helpers.resource_path(model: @resource.model, resource: @resource), class: 'absolute h-full w-full object-cover', title: title.value %>
@@ -23,11 +27,11 @@
     <% end %>
   </div>
   <div class="grid grid-cols-1 place-content-between p-4 h-full">
-    <div class="mb-4">
+    <div class="mb-4 h-full flex flex-col space-between">
       <div class="grid font-semibold leading-tight text-lg mb-2">
         <%= link_to_if title.link_to_resource, title.value, helpers.resource_path(model: @resource.model, resource: @resource) if title.present? %>
       </div>
-      <div class="text-sm break-words">
+      <div class="text-sm break-words text-gray-500">
         <%= body.value if body.present? %>
       </div>
     </div>
@@ -36,4 +40,3 @@
     </div>
   </div>
 </div>
-

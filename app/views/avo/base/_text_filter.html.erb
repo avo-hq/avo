@@ -16,7 +16,9 @@
       'data-action': 'keypress->text-filter#tryToSubmit'
     %>
     <div class="flex justify-end">
-      <%= a_button filter.button_label || "Filter by #{filter.name}", class: 'mt-4', color: 'blue', data: { action: "text-filter#changeFilter" }, size:   :sm %>
+      <%= a_button class: 'mt-4', color: :blue, data: { action: "text-filter#changeFilter" }, size: :sm do %>
+        <%= filter.button_label || "Filter by #{filter.name}" %>
+      <% end %>
     </div>
     <%= link_to 'url_redirect', request.url, data: { 'text-filter-target': 'urlRedirect', 'turbo-frame': params[:turbo_frame] }, style: 'hidden', class: 'hidden' %>
   <% end %>

@@ -19,16 +19,16 @@ RSpec.describe "KeyValueFields", type: :system do
 
         meta_element = find_field_element("meta")
 
-        expect(meta_element).to have_text "Meta"
+        expect(meta_element).to have_text "META"
 
         expect(meta_element).to have_text "META KEY"
         expect(meta_element).to have_text "META VALUE"
         expect(meta_element).to have_css ".flex"
         expect(meta_element).to have_css ".w-full"
-        expect(meta_element).to have_css ".bg-gray-800"
+        expect(meta_element).to have_css ".bg-gray-700"
         expect(meta_element).to have_css ".shadow"
         expect(meta_element).to have_css ".overflow-hidden"
-        expect(meta_element).to have_css ".rounded-lg"
+        expect(meta_element).to have_css ".rounded"
         expect(meta_element).to have_selector '[data-button="add-row"]'
       end
 
@@ -133,16 +133,16 @@ RSpec.describe "KeyValueFields", type: :system do
 
         meta_element = find_field_element("meta")
 
-        expect(meta_element).to have_text "Meta"
+        expect(meta_element).to have_text "META"
 
         expect(meta_element).to have_text "META KEY"
         expect(meta_element).to have_text "META VALUE"
         expect(meta_element).to have_css ".flex"
         expect(meta_element).to have_css ".w-full"
-        expect(meta_element).to have_css ".bg-gray-800"
+        expect(meta_element).to have_css ".bg-gray-700"
         expect(meta_element).to have_css ".shadow"
         expect(meta_element).to have_css ".overflow-hidden"
-        expect(meta_element).to have_css ".rounded-lg"
+        expect(meta_element).to have_css ".rounded"
 
         expect(meta_element).to have_selector '[data-button="add-row"]'
         expect(meta_element).to have_selector '[data-button="delete-row"]'

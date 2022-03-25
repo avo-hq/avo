@@ -1,1 +1,1 @@
-<%%= render Avo::NavigationLinkComponent.new label: '<%= human_name %>', path: "#{avo.root_path}<%= file_name %>" %>
+<%%= render Avo::SidebarItemComponent.new label: '<%= human_name %>', path: "#{avo.root_path}<%= file_name %>" %>

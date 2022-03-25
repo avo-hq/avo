@@ -1,13 +1,18 @@
 :root {
   --aa-primary-color: --tw-ring-color;
   --aa-selected-color: --tw-ring-color;
-  --aa-primary-color-rgb: 5, 150, 105;
+  --aa-primary-color-rgb: 117, 125, 138;
 }
 
 .global-search {
   .aa-DetachedSearchButton:focus,
   .aa-DetachedSearchButton {
     border: none !important;
+    @apply text-gray-500 cursor-pointer;
+
+    .aa-DetachedSearchButtonPlaceholder {
+      @apply hidden sm:block;
+    }
   }
 }
 
@@ -17,7 +22,7 @@
   }
 
   .aa-DetachedSearchButton {
-    @apply rounded-full border-gray-300;
+    @apply rounded border-gray-300 h-[34px];
   }
 }
 
@@ -27,7 +32,7 @@
 
 .aa-DetachedFormContainer,
 .aa-DetachedContainer .aa-Panel {
-  @apply bg-slate-100 border-b-0;
+  @apply bg-gray-100 border-b-0;
 }
 
 .aa-Form {
@@ -46,6 +51,12 @@
     }
   }
 }
+
+button.aa-DetachedCancelButton {
+  border: 1px solid #757D8A !important;
+  @apply bg-white;
+}
+
 .aa-Input {
   @apply focus:ring-green-600;
 }
@@ -57,17 +68,17 @@
 
   .aa-Source {
     .aa-List {
-      @apply space-y-1;
+      @apply space-y-2;
 
       .aa-Item {
-        @apply bg-white rounded-md px-3 py-4 shadow;
+        @apply bg-white rounded px-3 py-4 shadow font-medium;
 
         .aa-ItemDescription {
-          @apply text-gray-500 text-sm;
+          @apply text-gray-500 text-sm font-normal mt-1;
         }
 
         &[aria-selected=true]{
-          @apply bg-blue-700 text-white;
+          @apply bg-blue-500 text-white;
 
           .aa-ItemDescription {
             @apply text-white;

@@ -1,13 +1,14 @@
 ro:
   avo:
     dashboard: 'Panou de control'
+    dashboards: 'Panouri de control'
     choose_a_country: 'Alege o tara'
     choose_an_option: 'Alege o optiune'
     are_you_sure_you_want_to_run_this_option: 'Esti sigur ca vrei sa rulezi aceasta actiune?'
     run: 'Ruleaza'
     cancel: 'Anuleaza'
     action_ran_successfully: 'Actiunea a rulat cu succes!'
-    resource_details: 'Detalii %{item}'
+    details: "detalii"
     unauthorized: 'Neautorizat'
     attachment_class_attached: '%{attachment_class} anexat.'
     attachment_class_detached: '%{attachment_class} separat.'
@@ -79,3 +80,5 @@ ro:
     was_successfully_created: 'a fost creat'
     was_successfully_updated: 'a fost actualizat'
     tools: Instrumente
+    empty_dashboard_message: Adauga carduri in acest dashboard
+    no_cards_present: 'Niciun card disponibil'

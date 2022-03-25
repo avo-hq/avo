@@ -10,8 +10,8 @@ Gem::Specification.new do |spec|
   spec.authors = ["Adrian Marin", "Mihai Marin"]
   spec.email = ["avo@avohq.io"]
   spec.homepage = "https://avohq.io"
-  spec.summary = "Configuration-based, no-maintenance, extendable Ruby on Rails admin."
-  spec.description = "Avo is a beautiful next-generation framework that empowers you, the developer, to create fantastic admin panels for your Ruby on Rails apps with the flexibility to fit your needs as you grow."
+  spec.summary = "Configuration-based, no-maintenance, extendable Ruby on Rails admin panel framework."
+  spec.description = "Avo abstracts away the common parts of building apps, letting your engineers work on your app's essential components. The result is a full-featured admin panel that works out of the box, ready to give to your end-users."
   spec.license = "Commercial"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
@@ -27,6 +27,7 @@ Gem::Specification.new do |spec|
       "public gem pushes."
   end
 
+  spec.required_ruby_version = ">= 2.4.0"
   spec.post_install_message = "Thank you for using Avo 💪  Docs are available at https://docs.avohq.io"
 
   spec.files = Dir["{bin,app,config,db,lib,public}/**/*", "MIT-LICENSE", "Rakefile", "README.md", "avo.gemspec", "Gemfile", "Gemfile.lock"]
@@ -44,5 +45,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "addressable"
   spec.add_dependency "meta-tags"
   spec.add_dependency "breadcrumbs_on_rails"
+  spec.add_dependency "chartkick"
   spec.add_dependency "dry-initializer"
 end

@@ -16,8 +16,8 @@ module Avo
       }
     end
 
-    def empty_state(resource_name)
-      render partial: "avo/partials/empty_state", locals: {resource_name: resource_name}
+    def empty_state(**args)
+      render Avo::EmptyStateComponent.new **args
     end
 
     def turbo_frame_wrap(name, &block)
@@ -26,56 +26,26 @@ module Avo
       end
     end
 
-    def a_button(label = nil, **args, &block)
-      args[:class] = button_classes(args[:class], color: args[:color], variant: args[:variant], size: args[:size])
-      if args[:spinner]
-        args[:"data-controller"] = "loading-button"
-      end
-
-      locals = {
-        label: label,
-        args: args
-      }
-
-      if block
-        render layout: "avo/partials/a_button", locals: locals do
-          capture(&block)
-        end
-      else
-        render partial: "avo/partials/a_button", locals: locals
+    def a_button(**args, &block)
+      render Avo::ButtonComponent.new(is_link: false, **args) do
+        capture(&block) if block_given?
       end
     end
 
-    def a_link(label, url = nil, **args, &block)
-      args[:class] = button_classes(args[:class], color: args[:color], variant: args[:variant], size: args[:size])
-
-      if block
-        url = label
-      end
-
-      locals = {
-        label: label,
-        url: url,
-        args: args
-      }
-
-      if block
-        render layout: "avo/partials/a_link", locals: locals do
-          capture(&block)
-        end
-      else
-        render partial: "avo/partials/a_link", locals: locals
+    def a_link(path = nil, **args, &block)
+      render Avo::ButtonComponent.new(path, is_link: true, **args) do
+        capture(&block) if block_given?
       end
     end
 
-    def button_classes(extra_classes = nil, color: nil, variant: nil, size: :md)
-      classes = "inline-flex flex-grow-0 items-center text-sm font-bold leading-none fill-current whitespace-nowrap transition duration-100 rounded-lg shadow-xl transform transition duration-100 active:translate-x-px active:translate-y-px cursor-pointer disabled:cursor-not-allowed #{extra_classes}"
+    def button_classes(extra_classes = nil, color: nil, variant: nil, size: :md, active: false)
+      classes = "inline-flex flex-grow-0 items-center text-sm font-semibold leading-6 fill-current whitespace-nowrap transition duration-100 rounded transform transition duration-100 active:translate-x-px active:translate-y-px cursor-pointer disabled:cursor-not-allowed #{extra_classes}"
 
       if color.present?
         if variant.present? && (variant.to_sym == :outlined)
           classes += " bg-white border"
 
-          classes += " hover:border-#{color}-700 border-#{color}-600 text-#{color}-600 hover:text-#{color}-700 disabled:border-gray-300 disabled:text-gray-600"
+          classes += " hover:border-#{color}-700 border-#{color}-500 text-#{color}-600 hover:text-#{color}-700 disabled:border-gray-300 disabled:text-gray-600"
         else
           classes += " text-white bg-#{color}-500 hover:bg-#{color}-600 disabled:bg-#{color}-300"
         end
@@ -88,9 +58,11 @@ module Avo
       when :xs
         " p-2 py-1"
       when :sm
-        " p-3"
+        " py-1 px-4"
       when :md
-        " p-4"
+        " py-2 px-4"
+      when :xl
+        " py-3 px-4"
       else
         " p-4"
       end
@@ -100,8 +72,18 @@ module Avo
 
     def svg(file_name, **args)
       options = {}
-      options[:class] = args[:class].present? ? args[:class] : "h-4 mr-1"
+      options[:class] = args[:class].present? ? args[:class] : ""
       options[:class] += args[:extra_class].present? ? " #{args[:extra_class]}" : ""
+
+      if args[:'data-target'].present?
+        options[:'data-target'] = args[:'data-target']
+      end
+      if args[:'data-tippy'].present?
+        options[:'data-tippy'] = args[:'data-tippy']
+      end
+      if args[:title].present?
+        options[:title] = args[:title]
+      end
 
       # Create the path to the svgs directory
       file_path = "#{Avo::Engine.root}/app/assets/svgs/#{file_name}"
@@ -110,7 +92,7 @@ module Avo
       # Create a cache hash
       hash = Digest::MD5.hexdigest "#{file_path.underscore}_#{options}"
 
-      svg_content = Avo::App.cache_store.fetch "svg_file_#{hash}", expires_in: 1.year, cache_nils: false do
+      svg_content = Avo::App.cache_store.fetch "svg_file_#{hash}", expires_in: 1.week, cache_nils: false do
         if File.exist?(file_path)
           file = File.read(file_path)
 
@@ -134,12 +116,12 @@ module Avo
     end
 
     def input_classes(extra_classes = "", has_error: false)
-      classes = "appearance-none inline-flex bg-slate-100 disabled:bg-slate-300 disabled:cursor-not-allowed focus:bg-white text-slate-700 disabled:text-slate-700 rounded-md py-2 px-3 leading-tight border outline-none outline"
+      classes = "appearance-none inline-flex bg-gray-100 disabled:cursor-not-allowed text-gray-600 disabled:opacity-50 rounded py-2 px-3 leading-tight border focus:border-gray-600 focus-visible:ring-0 focus:text-gray-700"
 
       classes += if has_error
         " border-red-600"
       else
-        " border-slate-300"
+        " border-gray-200"
       end
 
       classes += " #{extra_classes}"

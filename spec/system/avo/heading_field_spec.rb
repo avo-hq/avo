@@ -15,9 +15,10 @@ RSpec.describe "HeadingFields", type: :system do
         visit "/admin/resources/users/#{user.id}"
         wait_for_loaded
 
-        expect(find_field_element("heading_div_class_text_gray_300_uppercase_font_bold_dev_div")).to have_text "DEV"
-        expect(find_field_element("heading_div_class_text_gray_300_uppercase_font_bold_dev_div")).to have_css ".uppercase"
-        expect(find_field_element("heading_div_class_text_gray_300_uppercase_font_bold_dev_div")).to have_css ".text-gray-300"
+        expect(find_field_element("heading_div_class_underline_uppercase_font_bold_dev_div")).to have_text "DEV"
+        expect(find_field_element("heading_div_class_underline_uppercase_font_bold_dev_div")).to have_css ".uppercase"
+        expect(find_field_element("heading_div_class_underline_uppercase_font_bold_dev_div")).to have_css ".underline"
+        expect(find_field_element("heading_div_class_underline_uppercase_font_bold_dev_div")).to have_css ".font-bold"
       end
     end
 
@@ -35,9 +36,10 @@ RSpec.describe "HeadingFields", type: :system do
         visit "/admin/resources/users/#{user.id}/edit"
         wait_for_loaded
 
-        expect(find_field_element("heading_div_class_text_gray_300_uppercase_font_bold_dev_div")).to have_text "DEV"
-        expect(find_field_element("heading_div_class_text_gray_300_uppercase_font_bold_dev_div")).to have_css ".uppercase"
-        expect(find_field_element("heading_div_class_text_gray_300_uppercase_font_bold_dev_div")).to have_css ".text-gray-300"
+        expect(find_field_element("heading_div_class_underline_uppercase_font_bold_dev_div")).to have_text "DEV"
+        expect(find_field_element("heading_div_class_underline_uppercase_font_bold_dev_div")).to have_css ".uppercase"
+        expect(find_field_element("heading_div_class_underline_uppercase_font_bold_dev_div")).to have_css ".underline"
+        expect(find_field_element("heading_div_class_underline_uppercase_font_bold_dev_div")).to have_css ".font-bold"
       end
     end
   end

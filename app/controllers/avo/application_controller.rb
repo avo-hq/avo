@@ -53,20 +53,38 @@ module Avo
         raise Avo::LicenseVerificationTemperedError, "License verification mechanism tempered with." unless method(:index).source_location.first.match?(/.*\/app\/controllers\/avo\/search_controller\.rb/)
       end
 
+      if params[:controller] == "avo/dashboards" && params[:action] == "show"
+        raise Avo::LicenseVerificationTemperedError, "License verification mechanism tempered with." unless method(:show).source_location.first.match?(/.*\/app\/controllers\/avo\/dashboards_controller\.rb/)
+      end
+
+      if params[:controller] == "avo/dashboards" && params[:action] == "card"
+        raise Avo::LicenseVerificationTemperedError, "License verification mechanism tempered with." unless method(:card).source_location.first.match?(/.*\/app\/controllers\/avo\/dashboards_controller\.rb/)
+      end
+
       super(*args)
     end
 
     def check_avo_license
-      # Check to see if the path is on a custom tool
-      unless on_root_path || on_resources_path || on_api_path
-        # Display alert on custom tool page if in development.
+      # Check to see if the path is a custom tool
+      if on_custom_tool_page
         if @license.lacks(:custom_tools) || @license.invalid?
-          if Rails.env.development? || Rails.env.test?
-            @custom_tools_alert_visible = true
-          elsif @license.lacks_with_trial(:custom_tools)
-            # Raise error in non-development environments.
-            raise Avo::LicenseInvalidError, "Your license is invalid or doesn't support custom tools."
-          end
+          message = "Your license is invalid or doesn't support custom tools."
+        end
+      end
+
+      # Check to see if the path is a dashboard
+      if on_dashboards_path
+        if @license.lacks(:dashboards) || @license.invalid?
+          message = "Your license is invalid or doesn't support dashboards."
+        end
+      end
+
+      if message.present?
+        if Rails.env.development? || Rails.env.test?
+          @custom_tools_alert_visible = message
+        elsif @license.lacks_with_trial(:custom_tools)
+          # Raise error in non-development environments.
+          raise Avo::LicenseInvalidError, message
         end
       end
     end
@@ -210,7 +228,7 @@ module Avo
 
     def render_unauthorized(exception)
       if !exception.is_a? Pundit::NotDefinedError
-        flash[:notice] = t "avo.not_authorized"
+        flash.now[:notice] = t "avo.not_authorized"
 
         redirect_url = if request.referrer.blank? || (request.referrer == request.url)
           root_url
@@ -227,8 +245,13 @@ module Avo
     end
 
     def set_container_classes
-      contain = !Avo.configuration.full_width_container
-      contain = false if Avo.configuration.full_width_index_view && action_name.to_sym == :index && self.class.superclass.to_s == "Avo::ResourcesController"
+      contain = true
+
+      if Avo.configuration.full_width_container
+        contain = false
+      elsif Avo.configuration.full_width_index_view && action_name.to_sym == :index && self.class.superclass.to_s == "Avo::ResourcesController"
+        contain = false
+      end
 
       @container_classes = contain ? "2xl:container 2xl:mx-auto" : ""
     end
@@ -247,6 +270,14 @@ module Avo
 
     def on_api_path
       request.original_url.match?(/.*#{Avo::App.root_path}\/avo_api\/.*/)
+    end
+
+    def on_dashboards_path
+      request.original_url.match?(/.*#{Avo::App.root_path}\/dashboards\/.*/)
+    end
+
+    def on_custom_tool_page
+      !(on_root_path || on_resources_path || on_api_path || on_dashboards_path)
     end
 
     def model_param_key

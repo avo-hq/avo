@@ -1,6 +1,7 @@
 module Avo
   class App
     class_attribute :resources, default: []
+    class_attribute :dashboards, default: []
     class_attribute :cache_store, default: nil
     class_attribute :fields, default: []
     class_attribute :request, default: nil
@@ -44,6 +45,7 @@ module Avo
         end
 
         init_resources
+        init_dashboards if license.has_with_trial(:dashboards)
       end
 
       # This method will find all fields available in the Avo::Fields namespace and add them to the fields class_variable array
@@ -80,6 +82,20 @@ module Avo
               resource.new
             end
           end
+      end
+
+      def init_dashboards
+        self.dashboards = Dashboards::BaseDashboard.descendants
+          .select do |dashboard|
+            dashboard != Dashboards::BaseDashboard
+          end
+      end
+
+      # Returns the Avo dashboard by id
+      def get_dashboard_by_id(id)
+        dashboards.find do |dashboard|
+          dashboard.id == id
+        end
       end
 
       # Returns the Avo resource by camelized name
@@ -132,13 +148,24 @@ module Avo
           .sort_by { |r| r.name }
       end
 
+      def get_available_dashboards(user = nil)
+        dashboards.sort_by { |r| r.name }
+      end
+
       def resources_navigation(user = nil)
-        get_available_resources(user).select do |resource|
-          resource.model_class.present?
-        end
+        get_available_resources(user)
+          .select do |resource|
+            resource.model_class.present?
+          end
           .select do |resource|
             resource.visible_on_sidebar
           end
+      end
+
+      def get_dashboards(user = nil)
+        return [] unless App.license.has_with_trial(:resource_ordering)
+
+        get_available_dashboards(user)
       end
 
       # Insert any partials that we find in app/views/avo/sidebar/items.

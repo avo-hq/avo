@@ -17,7 +17,7 @@
           end
         %>
         <label class="block">
-          <%= check_box_tag "#{model_param_key}[#{@field.id}][]", id, checked, { class: "w-3 h-3", disabled: @field.readonly, id: "#{model_param_key}_#{@field.id}_#{id}" } %> <%= label %>
+          <%= check_box_tag "#{model_param_key}[#{@field.id}][]", id, checked, { class: "w-4 h-4", disabled: @field.readonly, id: "#{model_param_key}_#{@field.id}_#{id}" } %> <%= label %>
         </label>
       <% end %>
     </div>

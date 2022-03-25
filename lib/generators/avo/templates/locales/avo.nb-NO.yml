@@ -1,6 +1,7 @@
 nb-NO:
   avo:
     dashboard: 'Dashboard'
+    dashboards: 'Dashboards'
     choose_a_country: 'Velg et land'
     choose_an_option: 'Velg et alternativ'
     are_you_sure_you_want_to_run_this_option: 'Er du sikker?'
@@ -8,8 +9,7 @@ nb-NO:
     run: 'Kjør'
     cancel: 'Avslutt'
     action_ran_successfully: 'Suksess!'
-    resource_details: "%{item} detaljer: %{title}"
-    update_item: 'Oppdatert %{item}: %{title}'
+    details: "detaljer"
     unauthorized: 'Ikke autorisert'
     attachment_class_attached: '%{attachment_class} lagt til.'
     attachment_class_detached: '%{attachment_class} fjernet.'
@@ -82,3 +82,6 @@ nb-NO:
     search_cancel_button: 'Avbryt'
     sign_out: 'Logg ut'
     tools: Redskapene
+    empty_dashboard_message: Legg til kort i dette dashbordet
+    no_cards_present: 'Ingen kort til stede'
+

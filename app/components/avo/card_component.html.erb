@@ -1,0 +1,40 @@
+<div class="relative flex-1 flex flex-col justify-between h-full" data-controller="dashboard-card" data-dashboard-card-target="card" data-refresh-every="<%= @card.refresh_every %>" data-card-id="<%= @card.id %>">
+  <% if @card.class.display_header %>
+    <div class="px-4 pt-4">
+      <div class="flex justify-between items-center min-h-6">
+          <div class="text-base font-bold text-gray-700 leading-none">
+            <%= @card.label %>
+          </div>
+        <div data-controller="select">
+          <% if @card.type == :metric && @card.parsed_ranges.present? %>
+            <%= select_tag "#{@card.id}_range", options_for_select(@card.parsed_ranges, @card.range),
+              class: 'appearance-none inline-flex bg-blue-gray-100 disabled:bg-blue-gray-300 disabled:cursor-not-allowed focus:bg-white text-sm text-blue-gray-700 disabled:text-blue-gray-700 leading-none rounded-md py-px px-2 leading-tight border outline-none outline w-24',
+              data: {
+                target: 'select',
+                action: 'change->select#onChange'
+              }
+            %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <% if @card.type == :chartkick %>
+    <%= render 'chartkick_card', card: @card %>
+  <% elsif @card.type === :partial %>
+    <%= render @card.class.partial %>
+  <% elsif @card.type === :metric %>
+    <div class="flex-1 flex px-4 pb-4">
+      <%= render 'metric_card', card: @card %>
+    </div>
+  <% end %>
+  <% if @card.description %>
+    <div class="absolute inset-auto bottom-0 right-0 mb-4 mr-4">
+      <%= helpers.svg 'heroicons/solid/information-circle',
+        class: 'h-4 text-gray-500 cursor-pointer',
+        title: @card.description,
+        'data-tippy': 'tooltip',
+        'data-target': 'card-description' %>
+    </div>
+  <% end %>
+</div>

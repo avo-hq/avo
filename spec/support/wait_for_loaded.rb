@@ -28,14 +28,22 @@ def wait_for_search_to_dissapear(time = Capybara.default_max_wait_time)
   wait_for_element_missing(".aa-DetachedOverlay", time)
 end
 
-def wait_for_body_class_missing(klass = "turbo-loading", time = Capybara.default_max_wait_time)
+def wait_for_turbo_frame_id(frame_id = "", time = Capybara.default_max_wait_time)
+  wait_for_element_missing("turbo-frame[id='#{frame_id}'][busy]", time)
+end
+
+def wait_for_turbo_frame_src(frame_src = "", time = Capybara.default_max_wait_time)
+  wait_for_element_missing("turbo-frame[src='#{frame_src}'][busy]", time)
+end
+
+def wait_for_body_class_missing(klass = 'turbo-loading', time = Capybara.default_max_wait_time)
   Timeout.timeout(time) do
     if page.present? &&
         page.find("body").present? &&
         page.find("body")[:class].present? &&
         page.find("body")[:class].is_a?(String)
 
-      sleep(0.01) until page.present? && !page.find("body")[:class].to_s.include?(klass)
+        sleep(0.01) until page.present? && !page.find("body")[:class].to_s.include?(klass)
     else
       sleep 0.1
     end

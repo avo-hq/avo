@@ -1,80 +1,82 @@
 <div data-model-id="<%= @resource.model.id %>"
   data-selected-resources-name="<%= @resource.model_key %>"
   data-selected-resources='["<%= @resource.model.id %>"]'
+  class="space-y-8"
 >
   <% @resource.panels.each_with_index do |resource_panel, index| %>
     <%= render Avo::PanelComponent.new(title: title, description: @resource.resource_description, display_breadcrumbs: @reflection.blank?, index: index) do |c| %>
       <% c.tools do %>
         <% if resource_panel[:name] == @resource.default_panel_name %>
-          <%= render 'actions' %>
-
           <% if @reflection.present? && @resource.model.present? %>
+            <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource %>
             <% if can_detach? %>
-              <%= a_link detach_path, color: 'indigo', method: :delete, data: { confirm: "Are you sure you want to detach this #{@reflection.name.to_s}." } do %>
-                <%= svg 'trash' %> <%= t('avo.detach_item', item: @reflection.name.to_s).capitalize %>
+              <%= a_button url: detach_path,
+                icon: 'detach',
+                method: :delete,
+                form_class: 'flex flex-col sm:flex-row sm:inline-flex',
+                data: {
+                  confirm: "Are you sure you want to detach this #{@reflection.name.to_s}."
+                } do %>
+                <%= t('avo.detach_item', item: @reflection.name.to_s).capitalize %>
               <% end %>
             <% end %>
             <% if can_see_the_edit_button? %>
-              <%= a_link edit_path, color: 'indigo' do %>
-                <%= svg 'edit' %> <%= t('avo.edit').capitalize %>
+              <%= a_link edit_path, color: :primary, icon: 'edit' do %>
+                <%= t('avo.edit').capitalize %>
               <% end %>
             <% end %>
           <% else %>
-            <%= a_link back_path do %>
-              <%= svg 'arrow-left' %> <%= t('avo.go_back') %>
+            <%= a_link back_path, icon: 'arrow-left' do %>
+              <%= t('avo.go_back') %>
             <% end %>
-
+            <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource %>
             <% if can_see_the_destroy_button? %>
-              <%= form_with url: helpers.resource_path(model: @resource.model, resource: @resource), method: :delete, html: { 'data-turbo-frame': params[:turbo_frame] } do |form| %>
-                <%= a_button title: t('avo.delete_item', item: @resource.model.model_name.name.downcase).capitalize,
-                  spinner: true,
-                  color: 'red',
-                  variant: 'outlined',
-                  type: :submit,
-                  data: {
-                    confirm: t('avo.are_you_sure', item: @resource.model.model_name.name.downcase),
-                    control: :destroy,
-                    'resource-id': @resource.model.id,
-                    'tippy': 'tooltip',
-                  } do
-                %>
-                  <%= svg 'trash' %> <%= t('avo.delete').capitalize %>
-                <% end %>
+              <%= a_button url: helpers.resource_path(model: @resource.model, resource: @resource),
+                method: :delete,
+                title: t('avo.delete_item', item: @resource.model.model_name.name.downcase).capitalize,
+                spinner: true,
+                color: :red,
+                icon: 'trash',
+                form_class: 'flex flex-col sm:flex-row sm:inline-flex',
+                data: {
+                  confirm: t('avo.are_you_sure', item: @resource.model.model_name.name.downcase),
+                  control: :destroy,
+                  'resource-id': @resource.model.id,
+                  'tippy': 'tooltip',
+                } do %>
+                <%= t('avo.delete').capitalize %>
               <% end %>
             <% end %>
-
             <% if @resource.authorization.authorize_action(:edit, raise_exception: false) %>
-              <%= a_link edit_path, color: 'indigo' do %>
-                <%= svg 'edit' %> <%= t('avo.edit').capitalize %>
+              <%= a_link edit_path, color: :primary, icon: 'edit' do %>
+                <%= t('avo.edit').capitalize %>
               <% end %>
             <% end %>
           <% end %>
         <% end %>
       <% end %>
-
       <% c.body do %>
         <% if fields_by_panel[resource_panel[:name]].present? %>
-          <% fields_by_panel[resource_panel[:name]].each_with_index do |field, index| %>
-            <%= render field.component_for_view(:show).new(field: field, resource: @resource, index: index) %>
-          <% end %>
+          <div class="divide-y">
+            <% fields_by_panel[resource_panel[:name]].each_with_index do |field, index| %>
+              <%= render field.component_for_view(:show).new(field: field, resource: @resource, index: index) %>
+            <% end %>
+          </div>
         <% end %>
       <% end %>
     <% end %>
   <% end %>
-
   <% if @reflection.blank? %>
     <% if has_one_panels.present? %>
       <% has_one_panels.each_with_index do |field, index| %>
         <%= render field.component_for_view(:show).new(field: field, resource: @resource, index: index) %>
       <% end %>
     <% end %>
-
     <% if has_many_panels.present? %>
       <% has_many_panels.each_with_index do |field, index| %>
         <%= render field.component_for_view(:show).new(field: field, resource: @resource, index: index) %>
       <% end %>
     <% end %>
-
     <% if has_as_belongs_to_many_panels.present? %>
       <% has_as_belongs_to_many_panels.each_with_index do |field, index| %>
         <%= render field.component_for_view(:show).new(field: field, resource: @resource, index: index) %>
