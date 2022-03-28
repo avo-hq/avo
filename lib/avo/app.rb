@@ -91,6 +91,9 @@ module Avo
           .select do |dashboard|
             dashboard != Dashboards::BaseDashboard
           end
+          .uniq do |dashboard|
+            dashboard.id
+          end
       end
 
       # Returns the Avo dashboard by id

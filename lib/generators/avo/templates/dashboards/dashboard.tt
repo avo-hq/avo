@@ -5,5 +5,5 @@ class <%= class_name.camelize %> < Avo::Dashboards::BaseDashboard
   # self.grid_cols = 3
 
   # cards go here
-  # card metric: UsersCount
+  # card UsersCount
 end
