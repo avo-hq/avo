@@ -244,9 +244,18 @@ module Avo
       class_name_without_resource.safe_constantize
     end
 
-    def model_title
-      return @model.send title if @model.present?
+    def model_id
+      @model.send id
+    end
 
+    def model_title
+      return name if @model.nil?
+
+      the_title = @model.send title
+      return the_title if the_title.present?
+
+      model_id
+    rescue
       name
     end
 
