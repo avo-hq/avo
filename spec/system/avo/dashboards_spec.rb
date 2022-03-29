@@ -101,7 +101,7 @@ RSpec.describe "Dashboards", type: :system do
 
       it do
         is_expected.to have_text "User signups"
-        is_expected.to have_css "canvas[height='112']"
+        is_expected.to have_css "canvas"
       end
     end
 
@@ -110,7 +110,7 @@ RSpec.describe "Dashboards", type: :system do
 
       it do
         is_expected.to have_text "Scatter"
-        is_expected.to have_css "canvas[height='112']"
+        is_expected.to have_css "canvas"
       end
     end
 
@@ -119,7 +119,7 @@ RSpec.describe "Dashboards", type: :system do
 
       it do
         is_expected.to have_text "Line chart"
-        is_expected.to have_css "canvas[height='112']"
+        is_expected.to have_css "canvas"
       end
     end
 
@@ -128,7 +128,7 @@ RSpec.describe "Dashboards", type: :system do
 
       it do
         is_expected.to have_text "Example column chart"
-        is_expected.to have_css "canvas[height='112']"
+        is_expected.to have_css "canvas"
       end
     end
 
@@ -137,7 +137,7 @@ RSpec.describe "Dashboards", type: :system do
 
       it do
         is_expected.to have_text "Example bar chart"
-        is_expected.to have_css "canvas[height='112']"
+        is_expected.to have_css "canvas"
       end
     end
 
@@ -146,7 +146,7 @@ RSpec.describe "Dashboards", type: :system do
 
       it do
         is_expected.to have_text "Example bar chart"
-        is_expected.to have_css "canvas[height='112']"
+        is_expected.to have_css "canvas"
       end
     end
   end
