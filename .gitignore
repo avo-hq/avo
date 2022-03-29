@@ -65,3 +65,5 @@ coverage/
 avo*.gem
 
 app/assets/builds
+
+TAGS
