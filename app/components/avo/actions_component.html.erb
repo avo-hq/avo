@@ -12,7 +12,7 @@
     <%= t 'avo.actions' %>
   <% end %>
   <div
-    class="absolute flex inset-auto right-0 top-full bg-white w-full sm:w-auto sm:min-w-[300px] mt-2 z-20 shadow-modal rounded overflow-hidden hidden"
+    class="absolute flex inset-auto <%= Avo::PanelComponent.const_get(:RIGHT_ALIGNED_BUTTONS_BREAKPOINT).to_s %>:right-0 top-full bg-white w-full sm:w-auto sm:min-w-[300px] mt-2 z-20 shadow-modal rounded overflow-hidden hidden"
     data-toggle-panel-target="panel"
   >
     <div class="w-full space divide-y">

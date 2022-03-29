@@ -114,7 +114,7 @@ module Avo
 
     def create
       # model gets instantiated and filled in the fill_model method
-      saved = @model.save
+      saved = save_model
       @resource.hydrate(model: @model, view: :new, user: _current_user)
 
       # This means that the record has been created through another parent record and we need to attach it somehow.
@@ -165,7 +165,7 @@ module Avo
 
     def update
       # model gets instantiated and filled in the fill_model method
-      saved = @model.save
+      saved = save_model
       @resource = @resource.hydrate(model: @model, view: :edit, user: _current_user)
 
       respond_to do |format|
@@ -179,11 +179,14 @@ module Avo
     end
 
     def destroy
-      @model.destroy!
-
       respond_to do |format|
-        format.html { redirect_to params[:referrer] || resources_path(resource: @resource, turbo_frame: params[:turbo_frame], view_type: params[:view_type]), notice: t("avo.resource_destroyed", attachment_class: @attachment_class) }
-        format.json { head :no_content }
+        if destroy_model
+          format.html { redirect_to params[:referrer] || resources_path(resource: @resource, turbo_frame: params[:turbo_frame], view_type: params[:view_type]), notice: t("avo.resource_destroyed", attachment_class: @attachment_class) }
+        else
+          error_message = @errors.present? ? @errors.first : t("avo.failed")
+
+          format.html { redirect_back fallback_location: params[:referrer] || resources_path(resource: @resource, turbo_frame: params[:turbo_frame], view_type: params[:view_type]), error: error_message }
+        end
       end
     end
 
@@ -203,6 +206,31 @@ module Avo
     end
 
     private
+
+    def save_model
+      perform_action_and_record_errors do
+        @model.save!
+      end
+    end
+
+    def destroy_model
+      perform_action_and_record_errors do
+        @model.destroy!
+      end
+    end
+
+    def perform_action_and_record_errors(&block)
+      begin
+        succeeded = block.call
+      rescue => exception
+        # In case there's an error somewhere else than the model
+        # Example: When you save a license that should create a user for it and creating that user throws and error.
+        # Example: When you Try to delete a record and has a foreign key constraint.
+        @errors = Array.wrap(exception.message)
+      end
+
+      succeeded
+    end
 
     def model_params
       request_params = params.require(model_param_key).permit(permitted_params)

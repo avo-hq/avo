@@ -12,18 +12,18 @@ class Avo::AlertComponent < ViewComponent::Base
   end
 
   def icon
-    return 'x-circle' if is_error?
+    return "x-circle" if is_error?
 
-    'check-circle'
+    "check-circle"
   end
 
   def classes
     result = "max-w-sm w-full shadow-lg rounded px-4 py-3 rounded relative border text-white pointer-events-auto"
 
-    if is_error?
-      result += " bg-red-400 border-red-700"
+    result += if is_error?
+      " bg-red-400 border-red-700"
     else
-      result += " bg-green-400 border-green-700"
+      " bg-green-400 border-green-700"
     end
 
     result
