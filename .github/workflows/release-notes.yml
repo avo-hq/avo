@@ -14,6 +14,6 @@ jobs:
       - uses: release-drafter/release-drafter@v5
         id: release_drafter
         with:
-          config-name: release-drafter-1x.yml
+          config-name: release-drafter.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
