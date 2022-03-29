@@ -71,12 +71,13 @@ document.addEventListener('turbo:frame-load', () => {
   initTippy()
 })
 
-document.addEventListener('turbo:before-fetch-response', (e) => {
+document.addEventListener('turbo:before-fetch-response', async (e) => {
   if (e.detail.fetchResponse.response.status === 500) {
-    const id = e.srcElement.getAttribute('id')
-    e.srcElement.src = `${window.Avo.configuration.root_path}/failed_to_load?turbo_frame=${id}`
+    const { id, src } = e.target
+    e.target.src = `${window.Avo.configuration.root_path}/failed_to_load?turbo_frame=${id}&src=${src}`
   }
 })
+
 document.addEventListener('turbo:visit', () => document.body.classList.add('turbo-loading'))
 document.addEventListener('turbo:submit-start', () => document.body.classList.add('turbo-loading'))
 document.addEventListener('turbo:submit-end', () => document.body.classList.remove('turbo-loading'))
