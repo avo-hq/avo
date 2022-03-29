@@ -179,10 +179,8 @@ module Avo
     end
 
     def destroy
-      destroyed = destroy_model
-
       respond_to do |format|
-        if destroyed
+        if destroy_model
           format.html { redirect_to params[:referrer] || resources_path(resource: @resource, turbo_frame: params[:turbo_frame], view_type: params[:view_type]), notice: t("avo.resource_destroyed", attachment_class: @attachment_class) }
         else
           error_message = @errors.present? ? @errors.first : t("avo.failed")
