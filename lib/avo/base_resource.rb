@@ -245,8 +245,18 @@ module Avo
     end
 
     def model_title
-      return @model.send title if @model.present?
+      if @model.present?
+        the_title = @model.send title
 
+        if the_title.present?
+          return the_title
+        else
+          return @model.send self.id
+        end
+      end
+
+      name
+    rescue
       name
     end
 
