@@ -12,7 +12,7 @@ class Comment < ApplicationRecord
   end
 
   def body_different
-    possible_comment = Comment.where(body: body).first
+    possible_comment = Comment.where(body: body).where.not(id: id).first
     if possible_comment.present?
       # errors.add :body, message: "A comment with that Body exists"
       errors.add :body, message: "exists in another Comment."
