@@ -1,6 +1,6 @@
 <div <%== data_attributes %>>
   <% if render_header? %>
-    <div class="bg-white rounded shadow p-4 flex-1 flex flex-col xl:flex-row justify-between mb-6">
+    <div class="bg-white rounded shadow p-4 flex-1 flex flex-col <%= bp %>:flex-row justify-between mb-6">
       <div class="overflow-hidden mr-4">
         <% if display_breadcrumbs? %>
           <div class="breadcrumbs truncate mb-2">
@@ -19,7 +19,7 @@
         <% end %>
       </div>
 
-      <div class="flex-1 w-full flex flex-col sm:flex-row xl:justify-end sm:items-end space-y-2 sm:space-y-0 sm:space-x-2 mt-4 xl:mt-0">
+      <div class="flex-1 w-full flex flex-col sm:flex-row <%= bp %>:justify-end sm:items-end space-y-2 sm:space-y-0 sm:space-x-2 mt-4 <%= bp %>:mt-0">
         <%= tools %>
       </div>
     </div>
