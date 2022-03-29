@@ -211,7 +211,7 @@ module Avo
 
     def save_model
       perform_action_and_record_errors do
-        @model.destroy!
+        @model.save!
       end
     end
 
