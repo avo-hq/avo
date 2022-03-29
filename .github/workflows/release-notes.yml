@@ -1,6 +1,9 @@
 name: Build release notes
 
-on: push
+on:
+  pull_request:
+    branches:
+      - main
 
 jobs:
   update_release_notes:
