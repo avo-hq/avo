@@ -254,10 +254,10 @@ module Avo
 
         return the_title if the_title.present?
 
-        return model_id
+        model_id
+      else
+        name
       end
-
-      name
     rescue
       name
     end
