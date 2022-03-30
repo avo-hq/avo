@@ -7,6 +7,7 @@ module Avo
     before_action :hydrate_resource
     before_action :set_model, only: [:show, :edit, :destroy, :update, :order]
     before_action :set_model_to_fill
+    before_action :set_edit_title_and_breadcrumbs, only: [:edit, :update]
     before_action :fill_model, only: [:create, :update]
     before_action :authorize_action
     before_action :reset_pagination_if_filters_changed, only: :index
@@ -91,27 +92,6 @@ module Avo
       add_breadcrumb t("avo.new").humanize
     end
 
-    def edit
-      @resource = @resource.hydrate(model: @model, view: :edit, user: _current_user)
-
-      @page_title = @resource.default_panel_name.to_s
-
-      # If we're accessing this resource via another resource add the parent to the breadcrumbs.
-      if params[:via_resource_class].present? && params[:via_resource_id].present?
-        via_resource = Avo::App.get_resource_by_model_name params[:via_resource_class]
-        via_model = via_resource.class.find_scope.find params[:via_resource_id]
-        via_resource.hydrate model: via_model
-
-        add_breadcrumb via_resource.plural_name, resources_path(resource: @resource)
-        add_breadcrumb via_resource.model_title, resource_path(model: via_model, resource: via_resource)
-      else
-        add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
-      end
-
-      add_breadcrumb @resource.model_title, resource_path(model: @resource.model, resource: @resource)
-      add_breadcrumb t("avo.edit").humanize
-    end
-
     def create
       # model gets instantiated and filled in the fill_model method
       saved = save_model
@@ -161,6 +141,9 @@ module Avo
           format.html { render :new, status: :unprocessable_entity }
         end
       end
+    end
+
+    def edit
     end
 
     def update
@@ -354,6 +337,25 @@ module Avo
 
     def applied_filters_cache_key
       "avo.base_controller.#{@resource.model_key}.applied_filters"
+    end
+
+    def set_edit_title_and_breadcrumbs
+      @resource = @resource.hydrate(model: @model, view: :edit, user: _current_user)
+      @page_title = @resource.default_panel_name.to_s
+      # If we're accessing this resource via another resource add the parent to the breadcrumbs.
+      if params[:via_resource_class].present? && params[:via_resource_id].present?
+        via_resource = Avo::App.get_resource_by_model_name params[:via_resource_class]
+        via_model = via_resource.class.find_scope.find params[:via_resource_id]
+        via_resource.hydrate model: via_model
+
+        add_breadcrumb via_resource.plural_name, resources_path(resource: @resource)
+        add_breadcrumb via_resource.model_title, resource_path(model: via_model, resource: via_resource)
+      else
+        add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
+      end
+
+      add_breadcrumb @resource.model_title, resource_path(model: @resource.model, resource: @resource)
+      add_breadcrumb t("avo.edit").humanize
     end
   end
 end

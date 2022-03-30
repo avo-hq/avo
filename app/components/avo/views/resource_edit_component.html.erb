@@ -6,7 +6,7 @@
         method: :put,
         local: true,
         multipart: true do |form| %>
-      <%= hidden_field_tag :referrer, back_path if params[:via_resource_class] %>
+      <%= render Avo::ReferrerParamsComponent.new back_path: back_path %>
       <%= render Avo::PanelComponent.new(title: resource_panel[:name], description: @resource.resource_description, display_breadcrumbs: true) do |c| %>
         <% c.tools do %>
           <%= a_link back_path, icon: 'arrow-left' do %>
