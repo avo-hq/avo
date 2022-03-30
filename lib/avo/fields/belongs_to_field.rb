@@ -236,7 +236,6 @@ module Avo
       end
 
       def name
-        puts ["polymorphic_as->", polymorphic_as].inspect
         return polymorphic_as.to_s.humanize if polymorphic_as.present? && view == :index
 
         super
