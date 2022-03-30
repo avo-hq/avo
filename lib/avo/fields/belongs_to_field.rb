@@ -70,7 +70,7 @@ module Avo
         @searchable = args[:searchable] == true
         @polymorphic_as = args[:polymorphic_as]
         @types = args[:types]
-        @relation_method = name.to_s.parameterize.underscore
+        @relation_method = id.to_s.parameterize.underscore
       end
 
       def searchable
@@ -236,6 +236,7 @@ module Avo
       end
 
       def name
+        puts ["polymorphic_as->", polymorphic_as].inspect
         return polymorphic_as.to_s.humanize if polymorphic_as.present? && view == :index
 
         super

@@ -10,6 +10,7 @@ module Avo
       delegate :view_context, to: "Avo::App"
       delegate :main_app, to: :view_context
       delegate :avo, to: :view_context
+      delegate :t, to: ::I18n
 
       attr_reader :id
       attr_reader :block
@@ -48,7 +49,7 @@ module Avo
         @id = id
         @name = args[:name]
         @translation_key = args[:translation_key]
-        @translation_enabled = false
+        @translation_enabled = ::Avo::App.translation_enabled
         @block = block
         @required = args[:required] || false
         @readonly = args[:readonly] || false
@@ -94,18 +95,26 @@ module Avo
         @translation_key
       end
 
+      # Getting the name of the resource (user/users, post/posts)
+      # We'll first check to see if the user passed a name
+      # Secondly we'll try to find a translation key
+      # We'll fallback to humanizing the id
       def name
+        default = @id.to_s.humanize(keep_id_suffix: true)
+
         return @name if @name.present?
 
-        return I18n.t(translation_key, count: 1).capitalize if translation_key
+        return t(translation_key, count: 1, default: default).capitalize if @translation_key
 
-        @id.to_s.humanize(keep_id_suffix: true)
+        default
       end
 
       def plural_name
-        return I18n.t(translation_key, count: 2).capitalize if translation_key
+        default = name.pluralize
 
-        name.pluralize
+        return t(translation_key, count: 2, default: default).capitalize if @translation_key
+
+        default
       end
 
       def placeholder

@@ -11,6 +11,7 @@ module Avo
     delegate :avo, to: :view_context
     delegate :resource_path, to: :view_context
     delegate :resources_path, to: :view_context
+    delegate :t, to: ::I18n
 
     attr_accessor :view
     attr_accessor :model
@@ -26,7 +27,7 @@ module Avo
     class_attribute :includes, default: []
     class_attribute :model_class
     class_attribute :translation_key
-    class_attribute :translation_enabled
+    class_attribute :translation_enabled, default: false
     class_attribute :default_view_type, default: :table
     class_attribute :devise_password_optional, default: false
     class_attribute :actions_loader
@@ -40,6 +41,8 @@ module Avo
     class_attribute :ordering
 
     class << self
+      delegate :t, to: ::I18n
+
       def grid(&block)
         grid_collector = GridCollector.new
         grid_collector.instance_eval(&block)
@@ -96,6 +99,8 @@ module Avo
           self.class.model_class = model_class.base_class
         end
       end
+
+      self.class.translation_enabled = ::Avo::App.translation_enabled
     end
 
     def hydrate(model: nil, view: nil, user: nil, params: nil)
@@ -215,7 +220,7 @@ module Avo
       when :edit
         model_title
       when :new
-        I18n.t("avo.create_new_item", item: name.downcase).upcase_first
+        t("avo.create_new_item", item: name.downcase).upcase_first
       end
     end
 
@@ -276,11 +281,13 @@ module Avo
     end
 
     def name
+      default = class_name_without_resource.titlecase
+
       return @name if @name.present?
 
-      return I18n.t(translation_key, count: 1).capitalize if translation_key
+      return t(translation_key, count: 1, default: default).capitalize if translation_key
 
-      class_name_without_resource.titlecase
+      default
     end
 
     def singular_name
@@ -288,9 +295,11 @@ module Avo
     end
 
     def plural_name
-      return I18n.t(translation_key, count: 2).capitalize if translation_key
+      default = name.pluralize
 
-      name.pluralize
+      return t(translation_key, count: 2, default: default).capitalize if translation_key
+
+      default
     end
 
     def underscore_name
