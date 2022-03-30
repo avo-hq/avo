@@ -13,11 +13,11 @@ RSpec.feature "ResourcesHiddenFromSidebar", type: :feature do
     it "does not display the resource but can access it" do
       visit "/admin/resources/posts"
 
-      expect(page.body).not_to have_text "Team Memberships"
+      expect(page.body).not_to have_text "Team memberships"
 
       visit "/admin/resources/team_memberships"
 
-      expect(page.body).to have_text "Team Memberships"
+      expect(page.body).to have_text "Team memberships"
     end
   end
 end
