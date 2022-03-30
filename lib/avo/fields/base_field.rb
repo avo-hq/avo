@@ -190,8 +190,12 @@ module Avo
         "#{type.camelize}Field"
       end
 
+      # Try and build the component class or fallback to a blank one
       def component_for_view(view = :index)
-        "Avo::Fields::#{view_component_name}::#{view.to_s.camelize}Component".safe_constantize
+        component_class = "::Avo::Fields::#{view_component_name}::#{view.to_s.camelize}Component"
+        component_class.constantize
+      rescue
+        ::Avo::BlankFieldComponent
       end
 
       def model_errors
