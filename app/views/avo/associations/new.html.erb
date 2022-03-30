@@ -1,6 +1,7 @@
 <%= turbo_frame_tag 'attach_modal' do %>
   <%= form_with scope: 'fields',
     url: "#{avo.root_path}resources/#{params[:resource_name]}/#{params[:id]}/#{params[:related_name]}/",
+    local: true,
     data: {
       'turbo-frame': '_top'
     } do |form| %>
