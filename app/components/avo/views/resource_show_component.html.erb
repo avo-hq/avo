@@ -33,6 +33,7 @@
             <% if can_see_the_destroy_button? %>
               <%= a_button url: helpers.resource_path(model: @resource.model, resource: @resource),
                 method: :delete,
+                local: true,
                 title: t('avo.delete_item', item: @resource.model.model_name.name.downcase).capitalize,
                 spinner: true,
                 color: :red,
