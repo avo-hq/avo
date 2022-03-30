@@ -3,7 +3,7 @@
     <%= render partial: 'avo/partials/table_header', locals: {fields: @resource.get_fields(reflection: @reflection)} %>
     <tbody class="divide-y">
       <% @resources.each_with_index do |resource, index| %>
-        <% cache_if Avo.configuration.cache_resources_on_index_view, resource.cache_hash(@parent_model) do %>
+        <% cache_if Avo.configuration.cache_resources_on_index_view, resource.cache_hash(@parent_model), expires_in: 1.day do %>
           <%= render Avo::Index::TableRowComponent.new(resource: resource, reflection: @reflection, parent_model: @parent_model) %>
         <% end %>
       <% end %>
