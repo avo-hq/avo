@@ -10,6 +10,7 @@ module Avo
     class_attribute :current_user, default: nil
     class_attribute :root_path, default: nil
     class_attribute :view_context, default: nil
+    class_attribute :translation_enabled, default: false
 
     class << self
       def boot
@@ -32,6 +33,7 @@ module Avo
         self.view_context = view_context
 
         self.license = Licensing::LicenseManager.new(Licensing::HQ.new(request).response).license
+        self.translation_enabled = license.has(:localization)
 
         # Set the current host for ActiveStorage
         begin
