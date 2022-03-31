@@ -74,7 +74,7 @@ body {
 }
 
 .turbo-progress-bar {
-  @apply bg-green-500;
+  @apply bg-blue-400;
 }
 
 body.os-mac .mac\:hidden {
