@@ -44,6 +44,7 @@ Avo::App.boot
 # ActiveRecord::Migrator.migrate(File.join(Rails.root, 'db/migrate'))
 
 require 'support/download_helpers'
+require 'support/request_helpers'
 
 Capybara.register_driver :chrome_headless do |app|
   Capybara::Selenium::Driver.new app,
@@ -90,6 +91,7 @@ require 'support/controller_routes'
 
 RSpec.configure do |config|
   config.include TestHelpers::ControllerRoutes, type: :controller
+  config.include Requests::JsonHelpers, :type => :controller
   config.include TestHelpers::DisableAuthentication, type: :system
   config.include TestHelpers::DisableAuthentication, type: :feature
   config.include TestHelpers::DisableHQRequest

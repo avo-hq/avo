@@ -39,6 +39,7 @@ module Avo
     class_attribute :resolve_query_scope
     class_attribute :resolve_find_scope
     class_attribute :ordering
+    class_attribute :search_hide_from_global_search, default: false
 
     class << self
       delegate :t, to: ::I18n
