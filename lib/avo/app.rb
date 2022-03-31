@@ -10,6 +10,7 @@ module Avo
     class_attribute :current_user, default: nil
     class_attribute :root_path, default: nil
     class_attribute :view_context, default: nil
+    class_attribute :params, default: {}
     class_attribute :translation_enabled, default: false
 
     class << self
@@ -25,12 +26,13 @@ module Avo
         end
       end
 
-      def init(request:, context:, current_user:, root_path:, view_context:)
+      def init(request:, context:, current_user:, root_path:, view_context:, params:)
         self.request = request
         self.context = context
         self.current_user = current_user
         self.root_path = root_path
         self.view_context = view_context
+        self.params = params
 
         self.license = Licensing::LicenseManager.new(Licensing::HQ.new(request).response).license
         self.translation_enabled = license.has(:localization)
@@ -90,6 +92,9 @@ module Avo
         self.dashboards = Dashboards::BaseDashboard.descendants
           .select do |dashboard|
             dashboard != Dashboards::BaseDashboard
+          end
+          .uniq do |dashboard|
+            dashboard.id
           end
       end
 

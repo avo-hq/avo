@@ -4,7 +4,9 @@ class Avo::SidebarComponent < ViewComponent::Base
   def dashboards
     return [] if Avo::App.license.lacks_with_trial(:dashboards)
 
-    Avo::App.get_dashboards(helpers._current_user)
+    Avo::App.get_dashboards(helpers._current_user).select do |dashboard|
+      dashboard.is_visible?
+    end
   end
 
   def resources
