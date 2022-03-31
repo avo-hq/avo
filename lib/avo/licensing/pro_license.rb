@@ -4,6 +4,7 @@ module Avo
       def abilities
         [
           :authorization,
+          :localization,
           :custom_tools,
           :custom_fields,
           :global_search,

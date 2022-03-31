@@ -106,7 +106,7 @@ RSpec.feature "HasManyField", type: :system do
         wait_for_loaded
       }.to change(Course.find(course.id).links, :count).by 1
 
-      expect(page).to have_text "Course Link attached."
+      expect(page).to have_text "Course link attached."
     end
   end
 end

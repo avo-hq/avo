@@ -37,7 +37,8 @@ version-resolver:
     labels:
       - 'patch'
   default: patch
+references:
+  - main
 template: |
   ## Release notes
-
   $CHANGES

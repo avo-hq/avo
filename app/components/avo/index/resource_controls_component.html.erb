@@ -28,7 +28,10 @@
   <% end %>
 
   <% if can_detach? %>
-    <%= form_with url: helpers.resource_detach_path(params[:resource_name], params[:id], params[:related_name], @resource.model.id), method: :delete, html: {
+    <%= form_with url: helpers.resource_detach_path(params[:resource_name], params[:id], params[:related_name], @resource.model.id),
+      method: :delete,
+      local: true,
+      html: {
         'data-turbo-frame': params[:turbo_frame]
       } do |form| %>
       <%= form.button helpers.svg('detach', class: button_classes),
@@ -51,6 +54,7 @@
     <%= form_with url: helpers.resource_path(model: @resource.model, resource: @resource),
       method: :delete,
       class: 'flex items-center',
+      local: true,
       html: {
         'data-turbo-frame': params[:turbo_frame]
       } do |form| %>

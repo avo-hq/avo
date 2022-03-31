@@ -1,13 +1,16 @@
 ---
 name: Bug report
-about: Create a report to help us improve
+about: Create a report to help us improve Avo
 title: ''
 labels: ''
 assignees: ''
 ---
 
 ### Describe the bug
-<!-- A clear and concise description of what the bug is. -->
+<!--
+A clear and concise description of what the bug is.
+You can use https://avodemo.herokuapp.com as the base app for the given instructions.
+-->
 
 ### Steps to Reproduce
 Steps to reproduce the behavior:
@@ -35,9 +38,10 @@ Steps to reproduce the behavior:
 ### Additional context
 <!-- Add any other context about the problem here. -->
 
-### How much are you impacted by this issue
-<!-- Please set a level for Impact and Urgency -->
-
+<!--
+How much are you impacted by this issue?
+Please set a level for Impact and Urgency
+-->
 #### Impact
 
  - [ ] High impact
