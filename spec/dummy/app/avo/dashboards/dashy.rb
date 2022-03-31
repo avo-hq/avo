@@ -16,7 +16,9 @@ class Dashy < Avo::Dashboards::BaseDashboard
   card ExampleColumnChart
   card ExamplePieChart
   card ExampleBarChart
+
   divider label: "Custom partials"
+
   card ExampleCustomPartial
   card MapCard
 end
