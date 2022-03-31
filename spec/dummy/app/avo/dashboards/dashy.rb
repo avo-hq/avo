@@ -3,7 +3,9 @@ class Dashy < Avo::Dashboards::BaseDashboard
   self.name = "Dashy"
   self.description = "The first dashbaord"
   self.grid_cols = 3
-  self.visible = true
+  # self.visible = -> do
+  #   true
+  # end
 
   card ExampleMetric
   card ExampleAreaChart
