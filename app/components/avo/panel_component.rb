@@ -6,6 +6,7 @@ class Avo::PanelComponent < ViewComponent::Base
   renders_one :tools
   renders_one :body
   renders_one :bare_content
+  renders_one :footer_tools
   renders_one :footer
 
   def initialize(title: nil, description: nil, body_classes: nil, data: {}, display_breadcrumbs: false, index: nil)
@@ -18,6 +19,10 @@ class Avo::PanelComponent < ViewComponent::Base
   end
 
   private
+
+  def white_panel_classes
+    'bg-white rounded shadow'
+  end
 
   def data_attributes
     @data.merge({'panel-index': @index}).map do |key, value|
@@ -37,5 +42,9 @@ class Avo::PanelComponent < ViewComponent::Base
 
   def render_header?
     @title.present? || description.present? || tools.present? || display_breadcrumbs?
+  end
+
+  def render_footer_tools?
+    footer_tools.present?
   end
 end

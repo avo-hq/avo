@@ -18,6 +18,18 @@
             <% end %>
           <% end %>
         <% end %>
+        <% if Avo.configuration.buttons_on_form_footers %>
+          <% c.footer_tools do %>
+            <%= a_link back_path, icon: 'arrow-left' do %>
+              <%= t('avo.cancel').capitalize %>
+            <% end %>
+            <% if can_see_the_save_button? %>
+              <%= a_button color: :green, spinner: true, type: :submit, icon: 'save' do %>
+                <%= t('avo.save').capitalize %>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% end %>
         <% c.body do %>
           <div class="divide-y">
             <% @resource.get_fields.each_with_index do |field, index| %>

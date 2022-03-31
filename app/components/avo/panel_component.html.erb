@@ -1,6 +1,6 @@
 <div <%== data_attributes %>>
   <% if render_header? %>
-    <div class="bg-white rounded shadow p-4 flex-1 flex flex-col xl:flex-row justify-between mb-6">
+    <div class="<%= white_panel_classes %> p-4 flex-1 flex flex-col xl:flex-row justify-between mb-6">
       <div class="overflow-hidden mr-4">
         <% if display_breadcrumbs? %>
           <div class="breadcrumbs truncate mb-2">
@@ -25,13 +25,21 @@
     </div>
   <% end %>
 
-  <div class="relative bg-white rounded shadow <%= @body_classes %>">
+  <div class="relative <%= white_panel_classes %> <%= @body_classes %>">
     <%= body %>
   </div>
 
   <div class="relative">
     <%= bare_content %>
   </div>
+
+  <% if footer_tools.present? %>
+    <div class="<%= white_panel_classes %> p-4 flex-1 flex flex-col xl:flex-row justify-between mt-6">
+      <div class="flex-1 w-full flex flex-col sm:flex-row xl:justify-end sm:items-end space-y-2 sm:space-y-0 sm:space-x-2 mt-4 xl:mt-0">
+        <%= footer_tools %>
+      </div>
+    </div>
+  <% end %>
 
   <div class="flex justify-end w-full">
     <div>
