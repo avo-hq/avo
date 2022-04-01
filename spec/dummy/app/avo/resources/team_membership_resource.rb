@@ -5,7 +5,7 @@ class TeamMembershipResource < Avo::BaseResource
   self.search_query = ->(params:) do
     scope.ransack(id_eq: params[:q], m: "or").result(distinct: false)
   end
-  self.search_hide_from_global_search = true
+  self.hide_from_global_search = true
 
   field :id, as: :id
   field :id, as: :number, only_on: :edit
