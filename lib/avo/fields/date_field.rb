@@ -19,7 +19,7 @@ module Avo
         return if value.blank?
 
         if @format.is_a?(Symbol)
-          value.to_s(@format)
+          value.to_formatted_s(@format)
         else
           value.strftime(@format)
         end
