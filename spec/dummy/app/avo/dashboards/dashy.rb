@@ -8,15 +8,15 @@ class Dashy < Avo::Dashboards::BaseDashboard
   # end
 
   card ExampleMetric
+  card ExampleAreaChart
+  card ExampleScatterChart
   card ExampleMetric, options: {
     active_users: true
     # @todo: add the ability to change the card title and description from here.
   }
-  card ExampleAreaChart
-  card ExampleScatterChart
   card PercentDone
-  card AmountRaised
   card ExampleLineChart
+  card AmountRaised
   card ExampleColumnChart
   card ExamplePieChart
   card ExampleBarChart
