@@ -12,7 +12,7 @@ module Avo
       class_attribute :index, default: 0
 
       class << self
-        def card(klass, options: nil)
+        def card(klass, options: {})
           self.items_holder ||= []
 
           self.items_holder << klass.new(dashboard: self, options: options, index: index)

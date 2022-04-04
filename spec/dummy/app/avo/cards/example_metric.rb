@@ -33,6 +33,12 @@ class ExampleMetric < Avo::Dashboards::MetricCard
       end
     end
 
-    result User.where(created_at: from..to).count
+    scope = User
+
+    if card.options[:active_users].present?
+      scope = scope.active
+    end
+
+    result scope.where(created_at: from..to).count
   end
 end

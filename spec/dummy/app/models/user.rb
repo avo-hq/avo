@@ -20,6 +20,8 @@ class User < ApplicationRecord
 
   friendly_id :name, use: :slugged
 
+  scope :active, -> { where active: true }
+
   def is_admin?
     roles.present? && roles["admin"].present?
   end

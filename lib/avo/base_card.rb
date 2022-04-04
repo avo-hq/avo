@@ -26,11 +26,10 @@ module Avo
       end
     end
 
-    def initialize(dashboard:, options: nil, index: 0)
+    def initialize(dashboard:, options: {}, index: 0)
       @dashboard = dashboard
       @options = options
       @index = index
-      puts ["options->", options].inspect
     end
 
     def label
