@@ -10,6 +10,7 @@ module Avo
       option :dashboard
       option :card
       option :params
+      option :options
 
       delegate :result, to: :card
 

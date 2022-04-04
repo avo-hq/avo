@@ -1,6 +1,6 @@
 module Avo
   module Dashboards
-    class PartialCard < BaseCard
+    class PartialCard < Avo::BaseCard
       class_attribute :partial
     end
   end

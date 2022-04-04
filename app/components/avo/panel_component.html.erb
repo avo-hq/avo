@@ -19,9 +19,11 @@
         <% end %>
       </div>
 
-      <div class="flex-1 w-full flex flex-col sm:flex-row xl:justify-end sm:items-end space-y-2 sm:space-y-0 sm:space-x-2 mt-4 xl:mt-0">
-        <%= tools %>
-      </div>
+      <% if tools.present? %>
+        <div class="flex-1 w-full flex flex-col sm:flex-row xl:justify-end sm:items-end space-y-2 sm:space-y-0 sm:space-x-2 mt-4 xl:mt-0">
+          <%= tools %>
+        </div>
+      <% end %>
     </div>
   <% end %>
 

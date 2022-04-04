@@ -19,6 +19,11 @@ class Dashy < Avo::Dashboards::BaseDashboard
 
   divider label: "Custom partials"
 
-  card ExampleCustomPartial
+  card ExampleCustomPartial, options: {
+    foo: "bar",
+    block: ->(params = nil) {
+      "Hello from the block"
+    }
+  }
   card MapCard
 end
