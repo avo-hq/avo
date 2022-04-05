@@ -128,7 +128,7 @@ module Avo
 
       respond_to do |format|
         if saved
-          format.html { redirect_to redirect_path, notice: "#{@model.class.name} #{t("avo.was_successfully_created")}." }
+          format.html { redirect_to after_create_path, notice: "#{@model.class.name} #{t("avo.was_successfully_created")}." }
         else
           flash.now[:error] = t "avo.you_missed_something_check_form"
           format.html { render :new, status: :unprocessable_entity }
@@ -146,7 +146,7 @@ module Avo
 
       respond_to do |format|
         if saved
-          format.html { redirect_to redirect_path, notice: "#{@model.class.name} #{t("avo.was_successfully_updated")}." }
+          format.html { redirect_to after_update_path, notice: "#{@model.class.name} #{t("avo.was_successfully_updated")}." }
         else
           flash.now[:error] = t "avo.you_missed_something_check_form"
           format.html { render :edit, status: :unprocessable_entity }
@@ -349,14 +349,6 @@ module Avo
 
       add_breadcrumb @resource.model_title, resource_path(model: @resource.model, resource: @resource)
       add_breadcrumb t("avo.edit").humanize
-    end
-
-    def redirect_path
-      if action_name == "create"
-        after_create_path
-      elsif action_name == "update"
-        after_update_path
-      end
     end
 
     def after_create_path
