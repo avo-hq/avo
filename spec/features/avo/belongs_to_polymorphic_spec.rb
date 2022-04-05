@@ -36,6 +36,10 @@ RSpec.feature "belongs_to", type: :system do
             select user.name, from: "comment_user_id"
             click_on "Save"
 
+            wait_for_loaded
+
+            return_to_comment_page
+
             expect(find_field_value_element("body")).to have_text "Sample comment"
             expect(find_field_value_element("user")).to have_link user.name, href: "/admin/resources/users/#{user.slug}?via_resource_class=Comment&via_resource_id=#{Comment.last.id}"
             expect(find_field_value_element("commentable")).to have_text empty_dash
@@ -58,6 +62,8 @@ RSpec.feature "belongs_to", type: :system do
 
               expect(Comment.count).to eq 1
               comment = Comment.first
+
+              return_to_comment_page
 
               expect(current_path).to eq "/admin/resources/comments/#{comment.id}"
 
@@ -111,6 +117,10 @@ RSpec.feature "belongs_to", type: :system do
               select "Choose an option", from: "comment_commentable_type"
               click_on "Save"
 
+              wait_for_loaded
+
+              return_to_comment_page
+
               expect(find_field_value_element("commentable")).to have_text empty_dash
             end
           end
@@ -128,6 +138,10 @@ RSpec.feature "belongs_to", type: :system do
               select "Post", from: "comment_commentable_type"
               click_on "Save"
 
+              wait_for_loaded
+
+              return_to_comment_page
+
               expect(find_field_value_element("commentable")).to have_text empty_dash
             end
 
@@ -140,6 +154,10 @@ RSpec.feature "belongs_to", type: :system do
               select "Post", from: "comment_commentable_type"
               select post.name, from: "comment_commentable_id"
               click_on "Save"
+
+              wait_for_loaded
+
+              return_to_comment_page
 
               expect(find_field_value_element("commentable")).to have_text post.name
             end
@@ -436,4 +454,12 @@ RSpec.feature "belongs_to", type: :system do
       expect(page).to have_field type: "hidden", name: "course/link[course_id]", visible: false, with: course.id
     end
   end
+end
+
+def return_to_comment_page
+  comment = Comment.first
+
+  expect(current_path).to eq "/admin/resources/comments"
+
+  click_on comment.id.to_s
 end
