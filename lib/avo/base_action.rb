@@ -13,6 +13,7 @@ module Avo
     class_attribute :user
     class_attribute :resource
     class_attribute :fields
+    class_attribute :invalid_fields
     class_attribute :standalone, default: false
     class_attribute :visible
     class_attribute :may_download_file, default: false

@@ -18,7 +18,7 @@ class Avo::AlertComponent < ViewComponent::Base
   end
 
   def classes
-    result = "max-w-sm w-full shadow-lg rounded px-4 py-3 rounded relative border text-white pointer-events-auto"
+    result = "max-w-lg w-full shadow-lg rounded px-4 py-3 rounded relative border text-white pointer-events-auto"
 
     result += if is_error?
       " bg-red-400 border-red-700"

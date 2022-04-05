@@ -2,14 +2,19 @@ module Avo
   module FieldsCollector
     def field(field_name, as:, **args, &block)
       self.fields ||= []
+      self.invalid_fields ||= []
 
       field_instance = parse_field(field_name, as: as, **args, &block)
 
       if field_instance.present?
         self.fields << field_instance
       else
-        message = "[Avo] The #{field_name} field, as: #{as} from #{self.name} has an invalid configuration."
-        ::Rails.logger.warn message
+        self.invalid_fields << ({
+          name: field_name,
+          as: as,
+          resource: name,
+          message: "There's an invalid field configuration for this resource. <br/> <code class='px-1 py-px rounded bg-red-600'>field :#{field_name}, as: #{as}</code>"
+        })
       end
     end
 
