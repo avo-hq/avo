@@ -128,13 +128,6 @@ module Avo
 
       respond_to do |format|
         if saved
-          redirect_path = resource_path(model: @model, resource: @resource)
-
-          if params[:via_relation_class].present? && params[:via_resource_id].present?
-            parent_resource = ::Avo::App.get_resource_by_model_name params[:via_relation_class].safe_constantize
-            redirect_path = resource_path(model: params[:via_relation_class].safe_constantize, resource: parent_resource, resource_id: params[:via_resource_id])
-          end
-
           format.html { redirect_to redirect_path, notice: "#{@model.class.name} #{t("avo.was_successfully_created")}." }
         else
           flash.now[:error] = t "avo.you_missed_something_check_form"
@@ -153,7 +146,7 @@ module Avo
 
       respond_to do |format|
         if saved
-          format.html { redirect_to params[:referrer] || resource_path(model: @model, resource: @resource), notice: "#{@model.class.name} #{t("avo.was_successfully_updated")}." }
+          format.html { redirect_to redirect_path, notice: "#{@model.class.name} #{t("avo.was_successfully_updated")}." }
         else
           flash.now[:error] = t "avo.you_missed_something_check_form"
           format.html { render :edit, status: :unprocessable_entity }
@@ -356,6 +349,44 @@ module Avo
 
       add_breadcrumb @resource.model_title, resource_path(model: @resource.model, resource: @resource)
       add_breadcrumb t("avo.edit").humanize
+    end
+
+    def redirect_path
+      if action_name == "create"
+        after_create_path
+      elsif action_name == "update"
+        after_update_path
+      end
+    end
+
+    def after_create_path
+      # If this is an associated record return to the association show page
+      if params[:via_relation_class].present? && params[:via_resource_id].present?
+        parent_resource = ::Avo::App.get_resource_by_model_name params[:via_relation_class].safe_constantize
+        resource_path(model: params[:via_relation_class].safe_constantize, resource: parent_resource, resource_id: params[:via_resource_id])
+      elsif @resource.class.after_create_path.present?
+        # If the developer specified the return path, use that
+        if @resource.class.after_create_path == :index
+          resources_path(resource: @resource)
+        else
+          resource_path(model: @model, resource: @resource)
+        end
+      else
+        # Default to the index path
+        resource_path(model: @model, resource: @resource)
+      end
+    end
+
+    def after_update_path
+      if @resource.class.after_update_path.present?
+        if @resource.class.after_create_path == :index
+          resources_path(resource: @resource)
+        else
+          resource_path(model: @model, resource: @resource)
+        end
+      else
+        params[:referrer] || resource_path(model: @model, resource: @resource)
+      end
     end
   end
 end

@@ -5,6 +5,9 @@ class CommentResource < Avo::BaseResource
   #   scope.ransack(id_eq: params[:q], m: "or").result(distinct: false)
   # end
 
+  self.after_create_path = :index
+  self.after_update_path = :index
+
   field :id, as: :id
   field :body, as: :textarea
   field :tiny_name, as: :text, only_on: :index, as_description: true
