@@ -104,7 +104,7 @@ module Avo
 
         return @name if @name.present?
 
-        return t(translation_key, count: 1, default: default).capitalize if @translation_key
+        return t(translation_key, count: 1, default: default).capitalize if translation_key
 
         default
       end
@@ -112,7 +112,7 @@ module Avo
       def plural_name
         default = name.pluralize
 
-        return t(translation_key, count: 2, default: default).capitalize if @translation_key
+        return t(translation_key, count: 2, default: default).capitalize if translation_key
 
         default
       end
