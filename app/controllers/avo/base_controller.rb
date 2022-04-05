@@ -370,6 +370,8 @@ module Avo
     end
 
     def after_update_path
+      return params[:referrer] if params[:referrer].present?
+
       if @resource.class.after_update_path.present?
         if @resource.class.after_create_path == :index
           resources_path(resource: @resource)
@@ -377,7 +379,7 @@ module Avo
           resource_path(model: @model, resource: @resource)
         end
       else
-        params[:referrer] || resource_path(model: @model, resource: @resource)
+        resource_path(model: @model, resource: @resource)
       end
     end
   end
