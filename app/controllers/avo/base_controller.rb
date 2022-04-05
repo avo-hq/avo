@@ -355,29 +355,24 @@ module Avo
       # If this is an associated record return to the association show page
       if params[:via_relation_class].present? && params[:via_resource_id].present?
         parent_resource = ::Avo::App.get_resource_by_model_name params[:via_relation_class].safe_constantize
-        resource_path(model: params[:via_relation_class].safe_constantize, resource: parent_resource, resource_id: params[:via_resource_id])
-      elsif @resource.class.after_create_path.present?
-        # If the developer specified the return path, use that
-        if @resource.class.after_create_path == :index
-          resources_path(resource: @resource)
-        else
-          resource_path(model: @model, resource: @resource)
-        end
-      else
-        # Default to the index path
-        resource_path(model: @model, resource: @resource)
+
+        return resource_path(model: params[:via_relation_class].safe_constantize, resource: parent_resource, resource_id: params[:via_resource_id])
       end
+
+      redirect_path_from_resource_option || resource_path(model: @model, resource: @resource)
     end
 
     def after_update_path
       return params[:referrer] if params[:referrer].present?
 
-      if @resource.class.after_update_path.present?
-        if @resource.class.after_create_path == :index
-          resources_path(resource: @resource)
-        else
-          resource_path(model: @model, resource: @resource)
-        end
+      redirect_path_from_resource_option || resource_path(model: @model, resource: @resource)
+    end
+
+    def redirect_path_from_resource_option
+      return nil if @resource.class.after_update_path.blank?
+
+      if @resource.class.after_create_path == :index
+        resources_path(resource: @resource)
       else
         resource_path(model: @model, resource: @resource)
       end
