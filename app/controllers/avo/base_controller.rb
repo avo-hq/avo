@@ -128,14 +128,7 @@ module Avo
 
       respond_to do |format|
         if saved
-          redirect_path = resource_path(model: @model, resource: @resource)
-
-          if params[:via_relation_class].present? && params[:via_resource_id].present?
-            parent_resource = ::Avo::App.get_resource_by_model_name params[:via_relation_class].safe_constantize
-            redirect_path = resource_path(model: params[:via_relation_class].safe_constantize, resource: parent_resource, resource_id: params[:via_resource_id])
-          end
-
-          format.html { redirect_to redirect_path, notice: "#{@model.class.name} #{t("avo.was_successfully_created")}." }
+          format.html { redirect_to after_create_path, notice: "#{@model.class.name} #{t("avo.was_successfully_created")}." }
         else
           flash.now[:error] = t "avo.you_missed_something_check_form"
           format.html { render :new, status: :unprocessable_entity }
@@ -153,7 +146,7 @@ module Avo
 
       respond_to do |format|
         if saved
-          format.html { redirect_to params[:referrer] || resource_path(model: @model, resource: @resource), notice: "#{@model.class.name} #{t("avo.was_successfully_updated")}." }
+          format.html { redirect_to after_update_path, notice: "#{@model.class.name} #{t("avo.was_successfully_updated")}." }
         else
           flash.now[:error] = t "avo.you_missed_something_check_form"
           format.html { render :edit, status: :unprocessable_entity }
@@ -356,6 +349,33 @@ module Avo
 
       add_breadcrumb @resource.model_title, resource_path(model: @resource.model, resource: @resource)
       add_breadcrumb t("avo.edit").humanize
+    end
+
+    def after_create_path
+      # If this is an associated record return to the association show page
+      if params[:via_relation_class].present? && params[:via_resource_id].present?
+        parent_resource = ::Avo::App.get_resource_by_model_name params[:via_relation_class].safe_constantize
+
+        return resource_path(model: params[:via_relation_class].safe_constantize, resource: parent_resource, resource_id: params[:via_resource_id])
+      end
+
+      redirect_path_from_resource_option || resource_path(model: @model, resource: @resource)
+    end
+
+    def after_update_path
+      return params[:referrer] if params[:referrer].present?
+
+      redirect_path_from_resource_option || resource_path(model: @model, resource: @resource)
+    end
+
+    def redirect_path_from_resource_option
+      return nil if @resource.class.after_update_path.blank?
+
+      if @resource.class.after_create_path == :index
+        resources_path(resource: @resource)
+      else
+        resource_path(model: @model, resource: @resource)
+      end
     end
   end
 end
