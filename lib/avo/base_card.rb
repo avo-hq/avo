@@ -33,7 +33,8 @@ module Avo
     end
 
     def label
-      return self.class.label.to_s if self.class.label.to_s.present?
+      return @options[:label].to_s if @options[:label].present?
+      return self.class.label.to_s if self.class.label.present?
 
       self.class.id.to_s.humanize
     end
@@ -80,7 +81,7 @@ module Avo
     def card_classes
       result = ""
 
-      result += case self.class.cols.to_i
+      result += case cols.to_i
       when 1
         " sm:col-span-1"
       when 2
@@ -97,7 +98,7 @@ module Avo
         " sm:col-span-1"
       end
 
-      result += case self.class.rows.to_i
+      result += case rows.to_i
       when 1
         " h-36"
       when 2
@@ -136,7 +137,7 @@ module Avo
     end
 
     def range
-      return params[:range] if params.present? && params[:range].present?
+      return params[:range] if params.dig(:range).present?
 
       return initial_range if initial_range.present?
 
@@ -155,6 +156,24 @@ module Avo
 
     def is_divider?
       false
+    end
+
+    def refresh_every
+      @options.dig(:refresh_every) || self.class.refresh_every
+    end
+
+    def description
+      @options.dig(:description) || self.class.description
+    end
+
+    private
+
+    def cols
+      @options.dig(:cols) || self.class.cols
+    end
+
+    def rows
+      @options.dig(:rows) || self.class.rows
     end
   end
 end

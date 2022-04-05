@@ -11,11 +11,14 @@ class Dashy < Avo::Dashboards::BaseDashboard
   card ExampleAreaChart
   card ExampleScatterChart
   card ExampleMetric, options: {
-    active_users: true
-    # @todo: add the ability to change the card title and description from here.
+    active_users: true,
+    label: "Active users metric",
+    description: "Count the active users"
   }
   card PercentDone
-  card ExampleLineChart
+  card ExampleLineChart, options: {
+    cols: 2
+  }
   card AmountRaised
   card ExampleColumnChart
   card ExamplePieChart

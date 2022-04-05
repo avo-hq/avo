@@ -2,6 +2,7 @@ require "rails_helper"
 
 RSpec.describe "Dashboards", type: :system do
   let(:dashboard_id) { "dashy" }
+  # let(:full_card_id) { "#{dashboard_id}_#{card_id}_#{index}" }
   let(:full_card_id) { "#{dashboard_id}_#{card_id}" }
 
   describe "empty dashboard" do
@@ -19,6 +20,7 @@ RSpec.describe "Dashboards", type: :system do
   describe "dashboard with cards" do
     let(:card) { page.find("turbo-frame[id='#{full_card_id}']") }
     let(:wait_for_card) { wait_for_turbo_frame_id full_card_id }
+
     subject do
       visit "/admin/dashboards/dashy"
 
@@ -41,6 +43,7 @@ RSpec.describe "Dashboards", type: :system do
       let!(:users) { create_list :user, 10 }
       let!(:initial_user) { create :user, created_at: 1.year.ago }
 
+      let(:index) { 0 }
       let(:card_id) { "users_metric" }
 
       it do
@@ -149,6 +152,18 @@ RSpec.describe "Dashboards", type: :system do
         is_expected.to have_css "canvas"
       end
     end
+  end
+
+  describe "card options" do
+    let(:url) { "/admin/dashboards/dashy" }
+
+    subject {
+      visit url
+      page
+    }
+
+    it { is_expected.to have_text "Users count" }
+    it { is_expected.to have_text "Active users metric" }
   end
 end
 
