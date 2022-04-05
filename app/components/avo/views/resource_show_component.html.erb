@@ -84,4 +84,15 @@
       <% end %>
     <% end %>
   <% end %>
+
+  <%# Append invalid fields errors %>
+  <% if should_display_invalid_fields_errors? %>
+    <turbo-stream action="append" target="alerts">
+      <template>
+        <% @resource.invalid_fields.each do |error| %>
+          <%= render Avo::AlertComponent.new :error, error[:message] %>
+        <% end %>
+      </template>
+    </turbo-stream>
+  <% end %>
 </div>
