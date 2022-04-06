@@ -2,7 +2,6 @@ require "rails_helper"
 
 RSpec.describe "Dashboards", type: :system do
   let(:dashboard_id) { "dashy" }
-  # let(:full_card_id) { "#{dashboard_id}_#{card_id}_#{index}" }
   let(:full_card_id) { "#{dashboard_id}_#{card_id}" }
 
   describe "empty dashboard" do
