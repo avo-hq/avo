@@ -6,8 +6,8 @@ import AlertsController from './controllers/alerts_controller'
 import AttachmentsController from './controllers/attachments_controller'
 import BelongsToFieldController from './controllers/fields/belongs_to_field_controller'
 import BooleanFilterController from './controllers/boolean_filter_controller'
+import CardController from './controllers/card_controller'
 import CodeFieldController from './controllers/fields/code_field_controller'
-import DashboardCardController from './controllers/dashboard_card_controller'
 import DateFieldController from './controllers/fields/date_field_controller'
 import FilterController from './controllers/filter_controller'
 import HiddenInputController from './controllers/hidden_input_controller'
@@ -33,7 +33,7 @@ application.register('actions-picker', ActionsPickerController)
 application.register('alerts', AlertsController)
 application.register('attachments', AttachmentsController)
 application.register('boolean-filter', BooleanFilterController)
-application.register('dashboard-card', DashboardCardController)
+application.register('card', CardController)
 application.register('filter', FilterController)
 application.register('hidden-input', HiddenInputController)
 application.register('item-select-all', ItemSelectAllController)

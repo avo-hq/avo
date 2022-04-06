@@ -27,6 +27,10 @@ class UserPolicy < ApplicationPolicy
     true
   end
 
+  def cards?
+    true
+  end
+
   def act_on?
     true
   end

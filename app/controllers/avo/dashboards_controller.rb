@@ -7,12 +7,6 @@ module Avo
     def show
     end
 
-    def card
-      @card = @dashboard.item_at_index(params[:index].to_i).tap do |card|
-        card.hydrate(dashboard: @dashboard, params: params)
-      end
-    end
-
     private
 
     def set_dashboard

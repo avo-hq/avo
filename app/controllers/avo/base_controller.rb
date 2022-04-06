@@ -188,6 +188,9 @@ module Avo
       end
     end
 
+    def cards
+    end
+
     private
 
     def save_model

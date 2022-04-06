@@ -5,7 +5,7 @@ Avo::Engine.routes.draw do
   post "/rails/active_storage/direct_uploads", to: "/active_storage/direct_uploads#create"
 
   get "/dashboards/:dashboard_id", to: "dashboards#show"
-  get "/dashboards/:dashboard_id/cards/:card_id", to: "dashboards#card"
+  get "/dashboards/:dashboard_id/cards/:card_id", to: "cards#show"
 
   scope "avo_api", as: "avo_api" do
     get "/search", to: "search#index"
@@ -30,6 +30,9 @@ Avo::Engine.routes.draw do
     # Generate resource routes as below:
     # resources :posts
     Avo::DynamicRouter.routes(self)
+
+    # Cards
+    get "/:resource_name/:id/cards/:card_id", to: "cards#show"
 
     # Associations
     get "/:resource_name/:id/:related_name/new", to: "associations#new", as: "associations_new"

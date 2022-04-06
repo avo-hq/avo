@@ -65,4 +65,6 @@ class UserResource < Avo::BaseResource
   action DownloadFile
 
   filter UserNamesFilter
+
+  card ExampleMetric
 end

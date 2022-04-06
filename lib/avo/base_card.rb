@@ -13,7 +13,7 @@ module Avo
     class_attribute :result_data
     class_attribute :query_block
 
-    attr_accessor :dashboard
+    attr_accessor :parent
     attr_accessor :options
     attr_accessor :index
     attr_accessor :params
@@ -26,8 +26,8 @@ module Avo
       end
     end
 
-    def initialize(dashboard:, options: {}, index: 0)
-      @dashboard = dashboard
+    def initialize(parent: nil, options: {}, index: 0)
+      @parent = parent
       @options = options
       @index = index
     end
@@ -63,7 +63,13 @@ module Avo
     end
 
     def turbo_frame
-      "#{dashboard.id}_#{id}"
+      # puts ["parent->", parent, dashboard, parent_is_dashboard?].inspect
+      # abort resource.inspect
+      if parent_is_dashboard?
+        "#{dashboard.id}_#{id}"
+      elsif parent_is_resource?
+        "#{resource.id}_#{resource.model.id}_#{id}"
+      end
     end
 
     def frame_url(enforced_range: nil, params: {})
@@ -74,8 +80,13 @@ module Avo
         other_params = "&#{params.permit!.to_h.map { |k, v| "#{k}=#{v}" }.join("&")}"
       rescue
       end
+      # puts ["parent_is_dashboard?->", parent_is_dashboard?, parent.superclass, parent.class.superclass].inspect
 
-      "#{Avo::App.root_path}/dashboards/#{dashboard.id}/cards/#{id}?turbo_frame=#{turbo_frame}&index=#{index}&range=#{enforced_range}#{other_params}"
+      if parent_is_dashboard?
+        "#{Avo::App.root_path}/dashboards/#{dashboard.id}/cards/#{id}?turbo_frame=#{turbo_frame}&index=#{index}&range=#{enforced_range}#{other_params}"
+      elsif parent_is_resource?
+        "#{Avo::App.root_path}/resources/#{resource.route_key}/#{resource.model.id}/cards/#{id}?turbo_frame=#{turbo_frame}&index=#{index}&range=#{enforced_range}#{other_params}"
+      end
     end
 
     def card_classes
@@ -129,8 +140,8 @@ module Avo
       self
     end
 
-    def hydrate(dashboard: nil, params: nil)
-      @dashboard = dashboard if dashboard.present?
+    def hydrate(parent: nil, params: nil)
+      @parent = parent if parent.present?
       @params = params if params.present?
 
       self
@@ -174,6 +185,27 @@ module Avo
 
     def rows
       @options.dig(:rows) || self.class.rows
+    end
+
+    def parent_is_dashboard?
+      parent.superclass == Avo::Dashboards::BaseDashboard
+
+      # args[:resource] = self if
+      # args[:dashboard] = self if superclass == Avo::Dashboards::BaseDashboard
+      # dashboard.present?
+    end
+
+    def parent_is_resource?
+      # resource.present?
+      parent.superclass == Avo::BaseResource
+    end
+
+    def resource
+      parent if parent_is_resource?
+    end
+
+    def dashboard
+      parent if parent_is_dashboard?
     end
   end
 end

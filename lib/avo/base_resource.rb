@@ -5,6 +5,7 @@ module Avo
     extend HasContext
 
     include ActionView::Helpers::UrlHelper
+    include Avo::Concerns::HasCards
 
     delegate :view_context, to: "Avo::App"
     delegate :main_app, to: :view_context
@@ -12,6 +13,9 @@ module Avo
     delegate :resource_path, to: :view_context
     delegate :resources_path, to: :view_context
     delegate :t, to: ::I18n
+    delegate :item_at_index, to: :class
+    # required for better interoperability with cards
+    delegate :superclass, to: :class
 
     attr_accessor :view
     attr_accessor :model
