@@ -9,12 +9,30 @@ module Avo
       class_attribute :items_holder
       class_attribute :grid_cols, default: 3
       class_attribute :visible, default: true
+      class_attribute :index, default: 0
 
       class << self
-        def card(klass)
+        def card(klass, label: nil, description: nil, cols: nil, rows: nil, refresh_every: nil, options: {})
           self.items_holder ||= []
 
-          self.items_holder << klass.new(dashboard: self)
+          self.items_holder << klass.new(dashboard: self,
+            label: label,
+            description: description,
+            cols: cols,
+            rows: rows,
+            refresh_every: refresh_every,
+            options: options,
+            index: index
+          )
+          self.index += 1
+        end
+
+        def item_at_index(index)
+          items.find do |item|
+            next if item.index.blank?
+
+            item.index == index
+          end
         end
 
         def divider(**args)

@@ -8,7 +8,10 @@
               <%= render Avo::Dashboards::DividerComponent.new(divider: item) %>
             <% elsif item.is_card? %>
               <%= content_tag(:div, class: "relative bg-white rounded shadow-panel space-y-2 #{item.card_classes} overflow-hidden") do %>
-                <turbo-frame id="<%= item.turbo_frame %>" src="<%= item.frame_url(enforced_range: @range) %>">
+                <turbo-frame id="<%= item.turbo_frame %>"
+                  src="<%= item.frame_url(enforced_range: @range, params: params) %>"
+                  data-card-index="<%= item.index %>"
+                >
                   <%= render(Avo::LoadingComponent.new(title: item.label)) %>
                 </turbo-frame>
               <% end %>

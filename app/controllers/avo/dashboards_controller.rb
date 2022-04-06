@@ -8,11 +8,7 @@ module Avo
     end
 
     def card
-      @card = @dashboard.items.find do |item|
-        next unless item.is_card?
-
-        item.id.to_s == params[:card_id]
-      end.tap do |card|
+      @card = @dashboard.item_at_index(params[:index].to_i).tap do |card|
         card.hydrate(dashboard: @dashboard, params: params)
       end
     end
