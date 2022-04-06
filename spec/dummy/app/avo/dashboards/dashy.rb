@@ -17,7 +17,7 @@ class Dashy < Avo::Dashboards::BaseDashboard
       active_users: true
     }
   card PercentDone
-  card ExampleLineChart, cols: 2
+  card ExampleLineChart, cols: 1
   card AmountRaised
   card ExampleColumnChart
   card ExamplePieChart
