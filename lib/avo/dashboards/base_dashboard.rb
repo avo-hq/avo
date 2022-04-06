@@ -9,6 +9,7 @@ module Avo
       class_attribute :name
       class_attribute :description
       class_attribute :visible, default: true
+      class_attribute :index, default: 0
 
       class << self
         def navigation_label

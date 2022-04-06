@@ -26,17 +26,30 @@ module Avo
       end
     end
 
-    def initialize(parent: nil, options: {}, index: 0)
+    def initialize(parent:, options: {}, index: 0, cols: nil, rows: nil, label: nil, description: nil, refresh_every: nil)
       @parent = parent
       @options = options
       @index = index
+      @cols = cols
+      @rows = rows
+      @label = label
+      @refresh_every = refresh_every
+      @description = description
     end
 
     def label
-      return @options[:label].to_s if @options[:label].present?
+      return @label.to_s if @label.present?
       return self.class.label.to_s if self.class.label.present?
 
       self.class.id.to_s.humanize
+    end
+
+    def description
+      @description || self.class.description
+    end
+
+    def refresh_every
+      @refresh_every || self.class.refresh_every
     end
 
     def translated_range(range)
@@ -92,37 +105,28 @@ module Avo
     def card_classes
       result = ""
 
-      result += case cols.to_i
-      when 1
-        " sm:col-span-1"
-      when 2
-        " sm:col-span-2"
-      when 3
-        " sm:col-span-3"
-      when 4
-        " sm:col-span-4"
-      when 5
-        " sm:col-span-5"
-      when 6
-        " sm:col-span-6"
-      else
-        " sm:col-span-1"
-      end
+      # Writing down the classes so TailwindCSS knows not to purge them
+      classes_for_cols = {
+        1 => " sm:col-span-1",
+        2 => " sm:col-span-2",
+        3 => " sm:col-span-3",
+        4 => " sm:col-span-4",
+        5 => " sm:col-span-5",
+        6 => " sm:col-span-6"
+      }
 
-      result += case rows.to_i
-      when 1
-        " h-36"
-      when 2
-        " h-72"
-      when 3
-        " h-[27rem]"
-      when 4
-        " h-[36rem]"
-      when 5
-        " h-[45rem]"
-      when 6
-        " h-[54rem]"
-      end
+      classes_for_rows = {
+        1 => " h-36",
+        2 => " h-72",
+        3 => " h-[27rem]",
+        4 => " h-[36rem]",
+        5 => " h-[45rem]",
+        6 => " h-[54rem]"
+      }
+      # puts ["cols->", cols, classes_for_cols, classes_for_rows, classes_for_cols[cols.to_i]].inspect
+
+      result += classes_for_cols[cols.to_i] if classes_for_cols[cols.to_i].present?
+      result += classes_for_rows[rows.to_i] if classes_for_rows[rows.to_i].present?
 
       result
     end
@@ -169,22 +173,14 @@ module Avo
       false
     end
 
-    def refresh_every
-      @options.dig(:refresh_every) || self.class.refresh_every
-    end
-
-    def description
-      @options.dig(:description) || self.class.description
-    end
-
     private
 
     def cols
-      @options.dig(:cols) || self.class.cols
+      @cols || self.class.cols
     end
 
     def rows
-      @options.dig(:rows) || self.class.rows
+      @rows || self.class.rows
     end
 
     def parent_is_dashboard?

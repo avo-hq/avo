@@ -10,20 +10,19 @@ module Avo
       end
 
       class_methods do
-        def card(klass, options: {})
+        def card(klass, label: nil, description: nil, cols: nil, rows: nil, refresh_every: nil, options: {})
           self.items_holder ||= []
 
-          args = {
+          self.items_holder << klass.new(
+            parent: self,
             options: options,
             index: items_index,
-            parent: self
-          }
-
-          # Add the parent
-          # args[:resource] = self if superclass == Avo::BaseResource
-          # args[:dashboard] = self if superclass == Avo::Dashboards::BaseDashboard
-
-          self.items_holder << klass.new(**args)
+            label: label,
+            description: description,
+            cols: cols,
+            rows: rows,
+            refresh_every: refresh_every,
+          )
           self.items_index += 1
         end
 

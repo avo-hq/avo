@@ -90,4 +90,9 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
       end
     end
   end
+
+  # In development and test environments we shoudl show the invalid field errors
+  def should_display_invalid_fields_errors?
+    (Rails.env.development? || Rails.env.test?) && @resource.invalid_fields.present?
+  end
 end

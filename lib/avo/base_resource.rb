@@ -44,6 +44,9 @@ module Avo
     class_attribute :resolve_find_scope
     class_attribute :ordering
     class_attribute :hide_from_global_search, default: false
+    class_attribute :after_create_path, default: :show
+    class_attribute :after_update_path, default: :show
+    class_attribute :invalid_fields
 
     class << self
       delegate :t, to: ::I18n
