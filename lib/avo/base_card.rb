@@ -76,8 +76,6 @@ module Avo
     end
 
     def turbo_frame
-      # puts ["parent->", parent, dashboard, parent_is_dashboard?].inspect
-      # abort resource.inspect
       if parent_is_dashboard?
         "#{dashboard.id}_#{id}"
       elsif parent_is_resource?
@@ -123,7 +121,6 @@ module Avo
         5 => " h-[45rem]",
         6 => " h-[54rem]"
       }
-      # puts ["cols->", cols, classes_for_cols, classes_for_rows, classes_for_cols[cols.to_i]].inspect
 
       result += classes_for_cols[cols.to_i] if classes_for_cols[cols.to_i].present?
       result += classes_for_rows[rows.to_i] if classes_for_rows[rows.to_i].present?
@@ -185,14 +182,9 @@ module Avo
 
     def parent_is_dashboard?
       parent.superclass == Avo::Dashboards::BaseDashboard
-
-      # args[:resource] = self if
-      # args[:dashboard] = self if superclass == Avo::Dashboards::BaseDashboard
-      # dashboard.present?
     end
 
     def parent_is_resource?
-      # resource.present?
       parent.superclass == Avo::BaseResource
     end
 
