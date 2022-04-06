@@ -10,15 +10,11 @@ class Dashy < Avo::Dashboards::BaseDashboard
   card ExampleMetric
   card ExampleAreaChart
   card ExampleScatterChart
-  card ExampleMetric, options: {
-    active_users: true,
-    label: "Active users metric",
-    description: "Count the active users"
+  card ExampleMetric, label: "Active users metric", description: "Count the active users", options: {
+    active_users: true
   }
   card PercentDone
-  card ExampleLineChart, options: {
-    cols: 2
-  }
+  card ExampleLineChart, cols: 2
   card AmountRaised
   card ExampleColumnChart
   card ExamplePieChart

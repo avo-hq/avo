@@ -12,10 +12,18 @@ module Avo
       class_attribute :index, default: 0
 
       class << self
-        def card(klass, options: {})
+        def card(klass, label: nil, description: nil, cols: nil, rows: nil, refresh_every: nil, options: {})
           self.items_holder ||= []
 
-          self.items_holder << klass.new(dashboard: self, options: options, index: index)
+          self.items_holder << klass.new(dashboard: self,
+            label: label,
+            description: description,
+            cols: cols,
+            rows: rows,
+            refresh_every: refresh_every,
+            options: options,
+            index: index
+          )
           self.index += 1
         end
 

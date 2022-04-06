@@ -43,19 +43,21 @@ RSpec.describe "Dashboards", type: :system do
       let!(:users) { create_list :user, 10 }
       let!(:initial_user) { create :user, created_at: 1.year.ago }
 
+      let(:card) { page.find("turbo-frame[id='#{full_card_id}'][data-card-index='0']") }
+
       let(:index) { 0 }
       let(:card_id) { "users_metric" }
 
       it do
         is_expected.to have_text "Users count"
-        is_expected.to have_text "11" # test prefix and suffix. 10 new users + admin
+        is_expected.to have_text "11"
         description_tooltip_has_text "Users description"
       end
 
       it "changes displays different data when changing the range" do
         subject
 
-        select "ALL", from: "#{card_id}_range"
+        select "ALL", from: "#{card_id}_0_range"
         expect(card).to have_text "12"
       end
     end
@@ -84,9 +86,9 @@ RSpec.describe "Dashboards", type: :system do
 
       it do
         is_expected.to have_text "Users custom card"
-        is_expected.to have_text "Dashboard ID: dashy"
+        is_expected.to have_text "Dashboard ID: Dashy"
         is_expected.to have_text "Current user ID: #{admin.id}"
-        description_tooltip_has_text "This card has been loaded from a custom partial."
+        description_tooltip_has_text "This card has been loaded from a custom partial and has access to the options hash and the dashboard params."
       end
     end
 

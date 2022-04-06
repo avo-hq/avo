@@ -26,17 +26,30 @@ module Avo
       end
     end
 
-    def initialize(dashboard:, options: {}, index: 0)
+    def initialize(dashboard:, options: {}, index: 0, cols: nil, rows: nil, label: nil, description: nil, refresh_every: nil)
       @dashboard = dashboard
       @options = options
       @index = index
+      @cols = cols
+      @rows = rows
+      @label = label
+      @refresh_every = refresh_every
+      @description = description
     end
 
     def label
-      return @options[:label].to_s if @options[:label].present?
+      return @label.to_s if @label.present?
       return self.class.label.to_s if self.class.label.present?
 
       self.class.id.to_s.humanize
+    end
+
+    def refresh_every
+      @refresh_every || self.class.refresh_every
+    end
+
+    def description
+      @description || self.class.description
     end
 
     def translated_range(range)
@@ -158,22 +171,14 @@ module Avo
       false
     end
 
-    def refresh_every
-      @options.dig(:refresh_every) || self.class.refresh_every
-    end
-
-    def description
-      @options.dig(:description) || self.class.description
-    end
-
     private
 
     def cols
-      @options.dig(:cols) || self.class.cols
+      @cols || self.class.cols
     end
 
     def rows
-      @options.dig(:rows) || self.class.rows
+      @rows || self.class.rows
     end
   end
 end
