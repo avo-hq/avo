@@ -44,12 +44,12 @@ module Avo
       self.class.id.to_s.humanize
     end
 
-    def refresh_every
-      @refresh_every || self.class.refresh_every
-    end
-
     def description
       @description || self.class.description
+    end
+
+    def refresh_every
+      @refresh_every || self.class.refresh_every
     end
 
     def translated_range(range)
