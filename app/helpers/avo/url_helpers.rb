@@ -12,8 +12,12 @@ module Avo
         end
       end
 
-      # This entry uses `route_key` instead of `model_key` because it's rails that needs `fish_index` to build the correct path
-      avo.send :"resources_#{resource.route_key}_path", **existing_params, **args
+      # Create the `route_key` from the model key so the namespaced models get the proper path (SomeModule::Post -> some_module_post).
+      # Add the `_index` suffix for the uncountable models so they get the correct path (`fish_index`)
+      route_key = resource.model_key
+      route_key << "_index" if resource.model_name.singular == resource.model_name.plural
+
+      avo.send :"resources_#{route_key}_path", **existing_params, **args
     end
 
     def resource_path(
