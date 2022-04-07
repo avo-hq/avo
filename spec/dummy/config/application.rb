@@ -7,7 +7,7 @@ Bundler.require(*Rails.groups)
 # Tell spring where the new dummy ap is located
 Spring.application_root = "."
 
-module Dummy
+module AvoDummy
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     # We're going to load the defaults from the env because we're using appraisal and differently versioned gems.
