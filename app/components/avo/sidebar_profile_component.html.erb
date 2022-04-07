@@ -12,8 +12,8 @@
       </div>
     </div>
   </div>
-  <div class="relative" data-controller="toggle-panel">
-    <% if can_destroy_user? %>
+  <% if can_destroy_user? %>
+    <div class="relative" data-controller="toggle-panel">
       <a class="flex items-center h-full cursor-pointer" data-control="profile-dots" data-action="click->toggle-panel#togglePanel">
         <%= helpers.svg 'three-dots', class: 'h-4' %>
       </a>
@@ -31,6 +31,6 @@
           <%= helpers.svg 'logout', class: 'h-4 mr-1' %> <%= t('avo.sign_out') %>
         <% end %>
       </div>
-    <% end %>
-  </div>
+    </div>
+  <% end %>
 </div>
