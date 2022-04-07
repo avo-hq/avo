@@ -77,9 +77,9 @@ module Avo
 
     def turbo_frame
       if parent_is_dashboard?
-        "#{dashboard.id}_#{id}"
+        "#{parent.id}_#{id}"
       elsif parent_is_resource?
-        "#{resource.id}_#{resource.model.id}_#{id}"
+        "#{parent.id}_#{parent.model.id}_#{id}"
       end
     end
 
@@ -96,7 +96,7 @@ module Avo
       if parent_is_dashboard?
         "#{Avo::App.root_path}/dashboards/#{dashboard.id}/cards/#{id}?turbo_frame=#{turbo_frame}&index=#{index}&range=#{enforced_range}#{other_params}"
       elsif parent_is_resource?
-        "#{Avo::App.root_path}/resources/#{resource.route_key}/#{resource.model.id}/cards/#{id}?turbo_frame=#{turbo_frame}&index=#{index}&range=#{enforced_range}#{other_params}"
+        "#{Avo::App.root_path}/resources/#{parent.route_key}/#{parent.model.id}/cards/#{id}?turbo_frame=#{turbo_frame}&index=#{index}&range=#{enforced_range}#{other_params}"
       end
     end
 

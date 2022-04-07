@@ -10,9 +10,11 @@ module Avo
     private
 
     def set_dashboard
-      @dashboard = Avo::App.get_dashboard_by_id params[:dashboard_id]
+      @dashboard_class = Avo::App.get_dashboard_by_id params[:dashboard_id]
 
-      raise ActionController::RoutingError.new("Not Found") if @dashboard.nil? || @dashboard.is_hidden?
+      raise ActionController::RoutingError.new("Not Found") if @dashboard_class.nil? || @dashboard_class.is_hidden?
+
+      @dashboard = @dashboard_class.new if @dashboard_class.present?
     end
   end
 end

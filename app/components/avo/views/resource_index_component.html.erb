@@ -1,26 +1,11 @@
 <div>
-  <% if @resource.class.items.present? %>
+  <% if @resource.cards.present? %>
     <div class="mb-6">
       <div class="min-h-24">
-        <%= content_tag(:div, class: "grid gap-4 grid-cols-1 #{@resource.class.items_classes}") do %>
-          <% @resource.class.items.each do |item| %>
-<% item.hydrate(parent: @resource, params: params) %>
-<%#= item.inspect %>
-            <% if item.is_divider? %>
-              <%= render Avo::Dashboards::DividerComponent.new(divider: item) %>
-            <% elsif item.is_card? %>
-              <%= content_tag(:div, class: "relative bg-white rounded shadow-panel space-y-2 #{item.card_classes} overflow-hidden") do %>
-                <turbo-frame id="<%= item.turbo_frame %>" src="<%= item.frame_url(enforced_range: @range, params: params) %>">
-                  <%= render(Avo::LoadingComponent.new(title: item.label)) %>
-                </turbo-frame>
-              <% end %>
-            <% end %>
-          <% end %>
-        <% end %>
+        <%= render 'avo/cards/card_list', parent: @resource %>
       </div>
     </div>
   <% end %>
-
 
   <%= render Avo::PanelComponent.new(title: title, description: description, data: { component: 'resources-index' }, display_breadcrumbs: @reflection.blank?) do |c| %>
     <% c.tools do %>
