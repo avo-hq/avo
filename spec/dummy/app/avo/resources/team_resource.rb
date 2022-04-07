@@ -6,7 +6,7 @@ class TeamResource < Avo::BaseResource
   end
 
   field :id, as: :id
-  field :name, as: :text
+  field :name, as: :text, sortable: true
   field :url, as: :text
   field :logo, as: :external_image do |model|
     if model.url

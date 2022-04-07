@@ -8,7 +8,7 @@ class PostResource < Avo::BaseResource
   self.default_view_type = :grid
 
   field :id, as: :id
-  field :name, as: :text, required: true
+  field :name, as: :text, required: true, sortable: true
   field :body, as: :trix, placeholder: "Enter text", always_show: false, attachment_key: :attachments, hide_attachment_url: true, hide_attachment_filename: true, hide_attachment_filesize: true
   field :cover_photo, as: :file, is_image: true, as_avatar: :rounded, full_width: true, hide_on: []
   field :cover_photo, as: :external_image, name: 'Cover photo', required: true, hide_on: :all, link_to_resource: true, as_avatar: :rounded, format_using: ->(value) { value.present? ? value&.url : nil }
