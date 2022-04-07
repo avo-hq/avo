@@ -1,9 +1,9 @@
 name: Build release notes
 
 on:
-  pull_request:
+  push:
     branches:
-      - 1.x
+      - main
 
 jobs:
   update_release_notes:
