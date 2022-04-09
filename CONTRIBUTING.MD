@@ -22,7 +22,7 @@ Please fork Avo and create a descriptive branch for your feature or fix. We usua
 
 NOTE: We're using `docker-compose` to run Postgres. While we find this incredibly helpful, it's not a requirement, but you'll have to BYOD (Bring Your Own Database).
 
-Once you pull the code down to your machine, running `bin/init` will get you up-and-running.
+Once you pull the code down to your machine, modify `spec/dummy/config/database.yml` as appropriate to your environment (no changes needed if you're using Docker).  Do not commit these changes.  From here, running `bin/init` will get you up-and-running.
 
 # Local development
 
