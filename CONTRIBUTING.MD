@@ -34,6 +34,31 @@ From the root directory you can run `bin/dev` and that will start a foreman proc
 
 Run `AVO_ADMIN_PASSWORD=secret bin/rails db:seed` to seed the database with dummy data and create a user for yourself with the email `admin@avohq.io` and password `secret`.
 
+## Using your fork from another project
+
+You may want to evaluate your changes in the context of a real project.  To do so without publishing your own version of the gem, follow these instructions.
+
+In the other project, change the `Gemfile` entry for `avo` to point to your local clone of this repo.  For example:
+
+```ruby
+gem 'avo', path: '../avo'
+```
+
+Avo's assets will not show up by default, resulting in 404 errors on `/avo-assets/avo.js` and `/avo-assets/avo.css`. To avoid this, you need to compile the asset bundles, and symlink them into `public/avo-assets`.
+
+Create symlinks for compiled assets into public.  You'll only need to do this once.
+
+```bash
+# `cd` into the root directory of this project.
+ln -sf $(pwd)/app/assets/builds/avo.js public/avo-assets/avo.js
+ln -sf $(pwd)/app/assets/builds/avo.css public/avo-assets/avo.css
+```
+
+After that, you'll need to compile the asset bundles any time you make changes to the JS or CSS code:
+
+```bash
+yarn build
+```
 
 # Running tests
 
