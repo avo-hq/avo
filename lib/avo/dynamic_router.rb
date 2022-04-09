@@ -1,7 +1,7 @@
 module Avo
   module DynamicRouter
     def self.routes(router)
-      Rails.application.eager_load!
+      Rails.application.eager_load! if Rails.env.development?
 
       BaseResource.descendants
         .select do |resource|
