@@ -45,9 +45,9 @@ jobs:
     - uses: actions/checkout@v2
 
     - id: build
-        uses: composite-build.yml
-        with:
-          who-to-greet: 'Mona the Octocat'
+      uses: composite-build.yml
+      with:
+        who-to-greet: 'Mona the Octocat'
 
     - name: Run tests
       id: run_tests
