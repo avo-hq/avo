@@ -93,7 +93,6 @@ jobs:
           yarn build:css
 
   features:
-    needs: setup
     steps:
       - name: Run tests
         id: run_tests
@@ -106,7 +105,6 @@ jobs:
           path: ./spec/dummy/tmp/screenshots
 
   system:
-    needs: setup
     steps:
       - name: Run tests
         id: run_tests
@@ -119,7 +117,6 @@ jobs:
           path: ./spec/dummy/tmp/screenshots
 
   requests:
-    needs: setup
     steps:
       - name: Run tests
         id: run_tests
@@ -132,7 +129,6 @@ jobs:
           path: ./spec/dummy/tmp/screenshots
 
   components:
-    needs: setup
     steps:
       - name: Run tests
         id: run_tests
