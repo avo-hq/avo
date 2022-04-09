@@ -45,7 +45,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - id: build
-      uses: composite-build.yml
+      uses: ./.github/composite-build.yml
       with:
         who-to-greet: 'Mona the Octocat'
 
