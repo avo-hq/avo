@@ -17,7 +17,7 @@ app_root do
   header 'Installing Yarn packages'
   run! 'yarn'
 
-  if use_docker
+  if use_docker == 'y'
     header 'Creating the Docker volume'
     run! 'docker volume create --name=avo-db-data'
 
@@ -28,7 +28,7 @@ app_root do
   header 'Preparing the database'
   run! 'bin/rails db:setup'
 
-  if use_docker
+  if use_docker == 'y'
     header 'Stopping the Docker image'
     run! 'docker-compose stop'
   end
