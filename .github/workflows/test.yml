@@ -46,12 +46,12 @@ jobs:
 
     - id: build
       uses: ./.github/composite-build.yml
-      with:
-        who-to-greet: 'Mona the Octocat'
+      # with:
+        # rspec_path: ./spec/system/**/*.rb
 
     - name: Run tests
       id: run_tests
-      run: bundle exec rspec
+      run: bundle exec rspec ./spec/system/**/*.rb
 
     - uses: actions/upload-artifact@v2
       if: always() && steps.run_tests.outcome == 'failure'

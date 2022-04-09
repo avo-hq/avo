@@ -1,10 +1,10 @@
 name: Tests
 
-inputs:
-  rspec_path:  # id of input
-    description: 'The directory to test'
-    required: true
-    default: './spec'
+# inputs:
+#   rspec_path:  # id of input
+#     description: 'The directory to test'
+#     required: false
+#     default: './spec'
 
 # on:
 #   pull_request:
@@ -98,12 +98,12 @@ jobs:
           yarn build:js
           yarn build:css
 
-      - name: Run tests
-        id: run_tests
-        run: bundle exec rspec ${{ inputs.rspec_path }}
+      # - name: Run tests
+      #   id: run_tests
+      #   run: bundle exec rspec ${{ inputs.rspec_path }}
 
-      - uses: actions/upload-artifact@v2
-        if: always() && steps.run_tests.outcome == 'failure'
-        with:
-          name: rspec_failed_screenshots
-          path: ./spec/dummy/tmp/screenshots
+      # - uses: actions/upload-artifact@v2
+      #   if: always() && steps.run_tests.outcome == 'failure'
+      #   with:
+      #     name: rspec_failed_screenshots
+      #     path: ./spec/dummy/tmp/screenshots
