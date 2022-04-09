@@ -93,7 +93,7 @@ jobs:
           yarn build:css
 
   features:
-    depends_on: setup
+    needs: setup
     steps:
       - name: Run tests
         id: run_tests
@@ -104,9 +104,9 @@ jobs:
         with:
           name: rspec_failed_screenshots
           path: ./spec/dummy/tmp/screenshots
-          
+
   system:
-    depends_on: setup
+    needs: setup
     steps:
       - name: Run tests
         id: run_tests
@@ -117,9 +117,9 @@ jobs:
         with:
           name: rspec_failed_screenshots
           path: ./spec/dummy/tmp/screenshots
-          
+
   requests:
-    depends_on: setup
+    needs: setup
     steps:
       - name: Run tests
         id: run_tests
@@ -130,9 +130,9 @@ jobs:
         with:
           name: rspec_failed_screenshots
           path: ./spec/dummy/tmp/screenshots
-          
+
   components:
-    depends_on: setup
+    needs: setup
     steps:
       - name: Run tests
         id: run_tests
