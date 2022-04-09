@@ -23,7 +23,9 @@ end
 def ask(question:, valid_answers: [])
   puts "\n#{question} (#{valid_answers.join('/')})"
 
-  input = gets.chomp
+  valid_answers.map!(&:downcase)
+
+  input = gets.downcase.chomp
 
   while !valid_answers.include?(input)
     puts 'Invalid input, please try again.'
