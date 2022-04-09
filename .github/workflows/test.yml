@@ -104,6 +104,45 @@ jobs:
         with:
           name: rspec_failed_screenshots
           path: ./spec/dummy/tmp/screenshots
+          
+  system:
+    depends_on: setup
+    steps:
+      - name: Run tests
+        id: run_tests
+        run: bundle exec rspec ./spec/system/**/*.rb
+
+      - uses: actions/upload-artifact@v2
+        if: always() && steps.run_tests.outcome == 'failure'
+        with:
+          name: rspec_failed_screenshots
+          path: ./spec/dummy/tmp/screenshots
+          
+  requests:
+    depends_on: setup
+    steps:
+      - name: Run tests
+        id: run_tests
+        run: bundle exec rspec ./spec/requests/**/*.rb
+
+      - uses: actions/upload-artifact@v2
+        if: always() && steps.run_tests.outcome == 'failure'
+        with:
+          name: rspec_failed_screenshots
+          path: ./spec/dummy/tmp/screenshots
+          
+  components:
+    depends_on: setup
+    steps:
+      - name: Run tests
+        id: run_tests
+        run: bundle exec rspec ./spec/components/**/*.rb
+
+      - uses: actions/upload-artifact@v2
+        if: always() && steps.run_tests.outcome == 'failure'
+        with:
+          name: rspec_failed_screenshots
+          path: ./spec/dummy/tmp/screenshots
 
       # - name: Generate coverage
       #   uses: codecov/codecov-action@v1
