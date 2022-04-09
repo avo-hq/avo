@@ -22,10 +22,12 @@ end
 
 def ask(question:, valid_answers: [])
   puts "\n#{question} (#{valid_answers.join('/')})"
+  default_answer = valid_answers.select { |val| val == val.upcase }.first&.downcase
 
   valid_answers.map!(&:downcase)
 
   input = gets.downcase.chomp
+  input = default_answer if input == ''
 
   while !valid_answers.include?(input)
     puts 'Invalid input, please try again.'
