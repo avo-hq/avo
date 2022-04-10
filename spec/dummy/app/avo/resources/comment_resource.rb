@@ -4,6 +4,7 @@ class CommentResource < Avo::BaseResource
   # self.search_query = ->(params:) do
   #   scope.ransack(id_eq: params[:q], m: "or").result(distinct: false)
   # end
+  self.record_selector = false
 
   self.after_create_path = :index
   self.after_update_path = :index

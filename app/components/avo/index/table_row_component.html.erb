@@ -2,11 +2,13 @@
   class="bg-white hover:bg-blue-50 hover:shadow-row hover:z-[21] relative z-20 border-b"
   <%== item_selector_init @resource %>
 >
-  <td class="w-10">
-    <div class="flex justify-center h-full">
-      <%== item_selector_input floating: false %>
-    </div>
-  </td>
+  <% if @resource.record_selector %>
+    <td class="w-10">
+      <div class="flex justify-center h-full">
+        <%== item_selector_input floating: false %>
+      </div>
+    </td>
+  <% end %>
   <% @resource.get_fields(reflection: @reflection).each_with_index do |field, index| %>
     <%= render field.component_for_view(:index).new(field: field, resource: @resource, index: index, parent_model: @parent_model) %>
   <% end %>

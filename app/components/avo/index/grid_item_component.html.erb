@@ -3,7 +3,9 @@
   <%== item_selector_init @resource %>
 >
   <div class="relative w-full pb-3/4 rounded-t overflow-hidden">
-    <%== item_selector_input floating: true, size: :lg %>
+    <% if @resource.record_selector %>
+      <%== item_selector_input floating: true, size: :lg %>
+    <% end %>
     <% if cover.blank? %>
       <%= link_to cover.link_to_resource do %>
         <%= render Avo::Index::GridCoverEmptyStateComponent.new %>
