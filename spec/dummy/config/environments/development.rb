@@ -67,9 +67,10 @@ Rails.application.configure do
   config.action_view.logger = nil
   config.assets.logger = nil
 
+  config.hotwire_livereload.listen_paths << Avo::Engine.root.join("app/assets/stylesheets")
+  config.hotwire_livereload.listen_paths << Rails.root.join("app/avo")
   config.hotwire_livereload.listen_paths << Avo::Engine.root.join("app/components")
   config.hotwire_livereload.listen_paths << Avo::Engine.root.join("app/helpers")
-  config.hotwire_livereload.listen_paths << Avo::Engine.root.join("app/assets/stylesheets")
   config.hotwire_livereload.listen_paths << Avo::Engine.root.join("app/javascript")
   config.hotwire_livereload.listen_paths << Avo::Engine.root.join("app/views")
   config.hotwire_livereload.listen_paths << Avo::Engine.root.join("lib")
