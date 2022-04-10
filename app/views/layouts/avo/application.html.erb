@@ -16,6 +16,7 @@
   <% else %>
     <%= javascript_include_tag "avo", "data-turbo-track": "reload", defer: true %>
     <%= stylesheet_link_tag "avo", "data-turbo-track": "reload", defer: true %>
+    <%= javascript_include_tag "hotwire-livereload", defer: true %>
   <% end %>
 </head>
 <body class="bg-application os-mac">
