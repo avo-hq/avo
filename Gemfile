@@ -79,6 +79,8 @@ group :development do
   # gem 'pry-rails'
 
   gem 'htmlbeautifier'
+
+  gem "hotwire-livereload", "~> 1.1"
 end
 
 group :development, :test do
@@ -144,5 +146,3 @@ gem "hightop"
 gem "active_median"
 
 gem 'acts_as_list'
-
-gem "hotwire-livereload", "~> 1.1", :group => :development
