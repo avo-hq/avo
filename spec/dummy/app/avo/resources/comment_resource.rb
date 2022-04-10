@@ -13,6 +13,6 @@ class CommentResource < Avo::BaseResource
   field :body, as: :textarea
   field :tiny_name, as: :text, only_on: :index, as_description: true
 
-  field :user, as: :belongs_to
-  field :commentable, as: :belongs_to, polymorphic_as: :commentable, types: [::Post, ::Project]
+  field :user, as: :belongs_to, allow_via_detaching: true
+  field :commentable, as: :belongs_to, polymorphic_as: :commentable, types: [::Post, ::Project], allow_via_detaching: true
 end
