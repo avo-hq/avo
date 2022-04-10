@@ -19,7 +19,7 @@ module Avo
 
     config.i18n.load_path += Dir[Avo::Engine.root.join('lib', 'generators', 'avo', 'templates', 'locales', '*.{rb,yml}')]
 
-    initializer "avo.autoload", before: :set_autoload_paths do |app|
+    initializer "avo.autoload" do |app|
       [
         ["app", "avo", "fields"],
         ["app", "avo", "filters"],
@@ -41,21 +41,11 @@ module Avo
       ::Avo::App.init_fields
     end
 
-    initializer "avo.reload_avo_files" do |app|
-      if Avo::IN_DEVELOPMENT && ENV["RELOAD_AVO_FILES"]
-        avo_root_path = Avo::Engine.root.to_s
-        # This should only be happening when ENV["RELOAD_AVO_FILES"] is true because it loads all the files into memory on every change and makes rails sluggish.
-        app.config.autoload_paths += [Avo::Engine.root.join("lib", "avo").to_s]
-        # Register reloader
-        app.reloaders << app.config.file_watcher.new([], {
-          Avo::Engine.root.join("lib", "avo").to_s => ["rb"]
-        }) {}
-
-        # What to do on file change
-        config.to_prepare do
-          Dir.glob(avo_root_path + "/lib/avo/**/*.rb".to_s).each { |c| load c }
-          Avo::App.boot
-        end
+    initializer "avo.reloader" do |app|
+      Avo::Reloader.new.tap do |reloader|
+        reloader.execute
+        app.reloaders << reloader
+        app.reloader.to_run { reloader.execute }
       end
     end
 
