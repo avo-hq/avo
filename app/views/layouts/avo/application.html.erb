@@ -16,6 +16,9 @@
   <% else %>
     <%= javascript_include_tag "avo", "data-turbo-track": "reload", defer: true %>
     <%= stylesheet_link_tag "avo", "data-turbo-track": "reload", defer: true %>
+    <% if Rails.env.development? %>
+      <%= javascript_include_tag "hotwire-livereload", defer: true %>
+    <% end %>
   <% end %>
 </head>
 <body class="bg-application os-mac">

@@ -79,12 +79,16 @@ module Avo
       def init_resources
         self.resources = BaseResource.descendants
           .select do |resource|
+            # Remove the BaseResource. We only need the descendants
             resource != BaseResource
           end
+          .uniq do |klass|
+            # On invalid resource configuration the resource classes get duplicated in `ObjectSpace`
+            # We need to de-duplicate them
+            klass.name
+          end
           .map do |resource|
-            if resource.is_a? Class
-              resource.new
-            end
+            resource.new if resource.is_a? Class
           end
       end
 

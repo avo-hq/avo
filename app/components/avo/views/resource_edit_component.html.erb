@@ -13,7 +13,7 @@
             <%= t('avo.cancel').capitalize %>
           <% end %>
           <% if can_see_the_save_button? %>
-            <%= a_button color: :green, spinner: true, type: :submit, icon: 'save' do %>
+            <%= a_button color: :green, loading: true, type: :submit, icon: 'save' do %>
               <%= t('avo.save').capitalize %>
             <% end %>
           <% end %>
@@ -24,7 +24,7 @@
               <%= t('avo.cancel').capitalize %>
             <% end %>
             <% if can_see_the_save_button? %>
-              <%= a_button color: :green, spinner: true, type: :submit, icon: 'save' do %>
+              <%= a_button color: :green, loading: true, type: :submit, icon: 'save' do %>
                 <%= t('avo.save').capitalize %>
               <% end %>
             <% end %>

@@ -1,19 +1,23 @@
 <div class="text-black border-t border-gray-200 p-4 flex">
   <div class="flex-1 flex space-x-4">
-    <div class="relative aspect-square w-10 h-10 overflow-hidden rounded">
-      <%= image_tag avatar, class: "object-cover min-w-full min-h-full h-full" %>
-    </div>
+    <% if avatar.present? %>
+      <div class="relative aspect-square w-10 h-10 overflow-hidden rounded">
+        <%= image_tag avatar, class: "object-cover min-w-full min-h-full h-full" %>
+      </div>
+    <% end %>
     <div class="flex flex-col">
       <div class="font-medium">
         <%= name %>
       </div>
-      <div class="text-xs text-gray-500 uppercase">
-        <%= title %>
-      </div>
+      <% if title.present? %>
+        <div class="text-xs text-gray-500 uppercase">
+          <%= title %>
+        </div>
+      <% end %>
     </div>
   </div>
-  <div class="relative" data-controller="toggle-panel">
-    <% if can_destroy_user? %>
+  <% if can_destroy_user? %>
+    <div class="relative" data-controller="toggle-panel">
       <a class="flex items-center h-full cursor-pointer" data-control="profile-dots" data-action="click->toggle-panel#togglePanel">
         <%= helpers.svg 'three-dots', class: 'h-4' %>
       </a>
@@ -31,6 +35,6 @@
           <%= helpers.svg 'logout', class: 'h-4 mr-1' %> <%= t('avo.sign_out') %>
         <% end %>
       </div>
-    <% end %>
-  </div>
+    </div>
+  <% end %>
 </div>

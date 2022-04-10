@@ -7,31 +7,30 @@
       title: t('avo.click_to_reveal_filters'),
       'data-button': 'resource-filters',
       'data-action': 'click->toggle-panel#togglePanel',
-      'data-tippy': 'tooltip' do
-    %>
-    <%= t 'avo.filters' %>
-    <% if params[:filters].present? %>
-      <span class="ml-1">(<%=JSON.parse(Base64.decode64(params[:filters])).count%> applied)</span>
+      'data-tippy': 'tooltip' do %>
+      <%= t 'avo.filters' %>
+      <% if params[:filters].present? %>
+        <span class="ml-1">(<%=JSON.parse(Base64.decode64(params[:filters])).count%> applied)</span>
+      <% end %>
     <% end %>
-  <% end %>
-  <div
+    <div
       class="absolute block inset-auto sm:right-0 top-full bg-white min-w-[300px] mt-2 z-20 shadow-modal rounded hidden divide-y divide-gray-300"
       data-toggle-panel-target="panel"
     >
-    <% @filters.each do |filter| %>
-      <%= render partial: filter.class.template, locals: {filter: filter} %>
-    <% end %>
-    <div class="p-4 border-gray-300 border-t">
-      <% if params[:filters].present? %>
-        <%= a_link helpers.resources_path(resource: @resource, filters: nil, keep_query_params: true), color: :gray, size: :sm, class: 'w-full justify-center' do %>
-          <%= t('avo.reset_filters') %>
-        <% end %>
-      <% else %>
-        <%= a_button class: 'w-full justify-center', disabled: true do %>
-          <%= t('avo.reset_filters') %>
-        <% end %>
+      <% @filters.each do |filter| %>
+        <%= render partial: filter.class.template, locals: {filter: filter} %>
       <% end %>
+      <div class="p-4 border-gray-300 border-t">
+        <% if params[:filters].present? %>
+          <%= a_link helpers.resources_path(resource: @resource, filters: nil, keep_query_params: true), color: :gray, size: :sm, class: 'w-full justify-center' do %>
+            <%= t('avo.reset_filters') %>
+          <% end %>
+        <% else %>
+          <%= a_button class: 'w-full justify-center', disabled: true do %>
+            <%= t('avo.reset_filters') %>
+          <% end %>
+        <% end %>
+      </div>
     </div>
   </div>
-</div>
 </div>

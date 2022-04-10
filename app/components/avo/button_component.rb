@@ -24,8 +24,12 @@ class Avo::ButtonComponent < ViewComponent::Base
   end
 
   def args
-    if @args[:spinner]
+    if @args[:loading]
       @args[:"data-controller"] = "loading-button"
+
+      if @args[:confirm]
+        @args[:"data-avo-confirm"] = @args.delete(:confirm)
+      end
     end
 
     @args[:class] = button_classes
@@ -34,7 +38,7 @@ class Avo::ButtonComponent < ViewComponent::Base
   end
 
   def button_classes
-    classes = "button-component inline-flex flex-grow-0 items-center text-sm font-semibold leading-6 fill-current whitespace-nowrap transition duration-100 transform transition duration-100 cursor-pointer disabled:cursor-not-allowed disabled:opacity-30 border justify-center active:outline active:outline-1 #{@class}"
+    classes = "button-component inline-flex flex-grow-0 items-center text-sm font-semibold leading-6 fill-current whitespace-nowrap transition duration-100 transform transition duration-100 cursor-pointer disabled:cursor-not-allowed disabled:opacity-70 border justify-center active:outline active:outline-1 #{@class}"
 
     classes += " rounded" if @rounded.present?
 

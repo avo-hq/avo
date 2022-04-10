@@ -47,6 +47,7 @@ module Avo
     class_attribute :after_create_path, default: :show
     class_attribute :after_update_path, default: :show
     class_attribute :invalid_fields
+    class_attribute :record_selector, default: true
 
     class << self
       delegate :t, to: ::I18n
@@ -434,9 +435,13 @@ module Avo
     # This is used as the model class ID
     # We use this instead of the route_key to maintain compatibility with uncountable models
     # With uncountable models route key appends an _index suffix (Fish->fish_index)
-    # Example: User->users, MediaItem->medie_items, Fish->fish
+    # Example: User->users, MediaItem->media_items, Fish->fish
     def model_key
       model_class.model_name.plural
+    end
+
+    def model_name
+      model_class.model_name
     end
 
     def singular_model_key
