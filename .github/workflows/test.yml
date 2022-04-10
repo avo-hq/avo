@@ -44,14 +44,57 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - id: build
-      uses: ./.github/composite-build.yml
-      # with:
-        # rspec_path: ./spec/system/**/*.rb
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        # bundler-cache: true
+        bundler: default
+        ruby-version: ${{ matrix.ruby }}
+
+    - name: Install PostgreSQL 11 client
+      run: |
+        sudo apt-get -yqq install libpq-dev
+
+    - uses: actions/cache@v1
+      with:
+        path: vendor/bundle
+        key: ${{ runner.os }}-test-gems-${{ hashFiles('**/Gemfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-test-gems-${{ hashFiles('**/Gemfile.lock') }}
+
+    - name: Bundle install
+      run: |
+        bundle config path vendor/bundle
+        bundle install --jobs 4 --retry 3
+        bin/rails db:create
+        bin/rails db:migrate
+
+    - name: Get yarn cache directory path
+      id: test-yarn-cache-dir-path
+      run: echo "::set-output name=dir::$(yarn cache dir)"
+
+    - uses: actions/cache@v1
+      id: test-yarn-cache
+      with:
+        path: ${{ steps.test-yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-test-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-test-yarn-${{ hashFiles('**/yarn.lock') }}
+
+    - name: Yarn install
+      run: yarn
+
+    - name: Build assets
+      env:
+        RAILS_ENV: production
+        NODE_ENV: production
+      run: |
+        yarn build:js
+        yarn build:css
 
     - name: Run tests
       id: run_tests
-      run: bundle exec rspec ./spec/system/**/*.rb
+      run: bundle exec rspec
 
     - uses: actions/upload-artifact@v2
       if: always() && steps.run_tests.outcome == 'failure'
@@ -66,5 +109,3 @@ jobs:
         token: ${{ secrets.CODECOV_TOKEN }}
         file: ./coverage/coverage.xml
         name: codecov-umbrella
-
-# bundle exec rspec ./spec/system/**/*.rb
