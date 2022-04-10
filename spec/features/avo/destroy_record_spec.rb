@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.feature "DestroyRecordSpecs", type: :system do
+RSpec.feature "DestroyRecord", type: :system do
   describe "foreign key constraints" do
     let!(:user) { create :user }
     let!(:comment) { create :comment, user: user }
@@ -11,6 +11,7 @@ RSpec.feature "DestroyRecordSpecs", type: :system do
 
       expect {
         click_on "Delete"
+        confirm_alert
         wait_for_loaded
       }.not_to change(User, :count)
 
