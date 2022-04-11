@@ -88,6 +88,9 @@ export default class extends Controller {
     } else {
       Turbo.visit(item._url, { action: 'advance' })
     }
+
+    // On searchable belongs to the class `aa-Detached` remains on the body making it unscrollable
+    document.body.classList.remove('aa-Detached')
   }
 
   addSource(resourceName, data) {
