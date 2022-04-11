@@ -3,31 +3,31 @@ class Avo::Reloader
 
   def reload!
     # reload all files declared in paths
-    paths.each { |path| load path }
+    files.each { |file| load file }
 
     # reload all files declared in each directory
     directories.keys.each do |dir|
-      Dir.glob("#{dir}/**/*.rb".to_s).each { |c| load c }
+      Dir.glob("#{dir}/**/*.rb".to_s).each { |file| load file }
     end
   end
 
   private
     def updater
-      @updater ||= config.file_watcher.new(paths, directories) { reload! }
+      @updater ||= config.file_watcher.new(files, directories) { reload! }
     end
 
-    def paths
+    def files
       # we want to watch some files no matter what
-      files = [
+      paths = [
         Rails.root.join("config", "initializers", "avo.rb"),
       ]
 
       # we want to watch some files only in Avo development
       if reload_lib?
-        files += []
+        paths += []
       end
 
-      files
+      paths
     end
 
     def directories
