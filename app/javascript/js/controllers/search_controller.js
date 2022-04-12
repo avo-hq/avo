@@ -105,7 +105,7 @@ export default class extends Controller {
           return `${data.header.toUpperCase()} ${data.help}`
         },
         item({ item, createElement }) {
-          let element = ''
+          const children = []
 
           if (item._avatar) {
             let classes
@@ -120,22 +120,37 @@ export default class extends Controller {
                 break
             }
 
-            element += `<img src="${item._avatar}" alt="${item._label}" class="flex-shrink-0 w-8 h-8 my-[2px] inline mr-2 ${classes}" />`
+            children.push(
+              createElement('img', {
+                src: item._avatar,
+                alt: item._label,
+                class: `flex-shrink-0 w-8 h-8 my-[2px] inline mr-2 ${classes}`,
+              }),
+            )
           }
-          element += `<div>${item._label}`
 
+          const labelChildren = [item._label]
           if (item._description) {
-            element += `<div class="aa-ItemDescription">${item._description}</div>`
+            labelChildren.push(
+              createElement(
+                'div',
+                {
+                  class: 'aa-ItemDescription',
+                },
+                item._description,
+              ),
+            )
           }
 
-          element += '</div>'
+          children.push(createElement('div', null, labelChildren))
 
-          return createElement('div', {
-            class: 'flex',
-            dangerouslySetInnerHTML: {
-              __html: element,
+          return createElement(
+            'div',
+            {
+              class: 'flex',
             },
-          })
+            children,
+          )
         },
         noResults() {
           return that.translationKeys.no_item_found.replace(
