@@ -9,6 +9,7 @@ gem "pundit"
 gem "rails", "~> 7.0.0"
 gem "pg", ">= 0.18", "< 2.0"
 gem "puma", "~> 5.6.4"
+gem "redis", "~> 4.0"
 gem "image_processing", "~> 1.12"
 gem "bootsnap", ">= 1.4.2", require: false
 gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
@@ -48,6 +49,7 @@ group :development do
   gem "bump", require: false
   gem "gem-release", require: false
   gem "htmlbeautifier"
+  gem "hotwire-livereload", "~> 1.1"
 end
 
 group :development, :test do
