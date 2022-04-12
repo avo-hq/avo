@@ -17,6 +17,19 @@ class Avo::Index::FieldWrapperComponent < ViewComponent::Base
       result += " py-3"
     end
 
+    result += " #{text_align_classes}"
+
     result
+  end
+
+  private
+
+  def text_align_classes
+    case @field.index_text_align.to_sym
+    when :right
+      'text-right'
+    when :center
+      'text-center'
+    end
   end
 end
