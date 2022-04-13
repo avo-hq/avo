@@ -59,7 +59,7 @@
     "tailwindcss-stimulus-components": "^3.0.3",
     "tippy.js": "^6.3.0",
     "trix": "^1.3.1",
-    "urijs": "^1.19.10"
+    "urijs": "^1.19.11"
   },
   "devDependencies": {
     "@prettier/plugin-ruby": "^2.0.0",
