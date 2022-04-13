@@ -124,8 +124,10 @@ module Avo
       #
       # get_resource_by_name('User') => UserResource
       def get_resource(resource)
+        possible_resource = "#{resource}Resource".gsub "ResourceResource", "Resource"
+
         resources.find do |available_resource|
-          "#{resource}Resource".safe_constantize == available_resource.class
+          possible_resource.safe_constantize == available_resource.class
         end
       end
 

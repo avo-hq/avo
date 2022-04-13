@@ -47,7 +47,7 @@ Avo.configure do |config|
       end
 
       group "People" do
-        resource :users
+        resource "UserResource"
         resource :people
         resource :spouses
       end
