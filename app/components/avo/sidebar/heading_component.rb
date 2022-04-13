@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::SidebarHeadingComponent < ViewComponent::Base
+class Avo::Sidebar::HeadingComponent < ViewComponent::Base
   attr_reader :label
   attr_reader :icon
 

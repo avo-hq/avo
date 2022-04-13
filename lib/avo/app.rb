@@ -1,3 +1,4 @@
+require 'docile'
 module Avo
   class App
     class_attribute :resources, default: []
@@ -103,9 +104,20 @@ module Avo
       end
 
       # Returns the Avo dashboard by id
+      #
+      # get_dashboard_by_id(:dashy) -> Dashy
       def get_dashboard_by_id(id)
         dashboards.find do |dashboard|
           dashboard.id == id
+        end
+      end
+
+      # Returns the Avo dashboard by name
+      #
+      # get_dashboard_by_name(:dashy) -> Dashy
+      def get_dashboard_by_name(name)
+        dashboards.find do |dashboard|
+          dashboard.name == name
         end
       end
 
@@ -193,6 +205,155 @@ module Avo
             filename
           end
       end
+
+      def menu_parse(parser, &block)
+        Docile.dsl_eval(parser, &block).build
+      end
+
+      def menu
+        menu_parse MenuBuilder.new, &Avo.configuration.menu
+        # bll = -> {
+        #   name 'John Smith'
+        #   mother {
+        #     name 'Mary Smith'
+        #   }
+        #   father {
+        #     name 'Tom Smith'
+        #     mother {
+        #       name 'Jane Smith'
+        #     }
+        #   }
+        # }
+
+
+
+        # block
+      end
+
     end
   end
 end
+
+require "dry-initializer"
+
+class BaseItem
+  extend Dry::Initializer
+
+  option :name, default: proc { "" }
+  option :items, default: proc { [] }
+  option :collapsable, default: proc { false }
+end
+
+class ResourceItem
+  extend Dry::Initializer
+
+  option :resource
+
+  def parsed_resource
+    Avo::App.get_resource_by_name resource.to_s
+  end
+end
+
+class DashboardItem
+  extend Dry::Initializer
+
+  option :dashboard
+
+  def parsed_dashboard
+    dashboard_by_id || dashboard_by_name
+  end
+
+  def dashboard_by_name
+    Avo::App.get_dashboard_by_name dashboard.to_s
+  end
+
+  def dashboard_by_id
+    Avo::App.get_dashboard_by_id dashboard.to_s
+  end
+end
+
+class MenuItem < BaseItem
+  option :path, default: proc { "" }
+  option :target, optional: true
+end
+
+class SectionItem < BaseItem
+  option :icon, optional: true
+end
+
+class GroupItem < BaseItem
+end
+
+Menu = Struct.new(:name, :items)
+class MenuBuilder
+  def initialize(name: nil, items: [])
+    @menu = Menu.new
+
+    # @menu.sections = []
+    # @menu.groups = []
+    @menu.name = name
+    @menu.items = items
+  end
+
+  def item(name, **args)
+    @menu.items << MenuItem.new(name: name, **args)
+  end
+
+  def resource(resource)
+    @menu.items << ResourceItem.new(resource: resource)
+  end
+
+  def dashboard(dashboard)
+    @menu.items << DashboardItem.new(dashboard: dashboard)
+  end
+
+  def section(name, **args, &block)
+    # abort args.inspect
+    @menu.items << SectionItem.new(name: name, **args, items: Avo::App.menu_parse(MenuBuilder.new, &block).items)
+  end
+
+  def group(name, **args, &block)
+    @menu.items << GroupItem.new(name: name, **args, items: Avo::App.menu_parse(MenuBuilder.new, &block).items)
+  end
+
+  def rest_of_resources
+
+  end
+
+  def rest_of_dashboards
+
+  end
+
+  def rest_of_tools
+
+  end
+
+  def build
+    @menu
+  end
+end
+
+# class SectionBuilder
+#   def initialize(name: nil, items: [])
+#     @menu = Menu.new
+#     puts ["name->", self, name].inspect
+
+#     @menu.items = items
+#   end
+#   def item(name)
+#     # puts ["name->", name].inspect
+#     @menu.items << BaseItem.new(name: name)
+#   end
+
+#   def section(name, &block)
+#     parsed_section = Avo::App.menu_parse(&block)
+#     # abort parsed_section.inspect
+#     # abort name.inspect
+#     @menu.items << BaseItem.new(name: name, items: parsed_section.items)
+#   end
+
+#   def build
+#     @menu
+#   end
+# end
+

@@ -1,0 +1,7 @@
+<%= render Avo::Sidebar::HeadingComponent.new label: item.name, icon: helpers.svg(icon, class: 'h-4') %>
+
+<div class="w-full space-y-1">
+  <% items.each do |item| %>
+    <%= render Avo::Sidebar::ItemSwitcherComponent.new item: item %>
+  <% end %>
+</div>

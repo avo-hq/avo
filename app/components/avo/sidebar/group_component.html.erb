@@ -1,0 +1,11 @@
+<%#= render Avo::Sidebar::GroupComponent.new label: item.name, icon: helpers.svg('dashboards-icon', class: 'h-4') %>
+<div class="flex items-center px-10 pt-2 py-1 text-gray-500 text-xs uppercase font-semibold leading-none">
+  <%= item.name %>
+</div>
+
+
+<div class="w-full space-y-1">
+  <% items.each do |item| %>
+    <%= render Avo::Sidebar::ItemSwitcherComponent.new item: item %>
+  <% end %>
+</div>

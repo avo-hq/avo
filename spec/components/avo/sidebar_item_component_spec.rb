@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Avo::SidebarItemComponent, type: :component do
+RSpec.describe Avo::Sidebar::ItemComponent, type: :component do
 
   # it "renders something useful" do
   #   expect(
