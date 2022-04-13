@@ -19,7 +19,6 @@ Avo.configure do |config|
     add_breadcrumb "Dashboard", "/admin/dashboard"
   end
   config.search_debounce = 300
-  config.main_menu = nil
   config.main_menu = -> {
     section I18n.t("avo.dashboards"), icon: "dashboards" do
       dashboard :dashy, visible: -> { true }
@@ -66,5 +65,8 @@ Avo.configure do |config|
       link "Avo", path: "https://avohq.io"
       link "Google", path: "https://google.com", target: :_blank
     end
+  }
+  config.profile_menu = -> {
+    link "Profile", path: "/profile", icon: "user-circle"
   }
 end

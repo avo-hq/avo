@@ -7,6 +7,7 @@ class Avo::Menu::BaseItem
   option :items, default: proc { [] }
   option :collapsable, default: proc { false }
   option :visible, default: proc { true }
+  option :icon, optional: true
 
   def visible?
     return visible if visible.in? [true, false]

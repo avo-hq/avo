@@ -224,7 +224,11 @@ module Avo
         Avo::Menu::Builder.parse_menu(&Avo.configuration.main_menu)
       end
 
-      #@todo: add profile menu
+      def profile_menu
+        return nil if Avo::App.license.lacks_with_trial(:menu_builder)
+
+        Avo::Menu::Builder.parse_menu(&Avo.configuration.profile_menu)
+      end
     end
   end
 end
