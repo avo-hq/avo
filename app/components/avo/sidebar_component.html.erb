@@ -48,6 +48,11 @@
       </div>
     </div>
     <%= helpers.render_license_warnings %>
+    <% if Avo::App.feedback_enabled? %>
+      <a href="javascript:void(0);" class="px-4 text-sm text-gray-800 underline mb-2">
+        Provide feedback
+      </a>
+    <% end %>
     <%= render Avo::SidebarProfileComponent.new user: helpers._current_user %>
   </div>
 </div>

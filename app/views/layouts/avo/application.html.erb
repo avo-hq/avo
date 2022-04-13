@@ -20,6 +20,10 @@
       <%= javascript_include_tag "hotwire-livereload", defer: true %>
     <% end %>
   <% end %>
+
+  <% if Avo::App.feedback_enabled? %>
+    <script module src="https://feedbucket.app/js/feedbucket.js" feedbucket-key="xyLFR91T0McYuhG4B571" defer></script>
+  <% end %>
 </head>
 <body class="bg-application os-mac">
 <div class="relative flex flex-1 w-full min-h-full" data-controller="mobile">

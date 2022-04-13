@@ -12,6 +12,7 @@ module Avo
     class_attribute :view_context, default: nil
     class_attribute :params, default: {}
     class_attribute :translation_enabled, default: false
+    class_attribute :feedback_enabled, default: false
 
     class << self
       def boot
@@ -192,6 +193,10 @@ module Avo
             filename.gsub!(".html.erb", "")
             filename
           end
+      end
+
+      def feedback_enabled?
+        feedback_enabled || Rails.env.development?
       end
     end
   end

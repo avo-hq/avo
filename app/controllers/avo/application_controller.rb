@@ -14,12 +14,12 @@ module Avo
     before_action :init_app
     before_action :check_avo_license
     before_action :set_locale
+    before_action :set_feedback_state
     before_action :set_authorization
     before_action :_authenticate!
     before_action :set_container_classes
     before_action :add_initial_breadcrumbs
     before_action :set_view
-    before_action :set_model_to_fill
 
     rescue_from Pundit::NotAuthorizedError, with: :render_unauthorized
     rescue_from ActiveRecord::RecordInvalid, with: :exception_logger
@@ -288,6 +288,10 @@ module Avo
       I18n.locale = params[:locale] || I18n.default_locale
 
       I18n.default_locale = I18n.locale
+    end
+
+    def set_feedback_state
+      Avo::App.feedback_enabled = params[:enable_feedback].present?
     end
   end
 end
