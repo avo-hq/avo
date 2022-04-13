@@ -19,48 +19,52 @@ Avo.configure do |config|
     add_breadcrumb "Dashboard", "/admin/dashboard"
   end
   config.search_debounce = 300
-  config.menu = -> {
-    section "Dahsboard", icon: "heroicons/outline/academic-cap" do
-      dashboard "Dashy"
-      dashboard :dashy
-      item "Dashy"
-      item "Blank"
-      rest_of_dashboards
-    end
-    section "Resources" do
-      resource :user
-      group "Users" do
-        item "Course Link"
+  config.main_menu = nil
+  config.main_menu = -> {
+    section I18n.t("avo.dashboards"), icon: "dashboards" do
+      dashboard :dashy, visible: -> { true }
+      dashboard :sales, visible: -> { true }
+
+      group "All dashboards", visible: false do
+        all_dashboards
       end
-      item "users"
-      rest_of_resources
-    end
-    section "Tools" do
-      item "Some"
-      item "thing"
-      item "custom"
-      rest_of_tools
     end
 
-    item "avo", path: "https://avohq.io"
-    item "google", path: "https://google.com", target: :_blank
+    section "Resources", icon: "heroicons/outline/academic-cap" do
+      group "Academia" do
+        resource :course
+        resource :course_link
+      end
 
-    # item :see1
+      group "Blog" do
+        resource :posts
+        resource :comments
+      end
 
-    # section "Seection", collapsable: false do
-    #   group "Group", collapsable: true do
-    #     item :lol
-    #   end
+      group "Company" do
+        resource :projects
+        resource :team
+        resource :reviews
+      end
 
-    #   item :lol
-    # end
+      group "People" do
+        resource :users
+        resource :people
+        resource :spouses
+      end
 
-    # group "Group 2" do
-    #   item :lol2
-    # end
-    # section "section 2" do
-    #   item :lol3
-    # end
-    # item :see4
+      group "Other" do
+        resource :fish
+      end
+    end
+
+    section "Tools", icon: "heroicons/outline/finger-print" do
+      all_tools
+    end
+
+    group do
+      link "Avo", path: "https://avohq.io"
+      link "Google", path: "https://google.com", target: :_blank
+    end
   }
 end

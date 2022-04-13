@@ -1,4 +1,3 @@
-require 'docile'
 module Avo
   class App
     class_attribute :resources, default: []
@@ -157,6 +156,11 @@ module Avo
         end
       end
 
+      # Returns the Avo resource by some name
+      def guess_resource(name)
+        get_resource_by_name(name.to_s) || get_resource_by_model_name(name)
+      end
+
       # Returns the Rails model class by singular snake_cased name
       #
       # get_model_class_by_name('user') => User
@@ -175,8 +179,8 @@ module Avo
         dashboards.sort_by { |r| r.name }
       end
 
-      def resources_navigation(user = nil)
-        get_available_resources(user)
+      def resources_for_navigation(user = nil)
+        get_available_resources(current_user)
           .select do |resource|
             resource.model_class.present?
           end
@@ -185,10 +189,12 @@ module Avo
           end
       end
 
-      def get_dashboards(user = nil)
+      def dashboards_for_navigation(user = nil)
         return [] unless App.license.has_with_trial(:resource_ordering)
 
-        get_available_dashboards(user)
+        get_available_dashboards(user).select do |dashboard|
+          dashboard.is_visible?
+        end
       end
 
       # Insert any partials that we find in app/views/avo/sidebar/items.
@@ -206,154 +212,19 @@ module Avo
           end
       end
 
-      def menu_parse(parser, &block)
-        Docile.dsl_eval(parser, &block).build
+      def tools_for_navigation
+        return [] if Avo::App.license.lacks_with_trial(:custom_tools)
+
+        get_sidebar_partials
       end
 
-      def menu
-        menu_parse MenuBuilder.new, &Avo.configuration.menu
-        # bll = -> {
-        #   name 'John Smith'
-        #   mother {
-        #     name 'Mary Smith'
-        #   }
-        #   father {
-        #     name 'Tom Smith'
-        #     mother {
-        #       name 'Jane Smith'
-        #     }
-        #   }
-        # }
+      def main_menu
+        return nil if Avo::App.license.lacks_with_trial(:menu_builder)
 
-
-
-        # block
+        Avo::Menu::Builder.parse_menu(&Avo.configuration.main_menu)
       end
 
+      #@todo: add profile menu
     end
   end
 end
-
-require "dry-initializer"
-
-class BaseItem
-  extend Dry::Initializer
-
-  option :name, default: proc { "" }
-  option :items, default: proc { [] }
-  option :collapsable, default: proc { false }
-end
-
-class ResourceItem
-  extend Dry::Initializer
-
-  option :resource
-
-  def parsed_resource
-    Avo::App.get_resource_by_name resource.to_s
-  end
-end
-
-class DashboardItem
-  extend Dry::Initializer
-
-  option :dashboard
-
-  def parsed_dashboard
-    dashboard_by_id || dashboard_by_name
-  end
-
-  def dashboard_by_name
-    Avo::App.get_dashboard_by_name dashboard.to_s
-  end
-
-  def dashboard_by_id
-    Avo::App.get_dashboard_by_id dashboard.to_s
-  end
-end
-
-class MenuItem < BaseItem
-  option :path, default: proc { "" }
-  option :target, optional: true
-end
-
-class SectionItem < BaseItem
-  option :icon, optional: true
-end
-
-class GroupItem < BaseItem
-end
-
-Menu = Struct.new(:name, :items)
-class MenuBuilder
-  def initialize(name: nil, items: [])
-    @menu = Menu.new
-
-    # @menu.sections = []
-    # @menu.groups = []
-    @menu.name = name
-    @menu.items = items
-  end
-
-  def item(name, **args)
-    @menu.items << MenuItem.new(name: name, **args)
-  end
-
-  def resource(resource)
-    @menu.items << ResourceItem.new(resource: resource)
-  end
-
-  def dashboard(dashboard)
-    @menu.items << DashboardItem.new(dashboard: dashboard)
-  end
-
-  def section(name, **args, &block)
-    # abort args.inspect
-    @menu.items << SectionItem.new(name: name, **args, items: Avo::App.menu_parse(MenuBuilder.new, &block).items)
-  end
-
-  def group(name, **args, &block)
-    @menu.items << GroupItem.new(name: name, **args, items: Avo::App.menu_parse(MenuBuilder.new, &block).items)
-  end
-
-  def rest_of_resources
-
-  end
-
-  def rest_of_dashboards
-
-  end
-
-  def rest_of_tools
-
-  end
-
-  def build
-    @menu
-  end
-end
-
-# class SectionBuilder
-#   def initialize(name: nil, items: [])
-#     @menu = Menu.new
-#     puts ["name->", self, name].inspect
-
-#     @menu.items = items
-#   end
-#   def item(name)
-#     # puts ["name->", name].inspect
-#     @menu.items << BaseItem.new(name: name)
-#   end
-
-#   def section(name, &block)
-#     parsed_section = Avo::App.menu_parse(&block)
-#     # abort parsed_section.inspect
-#     # abort name.inspect
-#     @menu.items << BaseItem.new(name: name, items: parsed_section.items)
-#   end
-
-#   def build
-#     @menu
-#   end
-# end
-

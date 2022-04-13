@@ -29,7 +29,8 @@ module Avo
     attr_accessor :raise_error_on_missing_policy
     attr_accessor :disabled_features
     attr_accessor :buttons_on_form_footers
-    attr_accessor :menu
+    attr_accessor :main_menu
+    attr_accessor :profile_menu
 
     def initialize
       @root_path = "/avo"
@@ -71,7 +72,8 @@ module Avo
       @raise_error_on_missing_policy = false
       @disabled_features = []
       @buttons_on_form_footers = false
-      @menu = proc {}
+      @main_menu = nil
+      @profile_menu = nil
     end
 
     def locale_tag

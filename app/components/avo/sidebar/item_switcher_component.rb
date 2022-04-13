@@ -8,4 +8,8 @@ class Avo::Sidebar::ItemSwitcherComponent < Avo::Sidebar::BaseItemComponent
   def dashboard
     item.parsed_dashboard
   end
+
+  def render?
+    item.visible?
+  end
 end
