@@ -29,7 +29,7 @@ Avo.configure do |config|
       end
     end
 
-    section "Resources" do
+    section "Resources", icon: "heroicons/outline/academic-cap" do
       group "Academia" do
         resource :course
         resource :course_link
