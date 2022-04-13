@@ -22,7 +22,7 @@ Avo.configure do |config|
   config.main_menu = -> {
     section I18n.t("avo.dashboards"), icon: "dashboards" do
       dashboard :dashy, visible: -> { true }
-      dashboard :sales, visible: -> { true }
+      dashboard "Sales", visible: -> { true }
 
       group "All dashboards", visible: false do
         all_dashboards
