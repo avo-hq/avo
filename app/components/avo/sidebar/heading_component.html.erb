@@ -1,0 +1,14 @@
+<div class="flex justify-between p-4 py-2 text-gray-500">
+  <div class="flex items-center text-sm uppercase font-semibold leading-none space-x-1">
+    <span class="min-w-[20px]"><%= icon %></span> <span><%= label %></span>
+  </div>
+  <% if collapsable %>
+    <div class="cursor-pointer"
+      data-action="click->menu#triggerCollapse"
+      data-menu-key-param="<%= key %>"
+      data-menu-target="svg"
+    >
+      <%= helpers.svg 'heroicons/outline/chevron-down', class: 'h-5'%>
+    </div>
+  <% end %>
+</div>

@@ -84,7 +84,7 @@ group :development do
 end
 
 group :development, :test do
-  gem 'ap'
+  gem "awesome_print"
   gem "faker", require: false
 end
 

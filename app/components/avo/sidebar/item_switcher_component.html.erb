@@ -1,0 +1,16 @@
+<% if item.is_a? Avo::Menu::Link %>
+  <%= render Avo::Sidebar::LinkComponent.new label: item.name, path: item.path, target: item.target %>
+<% end %>
+<% if item.is_a? Avo::Menu::Resource %>
+  <%= render Avo::Sidebar::LinkComponent.new label: resource.navigation_label, path: helpers.resources_path(resource: resource) %>
+<% end %>
+<% if item.is_a? Avo::Menu::Dashboard %>
+  <%= render Avo::Sidebar::LinkComponent.new label: dashboard.navigation_label, path: dashboard.navigation_path %>
+<% end %>
+<% if item.is_a? Avo::Menu::Section %>
+  <%= render Avo::Sidebar::SectionComponent.new item: item %>
+<% end %>
+<% if item.is_a? Avo::Menu::Group %>
+  <%= render Avo::Sidebar::GroupComponent.new item: item %>
+<% end %>
+

@@ -25,8 +25,17 @@
         class="hidden absolute flex flex-col inset-auto right-0 -mt-12 bg-white rounded min-w-[200px] shadow-context -translate-y-full"
         data-toggle-panel-target="panel"
       >
+        <% if Avo::App.license.has_with_trial(:menu_editor) && Avo.configuration.profile_menu.present? %>
+          <div class="text-black space-y-4">
+            <% Avo::App.profile_menu.items.each do |item| %>
+              <% if item.is_a? Avo::Menu::Link %>
+                <%= render Avo::ProfileItemComponent.new label: item.name, path: item.path, icon: item.icon %>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
         <%# Example link below %>
-        <%#= render Avo::ProfileItemComponent.new label: 'Profile', path: '/profile', icon: helpers.svg('user-circle', class: 'h-4 mr-1') %>
+        <%#= render Avo::ProfileItemComponent.new label: 'Profile', path: '/profile', icon: 'user-circle' %>
         <%= button_to helpers.main_app.send(destroy_user_session_path),
           method: :delete,
           form: { "data-turbo" => "false" },

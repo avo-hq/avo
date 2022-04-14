@@ -11,7 +11,8 @@ module Avo
           :enhanced_search_results,
           :searchable_associations,
           :resource_ordering,
-          :dashboards
+          :dashboards,
+          :menu_editor
         ]
       end
     end
