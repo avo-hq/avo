@@ -6,12 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
-      - name: fix
-        run: |
-          git config --global --add safe.directory "${GITHUB_WORKSPACE}"
-          git config --global --add safe.directory "${GITHUB_WORKSPACE}/${INPUT_WORKDIR}"
-          cd "${GITHUB_WORKSPACE}/${INPUT_WORKDIR}"
+        uses: actions/checkout@v1
       - name: standardrb
         uses: SennaLabs/action-standardrb@v0.0.3
         with:
@@ -24,7 +19,7 @@ jobs:
     name: runner / eslint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v1
       - run: yarn
       - name: eslint
         uses: reviewdog/action-eslint@v1
