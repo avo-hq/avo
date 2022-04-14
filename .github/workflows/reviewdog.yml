@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       - name: standardrb
         uses: SennaLabs/action-standardrb@v0.0.3
         with:
@@ -19,7 +19,7 @@ jobs:
     name: runner / eslint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - run: yarn
       - name: eslint
         uses: reviewdog/action-eslint@v1
