@@ -71,6 +71,8 @@ module Avo
     end
 
     def svg(file_name, **args)
+      return if file_name.nil?
+
       options = {}
       options[:class] = args[:class].present? ? args[:class] : ""
       options[:class] += args[:extra_class].present? ? " #{args[:extra_class]}" : ""

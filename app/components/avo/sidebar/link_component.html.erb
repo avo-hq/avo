@@ -1,0 +1,12 @@
+<% if path.present? %>
+  <%= send link_method, path, class: classes, active: active, target: target do %>
+    <%= label %>
+    <% if target == :_blank %>
+      <%= helpers.svg('heroicons/outline/external-link', class: 'self-center ml-auto h-3') %>
+    <% end %>
+  <% end %>
+<% else %>
+  <%= content_tag :div, class: classes, active: active, target: target do %>
+    <%= label %>
+  <% end %>
+<% end %>
