@@ -13,8 +13,8 @@ module Generators
       def create_resource_file
         type = "boolean"
 
-        type = "select" if options[:select]
         type = "multiple_select" if options[:multiple_select]
+        type = "select" if options[:select]
         type = "text" if options[:text]
 
         template "filters/#{type}_filter.tt", "app/avo/filters/#{singular_name}.rb"
