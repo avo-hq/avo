@@ -4,6 +4,7 @@ module Generators
   module Avo
     class FilterGenerator < ::Rails::Generators::NamedBase
       source_root File.expand_path("templates", __dir__)
+      class_option :multiple_select, type: :boolean
       class_option :select, type: :boolean
       class_option :text, type: :boolean
 
@@ -13,6 +14,7 @@ module Generators
         type = "boolean"
 
         type = "select" if options[:select]
+        type = "multiple_select" if options[:multiple_select]
         type = "text" if options[:text]
 
         template "filters/#{type}_filter.tt", "app/avo/filters/#{singular_name}.rb"

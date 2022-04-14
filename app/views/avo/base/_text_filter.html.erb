@@ -6,7 +6,7 @@
     set_value = filter.default
   end
 %>
-<div data-controller="text-filter">
+<div data-controller="text-filter" data-filter-name="<%= filter.name %>">
   <%= filter_wrapper name: filter.name do %>
     <%= text_field_tag filter.id, set_value,
       class: input_classes('w-full mb-0'),

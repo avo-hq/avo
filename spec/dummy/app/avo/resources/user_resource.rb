@@ -65,4 +65,5 @@ class UserResource < Avo::BaseResource
   action DownloadFile
 
   filter UserNamesFilter
+  filter IsAdmin
 end
