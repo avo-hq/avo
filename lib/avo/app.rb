@@ -192,7 +192,7 @@ module Avo
       end
 
       def dashboards_for_navigation(user = nil)
-        return [] unless App.license.has_with_trial(:resource_ordering)
+        return [] if App.license.lacks_with_trial(:resource_ordering)
 
         get_available_dashboards(user).select do |dashboard|
           dashboard.is_visible?
