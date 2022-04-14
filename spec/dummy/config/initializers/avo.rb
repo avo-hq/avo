@@ -29,7 +29,7 @@ Avo.configure do |config|
       end
     end
 
-    section "Resources", icon: "heroicons/outline/academic-cap", collapsable: true, collapsed: true do
+    section "Resources", icon: "heroicons/outline/academic-cap", collapsable: true, collapsed: false do
       group "Academia", collapsable: true do
         resource :course
         resource :course_link
