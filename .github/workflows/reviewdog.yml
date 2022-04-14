@@ -7,6 +7,11 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v2
+      - name: fix
+        run: |
+          git config --global --add safe.directory "${GITHUB_WORKSPACE}"
+          git config --global --add safe.directory "${GITHUB_WORKSPACE}/${INPUT_WORKDIR}"
+          cd "${GITHUB_WORKSPACE}/${INPUT_WORKDIR}"
       - name: standardrb
         uses: SennaLabs/action-standardrb@v0.0.3
         with:
