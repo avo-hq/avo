@@ -24,40 +24,40 @@ Avo.configure do |config|
       dashboard :dashy, visible: -> { true }
       dashboard "Sales", visible: -> { true }
 
-      group "All dashboards", visible: false do
+      group "All dashboards", visible: false, collapsable: true do
         all_dashboards
       end
     end
 
-    section "Resources", icon: "heroicons/outline/academic-cap" do
-      group "Academia" do
+    section "Resources", icon: "heroicons/outline/academic-cap", collapsable: true, collapsed: true do
+      group "Academia", collapsable: true do
         resource :course
         resource :course_link
       end
 
-      group "Blog" do
+      group "Blog", collapsable: true do
         resource :posts
         resource :comments
       end
 
-      group "Company" do
+      group "Company", collapsable: true do
         resource :projects
         resource :team
         resource :reviews
       end
 
-      group "People" do
+      group "People", collapsable: true do
         resource "UserResource"
         resource :people
         resource :spouses
       end
 
-      group "Other" do
+      group "Other", collapsable: true, collapsed: true do
         resource :fish
       end
     end
 
-    section "Tools", icon: "heroicons/outline/finger-print" do
+    section "Tools", icon: "heroicons/outline/finger-print", collapsable: true, collapsed: true do
       all_tools
     end
 
