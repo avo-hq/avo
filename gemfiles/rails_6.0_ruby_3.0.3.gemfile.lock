@@ -7,6 +7,7 @@ PATH
       breadcrumbs_on_rails
       chartkick
       countries
+      docile
       dry-initializer
       hotwire-rails
       httparty
@@ -81,17 +82,18 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
       zeitwerk (~> 2.2, >= 2.2.2)
+    acts-as-taggable-on (9.0.1)
+      activerecord (>= 6.0, < 7.1)
     acts_as_list (1.0.4)
       activerecord (>= 4.2)
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
-    ap (0.1.1)
-      httparty (>= 0.7.7)
     appraisal (2.4.1)
       bundler
       rake
       thor (>= 0.14.0)
     ast (2.4.2)
+    awesome_print (1.9.2)
     aws-eventstream (1.2.0)
     aws-partitions (1.552.0)
     aws-sdk-core (3.126.0)
@@ -410,11 +412,12 @@ PLATFORMS
 DEPENDENCIES
   active_link_to
   active_median
+  acts-as-taggable-on (~> 9.0)
   acts_as_list
   addressable
-  ap
   appraisal
   avo!
+  awesome_print
   aws-sdk-s3
   bootsnap (>= 1.4.2)
   breadcrumbs_on_rails
@@ -471,4 +474,4 @@ DEPENDENCIES
   zeitwerk (~> 2.3)
 
 BUNDLED WITH
-   2.3.5
+   2.3.7
