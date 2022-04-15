@@ -1,3 +1,8 @@
-<div class="flex px-2 py-0 rounded bg-blue-500 text-sm text-white uppercase font-bold mb-2 flex-shrink-0 mr-1">
-  <%= name %>
+<div class="flex px-2 py-px rounded bg-gray-600 text-sm text-white font-normal flex-shrink-0"
+  <% if title.present? %>
+    data-tippy="tooltip"
+    title="<%= title %>"
+  <% end %>
+>
+  <%= label %>
 </div>

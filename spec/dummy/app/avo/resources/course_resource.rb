@@ -7,5 +7,6 @@ class CourseResource < Avo::BaseResource
 
   field :id, as: :id
   field :name, as: :text
+  field :skills, as: :tags, blacklist: -> { record.skill_blacklist }, suggestions: -> { record.skill_suggestions }
   field :links, as: :has_many, searchable: true, placeholder: "Click to choose a link"
 end

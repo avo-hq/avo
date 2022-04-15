@@ -1,7 +1,14 @@
 <%= index_field_wrapper field: @field do %>
-  <% if @field.as_html %>
-    <%== @field.value %>
-  <% else %>
-    <%= link_to_if @field.link_to_resource, @field.value, resource_path %>
-  <% end %>
+  <div class="flex gap-1 items-center flex-wrap">
+    <% value.take(3).each do |item| %>
+      <% if @field.acts_as_taggable_on.present? %>
+        <%= render Avo::Fields::TagsField::TagComponent.new(label: item['value']) %>
+      <% else %>
+        <%= render Avo::Fields::TagsField::TagComponent.new(label: item) %>
+      <% end %>
+    <% end %>
+    <% if value.count > 3 %>
+      <%= render Avo::Fields::TagsField::TagComponent.new(label: '...', title: I18n.t('avo.x_items_more', count: value.count)) %>
+    <% end %>
+  </div>
 <% end %>

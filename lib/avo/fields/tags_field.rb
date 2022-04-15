@@ -9,11 +9,18 @@ module Avo
       def initialize(id, **args, &block)
         super(id, **args, &block)
 
-        @suggestions = args[:suggestions].present? ? args[:suggestions] : []
         @acts_as_taggable_on = args[:acts_as_taggable_on].present? ? args[:acts_as_taggable_on] : nil
-        @enforce_suggestions = args[:enforce_suggestions].present? ? args[:enforce_suggestions] : false
-        @delimiters = args[:delimiters].present? ? args[:delimiters] : [","]
+        @blacklist = args[:blacklist].present? ? args[:blacklist] : []
         @close_on_select = args[:close_on_select] == true
+        @delimiters = args[:delimiters].present? ? args[:delimiters] : [","]
+        @enforce_suggestions = args[:enforce_suggestions].present? ? args[:enforce_suggestions] : false
+        @suggestions = args[:suggestions].present? ? args[:suggestions] : []
+      end
+
+      def field_value
+        return json_value if acts_as_taggable_on.present?
+
+        value || []
       end
 
       def json_value
@@ -25,11 +32,11 @@ module Avo
       end
 
       def fill_field(model, key, value, params)
-        # parsed_value(value)
-
-        # puts ['->', model, key, value, params].inspect
-        model.send(act_as_taggable_attribute(key), parsed_value(value))
-        # puts ["->", "#{key.singularize}_list=", model.tag_list, JSON.parse(value).pluck(:value)].inspect
+        if acts_as_taggable_on.present?
+          model.send(act_as_taggable_attribute(key), parsed_value(value))
+        else
+          model.send("#{key}=", parsed_value(value))
+        end
 
         model
       end
@@ -39,6 +46,16 @@ module Avo
 
         if @suggestions.respond_to? :call
           return Avo::Hosts::RecordHost.new(block: @suggestions, record: model).handle
+        end
+
+        []
+      end
+
+      def blacklist
+        return @blacklist if @blacklist.is_a? Array
+
+        if @blacklist.respond_to? :call
+          return Avo::Hosts::RecordHost.new(block: @blacklist, record: model).handle
         end
 
         []

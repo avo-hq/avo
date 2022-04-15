@@ -2,57 +2,19 @@ import { Controller } from '@hotwired/stimulus'
 import { first, isObject, merge } from 'lodash'
 import Tagify from '@yaireo/tagify'
 
-function tagTemplate(tagData) {
-  const suggestions = this.settings.whitelist || []
-
-  // eslint-disable-next-line eqeqeq
-  const possibleSuggestion = suggestions.find((item) => item.value == tagData.value)
-  const possibleLabel = possibleSuggestion ? possibleSuggestion.label : tagData.value
-
-  return `
-<tag title="${tagData.email}"
-  contenteditable='false'
-  spellcheck='false'
-  tabIndex="-1"
-  class="tagify__tag ${tagData.class ? tagData.class : ''}"
-  ${this.getAttributes(tagData)}
->
-  <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>
-  <div>
-      <span class='tagify__tag-text'>${possibleLabel}</span>
-  </div>
-</tag>
-`
-}
-
-function suggestionItemTemplate(tagData) {
-  return `
-<div ${this.getAttributes(tagData)}
-  class='tagify__dropdown__item flex items-center ${
-  tagData.class ? tagData.class : ''
-}'
-  tabindex="0"
-  role="option">
-  ${
-  tagData.avatar
-    ? `
-  <div class='rounded w-8 h-8 block mr-2'>
-      <img onerror="this.style.visibility='hidden'" class="w-full" src="${tagData.avatar}">
-  </div>`
-    : ''
-}
-  <span>${tagData.label}</span>
-</div>
-`
-}
+import { suggestionItemTemplate, tagTemplate } from './tags_field_helpers'
 
 export default class extends Controller {
-  static targets = ['input'];
+  static targets = ['input', 'fakeInput'];
 
   tagify = null;
 
-  get suggestions() {
-    return this.getJsonDataAttribute(this.inputTarget, 'data-suggestions', [])
+  get whitelistItems() {
+    return this.getJsonDataAttribute(this.inputTarget, 'data-whitelist-items', [])
+  }
+
+  get blacklistItems() {
+    return this.getJsonDataAttribute(this.inputTarget, 'data-blacklist-items', [])
   }
 
   get enforceSuggestions() {
@@ -68,12 +30,13 @@ export default class extends Controller {
   }
 
   get suggestionsAreObjects() {
-    return isObject(first(this.suggestions))
+    return isObject(first(this.whitelistItems))
   }
 
-  connect() {
+  get tagifyOptions() {
     let options = {
-      whitelist: this.suggestions,
+      whitelist: this.whitelistItems,
+      blacklist: this.blacklistItems,
       enforceWhitelist: this.enforceSuggestions,
       delimiters: this.delimiters.join('|'),
       maxTags: 10,
@@ -97,8 +60,14 @@ export default class extends Controller {
       })
     }
 
+    return options
+  }
+
+  connect() {
     if (this.hasInputTarget) {
-      this.tagify = new Tagify(this.inputTarget, options)
+      this.hideFakeInput()
+      this.showRealInput()
+      this.initTagify()
     }
   }
 
@@ -109,5 +78,17 @@ export default class extends Controller {
     } catch (error) {}
 
     return result
+  }
+
+  initTagify() {
+    this.tagify = new Tagify(this.inputTarget, this.tagifyOptions)
+  }
+
+  hideFakeInput() {
+    this.fakeInputTarget.classList.add('hidden')
+  }
+
+  showRealInput() {
+    this.inputTarget.classList.remove('hidden')
   }
 }
