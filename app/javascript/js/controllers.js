@@ -24,6 +24,7 @@ import SearchController from './controllers/search_controller'
 import SelectController from './controllers/select_controller'
 import SelectFilterController from './controllers/select_filter_controller'
 import SimpleMdeController from './controllers/fields/simple_mde_controller'
+import TagsFieldController from './controllers/fields/tags_field_controller'
 import TextFilterController from './controllers/text_filter_controller'
 import TippyController from './controllers/tippy_controller'
 import TogglePanelController from './controllers/toggle_panel_controller'
@@ -48,6 +49,7 @@ application.register('per-page', PerPageController)
 application.register('search', SearchController)
 application.register('select', SelectController)
 application.register('select-filter', SelectFilterController)
+application.register('tags-field', TagsFieldController)
 application.register('text-filter', TextFilterController)
 application.register('tippy', TippyController)
 application.register('toggle-panel', TogglePanelController)

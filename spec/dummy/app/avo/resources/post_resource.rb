@@ -8,16 +8,48 @@ class PostResource < Avo::BaseResource
   self.default_view_type = :grid
 
   field :id, as: :id
+
+  field :tags,
+    as: :tags,
+    acts_as_taggable_on: :tags,
+    close_on_select: false,
+    placeholder: 'write some tags',
+    suggestions: ["hey", "new_tag", "another new tag"],
+    suggestions: -> {
+      # ["hey", "new_tag", "another new tag", record.name, *params.permit!['allowed_tags']]
+      # ["hey", "new_tag", "another new tag", record.name]
+      [
+        {
+          value: 1,
+          label: 'one',
+          # avatar: 'https://www.gravatar.com/avatar/486187eddec3e74a7b9f38a69fc60e07?default=&size=100',
+        },
+        {
+          value: 2,
+          label: 'two',
+          avatar: 'https://www.gravatar.com/avatar/486187eddec3e74a7b9f38a69fc60e07?default=&size=100',
+        },
+        {
+          value: 3,
+          label: 'three',
+          avatar: 'https://www.gravatar.com/avatar/486187eddec3e74a7b9f38a69fc60e07?default=&size=100',
+        },
+      ]
+    },
+    # suggestions: ["hey", "new_tag", "another new tag"],
+    enforce_suggestions: false
+    # delimiters: [",", " "]
+
   field :name, as: :text, required: true, sortable: true
-  field :body, as: :trix, placeholder: "Enter text", always_show: false, attachment_key: :attachments, hide_attachment_url: true, hide_attachment_filename: true, hide_attachment_filesize: true
-  field :cover_photo, as: :file, is_image: true, as_avatar: :rounded, full_width: true, hide_on: []
-  field :cover_photo, as: :external_image, name: 'Cover photo', required: true, hide_on: :all, link_to_resource: true, as_avatar: :rounded, format_using: ->(value) { value.present? ? value&.url : nil }
-  field :audio, as: :file, is_audio: true
-  field :excerpt, as: :text, hide_on: :all, as_description: true do |model|
-    ActionView::Base.full_sanitizer.sanitize(model.body).truncate 130
-  rescue
-    ""
-  end
+  # field :body, as: :trix, placeholder: "Enter text", always_show: false, attachment_key: :attachments, hide_attachment_url: true, hide_attachment_filename: true, hide_attachment_filesize: true
+  # field :cover_photo, as: :file, is_image: true, as_avatar: :rounded, full_width: true, hide_on: []
+  # field :cover_photo, as: :external_image, name: 'Cover photo', required: true, hide_on: :all, link_to_resource: true, as_avatar: :rounded, format_using: ->(value) { value.present? ? value&.url : nil }
+  # field :audio, as: :file, is_audio: true
+  # field :excerpt, as: :text, hide_on: :all, as_description: true do |model|
+  #   ActionView::Base.full_sanitizer.sanitize(model.body).truncate 130
+  # rescue
+  #   ""
+  # end
 
   field :is_featured, as: :boolean, visible: ->(resource:) { context[:user].is_admin? }
   field :is_published, as: :boolean do |model|

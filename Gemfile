@@ -146,3 +146,5 @@ gem "hightop"
 gem "active_median"
 
 gem 'acts_as_list'
+
+gem 'acts-as-taggable-on', '~> 9.0'
