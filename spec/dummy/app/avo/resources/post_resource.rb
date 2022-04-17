@@ -8,16 +8,13 @@ class PostResource < Avo::BaseResource
   self.default_view_type = :grid
 
   field :id, as: :id
-
   field :tags,
     as: :tags,
+    # disabled: true,
     acts_as_taggable_on: :tags,
     close_on_select: false,
-    placeholder: 'write some tags',
-    suggestions: ["hey", "new_tag", "another new tag"],
+    placeholder: 'add some tags',
     suggestions: -> {
-      # ["hey", "new_tag", "another new tag", record.name, *params.permit!['allowed_tags']]
-      # ["hey", "new_tag", "another new tag", record.name]
       [
         {
           value: 1,
@@ -36,9 +33,7 @@ class PostResource < Avo::BaseResource
         },
       ]
     },
-    # suggestions: ["hey", "new_tag", "another new tag"],
-    enforce_suggestions: false
-    # delimiters: [",", " "]
+    enforce_suggestions: true
 
   field :name, as: :text, required: true, sortable: true
   # field :body, as: :trix, placeholder: "Enter text", always_show: false, attachment_key: :attachments, hide_attachment_url: true, hide_attachment_filename: true, hide_attachment_filesize: true

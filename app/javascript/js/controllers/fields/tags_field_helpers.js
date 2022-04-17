@@ -1,4 +1,4 @@
-export const tagTemplate = (tagData) => {
+export function tagTemplate(tagData) {
   const suggestions = this.settings.whitelist || []
 
   const possibleSuggestion = suggestions.find(
@@ -10,7 +10,7 @@ export const tagTemplate = (tagData) => {
     : tagData.value
 
   return `
-<tag title="${tagData.email}"
+<tag title="${tagData.value}"
   contenteditable='false'
   spellcheck='false'
   tabIndex="-1"
@@ -25,7 +25,8 @@ export const tagTemplate = (tagData) => {
 `
 }
 
-export const suggestionItemTemplate = (tagData) => `
+export function suggestionItemTemplate(tagData) {
+  return `
 <div ${this.getAttributes(tagData)}
   class='tagify__dropdown__item flex items-center ${
   tagData.class ? tagData.class : ''
@@ -43,3 +44,4 @@ export const suggestionItemTemplate = (tagData) => `
   <span>${tagData.label}</span>
 </div>
 `
+}
