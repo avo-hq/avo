@@ -1,12 +1,13 @@
 PATH
   remote: ..
   specs:
-    avo (2.2.1)
+    avo (2.2.2)
       active_link_to
       addressable
       breadcrumbs_on_rails
       chartkick
       countries
+      docile
       dry-initializer
       hotwire-rails
       httparty
@@ -89,13 +90,12 @@ GEM
       activerecord (>= 4.2)
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
-    ap (0.1.1)
-      httparty (>= 0.7.7)
     appraisal (2.4.1)
       bundler
       rake
       thor (>= 0.14.0)
     ast (2.4.2)
+    awesome_print (1.9.2)
     aws-eventstream (1.2.0)
     aws-partitions (1.552.0)
     aws-sdk-core (3.126.0)
@@ -415,9 +415,9 @@ DEPENDENCIES
   active_median
   acts_as_list
   addressable
-  ap
   appraisal
   avo!
+  awesome_print
   aws-sdk-s3
   bootsnap (>= 1.4.2)
   breadcrumbs_on_rails
