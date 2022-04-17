@@ -19,7 +19,10 @@ class UserResource < Avo::BaseResource
   field :id, as: :id, link_to_resource: true
   field :email, as: :gravatar, link_to_resource: true, as_avatar: :circle
   heading "User Information"
-  field :first_name, as: :text, required: true, placeholder: "John"
+  field :first_name, as: :text, required: true, placeholder: "John", sortable: ->(query, direction) {
+    # Order by something else completely, just to make a test case that clearly and reliably does what we want.
+    query.order(id: direction)
+  }
   field :last_name, as: :text, required: true, placeholder: "Doe"
   field :email, as: :text, name: "User Email", required: true
   field :active, as: :boolean, name: "Is active", show_on: :show
