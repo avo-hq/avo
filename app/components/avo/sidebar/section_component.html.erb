@@ -3,11 +3,11 @@
     data-controller="menu"
     data-menu-target="self"
     data-menu-key-param="<%= key %>"
-    data-menu-collapsed-param="<%= collapsed ? 'collapsed' : 'expanded' %>"
+    data-menu-default-collapsed-state="<%= collapsed ? 'collapsed' : 'expanded' %>"
   <% end %>
 >
-  <%= render Avo::Sidebar::HeadingComponent.new label: item.name, icon: helpers.svg(icon, class: 'h-5'), collapsable: item.collapsable, key: key %>
-  <div class="w-full space-y-1" data-menu-target="items">
+  <%= render Avo::Sidebar::HeadingComponent.new label: item.name, icon: helpers.svg(icon, class: "h-5"), collapsable: item.collapsable, collapsed: collapsed, key: key %>
+  <div class="w-full space-y-1 <%= 'hidden' if collapsed %>" data-menu-target="items">
     <% items.each do |item| %>
       <%= render Avo::Sidebar::ItemSwitcherComponent.new item: item %>
     <% end %>

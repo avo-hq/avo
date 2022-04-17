@@ -3,7 +3,7 @@
     data-controller="menu"
     data-menu-target="self"
     data-menu-key-param="<%= key %>"
-    data-menu-collapsed-param="<%= collapsed ? 'collapsed' : 'expanded' %>"
+    data-menu-default-collapsed-state="<%= collapsed ? 'collapsed' : 'expanded' %>"
   <% end %>
 >
   <div class="flex justify-between px-10 pt-2 pb-0 text-gray-600 ">
@@ -11,16 +11,16 @@
       <%= item.name %>
     </div>
     <% if collapsable %>
-      <div class="cursor-pointer"
+      <div class="cursor-pointer <%= 'rotate-90' if collapsed %>"
         data-action="click->menu#triggerCollapse"
         data-menu-target="svg"
         data-menu-key-param="<%= key %>"
         >
-        <%= helpers.svg 'heroicons/outline/chevron-down', class: 'h-4'%>
+        <%= helpers.svg 'heroicons/outline/chevron-down', class: "h-4"%>
       </div>
     <% end %>
   </div>
-  <div class="w-full space-y-1" data-menu-target="items">
+  <div class="w-full space-y-1 <%= 'hidden' if collapsed %>" data-menu-target="items">
     <% items.each do |item| %>
       <%= render Avo::Sidebar::ItemSwitcherComponent.new item: item %>
     <% end %>
