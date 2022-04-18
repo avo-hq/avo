@@ -4,5 +4,5 @@ plugins:
     config:
       languages:
         javascript:
-          mass_threshold: 40
+          mass_threshold: 64
 
