@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    avo (2.2.2)
+    avo (2.3.0)
       active_link_to
       addressable
       breadcrumbs_on_rails
