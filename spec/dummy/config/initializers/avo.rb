@@ -40,7 +40,7 @@ Avo.configure do |config|
         resource :comments
       end
 
-      group "Company", collapsable: true do
+      group "Company" do
         resource :projects
         resource :team
         resource :reviews

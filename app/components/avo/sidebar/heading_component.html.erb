@@ -3,7 +3,7 @@
     <span class="min-w-[20px]"><%= icon %></span> <span><%= label %></span>
   </div>
   <% if collapsable %>
-    <div class="cursor-pointer"
+    <div class="cursor-pointer <%= 'rotate-90' if collapsed %>"
       data-action="click->menu#triggerCollapse"
       data-menu-key-param="<%= key %>"
       data-menu-target="svg"

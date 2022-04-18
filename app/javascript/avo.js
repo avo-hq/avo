@@ -84,3 +84,16 @@ document.addEventListener('turbo:submit-end', () => document.body.classList.remo
 document.addEventListener('turbo:before-cache', () => {
   document.querySelectorAll('[data-turbo-remove-before-cache]').forEach((element) => element.remove())
 })
+
+window.Avo = window.Avo || { configuration: {} }
+
+window.Avo.menus = {
+  resetCollapsedState() {
+    Array.from(document.querySelectorAll('[data-menu-key-param]'))
+      .map((i) => i.getAttribute('data-menu-key-param'))
+      .filter(Boolean)
+      .forEach((key) => {
+        window.localStorage.removeItem(key)
+      })
+  },
+}
