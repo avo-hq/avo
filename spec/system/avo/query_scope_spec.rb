@@ -36,7 +36,7 @@ RSpec.describe "QueryScope", type: :system do
     end
 
     it "displays the users according to the logic of a proc provided to sortable" do
-      visit "/admin/resources/users?sort_by=first_name&sort_direction=asc"
+      visit "/admin/resources/users?sort_by=is_writer&sort_direction=asc"
 
       first_user_id = all('[data-field-type="id"]')[0].find("a").text.to_i
       second_user_id = all('[data-field-type="id"]')[1].find("a").text.to_i

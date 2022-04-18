@@ -19,10 +19,7 @@ class UserResource < Avo::BaseResource
   field :id, as: :id, link_to_resource: true
   field :email, as: :gravatar, link_to_resource: true, as_avatar: :circle
   heading "User Information"
-  field :first_name, as: :text, required: true, placeholder: "John", sortable: ->(query, direction) {
-    # Order by something else completely, just to make a test case that clearly and reliably does what we want.
-    query.order(id: direction)
-  }
+  field :first_name, as: :text, required: true, placeholder: "John"
   field :last_name, as: :text, required: true, placeholder: "Doe"
   field :email, as: :text, name: "User Email", required: true
   field :active, as: :boolean, name: "Is active", show_on: :show
@@ -33,7 +30,10 @@ class UserResource < Avo::BaseResource
     "This user has the following roles: #{model.roles.select { |key, value| value }.keys.join(", ")}"
   end
   field :birthday, as: :date, first_day_of_week: 1, picker_format: "F J Y", format: "%Y-%m-%d", placeholder: "Feb 24th 1955", required: true
-  field :is_writer, as: :text, format_using: ->(value) { value.truncate 3 }, hide_on: :edit do |model, resource, view, field|
+  field :is_writer, as: :text, format_using: ->(value) { value.truncate 3 }, sortable: ->(query, direction) {
+    # Order by something else completely, just to make a test case that clearly and reliably does what we want.
+    query.order(id: direction)
+  }, hide_on: :edit do |model, resource, view, field|
     model.posts.to_a.size > 0 ? "yes" : "no"
   end
 
