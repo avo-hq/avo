@@ -93,3 +93,9 @@ POSTGRES_PASSWORD=
 ## Update appraisal gemfiles
 
 We use [appraisal](https://github.com/thoughtbot/appraisal) to run tests against multiple versions of rails. When the gemfile gets updated you must also run `bundle exec appraisal install` to update the versioned ones and commit them to the repo.
+
+# Misc
+
+## Annotate models
+
+To keep track of the schema structure for the models run `annotate --models --exclude fixtures` in the dummy app.
