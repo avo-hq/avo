@@ -90,6 +90,9 @@ GEM
       activerecord (>= 4.2)
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
+    annotate (3.2.0)
+      activerecord (>= 3.2, < 8.0)
+      rake (>= 10.4, < 14.0)
     appraisal (2.4.1)
       bundler
       rake
@@ -244,6 +247,8 @@ GEM
     nio4r (2.5.8)
     nokogiri (1.13.4)
       mini_portile2 (~> 2.8.0)
+      racc (~> 1.4)
+    nokogiri (1.13.4-x86_64-linux)
       racc (~> 1.4)
     orm_adapter (0.5.0)
     pagy (5.10.1)
@@ -418,6 +423,7 @@ DEPENDENCIES
   active_median
   acts_as_list
   addressable
+  annotate
   appraisal
   avo!
   awesome_print

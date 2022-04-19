@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: reviews
+#
+#  id              :bigint           not null, primary key
+#  reviewable_type :string
+#  reviewable_id   :integer
+#  body            :text
+#  user_id         :bigint
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#
 class Review < ApplicationRecord
   validates :body, presence: true
 

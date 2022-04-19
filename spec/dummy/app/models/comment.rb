@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: comments
+#
+#  id               :bigint           not null, primary key
+#  commentable_type :string
+#  commentable_id   :integer
+#  body             :text
+#  user_id          :bigint
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#
 class Comment < ApplicationRecord
   validates :body, presence: true
   validate :body_different

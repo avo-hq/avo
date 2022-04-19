@@ -71,6 +71,8 @@ group :development do
   gem "bump", require: false
   gem "gem-release", require: false
 
+  gem 'annotate'
+
   # gem 'rack-mini-profiler'
   # gem 'memory_profiler'
   # gem 'stackprof'
