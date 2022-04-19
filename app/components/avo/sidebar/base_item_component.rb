@@ -12,7 +12,7 @@ class Avo::Sidebar::BaseItemComponent < ViewComponent::Base
   end
 
   def key
-    result = "avo.#{request.host}.main_menu.#{item.name.underscore}"
+    result = "avo.#{request.host}.main_menu.#{item.name.to_s.underscore}"
 
     if item.icon.present?
       result += ".#{item.icon.parameterize.underscore}"
