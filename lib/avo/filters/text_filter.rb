@@ -6,7 +6,7 @@ module Avo
       self.template = "avo/base/text_filter"
 
       def selected_value(applied_filters)
-        default_value
+        applied_or_default_value
       end
     end
   end

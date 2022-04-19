@@ -4,7 +4,7 @@ export default class extends BaseFilterController {
   static targets = ['selector']
 
   getFilterValue() {
-    return this.selectorTarget.value
+    return this.selectorTarget.value === '' ? null : this.selectorTarget.value
   }
 
   getFilterClass() {

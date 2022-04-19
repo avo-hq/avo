@@ -7,9 +7,9 @@ module Avo
         # See if there are any applied rules for this particular filter
         if applied_filters[self.class.to_s].present?
           # Symbolize the keys because they are returned from de-serialization (JSON and Base64)
-          applied_filters[self.class.to_s].symbolize_keys.dig(item)
+          applied_filters[self.class.to_s].stringify_keys.dig(item.to_s)
         else
-          default_value(applied_filters).dig(item)
+          applied_or_default_value(applied_filters).stringify_keys.dig(item.to_s)
         end
       rescue
         false

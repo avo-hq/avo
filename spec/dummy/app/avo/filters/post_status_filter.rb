@@ -8,4 +8,11 @@ class PostStatusFilter < Avo::Filters::MultipleSelectFilter
   def options
     Post.statuses.invert
   end
+
+  # def default
+  #   [1]
+  #   # {
+  #   #   '0': true
+  #   # }
+  # end
 end

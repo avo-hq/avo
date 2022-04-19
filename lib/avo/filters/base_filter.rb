@@ -7,7 +7,7 @@ module Avo
       class_attribute :template, default: "avo/base/select_filter"
 
       def apply_query(request, query, value)
-        value.symbolize_keys! if value.is_a? Hash
+        value.stringify_keys! if value.is_a? Hash
 
         apply(request, query, value)
       end
@@ -18,7 +18,7 @@ module Avo
 
       # Get the applied value this filter.
       # If it's not present return the default value.
-      def default_value(applied_filters)
+      def applied_or_default_value(applied_filters)
         # Get the values for this particular filter
         applied_value = applied_filters[self.class.to_s]
 
