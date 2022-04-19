@@ -4,7 +4,7 @@ export default class extends BaseFilterController {
   static targets = ['selector']
 
   getFilterValue() {
-    return Array.from(this.selectorTarget.selectedOptions).map(({ value }) => value)
+    return Object.fromEntries(Array.from(this.selectorTarget.selectedOptions).map(({ value }) => [value, true]))
   }
 
   getFilterClass() {

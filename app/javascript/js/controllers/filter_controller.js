@@ -49,7 +49,7 @@ export default class extends Controller {
     filters[filterClass] = value
 
     const filtered = Object.keys(filters)
-      .filter((key) => filters[key] !== '')
+      .filter((key) => filters[key] !== null)
       .reduce((obj, key) => {
         obj[key] = filters[key]
 

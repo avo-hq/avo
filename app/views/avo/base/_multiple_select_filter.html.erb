@@ -1,17 +1,6 @@
-<%
-  set_value = filter.default.present? ? filter.default.select { |key, value| value }.keys.map(&:to_sym) : {}
-
-  begin
-    decoded_filters_param = JSON.parse(Base64.decode64(params[:filters]))
-    if decoded_filters_param[filter.class.to_s].present?
-      set_value = decoded_filters_param[filter.class.to_s]
-    end
-  rescue
-  end
-%>
 <div data-controller="multiple-select-filter" data-filter-name="<%= filter.name %>">
   <%= filter_wrapper name: filter.name do %>
-    <%= select_tag filter.id, options_for_select(filter.options.invert, set_value),
+    <%= select_tag filter.id, options_for_select(filter.options.invert, filter.selected_value(@applied_filters)),
       class: input_classes('w-full mb-0'),
       multiple: true,
       id: "avo_filters_#{filter.id.parameterize.underscore}",
@@ -19,7 +8,7 @@
       'data-multiple-select-filter-target': 'selector'
     %>
     <div class="flex justify-end">
-      <%= a_button class: 'mt-4', color: :blue, size: :sm, data: { action: "multiple-select-filter#changeFilter" } do %>
+      <%= a_button class: 'mt-4', color: :blue, size: :xs, data: { action: "multiple-select-filter#changeFilter" } do %>
         Filter by <%=filter.name %>
       <% end %>
     </div>

@@ -5,6 +5,7 @@ module Avo
     before_action :set_resource_name
     before_action :set_resource
     before_action :hydrate_resource
+    before_action :set_applied_filters, only: :index
     before_action :set_model, only: [:show, :edit, :destroy, :update, :order]
     before_action :set_model_to_fill
     before_action :set_edit_title_and_breadcrumbs, only: [:edit, :update]
@@ -55,8 +56,8 @@ module Avo
         end
       end
 
-      # Apply filters
-      applied_filters.each do |filter_class, filter_value|
+      # Apply filters to the current query
+      filters_to_be_applied.each do |filter_class, filter_value|
         @query = filter_class.safe_constantize.new.apply_query request, @query, filter_value
       end
 
@@ -308,28 +309,32 @@ module Avo
         .select { |action| action.visible_in_view }
     end
 
-    def applied_filters
-      if params[:filters].present?
-        return JSON.parse(Base64.decode64(params[:filters]))
-      end
+    def set_applied_filters
+      @applied_filters = JSON.parse(Base64.decode64(params[:filters]))
+    rescue
+      @applied_filters = {}
+    end
 
+    # Get the default state of the filters and override with the user applied filters
+    def filters_to_be_applied
       filter_defaults = {}
 
       @resource.get_filters.each do |filter_class|
         filter = filter_class.new
 
-        if filter.default.present?
+        unless filter.default.nil?
           filter_defaults[filter_class.to_s] = filter.default
         end
       end
 
-      filter_defaults
+      filter_defaults.merge(@applied_filters)
     end
 
+    # Caching these so we know when the filters have changed so we reset the pagination
     def cache_applied_filters
       ::Avo::App.cache_store.delete applied_filters_cache_key if params[:filters].nil?
 
-      ::Avo::App.cache_store.write(applied_filters_cache_key, params[:filters], expires_in: 7.days)
+      ::Avo::App.cache_store.write(applied_filters_cache_key, params[:filters], expires_in: 1.day)
     end
 
     def reset_pagination_if_filters_changed

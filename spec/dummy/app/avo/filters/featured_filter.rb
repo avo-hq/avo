@@ -15,8 +15,8 @@ class FeaturedFilter < Avo::Filters::BooleanFilter
 
   def options
     {
-      'is_featured': "Featured",
-      'is_unfeatured': "Unfeatured"
+      is_featured: "Featured",
+      is_unfeatured: "Unfeatured"
     }
   end
 end
