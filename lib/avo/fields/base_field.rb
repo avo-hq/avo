@@ -4,8 +4,9 @@ module Avo
       extend ActiveSupport::DescendantsTracker
       extend Avo::Fields::FieldExtensions::HasFieldName
 
-      include ActionView::Helpers::UrlHelper
       include Avo::Fields::FieldExtensions::VisibleInDifferentViews
+      include Avo::Concerns::HandlesFieldArgs
+      include ActionView::Helpers::UrlHelper
 
       delegate :view_context, to: "Avo::App"
       delegate :main_app, to: :view_context
@@ -214,33 +215,6 @@ module Avo
         !method(:initialize).source_location.first.include?("lib/avo/field")
       rescue
         true
-      end
-
-      # Add an instance variable from args
-      # That may be a string, boolean, or array
-      # Each args should also have a default value
-      def add_prop_from_args(args = {}, name: nil, type: :string, default: nil)
-        value = default
-
-        if type == :boolean
-          value = args[name.to_sym] == true
-        else
-          value = args[name.to_sym] unless args.dig(name.to_sym).nil?
-        end
-
-        instance_variable_set(:"@#{name}", value)
-      end
-
-      def add_boolean_prop(args, name, default = false)
-        add_prop_from_args args, name: name, default: default, type: :boolean
-      end
-
-      def add_array_prop(args, name, default = [])
-        add_prop_from_args args, name: name, default: default, type: :array
-      end
-
-      def add_string_prop(args, name, default = [])
-        add_prop_from_args args, name: name, default: default, type: :string
       end
 
       private
