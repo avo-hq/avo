@@ -227,7 +227,7 @@ RSpec.describe "Filters", type: :system do
         open_filters_menu
 
         expect(page).to have_text "Status"
-        expect(page).to have_select "avo_filters_status", selected: ["draft", "published", "archived"], options: ["draft", "published", "archived"]
+        expect(page).to have_select "avo_filters_status", selected: [], options: ["draft", "published", "archived"]
         expect(page).to have_button("Reset filters", disabled: true)
       end
 
@@ -328,8 +328,4 @@ RSpec.describe "Filters", type: :system do
       end
     end
   end
-end
-
-def open_filters_menu
-  find('[data-button="resource-filters"]').click
 end

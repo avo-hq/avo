@@ -11,7 +11,7 @@
         <%= render Avo::Sidebar::LinkComponent.new label: 'Get started', path: helpers.avo.root_path, active: :exclusive if Rails.env.development? && Avo.configuration.home_path.nil? %>
 
         <% if Avo::App.license.has_with_trial(:menu_editor) && Avo.configuration.main_menu.present? %>
-          <div class="text-black space-y-4">
+          <div class="text-black">
             <% Avo::App.main_menu.items.each do |item| %>
               <%= render Avo::Sidebar::ItemSwitcherComponent.new item: item %>
             <% end %>

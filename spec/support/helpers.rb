@@ -57,3 +57,7 @@ class DummyRequest
     @port = port
   end
 end
+
+def open_filters_menu
+  find('[data-button="resource-filters"]').click
+end

@@ -42,7 +42,7 @@ Avo.configure do |config|
         resource :spouses
       end
 
-      group "Academia", collapsable: true do
+      group "Education", collapsable: true do
         resource :course
         resource :course_link
       end

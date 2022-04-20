@@ -3,11 +3,19 @@ class Avo::Reloader
 
   def reload!
     # reload all files declared in paths
-    files.each { |file| load file }
+    files.each do |file|
+      if File.exist? file
+        load file
+      end
+    end
 
     # reload all files declared in each directory
     directories.keys.each do |dir|
-      Dir.glob("#{dir}/**/*.rb".to_s).each { |file| load file }
+      Dir.glob("#{dir}/**/*.rb".to_s).each do |file|
+        if File.exist? file
+          load file
+        end
+      end
     end
   end
 

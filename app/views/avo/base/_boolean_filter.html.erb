@@ -11,7 +11,7 @@
   end
   set_value = {} if set_value.nil?
 %>
-<div data-controller="boolean-filter">
+<div data-controller="boolean-filter" data-filter-name="<%= filter.name %>">
   <%= filter_wrapper name: filter.name do %>
     <div class="flex items-center">
       <div class="space-y-2">

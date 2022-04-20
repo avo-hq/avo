@@ -56,6 +56,10 @@ Rails.application.configure do
   # Raises error for missing translations.
   # config.action_view.raise_on_missing_translations = true
 
+  # Adds HTML comments to the rendered output indicating where
+  # each template begins and ends
+  config.action_view.annotate_rendered_view_with_filenames = true
+
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker

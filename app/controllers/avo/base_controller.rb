@@ -44,7 +44,15 @@ module Avo
         unless @index_params[:sort_by].eql? :created_at
           @query = @query.unscope(:order)
         end
-        @query = @query.order("#{@resource.model_class.table_name}.#{@index_params[:sort_by]} #{@index_params[:sort_direction]}")
+
+        # Check if the sortable field option is actually a proc and we need to do a custom sort
+        field_id = @index_params[:sort_by].to_sym
+        field = @resource.get_field_definitions.find { |field| field.id == field_id }
+        if field&.sortable.is_a?(Proc)
+          @query = field.sortable.call(@query, @index_params[:sort_direction])
+        else
+          @query = @query.order("#{@resource.model_class.table_name}.#{@index_params[:sort_by]} #{@index_params[:sort_direction]}")
+        end
       end
 
       # Apply filters
