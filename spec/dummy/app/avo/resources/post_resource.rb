@@ -10,30 +10,13 @@ class PostResource < Avo::BaseResource
   field :id, as: :id
   field :tags,
     as: :tags,
-    # disabled: true,
+    # readonly: true,
     acts_as_taggable_on: :tags,
     close_on_select: false,
     placeholder: 'add some tags',
-    suggestions: -> {
-      [
-        {
-          value: 1,
-          label: 'one',
-          # avatar: 'https://www.gravatar.com/avatar/486187eddec3e74a7b9f38a69fc60e07?default=&size=100',
-        },
-        {
-          value: 2,
-          label: 'two',
-          avatar: 'https://www.gravatar.com/avatar/486187eddec3e74a7b9f38a69fc60e07?default=&size=100',
-        },
-        {
-          value: 3,
-          label: 'three',
-          avatar: 'https://www.gravatar.com/avatar/486187eddec3e74a7b9f38a69fc60e07?default=&size=100',
-        },
-      ]
-    },
-    enforce_suggestions: true
+    suggestions: -> { Post.tags_suggestions },
+    enforce_suggestions: true,
+    help: 'The only allowed values here are `one`, `two`, and `three`'
 
   field :name, as: :text, required: true, sortable: true
   # field :body, as: :trix, placeholder: "Enter text", always_show: false, attachment_key: :attachments, hide_attachment_url: true, hide_attachment_filename: true, hide_attachment_filesize: true

@@ -26,6 +26,7 @@ FactoryBot.define do
       end
     end
     status { 0 }
+    tag_list { ["1", "2", "five", "seven"] }
   end
 
   factory :project do

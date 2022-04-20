@@ -51,7 +51,8 @@ RSpec.describe "Tags", type: :system do
 
     context "edit" do
       let(:path) {"/admin/resources/posts/#{post.id}/edit"}
-      let(:tag_input) {tags_element(find_field_value_element("tags"))}
+      let(:tag_input) { tags_element(find_field_value_element("tags")) }
+      let(:input_textbox) { 'span[contenteditable][data-placeholder="add some tags"]' }
 
       it "shows empty state" do
         visit path
@@ -66,9 +67,23 @@ RSpec.describe "Tags", type: :system do
 
         visit path
 
-        # expect(find_field_value_element("tags")).not_to have_text empty_dash
-        # expect(find_field_value_element("tags")).not_to have_text 'some tags here and there'
         expect(tag_input).to have_selector 'tag', count: 5
+        expect(tag_input).to have_selector input_textbox
+      end
+
+      it "adds a tag" do
+        post.tag_list = ['some', 'tags', 'here', 'and', 'there']
+        post.save
+
+        visit path
+
+        tag_input.find(input_textbox).click
+        tag_input.find(input_textbox).set("one, two, five,")
+
+        click_on "Save"
+        wait_for_loaded
+
+        expect(post.reload.tag_list).to eq ["1", "2"]
       end
     end
   end
