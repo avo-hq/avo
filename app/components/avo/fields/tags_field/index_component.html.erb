@@ -1,5 +1,5 @@
 <%= index_field_wrapper field: @field do %>
-  <div class="flex gap-1 items-center flex-wrap">
+  <div class="flex gap-1 items-center flex-nowrap">
     <% value.take(3).each do |item| %>
       <% if @field.acts_as_taggable_on.present? %>
         <%= render Avo::Fields::TagsField::TagComponent.new(label: item['value']) %>

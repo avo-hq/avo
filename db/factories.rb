@@ -26,7 +26,7 @@ FactoryBot.define do
       end
     end
     status { 0 }
-    tag_list { ["1", "2", "five", "seven"] }
+    tag_list { ["1", "2", "five", "seven"].shuffle }
   end
 
   factory :project do
@@ -65,6 +65,7 @@ FactoryBot.define do
 
   factory :course do
     name { Faker::Educator.unique.course_name }
+    skills { Faker::Educator.subject }
   end
 
   factory :course_link, class: "Course::Link" do
