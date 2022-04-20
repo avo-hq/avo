@@ -9,12 +9,12 @@ module Avo
       def initialize(id, **args, &block)
         super(id, **args, &block)
 
-        @acts_as_taggable_on = args[:acts_as_taggable_on].present? ? args[:acts_as_taggable_on] : nil
-        @blacklist = args[:blacklist].present? ? args[:blacklist] : []
-        @close_on_select = args[:close_on_select] == true
-        @delimiters = args[:delimiters].present? ? args[:delimiters] : [","]
-        @enforce_suggestions = args[:enforce_suggestions].present? ? args[:enforce_suggestions] : false
-        @suggestions = args[:suggestions].present? ? args[:suggestions] : []
+        add_boolean_prop args, :close_on_select
+        add_boolean_prop args, :enforce_suggestions
+        add_string_prop args, :acts_as_taggable_on
+        add_array_prop args, :blacklist
+        add_array_prop args, :delimiters, [","]
+        add_array_prop args, :suggestions
       end
 
       def field_value
