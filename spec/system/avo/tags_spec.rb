@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "Tags", type: :system do
-  let!(:post) { create :post }
+  let!(:post) { create :post, tag_list: [] }
 
   describe "acts_as_taggable" do
     context "show" do
@@ -83,7 +83,7 @@ RSpec.describe "Tags", type: :system do
         click_on "Save"
         wait_for_loaded
 
-        expect(post.reload.tag_list).to eq ["1", "2"]
+        expect(post.reload.tag_list.sort).to eq ["1", "2"].sort
       end
     end
   end
