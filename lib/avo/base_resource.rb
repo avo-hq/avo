@@ -135,6 +135,12 @@ module Avo
         end
       end
 
+      if Avo::App.license.lacks_with_trial(:advanced_fields)
+        fields = fields.reject do |field|
+          field.type == 'tags'
+        end
+      end
+
       fields
     end
 
