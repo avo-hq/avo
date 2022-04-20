@@ -11,8 +11,5 @@ class PostStatusFilter < Avo::Filters::MultipleSelectFilter
 
   # def default
   #   [1]
-  #   # {
-  #   #   '0': true
-  #   # }
   # end
 end

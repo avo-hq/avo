@@ -7,7 +7,7 @@ RSpec.describe "KeepDefaultsOnfFilterSelection", type: :system do
 
       open_filters_menu
 
-      expect(page).to have_select "avo_filters_is_admin", selected: ["Admins", "Non admins"], options: ["Admins", "Non admins"]
+      expect(page).to have_select "avo_filters_dummy_multiple_select_filter", selected: ["Yes"], options: ["Yes", "No"]
 
       fill_in "avo_filters_user_names_filter", with: 'avo'
       find('[data-filter-name="User names filter"] button').click
@@ -15,7 +15,7 @@ RSpec.describe "KeepDefaultsOnfFilterSelection", type: :system do
 
       open_filters_menu
 
-      expect(page).to have_select "avo_filters_is_admin", selected: ["Admins", "Non admins"], options: ["Admins", "Non admins"]
+      expect(page).to have_select "avo_filters_dummy_multiple_select_filter", selected: ["Yes"], options: ["Yes", "No"]
     end
   end
 end
