@@ -7,7 +7,7 @@ module Avo
 
       option :context
       option :range
-      option :dashboard
+      option :parent
       option :card
       option :params
       option :options

@@ -1,11 +1,5 @@
-<div>
-  <% if @resource.cards.present? %>
-    <div class="mb-6">
-      <div class="min-h-24">
-        <%= render 'avo/cards/card_list', parent: @resource %>
-      </div>
-    </div>
-  <% end %>
+<div class="space-y-6">
+  <%= render Avo::CardsListComponent.new parent: @resource %>
 
   <%= render Avo::PanelComponent.new(title: title, description: description, data: { component: 'resources-index' }, display_breadcrumbs: @reflection.blank?) do |c| %>
     <% c.tools do %>

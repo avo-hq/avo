@@ -1,6 +1,6 @@
 <div class="flex-1 flex p-4">
   <div class="place-self-end">
-    Dashboard ID: <%= @dashboard.inspect %>
+    Parent: <%= @parent.inspect %>
     <br>
     Current user ID: <%= current_user.id %>
     <br>
@@ -8,6 +8,6 @@
     <br>
     Options: <%= @card.options %>
     <br>
-    Options block: <%= @card.options[:block].call params %>
+    Options block: <%= @card.options[:block].call(params) if @card.options[:block].present? %>
   </div>
 </div>

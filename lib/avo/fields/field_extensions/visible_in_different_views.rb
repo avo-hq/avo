@@ -6,12 +6,20 @@ module Avo
         attr_accessor :show_on_show
         attr_accessor :show_on_new
         attr_accessor :show_on_edit
+        attr_accessor :show_on_dashboard
 
-        def initialize(id, **args, &block)
+        def initialize_visibility(args = {})
           @show_on_index = @show_on_index.nil? ? true : @show_on_index
           @show_on_show = @show_on_show.nil? ? true : @show_on_show
           @show_on_new = @show_on_new.nil? ? true : @show_on_new
           @show_on_edit = @show_on_edit.nil? ? true : @show_on_edit
+          @show_on_dashboard = @show_on_dashboard.nil? ? true : @show_on_dashboard
+
+          # Set the visibility
+          show_on args[:show_on] if args[:show_on].present?
+          hide_on args[:hide_on] if args[:hide_on].present?
+          only_on args[:only_on] if args[:only_on].present?
+          except_on args[:except_on] if args[:except_on].present?
         end
 
         def show_on(*where)
@@ -65,6 +73,7 @@ module Avo
         end
 
         def show_on_all
+          @show_on_dashboard = true
           @show_on_index = true
           @show_on_show = true
           @show_on_edit = true
@@ -72,6 +81,7 @@ module Avo
         end
 
         def hide_on_all
+          @show_on_dashboard = false
           @show_on_index = false
           @show_on_show = false
           @show_on_edit = false

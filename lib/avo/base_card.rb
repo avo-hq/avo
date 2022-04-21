@@ -1,10 +1,11 @@
 module Avo
   class BaseCard
+    include Avo::Concerns::StylesCards
+    include Avo::Fields::FieldExtensions::VisibleInDifferentViews
+
     class_attribute :id
     class_attribute :label
     class_attribute :description
-    class_attribute :cols, default: 1
-    class_attribute :rows, default: 1
     class_attribute :initial_range
     class_attribute :ranges, default: []
     class_attribute :refresh_every
@@ -26,7 +27,7 @@ module Avo
       end
     end
 
-    def initialize(parent:, options: {}, index: 0, cols: nil, rows: nil, label: nil, description: nil, refresh_every: nil)
+    def initialize(parent:, options: {}, index: 0, cols: nil, rows: nil, label: nil, description: nil, refresh_every: nil, **args)
       @parent = parent
       @options = options
       @index = index
@@ -35,6 +36,8 @@ module Avo
       @label = label
       @refresh_every = refresh_every
       @description = description
+
+      initialize_visibility args
     end
 
     def label
@@ -91,41 +94,12 @@ module Avo
         other_params = "&#{params.permit!.to_h.map { |k, v| "#{k}=#{v}" }.join("&")}"
       rescue
       end
-      # puts ["parent_is_dashboard?->", parent_is_dashboard?, parent.superclass, parent.class.superclass].inspect
 
       if parent_is_dashboard?
         "#{Avo::App.root_path}/dashboards/#{dashboard.id}/cards/#{id}?turbo_frame=#{turbo_frame}&index=#{index}&range=#{enforced_range}#{other_params}"
       elsif parent_is_resource?
         "#{Avo::App.root_path}/resources/#{parent.route_key}/#{parent.model.id}/cards/#{id}?turbo_frame=#{turbo_frame}&index=#{index}&range=#{enforced_range}#{other_params}"
       end
-    end
-
-    def card_classes
-      result = ""
-
-      # Writing down the classes so TailwindCSS knows not to purge them
-      classes_for_cols = {
-        1 => " sm:col-span-1",
-        2 => " sm:col-span-2",
-        3 => " sm:col-span-3",
-        4 => " sm:col-span-4",
-        5 => " sm:col-span-5",
-        6 => " sm:col-span-6"
-      }
-
-      classes_for_rows = {
-        1 => " h-36",
-        2 => " h-72",
-        3 => " h-[27rem]",
-        4 => " h-[36rem]",
-        5 => " h-[45rem]",
-        6 => " h-[54rem]"
-      }
-
-      result += classes_for_cols[cols.to_i] if classes_for_cols[cols.to_i].present?
-      result += classes_for_rows[rows.to_i] if classes_for_rows[rows.to_i].present?
-
-      result
     end
 
     def type
@@ -135,15 +109,16 @@ module Avo
     end
 
     def compute_result
-      Avo::Hosts::DashboardCard.new(card: self, dashboard: dashboard, params: params, context: context, range: range, options: options)
+      Avo::Hosts::DashboardCard.new(card: self, parent: parent, params: params, context: context, range: range, options: options)
         .compute_result
 
       self
     end
 
-    def hydrate(parent: nil, params: nil)
+    def hydrate(parent: nil, params: nil, view: nil)
       @parent = parent if parent.present?
       @params = params if params.present?
+      @view = view if view.present?
 
       self
     end
@@ -172,20 +147,12 @@ module Avo
 
     private
 
-    def cols
-      @cols || self.class.cols
-    end
-
-    def rows
-      @rows || self.class.rows
-    end
-
     def parent_is_dashboard?
-      parent.superclass == Avo::Dashboards::BaseDashboard
+      parent.class.superclass == Avo::Dashboards::BaseDashboard
     end
 
     def parent_is_resource?
-      parent.superclass == Avo::BaseResource
+      parent.class.superclass == Avo::BaseResource
     end
 
     def resource

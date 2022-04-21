@@ -70,5 +70,12 @@ class UserResource < Avo::BaseResource
   filter UserNamesFilter
   filter IsAdmin
 
+  card UsersMetric, only_on: :index
+  card ExampleCustomPartial, rows: 2
+  card ExampleMetric, only_on: :index
+  card ExampleMetric, only_on: :index
+  divider label: 'Hey divider row-span-2'
   card ExampleMetric
+  # card ExampleCustomPartial, visible_on: :index
+  card ExampleCustomPartial, only_on: :show
 end

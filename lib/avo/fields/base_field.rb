@@ -45,8 +45,6 @@ module Avo
       class_attribute :field_name_attribute
 
       def initialize(id, _options: {}, **args, &block)
-        super(id, **args, &block)
-
         @id = id
         @name = args[:name]
         @translation_key = args[:translation_key]
@@ -72,11 +70,7 @@ module Avo
         @computed = block.present?
         @computed_value = nil
 
-        # Set the visibility
-        show_on args[:show_on] if args[:show_on].present?
-        hide_on args[:hide_on] if args[:hide_on].present?
-        only_on args[:only_on] if args[:only_on].present?
-        except_on args[:except_on] if args[:except_on].present?
+        initialize_visibility args
       end
 
       def hydrate(model: nil, resource: nil, action: nil, view: nil, panel_name: nil, user: nil, translation_enabled: nil)

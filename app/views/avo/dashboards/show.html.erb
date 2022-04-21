@@ -1,9 +1,7 @@
 <%= render Avo::PanelComponent.new(title: @dashboard.name, description: @dashboard.description) do |c| %>
   <% c.bare_content do %>
     <% if @dashboard.cards.present? %>
-      <div class="min-h-24">
-        <%= render 'avo/cards/card_list', parent: @dashboard %>
-      </div>
+      <%= render Avo::CardsListComponent.new parent: @dashboard %>
     <% else %>
       <div class="w-full h-full">
         <% if Rails.env.development? %>

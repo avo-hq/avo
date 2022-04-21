@@ -3,6 +3,8 @@
   data-selected-resources='["<%= @resource.model.id %>"]'
   class="space-y-8"
 >
+  <%= render Avo::CardsListComponent.new parent: @resource %>
+
   <% @resource.panels.each_with_index do |resource_panel, index| %>
     <%= render Avo::PanelComponent.new(title: title, description: @resource.resource_description, display_breadcrumbs: @reflection.blank?, index: index) do |c| %>
       <% c.tools do %>

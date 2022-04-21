@@ -11,6 +11,8 @@ module Avo
       class_attribute :visible, default: true
       class_attribute :index, default: 0
 
+      attr_reader :view
+
       class << self
         def navigation_label
           name
@@ -35,6 +37,10 @@ module Avo
         def is_hidden?
           !is_visible?
         end
+      end
+
+      def initialize
+        @view = :dashboard
       end
     end
   end

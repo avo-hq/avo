@@ -13,9 +13,6 @@ module Avo
     delegate :resource_path, to: :view_context
     delegate :resources_path, to: :view_context
     delegate :t, to: ::I18n
-    delegate :item_at_index, to: :class
-    # required for better interoperability with cards
-    delegate :superclass, to: :class
 
     attr_accessor :view
     attr_accessor :model
