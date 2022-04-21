@@ -6,7 +6,7 @@
     set_value = filter.default
   end
 %>
-<div data-controller="select-filter">
+<div data-controller="select-filter" data-filter-name="<%= filter.name %>">
   <%= filter_wrapper name: filter.name do %>
     <%= select_tag filter.id, options_for_select(filter.options.invert, set_value),
       class: input_classes('w-full mb-0'),

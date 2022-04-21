@@ -3,6 +3,9 @@ Avo.configure do |config|
   ## == Routing ==
   config.root_path = '/<%= options[:path] %>'
 
+  # Where should the user be redirected when he hits the `/<%= options[:path] %>` url
+  # config.home_path = nil
+
   ## == Licensing ==
   config.license = 'community' # change this to 'pro' when you add the license key
   # config.license_key = ENV['AVO_LICENSE_KEY']
@@ -26,6 +29,7 @@ Avo.configure do |config|
   #   create: 'create?',
   #   destroy: 'destroy?',
   # }
+  # config.raise_error_on_missing_policy = false
 
   ## == Localization ==
   # config.locale = 'en-US'
@@ -45,14 +49,30 @@ Avo.configure do |config|
   # config.search_debounce = 300
   # config.view_component_path = "app/components"
   # config.display_license_request_timeout_error = true
+  # config.disabled_features = []
 
-
-  # Where should the user be redirected when he hits the `/<%= options[:path] %>` url
-  # config.home_path = nil
 
   ## == Breadcrumbs ==
   # config.display_breadcrumbs = true
   # config.set_initial_breadcrumbs do
   #   add_breadcrumb "Home", '/<%= options[:path] %>'
   # end
+
+  ## == Menus ==
+  # config.main_menu = -> {
+  #   section "Dashboards", icon: "dashboards" do
+  #     all_dashboards
+  #   end
+
+  #   section "Resources", icon: "resources" do
+  #     all_resources
+  #   end
+
+  #   section "Tools", icon: "tools" do
+  #     all_tools
+  #   end
+  # }
+  # config.profile_menu = -> {
+  #   link "Profile", path: "/<%= options[:path] %>/profile", icon: "user-circle"
+  # }
 end

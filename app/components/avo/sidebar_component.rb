@@ -2,20 +2,14 @@
 
 class Avo::SidebarComponent < ViewComponent::Base
   def dashboards
-    return [] if Avo::App.license.lacks_with_trial(:dashboards)
-
-    Avo::App.get_dashboards(helpers._current_user).select do |dashboard|
-      dashboard.is_visible?
-    end
+    Avo::App.dashboards_for_navigation
   end
 
   def resources
-    Avo::App.resources_navigation(helpers._current_user)
+    Avo::App.resources_for_navigation
   end
 
   def tools
-    return [] if Avo::App.license.lacks_with_trial(:custom_tools)
-
-    Avo::App.get_sidebar_partials
+    Avo::App.tools_for_navigation
   end
 end

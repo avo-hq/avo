@@ -8,7 +8,7 @@ Permission is hereby granted to any person obtaining a copy of this software (th
 
 3. **Do not alter the licensing features.** Software features related to licensing shall not be altered, overriden, or circumvented in any way, including (but not limited to) license validation, feature or edition restrictions, and update eligibility.
 
-4. **Not for reuse.** The Software and the proprietary code therein, not limited to but including  designs, components, classes, and patterns, may not be reused in other projects without the express written consent of Avo HQ.
+4. **Not for reuse.** The Software and the proprietary code therein, not limited to but including designs, components, classes, and patterns, may not be reused in other projects as parts without the express written consent of Avo HQ.
 
 5. **Follow the law.** All use of the Software shall not violate any applicable law or regulation, nor infringe the rights of any other person or entity.
 

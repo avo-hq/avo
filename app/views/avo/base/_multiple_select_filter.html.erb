@@ -1,12 +1,15 @@
 <%
+  set_value = filter.default.present? ? filter.default.select { |key, value| value }.keys.map(&:to_sym) : {}
+
   begin
     decoded_filters_param = JSON.parse(Base64.decode64(params[:filters]))
-    set_value = decoded_filters_param[filter.class.to_s]
-  rescue => exception
-    set_value = filter.options.keys
+    if decoded_filters_param[filter.class.to_s].present?
+      set_value = decoded_filters_param[filter.class.to_s]
+    end
+  rescue
   end
 %>
-<div data-controller="multiple-select-filter">
+<div data-controller="multiple-select-filter" data-filter-name="<%= filter.name %>">
   <%= filter_wrapper name: filter.name do %>
     <%= select_tag filter.id, options_for_select(filter.options.invert, set_value),
       class: input_classes('w-full mb-0'),

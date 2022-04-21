@@ -2,9 +2,9 @@ require "rails_helper"
 
 RSpec.describe "QueryScope", type: :system do
   describe "for user order by last name" do
-    let!(:user_c) { create :user, last_name: 'Aandy' }
-    let!(:user_a) { create :user, last_name: 'Aaaandy' }
-    let!(:user_b) { create :user, last_name: 'Aaandy' }
+    let!(:user_c) { create :user, first_name: 'ccccc', last_name: 'Aandy' }
+    let!(:user_a) { create :user, first_name: 'ccccc', last_name: 'Aaaandy' }
+    let!(:user_b) { create :user, first_name: 'aaaaa', last_name: 'Aaandy' }
 
     context "index" do
       it "displays the users in ascending order by last_name" do
@@ -33,6 +33,18 @@ RSpec.describe "QueryScope", type: :system do
       expect(first_user_id).to eq User.all[0].id.to_s
       expect(second_user_id).to eq User.all[1].id.to_s
       expect(third_user_id).to eq User.all[2].id.to_s
+    end
+
+    it "displays the users according to the logic of a proc provided to sortable" do
+      visit "/admin/resources/users?sort_by=is_writer&sort_direction=asc"
+
+      first_user_id = all('[data-field-type="id"]')[0].find("a").text.to_i
+      second_user_id = all('[data-field-type="id"]')[1].find("a").text.to_i
+      third_user_id = all('[data-field-type="id"]')[2].find("a").text.to_i
+
+      all_ids = [first_user_id, second_user_id, third_user_id]
+
+      expect(all_ids).to eq all_ids.sort
     end
   end
 end

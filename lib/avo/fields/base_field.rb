@@ -26,6 +26,7 @@ module Avo
       attr_reader :as_label
       attr_reader :as_avatar
       attr_reader :as_description
+      attr_reader :index_text_align
 
       # Private options
       attr_reader :updatable
@@ -64,6 +65,7 @@ module Avo
         @as_label = args[:as_label] || false
         @as_avatar = args[:as_avatar] || false
         @as_description = args[:as_description] || false
+        @index_text_align = args[:index_text_align] || :left
 
         @updatable = true
         @computable = true

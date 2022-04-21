@@ -71,6 +71,8 @@ group :development do
   gem "bump", require: false
   gem "gem-release", require: false
 
+  gem 'annotate'
+
   # gem 'rack-mini-profiler'
   # gem 'memory_profiler'
   # gem 'stackprof'
@@ -84,7 +86,7 @@ group :development do
 end
 
 group :development, :test do
-  gem 'ap'
+  gem "awesome_print"
   gem "faker", require: false
 end
 

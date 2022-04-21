@@ -19,7 +19,6 @@ module Avo
     before_action :set_container_classes
     before_action :add_initial_breadcrumbs
     before_action :set_view
-    before_action :set_model_to_fill
 
     rescue_from Pundit::NotAuthorizedError, with: :render_unauthorized
     rescue_from ActiveRecord::RecordInvalid, with: :exception_logger
@@ -285,7 +284,7 @@ module Avo
     end
 
     def set_locale
-      I18n.locale = params[:locale] || I18n.default_locale
+      I18n.locale = params[:set_locale] || I18n.default_locale
 
       I18n.default_locale = I18n.locale
     end

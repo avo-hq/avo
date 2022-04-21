@@ -1,5 +1,7 @@
 module Avo
   class App
+    include Avo::Concerns::FetchesThings
+
     class_attribute :resources, default: []
     class_attribute :dashboards, default: []
     class_attribute :cache_store, default: nil
@@ -102,96 +104,16 @@ module Avo
           end
       end
 
-      # Returns the Avo dashboard by id
-      def get_dashboard_by_id(id)
-        dashboards.find do |dashboard|
-          dashboard.id == id
-        end
+      def main_menu
+        return nil if Avo::App.license.lacks_with_trial(:menu_builder)
+
+        Avo::Menu::Builder.parse_menu(&Avo.configuration.main_menu)
       end
 
-      # Returns the Avo resource by camelized name
-      #
-      # get_resource_by_name('User') => UserResource
-      def get_resource(resource)
-        resources.find do |available_resource|
-          "#{resource}Resource".safe_constantize == available_resource.class
-        end
-      end
+      def profile_menu
+        return nil if Avo::App.license.lacks_with_trial(:menu_builder)
 
-      # Returns the Avo resource by singular snake_cased name
-      #
-      # get_resource_by_name('user') => UserResource
-      def get_resource_by_name(name)
-        get_resource name.singularize.camelize
-      end
-
-      # Returns the Avo resource by singular snake_cased name
-      #
-      # get_resource_by_name('User') => UserResource
-      # get_resource_by_name(User) => UserResource
-      def get_resource_by_model_name(name)
-        resources.find do |resource|
-          resource.model_class.model_name.name == name.to_s
-        end
-      end
-
-      # Returns the Avo resource by singular snake_cased name
-      #
-      # get_resource_by_controller_name('delayed_backend_active_record_jobs') => DelayedJobResource
-      # get_resource_by_controller_name('users') => UserResource
-      def get_resource_by_controller_name(name)
-        resources.find do |resource|
-          resource.model_class.to_s.pluralize.underscore.tr("/", "_") == name.to_s
-        end
-      end
-
-      # Returns the Rails model class by singular snake_cased name
-      #
-      # get_model_class_by_name('user') => User
-      def get_model_class_by_name(name)
-        name.to_s.camelize.singularize
-      end
-
-      def get_available_resources(user = nil)
-        resources.select do |resource|
-          Services::AuthorizationService.authorize user, resource.model_class, Avo.configuration.authorization_methods.stringify_keys["index"], raise_exception: false
-        end
-          .sort_by { |r| r.name }
-      end
-
-      def get_available_dashboards(user = nil)
-        dashboards.sort_by { |r| r.name }
-      end
-
-      def resources_navigation(user = nil)
-        get_available_resources(user)
-          .select do |resource|
-            resource.model_class.present?
-          end
-          .select do |resource|
-            resource.visible_on_sidebar
-          end
-      end
-
-      def get_dashboards(user = nil)
-        return [] unless App.license.has_with_trial(:resource_ordering)
-
-        get_available_dashboards(user)
-      end
-
-      # Insert any partials that we find in app/views/avo/sidebar/items.
-      def get_sidebar_partials
-        Dir.glob(Rails.root.join("app", "views", "avo", "sidebar", "items", "*.html.erb"))
-          .map do |path|
-            File.basename path
-          end
-          .map do |filename|
-            # remove the leading underscore (_)
-            filename[0] = ""
-            # remove the extension
-            filename.gsub!(".html.erb", "")
-            filename
-          end
+        Avo::Menu::Builder.parse_menu(&Avo.configuration.profile_menu)
       end
     end
   end

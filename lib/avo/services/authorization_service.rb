@@ -68,10 +68,16 @@ module Avo
         def authorize_action(user, record, action, **args)
           action = Avo.configuration.authorization_methods.stringify_keys[action.to_s] || action
 
+          # If no action passed we should raise error if the user wants that.
+          # If not, just allow it.
+          if action.nil?
+            raise Pundit::NotDefinedError.new 'Policy method is missing' if Avo.configuration.raise_error_on_missing_policy
+
+            return true
+          end
+
           # Add the question mark if it's missing
           action = "#{action}?" unless action.end_with? '?'
-
-          return true if action.nil?
 
           authorize user, record, action, **args
         end
