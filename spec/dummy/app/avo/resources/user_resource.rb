@@ -70,7 +70,12 @@ class UserResource < Avo::BaseResource
   filter UserNamesFilter
   filter IsAdmin
 
-  card UsersMetric, only_on: :index
+  with_options only_on: :index do
+    card UsersMetric
+    card UsersMetric, options: { type: :active }
+    card UsersMetric, options: { type: :admin }
+  end
+
   card ExampleCustomPartial, rows: 2
   card ExampleMetric, only_on: :index
   card ExampleMetric, only_on: :index
