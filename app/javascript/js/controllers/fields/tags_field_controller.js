@@ -1,32 +1,33 @@
-import { Controller } from '@hotwired/stimulus'
 import { first, isObject, merge } from 'lodash'
 import Tagify from '@yaireo/tagify'
 
+import BaseController from '../base_controller'
+
 import { suggestionItemTemplate, tagTemplate } from './tags_field_helpers'
 
-export default class extends Controller {
+export default class extends BaseController {
   static targets = ['input', 'fakeInput'];
 
   tagify = null;
 
   get whitelistItems() {
-    return this.getJsonDataAttribute(this.inputTarget, 'data-whitelist-items', [])
+    return this.getJsonAttribute(this.inputTarget, 'data-whitelist-items', [])
   }
 
   get blacklistItems() {
-    return this.getJsonDataAttribute(this.inputTarget, 'data-blacklist-items', [])
+    return this.getJsonAttribute(this.inputTarget, 'data-blacklist-items', [])
   }
 
   get enforceSuggestions() {
-    return this.inputTarget.getAttribute('data-enforce-suggestions') === '1'
+    return this.getBooleanAttribute(this.inputTarget, 'data-enforce-suggestions')
   }
 
   get closeOnSelect() {
-    return this.inputTarget.getAttribute('data-close-on-select') === '1'
+    return this.getBooleanAttribute(this.inputTarget, 'data-close-on-select')
   }
 
   get delimiters() {
-    return this.getJsonDataAttribute(this.inputTarget, 'data-delimiters', [])
+    return this.getJsonAttribute(this.inputTarget, 'data-delimiters', [])
   }
 
   get suggestionsAreObjects() {
@@ -69,15 +70,6 @@ export default class extends Controller {
       this.showRealInput()
       this.initTagify()
     }
-  }
-
-  getJsonDataAttribute(target, attribute, defaultValue = []) {
-    let result = defaultValue
-    try {
-      result = JSON.parse(target.getAttribute(attribute))
-    } catch (error) {}
-
-    return result
   }
 
   initTagify() {

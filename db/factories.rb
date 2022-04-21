@@ -65,7 +65,7 @@ FactoryBot.define do
 
   factory :course do
     name { Faker::Educator.unique.course_name }
-    skills { Faker::Educator.subject }
+    skills { [Faker::Educator.subject, Faker::Educator.subject, Faker::Educator.subject, Faker::Educator.subject, Faker::Educator.subject] }
   end
 
   factory :course_link, class: "Course::Link" do

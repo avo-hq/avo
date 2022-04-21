@@ -1,7 +1,7 @@
 <%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal do %>
   <div data-controller="tags-field">
-    <%= text_field_tag "#{@field.id}-dummy",
-      '',
+    <%# dummy field %>
+    <%= text_field_tag "#{@field.id}-dummy", '',
       class: helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)),
       placeholder: @field.placeholder,
       disabled: @field.readonly,
@@ -9,7 +9,8 @@
       data: {
         'tags-field-target': 'fakeInput',
       } %>
-      <%= @form.text_field @field.id,
+    <%# real field %>
+    <%= @form.text_field @field.id,
       class: helpers.input_classes('hidden w-full', has_error: @field.model_errors.include?(@field.id)),
       placeholder: @field.placeholder,
       disabled: @field.readonly,
