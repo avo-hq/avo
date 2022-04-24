@@ -1,5 +1,5 @@
 <%= content_tag(:div, class: "grid gap-4 grid-cols-1 #{parent.class.cards_classes}") do %>
-  <% parent.cards(params: params, view: parent.view).each do |card| %>
+  <% parent.cards.each do |card| %>
     <% if card.is_divider? %>
       <%= render Avo::Dashboards::DividerComponent.new(divider: card) %>
     <% elsif card.is_card? %>

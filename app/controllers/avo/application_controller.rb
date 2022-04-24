@@ -115,7 +115,7 @@ module Avo
     def set_resource
       raise ActionController::RoutingError.new "No route matches" if resource.nil?
 
-      @resource = resource.hydrate(params: params)
+      @resource = resource
     end
 
     def set_related_resource
@@ -149,11 +149,11 @@ module Avo
     end
 
     def hydrate_resource
-      @resource.hydrate(view: action_name.to_sym, user: _current_user)
+      @resource.hydrate(view: action_name.to_sym, user: _current_user, model: @model, params: params)
     end
 
     def hydrate_related_resource
-      @related_resource.hydrate(view: action_name.to_sym, user: _current_user)
+      @related_resource.hydrate(view: action_name.to_sym, user: _current_user, model: @related_model)
     end
 
     def authorize_action

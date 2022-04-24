@@ -10,15 +10,15 @@ module Avo
 
         delegate :item_at_index, to: :class
 
-        def cards(params: nil, view: nil)
+        def cards
           return [] if self.class.cards.blank?
 
-          view = view || self&.view
+          view = self&.view
 
           self.class.cards
             .map do |card|
               # Try to hydrate the card
-              card.hydrate(parent: self, params: params) if card.is_card?
+              card.hydrate(parent: self, params: params, view: view) if card.is_card?
 
               card
             end

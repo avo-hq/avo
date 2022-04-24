@@ -5,8 +5,8 @@ module Avo
     before_action :set_dashboard
     before_action :set_resource_name
     before_action :set_resource, if: -> { @dashboard.blank? }
-    before_action :hydrate_resource, if: -> { @dashboard.blank? }
-    before_action :set_model, only: :show, if: -> { @dashboard.blank? }
+    before_action :set_model, only: :show, if: -> { @resource.present? }
+    before_action :hydrate_resource, if: -> { @resource.present? }
     before_action :set_parent, only: :show
 
     def show

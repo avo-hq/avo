@@ -71,16 +71,14 @@ class UserResource < Avo::BaseResource
   filter IsAdmin
 
   with_options only_on: :index do
-    card UsersMetric
-    card UsersMetric, options: { type: :active }
-    card UsersMetric, options: { type: :admin }
+    card UsersMetric, label: 'Users count'
+    card UsersMetric, options: { type: :active }, label: 'Active users'
+    card UsersMetric, options: { type: :non_admins }, label: 'Non admin users'
   end
 
-  card ExampleCustomPartial, rows: 2
-  card ExampleMetric, only_on: :index
-  card ExampleMetric, only_on: :index
-  divider label: 'Hey divider row-span-2'
-  card ExampleMetric
-  # card ExampleCustomPartial, visible_on: :index
-  card ExampleCustomPartial, only_on: :show
+  with_options only_on: :show do
+    card UserMetric, options: { get: :comments }, label: 'Comments count'
+    card UserMetric, options: { get: :posts }, label: 'Posts count'
+    card UserMetric, options: { get: :projects }, label: 'Projects count'
+  end
 end

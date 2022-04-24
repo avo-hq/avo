@@ -9,7 +9,20 @@ class UsersMetric < Avo::Dashboards::MetricCard
   # self.suffix = ""
 
   query do
-    puts ["options->", options].inspect
-    result User.count
+    query = User
+
+    if options[:type] == :active
+      query = query.active
+    end
+
+    if options[:type] == :admins
+      query = query.admins
+    end
+
+    if options[:type] == :non_admins
+      query = query.non_admins
+    end
+
+    result query.count
   end
 end
