@@ -16,27 +16,25 @@
       <% end %>
     <% end %>
     <% c.body do %>
-      <% if @resource.search_query.present? || @filters.present? || available_view_types.count > 1 %>
-        <div class="flex flex-col xs:flex-row xs:justify-between space-y-2 xs:space-y-0 py-4"
-          data-selected-resources-name="<%= @resource.model_key %>"
-          data-selected-resources="[]"
-        >
-          <% if @resource.search_query.present? %>
-            <div class="flex items-center px-4 w-64">
-              <%= render partial: 'avo/partials/resource_search', locals: {resource: @resource.model_key} %>
-            </div>
-          <% else %>
-            <%# Offset for the space-y-2 property when the serach is missing %>
-            <div class="-mb-2"></div>
-          <% end %>
-          <% if @filters.present? || available_view_types.count > 1 %>
-            <div class="justify-self-end flex justify-start xs:justify-end items-center px-4 space-x-3">
-              <%= render Avo::FiltersComponent.new filters: @filters, resource: @resource %>
-              <%= render partial: 'avo/partials/view_toggle_button', locals: { available_view_types: available_view_types, view_type: view_type, turbo_frame: @turbo_frame } if available_view_types.count > 1 %>
-            </div>
-          <% end %>
-        </div>
-      <% end %>
+      <div class="flex flex-col xs:flex-row xs:justify-between space-y-2 xs:space-y-0 py-4 <%= 'hidden' if @resource.search_query.nil? && @filters.empty? && available_view_types.count <= 1 %>"
+        data-selected-resources-name="<%= @resource.model_key %>"
+        data-selected-resources="[]"
+      >
+        <% if @resource.search_query.present? %>
+          <div class="flex items-center px-4 w-64">
+            <%= render partial: 'avo/partials/resource_search', locals: {resource: @resource.model_key} %>
+          </div>
+        <% else %>
+          <%# Offset for the space-y-2 property when the serach is missing %>
+          <div class="-mb-2"></div>
+        <% end %>
+        <% if @filters.present? || available_view_types.count > 1 %>
+          <div class="justify-self-end flex justify-start xs:justify-end items-center px-4 space-x-3">
+            <%= render Avo::FiltersComponent.new filters: @filters, resource: @resource %>
+            <%= render partial: 'avo/partials/view_toggle_button', locals: { available_view_types: available_view_types, view_type: view_type, turbo_frame: @turbo_frame } if available_view_types.count > 1 %>
+          </div>
+        <% end %>
+      </div>
       <% if view_type.to_sym == :table %>
         <% if @resources.present? %>
           <div class="w-full overflow-auto flex flex-col mt-0">
