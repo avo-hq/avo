@@ -46,8 +46,8 @@
                   <% end %>
                   <dt class="font-semibold text-sm">Last fetched at</dt>
                   <dd><%= license.response['fetched_at'] %> <br>
-                  <% if license.response['fetched_at'].present? %>
-                     (<%= time_ago_in_words license.response['fetched_at'] %> ago)</dd>
+                    <% if license.response['fetched_at'].present? %>
+                      (<%= time_ago_in_words license.response['fetched_at'] %> ago)</dd>
                   <% end %>
                   <dt class="font-semibold text-sm">Cache store</dt>
                   <dd><%= Avo::App.cache_store.class.to_s %> - <%= Avo::App.cache_store.options.inspect %></dd>
@@ -67,25 +67,9 @@
           </div>
         </div>
         <div class="relative bg-white rounded shadow-panel p-4 space-y-4 col-span-2">
-          <div class="font-semibold">Debug report</div>
-          <div>
-            <% if defined?(ap) %>
-              <%== ap Avo::App.debug_report(request) %>
-            <% else %>
-              <pre><%== JSON.pretty_generate(Avo::App.debug_report(request)) %></pre>
-            <% end %>
-          </div>
-          <div class="flex justify-end">
-            <%= a_button icon: 'heroicons/outline/clipboard',
-              style: :primary,
-              data: {
-                controller: 'copy-to-clipboard',
-                action: "click->copy-to-clipboard#copy",
-                text: Avo::App.debug_report(request),
-              } do %>
-              Copy debug info
-            <% end %>
-          </div>
+          <turbo-frame id="debug-report" src="/admin/avo_private/debug/report" target="_top" class="block">
+            Loading...
+          </turbo-frame>
         </div>
       </div>
     <% end %>

@@ -41,6 +41,7 @@ Avo::Engine.routes.draw do
 
   scope "/avo_private", as: "avo_private" do
     get "/debug", to: "debug#index", as: "debug_index"
+    get "/debug/report", to: "debug#report", as: "debug_report"
     post "/debug/refresh_license", to: "debug#refresh_license"
   end
 
