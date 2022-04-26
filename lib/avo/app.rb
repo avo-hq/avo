@@ -115,6 +115,24 @@ module Avo
 
         Avo::Menu::Builder.parse_menu(&Avo.configuration.profile_menu)
       end
+
+      def debug_report(request)
+        payload = {}
+        hq = Avo::Licensing::HQ.new(request)
+
+        payload[:hq_payload] = hq.payload
+        payload[:license_id] = Avo::App.license.id
+        payload[:license_valid] = Avo::App.license.valid?
+        payload[:license_payload] = Avo::App.license.payload
+        payload[:license_response] = Avo::App.license.response
+        payload[:cache_store] = self.cache_store.class.to_s
+        payload[:avo_metadata] = hq.avo_metadata
+        payload[:app_timezone] = Time.now.zone
+
+        payload
+      rescue => e
+        e
+      end
     end
   end
 end

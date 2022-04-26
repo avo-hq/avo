@@ -40,8 +40,10 @@ Avo::Engine.routes.draw do
   end
 
   if Rails.env.development? or Rails.env.staging?
-    scope "avo_private", as: "avo_private" do
+    scope "/avo_private", as: "avo_private" do
       get "/design", to: "private#design"
+      get "/debug", to: "debug#index", as: "debug_index"
+      post "/debug/refresh_license", to: "debug#refresh_license"
     end
   end
 end

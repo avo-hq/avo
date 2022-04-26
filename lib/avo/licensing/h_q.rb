@@ -13,13 +13,62 @@ module Avo
       end
 
       def response
-        @hq_response || request
+        make_request
+      end
+
+      def fresh_response
+        make_request(fresh: true)
+      end
+
+      def payload
+        {
+          license: Avo.configuration.license,
+          license_key: Avo.configuration.license_key,
+          avo_version: Avo::VERSION,
+          rails_version: Rails::VERSION::STRING,
+          ruby_version: RUBY_VERSION,
+          environment: Rails.env,
+          ip: current_request.ip,
+          host: current_request.host,
+          port: current_request.port,
+          app_name: app_name
+        }
+      end
+
+      def avo_metadata
+        resources = App.resources
+        field_definitions = resources.map(&:get_field_definitions)
+        fields_count = field_definitions.map(&:count).sum
+        fields_per_resource = sprintf("%0.01f", fields_count / (resources.count + 0.0))
+
+        field_types = {}
+        custom_fields_count = 0
+        field_definitions.each do |fields|
+          fields.each do |field|
+            field_types[field.type] ||= 0
+            field_types[field.type] += 1
+
+            custom_fields_count += 1 if field.custom?
+          end
+        end
+
+        {
+          resources_count: resources.count,
+          fields_count: fields_count,
+          fields_per_resource: fields_per_resource,
+          custom_fields_count: custom_fields_count,
+          field_types: field_types,
+          **other_metadata(:actions),
+          **other_metadata(:filters),
+          main_menu_present: Avo::App.main_menu.present?,
+          profile_menu_present: Avo::App.profile_menu.present?,
+        }
       end
 
       private
 
-      def request
-        return cached_response if has_cached_response
+      def make_request(fresh: false)
+        return cached_response if has_cached_response && !fresh
 
         begin
           perform_and_cache_request
@@ -51,12 +100,11 @@ module Avo
       def cache_response(time, response)
         response.merge!(
           expiry: time,
+          fetched_at: Time.now,
           **payload
         ).stringify_keys!
 
         @cache_store.write(CACHE_KEY, response, expires_in: time)
-
-        @hq_response = response
 
         response
       end
@@ -67,53 +115,10 @@ module Avo
         HTTParty.post ENDPOINT, body: payload.to_json, headers: {'Content-type': "application/json"}, timeout: REQUEST_TIMEOUT
       end
 
-      def payload
-        {
-          license: Avo.configuration.license,
-          license_key: Avo.configuration.license_key,
-          avo_version: Avo::VERSION,
-          rails_version: Rails::VERSION::STRING,
-          ruby_version: RUBY_VERSION,
-          environment: Rails.env,
-          ip: current_request.ip,
-          host: current_request.host,
-          port: current_request.port,
-          app_name: app_name
-        }
-      end
-
       def app_name
         Rails.application.class.to_s.split("::").first
       rescue
         nil
-      end
-
-      def avo_metadata
-        resources = App.resources
-        field_definitions = resources.map(&:get_field_definitions)
-        fields_count = field_definitions.map(&:count).sum
-        fields_per_resource = sprintf("%0.01f", fields_count / (resources.count + 0.0))
-
-        field_types = {}
-        custom_fields_count = 0
-        field_definitions.each do |fields|
-          fields.each do |field|
-            field_types[field.type] ||= 0
-            field_types[field.type] += 1
-
-            custom_fields_count += 1 if field.custom?
-          end
-        end
-
-        {
-          resources_count: resources.count,
-          fields_count: fields_count,
-          fields_per_resource: fields_per_resource,
-          custom_fields_count: custom_fields_count,
-          field_types: field_types,
-          **other_metadata(:actions),
-          **other_metadata(:filters),
-        }
       end
 
       def other_metadata(type = :actions)
