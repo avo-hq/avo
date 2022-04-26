@@ -7,7 +7,6 @@ module Avo
 
     def refresh_license
       license = Licensing::LicenseManager.refresh_license request
-      puts ["license->", license].inspect
 
       if license.valid?
         flash[:notice] = "avohq.io responded: \"#{license.id.humanize} license is valid\"."
