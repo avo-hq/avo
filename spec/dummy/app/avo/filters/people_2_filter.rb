@@ -2,10 +2,10 @@ class People2Filter < Avo::Filters::BooleanFilter
   self.name = "People 2 status (temporary)"
 
   def apply(request, query, value = {})
-    if value[:a_lot]
+    if value['a_lot']
       query = query.where("users_required > ?", 30)
     end
-    if value[:few]
+    if value['few']
       query = query.where("users_required <= ?", 30)
     end
 
@@ -20,6 +20,8 @@ class People2Filter < Avo::Filters::BooleanFilter
   end
 
   def default
-    {few: true}
+    {
+      few: true
+    }
   end
 end

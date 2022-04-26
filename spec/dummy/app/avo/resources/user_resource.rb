@@ -69,4 +69,5 @@ class UserResource < Avo::BaseResource
 
   filter UserNamesFilter
   filter IsAdmin
+  filter DummyMultipleSelectFilter
 end

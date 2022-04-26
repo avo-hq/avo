@@ -5,4 +5,8 @@ class UserNamesFilter < Avo::Filters::TextFilter
   def apply(request, query, value)
     query.where('LOWER(first_name) like ?', "%#{value}%").or(query.where('LOWER(last_name) like ?', "%#{value}%"))
   end
+
+  # def default
+  #   'avo'
+  # end
 end

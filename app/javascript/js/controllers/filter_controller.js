@@ -38,18 +38,22 @@ export default class extends Controller {
     const value = this.getFilterValue()
     const filterClass = this.getFilterClass()
 
+    // Get the `filters` param for all params
     let filters = this.uriParams()[this.uriParam('filters')]
 
+    // Decode the filters
     if (filters) {
       filters = JSON.parse(this.b64DecodeUnicode(filters))
     } else {
       filters = {}
     }
 
+    // Get the values for this particular filter
     filters[filterClass] = value
 
     const filtered = Object.keys(filters)
-      .filter((key) => filters[key] !== '')
+      // Filter out the filters without a value
+      .filter((key) => filters[key] !== null)
       .reduce((obj, key) => {
         obj[key] = filters[key]
 
@@ -58,10 +62,16 @@ export default class extends Controller {
 
     let encodedFilters
 
+    // Encode the filters and their values
     if (filtered && Object.keys(filtered).length > 0) {
       encodedFilters = this.b64EncodeUnicode(JSON.stringify(filtered))
     }
 
+    this.navigateToURLWithFilters(encodedFilters)
+  }
+
+  navigateToURLWithFilters(encodedFilters) {
+    // Create a new URI with them
     const url = new URI(this.urlRedirectTarget.href)
 
     const query = {
