@@ -6,6 +6,7 @@ module Avo
       ENDPOINT = "https://avohq.io/api/v1/licenses/check".freeze unless const_defined?(:ENDPOINT)
       CACHE_KEY = "avo.hq.response".freeze unless const_defined?(:CACHE_KEY)
       REQUEST_TIMEOUT = 5 unless const_defined?(:REQUEST_TIMEOUT) # seconds
+      CACHE_TIME = 3600 unless const_defined?(:CACHE_TIME) # seconds
 
       def initialize(current_request)
         @current_request = current_request
@@ -60,8 +61,8 @@ module Avo
           field_types: field_types,
           **other_metadata(:actions),
           **other_metadata(:filters),
-          main_menu_present: Avo::App.main_menu.present?,
-          profile_menu_present: Avo::App.profile_menu.present?,
+          main_menu_present: Avo.configuration.main_menu.present?,
+          profile_menu_present: Avo.configuration.profile_menu.present?,
         }
       end
 
@@ -94,10 +95,12 @@ module Avo
 
         return cache_and_return_error "Avo HQ Internal server error.", hq_response.body if hq_response.code == 500
 
-        cache_response 1.hour.to_i, hq_response.parsed_response if hq_response.code == 200
+        if hq_response.code == 200
+          cache_response response: hq_response.parsed_response
+        end
       end
 
-      def cache_response(time, response)
+      def cache_response(response: nil, time: CACHE_TIME)
         response.merge!(
           expiry: time,
           fetched_at: Time.now,
@@ -135,7 +138,7 @@ module Avo
       end
 
       def cache_and_return_error(error, exception_message = "")
-        cache_response 5.minutes.to_i, {error: error, exception_message: exception_message}.stringify_keys
+        cache_response response: {error: error, exception_message: exception_message}.stringify_keys, time: 5.minutes.to_i
       end
 
       def has_cached_response

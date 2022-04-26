@@ -105,13 +105,15 @@ module Avo
       end
 
       def main_menu
-        return nil if Avo::App.license.lacks_with_trial(:menu_builder)
+        return [] if Avo::App.license.lacks_with_trial(:menu_builder)
+        return [] if Avo.configuration.main_menu.nil?
 
         Avo::Menu::Builder.parse_menu(&Avo.configuration.main_menu)
       end
 
       def profile_menu
-        return nil if Avo::App.license.lacks_with_trial(:menu_builder)
+        return [] if Avo::App.license.lacks_with_trial(:menu_builder)
+        return [] if Avo.configuration.profile_menu.nil?
 
         Avo::Menu::Builder.parse_menu(&Avo.configuration.profile_menu)
       end
