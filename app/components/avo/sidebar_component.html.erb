@@ -1,4 +1,7 @@
-<div class="fixed z-[60] application-sidebar hidden lg:flex h-full bg-white text-white w-64 border-r" data-mobile-target="sidebar">
+<div
+  class="fixed z-[60] application-sidebar hidden lg:flex h-full bg-white text-white w-64 border-r <%= 'print:hidden' if Avo.configuration.hide_layout_when_printing %>"
+  data-mobile-target="sidebar"
+>
   <div class="flex flex-col w-full h-full">
     <div class="flex justify-between">
       <%= render partial: "avo/partials/logo" %>
