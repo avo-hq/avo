@@ -1,0 +1,21 @@
+<turbo-frame id="debug-report">
+  <div class="font-semibold">Debug report <small class="font-normal">(don't post this anywhere public)</small></div>
+  <div>
+    <% if defined?(ap) %>
+      <%== ap Avo::App.debug_report(request) %>
+    <% else %>
+      <pre><%== JSON.pretty_generate(Avo::App.debug_report(request)) %></pre>
+    <% end %>
+  </div>
+  <div class="flex justify-end">
+    <%= a_button icon: 'heroicons/outline/clipboard',
+      style: :primary,
+      data: {
+        controller: 'copy-to-clipboard',
+        action: "click->copy-to-clipboard#copy",
+        text: Avo::App.debug_report(request),
+      } do %>
+      Copy debug info
+    <% end %>
+  </div>
+</turbo-frame>

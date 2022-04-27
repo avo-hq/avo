@@ -39,8 +39,14 @@ Avo::Engine.routes.draw do
     delete "/:resource_name/:id/:related_name/:related_id", to: "associations#destroy", as: "associations_destroy"
   end
 
+  scope "/avo_private", as: "avo_private" do
+    get "/debug", to: "debug#index", as: "debug_index"
+    get "/debug/report", to: "debug#report", as: "debug_report"
+    post "/debug/refresh_license", to: "debug#refresh_license"
+  end
+
   if Rails.env.development? or Rails.env.staging?
-    scope "avo_private", as: "avo_private" do
+    scope "/avo_private", as: "avo_private" do
       get "/design", to: "private#design"
     end
   end

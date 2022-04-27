@@ -20,6 +20,8 @@ module DownloadHelpers
   end
 
   def wait_for_download
+    sleep 0.1 # Add extra sleep to make sure we capture that download
+
     Timeout.timeout(TIMEOUT) do
       sleep 0.1 until downloaded?
     end

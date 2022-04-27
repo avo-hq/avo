@@ -13,6 +13,7 @@ RSpec.feature "DestroyRecord", type: :system do
         click_on "Delete"
         confirm_alert
         wait_for_loaded
+        sleep 0.1
       }.not_to change(User, :count)
 
       expect(current_path).to eq url
