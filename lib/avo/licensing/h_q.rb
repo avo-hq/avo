@@ -8,13 +8,15 @@ module Avo
       REQUEST_TIMEOUT = 5 unless const_defined?(:REQUEST_TIMEOUT) # seconds
       CACHE_TIME = 3600 unless const_defined?(:CACHE_TIME) # seconds
 
+      class << self
+        def cache_key
+          "avo.hq-#{Avo::VERSION.parameterize}.response"
+        end
+      end
+
       def initialize(current_request = nil)
         @current_request = current_request
         @cache_store = Avo::App.cache_store
-      end
-
-      def self.cache_key
-        "avo.hq-#{Avo::VERSION.parameterize}.response"
       end
 
       def response
@@ -22,9 +24,13 @@ module Avo
       end
 
       def fresh_response
-        cache_store.delete self.class.cache_key
+        clear_response
 
         make_request
+      end
+
+      def clear_response
+        cache_store.delete self.class.cache_key
       end
 
       def payload

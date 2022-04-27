@@ -63,5 +63,18 @@ module Avo
     config.generators do |g|
       g.test_framework :rspec, view_specs: false
     end
+
+    # After deploy we want to make sure the license response is being cleared.
+    # We need a fresh license response.
+    # This is disabled in development because the initialization process might be triggered more than once.
+    config.after_initialize do
+      unless Rails.env.development?
+        begin
+          Licensing::HQ.new.clear_response
+        rescue => exception
+          puts "Failed to clear Avo HQ response: #{e.message}"
+        end
+      end
+    end
   end
 end
