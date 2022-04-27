@@ -4,11 +4,11 @@
 # end
 
 desc 'Installs Avo assets and bundles them for when you want to use the GitHub repo in your app'
-task 'avo:install' do
+task 'avo:build-assets' do
   enabled = true
 
   if enabled
-    puts "Starting avo:install"
+    puts "Starting avo:build-assets"
     path = locate_gem 'avo'
 
     Dir.chdir(path) do
@@ -18,7 +18,7 @@ task 'avo:install' do
 
     puts "Done"
   else
-    puts "Not starting avo:install"
+    puts "Not starting avo:build-assets"
   end
 end
 

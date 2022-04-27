@@ -22,7 +22,6 @@ module Avo
       end
 
       def fresh_response
-        puts ["in fresh_response->", cache_store, cache_store.read(self.class.cache_key), cache_store.delete(self.class.cache_key), cache_store.read(self.class.cache_key)].inspect
         cache_store.delete self.class.cache_key
 
         make_request
