@@ -1,5 +1,5 @@
 <turbo-frame id="debug-report">
-  <div class="font-semibold">Debug report</div>
+  <div class="font-semibold">Debug report <small class="font-normal">(don't post this anywhere public)</small></div>
   <div>
     <% if defined?(ap) %>
       <%== ap Avo::App.debug_report(request) %>

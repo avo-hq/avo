@@ -2,15 +2,19 @@ module Avo
   module Licensing
     class HQ
       attr_accessor :current_request
+      attr_accessor :cache_store
 
       ENDPOINT = "https://avohq.io/api/v1/licenses/check".freeze unless const_defined?(:ENDPOINT)
-      CACHE_KEY = "avo.hq.response".freeze unless const_defined?(:CACHE_KEY)
       REQUEST_TIMEOUT = 5 unless const_defined?(:REQUEST_TIMEOUT) # seconds
       CACHE_TIME = 3600 unless const_defined?(:CACHE_TIME) # seconds
 
-      def initialize(current_request)
+      def initialize(current_request = nil)
         @current_request = current_request
         @cache_store = Avo::App.cache_store
+      end
+
+      def self.cache_key
+        "avo.hq-#{Avo::VERSION.parameterize}.response"
       end
 
       def response
@@ -18,7 +22,9 @@ module Avo
       end
 
       def fresh_response
-        make_request(fresh: true)
+        cache_store.delete self.class.cache_key
+
+        make_request
       end
 
       def payload
@@ -29,9 +35,9 @@ module Avo
           rails_version: Rails::VERSION::STRING,
           ruby_version: RUBY_VERSION,
           environment: Rails.env,
-          ip: current_request.ip,
-          host: current_request.host,
-          port: current_request.port,
+          ip: current_request&.ip,
+          host: current_request&.host,
+          port: current_request&.port,
           app_name: app_name
         }
       end
@@ -66,10 +72,14 @@ module Avo
         }
       end
 
+      def cached_response
+        cache_store.read self.class.cache_key
+      end
+
       private
 
-      def make_request(fresh: false)
-        return cached_response if has_cached_response && !fresh
+      def make_request
+        return cached_response if has_cached_response
 
         begin
           perform_and_cache_request
@@ -107,7 +117,7 @@ module Avo
           **payload
         ).stringify_keys!
 
-        @cache_store.write(CACHE_KEY, response, expires_in: time)
+        cache_store.write(self.class.cache_key, response, expires_in: time)
 
         response
       end
@@ -142,11 +152,7 @@ module Avo
       end
 
       def has_cached_response
-        @cache_store.exist? CACHE_KEY
-      end
-
-      def cached_response
-        @cache_store.read CACHE_KEY
+        cache_store.exist? self.class.cache_key
       end
     end
   end
