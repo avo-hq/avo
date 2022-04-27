@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    avo (2.3.0)
+    avo (2.4.0)
       active_link_to
       addressable
       breadcrumbs_on_rails
@@ -90,6 +90,9 @@ GEM
       activerecord (>= 4.2)
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
+    annotate (3.2.0)
+      activerecord (>= 3.2, < 8.0)
+      rake (>= 10.4, < 14.0)
     appraisal (2.4.1)
       bundler
       rake
@@ -415,6 +418,7 @@ DEPENDENCIES
   active_median
   acts_as_list
   addressable
+  annotate
   appraisal
   avo!
   awesome_print

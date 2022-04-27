@@ -48,6 +48,7 @@ group :development do
   gem "standard"
   gem "bump", require: false
   gem "gem-release", require: false
+  gem "annotate"
   gem "htmlbeautifier"
   gem "hotwire-livereload", "~> 1.1"
 end
