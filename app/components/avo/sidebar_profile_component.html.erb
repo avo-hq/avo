@@ -34,9 +34,6 @@
             <% end %>
           </div>
         <% end %>
-        <% if Rails.env.development? %>
-          <%= render Avo::ProfileItemComponent.new label: 'Debug', path: "#{root_path}avo_private/debug", icon: 'heroicons/outline/receipt-refund', title: 'Menu item visible only in development.' %>
-        <% end %>
         <%# Example link below %>
         <%#= render Avo::ProfileItemComponent.new label: 'Profile', path: '/profile', icon: 'user-circle' %>
         <%= button_to helpers.main_app.send(destroy_user_session_path),
