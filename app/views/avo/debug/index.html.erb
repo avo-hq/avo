@@ -57,7 +57,7 @@
             <div class="flex justify-end mt-4">
               <%= a_button style: :outline,
                 color: :blue,
-                url: '/admin/avo_private/debug/refresh_license',
+                url: "#{root_path}avo_private/debug/refresh_license",
                 method: :post,
                 loading: true,
                 icon: 'heroicons/outline/refresh' do %>
@@ -67,7 +67,7 @@
           </div>
         </div>
         <div class="relative bg-white rounded shadow-panel p-4 space-y-4 col-span-2">
-          <turbo-frame id="debug-report" src="<%= root_path %>/avo_private/debug/report" target="_top" class="block">
+          <turbo-frame id="debug-report" src="<%= root_path %>avo_private/debug/report" target="_top" class="block">
             Loading...
           </turbo-frame>
         </div>
