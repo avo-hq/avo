@@ -20,7 +20,21 @@ module Avo
       end
 
       def response
+        expire_cache_if_overdue
+
         make_request
+      end
+
+      # Some cache stores don't auto-expire their keys and payloads so we need to do it for them
+      def expire_cache_if_overdue
+        return unless cached_response.present?
+        return unless cached_response['fetched_at'].present?
+
+        allowed_time = 1.hour
+        parsed_time = Time.parse(cached_response['fetched_at'].to_s)
+        time_has_passed = parsed_time < Time.now - allowed_time
+
+        clear_response if time_has_passed
       end
 
       def fresh_response
@@ -34,7 +48,7 @@ module Avo
       end
 
       def payload
-        {
+        result = {
           license: Avo.configuration.license,
           license_key: Avo.configuration.license_key,
           avo_version: Avo::VERSION,
@@ -46,10 +60,18 @@ module Avo
           port: current_request&.port,
           app_name: app_name
         }
+
+        metadata = avo_metadata
+        if metadata[:resources_count] != 0
+          result[:avo_metadata] = metadata
+        end
+
+        result
       end
 
       def avo_metadata
         resources = App.resources
+        dashboards = App.dashboards
         field_definitions = resources.map(&:get_field_definitions)
         fields_count = field_definitions.map(&:count).sum
         fields_per_resource = sprintf("%0.01f", fields_count / (resources.count + 0.0))
@@ -67,6 +89,7 @@ module Avo
 
         {
           resources_count: resources.count,
+          dashboards_count: dashboards.count,
           fields_count: fields_count,
           fields_per_resource: fields_per_resource,
           custom_fields_count: custom_fields_count,
@@ -76,6 +99,8 @@ module Avo
           main_menu_present: Avo.configuration.main_menu.present?,
           profile_menu_present: Avo.configuration.profile_menu.present?,
         }
+      rescue
+        {}
       end
 
       def cached_response
