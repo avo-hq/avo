@@ -14,7 +14,7 @@ module Avo
         super(id, **args, &block)
 
         @language = args[:language].present? ? args[:language].to_s : "javascript"
-        @theme = args[:theme].present? ? args[:theme].to_s : "material-darker"
+        @theme = args[:theme].present? ? args[:theme].to_s : "default"
         @height = args[:height].present? ? args[:height].to_s : "auto"
         @tab_size = args[:tab_size].present? ? args[:tab_size] : 2
         @indent_with_tabs = args[:indent_with_tabs].present? ? args[:indent_with_tabs] : false
