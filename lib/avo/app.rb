@@ -104,14 +104,14 @@ module Avo
           end
       end
 
-      def has_main_menu
+      def has_main_menu?
         return false if Avo::App.license.lacks_with_trial(:menu_editor)
         return false if Avo.configuration.main_menu.nil?
 
         true
       end
 
-      def has_profile_menu
+      def has_profile_menu?
         return false if Avo::App.license.lacks_with_trial(:menu_editor)
         return false if Avo.configuration.profile_menu.nil?
 
@@ -119,15 +119,17 @@ module Avo
       end
 
       def main_menu
+        puts ["Avo::Menu::Builder.new.build->", Avo::App.license.lacks_with_trial(:menu_editor), Avo.configuration.profile_menu, has_main_menu?, Avo::Menu::Builder.new.build].inspect
+        puts ["Avo::Menu::Builder.parse_menu(&Avo.configuration.main_menu)->", Avo::Menu::Builder.parse_menu(&Avo.configuration.main_menu)].inspect
         # Return empty menu if the app doesn't have the profile menu configured
-        return Avo::Menu::Builder.new.build unless has_main_menu
+        return Avo::Menu::Builder.new.build unless has_main_menu?
 
         Avo::Menu::Builder.parse_menu(&Avo.configuration.main_menu)
       end
 
       def profile_menu
         # Return empty menu if the app doesn't have the profile menu configured
-        return Avo::Menu::Builder.new.build unless has_profile_menu
+        return Avo::Menu::Builder.new.build unless has_profile_menu?
 
         Avo::Menu::Builder.parse_menu(&Avo.configuration.profile_menu)
       end
