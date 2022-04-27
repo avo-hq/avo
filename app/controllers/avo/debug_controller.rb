@@ -5,6 +5,9 @@ module Avo
     def index
     end
 
+    def report
+    end
+
     def refresh_license
       license = Licensing::LicenseManager.refresh_license request
 
