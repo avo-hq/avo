@@ -12,4 +12,11 @@ class PostStatusFilter < Avo::Filters::MultipleSelectFilter
   # def default
   #   [1]
   # end
+
+  def react
+    if applied_filters.present?
+      return [Post.statuses["published"]] if applied_filters["PublishedFilter"] == "published"
+      return [Post.statuses["archived"]] if applied_filters["PublishedFilter"] == "unpublished"
+    end
+  end
 end

@@ -25,7 +25,7 @@ FactoryBot.define do
         Time.now - rand(10...365).days
       end
     end
-    status { 0 }
+    status { ::Post.statuses.keys.sample }
   end
 
   factory :project do

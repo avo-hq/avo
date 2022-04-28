@@ -3,9 +3,10 @@
 class Avo::FiltersComponent < ViewComponent::Base
   include Avo::ApplicationHelper
 
-  def initialize(filters: [], resource: nil)
+  def initialize(filters: [], resource: nil, applied_filters: [])
     @filters = filters
     @resource = resource
+    @applied_filters = applied_filters
   end
 
   def render?

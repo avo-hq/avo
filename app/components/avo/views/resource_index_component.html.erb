@@ -30,7 +30,7 @@
         <% end %>
         <% if @filters.present? || available_view_types.count > 1 %>
           <div class="justify-self-end flex justify-start xs:justify-end items-center px-4 space-x-3">
-            <%= render Avo::FiltersComponent.new filters: @filters, resource: @resource %>
+            <%= render Avo::FiltersComponent.new filters: @filters, resource: @resource, applied_filters: @applied_filters %>
             <%= render partial: 'avo/partials/view_toggle_button', locals: { available_view_types: available_view_types, view_type: view_type, turbo_frame: @turbo_frame } if available_view_types.count > 1 %>
           </div>
         <% end %>
