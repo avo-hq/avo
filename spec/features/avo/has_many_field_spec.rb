@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.feature "HasManyField", type: :feature do
-  let!(:user) { create :user }
+  let!(:user) { create :user, first_name: "Alicia" }
 
   subject do
     visit url
