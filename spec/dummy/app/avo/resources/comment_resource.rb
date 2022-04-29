@@ -13,6 +13,22 @@ class CommentResource < Avo::BaseResource
   field :body, as: :textarea
   field :tiny_name, as: :text, only_on: :index, as_description: true
 
-  field :user, as: :belongs_to
-  field :commentable, as: :belongs_to, polymorphic_as: :commentable, types: [::Post, ::Project]
+  field :user, as: :belongs_to, scope: -> do
+    # For the parent record with ID 1 we'll apply this rule.
+    # This is for testing purposes only. Just to show that it's possbile.
+    if parent.present? && parent.id == 1 && params[:like].present?
+      query.where("lower(first_name) like ?", "%#{params[:like]}%")
+    else
+      query
+    end
+  end
+  field :commentable, as: :belongs_to, polymorphic_as: :commentable, types: [::Post, ::Project], scope: -> do
+    # For the parent record with ID 1 we'll apply this rule.
+    # This is for testing purposes only. Just to show that it's possbile.
+    if parent.present? && parent.id == 1 && params[:like].present?
+      query.where("lower(name) like ?", "%#{params[:like]}%")
+    else
+      query
+    end
+  end
 end
