@@ -32,7 +32,7 @@ class ReviewResource < Avo::BaseResource
       # For the parent record with ID 1 we'll apply this rule.
       # This is for testing purposes only. Just to show that it's possbile.
       if parent.present? && parent.id == 1
-        query.where("lower(name) like ?", "%#{params[:like]}%")
+        query.where("lower(name) like ?", "%#{parent.body[0].downcase}%")
       else
         query
       end
