@@ -75,7 +75,7 @@ module Avo
       rescue
       end
 
-      avo.resources_associations_index_path(@parent_resource.model_class.model_name.route_key, @parent_resource.model.id, **existing_params, **args )
+      avo.resources_associations_index_path(@parent_resource.model_class.model_name.route_key, @parent_resource.model.id, **existing_params, **args)
     end
 
     def order_up_resource_path(model:, resource:, **args)

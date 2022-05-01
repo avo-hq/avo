@@ -90,7 +90,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     if @reflection.present?
       args = {
         via_relation_class: reflection_model_class,
-        via_resource_id: @parent_model.id,
+        via_resource_id: @parent_model.id
       }
 
       if @reflection.is_a? ActiveRecord::Reflection::ThroughReflection
@@ -126,7 +126,12 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def description
-    return if @reflection.present?
+    # If this is a has many association, the user can pass a description to be shown just for this association.
+    if @reflection.present?
+      return field.description if field.present? && field.description
+
+      return
+    end
 
     @resource.resource_description
   end

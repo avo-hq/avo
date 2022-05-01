@@ -53,7 +53,10 @@ class UserResource < Avo::BaseResource
   field :teams, as: :has_and_belongs_to_many
   field :people, as: :has_many, translation_key: "avo.field_translations.people"
   field :spouses, as: :has_many # STI has_many resource
-  field :comments, as: :has_many, scope: -> { starts_with :a }
+  field :comments,
+    as: :has_many,
+    scope: -> { query.starts_with parent.first_name[0].downcase },
+    description: "The comments listed in the attach modal all start with the name of the parent user."
   field :projects, as: :has_and_belongs_to_many
 
   grid do

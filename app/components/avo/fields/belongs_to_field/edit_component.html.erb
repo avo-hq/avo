@@ -1,20 +1,19 @@
-<%
-  if is_polymorphic?
-
-  # Set the model keys so we can pass them over
-  model_keys = @field.types.map do |type|
-    resource = Avo::App.get_resource_by_model_name(type.to_s)
-    [type.to_s, resource.model_key]
-  end.to_h
-%>
-<div class="divide-y"
+<% if is_polymorphic? %>
+  <%
+    # Set the model keys so we can pass them over
+    model_keys = @field.types.map do |type|
+      resource = Avo::App.get_resource_by_model_name(type.to_s)
+      [type.to_s, resource.model_key]
+    end.to_h
+  %>
+  <div class="divide-y"
     data-controller="belongs-to-field"
     data-searchable="<%= @field.searchable %>"
     data-association="<%= @field.id %>"
     data-association-class="<%= @field&.target_resource&.model_class || nil %>"
   >
-  <%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal do %>
-    <%= @form.select @field.type_input_foreign_key, @field.types.map { |type| [type.to_s.underscore.humanize, type.to_s] },
+    <%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal, help: @field.polymorphic_help || ''  do %>
+      <%= @form.select @field.type_input_foreign_key, @field.types.map { |type| [type.to_s.underscore.humanize, type.to_s] },
       {
         value: @field.value,
         include_blank: @field.placeholder,
@@ -26,21 +25,21 @@
         'data-action': 'change->belongs-to-field#changeType'
       }
     %>
-    <%
+      <%
         # If the select field is disabled, no value will be sent. It's how HTML works.
         # Thus the extra hidden field to actually send the related id to the server.
         if disabled %>
-      <%= @form.hidden_field @field.type_input_foreign_key %>
+        <%= @form.hidden_field @field.type_input_foreign_key %>
+      <% end %>
     <% end %>
-  <% end %>
-  <% @field.types.each do |type| %>
-    <div class="hidden"
+    <% @field.types.each do |type| %>
+      <div class="hidden"
         data-belongs-to-field-target="type"
         data-type="<%= type %>"
       >
-      <%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal, label: type.to_s.underscore.humanize do %>
-        <% if @field.searchable %>
-          <%= render Avo::Fields::BelongsToField::AutocompleteComponent.new form: @form,
+        <%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal, label: type.to_s.underscore.humanize do %>
+          <% if @field.searchable %>
+            <%= render Avo::Fields::BelongsToField::AutocompleteComponent.new form: @form,
             field: @field,
             type: type,
             model_key: model_keys[type.to_s],
@@ -49,8 +48,8 @@
             disabled: disabled,
             polymorphic_record: polymorphic_record
           %>
-        <% else %>
-          <%= @form.select @field.id_input_foreign_key,
+          <% else %>
+            <%= @form.select @field.id_input_foreign_key,
             options_for_select(@field.values_for_type(type), @resource.present? && @resource.model.present? ? @resource.model[@field.id_input_foreign_key] : nil),
             {
               value: @resource.model[@field.id_input_foreign_key].to_s,
@@ -61,17 +60,17 @@
               disabled: disabled
             }
           %>
-          <%
+            <%
             # If the select field is disabled, no value will be sent. It's how HTML works.
             # Thus the extra hidden field to actually send the related id to the server.
             if disabled %>
               <%= @form.hidden_field @field.id_input_foreign_key %>
             <% end %>
+          <% end %>
         <% end %>
-      <% end %>
-    </div>
-  <% end %>
-</div>
+      </div>
+    <% end %>
+  </div>
 <% else %>
   <%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal do %>
     <% if @field.searchable %>
