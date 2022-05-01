@@ -328,7 +328,6 @@ module Avo
         # Run the react method if it's present
         reaction = filter_class.new.react
 
-        # @todo: fix: can't change thereactive filter after reacted
         next if reaction.nil?
 
         filter_reactions[filter_class.to_s] = filter_class.new.react

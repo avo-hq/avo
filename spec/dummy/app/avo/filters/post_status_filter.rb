@@ -14,7 +14,8 @@ class PostStatusFilter < Avo::Filters::MultipleSelectFilter
   # end
 
   def react
-    if applied_filters.present?
+    # This filter will react if PublishedFilter is set and this on is not.
+    if applied_filters.present? && applied_filters["PostStatusFilter"].blank?
       return [Post.statuses["published"]] if applied_filters["PublishedFilter"] == "published"
       return [Post.statuses["archived"]] if applied_filters["PublishedFilter"] == "unpublished"
     end
