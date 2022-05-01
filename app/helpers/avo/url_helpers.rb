@@ -59,11 +59,11 @@ module Avo
 
     def related_resources_path(
       parent_model,
-      model,
+      record,
       keep_query_params: false,
       **args
     )
-      return if model.nil?
+      return if record.nil?
 
       existing_params = {}
 
@@ -75,7 +75,7 @@ module Avo
       rescue
       end
 
-      avo.resources_associations_index_path(@parent_resource.model_class.model_name.route_key, @parent_resource.model.id, **existing_params, **args)
+      avo.resources_associations_index_path(parent_model.model_name.route_key, record.id, **existing_params, **args)
     end
 
     def order_up_resource_path(model:, resource:, **args)
