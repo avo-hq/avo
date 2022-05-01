@@ -327,7 +327,6 @@ module Avo
           filter_class.instance_methods(false).include? :react
         end
         .each do |filter_class|
-
           # Run the react method if it's present
           reaction = filter_class.new.react
 
