@@ -9,7 +9,6 @@
       'data-action': 'click->toggle-panel#togglePanel',
       'data-tippy': 'tooltip' do %>
       <%= t 'avo.filters' %>
-      <%= @applied_filters.inspect %>
       <% if @applied_filters.present? %>
         <span class="ml-1">(<%= @applied_filters.count %> applied)</span>
       <% end %>
