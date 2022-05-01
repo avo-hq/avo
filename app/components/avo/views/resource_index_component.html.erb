@@ -57,7 +57,6 @@
       <% end %>
 
       <% if view_type.to_sym == :grid %>
-          1<%= @parent_model.inspect %>2
         <%= render Avo::Index::ResourceGridComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_model: @parent_model) %>
         <div class="mt-14">
           <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: @turbo_frame || 'none', index_params: @index_params, resource: @resource, parent_model: @parent_model %>
