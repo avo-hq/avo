@@ -3,6 +3,7 @@ module Avo
     class HasBaseField < BaseField
       attr_accessor :display
       attr_accessor :scope
+      attr_accessor :description
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
@@ -10,6 +11,7 @@ module Avo
         @scope = args[:scope].present? ? args[:scope] : nil
         @display = args[:display].present? ? args[:display] : :show
         @searchable = args[:searchable] == true
+        @description = args[:description]
       end
 
       def searchable

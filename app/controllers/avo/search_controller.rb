@@ -44,7 +44,23 @@ module Avo
     end
 
     def search_resource(resource)
-      results = apply_search_metadata(resource.search_query.call(params: params).limit(8), resource)
+      query = resource.search_query.call(params: params).limit(8)
+
+      # Figure oute if this is a belongs_to search
+      if params[:via_reflection_class].present? && params[:via_reflection_id].present?
+        # Fetch the field
+        field = belongs_to_field
+
+        if field.scope.present?
+          # Fetch the parent
+          parent = params[:via_reflection_class].safe_constantize.find params[:via_reflection_id]
+
+          # Add to the query
+          query = Avo::Hosts::AssociationScopeHost.new(block: belongs_to_field.scope, query: query, parent: parent).handle
+        end
+      end
+
+      results = apply_search_metadata(query, resource)
 
       result_object = {
         header: resource.name.pluralize,
@@ -74,6 +90,11 @@ module Avo
 
         result
       end
+    end
+
+    def belongs_to_field
+      fields = ::Avo::App.get_resource_by_model_name(params[:via_reflection_class]).get_field_definitions
+      fields.find { |f| f.id.to_s == params[:via_association_id] }
     end
   end
 end

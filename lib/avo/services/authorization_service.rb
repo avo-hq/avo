@@ -71,13 +71,13 @@ module Avo
           # If no action passed we should raise error if the user wants that.
           # If not, just allow it.
           if action.nil?
-            raise Pundit::NotDefinedError.new 'Policy method is missing' if Avo.configuration.raise_error_on_missing_policy
+            raise Pundit::NotDefinedError.new "Policy method is missing" if Avo.configuration.raise_error_on_missing_policy
 
             return true
           end
 
           # Add the question mark if it's missing
-          action = "#{action}?" unless action.end_with? '?'
+          action = "#{action}?" unless action.end_with? "?"
 
           authorize user, record, action, **args
         end
@@ -110,14 +110,12 @@ module Avo
         end
 
         def defined_methods(user, record, **args)
-          begin
-            Pundit.policy!(user, record).methods
-          rescue => error
-            if args[:raise_exception] == false
-              []
-            else
-              raise error
-            end
+          Pundit.policy!(user, record).methods
+        rescue => error
+          if args[:raise_exception] == false
+            []
+          else
+            raise error
           end
         end
       end

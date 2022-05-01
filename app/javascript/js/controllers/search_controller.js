@@ -68,8 +68,15 @@ export default class extends Controller {
     }
 
     if (this.isBelongsToSearch) {
-      // eslint-disable-next-line camelcase
-      params = { ...params, via_association: this.dataset.viaAssociation }
+      params = {
+        ...params,
+        // eslint-disable-next-line camelcase
+        via_association_id: this.dataset.viaAssociationId,
+        // eslint-disable-next-line camelcase
+        via_reflection_class: this.dataset.viaReflectionClass,
+        // eslint-disable-next-line camelcase
+        via_reflection_id: this.dataset.viaReflectionId,
+      }
     }
 
     return url.segment(segments).search(params).toString()
