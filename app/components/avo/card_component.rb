@@ -11,6 +11,8 @@ class Avo::CardComponent < ViewComponent::Base
     !@card.nil?
   end
 
+  # Initializing the card byt running the query method.
+  # We'll still keep the query block around for compatibility reasons.
   def init_card
     if @card.respond_to? :query
       @card.query
