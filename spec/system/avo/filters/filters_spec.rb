@@ -135,8 +135,8 @@ RSpec.describe "Filters", type: :system do
   end
 
   describe "Select filter" do
-    let!(:published_post) { create :post, name: "Published post", published_at: "2019-12-05 08:27:19.295065", status: Post.statuses["published"] }
-    let!(:unpublished_post) { create :post, name: "Unpublished post", published_at: nil, status: Post.statuses["archived"] }
+    let!(:published_post) { create :post, name: "Published post", published_at: "2019-12-05 08:27:19.295065" }
+    let!(:unpublished_post) { create :post, name: "Unpublished post", published_at: nil }
 
     let(:url) { "/admin/resources/posts?view_type=table" }
 

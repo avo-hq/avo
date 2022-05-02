@@ -66,6 +66,9 @@ ActiveRecord::Schema.define(version: 2022_03_02_214148) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.text "skills", default: [], array: true
+    t.string "country"
+    t.string "city"
   end
 
   create_table "fish", force: :cascade do |t|

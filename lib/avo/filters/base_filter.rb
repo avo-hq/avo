@@ -1,12 +1,13 @@
 module Avo
   module Filters
     class BaseFilter
-      PARAM_KEY = :filters
+      PARAM_KEY = :filters unless const_defined?(:PARAM_KEY)
 
       class_attribute :name, default: "Filter"
       class_attribute :component, default: "boolean-filter"
       class_attribute :default, default: nil
       class_attribute :template, default: "avo/base/select_filter"
+      class_attribute :empty_message, default: I18n.t("avo.no_options_available")
 
       delegate :params, to: Avo::App
 

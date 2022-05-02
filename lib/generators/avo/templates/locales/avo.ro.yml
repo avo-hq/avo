@@ -81,4 +81,5 @@ ro:
     was_successfully_updated: 'a fost actualizat'
     tools: Instrumente
     empty_dashboard_message: Adauga carduri in acest dashboard
-    no_cards_present: 'Niciun card disponibil'
+    no_cards_present: Niciun card disponibil
+    no_options_available: Nicio optiune disponibila
