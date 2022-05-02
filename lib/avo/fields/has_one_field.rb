@@ -6,7 +6,7 @@ module Avo
       def initialize(id, **args, &block)
         super(id, **args, &block)
 
-        hide_on :new, :edit
+        hide_on :new
 
         @placeholder ||= I18n.t "avo.choose_an_option"
 

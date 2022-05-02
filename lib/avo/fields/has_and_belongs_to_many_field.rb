@@ -7,7 +7,7 @@ module Avo
         super(id, **args, &block)
 
         hide_on :all
-        show_on :show
+        show_on :show, :edit
       end
 
       def view_component_name

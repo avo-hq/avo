@@ -4,8 +4,12 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   include Avo::ResourcesHelper
   include Avo::ApplicationHelper
 
+  attr_reader :fields_by_panel, :has_one_panels, :has_many_panels, :has_as_belongs_to_many_panels
+
   def initialize(resource: nil)
     @resource = resource
+
+    split_panel_fields
   end
 
   def back_path
@@ -26,5 +30,26 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
 
   def via_resource?
     params[:via_resource_class].present? && params[:via_resource_id].present?
+  end
+
+  def split_panel_fields
+    @fields_by_panel = {}
+    @has_one_panels = []
+    @has_many_panels = []
+    @has_as_belongs_to_many_panels = []
+
+    @resource.get_fields.each do |field|
+      case field.class.to_s
+      when "Avo::Fields::HasOneField"
+        @has_one_panels << field
+      when "Avo::Fields::HasManyField"
+        @has_many_panels << field
+      when "Avo::Fields::HasAndBelongsToManyField"
+        @has_as_belongs_to_many_panels << field
+      else
+        @fields_by_panel[field.panel_name] ||= []
+        @fields_by_panel[field.panel_name] << field
+      end
+    end
   end
 end
