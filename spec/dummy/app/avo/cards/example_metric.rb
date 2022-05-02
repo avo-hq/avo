@@ -35,7 +35,7 @@ class ExampleMetric < Avo::Dashboards::MetricCard
 
     scope = User
 
-    if card.options[:active_users].present?
+    if options[:active_users].present?
       scope = scope.active
     end
 

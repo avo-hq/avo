@@ -14,7 +14,7 @@ class Avo::CardComponent < ViewComponent::Base
   def init_card
     if @card.respond_to? :query
       @card.query
-    else
+    elsif @card.query_block.present?
       @card.compute_result
     end
   end
