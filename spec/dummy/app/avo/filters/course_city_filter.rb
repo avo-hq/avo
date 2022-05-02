@@ -39,10 +39,8 @@ class CourseCityFilter < Avo::Filters::BooleanFilter
         Course.cities.stringify_keys[country]
       end
       .flatten
-      # Prepare to transform to a Hash
-      .map { |city| [city, city] }
-      # Turn to a Hash
-      .to_h
+      .map { |city| [city, city] } # Prepare to transform to a Hash
+      .to_h # Turn to a Hash
   end
 
   # Get the value of the selected countries
@@ -59,10 +57,8 @@ class CourseCityFilter < Avo::Filters::BooleanFilter
     if applied_filters["CourseCountryFilter"].present?
       # Fetch the value of the countries filter
       applied_filters["CourseCountryFilter"]
-        # Keep only the ones selected
-        .select { |k, v| v }
-        # Pluck the name of the coutnry
-        .keys
+        .select { |k, v| v } # Keep only the ones selected
+        .keys # Pluck the name of the country
     else
       # Return empty array
       []
