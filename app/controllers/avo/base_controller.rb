@@ -310,9 +310,32 @@ module Avo
     end
 
     def set_applied_filters
-      @applied_filters = JSON.parse(Base64.decode64(params[:filters]))
+      @applied_filters = Avo::Filters::BaseFilter.decode_filters(params[Avo::Filters::BaseFilter::PARAM_KEY])
+
+      # Some filters react to others and will have to be merged into this
+      @applied_filters = @applied_filters.merge reactive_filters
     rescue
       @applied_filters = {}
+    end
+
+    def reactive_filters
+      filter_reactions = {}
+
+      # Go through all filters
+      @resource.get_filters
+        .select do |filter_class|
+          filter_class.instance_methods(false).include? :react
+        end
+        .each do |filter_class|
+          # Run the react method if it's present
+          reaction = filter_class.new.react
+
+          next if reaction.nil?
+
+          filter_reactions[filter_class.to_s] = filter_class.new.react
+        end
+
+      filter_reactions
     end
 
     # Get the default state of the filters and override with the user applied filters

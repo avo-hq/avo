@@ -108,7 +108,7 @@ projects.each do |project|
 end
 
 # Courses and links
-courses = FactoryBot.create_list(:course, 28)
+courses = FactoryBot.create_list(:course, 150)
 courses.each do |course|
   FactoryBot.create_list(:course_link, 3, course: course)
 end

@@ -1,20 +1,28 @@
-<div data-controller="boolean-filter" data-filter-name="<%= filter.name %>">
+<div
+  data-controller="boolean-filter"
+  data-filter-name="<%= filter.name %>"
+  data-boolean-filter-keep-filters-panel-open-value="<%= @resource.keep_filters_panel_open %>"
+>
   <%= filter_wrapper name: filter.name do %>
     <div class="flex items-center">
-      <div class="space-y-2">
-        <% filter.options.each do |value, label| %>
-          <label class="flex items-center text-gray-700 text-sm">
-            <%= check_box_tag filter.id, value, filter.selected_value(value.to_s, @applied_filters),
-              class: 'mr-2 text-lg h-4 w-4',
-              id: "avo_filters_#{filter.id.parameterize.underscore}",
-              'data-filter-class': filter.class,
-              'data-boolean-filter-target': 'option',
-              'data-action': 'input->boolean-filter#changeFilter'
-            %>
-            <%= label %>
-          </label>
-        <% end %>
-      </div>
+      <% if filter.options.empty? %>
+        <div class="text-sm text-gray-600"><%= filter.class.empty_message %></div>
+      <% else %>
+        <div class="space-y-2">
+          <% filter.options.each do |value, label| %>
+            <label class="flex items-center text-gray-700 text-sm">
+              <%= check_box_tag filter.id, value, filter.selected_value(value.to_s, @applied_filters),
+                class: 'mr-2 text-lg h-4 w-4',
+                id: "avo_filters_#{filter.id.parameterize.underscore}",
+                'data-filter-class': filter.class,
+                'data-boolean-filter-target': 'option',
+                'data-action': 'input->boolean-filter#changeFilter'
+              %>
+              <%= label %>
+            </label>
+          <% end %>
+        </div>
+      <% end %>
       <%= link_to 'url_redirect', request.url, data: { 'boolean-filter-target': 'urlRedirect', 'turbo-frame': params[:turbo_frame] }, style: 'hidden', class: 'hidden' %>
     </div>
   <% end %>

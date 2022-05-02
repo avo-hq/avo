@@ -85,4 +85,5 @@ pt-BR:
     sign_out: 'sair'
     tools: Ferramentas
     empty_dashboard_message: Adicionar cartões a este painel
-    no_cards_present: 'Nenhum cartão presente'
+    no_cards_present: Nenhum cartão presente
+    no_options_available: Nenhuma opção disponível

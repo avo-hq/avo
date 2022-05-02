@@ -4,6 +4,10 @@ import URI from 'urijs'
 export default class extends Controller {
   static targets = ['urlRedirect']
 
+  static values = {
+    keepFiltersPanelOpen: Boolean,
+  }
+
   // eslint-disable-next-line class-methods-use-this
   uriParams() {
     return URI(window.location.toString()).query(true)
@@ -76,6 +80,11 @@ export default class extends Controller {
 
     const query = {
       ...url.query(true),
+    }
+
+    if (this.keepFiltersPanelOpenValue) {
+      // eslint-disable-next-line camelcase
+      query.keep_filters_panel_open = this.keepFiltersPanelOpenValue
     }
 
     if (encodedFilters) {

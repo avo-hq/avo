@@ -3,9 +3,9 @@ class PublishedFilter < Avo::Filters::SelectFilter
 
   def apply(request, query, value)
     case value
-    when 'published'
+    when "published"
       query.where.not(published_at: nil)
-    when 'unpublished'
+    when "unpublished"
       query.where(published_at: nil)
     else
       query

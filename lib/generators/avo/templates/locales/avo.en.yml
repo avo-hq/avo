@@ -107,4 +107,5 @@ en:
       to_top: Move record to top
       to_bottom: Move record to bottom
     empty_dashboard_message: Add cards to this dashboard
-    no_cards_present: 'No cards present'
+    no_cards_present: No cards present
+    no_options_available: No options available
