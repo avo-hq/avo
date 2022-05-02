@@ -4,9 +4,8 @@ import URI from 'urijs'
 export default class extends Controller {
   static targets = ['urlRedirect']
 
-  get keepFiltersPanelOpen() {
-    // @todo: do this manually on each filter
-    return this.data.get('keepFiltersPanelOpen') === '1'
+  static values = {
+    keepFiltersPanelOpen: Boolean,
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -83,9 +82,9 @@ export default class extends Controller {
       ...url.query(true),
     }
 
-    if (this.keepFiltersPanelOpen) {
+    if (this.keepFiltersPanelOpenValue) {
       // eslint-disable-next-line camelcase
-      query.keep_filters_panel_open = this.keepFiltersPanelOpen
+      query.keep_filters_panel_open = this.keepFiltersPanelOpenValue
     }
 
     if (encodedFilters) {
