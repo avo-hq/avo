@@ -22,7 +22,7 @@ class CourseCityFilter < Avo::Filters::BooleanFilter
       cities = cities_for_countries(selected_countries.keys)
       first_city = cities.first.first
 
-      # Return the first city as selected
+      # Return the first city selected as a Hash
       [[first_city, true]].to_h
     end
   end
@@ -32,22 +32,39 @@ class CourseCityFilter < Avo::Filters::BooleanFilter
   # Get a hash of cities for certain countries
   # Example payload:
   # countries = ["USA", "Japan"]
-  def cities_for_countries(countries = [])
-    countries
+  def cities_for_countries(countries_array = [])
+    countries_array
       .map do |country|
+        # Get the cities for this country
         Course.cities.stringify_keys[country]
       end
       .flatten
+      # Prepare to transform to a Hash
       .map { |city| [city, city] }
+      # Turn to a Hash
       .to_h
   end
 
   # Get the value of the selected countries
+  # Example payload:
+  # applied_filters = {
+  #   "CourseCountryFilter" => {
+  #     "USA" => true,
+  #     "Japan" => true,
+  #     "Spain" => false,
+  #     "Thailand" => false,
+  #   }
+  # }
   def countries
     if applied_filters["CourseCountryFilter"].present?
-      applied_filters["CourseCountryFilter"].select { |k, v| v }.keys
+      # Fetch the value of the countries filter
+      applied_filters["CourseCountryFilter"]
+        # Keep only the ones selected
+        .select { |k, v| v }
+        # Pluck the name of the coutnry
+        .keys
     else
-      # Course.countries
+      # Return empty array
       []
     end
   end
