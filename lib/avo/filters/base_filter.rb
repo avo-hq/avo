@@ -7,7 +7,7 @@ module Avo
       class_attribute :component, default: "boolean-filter"
       class_attribute :default, default: nil
       class_attribute :template, default: "avo/base/select_filter"
-      class_attribute :empty_message, default: I18n.t("avo.no_options_available")
+      class_attribute :empty_message
 
       delegate :params, to: Avo::App
 
@@ -16,6 +16,10 @@ module Avo
           JSON.parse(Base64.decode64(filter_params))
         rescue
           {}
+        end
+
+        def get_empty_message
+          empty_message || I18n.t("avo.no_options_available")
         end
       end
 
