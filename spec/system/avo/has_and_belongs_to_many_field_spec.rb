@@ -36,7 +36,7 @@ RSpec.describe "HasAndBelongsToManyField", type: :system do
           wait_for_loaded
         }.to change(project.users, :count).by 1
 
-        expect(current_path).to eql "/admin/resources/projects/#{project.id}"
+        expect(current_path).to eql "/admin/resources/projects/#{project.id}/users"
         expect(page).not_to have_text "Choose user"
         expect(page).not_to have_text "No related users found"
       end
