@@ -10,10 +10,15 @@ module Generators
       class_option :path, type: :string, default: "avo"
 
       def create_initializer_file
-        route "mount Avo::Engine, at: Avo.configuration.root_path"
+        # route "mount Avo::Engine, at: Avo.configuration.root_path"
 
-        template "initializer/avo.tt", "config/initializers/avo.rb"
-        template "locales/avo.en.yml", "config/locales/avo.en.yml"
+        # template "initializer/avo.tt", "config/initializers/avo.rb"
+        # template "locales/avo.en.yml", "config/locales/avo.en.yml"
+
+        inject_into_file Rails.root.join("config", "initializers", "avo.rb"), before: "config.root_path" do <<-'RUBY'
+config.token = '123'
+  RUBY
+        end
       end
     end
   end
