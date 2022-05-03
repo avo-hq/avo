@@ -1,47 +1,47 @@
-require 'rails_helper'
+require "rails_helper"
 
-RSpec.describe 'Actions', type: :system do
+RSpec.describe "Actions", type: :system do
   let!(:user) { create :user }
   let!(:person) { create :person }
 
-  describe 'action visibility option' do
-    context 'index' do
-      it 'finds an action on index' do
-        visit '/admin/resources/users'
+  describe "action visibility option" do
+    context "index" do
+      it "finds an action on index" do
+        visit "/admin/resources/users"
 
-        click_on 'Actions'
+        click_on "Actions"
 
-        expect(page).to have_link 'Dummy action'
+        expect(page).to have_link "Dummy action"
       end
     end
 
-    context 'show' do
-      it 'does not find an action on show' do
+    context "show" do
+      it "does not find an action on show" do
         visit "/admin/resources/users/#{user.id}"
 
         within "[data-panel-index=\"0\"]" do
-          click_on 'Actions'
+          click_on "Actions"
         end
 
-        expect(page).not_to have_link 'Dummy action'
+        expect(page).not_to have_link "Dummy action"
       end
     end
   end
 
-  describe 'action button should be hidden if no actions present' do
-    context 'index' do
-      it 'does not see the actions button' do
-        visit '/admin/resources/people'
+  describe "action button should be hidden if no actions present" do
+    context "index" do
+      it "does not see the actions button" do
+        visit "/admin/resources/people"
 
-        expect(page).not_to have_button 'Actions'
+        expect(page).not_to have_button "Actions"
       end
     end
 
-    context 'show' do
-      it 'does not see the actions button' do
+    context "show" do
+      it "does not see the actions button" do
         visit "/admin/resources/people/#{person.id}"
 
-        expect(page).not_to have_button 'Actions'
+        expect(page).not_to have_button "Actions"
       end
     end
   end
@@ -62,7 +62,7 @@ RSpec.describe 'Actions', type: :system do
 
         expect(downloaded?).to be true
         expect(download_content).to eq content
-        expect(download.split('/').last).to eq file_name
+        expect(download.split("/").last).to eq file_name
       end
     end
 
@@ -82,7 +82,7 @@ RSpec.describe 'Actions', type: :system do
 
         expect(downloaded?).to be true
         expect(download_content).to eq content
-        expect(download.split('/').last).to eq file_name
+        expect(download.split("/").last).to eq file_name
       end
     end
   end

@@ -2,7 +2,6 @@ import { application } from './application'
 
 import ActionController from './controllers/action_controller'
 import ActionsPickerController from './controllers/actions_picker_controller'
-import AlertsController from './controllers/alerts_controller'
 import AttachmentsController from './controllers/attachments_controller'
 import BelongsToFieldController from './controllers/fields/belongs_to_field_controller'
 import BooleanFilterController from './controllers/boolean_filter_controller'
@@ -32,7 +31,6 @@ import TrixFieldController from './controllers/fields/trix_field_controller'
 
 application.register('action', ActionController)
 application.register('actions-picker', ActionsPickerController)
-application.register('alerts', AlertsController)
 application.register('attachments', AttachmentsController)
 application.register('boolean-filter', BooleanFilterController)
 application.register('copy-to-clipboard', CopyToClipboardController)
