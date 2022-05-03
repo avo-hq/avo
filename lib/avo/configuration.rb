@@ -20,6 +20,7 @@ module Avo
     attr_accessor :cache_resources_on_index_view
     attr_accessor :context
     attr_accessor :display_breadcrumbs
+    attr_accessor :hide_layout_when_printing
     attr_accessor :initial_breadcrumbs
     attr_accessor :home_path
     attr_accessor :search_debounce
@@ -64,6 +65,7 @@ module Avo
         add_breadcrumb I18n.t("avo.home").humanize, avo.root_path
       }
       @display_breadcrumbs = true
+      @hide_layout_when_printing = false
       @home_path = nil
       @search_debounce = 300
       @view_component_path = "app/components"

@@ -34,6 +34,10 @@ class Avo::Fields::BelongsToField::AutocompleteComponent < ViewComponent::Base
     result
   end
 
+  def reflection_class
+    has_polymorphic_association? ? polymorphic_class : @resource.model_class._reflections[@field.id.to_s].klass
+  end
+
   private
 
   def should_prefill?

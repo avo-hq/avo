@@ -1,0 +1,77 @@
+<%
+  license = Avo::App.license
+  information_items = [
+    'license',
+    'license_key',
+    'ruby_version',
+    'rails_version',
+    'environment',
+    'host',
+    'port',
+    'ip',
+    'app_name',
+  ]
+  hq_payload = Avo::Licensing::HQ.new(request).payload
+%>
+<div class="flex flex-col">
+  <%= render Avo::PanelComponent.new title: 'Debug Avo', description: 'Use this page to debug the Avo license.' do |c| %>
+    <% c.tools do %>
+    <% end %>
+    <% c.bare_content do %>
+      <div class="grid gap-4 sm:grid-cols-3">
+        <div class="relative flex flex-col bg-white rounded shadow-panel p-4 space-y-4 h-full col-span-1">
+          <div class="font-semibold">License info</div>
+          <div class="flex flex-col flex-1">
+            <div>
+              <div class="text-xl font-semibold"><%= license.name %></div>
+              <% if license.response['reason'] %>
+                <dl>
+                  <dt class="font-semibold text-sm">Error</dt>
+                  <dd class="text-red-600"><%= license.response['reason'] %></dd>
+                </dl>
+              <% end %>
+              <% if license.response['error'] %>
+                <dl>
+                  <dt class="font-semibold text-sm">Error</dt>
+                  <dd class="text-red-600"><%= license.response['error'] %></dd>
+                  <dt class="font-semibold text-sm">Exception message</dt>
+                  <dd class="text-red-600"><%= license.response['exception_message'] %></dd>
+                </dl>
+              <% end %>
+              <div class="mt-4">
+                <dl>
+                  <% information_items.each do |item| %>
+                    <dt class="font-semibold text-sm"><%= item.humanize %></dt>
+                    <dd><%= license.response[item] %></dd>
+                  <% end %>
+                  <dt class="font-semibold text-sm">Last fetched at</dt>
+                  <dd><%= license.response['fetched_at'] %> <br>
+                    <% if license.response['fetched_at'].present? %>
+                      (<%= time_ago_in_words license.response['fetched_at'] %> ago)</dd>
+                  <% end %>
+                  <dt class="font-semibold text-sm">Cache store</dt>
+                  <dd><%= Avo::App.cache_store.class.to_s %> - <%= Avo::App.cache_store.options.inspect %></dd>
+                </dl>
+              </div>
+            </div>
+            <div class="flex justify-end mt-4">
+              <%= a_button style: :outline,
+                color: :blue,
+                url: "#{root_path}avo_private/debug/refresh_license",
+                method: :post,
+                loading: true,
+                icon: 'heroicons/outline/refresh' do %>
+                Refresh license
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <div class="relative bg-white rounded shadow-panel p-4 space-y-4 col-span-2">
+          <turbo-frame id="debug-report" src="<%= root_path %>avo_private/debug/report" target="_top" class="block">
+            Loading...
+          </turbo-frame>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>

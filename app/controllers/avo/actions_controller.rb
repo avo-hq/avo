@@ -34,7 +34,7 @@ module Avo
     private
 
     def action_params
-      params.permit(:resource_name, :action_id, fields: {})
+      params.permit(:authenticity_token, :resource_name, :action_id, fields: {})
     end
 
     def set_action

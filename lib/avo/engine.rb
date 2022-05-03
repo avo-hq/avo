@@ -17,7 +17,7 @@ module Avo
       ::Avo::App.boot
     end
 
-    config.i18n.load_path += Dir[Avo::Engine.root.join('lib', 'generators', 'avo', 'templates', 'locales', '*.{rb,yml}')]
+    config.i18n.load_path += Dir[Avo::Engine.root.join("lib", "generators", "avo", "templates", "locales", "*.{rb,yml}")]
 
     initializer "avo.autoload" do |app|
       [
@@ -62,6 +62,19 @@ module Avo
 
     config.generators do |g|
       g.test_framework :rspec, view_specs: false
+    end
+
+    # After deploy we want to make sure the license response is being cleared.
+    # We need a fresh license response.
+    # This is disabled in development because the initialization process might be triggered more than once.
+    config.after_initialize do
+      unless Rails.env.development?
+        begin
+          Licensing::HQ.new.clear_response
+        rescue => exception
+          puts "Failed to clear Avo HQ response: #{e.message}"
+        end
+      end
     end
   end
 end

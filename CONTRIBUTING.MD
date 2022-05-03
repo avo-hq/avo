@@ -32,7 +32,7 @@ From the root directory you can run `bin/dev` and that will start a foreman proc
 
 ## Seeding the database for local development
 
-Run `AVO_ADMIN_PASSWORD=secret bin/rails db:seed` to seed the database with dummy data and create a user for yourself with the email `admin@avohq.io` and password `secret`.
+Run `AVO_ADMIN_PASSWORD=secret bin/rails db:seed` to seed the database with dummy data and create a user for yourself with the email `avo@avohq.io` and password `secret`.
 
 ## Using your fork from another project
 

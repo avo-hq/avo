@@ -4,6 +4,9 @@
     data-search-resource="<%= @model_key %>"
     data-translation-keys='{"no_item_found": "<%= I18n.translate 'avo.no_item_found' %>"}'
     data-via-association="belongs_to"
+    data-via-association-id="<%= @field.id %>"
+    data-via-reflection-id="<%= @field.model.id %>"
+    data-via-reflection-class="<%= @field.model.class.to_s %>"
   ></div>
   <div class="relative w-full" autocomplete="off">
     <%= @form.text_field @foreign_key,

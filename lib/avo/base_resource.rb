@@ -44,6 +44,7 @@ module Avo
     class_attribute :after_update_path, default: :show
     class_attribute :invalid_fields
     class_attribute :record_selector, default: true
+    class_attribute :keep_filters_panel_open, default: false
 
     class << self
       delegate :t, to: ::I18n
