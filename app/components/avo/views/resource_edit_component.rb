@@ -20,6 +20,26 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
     end
   end
 
+  def detach_path
+    helpers.resource_detach_path(params[:resource_name], params[:id], @reflection.name.to_s, @resource.model.id)
+  end
+
+  def destroy_path
+    helpers.resource_path(model: @resource.model, resource: @resource)
+  end
+
+  def can_detach?
+    authorize_association_for("detach")
+  end
+
+  def can_see_the_edit_button?
+    @resource.authorization.authorize_action(:edit, raise_exception: false)
+  end
+
+  def can_see_the_destroy_button?
+    @resource.authorization.authorize_action(:destroy, raise_exception: false)
+  end
+
   # The save button is dependent on the edit? policy method.
   # The update? method should be called only when the user clicks the Save button so the developer gets access to the params from the form.
   def can_see_the_save_button?
