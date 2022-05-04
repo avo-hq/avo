@@ -117,8 +117,8 @@ module Avo
 
         query = Avo::Services::AuthorizationService.apply_policy(user, resource.class.query_scope)
 
-        if scope.present?
-          query = Avo::Hosts::AssociationScopeHost.new(block: scope, query: query, parent: get_model).handle
+        if attach_scope.present?
+          query = Avo::Hosts::AssociationScopeHost.new(block: attach_scope, query: query, parent: get_model).handle
         end
 
         query.all.map do |model|
