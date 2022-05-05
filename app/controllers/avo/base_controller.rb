@@ -11,8 +11,8 @@ module Avo
     before_action :set_edit_title_and_breadcrumbs, only: [:edit, :update]
     before_action :fill_model, only: [:create, :update]
     before_action :authorize_action
-    before_action :reset_pagination_if_filters_changed, only: :index
-    before_action :cache_applied_filters, only: :index
+    # before_action :reset_pagination_if_filters_changed, only: :index
+    # before_action :cache_applied_filters, only: :index
 
     def index
       @page_title = @resource.plural_name.humanize
@@ -354,19 +354,21 @@ module Avo
     end
 
     # Caching these so we know when the filters have changed so we reset the pagination
-    def cache_applied_filters
-      ::Avo::App.cache_store.delete applied_filters_cache_key if params[:filters].nil?
+    # def cache_applied_filters
+    #   # puts ["Rails.session->", session].inspect
+    #   session[:avo_applied_filters] = params[:filters]
+    #   # ::Avo::App.cache_store.delete(applied_filters_cache_key) if params[:filters].nil?
 
-      ::Avo::App.cache_store.write(applied_filters_cache_key, params[:filters], expires_in: 1.day)
-    end
+    #   # ::Avo::App.cache_store.write(applied_filters_cache_key, params[:filters], expires_in: 1.day)
+    # end
 
-    def reset_pagination_if_filters_changed
-      params[:page] = 1 if params[:filters] != ::Avo::App.cache_store.read(applied_filters_cache_key)
-    end
+    # def reset_pagination_if_filters_changed
+    #   params[:page] = 1 if params[:filters] != session[:avo_applied_filters]
+    # end
 
-    def applied_filters_cache_key
-      "avo.base_controller.#{@resource.model_key}.applied_filters"
-    end
+    # def applied_filters_cache_key
+    #   "avo.base_controller.#{@resource.model_key}.applied_filters"
+    # end
 
     def set_edit_title_and_breadcrumbs
       @resource = @resource.hydrate(model: @model, view: :edit, user: _current_user)

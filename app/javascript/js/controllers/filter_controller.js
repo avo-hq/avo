@@ -87,6 +87,9 @@ export default class extends Controller {
       query.keep_filters_panel_open = this.keepFiltersPanelOpenValue
     }
 
+    // force to go to the first page if the filters changed
+    query.page = 1
+
     if (encodedFilters) {
       query.filters = encodedFilters
     } else {
