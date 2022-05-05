@@ -84,7 +84,7 @@ export default class extends Controller {
 
     if (this.keepFiltersPanelOpenValue) {
       // eslint-disable-next-line camelcase
-      query.keep_filters_panel_open = this.keepFiltersPanelOpenValue
+      query.keep_filters_panel_open = this.keepFiltersPanelOpenValue ? 1 : null
     }
 
     // force to go to the first page if the filters changed

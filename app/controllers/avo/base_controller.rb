@@ -49,10 +49,10 @@ module Avo
         # Check if the sortable field option is actually a proc and we need to do a custom sort
         field_id = @index_params[:sort_by].to_sym
         field = @resource.get_field_definitions.find { |field| field.id == field_id }
-        if field&.sortable.is_a?(Proc)
-          @query = field.sortable.call(@query, @index_params[:sort_direction])
+        @query = if field&.sortable.is_a?(Proc)
+          field.sortable.call(@query, @index_params[:sort_direction])
         else
-          @query = @query.order("#{@resource.model_class.table_name}.#{@index_params[:sort_by]} #{@index_params[:sort_direction]}")
+          @query.order("#{@resource.model_class.table_name}.#{@index_params[:sort_by]} #{@index_params[:sort_direction]}")
         end
       end
 
@@ -61,7 +61,14 @@ module Avo
         @query = filter_class.safe_constantize.new.apply_query request, @query, filter_value
       end
 
-      @pagy, @models = pagy(@query, items: @index_params[:per_page], link_extra: "data-turbo-frame=\"#{params[:turbo_frame]}\"", size: [1, 2, 2, 1])
+      extra_pagy_params = {}
+
+      # Reset open filters when a user navigates to a new page
+      extra_pagy_params[:keep_filters_panel_open] = if params[:keep_filters_panel_open] == "1"
+        "0"
+      end
+
+      @pagy, @models = pagy(@query, items: @index_params[:per_page], link_extra: "data-turbo-frame=\"#{params[:turbo_frame]}\"", size: [1, 2, 2, 1], params: extra_pagy_params)
 
       # Create resources for each model
       @resources = @models.map do |model|
