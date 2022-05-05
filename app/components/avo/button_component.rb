@@ -117,6 +117,8 @@ class Avo::ButtonComponent < ViewComponent::Base
       " bg-primary-500 text-white border-primary-500 hover:bg-primary-600 hover:border-primary-600 active:border-primary-700 active:outline-primary-700 active:bg-primary-600"
     when :outline
       " bg-white text-#{@color}-500 border-#{@color}-500 hover:bg-#{@color}-100 active:bg-#{@color}-100 active:border-#{@color}-500 active:outline-#{@color}-500"
+    when :text
+      " text-#{@color}-500 active:outline-#{@color}-500 border-none hover:bg-gray-100"
     else
       ""
     end

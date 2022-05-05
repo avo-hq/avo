@@ -1,7 +1,7 @@
 <div <%== data_attributes %>>
   <% if render_header? %>
-    <div class="<%= white_panel_classes %> p-4 flex-1 flex flex-col xl:flex-row justify-between mb-6">
-      <div class="overflow-hidden mr-4 flex flex-col">
+    <div class="flex-1 flex flex-col xl:flex-row justify-between mb-4">
+      <div class="overflow-hidden flex flex-col">
         <% if display_breadcrumbs? %>
           <div class="breadcrumbs truncate mb-2">
             <%= helpers.render_breadcrumbs(separator: helpers.svg('chevron-right', class: 'inline-block h-3 stroke-current relative top-[-1px] ml-1' )) if Avo.configuration.display_breadcrumbs %>
@@ -13,7 +13,7 @@
         </div>
 
         <% if description.present? %>
-        <div class="text-base tracking-normal font-medium text-gray-600" data-target="description">
+        <div class="text-sm tracking-normal font-medium text-gray-600" data-target="description">
           <%== description %>
         </div>
         <% end %>
