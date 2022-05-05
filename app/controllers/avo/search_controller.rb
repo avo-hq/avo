@@ -51,12 +51,12 @@ module Avo
         # Fetch the field
         field = belongs_to_field
 
-        if field.scope.present?
+        if field.attach_scope.present?
           # Fetch the parent
           parent = params[:via_reflection_class].safe_constantize.find params[:via_reflection_id]
 
           # Add to the query
-          query = Avo::Hosts::AssociationScopeHost.new(block: belongs_to_field.scope, query: query, parent: parent).handle
+          query = Avo::Hosts::AssociationScopeHost.new(block: belongs_to_field.attach_scope, query: query, parent: parent).handle
         end
       end
 

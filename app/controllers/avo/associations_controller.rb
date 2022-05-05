@@ -46,8 +46,8 @@ module Avo
         query = @authorization.apply_policy @attachment_class
 
         # Add the association scope to the query scope
-        if @field.scope.present?
-          query = Avo::Hosts::AssociationScopeHost.new(block: @field.scope, query: query, parent: @model).handle
+        if @field.attach_scope.present?
+          query = Avo::Hosts::AssociationScopeHost.new(block: @field.attach_scope, query: query, parent: @model).handle
         end
 
         @options = query.all.map do |model|
