@@ -4,12 +4,9 @@
 >
   <div class="flex items-center space-x-2 lg:space-x-0 w-64">
     <%= a_button class: 'lg:hidden', icon: 'menu', size: :xs, compact: true, style: :text, data: { action: 'click->mobile#toggleSidebar' } %>
-
     <%= render partial: "avo/partials/logo" %>
   </div>
-
-
-  <div class="flex-1 flex items-center justify-between lg:justify-start space-x-8 pl-4">
+  <div class="flex-1 flex items-center justify-between lg:justify-start space-x-8 lg:pl-4">
     <div class="flex">
       <%= render partial: "avo/partials/global_search" if ::Avo::App.license.has_with_trial(:global_search) && ::Avo.configuration.feature_enabled?(:global_search) %>
     </div>

@@ -54,12 +54,12 @@ export default class extends Controller {
   }
 
   markCollapsed() {
-    this.svgTarget.classList.add('rotate-90')
+    this.svgTarget.classList.add('rotate-180')
     this.itemsTarget.classList.add('hidden')
   }
 
   markExpanded() {
-    this.svgTarget.classList.remove('rotate-90')
+    this.svgTarget.classList.remove('rotate-180')
     this.itemsTarget.classList.remove('hidden')
   }
 }
