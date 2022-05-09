@@ -14,14 +14,12 @@ module Avo
       resource_ids = action_params[:fields][:resource_ids].split(",")
       models = @resource.class.find_scope.find resource_ids
 
-      fields = action_params[:fields].select do |key, value|
-        key != "resource_ids"
-      end
+      fields = action_params[:fields].except("resource_ids")
 
       args = {
         fields: fields,
         current_user: _current_user,
-        resource: resource,
+        resource: resource
       }
 
       args[:models] = models unless @action.standalone
@@ -49,8 +47,7 @@ module Avo
 
     def respond(response)
       response[:type] ||= :reload
-      response[:message_type] ||= :notice
-      response[:message] ||= I18n.t("avo.action_ran_successfully")
+      messages = get_messages response
 
       if response[:type] == :download
         return send_data response[:path], filename: response[:filename]
@@ -58,6 +55,11 @@ module Avo
 
       respond_to do |format|
         format.html do
+          # Flash the messages collected from the action
+          messages.each do |message|
+            flash[message[:type]] = message[:body]
+          end
+
           if response[:type] == :redirect
             path = response[:path]
 
@@ -65,12 +67,25 @@ module Avo
               path = instance_eval(&path)
             end
 
-            redirect_to path, "#{response[:message_type]}": response[:message]
+            redirect_to path
           elsif response[:type] == :reload
-            redirect_back fallback_location: resources_path(resource: @resource), "#{response[:message_type]}": response[:message]
+            redirect_back fallback_location: resources_path(resource: @resource)
           end
         end
       end
+    end
+
+    private
+
+    def get_messages(response)
+      default_message = {
+        type: :info,
+        body: I18n.t("avo.action_ran_successfully")
+      }
+
+      return [default_message] if response[:messages].blank?
+
+      response[:messages]
     end
   end
 end

@@ -49,7 +49,9 @@ class UserResource < Avo::BaseResource
   end
 
   field :post, as: :has_one, translation_key: "avo.field_translations.people"
-  field :posts, as: :has_many
+  field :posts,
+    as: :has_many,
+    attach_scope: -> { query.where.not(user_id: parent.id).or(query.where(user_id: nil)) }
   field :teams, as: :has_and_belongs_to_many
   field :people, as: :has_many, translation_key: "avo.field_translations.people"
   field :spouses, as: :has_many # STI has_many resource

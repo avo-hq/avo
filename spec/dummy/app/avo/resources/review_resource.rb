@@ -13,22 +13,27 @@ class ReviewResource < Avo::BaseResource
     ""
   end
 
-  field :user, as: :belongs_to, searchable: true, allow_via_detaching: true, scope: -> do
-    # For the parent record with ID 1 we'll apply this rule.
-    # This is for testing purposes only. Just to show that it's possbile.
-    if parent.present? && parent.id == 1
-      query.admins
-    else
-      query
+  field :user,
+    as: :belongs_to,
+    searchable: true,
+    allow_via_detaching: true,
+    help: "For the review with the ID of 1 only admin users will be displayed.",
+    attach_scope: -> do
+      # For the parent record with ID 1 we'll apply this rule.
+      # This is for testing purposes only. Just to show that it's possbile.
+      if parent.present? && parent.id == 1
+        query.admins
+      else
+        query
+      end
     end
-  end, help: "For the review with the ID of 1 only admin users will be displayed."
   field :reviewable,
     as: :belongs_to,
     polymorphic_as: :reviewable,
     types: [::Fish, ::Post, ::Project, ::Team],
     searchable: true,
     allow_via_detaching: true,
-    scope: -> do
+    attach_scope: -> do
       # For the parent record with ID 1 we'll apply this rule.
       # This is for testing purposes only. Just to show that it's possbile.
       if parent.present? && parent.id == 1

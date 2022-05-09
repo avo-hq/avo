@@ -4,9 +4,9 @@ module Avo
       attr_accessor :relation_method
 
       def initialize(id, **args, &block)
-        super(id, **args, &block)
-
         hide_on :new, :edit
+
+        super(id, **args, &block)
 
         @placeholder ||= I18n.t "avo.choose_an_option"
 
