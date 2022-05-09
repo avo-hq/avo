@@ -20,8 +20,8 @@ module Avo
       render Avo::EmptyStateComponent.new **args
     end
 
-    def turbo_frame_wrap(name, &block)
-      render Avo::TurboFrameWrapperComponent.new name do
+    def turbo_frame_wrap(name, **args, &block)
+      render Avo::TurboFrameWrapperComponent.new name, **args do
         capture(&block)
       end
     end

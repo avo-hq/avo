@@ -23,6 +23,7 @@
     "@babel/plugin-proposal-class-properties": "^7.12.1",
     "@hotwired/stimulus": "^3.0.1",
     "@hotwired/turbo-rails": "^7.1.1",
+    "@rails/actioncable": "^7.0.2-4",
     "@rails/activestorage": "^6.0.2-1",
     "@rails/ujs": "^6.1.0",
     "@stimulus/mutation-observers": "^2.0.0",

@@ -20,6 +20,7 @@ import MobileController from './controllers/mobile_controller'
 import ModalController from './controllers/modal_controller'
 import MultipleSelectFilterController from './controllers/multiple_select_filter_controller'
 import PerPageController from './controllers/per_page_controller'
+import ResourceController from './controllers/resource_controller'
 import SearchController from './controllers/search_controller'
 import SelectController from './controllers/select_controller'
 import SelectFilterController from './controllers/select_filter_controller'
@@ -45,6 +46,7 @@ application.register('mobile', MobileController)
 application.register('modal', ModalController)
 application.register('multiple-select-filter', MultipleSelectFilterController)
 application.register('per-page', PerPageController)
+application.register('resource', ResourceController)
 application.register('search', SearchController)
 application.register('select', SelectController)
 application.register('select-filter', SelectFilterController)

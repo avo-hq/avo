@@ -1,4 +1,12 @@
-<div data-model-id="<%= @resource.model.id %>"
+  <%#= AvoChannel.broadcasting_for([@resource.class, @resource.model_id].join(":")) %>
+  <div>
+  <%# data-resource-view-value="<%#= @resource.view %" %>
+<div
+  data-controller="resource"
+  data-resource-channel-name-value="ResourceShowChannel"
+  data-resource-resource-name-value="<%= @resource.class %>"
+  data-resource-resource-id-value="<%= @resource.model_id %>"
+  data-model-id="<%= @resource.model.id %>"
   data-selected-resources-name="<%= @resource.model_key %>"
   data-selected-resources='["<%= @resource.model.id %>"]'
   class="space-y-8"
@@ -94,4 +102,5 @@
       </template>
     </turbo-stream>
   <% end %>
+</div>
 </div>

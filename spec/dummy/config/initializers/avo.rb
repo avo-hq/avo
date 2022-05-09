@@ -69,4 +69,14 @@ Avo.configure do |config|
   config.profile_menu = -> {
     link "Profile", path: "/profile", icon: "user-circle"
   }
+
+  config.action_cable = {
+    enabled: true
+  }
 end
+
+# Course.after_save_commit do
+#   puts ["dynamic after save commit->"].inspect
+#   # Avo::App.
+#   ResourceChannel.broadcast_to "1", action: :reload
+# end

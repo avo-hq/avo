@@ -32,6 +32,7 @@ module Avo
     attr_accessor :buttons_on_form_footers
     attr_accessor :main_menu
     attr_accessor :profile_menu
+    attr_accessor :action_cable
 
     def initialize
       @root_path = "/avo"
@@ -76,6 +77,9 @@ module Avo
       @buttons_on_form_footers = false
       @main_menu = nil
       @profile_menu = nil
+      @action_cable = {
+        enabled: false
+      }
     end
 
     def locale_tag

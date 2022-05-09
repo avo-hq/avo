@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
   get "hey", to: "home#index"
+  get "trigger_course_update", to: "home#trigger_course_update"
 
   authenticate :user, ->(user) { user.is_admin? } do
     scope :admin do

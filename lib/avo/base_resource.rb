@@ -97,6 +97,25 @@ module Avo
 
         ordering.dig(:actions) || {}
       end
+
+      def reload_resource(id: nil)
+        puts ["reload_resource->"].inspect
+        if id.present?
+          # , self, id, ResourceShowChannel.broadcasting_for([self, id].join(":"))
+          # tag = ResourceShowChannel.broadcasting_for [:resource, self, id].join(":")
+          # tag = [:resource, self, id].join(":")
+          tag = [self, id].join(":")
+          puts ["tag->", tag].inspect
+          # AvoChannel.broadcast_to "#{self.to_s}:#{id}", action: :reload
+          ResourceShowChannel.broadcast_to tag, action: :reload, params: {
+            foo: 'bar'
+          }
+        end
+      end
+    end
+
+    def turbo_tag
+      "resource:#{self.class}:#{model_id}"
     end
 
     def initialize

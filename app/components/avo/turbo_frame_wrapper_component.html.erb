@@ -1,4 +1,4 @@
-<% if name.present? %><turbo-frame id="<%= name %>"><% end %>
+<% if name.present? %><turbo-frame id="<%= name %>" <%= "target=\"#{target}\"" if target.present? %>><% end %>
 <%
   # When rendering the frames the flashed content gets lost.
   # We're appending it back if it's a turbo_frame_request.

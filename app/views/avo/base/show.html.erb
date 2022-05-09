@@ -1,3 +1,6 @@
+<%#= turbo_frame_wrap(params[:turbo_frame] || 'resource_show', target: "_top") do %>
 <%= turbo_frame_wrap(params[:turbo_frame]) do %>
+  <turbo-frame>
   <%= render Avo::Views::ResourceShowComponent.new(resource: @resource, reflection: @reflection, actions: @actions) %>
+  </turbo-frame>
 <% end %>
