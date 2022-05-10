@@ -1,11 +1,7 @@
 # frozen_string_literal: true
 
+# require_relative 'item_labels'
+
 class Avo::Fields::TagsField::ShowComponent < Avo::Fields::ShowComponent
-  def label_from_item(item)
-    if @field.acts_as_taggable_on.present?
-      item['value']
-    else
-      item
-    end
-  end
+  include Avo::Fields::Concerns::ItemLabels
 end

@@ -15,12 +15,12 @@ class PostResource < Avo::BaseResource
     # readonly: true,
     acts_as_taggable_on: :tags,
     close_on_select: false,
-    placeholder: 'add some tags',
+    placeholder: "add some tags",
     suggestions: -> { Post.tags_suggestions },
     enforce_suggestions: true,
-    help: 'The only allowed values here are `one`, `two`, and `three`'
+    help: "The only allowed values here are `one`, `two`, and `three`"
   field :cover_photo, as: :file, is_image: true, as_avatar: :rounded, full_width: true, hide_on: []
-  field :cover_photo, as: :external_image, name: 'Cover photo', required: true, hide_on: :all, link_to_resource: true, as_avatar: :rounded, format_using: ->(value) { value.present? ? value&.url : nil }
+  field :cover_photo, as: :external_image, name: "Cover photo", required: true, hide_on: :all, link_to_resource: true, as_avatar: :rounded, format_using: ->(value) { value.present? ? value&.url : nil }
   field :audio, as: :file, is_audio: true
   field :excerpt, as: :text, hide_on: :all, as_description: true do |model|
     ActionView::Base.full_sanitizer.sanitize(model.body).truncate 130

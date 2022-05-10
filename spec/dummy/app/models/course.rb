@@ -17,7 +17,7 @@ class Course < ApplicationRecord
     ["example suggestion", "example tag", name]
   end
 
-  def skill_blacklist
+  def skill_disallowed
     ["foo", "bar", id]
   end
 

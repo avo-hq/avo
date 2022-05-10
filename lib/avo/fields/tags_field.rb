@@ -12,7 +12,7 @@ module Avo
         add_boolean_prop args, :close_on_select
         add_boolean_prop args, :enforce_suggestions
         add_string_prop args, :acts_as_taggable_on
-        add_array_prop args, :blacklist
+        add_array_prop args, :disallowed
         add_array_prop args, :delimiters, [","]
         add_array_prop args, :suggestions
       end
@@ -51,11 +51,11 @@ module Avo
         []
       end
 
-      def blacklist
-        return @blacklist if @blacklist.is_a? Array
+      def disallowed
+        return @disallowed if @disallowed.is_a? Array
 
-        if @blacklist.respond_to? :call
-          return Avo::Hosts::RecordHost.new(block: @blacklist, record: model).handle
+        if @disallowed.respond_to? :call
+          return Avo::Hosts::RecordHost.new(block: @disallowed, record: model).handle
         end
 
         []

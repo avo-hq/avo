@@ -14,8 +14,8 @@ export default class extends BaseController {
     return this.getJsonAttribute(this.inputTarget, 'data-whitelist-items', [])
   }
 
-  get blacklistItems() {
-    return this.getJsonAttribute(this.inputTarget, 'data-blacklist-items', [])
+  get disallowedItems() {
+    return this.getJsonAttribute(this.inputTarget, 'data-disallowed-items', [])
   }
 
   get enforceSuggestions() {
@@ -37,7 +37,7 @@ export default class extends BaseController {
   get tagifyOptions() {
     let options = {
       whitelist: this.whitelistItems,
-      blacklist: this.blacklistItems,
+      blacklist: this.disallowedItems,
       enforceWhitelist: this.enforceSuggestions,
       delimiters: this.delimiters.join('|'),
       maxTags: 10,
