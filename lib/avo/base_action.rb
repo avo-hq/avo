@@ -61,8 +61,7 @@ module Avo
       self.class.cancel_button_label ||= I18n.t("avo.cancel")
 
       @response ||= {}
-      @response[:message_type] ||= :notice
-      @response[:message] ||= I18n.t("avo.action_ran_successfully")
+      @response[:messages] = []
     end
 
     def context
@@ -131,15 +130,25 @@ module Avo
     end
 
     def succeed(text)
-      response[:message_type] = :notice
-      response[:message] = text
+      add_message text, :success
 
       self
     end
 
     def fail(text)
-      response[:message_type] = :alert
-      response[:message] = text
+      add_message text, :error
+
+      self
+    end
+
+    def inform(text)
+      add_message text, :info
+
+      self
+    end
+
+    def warn(text)
+      add_message text, :warning
 
       self
     end
@@ -167,6 +176,15 @@ module Avo
       response[:filename] = filename
 
       self
+    end
+
+    private
+
+    def add_message(body, type = :info)
+      response[:messages] << {
+        type: type,
+        body: body
+      }
     end
   end
 end

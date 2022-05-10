@@ -46,8 +46,8 @@ module Avo
         query = @authorization.apply_policy @attachment_class
 
         # Add the association scope to the query scope
-        if @field.scope.present?
-          query = Avo::Hosts::AssociationScopeHost.new(block: @field.scope, query: query, parent: @model).handle
+        if @field.attach_scope.present?
+          query = Avo::Hosts::AssociationScopeHost.new(block: @field.attach_scope, query: query, parent: @model).handle
         end
 
         @options = query.all.map do |model|
@@ -65,7 +65,7 @@ module Avo
 
       respond_to do |format|
         if @model.save
-          format.html { redirect_to resource_path(model: @model, resource: @resource), notice: t("avo.attachment_class_attached", attachment_class: @related_resource.name) }
+          format.html { redirect_back fallback_location: resource_path(model: @model, resource: @resource), notice: t("avo.attachment_class_attached", attachment_class: @related_resource.name) }
         else
           format.html { render :new }
         end
