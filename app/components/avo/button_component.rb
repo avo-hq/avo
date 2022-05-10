@@ -164,21 +164,13 @@ class Avo::ButtonComponent < ViewComponent::Base
 
     case @size
     when :xs
-      icon_classes += " h-4"
-      # When icon is solo we need to add an offset
-      icon_classes += " my-1" if content.blank?
+      icon_classes += " h-4 my-1"
     when :sm
-      icon_classes += " h-4"
-      # When icon is solo we need to add an offset
-      icon_classes += " my-1" if content.blank?
+      icon_classes += " h-4 my-1"
     when :md
-      icon_classes += " h-4"
-      # When icon is solo we need to add an offset
-      icon_classes += " my-1" if content.blank?
+      icon_classes += " h-4 my-1"
     when :lg
-      icon_classes += " h-5"
-      # When icon is solo we need to add an offset
-      icon_classes += " my-0.5" if content.blank?
+      icon_classes += " h-5 my-0.5"
     when :xl
       icon_classes += " h-6"
     end
