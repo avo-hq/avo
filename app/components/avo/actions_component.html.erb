@@ -35,7 +35,7 @@
             'actions-picker-target': action.standalone ? 'standaloneAction' : 'resourceAction',
             'disabled': disabled,
           },
-          class: "flex items-center px-4 py-4 w-full font-medium #{disabled ? 'text-gray-500' : 'text-black hover:bg-blue-500 hover:text-white'}" do %>
+          class: "flex items-center px-4 py-3 w-full font-semibold text-sm #{disabled ? 'text-gray-500' : 'text-black hover:bg-blue-500 hover:text-white'}" do %>
           <%= svg 'play', class: 'h-5 mr-1 inline' %> <%= action.action_name %>
         <% end %>
       <% end %>
