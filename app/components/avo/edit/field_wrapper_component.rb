@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Avo::Edit::FieldWrapperComponent < ViewComponent::Base
-  def initialize(field: nil, dash_if_blank: true, full_width: false, displayed_in_modal: false, form: nil, resource: {}, label: nil, **args)
+  def initialize(field: nil, dash_if_blank: true, full_width: false, displayed_in_modal: false, form: nil, resource: {}, label: nil, help: nil, **args)
     @field = field
     @dash_if_blank = dash_if_blank
     @classes = args[:class].present? ? args[:class] : ""
@@ -12,5 +12,10 @@ class Avo::Edit::FieldWrapperComponent < ViewComponent::Base
     @model = resource.present? ? resource.model : nil
     @full_width = full_width
     @label = label
+    @help = help
+  end
+
+  def help
+    @help || @field.help
   end
 end

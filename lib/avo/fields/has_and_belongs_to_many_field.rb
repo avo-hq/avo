@@ -4,10 +4,10 @@ module Avo
       def initialize(id, **args, &block)
         args[:updatable] = false
 
-        super(id, **args, &block)
-
         hide_on :all
         show_on :show
+
+        super(id, **args, &block)
       end
 
       def view_component_name

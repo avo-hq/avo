@@ -1,7 +1,7 @@
 <%
   per_page_options = [*Avo.configuration.per_page_steps, Avo.configuration.per_page.to_i, index_params[:per_page].to_i]
 
-  if parent_resource.present?
+  if parent_model.present?
     per_page_options.prepend Avo.configuration.via_per_page
   end
 
@@ -24,8 +24,8 @@
             %> <%= t('avo.per_page').downcase %>
           </div>
           <% per_page_options.each do |option| %>
-            <% if parent_resource.present? %>
-              <%= link_to "Change to #{option} items per page", helpers.related_resources_path(parent_resource.model_class, resource.model_class, per_page: option, keep_query_params: true), class: 'hidden', 'data-per-page-option': option, 'data-turbo-frame': turbo_frame %>
+            <% if parent_model.present? %>
+              <%= link_to "Change to #{option} items per page", helpers.related_resources_path(parent_model, parent_model, per_page: option, keep_query_params: true), class: 'hidden', 'data-per-page-option': option, 'data-turbo-frame': turbo_frame %>
             <% else %>
               <%= link_to "Change to #{option} items per page", helpers.resources_path(resource: resource, per_page: option, keep_query_params: true), class: 'hidden', 'data-per-page-option': option, 'data-turbo-frame': turbo_frame %>
             <% end %>

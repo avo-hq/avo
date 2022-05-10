@@ -1,4 +1,8 @@
-<div data-controller="text-filter" data-filter-name="<%= filter.name %>">
+<div
+  data-controller="text-filter"
+  data-filter-name="<%= filter.name %>"
+  data-text-filter-keep-filters-panel-open-value="<%= @resource.keep_filters_panel_open %>"
+>
   <%= filter_wrapper name: filter.name do %>
     <%= text_field_tag filter.id, filter.applied_or_default_value(@applied_filters),
       class: input_classes('w-full mb-0'),

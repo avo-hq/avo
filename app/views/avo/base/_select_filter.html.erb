@@ -1,4 +1,8 @@
-<div data-controller="select-filter" data-filter-name="<%= filter.name %>">
+<div
+  data-controller="select-filter"
+  data-filter-name="<%= filter.name %>"
+  data-select-filter-keep-filters-panel-open-value="<%= @resource.keep_filters_panel_open %>"
+>
   <%= filter_wrapper name: filter.name do %>
     <%= select_tag filter.id, options_for_select(filter.options.invert, filter.applied_or_default_value(@applied_filters)),
       class: input_classes('w-full mb-0'),

@@ -21,7 +21,7 @@ module Avo
       @association_field = @parent_resource.get_field params[:related_name]
 
       if @association_field.present? && @association_field.scope.present?
-        @query = @query.instance_exec(&@association_field.scope)
+        @query = Avo::Hosts::AssociationScopeHost.new(block: @association_field.scope, query: @query, parent: @parent_model).handle
       end
 
       super
@@ -45,6 +45,11 @@ module Avo
       if @field.present? && !@field.searchable
         query = @authorization.apply_policy @attachment_class
 
+        # Add the association scope to the query scope
+        if @field.attach_scope.present?
+          query = Avo::Hosts::AssociationScopeHost.new(block: @field.attach_scope, query: query, parent: @model).handle
+        end
+
         @options = query.all.map do |model|
           [model.send(@attachment_resource.class.title), model.id]
         end
@@ -60,7 +65,7 @@ module Avo
 
       respond_to do |format|
         if @model.save
-          format.html { redirect_to resource_path(model: @model, resource: @resource), notice: t("avo.attachment_class_attached", attachment_class: @related_resource.name) }
+          format.html { redirect_back fallback_location: resource_path(model: @model, resource: @resource), notice: t("avo.attachment_class_attached", attachment_class: @related_resource.name) }
         else
           format.html { render :new }
         end
