@@ -4,7 +4,7 @@ class PercentDone < Avo::Dashboards::MetricCard
   self.description = "This is the progress we made so far..."
   self.suffix = "%"
 
-  query do
+  def query
     result 42
   end
 end

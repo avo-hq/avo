@@ -9,7 +9,7 @@ class <%= class_name.camelize %> < Avo::Dashboards::ChartkickCard
   # self.chart_options = { library: { plugins: { legend: { display: true } } } }
   # self.flush = true
 
-  query do
+  def query
     points = 16
     i = Time.new.year.to_i - points
     base_data = Array.new(points).map do

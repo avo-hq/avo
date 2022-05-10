@@ -8,7 +8,7 @@ class AmountRaised < Avo::Dashboards::MetricCard
   self.prefix = "$"
   # self.suffix = ""
 
-  query do
+  def query
     result 9001
   end
 end
