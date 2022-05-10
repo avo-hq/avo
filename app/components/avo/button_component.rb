@@ -44,8 +44,8 @@ class Avo::ButtonComponent < ViewComponent::Base
 
     classes += style_classes
 
-    classes += padding_classes
-    classes += spacing_classes
+    classes += horizontal_padding_classes
+    classes += vertical_padding_classes
     classes += text_size_classes
 
     classes
@@ -101,7 +101,7 @@ class Avo::ButtonComponent < ViewComponent::Base
 
   private
 
-  def spacing_classes
+  def vertical_padding_classes
     case @size.to_sym
     when :xs
       " py-0"
@@ -118,7 +118,7 @@ class Avo::ButtonComponent < ViewComponent::Base
     end
   end
 
-  def padding_classes
+  def horizontal_padding_classes
     return " px-1" if @compact
 
     case @size.to_sym
@@ -172,11 +172,13 @@ class Avo::ButtonComponent < ViewComponent::Base
       # When icon is solo we need to add an offset
       icon_classes += " my-1" if content.blank?
     when :md
-      icon_classes += " h-4 my-1.5"
+      icon_classes += " h-4"
+      # When icon is solo we need to add an offset
+      icon_classes += " my-1" if content.blank?
+    when :lg
+      icon_classes += " h-5"
       # When icon is solo we need to add an offset
       icon_classes += " my-0.5" if content.blank?
-    when :lg
-      icon_classes += " h-5 my-2"
     when :xl
       icon_classes += " h-6"
     end
