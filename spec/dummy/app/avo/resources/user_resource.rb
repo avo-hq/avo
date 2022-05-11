@@ -1,7 +1,7 @@
 class UserResource < Avo::BaseResource
   self.title = :name
   self.description = -> {
-    "These are the users of the app. view: #{view}"
+    "Users of the app. view: #{view}"
   }
   self.translation_key = "avo.resource_translations.user"
   self.search_query = ->(params:) do

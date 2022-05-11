@@ -31,7 +31,7 @@ module Avo
         path = Rails.root.join(*path_params)
 
         if File.directory? path.to_s
-          Rails.autoloaders.main.push_dir path
+          Rails.autoloaders.main.push_dir path.to_s
         end
       end
     end

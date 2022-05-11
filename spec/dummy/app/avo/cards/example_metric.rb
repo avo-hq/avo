@@ -10,7 +10,7 @@ class ExampleMetric < Avo::Dashboards::MetricCard
   self.refresh_every = 10.minutes
 
   # You have access to context, params, range, current dashboard, and current card
-  query do
+  def query
     from = Date.today.midnight - 1.week
     to = DateTime.current
 
@@ -35,7 +35,7 @@ class ExampleMetric < Avo::Dashboards::MetricCard
 
     scope = User
 
-    if card.options[:active_users].present?
+    if options[:active_users].present?
       scope = scope.active
     end
 

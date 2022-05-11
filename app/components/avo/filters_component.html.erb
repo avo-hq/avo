@@ -14,7 +14,7 @@
       <% end %>
     <% end %>
     <div
-      class="absolute block inset-auto sm:right-0 top-full bg-white min-w-[300px] mt-2 z-20 shadow-modal rounded divide-y divide-gray-300 <%= 'hidden' unless params[:keep_filters_panel_open] %>"
+      class="absolute block inset-auto sm:right-0 top-full bg-white min-w-[300px] mt-2 z-20 shadow-modal rounded divide-y divide-gray-300 <%= 'hidden' unless params[:keep_filters_panel_open] == '1' %>"
       data-toggle-panel-target="panel"
     >
       <% @filters.each do |filter| %>

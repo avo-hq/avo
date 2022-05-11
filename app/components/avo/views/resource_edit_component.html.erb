@@ -11,11 +11,17 @@
       <%= render Avo::ReferrerParamsComponent.new back_path: back_path %>
       <%= render Avo::PanelComponent.new(title: resource_panel[:name], description: @resource.resource_description, display_breadcrumbs: true) do |c| %>
         <% c.tools do %>
-          <%= a_link back_path, icon: 'arrow-left' do %>
+          <%= a_link back_path,
+            style: :text,
+            icon: 'arrow-left' do %>
             <%= t('avo.cancel').capitalize %>
           <% end %>
           <% if can_see_the_save_button? %>
-            <%= a_button color: :green, loading: true, type: :submit, icon: 'save' do %>
+            <%= a_button color: :primary,
+              style: :primary,
+              loading: true,
+              type: :submit,
+              icon: 'save' do %>
               <%= t('avo.save').capitalize %>
             <% end %>
           <% end %>

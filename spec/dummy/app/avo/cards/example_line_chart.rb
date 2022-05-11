@@ -7,7 +7,7 @@ class ExampleLineChart < Avo::Dashboards::ChartkickCard
   self.scale = false
   self.legend = false
 
-  query do
+  def query
     data = 3.times.map do |index|
       {
         name: "Batch #{index}",
