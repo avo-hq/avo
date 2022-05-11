@@ -43,7 +43,7 @@ module.exports = {
 
     './app/helpers/**/*.rb',
     './app/views/**/*.erb',
-    './app/packs/**/*.js',
+    './app/javascript/**/*.js',
     './app/components/avo/**/*.erb',
     './app/components/avo/**/*.rb',
     './app/controllers/avo/**/*.rb',

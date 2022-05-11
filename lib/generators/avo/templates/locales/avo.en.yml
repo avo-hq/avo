@@ -39,6 +39,10 @@ en:
       zero: 'no %{item}'
       one: 'one %{item}'
       other: '%{count} %{item}'
+    x_items_more:
+      zero: 'no more items'
+      one: 'one more item'
+      other: '%{count} more items'
     are_you_sure: 'Are you sure?'
     filters: 'Filters'
     per_page: 'Per page'

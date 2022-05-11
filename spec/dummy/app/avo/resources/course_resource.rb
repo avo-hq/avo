@@ -8,6 +8,7 @@ class CourseResource < Avo::BaseResource
 
   field :id, as: :id
   field :name, as: :text
+  field :skills, as: :tags, disallowed: -> { record.skill_disallowed }, suggestions: -> { record.skill_suggestions }
   field :country, as: :select, options: Course.countries.map { |country| [country, country] }.to_h
   field :city, as: :select, options: Course.cities.values.flatten.map { |city| [city, city] }.to_h
   field :links, as: :has_many, searchable: true, placeholder: "Click to choose a link"

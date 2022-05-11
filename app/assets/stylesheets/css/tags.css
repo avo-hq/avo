@@ -1,0 +1,16 @@
+tags.tagify {
+  --tag-inset-shadow-size: 3em;
+}
+
+tags.tagify {
+  @apply !p-0;
+
+  span.tagify__input {
+    @apply my-1;
+  }
+}
+
+tag.tagify__tag {
+  @apply text-sm my-1 mb-0;
+}
+

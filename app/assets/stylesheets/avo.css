@@ -4,6 +4,7 @@
 @import './../../../node_modules/trix/dist/trix.css';
 @import './../../../node_modules/flatpickr/dist/flatpickr.css';
 @import './../../../node_modules/@algolia/autocomplete-theme-classic/dist/theme.css';
+@import './../../../node_modules/@yaireo/tagify/dist/tagify.css';
 
 @import 'tailwindcss/base';
 
@@ -17,6 +18,7 @@
 @import './css/search.css';
 @import './css/active-storage.css';
 @import './css/spinner.css';
+@import './css/tags.css';
 
 @import './css/components/status.css';
 @import './css/components/code.css';

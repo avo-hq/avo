@@ -8,11 +8,11 @@ RSpec.describe "CollapsableMenus", type: :system do
       visit "/admin/dashboard"
 
       expect(page).to have_selector selector
-      expect(page).to have_text "ACADEMIA"
+      expect(page).to have_text "EDUCATION"
 
       first("#{selector} [data-menu-target='svg']").click
 
-      expect(page).not_to have_text "ACADEMIA"
+      expect(page).not_to have_text "EDUCATION"
     end
   end
 end
