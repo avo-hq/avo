@@ -7,6 +7,17 @@ class Avo::BaseComponent < ViewComponent::Base
 
   private
 
+  def can_see_the_back_button?
+    Avo.configuration.back_path.present?
+  end
+
+  def configured_back_path
+    return nil if Avo.configuration.back_path.nil?
+    return "javascript:history.back()" if Avo.configuration.back_path == :javascript_history_back
+
+    :computed
+  end
+
   # Figure out what is the corresponding field for this @reflection
   def field
     fields = ::Avo::App.get_resource_by_model_name(@reflection.active_record.name).get_field_definitions

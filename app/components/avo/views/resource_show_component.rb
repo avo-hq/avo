@@ -24,6 +24,8 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
   end
 
   def back_path
+    return configured_back_path unless configured_back_path == :computed
+
     if via_resource?
       helpers.resource_path(model: params[:via_resource_class].safe_constantize, resource: relation_resource, resource_id: params[:via_resource_id])
     else

@@ -26,8 +26,10 @@
               <% end %>
             <% end %>
           <% else %>
-            <%= a_link back_path, icon: 'arrow-left' do %>
-              <%= t('avo.go_back') %>
+            <% if can_see_the_back_button? %>
+              <%= a_link back_path, icon: 'arrow-left' do %>
+                <%= t('avo.go_back') %>
+              <% end %>
             <% end %>
             <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource %>
             <% if can_see_the_destroy_button? %>

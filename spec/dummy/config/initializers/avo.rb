@@ -14,6 +14,8 @@ Avo.configure do |config|
       params: request.params
     }
   end
+  # config.back_path = :computed # possible values: :computed, :javascript_history_back, nil
+  config.back_path = :javascript_history_back
   config.home_path = "/admin/dashboard"
   config.set_initial_breadcrumbs do
     add_breadcrumb "Dashboard", "/admin/dashboard"

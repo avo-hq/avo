@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::Views::ResourceNewComponent < ViewComponent::Base
+class Avo::Views::ResourceNewComponent < Avo::BaseComponent
   include Avo::ResourcesHelper
   include Avo::ApplicationHelper
 
@@ -13,6 +13,8 @@ class Avo::Views::ResourceNewComponent < ViewComponent::Base
   end
 
   def back_path
+    return configured_back_path unless configured_back_path == :computed
+
     if via_resource?
       helpers.resource_path(model: params[:via_relation_class].safe_constantize, resource: relation_resource, resource_id: params[:via_resource_id])
     else
