@@ -21,7 +21,7 @@ class Avo::PanelComponent < ViewComponent::Base
   private
 
   def white_panel_classes
-    'bg-white rounded shadow'
+    "bg-white rounded shadow"
   end
 
   def data_attributes

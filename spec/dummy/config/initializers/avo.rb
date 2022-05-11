@@ -32,17 +32,7 @@ Avo.configure do |config|
     end
 
     section "Resources", icon: "heroicons/outline/academic-cap", collapsable: true, collapsed: false do
-      group "Academia", collapsable: true do
-        resource :course
-        resource :course_link
-      end
-
-      group "Blog", collapsable: true do
-        resource :posts
-        resource :comments
-      end
-
-      group "Company" do
+      group "Company", collapsable: true do
         resource :projects
         resource :team
         resource :reviews
@@ -52,6 +42,16 @@ Avo.configure do |config|
         resource "UserResource"
         resource :people
         resource :spouses
+      end
+
+      group "Education", collapsable: true do
+        resource :course
+        resource :course_link
+      end
+
+      group "Blog", collapsable: true do
+        resource :posts
+        resource :comments
       end
 
       group "Other", collapsable: true, collapsed: true do

@@ -25,6 +25,7 @@ FactoryBot.define do
         Time.now - rand(10...365).days
       end
     end
+    tag_list { ["1", "2", "five", "seven"].shuffle }
     status { ::Post.statuses.keys.sample }
   end
 
@@ -64,6 +65,7 @@ FactoryBot.define do
 
   factory :course do
     name { Faker::Educator.unique.course_name }
+    skills { [Faker::Educator.subject, Faker::Educator.subject, Faker::Educator.subject, Faker::Educator.subject, Faker::Educator.subject] }
     country { Course.countries.sample }
     city { Course.cities.stringify_keys[country].sample }
   end

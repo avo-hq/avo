@@ -7,7 +7,9 @@
   <% end %>
 >
   <% if item.name.present? %>
-    <div class="flex justify-between px-10 pt-2 pb-0 text-gray-600 ">
+    <div
+      class="flex justify-between px-10 pr-2 pt-2 pb-0 text-gray-400"
+    >
       <div class="flex items-center text-xs uppercase font-semibold leading-none">
         <%= item.name %>
       </div>
@@ -17,7 +19,7 @@
           data-menu-target="svg"
           data-menu-key-param="<%= key %>"
           >
-          <%= helpers.svg 'heroicons/outline/chevron-down', class: "h-4"%>
+          <%= helpers.svg 'heroicons/outline/chevron-down', class: "h-4 mr-0.5"%>
         </div>
       <% end %>
     </div>

@@ -15,12 +15,17 @@
         <% c.tools do %>
           <div class="flex justify-end space-x-2">
             <% if can_see_the_back_button? %>
-              <%= a_link back_path, icon: 'arrow-left' do %>
+              <%= a_link back_path,
+                icon: 'arrow-left' do %>
                 <%= t('avo.cancel').capitalize %>
               <% end %>
             <% end %>
             <% if can_see_the_save_button? %>
-              <%= a_button color: 'green', loading: true, type: :submit, icon: 'save' do %>
+              <%= a_button color: :primary,
+                style: :primary,
+                loading: true,
+                type: :submit,
+                icon: 'save' do %>
                 <%= t('avo.save').capitalize %>
               <% end %>
             <% end %>
@@ -29,9 +34,9 @@
         <% if Avo.configuration.buttons_on_form_footers %>
           <% c.footer_tools do %>
             <% if can_see_the_back_button? %>
-            <%= a_link back_path, icon: 'arrow-left' do %>
-              <%= t('avo.cancel').capitalize %>
-            <% end %>
+              <%= a_link back_path, icon: 'arrow-left' do %>
+                <%= t('avo.cancel').capitalize %>
+              <% end %>
             <% end %>
             <% if can_see_the_save_button? %>
               <%= a_button color: :green, loading: true, type: :submit, icon: 'save' do %>

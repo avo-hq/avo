@@ -8,7 +8,7 @@ class ExamplePieChart < Avo::Dashboards::ChartkickCard
   self.scale = true
   self.legend_on_left = true
 
-  query do
+  def query
     result [["Blueberry", 44], ["Strawberry", 23], ["Banana", 22], ["Apple", 21], ["Grape", 13], ["Pear", 53], ["Avocado", 15]]
   end
 end

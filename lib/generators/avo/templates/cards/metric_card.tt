@@ -2,7 +2,7 @@ class <%= class_name.camelize %> < Avo::Dashboards::MetricCard
   self.id = "<%= name.underscore %>"
   self.label = "<%= name.underscore.humanize %>"
 
-  query do
+  def query
     result 101
   end
 end

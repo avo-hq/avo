@@ -9,7 +9,7 @@ class ExampleScatterChart < Avo::Dashboards::ChartkickCard
   self.scale = true
   self.legend_on_left = true
 
-  query do
+  def query
     result [
       {
         name: "batch 1",

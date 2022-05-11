@@ -12,7 +12,8 @@ module Avo
           :searchable_associations,
           :resource_ordering,
           :dashboards,
-          :menu_editor
+          :menu_editor,
+          :advanced_fields
         ]
       end
     end

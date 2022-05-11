@@ -15,4 +15,4 @@ jobs:
         with:
           stale-issue-message: 'This issue has been marked as stale because there was no activity for the last 60 days'
           stale-pr-message: 'This PR has been marked as stale because there was no activity for the last 60 days'
-          exempt-issue-labels: Not stale
+          exempt-issue-labels: Stale exempt

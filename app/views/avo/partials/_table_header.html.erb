@@ -29,8 +29,9 @@
         sort_by = field.id
         sort_direction = 'desc'
       end
-      classes = "text-gray-500 tracking-tight leading-tight text-sm font-semibold" %>
-    <th class="text-left uppercase px-3 py-4 whitespace-nowrap rounded-l">
+      classes = "text-gray-500 tracking-tight leading-tight text-xs font-semibold"
+    %>
+    <th class="text-left uppercase px-3 py-2 whitespace-nowrap rounded-l">
       <% if field.sortable %>
         <%= link_to params.permit!.merge(sort_by: sort_by, sort_direction: sort_direction), class: "flex items-center #{classes} #{'cursor-pointer' if field.sortable}", 'data-turbo-frame': params[:turbo_frame] do %>
           <%= field.name %>

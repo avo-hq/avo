@@ -61,3 +61,7 @@ end
 def open_filters_menu
   find('[data-button="resource-filters"]').click
 end
+
+def toggle_filters_menu
+  open_filters_menu
+end

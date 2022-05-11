@@ -1,0 +1,10 @@
+<%= index_field_wrapper field: @field do %>
+  <div class="flex gap-1 items-center flex-nowrap">
+    <% value.take(3).each do |item| %>
+      <%= render Avo::Fields::TagsField::TagComponent.new(label: label_from_item(item)) %>
+    <% end %>
+    <% if value.count > 3 %>
+      <%= render Avo::Fields::TagsField::TagComponent.new(label: '...', title: I18n.t('avo.x_items_more', count: value.count - 3)) %>
+    <% end %>
+  </div>
+<% end %>
