@@ -16,6 +16,7 @@
           <div class="flex justify-end space-x-2">
             <% if can_see_the_back_button? %>
               <%= a_link back_path,
+                style: :text,
                 icon: 'arrow-left' do %>
                 <%= t('avo.cancel').capitalize %>
               <% end %>
