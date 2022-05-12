@@ -26,6 +26,7 @@ module Avo
     class_attribute :search_query_help, default: ""
     class_attribute :includes, default: []
     class_attribute :model_class
+    class_attribute :model_name
     class_attribute :translation_key
     class_attribute :translation_enabled, default: false
     class_attribute :default_view_type, default: :table
@@ -293,6 +294,8 @@ module Avo
     end
 
     def name
+      return self.class.model_name if self.class.model_name.present?
+
       default = class_name_without_resource.titlecase
 
       return @name if @name.present?
