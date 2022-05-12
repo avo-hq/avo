@@ -193,7 +193,7 @@ export default class extends Controller {
       Mousetrap.bind(['command+k', 'ctrl+k'], () => this.showSearchPanel())
     }
 
-    autocomplete({
+    const { destroy } = autocomplete({
       container: this.autocompleteTarget,
       placeholder: this.translationKeys.placeholder,
       translations: {
@@ -215,6 +215,8 @@ export default class extends Controller {
           .then((data) => Object.keys(data).map((resourceName) => that.addSource(resourceName, data[resourceName])))
       },
     })
+
+    document.addEventListener('turbo:before-render', destroy)
 
     // When using search for belongs-to
     if (this.buttonTarget.dataset.shouldBeDisabled !== 'true') {
