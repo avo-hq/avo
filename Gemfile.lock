@@ -435,7 +435,7 @@ DEPENDENCIES
   bootsnap (>= 1.4.2)
   breadcrumbs_on_rails
   bump
-  bundler-integrity
+  bundler-integrity (~> 1.0)
   byebug
   capybara (= 3.36)
   countries
