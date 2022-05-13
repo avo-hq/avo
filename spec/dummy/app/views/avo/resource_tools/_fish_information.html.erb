@@ -16,7 +16,7 @@
           </p>
 
           <% if tool.has_fish_image? @resource.model.name.to_s.downcase.to_sym %>
-            <%= image_tag tool.images[@resource.model.name.to_s.downcase.to_sym], loading: :lazy %>
+            <%= image_tag tool.images[@resource.model.name.to_s.downcase.to_sym], loading: :lazy, class: 'rounded' %>
           <% end %>
 
           <%#== ap @resource.model %>

@@ -1,5 +1,6 @@
 class FishInformation < Avo::BaseResourceTool
   self.name = "Fish information"
+  # self.partial = "avo/resource_tools/_fish_information"
 
   def has_fish_image?(name)
     images.key? name

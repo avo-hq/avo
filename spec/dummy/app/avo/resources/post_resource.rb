@@ -51,4 +51,6 @@ class PostResource < Avo::BaseResource
   filter PostStatusFilter
 
   action TogglePublished
+
+  # tool PostInfo
 end
