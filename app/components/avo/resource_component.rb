@@ -1,4 +1,10 @@
 class Avo::ResourceComponent < Avo::BaseComponent
+  attr_reader :fields_by_panel
+  attr_reader :has_one_panels
+  attr_reader :has_many_panels
+  attr_reader :has_as_belongs_to_many_panels
+  attr_reader :resource_tools
+
   def can_create?
     return authorize_association_for(:create) if @reflection.present?
 
@@ -75,6 +81,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
     @has_one_panels = []
     @has_many_panels = []
     @has_as_belongs_to_many_panels = []
+    @resource_tools = @resource.tools
   end
 
   def via_resource?
