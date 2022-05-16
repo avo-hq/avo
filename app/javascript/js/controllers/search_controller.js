@@ -76,6 +76,10 @@ export default class extends Controller {
         via_reflection_class: this.dataset.viaReflectionClass,
         // eslint-disable-next-line camelcase
         via_reflection_id: this.dataset.viaReflectionId,
+        // eslint-disable-next-line camelcase
+        via_parent_resource_id: this.dataset.viaParentResourceId,
+        // eslint-disable-next-line camelcase
+        via_parent_resource_class: this.dataset.viaParentResourceClass,
       }
     }
 

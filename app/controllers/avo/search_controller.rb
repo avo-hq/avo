@@ -47,16 +47,23 @@ module Avo
       query = resource.search_query.call(params: params).limit(8)
 
       # Figure oute if this is a belongs_to search
-      if params[:via_reflection_class].present? && params[:via_reflection_id].present?
+      if params[:via_reflection_class].present?
         # Fetch the field
         field = belongs_to_field
 
         if field.attach_scope.present?
-          # Fetch the parent
-          parent = params[:via_reflection_class].safe_constantize.find params[:via_reflection_id]
+          # Try to fetch the parent.
+          if params[:via_reflection_id].present?
+            parent = params[:via_reflection_class].safe_constantize.find params[:via_reflection_id]
+          end
+
+          # Try to fetch the grandparent for the new views where the parent is nil.
+          if params[:via_parent_resource_id].present? && params[:via_parent_resource_class].present?
+            grandparent = params[:via_parent_resource_class].safe_constantize.find params[:via_parent_resource_id]
+          end
 
           # Add to the query
-          query = Avo::Hosts::AssociationScopeHost.new(block: belongs_to_field.attach_scope, query: query, parent: parent).handle
+          query = Avo::Hosts::AssociationScopeHost.new(block: belongs_to_field.attach_scope, query: query, parent: parent, grandparent: grandparent).handle
         end
       end
 
