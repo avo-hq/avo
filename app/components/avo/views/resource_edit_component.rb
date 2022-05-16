@@ -4,8 +4,6 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   include Avo::ResourcesHelper
   include Avo::ApplicationHelper
 
-  attr_reader :fields_by_panel, :has_one_panels, :has_many_panels, :has_as_belongs_to_many_panels
-
   def initialize(resource: nil)
     @resource = resource
 

@@ -3,6 +3,6 @@ class NameFilter < Avo::Filters::TextFilter
   self.button_label = "Filter by name"
 
   def apply(request, query, value)
-    query.where('name LIKE ?', "%#{value}%")
+    query.where("name LIKE ?", "%#{value}%")
   end
 end

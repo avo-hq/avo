@@ -1,0 +1,37 @@
+<div class="flex flex-col">
+  <%%= render Avo::PanelComponent.new title: "<%= human_name %>" do |c| %>
+    <%% c.tools do %>
+      <%%= a_link('/avo', icon: 'heroicons/solid/academic-cap', style: :primary) do %>
+        Dummy link
+      <%% end %>
+    <%% end %>
+
+    <%% c.body do %>
+      <div class="flex flex-col p-4 min-h-24">
+        <div class="space-y-4">
+          <h3>🪧 This partial is waiting to be updated</h3>
+
+          <p>
+            You can edit this file here <%= in_code "app/views/avo/resource_tools/#{file_name}.html.erb" %>.
+          </p>
+
+          <p>
+            The resource tool configuration file should be here <%= in_code "app/avo/resource_tools/#{file_name}.rb" %>.
+          </p>
+
+          <%%
+            # In this partial you have access to the following variables:
+            # tool
+            # @resource
+            # @resource.model
+            # params
+            # Avo::App.context
+            # current_user
+          %>
+        </div>
+      </div>
+    <%% end %>
+  <%% end %>
+</div>
+
+

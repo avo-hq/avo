@@ -93,6 +93,11 @@
         <%= render field.component_for_view(:show).new(field: field, resource: @resource, index: index) %>
       <% end %>
     <% end %>
+    <% if resource_tools.present? %>
+      <% resource_tools.each do |tool, index| %>
+        <%= render tool.partial, tool: tool %>
+      <% end %>
+    <% end %>
   <% end %>
 
   <% if should_display_invalid_fields_errors? %>
