@@ -12,6 +12,8 @@ module Avo
       option :current_user, default: proc { Avo::App.current_user }
       option :block, optional: true
 
+      delegate :authorize, to: Avo::Services::AuthorizationService
+
       def handle
         instance_exec(&block)
       end
