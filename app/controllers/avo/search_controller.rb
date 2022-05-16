@@ -46,26 +46,8 @@ module Avo
     def search_resource(resource)
       query = resource.search_query.call(params: params).limit(8)
 
-      # Figure oute if this is a belongs_to search
-      if params[:via_reflection_class].present?
-        # Fetch the field
-        field = belongs_to_field
-
-        if field.attach_scope.present?
-          # Try to fetch the parent.
-          if params[:via_reflection_id].present?
-            parent = params[:via_reflection_class].safe_constantize.find params[:via_reflection_id]
-          end
-
-          # Try to fetch the grandparent for the new views where the parent is nil.
-          if params[:via_parent_resource_id].present? && params[:via_parent_resource_class].present?
-            grandparent = params[:via_parent_resource_class].safe_constantize.find params[:via_parent_resource_id]
-          end
-
-          # Add to the query
-          query = Avo::Hosts::AssociationScopeHost.new(block: belongs_to_field.attach_scope, query: query, parent: parent, grandparent: grandparent).handle
-        end
-      end
+      # Figure out if this is a belongs_to search
+      query = apply_attach_scope query
 
       results = apply_search_metadata(query, resource)
 
@@ -77,6 +59,31 @@ module Avo
       }
 
       [resource.name.pluralize.downcase, result_object]
+    end
+
+    # Figure out if it's a belongs to search and if it has the attach_scope block present.
+    # If so, set the parent for those edit screens and the grandparent for those new screens.
+    def apply_attach_scope(query)
+      return query if params[:via_reflection_class].blank?
+
+      # Fetch the field
+      field = belongs_to_field
+
+      # No need to modify the query if there's no attach_scope present.
+      return query if field.attach_scope.blank?
+
+      # Try to fetch the parent.
+      if params[:via_reflection_id].present?
+        parent = params[:via_reflection_class].safe_constantize.find params[:via_reflection_id]
+      end
+
+      # Try to fetch the grandparent for the new views where the parent is nil.
+      if params[:via_parent_resource_id].present? && params[:via_parent_resource_class].present?
+        grandparent = params[:via_parent_resource_class].safe_constantize.find params[:via_parent_resource_id]
+      end
+
+      # Add to the query
+      Avo::Hosts::AssociationScopeHost.new(block: belongs_to_field.attach_scope, query: query, parent: parent, grandparent: grandparent).handle
     end
 
     def apply_search_metadata(models, avo_resource)
