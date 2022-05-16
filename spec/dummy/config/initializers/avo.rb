@@ -37,7 +37,9 @@ Avo.configure do |config|
       end
 
       group "People", collapsable: true do
-        resource "UserResource"
+        resource "UserResource", visible: -> do
+          authorize current_user, User, "index?", raise_exception: false
+        end
         resource :people
         resource :spouses
       end
