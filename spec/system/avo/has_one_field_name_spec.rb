@@ -4,7 +4,10 @@ RSpec.describe 'HasOneFieldName', type: :system do
   let!(:user) { create :user }
   let!(:post) { create :post }
 
-  subject { visit url; page }
+  subject {
+    visit url
+    page 
+  }
 
   context 'show' do
     let(:url) { "/admin/resources/users/#{user.id}" }
@@ -18,8 +21,8 @@ RSpec.describe 'HasOneFieldName', type: :system do
         wait_for_loaded
         expect(page).to have_text 'Choose post'
 
-        expect(page).to have_select "fields_related_id", selected: "Choose an option"
-        select post.name, from: "fields_related_id"
+        expect(page).to have_select 'fields_related_id', selected: "Choose an option"
+        select post.name, from: 'fields_related_id'
 
         click_on 'Attach'
         wait_for_loaded
