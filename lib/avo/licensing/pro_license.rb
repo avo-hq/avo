@@ -7,6 +7,7 @@ module Avo
           :localization,
           :custom_tools,
           :custom_fields,
+          :resource_tools,
           :global_search,
           :enhanced_search_results,
           :searchable_associations,

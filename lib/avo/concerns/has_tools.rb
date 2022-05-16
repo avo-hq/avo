@@ -7,6 +7,12 @@ module Avo
         class_attribute :tools_holder
 
         def tools
+          if !Rails.env.production? && App.license.lacks(:resource_tools)
+            # Add error message to let the developer know the resource tool will not be available in a production environment.
+            Avo::App.error_messages.push "Warning: Your license is invalid or doesn't support resource tools. The resource tools will not be visible in a production environment."
+          end
+
+          return [] if App.license.lacks_with_trial :resource_tools
           return [] if self.class.tools.blank?
 
           self.class.tools

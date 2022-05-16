@@ -14,6 +14,7 @@ module Avo
     class_attribute :view_context, default: nil
     class_attribute :params, default: {}
     class_attribute :translation_enabled, default: false
+    class_attribute :error_messages, default: []
 
     class << self
       def boot
@@ -29,6 +30,7 @@ module Avo
       end
 
       def init(request:, context:, current_user:, root_path:, view_context:, params:)
+        self.error_messages = []
         self.request = request
         self.context = context
         self.current_user = current_user
