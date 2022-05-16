@@ -48,7 +48,7 @@ class UserResource < Avo::BaseResource
     main_app.hey_url
   end
 
-  field :post, as: :has_one, translation_key: "avo.field_translations.people"
+  field :post, as: :has_one, translation_key: "avo.field_translations.people", name: "Main post"
   field :posts,
     as: :has_many,
     attach_scope: -> { query.where.not(user_id: parent.id).or(query.where(user_id: nil)) }
