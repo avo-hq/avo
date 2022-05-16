@@ -12,8 +12,8 @@ RSpec.describe 'HasOneFieldName', type: :system do
   context 'show' do
     let(:url) { "/admin/resources/users/#{user.id}" }
 
-    describe 'without a related user' do
-      it 'attaches a post' do
+    describe 'without a related post' do
+      it 'attaches and detaches a post' do
         visit url
         expect(page).to have_text 'Attach Main post'
 
@@ -32,6 +32,19 @@ RSpec.describe 'HasOneFieldName', type: :system do
         expect(page).to have_text post.name
 
         expect(user.posts.pluck('id')).to include post.id
+
+        expect(page).to have_text 'Main post'
+        expect(page).to have_text 'Detach main post'
+
+        accept_alert do
+          click_on 'Detach main post'
+        end
+        wait_for_loaded
+
+        expect(page).to have_text 'Post detached.'
+        expect(page).not_to have_text 'Detach main post'
+        expect(page).to have_text 'Attach Main post'
+        expect(user.posts.pluck('id')).not_to include post.id
       end
     end
   end
