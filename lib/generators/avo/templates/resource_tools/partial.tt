@@ -9,7 +9,7 @@
     <%% c.body do %>
       <div class="flex flex-col p-4 min-h-24">
         <div class="space-y-4">
-          <h3>This partial is waiting to be updated</h3>
+          <h3>🪧 This partial is waiting to be updated</h3>
 
           <p>
             You can edit this file here <%= in_code "app/views/avo/resource_tools/#{file_name}.html.erb" %>.
