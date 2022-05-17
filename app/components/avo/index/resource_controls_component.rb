@@ -41,7 +41,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   end
 
   def edit_path
-    #If @praent_model is present this will get override by via_resource params
+    # Add the `view` param to let Avo know where to redirect back when the user clicks the `Cancel` button.
     args = {via_index: 'true'}
 
     if @parent_model.present?
