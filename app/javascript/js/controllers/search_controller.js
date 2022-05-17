@@ -80,6 +80,8 @@ export default class extends Controller {
         via_parent_resource_id: this.dataset.viaParentResourceId,
         // eslint-disable-next-line camelcase
         via_parent_resource_class: this.dataset.viaParentResourceClass,
+        // eslint-disable-next-line camelcase
+        via_relation: this.dataset.viaRelation,
       }
     }
 
