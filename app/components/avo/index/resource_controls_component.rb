@@ -42,7 +42,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
 
   def edit_path
     #If @praent_model is present this will get override by via_resource params
-    args = {via_index: 'true'}
+    args = {via_view: 'index'}
 
     if @parent_model.present?
       args = {

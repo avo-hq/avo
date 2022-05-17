@@ -31,6 +31,6 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   private
 
   def via_index?
-    params[:via_index].present?
+    params[:via_view] == 'index'
   end
 end
