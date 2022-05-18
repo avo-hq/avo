@@ -5,6 +5,7 @@ module Avo
     extend HasContext
 
     include ActionView::Helpers::UrlHelper
+    include Avo::Concerns::HasTools
 
     delegate :view_context, to: "Avo::App"
     delegate :main_app, to: :view_context
@@ -133,6 +134,12 @@ module Avo
       if Avo::App.license.lacks_with_trial(:custom_fields)
         fields = fields.reject do |field|
           field.custom?
+        end
+      end
+
+      if Avo::App.license.lacks_with_trial(:advanced_fields)
+        fields = fields.reject do |field|
+          field.type == 'tags'
         end
       end
 

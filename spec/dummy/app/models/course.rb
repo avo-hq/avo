@@ -7,9 +7,19 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  skills     :text             default([]), is an Array
+#  country    :string
+#  city       :string
 #
 class Course < ApplicationRecord
   has_many :links, -> { order(position: :asc) }, class_name: "Course::Link", inverse_of: :course
+
+  def skill_suggestions
+    ["example suggestion", "example tag", name]
+  end
+
+  def skill_disallowed
+    ["foo", "bar", id]
+  end
 
   def self.countries
     ["USA", "Japan", "Spain", "Thailand"]

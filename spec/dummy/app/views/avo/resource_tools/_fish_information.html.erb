@@ -1,0 +1,33 @@
+<div class="flex flex-col">
+  <%= render Avo::PanelComponent.new title: @resource.model.name do |c| %>
+    <% c.tools do %>
+      <%= a_link('/admin', icon: 'heroicons/solid/academic-cap', style: :primary) do %>
+        Primary
+      <% end %>
+    <% end %>
+
+    <% c.body do %>
+      <div class="flex flex-col p-4 min-h-24">
+        <div class="space-y-4">
+          <h3>Below there should be an image of this fish 🐠</h3>
+
+          <p>
+            The fish's name is <strong><%= @resource.model.name %></strong>. The ID of the record is <%= @resource.model.id %> and the tool's name is <strong><%= tool.class.to_s %></strong>.
+          </p>
+
+          <% if tool.has_fish_image? @resource.model.name.to_s.downcase.to_sym %>
+            <%= image_tag tool.images[@resource.model.name.to_s.downcase.to_sym], loading: :lazy, class: 'rounded' %>
+          <% end %>
+
+          <%#== ap @resource.model %>
+          <%#== ap tool %>
+          <%#== ap params %>
+          <%#== ap Avo::App.context %>
+          <%#== ap current_user %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+
+

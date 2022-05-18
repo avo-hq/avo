@@ -4,8 +4,6 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
   include Avo::ResourcesHelper
   include Avo::ApplicationHelper
 
-  attr_reader :fields_by_panel, :has_one_panels, :has_many_panels, :has_as_belongs_to_many_panels
-
   def initialize(resource: nil, reflection: nil, parent_model: nil, resource_panel: nil, actions: [])
     @resource = resource
     @reflection = reflection
@@ -17,6 +15,7 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
 
   def title
     if @reflection.present?
+      return field.name if has_one_field?
       reflection_resource.name
     else
       @resource.panels.first[:name]
@@ -49,5 +48,9 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
   # In development and test environments we shoudl show the invalid field errors
   def should_display_invalid_fields_errors?
     (Rails.env.development? || Rails.env.test?) && @resource.invalid_fields.present?
+  end
+
+  def has_one_field?
+    field.present? and field.class == Avo::Fields::HasOneField
   end
 end

@@ -32,7 +32,7 @@
 
 .aa-DetachedFormContainer,
 .aa-DetachedContainer .aa-Panel {
-  @apply bg-gray-100 border-b-0;
+  @apply bg-gray-50 border-b-0;
 }
 
 .aa-Form {
