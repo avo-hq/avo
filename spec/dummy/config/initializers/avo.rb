@@ -32,7 +32,9 @@ Avo.configure do |config|
     section "Resources", icon: "heroicons/outline/academic-cap", collapsable: true, collapsed: false do
       group "Company", collapsable: true do
         resource :projects
-        resource :team
+        resource :team, visible: -> {
+          authorize current_user, Team, "index?", raise_exception: false
+        }
         resource :team_membership, visible: -> {
           authorize current_user, TeamMembership, "index?", raise_exception: false
 
