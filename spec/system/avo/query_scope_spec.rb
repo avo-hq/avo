@@ -30,9 +30,9 @@ RSpec.describe "QueryScope", type: :system do
 
       users_ids = all('[data-field-type="id"]')
 
-      first_user_id = user_ids[0].find("a").text
-      second_user_id = user_ids[1].find("a").text
-      third_user_id = user_ids[2].find("a").text
+      first_user_id = users_ids[0].find("a").text
+      second_user_id = users_ids[1].find("a").text
+      third_user_id = users_ids[2].find("a").text
 
       expect(first_user_id).to eq User.all[0].id.to_s
       expect(second_user_id).to eq User.all[1].id.to_s

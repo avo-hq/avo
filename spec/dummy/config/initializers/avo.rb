@@ -33,6 +33,11 @@ Avo.configure do |config|
       group "Company", collapsable: true do
         resource :projects
         resource :team
+        resource :team_membership, visible: -> {
+          authorize current_user, TeamMembership, "index?", raise_exception: false
+
+          false
+        }
         resource :reviews
       end
 
