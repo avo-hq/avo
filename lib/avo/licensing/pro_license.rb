@@ -7,12 +7,14 @@ module Avo
           :localization,
           :custom_tools,
           :custom_fields,
+          :resource_tools,
           :global_search,
           :enhanced_search_results,
           :searchable_associations,
           :resource_ordering,
           :dashboards,
-          :menu_editor
+          :menu_editor,
+          :advanced_fields
         ]
       end
     end

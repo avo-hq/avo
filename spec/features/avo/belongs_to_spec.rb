@@ -109,7 +109,7 @@ RSpec.feature "belongs_to", type: :feature do
   end
 
   describe "hidden columns if current association" do
-    let!(:user) { create :user }
+    let!(:user) { create :user, first_name: "Alicia" }
     let!(:comment) { create :comment, body: "a comment", user: user }
 
     it "hides the User column" do

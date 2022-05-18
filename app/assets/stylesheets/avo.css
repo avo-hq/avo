@@ -4,6 +4,7 @@
 @import './../../../node_modules/trix/dist/trix.css';
 @import './../../../node_modules/flatpickr/dist/flatpickr.css';
 @import './../../../node_modules/@algolia/autocomplete-theme-classic/dist/theme.css';
+@import './../../../node_modules/@yaireo/tagify/dist/tagify.css';
 
 @import 'tailwindcss/base';
 
@@ -11,13 +12,13 @@
 @import './css/buttons.css';
 @import './css/typography.css';
 @import './css/tooltips.css';
-@import './css/alerts.css';
 @import './css/loader.css';
 @import './css/pagination.css';
 @import './css/breadcrumbs.css';
 @import './css/search.css';
 @import './css/active-storage.css';
 @import './css/spinner.css';
+@import './css/tags.css';
 
 @import './css/components/status.css';
 @import './css/components/code.css';
@@ -88,4 +89,37 @@ body.os-pc .pc\:hidden {
 trix-editor {
   max-height: 320px !important;
   overflow-y: auto;
+}
+
+.scroll-shadows {
+  background:
+    /* Shadow Cover TOP */
+    linear-gradient(
+      #F6F6F7 30%,
+      #F6F6F7
+    ) center top,
+
+    /* Shadow Cover BOTTOM */
+    linear-gradient(
+      #F6F6F7,
+      #F6F6F7 70%
+    ) center bottom,
+
+    /* Shadow TOP */
+    radial-gradient(
+      farthest-side at 50% 0,
+      rgba(0, 0, 0, 0.2),
+      rgba(0, 0, 0, 0)
+    ) center top,
+
+    /* Shadow BOTTOM */
+    radial-gradient(
+      farthest-side at 50% 100%,
+      rgba(0, 0, 0, 0.2),
+      rgba(0, 0, 0, 0)
+    ) center bottom;
+
+  background-repeat: no-repeat;
+  background-size: 100% 34px, 100% 34px, 100% 14px, 100% 14px;
+  background-attachment: local, local, scroll, scroll;
 }

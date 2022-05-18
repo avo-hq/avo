@@ -23,11 +23,11 @@ RSpec.feature "Avo::Licensing::HQ", type: :feature do
         it { is_expected.to include({id: "community", valid: true, expiry: 1.hour, license: "community", license_key: "license_123", environment: "test", ip: "127.0.0.1", host: "avodemo.herokuapp.test", port: 3001}.as_json) }
 
         it "caches the result" do
-          expect(Rails.cache.read(Avo::Licensing::HQ::CACHE_KEY)).to be nil
+          expect(Rails.cache.read(Avo::Licensing::HQ.cache_key)).to be nil
 
           subject
 
-          expect(Rails.cache.read(Avo::Licensing::HQ::CACHE_KEY)).not_to be nil
+          expect(Rails.cache.read(Avo::Licensing::HQ.cache_key)).not_to be nil
         end
 
         describe "when runs multiple times" do
@@ -51,12 +51,12 @@ RSpec.feature "Avo::Licensing::HQ", type: :feature do
         end
 
         it "caches the error" do
-          expect(Rails.cache.read(Avo::Licensing::HQ::CACHE_KEY)).to be nil
+          expect(Rails.cache.read(Avo::Licensing::HQ.cache_key)).to be nil
 
           subject
 
-          expect(Rails.cache.read(Avo::Licensing::HQ::CACHE_KEY)).to include({error: "Avo HQ Internal server error.", exception_message: "HQ Internal Server Error.", expiry: 5.minutes}.as_json)
-          expect(Rails.cache.read(Avo::Licensing::HQ::CACHE_KEY)).not_to include :valid
+          expect(Rails.cache.read(Avo::Licensing::HQ.cache_key)).to include({error: "Avo HQ Internal server error.", exception_message: "HQ Internal Server Error.", expiry: 5.minutes}.as_json)
+          expect(Rails.cache.read(Avo::Licensing::HQ.cache_key)).not_to include :valid
         end
       end
 
@@ -68,12 +68,12 @@ RSpec.feature "Avo::Licensing::HQ", type: :feature do
         end
 
         it "caches the error" do
-          expect(Rails.cache.read(Avo::Licensing::HQ::CACHE_KEY)).to be nil
+          expect(Rails.cache.read(Avo::Licensing::HQ.cache_key)).to be nil
 
           subject
 
-          expect(Rails.cache.read(Avo::Licensing::HQ::CACHE_KEY)).to include({error: "Request timeout.", exception_message: "execution expired", expiry: 5.minutes}.as_json)
-          expect(Rails.cache.read(Avo::Licensing::HQ::CACHE_KEY)).not_to include :valid
+          expect(Rails.cache.read(Avo::Licensing::HQ.cache_key)).to include({error: "Request timeout.", exception_message: "execution expired", expiry: 5.minutes}.as_json)
+          expect(Rails.cache.read(Avo::Licensing::HQ.cache_key)).not_to include :valid
         end
 
         describe "when config for display is false" do
@@ -86,12 +86,12 @@ RSpec.feature "Avo::Licensing::HQ", type: :feature do
           end
 
           it "does not display the error" do
-            expect(Rails.cache.read(Avo::Licensing::HQ::CACHE_KEY)).to be nil
+            expect(Rails.cache.read(Avo::Licensing::HQ.cache_key)).to be nil
 
             subject
 
-            expect(Rails.cache.read(Avo::Licensing::HQ::CACHE_KEY)).to include({error: "Request timeout.", exception_message: "execution expired", expiry: 5.minutes}.as_json)
-            expect(Rails.cache.read(Avo::Licensing::HQ::CACHE_KEY)).not_to include :valid
+            expect(Rails.cache.read(Avo::Licensing::HQ.cache_key)).to include({error: "Request timeout.", exception_message: "execution expired", expiry: 5.minutes}.as_json)
+            expect(Rails.cache.read(Avo::Licensing::HQ.cache_key)).not_to include :valid
 
             visit url
 
@@ -111,12 +111,12 @@ RSpec.feature "Avo::Licensing::HQ", type: :feature do
           end
 
           it "does not display the error" do
-            expect(Rails.cache.read(Avo::Licensing::HQ::CACHE_KEY)).to be nil
+            expect(Rails.cache.read(Avo::Licensing::HQ.cache_key)).to be nil
 
             subject
 
-            expect(Rails.cache.read(Avo::Licensing::HQ::CACHE_KEY)).to include({error: "Request timeout.", exception_message: "execution expired", expiry: 5.minutes}.as_json)
-            expect(Rails.cache.read(Avo::Licensing::HQ::CACHE_KEY)).not_to include :valid
+            expect(Rails.cache.read(Avo::Licensing::HQ.cache_key)).to include({error: "Request timeout.", exception_message: "execution expired", expiry: 5.minutes}.as_json)
+            expect(Rails.cache.read(Avo::Licensing::HQ.cache_key)).not_to include :valid
 
             visit url
 
@@ -127,12 +127,12 @@ RSpec.feature "Avo::Licensing::HQ", type: :feature do
         end
 
         it "caches the error" do
-          expect(Rails.cache.read(Avo::Licensing::HQ::CACHE_KEY)).to be nil
+          expect(Rails.cache.read(Avo::Licensing::HQ.cache_key)).to be nil
 
           subject
 
-          expect(Rails.cache.read(Avo::Licensing::HQ::CACHE_KEY)).to include({error: "Request timeout.", exception_message: "execution expired", expiry: 5.minutes}.as_json)
-          expect(Rails.cache.read(Avo::Licensing::HQ::CACHE_KEY)).not_to include :valid
+          expect(Rails.cache.read(Avo::Licensing::HQ.cache_key)).to include({error: "Request timeout.", exception_message: "execution expired", expiry: 5.minutes}.as_json)
+          expect(Rails.cache.read(Avo::Licensing::HQ.cache_key)).not_to include :valid
         end
 
       end
@@ -146,12 +146,12 @@ RSpec.feature "Avo::Licensing::HQ", type: :feature do
         end
 
         it "caches the error" do
-          expect(Rails.cache.read(Avo::Licensing::HQ::CACHE_KEY)).to be nil
+          expect(Rails.cache.read(Avo::Licensing::HQ.cache_key)).to be nil
 
           subject
 
-          expect(Rails.cache.read(Avo::Licensing::HQ::CACHE_KEY)).to include({error: "Connection error.", exception_message: "Connection error!", expiry: 5.minutes}.as_json)
-          expect(Rails.cache.read(Avo::Licensing::HQ::CACHE_KEY)).not_to include :valid
+          expect(Rails.cache.read(Avo::Licensing::HQ.cache_key)).to include({error: "Connection error.", exception_message: "Connection error!", expiry: 5.minutes}.as_json)
+          expect(Rails.cache.read(Avo::Licensing::HQ.cache_key)).not_to include :valid
         end
       end
     end

@@ -29,6 +29,7 @@
     "@tailwindcss/forms": "^0.4.0",
     "@tailwindcss/jit": "^0.1.17",
     "@tailwindcss/typography": "^0.5.1",
+    "@yaireo/tagify": "^4.11.0",
     "autoprefixer": "^10.4.2",
     "axios": "^0.21.2",
     "chart.js": "^3.7.0",

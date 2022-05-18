@@ -3,7 +3,7 @@ class <%= class_name.camelize %> < Avo::Dashboards::ChartkickCard
   self.label = "<%= name.underscore.humanize %>"
   self.chart_type = :area_chart
 
-  query do
+  def query
     data = 3.times.map do |index|
       {
         name: "Batch #{index}",

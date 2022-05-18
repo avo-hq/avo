@@ -2,12 +2,12 @@ import { application } from './application'
 
 import ActionController from './controllers/action_controller'
 import ActionsPickerController from './controllers/actions_picker_controller'
-import AlertsController from './controllers/alerts_controller'
 import AttachmentsController from './controllers/attachments_controller'
 import BelongsToFieldController from './controllers/fields/belongs_to_field_controller'
 import BooleanFilterController from './controllers/boolean_filter_controller'
 import CardController from './controllers/card_controller'
 import CodeFieldController from './controllers/fields/code_field_controller'
+import CopyToClipboardController from './controllers/copy_to_clipboard_controller'
 import DateFieldController from './controllers/fields/date_field_controller'
 import FilterController from './controllers/filter_controller'
 import HiddenInputController from './controllers/hidden_input_controller'
@@ -24,6 +24,7 @@ import SearchController from './controllers/search_controller'
 import SelectController from './controllers/select_controller'
 import SelectFilterController from './controllers/select_filter_controller'
 import SimpleMdeController from './controllers/fields/simple_mde_controller'
+import TagsFieldController from './controllers/fields/tags_field_controller'
 import TextFilterController from './controllers/text_filter_controller'
 import TippyController from './controllers/tippy_controller'
 import TogglePanelController from './controllers/toggle_panel_controller'
@@ -31,10 +32,10 @@ import TrixFieldController from './controllers/fields/trix_field_controller'
 
 application.register('action', ActionController)
 application.register('actions-picker', ActionsPickerController)
-application.register('alerts', AlertsController)
 application.register('attachments', AttachmentsController)
 application.register('boolean-filter', BooleanFilterController)
 application.register('card', CardController)
+application.register('copy-to-clipboard', CopyToClipboardController)
 application.register('filter', FilterController)
 application.register('hidden-input', HiddenInputController)
 application.register('item-select-all', ItemSelectAllController)
@@ -48,6 +49,7 @@ application.register('per-page', PerPageController)
 application.register('search', SearchController)
 application.register('select', SelectController)
 application.register('select-filter', SelectFilterController)
+application.register('tags-field', TagsFieldController)
 application.register('text-filter', TextFilterController)
 application.register('tippy', TippyController)
 application.register('toggle-panel', TogglePanelController)

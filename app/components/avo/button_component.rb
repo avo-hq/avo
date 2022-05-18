@@ -38,14 +38,15 @@ class Avo::ButtonComponent < ViewComponent::Base
   end
 
   def button_classes
-    classes = "button-component inline-flex flex-grow-0 items-center text-sm font-semibold leading-6 fill-current whitespace-nowrap transition duration-100 transform transition duration-100 cursor-pointer disabled:cursor-not-allowed disabled:opacity-70 border justify-center active:outline active:outline-1 #{@class}"
+    classes = "button-component inline-flex flex-grow-0 items-center font-semibold leading-6 fill-current whitespace-nowrap transition duration-100 transform transition duration-100 cursor-pointer disabled:cursor-not-allowed disabled:opacity-70 border justify-center active:outline active:outline-1 #{@class}"
 
     classes += " rounded" if @rounded.present?
 
     classes += style_classes
 
-    classes += @compact ? " px-1" : " px-4" # Same horizontal padding on all sizes
-    classes += spacing_classes
+    classes += horizontal_padding_classes
+    classes += vertical_padding_classes
+    classes += text_size_classes
 
     classes
   end
@@ -57,10 +58,14 @@ class Avo::ButtonComponent < ViewComponent::Base
   def full_content
     result = ""
     icon_classes = @icon_class
-    icon_classes += full_content_icon_classes
+    # space out the icon from the text if text is present
+    icon_classes += " mr-1" if content.present?
+    # add the icon height
+    icon_classes += icon_size_classes
 
+    # Add the icon
     result += helpers.svg(@icon, class: icon_classes) if @icon.present?
-    result += "<span class='w-0 m-0'>&nbsp;</span>"
+
     if content.present?
       result += "<span>#{content}</span>"
     end
@@ -96,18 +101,48 @@ class Avo::ButtonComponent < ViewComponent::Base
 
   private
 
-  def spacing_classes
+  def vertical_padding_classes
     case @size.to_sym
     when :xs
       " py-0"
     when :sm
       " py-1"
     when :md
-      " py-2"
+      " py-1.5"
     when :lg
+      " py-2"
+    when :xl
       " py-3"
     else
       ""
+    end
+  end
+
+  def horizontal_padding_classes
+    return " px-1" if @compact
+
+    case @size.to_sym
+    when :xs
+      " px-2"
+    when :sm
+      " px-3"
+    when :md
+      " px-3"
+    when :lg
+      " px-5"
+    when :xl
+      " px-6"
+    else
+      "px-4"
+    end
+  end
+
+  def text_size_classes
+    case @size.to_sym
+    when :xs
+      " text-xs"
+    else
+      " text-sm"
     end
   end
 
@@ -117,28 +152,26 @@ class Avo::ButtonComponent < ViewComponent::Base
       " bg-primary-500 text-white border-primary-500 hover:bg-primary-600 hover:border-primary-600 active:border-primary-700 active:outline-primary-700 active:bg-primary-600"
     when :outline
       " bg-white text-#{@color}-500 border-#{@color}-500 hover:bg-#{@color}-100 active:bg-#{@color}-100 active:border-#{@color}-500 active:outline-#{@color}-500"
+    when :text
+      " text-#{@color}-500 active:outline-#{@color}-500 hover:bg-gray-100 border-transparent"
     else
       ""
     end
   end
 
-  def full_content_icon_classes
+  def icon_size_classes
     icon_classes = ""
 
     case @size
     when :xs
-      icon_classes += " h-4"
-      # When icon is solo we need to add an offset
-      icon_classes += " my-1" if content.blank?
+      icon_classes += " h-4 my-1"
     when :sm
-      icon_classes += " h-4"
-      # When icon is solo we need to add an offset
-      icon_classes += " my-1" if content.blank?
+      icon_classes += " h-4 my-1"
     when :md
-      icon_classes += " h-5"
-      # When icon is solo we need to add an offset
-      icon_classes += " my-0.5" if content.blank?
+      icon_classes += " h-4 my-1"
     when :lg
+      icon_classes += " h-5 my-0.5"
+    when :xl
       icon_classes += " h-6"
     end
 

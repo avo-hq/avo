@@ -1,5 +1,4 @@
 import 'codemirror/mode/css/css'
-
 import 'codemirror/mode/dockerfile/dockerfile'
 import 'codemirror/mode/htmlmixed/htmlmixed'
 import 'codemirror/mode/javascript/javascript'

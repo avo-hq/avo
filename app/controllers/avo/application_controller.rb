@@ -275,8 +275,12 @@ module Avo
       request.original_url.match?(/.*#{Avo::App.root_path}\/dashboards\/.*/)
     end
 
+    def on_debug_path
+      request.original_url.match?(/.*#{Avo::App.root_path}\/avo_private\/debug.*/)
+    end
+
     def on_custom_tool_page
-      !(on_root_path || on_resources_path || on_api_path || on_dashboards_path)
+      !(on_root_path || on_resources_path || on_api_path || on_dashboards_path || on_debug_path)
     end
 
     def model_param_key

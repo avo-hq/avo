@@ -15,6 +15,10 @@ module Avo
           NullLicense.new @hq_response
         end
       end
+
+      def self.refresh_license(request)
+        self.new(Licensing::HQ.new(request).fresh_response).license
+      end
     end
   end
 end

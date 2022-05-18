@@ -6,12 +6,16 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
 
   def initialize(resource: nil)
     @resource = resource
+
+    split_panel_fields
   end
 
   def back_path
     if via_resource?
       helpers.resource_path(model: params[:via_resource_class].safe_constantize, resource: relation_resource, resource_id: params[:via_resource_id])
-    else
+    elsif via_index?
+      helpers.resources_path(resource: @resource)
+    else # via resource show page
       helpers.resource_path(model: @resource.model, resource: @resource)
     end
   end
@@ -24,7 +28,7 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
 
   private
 
-  def via_resource?
-    params[:via_resource_class].present? && params[:via_resource_id].present?
+  def via_index?
+    params[:via_view] == 'index'
   end
 end

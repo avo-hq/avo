@@ -59,6 +59,14 @@ module Avo
       def lacks_with_trial(ability)
         !has_with_trial ability
       end
+
+      def name
+        if id.present?
+          id.humanize
+        else
+          self.class.to_s.split('::').last.underscore.humanize.gsub ' license', ''
+        end
+      end
     end
   end
 end

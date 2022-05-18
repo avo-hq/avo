@@ -25,7 +25,8 @@ FactoryBot.define do
         Time.now - rand(10...365).days
       end
     end
-    status { 0 }
+    tag_list { ["1", "2", "five", "seven"].shuffle }
+    status { ::Post.statuses.keys.sample }
   end
 
   factory :project do
@@ -42,11 +43,11 @@ FactoryBot.define do
   end
 
   factory :comment do
-    body { Faker::Lorem.paragraphs(number: rand(4...10)).join(' ') }
+    body { Faker::Lorem.paragraphs(number: rand(4...10)).join(" ") }
   end
 
   factory :review do
-    body { Faker::Lorem.paragraphs(number: rand(4...10)).join(' ') }
+    body { Faker::Lorem.paragraphs(number: rand(4...10)).join(" ") }
   end
 
   factory :person do
@@ -64,6 +65,9 @@ FactoryBot.define do
 
   factory :course do
     name { Faker::Educator.unique.course_name }
+    skills { [Faker::Educator.subject, Faker::Educator.subject, Faker::Educator.subject, Faker::Educator.subject, Faker::Educator.subject] }
+    country { Course.countries.sample }
+    city { Course.cities.stringify_keys[country].sample }
   end
 
   factory :course_link, class: "Course::Link" do

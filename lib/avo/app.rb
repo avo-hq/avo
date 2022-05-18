@@ -14,6 +14,7 @@ module Avo
     class_attribute :view_context, default: nil
     class_attribute :params, default: {}
     class_attribute :translation_enabled, default: false
+    class_attribute :error_messages, default: []
 
     class << self
       def boot
@@ -29,6 +30,7 @@ module Avo
       end
 
       def init(request:, context:, current_user:, root_path:, view_context:, params:)
+        self.error_messages = []
         self.request = request
         self.context = context
         self.current_user = current_user
@@ -104,16 +106,61 @@ module Avo
           end
       end
 
+      def has_main_menu?
+        return false if Avo::App.license.lacks_with_trial(:menu_editor)
+        return false if Avo.configuration.main_menu.nil?
+
+        true
+      end
+
+      def has_profile_menu?
+        return false if Avo::App.license.lacks_with_trial(:menu_editor)
+        return false if Avo.configuration.profile_menu.nil?
+
+        true
+      end
+
       def main_menu
-        return nil if Avo::App.license.lacks_with_trial(:menu_builder)
+        # Return empty menu if the app doesn't have the profile menu configured
+        return Avo::Menu::Builder.new.build unless has_main_menu?
 
         Avo::Menu::Builder.parse_menu(&Avo.configuration.main_menu)
       end
 
       def profile_menu
-        return nil if Avo::App.license.lacks_with_trial(:menu_builder)
+        # Return empty menu if the app doesn't have the profile menu configured
+        return Avo::Menu::Builder.new.build unless has_profile_menu?
 
         Avo::Menu::Builder.parse_menu(&Avo.configuration.profile_menu)
+      end
+
+      def debug_report(request = nil)
+        payload = {}
+
+        hq = Avo::Licensing::HQ.new(request)
+
+        payload[:thread_count] = get_thread_count
+        payload[:hq_payload] = hq&.payload
+        payload[:license_id] = Avo::App&.license&.id
+        payload[:license_valid] = Avo::App&.license&.valid?
+        payload[:license_payload] = Avo::App&.license&.payload
+        payload[:license_response] = Avo::App&.license&.response
+        payload[:license_abilities] = Avo::App&.license&.abilities
+        payload[:cache_store] = self.cache_store&.class&.to_s
+        payload[:avo_metadata] = hq&.avo_metadata
+        payload[:app_timezone] = Time.now.zone
+        payload[:cache_key] = Avo::Licensing::HQ.cache_key
+        payload[:cache_key_contents] = hq&.cached_response
+
+        payload
+      rescue => e
+        e
+      end
+
+      def get_thread_count
+        Thread.list.select {|thread| thread.status == "run"}.count
+      rescue => e
+        e
       end
     end
   end

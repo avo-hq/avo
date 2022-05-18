@@ -1,4 +1,4 @@
-<div class="text-black border-t border-gray-200 p-4 flex">
+<div class="text-black border-gray-200 p-4 flex">
   <div class="flex-1 flex space-x-4">
     <% if avatar.present? %>
       <div class="relative aspect-square w-10 h-10 overflow-hidden rounded">
@@ -25,7 +25,7 @@
         class="hidden absolute flex flex-col inset-auto right-0 -mt-12 bg-white rounded min-w-[200px] shadow-context -translate-y-full"
         data-toggle-panel-target="panel"
       >
-        <% if Avo::App.license.has_with_trial(:menu_editor) && Avo.configuration.profile_menu.present? %>
+        <% if Avo::App.has_profile_menu? %>
           <div class="text-black space-y-4">
             <% Avo::App.profile_menu.items.each do |item| %>
               <% if item.is_a? Avo::Menu::Link %>

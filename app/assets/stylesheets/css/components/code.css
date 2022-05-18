@@ -8,6 +8,7 @@
 .CodeMirror {
   height: var(--height) !important;
   min-height: auto;
+  padding: 0;
 }
 
 /* overlay CodeMirror fullscreen & Preview on small screens */

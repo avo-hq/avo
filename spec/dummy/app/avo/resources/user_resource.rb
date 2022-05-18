@@ -1,7 +1,7 @@
 class UserResource < Avo::BaseResource
   self.title = :name
   self.description = -> {
-    "These are the users of the app. view: #{view}"
+    "Users of the app. view: #{view}"
   }
   self.translation_key = "avo.resource_translations.user"
   self.search_query = ->(params:) do
@@ -48,12 +48,17 @@ class UserResource < Avo::BaseResource
     main_app.hey_url
   end
 
-  field :post, as: :has_one, translation_key: "avo.field_translations.people"
-  field :posts, as: :has_many
+  field :post, as: :has_one, translation_key: "avo.field_translations.people", name: "Main post"
+  field :posts,
+    as: :has_many,
+    attach_scope: -> { query.where.not(user_id: parent.id).or(query.where(user_id: nil)) }
   field :teams, as: :has_and_belongs_to_many
   field :people, as: :has_many, translation_key: "avo.field_translations.people"
   field :spouses, as: :has_many # STI has_many resource
-  field :comments, as: :has_many, scope: -> { starts_with :a }
+  field :comments,
+    as: :has_many,
+    scope: -> { query.starts_with parent.first_name[0].downcase },
+    description: "The comments listed in the attach modal all start with the name of the parent user."
   field :projects, as: :has_and_belongs_to_many
 
   grid do
@@ -69,16 +74,17 @@ class UserResource < Avo::BaseResource
 
   filter UserNamesFilter
   filter IsAdmin
+  filter DummyMultipleSelectFilter
 
   with_options only_on: :index do
-    card UsersMetric, label: 'Users count'
-    card UsersMetric, options: { type: :active }, label: 'Active users'
-    card UsersMetric, options: { type: :non_admins }, label: 'Non admin users'
+    card UsersMetric, label: "Users count"
+    card UsersMetric, options: {type: :active}, label: "Active users"
+    card UsersMetric, options: {type: :non_admins}, label: "Non admin users"
   end
 
   with_options only_on: :show do
-    card UserMetric, options: { get: :comments }, label: 'Comments count'
-    card UserMetric, options: { get: :posts }, label: 'Posts count'
-    card UserMetric, options: { get: :projects }, label: 'Projects count'
+    card UserMetric, options: {get: :comments}, label: "Comments count"
+    card UserMetric, options: {get: :posts}, label: "Posts count"
+    card UserMetric, options: {get: :projects}, label: "Projects count"
   end
 end

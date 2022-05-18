@@ -4,14 +4,14 @@ module Avo
   class BaseController < ApplicationController
     before_action :set_resource_name
     before_action :set_resource
+    before_action :hydrate_resource
+    before_action :set_applied_filters, only: :index
     before_action :set_model, only: [:show, :edit, :destroy, :update, :order]
     before_action :hydrate_resource
     before_action :set_model_to_fill
     before_action :set_edit_title_and_breadcrumbs, only: [:edit, :update]
     before_action :fill_model, only: [:create, :update]
     before_action :authorize_action
-    before_action :reset_pagination_if_filters_changed, only: :index
-    before_action :cache_applied_filters, only: :index
 
     def index
       @page_title = @resource.plural_name.humanize
@@ -48,19 +48,26 @@ module Avo
         # Check if the sortable field option is actually a proc and we need to do a custom sort
         field_id = @index_params[:sort_by].to_sym
         field = @resource.get_field_definitions.find { |field| field.id == field_id }
-        if field&.sortable.is_a?(Proc)
-          @query = field.sortable.call(@query, @index_params[:sort_direction])
+        @query = if field&.sortable.is_a?(Proc)
+          field.sortable.call(@query, @index_params[:sort_direction])
         else
-          @query = @query.order("#{@resource.model_class.table_name}.#{@index_params[:sort_by]} #{@index_params[:sort_direction]}")
+          @query.order("#{@resource.model_class.table_name}.#{@index_params[:sort_by]} #{@index_params[:sort_direction]}")
         end
       end
 
-      # Apply filters
-      applied_filters.each do |filter_class, filter_value|
+      # Apply filters to the current query
+      filters_to_be_applied.each do |filter_class, filter_value|
         @query = filter_class.safe_constantize.new.apply_query request, @query, filter_value
       end
 
-      @pagy, @models = pagy(@query, items: @index_params[:per_page], link_extra: "data-turbo-frame=\"#{params[:turbo_frame]}\"", size: [1, 2, 2, 1])
+      extra_pagy_params = {}
+
+      # Reset open filters when a user navigates to a new page
+      extra_pagy_params[:keep_filters_panel_open] = if params[:keep_filters_panel_open] == "1"
+        "0"
+      end
+
+      @pagy, @models = pagy(@query, items: @index_params[:per_page], link_extra: "data-turbo-frame=\"#{params[:turbo_frame]}\"", size: [1, 2, 2, 1], params: extra_pagy_params)
 
       # Create resources for each model
       @resources = @models.map do |model|
@@ -311,36 +318,48 @@ module Avo
         .select { |action| action.visible_in_view }
     end
 
-    def applied_filters
-      if params[:filters].present?
-        return JSON.parse(Base64.decode64(params[:filters]))
-      end
+    def set_applied_filters
+      @applied_filters = Avo::Filters::BaseFilter.decode_filters(params[Avo::Filters::BaseFilter::PARAM_KEY])
 
+      # Some filters react to others and will have to be merged into this
+      @applied_filters = @applied_filters.merge reactive_filters
+    rescue
+      @applied_filters = {}
+    end
+
+    def reactive_filters
+      filter_reactions = {}
+
+      # Go through all filters
+      @resource.get_filters
+        .select do |filter_class|
+          filter_class.instance_methods(false).include? :react
+        end
+        .each do |filter_class|
+          # Run the react method if it's present
+          reaction = filter_class.new.react
+
+          next if reaction.nil?
+
+          filter_reactions[filter_class.to_s] = filter_class.new.react
+        end
+
+      filter_reactions
+    end
+
+    # Get the default state of the filters and override with the user applied filters
+    def filters_to_be_applied
       filter_defaults = {}
 
       @resource.get_filters.each do |filter_class|
         filter = filter_class.new
 
-        if filter.default.present?
+        unless filter.default.nil?
           filter_defaults[filter_class.to_s] = filter.default
         end
       end
 
-      filter_defaults
-    end
-
-    def cache_applied_filters
-      ::Avo::App.cache_store.delete applied_filters_cache_key if params[:filters].nil?
-
-      ::Avo::App.cache_store.write(applied_filters_cache_key, params[:filters], expires_in: 7.days)
-    end
-
-    def reset_pagination_if_filters_changed
-      params[:page] = 1 if params[:filters] != ::Avo::App.cache_store.read(applied_filters_cache_key)
-    end
-
-    def applied_filters_cache_key
-      "avo.base_controller.#{@resource.model_key}.applied_filters"
+      filter_defaults.merge(@applied_filters)
     end
 
     def set_edit_title_and_breadcrumbs

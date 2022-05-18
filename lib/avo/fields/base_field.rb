@@ -4,8 +4,9 @@ module Avo
       extend ActiveSupport::DescendantsTracker
       extend Avo::Fields::FieldExtensions::HasFieldName
 
-      include ActionView::Helpers::UrlHelper
       include Avo::Fields::FieldExtensions::VisibleInDifferentViews
+      include Avo::Concerns::HandlesFieldArgs
+      include ActionView::Helpers::UrlHelper
 
       delegate :view_context, to: "Avo::App"
       delegate :main_app, to: :view_context

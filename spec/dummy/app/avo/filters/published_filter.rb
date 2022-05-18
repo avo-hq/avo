@@ -14,8 +14,12 @@ class PublishedFilter < Avo::Filters::SelectFilter
 
   def options
     {
-      'published': "Published",
-      'unpublished': "Unpublished"
+      published: "Published",
+      unpublished: "Unpublished"
     }
   end
+
+  # def default
+  #   :published
+  # end
 end

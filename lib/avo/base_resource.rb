@@ -6,6 +6,7 @@ module Avo
 
     include ActionView::Helpers::UrlHelper
     include Avo::Concerns::HasCards
+    include Avo::Concerns::HasTools
 
     delegate :view_context, to: "Avo::App"
     delegate :main_app, to: :view_context
@@ -45,6 +46,7 @@ module Avo
     class_attribute :after_update_path, default: :show
     class_attribute :invalid_fields
     class_attribute :record_selector, default: true
+    class_attribute :keep_filters_panel_open, default: false
 
     class << self
       delegate :t, to: ::I18n
@@ -133,6 +135,12 @@ module Avo
       if Avo::App.license.lacks_with_trial(:custom_fields)
         fields = fields.reject do |field|
           field.custom?
+        end
+      end
+
+      if Avo::App.license.lacks_with_trial(:advanced_fields)
+        fields = fields.reject do |field|
+          field.type == 'tags'
         end
       end
 

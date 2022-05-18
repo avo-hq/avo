@@ -62,6 +62,8 @@ module Avo
       attr_reader :relation_method
       attr_reader :types # for Polymorphic associations
       attr_reader :allow_via_detaching
+      attr_reader :attach_scope
+      attr_reader :polymorphic_help
 
       def initialize(id, **args, &block)
         args[:placeholder] ||= I18n.t("avo.choose_an_option")
@@ -73,6 +75,8 @@ module Avo
         @types = args[:types]
         @relation_method = id.to_s.parameterize.underscore
         @allow_via_detaching = args[:allow_via_detaching] == true
+        @attach_scope = args[:attach_scope]
+        @polymorphic_help = args[:polymorphic_help]
       end
 
       def searchable
@@ -111,7 +115,13 @@ module Avo
         resource = target_resource
         resource = App.get_resource_by_model_name model if model.present?
 
-        ::Avo::Services::AuthorizationService.apply_policy(user, resource.class.query_scope).all.map do |model|
+        query = Avo::Services::AuthorizationService.apply_policy(user, resource.class.query_scope)
+
+        if attach_scope.present?
+          query = Avo::Hosts::AssociationScopeHost.new(block: attach_scope, query: query, parent: get_model).handle
+        end
+
+        query.all.map do |model|
           [model.send(resource.class.title), model.id]
         end
       end

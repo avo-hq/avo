@@ -2,23 +2,114 @@ module Avo
   module Licensing
     class HQ
       attr_accessor :current_request
+      attr_accessor :cache_store
 
       ENDPOINT = "https://avohq.io/api/v1/licenses/check".freeze unless const_defined?(:ENDPOINT)
-      CACHE_KEY = "avo.hq.response".freeze unless const_defined?(:CACHE_KEY)
       REQUEST_TIMEOUT = 5 unless const_defined?(:REQUEST_TIMEOUT) # seconds
+      CACHE_TIME = 3600 unless const_defined?(:CACHE_TIME) # seconds
 
-      def initialize(current_request)
+      class << self
+        def cache_key
+          "avo.hq-#{Avo::VERSION.parameterize}.response"
+        end
+      end
+
+      def initialize(current_request = nil)
         @current_request = current_request
         @cache_store = Avo::App.cache_store
       end
 
       def response
-        @hq_response || request
+        expire_cache_if_overdue
+
+        make_request
+      end
+
+      # Some cache stores don't auto-expire their keys and payloads so we need to do it for them
+      def expire_cache_if_overdue
+        return unless cached_response.present?
+        return unless cached_response['fetched_at'].present?
+
+        allowed_time = 1.hour
+        parsed_time = Time.parse(cached_response['fetched_at'].to_s)
+        time_has_passed = parsed_time < Time.now - allowed_time
+
+        clear_response if time_has_passed
+      end
+
+      def fresh_response
+        clear_response
+
+        make_request
+      end
+
+      def clear_response
+        cache_store.delete self.class.cache_key
+      end
+
+      def payload
+        result = {
+          license: Avo.configuration.license,
+          license_key: Avo.configuration.license_key,
+          avo_version: Avo::VERSION,
+          rails_version: Rails::VERSION::STRING,
+          ruby_version: RUBY_VERSION,
+          environment: Rails.env,
+          ip: current_request&.ip,
+          host: current_request&.host,
+          port: current_request&.port,
+          app_name: app_name
+        }
+
+        metadata = avo_metadata
+        if metadata[:resources_count] != 0
+          result[:avo_metadata] = metadata
+        end
+
+        result
+      end
+
+      def avo_metadata
+        resources = App.resources
+        dashboards = App.dashboards
+        field_definitions = resources.map(&:get_field_definitions)
+        fields_count = field_definitions.map(&:count).sum
+        fields_per_resource = sprintf("%0.01f", fields_count / (resources.count + 0.0))
+
+        field_types = {}
+        custom_fields_count = 0
+        field_definitions.each do |fields|
+          fields.each do |field|
+            field_types[field.type] ||= 0
+            field_types[field.type] += 1
+
+            custom_fields_count += 1 if field.custom?
+          end
+        end
+
+        {
+          resources_count: resources.count,
+          dashboards_count: dashboards.count,
+          fields_count: fields_count,
+          fields_per_resource: fields_per_resource,
+          custom_fields_count: custom_fields_count,
+          field_types: field_types,
+          **other_metadata(:actions),
+          **other_metadata(:filters),
+          main_menu_present: Avo.configuration.main_menu.present?,
+          profile_menu_present: Avo.configuration.profile_menu.present?,
+        }
+      rescue
+        {}
+      end
+
+      def cached_response
+        cache_store.read self.class.cache_key
       end
 
       private
 
-      def request
+      def make_request
         return cached_response if has_cached_response
 
         begin
@@ -45,18 +136,19 @@ module Avo
 
         return cache_and_return_error "Avo HQ Internal server error.", hq_response.body if hq_response.code == 500
 
-        cache_response 1.hour.to_i, hq_response.parsed_response if hq_response.code == 200
+        if hq_response.code == 200
+          cache_response response: hq_response.parsed_response
+        end
       end
 
-      def cache_response(time, response)
+      def cache_response(response: nil, time: CACHE_TIME)
         response.merge!(
           expiry: time,
+          fetched_at: Time.now,
           **payload
         ).stringify_keys!
 
-        @cache_store.write(CACHE_KEY, response, expires_in: time)
-
-        @hq_response = response
+        cache_store.write(self.class.cache_key, response, expires_in: time)
 
         response
       end
@@ -67,53 +159,10 @@ module Avo
         HTTParty.post ENDPOINT, body: payload.to_json, headers: {'Content-type': "application/json"}, timeout: REQUEST_TIMEOUT
       end
 
-      def payload
-        {
-          license: Avo.configuration.license,
-          license_key: Avo.configuration.license_key,
-          avo_version: Avo::VERSION,
-          rails_version: Rails::VERSION::STRING,
-          ruby_version: RUBY_VERSION,
-          environment: Rails.env,
-          ip: current_request.ip,
-          host: current_request.host,
-          port: current_request.port,
-          app_name: app_name
-        }
-      end
-
       def app_name
         Rails.application.class.to_s.split("::").first
       rescue
         nil
-      end
-
-      def avo_metadata
-        resources = App.resources
-        field_definitions = resources.map(&:get_field_definitions)
-        fields_count = field_definitions.map(&:count).sum
-        fields_per_resource = sprintf("%0.01f", fields_count / (resources.count + 0.0))
-
-        field_types = {}
-        custom_fields_count = 0
-        field_definitions.each do |fields|
-          fields.each do |field|
-            field_types[field.type] ||= 0
-            field_types[field.type] += 1
-
-            custom_fields_count += 1 if field.custom?
-          end
-        end
-
-        {
-          resources_count: resources.count,
-          fields_count: fields_count,
-          fields_per_resource: fields_per_resource,
-          custom_fields_count: custom_fields_count,
-          field_types: field_types,
-          **other_metadata(:actions),
-          **other_metadata(:filters),
-        }
       end
 
       def other_metadata(type = :actions)
@@ -130,15 +179,11 @@ module Avo
       end
 
       def cache_and_return_error(error, exception_message = "")
-        cache_response 5.minutes.to_i, {error: error, exception_message: exception_message}.stringify_keys
+        cache_response response: {error: error, exception_message: exception_message}.stringify_keys, time: 5.minutes.to_i
       end
 
       def has_cached_response
-        @cache_store.exist? CACHE_KEY
-      end
-
-      def cached_response
-        @cache_store.read CACHE_KEY
+        cache_store.exist? self.class.cache_key
       end
     end
   end
