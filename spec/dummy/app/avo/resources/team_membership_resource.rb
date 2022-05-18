@@ -11,7 +11,7 @@ class TeamMembershipResource < Avo::BaseResource
   field :id, as: :number, only_on: :edit
   field :level, as: :select, as_description: true, options: ->(**args) { {Beginner: :beginner, Intermediate: :intermediate, Advanced: :advanced, "#{args[:model].id}": "model_id", "#{args[:resource].name}": "resource_name", "#{args[:view]}": "view", "#{args[:field].id}": "field"} }, display_value: true, default: -> { Time.now.hour < 12 ? "advanced" : "beginner" }
 
-  field :user, as: :belongs_to, searchable: false, attach_scope: -> {
+  field :user, as: :belongs_to, searchable: true, attach_scope: -> {
     # puts ["parent->", parent, parent.team].inspect
     query.where.not(id: nil)
   }
