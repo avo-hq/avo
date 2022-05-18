@@ -93,9 +93,9 @@ module Avo
       end
 
       def translation_key
-        return "avo.field_translations.#{@id}" if @translation_enabled
+        return @translation_key if @translation_key.present?
 
-        @translation_key
+        "avo.field_translations.#{@id}"
       end
 
       # Getting the name of the resource (user/users, post/posts)
