@@ -21,6 +21,13 @@ class TeamResource < Avo::BaseResource
     model.team_members.length
   end
 
+  # field :memberships,
+  #   as: :has_many,
+  #   searchable: true,
+  #   attach_scope: -> do
+  #     query.where.not(user_id: parent.id).or(query.where(user_id: nil))
+  #   end
+
   field :admin, as: :has_one
   field :team_members, as: :has_many, through: :memberships
   field :reviews, as: :has_many
