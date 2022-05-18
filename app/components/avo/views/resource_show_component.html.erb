@@ -15,9 +15,9 @@
                 form_class: 'flex flex-col sm:flex-row sm:inline-flex',
                 style: :text,
                 data: {
-                  confirm: "Are you sure you want to detach this #{@reflection.name.to_s}."
+                  confirm: "Are you sure you want to detach this #{title}."
                 } do %>
-                <%= t('avo.detach_item', item: @reflection.name.to_s).capitalize %>
+                <%= t('avo.detach_item', item: title).capitalize %>
               <% end %>
               <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource %>
             <% end %>
@@ -91,6 +91,11 @@
     <% if has_as_belongs_to_many_panels.present? %>
       <% has_as_belongs_to_many_panels.each_with_index do |field, index| %>
         <%= render field.component_for_view(:show).new(field: field, resource: @resource, index: index) %>
+      <% end %>
+    <% end %>
+    <% if resource_tools.present? %>
+      <% resource_tools.each do |tool, index| %>
+        <%= render tool.partial, tool: tool %>
       <% end %>
     <% end %>
   <% end %>

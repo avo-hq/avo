@@ -1,6 +1,17 @@
-<div class="w-full inset-auto bottom-0 z-50 mb-4 opacity-75 hover:opacity-100 transition-opacity duration-150">
-  <a href="https://avohq.io/pricing" target="_blank" class="rounded bg-orange-700 text-white py-2 px-4 text-sm block items-center flex leading-tight">
-    <%= svg "exclamation", class: "h-6 inline mr-2 text-bold flex-shrink-0 mr-1" %> Warning. <%= @custom_tools_alert_visible %> This page will not be visible in a production environment.
-  </a>
-</div>
+<% if @custom_tools_alert_visible %>
+  <div class="w-full inset-auto bottom-0 z-50 mb-4 opacity-75 hover:opacity-100 transition-opacity duration-150">
+    <a href="https://avohq.io/pricing" target="_blank" class="rounded bg-orange-700 text-white py-2 px-4 text-sm block items-center flex leading-tight">
+      <%= svg "exclamation", class: "h-6 inline mr-2 text-bold flex-shrink-0 mr-1" %> Warning. <%= @custom_tools_alert_visible %> This page will not be visible in a production environment.
+    </a>
+  </div>
+<% end %>
 
+<% if Avo::App.error_messages.present? %>
+  <% Avo::App.error_messages.each do |message| %>
+    <div class="w-full inset-auto bottom-0 z-50 mb-4 opacity-75 hover:opacity-100 transition-opacity duration-150">
+      <a href="https://avohq.io/pricing" target="_blank" class="rounded bg-orange-700 text-white py-2 px-4 text-sm block items-center flex leading-tight">
+        <%= svg "exclamation", class: "h-6 inline mr-2 text-bold flex-shrink-0 mr-1" %> <%= message %>
+      </a>
+    </div>
+  <% end %>
+<% end %>
