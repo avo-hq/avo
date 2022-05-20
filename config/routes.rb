@@ -3,6 +3,7 @@ Avo::Engine.routes.draw do
 
   get "resources", to: redirect(Avo.configuration.root_path)
   get "dashboards", to: redirect(Avo.configuration.root_path)
+
   post "/rails/active_storage/direct_uploads", to: "/active_storage/direct_uploads#create"
 
   resources :dashboards do

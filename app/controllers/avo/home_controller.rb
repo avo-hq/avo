@@ -4,8 +4,9 @@ module Avo
   class HomeController < ApplicationController
     def index
       if Avo.configuration.home_path.present?
+        # If the home_path is a block run it, if not, just use it
         computed_path = if Avo.configuration.home_path.respond_to? :call
-          instance_eval(&Avo.configuration.home_path)
+          instance_exec(&Avo.configuration.home_path)
         else
           Avo.configuration.home_path
         end

@@ -7,6 +7,9 @@
     data-via-association-id="<%= @field.id %>"
     data-via-reflection-id="<%= @field.model.id %>"
     data-via-reflection-class="<%= @field.model.class.to_s %>"
+    data-via-parent-resource-id="<%= params[:via_resource_id] %>"
+    data-via-parent-resource-class="<%= params[:via_relation_class] %>"
+    data-via-relation="<%= params[:via_relation] %>"
   ></div>
   <div class="relative w-full" autocomplete="off">
     <%= @form.text_field @foreign_key,

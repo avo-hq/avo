@@ -9,9 +9,6 @@ module Avo
       redirect_to dashboard_path(dashboard)
     end
 
-    def show
-    end
-
     private
 
     def set_dashboard
