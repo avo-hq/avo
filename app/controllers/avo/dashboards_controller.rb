@@ -4,9 +4,7 @@ module Avo
   class DashboardsController < ApplicationController
     before_action :set_dashboard, only: :show
 
-    def index
-      dashboard = Avo::App.dashboards.min_by { |dashboard| dashboard.id }
-      redirect_to dashboard_path(dashboard)
+    def show
     end
 
     private
