@@ -5,8 +5,12 @@ RSpec.feature "Avo.configuration", type: :feature do
     context "when set" do
       it "redirects to that path" do
         visit "/admin"
+        expect(current_path).to eq "/admin/dashboards/dashy"
 
-        expect(current_path).to eql "/admin/dashboard"
+        find(".logo-placeholder").click
+        wait_for_loaded
+
+        expect(current_path).to eq "/admin/dashboards/dashy"
       end
     end
   end
