@@ -66,21 +66,19 @@ module Avo
         def parse_symbol(field_name, as:, **args, &block)
           field_class = field_class_from_symbol(as)
 
-          if field_class.blank?
+          if field_class.present?
+            # The field has been registered before.
+            instantiate_field(field_name, klass: field_class, **args, &block)
+          else
             # The symbol can be transformed to a class and found.
             class_name = as.to_s.camelize
             field_class = "#{class_name}Field"
 
             # Discover & load custom field classes
             if Object.const_defined? field_class
-              field_class = field_class.safe_constantize
+              instantiate_field(field_name, klass: field_class.safe_constantize, **args, &block)
             end
           end
-
-          # The field has been registered before.
-          return if field_class.blank?
-
-          instantiate_field(field_name, klass: field_class, **args, &block)
         end
 
         def parse_class(field_name, as:, **args, &block)
