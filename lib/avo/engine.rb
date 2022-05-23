@@ -55,6 +55,16 @@ module Avo
       # app.config.logger = ::Logger.new(STDOUT)
     end
 
+    # Toolio
+    paths["app/views"] << "lib/toolio/views"
+
+    # initializer "toolio" do |app|
+    #   # app.append_view_path(Avo::Engine.root.join("lib", "toolio", "views"))
+    #   # app.config.logger = ::Logger.new(STDOUT)
+    # end
+
+    # END Toolio
+
     config.app_middleware.use(
       Rack::Static,
       urls: ["/avo-assets"],
