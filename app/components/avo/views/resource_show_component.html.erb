@@ -3,6 +3,18 @@
   data-selected-resources='["<%= @resource.model.id %>"]'
   class="space-y-12"
 >
+  <%= @resource.tabs.inspect %>
+  <% if tabs.present? %>
+    <% active_tab = params[:active_tab] || tabs.first %>
+    <%= turbo_frame_tag "tabs_container" do %>
+      <%= render partial: 'avo/partials/tabs_toggle', locals: { tabs: tabs } %>
+      <% tabs.each do |tab| %>
+        <% next if tab != active_tab %>
+        <%= tab %>
+        <%#= render tool.partial, tab: tab %>
+      <% end %>
+    <% end %>
+  <% end %>
   <% @resource.panels.each_with_index do |resource_panel, index| %>
     <%= render Avo::PanelComponent.new(title: title, description: @resource.resource_description, display_breadcrumbs: @reflection.blank?, index: index) do |c| %>
       <% c.tools do %>
@@ -99,7 +111,6 @@
       <% end %>
     <% end %>
   <% end %>
-
   <% if should_display_invalid_fields_errors? %>
     <turbo-stream action="append" target="alerts">
       <template>

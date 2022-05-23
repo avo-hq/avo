@@ -43,6 +43,13 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
     helpers.edit_resource_path(model: @resource.model, resource: @resource, **args)
   end
 
+  def tabs
+    [
+      'Main',
+      'Other'
+    ]
+  end
+
   private
 
   # In development and test environments we shoudl show the invalid field errors

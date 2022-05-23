@@ -1,0 +1,40 @@
+<% if tabs.count > 1 %>
+  <%
+    info = {
+      table: {
+        new_view_type: 'table',
+        new_icon: 'table-view-type',
+        translation_key: 'avo.table_view',
+      },
+      grid: {
+        new_view_type: 'grid',
+        new_icon: 'grid-view-type',
+        translation_key: 'avo.grid_view',
+      },
+    }
+  %>
+  <div class="flex">
+    <div class="button-group">
+      <% tabs.each do |tab| %>
+        <% is_active_view = tab.to_s == params[:active_tab].to_s %>
+        <%# is_active_view = false %>
+        <%#= a_link "#{request.fullpath}?", %>
+        <%= a_link resource_path(resource: @resource, model: @resource.model, keep_query_params: true, active_tab: tab),
+          # icon: 'info[type][:new_icon]',
+          color: is_active_view ? :gray : :primary,
+          rounded: false,
+          size: :sm,
+          class: is_active_view ? ' bg-gray-100 border-gray-300' : ' z-20',
+          title: tab,
+          data: {
+            tippy: 'tooltip',
+            'turbo-frame': 'tabs_container',
+            control: "view-type-toggle-#{tab}"
+          } do
+        %>
+        <%= tab %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+<% end %>

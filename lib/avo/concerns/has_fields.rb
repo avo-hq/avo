@@ -6,6 +6,8 @@ module Avo
       included do
         class_attribute :fields
         class_attribute :fields_index, default: 0
+        class_attribute :tabs
+        class_attribute :raw_tabs
       end
 
       class_methods do
@@ -37,6 +39,23 @@ module Avo
 
         def heading(body, **args)
           add_to_fields Avo::Fields::HeadingField.new(body, order_index: fields_index, **args)
+        end
+
+        def tab(args, **kargs, &block)
+          self.tabs ||= []
+          self.raw_tabs ||= []
+
+          self.raw_tabs << [args, kargs, block]
+
+          # new_tab = Tab.new
+          # tab.fields
+
+          # tools_and_fields = new_tab.class_eval(&block)
+
+
+          # puts ["new_tab->", new_tab, new_tab.tools, tools_and_fields].inspect
+
+          # self.tabs << new_tab
         end
 
         private
@@ -90,4 +109,9 @@ module Avo
       end
     end
   end
+end
+
+class Avo::Concerns::Tab
+  include Avo::Concerns::HasTools
+  include Avo::Concerns::HasFields
 end

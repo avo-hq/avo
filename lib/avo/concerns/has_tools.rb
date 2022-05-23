@@ -24,6 +24,7 @@ module Avo
 
       class_methods do
         def tool(klass, **args)
+          puts ["tool->", klass].inspect
           self.tools_holder ||= []
 
           self.tools_holder << klass.new(**args)
