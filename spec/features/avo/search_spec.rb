@@ -80,7 +80,7 @@ RSpec.feature "Search", type: :system do
 
         sleep 0.4
 
-        expect(current_path).to eql "/admin/resources/users/#{user.slug}"
+        expect(current_path).to eql "/admin/resources/users/#{user2.slug}"
       end
     end
   end
