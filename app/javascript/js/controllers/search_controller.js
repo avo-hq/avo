@@ -55,10 +55,10 @@ export default class extends Controller {
   searchUrl(query) {
     const url = URI()
 
-    let params = {
-      q: query,
-      global: false,
-    }
+    return url.segment(this.searchSegments()).search(this.searchParams(query)).toString()
+  }
+
+  searchSegments() {
     let segments = [
       window.Avo.configuration.root_path,
       'avo_api',
@@ -68,7 +68,18 @@ export default class extends Controller {
 
     if (this.isGlobalSearch) {
       segments = [window.Avo.configuration.root_path, 'avo_api', 'search']
+    }
 
+    return segments
+  }
+
+  searchParams(query) {
+    let params = {
+      q: query,
+      global: false,
+    }
+
+    if (this.isGlobalSearch) {
       params.global = true
     }
 
@@ -90,7 +101,7 @@ export default class extends Controller {
       }
     }
 
-    return url.segment(segments).search(params).toString()
+    return params
   }
 
   handleOnSelect({ item }) {
