@@ -65,6 +65,11 @@ export default class extends Controller {
 
     if (this.isGlobalSearch) {
       segments = [window.Avo.configuration.root_path, 'avo_api', 'search']
+
+      params = {
+        ...params,
+        global: true,
+      }
     }
 
     if (this.isBelongsToSearch) {
