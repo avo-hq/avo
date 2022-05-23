@@ -1,10 +1,10 @@
 module Avo
   class BaseResource
     extend ActiveSupport::DescendantsTracker
-    extend FieldsCollector
     extend HasContext
 
     include ActionView::Helpers::UrlHelper
+    include Avo::Concerns::HasFields
     include Avo::Concerns::HasTools
 
     delegate :view_context, to: "Avo::App"
@@ -33,7 +33,6 @@ module Avo
     class_attribute :devise_password_optional, default: false
     class_attribute :actions_loader
     class_attribute :filters_loader
-    class_attribute :fields
     class_attribute :grid_loader
     class_attribute :visible_on_sidebar, default: true
     class_attribute :unscoped_queries_on_index, default: false
@@ -238,13 +237,29 @@ module Avo
     end
 
     def panels
-      [
+      panes = [
         {
           name: default_panel_name,
-          type: :fields,
-          in_panel: true
+          # type: :fields,
+          # in_panel: true
         }
       ]
+      return panes
+      # abort get_fields.inspect
+
+      get_fields.each do |field|
+        case field.class.to_s
+        when "Avo::Fields::HasOneField"
+          @has_one_panels << field
+        when "Avo::Fields::HasManyField"
+          @has_many_panels << field
+        when "Avo::Fields::HasAndBelongsToManyField"
+          @has_as_belongs_to_many_panels << field
+        else
+          @fields_by_panel[field.panel_name] ||= []
+          @fields_by_panel[field.panel_name] << field
+        end
+      end
     end
 
     def class_name_without_resource

@@ -44,6 +44,7 @@ class Avo::Reloader
       # watch the lib directory in Avo development
       if reload_lib?
         dirs[Avo::Engine.root.join("lib", "avo").to_s] = ["rb"]
+        dirs[Avo::Engine.root.join("lib", "toolio").to_s] = ["rb"]
       end
 
       dirs

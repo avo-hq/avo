@@ -43,6 +43,8 @@ module Avo
       attr_reader :user
       attr_reader :panel_name
 
+      attr_reader :order_index
+
       class_attribute :field_name_attribute
 
       def initialize(id, _options: {}, **args, &block)
@@ -67,6 +69,7 @@ module Avo
         @as_avatar = args[:as_avatar] || false
         @as_description = args[:as_description] || false
         @index_text_align = args[:index_text_align] || :left
+        @order_index = args[:order_index]
 
         @updatable = true
         @computable = true
@@ -193,10 +196,13 @@ module Avo
         "#{type.camelize}Field"
       end
 
+      def component_class(view = :index)
+        "::Avo::Fields::#{view_component_name}::#{view.to_s.camelize}Component"
+      end
+
       # Try and build the component class or fallback to a blank one
       def component_for_view(view = :index)
-        component_class = "::Avo::Fields::#{view_component_name}::#{view.to_s.camelize}Component"
-        component_class.constantize
+        component_class(view).constantize
       rescue
         ::Avo::BlankFieldComponent
       end
