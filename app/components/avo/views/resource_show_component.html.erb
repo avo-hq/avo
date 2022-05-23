@@ -3,15 +3,14 @@
   data-selected-resources='["<%= @resource.model.id %>"]'
   class="space-y-12"
 >
-  <%= @resource.tabs.inspect %>
   <% if tabs.present? %>
-    <% active_tab = params[:active_tab] || tabs.first %>
     <%= turbo_frame_tag "tabs_container" do %>
-      <%= render partial: 'avo/partials/tabs_toggle', locals: { tabs: tabs } %>
-      <% tabs.each do |tab| %>
-        <% next if tab != active_tab %>
-        <%= tab %>
-        <%#= render tool.partial, tab: tab %>
+      <div class="mb-4">
+        <%= render partial: 'avo/partials/tabs_toggle', locals: { tabs: tabs, active_tab_name: active_tab_name } %>
+      </div>
+      <% active_tab.tools.each do |tool| %>
+        <% next if tool.blank? || tool.partial.blank? %>
+        <%= render tool.partial, tool: tool %>
       <% end %>
     <% end %>
   <% end %>

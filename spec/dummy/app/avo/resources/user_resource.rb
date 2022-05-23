@@ -23,8 +23,12 @@ class UserResource < Avo::BaseResource
   field :last_name, as: :text, required: true, placeholder: "Doe"
   field :email, as: :text, name: "User Email", required: true
 
-  tab :Other do
+  tab :Main do
+    field :email, as: :text, name: "User Email", required: true
     tool UserTool
+  end
+  tab :Other do
+    tool MuserTool
   end
 
   # field :active, as: :boolean, name: "Is active", show_on: :show

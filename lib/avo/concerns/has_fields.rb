@@ -41,21 +41,25 @@ module Avo
           add_to_fields Avo::Fields::HeadingField.new(body, order_index: fields_index, **args)
         end
 
-        def tab(args, **kargs, &block)
+        def tab(name, **kargs, &block)
+          puts ["tab->", name].inspect
+          t = Avo::Concerns::Builder.parse_block(name: name, &block)
+          puts ["t->", t].inspect
           self.tabs ||= []
-          self.raw_tabs ||= []
+          # self.raw_tabs ||= []
 
-          self.raw_tabs << [args, kargs, block]
+          # # self.raw_tabs << [args, kargs, block]
 
           # new_tab = Tab.new
-          # tab.fields
+
+          # # tab.fields
 
           # tools_and_fields = new_tab.class_eval(&block)
 
+          # puts ["new_tab->", new_tab, tools_and_fields].inspect
+          # new_tab.class.tools_holder = tools_and_fields
 
-          # puts ["new_tab->", new_tab, new_tab.tools, tools_and_fields].inspect
-
-          # self.tabs << new_tab
+          self.tabs << t
         end
 
         private
@@ -107,11 +111,121 @@ module Avo
           end
         end
       end
+
+      def get_tabs
+        self.tabs
+      end
+
+      def get_field_definitions
+        return [] if self.class.fields.blank?
+
+        fields = self.class.fields.map do |field|
+          field.hydrate(resource: self, panel_name: default_panel_name, user: user, translation_enabled: translation_enabled)
+        end
+
+        if Avo::App.license.lacks_with_trial(:custom_fields)
+          fields = fields.reject do |field|
+            field.custom?
+          end
+        end
+
+        if Avo::App.license.lacks_with_trial(:advanced_fields)
+          fields = fields.reject do |field|
+            field.type == "tags"
+          end
+        end
+
+        fields
+      end
+
+      def get_fields(panel: nil, reflection: nil)
+        fields = get_field_definitions
+          .select do |field|
+            field.send("show_on_#{@view}")
+          end
+          .select do |field|
+            field.visible?
+          end
+          .select do |field|
+            is_valid = true
+
+            # Strip out the reflection field in index queries with a parent association.
+            if reflection.present?
+              # regular non-polymorphic association
+              # we're matching the reflection inverse_of foriegn key with the field's foreign_key
+              if field.is_a?(Avo::Fields::BelongsToField)
+                if field.respond_to?(:foreign_key) &&
+                    reflection.inverse_of.present? &&
+                    reflection.inverse_of.foreign_key == field.foreign_key
+                  is_valid = false
+                end
+
+                # polymorphic association
+                if field.respond_to?(:foreign_key) &&
+                    field.is_polymorphic? &&
+                    reflection.respond_to?(:polymorphic?) &&
+                    reflection.inverse_of.foreign_key == field.reflection.foreign_key
+                  is_valid = false
+                end
+              end
+            end
+
+            is_valid
+          end
+
+        if panel.present?
+          fields = fields.select do |field|
+            field.panel_name == panel
+          end
+        end
+
+        hydrate_fields(model: @model, view: @view)
+
+        fields
+      end
+
+      def get_field(id)
+        get_field_definitions.find do |f|
+          f.id == id.to_sym
+        end
+      end
     end
   end
 end
 
-class Avo::Concerns::Tab
-  include Avo::Concerns::HasTools
-  include Avo::Concerns::HasFields
+# class Avo::Concerns::Builder
+class Avo::Concerns::Builder
+  class << self
+    def parse_block(**args, &block)
+      Docile.dsl_eval(Avo::Concerns::Builder.new(**args), &block).build
+    end
+  end
+
+  delegate :add_tool, to: ::Avo::Services::DslService
+
+  def initialize(name: nil, items: [], **args)
+    @tab = Avo::Tab.new(name: name, **args)
+
+    # @tab.name = name
+    # @tab.tools = items
+    @tab.fields_holder = []
+    @tab.tools_holder = []
+  end
+
+  # Adds a link
+  def field(name, **args)
+    puts ["B field->", name].inspect
+    @tab.fields_holder << name
+  end
+
+  # Adds a link
+  def tool(klass, **args)
+    add_tool @tab.tools_holder, klass, **args
+    # @tab.tools_holder << klass.new(**args)
+  end
+
+  # Fetch the tab
+  def build
+    @tab
+  end
 end

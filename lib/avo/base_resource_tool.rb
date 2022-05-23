@@ -20,7 +20,7 @@ module Avo
     end
 
     def hydrate(view: nil)
-      @view = view
+      @view = view if view.present?
 
       self
     end
