@@ -3,7 +3,7 @@ Avo.configure do |config|
   ## == Routing ==
   config.root_path = '/<%= options[:path] %>'
 
-  # Where should the user be redirected when he hits the `/<%= options[:path] %>` url
+  # Where should the user be redirected when visting the `/<%= options[:path] %>` url
   # config.home_path = nil
 
   ## == Licensing ==
