@@ -13,7 +13,7 @@ RSpec.feature "Search", type: :system do
       it "opens the search" do
         visit url
 
-        find('body').send_keys [:control, 'k']
+        find("body").send_keys [:control, "k"]
 
         expect_search_panel_open
       end
@@ -23,7 +23,7 @@ RSpec.feature "Search", type: :system do
       it "opens the search" do
         visit url
 
-        find('.global-search').click
+        find(".global-search").click
 
         expect_search_panel_open
       end
@@ -37,16 +37,16 @@ RSpec.feature "Search", type: :system do
 
         write_in_search "wwwww"
 
-        expect(page).to have_content 'No posts found'
-        expect(page).to have_content 'No users found'
-        expect(page).to have_content 'No projects found'
+        expect(page).to have_content "No posts found"
+        expect(page).to have_content "No users found"
+        expect(page).to have_content "No projects found"
       end
     end
 
     context "with results" do
-      let!(:post) { create :post, name: "New hehe post", body: 'New hehe post description.'}
-      let!(:user) { create :user, first_name: "Hehe", last_name: "user", roles: {admin: true, manager: true, writer: true}}
-      let!(:user2) { create :user, first_name: "Hehe ahi", last_name: "user", roles: {admin: true, manager: true, writer: true}}
+      let!(:post) { create :post, name: "New hehe post", body: "New hehe post description." }
+      let!(:user) { create :user, first_name: "Hehe", last_name: "user", roles: {admin: true, manager: true, writer: true} }
+      let!(:user2) { create :user, first_name: "Hehe ahi", last_name: "user", roles: {admin: true, manager: true, writer: true} }
 
       it "opens the search" do
         visit url
@@ -87,10 +87,10 @@ RSpec.feature "Search", type: :system do
 end
 
 def open_global_search_box
-  find('.global-search').click
+  find(".global-search").click
 end
 
 def expect_search_panel_open
   expect(page).to have_css ".aa-InputWrapper .aa-Input"
-  expect(page).to have_selector('.aa-Input:focus')
+  expect(page).to have_selector(".aa-Input:focus")
 end
