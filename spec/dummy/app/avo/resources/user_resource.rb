@@ -5,11 +5,7 @@ class UserResource < Avo::BaseResource
   }
   self.translation_key = "avo.resource_translations.user"
   self.search_query = ->(params:) do
-    if params[:global]
-      scope.ransack(id_eq: params[:q], first_name_cont: params[:q], last_name_cont: params[:q], m: "or").result(distinct: false)
-    else
-      scope.ransack(id_eq: params[:q], first_name_cont: params[:q], last_name_cont: params[:q], bio_cont: params[:q], m: "or").result(distinct: false)
-    end
+    scope.ransack(id_eq: params[:q], first_name_cont: params[:q], last_name_cont: params[:q], m: "or").result(distinct: false)
   end
   self.resolve_query_scope = ->(model_class:) do
     model_class.order(last_name: :asc)

@@ -6,7 +6,6 @@ module Avo
     class_attribute :dashboards, default: []
     class_attribute :cache_store, default: nil
     class_attribute :fields, default: []
-    class_attribute :plugins, default: []
     class_attribute :request, default: nil
     class_attribute :context, default: nil
     class_attribute :license, default: nil
@@ -55,7 +54,6 @@ module Avo
 
         init_resources
         init_dashboards if license.has_with_trial(:dashboards)
-        init_plugins
       end
 
       # This method will find all fields available in the Avo::Fields namespace and add them to the fields class_variable array
@@ -105,30 +103,6 @@ module Avo
           end
           .uniq do |dashboard|
             dashboard.id
-          end
-      end
-
-      def init_plugins
-        init_args = {
-          request: request,
-          context: context,
-          current_user: current_user,
-          root_path: root_path,
-          view_context: view_context,
-          params: params
-        }
-
-        self.plugins = Plugins::BasePlugin.descendants
-          .select do |plugin|
-            plugin != Plugins::BasePlugin
-          end
-          .uniq do |plugin|
-            plugin.id
-          end
-          .map do |plugin|
-            instance = plugin.new(**init_args)
-            instance.on_init
-            instance
           end
       end
 

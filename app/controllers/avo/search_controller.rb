@@ -51,14 +51,8 @@ module Avo
 
       results = apply_search_metadata(query, resource)
 
-      header = resource.plural_name
-
-      if results.length > 0
-        header += " (#{results.length})"
-      end
-
       result_object = {
-        header: header,
+        header: resource.name.pluralize,
         help: resource.class.search_query_help,
         results: results,
         count: results.length
