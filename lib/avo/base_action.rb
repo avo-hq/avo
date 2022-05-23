@@ -1,7 +1,8 @@
 module Avo
   class BaseAction
-    extend FieldsCollector
     extend HasContext
+
+    include Avo::Concerns::HasFields
 
     class_attribute :name, default: nil
     class_attribute :message
@@ -12,7 +13,6 @@ module Avo
     class_attribute :view
     class_attribute :user
     class_attribute :resource
-    class_attribute :fields
     class_attribute :invalid_fields
     class_attribute :standalone, default: false
     class_attribute :visible
