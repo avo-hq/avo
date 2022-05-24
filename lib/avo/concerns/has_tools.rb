@@ -3,8 +3,6 @@ module Avo
     module HasTools
       extend ActiveSupport::Concern
 
-
-
       included do
         class_attribute :tools_holder
       end
@@ -14,11 +12,8 @@ module Avo
 
         def tool(klass, **args)
           self.tools_holder ||= []
-          add_tool(tools_holder, klass, **args)
-          puts ["tools_holder->", tools_holder].inspect
-          # puts ["tool->", self, klass].inspect
 
-          # self.tools_holder << klass.new(**args)
+          add_tool(tools_holder, klass, **args)
         end
 
         def tools

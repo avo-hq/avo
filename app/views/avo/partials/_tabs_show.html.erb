@@ -1,0 +1,28 @@
+<%= turbo_frame_tag group.turbo_frame_id do %>
+  <div class="border rounded-lg p-2 -mx-2 -my-2 lg:p-4 lg:-mx-4 lg:-my-4">
+  <div class="mb-4">
+    <%= render partial: 'avo/partials/tabs_toggle', locals: { group: group, tabs: group.tabs, active_tab_name: active_tab.name } %>
+  </div>
+  <div class="space-y-12">
+    <%#= active_tab.inspect %>
+    <% active_tab.items.each_with_index do |item, index| %>
+      <% if item.is_tool? %>
+        <% next if item.blank? || item.partial.blank? %>
+        <%= render item.partial, tool: item %>
+      <% elsif item.is_panel? %>
+        <%= render Avo::PanelComponent.new(title: item.name, display_breadcrumbs: false, index: index) do |c| %>
+          <% c.body do %>
+            <div class="divide-y">
+              <% item.items.each_with_index do |field, index| %>
+                <%= render field.component_for_view(:show).new(field: field.hydrate(resource: @resource, view: :show, model: @resource.model), resource: @resource, index: index) %>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+      <% elsif item.is_field? %>
+        <%= render item.component_for_view(:show).new(field: item.hydrate(resource: @resource, view: :show, model: @resource.model), resource: @resource, index: index) %>
+      <% end %>
+    <% end %>
+  </div>
+  </div>
+<% end %>

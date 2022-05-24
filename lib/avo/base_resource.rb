@@ -4,7 +4,7 @@ module Avo
     extend HasContext
 
     include ActionView::Helpers::UrlHelper
-    include Avo::Concerns::HasTools
+    # include Avo::Concerns::HasTools
     include Avo::Concerns::HasFields
 
     delegate :view_context, to: "Avo::App"

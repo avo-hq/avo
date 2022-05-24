@@ -2,7 +2,7 @@
   <div class="button-group">
     <% tabs.each do |tab| %>
       <% is_active_view = tab.name.to_s == active_tab_name.to_s %>
-      <%= a_link resource_path(resource: @resource, model: @resource.model, keep_query_params: true, active_tab: tab.name),
+      <%= a_link resource_path(resource: @resource, model: @resource.model, keep_query_params: true, active_tab_name: tab.name, tab_turbo_frame: group.turbo_frame_id),
           color: is_active_view ? :gray : :primary,
           rounded: false,
           size: :sm,
@@ -10,7 +10,7 @@
           title: tab,
           data: {
             tippy: 'tooltip',
-            'turbo-frame': 'tabs_container',
+            'turbo-frame': group.turbo_frame_id,
             control: "view-type-toggle-#{tab}"
           } do %>
         <%= tab.name %>

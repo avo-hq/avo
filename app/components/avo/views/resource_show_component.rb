@@ -44,21 +44,21 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
   end
 
   def tabs
-    @resource.tabs
+    @resource.tabs_holder
   end
 
-  def active_tab_name
-    params[:active_tab] || tabs.first.name
-  end
+  # def active_tab_name
+  #   params[:active_tab] || tabs.first.name
+  # end
 
-  def active_tab
-    tab_by_name active_tab_name
-  end
+  # def active_tab
+  #   tab_by_name active_tab_name
+  # end
 
   private
 
   def tab_by_name(name = nil)
-    @resource.tabs.find do |tab|
+    @resource.tabs_holder.find do |tab|
       tab.name.to_s == name.to_s
     end
   end
@@ -69,6 +69,6 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
   end
 
   def has_one_field?
-    field.present? and field.class == Avo::Fields::HasOneField
+    field.present? and field.instance_of? Avo::Fields::HasOneField
   end
 end

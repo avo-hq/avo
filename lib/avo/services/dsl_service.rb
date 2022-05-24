@@ -7,6 +7,12 @@ module Avo
 
           container << klass.new(**args)
         end
+
+        # def add_field(container, instance)
+        #   container ||= []
+
+        #   container << instance
+        # end
       end
     end
   end

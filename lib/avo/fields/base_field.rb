@@ -4,9 +4,11 @@ module Avo
       extend ActiveSupport::DescendantsTracker
       extend Avo::Fields::FieldExtensions::HasFieldName
 
-      include Avo::Fields::FieldExtensions::VisibleInDifferentViews
+      include Avo::Concerns::IsResourceItem
       include Avo::Concerns::HandlesFieldArgs
+
       include ActionView::Helpers::UrlHelper
+      include Avo::Fields::FieldExtensions::VisibleInDifferentViews
 
       delegate :view_context, to: "Avo::App"
       delegate :main_app, to: :view_context
@@ -44,8 +46,9 @@ module Avo
       attr_reader :panel_name
 
       class_attribute :field_name_attribute
+      class_attribute :item_type, default: :field
 
-      def initialize(id, _options: {}, **args, &block)
+      def initialize(id, **args, &block)
         super(id, **args, &block)
 
         @id = id

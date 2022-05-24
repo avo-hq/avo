@@ -4,8 +4,8 @@ class TogglePublished < Avo::BaseAction
   self.confirm_button_label = "Toggle"
   self.cancel_button_label = "Don't toggle yet"
 
-  field :notify_user, as: :boolean, default: true
-  field :message, as: :text, default: "Your account has been marked as inactive."
+  # field :notify_user, as: :boolean, default: true
+  # field :message, as: :text, default: "Your account has been marked as inactive."
 
   def handle(**args)
     models, fields, current_user, resource = args.values_at(:models, :fields, :current_user, :resource)
