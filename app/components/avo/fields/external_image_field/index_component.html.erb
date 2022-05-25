@@ -1,8 +1,10 @@
 <%= index_field_wrapper field: @field, flush: true do %>
   <% if @field.value.present? %>
-    <%= image_tag @field.value,
-      height: @field.height,
-      style: "border-radius: #{@field.radius}px; max-height: #{@field.height}#{@field.height.to_s&.ends_with?('px') ? '' : 'px'};"
+    <%= link_to_if @field.link_to_resource.present?,
+                   image_tag(@field.value,
+                             height: @field.height,
+                             style: "border-radius: #{@field.radius}px; max-height: #{@field.height}#{@field.height.to_s&.ends_with?('px') ? '' : 'px'};"),
+                   resource_path
     %>
   <% end %>
 <% end %>
