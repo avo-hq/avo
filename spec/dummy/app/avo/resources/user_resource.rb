@@ -24,52 +24,61 @@ class UserResource < Avo::BaseResource
   field :last_name, as: :text, required: true, placeholder: "Doe"
 
   # field :email, as: :text, name: "User Email", required: true
-  # field :people, as: :has_many, translation_key: "avo.field_translations.people"
-  # field :post, as: :has_one, translation_key: "avo.field_translations.people", name: "Main post"
 
-  # tabs do
-  #   tab :Main do
-  #     # panel :Data do
-  #       field :email, as: :text, name: "UUUser Email", required: true
-  #     # end
+  tabs do
+    tab I18n.t("avo.field_translations.people", count: 2) do
+      field :people, as: :has_many, translation_key: "avo.field_translations.people"
+    end
 
-  #     panel :Other do
-  #       field :is_admin?, as: :boolean, name: "Is admin"
-  #     end
+    tab :post, description: 'Somethings about this post' do
+      field :post, as: :has_one, translation_key: "avo.field_translations.people", name: "Main post"
+    end
+  end
 
-  #     tool AnnTool
-  #     tool UserTool
-  #   end
-  #   tab :Other do
-  #     tool MuserTool
-  #     panel do
-  #       field :email, as: :text, name: "User Email", required: true
-  #       field :email, as: :text, name: "User Email", required: true
-  #     end
-  #   end
-  #   tab :Other_2 do
-  #     tool BobTool
-  #   end
-  # end
-  # panel do
-  #   field :first_name, as: :text
-  #   field :last_name, as: :text
-  # end
+  tabs do
+    tab :Main do
+      panel :Data do
+        field :email, as: :text, name: "UUUser Email", required: true
+      end
 
-  # tool AnnTool
+      panel :Other do
+        field :is_admin?, as: :boolean, name: "Is admin"
+      end
+      field :people, as: :has_many, translation_key: "avo.field_translations.people"
 
-  # tabs do
-  #   tab :Foo do
-  #     panel do
-  #       field :email, as: :text, name: "User Email", required: true
-  #       field :email, as: :text, name: "User Email", required: true
-  #     end
-  #     tool AnnTool
-  #   end
-  #   tab :Baz do
-  #     tool BobTool
-  #   end
-  # end
+      tool AnnTool
+      tool UserTool
+    end
+    tab :Other do
+      tool MuserTool
+      panel do
+        field :email, as: :text, name: "User Email", required: true
+        field :email, as: :text, name: "User Email", required: true
+      end
+    end
+    tab :Other_2 do
+      tool BobTool
+    end
+  end
+  panel do
+    field :first_name, as: :text
+    field :last_name, as: :text
+  end
+
+  tool AnnTool
+
+  tabs do
+    tab :Foo do
+      panel do
+        field :email, as: :text, name: "User Email", required: true
+        field :email, as: :text, name: "User Email", required: true
+      end
+      tool AnnTool
+    end
+    tab :Baz do
+      tool BobTool
+    end
+  end
 
   # panel do
   #   field :email, as: :text, name: "User Email", required: true

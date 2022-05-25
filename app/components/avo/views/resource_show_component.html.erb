@@ -3,50 +3,6 @@
   data-selected-resources='["<%= @resource.model.id %>"]'
   class="space-y-12"
 >
-    <% if params[:tab_turbo_frame].present? %>
-      <%# find that group %>
-      <%# find the tool %>
-      <%# render that tool only %>
-      <%
-      group = @resource.tab_groups.find do |group|
-        group.turbo_frame_id == params[:tab_turbo_frame]
-      end
-
-      tab = group&.tabs.find do |tab|
-        tab.name.to_s == params[:active_tab_name].to_s
-      end
-    %>
-      <%#= group.inspect %>
-      <% if tab.present? %>
-        <%= render partial: 'avo/partials/tabs_show', locals: { group: group, active_tab: tab } %>
-      <% end %>
-    <% else %>
-      <div class="space-y-12">
-        <%# @todo: add turbo eager loading maybe %>
-        <% @resource.tab_groups.each do |group| %>
-          <div>
-            <% active_tab_name = params[:active_tab_name] || group.tabs.first.name %>
-            <% active_tab = group.tabs.find { |tab| tab.name == active_tab_name } %>
-            <% active_tab.parse %>
-            <%= render partial: 'avo/partials/tabs_show', locals: { group: group, active_tab: active_tab } %>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
-  <%#= @resource.items %>
-  <% if tabs.present? %>
-    <%= turbo_frame_tag "tabs_container" do %>
-      <div class="mb-4">
-        <%= render partial: 'avo/partials/tabs_toggle', locals: { tabs: tabs, active_tab_name: active_tab_name } %>
-      </div>
-      <%#= active_tab.inspect %>
-      <% active_tab.tools.each do |tool| %>
-        <% next if tool.blank? || tool.partial.blank? %>
-        <%= render tool.partial, tool: tool %>
-      <% end %>
-    <% end %>
-  <% end %>
-  <%#= abort @resource.get_items.inspect %>
   <%= render Avo::PanelComponent.new(title: title, description: @resource.resource_description, display_breadcrumbs: @reflection.blank?, index: 0) do |c| %>
     <% c.tools do %>
       <% if @reflection.present? && @resource.model.present? %>
@@ -108,16 +64,13 @@
       <% end %>
     <% end %>
     <% c.body do %>
-      <%# <% if fields_by_panel[resource_panel[:name]].present? %>
-        <div class="divide-y">
-          <% @resource.get_base_items.each_with_index do |field, index| %>
-            <%= render field.component_for_view(:show).new(field: field, resource: @resource, index: index) %>
-          <% end %>
-        </div>
-      <%# <% end %>
+      <div class="divide-y">
+        <% @resource.get_base_items.each_with_index do |field, index| %>
+          <%= render field.component_for_view(:show).new(field: field, resource: @resource, index: index) %>
+        <% end %>
+      </div>
     <% end %>
   <% end %>
-  <%#= @resource.get_items.inspect %>
   <% @resource.get_items.each_with_index do |item, index| %>
     <% next if item.nil? %>
     <%= render partial: 'avo/partials/item_switcher', locals: { item: item, index: index } %>

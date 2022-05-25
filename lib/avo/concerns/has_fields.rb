@@ -17,7 +17,6 @@ module Avo
         delegate :add_tool, to: ::Avo::Services::DslService
 
         def tool(klass, **args)
-          puts ["tool->", klass].inspect
           self.tools_holder ||= []
 
           add_tool(items, klass, **args)
@@ -25,8 +24,6 @@ module Avo
 
         def tools
           self.tools_holder
-          # [1,2,34]
-          # ['asd']
         end
 
         def panel(panel_name = nil, **args, &block)
@@ -440,15 +437,18 @@ class Avo::Tab
   include Avo::Concerns::HasFields
   include Avo::Concerns::IsResourceItem
 
+  # @todo: fix the view
   class_attribute :view, default: :show
 
   delegate :view, to: :self
 
   attr_reader :name
   attr_accessor :items
+  attr_accessor :description
 
-  def initialize(name: nil)
+  def initialize(name: nil, description: nil)
     @name = name
+    @description = description
     @items = []
   end
 
@@ -463,7 +463,7 @@ class Avo::Tab
     items.each do |item|
       puts ["1->", item.class].inspect
       if item.is_field?
-        if in_panel
+        if in_panel || item.has_own_panel?
           new_items << item
         else
           # Add to latest panel
@@ -471,7 +471,7 @@ class Avo::Tab
           # new_items << item
         end
       else
-        if last_item.present? && last_item.is_field?
+        if last_item.present? && last_item.is_field? && latest_panel.has_items?
           # Close the panel and add it to the new stack
           new_items << latest_panel
           in_panel = false
@@ -537,5 +537,9 @@ class Avo::Panel
 
   def add_item(item)
     @items << item
+  end
+
+  def has_items?
+    @items.present?
   end
 end

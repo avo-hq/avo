@@ -13,6 +13,28 @@
       </div>
     <% end %>
   <% end %>
+<% elsif item.is_tab_group? %>
+  <div class="space-y-12">
+    <%# @todo: add turbo eager loading maybe %>
+    <div>
+      <% active_tab_name = params[:active_tab_name] || item.tabs.first.name %>
+      <%
+        if params[:tab_turbo_frame].present? && params[:active_tab_name].present?
+          active_tab = item&.tabs.find do |tab|
+            tab.name.to_s == params[:active_tab_name].to_s
+          end
+        else
+          active_tab = item.tabs.find do |tab|
+            tab.name == active_tab_name
+          end
+        end
+        if active_tab.present?
+          active_tab.parse
+      %>
+      <%= render partial: 'avo/partials/tabs_show', locals: { group: item, active_tab: active_tab } %>
+    <% end %>
+  </div>
+</div>
 <% elsif item.is_field? %>
   <%= render item.component_for_view(:show).new(field: item.hydrate(resource: @resource, view: :show, model: @resource.model), resource: @resource, index: index) %>
 <% end %>
