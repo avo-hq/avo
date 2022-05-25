@@ -59,6 +59,10 @@ module Avo
       def placeholder
         @placeholder || I18n.t("avo.choose_an_option")
       end
+
+      def has_own_panel?
+        true
+      end
     end
   end
 end

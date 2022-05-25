@@ -19,47 +19,62 @@ class UserResource < Avo::BaseResource
   field :id, as: :id, link_to_resource: true
   field :email, as: :gravatar, link_to_resource: true, as_avatar: :circle
   heading "User Information"
+
   field :first_name, as: :text, required: true, placeholder: "John"
   field :last_name, as: :text, required: true, placeholder: "Doe"
-  # field :email, as: :text, name: "User Email", required: true
-  field :people, as: :has_many, translation_key: "avo.field_translations.people"
-  field :post, as: :has_one, translation_key: "avo.field_translations.people", name: "Main post"
 
-  tabs do
-    tab :Main do
-      field :email, as: :text, name: "User Email", required: true
-      panel do
-        field :is_admin?, as: :boolean, name: "Is admin"
-        tool AnnTool
-      end
-      tool UserTool
-    end
-    tab :Other do
-      tool MuserTool
-      panel do
-        field :email, as: :text, name: "User Email", required: true
-        field :email, as: :text, name: "User Email", required: true
-      end
-    end
-    tab :Other_2 do
-      tool BobTool
-    end
-  end
-  panel do
-    field :first_name, as: :text
-    field :last_name, as: :text
-    tool AnnTool
-  end
-  tabs do
-    tab :Foo do
-      field :email, as: :text, name: "User Email", required: true
-      field :email, as: :text, name: "User Email", required: true
-      tool AnnTool
-    end
-    tab :Baz do
-      tool BobTool
-    end
-  end
+  # field :email, as: :text, name: "User Email", required: true
+  # field :people, as: :has_many, translation_key: "avo.field_translations.people"
+  # field :post, as: :has_one, translation_key: "avo.field_translations.people", name: "Main post"
+
+  # tabs do
+  #   tab :Main do
+  #     # panel :Data do
+  #       field :email, as: :text, name: "UUUser Email", required: true
+  #     # end
+
+  #     panel :Other do
+  #       field :is_admin?, as: :boolean, name: "Is admin"
+  #     end
+
+  #     tool AnnTool
+  #     tool UserTool
+  #   end
+  #   tab :Other do
+  #     tool MuserTool
+  #     panel do
+  #       field :email, as: :text, name: "User Email", required: true
+  #       field :email, as: :text, name: "User Email", required: true
+  #     end
+  #   end
+  #   tab :Other_2 do
+  #     tool BobTool
+  #   end
+  # end
+  # panel do
+  #   field :first_name, as: :text
+  #   field :last_name, as: :text
+  # end
+
+  # tool AnnTool
+
+  # tabs do
+  #   tab :Foo do
+  #     panel do
+  #       field :email, as: :text, name: "User Email", required: true
+  #       field :email, as: :text, name: "User Email", required: true
+  #     end
+  #     tool AnnTool
+  #   end
+  #   tab :Baz do
+  #     tool BobTool
+  #   end
+  # end
+
+  # panel do
+  #   field :email, as: :text, name: "User Email", required: true
+  #   field :email, as: :text, name: "User Email", required: true
+  # end
 
   # field :active, as: :boolean, name: "Is active", show_on: :show
   # field :cv, as: :file, name: "CV"
@@ -79,20 +94,23 @@ class UserResource < Avo::BaseResource
   # field :password, as: :password, name: "User Password", required: false, except_on: :forms, help: 'You may verify the password strength <a href="http://www.passwordmeter.com/" target="_blank">here</a>.'
   # field :password_confirmation, as: :password, name: "Password confirmation", required: false, only_on: :new
 
-  # heading '<div class="underline uppercase font-bold">DEV</div>', as_html: true
-  # field :custom_css, as: :code, theme: "dracula", language: "css", help: "This enables you to edit the user's custom styles.", height: "250px"
-  # field :team_id, as: :hidden, default: 0 # For testing purposes
+  heading '<div class="underline uppercase font-bold">DEV</div>', as_html: true
+  field :post, as: :has_one, translation_key: "avo.field_translations.people", name: "Main post"
+  panel :hey, description: :yo do
+    field :custom_css, as: :code, theme: "dracula", language: "css", help: "This enables you to edit the user's custom styles.", height: "250px"
+    field :team_id, as: :hidden, default: 0 # For testing purposes
 
-  # field :outside_link, as: :text, only_on: [:show], format_using: ->(url) { link_to("hey", url, target: "_blank") } do |model, *args|
-  #   main_app.hey_url
-  # end
+    field :outside_link, as: :text, only_on: [:show], format_using: ->(url) { link_to("hey", url, target: "_blank") } do |model, *args|
+      main_app.hey_url
+    end
+  end
 
   # field :post, as: :has_one, translation_key: "avo.field_translations.people", name: "Main post"
   # field :posts,
   #   as: :has_many,
   #   attach_scope: -> { query.where.not(user_id: parent.id).or(query.where(user_id: nil)) }
   # field :teams, as: :has_and_belongs_to_many
-  field :people, as: :has_many, translation_key: "avo.field_translations.people"
+  # field :people, as: :has_many, translation_key: "avo.field_translations.people"
   field :spouses, as: :has_many # STI has_many resource
   # field :comments,
   #   as: :has_many,

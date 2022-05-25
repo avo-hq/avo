@@ -109,6 +109,10 @@ module Avo
       self.class.translation_enabled = ::Avo::App.translation_enabled
     end
 
+    # def items
+    #   self
+    # end
+
     def hydrate(model: nil, view: nil, user: nil, params: nil)
       @view = view if view.present?
       @user = user if user.present?
@@ -162,15 +166,15 @@ module Avo
       end
     end
 
-    def panels
-      [
-        {
-          name: default_panel_name,
-          type: :fields,
-          in_panel: true
-        }
-      ]
-    end
+    # def panels
+    #   [
+    #     {
+    #       name: default_panel_name,
+    #       type: :fields,
+    #       in_panel: true
+    #     }
+    #   ]
+    # end
 
     def class_name_without_resource
       self.class.name.demodulize.chomp("Resource")

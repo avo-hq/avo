@@ -1,0 +1,18 @@
+<% if item.is_tool? %>
+  <% if item&.partial.present? %>
+    <%= render item.partial, tool: item %>
+  <% end %>
+<% elsif item.is_panel? && !item.is_base_panel %>
+  <%= render Avo::PanelComponent.new(title: item.title, description: item.description, display_breadcrumbs: false, index: index) do |c| %>
+    <% c.body do %>
+      <div class="divide-y">
+        <% item.items.each_with_index do |item_item, index| %>
+          <%= render partial: 'avo/partials/item_switcher', locals: { item: item_item, index: index } %>
+          <%#= render field.component_for_view(:show).new(field: field.hydrate(resource: @resource, view: :show, model: @resource.model), resource: @resource, index: index) %>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+<% elsif item.is_field? %>
+  <%= render item.component_for_view(:show).new(field: item.hydrate(resource: @resource, view: :show, model: @resource.model), resource: @resource, index: index) %>
+<% end %>

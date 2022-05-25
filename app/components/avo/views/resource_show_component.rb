@@ -18,7 +18,7 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
       return field.name if has_one_field?
       reflection_resource.name
     else
-      @resource.panels.first[:name]
+      @resource.default_panel_name
     end
   end
 
