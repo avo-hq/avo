@@ -16,16 +16,10 @@ class UserResource < Avo::BaseResource
   self.includes = [:posts, :post]
   self.devise_password_optional = true
 
-  field :id, as: :id, link_to_resource: true
-  field :email, as: :gravatar, link_to_resource: true, as_avatar: :circle
-  heading "User Information"
-
-  field :first_name, as: :text, required: true, placeholder: "John"
-  field :last_name, as: :text, required: true, placeholder: "Doe"
-
-  # field :email, as: :text, name: "User Email", required: true
-
   tabs do
+    tab :MAAAIN do
+      main_panel
+    end
     tab I18n.t("avo.field_translations.people", count: 2) do
       field :people, as: :has_many, translation_key: "avo.field_translations.people"
     end
@@ -34,6 +28,15 @@ class UserResource < Avo::BaseResource
       field :post, as: :has_one, translation_key: "avo.field_translations.people", name: "Main post"
     end
   end
+
+  field :id, as: :id, link_to_resource: true
+  field :email, as: :gravatar, link_to_resource: true, as_avatar: :circle
+  heading "User Information"
+
+  field :first_name, as: :text, required: true, placeholder: "John"
+  field :last_name, as: :text, required: true, placeholder: "Doe"
+
+  # field :email, as: :text, name: "User Email", required: true
 
   tabs do
     tab :Main do

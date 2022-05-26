@@ -10,6 +10,10 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
     split_panel_fields
   end
 
+  def title
+    @resource.default_panel_name
+  end
+
   def back_path
     if via_resource?
       helpers.resource_path(model: params[:via_resource_class].safe_constantize, resource: relation_resource, resource_id: params[:via_resource_id])

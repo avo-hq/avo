@@ -13,7 +13,11 @@ module Avo
       end
 
       def is_panel?
-        self.class.item_type == :panel
+        self.class.item_type == :panel || self.class.item_type == :main_panel
+      end
+
+      def is_main_panel?
+        self.class.item_type == :main_panel
       end
 
       def is_tool?

@@ -1,7 +1,57 @@
 <div data-model-id="<%= @resource.model.id %>"
-  class="space-y-8"
+  class="space-y-12"
 >
-  <% @resource.panels.each do |resource_panel| %>
+  <%= form_with model: @resource.model,
+      scope: @resource.form_scope,
+      url: helpers.resource_path(model: @resource.model, resource: @resource),
+      method: :put,
+      local: true,
+      class: 'space-y-12',
+      multipart: true do |form| %>
+    <%= render Avo::ReferrerParamsComponent.new back_path: back_path %>
+    <%= render Avo::PanelComponent.new(title: title, description: @resource.resource_description, display_breadcrumbs: @reflection.blank?, index: 0) do |c| %>
+      <% c.tools do %>
+        <%= a_link back_path,
+        style: :text,
+        icon: 'arrow-left' do %>
+          <%= t('avo.cancel').capitalize %>
+        <% end %>
+        <% if can_see_the_save_button? %>
+          <%= a_button color: :primary,
+              style: :primary,
+              loading: true,
+              type: :submit,
+              icon: 'save' do %>
+            <%= t('avo.save').capitalize %>
+          <% end %>
+        <% end %>
+      <% end %>
+      <% if Avo.configuration.buttons_on_form_footers %>
+        <% c.footer_tools do %>
+          <%= a_link back_path, icon: 'arrow-left' do %>
+            <%= t('avo.cancel').capitalize %>
+          <% end %>
+          <% if can_see_the_save_button? %>
+            <%= a_button color: :green, loading: true, type: :submit, icon: 'save' do %>
+              <%= t('avo.save').capitalize %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+      <% c.body do %>
+        <div class="divide-y">
+          <% @resource.get_base_items.each_with_index do |field, index| %>
+            <%= render field.component_for_view(:edit).new(field: field, resource: @resource, index: index, form: form) unless field.computed %>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+    <% @resource.get_items.each_with_index do |item, index| %>
+      <% next if item.nil? %>
+      <%= render partial: 'avo/partials/item_switcher', locals: { item: item, index: index, view: :edit, form: form } %>
+    <% end %>
+  <% end %>
+  <%# @resource.panels.each do |resource_panel| %>
     <%= form_with model: @resource.model,
         scope: @resource.form_scope,
         url: helpers.resource_path(model: @resource.model, resource: @resource),
@@ -9,7 +59,7 @@
         local: true,
         multipart: true do |form| %>
       <%= render Avo::ReferrerParamsComponent.new back_path: back_path %>
-      <%= render Avo::PanelComponent.new(title: resource_panel[:name], description: @resource.resource_description, display_breadcrumbs: true) do |c| %>
+      <%= render Avo::PanelComponent.new(title: 'resource_panel[:name]', description: @resource.resource_description, display_breadcrumbs: true) do |c| %>
         <% c.tools do %>
           <%= a_link back_path,
             style: :text,
@@ -47,27 +97,27 @@
         <% end %>
       <% end %>
     <% end %>
-  <% end %>
-  <% if @reflection.blank? %>
-    <% if has_one_panels.present? %>
-      <% has_one_panels.each_with_index do |field, index| %>
-        <%= render field.component_for_view(:show).new(field: field, resource: @resource, index: index) %>
+    <%# end %>
+    <% if @reflection.blank? %>
+      <% if has_one_panels.present? %>
+        <% has_one_panels.each_with_index do |field, index| %>
+          <%= render field.component_for_view(:show).new(field: field, resource: @resource, index: index) %>
+        <% end %>
+      <% end %>
+      <% if has_many_panels.present? %>
+        <% has_many_panels.each_with_index do |field, index| %>
+          <%= render field.component_for_view(:show).new(field: field, resource: @resource, index: index) %>
+        <% end %>
+      <% end %>
+      <% if has_as_belongs_to_many_panels.present? %>
+        <% has_as_belongs_to_many_panels.each_with_index do |field, index| %>
+          <%= render field.component_for_view(:show).new(field: field, resource: @resource, index: index) %>
+        <% end %>
+      <% end %>
+      <% if resource_tools.present? %>
+        <% resource_tools.each do |tool, index| %>
+          <%= render tool.partial, tool: tool %>
+        <% end %>
       <% end %>
     <% end %>
-    <% if has_many_panels.present? %>
-      <% has_many_panels.each_with_index do |field, index| %>
-        <%= render field.component_for_view(:show).new(field: field, resource: @resource, index: index) %>
-      <% end %>
-    <% end %>
-    <% if has_as_belongs_to_many_panels.present? %>
-      <% has_as_belongs_to_many_panels.each_with_index do |field, index| %>
-        <%= render field.component_for_view(:show).new(field: field, resource: @resource, index: index) %>
-      <% end %>
-    <% end %>
-    <% if resource_tools.present? %>
-      <% resource_tools.each do |tool, index| %>
-        <%= render tool.partial, tool: tool %>
-      <% end %>
-    <% end %>
-  <% end %>
-</div>
+  </div>

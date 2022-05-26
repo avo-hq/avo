@@ -236,7 +236,7 @@ module Avo
 
         puts ["panelfull_fields->", items.count, panelfull_items.count, panelless_items.count, items.map(&:item_type)].inspect
 
-        [Avo::Panel.new(title: default_panel_name, description: resource_description, items: panelless_items, is_base_panel: true), *panelfull_items]
+        [Avo::MainPanel.new(title: default_panel_name, description: resource_description, items: panelless_items), *panelfull_items]
       end
 
       def get_base_items
@@ -252,7 +252,7 @@ module Avo
 
         # puts ["panelfull_fields->", panelfull_fields.count, panelless_fields.count].inspect
 
-        # [Avo::Panel.new(title: default_panel_name, description: resource_description, items: panelless_fields, is_base_panel: true), *panelfull_fields]
+        # [Avo::Panel.new(title: default_panel_name, description: resource_description, items: panelless_fields, is_main_panel: true), *panelfull_fields]
       end
 
       private
@@ -343,6 +343,10 @@ class Avo::TabBuilder
   #   puts ["taaab->", name].inspect
   #   @items << Avo::Tab.new(name: name)
   # end
+
+  def main_panel
+
+  end
 
   # Fetch the tab
   def build
@@ -520,17 +524,15 @@ class Avo::Panel
   attr_reader :description
   attr_reader :items
   attr_accessor :items_index
-  attr_accessor :is_base_panel
 
   class_attribute :item_type, default: :panel
 
   include Avo::Concerns::IsResourceItem
 
-  def initialize(title: nil, description: nil, items: [], is_base_panel: false)
+  def initialize(title: nil, description: nil, items: [])
     @title = title
     @description = description
     @items = items
-    @is_base_panel = is_base_panel
 
     @items_index = 0
   end
@@ -542,4 +544,8 @@ class Avo::Panel
   def has_items?
     @items.present?
   end
+end
+
+class Avo::MainPanel < Avo::Panel
+  class_attribute :item_type, default: :main_panel
 end

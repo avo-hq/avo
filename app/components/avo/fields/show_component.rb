@@ -3,7 +3,7 @@
 class Avo::Fields::ShowComponent < ViewComponent::Base
   include Avo::ResourcesHelper
 
-  def initialize(field: nil, resource: nil, index: 0)
+  def initialize(field: nil, resource: nil, index: 0, form: nil)
     @field = field
     @resource = resource
     @index = index
