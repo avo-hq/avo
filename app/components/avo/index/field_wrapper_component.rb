@@ -22,6 +22,11 @@ class Avo::Index::FieldWrapperComponent < ViewComponent::Base
     result
   end
 
+  def stimulus_target
+    "#{@field.id.to_s.underscore}_#{@field.type.to_s.underscore}_wrapper".camelize(:lower)
+  end
+
+
   private
 
   def text_align_classes

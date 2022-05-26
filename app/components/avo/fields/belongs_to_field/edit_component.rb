@@ -48,4 +48,8 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
 
     @polymorphic_record
   end
+
+  def field_html_action
+    @field.data_attributes[:action]
+  end
 end

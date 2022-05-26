@@ -3,7 +3,8 @@
     <%= @form.check_box @field.id,
       class: 'text-lg h-4 w-4',
       disabled: @field.readonly,
-      checked: @field.value
+      checked: @field.value,
+      data: @field.data_attributes
     %>
   </div>
 <% end %>

@@ -2,5 +2,6 @@
   <%= @form.text_field @field.id,
     class: helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)),
     placeholder: @field.placeholder,
-    disabled: @field.readonly %>
+    disabled: @field.readonly,
+    data: @field.data_attributes %>
 <% end %>

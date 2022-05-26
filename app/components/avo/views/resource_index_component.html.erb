@@ -1,4 +1,4 @@
-<div>
+<div data-controller="resource-index">
   <%= render Avo::PanelComponent.new(title: title, description: description, data: { component: 'resources-index' }, display_breadcrumbs: @reflection.blank?) do |c| %>
     <% c.tools do %>
       <% if can_attach? %>

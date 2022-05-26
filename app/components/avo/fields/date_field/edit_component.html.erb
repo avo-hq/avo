@@ -12,7 +12,8 @@
         format: @field.format,
         placeholder: @field.placeholder,
         relative: @field.relative,
-      }
+        **@field.data_attributes
+      },
     %>
   </div>
 <% end %>

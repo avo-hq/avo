@@ -21,8 +21,11 @@
       {
         class: helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)),
         disabled: disabled,
-        'data-belongs-to-field-target': "select",
-        'data-action': 'change->belongs-to-field#changeType'
+        data: {
+          **@field.data_attributes,
+          action: "change->belongs-to-field#changeType #{field_html_action}",
+          'belongs-to-field-target': "select",
+        }
       }
     %>
       <%
@@ -57,7 +60,8 @@
             },
             {
               class: helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)),
-              disabled: disabled
+              disabled: disabled,
+              data: @field.data_attributes
             }
           %>
             <%
@@ -89,7 +93,8 @@
         },
         {
           class: helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)),
-          disabled: disabled
+          disabled: disabled,
+          data: @field.data_attributes
         }
       %>
       <%

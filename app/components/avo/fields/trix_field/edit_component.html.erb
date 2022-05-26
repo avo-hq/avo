@@ -11,13 +11,21 @@
     data-hide-attachment-url="<%= @field.hide_attachment_url %>"
     class="relative block overflow-x-auto max-w-full"
   >
-    <% trix_id = "trix_#{@resource.name.underscore}_#{@field.id}" %>
-    <trix-editor data-trix-field-target="editor" input="<%= trix_id %>" placeholder="<%= @field.placeholder %>"><%== @field.value %></trix-editor>
+    <%= content_tag 'trix-editor',
+      input: trix_id,
+      placeholder: @field.placeholder,
+      data: {
+        "trix-field-target": "editor",
+        **@field.data_attributes
+      }  do %>
+      <%== @field.value %>
+    <% end %>
     <%= @form.text_area @field.id,
       id: trix_id,
       class: helpers.input_classes('w-full hidden', has_error: (@resource.model.present? and @resource.model.errors.include?(@field.id))),
       placeholder: @field.placeholder,
-      disabled: @field.readonly
+      disabled: @field.readonly,
+      data: @field.data_attributes
     %>
   </div>
 <% end %>

@@ -1,5 +1,6 @@
-<div data-model-id="<%= @resource.model.id %>"
-  class="space-y-8"
+<div class="space-y-8"
+  data-model-id="<%= @resource.model.id %>"
+  data-controller="resource-edit"
 >
   <% @resource.panels.each do |resource_panel| %>
     <%= form_with model: @resource.model,
