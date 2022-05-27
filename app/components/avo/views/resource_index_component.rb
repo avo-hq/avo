@@ -32,7 +32,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
   def title
     if @reflection.present?
-      return field.plural_name if field.present?
+      return field.custom_name if field.present?
 
       reflection_resource.plural_name
     else

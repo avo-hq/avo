@@ -120,6 +120,10 @@ module Avo
         default
       end
 
+      def custom_name
+        @singular_name ? name : plural_name
+      end
+
       def placeholder
         return @placeholder if @placeholder.present?
 

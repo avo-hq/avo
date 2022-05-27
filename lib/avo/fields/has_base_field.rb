@@ -5,6 +5,7 @@ module Avo
       attr_accessor :scope
       attr_accessor :attach_scope
       attr_accessor :description
+      attr_accessor :singular_name
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
@@ -14,6 +15,7 @@ module Avo
         @display = args[:display].present? ? args[:display] : :show
         @searchable = args[:searchable] == true
         @description = args[:description]
+        @singular_name = args[:singular_name] || false
       end
 
       def searchable
