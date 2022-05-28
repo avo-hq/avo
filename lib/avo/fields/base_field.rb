@@ -105,7 +105,7 @@ module Avo
       def name
         default = @id.to_s.humanize(keep_id_suffix: true)
 
-        return @name if @name.present?
+        return @name if custom_name?
 
         return t(translation_key, count: 1, default: default).capitalize if translation_key
 
@@ -118,6 +118,10 @@ module Avo
         return t(translation_key, count: 2, default: default).capitalize if translation_key
 
         default
+      end
+
+      def custom_name?
+        @name.present?
       end
 
       def placeholder
