@@ -14,6 +14,7 @@ class PublishedFilter < Avo::Filters::SelectFilter
 
   def options
     {
+      blank: "Select status",
       published: "Published",
       unpublished: "Unpublished"
     }
