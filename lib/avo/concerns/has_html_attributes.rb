@@ -12,7 +12,7 @@ module Avo
       # get_html :classes, view: :show, element: :wrapper
       # get_html :styles, view: :index, element: :wrapper
       def get_html(name = nil, element:, view:)
-        return if [name, view, element, html_builder].any?(&:nil?)
+        return {} if [name, view, element, html_builder].any?(&:nil?)
 
         if html_builder.is_a? Hash
           get_html_from_hash name, element: element, view: view
@@ -43,7 +43,8 @@ module Avo
       end
 
       def get_html_from_hash(name = nil, element:, view:)
-        html_builder.dig(view, element, name)
+        # @todo: what if this is not a Hash but a string?
+        html_builder.dig(view, element, name) || {}
       end
 
       def html_builder
@@ -54,7 +55,6 @@ module Avo
         elsif @html.respond_to? :call
           Avo::Html::Builder.parse_block(record: model, &@html)
         end
-
       end
 
       def merge_values_as(as: :array, values: [])

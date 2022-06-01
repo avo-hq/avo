@@ -36,7 +36,7 @@
   <% if @form.present? %>
     <%= @form.text_area @field.id,
       value: @field.parsed_value,
-      class: 'Xhidden',
+      class: 'hidden',
       placeholder: @field.placeholder,
       data: {
         "key-value-target": 'input',
@@ -47,7 +47,7 @@
   <% else %>
     <%= text_area_tag @field.id,
       @field.parsed_value,
-      class: 'Xhidden',
+      class: 'hidden',
       placeholder: @field.placeholder,
       data: {
         "key-value-target": 'input',
