@@ -1,22 +1,18 @@
-// import { Controller } from '@hotwired/stimulus'
 import Controller from '../resource_edit_controller'
-// import { useClickOutside } from 'stimulus-use'
 
 export default class extends Controller {
-  static targets = ['skillsTagsWrapper']
+  static targets = ['parentController', 'skillsTagsWrapper']
 
-  connect() {
-    // useClickOutside(this)
-    console.log('connect->', this.skillsTagsWrapperTarget)
+  static values = {
+    view: String,
   }
 
-  // clickOutside() {
-  //   this.panelTarget.classList.add('hidden')
-  // }
+  connect() {
+    const parentController = this.application.getControllerForElementAndIdentifier(this.parentControllerTarget, `resource-${this.viewValue}`)
+    // console.log('Parent controller->', parentController.viewValue, this.viewValue)
+  }
 
   toggle() {
-    console.log('toggle->')
-
     this.skillsTagsWrapperTarget.classList.toggle('hidden')
   }
 }

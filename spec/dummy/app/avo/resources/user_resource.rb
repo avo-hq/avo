@@ -20,25 +20,37 @@ class UserResource < Avo::BaseResource
   field :email, as: :gravatar, link_to_resource: true, as_avatar: :circle
   heading "User Information"
   field :first_name, as: :text, required: true, placeholder: "John", html: {
-    data: {
-      'resource-edit-target': 'emailField',
-      action: 'input->resource-edit#emailUpdate'
+    edit: {
+      input: {
+        data: {
+          "resource-edit-target": "emailField",
+          action: "input->resource-edit#atInput"
+        }
+      }
     }
   }
   field :last_name, as: :text, required: true, placeholder: "Doe"
   field :email, as: :text, name: "User Email", required: true, html: {
-    data: {
-      'resource-edit-target': 'emailField',
-      action: 'input->resource-edit#emailUpdate'
+    edit: {
+      input: {
+        data: {
+          "resource-edit-target": "emailField",
+          action: "input->resource-edit#atInput"
+        }
+      }
     }
   }
   # field :active, as: :boolean, name: "Is active", show_on: :show
   # field :cv, as: :file, name: "CV"
   # field :is_admin?, as: :boolean, name: "Is admin", only_on: :index
   field :roles, as: :boolean_group, options: {admin: "Administrator", manager: "Manager", writer: "Writer"}, html: {
-    data: {
-      action: 'input->resource-edit#atInput',
-      'resource-edit-target': 'checkbox'
+    edit: {
+      input: {
+        data: {
+          action: "input->resource-edit#atInput",
+          "resource-edit-target": "checkbox"
+        }
+      }
     }
   }
   # field :roles, as: :text, hide_on: :all, as_description: true do |model, resource, view, field|
@@ -57,9 +69,13 @@ class UserResource < Avo::BaseResource
 
   # heading '<div class="underline uppercase font-bold">DEV</div>', as_html: true
   field :custom_css, as: :code, theme: "dracula", language: "css", help: "This enables you to edit the user's custom styles.", height: "250px", html: {
-    data: {
-      'resource-edit-target': 'emailField',
-      action: 'input->resource-edit#emailUpdate'
+    edit: {
+      input: {
+        data: {
+          "resource-edit-target": "emailField",
+          action: "input->resource-edit#emailUpdate"
+        }
+      }
     }
   }
   # field :team_id, as: :hidden, default: 0 # For testing purposes
@@ -69,10 +85,10 @@ class UserResource < Avo::BaseResource
   # end
 
   # field :post, as: :has_one, translation_key: "avo.field_translations.people", name: "Main post"
-  field :posts,
-    as: :has_many,
-    attach_scope: -> { query.where.not(user_id: parent.id).or(query.where(user_id: nil)) }
-    # ,name: 'loool'
+  # field :posts,
+  #   as: :has_many,
+  #   attach_scope: -> { query.where.not(user_id: parent.id).or(query.where(user_id: nil)) }
+  # ,name: 'loool'
   # field :teams, as: :has_and_belongs_to_many
   # field :people, as: :has_many, translation_key: "avo.field_translations.people"
   # field :spouses, as: :has_many # STI has_many resource

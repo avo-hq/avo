@@ -10,6 +10,7 @@ class Avo::Views::ResourceNewComponent < ViewComponent::Base
   )
     @resource = resource
     @model = model
+    @view = :new
   end
 
   def back_path

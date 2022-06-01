@@ -5,13 +5,14 @@ class CourseResource < Avo::BaseResource
     scope.ransack(id_eq: params[:q], name_cont: params[:q], m: "or").result(distinct: false)
   end
   self.keep_filters_panel_open = true
+  self.stimulus_controllers = "field-toggle"
 
   field :id, as: :id
   field :name, as: :text
   field :has_skills, as: :boolean, html: -> do
     edit do
       input do
-        data({action: "input->resource-edit#toggle"})
+        data({action: "input->field-toggle#toggle"})
       end
     end
   end

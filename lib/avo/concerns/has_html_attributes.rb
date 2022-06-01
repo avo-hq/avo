@@ -3,25 +3,7 @@ module Avo
     module HasHtmlAttributes
       extend ActiveSupport::Concern
 
-      included do
-      end
-
-      class_methods do
-      end
-
       attr_reader :html
-
-      # def data_attributes(**args)
-      #   get_html :data, **args
-      # end
-
-      # def classes_attributes(**args)
-      #   get_html :classes, **args
-      # end
-
-      # def style_attributes(**args)
-      #   get_html :style, **args
-      # end
 
       # Used to get attributes for elements and views
       #
@@ -32,6 +14,16 @@ module Avo
       def get_html(name = nil, element:, view:)
         return if [name, view, element, html_builder].any?(&:nil?)
 
+        if html_builder.is_a? Hash
+          get_html_from_hash name, element: element, view: view
+        elsif html_builder.respond_to? :call
+          get_html_from_block name, element: element, view: view
+        end
+      end
+
+      private
+
+      def get_html_from_block(name = nil, element:, view:)
         values = []
 
         # get view ancestor
@@ -50,27 +42,31 @@ module Avo
         merge_values_as(as: values_type, values: values)
       end
 
-      private
+      def get_html_from_hash(name = nil, element:, view:)
+        html_builder.dig(view, element, name)
+      end
 
       def html_builder
         return if @html.nil?
 
-        Avo::Html::Builder.parse_block(record: model, &@html)
+        if @html.is_a? Hash
+          @html
+        elsif @html.respond_to? :call
+          Avo::Html::Builder.parse_block(record: model, &@html)
+        end
+
       end
 
       def merge_values_as(as: :array, values: [])
+        puts ["values->", values, as].inspect
         if as == :array
           values.flatten
         elsif as == :string
-          values.join " "
+          values.select do |value|
+            value.is_a? String
+          end.join " "
         elsif as == :hash
-          merged = {}
-
-          values.each do |val|
-            merged.merge! val
-          end
-
-          merged
+          values.reduce({}, :merge)
         end
       end
     end

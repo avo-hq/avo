@@ -6,6 +6,7 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
 
   def initialize(resource: nil)
     @resource = resource
+    @view = :edit
 
     split_panel_fields
   end
@@ -29,6 +30,6 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   private
 
   def via_index?
-    params[:via_view] == 'index'
+    params[:via_view] == "index"
   end
 end

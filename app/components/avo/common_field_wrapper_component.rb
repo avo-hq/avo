@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class Avo::CommonFieldWrapperComponent < ViewComponent::Base
-  def initialize(field: nil, dash_if_blank: true, full_width: false, displayed_in_modal: false, form: nil, resource: {}, label: nil, view: nil, **args)
+  attr_reader :view
+
+  def initialize(field: nil, dash_if_blank: true, full_width: false, displayed_in_modal: false, form: nil, resource: nil, label: nil, view: nil, **args)
     @field = field
     @dash_if_blank = dash_if_blank
     @classes = args[:class].present? ? args[:class] : ""
@@ -15,11 +17,21 @@ class Avo::CommonFieldWrapperComponent < ViewComponent::Base
     @view = view
   end
 
+  def classes
+    "#{@classes || ""} #{@field.get_html(:classes, view: view, element: :wrapper)}"
+  end
+
   def label
     @label || @field.name
   end
 
-  def stimulus_target
-    "#{@field.id.to_s.underscore}_#{@field.type.to_s.underscore}_wrapper".camelize(:lower)
+  def stimulus_attributes
+    attributes = {}
+
+    @resource.stimulus_controllers.split(" ").each do |controller|
+      attributes["#{controller}-target"] = "#{@field.id.to_s.underscore}_#{@field.type.to_s.underscore}_wrapper".camelize(:lower)
+    end
+
+    attributes
   end
 end

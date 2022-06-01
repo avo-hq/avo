@@ -1,4 +1,4 @@
-<%= index_field_wrapper field: @field, flush: true do %>
+<%= index_field_wrapper field: @field, resource: @resource, flush: true do %>
   <% if @field.value.present? %>
     <%= link_to_if @field.link_to_resource.present?,
                    image_tag(@field.value,

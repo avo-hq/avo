@@ -6,6 +6,7 @@ module Avo
     include ActionView::Helpers::UrlHelper
     include Avo::Concerns::HasTools
     include Avo::Concerns::HasFields
+    include Avo::Concerns::HasStimulusControllers
 
     delegate :view_context, to: "Avo::App"
     delegate :main_app, to: :view_context
@@ -45,7 +46,6 @@ module Avo
     class_attribute :invalid_fields
     class_attribute :record_selector, default: true
     class_attribute :keep_filters_panel_open, default: false
-    class_attribute :stimulus_controller, default: false
 
     class << self
       delegate :t, to: ::I18n
