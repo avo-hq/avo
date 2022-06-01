@@ -4,6 +4,6 @@
     placeholder: @field.placeholder,
     disabled: @field.readonly,
     rows: @field.rows,
-    data: @field.data_attributes
+    data: @field.get_html(:data, view: view, element: :input)
   %>
 <% end %>

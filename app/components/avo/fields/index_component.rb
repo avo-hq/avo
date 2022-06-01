@@ -3,11 +3,14 @@
 class Avo::Fields::IndexComponent < ViewComponent::Base
   include Avo::ResourcesHelper
 
+  attr_reader :view
+
   def initialize(field: nil, resource: nil, index: 0, parent_model: nil)
     @field = field
     @resource = resource
     @index = index
     @parent_model = parent_model
+    @view = :index
   end
 
   def resource_path

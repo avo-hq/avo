@@ -16,7 +16,12 @@ class ReviewResource < Avo::BaseResource
   field :user,
     as: :belongs_to,
     searchable: true,
-    allow_via_detaching: true,
+    allow_via_detaching: true, html: {
+      data: {
+        'resource-edit-target': 'emailField',
+        action: 'input->resource-edit#emailUpdate'
+      }
+    },
     help: "For the review with the ID of 1 only admin users will be displayed.",
     attach_scope: -> do
       # For the parent record with ID 1 we'll apply this rule.
@@ -32,7 +37,12 @@ class ReviewResource < Avo::BaseResource
     polymorphic_as: :reviewable,
     types: [::Fish, ::Post, ::Project, ::Team],
     searchable: true,
-    allow_via_detaching: true,
+    allow_via_detaching: true, html: {
+      data: {
+        'resource-edit-target': 'emailField',
+        action: 'input->resource-edit#emailUpdate'
+      }
+    },
     attach_scope: -> do
       # For the parent record with ID 1 we'll apply this rule.
       # This is for testing purposes only. Just to show that it's possbile.

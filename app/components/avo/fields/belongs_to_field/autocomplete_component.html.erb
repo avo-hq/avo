@@ -22,7 +22,7 @@
       data: {
         'search-target': 'button clearValue',
         'should-be-disabled': @disabled,
-        **@field.data_attributes
+        **@field.get_html(:data, view: view, element: :input)
       },
       disabled: true %>123
     <% unless @disabled %>
@@ -39,7 +39,7 @@
     value: field_value,
     data: {
       'search-target': 'hiddenId clearValue',
-      **@field.data_attributes
+      **@field.get_html(:data, view: view, element: :input)
     }
   %>
 </div>

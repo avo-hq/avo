@@ -41,7 +41,7 @@
       data: {
         "key-value-target": 'input',
         view: :edit,
-        **@field.data_attributes
+        **@field.get_html(:data, view: view, element: :input)
       }
     %>
   <% else %>
@@ -52,7 +52,7 @@
       data: {
         "key-value-target": 'input',
         view: :edit,
-        **@field.data_attributes
+        **@field.get_html(:data, view: view, element: :input)
       }
     %>
   <% end %>

@@ -16,7 +16,7 @@
       placeholder: @field.placeholder,
       data: {
         "trix-field-target": "editor",
-        **@field.data_attributes
+        **@field.get_html(:data, view: view, element: :input)
       }  do %>
       <%== @field.value %>
     <% end %>
@@ -25,7 +25,7 @@
       class: helpers.input_classes('w-full hidden', has_error: (@resource.model.present? and @resource.model.errors.include?(@field.id))),
       placeholder: @field.placeholder,
       disabled: @field.readonly,
-      data: @field.data_attributes
+      data: @field.get_html(:data, view: view, element: :input)
     %>
   </div>
 <% end %>

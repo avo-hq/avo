@@ -4,7 +4,7 @@
       class: 'text-lg h-4 w-4',
       disabled: @field.readonly,
       checked: @field.value,
-      data: @field.data_attributes
+      data: @field.get_html(:data, view: view, element: :input)
     %>
   </div>
 <% end %>

@@ -21,7 +21,7 @@
             class: "w-4 h-4",
             disabled: @field.readonly,
             id: "#{model_param_key}_#{@field.id}_#{id}",
-            data: @field.data_attributes
+            data: @field.get_html(:data, view: view, element: :input)
             } %> <%= label %>
         </label>
       <% end %>

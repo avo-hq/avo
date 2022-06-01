@@ -13,7 +13,7 @@
         'read-only': @field.readonly,
         'indent-with-tabs': @field.indent_with_tabs,
         'line-wrapping': @field.line_wrapping,
-        **@field.data_attributes,
+        **@field.get_html(:data, view: view, element: :input),
       }
     %>
   </div>

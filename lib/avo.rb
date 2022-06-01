@@ -4,6 +4,10 @@ require_relative "avo/engine" if defined?(Rails)
 
 loader = Zeitwerk::Loader.for_gem
 loader.setup
+# loader.inflector.inflect(
+#   "html"   => "HTML",
+#   "HTML"   => "HTML",
+# )
 
 #                                      .//*,,.....,,*/(*
 #                                   **,,..............,*#.

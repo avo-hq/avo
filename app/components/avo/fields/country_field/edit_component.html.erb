@@ -3,6 +3,6 @@
     class: helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)),
     placeholder: @field.placeholder,
     disabled: @field.readonly,
-    data: @field.data_attributes
+    data: @field.get_html(:data, view: view, element: :input)
   %>
 <% end %>

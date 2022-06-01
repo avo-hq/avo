@@ -25,7 +25,7 @@ class Avo::PanelComponent < ViewComponent::Base
   end
 
   def data_attributes
-    @data.merge({'panel-index': @index}).map do |key, value|
+    @data.merge({"panel-index": @index}).map do |key, value|
       " data-#{key}=\"#{value}\""
     end.join
   end

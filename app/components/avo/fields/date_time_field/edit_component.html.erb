@@ -14,7 +14,7 @@
         format: @field.format,
         placeholder: @field.placeholder,
         relative: @field.relative,
-        **@field.data_attributes
+        **@field.get_html(:data, view: view, element: :input)
       }
     %>
   </div>

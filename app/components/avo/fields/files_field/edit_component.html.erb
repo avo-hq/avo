@@ -7,7 +7,7 @@
         disabled: @field.readonly,
         multiple: true,
         direct_upload: @field.direct_upload,
-        data: @field.data_attributes
+        data: @field.get_html(:data, view: view, element: :input)
       %>
     </div>
   <% end %>
