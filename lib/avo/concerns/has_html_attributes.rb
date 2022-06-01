@@ -58,7 +58,6 @@ module Avo
       end
 
       def merge_values_as(as: :array, values: [])
-        puts ["values->", values, as].inspect
         if as == :array
           values.flatten
         elsif as == :string

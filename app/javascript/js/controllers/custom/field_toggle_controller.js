@@ -8,7 +8,7 @@ export default class extends Controller {
   }
 
   connect() {
-    const parentController = this.application.getControllerForElementAndIdentifier(this.parentControllerTarget, `resource-${this.viewValue}`)
+    // const parentController = this.application.getControllerForElementAndIdentifier(this.parentControllerTarget, `resource-${this.viewValue}`)
     // console.log('Parent controller->', parentController.viewValue, this.viewValue)
   }
 
