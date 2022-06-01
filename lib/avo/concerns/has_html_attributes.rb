@@ -16,7 +16,7 @@ module Avo
 
         if html_builder.is_a? Hash
           get_html_from_hash name, element: element, view: view
-        elsif html_builder.respond_to? :call
+        elsif html_builder.is_a? Avo::HTML::Builder
           get_html_from_block name, element: element, view: view
         end
       end
