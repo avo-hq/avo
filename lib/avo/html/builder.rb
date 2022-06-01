@@ -60,6 +60,7 @@ class Avo::Html::Builder
     assign_property :classes, payload, &block
   end
 
+  # Takes a block
   def wrapper(&block)
     capture_block :wrapper, &block
   end
