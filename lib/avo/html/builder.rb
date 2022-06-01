@@ -1,7 +1,7 @@
-class Avo::Html::Builder
+class Avo::HTML::Builder
   class << self
     def parse_block(record: nil, &block)
-      Docile.dsl_eval(Avo::Html::Builder.new(record: record), &block).build
+      Docile.dsl_eval(Avo::HTML::Builder.new(record: record), &block).build
     end
   end
 

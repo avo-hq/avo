@@ -8,7 +8,7 @@ module Avo
       include ActionView::Helpers::UrlHelper
 
       include Avo::Concerns::HandlesFieldArgs
-      include Avo::Concerns::HasHtmlAttributes
+      include Avo::Concerns::HasHTMLAttributes
 
       delegate :view_context, to: "Avo::App"
       delegate :main_app, to: :view_context

@@ -1,6 +1,6 @@
 module Avo
   module Concerns
-    module HasHtmlAttributes
+    module HasHTMLAttributes
       extend ActiveSupport::Concern
 
       attr_reader :html
@@ -53,7 +53,7 @@ module Avo
         if @html.is_a? Hash
           @html
         elsif @html.respond_to? :call
-          Avo::Html::Builder.parse_block(record: model, &@html)
+          Avo::HTML::Builder.parse_block(record: model, &@html)
         end
       end
 
