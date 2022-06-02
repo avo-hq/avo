@@ -29,7 +29,6 @@ module Avo
     class_attribute :includes, default: []
     class_attribute :model_class
     class_attribute :translation_key
-    class_attribute :translation_enabled, default: false
     class_attribute :default_view_type, default: :table
     class_attribute :devise_password_optional, default: false
     class_attribute :actions_loader
@@ -106,8 +105,6 @@ module Avo
           self.class.model_class = model_class.base_class
         end
       end
-
-      self.class.translation_enabled = ::Avo::App.translation_enabled
     end
 
     def hydrate(model: nil, view: nil, user: nil, params: nil)
@@ -128,7 +125,7 @@ module Avo
       return [] if self.class.fields.blank?
 
       fields = self.class.fields.map do |field|
-        field.hydrate(resource: self, panel_name: default_panel_name, user: user, translation_enabled: translation_enabled)
+        field.hydrate(resource: self, panel_name: default_panel_name, user: user)
       end
 
       if Avo::App.license.lacks_with_trial(:custom_fields)
@@ -139,7 +136,7 @@ module Avo
 
       if Avo::App.license.lacks_with_trial(:advanced_fields)
         fields = fields.reject do |field|
-          field.type == 'tags'
+          field.type == "tags"
         end
       end
 
@@ -288,7 +285,7 @@ module Avo
     end
 
     def translation_key
-      return "avo.resource_translations.#{class_name_without_resource.underscore}" if self.class.translation_enabled
+      return "avo.resource_translations.#{class_name_without_resource.underscore}" if ::Avo::App.translation_enabled
 
       self.class.translation_key
     end
@@ -298,9 +295,11 @@ module Avo
 
       return @name if @name.present?
 
-      return t(translation_key, count: 1, default: default).capitalize if translation_key
-
-      default
+      if translation_key && ::Avo::App.translation_enabled
+        t(translation_key, count: 1, default: default).capitalize
+      else
+        default
+      end
     end
 
     def singular_name
@@ -310,9 +309,11 @@ module Avo
     def plural_name
       default = name.pluralize
 
-      return t(translation_key, count: 2, default: default).capitalize if translation_key
-
-      default
+      if translation_key && ::Avo::App.translation_enabled
+        t(translation_key, count: 2, default: default).capitalize
+      else
+        default
+      end
     end
 
     def underscore_name
