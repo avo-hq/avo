@@ -40,7 +40,6 @@ export default class extends BaseController {
       blacklist: this.disallowedItems,
       enforceWhitelist: this.enforceSuggestions,
       delimiters: this.delimiters.join('|'),
-      maxTags: 10,
       dropdown: {
         maxItems: 20,
         enabled: 0,

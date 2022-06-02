@@ -1,6 +1,6 @@
 module Avo
   class GridCollector
-    include FieldsCollector
+    include Avo::Concerns::HasFields
 
     attr_accessor :cover_field
     attr_accessor :title_field
@@ -13,15 +13,15 @@ module Avo
     end
 
     def cover(field_name, as:, **args, &block)
-      self.cover_field = parse_field(field_name, as: as, **args, &block)
+      self.cover_field = self.class.parse_field(field_name, as: as, **args, &block)
     end
 
     def title(field_name, as:, **args, &block)
-      self.title_field = parse_field(field_name, as: as, **args, &block)
+      self.title_field = self.class.parse_field(field_name, as: as, **args, &block)
     end
 
     def body(field_name, as:, **args, &block)
-      self.body_field = parse_field(field_name, as: as, **args, &block)
+      self.body_field = self.class.parse_field(field_name, as: as, **args, &block)
     end
 
     def hydrate(model:, view:, resource:)

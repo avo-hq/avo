@@ -1,11 +1,14 @@
 Avo::Engine.routes.draw do
   root "home#index"
 
-  get "resources", to: redirect("/admin")
+  get "resources", to: redirect(Avo.configuration.root_path)
+  get "dashboards", to: redirect(Avo.configuration.root_path)
+
   post "/rails/active_storage/direct_uploads", to: "/active_storage/direct_uploads#create"
 
-  get "/dashboards/:dashboard_id", to: "dashboards#show"
-  get "/dashboards/:dashboard_id/cards/:card_id", to: "dashboards#card"
+  resources :dashboards do
+    resources :cards
+  end
 
   scope "avo_api", as: "avo_api" do
     get "/search", to: "search#index"

@@ -1,11 +1,11 @@
 module Avo
   class BaseResource
     extend ActiveSupport::DescendantsTracker
-    extend FieldsCollector
     extend HasContext
 
     include ActionView::Helpers::UrlHelper
     include Avo::Concerns::HasTools
+    include Avo::Concerns::HasFields
 
     delegate :view_context, to: "Avo::App"
     delegate :main_app, to: :view_context
@@ -33,7 +33,6 @@ module Avo
     class_attribute :devise_password_optional, default: false
     class_attribute :actions_loader
     class_attribute :filters_loader
-    class_attribute :fields
     class_attribute :grid_loader
     class_attribute :visible_on_sidebar, default: true
     class_attribute :unscoped_queries_on_index, default: false
