@@ -102,7 +102,17 @@ module Avo
       @resource = @resource.hydrate(model: @model, view: :new, user: _current_user)
 
       @page_title = @resource.default_panel_name.to_s
-      add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
+
+      if params[:via_relation_class].present? && params[:via_resource_id].present?
+        via_resource = Avo::App.get_resource_by_model_name params[:via_relation_class]
+        via_model = via_resource.class.find_scope.find params[:via_resource_id]
+        via_resource.hydrate model: via_model
+
+        add_breadcrumb via_resource.plural_name, resources_path(resource: via_resource)
+        add_breadcrumb via_resource.model_title, resource_path(model: via_model, resource: via_resource)
+      end
+
+      add_breadcrumb @resource.plural_name.humanize
       add_breadcrumb t("avo.new").humanize
     end
 
