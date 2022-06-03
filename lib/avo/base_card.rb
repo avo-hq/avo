@@ -52,23 +52,6 @@ module Avo
       @refresh_every || self.class.refresh_every
     end
 
-    def translated_range(range)
-      return "#{range} days" if range.is_a? Integer
-
-      case range
-      when "MTD"
-        "Month to date"
-      when "QTD"
-        "Quarter to date"
-      when "YTD"
-        "Year to date"
-      when "TODAY"
-        "Today"
-      else
-        range
-      end
-    end
-
     def turbo_frame
       "#{dashboard.id}_#{id}"
     end
