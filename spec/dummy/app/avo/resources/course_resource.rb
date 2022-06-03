@@ -14,7 +14,8 @@ class CourseResource < Avo::BaseResource
       input do
         data({
           action: "input->resource-edit#toggle",
-          resource_edit_field_param: "skills_tags"
+          resource_edit_toggle_field_param: "skills_tags",
+          resource_edit_toggle_fields_param: ["country_select"]
         })
       end
     end
@@ -26,7 +27,13 @@ class CourseResource < Avo::BaseResource
       }
     }
   }
-  field :country, as: :select, options: Course.countries.map { |country| [country, country] }.to_h
+  field :country, as: :select, options: Course.countries.map { |country| [country, country] }.to_h, html: {
+    edit: {
+      wrapper: {
+        classes: "hidden"
+      }
+    }
+  }
   field :city, as: :select, options: Course.cities.values.flatten.map { |city| [city, city] }.to_h
   field :links, as: :has_many, searchable: true, placeholder: "Click to choose a link"
 

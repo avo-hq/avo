@@ -26,14 +26,14 @@ export default class extends Controller {
   }
 
   toggle({ params }) {
-    const { field } = params
-    if (field) {
-      const target = camelCase(`${field}_wrapper`)
-      const element = document.querySelector(`[data-resource-edit-target="${target}"]`)
+    const { toggleField, toggleFields } = params
 
-      if (element) {
-        element.classList.toggle('hidden')
-      }
+    if (toggleField) {
+      this.toggleAvoField(toggleField)
+    }
+
+    if (toggleFields && toggleFields.length > 0) {
+      toggleFields.forEach(this.toggleAvoField.bind(this))
     }
   }
 
@@ -50,6 +50,16 @@ export default class extends Controller {
   }
 
   // Private
+
+  toggleAvoField(fieldName) {
+    // compose the default wrapper data value
+    const target = camelCase(`${fieldName}_wrapper`)
+    const element = document.querySelector(`[data-resource-edit-target="${target}"]`)
+
+    if (element) {
+      element.classList.toggle('hidden')
+    }
+  }
 
   disableAvoField(fieldName) {
     // compose the default wrapper data value
