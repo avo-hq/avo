@@ -75,9 +75,9 @@ module Avo
     end
 
     def show
-      set_actions
-
       @resource.hydrate(model: @model, view: :show, user: _current_user, params: params)
+      
+      set_actions
 
       @page_title = @resource.default_panel_name.to_s
 
@@ -102,7 +102,17 @@ module Avo
       @resource = @resource.hydrate(model: @model, view: :new, user: _current_user)
 
       @page_title = @resource.default_panel_name.to_s
-      add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
+
+      if params[:via_relation_class].present? && params[:via_resource_id].present?
+        via_resource = Avo::App.get_resource_by_model_name params[:via_relation_class]
+        via_model = via_resource.class.find_scope.find params[:via_resource_id]
+        via_resource.hydrate model: via_model
+
+        add_breadcrumb via_resource.plural_name, resources_path(resource: via_resource)
+        add_breadcrumb via_resource.model_title, resource_path(model: via_model, resource: via_resource)
+      end
+
+      add_breadcrumb @resource.plural_name.humanize
       add_breadcrumb t("avo.new").humanize
     end
 
@@ -302,14 +312,10 @@ module Avo
     end
 
     def set_actions
-      if params[:resource_id].present?
-        model = @resource.class.find_scope.find params[:resource_id]
-      end
-
       @actions = @resource
         .get_actions
         .map do |action|
-          action.new(model: model, resource: @resource, view: @view)
+          action.new(model: @model, resource: @resource, view: @view)
         end
         .select { |action| action.visible_in_view }
     end

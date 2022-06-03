@@ -85,7 +85,10 @@ module Avo
 
       return [default_message] if response[:messages].blank?
 
-      response[:messages]
+      response[:messages].select do |message|
+        # Remove the silent placeholder messages
+        message[:type] != :silent
+      end
     end
   end
 end

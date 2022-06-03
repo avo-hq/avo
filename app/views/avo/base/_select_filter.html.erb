@@ -6,7 +6,7 @@
   <%= filter_wrapper name: filter.name do %>
     <%= select_tag filter.id, options_for_select(filter.options.invert, filter.applied_or_default_value(@applied_filters)),
       class: input_classes('w-full mb-0'),
-      include_blank: '—',
+      include_blank: filter.class.empty_message || '—',
       id: "avo_filters_#{filter.id.parameterize.underscore}",
       'data-filter-class': filter.class,
       'data-select-filter-target': 'selector',

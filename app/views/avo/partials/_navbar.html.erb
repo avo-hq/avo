@@ -2,7 +2,7 @@
   class="fixed bg-white p-2 w-full flex flex-shrink-0 items-center z-50 px-4 lg:px-4 border-b space-x-4 lg:space-x-0 h-16 <%= 'print:hidden' if Avo.configuration.hide_layout_when_printing %>"
   v-if="layout !== 'blank'"
 >
-  <div class="flex items-center space-x-2 lg:space-x-0 w-32 sm:w-64 flex-shrink-0">
+  <div class="flex items-center space-x-2 lg:space-x-0 w-auto lg:w-64 flex-shrink-0 h-full">
     <%= a_button class: 'lg:hidden', icon: 'menu', size: :xs, compact: true, style: :text, data: { action: 'click->mobile#toggleSidebar' } %>
     <%= render partial: "avo/partials/logo" %>
   </div>
