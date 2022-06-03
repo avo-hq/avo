@@ -28,7 +28,7 @@ class Avo::CommonFieldWrapperComponent < ViewComponent::Base
   def stimulus_attributes
     attributes = {}
 
-    @resource.stimulus_controllers.split(" ").each do |controller|
+    @resource.get_stimulus_controllers.split(" ").each do |controller|
       attributes["#{controller}-target"] = "#{@field.id.to_s.underscore}_#{@field.type.to_s.underscore}_wrapper".camelize(:lower)
     end
 

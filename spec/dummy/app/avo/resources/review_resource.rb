@@ -13,13 +13,27 @@ class ReviewResource < Avo::BaseResource
     ""
   end
 
+  field :enable_course, as: :boolean, only_on: :forms, html: {
+    edit: {
+      input: {
+        data: {
+          action: "resource-edit#disable",
+          resource_edit_disable_field_param: "reviewable_belongs_to",
+          resource_edit_disable_fields_param: ["user_belongs_to"]
+        }
+      }
+    }
+  }
+
   field :user,
     as: :belongs_to,
     searchable: true,
     allow_via_detaching: true, html: {
-      data: {
-        'resource-edit-target': 'emailField',
-        action: 'input->resource-edit#emailUpdate'
+      input: {
+        data: {
+          'resource-edit-target': 'emailField',
+          action: 'input->resource-edit#emailUpdate'
+        }
       }
     },
     help: "For the review with the ID of 1 only admin users will be displayed.",

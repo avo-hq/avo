@@ -32,7 +32,7 @@ module Avo
           "resource-#{view}-view-value": view
         }
 
-        self.class.stimulus_controllers.split(" ").each do |controller|
+        get_stimulus_controllers.split(" ").each do |controller|
           # add the parentController for each extra controller so we can target the main controller (resource-edit/resource-show/resource-index)
           # in custom controllers.
           attributes["#{controller}-target"] = "parentController"

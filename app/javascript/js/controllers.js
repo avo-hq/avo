@@ -9,7 +9,7 @@ import CodeFieldController from './controllers/fields/code_field_controller'
 import CopyToClipboardController from './controllers/copy_to_clipboard_controller'
 import DashboardCardController from './controllers/dashboard_card_controller'
 import DateFieldController from './controllers/fields/date_field_controller'
-import FieldToggleController from './controllers/custom/field_toggle_controller'
+import DummyCustomController from './controllers/custom/dummy_custom_controller'
 import FilterController from './controllers/filter_controller'
 import HiddenInputController from './controllers/hidden_input_controller'
 import ItemSelectAllController from './controllers/item_select_all_controller'
@@ -70,4 +70,4 @@ application.register('simple-mde', SimpleMdeController)
 application.register('trix-field', TrixFieldController)
 
 // Custom controllers
-application.register('field-toggle', FieldToggleController)
+application.register('dummy-custom', DummyCustomController)

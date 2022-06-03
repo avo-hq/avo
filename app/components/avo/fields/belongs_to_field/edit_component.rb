@@ -50,6 +50,6 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
   end
 
   def field_html_action
-    @field.data_attributes[:action]
+    @field.get_html(:data, view: :edit, element: :input)
   end
 end
