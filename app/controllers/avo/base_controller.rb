@@ -75,9 +75,9 @@ module Avo
     end
 
     def show
-      set_actions
-
       @resource.hydrate(model: @model, view: :show, user: _current_user, params: params)
+      
+      set_actions
 
       @page_title = @resource.default_panel_name.to_s
 
@@ -312,14 +312,10 @@ module Avo
     end
 
     def set_actions
-      if params[:resource_id].present?
-        model = @resource.class.find_scope.find params[:resource_id]
-      end
-
       @actions = @resource
         .get_actions
         .map do |action|
-          action.new(model: model, resource: @resource, view: @view)
+          action.new(model: @model, resource: @resource, view: @view)
         end
         .select { |action| action.visible_in_view }
     end
