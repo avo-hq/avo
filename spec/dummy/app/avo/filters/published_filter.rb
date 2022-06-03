@@ -1,5 +1,6 @@
 class PublishedFilter < Avo::Filters::SelectFilter
   self.name = "Published status"
+  self.empty_message = "Published or unpublished"
 
   def apply(request, query, value)
     case value
