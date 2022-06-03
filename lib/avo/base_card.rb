@@ -69,12 +69,6 @@ module Avo
       end
     end
 
-    def parsed_ranges
-      return unless ranges.present?
-
-      ranges.map { |range| [translated_range(range), range] }
-    end
-
     def turbo_frame
       "#{dashboard.id}_#{id}"
     end
