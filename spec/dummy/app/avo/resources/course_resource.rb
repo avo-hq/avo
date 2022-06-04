@@ -5,7 +5,7 @@ class CourseResource < Avo::BaseResource
     scope.ransack(id_eq: params[:q], name_cont: params[:q], m: "or").result(distinct: false)
   end
   self.keep_filters_panel_open = true
-  self.stimulus_controllers = "dummy-custom"
+  self.stimulus_controllers = "course-resource"
 
   field :id, as: :id
   field :name, as: :text
@@ -14,7 +14,7 @@ class CourseResource < Avo::BaseResource
       input do
         data({
           action: "input->resource-edit#toggle",
-          resource_edit_toggle_field_param: "skills_tags",
+          # resource_edit_toggle_field_param: "skills_tags",
           resource_edit_toggle_fields_param: ["country_select"]
         })
       end
@@ -29,12 +29,28 @@ class CourseResource < Avo::BaseResource
   }
   field :country, as: :select, options: Course.countries.map { |country| [country, country] }.to_h, html: {
     edit: {
-      wrapper: {
-        classes: "hidden"
+      input: {
+        data: {
+          course_resource_target: "countryFieldInput",
+          action: "course-resource#countryChanged"
+        }
       }
     }
   }
-  field :city, as: :select, options: Course.cities.values.flatten.map { |city| [city, city] }.to_h
+  # field :city, as: :select, options: Course.cities.values.flatten.map { |city| [city, city] }.to_h, html: {
+  # field :city, as: :text
+  field :city, as: :select, options: Course.cities.values.flatten.map { |city| [city, city] }.to_h, placeholderw: 'qweq', display_value: false, html: {
+    edit: {
+      input: {
+        data: {
+          course_resource_target: "cityFieldInput"
+        }
+      },
+      # wrapper: {
+      #   classes: "hidden"
+      # }
+    }
+  }
   field :links, as: :has_many, searchable: true, placeholder: "Click to choose a link"
 
   filter CourseCountryFilter

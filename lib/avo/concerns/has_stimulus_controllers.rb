@@ -29,13 +29,9 @@ module Avo
       def stimulus_data_attributes
         attributes = {
           controller: get_stimulus_controllers,
-          "resource-#{view}-view-value": view
         }
 
         get_stimulus_controllers.split(" ").each do |controller|
-          # add the parentController for each extra controller so we can target the main controller (resource-edit/resource-show/resource-index)
-          # in custom controllers.
-          attributes["#{controller}-target"] = "parentController"
           attributes["#{controller}-view-value"] = view
         end
 

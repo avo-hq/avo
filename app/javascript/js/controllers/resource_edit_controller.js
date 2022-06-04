@@ -10,7 +10,7 @@ export default class extends Controller {
   }
 
   connect() {
-    console.log('BASE resource_edit_controller', this.context.targets, this.constructor.targets, 1, this.viewValue)
+    // console.log('BASE resource_edit_controller', this.context.targets, this.constructor.targets, 1, this.viewValue)
     // this.application.getControllerForElementAndIdentifier(this.otherTarget, 'other')
     // console.log('this.firstNameTextWrapperTarget->', this.firstNameTextWrapperTarget)
   }

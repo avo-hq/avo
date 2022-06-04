@@ -10,7 +10,7 @@ module Avo
 
         super(id, **args, &block)
 
-        @options = args[:options].present? ? args[:options] : args[:enum]
+        @options = args[:options] || args[:enum]
         @options = ActiveSupport::HashWithIndifferentAccess.new @options if @options.is_a? Hash
         @enum = args[:enum].present? ? args[:enum] : nil
         @display_value = args[:display_value].present? ? args[:display_value] : false
