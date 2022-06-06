@@ -10,6 +10,8 @@ RSpec.describe "QueryScope", type: :system do
       it "displays the users in ascending order by last_name" do
         visit "/admin/resources/users"
 
+        wait_for_loaded
+
         users_ids = all('[data-field-type="id"]')
 
         first_user_id = users_ids[0].find("a").text
@@ -28,6 +30,8 @@ RSpec.describe "QueryScope", type: :system do
     it "displays the users in ascending order by id" do
       visit "/admin/resources/users?sort_by=id&sort_direction=asc"
 
+      wait_for_loaded
+
       users_ids = all('[data-field-type="id"]')
 
       first_user_id = users_ids[0].find("a").text
@@ -41,6 +45,8 @@ RSpec.describe "QueryScope", type: :system do
 
     it "displays the users according to the logic of a proc provided to sortable" do
       visit "/admin/resources/users?sort_by=is_writer&sort_direction=asc"
+
+      wait_for_loaded
 
       users_ids = all('[data-field-type="id"]')
 
