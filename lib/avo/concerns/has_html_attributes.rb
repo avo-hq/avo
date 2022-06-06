@@ -27,7 +27,7 @@ module Avo
           name == :data ? {} : ""
         end
 
-        add_default_data_attributes attributes, data, element, view
+        add_default_data_attributes attributes, name, element, view
       end
 
       private
