@@ -1,5 +1,5 @@
 class TeamMembershipResource < Avo::BaseResource
-  self.title = :id
+  self.title = :name
   self.includes = [:user, :team]
   self.visible_on_sidebar = false
   self.search_query = ->(params:) do
@@ -13,7 +13,7 @@ class TeamMembershipResource < Avo::BaseResource
 
   field :user, as: :belongs_to, searchable: false, attach_scope: -> {
     # puts ["parent->", parent, parent.team].inspect
-    query.where.not(id: nil)
+    query
   }
   field :team, as: :belongs_to
 end

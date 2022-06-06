@@ -22,10 +22,11 @@ export default class extends Controller {
   }
 
   get initiallyCollapsed() {
-    if (this.userState === 'collapsed' || this.defaultState === 'collapsed') return true
-    if (this.userState === 'expanded' || this.defaultState === 'expanded') return false
+    if (this.defaultState === 'collapsed') {
+      return this.userState === 'collapsed'
+    }
 
-    return false
+    return this.userState === 'collapsed'
   }
 
   connect() {

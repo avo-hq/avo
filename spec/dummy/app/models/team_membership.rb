@@ -12,4 +12,8 @@
 class TeamMembership < ApplicationRecord
   belongs_to :team
   belongs_to :user
+
+  def name
+    "#{team&.name} - #{user&.name}"
+  end
 end

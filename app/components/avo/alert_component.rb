@@ -21,6 +21,8 @@ class Avo::AlertComponent < ViewComponent::Base
   end
 
   def classes
+    return "hidden" if is_empty?
+
     result = "max-w-lg w-full shadow-lg rounded px-4 py-3 rounded relative border text-white pointer-events-auto"
 
     result += if is_error?
@@ -50,5 +52,9 @@ class Avo::AlertComponent < ViewComponent::Base
 
   def is_warning?
     type.to_sym == :warning
+  end
+
+  def is_empty?
+    message.nil?
   end
 end

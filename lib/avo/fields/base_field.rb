@@ -49,7 +49,6 @@ module Avo
         @id = id
         @name = args[:name]
         @translation_key = args[:translation_key]
-        @translation_enabled = ::Avo::App.translation_enabled
         @block = block
         @required = args[:required] || false
         @readonly = args[:readonly] || false
@@ -74,22 +73,21 @@ module Avo
         initialize_visibility args
       end
 
-      def hydrate(model: nil, resource: nil, action: nil, view: nil, panel_name: nil, user: nil, translation_enabled: nil)
+      def hydrate(model: nil, resource: nil, action: nil, view: nil, panel_name: nil, user: nil)
         @model = model if model.present?
         @view = view if view.present?
         @resource = resource if resource.present?
         @action = action if action.present?
         @user = user if user.present?
         @panel_name = panel_name if panel_name.present?
-        @translation_enabled = translation_enabled if translation_enabled.present?
 
         self
       end
 
       def translation_key
-        return "avo.field_translations.#{@id}" if @translation_enabled
+        return @translation_key if @translation_key.present?
 
-        @translation_key
+        "avo.field_translations.#{@id}"
       end
 
       # Getting the name of the resource (user/users, post/posts)
@@ -99,19 +97,27 @@ module Avo
       def name
         default = @id.to_s.humanize(keep_id_suffix: true)
 
-        return @name if @name.present?
+        return @name if custom_name?
 
-        return t(translation_key, count: 1, default: default).capitalize if translation_key
-
-        default
+        if translation_key && ::Avo::App.translation_enabled
+          t(translation_key, count: 1, default: default).capitalize
+        else
+          default
+        end
       end
 
       def plural_name
         default = name.pluralize
 
-        return t(translation_key, count: 2, default: default).capitalize if translation_key
+        if translation_key && ::Avo::App.translation_enabled
+          t(translation_key, count: 2, default: default).capitalize
+        else
+          default
+        end
+      end
 
-        default
+      def custom_name?
+        @name.present?
       end
 
       def placeholder

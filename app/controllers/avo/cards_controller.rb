@@ -8,14 +8,16 @@ module Avo
     before_action :set_model, only: :show, if: -> { @resource.present? }
     before_action :hydrate_resource, if: -> { @resource.present? }
     before_action :set_parent, only: :show
+    before_action :set_card, only: :show
 
     def show
-      @card = @parent.item_at_index(params[:index].to_i).tap do |card|
-        card.hydrate(parent: @parent, params: params)
-      end
     end
 
     private
+
+    def set_parent
+      @parent = @dashboard || @resource
+    end
 
     def set_dashboard
       return if params[:dashboard_id].blank?
@@ -27,8 +29,10 @@ module Avo
       @dashboard = @dashboard_class.new
     end
 
-    def set_parent
-      @parent = @dashboard || @resource
+    def set_card
+      @card = @parent.item_at_index(params[:index].to_i).tap do |card|
+        card.hydrate(parent: @parent, params: params)
+      end
     end
   end
 end

@@ -12,6 +12,7 @@ module Avo
       class_attribute :index, default: 0
 
       attr_reader :view
+      attr_reader :params
 
       class << self
         def navigation_label
@@ -41,6 +42,12 @@ module Avo
 
       def initialize
         @view = :dashboard
+      end
+
+      def hydrate(params:)
+        @params = params
+
+        self
       end
     end
   end
