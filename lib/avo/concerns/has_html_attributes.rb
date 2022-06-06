@@ -24,25 +24,28 @@ module Avo
           get_html_from_block name, element: element, view: view
         elsif html_builder.nil?
           # Handle empty html_builder by returning an empty state
-          if name == :data
-            {}
-          else
-            ""
-          end
+          name == :data ? {} : ""
         end
 
-        if name == :data && element == :input && view.in?([:edit, :new]) && resource.present?
-          extra_attributes = resource.get_stimulus_controllers.split(" ").map do |controller|
-            [:"#{controller}-target", "#{id.to_s.underscore}_#{type.to_s.underscore}_input".camelize(:lower)]
-          end.to_h
-
-          return extra_attributes.merge attributes
-        end
-
-        attributes
+        add_default_data_attributes attributes, data, element, view
       end
 
       private
+
+      def add_default_data_attributes(attributes, name, element, view)
+        if name == :data && element == :input && view.in?([:edit, :new]) && resource.present?
+          extra_attributes = resource.get_stimulus_controllers
+            .split(" ")
+            .map do |controller|
+              [:"#{controller}-target", "#{id.to_s.underscore}_#{type.to_s.underscore}_input".camelize(:lower)]
+            end
+            .to_h
+
+          extra_attributes.merge attributes
+        else
+          attributes
+        end
+      end
 
       def html_builder
         return @parsed_html if @parsed_html.present?
