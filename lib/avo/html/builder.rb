@@ -24,7 +24,7 @@ class Avo::HTML::Builder
   def initialize(record: nil, resource: nil)
     @wrapper_stack = {}
     @data_stack = {}
-    @style_stack = {}
+    @style_stack = ""
     @classes_stack = ""
     @show_stack = {}
     @edit_stack = {}

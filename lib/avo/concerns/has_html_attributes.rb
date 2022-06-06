@@ -23,30 +23,6 @@ module Avo
 
       private
 
-      def get_html_from_block(name = nil, element:, view:)
-        values = []
-
-        # get view ancestor
-        values << html_builder.dig_stack(view, element, name)
-        # get element ancestor
-        values << html_builder.dig_stack(element, name)
-        # get direct ancestor
-        values << html_builder.dig_stack(name)
-
-        values_type = if [:data, :styles].include? name
-          :hash
-        elsif name == :classes
-          :string
-        end
-
-        merge_values_as(as: values_type, values: values)
-      end
-
-      def get_html_from_hash(name = nil, element:, view:)
-        # @todo: what if this is not a Hash but a string?
-        html_builder.dig(view, element, name) || {}
-      end
-
       def html_builder
         return @parsed_html if @parsed_html.present?
 
@@ -62,8 +38,36 @@ module Avo
         @parsed_html
       end
 
+      def get_html_from_block(name = nil, element:, view:)
+        values = []
+
+        # get view ancestor
+        values << html_builder.dig_stack(view, element, name)
+        # get element ancestor
+        values << html_builder.dig_stack(element, name)
+        # get direct ancestor
+        values << html_builder.dig_stack(name)
+
+        values_type = if name == :data
+          :hash
+        else
+          :string
+        end
+
+        merge_values_as(as: values_type, values: values)
+      end
+
+      def get_html_from_hash(name = nil, element:, view:)
+        # @todo: what if this is not a Hash but a string?
+        html_builder.dig(view, element, name) || {}
+      end
+
+      # Merge the values from all possible locations.
+      # If the result is "blank", return nil so the attributes are not outputted to the DOM.
+      #
+      # Ex: if the style attribute is empty return `nil` instead of an empty space `" "`
       def merge_values_as(as: :array, values: [])
-        if as == :array
+        result = if as == :array
           values.flatten
         elsif as == :string
           values.select do |value|
@@ -72,6 +76,8 @@ module Avo
         elsif as == :hash
           values.reduce({}, :merge)
         end
+
+        result if result.present?
       end
     end
   end

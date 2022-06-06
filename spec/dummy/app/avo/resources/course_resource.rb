@@ -17,6 +17,9 @@ class CourseResource < Avo::BaseResource
   }
   field :has_skills, as: :boolean, html: -> do
     edit do
+      # wrapper do
+        # style("background: green;")
+      # end
       input do
         data({
           foo: record,
