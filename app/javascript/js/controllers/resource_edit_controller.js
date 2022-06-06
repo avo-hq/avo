@@ -9,34 +9,34 @@ export default class extends Controller {
   }
 
   toggle({ params }) {
-    const { toggleField, toggleFields } = params
+    const { toggleTarget, toggleTargets } = params
 
-    if (toggleField) {
-      this.toggleAvoField(toggleField)
+    if (toggleTarget) {
+      this.toggleAvoTarget(toggleTarget)
     }
 
-    if (toggleFields && toggleFields.length > 0) {
-      toggleFields.forEach(this.toggleAvoField.bind(this))
+    if (toggleTargets && toggleTargets.length > 0) {
+      toggleTargets.forEach(this.toggleAvoTarget.bind(this))
     }
   }
 
   disable({ params }) {
-    const { disableField, disableFields } = params
+    const { disableTarget, disableTargets } = params
 
-    if (disableField) {
-      this.disableAvoField(disableField)
+    if (disableTarget) {
+      this.disableAvoField(disableTarget)
     }
 
-    if (disableFields && disableFields.length > 0) {
-      disableFields.forEach(this.disableAvoField.bind(this))
+    if (disableTargets && disableTargets.length > 0) {
+      disableTargets.forEach(this.disableAvoField.bind(this))
     }
   }
 
   // Private
 
-  toggleAvoField(fieldName) {
+  toggleAvoTarget(targetName) {
     // compose the default wrapper data value
-    const target = camelCase(`${fieldName}_wrapper`)
+    const target = camelCase(targetName)
     const element = document.querySelector(`[data-resource-edit-target="${target}"]`)
 
     if (element) {
@@ -44,9 +44,9 @@ export default class extends Controller {
     }
   }
 
-  disableAvoField(fieldName) {
+  disableAvoField(targetName) {
     // compose the default wrapper data value
-    const target = camelCase(`${fieldName}_wrapper`)
+    const target = camelCase(targetName)
 
     // find & disable inputs
     document.querySelectorAll(`[data-resource-edit-target="${target}"] input`).forEach(this.toggleItemDisabled)

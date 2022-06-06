@@ -34,20 +34,18 @@ export default class extends Controller {
   }
 
   async connect() {
+    // Add the controller functionality only on forms
     if (['edit', 'new'].includes(this.viewValue)) {
       this.captureTheInitialValue()
 
-      await this.countryChanged()
+      // Trigger the change on load
+      await this.onCountryChange()
     }
-  }
-
-  captureTheInitialValue() {
-    this.initialValue = this.cityFieldInputTarget.value
   }
 
   // Read the country select.
   // If there's any value selected show the cities and prefill them.
-  async countryChanged() {
+  async onCountryChange() {
     if (this.hasCountryFieldInputTarget && this.countryFieldInputTarget) {
       // Get the country
       const country = this.countryFieldInputTarget.value
@@ -80,6 +78,10 @@ export default class extends Controller {
   }
 
   // Private
+
+  captureTheInitialValue() {
+    this.initialValue = this.cityFieldInputTarget.value
+  }
 
   async fetchCitiesForCountry(country) {
     if (!country) {

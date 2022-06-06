@@ -48,13 +48,18 @@ module Avo
       end
 
       def html_builder
+        return @parsed_html if @parsed_html.present?
+
         return if @html.nil?
 
-        if @html.is_a? Hash
+        # Memoize the value
+        @parsed_html = if @html.is_a? Hash
           @html
         elsif @html.respond_to? :call
-          Avo::HTML::Builder.parse_block(record: model, &@html)
+          Avo::HTML::Builder.parse_block(record: model, resource: resource, &@html)
         end
+
+        @parsed_html
       end
 
       def merge_values_as(as: :array, values: [])

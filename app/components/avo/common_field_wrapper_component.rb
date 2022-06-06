@@ -21,6 +21,10 @@ class Avo::CommonFieldWrapperComponent < ViewComponent::Base
     "#{@classes || ""} #{@field.get_html(:classes, view: view, element: :wrapper)}"
   end
 
+  def style
+    @field.get_html(:style, view: view, element: :wrapper)
+  end
+
   def label
     @label || @field.name
   end

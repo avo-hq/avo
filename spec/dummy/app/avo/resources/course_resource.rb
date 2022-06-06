@@ -8,14 +8,22 @@ class CourseResource < Avo::BaseResource
   self.stimulus_controllers = "course-resource"
 
   field :id, as: :id
-  field :name, as: :text
+  field :name, as: :text, html: {
+    edit: {
+      wrapper: {
+        # style: "background: red"
+      }
+    }
+  }
   field :has_skills, as: :boolean, html: -> do
     edit do
       input do
         data({
+          foo: record,
+          resource: resource,
           action: "input->resource-edit#toggle",
-          # resource_edit_toggle_field_param: "skills_tags",
-          resource_edit_toggle_fields_param: ["country_select"]
+          resource_edit_toggle_target_param: "skills_tags_wrapper",
+          # resource_edit_toggle_targets_param: ["country_select_wrapper"]
         })
       end
     end
@@ -32,7 +40,7 @@ class CourseResource < Avo::BaseResource
       input: {
         data: {
           course_resource_target: "countryFieldInput",
-          action: "course-resource#countryChanged"
+          action: "course-resource#onCountryChange"
         }
       }
     }

@@ -1,7 +1,7 @@
 class Avo::HTML::Builder
   class << self
-    def parse_block(record: nil, &block)
-      Docile.dsl_eval(Avo::HTML::Builder.new(record: record), &block).build
+    def parse_block(record: nil, resource: nil, &block)
+      Docile.dsl_eval(Avo::HTML::Builder.new(record: record, resource: resource), &block).build
     end
   end
 
@@ -15,10 +15,13 @@ class Avo::HTML::Builder
   attr_accessor :input_stack
 
   attr_accessor :record
+  attr_accessor :resource
 
   delegate :root_path, to: Avo::App
+  delegate :params, to: Avo::App
+  delegate :current_user, to: Avo::App
 
-  def initialize(record: nil)
+  def initialize(record: nil, resource: nil)
     @wrapper_stack = {}
     @data_stack = {}
     @style_stack = {}
@@ -29,6 +32,7 @@ class Avo::HTML::Builder
     @input_stack = {}
 
     @record = record
+    @resource = resource
   end
 
   def get_stack(name = nil)
@@ -94,7 +98,7 @@ class Avo::HTML::Builder
 
   # Capture and parse the blocks for the nested structure
   def capture_block(property = nil, &block)
-    send("#{property}_stack=", self.class.parse_block(record: record, &block).build)
+    send("#{property}_stack=", self.class.parse_block(record: record, resource: resource, &block).build)
   end
 
   # Parse the properties and assign them to the blocks
