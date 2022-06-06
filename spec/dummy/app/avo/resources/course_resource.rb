@@ -35,14 +35,19 @@ class CourseResource < Avo::BaseResource
       end
     end
   end
-  field :skills, as: :tags, disallowed: -> { record.skill_disallowed }, suggestions: -> { record.skill_suggestions }, html: {
-    edit: {
-      wrapper: {
-        classes: "hidden"
-      }
-    }
-  }
-  field :country, as: :select, options: Course.countries.map { |country| [country, country] }.to_h, html: {
+  field :skills, as: :tags, disallowed: -> { record.skill_disallowed }, suggestions: -> { record.skill_suggestions }, html: -> do
+    edit do
+      wrapper do
+        classes do
+          unless record.has_skills
+            "hidden"
+          end
+        end
+        # classes: "hidden"
+      end
+    end
+  end
+  field :country, as: :select, options: Course.countries.map { |country| [country, country] }.prepend(["–", nil]).to_h, html: {
     edit: {
       input: {
         data: {

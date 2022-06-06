@@ -58,12 +58,12 @@ class Avo::HTML::Builder
   end
 
   # payload or block
-  def style(payload, &block)
+  def style(payload = nil, &block)
     assign_property :style, payload, &block
   end
 
   # payload or block
-  def classes(payload, &block)
+  def classes(payload = nil, &block)
     assign_property :classes, payload, &block
   end
 
