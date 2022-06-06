@@ -8,6 +8,11 @@ export default class extends Controller {
     view: String,
   }
 
+  debugOnInput(e) {
+    // eslint-disable-next-line no-console
+    console.log('onInput', e, e.target.value)
+  }
+
   toggle({ params }) {
     const { toggleTarget, toggleTargets } = params
 

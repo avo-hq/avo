@@ -11,7 +11,10 @@ class CourseResource < Avo::BaseResource
   field :name, as: :text, html: {
     edit: {
       input: {
-        # classes: 'absolute'
+        # classes: "bg-primary-500"
+        data: {
+          action: "input->resource-edit#debugOnInput"
+        }
       },
       wrapper: {
         # style: "background: red"
@@ -20,9 +23,6 @@ class CourseResource < Avo::BaseResource
   }
   field :has_skills, as: :boolean, html: -> do
     edit do
-      # wrapper do
-        # style("background: green;")
-      # end
       input do
         # classes('absolute')
         data({
@@ -46,26 +46,12 @@ class CourseResource < Avo::BaseResource
     edit: {
       input: {
         data: {
-          course_resource_target: "countryFieldInput",
           action: "course-resource#onCountryChange"
         }
       }
     }
   }
-  # field :city, as: :select, options: Course.cities.values.flatten.map { |city| [city, city] }.to_h, html: {
-  # field :city, as: :text
-  field :city, as: :select, options: Course.cities.values.flatten.map { |city| [city, city] }.to_h, placeholderw: 'qweq', display_value: false, html: {
-    edit: {
-      input: {
-        data: {
-          course_resource_target: "cityFieldInput"
-        }
-      },
-      # wrapper: {
-      #   classes: "hidden"
-      # }
-    }
-  }
+  field :city, as: :select, options: Course.cities.values.flatten.map { |city| [city, city] }.to_h, display_value: false
   field :links, as: :has_many, searchable: true, placeholder: "Click to choose a link"
 
   filter CourseCountryFilter

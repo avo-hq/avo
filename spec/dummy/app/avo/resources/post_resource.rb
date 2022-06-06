@@ -8,22 +8,8 @@ class PostResource < Avo::BaseResource
   self.default_view_type = :grid
 
   field :id, as: :id
-  field :name, as: :text, required: true, sortable: true, html: -> do
-    input do
-      data({
-        "resource-edit-target": "trix",
-        action: "input->resource-edit#atInput"
-      })
-    end
-  end
-  field :body, as: :trix, placeholder: "Enter text", always_show: false, attachment_key: :attachments, hide_attachment_url: true, hide_attachment_filename: true, hide_attachment_filesize: true, html: -> do
-    input do
-      data({
-        "resource-edit-target": "trix",
-        action: "input->resource-edit#atInput"
-      })
-    end
-  end
+  field :name, as: :text, required: true, sortable: true
+  field :body, as: :trix, placeholder: "Enter text", always_show: false, attachment_key: :attachments, hide_attachment_url: true, hide_attachment_filename: true, hide_attachment_filesize: true
   field :tags,
     as: :tags,
     # readonly: true,
@@ -33,38 +19,20 @@ class PostResource < Avo::BaseResource
     suggestions: -> { Post.tags_suggestions },
     enforce_suggestions: true,
     help: "The only allowed values here are `one`, `two`, and `three`"
-  # field :cover_photo, as: :file, is_image: true, as_avatar: :rounded, full_width: true, hide_on: [], html: {
-  #   data: {
-  #     action: 'input->resource-edit#atInput'
-  #   }
-  # }
+  field :cover_photo, as: :file, is_image: true, as_avatar: :rounded, full_width: true, hide_on: []
   field :cover_photo, as: :external_image, name: "Cover photo", required: true, hide_on: :all, link_to_resource: true, as_avatar: :rounded, format_using: ->(value) { value.present? ? value&.url : nil }
-  # field :audio, as: :file, is_audio: true, html: {
-  #   data: {
-  #     action: 'input->resource-edit#atInput'
-  #   }
-  # }
+  field :audio, as: :file, is_audio: true
   field :excerpt, as: :text, hide_on: :all, as_description: true do |model|
     ActionView::Base.full_sanitizer.sanitize(model.body).truncate 130
   rescue
     ""
   end
 
-  # field :is_featured, as: :boolean, visible: ->(resource:) { context[:user].is_admin? }, html: {
-  #   data: {
-  #     action: 'input->resource-edit#atInput'
-  #   }
-  # }
+  field :is_featured, as: :boolean, visible: ->(resource:) { context[:user].is_admin? }
   field :is_published, as: :boolean do |model|
     model.published_at.present?
   end
   field :user, as: :belongs_to, placeholder: "—"
-  # ,
-  # html: {
-  #   data: {
-  #     action: 'input->resource-edit#atInput'
-  #   }
-  # }
   field :status, as: :select, enum: ::Post.statuses, display_value: false
   field :comments, as: :has_many
 

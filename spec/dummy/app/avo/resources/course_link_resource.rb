@@ -24,7 +24,7 @@ class CourseLinkResource < Avo::BaseResource
       input: {
         data: {
           action: "resource-edit#disable",
-          resource_edit_field_param: "course_belongs_to"
+          resource_edit_disable_target_param: "courseBelongsToWrapper"
         }
       }
     }

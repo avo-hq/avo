@@ -3,7 +3,7 @@ import { Controller } from '@hotwired/stimulus'
 const LOADER_CLASSES = 'absolute bg-gray-100 opacity-10 w-full h-full'
 
 export default class extends Controller {
-  static targets = ['countryFieldInput', 'cityFieldInput', 'citySelectWrapper'];
+  static targets = ['countrySelectInput', 'citySelectInput', 'citySelectWrapper'];
 
   static values = {
     view: String,
@@ -13,7 +13,7 @@ export default class extends Controller {
   static initialValue
 
   get placeholder() {
-    return this.cityFieldInputTarget.ariaPlaceholder
+    return this.citySelectInputTarget.ariaPlaceholder
   }
 
   set loading(isLoading) {
@@ -46,33 +46,33 @@ export default class extends Controller {
   // Read the country select.
   // If there's any value selected show the cities and prefill them.
   async onCountryChange() {
-    if (this.hasCountryFieldInputTarget && this.countryFieldInputTarget) {
+    if (this.hasCountrySelectInputTarget && this.countrySelectInputTarget) {
       // Get the country
-      const country = this.countryFieldInputTarget.value
+      const country = this.countrySelectInputTarget.value
       // Dynamically fetch the cities for this country
       const cities = await this.fetchCitiesForCountry(country)
 
       // Clear the select of options
-      Object.keys(this.cityFieldInputTarget.options).forEach(() => {
-        this.cityFieldInputTarget.options.remove(0)
+      Object.keys(this.citySelectInputTarget.options).forEach(() => {
+        this.citySelectInputTarget.options.remove(0)
       })
 
       // Add blank option
-      this.cityFieldInputTarget.add(new Option(this.placeholder))
+      this.citySelectInputTarget.add(new Option(this.placeholder))
 
       // Add the new cities
       cities.forEach((city) => {
-        this.cityFieldInputTarget.add(new Option(city, city))
+        this.citySelectInputTarget.add(new Option(city, city))
       })
 
       // Check if the initial value is present in the cities array and select it.
       // If not, select the first item
-      const currentOptions = Array.from(this.cityFieldInputTarget.options).map((item) => item.value)
+      const currentOptions = Array.from(this.citySelectInputTarget.options).map((item) => item.value)
       if (currentOptions.includes(this.initialValue)) {
-        this.cityFieldInputTarget.value = this.initialValue
+        this.citySelectInputTarget.value = this.initialValue
       } else {
         // Select the first item
-        this.cityFieldInputTarget.value = this.cityFieldInputTarget.options[0].value
+        this.citySelectInputTarget.value = this.citySelectInputTarget.options[0].value
       }
     }
   }
@@ -80,7 +80,7 @@ export default class extends Controller {
   // Private
 
   captureTheInitialValue() {
-    this.initialValue = this.cityFieldInputTarget.value
+    this.initialValue = this.citySelectInputTarget.value
   }
 
   async fetchCitiesForCountry(country) {
