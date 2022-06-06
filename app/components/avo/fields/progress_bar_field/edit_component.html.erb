@@ -5,12 +5,15 @@
     </div>
   <% end %>
   <%= @form.range_field @field.id,
-    min: 0,
-    max: @field.max,
-    step: @field.step,
     class: 'w-full',
+    data: @field.get_html(:data, view: view, element: :input),
+    disabled: @field.readonly,
+    max: @field.max,
+    min: 0,
     placeholder: @field.placeholder,
-    disabled: @field.readonly %>
+    step: @field.step,
+    style: @field.get_html(:style, view: view, element: :input)
+  %>
 <% end %>
 
 

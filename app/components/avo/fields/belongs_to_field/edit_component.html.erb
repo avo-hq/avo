@@ -20,12 +20,12 @@
       },
       {
         class: helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)),
-        disabled: disabled,
         data: {
           **@field.get_html(:data, view: view, element: :input),
           action: "change->belongs-to-field#changeType #{field_html_action}",
           'belongs-to-field-target': "select",
-        }
+        },
+        disabled: disabled
       }
     %>
       <%
@@ -43,14 +43,15 @@
         <%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal, label: type.to_s.underscore.humanize do %>
           <% if @field.searchable %>
             <%= render Avo::Fields::BelongsToField::AutocompleteComponent.new form: @form,
-            field: @field,
-            type: type,
-            model_key: model_keys[type.to_s],
-            foreign_key: @field.id_input_foreign_key,
-            resource: @resource,
-            disabled: disabled,
-            view: :edit,
-            polymorphic_record: polymorphic_record
+              disabled: disabled,
+              field: @field,
+              foreign_key: @field.id_input_foreign_key,
+              model_key: model_keys[type.to_s],
+              polymorphic_record: polymorphic_record,
+              resource: @resource,
+              style: @field.get_html(:style, view: view, element: :input),
+              type: type,
+              view: @resource.view
           %>
           <% else %>
             <%= @form.select @field.id_input_foreign_key,
@@ -61,8 +62,8 @@
             },
             {
               class: helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)),
-              disabled: disabled,
-              data: @field.get_html(:data, view: view, element: :input)
+              data: @field.get_html(:data, view: view, element: :input),
+              disabled: disabled
             }
           %>
             <%
@@ -84,7 +85,8 @@
         model_key: @field.target_resource&.model_key,
         foreign_key: @field.id_input_foreign_key,
         resource: @resource,
-        disabled: disabled
+        disabled: disabled,
+        style: @field.get_html(:style, view: view, element: :input)
       %>
     <% else %>
       <%= @form.select @field.id_input_foreign_key, @field.options,
@@ -94,8 +96,9 @@
         },
         {
           class: helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)),
+          data: @field.get_html(:data, view: view, element: :input),
           disabled: disabled,
-          data: @field.get_html(:data, view: view, element: :input)
+          style: @field.get_html(:style, view: view, element: :input)
         }
       %>
       <%

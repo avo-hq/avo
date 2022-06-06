@@ -1,1 +1,4 @@
-<%= @form.hidden_field @field.id %>
+<%= @form.hidden_field @field.id,
+  data: @field.get_html(:data, view: view, element: :input),
+  style: @field.get_html(:style, view: view, element: :input)
+%>

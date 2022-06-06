@@ -40,7 +40,7 @@
       placeholder: @field.placeholder,
       data: {
         "key-value-target": 'input',
-        view: :edit,
+        view: @view,
         **@field.get_html(:data, view: view, element: :input)
       }
     %>
@@ -51,7 +51,7 @@
       placeholder: @field.placeholder,
       data: {
         "key-value-target": 'input',
-        view: :edit,
+        view: @view,
         **@field.get_html(:data, view: view, element: :input)
       }
     %>
