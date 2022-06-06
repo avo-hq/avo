@@ -12,10 +12,8 @@ module Avo
       # get_html :classes, view: :show, element: :wrapper
       # get_html :styles, view: :index, element: :wrapper
       def get_html(name = nil, element:, view:)
-        if [view, element].any?(&:nil?)
-          return "" if name.in?([:classes, :style])
-
-          return {}
+        if [view, element].any?(&:nil?) || Avo::App.license.lacks_with_trial(:stimulus_js_integration)
+          default_attribute_value name
         end
 
         attributes = if html_builder.is_a? Hash
@@ -24,28 +22,13 @@ module Avo
           get_html_from_block name, element: element, view: view
         elsif html_builder.nil?
           # Handle empty html_builder by returning an empty state
-          name == :data ? {} : ""
+          default_attribute_value name
         end
 
         add_default_data_attributes attributes, name, element, view
       end
 
       private
-
-      def add_default_data_attributes(attributes, name, element, view)
-        if name == :data && element == :input && view.in?([:edit, :new]) && resource.present?
-          extra_attributes = resource.get_stimulus_controllers
-            .split(" ")
-            .map do |controller|
-              [:"#{controller}-target", "#{id.to_s.underscore}_#{type.to_s.underscore}_input".camelize(:lower)]
-            end
-            .to_h
-
-          extra_attributes.merge attributes
-        else
-          attributes
-        end
-      end
 
       def html_builder
         return @parsed_html if @parsed_html.present?
@@ -60,6 +43,25 @@ module Avo
         end
 
         @parsed_html
+      end
+
+      def default_attribute_value(name)
+        name == :data ? {} : ""
+      end
+
+      def add_default_data_attributes(attributes, name, element, view)
+        if name == :data && element == :input && view.in?([:edit, :new]) && resource.present?
+          extra_attributes = resource.get_stimulus_controllers
+            .split(" ")
+            .map do |controller|
+              [:"#{controller}-target", "#{id.to_s.underscore}_#{type.to_s.underscore}_input".camelize(:lower)]
+            end
+            .to_h
+
+          extra_attributes.merge attributes
+        else
+          attributes
+        end
       end
 
       def get_html_from_block(name = nil, element:, view:)

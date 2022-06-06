@@ -14,6 +14,7 @@ module Avo
           :resource_ordering,
           :dashboards,
           :menu_editor,
+          :stimulus_js_integration,
           :advanced_fields
         ]
       end
