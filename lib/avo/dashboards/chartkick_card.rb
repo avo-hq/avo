@@ -23,8 +23,8 @@ module Avo
       end
 
       def chartkick_options
-        card_height = 144
-        card_heading = 40
+        card_height = 128
+        card_heading = 30
 
         default = {
           # figure our the available height for the chart

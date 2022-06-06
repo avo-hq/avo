@@ -21,12 +21,12 @@ module Avo
           }
 
           classes_for_rows = {
-            1 => " sm:row-span-1 min-h-[9rem]",
-            2 => " sm:row-span-2 min-h-[18rem]",
-            3 => " sm:row-span-3 min-h-[27rem]",
-            4 => " sm:row-span-4 min-h-[36rem]",
-            5 => " sm:row-span-5 min-h-[45rem]",
-            6 => " sm:row-span-6 min-h-[54rem]",
+            1 => " sm:row-span-1 min-h-[8rem]",
+            2 => " sm:row-span-2 min-h-[16rem]",
+            3 => " sm:row-span-3 min-h-[24rem]",
+            4 => " sm:row-span-4 min-h-[32rem]",
+            5 => " sm:row-span-5 min-h-[40rem]",
+            6 => " sm:row-span-6 min-h-[48rem]",
           }
 
           result += classes_for_cols[cols.to_i] if classes_for_cols[cols.to_i].present?

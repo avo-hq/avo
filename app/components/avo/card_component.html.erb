@@ -6,14 +6,14 @@
   data-card-index="<%= @card.index %>">
   <% if @card.class.display_header %>
     <div class="px-4 pt-4">
-      <div class="flex justify-between items-center min-h-6">
-          <div class="text-base font-bold text-gray-700 leading-none">
-            <%= @card.label %>
-          </div>
-        <div data-controller="select">
+      <div class="flex justify-between items-center">
+        <div class="text-sm font-bold text-gray-700 leading-none">
+          <%= @card.label %>
+        </div>
+        <div class="flex" data-controller="select">
           <% if @card.type.in?([:metric, :chartkick, :partial]) && @card.ranges.present? %>
             <%= select_tag "#{@card.id}_#{@card.index}_range", options_for_select(@card.ranges, @card.range),
-              class: 'appearance-none inline-flex bg-blue-gray-100 disabled:bg-blue-gray-300 disabled:cursor-not-allowed focus:bg-white text-sm text-blue-gray-700 disabled:text-blue-gray-700 leading-none rounded-md py-px px-2 leading-tight border outline-none outline w-24',
+              class: 'appearance-none inline-flex bg-blue-gray-100 disabled:bg-blue-gray-300 disabled:cursor-not-allowed focus:bg-white text-xs text-blue-gray-700 disabled:text-blue-gray-700 leading-none rounded-md py-px px-2 border outline-none outline w-24',
               data: {
                 target: 'select',
                 action: 'change->select#onChange'
