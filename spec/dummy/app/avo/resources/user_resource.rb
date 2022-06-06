@@ -22,9 +22,9 @@ class UserResource < Avo::BaseResource
   field :first_name, as: :text, required: true, placeholder: "John"
   field :last_name, as: :text, required: true, placeholder: "Doe"
   field :email, as: :text, name: "User Email", required: true
-  # field :active, as: :boolean, name: "Is active", show_on: :show
-  # field :cv, as: :file, name: "CV"
-  # field :is_admin?, as: :boolean, name: "Is admin", only_on: :index
+  field :active, as: :boolean, name: "Is active", show_on: :show
+  field :cv, as: :file, name: "CV"
+  field :is_admin?, as: :boolean, name: "Is admin", only_on: :index
   field :roles, as: :boolean_group, options: {admin: "Administrator", manager: "Manager", writer: "Writer"}
   field :roles, as: :text, hide_on: :all, as_description: true do |model, resource, view, field|
     "This user has the following roles: #{model.roles.select { |key, value| value }.keys.join(", ")}"
