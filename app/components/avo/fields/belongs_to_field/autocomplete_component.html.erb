@@ -13,7 +13,7 @@
   ></div>
   <div class="relative w-full" autocomplete="off">
     <%= @form.text_field @foreign_key,
-      class: classes("w-full"),
+      class: classes,
       # This instructs the search_controller if it should enable/disabled this field when the user switches polymorphic associations
       # It should not enable the field if the record is being created through an association
       data: {

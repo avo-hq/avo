@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 class Avo::Fields::BelongsToField::AutocompleteComponent < ViewComponent::Base
+  attr_reader :classes
   attr_reader :view
 
-  def initialize(form:, field:, model_key:, foreign_key:, disabled: false, type: nil, resource: nil, polymorphic_record: nil, view: nil, style: nil)
+  def initialize(form:, field:, model_key:, foreign_key:, disabled: false, type: nil, resource: nil, polymorphic_record: nil, view: nil, style: nil, classes: nil)
     @form = form
     @field = field
     @type = type
@@ -13,6 +14,7 @@ class Avo::Fields::BelongsToField::AutocompleteComponent < ViewComponent::Base
     @resource = resource
     @disabled = disabled
     @style = style
+    @classes = classes
     @polymorphic_record = polymorphic_record
   end
 
