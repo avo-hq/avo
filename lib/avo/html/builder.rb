@@ -36,6 +36,9 @@ class Avo::HTML::Builder
   end
 
   def get_stack(name = nil)
+    # We don't have an edit component for new so we should use edit
+    name = :edit if name == :new
+
     send "#{name}_stack"
   end
 
