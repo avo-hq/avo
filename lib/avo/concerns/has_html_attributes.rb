@@ -31,7 +31,7 @@ module Avo
           end
         end
 
-        if name == :data && element == :input && view.in?([:edit, :new])
+        if name == :data && element == :input && view.in?([:edit, :new]) && resource.present?
           extra_attributes = resource.get_stimulus_controllers.split(" ").map do |controller|
             [:"#{controller}-target", "#{id.to_s.underscore}_#{type.to_s.underscore}_input".camelize(:lower)]
           end.to_h

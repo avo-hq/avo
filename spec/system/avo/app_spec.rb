@@ -49,7 +49,7 @@ RSpec.describe "App", type: :system do
 
       expect(Comment.count).to eq 0
 
-      expect(page).to have_text("Resource destroyed").once
+      expect(page).to have_text("Record destroyed").once
     end
   end
 end
