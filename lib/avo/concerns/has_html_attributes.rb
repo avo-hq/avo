@@ -12,13 +12,34 @@ module Avo
       # get_html :classes, view: :show, element: :wrapper
       # get_html :styles, view: :index, element: :wrapper
       def get_html(name = nil, element:, view:)
-        return {} if [name, view, element, html_builder].any?(&:nil?)
+        if [view, element].any?(&:nil?)
+          return "" if name.in?([:classes, :style])
 
-        if html_builder.is_a? Hash
+          return {}
+        end
+
+        attributes = if html_builder.is_a? Hash
           get_html_from_hash name, element: element, view: view
         elsif html_builder.is_a? Avo::HTML::Builder
           get_html_from_block name, element: element, view: view
+        elsif html_builder.nil?
+          # Handle empty html_builder by returning an empty state
+          if name == :data
+            {}
+          else
+            ""
+          end
         end
+
+        if name == :data && element == :input && view.in?([:edit, :new])
+          extra_attributes = resource.get_stimulus_controllers.split(" ").map do |controller|
+            [:"#{controller}-target", "#{id.to_s.underscore}_#{type.to_s.underscore}_input".camelize(:lower)]
+          end.to_h
+
+          return extra_attributes.merge attributes
+        end
+
+        attributes
       end
 
       private

@@ -24,11 +24,11 @@ export default class extends Controller {
     const { disableTarget, disableTargets } = params
 
     if (disableTarget) {
-      this.disableAvoField(disableTarget)
+      this.disableAvoTarget(disableTarget)
     }
 
     if (disableTargets && disableTargets.length > 0) {
-      disableTargets.forEach(this.disableAvoField.bind(this))
+      disableTargets.forEach(this.disableAvoTarget.bind(this))
     }
   }
 
@@ -44,9 +44,12 @@ export default class extends Controller {
     }
   }
 
-  disableAvoField(targetName) {
+  disableAvoTarget(targetName) {
     // compose the default wrapper data value
     const target = camelCase(targetName)
+
+    // find & disable direct selector
+    document.querySelectorAll(`[data-resource-edit-target="${target}"]`).forEach(this.toggleItemDisabled)
 
     // find & disable inputs
     document.querySelectorAll(`[data-resource-edit-target="${target}"] input`).forEach(this.toggleItemDisabled)
