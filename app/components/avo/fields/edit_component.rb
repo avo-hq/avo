@@ -13,4 +13,8 @@ class Avo::Fields::EditComponent < ViewComponent::Base
     @displayed_in_modal = displayed_in_modal
     @view = :edit
   end
+
+  def classes(extra_classes = "")
+    helpers.input_classes("#{@field.get_html(:classes, view: view, element: :input)} #{extra_classes}", has_error: @field.model_errors.include?(@field.id))
+  end
 end

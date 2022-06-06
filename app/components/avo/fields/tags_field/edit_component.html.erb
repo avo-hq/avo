@@ -6,7 +6,7 @@
   <div data-controller="tags-field">
     <%# dummy field %>
     <%= text_field_tag "#{@field.id}-dummy", '',
-      class: helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)),
+      class: classes("w-full"),
       data: {
         'tags-field-target': 'fakeInput',
       },
@@ -17,7 +17,7 @@
     %>
     <%# real field %>
     <%= @form.text_field @field.id,
-      class: helpers.input_classes('hidden w-full', has_error: @field.model_errors.include?(@field.id)),
+      class: classes("hidden w-full"),
       data: {
         'tags-field-target': 'input',
         'whitelist-items': @field.suggestions.to_json,

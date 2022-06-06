@@ -21,7 +21,7 @@
       <%== @field.value %>
     <% end %>
     <%= @form.text_area @field.id,
-      class: helpers.input_classes('w-full hidden', has_error: (@resource.model.present? and @resource.model.errors.include?(@field.id))),
+      class: classes("w-full hidden"),
       data: @field.get_html(:data, view: view, element: :input),
       disabled: @field.readonly,
       id: trix_id,

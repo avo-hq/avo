@@ -10,6 +10,9 @@ class CourseResource < Avo::BaseResource
   field :id, as: :id
   field :name, as: :text, html: {
     edit: {
+      input: {
+        # classes: 'absolute'
+      },
       wrapper: {
         # style: "background: red"
       }
@@ -21,6 +24,7 @@ class CourseResource < Avo::BaseResource
         # style("background: green;")
       # end
       input do
+        # classes('absolute')
         data({
           foo: record,
           resource: resource,

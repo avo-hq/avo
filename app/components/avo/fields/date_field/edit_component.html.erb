@@ -1,7 +1,7 @@
 <%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal do %>
   <div data-controller="date-field">
     <%= @form.date_field @field.id,
-      class: helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)),
+      class: classes("w-full"),
       data: {
         'date-field-target': 'input',
         'first-day-of-week': @field.first_day_of_week,

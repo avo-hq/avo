@@ -5,7 +5,7 @@
     </div>
   <% end %>
   <%= @form.range_field @field.id,
-    class: 'w-full',
+    class: "w-full #{@field.get_html(:classes, view: view, element: :input)}",
     data: @field.get_html(:data, view: view, element: :input),
     disabled: @field.readonly,
     max: @field.max,
