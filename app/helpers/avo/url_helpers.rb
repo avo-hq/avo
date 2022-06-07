@@ -7,7 +7,7 @@ module Avo
       if keep_query_params
         begin
           existing_params =
-            Addressable::URI.parse(request.fullpath).query_values.symbolize_keys
+            Addressable::URI.parse(request.fullpath).query_values.symbolize_keys.except(:keep_filters_panel_open)
         rescue
         end
       end
