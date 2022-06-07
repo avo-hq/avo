@@ -15,7 +15,7 @@ module Avo
         case view.to_sym
         when :show
           controllers << "resource-show"
-        when :edit
+        when :new, :edit
           controllers << "resource-edit"
         when :index
           controllers << "resource-index"
