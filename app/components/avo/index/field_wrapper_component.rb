@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Avo::Index::FieldWrapperComponent < ViewComponent::Base
+  attr_reader :view
+
   def initialize(field: nil, resource: nil, dash_if_blank: true, center_content: false, flush: false, **args)
     @field = field
     @resource = resource
@@ -9,6 +11,7 @@ class Avo::Index::FieldWrapperComponent < ViewComponent::Base
     @classes = args[:class].present? ? args[:class] : ""
     @args = args
     @flush = flush
+    @view = :index
   end
 
   def classes
@@ -19,8 +22,13 @@ class Avo::Index::FieldWrapperComponent < ViewComponent::Base
     end
 
     result += " #{text_align_classes}"
+    result += " #{@field.get_html(:classes, view: view, element: :wrapper)}"
 
     result
+  end
+
+  def style
+    @field.get_html(:style, view: view, element: :wrapper)
   end
 
   def stimulus_attributes
@@ -28,6 +36,11 @@ class Avo::Index::FieldWrapperComponent < ViewComponent::Base
 
     @resource.get_stimulus_controllers.split(" ").each do |controller|
       attributes["#{controller}-target"] = "#{@field.id.to_s.underscore}_#{@field.type.to_s.underscore}_wrapper".camelize(:lower)
+    end
+
+    wrapper_data_attributes = @field.get_html :data, view: view, element: :wrapper
+    if wrapper_data_attributes.present?
+      attributes.merge! wrapper_data_attributes
     end
 
     attributes

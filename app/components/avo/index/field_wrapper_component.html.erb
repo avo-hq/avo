@@ -4,7 +4,8 @@
     field_id: @field.id,
     field_type: @field.type,
     **stimulus_attributes
-  } do %>
+  },
+  style: style do %>
   <% if @field.value.blank? && @dash_if_blank %>
     —
   <% else %>

@@ -10,7 +10,7 @@ class CommentResource < Avo::BaseResource
   self.after_update_path = :index
 
   field :id, as: :id
-  field :body, as: :textarea
+  field :body, as: :textarea, format_using: -> (value) { content_tag(:div, style: 'white-space: pre-line') { value } }
   field :tiny_name, as: :text, only_on: :index, as_description: true
 
   field :user, as: :belongs_to

@@ -10,7 +10,8 @@ module Avo
       include Avo::Concerns::HandlesFieldArgs
       include Avo::Concerns::HasHTMLAttributes
 
-      delegate :view_context, to: "Avo::App"
+      delegate :view_context, to: ::Avo::App
+      delegate :simple_format, :content_tag, to: :view_context
       delegate :main_app, to: :view_context
       delegate :avo, to: :view_context
       delegate :t, to: ::I18n

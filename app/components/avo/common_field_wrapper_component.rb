@@ -17,8 +17,8 @@ class Avo::CommonFieldWrapperComponent < ViewComponent::Base
     @view = view
   end
 
-  def classes
-    "#{@classes || ""} #{@field.get_html(:classes, view: view, element: :wrapper)}"
+  def classes(extra_classes = "")
+    "#{@classes || ""} #{extra_classes || ""} #{@field.get_html(:classes, view: view, element: :wrapper)}"
   end
 
   def style
@@ -34,6 +34,11 @@ class Avo::CommonFieldWrapperComponent < ViewComponent::Base
 
     @resource.get_stimulus_controllers.split(" ").each do |controller|
       attributes["#{controller}-target"] = "#{@field.id.to_s.underscore}_#{@field.type.to_s.underscore}_wrapper".camelize(:lower)
+    end
+
+    wrapper_data_attributes = @field.get_html :data, view: view, element: :wrapper
+    if wrapper_data_attributes.present?
+      attributes.merge! wrapper_data_attributes
     end
 
     attributes
