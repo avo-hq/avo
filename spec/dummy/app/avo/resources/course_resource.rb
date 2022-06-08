@@ -5,29 +5,29 @@ class CourseResource < Avo::BaseResource
     scope.ransack(id_eq: params[:q], name_cont: params[:q], m: "or").result(distinct: false)
   end
   self.keep_filters_panel_open = true
-  self.stimulus_controllers = "course-resource"
+  self.stimulus_controllers = "course-resource toggle-fields"
 
   field :id, as: :id
   field :name, as: :text, html: {
     edit: {
       input: {
-        # classes: "bg-primary-500"
+        # classes: "bg-primary-500",
         data: {
           action: "input->resource-edit#debugOnInput"
         }
       },
       wrapper: {
-        # style: "background: red"
+        # style: "background: red;",
       }
     }
   }
   field :has_skills, as: :boolean, html: -> do
     edit do
       input do
-        # classes('absolute')
+        # classes('block')
         data({
-          foo: record,
-          resource: resource,
+          # foo: record,
+          # resource: resource,
           action: "input->resource-edit#toggle",
           resource_edit_toggle_target_param: "skills_tags_wrapper",
           # resource_edit_toggle_targets_param: ["country_select_wrapper"]
@@ -47,16 +47,22 @@ class CourseResource < Avo::BaseResource
       end
     end
   end
-  field :country, as: :select, options: Course.countries.map { |country| [country, country] }.prepend(["–", nil]).to_h, html: {
-    edit: {
-      input: {
-        data: {
-          action: "course-resource#onCountryChange"
+  field :country,
+    as: :select,
+    options: Course.countries.map { |country| [country, country] }.prepend(["-", nil]).to_h,
+    html: {
+      edit: {
+        input: {
+          data: {
+            action: "course-resource#onCountryChange"
+          }
         }
       }
     }
-  }
-  field :city, as: :select, options: Course.cities.values.flatten.map { |city| [city, city] }.to_h, display_value: false
+  field :city,
+    as: :select,
+    options: Course.cities.values.flatten.map { |city| [city, city] }.to_h,
+    display_value: false
   field :links, as: :has_many, searchable: true, placeholder: "Click to choose a link"
 
   filter CourseCountryFilter

@@ -17,6 +17,10 @@ class Course < ApplicationRecord
     true
   end
 
+  def has_skills=(value)
+    true
+  end
+
   def skill_suggestions
     ["example suggestion", "example tag", name]
   end

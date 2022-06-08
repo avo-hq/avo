@@ -50,7 +50,7 @@ module Avo
       end
 
       def add_default_data_attributes(attributes, name, element, view)
-        if name == :data && element == :input && view.in?([:edit, :new]) && resource.present?
+        if !attributes.nil? && name == :data && element == :input && view.in?([:edit, :new]) && resource.present?
           extra_attributes = resource.get_stimulus_controllers
             .split(" ")
             .map do |controller|
