@@ -1,4 +1,4 @@
-<%= show_field_wrapper field: @field, index: @index, full_width: true do %>
+<%= show_field_wrapper field: @field, resource: @resource, index: @index, full_width: true do %>
   <div data-controller="simple-mde">
     <%= text_area_tag @field.id, @field.value,
       class: helpers.input_classes('w-full js-has-simple-mde-editor'),

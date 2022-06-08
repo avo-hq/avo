@@ -1,4 +1,4 @@
-<%= show_field_wrapper field: @field, index: @index, full_width: true do %>
+<%= show_field_wrapper field: @field, resource: @resource, index: @index, full_width: true do %>
   <div data-controller="code-field" style="--height: <%= @field.height %>">
     <%= text_area_tag @field.id, @field.value,
       class: helpers.input_classes('w-full'),
@@ -6,7 +6,7 @@
       disabled: true,
       data: {
         'code-field-target': 'element',
-        view: :edit,
+        view: @resource.view,
         language: @field.language,
         theme: @field.theme,
         'tab-size': @field.tab_size,

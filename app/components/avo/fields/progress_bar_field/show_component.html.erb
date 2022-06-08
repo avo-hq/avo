@@ -1,4 +1,4 @@
-<%= show_field_wrapper field: @field, index: @index do %>
+<%= show_field_wrapper field: @field, resource: @resource, index: @index do %>
   <% if @field.display_value %>
     <div class="text-center text-sm font-semibold w-full leading-none mb-1">
       <%= @field.value %><%= @field.value_suffix if @field.value_suffix.present? %>

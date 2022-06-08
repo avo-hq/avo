@@ -6,8 +6,10 @@ module Avo
     include ActionView::Helpers::UrlHelper
     include Avo::Concerns::HasTools
     include Avo::Concerns::HasFields
+    include Avo::Concerns::HasStimulusControllers
 
-    delegate :view_context, to: "Avo::App"
+    delegate :view_context, to: ::Avo::App
+    delegate :simple_format, :content_tag, to: :view_context
     delegate :main_app, to: :view_context
     delegate :avo, to: :view_context
     delegate :resource_path, to: :view_context

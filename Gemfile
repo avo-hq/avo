@@ -152,3 +152,5 @@ gem 'acts_as_list'
 gem 'acts-as-taggable-on', '~> 9.0'
 
 gem "bundler-integrity", "~> 1.0"
+
+gem 'erb-formatter'

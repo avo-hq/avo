@@ -106,8 +106,8 @@ export default class extends Controller {
 
   handleOnSelect({ item }) {
     if (this.isBelongsToSearch) {
-      this.hiddenIdTarget.setAttribute('value', item._id)
-      this.buttonTarget.setAttribute('value', item._label)
+      this.updateFieldAttribute(this.hiddenIdTarget, 'value', item._id)
+      this.updateFieldAttribute(this.buttonTarget, 'value', item._label)
 
       document.querySelector('.aa-DetachedOverlay').remove()
 
@@ -196,7 +196,7 @@ export default class extends Controller {
   }
 
   clearValue() {
-    this.clearValueTargets.map((e) => e.setAttribute('value', ''))
+    this.clearValueTargets.map((t) => this.updateFieldAttribute(t, 'value', ''))
     this.clearButtonTarget.classList.add('hidden')
   }
 
@@ -244,5 +244,12 @@ export default class extends Controller {
     if (this.buttonTarget.dataset.shouldBeDisabled !== 'true') {
       this.buttonTarget.removeAttribute('disabled')
     }
+  }
+
+  // Private
+
+  updateFieldAttribute(target, attribute, value) {
+    target.setAttribute(attribute, value)
+    target.dispatchEvent(new Event('input'))
   }
 }

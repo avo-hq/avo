@@ -1,9 +1,12 @@
 <%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal do %>
   <%= @form.number_field @field.id,
-    class: helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)),
-    placeholder: @field.placeholder,
+    class: classes("w-full"),
+    data: @field.get_html(:data, view: view, element: :input),
     disabled: @field.readonly,
-    min: @field.min,
     max: @field.max,
-    step: @field.step %>
+    min: @field.min,
+    placeholder: @field.placeholder,
+    step: @field.step,
+    style: @field.get_html(:style, view: view, element: :input)
+  %>
 <% end %>

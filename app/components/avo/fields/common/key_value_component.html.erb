@@ -38,16 +38,22 @@
       value: @field.parsed_value,
       class: 'hidden',
       placeholder: @field.placeholder,
-      'data-key-value-target': 'input',
-      'data-view': :edit
+      data: {
+        "key-value-target": 'input',
+        view: @view,
+        **@field.get_html(:data, view: view, element: :input)
+      }
     %>
   <% else %>
     <%= text_area_tag @field.id,
       @field.parsed_value,
       class: 'hidden',
       placeholder: @field.placeholder,
-      'data-key-value-target': 'input',
-      'data-view': :edit
+      data: {
+        "key-value-target": 'input',
+        view: @view,
+        **@field.get_html(:data, view: view, element: :input)
+      }
     %>
   <% end %>
 </div>

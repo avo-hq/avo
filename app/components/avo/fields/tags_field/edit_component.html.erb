@@ -1,20 +1,23 @@
-<%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal do %>
+<%= edit_field_wrapper field: @field,
+  index: @index,
+  form: @form,
+  resource: @resource,
+  displayed_in_modal: @displayed_in_modal do %>
   <div data-controller="tags-field">
     <%# dummy field %>
     <%= text_field_tag "#{@field.id}-dummy", '',
-      class: helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)),
-      placeholder: @field.placeholder,
-      disabled: @field.readonly,
-      value: '',
+      class: classes("w-full"),
       data: {
         'tags-field-target': 'fakeInput',
-      } %>
+      },
+      disabled: @field.readonly,
+      placeholder: @field.placeholder,
+      style: @field.get_html(:style, view: view, element: :input),
+      value: ''
+    %>
     <%# real field %>
     <%= @form.text_field @field.id,
-      class: helpers.input_classes('hidden w-full', has_error: @field.model_errors.include?(@field.id)),
-      placeholder: @field.placeholder,
-      disabled: @field.readonly,
-      value: @field.field_value.to_json,
+      class: classes("hidden w-full"),
       data: {
         'tags-field-target': 'input',
         'whitelist-items': @field.suggestions.to_json,
@@ -22,6 +25,11 @@
         'enforce-suggestions': @field.enforce_suggestions ? 1 : 0,
         'delimiters': @field.delimiters,
         'close-on-select': @field.close_on_select ? 1 : 0,
-      } %>
+      },
+      disabled: @field.readonly,
+      placeholder: @field.placeholder,
+      style: @field.get_html(:style, view: view, element: :input),
+      value: @field.field_value.to_json
+    %>
   </div>
 <% end %>

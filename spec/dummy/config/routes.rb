@@ -13,3 +13,11 @@ Rails.application.routes.draw do
     mount Avo::Engine, at: Avo.configuration.root_path
   end
 end
+
+if defined? ::Avo
+  Avo::Engine.routes.draw do
+    scope :resources do
+      get "courses/cities", to: "courses#cities"
+    end
+  end
+end

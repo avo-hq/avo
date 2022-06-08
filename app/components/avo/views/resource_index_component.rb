@@ -28,6 +28,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     @turbo_frame = turbo_frame
     @parent_model = parent_model
     @applied_filters = applied_filters
+    @view = :index
   end
 
   def title

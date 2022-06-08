@@ -1,4 +1,4 @@
-<%= show_field_wrapper field: @field do %>
+<%= show_field_wrapper field: @field, resource: @resource do %>
   <% if @field.value.present? %>
     <%= image_tag @field.value, style: 'max-width: 340px;' %>
   <% end %>

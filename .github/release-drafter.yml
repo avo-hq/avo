@@ -12,7 +12,9 @@ categories:
       - 'bugfix'
       - 'bug'
   - title: '🤖 Maintenance'
-    label: 'chore'
+    labels:
+      - 'chore'
+      - 'dependencies'
   - title: '🧪 Test'
     label: 'test'
   - title: '✏️ Docs'
