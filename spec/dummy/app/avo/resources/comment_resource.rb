@@ -12,13 +12,6 @@ class CommentResource < Avo::BaseResource
   field :id, as: :id
   field :body, as: :textarea, format_using: -> (value) do
     if view == :show
-      simple_format(value)
-    else
-      value
-    end
-  end
-  field :body, as: :textarea, format_using: -> (value) do
-    if view == :show
       content_tag(:div, style: 'white-space: pre-line') { value }
     else
       value
