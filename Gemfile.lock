@@ -210,7 +210,7 @@ GEM
     io-wait (0.2.1)
     iso (0.4.0)
       i18n
-    jmespath (1.5.0)
+    jmespath (1.6.1)
     jsbundling-rails (1.0.0)
       railties (>= 6.0.0)
     launchy (2.5.0)
