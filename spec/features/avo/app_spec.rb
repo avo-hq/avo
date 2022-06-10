@@ -6,6 +6,9 @@ RSpec.describe "App", type: :feature do
       visit "/admin/dashboard"
 
       expect(current_path).to eq "/admin/dashboard"
+
+      # Label on the menu builder
+      expect(page).to have_text "Fishies"
     end
   end
 end
