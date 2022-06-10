@@ -76,7 +76,7 @@ module Avo
 
     def show
       @resource.hydrate(model: @model, view: :show, user: _current_user, params: params)
-      
+
       set_actions
 
       @page_title = @resource.default_panel_name.to_s
@@ -405,6 +405,8 @@ module Avo
 
       if @resource.class.after_create_path == :index
         resources_path(resource: @resource)
+      elsif @resource.class.after_create_path == :edit
+        resources_edit_path(resource: @resource)
       else
         resource_path(model: @model, resource: @resource)
       end
