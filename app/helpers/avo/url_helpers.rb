@@ -12,10 +12,9 @@ module Avo
         end
       end
 
-      # Create the `route_key` from the model key so the namespaced models get the proper path (SomeModule::Post -> some_module_post).
-      # Add the `_index` suffix for the uncountable models so they get the correct path (`fish_index`)
-      route_key = resource.model_key
-      route_key << "_index" if resource.model_name.singular == resource.model_name.plural
+      route_key = resource.route_key
+      # Add the `_index` suffix for the uncountable names so they get the correct path (`fish_index`)
+      route_key << "_index" if resource.route_key == resource.singular_route_key
 
       avo.send :"resources_#{route_key}_path", **existing_params, **args
     end
@@ -33,19 +32,19 @@ module Avo
         id = resource_id
       end
 
-      avo.send :"resources_#{resource.singular_model_key}_path", id, **args
+      avo.send :"resources_#{resource.singular_route_key}_path", id, **args
     end
 
     def new_resource_path(model:, resource:, **args)
-      avo.send :"new_resources_#{resource.singular_model_key}_path", **args
+      avo.send :"new_resources_#{resource.singular_route_key}_path", **args
     end
 
     def edit_resource_path(model:, resource:, **args)
-      avo.send :"edit_resources_#{resource.singular_model_key}_path", model, **args
+      avo.send :"edit_resources_#{resource.singular_route_key}_path", model, **args
     end
 
     def resource_attach_path(resource, model_id, related_name, related_id = nil)
-      helpers.avo.resources_associations_new_path(resource.singular_model_key, model_id, related_name)
+      helpers.avo.resources_associations_new_path(resource.singular_route_key, model_id, related_name)
     end
 
     def resource_detach_path(
@@ -79,7 +78,7 @@ module Avo
     end
 
     def order_up_resource_path(model:, resource:, **args)
-      avo.send :"order_up_resources_#{resource.singular_model_key}_path", model, **args
+      avo.send :"order_up_resources_#{resource.singular_route_key}_path", model, **args
     end
   end
 end
