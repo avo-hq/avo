@@ -13,7 +13,7 @@
       <% else %>
         <%= @field.name %>
       <% end %>
-      <% if @field.required %> <span class="text-red-600 ml-1">*</span> <% end %>
+      <% if @field.is_required? %> <span class="text-red-600 ml-1">*</span> <% end %>
     </div>
   </div>
   <div class="flex-1 flex flex-row md:min-h-inherit py-2 <% unless @displayed_in_modal %> px-6 <% end %>">
