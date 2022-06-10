@@ -2,7 +2,6 @@
 
 .trix-content h1 {
   @apply text-xl font-bold mb-2;
-
 }
 
 .trix-content ul {
