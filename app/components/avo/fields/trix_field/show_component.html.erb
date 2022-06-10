@@ -1,6 +1,6 @@
 <%= show_field_wrapper field: @field, resource: @resource, index: @index do %>
   <%
-    content_classes = 'prose prose-sm'
+    content_classes = 'trix-content py-2'
     content_classes << ' hidden' unless @field.always_show
   %>
   <div data-controller="hidden-input">

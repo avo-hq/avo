@@ -1,0 +1,17 @@
+@import './../../../../../node_modules/trix/dist/trix.css';
+
+.trix-content h1 {
+  @apply text-xl font-bold mb-2;
+}
+
+.trix-content ul {
+  @apply list-disc;
+}
+
+.trix-content pre {
+  @apply text-base;
+}
+
+.trix-content ol {
+  @apply list-decimal;
+}

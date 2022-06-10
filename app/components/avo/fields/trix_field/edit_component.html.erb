@@ -12,6 +12,7 @@
     class="relative block overflow-x-auto max-w-full"
   >
     <%= content_tag 'trix-editor',
+      class: 'trix-content',
       data: {
         "trix-field-target": "editor",
         **@field.get_html(:data, view: view, element: :input)
