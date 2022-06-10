@@ -30,6 +30,14 @@
         sort_direction = 'desc'
       end
       classes = "text-gray-500 tracking-tight leading-tight text-xs font-semibold"
+      classes += case field.index_text_align.to_sym
+        when :right
+          " text-right"
+        when :center
+          " text-center"
+        else
+          ""
+        end
     %>
     <th class="text-left uppercase px-3 py-2 whitespace-nowrap rounded-l">
       <% if field.sortable %>
@@ -38,7 +46,7 @@
           <%= render partial: 'avo/partials/sortable_component', locals: {field: field} %>
         <% end %>
       <% else %>
-        <div class="flex items-center <%= classes %>">
+        <div class="block w-full <%= classes %>">
           <%= field.name %>
         </div>
       <% end %>
