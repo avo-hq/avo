@@ -438,7 +438,7 @@ module Avo
       class_name_without_resource.underscore.pluralize
     end
 
-    def singular_route_key
+    def route_key
       class_name_without_resource.underscore.singularize
     end
 
