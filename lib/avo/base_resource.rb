@@ -439,7 +439,7 @@ module Avo
     end
 
     def singular_route_key
-      route_key.underscore.singularize
+      route_key.singularize
     end
 
     # This is used as the model class ID
