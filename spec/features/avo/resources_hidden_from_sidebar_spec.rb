@@ -15,7 +15,7 @@ RSpec.feature "ResourcesHiddenFromSidebar", type: :feature do
 
       expect(page.body).not_to have_text "Team memberships"
 
-      visit "/admin/resources/team_memberships"
+      visit "/admin/resources/memberships"
 
       expect(page.body).to have_text "Team memberships"
     end
