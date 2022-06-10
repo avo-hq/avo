@@ -21,7 +21,6 @@ class TeamResource < Avo::BaseResource
     model.team_members.length
   end
 
-
   field :memberships,
     as: :has_many,
     searchable: true,
