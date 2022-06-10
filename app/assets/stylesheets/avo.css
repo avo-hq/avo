@@ -1,7 +1,6 @@
 @import './../../../node_modules/simplemde/dist/simplemde.min.css';
 @import './../../../node_modules/tippy.js/dist/tippy.css';
 @import './../../../node_modules/tippy.js/themes/light.css';
-@import './../../../node_modules/trix/dist/trix.css';
 @import './../../../node_modules/flatpickr/dist/flatpickr.css';
 @import './../../../node_modules/@algolia/autocomplete-theme-classic/dist/theme.css';
 @import './../../../node_modules/@yaireo/tagify/dist/tagify.css';
@@ -20,9 +19,10 @@
 @import './css/spinner.css';
 @import './css/tags.css';
 
-@import './css/components/status.css';
-@import './css/components/code.css';
-@import './css/components/progress.css';
+@import './css/fields/status.css';
+@import './css/fields/code.css';
+@import './css/fields/progress.css';
+@import './css/fields/trix.css';
 
 @import 'tailwindcss/components';
 
