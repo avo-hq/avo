@@ -19,6 +19,7 @@ module Avo
 
       attr_reader :id
       attr_reader :block
+      attr_reader :required
       attr_reader :readonly
       attr_reader :sortable
       attr_reader :nullable
