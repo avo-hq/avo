@@ -438,8 +438,8 @@ module Avo
       class_name_without_resource.underscore.pluralize
     end
 
-    def route_key
-      class_name_without_resource.underscore.singularize
+    def singular_route_key
+      route_key.underscore.singularize
     end
 
     # This is used as the model class ID
