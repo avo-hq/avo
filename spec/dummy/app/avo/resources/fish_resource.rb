@@ -6,7 +6,7 @@ class FishResource < Avo::BaseResource
   end
 
   field :id, as: :id
-  field :name, as: :text
+  field :name, as: :text, required: -> { view == :new }
 
   tool FishInformation, show_on: :edit
 

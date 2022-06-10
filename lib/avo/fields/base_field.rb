@@ -227,6 +227,14 @@ module Avo
         true
       end
 
+      def is_required?
+        if required.respond_to? :call
+          Avo::Hosts::ViewRecordHost.new(block: required, record: model, view: view).handle
+        else
+          required
+        end
+      end
+
       private
 
       def model_or_class(model)
