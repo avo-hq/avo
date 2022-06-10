@@ -9,6 +9,7 @@ module Avo
 
       include Avo::Concerns::HandlesFieldArgs
       include Avo::Concerns::HasHTMLAttributes
+      include Avo::Fields::Concerns::IsRequired
 
       delegate :view_context, to: ::Avo::App
       delegate :simple_format, :content_tag, to: :view_context
@@ -18,7 +19,6 @@ module Avo
 
       attr_reader :id
       attr_reader :block
-      attr_reader :required
       attr_reader :readonly
       attr_reader :sortable
       attr_reader :nullable
@@ -225,14 +225,6 @@ module Avo
         !method(:initialize).source_location.first.include?("lib/avo/field")
       rescue
         true
-      end
-
-      def is_required?
-        if required.respond_to? :call
-          Avo::Hosts::ViewRecordHost.new(block: required, record: model, view: view).handle
-        else
-          required
-        end
       end
 
       private
