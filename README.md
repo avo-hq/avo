@@ -76,6 +76,15 @@ Please read the [UPGRADE_GUIDE.MD](https://docs.avohq.io/2.0/upgrade.html)
 </a>
 <!--  https://contrib.rocks -->
 
+# 🥇 Business & Agency Sponsors
+
+<a href="https://equipetechnique.com/?utm_source=github&utm_medium=link&utm_campaign=avo_code_without_borders" target="_blank">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://avohq.io/img/sponsors/ET-dark.jpeg">
+    <img alt="Equipe Technique Busines Sponsor" src="https://avohq.io/img/sponsors/ET-light.jpeg" width="240px">
+  </picture>
+</a>
+
 
 ![Alt](https://repobeats.axiom.co/api/embed/1481a6a259064f02a7936470d12a50802a9c98a4.svg "Repobeats analytics image")
 
