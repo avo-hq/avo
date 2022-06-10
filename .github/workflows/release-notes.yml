@@ -15,3 +15,6 @@ jobs:
           config-name: release-drafter.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Refresh on avohq.io
+        run: curl https://avohq.io/pull_requests/refresh
