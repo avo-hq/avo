@@ -4,6 +4,8 @@
 [![codecov](https://codecov.io/gh/avo-hq/avo/branch/master/graph/badge.svg?token=Q2LMFE4989)](https://codecov.io/gh/avo-hq/avo)
 [![Maintainability](https://api.codeclimate.com/v1/badges/676a0afa2cc79f03aa29/maintainability)](https://codeclimate.com/github/avo-hq/avo/maintainability)
 
+TEST
+
 ![](./public/avo-assets/logo-on-white.png)
 
 **Configuration-based, no-maintenance, extendable Ruby on Rails admin**
