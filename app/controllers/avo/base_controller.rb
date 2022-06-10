@@ -76,7 +76,7 @@ module Avo
 
     def show
       @resource.hydrate(model: @model, view: :show, user: _current_user, params: params)
-      
+
       set_actions
 
       @page_title = @resource.default_panel_name.to_s
@@ -391,20 +391,22 @@ module Avo
         return resource_path(model: params[:via_relation_class].safe_constantize, resource: parent_resource, resource_id: params[:via_resource_id])
       end
 
-      redirect_path_from_resource_option || resource_path(model: @model, resource: @resource)
+      redirect_path_from_resource_option(:after_create_path) || resource_path(model: @model, resource: @resource)
     end
 
     def after_update_path
       return params[:referrer] if params[:referrer].present?
 
-      redirect_path_from_resource_option || resource_path(model: @model, resource: @resource)
+      redirect_path_from_resource_option(:after_update_path) || resource_path(model: @model, resource: @resource)
     end
 
-    def redirect_path_from_resource_option
-      return nil if @resource.class.after_update_path.blank?
+    def redirect_path_from_resource_option(action = :after_update_path)
+      return nil if @resource.class.send(action).blank?
 
-      if @resource.class.after_create_path == :index
+      if @resource.class.send(action) == :index
         resources_path(resource: @resource)
+      elsif @resource.class.send(action) == :edit
+        edit_resource_path(resource: @resource, model: @resource.model)
       else
         resource_path(model: @model, resource: @resource)
       end
