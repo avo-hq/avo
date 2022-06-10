@@ -76,9 +76,9 @@ Please read the [UPGRADE_GUIDE.MD](https://docs.avohq.io/2.0/upgrade.html)
 </a>
 <!--  https://contrib.rocks -->
 
-# Business & Agency Sponsors
+# 🥇 Business & Agency Sponsors
 
-<picture>
+<picture width="240px">
   <source media="(prefers-color-scheme: dark)" srcset="https://avohq.io/img/sponsors/ET-dark.jpeg">
   <img alt="Equipe Technique Busines Sponsor" src="https://avohq.io/img/sponsors/ET-light.jpeg">
 </picture>
