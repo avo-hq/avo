@@ -62,7 +62,7 @@ Avo.configure do |config|
       end
 
       group "Other", collapsable: true, collapsed: true do
-        resource :fish
+        resource :fish, label: "Fishies"
       end
     end
 
