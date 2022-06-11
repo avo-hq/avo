@@ -33,7 +33,7 @@ RSpec.describe "DefaultField", type: :system do
 
     context "create" do
       it "checks presence of default team membership level" do
-        visit "/admin/resources/team_memberships/new"
+        visit "/admin/resources/memberships/new"
         wait_for_loaded
 
         if Time.now.hour < 12
@@ -44,7 +44,7 @@ RSpec.describe "DefaultField", type: :system do
       end
 
       it "saves team membership and checks for default team membership level value" do
-        visit "/admin/resources/team_memberships/new"
+        visit "/admin/resources/memberships/new"
         wait_for_loaded
 
         expect(TeamMembership.count).to eql 0
@@ -55,7 +55,7 @@ RSpec.describe "DefaultField", type: :system do
         click_on "Save"
         wait_for_loaded
 
-        expect(current_path).to eql "/admin/resources/team_memberships/#{TeamMembership.last.id}"
+        expect(current_path).to eql "/admin/resources/memberships/#{TeamMembership.last.id}"
 
         if Time.now.hour < 12
           expect(find_field_element(:level)).to have_text "advanced"

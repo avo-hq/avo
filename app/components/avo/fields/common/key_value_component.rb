@@ -3,6 +3,8 @@
 class Avo::Fields::Common::KeyValueComponent < ViewComponent::Base
   include Avo::ApplicationHelper
 
+  attr_reader :view
+
   def initialize(field:, form: nil, view: :show)
     @field = field
     @form = form

@@ -5,10 +5,14 @@ module Avo
       extend Avo::Fields::FieldExtensions::HasFieldName
 
       include Avo::Fields::FieldExtensions::VisibleInDifferentViews
-      include Avo::Concerns::HandlesFieldArgs
       include ActionView::Helpers::UrlHelper
 
-      delegate :view_context, to: "Avo::App"
+      include Avo::Concerns::HandlesFieldArgs
+      include Avo::Concerns::HasHTMLAttributes
+      include Avo::Fields::Concerns::IsRequired
+
+      delegate :view_context, to: ::Avo::App
+      delegate :simple_format, :content_tag, to: :view_context
       delegate :main_app, to: :view_context
       delegate :avo, to: :view_context
       delegate :t, to: ::I18n
@@ -64,6 +68,7 @@ module Avo
         @as_avatar = args[:as_avatar] || false
         @as_description = args[:as_description] || false
         @index_text_align = args[:index_text_align] || :left
+        @html = args[:html] || nil
 
         @updatable = true
         @computable = true

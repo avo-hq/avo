@@ -1,6 +1,8 @@
-<div class="space-y-6">
+<%= content_tag :div,
+  data: {
+    **@resource.stimulus_data_attributes
+  } do %>
   <%= render Avo::CardsListComponent.new parent: @resource %>
-
   <%= render Avo::PanelComponent.new(title: title, description: description, data: { component: 'resources-index' }, display_breadcrumbs: @reflection.blank?) do |c| %>
     <% c.tools do %>
       <% if can_attach? %>
@@ -74,4 +76,4 @@
       <% end %>
     <% end %>
   <% end %>
-</div>
+<% end %>

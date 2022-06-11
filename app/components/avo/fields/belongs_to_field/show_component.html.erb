@@ -1,3 +1,3 @@
-<%= show_field_wrapper field: @field, index: @index do %>
+<%= show_field_wrapper field: @field, resource: @resource, index: @index do %>
   <%= link_to @field.label, helpers.resource_path(model: @field.value, resource: @field.target_resource, via_resource_class: @resource.model_class, via_resource_id: @resource.model.id) %>
 <% end %>

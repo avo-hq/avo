@@ -7,8 +7,10 @@ module Avo
     include Avo::Concerns::HasCards
     include Avo::Concerns::HasTools
     include Avo::Concerns::HasFields
+    include Avo::Concerns::HasStimulusControllers
 
-    delegate :view_context, to: "Avo::App"
+    delegate :view_context, to: ::Avo::App
+    delegate :simple_format, :content_tag, to: :view_context
     delegate :main_app, to: :view_context
     delegate :avo, to: :view_context
     delegate :resource_path, to: :view_context
@@ -434,7 +436,11 @@ module Avo
     end
 
     def route_key
-      model_class.model_name.route_key
+      class_name_without_resource.underscore.pluralize
+    end
+
+    def singular_route_key
+      route_key.singularize
     end
 
     # This is used as the model class ID

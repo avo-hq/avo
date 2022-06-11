@@ -14,7 +14,7 @@ module Avo
         #   resource.model_class.present?
         # end
         .map do |resource|
-          router.resources resource.new.model_key
+          router.resources resource.new.route_key
         end
     end
   end

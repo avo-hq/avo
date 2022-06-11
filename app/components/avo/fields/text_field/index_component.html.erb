@@ -1,4 +1,4 @@
-<%= index_field_wrapper field: @field do %>
+<%= index_field_wrapper field: @field, resource: @resource do %>
   <% if @field.as_html %>
     <%== @field.value %>
   <% else %>

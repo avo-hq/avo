@@ -1,4 +1,4 @@
-<%= index_field_wrapper field: @field, flush: flush? do %>
+<%= index_field_wrapper field: @field, resource: @resource, flush: flush? do %>
   <% if @field.value.present? %>
     <% if @field.value.attached? && @field.value.representable? && @field.is_image %>
       <%= link_to_if @field.link_to_resource, image_tag(helpers.main_app.url_for(@field.value), class: 'h-10'), resource_path, class: 'block' %>

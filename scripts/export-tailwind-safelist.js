@@ -11,6 +11,9 @@ buttonColors.push('primary')
 
 const ignoredButtonClasses = buttonColors.map((color) => buttonClasses.map((buttonClass) => buttonClass.replace('${color}', kebabCase(color))))
 
+// Add the whitespace class for newlines
+ignoredButtonClasses.push('whitespace-pre-line')
+
 // Write them into a safelist.txt file until @tailwindcss/jit supports PurgeCSS options
 fs.writeFile('./safelist.txt', ignoredButtonClasses.flat().join(' '), () => {
   // eslint-disable-next-line no-console

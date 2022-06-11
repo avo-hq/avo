@@ -17,4 +17,8 @@ class Avo::Menu::BaseItem
       Avo::Hosts::BaseHost.new(block: visible).handle
     end
   end
+
+  def navigation_label
+    label || entity_label
+  end
 end

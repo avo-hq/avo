@@ -19,13 +19,13 @@ RSpec.feature Avo::SearchController, type: :controller do
   describe "resource search" do
     it "does not return the ream membership" do
       get :show, params: {
-        resource_name: 'team_memberships'
+        resource_name: 'memberships'
       }
 
       expect(json.keys).not_to include "users"
-      expect(json.keys).to include "team memberships"
-      expect(json['team memberships']['count']).to eq 1
-      expect(json['team memberships']['results'].first['_id']).to eq team.memberships.first.id
+      expect(json.keys).to include "memberships"
+      expect(json['memberships']['count']).to eq 1
+      expect(json['memberships']['results'].first['_id']).to eq team.memberships.first.id
     end
   end
 end

@@ -1,6 +1,9 @@
-<div data-model-id="<%= @resource.model.id %>"
-  class="space-y-8"
->
+<%= content_tag :div,
+  class: "space-y-12",
+  data: {
+    'model-id': @resource.model.id,
+    **@resource.stimulus_data_attributes
+  } do %>
   <% @resource.panels.each do |resource_panel| %>
     <%= form_with model: @resource.model,
         scope: @resource.form_scope,
@@ -70,4 +73,4 @@
       <% end %>
     <% end %>
   <% end %>
-</div>
+<% end %>
