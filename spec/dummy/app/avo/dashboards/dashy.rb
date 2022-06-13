@@ -9,19 +9,21 @@ class Dashy < Avo::Dashboards::BaseDashboard
 
   card ExampleMetric
   card ExampleAreaChart
-  card ExampleScatterChart
+
+  card ExampleLineChart, cols: 1
+  card MapCard
+  card ExamplePieChart
+  card ExampleBarChart
+  card ExampleColumnChart
+  card AmountRaised
   card ExampleMetric,
-    label: "Active users metric",
+  label: "Active users metric",
     description: "Count of the active users.",
     options: {
       active_users: true
     }
-  card PercentDone
-  card ExampleLineChart, cols: 1
-  card AmountRaised
-  card ExampleColumnChart
-  card ExamplePieChart
-  card ExampleBarChart
+    card PercentDone
+    card ExampleScatterChart, cols: 3
 
   divider label: "Custom partials"
 
@@ -31,5 +33,4 @@ class Dashy < Avo::Dashboards::BaseDashboard
       "Hello from the block"
     }
   }
-  card MapCard
 end

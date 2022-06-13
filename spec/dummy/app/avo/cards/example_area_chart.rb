@@ -26,7 +26,7 @@ class ExampleAreaChart < Avo::Dashboards::ChartkickCard
     data = 3.times.map do |index|
       {
         name: "Batch #{index}",
-        data: 17.times.map { |i| [i, Random.rand(32)] }
+        data: 10.times.map { |i| [i, Random.rand(32)] }
       }
     end
 

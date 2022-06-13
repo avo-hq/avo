@@ -79,7 +79,7 @@ class UserResource < Avo::BaseResource
   with_options only_on: :index do
     card UsersMetric, label: "Users count"
     card UsersMetric, options: {type: :active}, label: "Active users"
-    card UsersMetric, options: {type: :non_admins}, label: "Non admin users"
+    card UserTypes, options: {type: :active}
   end
 
   with_options only_on: :show do

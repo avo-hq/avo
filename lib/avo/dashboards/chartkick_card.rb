@@ -35,7 +35,7 @@ module Avo
             points: false,
             animation: true
           },
-          id: "#{dashboard.id}-#{rand(10_000..99_999)}"
+          id: "#{parent.id}-#{rand(10_000..99_999)}"
         }
 
         no_scale_options = {display: false}
