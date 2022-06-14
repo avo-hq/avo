@@ -345,7 +345,7 @@ class Avo::TabBuilder
   # end
 
   def main_panel
-
+    'DDDDDDD'
   end
 
   # Fetch the tab

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Avo::ItemSwitcherComponent < Avo::BaseComponent
+  include Turbo::FramesHelper
+
   attr_reader :item
   attr_reader :view
   attr_reader :index

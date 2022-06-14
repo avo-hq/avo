@@ -7,25 +7,35 @@
     <%= render item.partial, tool: item %>
   <% end %>
 <% elsif item.is_main_panel? %>
-  main panel
-  1<%= main_panel_tools %>2
-<% elsif item.is_panel? && !item.is_main_panel? %>
-11
   <%= render Avo::PanelComponent.new(title: title, description: @resource.resource_description, display_breadcrumbs: @reflection.blank?, index: 0) do |c| %>
     <% c.body do %>
       <div class="divide-y">
-        <% @resource.get_base_items.each_with_index do |field, index| %>
+        <% item.items.each_with_index do |field, index| %>
           <%= render field.component_for_view(:show).new(field: field, resource: @resource, index: index) %>
         <% end %>
       </div>
     <% end %>
   <% end %>
-  22
+  <%# is main panel %>
+  <%= main_panel_tools %>
+<% elsif item.is_panel? && !item.is_main_panel? %>
+  <%= render Avo::PanelComponent.new(title: title, description: @resource.resource_description, display_breadcrumbs: @reflection.blank?, index: 0) do |c| %>
+    <% c.body do %>
+      <div class="divide-y">
+        <% item.items.each_with_index do |field, index| %>
+          <%= render field.component_for_view(:show).new(field: field, resource: @resource, index: index) %>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
 <% elsif item.is_tab_group? && view == :show %>
+  <%# TAB GROUP %>
+  <%#= item.inspect %>
   <div class="space-y-12">
     <%# @todo: add turbo eager loading maybe %>
     <div>
       <% active_tab_name = params[:active_tab_name] || item.tabs.first.name %>
+      <%= active_tab_name.inspect %>
       <%
         if params[:tab_turbo_frame].present? && params[:active_tab_name].present?
           active_tab = item&.tabs.find do |tab|
