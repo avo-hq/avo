@@ -51,4 +51,6 @@ Rails.application.configure do
   config.factory_bot.definition_file_paths = ["../../db"]
 
   config.log_level = :fatal
+
+  config.i18n.load_path += Dir[Avo::Engine.root.join("lib", "generators", "avo", "templates", "locales", "*.{rb,yml}")]
 end
