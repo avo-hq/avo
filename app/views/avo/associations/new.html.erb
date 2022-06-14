@@ -16,7 +16,8 @@
             field: @field,
             model_key: @field.target_resource&.model_key,
             foreign_key: 'related_id',
-            resource: @resource
+            resource: @resource,
+            view: :new
           %>
         <% else %>
           <div class="flex-1 flex flex-col items-center justify-center px-0 md:px-24 text-base">

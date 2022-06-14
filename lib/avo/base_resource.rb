@@ -6,8 +6,10 @@ module Avo
     include ActionView::Helpers::UrlHelper
     # include Avo::Concerns::HasTools
     include Avo::Concerns::HasFields
+    include Avo::Concerns::HasStimulusControllers
 
-    delegate :view_context, to: "Avo::App"
+    delegate :view_context, to: ::Avo::App
+    delegate :simple_format, :content_tag, to: :view_context
     delegate :main_app, to: :view_context
     delegate :avo, to: :view_context
     delegate :resource_path, to: :view_context
@@ -28,7 +30,6 @@ module Avo
     class_attribute :includes, default: []
     class_attribute :model_class
     class_attribute :translation_key
-    class_attribute :translation_enabled, default: false
     class_attribute :default_view_type, default: :table
     class_attribute :devise_password_optional, default: false
     class_attribute :actions_loader
@@ -105,8 +106,6 @@ module Avo
           self.class.model_class = model_class.base_class
         end
       end
-
-      self.class.translation_enabled = ::Avo::App.translation_enabled
     end
 
     # def items
@@ -217,7 +216,7 @@ module Avo
     end
 
     def translation_key
-      return "avo.resource_translations.#{class_name_without_resource.underscore}" if self.class.translation_enabled
+      return "avo.resource_translations.#{class_name_without_resource.underscore}" if ::Avo::App.translation_enabled
 
       self.class.translation_key
     end
@@ -227,9 +226,11 @@ module Avo
 
       return @name if @name.present?
 
-      return t(translation_key, count: 1, default: default).capitalize if translation_key
-
-      default
+      if translation_key && ::Avo::App.translation_enabled
+        t(translation_key, count: 1, default: default).capitalize
+      else
+        default
+      end
     end
 
     def singular_name
@@ -239,9 +240,11 @@ module Avo
     def plural_name
       default = name.pluralize
 
-      return t(translation_key, count: 2, default: default).capitalize if translation_key
-
-      default
+      if translation_key && ::Avo::App.translation_enabled
+        t(translation_key, count: 2, default: default).capitalize
+      else
+        default
+      end
     end
 
     def underscore_name
@@ -362,7 +365,11 @@ module Avo
     end
 
     def route_key
-      model_class.model_name.route_key
+      class_name_without_resource.underscore.pluralize
+    end
+
+    def singular_route_key
+      route_key.singularize
     end
 
     # This is used as the model class ID

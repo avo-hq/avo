@@ -62,7 +62,7 @@ RSpec.feature "HasManyField", type: :system do
         expect(page).to have_text comments.second.tiny_name.to_s
 
         sleep 0.5
-        expect(page).to have_text("Resource destroyed").twice
+        expect(page).to have_text("Record destroyed").twice
       end
     end
   end

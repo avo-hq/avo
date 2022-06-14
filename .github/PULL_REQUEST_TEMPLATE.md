@@ -14,8 +14,6 @@ Fixes # (issue)
 ## Manual review steps
 <!-- Please describe the tests that you ran to verify your changes. Provide instructions so we can reproduce. Please also list any relevant details for your test configuration. -->
 
-Description...
-
 1. Step 1
 1. Step 2
 

@@ -115,4 +115,4 @@ jobs:
         gem push --key github --host https://rubygems.pkg.github.com/avo-hq ./pkg/avo-${{steps.gem_version.outputs.tag}}.gem
 
     - name: Publish release on avohq.io
-      run: node .github/publish-release-to-avo-hq-io.js
+      run: curl https://avohq.io/releases/refresh_releases

@@ -72,5 +72,6 @@ FactoryBot.define do
 
   factory :course_link, class: "Course::Link" do
     link { Faker::Internet.url }
+    course { create :course }
   end
 end

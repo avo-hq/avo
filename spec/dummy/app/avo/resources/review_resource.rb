@@ -1,6 +1,6 @@
 class ReviewResource < Avo::BaseResource
   self.title = :tiny_name
-  self.includes = []
+  self.includes = [:user, :reviewable]
   # self.search_query = ->(params:) do
   #   scope.ransack(id_eq: params[:q], m: "or").result(distinct: false)
   # end
@@ -32,7 +32,12 @@ class ReviewResource < Avo::BaseResource
     polymorphic_as: :reviewable,
     types: [::Fish, ::Post, ::Project, ::Team],
     searchable: true,
-    allow_via_detaching: true,
+    allow_via_detaching: true, html: {
+      data: {
+        'resource-edit-target': 'emailField',
+        action: 'input->resource-edit#emailUpdate'
+      }
+    },
     attach_scope: -> do
       # For the parent record with ID 1 we'll apply this rule.
       # This is for testing purposes only. Just to show that it's possbile.

@@ -15,7 +15,7 @@ RSpec.feature "multiple names model", type: :feature do
   describe "creating a comment" do
     context "without a polymorphic association" do
       it "sets the right form_scope" do
-        visit "admin/resources/team_memberships/#{team_membership.id}/edit"
+        visit "admin/resources/memberships/#{team_membership.id}/edit"
 
         click_on "Save"
       end

@@ -1,6 +1,9 @@
-<div data-model-id="<%= @resource.model.id %>"
-  class="space-y-12"
->
+<%= content_tag :div,
+  class: "space-y-12",
+  data: {
+    'model-id': @resource.model.id,
+    **@resource.stimulus_data_attributes
+  } do %>
   <%= form_with model: @resource.model,
       scope: @resource.form_scope,
       url: helpers.resource_path(model: @resource.model, resource: @resource),
@@ -120,4 +123,5 @@
         <% end %>
       <% end %>
     <% end %>
-  </div>
+  <% end %>
+<% end %>

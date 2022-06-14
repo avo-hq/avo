@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::Views::ResourceNewComponent < ViewComponent::Base
+class Avo::Views::ResourceNewComponent < Avo::ResourceComponent
   include Avo::ResourcesHelper
   include Avo::ApplicationHelper
 
@@ -10,6 +10,7 @@ class Avo::Views::ResourceNewComponent < ViewComponent::Base
   )
     @resource = resource
     @model = model
+    @view = :new
   end
 
   def back_path

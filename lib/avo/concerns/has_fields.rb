@@ -115,7 +115,7 @@ module Avo
         return [] if fields.blank?
 
         items = fields.map do |field|
-          field.hydrate(resource: self, panel_name: default_panel_name, user: user, translation_enabled: translation_enabled)
+          field.hydrate(resource: self, panel_name: default_panel_name, user: user)
         end
 
         if Avo::App.license.lacks_with_trial(:custom_fields)

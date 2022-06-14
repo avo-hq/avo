@@ -1,7 +1,9 @@
 <%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal do %>
   <%= @form.password_field @field.id,
-    class: helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)),
+    class: classes("w-full"),
+    data: @field.get_html(:data, view: view, element: :input),
+    disabled: @field.readonly,
     placeholder: @field.placeholder,
-    disabled: @field.readonly
+    style: @field.get_html(:style, view: view, element: :input)
     %>
 <% end %>

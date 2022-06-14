@@ -153,6 +153,13 @@ module Avo
       self
     end
 
+    # Add a placeholder silent message from when a user wants to do a redirect action or something similar
+    def silent
+      add_message nil, :silent
+
+      self
+    end
+
     def redirect_to(path = nil, &block)
       response[:type] = :redirect
       response[:path] = if block.present?

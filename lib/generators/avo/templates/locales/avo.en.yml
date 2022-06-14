@@ -13,9 +13,9 @@ en:
     unauthorized: 'Unauthorized'
     attachment_class_attached: '%{attachment_class} attached.'
     attachment_class_detached: '%{attachment_class} detached.'
-    resource_updated: 'Resource updated'
-    resource_created: 'Resource created'
-    resource_destroyed: 'Resource destroyed'
+    resource_updated: 'Record updated'
+    resource_created: 'Record created'
+    resource_destroyed: 'Record destroyed'
     switch_to_view: "Switch to %{view_type} view"
     click_to_reveal_filters: "Click to reveal filters"
     attachment_destroyed: 'Attachment destroyed'

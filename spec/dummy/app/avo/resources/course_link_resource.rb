@@ -19,5 +19,15 @@ class CourseLinkResource < Avo::BaseResource
 
   field :id, as: :id
   field :link, as: :text, help: "Hehe. Something helpful."
+  field :enable_course, as: :boolean, only_on: :forms, html: {
+    edit: {
+      input: {
+        data: {
+          action: "resource-edit#disable",
+          resource_edit_disable_target_param: "courseBelongsToWrapper"
+        }
+      }
+    }
+  }
   field :course, as: :belongs_to, searchable: true
 end

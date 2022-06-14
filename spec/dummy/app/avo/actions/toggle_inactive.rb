@@ -17,6 +17,6 @@ class ToggleInactive < Avo::BaseAction
       model.notify fields[:message] if fields[:notify_user]
     end
 
-    succeed "Perfect!"
+    silent
   end
 end

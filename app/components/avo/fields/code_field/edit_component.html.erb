@@ -1,19 +1,21 @@
 <%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal, full_width: true do %>
   <div data-controller="code-field">
     <%= @form.text_area @field.id,
-      class: helpers.input_classes('w-full', has_error: @field.model_errors.include?(@field.id)),
-      placeholder: @field.placeholder,
-      disabled: @field.readonly,
+      class: classes("w-full"),
       data: {
         'code-field-target': 'element',
-        view: :edit,
+        view: @resource.view,
         language: @field.language,
         theme: @field.theme,
         'tab-size': @field.tab_size,
         'read-only': @field.readonly,
         'indent-with-tabs': @field.indent_with_tabs,
         'line-wrapping': @field.line_wrapping,
-      }
+        **@field.get_html(:data, view: view, element: :input),
+      },
+      disabled: @field.readonly,
+      placeholder: @field.placeholder,
+      style: @field.get_html(:style, view: view, element: :input)
     %>
   </div>
 <% end %>

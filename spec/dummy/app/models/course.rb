@@ -13,6 +13,14 @@
 class Course < ApplicationRecord
   has_many :links, -> { order(position: :asc) }, class_name: "Course::Link", inverse_of: :course
 
+  def has_skills
+    true
+  end
+
+  def has_skills=(value)
+    true
+  end
+
   def skill_suggestions
     ["example suggestion", "example tag", name]
   end

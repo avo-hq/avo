@@ -1,12 +1,15 @@
 <%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal, full_width: true do %>
   <div data-controller="simple-mde">
     <%= @form.text_area @field.id,
-      class: helpers.input_classes('w-full js-has-simple-mde-editor', has_error: @field.model_errors.include?(@field.id)),
-      placeholder: @field.placeholder,
+      class: classes("w-full js-has-simple-mde-editor"),
+      data: {
+        view: @resource.view,
+        'simple-mde-target': 'element',
+        'component-options': @field.options.to_json,
+      },
       disabled: @field.readonly,
-      'data-simple-mde-target': 'element',
-      'data-component-options': @field.options.to_json,
-      'data-view': :edit
+      placeholder: @field.placeholder,
+      style: @field.get_html(:style, view: view, element: :input)
     %>
   </div>
 <% end %>

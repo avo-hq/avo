@@ -7,6 +7,7 @@
     <%= text_field_tag filter.id, filter.applied_or_default_value(@applied_filters),
       class: input_classes('w-full mb-0'),
       id: "avo_filters_#{filter.id.parameterize.underscore}",
+      placeholder: filter.class.empty_message,
       'data-filter-class': filter.class.to_s,
       'data-text-filter-target': 'text',
       'data-action': 'keypress->text-filter#tryToSubmit'

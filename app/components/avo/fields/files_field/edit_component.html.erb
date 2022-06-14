@@ -3,7 +3,13 @@
 
   <% if @resource.authorization.authorize_action(:upload_attachments?, raise_exception: false) %>
     <div class="mt-2">
-      <%= @form.file_field @field.id, disabled: @field.readonly, multiple: true, direct_upload: @field.direct_upload %>
+      <%= @form.file_field @field.id,
+        data: @field.get_html(:data, view: view, element: :input),
+        direct_upload: @field.direct_upload,
+        disabled: @field.readonly,
+        multiple: true,
+        style: @field.get_html(:style, view: view, element: :input)
+      %>
     </div>
   <% end %>
 <% end %>

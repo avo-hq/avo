@@ -1,8 +1,11 @@
-<div data-model-id="<%= @resource.model.id %>"
-  data-selected-resources-name="<%= @resource.model_key %>"
-  data-selected-resources='["<%= @resource.model.id %>"]'
-  class="space-y-12"
->
+<%= content_tag :div,
+  class: "space-y-12",
+  data: {
+    'model-id': @resource.model.id,
+    selected_resources_name: @resource.model_key,
+    selected_resources: [@resource.model.id],
+    **@resource.stimulus_data_attributes
+  } do %>
 <% if false %>
   <%= render Avo::PanelComponent.new(title: title, description: @resource.resource_description, display_breadcrumbs: @reflection.blank?, index: 0) do |c| %>
     <% c.body do %>
@@ -21,13 +24,13 @@
       <% if @reflection.present? && @resource.model.present? %>
         <% if can_detach? %>
           <%= a_button url: detach_path,
-                  icon: 'detach',
-                  method: :delete,
-                  form_class: 'flex flex-col sm:flex-row sm:inline-flex',
-                  style: :text,
-                  data: {
-                    confirm: "Are you sure you want to detach this #{title}."
-                  } do %>
+            icon: 'detach',
+            method: :delete,
+            form_class: 'flex flex-col sm:flex-row sm:inline-flex',
+            style: :text,
+            data: {
+              confirm: "Are you sure you want to detach this #{title}."
+            } do %>
             <%= t('avo.detach_item', item: title).capitalize %>
           <% end %>
           <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource %>
@@ -87,4 +90,4 @@
       </template>
     </turbo-stream>
   <% end %>
-</div>
+<% end %>

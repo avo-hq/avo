@@ -28,11 +28,12 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     @turbo_frame = turbo_frame
     @parent_model = parent_model
     @applied_filters = applied_filters
+    @view = :index
   end
 
   def title
     if @reflection.present?
-      return field.plural_name if field.present?
+      return name if field.present?
 
       reflection_resource.plural_name
     else
@@ -143,4 +144,9 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   def reflection_model_class
     @reflection.active_record.to_s
   end
+
+  def name 
+    field.custom_name? ? field.name : field.plural_name
+  end
+
 end

@@ -17,8 +17,6 @@ module Avo
       ::Avo::App.boot
     end
 
-    config.i18n.load_path += Dir[Avo::Engine.root.join("lib", "generators", "avo", "templates", "locales", "*.{rb,yml}")]
-
     initializer "avo.autoload" do |app|
       [
         ["app", "avo", "fields"],

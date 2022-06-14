@@ -146,7 +146,7 @@ RSpec.describe "Filters", type: :system do
         open_filters_menu
 
         expect(page).to have_text "Published status"
-        expect(page).to have_select "published status", selected: empty_dash, options: [empty_dash, "Published", "Unpublished"]
+        expect(page).to have_select "published status", selected: "Published or unpublished", options: ["Published or unpublished", "Published", "Unpublished"]
         expect(page).to have_text "Published post"
         expect(page).to have_text "Unpublished post"
         expect(page).to have_button("Reset filters", disabled: true)
@@ -162,7 +162,7 @@ RSpec.describe "Filters", type: :system do
 
         expect(page).to have_text "Published post"
         expect(page).not_to have_text "Unpublished post"
-        expect(page).to have_select "avo_filters_published_status", selected: "Published", options: [empty_dash, "Published", "Unpublished"]
+        expect(page).to have_select "avo_filters_published_status", selected: "Published", options: ["Published or unpublished", "Published", "Unpublished"]
         expect(current_url).to include "filters="
         expect(page).to have_link("Reset filters")
       end
@@ -177,17 +177,17 @@ RSpec.describe "Filters", type: :system do
 
         expect(page).to have_text "Published post"
         expect(page).not_to have_text "Unpublished post"
-        expect(page).to have_select "avo_filters_published_status", selected: "Published", options: [empty_dash, "Published", "Unpublished"]
+        expect(page).to have_select "avo_filters_published_status", selected: "Published", options: ["Published or unpublished", "Published", "Unpublished"]
         expect(current_url).to include "filters="
         expect(page).to have_link("Reset filters")
 
-        select empty_dash, from: "avo_filters_published_status"
+        select "Published or unpublished", from: "avo_filters_published_status"
         wait_for_loaded
         open_filters_menu
 
         expect(page).to have_text "Published post"
         expect(page).to have_text "Unpublished post"
-        expect(page).to have_select "avo_filters_published_status", selected: empty_dash, options: [empty_dash, "Published", "Unpublished"]
+        expect(page).to have_select "avo_filters_published_status", selected: "Published or unpublished", options: ["Published or unpublished", "Published", "Unpublished"]
         expect(current_url).not_to include "filters="
         expect(page).to have_button("Reset filters", disabled: true)
 
@@ -197,7 +197,7 @@ RSpec.describe "Filters", type: :system do
 
         expect(page).not_to have_text "Published post"
         expect(page).to have_text "Unpublished post"
-        expect(page).to have_select "avo_filters_published_status", selected: "Unpublished", options: [empty_dash, "Published", "Unpublished"]
+        expect(page).to have_select "avo_filters_published_status", selected: "Unpublished", options: ["Published or unpublished", "Published", "Unpublished"]
         expect(current_url).to include "filters="
         expect(page).to have_link("Reset filters")
 
@@ -206,7 +206,7 @@ RSpec.describe "Filters", type: :system do
         open_filters_menu
 
         expect(page).to have_text "Published status"
-        expect(page).to have_select "avo_filters_published_status", selected: empty_dash, options: [empty_dash, "Published", "Unpublished"]
+        expect(page).to have_select "avo_filters_published_status", selected: "Published or unpublished", options: ["Published or unpublished", "Published", "Unpublished"]
         expect(page).to have_text "Published post"
         expect(page).to have_text "Unpublished post"
         expect(page).to have_button("Reset filters", disabled: true)
@@ -279,19 +279,19 @@ RSpec.describe "Filters", type: :system do
     let(:url) { "/admin/resources/teams?view_type=table" }
 
     context "without default value" do
-      it 'displays the filter' do
+      it "displays the filter" do
         visit url
         open_filters_menu
 
         expect(page).to have_text "Name filter"
       end
 
-      it 'filters by name' do
+      it "filters by name" do
         visit url
         expect(page).to have_text("Displaying 2 item")
 
         open_filters_menu
-        fill_in 'avo_filters_name_filter', with: 'With Members'
+        fill_in "avo_filters_name_filter", with: "With Members"
         click_on "Filter by name"
         wait_for_loaded
         expect(page).to have_text("Displaying 1 item")

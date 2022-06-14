@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    avo (2.7.0)
+    avo (2.8.0)
       active_link_to
       addressable
       breadcrumbs_on_rails
@@ -163,6 +163,7 @@ GEM
       dotenv (= 2.7.6)
       railties (>= 3.2)
     dry-initializer (3.1.1)
+    erb-formatter (0.3.0)
     erubi (1.10.0)
     factory_bot (6.2.0)
       activesupport (>= 5.0.0)
@@ -435,6 +436,7 @@ DEPENDENCIES
   database_cleaner
   devise
   dotenv-rails
+  erb-formatter
   factory_bot_rails
   faker
   friendly_id (~> 5.4.0)
