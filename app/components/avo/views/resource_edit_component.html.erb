@@ -1,75 +1,57 @@
 <%= content_tag :div,
-  class: "space-y-12",
+  class: "space-y-6",
   data: {
     'model-id': @resource.model.id,
     **@resource.stimulus_data_attributes
   } do %>
-  <% @resource.panels.each do |resource_panel| %>
-    <%= form_with model: @resource.model,
-        scope: @resource.form_scope,
-        url: helpers.resource_path(model: @resource.model, resource: @resource),
-        method: :put,
-        local: true,
-        multipart: true do |form| %>
-      <%= render Avo::ReferrerParamsComponent.new back_path: back_path %>
-      <%= render Avo::PanelComponent.new(title: resource_panel[:name], description: @resource.resource_description, display_breadcrumbs: true) do |c| %>
-        <% c.tools do %>
-          <%= a_link back_path,
-            style: :text,
-            icon: 'arrow-left' do %>
-            <%= t('avo.cancel').capitalize %>
+  <%= render Avo::CardsListComponent.new parent: @resource %>
+  <%= content_tag :div, class: "space-y-12" do %>
+    <% @resource.panels.each do |resource_panel| %>
+      <%= form_with model: @resource.model,
+      scope: @resource.form_scope,
+      url: form_url,
+      local: true,
+      multipart: true do |form| %>
+        <%= render Avo::ReferrerParamsComponent.new back_path: back_path %>
+        <%= render Avo::PanelComponent.new(title: resource_panel[:name], description: @resource.resource_description, display_breadcrumbs: true) do |c| %>
+          <% c.tools do %>
+            <div class="flex justify-end space-x-2">
+              <%= a_link back_path,
+              style: :text,
+              icon: 'arrow-left' do %>
+                <%= t('avo.cancel').capitalize %>
+              <% end %>
+              <% if can_see_the_save_button? %>
+                <%= a_button color: :primary,
+                style: :primary,
+                loading: true,
+                type: :submit,
+                icon: 'save' do %>
+                  <%= t('avo.save').capitalize %>
+                <% end %>
+              <% end %>
+            </div>
           <% end %>
-          <% if can_see_the_save_button? %>
-            <%= a_button color: :primary,
-              style: :primary,
-              loading: true,
-              type: :submit,
-              icon: 'save' do %>
-              <%= t('avo.save').capitalize %>
-            <% end %>
-          <% end %>
-        <% end %>
-        <% if Avo.configuration.buttons_on_form_footers %>
-          <% c.footer_tools do %>
-            <%= a_link back_path, icon: 'arrow-left' do %>
-              <%= t('avo.cancel').capitalize %>
-            <% end %>
-            <% if can_see_the_save_button? %>
-              <%= a_button color: :green, loading: true, type: :submit, icon: 'save' do %>
-                <%= t('avo.save').capitalize %>
+          <% if Avo.configuration.buttons_on_form_footers %>
+            <% c.footer_tools do %>
+              <%= a_link back_path, icon: 'arrow-left' do %>
+                <%= t('avo.cancel').capitalize %>
+              <% end %>
+              <% if can_see_the_save_button? %>
+                <%= a_button color: :green, loading: true, type: :submit, icon: 'save' do %>
+                  <%= t('avo.save').capitalize %>
+                <% end %>
               <% end %>
             <% end %>
           <% end %>
+          <% c.body do %>
+            <div class="divide-y">
+              <% @resource.get_fields.each_with_index do |field, index| %>
+                <%= render field.component_for_view(:edit).new(field: field, resource: @resource, index: index, form: form) unless field.computed %>
+              <% end %>
+            </div>
+          <% end %>
         <% end %>
-        <% c.body do %>
-          <div class="divide-y">
-            <% @resource.get_fields.each_with_index do |field, index| %>
-              <%= render field.component_for_view(:edit).new(field: field, resource: @resource, index: index, form: form) unless field.computed %>
-            <% end %>
-          </div>
-        <% end %>
-      <% end %>
-    <% end %>
-  <% end %>
-  <% if @reflection.blank? %>
-    <% if has_one_panels.present? %>
-      <% has_one_panels.each_with_index do |field, index| %>
-        <%= render field.component_for_view(:show).new(field: field, resource: @resource, index: index) %>
-      <% end %>
-    <% end %>
-    <% if has_many_panels.present? %>
-      <% has_many_panels.each_with_index do |field, index| %>
-        <%= render field.component_for_view(:show).new(field: field, resource: @resource, index: index) %>
-      <% end %>
-    <% end %>
-    <% if has_as_belongs_to_many_panels.present? %>
-      <% has_as_belongs_to_many_panels.each_with_index do |field, index| %>
-        <%= render field.component_for_view(:show).new(field: field, resource: @resource, index: index) %>
-      <% end %>
-    <% end %>
-    <% if resource_tools.present? %>
-      <% resource_tools.each do |tool, index| %>
-        <%= render tool.partial, tool: tool %>
       <% end %>
     <% end %>
   <% end %>
