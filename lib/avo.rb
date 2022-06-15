@@ -7,6 +7,7 @@ loader.inflector.inflect(
   "html" => "HTML",
   "has_html_attributes" => "HasHTMLAttributes"
 )
+loader.ignore("#{__dir__}/generators")
 loader.setup
 
 #                                      .//*,,.....,,*/(*
