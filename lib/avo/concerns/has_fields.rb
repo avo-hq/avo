@@ -315,7 +315,7 @@ class Avo::TabBuilder
     # puts ['!!!!->', klass].inspect
   end
 
-  # def panel(klass, **args)
+  # def dpanel(klass, **args)
   #   # add_tool(@tab.items, klass, **args)
   #   @tab.items << klass.new
   #   @tab.items_index += 1
@@ -332,6 +332,7 @@ class Avo::TabBuilder
   end
 
   def panel(panel_name = nil, **args, &block)
+    # puts ["@resource->", @resource].inspect
     panel = Avo::PanelBuilder.parse_block(name: panel_name, **args, &block)
     # field_parser = Avo::Dsl::FieldParser.new(id: panel_name, order_index: @tab.items_index, **args, &block).parse
 
@@ -443,6 +444,7 @@ class Avo::Tab
 
   # @todo: fix the view
   class_attribute :view, default: :show
+  class_attribute :item_type, default: :tab
 
   delegate :view, to: :self
 
@@ -464,35 +466,49 @@ class Avo::Tab
     latest_panel = Avo::Panel.new
     last_item = nil
 
-    items.each do |item|
-      puts ["1->", item.class].inspect
-      if item.is_field?
-        if in_panel || item.has_own_panel?
-          new_items << item
-        else
-          # Add to latest panel
-          latest_panel.add_item item
-          # new_items << item
-        end
-      else
-        if last_item.present? && last_item.is_field? && latest_panel.has_items?
-          # Close the panel and add it to the new stack
-          new_items << latest_panel
-          in_panel = false
-          latest_panel = Avo::Panel.new
-        end
-      # elsif item.is_panel?
-        # new_items << item
-      # elsif item.is_tool?
-        new_items << item
-      end
-      last_item = item
-    end
+    # items.each_with_index do |item, index|
+    #   puts ["1->", item.class.item_type].inspect
+    #   if item.is_field?
+    #     if in_panel || item.has_own_panel?
+    #       puts ['->', 1].inspect
+    #       new_items << item
+    #     else
+    #       puts ['->', 2].inspect
+    #       # Add to latest panel
+    #       latest_panel.add_item item
+    #       # new_items << item
+    #     end
+    #   else
+    #     puts ['->', 2.5].inspect
 
-    # abort [new_items].inspect
+    #     if last_item.present? && last_item.is_field? && latest_panel.has_items?
+    #       puts ['->', 3].inspect
+    #       # Close the panel and add it to the new stack
+    #       new_items << latest_panel
+    #       in_panel = false
+    #       latest_panel = Avo::Panel.new
+    #     end
+    #     # elsif item.is_panel?
+    #     #   new_items << item
+    #     # elsif item.is_tool?
+    #     puts ['->', 4].inspect
+    #     new_items << item
+    #   end
 
-    @items = new_items
-    # @items
+    #   # If this is the last item
+    #   if (index + 1) == items.count && latest_panel.items.count
+    #     new_items << latest_panel
+    #     in_panel = false
+    #     latest_panel = Avo::Panel.new
+    #     # puts ['->', 5, latest_panel.items.count].inspect
+    #   end
+    #   last_item = item
+    # end
+
+    # # abort [new_items].inspect
+
+    # @items = new_items
+    @items
   end
 end
 
