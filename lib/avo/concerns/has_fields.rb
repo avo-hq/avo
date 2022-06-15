@@ -4,7 +4,7 @@ module Avo
       extend ActiveSupport::Concern
 
       included do
-        class_attribute :items_holder # can be: field, tool, panel, tab
+        class_attribute :items_holder
         class_attribute :items_index, default: 0
         class_attribute :tabs_holder
         class_attribute :tabs_tabs_holder
@@ -14,36 +14,14 @@ module Avo
       delegate :items, to: :items_holder
 
       class_methods do
-        # delegate :add_field, to: ::Avo::Services::DslService
         delegate :add_tool, to: ::Avo::Services::DslService
-        # delegate :field, to: :items
         delegate :tool, to: :items_holder
         delegate :items, to: :items_holder
-        delegate :panel, to: :items_holder
 
-        # def tool(klass, **args)
-        #   self.tools_holder ||= []
-
-        #   add_tool(items, klass, **args)
-
-        # end
-
-
-        def init_items
-          self.items_holder ||= Avo::ItemsHolder.new
-        end
 
         def tools
           self.tools_holder
         end
-
-        # def panel(panel_name = nil, **args, &block)
-        #   panel = Avo::PanelBuilder.parse_block(name: panel_name, **args, &block)
-        #   # field_parser = Avo::Dsl::FieldParser.new(id: panel_name, order_index: @tab.items_index, **args, &block).parse
-
-        #   items << panel
-        #   self.items_index += 1
-        # end
 
         def field(name, **args, &block)
           init_items
@@ -51,19 +29,20 @@ module Avo
           self.items_holder.field name, **args, &block
         end
 
+        def panel(name = nil, **args, &block)
+          init_items
+
+          self.items_holder.panel name, **args, &block
+        end
+
         def tabs(&block)
           init_items
 
-          tab_group = Avo::TabGroupBuilder.parse_block(&block)
-
-          # tab_group = Avo::TabGroup.new(index: items_index)
-          # abort tabs.inspect
-          # tab_group.items = tabs
-          self.items_holder.tabs tab_group
+          self.items_holder.tabs Avo::TabGroupBuilder.parse_block(&block)
         end
 
         def heading(body, **args)
-          add_to_fields Avo::Fields::HeadingField.new(body, order_index: items_index, **args)
+          self.items_holder.add_item Avo::Fields::HeadingField.new(body, order_index: items_index, **args)
         end
 
         def fields
@@ -74,13 +53,6 @@ module Avo
           end
         end
 
-        # def tools
-        #   self.items.select do |item|
-        #     # item.is_field?
-        #     true
-        #   end
-        # end
-
         def tab_groups
           self.items.select do |item|
             item.instance_of? Avo::TabGroup
@@ -89,9 +61,12 @@ module Avo
 
         private
 
+        def init_items
+          self.items_holder ||= Avo::ItemsHolder.new
+        end
+
         def add_to_fields(instance)
           self.items ||= []
-          # add_field(fields, instance)
           self.items << instance
           increment_order_index
         end
@@ -215,6 +190,8 @@ module Avo
       end
 
       def get_items
+        # return items
+
         panelless_items = []
         panelfull_items = []
 
@@ -243,7 +220,7 @@ module Avo
         i_holder = Avo::ItemsHolder.new
         i_holder.items = panelless_items
 
-        main_panel = Avo::MainPanel.new(title: default_panel_name, description: resource_description)
+        main_panel = Avo::MainPanel.new(name: default_panel_name, description: resource_description)
         main_panel.items_holder = i_holder
 
         [main_panel, *panelfull_items]
@@ -262,7 +239,7 @@ module Avo
 
         # puts ["panelfull_fields->", panelfull_fields.count, panelless_fields.count].inspect
 
-        # [Avo::Panel.new(title: default_panel_name, description: resource_description, items: panelless_fields, is_main_panel: true), *panelfull_fields]
+        # [Avo::Panel.new(name: default_panel_name, description: resource_description, items: panelless_fields, is_main_panel: true), *panelfull_fields]
       end
 
       private
@@ -296,13 +273,15 @@ module Avo
       # puts ["ItemsHolder field->", field_name, resource_class, args, block].inspect
 
       field_parser = Avo::Dsl::FieldParser.new(id: field_name, order_index: @items_index, **args, &block).parse
+      puts ["field_parser->", field_parser].inspect
 
       if field_parser.invalid?
+        as = args.fetch(:as, nil)
         add_invalid_field({
           name: field_name,
-          as: args.fetch(:as),
+          as: as,
           # resource: resource_class.name,
-          message: "There's an invalid field configuration for this resource. <br/> <code class='px-1 py-px rounded bg-red-600'>field :#{field_name}, as: #{args.fetch(:as)}</code>"
+          message: "There's an invalid field configuration for this resource. <br/> <code class='px-1 py-px rounded bg-red-600'>field :#{field_name}, as: #{as}</code>"
         })
       end
 
@@ -329,13 +308,13 @@ module Avo
       add_item panel
     end
 
-    private
-
     def add_item(instance)
       @items << instance
 
       increment_order_index
     end
+
+    private
 
     def add_invalid_field(payload)
       @invalid_fields << payload
@@ -373,9 +352,29 @@ class Avo::TabGroupBuilder
     @items_holder = Avo::ItemsHolder.new
   end
 
-  # def tab(name, **args, &block)
-  #   @items << Avo::TabBuilder.parse_block(name: name, **args, &block)
-  # end
+  def field(field_name, **args, &block)
+    parsed = Avo::Dsl::FieldParser.new(id: field_name, order_index: @items_index, **args, &block).parse
+    field_instance = parsed.instance
+
+    name = field_instance.name
+    tab = Avo::Tab.new name: name
+
+    if field_instance.has_own_panel?
+      tab.items_holder.add_item parsed.instance
+    else
+      panel = Avo::Panel.new name: name
+      panel.items_holder.add_item parsed.instance
+      tab.items_holder.add_item panel
+    end
+
+    # abort [1, tab, 2, tab.items_holder, 3, field].inspect
+
+    # abort [t, parsed.instance].inspect
+
+    @items_holder.tabs tab
+
+    # @items_holder << tab
+  end
 
   # Fetch the tab
   def build
@@ -425,7 +424,7 @@ class Avo::PanelBuilder
   attr_reader :items_holder
 
   def initialize(name: nil, **args)
-    @panel = Avo::Panel.new(title: name, **args)
+    @panel = Avo::Panel.new(name: name, **args)
     @items_holder = Avo::ItemsHolder.new
   end
 
@@ -445,12 +444,11 @@ class Avo::Tab
   class_attribute :item_type, default: :tab
 
   delegate :view, to: :self
+  delegate :items, :add_item, to: :items_holder
 
   attr_reader :name
   attr_accessor :items_holder
   attr_accessor :description
-
-  delegate :items, to: :items_holder
 
   def initialize(name: nil, description: nil)
     @name = name
@@ -458,60 +456,60 @@ class Avo::Tab
     @items_holder = Avo::ItemsHolder.new
   end
 
-  def parse
-    # spot fields that don't belong to a panel and add them to a panel
-    # abort items.inspect
-    new_items = []
-    in_panel = false
-    latest_panel = Avo::Panel.new
-    last_item = nil
+  # def items
+  #   # spot fields that don't belong to a panel and add them to a panel
+  #   # abort items.inspect
+  #   new_items = []
+  #   in_panel = false
+  #   latest_panel = Avo::Panel.new
+  #   last_item = nil
 
-    items
+  #   items
 
-    # items.each_with_index do |item, index|
-    #   puts ["->", item.class.item_type, item.try(:title) || item.try(:id) || item.try(:name)].inspect
-    #   if item.is_field?
-    #     if in_panel || item.has_own_panel?
-    #       puts ['->', 1].inspect
-    #       new_items << item
-    #     else
-    #       puts ['->', 2].inspect
-    #       # Add to latest panel
-    #       latest_panel.add_item item
-    #       # new_items << item
-    #     end
-    #   else
-    #     puts ['->', 2.5].inspect
+  #   # items.each_with_index do |item, index|
+  #   #   puts ["->", item.class.item_type, item.try(:name) || item.try(:id) || item.try(:name)].inspect
+  #   #   if item.is_field?
+  #   #     if in_panel || item.has_own_panel?
+  #   #       puts ['->', 1].inspect
+  #   #       new_items << item
+  #   #     else
+  #   #       puts ['->', 2].inspect
+  #   #       # Add to latest panel
+  #   #       latest_panel.add_item item
+  #   #       # new_items << item
+  #   #     end
+  #   #   else
+  #   #     puts ['->', 2.5].inspect
 
-    #     if last_item.present? && last_item.is_field? && latest_panel.has_items?
-    #       puts ['->', 3].inspect
-    #       # Close the panel and add it to the new stack
-    #       new_items << latest_panel
-    #       in_panel = false
-    #       latest_panel = Avo::Panel.new
-    #     end
-    #     # elsif item.is_panel?
-    #     #   new_items << item
-    #     # elsif item.is_tool?
-    #     puts ['->', 4].inspect
-    #     new_items << item
-    #   end
+  #   #     if last_item.present? && last_item.is_field? && latest_panel.has_items?
+  #   #       puts ['->', 3].inspect
+  #   #       # Close the panel and add it to the new stack
+  #   #       new_items << latest_panel
+  #   #       in_panel = false
+  #   #       latest_panel = Avo::Panel.new
+  #   #     end
+  #   #     # elsif item.is_panel?
+  #   #     #   new_items << item
+  #   #     # elsif item.is_tool?
+  #   #     puts ['->', 4].inspect
+  #   #     new_items << item
+  #   #   end
 
-    #   # If this is the last item
-    #   if (index + 1) == items.count && latest_panel.items.count
-    #     new_items << latest_panel
-    #     in_panel = false
-    #     latest_panel = Avo::Panel.new
-    #     # puts ['->', 5, latest_panel.items.count].inspect
-    #   end
-    #   last_item = item
-    # end
+  #   #   # If this is the last item
+  #   #   if (index + 1) == items.count && latest_panel.items.count
+  #   #     new_items << latest_panel
+  #   #     in_panel = false
+  #   #     latest_panel = Avo::Panel.new
+  #   #     # puts ['->', 5, latest_panel.items.count].inspect
+  #   #   end
+  #   #   last_item = item
+  #   # end
 
-    # # # abort [new_items].inspect
+  #   # # # abort [new_items].inspect
 
-    # @items = new_items
+  #   # @items = new_items
 
-  end
+  # end
 end
 
 class Avo::TabGroup
@@ -540,16 +538,16 @@ end
 class Avo::Panel
   include Avo::Concerns::IsResourceItem
 
-  attr_reader :title
+  attr_reader :name
   attr_reader :description
   attr_accessor :items_holder
 
   class_attribute :item_type, default: :panel
 
-  delegate :items, to: :items_holder
+  delegate :items, :add_item, to: :items_holder
 
-  def initialize(title: nil, description: nil)
-    @title = title
+  def initialize(name: nil, description: nil)
+    @name = name
     @description = description
     @items_holder = Avo::ItemsHolder.new
   end

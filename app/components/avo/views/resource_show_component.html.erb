@@ -7,7 +7,7 @@
     **@resource.stimulus_data_attributes
   } do %>
   <% if true %>
-    <%= render Avo::PanelComponent.new(title: title, description: @resource.resource_description, display_breadcrumbs: @reflection.blank?, index: 0) do |c| %>
+    <%= render Avo::PanelComponent.new(title: title, description: @resource.resource_description, display_breadcrumbs: @reflection.blank?, index: 0, classes: '-mb-8') do |c| %>
       <% c.tools do %>
         <% if @reflection.present? && @resource.model.present? %>
           <% if can_detach? %>
@@ -65,13 +65,6 @@
               <%= t('avo.edit').capitalize %>
             <% end %>
           <% end %>
-        <% end %>
-        <% c.body do %>
-          <div class="divide-y">
-            <%# @resource.get_base_items.each_with_index do |field, index| %>
-              <%#= render field.component_for_view(:show).new(field: field, resource: @resource, index: index) %>
-            <%# end %>
-          </div>
         <% end %>
       <% end %>
     <% end %>

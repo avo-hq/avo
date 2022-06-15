@@ -35,18 +35,11 @@
         end
       %>
       <% if active_tab.present? %>
-        <% active_tab.parse %>
         <%= render partial: 'avo/partials/tabs_show', locals: { group: item, index: index, active_tab: active_tab, form: form, main_panel_tools: main_panel_tools } %>
       <% end %>
     </div>
   </div>
-<% elsif item.is_tab? %>
-  taaab
 <% elsif item.is_field? %>
   <%= render item.component_for_view(@view).new(field: item.hydrate(resource: @resource, view: @view, model: @resource.model), resource: @resource, index: index, form: form) %>
 <% end %>
 
-<% if item.is_tab_group? and false %>
-  <%= index %> || <%= item.try(:index) %>
-<% end %>
-<%#= "item_type: #{item.class.item_type}" %>

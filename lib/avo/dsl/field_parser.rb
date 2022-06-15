@@ -8,9 +8,9 @@ module Avo
       attr_reader :instance
       attr_reader :order_index
 
-      def initialize(id:, as:, order_index: 0, **args, &block)
+      def initialize(id:, order_index: 0, **args, &block)
         @id = id
-        @as = as
+        @as = args.fetch(:as, nil)
         @order_index = order_index
         @args = args
         @block = block
