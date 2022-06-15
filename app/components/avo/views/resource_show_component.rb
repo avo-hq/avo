@@ -44,9 +44,9 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
     helpers.edit_resource_path(model: @resource.model, resource: @resource, **args)
   end
 
-  def tabs
-    @resource.tabs_holder
-  end
+  # def tabs
+  #   @resource.tabs_holder
+  # end
 
   # def active_tab_name
   #   params[:active_tab] || tabs.first.name
@@ -58,11 +58,11 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
 
   private
 
-  def tab_by_name(name = nil)
-    @resource.tabs_holder.find do |tab|
-      tab.name.to_s == name.to_s
-    end
-  end
+  # def tab_by_name(name = nil)
+  #   @resource.tabs_holder.find do |tab|
+  #     tab.name.to_s == name.to_s
+  #   end
+  # end
 
   # In development and test environments we shoudl show the invalid field errors
   def should_display_invalid_fields_errors?
