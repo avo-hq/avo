@@ -273,7 +273,6 @@ module Avo
       # puts ["ItemsHolder field->", field_name, resource_class, args, block].inspect
 
       field_parser = Avo::Dsl::FieldParser.new(id: field_name, order_index: @items_index, **args, &block).parse
-      puts ["field_parser->", field_parser].inspect
 
       if field_parser.invalid?
         as = args.fetch(:as, nil)
