@@ -40,7 +40,7 @@ class User < ApplicationRecord
 
   has_one_attached :cv
 
-  friendly_id :name, use: :slugged
+  friendly_id :slug_candidates, use: :slugged
 
   scope :active, -> { where active: true }
   scope :admins, -> { where "(roles->>'admin')::boolean is true" }
@@ -68,5 +68,16 @@ class User < ApplicationRecord
 
   def avo_title
     is_admin? ? "Admin" : "Member"
+  end
+
+  # Friendly id
+  def slug_candidates
+    [
+      [:first_name, :last_name]
+    ]
+  end
+
+  def should_generate_new_friendly_id?
+    first_name_changed? || last_name_changed? || super
   end
 end
