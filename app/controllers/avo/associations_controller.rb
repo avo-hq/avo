@@ -50,7 +50,9 @@ module Avo
           query = Avo::Hosts::AssociationScopeHost.new(block: @field.attach_scope, query: query, parent: @model).handle
         end
 
-        @options = query.all.map do |model|
+        query = @attachment_resource.apply_decoration_to_collection query.all
+
+        @options = query.map do |model|
           [model.send(@attachment_resource.class.title), model.id]
         end
       end

@@ -39,6 +39,8 @@ module Avo
     class_attribute :unscoped_queries_on_index, default: false
     class_attribute :resolve_query_scope
     class_attribute :resolve_find_scope
+    class_attribute :decorate_record
+    class_attribute :decorate_collection
     class_attribute :ordering
     class_attribute :hide_from_global_search, default: false
     class_attribute :after_create_path, default: :show
@@ -114,12 +116,22 @@ module Avo
       @params = params if params.present?
 
       if model.present?
-        @model = model
+        @model = apply_decoration_to_record model
 
         hydrate_model_with_default_values if @view == :new
       end
 
       self
+    end
+
+    # Used by external entities
+    def apply_decoration_to_record(record)
+      Avo::Services::DecoratorService.decorate_record(decoration: decorate_record, record: record, view: @view)
+    end
+
+    # Used by external entities
+    def apply_decoration_to_collection(collection)
+      Avo::Services::DecoratorService.decorate_collection(decoration: decorate_collection, collection: collection, view: @view)
     end
 
     def get_field_definitions
@@ -525,5 +537,7 @@ module Avo
     def ordering_host(**args)
       Avo::Hosts::Ordering.new resource: self, options: self.class.ordering, **args
     end
+
+    # def decorate_model
   end
 end

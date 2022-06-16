@@ -50,10 +50,6 @@ class User < ApplicationRecord
     roles.present? && roles["admin"].present?
   end
 
-  def name
-    "#{first_name} #{last_name}"
-  end
-
   def notify(text)
     # notify about text
   end

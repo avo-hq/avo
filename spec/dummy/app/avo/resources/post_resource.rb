@@ -1,14 +1,20 @@
 class PostResource < Avo::BaseResource
-  self.title = :name
+  self.title = :decorated_name
   self.search_query = ->(params:) do
     scope.ransack(id_eq: params[:q], name_cont: params[:q], body_cont: params[:q], m: "or").result(distinct: false)
   end
   self.search_query_help = "- search by id, name or body"
   self.includes = [:user]
   self.default_view_type = :grid
+  self.decorate_record = -> do
+    record.decorate
+  end
+  self.decorate_collection = -> do
+    collection.decorate
+  end
 
   field :id, as: :id
-  field :name, as: :text, required: true, sortable: true
+  field :decorated_name, as: :text, required: true, sortable: true, name: :Name
   field :body, as: :trix, placeholder: "Enter text", always_show: false, attachment_key: :attachments, hide_attachment_url: true, hide_attachment_filename: true, hide_attachment_filesize: true
   field :tags,
     as: :tags,
@@ -39,11 +45,7 @@ class PostResource < Avo::BaseResource
   grid do
     cover :cover_photo, as: :file, is_image: true, link_to_resource: true
     title :name, as: :text, required: true, link_to_resource: true
-    body :excerpt, as: :text do |model|
-      ActionView::Base.full_sanitizer.sanitize(model.body).truncate 130
-    rescue
-      ""
-    end
+    body :excerpt, as: :text
   end
 
   filter FeaturedFilter

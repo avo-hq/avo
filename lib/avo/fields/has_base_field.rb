@@ -16,12 +16,21 @@ module Avo
         @description = args[:description]
       end
 
+      def value(decorated: true)
+        val = super()
+
+        return val if val.nil?
+        return val if decorated == false
+
+        resource.apply_decoration_to_record(val)
+      end
+
       def searchable
         @searchable && ::Avo::App.license.has_with_trial(:searchable_associations)
       end
 
       def resource
-        Avo::App.get_resource_by_model_name @model.class
+        Avo::App.get_resource_by_model_name value(decorated: false).class
       end
 
       def turbo_frame

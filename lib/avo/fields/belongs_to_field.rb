@@ -83,13 +83,39 @@ module Avo
         @searchable && ::Avo::App.license.has_with_trial(:searchable_associations)
       end
 
-      def value
+      # Return the decorated value by default but offer the undercorated one too
+      def value(decorated: true)
+        method = is_polymorphic? ? polymorphic_as : relation_method
+
+        val = super(method)
+
+        return val if val.nil?
+
+        return val if decorated == false
+
+        target_resource = App.get_resource_by_model_name(val.class)
+
+        target_resource.apply_decoration_to_record val
+      end
+
+      def target_resource
+         App.get_resource_by_model_name(value(decorated: false).class)
         if is_polymorphic?
-          # Get the value from the pre-filled assoociation record
-          super(polymorphic_as)
+          if value.present?
+            return App.get_resource_by_model_name(value(decorated: false).class)
+          else
+            return nil
+          end
+        end
+
+        reflection_key = polymorphic_as || id
+
+        if @model._reflections[reflection_key.to_s].klass.present?
+          App.get_resource_by_model_name @model._reflections[reflection_key.to_s].klass.to_s
+        elsif @model._reflections[reflection_key.to_s].options[:class_name].present?
+          App.get_resource_by_model_name @model._reflections[reflection_key.to_s].options[:class_name]
         else
-          # Get the value from the pre-filled assoociation record
-          super(relation_method)
+          App.get_resource_by_name reflection_key.to_s
         end
       end
 
@@ -121,7 +147,9 @@ module Avo
           query = Avo::Hosts::AssociationScopeHost.new(block: attach_scope, query: query, parent: get_model).handle
         end
 
-        query.all.map do |model|
+        query = resource.apply_decoration_to_collection query.all
+
+        query.map do |model|
           [model.send(resource.class.title), model.id]
         end
       end
@@ -179,10 +207,6 @@ module Avo
         @resource.model_class
       end
 
-      def label
-        value.send(target_resource.class.title)
-      end
-
       def to_permitted_param
         if polymorphic_as.present?
           return ["#{polymorphic_as}_type".to_sym, "#{polymorphic_as}_id".to_sym]
@@ -217,26 +241,6 @@ module Avo
         foreign_key
       rescue
         id
-      end
-
-      def target_resource
-        if is_polymorphic?
-          if value.present?
-            return App.get_resource_by_model_name(value.class)
-          else
-            return nil
-          end
-        end
-
-        reflection_key = polymorphic_as || id
-
-        if @model._reflections[reflection_key.to_s].klass.present?
-          App.get_resource_by_model_name @model._reflections[reflection_key.to_s].klass.to_s
-        elsif @model._reflections[reflection_key.to_s].options[:class_name].present?
-          App.get_resource_by_model_name @model._reflections[reflection_key.to_s].options[:class_name]
-        else
-          App.get_resource_by_name reflection_key.to_s
-        end
       end
 
       def get_model

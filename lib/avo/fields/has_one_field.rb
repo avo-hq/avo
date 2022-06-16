@@ -17,9 +17,6 @@ module Avo
         value.send(target_resource.title)
       end
 
-      def resource
-        Avo::App.get_resource_by_model_name @model.class
-      end
 
       def frame_url
         "#{@resource.record_path}/#{id}/#{value.id}?turbo_frame=#{turbo_frame}"

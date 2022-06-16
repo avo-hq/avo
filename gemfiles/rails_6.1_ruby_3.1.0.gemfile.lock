@@ -70,6 +70,10 @@ GEM
       globalid (>= 0.3.6)
     activemodel (6.1.4.6)
       activesupport (= 6.1.4.6)
+    activemodel-serializers-xml (1.0.2)
+      activemodel (> 5.x)
+      activesupport (> 5.x)
+      builder (~> 3.1)
     activerecord (6.1.4.6)
       activemodel (= 6.1.4.6)
       activesupport (= 6.1.4.6)
@@ -166,6 +170,13 @@ GEM
     dotenv-rails (2.7.6)
       dotenv (= 2.7.6)
       railties (>= 3.2)
+    draper (4.0.2)
+      actionpack (>= 5.0)
+      activemodel (>= 5.0)
+      activemodel-serializers-xml (>= 1.0)
+      activesupport (>= 5.0)
+      request_store (>= 1.0)
+      ruby2_keywords
     dry-initializer (3.1.1)
     erb-formatter (0.3.0)
     erubi (1.10.0)
@@ -307,6 +318,8 @@ GEM
       ffi (~> 1.0)
     redis (4.6.0)
     regexp_parser (2.2.0)
+    request_store (1.5.1)
+      rack (>= 1.4)
     responders (3.0.1)
       actionpack (>= 5.0)
       railties (>= 5.0)
@@ -349,6 +362,7 @@ GEM
     ruby-progressbar (1.11.0)
     ruby-vips (2.1.4)
       ffi (~> 1.12)
+    ruby2_keywords (0.0.5)
     rubyzip (2.3.2)
     selenium-webdriver (4.1.0)
       childprocess (>= 0.5, < 5.0)
@@ -439,6 +453,7 @@ DEPENDENCIES
   database_cleaner
   devise
   dotenv-rails
+  draper
   erb-formatter
   factory_bot_rails
   faker
@@ -485,4 +500,4 @@ DEPENDENCIES
   zeitwerk (~> 2.3)
 
 BUNDLED WITH
-   2.3.5
+   2.3.12

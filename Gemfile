@@ -153,4 +153,7 @@ gem 'acts-as-taggable-on', '~> 9.0'
 
 gem "bundler-integrity", "~> 1.0"
 
-gem 'erb-formatter'
+gem "erb-formatter"
+
+# Draper adds an object-oriented layer of presentation logic to your Rails application.
+gem "draper"

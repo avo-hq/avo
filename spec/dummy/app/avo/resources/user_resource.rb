@@ -13,14 +13,21 @@ class UserResource < Avo::BaseResource
   self.resolve_find_scope = ->(model_class:) do
     model_class.friendly
   end
+  self.decorate_record = -> do
+    UserDecorator.decorate record
+  end
+  self.decorate_collection = -> do
+    UserDecorator.decorate_collection collection
+  end
   self.includes = [:posts, :post]
   self.devise_password_optional = true
 
   field :id, as: :id, link_to_resource: true
   field :email, as: :gravatar, link_to_resource: true, as_avatar: :circle
   heading "User Information"
-  field :first_name, as: :text, required: true, placeholder: "John"
-  field :last_name, as: :text, required: true, placeholder: "Doe"
+  field :name, as: :text, only_on: :index
+  # field :first_name, as: :text, required: true, placeholder: "John"
+  # field :last_name, as: :text, required: true, placeholder: "Doe"
   field :email, as: :text, name: "User Email", required: true
   field :active, as: :boolean, name: "Is active", show_on: :show
   field :cv, as: :file, name: "CV"
