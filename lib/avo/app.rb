@@ -14,7 +14,7 @@ module Avo
     class_attribute :view_context, default: nil
     class_attribute :params, default: {}
     class_attribute :translation_enabled, default: false
-    class_attribute :error_messages, default: []
+    class_attribute :error_messages
 
     class << self
       def boot
@@ -52,6 +52,7 @@ module Avo
           Rails.logger.debug "[Avo] Failed to set ActiveStorage::Current.url_options, #{exception.inspect}"
         end
 
+        check_bad_resources
         init_resources
         init_dashboards if license.has_with_trial(:dashboards)
       end
@@ -78,6 +79,22 @@ module Avo
           name: method_name,
           class: klass
         )
+      end
+
+      def check_bad_resources
+        resources.each do |resource|
+          has_model = resource.model_class.present?
+
+          unless has_model
+            possible_model = resource.class.to_s.gsub 'Resource', ''
+
+            Avo::App.error_messages.push({
+              url: "https://docs.avohq.io/2.0/resources.html#custom-model-class",
+              target: "_blank",
+              message: "#{resource.class.to_s} does not have a valid model assigned. It failed to find the #{possible_model} model. \n\r Please create that model or assign one using self.model_class = YOUR_MODEL"
+            })
+          end
+        end
       end
 
       def init_resources
