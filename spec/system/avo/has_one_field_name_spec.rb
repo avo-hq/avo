@@ -6,7 +6,7 @@ RSpec.describe 'HasOneFieldName', type: :system do
 
   subject {
     visit url
-    page 
+    page
   }
 
   context 'show' do
@@ -22,14 +22,14 @@ RSpec.describe 'HasOneFieldName', type: :system do
         expect(page).to have_text 'Choose post'
 
         expect(page).to have_select 'fields_related_id', selected: "Choose an option"
-        select post.name, from: 'fields_related_id'
+        select post.decorate.name, from: 'fields_related_id'
 
         click_on 'Attach'
         wait_for_loaded
 
         expect(page).to have_text 'Post attached.'
         expect(page).not_to have_text 'Choose post'
-        expect(page).to have_text post.name
+        expect(page).to have_text post.decorate.name
 
         expect(user.posts.pluck('id')).to include post.id
 

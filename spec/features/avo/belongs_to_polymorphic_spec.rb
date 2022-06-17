@@ -56,7 +56,7 @@ RSpec.feature "belongs_to", type: :system do
 
               fill_in "comment_body", with: "Sample comment"
               select "Post", from: "comment_commentable_type"
-              select post.name, from: "comment_commentable_id"
+              select post.decorate.name, from: "comment_commentable_id"
               click_on "Save"
               wait_for_loaded
 
@@ -68,18 +68,18 @@ RSpec.feature "belongs_to", type: :system do
               expect(current_path).to eq "/admin/resources/comments/#{comment.id}"
 
               expect(find_field_value_element("body")).to have_text "Sample comment"
-              expect(page).to have_link post.name, href: "/admin/resources/posts/#{post.id}?via_resource_class=Comment&via_resource_id=#{Comment.last.id}"
+              expect(page).to have_link post.decorate.name, href: "/admin/resources/posts/#{post.id}?via_resource_class=Comment&via_resource_id=#{Comment.last.id}"
 
               click_on "Edit"
 
               expect(page).to have_select "comment_commentable_type", options: ["Choose an option", "Post", "Project"], selected: "Post"
-              expect(page).to have_select "comment_commentable_id", options: ["Choose an option", post.name, second_post.name, *other_posts.map(&:name)], selected: post.name
+              expect(page).to have_select "comment_commentable_id", options: ["Choose an option", post.decorate.name, second_post.decorate.name, *other_posts.map(&:name)], selected: post.decorate.name
 
               # Switch between types and check that values are kept for each one.
               select "Project", from: "comment_commentable_type"
               expect(page).to have_select "comment_commentable_id", options: ["Choose an option", project.name], selected: "Choose an option"
               select "Post", from: "comment_commentable_type"
-              expect(page).to have_select "comment_commentable_id", options: ["Choose an option", post.name, second_post.name, *other_posts.map(&:name)], selected: post.name
+              expect(page).to have_select "comment_commentable_id", options: ["Choose an option", post.decorate.name, second_post.decorate.name, *other_posts.map(&:name)], selected: post.decorate.name
 
               # Switch to Project, select one and save
               select "Project", from: "comment_commentable_type"
@@ -152,14 +152,14 @@ RSpec.feature "belongs_to", type: :system do
               expect(page).to have_select "comment_commentable_id", options: ["Choose an option", project.name], selected: project.name
 
               select "Post", from: "comment_commentable_type"
-              select post.name, from: "comment_commentable_id"
+              select post.decorate.name, from: "comment_commentable_id"
               click_on "Save"
 
               wait_for_loaded
 
               return_to_comment_page
 
-              expect(find_field_value_element("commentable")).to have_text post.name
+              expect(find_field_value_element("commentable")).to have_text post.decorate.name
             end
           end
         end
@@ -282,7 +282,7 @@ RSpec.feature "belongs_to", type: :system do
 
           expect(review.reviewable).to eq post
           expect(page).to have_text("Review was successfully created.").once
-          expect(find_field_value_element("reviewable")).to have_text post.name
+          expect(find_field_value_element("reviewable")).to have_text post.decorate.name
         end
       end
 
@@ -305,9 +305,9 @@ RSpec.feature "belongs_to", type: :system do
           it "changes the reviewable item" do
             visit "/admin/resources/reviews/#{review.id}/edit"
 
-            expect(page).to have_field "review_reviewable_id", with: post.name
+            expect(page).to have_field "review_reviewable_id", with: post.decorate.name
             expect(page).to have_select "review_reviewable_type", selected: "Post", options: ["Choose an option", "Fish", "Post", "Project", "Team"]
-            expect(page).to have_field type: "text", name: "review[reviewable_id]", with: post.name
+            expect(page).to have_field type: "text", name: "review[reviewable_id]", with: post.decorate.name
             expect(page).to have_field type: "hidden", name: "review[reviewable_id]", with: post.id, visible: false
 
             fill_in "review_body", with: "Avo rules!"
@@ -325,7 +325,7 @@ RSpec.feature "belongs_to", type: :system do
             wait_for_search_to_dissapear
             sleep 0.2
 
-            expect(page).to have_field type: "text", name: "review[reviewable_id]", with: second_post.name
+            expect(page).to have_field type: "text", name: "review[reviewable_id]", with: second_post.decorate.name
             expect(page).to have_field type: "hidden", name: "review[reviewable_id]", with: second_post.id, visible: false
 
             click_on "Save"
@@ -342,9 +342,9 @@ RSpec.feature "belongs_to", type: :system do
         it "nullifies the reviewable item" do
           visit "/admin/resources/reviews/#{review.id}/edit"
 
-          expect(page).to have_field "review_reviewable_id", with: post.name
+          expect(page).to have_field "review_reviewable_id", with: post.decorate.name
           expect(page).to have_select "review_reviewable_type", selected: "Post", options: ["Choose an option", "Fish", "Post", "Project", "Team"]
-          expect(page).to have_field type: "text", name: "review[reviewable_id]", with: post.name
+          expect(page).to have_field type: "text", name: "review[reviewable_id]", with: post.decorate.name
           expect(page).to have_field type: "hidden", name: "review[reviewable_id]", with: post.id, visible: false
 
           fill_in "review_body", with: "Avo rules!"
@@ -363,9 +363,9 @@ RSpec.feature "belongs_to", type: :system do
         it "toggles the reviewable item" do
           visit "/admin/resources/reviews/#{review.id}/edit"
 
-          expect(page).to have_field "review_reviewable_id", with: post.name
+          expect(page).to have_field "review_reviewable_id", with: post.decorate.name
           expect(page).to have_select "review_reviewable_type", selected: "Post", options: ["Choose an option", "Fish", "Post", "Project", "Team"]
-          expect(page).to have_field type: "text", name: "review[reviewable_id]", with: post.name
+          expect(page).to have_field type: "text", name: "review[reviewable_id]", with: post.decorate.name
           expect(page).to have_field type: "hidden", name: "review[reviewable_id]", with: post.id, visible: false
 
           # Change reviewable to Team and check for empty inputs
@@ -398,7 +398,7 @@ RSpec.feature "belongs_to", type: :system do
           # Change reviewable to Post and check for inputs filled with the post details
           select "Post", from: "review_reviewable_type"
 
-          expect(page).to have_field type: "text", name: "review[reviewable_id]", with: post.name
+          expect(page).to have_field type: "text", name: "review[reviewable_id]", with: post.decorate.name
           expect(page).to have_field type: "hidden", name: "review[reviewable_id]", with: post.id, visible: false
 
           # Change reviewable to Team and check for inputs filled with the team details
@@ -419,9 +419,9 @@ RSpec.feature "belongs_to", type: :system do
         it "nullifies the reviewable type" do
           visit "/admin/resources/reviews/#{review.id}/edit"
 
-          expect(page).to have_field "review_reviewable_id", with: post.name
+          expect(page).to have_field "review_reviewable_id", with: post.decorate.name
           expect(page).to have_select "review_reviewable_type", selected: "Post", options: ["Choose an option", "Fish", "Post", "Project", "Team"]
-          expect(page).to have_field type: "text", name: "review[reviewable_id]", with: post.name
+          expect(page).to have_field type: "text", name: "review[reviewable_id]", with: post.decorate.name
           expect(page).to have_field type: "hidden", name: "review[reviewable_id]", with: post.id, visible: false
 
           select "Choose an option", from: "review_reviewable_type"

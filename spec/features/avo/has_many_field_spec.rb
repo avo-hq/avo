@@ -92,7 +92,7 @@ RSpec.feature "HasManyField", type: :feature do
         }.to change(Post, :count).by(-1)
 
         expect(page).to have_current_path url
-        expect(page).not_to have_text post.name
+        expect(page).not_to have_text post.decorate.name
       end
 
       it "detaches a post" do
@@ -103,7 +103,7 @@ RSpec.feature "HasManyField", type: :feature do
         }.to change(user.posts, :count).by(-1)
 
         expect(page).to have_current_path url
-        expect(page).not_to have_text post.name
+        expect(page).not_to have_text post.decorate.name
       end
     end
   end
