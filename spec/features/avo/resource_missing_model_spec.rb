@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'rails/generators'
 
 RSpec.feature "ResourceMissingModels", type: :feature do
   before :all do
