@@ -71,7 +71,7 @@ module Avo
         begin
           Licensing::HQ.new.clear_response
         rescue => exception
-          puts "Failed to clear Avo HQ response: #{e.message}"
+          puts "Failed to clear Avo HQ response: #{exception.message}"
         end
       end
     end
