@@ -14,7 +14,9 @@ class PostResource < Avo::BaseResource
   end
 
   field :id, as: :id
-  field :decorated_name, as: :text, required: true, sortable: true, name: :Name
+  field :decorated_name, as: :text, required: true, sortable: true, name: :Name, hide_on: :forms
+  # keep this so forms won't try to update the decorated name property that doesn't really exist
+  field :name, as: :text, required: true, sortable: true, name: :Name, show_on: :forms
   field :body, as: :trix, placeholder: "Enter text", always_show: false, attachment_key: :attachments, hide_attachment_url: true, hide_attachment_filename: true, hide_attachment_filesize: true
   field :tags,
     as: :tags,

@@ -32,10 +32,15 @@ class ReviewResource < Avo::BaseResource
     polymorphic_as: :reviewable,
     types: [::Fish, ::Post, ::Project, ::Team],
     searchable: true,
-    allow_via_detaching: true, html: {
-      data: {
-        'resource-edit-target': 'emailField',
-        action: 'input->resource-edit#emailUpdate'
+    allow_via_detaching: true,
+    html: {
+      edit: {
+        input: {
+          data: {
+            'resource-edit-target': 'emailField',
+            action: 'input->resource-edit#emailUpdate'
+          }
+        }
       }
     },
     attach_scope: -> do

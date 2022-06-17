@@ -18,7 +18,7 @@ RSpec.feature "belongs_to", type: :feature do
     describe "with a related user" do
       let!(:post) { create :post, user: admin }
 
-      it { is_expected.to have_text admin.name }
+      it { is_expected.to have_text decorated_admin.name }
     end
 
     describe "without a related user" do
@@ -39,7 +39,7 @@ RSpec.feature "belongs_to", type: :feature do
     describe "with user attached" do
       let!(:post) { create :post, user: admin }
 
-      it { is_expected.to have_link admin.name, href: "/admin/resources/users/#{admin.slug}?via_resource_class=Post&via_resource_id=#{post.id}" }
+      it { is_expected.to have_link decorated_admin.name, href: "/admin/resources/users/#{admin.slug}?via_resource_class=Post&via_resource_id=#{post.id}" }
     end
 
     describe "without user attached" do
@@ -55,18 +55,18 @@ RSpec.feature "belongs_to", type: :feature do
     describe "without user attached" do
       let!(:post) { create :post, user: nil }
 
-      it { is_expected.to have_select "post_user_id", selected: nil, options: [empty_dash, admin.name] }
+      it { is_expected.to have_select "post_user_id", selected: nil, options: [empty_dash, decorated_admin.name] }
 
       it "changes the user" do
         visit url
-        expect(page).to have_select "post_user_id", selected: nil, options: [empty_dash, admin.name]
+        expect(page).to have_select "post_user_id", selected: nil, options: [empty_dash, decorated_admin.name]
 
-        select admin.name, from: "post_user_id"
+        select decorated_admin.name, from: "post_user_id"
 
         click_on "Save"
 
         expect(current_path).to eql "/admin/resources/posts/#{post.id}"
-        expect(page).to have_link admin.name, href: "/admin/resources/users/#{admin.slug}?via_resource_class=Post&via_resource_id=#{post.id}"
+        expect(page).to have_link decorated_admin.name, href: "/admin/resources/users/#{admin.slug}?via_resource_class=Post&via_resource_id=#{post.id}"
       end
     end
 
@@ -74,11 +74,11 @@ RSpec.feature "belongs_to", type: :feature do
       let!(:post) { create :post, user: admin }
       let!(:second_user) { create :user }
 
-      it { is_expected.to have_select "post_user_id", selected: admin.name }
+      it { is_expected.to have_select "post_user_id", selected: decorated_admin.name }
 
       it "changes the user" do
         visit url
-        expect(page).to have_select "post_user_id", selected: admin.name
+        expect(page).to have_select "post_user_id", selected: decorated_admin.name
 
         select second_user.decorate.name, from: "post_user_id"
 
@@ -90,7 +90,7 @@ RSpec.feature "belongs_to", type: :feature do
 
       it "nullifies the user" do
         visit url
-        expect(page).to have_select "post_user_id", selected: admin.name
+        expect(page).to have_select "post_user_id", selected: decorated_admin.name
 
         select empty_dash, from: "post_user_id"
 
@@ -105,7 +105,7 @@ RSpec.feature "belongs_to", type: :feature do
   context "new" do
     let(:url) { "/admin/resources/posts/new?via_relation=user&via_relation_class=User&via_resource_id=#{admin.id}" }
 
-    it { is_expected.to have_select "post_user_id", selected: admin.name, options: [empty_dash, admin.name], disabled: true }
+    it { is_expected.to have_select "post_user_id", selected: decorated_admin.name, options: [empty_dash, decorated_admin.name], disabled: true }
   end
 
   describe "hidden columns if current association" do

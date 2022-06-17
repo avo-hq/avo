@@ -30,7 +30,14 @@ module Avo
       end
 
       def resource
-        Avo::App.get_resource_by_model_name value(decorated: false).class
+        field_value = value(decorated: false)
+        record = if field_value.class.to_s.downcase.include? 'collectionproxy'
+          field_value.first
+        else
+          field_value
+        end
+
+        Avo::App.get_resource_by_model_name record.class
       end
 
       def turbo_frame
