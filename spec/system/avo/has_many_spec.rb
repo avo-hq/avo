@@ -15,7 +15,7 @@ RSpec.feature "HasManyField", type: :system do
 
           row = find("[data-resource-name='comments'][data-resource-id='#{comment.id}']")
 
-          expect(row.find('[data-field-id="user"]').text).to eq user.name
+          expect(row.find('[data-field-id="user"]').text).to eq user.decorate.name
         end
       end
     end
@@ -31,7 +31,7 @@ RSpec.feature "HasManyField", type: :system do
 
           row = find("[data-resource-name='reviews'][data-resource-id='#{review.id}']")
 
-          expect(row.find('[data-field-id="user"]').text).to eq user.name
+          expect(row.find('[data-field-id="user"]').text).to eq user.decorate.name
         end
       end
     end

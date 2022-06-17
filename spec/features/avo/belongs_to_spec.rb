@@ -80,12 +80,12 @@ RSpec.feature "belongs_to", type: :feature do
         visit url
         expect(page).to have_select "post_user_id", selected: admin.name
 
-        select second_user.name, from: "post_user_id"
+        select second_user.decorate.name, from: "post_user_id"
 
         click_on "Save"
 
         expect(current_path).to eql "/admin/resources/posts/#{post.id}"
-        expect(page).to have_link second_user.name, href: "/admin/resources/users/#{second_user.slug}?via_resource_class=Post&via_resource_id=#{post.id}"
+        expect(page).to have_link second_user.decorate.name, href: "/admin/resources/users/#{second_user.slug}?via_resource_class=Post&via_resource_id=#{post.id}"
       end
 
       it "nullifies the user" do
@@ -121,7 +121,7 @@ RSpec.feature "belongs_to", type: :feature do
       expect(find("thead")).not_to have_text "User"
       expect(page).to have_text comment.id
       expect(page).to have_text "a comment"
-      expect(page).not_to have_text user.name
+      expect(page).not_to have_text user.decorate.name
     end
   end
 
@@ -139,7 +139,7 @@ RSpec.feature "belongs_to", type: :feature do
       expect(find("thead")).not_to have_text "Commentable"
       expect(page).to have_text comment.id
       expect(page).to have_text "a comment"
-      expect(page).to have_text user.name
+      expect(page).to have_text user.decorate.name
       expect(page).not_to have_text project.name
     end
   end
@@ -158,7 +158,7 @@ RSpec.feature "belongs_to", type: :feature do
       expect(find("thead")).not_to have_text "Reviewable"
       expect(page).to have_text review.id
       expect(page).to have_text "a review"
-      expect(page).to have_text user.name
+      expect(page).to have_text user.decorate.name
       expect(page).not_to have_text team.name
     end
   end

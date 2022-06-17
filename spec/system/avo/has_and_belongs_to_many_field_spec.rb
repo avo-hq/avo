@@ -27,7 +27,7 @@ RSpec.describe "HasAndBelongsToManyField", type: :system do
         expect(page).to have_text "Choose user"
         expect(page).to have_select "fields_related_id", selected: "Choose an option"
 
-        select user.name, from: "fields_related_id"
+        select user.decorate.name, from: "fields_related_id"
 
         expect {
           within '[aria-modal="true"]' do
@@ -51,7 +51,7 @@ RSpec.describe "HasAndBelongsToManyField", type: :system do
         expect(page).to have_text "Choose user"
         expect(page).to have_select "fields_related_id", selected: "Choose an option"
 
-        select user.name, from: "fields_related_id"
+        select user.decorate.name, from: "fields_related_id"
 
         expect {
           click_on "Cancel"
@@ -73,7 +73,7 @@ RSpec.describe "HasAndBelongsToManyField", type: :system do
       #   expect(page).to have_text 'Choose user'
       #   expect(page).to have_select 'fields_related_id', selected: 'Choose an option'
 
-      #   select user.name, from: 'fields_related_id'
+      #   select user.decorate.name, from: 'fields_related_id'
 
       #   expect {
       #     click_on 'Attach & Attach another'
@@ -83,7 +83,7 @@ RSpec.describe "HasAndBelongsToManyField", type: :system do
       #   expect(page).to have_text 'Choose user'
       #   expect(page).to have_select 'fields_related_id', selected: 'Choose an option'
 
-      #   select user.name, from: 'fields_related_id'
+      #   select user.decorate.name, from: 'fields_related_id'
 
       #   expect {
       #     click_on 'Attach'

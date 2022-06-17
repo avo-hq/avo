@@ -11,7 +11,7 @@
 #     describe 'with a related user' do
 #       let!(:team) { create :team, admin: user }
 
-#       it { is_expected.to have_text user.name }
+#       it { is_expected.to have_text user.decorate.name }
 #     end
 
 #     describe 'without a related user' do
@@ -36,7 +36,7 @@
 #     describe 'with user attached' do
 #       let!(:team) { create :team, admin: user }
 
-#       it { is_expected.to have_link user.name, href: "/admin/resources/users/#{user.id}" }
+#       it { is_expected.to have_link user.decorate.name, href: "/admin/resources/users/#{user.id}" }
 #     end
 
 #     describe 'without user attached' do
@@ -58,13 +58,13 @@
 #         visit url
 #         expect(page).to have_select 'admin', selected: 'Choose an option'
 
-#         select user.name, from: 'admin'
+#         select user.decorate.name, from: 'admin'
 
 #         click_on 'Save'
 #         wait_for_loaded
 
 #         expect(current_path).to eql "/admin/resources/teams/#{team.id}"
-#         expect(page).to have_link user.name, href: "/admin/resources/users/#{user.id}"
+#         expect(page).to have_link user.decorate.name, href: "/admin/resources/users/#{user.id}"
 #       end
 #     end
 
@@ -72,24 +72,24 @@
 #       let!(:team) { create :team, admin: user }
 #       let!(:second_user) { create :user }
 
-#       it { is_expected.to have_select 'admin', selected: user.name }
+#       it { is_expected.to have_select 'admin', selected: user.decorate.name }
 
 #       it 'changes the user' do
 #         visit url
-#         expect(page).to have_select 'admin', selected: user.name
+#         expect(page).to have_select 'admin', selected: user.decorate.name
 
-#         select second_user.name, from: 'admin'
+#         select second_user.decorate.name, from: 'admin'
 
 #         click_on 'Save'
 #         wait_for_loaded
 
 #         expect(current_path).to eql "/admin/resources/teams/#{team.id}"
-#         expect(page).to have_link second_user.name, href: "/admin/resources/users/#{second_user.id}"
+#         expect(page).to have_link second_user.decorate.name, href: "/admin/resources/users/#{second_user.id}"
 #       end
 
 #       it 'nullifies the user' do
 #         visit url
-#         expect(page).to have_select 'admin', selected: user.name
+#         expect(page).to have_select 'admin', selected: user.decorate.name
 
 #         select 'Choose an option', from: 'admin'
 

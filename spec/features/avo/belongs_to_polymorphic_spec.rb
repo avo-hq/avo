@@ -33,7 +33,7 @@ RSpec.feature "belongs_to", type: :system do
 
             click_on "Create new comment"
             fill_in "comment_body", with: "Sample comment"
-            select user.name, from: "comment_user_id"
+            select user.decorate.name, from: "comment_user_id"
             click_on "Save"
 
             wait_for_loaded
@@ -41,7 +41,7 @@ RSpec.feature "belongs_to", type: :system do
             return_to_comment_page
 
             expect(find_field_value_element("body")).to have_text "Sample comment"
-            expect(find_field_value_element("user")).to have_link user.name, href: "/admin/resources/users/#{user.slug}?via_resource_class=Comment&via_resource_id=#{Comment.last.id}"
+            expect(find_field_value_element("user")).to have_link user.decorate.name, href: "/admin/resources/users/#{user.slug}?via_resource_class=Comment&via_resource_id=#{Comment.last.id}"
             expect(find_field_value_element("commentable")).to have_text empty_dash
           end
         end
@@ -214,7 +214,7 @@ RSpec.feature "belongs_to", type: :system do
           click_on comment.id.to_s
 
           expect(find_field_value_element("body")).to have_text "hey there"
-          expect(find_field_value_element("user")).to have_link user.name, href: "/admin/resources/users/#{user.slug}?via_resource_class=Comment&via_resource_id=#{comment.id}"
+          expect(find_field_value_element("user")).to have_link user.decorate.name, href: "/admin/resources/users/#{user.slug}?via_resource_class=Comment&via_resource_id=#{comment.id}"
           expect(find_field_value_element("commentable")).to have_link project.name, href: "/admin/resources/projects/#{project.id}?via_resource_class=Comment&via_resource_id=#{comment.id}"
 
           click_on "Edit"
