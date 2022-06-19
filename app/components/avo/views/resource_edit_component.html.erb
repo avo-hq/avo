@@ -7,8 +7,7 @@
   <% @resource.panels.each do |resource_panel| %>
     <%= form_with model: @resource.model,
         scope: @resource.form_scope,
-        url: helpers.resource_path(model: @resource.model, resource: @resource),
-        method: :put,
+        url: form_url,
         local: true,
         multipart: true do |form| %>
       <%= render Avo::ReferrerParamsComponent.new back_path: back_path %>

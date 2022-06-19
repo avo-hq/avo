@@ -4,9 +4,12 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   include Avo::ResourcesHelper
   include Avo::ApplicationHelper
 
-  def initialize(resource: nil)
+  attr_reader :view
+
+  def initialize(resource: nil, model: nil, view: :edit)
     @resource = resource
-    @view = :edit
+    @model = model
+    @view = view
 
     split_panel_fields
   end
@@ -17,7 +20,11 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
     elsif via_index?
       helpers.resources_path(resource: @resource)
     else # via resource show page
-      helpers.resource_path(model: @resource.model, resource: @resource)
+      if is_edit?
+        helpers.resource_path(model: @resource.model, resource: @resource)
+      else
+        helpers.resources_path(resource: @resource)
+      end
     end
   end
 
@@ -31,5 +38,25 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
 
   def via_index?
     params[:via_view] == "index"
+  end
+
+  def is_edit?
+    view == :edit
+  end
+
+  def form_url
+    if is_edit?
+      helpers.resource_path(
+        model: @resource.model,
+        resource: @resource
+      )
+    else
+      helpers.resources_path(
+        resource: @resource,
+        via_relation_class: params[:via_relation_class],
+        via_relation: params[:via_relation],
+        via_resource_id: params[:via_resource_id]
+      )
+    end
   end
 end
