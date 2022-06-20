@@ -22,7 +22,7 @@
                 } do %>
                 <%= t('avo.detach_item', item: title).capitalize %>
               <% end %>
-              <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource %>
+              <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>
             <% end %>
             <% if can_see_the_edit_button? %>
               <%= a_link edit_path,
@@ -57,7 +57,7 @@
                 <%= t('avo.delete').capitalize %>
               <% end %>
             <% end %>
-            <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource %>
+            <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>
             <% if @resource.authorization.authorize_action(:edit, raise_exception: false) %>
               <%= a_link edit_path,
                 color: :primary,

@@ -2,6 +2,8 @@
   class: "space-y-12",
   data: {
     'model-id': @resource.model.id,
+    selected_resources_name: @resource.model_key,
+    selected_resources: [@resource.model.id],
     **@resource.stimulus_data_attributes
   } do %>
   <% @resource.panels.each do |resource_panel| %>
@@ -18,6 +20,7 @@
             icon: 'arrow-left' do %>
             <%= t('avo.cancel').capitalize %>
           <% end %>
+          <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>
           <% if can_see_the_save_button? %>
             <%= a_button color: :primary,
               style: :primary,
