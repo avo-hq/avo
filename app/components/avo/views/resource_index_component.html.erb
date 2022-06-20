@@ -15,7 +15,7 @@
         <% end %>
       <% end %>
       <% if can_see_the_actions_button? %>
-        <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource %>
+        <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>
       <% end %>
       <% if can_see_the_create_button? %>
         <%= a_link create_path,

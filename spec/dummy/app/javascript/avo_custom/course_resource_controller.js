@@ -9,7 +9,7 @@ export default class extends Controller {
     view: String,
   }
 
-  // Te fields initial value
+  // The fields initial value
   static initialValue
 
   get placeholder() {

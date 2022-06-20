@@ -9,6 +9,7 @@
     "js:visualize": "yarn prod:build:js -- --metafile=js_bundle_metadata.json && esbuild-visualizer --metadata=js_bundle_metadata.json --filename=js_bundle_stats.html",
     "build": "yarn build:js && yarn build:css",
     "build:js": "esbuild app/javascript/*.js --bundle --sourcemap --minify --outdir=app/assets/builds",
+    "build:custom-js": "esbuild spec/dummy/app/javascript/*.js --bundle --sourcemap --minify --outdir=app/assets/builds",
     "build:css": "tailwindcss -i ./app/assets/stylesheets/avo.css -o ./app/assets/builds/avo.css --postcss",
     "prod:build": "yarn prod:build:js && yarn prod:build:css",
     "prod:build:js": "esbuild app/javascript/*.js --bundle --sourcemap --minify --outdir=public/avo-assets",

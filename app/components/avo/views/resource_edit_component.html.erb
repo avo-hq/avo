@@ -2,6 +2,8 @@
   class: "space-y-12",
   data: {
     'model-id': @resource.model.id,
+    selected_resources_name: @resource.model_key,
+    selected_resources: [@resource.model.id],
     **@resource.stimulus_data_attributes
   } do %>
   <%= form_with model: @resource.model,
@@ -57,8 +59,7 @@
   <%# @resource.panels.each do |resource_panel| %>
     <%= form_with model: @resource.model,
         scope: @resource.form_scope,
-        url: helpers.resource_path(model: @resource.model, resource: @resource),
-        method: :put,
+        url: form_url,
         local: true,
         multipart: true do |form| %>
       <%= render Avo::ReferrerParamsComponent.new back_path: back_path %>
@@ -69,6 +70,7 @@
             icon: 'arrow-left' do %>
             <%= t('avo.cancel').capitalize %>
           <% end %>
+          <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>
           <% if can_see_the_save_button? %>
             <%= a_button color: :primary,
               style: :primary,

@@ -4,6 +4,7 @@
   data-actions-picker-disabled-class="cursor-wait text-gray-500"
 >
   <%= a_button style: :outline,
+    type: :button,
     color: :primary,
     class: "focus:outline-none",
     icon: 'arrow-circle-right',
@@ -18,24 +19,15 @@
   >
     <div class="w-full space divide-y">
       <% @actions.each_with_index do |action, index| %>
-        <%
-          path = action_name == 'show' ?
-            "#{@resource.record_path}/actions/#{action.param_id}" :
-            "#{@resource.records_path}/actions/#{action.param_id}"
-          if action_name == 'show' || action.standalone
-            disabled = false
-          else
-            disabled = true
-          end
-        %>
-        <%= link_to path,
+        <%= link_to action_path(action.param_id),
           data: {
             'turbo-frame': 'actions_show',
             'action': 'click->actions-picker#visitAction',
             'actions-picker-target': action.standalone ? 'standaloneAction' : 'resourceAction',
-            'disabled': disabled,
+            'disabled': is_disabled?(action),
           },
-          class: "flex items-center px-4 py-3 w-full font-semibold text-sm #{disabled ? 'text-gray-500' : 'text-black hover:bg-blue-500 hover:text-white'}" do %>
+          title: action.action_name,
+          class: "flex items-center px-4 py-3 w-full font-semibold text-sm #{is_disabled?(action) ? 'text-gray-500' : 'text-black hover:bg-blue-500 hover:text-white'}" do %>
           <%= svg 'play', class: 'h-5 mr-1 inline' %> <%= action.action_name %>
         <% end %>
       <% end %>
