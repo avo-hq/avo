@@ -167,9 +167,9 @@ class UserResource < Avo::BaseResource
   #   body :url, as: :text
   # end
 
-  # action ToggleInactive
-  # action ToggleAdmin
-  # action DummyAction
+  action ToggleInactive
+  action ToggleAdmin
+  action DummyAction
   # action DownloadFile
 
   filter UserNamesFilter

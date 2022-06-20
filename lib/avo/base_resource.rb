@@ -43,7 +43,7 @@ module Avo
     class_attribute :hide_from_global_search, default: false
     class_attribute :after_create_path, default: :show
     class_attribute :after_update_path, default: :show
-    class_attribute :invalid_fields
+    # class_attribute :invalid_fields
     class_attribute :record_selector, default: true
     class_attribute :keep_filters_panel_open, default: false
 
@@ -142,14 +142,6 @@ module Avo
       return [] if self.class.actions_loader.blank?
 
       self.class.actions_loader.bag
-    end
-
-    def hydrate_fields(model: nil, view: nil)
-      fields.map do |field|
-        field.hydrate(model: @model, view: @view, resource: self)
-      end
-
-      self
     end
 
     def default_panel_name

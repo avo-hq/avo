@@ -24,7 +24,7 @@ module Avo
 
       args[:models] = models unless @action.standalone
 
-      performed_action = @action.handle_action()
+      performed_action = @action.handle_action(**args)
 
       respond performed_action.response
     end
