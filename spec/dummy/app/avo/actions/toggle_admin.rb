@@ -4,7 +4,8 @@ class ToggleAdmin < Avo::BaseAction
   self.visible = -> (resource:, view:) {
     # puts ["view->", view].inspect
     # view == :edit
-    view == :new
+    # view == :new
+    true
   }
 
   def handle(**args)
