@@ -5,6 +5,7 @@ module Avo
 
     include ActionView::Helpers::UrlHelper
     include Avo::Concerns::HasTools
+    include Avo::Concerns::HasModel
     include Avo::Concerns::HasFields
     include Avo::Concerns::HasStimulusControllers
 

@@ -101,6 +101,8 @@ module Avo
       @model = @resource.model_class.new
       @resource = @resource.hydrate(model: @model, view: :new, user: _current_user)
 
+      set_actions
+
       @page_title = @resource.default_panel_name.to_s
 
       if params[:via_relation_class].present? && params[:via_resource_id].present?
@@ -161,6 +163,7 @@ module Avo
     end
 
     def edit
+      set_actions
     end
 
     def update

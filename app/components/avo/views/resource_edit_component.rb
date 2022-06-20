@@ -6,9 +6,10 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
 
   attr_reader :view
 
-  def initialize(resource: nil, model: nil, view: :edit)
+  def initialize(resource: nil, model: nil, actions: [], view: :edit)
     @resource = resource
     @model = model
+    @actions = actions
     @view = view
 
     split_panel_fields

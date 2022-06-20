@@ -120,9 +120,14 @@ module Avo
     end
 
     def visible_in_view
-      return true unless visible.present?
+      # Run the visible block if available
+      return instance_exec(resource: self.class.resource, view: view, &visible) if visible.present?
 
-      instance_exec(resource: self.class.resource, view: view, &visible)
+      # Hide on the :new view by default
+      return false if view == :new
+
+      # Show on all other views
+      true
     end
 
     def param_id
