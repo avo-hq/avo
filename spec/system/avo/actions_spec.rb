@@ -11,7 +11,11 @@ RSpec.describe "Actions", type: :system do
 
         click_on "Actions"
 
-        expect(page).to have_link "Dummy action"
+        # Check to see if all the actions are present and which are disabled by default
+        expect(page.find('a', text: "Toggle inactive")['data-disabled']).to eq 'true'
+        expect(page.find('a', text: "Toggle admin")['data-disabled']).to eq 'true'
+        expect(page.find('a', text: "Dummy action")['data-disabled']).to eq 'false'
+        expect(page.find('a', text: "Download file")['data-disabled']).to eq 'false'
       end
     end
 
@@ -24,6 +28,37 @@ RSpec.describe "Actions", type: :system do
         end
 
         expect(page).not_to have_link "Dummy action"
+        expect(page).to have_link "Toggle inactive"
+        expect(page).to have_link "Toggle admin"
+        expect(page).to have_link "Download file"
+      end
+    end
+
+    context "edit" do
+      it "finds the action on edit" do
+        visit "/admin/resources/users/#{user.id}/edit"
+
+        within "[data-panel-index=\"0\"]" do
+          click_on "Actions"
+        end
+
+        expect(page).to have_link "Toggle inactive"
+        expect(page).to have_link "Toggle admin"
+        expect(page).to have_link "Download file"
+      end
+    end
+
+    context "new" do
+      it "finds the action on show" do
+        visit "/admin/resources/users/new"
+
+        within "[data-panel-index=\"0\"]" do
+          click_on "Actions"
+        end
+
+        expect(page).not_to have_link "Toggle inactive"
+        expect(page).not_to have_link "Download file"
+        expect(page).to have_link "Toggle admin"
       end
     end
   end
