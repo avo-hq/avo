@@ -14,7 +14,18 @@ module Avo
         #   resource.model_class.present?
         # end
         .map do |resource|
-          router.resources resource.new.route_key
+          route_key = resource.new.route_key
+          segments = route_key.split "/"
+
+          if segments.count == 1
+            router.resources resource.new.route_key
+          else
+            last = segments.pop
+
+            router.namespace segments.join('/').to_sym do
+              router.resources last
+            end
+          end
         end
     end
   end

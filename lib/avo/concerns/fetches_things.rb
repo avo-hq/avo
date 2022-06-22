@@ -60,12 +60,12 @@ module Avo
 
         # Returns the Avo resource by singular snake_cased name
         #
-        # get_resource_by_controller_name('delayed_backend_active_record_jobs') => DelayedJobResource
-        # get_resource_by_controller_name('users') => UserResource
-        def get_resource_by_controller_name(name)
+        # get_resource_by_controller_class('delayed_backend_active_record_jobs') => DelayedJobResource
+        # get_resource_by_controller_class('users') => UserResource
+        def get_resource_by_controller_class(controller_class)
           valid_resources
             .find do |resource|
-              resource.model_class.to_s.pluralize.underscore.tr("/", "_") == name.to_s
+              resource.controller_class == controller_class
             end
         end
 

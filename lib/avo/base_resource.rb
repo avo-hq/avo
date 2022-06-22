@@ -247,6 +247,10 @@ module Avo
     end
 
     def class_name_without_resource
+      self.class.name.chomp("Resource")
+    end
+
+    def demodulized_class_name_without_resource
       self.class.name.demodulize.chomp("Resource")
     end
 
@@ -258,7 +262,7 @@ module Avo
       return @model.base_class if @model.present?
 
       # generate a model class
-      class_name_without_resource.safe_constantize
+      demodulized_class_name_without_resource.safe_constantize
     end
 
     def model_id
@@ -293,7 +297,7 @@ module Avo
     end
 
     def name
-      default = class_name_without_resource.titlecase
+      default = class_name_without_resource.to_s.gsub('::', ' ').humanize
 
       return @name if @name.present?
 
@@ -439,8 +443,23 @@ module Avo
       class_name_without_resource.underscore.pluralize
     end
 
+    def url_route_key
+      class_name_without_resource.underscore.pluralize.gsub '/', '_'
+    end
+
+    def controller_class
+      # split the resource name and namespaces
+      segments = self.class.name.to_s.split '::'
+
+      # build the controller base name
+      controller_name = segments.pop.chomp('Resource').pluralize.concat('Controller')
+
+      # put it all together
+      ["Avo", *segments, controller_name].join('::').safe_constantize
+    end
+
     def singular_route_key
-      route_key.singularize
+      url_route_key.singularize
     end
 
     # This is used as the model class ID

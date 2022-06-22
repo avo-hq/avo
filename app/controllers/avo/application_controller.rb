@@ -169,6 +169,10 @@ module Avo
     def resource_name
       return params[:resource_name] if params[:resource_name].present?
 
+      controller_based_resource = Avo::App.get_resource_by_controller_class(self.class)
+
+      return controller_based_resource.route_key if controller_based_resource.present?
+
       return controller_name if controller_name.present?
 
       begin
@@ -187,11 +191,15 @@ module Avo
     # Gets the Avo resource for this request based on the request from the `resource_name` "param"
     # Ex: Avo::Resources::Project, Avo::Resources::Team, Avo::Resources::User
     def resource
+      controller_based_resource = Avo::App.get_resource_by_controller_class(self.class)
+
+      return controller_based_resource if controller_based_resource.present?
+
       resource = App.get_resource @resource_name.to_s.camelize.singularize
 
       return resource if resource.present?
 
-      App.get_resource_by_controller_name @resource_name
+      App.guess_resource @resource_name
     end
 
     def related_resource
