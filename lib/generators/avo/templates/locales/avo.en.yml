@@ -87,9 +87,9 @@ en:
         zero: 'users'
         one: 'user'
         other: 'users'
-      super/project:
-        one: 'suuuper project'
-        other: 'suuuper projects'
+      super/duper/project:
+        one: 'suuuper duuuper project'
+        other: 'suuuper duuuper projects'
     reset_filters: 'Reset filters'
     not_authorized: 'You are not authorized to perform this action.'
     search:
