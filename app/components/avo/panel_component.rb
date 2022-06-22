@@ -10,7 +10,7 @@ class Avo::PanelComponent < ViewComponent::Base
   renders_one :footer_tools
   renders_one :footer
 
-  def initialize(title: nil, description: nil, body_classes: nil, data: {}, display_breadcrumbs: false, index: nil, classes: nil)
+  def initialize(title: nil, description: nil, body_classes: nil, data: {}, display_breadcrumbs: false, index: nil, classes: nil, view: nil)
     @title = title
     @description = description
     @classes = classes
@@ -18,6 +18,7 @@ class Avo::PanelComponent < ViewComponent::Base
     @data = data
     @display_breadcrumbs = display_breadcrumbs
     @index = index
+    @view = view
   end
 
   private

@@ -1,45 +1,19 @@
-<%
-  form ||= nil
-  main_panel_tools ||= nil
-%>
 <% if item.is_tool? %>
   <% if item&.partial.present? %>
     <%= render item.partial, tool: item %>
   <% end %>
 <% elsif item.is_panel? %>
-  <%= render Avo::PanelComponent.new(title: title, index: index) do |c| %>
+  <%= render Avo::PanelComponent.new(title: title, index: index, view: view) do |c| %>
     <% c.body do %>
       <div class="divide-y">
         <% item.items.each_with_index do |field, index| %>
-          <%= render field.hydrate(resource: @resource, model: @resource.model, user: resource.user, view: @view).component_for_view(@view).new(field: field, resource: @resource, index: index) %>
+          <%= render field.hydrate(resource: @resource, model: @resource.model, user: resource.user, view: @view).component_for_view(view).new(field: field, resource: @resource, index: index, form: form) %>
         <% end %>
       </div>
     <% end %>
   <% end %>
-<% elsif item.is_tab_group? && view == :show %>
-  <%# Add the index to each tab group %>
-  <% item.index = index %>
-  <div class="space-y-12">
-    <%# @todo: add turbo eager loading maybe %>
-    <div>
-      <% active_tab_name = params[:active_tab_name] || item.items.first.name %>
-      <%
-        if params[:tab_turbo_frame].present? && params[:active_tab_name].present?
-          active_tab = item&.items.find do |tab|
-            tab.name.to_s == params[:active_tab_name].to_s
-          end
-        else
-          active_tab = item.items.find do |tab|
-            tab.name == active_tab_name
-          end
-        end
-      %>
-      <% if active_tab.present? %>
-        <%= render partial: 'avo/partials/tabs_show', locals: { group: item, index: index, active_tab: active_tab, form: form, main_panel_tools: main_panel_tools } %>
-      <% end %>
-    </div>
-  </div>
+<% elsif item.is_tab_group? %>
+  <%= render Avo::TabGroupComponent.new resource: @resource, group: item, index: index, params: params, form: form, view: view %>
 <% elsif item.is_field? %>
   <%= render item.component_for_view(@view).new(field: item.hydrate(resource: @resource, view: @view, model: @resource.model), resource: @resource, index: index, form: form) %>
 <% end %>
-

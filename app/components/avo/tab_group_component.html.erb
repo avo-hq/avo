@@ -1,0 +1,20 @@
+<%# Add the index to each tab group %>
+<div class="space-y-12">
+  <%# @todo: add turbo eager loading maybe %>
+  <div>
+    <%= turbo_frame_tag group.turbo_frame_id do %>
+      <div class="border rounded-lg p-2 -mx-2 -my-2 lg:p-4 lg:-mx-4 lg:-my-4 space-y-4">
+        <div>
+          <%= render Avo::TabSwitcherComponent.new resource: @resource, group: group, tabs: group.items, active_tab_name: active_tab.name, view: view %>
+        </div>
+        <% if active_tab.items.present? %>
+          <div class="space-y-12">
+            <% active_tab.items.each do |item| %>
+              <%= render Avo::ItemSwitcherComponent.new resource: @resource, item: item, index: index, form: form, view: @view %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

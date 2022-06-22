@@ -6,12 +6,11 @@
     selected_resources: [@resource.model.id],
     **@resource.stimulus_data_attributes
   } do %>
-  <% if true %>
-    <%= render Avo::PanelComponent.new(title: title, description: @resource.resource_description, display_breadcrumbs: @reflection.blank?, index: 0, classes: '-mb-8') do |c| %>
-      <% c.tools do %>
-        <% if @reflection.present? && @resource.model.present? %>
-          <% if can_detach? %>
-            <%= a_button url: detach_path,
+  <%= render Avo::PanelComponent.new(title: title, description: @resource.resource_description, display_breadcrumbs: @reflection.blank?, index: 0, classes: '-mb-8') do |c| %>
+    <% c.tools do %>
+      <% if @reflection.present? && @resource.model.present? %>
+        <% if can_detach? %>
+          <%= a_button url: detach_path,
             icon: 'detach',
             method: :delete,
             form_class: 'flex flex-col sm:flex-row sm:inline-flex',
@@ -19,26 +18,26 @@
             data: {
               confirm: "Are you sure you want to detach this #{title}."
             } do %>
-              <%= t('avo.detach_item', item: title).capitalize %>
-            <% end %>
-            <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource %>
+            <%= t('avo.detach_item', item: title).capitalize %>
           <% end %>
-          <% if can_see_the_edit_button? %>
-            <%= a_link edit_path,
+          <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource %>
+        <% end %>
+        <% if can_see_the_edit_button? %>
+          <%= a_link edit_path,
             color: :primary,
             style: :primary,
             icon: 'edit' do %>
-              <%= t('avo.edit').capitalize %>
-            <% end %>
+            <%= t('avo.edit').capitalize %>
           <% end %>
-        <% else %>
-          <%= a_link back_path,
+        <% end %>
+      <% else %>
+        <%= a_link back_path,
           style: :text,
           icon: 'arrow-left' do %>
-            <%= t('avo.go_back') %>
-          <% end %>
-          <% if can_see_the_destroy_button? %>
-            <%= a_button url: helpers.resource_path(model: @resource.model, resource: @resource),
+          <%= t('avo.go_back') %>
+        <% end %>
+        <% if can_see_the_destroy_button? %>
+          <%= a_button url: helpers.resource_path(model: @resource.model, resource: @resource),
             method: :delete,
             local: true,
             style: :text,
@@ -53,25 +52,24 @@
               'resource-id': @resource.model.id,
               'tippy': 'tooltip',
             } do %>
-              <%= t('avo.delete').capitalize %>
-            <% end %>
+            <%= t('avo.delete').capitalize %>
           <% end %>
-          <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource %>
-          <% if @resource.authorization.authorize_action(:edit, raise_exception: false) %>
-            <%= a_link edit_path,
+        <% end %>
+        <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource %>
+        <% if @resource.authorization.authorize_action(:edit, raise_exception: false) %>
+          <%= a_link edit_path,
             color: :primary,
             style: :primary,
             icon: 'edit' do %>
-              <%= t('avo.edit').capitalize %>
-            <% end %>
+            <%= t('avo.edit').capitalize %>
           <% end %>
         <% end %>
       <% end %>
     <% end %>
-    <% @resource.get_items.each_with_index do |item, index| %>
-      <% next if item.nil? %>
-      <%= render Avo::ItemSwitcherComponent.new resource: @resource, item: item, index: index, view: :show %>
-    <% end %>
+  <% end %>
+  <% @resource.get_items.each_with_index do |item, index| %>
+    <% next if item.nil? %>
+    <%= render Avo::ItemSwitcherComponent.new resource: @resource, item: item, index: index, view: @view %>
   <% end %>
   <% if should_display_invalid_fields_errors? %>
     <turbo-stream action="append" target="alerts">
