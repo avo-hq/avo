@@ -20,6 +20,16 @@ module Avo
       end
 
       def response
+        # ------------------------------------------------------------------
+        # You could edit/monkey-patch this and become a paid user for free.
+        # I'd rather you didn't. Avo takes time & love to build,
+        # and I can't do that if it doesn't pay my bills!
+        #
+        # Fund open source - if you want Pro, help pay for its development.
+        # Can't afford it? Get in touch: adrian@avohq.io
+        #
+        # Inspired by https://github.com/httptoolkit/httptoolkit-ui/blob/5cf0b10c6f8bb902ee5261414e8a21a45904690d/src/model/account/account-store.ts#L108
+        # ------------------------------------------------------------------
         expire_cache_if_overdue
 
         make_request
