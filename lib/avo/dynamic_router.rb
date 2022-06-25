@@ -31,22 +31,22 @@ module Avo
             # Form segment.count == 2 we manually nest the namespaces in order to avoid the complexity around programatically nesting them.
             case segments.count
             when 1
-              router.resources resource.new.route_key
+              register_resource(router, resource.new.route_key, count: segments.count).call
             when 2
               router.namespace segments.first do
-                router.resources segments.last
+                register_resource(router, segments.last, count: segments.count).call
               end
             when 3
               router.namespace segments.first do
                 router.namespace segments.second do
-                  router.resources segments.last
+                  register_resource(router, segments.last, count: segments.count).call
                 end
               end
             when 4
               router.namespace segments.first do
                 router.namespace segments.second do
                   router.namespace segments.third do
-                    router.resources segments.last
+                    register_resource(router, segments.last, count: segments.count).call
                   end
                 end
               end
@@ -55,7 +55,7 @@ module Avo
                 router.namespace segments.second do
                   router.namespace segments.third do
                     router.namespace segments.fourth do
-                      router.resources segments.last
+                      register_resource(router, segments.last, count: segments.count).call
                     end
                   end
                 end
@@ -66,7 +66,7 @@ module Avo
                   router.namespace segments.third do
                     router.namespace segments.fourth do
                       router.namespace segments.fifth do
-                        router.resources segments.last
+                        register_resource(router, segments.last, count: segments.count).call
                       end
                     end
                   end
