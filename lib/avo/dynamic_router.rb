@@ -1,6 +1,19 @@
 module Avo
   module DynamicRouter
     class << self
+      def register_resource(router, route_key, count: 0)
+        -> {
+          router.resources route_key
+
+          # router.get "/:resource_name/:id/:related_name/new", to: "associations#new", as: "associations_new"
+          # router.get "/:resource_name/:id/:related_name/", to: "associations#index", as: "associations_index"
+          # router.get "/:resource_name/:id/:related_name/:related_id", to: "associations#show", as: "associations_show"
+          # router.post "/:resource_name/:id/:related_name", to: "associations#create", as: "associations_create"
+          # router.delete "/:resource_name/:id/:related_name/:related_id", to: "associations#destroy", as: "associations_destroy"
+        }
+
+      end
+
       def routes(router)
         Rails.application.eager_load! unless Rails.env.production?
 
