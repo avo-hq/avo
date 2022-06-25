@@ -8,6 +8,8 @@ module Avo
       def initialize(id, **args, &block)
         super(id, **args, &block)
 
+        # puts ["Rails.application.config.time_zone->", Rails.application.config.time_zone].inspect
+
         @picker_format = args[:picker_format].present? ? args[:picker_format] : "Y-m-d H:i:S"
         @time_24hr = args[:time_24hr].present? ? args[:time_24hr] : false
         @timezone = args[:timezone].present? ? args[:timezone] : Rails.application.config.time_zone
