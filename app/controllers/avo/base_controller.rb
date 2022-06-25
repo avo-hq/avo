@@ -121,9 +121,8 @@ module Avo
     def create
       # model gets instantiated and filled in the fill_model method
       # Upon success, if a block is supplied to the inherited controller action, yield the resource to perform some actions
-      if (saved = save_model)
-        yield(@model) if block_given?
-      end
+      saved = save_model
+      yield(@model) if saved && block_given?
       @resource.hydrate(model: @model, view: :new, user: _current_user)
 
       # This means that the record has been created through another parent record and we need to attach it somehow.
@@ -172,9 +171,8 @@ module Avo
     def update
       # model gets instantiated and filled in the fill_model method
       # Upon success, if a block is supplied to the inherited controller action, yield the resource to perform some actions
-      if (saved = save_model)
-        yield(@model) if block_given?
-      end
+      saved = save_model
+      yield(@model) if saved && block_given?
       @resource = @resource.hydrate(model: @model, view: :edit, user: _current_user)
 
       respond_to do |format|
@@ -188,7 +186,8 @@ module Avo
     end
 
     def destroy
-      yield @model if (destroyed = destroy_model) && block_given?
+      destroyed = destroy_model
+      yield if destroyed && block_given?
       respond_to do |format|
         if destroyed
           format.html { redirect_to params[:referrer] || resources_path(resource: @resource, turbo_frame: params[:turbo_frame], view_type: params[:view_type]), notice: t("avo.resource_destroyed", attachment_class: @attachment_class) }
