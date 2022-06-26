@@ -10,8 +10,9 @@
           title: tab.description || tab.name,
           data: {
             tippy: 'tooltip',
-            'turbo-frame': group.turbo_frame_id,
-            control: "view-type-toggle-#{tab}"
+            control: "view-type-toggle-#{tab}",
+            action: 'click->tabs#changeTab',
+            tabs_id_param: tab.name
           } do %>
         <%= tab.name %>
       <% end %>

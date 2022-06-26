@@ -1,20 +1,22 @@
 <%# Add the index to each tab group %>
 <div class="space-y-12">
-  <%# @todo: add turbo eager loading maybe %>
-  <div>
-    <%= turbo_frame_tag group.turbo_frame_id do %>
-      <div class="border rounded-lg p-2 -mx-2 -my-2 lg:p-4 lg:-mx-4 lg:-my-4 space-y-4">
-        <div>
-          <%= render Avo::TabSwitcherComponent.new resource: @resource, group: group, tabs: group.items, active_tab_name: active_tab.name, view: view %>
+  <div class="border rounded-lg p-2 -mx-2 -my-2 lg:p-4 lg:-mx-4 lg:-my-4 space-y-4" data-controller="tabs">
+    <div>
+      <%= render Avo::TabSwitcherComponent.new resource: @resource, group: group, tabs: group.items, active_tab_name: active_tab.name, view: view %>
+    </div>
+    <% @group.items.each do |tab| %>
+    <%#= '111' if tab.name == active_tab.name %>
+      <div data-tabs-target="tab" data-tab-id="<%= tab.name %>" class="<%= "hidden" if tab.name == active_tab.name %>">
+        <%= turbo_frame_tag group.turbo_frame_id, src: '/', loading: "lazy", class: 'hidden' do %>
+          <% if tab.items.present? %>
+            <div class="space-y-12">
+              <% tab.items.each do |item| %>
+                <%= render Avo::ItemSwitcherComponent.new resource: @resource, item: item, index: index, form: form, view: @view %>
+              <% end %>
+            </div>
+          <% end %>
         </div>
-        <% if active_tab.items.present? %>
-          <div class="space-y-12">
-            <% active_tab.items.each do |item| %>
-              <%= render Avo::ItemSwitcherComponent.new resource: @resource, item: item, index: index, form: form, view: @view %>
-            <% end %>
-          </div>
-        <% end %>
-      </div>
+      <% end %>
     <% end %>
   </div>
 </div>
