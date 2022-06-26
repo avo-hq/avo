@@ -78,14 +78,14 @@ module Avo
 
       # This resolves the scope when doing "where" queries (not find queries)
       def query_scope
-        final_scope = resolve_query_scope.present? ? resolve_query_scope.call(model_class: model_class) : model_class
+        final_scope = resolve_query_scope.present? ? resolve_query_scope.call(model_class: get_model_class) : get_model_class
 
         authorization.apply_policy final_scope
       end
 
       # This resolves the scope when finding records (not "where" queries)
       def find_scope
-        final_scope = resolve_find_scope.present? ? resolve_find_scope.call(model_class: model_class) : model_class
+        final_scope = resolve_find_scope.present? ? resolve_find_scope.call(model_class: get_model_class) : get_model_class
 
         authorization.apply_policy final_scope
       end
@@ -98,6 +98,14 @@ module Avo
         return {} if ordering.blank?
 
         ordering.dig(:actions) || {}
+      end
+
+      def get_model_class
+        if model_class.is_a? String
+          model_class.safe_constantize
+        else
+          model_class
+        end
       end
     end
 
@@ -252,7 +260,7 @@ module Avo
 
     def model_class
       # get the model class off of the static property
-      return self.class.model_class if self.class.model_class.present?
+      return self.class.get_model_class if self.class.get_model_class.present?
 
       # get the model class off of the model
       return @model.base_class if @model.present?
