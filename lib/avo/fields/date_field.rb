@@ -3,6 +3,7 @@ module Avo
     class DateField < TextField
       attr_reader :first_day_of_week
       attr_reader :picker_format
+      attr_reader :disable_mobile
       attr_reader :format
       attr_reader :relative
 
@@ -13,6 +14,7 @@ module Avo
         @picker_format = args[:picker_format].present? ? args[:picker_format] : "Y-m-d"
         @format = args[:format].present? ? args[:format] : :long
         @relative = args[:relative].present? ? args[:relative] : false
+        @disable_mobile = args[:disable_mobile].present? ? args[:disable_mobile] : false
       end
 
       def formatted_value
