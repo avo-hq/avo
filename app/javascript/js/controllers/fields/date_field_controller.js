@@ -28,7 +28,7 @@ export default class extends Controller {
     // Set the format of the displayed input field.
     options.altFormat = this.inputTarget.dataset.pickerFormat
 
-    // Support mobile browsers
+    // Disable native input in mobile browsers
     options.disableMobile = this.inputTarget.dataset.disableMobile
 
     // Set first day of the week.
