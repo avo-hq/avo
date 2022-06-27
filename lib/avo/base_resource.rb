@@ -8,6 +8,7 @@ module Avo
     include Avo::Concerns::HasModel
     include Avo::Concerns::HasFields
     include Avo::Concerns::HasStimulusControllers
+    include Avo::Concerns::ModelClassConstantized
 
     delegate :view_context, to: ::Avo::App
     delegate :simple_format, :content_tag, to: :view_context
@@ -29,7 +30,6 @@ module Avo
     class_attribute :search_query, default: nil
     class_attribute :search_query_help, default: ""
     class_attribute :includes, default: []
-    class_attribute :model_class
     class_attribute :translation_key
     class_attribute :default_view_type, default: :table
     class_attribute :devise_password_optional, default: false
