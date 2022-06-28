@@ -27,13 +27,17 @@ export default class extends Controller {
   }
 
   get initialValue() {
-    if (this.isOnShow) {
+    if (this.isOnShow || this.isOnIndex) {
       return this.context.element.innerText
     } if (this.isOnEdit) {
       return this.inputTarget.value
     }
 
     return null
+  }
+
+  get isOnIndex() {
+    return this.viewValue === 'index'
   }
 
   get isOnEdit() {
@@ -54,7 +58,7 @@ export default class extends Controller {
   }
 
   connect() {
-    if (this.isOnShow) {
+    if (this.isOnShow || this.isOnIndex) {
       this.initShow()
     } else if (this.isOnEdit) {
       this.initEdit()
