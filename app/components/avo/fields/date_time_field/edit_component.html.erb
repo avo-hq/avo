@@ -1,15 +1,18 @@
 <%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal do %>
-  <div data-controller="date-field">
+  <%= content_tag :div, data: {
+      controller: "date-field",
+      date_field_view_value: @view,
+      date_field_enable_time_value: true,
+      date_field_picker_format_value: @field.picker_format,
+      date_field_first_day_of_week_value: @field.first_day_of_week,
+      date_field_time24_hr_value: @field.time_24hr,
+      date_field_timezone_value: @field.timezone,
+  } do %>
     <%= @form.datetime_field @field.id,
+      value: @field.edit_formatted_value,
       class: classes("w-full"),
       data: {
         'date-field-target': 'input',
-        'first-day-of-week': @field.first_day_of_week,
-        'picker-format': @field.picker_format,
-        'enable-time': true,
-        time24hr: @field.time_24hr,
-        timezone: @field.timezone,
-        format: @field.format,
         placeholder: @field.placeholder,
         relative: @field.relative,
         **@field.get_html(:data, view: view, element: :input)
@@ -18,5 +21,5 @@
       placeholder: @field.placeholder,
       style: @field.get_html(:style, view: view, element: :input)
     %>
-  </div>
+  <% end %>
 <% end %>

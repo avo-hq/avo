@@ -2,8 +2,6 @@ import { Controller } from '@hotwired/stimulus'
 import { DateTime } from 'luxon'
 import flatpickr from 'flatpickr'
 
-import { castBoolean } from '../../helpers/cast_boolean'
-
 // Get the DateTime with the TZ offset applied.
 function universalTimestamp(timestampStr) {
   return new Date(new Date(timestampStr).getTime() + (new Date(timestampStr).getTimezoneOffset() * 60 * 1000))
@@ -12,49 +10,94 @@ function universalTimestamp(timestampStr) {
 export default class extends Controller {
   static targets = ['input']
 
+  static values = {
+    view: String,
+    timezone: String,
+    format: String,
+    enableTime: Boolean,
+    pickerFormat: String,
+    firstDayOfWeek: Number,
+    time24Hr: Boolean,
+  }
+
+  get browserZone() {
+    const time = DateTime.local()
+
+    return time.zoneName
+  }
+
+  get initialValue() {
+    if (this.isOnShow) {
+      return this.context.element.innerText
+    } if (this.isOnEdit) {
+      return this.inputTarget.value
+    }
+
+    return null
+  }
+
+  get isOnEdit() {
+    return this.viewValue === 'edit'
+  }
+
+  get isOnShow() {
+    return this.viewValue === 'show'
+  }
+
+  // Parse the time as if it were UTC
+  get parsedValue() {
+    return DateTime.fromISO(this.initialValue, { zone: 'UTC' })
+  }
+
+  get displayTimezone() {
+    return this.timezoneValue || this.browserZone
+  }
+
   connect() {
+    if (this.isOnShow) {
+      this.initShow()
+    } else if (this.isOnEdit) {
+      this.initEdit()
+    }
+  }
+
+  // Turns the value in the controller wrapper into the timezone of the browser
+  initShow() {
+    this.context.element.innerText = this.parsedValue.setZone(this.displayTimezone).toFormat(this.formatValue)
+  }
+
+  initEdit() {
     const options = {
       enableTime: false,
       enableSeconds: false,
       // eslint-disable-next-line camelcase
-      time_24hr: false,
+      time_24hr: this.time24HrValue,
       locale: {
         firstDayOfWeek: 0,
       },
       altInput: true,
     }
-    const enableTime = castBoolean(this.inputTarget.dataset.enableTime)
 
     // Set the format of the displayed input field.
-    options.altFormat = this.inputTarget.dataset.pickerFormat
+    options.altFormat = this.pickerFormatValue
 
     // Set first day of the week.
-    options.locale.firstDayOfWeek = this.inputTarget.dataset.firstDayOfWeek
+    options.locale.firstDayOfWeek = this.firstDayOfWeekValue
 
     // Enable time if needed.
-    options.enableTime = enableTime
-    options.enableSeconds = enableTime
-
-    let currentValue
+    options.enableTime = this.enableTimeValue
+    options.enableSeconds = this.enableTimeValue
 
     // enable timezone display
-    if (enableTime) {
-      currentValue = DateTime.fromISO(this.inputTarget.value, { zone: window.Avo.configuration.timezone })
-      currentValue = currentValue.setZone(this.inputTarget.dataset.timezone)
-      currentValue = currentValue.toISO()
+    if (this.enableTimeValue) {
+      options.defaultDate = this.parsedValue.setZone(this.displayTimezone).toISO()
 
       options.dateFormat = 'Y-m-d H:i:S'
-      // eslint-disable-next-line camelcase
-      options.time_24hr = castBoolean(this.inputTarget.dataset.time24hr)
-      // this.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
-      options.appTimezone = this.inputTarget.dataset.timezone
     } else {
       // Because the browser treats the date like a timestamp and updates it ot 00:00 hour, when on a western timezone the date will be converted with one day offset.
       // Ex: 2022-01-30 will render as 2022-01-29 on an American timezone
-      currentValue = universalTimestamp(this.inputTarget.value)
+      options.defaultDate = universalTimestamp(this.initialValue)
     }
-
-    options.defaultDate = currentValue
 
     flatpickr(this.inputTarget, options)
   }
