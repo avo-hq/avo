@@ -10,6 +10,8 @@ module Avo
     include Avo::Concerns::HasStimulusControllers
 
     delegate :view_context, to: ::Avo::App
+    delegate :current_user, to: ::Avo::App
+    delegate :params, to: ::Avo::App
     delegate :simple_format, :content_tag, to: :view_context
     delegate :main_app, to: :view_context
     delegate :avo, to: :view_context

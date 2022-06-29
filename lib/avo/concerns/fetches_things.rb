@@ -60,6 +60,17 @@ module Avo
 
         # Returns the Avo resource by singular snake_cased name
         #
+        # get_resource_by_records_path('/avo/resources/users') => UserResource
+        # get_resource_by_records_path('/avo/resources/super/duper/trooper/users') => Super::Dooper::Trooper::UserResource
+        def get_resource_by_records_path(path)
+          valid_resources
+            .find do |resource|
+              resource.records_path == path
+            end
+        end
+
+        # Returns the Avo resource by singular snake_cased name
+        #
         # get_resource_by_controller_class('delayed_backend_active_record_jobs') => DelayedJobResource
         # get_resource_by_controller_class('users') => UserResource
         def get_resource_by_controller_class(controller_class)

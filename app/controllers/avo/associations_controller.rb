@@ -121,5 +121,55 @@ module Avo
 
       klass
     end
+
+    private
+
+    def resource_discovery_regex
+      if action_name == 'new'
+        /^\/resources\/(.*)\/\d*\/reviews\/new$/
+      elsif action_name == 'index'
+        /^\/resources\/(.*)\/\d*\/reviews$/
+      end
+    end
+
+    # Gets the Avo resource for this request based on the request from the `resource_name` "param"
+    # Ex: Avo::Resources::Project, Avo::Resources::Team, Avo::Resources::User
+    def old_resource
+      return Avo::App.get_resource_by_name params[:resource_class]
+      regex_test = request.env['PATH_INFO'].match(resource_discovery_regex)
+      return if regex_test.blank?
+      path = regex_test[1]
+      path = "#{Avo.configuration.root_path}/resources/#{path}"
+      return Avo::App.get_resource_by_records_path path
+
+      t =Avo::App.get_resource_by_records_path path
+      abort t.inspect
+      return t
+      if action_name == "new"
+        regex = /^\/resources\/(.*)\/\d*\/reviews\/new$/
+
+        # resource = ::Super::Duper::ProjectResource.new
+
+
+
+      elsif action_name == "index"
+        regex = /^\/resources\/(.*)\/\d*\/reviews\/new$/
+
+        abort request.env['PATH_INFO'].inspect
+        t = super
+
+        abort t.inspect
+      end
+      # controller_based_resource = Avo::App.get_resource_by_controller_class(self.class)
+      # # controller_based_resource = Avo::App.get_resource_by_path(self.class)
+
+      # return controller_based_resource if controller_based_resource.present?
+
+      # resource = App.get_resource @resource_name.to_s.camelize.singularize
+
+      # return resource if resource.present?
+
+      # App.guess_resource @resource_name
+    end
   end
 end

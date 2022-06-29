@@ -23,7 +23,14 @@ module Avo
     rescue_from Pundit::NotAuthorizedError, with: :render_unauthorized
     rescue_from ActiveRecord::RecordInvalid, with: :exception_logger
 
-    helper_method :_current_user, :resources_path, :resource_path, :new_resource_path, :edit_resource_path, :resource_attach_path, :resource_detach_path, :related_resources_path, :turbo_frame_request?
+    helper_method :_current_user,
+      :resources_path,
+      :resource_path,
+      :new_resource_path,
+      :edit_resource_path,
+      :resource_detach_path,
+      :related_resources_path,
+      :turbo_frame_request?
     add_flash_types :info, :warning, :success, :error
 
     def init_app
@@ -113,7 +120,7 @@ module Avo
     end
 
     def set_resource
-      raise ActionController::RoutingError.new "No route matches" if resource.nil?
+      raise ActionController::RoutingError.new "No route matches!" if resource.nil?
 
       @resource = resource.hydrate(params: params)
     end
@@ -168,6 +175,8 @@ module Avo
     # Ex: projects, teams, users
     def resource_name
       return params[:resource_name] if params[:resource_name].present?
+
+      return params[:resource_class] if params[:resource_class].present?
 
       controller_based_resource = Avo::App.get_resource_by_controller_class(self.class)
 
