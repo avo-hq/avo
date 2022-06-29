@@ -29,7 +29,10 @@ class UserResource < Avo::BaseResource
     end
 
     tab I18n.t("avo.field_translations.people", count: 2) do
-      field :people, as: :has_many, translation_key: "avo.field_translations.people"
+      panel do
+        field :email, as: :text
+      end
+      field :people, as: :has_many, translation_key: "avo.field_translations.people", show_on: :edit
     end
 
     tab :post, description: 'Somethings about this post' do
@@ -38,10 +41,10 @@ class UserResource < Avo::BaseResource
     end
   end
 
-  panel do
-    field :last_name, as: :text, required: true, placeholder: "Doe"
-    field :first_name, as: :text, required: true, placeholder: "John"
-  end
+  # panel do
+  #   field :last_name, as: :text, required: true, placeholder: "Doe"
+  #   field :first_name, as: :text, required: true, placeholder: "John"
+  # end
 
   # field :email, as: :gravatar, link_to_resource: true, as_avatar: :circle
   # heading "User Information"
@@ -181,5 +184,5 @@ class UserResource < Avo::BaseResource
   filter IsAdmin
   filter DummyMultipleSelectFilter
 
-  tool UserTool
+  # tool UserTool
 end

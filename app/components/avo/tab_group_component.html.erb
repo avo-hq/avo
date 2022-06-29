@@ -1,14 +1,34 @@
 <%# Add the index to each tab group %>
 <div class="space-y-12">
-  <div class="border rounded-lg p-2 -mx-2 -my-2 lg:p-4 lg:-mx-4 lg:-my-4 space-y-4" data-controller="tabs">
-    <div>
-      <%= render Avo::TabSwitcherComponent.new resource: @resource, group: group, tabs: group.items, active_tab_name: active_tab.name, view: view %>
-    </div>
-    <% @group.items.each do |tab| %>
-    <%#= '111' if tab.name == active_tab.name %>
-      <div data-tabs-target="tab" data-tab-id="<%= tab.name %>" class="<%= "hidden" if tab.name == active_tab.name %>">
-        <%= turbo_frame_tag group.turbo_frame_id, src: '/', loading: "lazy", class: 'hidden' do %>
-          <% if tab.items.present? %>
+  <div data-controller="tabs">
+    <% @group.items.each_with_index do |tab, index| %>
+      <%
+        args = {
+          class: "#{'hidden' unless tab.name == active_tab.name}",
+          data: {
+            tabs_target: :tab,
+            tab_id: tab.name,
+          }
+        }
+
+        is_current_tab = false
+        if params[:active_tab_name].blank?
+          is_current_tab = index == 0
+        elsif params[:active_tab_name].to_s == tab.name.to_s
+          is_current_tab = true
+        end
+
+        should_lazy_load = !is_current_tab && !@view.to_s.in?(['edit', 'new'])
+
+        if should_lazy_load
+          args[:src] = helpers.resource_path(resource: @resource, model: @resource.model, keep_query_params: true, active_tab_name: tab.name, tab_turbo_frame: group.turbo_frame_id)
+          args[:loading] = :lazy
+        end
+      %>
+      <%= turbo_frame_tag tab.turbo_frame_id(parent: @group), **args do %>
+        <div class="border rounded-lg p-2 -mx-2 -my-2 lg:p-4 lg:-mx-4 lg:-my-4 space-y-4" >
+          <%= render Avo::TabSwitcherComponent.new resource: @resource, group: group, tabs: group.items, active_tab_name: active_tab.name, view: view %>
+          <% if !should_lazy_load && tab.items.present? %>
             <div class="space-y-12">
               <% tab.items.each do |item| %>
                 <%= render Avo::ItemSwitcherComponent.new resource: @resource, item: item, index: index, form: form, view: @view %>

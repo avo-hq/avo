@@ -27,7 +27,7 @@ module Avo
       **args
     )
       if model.respond_to? :id
-        id = model
+        id = model.id
       elsif resource_id.present?
         id = resource_id
       end

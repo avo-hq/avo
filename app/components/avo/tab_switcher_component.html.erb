@@ -1,7 +1,13 @@
 <div class="flex">
   <div class="button-group">
-    <% tabs.each do |tab| %>
-      <% is_active_view = tab.name.to_s == active_tab_name.to_s %>
+    <% tabs.each_with_index do |tab, index| %>
+      <%
+        is_active_view = if params[:active_tab_name].present?
+          tab.name.to_s == params[:active_tab_name].to_s
+        else
+          index == 0
+        end
+      %>
       <%= a_link tab_path(tab),
           color: is_active_view ? :gray : :primary,
           rounded: false,
