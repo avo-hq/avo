@@ -6,7 +6,7 @@ class MembershipResource < Avo::BaseResource
     scope.ransack(id_eq: params[:q], m: "or").result(distinct: false)
   end
   self.hide_from_global_search = true
-  self.model_class = ::TeamMembership
+  self.model_class = "TeamMembership"
 
   field :id, as: :id
   field :id, as: :number, only_on: :edit
