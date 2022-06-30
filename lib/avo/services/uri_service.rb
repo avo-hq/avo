@@ -28,8 +28,14 @@ module Avo
       end
       alias_method :append_path, :append_paths
 
-      def append_query(*params)
-        params = Array.wrap(params).flatten
+      def append_query(params)
+        params = if params.is_a? Hash
+          params.map do |key, value|
+            "#{key}=#{value}"
+          end
+        else
+          {}
+        end
 
         return self if params.blank?
 
