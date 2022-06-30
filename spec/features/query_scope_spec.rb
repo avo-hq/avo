@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "QueryScope", type: :system do
+RSpec.describe "QueryScope", type: :feature do
   describe "for user order by last name" do
     let!(:user_c) { create :user, first_name: "ccccc", last_name: "Aandy" }
     let!(:user_a) { create :user, first_name: "ccccc", last_name: "Aaaandy" }
@@ -11,7 +11,6 @@ RSpec.describe "QueryScope", type: :system do
         visit "/admin/resources/users"
 
         wait_for_loaded
-        sleep 0.2
 
         users_ids = all('[data-field-type="id"]')
 
@@ -32,7 +31,6 @@ RSpec.describe "QueryScope", type: :system do
       visit "/admin/resources/users?sort_by=id&sort_direction=asc"
 
       wait_for_loaded
-      sleep 0.2
 
       users_ids = all('[data-field-type="id"]')
 
@@ -49,7 +47,6 @@ RSpec.describe "QueryScope", type: :system do
       visit "/admin/resources/users?sort_by=is_writer&sort_direction=asc"
 
       wait_for_loaded
-      sleep 0.2
 
       users_ids = all('[data-field-type="id"]')
 
