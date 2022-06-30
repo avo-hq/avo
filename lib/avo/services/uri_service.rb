@@ -34,7 +34,7 @@ module Avo
         return self if params.blank?
 
         # Add the query params to the URI
-        @uri.merge!(query: [@uri.query, *params].join("&"))
+        @uri.merge!(query: [@uri.query, *params].compact.join("&"))
 
         self
       end
