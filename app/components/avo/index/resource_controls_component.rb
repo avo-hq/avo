@@ -41,7 +41,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   end
 
   def edit_path
-    #Add the `view` param to let Avo know where to redirect back when the user clicks the `Cancel` button.
+    # Add the `view` param to let Avo know where to redirect back when the user clicks the `Cancel` button.
     args = {via_view: 'index'}
 
     if @parent_model.present?
@@ -70,5 +70,9 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
 
   def is_has_many_association
     @reflection.is_a?(::ActiveRecord::Reflection::HasManyReflection) || @reflection.is_a?(::ActiveRecord::Reflection::ThroughReflection)
+  end
+
+  def referrer_path
+    Avo::App.root_path(paths: ['resources', params[:resource_name], params[:id], params[:related_name]], query: request.query_parameters.to_h)
   end
 end

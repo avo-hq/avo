@@ -55,7 +55,7 @@ RSpec.feature "HasManyField", type: :feature do
         expect(page).to have_link("Create new post", href: "/admin/resources/posts/new?via_relation=user&via_relation_class=User&via_resource_id=#{user.id}")
 
         # attach button
-        expect(page).to have_link("Attach post", href: "/admin/resources/users/#{user.id}/posts/new")
+        expect(page).to have_link("Attach post", href: /\/admin\/resources\/users\/#{user.id}\/posts\/new/)
 
         ## Table Rows
         # show link

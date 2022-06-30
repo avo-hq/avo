@@ -74,7 +74,11 @@ document.addEventListener('turbo:frame-load', () => {
 document.addEventListener('turbo:before-fetch-response', async (e) => {
   if (e.detail.fetchResponse.response.status === 500) {
     const { id, src } = e.target
-    e.target.src = `${window.Avo.configuration.root_path}/failed_to_load?turbo_frame=${id}&src=${src}`
+    // Don't try to redirect to failed to load if this is alread a redirection to failed to load and crashed somewhere.
+    // You'll end up with a request loop.
+    if (!e.detail.fetchResponse?.response?.url?.includes('/failed_to_load')) {
+      e.target.src = `${window.Avo.configuration.root_path}/failed_to_load?turbo_frame=${id}&src=${src}`
+    }
   }
 })
 

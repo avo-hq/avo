@@ -13,7 +13,8 @@ module Avo
     protect_from_forgery with: :exception
     before_action :init_app
     before_action :check_avo_license
-    before_action :set_locale
+    before_action :set_default_locale
+    around_action :set_force_locale
     before_action :set_authorization
     before_action :_authenticate!
     before_action :set_container_classes
@@ -27,7 +28,7 @@ module Avo
     add_flash_types :info, :warning, :success, :error
 
     def init_app
-      Avo::App.init request: request, context: context, root_path: avo.root_path.delete_suffix("/"), current_user: _current_user, view_context: view_context, params: params
+      Avo::App.init request: request, context: context, current_user: _current_user, view_context: view_context, params: params
 
       @license = Avo::App.license
     end
@@ -287,10 +288,30 @@ module Avo
       @resource.form_scope
     end
 
-    def set_locale
+    def set_default_locale
       I18n.locale = params[:set_locale] || I18n.default_locale
 
       I18n.default_locale = I18n.locale
+    end
+
+    # Temporary set the locale
+    def set_force_locale
+      if params[:force_locale].present?
+        initial_locale = I18n.locale.to_s.dup
+        I18n.locale = params[:force_locale]
+        yield
+        I18n.locale = initial_locale
+      else
+        yield
+      end
+    end
+
+    def default_url_options
+      if params[:force_locale].present?
+        { **super, force_locale: params[:force_locale] }
+      else
+        super
+      end
     end
   end
 end
