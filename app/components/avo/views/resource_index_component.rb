@@ -117,7 +117,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def attach_path
-    "#{Avo::App.root_path}#{request.env["PATH_INFO"]}/new"
+    Avo::App.root_path(paths: [request.env["PATH_INFO"], "new"])
   end
 
   def singular_resource_name
@@ -145,7 +145,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     @reflection.active_record.to_s
   end
 
-  def name 
+  def name
     field.custom_name? ? field.name : field.plural_name
   end
 

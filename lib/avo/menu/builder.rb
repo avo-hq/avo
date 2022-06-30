@@ -5,6 +5,8 @@ class Avo::Menu::Builder
     end
   end
 
+  delegate :root_path, to: Avo::App
+
   def initialize(name: nil, items: [])
     @menu = Avo::Menu::Menu.new
 
@@ -60,18 +62,12 @@ class Avo::Menu::Builder
   # Add all the tools
   def all_tools(**args)
     Avo::App.tools_for_navigation.each do |tool|
-      link tool.humanize, path: "#{root_path}/#{tool}"
+      link tool.humanize, path: root_path(paths: [tool])
     end
   end
 
   # Fetch the menu
   def build
     @menu
-  end
-
-  protected
-
-  def root_path
-    Avo::App.root_path
   end
 end

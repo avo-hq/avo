@@ -10,7 +10,7 @@ class Avo::Fields::Common::SingleFileViewerComponent < ViewComponent::Base
   end
 
   def destroy_path
-    "#{@resource.record_path}/active_storage_attachments/#{id}/#{file.id}"
+    Avo::Services::URIService.parse(@resource.record_path).append_paths("active_storage_attachments", id, file.id).to_s
   end
 
   def id

@@ -1,6 +1,6 @@
 <%= javascript_tag nonce: true do %>
   window.Avo = window.Avo || { configuration: {} }
   Avo.configuration.timezone = '<%= Avo.configuration.timezone %>'
-  Avo.configuration.root_path = '<%= Avo::App.root_path %>'
+  Avo.configuration.root_path = '<%= Avo.configuration.root_path %>'
   Avo.configuration.search_debounce = '<%= Avo.configuration.search_debounce %>'
 <% end %>

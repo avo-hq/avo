@@ -29,12 +29,16 @@ module Avo
         end
       end
 
-      def init(request:, context:, current_user:, root_path:, view_context:, params:)
+      # Renerate a dynamic root path using the URIService
+      def root_path(paths: [], **args)
+        Avo::Services::URIService.parse(view_context.avo.root_url.to_s).append_paths(paths).to_s
+      end
+
+      def init(request:, context:, current_user:, view_context:, params:)
         self.error_messages = []
         self.request = request
         self.context = context
         self.current_user = current_user
-        self.root_path = root_path
         self.view_context = view_context
         self.params = params
 
