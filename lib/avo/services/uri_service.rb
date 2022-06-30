@@ -16,10 +16,7 @@ module Avo
       def append_paths(*paths)
         paths = Array.wrap(paths)
 
-        # abort 11.inspect
-
         return self if paths.blank?
-        # abort 12.inspect
 
         @uri.merge!(path: @uri.path.concat("/#{paths.join("/")}"))
         self
@@ -28,6 +25,8 @@ module Avo
 
       def append_query(*params)
         params = Array.wrap(params)
+
+        return self if params.blank?
 
         @uri.merge!(query: [@uri.query, *params].join("&"))
         self
