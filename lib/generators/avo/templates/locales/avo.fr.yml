@@ -1,0 +1,115 @@
+fr:
+  avo:
+    dashboard: 'Tableau de bord'
+    dashboards: 'Tableaux de bord'
+    choose_a_country: 'Sélectionnez un pays'
+    choose_an_option: 'Sélectionnez une option'
+    are_you_sure_you_want_to_run_this_option: 'Etes-vous sûr de vouloir exécuter cette action ?'
+    are_you_sure_detach_item: 'Êtes-vous sûr de vouloir détacher %{item}.'
+    run: 'Exécuter'
+    cancel: 'Annuler'
+    action_ran_successfully: "L'action s'est exécutée avec succès !"
+    details: "détails"
+    unauthorized: 'Non autorisé'
+    attachment_class_attached: '%{attachment_class} attaché.'
+    attachment_class_detached: '%{attachment_class} détaché.'
+    resource_updated: 'Ressource mise à jour'
+    resource_created: 'Ressource créee'
+    resource_destroyed: 'Ressource détruite'
+    switch_to_view: "Passez à la vue %{view_type}"
+    click_to_reveal_filters: "Cliquez pour révéler les filtres"
+    attachment_destroyed: 'Pièce jointe détruite'
+    failed_to_find_attachment: 'Impossible de trouver la pièce jointe'
+    you_missed_something_check_form: 'Vous avez peut-être oublié quelque chose. Veuillez vérifier le formulaire'
+    remove_selection: 'Supprimer la sélection'
+    select_item: 'Sélectionnez un élément'
+    select_all: 'Sélectionner tout sur la page'
+    delete_file: 'Supprimer le fichier'
+    delete: 'supprimer'
+    delete_item: 'Supprimer %{item}'
+    download_item: 'Télécharger %{item}'
+    download_file: 'Télécharger le fichier'
+    download: 'Télécharger'
+    view: 'Vue'
+    view_item: 'voir %{item}'
+    edit: 'éditer'
+    edit_item: 'éditer %{item}'
+    detach_item: 'détacher %{item}'
+    number_of_items:
+      zero: 'aucun %{item}'
+      one: 'un %{item}'
+      other: '%{count} %{item}'
+    x_items_more:
+      zero: 'aucun élément supplémentaire'
+      one: 'un élément de plus'
+      other: '%{count} éléments en plus'
+    are_you_sure: 'Êtes-vous sûr ?'
+    filters: 'Filtres'
+    per_page: 'Par page'
+    more: 'Plus'
+    attach: 'Attacher'
+    cancel: 'Annuler'
+    save: 'Enregistrer'
+    attach_and_attach_another: 'joindre et joindre un autre'
+    hide_content: 'Cacher le contenu'
+    show_content: 'Afficher le contenu'
+    no_related_item_found: "Aucun %{item} apparenté n'a été trouvé"
+    no_item_found: 'Aucun %{item} trouvé'
+    loading: 'Chargement'
+    confirm: 'Confirmer'
+    actions: 'Actions'
+    resources: 'Ressources'
+    oops_nothing_found: "Oups ! Rien n'a été trouvé..."
+    type_to_search: 'Type à rechercher.'
+    and_x_other_resources: 'et %{count} autres ressources'
+    go_back: 'Retourner en arrière'
+    home: 'Accueil'
+    new: 'Nouveau'
+    attach_item: 'Attacher %{item}'
+    choose_item: 'Choisir %{item}'
+    create_new_item: 'Créer un nouveau %{item}'
+    table_view: 'Vue table'
+    grid_view: 'Vue grille'
+    next_page: 'Page suivante'
+    prev_page: 'Page précédente'
+    list_is_empty: 'La liste est vide'
+    field_translations:
+      file:
+        zero: 'fichier'
+        one: 'fichier'
+        other: 'fichiers'
+      people:
+        zero: 'personne'
+        one: 'personne'
+        other: 'personnes'
+    resource_translations:
+      user:
+        zero: 'utilisateur'
+        one: 'utilisateurs'
+        other: 'utilisateurs'
+    reset_filters: 'Réinitialiser les filtres'
+    not_authorized: "Vous n'êtes pas autorisé à effectuer cette action."
+    search:
+      placeholder: 'Rechercher'
+      cancel_button: 'Annuler'
+    sign_out: 'Se déconnecter'
+    failed: 'Échec'
+    failed_to_load: 'Impossible de charger'
+    key_value_field:
+      key: 'Clé'
+      value: 'Valeur'
+      add_row: 'Ajouter une ligne'
+      delete_row: 'Supprimer une ligne'
+    was_successfully_created: 'a été créé avec succès'
+    was_successfully_updated: 'a été mis à jour avec succès'
+    clear_value: "Effacer la valeur"
+    tools: Outils
+    order:
+      reorder_record: Réorganiser
+      higher: Déplacer plus haut
+      lower: Déplacer plus bas
+      to_top: Déplacer tout en haut
+      to_bottom: Déplacer tout en bas
+    empty_dashboard_message: Ajouter des cartes à ce tableau de bord
+    no_cards_present: Aucune carte présente
+    no_options_available: Aucune option disponible
