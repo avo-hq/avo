@@ -20,6 +20,8 @@ class Avo::TabSwitcherComponent < Avo::BaseComponent
   def tab_path(tab)
     if is_edit?
       helpers.edit_resource_path(resource: @resource, model: @resource.model, keep_query_params: true, active_tab_name: tab.name, tab_turbo_frame: group.turbo_frame_id)
+    elsif is_new?
+      helpers.new_resource_path(resource: @resource, keep_query_params: true, active_tab_name: tab.name, tab_turbo_frame: group.turbo_frame_id)
     else
       helpers.resource_path(resource: @resource, model: @resource.model, keep_query_params: true, active_tab_name: tab.name, tab_turbo_frame: group.turbo_frame_id)
     end
@@ -27,5 +29,9 @@ class Avo::TabSwitcherComponent < Avo::BaseComponent
 
   def is_edit?
     @view == :edit
+  end
+
+  def is_new?
+    @view == :new
   end
 end

@@ -113,7 +113,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
       end
     end
 
-    helpers.new_resource_path(model: @resource.model_class, resource: @resource, **args)
+    helpers.new_resource_path(resource: @resource, **args)
   end
 
   def attach_path
@@ -145,7 +145,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     @reflection.active_record.to_s
   end
 
-  def name 
+  def name
     field.custom_name? ? field.name : field.plural_name
   end
 

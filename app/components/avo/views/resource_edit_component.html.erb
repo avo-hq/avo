@@ -8,7 +8,7 @@
   } do %>
   <%= form_with model: @resource.model,
     scope: @resource.form_scope,
-    url: helpers.resource_path(model: @resource.model, resource: @resource),
+    url: form_url,
     method: :put,
     local: true,
     class: 'space-y-12',

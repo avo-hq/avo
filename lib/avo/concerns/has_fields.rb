@@ -16,18 +16,7 @@ module Avo
         delegate :add_tool, to: ::Avo::Services::DslService
         delegate :tool, to: :items_holder
 
-        def items
-          if self.items_holder.present?
-            self.items_holder.items
-          else
-            []
-          end
-        end
-
-        def tools
-          self.tools_holder
-        end
-
+        # DSL methods
         def field(name, **args, &block)
           ensure_items_holder_initialized
 
@@ -48,6 +37,19 @@ module Avo
 
         def heading(body, **args)
           self.items_holder.add_item Avo::Fields::HeadingField.new(body, order_index: items_index, **args)
+        end
+        # END DSL methods
+
+        def items
+          if self.items_holder.present?
+            self.items_holder.items
+          else
+            []
+          end
+        end
+
+        def tools
+          self.tools_holder
         end
 
         def fields

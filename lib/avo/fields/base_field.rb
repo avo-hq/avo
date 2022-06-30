@@ -210,9 +210,14 @@ module Avo
 
       # Try and build the component class or fallback to a blank one
       def component_for_view(view = :index)
+        # Use the edit variant for new views
+        view = :edit if view == :new
+
         component_class = "::Avo::Fields::#{view_component_name}::#{view.to_s.camelize}Component"
         component_class.constantize
       rescue
+        # When returning nil, a race condition happens and throws an error in some environments.
+        # See https://github.com/avo-hq/avo/pull/365
         ::Avo::BlankFieldComponent
       end
 

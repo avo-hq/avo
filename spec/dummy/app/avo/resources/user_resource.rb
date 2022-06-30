@@ -16,6 +16,8 @@ class UserResource < Avo::BaseResource
   self.includes = [:posts, :post]
   self.devise_password_optional = true
 
+  field :email, as: :text
+
   tabs do
     tab :MAAAIN do
       # main_panel
