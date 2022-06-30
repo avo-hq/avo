@@ -1,6 +1,4 @@
 <div class="space-x-2 flex flex-row justify-around w-full">
-  <%# Output the referrer path here to highlight the request bleed %>
-  <%= referrer_path %>
   <% button_classes = "text-gray-600 h-6 hover:text-gray-600" %>
   <%= render Avo::Index::Ordering::ButtonsComponent.new resource: @resource, reflection: @reflection, view_type: @view_type %>
 
