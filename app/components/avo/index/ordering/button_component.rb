@@ -20,7 +20,7 @@ class Avo::Index::Ordering::ButtonComponent < Avo::Index::Ordering::BaseComponen
   end
 
   def order_path(args)
-     if reflection.present?
+    if reflection.present?
       view_context.avo.associations_order_path(reflection_parent_resource.route_key, params[:id], field.id, resource.model.id, **args)
     else
       view_context.avo.resources_order_path(resource.route_key, resource.model.id, **args)
