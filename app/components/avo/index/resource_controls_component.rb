@@ -71,4 +71,8 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   def is_has_many_association
     @reflection.is_a?(::ActiveRecord::Reflection::HasManyReflection) || @reflection.is_a?(::ActiveRecord::Reflection::ThroughReflection)
   end
+
+  def referrer_path
+    Avo::App.root_path(paths: ['resources', params[:resource_name], params[:id], params[:related_name]], query: ["turbo_frame=#{params[:turbo_frame]}"])
+  end
 end
