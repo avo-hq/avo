@@ -31,12 +31,12 @@ module Avo
 
       def init(request:, context:, current_user:, root_path:, view_context:, params:)
         self.error_messages = []
-        self.request = request
         self.context = context
         self.current_user = current_user
+        self.params = params
+        self.request = request
         self.root_path = root_path
         self.view_context = view_context
-        self.params = params
 
         self.license = Licensing::LicenseManager.new(Licensing::HQ.new(request).response).license
         self.translation_enabled = license.has(:localization)
