@@ -23,7 +23,7 @@ Avo::Engine.routes.draw do
     delete "/:resource_name/:id/active_storage_attachments/:attachment_name/:attachment_id", to: "attachments#destroy"
 
     # Ordering
-    patch "/:resource_name/:id/order", to: "resources#order"
+    patch "/:resource_name/:id/order", to: "resources#order", as: "order"
     patch "/:resource_name/:id/:related_name/:related_id/order", to: "associations#order", as: "associations_order"
 
     # Actions

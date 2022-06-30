@@ -67,7 +67,7 @@ class Avo::Menu::Builder
   # Add all the tools
   def all_tools(**args)
     Avo::App.tools_for_navigation.each do |tool|
-      link tool.humanize, path: "#{root_path}/#{tool}"
+      link tool.humanize, path: root_path(paths: [tool])
     end
   end
 

@@ -8,7 +8,7 @@ RSpec.feature "CustomTools", type: :feature do
 
     subject { page.body }
 
-    it { is_expected.to have_link "Dashboard", href: "/admin/dashboard" }
+    it { is_expected.to have_link "Dashboard", href: /.*\/admin\/dashboard/ }
 
     it "navigates to the custom tool page" do
       subject
