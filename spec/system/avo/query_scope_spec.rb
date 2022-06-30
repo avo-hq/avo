@@ -11,6 +11,7 @@ RSpec.describe "QueryScope", type: :system do
         visit "/admin/resources/users"
 
         wait_for_loaded
+        sleep 0.2
 
         users_ids = all('[data-field-type="id"]')
 
@@ -31,6 +32,7 @@ RSpec.describe "QueryScope", type: :system do
       visit "/admin/resources/users?sort_by=id&sort_direction=asc"
 
       wait_for_loaded
+      sleep 0.2
 
       users_ids = all('[data-field-type="id"]')
 
@@ -47,6 +49,7 @@ RSpec.describe "QueryScope", type: :system do
       visit "/admin/resources/users?sort_by=is_writer&sort_direction=asc"
 
       wait_for_loaded
+      sleep 0.2
 
       users_ids = all('[data-field-type="id"]')
 
