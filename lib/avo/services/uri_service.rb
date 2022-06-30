@@ -7,7 +7,7 @@ module Avo
         end
       end
 
-      attr_reader = :uri
+      attr_reader :uri
 
       def initialize(path = '')
         @uri = Addressable::URI.parse(path)
