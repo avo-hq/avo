@@ -11,7 +11,7 @@ module Avo
       @items_index = 0
       @invalid_fields = []
 
-      puts ["ItemsHolder initialize->", self.class].inspect
+      # puts ["ItemsHolder initialize->", self.class].inspect
     end
 
     def field(field_name, **args, &block)

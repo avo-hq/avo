@@ -66,6 +66,10 @@ module Avo
       def has_own_panel?
         true
       end
+
+      def visible_in_reflection?
+        false
+      end
     end
   end
 end

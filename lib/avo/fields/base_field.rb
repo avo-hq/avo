@@ -237,6 +237,14 @@ module Avo
         true
       end
 
+      def visible_in_reflection?
+        true
+      end
+
+      def hidden_in_reflection?
+        !visible_in_reflection?
+      end
+
       private
 
       def model_or_class(model)

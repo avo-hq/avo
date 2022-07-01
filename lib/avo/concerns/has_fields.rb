@@ -133,7 +133,7 @@ module Avo
       def get_fields(panel: nil, reflection: nil)
         fields = get_field_definitions
           .select do |field|
-            field.send("show_on_#{@view}")
+            field.send(:"show_on_#{@view}")
           end
           .select do |field|
             field.visible?

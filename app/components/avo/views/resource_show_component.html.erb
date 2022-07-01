@@ -69,7 +69,7 @@
   <% end %>
   <% @resource.get_items.each_with_index do |item, index| %>
     <% next if item.nil? %>
-    <%= render Avo::ItemSwitcherComponent.new resource: @resource, item: item, index: index, view: @view %>
+    <%= render Avo::ItemSwitcherComponent.new resource: @resource, reflection: @reflection, item: item, index: index, view: @view %>
   <% end %>
   <% if should_display_invalid_fields_errors? %>
     <turbo-stream action="append" target="alerts">
