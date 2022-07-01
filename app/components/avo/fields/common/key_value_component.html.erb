@@ -3,7 +3,7 @@
   data-key-value-target="controller"
   data-options="<%= @field.options.to_json %>"
   data-input-classes="<%= input_classes %>"
-  data-editable="<%= @view.in?([:edit, :create]) %>"
+  data-editable="<%= @view.in?([:edit, :new]) %>"
 >
   <div class="w-full flex flex-col">
     <div class="flex w-full">
@@ -14,7 +14,7 @@
         <div class="w-1/2 py-3 px-3 uppercase font-semibold text-xs text-white">
           <%= @field.value_label %>
         </div>
-        <% if @view.in?([:edit, :create]) %>
+        <% if @view.in?([:edit, :new]) %>
           <div class="flex items-center justify-center p-2 px-3 border-l border-gray-600">
             <a href="javascript:void(0);"
               title="<%= @field.action_text %>"
