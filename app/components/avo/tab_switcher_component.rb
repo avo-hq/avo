@@ -9,11 +9,11 @@ class Avo::TabSwitcherComponent < Avo::BaseComponent
   attr_reader :tabs
   attr_reader :view
 
-  def initialize(resource:, group:, tabs:, active_tab_name:, view:)
+  def initialize(resource:, group:, active_tab_name:, view:)
     @active_tab_name = active_tab_name
     @resource = resource
     @group = group
-    @tabs = tabs
+    @tabs = group.items
     @view = view
   end
 
@@ -33,5 +33,29 @@ class Avo::TabSwitcherComponent < Avo::BaseComponent
 
   def is_new?
     @view == :new
+  end
+
+  # Goes through all items and removes the ones that are not supposed to be visible.
+  # Example below:
+  # tabs do
+  #   field :comments, as: :has_many
+  # end
+  # Because the developer hasn't specified that it should be visible on edit views (with the show_on: :edit option),
+  # the field should not be visible in the item switcher either.
+  def visible_items
+    tabs.map do |tab|
+      first_item = tab.items.first
+
+      if tab.items.blank?
+        # Return nil if tab group is empty
+        nil
+      elsif tab.items.count == 1 && first_item.is_field? && first_item.has_own_panel? && !first_item.visible_on?(view)
+        # Return nil if tab contians a has_many type of fields and it's hidden in current view
+        nil
+      else
+        tab
+      end
+    end
+    .compact
   end
 end

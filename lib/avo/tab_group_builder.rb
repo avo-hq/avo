@@ -24,18 +24,14 @@ class Avo::TabGroupBuilder
     if field_instance.has_own_panel?
       tab.items_holder.add_item parsed.instance
     else
+      # If the field is not in a panel, create one and add it
       panel = Avo::Panel.new name: name
       panel.items_holder.add_item parsed.instance
+      # Add that panel to the bag
       tab.items_holder.add_item panel
     end
 
-    # abort [1, tab, 2, tab.items_holder, 3, field].inspect
-
-    # abort [t, parsed.instance].inspect
-
     @items_holder.tabs tab
-
-    # @items_holder << tab
   end
 
   # Fetch the tab

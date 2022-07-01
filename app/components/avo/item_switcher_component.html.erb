@@ -13,7 +13,7 @@
     <% end %>
   <% end %>
 <% elsif item.is_tab_group? %>
-  <%= render Avo::TabGroupComponent.new resource: @resource, group: item, index: index, params: params, form: form, view: view %>
+  <%= render tab_group_component %>
 <% elsif item.is_field? %>
-  <%= render item.component_for_view(@view).new(field: item.hydrate(resource: @resource, view: @view, model: @resource.model), resource: @resource, index: index, form: form) %>
+  <%= render field_component %>
 <% end %>

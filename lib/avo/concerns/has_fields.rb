@@ -52,12 +52,31 @@ module Avo
           self.tools_holder
         end
 
+        # Dives deep into panels and tabs to fetch all the fields for a resource.
         def fields
-          self.items.select do |item|
+          fields = []
+
+          self.items.each do |item|
             next if item.nil?
 
-            item.is_field?
+            # Dive into panels to fetch their fields
+            if item.is_panel?
+              fields << extract_fields_from_items(item)
+            end
+
+            # Dive into tabs to fetch their fields
+            if item.is_tab_group?
+              item.items.map do |tab|
+                fields << extract_fields_from_items(tab)
+              end
+            end
+
+            if item.is_field?
+              fields << item
+            end
           end
+
+          fields.flatten
         end
 
         def tab_groups
@@ -67,6 +86,17 @@ module Avo
         end
 
         private
+
+        def extract_fields_from_items(thing)
+          fields = []
+
+          thing.items.each do |item|
+            fields << extract_fields_from_items(item) if item.is_panel?
+            fields << item if item.is_field?
+          end
+
+          fields
+        end
 
         def ensure_items_holder_initialized
           self.items_holder ||= Avo::ItemsHolder.new
@@ -133,7 +163,7 @@ module Avo
       def get_fields(panel: nil, reflection: nil)
         fields = get_field_definitions
           .select do |field|
-            field.send(:"show_on_#{@view}")
+            field.visible_on?(@view)
           end
           .select do |field|
             field.visible?
@@ -196,7 +226,7 @@ module Avo
         #   tool
         # end
         # .select do |field|
-        #   # field.send("show_on_#{view}")
+        #   # field.visible_on?(view)
         #   true
         # end
         # [3,4,5]
@@ -207,9 +237,10 @@ module Avo
         end
       end
 
+      # Separates the fields that are in a panel and those that are just hanging out.
+      # Take the ones that aren't placed into a panel and add them to the "default" panel.
+      # This is to keep compatibility with the versions before 2.10 when you didn't have the ability to add fields to panels.
       def get_items
-        # return items
-
         panelless_items = []
         panelfull_items = []
 
@@ -225,39 +256,16 @@ module Avo
           end
         end
 
-        # panelfull_items = items.select do |item|
-        #   if item.is_field? && item.has_own_panel?
-        #     false
-        #   else
-        #     true
-        #   end
-        # end
+        # Add all the panelles fields to a new panel
+        main_panel_holder = Avo::ItemsHolder.new
+        main_panel_holder.items = panelless_items
 
-        puts ["panelfull_fields->", items.count, panelfull_items.count, panelless_items.count, items.map(&:item_type)].inspect
-
-        i_holder = Avo::ItemsHolder.new
-        i_holder.items = panelless_items
-
+        # Add that panel to the main panel
         main_panel = Avo::MainPanel.new(name: default_panel_name, description: resource_description)
-        main_panel.items_holder = i_holder
+        main_panel.items_holder = main_panel_holder
 
+        # Return all the items but this time with all the panelless ones inside the main panel
         [main_panel, *panelfull_items]
-      end
-
-      def get_base_items
-        panelless_fields = items.select do |field|
-          field.is_field? && !field.has_own_panel?
-        end
-
-        panelless_fields
-
-        # panelfull_fields = items.select do |field|
-        #   field.is_field? && field.has_own_panel?
-        # end
-
-        # puts ["panelfull_fields->", panelfull_fields.count, panelless_fields.count].inspect
-
-        # [Avo::Panel.new(name: default_panel_name, description: resource_description, items: panelless_fields, is_main_panel: true), *panelfull_fields]
       end
 
       private

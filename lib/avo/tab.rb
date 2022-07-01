@@ -19,7 +19,27 @@ class Avo::Tab
 
     return id if parent.nil?
 
-
     "#{parent.turbo_frame_id} #{id}".parameterize
+  end
+
+  def items(view: :show)
+    if self.items_holder.present?
+      self.items_holder
+        .items
+        # Check all the fields
+        .map do |item|
+          if item.is_field?
+            visible = item.visible_on?(view)
+            # Remove the fields that shouldn't be visible in this view
+            # eg: has_many fields on edit
+            item = nil unless visible
+          end
+
+          item
+        end
+        .compact
+    else
+      []
+    end
   end
 end

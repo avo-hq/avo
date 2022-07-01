@@ -1,5 +1,4 @@
 <%= content_tag :div,
-  class: "space-y-12",
   data: {
     'model-id': @resource.model.id,
     selected_resources_name: @resource.model_key,
@@ -11,7 +10,6 @@
     url: form_url,
     method: :put,
     local: true,
-    class: 'space-y-12',
     multipart: true do |form| %>
     <%= render Avo::ReferrerParamsComponent.new back_path: back_path %>
     <%= render Avo::PanelComponent.new(title: title, description: @resource.resource_description, display_breadcrumbs: @reflection.blank?, index: 0) do |c| %>
@@ -44,9 +42,11 @@
         <% end %>
       <% end %>
     <% end %>
-    <% @resource.get_items.each_with_index do |item, index| %>
-      <% next if item.nil? %>
-      <%= render Avo::ItemSwitcherComponent.new resource: @resource, item: item, index: index, view: @view, form: form %>
+    <%= content_tag :div, class: 'space-y-12' do %>
+      <% @resource.get_items.each_with_index do |item, index| %>
+        <% next if item.nil? %>
+        <%= render Avo::ItemSwitcherComponent.new resource: @resource, item: item, index: index + 1, view: @view, form: form %>
+      <% end %>
     <% end %>
   <% end %>
 <% end %>

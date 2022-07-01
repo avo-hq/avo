@@ -14,6 +14,13 @@ module Avo
           @show_on_edit = @show_on_edit.nil? ? true : @show_on_edit
         end
 
+        # Validates if the field is visible on certain view
+        def visible_on?(view)
+          raise "No view specified on visibility check." if view.blank?
+
+          send :"show_on_#{view.to_s}"
+        end
+
         def show_on(*where)
           return show_on_all if where.include? :all
 

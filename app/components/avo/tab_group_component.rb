@@ -18,7 +18,13 @@ class Avo::TabGroupComponent < Avo::BaseComponent
   end
 
   def render?
-    active_tab.present?
+    tabs_have_content? && active_tab.present?
+  end
+
+  def tabs_have_content?
+    group.items.any? do |tab|
+      tab.items(view: view).present?
+    end
   end
 
   def active_tab_name

@@ -7,8 +7,11 @@
     <% @group.items.each_with_index do |tab, index| %>
       <%
         args = {
+          # Hide the turbo frames that aren't in the current tab
+          # This way we can lazy load the un-selected tabs on the show view
           class: "block #{'hidden' unless tab.name == active_tab.name}",
           data: {
+            # Add a marker to know if we already loaded a turbo frame
             loaded: tab.name == active_tab.name,
             tabs_target: :tab,
             tab_id: tab.name,
@@ -17,8 +20,10 @@
 
         is_current_tab = false
         if params[:active_tab_name].blank?
+          # Select the first tab
           is_current_tab = index == 0
         elsif params[:active_tab_name].to_s == tab.name.to_s
+          # Select the tab matched by the param
           is_current_tab = true
         end
 
@@ -31,10 +36,10 @@
       %>
       <%= turbo_frame_tag tab.turbo_frame_id(parent: @group), **args do %>
         <div class="border rounded-lg p-2 -mx-2 -my-2 lg:p-4 lg:-mx-4 lg:-my-4 space-y-4">
-          <%= render Avo::TabSwitcherComponent.new resource: @resource, group: group, tabs: group.items, active_tab_name: active_tab.name, view: view %>
-          <% if !should_lazy_load && tab.items.present? %>
+          <%= render Avo::TabSwitcherComponent.new resource: @resource, group: group, active_tab_name: active_tab.name, view: view %>
+          <% if !should_lazy_load && tab.items(view: view).present? %>
             <div class="space-y-12">
-              <% tab.items.each do |item| %>
+              <% tab.items(view: view).each do |item| %>
                 <%= render Avo::ItemSwitcherComponent.new resource: @resource, item: item, index: index, form: form, view: @view %>
               <% end %>
             </div>

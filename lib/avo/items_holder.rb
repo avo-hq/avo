@@ -10,13 +10,10 @@ module Avo
       @items = []
       @items_index = 0
       @invalid_fields = []
-
-      # puts ["ItemsHolder initialize->", self.class].inspect
     end
 
+    # Adds a field to the bag
     def field(field_name, **args, &block)
-      # puts ["ItemsHolder field->", field_name, resource_class, args, block].inspect
-
       field_parser = Avo::Dsl::FieldParser.new(id: field_name, order_index: @items_index, **args, &block).parse
 
       if field_parser.invalid?

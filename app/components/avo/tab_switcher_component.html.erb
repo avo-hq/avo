@@ -1,6 +1,6 @@
 <div class="flex">
   <div class="button-group">
-    <% tabs.each_with_index do |tab, index| %>
+    <% visible_items.each_with_index do |tab, index| %>
       <%
         is_active_view = if params[:active_tab_name].present?
           tab.name.to_s == params[:active_tab_name].to_s

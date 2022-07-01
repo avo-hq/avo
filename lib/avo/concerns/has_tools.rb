@@ -36,7 +36,7 @@ module Avo
           #   tool
           # end
           # .select do |field|
-          #   # field.send("show_on_#{view}")
+          #   # field.visible_on?(view)
           #   true
           # end
       end

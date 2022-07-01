@@ -29,7 +29,7 @@ class UserResource < Avo::BaseResource
   field :roles, as: :text, hide_on: :all, as_description: true do |model, resource, view, field|
     "This user has the following roles: #{model.roles.select { |key, value| value }.keys.join(", ")}"
   end
-  field :birthday, as: :date, first_day_of_week: 1, picker_format: "F J Y", format: "%Y-%m-%d", placeholder: "Feb 24th 1955", required: true
+  # field :birthday, as: :date, first_day_of_week: 1, picker_format: "F J Y", format: "%Y-%m-%d", placeholder: "Feb 24th 1955", required: true
   field :is_writer, as: :text, format_using: ->(value) { value.truncate 3 }, sortable: ->(query, direction) {
     # Order by something else completely, just to make a test case that clearly and reliably does what we want.
     query.order(id: direction)
@@ -49,16 +49,31 @@ class UserResource < Avo::BaseResource
   end
 
   tabs do
-    # TODO: This shows the associations too
-    field :post, as: :has_one, translation_key: "avo.field_translations.people", name: "Main post"
+    field :post,
+      as: :has_one,
+      # TODO: this shouldn't show on :show but it's visible on the tab switcher
+      hide_on: :show,
+      # show_on: :edit,
+      name: "Main post",
+      translation_key: "avo.field_translations.people"
+    tab "birthday" do
+      panel do
+        field :birthday, as: :date, first_day_of_week: 1, picker_format: "F J Y", format: "%Y-%m-%d", placeholder: "Feb 24th 1955", required: true
+      end
+    end
     field :posts,
       as: :has_many,
+      show_on: :edit,
       attach_scope: -> { query.where.not(user_id: parent.id).or(query.where(user_id: nil)) }
     field :teams, as: :has_and_belongs_to_many
-    field :people, as: :has_many, translation_key: "avo.field_translations.people", show_on: :edit
+    field :people,
+      as: :has_many,
+      show_on: :edit,
+      translation_key: "avo.field_translations.people"
     field :spouses, as: :has_many # STI has_many resource
     field :comments,
       as: :has_many,
+      # show_on: :edit,
       scope: -> { query.starts_with parent.first_name[0].downcase },
       description: "The comments listed in the attach modal all start with the name of the parent user."
     field :projects, as: :has_and_belongs_to_many

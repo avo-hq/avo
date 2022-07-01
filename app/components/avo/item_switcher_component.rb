@@ -34,4 +34,12 @@ class Avo::ItemSwitcherComponent < Avo::BaseComponent
   def in_reflection?
     @reflection.present?
   end
+
+  def tab_group_component
+    Avo::TabGroupComponent.new resource: @resource, group: item, index: index, params: params, form: form, view: view
+  end
+
+  def field_component
+    item.component_for_view(@view).new(field: item.hydrate(resource: @resource, view: @view, model: @resource.model), resource: @resource, index: index, form: form)
+  end
 end
