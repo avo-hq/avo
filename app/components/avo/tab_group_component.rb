@@ -18,32 +18,33 @@ class Avo::TabGroupComponent < Avo::BaseComponent
   end
 
   def render?
-    tabs_have_content? && active_tab.present?
+    tabs_have_content? && visible_tabs.present?
   end
 
   def tabs_have_content?
-    group.items.any? do |tab|
-      tab.items(view: view).present?
-    end
+    visible_tabs.present?
   end
 
   def active_tab_name
-    params[:active_tab_name] || group.items.first.name
+    # puts ["first&.name->", params[:active_tab_name], group.visible_items&.first&.name, group.visible_items.map(&:name)].inspect
+    params[:active_tab_name] || group.visible_items&.first&.name
+  end
+
+  def tabs
+    @group.items.map do |tab|
+      tab.hydrate(view: view)
+    end
+  end
+
+  def visible_tabs
+    tabs.select do |tab|
+      !tab.empty?
+    end
   end
 
   def active_tab
-    group&.items.find do |tab|
+    group&.visible_items.find do |tab|
       tab.name.to_s == active_tab_name.to_s
     end
-
-    # active_tab = if params[:tab_turbo_frame].present? && params[:active_tab_name].present?
-    #   item&.items.find do |tab|
-    #     tab.name.to_s == params[:active_tab_name].to_s
-    #   end
-    # else
-    #   item.items.find do |tab|
-    #     tab.name.to_s == active_tab_name
-    #   end
-    # end
   end
 end

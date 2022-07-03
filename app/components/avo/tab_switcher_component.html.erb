@@ -2,10 +2,12 @@
   <div class="button-group">
     <% visible_items.each_with_index do |tab, index| %>
       <%
-        is_active_view = if params[:active_tab_name].present?
-          tab.name.to_s == params[:active_tab_name].to_s
+        # On initial load we want that each tab button to be the selected one.
+        # We do that so we don't get the wrongly selected item for a quick brief when first switching from one panel to another.
+        is_active_view = if is_initial_load?
+          current_tab.name.to_s == tab.name.to_s
         else
-          index == 0
+          tab.name.to_s == active_tab_name.to_s
         end
       %>
       <%= a_link tab_path(tab),
@@ -13,9 +15,9 @@
           rounded: false,
           size: :sm,
           class: is_active_view ? ' bg-gray-100 border-gray-300' : ' z-20',
-          title: tab.description || tab.name,
+          title: tab.description,
           data: {
-            tippy: 'tooltip',
+            tippy: tab.description.present? ? 'tooltip' : '',
             control: "view-type-toggle-#{tab}",
             action: 'click->tabs#changeTab',
             tabs_id_param: tab.name

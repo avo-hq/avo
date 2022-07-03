@@ -7,7 +7,7 @@ module Avo
         attr_accessor :show_on_new
         attr_accessor :show_on_edit
 
-        def initialize(id, **args, &block)
+        def initialize(id = nil, **args, &block)
           @show_on_index = @show_on_index.nil? ? true : @show_on_index
           @show_on_show = @show_on_show.nil? ? true : @show_on_show
           @show_on_new = @show_on_new.nil? ? true : @show_on_new

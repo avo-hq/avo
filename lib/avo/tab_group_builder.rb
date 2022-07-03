@@ -23,6 +23,7 @@ class Avo::TabGroupBuilder
 
     if field_instance.has_own_panel?
       tab.items_holder.add_item parsed.instance
+      tab.holds_one_field = true
     else
       # If the field is not in a panel, create one and add it
       panel = Avo::Panel.new name: name

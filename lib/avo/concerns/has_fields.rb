@@ -137,7 +137,7 @@ module Avo
       end
 
       def get_field_definitions
-        fields = self.class.fields
+        fields = self.fields
 
         return [] if fields.blank?
 
