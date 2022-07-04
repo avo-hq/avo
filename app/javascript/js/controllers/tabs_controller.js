@@ -78,7 +78,6 @@ export default class extends Controller {
         element.classList.remove('hidden')
       }
     })
-    // this.tabTargets.map((element) => element.clasList.add('hidden'))
   }
 
   hideTabs() {

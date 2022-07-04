@@ -26,7 +26,6 @@ class Avo::TabGroupComponent < Avo::BaseComponent
   end
 
   def active_tab_name
-    # puts ["first&.name->", params[:active_tab_name], group.visible_items&.first&.name, group.visible_items.map(&:name)].inspect
     params[:active_tab_name] || group.visible_items&.first&.name
   end
 
@@ -43,7 +42,9 @@ class Avo::TabGroupComponent < Avo::BaseComponent
   end
 
   def active_tab
-    group&.visible_items.find do |tab|
+    return if group.visible_items.blank?
+
+    group.visible_items.find do |tab|
       tab.name.to_s == active_tab_name.to_s
     end
   end
