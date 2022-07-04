@@ -64,11 +64,17 @@ class Avo::TabSwitcherComponent < Avo::BaseComponent
     end
     .compact
     .select do |item|
+      visible = true
+
       if item.respond_to?(:visible_on?)
-        item.visible_on? view
+        visible = item.visible_on? view
       end
 
-      true
+      if item.respond_to?(:visible?)
+        visible = item.visible?
+      end
+
+      visible
     end
   end
 end
