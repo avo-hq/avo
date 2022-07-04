@@ -27,7 +27,6 @@ jobs:
       POSTGRES_HOST: localhost
       POSTGRES_USERNAME: postgres
       POSTGRES_PORT: 5432
-      COVERAGE: ${{ matrix.rails == '6.1' && matrix.ruby == '3.0.3' }}
       RAILS_VERSION: ${{matrix.rails}}
       BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}.gemfile
       BUNDLE_PATH_RELATIVE_TO_CWD: true
