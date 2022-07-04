@@ -23,7 +23,7 @@
       <div class="w-full h-full">
         <% if Rails.env.development? %>
           <%= render Avo::PanelComponent.new do |c| %>
-            <% c.with_body do %>
+            <% c.body do %>
               <div class="p-6">
                 <%= t 'avo.empty_dashboard_message' %>. <%= link_to 'Docs', 'https://docs.avohq.io/2.0/dashboards.html', target: '_blank' %>
               </div>
