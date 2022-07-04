@@ -142,7 +142,7 @@ module Avo
         return [] if fields.blank?
 
         items = fields.map do |field|
-          field.hydrate(resource: self, panel_name: default_panel_name, user: user)
+          field.hydrate(resource: self, user: user, view: view)
         end
 
         if Avo::App.license.lacks_with_trial(:custom_fields)
@@ -163,7 +163,7 @@ module Avo
       def get_fields(panel: nil, reflection: nil)
         fields = get_field_definitions
           .select do |field|
-            field.visible_on?(@view)
+            field.visible_on?(view)
           end
           .select do |field|
             field.visible?
@@ -261,7 +261,7 @@ module Avo
         main_panel_holder.items = panelless_items
 
         # Add that panel to the main panel
-        main_panel = Avo::MainPanel.new(name: default_panel_name, description: resource_description)
+        main_panel = Avo::MainPanel.new
         main_panel.items_holder = main_panel_holder
 
         # Return all the items but this time with all the panelless ones inside the main panel
