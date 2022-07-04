@@ -41,8 +41,7 @@ module Avo
     end
 
     def tool(klass, **args)
-      # puts ["ItemsHolder tool->", klass, args].inspect
-      instance = klass.new **args
+      instance = klass.new(**args)
       add_item instance
     end
 
