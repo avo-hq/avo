@@ -254,10 +254,9 @@ RSpec.feature "belongs_to", type: :system do
           fill_in "review_body", with: "Yup"
           find("#review_reviewable_id").click
 
-          write_in_search "A"
+          write_in_search "Avo"
 
           wait_for_search_loaded
-          sleep 0.1
 
           expect(find(".aa-Panel")).to have_content "Avocados"
           expect(find(".aa-Panel")).to have_content "Artichokes"
@@ -266,7 +265,6 @@ RSpec.feature "belongs_to", type: :system do
           write_in_search "Avocado"
 
           wait_for_search_loaded
-          sleep 0.1
 
           select_first_result_in_search
           wait_for_search_to_dissapear
@@ -314,8 +312,6 @@ RSpec.feature "belongs_to", type: :system do
             find("#review_reviewable_id").click
 
             write_in_search "Artichokes"
-            sleep 0.2
-
             wait_for_search_loaded
 
             expect(find(".aa-Panel")).not_to have_content "Avocados"
@@ -323,7 +319,6 @@ RSpec.feature "belongs_to", type: :system do
 
             select_first_result_in_search
             wait_for_search_to_dissapear
-            sleep 0.2
 
             expect(page).to have_field type: "text", name: "review[reviewable_id]", with: second_post.name
             expect(page).to have_field type: "hidden", name: "review[reviewable_id]", with: second_post.id, visible: false
@@ -384,7 +379,7 @@ RSpec.feature "belongs_to", type: :system do
           find(".aa-Input").send_keys :arrow_down
           find(".aa-Input").send_keys :return
 
-          sleep 0.5
+          sleep 0.2
 
           expect(page).to have_field type: "text", name: "review[reviewable_id]", with: "Apple"
           expect(page).to have_field type: "hidden", name: "review[reviewable_id]", with: team.id, visible: false
