@@ -2,7 +2,7 @@
 
 class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
   def initialize(field: nil, resource: nil, index: 0, form: nil, displayed_in_modal: false)
-    super field: field, resource: resource, form: form, displayed_in_modal: displayed_in_modal
+    super field: field, resource: resource, index: index, form: form, displayed_in_modal: displayed_in_modal
 
     @polymorphic_record = nil
   end
