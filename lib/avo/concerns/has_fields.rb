@@ -213,8 +213,6 @@ module Avo
       end
 
       def tools
-        # abort self.class.tools.inspect
-        # abort self.inspect
         check_license
 
         return [] if App.license.lacks_with_trial :resource_tools
