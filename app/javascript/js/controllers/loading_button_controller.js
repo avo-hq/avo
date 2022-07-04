@@ -18,6 +18,7 @@ export default class extends Controller {
       // Intervene only if not confirmed
       if (!this.confirmedValue) {
         e.preventDefault()
+
         if (window.confirm(this.confirmationMessageValue)) {
           this.applyLoader()
         }
