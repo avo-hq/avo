@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class Avo::Index::Ordering::ButtonComponent < Avo::Index::Ordering::BaseComponent
-  # delegate :view_context, to: ::Avo::App
-
   attr_accessor :resource
   attr_accessor :reflection
   attr_accessor :direction
