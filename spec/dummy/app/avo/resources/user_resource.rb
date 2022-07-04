@@ -49,18 +49,16 @@ class UserResource < Avo::BaseResource
   end
 
   tabs do
-    field :post,
-      as: :has_one,
-      # TODO: this shouldn't show on :show but it's visible on the tab switcher
-      hide_on: :show,
-      # show_on: :edit,
-      name: "Main post",
-      translation_key: "avo.field_translations.people"
     tab "birthday", description: "hey you" do
       panel do
         field :birthday, as: :date, first_day_of_week: 1, picker_format: "F J Y", format: "%Y-%m-%d", placeholder: "Feb 24th 1955", required: true
       end
     end
+
+    field :post,
+      as: :has_one,
+      name: "Main post",
+      translation_key: "avo.field_translations.people"
 
     field :posts,
       as: :has_many,
@@ -257,7 +255,7 @@ class UserResource < Avo::BaseResource
   #   body :url, as: :text
   # end
 
-  action ToggleInactive
+  # action ToggleInactive
   # action ToggleAdmin
   # action DummyAction
   # # action DownloadFile

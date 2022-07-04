@@ -74,7 +74,7 @@ module Avo
       # Adds the view override component
       # has_one, has_many, has_and_belongs_to_many fields don't have edit views
       def component_for_view(view = :index)
-        view = :show if view.in?([:edit, :new])
+        view = :edit if view.in? [:new, :create, :update]
 
         super view
       end

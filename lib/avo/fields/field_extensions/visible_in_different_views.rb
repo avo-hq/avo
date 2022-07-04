@@ -51,6 +51,16 @@ module Avo
           end
         end
 
+        # When submitting the form on creation, the new page will be create but we don't have a visibility marker for create so we'll default to new
+        def show_on_create
+          show_on_new
+        end
+
+        # When submitting the form on update, the new page will be create but we don't have a visibility marker for update so we'll default to edit
+        def show_on_update
+          show_on_edit
+        end
+
         private
 
         def show_on_view(view)

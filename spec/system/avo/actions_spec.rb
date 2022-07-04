@@ -23,7 +23,7 @@ RSpec.describe "Actions", type: :system do
       it "does not find an action on show" do
         visit "/admin/resources/users/#{user.id}"
 
-        within "[data-panel-index=\"0\"]" do
+        within "[data-panel-id=\"main\"]" do
           click_on "Actions"
         end
 
@@ -38,7 +38,7 @@ RSpec.describe "Actions", type: :system do
       it "finds the action on edit" do
         visit "/admin/resources/users/#{user.id}/edit"
 
-        within "[data-panel-index=\"0\"]" do
+        within "[data-panel-id=\"main\"]" do
           click_on "Actions"
         end
 
@@ -52,7 +52,7 @@ RSpec.describe "Actions", type: :system do
       it "finds the action on show" do
         visit "/admin/resources/users/new"
 
-        within "[data-panel-index=\"0\"]" do
+        within "[data-panel-id=\"main\"]" do
           click_on "Actions"
         end
 
