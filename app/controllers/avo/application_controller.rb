@@ -14,7 +14,7 @@ module Avo
     before_action :init_app
     before_action :check_avo_license
     before_action :set_default_locale
-    around_action :set_force_locale
+    around_action :set_force_locale, if: -> { params[:force_locale].present? }
     before_action :set_authorization
     before_action :_authenticate!
     before_action :set_container_classes
@@ -296,14 +296,10 @@ module Avo
 
     # Temporary set the locale
     def set_force_locale
-      if params[:force_locale].present?
-        initial_locale = I18n.locale.to_s.dup
-        I18n.locale = params[:force_locale]
-        yield
-        I18n.locale = initial_locale
-      else
-        yield
-      end
+      initial_locale = I18n.locale.to_s.dup
+      I18n.locale = params[:force_locale]
+      yield
+      I18n.locale = initial_locale
     end
 
     def default_url_options
