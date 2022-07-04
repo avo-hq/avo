@@ -6,7 +6,7 @@
       <%% end %>
     <%% end %>
 
-    <%% c.with_body do %>
+    <%% c.body do %>
       <div class="flex flex-col p-4 min-h-24">
         <div class="space-y-4">
           <h3>🪧 This partial is waiting to be updated</h3>
