@@ -22,6 +22,8 @@ module Avo
     attr_accessor :resource
     attr_accessor :user
 
+    delegate :view, to: :class
+
     class << self
       def form_data_attributes
         # We can't respond with a file download from Turbo se we disable it on the form
