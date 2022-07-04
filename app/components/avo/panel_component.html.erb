@@ -23,11 +23,9 @@
       <% end %>
     </div>
   <% end %>
-  <% if body? %>
-    <div class="relative <%= white_panel_classes %> <%= @body_classes %>">
-      <%= body %>
-    </div>
-  <% end %>
+  <div class="relative <%= white_panel_classes %> <%= @body_classes %>">
+    <%= body %>
+  </div>
   <% if bare_content? %>
     <div class="relative">
       <%= bare_content %>
