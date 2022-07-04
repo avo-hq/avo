@@ -26,9 +26,11 @@ class Avo::ButtonComponent < ViewComponent::Base
   def args
     if @args[:loading]
       @args[:"data-controller"] = "loading-button"
+      @args[:"data-loading-button-confirmed-value"] = false
+      @args[:"data-action"] = "click->loading-button#attemptSubmit"
 
       if @args[:confirm]
-        @args[:"data-avo-confirm"] = @args.delete(:confirm)
+        @args[:"data-loading-button-confirmation-message-value"] = @args.delete(:confirm)
       end
     end
 

@@ -7,31 +7,28 @@ export default class extends Controller {
   <div class="double-bounce2"></div>
 </div>`;
 
-  confirmed = false
+  static values = {
+    confirmationMessage: String,
+    confirmed: Boolean,
+  }
 
-  connect() {
-    this.context.scope.element.addEventListener('click', (e) => {
-      // If the user has to confirm the action
-      if (this.confirmationMessage) {
-        // Intervene only if not confirmed
-        if (!this.confirmed) {
-          e.preventDefault()
-          if (window.confirm(this.confirmationMessage)) {
-            this.applyLoader()
-          }
+  attemptSubmit(e) {
+    // If the user has to confirm the action
+    if (this.confirmationMessageValue) {
+      // Intervene only if not confirmed
+      if (!this.confirmedValue) {
+        e.preventDefault()
+        if (window.confirm(this.confirmationMessageValue)) {
+          this.applyLoader()
         }
-      } else {
-        this.applyLoader()
       }
-    })
+    } else {
+      this.applyLoader()
+    }
   }
 
   get button() {
     return this.context.scope.element
-  }
-
-  get confirmationMessage() {
-    return this.context.scope.element.getAttribute('data-avo-confirm')
   }
 
   applyLoader() {
@@ -50,10 +47,10 @@ export default class extends Controller {
   }
 
   markConfirmed() {
-    this.confirmed = true
+    this.confirmedValue = true
   }
 
   markUnconfirmed() {
-    this.confirmed = false
+    this.confirmedValue = false
   }
 }

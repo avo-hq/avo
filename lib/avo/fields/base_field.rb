@@ -210,8 +210,8 @@ module Avo
 
       # Try and build the component class or fallback to a blank one
       def component_for_view(view = :index)
-        # Use the edit variant for new views
-        view = :edit if view == :new
+        # Use the edit variant for all "update" views
+        view = :edit if view.in? [:new, :create, :update]
 
         component_class = "::Avo::Fields::#{view_component_name}::#{view.to_s.camelize}Component"
         component_class.constantize

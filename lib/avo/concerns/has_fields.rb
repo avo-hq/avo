@@ -243,6 +243,14 @@ module Avo
         panelfull_items = []
 
         items.each do |item|
+          # fields and tabs can be hidden on some views
+          if item.respond_to? :visible_on?
+            next unless item.visible_on?(view)
+          end
+          if item.respond_to? :visible?
+            next unless item.visible?
+          end
+
           if item.is_field?
             if item.has_own_panel?
               panelfull_items << item

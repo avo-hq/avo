@@ -49,6 +49,12 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
     view == :edit
   end
 
+  def form_method
+    return :put if is_edit?
+
+    :post
+  end
+
   def form_url
     if is_edit?
       helpers.resource_path(
