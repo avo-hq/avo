@@ -2,6 +2,7 @@
 
 class Avo::PanelComponent < ViewComponent::Base
   attr_reader :title
+  attr_reader :name
   attr_reader :classes
 
   renders_one :tools
@@ -10,8 +11,10 @@ class Avo::PanelComponent < ViewComponent::Base
   renders_one :footer_tools
   renders_one :footer
 
-  def initialize(title: nil, description: nil, body_classes: nil, data: {}, display_breadcrumbs: false, index: nil, classes: nil, view: nil)
+  def initialize(title: nil, name: nil, description: nil, body_classes: nil, data: {}, display_breadcrumbs: false, index: nil, classes: nil, view: nil)
+    # deprecating title in favor of name
     @title = title
+    @name = name || title
     @description = description
     @classes = classes
     @body_classes = body_classes
@@ -42,7 +45,7 @@ class Avo::PanelComponent < ViewComponent::Base
   end
 
   def render_header?
-    @title.present? || description.present? || tools.present? || display_breadcrumbs?
+    @name.present? || description.present? || tools.present? || display_breadcrumbs?
   end
 
   def render_footer_tools?
