@@ -10,7 +10,9 @@ RSpec.describe "Tabs", type: :system do
         visit "/admin/resources/users"
 
         expect(find('table thead').text).to eq "ID\nAVATAR\nFIRST NAME\nLAST NAME\nUSER EMAIL\nIS ACTIVE\nCV\nIS ADMIN\nROLES\nBIRTHDAY\nIS WRITER"
-        expect(find_all('table tbody tr td')[10].text).to eq "1988-02-10"
+        within find("tr[data-resource-id='#{user.id}']") do
+          expect(find_all('table tbody tr td')[10].text).to eq "1988-02-10"
+        end
       end
     end
   end
