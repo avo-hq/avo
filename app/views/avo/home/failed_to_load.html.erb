@@ -1,4 +1,4 @@
-<%= turbo_frame_wrap(params[:turbo_frame]) do %>
+<%= render Avo::TurboFrameWrapperComponent.new(params[:turbo_frame]) do %>
   <%
   classes = 'absolute inset-auto left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2'
   label = t 'avo.failed_to_load'

@@ -20,12 +20,6 @@ module Avo
       render Avo::EmptyStateComponent.new **args
     end
 
-    def turbo_frame_wrap(name, &block)
-      render Avo::TurboFrameWrapperComponent.new name do
-        capture(&block)
-      end
-    end
-
     def a_button(**args, &block)
       render Avo::ButtonComponent.new(is_link: false, **args) do
         capture(&block) if block_given?
