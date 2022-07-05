@@ -59,22 +59,18 @@ class Avo::TabSwitcherComponent < Avo::BaseComponent
   # Because the developer hasn't specified that it should be visible on edit views (with the show_on: :edit option),
   # the field should not be visible in the item switcher either.
   def visible_items
-    tabs.map do |tab|
-      first_item = tab.items.first
-
-      if tab.items.blank?
-        # Return nil if tab group is empty
-        nil
-      elsif tab.items.count == 1 && first_item.is_field? && first_item.has_own_panel? && !first_item.visible_on?(view)
-        # Return nil if tab contians a has_many type of fields and it's hidden in current view
-        nil
-      else
-        tab
-      end
-    end
-    .compact
-    .select do |item|
+    tabs.select do |item|
       visible = true
+
+      if item.items.blank?
+        visible = false
+      end
+
+      first_item = item.items.first
+      if item.items.count == 1 && first_item.is_field? && first_item.has_own_panel? && !first_item.visible_on?(view)
+        # Return nil if tab contians a has_many type of fields and it's hidden in current view
+        visible = false
+      end
 
       if item.respond_to?(:visible_on?)
         visible = item.visible_on? view
