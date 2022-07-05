@@ -15,16 +15,22 @@ export default class extends Controller {
   attemptSubmit(e) {
     // If the user has to confirm the action
     if (this.confirmationMessageValue) {
-      // Intervene only if not confirmed
-      if (!this.confirmedValue) {
-        e.preventDefault()
-
-        if (window.confirm(this.confirmationMessageValue)) {
-          this.applyLoader()
-        }
-      }
+      this.confirmAndApply(e)
     } else {
       this.applyLoader()
+    }
+
+    return null
+  }
+
+  confirmAndApply(e) {
+    // Intervene only if not confirmed
+    if (!this.confirmedValue) {
+      e.preventDefault()
+
+      if (window.confirm(this.confirmationMessageValue)) {
+        this.applyLoader()
+      }
     }
   }
 
