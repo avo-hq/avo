@@ -67,6 +67,7 @@ RSpec.describe "Tabs", type: :system do
         end
 
         find('[aria-label="February 9, 1988"]').click
+        sleep 0.1
         click_on 'Save'
         wait_for_loaded
 
