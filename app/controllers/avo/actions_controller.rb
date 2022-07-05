@@ -42,7 +42,7 @@ module Avo
         model = @resource.class.find_scope.find params[:id]
       end
 
-      @action = action_class.new(model: model, resource: resource, user: _current_user)
+      @action = action_class.new(model: model, resource: resource, user: _current_user, view: :edit)
     end
 
     def respond(response)

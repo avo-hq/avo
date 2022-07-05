@@ -3,10 +3,10 @@ require "rails_helper"
 RSpec.feature "belongs_to", type: :system do
   let!(:user) { create :user }
   let!(:post) { create :post }
-  let!(:second_post) { create :post, name: "Artichokes are good too" }
+  let!(:second_post) { create :post, name: "Plums are good" }
   # making more posts so we're certain that we check for the right record
   let!(:other_posts) {
-    create_list(:post, 10) do |post, i|
+    create_list(:post, 10, body: 'zzz') do |post, i|
       post.update(name: "#{Faker::Company.name} - #{i}")
     end
   }
@@ -14,7 +14,7 @@ RSpec.feature "belongs_to", type: :system do
 
   let!(:amber) { create :user, first_name: "Amber", last_name: "Johnes" }
   let!(:alicia) { create :user, first_name: "Alicia", last_name: "Johnes" }
-  let!(:post) { create :post, name: "Avocados are the best" }
+  let!(:post) { create :post, name: "Plates are required" }
   let!(:team) { create :team, name: "Apple" }
 
   before do
@@ -254,25 +254,23 @@ RSpec.feature "belongs_to", type: :system do
           fill_in "review_body", with: "Yup"
           find("#review_reviewable_id").click
 
-          write_in_search "A"
+          write_in_search "pl"
 
           wait_for_search_loaded
-          sleep 0.1
 
-          expect(find(".aa-Panel")).to have_content "Avocados"
-          expect(find(".aa-Panel")).to have_content "Artichokes"
+          expect(find(".aa-Panel")).to have_content "Plates"
+          expect(find(".aa-Panel")).to have_content "Plums"
           expect(find(".aa-Panel")).not_to have_content "TEAMS"
 
-          write_in_search "Avocado"
+          write_in_search "Plates"
 
           wait_for_search_loaded
-          sleep 0.1
 
           select_first_result_in_search
           wait_for_search_to_dissapear
 
           text_input = find '[name="review[reviewable_id]"][type="text"]', visible: true
-          expect(text_input.value).to eq "Avocados are the best"
+          expect(text_input.value).to eq "Plates are required"
 
           click_on "Save"
 
@@ -313,17 +311,14 @@ RSpec.feature "belongs_to", type: :system do
             fill_in "review_body", with: "Avo rules!"
             find("#review_reviewable_id").click
 
-            write_in_search "Artichokes"
-            sleep 0.2
-
+            write_in_search "Plums"
             wait_for_search_loaded
 
-            expect(find(".aa-Panel")).not_to have_content "Avocados"
-            expect(find(".aa-Panel")).to have_content "Artichokes"
+            expect(find(".aa-Panel")).not_to have_content "Plates"
+            expect(find(".aa-Panel")).to have_content "Plums"
 
             select_first_result_in_search
             wait_for_search_to_dissapear
-            sleep 0.2
 
             expect(page).to have_field type: "text", name: "review[reviewable_id]", with: second_post.name
             expect(page).to have_field type: "hidden", name: "review[reviewable_id]", with: second_post.id, visible: false
@@ -384,7 +379,7 @@ RSpec.feature "belongs_to", type: :system do
           find(".aa-Input").send_keys :arrow_down
           find(".aa-Input").send_keys :return
 
-          sleep 0.5
+          sleep 0.2
 
           expect(page).to have_field type: "text", name: "review[reviewable_id]", with: "Apple"
           expect(page).to have_field type: "hidden", name: "review[reviewable_id]", with: team.id, visible: false

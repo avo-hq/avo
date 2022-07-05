@@ -1,5 +1,5 @@
 <div class="flex flex-col">
-  <%= render Avo::PanelComponent.new title: 'Welcome to Avo', description: 'This page is visible only in development. It will be hidden in other environments.' do |c| %>
+  <%= render Avo::PanelComponent.new(title: 'Welcome to Avo', description: 'This page is visible only in development. It will be hidden in other environments.') do |c| %>
     <% c.body do %>
       <div class="flex flex-col justify-between py-6 min-h-24">
         <div class="px-6 space-y-4">
@@ -23,10 +23,20 @@
               <li><span class="mr-2">👍</span> Grid view</li>
               <li><span class="mr-2">👍</span> Authorization</li>
               <li><span class="mr-2">👍</span> Localization</li>
+              <li><span class="mr-2">👍</span> Resource tools</li>
               <li><span class="mr-2">👍</span> Custom tools</li>
               <li><span class="mr-2">👍</span> Custom fields</li>
+              <li><span class="mr-2">👍</span> Menu editor</li>
               <li><span class="mr-2">👍</span> Search</li>
-              <li><span class="mr-2">🕐</span> Dashboards</li>
+              <li><span class="mr-2">👍</span> Dashboards</li>
+              <li><span class="mr-2">👍</span> Responsive design</li>
+              <li><span class="mr-2">👍</span> Menu editor</li>
+              <li><span class="mr-2">👍</span> Stimulus JS integration</li>
+              <li><span class="mr-2">👍</span> Tabs and panels</li>
+              <li><span class="mr-2">🕐</span> Resource cards</li>
+              <li><span class="mr-2">🕐</span> Track resource changes</li>
+              <li><span class="mr-2">🕐</span> Smart resource generation</li>
+              <li><span class="mr-2">🕐</span> Records preview</li>
               <li><span class="mr-2">🕐</span> Themes</li>
             </ul>
           </p>
@@ -36,6 +46,8 @@
         <div class="px-6 mt-8">
           <div class="space">
             <%= render partial: 'resources' %>
+            <hr class="my-6">
+            <%= render partial: 'dashboards' %>
             <hr class="my-6">
             <%= render partial: 'filters' %>
             <hr class="my-6">

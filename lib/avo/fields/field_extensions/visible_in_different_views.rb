@@ -7,11 +7,18 @@ module Avo
         attr_accessor :show_on_new
         attr_accessor :show_on_edit
 
-        def initialize(id, **args, &block)
+        def initialize(id = nil, **args, &block)
           @show_on_index = @show_on_index.nil? ? true : @show_on_index
           @show_on_show = @show_on_show.nil? ? true : @show_on_show
           @show_on_new = @show_on_new.nil? ? true : @show_on_new
           @show_on_edit = @show_on_edit.nil? ? true : @show_on_edit
+        end
+
+        # Validates if the field is visible on certain view
+        def visible_on?(view)
+          raise "No view specified on visibility check." if view.blank?
+
+          send :"show_on_#{view.to_s}"
         end
 
         def show_on(*where)
@@ -42,6 +49,16 @@ module Avo
           normalize_views(where).flatten.each do |view|
             show_on_view view
           end
+        end
+
+        # When submitting the form on creation, the new page will be create but we don't have a visibility marker for create so we'll default to new
+        def show_on_create
+          show_on_new
+        end
+
+        # When submitting the form on update, the new page will be create but we don't have a visibility marker for update so we'll default to edit
+        def show_on_update
+          show_on_edit
         end
 
         private

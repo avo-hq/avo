@@ -1,9 +1,11 @@
 module Avo
   class BaseResourceTool
+    include Avo::Concerns::IsResourceItem
     include Avo::Fields::FieldExtensions::VisibleInDifferentViews
 
     class_attribute :name
     class_attribute :partial
+    class_attribute :item_type, default: :tool
 
     attr_accessor :params
     attr_accessor :resource
@@ -20,7 +22,7 @@ module Avo
     end
 
     def hydrate(view: nil)
-      @view = view
+      @view = view if view.present?
 
       self
     end

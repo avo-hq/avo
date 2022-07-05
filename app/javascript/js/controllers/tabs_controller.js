@@ -6,6 +6,7 @@ export default class extends Controller {
   static targets = ['tab'];
 
   static values = {
+    view: String,
     activeTab: String,
   };
 
@@ -35,9 +36,15 @@ export default class extends Controller {
   }
 
   /**
-  * Sets the target container height to the previous panel height so we don't get jerky tab changes.
-  */
+   * Sets the target container height to the previous panel height so we don't get jerky tab changes.
+   */
   setTheTargetPanelHeight(id) {
+    // Ignore this on edit.
+    // All tabs are loaded beforehand, they have their own height, and the page won't jiggle when the user toggles between them.
+    if (this.viewValue === 'edit' || this.viewValue === 'new') {
+      return
+    }
+
     // We don't need to add a height to this panel because it was loaded before
     if (castBoolean(this.targetTab(id).dataset.loaded)) {
       return
@@ -71,7 +78,6 @@ export default class extends Controller {
         element.classList.remove('hidden')
       }
     })
-    // this.tabTargets.map((element) => element.clasList.add('hidden'))
   }
 
   hideTabs() {

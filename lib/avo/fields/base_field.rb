@@ -4,8 +4,11 @@ module Avo
       extend ActiveSupport::DescendantsTracker
       extend Avo::Fields::FieldExtensions::HasFieldName
 
-      include Avo::Fields::FieldExtensions::VisibleInDifferentViews
+      include Avo::Concerns::IsResourceItem
+      include Avo::Concerns::HandlesFieldArgs
+
       include ActionView::Helpers::UrlHelper
+      include Avo::Fields::FieldExtensions::VisibleInDifferentViews
 
       include Avo::Concerns::HandlesFieldArgs
       include Avo::Concerns::HasHTMLAttributes
@@ -48,8 +51,9 @@ module Avo
       attr_reader :panel_name
 
       class_attribute :field_name_attribute
+      class_attribute :item_type, default: :field
 
-      def initialize(id, _options: {}, **args, &block)
+      def initialize(id, **args, &block)
         super(id, **args, &block)
 
         @id = id
@@ -206,9 +210,14 @@ module Avo
 
       # Try and build the component class or fallback to a blank one
       def component_for_view(view = :index)
+        # Use the edit variant for all "update" views
+        view = :edit if view.in? [:new, :create, :update]
+
         component_class = "::Avo::Fields::#{view_component_name}::#{view.to_s.camelize}Component"
         component_class.constantize
       rescue
+        # When returning nil, a race condition happens and throws an error in some environments.
+        # See https://github.com/avo-hq/avo/pull/365
         ::Avo::BlankFieldComponent
       end
 
@@ -226,6 +235,14 @@ module Avo
         !method(:initialize).source_location.first.include?("lib/avo/field")
       rescue
         true
+      end
+
+      def visible_in_reflection?
+        true
+      end
+
+      def hidden_in_reflection?
+        !visible_in_reflection?
       end
 
       private

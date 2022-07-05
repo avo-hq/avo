@@ -5,12 +5,12 @@ class Avo::Menu::Builder
     end
   end
 
-  delegate :context, to: Avo::App
-  delegate :current_user, to: Avo::App
-  delegate :params, to: Avo::App
-  delegate :request, to: Avo::App
-  delegate :root_path, to: Avo::App
-  delegate :view_context, to: Avo::App
+  delegate :context, to: ::Avo::App
+  delegate :current_user, to: ::Avo::App
+  delegate :params, to: ::Avo::App
+  delegate :request, to: ::Avo::App
+  delegate :root_path, to: ::Avo::App
+  delegate :view_context, to: ::Avo::App
 
   def initialize(name: nil, items: [])
     @menu = Avo::Menu::Menu.new

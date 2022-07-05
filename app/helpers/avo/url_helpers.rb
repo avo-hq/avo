@@ -35,7 +35,7 @@ module Avo
       avo.send :"resources_#{resource.singular_route_key}_path", id, **args
     end
 
-    def new_resource_path(model:, resource:, **args)
+    def new_resource_path(resource:, **args)
       avo.send :"new_resources_#{resource.singular_route_key}_path", **args
     end
 

@@ -113,7 +113,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
       end
     end
 
-    helpers.new_resource_path(model: @resource.model_class, resource: @resource, **args)
+    helpers.new_resource_path(resource: @resource, **args)
   end
 
   def attach_path
