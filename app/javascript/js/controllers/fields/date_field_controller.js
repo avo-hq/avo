@@ -8,7 +8,7 @@ function universalTimestamp(timestampStr) {
 }
 
 export default class extends Controller {
-  static targets = ['input']
+  static targets = ['input', 'fakeInput']
 
   static values = {
     view: String,
@@ -80,6 +80,7 @@ export default class extends Controller {
         firstDayOfWeek: 0,
       },
       altInput: true,
+      onChange: this.onChange.bind(this),
     }
 
     // Set the format of the displayed input field.
@@ -103,6 +104,23 @@ export default class extends Controller {
       options.defaultDate = universalTimestamp(this.initialValue)
     }
 
-    flatpickr(this.inputTarget, options)
+    flatpickr(this.fakeInputTarget, options)
+
+    this.updateRealInput(this.parsedValue.setZone(this.displayTimezone).toISO())
+  }
+
+  onChange(selectedDates) {
+    let time
+
+    if (this.timezoneValue) {
+      time = DateTime.fromISO(selectedDates[0].toISOString()).setZone('UTC', { keepLocalTime: true })
+    } else {
+      time = DateTime.fromISO(selectedDates[0].toISOString()).setZone('UTC', { keepLocalTime: false })
+    }
+    this.updateRealInput(time)
+  }
+
+  updateRealInput(value) {
+    this.inputTarget.value = value
   }
 }

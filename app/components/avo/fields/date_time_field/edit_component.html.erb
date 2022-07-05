@@ -8,9 +8,22 @@
       date_field_time24_hr_value: @field.time_24hr,
       date_field_timezone_value: @field.timezone,
   } do %>
-    <%= @form.datetime_field @field.id,
+    <%= datetime_field "fake_#{@field.id}", "fake",
       value: @field.edit_formatted_value,
       class: classes("w-full"),
+      data: {
+        'date-field-target': 'fakeInput',
+        placeholder: @field.placeholder,
+        relative: @field.relative,
+        **@field.get_html(:data, view: view, element: :input)
+      },
+      disabled: @field.readonly,
+      placeholder: @field.placeholder,
+      style: @field.get_html(:style, view: view, element: :input)
+    %>
+    <%= @form.text_field @field.id,
+      value: @field.edit_formatted_value,
+      class: classes("w-full hidden"),
       data: {
         'date-field-target': 'input',
         placeholder: @field.placeholder,

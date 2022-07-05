@@ -24,7 +24,7 @@ module Avo
       def edit_formatted_value
         return nil if value.nil?
 
-        value.utc.to_formatted_s(:db)
+        value.utc.iso8601
       end
 
       def fill_field(model, key, value, params)
@@ -36,9 +36,17 @@ module Avo
 
         return model if value.blank?
 
-        model[id] = value.in_time_zone(timezone)
+        model[id] = utc_time(value)
 
         model
+      end
+
+      def utc_time(value)
+        if timezone.present?
+          ActiveSupport::TimeZone.new(timezone).local_to_utc(Time.parse(value))
+        else
+          value
+        end
       end
     end
   end

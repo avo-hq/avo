@@ -18,6 +18,8 @@ class CommentResource < Avo::BaseResource
     end
   end
   field :tiny_name, as: :text, only_on: :index, as_description: true
+  # field :posted_at, as: :date_time, timezone: 'Australia/Sydney'
+  field :posted_at, as: :date_time
 
   field :user, as: :belongs_to
   field :commentable, as: :belongs_to, polymorphic_as: :commentable, types: [::Post, ::Project]
