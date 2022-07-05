@@ -43,7 +43,6 @@ module Avo
     class_attribute :hide_from_global_search, default: false
     class_attribute :after_create_path, default: :show
     class_attribute :after_update_path, default: :show
-    # class_attribute :invalid_fields
     class_attribute :record_selector, default: true
     class_attribute :keep_filters_panel_open, default: false
 
@@ -108,10 +107,6 @@ module Avo
       end
     end
 
-    # def items
-    #   self
-    # end
-
     def hydrate(model: nil, view: nil, user: nil, params: nil)
       @view = view if view.present?
       @user = user if user.present?
@@ -156,16 +151,6 @@ module Avo
         t("avo.create_new_item", item: name.downcase).upcase_first
       end
     end
-
-    # def panels
-    #   [
-    #     {
-    #       name: default_panel_name,
-    #       type: :fields,
-    #       in_panel: true
-    #     }
-    #   ]
-    # end
 
     def class_name_without_resource
       self.class.name.demodulize.chomp("Resource")
