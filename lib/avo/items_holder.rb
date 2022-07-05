@@ -1,8 +1,6 @@
 module Avo
   class ItemsHolder
     attr_reader :tools
-    # attr_reader :filters
-    # attr_reader :actions
     attr_accessor :items
     attr_accessor :invalid_fields
 

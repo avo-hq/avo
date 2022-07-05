@@ -7,8 +7,6 @@ class Avo::PanelBuilder
 
   delegate :field, to: :items_holder
   delegate :items, to: :items_holder
-  # delegate :tool, to: :items_holder
-  # delegate :panel, to: :items_holder
 
   attr_reader :items_holder
 

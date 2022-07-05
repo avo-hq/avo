@@ -13,7 +13,6 @@ module Avo
       end
 
       class_methods do
-        delegate :add_tool, to: ::Avo::Services::DslService
         delegate :tool, to: :items_holder
 
         # DSL methods
