@@ -94,8 +94,11 @@ module Avo
           fields = []
 
           thing.items.each do |item|
-            fields << extract_fields_from_items(item) if item.is_panel?
-            fields << item if item.is_field?
+            if item.is_field?
+              fields << item
+            elsif item.is_panel?
+              fields << extract_fields_from_items(item)
+            end
           end
 
           fields
