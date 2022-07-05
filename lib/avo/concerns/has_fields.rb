@@ -223,22 +223,20 @@ module Avo
 
         return [] if App.license.lacks_with_trial :resource_tools
         return [] if self.class.tools.blank?
-        # abort self.class.tools_holder.inspect
 
-        # .map do |tool|
-        #   tool.hydrate view: view
-        #   tool
-        # end
-        # .select do |field|
-        #   # field.visible_on?(view)
-        #   true
-        # end
-        # [3,4,5]
-        self.items.select do |item|
-          next if item.nil?
+        self.items
+          .select do |item|
+            next if item.nil?
 
-          item.is_tool?
-        end
+            item.is_tool?
+          end
+          .map do |tool|
+            tool.hydrate view: view
+            tool
+          end
+          .select do |item|
+            item.visible_on?(view)
+          end
       end
 
       # Separates the fields that are in a panel and those that are just hanging out.
