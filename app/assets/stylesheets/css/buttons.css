@@ -2,7 +2,7 @@
   @apply flex;
 
   .button-component {
-    @apply  -mr-px;
+    @apply -mr-px;
 
     &:first-child {
       @apply rounded-l;

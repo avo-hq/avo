@@ -1,11 +1,5 @@
 require 'rails_helper'
 
-def click_tab(tab_name = '')
-  within find('[data-controller="tabs"] .button-group:first-of-type') do
-    find_link(tab_name).click
-  end
-end
-
 RSpec.describe 'HasOneFieldName', type: :system do
   let!(:user) { create :user }
   let!(:post) { create :post }
@@ -21,12 +15,16 @@ RSpec.describe 'HasOneFieldName', type: :system do
     describe 'without a related post' do
       it 'attaches and detaches a post' do
         visit url
-        scroll_to find('[data-controller="tabs"]')
-        click_tab 'Main post'
+
+        scroll_to second_tab_group
+
+        click_tab 'Main post', within: second_tab_group
         expect(page).to have_text 'Attach Main post'
 
         click_on 'Attach Main post'
+
         wait_for_loaded
+
         expect(page).to have_text 'Choose post'
 
         expect(page).to have_select 'fields_related_id', selected: "Choose an option"
@@ -34,7 +32,10 @@ RSpec.describe 'HasOneFieldName', type: :system do
 
         click_on 'Attach'
         wait_for_loaded
-        click_tab 'Main post'
+
+        scroll_to second_tab_group
+
+        click_tab 'Main post', within: second_tab_group
 
         expect(page).to have_text 'Post attached.'
         expect(page).not_to have_text 'Choose post'
@@ -49,7 +50,8 @@ RSpec.describe 'HasOneFieldName', type: :system do
           click_on 'Detach main post'
         end
         wait_for_loaded
-        click_tab 'Main post'
+
+        click_tab 'Main post', within: second_tab_group
 
         expect(page).to have_text 'Post detached.'
         expect(page).not_to have_text 'Detach main post'

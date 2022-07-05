@@ -1,24 +1,16 @@
-<div class="flex">
+<div class="flex" data-target="tab-switcher">
   <div class="button-group">
-    <% visible_items.each_with_index do |tab, index| %>
-      <%
-        # On initial load we want that each tab button to be the selected one.
-        # We do that so we don't get the wrongly selected item for a quick brief when first switching from one panel to another.
-        is_active_view = if is_initial_load?
-          current_tab.name.to_s == tab.name.to_s
-        else
-          tab.name.to_s == active_tab_name.to_s
-        end
-      %>
+    <% visible_items.each do |tab| %>
       <%= a_link tab_path(tab),
-          color: is_active_view ? :gray : :primary,
+          color: selected?(tab) ? :gray : :primary,
           rounded: false,
           size: :sm,
-          class: is_active_view ? ' bg-gray-100 border-gray-300' : ' z-20',
+          class: selected?(tab) ? ' bg-gray-100 border-gray-300' : ' z-20',
           title: tab.description,
           data: {
             tippy: tab.description.present? ? 'tooltip' : '',
-            control: "view-type-toggle-#{tab}",
+            control: "view-type-toggle-#{tab.name}",
+            selected: selected?(tab),
             action: 'click->tabs#changeTab',
             tabs_id_param: tab.name
           } do %>

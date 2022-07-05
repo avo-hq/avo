@@ -65,3 +65,29 @@ end
 def toggle_filters_menu
   open_filters_menu
 end
+
+def click_tab(tab_name = '', **args)
+  if args[:within].present?
+    within args[:within] do
+      within find('[data-controller="tabs"] turbo-frame:not(.hidden) [data-target="tab-switcher"]') do
+        find_link(tab_name).click
+      end
+    end
+  else
+    within find('[data-controller="tabs"] turbo-frame:not(.hidden) [data-target="tab-switcher"]') do
+      find_link(tab_name).click
+    end
+  end
+end
+
+def first_tab_group
+  find_all('[data-controller="tabs"]')[0]
+end
+
+def second_tab_group
+  find_all('[data-controller="tabs"]')[1]
+end
+
+def third_tab_group
+  find_all('[data-controller="tabs"]')[2]
+end
