@@ -1,6 +1,8 @@
 module Avo
   module Fields
     class CountryField < BaseField
+      include Avo::Fields::FieldExtensions::HasIncludeBlank
+
       attr_reader :countries
       attr_reader :display_code
 

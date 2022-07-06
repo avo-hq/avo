@@ -76,6 +76,8 @@ module Avo
         @index_text_align = args[:index_text_align] || :left
         @html = args[:html] || nil
 
+        @args = args
+
         @updatable = true
         @computable = true
         @computed = block.present?

@@ -1,6 +1,8 @@
 module Avo
   module Fields
     class SelectField < BaseField
+      include Avo::Fields::FieldExtensions::HasIncludeBlank
+
       attr_reader :options
       attr_reader :enum
       attr_reader :display_value
