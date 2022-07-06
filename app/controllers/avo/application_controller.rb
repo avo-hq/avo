@@ -195,7 +195,7 @@ module Avo
 
     def related_resource_name
       # params[:related_name]
-      request.path_info.gsub '/resources/', ''
+      request.path_info.split('/').select(&:present?).second
     end
 
     # Gets the Avo resource for this request based on the request from the `resource_name` "param"

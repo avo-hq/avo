@@ -22,7 +22,7 @@ module Avo
       end
 
       def frame_url
-        "#{@resource.record_path}/#{id}/#{value.id}?turbo_frame=#{turbo_frame}"
+        "#{target_resource.hydrate(model: value).record_path}?turbo_frame=#{turbo_frame}&for_resource_klass=#{@resource.class}&related_id=#{@resource.model.id}"
       end
 
       def fill_field(model, key, value, params)
