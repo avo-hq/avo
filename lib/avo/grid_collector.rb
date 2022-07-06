@@ -13,15 +13,18 @@ module Avo
     end
 
     def cover(field_name, as:, **args, &block)
-      self.cover_field = self.class.parse_field(field_name, as: as, **args, &block)
+      field_parser = Avo::Dsl::FieldParser.new(id: field_name, as: as, order_index: items_index, **args, &block).parse
+      self.cover_field = field_parser.instance if field_parser.valid?
     end
 
     def title(field_name, as:, **args, &block)
-      self.title_field = self.class.parse_field(field_name, as: as, **args, &block)
+      field_parser = Avo::Dsl::FieldParser.new(id: field_name, as: as, order_index: items_index, **args, &block).parse
+      self.title_field = field_parser.instance if field_parser.valid?
     end
 
     def body(field_name, as:, **args, &block)
-      self.body_field = self.class.parse_field(field_name, as: as, **args, &block)
+      field_parser = Avo::Dsl::FieldParser.new(id: field_name, as: as, order_index: items_index, **args, &block).parse
+      self.body_field = field_parser.instance if field_parser.valid?
     end
 
     def hydrate(model:, view:, resource:)

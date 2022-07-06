@@ -1,0 +1,53 @@
+<%= content_tag :div,
+  data: {
+    target: "tab-group",
+    index: index,
+    controller: "tabs",
+    tabs_view_value: view,
+    tabs_active_tab_value: active_tab_name
+  },
+  class: 'space-y-12' do %>
+  <% visible_tabs.each_with_index do |tab, index| %>
+    <%
+      args = {
+        # Hide the turbo frames that aren't in the current tab
+        # This way we can lazy load the un-selected tabs on the show view
+        class: "block #{'hidden' unless tab.name == active_tab_name}",
+        data: {
+          # Add a marker to know if we already loaded a turbo frame
+          loaded: tab.name == active_tab_name,
+          tabs_target: :tab,
+          tab_id: tab.name,
+        }
+      }
+
+      is_current_tab = active_tab_name.to_s == tab.name.to_s
+
+      # On edit screens we want to load each tab because we wnst the DOM to have the fields present on form submission.
+      # If you have a field which is in the second tab and it's required, the form submission will fail because the required field is not in view, and we don't want that.
+      # We also want to load the current tab
+      should_lazy_load = if @view.to_s.in?(['edit', 'new'])
+        false
+      else
+        !is_current_tab
+      end
+
+      if should_lazy_load
+        args[:src] = helpers.resource_path(resource: @resource, model: @resource.model, keep_query_params: true, active_tab_name: tab.name, tab_turbo_frame: group.turbo_frame_id)
+        args[:loading] = :lazy
+      end
+    %>
+    <%= turbo_frame_tag tab.turbo_frame_id(parent: @group), **args do %>
+      <div class="border rounded-lg p-2 -mx-2 -my-2 lg:p-4 lg:-mx-4 lg:-my-4 space-y-4">
+        <%= render Avo::TabSwitcherComponent.new resource: @resource, current_tab: tab, group: group, active_tab_name: active_tab_name, view: view %>
+        <% if !should_lazy_load && !tab.empty? %>
+          <div class="space-y-12">
+            <% tab.visible_items.each do |item| %>
+              <%= render Avo::ItemSwitcherComponent.new resource: @resource, item: item, index: index, form: form, view: @view %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

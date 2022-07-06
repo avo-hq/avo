@@ -19,19 +19,9 @@ class Avo::Index::Ordering::ButtonComponent < Avo::Index::Ordering::BaseComponen
 
   def order_path(args)
     if reflection.present?
-      path = "#{::Avo::App.root_path}/resources/#{reflection_parent_resource.route_key}/#{params[:id]}/#{field.id}/#{resource.model.id}/order"
+      Avo::App.view_context.avo.associations_order_path(reflection_parent_resource.route_key, params[:id], field.id, resource.model.id, **args)
     else
-      path = "#{::Avo::App.root_path}/resources/#{resource.route_key}/#{resource.model.id}/order"
+      Avo::App.view_context.avo.resources_order_path(resource.route_key, resource.model.id, **args)
     end
-
-    if args.present?
-      string_args = args.map do |key, value|
-        "#{key}=#{value}"
-      end.join('&')
-
-      path = "#{path}?#{string_args}"
-    end
-
-    path
   end
 end

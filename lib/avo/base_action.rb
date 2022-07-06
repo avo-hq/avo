@@ -13,7 +13,6 @@ module Avo
     class_attribute :view
     class_attribute :user
     class_attribute :resource
-    class_attribute :invalid_fields
     class_attribute :standalone, default: false
     class_attribute :visible
     class_attribute :may_download_file, default: false
@@ -22,7 +21,8 @@ module Avo
     attr_accessor :model
     attr_accessor :resource
     attr_accessor :user
-    attr_accessor :fields_loader
+
+    delegate :view, to: :class
 
     class << self
       def form_data_attributes
@@ -66,23 +66,6 @@ module Avo
 
     def context
       self.class.context
-    end
-
-    def get_field_definitions
-      return [] if self.class.fields.blank?
-
-      self.class.fields.map do |field|
-        field.hydrate(action: self)
-      end
-    end
-
-    def get_fields
-      get_field_definitions.map do |field|
-        field.hydrate(action: self, model: @model)
-      end
-        .select do |field|
-        field.visible?
-      end
     end
 
     def get_attributes_for_action

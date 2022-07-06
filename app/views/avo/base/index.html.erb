@@ -1,4 +1,4 @@
-<%= turbo_frame_wrap(params[:turbo_frame]) do %>
+<%= render Avo::TurboFrameWrapperComponent.new(params[:turbo_frame]) do %>
   <%= render Avo::Views::ResourceIndexComponent.new(
       resource: @resource,
       resources: @resources,

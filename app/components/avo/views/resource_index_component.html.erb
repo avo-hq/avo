@@ -37,7 +37,7 @@
             <%= render partial: 'avo/partials/resource_search', locals: {resource: @resource.model_name.collection} %>
           </div>
         <% else %>
-          <%# Offset for the space-y-2 property when the serach is missing %>
+          <%# Offset for the space-y-2 property when the search is missing %>
           <div class="-mb-2"></div>
         <% end %>
         <% if @filters.present? || available_view_types.count > 1 %>

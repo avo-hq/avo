@@ -22,7 +22,11 @@ module Avo
       end
 
       def frame_url
-        "#{target_resource.hydrate(model: value).record_path}?turbo_frame=#{turbo_frame}&for_resource_klass=#{@resource.class}&related_id=#{@resource.model.id}"
+        # "#{target_resource.hydrate(model: value).record_path}?turbo_frame=#{turbo_frame}&for_resource_klass=#{@resource.class}&related_id=#{@resource.model.id}"
+        Avo::Services::URIService.parse(target_resource.hydrate(model: value).record_path)
+          # .append_paths(id, value.id)
+          .append_query(turbo_frame: turbo_frame, for_resource_klass: @resource.class, related_id: @resource.model.id)
+          .to_s
       end
 
       def fill_field(model, key, value, params)

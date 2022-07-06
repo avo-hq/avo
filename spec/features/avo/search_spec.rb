@@ -73,7 +73,7 @@ RSpec.feature "Search", type: :system do
         expect(page).to have_content "Hehe user"
         expect(page).to have_content "This user has the following roles: admin, manager, writer"
 
-        sleep 0.2
+        sleep 0.4
 
         find(".aa-Input").send_keys :arrow_down
         find(".aa-Input").send_keys :return

@@ -65,7 +65,7 @@ module Avo
         end
 
         def navigation_path
-          "#{Avo::App.root_path}/dashboards/#{id}"
+          Avo::App.view_context.avo.dashboard_path id
         end
 
         def is_visible?

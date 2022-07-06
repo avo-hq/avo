@@ -29,7 +29,11 @@ module Avo
       end
 
       def frame_url
-        "#{target_resource.records_path}?turbo_frame=#{turbo_frame}&for_resource_klass=#{@resource.class}&id=#{@resource.model.id}"
+        # "#{target_resource.records_path}?turbo_frame=#{turbo_frame}&for_resource_klass=#{@resource.class}&id=#{@resource.model.id}"
+        Avo::Services::URIService.parse(target_resource.records_path)
+          # .append_path(id.to_s)
+          .append_query(turbo_frame: turbo_frame.to_s, for_resource_klass: @resource.class, id: @resource.model.id)
+          .to_s
       end
 
       # The value
@@ -58,6 +62,22 @@ module Avo
 
       def placeholder
         @placeholder || I18n.t("avo.choose_an_option")
+      end
+
+      def has_own_panel?
+        true
+      end
+
+      def visible_in_reflection?
+        false
+      end
+
+      # Adds the view override component
+      # has_one, has_many, has_and_belongs_to_many fields don't have edit views
+      def component_for_view(view = :index)
+        view = :show if view.in? [:new, :create, :update, :edit]
+
+        super view
       end
     end
   end
