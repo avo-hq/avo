@@ -64,10 +64,10 @@ module Avo
 
       def options
         {
-          key_label: @key_label,
-          value_label: @value_label,
-          action_text: @action_text,
-          delete_text: @delete_text,
+          key_label: key_label,
+          value_label: value_label,
+          action_text: action_text,
+          delete_text: delete_text,
           disable_editing_keys: @disable_editing_keys,
           disable_adding_rows: @disable_adding_rows,
           disable_deleting_rows: @disable_deleting_rows
