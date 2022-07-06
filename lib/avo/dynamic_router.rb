@@ -11,8 +11,22 @@ module Avo
 
           # end
           # router.get "/:resource_name/:id/:related_name/", to: "associations#index", as: "associations_index"
-          router.resources route_key, only: [:index], controller: '/avo/associations', constraints: lambda { |req| req.params[:resource_class].present? }
+          # router.resources route_key, only: [:index], controller: '/avo/associations', constraints: lambda { |req| req.params[:resource_class].present? }
+
+
+          # association routes
+          router.resources route_key,
+            controller: "associations",
+            constraints: ->(request) do
+              # request.params[:for_resource_klass].present? || request.params[:for_association].present?
+              request.params[:for_resource_klass].present?
+            end
+
+          # regular routes
           router.resources route_key
+
+
+
           # member do
 
           # end
@@ -41,15 +55,15 @@ module Avo
             # Form segment.count == 2 we manually nest the namespaces in order to avoid the complexity around programatically nesting them.
             case segments.count
             when 1
-              register_resource(router, resource.new.route_key, segments: segments).call
+              instance_exec &register_resource(router, resource.new.route_key, segments: segments)
             when 2
               router.namespace segments.first do
-                register_resource(router, segments.last, segments: segments).call
+                instance_exec &register_resource(router, segments.last, segments: segments)
               end
             when 3
               router.namespace segments.first do
                 router.namespace segments.second do
-                  register_resource(router, segments.last, segments: segments).call
+                  instance_exec &register_resource(router, segments.last, segments: segments)
                 end
               end
             # when 4

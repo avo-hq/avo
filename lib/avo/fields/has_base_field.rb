@@ -29,7 +29,7 @@ module Avo
       end
 
       def frame_url
-        "#{@resource.record_path}/#{id}?turbo_frame=#{turbo_frame}"
+        "#{target_resource.records_path}?turbo_frame=#{turbo_frame}&for_resource_klass=#{@resource.class}&id=#{@resource.model.id}"
       end
 
       # The value

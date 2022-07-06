@@ -17,8 +17,8 @@ module Avo
       @resource = @related_resource
       @parent_model = @parent_resource.class.find_scope.find(params[:id])
       @parent_resource.hydrate(model: @parent_model)
-      @query = @authorization.apply_policy @parent_model.public_send(params[:related_name])
-      @association_field = @parent_resource.get_field params[:related_name]
+      @query = @authorization.apply_policy @parent_model.public_send(related_resource_name)
+      @association_field = @parent_resource.get_field related_resource_name
 
       if @association_field.present? && @association_field.scope.present?
         @query = Avo::Hosts::AssociationScopeHost.new(block: @association_field.scope, query: @query, parent: @parent_model).handle
@@ -58,9 +58,9 @@ module Avo
 
     def create
       if reflection_class == "HasManyReflection"
-        @model.send(params[:related_name].to_s) << @attachment_model
+        @model.send(related_resource_name.to_s) << @attachment_model
       else
-        @model.send("#{params[:related_name]}=", @attachment_model)
+        @model.send("#{related_resource_name}=", @attachment_model)
       end
 
       respond_to do |format|
@@ -74,9 +74,9 @@ module Avo
 
     def destroy
       if reflection_class == "HasManyReflection"
-        @model.send(params[:related_name].to_s).delete @attachment_model
+        @model.send(related_resource_name.to_s).delete @attachment_model
       else
-        @model.send("#{params[:related_name]}=", nil)
+        @model.send("#{related_resource_name}=", nil)
       end
 
       respond_to do |format|
@@ -94,7 +94,7 @@ module Avo
     private
 
     def set_attachment_class
-      @attachment_class = @model._reflections[params[:related_name].to_s].klass
+      @attachment_class = @model._reflections[related_resource_name.to_s].klass
     end
 
     def set_attachment_resource
@@ -102,11 +102,11 @@ module Avo
     end
 
     def set_attachment_model
-      @attachment_model = @model._reflections[params[:related_name].to_s].klass.find attachment_id
+      @attachment_model = @model._reflections[related_resource_name.to_s].klass.find attachment_id
     end
 
     def set_reflection
-      @reflection = @model._reflections[params[:related_name].to_s]
+      @reflection = @model._reflections[related_resource_name.to_s]
     end
 
     def attachment_id
@@ -114,7 +114,7 @@ module Avo
     end
 
     def reflection_class
-      reflection = @model._reflections[params[:related_name]]
+      reflection = @model._reflections[related_resource_name]
 
       klass = reflection.class.name.demodulize.to_s
       klass = reflection.through_reflection.class.name.demodulize.to_s if klass == "ThroughReflection"

@@ -148,7 +148,7 @@ module Avo
 
     def fill_model
       # We have to skip filling the the model if this is an attach action
-      is_attach_action = params[model_param_key].blank? && params[:related_name].present? && params[:fields].present?
+      is_attach_action = params[model_param_key].blank? && related_resource_name.present? && params[:fields].present?
 
       unless is_attach_action
         @model = @resource.fill_model(@model_to_fill, cast_nullable(model_params))
@@ -194,12 +194,17 @@ module Avo
     end
 
     def related_resource_name
-      params[:related_name]
+      # params[:related_name]
+      request.path_info.gsub '/resources/', ''
     end
 
     # Gets the Avo resource for this request based on the request from the `resource_name` "param"
     # Ex: Avo::Resources::Project, Avo::Resources::Team, Avo::Resources::User
     def resource
+      if params[:for_resource_klass].present?
+        return App.get_resource params[:for_resource_klass]
+      end
+
       controller_based_resource = Avo::App.get_resource_by_controller_class(self.class)
 
       return controller_based_resource if controller_based_resource.present?
@@ -212,7 +217,7 @@ module Avo
     end
 
     def related_resource
-      reflection = @model._reflections[params[:related_name]]
+      reflection = @model._reflections[related_resource_name]
 
       reflected_model = reflection.klass
 

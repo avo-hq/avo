@@ -28,7 +28,7 @@
   <% end %>
 
   <% if can_detach? %>
-    <%= form_with url: helpers.resource_detach_path(params[:resource_name], params[:id], params[:related_name], @resource.model.id),
+    <%= form_with url: helpers.resource_detach_path(params[:resource_name], params[:id], @related_resource_name, @resource.model.id),
       method: :delete,
       local: true,
       html: {

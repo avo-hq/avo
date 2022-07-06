@@ -55,7 +55,7 @@
             </div>
           </div>
         <% else %>
-          <%= helpers.empty_state resource_name: @resource.name.downcase.pluralize, related_name: params[:related_name], view_type: view_type, add_background: true %>
+          <%= helpers.empty_state resource_name: @resource.name.downcase.pluralize, related_name: @related_resource_name, view_type: view_type, add_background: true %>
         <% end %>
       <% end %>
     <% end %>
