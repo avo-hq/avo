@@ -130,12 +130,18 @@ module Avo
       @related_resource = related_resource.hydrate(params: params)
     end
 
+    # On associations, the model is the one calling the association.
+    # /avo/resources/posts/4?turbo_frame=has_one_field_show_post&for_resource_class=UserResource&related_id=39
+    # For this path, the model is User.find 39
     def set_model
       @model = eager_load_files(@resource, @resource.class.find_scope).find params[:id]
     end
 
+    # The related model is the associated one.
+    # /avo/resources/posts/4?turbo_frame=has_one_field_show_post&for_resource_class=UserResource&related_id=39
+    # For this path, the related model is Post.find 4
     def set_related_model
-      @related_model = eager_load_files(@related_resource, @related_resource.class.find_scope).find params[:related_id]
+      @related_model = eager_load_files(@related_resource, @related_resource.class.find_scope).find params[:id]
     end
 
     def set_view
@@ -202,8 +208,8 @@ module Avo
     # Gets the Avo resource for this request based on the request from the `resource_name` "param"
     # Ex: Avo::Resources::Project, Avo::Resources::Team, Avo::Resources::User
     def resource
-      if params[:for_resource_klass].present?
-        return App.get_resource params[:for_resource_klass]
+      if params[:for_resource_class].present?
+        return App.get_resource params[:for_resource_class]
       end
 
       controller_based_resource = Avo::App.get_resource_by_controller_class(self.class)

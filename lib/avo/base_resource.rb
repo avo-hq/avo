@@ -142,6 +142,7 @@ module Avo
     end
 
     def default_panel_name
+      # TODO: check this out
       return @params[:related_name].capitalize if @params.present? && @params[:related_name].present?
 
       case @view
