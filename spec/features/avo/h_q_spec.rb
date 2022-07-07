@@ -134,9 +134,7 @@ RSpec.feature "Avo::Licensing::HQ", type: :feature do
           expect(Rails.cache.read(Avo::Licensing::HQ.cache_key)).to include({error: "Request timeout.", exception_message: "execution expired", expiry: 5.minutes}.as_json)
           expect(Rails.cache.read(Avo::Licensing::HQ.cache_key)).not_to include :valid
         end
-
       end
-
 
       context "with connection error" do
         before do
@@ -151,6 +149,23 @@ RSpec.feature "Avo::Licensing::HQ", type: :feature do
           subject
 
           expect(Rails.cache.read(Avo::Licensing::HQ.cache_key)).to include({error: "Connection error.", exception_message: "Connection error!", expiry: 5.minutes}.as_json)
+          expect(Rails.cache.read(Avo::Licensing::HQ.cache_key)).not_to include :valid
+        end
+      end
+
+      context "with SSL error" do
+        before do
+          stub_request(:post, Avo::Licensing::HQ::ENDPOINT).with(body: hash_including({
+            license: "community"
+          }.stringify_keys)).to_raise OpenSSL::SSL::SSLError.new "SSL_connect"
+        end
+
+        it "caches the error" do
+          expect(Rails.cache.read(Avo::Licensing::HQ.cache_key)).to be nil
+
+          subject
+
+          expect(Rails.cache.read(Avo::Licensing::HQ.cache_key)).to include({error: "OpenSSL error.", exception_message: "SSL_connect", expiry: 5.minutes}.as_json)
           expect(Rails.cache.read(Avo::Licensing::HQ.cache_key)).not_to include :valid
         end
       end
