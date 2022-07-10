@@ -8,10 +8,16 @@ module Generators
 
       def handle
         if defined? ::Avo::Engine
-          puts "Avo #{::Avo.configuration.license} #{::Avo::VERSION}" unless options["quiet"]
+          output "Avo #{::Avo.configuration.license} #{::Avo::VERSION}", options
         else
-          puts "Avo not installed." unless options["quiet"]
+          output "Avo not installed.", options
         end
+      end
+
+      private
+
+      def output(message, options)
+        puts message unless options["quiet"]
       end
     end
   end
