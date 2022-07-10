@@ -261,23 +261,23 @@ module Avo
     end
 
     def on_root_path
-      [Avo::App.root_path, "#{Avo::App.root_path}/"].include?(request.original_fullpath)
+      [Avo.configuration.root_path, "#{Avo.configuration.root_path}/"].include?(request.original_fullpath)
     end
 
     def on_resources_path
-      request.original_url.match?(/.*#{Avo::App.root_path}\/resources\/.*/)
+      request.original_url.match?(/.*#{Avo.configuration.root_path}\/resources\/.*/)
     end
 
     def on_api_path
-      request.original_url.match?(/.*#{Avo::App.root_path}\/avo_api\/.*/)
+      request.original_url.match?(/.*#{Avo.configuration.root_path}\/avo_api\/.*/)
     end
 
     def on_dashboards_path
-      request.original_url.match?(/.*#{Avo::App.root_path}\/dashboards\/.*/)
+      request.original_url.match?(/.*#{Avo.configuration.root_path}\/dashboards\/.*/)
     end
 
     def on_debug_path
-      request.original_url.match?(/.*#{Avo::App.root_path}\/avo_private\/debug.*/)
+      request.original_url.match?(/.*#{Avo.configuration.root_path}\/avo_private\/debug.*/)
     end
 
     def on_custom_tool_page
