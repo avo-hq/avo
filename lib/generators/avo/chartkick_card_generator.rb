@@ -1,8 +1,8 @@
-require "rails/generators"
+require_relative "named_base_generator"
 
 module Generators
   module Avo
-    class ChartkickCardGenerator < ::Rails::Generators::NamedBase
+    class ChartkickCardGenerator < NamedBaseGenerator
       source_root File.expand_path("templates", __dir__)
 
       namespace "avo:card:chartkick"
