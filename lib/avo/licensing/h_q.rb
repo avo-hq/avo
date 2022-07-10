@@ -121,6 +121,8 @@ module Avo
           cache_and_return_error "HTTP connection reset error.", exception.message
         rescue Errno::ECONNREFUSED => exception
           cache_and_return_error "HTTP connection refused error.", exception.message
+        rescue OpenSSL::SSL::SSLError => exception
+          cache_and_return_error "OpenSSL error.", exception.message
         rescue HTTParty::Error => exception
           cache_and_return_error "HTTP client error.", exception.message
         rescue Net::OpenTimeout => exception
