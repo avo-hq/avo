@@ -2,7 +2,7 @@ require_relative "named_base_generator"
 
 module Generators
   module Avo
-    class ResourceGenerator < BaseGenerator
+    class ResourceGenerator < NamedBaseGenerator
       source_root File.expand_path("templates", __dir__)
 
       namespace "avo:resource"
