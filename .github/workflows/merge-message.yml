@@ -14,5 +14,7 @@ jobs:
         # if: github.event.pull_request.merged == true
         with:
           message: |
-            This PR has been merged into `main`. The functionality will be available in the next release. Please check [the release guide](https://github.com/avo-hq/avo/blob/main/RELEASE.MD) for more information.
+            This PR has been merged into `main`. The functionality will be available in the next release.
+
+            Please check [the release guide](https://github.com/avo-hq/avo/blob/main/RELEASE.MD) for more information.
           repo-token: ${{ secrets.GITHUB_TOKEN }}
