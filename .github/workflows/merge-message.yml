@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: mshick/add-pr-comment@v1
-        if: github.event.pull_request.merged == true
+        # if: github.event.pull_request.merged == true
         with:
           message: |
             This PR has been merged into `main`. The functionality will be available in the next release. Please check [the release guide](https://github.com/avo-hq/avo/blob/main/RELEASE.MD) for more information.
