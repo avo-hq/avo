@@ -4,14 +4,14 @@ on:
   pull_request:
     branches:
       - main
-    # types: [closed]
+    types: [closed]
 
 jobs:
-  test:
+  add_comment:
     runs-on: ubuntu-latest
     steps:
       - uses: mshick/add-pr-comment@v1
-        # if: github.event.pull_request.merged == true
+        if: github.event.pull_request.merged == true
         with:
           message: |
             This PR has been merged into `main`. The functionality will be available in the next release.
