@@ -8,7 +8,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v1
       - name: standardrb
-        uses: SennaLabs/action-standardrb@v0.0.3
+        uses: adrianthedev/action-standardrb@master
         with:
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-review # Default is github-pr-check
