@@ -1,9 +1,10 @@
-require "rails/generators"
+require_relative "named_base_generator"
 
 module Generators
   module Avo
-    class FilterGenerator < ::Rails::Generators::NamedBase
+    class FilterGenerator < NamedBaseGenerator
       source_root File.expand_path("templates", __dir__)
+
       class_option :multiple_select, type: :boolean
       class_option :select, type: :boolean
       class_option :text, type: :boolean

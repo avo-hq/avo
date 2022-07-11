@@ -123,7 +123,7 @@ module Avo
     end
 
     def computed_root_path
-      Avo::App.root_path
+      Avo.configuration.root_path
     end
 
     def feature_enabled?(feature)

@@ -1,12 +1,12 @@
-require "rails/generators"
 require "fileutils"
+require_relative "base_generator"
 
 module Generators
   module Avo
-    class ToolGenerator < ::Rails::Generators::Base
-      argument :name, type: :string, required: true
-
+    class ToolGenerator < BaseGenerator
       source_root File.expand_path("templates", __dir__)
+
+      argument :name, type: :string, required: true
 
       namespace "avo:tool"
 

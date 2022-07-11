@@ -1,5 +1,4 @@
 require "rails/generators"
-require "fileutils"
 
 module Generators
   module Avo
@@ -8,15 +7,15 @@ module Generators
 
       def handle
         if defined? ::Avo::Engine
-          output "Avo #{::Avo.configuration.license} #{::Avo::VERSION}", options
+          output "Avo #{::Avo.configuration.license} #{::Avo::VERSION}"
         else
-          output "Avo not installed.", options
+          output "Avo not installed."
         end
       end
 
       private
 
-      def output(message, options)
+      def output(message)
         puts message unless options["quiet"]
       end
     end

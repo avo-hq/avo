@@ -4,6 +4,7 @@ module Generators
   module Avo
     class ActionGenerator < NamedBaseGenerator
       source_root File.expand_path("templates", __dir__)
+
       class_option :standalone, type: :boolean
 
       namespace "avo:action"
