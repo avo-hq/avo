@@ -3,6 +3,7 @@ require_relative "avo/version"
 require_relative "avo/engine" if defined?(Rails)
 
 loader = Zeitwerk::Loader.for_gem
+loader.ignore("#{__dir__}/generators")
 loader.setup
 
 module Avo
