@@ -1,3 +1,5 @@
+name: Merge message
+
 on:
   pull_request:
     branches:
