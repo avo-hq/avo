@@ -13,7 +13,7 @@ RSpec.feature "ResourceMissingModels", type: :feature do
     end
   end
 
-  it "tests" do
+  it "tests the message" do
     visit "/admin/dashboards/dashy"
 
     click_on "Sales"

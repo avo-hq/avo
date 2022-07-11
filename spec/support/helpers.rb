@@ -91,3 +91,26 @@ end
 def third_tab_group
   find_all('[data-controller="tabs"]')[2]
 end
+
+# Generators helpers
+def check_files_and_clean_up(files = [])
+  files = Array.wrap files
+
+  check_files_exist files
+  delete_files files
+end
+
+def check_files_exist(files = [])
+  files.each do |paths|
+    path = Rails.root.join(*paths)
+
+    expect(File).to exist path.to_s
+  end
+end
+
+def delete_files(files = [])
+  files.each do |paths|
+    path = Rails.root.join(*paths)
+    File.delete(path.to_s) if File.exist?(path.to_s)
+  end
+end
