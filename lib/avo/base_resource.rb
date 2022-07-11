@@ -101,7 +101,7 @@ module Avo
 
     def initialize
       unless self.class.model_class.present?
-        if model_class.present?
+        if model_class.present? && model_class.respond_to?(:base_class)
           self.class.model_class = model_class.base_class
         end
       end
