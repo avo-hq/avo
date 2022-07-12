@@ -1,8 +1,8 @@
-require "rails/generators"
+require_relative "named_base_generator"
 
 module Generators
   module Avo
-    class DashboardGenerator < ::Rails::Generators::NamedBase
+    class DashboardGenerator < NamedBaseGenerator
       source_root File.expand_path("templates", __dir__)
 
       namespace "avo:dashboard"

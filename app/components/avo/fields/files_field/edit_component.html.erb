@@ -4,6 +4,7 @@
   <% if @resource.authorization.authorize_action(:upload_attachments?, raise_exception: false) %>
     <div class="mt-2">
       <%= @form.file_field @field.id,
+        accept: @field.accept,
         data: @field.get_html(:data, view: view, element: :input),
         direct_upload: @field.direct_upload,
         disabled: @field.readonly,

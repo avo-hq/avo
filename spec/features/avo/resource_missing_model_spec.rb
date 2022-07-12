@@ -1,20 +1,20 @@
-require 'rails_helper'
-require 'rails/generators'
+require "rails_helper"
+require "rails/generators"
 
 RSpec.feature "ResourceMissingModels", type: :feature do
   before :all do
-    Rails::Generators.invoke('avo:resource', ['bad'], {destination_root: Rails.root})
+    Rails::Generators.invoke("avo:resource", ["bad", "-q"], {destination_root: Rails.root})
   end
 
   after :all do
-    files = %w(spec/dummy/app/avo/resources/bad_resource.rb spec/dummy/app/controllers/avo/bads_controller.rb)
+    files = %w[spec/dummy/app/avo/resources/bad_resource.rb spec/dummy/app/controllers/avo/bads_controller.rb]
     files.each do |path|
       File.delete(path) if File.exist?(path)
     end
   end
 
-  it "tests" do
-    visit '/admin/dashboards/dashy'
+  it "tests the message" do
+    visit "/admin/dashboards/dashy"
 
     click_on "Sales"
     expect(page).to have_text "BadResource does not have a valid model assigned. It failed to find the Bad model."

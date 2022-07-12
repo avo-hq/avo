@@ -13,6 +13,10 @@ jobs:
     steps:
       - uses: actions/stale@v4
         with:
-          stale-issue-message: 'This issue has been marked as stale because there was no activity for the last 60 days'
-          stale-pr-message: 'This PR has been marked as stale because there was no activity for the last 60 days'
-          exempt-issue-labels: Stale exempt
+          days-before-stale: 15
+          days-before-close: 15
+          stale-issue-message: 'This issue has been marked as stale because there was no activity for the past 15 days.'
+          stale-pr-message: 'This PR has been marked as stale because there was no activity for the past 15 days.'
+          close-issue-message: 'Closing this because there was no activity for the past 15 days. Feel free to reopen if new information pops up ✌️'
+          close-pr-message: 'Closing this because there was no activity for the past 15 days. Feel free to reopen if new information pops up ✌️'
+          exempt-issue-labels: Stale exempt, Good first issue, Help wanted
