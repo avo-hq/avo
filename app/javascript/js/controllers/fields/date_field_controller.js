@@ -99,7 +99,7 @@ export default class extends Controller {
 
       options.dateFormat = 'Y-m-d H:i:S'
     } else {
-      // Because the browser treats the date like a timestamp and updates it ot 00:00 hour, when on a western timezone the date will be converted with one day offset.
+      // Because the browser treats the date like a timestamp and updates it at 00:00 hour, when on a western timezone the date will be converted with one day offset.
       // Ex: 2022-01-30 will render as 2022-01-29 on an American timezone
       options.defaultDate = universalTimestamp(this.initialValue)
     }
@@ -111,12 +111,20 @@ export default class extends Controller {
 
   onChange(selectedDates) {
     let time
+    let args = {}
 
     if (this.timezoneValue) {
-      time = DateTime.fromISO(selectedDates[0].toISOString()).setZone('UTC', { keepLocalTime: true })
+      args = { keepLocalTime: true }
     } else {
-      time = DateTime.fromISO(selectedDates[0].toISOString()).setZone('UTC', { keepLocalTime: false })
+      args = { keepLocalTime: false }
     }
+
+    if (this.enableTimeValue) {
+      time = DateTime.fromISO(selectedDates[0].toISOString()).setZone('UTC', args)
+    } else {
+      time = DateTime.fromISO(selectedDates[0].toISOString()).setZone('UTC', { keepLocalTime: true })
+    }
+
     this.updateRealInput(time)
   }
 
