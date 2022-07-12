@@ -4,6 +4,10 @@ RSpec.describe "Date field", type: :system do
   let!(:comment) { create :comment, posted_at: Time.new(1988, 2, 10, 16, 22, 0, "UTC") }
 
   describe "on UTC", tz: "UTC" do
+    before do
+      puts ["in suite->", ENV['TZ']].inspect
+    end
+
     context "index" do
       it "displays the time" do
         visit "/admin/resources/comments"
