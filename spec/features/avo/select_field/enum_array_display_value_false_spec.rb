@@ -84,12 +84,12 @@ RSpec.describe "SelectField", type: :feature do
         let!(:post) { create :post, status: nil }
         let(:new_status) { "published" }
 
-        it { is_expected.to have_select "post_status", selected: nil, options: statuses_with_placeholder }
+        it { is_expected.to have_select "post_status", selected: nil, options: statuses_without_placeholder }
 
         it "sets the status to idea" do
           visit url
 
-          expect(page).to have_select "post_status", selected: nil, options: statuses_with_placeholder
+          expect(page).to have_select "post_status", selected: nil, options: statuses_without_placeholder
 
           select new_status, from: "post_status"
 

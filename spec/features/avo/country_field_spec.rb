@@ -1,6 +1,8 @@
 require "rails_helper"
 
-RSpec.describe "CountryField", type: :system do
+RSpec.describe "CountryField", type: :feature do
+  let(:countries) { ISO3166::Country.translations.sort_by { |code, name| name }.map { |code, name| name } }
+
   describe "without a value" do
     let!(:project) { create :project, country: nil }
 
@@ -27,7 +29,7 @@ RSpec.describe "CountryField", type: :system do
       it "displays the placeholder" do
         visit url
 
-        expect(page).to have_select "project_country", selected: "Choose a country"
+        expect(page).to have_select "project_country", selected: nil, options: ['No country', *countries]
       end
     end
   end
@@ -57,7 +59,7 @@ RSpec.describe "CountryField", type: :system do
     context "edit" do
       let!(:url) { "/admin/resources/projects/#{project.id}/edit" }
 
-      it { is_expected.to have_select "project_country", selected: country_name }
+      it { is_expected.to have_select "project_country", selected: country_name, options: ['No country', *countries] }
 
       it "changes the country" do
         visit url

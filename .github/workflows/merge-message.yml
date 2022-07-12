@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       issues: write
-      pull-requests: true
+      pull-requests: write
     steps:
       - uses: mshick/add-pr-comment@v1
         if: github.event.pull_request.merged == true
