@@ -1,10 +1,10 @@
-feature: ['feature/*', 'feat/*', '*feature/*', '*feat/*']
-fix: fix/*
-chore: chore/*
-test: test/*
-docs: docs/*
-refactor: [refactor/*, 'refact/*']
-style: style/*
-ci: ci/*
-perf: perf/*
-fixed-branch: fixed-branch-name
+feature: ["feature/*", "feat/*", "*feature/*", "*feat/*"]
+fix: ["fix/*", "*fix/*"]
+chore: ["chore/*", "*chore/*"]
+test: ["test/*", "*test/*"]
+docs: ["docs/*", "*docs/*"]
+refactor: ["refactor/*", "refact/*", "*refactor/*", "*refact/*"]
+style: ["style/*", "*style/*"]
+ci: ["ci/*", "*ci/*"]
+perf: ["perf/*", "*perf/*"]
+fixed-branch: ["fixed-branch-name", "*fixed-branch-name"]
