@@ -18,7 +18,6 @@ class CommentResource < Avo::BaseResource
     end
   end
   field :tiny_name, as: :text, only_on: :index, as_description: true
-  # field :posted_at, as: :date_time, timezone: 'Australia/Sydney'
   field :posted_at, as: :date_time,
     picker_format: "Y-m-d H:i:S",
     format: "fff"
