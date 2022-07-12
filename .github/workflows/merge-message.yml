@@ -9,6 +9,9 @@ on:
 jobs:
   add_comment:
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: true
     steps:
       - uses: mshick/add-pr-comment@v1
         if: github.event.pull_request.merged == true
