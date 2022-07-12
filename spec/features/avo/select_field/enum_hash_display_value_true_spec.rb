@@ -99,12 +99,12 @@ RSpec.describe "SelectField", type: :feature do
         let!(:project) { create :project, users_required: 15, stage: nil }
         let(:new_stage) { "idea" }
 
-        it { is_expected.to have_select "project_stage", selected: nil, options: stages_with_placeholder }
+        it { is_expected.to have_select "project_stage", selected: nil, options: stages_without_placeholder }
 
         it "sets the stage to idea" do
           visit url
 
-          expect(page).to have_select "project_stage", selected: nil, options: stages_with_placeholder
+          expect(page).to have_select "project_stage", selected: nil, options: stages_without_placeholder
 
           select new_stage, from: "project_stage"
 
@@ -142,12 +142,12 @@ RSpec.describe "SelectField", type: :feature do
 
       describe "creates new project with stage discovery" do
         it "checks placeholder" do
-          is_expected.to have_select "project_stage", selected: nil, options: stages_with_placeholder
+          is_expected.to have_select "project_stage", selected: nil, options: stages_without_placeholder
         end
 
         it "saves the resource with stage discovery" do
           visit url
-          expect(page).to have_select "project_stage", selected: nil, options: stages_with_placeholder
+          expect(page).to have_select "project_stage", selected: nil, options: stages_without_placeholder
 
           fill_in "project_name", with: "Project X"
           fill_in "project_users_required", with: 15
