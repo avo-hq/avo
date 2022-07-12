@@ -13,6 +13,8 @@ require "webmock/rspec"
 
 require "test_prof/any_fixture"
 require "test_prof/any_fixture/dsl"
+puts ["ENV TZ->", ENV['TZ']].inspect
+
 ENV["TZ"] ||= "UTC"
 # Add additional requires below this line. Rails is not loaded until this point!
 
