@@ -1,17 +1,16 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Tabs", type: :system do
-  let!(:user) { create :user, birthday: '10.02.1988' }
+  let!(:user) { create :user, birthday: "10.02.1988" }
 
   describe "doesn't display tabs content" do
     context "on index" do
-
       it "doesn't display the birthday from the tab content" do
         visit "/admin/resources/users"
 
-        expect(find('table thead').text).to eq "ID\nAVATAR\nFIRST NAME\nLAST NAME\nUSER EMAIL\nIS ACTIVE\nCV\nIS ADMIN\nROLES\nBIRTHDAY\nIS WRITER"
+        expect(find("table thead").text).to eq "ID\nAVATAR\nFIRST NAME\nLAST NAME\nUSER EMAIL\nIS ACTIVE\nCV\nIS ADMIN\nROLES\nBIRTHDAY\nIS WRITER"
         within find("tr[data-resource-id='#{user.id}']") do
-          expect(find_all('table tbody tr td')[10].text).to eq "1988-02-10"
+          expect(find_all("table tbody tr td")[10].text).to eq "Wednesday, 10 February 1988"
         end
       end
     end
@@ -26,11 +25,11 @@ RSpec.describe "Tabs", type: :system do
 
         expect(page).not_to have_selector 'turbo-frame[id="has_many_field_show_posts"]'
 
-        click_tab 'Posts', within: second_tab_group
+        click_tab "Posts", within: second_tab_group
 
-        expect(find('turbo-frame[id="has_many_field_show_posts"]')).to have_text 'Posts'
-        expect(find('turbo-frame[id="has_many_field_show_posts"]')).to have_link 'Attach post'
-        expect(find('turbo-frame[id="has_many_field_show_posts"]')).to have_link 'Create new post', href: "/admin/resources/posts/new?via_relation=user&via_relation_class=User&via_resource_id=#{user.id}"
+        expect(find('turbo-frame[id="has_many_field_show_posts"]')).to have_text "Posts"
+        expect(find('turbo-frame[id="has_many_field_show_posts"]')).to have_link "Attach post"
+        expect(find('turbo-frame[id="has_many_field_show_posts"]')).to have_link "Create new post", href: "/admin/resources/posts/new?via_relation=user&via_relation_class=User&via_resource_id=#{user.id}"
 
         click_on "Attach post"
 
@@ -40,9 +39,9 @@ RSpec.describe "Tabs", type: :system do
 
         click_tab "Teams", within: first_tab_group
 
-        expect(find('turbo-frame#has_and_belongs_to_many_field_show_teams')).to have_text 'Teams'
-        expect(find('turbo-frame#has_and_belongs_to_many_field_show_teams')).to have_link 'Attach team'
-        expect(find('turbo-frame#has_and_belongs_to_many_field_show_teams')).to have_link 'Create new team', href: "/admin/resources/teams/new?via_relation=users&via_relation_class=User&via_resource_id=#{user.id}"
+        expect(find("turbo-frame#has_and_belongs_to_many_field_show_teams")).to have_text "Teams"
+        expect(find("turbo-frame#has_and_belongs_to_many_field_show_teams")).to have_link "Attach team"
+        expect(find("turbo-frame#has_and_belongs_to_many_field_show_teams")).to have_link "Create new team", href: "/admin/resources/teams/new?via_relation=users&via_relation_class=User&via_resource_id=#{user.id}"
       end
 
       it "hides the birthday tab" do
@@ -58,22 +57,22 @@ RSpec.describe "Tabs", type: :system do
       it "shows the birthday in the tab" do
         visit avo.edit_resources_user_path user
 
-        expect(find('[data-panel-index="1"]')).not_to have_text 'Birthday'
+        expect(find('[data-panel-index="1"]')).not_to have_text "Birthday"
 
         scroll_to first_tab_group
 
-        expect(first_tab_group).to have_text 'Birthday'
+        expect(first_tab_group).to have_text "Birthday"
         expect(first_tab_group).to have_selector 'input[name="user[birthday]"]', visible: false
         within first_tab_group do
-          find('input', visible: true).click
+          find("input", visible: true).click
         end
 
         find('[aria-label="February 9, 1988"]').click
-        click_on 'Save'
+        click_on "Save"
         wait_for_loaded
 
         expect(current_path).to eq avo.resources_user_path user
-        expect(find_field_value_element('birthday')).to have_text '1988-02-09'
+        expect(find_field_value_element("birthday")).to have_text "Tuesday, 9 February 1988"
       end
 
       it "hides the Projects tab" do
