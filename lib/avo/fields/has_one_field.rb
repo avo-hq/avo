@@ -22,7 +22,10 @@ module Avo
       end
 
       def frame_url
-        "#{@resource.record_path}/#{id}/#{value.id}?turbo_frame=#{turbo_frame}"
+        Avo::Services::URIService.parse(@resource.record_path)
+          .append_paths(id, value.id)
+          .append_query(turbo_frame: turbo_frame)
+          .to_s
       end
 
       def fill_field(model, key, value, params)

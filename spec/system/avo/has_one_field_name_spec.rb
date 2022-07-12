@@ -6,7 +6,7 @@ RSpec.describe 'HasOneFieldName', type: :system do
 
   subject {
     visit url
-    page 
+    page
   }
 
   context 'show' do
@@ -15,10 +15,16 @@ RSpec.describe 'HasOneFieldName', type: :system do
     describe 'without a related post' do
       it 'attaches and detaches a post' do
         visit url
+
+        scroll_to second_tab_group
+
+        click_tab 'Main post', within: second_tab_group
         expect(page).to have_text 'Attach Main post'
 
         click_on 'Attach Main post'
+
         wait_for_loaded
+
         expect(page).to have_text 'Choose post'
 
         expect(page).to have_select 'fields_related_id', selected: "Choose an option"
@@ -26,6 +32,10 @@ RSpec.describe 'HasOneFieldName', type: :system do
 
         click_on 'Attach'
         wait_for_loaded
+
+        scroll_to second_tab_group
+
+        click_tab 'Main post', within: second_tab_group
 
         expect(page).to have_text 'Post attached.'
         expect(page).not_to have_text 'Choose post'
@@ -40,6 +50,8 @@ RSpec.describe 'HasOneFieldName', type: :system do
           click_on 'Detach main post'
         end
         wait_for_loaded
+
+        click_tab 'Main post', within: second_tab_group
 
         expect(page).to have_text 'Post detached.'
         expect(page).not_to have_text 'Detach main post'

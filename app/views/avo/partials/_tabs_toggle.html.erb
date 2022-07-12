@@ -1,0 +1,20 @@
+<div class="flex">
+  <div class="button-group">
+    <% tabs.each do |tab| %>
+      <% is_active_view = tab.name.to_s == active_tab_name.to_s %>
+      <%= a_link resource_path(resource: @resource, model: @resource.model, keep_query_params: true, active_tab_name: tab.name, tab_turbo_frame: group.turbo_frame_id),
+          color: is_active_view ? :gray : :primary,
+          rounded: false,
+          size: :sm,
+          class: is_active_view ? ' bg-gray-100 border-gray-300' : ' z-20',
+          title: tab.description || tab.name,
+          data: {
+            tippy: 'tooltip',
+            'turbo-frame': group.turbo_frame_id,
+            control: "view-type-toggle-#{tab}"
+          } do %>
+        <%= tab.name %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

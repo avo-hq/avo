@@ -69,6 +69,10 @@ Please read [CONTRIBUTING.MD](./CONTRIBUTING.MD)
 
 Please read the [UPGRADE_GUIDE.MD](https://docs.avohq.io/2.0/upgrade.html)
 
+# Release schedule
+
+Please read the [RELEASE.MD](./RELEASE.MD)
+
 # ✨ Contributors
 
 <a href="https://github.com/avo-hq/avo/graphs/contributors">

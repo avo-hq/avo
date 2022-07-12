@@ -1,105 +1,74 @@
 <%= content_tag :div,
-  class: "space-y-12",
   data: {
     'model-id': @resource.model.id,
     selected_resources_name: @resource.model_key,
     selected_resources: [@resource.model.id],
     **@resource.stimulus_data_attributes
   } do %>
-  <% @resource.panels.each_with_index do |resource_panel, index| %>
-    <%= render Avo::PanelComponent.new(title: title, description: @resource.resource_description, display_breadcrumbs: @reflection.blank?, index: index) do |c| %>
-      <% c.tools do %>
-        <% if resource_panel[:name] == @resource.default_panel_name %>
-          <% if @reflection.present? && @resource.model.present? %>
-            <% if can_detach? %>
-              <%= a_button url: detach_path,
-                icon: 'detach',
-                method: :delete,
-                form_class: 'flex flex-col sm:flex-row sm:inline-flex',
-                style: :text,
-                data: {
-                  confirm: "Are you sure you want to detach this #{title}."
-                } do %>
-                <%= t('avo.detach_item', item: title).capitalize %>
-              <% end %>
-              <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>
-            <% end %>
-            <% if can_see_the_edit_button? %>
-              <%= a_link edit_path,
-                color: :primary,
-                style: :primary,
-                icon: 'edit' do %>
-                <%= t('avo.edit').capitalize %>
-              <% end %>
-            <% end %>
-          <% else %>
-            <%= a_link back_path,
-              style: :text,
-              icon: 'arrow-left' do %>
-              <%= t('avo.go_back') %>
-            <% end %>
-            <% if can_see_the_destroy_button? %>
-              <%= a_button url: helpers.resource_path(model: @resource.model, resource: @resource),
-                method: :delete,
-                local: true,
-                style: :text,
-                title: t('avo.delete_item', item: @resource.model.model_name.name.downcase).capitalize,
-                loading: true,
-                confirm: t('avo.are_you_sure', item: @resource.model.model_name.name.downcase),
-                color: :red,
-                icon: 'trash',
-                form_class: 'flex flex-col sm:flex-row sm:inline-flex',
-                data: {
-                  control: :destroy,
-                  'resource-id': @resource.model.id,
-                  'tippy': 'tooltip',
-                } do %>
-                <%= t('avo.delete').capitalize %>
-              <% end %>
-            <% end %>
-            <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>
-            <% if @resource.authorization.authorize_action(:edit, raise_exception: false) %>
-              <%= a_link edit_path,
-                color: :primary,
-                style: :primary,
-                icon: 'edit' do %>
-                <%= t('avo.edit').capitalize %>
-              <% end %>
-            <% end %>
+  <%= render Avo::PanelComponent.new(title: title, description: @resource.resource_description, display_breadcrumbs: @reflection.blank?, index: 0, data: { panel_id: "main" }) do |c| %>
+    <% c.tools do %>
+      <% if @reflection.present? && @resource.model.present? %>
+        <% if can_detach? %>
+          <%= a_button url: detach_path,
+            icon: 'detach',
+            method: :delete,
+            form_class: 'flex flex-col sm:flex-row sm:inline-flex',
+            style: :text,
+            data: {
+              confirm: "Are you sure you want to detach this #{title}."
+            } do %>
+            <%= t('avo.detach_item', item: title).capitalize %>
+          <% end %>
+          <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>
+        <% end %>
+        <% if can_see_the_edit_button? %>
+          <%= a_link edit_path,
+            color: :primary,
+            style: :primary,
+            icon: 'edit' do %>
+            <%= t('avo.edit').capitalize %>
           <% end %>
         <% end %>
-      <% end %>
-      <% c.body do %>
-        <% if fields_by_panel[resource_panel[:name]].present? %>
-          <div class="divide-y">
-            <% fields_by_panel[resource_panel[:name]].each_with_index do |field, index| %>
-              <%= render field.component_for_view(:show).new(field: field, resource: @resource, index: index) %>
-            <% end %>
-          </div>
+      <% else %>
+        <%= a_link back_path,
+          style: :text,
+          icon: 'arrow-left' do %>
+          <%= t('avo.go_back') %>
+        <% end %>
+        <% if can_see_the_destroy_button? %>
+          <%= a_button url: helpers.resource_path(model: @resource.model, resource: @resource),
+            method: :delete,
+            local: true,
+            style: :text,
+            loading: true,
+            confirm: t('avo.are_you_sure', item: @resource.model.model_name.name.downcase),
+            color: :red,
+            icon: 'trash',
+            form_class: 'flex flex-col sm:flex-row sm:inline-flex',
+            data: {
+              control: :destroy,
+              'resource-id': @resource.model.id,
+              'tippy': 'tooltip',
+            } do %>
+            <%= t('avo.delete').capitalize %>
+          <% end %>
+        <% end %>
+        <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>
+        <% if @resource.authorization.authorize_action(:edit, raise_exception: false) %>
+          <%= a_link edit_path,
+            color: :primary,
+            style: :primary,
+            icon: 'edit' do %>
+            <%= t('avo.edit').capitalize %>
+          <% end %>
         <% end %>
       <% end %>
     <% end %>
   <% end %>
-  <% if @reflection.blank? %>
-    <% if has_one_panels.present? %>
-      <% has_one_panels.each_with_index do |field, index| %>
-        <%= render field.component_for_view(:show).new(field: field, resource: @resource, index: index) %>
-      <% end %>
-    <% end %>
-    <% if has_many_panels.present? %>
-      <% has_many_panels.each_with_index do |field, index| %>
-        <%= render field.component_for_view(:show).new(field: field, resource: @resource, index: index) %>
-      <% end %>
-    <% end %>
-    <% if has_as_belongs_to_many_panels.present? %>
-      <% has_as_belongs_to_many_panels.each_with_index do |field, index| %>
-        <%= render field.component_for_view(:show).new(field: field, resource: @resource, index: index) %>
-      <% end %>
-    <% end %>
-    <% if resource_tools.present? %>
-      <% resource_tools.each do |tool, index| %>
-        <%= render tool.partial, tool: tool %>
-      <% end %>
+  <%= content_tag :div, class: 'space-y-12' do %>
+    <% @resource.get_items.each_with_index do |item, index| %>
+      <% next if item.nil? %>
+      <%= render Avo::ItemSwitcherComponent.new resource: @resource, reflection: @reflection, item: item, index: index + 1, view: @view %>
     <% end %>
   <% end %>
   <% if should_display_invalid_fields_errors? %>

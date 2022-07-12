@@ -94,6 +94,8 @@ POSTGRES_PASSWORD=
 
 We use [appraisal](https://github.com/thoughtbot/appraisal) to run tests against multiple versions of rails. When the gemfile gets updated you must also run `bundle exec appraisal install` to update the versioned ones and commit them to the repo.
 
+Please read the [RELEASE.MD](./RELEASE.MD) for release schedules.
+
 # Custom JS
 
 In order to be able to test the custom Stimulus integration we need to have some kind of JS content injected in the dummy app. We also need not to have that content present in every Avo installation. That's why we ejected the `_head.html.erb` partial that loads the `avo_custom.js` file from the engine's `build` directory. The build directory is not commited to git so we're all good on that. In order to have that file built and watche we added a `cjs` (short for `custom-js`) process in the `Procfile.dev` (which is used only in development).

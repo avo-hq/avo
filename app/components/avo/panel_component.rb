@@ -2,6 +2,8 @@
 
 class Avo::PanelComponent < ViewComponent::Base
   attr_reader :title
+  attr_reader :name
+  attr_reader :classes
 
   renders_one :tools
   renders_one :body
@@ -9,13 +11,17 @@ class Avo::PanelComponent < ViewComponent::Base
   renders_one :footer_tools
   renders_one :footer
 
-  def initialize(title: nil, description: nil, body_classes: nil, data: {}, display_breadcrumbs: false, index: nil)
+  def initialize(title: nil, name: nil, description: nil, body_classes: nil, data: {}, display_breadcrumbs: false, index: nil, classes: nil, view: nil)
+    # deprecating title in favor of name
     @title = title
+    @name = name || title
     @description = description
+    @classes = classes
     @body_classes = body_classes
     @data = data
     @display_breadcrumbs = display_breadcrumbs
     @index = index
+    @view = view
   end
 
   private
@@ -26,9 +32,6 @@ class Avo::PanelComponent < ViewComponent::Base
 
   def data_attributes
     @data.merge({"panel-index": @index})
-      .map do |key, value|
-        " data-#{key}=\"#{value}\""
-      end.join
   end
 
   def display_breadcrumbs?
@@ -42,7 +45,7 @@ class Avo::PanelComponent < ViewComponent::Base
   end
 
   def render_header?
-    @title.present? || description.present? || tools.present? || display_breadcrumbs?
+    @name.present? || description.present? || tools.present? || display_breadcrumbs?
   end
 
   def render_footer_tools?

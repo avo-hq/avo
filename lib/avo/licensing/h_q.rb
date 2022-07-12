@@ -98,6 +98,7 @@ module Avo
           **other_metadata(:filters),
           main_menu_present: Avo.configuration.main_menu.present?,
           profile_menu_present: Avo.configuration.profile_menu.present?,
+          **config_metadata
         }
       rescue
         {}
@@ -120,6 +121,8 @@ module Avo
           cache_and_return_error "HTTP connection reset error.", exception.message
         rescue Errno::ECONNREFUSED => exception
           cache_and_return_error "HTTP connection refused error.", exception.message
+        rescue OpenSSL::SSL::SSLError => exception
+          cache_and_return_error "OpenSSL error.", exception.message
         rescue HTTParty::Error => exception
           cache_and_return_error "HTTP client error.", exception.message
         rescue Net::OpenTimeout => exception
@@ -175,6 +178,15 @@ module Avo
         {
           "#{type}_count": type_count,
           "#{type}_per_resource": type_per_resource,
+        }
+      end
+
+      def config_metadata
+        {
+          config: {
+            root_path: Avo.configuration.root_path,
+            app_name: Avo.configuration.app_name
+          }
         }
       end
 

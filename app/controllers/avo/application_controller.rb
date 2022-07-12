@@ -13,7 +13,8 @@ module Avo
     protect_from_forgery with: :exception
     before_action :init_app
     before_action :check_avo_license
-    before_action :set_locale
+    before_action :set_default_locale
+    around_action :set_force_locale, if: -> { params[:force_locale].present? }
     before_action :set_authorization
     before_action :_authenticate!
     before_action :set_container_classes
@@ -27,7 +28,7 @@ module Avo
     add_flash_types :info, :warning, :success, :error
 
     def init_app
-      Avo::App.init request: request, context: context, root_path: avo.root_path.delete_suffix("/"), current_user: _current_user, view_context: view_context, params: params
+      Avo::App.init request: request, context: context, current_user: _current_user, view_context: view_context, params: params
 
       @license = Avo::App.license
     end
@@ -260,23 +261,23 @@ module Avo
     end
 
     def on_root_path
-      [Avo::App.root_path, "#{Avo::App.root_path}/"].include?(request.original_fullpath)
+      [Avo.configuration.root_path, "#{Avo.configuration.root_path}/"].include?(request.original_fullpath)
     end
 
     def on_resources_path
-      request.original_url.match?(/.*#{Avo::App.root_path}\/resources\/.*/)
+      request.original_url.match?(/.*#{Avo.configuration.root_path}\/resources\/.*/)
     end
 
     def on_api_path
-      request.original_url.match?(/.*#{Avo::App.root_path}\/avo_api\/.*/)
+      request.original_url.match?(/.*#{Avo.configuration.root_path}\/avo_api\/.*/)
     end
 
     def on_dashboards_path
-      request.original_url.match?(/.*#{Avo::App.root_path}\/dashboards\/.*/)
+      request.original_url.match?(/.*#{Avo.configuration.root_path}\/dashboards\/.*/)
     end
 
     def on_debug_path
-      request.original_url.match?(/.*#{Avo::App.root_path}\/avo_private\/debug.*/)
+      request.original_url.match?(/.*#{Avo.configuration.root_path}\/avo_private\/debug.*/)
     end
 
     def on_custom_tool_page
@@ -287,10 +288,26 @@ module Avo
       @resource.form_scope
     end
 
-    def set_locale
+    def set_default_locale
       I18n.locale = params[:set_locale] || I18n.default_locale
 
       I18n.default_locale = I18n.locale
+    end
+
+    # Temporary set the locale and reverting at the end of the request.
+    def set_force_locale
+      initial_locale = I18n.locale.to_s.dup
+      I18n.locale = params[:force_locale]
+      yield
+      I18n.locale = initial_locale
+    end
+
+    def default_url_options
+      if params[:force_locale].present?
+        { **super, force_locale: params[:force_locale] }
+      else
+        super
+      end
     end
   end
 end

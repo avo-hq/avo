@@ -18,6 +18,7 @@ export default class extends Controller {
     pickerFormat: String,
     firstDayOfWeek: Number,
     time24Hr: Boolean,
+    disableMobile: Boolean,
   }
 
   get browserZone() {
@@ -85,6 +86,9 @@ export default class extends Controller {
 
     // Set the format of the displayed input field.
     options.altFormat = this.pickerFormatValue
+
+    // Disable native input in mobile browsers
+    options.disableMobile = this.disableMobileValue
 
     // Set first day of the week.
     options.locale.firstDayOfWeek = this.firstDayOfWeekValue

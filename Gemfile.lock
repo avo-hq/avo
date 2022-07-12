@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    avo (2.9.0)
+    avo (2.10.2)
       active_link_to
       addressable
       breadcrumbs_on_rails
@@ -138,7 +138,7 @@ GEM
       xpath (~> 3.2)
     chartkick (4.2.0)
     childprocess (4.1.0)
-    concurrent-ruby (1.1.9)
+    concurrent-ruby (1.1.10)
     countries (4.2.1)
       i18n_data (~> 0.15.0)
       sixarm_ruby_unaccent (~> 1.1)
@@ -219,7 +219,7 @@ GEM
     listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
-    loofah (2.14.0)
+    loofah (2.18.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -238,7 +238,7 @@ GEM
     mini_magick (4.11.0)
     mini_mime (1.1.2)
     mini_portile2 (2.8.0)
-    minitest (5.15.0)
+    minitest (5.16.2)
     msgpack (1.4.4)
     multi_xml (0.6.0)
     net-protocol (0.1.2)
@@ -249,7 +249,7 @@ GEM
       net-protocol
       timeout
     nio4r (2.5.8)
-    nokogiri (1.13.4)
+    nokogiri (1.13.6)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     orm_adapter (0.5.0)
@@ -290,7 +290,7 @@ GEM
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
-    rails-html-sanitizer (1.4.2)
+    rails-html-sanitizer (1.4.3)
       loofah (~> 2.3)
     railties (6.1.4.6)
       actionpack (= 6.1.4.6)
@@ -391,7 +391,7 @@ GEM
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.1.0)
-    view_component (2.49.1)
+    view_component (2.57.1)
       activesupport (>= 5.0.0, < 8.0)
       method_source (~> 1.0)
     warden (1.2.9)
@@ -414,7 +414,7 @@ GEM
     websocket-extensions (0.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.5.4)
+    zeitwerk (2.6.0)
 
 PLATFORMS
   ruby

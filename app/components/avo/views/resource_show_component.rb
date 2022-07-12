@@ -19,7 +19,7 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
       return field.name if has_one_field?
       reflection_resource.name
     else
-      @resource.panels.first[:name]
+      @resource.default_panel_name
     end
   end
 
@@ -52,6 +52,6 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
   end
 
   def has_one_field?
-    field.present? and field.class == Avo::Fields::HasOneField
+    field.present? and field.instance_of? Avo::Fields::HasOneField
   end
 end

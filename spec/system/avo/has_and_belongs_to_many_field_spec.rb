@@ -15,7 +15,7 @@ RSpec.describe "HasAndBelongsToManyField", type: :system do
 
     describe "without a related user" do
       it { is_expected.to have_text "No related users found" }
-      it { is_expected.to have_link "Attach user", href: "/admin/resources/projects/#{project.id}/users/new" }
+      it { is_expected.to have_link "Attach user", href: /\/admin\/resources\/projects\/#{project.id}\/users\/new/ }
 
       it "displays valid links" do
         visit url

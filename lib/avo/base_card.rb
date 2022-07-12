@@ -59,13 +59,7 @@ module Avo
     def frame_url(enforced_range: nil, params: {})
       enforced_range ||= initial_range || ranges.first
 
-      # append the parent params to the card request
-      begin
-        other_params = "&#{params.permit!.to_h.map { |k, v| "#{k}=#{v}" }.join("&")}"
-      rescue
-      end
-
-      "#{Avo::App.root_path}/dashboards/#{dashboard.id}/cards/#{id}?turbo_frame=#{turbo_frame}&index=#{index}&range=#{enforced_range}#{other_params}"
+      Avo::App.view_context.avo.dashboard_card_path(dashboard.id, id, turbo_frame: turbo_frame, index: index, range: enforced_range, **params.permit!)
     end
 
     def card_classes
