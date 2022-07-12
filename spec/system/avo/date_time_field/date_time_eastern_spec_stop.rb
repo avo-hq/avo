@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "Date field on eastern zone", type: :system do
-  let!(:comment) { create :comment, posted_at: Time.new(1988, 2, 10, 16, 22, 00, "UTC") }
+  let!(:comment) { create :comment, posted_at: Time.new(1988, 2, 10, 16, 22, 0, "UTC") }
 
   describe "in an eastern (positive) Timezone", tz: "Europe/Bucharest" do
     context "index" do
