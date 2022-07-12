@@ -28,6 +28,7 @@ RSpec.describe "Date field", type: :system do
         expect(text_input.value).to eq "February 10th 1988"
 
         click_on "Save"
+        wait_for_loaded
 
         expect(find_field_value_element("birthday").text).to eq "Wednesday, 10 February 1988"
       end
@@ -59,6 +60,7 @@ RSpec.describe "Date field", type: :system do
         expect(text_input.value).to eq "February 10th 1988"
 
         click_on "Save"
+        wait_for_loaded
 
         expect(find_field_value_element("birthday").text).to eq "Wednesday, 10 February 1988"
       end

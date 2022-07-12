@@ -35,7 +35,8 @@ class UserResource < Avo::BaseResource
     picker_format: "F J Y",
     format: "DDDD",
     placeholder: "Feb 24th 1955",
-    required: true
+    required: true,
+    only_on: [:index, :show]
   field :is_writer, as: :text, format_using: ->(value) { value.truncate 3 }, sortable: ->(query, direction) {
     # Order by something else completely, just to make a test case that clearly and reliably does what we want.
     query.order(id: direction)
@@ -57,7 +58,13 @@ class UserResource < Avo::BaseResource
   tabs do
     tab "Birthday", description: "hey you", hide_on: :show do
       panel do
-        field :birthday, as: :date, first_day_of_week: 1, picker_format: "F J Y", format: "%Y-%m-%d", placeholder: "Feb 24th 1955", required: true
+        field :birthday,
+          as: :date,
+          first_day_of_week: 1,
+          picker_format: "F J Y",
+          format: "DDDD",
+          placeholder: "Feb 24th 1955",
+          required: true
       end
     end
 
