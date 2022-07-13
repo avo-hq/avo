@@ -64,7 +64,7 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
     else
       helpers.resources_path(
         resource: @resource,
-        via_resource_class: params[:via_resource_class],
+        via_relation_class: params[:via_relation_class],
         via_relation: params[:via_relation],
         via_resource_id: params[:via_resource_id]
       )

@@ -29,7 +29,7 @@ RSpec.describe "Tabs", type: :system do
 
         expect(find('turbo-frame[id="has_many_field_show_posts"]')).to have_text "Posts"
         expect(find('turbo-frame[id="has_many_field_show_posts"]')).to have_link "Attach post"
-        expect(find('turbo-frame[id="has_many_field_show_posts"]')).to have_link "Create new post", href: "/admin/resources/posts/new?via_relation=user&via_resource_class=User&via_resource_id=#{user.id}"
+        expect(find('turbo-frame[id="has_many_field_show_posts"]')).to have_link "Create new post", href: "/admin/resources/posts/new?via_relation=user&via_relation_class=User&via_resource_id=#{user.id}"
 
         click_on "Attach post"
 
@@ -41,7 +41,7 @@ RSpec.describe "Tabs", type: :system do
 
         expect(find("turbo-frame#has_and_belongs_to_many_field_show_teams")).to have_text "Teams"
         expect(find("turbo-frame#has_and_belongs_to_many_field_show_teams")).to have_link "Attach team"
-        expect(find("turbo-frame#has_and_belongs_to_many_field_show_teams")).to have_link "Create new team", href: "/admin/resources/teams/new?via_relation=users&via_resource_class=User&via_resource_id=#{user.id}"
+        expect(find("turbo-frame#has_and_belongs_to_many_field_show_teams")).to have_link "Create new team", href: "/admin/resources/teams/new?via_relation=users&via_relation_class=User&via_resource_id=#{user.id}"
       end
 
       it "hides the birthday tab" do

@@ -105,8 +105,8 @@ module Avo
 
       @page_title = @resource.default_panel_name.to_s
 
-      if params[:via_resource_class].present? && params[:via_resource_id].present?
-        via_resource = Avo::App.get_resource_by_model_name params[:via_resource_class]
+      if params[:via_relation_class].present? && params[:via_resource_id].present?
+        via_resource = Avo::App.get_resource_by_model_name params[:via_relation_class]
         via_model = via_resource.class.find_scope.find params[:via_resource_id]
         via_resource.hydrate model: via_model
 
@@ -145,7 +145,7 @@ module Avo
         # polymorphic
         if @reflection.is_a? ActiveRecord::Reflection::ThroughReflection
           # find the record
-          via_resource = ::Avo::App.get_resource_by_model_name params[:via_resource_class]
+          via_resource = ::Avo::App.get_resource_by_model_name params[:via_relation_class]
           @related_record = via_resource.model_class.find params[:via_resource_id]
 
           @model.send(params[:via_relation]) << @related_record
@@ -388,10 +388,10 @@ module Avo
 
     def after_create_path
       # If this is an associated record return to the association show page
-      if params[:via_resource_class].present? && params[:via_resource_id].present?
-        parent_resource = ::Avo::App.get_resource_by_model_name params[:via_resource_class].safe_constantize
+      if params[:via_relation_class].present? && params[:via_resource_id].present?
+        parent_resource = ::Avo::App.get_resource_by_model_name params[:via_relation_class].safe_constantize
 
-        return resource_path(model: params[:via_resource_class].safe_constantize, resource: parent_resource, resource_id: params[:via_resource_id])
+        return resource_path(model: params[:via_relation_class].safe_constantize, resource: parent_resource, resource_id: params[:via_resource_id])
       end
 
       redirect_path_from_resource_option(:after_create_path) || resource_path(model: @model, resource: @resource)
