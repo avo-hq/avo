@@ -33,7 +33,7 @@ class UserResource < Avo::BaseResource
     as: :date,
     first_day_of_week: 1,
     picker_format: "F J Y",
-    format: "DDDD",
+    format: "cccc, d LLLL yyyy", # Wednesday, 10 February 1988
     placeholder: "Feb 24th 1955",
     required: true,
     only_on: [:index, :show]

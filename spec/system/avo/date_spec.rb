@@ -3,10 +3,6 @@ require "rails_helper"
 RSpec.describe "Date field", type: :system do
   let!(:user) { create :user, birthday: Date.new(1988, 2, 10) }
 
-  before do
-    ENV["TZ"] = "UTC"
-  end
-
   describe "in a western (negative) Timezone", tz: "Berlin" do
     context "index" do
       it "formats the date" do
