@@ -30,7 +30,7 @@ module Avo
 
       def frame_url
         Avo::Services::URIService.parse(target_resource.records_path)
-          .append_query(turbo_frame: turbo_frame.to_s, for_resource_class: @resource.class, id: @resource.model.id)
+          .append_query(turbo_frame: turbo_frame.to_s, field_id: id, resource_class: @resource.class, id: @resource.model.id)
           .to_s
       end
 

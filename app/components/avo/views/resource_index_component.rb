@@ -96,11 +96,8 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
         via_resource_id: @parent_model.id
       }
 
-      if @reflection.is_a? ActiveRecord::Reflection::ThroughReflection
-        args[:via_relation] = params[:resource_name]
-      end
 
-      if @reflection.is_a? ActiveRecord::Reflection::HasManyReflection
+      if @reflection.class.in?([ActiveRecord::Reflection::HasManyReflection, ActiveRecord::Reflection::ThroughReflection])
         args[:via_relation] = @reflection.name
       end
 

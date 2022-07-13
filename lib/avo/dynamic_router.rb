@@ -18,8 +18,8 @@ module Avo
           router.resources route_key,
             controller: "associations",
             constraints: ->(request) do
-              # request.params[:for_resource_class].present? || request.params[:for_association].present?
-              request.params[:for_resource_class].present?
+              # request.params[:resource_class].present? || request.params[:for_association].present?
+              request.params[:field_id].present?
             end
 
           # regular routes
