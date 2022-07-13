@@ -84,13 +84,6 @@ module Avo
       end
     end
 
-    def order
-      @parent_resource = @resource.dup
-      @resource, @model = @related_resource, @related_model
-
-      super
-    end
-
     private
 
     def set_attachment_class

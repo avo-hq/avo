@@ -16,15 +16,16 @@ Avo::Engine.routes.draw do
     post "/resources/:resource_name/:id/attachments/", to: "attachments#create"
   end
 
+  # Records ordering
+  scope "reorder", as: "reorder" do
+    patch "/:resource_name/:id", to: "reorder#order", as: "order"
+  end
+
   get "failed_to_load", to: "home#failed_to_load"
 
   scope "resources", as: "resources" do
     # Attachments
     delete "/:resource_name/:id/active_storage_attachments/:attachment_name/:attachment_id", to: "attachments#destroy"
-
-    # Ordering
-    patch "/:resource_name/:id/order", to: "resources#order", as: "order"
-    patch "/:resource_name/:id/:related_name/:related_id/order", to: "associations#order", as: "associations_order"
 
     # Actions
     get "/:resource_name(/:id)/actions/:action_id", to: "actions#show"
