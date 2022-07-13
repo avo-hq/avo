@@ -24,8 +24,7 @@ RSpec.describe "Date field", type: :system do
       it "sets the proper date without the TZ modifications" do
         visit "/admin/resources/users/#{user.id}/edit"
 
-        # wait for the birthday turbo frame to load
-        sleep 0.1
+        wait_for_turbo_frame_id "avo-tabgroup-2-avo-tab-birthday"
 
         expect(hidden_input.value).to eq "1988-02-10"
         expect(text_input.value).to eq "February 10th 1988"
@@ -62,8 +61,7 @@ RSpec.describe "Date field", type: :system do
         expect(hidden_input.value).to eq "1988-02-10"
         expect(text_input.value).to eq "February 10th 1988"
 
-        # wait for the birthday turbo frame to load
-        sleep 0.1
+        wait_for_turbo_frame_id "avo-tabgroup-2-avo-tab-birthday"
 
         click_on "Save"
         wait_for_loaded
