@@ -8,7 +8,7 @@ RSpec.describe "Date field", type: :system do
       it "displays the time" do
         visit "/admin/resources/comments"
 
-        expect(field_element_by_resource_id("posted_at", comment.id).text).to eq "10 February 1988 at 16:22 GMT"
+        expect(field_element_by_resource_id("posted_at", comment.id).text).to eq "Wednesday, 10 February 1988, 16:22 UTC"
       end
     end
 
@@ -16,7 +16,7 @@ RSpec.describe "Date field", type: :system do
       it "displays the time" do
         visit "/admin/resources/comments/#{comment.id}"
 
-        expect(find_field_value_element("posted_at").text).to eq "10 February 1988 at 16:22 GMT"
+        expect(find_field_value_element("posted_at").text).to eq "Wednesday, 10 February 1988, 16:22 UTC"
       end
     end
 
@@ -29,7 +29,7 @@ RSpec.describe "Date field", type: :system do
 
         click_on "Save"
 
-        expect(field_element_by_resource_id("posted_at", comment.id).text).to eq "10 February 1988 at 16:22 GMT"
+        expect(field_element_by_resource_id("posted_at", comment.id).text).to eq "Wednesday, 10 February 1988, 16:22 UTC"
       end
 
       it "keeps the right value on update and save" do
@@ -49,7 +49,7 @@ RSpec.describe "Date field", type: :system do
 
         click_on "Save"
 
-        expect(field_element_by_resource_id("posted_at", comment.id).text).to eq "11 February 1988 at 17:17 GMT"
+        expect(field_element_by_resource_id("posted_at", comment.id).text).to eq "Thursday, 11 February 1988, 17:17 UTC"
       end
     end
   end
