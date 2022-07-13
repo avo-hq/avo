@@ -206,7 +206,7 @@ module Avo
     end
 
     def name
-      default = class_name_without_resource.to_s.gsub('::', ' ').humanize
+      default = class_name_without_resource.to_s.underscore.gsub('::', ' ').humanize
 
       return @name if @name.present?
 
