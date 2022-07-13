@@ -92,7 +92,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
     if @reflection.present?
       args = {
-        via_relation_class: reflection_model_class,
+        via_resource_class: reflection_model_class,
         via_resource_id: @parent_model.id
       }
 
