@@ -48,7 +48,7 @@ RSpec.feature "Search", type: :system do
       let!(:user) { create :user, first_name: "Hehe", last_name: "user", roles: {admin: true, manager: true, writer: true} }
       let!(:user2) { create :user, first_name: "Hehe ahi", last_name: "user", roles: {admin: true, manager: true, writer: true} }
 
-      it "goes to the search result" do
+      it "opens the search" do
         visit url
         open_global_search_box
         expect_search_panel_open
@@ -61,11 +61,24 @@ RSpec.feature "Search", type: :system do
         expect(page).to have_content "New hehe post description."
         expect(page).to have_content "Hehe user"
         expect(page).to have_content "This user has the following roles: admin, manager, writer"
+      end
+
+      it "goes to the search result" do
+        visit url
+        open_global_search_box
+        expect_search_panel_open
+
+        write_in_search "hehe"
+
+        expect(page).to have_content "Hehe user"
+        expect(page).to have_content "This user has the following roles: admin, manager, writer"
+
+        sleep 0.4
 
         find(".aa-Input").send_keys :arrow_down
         find(".aa-Input").send_keys :return
 
-        wait_for_search_loaded
+        sleep 0.4
 
         expect(current_path).to eql "/admin/resources/users/#{user2.slug}"
       end
