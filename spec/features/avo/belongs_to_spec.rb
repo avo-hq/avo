@@ -103,7 +103,7 @@ RSpec.feature "belongs_to", type: :feature do
   end
 
   context "new" do
-    let(:url) { "/admin/resources/posts/new?via_relation=user&via_relation_class=User&via_resource_id=#{admin.id}" }
+    let(:url) { "/admin/resources/posts/new?via_relation=user&via_resource_class=User&via_resource_id=#{admin.id}" }
 
     it { is_expected.to have_select "post_user_id", selected: admin.name, options: [empty_dash, admin.name], disabled: true }
   end

@@ -20,7 +20,7 @@ RSpec.feature "HasManyField", type: :feature do
 
         click_on "Create new post"
 
-        expect(page).to have_current_path "/admin/resources/posts/new?via_relation=user&via_relation_class=User&via_resource_id=#{user.id}"
+        expect(page).to have_current_path "/admin/resources/posts/new?via_relation=user&via_resource_class=User&via_resource_id=#{user.id}"
         expect(page).to have_select "post_user_id", selected: user.name, disabled: true
 
         fill_in "post_name", with: "New post name"
@@ -42,7 +42,7 @@ RSpec.feature "HasManyField", type: :feature do
 
         click_on "Create new post"
 
-        expect(page).to have_current_path "/admin/resources/posts/new?via_relation=user&via_relation_class=User&via_resource_id=#{user.id}"
+        expect(page).to have_current_path "/admin/resources/posts/new?via_relation=user&via_resource_class=User&via_resource_id=#{user.id}"
       end
 
       it "displays valid links to resources" do
@@ -52,7 +52,7 @@ RSpec.feature "HasManyField", type: :feature do
         expect(page).to have_selector "[data-control='view-type-toggle-grid'][href='/admin/resources/users/#{user.id}/posts?turbo_frame=has_many_field_posts&view_type=grid']"
 
         # create new button
-        expect(page).to have_link("Create new post", href: "/admin/resources/posts/new?via_relation=user&via_relation_class=User&via_resource_id=#{user.id}")
+        expect(page).to have_link("Create new post", href: "/admin/resources/posts/new?via_relation=user&via_resource_class=User&via_resource_id=#{user.id}")
 
         # attach button
         expect(page).to have_link("Attach post", href: /\/admin\/resources\/users\/#{user.id}\/posts\/new/)
@@ -126,7 +126,7 @@ RSpec.feature "HasManyField", type: :feature do
 
     it "creates and updates the course" do
       expect(Course::Link.count).to be 0
-      visit "/admin/resources/course_links/new?via_relation=course&via_relation_class=Course&via_resource_id=#{course.id}"
+      visit "/admin/resources/course_links/new?via_relation=course&via_resource_class=Course&via_resource_id=#{course.id}"
 
       fill_in "course_link_link", with: "https://google.com"
       click_on "Save"

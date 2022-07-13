@@ -196,7 +196,7 @@ RSpec.feature "belongs_to", type: :system do
       let!(:comment) { create :comment, body: "hey there", user: user, commentable: project }
 
       it "has the associated record details prefilled" do
-        visit "/admin/resources/comments/new?via_relation=commentable&via_relation_class=Project&via_resource_id=#{project.id}"
+        visit "/admin/resources/comments/new?via_relation=commentable&via_resource_class=Project&via_resource_id=#{project.id}"
 
         expect(find("#comment_commentable_type").value).to eq "Project"
         expect(find("#comment_commentable_type").disabled?).to be true
@@ -434,7 +434,7 @@ RSpec.feature "belongs_to", type: :system do
 
     describe "with associated record" do
       it "prefills the associated record details" do
-        visit "/admin/resources/reviews/new?via_relation=reviewable&via_relation_class=Team&via_resource_id=#{team.id}"
+        visit "/admin/resources/reviews/new?via_relation=reviewable&via_resource_class=Team&via_resource_id=#{team.id}"
 
         expect(find("#review_reviewable_type").value).to eq "Team"
         expect(find("[data-type='Team'] #review_reviewable_id[type='text']").value).to eq team.name
@@ -447,7 +447,7 @@ RSpec.feature "belongs_to", type: :system do
     let!(:course) { create :course }
 
     it "has the prefilled association details" do
-      visit "/admin/resources/course_links/new?via_relation=course&via_relation_class=Course&via_resource_id=#{course.id}"
+      visit "/admin/resources/course_links/new?via_relation=course&via_resource_class=Course&via_resource_id=#{course.id}"
 
       expect(page).to have_field type: "text", name: "course/link[course_id]", disabled: true, with: course.name
       expect(page).to have_field type: "hidden", name: "course/link[course_id]", visible: false, with: course.id
