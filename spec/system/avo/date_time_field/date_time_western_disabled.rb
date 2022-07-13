@@ -1,5 +1,9 @@
 require "rails_helper"
 
+# These are disabled because I couldn't find a way to test multiple timezones in one go.
+# Because they are system tests, the stubbing doesn't work.
+# I left them here just in case I find a way to do it in the future.
+
 RSpec.describe "Date field on western zone", type: :system do
   let!(:comment) { create :comment, posted_at: Time.new(1988, 2, 10, 16, 22, 00, "UTC") }
 

@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe "Date field", type: :system do
   let!(:comment) { create :comment, posted_at: Time.new(1988, 2, 10, 16, 22, 0, "UTC") }
 
-  describe "on UTC", tz: "UTC" do
+  describe "on UTC" do
     context "index" do
       it "displays the time" do
         visit "/admin/resources/comments"
