@@ -24,6 +24,7 @@ RSpec.describe "Date field", type: :system do
       it "sets the proper date without the TZ modifications" do
         visit "/admin/resources/users/#{user.id}/edit"
 
+        scroll_to find_all('[data-target="tab-group"]').first
         wait_for_turbo_frame_id "avo-tabgroup-2-avo-tab-birthday"
 
         expect(hidden_input.value).to eq "1988-02-10"
