@@ -7,7 +7,6 @@ RSpec.describe "Filters", type: :system do
 
     let(:url) { "/admin/resources/posts?view_type=table" }
 
-
     it "allows selecting and deselecting all" do
       visit url
       expect(page.all("input[name='Select item']").any?(&:checked?)).to be false

@@ -1,9 +1,10 @@
-require "rails/generators"
+require_relative "named_base_generator"
 
 module Generators
   module Avo
-    class ActionGenerator < Rails::Generators::NamedBase
+    class ActionGenerator < NamedBaseGenerator
       source_root File.expand_path("templates", __dir__)
+
       class_option :standalone, type: :boolean
 
       namespace "avo:action"

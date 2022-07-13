@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_02_080845) do
+ActiveRecord::Schema.define(version: 2022_07_05_172707) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(version: 2022_05_02_080845) do
     t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.datetime "posted_at"
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
@@ -75,18 +76,6 @@ ActiveRecord::Schema.define(version: 2022_05_02_080845) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "mobility_text_translations", force: :cascade do |t|
-    t.string "locale", null: false
-    t.string "key", null: false
-    t.text "value"
-    t.string "translatable_type"
-    t.bigint "translatable_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["translatable_id", "translatable_type", "key"], name: "index_mobility_text_translations_on_translatable_attribute"
-    t.index ["translatable_id", "translatable_type", "locale", "key"], name: "index_mobility_text_translations_on_keys", unique: true
   end
 
   create_table "people", force: :cascade do |t|

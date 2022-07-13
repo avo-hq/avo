@@ -1,9 +1,8 @@
-require "rails/generators"
-require "fileutils"
+require_relative "base_generator"
 
 module Generators
   module Avo
-    class EjectGenerator < ::Rails::Generators::Base
+    class EjectGenerator < BaseGenerator
       argument :filename, type: :string, required: true
 
       source_root ::Avo::Engine.root

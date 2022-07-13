@@ -1,3 +1,9 @@
 <%= index_field_wrapper field: @field, resource: @resource do %>
-  <%= @field.formatted_value %>
+   <%= content_tag :div, data: {
+    controller: "date-field",
+    date_field_view_value: @view,
+    date_field_format_value: @field.format,
+  } do %>
+    <%= @field.formatted_value %>
+  <% end %>
 <% end %>

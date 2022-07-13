@@ -147,6 +147,9 @@ export default class extends Controller {
               case 'rounded':
                 classes = 'rounded'
                 break
+              case 'square':
+                classes = 'rounded-none'
+                break
             }
 
             children.push(
