@@ -10,21 +10,23 @@ module Avo
       def initialize(id, **args, &block)
         super(id, **args, &block)
 
-        @first_day_of_week = args[:first_day_of_week].present? ? args[:first_day_of_week].to_i : 0
-        @picker_format = args[:picker_format].present? ? args[:picker_format] : "Y-m-d"
-        @format = args[:format].present? ? args[:format] : :long
-        @relative = args[:relative].present? ? args[:relative] : false
-        @disable_mobile = args[:disable_mobile].present? ? args[:disable_mobile] : false
+        add_string_prop args, :first_day_of_week, 0
+        add_string_prop args, :picker_format, "Y-m-d"
+        add_string_prop args, :format, "yyyy-LL-dd"
+        add_boolean_prop args, :relative
+        add_boolean_prop args, :disable_mobile
       end
 
       def formatted_value
         return if value.blank?
 
-        if @format.is_a?(Symbol)
-          value.to_formatted_s(@format)
-        else
-          value.strftime(@format)
-        end
+        value.iso8601
+      end
+
+      def edit_formatted_value
+        return nil if value.nil?
+
+        value.iso8601
       end
     end
   end

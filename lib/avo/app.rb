@@ -172,7 +172,7 @@ module Avo
         payload[:license_abilities] = Avo::App&.license&.abilities
         payload[:cache_store] = self.cache_store&.class&.to_s
         payload[:avo_metadata] = hq&.avo_metadata
-        payload[:app_timezone] = Time.now.zone
+        payload[:app_timezone] = Time.current.zone
         payload[:cache_key] = Avo::Licensing::HQ.cache_key
         payload[:cache_key_contents] = hq&.cached_response
 

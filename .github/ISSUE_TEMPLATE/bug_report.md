@@ -42,9 +42,9 @@ Steps to reproduce the behavior:
 <!-- Add any other context about the problem here. -->
 
 <!--
-How much are you impacted by this issue?
-Please set a level for Impact and Urgency
-*Mark [x] inside the backets
+  How much are you impacted by this issue?
+  Please set a level of Impact and Urgency
+  (Mark [x] inside the brackets)
 -->
 #### Impact
 

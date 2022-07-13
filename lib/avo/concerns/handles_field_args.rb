@@ -28,7 +28,7 @@ module Avo
         add_prop_from_args args, name: name, default: default, type: :array
       end
 
-      def add_string_prop(args, name, default = [])
+      def add_string_prop(args, name, default = nil)
         add_prop_from_args args, name: name, default: default, type: :string
       end
     end

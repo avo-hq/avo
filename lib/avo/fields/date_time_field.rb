@@ -2,25 +2,29 @@ module Avo
   module Fields
     class DateTimeField < DateField
       attr_reader :format
+      attr_reader :picker_format
       attr_reader :time_24hr
       attr_reader :timezone
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
 
-        @picker_format = args[:picker_format].present? ? args[:picker_format] : "Y-m-d H:i:S"
-        @time_24hr = args[:time_24hr].present? ? args[:time_24hr] : false
-        @timezone = args[:timezone].present? ? args[:timezone] : Rails.application.config.time_zone
+        add_boolean_prop args, :time_24hr
+        add_string_prop args, :picker_format, "Y-m-d H:i:S"
+        add_string_prop args, :format, "yyyy-LL-dd TT"
+        add_string_prop args, :timezone
       end
 
       def formatted_value
         return nil if value.nil?
 
-        if @format.is_a?(Symbol)
-          value.to_time.in_time_zone(timezone).to_formatted_s(@format)
-        else
-          value.to_time.in_time_zone(timezone).strftime(@format)
-        end
+        value.utc.to_time.iso8601
+      end
+
+      def edit_formatted_value
+        return nil if value.nil?
+
+        value.utc.iso8601
       end
 
       def fill_field(model, key, value, params)
@@ -32,9 +36,17 @@ module Avo
 
         return model if value.blank?
 
-        model[id] = value.to_time.in_time_zone(Rails.application.config.time_zone)
+        model[id] = utc_time(value)
 
         model
+      end
+
+      def utc_time(value)
+        if timezone.present?
+          ActiveSupport::TimeZone.new(timezone).local_to_utc(Time.parse(value))
+        else
+          value
+        end
       end
     end
   end

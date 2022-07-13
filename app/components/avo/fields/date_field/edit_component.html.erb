@@ -1,14 +1,19 @@
 <%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal do %>
-  <div data-controller="date-field">
-    <%= @form.date_field @field.id,
+  <%= content_tag :div, data: {
+      controller: "date-field",
+      date_field_view_value: @view,
+      date_field_enable_time_value: false,
+      date_field_format_value: @field.format,
+      date_field_picker_format_value: @field.picker_format,
+      date_field_first_day_of_week_value: @field.first_day_of_week,
+      date_field_disable_mobile_value: @field.disable_mobile,
+      date_field_relative_value: @field.relative,
+  } do %>
+    <%= datetime_field "fake_#{@field.id}", "fake",
+      value: @field.edit_formatted_value,
       class: classes("w-full"),
       data: {
-        'date-field-target': 'input',
-        'first-day-of-week': @field.first_day_of_week,
-        'picker-format': @field.picker_format,
-        'disable-mobile': @field.disable_mobile,
-        'enable-time': false,
-        format: @field.format,
+        'date-field-target': 'fakeInput',
         placeholder: @field.placeholder,
         relative: @field.relative,
         **@field.get_html(:data, view: view, element: :input)
@@ -17,5 +22,18 @@
       placeholder: @field.placeholder,
       style: @field.get_html(:style, view: view, element: :input)
     %>
-  </div>
+    <%= @form.text_field @field.id,
+      value: @field.edit_formatted_value,
+      class: classes("w-full hidden"),
+      data: {
+        'date-field-target': 'input',
+        placeholder: @field.placeholder,
+        relative: @field.relative,
+        **@field.get_html(:data, view: view, element: :input)
+      },
+      disabled: @field.readonly,
+      placeholder: @field.placeholder,
+      style: @field.get_html(:style, view: view, element: :input)
+    %>
+  <% end %>
 <% end %>

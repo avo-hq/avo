@@ -1,18 +1,21 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
-require 'spec_helper'
-ENV['RAILS_ENV'] = 'test'
+require "spec_helper"
+ENV["RAILS_ENV"] = "test"
 
-require_relative 'dummy/config/environment'
+require_relative "dummy/config/environment"
 # Prevent database truncation if the environment is production
 if Rails.env.production?
-  abort('The Rails environment is running in production mode!')
+  abort("The Rails environment is running in production mode!")
 end
 
-require 'rspec/rails'
-require 'webmock/rspec'
+require "rspec/rails"
+require "webmock/rspec"
 
-require 'test_prof/any_fixture'
-require 'test_prof/any_fixture/dsl'
+require "test_prof/any_fixture"
+require "test_prof/any_fixture/dsl"
+
+ENV["TZ"] ||= "UTC"
+
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -43,55 +46,55 @@ Avo::App.boot
 
 # ActiveRecord::Migrator.migrate(File.join(Rails.root, 'db/migrate'))
 
-require 'support/download_helpers'
-require 'support/request_helpers'
+require "support/download_helpers"
+require "support/request_helpers"
 
 Capybara.register_driver :chrome_headless do |app|
   Capybara::Selenium::Driver.new app,
-                                 browser: :chrome,
-                                 clear_session_storage: true,
-                                 clear_local_storage: true,
-                                 capabilities: [
-                                   Selenium::WebDriver::Chrome::Options.new(
-                                     args: %w[
-                                       headless
-                                       disable-gpu
-                                       no-sandbox
-                                       window-size=1440,1024
-                                     ],
-                                     'prefs' => {
-                                      'download.default_directory' => DownloadHelpers::PATH.to_s
-                                     }
-                                   )
-                                 ]
+    browser: :chrome,
+    clear_session_storage: true,
+    clear_local_storage: true,
+    capabilities: [
+      Selenium::WebDriver::Chrome::Options.new(
+        :args => %w[
+          headless
+          disable-gpu
+          no-sandbox
+          window-size=1440,1024
+        ],
+        "prefs" => {
+          "download.default_directory" => DownloadHelpers::PATH.to_s
+        }
+      )
+    ]
 end
 
 Capybara.register_driver :chrome do |app|
   Capybara::Selenium::Driver.new app,
-                                 browser: :chrome,
-                                 clear_session_storage: true,
-                                 clear_local_storage: true,
-                                 capabilities: [
-                                   Selenium::WebDriver::Chrome::Options.new(
-                                     args: %w[
-                                       disable-gpu
-                                       no-sandbox
-                                       window-size=1440,1024
-                                     ],
-                                     'prefs' => {
-                                      'download.default_directory' => DownloadHelpers::PATH.to_s
-                                     }
-                                   )
-                                 ]
+    browser: :chrome,
+    clear_session_storage: true,
+    clear_local_storage: true,
+    capabilities: [
+      Selenium::WebDriver::Chrome::Options.new(
+        :args => %w[
+          disable-gpu
+          no-sandbox
+          window-size=1440,1024
+        ],
+        "prefs" => {
+          "download.default_directory" => DownloadHelpers::PATH.to_s
+        }
+      )
+    ]
 end
 
-test_driver = ENV['HEADFULL'] ? :chrome : :chrome_headless
+test_driver = ENV["HEADFULL"] ? :chrome : :chrome_headless
 
-require 'support/controller_routes'
+require "support/controller_routes"
 
 RSpec.configure do |config|
   config.include TestHelpers::ControllerRoutes, type: :controller
-  config.include Requests::JsonHelpers, :type => :controller
+  config.include Requests::JsonHelpers, type: :controller
   config.include TestHelpers::DisableAuthentication, type: :system
   config.include TestHelpers::DisableAuthentication, type: :feature
   config.include TestHelpers::DisableHQRequest
@@ -122,19 +125,19 @@ RSpec.configure do |config|
       body: {}.to_json,
       headers: json_headers
     )
-    ENV['RUN_WITH_NULL_LICENSE'] = '1'
+    ENV["RUN_WITH_NULL_LICENSE"] = "1"
 
     WebMock.disable_net_connect!(
       net_http_connect_on_start: true,
       allow_localhost: true,
-      allow: 'chromedriver.storage.googleapis.com'
+      allow: "chromedriver.storage.googleapis.com"
     )
     example.run
 
     # WebMock.allow_net_connect!
     WebMock.allow_net_connect!(net_http_connect_on_start: true)
     WebMock.reset!
-    ENV['RUN_WITH_NULL_LICENSE'] = '0'
+    ENV["RUN_WITH_NULL_LICENSE"] = "0"
   end
 
   # You can uncomment this line to turn off ActiveRecord support entirely.
@@ -161,10 +164,11 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
 end
 
-require 'support/helpers'
-require 'support/factory_bot'
-require 'support/database_cleaner'
-require 'support/wait_for_loaded'
-require 'support/js_error_detector'
-require 'support/devise'
-require 'support/shared_contexts'
+require "support/helpers"
+require "support/factory_bot"
+require "support/database_cleaner"
+require "support/wait_for_loaded"
+require "support/js_error_detector"
+require "support/devise"
+require "support/shared_contexts"
+require "support/timezone"

@@ -4,6 +4,10 @@
 Fixes # (issue)
 
 # Checklist:
+<!--
+  Please go through the steps and complete them if they make sense (add testes if the change requires it, add to the docs, etc.)
+  (Mark [x] inside the brackets)
+-->
 
 - [ ] I have performed a self-review of my own code
 - [ ] I have commented my code, particularly in hard-to-understand areas
