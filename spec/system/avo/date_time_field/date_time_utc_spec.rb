@@ -5,7 +5,8 @@ RSpec.describe "Date field", type: :system do
 
   describe "on UTC", tz: "UTC" do
     before do
-      puts ["in suite->", ENV['TZ']].inspect
+      # puts ["in suite->", ENV['TZ']].inspect
+      allow(Rails.application.config).to receive(:time_zone).and_return('UTC')
     end
 
     context "index" do

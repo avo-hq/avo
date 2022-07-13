@@ -17,6 +17,7 @@ puts ["ENV TZ->", ENV['TZ']].inspect
 
 ENV["TZ"] ||= "UTC"
 puts ["ENV TZ AFTER->", ENV['TZ']].inspect
+puts ["locale->", I18n.locale].inspect
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
