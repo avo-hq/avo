@@ -14,6 +14,15 @@ If you'd like to contribute code, the steps below will help you get up and runni
 
 Since v `1.20` (Jan 2022) we started to change the `model` name with `record` where it fits. The `model` should be the class (ex: `User`, `Comment`, etc.) and `record` will be the instantiated model class with data (ex: `user` is a record when doing `user = User.find(1)`).
 
+### Parameters in paths
+
+In different sections of the app Avo will generate paths with some params to figure out the context around that request. Ex: to generate the back path or to fetch informations about a field.
+
+`via_resource_class` - a string representing the class of a resource (`via_resource_class=UserResource`, `via_resource_class=PostResource`)
+`via_resource_id` - a string representing the id of a record (`via_resource_id=5`, `via_resource_id=27`)
+`via_relation_class` - a string representing the class of a model (`via_relation_class=User`, `via_relation_class=Post`)
+`via_relation` - a string representing the association; usually the field id `field :users, as: :has_many` will make paths with param named `via_relation=users`
+
 ## Forking & branches
 
 Please fork Avo and create a descriptive branch for your feature or fix. We usually use the `feature/`, `chore/`, or `fix/` branch prefixes. This way, the PR gets automatically labelled.
