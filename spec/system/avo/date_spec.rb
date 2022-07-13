@@ -27,8 +27,8 @@ RSpec.describe "Date field", type: :system do
         scroll_to find_all('[data-target="tab-group"]').first
         wait_for_turbo_frame_id "avo-tabgroup-2-avo-tab-birthday"
 
-        expect(hidden_input.value).to eq "1988-02-10"
-        expect(text_input.value).to eq "February 10th 1988"
+        expect(find('[data-field-id="birthday"] [data-controller="date-field"] input[type="hidden"]', visible: false).value).to eq "1988-02-10"
+        expect(find('[data-field-id="birthday"] [data-controller="date-field"] input[type="text"]').value).to eq "February 10th 1988"
 
         click_on "Save"
         wait_for_loaded
@@ -59,8 +59,8 @@ RSpec.describe "Date field", type: :system do
       it "sets the proper date without" do
         visit "/admin/resources/users/#{user.id}/edit"
 
-        expect(hidden_input.value).to eq "1988-02-10"
-        expect(text_input.value).to eq "February 10th 1988"
+        expect(find('[data-field-id="birthday"] [data-controller="date-field"] input[type="hidden"]', visible: false).value).to eq "1988-02-10"
+        expect(find('[data-field-id="birthday"] [data-controller="date-field"] input[type="text"]').value).to eq "February 10th 1988"
 
         wait_for_turbo_frame_id "avo-tabgroup-2-avo-tab-birthday"
 
@@ -71,12 +71,4 @@ RSpec.describe "Date field", type: :system do
       end
     end
   end
-end
-
-def text_input
-  find '[data-field-id="birthday"] [data-controller="date-field"] input[type="text"]'
-end
-
-def hidden_input
-  find '[data-field-id="birthday"] [data-controller="date-field"] input[type="hidden"]', visible: false
 end
