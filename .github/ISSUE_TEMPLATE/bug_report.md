@@ -33,7 +33,11 @@ Steps to reproduce the behavior:
 
 **Ruby version**:
 
-**License type** (Community or Pro):
+**License type**:
+<!-- (Mark [x] inside the brackets) -->
+
+ - [ ] Community
+ - [ ] Pro
 
 ### Screenshots
 <!-- If applicable, add screenshots to help explain your problem. -->

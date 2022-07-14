@@ -10,6 +10,8 @@ module Avo
     include Avo::Concerns::ModelClassConstantized
 
     delegate :view_context, to: ::Avo::App
+    delegate :current_user, to: ::Avo::App
+    delegate :params, to: ::Avo::App
     delegate :simple_format, :content_tag, to: :view_context
     delegate :main_app, to: :view_context
     delegate :avo, to: :view_context
@@ -153,7 +155,7 @@ module Avo
     end
 
     def class_name_without_resource
-      self.class.name.demodulize.chomp("Resource")
+      self.class.name.demodulize.delete_suffix("Resource")
     end
 
     def model_class
@@ -199,7 +201,7 @@ module Avo
     end
 
     def name
-      default = class_name_without_resource.titlecase
+      default = class_name_without_resource.to_s.gsub('::', ' ').underscore.humanize
 
       return @name if @name.present?
 

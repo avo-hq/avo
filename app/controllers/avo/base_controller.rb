@@ -154,7 +154,7 @@ module Avo
 
       respond_to do |format|
         if saved
-          format.html { redirect_to after_create_path, notice: "#{@model.class.name} #{t("avo.was_successfully_created")}." }
+          format.html { redirect_to after_create_path, notice: "#{@resource.name} #{t("avo.was_successfully_created")}." }
         else
           flash.now[:error] = t "avo.you_missed_something_check_form"
           format.html { render :new, status: :unprocessable_entity }
@@ -173,7 +173,7 @@ module Avo
 
       respond_to do |format|
         if saved
-          format.html { redirect_to after_update_path, notice: "#{@model.class.name} #{t("avo.was_successfully_updated")}." }
+          format.html { redirect_to after_update_path, notice: "#{@resource.name} #{t("avo.was_successfully_updated")}." }
         else
           flash.now[:error] = t "avo.you_missed_something_check_form"
           format.html { render :edit, status: :unprocessable_entity }

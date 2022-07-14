@@ -13,6 +13,10 @@ module Avo
         @uri = Addressable::URI.parse(path)
       end
 
+      def call
+        to_s
+      end
+
       def append_paths(*paths)
         paths = Array.wrap(paths).flatten
 
