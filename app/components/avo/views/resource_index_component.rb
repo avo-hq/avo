@@ -6,6 +6,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
   def initialize(
     resource: nil,
+    related_resource: nil,
     resources: nil,
     models: [],
     pagy: nil,
@@ -18,6 +19,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     applied_filters: []
   )
     @resource = resource
+    @related_resource = related_resource
     @resources = resources
     @models = models
     @pagy = pagy

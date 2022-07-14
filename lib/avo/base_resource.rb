@@ -206,7 +206,7 @@ module Avo
     end
 
     def name
-      default = class_name_without_resource.to_s.underscore.gsub('::', ' ').humanize
+      default = class_name_without_resource.to_s.gsub('::', ' ').humanize
 
       return @name if @name.present?
 
@@ -393,6 +393,14 @@ module Avo
 
     def records_path
       resources_path(resource: self)
+    end
+
+    # TODO: rename this
+    # Ex:
+    #   UserResource -> users
+    #   Supser::Duper::ProjectResource -> super/duper/projects
+    def param_segment
+      resources_path(resource: self).gsub("#{Avo.configuration.root_path}/resources/", '')
     end
 
     def label_field

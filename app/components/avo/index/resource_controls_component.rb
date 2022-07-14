@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
-  def initialize(resource: nil, reflection: nil, parent_model: nil, view_type: :table)
+  def initialize(resource: nil, related_resource: nil, reflection: nil, parent_model: nil, view_type: :table)
     @resource = resource
+    @related_resource = related_resource
     @reflection = reflection
     @parent_model = parent_model
     @view_type = view_type
@@ -31,8 +32,9 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     args = {}
 
     if @parent_model.present?
+      # abort @related_resource.inspect
       args = {
-        via_resource_class: parent_resource.model_class,
+        via_resource_class: @related_resource.class,
         via_resource_id: @parent_model.id
       }
     end
@@ -46,7 +48,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
 
     if @parent_model.present?
       args = {
-        via_resource_class: parent_resource.model_class,
+        via_resource_class: @related_resource.model_class,
         via_resource_id: @parent_model.id
       }
     end
@@ -62,17 +64,11 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     end
   end
 
-  def parent_resource
-    return nil if @parent_model.blank?
-
-    ::Avo::App.get_resource_by_model_name @parent_model.class
-  end
-
   def is_has_many_association
     @reflection.is_a?(::ActiveRecord::Reflection::HasManyReflection) || @reflection.is_a?(::ActiveRecord::Reflection::ThroughReflection)
   end
 
   def referrer_path
-    Avo::App.root_path(paths: ['resources', params[:resource_name], params[:id], params[:related_name]], query: request.query_parameters.to_h)
+    Avo::App.root_path(paths: ['resources', @resource.param_segment], query: request.query_parameters.to_h)
   end
 end

@@ -112,41 +112,121 @@ module Avo
 
     private
 
-    def set_resource_name
-      @resource_name = resource_name
+    def set_view
+      @view = action_name.to_sym
     end
 
-    def set_related_resource_name
-      @related_resource_name = related_resource_name
+    def in_association?
+      params[:associated_resource_class].present?
+    end
+
+    # Figure out the resource segment key from the URL
+    # /admin/resources/super/duper/projects/3/wonka/donka/comments/395 we should get `super/duper/projects`
+    def segment_from_class_name
+      self.class.name.delete_prefix("Avo::").delete_suffix("Controller").gsub("::", "/").downcase
+    end
+
+    def resource_segment
+      if in_association?
+        resource_regex = /.*resources\/(\D*)\/?\d*\/#{segment_from_class_name}/
+        request.path.match(resource_regex)[1].delete_suffix "/"
+      else
+        segment_from_class_name
+      end
+    end
+
+    def association_id_param
+      :"#{model_param_key}_id"
+    end
+
+    # Gets the Avo resource for this request based on the request from the `resource_name` "param"
+    # Ex: Avo::Resources::Project, Avo::Resources::Team, Avo::Resources::User
+    def resource
+      Avo::App.get_resource_by_resource_segment resource_segment
+      # abort in_association?.inspect
+      # abort params.inspect
+
+      # controller_based_resource = Avo::App.get_resource_by_controller_class(self.class)
+      # abort self.class.inspect
+      # # abort controller_based_resource.inspect
+
+      # return controller_based_resource if controller_based_resource.present?
+
+      # resource = App.get_resource @resource_name.to_s.camelize.singularize
+
+      # return resource if resource.present?
+
+      # App.guess_resource @resource_name
     end
 
     def set_resource
       raise ActionController::RoutingError.new "No route matches!" if resource.nil?
 
-      @resource = resource.hydrate(params: params)
+      @resource = resource.hydrate(params: params, view: action_name.to_sym, user: _current_user)
+    end
+
+    def related_resource
+      return Avo::App.get_resource_by_controller_class(self.class)
+      return App.get_resource params[:associated_resource_class] if params[:associated_resource_class].present?
+
+      reflection = @model._reflections[related_resource_name]
+
+      reflected_model = reflection.klass
+
+      App.get_resource_by_model_name reflected_model
     end
 
     def set_related_resource
+      # abort 'set_related_resource->'.inspect
       @related_resource = related_resource.hydrate(params: params)
     end
 
     # On associations, the model is the one calling the association.
-    # /avo/resources/posts/4?turbo_frame=has_one_field_show_post&resource_class=UserResource&related_id=39
-    # For this path, the model is User.find 39
+    # For this path, the model is Project.find 3
+    # /admin/resources/super/duper/projects/3/wonka/donka/comments/395
     def set_model
-      @model = eager_load_files(@resource, @resource.class.find_scope).find params[:id]
+      # abort @resource.inspect
+      if in_association?
+        # abort action_name.inspect
+        @model = eager_load_files(@resource, @resource.class.find_scope).find params[association_id_param]
+      else
+        @model = eager_load_files(@resource, @resource.class.find_scope).find params[:id]
+      end
     end
 
     # The related model is the associated one.
-    # /avo/resources/posts/4?turbo_frame=has_one_field_show_post&resource_class=UserResource&related_id=39
+    # /avo/resources/posts/4?turbo_frame=has_one_field_show_post&resource_class=UserResource&associated_record_=39
     # For this path, the related model is Post.find 4
     def set_related_model
-      @related_model = eager_load_files(@related_resource, @related_resource.class.find_scope).find params[:id]
+      @related_model = eager_load_files(@related_resource, @model.send(params[:field_id])).find params[:id]
     end
 
-    def set_view
-      @view = action_name.to_sym
+    def set_reflection
+      @reflection = @model._reflections[params[:field_id]]
     end
+
+    def set_attachment_class
+      @attachment_class = @reflection.klass
+    end
+
+    def set_attachment_model
+      @attachment_model = @attachment_class.find attachment_id
+    end
+
+    def set_attachment_resource
+      @attachment_resource = App.get_resource_by_model_name @attachment_class
+    end
+
+
+    # ------------------
+
+    # def set_resource_name
+    #   @resource_name = resource_name
+    # end
+
+    # def set_related_resource_name
+    #   @related_resource_name = related_resource_name
+    # end
 
     def set_model_to_fill
       @model_to_fill = @resource.model_class.new if @view == :create
@@ -160,10 +240,6 @@ module Avo
       unless is_attach_action
         @model = @resource.fill_model(@model_to_fill, cast_nullable(model_params))
       end
-    end
-
-    def hydrate_resource
-      @resource.hydrate(view: action_name.to_sym, user: _current_user)
     end
 
     def hydrate_related_resource
@@ -180,57 +256,41 @@ module Avo
 
     # Get the pluralized resource name for this request
     # Ex: projects, teams, users
-    def resource_name
-      return params[:resource_name] if params[:resource_name].present?
+    # def resource_name
+    #   possible_resource_class = params[:resource_name] || params[:resource_class]
 
-      return params[:resource_class] if params[:resource_class].present?
 
-      controller_based_resource = Avo::App.get_resource_by_controller_class(self.class)
+    #   return App.get_resource possible_resource_class if possible_resource_class.present?
 
-      return controller_based_resource.route_key if controller_based_resource.present?
+    #   controller_based_resource = Avo::App.get_resource_by_controller_class(self.class)
 
-      return controller_name if controller_name.present?
+    #   return controller_based_resource.route_key if controller_based_resource.present?
 
-      begin
-        request.path
-          .match(/\/?#{Avo::App.root_path.delete('/')}\/resources\/([a-z1-9\-_]*)\/?/mi)
-          .captures
-          .first
-      rescue
-      end
-    end
+    #   return request.path_info.split('/').select(&:present?).second if self.class != Avo::AssociationsController
 
-    def related_resource_name
-      # params[:related_name]
-      # request.path_info.split('/').select(&:present?).second
-      params[:field_id]
-    end
+    #   return controller_name if controller_name.present?
 
-    # Gets the Avo resource for this request based on the request from the `resource_name` "param"
-    # Ex: Avo::Resources::Project, Avo::Resources::Team, Avo::Resources::User
-    def resource
-      if params[:resource_class].present?
-        return App.get_resource params[:resource_class]
-      end
+    #   begin
+    #     request.path.match(/\/?#{Avo::App.root_path.delete('/')}\/resources\/([a-z1-9\-_]*)\/?/mi).captures.first
+    #   rescue
+    #   end
 
-      controller_based_resource = Avo::App.get_resource_by_controller_class(self.class)
+    #   request.path_info.split('/').select(&:present?).second
+    # end
 
-      return controller_based_resource if controller_based_resource.present?
+    # def related_resource_name
+    #   # params[:related_name]
+    #   # abort request.path_info.inspect
+    #   # puts ["request.path->", request.path].inspect
+    #   # params[:related_name] || params[:field_id]
+    #   # params[:field_id] || request.path_info.split('/').select(&:present?).second
+    #   # abort ["associated_resource_class->", params[:associated_resource_class]].inspect
+    #   possible_resource_class = params[:associated_resource_class]
 
-      resource = App.get_resource @resource_name.to_s.camelize.singularize
+    #   return App.get_resource possible_resource_class if possible_resource_class.present?
 
-      return resource if resource.present?
-
-      App.guess_resource @resource_name
-    end
-
-    def related_resource
-      reflection = @model._reflections[related_resource_name]
-
-      reflected_model = reflection.klass
-
-      App.get_resource_by_model_name reflected_model
-    end
+    #   params[:associated_resource_class]
+    # end
 
     def eager_load_files(resource, query)
       if resource.attached_file_fields.present?

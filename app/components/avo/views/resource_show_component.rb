@@ -7,6 +7,7 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
   def initialize(resource: nil, reflection: nil, parent_model: nil, resource_panel: nil, actions: [])
     @resource = resource
     @reflection = reflection
+    @parent_model = parent_model
     @resource_panel = resource_panel
     @actions = actions
     @view = :show
@@ -26,7 +27,7 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
 
   def back_path
     if via_resource?
-      helpers.resource_path(model: params[:via_resource_class].safe_constantize, resource: relation_resource, resource_id: params[:via_resource_id])
+      helpers.resource_path(model: via_resource_class.new.route_key, resource: relation_resource, resource_id: params[:via_resource_id])
     else
       helpers.resources_path(resource: @resource)
     end

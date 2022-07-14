@@ -31,7 +31,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def detach_path
-    helpers.resource_detach_path(params[:resource_name], params[:id], @reflection.name.to_s, @resource.model.id)
+    helpers.resource_detach_path(resource: @resource, model: @resource.model, associated_model_class: @reflection.active_record)
   end
 
   def destroy_path
@@ -83,6 +83,10 @@ class Avo::ResourceComponent < Avo::BaseComponent
     @has_many_panels = []
     @has_as_belongs_to_many_panels = []
     @resource_tools = @resource.tools
+  end
+
+  def via_resource_class
+    params[:via_resource_class].safe_constantize
   end
 
   def via_resource?

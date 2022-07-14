@@ -2,15 +2,15 @@ require_dependency "avo/base_controller"
 
 module Avo
   class AssociationsController < BaseController
-    before_action :set_model, only: [:show, :index, :new, :create, :destroy, :order]
-    before_action :set_related_resource_name
     before_action :set_related_resource, only: [:show, :index, :new, :create, :destroy, :order]
+    before_action :set_model, only: [:show, :index, :new, :create, :destroy, :order]
+    # before_action :set_related_resource_name
     before_action :hydrate_related_resource, only: [:show, :index, :new, :create, :destroy, :order]
-    before_action :set_related_model, only: [:show, :order]
+    before_action :set_related_model, only: [:new, :show, :order]
+    before_action :set_reflection, only: [:new, :index, :show, :order]
     before_action :set_attachment_class, only: [:show, :index, :new, :create, :destroy, :order]
-    before_action :set_attachment_resource, only: [:show, :index, :new, :create, :destroy, :order]
     before_action :set_attachment_model, only: [:create, :destroy, :order]
-    before_action :set_reflection, only: [:index, :show, :order]
+    before_action :set_attachment_resource, only: [:show, :index, :new, :create, :destroy, :order]
 
     def index
       @parent_resource = @resource.dup
@@ -34,11 +34,11 @@ module Avo
     end
 
     def new
-      @resource.hydrate(model: @model)
+      @related_resource.hydrate(model: @related_model)
 
       begin
-        @field = @resource.get_field_definitions.find { |f| f.id == @related_resource_name.to_sym }
-        @field.hydrate(resource: @resource, model: @model, view: :new)
+        @field = @related_resource.get_field_definitions.find { |f| f.id == params[:field_id].to_sym }
+        @field.hydrate(resource: @related_resource, model: @related_model, view: :new)
       rescue
       end
 
@@ -47,7 +47,7 @@ module Avo
 
         # Add the association scope to the query scope
         if @field.attach_scope.present?
-          query = Avo::Hosts::AssociationScopeHost.new(block: @field.attach_scope, query: query, parent: @model).handle
+          query = Avo::Hosts::AssociationScopeHost.new(block: @field.attach_scope, query: query, parent: @related_model).handle
         end
 
         @options = query.all.map do |model|
@@ -86,24 +86,24 @@ module Avo
 
     private
 
+    def set_reflection
+      @reflection = @related_model._reflections[params[:field_id]]
+    end
+
     def set_attachment_class
-      @attachment_class = @model._reflections[related_resource_name.to_s].klass
+      @attachment_class = @reflection.klass
+    end
+
+    def set_attachment_model
+      @attachment_model = @attachment_class.find attachment_id
     end
 
     def set_attachment_resource
       @attachment_resource = App.get_resource_by_model_name @attachment_class
     end
 
-    def set_attachment_model
-      @attachment_model = @model._reflections[related_resource_name.to_s].klass.find attachment_id
-    end
-
-    def set_reflection
-      @reflection = @model._reflections[related_resource_name.to_s]
-    end
-
     def attachment_id
-      params[:related_id] || params.require(:fields).permit(:related_id)[:related_id]
+      params[:associated_record_id] || params.require(:fields).permit(:associated_record_id)[:associated_record_id]
     end
 
     def reflection_class
@@ -115,54 +115,79 @@ module Avo
       klass
     end
 
-    private
+    # private
 
-    def resource_discovery_regex
-      if action_name == 'new'
-        /^\/resources\/(.*)\/\d*\/reviews\/new$/
-      elsif action_name == 'index'
-        /^\/resources\/(.*)\/\d*\/reviews$/
-      end
+    # On associations, the model is the one calling the association.
+    # /avo/resources/posts/4?turbo_frame=has_one_field_show_post&resource_class=UserResource&associated_record_id=39
+    # For this path, the model is User.find 39
+    def set_model
+      @model = eager_load_files(@resource, @resource.class.find_scope).find params[:id] if params[:id].present?
     end
 
-    # Gets the Avo resource for this request based on the request from the `resource_name` "param"
-    # Ex: Avo::Resources::Project, Avo::Resources::Team, Avo::Resources::User
-    def old_resource
-      return Avo::App.get_resource_by_name params[:resource_class]
-      regex_test = request.env['PATH_INFO'].match(resource_discovery_regex)
-      return if regex_test.blank?
-      path = regex_test[1]
-      path = "#{Avo.configuration.root_path}/resources/#{path}"
-      return Avo::App.get_resource_by_records_path path
-
-      t =Avo::App.get_resource_by_records_path path
-      abort t.inspect
-      return t
-      if action_name == "new"
-        regex = /^\/resources\/(.*)\/\d*\/reviews\/new$/
-
-        # resource = ::Super::Duper::ProjectResource.new
-
-
-
-      elsif action_name == "index"
-        regex = /^\/resources\/(.*)\/\d*\/reviews\/new$/
-
-        abort request.env['PATH_INFO'].inspect
-        t = super
-
-        abort t.inspect
-      end
-      # controller_based_resource = Avo::App.get_resource_by_controller_class(self.class)
-      # # controller_based_resource = Avo::App.get_resource_by_path(self.class)
-
-      # return controller_based_resource if controller_based_resource.present?
-
-      # resource = App.get_resource @resource_name.to_s.camelize.singularize
-
-      # return resource if resource.present?
-
-      # App.guess_resource @resource_name
+    # The related model is the associated one.
+    # /avo/resources/posts/4?turbo_frame=has_one_field_show_post&resource_class=UserResource&associated_record_=39
+    # For this path, the related model is Post.find 4
+    def set_related_model
+      @related_model = eager_load_files(@related_resource, @related_resource.class.find_scope).find params[:associated_record_id]
     end
+
+    def resource
+      resource_segment = request.path_info.split('/').select(&:present?).second
+      # abort resource_segment.inspect
+      Avo::App.get_resource_by_resource_segment resource_segment
+    end
+
+    # def set_model
+    #   # abort @resource.inspect
+    #   @model = eager_load_files(@related_resource, @related_resource.class.find_scope).find params[:associated_record_id]
+    # end
+
+    # def resource_discovery_regex
+    #   if action_name == 'new'
+    #     /^\/resources\/(.*)\/\d*\/reviews\/new$/
+    #   elsif action_name == 'index'
+    #     /^\/resources\/(.*)\/\d*\/reviews$/
+    #   end
+    # end
+
+    # # Gets the Avo resource for this request based on the request from the `resource_name` "param"
+    # # Ex: Avo::Resources::Project, Avo::Resources::Team, Avo::Resources::User
+    # def old_resource
+    #   return Avo::App.get_resource_by_name params[:resource_class]
+    #   regex_test = request.env['PATH_INFO'].match(resource_discovery_regex)
+    #   return if regex_test.blank?
+    #   path = regex_test[1]
+    #   path = "#{Avo.configuration.root_path}/resources/#{path}"
+    #   return Avo::App.get_resource_by_records_path path
+
+    #   t =Avo::App.get_resource_by_records_path path
+    #   abort t.inspect
+    #   return t
+    #   if action_name == "new"
+    #     regex = /^\/resources\/(.*)\/\d*\/reviews\/new$/
+
+    #     # resource = ::Super::Duper::ProjectResource.new
+
+
+
+    #   elsif action_name == "index"
+    #     regex = /^\/resources\/(.*)\/\d*\/reviews\/new$/
+
+    #     abort request.env['PATH_INFO'].inspect
+    #     t = super
+
+    #     abort t.inspect
+    #   end
+    #   # controller_based_resource = Avo::App.get_resource_by_controller_class(self.class)
+    #   # # controller_based_resource = Avo::App.get_resource_by_path(self.class)
+
+    #   # return controller_based_resource if controller_based_resource.present?
+
+    #   # resource = App.get_resource @resource_name.to_s.camelize.singularize
+
+    #   # return resource if resource.present?
+
+    #   # App.guess_resource @resource_name
+    # end
   end
 end

@@ -1,10 +1,11 @@
-class CommentResource < Avo::BaseResource
+class Wonka::Donka::CommentResource < Avo::BaseResource
   self.title = :tiny_name
   self.includes = [:user, :commentable]
   # self.search_query = ->(params:) do
   #   scope.ransack(id_eq: params[:q], m: "or").result(distinct: false)
   # end
   self.record_selector = false
+  self.model_class = ::Comment
 
   self.after_create_path = :index
   self.after_update_path = :index

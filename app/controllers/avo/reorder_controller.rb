@@ -4,7 +4,6 @@ module Avo
   class ReorderController < ApplicationController
     before_action :set_resource_name
     before_action :set_resource
-    before_action :hydrate_resource
     before_action :set_model
 
     def order

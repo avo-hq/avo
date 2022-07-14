@@ -48,13 +48,20 @@ module Avo
     # end
 
     def resource_detach_path(
-      model_name, # teams
-      model_id, # 1
-      related_name, # admin
-      related_id = nil
+      model:,
+      resource:,
+      # model_name, # super/duper/project
+      # model_id, # project_id: 1
+      **args
+      # args: {
+      #   related_name, # review
+      #   related_id # review_id: 1
+      # }
     )
-    "wqe"
+      ""
+      # abort [resource ].inspect
       # avo.send(:"resources_associations_destroy_path", model_name, model_id, related_name, related_id)
+      avo.send(:"resources_#{resource.singular_route_key}_path", model.id, **args)
     end
 
     def related_resources_path(
@@ -81,8 +88,8 @@ module Avo
       avo.send(:"resources_associations_index_#{count}_path", record.model_name.route_key, record.id, **existing_params, **args)
     end
 
-    def order_up_resource_path(model:, resource:, **args)
-      avo.send :"order_up_resources_#{resource.singular_route_key}_path", model, **args
-    end
+    # def order_up_resource_path(model:, resource:, **args)
+    #   avo.send :"order_up_resources_#{resource.singular_route_key}_path", model, **args
+    # end
   end
 end

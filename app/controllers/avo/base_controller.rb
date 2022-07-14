@@ -2,15 +2,73 @@ require_dependency "avo/application_controller"
 
 module Avo
   class BaseController < ApplicationController
-    before_action :set_resource_name
+
+
+    # before_action :set_resource_name
     before_action :set_resource
-    before_action :hydrate_resource
     before_action :set_applied_filters, only: :index
     before_action :set_model, only: [:show, :edit, :destroy, :update, :order]
     before_action :set_model_to_fill
     before_action :set_edit_title_and_breadcrumbs, only: [:edit, :update]
     before_action :fill_model, only: [:create, :update]
+
+    # before_action :set_model, only: [:show, :index, :new, :create, :destroy, :order]
+    # , if: -> { params[:associated_resource_class] }
+    # before_action :set_related_resource_name, if: -> { params[:associated_resource_class] }
+
+
+
+    before_action :set_related_resource, if: -> { in_association? }
+    before_action :hydrate_related_resource, only: [:show, :index, :new, :create, :destroy, :order], if: -> { in_association? }
+    before_action :set_related_model, only: [:show, :order], if: -> { in_association? }
+    before_action :set_reflection, only: [:show, :order], if: -> { in_association? }
+    before_action :set_attachment_class, only: [:show, :new, :create, :destroy, :order], if: -> { in_association? }
+    before_action :set_attachment_resource, only: [:show, :index, :new, :create, :destroy, :order], if: -> { in_association? }
+    before_action :set_attachment_model, only: [:create, :destroy, :order], if: -> { in_association? }
+
+
+    before_action :association_index_params, if: -> { in_association? }, only: :index
+    before_action :association_show_params, if: -> { params[:associated_resource_class] }, only: :show
+    # before_action :association_show_params, if: -> { params[:associated_model_class] }, only: :show
+
     before_action :authorize_action
+
+    def association_index_params
+      @parent_resource = @resource.dup
+      # abort @resource.inspect
+      @parent_model = @parent_resource.class.find_scope.find(params[association_id_param])
+      @resource = @related_resource
+      @related_resource = @parent_resource
+      @parent_resource.hydrate(model: @parent_model)
+      @query = @authorization.apply_policy @parent_model.public_send(params[:field_id])
+      @association_field = @parent_resource.get_field params[:field_id]
+      # abort [@parent_resource, @resource].inspect
+
+      if @association_field.present? && @association_field.scope.present?
+        @query = Avo::Hosts::AssociationScopeHost.new(block: @association_field.scope, query: @query, parent: @parent_model).handle
+      end
+      # abort [resource, '---', @resource, '---', @related_resource].inspect
+    end
+
+    def association_show_params
+      # abort [@resource, @related_resource].inspect
+      @resource, @model = @related_resource, @related_model
+
+      # @resource, @model = @related_resource, @related_model
+      # abort [@resource, @model].inspect
+      # @parent_resource = Avo::App.get_resource params[:associated_resource_class]
+      # # @resource = @related_resource
+      # @parent_model = @parent_resource.class.find_scope.find(params[:id])
+      # @parent_resource.hydrate(model: @parent_model)
+      # @query = @authorization.apply_policy @parent_model.public_send(params[:field_id])
+      # @association_field = @parent_resource.get_field params[:field_id]
+      # # abort [@parent_resource, @resource].inspect
+
+      # if @association_field.present? && @association_field.scope.present?
+      #   @query = Avo::Hosts::AssociationScopeHost.new(block: @association_field.scope, query: @query, parent: @parent_model).handle
+      # end
+      # abort @parent_resource.inspect
+    end
 
     def index
       @page_title = @resource.plural_name.humanize
@@ -75,6 +133,7 @@ module Avo
     end
 
     def show
+      # abort @related_resource.inspect
       @resource.hydrate(model: @model, view: :show, user: _current_user, params: params)
 
       set_actions
@@ -83,7 +142,7 @@ module Avo
 
       # If we're accessing this resource via another resource add the parent to the breadcrumbs.
       if params[:via_resource_class].present? && params[:via_resource_id].present?
-        via_resource = Avo::App.get_resource_by_model_name params[:via_resource_class]
+        via_resource = Avo::App.get_resource params[:via_resource_class]
         via_model = via_resource.class.find_scope.find params[:via_resource_id]
         via_resource.hydrate model: via_model
 
@@ -182,29 +241,27 @@ module Avo
     end
 
     def destroy
-      respond_to do |format|
-        if destroy_model
-          format.html { redirect_to params[:referrer] || resources_path(resource: @resource, turbo_frame: params[:turbo_frame], view_type: params[:view_type]), notice: t("avo.resource_destroyed", attachment_class: @attachment_class) }
+      if true
+        abort reflection_class.inspect
+        if reflection_class == "HasManyReflection"
+          @model.send(related_resource_name.to_s).delete @attachment_model
         else
-          error_message = @errors.present? ? @errors.first : t("avo.failed")
-
-          format.html { redirect_back fallback_location: params[:referrer] || resources_path(resource: @resource, turbo_frame: params[:turbo_frame], view_type: params[:view_type]), error: error_message }
+          @model.send("#{related_resource_name}=", nil)
         end
-      end
-    end
 
-    def order
-      direction = params[:direction].to_sym
+        respond_to do |format|
+          format.html { redirect_to params[:referrer] || resource_path(model: @model, resource: @resource), notice: t("avo.attachment_class_detached", attachment_class: @attachment_class) }
+        end
+      else
+        respond_to do |format|
+          if destroy_model
+            format.html { redirect_to params[:referrer] || resources_path(resource: @resource, turbo_frame: params[:turbo_frame], view_type: params[:view_type]), notice: t("avo.resource_destroyed", attachment_class: @attachment_class) }
+          else
+            error_message = @errors.present? ? @errors.first : t("avo.failed")
 
-      if direction.present?
-        @resource
-          .hydrate(model: @model, params: params)
-          .ordering_host
-          .order direction
-      end
-
-      respond_to do |format|
-        format.html { redirect_to params[:referrer] || resources_path(resource: @resource) }
+            format.html { redirect_back fallback_location: params[:referrer] || resources_path(resource: @resource, turbo_frame: params[:turbo_frame], view_type: params[:view_type]), error: error_message }
+          end
+        end
       end
     end
 
@@ -413,6 +470,40 @@ module Avo
       else
         resource_path(model: @model, resource: @resource)
       end
+    end
+
+
+    # private
+    # From associations controller
+
+    # def set_reflection
+    #   @reflection = @related_model._reflections[params[:field_id]]
+    #   # abort @reflection.inspect
+    # end
+
+    # def set_attachment_class
+    #   @attachment_class = @reflection.klass
+    # end
+
+    # def set_attachment_model
+    #   @attachment_model = @attachment_class.find attachment_id
+    # end
+
+    # def set_attachment_resource
+    #   @attachment_resource = App.get_resource_by_model_name @attachment_class
+    # end
+
+    def attachment_id
+      params[:associated_record_id] || params.require(:fields).permit(:associated_record_id)[:associated_record_id]
+    end
+
+    def reflection_class
+      reflection = @model._reflections[related_resource_name]
+
+      klass = reflection.class.name.demodulize.to_s
+      klass = reflection.through_reflection.class.name.demodulize.to_s if klass == "ThroughReflection"
+
+      klass
     end
   end
 end

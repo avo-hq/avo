@@ -30,8 +30,12 @@ Avo.configure do |config|
     end
 
     section "Resources", icon: "heroicons/outline/academic-cap", collapsable: true, collapsed: false do
-      group "Company", collapsable: true do
+      group "Namespaced" do
         resource Super::Duper::ProjectResource
+        resource Wonka::Donka::CommentResource
+      end
+
+      group "Company", collapsable: true do
         resource :projects
         resource :team, visible: -> {
           authorize current_user, Team, "index?", raise_exception: false
