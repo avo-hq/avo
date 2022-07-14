@@ -370,6 +370,8 @@ module Avo
     def set_edit_title_and_breadcrumbs
       @resource = @resource.hydrate(model: @model, view: :edit, user: _current_user)
       @page_title = @resource.default_panel_name.to_s
+
+      last_crumb_args = {}
       # If we're accessing this resource via another resource add the parent to the breadcrumbs.
       if params[:via_resource_class].present? && params[:via_resource_id].present?
         via_resource = Avo::App.get_resource_by_model_name params[:via_resource_class]
@@ -378,11 +380,17 @@ module Avo
 
         add_breadcrumb via_resource.plural_name, resources_path(resource: @resource)
         add_breadcrumb via_resource.model_title, resource_path(model: via_model, resource: via_resource)
+        puts ["via_resource.model_title->", via_resource.model_title].inspect
+
+        last_crumb_args = {
+          via_resource_class: params[:via_resource_class],
+          via_resource_id: params[:via_resource_id]
+        }
       else
         add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
       end
 
-      add_breadcrumb @resource.model_title, resource_path(model: @resource.model, resource: @resource)
+      add_breadcrumb @resource.model_title, resource_path(model: @resource.model, resource: @resource, **last_crumb_args)
       add_breadcrumb t("avo.edit").humanize
     end
 
