@@ -34,7 +34,7 @@
       >
         <% if @resource.search_query.present? %>
           <div class="flex items-center px-4 w-64">
-            <%= render partial: 'avo/partials/resource_search', locals: {resource: @resource.model_name.collection} %>
+            <%= render partial: 'avo/partials/resource_search', locals: {resource: @resource.route_key} %>
           </div>
         <% else %>
           <%# Offset for the space-y-2 property when the search is missing %>

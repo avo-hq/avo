@@ -84,6 +84,31 @@ RSpec.feature "Search", type: :system do
       end
     end
   end
+
+  describe "with namespaced model" do
+    let!(:link) { create :course_link, link: "https://avohq.io" }
+
+    it "searches the given resource" do
+      visit "/admin/resources/course_links"
+
+      find('[data-component="resources-index"] [data-controller="search"]').click
+
+      expect_search_panel_open
+
+      write_in_search "avohq.io"
+
+      wait_for_search_loaded
+
+      expect(find('.aa-Panel')).to have_content "avohq.io"
+
+      find(".aa-Input").send_keys :arrow_down
+      find(".aa-Input").send_keys :return
+
+      wait_for_search_loaded
+
+      expect(current_path).to eql "/admin/resources/course_links/#{link.id}"
+    end
+  end
 end
 
 def open_global_search_box
