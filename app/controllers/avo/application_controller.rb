@@ -295,7 +295,7 @@ module Avo
       I18n.with_locale(locale, &action)
     end
 
-    # Enable the user to change the default locale wiht the `?set_locale=pt-BR` param
+    # Enable the user to change the default locale with the `?set_locale=pt-BR` param
     def set_default_locale
       locale = params[:set_locale] || I18n.default_locale
 
