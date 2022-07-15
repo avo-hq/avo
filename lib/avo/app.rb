@@ -20,8 +20,6 @@ module Avo
       def boot
         init_fields
 
-        I18n.locale = Avo.configuration.language_code
-
         if Rails.cache.instance_of?(ActiveSupport::Cache::NullStore)
           self.cache_store ||= ActiveSupport::Cache::MemoryStore.new
         else
