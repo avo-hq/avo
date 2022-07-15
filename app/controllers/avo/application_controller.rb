@@ -295,11 +295,9 @@ module Avo
     end
 
     # Temporary set the locale and reverting at the end of the request.
-    def set_force_locale
-      initial_locale = I18n.locale.to_s.dup
-      I18n.locale = params[:force_locale]
-      yield
-      I18n.locale = initial_locale
+    def set_force_locale(&action)
+      locale = params[:force_locale] || I18n.default_locale
+      I18n.with_locale(locale, &action)
     end
 
     def default_url_options
