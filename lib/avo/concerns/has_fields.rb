@@ -183,6 +183,7 @@ module Avo
               if field.is_a?(Avo::Fields::BelongsToField)
                 if field.respond_to?(:foreign_key) &&
                     reflection.inverse_of.present? &&
+                    reflection.inverse_of.respond_to?(:foreign_key) &&
                     reflection.inverse_of.foreign_key == field.foreign_key
                   is_valid = false
                 end
@@ -191,6 +192,7 @@ module Avo
                 if field.respond_to?(:foreign_key) &&
                     field.is_polymorphic? &&
                     reflection.respond_to?(:polymorphic?) &&
+                    reflection.inverse_of.respond_to?(:foreign_key) &&
                     reflection.inverse_of.foreign_key == field.reflection.foreign_key
                   is_valid = false
                 end
