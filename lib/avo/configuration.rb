@@ -40,7 +40,7 @@ module Avo
       @per_page = 24
       @per_page_steps = [12, 24, 48, 72]
       @via_per_page = 8
-      @locale = "en-US"
+      @locale = nil
       @currency = "USD"
       @default_view_type = :table
       @license = "community"
@@ -76,16 +76,6 @@ module Avo
       @buttons_on_form_footers = false
       @main_menu = nil
       @profile_menu = nil
-    end
-
-    def locale_tag
-      ::ISO::Tag.new(locale)
-    end
-
-    def language_code
-      locale_tag.language.code
-    rescue
-      "en"
     end
 
     def current_user_method(&block)
