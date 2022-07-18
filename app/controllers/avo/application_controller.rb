@@ -158,12 +158,17 @@ module Avo
       @related_resource.hydrate(view: action_name.to_sym, user: _current_user)
     end
 
-    def authorize_action
-      if @model.present?
-        @authorization.set_record(@model).authorize_action action_name.to_sym
-      else
-        @authorization.set_record(@resource.model_class).authorize_action action_name.to_sym
-      end
+    def authorize_base_action
+      class_to_authorize = @model || @resource.model_class
+
+      authorize_action class_to_authorize
+    end
+
+    def authorize_action(class_to_authorize, action = nil)
+      # Use the provided action or firgure it out from the request
+      action_to_authorize = action || action_name
+
+      @authorization.set_record(class_to_authorize).authorize_action action_to_authorize.to_sym
     end
 
     # Get the pluralized resource name for this request

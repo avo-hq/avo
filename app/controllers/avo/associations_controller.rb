@@ -11,7 +11,11 @@ module Avo
     before_action :set_attachment_class, only: [:show, :index, :new, :create, :destroy, :order]
     before_action :set_attachment_resource, only: [:show, :index, :new, :create, :destroy, :order]
     before_action :set_attachment_model, only: [:create, :destroy, :order]
-
+    before_action :set_reflection_field, only: [:index, :new, :destroy]
+    before_action :authorize_index_action, only: :index
+    before_action :authorize_attach_action, only: :new
+    before_action :authorize_detach_action, only: :destroy
+    # before_action :authorize_related_action
 
     def index
       @parent_resource = @resource.dup
@@ -36,12 +40,6 @@ module Avo
 
     def new
       @resource.hydrate(model: @model)
-
-      begin
-        @field = @resource.get_field_definitions.find { |f| f.id == @related_resource_name.to_sym }
-        @field.hydrate(resource: @resource, model: @model, view: :new)
-      rescue
-      end
 
       if @field.present? && !@field.searchable
         query = @authorization.apply_policy @attachment_class
@@ -110,6 +108,12 @@ module Avo
       @attachment_model = @attachment_class.find attachment_id
     end
 
+    def set_reflection_field
+      @field = @resource.get_field_definitions.find { |f| f.id == @related_resource_name.to_sym }
+      @field.hydrate(resource: @resource, model: @model, view: :new)
+    rescue
+    end
+
     def attachment_id
       params[:related_id] || params.require(:fields).permit(:related_id)[:related_id]
     end
@@ -121,6 +125,18 @@ module Avo
       klass = reflection.through_reflection.class.name.demodulize.to_s if klass == "ThroughReflection"
 
       klass
+    end
+
+    def authorize_index_action
+      authorize_action @resource.hydrate(model: @model), "view_#{@field.id}"
+    end
+
+    def authorize_attach_action
+      authorize_action @resource.hydrate(model: @model), "attach_#{@field.id}"
+    end
+
+    def authorize_detach_action
+      authorize_action @resource.hydrate(model: @model), "detach_#{@field.id}"
     end
   end
 end

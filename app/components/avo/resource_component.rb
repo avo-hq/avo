@@ -51,9 +51,11 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
       if association_name.present?
         method_name = "#{policy_method}_#{association_name}?".to_sym
+        # Prepare the authorization service
+        service = reflection_resource.authorization.set_record(@parent_model)
 
-        if reflection_resource.authorization.has_method?(method_name, raise_exception: false)
-          policy_result = reflection_resource.authorization.authorize_action(method_name, raise_exception: false)
+        if service.has_method?(method_name, raise_exception: false)
+          policy_result = service.authorize_action(method_name, raise_exception: false)
         end
       end
     end

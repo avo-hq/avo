@@ -114,3 +114,11 @@ def delete_files(files = [])
     File.delete(path.to_s) if File.exist?(path.to_s)
   end
 end
+
+def avo_home_path
+  if Avo.configuration.home_path.respond_to? :call
+    instance_exec(&Avo.configuration.home_path)
+  else
+    Avo.configuration.home_path
+  end
+end

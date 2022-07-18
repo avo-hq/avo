@@ -22,8 +22,9 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   end
 
   def can_view?
-    return authorize_association_for(:view) if @reflection.present?
+    return authorize_association_for(:show) if @reflection.present?
 
+    # Even if there's a @reflection object present, for show we're going to fallback to the original policy.
     @resource.authorization.authorize_action(:show, raise_exception: false)
   end
 

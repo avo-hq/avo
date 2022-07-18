@@ -52,7 +52,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   # The Create button is dependent on the new? policy method.
   # The create? should be called only when the user clicks the Save button so the developers gets access to the params from the form.
   def can_see_the_create_button?
-    return authorize_association_for("create") if @reflection.present?
+    return authorize_association_for(:create) if @reflection.present?
 
     @resource.authorization.authorize_action(:new, raise_exception: false) && !has_reflection_and_is_read_only
   end
@@ -60,7 +60,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   def can_see_the_actions_button?
     return false if @actions.blank?
 
-    return authorize_association_for("act_on") if @reflection.present?
+    return authorize_association_for(:act_on) if @reflection.present?
 
     @resource.authorization.authorize_action(:act_on, raise_exception: false) && !has_reflection_and_is_read_only
   end
@@ -69,7 +69,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     klass = @reflection
     klass = @reflection.through_reflection if klass.is_a? ::ActiveRecord::Reflection::ThroughReflection
 
-    @reflection.present? && klass.is_a?(::ActiveRecord::Reflection::HasManyReflection) && !has_reflection_and_is_read_only && authorize_association_for("attach")
+    @reflection.present? && klass.is_a?(::ActiveRecord::Reflection::HasManyReflection) && !has_reflection_and_is_read_only && authorize_association_for(:attach)
   end
 
   def has_reflection_and_is_read_only
