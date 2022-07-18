@@ -7,6 +7,7 @@ module Avo
     before_action :set_related_resource, only: [:show, :index, :new, :create, :destroy, :order]
     before_action :hydrate_related_resource, only: [:show, :index, :new, :create, :destroy, :order]
     before_action :set_related_model, only: [:show, :order]
+    before_action :set_reflection, only: [:index, :show, :order]
     before_action :set_attachment_class, only: [:show, :index, :new, :create, :destroy, :order]
     before_action :set_attachment_resource, only: [:show, :index, :new, :create, :destroy, :order]
     before_action :set_attachment_model, only: [:create, :destroy, :order]
@@ -93,8 +94,12 @@ module Avo
 
     private
 
+    def set_reflection
+      @reflection = @model._reflections[params[:related_name].to_s]
+    end
+
     def set_attachment_class
-      @attachment_class = @model._reflections[params[:related_name].to_s].klass
+      @attachment_class = @reflection.klass
     end
 
     def set_attachment_resource
@@ -102,11 +107,7 @@ module Avo
     end
 
     def set_attachment_model
-      @attachment_model = @model._reflections[params[:related_name].to_s].klass.find attachment_id
-    end
-
-    def set_reflection
-      @reflection = @model._reflections[params[:related_name].to_s]
+      @attachment_model = @attachment_class.find attachment_id
     end
 
     def attachment_id

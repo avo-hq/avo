@@ -4,43 +4,6 @@ module Avo
       attr_accessor :user
       attr_accessor :record
 
-      def initialize(user = nil, record = nil)
-        @user = user
-        @record = record
-      end
-
-      def authorize(action, **args)
-        self.class.authorize(user, record, action, **args)
-      end
-
-      def set_record(record)
-        @record = record
-
-        self
-      end
-
-      def set_user(user)
-        @user = user
-
-        self
-      end
-
-      def authorize_action(action, **args)
-        self.class.authorize_action(user, record, action, **args)
-      end
-
-      def apply_policy(model)
-        self.class.apply_policy(user, model)
-      end
-
-      def defined_methods(model, **args)
-        self.class.defined_methods(user, model, **args)
-      end
-
-      def has_method?(method, **args)
-        self.class.defined_methods(user, record, **args).include? method.to_sym
-      end
-
       class << self
         def authorize(user, record, action, **args)
           return true if skip_authorization
@@ -118,6 +81,43 @@ module Avo
             raise error
           end
         end
+      end
+
+      def initialize(user = nil, record = nil)
+        @user = user
+        @record = record
+      end
+
+      def authorize(action, **args)
+        self.class.authorize(user, record, action, **args)
+      end
+
+      def set_record(record)
+        @record = record
+
+        self
+      end
+
+      def set_user(user)
+        @user = user
+
+        self
+      end
+
+      def authorize_action(action, **args)
+        self.class.authorize_action(user, record, action, **args)
+      end
+
+      def apply_policy(model)
+        self.class.apply_policy(user, model)
+      end
+
+      def defined_methods(model, **args)
+        self.class.defined_methods(user, model, **args)
+      end
+
+      def has_method?(method, **args)
+        self.class.defined_methods(user, record, **args).include? method.to_sym
       end
     end
   end

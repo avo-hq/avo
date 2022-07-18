@@ -78,6 +78,10 @@ module Avo
 
         super view
       end
+
+      def authorized?
+        @resource.authorization.authorize_action(:"view_#{id}", raise_exception: false)
+      end
     end
   end
 end
