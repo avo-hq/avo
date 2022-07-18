@@ -39,51 +39,29 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def authorize_association_for(policy_method)
-    association_policy = true
+    policy_result = true
 
     if @reflection.present?
+      # Fetch the appropiate resource
       reflection_resource = ::Avo::App.get_resource_by_model_name(@reflection.active_record.name)
+      # Hydrate the resource with the model if we have one
       reflection_resource.hydrate(model: @parent_model) if @parent_model.present?
+      # Use the related_name as the base of the association
       association_name = params["related_name"]
 
       if association_name.present?
         method_name = "#{policy_method}_#{association_name}?".to_sym
 
         if reflection_resource.authorization.has_method?(method_name, raise_exception: false)
-          association_policy = reflection_resource.authorization.authorize_action(method_name, raise_exception: false)
+          policy_result = reflection_resource.authorization.authorize_action(method_name, raise_exception: false)
         end
       end
     end
 
-    association_policy
-  end
-
-  def split_panel_fields
-    initialize_panels
-    @resource.get_fields.each do |field|
-      case field.class.to_s
-      when "Avo::Fields::HasOneField"
-        @has_one_panels << field
-      when "Avo::Fields::HasManyField"
-        @has_many_panels << field
-      when "Avo::Fields::HasAndBelongsToManyField"
-        @has_as_belongs_to_many_panels << field
-      else
-        @fields_by_panel[field.panel_name] ||= []
-        @fields_by_panel[field.panel_name] << field
-      end
-    end
+    policy_result
   end
 
   private
-
-  def initialize_panels
-    @fields_by_panel = {}
-    @has_one_panels = []
-    @has_many_panels = []
-    @has_as_belongs_to_many_panels = []
-    @resource_tools = @resource.tools
-  end
 
   def via_resource?
     params[:via_resource_class].present? && params[:via_resource_id].present?
