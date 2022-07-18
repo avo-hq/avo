@@ -41,7 +41,8 @@ class TeamPolicy < ApplicationPolicy
   end
 
   # Team members association
-  def view_team_members? # index?
+  # index? method
+  def view_team_members?
     true
   end
 
