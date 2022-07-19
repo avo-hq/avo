@@ -1,7 +1,6 @@
 module Avo
   class BaseResource
     extend ActiveSupport::DescendantsTracker
-    extend HasContext
 
     include ActionView::Helpers::UrlHelper
     include Avo::Concerns::HasModel
@@ -18,6 +17,7 @@ module Avo
     delegate :resource_path, to: :view_context
     delegate :resources_path, to: :view_context
     delegate :t, to: ::I18n
+    delegate :context, to: ::Avo::App
 
     attr_accessor :view
     attr_accessor :model
@@ -50,6 +50,7 @@ module Avo
 
     class << self
       delegate :t, to: ::I18n
+      delegate :context, to: ::Avo::App
 
       def grid(&block)
         grid_collector = GridCollector.new
@@ -242,10 +243,6 @@ module Avo
       view_types << :grid if get_grid_fields.present?
 
       view_types
-    end
-
-    def context
-      self.class.context
     end
 
     def attached_file_fields
