@@ -14,6 +14,7 @@ Avo.configure do |config|
     }
   end
   config.home_path = -> { avo.dashboard_path(:dashy) }
+  config.home_path = -> { avo.resources_teams_path }
   config.set_initial_breadcrumbs do
     add_breadcrumb "Dashboard", "/admin/dashboard"
   end

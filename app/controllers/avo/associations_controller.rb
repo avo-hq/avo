@@ -5,13 +5,13 @@ module Avo
     before_action :set_model, only: [:show, :index, :new, :create, :destroy, :order]
     before_action :set_related_resource_name
     before_action :set_related_resource, only: [:show, :index, :new, :create, :destroy, :order]
+    before_action :set_reflection_field
     before_action :hydrate_related_resource, only: [:show, :index, :new, :create, :destroy, :order]
     before_action :set_related_model, only: [:show, :order]
     before_action :set_reflection
     before_action :set_attachment_class, only: [:show, :index, :new, :create, :destroy, :order]
     before_action :set_attachment_resource, only: [:show, :index, :new, :create, :destroy, :order]
     before_action :set_attachment_model, only: [:create, :destroy, :order]
-    before_action :set_reflection_field, only: [:index, :new, :destroy]
     before_action :authorize_index_action, only: :index
     before_action :authorize_attach_action, only: :new
     before_action :authorize_detach_action, only: :destroy

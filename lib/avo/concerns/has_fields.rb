@@ -258,7 +258,7 @@ module Avo
           end
           # check if the user is authorized to view it
           if item.respond_to? :authorized?
-            next unless item.authorized?
+            next unless item.hydrate(model: @model).authorized?
           end
 
           if item.is_field?

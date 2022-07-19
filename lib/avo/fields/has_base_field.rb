@@ -80,7 +80,7 @@ module Avo
       end
 
       def authorized?
-        @resource.authorization.authorize_action(:"view_#{id}", raise_exception: false)
+        target_resource.authorization.authorize_action(:"view_#{id}", raise_exception: false)
       end
     end
   end

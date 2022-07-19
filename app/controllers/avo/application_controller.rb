@@ -129,7 +129,11 @@ module Avo
     end
 
     def set_related_model
-      @related_model = eager_load_files(@related_resource, @model.send(params[:related_name])).find params[:related_id]
+      if @field.is_a? Avo::Fields::HasOneField
+        @related_model = @model.send params[:related_name]
+      else
+        @related_model = eager_load_files(@related_resource, @model.send(params[:related_name])).find params[:related_id]
+      end
     end
 
     def set_view
