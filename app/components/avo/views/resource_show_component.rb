@@ -10,8 +10,6 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
     @resource_panel = resource_panel
     @actions = actions
     @view = :show
-
-    split_panel_fields
   end
 
   def title
