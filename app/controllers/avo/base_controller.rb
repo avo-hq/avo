@@ -380,7 +380,6 @@ module Avo
 
         add_breadcrumb via_resource.plural_name, resources_path(resource: @resource)
         add_breadcrumb via_resource.model_title, resource_path(model: via_model, resource: via_resource)
-        puts ["via_resource.model_title->", via_resource.model_title].inspect
 
         last_crumb_args = {
           via_resource_class: params[:via_resource_class],
