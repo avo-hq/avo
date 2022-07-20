@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "QueryScope", type: :system do
+RSpec.describe "QueryScope", type: :feature do
   describe "for user order by last name" do
     let!(:user_c) { create :user, first_name: "ccccc", last_name: "Aandy" }
     let!(:user_a) { create :user, first_name: "ccccc", last_name: "Aaaandy" }

@@ -90,6 +90,7 @@ jobs:
         NODE_ENV: production
       run: |
         yarn build:js
+        yarn build:custom-js
         yarn build:css
 
     - name: Run tests

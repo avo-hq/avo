@@ -29,7 +29,14 @@ class UserResource < Avo::BaseResource
   field :roles, as: :text, hide_on: :all, as_description: true do |model, resource, view, field|
     "This user has the following roles: #{model.roles.select { |key, value| value }.keys.join(", ")}"
   end
-  field :birthday, as: :date, first_day_of_week: 1, picker_format: "F J Y", format: "%Y-%m-%d", placeholder: "Feb 24th 1955", required: true
+  field :birthday,
+    as: :date,
+    first_day_of_week: 1,
+    picker_format: "F J Y",
+    format: "cccc, d LLLL yyyy", # Wednesday, 10 February 1988
+    placeholder: "Feb 24th 1955",
+    required: true,
+    only_on: [:index, :show]
   field :is_writer, as: :text, format_using: ->(value) { value.truncate 3 }, sortable: ->(query, direction) {
     # Order by something else completely, just to make a test case that clearly and reliably does what we want.
     query.order(id: direction)
@@ -48,18 +55,43 @@ class UserResource < Avo::BaseResource
     main_app.hey_url
   end
 
-  field :post, as: :has_one, translation_key: "avo.field_translations.people", name: "Main post"
-  field :posts,
-    as: :has_many,
-    attach_scope: -> { query.where.not(user_id: parent.id).or(query.where(user_id: nil)) }
-  field :teams, as: :has_and_belongs_to_many
-  field :people, as: :has_many, translation_key: "avo.field_translations.people"
-  field :spouses, as: :has_many # STI has_many resource
-  field :comments,
-    as: :has_many,
-    scope: -> { query.starts_with parent.first_name[0].downcase },
-    description: "The comments listed in the attach modal all start with the name of the parent user."
-  field :projects, as: :has_and_belongs_to_many
+  tabs do
+    tab "Birthday", description: "hey you", hide_on: :show do
+      panel do
+        field :birthday,
+          as: :date,
+          first_day_of_week: 1,
+          picker_format: "F J Y",
+          format: "DDDD",
+          placeholder: "Feb 24th 1955",
+          required: true
+      end
+    end
+
+    field :teams, as: :has_and_belongs_to_many
+    field :people,
+      as: :has_many,
+      show_on: :edit,
+      translation_key: "avo.field_translations.people"
+    field :spouses, as: :has_many # STI has_many resource
+    field :projects, as: :has_and_belongs_to_many
+  end
+
+  tabs do
+    field :post,
+      as: :has_one,
+      name: "Main post",
+      translation_key: "avo.field_translations.people"
+    field :posts,
+      as: :has_many,
+      show_on: :edit,
+      attach_scope: -> { query.where.not(user_id: parent.id).or(query.where(user_id: nil)) }
+    field :comments,
+      as: :has_many,
+      # show_on: :edit,
+      scope: -> { query.starts_with parent.first_name[0].downcase },
+      description: "The comments listed in the attach modal all start with the name of the parent user."
+  end
 
   grid do
     cover :email, as: :gravatar, link_to_resource: true
@@ -87,4 +119,5 @@ class UserResource < Avo::BaseResource
     card UserMetric, options: {get: :posts}, label: "Posts count"
     card UserMetric, options: {get: :projects}, label: "Projects count"
   end
+  tool UserTool
 end

@@ -1,0 +1,19 @@
+<% if item.is_tool? %>
+  <% if item&.partial.present? %>
+    <%= render item.partial, tool: item %>
+  <% end %>
+<% elsif item.is_panel? %>
+  <%= render Avo::PanelComponent.new(title: item.name, description: item.description, index: index, view: view) do |c| %>
+    <% c.body do %>
+      <div class="divide-y">
+        <% item.items.each_with_index do |field, index| %>
+          <%= render field.hydrate(resource: @resource, model: @resource.model, user: resource.user, view: view).component_for_view(view).new(field: field, resource: @resource, index: index, form: form) %>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+<% elsif item.is_tab_group? %>
+  <%= render tab_group_component %>
+<% elsif item.is_field? %>
+  <%= render field_component %>
+<% end %>

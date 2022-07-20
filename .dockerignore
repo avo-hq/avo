@@ -18,6 +18,7 @@ node_modules/
 /spec/dummy/tmp
 /spec/dummy/log
 /spec/dummy/storage
+app/assets/builds
 .idea
 docker/
 coverage/

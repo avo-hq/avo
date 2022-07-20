@@ -1,0 +1,21 @@
+<div class="flex" data-target="tab-switcher">
+  <div class="button-group">
+    <% visible_items.each do |tab| %>
+      <%= a_link tab_path(tab),
+          color: selected?(tab) ? :gray : :primary,
+          rounded: false,
+          size: :sm,
+          class: selected?(tab) ? ' bg-gray-100 border-gray-300' : ' z-20',
+          title: tab.description,
+          data: {
+            tippy: tab.description.present? ? 'tooltip' : '',
+            control: "view-type-toggle-#{tab.name}",
+            selected: selected?(tab),
+            action: 'click->tabs#changeTab',
+            tabs_id_param: tab.name
+          } do %>
+        <%= tab.name %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

@@ -8,7 +8,6 @@ import BooleanFilterController from './controllers/boolean_filter_controller'
 import CardController from './controllers/card_controller'
 import CodeFieldController from './controllers/fields/code_field_controller'
 import CopyToClipboardController from './controllers/copy_to_clipboard_controller'
-import CourseResourceController from './controllers/custom/course_resource_controller'
 import DateFieldController from './controllers/fields/date_field_controller'
 import FilterController from './controllers/filter_controller'
 import HiddenInputController from './controllers/hidden_input_controller'
@@ -28,6 +27,7 @@ import SearchController from './controllers/search_controller'
 import SelectController from './controllers/select_controller'
 import SelectFilterController from './controllers/select_filter_controller'
 import SimpleMdeController from './controllers/fields/simple_mde_controller'
+import TabsController from './controllers/tabs_controller'
 import TagsFieldController from './controllers/fields/tags_field_controller'
 import TextFilterController from './controllers/text_filter_controller'
 import TippyController from './controllers/tippy_controller'
@@ -56,6 +56,7 @@ application.register('resource-show', ResourceShowController)
 application.register('search', SearchController)
 application.register('select', SelectController)
 application.register('select-filter', SelectFilterController)
+application.register('tabs', TabsController)
 application.register('tags-field', TagsFieldController)
 application.register('text-filter', TextFilterController)
 application.register('tippy', TippyController)
@@ -70,4 +71,3 @@ application.register('simple-mde', SimpleMdeController)
 application.register('trix-field', TrixFieldController)
 
 // Custom controllers
-application.register('course-resource', CourseResourceController)

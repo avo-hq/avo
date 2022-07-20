@@ -66,17 +66,40 @@ module Avo
     def frame_url(enforced_range: nil, params: {})
       enforced_range ||= initial_range || ranges.first
 
-      # append the parent params to the card request
-      begin
-        other_params = "&#{params.permit!.to_h.map { |k, v| "#{k}=#{v}" }.join("&")}"
-      rescue
-      end
-
       if parent_is_dashboard?
-        "#{Avo::App.root_path}/dashboards/#{dashboard.id}/cards/#{id}?turbo_frame=#{turbo_frame}&index=#{index}&range=#{enforced_range}#{other_params}"
+        Avo::App.view_context.avo.dashboard_card_path(dashboard.id, id, turbo_frame: turbo_frame, index: index, range: enforced_range, **params.permit!.to_h)
       elsif parent_is_resource?
-        "#{Avo::App.root_path}/resources/#{parent.route_key}/#{parent.model.id}/cards/#{id}?turbo_frame=#{turbo_frame}&index=#{index}&range=#{enforced_range}#{other_params}"
+        Avo::App.root_path(paths: ["resources", parent.route_key, parent.model.id, "cards", id], query: {turbo_frame: turbo_frame, index: index, range: enforced_range, **params.permit!.to_h})
       end
+    end
+
+    def card_classes
+      result = ""
+
+      # Writing down the classes so TailwindCSS knows not to purge them
+      classes_for_cols = {
+        1 => " sm:col-span-1",
+        2 => " sm:col-span-2",
+        3 => " sm:col-span-3",
+        4 => " sm:col-span-4",
+        5 => " sm:col-span-5",
+        6 => " sm:col-span-6"
+      }
+
+      classes_for_rows = {
+        1 => " h-36 row-span-1",
+        2 => " h-72 row-span-2",
+        3 => " h-[27rem] row-span-3",
+        4 => " h-[36rem] row-span-4",
+        5 => " h-[45rem] row-span-5",
+        6 => " h-[54rem] row-span-6"
+      }
+      # puts ["cols->", cols, classes_for_cols, classes_for_rows, classes_for_cols[cols.to_i]].inspect
+
+      result += classes_for_cols[cols.to_i] if classes_for_cols[cols.to_i].present?
+      result += classes_for_rows[rows.to_i] if classes_for_rows[rows.to_i].present?
+
+      result
     end
 
     def type

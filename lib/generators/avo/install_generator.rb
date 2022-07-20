@@ -1,8 +1,8 @@
-require "rails/generators"
+require_relative "base_generator"
 
 module Generators
   module Avo
-    class InstallGenerator < Rails::Generators::Base
+    class InstallGenerator < BaseGenerator
       source_root File.expand_path("templates", __dir__)
 
       namespace "avo:install"
@@ -13,10 +13,7 @@ module Generators
         route "mount Avo::Engine, at: Avo.configuration.root_path"
 
         template "initializer/avo.tt", "config/initializers/avo.rb"
-        template "locales/avo.en.yml", "config/locales/avo.en.yml"
-        template "locales/avo.nb-NO.yml", "config/locales/avo.nb-NO.yml"
-        template "locales/avo.pt-BR.yml", "config/locales/avo.pt-BR.yml"
-        template "locales/avo.ro.yml", "config/locales/avo.ro.yml"
+        directory File.join(__dir__, "templates", "locales"), "config/locales"
       end
     end
   end

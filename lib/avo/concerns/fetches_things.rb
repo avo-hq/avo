@@ -22,6 +22,13 @@ module Avo
           end
         end
 
+        # Filters out the resources that are missing the model_class
+        def valid_resources
+          resources.select do |resource|
+            resource.model_class.present?
+          end
+        end
+
         # Returns the Avo resource by camelized name
         #
         # get_resource_by_name('User') => UserResource
@@ -45,9 +52,10 @@ module Avo
         # get_resource_by_name('User') => UserResource
         # get_resource_by_name(User) => UserResource
         def get_resource_by_model_name(name)
-          resources.find do |resource|
-            resource.model_class.model_name.name == name.to_s
-          end
+          valid_resources
+            .find do |resource|
+              resource.model_class.model_name.name == name.to_s
+            end
         end
 
         # Returns the Avo resource by singular snake_cased name
@@ -55,9 +63,10 @@ module Avo
         # get_resource_by_controller_name('delayed_backend_active_record_jobs') => DelayedJobResource
         # get_resource_by_controller_name('users') => UserResource
         def get_resource_by_controller_name(name)
-          resources.find do |resource|
-            resource.model_class.to_s.pluralize.underscore.tr("/", "_") == name.to_s
-          end
+          valid_resources
+            .find do |resource|
+              resource.model_class.to_s.pluralize.underscore.tr("/", "_") == name.to_s
+            end
         end
 
         # Returns the Avo resource by some name
@@ -73,9 +82,10 @@ module Avo
         end
 
         def get_available_resources(user = nil)
-          resources.select do |resource|
-            Services::AuthorizationService.authorize user, resource.model_class, Avo.configuration.authorization_methods.stringify_keys["index"], raise_exception: false
-          end
+          valid_resources
+            .select do |resource|
+              Services::AuthorizationService.authorize user, resource.model_class, Avo.configuration.authorization_methods.stringify_keys["index"], raise_exception: false
+            end
             .sort_by { |r| r.name }
         end
 
@@ -85,9 +95,6 @@ module Avo
 
         def resources_for_navigation(user = nil)
           get_available_resources(current_user)
-            .select do |resource|
-              resource.model_class.present?
-            end
             .select do |resource|
               resource.visible_on_sidebar
             end

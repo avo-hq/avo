@@ -17,8 +17,6 @@ module Avo
       ::Avo::App.boot
     end
 
-    config.i18n.load_path += Dir[Avo::Engine.root.join("lib", "generators", "avo", "templates", "locales", "*.{rb,yml}")]
-
     initializer "avo.autoload" do |app|
       [
         ["app", "avo", "fields"],
@@ -73,7 +71,7 @@ module Avo
         begin
           Licensing::HQ.new.clear_response
         rescue => exception
-          puts "Failed to clear Avo HQ response: #{e.message}"
+          puts "Failed to clear Avo HQ response: #{exception.message}"
         end
       end
     end

@@ -17,17 +17,17 @@
             <%= t('avo.attach_item', item: singular_resource_name).capitalize %>
           <% end %>
         <% end %>
-        <% if can_see_the_actions_button? %>
-          <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource %>
-        <% end %>
-        <% if can_see_the_create_button? %>
-          <%= a_link create_path,
+      <% end %>
+      <% if can_see_the_actions_button? %>
+        <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>
+      <% end %>
+      <% if can_see_the_create_button? %>
+        <%= a_link create_path,
           icon: 'heroicons/outline/plus',
           'data-target': 'create',
           style: :primary,
           color: :primary do %>
-            <%= t('avo.create_new_item', item: singular_resource_name.downcase ) %>
-          <% end %>
+          <%= t('avo.create_new_item', item: singular_resource_name.downcase ) %>
         <% end %>
       <% end %>
       <% c.body do %>
@@ -37,10 +37,10 @@
       >
           <% if @resource.search_query.present? %>
             <div class="flex items-center px-4 w-64">
-              <%= render partial: 'avo/partials/resource_search', locals: {resource: @resource.model_name.collection} %>
+              <%= render partial: 'avo/partials/resource_search', locals: {resource: @resource.route_key} %>
             </div>
           <% else %>
-            <%# Offset for the space-y-2 property when the serach is missing %>
+            <%# Offset for the space-y-2 property when the search is missing %>
             <div class="-mb-2"></div>
           <% end %>
           <% if @filters.present? || available_view_types.count > 1 %>
@@ -56,25 +56,43 @@
               <div class="relative flex-1 flex">
                 <%= render(Avo::Index::ResourceTableComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_model: @parent_model)) %>
               </div>
-            </div>
-          <% else %>
-            <%= helpers.empty_state resource_name: @resource.name.downcase.pluralize, related_name: params[:related_name], view_type: view_type, add_background: true %>
+            <% else %>
+              <%# Offset for the space-y-2 property when the serach is missing %>
+              <div class="-mb-2"></div>
+            <% end %>
+            <% if @filters.present? || available_view_types.count > 1 %>
+              <div class="justify-self-end flex justify-start xs:justify-end items-center px-4 space-x-3">
+                <%= render Avo::FiltersComponent.new filters: @filters, resource: @resource, applied_filters: @applied_filters %>
+                <%= render partial: 'avo/partials/view_toggle_button', locals: { available_view_types: available_view_types, view_type: view_type, turbo_frame: @turbo_frame } if available_view_types.count > 1 %>
+              </div>
+            <% end %>
+          </div>
+          <% if view_type.to_sym == :table %>
+            <% if @resources.present? %>
+              <div class="w-full overflow-auto flex flex-col mt-0">
+                <div class="relative flex-1 flex">
+                  <%= render(Avo::Index::ResourceTableComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_model: @parent_model)) %>
+                </div>
+              </div>
+            <% else %>
+              <%= helpers.empty_state resource_name: @resource.name.downcase.pluralize, related_name: params[:related_name], view_type: view_type, add_background: true %>
+            <% end %>
           <% end %>
         <% end %>
-      <% end %>
-      <% c.bare_content do %>
-        <% if view_type.to_sym == :table %>
-          <% if @models.present? %>
-            <div class="mt-4">
+        <% c.bare_content do %>
+          <% if view_type.to_sym == :table %>
+            <% if @models.present? %>
+              <div class="mt-4">
+                <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: @turbo_frame || 'none', index_params: @index_params, resource: @resource, parent_model: @parent_model %>
+              </div>
+            <% end %>
+          <% end %>
+          <% if view_type.to_sym == :grid %>
+            <%= render Avo::Index::ResourceGridComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_model: @parent_model) %>
+            <div class="mt-6">
               <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: @turbo_frame || 'none', index_params: @index_params, resource: @resource, parent_model: @parent_model %>
             </div>
           <% end %>
-        <% end %>
-        <% if view_type.to_sym == :grid %>
-          <%= render Avo::Index::ResourceGridComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_model: @parent_model) %>
-          <div class="mt-6">
-            <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: @turbo_frame || 'none', index_params: @index_params, resource: @resource, parent_model: @parent_model %>
-          </div>
         <% end %>
       <% end %>
     <% end %>

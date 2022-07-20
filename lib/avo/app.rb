@@ -14,13 +14,11 @@ module Avo
     class_attribute :view_context, default: nil
     class_attribute :params, default: {}
     class_attribute :translation_enabled, default: false
-    class_attribute :error_messages, default: []
+    class_attribute :error_messages
 
     class << self
       def boot
         init_fields
-
-        I18n.locale = Avo.configuration.language_code
 
         if Rails.cache.instance_of?(ActiveSupport::Cache::NullStore)
           self.cache_store ||= ActiveSupport::Cache::MemoryStore.new
@@ -29,14 +27,21 @@ module Avo
         end
       end
 
-      def init(request:, context:, current_user:, root_path:, view_context:, params:)
+      # Renerate a dynamic root path using the URIService
+      def root_path(paths: [], query: {}, **args)
+        Avo::Services::URIService.parse(view_context.avo.root_url.to_s)
+          .append_paths(paths)
+          .append_query(query)
+          .to_s
+      end
+
+      def init(request:, context:, current_user:, view_context:, params:)
         self.error_messages = []
-        self.request = request
         self.context = context
         self.current_user = current_user
-        self.root_path = root_path
-        self.view_context = view_context
         self.params = params
+        self.request = request
+        self.view_context = view_context
 
         self.license = Licensing::LicenseManager.new(Licensing::HQ.new(request).response).license
         self.translation_enabled = license.has(:localization)
@@ -52,6 +57,7 @@ module Avo
           Rails.logger.debug "[Avo] Failed to set ActiveStorage::Current.url_options, #{exception.inspect}"
         end
 
+        check_bad_resources
         init_resources
         init_dashboards if license.has_with_trial(:dashboards)
       end
@@ -78,6 +84,22 @@ module Avo
           name: method_name,
           class: klass
         )
+      end
+
+      def check_bad_resources
+        resources.each do |resource|
+          has_model = resource.model_class.present?
+
+          unless has_model
+            possible_model = resource.class.to_s.gsub 'Resource', ''
+
+            Avo::App.error_messages.push({
+              url: "https://docs.avohq.io/2.0/resources.html#custom-model-class",
+              target: "_blank",
+              message: "#{resource.class.to_s} does not have a valid model assigned. It failed to find the #{possible_model} model. \n\r Please create that model or assign one using self.model_class = YOUR_MODEL"
+            })
+          end
+        end
       end
 
       def init_resources
@@ -148,7 +170,7 @@ module Avo
         payload[:license_abilities] = Avo::App&.license&.abilities
         payload[:cache_store] = self.cache_store&.class&.to_s
         payload[:avo_metadata] = hq&.avo_metadata
-        payload[:app_timezone] = Time.now.zone
+        payload[:app_timezone] = Time.current.zone
         payload[:cache_key] = Avo::Licensing::HQ.cache_key
         payload[:cache_key_contents] = hq&.cached_response
 

@@ -44,6 +44,7 @@ FactoryBot.define do
 
   factory :comment do
     body { Faker::Lorem.paragraphs(number: rand(4...10)).join(" ") }
+    posted_at { Time.now - rand(10...365).days }
   end
 
   factory :review do

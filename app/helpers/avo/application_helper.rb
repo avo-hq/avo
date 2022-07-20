@@ -20,12 +20,6 @@ module Avo
       render Avo::EmptyStateComponent.new **args
     end
 
-    def turbo_frame_wrap(name, &block)
-      render Avo::TurboFrameWrapperComponent.new name do
-        capture(&block)
-      end
-    end
-
     def a_button(**args, &block)
       render Avo::ButtonComponent.new(is_link: false, **args) do
         capture(&block) if block_given?
@@ -137,6 +131,12 @@ module Avo
       else
         model.class
       end
+    end
+
+    def root_path_without_url
+      Avo::App.root_path.to_s.delete_prefix(request.base_url.to_s).delete_suffix "/"
+    rescue
+      Avo.configuration.root_path
     end
   end
 end

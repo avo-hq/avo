@@ -35,7 +35,7 @@ module Avo
       avo.send :"resources_#{resource.singular_route_key}_path", id, **args
     end
 
-    def new_resource_path(model:, resource:, **args)
+    def new_resource_path(resource:, **args)
       avo.send :"new_resources_#{resource.singular_route_key}_path", **args
     end
 
@@ -75,10 +75,6 @@ module Avo
       end
 
       avo.resources_associations_index_path(parent_model.model_name.route_key, record.id, **existing_params, **args)
-    end
-
-    def order_up_resource_path(model:, resource:, **args)
-      avo.send :"order_up_resources_#{resource.singular_route_key}_path", model, **args
     end
   end
 end

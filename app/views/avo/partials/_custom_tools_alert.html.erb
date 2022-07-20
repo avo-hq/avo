@@ -5,13 +5,27 @@
     </a>
   </div>
 <% end %>
-
 <% if Avo::App.error_messages.present? %>
-  <% Avo::App.error_messages.each do |message| %>
-    <div class="w-full inset-auto bottom-0 z-50 mb-4 opacity-75 hover:opacity-100 transition-opacity duration-150">
-      <a href="https://avohq.io/pricing" target="_blank" class="rounded bg-orange-700 text-white py-2 px-4 text-sm block items-center flex leading-tight">
-        <%= svg "exclamation", class: "h-6 inline mr-2 text-bold flex-shrink-0 mr-1" %> <%= message %>
-      </a>
-    </div>
+  <% Avo::App.error_messages.each do |error| %>
+    <% if error.is_a? Hash %>
+      <%
+        url, message, target = error.values_at :url, :message, :target
+      %>
+      <div class="w-full inset-auto bottom-0 z-50 mb-4 opacity-75 hover:opacity-100 transition-opacity duration-150">
+        <a href="<%= url %>" target="<%= target %>" class="rounded bg-orange-700 text-white py-2 px-4 text-sm items-center flex leading-tight space-x-2">
+          <%= svg "exclamation", class: "h-6 inline mr-2 text-bold flex-shrink-0 mr-1" %>
+          <div>
+            <%= simple_format message %>
+          </div>
+        </a>
+      </div>
+    <% elsif error.is_a? String %>
+      <div class="w-full inset-auto bottom-0 z-50 mb-4 opacity-75 hover:opacity-100 transition-opacity duration-150">
+        <div class="rounded bg-orange-700 text-white py-2 px-4 text-sm items-center flex leading-tight space-x-2">
+          <%= svg "exclamation", class: "h-6 inline mr-2 text-bold flex-shrink-0 mr-1" %>
+          <div><%= simple_format error %></div>
+        </div>
+      </div>
+    <% end %>
   <% end %>
 <% end %>

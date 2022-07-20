@@ -1,7 +1,5 @@
 module Avo
   class BaseAction
-    extend HasContext
-
     include Avo::Concerns::HasFields
 
     class_attribute :name, default: nil
@@ -13,7 +11,6 @@ module Avo
     class_attribute :view
     class_attribute :user
     class_attribute :resource
-    class_attribute :invalid_fields
     class_attribute :standalone, default: false
     class_attribute :visible
     class_attribute :may_download_file, default: false
@@ -22,9 +19,18 @@ module Avo
     attr_accessor :model
     attr_accessor :resource
     attr_accessor :user
-    attr_accessor :fields_loader
+
+    delegate :view, to: :class
+    delegate :context, to: ::Avo::App
+    delegate :current_user, to: ::Avo::App
+    delegate :params, to: ::Avo::App
+    delegate :view_context, to: ::Avo::App
+    delegate :avo, to: :view_context
+    delegate :main_app, to: :view_context
 
     class << self
+      delegate :context, to: ::Avo::App
+
       def form_data_attributes
         # We can't respond with a file download from Turbo se we disable it on the form
         if may_download_file
@@ -64,27 +70,6 @@ module Avo
       @response[:messages] = []
     end
 
-    def context
-      self.class.context
-    end
-
-    def get_field_definitions
-      return [] if self.class.fields.blank?
-
-      self.class.fields.map do |field|
-        field.hydrate(action: self)
-      end
-    end
-
-    def get_fields
-      get_field_definitions.map do |field|
-        field.hydrate(action: self, model: @model)
-      end
-        .select do |field|
-        field.visible?
-      end
-    end
-
     def get_attributes_for_action
       get_fields.map do |field|
         [field.id, field.value]
@@ -120,9 +105,14 @@ module Avo
     end
 
     def visible_in_view
-      return true unless visible.present?
+      # Run the visible block if available
+      return instance_exec(resource: self.class.resource, view: view, &visible) if visible.present?
 
-      instance_exec(resource: self.class.resource, view: view, &visible)
+      # Hide on the :new view by default
+      return false if view == :new
+
+      # Show on all other views
+      true
     end
 
     def param_id

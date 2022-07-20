@@ -1,21 +1,24 @@
 module Avo
   class BaseResource
     extend ActiveSupport::DescendantsTracker
-    extend HasContext
 
     include ActionView::Helpers::UrlHelper
     include Avo::Concerns::HasCards
-    include Avo::Concerns::HasTools
+    include Avo::Concerns::HasModel
     include Avo::Concerns::HasFields
     include Avo::Concerns::HasStimulusControllers
+    include Avo::Concerns::ModelClassConstantized
 
     delegate :view_context, to: ::Avo::App
+    delegate :current_user, to: ::Avo::App
+    delegate :params, to: ::Avo::App
     delegate :simple_format, :content_tag, to: :view_context
     delegate :main_app, to: :view_context
     delegate :avo, to: :view_context
     delegate :resource_path, to: :view_context
     delegate :resources_path, to: :view_context
     delegate :t, to: ::I18n
+    delegate :context, to: ::Avo::App
 
     attr_accessor :view
     attr_accessor :model
@@ -29,7 +32,6 @@ module Avo
     class_attribute :search_query, default: nil
     class_attribute :search_query_help, default: ""
     class_attribute :includes, default: []
-    class_attribute :model_class
     class_attribute :translation_key
     class_attribute :default_view_type, default: :table
     class_attribute :devise_password_optional, default: false
@@ -44,12 +46,12 @@ module Avo
     class_attribute :hide_from_global_search, default: false
     class_attribute :after_create_path, default: :show
     class_attribute :after_update_path, default: :show
-    class_attribute :invalid_fields
     class_attribute :record_selector, default: true
     class_attribute :keep_filters_panel_open, default: false
 
     class << self
       delegate :t, to: ::I18n
+      delegate :context, to: ::Avo::App
 
       def grid(&block)
         grid_collector = GridCollector.new
@@ -103,7 +105,7 @@ module Avo
 
     def initialize
       unless self.class.model_class.present?
-        if model_class.present?
+        if model_class.present? && model_class.respond_to?(:base_class)
           self.class.model_class = model_class.base_class
         end
       end
@@ -121,80 +123,6 @@ module Avo
       end
 
       self
-    end
-
-    def get_field_definitions
-      return [] if self.class.fields.blank?
-
-      fields = self.class.fields.map do |field|
-        field.hydrate(resource: self, panel_name: default_panel_name, user: user)
-      end
-
-      if Avo::App.license.lacks_with_trial(:custom_fields)
-        fields = fields.reject do |field|
-          field.custom?
-        end
-      end
-
-      if Avo::App.license.lacks_with_trial(:advanced_fields)
-        fields = fields.reject do |field|
-          field.type == "tags"
-        end
-      end
-
-      fields
-    end
-
-    def get_fields(panel: nil, reflection: nil)
-      fields = get_field_definitions
-        .select do |field|
-          field.send("show_on_#{@view}")
-        end
-        .select do |field|
-          field.visible?
-        end
-        .select do |field|
-          is_valid = true
-
-          # Strip out the reflection field in index queries with a parent association.
-          if reflection.present?
-            # regular non-polymorphic association
-            # we're matching the reflection inverse_of foriegn key with the field's foreign_key
-            if field.is_a?(Avo::Fields::BelongsToField)
-              if field.respond_to?(:foreign_key) &&
-                  reflection.inverse_of.present? &&
-                  reflection.inverse_of.foreign_key == field.foreign_key
-                is_valid = false
-              end
-
-              # polymorphic association
-              if field.respond_to?(:foreign_key) &&
-                  field.is_polymorphic? &&
-                  reflection.respond_to?(:polymorphic?) &&
-                  reflection.inverse_of.foreign_key == field.reflection.foreign_key
-                is_valid = false
-              end
-            end
-          end
-
-          is_valid
-        end
-
-      if panel.present?
-        fields = fields.select do |field|
-          field.panel_name == panel
-        end
-      end
-
-      hydrate_fields(model: @model, view: @view)
-
-      fields
-    end
-
-    def get_field(id)
-      get_field_definitions.find do |f|
-        f.id == id.to_sym
-      end
     end
 
     def get_grid_fields
@@ -215,14 +143,6 @@ module Avo
       self.class.actions_loader.bag
     end
 
-    def hydrate_fields(model: nil, view: nil)
-      fields.map do |field|
-        field.hydrate(model: @model, view: @view, resource: self)
-      end
-
-      self
-    end
-
     def default_panel_name
       return @params[:related_name].capitalize if @params.present? && @params[:related_name].present?
 
@@ -236,18 +156,8 @@ module Avo
       end
     end
 
-    def panels
-      [
-        {
-          name: default_panel_name,
-          type: :fields,
-          in_panel: true
-        }
-      ]
-    end
-
     def class_name_without_resource
-      self.class.name.demodulize.chomp("Resource")
+      self.class.name.demodulize.delete_suffix("Resource")
     end
 
     def model_class
@@ -293,7 +203,7 @@ module Avo
     end
 
     def name
-      default = class_name_without_resource.titlecase
+      default = class_name_without_resource.to_s.gsub('::', ' ').underscore.humanize
 
       return @name if @name.present?
 
@@ -334,10 +244,6 @@ module Avo
       view_types << :grid if get_grid_fields.present?
 
       view_types
-    end
-
-    def context
-      self.class.context
     end
 
     def attached_file_fields

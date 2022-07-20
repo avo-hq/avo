@@ -14,16 +14,17 @@ You can use https://avodemo.herokuapp.com as the base app for the given instruct
 
 ### Steps to Reproduce
 Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+1. Add this configuration '...'
+2. Go to '...'
+3. Click on '....'
+4. Scroll down to '....'
+5. See error
 
-### Expected behavior
-<!-- Tell us what should happen -->
+### Expected behavior & Actual behavior
+<!-- Tell us what should happen and what happens instead. -->
 
-### Actual behavior
-<!-- Tell us what happens instead -->
+### Models and resource files
+<!-- If it helps with replicating the issue, please add models and resources configuration. -->
 
 ### System configuration
 **Avo version**:
@@ -32,7 +33,11 @@ Steps to reproduce the behavior:
 
 **Ruby version**:
 
-**License type** (Community or Pro):
+**License type**:
+<!-- (Mark [x] inside the brackets) -->
+
+ - [ ] Community
+ - [ ] Pro
 
 ### Screenshots
 <!-- If applicable, add screenshots to help explain your problem. -->
@@ -41,8 +46,9 @@ Steps to reproduce the behavior:
 <!-- Add any other context about the problem here. -->
 
 <!--
-How much are you impacted by this issue?
-Please set a level for Impact and Urgency
+  How much are you impacted by this issue?
+  Please set a level of Impact and Urgency
+  (Mark [x] inside the brackets)
 -->
 #### Impact
 

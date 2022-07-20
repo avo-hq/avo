@@ -40,7 +40,7 @@ module Avo
       @per_page = 24
       @per_page_steps = [12, 24, 48, 72]
       @via_per_page = 8
-      @locale = "en-US"
+      @locale = nil
       @currency = "USD"
       @default_view_type = :table
       @license = "community"
@@ -78,16 +78,6 @@ module Avo
       @profile_menu = nil
     end
 
-    def locale_tag
-      ::ISO::Tag.new(locale)
-    end
-
-    def language_code
-      locale_tag.language.code
-    rescue
-      "en"
-    end
-
     def current_user_method(&block)
       @current_user = block if block.present?
     end
@@ -123,7 +113,7 @@ module Avo
     end
 
     def computed_root_path
-      Avo::App.root_path
+      Avo.configuration.root_path
     end
 
     def feature_enabled?(feature)

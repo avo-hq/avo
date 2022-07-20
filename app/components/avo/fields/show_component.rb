@@ -5,7 +5,7 @@ class Avo::Fields::ShowComponent < ViewComponent::Base
 
   attr_reader :view
 
-  def initialize(field: nil, resource: nil, index: 0)
+  def initialize(field: nil, resource: nil, index: 0, form: nil)
     @field = field
     @resource = resource
     @index = index

@@ -1,8 +1,11 @@
 .button-group {
   @apply flex;
+
   .button-component {
+    @apply -mr-px;
+
     &:first-child {
-      @apply rounded-l -mr-px;
+      @apply rounded-l;
     }
 
     &:last-child {
