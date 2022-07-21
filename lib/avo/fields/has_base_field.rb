@@ -80,7 +80,14 @@ module Avo
       end
 
       def authorized?
-        resource.authorization.authorize_action(:"view_#{id}", raise_exception: false)
+        method = "view_#{id}?".to_sym
+        service = resource.authorization
+
+        if service.has_method? method
+          service.authorize_action(method, raise_exception: false)
+        else
+          true
+        end
       end
     end
   end
