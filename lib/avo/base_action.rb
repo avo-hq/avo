@@ -1,7 +1,5 @@
 module Avo
   class BaseAction
-    extend HasContext
-
     include Avo::Concerns::HasFields
 
     class_attribute :name, default: nil
@@ -23,8 +21,16 @@ module Avo
     attr_accessor :user
 
     delegate :view, to: :class
+    delegate :context, to: ::Avo::App
+    delegate :current_user, to: ::Avo::App
+    delegate :params, to: ::Avo::App
+    delegate :view_context, to: ::Avo::App
+    delegate :avo, to: :view_context
+    delegate :main_app, to: :view_context
 
     class << self
+      delegate :context, to: ::Avo::App
+
       def form_data_attributes
         # We can't respond with a file download from Turbo se we disable it on the form
         if may_download_file
@@ -62,10 +68,6 @@ module Avo
 
       @response ||= {}
       @response[:messages] = []
-    end
-
-    def context
-      self.class.context
     end
 
     def get_attributes_for_action

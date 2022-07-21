@@ -68,7 +68,14 @@ export default class extends Controller {
 
   // Turns the value in the controller wrapper into the timezone of the browser
   initShow() {
-    this.context.element.innerText = this.parsedValue.setZone(this.displayTimezone).toFormat(this.formatValue)
+    let value = this.parsedValue
+
+    // Set the zone only if the type of field is date time.
+    if (this.enableTimeValue) {
+      value = value.setZone(this.displayTimezone)
+    }
+
+    this.context.element.innerText = value.toFormat(this.formatValue)
   }
 
   initEdit() {
@@ -99,10 +106,13 @@ export default class extends Controller {
 
     // enable timezone display
     if (this.enableTimeValue) {
+      console.log(1)
       options.defaultDate = this.parsedValue.setZone(this.displayTimezone).toISO()
 
       options.dateFormat = 'Y-m-d H:i:S'
     } else {
+      console.log(2)
+
       // Because the browser treats the date like a timestamp and updates it at 00:00 hour, when on a western timezone the date will be converted with one day offset.
       // Ex: 2022-01-30 will render as 2022-01-29 on an American timezone
       options.defaultDate = universalTimestamp(this.initialValue)

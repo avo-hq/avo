@@ -18,11 +18,10 @@ class ProjectResource < Avo::BaseResource
     display_value: true,
     include_blank: false
   field :stage, as: :badge, options: {info: ["Discovery", "Idea"], success: "Done", warning: "On hold", danger: "Cancelled"}
-  # currency :budget, currency: 'EUR', locale: 'de-DE'
   field :country,
     as: :country,
     index_text_align: :left,
-    include_blank: 'No country'
+    include_blank: "No country"
   field :users_required, as: :number, min: 10, max: 1000000, step: 1, index_text_align: :right
   field :started_at, as: :date_time, name: "Started", time_24hr: true, relative: true, timezone: "EET", nullable: true
   field :description, as: :markdown, height: "350px"
