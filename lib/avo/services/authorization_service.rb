@@ -74,6 +74,10 @@ module Avo
 
         def defined_methods(user, record, **args)
           Pundit.policy!(user, record).methods
+        rescue Pundit::NotDefinedError => e
+          return [] unless Avo.configuration.raise_error_on_missing_policy
+
+          raise e
         rescue => error
           if args[:raise_exception] == false
             []
