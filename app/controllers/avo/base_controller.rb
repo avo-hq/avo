@@ -320,7 +320,9 @@ module Avo
         .map do |action|
           action.new(model: @model, resource: @resource, view: @view)
         end
-        .select { |action| action.visible_in_view }
+        .select do |action|
+          action.visible_in_view
+        end
     end
 
     def set_applied_filters
