@@ -30,36 +30,88 @@
           <% end %>
         <% end %>
       <% else %>
-        <%= a_link back_path,
-          style: :text,
-          icon: 'arrow-left' do %>
-          <%= t('avo.go_back') %>
-        <% end %>
-        <% if can_see_the_destroy_button? %>
-          <%= a_button url: helpers.resource_path(model: @resource.model, resource: @resource),
-            method: :delete,
-            local: true,
-            style: :text,
-            loading: true,
-            confirm: t('avo.are_you_sure', item: @resource.model.model_name.name.downcase),
-            color: :red,
-            icon: 'trash',
-            form_class: 'flex flex-col sm:flex-row sm:inline-flex',
-            data: {
-              control: :destroy,
-              'resource-id': @resource.model.id,
-              'tippy': 'tooltip',
-            } do %>
-            <%= t('avo.delete').capitalize %>
+      <%# TODO: add license check here %>
+        <% if @resource.class.show_controls.present? %>
+          <% @resource.render_show_controls.each do |control| %>
+            <% if control.back_button? %>
+              <%= a_link back_path,
+                style: :text,
+                icon: 'arrow-left' do %>
+                <%= control.label %>
+              <% end %>
+            <% elsif control.delete_button? %>
+              <% if can_see_the_destroy_button? %>
+              <% end %>
+              <%= a_button url: helpers.resource_path(model: @resource.model, resource: @resource),
+                method: :delete,
+                local: true,
+                style: :text,
+                loading: true,
+                confirm: t('avo.are_you_sure', item: @resource.model.model_name.name.downcase),
+                color: :red,
+                icon: 'trash',
+                form_class: 'flex flex-col sm:flex-row sm:inline-flex',
+                data: {
+                  control: :destroy,
+                  'resource-id': @resource.model.id,
+                } do %>
+              <% end %>
+            <% elsif control.actions_list? %>
+              <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>
+            <% elsif control.edit_button? %>
+              <% if @resource.authorization.authorize_action(:edit, raise_exception: false) %>
+              <% end %>
+              <%= a_link edit_path,
+                  color: :primary,
+                  style: :primary,
+                  icon: 'edit' do %>
+                <%= control.label %>
+              <% end %>
+            <% elsif control.action? %>
+              <%= a_link control.path,
+                  color: control.color,
+                  style: control.style,
+                  icon: control.icon,
+                  data: {
+                    'turbo-frame': 'actions_show',
+                    'action': 'click->actions-picker#visitAction',
+                  },
+                  title: control.label do %>
+                <%= control.label %>
+              <% end %>
+            <% end %>
           <% end %>
-        <% end %>
-        <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>
-        <% if @resource.authorization.authorize_action(:edit, raise_exception: false) %>
-          <%= a_link edit_path,
-            color: :primary,
-            style: :primary,
-            icon: 'edit' do %>
-            <%= t('avo.edit').capitalize %>
+        <% else %>
+          <%= a_link back_path,
+            style: :text,
+            icon: 'arrow-left' do %>
+            <%= t('avo.go_back') %>
+          <% end %>
+          <% if can_see_the_destroy_button? %>
+            <%= a_button url: helpers.resource_path(model: @resource.model, resource: @resource),
+              method: :delete,
+              local: true,
+              style: :text,
+              loading: true,
+              confirm: t('avo.are_you_sure', item: @resource.model.model_name.name.downcase),
+              color: :red,
+              icon: 'trash',
+              form_class: 'flex flex-col sm:flex-row sm:inline-flex',
+              data: {
+                control: :destroy,
+                'resource-id': @resource.model.id,
+              } do %>
+              <%= t('avo.delete').capitalize %>
+            <% end %>
+          <% end %>
+          <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>
+          <% if @resource.authorization.authorize_action(:edit, raise_exception: false) %>
+            <%= a_link edit_path,
+              color: :primary,
+              style: :primary,
+              icon: 'edit' do %>
+              <%= t('avo.edit').capitalize %>
+            <% end %>
           <% end %>
         <% end %>
       <% end %>
