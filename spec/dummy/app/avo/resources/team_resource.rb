@@ -6,31 +6,31 @@ class TeamResource < Avo::BaseResource
   end
 
   field :id, as: :id
-  # field :name, as: :text, sortable: true
-  # field :url, as: :text
-  # field :logo, as: :external_image do |model|
-  #   if model.url
-  #     "//logo.clearbit.com/#{URI.parse(model.url).host}?size=180"
-  #   end
-  # end
-  # field :color, as: ::ColorPickerField
-  # field :invalid, as: :invalid_field
-  # field :description, as: :textarea, rows: 5, readonly: false, hide_on: :index, format_using: ->(value) { value.to_s.truncate 30 }, default: "This is a wonderful team!", nullable: true, null_values: ["0", "", "null", "nil"]
+  field :name, as: :text, sortable: true
+  field :url, as: :text
+  field :logo, as: :external_image do |model|
+    if model.url
+      "//logo.clearbit.com/#{URI.parse(model.url).host}?size=180"
+    end
+  end
+  field :color, as: ::ColorPickerField
+  field :invalid, as: :invalid_field
+  field :description, as: :textarea, rows: 5, readonly: false, hide_on: :index, format_using: ->(value) { value.to_s.truncate 30 }, default: "This is a wonderful team!", nullable: true, null_values: ["0", "", "null", "nil"]
 
-  # field :members_count, as: :number do |model|
-  #   model.team_members.length
-  # end
+  field :members_count, as: :number do |model|
+    model.team_members.length
+  end
 
-  # field :memberships,
-  #   as: :has_many,
-  #   searchable: true,
-  #   attach_scope: -> do
-  #     query.where.not(user_id: parent.id).or(query.where(user_id: nil))
-  #   end
+  field :memberships,
+    as: :has_many,
+    searchable: true,
+    attach_scope: -> do
+      query.where.not(user_id: parent.id).or(query.where(user_id: nil))
+    end
 
-  # field :admin, as: :has_one
+  field :admin, as: :has_one
   field :team_members, as: :has_many, through: :memberships
-  # field :reviews, as: :has_many
+  field :reviews, as: :has_many
 
   grid do
     cover :logo, as: :external_image, link_to_resource: true do |model|

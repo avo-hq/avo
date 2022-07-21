@@ -169,7 +169,7 @@ module Avo
     end
 
     def authorize_action(class_to_authorize, action = nil)
-      # Use the provided action or firgure it out from the request
+      # Use the provided action or figure it out from the request
       action_to_authorize = action || action_name
 
       @authorization.set_record(class_to_authorize).authorize_action action_to_authorize.to_sym

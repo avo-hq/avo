@@ -36,7 +36,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def detach_post?
-    false
+    true
   end
 
   def attach_posts?

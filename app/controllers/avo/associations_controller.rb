@@ -127,16 +127,24 @@ module Avo
       klass
     end
 
+    def authorize_if_defined(method)
+      @authorization.set_record(@model)
+
+      if @authorization.has_method?(method.to_sym)
+        @authorization.authorize_action method.to_sym
+      end
+    end
+
     def authorize_index_action
-      authorize_action @resource.hydrate(model: @model), "view_#{@field.id}"
+      authorize_if_defined "view_#{@field.id}?"
     end
 
     def authorize_attach_action
-      authorize_action @resource.hydrate(model: @model), "attach_#{@field.id}"
+      authorize_if_defined "attach_#{@field.id}?"
     end
 
     def authorize_detach_action
-      authorize_action @resource.hydrate(model: @model), "detach_#{@field.id}"
+      authorize_if_defined "detach_#{@field.id}?"
     end
   end
 end
