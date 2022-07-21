@@ -113,15 +113,11 @@ module Avo
       end
 
       def defined_methods(model, **args)
-        puts ["!!!!!!!!!->"].inspect
-        t  = self.class.defined_methods(user, model, **args)
-        puts ["t->", t].inspect
-
-        t
+        self.class.defined_methods(user, model, **args)
       end
 
       def has_method?(method, **args)
-        self.class.defined_methods(user, record, **args).include? method.to_sym
+        defined_methods(record, **args).include? method.to_sym
       end
     end
   end

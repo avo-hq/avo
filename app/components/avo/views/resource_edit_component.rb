@@ -22,12 +22,10 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
       helpers.resource_path(model: params[:via_resource_class].safe_constantize, resource: relation_resource, resource_id: params[:via_resource_id])
     elsif via_index?
       helpers.resources_path(resource: @resource)
-    else # via resource show page
-      if is_edit?
-        helpers.resource_path(model: @resource.model, resource: @resource)
-      else
-        helpers.resources_path(resource: @resource)
-      end
+    elsif is_edit? # via resource show page
+      helpers.resource_path(model: @resource.model, resource: @resource)
+    else
+      helpers.resources_path(resource: @resource)
     end
   end
 
