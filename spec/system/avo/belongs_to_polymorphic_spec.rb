@@ -6,7 +6,7 @@ RSpec.feature "belongs_to", type: :system do
   let!(:second_post) { create :post, name: "Plums are good" }
   # making more posts so we're certain that we check for the right record
   let!(:other_posts) {
-    create_list(:post, 10, body: 'zzz') do |post, i|
+    create_list(:post, 10, body: "zzz") do |post, i|
       post.update(name: "#{Faker::Company.name} - #{i}")
     end
   }
