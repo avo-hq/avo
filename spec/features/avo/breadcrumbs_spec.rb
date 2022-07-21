@@ -16,7 +16,7 @@ RSpec.feature "Breadcrumbs", type: :feature do
   end
 
   describe "on a custom tool" do
-    let!(:url) { "/admin/dashboard" }
+    let!(:url) { "/admin/custom_tool" }
 
     it { is_expected.to have_css ".breadcrumbs" }
     it { is_expected.to have_text "Dashboard\n" }

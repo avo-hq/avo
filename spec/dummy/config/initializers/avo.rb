@@ -16,7 +16,7 @@ Avo.configure do |config|
   config.home_path = -> { avo.dashboard_path(:dashy) }
   config.home_path = -> { avo.resources_teams_path }
   config.set_initial_breadcrumbs do
-    add_breadcrumb "Dashboard", "/admin/dashboard"
+    add_breadcrumb "Dashboard", "/admin/dashboards/dashy"
   end
   config.search_debounce = 300
   config.main_menu = -> {

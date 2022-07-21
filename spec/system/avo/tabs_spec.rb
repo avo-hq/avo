@@ -57,7 +57,8 @@ RSpec.describe "Tabs", type: :system do
       it "shows the birthday in the tab" do
         visit avo.edit_resources_user_path user
 
-        expect(find('[data-panel-index="1"]')).not_to have_text "Birthday"
+        # Birthday not visible on the first panel
+        expect(find_all('[data-panel-index="0"]').first).not_to have_text "Birthday"
 
         scroll_to first_tab_group
 

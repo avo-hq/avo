@@ -77,7 +77,7 @@ RSpec.feature "Avo::Licensing::HQ", type: :feature do
         end
 
         describe "when config for display is false" do
-          let(:url) { "/admin/dashboard/" }
+          let(:url) { "/admin/custom_tool/" }
 
           before do
             Avo.configure do |config|
@@ -102,7 +102,7 @@ RSpec.feature "Avo::Licensing::HQ", type: :feature do
         end
 
         describe "when config for display is true" do
-          let(:url) { "/admin/dashboard/" }
+          let(:url) { "/admin/custom_tool/" }
 
           before do
             Avo.configure do |config|

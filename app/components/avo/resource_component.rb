@@ -63,6 +63,12 @@ class Avo::ResourceComponent < Avo::BaseComponent
     policy_result
   end
 
+  def main_panel
+    @resource.get_items.find do |item|
+      item.is_main_panel?
+    end
+  end
+
   private
 
   def via_resource?

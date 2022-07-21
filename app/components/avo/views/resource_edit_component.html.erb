@@ -33,20 +33,42 @@
           <% end %>
         <% end %>
       <% end %>
+      <%# Extract the main panel and display the fields here. %>
+      <%# This way we'll be able to render the footer buttons under the main fields. %>
+      <% if main_panel.present? %>
+        <% c.body do %>
+          <div class="divide-y">
+            <% main_panel.items.each_with_index do |field, index| %>
+              <%= render field.hydrate(resource: @resource, model: @resource.model, user: @resource.user, view: view)
+                .component_for_view(view)
+                .new(field: field, resource: @resource, index: index, form: form)
+              %>
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>
       <% if Avo.configuration.buttons_on_form_footers %>
         <% c.footer_tools do %>
-          <%= a_link back_path, icon: 'arrow-left' do %>
-            <%= t('avo.cancel').capitalize %>
-          <% end %>
-          <% if can_see_the_save_button? %>
-            <%= a_button color: :green, loading: true, type: :submit, icon: 'save' do %>
-              <%= t('avo.save').capitalize %>
+          <div class="mt-4">
+            <%= a_link back_path,
+              style: :text,
+              icon: 'arrow-left' do %>
+              <%= t('avo.cancel').capitalize %>
             <% end %>
-          <% end %>
+            <% if can_see_the_save_button? %>
+              <%= a_button color: :primary,
+                style: :primary,
+                loading: true,
+                type: :submit,
+                icon: 'save' do %>
+                <%= t('avo.save').capitalize %>
+              <% end %>
+            <% end %>
+          </div>
         <% end %>
       <% end %>
     <% end %>
-    <%= content_tag :div, class: 'space-y-12' do %>
+    <%= content_tag :div, class: 'space-y-12 mt-12' do %>
       <% @resource.get_items.each_with_index do |item, index| %>
         <% next if item.nil? %>
         <%= render Avo::ItemSwitcherComponent.new resource: @resource, item: item, index: index + 1, view: @view, form: form %>
