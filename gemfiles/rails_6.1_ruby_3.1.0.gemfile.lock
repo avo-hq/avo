@@ -16,7 +16,7 @@ PATH
       pagy
       pundit
       rails (>= 6.0)
-      view_component
+      view_component (= 2.60)
       zeitwerk
 
 GEM
@@ -102,20 +102,20 @@ GEM
     ast (2.4.2)
     awesome_print (1.9.2)
     aws-eventstream (1.2.0)
-    aws-partitions (1.602.0)
-    aws-sdk-core (3.131.2)
+    aws-partitions (1.609.0)
+    aws-sdk-core (3.131.3)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.525.0)
       aws-sigv4 (~> 1.1)
       jmespath (~> 1, >= 1.6.1)
-    aws-sdk-kms (1.57.0)
+    aws-sdk-kms (1.58.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sigv4 (~> 1.1)
     aws-sdk-s3 (1.114.0)
       aws-sdk-core (~> 3, >= 3.127.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.4)
-    aws-sigv4 (1.5.0)
+    aws-sigv4 (1.5.1)
       aws-eventstream (~> 1, >= 1.0.2)
     bcrypt (3.1.18)
     bindex (0.8.1)
@@ -139,7 +139,7 @@ GEM
     chartkick (4.2.0)
     childprocess (4.1.0)
     concurrent-ruby (1.1.10)
-    countries (5.1.0)
+    countries (5.1.1)
       sixarm_ruby_unaccent (~> 1.1)
     crack (0.4.5)
       rexml
@@ -200,7 +200,7 @@ GEM
     httparty (0.20.0)
       mime-types (~> 3.0)
       multi_xml (>= 0.5.2)
-    i18n (1.11.0)
+    i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     image_processing (1.12.2)
       mini_magick (>= 4.9.5, < 5)
@@ -226,7 +226,7 @@ GEM
       zeitwerk
     marcel (1.0.2)
     matrix (0.4.2)
-    meta-tags (2.16.0)
+    meta-tags (2.17.0)
       actionpack (>= 3.2.0, < 7.1)
     method_source (1.0.0)
     mime-types (3.4.1)
@@ -244,7 +244,7 @@ GEM
       net-protocol
       timeout
     nio4r (2.5.8)
-    nokogiri (1.13.7-x86_64-darwin)
+    nokogiri (1.13.7-arm64-darwin)
       racc (~> 1.4)
     orm_adapter (0.5.0)
     pagy (5.10.1)
@@ -324,7 +324,7 @@ GEM
       rspec-mocks (~> 3.10)
       rspec-support (~> 3.10)
     rspec-support (3.11.0)
-    rubocop (1.31.1)
+    rubocop (1.31.2)
       json (~> 2.3)
       parallel (~> 1.10)
       parser (>= 3.1.0.0)
@@ -334,8 +334,11 @@ GEM
       rubocop-ast (>= 1.18.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 3.0)
-    rubocop-ast (1.18.0)
+    rubocop-ast (1.19.1)
       parser (>= 3.1.1.0)
+    rubocop-performance (1.14.3)
+      rubocop (>= 1.7.0, < 2.0)
+      rubocop-ast (>= 0.4.0)
     rubocop-shopify (2.8.0)
       rubocop (~> 1.31)
     ruby-debug-ide (0.7.3)
@@ -369,9 +372,10 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
-    standard (0.0.36)
-      rubocop (>= 0.63)
-    stimulus-rails (1.0.4)
+    standard (1.13.0)
+      rubocop (= 1.31.2)
+      rubocop-performance (= 1.14.3)
+    stimulus-rails (1.1.0)
       railties (>= 6.0.0)
     test-prof (1.0.9)
     thor (1.2.1)
@@ -380,10 +384,10 @@ GEM
       actionpack (>= 6.0.0)
       activejob (>= 6.0.0)
       railties (>= 6.0.0)
-    tzinfo (2.0.4)
+    tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.2.0)
-    view_component (2.57.1)
+    view_component (2.60.0)
       activesupport (>= 5.0.0, < 8.0)
       method_source (~> 1.0)
     warden (1.2.9)
@@ -410,7 +414,7 @@ GEM
     zeitwerk (2.6.0)
 
 PLATFORMS
-  x86_64-darwin-21
+  arm64-darwin-21
 
 DEPENDENCIES
   active_link_to
@@ -473,7 +477,6 @@ DEPENDENCIES
   standard
   test-prof
   tzinfo-data
-  view_component
   web-console (>= 3.3.0)
   webdrivers
   webmock

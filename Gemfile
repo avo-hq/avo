@@ -121,8 +121,6 @@ gem "hotwire-rails"
 
 gem "active_link_to"
 
-gem "view_component"
-
 gem "addressable"
 
 gem "appraisal"

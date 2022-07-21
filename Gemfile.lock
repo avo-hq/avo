@@ -16,7 +16,7 @@ PATH
       pagy
       pundit
       rails (>= 6.0)
-      view_component
+      view_component (= 2.60)
       zeitwerk
 
 GEM
@@ -390,10 +390,10 @@ GEM
     turbo-rails (1.0.1)
       actionpack (>= 6.0.0)
       railties (>= 6.0.0)
-    tzinfo (2.0.4)
+    tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.1.0)
-    view_component (2.61.0)
+    view_component (2.60.0)
       activesupport (>= 5.0.0, < 8.0)
       method_source (~> 1.0)
     warden (1.2.9)
@@ -483,7 +483,6 @@ DEPENDENCIES
   standard
   test-prof
   tzinfo-data
-  view_component
   web-console (>= 3.3.0)
   webdrivers
   webmock
