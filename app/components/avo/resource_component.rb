@@ -58,32 +58,13 @@ class Avo::ResourceComponent < Avo::BaseComponent
     association_policy
   end
 
-  def split_panel_fields
-    initialize_panels
-    @resource.get_fields.each do |field|
-      case field.class.to_s
-      when "Avo::Fields::HasOneField"
-        @has_one_panels << field
-      when "Avo::Fields::HasManyField"
-        @has_many_panels << field
-      when "Avo::Fields::HasAndBelongsToManyField"
-        @has_as_belongs_to_many_panels << field
-      else
-        @fields_by_panel[field.panel_name] ||= []
-        @fields_by_panel[field.panel_name] << field
-      end
+  def main_panel
+    @resource.get_items.find do |item|
+      item.is_main_panel?
     end
   end
 
   private
-
-  def initialize_panels
-    @fields_by_panel = {}
-    @has_one_panels = []
-    @has_many_panels = []
-    @has_as_belongs_to_many_panels = []
-    @resource_tools = @resource.tools
-  end
 
   def via_resource?
     params[:via_resource_class].present? && params[:via_resource_id].present?

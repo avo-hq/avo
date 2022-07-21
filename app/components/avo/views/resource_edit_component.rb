@@ -11,8 +11,6 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
     @model = model
     @actions = actions
     @view = view
-
-    split_panel_fields
   end
 
   def title

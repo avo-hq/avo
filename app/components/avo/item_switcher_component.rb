@@ -28,6 +28,8 @@ class Avo::ItemSwitcherComponent < Avo::BaseComponent
       return false if in_reflection? && item.hidden_in_reflection?
     end
 
+    return false if item.is_main_panel?
+
     true
   end
 

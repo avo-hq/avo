@@ -64,8 +64,20 @@
         <% end %>
       <% end %>
     <% end %>
+    <% if main_panel.present? %>
+      <% c.body do %>
+        <div class="divide-y">
+          <% main_panel.items.each_with_index do |field, index| %>
+            <%= render field.hydrate(resource: @resource, model: @resource.model, user: @resource.user, view: view)
+              .component_for_view(view)
+              .new(field: field, resource: @resource, index: index)
+            %>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
   <% end %>
-  <%= content_tag :div, class: 'space-y-12' do %>
+  <%= content_tag :div, class: 'space-y-12 mt-12' do %>
     <% @resource.get_items.each_with_index do |item, index| %>
       <% next if item.nil? %>
       <%= render Avo::ItemSwitcherComponent.new resource: @resource, reflection: @reflection, item: item, index: index + 1, view: @view %>
