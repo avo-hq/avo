@@ -45,12 +45,12 @@ Steps to reproduce the behavior:
 ### Additional context
 <!-- Add any other context about the problem here. -->
 
+#### Impact
 <!--
   How much are you impacted by this issue?
   Please set a level of Impact and Urgency
   (Mark [x] inside the brackets)
 -->
-#### Impact
 
  - [ ] High impact
  - [ ] Medium impact

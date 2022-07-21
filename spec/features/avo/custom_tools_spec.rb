@@ -8,16 +8,16 @@ RSpec.feature "CustomTools", type: :feature do
 
     subject { page.body }
 
-    it { is_expected.to have_link "Dashboard", href: /.*\/admin\/dashboard/ }
+    it { is_expected.to have_link "Custom tool", href: /.*\/admin\/custom_tool/ }
 
     it "navigates to the custom tool page" do
       subject
 
-      click_on "Dashboard"
+      click_on "Custom tool"
 
       expect(page.body).to have_text "What a nice new tool"
-      expect(page.body).to have_text "app/views/avo/tools/dashboard.html.erb"
-      expect(page.body).to have_text "app/views/avo/sidebar/items/_dashboard.html.erb"
+      expect(page.body).to have_text "app/views/avo/tools/custom_tool.html.erb"
+      expect(page.body).to have_text "app/views/avo/sidebar/items/_custom_tool.html.erb"
       expect(find(".text-sm.italic")).to have_text "This is the panels tools section."
       expect(find(".breadcrumbs")).to have_text "Dashboard"
     end

@@ -1,5 +1,5 @@
 class Avo::ToolsController < Avo::ApplicationController
-  def dashboard
-    @page_title = "Dashboard"
+  def custom_tool
+    @page_title = "Custom tool"
   end
 end
