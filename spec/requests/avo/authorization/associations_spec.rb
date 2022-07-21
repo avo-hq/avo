@@ -1,18 +1,36 @@
 require "rails_helper"
 
-RSpec.describe 'Avo::TeamsController', type: :feature do
+RSpec.describe "Avo::TeamsController", type: :feature do
   let!(:team) { create :team }
   let!(:user) { create :user }
   let!(:team_member) { team.team_members << user }
 
-  context 'all false' do
+  context "all false" do
     describe ".index" do
-      it "returns the scoped results" do
+      it "redirects to the root_path" do
         allow_any_instance_of(TeamPolicy).to receive(:view_team_members?).and_return false
 
         visit "/admin/resources/teams/#{team.id}/team_members?turbo_frame=has_many_field_show_team_members"
 
         expect(current_path).to eql avo_home_path
+      end
+
+      it "does not render the field on the parent resource" do
+        allow_any_instance_of(TeamPolicy).to receive(:view_team_members?).and_return false
+
+        visit "/admin/resources/teams/#{team.id}"
+
+        expect(page).not_to have_text "Loading team members"
+        expect(page).not_to have_selector "turbo-frame#has_many_field_show_team_members"
+      end
+
+      it "renders the field on the parent resource" do
+        allow_any_instance_of(TeamPolicy).to receive(:view_team_members?).and_return true
+
+        visit "/admin/resources/teams/#{team.id}"
+
+        expect(page).to have_text "Loading team members"
+        expect(page).to have_selector "turbo-frame#has_many_field_show_team_members"
       end
     end
 
@@ -47,7 +65,7 @@ RSpec.describe 'Avo::TeamsController', type: :feature do
     end
   end
 
-  context 'all true' do
+  context "all true" do
     describe ".index" do
       it "returns the scoped results" do
         allow_any_instance_of(TeamPolicy).to receive(:view_team_members?).and_return true
@@ -62,7 +80,6 @@ RSpec.describe 'Avo::TeamsController', type: :feature do
         visit "/admin/resources/teams/#{team.id}/team_members?turbo_frame=has_many_field_show_team_members"
 
         expect(current_path).to eql "/admin/resources/teams/#{team.id}/team_members"
-
 
         resource_index = find('[data-component="resources-index"]')
         expect(resource_index).to have_selector("[data-controller='toggle-panel actions-picker']")

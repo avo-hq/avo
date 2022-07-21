@@ -129,10 +129,10 @@ module Avo
     end
 
     def set_related_model
-      if @field.is_a? Avo::Fields::HasOneField
-        @related_model = @model.send params[:related_name]
+      @related_model = if @field.is_a? Avo::Fields::HasOneField
+        @model.send params[:related_name]
       else
-        @related_model = eager_load_files(@related_resource, @model.send(params[:related_name])).find params[:related_id]
+        eager_load_files(@related_resource, @model.send(params[:related_name])).find params[:related_id]
       end
     end
 
@@ -319,7 +319,7 @@ module Avo
 
     def default_url_options
       if params[:force_locale].present?
-        { **super, force_locale: params[:force_locale] }
+        {**super, force_locale: params[:force_locale]}
       else
         super
       end
