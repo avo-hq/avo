@@ -19,8 +19,8 @@
             } do %>
             <%= t('avo.detach_item', item: title).capitalize %>
           <% end %>
-          <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>
         <% end %>
+        <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>
         <% if can_see_the_edit_button? %>
           <%= a_link edit_path,
             color: :primary,

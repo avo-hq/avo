@@ -4,11 +4,13 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
   include Avo::ResourcesHelper
   include Avo::ApplicationHelper
 
-  def initialize(resource: nil, reflection: nil, parent_model: nil, resource_panel: nil, actions: [])
+  def initialize(resource: nil, reflection: nil, parent_resource: nil, parent_model: nil, resource_panel: nil, actions: [])
     @resource = resource
     @reflection = reflection
     @resource_panel = resource_panel
     @actions = actions
+    @parent_model = parent_model
+    @parent_resource = parent_resource
     @view = :show
   end
 

@@ -39,23 +39,29 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def authorize_association_for(policy_method)
-    association_policy = true
+    policy_result = true
 
     if @reflection.present?
+      # Fetch the appropiate resource
       reflection_resource = ::Avo::App.get_resource_by_model_name(@reflection.active_record.name)
+      # Fetch the model
+      # Hydrate the resource with the model if we have one
       reflection_resource.hydrate(model: @parent_model) if @parent_model.present?
-      association_name = params["related_name"]
+      # Use the related_name as the base of the association
+      association_name = @reflection.name
 
       if association_name.present?
         method_name = "#{policy_method}_#{association_name}?".to_sym
+        # Prepare the authorization service
+        service = reflection_resource.authorization
 
-        if reflection_resource.authorization.has_method?(method_name, raise_exception: false)
-          association_policy = reflection_resource.authorization.authorize_action(method_name, raise_exception: false)
+        if service.has_method?(method_name, raise_exception: false)
+          policy_result = service.authorize_action(method_name, raise_exception: false)
         end
       end
     end
 
-    association_policy
+    policy_result
   end
 
   def main_panel
