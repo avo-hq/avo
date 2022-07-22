@@ -10,6 +10,7 @@ module Avo
     before_action :set_model_to_fill
     before_action :set_edit_title_and_breadcrumbs, only: [:edit, :update]
     before_action :fill_model, only: [:create, :update]
+    # Don't run base authorizations for associations
     before_action :authorize_base_action, if: -> {controller_name != "associations"}
 
     def index
