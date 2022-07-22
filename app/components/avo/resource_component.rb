@@ -45,16 +45,15 @@ class Avo::ResourceComponent < Avo::BaseComponent
       # Fetch the appropiate resource
       reflection_resource = ::Avo::App.get_resource_by_model_name(@reflection.active_record.name)
       # Fetch the model
-      parent_model = reflection_resource.class.find_scope.find(params[:id])
       # Hydrate the resource with the model if we have one
-      reflection_resource.hydrate(model: parent_model) if parent_model.present?
+      reflection_resource.hydrate(model: @parent_model) if @parent_model.present?
       # Use the related_name as the base of the association
-      association_name = params["related_name"]
+      association_name = @reflection.name
 
       if association_name.present?
         method_name = "#{policy_method}_#{association_name}?".to_sym
         # Prepare the authorization service
-        service = reflection_resource.authorization.set_record(parent_model)
+        service = reflection_resource.authorization
 
         if service.has_method?(method_name, raise_exception: false)
           policy_result = service.authorize_action(method_name, raise_exception: false)

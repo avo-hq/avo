@@ -15,6 +15,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     reflection: nil,
     turbo_frame: "",
     parent_model: nil,
+    parent_resource: nil,
     applied_filters: []
   )
     @resource = resource
@@ -27,6 +28,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     @reflection = reflection
     @turbo_frame = turbo_frame
     @parent_model = parent_model
+    @parent_resource = parent_resource
     @applied_filters = applied_filters
     @view = :index
   end

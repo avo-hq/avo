@@ -159,7 +159,7 @@ module Avo
     end
 
     def hydrate_related_resource
-      @related_resource.hydrate(view: action_name.to_sym, user: _current_user)
+      @related_resource.hydrate(view: action_name.to_sym, user: _current_user, model: @model)
     end
 
     def authorize_base_action

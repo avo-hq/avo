@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
-  def initialize(resource: nil, reflection: nil, parent_model: nil, view_type: :table)
+  def initialize(resource: nil, reflection: nil, parent_model: nil, parent_resource: nil, view_type: :table)
     @resource = resource
     @reflection = reflection
     @parent_model = parent_model
+    @parent_resource = parent_resource
     @view_type = view_type
   end
 
@@ -12,7 +13,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     @reflection.present? &&
       @resource.model.present? &&
       is_has_many_association &&
-      authorize_association_for("detach")
+      authorize_association_for(:detach)
   end
 
   def can_edit?

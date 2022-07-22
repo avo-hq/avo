@@ -33,6 +33,8 @@ module Avo
     end
 
     def show
+      @parent_resource, @parent_model = @resource, @model
+
       @resource, @model = @related_resource, @related_model
 
       super
