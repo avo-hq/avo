@@ -318,7 +318,8 @@ module Avo
     end
 
     def set_sidebar_open
-      @sidebar_open = cookies["#{Avo::COOKIES_KEY}.sidebar.open"] == '1'
+      value = cookies["#{Avo::COOKIES_KEY}.sidebar.open"]
+      @sidebar_open = value.blank? || value == '1'
     end
   end
 end

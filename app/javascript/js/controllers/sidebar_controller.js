@@ -12,21 +12,35 @@ export default class extends Controller {
     return `${window.Avo.configuration.cookies_key}.sidebar.open`
   }
 
-  get cookie() {
-    return Cookies.get(this.cookieKey)
+  get sidebarOpen() {
+    return Cookies.get(this.cookieKey) === '1'
   }
 
   set cookie(state) {
     Cookies.set(this.cookieKey, state === true ? 1 : 0)
   }
 
+  connect() {
+    console.log('Cookies.get(this.cookieKey)->', Cookies.get(this.cookieKey))
+  }
+
+  markSidebarClosed() {
+    Cookies.set(this.cookieKey, '0')
+    this.openValue = false
+    this.mainAreaTarget.classList.remove('sidebar-open')
+  }
+
+  markSidebarOpen() {
+    Cookies.set(this.cookieKey, '1')
+    this.openValue = true
+    this.mainAreaTarget.classList.add('sidebar-open')
+  }
+
   toggleSidebar() {
-    if (this.cookie === '1') {
-      this.cookie = false
-      this.mainAreaTarget.classList.remove('sidebar-open')
+    if (this.openValue) {
+      this.markSidebarClosed()
     } else {
-      this.cookie = true
-      this.mainAreaTarget.classList.add('sidebar-open')
+      this.markSidebarOpen()
     }
   }
 

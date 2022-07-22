@@ -10,7 +10,7 @@
   }
 
   /* Hide the sidebar by default. */
-  .sidebar {
+  .avo-sidebar {
     @apply lg:hidden;
   }
 
@@ -21,7 +21,7 @@
     }
 
     /* Show the sidebar. */
-    .sidebar {
+    .avo-sidebar {
       @apply lg:block;
     }
   }
