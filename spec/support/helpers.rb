@@ -114,3 +114,7 @@ def delete_files(files = [])
     File.delete(path.to_s) if File.exist?(path.to_s)
   end
 end
+
+def reload_page
+  page.evaluate_script("window.location.reload()")
+end

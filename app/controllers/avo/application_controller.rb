@@ -21,6 +21,7 @@ module Avo
     before_action :set_container_classes
     before_action :add_initial_breadcrumbs
     before_action :set_view
+    before_action :set_sidebar_open
 
     rescue_from Pundit::NotAuthorizedError, with: :render_unauthorized
     rescue_from ActiveRecord::RecordInvalid, with: :exception_logger
@@ -314,6 +315,11 @@ module Avo
       else
         super
       end
+    end
+
+    def set_sidebar_open
+      value = cookies["#{Avo::COOKIES_KEY}.sidebar.open"]
+      @sidebar_open = value.blank? || value == '1'
     end
   end
 end
