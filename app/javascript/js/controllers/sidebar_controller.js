@@ -20,10 +20,6 @@ export default class extends Controller {
     Cookies.set(this.cookieKey, state === true ? 1 : 0)
   }
 
-  connect() {
-    console.log('Cookies.get(this.cookieKey)->', Cookies.get(this.cookieKey))
-  }
-
   markSidebarClosed() {
     Cookies.set(this.cookieKey, '0')
     this.openValue = false
