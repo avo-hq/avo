@@ -39,6 +39,7 @@ module Avo
   ROOT_PATH = Pathname.new(File.join(__dir__, ".."))
   IN_DEVELOPMENT = ENV["AVO_IN_DEVELOPMENT"] == "1"
   PACKED = !IN_DEVELOPMENT
+  COOKIES_KEY = "avo"
 
   class LicenseVerificationTemperedError < StandardError; end
 

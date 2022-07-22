@@ -14,7 +14,7 @@
     @apply lg:hidden;
   }
 
-  &.sidebar-visible {
+  &.sidebar-open {
     /* Add padding to the main area to allow for the sidebar to expand. */
     .main-content-area {
       @apply lg:pl-64;
