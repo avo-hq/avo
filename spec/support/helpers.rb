@@ -122,3 +122,7 @@ def avo_home_path
     Avo.configuration.home_path
   end
 end
+
+def reload_page
+  page.evaluate_script("window.location.reload()")
+end
