@@ -16,6 +16,7 @@
 @import './css/breadcrumbs.css';
 @import './css/search.css';
 @import './css/active-storage.css';
+@import './css/sidebar.css';
 @import './css/spinner.css';
 @import './css/tags.css';
 
@@ -69,10 +70,6 @@ body {
   @apply opacity-0 translate-y-1;
 }
 
-.application-sidebar .active:hover,
-.application-sidebar .active {
-  @apply bg-blue-100 text-blue-500;
-}
 
 .turbo-progress-bar {
   @apply bg-blue-400;

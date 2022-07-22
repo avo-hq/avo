@@ -1,0 +1,28 @@
+.application-sidebar .active:hover,
+.application-sidebar .active {
+  @apply bg-blue-100 text-blue-500;
+}
+
+.content-area {
+  /* remove the left padding. */
+  .main-content-area {
+    @apply lg:pl-0;
+  }
+
+  /* Hide the sidebar by default. */
+  .sidebar {
+    @apply lg:hidden;
+  }
+
+  &.sidebar-visible {
+    /* Add padding to the main area to allow for the sidebar to expand. */
+    .main-content-area {
+      @apply lg:pl-64;
+    }
+
+    /* Show the sidebar. */
+    .sidebar {
+      @apply lg:block;
+    }
+  }
+}
