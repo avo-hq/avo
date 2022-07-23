@@ -4,6 +4,11 @@
       <%== item_select_all_input %>
     </th>
   <% end %>
+  <% if Avo.configuration.resource_controls_placement == :left %>
+    <th class="w-24">
+      <!-- Item controls cell -->
+    </th>
+  <% end %>
   <% fields.each_with_index do |field, index|  %>
     <%
       if params[:sort_by] == field.id.to_s
@@ -52,7 +57,9 @@
       <% end %>
     </th>
   <% end %>
-  <th class="w-24">
-    <!-- Item controls cell -->
-  </th>
+  <% if Avo.configuration.resource_controls_placement == :left %>
+    <th class="w-24">
+      <!-- Item controls cell -->
+    </th>
+  <% end %>
 </thead>

@@ -4,8 +4,9 @@ Avo.configure do |config|
   config.license = "pro"
   config.license_key = ENV["AVO_LICENSE_KEY"]
   config.current_user_method = :current_user
-  config.id_links_to_resource = true
+  config.id_links_to_resource = false
   config.full_width_container = true
+  config.resource_controls_placement = :left
   config.set_context do
     {
       foo: "bar",
