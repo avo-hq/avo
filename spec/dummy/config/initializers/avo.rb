@@ -6,7 +6,7 @@ Avo.configure do |config|
   config.current_user_method = :current_user
   config.id_links_to_resource = false
   config.full_width_container = true
-  config.resource_controls_placement = :left
+  config.resource_controls_placement = ENV["AVO_RESOURCE_CONTROLS_PLACEMENT"]
   config.set_context do
     {
       foo: "bar",
