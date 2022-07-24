@@ -4,7 +4,7 @@
       <%== item_select_all_input %>
     </th>
   <% end %>
-  <% if Avo.configuration.resource_controls_placement.to_sym == :left %>
+  <% if Avo.configuration.resource_controls_placement.to_s == 'left' %>
     <th class="w-24" data-control="resource-controls-th">
       <!-- Item controls cell -->
     </th>
@@ -57,7 +57,7 @@
       <% end %>
     </th>
   <% end %>
-  <% if Avo.configuration.resource_controls_placement.to_sym == :right %>
+  <% if Avo.configuration.resource_controls_placement.to_s == 'right' %>
     <th class="w-24" data-control="resource-controls-th">
       <!-- Item controls cell -->
     </th>
