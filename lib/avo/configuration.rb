@@ -121,6 +121,14 @@ module Avo
     def feature_enabled?(feature)
       !@disabled_features.map(&:to_sym).include?(feature.to_sym)
     end
+
+    def resource_controls_on_the_left?
+      resource_controls_placement.to_s == 'left'
+    end
+
+    def resource_controls_on_the_right?
+      resource_controls_placement.to_s == 'right'
+    end
   end
 
   def self.configuration
