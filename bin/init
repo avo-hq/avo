@@ -28,6 +28,11 @@ app_root do
   header 'Preparing the database'
   run! 'bin/rails db:setup'
 
+  header 'Building assets'
+  run! 'yarn build:js'
+  run! 'yarn build:custom-js'
+  run! 'yarn build:css'
+
   if use_docker == 'y'
     header 'Stopping the Docker image'
     run! 'docker-compose stop'
