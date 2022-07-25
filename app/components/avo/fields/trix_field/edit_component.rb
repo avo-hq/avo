@@ -2,6 +2,6 @@
 
 class Avo::Fields::TrixField::EditComponent < Avo::Fields::EditComponent
   def trix_id
-    "trix_#{@resource.name.underscore}_#{@field.id}"
+    "trix_#{@resource.class_name_without_resource.underscore}_#{@field.id}"
   end
 end
