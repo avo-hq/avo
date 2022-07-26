@@ -9,12 +9,21 @@
       </div>
     </td>
   <% end %>
+  <% if Avo.configuration.resource_controls_on_the_left? %>
+    <td class="text-right whitespace-nowrap px-2" data-control="resource-controls">
+      <div class="flex items-center justify-end flex-grow-0 h-full w-full">
+        <%= render(Avo::Index::ResourceControlsComponent.new(resource: @resource, reflection: @reflection, parent_model: @parent_model, parent_resource: @parent_resource, view_type: :table)) %>
+      </div>
+    </td>
+  <% end %>
   <% @resource.get_fields(reflection: @reflection, only_root: true).each_with_index do |field, index| %>
     <%= render field.component_for_view(:index).new(field: field, resource: @resource, index: index, parent_model: @parent_model) %>
   <% end %>
-  <td class="text-right whitespace-nowrap px-2">
-    <div class="flex items-center justify-end flex-grow-0 h-full w-full">
-      <%= render(Avo::Index::ResourceControlsComponent.new(resource: @resource, reflection: @reflection, parent_model: @parent_model, parent_resource: @parent_resource, view_type: :table)) %>
-    </div>
-  </td>
+  <% if Avo.configuration.resource_controls_on_the_right? %>
+    <td class="text-right whitespace-nowrap px-2" data-control="resource-controls">
+      <div class="flex items-center justify-end flex-grow-0 h-full w-full">
+        <%= render(Avo::Index::ResourceControlsComponent.new(resource: @resource, reflection: @reflection, parent_model: @parent_model, parent_resource: @parent_resource, view_type: :table)) %>
+      </div>
+    </td>
+  <% end %>
 </tr>

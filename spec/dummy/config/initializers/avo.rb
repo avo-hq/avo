@@ -6,6 +6,7 @@ Avo.configure do |config|
   config.current_user_method = :current_user
   config.id_links_to_resource = true
   config.full_width_container = true
+  config.resource_controls_placement = ENV["AVO_RESOURCE_CONTROLS_PLACEMENT"].present? ? ENV["AVO_RESOURCE_CONTROLS_PLACEMENT"].to_sym : :right
   config.set_context do
     {
       foo: "bar",
