@@ -39,7 +39,7 @@ module Avo
         end
 
         def heading(body, **args)
-          self.items_holder.add_item Avo::Fields::HeadingField.new(body, order_index: items_index, **args)
+          self.items_holder.heading body, **args
         end
         # END DSL methods
 
