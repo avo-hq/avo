@@ -1,5 +1,7 @@
 module Avo
   class Configuration
+    include ResourceConfiguration
+
     attr_writer :root_path
     attr_accessor :app_name
     attr_accessor :timezone
