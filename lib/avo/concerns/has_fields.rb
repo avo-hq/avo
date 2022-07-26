@@ -13,8 +13,6 @@ module Avo
       end
 
       class_methods do
-        delegate :tool, to: :items_holder
-
         # DSL methods
         def field(name, **args, &block)
           ensure_items_holder_initialized
@@ -32,6 +30,12 @@ module Avo
           ensure_items_holder_initialized
 
           self.items_holder.tabs Avo::TabGroupBuilder.parse_block(&block)
+        end
+
+        def tool(klass, **args)
+          ensure_items_holder_initialized
+
+          items_holder.tool klass, **args
         end
 
         def heading(body, **args)
