@@ -19,4 +19,8 @@
   <div class="flex-1 flex flex-row md:min-h-inherit py-2 <% unless @displayed_in_modal %> px-6 <% end %>">
     <%= content %>
   </div>
+  <% if params[:avo_debug].present? %>
+    <!-- Raw value: -->
+    <!-- <%== @field.value.inspect %> -->
+  <% end %>
 <% end %>
