@@ -14,7 +14,7 @@ module Avo
           when String, Symbol
             value.to_s.safe_constantize
           else
-            raise ArgumentError.new "Failed to find a proper model class for #{self.to_s}"
+            raise ArgumentError.new "Failed to find a proper model class for #{self}"
           end
         end
       end
