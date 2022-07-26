@@ -10,11 +10,11 @@ module Avo
       end
 
       def resource_controls_on_the_left?
-        resource_controls_placement.to_s == 'left'
+        resource_controls_placement == :left
       end
 
       def resource_controls_on_the_right?
-        resource_controls_placement.to_s == 'right'
+        resource_controls_placement == :right
       end
     end
   end
