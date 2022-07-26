@@ -293,7 +293,6 @@ RSpec.describe "KeyValueFields", type: :system do
         visit "/admin/resources/projects/#{project.id}"
         wait_for_loaded
 
-        meta_element = find_field_element("meta")
 
         keys = page.all('input[placeholder="Meta key"][disabled="disabled"]')
         values = page.all('input[placeholder="Meta value"][disabled="disabled"]')
