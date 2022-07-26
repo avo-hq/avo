@@ -13,7 +13,7 @@ RSpec.feature "CustomTools", type: :feature do
     it "navigates to the custom tool page" do
       subject
 
-      click_on "Custom tool"
+      click_on_sidebar_item "Custom tool"
 
       expect(page.body).to have_text "What a nice new tool"
       expect(page.body).to have_text "app/views/avo/tools/custom_tool.html.erb"
