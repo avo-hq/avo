@@ -8,7 +8,57 @@ class FishResource < Avo::BaseResource
   field :id, as: :id
   field :name, as: :text, required: -> { view == :new }
 
-  tool FishInformation, show_on: :edit
-
   action DummyAction
+
+  tabs do
+    tab "big useless tab here" do
+      panel do
+        field :id, as: :id
+      end
+    end
+
+    tab "big useless tab here 2" do
+      panel do
+        field :id, as: :id
+      end
+    end
+
+    tab "big useless tab here 3" do
+      panel do
+        field :id, as: :id
+      end
+    end
+
+    tab "big useless tab here 4" do
+      panel do
+        field :id, as: :id
+      end
+    end
+
+    tab "big useless tab here 5" do
+      panel do
+        field :id, as: :id
+      end
+    end
+
+    tab "big useless tab here 6" do
+      panel do
+        field :id, as: :id
+      end
+    end
+
+    tab "big useless tab here 7" do
+      panel do
+        field :id, as: :id
+      end
+    end
+
+    tab "big useless tab here 8" do
+      panel do
+        field :id, as: :id
+      end
+    end
+  end
+
+  tool FishInformation, show_on: :edit
 end
