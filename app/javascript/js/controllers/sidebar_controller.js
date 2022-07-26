@@ -1,8 +1,9 @@
 import { Controller } from '@hotwired/stimulus'
+import { enter, leave, toggle } from 'el-transition'
 import Cookies from 'js-cookie'
 
 export default class extends Controller {
-  static targets = ['sidebar', 'mainArea']
+  static targets = ['sidebar', 'mobileSidebar', 'mainArea']
 
   static values = {
     open: Boolean,
@@ -23,12 +24,14 @@ export default class extends Controller {
   markSidebarClosed() {
     Cookies.set(this.cookieKey, '0')
     this.openValue = false
+    leave(this.sidebarTarget)
     this.mainAreaTarget.classList.remove('sidebar-open')
   }
 
   markSidebarOpen() {
     Cookies.set(this.cookieKey, '1')
     this.openValue = true
+    enter(this.sidebarTarget)
     this.mainAreaTarget.classList.add('sidebar-open')
   }
 
@@ -41,6 +44,6 @@ export default class extends Controller {
   }
 
   toggleSidebarOnMobile() {
-    this.sidebarTarget.classList.toggle('hidden')
+    toggle(this.mobileSidebarTarget)
   }
 }

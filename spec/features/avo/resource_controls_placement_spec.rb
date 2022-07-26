@@ -15,7 +15,7 @@ RSpec.feature "ResourceControlsPlacement", type: :feature do
       visit "/admin/resources/comments"
 
       # XPath containing the index of the cell
-      expect(page).to have_xpath('/html/body/div/div/div[2]/div[2]/div/div/div[1]/div/div[2]/div[2]/div/div/table/tbody/tr[1]/td[1][@data-control="resource-controls"]')
+      expect(page).to have_xpath('/html/body/div/div/div[2]/div[3]/div/div/div[1]/div/div[2]/div[2]/div/div/table/tbody/tr[1]/td[1][@data-control="resource-controls"]')
     end
   end
 
@@ -25,7 +25,7 @@ RSpec.feature "ResourceControlsPlacement", type: :feature do
       visit "/admin/resources/comments"
 
       # XPath containing the index of the cell
-      expect(page).to have_xpath('/html/body/div/div/div[2]/div[2]/div/div/div[1]/div/div[2]/div[2]/div/div/table/tbody/tr[1]/td[6][@data-control="resource-controls"]')
+      expect(page).to have_xpath('/html/body/div/div/div[2]/div[3]/div/div/div[1]/div/div[2]/div[2]/div/div/table/tbody/tr[1]/td[6][@data-control="resource-controls"]')
     end
   end
 end

@@ -9,20 +9,10 @@
     @apply lg:pl-0;
   }
 
-  /* Hide the sidebar by default. */
-  .avo-sidebar {
-    @apply lg:hidden;
-  }
-
   &.sidebar-open {
     /* Add padding to the main area to allow for the sidebar to expand. */
     .main-content-area {
       @apply lg:pl-64;
-    }
-
-    /* Show the sidebar. */
-    .avo-sidebar {
-      @apply lg:block;
     }
   }
 }

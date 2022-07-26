@@ -16,7 +16,7 @@ RSpec.feature "ResourceMissingModels", type: :feature do
   it "tests the message" do
     visit "/admin/dashboards/dashy"
 
-    click_on "Sales"
+    click_on_sidebar_item "Sales"
     expect(page).to have_text "BadResource does not have a valid model assigned. It failed to find the Bad model."
     expect(page).to have_text "Please create that model or assign one using self.model_class = YOUR_MODEL"
     expect(page).to have_link href: "https://docs.avohq.io/2.0/resources.html#custom-model-class"

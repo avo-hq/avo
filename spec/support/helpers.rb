@@ -126,3 +126,13 @@ end
 def reload_page
   page.evaluate_script("window.location.reload()")
 end
+
+def main_sidebar
+  find('[data-sidebar-target="sidebar"]')
+end
+
+def click_on_sidebar_item(label)
+  within main_sidebar do
+    click_on label
+  end
+end
