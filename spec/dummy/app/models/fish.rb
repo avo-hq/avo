@@ -18,4 +18,9 @@ class Fish < ApplicationRecord
   def fish_type=(value)
     self.type = value
   end
+
+  def properties=(value)
+    # properties should be an array
+    puts ["properties->", value].inspect
+  end
 end
