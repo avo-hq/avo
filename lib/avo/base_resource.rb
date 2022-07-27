@@ -274,15 +274,8 @@ module Avo
 
       # Write the user configured extra params to the model
       if extra_params.present?
-        extra_params.each do |param_id|
-          # if it's a nested array, use the key
-          param_id = param_id.first.first if param_id.is_a? Hash
-
-          next unless model.respond_to? "#{param_id}="
-
-          param_value = params[param_id]
-          model.send("#{param_id}=", param_value)
-        end
+        # Let Rails fill in the rest of the params
+        model.assign_attributes params.permit(extra_params)
       end
 
       model
