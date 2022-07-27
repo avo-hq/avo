@@ -9,8 +9,8 @@
 
   discreet_pagination = field.present? && @pagy.pages <= 1 && field.discreet_pagination
 %>
-<div class="flex flex-col sm:flex-row items-center justify-between aborder-t aborder-slate-200 rounded-xl space-y-2 sm:space-y-0">
-  <% unless discreet_pagination %>
+<% unless discreet_pagination %>
+  <div class="flex flex-col sm:flex-row items-center justify-between aborder-t aborder-slate-200 rounded-xl space-y-2 sm:space-y-0">
     <div class="flex-2 sm:flex sm:items-center sm:justify-between">
       <div>
         <div class="text-sm leading-5 text-slate-600 flex items-center">
@@ -49,5 +49,5 @@
         <% end %>
       </div>
     </div>
-  <% end %>
-</div>
+  </div>
+<% end %>
