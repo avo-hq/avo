@@ -7,20 +7,10 @@
 
   per_page_options = per_page_options.sort.uniq
 
-  show_per_page_options = show_per_page_counter = true
-  
-  if field.present? && @pagy.pages <= 1
-    if field.pagination_when_one_page_present[:hide_all]
-      show_per_page_options = show_per_page_counter = false
-    elsif field.pagination_when_one_page_present[:hide_counter]
-      show_per_page_counter = false      
-    elsif field.pagination_when_one_page_present[:hide_options]
-      show_per_page_options = false
-    end
-  end
+  discreet_pagination = field.present? && @pagy.pages <= 1 && field.discreet_pagination
 %>
 <div class="flex flex-col sm:flex-row items-center justify-between aborder-t aborder-slate-200 rounded-xl space-y-2 sm:space-y-0">
-  <% if show_per_page_options %>
+  <% unless discreet_pagination %>
     <div class="flex-2 sm:flex sm:items-center sm:justify-between">
       <div>
         <div class="text-sm leading-5 text-slate-600 flex items-center">
@@ -47,18 +37,17 @@
         </div>
       </div>
     </div>
-  <% end %>
+    <div class="flex">
+      <div class="flex-2 sm:flex sm:items-center sm:justify-between space-y-2 sm:space-y-0 text-center sm:text-left">
+        <% if @pagy.count > 0 %>
+          <div class="text-sm text-slate-600 mr-4"><%== helpers.pagy_info @pagy %></div>
+        <% end %>
 
-  <div class="flex">
-    <div class="flex-2 sm:flex sm:items-center sm:justify-between space-y-2 sm:space-y-0 text-center sm:text-left">
-      <% if show_per_page_counter %>
-        <div class="text-sm text-slate-600 mr-4"><%== helpers.pagy_info @pagy %></div>
-      <% end %>
-
-      <% if @pagy.pages > 1 %>
-        <%# @todo: add first & last page. make the first and last buttons rounded %>
-        <%== helpers.pagy_nav @pagy %>
-      <% end %>
+        <% if @pagy.pages > 1 %>
+          <%# @todo: add first & last page. make the first and last buttons rounded %>
+          <%== helpers.pagy_nav @pagy %>
+        <% end %>
+      </div>
     </div>
-  </div>
+  <% end %>
 </div>
