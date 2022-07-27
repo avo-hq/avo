@@ -10,7 +10,7 @@ class FishResource < Avo::BaseResource
   field :name, as: :text, required: -> { view == :new }
   field :type, as: :text, hide_on: :forms
 
-  tool FishInformation, show_on: :edit
+  tool FishInformation, show_on: :forms
 
   action DummyAction
 end

@@ -278,10 +278,10 @@ module Avo
           # if it's a nested array, use the key
           param_id = param_id.first.first if param_id.is_a? Hash
 
-          next unless @model.respond_to? "#{param_id}="
+          next unless model.respond_to? "#{param_id}="
 
           param_value = params[param_id]
-          @model.send("#{param_id}=", param_value)
+          model.send("#{param_id}=", param_value)
         end
       end
 
