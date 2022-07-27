@@ -248,7 +248,11 @@ module Avo
     end
 
     def permitted_params
-      @resource.get_field_definitions.select(&:updatable).map(&:to_permitted_param)
+      @resource.get_field_definitions.select(&:updatable).map(&:to_permitted_param).concat extra_params
+    end
+
+    def extra_params
+      @resource.class.extra_params || []
     end
 
     def cast_nullable(params)

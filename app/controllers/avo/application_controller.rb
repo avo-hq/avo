@@ -151,7 +151,7 @@ module Avo
       is_attach_action = params[model_param_key].blank? && params[:related_name].present? && params[:fields].present?
 
       unless is_attach_action
-        @model = @resource.fill_model(@model_to_fill, cast_nullable(model_params))
+        @model = @resource.fill_model(@model_to_fill, cast_nullable(model_params), extra_params: extra_params)
       end
     end
 

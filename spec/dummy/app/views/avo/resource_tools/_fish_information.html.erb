@@ -11,6 +11,11 @@
         <div class="space-y-4">
           <h3>Below there should be an image of this fish 🐠</h3>
 
+          <% if form.present? %>
+            <%= form.label :fish_type  %>
+            <%= form.text_field :fish_type, value: 'default type of fish', class: input_classes %>
+          <% end %>
+
           <p>
             The fish's name is <strong><%= @resource.model.name %></strong>. The ID of the record is <%= @resource.model.id %> and the tool's name is <strong><%= tool.class.to_s %></strong>.
           </p>

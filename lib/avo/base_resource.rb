@@ -47,6 +47,7 @@ module Avo
     class_attribute :after_update_path, default: :show
     class_attribute :record_selector, default: true
     class_attribute :keep_filters_panel_open, default: false
+    class_attribute :extra_params
 
     class << self
       delegate :t, to: ::I18n
@@ -251,7 +252,7 @@ module Avo
       end
     end
 
-    def fill_model(model, params)
+    def fill_model(model, params, extra_params: [])
       # Map the received params to their actual fields
       fields_by_database_id = get_field_definitions
         .reject do |field|
@@ -262,12 +263,23 @@ module Avo
         end
         .to_h
 
+      # Write the field values
       params.each do |key, value|
         field = fields_by_database_id[key]
 
         next unless field.present?
 
         model = field.fill_field model, key, value, params
+      end
+
+      # Write the user configured extra params to the model
+      if extra_params.present?
+        extra_params.each do |param_id|
+          next unless @model.respond_to? "#{param_id}="
+
+          param_value = params[param_id]
+          @model.send("#{param_id}=", param_value)
+        end
       end
 
       model

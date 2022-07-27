@@ -9,4 +9,13 @@
 #
 class Fish < ApplicationRecord
   has_many :reviews, as: :reviewable
+  self.inheritance_column = nil
+
+  def fish_type
+    type
+  end
+
+  def fish_type=(value)
+    self.type = value
+  end
 end
