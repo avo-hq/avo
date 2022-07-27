@@ -5,6 +5,7 @@ module Avo
       attr_accessor :scope
       attr_accessor :attach_scope
       attr_accessor :description
+      attr_accessor :pagination_when_one_page_present
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
@@ -14,6 +15,11 @@ module Avo
         @display = args[:display].present? ? args[:display] : :show
         @searchable = args[:searchable] == true
         @description = args[:description]
+        @pagination_when_one_page_present = {
+            :hide_all => args[:hide_pagination_when_one_page_present] || false,
+            :hide_options => args[:hide_pagination_options_when_one_page_present] || false,
+            :hide_counter => args[:hide_pagination_counter_when_one_page_present] || false
+        }
       end
 
       def searchable

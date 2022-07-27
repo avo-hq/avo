@@ -7,11 +7,17 @@
 
   per_page_options = per_page_options.sort.uniq
 
-  #If field exists and hide per page options on few items is not seted true or there are more than 1 page
-  show_per_page_options = !field&.hide_per_page_options_on_few_items || @pagy.pages > 1
-
-  #If there are records and field exists and hide per page counter is not seted true
-  show_per_page_counter = @pagy.count > 0 && !field&.hide_per_page_counter
+  show_per_page_options = show_per_page_counter = true
+  
+  if field.present? && @pagy.pages <= 1
+    if field.pagination_when_one_page_present[:hide_all]
+      show_per_page_options = show_per_page_counter = false
+    elsif field.pagination_when_one_page_present[:hide_counter]
+      show_per_page_counter = false      
+    elsif field.pagination_when_one_page_present[:hide_options]
+      show_per_page_options = false
+    end
+  end
 %>
 <div class="flex flex-col sm:flex-row items-center justify-between aborder-t aborder-slate-200 rounded-xl space-y-2 sm:space-y-0">
   <% if show_per_page_options %>
