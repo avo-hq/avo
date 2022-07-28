@@ -124,6 +124,12 @@ export default class extends Controller {
   }
 
   onChange(selectedDates) {
+    // No date has been selected
+    if (selectedDates.length == 0) {
+      this.updateRealInput("")
+      return
+    }
+
     let time
     let args = {}
 
