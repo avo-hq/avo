@@ -9,6 +9,7 @@ module Avo
       def initialize(id, **args, &block)
         super(id, **args, &block)
 
+        @custom_resource = args[:resource] || nil
         @scope = args[:scope].present? ? args[:scope] : nil
         @attach_scope = args[:attach_scope].present? ? args[:attach_scope] : nil
         @display = args[:display].present? ? args[:display] : :show
@@ -21,7 +22,11 @@ module Avo
       end
 
       def resource
-        Avo::App.get_resource_by_model_name @model.class
+        if @custom_resource.present?
+          Avo::App.get_resource @custom_resource
+        else
+          Avo::App.get_resource_by_model_name @model.class
+        end
       end
 
       def turbo_frame
@@ -50,7 +55,9 @@ module Avo
       end
 
       def target_resource
-        if @model._reflections[id.to_s].klass.present?
+        if @custom_resource.present?
+          Avo::App.get_resource @custom_resource
+        elsif @model._reflections[id.to_s].klass.present?
           Avo::App.get_resource_by_model_name @model._reflections[id.to_s].klass.to_s
         elsif @model._reflections[id.to_s].options[:class_name].present?
           Avo::App.get_resource_by_model_name @model._reflections[id.to_s].options[:class_name]
