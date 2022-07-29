@@ -7,5 +7,5 @@ class TestResource < Avo::BaseResource
   # end
 
   field :id, as: :id
-  field :tiny_name, as: :text, only_on: :index, as_description: true
+  field :tiny_name, as: :text, as_description: true
 end

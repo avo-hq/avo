@@ -211,7 +211,13 @@ module Avo
       field = @resource.get_field params[:related_name]
 
       # Get the related resource from the field
-      return field.resource if field.present? && field.resource.present?
+      if field.present? && field.use_resource.present?
+        # Get the instance of that resource class
+        instance = App.get_resource(field.use_resource)
+
+        # Use this resource if present
+        return instance if instance.present?
+      end
 
       reflection = @model._reflections[params[:related_name]]
 

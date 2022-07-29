@@ -5,16 +5,17 @@ module Avo
       attr_accessor :scope
       attr_accessor :attach_scope
       attr_accessor :description
+      attr_accessor :use_resource
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
 
-        @custom_resource = args[:resource] || nil
         @scope = args[:scope].present? ? args[:scope] : nil
         @attach_scope = args[:attach_scope].present? ? args[:attach_scope] : nil
         @display = args[:display].present? ? args[:display] : :show
         @searchable = args[:searchable] == true
         @description = args[:description]
+        @use_resource = args[:use_resource] || nil
       end
 
       def searchable
@@ -22,11 +23,9 @@ module Avo
       end
 
       def resource
-        if @custom_resource.present?
-          Avo::App.get_resource @custom_resource
-        else
-          Avo::App.get_resource_by_model_name @model.class
-        end
+        return @use_resource if @use_resource.present?
+
+        Avo::App.get_resource_by_model_name @model.class
       end
 
       def turbo_frame
@@ -55,9 +54,7 @@ module Avo
       end
 
       def target_resource
-        if @custom_resource.present?
-          Avo::App.get_resource @custom_resource
-        elsif @model._reflections[id.to_s].klass.present?
+        if @model._reflections[id.to_s].klass.present?
           Avo::App.get_resource_by_model_name @model._reflections[id.to_s].klass.to_s
         elsif @model._reflections[id.to_s].options[:class_name].present?
           Avo::App.get_resource_by_model_name @model._reflections[id.to_s].options[:class_name]
