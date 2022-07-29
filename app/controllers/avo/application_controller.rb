@@ -211,7 +211,7 @@ module Avo
       field = @resource.get_field params[:related_name]
 
       # Get the related resource from the field
-      return field.resource if field.present?
+      return field.resource if field.present? && field.resource.present?
 
       reflection = @model._reflections[params[:related_name]]
 
