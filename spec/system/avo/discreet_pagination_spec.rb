@@ -11,20 +11,20 @@ RSpec.describe 'DiscreetPagination', type: :feature do
 
     describe 'with one page' do
       it 'should not have pagination' do
-        visit "/admin/resources/courses/#{course_with_one_page_of_links.id}/links?turbo_frame=has_many_field_show_comments"
+        visit "/admin/resources/courses/#{course_with_one_page_of_links.id}/links?turbo_frame=has_many_field_show_links"
         wait_for_loaded
 
-        expect(page).to have_text 'Links'
+        expect(current_path).to eql "/admin/resources/courses/#{course_with_one_page_of_links.id}/links"
         expect(page).not_to have_text "Displaying #{per_page} items"
       end
     end
-
+    
     describe 'with two pages' do
       it 'should have pagination' do
-        visit "/admin/resources/courses/#{course_with_two_pages_of_links.id}/links?turbo_frame=has_many_field_show_comments"
+        visit "/admin/resources/courses/#{course_with_two_pages_of_links.id}/links?turbo_frame=has_many_field_show_links"
         wait_for_loaded
-
-        expect(page).to have_text 'Links'
+        
+        expect(current_path).to eql "/admin/resources/courses/#{course_with_two_pages_of_links.id}/links"
         expect(page).to have_text "Displaying items 1-#{per_page} of #{per_page * 2} in total"
       end
     end
