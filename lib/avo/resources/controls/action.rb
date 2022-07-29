@@ -3,16 +3,11 @@ module Avo
     module Controls
       class Action < BaseControl
         attr_reader :klass
-        attr_reader :icon
-        attr_reader :color
-        attr_reader :style
 
         def initialize(klass, model: nil, resource: nil, view: nil, **args)
+          super(**args)
+
           @klass = klass
-          @args = args
-          @icon = args[:icon] || "play"
-          @color = args[:color] || :gray
-          @style = args[:style] || :text
           @resource = resource
           @model = model
           @view = view

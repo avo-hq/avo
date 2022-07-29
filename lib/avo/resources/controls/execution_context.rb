@@ -33,8 +33,16 @@ module Avo
           items_holder.add_item Avo::Resources::Controls::DeleteButton.new(**args)
         end
 
+        def detach_button(**args)
+          items_holder.add_item Avo::Resources::Controls::DetachButton.new(**args)
+        end
+
         def edit_button(**args)
           items_holder.add_item Avo::Resources::Controls::EditButton.new(**args)
+        end
+
+        def link_to(label, path, **args)
+          items_holder.add_item Avo::Resources::Controls::LinkTo.new(label: label, path: path, **args)
         end
 
         def actions_list(**args)

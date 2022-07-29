@@ -2,7 +2,29 @@ module Avo
   module Resources
     module Controls
       class BaseControl
-        attr_reader :label
+        def initialize(**args)
+          @args = args
+        end
+
+        def label
+          @args[:label] || @label
+        end
+
+        def title
+          @args[:title]
+        end
+
+        def color
+          @args[:color] || :gray
+        end
+
+        def style
+          @args[:style] || :text
+        end
+
+        def icon
+          @args[:icon] || nil
+        end
 
         def back_button?
           is_a? Avo::Resources::Controls::BackButton
@@ -18,6 +40,14 @@ module Avo
 
         def actions_list?
           is_a? Avo::Resources::Controls::ActionsList
+        end
+
+        def link_to?
+          is_a? Avo::Resources::Controls::LinkTo
+        end
+
+        def detach_button?
+          is_a? Avo::Resources::Controls::DetachButton
         end
 
         def action?

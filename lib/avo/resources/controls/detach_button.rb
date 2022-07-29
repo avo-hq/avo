@@ -1,11 +1,11 @@
 module Avo
   module Resources
     module Controls
-      class DeleteButton < BaseControl
+      class DetachButton < BaseControl
         def initialize(**args)
           super(**args)
 
-          @label = I18n.t("avo.delete").capitalize
+          @label = I18n.t("avo.detach_item", item: title).capitalize
         end
       end
     end

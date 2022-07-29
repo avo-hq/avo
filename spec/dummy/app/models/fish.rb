@@ -9,4 +9,8 @@
 #
 class Fish < ApplicationRecord
   has_many :reviews, as: :reviewable
+
+  def release
+    # Dummy method
+  end
 end

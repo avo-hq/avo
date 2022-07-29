@@ -9,10 +9,22 @@ module Avo
         class_attribute :show_controls_holder_called, default: false
       end
 
+      def has_show_controls?
+        return false if ::Avo::App.license.lacks_with_trial(:resource_show_controls)
+
+        self.class.show_controls.present?
+      end
+
       def render_show_controls
+        return [] if ::Avo::App.license.lacks_with_trial(:resource_show_controls)
+
         if show_controls.present?
-          show_controls_holder = Avo::Resources::Controls::ExecutionContext.new(block: show_controls, resource: self, model: model, view: self.view).handle
-          show_controls_holder.items
+          Avo::Resources::Controls::ExecutionContext.new(
+            block: show_controls,
+            resource: self,
+            model: model,
+            view: view
+          ).handle.items
         else
           []
         end

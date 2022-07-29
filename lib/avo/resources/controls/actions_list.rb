@@ -2,8 +2,16 @@ module Avo
   module Resources
     module Controls
       class ActionsList < BaseControl
-        def initialize(filter_out: [], **args)
-          @filter_out = filter_out
+        def exclude
+          Array.wrap(@args[:exclude]) || []
+        end
+
+        def color
+          @args[:color] || :primary
+        end
+
+        def style
+          @args[:style] || :outline
         end
       end
     end

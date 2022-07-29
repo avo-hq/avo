@@ -3,7 +3,9 @@ module Avo
     module Controls
       class EditButton < BaseControl
         def initialize(**args)
-          @label = args[:label] || I18n.t("avo.edit").capitalize
+          super(**args)
+
+          @label = I18n.t("avo.edit").capitalize
         end
       end
     end
