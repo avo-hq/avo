@@ -1,0 +1,30 @@
+/* total width */
+body.os-pc .mac-styled-scrollbar::-webkit-scrollbar {
+    background-color: none;
+    width: 0.5rem;
+    height: 0.5rem;
+}
+
+/* background of the scrollbar except button or resizer */
+body.os-pc .mac-styled-scrollbar::-webkit-scrollbar-track {
+    background-color: none;
+}
+
+/* scrollbar itself */
+body.os-pc .mac-styled-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #babac0;
+    border-radius: 0.5rem;
+}
+
+/* set button(top and bottom of the scrollbar) */
+body.os-pc .mac-styled-scrollbar::-webkit-scrollbar-button {
+    display:none;
+}
+/* hide by default */
+body.os-pc .mac-styled-scrollbar::-webkit-scrollbar-thumb {
+  display:none
+}
+/* show on hover */
+body.os-pc .mac-styled-scrollbar:hover::-webkit-scrollbar-thumb {
+  display:block
+}
