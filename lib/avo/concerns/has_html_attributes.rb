@@ -58,7 +58,7 @@ module Avo
             end
             .to_h
 
-          extra_attributes.merge attributes
+          attributes.merge extra_attributes
         else
           attributes
         end

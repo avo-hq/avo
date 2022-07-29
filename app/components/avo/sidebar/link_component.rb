@@ -14,7 +14,10 @@ class Avo::Sidebar::LinkComponent < ViewComponent::Base
   end
 
   def is_external?
-    URI(path).scheme.present?
+    # If the path contains the scheme, check if it includes the root path or not
+    return !path.include?(Avo::App.root_path) if URI(path).scheme.present?
+
+    false
   end
 
   # For external links active_link_to marks them all as active.

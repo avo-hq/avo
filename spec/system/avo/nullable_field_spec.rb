@@ -113,6 +113,7 @@ RSpec.describe "NullableField", type: :system do
         fill_in "project_status", with: ""
         click_on "Save"
         wait_for_loaded
+        sleep 0.1
 
         expect(current_path).to eql "/admin/resources/projects/#{project.id}"
         expect(find_field_value_element("status")).to have_text empty_dash

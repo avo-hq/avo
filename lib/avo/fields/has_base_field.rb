@@ -78,6 +78,17 @@ module Avo
 
         super view
       end
+
+      def authorized?
+        method = "view_#{id}?".to_sym
+        service = resource.authorization
+
+        if service.has_method? method
+          service.authorize_action(method, raise_exception: false)
+        else
+          true
+        end
+      end
     end
   end
 end

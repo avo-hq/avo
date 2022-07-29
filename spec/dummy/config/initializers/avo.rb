@@ -6,6 +6,11 @@ Avo.configure do |config|
   config.current_user_method = :current_user
   config.id_links_to_resource = true
   config.full_width_container = true
+  config.resource_controls_placement = if ENV["AVO_RESOURCE_CONTROLS_PLACEMENT"].present?
+    ENV["AVO_RESOURCE_CONTROLS_PLACEMENT"].to_sym
+  else
+    :right
+  end
   config.set_context do
     {
       foo: "bar",
@@ -15,7 +20,7 @@ Avo.configure do |config|
   end
   config.home_path = -> { avo.dashboard_path(:dashy) }
   config.set_initial_breadcrumbs do
-    add_breadcrumb "Dashboard", "/admin/dashboard"
+    add_breadcrumb "Dashboard", "/admin/dashboards/dashy"
   end
   config.search_debounce = 300
   config.main_menu = -> {

@@ -7,7 +7,7 @@
     <% c.tools do %>
       <% if !@field.readonly && can_attach? %>
         <%= a_link attach_path, icon: 'heroicons/outline/link', color: :primary, 'data-turbo-frame': 'attach_modal' do %>
-          <%= t('avo.attach_item', item: @field.name) %>
+          <%= t('avo.attach_item', item: @field.name.downcase) %>
         <% end %>
       <% end %>
     <% end %>
