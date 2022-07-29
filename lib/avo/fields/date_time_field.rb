@@ -28,8 +28,8 @@ module Avo
       end
 
       def fill_field(model, key, value, params)
-        if value.nil?
-          model[id] = nil
+        if value.in?(["", nil])
+          model[id] = value
 
           return model
         end

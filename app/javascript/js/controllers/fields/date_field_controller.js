@@ -106,13 +106,10 @@ export default class extends Controller {
 
     // enable timezone display
     if (this.enableTimeValue) {
-      console.log(1)
       options.defaultDate = this.parsedValue.setZone(this.displayTimezone).toISO()
 
       options.dateFormat = 'Y-m-d H:i:S'
     } else {
-      console.log(2)
-
       // Because the browser treats the date like a timestamp and updates it at 00:00 hour, when on a western timezone the date will be converted with one day offset.
       // Ex: 2022-01-30 will render as 2022-01-29 on an American timezone
       options.defaultDate = universalTimestamp(this.initialValue)
@@ -124,6 +121,13 @@ export default class extends Controller {
   }
 
   onChange(selectedDates) {
+    // No date has been selected
+    if (selectedDates.length === 0) {
+      this.updateRealInput('')
+
+      return
+    }
+
     let time
     let args = {}
 

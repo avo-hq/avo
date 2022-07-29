@@ -254,18 +254,19 @@ module Avo
     def cast_nullable(params)
       fields = @resource.get_field_definitions
 
-      nullable_fields = fields.filter do |field|
-        field.nullable
-      end
+      nullable_fields = fields
+        .filter do |field|
+          field.nullable
+        end
         .map do |field|
-        [field.id, field.null_values]
-      end
+          [field.id, field.null_values]
+        end
         .to_h
 
       params.each do |key, value|
-        nullable = nullable_fields[key.to_sym]
+        nullable_values = nullable_fields[key.to_sym]
 
-        if nullable.present? && value.in?(nullable)
+        if nullable_values.present? && value.in?(nullable_values)
           params[key] = nil
         end
       end
