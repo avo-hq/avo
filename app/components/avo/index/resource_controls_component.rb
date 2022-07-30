@@ -58,7 +58,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
 
   def singular_resource_name
     if @reflection.present?
-      reflection_resource.name
+      field&.name&.singularize || reflection_resource.name
     else
       @resource.singular_name.present? ? @resource.singular_name : @resource.model_class.model_name.name.downcase
     end
