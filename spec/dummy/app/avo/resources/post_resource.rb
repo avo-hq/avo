@@ -7,6 +7,12 @@ class PostResource < Avo::BaseResource
   self.includes = [:user]
   self.default_view_type = :grid
 
+  # self.show_controls = -> do
+  #   detach_button
+  #   edit_button
+  #   link_to "google", "goolee"
+  # end
+
   field :id, as: :id
   field :name, as: :text, required: true, sortable: true
   field :body, as: :trix, placeholder: "Enter text", always_show: false, attachment_key: :attachments, hide_attachment_url: true, hide_attachment_filename: true, hide_attachment_filesize: true
@@ -34,7 +40,7 @@ class PostResource < Avo::BaseResource
   end
   field :user, as: :belongs_to, placeholder: "—"
   field :status, as: :select, enum: ::Post.statuses, display_value: false
-  field :comments, as: :has_many
+  field :comments, as: :has_many, use_resource: 'TinyComment'
 
   grid do
     cover :cover_photo, as: :file, is_image: true, link_to_resource: true
