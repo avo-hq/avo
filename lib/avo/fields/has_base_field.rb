@@ -22,14 +22,16 @@ module Avo
         @searchable && ::Avo::App.license.has_with_trial(:searchable_associations)
       end
 
-      def resource
-        return @use_resource if @use_resource.present?
+      def use_resource
+        App.get_resource @use_resource 
+      end
 
+      def resource
         Avo::App.get_resource_by_model_name @model.class
       end
 
       def turbo_frame
-        "#{self.class.name.demodulize.to_s.underscore}_#{display}_#{id}"
+        "#{self.class.name.demodulize.to_s.underscore}_#{display}_#{frame_id}"
       end
 
       def frame_url
@@ -92,6 +94,12 @@ module Avo
         else
           true
         end
+      end
+
+      private
+
+      def frame_id
+        use_resource.present? ? resource.route_key.to_sym : @id
       end
     end
   end

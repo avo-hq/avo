@@ -112,9 +112,9 @@ module Avo
       # Secondly we'll try to find a translation key
       # We'll fallback to humanizing the id
       def name
-        default = @id.to_s.humanize(keep_id_suffix: true)
-
         return @name if custom_name?
+        
+        default = name_from_use_resource || name_from_id
 
         if translation_key && ::Avo::App.translation_enabled
           t(translation_key, count: 1, default: default).capitalize
@@ -255,6 +255,14 @@ module Avo
         else
           "model"
         end
+      end
+
+      def name_from_id
+        @id.to_s.humanize(keep_id_suffix: true)
+      end
+
+      def name_from_use_resource
+        use_resource&.name if @use_resource.present?
       end
     end
   end

@@ -1,5 +1,5 @@
-class TestResource < Avo::BaseResource
-  self.title = :id
+class TinyCommentResource < Avo::BaseResource
+  self.title = :tiny_name
   self.includes = []
   self.model_class = ::Comment
   # self.search_query = ->(params:) do
