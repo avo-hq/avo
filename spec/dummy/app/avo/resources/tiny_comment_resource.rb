@@ -7,5 +7,13 @@ class TinyCommentResource < Avo::BaseResource
   # end
 
   field :id, as: :id
-  field :tiny_name, as: :text, as_description: true
+  field :body, as: :textarea, format_using: ->(value) do
+    if view == :show
+      content_tag(:div, style: "white-space: pre-line") { value }
+    else
+      value
+    end
+  end
+  field :tiny_name, as: :text, only_on: :index, as_description: true
+
 end
