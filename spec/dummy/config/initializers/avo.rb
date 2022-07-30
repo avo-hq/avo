@@ -59,7 +59,6 @@ Avo.configure do |config|
       group "Blog", collapsable: true do
         resource :posts
         resource :comments
-        resource :tests
       end
 
       group "Other", collapsable: true, collapsed: true do
