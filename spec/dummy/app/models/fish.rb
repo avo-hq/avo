@@ -8,7 +8,7 @@
 #  updated_at :datetime         not null
 #
 class Fish < ApplicationRecord
-  belongs_to :user
+  belongs_to :user, optional: true
   has_many :reviews, as: :reviewable
 
   def release

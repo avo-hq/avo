@@ -73,8 +73,9 @@
                 icon: control.icon,
                 title: control.title,
                 target: control.target,
+                class: control.class,
                 data: {
-                  turbo_frame: control.turbo_frame,
+                  **control.data,
                   tippy: control.title ? :tooltip : nil,
                 } do %>
               <%= control.label %>

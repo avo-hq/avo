@@ -14,8 +14,12 @@ module Avo
           @args[:target] || nil
         end
 
-        def turbo_frame
-          @args[:turbo_frame] || nil
+        def data
+          @args[:data] || {}
+        end
+
+        def class
+          @args[:class] || nil
         end
       end
     end
