@@ -4,7 +4,7 @@ class Avo::ActionsComponent < ViewComponent::Base
   include Avo::ApplicationHelper
 
   def initialize(actions: [], resource: nil, view: nil, exclude: [], style: :outline, color: :blue)
-    @actions = actions
+    @actions = actions || []
     @resource = resource
     @view = view
     @exclude = exclude
