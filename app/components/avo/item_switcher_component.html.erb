@@ -1,6 +1,6 @@
 <% if item.is_tool? %>
   <% if item&.partial.present? %>
-    <%= render item.partial, tool: item %>
+    <%= render item.partial, tool: item, form: @form %>
   <% end %>
 <% elsif item.is_panel? %>
   <%= render Avo::PanelComponent.new(title: item.name, description: item.description, index: index, view: view) do |c| %>

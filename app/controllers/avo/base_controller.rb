@@ -11,7 +11,7 @@ module Avo
     before_action :set_edit_title_and_breadcrumbs, only: [:edit, :update]
     before_action :fill_model, only: [:create, :update]
     # Don't run base authorizations for associations
-    before_action :authorize_base_action, if: -> {controller_name != "associations"}
+    before_action :authorize_base_action, if: -> { controller_name != "associations" }
 
     def index
       @page_title = @resource.plural_name.humanize
@@ -248,7 +248,11 @@ module Avo
     end
 
     def permitted_params
-      @resource.get_field_definitions.select(&:updatable).map(&:to_permitted_param)
+      @resource.get_field_definitions.select(&:updatable).map(&:to_permitted_param).concat extra_params
+    end
+
+    def extra_params
+      @resource.class.extra_params || []
     end
 
     def cast_nullable(params)

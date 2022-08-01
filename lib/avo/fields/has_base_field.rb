@@ -5,6 +5,7 @@ module Avo
       attr_accessor :scope
       attr_accessor :attach_scope
       attr_accessor :description
+      attr_accessor :discreet_pagination
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
@@ -14,6 +15,7 @@ module Avo
         @display = args[:display].present? ? args[:display] : :show
         @searchable = args[:searchable] == true
         @description = args[:description]
+        @discreet_pagination = args[:discreet_pagination] || false
       end
 
       def searchable

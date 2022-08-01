@@ -63,14 +63,14 @@
       <% if view_type.to_sym == :table %>
         <% if @models.present? %>
           <div class="mt-4">
-            <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: @turbo_frame || 'none', index_params: @index_params, resource: @resource, parent_model: @parent_model %>
+            <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: @turbo_frame || 'none', index_params: @index_params, resource: @resource, parent_model: @parent_model, discreet_pagination: field&.discreet_pagination %>
           </div>
         <% end %>
       <% end %>
       <% if view_type.to_sym == :grid %>
         <%= render Avo::Index::ResourceGridComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_model: @parent_model) %>
         <div class="mt-6">
-          <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: @turbo_frame || 'none', index_params: @index_params, resource: @resource, parent_model: @parent_model %>
+          <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: @turbo_frame || 'none', index_params: @index_params, resource: @resource, parent_model: @parent_model, discreet_pagination: field&.discreet_pagination %>
         </div>
       <% end %>
     <% end %>

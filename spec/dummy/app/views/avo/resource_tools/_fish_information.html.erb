@@ -11,6 +11,31 @@
         <div class="space-y-4">
           <h3>Below there should be an image of this fish 🐠</h3>
 
+          <% if form.present? %>
+            <%= form.label :fish_type %>
+            <%= form.text_field :fish_type, value: 'default type of fish', class: input_classes %>
+            <br>
+
+            <%= form.label :properties %>
+            <%= form.text_field :properties, multiple: true, value: 'property 1', class: input_classes %>
+            <%= form.text_field :properties, multiple: true, value: 'property 2', class: input_classes %>
+            <br>
+
+            <% form.fields_for :information do |information_form| %>
+              <%= form.label :information_name %>
+              <%= information_form.text_field :name, value: 'information name', class: input_classes %>
+              <div class="text-gray-600 mt-2 text-sm">This is going to be passed to the model</div>
+              <br>
+              <%= form.label :information_history %>
+              <%= information_form.text_field :history, value: 'information history', class: input_classes %>
+              <div class="text-gray-600 mt-2 text-sm">This is going to be passed to the model</div>
+              <br>
+              <%= form.label :information_age %>
+              <%= information_form.text_field :age, value: 'information age', class: input_classes %>
+              <div class="text-gray-600 mt-2 text-sm">This is NOT going to be passed to the model</div>
+            <% end %>
+          <% end %>
+
           <p>
             The fish's name is <strong><%= @resource.model.name %></strong>. The ID of the record is <%= @resource.model.id %> and the tool's name is <strong><%= tool.class.to_s %></strong>.
           </p>
