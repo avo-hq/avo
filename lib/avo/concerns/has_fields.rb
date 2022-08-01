@@ -13,8 +13,6 @@ module Avo
       end
 
       class_methods do
-        delegate :tool, to: :items_holder
-
         # DSL methods
         def field(name, **args, &block)
           ensure_items_holder_initialized
@@ -34,8 +32,14 @@ module Avo
           self.items_holder.tabs Avo::TabGroupBuilder.parse_block(&block)
         end
 
+        def tool(klass, **args)
+          ensure_items_holder_initialized
+
+          items_holder.tool klass, **args
+        end
+
         def heading(body, **args)
-          self.items_holder.add_item Avo::Fields::HeadingField.new(body, order_index: items_index, **args)
+          self.items_holder.heading body, **args
         end
         # END DSL methods
 
@@ -252,8 +256,13 @@ module Avo
           if item.respond_to? :visible_on?
             next unless item.visible_on?(view)
           end
+          # each field has it's own visibility checker
           if item.respond_to? :visible?
             next unless item.visible?
+          end
+          # check if the user is authorized to view it
+          if item.respond_to? :authorized?
+            next unless item.hydrate(model: @model).authorized?
           end
 
           if item.is_field?

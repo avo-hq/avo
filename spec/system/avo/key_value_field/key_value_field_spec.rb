@@ -283,4 +283,48 @@ RSpec.describe "KeyValueFields", type: :system do
       end
     end
   end
+
+  describe "with null values" do
+    let!(:meta_data) { {'foo' => nil, nil => 'bar'} }
+    let!(:project) { create :project, meta: meta_data }
+
+    context "show" do
+      it "does not show null keys or values" do
+        visit "/admin/resources/projects/#{project.id}"
+        wait_for_loaded
+
+
+        keys = page.all('input[placeholder="Meta key"][disabled="disabled"]')
+        values = page.all('input[placeholder="Meta value"][disabled="disabled"]')
+
+        expect(keys[0].value).to eq "foo"
+        expect(values[0].value).to eq ""
+
+        expect(keys[1].value).to eq ""
+        expect(values[1].value).to eq "bar"
+      end
+    end
+
+    context "edit" do
+      let!(:project) { create :project, meta: meta_data }
+
+      it "has the projects meta label, table header, table rows (2), buttons" do
+        visit "/admin/resources/projects/#{project.id}/edit"
+        wait_for_loaded
+
+        meta_element = find_field_element("meta")
+
+        expect(meta_element).to have_text "META"
+
+        keys = page.all('input[placeholder="Meta key"]')
+        values = page.all('input[placeholder="Meta value"]')
+
+        expect(keys[0].value).to eq "foo"
+        expect(values[0].value).to eq ""
+
+        expect(keys[1].value).to eq ""
+        expect(values[1].value).to eq "bar"
+      end
+    end
+  end
 end

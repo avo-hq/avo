@@ -21,6 +21,7 @@ module Avo
     before_action :set_container_classes
     before_action :add_initial_breadcrumbs
     before_action :set_view
+    before_action :set_sidebar_open
 
     rescue_from Pundit::NotAuthorizedError, with: :render_unauthorized
     rescue_from ActiveRecord::RecordInvalid, with: :exception_logger
@@ -129,7 +130,11 @@ module Avo
     end
 
     def set_related_model
-      @related_model = eager_load_files(@related_resource, @related_resource.class.find_scope).find params[:related_id]
+      @related_model = if @field.is_a? Avo::Fields::HasOneField
+        @model.send params[:related_name]
+      else
+        eager_load_files(@related_resource, @model.send(params[:related_name])).find params[:related_id]
+      end
     end
 
     def set_view
@@ -146,7 +151,7 @@ module Avo
       is_attach_action = params[model_param_key].blank? && params[:related_name].present? && params[:fields].present?
 
       unless is_attach_action
-        @model = @resource.fill_model(@model_to_fill, cast_nullable(model_params))
+        @model = @resource.fill_model(@model_to_fill, cast_nullable(model_params), extra_params: extra_params)
       end
     end
 
@@ -155,15 +160,20 @@ module Avo
     end
 
     def hydrate_related_resource
-      @related_resource.hydrate(view: action_name.to_sym, user: _current_user, model: @related_model)
+      @related_resource.hydrate(view: action_name.to_sym, user: _current_user, model: @model)
     end
 
-    def authorize_action
-      if @model.present?
-        @authorization.set_record(@model).authorize_action action_name.to_sym
-      else
-        @authorization.set_record(@resource.model_class).authorize_action action_name.to_sym
-      end
+    def authorize_base_action
+      class_to_authorize = @model || @resource.model_class
+
+      authorize_action class_to_authorize
+    end
+
+    def authorize_action(class_to_authorize, action = nil)
+      # Use the provided action or figure it out from the request
+      action_to_authorize = action || action_name
+
+      @authorization.set_record(class_to_authorize).authorize_action action_to_authorize.to_sym
     end
 
     # Get the pluralized resource name for this request
@@ -310,10 +320,15 @@ module Avo
 
     def default_url_options
       if params[:force_locale].present?
-        { **super, force_locale: params[:force_locale] }
+        {**super, force_locale: params[:force_locale]}
       else
         super
       end
+    end
+
+    def set_sidebar_open
+      value = cookies["#{Avo::COOKIES_KEY}.sidebar.open"]
+      @sidebar_open = value.blank? || value == "1"
     end
   end
 end

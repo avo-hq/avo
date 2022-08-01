@@ -17,4 +17,8 @@
       <%= content %>
     <% end %>
   <% end %>
+  <% if params[:avo_debug].present? %>
+    <!-- Raw value: -->
+    <!-- <%== @field.value.inspect %> -->
+  <% end %>
 <% end %>

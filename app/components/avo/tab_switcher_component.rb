@@ -80,6 +80,10 @@ class Avo::TabSwitcherComponent < Avo::BaseComponent
         visible = item.visible?
       end
 
+      if item.respond_to?(:authorized?)
+        visible = item.authorized?
+      end
+
       visible
     end
   end

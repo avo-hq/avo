@@ -19,9 +19,9 @@ RSpec.describe 'HasOneFieldName', type: :system do
         scroll_to second_tab_group
 
         click_tab 'Main post', within: second_tab_group
-        expect(page).to have_text 'Attach Main post'
+        expect(page).to have_text 'Attach main post'
 
-        click_on 'Attach Main post'
+        click_on 'Attach main post'
 
         wait_for_loaded
 
@@ -55,7 +55,7 @@ RSpec.describe 'HasOneFieldName', type: :system do
 
         expect(page).to have_text 'Post detached.'
         expect(page).not_to have_text 'Detach main post'
-        expect(page).to have_text 'Attach Main post'
+        expect(page).to have_text 'Attach main post'
         expect(user.posts.pluck('id')).not_to include post.id
       end
     end

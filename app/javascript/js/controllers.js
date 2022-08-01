@@ -16,7 +16,6 @@ import ItemSelectorController from './controllers/item_selector_controller'
 import KeyValueController from './controllers/fields/key_value_controller'
 import LoadingButtonController from './controllers/loading_button_controller'
 import MenuController from './controllers/menu_controller'
-import MobileController from './controllers/mobile_controller'
 import ModalController from './controllers/modal_controller'
 import MultipleSelectFilterController from './controllers/multiple_select_filter_controller'
 import PerPageController from './controllers/per_page_controller'
@@ -26,6 +25,7 @@ import ResourceShowController from './controllers/resource_show_controller'
 import SearchController from './controllers/search_controller'
 import SelectController from './controllers/select_controller'
 import SelectFilterController from './controllers/select_filter_controller'
+import SidebarController from './controllers/sidebar_controller'
 import SimpleMdeController from './controllers/fields/simple_mde_controller'
 import TabsController from './controllers/tabs_controller'
 import TagsFieldController from './controllers/fields/tags_field_controller'
@@ -46,7 +46,6 @@ application.register('item-select-all', ItemSelectAllController)
 application.register('item-selector', ItemSelectorController)
 application.register('loading-button', LoadingButtonController)
 application.register('menu', MenuController)
-application.register('mobile', MobileController)
 application.register('modal', ModalController)
 application.register('multiple-select-filter', MultipleSelectFilterController)
 application.register('per-page', PerPageController)
@@ -56,6 +55,7 @@ application.register('resource-show', ResourceShowController)
 application.register('search', SearchController)
 application.register('select', SelectController)
 application.register('select-filter', SelectFilterController)
+application.register('sidebar', SidebarController)
 application.register('tabs', TabsController)
 application.register('tags-field', TagsFieldController)
 application.register('text-filter', TextFilterController)

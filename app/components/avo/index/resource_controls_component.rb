@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
-  def initialize(resource: nil, reflection: nil, parent_model: nil, view_type: :table)
+  def initialize(resource: nil, reflection: nil, parent_model: nil, parent_resource: nil, view_type: :table)
     @resource = resource
     @reflection = reflection
     @parent_model = parent_model
+    @parent_resource = parent_resource
     @view_type = view_type
   end
 
@@ -12,7 +13,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     @reflection.present? &&
       @resource.model.present? &&
       is_has_many_association &&
-      authorize_association_for("detach")
+      authorize_association_for(:detach)
   end
 
   def can_edit?
@@ -22,8 +23,9 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   end
 
   def can_view?
-    return authorize_association_for(:view) if @reflection.present?
+    return authorize_association_for(:show) if @reflection.present?
 
+    # Even if there's a @reflection object present, for show we're going to fallback to the original policy.
     @resource.authorization.authorize_action(:show, raise_exception: false)
   end
 
@@ -42,7 +44,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
 
   def edit_path
     # Add the `view` param to let Avo know where to redirect back when the user clicks the `Cancel` button.
-    args = {via_view: 'index'}
+    args = {via_view: "index"}
 
     if @parent_model.present?
       args = {
@@ -73,6 +75,6 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   end
 
   def referrer_path
-    Avo::App.root_path(paths: ['resources', params[:resource_name], params[:id], params[:related_name]], query: request.query_parameters.to_h)
+    Avo::App.root_path(paths: ["resources", params[:resource_name], params[:id], params[:related_name]], query: request.query_parameters.to_h)
   end
 end

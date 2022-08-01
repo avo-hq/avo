@@ -5,7 +5,7 @@ Fixes # (issue)
 
 # Checklist:
 <!--
-  Please go through the steps and complete them if they make sense (add testes if the change requires it, add to the docs, etc.)
+  Please go through the steps and complete them if they make sense (add tests if the change requires it, add to the docs, etc.)
   (Mark [x] inside the brackets)
 -->
 

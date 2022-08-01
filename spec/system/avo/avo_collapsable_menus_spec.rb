@@ -5,7 +5,7 @@ RSpec.describe "CollapsableMenus", type: :system do
     let(:selector) { "[data-menu-key-param='avo.127.0.0.1.main_menu.resources.heroicons_outline_academic_cap'][data-controller='menu']" }
 
     it "collapses the section" do
-      visit "/admin/dashboard"
+      visit "/admin/custom_tool"
 
       expect(page).to have_selector selector
       expect(page).to have_text "EDUCATION"

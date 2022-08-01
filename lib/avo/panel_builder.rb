@@ -5,6 +5,7 @@ class Avo::PanelBuilder
     end
   end
 
+  delegate :heading, to: :items_holder
   delegate :field, to: :items_holder
   delegate :items, to: :items_holder
 

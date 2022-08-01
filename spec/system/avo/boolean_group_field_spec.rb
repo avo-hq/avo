@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "BooleanGroupFields", type: :system do
+RSpec.describe "BooleanGroupField", type: :system do
   describe "with regular input" do
     let!(:user) { create :user, roles: {} }
 

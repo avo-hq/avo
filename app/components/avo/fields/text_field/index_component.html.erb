@@ -1,6 +1,8 @@
 <%= index_field_wrapper field: @field, resource: @resource do %>
   <% if @field.as_html %>
     <%== @field.value %>
+  <% elsif @field.protocol.present? %>
+    <%= link_to @field.value, "#{@field.protocol}:#{@field.value}" %>
   <% else %>
     <%= link_to_if @field.link_to_resource, @field.value, resource_path %>
   <% end %>

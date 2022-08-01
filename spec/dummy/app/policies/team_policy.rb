@@ -41,32 +41,37 @@ class TeamPolicy < ApplicationPolicy
   end
 
   # Team members association
+  # index? method
+  def view_team_members?
+    true
+  end
+
+  def show_team_members?
+    true
+  end
+
   def create_team_members?
-    false
+    true
   end
 
   def destroy_team_members?
-    false
-  end
-
-  def view_team_members?
-    false
+    true
   end
 
   def edit_team_members?
-    false
+    true
   end
 
   def attach_team_members?
-    false
+    true
   end
 
   def detach_team_members?
-    false
+    true
   end
 
   def act_on_team_members?
-    false
+    true
   end
 
   # Actions

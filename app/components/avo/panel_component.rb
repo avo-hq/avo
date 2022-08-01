@@ -47,8 +47,4 @@ class Avo::PanelComponent < ViewComponent::Base
   def render_header?
     @name.present? || description.present? || tools.present? || display_breadcrumbs?
   end
-
-  def render_footer_tools?
-    footer_tools.present?
-  end
 end

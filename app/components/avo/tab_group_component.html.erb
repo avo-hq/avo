@@ -5,8 +5,7 @@
     controller: "tabs",
     tabs_view_value: view,
     tabs_active_tab_value: active_tab_name
-  },
-  class: 'space-y-12' do %>
+  } do %>
   <% visible_tabs.each_with_index do |tab, index| %>
     <%
       args = {
