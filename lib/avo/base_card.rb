@@ -87,12 +87,12 @@ module Avo
       }
 
       classes_for_rows = {
-        1 => " h-36 row-span-1",
-        2 => " h-72 row-span-2",
-        3 => " h-[27rem] row-span-3",
-        4 => " h-[36rem] row-span-4",
-        5 => " h-[45rem] row-span-5",
-        6 => " h-[54rem] row-span-6"
+        1 => " min-h-[9rem] row-span-1",
+        2 => " min-h-[18rem] row-span-2",
+        3 => " min-h-[27rem] row-span-3",
+        4 => " min-h-[36rem] row-span-4",
+        5 => " min-h-[45rem] row-span-5",
+        6 => " min-h-[54rem] row-span-6"
       }
       # puts ["cols->", cols, classes_for_cols, classes_for_rows, classes_for_cols[cols.to_i]].inspect
 

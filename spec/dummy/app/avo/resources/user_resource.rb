@@ -115,9 +115,9 @@ class UserResource < Avo::BaseResource
   end
 
   with_options only_on: :show do
-    card UserMetric, options: {get: :comments}, label: "Comments count"
-    card UserMetric, options: {get: :posts}, label: "Posts count"
-    card UserMetric, options: {get: :projects}, label: "Projects count"
+    card UserMetric, options: {get: :comments}, label: "Comments count", cols: 2
+    card UserMetric, options: {get: :posts}, label: "Posts count", rows: 3
+    card UserMetric, options: {get: :projects}, label: "Projects count", rows: 2, cols: 2
   end
   tool UserTool
 end
