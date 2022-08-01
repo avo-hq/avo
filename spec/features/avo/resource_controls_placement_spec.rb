@@ -14,8 +14,8 @@ RSpec.feature "ResourceControlsPlacement", type: :feature do
       Avo.configuration.resource_controls_placement = :left
       visit "/admin/resources/comments"
 
-      # XPath containing the index of the cell
-      expect(page).to have_xpath('/html/body/div/div/div[2]/div[3]/div/div/div[1]/div/div[2]/div[2]/div/div/table/tbody/tr[1]/td[1][@data-control="resource-controls"]')
+      expect(page).to have_selector 'table tr:first-child td:first-child[data-control="resource-controls"]'
+      expect(page).not_to have_selector 'table tr:first-child td:last-child[data-control="resource-controls"]'
     end
   end
 
@@ -24,8 +24,8 @@ RSpec.feature "ResourceControlsPlacement", type: :feature do
       Avo.configuration.resource_controls_placement = :right
       visit "/admin/resources/comments"
 
-      # XPath containing the index of the cell
-      expect(page).to have_xpath('/html/body/div/div/div[2]/div[3]/div/div/div[1]/div/div[2]/div[2]/div/div/table/tbody/tr[1]/td[6][@data-control="resource-controls"]')
+      expect(page).not_to have_selector 'table tr:first-child td:first-child[data-control="resource-controls"]'
+      expect(page).to have_selector 'table tr:first-child td:last-child[data-control="resource-controls"]'
     end
   end
 end
