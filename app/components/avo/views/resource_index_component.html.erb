@@ -17,17 +17,17 @@
             <%= t('avo.attach_item', item: singular_resource_name).capitalize %>
           <% end %>
         <% end %>
-      <% end %>
-      <% if can_see_the_actions_button? %>
-        <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>
-      <% end %>
-      <% if can_see_the_create_button? %>
-        <%= a_link create_path,
+        <% if can_see_the_actions_button? %>
+          <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>
+        <% end %>
+        <% if can_see_the_create_button? %>
+          <%= a_link create_path,
           icon: 'heroicons/outline/plus',
           'data-target': 'create',
           style: :primary,
           color: :primary do %>
-          <%= t('avo.create_new_item', item: singular_resource_name.downcase ) %>
+            <%= t('avo.create_new_item', item: singular_resource_name.downcase ) %>
+          <% end %>
         <% end %>
       <% end %>
       <% c.body do %>
