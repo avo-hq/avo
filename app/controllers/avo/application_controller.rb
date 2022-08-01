@@ -116,7 +116,7 @@ module Avo
     end
 
     def set_resource
-      raise ActionController::RoutingError.new "No route matches" if resource.nil?
+      raise ActionController::RoutingError.new "No route matches!" if resource.nil?
 
       @resource = resource
     end
@@ -160,8 +160,13 @@ module Avo
     end
 
     def hydrate_related_resource
-      @related_resource.hydrate(view: action_name.to_sym, user: _current_user, model: @model)
+      @related_resource.hydrate(view: action_name.to_sym, user: _current_user)
     end
+
+    # def hydrate_related_resource_with_model
+    #   abort 'hydrate_related_resource_with_model'.inspect
+    #   @related_resource.hydrate(model: @model)
+    # end
 
     def authorize_base_action
       class_to_authorize = @model || @resource.model_class

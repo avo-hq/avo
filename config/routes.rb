@@ -7,7 +7,22 @@ Avo::Engine.routes.draw do
   post "/rails/active_storage/direct_uploads", to: "/active_storage/direct_uploads#create"
 
   resources :dashboards do
+    # cards/dashboards/dashy/user_metric
     resources :cards
+  end
+
+  scope :cards do
+    scope :resources do
+      # cards/resources/users/15/user_metric
+      get "/:resource_name/:id/:card_id", to: "cards/resources#show"
+      # cards/resources/users/user_metric
+      get "/:resource_name/:card_id", to: "cards/resources#index"
+    end
+
+    # scope :dashboards do
+    #   get '/:resource_name/:resource_id', to: 'cards#show'
+
+    # end
   end
 
   scope "avo_api", as: "avo_api" do

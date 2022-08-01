@@ -211,7 +211,9 @@ RSpec.feature "belongs_to", type: :system do
           expect(find('turbo-frame[id="has_many_field_show_comments"]')).not_to have_text "Commentable"
           expect(find('turbo-frame[id="has_many_field_show_comments"]')).to have_link comment.id.to_s, href: "/admin/resources/comments/#{comment.id}?via_resource_class=Project&via_resource_id=#{project.id}"
 
-          click_on comment.id.to_s
+          within find("turbo-frame#has_many_field_show_comments") do
+            click_on comment.id.to_s
+          end
 
           expect(find_field_value_element("body")).to have_text "hey there"
           expect(find_field_value_element("user")).to have_link user.name, href: "/admin/resources/users/#{user.slug}?via_resource_class=Comment&via_resource_id=#{comment.id}"

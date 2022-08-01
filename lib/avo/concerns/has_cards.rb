@@ -7,28 +7,6 @@ module Avo
         class_attribute :cards_holder
         class_attribute :cards_index, default: 0
         class_attribute :grid_cols, default: 3
-
-        delegate :item_at_index, to: :class
-
-        def cards
-          return [] if self.class.cards.blank?
-
-          view = self&.view
-
-          self.class.cards
-            .map do |card|
-              # Try to hydrate the card
-              card.hydrate(parent: self, params: params, view: view) if card.is_card?
-
-              card
-            end
-            .select do |card|
-              # If we don't get a view return all cards
-              return true if view.nil?
-
-              card.send("show_on_#{view}")
-            end
-        end
       end
 
       class_methods do
@@ -82,6 +60,31 @@ module Avo
             "sm:grid-cols-3"
           end
         end
+      end
+
+      delegate :item_at_index, to: :class
+
+      def cards
+        # puts ["self.class.cards->", self.class.cards].inspect
+        return [] if self.class.cards.blank?
+
+        view = self&.view
+
+        self.class.cards
+          .map do |card|
+            # Try to hydrate the card
+            card.hydrate(parent: self, params: params, view: view) if card.is_card?
+
+            card
+          end
+          .select do |card|
+            # If we don't get a view return all cards
+            if view.nil?
+              true
+            else
+              card.visible_on?(view)
+            end
+          end
       end
     end
   end

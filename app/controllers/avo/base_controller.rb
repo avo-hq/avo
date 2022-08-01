@@ -4,7 +4,6 @@ module Avo
   class BaseController < ApplicationController
     before_action :set_resource_name
     before_action :set_resource
-    before_action :hydrate_resource
     before_action :set_applied_filters, only: :index
     before_action :set_model, only: [:show, :edit, :destroy, :update, :order]
     before_action :hydrate_resource

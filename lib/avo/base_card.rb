@@ -59,7 +59,11 @@ module Avo
       if parent_is_dashboard?
         "#{parent.id}_#{id}"
       elsif parent_is_resource?
-        "#{parent.id}_#{parent.model.id}_#{id}"
+        if parent.model.present?
+          "#{parent.id}_#{parent.model.id}_#{id}"
+        else
+          "#{parent.id}_#{id}"
+        end
       end
     end
 
@@ -69,7 +73,11 @@ module Avo
       if parent_is_dashboard?
         Avo::App.view_context.avo.dashboard_card_path(dashboard.id, id, turbo_frame: turbo_frame, index: index, range: enforced_range, **params.permit!.to_h)
       elsif parent_is_resource?
-        Avo::App.root_path(paths: ["resources", parent.route_key, parent.model.id, "cards", id], query: {**params.permit!.to_h, turbo_frame: turbo_frame, index: index, range: enforced_range})
+        if parent.model.present?
+          Avo::App.root_path(paths: ["resources", parent.route_key, parent.model.id, "cards", id], query: {**params.permit!.to_h, turbo_frame: turbo_frame, index: index, range: enforced_range})
+        else
+          Avo::App.root_path(paths: ["resources", parent.route_key, "cards", id], query: {**params.permit!.to_h, turbo_frame: turbo_frame, index: index, range: enforced_range})
+        end
       end
     end
 
