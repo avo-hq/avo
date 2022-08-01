@@ -101,7 +101,7 @@ module Avo
       private
 
       def frame_id
-        use_resource.present? ? resource.route_key.to_sym : @id
+        use_resource.present? ? use_resource.route_key.to_sym : @id
       end
     end
   end
