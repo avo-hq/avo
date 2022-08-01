@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "BadgeField", type: :system do
+RSpec.describe "BadgeField", type: :feature do
   describe "without a value" do
     let!(:project) { create :project, stage: nil }
 
@@ -45,8 +45,9 @@ RSpec.describe "BadgeField", type: :system do
     context "index" do
       let!(:url) { "/admin/resources/projects" }
 
-      it { is_expected.to have_text "DISCOVERY" }
+      it { is_expected.to have_text "Discovery" }
       it { is_expected.to have_css ".rounded-md" }
+      it { is_expected.to have_css ".uppercase" }
       it { is_expected.to have_css ".bg-blue-500" }
       it { is_expected.not_to have_css ".bg-red-500" }
     end
@@ -54,8 +55,9 @@ RSpec.describe "BadgeField", type: :system do
     context "show" do
       let!(:url) { "/admin/resources/projects/#{project.id}" }
 
-      it { is_expected.to have_text "DISCOVERY" }
+      it { is_expected.to have_text "Discovery" }
       it { is_expected.to have_css ".rounded-md" }
+      it { is_expected.to have_css ".uppercase" }
       it { is_expected.to have_css ".bg-blue-500" }
       it { is_expected.not_to have_css ".bg-red-500" }
     end
@@ -72,8 +74,9 @@ RSpec.describe "BadgeField", type: :system do
     context "index" do
       let!(:url) { "/admin/resources/projects" }
 
-      it { is_expected.to have_text "CANCELLED" }
+      it { is_expected.to have_text "Cancelled" }
       it { is_expected.to have_css ".rounded-md" }
+      it { is_expected.to have_css ".uppercase" }
       it { is_expected.to have_css ".bg-red-500" }
       it { is_expected.not_to have_css ".bg-blue-500" }
     end
@@ -81,8 +84,9 @@ RSpec.describe "BadgeField", type: :system do
     context "show" do
       let!(:url) { "/admin/resources/projects/#{project.id}" }
 
-      it { is_expected.to have_text "CANCELLED" }
+      it { is_expected.to have_text "Cancelled" }
       it { is_expected.to have_css ".rounded-md" }
+      it { is_expected.to have_css ".uppercase" }
       it { is_expected.to have_css ".bg-red-500" }
       it { is_expected.not_to have_css ".bg-blue-500" }
     end

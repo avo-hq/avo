@@ -22,12 +22,12 @@ RSpec.describe "App", type: :system do
 
       expect(find_field("comment_body").value).to eql "hey there"
 
-      fill_in 'comment_body', with: 'yes'
-      click_on 'Save'
+      fill_in "comment_body", with: "yes"
+      click_on "Save"
       wait_for_loaded
 
       comment.reload
-      expect(comment.body).to eq 'yes'
+      expect(comment.body).to eq "yes"
 
       expect(current_path).to eq "/admin/resources/projects/#{project.id}"
       expect(page).to have_text("Comment was successfully updated.").once
