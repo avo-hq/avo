@@ -4,11 +4,13 @@ class FishResource < Avo::BaseResource
   self.search_query = ->(params:) do
     scope.ransack(id_eq: params[:q], name_cont: params[:q], m: "or").result(distinct: false)
   end
+  self.extra_params = [:fish_type, :something_else, properties: [], information: [:name, :history]]
 
   field :id, as: :id
   field :name, as: :text, required: -> { view == :new }
+  field :type, as: :text, hide_on: :forms
 
-  action DummyAction
+  tool FishInformation, show_on: :forms
 
   tabs do
     tab "big useless tab here" do
@@ -60,5 +62,5 @@ class FishResource < Avo::BaseResource
     end
   end
 
-  tool FishInformation, show_on: :edit
+  action DummyAction
 end
