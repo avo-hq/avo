@@ -11,7 +11,7 @@ module Avo
     before_action :set_edit_title_and_breadcrumbs, only: [:edit, :update]
     before_action :fill_model, only: [:create, :update]
     # Don't run base authorizations for associations
-    before_action :authorize_base_action, if: -> {controller_name != "associations"}
+    before_action :authorize_base_action, if: -> { controller_name != "associations" }
 
     def index
       @page_title = @resource.plural_name.humanize
@@ -248,24 +248,29 @@ module Avo
     end
 
     def permitted_params
-      @resource.get_field_definitions.select(&:updatable).map(&:to_permitted_param)
+      @resource.get_field_definitions.select(&:updatable).map(&:to_permitted_param).concat extra_params
+    end
+
+    def extra_params
+      @resource.class.extra_params || []
     end
 
     def cast_nullable(params)
       fields = @resource.get_field_definitions
 
-      nullable_fields = fields.filter do |field|
-        field.nullable
-      end
+      nullable_fields = fields
+        .filter do |field|
+          field.nullable
+        end
         .map do |field|
-        [field.id, field.null_values]
-      end
+          [field.id, field.null_values]
+        end
         .to_h
 
       params.each do |key, value|
-        nullable = nullable_fields[key.to_sym]
+        nullable_values = nullable_fields[key.to_sym]
 
-        if nullable.present? && value.in?(nullable)
+        if nullable_values.present? && value.in?(nullable_values)
           params[key] = nil
         end
       end

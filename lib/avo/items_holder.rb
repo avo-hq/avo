@@ -49,6 +49,12 @@ module Avo
       add_item panel
     end
 
+    def heading(body = nil, **args, &block)
+      field = Avo::Fields::HeadingField.new(body, **args)
+
+      add_item field
+    end
+
     def add_item(instance)
       @items << instance
 

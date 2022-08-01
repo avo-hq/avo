@@ -29,7 +29,7 @@ Mousetrap.bind('r r r', () => {
 function isMac() {
   const isMac = window.navigator.userAgent.indexOf('Mac OS X')
 
-  if (isMac) {
+  if (isMac >= 0) {
     document.body.classList.add('os-mac')
     document.body.classList.remove('os-pc')
   } else {

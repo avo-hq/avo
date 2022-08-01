@@ -48,7 +48,6 @@
             data: {
               control: :destroy,
               'resource-id': @resource.model.id,
-              'tippy': 'tooltip',
             } do %>
             <%= t('avo.delete').capitalize %>
           <% end %>
@@ -77,10 +76,12 @@
       <% end %>
     <% end %>
   <% end %>
-  <%= content_tag :div, class: 'space-y-12 mt-12' do %>
-    <% @resource.get_items.each_with_index do |item, index| %>
-      <% next if item.nil? %>
-      <%= render Avo::ItemSwitcherComponent.new resource: @resource, reflection: @reflection, item: item, index: index + 1, view: @view %>
+  <% if @reflection.blank? %>
+    <%= content_tag :div, class: 'space-y-12 mt-12' do %>
+      <% @resource.get_items.each_with_index do |item, index| %>
+        <% next if item.nil? %>
+        <%= render Avo::ItemSwitcherComponent.new resource: @resource, reflection: @reflection, item: item, index: index + 1, view: @view %>
+      <% end %>
     <% end %>
   <% end %>
   <% if should_display_invalid_fields_errors? %>

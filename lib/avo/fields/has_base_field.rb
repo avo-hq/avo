@@ -6,6 +6,7 @@ module Avo
       attr_accessor :attach_scope
       attr_accessor :description
       attr_accessor :use_resource
+      attr_accessor :discreet_pagination
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
@@ -16,6 +17,7 @@ module Avo
         @searchable = args[:searchable] == true
         @description = args[:description]
         @use_resource = args[:use_resource] || nil
+        @discreet_pagination = args[:discreet_pagination] || false
       end
 
       def searchable
@@ -23,7 +25,7 @@ module Avo
       end
 
       def use_resource
-        App.get_resource @use_resource 
+        App.get_resource @use_resource
       end
 
       def resource
