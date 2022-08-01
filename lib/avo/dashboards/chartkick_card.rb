@@ -24,10 +24,11 @@ module Avo
 
       def chartkick_options
         card_height = 128
-        card_heading = 30
+        card_heading = 32
 
         default = {
-          # figure our the available height for the chart
+          # figure our the available height for the chart.
+          # It's not ideal to work with magic numbers, I know.
           height: "#{(rows * card_height) - card_heading}px",
           colors: %w[#0B8AE2 #34C683 #2AB1EE #34C6A8],
           library: {

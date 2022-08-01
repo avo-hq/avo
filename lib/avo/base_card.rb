@@ -69,7 +69,7 @@ module Avo
       if parent_is_dashboard?
         Avo::App.view_context.avo.dashboard_card_path(dashboard.id, id, turbo_frame: turbo_frame, index: index, range: enforced_range, **params.permit!.to_h)
       elsif parent_is_resource?
-        Avo::App.root_path(paths: ["resources", parent.route_key, parent.model.id, "cards", id], query: {turbo_frame: turbo_frame, index: index, range: enforced_range, **params.permit!.to_h})
+        Avo::App.root_path(paths: ["resources", parent.route_key, parent.model.id, "cards", id], query: {**params.permit!.to_h, turbo_frame: turbo_frame, index: index, range: enforced_range})
       end
     end
 
@@ -87,14 +87,13 @@ module Avo
       }
 
       classes_for_rows = {
-        1 => " min-h-[9rem] row-span-1",
-        2 => " min-h-[18rem] row-span-2",
-        3 => " min-h-[27rem] row-span-3",
-        4 => " min-h-[36rem] row-span-4",
-        5 => " min-h-[45rem] row-span-5",
-        6 => " min-h-[54rem] row-span-6"
+        1 => " min-h-[8rem] row-span-1",
+        2 => " min-h-[16rem] row-span-2",
+        3 => " min-h-[24rem] row-span-3",
+        4 => " min-h-[32rem] row-span-4",
+        5 => " min-h-[40rem] row-span-5",
+        6 => " min-h-[48rem] row-span-6"
       }
-      # puts ["cols->", cols, classes_for_cols, classes_for_rows, classes_for_cols[cols.to_i]].inspect
 
       result += classes_for_cols[cols.to_i] if classes_for_cols[cols.to_i].present?
       result += classes_for_rows[rows.to_i] if classes_for_rows[rows.to_i].present?
