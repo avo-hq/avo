@@ -72,7 +72,7 @@ module Avo
 
       # Create resources for each model
       @resources = @models.map do |model|
-        @resource.hydrate(model: model, params: params).dup
+        @resource.dup.hydrate(model: model, params: params)
       end
     end
 
