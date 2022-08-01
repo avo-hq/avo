@@ -5,7 +5,6 @@ module Avo
       attr_accessor :scope
       attr_accessor :attach_scope
       attr_accessor :description
-      attr_accessor :use_resource
       attr_accessor :discreet_pagination
 
       def initialize(id, **args, &block)
