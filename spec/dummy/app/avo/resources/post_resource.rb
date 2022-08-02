@@ -9,7 +9,14 @@ class PostResource < Avo::BaseResource
 
   field :id, as: :id
   field :name, as: :text, required: true, sortable: true
-  field :body, as: :trix, placeholder: "Enter text", always_show: false, attachment_key: :attachments, hide_attachment_url: true, hide_attachment_filename: true, hide_attachment_filesize: true
+  field :body,
+    as: :trix,
+    placeholder: "Enter text",
+    always_show: false,
+    attachment_key: :attachments,
+    hide_attachment_url: true,
+    hide_attachment_filename: true,
+    hide_attachment_filesize: true
   field :tags,
     as: :tags,
     # readonly: true,

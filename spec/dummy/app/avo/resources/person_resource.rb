@@ -1,15 +1,14 @@
 class PersonResource < Avo::BaseResource
   self.title = :name
-  self.description = 'People on the app'
+  self.description = "Demo resource to illustrate Avo's Single Table Inheritance support (Spouse < Person)"
   self.includes = []
 
   # self.search_query = ->(params:) do
   #   scope.ransack(id_eq: params[:q], m: "or").result(distinct: false)
   # end
 
-  field :id, as: :id
   field :name, as: :text, link_to_resource: true, sortable: true
-  field :type, as: :select, name: "Type", options: { Spouse: "Spouse" }, include_blank: true
+  field :type, as: :select, name: "Type", options: {Spouse: "Spouse"}, include_blank: true
   field :link, as: :text, as_html: true do |model, &args|
     "<a href='https://avohq.io'>#{model.name}</a>"
   end
