@@ -102,7 +102,7 @@ module Avo
     end
 
     def set_attachment_resource
-      @attachment_resource = App.get_resource_by_model_name @attachment_class
+      @attachment_resource = @field.use_resource || (App.get_resource_by_model_name @attachment_class)
     end
 
     def set_attachment_model

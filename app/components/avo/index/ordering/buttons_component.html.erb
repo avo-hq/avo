@@ -9,7 +9,7 @@
   <% else %>
     <div class="popover inline-block"
       data-controller="popover"
-      data-popover-translate-x="-100%"
+      data-popover-translate-x="<%= Avo.configuration.resource_controls_placement == :left ? '20%' : '-100%' %>"
       data-popover-translate-y="-32px"
       data-action="mouseover->popover#mouseOver mouseout->popover#mouseOut"
       >

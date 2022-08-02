@@ -207,6 +207,11 @@ module Avo
     end
 
     def related_resource
+      # Find the field from the parent resource
+      field = @resource.get_field params[:related_name]
+
+      return field.use_resource if field&.use_resource.present?
+
       reflection = @model._reflections[params[:related_name]]
 
       reflected_model = reflection.klass
