@@ -3,6 +3,7 @@
 ![reviewdog](https://github.com/avo-hq/avo/workflows/reviewdog/badge.svg)
 [![codecov](https://codecov.io/gh/avo-hq/avo/branch/master/graph/badge.svg?token=Q2LMFE4989)](https://codecov.io/gh/avo-hq/avo)
 [![Maintainability](https://api.codeclimate.com/v1/badges/676a0afa2cc79f03aa29/maintainability)](https://codeclimate.com/github/avo-hq/avo/maintainability)
+[![Open Source Helpers](https://www.codetriage.com/avo-hq/avo/badges/users.svg)](https://www.codetriage.com/avo-hq/avo)
 
 ![](./public/avo-assets/logo-on-white.png)
 
@@ -79,6 +80,8 @@ Please read the [RELEASE.MD](./RELEASE.MD)
   <img src="https://contrib.rocks/image?repo=avo-hq/avo" />
 </a>
 <!--  https://contrib.rocks -->
+
+More on contributors [here](https://avohq.io/contributors).
 
 # 🥇 Business & Agency Sponsors
 
