@@ -98,6 +98,10 @@ module Avo
         end
       end
 
+      def name
+        super(from_use_resource: use_resource&.name)
+      end
+
       private
 
       def frame_id
