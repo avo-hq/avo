@@ -97,8 +97,8 @@ module Avo
         end
       end
 
-      def name
-        super(from_use_resource: use_resource&.name)
+      def default_name
+        use_resource&.name || super
       end
 
       private
