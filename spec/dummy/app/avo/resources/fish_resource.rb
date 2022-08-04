@@ -6,6 +6,7 @@ class FishResource < Avo::BaseResource
   end
   # self.extra_params = [:fish_type, :something_else, properties: []]
   self.accepted_nested_attributes = [:types]
+  self.after_update_path = :edit
 
   field :id, as: :id
   field :name, as: :text, required: -> { view == :new }

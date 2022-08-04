@@ -248,7 +248,7 @@ module Avo
     end
 
     def permitted_params
-      @resource.get_field_definitions.select(&:updatable).map(&:to_permitted_param).concat extra_params
+      @resource.get_field_definitions.select(&:updatable).map(&:to_permitted_param).concat(extra_params).concat(accepted_nested_attributes).uniq
     end
 
     def extra_params
@@ -256,7 +256,11 @@ module Avo
     end
 
     def accepted_nested_attributes
-      @resource.class.accepted_nested_attributes || []
+      attributes = @resource.class.accepted_nested_attributes || []
+
+      attributes.map do |attribute|
+        {"#{attribute}_attributes": true}
+      end
     end
 
     def cast_nullable(params)

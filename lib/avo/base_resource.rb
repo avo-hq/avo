@@ -273,6 +273,16 @@ module Avo
         model = field.fill_field model, key, value, params
       end
 
+      puts ["params->", params].inspect
+      puts ["nested_params->", accepted_nested_attributes].inspect
+      puts ["values of nested_params->", params.permit(accepted_nested_attributes)].inspect
+
+      # Write the nested params to the model
+      if extra_params.present?
+        # Let Rails fill in the rest of the params
+        model.assign_attributes params.permit(extra_params)
+      end
+
       # Write the user configured extra params to the model
       if extra_params.present?
         # Let Rails fill in the rest of the params
