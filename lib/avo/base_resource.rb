@@ -48,6 +48,7 @@ module Avo
     class_attribute :record_selector, default: true
     class_attribute :keep_filters_panel_open, default: false
     class_attribute :extra_params
+    class_attribute :accepted_nested_attributes
 
     class << self
       delegate :t, to: ::I18n
@@ -252,7 +253,7 @@ module Avo
       end
     end
 
-    def fill_model(model, params, extra_params: [])
+    def fill_model(model, params, extra_params: [], accepted_nested_attributes: [])
       # Map the received params to their actual fields
       fields_by_database_id = get_field_definitions
         .reject do |field|

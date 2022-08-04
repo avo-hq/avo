@@ -255,6 +255,10 @@ module Avo
       @resource.class.extra_params || []
     end
 
+    def accepted_nested_attributes
+      @resource.class.accepted_nested_attributes || []
+    end
+
     def cast_nullable(params)
       fields = @resource.get_field_definitions
 

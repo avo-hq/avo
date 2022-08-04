@@ -9,6 +9,9 @@
 #
 class Fish < ApplicationRecord
   has_many :reviews, as: :reviewable
+  has_many :types, dependent: :destroy
+
+  accepts_nested_attributes_for :types, allow_destroy: true
   self.inheritance_column = nil
 
   def fish_type

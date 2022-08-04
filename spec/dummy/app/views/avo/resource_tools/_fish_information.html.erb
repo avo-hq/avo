@@ -34,6 +34,34 @@
               <%= information_form.text_field :age, value: 'information age', class: input_classes %>
               <div class="text-gray-600 mt-2 text-sm">This is NOT going to be passed to the model</div>
             <% end %>
+
+            <div data-controller="nested-form">
+              <div class="text-gray-600 mt-2 text-sm">This is going to be passed to the model as nested attributes</div>
+              <template data-nested-form-target="template">
+                <%= form.fields_for form.object.types.blank? ? form.object.types.build : :types, child_index: 'NEW_RECORD' do |type_form| %>
+                  <div class="nested-form-wrapper" data-new-record="<%= type_form.object.new_record? %>">
+                    <%= type_form.label :title %>
+                    <%= type_form.text_field :title, value: 'pirhana', class: input_classes %>
+                    <button type="button" data-action="nested-form#remove">Remove type</button>
+                    <%= type_form.hidden_field :_destroy %>
+                  </div>
+                <% end %>
+              </template>
+
+              <%= form.fields_for form.object.types.blank? ? form.object.types.build : :types do |type_form| %>
+                <div class="nested-form-wrapper" data-new-record="<%= type_form.object.new_record? %>">
+                  <%= type_form.label :title %>
+                  <%= type_form.text_field :title, value: 'pirhana', class: input_classes %>
+                  <button type="button" data-action="nested-form#remove">Remove type</button>
+                  <%= type_form.hidden_field :_destroy %>
+                </div>
+              <% end %>
+
+              <!-- Inserted elements will be injected before that target. -->
+              <div data-nested-form-target="target"></div>
+              <button type="button" data-action="nested-form#add">Add type</button>
+            </div>
+
           <% end %>
 
           <p>

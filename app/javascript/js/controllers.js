@@ -33,6 +33,7 @@ import TextFilterController from './controllers/text_filter_controller'
 import TippyController from './controllers/tippy_controller'
 import TogglePanelController from './controllers/toggle_panel_controller'
 import TrixFieldController from './controllers/fields/trix_field_controller'
+import NestedForm from 'stimulus-rails-nested-form'
 
 application.register('action', ActionController)
 application.register('actions-picker', ActionsPickerController)
@@ -69,5 +70,6 @@ application.register('date-field', DateFieldController)
 application.register('key-value', KeyValueController)
 application.register('simple-mde', SimpleMdeController)
 application.register('trix-field', TrixFieldController)
+application.register('nested-form', NestedForm)
 
 // Custom controllers
