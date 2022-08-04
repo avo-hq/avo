@@ -259,7 +259,7 @@ module Avo
       attributes = @resource.class.accepted_nested_attributes || []
 
       attributes.map do |attribute|
-        {"#{attribute}_attributes": true}
+        {"#{attribute}_attributes": [:title]}
       end
     end
 
