@@ -67,35 +67,52 @@ module Avo
       [resource.name.pluralize.downcase, result_object]
     end
 
-    # Figure out if it's a belongs to search and if it has the attach_scope block present.
+    # First we check if is a serach from a has_many association.
+    # If is not we figure out if it's a belongs to search and if it has the attach_scope block present.
     # If so, set the parent for those edit view and the parent with the grandparent for the new view.
     def apply_attach_scope(query)
+      return apply_has_many_attach_scope(query) if params[:via_association] == 'has_many'
+
       return query if params[:via_reflection_class].blank?
 
       # Fetch the field
-      field = belongs_to_field
+      field = fetch_field
 
       # No need to modify the query if there's no attach_scope present.
       return query if field.attach_scope.blank?
 
       # Try to fetch the parent.
-      if params[:via_reflection_id].present?
-        parent = params[:via_reflection_class].safe_constantize.find params[:via_reflection_id]
-      end
+      fetch_parent
 
       # If the parent is nil it probably means that someone's creating the record so it's not attached yet.
       # In these scenarios, try to find the grandparent for the new views where the parent is nil
       # and initialize the parent record with the grandparent attached so the user has the required information
       # to scope the query.
-      if parent.blank? && params[:via_parent_resource_id].present? && params[:via_parent_resource_class].present? && params[:via_relation].present?
+      if @parent.blank? && params[:via_parent_resource_id].present? && params[:via_parent_resource_class].present? && params[:via_relation].present?
         grandparent = params[:via_parent_resource_class].safe_constantize.find params[:via_parent_resource_id]
-        parent = params[:via_reflection_class].safe_constantize.new(
+        @parent = params[:via_reflection_class].safe_constantize.new(
           params[:via_relation] => grandparent
         )
       end
 
       # Add to the query
-      Avo::Hosts::AssociationScopeHost.new(block: belongs_to_field.attach_scope, query: query, parent: parent).handle
+      Avo::Hosts::AssociationScopeHost.new(block: field.attach_scope, query: query, parent: @parent).handle
+    end
+
+    def apply_has_many_attach_scope(query)
+      # Try to fetch the parent.
+      fetch_parent
+
+      # Fetch the field
+      field = fetch_field
+
+      # please don't judge the next to lines, =')) it is work in progress, i'm testing some use cases.
+      # we need to know the relation with the inverse_of reflection here in order to know how to handle the query
+      return query.where("#{params["via_association_fk"]} = #{@parent.id}") if field.attach_scope.blank?
+      return query.joins(params["via_reflection_class"].downcase.pluralize.to_sym).where("#{params["via_reflection_class"].downcase.pluralize}.id = #{@parent.id}") if field.attach_scope.blank?
+
+      # Add to the query
+      Avo::Hosts::AssociationScopeHost.new(block: field.attach_scope, query: query, parent: @parent).handle
     end
 
     def apply_search_metadata(models, avo_resource)
@@ -118,9 +135,18 @@ module Avo
       end
     end
 
-    def belongs_to_field
+    def fetch_field
       fields = ::Avo::App.get_resource_by_model_name(params[:via_reflection_class]).get_field_definitions
       fields.find { |f| f.id.to_s == params[:via_association_id] }
     end
+
+    private
+
+    def fetch_parent
+      if params[:via_reflection_id].present?
+        @parent = params[:via_reflection_class].safe_constantize.find params[:via_reflection_id]
+      end
+    end
+
   end
 end

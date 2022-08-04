@@ -48,6 +48,10 @@ export default class extends Controller {
     return this.dataset.viaAssociation === 'belongs_to'
   }
 
+  get isHasManyToSearch() {
+    return this.dataset.viaAssociation === 'has_many'
+  }
+
   get isGlobalSearch() {
     return this.dataset.searchResource === 'global'
   }
@@ -98,6 +102,16 @@ export default class extends Controller {
         via_parent_resource_class: this.dataset.viaParentResourceClass,
         // eslint-disable-next-line camelcase
         via_relation: this.dataset.viaRelation,
+      }
+    }
+    else if (this.isHasManyToSearch){
+      params = {
+        ...params,
+        via_association: this.dataset.viaAssociation,
+        via_association_id: this.dataset.viaAssociationId,
+        via_association_fk: this.dataset.viaAssociationFk,
+        via_reflection_class: this.dataset.viaReflectionClass,
+        via_reflection_id: this.dataset.viaReflectionId,    
       }
     }
 
