@@ -106,13 +106,12 @@ module Avo
       # Fetch the field
       field = fetch_field
 
-      # please don't judge the next to lines, =')) it is work in progress, i'm testing some use cases.
-      # we need to know the relation with the inverse_of reflection here in order to know how to handle the query
-      return query.where("#{params["via_association_fk"]} = #{@parent.id}") if field.attach_scope.blank?
-      return query.joins(params["via_reflection_class"].downcase.pluralize.to_sym).where("#{params["via_reflection_class"].downcase.pluralize}.id = #{@parent.id}") if field.attach_scope.blank?
+      return query if @resource.search_query.nil?
+
+      query = @parent.send(params[:via_association_id])
 
       # Add to the query
-      Avo::Hosts::AssociationScopeHost.new(block: field.attach_scope, query: query, parent: @parent).handle
+      Avo::Hosts::AssociationScopeHost.new(block: @resource.search_query, params: params, query: query, parent: @parent).handle
     end
 
     def apply_search_metadata(models, avo_resource)

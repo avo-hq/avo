@@ -109,7 +109,6 @@ export default class extends Controller {
         ...params,
         via_association: this.dataset.viaAssociation,
         via_association_id: this.dataset.viaAssociationId,
-        via_association_fk: this.dataset.viaAssociationFk,
         via_reflection_class: this.dataset.viaReflectionClass,
         via_reflection_id: this.dataset.viaReflectionId,    
       }

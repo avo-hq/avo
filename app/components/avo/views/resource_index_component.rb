@@ -158,7 +158,6 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
       {
         association: 'has_many',
         association_id: @reflection.name,
-        association_fk: @reflection.foreign_key,
         class: reflection_model_class,
         id: @parent_model.id
       }
@@ -166,7 +165,6 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
       {
         association: '',
         association_id: '',
-        association_fk: '',
         class: '',
         id: ''
       }
