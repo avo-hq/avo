@@ -39,6 +39,8 @@ module Avo
         end
 
         def heading(body, **args)
+          ensure_items_holder_initialized
+
           self.items_holder.heading body, **args
         end
         # END DSL methods
