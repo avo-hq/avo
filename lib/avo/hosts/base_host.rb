@@ -15,11 +15,7 @@ module Avo
       delegate :authorize, to: Avo::Services::AuthorizationService
 
       def handle
-        if params["via_association"] == "has_many"
-          instance_exec(&block) # *** ArgumentError Exception: missing keyword: :params
-        else
-          instance_exec(&block)
-        end
+        instance_exec(&block)
       end
     end
   end

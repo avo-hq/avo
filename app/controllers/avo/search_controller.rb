@@ -44,7 +44,11 @@ module Avo
     end
 
     def search_resource(resource)
-      query = resource.search_query.call(params: params).limit(8)
+      query =  Avo::Hosts::SearchScopeHost.new(
+        block: resource.search_query,
+        params: params,
+        scope: resource.class.scope
+      ).handle
 
       # Figure out if this is a belongs_to search
       query = apply_attach_scope query
@@ -108,10 +112,9 @@ module Avo
 
       return query if @resource.search_query.nil?
 
-      query = @parent.send(params[:via_association_id])
+      scope = @parent.send(params[:via_association_id])
 
-      # Add to the query
-      Avo::Hosts::AssociationScopeHost.new(block: @resource.search_query, params: params, query: query, parent: @parent).handle
+      Avo::Hosts::SearchScopeHost.new(block: @resource.search_query, params: params, scope: scope).handle
     end
 
     def apply_search_metadata(models, avo_resource)
