@@ -22,7 +22,7 @@ module Avo
           Avo::Resources::Controls::ExecutionContext.new(
             block: show_controls,
             resource: self,
-            model: model,
+            record: model,
             view: view
           ).handle.items
         else

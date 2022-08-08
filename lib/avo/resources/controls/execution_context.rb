@@ -13,7 +13,7 @@ module Avo
         option :current_user, default: proc { Avo::App.current_user }
         option :items_holder, default: proc { Avo::Resources::Controls::ItemsHolder.new }
         option :resource, optional: true
-        option :model, optional: true
+        option :record, optional: true
         option :view, optional: true
         option :block, optional: true
 
@@ -50,8 +50,7 @@ module Avo
         end
 
         def action(klass, **args)
-          # abort model.inspect
-          items_holder.add_item Avo::Resources::Controls::Action.new(klass, model: model, resource: resource, view: view, **args)
+          items_holder.add_item Avo::Resources::Controls::Action.new(klass, record: record, resource: resource, view: view, **args)
         end
       end
     end
