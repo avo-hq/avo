@@ -1,6 +1,7 @@
 class ReviewResource < Avo::BaseResource
   self.title = :tiny_name
   self.includes = [:user, :reviewable]
+  self.description = "Demo resource to illustrate searchable belongs_to associations. Visit a team and create a review for it."
   # self.search_query = ->(params:) do
   #   scope.ransack(id_eq: params[:q], m: "or").result(distinct: false)
   # end
@@ -35,8 +36,8 @@ class ReviewResource < Avo::BaseResource
     allow_via_detaching: true,
     html: {
       data: {
-        'resource-edit-target': 'emailField',
-        action: 'input->resource-edit#emailUpdate'
+        "resource-edit-target": "emailField",
+        action: "input->resource-edit#emailUpdate"
       }
     },
     attach_scope: -> do

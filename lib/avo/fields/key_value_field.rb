@@ -12,8 +12,8 @@ module Avo
         hide_on :index
 
         @key_label = args[:key_label] if args[:key_label].present?
-        @value_label = args[:value_label]if args[:value_label].present?
-        @action_text = args[:action_text] if args[:action_text].present?
+        @value_label = args[:value_label] if args[:value_label].present?
+        @action_text = args[:action_text] if args[:action_text].present? # This should be add_row_label
         @delete_text = args[:delete_text] if args[:delete_text].present?
 
         @disable_editing_keys = args[:disable_editing_keys].present? ? args[:disable_editing_keys] : false
@@ -31,25 +31,25 @@ module Avo
       def key_label
         return @key_label if @key_label.present?
 
-        I18n.translate('avo.key_value_field.key')
+        I18n.translate("avo.key_value_field.key")
       end
 
       def value_label
         return @value_label if @value_label.present?
 
-        I18n.translate('avo.key_value_field.value')
+        I18n.translate("avo.key_value_field.value")
       end
 
       def action_text
         return @action_text if @action_text.present?
 
-        I18n.translate('avo.key_value_field.add_row')
+        I18n.translate("avo.key_value_field.add_row")
       end
 
       def delete_text
         return @delete_text if @delete_text.present?
 
-        I18n.translate('avo.key_value_field.delete_row')
+        I18n.translate("avo.key_value_field.delete_row")
       end
 
       def to_permitted_param
