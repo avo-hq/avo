@@ -71,8 +71,6 @@ module Avo
     end
 
     def apply_scope(query)
-      set_parent
-
       if should_apply_has_many_scope?
         apply_has_many_scope
       elsif should_apply_attach_scope?
@@ -85,18 +83,18 @@ module Avo
       # In these scenarios, try to find the grandparent for the new views where the parent is nil
       # and initialize the parent record with the grandparent attached so the user has the required information
       # to scope the query.
-      if @parent.blank? && params[:via_parent_resource_id].present? && params[:via_parent_resource_class].present? && params[:via_relation].present?
+      if parent.blank? && params[:via_parent_resource_id].present? && params[:via_parent_resource_class].present? && params[:via_relation].present?
         grandparent = params[:via_parent_resource_class].safe_constantize.find params[:via_parent_resource_id]
-        @parent = params[:via_reflection_class].safe_constantize.new(
+        parent = params[:via_reflection_class].safe_constantize.new(
           params[:via_relation] => grandparent
         )
       end
 
-      Avo::Hosts::AssociationScopeHost.new(block: @attach_scope, query: query, parent: @parent).handle
+      Avo::Hosts::AssociationScopeHost.new(block: @attach_scope, query: query, parent: parent).handle
     end
 
     def apply_has_many_scope
-      scope = @parent.send(params[:via_association_id])
+      scope = parent.send(params[:via_association_id])
 
       Avo::Hosts::SearchScopeHost.new(block: @resource.search_query, params: params, scope: scope).handle
     end
@@ -123,33 +121,39 @@ module Avo
 
     private
 
-    def set_parent
-      return unless params[:via_reflection_id].present?
-
-      @parent = params[:via_reflection_class].safe_constantize.find params[:via_reflection_id]
-    end
-
     def should_apply_has_many_scope?
-      @should_apply_has_many_scope ||= params[:via_association] == 'has_many' && @resource.search_query.present?
+      params[:via_association] == 'has_many' && @resource.search_query.present?
     end
 
     def should_apply_attach_scope?
-      @should_apply_attach_scope ||= params[:via_association] == 'belongs_to' && field_have_attach_scope?
+      params[:via_association] == 'belongs_to' && attach_scope.present?
     end
 
     def should_apply_any_scope?
-      @should_apply_any_scope ||= should_apply_has_many_scope? || should_apply_attach_scope?
+      should_apply_has_many_scope? || should_apply_attach_scope?
     end
 
-    def field_have_attach_scope?
-      set_field
-      @attach_scope = @field.attach_scope
-      @attach_scope.present?
+    def attach_scope
+      @attach_scope ||= field&.attach_scope
     end
 
-    def set_field
+    def field
+      @field ||= fetch_field
+    end
+
+    def parent
+      @parent ||= fetch_parent
+    end
+
+    def fetch_field
       fields = ::Avo::App.get_resource_by_model_name(params[:via_reflection_class]).get_field_definitions
-      @field = fields.find { |f| f.id.to_s == params[:via_association_id] }
+      fields.find { |f| f.id.to_s == params[:via_association_id] }
+    end
+
+    def fetch_parent
+      return unless params[:via_reflection_id].present?
+
+      params[:via_reflection_class].safe_constantize.find params[:via_reflection_id]
     end
   end
 end
