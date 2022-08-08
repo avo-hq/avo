@@ -15,11 +15,11 @@ RSpec.feature Avo::SearchController, type: :controller do
       via_reflection_class: "Review",
       via_reflection_id: 1
     }
-    
+
     expect(json["users"]["results"].count).to eq 1
     expect(json["users"]["results"].first["_id"]).to eq admin.id
   end
-  
+
   it "returns only the team that starts with the letter H" do
     get :show, params: {
       resource_name: "teams",
