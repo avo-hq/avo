@@ -28,11 +28,11 @@ class Fish < ApplicationRecord
 
   def properties=(value)
     # properties should be an array
-    puts ["properties in the Fish model->", value].inspect
+    puts ["properties in the Fish model->", value].inspect unless Rails.env.test?
   end
 
   def information=(value)
     # properties should be a hash
-    puts ["information in the Fish model->", value].inspect
+    puts ["information in the Fish model->", value].inspect unless Rails.env.test?
   end
 end
