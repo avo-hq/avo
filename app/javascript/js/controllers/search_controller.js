@@ -91,6 +91,8 @@ export default class extends Controller {
       params = {
         ...params,
         // eslint-disable-next-line camelcase
+        via_association: this.dataset.viaAssociation,
+        // eslint-disable-next-line camelcase
         via_association_id: this.dataset.viaAssociationId,
         // eslint-disable-next-line camelcase
         via_reflection_class: this.dataset.viaReflectionClass,
@@ -107,9 +109,13 @@ export default class extends Controller {
     else if (this.isHasManyToSearch){
       params = {
         ...params,
+        // eslint-disable-next-line camelcase
         via_association: this.dataset.viaAssociation,
+        // eslint-disable-next-line camelcase
         via_association_id: this.dataset.viaAssociationId,
+        // eslint-disable-next-line camelcase
         via_reflection_class: this.dataset.viaReflectionClass,
+        // eslint-disable-next-line camelcase
         via_reflection_id: this.dataset.viaReflectionId,    
       }
     }

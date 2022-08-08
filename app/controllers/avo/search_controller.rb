@@ -50,8 +50,8 @@ module Avo
         scope: resource.class.scope
       ).handle
 
-      # Figure out if this is a belongs_to search
-      query = apply_attach_scope query
+      # Figure out if there are any scope to apply
+      query = apply_scope(query) if should_apply_any_scope?
 
       results = apply_search_metadata(query, resource)
 
@@ -71,23 +71,20 @@ module Avo
       [resource.name.pluralize.downcase, result_object]
     end
 
-    # First we check if is a serach from a has_many association.
-    # If is not we figure out if it's a belongs to search and if it has the attach_scope block present.
-    # If so, set the parent for those edit view and the parent with the grandparent for the new view.
-    def apply_attach_scope(query)
-      return apply_has_many_attach_scope(query) if params[:via_association] == 'has_many'
-
-      return query if params[:via_reflection_class].blank?
-
-      # Fetch the field
-      field = fetch_field
-
-      # No need to modify the query if there's no attach_scope present.
-      return query if field.attach_scope.blank?
-
+    # Both scopes need parent resource so we start fetching the parent
+    def apply_scope(query)
       # Try to fetch the parent.
       fetch_parent
 
+      if should_apply_has_many_scope?
+        apply_has_many_scope(query)
+      elsif should_apply_attach_scope?
+        apply_attach_scope(query)
+      end
+    end
+
+    # Set the parent for those edit view and the parent with the grandparent for the new view.
+    def apply_attach_scope(query)
       # If the parent is nil it probably means that someone's creating the record so it's not attached yet.
       # In these scenarios, try to find the grandparent for the new views where the parent is nil
       # and initialize the parent record with the grandparent attached so the user has the required information
@@ -103,15 +100,8 @@ module Avo
       Avo::Hosts::AssociationScopeHost.new(block: field.attach_scope, query: query, parent: @parent).handle
     end
 
-    def apply_has_many_attach_scope(query)
-      # Try to fetch the parent.
-      fetch_parent
-
-      # Fetch the field
-      field = fetch_field
-
-      return query if @resource.search_query.nil?
-
+    # We start changing the scope to the parent association records
+    def apply_has_many_scope(query)
       scope = @parent.send(params[:via_association_id])
 
       Avo::Hosts::SearchScopeHost.new(block: @resource.search_query, params: params, scope: scope).handle
@@ -139,7 +129,7 @@ module Avo
 
     def fetch_field
       fields = ::Avo::App.get_resource_by_model_name(params[:via_reflection_class]).get_field_definitions
-      fields.find { |f| f.id.to_s == params[:via_association_id] }
+      @field = fields.find { |f| f.id.to_s == params[:via_association_id] }
     end
 
     private
@@ -148,6 +138,24 @@ module Avo
       if params[:via_reflection_id].present?
         @parent = params[:via_reflection_class].safe_constantize.find params[:via_reflection_id]
       end
+    end
+
+    def should_apply_has_many_scope?
+      @should_apply_has_many_scope ||= params[:via_association] == 'has_many' && @resource.search_query.present?
+    end
+    
+    def should_apply_attach_scope?
+      @should_apply_attach_scope ||= params[:via_association] == 'belongs_to' && field_have_attach_scope?
+    end
+
+    def should_apply_any_scope?
+      @should_apply_any_scope ||= should_apply_has_many_scope? || should_apply_attach_scope?
+    end
+
+    def field_have_attach_scope?
+      fetch_field
+      @attach_scope = @field.attach_scope
+      @attach_scope.present?
     end
 
   end

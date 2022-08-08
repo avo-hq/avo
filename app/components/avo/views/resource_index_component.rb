@@ -125,7 +125,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   def singular_resource_name
     if @reflection.present?
       return name.singularize if field.present?
-      
+
       reflection_resource.name
     else
       @resource.singular_name || @resource.model_class.model_name.name.downcase
@@ -154,21 +154,14 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def via_reflection
-    if @reflection.present?
-      {
-        association: 'has_many',
-        association_id: @reflection.name,
-        class: reflection_model_class,
-        id: @parent_model.id
-      }
-    else
-      {
-        association: '',
-        association_id: '',
-        class: '',
-        id: ''
-      }
-    end
+    return unless @reflection.present?
+
+    {
+      association: 'has_many',
+      association_id: @reflection.name,
+      class: reflection_model_class,
+      id: @parent_model.id
+    }
   end
 
 end
