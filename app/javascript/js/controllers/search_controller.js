@@ -106,7 +106,7 @@ export default class extends Controller {
         via_relation: this.dataset.viaRelation,
       }
     }
-    else if (this.isHasManyToSearch){
+    else if (this.isHasManyToSearch) {
       params = {
         ...params,
         // eslint-disable-next-line camelcase
@@ -116,7 +116,7 @@ export default class extends Controller {
         // eslint-disable-next-line camelcase
         via_reflection_class: this.dataset.viaReflectionClass,
         // eslint-disable-next-line camelcase
-        via_reflection_id: this.dataset.viaReflectionId,    
+        via_reflection_id: this.dataset.viaReflectionId,
       }
     }
 
