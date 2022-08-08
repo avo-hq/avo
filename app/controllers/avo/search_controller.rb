@@ -50,7 +50,7 @@ module Avo
         scope: resource.class.scope
       ).handle
 
-      # Figure out if there are any scope to apply
+      # Figure out if there are any scopes to apply
       query = apply_scope(query) if should_apply_any_scope?
 
       results = apply_search_metadata(query, resource)
