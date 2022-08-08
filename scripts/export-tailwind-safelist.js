@@ -5,18 +5,18 @@ const colors = require('tailwindcss/colors')
 
 // Dynamically built buttons need these classes in prod.
 const buttonClasses = [
-  'text-${color}-500',
+  'bg-${color}-500',
   'border-${color}-500',
+  'hover:bg-${color}-600',
+  'hover:border-${color}-600',
+  'active:border-${color}-700',
+  'active:outline-${color}-700',
+  'active:bg-${color}-600',
+  'text-${color}-500',
   'hover:bg-${color}-100',
   'active:bg-${color}-100',
   'active:border-${color}-500',
   'active:outline-${color}-500',
-  'bg-${color}-500',
-  'hover:bg-${color}-600',
-  'hover:border-${color}-600',
-  'active:border-${color}-700',
-  'active:outline-#{color}-700',
-  'active:bg-${color}-600',
 ]
 
 const buttonColors = Object.keys(colors)
