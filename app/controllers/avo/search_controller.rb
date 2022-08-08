@@ -70,6 +70,8 @@ module Avo
       [resource.name.pluralize.downcase, result_object]
     end
 
+    # When searching in a `has_many` association and will scope out the records against the parent record.
+    # This is also used when looking for `belongs_to` associations, and this method applies the parents `attach_scope` if present.
     def apply_scope(query)
       if should_apply_has_many_scope?
         apply_has_many_scope
