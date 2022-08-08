@@ -4,7 +4,7 @@ module Avo
       module HasIncludeBlank
         def include_blank
           if @args[:include_blank] == true
-            placeholder || '—'
+            placeholder || "—"
           elsif @args[:include_blank] == false
             false
           else
