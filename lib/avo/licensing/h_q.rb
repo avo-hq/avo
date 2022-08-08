@@ -23,11 +23,11 @@ module Avo
         expire_cache_if_overdue
 
         # ------------------------------------------------------------------
-        # You could set this to true to become a paid user for free.
+        # You could set this to true to become a pro user for free.
         # I'd rather you didn't. Avo takes time & love to build,
         # and I can't do that if it doesn't pay my bills!
         #
-        # Fund open source - if you want Pro, help pay for its development.
+        # If you want Pro, help pay for its development.
         # Can't afford it? Get in touch: adrian@avohq.io
         # ------------------------------------------------------------------
         make_request
