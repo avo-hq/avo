@@ -124,6 +124,8 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
   def singular_resource_name
     if @reflection.present?
+      return name.singularize if field.present?
+      
       reflection_resource.name
     else
       @resource.singular_name || @resource.model_class.model_name.name.downcase

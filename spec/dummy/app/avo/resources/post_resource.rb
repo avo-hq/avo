@@ -40,7 +40,7 @@ class PostResource < Avo::BaseResource
   end
   field :user, as: :belongs_to, placeholder: "—"
   field :status, as: :select, enum: ::Post.statuses, display_value: false
-  field :comments, as: :has_many, use_resource: 'TinyComment'
+  field :comments, as: :has_many, use_resource: PhotoCommentResource
 
   grid do
     cover :cover_photo, as: :file, is_image: true, link_to_resource: true

@@ -1,6 +1,6 @@
 require "dry-initializer"
 
-# This object holds some data tha is usually needed to compute blocks around the app.
+# This object holds some data that is usually needed to compute blocks around the app.
 module Avo
   module Hosts
     class BaseHost
@@ -10,6 +10,7 @@ module Avo
       option :params, default: proc { Avo::App.params }
       option :view_context, default: proc { Avo::App.view_context }
       option :current_user, default: proc { Avo::App.current_user }
+      # This is optional because we might instantiate the `Host` first and later hydrate it with a block.
       option :block, optional: true
 
       delegate :authorize, to: Avo::Services::AuthorizationService

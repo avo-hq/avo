@@ -112,14 +112,12 @@ module Avo
       # Secondly we'll try to find a translation key
       # We'll fallback to humanizing the id
       def name
-        default = @id.to_s.humanize(keep_id_suffix: true)
-
         return @name if custom_name?
 
         if translation_key && ::Avo::App.translation_enabled
-          t(translation_key, count: 1, default: default).capitalize
+          t(translation_key, count: 1, default: default_name).capitalize
         else
-          default
+          default_name
         end
       end
 
@@ -135,6 +133,10 @@ module Avo
 
       def custom_name?
         @name.present?
+      end
+
+      def default_name
+        @id.to_s.humanize(keep_id_suffix: true)
       end
 
       def placeholder

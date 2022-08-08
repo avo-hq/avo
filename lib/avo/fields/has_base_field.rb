@@ -15,6 +15,7 @@ module Avo
         @display = args[:display].present? ? args[:display] : :show
         @searchable = args[:searchable] == true
         @description = args[:description]
+        @use_resource = args[:use_resource] || nil
         @discreet_pagination = args[:discreet_pagination] || false
       end
 
@@ -22,12 +23,16 @@ module Avo
         @searchable && ::Avo::App.license.has_with_trial(:searchable_associations)
       end
 
+      def use_resource
+        App.get_resource @use_resource
+      end
+
       def resource
         Avo::App.get_resource_by_model_name @model.class
       end
 
       def turbo_frame
-        "#{self.class.name.demodulize.to_s.underscore}_#{display}_#{id}"
+        "#{self.class.name.demodulize.to_s.underscore}_#{display}_#{frame_id}"
       end
 
       def frame_url
@@ -90,6 +95,16 @@ module Avo
         else
           true
         end
+      end
+
+      def default_name
+        use_resource&.name || super
+      end
+
+      private
+
+      def frame_id
+        use_resource.present? ? use_resource.route_key.to_sym : @id
       end
     end
   end
