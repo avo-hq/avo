@@ -127,10 +127,6 @@ module Avo
       end
     end
 
-    def fetch_field
-      fields = ::Avo::App.get_resource_by_model_name(params[:via_reflection_class]).get_field_definitions
-      @field = fields.find { |f| f.id.to_s == params[:via_association_id] }
-    end
 
     private
 
@@ -158,5 +154,9 @@ module Avo
       @attach_scope.present?
     end
 
+    def fetch_field
+      fields = ::Avo::App.get_resource_by_model_name(params[:via_reflection_class]).get_field_definitions
+      @field = fields.find { |f| f.id.to_s == params[:via_association_id] }
+    end
   end
 end
