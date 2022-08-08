@@ -6,9 +6,28 @@ class FishResource < Avo::BaseResource
   end
   self.extra_params = [:fish_type, :something_else, properties: [], information: [:name, :history]]
 
+  self.show_controls = -> do
+    back_button label: "", title: "Go back now"
+    link_to "Fish.com", "https://fish.com", icon: "heroicons/outline/academic-cap", target: :_blank
+    link_to "Turbo demo", "/admin/resources/fish/#{params[:id]}?change_to=🚀🚀🚀 I told you it will change 🚀🚀🚀",
+      class: ".custom-class",
+      data: {
+        turbo_frame: "fish_custom_action_demo"
+      }
+    delete_button label: "", title: "something"
+    detach_button label: "", title: "something"
+    actions_list exclude: ReleaseFish, style: :primary, color: :slate
+    action ReleaseFish, style: :primary, color: :fuchsia, icon: "heroicons/outline/globe"
+    edit_button label: ""
+  end
+
   field :id, as: :id
   field :name, as: :text, required: -> { view == :new }
+  field :user, as: :belongs_to
   field :type, as: :text, hide_on: :forms
+
+  action DummyAction
+  action ReleaseFish
 
   tool FishInformation, show_on: :forms
 
@@ -61,6 +80,4 @@ class FishResource < Avo::BaseResource
       end
     end
   end
-
-  action DummyAction
 end

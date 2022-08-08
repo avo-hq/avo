@@ -7,6 +7,12 @@ class PostResource < Avo::BaseResource
   self.includes = [:user]
   self.default_view_type = :grid
 
+  # self.show_controls = -> do
+  #   detach_button
+  #   edit_button
+  #   link_to "google", "goolee"
+  # end
+
   field :id, as: :id
   field :name, as: :text, required: true, sortable: true
   field :body,

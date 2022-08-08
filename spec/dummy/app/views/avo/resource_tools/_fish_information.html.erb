@@ -9,7 +9,7 @@
     <% c.body do %>
       <div class="flex flex-col p-4 min-h-24">
         <div class="space-y-4">
-          <h3>Below there should be an image of this fish 🐠</h3>
+          <h3>There should be an image of this fish below 🐠</h3>
 
           <% if form.present? %>
             <%= form.label :fish_type %>
@@ -38,6 +38,16 @@
 
           <p>
             The fish's name is <strong><%= @resource.model.name %></strong>. The ID of the record is <%= @resource.model.id %> and the tool's name is <strong><%= tool.class.to_s %></strong>.
+          </p>
+
+          <p>
+            <%= turbo_frame_tag "fish_custom_action_demo" do %>
+              <% if params[:change_to].present? %>
+                <%= params[:change_to] %>
+              <% else %>
+                This text will change when you press the <code class="p-1 rounded bg-sky-500 text-white">Turbo demo</code> button on the top.
+              <% end %>
+            <% end %>
           </p>
 
           <% if tool.has_fish_image? @resource.model.name.to_s.downcase.to_sym %>

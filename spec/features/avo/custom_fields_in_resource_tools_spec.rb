@@ -7,7 +7,7 @@ RSpec.feature "CustomFieldsInResourceTools", type: :feature do
     it "sends the params to the model" do
       visit avo.edit_resources_fish_path fish
 
-      expect(page).to have_text "Below there should be an image of this fish 🐠"
+      expect(page).to have_text "There should be an image of this fish below 🐠"
 
       fill_in "fish[fish_type]", with: "Fishy type"
 

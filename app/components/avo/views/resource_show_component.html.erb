@@ -7,58 +7,148 @@
   } do %>
   <%= render Avo::PanelComponent.new(title: title, description: @resource.resource_description, display_breadcrumbs: @reflection.blank?, index: 0, data: { panel_id: "main" }) do |c| %>
     <% c.tools do %>
-      <% if @reflection.present? && @resource.model.present? %>
-        <% if can_detach? %>
-          <%= a_button url: detach_path,
-            icon: 'detach',
-            method: :delete,
-            form_class: 'flex flex-col sm:flex-row sm:inline-flex',
-            style: :text,
-            data: {
-              confirm: "Are you sure you want to detach this #{title}."
-            } do %>
-            <%= t('avo.detach_item', item: title).capitalize %>
-          <% end %>
-        <% end %>
-        <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>
-        <% if can_see_the_edit_button? %>
-          <%= a_link edit_path,
-            color: :primary,
-            style: :primary,
-            icon: 'edit' do %>
-            <%= t('avo.edit').capitalize %>
+      <% if @resource.has_show_controls? %>
+        <% @resource.render_show_controls.each do |control| %>
+          <% if control.back_button? %>
+            <%= a_link back_path,
+                style: :text,
+                title: control.title,
+                data: {
+                  tippy: control.title ? :tooltip : nil,
+                },
+                icon: 'arrow-left' do %>
+              <%= control.label %>
+            <% end %>
+          <% elsif control.delete_button? %>
+            <% if can_see_the_destroy_button? %>
+              <%= a_button url: helpers.resource_path(model: @resource.model, resource: @resource),
+                method: :delete,
+                local: true,
+                style: :text,
+                loading: true,
+                confirm: t('avo.are_you_sure', item: @resource.model.model_name.name.downcase),
+                color: :red,
+                icon: 'trash',
+                form_class: 'flex flex-col sm:flex-row sm:inline-flex',
+                title: control.title,
+                data: {
+                  control: :destroy,
+                  tippy: control.title ? :tooltip : nil,
+                  'resource-id': @resource.model.id,
+                } do %>
+              <% end %>
+            <% end %>
+          <% elsif control.actions_list? %>
+            <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view, exclude: control.exclude, style: control.style, color: control.color %>
+          <% elsif control.edit_button? %>
+            <% if @resource.authorization.authorize_action(:edit, raise_exception: false) %>
+            <% end %>
+            <%= a_link edit_path,
+                color: :primary,
+                style: :primary,
+                title: control.title,
+                data: {
+                  tippy: control.title ? :tooltip : nil,
+                },
+                icon: 'edit' do %>
+              <%= control.label %>
+            <% end %>
+          <% elsif control.action? %>
+            <%= a_link control.path,
+                color: control.color,
+                style: control.style,
+                icon: control.icon,
+                title: control.title,
+                data: {
+                  tippy: control.title ? :tooltip : nil,
+                  'turbo-frame': 'actions_show',
+                  'action': 'click->actions-picker#visitAction',
+                } do %>
+              <%= control.label %>
+            <% end %>
+          <% elsif control.link_to? %>
+            <%= a_link control.path,
+                color: control.color,
+                style: control.style,
+                icon: control.icon,
+                title: control.title,
+                target: control.target,
+                class: control.class,
+                data: {
+                  **control.data,
+                  tippy: control.title ? :tooltip : nil,
+                } do %>
+              <%= control.label %>
+            <% end %>
+          <% elsif control.detach_button? %>
+            <% if @reflection.present? && @resource.model.present? && can_detach? %>
+              <%= a_button url: detach_path,
+                  icon: 'detach',
+                  method: :delete,
+                  form_class: 'flex flex-col sm:flex-row sm:inline-flex',
+                  style: :text,
+                  data: {
+                    confirm: "Are you sure you want to detach this #{title}."
+                  } do %>
+                <%= t('avo.detach_item', item: title).capitalize %>
+              <% end %>
+            <% end %>
           <% end %>
         <% end %>
       <% else %>
-        <%= a_link back_path,
-          style: :text,
-          icon: 'arrow-left' do %>
-          <%= t('avo.go_back') %>
-        <% end %>
-        <% if can_see_the_destroy_button? %>
-          <%= a_button url: helpers.resource_path(model: @resource.model, resource: @resource),
-            method: :delete,
-            local: true,
-            style: :text,
-            loading: true,
-            confirm: t('avo.are_you_sure', item: @resource.model.model_name.name.downcase),
-            color: :red,
-            icon: 'trash',
-            form_class: 'flex flex-col sm:flex-row sm:inline-flex',
-            data: {
-              control: :destroy,
-              'resource-id': @resource.model.id,
-            } do %>
-            <%= t('avo.delete').capitalize %>
+        <% if @reflection.present? && @resource.model.present? %>
+          <% if can_detach? %>
+            <%= a_button url: detach_path,
+                icon: 'detach',
+                method: :delete,
+                form_class: 'flex flex-col sm:flex-row sm:inline-flex',
+                style: :text,
+                data: {
+                  confirm: "Are you sure you want to detach this #{title}."
+                } do %>
+              <%= t('avo.detach_item', item: title).capitalize %>
+            <% end %>
           <% end %>
-        <% end %>
-        <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>
-        <% if @resource.authorization.authorize_action(:edit, raise_exception: false) %>
-          <%= a_link edit_path,
-            color: :primary,
-            style: :primary,
-            icon: 'edit' do %>
-            <%= t('avo.edit').capitalize %>
+          <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>
+          <% if can_see_the_edit_button? %>
+            <%= a_link edit_path,
+                color: :primary,
+                style: :primary,
+                icon: 'edit' do %>
+              <%= t('avo.edit').capitalize %>
+            <% end %>
+          <% end %>
+        <% else %>
+          <%= a_link back_path,
+            style: :text,
+            icon: 'arrow-left' do %>
+            <%= t('avo.go_back') %>
+          <% end %>
+          <% if can_see_the_destroy_button? %>
+            <%= a_button url: helpers.resource_path(model: @resource.model, resource: @resource),
+                method: :delete,
+                local: true,
+                style: :text,
+                loading: true,
+                confirm: t('avo.are_you_sure', item: @resource.model.model_name.name.downcase),
+                color: :red,
+                icon: 'trash',
+                form_class: 'flex flex-col sm:flex-row sm:inline-flex',
+                data: {
+                  control: :destroy,
+                  'resource-id': @resource.model.id,
+                } do %>
+              <%= t('avo.delete').capitalize %>
+            <% end %>
+          <% end %>
+          <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>
+          <% if @resource.authorization.authorize_action(:edit, raise_exception: false) %>
+            <%= a_link edit_path,
+              color: :primary,
+              style: :primary,
+              icon: 'edit' do %>
+              <%= t('avo.edit').capitalize %>
+            <% end %>
           <% end %>
         <% end %>
       <% end %>
