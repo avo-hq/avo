@@ -7,7 +7,7 @@ RSpec.feature "CustomResourceControls", type: :feature do
     it "renders the custom buttons" do
       visit "/admin/resources/fish/#{fish.id}"
 
-      within find_all('[data-target="panel-controls"]').first do
+      within find_all('[data-target="panel-tools"]').first do
         # back_button
         expect(page).to have_link "", href: /\/admin\/resources\/fish/
 
