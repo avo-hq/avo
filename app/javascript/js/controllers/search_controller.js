@@ -48,7 +48,7 @@ export default class extends Controller {
     return this.dataset.viaAssociation === 'belongs_to'
   }
 
-  get isHasManyToSearch() {
+  get isHasManySearch() {
     return this.dataset.viaAssociation === 'has_many'
   }
 
@@ -87,37 +87,45 @@ export default class extends Controller {
       params.global = true
     }
 
-    if (this.isBelongsToSearch) {
-      params = {
-        ...params,
-        // eslint-disable-next-line camelcase
-        via_association: this.dataset.viaAssociation,
-        // eslint-disable-next-line camelcase
-        via_association_id: this.dataset.viaAssociationId,
-        // eslint-disable-next-line camelcase
-        via_reflection_class: this.dataset.viaReflectionClass,
-        // eslint-disable-next-line camelcase
-        via_reflection_id: this.dataset.viaReflectionId,
-        // eslint-disable-next-line camelcase
-        via_parent_resource_id: this.dataset.viaParentResourceId,
-        // eslint-disable-next-line camelcase
-        via_parent_resource_class: this.dataset.viaParentResourceClass,
-        // eslint-disable-next-line camelcase
-        via_relation: this.dataset.viaRelation,
+    if (this.isBelongsToSearch || this.isHasManySearch) {
+      params = this.addAssociationParams(params)
+      params = this.addReflectionParams(params)
+
+      if (this.isBelongsToSearch) {
+        params = {
+          ...params,
+          // eslint-disable-next-line camelcase
+          via_parent_resource_id: this.dataset.viaParentResourceId,
+          // eslint-disable-next-line camelcase
+          via_parent_resource_class: this.dataset.viaParentResourceClass,
+          // eslint-disable-next-line camelcase
+          via_relation: this.dataset.viaRelation,
+        }
       }
     }
-    else if (this.isHasManyToSearch) {
-      params = {
-        ...params,
-        // eslint-disable-next-line camelcase
-        via_association: this.dataset.viaAssociation,
-        // eslint-disable-next-line camelcase
-        via_association_id: this.dataset.viaAssociationId,
-        // eslint-disable-next-line camelcase
-        via_reflection_class: this.dataset.viaReflectionClass,
-        // eslint-disable-next-line camelcase
-        via_reflection_id: this.dataset.viaReflectionId,
-      }
+
+    return params
+  }
+
+  addAssociationParams(params) {
+    params = {
+      ...params,
+      // eslint-disable-next-line camelcase
+      via_association: this.dataset.viaAssociation,
+      // eslint-disable-next-line camelcase
+      via_association_id: this.dataset.viaAssociationId,
+    }
+
+    return params
+  }
+
+  addReflectionParams(params) {
+    params = {
+      ...params,
+      // eslint-disable-next-line camelcase
+      via_reflection_class: this.dataset.viaReflectionClass,
+      // eslint-disable-next-line camelcase
+      via_reflection_id: this.dataset.viaReflectionId,
     }
 
     return params
