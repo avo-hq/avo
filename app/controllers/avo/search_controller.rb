@@ -127,7 +127,6 @@ module Avo
       end
     end
 
-
     private
 
     def fetch_parent
