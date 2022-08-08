@@ -10,18 +10,20 @@ RSpec.feature Avo::SearchController, type: :controller do
   it "returns only the admins" do
     get :show, params: {
       resource_name: "users",
+      via_association: 'belongs_to',
       via_association_id: "user",
       via_reflection_class: "Review",
       via_reflection_id: 1
     }
-
+    
     expect(json["users"]["results"].count).to eq 1
     expect(json["users"]["results"].first["_id"]).to eq admin.id
   end
-
+  
   it "returns only the team that starts with the letter H" do
     get :show, params: {
       resource_name: "teams",
+      via_association: 'belongs_to',
       via_association_id: "reviewable",
       via_reflection_class: "Review",
       via_reflection_id: 1

@@ -97,7 +97,7 @@ module Avo
       end
 
       # Add to the query
-      Avo::Hosts::AssociationScopeHost.new(block: field.attach_scope, query: query, parent: @parent).handle
+      Avo::Hosts::AssociationScopeHost.new(block: @attach_scope, query: query, parent: @parent).handle
     end
 
     # We start changing the scope to the parent association records
