@@ -32,7 +32,7 @@
         data-selected-resources-name="<%= @resource.model_key %>"
         data-selected-resources="[]"
       >
-        <% if @resource.search_query.present? %>
+        <% if @resource.search_query.present? && field.present? ? field.show_search_box? : true %>
           <div class="flex items-center px-4 w-64">
             <%= render partial: 'avo/partials/resource_search', locals: {resource: @resource.route_key, via_reflection: via_reflection} %>
           </div>

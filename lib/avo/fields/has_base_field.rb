@@ -14,6 +14,7 @@ module Avo
         @attach_scope = args[:attach_scope].present? ? args[:attach_scope] : nil
         @display = args[:display].present? ? args[:display] : :show
         @searchable = args[:searchable] == true
+        @hide_search_box = args[:hide_search_box] || false
         @description = args[:description]
         @use_resource = args[:use_resource] || nil
         @discreet_pagination = args[:discreet_pagination] || false
@@ -99,6 +100,10 @@ module Avo
 
       def default_name
         use_resource&.name || super
+      end
+
+      def show_search_box?
+        !@hide_search_box
       end
 
       private
