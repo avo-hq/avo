@@ -76,11 +76,14 @@ module Avo
       if should_apply_has_many_scope?
         apply_has_many_scope
       elsif should_apply_attach_scope?
-        apply_attach_scope(query)
+        apply_attach_scope(query, parent)
       end
     end
 
-    def apply_attach_scope(query)
+
+    # Parent passed as argument to be used as a variable instead of the method "def parent"
+    # Otherwise parent = params...safe_constantize... will try to call method "def parent="
+    def apply_attach_scope(query, parent)
       # If the parent is nil it probably means that someone's creating the record so it's not attached yet.
       # In these scenarios, try to find the grandparent for the new views where the parent is nil
       # and initialize the parent record with the grandparent attached so the user has the required information
@@ -92,7 +95,7 @@ module Avo
         )
       end
 
-      Avo::Hosts::AssociationScopeHost.new(block: @attach_scope, query: query, parent: parent).handle
+      Avo::Hosts::AssociationScopeHost.new(block: attach_scope, query: query, parent: parent).handle
     end
 
     def apply_has_many_scope
