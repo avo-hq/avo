@@ -1,5 +1,5 @@
 <div class="flex flex-col">
-  <%= render Avo::PanelComponent.new(title: 'Welcome to Avo', description: 'This page is visible only in development. It will be hidden in other environments.') do |c| %>
+  <%= render Avo::PanelComponent.new(name: 'Welcome to Avo', description: 'This page is visible only in development. It will be hidden in other environments.') do |c| %>
     <% c.tools do %>
       <%= a_link('/admin', icon: 'arrow-left', color: :green, style: :primary, is_link: true) do %>
         Primary

@@ -5,7 +5,7 @@
     selected_resources: [@resource.model.id],
     **@resource.stimulus_data_attributes
   } do %>
-  <%= render Avo::PanelComponent.new(title: title, description: @resource.resource_description, display_breadcrumbs: @reflection.blank?, index: 0, data: { panel_id: "main" }) do |c| %>
+  <%= render Avo::PanelComponent.new(name: title, description: @resource.resource_description, display_breadcrumbs: @reflection.blank?, index: 0, data: { panel_id: "main" }) do |c| %>
     <% c.tools do %>
       <% if @resource.has_show_controls? %>
         <% @resource.render_show_controls.each do |control| %>
