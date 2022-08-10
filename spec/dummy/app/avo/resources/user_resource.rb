@@ -68,6 +68,7 @@ class UserResource < Avo::BaseResource
       end
     end
 
+    field :fish, as: :has_one
     field :teams, as: :has_and_belongs_to_many
     field :people,
       as: :has_many,

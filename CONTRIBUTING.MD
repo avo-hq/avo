@@ -110,3 +110,7 @@ To test the custom Stimulus integration, we need to have some JS content injecte
 ## Annotate models
 
 To keep track of the schema structure for the models, run `annotate --models --exclude fixtures` in the dummy app.
+
+## Using VSCode?
+
+We compiled [an extension pack](https://marketplace.visualstudio.com/items?itemName=adrianthedev.vsruby) with a few extensions that should help you with Ruby development. We use them with Avo.

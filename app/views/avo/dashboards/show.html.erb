@@ -1,4 +1,4 @@
-<%= render Avo::PanelComponent.new(title: @dashboard.name, description: @dashboard.description) do |c| %>
+<%= render Avo::PanelComponent.new(name: @dashboard.name, description: @dashboard.description) do |c| %>
   <% c.bare_content do %>
     <% if @dashboard.items.present? %>
       <div class="min-h-24">

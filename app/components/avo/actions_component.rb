@@ -3,14 +3,23 @@
 class Avo::ActionsComponent < ViewComponent::Base
   include Avo::ApplicationHelper
 
-  def initialize(actions: [], resource: nil, view: nil)
-    @actions = actions
+  def initialize(actions: [], resource: nil, view: nil, exclude: [], style: :outline, color: :blue)
+    @actions = actions || []
     @resource = resource
     @view = view
+    @exclude = exclude
+    @color = color
+    @style = style
   end
 
   def render?
-    @actions.present?
+    actions.present?
+  end
+
+  def actions
+    @actions.select do |action|
+      !action.class.in?(@exclude)
+    end
   end
 
   # When running an action for one record we should do it on a special path.

@@ -3,6 +3,7 @@
 ![reviewdog](https://github.com/avo-hq/avo/workflows/reviewdog/badge.svg)
 [![codecov](https://codecov.io/gh/avo-hq/avo/branch/master/graph/badge.svg?token=Q2LMFE4989)](https://codecov.io/gh/avo-hq/avo)
 [![Maintainability](https://api.codeclimate.com/v1/badges/676a0afa2cc79f03aa29/maintainability)](https://codeclimate.com/github/avo-hq/avo/maintainability)
+[![Open Source Helpers](https://www.codetriage.com/avo-hq/avo/badges/users.svg)](https://www.codetriage.com/avo-hq/avo)
 
 ![](./public/avo-assets/logo-on-white.png)
 
@@ -73,7 +74,7 @@ Please read the [UPGRADE_GUIDE.MD](https://docs.avohq.io/2.0/upgrade.html)
 
 Please read the [RELEASE.MD](./RELEASE.MD)
 
-# ✨ Contributors
+# ✨ [Contributors](https://avohq.io/contributors)
 
 <a href="https://github.com/avo-hq/avo/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=avo-hq/avo" />

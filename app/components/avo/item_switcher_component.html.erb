@@ -3,7 +3,7 @@
     <%= render item.partial, tool: item, form: @form %>
   <% end %>
 <% elsif item.is_panel? %>
-  <%= render Avo::PanelComponent.new(title: item.name, description: item.description, index: index, view: view) do |c| %>
+  <%= render Avo::PanelComponent.new(name: item.name, description: item.description, index: index) do |c| %>
     <% c.body do %>
       <div class="divide-y">
         <% item.items.each_with_index do |field, index| %>

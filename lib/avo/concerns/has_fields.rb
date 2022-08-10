@@ -17,19 +17,19 @@ module Avo
         def field(name, **args, &block)
           ensure_items_holder_initialized
 
-          self.items_holder.field name, **args, &block
+          items_holder.field name, **args, &block
         end
 
         def panel(name = nil, **args, &block)
           ensure_items_holder_initialized
 
-          self.items_holder.panel name, **args, &block
+          items_holder.panel name, **args, &block
         end
 
         def tabs(&block)
           ensure_items_holder_initialized
 
-          self.items_holder.tabs Avo::TabGroupBuilder.parse_block(&block)
+          items_holder.tabs Avo::TabGroupBuilder.parse_block(&block)
         end
 
         def tool(klass, **args)
@@ -39,27 +39,29 @@ module Avo
         end
 
         def heading(body, **args)
-          self.items_holder.heading body, **args
+          ensure_items_holder_initialized
+
+          items_holder.heading body, **args
         end
         # END DSL methods
 
         def items
-          if self.items_holder.present?
-            self.items_holder.items
+          if items_holder.present?
+            items_holder.items
           else
             []
           end
         end
 
         def tools
-          self.tools_holder
+          tools_holder
         end
 
         # Dives deep into panels and tabs to fetch all the fields for a resource.
         def fields(only_root: false)
           fields = []
 
-          self.items.each do |item|
+          items.each do |item|
             next if item.nil?
 
             unless only_root
@@ -76,7 +78,6 @@ module Avo
               end
             end
 
-
             if item.is_field?
               fields << item
             end
@@ -86,7 +87,7 @@ module Avo
         end
 
         def tab_groups
-          self.items.select do |item|
+          items.select do |item|
             item.instance_of? Avo::TabGroup
           end
         end

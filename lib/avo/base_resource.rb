@@ -3,8 +3,8 @@ module Avo
     extend ActiveSupport::DescendantsTracker
 
     include ActionView::Helpers::UrlHelper
-    include Avo::Concerns::HasModel
     include Avo::Concerns::HasFields
+    include Avo::Concerns::HasEditableControls
     include Avo::Concerns::HasStimulusControllers
     include Avo::Concerns::ModelClassConstantized
 
@@ -438,6 +438,10 @@ module Avo
 
     def ordering_host(**args)
       Avo::Hosts::Ordering.new resource: self, options: self.class.ordering, **args
+    end
+
+    def has_model_id?
+      model.present? && model.id.present?
     end
   end
 end

@@ -14,7 +14,7 @@
   hq_payload = Avo::Licensing::HQ.new(request).payload
 %>
 <div class="flex flex-col">
-  <%= render Avo::PanelComponent.new(title: 'Debug Avo', description: 'Use this page to debug the Avo license.') do |c| %>
+  <%= render Avo::PanelComponent.new(name: 'Debug Avo', description: 'Use this page to debug the Avo license.') do |c| %>
     <% c.tools do %>
     <% end %>
     <% c.bare_content do %>

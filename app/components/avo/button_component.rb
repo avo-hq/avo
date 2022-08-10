@@ -43,9 +43,7 @@ class Avo::ButtonComponent < ViewComponent::Base
     classes = "button-component inline-flex flex-grow-0 items-center font-semibold leading-6 fill-current whitespace-nowrap transition duration-100 transform transition duration-100 cursor-pointer disabled:cursor-not-allowed disabled:opacity-70 border justify-center active:outline active:outline-1 #{@class}"
 
     classes += " rounded" if @rounded.present?
-
     classes += style_classes
-
     classes += horizontal_padding_classes
     classes += vertical_padding_classes
     classes += text_size_classes
@@ -151,7 +149,7 @@ class Avo::ButtonComponent < ViewComponent::Base
   def style_classes
     case @style
     when :primary
-      " bg-primary-500 text-white border-primary-500 hover:bg-primary-600 hover:border-primary-600 active:border-primary-700 active:outline-primary-700 active:bg-primary-600"
+      " bg-#{@color}-500 text-white border-#{@color}-500 hover:bg-#{@color}-600 hover:border-#{@color}-600 active:border-#{@color}-700 active:outline-#{@color}-700 active:bg-#{@color}-600"
     when :outline
       " bg-white text-#{@color}-500 border-#{@color}-500 hover:bg-#{@color}-100 active:bg-#{@color}-100 active:border-#{@color}-500 active:outline-#{@color}-500"
     when :text
