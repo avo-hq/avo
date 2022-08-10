@@ -6,6 +6,7 @@ module Avo
       attr_accessor :attach_scope
       attr_accessor :description
       attr_accessor :discreet_pagination
+      attr_accessor :hide_search_input
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
@@ -100,10 +101,6 @@ module Avo
 
       def default_name
         use_resource&.name || super
-      end
-
-      def show_search_input?
-        !@hide_search_input
       end
 
       private

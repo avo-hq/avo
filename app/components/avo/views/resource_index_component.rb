@@ -143,17 +143,10 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     @resource.resource_description
   end
 
-  def show_search_input
-    show_search_input = false
+  def hide_search_input
+    return true unless @resource.search_query.present?
 
-    if @resource.search_query.present?
-      show_search_input = true
-      if field.present?
-        show_search_input = field.show_search_input?
-      end
-    end
-
-    show_search_input
+    field&.hide_search_input || false
   end
 
   private
