@@ -127,7 +127,7 @@ module Avo
     private
 
     def should_apply_has_many_scope?
-      params[:via_association] == 'has_many' && @resource.search_query.present?
+      params[:via_association] == "has_many" && @resource.search_query.present?
     end
 
     def should_apply_attach_scope?
