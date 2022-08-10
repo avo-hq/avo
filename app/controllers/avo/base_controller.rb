@@ -115,7 +115,7 @@ module Avo
         add_breadcrumb via_resource.model_title, resource_path(model: via_model, resource: via_resource)
       end
 
-      add_breadcrumb @resource.plural_name.humanize
+      add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
       add_breadcrumb t("avo.new").humanize
     end
 
@@ -157,6 +157,9 @@ module Avo
         if saved
           format.html { redirect_to after_create_path, notice: "#{@resource.name} #{t("avo.was_successfully_created")}." }
         else
+          add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
+          add_breadcrumb t("avo.new").humanize
+          set_actions
           flash.now[:error] = t "avo.you_missed_something_check_form"
           format.html { render :new, status: :unprocessable_entity }
         end
@@ -176,6 +179,7 @@ module Avo
         if saved
           format.html { redirect_to after_update_path, notice: "#{@resource.name} #{t("avo.was_successfully_updated")}." }
         else
+          set_actions
           flash.now[:error] = t "avo.you_missed_something_check_form"
           format.html { render :edit, status: :unprocessable_entity }
         end

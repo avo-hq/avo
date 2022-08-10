@@ -30,11 +30,11 @@ class Avo::TabSwitcherComponent < Avo::BaseComponent
   end
 
   def is_edit?
-    @view == :edit
+    @view.in?([:edit, :update])
   end
 
   def is_new?
-    @view == :new
+    @view.in?([:new, :create])
   end
 
   def is_initial_load?
