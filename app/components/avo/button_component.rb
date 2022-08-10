@@ -73,7 +73,7 @@ class Avo::ButtonComponent < ViewComponent::Base
     result.html_safe
   end
 
-  def output
+  def call
     if is_link?
       output_link
     else
