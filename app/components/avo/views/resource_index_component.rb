@@ -143,6 +143,19 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     @resource.resource_description
   end
 
+  def show_search_box
+    show_search_box = false
+
+    if @resource.search_query.present?
+      show_search_box = true
+      if field.present?
+        show_search_box = field.show_search_box?
+      end
+    end
+
+    show_search_box
+  end
+
   private
 
   def reflection_model_class
