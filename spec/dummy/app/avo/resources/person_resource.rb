@@ -13,5 +13,5 @@ class PersonResource < Avo::BaseResource
   field :link, as: :text, as_html: true do |model, &args|
     "<a href='https://avohq.io'>#{model.name}</a>"
   end
-  field :spouses, as: :has_many, hide_search_box: true
+  field :spouses, as: :has_many, hide_search_input: true
 end
