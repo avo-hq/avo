@@ -79,16 +79,6 @@ module Avo
       @buttons_on_form_footers = false
       @main_menu = nil
       @profile_menu = nil
-      @branding = {
-        colors: {
-          100 => "#CEE7F8",
-          400 => "#399EE5",
-          500 => "#0886DE",
-          600 => "#066BB2"
-        },
-        logo: "/avo-assets/logo.png",
-        logomark: "/avo-assets/logomark.png"
-      }
     end
 
     def current_user_method(&block)
