@@ -4,5 +4,5 @@
       <%= @field.value %><%= @field.value_suffix if @field.value_suffix.present? %>
     </div>
   <% end %>
-  <progress min="0" max="<%= @field.max %>" value="<%= @field.value %>" class="block w-24"></progress>
+  <progress min="0" max="<%= @field.max %>" value="<%= @field.value %>" class="block w-auto"></progress>
 <% end %>
