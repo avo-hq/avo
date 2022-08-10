@@ -6,6 +6,7 @@ Avo.configure do |config|
   config.current_user_method = :current_user
   config.id_links_to_resource = true
   config.full_width_container = true
+  config.buttons_on_form_footers = false
   config.resource_controls_placement = if ENV["AVO_RESOURCE_CONTROLS_PLACEMENT"].present?
     ENV["AVO_RESOURCE_CONTROLS_PLACEMENT"].to_sym
   else

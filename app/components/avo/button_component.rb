@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # A button/link can have the following settings:
-# style: primary/secondary/ternary
+# style: primary/outline/text
 # size: :xs :sm, :md, :lg
 class Avo::ButtonComponent < ViewComponent::Base
   def initialize(path = nil, size: :md, style: :outline, color: :gray, icon: nil, icon_class: "", is_link: false, rounded: true, compact: false, **args)
@@ -149,7 +149,7 @@ class Avo::ButtonComponent < ViewComponent::Base
   def style_classes
     case @style
     when :primary
-      " bg-#{@color}-500 text-white border-#{@color}-500 hover:bg-#{@color}-600 hover:border-#{@color}-600 active:border-#{@color}-700 active:outline-#{@color}-700 active:bg-#{@color}-600"
+      " bg-#{@color}-500 text-white border-#{@color}-500 hover:bg-#{@color}-600 hover:border-#{@color}-600 active:border-#{@color}-600 active:outline-#{@color}-600 active:bg-#{@color}-600"
     when :outline
       " bg-white text-#{@color}-500 border-#{@color}-500 hover:bg-#{@color}-100 active:bg-#{@color}-100 active:border-#{@color}-500 active:outline-#{@color}-500"
     when :text
