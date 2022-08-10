@@ -131,7 +131,7 @@ module Avo
     end
 
     def should_apply_attach_scope?
-      params[:via_association] == 'belongs_to' && attach_scope.present?
+      params[:via_association] == "belongs_to" && attach_scope.present?
     end
 
     def should_apply_any_scope?
