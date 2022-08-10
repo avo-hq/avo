@@ -54,6 +54,17 @@ Avo.configure do |config|
   # config.resource_controls = :right
   # config.buttons_on_form_footers = true
 
+  ## == Branding ==
+  # config.branding = {
+  #   colors: {
+  #     100 => "#CEE7F8",
+  #     400 => "#399EE5",
+  #     500 => "#0886DE",
+  #     600 => "#066BB2",
+  #   },
+  #   logo: "/avo-assets/logo.png"
+  #   logomark: "/avo-assets/logomark.png",
+  # }
 
 
   ## == Breadcrumbs ==

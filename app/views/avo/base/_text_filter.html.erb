@@ -13,7 +13,7 @@
       'data-action': 'keypress->text-filter#tryToSubmit'
     %>
     <div class="flex justify-end">
-      <%= a_button class: 'mt-4', color: :blue, data: { action: "text-filter#changeFilter" }, size: :xs do %>
+      <%= a_button class: 'mt-4', color: :primary, data: { action: "text-filter#changeFilter" }, size: :xs do %>
         <%= filter.button_label || "Filter by #{filter.name}" %>
       <% end %>
     </div>

@@ -34,6 +34,7 @@ module Avo
     attr_accessor :buttons_on_form_footers
     attr_accessor :main_menu
     attr_accessor :profile_menu
+    attr_writer :branding
 
     def initialize
       @root_path = "/avo"
@@ -78,6 +79,16 @@ module Avo
       @buttons_on_form_footers = false
       @main_menu = nil
       @profile_menu = nil
+      @branding = {
+        colors: {
+          100 => "#CEE7F8",
+          400 => "#399EE5",
+          500 => "#0886DE",
+          600 => "#066BB2"
+        },
+        logo: "/avo-assets/logo.png",
+        logomark: "/avo-assets/logomark.png"
+      }
     end
 
     def current_user_method(&block)
@@ -120,6 +131,10 @@ module Avo
 
     def feature_enabled?(feature)
       !@disabled_features.map(&:to_sym).include?(feature.to_sym)
+    end
+
+    def branding
+      Avo::Configuration::Branding.new(**@branding || {})
     end
   end
 

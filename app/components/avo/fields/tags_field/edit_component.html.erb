@@ -17,7 +17,7 @@
     %>
     <%# real field %>
     <%= @form.text_field @field.id,
-      class: classes("hidden w-full"),
+      class: classes("hidden w-full border-primary-500 focus-within:border-primary-500"),
       data: {
         'tags-field-target': 'input',
         'whitelist-items': @field.suggestions.to_json,
