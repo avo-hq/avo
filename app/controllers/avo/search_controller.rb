@@ -80,7 +80,6 @@ module Avo
       end
     end
 
-
     # Parent passed as argument to be used as a variable instead of the method "def parent"
     # Otherwise parent = params...safe_constantize... will try to call method "def parent="
     def apply_attach_scope(query, parent)
