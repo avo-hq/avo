@@ -1,5 +1,5 @@
 class <%= class_name.camelize %> < Avo::BaseAction
-  self.name = '<%= name.underscore.humanize %>'
+  self.name = "<%= name.underscore.humanize %>"
   self.standalone = true
 
   def handle(fields:)

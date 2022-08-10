@@ -22,16 +22,24 @@ module Avo
       def response
         expire_cache_if_overdue
 
+        # ------------------------------------------------------------------
+        # You could set this to true to become a pro user for free.
+        # I'd rather you didn't. Avo takes time & love to build,
+        # and I can't do that if it doesn't pay my bills!
+        #
+        # If you want Pro, help pay for its development.
+        # Can't afford it? Get in touch: adrian@avohq.io
+        # ------------------------------------------------------------------
         make_request
       end
 
       # Some cache stores don't auto-expire their keys and payloads so we need to do it for them
       def expire_cache_if_overdue
         return unless cached_response.present?
-        return unless cached_response['fetched_at'].present?
+        return unless cached_response["fetched_at"].present?
 
         allowed_time = 1.hour
-        parsed_time = Time.parse(cached_response['fetched_at'].to_s)
+        parsed_time = Time.parse(cached_response["fetched_at"].to_s)
         time_has_passed = parsed_time < Time.now - allowed_time
 
         clear_response if time_has_passed
@@ -159,7 +167,7 @@ module Avo
       def perform_request
         ::Rails.logger.debug "[Avo] Performing request to avohq.io API to check license availability." if Rails.env.development?
 
-        HTTParty.post ENDPOINT, body: payload.to_json, headers: {'Content-type': "application/json"}, timeout: REQUEST_TIMEOUT
+        HTTParty.post ENDPOINT, body: payload.to_json, headers: {"Content-type": "application/json"}, timeout: REQUEST_TIMEOUT
       end
 
       def app_name
@@ -177,7 +185,7 @@ module Avo
 
         {
           "#{type}_count": type_count,
-          "#{type}_per_resource": type_per_resource,
+          "#{type}_per_resource": type_per_resource
         }
       end
 

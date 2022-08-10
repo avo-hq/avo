@@ -1,7 +1,13 @@
 class DummyAction < Avo::BaseAction
   self.name = "Dummy action"
   self.standalone = true
-  self.visible = ->(resource:, view:) { view == :index }
+  self.visible = ->(resource:, view:) do
+    if resource.is_a? UserResource
+      view == :index
+    else
+      true
+    end
+  end
 
   def handle(**args)
     # Do something here

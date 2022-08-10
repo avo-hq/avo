@@ -1,5 +1,5 @@
 <div
-  class="avo-sidebar fixed z-[60] t-0 application-sidebar w-64 flex-1 border-r lg:border-none bg-none h-[calc(100vh-4rem)] bg-gray-25 lg:bg-transparent <%= 'print:hidden' if Avo.configuration.hide_layout_when_printing %> <%= @sidebar_open ? 'flex' : 'hidden' %>"
+  class="avo-sidebar fixed z-[60] t-0 application-sidebar w-64 flex-1 border-r lg:border-none bg-none h-[calc(100vh-4rem)] bg-application lg:bg-transparent <%= 'print:hidden' if Avo.configuration.hide_layout_when_printing %> <%= @sidebar_open ? 'flex' : 'hidden' %>"
   data-sidebar-target="<%= stimulus_target %>"
   data-transition-enter="transition ease-out duration-100"
   data-transition-enter-start="transform opacity-0 -translate-x-full"

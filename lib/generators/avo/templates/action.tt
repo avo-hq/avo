@@ -1,5 +1,5 @@
 class <%= class_name.camelize %> < Avo::BaseAction
-  self.name = '<%= name.underscore.humanize %>'
+  self.name = "<%= name.underscore.humanize %>"
 
   def handle(**args)
     models, fields, current_user, resource = args.values_at(:models, :fields, :current_user, :resource)

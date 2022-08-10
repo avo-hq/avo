@@ -9,4 +9,4 @@
   url = URI::HTTPS.build(host: "www.gravatar.com", path: "/avatar/#{@md5}", query: query)
   classes = @rounded ? 'rounded-full' : ''
 %>
-<%= link_to_if @link_to_resource.present?, image_tag(url.to_s, class: classes), @link, title: @title %>
+<%= link_to_if @link_to_resource.present?, image_tag(url.to_s, class: classes, width: options[:size], height: options[:size]), @link, title: @title %>

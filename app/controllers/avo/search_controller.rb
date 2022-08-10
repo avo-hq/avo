@@ -80,7 +80,6 @@ module Avo
       end
     end
 
-
     # Parent passed as argument to be used as a variable instead of the method "def parent"
     # Otherwise parent = params...safe_constantize... will try to call method "def parent="
     def apply_attach_scope(query, parent)
@@ -127,11 +126,11 @@ module Avo
     private
 
     def should_apply_has_many_scope?
-      params[:via_association] == 'has_many' && @resource.search_query.present?
+      params[:via_association] == "has_many" && @resource.search_query.present?
     end
 
     def should_apply_attach_scope?
-      params[:via_association] == 'belongs_to' && attach_scope.present?
+      params[:via_association] == "belongs_to" && attach_scope.present?
     end
 
     def should_apply_any_scope?

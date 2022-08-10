@@ -48,7 +48,7 @@ RSpec.describe "Tabs", type: :system do
         visit avo.resources_user_path user
 
         within first_tab_group do
-          expect(find('[data-target="tab-switcher"]').text).to eq "Teams\nPeople\nSpouses\nProjects"
+          expect(find('[data-target="tab-switcher"]').text).to eq "Fish\nTeams\nPeople\nSpouses\nProjects"
         end
       end
     end
