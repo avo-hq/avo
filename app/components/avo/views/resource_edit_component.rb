@@ -42,7 +42,7 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   end
 
   def is_edit?
-    view == :edit
+    view.in?([:edit, :update])
   end
 
   def form_method
