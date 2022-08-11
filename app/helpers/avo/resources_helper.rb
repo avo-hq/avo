@@ -20,14 +20,9 @@ module Avo
       end
     end
 
-    def show_field_wrapper(**args, &block)
-      render Show::FieldWrapperComponent.new(**args) do
-        capture(&block)
-      end
-    end
-
-    def edit_field_wrapper(**args, &block)
-      render Edit::FieldWrapperComponent.new(**args) do
+    # @todo: maybe aliase show_ and edit_ to this method
+    def field_wrapper(**args, &block)
+      render Avo::FieldWrapperComponent.new(**args) do
         capture(&block)
       end
     end

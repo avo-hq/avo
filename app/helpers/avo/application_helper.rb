@@ -138,5 +138,11 @@ module Avo
     rescue
       Avo.configuration.root_path
     end
+
+    def avo_text_field(id = nil, form: nil, displayed_in_modal: false, **args)
+      field = Avo::Fields::TextField.new id, form: form, **args
+
+      render Avo::Fields::TextField::EditComponent.new field: field, form: form, displayed_in_modal: displayed_in_modal
+    end
   end
 end

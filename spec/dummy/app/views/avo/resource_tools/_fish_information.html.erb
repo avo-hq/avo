@@ -9,29 +9,52 @@
     <% c.body do %>
       <div class="flex flex-col p-4 min-h-24">
         <div class="space-y-4">
-          <h3>There should be an image of this fish below 🐠</h3>
+          <h3>This is a custom tool. It's not Avo CRUD</h3>
 
           <% if form.present? %>
-            <%= form.label :fish_type %>
-            <%= form.text_field :fish_type, value: 'default type of fish', class: input_classes %>
+            <div class="-mx-4 divide-y border-y">
+              <%= avo_text_field(:fish_type, form: form, help: 'Set the fish type', displayed_in_modal: false, required: true
+              # , html: {
+                #   edit: {
+                  #     wrapper: {
+                    #       classes: "sepia",
+              #       style: "background: yellow",
+              #       data: {
+                #         foo: :bar
+              #       }
+              #     }
+              #   }
+              # }
+              ) %>
+              <%= avo_text_field(:information, form: form, name: "location", help: 'Set the fish location', required: true) %>
+              <%#= render Avo::Public::Fields::TextField::EditComponent.new id: :fish_type, form: form, help: 'Some help here', required: true %>
+              <%#= render Avo::Public::Fields::TextField::EditComponent.new id: :properties, form: form, help: 'Some help here', required: true %>
+            </div>
+
+
+            <br>
+            <br>
+            <br>
+            <%#= form.label :fish_type %>
+            <%#= form.text_field :fish_type, value: 'default type of fish', class: input_classes %>
             <br>
 
-            <%= form.label :properties %>
-            <%= form.text_field :properties, multiple: true, value: 'property 1', class: input_classes %>
-            <%= form.text_field :properties, multiple: true, value: 'property 2', class: input_classes %>
+            <%#= form.label :properties %>
+            <%#= form.text_field :properties, multiple: true, value: 'property 1', class: input_classes %>
+            <%#= form.text_field :properties, multiple: true, value: 'property 2', class: input_classes %>
             <br>
 
             <% form.fields_for :information do |information_form| %>
-              <%= form.label :information_name %>
-              <%= information_form.text_field :name, value: 'information name', class: input_classes %>
+              <%#= form.label :information_name %>
+              <%#= information_form.text_field :name, value: 'information name', class: input_classes %>
               <div class="text-gray-600 mt-2 text-sm">This is going to be passed to the model</div>
               <br>
-              <%= form.label :information_history %>
-              <%= information_form.text_field :history, value: 'information history', class: input_classes %>
+              <%#= form.label :information_history %>
+              <%#= information_form.text_field :history, value: 'information history', class: input_classes %>
               <div class="text-gray-600 mt-2 text-sm">This is going to be passed to the model</div>
               <br>
-              <%= form.label :information_age %>
-              <%= information_form.text_field :age, value: 'information age', class: input_classes %>
+              <%#= form.label :information_age %>
+              <%#= information_form.text_field :age, value: 'information age', class: input_classes %>
               <div class="text-gray-600 mt-2 text-sm">This is NOT going to be passed to the model</div>
             <% end %>
           <% end %>

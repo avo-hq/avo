@@ -22,7 +22,15 @@ class FishResource < Avo::BaseResource
   end
 
   field :id, as: :id
-  field :name, as: :text, required: -> { view == :new }
+  field :name, as: :text, srequired: -> { view == :new }, required: true, help: "help text"
+  # , html: {
+  #   edit: {
+  #     wrapper: {
+  #       style: 'background: green',
+  #       classes: 'opacity-80'
+  #     }
+  #   }
+  # }
   field :user, as: :belongs_to
   field :type, as: :text, hide_on: :forms
 
@@ -38,25 +46,37 @@ class FishResource < Avo::BaseResource
       end
     end
 
-    tab "big useless tab here 2" do
+    tab "another big useless tab here 2" do
       panel do
         field :id, as: :id
       end
     end
 
-    tab "big useless tab here 3" do
+    tab "big tab here 3" do
       panel do
         field :id, as: :id
       end
     end
 
-    tab "big useless tab here 4" do
+    tab "big tab here 3.5" do
       panel do
         field :id, as: :id
       end
     end
 
-    tab "big useless tab here 5" do
+    tab "tab here 4" do
+      panel do
+        field :id, as: :id
+      end
+    end
+
+    tab "tab" do
+      panel do
+        field :id, as: :id
+      end
+    end
+
+    tab "tab" do
       panel do
         field :id, as: :id
       end
@@ -74,7 +94,7 @@ class FishResource < Avo::BaseResource
       end
     end
 
-    tab "big useless tab here 8" do
+    tab "big tab 8" do
       panel do
         field :id, as: :id
       end
