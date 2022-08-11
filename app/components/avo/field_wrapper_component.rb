@@ -3,7 +3,7 @@
 class Avo::FieldWrapperComponent < ViewComponent::Base
   # attr_reader :classes
   attr_reader :dash_if_blank
-  attr_reader :data
+  # attr_reader :data
   attr_reader :displayed_in_modal
   # attr_reader :help
   attr_reader :field
@@ -70,5 +70,27 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
 
   def record
     resource.present? ? resource.model : nil
+  end
+
+  def data
+    attributes = {
+      field_id: @field.id,
+      field_type: @field.type
+    }
+
+    # Add the built-in stimulus integration data tags.
+    if @resource.present?
+      @resource.get_stimulus_controllers.split(" ").each do |controller|
+        attributes["#{controller}-target"] = "#{@field.id.to_s.underscore}_#{@field.type.to_s.underscore}_wrapper".camelize(:lower)
+      end
+    end
+
+    # Fetch the data attributes off the html option
+    wrapper_data_attributes = @field.get_html :data, view: view, element: :wrapper
+    if wrapper_data_attributes.present?
+      attributes.merge! wrapper_data_attributes
+    end
+
+    attributes
   end
 end

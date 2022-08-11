@@ -24,23 +24,4 @@ class Avo::Fields::EditComponent < ViewComponent::Base
   def render?
     !field.computed
   end
-
-  def wrapper_data
-    attributes = {}
-
-    # Add the built-in stimulus integration data tags.
-    if @resource.present?
-      @resource.get_stimulus_controllers.split(" ").each do |controller|
-        attributes["#{controller}-target"] = "#{@field.id.to_s.underscore}_#{@field.type.to_s.underscore}_wrapper".camelize(:lower)
-      end
-    end
-
-    # Fetch the data attributes off the html option
-    wrapper_data_attributes = @field.get_html :data, view: view, element: :wrapper
-    if wrapper_data_attributes.present?
-      attributes.merge! wrapper_data_attributes
-    end
-
-    attributes
-  end
 end
