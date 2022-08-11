@@ -6,6 +6,7 @@ module Avo
       attr_accessor :attach_scope
       attr_accessor :description
       attr_accessor :discreet_pagination
+      attr_accessor :hide_search_input
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
@@ -14,6 +15,7 @@ module Avo
         @attach_scope = args[:attach_scope].present? ? args[:attach_scope] : nil
         @display = args[:display].present? ? args[:display] : :show
         @searchable = args[:searchable] == true
+        @hide_search_input = args[:hide_search_input] || false
         @description = args[:description]
         @use_resource = args[:use_resource] || nil
         @discreet_pagination = args[:discreet_pagination] || false

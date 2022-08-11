@@ -4,8 +4,12 @@ class PhotoCommentResource < Avo::BaseResource
   self.title = :tiny_name
   self.includes = []
   self.model_class = ::Comment
-  self.search_query = ->(params:) do
-    scope.ransack(id_eq: params[:q], m: "or").result(distinct: false)
+  self.search_query = -> do
+    if params[:via_association] == 'has_many'
+      scope.ransack(id_eq: params[:q], m: "or").result(distinct: false).joins(:photo_attachment)
+    else
+      scope.ransack(id_eq: params[:q], m: "or").result(distinct: false)
+    end
   end
 
   field :id, as: :id
