@@ -146,16 +146,10 @@ module Avo
         end
       end
 
-      respond_to do |format|
-        if saved
-          format.html { redirect_to after_create_path, notice: create_success_message}
-        else
-          add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
-          add_breadcrumb t("avo.new").humanize
-          set_actions
-          flash.now[:error] = create_fail_message
-          format.html { render :new, status: :unprocessable_entity }
-        end
+      if saved
+        create_success_action
+      else
+        create_fail_action
       end
     end
 
@@ -168,24 +162,18 @@ module Avo
       saved = save_model
       @resource = @resource.hydrate(model: @model, view: :edit, user: _current_user)
 
-      respond_to do |format|
-        if saved
-          format.html { redirect_to after_update_path, notice: update_success_message }
-        else
-          set_actions
-          flash.now[:error] = update_fail_message
-          format.html { render :edit, status: :unprocessable_entity }
-        end
+      if saved
+        update_success_action
+      else
+        update_fail_action
       end
     end
 
     def destroy
-      respond_to do |format|
-        if destroy_model
-          format.html { redirect_to after_destroy_path, notice: destroy_success_message }
-        else
-          format.html { redirect_back fallback_location: params[:referrer] || resources_path(resource: @resource, turbo_frame: params[:turbo_frame], view_type: params[:view_type]), error: destroy_fail_message }
-        end
+      if destroy_model
+        destroy_success_action
+      else
+        destroy_fail_action
       end
     end
 
@@ -396,6 +384,22 @@ module Avo
       add_breadcrumb t("avo.edit").humanize
     end
 
+    def create_success_action
+      respond_to do |format|
+        format.html { redirect_to after_create_path, notice: create_success_message}
+      end
+    end
+
+    def create_fail_action
+      respond_to do |format|
+        add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
+        add_breadcrumb t("avo.new").humanize
+        set_actions
+        flash.now[:error] = create_fail_message
+        format.html { render :new, status: :unprocessable_entity }
+      end
+    end
+
     def create_success_message
       "#{@resource.name} #{t("avo.was_successfully_created")}."
     end
@@ -415,6 +419,20 @@ module Avo
       redirect_path_from_resource_option(:after_create_path) || resource_path(model: @model, resource: @resource)
     end
 
+    def update_success_action
+      respond_to do |format|
+        format.html { redirect_to after_update_path, notice: update_success_message }
+      end
+    end
+
+    def update_fail_action
+      respond_to do |format|
+        set_actions
+        flash.now[:error] = update_fail_message
+        format.html { render :edit, status: :unprocessable_entity }
+      end
+    end
+
     def update_success_message
       "#{@resource.name} #{t("avo.was_successfully_updated")}."
     end
@@ -427,6 +445,18 @@ module Avo
       return params[:referrer] if params[:referrer].present?
 
       redirect_path_from_resource_option(:after_update_path) || resource_path(model: @model, resource: @resource)
+    end
+
+    def destroy_success_action
+      respond_to do |format|
+        format.html { redirect_to after_destroy_path, notice: destroy_success_message }
+      end
+    end
+
+    def destroy_fail_action
+      respond_to do |format|
+        format.html { redirect_back fallback_location: params[:referrer] || resources_path(resource: @resource, turbo_frame: params[:turbo_frame], view_type: params[:view_type]), error: destroy_fail_message }
+      end
     end
 
     def destroy_success_message
