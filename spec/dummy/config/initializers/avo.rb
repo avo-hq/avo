@@ -70,6 +70,10 @@ Avo.configure do |config|
       end
     end
 
+    section "Geography", icon: "heroicons/outline/globe", collapsable: true, collapsed: true do
+      resource :city
+    end
+
     section "Tools", icon: "heroicons/outline/finger-print", collapsable: true, collapsed: true do
       all_tools
     end

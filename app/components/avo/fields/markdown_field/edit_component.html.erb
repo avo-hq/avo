@@ -3,7 +3,7 @@
     <%= @form.text_area @field.id,
       class: classes("w-full js-has-simple-mde-editor"),
       data: {
-        view: @resource.view,
+        view: view,
         'simple-mde-target': 'element',
         'component-options': @field.options.to_json,
       },

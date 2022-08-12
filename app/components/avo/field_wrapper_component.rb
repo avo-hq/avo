@@ -16,6 +16,7 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
   attr_reader :view
 
   def initialize(
+    compact: false,
     dash_if_blank: true,
     data: {},
     displayed_in_modal: false,
@@ -31,6 +32,7 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
   )
     @args = args
     @classes = args[:class].present? ? args[:class] : ""
+    @compact = compact
     @dash_if_blank = dash_if_blank
     @data = data
     @displayed_in_modal = displayed_in_modal
@@ -45,7 +47,7 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
   end
 
   def classes(extra_classes = "")
-    "relative flex flex-col md:flex-row md:items-center pb-2 md:pb-0 leading-tight min-h-14 #{@classes || ""} #{extra_classes || ""} #{@field.get_html(:classes, view: view, element: :wrapper)}"
+    "relative flex flex-col flex-grow pb-2 md:pb-0 leading-tight min-h-14 #{compact? ? "" : "md:flex-row md:items-center"} #{@classes || ""} #{extra_classes || ""} #{@field.get_html(:classes, view: view, element: :wrapper)}"
   end
 
   def style
@@ -92,5 +94,9 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
     end
 
     attributes
+  end
+
+  def compact?
+    @compact
   end
 end

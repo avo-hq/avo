@@ -22,7 +22,7 @@
         <% end %>
       </div>
     <% elsif edit? %>
-      <div class="self-center <% if displayed_in_modal or full_width %> w-full <% else %> w-full md:w-8/12 <% end %>" data-slot="value">
+      <div class="self-center <% if displayed_in_modal or full_width or compact? %> w-full <% else %> w-full md:w-8/12 <% end %>" data-slot="value">
         <%= content %>
         <% if record.present? and record.errors.include? field.id %>
           <div class="text-red-600 mt-2 text-sm"><%= record.errors.full_messages_for(field.id).to_sentence %></div>

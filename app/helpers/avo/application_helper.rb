@@ -17,18 +17,18 @@ module Avo
     end
 
     def empty_state(**args)
-      render Avo::EmptyStateComponent.new **args
+      render Avo::EmptyStateComponent.new(**args)
     end
 
     def a_button(**args, &block)
       render Avo::ButtonComponent.new(is_link: false, **args) do
-        capture(&block) if block_given?
+        capture(&block) if block
       end
     end
 
     def a_link(path = nil, **args, &block)
       render Avo::ButtonComponent.new(path, is_link: true, **args) do
-        capture(&block) if block_given?
+        capture(&block) if block
       end
     end
 
@@ -139,10 +139,35 @@ module Avo
       Avo.configuration.root_path
     end
 
-    def avo_text_field(id = nil, form: nil, displayed_in_modal: false, **args)
-      field = Avo::Fields::TextField.new id, form: form, **args
+    def avo_field(type = nil, id = nil, as: nil, for_view: :show, form: nil, component_options: {}, **args, &block)
+      if as.present?
+        id = type
+        type = as
+      end
+      field_klass = "Avo::Fields::#{type.to_s.camelize}Field".safe_constantize
+      field = field_klass.new id, form: form, **args, &block
 
-      render Avo::Fields::TextField::EditComponent.new field: field, form: form, displayed_in_modal: displayed_in_modal
+      # Add the form record to the field so all fields have access to it.
+      field.hydrate(model: form.object)
+
+      component_klass = "Avo::Fields::#{type.to_s.camelize}Field::#{for_view.to_s.camelize}Component".safe_constantize
+      return if component_klass.nil?
+
+      render component_klass.new field: field, form: form, **component_options
     end
+
+    def avo_show_field(id, type = nil, for_view: :show, **args, &block)
+      avo_field(id, type, **args, for_view: for_view, &block)
+    end
+
+    def avo_edit_field(id, type = nil, for_view: :edit, **args, &block)
+      avo_field(id, type, **args, for_view: for_view, &block)
+    end
+
+    # def avo_text_field(id = nil, form: nil, component_options: {}, **args)
+    #   field = Avo::Fields::TextField.new id, form: form, **args
+
+    #   render Avo::Fields::TextField::EditComponent.new field: field, form: form, **component_options
+    # end
   end
 end

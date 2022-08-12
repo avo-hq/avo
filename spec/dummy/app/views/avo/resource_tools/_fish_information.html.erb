@@ -13,7 +13,7 @@
 
           <% if form.present? %>
             <div class="-mx-4 divide-y border-y">
-              <%= avo_text_field(:fish_type, form: form, help: 'Set the fish type', displayed_in_modal: false, required: true
+              <%= avo_edit_field(:fish_type, as: :text, form: form, help: 'Set the fish type', displayed_in_modal: false, required: true
               # , html: {
                 #   edit: {
                   #     wrapper: {
@@ -26,7 +26,7 @@
               #   }
               # }
               ) %>
-              <%= avo_text_field(:information, form: form, name: "location", help: 'Set the fish location', required: true) %>
+              <%= avo_edit_field(:information, as: :text, form: form, name: "location", help: 'Set the fish location', required: true) %>
               <%#= render Avo::Public::Fields::TextField::EditComponent.new id: :fish_type, form: form, help: 'Some help here', required: true %>
               <%#= render Avo::Public::Fields::TextField::EditComponent.new id: :properties, form: form, help: 'Some help here', required: true %>
             </div>
