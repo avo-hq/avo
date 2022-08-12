@@ -67,48 +67,18 @@ module Avo
     def svg(file_name, **args)
       return if file_name.nil?
 
-      options = {}
-      options[:class] = args[:class].present? ? args[:class] : ""
-      options[:class] += args[:extra_class].present? ? " #{args[:extra_class]}" : ""
+      file_name = "#{file_name}.svg" unless file_name.end_with? ".svg"
 
-      if args[:'data-target'].present?
-        options[:'data-target'] = args[:'data-target']
-      end
-      if args[:'data-tippy'].present?
-        options[:'data-tippy'] = args[:'data-tippy']
-      end
-      if args[:title].present?
-        options[:title] = args[:title]
+      paths = [
+        Rails.root.join(file_name).to_s,
+        Avo::Engine.root.join("app", "assets", "svgs", file_name).to_s
+      ]
+
+      path = paths.find do |path|
+        File.exist? path
       end
 
-      # Create the path to the svgs directory
-      file_path = "#{Avo::Engine.root}/app/assets/svgs/#{file_name}"
-      file_path = "#{file_path}.svg" unless file_path.end_with? ".svg"
-
-      # Create a cache hash
-      hash = Digest::MD5.hexdigest "#{file_path.underscore}_#{options}"
-
-      svg_content = Avo::App.cache_store.fetch "svg_file_#{hash}", expires_in: 1.week, cache_nils: false do
-        if File.exist?(file_path)
-          file = File.read(file_path)
-
-          # parse svg
-          doc = Nokogiri::HTML::DocumentFragment.parse file
-          svg = doc.at_css "svg"
-
-          # attach options
-          options.each do |attr, value|
-            svg[attr.to_s] = value
-          end
-
-          # cast to html
-          doc.to_html.html_safe
-        end
-      end
-
-      return "(not found)" if svg_content.to_s.blank?
-
-      svg_content
+      inline_svg_tag path, **args
     end
 
     def input_classes(extra_classes = "", has_error: false)
@@ -138,5 +108,37 @@ module Avo
     rescue
       Avo.configuration.root_path
     end
+
+    def avo_field(type = nil, id = nil, as: nil, for_view: :show, form: nil, component_options: {}, **args, &block)
+      if as.present?
+        id = type
+        type = as
+      end
+      field_klass = "Avo::Fields::#{type.to_s.camelize}Field".safe_constantize
+      field = field_klass.new id, form: form, **args, &block
+
+      # Add the form record to the field so all fields have access to it.
+      field.hydrate(model: form.object)
+
+      component_klass = "Avo::Fields::#{type.to_s.camelize}Field::#{for_view.to_s.camelize}Component".safe_constantize
+      return if component_klass.nil?
+
+      render component_klass.new field: field, form: form, **component_options
+    end
+
+    def avo_show_field(id, type = nil, for_view: :show, **args, &block)
+      avo_field(id, type, **args, for_view: for_view, &block)
+    end
+
+    def avo_edit_field(id, type = nil, for_view: :edit, **args, &block)
+      avo_field(id, type, **args, for_view: for_view, &block)
+    end
+
+    # def avo_text_field(id = nil, form: nil, component_options: {}, **args)
+    #   field = Avo::Fields::TextField.new id, form: form, **args
+
+    #   render Avo::Fields::TextField::EditComponent.new field: field, form: form, **component_options
+    # end
   end
 end
+
