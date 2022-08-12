@@ -20,7 +20,7 @@ RSpec.feature "ExposedMethodsBaseController", type: :feature do
       fill_in "course_name", with: "Great Course"
       save_and_wait_for_loaded
 
-      expect(current_path).to eq "/admin/resources/courses/1"
+      expect(current_path).to eq "/admin/resources/courses/#{Course.last.id}"
       expect(page).to have_text "Course created!"
     end
 
