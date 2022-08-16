@@ -59,6 +59,8 @@ gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "devise"
 gem "database_cleaner"
 
+gem "action_policy"
+
 gem "ruby-debug-ide", require: false
 #
 # END Dependencies for dummy_app

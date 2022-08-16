@@ -23,7 +23,7 @@ module Avo
     before_action :set_view
     before_action :set_sidebar_open
 
-    rescue_from Pundit::NotAuthorizedError, with: :render_unauthorized
+    rescue_from Avo::Services::AuthorizationService::NotAuthorizedError, with: :render_unauthorized
     rescue_from ActiveRecord::RecordInvalid, with: :exception_logger
 
     helper_method :_current_user, :resources_path, :resource_path, :new_resource_path, :edit_resource_path, :resource_attach_path, :resource_detach_path, :related_resources_path, :turbo_frame_request?
@@ -243,7 +243,7 @@ module Avo
     end
 
     def render_unauthorized(exception)
-      if !exception.is_a? Pundit::NotDefinedError
+      if !exception.is_a? Avo::Services::AuthorizationService::PolicyNotDefinedError
         flash.now[:notice] = t "avo.not_authorized"
 
         redirect_url = if request.referrer.blank? || (request.referrer == request.url)

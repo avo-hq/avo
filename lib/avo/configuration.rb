@@ -78,6 +78,7 @@ module Avo
       @buttons_on_form_footers = false
       @main_menu = nil
       @profile_menu = nil
+      @authorization_client = :pundit
     end
 
     def current_user_method(&block)
@@ -121,6 +122,16 @@ module Avo
     def feature_enabled?(feature)
       !@disabled_features.map(&:to_sym).include?(feature.to_sym)
     end
+
+    def authorization_client
+      case @authorization_client
+      when :pundit then Services::AuthorizationClient::PunditClient
+      when :action_policy then Services::AuthorizationClient::ActionPolicyClient
+      else
+        @authorization_client
+      end
+    end
+
   end
 
   def self.configuration

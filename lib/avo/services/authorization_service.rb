@@ -1,21 +1,28 @@
 module Avo
   module Services
     class AuthorizationService
+      class PolicyNotDefinedError < StandardError; end
+      class NotAuthorizedError < StandardError; end
+
       attr_accessor :user
       attr_accessor :record
 
       class << self
+        def client
+          Avo.configuration.authorization_client.new
+        end
+
         def authorize(user, record, action, **args)
           return true if skip_authorization
           return true if user.nil?
 
           begin
-            if Pundit.policy user, record
-              Pundit.authorize user, record, action
+            if client.policy(user, record)
+              client.authorize user, record, action
             end
 
             true
-          rescue Pundit::NotDefinedError => e
+          rescue PolicyNotDefinedError => e
             return false unless Avo.configuration.raise_error_on_missing_policy
 
             raise e
@@ -34,7 +41,7 @@ module Avo
           # If no action passed we should raise error if the user wants that.
           # If not, just allow it.
           if action.nil?
-            raise Pundit::NotDefinedError.new "Policy method is missing" if Avo.configuration.raise_error_on_missing_policy
+            raise PolicyNotDefinedError.new "Policy method is missing" if Avo.configuration.raise_error_on_missing_policy
 
             return true
           end
@@ -50,8 +57,8 @@ module Avo
           return model if user.nil?
 
           begin
-            Pundit.policy_scope! user, model
-          rescue Pundit::NotDefinedError => e
+            client.apply_policy! user, model
+          rescue PolicyNotDefinedError => e
             return model unless Avo.configuration.raise_error_on_missing_policy
 
             raise e
@@ -69,12 +76,12 @@ module Avo
         end
 
         def get_policy(user, record)
-          Pundit.policy user, record
+          client.policy user, record
         end
 
         def defined_methods(user, record, **args)
-          Pundit.policy!(user, record).methods
-        rescue Pundit::NotDefinedError => e
+          client.policy!(user, record).methods
+        rescue PolicyNotDefinedError => e
           return [] unless Avo.configuration.raise_error_on_missing_policy
 
           raise e

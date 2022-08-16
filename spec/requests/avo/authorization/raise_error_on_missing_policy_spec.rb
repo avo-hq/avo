@@ -8,14 +8,14 @@ RSpec.describe 'raise_error_on_missing_policy', type: :feature do
     it 'fails with a missing policy' do
       expect {
         visit '/admin/resources/people'
-      }.to raise_error Pundit::NotDefinedError
+      }.to raise_error Avo::Services::AuthorizationService::PolicyNotDefinedError
     end
 
     it 'succeeds with a present policy' do
       RSpec::Expectations.configuration.on_potential_false_positives = :nothing
       expect {
         visit '/admin/resources/projects'
-      }.not_to raise_error an_instance_of(Pundit::NotDefinedError)
+      }.not_to raise_error an_instance_of(Avo::Services::AuthorizationService::PolicyNotDefinedError)
       RSpec::Expectations.configuration.on_potential_false_positives = :warn
     end
   end
