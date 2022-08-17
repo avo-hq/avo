@@ -146,16 +146,14 @@ module Avo
         end
       end
 
-      respond_to do |format|
-        if saved
-          format.html { redirect_to after_create_path, notice: "#{@resource.name} #{t("avo.was_successfully_created")}." }
-        else
-          add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
-          add_breadcrumb t("avo.new").humanize
-          set_actions
-          flash.now[:error] = t "avo.you_missed_something_check_form"
-          format.html { render :new, status: :unprocessable_entity }
-        end
+      add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
+      add_breadcrumb t("avo.new").humanize
+      set_actions
+
+      if saved
+        create_success_action
+      else
+        create_fail_action
       end
     end
 
@@ -167,27 +165,20 @@ module Avo
       # model gets instantiated and filled in the fill_model method
       saved = save_model
       @resource = @resource.hydrate(model: @model, view: :edit, user: _current_user)
+      set_actions
 
-      respond_to do |format|
-        if saved
-          format.html { redirect_to after_update_path, notice: "#{@resource.name} #{t("avo.was_successfully_updated")}." }
-        else
-          set_actions
-          flash.now[:error] = t "avo.you_missed_something_check_form"
-          format.html { render :edit, status: :unprocessable_entity }
-        end
+      if saved
+        update_success_action
+      else
+        update_fail_action
       end
     end
 
     def destroy
-      respond_to do |format|
-        if destroy_model
-          format.html { redirect_to params[:referrer] || resources_path(resource: @resource, turbo_frame: params[:turbo_frame], view_type: params[:view_type]), notice: t("avo.resource_destroyed", attachment_class: @attachment_class) }
-        else
-          error_message = @errors.present? ? @errors.first : t("avo.failed")
-
-          format.html { redirect_back fallback_location: params[:referrer] || resources_path(resource: @resource, turbo_frame: params[:turbo_frame], view_type: params[:view_type]), error: error_message }
-        end
+      if destroy_model
+        destroy_success_action
+      else
+        destroy_fail_action
       end
     end
 
@@ -398,6 +389,27 @@ module Avo
       add_breadcrumb t("avo.edit").humanize
     end
 
+    def create_success_action
+      respond_to do |format|
+        format.html { redirect_to after_create_path, notice: create_success_message}
+      end
+    end
+
+    def create_fail_action
+      respond_to do |format|
+        flash.now[:error] = create_fail_message
+        format.html { render :new, status: :unprocessable_entity }
+      end
+    end
+
+    def create_success_message
+      "#{@resource.name} #{t("avo.was_successfully_created")}."
+    end
+
+    def create_fail_message
+      t "avo.you_missed_something_check_form"
+    end
+
     def after_create_path
       # If this is an associated record return to the association show page
       if params[:via_relation_class].present? && params[:via_resource_id].present?
@@ -409,10 +421,55 @@ module Avo
       redirect_path_from_resource_option(:after_create_path) || resource_path(model: @model, resource: @resource)
     end
 
+    def update_success_action
+      respond_to do |format|
+        format.html { redirect_to after_update_path, notice: update_success_message }
+      end
+    end
+
+    def update_fail_action
+      respond_to do |format|
+        flash.now[:error] = update_fail_message
+        format.html { render :edit, status: :unprocessable_entity }
+      end
+    end
+
+    def update_success_message
+      "#{@resource.name} #{t("avo.was_successfully_updated")}."
+    end
+
+    def update_fail_message
+      t "avo.you_missed_something_check_form"
+    end
+
     def after_update_path
       return params[:referrer] if params[:referrer].present?
 
       redirect_path_from_resource_option(:after_update_path) || resource_path(model: @model, resource: @resource)
+    end
+
+    def destroy_success_action
+      respond_to do |format|
+        format.html { redirect_to after_destroy_path, notice: destroy_success_message }
+      end
+    end
+
+    def destroy_fail_action
+      respond_to do |format|
+        format.html { redirect_back fallback_location: params[:referrer] || resources_path(resource: @resource, turbo_frame: params[:turbo_frame], view_type: params[:view_type]), error: destroy_fail_message }
+      end
+    end
+
+    def destroy_success_message
+      t("avo.resource_destroyed", attachment_class: @attachment_class)
+    end
+
+    def destroy_fail_message
+      @errors.present? ? @errors.first : t("avo.failed")
+    end
+
+    def after_destroy_path
+      params[:referrer] || resources_path(resource: @resource, turbo_frame: params[:turbo_frame], view_type: params[:view_type])
     end
 
     def redirect_path_from_resource_option(action = :after_update_path)
