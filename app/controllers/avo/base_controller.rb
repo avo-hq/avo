@@ -146,6 +146,10 @@ module Avo
         end
       end
 
+      add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
+      add_breadcrumb t("avo.new").humanize
+      set_actions
+
       if saved
         create_success_action
       else
@@ -161,6 +165,7 @@ module Avo
       # model gets instantiated and filled in the fill_model method
       saved = save_model
       @resource = @resource.hydrate(model: @model, view: :edit, user: _current_user)
+      set_actions
 
       if saved
         update_success_action
@@ -392,9 +397,6 @@ module Avo
 
     def create_fail_action
       respond_to do |format|
-        add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
-        add_breadcrumb t("avo.new").humanize
-        set_actions
         flash.now[:error] = create_fail_message
         format.html { render :new, status: :unprocessable_entity }
       end
@@ -427,7 +429,6 @@ module Avo
 
     def update_fail_action
       respond_to do |format|
-        set_actions
         flash.now[:error] = update_fail_message
         format.html { render :edit, status: :unprocessable_entity }
       end
