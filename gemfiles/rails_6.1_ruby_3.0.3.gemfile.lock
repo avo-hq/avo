@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    avo (2.12.0)
+    avo (2.13.0)
       active_link_to
       addressable
       breadcrumbs_on_rails
@@ -136,7 +136,7 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
-    chartkick (4.2.0)
+    chartkick (4.2.1)
     childprocess (4.1.0)
     concurrent-ruby (1.1.10)
     countries (5.1.1)
