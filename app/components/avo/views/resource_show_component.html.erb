@@ -36,6 +36,7 @@
                   tippy: control.title ? :tooltip : nil,
                   'resource-id': @resource.model.id,
                 } do %>
+                <%= control.label %>
               <% end %>
             <% end %>
           <% elsif control.actions_list? %>
@@ -90,7 +91,7 @@
                   data: {
                     confirm: "Are you sure you want to detach this #{title}."
                   } do %>
-                <%= t('avo.detach_item', item: title).capitalize %>
+                <%= control.label %>
               <% end %>
             <% end %>
           <% end %>
