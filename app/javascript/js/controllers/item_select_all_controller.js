@@ -11,6 +11,11 @@ export default class extends Controller {
     const value = !!event.target.checked
     document.querySelectorAll(`[data-controller="item-selector"][data-resource-name="${this.resourceName}"] input[type=checkbox]`)
       .forEach((checkbox) => checkbox.checked != value && checkbox.click())
+    this.displayInfo(value)
+  }
+
+  displayInfo(display) {
+    document.getElementById('selected_info').style.display = display ? 'block' : 'none'
   }
 
   update() {
