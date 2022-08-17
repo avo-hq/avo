@@ -22,8 +22,8 @@ export default class extends Controller {
   }
 
   get initiallyCollapsed() {
-    if (this.defaultState === 'collapsed') {
-      return this.userState === 'collapsed'
+    if (!this.userState) {
+      return this.defaultState === 'collapsed'
     }
 
     return this.userState === 'collapsed'
