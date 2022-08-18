@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.feature "RequiredTakesABlocks", type: :feature do
+RSpec.feature "RequiredTakesABlock", type: :feature do
   context "new" do
     it "is required" do
       visit "/admin/resources/fish/new"
