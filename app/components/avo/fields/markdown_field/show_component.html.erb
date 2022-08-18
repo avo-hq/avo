@@ -6,6 +6,7 @@
       disabled: @field.readonly,
       'data-simple-mde-target': 'element',
       'data-component-options': @field.options.to_json,
-      'data-view': :show %>
+      'data-view': :show,
+      required: @field.is_required? %>
   </div>
 <% end %>

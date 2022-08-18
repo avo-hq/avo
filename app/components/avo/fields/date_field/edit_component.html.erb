@@ -18,6 +18,7 @@
       },
       disabled: @field.readonly,
       placeholder: @field.placeholder,
+      required: @field.is_required?,
       style: @field.get_html(:style, view: view, element: :input)
     %>
     <%= @form.text_field @field.id,
@@ -30,6 +31,7 @@
       },
       disabled: @field.readonly,
       placeholder: @field.placeholder,
+      required: @field.is_required?,
       style: @field.get_html(:style, view: view, element: :input)
     %>
   <% end %>

@@ -6,6 +6,7 @@ RSpec.feature "RequiredTakesABlocks", type: :feature do
       visit "/admin/resources/fish/new"
 
       expect(page).to have_selector ".text-red-600.ml-1"
+      expect(page).to have_required_field "fish[name]"
     end
   end
 
@@ -16,6 +17,7 @@ RSpec.feature "RequiredTakesABlocks", type: :feature do
       visit "/admin/resources/fish/#{fish.id}/edit"
 
       expect(page).not_to have_selector ".text-red-600.ml-1"
+      expect(page).not_to have_required_field("fish[name]")
     end
   end
 end

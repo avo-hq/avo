@@ -48,6 +48,7 @@ Avo::App.boot
 
 require "support/download_helpers"
 require "support/request_helpers"
+require "support/field_matchers"
 
 Capybara.register_driver :chrome_headless do |app|
   Capybara::Selenium::Driver.new app,
