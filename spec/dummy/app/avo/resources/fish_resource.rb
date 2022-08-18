@@ -7,6 +7,7 @@ class FishResource < Avo::BaseResource
   self.extra_params = [:fish_type, :something_else, properties: [], information: [:name, :history]]
 
   field :id, as: :id
+  field :id, as: :number, only_on: :forms, readonly: -> { view != :new }
   field :name, as: :text, required: -> { view == :new }
   field :type, as: :text, hide_on: :forms
 
