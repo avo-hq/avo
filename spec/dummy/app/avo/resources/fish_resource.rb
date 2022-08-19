@@ -22,6 +22,7 @@ class FishResource < Avo::BaseResource
   end
 
   field :id, as: :id
+  field :id, as: :number, only_on: :forms, readonly: -> { view != :new }
   field :name, as: :text, required: -> { view == :new }
   field :user, as: :belongs_to
   field :type, as: :text, hide_on: :forms
