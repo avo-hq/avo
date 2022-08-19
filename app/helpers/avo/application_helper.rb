@@ -71,12 +71,15 @@ module Avo
 
       paths = [
         Rails.root.join(file_name).to_s,
+        Rails.root.join("app", "assets", "svgs", file_name).to_s,
         Avo::Engine.root.join("app", "assets", "svgs", file_name).to_s
       ]
 
       path = paths.find do |path|
         File.exist? path
       end
+
+      return if path.nil?
 
       inline_svg_tag path, **args
     end
