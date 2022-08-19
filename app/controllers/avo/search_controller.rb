@@ -47,7 +47,7 @@ module Avo
       query =  Avo::Hosts::SearchScopeHost.new(
         block: resource.search_query,
         params: params,
-        scope: resource.class.scope
+        scope: resource.class.scope.limit(8)
       ).handle
 
       query = apply_scope(query) if should_apply_any_scope?
