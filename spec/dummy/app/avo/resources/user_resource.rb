@@ -25,7 +25,7 @@ class UserResource < Avo::BaseResource
   field :active, as: :boolean, name: "Is active", show_on: :show
   field :cv, as: :file, name: "CV"
   field :is_admin?, as: :boolean, name: "Is admin", only_on: :index
-  field :roles, as: :boolean_group, options: {admin: "Administrator", manager: "Manager", writer: "Writer"}
+  field :roles, as: :boolean_group, options: {admin: "Administrator", manager: "Manager", writer: "Writer"}, only_on: :index
   field :roles, as: :text, hide_on: :all, as_description: true do |model, resource, view, field|
     "This user has the following roles: #{model.roles.select { |key, value| value }.keys.join(", ")}"
   end
@@ -56,6 +56,21 @@ class UserResource < Avo::BaseResource
   end
 
   tabs do
+    field :fish, as: :has_one
+    field :teams, as: :has_and_belongs_to_many
+    field :people,
+      as: :has_many,
+      show_on: :edit,
+      translation_key: "avo.field_translations.people"
+    field :spouses, as: :has_many # STI has_many resource
+    field :projects, as: :has_and_belongs_to_many
+
+    tab "Roles", description: "This tab is here just to hide the Birthday tab on the edit screen" do
+      panel do
+        field :roles, as: :boolean_group, options: {admin: "Administrator", manager: "Manager", writer: "Writer"}
+      end
+    end
+
     tab "Birthday", description: "hey you", hide_on: :show do
       panel do
         field :birthday,
@@ -67,15 +82,6 @@ class UserResource < Avo::BaseResource
           required: true
       end
     end
-
-    field :fish, as: :has_one
-    field :teams, as: :has_and_belongs_to_many
-    field :people,
-      as: :has_many,
-      show_on: :edit,
-      translation_key: "avo.field_translations.people"
-    field :spouses, as: :has_many # STI has_many resource
-    field :projects, as: :has_and_belongs_to_many
   end
 
   tabs do
