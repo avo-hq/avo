@@ -12,7 +12,7 @@ module Avo
 
     def handle
       resource_ids = action_params[:fields][:resource_ids].split(",")
-      selected_all = true #action_params[:fields][:selected_all] == 1
+      selected_all = action_params[:fields][:selected_all].to_i == 1
 
       models = if selected_all
         ActiveRecord::Base.connection.exec_query base64_decode_query
@@ -20,7 +20,7 @@ module Avo
         @resource.class.find_scope.find resource_ids
       end
 
-      fields = action_params[:fields].except("resource_ids", "query")
+      fields = action_params[:fields].except("resource_ids", "query", "selected_all")
 
       args = {
         fields: fields,
