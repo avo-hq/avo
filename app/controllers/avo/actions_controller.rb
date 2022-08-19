@@ -12,9 +12,15 @@ module Avo
 
     def handle
       resource_ids = action_params[:fields][:resource_ids].split(",")
-      models = @resource.class.find_scope.find resource_ids
+      selected_all = true #action_params[:fields][:selected_all] == 1
 
-      fields = action_params[:fields].except("resource_ids")
+      models = if selected_all
+        ActiveRecord::Base.connection.exec_query base64_decode_query
+      else
+        @resource.class.find_scope.find resource_ids
+      end
+
+      fields = action_params[:fields].except("resource_ids", "query")
 
       args = {
         fields: fields,
@@ -89,6 +95,10 @@ module Avo
         # Remove the silent placeholder messages
         message[:type] != :silent
       end
+    end
+
+    def base64_decode_query
+      Base64.decode64 action_params[:fields][:query]
     end
   end
 end

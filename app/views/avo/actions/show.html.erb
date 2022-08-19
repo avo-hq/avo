@@ -21,6 +21,9 @@
         <%= @action.message %>
       </div>
       <%= form.hidden_field :resource_ids, value: params[:resource_ids], 'data-action-target': 'resourceIds' %>
+      <% if true %> <!-- if data-selected-all == "1" -->
+        <%= form.hidden_field :query, value: params[:selected_query], 'data-action-target': 'selectedQuery' %>
+      <% end %>
       <% if @action.get_fields.present? %>
         <div class="mt-4">
           <% @action.get_fields.each_with_index do |field, index| %>

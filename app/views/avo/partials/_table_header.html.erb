@@ -1,7 +1,7 @@
 <div id='selected_info' style="display: none;">
-  <%= "#{@pagy.items} selected from #{@pagy.count}" %>
+  <%= "#{@pagy.in} selected from #{@pagy.count}" %>
   <button style='color:blue' onclick="document.getElementById('selected_info').style.display = 'none'">Dismiss</button> |
-  <%= link_to "Select All" %>
+  <%= link_to "Select All"%>
 </div>
 
 <thead class="bg-white border-b border-gray-200 pb-1">

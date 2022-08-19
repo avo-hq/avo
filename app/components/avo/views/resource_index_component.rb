@@ -16,7 +16,8 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     turbo_frame: "",
     parent_model: nil,
     parent_resource: nil,
-    applied_filters: []
+    applied_filters: [],
+    query: nil
   )
     @resource = resource
     @resources = resources
@@ -31,6 +32,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     @parent_resource = parent_resource
     @applied_filters = applied_filters
     @view = :index
+    @query = query
   end
 
   def title
@@ -168,6 +170,10 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
       class: reflection_model_class,
       id: @parent_model.id
     }
+  end
+
+  def base64_query
+    Base64.encode64(@query.to_sql) if @query.present?
   end
 
 end
