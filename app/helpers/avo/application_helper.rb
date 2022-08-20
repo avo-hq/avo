@@ -64,15 +64,21 @@ module Avo
       classes
     end
 
+    # I takes a filename or a path and tries to find the asset in this order:
+    # - file inside the parent app's `app/assets/svgs` path
+    # - full path in the parent app
+    # - file inside the Avo's app/assets/svgs path
+    # - full path in Avo's assets
     def svg(file_name, **args)
       return if file_name.nil?
 
       file_name = "#{file_name}.svg" unless file_name.end_with? ".svg"
 
       paths = [
-        Rails.root.join(file_name).to_s,
         Rails.root.join("app", "assets", "svgs", file_name).to_s,
-        Avo::Engine.root.join("app", "assets", "svgs", file_name).to_s
+        Rails.root.join(file_name).to_s,
+        Avo::Engine.root.join("app", "assets", "svgs", file_name).to_s,
+        Avo::Engine.root.join(file_name).to_s,
       ]
 
       path = paths.find do |path|

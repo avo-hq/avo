@@ -7,9 +7,9 @@
   <% if @card.class.display_header %>
     <div class="px-4 pt-4">
       <div class="flex justify-between items-center min-h-6">
-          <div class="text-base font-bold text-gray-700 leading-none">
-            <%= @card.label %>
-          </div>
+        <div class="text-base font-bold text-gray-700 leading-none">
+          <%= @card.label %>
+        </div>
         <div data-controller="select">
           <% if @card.type.in?([:metric, :chartkick, :partial]) && @card.ranges.present? %>
             <%= select_tag "#{@card.id}_#{@card.index}_range", options_for_select(@card.ranges, @card.range),
@@ -33,13 +33,14 @@
       <%= render 'metric_card', card: @card %>
     </div>
   <% end %>
-  <% if @card.description %>
-    <div class="absolute inset-auto bottom-0 right-0 mb-4 mr-4">
-      <%= helpers.svg 'heroicons/solid/information-circle',
-        class: 'h-4 text-gray-500 cursor-pointer',
-        title: @card.description,
-        'data-tippy': 'tooltip',
-        'data-target': 'card-description' %>
-    </div>
+  <% if @card.description.present? %>
+    <%= content_tag :div, class: "absolute inset-auto bottom-0 right-0 mb-4 mr-4",
+      title: @card.description,
+      data: {
+        target: 'card-description',
+        tippy: 'tooltip',
+      } do %>
+      <%= helpers.svg 'heroicons/solid/information-circle', class: 'h-4 text-gray-500 cursor-pointer' %>
+    <% end %>
   <% end %>
 </div>
