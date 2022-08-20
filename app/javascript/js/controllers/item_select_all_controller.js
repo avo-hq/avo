@@ -5,7 +5,7 @@ export default class extends Controller {
 
   static values = {
     selectedAll: Boolean,
-    selectedQuery: String,
+    selectedAllQuery: String,
   }
 
   connect() {

@@ -6,28 +6,34 @@
   data-selected-resources-name="<%= @resource.model_key %>"
   data-selected-resources="[]"
 >
-  <div id="selected_info" class="absolute z-30 w-full ml-10 mt-1 pt-px hidden" data-item-select-all-target="selectAllOvelay">
-    <div class="bg-white">
-      <div data-item-select-all-target="unselectedMessage">
-        <span class="font-bold text-gray-700"><%= pagy.in %></span> selected from a total of <span class="font-bold text-gray-700"><%= pagy.count %></span>
-        <%= helpers.a_link helpers.request.url,
-          size: :xs,
-          color: :primary,
-          data: {action: "click->item-select-all#selectAll"},
-          class: "cursor-pointer text-primary-500" do
-        %>
-          Select All
-        <% end %>
+  <% if pagy.pages > 1 %>
+    <div id="selected_info" class="absolute z-30 w-full ml-10 mt-1 pt-px hidden" data-item-select-all-target="selectAllOvelay">
+      <div class="bg-white">
+        <div data-item-select-all-target="unselectedMessage">
+          <span class="font-bold text-gray-700"><%= pagy.in %></span> selected from a total of <span class="font-bold text-gray-700"><%= pagy.count %></span>
+          <%= a_link request.url,
+            size: :xs,
+            color: :primary,
+            class: "cursor-pointer text-primary-500",
+            data: {action: "click->item-select-all#selectAll"} do
+          %>
+            Select All
+          <% end %>
         </div>
-      <div data-item-select-all-target="selectedMessage" class="hidden">
-        <span class="font-bold text-gray-700"><%= pagy.count %></span> selected from a total of <span class="font-bold text-gray-700"><%= pagy.count %></span>
-        <%= link_to "Undo", helpers.request.url,
-          class: "cursor-pointer text-primary-500",
-          data: {action: "click->item-select-all#selectAll"}
-        %>
+        <div data-item-select-all-target="selectedMessage" class="hidden">
+          <span class="font-bold text-gray-700"><%= pagy.count %></span> selected from a total of <span class="font-bold text-gray-700"><%= pagy.count %></span>
+          <%= a_link request.url,
+            size: :xs,
+            color: :primary,
+            class: "cursor-pointer text-primary-500",
+            data: {action: "click->item-select-all#selectAll"} do
+          %>
+            Undo
+          <% end %>
+        </div>
       </div>
     </div>
-  </div>
+  <% end %>
   <table class="w-full px-4 bg-white">
     <%= render partial: 'avo/partials/table_header', locals: {fields: @resource.get_fields(reflection: @reflection, only_root: true)} %>
     <tbody class="divide-y">

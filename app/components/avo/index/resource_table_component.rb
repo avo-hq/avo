@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Avo::Index::ResourceTableComponent < ViewComponent::Base
+  include Avo::ApplicationHelper
   attr_reader :pagy
 
   def initialize(resources: nil, resource: nil, reflection: nil, parent_model: nil, parent_resource: nil, pagy: nil, query: nil)

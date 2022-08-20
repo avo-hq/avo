@@ -2,14 +2,14 @@ import { Controller } from '@hotwired/stimulus'
 import { castBoolean } from '../helpers/cast_boolean'
 
 export default class extends Controller {
-  static targets = ['controllerDiv', 'resourceIds', 'form', 'selectedQuery', 'selectedAll']
+  static targets = ['controllerDiv', 'resourceIds', 'form', 'selectedAllQuery', 'selectedAll']
 
   connect() {
     this.resourceIdsTarget.value = this.resourceIds
 
     // This value is picked up from the DOM so we check true/false as strings
-    if (this.dataSet.itemSelectAllSelectedAllValue === 'true') {
-      this.selectedQueryTarget.value = this.dataSet.itemSelectAllSelectedQueryValue
+    if (this.selectionOptions.itemSelectAllSelectedAllValue === 'true') {
+      this.selectedAllQueryTarget.value = this.selectionOptions.itemSelectAllSelectedAllQueryValue
     }
 
     if (this.noConfirmation) {
@@ -29,13 +29,13 @@ export default class extends Controller {
 
   get resourceIds() {
     try {
-      return JSON.parse(this.dataSet.selectedResources)
+      return JSON.parse(this.selectionOptions.selectedResources)
     } catch (error) {
       return []
     }
   }
 
-  get dataSet() {
+  get selectionOptions() {
     return document.querySelector(`[data-selected-resources-name="${this.resourceName}"]`).dataset
   }
 }
