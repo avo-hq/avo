@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::TabSwitcherComponent < Avo::BaseComponent
+class Avo::PillsSwitcherComponent < Avo::BaseComponent
   include Avo::UrlHelpers
   include Avo::ApplicationHelper
 

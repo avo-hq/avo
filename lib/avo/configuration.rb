@@ -34,6 +34,7 @@ module Avo
     attr_accessor :buttons_on_form_footers
     attr_accessor :main_menu
     attr_accessor :profile_menu
+    attr_accessor :tabs_style
 
     def initialize
       @root_path = "/avo"
@@ -78,6 +79,7 @@ module Avo
       @buttons_on_form_footers = false
       @main_menu = nil
       @profile_menu = nil
+      @tabs_style = :tabs
     end
 
     def current_user_method(&block)

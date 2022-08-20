@@ -38,7 +38,11 @@
     %>
     <%= turbo_frame_tag tab.turbo_frame_id(parent: @group), **args do %>
       <div class="border rounded-lg p-2 -mx-2 -my-2 lg:p-4 lg:-mx-4 lg:-my-4 space-y-4">
-        <%= render Avo::TabSwitcherComponent.new resource: @resource, current_tab: tab, group: group, active_tab_name: active_tab_name, view: view %>
+        <% if Avo.configuration.tabs_style == :tabs %>
+          <%= render Avo::TabsSwitcherComponent.new resource: @resource, current_tab: tab, group: group, active_tab_name: active_tab_name, view: view %>
+        <% elsif Avo.configuration.tabs_style == :pills %>
+          <%= render Avo::PillsSwitcherComponent.new resource: @resource, current_tab: tab, group: group, active_tab_name: active_tab_name, view: view %>
+        <% end %>
         <% if !should_lazy_load && !tab.empty? %>
           <div class="space-y-12">
             <% tab.visible_items.each do |item| %>
