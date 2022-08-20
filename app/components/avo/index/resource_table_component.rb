@@ -14,7 +14,12 @@ class Avo::Index::ResourceTableComponent < ViewComponent::Base
     @query = query
   end
 
-  def base64_query
-    Base64.encode64(@query.to_sql) if @query.present?
+  def encrypted_query
+    return if @query.nil?
+
+    Avo::Services::EncryptionService.encrypt(
+      message: @query.to_sql,
+      purpose: :select_all
+    )
   end
 end

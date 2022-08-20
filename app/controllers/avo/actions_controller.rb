@@ -12,13 +12,7 @@ module Avo
 
     def handle
       resource_ids = action_params[:fields][:avo_resource_ids].split(",")
-      selected_query = action_params[:fields][:avo_selected_query]
-
-      models = if selected_query.present?
-        ActiveRecord::Base.connection.exec_query base64_decode_query
-      else
-        @resource.class.find_scope.find resource_ids
-      end
+      @selected_query = action_params[:fields][:avo_selected_query]
 
       fields = action_params[:fields].except(:avo_resource_ids, :avo_selected_query)
 
@@ -28,7 +22,13 @@ module Avo
         resource: resource
       }
 
-      args[:models] = models unless @action.standalone
+      unless @action.standalone
+        args[:models] = if @selected_query.present?
+          ActiveRecord::Base.connection.exec_query decrypted_query
+        else
+          @resource.class.find_scope.find resource_ids
+        end
+      end
 
       performed_action = @action.handle_action(**args)
 
@@ -97,8 +97,11 @@ module Avo
       end
     end
 
-    def base64_decode_query
-      Base64.decode64 action_params[:fields][:avo_selected_query]
+    def decrypted_query
+      Avo::Services::EncryptionService.decrypt(
+        message: @selected_query,
+        purpose: :select_all
+      )
     end
   end
 end
