@@ -7,7 +7,6 @@ class ReleaseFish < Avo::BaseAction
       model.release
     end
 
-    # @todo:
-    succeed "((#{args[:models].count} fish released....))"
+    succeed "#{args[:models].count} fish released..."
   end
 end

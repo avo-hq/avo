@@ -13,7 +13,6 @@ class DummyAction < Avo::BaseAction
     # Do something here
 
     succeed "Success response ✌️"
-    succeed "Success response ✌️"
     warn "Warning response ✌️"
     inform "Info response ✌️"
     fail "Error response ✌️"

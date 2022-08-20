@@ -24,7 +24,7 @@ module Avo
 
       unless @action.standalone
         args[:models] = if @selected_query.present?
-          ActiveRecord::Base.connection.exec_query decrypted_query
+          @resource.model_class.find_by_sql decrypted_query
         else
           @resource.class.find_scope.find resource_ids
         end
