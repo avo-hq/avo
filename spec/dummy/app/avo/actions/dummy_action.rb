@@ -1,6 +1,6 @@
 class DummyAction < Avo::BaseAction
   self.name = "Dummy action"
-  # self.standalone = true
+  self.standalone = true
   self.visible = ->(resource:, view:) do
     if resource.is_a? UserResource
       view == :index
@@ -12,10 +12,10 @@ class DummyAction < Avo::BaseAction
   def handle(**args)
     # Do something here
 
-    succeed "Success response ✌️ (#{args[:models].count} records)"
-    # succeed "Success response ✌️"
-    # warn "Warning response ✌️"
-    # inform "Info response ✌️"
-    # fail "Error response ✌️"
+    succeed "Success response ✌️"
+    succeed "Success response ✌️"
+    warn "Warning response ✌️"
+    inform "Info response ✌️"
+    fail "Error response ✌️"
   end
 end
