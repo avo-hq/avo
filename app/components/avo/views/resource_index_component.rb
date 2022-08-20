@@ -171,9 +171,4 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
       id: @parent_model.id
     }
   end
-
-  def base64_query
-    Base64.encode64(@query.to_sql) if @query.present?
-  end
-
 end

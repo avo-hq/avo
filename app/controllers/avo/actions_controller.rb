@@ -11,16 +11,16 @@ module Avo
     end
 
     def handle
-      resource_ids = action_params[:fields][:resource_ids].split(",")
-      selected_all = action_params[:fields][:selected_all].to_i == 1
+      resource_ids = action_params[:fields][:avo_resource_ids].split(",")
+      selected_query = action_params[:fields][:avo_selected_query]
 
-      models = if selected_all
+      models = if selected_query.present?
         ActiveRecord::Base.connection.exec_query base64_decode_query
       else
         @resource.class.find_scope.find resource_ids
       end
 
-      fields = action_params[:fields].except("resource_ids", "query", "selected_all")
+      fields = action_params[:fields].except(:avo_resource_ids, :avo_selected_query)
 
       args = {
         fields: fields,
@@ -98,7 +98,7 @@ module Avo
     end
 
     def base64_decode_query
-      Base64.decode64 action_params[:fields][:query]
+      Base64.decode64 action_params[:fields][:avo_selected_query]
     end
   end
 end

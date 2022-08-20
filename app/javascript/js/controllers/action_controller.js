@@ -6,8 +6,11 @@ export default class extends Controller {
 
   connect() {
     this.resourceIdsTarget.value = this.resourceIds
-    this.selectedQueryTarget.value = this.dataSet.selectedQuery
-    this.selectedAllTarget.value = this.dataSet.selectedAll
+
+    // This value is picked up from the DOM so we check true/false as strings
+    if (this.dataSet.itemSelectAllSelectedAllValue === 'true') {
+      this.selectedQueryTarget.value = this.dataSet.itemSelectAllSelectedQueryValue
+    }
 
     if (this.noConfirmation) {
       this.formTarget.submit()
