@@ -117,37 +117,6 @@ module Avo
     rescue
       Avo.configuration.root_path
     end
-
-    def avo_field(type = nil, id = nil, as: nil, for_view: :show, form: nil, component_options: {}, **args, &block)
-      if as.present?
-        id = type
-        type = as
-      end
-      field_klass = "Avo::Fields::#{type.to_s.camelize}Field".safe_constantize
-      field = field_klass.new id, form: form, **args, &block
-
-      # Add the form record to the field so all fields have access to it.
-      field.hydrate(model: form.object)
-
-      component_klass = "Avo::Fields::#{type.to_s.camelize}Field::#{for_view.to_s.camelize}Component".safe_constantize
-      return if component_klass.nil?
-
-      render component_klass.new field: field, form: form, **component_options
-    end
-
-    def avo_show_field(id, type = nil, for_view: :show, **args, &block)
-      avo_field(id, type, **args, for_view: for_view, &block)
-    end
-
-    def avo_edit_field(id, type = nil, for_view: :edit, **args, &block)
-      avo_field(id, type, **args, for_view: for_view, &block)
-    end
-
-    # def avo_text_field(id = nil, form: nil, component_options: {}, **args)
-    #   field = Avo::Fields::TextField.new id, form: form, **args
-
-    #   render Avo::Fields::TextField::EditComponent.new field: field, form: form, **component_options
-    # end
   end
 end
 
