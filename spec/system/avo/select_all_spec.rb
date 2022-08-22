@@ -2,9 +2,12 @@ require "rails_helper"
 
 RSpec.describe "SelectAll", type: :system do
   let!(:per_page) { Avo.configuration.per_page }
-  let!(:total_fish) { 300 }
+  # Create per_page + 1 Spec Solomons because otherwise with exactly 1 page they're already all selected
+  let!(:spec_solomon_number) { per_page + 1 }
+  let!(:total_fish) { per_page + spec_solomon_number }
   let!(:info_string) { "selected from a total of" }
-  let!(:fishes) { create_list :fish, total_fish }
+  let!(:random_fishes) { create_list :fish, per_page }
+  let!(:solomon) { create_list :fish, spec_solomon_number, name: "Spec Solomon" }
   let!(:url) { "/admin/resources/fish" }
 
   describe "without applyed filters" do
@@ -12,7 +15,11 @@ RSpec.describe "SelectAll", type: :system do
       it "releases the fish from the selected page" do
         visit url
 
-        check_select_all_on_page_and_expect(selected: per_page, total: total_fish)
+        check_select_all_on_page_and_expect(
+          selected: per_page,
+          total: total_fish
+        )
+
         release_fish
 
         expect(page).to have_text "#{per_page} fish released..."
@@ -96,26 +103,25 @@ RSpec.describe "SelectAll", type: :system do
 
           open_filters_menu
           expect(page).to have_text "Name filter"
-          filtered_fish_count, name = find_more_than_one_page_of_fish_with_the_same_name
-          fill_in "avo_filters_name_filter", with: name
+          fill_in "avo_filters_name_filter", with: "Spec Solomon"
           click_on "Filter by name"
           wait_for_loaded
 
           check_select_all_on_page_and_expect(
             selected: per_page,
-            total: filtered_fish_count
+            total: spec_solomon_number
           )
 
           press_button_and_expect(
             button: "Select all",
-            selected: filtered_fish_count,
-            total: filtered_fish_count
+            selected: spec_solomon_number,
+            total: spec_solomon_number
           )
 
-          expect(page).to have_text selected_info_string(filtered_fish_count, filtered_fish_count)
+          expect(page).to have_text selected_info_string(spec_solomon_number, spec_solomon_number)
           release_fish
 
-          expect(page).to have_text "#{filtered_fish_count} fish released..."
+          expect(page).to have_text "#{spec_solomon_number} fish released..."
         end
       end
     end
@@ -148,14 +154,4 @@ end
 
 def selected_info_string(selected, number_of_fish)
   "#{selected} #{info_string} #{number_of_fish}"
-end
-
-def find_more_than_one_page_of_fish_with_the_same_name
-  loop do
-    Fish.find_each do |fish|
-      count = Fish.where(name: fish.name).count
-      return [count, fish.name] if count > per_page
-    end
-    raise "Did not found more than one page of fishes with the same name"
-  end
 end
