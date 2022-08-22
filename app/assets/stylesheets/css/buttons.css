@@ -5,11 +5,11 @@
     @apply -mr-px;
 
     &:first-child {
-      @apply rounded-l border-l;
+      @apply rounded-l;
     }
 
     &:last-child {
-      @apply rounded-r border-r;
+      @apply rounded-r;
     }
   }
 }
