@@ -24,7 +24,7 @@ Avo.configure do |config|
   end
   config.search_debounce = 300
   config.main_menu = -> {
-    section I18n.t("avo.dashboards"), icon: "dashboards" do
+    section I18n.t("avo.dashboards"), icon: "app/assets/images/adjustments.svg" do
       dashboard :dashy, visible: -> { true }
       dashboard "Sales", visible: -> { true }
 
