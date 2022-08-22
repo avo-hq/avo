@@ -64,51 +64,30 @@ module Avo
       classes
     end
 
+    # I takes a filename or a path and tries to find the asset in this order:
+    # - file inside the parent app's `app/assets/svgs` path
+    # - full path in the parent app
+    # - file inside the Avo's app/assets/svgs path
+    # - full path in Avo's assets
     def svg(file_name, **args)
       return if file_name.nil?
 
-      options = {}
-      options[:class] = args[:class].present? ? args[:class] : ""
-      options[:class] += args[:extra_class].present? ? " #{args[:extra_class]}" : ""
+      file_name = "#{file_name}.svg" unless file_name.end_with? ".svg"
 
-      if args[:'data-target'].present?
-        options[:'data-target'] = args[:'data-target']
-      end
-      if args[:'data-tippy'].present?
-        options[:'data-tippy'] = args[:'data-tippy']
-      end
-      if args[:title].present?
-        options[:title] = args[:title]
-      end
+      paths = [
+        Rails.root.join("app", "assets", "svgs", file_name).to_s,
+        Rails.root.join(file_name).to_s,
+        Avo::Engine.root.join("app", "assets", "svgs", file_name).to_s,
+        Avo::Engine.root.join(file_name).to_s,
+      ]
 
-      # Create the path to the svgs directory
-      file_path = "#{Avo::Engine.root}/app/assets/svgs/#{file_name}"
-      file_path = "#{file_path}.svg" unless file_path.end_with? ".svg"
-
-      # Create a cache hash
-      hash = Digest::MD5.hexdigest "#{file_path.underscore}_#{options}"
-
-      svg_content = Avo::App.cache_store.fetch "svg_file_#{hash}", expires_in: 1.week, cache_nils: false do
-        if File.exist?(file_path)
-          file = File.read(file_path)
-
-          # parse svg
-          doc = Nokogiri::HTML::DocumentFragment.parse file
-          svg = doc.at_css "svg"
-
-          # attach options
-          options.each do |attr, value|
-            svg[attr.to_s] = value
-          end
-
-          # cast to html
-          doc.to_html.html_safe
-        end
+      path = paths.find do |path|
+        File.exist? path
       end
 
-      return "(not found)" if svg_content.to_s.blank?
+      return if path.nil?
 
-      svg_content
+      inline_svg_tag path, **args
     end
 
     def input_classes(extra_classes = "", has_error: false)
