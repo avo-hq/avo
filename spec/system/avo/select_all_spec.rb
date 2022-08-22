@@ -1,14 +1,14 @@
 require "rails_helper"
 
 RSpec.describe "SelectAll", type: :system do
-  let!(:per_page) { Avo.configuration.per_page }
+  let!(:per_page) { 2 }
   # Create per_page + 1 Spec Solomons because otherwise with exactly 1 page they're already all selected
   let!(:spec_solomon_number) { per_page + 1 }
   let!(:total_fish) { per_page + spec_solomon_number }
   let!(:info_string) { "selected from a total of" }
   let!(:random_fishes) { create_list :fish, per_page }
   let!(:solomon) { create_list :fish, spec_solomon_number, name: "Spec Solomon" }
-  let!(:url) { "/admin/resources/fish" }
+  let!(:url) { "/admin/resources/fish?per_page=#{per_page}" }
 
   describe "without applyed filters" do
     context "select first page" do
