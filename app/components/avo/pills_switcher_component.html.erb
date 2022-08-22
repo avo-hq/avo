@@ -1,4 +1,4 @@
-<div class="flex flex-wrap gap-2" data-target="tab-switcher">
+<div class="flex flex-wrap gap-2" data-target="tab-switcher" data-style="pills">
   <% visible_items.each do |tab| %>
     <%= a_link tab_path(tab),
       color: selected?(tab) ? :primary : :gray,

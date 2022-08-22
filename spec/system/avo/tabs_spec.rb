@@ -10,7 +10,7 @@ RSpec.describe "Tabs", type: :system do
 
         expect(find("table thead").text).to eq "ID\nAVATAR\nFIRST NAME\nLAST NAME\nUSER EMAIL\nIS ACTIVE\nCV\nIS ADMIN\nROLES\nBIRTHDAY\nIS WRITER"
         within find("tr[data-resource-id='#{user.id}']") do
-          expect(find_all("table tbody tr td")[10].text).to eq "Wednesday, 10 February 1988"
+          expect(find_all("table tbody tr td")[11].text).to eq "Wednesday, 10 February 1988"
         end
       end
     end
@@ -49,6 +49,30 @@ RSpec.describe "Tabs", type: :system do
 
         within first_tab_group do
           expect(find('[data-target="tab-switcher"]').text).to eq "Fish\nTeams\nPeople\nSpouses\nProjects"
+        end
+      end
+
+      describe "type: pills" do
+        it "displays the switcher as pills" do
+          visit avo.resources_user_path user
+
+          scroll_to second_tab_group
+
+          within second_tab_group do
+            expect(page).to have_selector '[data-target="tab-switcher"][data-style="pills"]'
+          end
+        end
+      end
+
+      describe "type: tabs" do
+        it "displays the switcher as pills" do
+          visit avo.resources_user_path user
+
+          scroll_to second_tab_group
+
+          within first_tab_group do
+            expect(page).to have_selector '[data-target="tab-switcher"][data-style="tabs"]'
+          end
         end
       end
     end
