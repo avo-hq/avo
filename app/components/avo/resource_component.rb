@@ -22,6 +22,12 @@ class Avo::ResourceComponent < Avo::BaseComponent
     authorize_association_for("detach")
   end
 
+  def detach_path
+    return "/" if @reflection.blank?
+
+    helpers.resource_detach_path(params[:resource_name], params[:id], @reflection.name.to_s, @resource.model.id)
+  end
+
   def can_see_the_edit_button?
     @resource.authorization.authorize_action(:edit, raise_exception: false)
   end
@@ -66,12 +72,6 @@ class Avo::ResourceComponent < Avo::BaseComponent
     end
 
     policy_result
-  end
-
-  def detach_path
-    return "/" if @reflection.blank?
-
-    helpers.resource_detach_path(params[:resource_name], params[:id], @reflection.name.to_s, @resource.model.id)
   end
 
   def main_panel
