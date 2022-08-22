@@ -126,7 +126,7 @@
             <%= t('avo.go_back') %>
           <% end %>
           <% if can_see_the_destroy_button? %>
-            <%= a_button url: helpers.resource_path(model: @resource.model, resource: @resource),
+            <%= a_button url: destroy_path,
                 method: :delete,
                 local: true,
                 style: :text,
