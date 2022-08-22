@@ -10,7 +10,6 @@
           title: tab.description,
           data: {
             tippy: tab.description.present? ? 'tooltip' : '',
-            control: "view-type-toggle-#{tab.name}",
             selected: selected?(tab),
             action: 'click->tabs#changeTab',
             tabs_id_param: tab.name
@@ -31,7 +30,6 @@
       title: tab.description,
       data: {
         tippy: tab.description.present? ? 'tooltip' : '',
-        control: "view-type-toggle-#{tab.name}",
         selected: selected?(tab),
         action: 'click->tabs#changeTab',
         tabs_id_param: tab.name
