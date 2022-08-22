@@ -17,13 +17,9 @@ export default class extends Controller {
     document.querySelectorAll(`[data-controller="item-selector"][data-resource-name="${this.resourceName}"] input[type=checkbox]`)
       .forEach((checkbox) => checkbox.checked !== checked && checkbox.click())
 
-    if (checked) {
-      this.showSelectAllOverlay()
-    } else {
-      this.hideSelectAllOverlay()
-    }
+    this.selectAllOverlay(checked)
 
-    // When de-selecting everything, ensure the selectAll toggle is false.
+    // When de-selecting everything, ensure the selectAll toggle is false and hide overlay.
     if (!checked) {
       this.resetUnselected()
     }
@@ -35,11 +31,7 @@ export default class extends Controller {
     this.itemCheckboxTargets.forEach((checkbox) => allSelected = allSelected && checkbox.checked)
     this.checkboxTarget.checked = allSelected
 
-    if (allSelected) {
-      this.showSelectAllOverlay()
-    } else {
-      this.hideSelectAllOverlay()
-    }
+    this.selectAllOverlay(allSelected)
     this.resetUnselected()
   }
 
@@ -57,11 +49,11 @@ export default class extends Controller {
     this.selectedMessageTarget.classList.add('hidden')
   }
 
-  showSelectAllOverlay() {
-    this.selectAllOvelayTarget.classList.remove('hidden')
-  }
-
-  hideSelectAllOverlay() {
-    this.selectAllOvelayTarget.classList.add('hidden')
+  selectAllOverlay(show) {
+    if (show) {
+      this.selectAllOvelayTarget.classList.remove('hidden')
+    } else {
+      this.selectAllOvelayTarget.classList.add('hidden')
+    }
   }
 }
