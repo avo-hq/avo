@@ -1,7 +1,7 @@
 class Avo::TabGroupBuilder
   class << self
-    def parse_block(&block)
-      Docile.dsl_eval(new, &block).build
+    def parse_block(**args, &block)
+      Docile.dsl_eval(new(**args), &block).build
     end
   end
 
@@ -9,8 +9,8 @@ class Avo::TabGroupBuilder
 
   delegate :tab, to: :items_holder
 
-  def initialize
-    @group = Avo::TabGroup.new
+  def initialize(style: nil)
+    @group = Avo::TabGroup.new(style: style)
     @items_holder = Avo::ItemsHolder.new
   end
 

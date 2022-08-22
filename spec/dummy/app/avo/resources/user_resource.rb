@@ -78,7 +78,7 @@ class UserResource < Avo::BaseResource
     field :projects, as: :has_and_belongs_to_many
   end
 
-  tabs do
+  tabs style: :pills do
     field :post,
       as: :has_one,
       name: "Main post",

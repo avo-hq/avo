@@ -38,7 +38,7 @@ class Avo::ItemSwitcherComponent < Avo::BaseComponent
   end
 
   def tab_group_component
-    Avo::TabGroupComponent.new resource: @resource, group: item.hydrate(view: view), index: index, params: params, form: form, view: view
+    Avo::TabGroupComponent.new resource: @resource, group: item.hydrate(view: view), index: index, params: params, form: form, view: view, tabs_style: item.style
   end
 
   def field_component

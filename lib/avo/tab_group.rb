@@ -7,11 +7,13 @@ class Avo::TabGroup
   attr_reader :view
   attr_accessor :index
   attr_accessor :items_holder
+  attr_accessor :style
 
-  def initialize(index: 0, view: nil)
+  def initialize(index: 0, view: nil, style: nil)
     @index = index
     @items_holder = Avo::ItemsHolder.new
     @view = view
+    @style = style
   end
 
   def hydrate(view: nil)
