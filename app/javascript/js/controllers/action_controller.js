@@ -2,7 +2,7 @@ import { Controller } from '@hotwired/stimulus'
 import { castBoolean } from '../helpers/cast_boolean'
 
 export default class extends Controller {
-  static targets = ['controllerDiv', 'resourceIds', 'form', 'selectedAllQuery', 'selectedAll']
+  static targets = ['controllerDiv', 'resourceIds', 'form', 'selectedAllQuery']
 
   connect() {
     this.resourceIdsTarget.value = this.resourceIds
