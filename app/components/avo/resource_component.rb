@@ -22,18 +22,20 @@ class Avo::ResourceComponent < Avo::BaseComponent
     authorize_association_for("detach")
   end
 
-  def detach_path
-    return "/" if @reflection.blank?
-
-    helpers.resource_detach_path(params[:resource_name], params[:id], @reflection.name.to_s, @resource.model.id)
-  end
-
   def can_see_the_edit_button?
     @resource.authorization.authorize_action(:edit, raise_exception: false)
   end
 
   def can_see_the_destroy_button?
     @resource.authorization.authorize_action(:destroy, raise_exception: false)
+  end
+
+  def can_see_the_actions_button?
+    return false if @actions.blank?
+
+    return authorize_association_for(:act_on) if @reflection.present?
+
+    @resource.authorization.authorize_action(:act_on, raise_exception: false) && !has_reflection_and_is_read_only
   end
 
   def destroy_path
@@ -66,9 +68,30 @@ class Avo::ResourceComponent < Avo::BaseComponent
     policy_result
   end
 
+  def detach_path
+    return "/" if @reflection.blank?
+
+    helpers.resource_detach_path(params[:resource_name], params[:id], @reflection.name.to_s, @resource.model.id)
+  end
+
   def main_panel
     @resource.get_items.find do |item|
       item.is_main_panel?
+    end
+  end
+
+  def has_reflection_and_is_read_only
+    if @reflection.present? && @reflection.active_record.name && @reflection.name
+      fields = ::Avo::App.get_resource_by_model_name(@reflection.active_record.name).get_field_definitions
+      filtered_fields = fields.filter { |f| f.id == @reflection.name }
+    else
+      return false
+    end
+
+    if filtered_fields.present?
+      filtered_fields.find { |f| f.id == @reflection.name }.readonly
+    else
+      false
     end
   end
 
