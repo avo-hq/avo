@@ -1,11 +1,12 @@
-<div class="flex overflow-auto mac-styled-scrollbar" data-target="tab-switcher" data-style="tabs">
-  <div class="button-group">
-    <% visible_items.each do |tab| %>
-      <%= a_link tab_path(tab),
+<% if style == :tabs %>
+  <div class="flex overflow-auto mac-styled-scrollbar" data-target="tab-switcher" data-style="tabs">
+    <div class="button-group">
+      <% visible_items.each do |tab| %>
+        <%= a_link tab_path(tab),
           color: selected?(tab) ? :primary : :gray ,
           rounded: false,
           size: :sm,
-          class: selected?(tab) ? ' z-20' : ' bg-gray-100 border-gray-300',
+          class: class_names("active:outline-0", "z-20": selected?(tab), "bg-gray-100 border-gray-300": !selected?(tab)),
           title: tab.description,
           data: {
             tippy: tab.description.present? ? 'tooltip' : '',
@@ -14,8 +15,29 @@
             action: 'click->tabs#changeTab',
             tabs_id_param: tab.name
           } do %>
+          <%= tab.name %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+<% else %>
+  <div class="flex flex-wrap gap-2" data-target="tab-switcher" data-style="pills">
+    <% visible_items.each do |tab| %>
+      <%= a_link tab_path(tab),
+      color: selected?(tab) ? :primary : :gray,
+      style: selected?(tab) ? :outline : :text,
+      size: :sm,
+      class: class_names("z-20": selected?(tab)),
+      title: tab.description,
+      data: {
+        tippy: tab.description.present? ? 'tooltip' : '',
+        control: "view-type-toggle-#{tab.name}",
+        selected: selected?(tab),
+        action: 'click->tabs#changeTab',
+        tabs_id_param: tab.name
+      } do %>
         <%= tab.name %>
       <% end %>
     <% end %>
   </div>
-</div>
+<% end %>
