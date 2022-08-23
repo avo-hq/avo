@@ -1,6 +1,7 @@
 class Avo::Configuration::Branding
-  def initialize(colors: nil, logo: nil, logomark: nil)
+  def initialize(colors: nil, chart_colors: nil, logo: nil, logomark: nil)
     @colors = colors
+    @chart_colors = chart_colors
     @logo = logo
     @logomark = logomark
 
@@ -10,6 +11,7 @@ class Avo::Configuration::Branding
       500 => "8 134 222",
       600 => "6 107 178"
     }
+    @default_chart_colors = ["#0B8AE2", "#34C683", "#2AB1EE", "#34C6A8"]
     @default_logo = "/avo-assets/logo.png"
     @default_logomark = "/avo-assets/logomark.png"
   end
@@ -30,6 +32,12 @@ class Avo::Configuration::Branding
     return @default_logomark if Avo::App.license.lacks_with_trial(:branding)
 
     @logomark || @default_logomark
+  end
+
+  def chart_colors
+    return @default_chart_colors if Avo::App.license.lacks_with_trial(:branding)
+
+    @chart_colors || @default_chart_colors
   end
 
   private
