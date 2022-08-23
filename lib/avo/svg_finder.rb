@@ -9,16 +9,7 @@ class Avo::SvgFinder
 
   # Use the default static finder logic. If that doesn't find anything, search according to our pattern:
   def pathname
-    found_asset = if ::Rails.application.config.assets.compile
-      asset = ::Rails.application.assets[@filename]
-      Pathname.new(asset.filename) if asset.present?
-    else
-      manifest = ::Rails.application.assets_manifest
-      asset_path = manifest.assets[@filename]
-      unless asset_path.nil?
-        ::Rails.root.join(manifest.directory, asset_path)
-      end
-    end
+    found_asset = default_strategy
 
     # Use the found asset
     return found_asset if found_asset.present?
@@ -36,6 +27,19 @@ class Avo::SvgFinder
     end
 
     path
+  end
+
+  def default_strategy
+    if ::Rails.application.config.assets.compile
+      asset = ::Rails.application.assets[@filename]
+      Pathname.new(asset.filename) if asset.present?
+    else
+      manifest = ::Rails.application.assets_manifest
+      asset_path = manifest.assets[@filename]
+      unless asset_path.nil?
+        ::Rails.root.join(manifest.directory, asset_path)
+      end
+    end
   end
 end
 
