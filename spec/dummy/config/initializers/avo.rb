@@ -24,7 +24,7 @@ Avo.configure do |config|
   end
   config.search_debounce = 300
   config.main_menu = -> {
-    section I18n.t("avo.dashboards"), icon: "app/assets/images/adjustments.svg" do
+    section I18n.t("avo.dashboards"), icon: "dummy-adjustments.svg" do
       dashboard :dashy, visible: -> { true }
       dashboard "Sales", visible: -> { true }
 
@@ -70,7 +70,7 @@ Avo.configure do |config|
       end
     end
 
-    section "Tools", icon: "heroicons/outline/finger-print", collapsable: true, collapsed: true do
+    section "Tools", icon: "finger-print", collapsable: true, collapsed: true do
       all_tools
     end
 
