@@ -142,7 +142,9 @@
               <%= t('avo.delete').capitalize %>
             <% end %>
           <% end %>
-          <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>
+          <% if can_see_the_actions_button? %>
+            <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>
+          <% end %>
           <% if @resource.authorization.authorize_action(:edit, raise_exception: false) %>
             <%= a_link edit_path,
               color: :primary,
