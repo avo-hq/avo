@@ -39,7 +39,7 @@
                 <%= control.label %>
               <% end %>
             <% end %>
-          <% elsif control.actions_list? %>
+          <% elsif can_see_the_actions_button? && control.actions_list? %>
             <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view, exclude: control.exclude, style: control.style, color: control.color %>
           <% elsif control.edit_button? %>
             <% if @resource.authorization.authorize_action(:edit, raise_exception: false) %>
@@ -142,7 +142,9 @@
               <%= t('avo.delete').capitalize %>
             <% end %>
           <% end %>
-          <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>
+          <% if can_see_the_actions_button? %>
+            <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>
+          <% end %>
           <% if @resource.authorization.authorize_action(:edit, raise_exception: false) %>
             <%= a_link edit_path,
               color: :primary,

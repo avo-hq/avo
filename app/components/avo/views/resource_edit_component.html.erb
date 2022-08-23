@@ -22,7 +22,9 @@
         icon: 'arrow-left' do %>
           <%= t('avo.cancel').capitalize %>
         <% end %>
-        <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>
+        <% if can_see_the_actions_button? %>
+          <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>
+        <% end %>
         <% if can_see_the_save_button? %>
           <%= a_button color: :primary,
               style: :primary,
