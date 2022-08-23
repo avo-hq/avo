@@ -64,7 +64,7 @@ module Avo
       classes
     end
 
-    # Just use inline_svg gem.
+    # Use inline_svg gem but with our own finder implementation.
     def svg(file_name, **args)
       return if file_name.blank?
 
@@ -73,16 +73,6 @@ module Avo
       with_asset_finder(::Avo::SvgFinder) do
         inline_svg file_name, **args
       end
-    end
-
-    # Taken from the original library
-    # https://github.com/jamesmartin/inline_svg/blob/main/lib/inline_svg/action_view/helpers.rb#L76
-    def with_asset_finder(asset_finder)
-      Thread.current[:inline_svg_asset_finder] = asset_finder
-      output = yield
-      Thread.current[:inline_svg_asset_finder] = nil
-
-      output
     end
 
     def input_classes(extra_classes = "", has_error: false)
@@ -111,6 +101,18 @@ module Avo
       Avo::App.root_path.to_s.delete_prefix(request.base_url.to_s).delete_suffix "/"
     rescue
       Avo.configuration.root_path
+    end
+
+    private
+
+    # Taken from the original library
+    # https://github.com/jamesmartin/inline_svg/blob/main/lib/inline_svg/action_view/helpers.rb#L76
+    def with_asset_finder(asset_finder)
+      Thread.current[:inline_svg_asset_finder] = asset_finder
+      output = yield
+      Thread.current[:inline_svg_asset_finder] = nil
+
+      output
     end
   end
 end
