@@ -19,13 +19,6 @@ module Avo
         @hide_attachment_filename = args[:hide_attachment_filename] || false
         @hide_attachment_filesize = args[:hide_attachment_filesize] || false
         @hide_attachment_url = args[:hide_attachment_url] || false
-
-        # add_boolean_prop args, :always_show
-        # add_boolean_prop args, :attachments_disabled
-        # add_string_prop args, :attachment_key
-        # add_string_prop args, :hide_attachment_filename, false
-        # add_string_prop args, :hide_attachment_filesize, false
-        # add_string_prop args, :hide_attachment_url, false
       end
     end
   end
