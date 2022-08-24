@@ -64,30 +64,15 @@ module Avo
       classes
     end
 
-    # I takes a filename or a path and tries to find the asset in this order:
-    # - file inside the parent app's `app/assets/svgs` path
-    # - full path in the parent app
-    # - file inside the Avo's app/assets/svgs path
-    # - full path in Avo's assets
+    # Use inline_svg gem but with our own finder implementation.
     def svg(file_name, **args)
-      return if file_name.nil?
+      return if file_name.blank?
 
       file_name = "#{file_name}.svg" unless file_name.end_with? ".svg"
 
-      paths = [
-        Rails.root.join("app", "assets", "svgs", file_name).to_s,
-        Rails.root.join(file_name).to_s,
-        Avo::Engine.root.join("app", "assets", "svgs", file_name).to_s,
-        Avo::Engine.root.join(file_name).to_s,
-      ]
-
-      path = paths.find do |path|
-        File.exist? path
+      with_asset_finder(::Avo::SvgFinder) do
+        inline_svg file_name, **args
       end
-
-      return if path.nil?
-
-      inline_svg_tag path, **args
     end
 
     def input_classes(extra_classes = "", has_error: false)
@@ -116,6 +101,18 @@ module Avo
       Avo::App.root_path.to_s.delete_prefix(request.base_url.to_s).delete_suffix "/"
     rescue
       Avo.configuration.root_path
+    end
+
+    private
+
+    # Taken from the original library
+    # https://github.com/jamesmartin/inline_svg/blob/main/lib/inline_svg/action_view/helpers.rb#L76
+    def with_asset_finder(asset_finder)
+      Thread.current[:inline_svg_asset_finder] = asset_finder
+      output = yield
+      Thread.current[:inline_svg_asset_finder] = nil
+
+      output
     end
   end
 end
