@@ -24,9 +24,8 @@ const handle = async () => {
   for (const type of Object.keys(types)) {
     const dirPath = types[type]
     const dir = path.join(__dirname, '..', 'node_modules', 'heroicons', dirPath)
-    const files = await readdir(dir)
 
-    for (const file of files) {
+    for (const file of await readdir(dir)) {
       const source = path.join(dir, file)
 
       const destinationDir = path.join(destinationPath, type)
