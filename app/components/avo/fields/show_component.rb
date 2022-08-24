@@ -3,12 +3,15 @@
 class Avo::Fields::ShowComponent < ViewComponent::Base
   include Avo::ResourcesHelper
 
+  attr_reader :field
+  attr_reader :index
+  attr_reader :resource
   attr_reader :view
 
   def initialize(field: nil, resource: nil, index: 0, form: nil)
     @field = field
-    @resource = resource
     @index = index
+    @resource = resource
     @view = :show
   end
 
@@ -37,9 +40,9 @@ class Avo::Fields::ShowComponent < ViewComponent::Base
 
   def field_wrapper_args
     {
-      field: @field,
-      resource: @resource,
-      index: @index,
+      field: field,
+      index: index,
+      resource: resource,
       view: view
     }
   end
