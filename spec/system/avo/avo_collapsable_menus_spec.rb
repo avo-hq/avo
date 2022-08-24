@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "CollapsableMenus", type: :system do
   describe "collapsable menu items" do
-    let(:selector) { "[data-menu-key-param='avo.127.0.0.1.main_menu.resources.heroicons_outline_academic_cap'][data-controller='menu']" }
+    let(:selector) { "[data-menu-key-param='avo.127.0.0.1.main_menu.resources.heroicons_solid_building_storefront'][data-controller='menu']" }
 
     it "collapses the section" do
       visit "/admin/custom_tool"
