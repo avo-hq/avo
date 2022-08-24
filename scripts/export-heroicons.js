@@ -22,8 +22,7 @@ const handle = async () => {
   let copiedIcons = 0
 
   for (const type of Object.keys(types)) {
-    const dirPath = types[type]
-    const dir = path.join(__dirname, '..', 'node_modules', 'heroicons', dirPath)
+    const dir = path.join(__dirname, '..', 'node_modules', 'heroicons', types[type])
 
     for (const file of await readdir(dir)) {
       const source = path.join(dir, file)
