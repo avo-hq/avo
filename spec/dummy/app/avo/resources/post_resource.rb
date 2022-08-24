@@ -1,6 +1,6 @@
 class PostResource < Avo::BaseResource
   self.title = :name
-  self.search_query = ->(params:) do
+  self.search_query = -> do
     scope.ransack(id_eq: params[:q], name_cont: params[:q], body_cont: params[:q], m: "or").result(distinct: false)
   end
   self.search_query_help = "- search by id, name or body"

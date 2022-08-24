@@ -24,7 +24,7 @@ Avo.configure do |config|
   end
   config.search_debounce = 300
   config.main_menu = -> {
-    section I18n.t("avo.dashboards"), icon: "dashboards" do
+    section I18n.t("avo.dashboards"), icon: "dummy-adjustments.svg" do
       dashboard :dashy, visible: -> { true }
       dashboard "Sales", visible: -> { true }
 
@@ -33,7 +33,7 @@ Avo.configure do |config|
       end
     end
 
-    section "Resources", icon: "heroicons/outline/academic-cap", collapsable: true, collapsed: false do
+    section "Resources", icon: "heroicons/solid/building-storefront", collapsable: true, collapsed: false do
       group "Company", collapsable: true do
         resource :projects
         resource :team, visible: -> {

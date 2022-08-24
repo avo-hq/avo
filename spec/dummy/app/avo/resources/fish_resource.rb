@@ -1,7 +1,7 @@
 class FishResource < Avo::BaseResource
   self.title = :name
   self.includes = []
-  self.search_query = ->(params:) do
+  self.search_query = -> do
     scope.ransack(id_eq: params[:q], name_cont: params[:q], m: "or").result(distinct: false)
   end
   self.extra_params = [:fish_type, :something_else, properties: [], information: [:name, :history]]
@@ -22,6 +22,7 @@ class FishResource < Avo::BaseResource
   end
 
   field :id, as: :id
+  field :id, as: :number, only_on: :forms, readonly: -> { view != :new }
   field :name, as: :text, srequired: -> { view == :new }, required: true, help: "help text"
   # , html: {
   #   edit: {
