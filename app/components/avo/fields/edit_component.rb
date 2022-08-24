@@ -3,20 +3,21 @@
 class Avo::Fields::EditComponent < ViewComponent::Base
   include Avo::ResourcesHelper
 
+  attr_reader :compact
+  attr_reader :displayed_in_modal
   attr_reader :field
   attr_reader :form
   attr_reader :index
-  attr_reader :view
   attr_reader :resource
-  attr_reader :compact
+  attr_reader :view
 
   def initialize(field: nil, resource: nil, index: 0, form: nil, displayed_in_modal: false, compact: false, **kwargs)
-    @field = field
-    @resource = resource
-    @index = index
-    @form = form
-    @displayed_in_modal = displayed_in_modal
     @compact = compact
+    @displayed_in_modal = displayed_in_modal
+    @field = field
+    @form = form
+    @index = index
+    @resource = resource
     @view = :edit
   end
 
@@ -30,12 +31,12 @@ class Avo::Fields::EditComponent < ViewComponent::Base
 
   def field_wrapper_args
     {
-      field: field,
-      index: index,
-      form: form,
-      resource: resource,
-      displayed_in_modal: @displayed_in_modal,
       compact: compact,
+      displayed_in_modal: displayed_in_modal,
+      field: field,
+      form: form,
+      index: index,
+      resource: resource,
       view: view
     }
   end
