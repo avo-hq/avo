@@ -1,7 +1,4 @@
-<%= field_wrapper field: @field,
-  resource: @resource,
-  index: @index,
-  view: view do %>
+<%= field_wrapper **field_wrapper_args do %>
   <% if @field.as_html %>
     <%== @field.value %>
   <% elsif @field.protocol.present? %>

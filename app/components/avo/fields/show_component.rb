@@ -34,4 +34,13 @@ class Avo::Fields::ShowComponent < ViewComponent::Base
 
     attributes
   end
+
+  def field_wrapper_args
+    {
+      field: @field,
+      resource: @resource,
+      index: @index,
+      view: view
+    }
+  end
 end

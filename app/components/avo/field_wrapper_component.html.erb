@@ -9,11 +9,11 @@
       <% else %>
         <%= field.name %>
       <% end %>
-      <% if field.is_required? %> <span class="text-red-600 ml-1">*</span> <% end %>
+      <% if on_edit? && field.is_required? %> <span class="text-red-600 ml-1">*</span> <% end %>
     </div>
   </div>
   <div class="flex-1 flex flex-row md:min-h-inherit py-2 <% unless displayed_in_modal %> px-6 <% end %>">
-    <% if show? %>
+    <% if on_show? %>
       <div class="self-center <% if full_width %> w-full <% else %> w-full md:w-8/12 <% end %>" data-slot="value">
         <% if field.value.blank? and dash_if_blank %>
           —
@@ -21,7 +21,7 @@
           <%= content %>
         <% end %>
       </div>
-    <% elsif edit? %>
+    <% elsif on_edit? %>
       <div class="self-center <% if displayed_in_modal or full_width or compact? %> w-full <% else %> w-full md:w-8/12 <% end %>" data-slot="value">
         <%= content %>
         <% if record.present? and record.errors.include? field.id %>

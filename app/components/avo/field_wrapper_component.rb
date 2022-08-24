@@ -58,11 +58,11 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
     @label || @field.name
   end
 
-  def show?
+  def on_show?
     view == :show
   end
 
-  def edit?
+  def on_edit?
     view == :edit
   end
 
