@@ -33,7 +33,7 @@ Avo.configure do |config|
       end
     end
 
-    section "Resources", icon: "heroicons/outline/academic-cap", collapsable: true, collapsed: false do
+    section "Resources", icon: "heroicons/solid/building-storefront", collapsable: true, collapsed: false do
       group "Company", collapsable: true do
         resource :projects
         resource :team, visible: -> {
@@ -70,7 +70,7 @@ Avo.configure do |config|
       end
     end
 
-    section "Tools", icon: "finger-print", collapsable: true, collapsed: true do
+    section "Tools", icon: "bolt", collapsable: true, collapsed: true do
       all_tools
     end
 
