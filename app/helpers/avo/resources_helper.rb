@@ -20,12 +20,13 @@ module Avo
       end
     end
 
-    # @todo: maybe aliase show_ and edit_ to this method
     def field_wrapper(**args, &block)
       render Avo::FieldWrapperComponent.new(**args) do
         capture(&block)
       end
     end
+    alias :edit_field_wrapper :field_wrapper
+    alias :show_field_wrapper :field_wrapper
 
     def filter_wrapper(name: nil, index: nil, **args, &block)
       render layout: "layouts/avo/filter_wrapper", locals: {

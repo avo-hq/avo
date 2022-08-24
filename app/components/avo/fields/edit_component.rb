@@ -5,6 +5,7 @@ class Avo::Fields::EditComponent < ViewComponent::Base
 
   attr_reader :field
   attr_reader :form
+  attr_reader :index
   attr_reader :view
   attr_reader :resource
   attr_reader :compact
@@ -25,5 +26,17 @@ class Avo::Fields::EditComponent < ViewComponent::Base
 
   def render?
     !field.computed
+  end
+
+  def field_wrapper_args
+    {
+      field: field,
+      index: index,
+      form: form,
+      resource: resource,
+      displayed_in_modal: @displayed_in_modal,
+      compact: compact,
+      view: view
+    }
   end
 end

@@ -1,4 +1,4 @@
-<%= field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal, full_width: true, view: view do %>
+<%= field_wrapper **field_wrapper_args, full_width: true do %>
   <div
     data-controller="trix-field"
     data-trix-field-target="controller"
