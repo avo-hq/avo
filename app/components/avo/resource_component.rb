@@ -98,6 +98,6 @@ class Avo::ResourceComponent < Avo::BaseComponent
   private
 
   def via_resource?
-    params[:via_resource_class].present? && params[:via_resource_id].present?
+    (params[:via_resource_class].present? || params[:via_relation_class].present?) && params[:via_resource_id].present?
   end
 end
