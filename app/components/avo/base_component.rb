@@ -9,10 +9,9 @@ class Avo::BaseComponent < ViewComponent::Base
 
   private
 
-  # Figure out what is the corresponding field for this @reflection
+  # Use the @parent_resource to fetch the field using the @reflection name.
   def field
-    fields = ::Avo::App.get_resource_by_model_name(@reflection.active_record.name).get_field_definitions
-    fields.find { |f| f.id == @reflection.name }
+    @parent_resource.get_field_definitions.find { |f| f.id == @reflection.name }
   rescue
     nil
   end

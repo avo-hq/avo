@@ -4,6 +4,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   attr_reader :has_many_panels
   attr_reader :has_as_belongs_to_many_panels
   attr_reader :resource_tools
+  attr_reader :resource
   attr_reader :view
 
   def can_create?
