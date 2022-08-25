@@ -55,15 +55,11 @@ module Avo
           # Fetch the mappings imposed by the user.
           # If they are present, use those ones.
           mapping = get_mapping_for_model klass
-          resource_klass = mapping if mapping.present?
+          return get_resource(mapping) if mapping.present?
 
           valid_resources
             .find do |resource|
-              if resource_klass.present?
-                resource.class.to_s == resource_klass
-              else
-                resource.model_class.model_name.name == klass.to_s
-              end
+              resource.model_class.model_name.name == klass.to_s
             end
         end
 
