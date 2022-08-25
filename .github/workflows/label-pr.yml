@@ -11,7 +11,7 @@ permissions:
 jobs:
   pr-labeler:
     permissions:
-      - pull-requests: write
+      pull-requests: write
     runs-on: ubuntu-latest
     steps:
       - uses: TimonVS/pr-labeler-action@v3
