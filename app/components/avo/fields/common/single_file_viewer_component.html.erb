@@ -33,7 +33,7 @@
         <% end %>
       </div>
       <div>
-        <% if @resource.authorization.authorize_action(:delete_attachments?, raise_exception: false) %>
+        <% if @file.id.present? && @resource.authorization.authorize_action(:delete_attachments?, raise_exception: false) %>
           <%= a_link destroy_path,
             icon: 'heroicons/outline/trash',
             method: :delete,
