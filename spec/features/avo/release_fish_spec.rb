@@ -20,6 +20,6 @@ RSpec.feature ReleaseFish, type: :feature do
     expect(action).to receive(:succeed).with "1 fish released with message 'Bye fishy!'."
     expect(fish).to receive(:release)
 
-    action.handle **args
+    action.handle(**args)
   end
 end
