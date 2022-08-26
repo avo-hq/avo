@@ -21,6 +21,7 @@ en:
     attachment_destroyed: 'Attachment destroyed'
     failed_to_find_attachment: 'Failed to find attachment'
     you_missed_something_check_form: 'You might have missed something. Please check the form.'
+    reupload_files: 'Uploaded files were lost. Please upload the files again.'
     remove_selection: 'Remove selection'
     select_item: 'Select item'
     select_all: 'Select all on page'

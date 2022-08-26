@@ -40,4 +40,12 @@ class Avo::Fields::Common::SingleFileViewerComponent < ViewComponent::Base
   rescue
     false
   end
+
+  # If model is not persistent blob is automatically destroyed otherwise it can be "lost" on storage
+  def persistent_record?
+    return true if @resource.model.persisted?
+
+    ActiveStorage::Blob.destroy(file.blob_id) if file.blob_id.present?
+    false
+  end
 end
