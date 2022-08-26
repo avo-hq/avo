@@ -3,12 +3,11 @@
 class Avo::FiltersComponent < ViewComponent::Base
   include Avo::ApplicationHelper
 
-  def initialize(filters: [], resource: nil, applied_filters: [], parent_model: nil, parent_resource: nil)
+  def initialize(filters: [], resource: nil, applied_filters: [], parent_model: nil)
     @filters = filters
     @resource = resource
     @applied_filters = applied_filters
     @parent_model = parent_model
-    @parent_resource = parent_resource
   end
 
   def render?
@@ -17,7 +16,7 @@ class Avo::FiltersComponent < ViewComponent::Base
 
   def reset_path
     # If come from a association page
-    if @parent_model.present? && @parent_resource.present?
+    if @parent_model.present?
       helpers.related_resources_path(@parent_model, @parent_model, filters: nil, keep_query_params: true)
     else
       helpers.resources_path(resource: @resource, filters: nil, keep_query_params: true)
