@@ -19,6 +19,25 @@
       <% end %>
     </div>
   </div>
+<% elsif style == :big_pills %>
+  <div class="flex flex-wrap gap-2" data-target="tab-switcher" data-style="pills">
+    <% visible_items.each do |tab| %>
+      <%= a_link tab_path(tab),
+      color: selected?(tab) ? :primary : :gray,
+      style: selected?(tab) ? :outline : :ghost,
+      size: :lg,
+      class: class_names("z-20": selected?(tab)),
+      title: tab.description,
+      data: {
+        tippy: tab.description.present? ? 'tooltip' : '',
+        selected: selected?(tab),
+        action: 'click->tabs#changeTab',
+        tabs_id_param: tab.name
+      } do %>
+        <%= tab.name %>
+      <% end %>
+    <% end %>
+  </div>
 <% else %>
   <div class="flex flex-wrap gap-2" data-target="tab-switcher" data-style="pills">
     <% visible_items.each do |tab| %>
