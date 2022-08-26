@@ -64,51 +64,15 @@ module Avo
       classes
     end
 
+    # Use inline_svg gem but with our own finder implementation.
     def svg(file_name, **args)
-      return if file_name.nil?
+      return if file_name.blank?
 
-      options = {}
-      options[:class] = args[:class].present? ? args[:class] : ""
-      options[:class] += args[:extra_class].present? ? " #{args[:extra_class]}" : ""
+      file_name = "#{file_name}.svg" unless file_name.end_with? ".svg"
 
-      if args[:'data-target'].present?
-        options[:'data-target'] = args[:'data-target']
+      with_asset_finder(::Avo::SvgFinder) do
+        inline_svg file_name, **args
       end
-      if args[:'data-tippy'].present?
-        options[:'data-tippy'] = args[:'data-tippy']
-      end
-      if args[:title].present?
-        options[:title] = args[:title]
-      end
-
-      # Create the path to the svgs directory
-      file_path = "#{Avo::Engine.root}/app/assets/svgs/#{file_name}"
-      file_path = "#{file_path}.svg" unless file_path.end_with? ".svg"
-
-      # Create a cache hash
-      hash = Digest::MD5.hexdigest "#{file_path.underscore}_#{options}"
-
-      svg_content = Avo::App.cache_store.fetch "svg_file_#{hash}", expires_in: 1.week, cache_nils: false do
-        if File.exist?(file_path)
-          file = File.read(file_path)
-
-          # parse svg
-          doc = Nokogiri::HTML::DocumentFragment.parse file
-          svg = doc.at_css "svg"
-
-          # attach options
-          options.each do |attr, value|
-            svg[attr.to_s] = value
-          end
-
-          # cast to html
-          doc.to_html.html_safe
-        end
-      end
-
-      return "(not found)" if svg_content.to_s.blank?
-
-      svg_content
     end
 
     def input_classes(extra_classes = "", has_error: false)
@@ -137,6 +101,18 @@ module Avo
       Avo::App.root_path.to_s.delete_prefix(request.base_url.to_s).delete_suffix "/"
     rescue
       Avo.configuration.root_path
+    end
+
+    private
+
+    # Taken from the original library
+    # https://github.com/jamesmartin/inline_svg/blob/main/lib/inline_svg/action_view/helpers.rb#L76
+    def with_asset_finder(asset_finder)
+      Thread.current[:inline_svg_asset_finder] = asset_finder
+      output = yield
+      Thread.current[:inline_svg_asset_finder] = nil
+
+      output
     end
   end
 end

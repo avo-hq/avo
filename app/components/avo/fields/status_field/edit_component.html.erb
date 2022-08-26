@@ -2,7 +2,7 @@
   <%= @form.text_field @field.id,
     class: classes("w-full"),
     data: @field.get_html(:data, view: view, element: :input),
-    disabled: @field.readonly,
+    disabled: @field.is_readonly?,
     placeholder: @field.placeholder,
     style: @field.get_html(:style, view: view, element: :input),
     value: @resource.model.present? ? @resource.model[@field.id] : @field.value
