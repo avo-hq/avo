@@ -65,7 +65,16 @@ module Avo
 
       respond_to do |format|
         if @model.save
-          format.html { redirect_back fallback_location: resource_path(model: @model, resource: @resource), notice: t("avo.attachment_class_attached", attachment_class: @related_resource.name) }
+          # byebug
+          flash[:autoscroll_to_frame] = params[:fields][:_avo_turbo_frame]
+          # back_path = Avo::Services::URIService.parse(request.referer).append_query(autoscroll_to: params[:fields][:_avo_turbo_frame]).to_s
+          # puts ["back_path->", back_path].inspect
+          # byebug
+          format.html { redirect_to params[:fields][:_avo_referer], notice: t("avo.attachment_class_attached", attachment_class: @related_resource.name) }
+          # format.html { redirect_back fallback_location: resource_path(model: @model, resource: @resource), notice: t("avo.attachment_class_attached", attachment_class: @related_resource.name) }
+          # forma
+
+          # format.html { redirect_to back_path, notice: t("avo.attachment_class_attached", attachment_class: @related_resource.name) }
         else
           format.html { render :new }
         end

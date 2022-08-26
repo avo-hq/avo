@@ -1,10 +1,12 @@
 <%= turbo_frame_tag 'attach_modal' do %>
   <%= form_with scope: 'fields',
-    url: "#{avo.root_path}resources/#{params[:resource_name]}/#{params[:id]}/#{params[:related_name]}/",
+    url: Avo::App.root_path(avo.root_path, paths: "resources", params[:resource_name], params[:id], params[:related_name]).to_s,
     local: true,
     data: {
-      'turbo-frame': '_top'
+      'turbo-frame': params[:turbo_frame]
     } do |form| %>
+    <%= form.hidden_field :_avo_referer, value: params[:referer] %>
+    <%= form.hidden_field :_avo_turbo_frame, value: params[:turbo_frame] %>
     <%= render Avo::ModalComponent.new do |c| %>
       <% c.heading do %>
         <%= t 'avo.choose_item', item: @related_resource.name.downcase %>

@@ -96,7 +96,18 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def attach_path
-    Avo::App.root_path(paths: [request.env["PATH_INFO"], "new"])
+    Avo::App.root_path(
+      paths: [request.env["PATH_INFO"], "new"],
+      query: {
+        autoscroll: true,
+        turbo_frame: params[:turbo_frame],
+        referer: Avo::App.root_path(
+          paths: [request.env["PATH_INFO"]],
+          query: {turbo_frame: params[:turbo_frame]}
+        ).to_s
+      }
+    )
+
   end
 
   def singular_resource_name

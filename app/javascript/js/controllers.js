@@ -22,6 +22,7 @@ import PerPageController from './controllers/per_page_controller'
 import ResourceEditController from './controllers/resource_edit_controller'
 import ResourceIndexController from './controllers/resource_index_controller'
 import ResourceShowController from './controllers/resource_show_controller'
+import ScrollToElementController from './controllers/scroll_to_element_controller'
 import SearchController from './controllers/search_controller'
 import SelectController from './controllers/select_controller'
 import SelectFilterController from './controllers/select_filter_controller'
@@ -52,6 +53,7 @@ application.register('per-page', PerPageController)
 application.register('resource-edit', ResourceEditController)
 application.register('resource-index', ResourceIndexController)
 application.register('resource-show', ResourceShowController)
+application.register('scroll-to-element', ScrollToElementController)
 application.register('search', SearchController)
 application.register('select', SelectController)
 application.register('select-filter', SelectFilterController)
