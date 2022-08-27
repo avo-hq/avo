@@ -9,6 +9,10 @@ Avo.configure do |config|
   config.buttons_on_form_footers = false
   config.branding = {
     colors: {
+      # background: "#FFFCF9", # basecamp
+      # background: "#F6F6F7", # original
+      # background: "#FBF7F0", # hotwire
+      # background: "248 246 242", # cookpad
       # BLUE
       100 => "#CEE7F8",
       400 => "#399EE5",

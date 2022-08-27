@@ -6,6 +6,7 @@ class Avo::Configuration::Branding
     @logomark = logomark
 
     @default_colors = {
+      background: "248 246 242",
       100 => "206 231 248",
       400 => "57 158 229",
       500 => "8 134 222",
@@ -18,7 +19,11 @@ class Avo::Configuration::Branding
 
   def css_colors
     rgb_colors.map do |color, value|
-      "--color-primary-#{color}: #{value};"
+      if color == :background
+        "--color-application-#{color}: #{value};"
+      else
+        "--color-primary-#{color}: #{value};"
+      end
     end.join("\n")
   end
 
@@ -45,7 +50,7 @@ class Avo::Configuration::Branding
   def colors
     return @default_colors if Avo::App.license.lacks_with_trial(:branding)
 
-    @colors || @default_colors
+    @default_colors.merge(@colors) || @default_colors
   end
 
   def rgb_colors
