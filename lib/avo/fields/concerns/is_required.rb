@@ -15,6 +15,8 @@ module Avo
         private
 
         def required_from_validators
+          return false if model.nil?
+
           validators.any?{|validator| validator.kind_of?(ActiveModel::Validations::PresenceValidator)}
         end
 
