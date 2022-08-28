@@ -22,7 +22,7 @@ RSpec.describe "SelectAll", type: :system do
 
         release_fish
 
-        expect(page).to have_text "#{per_page} fish released..."
+        expect(page).to have_text "#{per_page} fish released"
       end
     end
 
@@ -43,7 +43,7 @@ RSpec.describe "SelectAll", type: :system do
 
         release_fish
 
-        expect(page).to have_text "#{total_fish} fish released..."
+        expect(page).to have_text "#{total_fish} fish released"
       end
 
       context "press undo" do
@@ -69,7 +69,7 @@ RSpec.describe "SelectAll", type: :system do
 
           release_fish
 
-          expect(page).to have_text "#{per_page} fish released..."
+          expect(page).to have_text "#{per_page} fish released"
         end
       end
 
@@ -91,7 +91,7 @@ RSpec.describe "SelectAll", type: :system do
           uncheck_first_record
           release_fish
 
-          expect(page).to have_text "#{per_page - 1} fish released..."
+          expect(page).to have_text "#{per_page - 1} fish released"
         end
       end
     end
@@ -121,7 +121,7 @@ RSpec.describe "SelectAll", type: :system do
           expect(page).to have_text selected_info_string(spec_solomon_number, spec_solomon_number)
           release_fish
 
-          expect(page).to have_text "#{spec_solomon_number} fish released..."
+          expect(page).to have_text "#{spec_solomon_number} fish released"
         end
       end
     end
