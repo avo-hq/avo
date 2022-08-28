@@ -22,4 +22,29 @@ class Avo::Fields::EditComponent < ViewComponent::Base
   def render?
     !field.computed
   end
+
+  private
+
+  def record_persisted?
+    return true if @resource.model.persisted?
+
+    # If model is not persistent blob is automatically destroyed otherwise it can be "lost" on storage
+    delete_blobs
+    false
+  end
+
+  def delete_blobs
+    case @field.value
+    when ActiveStorage::Attached::One
+      delete_blob @field.value.attachment.blob_id
+    when ActiveStorage::Attached::Many
+      @field.value.attachments.each do |file|
+        delete_blob file.blob_id
+      end
+    end
+  end
+
+  def delete_blob(id)
+    ActiveStorage::Blob.destroy(id) if id.present?
+  end
 end

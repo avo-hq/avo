@@ -397,7 +397,6 @@ module Avo
 
     def create_fail_action
       respond_to do |format|
-        flash.now[:warning] = reupload_files_message if blobs_present?
         flash.now[:error] = create_fail_message
         format.html { render :new, status: :unprocessable_entity }
       end
@@ -409,10 +408,6 @@ module Avo
 
     def create_fail_message
       t "avo.you_missed_something_check_form"
-    end
-
-    def reupload_files_message
-      t "avo.reupload_files"
     end
 
     def after_create_path
@@ -487,11 +482,6 @@ module Avo
       else
         resource_path(model: @model, resource: @resource)
       end
-    end
-
-    # Find if any reflection key contains "blob"
-    def blobs_present?
-      @model._reflections&.keys&.index{ |key| key.include?("blob") }.present?
     end
   end
 end
