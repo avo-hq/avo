@@ -23,4 +23,18 @@ class Avo::Fields::HasOneField::ShowComponent < Avo::Fields::ShowComponent
   def attach_path
     helpers.avo.resources_associations_new_path(@resource.singular_model_key, @resource.model.id, @field.id)
   end
+
+  def can_see_the_create_button?
+    true
+  end
+
+  def create_path
+    args = {
+      via_relation: @resource.singular_model_key,
+      via_relation_class: @resource.name,
+      via_resource_id: @resource.model.id
+    }
+
+    helpers.new_resource_path(resource: @field.target_resource, **args)
+  end
 end
