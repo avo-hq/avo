@@ -21,7 +21,7 @@
     <div class="flex space-x-2">
       <div class="flex">
         <% if @resource.authorization.authorize_action(:download_attachments?, raise_exception: false) %>
-          <%= a_link helpers.main_app.url_for(file),
+          <%= a_link file.url(disposition: :attachment),
             icon: 'heroicons/outline/download',
             color: :primary,
             download: true,

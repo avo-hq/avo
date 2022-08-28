@@ -7,7 +7,7 @@
   <%= @form.range_field @field.id,
     class: "w-full #{@field.get_html(:classes, view: view, element: :input)}",
     data: @field.get_html(:data, view: view, element: :input),
-    disabled: @field.readonly,
+    disabled: @field.is_readonly?,
     max: @field.max,
     min: 0,
     placeholder: @field.placeholder,
