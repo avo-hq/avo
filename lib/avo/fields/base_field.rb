@@ -61,7 +61,7 @@ module Avo
         @name = args[:name]
         @translation_key = args[:translation_key]
         @block = block
-        @required = args[:required] || false
+        @required = args[:required] || nil
         @readonly = args[:readonly] || false
         @sortable = args[:sortable] || false
         @nullable = args[:nullable] || false

@@ -8,8 +8,18 @@ module Avo
           if required.respond_to? :call
             Avo::Hosts::ViewRecordHost.new(block: required, record: model, view: view).handle
           else
-            required
+            required || required_from_validators
           end
+        end
+
+        private
+
+        def required_from_validators
+          validators.any?{|validator| validator.kind_of?(ActiveModel::Validations::PresenceValidator)}
+        end
+
+        def validators
+          model.class.validators_on(id)
         end
       end
     end
