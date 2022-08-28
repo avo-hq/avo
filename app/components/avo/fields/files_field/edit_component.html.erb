@@ -1,7 +1,5 @@
 <%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal, full_width: true do %>
-  <% if record_persisted? %>
-    <%= render Avo::Fields::Common::FilesListViewerComponent.new(field: @field, resource: @resource) if @field.value.present? %>
-  <% end %>
+  <%= render Avo::Fields::Common::FilesListViewerComponent.new(field: @field, resource: @resource) if @field.value.present? %>
 
   <% if @resource.authorization.authorize_action(:upload_attachments?, raise_exception: false) %>
     <div class="mt-2">
