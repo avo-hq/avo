@@ -8,7 +8,7 @@ module Avo
           if required.respond_to? :call
             Avo::Hosts::ViewRecordHost.new(block: required, record: model, view: view).handle
           else
-            required || required_from_validators
+            required.nil? ? required_from_validators : required
           end
         end
 
