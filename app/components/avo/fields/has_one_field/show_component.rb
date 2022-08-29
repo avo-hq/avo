@@ -29,7 +29,7 @@ class Avo::Fields::HasOneField::ShowComponent < Avo::Fields::ShowComponent
 
     authorization_service = @resource.authorization
 
-    # By default eturn true if the create method is not defined for this field
+    # By default return true if the create method is not defined for this field
     return true unless authorization_service.has_method?(create, raise_exception: false)
 
     authorization_service.authorize_action(create, raise_exception: false)
