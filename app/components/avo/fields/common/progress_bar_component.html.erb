@@ -1,0 +1,8 @@
+<div class="flex items-center">
+  <% if display_value %>
+    <div class="text-right text-sm font-semibold leading-none mr-2 min-w-[2rem]">
+      <%= value %><%= value_suffix if value_suffix.present? %>
+    </div>
+  <% end %>
+  <progress min="0" max="<%= max %>" value="<%= value %>" class="block w-full min-w-[6rem]"></progress>
+</div>
