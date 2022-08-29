@@ -27,6 +27,8 @@ class FishResource < Avo::BaseResource
   field :user, as: :belongs_to
   field :type, as: :text, hide_on: :forms
 
+  filter NameFilter
+
   action DummyAction
   action ReleaseFish
 
