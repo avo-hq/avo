@@ -1610,10 +1610,10 @@ has@^1.0.3:
   dependencies:
     function-bind "^1.1.1"
 
-heroicons@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/heroicons/-/heroicons-1.0.6.tgz#1c2b2e0935a46516c3513afacfcaea71f0b68dd7"
-  integrity sha512-5bxTsG2hyNBF0l+BrFlZlR5YngQNMfl0ggJjIRkMSADBQbaZMoTg47OIQzq6f1mpEZ85HEIgSC4wt5AeFM9J2Q==
+heroicons@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/heroicons/-/heroicons-2.0.1.tgz#60ada0ede27b404a95c6e1eada654b73a613d533"
+  integrity sha512-PG+w77atf6BSMTqpEB/yqYYFhLXimhC1L9kHAw/4CA5Vw5SEkcbgO55XbjJ0iwReo6FBs7CbT/0Iv4E2HQJNNg==
 
 hosted-git-info@^2.1.4:
   version "2.8.9"

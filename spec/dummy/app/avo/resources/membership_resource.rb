@@ -2,7 +2,7 @@ class MembershipResource < Avo::BaseResource
   self.title = :name
   self.includes = [:user, :team]
   self.visible_on_sidebar = false
-  self.search_query = ->(params:) do
+  self.search_query = -> do
     scope.ransack(id_eq: params[:q], m: "or").result(distinct: false)
   end
   self.hide_from_global_search = true

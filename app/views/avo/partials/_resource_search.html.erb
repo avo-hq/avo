@@ -3,6 +3,12 @@
     data-search-target="autocomplete"
     data-search-resource="<%= resource %>"
     data-translation-keys='{"no_item_found": "<%= I18n.translate 'avo.no_item_found' %>"}'
+    <% if via_reflection.present? %>
+      data-via-association="<%= via_reflection[:association] %>"
+      data-via-association-id="<%= via_reflection[:association_id] %>"
+      data-via-reflection-class="<%= via_reflection[:class] %>"
+      data-via-reflection-id="<%= via_reflection[:id] %>"
+    <% end %>
   >
   </div>
   <div class="hidden relative inline-flex text-gray-400 text-sm border border-gray-300 rounded cursor-pointer" data-search-target="button"></div>

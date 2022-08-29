@@ -24,7 +24,7 @@ module Avo
             resource: self,
             record: model,
             view: view
-          ).handle.items
+          ).handle&.items || []
         else
           []
         end

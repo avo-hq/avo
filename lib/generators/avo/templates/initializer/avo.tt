@@ -1,4 +1,4 @@
-# For more information regaring these settings check out our docs https://docs.avohq.io
+# For more information regarding these settings check out our docs https://docs.avohq.io
 Avo.configure do |config|
   ## == Routing ==
   config.root_path = '/<%= options[:path] %>'

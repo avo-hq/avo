@@ -4,7 +4,7 @@ class UserResource < Avo::BaseResource
     "Users of the app. view: #{view}"
   }
   self.translation_key = "avo.resource_translations.user"
-  self.search_query = ->(params:) do
+  self.search_query = -> do
     scope.order(created_at: :desc).ransack(id_eq: params[:q], first_name_cont: params[:q], last_name_cont: params[:q], m: "or").result(distinct: false)
   end
   self.resolve_query_scope = ->(model_class:) do
@@ -19,8 +19,8 @@ class UserResource < Avo::BaseResource
   field :id, as: :id, link_to_resource: true
   field :email, as: :gravatar, link_to_resource: true, as_avatar: :circle
   heading "User Information"
-  field :first_name, as: :text, required: true, placeholder: "John"
-  field :last_name, as: :text, required: true, placeholder: "Doe"
+  field :first_name, as: :text, placeholder: "John"
+  field :last_name, as: :text, placeholder: "Doe"
   field :email, as: :text, name: "User Email", required: true, protocol: :mailto
   field :active, as: :boolean, name: "Is active", show_on: :show
   field :cv, as: :file, name: "CV"

@@ -10,7 +10,7 @@
       data: {
         'tags-field-target': 'fakeInput',
       },
-      disabled: @field.readonly,
+      disabled: @field.is_readonly?,
       placeholder: @field.placeholder,
       style: @field.get_html(:style, view: view, element: :input),
       value: ''
@@ -26,7 +26,7 @@
         'delimiters': @field.delimiters,
         'close-on-select': @field.close_on_select ? 1 : 0,
       },
-      disabled: @field.readonly,
+      disabled: @field.is_readonly?,
       placeholder: @field.placeholder,
       style: @field.get_html(:style, view: view, element: :input),
       value: @field.field_value.to_json
