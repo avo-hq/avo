@@ -66,9 +66,9 @@ def toggle_filters_menu
   open_filters_menu
 end
 
-def click_tab(tab_name = '', **args)
-  if args[:within].present?
-    within args[:within] do
+def click_tab(tab_name = '', within: nil**args)
+  if within.present?
+    within within do
       within find('[data-controller="tabs"] turbo-frame:not(.hidden) [data-target="tab-switcher"]') do
         find_link(tab_name).click
       end
