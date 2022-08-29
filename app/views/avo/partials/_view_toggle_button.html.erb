@@ -23,7 +23,7 @@
           color: is_active_view ? :primary : :gray,
           rounded: false,
           size: :sm,
-          class: class_names("z-20": is_active_view, "bg-gray-100 border-gray-300": !is_active_view),
+          class: class_names({"z-20": is_active_view, "bg-gray-100 border-gray-300": !is_active_view}),
           title: t('avo.switch_to_view', view_type: type),
           data: {
             tippy: 'tooltip',
