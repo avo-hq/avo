@@ -7,28 +7,28 @@
   data-selected-resources="[]"
 >
   <% if pagy.pages > 1 %>
-    <div id="selected_info" class="absolute z-30 w-full ml-10 mt-1 pt-px hidden" data-item-select-all-target="selectAllOvelay">
-      <div class="bg-white">
-        <div data-item-select-all-target="unselectedMessage">
-          <span class="font-bold text-gray-700"><%= pagy.in %></span> selected from a total of <span class="font-bold text-gray-700"><%= pagy.count %></span>
+    <div class="absolute z-30 w-full ml-10 pt-px hidden" data-item-select-all-target="selectAllOvelay">
+      <div class="bg-white flex items-center h-9 mt-0.5">
+        <div class="mt-1.5" data-item-select-all-target="unselectedMessage">
+          <%= t "avo.x_records_selected_from_a_total_of_x_html", selected: pagy.in, count: pagy.count %>
           <%= a_link request.url,
             size: :xs,
             color: :primary,
-            class: "cursor-pointer text-primary-500",
+            class: "relative -top-[0.1rem] ml-2 cursor-pointer text-primary-500",
             data: {action: "click->item-select-all#selectAll"} do
           %>
-            Select all
+            <%= t "avo.select_all_matching" %>
           <% end %>
         </div>
-        <div data-item-select-all-target="selectedMessage" class="hidden">
-          <span class="font-bold text-gray-700"><%= pagy.count %></span> selected from a total of <span class="font-bold text-gray-700"><%= pagy.count %></span>
+        <div class="mt-1.5" data-item-select-all-target="selectedMessage" class="hidden">
+          <%= t "avo.x_records_selected_from_all_pages_html", count: pagy.count %>
           <%= a_link request.url,
             size: :xs,
             color: :primary,
-            class: "cursor-pointer text-primary-500",
+            class: "relative -top-[0.1rem] ml-2 cursor-pointer text-primary-500",
             data: {action: "click->item-select-all#selectAll"} do
           %>
-            Undo
+            <%= t "avo.select_only_the_records_on_the_page", selected: pagy.in %>
           <% end %>
         </div>
       </div>
