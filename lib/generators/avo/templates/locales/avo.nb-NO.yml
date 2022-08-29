@@ -25,7 +25,7 @@ nb-NO:
     select_item: 'Velg'
     select_all: 'Velg alle'
     select_all_matching: 'Velg alle samsvarende'
-    select_only_the_records_on_the_page: Velg bare %{selected} postene på denne siden
+    undo: angre
     delete_file: 'Slett fil'
     delete: 'slett'
     delete_item: 'Slett %{item}'

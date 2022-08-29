@@ -25,7 +25,7 @@ en:
     select_item: 'Select item'
     select_all: 'Select all'
     select_all_matching: 'Select all matching'
-    select_only_the_records_on_the_page: Select only the %{selected} records on this page
+    undo: undo
     delete_file: 'Delete file'
     delete: 'delete'
     delete_item: 'Delete %{item}'

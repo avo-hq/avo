@@ -2,12 +2,12 @@ require "rails_helper"
 
 RSpec.describe "SelectAll", type: :system do
   let!(:per_page) { 2 }
-  # Create per_page + 1 Spec Solomons because otherwise with exactly 1 page they're already all selected
-  let!(:spec_solomon_number) { per_page + 1 }
-  let!(:total_fish) { per_page + spec_solomon_number }
-  let!(:info_string) { "selected from a total of" }
+  # Create per_page + 1 Spec Salmons because otherwise with exactly 1 page they're already all selected
+  let!(:spec_salmon_number) { per_page + 1 }
+  let!(:total_fish) { per_page + spec_salmon_number }
+  let!(:info_string) { "records selected on this page from a total of" }
   let!(:random_fishes) { create_list :fish, per_page }
-  let!(:solomon) { create_list :fish, spec_solomon_number, name: "Spec Solomon" }
+  let!(:salmon) { create_list :fish, spec_salmon_number, name: "Spec Salmon" }
   let!(:url) { "/admin/resources/fish?per_page=#{per_page}" }
 
   describe "without applyed filters" do
@@ -15,10 +15,7 @@ RSpec.describe "SelectAll", type: :system do
       it "releases the fish from the selected page" do
         visit url
 
-        check_select_all_on_page_and_expect(
-          selected: per_page,
-          total: total_fish
-        )
+        check_select_all
 
         release_fish
 
@@ -30,16 +27,11 @@ RSpec.describe "SelectAll", type: :system do
       it "releases all fishes" do
         visit url
 
-        check_select_all_on_page_and_expect(
-          selected: per_page,
-          total: total_fish
-        )
+        check_select_all
+        expect_all_message
 
-        press_button_and_expect(
-          button: "Select all",
-          selected: total_fish,
-          total: total_fish
-        )
+        click_on "Select all matching"
+        expect_all_matching_message
 
         release_fish
 
@@ -50,22 +42,14 @@ RSpec.describe "SelectAll", type: :system do
         it "releases the fish from the selected page" do
           visit url
 
-          check_select_all_on_page_and_expect(
-            selected: per_page,
-            total: total_fish
-          )
+          check_select_all
+          expect_all_message
 
-          press_button_and_expect(
-            button: "Select all",
-            selected: total_fish,
-            total: total_fish
-          )
+          click_on "Select all matching"
+          expect_all_matching_message
 
-          press_button_and_expect(
-            button: "Undo",
-            selected: per_page,
-            total: total_fish
-          )
+          click_on "Undo"
+          expect_all_message
 
           release_fish
 
@@ -77,16 +61,11 @@ RSpec.describe "SelectAll", type: :system do
         it "releases the fish from the selected page - 1" do
           visit url
 
-          check_select_all_on_page_and_expect(
-            selected: per_page,
-            total: total_fish
-          )
+          check_select_all
+          expect_all_message
 
-          press_button_and_expect(
-            button: "Select all",
-            selected: total_fish,
-            total: total_fish
-          )
+          click_on "Select all matching"
+          expect_all_matching_message
 
           uncheck_first_record
           release_fish
@@ -103,25 +82,19 @@ RSpec.describe "SelectAll", type: :system do
 
           open_filters_menu
           expect(page).to have_text "Name filter"
-          fill_in "avo_filters_name_filter", with: "Spec Solomon"
+          fill_in "avo_filters_name_filter", with: "Spec Salmon"
           click_on "Filter by name"
           wait_for_loaded
 
-          check_select_all_on_page_and_expect(
-            selected: per_page,
-            total: spec_solomon_number
-          )
+          check_select_all
+          expect(page).to have_text "#{per_page} records selected on this page from a total of #{spec_salmon_number}"
 
-          press_button_and_expect(
-            button: "Select all",
-            selected: spec_solomon_number,
-            total: spec_solomon_number
-          )
+          click_on "Select all matching"
 
-          expect(page).to have_text selected_info_string(spec_solomon_number, spec_solomon_number)
+          expect(page).to have_text "#{spec_salmon_number} records selected from all pages"
           release_fish
 
-          expect(page).to have_text "#{spec_solomon_number} fish released"
+          expect(page).to have_text "#{spec_salmon_number} fish released"
         end
       end
     end
@@ -129,9 +102,8 @@ RSpec.describe "SelectAll", type: :system do
   end
 end
 
-def check_select_all_on_page_and_expect(selected:,total:)
+def check_select_all
   find(:css, 'input[type="checkbox"][data-action="input->item-select-all#toggle"]').set(true)
-  expect(page).to have_text selected_info_string(selected,total)
 end
 
 def uncheck_first_record
@@ -139,9 +111,9 @@ def uncheck_first_record
   expect(page).not_to have_text info_string
 end
 
-def press_button_and_expect(button:,selected:,total:)
+def press_button_and_expect(button:, selected:, total:, string:)
   find('span', text: button).click
-  expect(page).to have_text selected_info_string(selected,total)
+  # expect(page).to have_text selected_info_string(selected, total)
 end
 
 def release_fish
@@ -150,6 +122,14 @@ def release_fish
   wait_for_loaded
   click_on "Run"
   wait_for_loaded
+end
+
+def expect_all_message
+  expect(page).to have_text "#{per_page} records selected on this page from a total of #{total_fish}"
+end
+
+def expect_all_matching_message
+  expect(page).to have_text "#{total_fish} records selected from all pages"
 end
 
 def selected_info_string(selected, number_of_fish)

@@ -19,7 +19,7 @@ ro:
     select_item: 'Selecteaza record'
     select_all: 'Selecteaza totul'
     select_all_matching: 'Selecteaza toate care se potrivesc'
-    select_only_the_records_on_the_page: Selecteaza doar cele %{selected} de pe pagina
+    undo: Anuleaza
     delete_file: 'Sterge fisierul'
     delete: 'sterge'
     delete_item: 'Sterge %{item}'

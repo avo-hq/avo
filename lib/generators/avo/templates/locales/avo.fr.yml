@@ -25,7 +25,7 @@ fr:
     select_item: 'Sélectionnez un élément'
     select_all: 'Sélectionner tout sur la page'
     select_all_matching: 'Sélectionner toutes les correspondances'
-    select_only_the_records_on_the_page: Sélectionnez uniquement les %{selected} enregistrements sur cette page
+    undo: annuler
     delete_file: 'Supprimer le fichier'
     delete: 'supprimer'
     delete_item: 'Supprimer %{item}'

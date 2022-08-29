@@ -25,6 +25,7 @@ pt-BR:
     select_item: 'Selecionar item'
     select_all: 'Selecionar tudo'
     select_all_matching: 'Selecione todas as correspondências'
+    undo: desfazer
     delete_file: 'Deletar arquivo'
     delete: 'deletar'
     delete_item: 'Deletar %{item}'
@@ -91,4 +92,3 @@ pt-BR:
     no_options_available: Nenhuma opção disponível
     x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> registros selecionados nesta página de um total de <span class="font-bold text-gray-700">%{count}</span>
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> registros selecionados de todas as páginas
-    select_only_the_records_on_the_page: Selecione apenas os %{selected} registros nesta página
