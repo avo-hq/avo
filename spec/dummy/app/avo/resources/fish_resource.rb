@@ -32,7 +32,7 @@ class FishResource < Avo::BaseResource
 
   tool FishInformation, show_on: :forms
 
-  tabs style: :big_pills do
+  tabs style: :pills do
     tab "big useless tab here" do
       panel do
         field :id, as: :id
