@@ -88,7 +88,6 @@ end
 group :development, :test do
   gem "awesome_print"
   gem "faker", require: false
-  gem 'dead_end', require: false
 end
 
 group :test do
