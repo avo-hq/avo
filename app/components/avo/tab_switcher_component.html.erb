@@ -6,7 +6,7 @@
           color: selected?(tab) ? :primary : :gray ,
           rounded: false,
           size: :sm,
-          class: class_names("active:outline-0", {"z-20": selected?(tab), "bg-gray-100 border-gray-300": !selected?(tab)}),
+          class: helpers.class_names("active:outline-0", {"z-20": selected?(tab), "bg-gray-100 border-gray-300": !selected?(tab)}),
           title: tab.description,
           data: {
             tippy: tab.description.present? ? 'tooltip' : '',
@@ -26,7 +26,7 @@
       color: selected?(tab) ? :primary : :gray,
       style: selected?(tab) ? :outline : :text,
       size: :sm,
-      class: class_names({"z-20": selected?(tab)}),
+      class: helpers.class_names({"z-20": selected?(tab)}),
       title: tab.description,
       data: {
         tippy: tab.description.present? ? 'tooltip' : '',
