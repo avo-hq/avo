@@ -7,12 +7,13 @@
 
 ![](./public/avo-assets/logo-on-white.png)
 
-**Configuration-based, no-maintenance, extendable Ruby on Rails admin**
+**Ruby on Rails application building framework.**
 
 Avo is a beautiful next-generation framework that empowers you, the developer, to create fantastic admin panels for your Ruby on Rails apps with the flexibility to fit your needs as you grow.
 
 ## Get started
 
+⚡️ **Install**: [docs.avohq.io/2.0/installation](https://docs.avohq.io/2.0/installation.html)\
 ✨ **Website**: [avohq.io](https://avohq.io)\
 📚 **Documentation**: [docs.avohq.io](https://docs.avohq.io)\
 🗺 **Roadmap**: [GitHub Roadmap](https://github.com/orgs/avo-hq/projects/3)\
@@ -43,24 +44,19 @@ Avo is a beautiful next-generation framework that empowers you, the developer, t
   - **Localization** - Have it available in any language you need. [docs](https://docs.avohq.io/2.0/localization.html)
   - **No asset pipeline pollution** - Bring your own asset pipeline. [docs](https://docs.avohq.io/2.0/custom-asset-pipeline.html)
   - **Mobile interface** - Check your data on the go from any mobile device.
+  - **Tabbed interface** - Conditionally show the data you need
+  - **Menu builder** - Group and surface information as you need to
+  - **Branding** - Make it look
 
 ## Some of the things we're going focusing on next
 
-Theming ⭐️  &nbsp;notifications ⭐️  &nbsp;Resource segmentation ⭐️  &nbsp;filterable fields ⭐️  &nbsp;inline editing ⭐️  &nbsp;multilingual records ⭐️  &nbsp;associations in tabs ⭐️  &nbsp;keyboard shortcuts ⭐️  &nbsp;track resource changes ⭐️  &nbsp;smart resource generation ⭐️  &nbsp;sidebar editor ⭐️  &nbsp;live resources ⭐️  &nbsp;tags field ⭐️  &nbsp;columns view ⭐️  &nbsp;list view ⭐️  &nbsp;custom action items ⭐️  &nbsp;command bar
+Theming ⭐️  &nbsp;notifications ⭐️  &nbsp;Resource segmentation ⭐️  &nbsp;filterable fields ⭐️  &nbsp;inline editing ⭐️  &nbsp;multilingual records ⭐️  &nbsp;keyboard shortcuts ⭐️  &nbsp;track resource changes ⭐️  &nbsp;smart resource generation ⭐️  &nbsp;live resources ⭐️  &nbsp;columns view ⭐️  &nbsp;list view ⭐️  &nbsp;custom action items ⭐️  &nbsp;command bar ⭐️  &nbsp; use fields DSL in your custom views
 
 For more up-to-date info check out our 🗺 [Roadmap](https://github.com/orgs/avo-hq/projects/3).
 
 # Installation
-Add this line to your application's `Gemfile`:
 
-```ruby
-gem 'avo'
-```
-
-And then execute:
-```bash
-$ bundle install
-```
+Use this RailsBytes template to get started quick `rails app:template LOCATION='https://avohq.io/app-template'`. If you need a more detailed guide, follow [this page](https://docs.avohq.io/2.0/installation.html).
 
 # Contributing
 
