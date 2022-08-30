@@ -3,7 +3,7 @@ import { Controller } from '@hotwired/stimulus'
 import { castBoolean } from '../helpers/cast_boolean'
 
 export default class extends Controller {
-  static targets = ['tab'];
+  static targets = ['tabPanel'];
 
   static values = {
     view: String,
@@ -11,13 +11,17 @@ export default class extends Controller {
   };
 
   get currentTab() {
-    return this.tabTargets.find(
+    return this.tabPanelTargets.find(
       (element) => element.dataset.tabId === this.activeTabValue,
     )
   }
 
   targetTab(id) {
-    return this.tabTargets.find((element) => element.dataset.tabId === id)
+    return this.tabTargets.find((element) => element.dataset.tabsIdParam === id)
+  }
+
+  targetTabPanel(id) {
+    return this.tabPanelTargets.find((element) => element.dataset.tabId === id)
   }
 
   changeTab(e) {
@@ -46,17 +50,17 @@ export default class extends Controller {
     }
 
     // We don't need to add a height to this panel because it was loaded before
-    if (castBoolean(this.targetTab(id).dataset.loaded)) {
+    if (castBoolean(this.targetTabPanel(id).dataset.loaded)) {
       return
     }
 
     // Get the height of the active panel
     const { height } = this.currentTab.getBoundingClientRect()
     // Set it to the target panel
-    this.targetTab(id).style.height = `${height}px`
+    this.targetTabPanel(id).style.height = `${height}px`
 
     // Wait until the panel loaded it's content and then remove the forced height
-    const observer = new AttributeObserver(this.targetTab(id), 'busy', {
+    const observer = new AttributeObserver(this.targetTabPanel(id), 'busy', {
       elementUnmatchedAttribute: () => {
         // The content is not available in an instant so delay the height reset a bit.
         setTimeout(() => {
@@ -69,11 +73,11 @@ export default class extends Controller {
   }
 
   markTabLoaded(id) {
-    this.targetTab(id).dataset.loaded = true
+    this.targetTabPanel(id).dataset.loaded = true
   }
 
   showTab(id) {
-    this.tabTargets.forEach((element) => {
+    this.tabPanelTargets.forEach((element) => {
       if (element.dataset.tabId === id) {
         element.classList.remove('hidden')
       }
@@ -81,6 +85,6 @@ export default class extends Controller {
   }
 
   hideTabs() {
-    this.tabTargets.map((element) => element.classList.add('hidden'))
+    this.tabPanelTargets.map((element) => element.classList.add('hidden'))
   }
 }
