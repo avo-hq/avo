@@ -16,7 +16,8 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     turbo_frame: "",
     parent_model: nil,
     parent_resource: nil,
-    applied_filters: []
+    applied_filters: [],
+    query: nil
   )
     @resource = resource
     @resources = resources
@@ -31,6 +32,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     @parent_resource = parent_resource
     @applied_filters = applied_filters
     @view = :index
+    @query = query
   end
 
   def title
@@ -146,5 +148,4 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
       id: @parent_model.id
     }
   end
-
 end

@@ -16,6 +16,10 @@ ro:
     resource_created: 'Resursa creata'
     resource_destroyed: 'Resursa stearsa'
     remove_selection: 'Sterge selectia'
+    select_item: 'Selecteaza record'
+    select_all: 'Selecteaza totul'
+    select_all_matching: 'Selecteaza toate care se potrivesc'
+    undo: Anuleaza
     delete_file: 'Sterge fisierul'
     delete: 'sterge'
     delete_item: 'Sterge %{item}'
@@ -83,3 +87,5 @@ ro:
     empty_dashboard_message: Adauga carduri in acest dashboard
     no_cards_present: Niciun card disponibil
     no_options_available: Nicio optiune disponibila
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> selectate dintr-un total de <span class="font-bold text-gray-700">%{count}</span>
+    x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> selectate din toate paginile

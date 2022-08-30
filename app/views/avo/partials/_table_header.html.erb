@@ -44,7 +44,7 @@
           ""
         end
     %>
-    <th class="text-left uppercase px-3 py-2 whitespace-nowrap rounded-l" data-control="resource-field-th">
+    <th class="text-left uppercase px-3 py-3 whitespace-nowrap rounded-l" data-control="resource-field-th">
       <% if field.sortable %>
         <%= link_to params.permit!.merge(sort_by: sort_by, sort_direction: sort_direction), class: "flex items-center #{classes} #{'cursor-pointer' if field.sortable}", 'data-turbo-frame': params[:turbo_frame] do %>
           <%= field.name %>

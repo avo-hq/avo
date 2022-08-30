@@ -23,6 +23,9 @@ nb-NO:
     you_missed_something_check_form: 'Her mangler du noe. Vennligst sjekk skjemaet.'
     remove_selection: 'Fjern valg'
     select_item: 'Velg'
+    select_all: 'Velg alle'
+    select_all_matching: 'Velg alle samsvarende'
+    undo: angre
     delete_file: 'Slett fil'
     delete: 'slett'
     delete_item: 'Slett %{item}'
@@ -85,4 +88,6 @@ nb-NO:
     empty_dashboard_message: Legg til kort i dette dashbordet
     no_cards_present: Ingen kort til stede
     no_options_available: Ingen tilgjengelige alternativer
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> poster valgt på denne siden fra totalt <span class="font-bold text-gray-700">%{count}</span>
+    x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> poster valgt fra alle sider
 

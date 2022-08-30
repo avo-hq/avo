@@ -11,14 +11,14 @@ RSpec.describe "Filters", type: :system do
       visit url
       expect(page.all("input[name='Select item']").any?(&:checked?)).to be false
 
-      check("Select all on page")
+      check("Select all")
 
       expect(page.all("input[name='Select item']").all?(&:checked?)).to be true
 
       uncheck("Select item", match: :first)
       expect(page.all("input[name='Select item']").map(&:checked?)).to match_array([false, true])
 
-      expect(page.find("input[name='Select all on page']")).not_to be_checked
+      expect(page.find("input[name='Select all']")).not_to be_checked
     end
   end
 end
