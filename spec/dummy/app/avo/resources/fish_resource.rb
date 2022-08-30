@@ -23,7 +23,7 @@ class FishResource < Avo::BaseResource
 
   field :id, as: :id
   field :id, as: :number, only_on: :forms, readonly: -> { view != :new }
-  field :name, as: :text, srequired: -> { view == :new }, required: true, help: "help text"
+  field :name, as: :text, required: -> { view == :new }, help: "help text"
   # , html: {
   #   edit: {
   #     wrapper: {
