@@ -6,7 +6,7 @@ class Avo::Configuration::Branding
     @logomark = logomark
 
     @default_colors = {
-      background: "248 246 242",
+      background: "#F6F6F7",
       100 => "206 231 248",
       400 => "57 158 229",
       500 => "8 134 222",
