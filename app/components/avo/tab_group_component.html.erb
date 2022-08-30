@@ -15,7 +15,7 @@
         data: {
           # Add a marker to know if we already loaded a turbo frame
           loaded: tab.name == active_tab_name,
-          tabs_target: :tab,
+          tabs_target: :tabPanel,
           tab_id: tab.name,
         }
       }
@@ -32,17 +32,17 @@
       end
 
       if should_lazy_load
-        args[:src] = helpers.resource_path(resource: @resource, model: @resource.model, keep_query_params: true, active_tab_name: tab.name, tab_turbo_frame: group.turbo_frame_id)
+        args[:src] = helpers.resource_path(resource: resource, model: resource.model, keep_query_params: true, active_tab_name: tab.name, tab_turbo_frame: group.turbo_frame_id)
         args[:loading] = :lazy
       end
     %>
     <%= turbo_frame_tag tab.turbo_frame_id(parent: @group), **args do %>
       <div class="border rounded-lg p-2 -mx-2 -my-2 lg:p-4 lg:-mx-4 lg:-my-4 space-y-4">
-        <%= render Avo::TabSwitcherComponent.new resource: @resource, current_tab: tab, group: group, active_tab_name: active_tab_name, view: view %>
+        <%= render Avo::TabSwitcherComponent.new resource: resource, current_tab: tab, group: group, active_tab_name: active_tab_name, view: view, style: tabs_style %>
         <% if !should_lazy_load && !tab.empty? %>
           <div class="space-y-12">
             <% tab.visible_items.each do |item| %>
-              <%= render Avo::ItemSwitcherComponent.new resource: @resource, item: item, index: index, form: form, view: @view %>
+              <%= render Avo::ItemSwitcherComponent.new resource: resource, item: item, index: index, form: form, view: @view %>
             <% end %>
           </div>
         <% end %>

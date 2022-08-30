@@ -24,6 +24,8 @@ fr:
     remove_selection: 'Supprimer la sélection'
     select_item: 'Sélectionnez un élément'
     select_all: 'Sélectionner tout sur la page'
+    select_all_matching: 'Sélectionner toutes les correspondances'
+    undo: annuler
     delete_file: 'Supprimer le fichier'
     delete: 'supprimer'
     delete_item: 'Supprimer %{item}'
@@ -113,3 +115,5 @@ fr:
     empty_dashboard_message: Ajouter des cartes à ce tableau de bord
     no_cards_present: Aucune carte présente
     no_options_available: Aucune option disponible
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> enregistrements sélectionnés sur cette page sur un total de <span class="font-bold text-gray-700">%{count}</span>
+    x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> enregistrements sélectionnés dans toutes les pages

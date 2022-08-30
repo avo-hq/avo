@@ -9,14 +9,16 @@ class Avo::TabSwitcherComponent < Avo::BaseComponent
   attr_reader :current_tab
   attr_reader :tabs
   attr_reader :view
+  attr_reader :style
 
-  def initialize(resource:, group:, current_tab:, active_tab_name:, view:)
+  def initialize(resource:, group:, current_tab:, active_tab_name:, view:, style:)
     @active_tab_name = active_tab_name
     @resource = resource
     @group = group
     @current_tab = current_tab
     @tabs = group.items
     @view = view
+    @style = style
   end
 
   def tab_path(tab)

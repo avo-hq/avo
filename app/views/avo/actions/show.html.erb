@@ -20,7 +20,8 @@
       <div class="flex-1 flex">
         <%= @action.message %>
       </div>
-      <%= form.hidden_field :resource_ids, value: params[:resource_ids], 'data-action-target': 'resourceIds' %>
+      <%= form.hidden_field :avo_resource_ids, value: params[:resource_ids], 'data-action-target': 'resourceIds' %>
+      <%= form.hidden_field :avo_selected_query, 'data-action-target': 'selectedAllQuery' %>
       <% if @action.get_fields.present? %>
         <div class="mt-4">
           <% @action.get_fields.each_with_index do |field, index| %>
