@@ -18,7 +18,7 @@ module Avo
       def initialize(message:, purpose:)
         @message = message
         @purpose = purpose
-        @crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base[0..31])
+        @crypt = ActiveSupport::MessageEncryptor.new(encryption_key)
       end
 
       def encrypt
@@ -27,6 +27,20 @@ module Avo
 
       def decrypt
         crypt.decrypt_and_verify(message, purpose: purpose)
+      end
+
+      private
+
+      def encryption_key
+        secret_key_base[0..31]
+      rescue
+        # This will fail the decryption process.
+        # It's here only to keep Avo from crashing
+        SecureRandom.random_bytes(32)
+      end
+
+      def secret_key_base
+        Rails.application.secrets.secret_key_base || ENV['SECRET_KEY_BASE']
       end
     end
   end
