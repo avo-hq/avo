@@ -34,11 +34,24 @@ module Generators
             Rails::Generators.invoke("avo:eject", [":head", "--no-avo-version"], {destination_root: Rails.root})
 
             say "Adding the JS asset to the partial"
-            prepend_to_file Rails.root.join("app", "views", "avo", "partials", "_head.html.erb"), "<%= javascript_importmap_tags \"avo.custom\" %>"
+            append_to_file Rails.root.join("app", "views", "avo", "partials", "_head.html.erb"), "<%= javascript_importmap_tags \"avo.custom\" %>"
 
             # pin to importmap
             say "Prepending the new entrypoint to your importmap config"
-            prepend_to_file Rails.root.join("config", "importmap.rb"), "\n\n# Avo custom JS entrypoint\npin \"avo.custom\", preload: true"
+            append_to_file Rails.root.join("config", "importmap.rb"), "\n# Avo custom JS entrypoint\npin \"avo.custom\", preload: true\n"
+          end
+
+          def install_for_esbuild
+            unless Rails.root.join("app", "javascript", "avo.custom.js").exist?
+              say "Add default app/javascript/avo.custom.js"
+              copy_file template_path("avo.custom.js"), "app/javascript/avo.custom.js"
+            end
+
+            say "Ejecting the _head.html.erb partial"
+            Rails::Generators.invoke("avo:eject", [":head", "--no-avo-version"], {destination_root: Rails.root})
+
+            say "Adding the JS asset to the partial"
+            append_to_file Rails.root.join("app", "views", "avo", "partials", "_head.html.erb"), "<%= javascript_include_tag \"avo.custom\", \"data-turbo-track\": \"reload\", defer: true %>"
           end
 
           def template_path(filename)
