@@ -10,7 +10,12 @@ module Generators
         desc "Add Tailwindcss to your Avo project."
 
         def create_files
-          unless Rails.root.join("app/assets/stylesheets/avo.tailwind.css").exist?
+          unless tailwindcss_installed?
+            system "./bin/bundle add tailwindcss-rails"
+            system "./bin/rails tailwindcss:install"
+          end
+
+          unless Rails.root.join("app", "assets", "stylesheets", "avo.tailwind.css").exist?
             say "Add default app/assets/stylesheets/avo.tailwind.css"
             copy_file template_path("avo.tailwind.css"), "app/assets/stylesheets/avo.tailwind.css"
           end
@@ -25,7 +30,7 @@ module Generators
             run "gem install foreman"
           end
 
-          append_to_file "Procfile.dev", "css: bin/rails tailwindcss:watch\n"
+          append_to_file "Procfile.dev", "avo_css: bin/rails tailwindcss:watch\n"
 
           say "Ejecting the _head.html.erb partial"
           Rails::Generators.invoke("avo:eject", [":head", "--no-avo-version"], {destination_root: Rails.root})
@@ -37,6 +42,10 @@ module Generators
         no_tasks do
           def template_path(filename)
             Pathname.new(__dir__).join("..", "templates", "tailwindcss", filename).to_s
+          end
+
+          def tailwindcss_installed?
+            Rails.root.join("config", "tailwind.config.js").exist? || Rails.root.join("tailwind.config.js").exist?
           end
         end
       end
