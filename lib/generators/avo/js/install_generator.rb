@@ -37,7 +37,7 @@ module Generators
             append_to_file Rails.root.join("app", "views", "avo", "partials", "_head.html.erb"), "<%= javascript_importmap_tags \"avo.custom\" %>"
 
             # pin to importmap
-            say "Prepending the new entrypoint to your importmap config"
+            say "Pin the new entrypoint to your importmap config"
             append_to_file Rails.root.join("config", "importmap.rb"), "\n# Avo custom JS entrypoint\npin \"avo.custom\", preload: true\n"
           end
 
