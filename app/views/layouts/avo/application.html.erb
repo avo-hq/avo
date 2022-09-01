@@ -6,7 +6,6 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= render partial: 'avo/partials/javascript' %>
-    <%= render partial: 'avo/partials/head' %>
     <% if Avo::PACKED %>
       <%= javascript_include_tag "/avo-assets/avo.base", "data-turbo-track": "reload", defer: true %>
       <%= stylesheet_link_tag "/avo-assets/avo.base", "data-turbo-track": "reload", defer: true %>
@@ -17,6 +16,7 @@
         <%= javascript_include_tag "hotwire-livereload", defer: true %>
       <% end %>
     <% end %>
+    <%= render partial: 'avo/partials/head' %>
   </head>
   <body class="bg-application os-mac">
     <div class="relative flex flex-1 w-full min-h-full" data-controller="sidebar" data-sidebar-open-value="<%= @sidebar_open %>">
