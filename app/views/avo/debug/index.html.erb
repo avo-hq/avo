@@ -20,7 +20,20 @@
     <% c.bare_content do %>
       <div class="grid gap-4 sm:grid-cols-3">
         <div class="relative flex flex-col bg-white rounded shadow-panel p-4 space-y-4 h-full col-span-1">
+        <div class="flex justify-between w-full">
           <div class="font-semibold">License info</div>
+            <div class="flex justify-self-end">
+              <%= a_button style: :outline,
+                color: :blue,
+                url: "#{root_path}avo_private/debug/refresh_license",
+                method: :post,
+                loading: true,
+                size: :xs,
+                icon: 'heroicons/outline/refresh' do %>
+                Refresh license
+              <% end %>
+            </div>
+        </div>
           <div class="flex flex-col flex-1">
             <div>
               <div class="text-xl font-semibold"><%= license.name %></div>
@@ -53,16 +66,6 @@
                   <dd><%= Avo::App.cache_store.class.to_s %> - <%= Avo::App.cache_store.options.inspect %></dd>
                 </dl>
               </div>
-            </div>
-            <div class="flex justify-end mt-4">
-              <%= a_button style: :outline,
-                color: :blue,
-                url: "#{root_path}avo_private/debug/refresh_license",
-                method: :post,
-                loading: true,
-                icon: 'heroicons/outline/refresh' do %>
-                Refresh license
-              <% end %>
             </div>
           </div>
         </div>

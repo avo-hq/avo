@@ -13,12 +13,10 @@ module Avo
 
       if license.valid?
         flash[:notice] = "avohq.io responded: \"#{license.id.humanize} license is valid\"."
+      elsif license.response['reason'].present?
+        flash[:error] = "avohq.io responded: \"#{license.response['reason']}\"."
       else
-        if license.response['reason'].present?
-          flash[:error] = "avohq.io responded: \"#{license.response['reason']}\"."
-        else
-          flash[:error] = license.response['error']
-        end
+        flash[:error] = license.response['error']
       end
 
       redirect_back fallback_location: avo.avo_private_debug_index_path
