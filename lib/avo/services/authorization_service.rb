@@ -73,8 +73,11 @@ module Avo
           policy_class.new(user, record)
         end
 
-        def defined_methods(user, record, **args)
-          Pundit.policy!(user, record).methods
+        def defined_methods(user, record, policy_class: nil, **args)
+          # I'm aware this will not raise a Pundit error.
+          # Should the policy not exist, it will however raise an uninitialized constant error, which is probably what we want when specifying a custom policy
+          policy = policy_class.new(user, record) || Pundit.policy!(user, record)
+          policy.methods
         rescue Pundit::NotDefinedError => e
           return [] unless Avo.configuration.raise_error_on_missing_policy
 
@@ -119,7 +122,7 @@ module Avo
       end
 
       def defined_methods(model, **args)
-        self.class.defined_methods(user, model, **args)
+        self.class.defined_methods(user, model, policy_class: @policy_class, **args)
       end
 
       def has_method?(method, **args)
