@@ -1,6 +1,6 @@
 class PhotoCommentPolicy < ApplicationPolicy
   def index?
-    false
+    true
   end
 
   def show?
