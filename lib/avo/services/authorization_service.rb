@@ -5,13 +5,13 @@ module Avo
       attr_accessor :record
 
       class << self
-        def authorize(user, record, action, **args)
+        def authorize(user, record, action, policy_class: nil, **args)
           return true if skip_authorization
           return true if user.nil?
 
           begin
-            if Pundit.policy user, record
-              Pundit.authorize user, record, action
+            if get_policy(user, record, policy_class: policy_class)
+              Pundit.authorize user, record, action, policy_class: policy_class
             end
 
             true
@@ -28,7 +28,7 @@ module Avo
           end
         end
 
-        def authorize_action(user, record, action, **args)
+        def authorize_action(user, record, action, policy_class: nil, **args)
           action = Avo.configuration.authorization_methods.stringify_keys[action.to_s] || action
 
           # If no action passed we should raise error if the user wants that.
@@ -41,8 +41,7 @@ module Avo
 
           # Add the question mark if it's missing
           action = "#{action}?" unless action.end_with? "?"
-
-          authorize user, record, action, **args
+          authorize(user, record, action, policy_class: policy_class, **args)
         end
 
         def apply_policy(user, model)
@@ -68,8 +67,10 @@ module Avo
           end.to_h
         end
 
-        def get_policy(user, record)
-          Pundit.policy user, record
+        def get_policy(user, record, policy_class: nil)
+          return Pundit.policy user, record unless policy_class
+
+          policy_class.new(user, record)
         end
 
         def defined_methods(user, record, **args)
@@ -87,13 +88,14 @@ module Avo
         end
       end
 
-      def initialize(user = nil, record = nil)
+      def initialize(user = nil, record = nil, policy_class: nil)
         @user = user
         @record = record
+        @policy_class = policy_class
       end
 
-      def authorize(action, **args)
-        self.class.authorize(user, record, action, **args)
+      def authorize(action, policy_class: nil, **args)
+        self.class.authorize(user, record, action, policy_class: @policy_class, **args)
       end
 
       def set_record(record)
@@ -109,7 +111,7 @@ module Avo
       end
 
       def authorize_action(action, **args)
-        self.class.authorize_action(user, record, action, **args)
+        self.class.authorize_action(user, record, action, policy_class: @policy_class, **args)
       end
 
       def apply_policy(model)
