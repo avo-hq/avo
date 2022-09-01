@@ -26,10 +26,10 @@ module Avo
           items_holder.panel name, **args, &block
         end
 
-        def tabs(&block)
+        def tabs(**args, &block)
           ensure_items_holder_initialized
 
-          items_holder.tabs Avo::TabGroupBuilder.parse_block(&block)
+          items_holder.tabs Avo::TabGroupBuilder.parse_block(**args, &block)
         end
 
         def tool(klass, **args)

@@ -35,6 +35,7 @@ module Avo
     attr_accessor :main_menu
     attr_accessor :profile_menu
     attr_accessor :model_resource_mapping
+    attr_accessor :tabs_style
 
     def initialize
       @root_path = "/avo"
@@ -80,6 +81,7 @@ module Avo
       @main_menu = nil
       @profile_menu = nil
       @model_resource_mapping = {}
+      @tabs_style = :tabs
     end
 
     def current_user_method(&block)

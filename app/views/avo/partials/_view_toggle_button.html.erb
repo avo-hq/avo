@@ -20,10 +20,10 @@
 
         <%= a_link url_for(params.permit!.merge(view_type: type)).to_s,
           icon: info[type][:new_icon],
-          color: is_active_view ? :gray : :primary,
+          color: is_active_view ? :primary : :gray,
           rounded: false,
           size: :sm,
-          class: is_active_view ? ' bg-gray-100 border-gray-300' : ' z-20',
+          class: is_active_view ? "z-20" : "bg-gray-100 border-gray-300",
           title: t('avo.switch_to_view', view_type: type),
           data: {
             tippy: 'tooltip',

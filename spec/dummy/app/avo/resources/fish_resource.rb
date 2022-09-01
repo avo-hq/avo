@@ -16,7 +16,7 @@ class FishResource < Avo::BaseResource
       }
     delete_button label: "", title: "something"
     detach_button label: "", title: "something"
-    actions_list exclude: ReleaseFish, style: :primary, color: :slate
+    actions_list exclude: [ReleaseFish], style: :primary, color: :slate
     action ReleaseFish, style: :primary, color: :fuchsia, icon: "heroicons/outline/globe"
     edit_button label: ""
   end
@@ -27,12 +27,14 @@ class FishResource < Avo::BaseResource
   field :user, as: :belongs_to
   field :type, as: :text, hide_on: :forms
 
+  filter NameFilter
+
   action DummyAction
   action ReleaseFish
 
   tool FishInformation, show_on: :forms
 
-  tabs do
+  tabs style: :pills do
     tab "big useless tab here" do
       panel do
         field :id, as: :id

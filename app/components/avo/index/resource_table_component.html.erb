@@ -1,5 +1,40 @@
-<div class="w-full ">
-  <table class="w-full px-4 bg-white" data-resource-name='<%= @resource.model_key %>' data-controller='item-select-all'>
+<div class="w-full relative"
+  data-controller="item-select-all"
+  data-resource-name="<%= @resource.model_key %>"
+  data-item-select-all-selected-all-value="false"
+  data-item-select-all-selected-all-query-value="<%= encrypted_query %>"
+  data-selected-resources-name="<%= @resource.model_key %>"
+  data-selected-resources="[]"
+>
+  <% if pagy.pages > 1 %>
+    <div class="absolute z-30 w-full ml-10 pt-px hidden" data-item-select-all-target="selectAllOvelay">
+      <div class="bg-white flex items-center h-9 mt-0.5">
+        <div class="mt-1.5" data-item-select-all-target="unselectedMessage">
+          <%= t "avo.x_records_selected_from_a_total_of_x_html", selected: pagy.in, count: pagy.count %>
+          <%= a_link request.url,
+            size: :xs,
+            color: :primary,
+            class: "relative -top-[0.1rem] ml-2 cursor-pointer text-primary-500",
+            data: {action: "click->item-select-all#selectAll"} do
+          %>
+            <%= t "avo.select_all_matching" %>
+          <% end %>
+        </div>
+        <div class="mt-1.5" data-item-select-all-target="selectedMessage" class="hidden">
+          <%= t "avo.x_records_selected_from_all_pages_html", count: pagy.count %>
+          <%= a_link request.url,
+            size: :xs,
+            color: :primary,
+            class: "relative -top-[0.1rem] ml-2 cursor-pointer text-primary-500",
+            data: {action: "click->item-select-all#selectAll"} do
+          %>
+            <%= t("avo.undo").humanize %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <table class="w-full px-4 bg-white">
     <%= render partial: 'avo/partials/table_header', locals: {fields: @resource.get_fields(reflection: @reflection, only_root: true)} %>
     <tbody class="divide-y">
       <% @resources.each_with_index do |resource, index| %>

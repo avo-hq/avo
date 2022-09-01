@@ -153,6 +153,8 @@ module Avo
       end
 
       def cache_response(response: nil, time: CACHE_TIME)
+        response = normalize_response response
+
         response.merge!(
           expiry: time,
           fetched_at: Time.now,
@@ -162,6 +164,21 @@ module Avo
         cache_store.write(self.class.cache_key, response, expires_in: time)
 
         response
+      end
+
+      def normalize_response(response)
+        if response.is_a? Hash
+          response
+        else
+          {
+            normalized_response: JSON.stringify(response)
+          }
+        end
+        response.merge({})
+      rescue
+        {
+          normalized_response: "rescued"
+        }
       end
 
       def perform_request
@@ -199,7 +216,12 @@ module Avo
       end
 
       def cache_and_return_error(error, exception_message = "")
-        cache_response response: {error: error, exception_message: exception_message}.stringify_keys, time: 5.minutes.to_i
+        cache_response response: {
+          id: Avo.configuration.license,
+          valid: true,
+          error: error,
+          exception_message: exception_message
+        }.stringify_keys, time: 5.minutes.to_i
       end
 
       def has_cached_response

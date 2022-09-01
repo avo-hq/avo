@@ -11,10 +11,10 @@ module Avo
     end
 
     def handle
-      resource_ids = action_params[:fields][:resource_ids].split(",")
-      models = @resource.class.find_scope.find resource_ids
+      resource_ids = action_params[:fields][:avo_resource_ids].split(",")
+      @selected_query = action_params[:fields][:avo_selected_query]
 
-      fields = action_params[:fields].except("resource_ids")
+      fields = action_params[:fields].except(:avo_resource_ids, :avo_selected_query)
 
       args = {
         fields: fields,
@@ -22,7 +22,13 @@ module Avo
         resource: resource
       }
 
-      args[:models] = models unless @action.standalone
+      unless @action.standalone
+        args[:models] = if @selected_query.present?
+          @resource.model_class.find_by_sql decrypted_query
+        else
+          @resource.class.find_scope.find resource_ids
+        end
+      end
 
       performed_action = @action.handle_action(**args)
 
@@ -89,6 +95,13 @@ module Avo
         # Remove the silent placeholder messages
         message[:type] != :silent
       end
+    end
+
+    def decrypted_query
+      Avo::Services::EncryptionService.decrypt(
+        message: @selected_query,
+        purpose: :select_all
+      )
     end
   end
 end

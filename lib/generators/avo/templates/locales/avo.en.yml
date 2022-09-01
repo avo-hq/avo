@@ -23,7 +23,9 @@ en:
     you_missed_something_check_form: 'You might have missed something. Please check the form.'
     remove_selection: 'Remove selection'
     select_item: 'Select item'
-    select_all: 'Select all on page'
+    select_all: 'Select all'
+    select_all_matching: 'Select all matching'
+    undo: undo
     delete_file: 'Delete file'
     delete: 'delete'
     delete_item: 'Delete %{item}'
@@ -113,3 +115,5 @@ en:
     empty_dashboard_message: Add cards to this dashboard
     no_cards_present: No cards present
     no_options_available: No options available
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> records selected on this page from a total of <span class="font-bold text-gray-700">%{count}</span>
+    x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> records selected from all pages
