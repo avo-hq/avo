@@ -4,8 +4,6 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   include Avo::ResourcesHelper
   include Avo::ApplicationHelper
 
-  attr_reader :view
-
   def initialize(resource: nil, model: nil, actions: [], view: :edit)
     @resource = resource
     @model = model
