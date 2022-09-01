@@ -283,7 +283,8 @@ module Avo
     end
 
     def authorization(user: nil)
-      Avo::Services::AuthorizationService.new(user, model || model_class, policy_class: authorization_policy)
+      current_user = user || Avo::App.current_user
+      Avo::Services::AuthorizationService.new(current_user, model || model_class, policy_class: authorization_policy)
     end
 
     def file_hash
