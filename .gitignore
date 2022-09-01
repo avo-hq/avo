@@ -47,8 +47,11 @@ js_bundle_metadata.json
 
 /public/packs
 /public/avo-assets/avo.css
+/public/avo-assets/avo.base.css
 /public/avo-assets/avo.js
+/public/avo-assets/avo.base.js
 /public/avo-assets/avo.js.map
+/public/avo-assets/avo.base.js.map
 /public/packs-test
 /node_modules
 /yarn-error.log
