@@ -54,7 +54,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
     if @reflection.present?
       # Fetch the appropiate resource
-      reflection_resource = field.use_resource || field.resource
+      reflection_resource = field.resource
       # Fetch the model
       # Hydrate the resource with the model if we have one
       reflection_resource.hydrate(model: @parent_model) if @parent_model.present?
