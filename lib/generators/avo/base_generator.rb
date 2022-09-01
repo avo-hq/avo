@@ -7,7 +7,11 @@ module Generators
 
       def initialize(*args)
         super(*args)
-        invoke "avo:version", *args
+
+        # Don't output the version if requested so
+        unless args.include?(["--no-avo-version"])
+          invoke "avo:version", *args
+        end
       end
     end
   end
