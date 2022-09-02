@@ -7,7 +7,6 @@ class TeamResource < Avo::BaseResource
 
   field :id, as: :id
   field :name, as: :text, sortable: true
-  field :url, as: :text
   field :logo, as: :external_image, as_avatar: :rounded do |model|
     if model.url
       "//logo.clearbit.com/#{URI.parse(model.url).host}?size=180"
@@ -49,6 +48,11 @@ class TeamResource < Avo::BaseResource
     end
     title :name, as: :text, link_to_resource: true
     body :url, as: :text
+  end
+
+  sidebar do
+    field :created_at, as: :date_time
+    field :url, as: :text
   end
 
   filter MembersFilter

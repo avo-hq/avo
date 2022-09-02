@@ -43,6 +43,12 @@ module Avo
 
           items_holder.heading body, **args
         end
+
+        def sidebar(**args, &block)
+          ensure_items_holder_initialized
+
+          items_holder.sidebar Avo::SidebarBuilder.parse_block(**args, &block)
+        end
         # END DSL methods
 
         def items

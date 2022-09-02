@@ -7,6 +7,7 @@ class Avo::PanelComponent < ViewComponent::Base
 
   renders_one :tools
   renders_one :body
+  renders_one :sidebar
   renders_one :bare_content
   renders_one :footer_tools
   renders_one :footer

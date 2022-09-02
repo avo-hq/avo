@@ -168,6 +168,11 @@
         </div>
       <% end %>
     <% end %>
+    <% if sidebar.present? %>
+      <% c.sidebar do %>
+        <%= render sidebar_component %>
+      <% end %>
+    <% end %>
   <% end %>
   <% if @reflection.blank? %>
     <%= content_tag :div, class: 'space-y-12 mt-12' do %>

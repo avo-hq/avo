@@ -80,6 +80,14 @@ class Avo::ResourceComponent < Avo::BaseComponent
     end
   end
 
+  def sidebar
+    @sidebar ||= search_for_sidebar
+  end
+
+  def sidebar_component
+    Avo::ResourceSidebarComponent.new resource: @resource, fields: sidebar.items, params: params, view: view
+  end
+
   def has_reflection_and_is_read_only
     if @reflection.present? && @reflection.active_record.name && @reflection.name
       fields = ::Avo::App.get_resource_by_model_name(@reflection.active_record.name).get_field_definitions
@@ -99,5 +107,13 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
   def via_resource?
     (params[:via_resource_class].present? || params[:via_relation_class].present?) && params[:via_resource_id].present?
+  end
+
+  def search_for_sidebar
+    item = @resource.get_items.find do |item|
+      item.is_sidebar?
+    end
+
+    item&.hydrate(view: view)
   end
 end

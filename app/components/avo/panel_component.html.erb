@@ -23,7 +23,17 @@
       <% end %>
     </div>
   <% end %>
-  <% if body? %>
+  <% if sidebar? && body? %>
+    <div class="flex space-x-4">
+      <div class="grow <%= white_panel_classes %> <%= @body_classes %>">
+        <%= body %>
+      </div>
+
+      <div class="h-full <%= white_panel_classes %>">
+        <%= sidebar %>
+      </div>
+    </div>
+  <% elsif body? %>
     <div class="relative <%= white_panel_classes %> <%= @body_classes %>">
       <%= body %>
     </div>
