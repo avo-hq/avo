@@ -35,6 +35,7 @@ module Avo
     attr_accessor :main_menu
     attr_accessor :profile_menu
     attr_accessor :tabs_style
+    attr_accessor :skip_show_view
 
     def initialize
       @root_path = "/avo"
@@ -80,6 +81,7 @@ module Avo
       @main_menu = nil
       @profile_menu = nil
       @tabs_style = :tabs
+      @skip_show_view = false
     end
 
     def current_user_method(&block)

@@ -445,7 +445,15 @@ module Avo
     def after_update_path
       return params[:referrer] if params[:referrer].present?
 
-      redirect_path_from_resource_option(:after_update_path) || resource_path(model: @model, resource: @resource)
+      redirect_path_from_resource_option(:after_update_path) || default_after_update_path
+    end
+
+    def default_after_update_path
+      if Avo.configuration.skip_show_view
+        edit_resource_path(model: @model, resource: @resource)
+      else
+        resource_path(model: @model, resource: @resource)
+      end
     end
 
     def destroy_success_action
@@ -477,7 +485,7 @@ module Avo
 
       if @resource.class.send(action) == :index
         resources_path(resource: @resource)
-      elsif @resource.class.send(action) == :edit
+      elsif @resource.class.send(action) == :edit || Avo.configuration.skip_show_view
         edit_resource_path(resource: @resource, model: @resource.model)
       else
         resource_path(model: @model, resource: @resource)
