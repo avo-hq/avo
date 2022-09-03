@@ -64,6 +64,9 @@ module Avo
       attr_reader :allow_via_detaching
       attr_reader :attach_scope
       attr_reader :polymorphic_help
+      attr_reader :actionable
+      attr_reader :actionable_id
+      attr_reader :actionable_class
 
       def initialize(id, **args, &block)
         args[:placeholder] ||= I18n.t("avo.choose_an_option")
@@ -77,6 +80,9 @@ module Avo
         @allow_via_detaching = args[:allow_via_detaching] == true
         @attach_scope = args[:attach_scope]
         @polymorphic_help = args[:polymorphic_help]
+        @actionable = args[:actionable] == true
+        @actionable_id = @relation_method + '_id'
+        @actionable_class = args[:actionable_class]
       end
 
       def searchable
@@ -152,8 +158,15 @@ module Avo
         false
       end
 
+      def actionable?
+        actionable ? true : false
+      rescue
+        false
+      end
+
       def foreign_key
         return polymorphic_as if polymorphic_as.present?
+        return actionable_id if actionable?
 
         if @model.present?
           get_model_class(@model).reflections[@relation_method].foreign_key
@@ -220,6 +233,8 @@ module Avo
       end
 
       def target_resource
+        return App.get_resource_by_name id.to_s.camelize if actionable?
+
         if is_polymorphic?
           if value.present?
             return App.get_resource_by_model_name(value.class)

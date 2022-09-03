@@ -84,7 +84,7 @@
       <%= render Avo::Fields::BelongsToField::AutocompleteComponent.new form: @form,
         field: @field,
         model_key: @field.target_resource&.model_key,
-        foreign_key: @field.id_input_foreign_key,
+        foreign_key: @field.actionable ? @field.relation_method : @field.id_input_foreign_key,
         resource: @resource,
         disabled: disabled,
         classes: classes("w-full"),
@@ -92,7 +92,7 @@
         style: @field.get_html(:style, view: view, element: :input)
       %>
     <% else %>
-      <%= @form.select @field.id_input_foreign_key, @field.options,
+      <%= @form.select @field.actionable ? @field.relation_method : @field.id_input_foreign_key, @field.options,
         {
           include_blank: @field.placeholder,
           value: @field.value
@@ -108,7 +108,7 @@
         # If the select field is disabled, no value will be sent. It's how HTML works.
         # Thus the extra hidden field to actually send the related id to the server.
         if disabled %>
-        <%= @form.hidden_field @field.id_input_foreign_key %>
+        <%= @form.hidden_field @field.actionable ? @field.relation_method : @field.id_input_foreign_key %>
       <% end %>
     <% end %>
   <% end %>
