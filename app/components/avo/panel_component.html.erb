@@ -28,9 +28,15 @@
       <div class="grow <%= white_panel_classes %> <%= @body_classes %>">
         <%= body %>
       </div>
-
-      <div class="h-full <%= white_panel_classes %>">
-        <%= sidebar %>
+      <div class="h-full">
+        <% if @sidebar_name.present? %>
+          <div class="text-2xl tracking-normal font-semibold text-gray-800 pb-2 mb-6 md:pb-0">
+            <span><%= @sidebar_name %></span>
+          </div>
+        <% end %>
+        <div class="h-full <%= white_panel_classes %>">
+          <%= sidebar %>
+        </div>
       </div>
     </div>
   <% elsif body? %>

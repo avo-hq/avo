@@ -50,7 +50,7 @@ class TeamResource < Avo::BaseResource
     body :url, as: :text
   end
 
-  sidebar do
+  sidebar "Sidebar dummy name" do
     field :created_at, as: :date_time
     field :url, as: :text
   end

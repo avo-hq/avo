@@ -5,14 +5,16 @@ class Avo::Sidebar
   class_attribute :item_type, default: :sidebar
   delegate :items, :add_item, to: :items_holder
 
+  attr_reader :name
   attr_reader :view
   attr_accessor :items_holder
   attr_accessor :holds_one_field
 
-  def initialize(view: nil, holds_one_field: false, **args)
+  def initialize(name: nil, view: nil, holds_one_field: false, **args)
     # Initialize the visibility markers
     super
 
+    @name = name
     @items_holder = Avo::ItemsHolder.new
     @holds_one_field = holds_one_field
     @view = view

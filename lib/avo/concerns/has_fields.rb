@@ -44,10 +44,10 @@ module Avo
           items_holder.heading body, **args
         end
 
-        def sidebar(**args, &block)
+        def sidebar(name = nil, **args, &block)
           ensure_items_holder_initialized
 
-          items_holder.sidebar Avo::SidebarBuilder.parse_block(**args, &block)
+          items_holder.sidebar Avo::SidebarBuilder.parse_block(name: name, **args, &block)
         end
         # END DSL methods
 

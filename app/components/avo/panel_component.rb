@@ -12,10 +12,11 @@ class Avo::PanelComponent < ViewComponent::Base
   renders_one :footer_tools
   renders_one :footer
 
-  def initialize(name: nil, description: nil, body_classes: nil, data: {}, display_breadcrumbs: false, index: nil, classes: nil, **args)
+  def initialize(name: nil, description: nil, body_classes: nil, data: {}, display_breadcrumbs: false, index: nil, classes: nil, sidebar_name: nil, **args)
     # deprecating title in favor of name
     @title = args[:title]
     @name = name || title
+    @sidebar_name = sidebar_name
     @description = description
     @classes = classes
     @body_classes = body_classes
