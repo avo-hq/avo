@@ -7,6 +7,8 @@ module Avo
     before_action :set_action, only: [:show, :handle]
 
     def show
+      model = @resource.class.find_scope.find params[:id]
+      @resource.hydrate(model: model, view: :show, user: _current_user, params: params)
       @model = ActionModel.new @action.get_attributes_for_action
     end
 
