@@ -34,12 +34,10 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
     end
   end
 
-  def destroy_path
-    if params[:via_resource_class].present?
-      helpers.edit_resource_path(model: @resource.model, resource: @resource, **{ referrer: back_path })
-    else
-      helpers.edit_resource_path(model: @resource.model, resource: @resource)
-    end
+  def can_see_the_destroy_button?
+    return super if Avo.configuration.skip_show_view && view == :edit
+
+    false
   end
 
   # The save button is dependent on the edit? policy method.

@@ -95,6 +95,14 @@ class Avo::ResourceComponent < Avo::BaseComponent
     end
   end
 
+  def destroy_path
+    if params[:via_resource_class].present?
+      helpers.resource_path(model: @resource.model, resource: @resource, referrer: back_path)
+    else
+      helpers.resource_path(model: @resource.model, resource: @resource)
+    end
+  end
+
   private
 
   def via_resource?

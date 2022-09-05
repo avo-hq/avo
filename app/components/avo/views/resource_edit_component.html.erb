@@ -22,9 +22,8 @@
         icon: 'arrow-left' do %>
           <%= t('avo.cancel').capitalize %>
         <% end %>
-        <% #TODO: for some reason new button act as delete button when delete button is present %>
-        <% if view != :new && view != :create && can_see_the_destroy_button? %>
-            <%= a_button url: destroy_path,
+        <% if can_see_the_destroy_button? %>
+            <%= a_link destroy_path,
                 method: :delete,
                 local: true,
                 style: :text,
