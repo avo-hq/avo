@@ -19,8 +19,7 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
 
   def back_path
     if via_resource?
-      model = params[:via_resource_class] || params[:via_relation_class]
-      default_view(model)
+      default_view
     elsif via_index?
       helpers.resources_path(resource: @resource)
     elsif is_edit? && !Avo.configuration.skip_show_view # via resource show or edit page
@@ -30,7 +29,9 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
     end
   end
 
-  def default_view(model)
+  def default_view
+    model = params[:via_resource_class] || params[:via_relation_class]
+
     if Avo.configuration.skip_show_view
       helpers.edit_resource_path(model: relation_resource.model, resource: relation_resource)
     else
