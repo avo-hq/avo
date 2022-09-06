@@ -93,6 +93,7 @@ module Avo
       end
 
       def authorization
+        # Is there a way to pass the authorization_policy here as well ?
         Avo::Services::AuthorizationService.new Avo::App.current_user
       end
 

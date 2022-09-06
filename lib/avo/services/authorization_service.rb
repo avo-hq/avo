@@ -45,13 +45,24 @@ module Avo
         end
 
         def apply_policy(user, model)
-          return model if skip_authorization
-          return model if user.nil?
+          return model if skip_authorization || user.nil?
 
           begin
             Pundit.policy_scope! user, model
           rescue Pundit::NotDefinedError => e
             return model unless Avo.configuration.raise_error_on_missing_policy
+
+            raise e
+          end
+        end
+
+        def apply_custom_policy(user, policy_class)
+          return policy_class if skip_authorization || user.nil?
+
+          begin
+            Pundit.policy_scope user, policy_scope_class: policy_class
+          rescue => e
+            return policy_class unless Avo.configuration.raise_error_on_missing_policy
 
             raise e
           end
@@ -119,7 +130,11 @@ module Avo
       end
 
       def apply_policy(model)
-        self.class.apply_policy(user, model)
+        if @policy_class
+          self.class.apply_custom_policy(user, policy_class: @policy_class)
+        else
+          self.class.apply_policy(user, model)
+        end
       end
 
       def defined_methods(model, **args)
