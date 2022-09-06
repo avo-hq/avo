@@ -20,7 +20,6 @@ module Avo
     delegate :context, to: ::Avo::App
 
     attr_accessor :view
-    attr_accessor :model
     attr_accessor :reflection
     attr_accessor :user
     attr_accessor :params
@@ -110,6 +109,11 @@ module Avo
         end
       end
     end
+
+    def record
+      @model
+    end
+    alias :model :record
 
     def hydrate(model: nil, view: nil, user: nil, params: nil)
       @view = view if view.present?

@@ -11,6 +11,9 @@ Avo.configure do |config|
   else
     :right
   end
+  config.model_resource_mapping = {
+    'User': 'UserResource'
+  }
   config.set_context do
     {
       foo: "bar",
