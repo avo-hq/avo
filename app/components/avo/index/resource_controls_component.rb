@@ -65,8 +65,8 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   end
 
   def parent_resource
+    return @parent_resource unless @parent_resource.blank?
     return nil if @parent_model.blank?
-
     ::Avo::App.get_resource_by_model_name @parent_model.class
   end
 

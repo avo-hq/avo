@@ -51,6 +51,9 @@ module Avo
         #
         # get_resource_by_name('User') => UserResource
         # get_resource_by_name(User) => UserResource
+
+        # FIXME: This query doesn't necessarily get the right resource.
+        # From all the resources that use the same model_class, it will fetch the first one in alphabetical order
         def get_resource_by_model_name(klass)
           # Fetch the mappings imposed by the user.
           # If they are present, use those ones.
