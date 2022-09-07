@@ -259,7 +259,7 @@ module Avo
 
     def set_authorization
       # We need to set @resource_name for the #resource method to work properly
-      @resource_name = resource_name
+      set_resource_name
       @authorization = if resource
         resource.authorization(user: _current_user)
       else
