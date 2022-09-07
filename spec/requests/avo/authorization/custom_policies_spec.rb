@@ -36,6 +36,7 @@ RSpec.describe "CustomPolicies" do
     it "should only show current user comments" do
       # Allow index just for this test
       allow_any_instance_of(PhotoCommentPolicy).to receive(:index?).and_return true
+      # Changing the scope to only allow current user comments for this test
       PhotoCommentPolicy::Scope.define_method(:resolve) do
         scope.where(user_id: user.id)
       end
