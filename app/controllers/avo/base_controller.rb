@@ -106,7 +106,7 @@ module Avo
 
       @page_title = @resource.default_panel_name.to_s
 
-      if params[:via_relation_class].present? && params[:via_resource_id].present?
+      if is_associated_record?
         via_resource = Avo::App.get_resource_by_model_name params[:via_relation_class]
         via_model = via_resource.class.find_scope.find params[:via_resource_id]
         via_resource.hydrate model: via_model
@@ -412,13 +412,21 @@ module Avo
 
     def after_create_path
       # If this is an associated record return to the association show page
-      if params[:via_relation_class].present? && params[:via_resource_id].present?
+      if is_associated_record?
         parent_resource = ::Avo::App.get_resource_by_model_name params[:via_relation_class].safe_constantize
 
         if Avo.configuration.skip_show_view
-          return edit_resource_path(model: @model.send(params[:via_relation]), resource: parent_resource, **{ resource_id: params[:via_resource_id] })
+          return edit_resource_path(
+            model: @model.send(params[:via_relation]),
+            resource: parent_resource,
+            **{ resource_id: params[:via_resource_id] }
+          )
         else
-          return resource_path(model: params[:via_relation_class].safe_constantize, resource: parent_resource, resource_id: params[:via_resource_id])
+          return resource_path(
+            model: params[:via_relation_class].safe_constantize,
+            resource: parent_resource,
+            resource_id: params[:via_resource_id]
+          )
         end
       end
 
@@ -494,6 +502,10 @@ module Avo
       else
         resource_path(model: @model, resource: @resource)
       end
+    end
+
+    def is_associated_record?
+      params[:via_relation_class].present? && params[:via_resource_id].present?
     end
   end
 end
