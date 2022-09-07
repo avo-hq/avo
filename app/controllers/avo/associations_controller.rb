@@ -23,6 +23,7 @@ module Avo
       @parent_resource.hydrate(model: @parent_model)
       @query = @authorization.apply_policy @parent_model.public_send(params[:related_name])
       @association_field = @parent_resource.get_field params[:related_name]
+
       if @association_field.present? && @association_field.scope.present?
         @query = Avo::Hosts::AssociationScopeHost.new(block: @association_field.scope, query: @query, parent: @parent_model).handle
       end
