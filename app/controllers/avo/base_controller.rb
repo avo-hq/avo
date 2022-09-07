@@ -415,10 +415,14 @@ module Avo
       if params[:via_relation_class].present? && params[:via_resource_id].present?
         parent_resource = ::Avo::App.get_resource_by_model_name params[:via_relation_class].safe_constantize
 
-        return resource_path(model: params[:via_relation_class].safe_constantize, resource: parent_resource, resource_id: params[:via_resource_id])
+        if Avo.configuration.skip_show_view
+          return edit_resource_path(model: @model.send(params[:via_relation]), resource: parent_resource, **{ resource_id: params[:via_resource_id] })
+        else
+          return resource_path(model: params[:via_relation_class].safe_constantize, resource: parent_resource, resource_id: params[:via_resource_id])
+        end
       end
 
-      redirect_path_from_resource_option(:after_create_path) || resource_path(model: @model, resource: @resource)
+      redirect_path_from_resource_option(:after_create_path) || default_after_path
     end
 
     def update_success_action
@@ -445,10 +449,10 @@ module Avo
     def after_update_path
       return params[:referrer] if params[:referrer].present?
 
-      redirect_path_from_resource_option(:after_update_path) || default_after_update_path
+      redirect_path_from_resource_option(:after_update_path) || default_after_path
     end
 
-    def default_after_update_path
+    def default_after_path
       if Avo.configuration.skip_show_view
         edit_resource_path(model: @model, resource: @resource)
       else
