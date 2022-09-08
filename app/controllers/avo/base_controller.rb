@@ -415,7 +415,7 @@ module Avo
       if params[:via_relation_class].present? && params[:via_resource_id].present?
         parent_resource = ::Avo::App.get_resource_by_model_name params[:via_relation_class].safe_constantize
 
-        return resource_path(model: params[:via_relation_class].safe_constantize, resource: parent_resource, resource_id: params[:via_resource_id])
+        return resource_path(resource: parent_resource, resource_id: params[:via_resource_id])
       end
 
       redirect_path_from_resource_option(:after_create_path) || resource_path(model: @model, resource: @resource)
