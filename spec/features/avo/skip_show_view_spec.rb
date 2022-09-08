@@ -70,6 +70,27 @@ RSpec.feature "SkipShowView", type: :feature do
       # Actual behaviour of deleting a course is to redirect to new page
       expect(current_path).to eql "/admin/resources/courses/new"
     end
+
+    it "create and delete association redirects to the edit page" do
+      Avo.configuration.skip_show_view = true
+
+      # Create
+      visit "/admin/resources/course_links/new?via_relation=course&via_relation_class=Course&via_resource_id=#{course.id}"
+
+      fill_in "course_link_link", with: "Awesome course link"
+      click_on "Save"
+
+      expect(page).to have_text("Course link was successfully created.")
+      expect(current_path).to eql "/admin/resources/courses/#{course.id}/edit"
+
+      # Delete
+      visit "/admin/resources/course_links/#{course.links.first.id}/edit?via_resource_class=Course&via_resource_id=#{course.id}"
+
+      click_on "Delete"
+
+      expect(page).to have_text("Record destroyed")
+      expect(current_path).to eql "/admin/resources/courses/#{course.id}/edit"
+    end
   end
 
   describe "skip_show_view = false" do
@@ -118,6 +139,34 @@ RSpec.feature "SkipShowView", type: :feature do
       expect(page).to have_text("Course updated!")
       expect(page).to have_text("Awesome course (edited)")
       expect(current_path).to eql "/admin/resources/courses/#{Course.last.id}"
+
+      click_on "Delete"
+      expect(page).to have_text("Course destroyed for ever!")
+      # Actual behaviour of deleting a course is to redirect to new page
+      expect(current_path).to eql "/admin/resources/courses/new"
+    end
+
+    it "create and delete association redirects to the show page" do
+      Avo.configuration.skip_show_view = false
+
+      # Create
+      visit "/admin/resources/course_links/new?via_relation=course&via_relation_class=Course&via_resource_id=#{course.id}"
+
+      fill_in "course_link_link", with: "Awesome course link"
+      click_on "Save"
+
+      expect(page).to have_text("Course link was successfully created.")
+      expect(current_path).to eql "/admin/resources/courses/#{course.id}"
+
+      # Delete
+      visit "/admin/resources/course_links/#{course.links.first.id}/edit?via_resource_class=Course&via_resource_id=#{course.id}"
+      expect(page).to_not have_selector("[data-control='destroy']")
+
+      visit "/admin/resources/course_links/#{course.links.first.id}?via_resource_class=Course&via_resource_id=#{course.id}"
+      click_on "Delete"
+
+      expect(page).to have_text("Record destroyed")
+      expect(current_path).to eql "/admin/resources/courses/#{course.id}"
     end
   end
 
