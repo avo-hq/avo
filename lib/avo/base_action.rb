@@ -81,9 +81,15 @@ module Avo
       models, fields, current_user, resource = args.values_at(:models, :fields, :current_user, :resource)
       avo_fields = get_fields.map { |field| [field.id, field] }.to_h
 
+      # For some fields, like belongs_to, the id and database_id differ (user vs user_id).
+      # That's why we need to fetch the database_id for when we process the action.
+      avo_fields_by_database_id = avo_fields.map do |id, value|
+        [value.database_id.to_sym, value]
+      end.to_h
+
       if fields.present?
         processed_fields = fields.to_unsafe_h.map do |name, value|
-          [name, avo_fields[name.to_sym].resolve_attribute(value)]
+          [name, avo_fields_by_database_id[name.to_sym].resolve_attribute(value)]
         end
 
         processed_fields = processed_fields.to_h
@@ -171,6 +177,15 @@ module Avo
       response[:type] = :download
       response[:path] = path
       response[:filename] = filename
+
+      self
+    end
+
+    # We're overriding this method to hydrate with the proper resource attribute.
+    def hydrate_fields(model: nil, view: nil)
+      fields.map do |field|
+        field.hydrate(model: @model, view: @view, resource: resource)
+      end
 
       self
     end
