@@ -413,9 +413,9 @@ module Avo
     def after_create_path
       # If this is an associated record return to the association show page
       if params[:via_relation_class].present? && params[:via_resource_id].present?
-        parent_resource = ::Avo::App.get_resource_by_model_name params[:via_relation_class].safe_constantize
+        parent_resource = ::Avo::App.get_resource_by_model_name params[:via_relation_class]
 
-        return resource_path(model: params[:via_relation_class].safe_constantize, resource: parent_resource, resource_id: params[:via_resource_id])
+        return resource_path(model: params[:via_relation_class], resource: parent_resource, resource_id: params[:via_resource_id])
       end
 
       redirect_path_from_resource_option(:after_create_path) || resource_path(model: @model, resource: @resource)
