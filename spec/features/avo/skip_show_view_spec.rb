@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.feature "SkipShowView", type: :feature do
   let!(:course) { create :course }
+  let!(:post) { create :post }
 
   around do |example|
     # Store original configuration
@@ -91,6 +92,18 @@ RSpec.feature "SkipShowView", type: :feature do
       expect(page).to have_text("Record destroyed")
       expect(current_path).to eql "/admin/resources/courses/#{course.id}/edit"
     end
+
+    it "grid item redirects to the edit page" do
+      Avo.configuration.skip_show_view = true
+
+      # Create
+      visit "/admin/resources/posts"
+
+      click_on "#{post.name}"
+      wait_for_loaded
+
+      expect(current_path).to eql "/admin/resources/posts/#{post.id}/edit"
+    end
   end
 
   describe "skip_show_view = false" do
@@ -167,6 +180,18 @@ RSpec.feature "SkipShowView", type: :feature do
 
       expect(page).to have_text("Record destroyed")
       expect(current_path).to eql "/admin/resources/courses/#{course.id}"
+    end
+
+    it "grid item redirects to the show page" do
+      Avo.configuration.skip_show_view = false
+
+      # Create
+      visit "/admin/resources/posts"
+
+      click_on "#{post.name}"
+      wait_for_loaded
+
+      expect(current_path).to eql "/admin/resources/posts/#{post.id}"
     end
   end
 
