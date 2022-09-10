@@ -148,4 +148,17 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
       id: @parent_model.id
     }
   end
+
+  def can_see_the_batch_delete_button?
+    can_see_the_destroy_button?
+  end
+
+  def batch_delete_action_path
+    Avo::Services::URIService.parse(
+      @resource.records_path
+    ).append_paths(
+      "actions",
+      "pre_made_action_batch_delete"
+    ).to_s
+  end
 end

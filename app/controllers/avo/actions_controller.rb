@@ -42,7 +42,16 @@ module Avo
     end
 
     def set_action
-      action_class = params[:action_id].gsub("avo_actions_", "").camelize.safe_constantize
+      action_id = params[:action_id]
+
+      action_class = action_id.gsub("avo_actions_", "").camelize
+
+      # Figure out if is a pre made action or custom action
+      action_class = if action_class.starts_with?("PreMadeAction")
+        "Actions::".concat(action_class).safe_constantize
+      else
+        action_class.safe_constantize
+      end
 
       if params[:id].present?
         model = @resource.class.find_scope.find params[:id]
