@@ -23,4 +23,12 @@ class Avo::Index::GridItemComponent < ViewComponent::Base
   def body
     @grid_fields.body_field
   end
+
+  def default_resource_path
+    if Avo.configuration.skip_show_view
+      helpers.edit_resource_path(model: @resource.model, resource: @resource)
+    else
+      helpers.resource_path(model: @resource.model, resource: @resource)
+    end
+  end
 end
