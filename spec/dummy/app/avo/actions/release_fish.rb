@@ -2,7 +2,7 @@ class ReleaseFish < Avo::BaseAction
   self.name = "Release fish"
   self.message = "Are you sure you want to release this fish?"
 
-  field :message, as: :textarea, help: "Tell the fish something before releasing."
+  field :message, as: :trix, help: "Tell the fish something before releasing."
   field :user, as: :belongs_to, searchable: true
 
   def handle(**args)
