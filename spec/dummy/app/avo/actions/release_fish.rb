@@ -14,10 +14,10 @@ class ReleaseFish < Avo::BaseAction
 
     # Try and find that user
     begin
-      user = User.find fields["user_id"]
+      user = User.find fields[:user_id]
     rescue
     end
 
-    succeed "#{models.count} fish released with message '#{fields["message"]}' by #{user&.name}."
+    succeed "#{models.count} fish released with message '#{fields[:message]}' by #{user&.name}."
   end
 end

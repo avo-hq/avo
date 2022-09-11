@@ -98,7 +98,7 @@ module Avo
       end
 
       args = {
-        fields: processed_fields,
+        fields: processed_fields.with_indifferent_access,
         current_user: current_user,
         resource: resource
       }
