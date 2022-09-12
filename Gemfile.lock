@@ -22,7 +22,7 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    action_policy (0.6.2)
+    action_policy (0.6.3)
       ruby-next-core (>= 0.14.0)
     actioncable (6.1.6.1)
       actionpack (= 6.1.6.1)

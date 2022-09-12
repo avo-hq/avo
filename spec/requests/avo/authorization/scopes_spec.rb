@@ -3,12 +3,19 @@ require "rails_helper"
 RSpec.describe Avo::UsersController, type: :controller do
   let(:regular_user) { create :user }
   let(:admin_user) { create :user, roles: {admin: true} }
-  let!(:active_user) { create :user, first_name: "active user", active: true }
-  let!(:inactive_user) { create :user, first_name: "inactive user", active: false }
+  let(:active_user) { create :user, first_name: "active user", active: true }
+  let(:inactive_user) { create :user, first_name: "inactive user", active: false }
   let(:dummy_user) { create :user }
   let(:project) { create :project }
 
   before do
+    allow_any_instance_of(Pundit::PolicyFinder).to receive(:find).and_wrap_original do |m, *args|
+      if args.first&.base_class == User
+        UserPolicy
+      else
+        m.call(*args)
+      end
+    end
     project.users << active_user
     project.users << inactive_user
   end

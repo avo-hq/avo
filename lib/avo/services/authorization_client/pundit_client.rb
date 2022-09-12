@@ -1,8 +1,3 @@
-return unless Avo.configuration.authorization_client == :pundit
-
-# Pundit monkeypatches Rails behavior, so we'll only load it if we're using it.
-require "pundit"
-
 module Avo
   module Services
     module AuthorizationClient

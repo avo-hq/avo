@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe 'Avo::Services::AuthorizationClient::ActionPolicyClient' do
+RSpec.describe Avo::Services::AuthorizationClient::ActionPolicyClient do
   let(:client) { described_class.new }
 
   let(:user) { double("User") }
@@ -25,6 +25,10 @@ RSpec.describe 'Avo::Services::AuthorizationClient::ActionPolicyClient' do
   end
 
   before do
+    allow(ActiveRecord::Relation).to receive(:respond_to?).and_call_original
+    allow(ActiveRecord::Relation).to receive(:respond_to?).with(:policy_class) { true }
+    allow_any_instance_of(ActiveRecord::Relation).to receive(:respond_to?).and_call_original
+    allow_any_instance_of(ActiveRecord::Relation).to receive(:respond_to?).with(:policy_class) { true }
     stub_const "Dummy", Class.new
     stub_const "DummyPolicy", policy
   end

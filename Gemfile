@@ -20,8 +20,8 @@ gem 'cssbundling-rails'
 gem "countries"
 
 # Authorization
-gem "pundit", require: false
-gem "action_policy", require: false
+gem "pundit"
+gem "action_policy"
 
 #
 # Dependencies for dummy_app
@@ -59,7 +59,6 @@ gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "devise"
 gem "database_cleaner"
-
 
 gem "ruby-debug-ide", require: false
 #
