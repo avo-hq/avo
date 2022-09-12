@@ -5,8 +5,22 @@
 const path = require('path')
 const { copyFile, readdir, mkdir } = require('fs/promises')
 
+const copyDirectory = async (dir, file, type, destinationPath) => {
+  const source = path.join(dir, file)
+
+  const destinationDir = path.join(destinationPath, type)
+  await mkdir(destinationDir, { recursive: true })
+
+  const destination = path.join(destinationDir, file)
+  await copyFile(source, destination)
+}
+
 const handle = async () => {
-  const types = ['outline', 'solid']
+  const types = {
+    outline: '24/outline',
+    solid: '24/solid',
+    mini: '20/solid',
+  }
   const destinationPath = path.join(
     __dirname,
     '..',
@@ -17,18 +31,13 @@ const handle = async () => {
   )
   let copiedIcons = 0
 
-  for (const type of types) {
-    const dir = path.join(__dirname, '..', 'node_modules', 'heroicons', type)
+  for (const type of Object.keys(types)) {
+    const dirPath = types[type]
+    const dir = path.join(__dirname, '..', 'node_modules', 'heroicons', dirPath)
     const files = await readdir(dir)
 
     for (const file of files) {
-      const source = path.join(dir, file)
-
-      const destinationDir = path.join(destinationPath, type)
-      await mkdir(destinationDir, { recursive: true })
-
-      const destination = path.join(destinationDir, file)
-      await copyFile(source, destination)
+      await copyDirectory(dir, file, type, destinationPath)
 
       copiedIcons++
     }

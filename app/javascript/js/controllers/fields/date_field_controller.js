@@ -117,7 +117,11 @@ export default class extends Controller {
 
     flatpickr(this.fakeInputTarget, options)
 
-    this.updateRealInput(this.parsedValue.setZone(this.displayTimezone).toISO())
+    if (this.enableTimeValue) {
+      this.updateRealInput(this.parsedValue.setZone(this.displayTimezone).toISO())
+    } else {
+      this.updateRealInput(universalTimestamp(this.initialValue))
+    }
   }
 
   onChange(selectedDates) {

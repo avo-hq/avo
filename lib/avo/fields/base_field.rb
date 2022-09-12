@@ -13,6 +13,7 @@ module Avo
       include Avo::Concerns::HandlesFieldArgs
       include Avo::Concerns::HasHTMLAttributes
       include Avo::Fields::Concerns::IsRequired
+      include Avo::Fields::Concerns::IsReadonly
 
       delegate :view_context, to: ::Avo::App
       delegate :simple_format, :content_tag, to: :view_context
@@ -60,7 +61,7 @@ module Avo
         @name = args[:name]
         @translation_key = args[:translation_key]
         @block = block
-        @required = args[:required] || false
+        @required = args.dig(:required) # Value if :required present on args, nil otherwise
         @readonly = args[:readonly] || false
         @sortable = args[:sortable] || false
         @nullable = args[:nullable] || false

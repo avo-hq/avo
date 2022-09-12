@@ -32,6 +32,7 @@ jobs:
       BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}.gemfile
       BUNDLE_PATH_RELATIVE_TO_CWD: true
       AVO_LICENSE_KEY: license_123
+      AVO_RESOURCE_CONTROLS_PLACEMENT: left
 
     runs-on: ubuntu-latest
 

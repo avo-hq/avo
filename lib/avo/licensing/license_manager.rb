@@ -17,7 +17,7 @@ module Avo
       end
 
       def self.refresh_license(request)
-        self.new(Licensing::HQ.new(request).fresh_response).license
+        new(Licensing::HQ.new(request).fresh_response).license
       end
     end
   end

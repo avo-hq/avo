@@ -4,8 +4,6 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   include Avo::ResourcesHelper
   include Avo::ApplicationHelper
 
-  attr_reader :view
-
   def initialize(resource: nil, model: nil, actions: [], view: :edit)
     @resource = resource
     @model = model
@@ -19,7 +17,8 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
 
   def back_path
     if via_resource?
-      helpers.resource_path(model: params[:via_resource_class].safe_constantize, resource: relation_resource, resource_id: params[:via_resource_id])
+      model = params[:via_resource_class] || params[:via_relation_class]
+      helpers.resource_path(model: model.safe_constantize, resource: relation_resource, resource_id: params[:via_resource_id])
     elsif via_index?
       helpers.resources_path(resource: @resource)
     elsif is_edit? # via resource show page

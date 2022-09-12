@@ -4,6 +4,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   attr_reader :has_many_panels
   attr_reader :has_as_belongs_to_many_panels
   attr_reader :resource_tools
+  attr_reader :resource
   attr_reader :view
 
   def can_create?
@@ -19,7 +20,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def can_detach?
-    authorize_association_for("detach")
+    authorize_association_for(:detach)
   end
 
   def detach_path
@@ -36,6 +37,14 @@ class Avo::ResourceComponent < Avo::BaseComponent
     @resource.authorization.authorize_action(:destroy, raise_exception: false)
   end
 
+  def can_see_the_actions_button?
+    return false if @actions.blank?
+
+    return authorize_association_for(:act_on) if @reflection.present?
+
+    @resource.authorization.authorize_action(:act_on, raise_exception: false) && !has_reflection_and_is_read_only
+  end
+
   def destroy_path
     helpers.resource_path(model: @resource.model, resource: @resource)
   end
@@ -45,7 +54,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
     if @reflection.present?
       # Fetch the appropiate resource
-      reflection_resource = ::Avo::App.get_resource_by_model_name(@reflection.active_record.name)
+      reflection_resource = field.resource
       # Fetch the model
       # Hydrate the resource with the model if we have one
       reflection_resource.hydrate(model: @parent_model) if @parent_model.present?
@@ -72,9 +81,24 @@ class Avo::ResourceComponent < Avo::BaseComponent
     end
   end
 
+  def has_reflection_and_is_read_only
+    if @reflection.present? && @reflection.active_record.name && @reflection.name
+      fields = ::Avo::App.get_resource_by_model_name(@reflection.active_record.name).get_field_definitions
+      filtered_fields = fields.filter { |f| f.id == @reflection.name }
+    else
+      return false
+    end
+
+    if filtered_fields.present?
+      filtered_fields.find { |f| f.id == @reflection.name }.readonly
+    else
+      false
+    end
+  end
+
   private
 
   def via_resource?
-    params[:via_resource_class].present? && params[:via_resource_id].present?
+    (params[:via_resource_class].present? || params[:via_relation_class].present?) && params[:via_resource_id].present?
   end
 end

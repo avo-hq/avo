@@ -20,6 +20,20 @@ Since v `1.20` (Jan 2022), we started to change the `model` name with `record` w
 
 Please fork Avo and create a descriptive branch for your feature or fix. We usually use the `feature/`, `chore/`, or `fix/` branch prefixes. This way, the PR gets automatically labeled.
 
+## Contributing with Pull Requests
+
+Thank you for considering to contribute to Avo. These are our recommendations to improve readability and interoperability when contributing with a PR:
+
+- the title should have the type (`feature`, `chore`, `fix`, `refactor`) followed by the sentence case of what it does (ex: `feature: scoped search for has many associations` or `fix: broken sidebar on desktop`).
+- the PR should be marked by the appropiate tag (`feature`, `chore`, `fix`, `refactor`)
+- if there's an issue open that could be fixed by this PR you can mark it by writing `Fixes ISSUE_URL` in the description so GitHub automates some actions (ex: `Fixes https://github.com/avo-hq/avo/issues/1008`). If there are more issues that could be fixed, add more lines.
+- please follow the steps on the `Checklist` and mark them as done with an `x` inside the brackets `[x]`
+- if there's something that we can test, please send us the instructions to do that in that PR description.
+- ask for help navigating the codebase. We love it when you do!
+- enjoy the process and the thing you are making, fixing, or improving.
+
+Thank you!
+
 ## Getting your local environment set up
 
 NOTE: We're using `docker-compose` to run Postgres. While we find this incredibly helpful, it's not a requirement, but you'll have to BYOD (Bring Your Own Database).
@@ -46,14 +60,14 @@ In the other project, change the `Gemfile` entry for `avo` to point to your loca
 gem 'avo', path: '../avo'
 ```
 
-Avo's assets will not show up by default, resulting in 404 errors on `/avo-assets/avo.js` and `/avo-assets/avo.css`. To avoid this, you need to compile the asset bundles, and symlink them into `public/avo-assets`.
+Avo's assets will not show up by default, resulting in 404 errors on `/avo-assets/avo.base.js` and `/avo-assets/avo.base.css`. To avoid this, you need to compile the asset bundles, and symlink them into `public/avo-assets`.
 
 Create symlinks for compiled assets into the `public` directory. You'll only need to do this once.
 
 ```bash
 # `cd` into the root directory of this project.
-ln -sf $(pwd)/app/assets/builds/avo.js public/avo-assets/avo.js
-ln -sf $(pwd)/app/assets/builds/avo.css public/avo-assets/avo.css
+ln -sf $(pwd)/app/assets/builds/avo.base.js public/avo-assets/avo.base.js
+ln -sf $(pwd)/app/assets/builds/avo.base.css public/avo-assets/avo.base.css
 ```
 
 After that, you'll need to compile the asset bundles any time you make changes to the JS or CSS code:
