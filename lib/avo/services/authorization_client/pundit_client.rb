@@ -1,3 +1,7 @@
+return unless Avo.configuration.authorization_client == :pundit
+
+require "pundit"
+
 module Avo
   module Services
     module AuthorizationClient

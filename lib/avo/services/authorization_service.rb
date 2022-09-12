@@ -4,12 +4,20 @@ module Avo
       class PolicyNotDefinedError < StandardError; end
       class NotAuthorizedError < StandardError; end
 
-      attr_accessor :user
-      attr_accessor :record
+      attr_accessor :user, :record
 
       class << self
         def client
-          Avo.configuration.authorization_client.new
+          client_klass =
+            case Avo.configuration.authorization_client
+            when :pundit
+              'Avo::Services::AuthorizationClient::PunditClient'.constantize
+            when :action_policy
+              'Avo::Services::AuthorizationClient::ActionPolicyClient'.constantize
+            else
+              Avo.configuration.authorization_client
+            end
+          client_klass.new
         end
 
         def authorize(user, record, action, **args)
@@ -26,11 +34,11 @@ module Avo
             return false unless Avo.configuration.raise_error_on_missing_policy
 
             raise e
-          rescue => error
+          rescue StandardError => e
             if args[:raise_exception] == false
               false
             else
-              raise error
+              raise e
             end
           end
         end
@@ -41,7 +49,7 @@ module Avo
           # If no action passed we should raise error if the user wants that.
           # If not, just allow it.
           if action.nil?
-            raise PolicyNotDefinedError.new "Policy method is missing" if Avo.configuration.raise_error_on_missing_policy
+            raise PolicyNotDefinedError, 'Policy method is missing' if Avo.configuration.raise_error_on_missing_policy
 
             return true
           end

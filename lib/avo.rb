@@ -8,7 +8,12 @@ loader.inflector.inflect(
   "uri_service" => "URIService",
   "has_html_attributes" => "HasHTMLAttributes"
 )
-loader.ignore("#{__dir__}/generators")
+loader.ignore(
+  "#{__dir__}/generators",
+  # Authorization clients Pundit and ActionPolicy conflict
+  # We'll only load the one we need.
+  "#{__dir__}/avo/services/authorization_client"
+)
 loader.setup
 
 #                                      .//*,,.....,,*/(*

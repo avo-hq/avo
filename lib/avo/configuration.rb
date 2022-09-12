@@ -14,6 +14,7 @@ module Avo
     attr_accessor :license
     attr_accessor :license_key
     attr_accessor :authorization_methods
+    attr_accessor :authorization_client
     attr_accessor :authenticate
     attr_accessor :current_user
     attr_accessor :id_links_to_resource
@@ -121,15 +122,6 @@ module Avo
 
     def feature_enabled?(feature)
       !@disabled_features.map(&:to_sym).include?(feature.to_sym)
-    end
-
-    def authorization_client
-      case @authorization_client
-      when :pundit then Services::AuthorizationClient::PunditClient
-      when :action_policy then Services::AuthorizationClient::ActionPolicyClient
-      else
-        @authorization_client
-      end
     end
 
   end

@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Avo::Services::AuthorizationClient::ActionPolicyClient do
+RSpec.describe 'Avo::Services::AuthorizationClient::ActionPolicyClient' do
   let(:client) { described_class.new }
 
   let(:user) { double("User") }
@@ -16,6 +16,13 @@ RSpec.describe Avo::Services::AuthorizationClient::ActionPolicyClient do
     end
   end
   let(:record) { Dummy.new }
+
+  around do |example|
+    current_client = Avo.configuration.authorization_client
+    Avo.configuration.authorization_client = :action_policy
+    example.run
+    Avo.configuration.authorization_client = current_client
+  end
 
   before do
     stub_const "Dummy", Class.new

@@ -1,4 +1,7 @@
-require "action_policy"
+return unless Avo.configuration.authorization_client == :action_policy
+
+require 'action_policy'
+
 module Avo
   module Services
     module AuthorizationClient
