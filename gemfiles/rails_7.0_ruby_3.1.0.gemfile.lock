@@ -15,7 +15,6 @@ PATH
       inline_svg
       meta-tags
       pagy
-      pundit
       rails (>= 6.0)
       view_component (= 2.60)
       zeitwerk
@@ -23,6 +22,8 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
+    action_policy (0.6.3)
+      ruby-next-core (>= 0.14.0)
     actioncable (7.0.3.1)
       actionpack (= 7.0.3.1)
       activesupport (= 7.0.3.1)
@@ -361,6 +362,7 @@ GEM
       rubocop (~> 1.31)
     ruby-debug-ide (0.7.3)
       rake (>= 0.8.1)
+    ruby-next-core (0.15.2)
     ruby-progressbar (1.11.0)
     ruby-vips (2.1.4)
       ffi (~> 1.12)
@@ -388,7 +390,7 @@ GEM
       rubocop-performance (= 1.14.3)
     stimulus-rails (1.1.0)
       railties (>= 6.0.0)
-    strscan (3.0.3)
+    strscan (3.0.4)
     test-prof (1.0.9)
     thor (1.2.1)
     timeout (0.3.0)
@@ -429,6 +431,7 @@ PLATFORMS
   arm64-darwin-21
 
 DEPENDENCIES
+  action_policy
   active_link_to
   active_median
   acts-as-taggable-on (~> 9.0)
@@ -495,4 +498,4 @@ DEPENDENCIES
   zeitwerk (~> 2.3)
 
 BUNDLED WITH
-   2.3.5
+   2.3.19

@@ -15,7 +15,6 @@ PATH
       inline_svg
       meta-tags
       pagy
-      pundit
       rails (>= 6.0)
       view_component (= 2.60)
       zeitwerk
