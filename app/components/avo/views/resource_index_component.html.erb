@@ -4,7 +4,7 @@
   } do %>
   <%= render Avo::PanelComponent.new(name: title, description: description, data: { component: 'resources-index' }, display_breadcrumbs: @reflection.blank?) do |c| %>
     <% c.tools do %>
-      <% if can_see_the_batch_delete_button? %>
+      <% if can_see_the_destroy_button? %>
         <%= a_link batch_delete_action_path,
           style: :text,
           color: :red,
