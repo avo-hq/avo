@@ -1,5 +1,6 @@
 return unless Avo.configuration.authorization_client == :action_policy
 
+# ActionPolicy monkeypatches Rails behavior, so we'll only load it if we're using it.
 require 'action_policy'
 
 module Avo

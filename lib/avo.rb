@@ -10,8 +10,7 @@ loader.inflector.inflect(
 )
 loader.ignore(
   "#{__dir__}/generators",
-  # Authorization clients Pundit and ActionPolicy conflict
-  # We'll only load the one we need.
+  # Authorization clients Pundit and ActionPolicy conflict, only load the one we need.
   "#{__dir__}/avo/services/authorization_client"
 )
 loader.setup
