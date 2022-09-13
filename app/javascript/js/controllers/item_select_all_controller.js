@@ -1,9 +1,10 @@
 import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
-  static targets = ['itemCheckbox', 'checkbox', 'selectAllOvelay', 'unselectedMessage', 'selectedMessage']
+  static targets = ['itemCheckbox', 'checkbox', 'selectAllOverlay', 'unselectedMessage', 'selectedMessage']
 
   static values = {
+    pageCount: Number,
     selectedAll: Boolean,
     selectedAllQuery: String,
   }
@@ -17,11 +18,14 @@ export default class extends Controller {
     document.querySelectorAll(`[data-controller="item-selector"][data-resource-name="${this.resourceName}"] input[type=checkbox]`)
       .forEach((checkbox) => checkbox.checked !== checked && checkbox.click())
 
-    this.selectAllOverlay(checked)
+    // Only run "all matching" if there are more pages available
+    if (this.pageCountValue > 1) {
+      this.selectAllOverlay(checked)
 
-    // When de-selecting everything, ensure the selectAll toggle is false and hide overlay.
-    if (!checked) {
-      this.resetUnselected()
+      // When de-selecting everything, ensure the selectAll toggle is false and hide overlay.
+      if (!checked) {
+        this.resetUnselected()
+      }
     }
   }
 
@@ -31,8 +35,11 @@ export default class extends Controller {
     this.itemCheckboxTargets.forEach((checkbox) => allSelected = allSelected && checkbox.checked)
     this.checkboxTarget.checked = allSelected
 
-    this.selectAllOverlay(allSelected)
-    this.resetUnselected()
+    // Only run "all matching" if there are more pages available
+    if (this.pageCountValue > 1) {
+      this.selectAllOverlay(allSelected)
+      this.resetUnselected()
+    }
   }
 
   selectAll(event) {
@@ -51,9 +58,9 @@ export default class extends Controller {
 
   selectAllOverlay(show) {
     if (show) {
-      this.selectAllOvelayTarget.classList.remove('hidden')
+      this.selectAllOverlayTarget.classList.remove('hidden')
     } else {
-      this.selectAllOvelayTarget.classList.add('hidden')
+      this.selectAllOverlayTarget.classList.add('hidden')
     }
   }
 }
