@@ -8,7 +8,7 @@ if Gem.loaded_specs.key? TAILWINDCSS_RAILS
   # Get the path
   GEM_PATH = Gem.loaded_specs[TAILWINDCSS_RAILS].full_gem_path
   # Compose the compile command
-  AVO_TAILWIND_COMPILE_COMMAND = "#{RbConfig.ruby} #{Pathname.new(GEM_PATH)}/exe/tailwindcss -i '#{Rails.root.join("app/assets/stylesheets/avo.css")}' -o '#{Rails.root.join(ASSET_FILE)}' -c '#{Rails.root.join("config/tailwind.config.js")}' --minify"
+  AVO_TAILWIND_COMPILE_COMMAND = "#{RbConfig.ruby} #{Pathname.new(GEM_PATH)}/exe/tailwindcss -i '#{Rails.root.join("app/assets/stylesheets/avo.tailwind.css")}' -o '#{Rails.root.join(ASSET_FILE)}' -c '#{Rails.root.join("config/tailwind.config.js")}' --minify"
 
   namespace "avo:tailwindcss" do
     desc "Build your Tailwind CSS"
