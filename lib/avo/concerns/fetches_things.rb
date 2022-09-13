@@ -51,10 +51,15 @@ module Avo
         #
         # get_resource_by_name('User') => UserResource
         # get_resource_by_name(User) => UserResource
-        def get_resource_by_model_name(name)
+        def get_resource_by_model_name(klass)
+          # Fetch the mappings imposed by the user.
+          # If they are present, use those ones.
+          mapping = get_mapping_for_model klass
+          return get_resource(mapping) if mapping.present?
+
           valid_resources
             .find do |resource|
-              resource.model_class.model_name.name == name.to_s
+              resource.model_class.model_name.name == klass.to_s
             end
         end
 
@@ -127,6 +132,12 @@ module Avo
           return [] if Avo::App.license.lacks_with_trial(:custom_tools)
 
           get_sidebar_partials
+        end
+
+        private
+
+        def get_mapping_for_model(klass)
+          (Avo.configuration.model_resource_mapping || {}).stringify_keys.transform_values(&:to_s)[klass.to_s]
         end
       end
     end

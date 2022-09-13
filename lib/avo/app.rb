@@ -161,12 +161,12 @@ module Avo
 
         hq = Avo::Licensing::HQ.new(request)
 
-        payload[:thread_count] = get_thread_count
-        payload[:hq_payload] = hq&.payload
         payload[:license_id] = Avo::App&.license&.id
         payload[:license_valid] = Avo::App&.license&.valid?
         payload[:license_payload] = Avo::App&.license&.payload
         payload[:license_response] = Avo::App&.license&.response
+        payload[:hq_payload] = hq&.payload
+        payload[:thread_count] = get_thread_count
         payload[:license_abilities] = Avo::App&.license&.abilities
         payload[:cache_store] = self.cache_store&.class&.to_s
         payload[:avo_metadata] = hq&.avo_metadata
