@@ -21,7 +21,7 @@ module Generators
           end
 
           if Rails.root.join("Procfile.dev").exist?
-            append_to_file "Procfile.dev", "css: bin/rails avo:tailwindcss:watch\n"
+            append_to_file "Procfile.dev", "avo_css: bin/rails avo:tailwindcss:watch\n"
           else
             say "Add default Procfile.dev"
             copy_file template_path("Procfile.dev"), "Procfile.dev"
