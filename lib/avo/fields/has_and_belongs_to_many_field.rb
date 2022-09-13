@@ -5,7 +5,7 @@ module Avo
         args[:updatable] = false
 
         hide_on :all
-        show_on Avo.configuration.skip_show_view ? :edit : :show
+        show_on default_view
 
         super(id, **args, &block)
       end

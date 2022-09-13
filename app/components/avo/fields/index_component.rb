@@ -2,7 +2,7 @@
 
 class Avo::Fields::IndexComponent < ViewComponent::Base
   include Avo::ResourcesHelper
-  include Avo::PathConstructorHelper
+  include Avo::Concerns::ResourceEditPath
 
   attr_reader :view
 
@@ -14,17 +14,15 @@ class Avo::Fields::IndexComponent < ViewComponent::Base
     @view = :index
   end
 
-  def resource_path
-    return edit_path if Avo.configuration.skip_show_view
+  def resource_default_view_path
+    Avo.configuration.skip_show_view ? edit_path : resource_path
+  end
 
+  def resource_path
     if @parent_model.present?
       helpers.resource_path(model: @resource.model, resource: @resource, via_resource_class: @parent_model.class, via_resource_id: @parent_model.id)
     else
       helpers.resource_path(model: @resource.model, resource: @resource)
     end
-  end
-
-  def edit_path
-    helpers.edit_path(parent_model: @parent_model, resource: @resource)
   end
 end

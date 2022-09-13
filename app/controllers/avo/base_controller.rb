@@ -430,7 +430,7 @@ module Avo
         end
       end
 
-      redirect_path_from_resource_option(:after_create_path) || default_after_path
+      redirect_path_from_resource_option(:after_create_path) || resource_default_view_after_path
     end
 
     def update_success_action
@@ -457,15 +457,12 @@ module Avo
     def after_update_path
       return params[:referrer] if params[:referrer].present?
 
-      redirect_path_from_resource_option(:after_update_path) || default_after_path
+      redirect_path_from_resource_option(:after_update_path) || resource_default_view_after_path
     end
 
-    def default_after_path
-      if Avo.configuration.skip_show_view
-        edit_resource_path(model: @model, resource: @resource)
-      else
-        resource_path(model: @model, resource: @resource)
-      end
+    # Need different name, otwherwise, in some places, this can be called instead helpers.resource_default_view_path
+    def resource_default_view_after_path
+      helpers.resource_default_view_path(model: @model, resource: @resource)
     end
 
     def destroy_success_action

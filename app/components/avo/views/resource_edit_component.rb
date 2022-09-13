@@ -30,6 +30,7 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
     helpers.resources_path(resource: @resource)
   end
 
+  # TODO: refator this, rename to resource_default_view_path and use helper method
   def default_view
     model = params[:via_resource_class] || params[:via_relation_class]
 

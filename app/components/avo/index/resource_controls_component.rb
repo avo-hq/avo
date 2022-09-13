@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
-  include Avo::PathConstructorHelper
+  include Avo::Concerns::ResourceEditPath
 
   def initialize(resource: nil, reflection: nil, parent_model: nil, parent_resource: nil, view_type: :table)
     @resource = resource
@@ -38,16 +38,12 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
 
     if @parent_model.present?
       args = {
-        via_resource_class: helpers.parent_resource(@parent_model).model_class,
+        via_resource_class: parent_resource.model_class,
         via_resource_id: @parent_model.id
       }
     end
 
     helpers.resource_path(model: @resource.model, resource: @resource, **args)
-  end
-
-  def edit_path
-    helpers.edit_path(parent_model: @parent_model, resource: @resource)
   end
 
   def singular_resource_name

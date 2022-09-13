@@ -65,19 +65,15 @@ module Avo
 
       respond_to do |format|
         if @model.save
-          format.html { redirect_back fallback_location: default_resource_path, notice: t("avo.attachment_class_attached", attachment_class: @related_resource.name) }
+          format.html { redirect_back fallback_location: resource_default_view_path, notice: t("avo.attachment_class_attached", attachment_class: @related_resource.name) }
         else
           format.html { render :new }
         end
       end
     end
 
-    def default_resource_path
-      if Avo.configuration.skip_show_view
-        edit_resource_path(model: @model, resource: @resource)
-      else
-        resource_path(model: @model, resource: @resource)
-      end
+    def resource_default_view_path
+      helpers.resource_default_view_path(model: @model, resource: @resource)
     end
 
 
@@ -89,7 +85,7 @@ module Avo
       end
 
       respond_to do |format|
-        format.html { redirect_to params[:referrer] || default_resource_path, notice: t("avo.attachment_class_detached", attachment_class: @attachment_class) }
+        format.html { redirect_to params[:referrer] || resource_default_view_path, notice: t("avo.attachment_class_detached", attachment_class: @attachment_class) }
       end
     end
 
