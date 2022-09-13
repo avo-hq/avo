@@ -1,0 +1,28 @@
+<div class="self-center w-full" data-slot="value">
+  <%= content_tag :div, class: "flex-auto", data: {
+          controller: "date-field",
+          date_field_view_value: :edit,
+          date_field_enable_time_value: filter.class.with_time,
+          date_field_format_value: filter.format,
+          date_field_picker_format_value: filter.picker_format,
+          date_field_first_day_of_week_value: 0,
+          date_field_disable_mobile_value: false,
+          date_field_relative_value: false,
+      } do %>
+    <%= datetime_field("fake_#{id}", "fake",
+            value: date,
+            class: "w-full appearance-none inline-flex bg-gray-25 disabled:cursor-not-allowed text-gray-600 disabled:opacity-50 rounded py-2 px-3 leading-tight border focus:border-gray-600 focus-visible:ring-0 focus:text-gray-700 border-gray-200 w-full form-control input",
+            data: {
+              'date-field-target': 'fakeInput',
+              "date-time-filter-target": "#{id}Date",
+              'action': "change->date-time-filter#changeFilter",
+            },
+            # placeholder: "End date"
+            )
+          %>
+    <%= text_field_tag(:end, date,
+            class: "w-full hidden",
+            data: { 'date-field-target': 'input' })
+          %>
+  <% end %>
+</div>

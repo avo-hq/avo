@@ -1,0 +1,21 @@
+<%
+  start_date, end_date =  @applied_filters[filter.class.to_s]&.values_at("start","end")
+%>
+<div
+  data-controller="date-time-filter"
+  data-filter-name="<%= filter.name %>"
+  data-date-time-filter-class-value="<%= filter.class.to_s %>"
+  data-date-time-filter-keep-filters-panel-open-value="<%= @resource.keep_filters_panel_open %>"
+>
+  <%= filter_wrapper name: filter.name do %>
+    <div>
+      <p class="text-gray-400">Start Date</p>
+      <%= render "date_time_filter_input", filter: filter, id: :start , date: start_date %>
+    </div>
+    <div>
+      <p class="text-gray-400">End Date</p>
+      <%= render "date_time_filter_input", filter: filter, id: :end , date: end_date %>
+    </div>
+    <%= link_to 'url_redirect', request.url, data: { 'date-time-filter-target': 'urlRedirect', 'turbo-frame': params[:turbo_frame] }, style: 'hidden', class: 'hidden' %>
+  <% end %>
+</div>
