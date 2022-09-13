@@ -3,7 +3,9 @@ class ReleaseFish < Avo::BaseAction
   self.message = "Are you sure you want to release this fish?"
 
   field :message, as: :trix, help: "Tell the fish something before releasing."
-  field :user, as: :belongs_to, searchable: true
+  field :user, as: :belongs_to, searchable: true, visible: ->(resource:) {
+    resource.params[:id].present?
+  }
 
   def handle(**args)
     models, fields, _, _ = args.values_at(:models, :fields, :current_user, :resource)
