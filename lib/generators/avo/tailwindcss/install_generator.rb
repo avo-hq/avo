@@ -30,8 +30,6 @@ module Generators
             run "gem install foreman"
           end
 
-          append_to_file "Procfile.dev", "avo_css: bin/rails tailwindcss:watch\n"
-
           say "Ejecting the _head.html.erb partial"
           Rails::Generators.invoke("avo:eject", [":head", "--no-avo-version"], {destination_root: Rails.root})
 

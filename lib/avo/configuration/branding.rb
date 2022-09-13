@@ -1,6 +1,6 @@
 class Avo::Configuration::Branding
   def initialize(colors: nil, chart_colors: nil, logo: nil, logomark: nil)
-    @colors = colors
+    @colors = colors || {}
     @chart_colors = chart_colors
     @logo = logo
     @logomark = logomark
