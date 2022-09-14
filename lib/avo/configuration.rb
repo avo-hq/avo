@@ -37,6 +37,7 @@ module Avo
     attr_accessor :model_resource_mapping
     attr_accessor :tabs_style
     attr_accessor :skip_show_view
+    attr_writer :branding
 
     def initialize
       @root_path = "/avo"
@@ -126,6 +127,10 @@ module Avo
 
     def feature_enabled?(feature)
       !@disabled_features.map(&:to_sym).include?(feature.to_sym)
+    end
+
+    def branding
+      Avo::Configuration::Branding.new(**@branding || {})
     end
   end
 

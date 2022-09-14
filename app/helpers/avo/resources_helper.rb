@@ -46,25 +46,29 @@ module Avo
     end
 
     def item_selector_input(floating: false, size: :md)
-      "<input type='checkbox'
-        class='mx-3 rounded #{"absolute inset-auto left-0 mt-2 z-10 hidden group-hover:block checked:block" if floating} #{size.to_sym == :lg ? "w-5 h-5" : "w-4 h-4"}'
-        data-action='input->item-selector#toggle input->item-select-all#selectRow'
-        data-item-select-all-target='itemCheckbox'
-        name='#{t "avo.select_item"}'
-        title='#{t "avo.select_item"}'
-        data-tippy='tooltip'
-      />"
+      tag :input,
+        type: "checkbox",
+        name: t("avo.select_item"),
+        title: t("avo.select_item"),
+        class: "mx-3 rounded checked:bg-primary-400 focus:checked:!bg-primary-400 #{floating ? "absolute inset-auto left-0 mt-3 z-10 hidden group-hover:block checked:block" : ""} #{size.to_sym == :lg ? "w-5 h-5" : "w-4 h-4"}",
+        data: {
+          action: 'input->item-selector#toggle input->item-select-all#selectRow',
+          item_select_all_target: 'itemCheckbox',
+          tippy: 'tooltip'
+        }
     end
 
     def item_select_all_input
-      "<input type='checkbox'
-        class='mx-3 rounded w-4 h-4'
-        data-action='input->item-select-all#toggle'
-        data-item-select-all-target='checkbox'
-        name='#{t "avo.select_all"}'
-        title='#{t "avo.select_all"}'
-        data-tippy='tooltip'
-      />"
+      tag :input,
+        type: "checkbox",
+        name: t("avo.select_all"),
+        title: t("avo.select_all"),
+        class: "mx-3 rounded w-4 h-4 checked:bg-primary-400 focus:checked:!bg-primary-400",
+        data: {
+          action: "input->item-select-all#toggle",
+          item_select_all_target: "checkbox",
+          tippy: "tooltip",
+        }
     end
   end
 end

@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 import 'trix'
 import { Controller } from '@hotwired/stimulus'
 import { castBoolean } from '../../helpers/cast_boolean'
@@ -48,7 +49,7 @@ export default class extends Controller {
         // Prevent file uploads for fields that have attachments disabled.
         if (this.attachmentsDisabled) {
           event.preventDefault()
-          window.toastr.warning('This field has attachments disabled.')
+          alert('This field has attachments disabled.')
 
           return
         }
@@ -56,7 +57,7 @@ export default class extends Controller {
         // Prevent file uploads for resources that haven't been saved yet.
         if (this.resourceId === '') {
           event.preventDefault()
-          window.toastr.warning("You can't upload files into the Trix editor until you save the resource.")
+          alert("You can't upload files into the Trix editor until you save the resource.")
 
           return
         }
@@ -64,7 +65,7 @@ export default class extends Controller {
         // Prevent file uploads for fields without an attachment key.
         if (this.attachmentKey === '') {
           event.preventDefault()
-          window.toastr.warning("You haven't set an <a href='https://google.com' class='!text-blue-700 underline'>attachment_key</a> to this Trix field.")
+          alert("You haven't set an `attachment_key` to this Trix field.")
         }
       }
     })

@@ -9,7 +9,7 @@
   data-transition-leave-end="transform opacity-0 -translate-x-full"
 >
   <div class="flex flex-col w-full h-full">
-    <div class="flex-1 flex flex-col justify-between overflow-auto h-full pt-3 scroll-shadows mac-styled-scrollbar">
+    <div class="flex-1 flex flex-col justify-between overflow-auto h-full pt-3 mac-styled-scrollbar">
       <div class="space-y-6 mb-4">
         <%= render Avo::Sidebar::LinkComponent.new label: 'Get started', path: helpers.avo.root_path, active: :exclusive if Rails.env.development? && Avo.configuration.home_path.nil? %>
 

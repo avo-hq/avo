@@ -21,7 +21,7 @@ module Generators
           end
 
           if Rails.root.join("Procfile.dev").exist?
-            append_to_file "Procfile.dev", "css: bin/rails avo:tailwindcss:watch\n"
+            append_to_file "Procfile.dev", "avo_css: bin/rails avo:tailwindcss:watch\n"
           else
             say "Add default Procfile.dev"
             copy_file template_path("Procfile.dev"), "Procfile.dev"
@@ -29,8 +29,6 @@ module Generators
             say "Ensure foreman is installed"
             run "gem install foreman"
           end
-
-          append_to_file "Procfile.dev", "avo_css: bin/rails tailwindcss:watch\n"
 
           say "Ejecting the _head.html.erb partial"
           Rails::Generators.invoke("avo:eject", [":head", "--no-avo-version"], {destination_root: Rails.root})

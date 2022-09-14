@@ -3,11 +3,12 @@
   data-resource-name="<%= @resource.model_key %>"
   data-item-select-all-selected-all-value="false"
   data-item-select-all-selected-all-query-value="<%= encrypted_query %>"
+  data-item-select-all-page-count-value="<%= pagy.pages %>"
   data-selected-resources-name="<%= @resource.model_key %>"
   data-selected-resources="[]"
 >
   <% if pagy.pages > 1 %>
-    <div class="absolute z-30 w-full ml-10 pt-px hidden" data-item-select-all-target="selectAllOvelay">
+    <div class="absolute z-30 w-full ml-10 pt-px hidden" data-item-select-all-target="selectAllOverlay">
       <div class="bg-white flex items-center h-9 mt-0.5">
         <div class="mt-1.5" data-item-select-all-target="unselectedMessage">
           <%= t "avo.x_records_selected_from_a_total_of_x_html", selected: pagy.in, count: pagy.count %>

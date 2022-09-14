@@ -1,6 +1,6 @@
 <div class="relative flex flex-col w-full sm:w-auto z-40 js-actions-dropdown"
   data-controller="toggle-panel actions-picker"
-  data-actions-picker-enabled-class="text-black hover:bg-blue-500 hover:text-white"
+  data-actions-picker-enabled-class="text-black hover:bg-primary-500 hover:text-white"
   data-actions-picker-disabled-class="cursor-wait text-gray-500"
 >
   <%= a_button style: @style,
@@ -27,7 +27,7 @@
             'disabled': is_disabled?(action),
           },
           title: action.action_name,
-          class: "flex items-center px-4 py-3 w-full font-semibold text-sm #{is_disabled?(action) ? 'text-gray-500' : 'text-black hover:bg-blue-500 hover:text-white'}" do %>
+          class: "flex items-center px-4 py-3 w-full font-semibold text-sm hover:bg-primary-100 #{is_disabled?(action) ? 'text-gray-500' : 'text-black'}" do %>
           <%= svg 'play', class: 'h-5 mr-1 inline' %> <%= action.action_name %>
         <% end %>
       <% end %>
