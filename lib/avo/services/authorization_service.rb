@@ -10,7 +10,7 @@ module Avo
           return true if user.nil?
 
           begin
-            if get_policy(user, record, policy_class: policy_class)
+            if policy_class&.new(user, record)
               Pundit.authorize user, record, action, policy_class: policy_class
             end
 
@@ -70,12 +70,6 @@ module Avo
           end.to_h
         end
 
-        def get_policy(user, record, policy_class: nil)
-          return Pundit.policy user, record unless policy_class
-
-          policy_class.new(user, record)
-        end
-
         def defined_methods(user, record, policy_class: nil, **args)
           return Pundit.policy!(user, record).methods if policy_class.nil?
 
@@ -98,10 +92,10 @@ module Avo
       def initialize(user = nil, record = nil, policy_class: nil)
         @user = user
         @record = record
-        @policy_class = policy_class
+        @policy_class = policy_class || Pundit.policy(user, record)&.class
       end
 
-      def authorize(action, policy_class: nil, **args)
+      def authorize(action, **args)
         self.class.authorize(user, record, action, policy_class: @policy_class, **args)
       end
 
