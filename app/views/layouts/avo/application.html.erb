@@ -7,6 +7,7 @@
     <%= csp_meta_tag %>
     <%= render partial: 'avo/partials/javascript' %>
     <%= render partial: 'avo/partials/branding' %>
+    <%= render partial: 'avo/partials/pre_head' %>
     <% if Avo::PACKED %>
       <%= javascript_include_tag "/avo-assets/avo.base", "data-turbo-track": "reload", defer: true %>
       <%= stylesheet_link_tag "/avo-assets/avo.base", "data-turbo-track": "reload", defer: true %>
