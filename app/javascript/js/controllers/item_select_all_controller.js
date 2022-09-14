@@ -9,6 +9,10 @@ export default class extends Controller {
     selectedAllQuery: String,
   }
 
+  get batchDeleteButton() {
+    return document.querySelector('[data-item-select-all-target="batchDeleteButton"]')
+  }
+
   connect() {
     this.resourceName = this.element.dataset.resourceName
   }
@@ -31,8 +35,17 @@ export default class extends Controller {
 
   selectRow() {
     let allSelected = true
+    const checkBoxes = this.itemCheckboxTargets
+    const atLeastOneSelected = Array.prototype.slice.call(checkBoxes).some((checkbox) => checkbox.checked)
+
+    if (atLeastOneSelected) {
+      this.batchDeleteButton.classList.remove('hidden')
+    } else {
+      this.batchDeleteButton.classList.add('hidden')
+    }
+
     // eslint-disable-next-line no-return-assign
-    this.itemCheckboxTargets.forEach((checkbox) => allSelected = allSelected && checkbox.checked)
+    checkBoxes.forEach((checkbox) => allSelected = allSelected && checkbox.checked)
     this.checkboxTarget.checked = allSelected
 
     // Only run "all matching" if there are more pages available

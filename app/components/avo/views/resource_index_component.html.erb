@@ -9,12 +9,12 @@
           style: :text,
           color: :red,
           icon: 'trash',
-          title: t('avo.delete').capitalize,
+          class: 'hidden',
           data: {
+            'item-select-all-target': 'batchDeleteButton',
             'turbo-frame': 'actions_show',
             'action': 'click->actions-picker#visitAction',
           } do %>
-          <%= t('avo.delete').capitalize %>
         <% end %>
       <% end %>
       <% if can_attach? %>

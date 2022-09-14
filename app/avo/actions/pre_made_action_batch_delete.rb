@@ -10,6 +10,9 @@ module Actions
       models.each(&:destroy!)
 
       silent
+
+    rescue => exception
+      fail exception
     end
   end
 end
