@@ -5,7 +5,7 @@ module Actions
     self.confirm_button_label = I18n.t('avo.delete').capitalize
 
     def handle(**args)
-      models, fields, current_user, resource = args.values_at(:models, :fields, :current_user, :resource)
+      models, _, _, _ = args.values_at(:models, :fields, :current_user, :resource)
 
       models.each(&:destroy!)
 
