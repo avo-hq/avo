@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 class Avo::Index::ResourceGridComponent < ViewComponent::Base
-  def initialize(resources: nil, resource: nil, reflection: nil, parent_model: nil)
+  def initialize(resources: nil, resource: nil, reflection: nil, parent_model: nil, parent_resource: @parent_resource)
     @resources = resources
     @resource = resource
     @reflection = reflection
     @parent_model = parent_model
+    @parent_resource = parent_resource
   end
 end
