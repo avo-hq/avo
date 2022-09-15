@@ -15,6 +15,15 @@ ro:
     resource_updated: 'Resursa actualizata'
     resource_created: 'Resursa creata'
     resource_destroyed: 'Resursa stearsa'
+    record:
+      zero: '%{count} resurse'
+      one: '%{count} resursa'
+      other: '%{count} resurse'
+    destroyed:
+      zero: 'sterse'
+      one: 'stearsa'
+      other: 'sterse'
+    resource_batch_destroyed: '%{records} %{destroyed}'
     remove_selection: 'Sterge selectia'
     select_item: 'Selecteaza record'
     select_all: 'Selecteaza totul'

@@ -16,6 +16,15 @@ fr:
     resource_updated: 'Ressource mise à jour'
     resource_created: 'Ressource créee'
     resource_destroyed: 'Ressource détruite'
+    record:
+      zero: '%{count} ressource'
+      one: '%{count} ressource'
+      other: '%{count} ressources'
+    destroyed:
+      zero: 'détruite'
+      one: 'détruite'
+      other: 'détruites'
+    resource_batch_destroyed: '%{records} %{destroyed}'
     switch_to_view: "Passez à la vue %{view_type}"
     click_to_reveal_filters: "Cliquez pour révéler les filtres"
     attachment_destroyed: 'Pièce jointe détruite'

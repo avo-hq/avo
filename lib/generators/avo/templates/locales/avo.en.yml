@@ -16,6 +16,15 @@ en:
     resource_updated: 'Record updated'
     resource_created: 'Record created'
     resource_destroyed: 'Record destroyed'
+    record:
+      zero: '%{count} records'
+      one: '%{count} record'
+      other: '%{count} records'
+    destroyed:
+      zero: 'destroyed'
+      one: 'destroyed'
+      other: 'destroyed'
+    resource_batch_destroyed: '%{records} %{destroyed}'
     switch_to_view: "Switch to %{view_type} view"
     click_to_reveal_filters: "Click to reveal filters"
     attachment_destroyed: 'Attachment destroyed'

@@ -16,6 +16,15 @@ nb-NO:
     resource_updated: 'Ressurs oppdatert'
     resource_created: 'Ressurs generert'
     resource_destroyed: 'Ressurs slettet'
+    record: # HELP NEEDED FOR TRANSLATIONS
+      zero: '%{count} records'
+      one: '%{count} record'
+      other: '%{count} records'
+    destroyed: # HELP NEEDED FOR TRANSLATIONS
+      zero: 'destroyed'
+      one: 'destroyed'
+      other: 'destroyed'
+    resource_batch_destroyed: '%{records} %{destroyed}'
     switch_to_view: "Bytt til %{view_type} vis"
     click_to_reveal_filters: "Vis filter"
     attachment_destroyed: 'Vedlett slettet'

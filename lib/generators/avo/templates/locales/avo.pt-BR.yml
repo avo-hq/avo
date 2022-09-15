@@ -16,6 +16,15 @@ pt-BR:
     resource_updated: 'Recurso atualizado'
     resource_created: 'Recurso criado'
     resource_destroyed: 'Recurso destruído'
+    record:
+      zero: '%{count} recursos'
+      one: '%{count} recurso'
+      other: '%{count} recursos'
+    destroyed:
+      zero: 'destruídos'
+      one: 'destruído'
+      other: 'destruídos'
+    resource_batch_destroyed: '%{records} %{destroyed}'
     switch_to_view: "Alterar para visão %{view_type}"
     click_to_reveal_filters: "Clique para revelar os filtros"
     attachment_destroyed: 'Anexo destruído'
