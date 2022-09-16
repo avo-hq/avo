@@ -1,11 +1,13 @@
-import { Controller } from '@hotwired/stimulus'
 import { castBoolean } from '../helpers/cast_boolean'
+import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
   static targets = ['controllerDiv', 'resourceIds', 'form', 'selectedAllQuery']
 
   connect() {
     this.resourceIdsTarget.value = this.resourceIds
+
+    console.log('something')
 
     // This value is picked up from the DOM so we check true/false as strings
     if (this.selectionOptions.itemSelectAllSelectedAllValue === 'true') {
