@@ -1,5 +1,12 @@
 tags.tagify {
   --tag-inset-shadow-size: 3em;
+  --tags-border-color: rgb(var(--color-primary-500));
+  --tags-hover-border-color: rgb(var(--color-primary-500));
+  --tags-hover-border-color: rgb(var(--color-primary-500));
+}
+
+.tagify__dropdown {
+  --tagify-dd-color-primary: rgb(var(--color-primary-500));
 }
 
 tags.tagify {

@@ -34,7 +34,9 @@ module Avo
     attr_accessor :buttons_on_form_footers
     attr_accessor :main_menu
     attr_accessor :profile_menu
+    attr_accessor :model_resource_mapping
     attr_accessor :tabs_style
+    attr_writer :branding
 
     def initialize
       @root_path = "/avo"
@@ -79,6 +81,7 @@ module Avo
       @buttons_on_form_footers = false
       @main_menu = nil
       @profile_menu = nil
+      @model_resource_mapping = {}
       @tabs_style = :tabs
     end
 
@@ -122,6 +125,10 @@ module Avo
 
     def feature_enabled?(feature)
       !@disabled_features.map(&:to_sym).include?(feature.to_sym)
+    end
+
+    def branding
+      Avo::Configuration::Branding.new(**@branding || {})
     end
   end
 
