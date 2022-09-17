@@ -64,6 +64,7 @@ module Avo
       attr_reader :allow_via_detaching
       attr_reader :attach_scope
       attr_reader :polymorphic_help
+      attr_reader :inside_tab
 
       def initialize(id, **args, &block)
         args[:placeholder] ||= I18n.t("avo.choose_an_option")
@@ -77,6 +78,7 @@ module Avo
         @allow_via_detaching = args[:allow_via_detaching] == true
         @attach_scope = args[:attach_scope]
         @polymorphic_help = args[:polymorphic_help]
+        @inside_tab = args[:inside_tab] == true
       end
 
       def searchable
