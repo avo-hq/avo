@@ -1,4 +1,4 @@
 <%= link_to root_path, class: 'logo-placeholder h-full w-full flex justify-start' do %>
-  <%= image_tag '/avo-assets/logo.png', class: 'hidden sm:block object-contain', title: 'Avo' %>
-  <%= image_tag '/avo-assets/logomark.png', class: 'sm:hidden object-contain', title: 'Avo' %>
+  <%= image_tag Avo.configuration.branding.logo, class: 'hidden sm:block object-contain', title: 'Avo' %>
+  <%= image_tag Avo.configuration.branding.logomark, class: 'sm:hidden object-contain', title: 'Avo' %>
 <% end %>

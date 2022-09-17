@@ -4,6 +4,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   attr_reader :has_many_panels
   attr_reader :has_as_belongs_to_many_panels
   attr_reader :resource_tools
+  attr_reader :resource
   attr_reader :view
 
   def can_create?
@@ -19,7 +20,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def can_detach?
-    authorize_association_for("detach")
+    authorize_association_for(:detach)
   end
 
   def detach_path
@@ -53,7 +54,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
     if @reflection.present?
       # Fetch the appropiate resource
-      reflection_resource = ::Avo::App.get_resource_by_model_name(@reflection.active_record.name)
+      reflection_resource = field.resource
       # Fetch the model
       # Hydrate the resource with the model if we have one
       reflection_resource.hydrate(model: @parent_model) if @parent_model.present?

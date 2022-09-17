@@ -32,11 +32,11 @@
       <% c.controls do %>
         <%= a_button data: { action: 'click->modal#close' },
           size: :sm,
-          color: :primary do %>
+          color: :gray do %>
           <%= @action.cancel_button_label %>
         <% end %>
         <%= a_button type: :submit,
-            color: :primary,
+            color: :green,
             style: :primary,
             size: :sm,
             data: @action.class.submit_button_data_attributes do %>

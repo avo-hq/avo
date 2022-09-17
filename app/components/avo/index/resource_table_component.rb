@@ -18,7 +18,7 @@ class Avo::Index::ResourceTableComponent < ViewComponent::Base
     return if @query.nil?
 
     Avo::Services::EncryptionService.encrypt(
-      message: @query.to_sql,
+      message: @query.all.to_sql,
       purpose: :select_all
     )
   end

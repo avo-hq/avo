@@ -22,18 +22,22 @@ class Avo::SvgFinder
       Avo::Engine.root.join(@filename).to_s,
     ]
 
-    path = paths.find do |path|
+    paths.find do |path|
       File.exist? path
     end
-
-    path
   end
 
   def default_strategy
-    if ::Rails.application.config.assets.compile
+    # If the app uses Propshaft, grab it from there
+    if defined?(Propshaft)
+      asset_path = ::Rails.application.assets.load_path.find(@filename)
+      asset_path&.path
+    elsif ::Rails.application.config.assets.compile
+      # Grab the asset from the compiled asset manifest
       asset = ::Rails.application.assets[@filename]
       Pathname.new(asset.filename) if asset.present?
     else
+      # Grab the asset from the manifest
       manifest = ::Rails.application.assets_manifest
       asset_path = manifest.assets[@filename]
       unless asset_path.nil?
@@ -42,4 +46,3 @@ class Avo::SvgFinder
     end
   end
 end
-

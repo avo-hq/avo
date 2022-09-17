@@ -16,6 +16,7 @@ module Avo
           :menu_editor,
           :stimulus_js_integration,
           :resource_show_controls,
+          :branding,
           :advanced_fields
         ]
       end
