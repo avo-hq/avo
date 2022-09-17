@@ -65,4 +65,8 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
       )
     end
   end
+
+  def view_for(field)
+    (field.is_a? Avo::Fields::TrixField) && field.is_readonly? ? :show : view
+  end
 end
