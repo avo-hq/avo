@@ -5,12 +5,14 @@ class Avo::ResourceSidebarComponent < ViewComponent::Base
   attr_reader :fields
   attr_reader :params
   attr_reader :view
+  attr_reader :form
 
   def initialize(resource: nil, fields: nil, index: nil, params: nil, form: nil, view: nil)
     @resource = resource
     @fields = fields
     @params = params
     @view = view
+    @form = form
   end
 
   def render_field(field)
@@ -22,6 +24,7 @@ class Avo::ResourceSidebarComponent < ViewComponent::Base
     ).component_for_view(view).new(
       field: field,
       resource: resource,
+      form: form
     )
   end
 

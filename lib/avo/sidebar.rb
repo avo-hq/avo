@@ -8,15 +8,13 @@ class Avo::Sidebar
   attr_reader :name
   attr_reader :view
   attr_accessor :items_holder
-  attr_accessor :holds_one_field
 
-  def initialize(name: nil, view: nil, holds_one_field: false, **args)
+  def initialize(name: nil, view: nil, **args)
     # Initialize the visibility markers
     super
 
     @name = name
     @items_holder = Avo::ItemsHolder.new
-    @holds_one_field = holds_one_field
     @view = view
 
     show_on args[:show_on] if args[:show_on].present?
@@ -33,15 +31,6 @@ class Avo::Sidebar
 
   def empty?
     visible_items.blank?
-  end
-
-  # Checks for visibility on itself or on theone field it holds
-  def visible_on?(view)
-    if holds_one_field
-      super(view) && items.first.visible_on?(view)
-    else
-      super(view)
-    end
   end
 
   def items

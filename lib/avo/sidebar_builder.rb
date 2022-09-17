@@ -11,7 +11,7 @@ class Avo::SidebarBuilder
   delegate :items, to: :items_holder
 
   def initialize(name: nil, **args)
-    @sidebar = Avo::Sidebar.new(name: name, **args)
+    @sidebar = Avo::Sidebar.new(**args)
     @items_holder = Avo::ItemsHolder.new
   end
 

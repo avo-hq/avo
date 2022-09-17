@@ -85,8 +85,8 @@ class Avo::ResourceComponent < Avo::BaseComponent
     @sidebar ||= search_for_sidebar
   end
 
-  def sidebar_component
-    Avo::ResourceSidebarComponent.new resource: @resource, fields: sidebar.items, params: params, view: view
+  def sidebar_component(form: nil)
+    Avo::ResourceSidebarComponent.new resource: @resource, fields: sidebar.items, params: params, view: view, form: form
   end
 
   def has_reflection_and_is_read_only

@@ -49,6 +49,11 @@
           </div>
         <% end %>
       <% end %>
+      <% if sidebar.present? %>
+        <% c.sidebar do %>
+          <%= render sidebar_component form: form %>
+        <% end %>
+      <% end %>
       <% if Avo.configuration.buttons_on_form_footers %>
         <% c.footer_tools do %>
           <div class="mt-4">

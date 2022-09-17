@@ -1,5 +1,5 @@
 <div class="divide-y">
   <% fields.each do |field| %>
-    <%= render_field field %>
+    <%= render_field field if field.visible_on? view %>
   <% end %>
 </div>
