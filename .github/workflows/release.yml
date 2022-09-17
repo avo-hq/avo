@@ -11,18 +11,16 @@ jobs:
     env:
       RAILS_ENV: production
       NODE_ENV: production
+      BUNDLE_WITHOUT: development:test
 
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
     - name: Set up Ruby
-    # To automatically get bug fixes and new Ruby versions for ruby/setup-ruby,
-    # change this to (see https://github.com/ruby/setup-ruby#versioning):
-    # uses: ruby/setup-ruby@v1
-      uses: ruby/setup-ruby@ec106b438a1ff6ff109590de34ddc62c540232e0
+      uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 2.6.3
+        ruby-version: 3.1.0
 
     - uses: actions/cache@v1
       with:
@@ -49,10 +47,15 @@ jobs:
           ${{ runner.os }}-production-yarn-
 
     - name: Yarn install
-      run: bundle exec rails app:yarn:install
+      run: yarn install
 
-    - name: Bundle assets
-      run: bin/webpack
+    - name: Yarn check integrity
+      run: yarn check --integrity
+
+    - name: Build assets
+      run: |
+        yarn prod:build:js
+        yarn prod:build:css
 
     - name: Build gem
       run: bundle exec rails build
@@ -92,22 +95,24 @@ jobs:
         asset_name: avo-${{steps.gem_version.outputs.tag}}.gem
         asset_content_type: application/x-tar
 
+    - name: Publish to rubygems.org
+      id: publish-to-rubygems-package-registry
+      env:
+        RUBYGEMS_TOKEN: ${{ secrets.RUBYGEMS_TOKEN }}
+      run: |
+        mkdir ~/.gem
+        touch ~/.gem/credentials
+        chmod 600 ~/.gem/credentials
+        echo ":rubygems_api_key: ${RUBYGEMS_TOKEN}" >> ~/.gem/credentials
+        gem push --host https://rubygems.org/ ./pkg/avo-${{steps.gem_version.outputs.tag}}.gem
+
     - name: Publish to GitHub Package Registry
       id: publish-to-github-package-registry
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         echo ":github: Bearer ${GITHUB_TOKEN}" >> ~/.gem/credentials
-        chmod 600 ~/.gem/credentials
         gem push --key github --host https://rubygems.pkg.github.com/avo-hq ./pkg/avo-${{steps.gem_version.outputs.tag}}.gem
 
-    - name: Publish to rubygems.org
-      id: publish-to-rubygems-package-registry
-      env:
-        RUBYGEMS_TOKEN: ${{ secrets.RUBYGEMS_TOKEN }}
-      run: |
-        echo ":rubygems_api_key: ${RUBYGEMS_TOKEN}" >> ~/.gem/credentials
-        gem push --host https://rubygems.org/ ./pkg/avo-${{steps.gem_version.outputs.tag}}.gem
-
     - name: Publish release on avohq.io
-      run: node .github/publish-release-to-avo-hq-io.js
+      run: curl https://avohq.io/releases/refresh_releases

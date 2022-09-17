@@ -1,1 +1,2 @@
-//= link_directory ../stylesheets/avo .css
+//= link_directory ../images/avo
+//= link_tree ../builds

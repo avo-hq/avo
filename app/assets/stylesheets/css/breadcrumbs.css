@@ -1,0 +1,16 @@
+.breadcrumbs {
+  @apply relative text-sm text-black;
+
+  svg {
+    @apply text-gray-500;
+  }
+
+  a,
+  span {
+    @apply inline-block text-sm;
+  }
+
+  a {
+    @apply hover:text-gray-500;
+  }
+}

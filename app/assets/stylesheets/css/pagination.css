@@ -1,0 +1,63 @@
+.pagy-nav,
+.pagy-nav-js,
+.pagy-combo-nav-js {
+  @apply relative z-0 flex;
+}
+
+.pagy-nav.pagination,
+.pagy-nav-js.pagination,
+.pagy-combo-nav-js.pagination {
+  @apply space-x-2;
+}
+
+.pagy-nav .page a{
+  @apply block;
+}
+
+.pagy-nav .page a,
+.pagy-nav .page.active,
+.pagy-nav .page.prev.disabled,
+.pagy-nav .page.next.disabled,
+.pagy-nav-js .page a,
+.pagy-combo-nav-js .page a,
+.pagy-combo-nav-js .pagy-combo-input a {
+  @apply rounded px-3 py-1 text-sm text-gray-500 font-semibold bg-white shadow-md border border-gray-300;
+
+  &:hover{
+    @apply bg-gray-150;
+  }
+
+  &:active{
+    @apply bg-gray-200;
+  }
+}
+
+.pagy-nav .page.prev.disabled,
+.pagy-nav-js .page.prev.disabled,
+.pagy-combo-nav-js .page.prev.disabled,
+.pagy-nav .page.next.disabled,
+.pagy-nav-js .page.next.disabled,
+.pagy-combo-nav-js .page.next.disabled {
+  @apply text-gray-300 cursor-default;
+
+  &:hover {
+    @apply text-gray-300 bg-white;
+  }
+
+  &:active {
+    @apply text-gray-300 bg-white;
+  }
+}
+
+.pagy-nav .page.active,
+.pagy-nav-js .page.active {
+  @apply text-white cursor-default bg-gray-500 border-gray-500;
+
+  &:hover {
+    @apply text-white bg-gray-500;
+  }
+
+  &:active {
+    @apply bg-gray-500 text-white;
+  }
+}

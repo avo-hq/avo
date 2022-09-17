@@ -1,0 +1,29 @@
+<tr
+  class="bg-white hover:bg-gray-50 hover:shadow-row hover:z-[21] relative z-20 border-b"
+  <%== item_selector_init @resource %>
+>
+  <% if @resource.record_selector %>
+    <td class="w-10">
+      <div class="flex justify-center h-full">
+        <%== item_selector_input floating: false %>
+      </div>
+    </td>
+  <% end %>
+  <% if Avo.configuration.resource_controls_on_the_left? %>
+    <td class="text-right whitespace-nowrap px-2" data-control="resource-controls">
+      <div class="flex items-center justify-end flex-grow-0 h-full w-full">
+        <%= render(Avo::Index::ResourceControlsComponent.new(resource: @resource, reflection: @reflection, parent_model: @parent_model, parent_resource: @parent_resource, view_type: :table)) %>
+      </div>
+    </td>
+  <% end %>
+  <% @resource.get_fields(reflection: @reflection, only_root: true).each_with_index do |field, index| %>
+    <%= render field.component_for_view(:index).new(field: field, resource: @resource, index: index, parent_model: @parent_model) %>
+  <% end %>
+  <% if Avo.configuration.resource_controls_on_the_right? %>
+    <td class="text-right whitespace-nowrap px-2" data-control="resource-controls">
+      <div class="flex items-center justify-end flex-grow-0 h-full w-full">
+        <%= render(Avo::Index::ResourceControlsComponent.new(resource: @resource, reflection: @reflection, parent_model: @parent_model, parent_resource: @parent_resource, view_type: :table)) %>
+      </div>
+    </td>
+  <% end %>
+</tr>

@@ -3,62 +3,36 @@
 #   # Task goes here
 # end
 
-def ensure_log_goes_to_stdout
-  old_logger = Webpacker.logger
-  Webpacker.logger = ActiveSupport::Logger.new(STDOUT)
-  yield
-ensure
-  Webpacker.logger = old_logger
-end
+desc "Installs Avo assets and bundles them for when you want to use the GitHub repo in your app"
+task "avo:build-assets" do
+  spec = get_gem_spec "avo"
+  # Uncomment to enable only when the source is github.com
+  # enabled = spec.source.to_s.include?('https://github.com/avo-hq/avo')
+  enabled = true
 
+  if enabled
+    puts "Starting avo:build-assets"
+    path = spec.full_gem_path
 
-namespace :avo do
-  namespace :webpacker do
-    desc 'Install deps with yarn'
-    task :yarn_install do
-      Dir.chdir(File.join(__dir__, '../..')) do
-        system 'yarn install --no-progress --production'
-      end
+    Dir.chdir(path) do
+      system "yarn"
+      system "yarn prod:build"
     end
 
-    desc 'Compile JavaScript packs using webpack for production with digests'
-    task compile: [:yarn_install, :environment] do
-      Webpacker.with_node_env('production') do
-        ensure_log_goes_to_stdout do
-          if Avo.webpacker.commands.compile
-            # Successful compilation!
-          else
-            # Failed compilation
-            exit!
-          end
-        end
-      end
-    end
-  end
-end
-
-def yarn_install_available?
-  rails_major = Rails::VERSION::MAJOR
-  rails_minor = Rails::VERSION::MINOR
-
-  rails_major > 5 || (rails_major == 5 && rails_minor >= 1)
-end
-
-def enhance_assets_precompile
-  # yarn:install was added in Rails 5.1
-  deps = yarn_install_available? ? [] : ['avo:webpacker:yarn_install']
-  # Rake::Task['assets:precompile'].enhance(deps) do
-  #   Rake::Task['avo:webpacker:compile'].invoke
-  # end
-end
-
-# Compile packs after we've compiled all other assets during precompilation
-skip_webpacker_precompile = %w(no false n f).include?(ENV['WEBPACKER_PRECOMPILE'])
-
-unless skip_webpacker_precompile
-  if Rake::Task.task_defined?('assets:precompile')
-    enhance_assets_precompile
+    puts "Done"
   else
-    Rake::Task.define_task('assets:precompile' => 'avo:webpacker:compile')
+    puts "Not starting avo:build-assets"
   end
+end
+
+# From
+# https://stackoverflow.com/questions/9322078/programmatically-determine-gems-path-using-bundler
+def get_gem_spec(name)
+  spec = Bundler.load.specs.find { |s| s.name == name }
+  raise GemNotFound, "Could not find gem '#{name}' in the current bundle." unless spec
+  if spec.name == "bundler"
+    return File.expand_path("../../../", __FILE__)
+  end
+
+  spec
 end

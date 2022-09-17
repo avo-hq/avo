@@ -1,0 +1,18 @@
+<%= render Avo::TurboFrameWrapperComponent.new(params[:turbo_frame]) do %>
+  <%= render Avo::Views::ResourceIndexComponent.new(
+      resource: @resource,
+      resources: @resources,
+      models: @models,
+      pagy: @pagy,
+      index_params: @index_params,
+      filters: @filters,
+      actions: @actions,
+      reflection: @reflection,
+      turbo_frame: params[:turbo_frame],
+      parent_model: @parent_model,
+      parent_resource: @parent_resource,
+      applied_filters: @applied_filters,
+      query: @query,
+    )
+  %>
+<% end %>

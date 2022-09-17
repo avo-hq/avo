@@ -1,28 +1,57 @@
 Avo::Engine.routes.draw do
-  root 'home#index'
+  root "home#index"
 
-  get '/avo-api/:resource_name/filters',  to: 'filters#index'
+  get "resources", to: redirect(Avo.configuration.root_path)
+  get "dashboards", to: redirect(Avo.configuration.root_path)
 
-  get '/avo-api/:resource_name/actions',  to: 'actions#index'
-  post '/avo-api/:resource_name/actions', to: 'actions#handle'
+  post "/rails/active_storage/direct_uploads", to: "/active_storage/direct_uploads#create"
 
-  get '/avo-api/search',                  to: 'search#index'
-  get '/avo-api/:resource_name/search',   to: 'search#resource'
+  resources :dashboards do
+    resources :cards
+  end
 
-  get '/avo-api/:resource_name',          to: 'resources#index'
-  post '/avo-api/:resource_name',         to: 'resources#create'
-  get '/avo-api/:resource_name/new',      to: 'resources#new'
-  get '/avo-api/:resource_name/:id',      to: 'resources#show'
-  get '/avo-api/:resource_name/:id/edit', to: 'resources#edit'
-  put '/avo-api/:resource_name/:id',      to: 'resources#update'
-  delete '/avo-api/:resource_name/:id',   to: 'resources#destroy'
+  scope "avo_api", as: "avo_api" do
+    get "/search", to: "search#index"
+    get "/:resource_name/search", to: "search#show"
+    post "/resources/:resource_name/:id/attachments/", to: "attachments#create"
+  end
 
-  post '/avo-api/:resource_name/:id/attach/:attachment_name/:attachment_id', to: 'relations#attach'
-  post '/avo-api/:resource_name/:id/detach/:attachment_name/:attachment_id', to: 'relations#detach'
+  # Records ordering
+  scope "reorder", as: "reorder" do
+    patch "/:resource_name/:id", to: "reorder#order", as: "order"
+  end
 
-  # Tools
-  get '/avo-tools/resource-overview', to: 'resource_overview#index'
+  get "failed_to_load", to: "home#failed_to_load"
 
-  # Catch them all
-  get '/:view/(:tool)/(:resource_name)/(:option)', to: 'home#index'
+  scope "resources", as: "resources" do
+    # Attachments
+    delete "/:resource_name/:id/active_storage_attachments/:attachment_name/:attachment_id", to: "attachments#destroy"
+
+    # Actions
+    get "/:resource_name(/:id)/actions/:action_id", to: "actions#show"
+    post "/:resource_name(/:id)/actions/:action_id", to: "actions#handle"
+
+    # Generate resource routes as below:
+    # resources :posts
+    Avo::DynamicRouter.routes(self)
+
+    # Associations
+    get "/:resource_name/:id/:related_name/new", to: "associations#new", as: "associations_new"
+    get "/:resource_name/:id/:related_name/", to: "associations#index", as: "associations_index"
+    get "/:resource_name/:id/:related_name/:related_id", to: "associations#show", as: "associations_show"
+    post "/:resource_name/:id/:related_name", to: "associations#create", as: "associations_create"
+    delete "/:resource_name/:id/:related_name/:related_id", to: "associations#destroy", as: "associations_destroy"
+  end
+
+  scope "/avo_private", as: "avo_private" do
+    get "/debug", to: "debug#index", as: "debug_index"
+    get "/debug/report", to: "debug#report", as: "debug_report"
+    post "/debug/refresh_license", to: "debug#refresh_license"
+  end
+
+  if Rails.env.development? || Rails.env.staging?
+    scope "/avo_private", as: "avo_private" do
+      get "/design", to: "private#design"
+    end
+  end
 end

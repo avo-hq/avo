@@ -1,10 +1,10 @@
-FROM ruby:2.5
+FROM ruby:3.1.0
 
 RUN apt-get update -qq && apt-get install -yqq build-essential apt-transport-https apt-utils
 
 # Cache nokogiri
 RUN apt-get install -yqq libxml2-dev libxslt1-dev build-essential patch ruby-dev zlib1g-dev liblzma-dev
-RUN gem install nokogiri selenium-webdriver
+RUN gem install nokogiri selenium-webdriver ffi ruby-debug-ide tilt
 
 # node
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
@@ -18,19 +18,24 @@ RUN apt-get update -qq && apt-get install -y yarn
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN gem install bundler -v 2.1.4
+RUN gem install bundler -v 2.3.5
 
 ENV RAILS_ENV=production
 ENV NODE_ENV=production
+ENV BUNDLE_WITHOUT=development:test
 
 WORKDIR /avo/
 
-# gems
-COPY Gemfile* /avo/
+# Install gems
+COPY Gemfile /avo/Gemfile
 COPY Rakefile /avo/
 COPY avo.gemspec /avo/
 COPY ./lib/avo.rb /avo/lib/avo.rb
-COPY ./lib/avo/version.rb /avo/lib/avo/version.rb
+RUN mkdir /avo/lib/avo
+
+# Cache the bundle install command with a fake version
+COPY ./tmp/Gemfile_v1.lock /avo/Gemfile.lock
+COPY ./tmp/version_v1.rb /avo/lib/avo/version.rb
 RUN bundle install --jobs 4 --retry 3
 
 COPY package.json /avo/
@@ -39,16 +44,14 @@ COPY yarn.lock /avo/
 RUN yarn install
 RUN yarn check --integrity
 
-COPY ./bin/ /avo/bin/
-COPY ./app/frontend/ /avo/app/frontend/
-COPY ./config/ /avo/config/
-COPY ./.eslintrc.json /avo/.eslintrc.json
-COPY ./jsconfig.json /avo/jsconfig.json
-COPY ./postcss.config.js /avo/postcss.config.js
-COPY ./tailwind.config.js /avo/tailwind.config.js
+# re-run bundle install with the appropriate version number
+COPY ./lib/avo/version.rb /avo/lib/avo/version.rb
+RUN bundle install --jobs 4 --retry 3
 
-RUN bin/webpack
+# Copy the files
+COPY . /avo
 
-COPY . /avo/
+RUN yarn prod:build:js
+RUN yarn prod:build:css
 
 RUN bundle exec rails build

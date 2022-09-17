@@ -1,0 +1,49 @@
+<div class="text-black border-gray-150 p-4 flex border-t">
+  <div class="flex-1 flex space-x-4">
+    <% if avatar.present? %>
+      <div class="relative aspect-square w-10 h-10 overflow-hidden rounded">
+        <%= image_tag avatar, class: "object-cover min-w-full min-h-full h-full" %>
+      </div>
+    <% end %>
+    <div class="flex flex-col">
+      <div class="font-medium">
+        <%= name %>
+      </div>
+      <% if title.present? %>
+        <div class="text-xs text-gray-500 uppercase">
+          <%= title %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <% if can_destroy_user? %>
+    <div class="relative" data-controller="toggle-panel">
+      <a class="flex items-center h-full cursor-pointer" data-control="profile-dots" data-action="click->toggle-panel#togglePanel">
+        <%= helpers.svg 'three-dots', class: 'h-4' %>
+      </a>
+      <div
+        class="hidden absolute flex flex-col inset-auto right-0 -mt-12 bg-white rounded min-w-[200px] shadow-context -translate-y-full"
+        data-toggle-panel-target="panel"
+      >
+        <% if Avo::App.has_profile_menu? %>
+          <div class="text-black space-y-4">
+            <% Avo::App.profile_menu.items.each do |item| %>
+              <% if item.is_a? Avo::Menu::Link %>
+                <%= render Avo::ProfileItemComponent.new label: item.name, path: item.path, icon: item.icon %>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
+        <%# Example link below %>
+        <%#= render Avo::ProfileItemComponent.new label: 'Profile', path: '/profile', icon: 'user-circle' %>
+        <%= button_to helpers.main_app.send(destroy_user_session_path),
+          method: :delete,
+          form: { "data-turbo" => "false" },
+          class: "flex-1 flex items-center justify-center bg-white text-left cursor-pointer text-red-600 font-semibold hover:bg-red-100 block px-4 py-1 w-full py-3 text-center rounded w-full",
+          form_class: 'flex-1' do %>
+          <%= helpers.svg 'logout', class: 'h-4 mr-1' %> <%= t('avo.sign_out') %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

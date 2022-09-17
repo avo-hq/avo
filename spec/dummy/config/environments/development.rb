@@ -14,13 +14,13 @@ Rails.application.configure do
 
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
-  if Rails.root.join('tmp', 'caching-dev.txt').exist?
+  if Rails.root.join("tmp", "caching-dev.txt").exist?
     config.action_controller.perform_caching = true
     config.action_controller.enable_fragment_cache_logging = true
 
     config.cache_store = :memory_store
     config.public_file_server.headers = {
-      'Cache-Control' => "public, max-age=#{2.days.to_i}"
+      "Cache-Control" => "public, max-age=#{2.days.to_i}"
     }
   else
     config.action_controller.perform_caching = false
@@ -29,7 +29,7 @@ Rails.application.configure do
   end
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
-  config.active_storage.service = :local
+  config.active_storage.service = ENV["STORAGE_SERVICE"] || :local
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
@@ -48,7 +48,7 @@ Rails.application.configure do
   # Debug mode disables concatenation and preprocessing of assets.
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
-  config.assets.debug = true
+  # config.assets.debug = true
 
   # Suppress logger output for asset requests.
   config.assets.quiet = true
@@ -56,11 +56,28 @@ Rails.application.configure do
   # Raises error for missing translations.
   # config.action_view.raise_on_missing_translations = true
 
+  # Adds HTML comments to the rendered output indicating where
+  # each template begins and ends
+  config.action_view.annotate_rendered_view_with_filenames = true
+
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
   config.factory_bot.definition_file_paths = ["../../db"]
 
-  config.action_mailer.default_url_options = { host: 'localhost', port: 3030 }
+  config.action_mailer.default_url_options = {host: "localhost", port: 3030}
+
+  config.action_view.logger = nil
+  config.assets.logger = nil
+
+  config.hotwire_livereload.listen_paths << Avo::Engine.root.join("app/assets/stylesheets")
+  config.hotwire_livereload.listen_paths << Rails.root.join("app/avo")
+  config.hotwire_livereload.listen_paths << Avo::Engine.root.join("app/components")
+  config.hotwire_livereload.listen_paths << Avo::Engine.root.join("app/helpers")
+  config.hotwire_livereload.listen_paths << Avo::Engine.root.join("app/javascript")
+  config.hotwire_livereload.listen_paths << Avo::Engine.root.join("app/views")
+  config.hotwire_livereload.listen_paths << Avo::Engine.root.join("lib")
+
+  config.i18n.load_path += Dir[Avo::Engine.root.join("lib", "generators", "avo", "templates", "locales", "*.{rb,yml}")]
 end

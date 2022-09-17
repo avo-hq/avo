@@ -1,0 +1,23 @@
+tags.tagify {
+  --tag-inset-shadow-size: 3em;
+  --tags-border-color: rgb(var(--color-primary-500));
+  --tags-hover-border-color: rgb(var(--color-primary-500));
+  --tags-hover-border-color: rgb(var(--color-primary-500));
+}
+
+.tagify__dropdown {
+  --tagify-dd-color-primary: rgb(var(--color-primary-500));
+}
+
+tags.tagify {
+  @apply !p-0;
+
+  span.tagify__input {
+    @apply my-1;
+  }
+}
+
+tag.tagify__tag {
+  @apply text-sm my-1 mb-0;
+}
+

@@ -1,0 +1,22 @@
+<div class="modal-container fixed inset-0 w-full min-h-screen z-[100] flex justify-center items-center"
+  data-controller="modal"
+  data-modal-target="modal"
+>
+  <div aria-expanded="true" class="modal-overlay absolute w-full h-full bg-opacity-25 bg-gray-800 flex justify-center items-center" data-action="click->modal#close"></div>
+  <div aria-expanded="true" role="dialog" aria-modal="true" class="modal-body rounded-lg overflow-hidden inset-auto w-11/12 lg:w-1/2 sm:max-w-168 min-h-1/4 bg-white flex z-50 relative shadow-modal">
+    <div class="flex-1 flex flex-col justify-between">
+      <div>
+        <div class="p-6 text-2xl tracking-normal font-semibold text-black">
+          <%= heading %>
+        </div>
+        <div class="px-6 text-base text-gray-500">
+          <%= content %>
+        </div>
+      </div>
+      <div class="flex justify-end items-baseline space-x-4 p-4 bg-gray-100">
+        <%= controls %>
+      </div>
+    </div>
+  </div>
+</div>
+

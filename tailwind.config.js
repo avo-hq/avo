@@ -1,29 +1,89 @@
+/* eslint-disable global-require */
 const plugin = require('tailwindcss/plugin')
+const colors = require('tailwindcss/colors')
+const defaultTheme = require('tailwindcss/defaultTheme')
+
+const primary = {
+  50: 'rgb(var(--color-primary-50))',
+  100: 'rgb(var(--color-primary-100))',
+  150: 'rgb(var(--color-primary-150))',
+  200: 'rgb(var(--color-primary-200))',
+  300: 'rgb(var(--color-primary-300))',
+  400: 'rgb(var(--color-primary-400))',
+  500: 'rgb(var(--color-primary-500))',
+  600: 'rgb(var(--color-primary-600))',
+  700: 'rgb(var(--color-primary-700))',
+  800: 'rgb(var(--color-primary-800))',
+  850: 'rgb(var(--color-primary-850))',
+  900: 'rgb(var(--color-primary-900))',
+}
+
+const blue = {
+  50: '#E6F3FC',
+  100: '#CEE7F8',
+  150: '#B5DBF5',
+  200: '#9CCFF2',
+  300: '#6BB6EB',
+  400: '#399EE5',
+  500: '#0886DE',
+  600: '#066BB2',
+  700: '#055085',
+  800: '#033659',
+  850: '#022843',
+  900: '#021B2C',
+}
+
+const gray = {
+  25: '#F6F6F7',
+  50: '#F1F2F3',
+  100: '#E3E5E8',
+  150: '#D6D8DC',
+  200: '#C8CBD0',
+  300: '#ACB1B9',
+  400: '#9197A1',
+  500: '#757D8A',
+  600: '#5E646E',
+  700: '#464B53',
+  800: '#2F3237',
+  850: '#232629',
+  900: '#17191C',
+}
 
 module.exports = {
-  future: {
-    purgeLayersByDefault: true,
-    removeDeprecatedGapUtilities: true,
-    standardFontWeights: true,
-  },
-  purge: {
-    mode: 'layers',
-    layers: ['components', 'utilities'],
-    content: [
-      './app/helpers/**/*.rb',
-      './app/views/**/*.html',
-      './app/views/**/*.html.erb',
-      './app/frontend/**/*.vue',
-      './app/frontend/**/*.js',
-    ],
-    options: {
-      whitelist: ['appearance-none'],
-    },
-  },
+  darkMode: 'class',
+  mode: 'jit',
+  future: {},
+  content: [
+    './safelist.txt',
+    './lib/avo/**/*.rb',
+
+    './app/helpers/**/*.rb',
+    './app/views/**/*.erb',
+    './app/javascript/**/*.js',
+    './app/components/avo/**/*.erb',
+    './app/components/avo/**/*.rb',
+    './app/controllers/avo/**/*.rb',
+    './app/javascript/**/*.js',
+
+    './spec/dummy/app/avo/resources/**/*.rb',
+    './spec/dummy/app/views/**/*.erb',
+  ],
+
   theme: {
     extend: {
+      colors: {
+        blue,
+        gray,
+        primary,
+        sky: colors.sky,
+        teal: colors.teal,
+        slate: colors.slate,
+        indigo: colors.indigo,
+        application: 'rgb(var(--color-application-background))',
+      },
       fontFamily: {
-        sans: '"Lato", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",  "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
+        // eslint-disable-next-line max-len
+        sans: '"Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",  "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
       },
       inset: {
         '1/2': '50%',
@@ -35,15 +95,39 @@ module.exports = {
       boxShadow: {
         row: '0 0 15px -5px rgba(0, 0, 0, 0.25)',
         context: '0 20px 25px -5px rgba(0, 0, 0, 0.25), 0 0 25px -5px rgba(0, 0, 0, 0.1)',
-        panel: '0 0 20px -5px rgba(0, 0, 0, 0.1)',
+        panel: '0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 2px rgba(0, 0, 0, 0.06), 0px 0px 1px rgba(0, 0, 0, 0.04)',
+        modal: ' 0px 24px 32px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04)',
       },
       minWidth: {
-        '300px': '300px',
-        4: '1rem',
-        10: '2.5rem',
+        '1/2': '50%',
+        '1/3': '33.333333%',
+        '2/3': '66.666667%',
+        '1/4': '25%',
+        '2/4': '50%',
+        '3/4': '75%',
+        '1/5': '20%',
+        '2/5': '40%',
+        '3/5': '60%',
+        '4/5': '80%',
+      },
+      maxWidth: {
+        168: '42rem',
       },
       minHeight: {
-        28: '7rem',
+        inherit: 'inherit',
+        16: '4rem',
+        24: '6rem',
+        48: '12rem',
+        '1/2': '50%',
+        '1/3': '33.333333%',
+        '2/3': '66.666667%',
+        '1/4': '25%',
+        '2/4': '50%',
+        '3/4': '75%',
+        '1/5': '20%',
+        '2/5': '40%',
+        '3/5': '60%',
+        '4/5': '80%',
       },
       spacing: {
         full: '100%',
@@ -78,10 +162,17 @@ module.exports = {
         '10/12': '83.333333%',
         '11/12': '91.666667%',
       },
+      transitionTimingFunction: {
+        pop: 'cubic-bezier(.23,2,.73,.55)',
+      },
+    },
+    screens: {
+      xs: '495px',
+      ...defaultTheme.screens,
     },
   },
   variants: {
-    display: ['responsive', 'hover', 'focus', 'group-hover'],
+    display: ['responsive', 'hover', 'focus', 'group-hover', 'checked'],
     padding: ['responsive', 'group-hover'],
     borderColor: ['responsive', 'hover', 'focus', 'disabled'],
     backgroundColor: ['responsive', 'hover', 'focus', 'disabled'],
@@ -90,69 +181,8 @@ module.exports = {
     cursor: ['responsive', 'disabled'],
   },
   plugins: [
+    require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
-    // buttons
-    plugin(({ addComponents, theme }) => {
-      const styles = {
-        display: 'inline-flex',
-        flexGrow: 0,
-        alignItems: 'center',
-        fontSize: theme('fontSize.md'),
-        fontWeight: theme('fontWeight.semibold'),
-        lineHeight: 1,
-        padding: `${theme('spacing.2')} ${theme('spacing.4')}`,
-        fill: 'currentColor',
-        whiteSpace: 'nowrap',
-        backgroundColor: theme('colors.white'),
-        color: theme('colors.gray.900'),
-        border: `1px solid ${theme('colors.gray.100')}`,
-        transitionProperty: theme('transitionProperty.default'),
-        transitionDuration: theme('transitionDuration.100'),
-        borderRadius: theme('borderRadius.default'),
-        boxShadow: theme('boxShadow.default'),
-        '&:hover': {
-          backgroundColor: theme('colors.gray.100'),
-        },
-        '&:active': {
-          backgroundColor: theme('colors.gray.200'),
-        },
-      }
-      const buttons = {
-        '@variants responsive': {
-          '.button': {
-            ...styles,
-            '&.button-lg': {
-              padding: `${theme('spacing.3')} ${theme('spacing.6')}`,
-              fontSize: theme('fontSize.lg'),
-            },
-            '&.button-sm': {
-              padding: `${theme('spacing.1')} ${theme('spacing.2')}`,
-              fontSize: theme('fontSize.sm'),
-            },
-            '&.button-xl': {
-              padding: `${theme('spacing.4')} ${theme('spacing.10')}`,
-              fontSize: theme('fontSize.2xl'),
-            },
-          },
-          '.button-indigo': {
-            ...styles,
-            color: theme('colors.white'),
-            backgroundColor: theme('colors.indigo.600'),
-            '&:hover': {
-              backgroundColor: theme('colors.indigo.700'),
-            },
-            '&:active': {
-              backgroundColor: theme('colors.indigo.800'),
-            },
-            '&1active': {
-              backgroundColor: theme('colors.indigo.800'),
-            },
-          },
-        },
-      }
-
-      addComponents(buttons)
-    }),
     plugin(({ addUtilities }) => {
       const newUtilities = {
         '.backface-hidden': {

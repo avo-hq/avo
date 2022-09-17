@@ -1,0 +1,65 @@
+<thead class="bg-white border-b border-gray-200 pb-1">
+  <% if @resource.record_selector %>
+    <th class="rounded-lg" data-control="item-select-th">
+      <%== item_select_all_input %>
+    </th>
+  <% end %>
+  <% if Avo.configuration.resource_controls_on_the_left? %>
+    <th class="w-24" data-control="resource-controls-th">
+      <!-- Item controls cell -->
+    </th>
+  <% end %>
+  <% fields.each_with_index do |field, index|  %>
+    <%
+      if params[:sort_by] == field.id.to_s
+        if params[:sort_direction] == 'asc'
+          sort_by = nil
+        else
+          sort_by = field.id
+        end
+
+        if sort_by.present?
+          case params[:sort_direction]
+            when nil
+              sort_direction = 'desc'
+            when 'desc'
+              sort_direction = 'asc'
+            when 'asc'
+              sort_direction = nil
+            end
+        else
+          sort_direction = nil
+        end
+      else
+        sort_by = field.id
+        sort_direction = 'desc'
+      end
+      classes = "text-gray-500 tracking-tight leading-tight text-xs font-semibold"
+      classes += case field.index_text_align.to_sym
+        when :right
+          " text-right"
+        when :center
+          " text-center"
+        else
+          ""
+        end
+    %>
+    <th class="text-left uppercase px-3 py-3 whitespace-nowrap rounded-l" data-control="resource-field-th">
+      <% if field.sortable %>
+        <%= link_to params.permit!.merge(sort_by: sort_by, sort_direction: sort_direction), class: "flex items-center #{classes} #{'cursor-pointer' if field.sortable}", 'data-turbo-frame': params[:turbo_frame] do %>
+          <%= field.name %>
+          <%= render partial: 'avo/partials/sortable_component', locals: {field: field} %>
+        <% end %>
+      <% else %>
+        <div class="block w-full <%= classes %>">
+          <%= field.name %>
+        </div>
+      <% end %>
+    </th>
+  <% end %>
+  <% if Avo.configuration.resource_controls_on_the_right? %>
+    <th class="w-24" data-control="resource-controls-th">
+      <!-- Item controls cell -->
+    </th>
+  <% end %>
+</thead>

@@ -1,0 +1,11 @@
+class <%= class_name.camelize %> < Avo::BaseAction
+  self.name = "<%= name.underscore.humanize %>"
+
+  def handle(**args)
+    models, fields, current_user, resource = args.values_at(:models, :fields, :current_user, :resource)
+
+    models.each do |model|
+      # Do something with your models.
+    end
+  end
+end

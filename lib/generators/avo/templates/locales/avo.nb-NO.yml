@@ -1,0 +1,93 @@
+nb-NO:
+  avo:
+    dashboard: 'Dashboard'
+    dashboards: 'Dashboards'
+    choose_a_country: 'Velg et land'
+    choose_an_option: 'Velg et alternativ'
+    are_you_sure_you_want_to_run_this_option: 'Er du sikker?'
+    are_you_sure_detach_item: 'Er du sikker på at du vil koble fra %{item}.'
+    run: 'Kjør'
+    cancel: 'Avslutt'
+    action_ran_successfully: 'Suksess!'
+    details: "detaljer"
+    unauthorized: 'Ikke autorisert'
+    attachment_class_attached: '%{attachment_class} lagt til.'
+    attachment_class_detached: '%{attachment_class} fjernet.'
+    resource_updated: 'Ressurs oppdatert'
+    resource_created: 'Ressurs generert'
+    resource_destroyed: 'Ressurs slettet'
+    switch_to_view: "Bytt til %{view_type} vis"
+    click_to_reveal_filters: "Vis filter"
+    attachment_destroyed: 'Vedlett slettet'
+    failed_to_find_attachment: 'Fant ikke vedlegg'
+    you_missed_something_check_form: 'Her mangler du noe. Vennligst sjekk skjemaet.'
+    remove_selection: 'Fjern valg'
+    select_item: 'Velg'
+    select_all: 'Velg alle'
+    select_all_matching: 'Velg alle samsvarende'
+    undo: angre
+    delete_file: 'Slett fil'
+    delete: 'slett'
+    delete_item: 'Slett %{item}'
+    download_item: 'Last ned %{item}'
+    download_file: 'Last ned fil'
+    download: 'Last ned'
+    view: 'Vis'
+    view_item: 'vis %{item}'
+    edit: 'endre'
+    edit_item: 'endre %{item}'
+    detach_item: 'koble fra %{item}'
+    number_of_items:
+      zero: 'ingen %{item}'
+      one: 'en %{item}'
+      other: '%{count} %{item}'
+    are_you_sure: 'Er du sikker?'
+    filters: 'Filter'
+    per_page: 'Per side'
+    more: 'Mer'
+    attach: 'Legg til'
+    save: 'Lagre'
+    attach_and_attach_another: 'Legg til & Legg til ny'
+    hide_content: 'Skjul innhold'
+    show_content: 'Vis innhold'
+    no_related_item_found: 'Ingen relaterte %{item} funnet'
+    no_item_found: 'Ingen %{item} funnet'
+    loading: 'Laster'
+    confirm: 'Bekreft'
+    actions: 'Handlinger'
+    resources: 'Ressurser'
+    oops_nothing_found: 'Oops! Ingen ting funnet...'
+    type_to_search: 'Søk.'
+    and_x_other_resources: 'og %{count} andre ressurser'
+    go_back: 'Gå tilbake'
+    home: 'Hjem'
+    attach_item: 'Legg til %{item}'
+    choose_item: 'Velge %{item}'
+    create_new_item: 'Lag ny %{item}'
+    table_view: 'Tabell visning'
+    grid_view: 'Grid visning'
+    next_page: 'Neste side'
+    prev_page: 'Forrige side'
+    list_is_empty: 'Listen er tom'
+    field_translations:
+      file:
+        zero: 'filer'
+        one: 'fil'
+        other: 'filer'
+    resource_translations:
+      user:
+        zero: 'brukere'
+        one: 'bruker'
+        other: 'brukere'
+    reset_filters: 'Nullstill filter'
+    not_authorized: 'Du er ikke autorisert til å gjøre denne handlingen.'
+    search_placeholder: 'Søk'
+    search_cancel_button: 'Avbryt'
+    sign_out: 'Logg ut'
+    tools: Redskapene
+    empty_dashboard_message: Legg til kort i dette dashbordet
+    no_cards_present: Ingen kort til stede
+    no_options_available: Ingen tilgjengelige alternativer
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> poster valgt på denne siden fra totalt <span class="font-bold text-gray-700">%{count}</span>
+    x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> poster valgt fra alle sider
+

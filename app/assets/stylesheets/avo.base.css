@@ -1,0 +1,90 @@
+@import './../../../node_modules/simplemde/dist/simplemde.min.css';
+@import './../../../node_modules/tippy.js/dist/tippy.css';
+@import './../../../node_modules/tippy.js/themes/light.css';
+@import './../../../node_modules/flatpickr/dist/flatpickr.css';
+@import './../../../node_modules/@algolia/autocomplete-theme-classic/dist/theme.css';
+@import './../../../node_modules/@yaireo/tagify/dist/tagify.css';
+
+@import 'tailwindcss/base';
+
+@import './css/fonts.css';
+@import './css/buttons.css';
+@import './css/typography.css';
+@import './css/tooltips.css';
+@import './css/loader.css';
+@import './css/pagination.css';
+@import './css/breadcrumbs.css';
+@import './css/search.css';
+@import './css/active-storage.css';
+@import './css/scrollbar.css';
+@import './css/sidebar.css';
+@import './css/spinner.css';
+@import './css/tags.css';
+
+@import './css/fields/status.css';
+@import './css/fields/code.css';
+@import './css/fields/progress.css';
+@import './css/fields/trix.css';
+
+@import 'tailwindcss/components';
+
+@import 'tailwindcss/utilities';
+
+html,
+body {
+  @apply antialiased relative h-full;
+}
+
+.will-change-transform {
+  will-change: transform;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  will-change: opacity;
+  will-change: transform;
+
+  @apply transition transform duration-150;
+}
+
+.fade-enter-active {
+  @apply relative ease-out delay-150;
+}
+
+.fade-leave-active {
+  @apply relative ease-in;
+}
+
+.fade-enter {
+  @apply delay-150 opacity-0 -translate-y-1;
+}
+
+.fade-enter-to {
+  @apply  delay-150 opacity-100 translate-y-0;
+}
+
+.fade-leave {
+  @apply opacity-100 translate-y-0;
+}
+
+.fade-leave-to {
+  @apply opacity-0 translate-y-1;
+}
+
+
+.turbo-progress-bar {
+  @apply bg-primary-400;
+}
+
+body.os-mac .mac\:hidden {
+  display: none;
+}
+
+body.os-pc .pc\:hidden {
+  display: none;
+}
+
+trix-editor {
+  max-height: 320px !important;
+  overflow-y: auto;
+}

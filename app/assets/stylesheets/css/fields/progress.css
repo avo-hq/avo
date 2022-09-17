@@ -1,0 +1,13 @@
+progress {
+  @apply h-2 bg-white border border-slate-400 rounded shadow-inner;
+}
+progress[value]::-webkit-progress-bar {
+  @apply bg-white border border-gray-500 rounded shadow-inner;
+}
+progress[value]::-webkit-progress-value{
+  @apply bg-primary-500 rounded;
+
+}
+progress[value]::-moz-progress-bar {
+  @apply bg-primary-500 rounded appearance-none;
+}

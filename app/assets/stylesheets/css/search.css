@@ -1,0 +1,90 @@
+:root {
+  --aa-primary-color: --tw-ring-color;
+  --aa-selected-color: --tw-ring-color;
+  --aa-primary-color-rgb: 117, 125, 138;
+}
+
+.global-search {
+  .aa-DetachedSearchButton:focus,
+  .aa-DetachedSearchButton {
+    border: none !important;
+    @apply text-gray-500 cursor-pointer;
+
+    .aa-DetachedSearchButtonPlaceholder {
+      @apply hidden sm:block;
+    }
+  }
+}
+
+.resource-search {
+  .aa-Autocomplete {
+    @apply w-full;
+  }
+
+  .aa-DetachedSearchButton {
+    @apply rounded border-gray-300 h-[34px];
+  }
+}
+
+.aa-SourceHeader {
+  @apply text-xs font-semibold;
+}
+
+.aa-DetachedFormContainer,
+.aa-DetachedContainer .aa-Panel {
+  @apply bg-gray-50 border-b-0;
+}
+
+.aa-Form {
+  &:focus-within {
+    @apply ring-0 !important;
+  }
+
+  input {
+    @apply focus:ring-0 !important;
+  }
+  &:focus-within {
+    .aa-InputWrapperPrefix{
+      .aa-SubmitButton {
+        @apply ring-0;
+      }
+    }
+  }
+}
+
+button.aa-DetachedCancelButton {
+  border: 1px solid #757D8A !important;
+  @apply bg-white;
+}
+
+.aa-Input {
+  @apply focus:ring-green-600;
+}
+
+.aa-DetachedContainer {
+  .aa-PanelLayout {
+    @apply pt-0 space-y-3;
+  }
+
+  .aa-Source {
+    .aa-List {
+      @apply space-y-2;
+
+      .aa-Item {
+        @apply bg-white rounded px-3 py-4 shadow font-medium;
+
+        .aa-ItemDescription {
+          @apply text-gray-500 text-sm font-normal mt-1;
+        }
+
+        &[aria-selected=true]{
+          @apply bg-primary-500 text-white;
+
+          .aa-ItemDescription {
+            @apply text-white;
+          }
+        }
+      }
+    }
+  }
+}

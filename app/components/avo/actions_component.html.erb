@@ -1,0 +1,36 @@
+<div class="relative flex flex-col w-full sm:w-auto z-40 js-actions-dropdown"
+  data-controller="toggle-panel actions-picker"
+  data-actions-picker-enabled-class="text-black hover:bg-primary-500 hover:text-white"
+  data-actions-picker-disabled-class="cursor-wait text-gray-500"
+>
+  <%= a_button style: @style,
+    type: :button,
+    color: @color,
+    class: "focus:outline-none",
+    icon: 'arrow-circle-right',
+    icon_class: 'transform rotate-90',
+    'data-action': "click->toggle-panel#togglePanel",
+    'data-actions-dropdown-button': @resource.model_key do %>
+    <%= t 'avo.actions' %>
+  <% end %>
+  <div
+    class="absolute flex inset-auto xl:right-0 top-full bg-white w-full sm:w-auto sm:min-w-[300px] mt-2 z-20 shadow-modal rounded overflow-hidden hidden"
+    data-toggle-panel-target="panel"
+  >
+    <div class="w-full space divide-y">
+      <% actions.each_with_index do |action, index| %>
+        <%= link_to action_path(action.param_id),
+          data: {
+            'turbo-frame': 'actions_show',
+            'action': 'click->actions-picker#visitAction',
+            'actions-picker-target': action.standalone ? 'standaloneAction' : 'resourceAction',
+            'disabled': is_disabled?(action),
+          },
+          title: action.action_name,
+          class: "flex items-center px-4 py-3 w-full font-semibold text-sm hover:bg-primary-100 #{is_disabled?(action) ? 'text-gray-500' : 'text-black'}" do %>
+          <%= svg 'play', class: 'h-5 mr-1 inline' %> <%= action.action_name %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

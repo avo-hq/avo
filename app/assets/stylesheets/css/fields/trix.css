@@ -1,0 +1,27 @@
+@import './../../../../../node_modules/trix/dist/trix.css';
+
+.trix-content h1 {
+  @apply text-xl font-bold mb-2;
+}
+
+.trix-content ul {
+  @apply list-disc;
+}
+
+.trix-content pre {
+  @apply text-base;
+}
+
+.trix-content ol {
+  @apply list-decimal;
+}
+
+trix-toolbar {
+  .trix-button-row {
+    @apply flex-wrap gap-x-5;
+  }
+
+  .trix-button-group:not(:first-child) {
+    @apply ml-0;
+  }
+}

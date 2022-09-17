@@ -1,0 +1,17 @@
+@import 'codemirror/lib/codemirror.css';
+
+/* themes */
+@import 'codemirror/theme/dracula.css';
+@import 'codemirror/theme/eclipse.css';
+@import 'codemirror/theme/material-darker.css';
+
+.CodeMirror {
+  height: var(--height) !important;
+  min-height: auto;
+  padding: 0;
+}
+
+/* overlay CodeMirror fullscreen & Preview on small screens */
+.CodeMirror-fullscreen, .editor-preview-active-side {
+  z-index: 50;
+}
