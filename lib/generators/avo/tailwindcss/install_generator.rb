@@ -30,11 +30,14 @@ module Generators
             run "gem install foreman"
           end
 
-          say "Ejecting the _head.html.erb partial"
-          Rails::Generators.invoke("avo:eject", [":head", "--no-avo-version"], {destination_root: Rails.root})
+          # Ensure that the _pre_head.html.erb template is available
+          unless Rails.root.join("app", "views", "avo", "partials", "_pre_head.html.erb").exist?
+            say "Ejecting the _pre_head.html.erb partial"
+            Rails::Generators.invoke("avo:eject", [":pre_head", "--skip-avo-version"], {destination_root: Rails.root})
+          end
 
           say "Adding the CSS asset to the partial"
-          prepend_to_file Rails.root.join("app", "views", "avo", "partials", "_head.html.erb"), "<%= stylesheet_link_tag \"avo.tailwind.css\", media: \"all\" %>"
+          prepend_to_file Rails.root.join("app", "views", "avo", "partials", "_pre_head.html.erb"), "<%= stylesheet_link_tag \"avo.tailwind.css\", media: \"all\" %>"
         end
 
         no_tasks do

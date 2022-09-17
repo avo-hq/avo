@@ -9,7 +9,7 @@ module Generators
         super(*args)
 
         # Don't output the version if requested so
-        unless args.include?(["--no-avo-version"])
+        unless args.include?(["--skip-avo-version"])
           invoke "avo:version", *args
         end
       end
