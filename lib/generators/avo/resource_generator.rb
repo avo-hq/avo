@@ -1,4 +1,6 @@
-require_relative "named_base_generator"
+# frozen_string_literal: true
+
+require_relative 'named_base_generator'
 
 module Generators
   module Avo
@@ -8,19 +10,16 @@ module Generators
       namespace "avo:resource"
 
       argument :additional_fields, type: :hash, required: false
-      class_option :'generate-fields', type: :boolean, required: false, default: false,
+      class_option :'generate-fields', type: :boolean, required: false,
+        default: false,
         desc: 'Looks for fields in the model and generates them.'
-      class_option :'model-class', type: :string, required: false, desc: 'The name of the model.'
-
-
-      def create_resource_file
-        @model_class = options[:'model-class'] ? options[:'model-class'] : singular_name
-        template 'resource.rb', "app/avo/resources/#{singular_name}.rb"
-      end
+      class_option :'model-class', type: :string, required: false,
+        desc: 'The name of the model.'
 
       def create
         template "resource/resource.tt", "app/avo/resources/#{resource_name}.rb"
-        template "resource/controller.tt", "app/controllers/avo/#{controller_name}.rb"
+        # TODO: uncomment this
+        # template "resource/controller.tt", "app/controllers/avo/#{controller_name}.rb"
       end
 
       def resource_class
@@ -44,118 +43,115 @@ module Generators
           model.capitalize.singularize.camelize
         end
       end
-    end
 
-    private
-      def generate_initializer
-        initializerString = ''
+      def model_class_from_args
+        class_from_args = options[:'model-class']
 
-        initializerString = "\n        @model = " + @model_class if options[:'model-class']
+        "\n  self.model_class = ::#{class_from_args}" if class_from_args.present?
+      end
 
-        initializerString
+      private
+
+      def model_class
+        @model_class ||= options[:'model-class'] || singular_name
+      end
+
+      def model
+        @model ||= model_class.classify.safe_constantize
       end
 
       def generate_fields
+        return unless options[:'generate-fields'] || additional_fields.present?
+
         fields = {}
-        fields = fields.merge(generate_params_from_model) if options[:'generate-fields']
-        fields = fields.merge(generate_select_from_model) if options[:'generate-fields']
-        fields = fields.merge(generate_attachements_from_model) if options[:'generate-fields']
-        fields = fields.merge(generate_additional_params_from_argument) if !additional_fields.nil?
 
-        fieldsString = ''
-        if fields.present?
-          fields.each do |field_name, field_options|
-            options = ''
-            if field_options[:options].present?
-              field_options[:options].each { |k, v| options += ', ' + k.to_s + ': ' + v }
-            end
-
-            fieldsString += "\n        " + field_options[:field] + ' :' + field_name + options
+        if options[:'generate-fields']
+          if model.present?
+            fields =
+              fields
+                .merge generate_params_from_model
+                .merge generate_select_from_model
+                .merge generate_attachements_from_model
+          else
+            puts "Can't generate fields from model. '#{model_class}.rb' not found!"
           end
         end
 
-        fieldsString
+        fields = fields.merge generate_additional_params_from_argument if additional_fields.present?
+
+        generated_fields_template fields if fields.present?
+
+      # rescue StandardError => e
+      #   puts 'Other error occured.' # TODO: better error message
+      end
+
+      def generated_fields_template(fields)
+        fields_string = "\n  # Generated fields from model"
+
+        fields.each do |field_name, field_options|
+          options = ''
+          field_options[:options].each { |k, v| options += ", #{k}: #{v}" } if field_options[:options].present?
+
+          fields_string += "\n  #{field_string field_name, field_options[:field], options}"
+        end
+
+        fields_string
+      end
+
+      def field_string(name, type, options)
+        "field :#{name}, as: :#{type}#{options}"
       end
 
       def generate_attachements_from_model
-        begin
-          model = @model_class.classify.safe_constantize
-          puts '---------------------------model.reflections'
-          puts model.reflections
-          # model.defined_enums.each { |k, v| enums.push(k) }
-        rescue NameError => e
-          puts 'Name error occurs. There is no ' + @model_class.classify + ' model.'
-        rescue => e
-          puts 'Other error occured.'
-        end
+        # model.defined_enums.each { |k, v| enums.push(k) }
 
         {}
       end
 
       def generate_select_from_model
         enums = []
-        begin
-          model = @model_class.classify.safe_constantize
-          model.defined_enums.each { |k, v| enums.push(k) }
-        rescue NameError => e
-          puts 'Name error occurs. There is no ' + @model_class.classify + ' model.'
-        rescue => e
-          puts 'Other error occured.'
-        end
+        model.defined_enums.each { |k, _v| enums.push(k) }
+        return {} if enums.empty?
 
         results = {}
-        if enums.present?
-          enums.each { |enum| results[enum] = {
+        enums.each do |enum|
+          results[enum] = {
             field: 'select',
             options: {
-              enum: '::' + @model_class.capitalize + '.' + enum.pluralize
-            },
-          } }
+              enum: "::#{model_class.capitalize}.#{enum.pluralize}"
+            }
+          }
         end
-
-        puts results
 
         results
       end
 
       def generate_params_from_model
-        columns_with_type = {}
-        begin
-          model = @model_class.classify.safe_constantize
-          model.columns_hash.each { |k, v| columns_with_type[k] = v.type }
-        rescue NameError => e
-          puts 'Name error occurs. There is no ' + @model_class.classify + ' model.'
-        rescue => e
-          puts 'Other error occured.'
+        model_columns_name_type = {}
+
+        model_columns_name_data.each do |name, data|
+          model_columns_name_type[name] = field(name, data.type)
         end
 
-        result = {}
-        if columns_with_type.present?
-          columns_with_type.each do |field_name, field_type|
-            result[field_name] = field(field_name, field_type)
-          end
-        end
+        model_columns_name_type
+      end
 
-        # ignore some fields from model
-        result = result.except('id') if result.key?('id')
-        result = result.except('encrypted_password') if result.key?('encrypted_password')
-        result = result.except('reset_password_token') if result.key?('reset_password_token')
-        result = result.except('reset_password_sent_at') if result.key?('reset_password_sent_at')
-        result = result.except('remember_created_at') if result.key?('remember_created_at')
-        result = result.except('created_at') if result.key?('created_at')
-        result = result.except('updated_at') if result.key?('updated_at')
+      def model_columns_name_data
+        model.columns_hash.reject { |name, _| model_fields_to_ignore.include? name }
+      end
 
-        result
+      def model_fields_to_ignore
+        %w[id encrypted_password reset_password_token reset_password_sent_at remember_created_at created_at updated_at]
       end
 
       def generate_additional_params_from_argument
         result = {}
 
-        additional_fields.each do |field_name, field_type|
-          if avo_fields.include? field_type
-            result[field_name] = { field: field_type, }
+        additional_fields.each do |name, type|
+          result[name] = if avo_fields.include? type
+            { field: type }
           else
-            result[field_name] = field(field_name, field_type)
+            field(name, type)
           end
         end
 
@@ -165,7 +161,8 @@ module Generators
       def avo_fields
         avo_fields = []
 
-        avo_fields_files = Dir[Avo::Engine.root.join('lib', 'avo', 'app', 'fields').to_s + '/*.rb']
+        #TODO: check things here
+        avo_fields_files = Dir["#{File.join(ENGINE_PATH, 'lib', 'avo', 'app', 'fields')}/*.rb"]
 
         avo_fields_files.each do |file|
           filename = file.match('[^/]*$').to_s
@@ -181,8 +178,47 @@ module Generators
         avo_fields
       end
 
-      def field(field_name, field_type)
-        field_mappings = {
+      def field(name, type)
+        name_mappings[name.to_sym] || field_mappings[type.to_sym] || { field: 'text' }
+      end
+
+      def name_mappings
+        @name_mappings ||= {
+          id: {
+            field: 'id',
+          },
+          description: {
+            field: 'textarea',
+          },
+          gravatar: {
+            field: 'gravatar',
+          },
+          email: {
+            field: 'text',
+          },
+          password: {
+            field: 'password',
+          },
+          password_confirmation: {
+            field: 'password',
+          },
+          stage: {
+            field: 'select',
+          },
+          budget: {
+            field: 'currency',
+          },
+          money: {
+            field: 'currency',
+          },
+          country: {
+            field: 'country',
+          },
+        }
+      end
+
+      def field_mappings
+        @field_mappings ||= {
           primary_key: {
             field: 'id',
           },
@@ -226,43 +262,7 @@ module Generators
             field: 'code',
           },
         }
-
-        name_mappings = {
-          id: {
-            field: 'id',
-          },
-          description: {
-            field: 'textarea',
-          },
-          gravatar: {
-            field: 'gravatar',
-          },
-          email: {
-            field: 'text',
-          },
-          password: {
-            field: 'password',
-          },
-          password_confirmation: {
-            field: 'password',
-          },
-          stage: {
-            field: 'select',
-          },
-          budget: {
-            field: 'currency',
-          },
-          money: {
-            field: 'currency',
-          },
-          country: {
-            field: 'country',
-          },
-        }
-
-        return name_mappings[field_name.to_sym] if name_mappings.key?(field_name.to_sym)
-        return field_mappings[field_type.to_sym] if field_mappings.key?(field_type.to_sym)
-        { field: 'text', }
       end
+    end
   end
 end
