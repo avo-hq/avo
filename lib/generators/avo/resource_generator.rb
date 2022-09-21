@@ -5,21 +5,18 @@ require_relative 'named_base_generator'
 module Generators
   module Avo
     class ResourceGenerator < NamedBaseGenerator
-      source_root File.expand_path("templates", __dir__)
+      source_root File.expand_path('templates', __dir__)
 
-      namespace "avo:resource"
+      namespace 'avo:resource'
 
       argument :additional_fields, type: :hash, required: false
-      class_option :'generate-fields', type: :boolean, required: false,
-        default: false,
+      class_option :'generate-fields', type: :boolean, required: false, default: false,
         desc: 'Looks for fields in the model and generates them.'
-      class_option :'model-class', type: :string, required: false,
-        desc: 'The name of the model.'
+      class_option :'model-class', type: :string, required: false, desc: 'The name of the model.'
 
       def create
-        template "resource/resource.tt", "app/avo/resources/#{resource_name}.rb"
-        # TODO: uncomment this
-        # template "resource/controller.tt", "app/controllers/avo/#{controller_name}.rb"
+        template 'resource/resource.tt', "app/avo/resources/#{resource_name}.rb"
+        template 'resource/controller.tt', "app/controllers/avo/#{controller_name}.rb"
       end
 
       def resource_class
@@ -60,6 +57,10 @@ module Generators
         @model ||= model_class.classify.safe_constantize
       end
 
+      def reflections
+        @reflections ||= model.reflections.reject { |name, _| model_reflections_to_ignore.include? name.split('_').pop }
+      end
+
       def generate_fields
         return unless options[:'generate-fields'] || additional_fields.present?
 
@@ -69,9 +70,9 @@ module Generators
           if model.present?
             fields =
               fields
-                .merge generate_params_from_model
-                .merge generate_select_from_model
-                .merge generate_attachements_from_model
+              .merge generate_params_from_model
+              .merge generate_select_from_model
+              .merge generate_attachements_from_model
           else
             puts "Can't generate fields from model. '#{model_class}.rb' not found!"
           end
@@ -81,8 +82,8 @@ module Generators
 
         generated_fields_template fields if fields.present?
 
-      # rescue StandardError => e
-      #   puts 'Other error occured.' # TODO: better error message
+        # rescue StandardError => e
+        #   puts 'Other error occured.' # TODO: better error message
       end
 
       def generated_fields_template(fields)
@@ -103,17 +104,49 @@ module Generators
       end
 
       def generate_attachements_from_model
-        # model.defined_enums.each { |k, v| enums.push(k) }
+        results = {}
 
-        {}
+        reflections.each do |name, reflection|
+          next if name == 'taggings'
+
+          if reflection.options[:as] == :taggable
+            results[(remove_last_word_from_name name).pluralize] = { field: 'tags' }
+
+            next
+          end
+
+          if reflection.options[:class_name] == 'ActiveStorage::Attachment'
+            results[remove_last_word_from_name name] = attachments_mapping[reflection.class]
+
+            next
+          end
+
+          results[name] = associations_mapping[reflection.class]
+
+          if reflection.is_a? ActiveRecord::Reflection::ThroughReflection
+            results[name][:options][:through] = ":#{reflection.options[:through]}"
+          end
+        end
+
+        results
+      end
+
+      def model_reflections_to_ignore
+        %w[blob blobs tags]
+      end
+
+      # "hello_world_hehe".split('_') => ['hello', 'world', 'hehe']
+      # ['hello', 'world', 'hehe'].pop => ['hello', 'world']
+      # ['hello', 'world'].join('_') => "hello_world"
+      def remove_last_word_from_name(name)
+        name = name.split('_')
+        name.pop
+        name.join('_')
       end
 
       def generate_select_from_model
-        enums = []
-        model.defined_enums.each { |k, _v| enums.push(k) }
-        return {} if enums.empty?
-
         results = {}
+
         enums.each do |enum|
           results[enum] = {
             field: 'select',
@@ -126,17 +159,23 @@ module Generators
         results
       end
 
-      def generate_params_from_model
-        model_columns_name_type = {}
+      def enums
+        return [] if model.defined_enums.empty?
 
-        model_columns_name_data.each do |name, data|
-          model_columns_name_type[name] = field(name, data.type)
-        end
-
-        model_columns_name_type
+        enums = model.defined_enums.keys
       end
 
-      def model_columns_name_data
+      def generate_params_from_model
+        columns_type_by_name = {}
+
+        model_columns.each do |name, data|
+          columns_type_by_name[name] = field(name, data.type)
+        end
+
+        columns_type_by_name
+      end
+
+      def model_columns
         model.columns_hash.reject { |name, _| model_fields_to_ignore.include? name }
       end
 
@@ -161,7 +200,7 @@ module Generators
       def avo_fields
         avo_fields = []
 
-        #TODO: check things here
+        # TODO: check things here
         avo_fields_files = Dir["#{File.join(ENGINE_PATH, 'lib', 'avo', 'app', 'fields')}/*.rb"]
 
         avo_fields_files.each do |file|
@@ -179,88 +218,122 @@ module Generators
       end
 
       def field(name, type)
-        name_mappings[name.to_sym] || field_mappings[type.to_sym] || { field: 'text' }
+        names_mapping[name.to_sym] || fields_mapping[type.to_sym] || { field: 'text' }
       end
 
-      def name_mappings
-        @name_mappings ||= {
-          id: {
-            field: 'id',
+      def associations_mapping
+        {
+          ActiveRecord::Reflection::BelongsToReflection => {
+            field: 'belongs_to'
           },
-          description: {
-            field: 'textarea',
+          ActiveRecord::Reflection::HasOneReflection => {
+            field: 'has_one'
           },
-          gravatar: {
-            field: 'gravatar',
+          ActiveRecord::Reflection::HasManyReflection => {
+            field: 'has_many'
           },
-          email: {
-            field: 'text',
+          ActiveRecord::Reflection::ThroughReflection => {
+            field: 'has_many',
+            options: {
+              through: ':...'
+            }
           },
-          password: {
-            field: 'password',
-          },
-          password_confirmation: {
-            field: 'password',
-          },
-          stage: {
-            field: 'select',
-          },
-          budget: {
-            field: 'currency',
-          },
-          money: {
-            field: 'currency',
-          },
-          country: {
-            field: 'country',
-          },
+          ActiveRecord::Reflection::HasAndBelongsToManyReflection => {
+            field: 'has_and_belongs_to_many'
+          }
         }
       end
 
-      def field_mappings
-        @field_mappings ||= {
+      def attachments_mapping
+        {
+          ActiveRecord::Reflection::HasOneReflection => {
+            field: 'file'
+          },
+          ActiveRecord::Reflection::HasManyReflection => {
+            field: 'files'
+          }
+        }
+      end
+
+      def names_mapping
+        {
+          id: {
+            field: 'id'
+          },
+          description: {
+            field: 'textarea'
+          },
+          gravatar: {
+            field: 'gravatar'
+          },
+          email: {
+            field: 'text'
+          },
+          password: {
+            field: 'password'
+          },
+          password_confirmation: {
+            field: 'password'
+          },
+          stage: {
+            field: 'select'
+          },
+          budget: {
+            field: 'currency'
+          },
+          money: {
+            field: 'currency'
+          },
+          country: {
+            field: 'country'
+          }
+        }
+      end
+
+      def fields_mapping
+        {
           primary_key: {
-            field: 'id',
+            field: 'id'
           },
           string: {
-            field: 'text',
+            field: 'text'
           },
           text: {
-            field: 'textarea',
+            field: 'textarea'
           },
           integer: {
-            field: 'number',
+            field: 'number'
           },
           float: {
-            field: 'number',
+            field: 'number'
           },
           decimal: {
-            field: 'number',
+            field: 'number'
           },
           datetime: {
-            field: 'datetime',
+            field: 'datetime'
           },
           timestamp: {
-            field: 'datetime',
+            field: 'datetime'
           },
           time: {
-            field: 'datetime',
+            field: 'datetime'
           },
           date: {
-            field: 'date',
+            field: 'date'
           },
           binary: {
-            field: 'number',
+            field: 'number'
           },
           boolean: {
-            field: 'boolean',
+            field: 'boolean'
           },
           references: {
-            field: 'belongs_to',
+            field: 'belongs_to'
           },
           json: {
-            field: 'code',
-          },
+            field: 'code'
+          }
         }
       end
     end
