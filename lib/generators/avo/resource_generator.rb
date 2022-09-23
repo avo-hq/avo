@@ -9,10 +9,18 @@ module Generators
 
       namespace 'avo:resource'
 
-      argument :additional_fields, type: :hash, required: false
-      class_option :'generate-fields', type: :boolean, required: false, default: false,
-        desc: 'Looks for fields in the model and generates them.'
-      class_option :'model-class', type: :string, required: false, desc: 'The name of the model.'
+      argument :additional_fields,
+               type: :hash,
+               required: false
+      class_option :'generate-fields',
+                   type: :boolean,
+                   required: false,
+                   default: false,
+                   desc: 'Looks for fields in the model and generates them.'
+      class_option :'model-class',
+                   type: :string,
+                   required: false,
+                   desc: 'The name of the model.'
 
       def create
         template 'resource/resource.tt', "app/avo/resources/#{resource_name}.rb"
@@ -57,36 +65,65 @@ module Generators
         @model ||= model_class.classify.safe_constantize
       end
 
+      def model_db_columns
+        @model_db_columns ||= model.columns_hash.reject { |name, _| db_columns_to_ignore.include? name }
+      end
+
+      def db_columns_to_ignore
+        %w[id encrypted_password reset_password_token reset_password_sent_at remember_created_at created_at updated_at]
+      end
+
       def reflections
-        @reflections ||= model.reflections.reject { |name, _| model_reflections_to_ignore.include? name.split('_').pop }
+        @reflections ||= model.reflections.reject do |name, _|
+          reflections_to_ignore.include? name.split('_').pop
+        end
+      end
+
+      def reflections_to_ignore
+        %w[blob blobs tags]
+      end
+
+      def attachments
+        @attachments ||= reflections.select do |_, reflection|
+          reflection.options[:class_name] == 'ActiveStorage::Attachment'
+        end
+      end
+
+      def tags
+        @tags ||= reflections.select do |_, reflection|
+          reflection.options[:as] == :taggable
+        end
+      end
+
+      def associations
+        @associations ||= reflections.reject { |key| attachments.keys.include?(key) || tags.keys.include?(key) }
+      end
+
+      def fields
+        @fields ||= {}
       end
 
       def generate_fields
         return unless options[:'generate-fields'] || additional_fields.present?
 
-        fields = {}
-
         if options[:'generate-fields']
           if model.present?
-            fields =
-              fields
-              .merge generate_params_from_model
-              .merge generate_select_from_model
-              .merge generate_attachements_from_model
+            generate_params_from_model
+            generate_select_from_model
+            generate_attachements_from_model
+            generate_associations_from_model
+            generate_tags_from_model
           else
             puts "Can't generate fields from model. '#{model_class}.rb' not found!"
           end
         end
 
-        fields = fields.merge generate_additional_params_from_argument if additional_fields.present?
+        fields.merge generate_additional_params_from_argument if additional_fields.present?
 
-        generated_fields_template fields if fields.present?
-
-        # rescue StandardError => e
-        #   puts 'Other error occured.' # TODO: better error message
+        generated_fields_template if fields.present?
       end
 
-      def generated_fields_template(fields)
+      def generated_fields_template
         fields_string = "\n  # Generated fields from model"
 
         fields.each do |field_name, field_options|
@@ -103,104 +140,73 @@ module Generators
         "field :#{name}, as: :#{type}#{options}"
       end
 
-      def generate_attachements_from_model
-        results = {}
-
-        reflections.each do |name, reflection|
-          next if name == 'taggings'
-
-          if reflection.options[:as] == :taggable
-            results[(remove_last_word_from_name name).pluralize] = { field: 'tags' }
-
-            next
-          end
-
-          if reflection.options[:class_name] == 'ActiveStorage::Attachment'
-            results[remove_last_word_from_name name] = attachments_mapping[reflection.class]
-
-            next
-          end
-
-          results[name] = associations_mapping[reflection.class]
-
-          if reflection.is_a? ActiveRecord::Reflection::ThroughReflection
-            results[name][:options][:through] = ":#{reflection.options[:through]}"
-          end
+      def generate_tags_from_model
+        tags.each do |name, _|
+          fields[(remove_last_word_from name).pluralize] = { field: 'tags' }
         end
-
-        results
       end
 
-      def model_reflections_to_ignore
-        %w[blob blobs tags]
+      def generate_associations_from_model
+        associations.each do |name, association|
+          fields[name] = associations_mapping[association.class]
+
+          if association.is_a? ActiveRecord::Reflection::ThroughReflection
+            fields[name][:options][:through] = ":#{association.options[:through]}"
+          end
+        end
+      end
+
+      def generate_attachements_from_model
+        attachments.each do |name, attachment|
+          fields[remove_last_word_from name] = attachments_mapping[attachment.class]
+        end
       end
 
       # "hello_world_hehe".split('_') => ['hello', 'world', 'hehe']
       # ['hello', 'world', 'hehe'].pop => ['hello', 'world']
       # ['hello', 'world'].join('_') => "hello_world"
-      def remove_last_word_from_name(name)
-        name = name.split('_')
-        name.pop
-        name.join('_')
+      def remove_last_word_from(snake_case_string)
+        snake_case_string = snake_case_string.split('_')
+        snake_case_string.pop
+        snake_case_string.join('_')
       end
 
       def generate_select_from_model
-        results = {}
-
-        enums.each do |enum|
-          results[enum] = {
+        model.defined_enums.each_key do |enum|
+          fields[enum] = {
             field: 'select',
             options: {
               enum: "::#{model_class.capitalize}.#{enum.pluralize}"
             }
           }
         end
-
-        results
-      end
-
-      def enums
-        return [] if model.defined_enums.empty?
-
-        enums = model.defined_enums.keys
       end
 
       def generate_params_from_model
-        columns_type_by_name = {}
-
-        model_columns.each do |name, data|
-          columns_type_by_name[name] = field(name, data.type)
+        model_db_columns.each do |name, data|
+          fields[name] = field(name, data.type)
         end
-
-        columns_type_by_name
       end
 
-      def model_columns
-        model.columns_hash.reject { |name, _| model_fields_to_ignore.include? name }
-      end
-
-      def model_fields_to_ignore
-        %w[id encrypted_password reset_password_token reset_password_sent_at remember_created_at created_at updated_at]
-      end
-
+      # TODO: check things here
       def generate_additional_params_from_argument
         result = {}
 
         additional_fields.each do |name, type|
           result[name] = if avo_fields.include? type
-            { field: type }
-          else
-            field(name, type)
-          end
+                           { field: type }
+                         else
+                           field(name, type)
+                         end
         end
 
         result
       end
 
+      # TODO: check things here
       def avo_fields
         avo_fields = []
 
-        # TODO: check things here
         avo_fields_files = Dir["#{File.join(ENGINE_PATH, 'lib', 'avo', 'app', 'fields')}/*.rb"]
 
         avo_fields_files.each do |file|
