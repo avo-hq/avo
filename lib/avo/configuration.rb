@@ -36,7 +36,7 @@ module Avo
     attr_accessor :profile_menu
     attr_accessor :model_resource_mapping
     attr_accessor :tabs_style
-    attr_accessor :skip_show_view
+    attr_accessor :resource_default_view
     attr_writer :branding
 
     def initialize
@@ -84,7 +84,7 @@ module Avo
       @profile_menu = nil
       @model_resource_mapping = {}
       @tabs_style = :tabs
-      @skip_show_view = false
+      @resource_default_view = :show
     end
 
     def current_user_method(&block)

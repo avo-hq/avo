@@ -415,22 +415,13 @@ module Avo
       if is_associated_record?
         parent_resource = ::Avo::App.get_resource_by_model_name params[:via_relation_class].safe_constantize
 
-        if Avo.configuration.skip_show_view
-          return edit_resource_path(
-            model: @model.send(params[:via_relation]),
-            resource: parent_resource,
-            **{ resource_id: params[:via_resource_id] }
-          )
-        else
-          return resource_path(
-            model: params[:via_relation_class].safe_constantize,
-            resource: parent_resource,
-            resource_id: params[:via_resource_id]
-          )
-        end
+        return resource_default_view_path(
+          model: @model.send(params[:via_relation]),
+          resource: parent_resource
+        )
       end
 
-      redirect_path_from_resource_option(:after_create_path) || resource_default_view_after_path
+      redirect_path_from_resource_option(:after_create_path) || resource_default_view_response_path
     end
 
     def update_success_action
@@ -457,11 +448,11 @@ module Avo
     def after_update_path
       return params[:referrer] if params[:referrer].present?
 
-      redirect_path_from_resource_option(:after_update_path) || resource_default_view_after_path
+      redirect_path_from_resource_option(:after_update_path) || resource_default_view_response_path
     end
 
     # Need different name, otwherwise, in some places, this can be called instead helpers.resource_default_view_path
-    def resource_default_view_after_path
+    def resource_default_view_response_path
       helpers.resource_default_view_path(model: @model, resource: @resource)
     end
 
@@ -494,7 +485,7 @@ module Avo
 
       if @resource.class.send(action) == :index
         resources_path(resource: @resource)
-      elsif @resource.class.send(action) == :edit || Avo.configuration.skip_show_view
+      elsif @resource.class.send(action) == :edit || Avo.configuration.resource_default_view == :edit
         edit_resource_path(resource: @resource, model: @resource.model)
       else
         resource_path(model: @model, resource: @resource)

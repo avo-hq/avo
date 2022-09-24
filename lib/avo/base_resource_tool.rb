@@ -13,7 +13,7 @@ module Avo
 
     def initialize(**args)
       # Set the visibility
-      show_on default_view
+      show_on Avo.configuration.resource_default_view
 
       show_on args[:show_on] if args[:show_on].present?
       hide_on args[:hide_on] if args[:hide_on].present?
@@ -31,10 +31,6 @@ module Avo
       return self.class.partial if self.class.partial.present?
 
       "avo/resource_tools/#{self.class.to_s.underscore}"
-    end
-
-    def default_view
-      Avo.configuration.skip_show_view ? :edit : :show
     end
   end
 end

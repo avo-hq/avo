@@ -2,7 +2,6 @@
 
 class Avo::Fields::IndexComponent < ViewComponent::Base
   include Avo::ResourcesHelper
-  include Avo::Concerns::ResourceEditPath
 
   attr_reader :view
 
@@ -15,14 +14,15 @@ class Avo::Fields::IndexComponent < ViewComponent::Base
   end
 
   def resource_default_view_path
-    Avo.configuration.skip_show_view ? edit_path : resource_path
-  end
+    args = {}
 
-  def resource_path
     if @parent_model.present?
-      helpers.resource_path(model: @resource.model, resource: @resource, via_resource_class: @parent_model.class, via_resource_id: @parent_model.id)
-    else
-      helpers.resource_path(model: @resource.model, resource: @resource)
+      args = {
+        via_resource_class: @parent_model.class,
+        via_resource_id: @parent_model.id
+      }
     end
+
+    helpers.resource_default_view_path(model: @resource.model, resource: @resource, **args)
   end
 end

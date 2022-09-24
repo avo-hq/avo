@@ -16,10 +16,10 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   end
 
   def back_path
-    return default_view if via_resource?
+    return resource_default_view_path if via_resource?
     return resources_path if via_index?
 
-    if is_edit? && !Avo.configuration.skip_show_view # via resource show or edit page
+    if is_edit? && Avo.configuration.resource_default_view == :show # via resource show or edit page
       return helpers.resource_path(model: @resource.model, resource: @resource)
     end
 
@@ -30,19 +30,12 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
     helpers.resources_path(resource: @resource)
   end
 
-  # TODO: refator this, rename to resource_default_view_path and use helper method
-  def default_view
-    model = params[:via_resource_class] || params[:via_relation_class]
-
-    if Avo.configuration.skip_show_view
-      helpers.edit_resource_path(model: relation_resource.model, resource: relation_resource)
-    else
-      helpers.resource_path(model: model.safe_constantize, resource: relation_resource, resource_id: params[:via_resource_id])
-    end
+  def resource_default_view_path
+    helpers.resource_default_view_path(model: relation_resource.model, resource: relation_resource)
   end
 
   def can_see_the_destroy_button?
-    return super if Avo.configuration.skip_show_view && is_edit?
+    return super if is_edit? && Avo.configuration.resource_default_view == :edit
 
     false
   end
