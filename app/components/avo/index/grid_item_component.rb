@@ -3,11 +3,12 @@
 class Avo::Index::GridItemComponent < ViewComponent::Base
   include Avo::ResourcesHelper
 
-  def initialize(resource: nil, reflection: nil, parent_model: nil)
+  def initialize(resource: nil, reflection: nil, parent_model: nil, parent_resource: nil)
     @resource = resource
     @reflection = reflection
     @grid_fields = resource.get_grid_fields
     @parent_model = parent_model
+    @parent_resource = parent_resource
   end
 
   private
