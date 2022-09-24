@@ -58,18 +58,18 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     helpers.edit_resource_path(model: @resource.model, resource: @resource, **args)
   end
 
-  def parent_resource
-    return nil if @parent_model.blank?
-
-    ::Avo::App.get_resource_by_model_name @parent_model.class
-  end
-
   def singular_resource_name
     if @reflection.present?
       field&.name&.singularize || reflection_resource.name
     else
       @resource.singular_name.present? ? @resource.singular_name : @resource.model_class.model_name.name.downcase
     end
+  end
+
+  def parent_resource
+    return nil if @parent_model.blank?
+
+    ::Avo::App.get_resource_by_model_name @parent_model.class
   end
 
   def is_has_many_association
