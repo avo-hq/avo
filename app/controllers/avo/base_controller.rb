@@ -413,7 +413,7 @@ module Avo
     def after_create_path
       # If this is an associated record return to the association show page
       if is_associated_record?
-        parent_resource = ::Avo::App.get_resource_by_model_name params[:via_relation_class].safe_constantize
+        parent_resource = ::Avo::App.get_resource_by_model_name params[:via_relation_class]
 
         return resource_default_view_path(
           model: @model.send(params[:via_relation]),
