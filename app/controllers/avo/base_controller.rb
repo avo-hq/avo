@@ -417,7 +417,8 @@ module Avo
 
         return resource_default_view_path(
           model: @model.send(params[:via_relation]),
-          resource: parent_resource
+          resource: parent_resource,
+          resource_id: params[:via_resource_id]
         )
       end
 
