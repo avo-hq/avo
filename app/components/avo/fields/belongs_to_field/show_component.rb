@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class Avo::Fields::BelongsToField::ShowComponent < Avo::Fields::ShowComponent
-  def resource_default_view_path
-    helpers.resource_default_view_path(
+  def resource_view_path
+    helpers.resource_view_path(
       model: @field.value,
       resource: @field.target_resource,
       via_resource_class: @resource.model_class,

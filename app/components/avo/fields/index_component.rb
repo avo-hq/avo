@@ -13,7 +13,7 @@ class Avo::Fields::IndexComponent < ViewComponent::Base
     @view = :index
   end
 
-  def resource_default_view_path
+  def resource_view_path
     args = {}
 
     if @parent_model.present?
@@ -23,6 +23,6 @@ class Avo::Fields::IndexComponent < ViewComponent::Base
       }
     end
 
-    helpers.resource_default_view_path(model: @resource.model, resource: @resource, **args)
+    helpers.resource_view_path(model: @resource.model, resource: @resource, **args)
   end
 end

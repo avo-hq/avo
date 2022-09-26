@@ -415,7 +415,7 @@ module Avo
       if is_associated_record?
         parent_resource = ::Avo::App.get_resource_by_model_name params[:via_relation_class]
 
-        return resource_default_view_path(
+        return resource_view_path(
           model: @model.send(params[:via_relation]),
           resource: parent_resource,
           resource_id: params[:via_resource_id]
@@ -452,9 +452,9 @@ module Avo
       redirect_path_from_resource_option(:after_update_path) || resource_default_view_response_path
     end
 
-    # Need different name, otwherwise, in some places, this can be called instead helpers.resource_default_view_path
-    def resource_default_view_response_path
-      helpers.resource_default_view_path(model: @model, resource: @resource)
+    # Need different name, otwherwise, in some places, this can be called instead helpers.resource_view_path
+    def resource_view_response_path
+      helpers.resource_view_path(model: @model, resource: @resource)
     end
 
     def destroy_success_action

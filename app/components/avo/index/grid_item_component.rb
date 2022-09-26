@@ -25,7 +25,7 @@ class Avo::Index::GridItemComponent < ViewComponent::Base
     @grid_fields.body_field
   end
 
-  def resource_default_view_path
-    helpers.resource_default_view_path(model: @resource.model, resource: @resource)
+  def resource_view_path
+    helpers.resource_view_path(model: @resource.model, resource: @resource)
   end
 end

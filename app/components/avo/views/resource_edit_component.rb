@@ -16,7 +16,7 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   end
 
   def back_path
-    return resource_default_view_path if via_resource?
+    return resource_view_path if via_resource?
     return resources_path if via_index?
 
     if is_edit? && Avo.configuration.resource_default_view == :show # via resource show or edit page
@@ -30,8 +30,8 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
     helpers.resources_path(resource: @resource)
   end
 
-  def resource_default_view_path
-    helpers.resource_default_view_path(model: relation_resource.model, resource: relation_resource)
+  def resource_view_path
+    helpers.resource_view_path(model: relation_resource.model, resource: relation_resource)
   end
 
   def can_see_the_destroy_button?
