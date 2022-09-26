@@ -110,8 +110,8 @@ Avo.configure do |config|
     end
 
     group do
-      link "Avo", path: "https://avohq.io"
-      link "Google", path: "https://google.com", target: :_blank
+      link "Avo", "https://avohq.io"
+      link_to "Google", "https://google.com", target: :_blank
     end
   }
   config.profile_menu = -> {

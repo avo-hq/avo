@@ -5,12 +5,14 @@ class Avo::Sidebar::LinkComponent < ViewComponent::Base
   attr_reader :target
   attr_reader :label
   attr_reader :path
+  attr_reader :data
 
-  def initialize(label: nil, path: nil, active: :inclusive, target: nil)
+  def initialize(label: nil, path: nil, active: :inclusive, target: nil, data: {})
     @label = label
     @path = path
     @active = active
     @target = target
+    @data = data
   end
 
   def is_external?
