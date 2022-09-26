@@ -30,7 +30,7 @@ module Avo
       end
 
       def resource
-        Avo::App.get_resource_by_model_name @model.class
+        @resource || Avo::App.get_resource_by_model_name(@model.class)
       end
 
       def turbo_frame
