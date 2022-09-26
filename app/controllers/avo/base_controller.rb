@@ -422,7 +422,7 @@ module Avo
         )
       end
 
-      redirect_path_from_resource_option(:after_create_path) || resource_default_view_response_path
+      redirect_path_from_resource_option(:after_create_path) || resource_view_response_path
     end
 
     def update_success_action
@@ -449,7 +449,7 @@ module Avo
     def after_update_path
       return params[:referrer] if params[:referrer].present?
 
-      redirect_path_from_resource_option(:after_update_path) || resource_default_view_response_path
+      redirect_path_from_resource_option(:after_update_path) || resource_view_response_path
     end
 
     # Need different name, otwherwise, in some places, this can be called instead helpers.resource_view_path
