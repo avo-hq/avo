@@ -22,6 +22,12 @@ class CommentResource < Avo::BaseResource
     picker_format: "Y-m-d H:i:S",
     format: "cccc, d LLLL yyyy, HH:mm ZZZZ" # Wednesday, 10 February 1988, 16:00 GMT
 
-  field :user, as: :belongs_to
-  field :commentable, as: :belongs_to, polymorphic_as: :commentable, types: [::Post, ::Project]
+  tabs do
+    tab "Associations" do
+      panel do
+        field :user, as: :belongs_to
+        field :commentable, as: :belongs_to, polymorphic_as: :commentable, types: [::Post, ::Project]
+      end
+    end
+  end
 end
