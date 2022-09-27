@@ -7,8 +7,8 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v1
-      - name: StandardRB Linter
-        uses: andrewmcodes/standardrb-action@v1.0.0
+      - name: standardrb
+        uses: amoeba/standardrb-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   #     - name: standardrb
