@@ -1,5 +1,5 @@
 class DeleteComment < Avo::BaseAction
-  self.name = 'Delete'
+  self.name = 'Delete '
 
 
   def handle(**args)
