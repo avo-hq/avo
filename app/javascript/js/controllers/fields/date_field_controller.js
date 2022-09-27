@@ -65,7 +65,7 @@ export default class extends Controller {
   connect() {
     // Cache the initial value so we can fill it back on disconnection.
     // We do that so the JS parser will continue to work when the user hits the back button to return on this page.
-    this.cachedInitialValue()
+    this.cacheInitialValue()
 
     if (this.isOnShow || this.isOnIndex) {
       this.initShow()
@@ -82,7 +82,7 @@ export default class extends Controller {
     }
   }
 
-  cachedInitialValue() {
+  cacheInitialValue() {
     this.cachedInitialValue = this.initialValue
   }
 
