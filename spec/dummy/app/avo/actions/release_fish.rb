@@ -7,9 +7,7 @@ class ReleaseFish < Avo::BaseAction
     resource.params[:id].present?
   }
 
-  def handle(**args)
-    models, fields, _, _ = args.values_at(:models, :fields, :current_user, :resource)
-
+  def handle(models:, fields:, **)
     models.each do |model|
       model.release
     end
@@ -20,6 +18,8 @@ class ReleaseFish < Avo::BaseAction
     rescue
     end
 
-    succeed "#{models.count} fish released with message '#{fields[:message]}' by #{user&.name}."
+    message = ActionView::Base.full_sanitizer.sanitize fields[:message]
+
+    succeed "#{models.count} fish released with message '#{message}' by #{user&.name}."
   end
 end
