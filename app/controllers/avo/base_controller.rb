@@ -84,7 +84,7 @@ module Avo
 
       # If we're accessing this resource via another resource add the parent to the breadcrumbs.
       if params[:via_resource_class].present? && params[:via_resource_id].present?
-        via_resource = Avo::App.get_resource_by_model_name params[:via_resource_class]
+        via_resource = Avo::App.get_resource_by_model_name(params[:via_resource_class]).dup
         via_model = via_resource.class.find_scope.find params[:via_resource_id]
         via_resource.hydrate model: via_model
 
@@ -107,7 +107,7 @@ module Avo
       @page_title = @resource.default_panel_name.to_s
 
       if is_associated_record?
-        via_resource = Avo::App.get_resource_by_model_name params[:via_relation_class]
+        via_resource = Avo::App.get_resource_by_model_name(params[:via_relation_class]).dup
         via_model = via_resource.class.find_scope.find params[:via_resource_id]
         via_resource.hydrate model: via_model
 
@@ -139,7 +139,7 @@ module Avo
         # For when working with has_one, has_one_through, has_many_through, has_and_belongs_to_many, polymorphic
         if @reflection.is_a? ActiveRecord::Reflection::ThroughReflection
           # find the record
-          via_resource = ::Avo::App.get_resource_by_model_name params[:via_relation_class]
+          via_resource = ::Avo::App.get_resource_by_model_name(params[:via_relation_class]).dup
           @related_record = via_resource.model_class.find params[:via_resource_id]
 
           @model.send(params[:via_relation]) << @related_record
@@ -370,7 +370,7 @@ module Avo
       last_crumb_args = {}
       # If we're accessing this resource via another resource add the parent to the breadcrumbs.
       if params[:via_resource_class].present? && params[:via_resource_id].present?
-        via_resource = Avo::App.get_resource_by_model_name params[:via_resource_class]
+        via_resource = Avo::App.get_resource_by_model_name(params[:via_resource_class]).dup
         via_model = via_resource.class.find_scope.find params[:via_resource_id]
         via_resource.hydrate model: via_model
 
@@ -413,7 +413,7 @@ module Avo
     def after_create_path
       # If this is an associated record return to the association show page
       if is_associated_record?
-        parent_resource = ::Avo::App.get_resource_by_model_name params[:via_relation_class]
+        parent_resource = ::Avo::App.get_resource_by_model_name(params[:via_relation_class]).dup
 
         return resource_view_path(
           model: @model.send(params[:via_relation]),
