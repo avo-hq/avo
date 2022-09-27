@@ -60,6 +60,7 @@ Avo.configure do |config|
   config.resource_default_view = :show
   config.search_debounce = 300
   config.main_menu = -> {
+
     section I18n.t("avo.dashboards"), icon: "dummy-adjustments.svg" do
       dashboard :dashy, visible: -> { true }
       dashboard "Sales", visible: -> { true }
@@ -99,6 +100,10 @@ Avo.configure do |config|
       group "Blog", collapsable: true do
         resource :posts
         resource :comments
+      end
+
+      section "Store", icon: "currency-dollar" do
+        resource :products
       end
 
       group "Other", collapsable: true, collapsed: true do
