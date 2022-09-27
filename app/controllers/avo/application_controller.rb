@@ -126,7 +126,19 @@ module Avo
     end
 
     def set_model
-      @model = eager_load_files(@resource, @resource.class.find_scope).find params[:id]
+      @model = model_find_scope.find record_id
+    end
+
+    def record_id
+      params.permit(:id).dig(:id)
+    end
+
+    def model_find_scope
+      eager_load_files(@resource, model_scope)
+    end
+
+    def model_scope
+      @resource.class.find_scope
     end
 
     def set_related_model

@@ -210,7 +210,7 @@ module Avo
         model
       end
 
-      def database_id(model)
+      def database_id
         # If the field is a polymorphic value, return the polymorphic_type as key and pre-fill the _id in fill_field.
         return "#{polymorphic_as}_type" if polymorphic_as.present?
 
