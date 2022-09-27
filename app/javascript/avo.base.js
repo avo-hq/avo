@@ -10,7 +10,6 @@ import tippy from 'tippy.js'
 
 import 'chartkick/chart.js/chart.esm'
 
-// Toastr alerts
 import './js/active-storage'
 import './js/controllers'
 

@@ -13,7 +13,7 @@
     data-association-class="<%= @field&.target_resource&.model_class || nil %>"
   >
     <%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal, help: @field.polymorphic_help || ''  do %>
-      <%= @form.select @field.type_input_foreign_key, @field.types.map { |type| [type.to_s.underscore.humanize, type.to_s] },
+      <%= @form.select @field.type_input_foreign_key, @field.types.map { |type| [::Avo::App.get_resource_by_model_name(type.to_s).name, type.to_s] },
       {
         value: @field.value,
         include_blank: @field.placeholder,
@@ -40,7 +40,7 @@
         data-belongs-to-field-target="type"
         data-type="<%= type %>"
       >
-        <%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal, label: type.to_s.underscore.humanize do %>
+        <%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal, label: ::Avo::App.get_resource_by_model_name(type.to_s).name do %>
           <% if @field.searchable %>
             <%= render Avo::Fields::BelongsToField::AutocompleteComponent.new form: @form,
               disabled: disabled,

@@ -3,10 +3,10 @@ class PhotoFilter < Avo::Filters::SelectFilter
 
   def apply(request, query, value)
     case value
-    when 'photo'
+    when "photo"
       query.joins(:photo_attachment)
-    when 'no_photo'
-      query.left_joins(:photo_attachment).where('active_storage_attachments.id is NULL')
+    when "no_photo"
+      query.left_joins(:photo_attachment).where("active_storage_attachments.id is NULL")
     else
       query
     end

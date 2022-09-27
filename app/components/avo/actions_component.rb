@@ -3,7 +3,7 @@
 class Avo::ActionsComponent < ViewComponent::Base
   include Avo::ApplicationHelper
 
-  def initialize(actions: [], resource: nil, view: nil, exclude: [], style: :outline, color: :blue)
+  def initialize(actions: [], resource: nil, view: nil, exclude: [], style: :outline, color: :primary)
     @actions = actions || []
     @resource = resource
     @view = view

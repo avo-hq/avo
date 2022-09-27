@@ -1,6 +1,6 @@
 .application-sidebar .active:hover,
 .application-sidebar .active {
-  @apply bg-blue-100 text-blue-500;
+  @apply bg-primary-100 text-primary-500;
 }
 
 .content-area {

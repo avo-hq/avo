@@ -36,6 +36,8 @@ module Avo
     attr_accessor :profile_menu
     attr_accessor :model_resource_mapping
     attr_accessor :tabs_style
+    attr_accessor :resource_default_view
+    attr_writer :branding
 
     def initialize
       @root_path = "/avo"
@@ -82,6 +84,7 @@ module Avo
       @profile_menu = nil
       @model_resource_mapping = {}
       @tabs_style = :tabs
+      @resource_default_view = :show
     end
 
     def current_user_method(&block)
@@ -124,6 +127,10 @@ module Avo
 
     def feature_enabled?(feature)
       !@disabled_features.map(&:to_sym).include?(feature.to_sym)
+    end
+
+    def branding
+      Avo::Configuration::Branding.new(**@branding || {})
     end
   end
 
