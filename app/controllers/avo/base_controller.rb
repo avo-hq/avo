@@ -452,7 +452,7 @@ module Avo
       redirect_path_from_resource_option(:after_update_path) || resource_view_response_path
     end
 
-    # Need different name, otwherwise, in some places, this can be called instead helpers.resource_view_path
+    # Needs a different name, otwherwise, in some places, this can be called instead helpers.resource_view_path
     def resource_view_response_path
       helpers.resource_view_path(model: @model, resource: @resource)
     end
