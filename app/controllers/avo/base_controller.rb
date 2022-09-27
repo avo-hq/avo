@@ -159,6 +159,7 @@ module Avo
 
     def edit
       set_actions
+      @form = Avo::ResourceForm.new(@model)
     end
 
     def update

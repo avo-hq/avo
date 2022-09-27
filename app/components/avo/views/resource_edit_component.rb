@@ -4,11 +4,12 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   include Avo::ResourcesHelper
   include Avo::ApplicationHelper
 
-  def initialize(resource: nil, model: nil, actions: [], view: :edit)
+  def initialize(resource: nil, model: nil, actions: [], view: :edit, form: nil)
     @resource = resource
     @model = model
     @actions = actions
     @view = view
+    @form = form
   end
 
   def title
