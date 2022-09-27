@@ -7,22 +7,26 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v1
-      - name: standardrb
-        uses: adrianthedev/action-standardrb@master
-        with:
-          github_token: ${{ secrets.github_token }}
-          reporter: github-pr-review # Default is github-pr-check
-          rubocop_version: 0.1.6
-          rubocop_flags: --format progress
-
-  rubocop:
-    name: runner / rubocop
-    runs-on: ubuntu-latest
-    steps:
-      - name: RuboCop
-        uses: andrewmcodes/rubocop-linter-action@v3.3.0
+      - name: StandardRB Linter
+        uses: andrewmcodes/standardrb-action@v1.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     - name: standardrb
+  #       uses: adrianthedev/action-standardrb@master
+  #       with:
+  #         github_token: ${{ secrets.github_token }}
+  #         reporter: github-pr-review # Default is github-pr-check
+  #         rubocop_version: 0.1.6
+  #         rubocop_flags: --format progress
+
+  # rubocop:
+  #   name: runner / rubocop
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: RuboCop
+  #       uses: andrewmcodes/rubocop-linter-action@v3.3.0
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   eslint:
     name: runner / eslint
