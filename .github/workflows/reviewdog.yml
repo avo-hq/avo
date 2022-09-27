@@ -15,6 +15,11 @@ jobs:
           rubocop_version: 0.1.6
           rubocop_flags: --format progress
 
+  - name: RuboCop
+    uses: andrewmcodes/rubocop-linter-action@v3.3.0
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   eslint:
     name: runner / eslint
     runs-on: ubuntu-latest
