@@ -108,6 +108,10 @@ module Avo
       def frame_id
         use_resource.present? ? use_resource.route_key.to_sym : @id
       end
+
+      def default_view
+        Avo.configuration.skip_show_view ? :edit : :show
+      end
     end
   end
 end

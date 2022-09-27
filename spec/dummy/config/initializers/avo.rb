@@ -57,6 +57,7 @@ Avo.configure do |config|
   config.set_initial_breadcrumbs do
     add_breadcrumb "Dashboard", "/admin/dashboards/dashy"
   end
+  config.resource_default_view = :show
   config.search_debounce = 300
   config.main_menu = -> {
     section I18n.t("avo.dashboards"), icon: "dummy-adjustments.svg" do

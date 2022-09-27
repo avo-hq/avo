@@ -22,6 +22,23 @@
         icon: 'arrow-left' do %>
           <%= t('avo.cancel').capitalize %>
         <% end %>
+        <% if can_see_the_destroy_button? %>
+          <%= a_link destroy_path,
+            method: :delete,
+            local: true,
+            style: :text,
+            loading: true,
+            confirm: t('avo.are_you_sure', item: @resource.model.model_name.name.downcase),
+            color: :red,
+            icon: 'trash',
+            form_class: 'flex flex-col sm:flex-row sm:inline-flex',
+            data: {
+              control: :destroy,
+              'resource-id': @resource.model.id,
+            } do %>
+            <%= t('avo.delete').capitalize %>
+          <% end %>
+        <% end %>
         <% if can_see_the_actions_button? %>
           <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>
         <% end %>

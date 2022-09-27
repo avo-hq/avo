@@ -16,16 +16,28 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   end
 
   def back_path
-    if via_resource?
-      model = params[:via_resource_class] || params[:via_relation_class]
-      helpers.resource_path(model: model.safe_constantize, resource: relation_resource, resource_id: params[:via_resource_id])
-    elsif via_index?
-      helpers.resources_path(resource: @resource)
-    elsif is_edit? # via resource show page
-      helpers.resource_path(model: @resource.model, resource: @resource)
-    else
-      helpers.resources_path(resource: @resource)
+    return resource_view_path if via_resource?
+    return resources_path if via_index?
+
+    if is_edit? && Avo.configuration.resource_default_view == :show # via resource show or edit page
+      return helpers.resource_path(model: @resource.model, resource: @resource)
     end
+
+    resources_path
+  end
+
+  def resources_path
+    helpers.resources_path(resource: @resource)
+  end
+
+  def resource_view_path
+    helpers.resource_view_path(model: relation_resource.model, resource: relation_resource)
+  end
+
+  def can_see_the_destroy_button?
+    return super if is_edit? && Avo.configuration.resource_default_view == :edit
+
+    false
   end
 
   # The save button is dependent on the edit? policy method.

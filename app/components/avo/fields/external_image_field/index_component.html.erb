@@ -4,7 +4,7 @@
                    image_tag(@field.value,
                              height: @field.height,
                              style: "border-radius: #{@field.radius}px; max-height: #{@field.height}#{@field.height.to_s&.ends_with?('px') ? '' : 'px'};"),
-                   resource_path
+                   resource_view_path
     %>
   <% end %>
 <% end %>
