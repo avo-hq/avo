@@ -25,6 +25,8 @@ export default class extends Controller {
 
   debouncedFetch = debouncePromise(fetch, this.searchDebounce);
 
+  destroyMethod;
+
   get dataset() {
     return this.autocompleteTarget.dataset
   }
@@ -142,8 +144,12 @@ export default class extends Controller {
         this.clearButtonTarget.classList.remove('hidden')
       }
     } else {
+      document.body.classList.add('turbo-loading')
       Turbo.visit(item._url, { action: 'advance' })
     }
+
+    // const t = this.destroyMethod()
+    // console.log(this.destroyMethod, t)
 
     // On searchable belongs to the class `aa-Detached` remains on the body making it unscrollable
     document.body.classList.remove('aa-Detached')
@@ -231,6 +237,7 @@ export default class extends Controller {
   }
 
   connect() {
+    console.log('connect')
     const that = this
 
     this.buttonTarget.onclick = () => this.showSearchPanel()
@@ -245,6 +252,7 @@ export default class extends Controller {
       Mousetrap.bind(['command+k', 'ctrl+k'], () => this.showSearchPanel())
     }
 
+    console.log('autocomplete')
     const { destroy } = autocomplete({
       container: this.autocompleteTarget,
       placeholder: this.translationKeys.placeholder,
@@ -253,7 +261,8 @@ export default class extends Controller {
       },
       openOnFocus: true,
       detachedMediaQuery: '',
-      getSources: ({ query }) => {
+      getSources: ({ query, onReset }) => {
+        console.log('getSources')
         document.body.classList.add('search-loading')
         const endpoint = that.searchUrl(query)
 
@@ -268,7 +277,8 @@ export default class extends Controller {
       },
     })
 
-    document.addEventListener('turbo:before-render', destroy)
+    // document.addEventListener('turbo:before-render', destroy)
+    // this.destroyMethod = destroy
 
     // When using search for belongs-to
     if (this.buttonTarget.dataset.shouldBeDisabled !== 'true') {
