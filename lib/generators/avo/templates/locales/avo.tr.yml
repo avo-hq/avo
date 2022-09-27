@@ -1,0 +1,119 @@
+en:
+  avo:
+    dashboard: 'Yönetim Paneli'
+    dashboards: 'Yönetim Panelleri'
+    choose_a_country: 'Bir ülke seç'
+    choose_an_option: 'Bir seçenek seç'
+    are_you_sure_you_want_to_run_this_option: 'Bu işlemi gerçekleştirmek istediğinize emin misiniz?'
+    are_you_sure_detach_item: '%{item} öğesini ayırmak istediğinizden emin misiniz?'
+    run: 'Başlat'
+    cancel: 'İptal et'
+    action_ran_successfully: 'Eylem başarıyla gerçekleşti!'
+    details: "detaylar"
+    unauthorized: 'Yetkisiz'
+    attachment_class_attached: '%{attachment_class} ilişkilendirildi.'
+    attachment_class_detached: '%{attachment_class} ilişkisi kesildi.'
+    resource_updated: 'Kayıt güncellendi'
+    resource_created: 'Kayıt oluşturuldu'
+    resource_destroyed: 'Kayıt silindi'
+    switch_to_view: "%{view_type} görünümüne kay"
+    click_to_reveal_filters: "Filtreleri ortaya çıkarmak için tıklayın"
+    attachment_destroyed: 'Ek silindi'
+    failed_to_find_attachment: 'Ek bulunamadı'
+    you_missed_something_check_form: 'Bir şeyleri kaçırmış olabilirsiniz. Lütfen formu kontrol edin.'
+    remove_selection: 'Seçimi sil'
+    select_item: 'Öğe seç'
+    select_all: 'Tümünü seç'
+    select_all_matching: 'Tüm eşleşenleri seç'
+    undo: geri al
+    delete_file: 'Dosyayı sil'
+    delete: 'sil'
+    delete_item: '%{item} öğresini sil'
+    download_item: '%{item} öğesini indir'
+    download_file: 'Dosya indir'
+    download: 'İndir'
+    view: 'Görünüm'
+    view_item: '%{item} öğresini görüntüle'
+    edit: 'düzenle'
+    edit_item: '%{item} öğesini düzenle'
+    detach_item: '%{item} öğesinin ilişkisini kes'
+    number_of_items:
+      zero: 'sıfır %{item}'
+      one: 'bir %{item}'
+      other: '%{count} %{item}'
+    x_items_more:
+      zero: 'daha fazla öğe yok'
+      one: 'bir öğe daha'
+      other: '%{count} öğe daha'
+    are_you_sure: 'Emin misiniz?'
+    filters: 'Filtreler'
+    per_page: 'Sayfa başına'
+    more: 'Daha fazla'
+    attach: 'İlişkilendir'
+    cancel: 'İptal et'
+    save: 'Kaydet'
+    attach_and_attach_another: 'İlişkilendir & Bir başka daha İlişkilendir'
+    hide_content: 'İçeriği gizle'
+    show_content: 'İçeriği göster'
+    no_related_item_found: 'İlişkili öğe bulunamadı'
+    no_item_found: 'Hiç %{item} bulunamadı'
+    loading: 'Yükleniyor'
+    confirm: 'Onayla'
+    actions: 'Aksiyonlar'
+    resources: 'Kaynaklar'
+    oops_nothing_found: 'Hata! Hiçbir şey bulunamadı'
+    type_to_search: 'Aramak için yazın.'
+    and_x_other_resources: 've %{count} diğer kaynak'
+    go_back: 'Geri dön'
+    home: 'Anasayfa'
+    new: 'yeni'
+    attach_item: '%{item} öğesini ilişkilendir'
+    choose_item: '%{item} seçin'
+    create_new_item: 'Yeni bir %{item} oluşturun'
+    table_view: 'Tablo görünümü'
+    grid_view: 'Grid görünümü'
+    next_page: 'Sonraki sayfa'
+    prev_page: 'Önceki sayfa'
+    list_is_empty: 'Boş liste'
+    field_translations:
+      file:
+        zero: 'dosya'
+        one: 'dosya'
+        other: 'dosya'
+      people:
+        zero: 'kişi'
+        one: 'kişi'
+        other: 'kişi'
+    resource_translations:
+      user:
+        zero: 'kullanıcı'
+        one: 'kullanıcı'
+        other: 'kullanıcı'
+    reset_filters: 'Filtreleri sıfırla'
+    not_authorized: 'Bu eylemi gerçekleştirme yetkiniz yok.'
+    search:
+      placeholder: 'Ara'
+      cancel_button: 'İptal et'
+    sign_out: 'Çıkış yap'
+    failed: 'Başarısız'
+    failed_to_load: 'Yüklenemedi'
+    key_value_field:
+      key: 'Anahtar'
+      value: 'Değer'
+      add_row: 'Satır ekle'
+      delete_row: 'Satır sil'
+    was_successfully_created: 'başarıyla oluşturuldu'
+    was_successfully_updated: 'başarıyla güncellendi'
+    clear_value: "Değeri temizle"
+    tools: Araçlar
+    order:
+      reorder_record: Kaydı yeniden sırala
+      higher: Kaydı yüksekten sırala
+      lower: Kaydı düşükten sırala
+      to_top: Kaydı en üste taşı
+      to_bottom: Kaydı en alta taşı
+    empty_dashboard_message: Kartları yönetim paneline ekle
+    no_cards_present: Kart yok
+    no_options_available: Seçenek yok
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> bu sayfada seçilen toplam kayıtlar <span class="font-bold text-gray-700">%{count}</span>
+    x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> tüm sayfalardan seçilen kayıtlar
