@@ -2,6 +2,7 @@
 
 class Avo::Index::GridItemComponent < ViewComponent::Base
   include Avo::ResourcesHelper
+
   attr_reader :parent_resource
 
   def initialize(resource: nil, reflection: nil, parent_model: nil, parent_resource: nil)
