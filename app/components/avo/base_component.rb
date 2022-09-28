@@ -24,7 +24,7 @@ class Avo::BaseComponent < ViewComponent::Base
     resource = ::Avo::App.get_resource_by_model_name model_klass
     model = model_klass.find params[:via_resource_id]
 
-    resource.hydrate model: model
+    resource.dup.hydrate model: model
   end
 
   # Get the resource for the resource using the klass attribute so we get the namespace too
