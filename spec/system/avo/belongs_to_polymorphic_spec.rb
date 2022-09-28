@@ -63,6 +63,8 @@ RSpec.feature "belongs_to", type: :system do
               expect(Comment.count).to eq 1
               comment = Comment.first
 
+              expect(current_path).to eq "/admin/resources/comments"
+
               return_to_comment_page
 
               expect(current_path).to eq "/admin/resources/comments/#{comment.id}"
@@ -457,9 +459,6 @@ RSpec.feature "belongs_to", type: :system do
 end
 
 def return_to_comment_page
-  comment = Comment.first
-
-  expect(current_path).to eq "/admin/resources/comments"
-
-  click_on comment.id.to_s
+  click_on Comment.first.id.to_s
+  wait_for_loaded
 end
