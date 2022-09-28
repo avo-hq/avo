@@ -262,7 +262,8 @@ export default class extends Controller {
       openOnFocus: true,
       detachedMediaQuery: '',
       getSources: ({ query, onReset }) => {
-        console.log('getSources')
+        console.log('getSources2', { query })
+
         document.body.classList.add('search-loading')
         const endpoint = that.searchUrl(query)
 
