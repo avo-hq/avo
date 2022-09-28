@@ -9,6 +9,7 @@ module Avo
           return true if skip_authorization
           return true if user.nil?
 
+          policy_class ||= Pundit.policy(user, record)&.class
           begin
             if policy_class&.new(user, record)
               Pundit.authorize user, record, action, policy_class: policy_class
