@@ -379,7 +379,8 @@ RSpec.feature "belongs_to", type: :system do
           find(".aa-Input").send_keys :arrow_down
           find(".aa-Input").send_keys :return
 
-          sleep 0.2
+          wait_for_search_loaded
+          wait_for_loaded
 
           expect(page).to have_field type: "text", name: "review[reviewable_id]", with: "Apple"
           expect(page).to have_field type: "hidden", name: "review[reviewable_id]", with: team.id, visible: false
