@@ -18,9 +18,6 @@ env:
   POSTGRES_HOST: localhost
   POSTGRES_USERNAME: postgres
   POSTGRES_PORT: 5432
-  COVERAGE: ${{ matrix.rails == '6.1' && matrix.ruby == '3.0.3' }}
-  RAILS_VERSION: ${{matrix.rails}}
-  BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}.gemfile
   BUNDLE_PATH_RELATIVE_TO_CWD: true
   AVO_LICENSE_KEY: license_123
   AVO_RESOURCE_CONTROLS_PLACEMENT: left
@@ -35,6 +32,10 @@ jobs:
           - '6.0'
           - '6.1'
     runs-on: ubuntu-latest
+
+    env:
+      RAILS_VERSION: ${{matrix.rails}}
+      BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}.gemfile
 
     services:
       postgres:
@@ -113,6 +114,10 @@ jobs:
           - '6.0'
           - '6.1'
     runs-on: ubuntu-latest
+
+    env:
+      RAILS_VERSION: ${{matrix.rails}}
+      BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}.gemfile
 
     services:
       postgres:
