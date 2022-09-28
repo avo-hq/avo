@@ -66,6 +66,7 @@ RSpec.feature "Search", type: :system do
         find(".aa-Input").send_keys :return
 
         wait_for_search_loaded
+        wait_for_loaded
 
         expect(current_path).to eql "/admin/resources/users/#{user2.slug}"
       end
@@ -91,6 +92,7 @@ RSpec.feature "Search", type: :system do
       find(".aa-Input").send_keys :arrow_down
       find(".aa-Input").send_keys :return
 
+      wait_for_search_loaded
       wait_for_loaded
 
       expect(current_path).to eql "/admin/resources/course_links/#{link.id}"
