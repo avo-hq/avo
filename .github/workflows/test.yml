@@ -71,6 +71,30 @@ jobs:
         bin/rails db:create
         bin/rails db:migrate
 
+    - name: Get yarn cache directory path
+      id: test-yarn-cache-dir-path
+      run: echo "::set-output name=dir::$(yarn cache dir)"
+
+    - uses: actions/cache@v1
+      id: test-yarn-cache
+      with:
+        path: ${{ steps.test-yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-test-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-test-yarn-${{ hashFiles('**/yarn.lock') }}
+
+    - name: Yarn install
+      run: yarn
+
+    - name: Build assets
+      env:
+        RAILS_ENV: production
+        NODE_ENV: production
+      run: |
+        yarn build:js
+        yarn build:custom-js
+        yarn build:css
+
     - name: Run tests
       id: run_tests
       run: bundle exec rspec spec/features
