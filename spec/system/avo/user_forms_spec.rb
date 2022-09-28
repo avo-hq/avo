@@ -79,6 +79,8 @@ RSpec.describe "UserForms", type: :system do
       click_on "Users"
     end
 
+    wait_for_loaded
+
     expect(page).to have_text("John")
     expect(page).to have_text("Doe")
     expect(current_path).to eq "/admin/resources/users"
