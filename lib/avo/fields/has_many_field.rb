@@ -5,7 +5,7 @@ module Avo
         args[:updatable] = false
 
         hide_on :all
-        show_on :show
+        show_on Avo.configuration.resource_default_view
 
         super(id, **args, &block)
       end

@@ -1,16 +1,16 @@
 <%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal, full_width: true do %>
-  <div
-    data-controller="trix-field"
-    data-trix-field-target="controller"
-    data-resource-name="<%= @resource.model_key %>"
-    data-resource-id="<%= @resource.model.id %>"
-    data-attachments-disabled="<%= @field.attachments_disabled %>"
-    data-attachment-key="<%= @field.attachment_key %>"
-    data-hide-attachment-filename="<%= @field.hide_attachment_filename %>"
-    data-hide-attachment-filesize="<%= @field.hide_attachment_filesize %>"
-    data-hide-attachment-url="<%= @field.hide_attachment_url %>"
-    class="relative block overflow-x-auto max-w-full"
-  >
+  <%= content_tag :div, class: "relative block overflow-x-auto max-w-full",
+    data: {
+      controller: "trix-field",
+      trix_field_target: "controller",
+      resource_name: @resource.model_key,
+      resource_id: @resource.model.methods.include?(:id) ? @resource.model&.id : nil,
+      attachments_disabled: @field.attachments_disabled,
+      attachment_key: @field.attachment_key,
+      hide_attachment_filename: @field.hide_attachment_filename,
+      hide_attachment_filesize: @field.hide_attachment_filesize,
+      hide_attachment_url: @field.hide_attachment_url,
+    } do %>
     <%= content_tag 'trix-editor',
       class: 'trix-content',
       data: {
@@ -29,5 +29,5 @@
       placeholder: @field.placeholder,
       style: @field.get_html(:style, view: view, element: :input)
     %>
-  </div>
+  <% end %>
 <% end %>
