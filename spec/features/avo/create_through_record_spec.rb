@@ -16,7 +16,7 @@ RSpec.feature "create_through_record", type: :feature do
 
       post = Post.first
       expect(post.user).to eq admin
-      expect(current_path).to eq "/admin/resources/users/#{admin.id}"
+      expect(current_path).to eq "/admin/resources/users/#{admin.slug}"
     end
   end
 
@@ -34,7 +34,7 @@ RSpec.feature "create_through_record", type: :feature do
 
       comment = Comment.last
       expect(comment.user).to eq admin
-      expect(current_path).to eq "/admin/resources/users/#{admin.id}"
+      expect(current_path).to eq "/admin/resources/users/#{admin.slug}"
     end
   end
 

@@ -4,5 +4,5 @@
       <%= value %><%= value_suffix if value_suffix.present? %>
     </div>
   <% end %>
-  <progress min="0" max="<%= max %>" value="<%= value %>" class="block w-full min-w-[6rem]"></progress>
+  <%= tag :progress, min: 0, max: max, value: value, class: "block min-w-[6rem] #{"w-full" if show?} #{"w-auto" if index?}" %>
 </div>

@@ -4,6 +4,21 @@ const colors = require('tailwindcss/colors')
 const defaultTheme = require('tailwindcss/defaultTheme')
 
 const primary = {
+  50: 'rgb(var(--color-primary-50))',
+  100: 'rgb(var(--color-primary-100))',
+  150: 'rgb(var(--color-primary-150))',
+  200: 'rgb(var(--color-primary-200))',
+  300: 'rgb(var(--color-primary-300))',
+  400: 'rgb(var(--color-primary-400))',
+  500: 'rgb(var(--color-primary-500))',
+  600: 'rgb(var(--color-primary-600))',
+  700: 'rgb(var(--color-primary-700))',
+  800: 'rgb(var(--color-primary-800))',
+  850: 'rgb(var(--color-primary-850))',
+  900: 'rgb(var(--color-primary-900))',
+}
+
+const blue = {
   50: '#E6F3FC',
   100: '#CEE7F8',
   150: '#B5DBF5',
@@ -35,6 +50,7 @@ const gray = {
 }
 
 module.exports = {
+  darkMode: 'class',
   mode: 'jit',
   future: {},
   content: [
@@ -56,15 +72,14 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        slate: colors.slate,
+        blue,
+        gray,
+        primary,
         sky: colors.sky,
         teal: colors.teal,
+        slate: colors.slate,
         indigo: colors.indigo,
-        blue: primary,
-        primary,
-        ternary: gray,
-        gray,
-        application: '#F6F6F7',
+        application: 'rgb(var(--color-application-background))',
       },
       fontFamily: {
         // eslint-disable-next-line max-len

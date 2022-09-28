@@ -1,2 +1,2 @@
 web: bin/rails server -p 3000
-css: bin/rails avo:tailwindcss:watch
+avo_css: bin/rails avo:tailwindcss:watch

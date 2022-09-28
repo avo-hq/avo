@@ -73,7 +73,7 @@ class Avo::ButtonComponent < ViewComponent::Base
     result.html_safe
   end
 
-  def output
+  def call
     if is_link?
       output_link
     else
@@ -149,7 +149,7 @@ class Avo::ButtonComponent < ViewComponent::Base
   def style_classes
     case @style
     when :primary
-      " bg-#{@color}-500 text-white border-#{@color}-500 hover:bg-#{@color}-600 hover:border-#{@color}-600 active:border-#{@color}-700 active:outline-#{@color}-700 active:bg-#{@color}-600"
+      " bg-#{@color}-500 text-white border-#{@color}-500 hover:bg-#{@color}-600 hover:border-#{@color}-600 active:border-#{@color}-600 active:outline-#{@color}-600 active:bg-#{@color}-600"
     when :outline
       " bg-white text-#{@color}-500 border-#{@color}-500 hover:bg-#{@color}-100 active:bg-#{@color}-100 active:border-#{@color}-500 active:outline-#{@color}-500"
     when :text

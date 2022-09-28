@@ -36,6 +36,11 @@ export default class extends Controller {
   }
 
   get selectionOptions() {
-    return document.querySelector(`[data-selected-resources-name="${this.resourceName}"]`).dataset
+    try {
+      return document.querySelector(`[data-selected-resources-name="${this.resourceName}"]`).dataset
+    } catch (error) {
+      return []
+    }
+
   }
 }

@@ -21,7 +21,7 @@ module Generators
           end
 
           if Rails.root.join("Procfile.dev").exist?
-            append_to_file "Procfile.dev", "css: bin/rails avo:tailwindcss:watch\n"
+            append_to_file "Procfile.dev", "avo_css: bin/rails avo:tailwindcss:watch\n"
           else
             say "Add default Procfile.dev"
             copy_file template_path("Procfile.dev"), "Procfile.dev"
@@ -30,13 +30,14 @@ module Generators
             run "gem install foreman"
           end
 
-          append_to_file "Procfile.dev", "avo_css: bin/rails tailwindcss:watch\n"
-
-          say "Ejecting the _head.html.erb partial"
-          Rails::Generators.invoke("avo:eject", [":head", "--no-avo-version"], {destination_root: Rails.root})
+          # Ensure that the _pre_head.html.erb template is available
+          unless Rails.root.join("app", "views", "avo", "partials", "_pre_head.html.erb").exist?
+            say "Ejecting the _pre_head.html.erb partial"
+            Rails::Generators.invoke("avo:eject", [":pre_head", "--skip-avo-version"], {destination_root: Rails.root})
+          end
 
           say "Adding the CSS asset to the partial"
-          prepend_to_file Rails.root.join("app", "views", "avo", "partials", "_head.html.erb"), "<%= stylesheet_link_tag \"avo.tailwind.css\", media: \"all\" %>"
+          prepend_to_file Rails.root.join("app", "views", "avo", "partials", "_pre_head.html.erb"), "<%= stylesheet_link_tag \"avo.tailwind.css\", media: \"all\" %>"
         end
 
         no_tasks do

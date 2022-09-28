@@ -29,7 +29,7 @@ module Avo
         default = {
           # figure our the available height for the chart
           height: "#{(rows * card_height) - card_heading}px",
-          colors: %w[#0B8AE2 #34C683 #2AB1EE #34C6A8],
+          colors: ::Avo.configuration.branding.chart_colors,
           library: {
             discrete: false,
             points: false,

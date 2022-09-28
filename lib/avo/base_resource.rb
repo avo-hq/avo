@@ -263,7 +263,7 @@ module Avo
           field.computed
         end
         .map do |field|
-          [field.database_id(model).to_s, field]
+          [field.database_id.to_s, field]
         end
         .to_h
 

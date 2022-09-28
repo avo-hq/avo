@@ -22,9 +22,11 @@ class Avo::Menu::Builder
   end
 
   # Adds a link
-  def link(name, **args)
-    @menu.items << Avo::Menu::Link.new(name: name, **args)
+  def link(name, path = nil, **args)
+    path ||= args[:path]
+    @menu.items << Avo::Menu::Link.new(name: name, path: path, **args)
   end
+  alias_method :link_to, :link
 
   # Validates and adds a resource
   def resource(name, **args)
