@@ -25,8 +25,8 @@ module Avo
         capture(&block)
       end
     end
-    alias :edit_field_wrapper :field_wrapper
-    alias :show_field_wrapper :field_wrapper
+    alias_method :edit_field_wrapper, :field_wrapper
+    alias_method :show_field_wrapper, :field_wrapper
 
     def filter_wrapper(name: nil, index: nil, **args, &block)
       render layout: "layouts/avo/filter_wrapper", locals: {
