@@ -8,15 +8,17 @@ class Avo::Fields::EditComponent < ViewComponent::Base
   attr_reader :field
   attr_reader :form
   attr_reader :index
+  attr_reader :multiple
   attr_reader :resource
   attr_reader :view
 
-  def initialize(field: nil, resource: nil, index: 0, form: nil, displayed_in_modal: false, compact: false, **kwargs)
+  def initialize(field: nil, resource: nil, index: 0, form: nil, displayed_in_modal: false, compact: false, multiple: false, **kwargs)
     @compact = compact
     @displayed_in_modal = displayed_in_modal
     @field = field
     @form = form
     @index = index
+    @multiple = multiple
     @resource = resource
     @view = :edit
   end
