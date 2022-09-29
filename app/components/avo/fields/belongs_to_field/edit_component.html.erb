@@ -40,7 +40,7 @@
         data-belongs-to-field-target="type"
         data-type="<%= type %>"
       >
-        <%= field_wrapper **field_wrapper_args, label: Avo::App.get_resource_by_model_name(type.to_s).name do %>
+        <%= field_wrapper **field_wrapper_args, label: ::Avo::App.get_resource_by_model_name(type.to_s).name do %>
           <% if @field.searchable %>
             <%= render Avo::Fields::BelongsToField::AutocompleteComponent.new form: @form,
               disabled: disabled,
