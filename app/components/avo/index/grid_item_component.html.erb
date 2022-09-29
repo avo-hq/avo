@@ -18,7 +18,7 @@
       <% else %>
         <%= link_to resource_view_path do %>
           <div class="absolute bg-gray-100 w-full h-full">
-            <%= helpers.svg 'avocado', class: 'relative transform -translate-x-1/2 -translate-y-1/2 h-20 text-gray-400 inset-auto top-1/2 left-1/2' %>
+            <%= image_tag Avo.configuration.branding.placeholder, class: 'relative transform -translate-x-1/2 -translate-y-1/2 h-20 text-gray-400 inset-auto top-1/2 left-1/2' %>
           </div>
         <% end %>
       <% end %>
