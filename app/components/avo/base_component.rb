@@ -9,17 +9,22 @@ class Avo::BaseComponent < ViewComponent::Base
 
   private
 
-  # Figure out what is the corresponding field for this @reflection
+  # Use the @parent_resource to fetch the field using the @reflection name.
   def field
-    fields = ::Avo::App.get_resource_by_model_name(@reflection.active_record.name).get_field_definitions
-    fields.find { |f| f.id == @reflection.name }
+    @parent_resource.get_field_definitions.find { |f| f.id == @reflection.name }
   rescue
     nil
   end
 
+  # Fetch the resource and hydrate it with the model
   def relation_resource
     model = params[:via_resource_class] || params[:via_relation_class]
-    ::Avo::App.get_resource_by_model_name model.safe_constantize
+    model_klass = model.safe_constantize
+
+    resource = ::Avo::App.get_resource_by_model_name model_klass
+    model = model_klass.find params[:via_resource_id]
+
+    resource.dup.hydrate model: model
   end
 
   # Get the resource for the resource using the klass attribute so we get the namespace too

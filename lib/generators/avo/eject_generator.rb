@@ -14,6 +14,7 @@ module Generators
         head: "app/views/avo/partials/_head.html.erb",
         header: "app/views/avo/partials/_header.html.erb",
         footer: "app/views/avo/partials/_footer.html.erb",
+        pre_head: "app/views/avo/partials/_pre_head.html.erb",
         scripts: "app/views/avo/partials/_scripts.html.erb",
         sidebar_extra: "app/views/avo/partials/_sidebar_extra.html.erb",
       }

@@ -1,16 +1,21 @@
 Avo.configure do |config|
+  ## == Base configs ==
   config.root_path = "/admin"
   config.app_name = "Avocadelicious"
+  config.home_path = -> { avo.dashboard_path(:dashy) }
+  config.set_initial_breadcrumbs do
+    add_breadcrumb "Dashboard", "/admin/dashboards/dashy"
+  end
+
+  ## == Licensing ==
   config.license = "pro"
   config.license_key = ENV["AVO_LICENSE_KEY"]
+
+  ## == App context ==
   config.current_user_method = :current_user
-  config.id_links_to_resource = true
-  config.full_width_container = true
-  config.resource_controls_placement = if ENV["AVO_RESOURCE_CONTROLS_PLACEMENT"].present?
-    ENV["AVO_RESOURCE_CONTROLS_PLACEMENT"].to_sym
-  else
-    :right
-  end
+  config.model_resource_mapping = {
+    User: "UserResource"
+  }
   config.set_context do
     {
       foo: "bar",
@@ -18,12 +23,40 @@ Avo.configure do |config|
       params: request.params
     }
   end
-  config.home_path = -> { avo.dashboard_path(:dashy) }
-  config.set_initial_breadcrumbs do
-    add_breadcrumb "Dashboard", "/admin/dashboards/dashy"
-  end
+
+  ## == Customization ==
+  config.id_links_to_resource = true
+  config.full_width_container = true
+  config.buttons_on_form_footers = false
+  config.resource_controls_placement = ENV["AVO_RESOURCE_CONTROLS_PLACEMENT"]&.to_sym || :right
+  config.resource_default_view = :show
   config.search_debounce = 300
-  config.main_menu = -> {
+
+  ## == Branding ==
+  config.branding = {
+    colors: {
+      # background: "#FFFCF9", # basecamp
+      # background: "#F6F6F7", # original
+      # background: "#FBF7F0", # hotwire
+      # background: "248 246 242", # cookpad
+      # BLUE
+      100 => "#CEE7F8",
+      400 => "#399EE5",
+      500 => "#0886DE",
+      600 => "#066BB2"
+      # # ORANGE
+      # 100 => "#FFECCC",
+      # 400 => "#FFB435",
+      # 500 => "#FFA102",
+      # 600 => "#CC8102",
+    },
+    # chart_colors: ['#FFB435', "#FFA102", "#CC8102", '#FFB435', "#FFA102", "#CC8102"],
+    logo: "/avo-assets/logo.png",
+    logomark: "/avo-assets/logomark.png"
+  }
+
+  ## == Menus ==
+  config.main_menu = -> do
     section I18n.t("avo.dashboards"), icon: "dummy-adjustments.svg" do
       dashboard :dashy, visible: -> { true }
       dashboard "Sales", visible: -> { true }
@@ -63,6 +96,13 @@ Avo.configure do |config|
       group "Blog", collapsable: true do
         resource :posts
         resource :comments
+        resource :photo_comments, visible: -> do
+          authorize current_user, Comment, "index?", policy_class: PhotoCommentPolicy, raise_exception: false
+        end
+      end
+
+      section "Store", icon: "currency-dollar" do
+        resource :products
       end
 
       group "Other", collapsable: true, collapsed: true do
@@ -79,11 +119,11 @@ Avo.configure do |config|
     end
 
     group do
-      link "Avo", path: "https://avohq.io"
-      link "Google", path: "https://google.com", target: :_blank
+      link "Avo", "https://avohq.io"
+      link_to "Google", "https://google.com", target: :_blank
     end
-  }
-  config.profile_menu = -> {
+  end
+  config.profile_menu = -> do
     link "Profile", path: "/profile", icon: "user-circle"
-  }
+  end
 end

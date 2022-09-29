@@ -3,11 +3,14 @@
 class Avo::Index::GridItemComponent < ViewComponent::Base
   include Avo::ResourcesHelper
 
-  def initialize(resource: nil, reflection: nil, parent_model: nil)
+  attr_reader :parent_resource
+
+  def initialize(resource: nil, reflection: nil, parent_model: nil, parent_resource: nil)
     @resource = resource
     @reflection = reflection
     @grid_fields = resource.get_grid_fields
     @parent_model = parent_model
+    @parent_resource = parent_resource
   end
 
   private
@@ -22,5 +25,18 @@ class Avo::Index::GridItemComponent < ViewComponent::Base
 
   def body
     @grid_fields.body_field
+  end
+
+  def resource_view_path
+    args = {}
+
+    if @parent_model.present?
+      args = {
+        via_resource_class: parent_resource.model_class,
+        via_resource_id: @parent_model.id
+      }
+    end
+
+    helpers.resource_view_path(model: @resource.model, resource: @resource, **args)
   end
 end

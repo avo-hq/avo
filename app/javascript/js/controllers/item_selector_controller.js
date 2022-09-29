@@ -5,7 +5,7 @@ export default class extends Controller {
 
   checkbox = {};
 
-  enabledClasses = ['text-black', 'hover:bg-blue-500', 'hover:text-white']
+  enabledClasses = ['text-black']
 
   disabledClasses = ['text-gray-500']
 

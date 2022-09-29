@@ -16,6 +16,7 @@ module Avo
     before_action :set_default_locale, if: -> { params[:set_locale].present? }
     before_action :init_app
     before_action :check_avo_license
+    before_action :set_resource_name
     before_action :set_authorization
     before_action :_authenticate!
     before_action :set_container_classes
@@ -26,7 +27,7 @@ module Avo
     rescue_from Pundit::NotAuthorizedError, with: :render_unauthorized
     rescue_from ActiveRecord::RecordInvalid, with: :exception_logger
 
-    helper_method :_current_user, :resources_path, :resource_path, :new_resource_path, :edit_resource_path, :resource_attach_path, :resource_detach_path, :related_resources_path, :turbo_frame_request?
+    helper_method :_current_user, :resources_path, :resource_path, :new_resource_path, :edit_resource_path, :resource_attach_path, :resource_detach_path, :related_resources_path, :turbo_frame_request?, :resource_view_path
     add_flash_types :info, :warning, :success, :error
 
     def init_app
@@ -126,7 +127,19 @@ module Avo
     end
 
     def set_model
-      @model = eager_load_files(@resource, @resource.class.find_scope).find params[:id]
+      @model = model_find_scope.find record_id
+    end
+
+    def record_id
+      params.permit(:id).dig(:id)
+    end
+
+    def model_find_scope
+      eager_load_files(@resource, model_scope)
+    end
+
+    def model_scope
+      @resource.class.find_scope
     end
 
     def set_related_model
@@ -257,7 +270,13 @@ module Avo
     end
 
     def set_authorization
-      @authorization = Services::AuthorizationService.new _current_user
+      # We need to set @resource_name for the #resource method to work properly
+      set_resource_name
+      @authorization = if resource
+        resource.authorization(user: _current_user)
+      else
+        Services::AuthorizationService.new _current_user
+      end
     end
 
     def set_container_classes

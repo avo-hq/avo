@@ -63,6 +63,10 @@ class UserPolicy < ApplicationPolicy
     true
   end
 
+  def create_fish?
+    false
+  end
+
   def upload_attachments?
     true
   end

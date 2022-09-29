@@ -9,6 +9,7 @@ class Avo::Menu::BaseItem
   option :items, default: proc { [] }
   option :name, default: proc { "" }
   option :visible, default: proc { true }
+  option :data, default: proc { {} }
 
   def visible?
     return visible if visible.in? [true, false]

@@ -20,7 +20,6 @@ module Avo
     delegate :context, to: ::Avo::App
 
     attr_accessor :view
-    attr_accessor :model
     attr_accessor :reflection
     attr_accessor :user
     attr_accessor :params
@@ -31,6 +30,7 @@ module Avo
     class_attribute :search_query, default: nil
     class_attribute :search_query_help, default: ""
     class_attribute :includes, default: []
+    class_attribute :authorization_policy
     class_attribute :translation_key
     class_attribute :default_view_type, default: :table
     class_attribute :devise_password_optional, default: false
@@ -93,7 +93,7 @@ module Avo
       end
 
       def authorization
-        Avo::Services::AuthorizationService.new Avo::App.current_user
+        Avo::Services::AuthorizationService.new Avo::App.current_user, model_class, policy_class: authorization_policy
       end
 
       def order_actions
@@ -110,6 +110,11 @@ module Avo
         end
       end
     end
+
+    def record
+      @model
+    end
+    alias :model :record
 
     def hydrate(model: nil, view: nil, user: nil, params: nil)
       @view = view if view.present?
@@ -259,7 +264,7 @@ module Avo
           field.computed
         end
         .map do |field|
-          [field.database_id(model).to_s, field]
+          [field.database_id.to_s, field]
         end
         .to_h
 
@@ -281,8 +286,9 @@ module Avo
       model
     end
 
-    def authorization
-      Avo::Services::AuthorizationService.new(user, model || model_class)
+    def authorization(user: nil)
+      current_user = user || Avo::App.current_user
+      Avo::Services::AuthorizationService.new(current_user, model || model_class, policy_class: authorization_policy)
     end
 
     def file_hash
