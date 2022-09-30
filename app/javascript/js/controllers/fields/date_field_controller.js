@@ -21,6 +21,10 @@ export default class extends Controller {
     disableMobile: Boolean,
   }
 
+  flatpickrInstance;
+
+  cachedInitialValue;
+
   get browserZone() {
     const time = DateTime.local()
 
@@ -59,11 +63,27 @@ export default class extends Controller {
   }
 
   connect() {
+    // Cache the initial value so we can fill it back on disconnection.
+    // We do that so the JS parser will continue to work when the user hits the back button to return on this page.
+    this.cacheInitialValue()
+
     if (this.isOnShow || this.isOnIndex) {
       this.initShow()
     } else if (this.isOnEdit) {
       this.initEdit()
     }
+  }
+
+  disconnect() {
+    if (this.isOnShow || this.isOnIndex) {
+      this.context.element.innerText = this.cachedInitialValue
+    } else if (this.isOnEdit) {
+      if (this.flatpickrInstance) this.flatpickrInstance.destroy()
+    }
+  }
+
+  cacheInitialValue() {
+    this.cachedInitialValue = this.initialValue
   }
 
   // Turns the value in the controller wrapper into the timezone of the browser
@@ -115,7 +135,7 @@ export default class extends Controller {
       options.defaultDate = universalTimestamp(this.initialValue)
     }
 
-    flatpickr(this.fakeInputTarget, options)
+    this.flatpickrInstance = flatpickr(this.fakeInputTarget, options)
 
     if (this.enableTimeValue) {
       this.updateRealInput(this.parsedValue.setZone(this.displayTimezone).toISO())

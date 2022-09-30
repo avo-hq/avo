@@ -28,7 +28,7 @@ RSpec.feature "HasManyField", type: :feature do
         click_on "Save"
         wait_for_loaded
 
-        expect(current_path).to eql "/admin/resources/users/#{user.id}"
+        expect(current_path).to eql "/admin/resources/users/#{user.slug}"
         expect(user.posts.last.name).to eql "New post name"
         expect(user.posts.last.user_id).to eql user.id
       end

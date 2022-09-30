@@ -117,8 +117,6 @@ gem "httparty"
 
 gem "iso"
 
-gem "hotwire-rails"
-
 gem "active_link_to"
 
 gem "addressable"

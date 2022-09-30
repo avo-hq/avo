@@ -25,6 +25,8 @@ export default class extends Controller {
 
   debouncedFetch = debouncePromise(fetch, this.searchDebounce);
 
+  destroyMethod;
+
   get dataset() {
     return this.autocompleteTarget.dataset
   }
@@ -54,6 +56,144 @@ export default class extends Controller {
 
   get isGlobalSearch() {
     return this.dataset.searchResource === 'global'
+  }
+
+  connect() {
+    const that = this
+
+    this.buttonTarget.onclick = () => this.showSearchPanel()
+
+    this.clearValueTargets.forEach((target) => {
+      if (target.getAttribute('value') && this.hasClearButtonTarget) {
+        this.clearButtonTarget.classList.remove('hidden')
+      }
+    })
+
+    if (this.isGlobalSearch) {
+      Mousetrap.bind(['command+k', 'ctrl+k'], () => this.showSearchPanel())
+    }
+
+    autocomplete({
+      container: this.autocompleteTarget,
+      placeholder: this.translationKeys.placeholder,
+      translations: {
+        detachedCancelButtonText: this.translationKeys.cancel_button,
+      },
+      autoFocus: true,
+      openOnFocus: true,
+      detachedMediaQuery: '',
+      getSources: ({ query }) => {
+        document.body.classList.add('search-loading')
+        const endpoint = that.searchUrl(query)
+
+        return that
+          .debouncedFetch(endpoint)
+          .then((response) => {
+            document.body.classList.remove('search-loading')
+
+            return response.json()
+          })
+          .then((data) => Object.keys(data).map((resourceName) => that.addSource(resourceName, data[resourceName])))
+      },
+    })
+
+    // document.addEventListener('turbo:before-render', destroy)
+    // this.destroyMethod = destroy
+
+    // When using search for belongs-to
+    if (this.buttonTarget.dataset.shouldBeDisabled !== 'true') {
+      this.buttonTarget.removeAttribute('disabled')
+    }
+  }
+
+  addSource(resourceName, data) {
+    const that = this
+
+    return {
+      sourceId: resourceName,
+      getItems: () => data.results,
+      onSelect: that.handleOnSelect.bind(that),
+      templates: {
+        header() {
+          return `${data.header.toUpperCase()} ${data.help}`
+        },
+        item({ item, createElement }) {
+          const children = []
+
+          if (item._avatar) {
+            let classes
+
+            switch (item._avatar_type) {
+              default:
+              case 'circle':
+                classes = 'rounded-full'
+                break
+              case 'rounded':
+                classes = 'rounded'
+                break
+              case 'square':
+                classes = 'rounded-none'
+                break
+            }
+
+            children.push(
+              createElement('img', {
+                src: item._avatar,
+                alt: item._label,
+                class: `flex-shrink-0 w-8 h-8 my-[2px] inline mr-2 ${classes}`,
+              }),
+            )
+          }
+
+          const labelChildren = [item._label]
+          if (item._description) {
+            labelChildren.push(
+              createElement(
+                'div',
+                {
+                  class: 'aa-ItemDescription',
+                },
+                item._description,
+              ),
+            )
+          }
+
+          children.push(createElement('div', null, labelChildren))
+
+          return createElement(
+            'div',
+            {
+              class: 'flex',
+            },
+            children,
+          )
+        },
+        noResults() {
+          return that.translationKeys.no_item_found.replace(
+            '%{item}',
+            resourceName,
+          )
+        },
+      },
+    }
+  }
+
+  handleOnSelect({ item }) {
+    if (this.isBelongsToSearch) {
+      this.updateFieldAttribute(this.hiddenIdTarget, 'value', item._id)
+      this.updateFieldAttribute(this.buttonTarget, 'value', item._label)
+
+      document.querySelector('.aa-DetachedOverlay').remove()
+
+      if (this.hasClearButtonTarget) {
+        this.clearButtonTarget.classList.remove('hidden')
+      }
+    } else {
+      Turbo.visit(item._url, { action: 'advance' })
+    }
+
+    // On searchable belongs to the class `aa-Detached` remains on the body making it unscrollable
+    document.body.classList.remove('aa-Detached')
   }
 
   searchUrl(query) {
@@ -131,149 +271,13 @@ export default class extends Controller {
     return params
   }
 
-  handleOnSelect({ item }) {
-    if (this.isBelongsToSearch) {
-      this.updateFieldAttribute(this.hiddenIdTarget, 'value', item._id)
-      this.updateFieldAttribute(this.buttonTarget, 'value', item._label)
-
-      document.querySelector('.aa-DetachedOverlay').remove()
-
-      if (this.hasClearButtonTarget) {
-        this.clearButtonTarget.classList.remove('hidden')
-      }
-    } else {
-      Turbo.visit(item._url, { action: 'advance' })
-    }
-
-    // On searchable belongs to the class `aa-Detached` remains on the body making it unscrollable
-    document.body.classList.remove('aa-Detached')
-  }
-
-  addSource(resourceName, data) {
-    const that = this
-
-    return {
-      sourceId: resourceName,
-      getItems: () => data.results,
-      onSelect: that.handleOnSelect.bind(that),
-      templates: {
-        header() {
-          return `${data.header.toUpperCase()} ${data.help}`
-        },
-        item({ item, createElement }) {
-          const children = []
-
-          if (item._avatar) {
-            let classes
-
-            switch (item._avatar_type) {
-              default:
-              case 'circle':
-                classes = 'rounded-full'
-                break
-              case 'rounded':
-                classes = 'rounded'
-                break
-              case 'square':
-                classes = 'rounded-none'
-                break
-            }
-
-            children.push(
-              createElement('img', {
-                src: item._avatar,
-                alt: item._label,
-                class: `flex-shrink-0 w-8 h-8 my-[2px] inline mr-2 ${classes}`,
-              }),
-            )
-          }
-
-          const labelChildren = [item._label]
-          if (item._description) {
-            labelChildren.push(
-              createElement(
-                'div',
-                {
-                  class: 'aa-ItemDescription',
-                },
-                item._description,
-              ),
-            )
-          }
-
-          children.push(createElement('div', null, labelChildren))
-
-          return createElement(
-            'div',
-            {
-              class: 'flex',
-            },
-            children,
-          )
-        },
-        noResults() {
-          return that.translationKeys.no_item_found.replace(
-            '%{item}',
-            resourceName,
-          )
-        },
-      },
-    }
-  }
-
   showSearchPanel() {
     this.autocompleteTarget.querySelector('button').click()
   }
 
   clearValue() {
-    this.clearValueTargets.map((t) => this.updateFieldAttribute(t, 'value', ''))
+    this.clearValueTargets.map((target) => this.updateFieldAttribute(target, 'value', ''))
     this.clearButtonTarget.classList.add('hidden')
-  }
-
-  connect() {
-    const that = this
-
-    this.buttonTarget.onclick = () => this.showSearchPanel()
-
-    this.clearValueTargets.forEach((target) => {
-      if (target.getAttribute('value') && this.hasClearButtonTarget) {
-        this.clearButtonTarget.classList.remove('hidden')
-      }
-    })
-
-    if (this.isGlobalSearch) {
-      Mousetrap.bind(['command+k', 'ctrl+k'], () => this.showSearchPanel())
-    }
-
-    const { destroy } = autocomplete({
-      container: this.autocompleteTarget,
-      placeholder: this.translationKeys.placeholder,
-      translations: {
-        detachedCancelButtonText: this.translationKeys.cancel_button,
-      },
-      openOnFocus: true,
-      detachedMediaQuery: '',
-      getSources: ({ query }) => {
-        document.body.classList.add('search-loading')
-        const endpoint = that.searchUrl(query)
-
-        return that
-          .debouncedFetch(endpoint)
-          .then((response) => {
-            document.body.classList.remove('search-loading')
-
-            return response.json()
-          })
-          .then((data) => Object.keys(data).map((resourceName) => that.addSource(resourceName, data[resourceName])))
-      },
-    })
-
-    document.addEventListener('turbo:before-render', destroy)
-
-    // When using search for belongs-to
-    if (this.buttonTarget.dataset.shouldBeDisabled !== 'true') {
-      this.buttonTarget.removeAttribute('disabled')
-    }
   }
 
   // Private

@@ -1,3 +1,4 @@
 <%= index_field_wrapper field: @field, resource: @resource do %>
-  <%= link_to @field.label, helpers.resource_path(model: @field.value, resource: @field.target_resource) %>
+  <%= link_to @field.label, helpers.resource_view_path(model: @field.value, resource: @field.target_resource)
+ %>
 <% end %>

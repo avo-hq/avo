@@ -84,7 +84,7 @@ module Avo
 
       # If we're accessing this resource via another resource add the parent to the breadcrumbs.
       if params[:via_resource_class].present? && params[:via_resource_id].present?
-        via_resource = Avo::App.get_resource_by_model_name params[:via_resource_class]
+        via_resource = Avo::App.get_resource_by_model_name(params[:via_resource_class]).dup
         via_model = via_resource.class.find_scope.find params[:via_resource_id]
         via_resource.hydrate model: via_model
 
@@ -106,8 +106,8 @@ module Avo
 
       @page_title = @resource.default_panel_name.to_s
 
-      if params[:via_relation_class].present? && params[:via_resource_id].present?
-        via_resource = Avo::App.get_resource_by_model_name params[:via_relation_class]
+      if is_associated_record?
+        via_resource = Avo::App.get_resource_by_model_name(params[:via_relation_class]).dup
         via_model = via_resource.class.find_scope.find params[:via_resource_id]
         via_resource.hydrate model: via_model
 
@@ -139,7 +139,7 @@ module Avo
         # For when working with has_one, has_one_through, has_many_through, has_and_belongs_to_many, polymorphic
         if @reflection.is_a? ActiveRecord::Reflection::ThroughReflection
           # find the record
-          via_resource = ::Avo::App.get_resource_by_model_name params[:via_relation_class]
+          via_resource = ::Avo::App.get_resource_by_model_name(params[:via_relation_class]).dup
           @related_record = via_resource.model_class.find params[:via_resource_id]
 
           @model.send(params[:via_relation]) << @related_record
@@ -370,7 +370,7 @@ module Avo
       last_crumb_args = {}
       # If we're accessing this resource via another resource add the parent to the breadcrumbs.
       if params[:via_resource_class].present? && params[:via_resource_id].present?
-        via_resource = Avo::App.get_resource_by_model_name params[:via_resource_class]
+        via_resource = Avo::App.get_resource_by_model_name(params[:via_resource_class]).dup
         via_model = via_resource.class.find_scope.find params[:via_resource_id]
         via_resource.hydrate model: via_model
 
@@ -412,13 +412,17 @@ module Avo
 
     def after_create_path
       # If this is an associated record return to the association show page
-      if params[:via_relation_class].present? && params[:via_resource_id].present?
-        parent_resource = ::Avo::App.get_resource_by_model_name params[:via_relation_class]
+      if is_associated_record?
+        parent_resource = ::Avo::App.get_resource_by_model_name(params[:via_relation_class]).dup
 
-        return resource_path(model: params[:via_relation_class], resource: parent_resource, resource_id: params[:via_resource_id])
+        return resource_view_path(
+          model: @model.send(params[:via_relation]),
+          resource: parent_resource,
+          resource_id: params[:via_resource_id]
+        )
       end
 
-      redirect_path_from_resource_option(:after_create_path) || resource_path(model: @model, resource: @resource)
+      redirect_path_from_resource_option(:after_create_path) || resource_view_response_path
     end
 
     def update_success_action
@@ -445,7 +449,12 @@ module Avo
     def after_update_path
       return params[:referrer] if params[:referrer].present?
 
-      redirect_path_from_resource_option(:after_update_path) || resource_path(model: @model, resource: @resource)
+      redirect_path_from_resource_option(:after_update_path) || resource_view_response_path
+    end
+
+    # Needs a different name, otwherwise, in some places, this can be called instead helpers.resource_view_path
+    def resource_view_response_path
+      helpers.resource_view_path(model: @model, resource: @resource)
     end
 
     def destroy_success_action
@@ -477,11 +486,15 @@ module Avo
 
       if @resource.class.send(action) == :index
         resources_path(resource: @resource)
-      elsif @resource.class.send(action) == :edit
+      elsif @resource.class.send(action) == :edit || Avo.configuration.resource_default_view == :edit
         edit_resource_path(resource: @resource, model: @resource.model)
       else
         resource_path(model: @model, resource: @resource)
       end
+    end
+
+    def is_associated_record?
+      params[:via_relation_class].present? && params[:via_resource_id].present?
     end
   end
 end

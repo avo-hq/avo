@@ -13,11 +13,16 @@ class Avo::Fields::IndexComponent < ViewComponent::Base
     @view = :index
   end
 
-  def resource_path
+  def resource_view_path
+    args = {}
+
     if @parent_model.present?
-      helpers.resource_path(model: @resource.model, resource: @resource, via_resource_class: @parent_model.class, via_resource_id: @parent_model.id)
-    else
-      helpers.resource_path(model: @resource.model, resource: @resource)
+      args = {
+        via_resource_class: @parent_model.class,
+        via_resource_id: @parent_model.id
+      }
     end
+
+    helpers.resource_view_path(model: @resource.model, resource: @resource, **args)
   end
 end

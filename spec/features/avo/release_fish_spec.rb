@@ -8,8 +8,9 @@ RSpec.feature ReleaseFish, type: :feature do
   it "tests the dummy action" do
     args = {
       fields: {
-        message: "Bye fishy!"
-      },
+        message: "Bye fishy!",
+        user_id: admin.id
+      }.with_indifferent_access,
       current_user: current_user,
       resource: resource,
       models: [fish]
@@ -17,7 +18,7 @@ RSpec.feature ReleaseFish, type: :feature do
 
     action = described_class.new(model: fish, resource: resource, user: current_user, view: :edit)
 
-    expect(action).to receive(:succeed).with "1 fish released with message 'Bye fishy!'."
+    expect(action).to receive(:succeed).with "1 fish released with message 'Bye fishy!' by #{admin.name}."
     expect(fish).to receive(:release)
 
     action.handle(**args)
