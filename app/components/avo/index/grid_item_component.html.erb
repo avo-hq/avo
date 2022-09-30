@@ -2,7 +2,7 @@
   class="relative bg-white rounded shadow-modal flex flex-col group"
   <%== item_selector_init @resource %>
 >
-  <div class="relative w-full pb-3/4 rounded-t overflow-hidden">
+  <%= content_tag :div, class: "relative w-full pb-3/4 rounded-t overflow-hidden #{cover.present? ? cover.get_html(:classes, view: :index, element: :wrapper) : ""}", style: cover.present? ? cover.get_html(:style, view: :index, element: :wrapper) : "" do %>
     <% if @resource.record_selector %>
       <%== item_selector_input floating: true, size: :lg %>
     <% end %>
@@ -27,18 +27,22 @@
     <% else %>
       <%= render Avo::Index::GridCoverEmptyStateComponent.new %>
     <% end %>
-  </div>
-  <div class="grid grid-cols-1 place-content-between p-4 h-full">
+  <% end %>
+  <%= content_tag :div, class: "grid grid-cols-1 place-content-between p-4 h-full" do %>
     <div class="mb-4 h-full flex flex-col space-between">
-      <div class="grid font-semibold leading-tight text-lg mb-2">
-        <%= link_to_if title.link_to_resource, title.value, resource_view_path if title.present? %>
-      </div>
-      <div class="text-sm break-words text-gray-500">
-        <%= body.value if body.present? %>
-      </div>
+      <% if title.present? %>
+        <%= content_tag :div, class: "grid font-semibold leading-tight text-lg mb-2 #{title.get_html(:classes, view: :index, element: :wrapper)}", style: title.get_html(:style, view: :index, element: :wrapper) do %>
+          <%= link_to_if title.link_to_resource, title.value, resource_view_path %>
+        <% end %>
+      <% end %>
+      <% if body.present? %>
+        <%= content_tag :div, class: "text-sm break-words text-gray-500 #{body.get_html(:classes, view: :index, element: :wrapper)}", style: body.get_html(:style, view: :index, element: :wrapper) do %>
+          <%= body.value %>
+        <% end %>
+      <% end %>
     </div>
     <div class="w-full place-self-end">
       <%= render(Avo::Index::ResourceControlsComponent.new(resource: @resource, reflection: @reflection, parent_model: @parent_model, parent_resource: @parent_resource, view_type: :grid)) %>
     </div>
-  </div>
+  <% end %>
 </div>
