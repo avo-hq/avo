@@ -17,9 +17,7 @@
         <%= link_to_if cover.link_to_resource, image_tag(helpers.main_app.url_for(cover.value.variant(resize_to_limit: [480, 480])), class: 'absolute h-full w-full object-cover'), resource_view_path, class: 'absolute h-full w-full object-cover', title: title.value %>
       <% else %>
         <%= link_to resource_view_path do %>
-          <div class="absolute bg-gray-100 w-full h-full">
-            <%= helpers.svg 'avocado', class: 'relative transform -translate-x-1/2 -translate-y-1/2 h-20 text-gray-400 inset-auto top-1/2 left-1/2' %>
-          </div>
+          <%= render Avo::Index::GridCoverEmptyStateComponent.new %>
         <% end %>
       <% end %>
     <% elsif cover.value.present? %>
