@@ -2,7 +2,7 @@
   class="relative bg-white rounded shadow-modal flex flex-col group"
   <%== item_selector_init @resource %>
 >
-  <%= content_tag :div, class: "relative w-full pb-3/4 rounded-t overflow-hidden #{cover.get_html(:classes, view: :index, element: :wrapper)}", style: cover.get_html(:style, view: :index, element: :wrapper) do %>
+  <%= content_tag :div, class: "relative w-full pb-3/4 rounded-t overflow-hidden #{cover.present? ? cover.get_html(:classes, view: :index, element: :wrapper) : ""}", style: cover.present? ? cover.get_html(:style, view: :index, element: :wrapper) : "" do %>
     <% if @resource.record_selector %>
       <%== item_selector_input floating: true, size: :lg %>
     <% end %>
@@ -30,11 +30,15 @@
   <% end %>
   <%= content_tag :div, class: "grid grid-cols-1 place-content-between p-4 h-full" do %>
     <div class="mb-4 h-full flex flex-col space-between">
-      <%= content_tag :div, class: "grid font-semibold leading-tight text-lg mb-2 #{title.get_html(:classes, view: :index, element: :wrapper)}", style: title.get_html(:style, view: :index, element: :wrapper) do %>
-        <%= link_to_if title.link_to_resource, title.value, resource_view_path if title.present? %>
+      <% if title.present? %>
+        <%= content_tag :div, class: "grid font-semibold leading-tight text-lg mb-2 #{title.get_html(:classes, view: :index, element: :wrapper)}", style: title.get_html(:style, view: :index, element: :wrapper) do %>
+          <%= link_to_if title.link_to_resource, title.value, resource_view_path %>
+        <% end %>
       <% end %>
-      <%= content_tag :div, class: "text-sm break-words text-gray-500 #{body.get_html(:classes, view: :index, element: :wrapper)}", style: body.get_html(:style, view: :index, element: :wrapper) do %>
-        <%= body.value if body.present? %>
+      <% if body.present? %>
+        <%= content_tag :div, class: "text-sm break-words text-gray-500 #{body.get_html(:classes, view: :index, element: :wrapper)}", style: body.get_html(:style, view: :index, element: :wrapper) do %>
+          <%= body.value %>
+        <% end %>
       <% end %>
     </div>
     <div class="w-full place-self-end">
