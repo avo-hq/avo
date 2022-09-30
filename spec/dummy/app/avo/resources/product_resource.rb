@@ -11,7 +11,13 @@ class ProductResource < Avo::BaseResource
   field :category, as: :select, enum: ::Product.categories
 
   grid do
-    cover :image, as: :file, is_image: true, link_to_resource: true
+    cover :image, as: :file, is_image: true, link_to_resource: true, html: {
+      index: {
+        wrapper: {
+          style: 'background: pink;'
+        }
+      }
+    }
     title :title, as: :text
     body :description, as: :textarea, format_using: ->(value) {
       simple_format value

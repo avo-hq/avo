@@ -56,7 +56,7 @@ def wait_for_element_missing(identifier = ".element", time = Capybara.default_ma
     if page.present?
       break if page.has_no_css?(identifier, wait: time)
     else
-      sleep 0.01
+      sleep 0.05
     end
   end
 end
