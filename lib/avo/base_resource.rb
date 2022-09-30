@@ -30,6 +30,7 @@ module Avo
     class_attribute :search_query, default: nil
     class_attribute :search_query_help, default: ""
     class_attribute :includes, default: []
+    class_attribute :authorization_policy
     class_attribute :translation_key
     class_attribute :default_view_type, default: :table
     class_attribute :devise_password_optional, default: false
@@ -92,7 +93,7 @@ module Avo
       end
 
       def authorization
-        Avo::Services::AuthorizationService.new Avo::App.current_user
+        Avo::Services::AuthorizationService.new Avo::App.current_user, model_class, policy_class: authorization_policy
       end
 
       def order_actions
@@ -285,8 +286,9 @@ module Avo
       model
     end
 
-    def authorization
-      Avo::Services::AuthorizationService.new(user, model || model_class)
+    def authorization(user: nil)
+      current_user = user || Avo::App.current_user
+      Avo::Services::AuthorizationService.new(current_user, model || model_class, policy_class: authorization_policy)
     end
 
     def file_hash

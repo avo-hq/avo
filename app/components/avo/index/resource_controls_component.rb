@@ -67,6 +67,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   end
 
   def parent_resource
+    return @parent_resource if @parent_resource.present?
     return nil if @parent_model.blank?
 
     ::Avo::App.get_resource_by_model_name @parent_model.class

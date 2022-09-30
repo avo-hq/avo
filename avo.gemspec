@@ -41,7 +41,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "active_link_to"
   spec.add_dependency "image_processing"
   spec.add_dependency "view_component", "2.60"
-  spec.add_dependency "hotwire-rails"
+  spec.add_dependency "turbo-rails"
   spec.add_dependency "addressable"
   spec.add_dependency "meta-tags"
   spec.add_dependency "breadcrumbs_on_rails"
