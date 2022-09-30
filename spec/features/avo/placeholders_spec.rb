@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Placeholders", type: :system do
+RSpec.describe "Placeholders", type: :feature do
   describe "with regular input" do
     let!(:user) { create :user }
 
