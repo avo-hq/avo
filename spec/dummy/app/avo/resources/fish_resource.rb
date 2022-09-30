@@ -79,12 +79,6 @@ class FishResource < Avo::BaseResource
       end
     end
 
-    tab "tab" do
-      panel do
-        field :id, as: :id
-      end
-    end
-
     tab "big useless tab here 6" do
       panel do
         field :id, as: :id
