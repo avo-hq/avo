@@ -22,13 +22,13 @@ module Avo
 
     def a_button(**args, &block)
       render Avo::ButtonComponent.new(is_link: false, **args) do
-        capture(&block) if block
+        capture(&block) if block.present?
       end
     end
 
     def a_link(path = nil, **args, &block)
       render Avo::ButtonComponent.new(path, is_link: true, **args) do
-        capture(&block) if block
+        capture(&block) if block.present?
       end
     end
 
