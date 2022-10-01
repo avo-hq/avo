@@ -2,7 +2,11 @@ PATH
   remote: .
   specs:
     avo (2.16.0)
+      actionpack (>= 6.0)
+      actionview (>= 6.0)
       active_link_to
+      activerecord (>= 6.0)
+      activesupport (>= 6.0)
       addressable
       breadcrumbs_on_rails
       chartkick
@@ -15,7 +19,6 @@ PATH
       meta-tags
       pagy
       pundit
-      rails (>= 6.0)
       turbo-rails
       view_component (= 2.60)
       zeitwerk
@@ -120,7 +123,7 @@ GEM
       aws-eventstream (~> 1, >= 1.0.2)
     bcrypt (3.1.16)
     bindex (0.8.1)
-    bootsnap (1.10.3)
+    bootsnap (1.13.0)
       msgpack (~> 1.2)
     breadcrumbs_on_rails (4.1.0)
       railties (>= 5.0)
@@ -239,7 +242,7 @@ GEM
     mini_mime (1.1.2)
     mini_portile2 (2.8.0)
     minitest (5.16.3)
-    msgpack (1.4.4)
+    msgpack (1.6.0)
     multi_xml (0.6.0)
     net-protocol (0.1.2)
       io-wait
@@ -465,7 +468,6 @@ DEPENDENCIES
   pg (>= 0.18, < 2.0)
   puma (~> 5.6.4)
   pundit
-  rails (~> 6.1.0)
   rails-controller-testing
   ransack
   redis (~> 4.0)

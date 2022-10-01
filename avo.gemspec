@@ -32,7 +32,11 @@ Gem::Specification.new do |spec|
 
   spec.files = Dir["{bin,app,config,db,lib,public}/**/*", "MIT-LICENSE", "Rakefile", "README.md", "avo.gemspec", "Gemfile", "Gemfile.lock"]
 
-  spec.add_dependency "rails", ">= 6.0"
+  # spec.add_dependency "rails", ">= 6.0"
+  spec.add_dependency "activerecord", ">= 6.0"
+  spec.add_dependency "actionpack", ">= 6.0"
+  spec.add_dependency "actionview", ">= 6.0"
+
   spec.add_dependency "pagy"
   spec.add_dependency "zeitwerk"
   spec.add_dependency "countries"
