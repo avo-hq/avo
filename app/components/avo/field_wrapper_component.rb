@@ -1,18 +1,12 @@
 # frozen_string_literal: true
 
 class Avo::FieldWrapperComponent < ViewComponent::Base
-  # attr_reader :classes
   attr_reader :dash_if_blank
-  # attr_reader :data
   attr_reader :compact
-  # attr_reader :help
   attr_reader :field
   attr_reader :form
   attr_reader :full_width
-  # attr_reader :label
   attr_reader :resource
-  # attr_reader :record
-  # attr_reader :style
   attr_reader :view
 
   def initialize(
