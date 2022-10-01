@@ -3,7 +3,7 @@
     <% c.body do %>
       <% if form.present? %>
         <%= field_container do %>
-          <%= avo_edit_field(:name, as: :text, form: form, help: 'The name of your city', required: true, compact: false) %>
+          <%= avo_edit_field(:name, as: :text, form: form, help: 'The name of your city', required: true, component_options: {stacked: false}) %>
           <%= avo_edit_field(:number, :population, form: form) %>
           <%= avo_field(:number, :population, form: form, value: 111) %>
           <%= avo_edit_field(:is_capital, as: :boolean, form: form) %>
@@ -21,8 +21,6 @@
           <%= avo_edit_field(:tiny_description, as: :markdown, form: form) %>
           <%= avo_edit_field(:status, as: :select, enum: ::City.statuses, form: form) %>
           <%= avo_edit_field(:status, as: :badge, enum: ::City.statuses, form: form) %>
-          <%#= image_tag 'https://source.unsplash.com/random' %>
-          https://source.unsplash.com/random
         <% end %>
       <% end %>
     <% end %>

@@ -28,7 +28,7 @@
             <%= render field
               .hydrate(resource: @resource, model: @resource.model, user: @resource.user, view: @view)
               .component_for_view(:edit)
-              .new(field: field, resource: @resource, index: index, form: form, displayed_in_modal: true)
+              .new(field: field, resource: @resource, index: index, form: form, compact: true)
             %>
           <% end %>
         </div>

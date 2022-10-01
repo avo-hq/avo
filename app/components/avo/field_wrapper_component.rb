@@ -4,7 +4,7 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
   # attr_reader :classes
   attr_reader :dash_if_blank
   # attr_reader :data
-  attr_reader :displayed_in_modal
+  attr_reader :compact
   # attr_reader :help
   attr_reader :field
   attr_reader :form
@@ -16,10 +16,10 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
   attr_reader :view
 
   def initialize(
-    compact: false,
+    stacked: false,
     dash_if_blank: true,
     data: {},
-    displayed_in_modal: false,
+    compact: false,
     help: nil, # do we really need it?
     field: nil,
     form: nil,
@@ -32,10 +32,10 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
   )
     @args = args
     @classes = args[:class].present? ? args[:class] : ""
-    @compact = compact
+    @stacked = stacked
     @dash_if_blank = dash_if_blank
     @data = data
-    @displayed_in_modal = displayed_in_modal
+    @compact = compact
     @help = help
     @field = field
     @form = form
@@ -47,7 +47,7 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
   end
 
   def classes(extra_classes = "")
-    "relative flex flex-col flex-grow pb-2 md:pb-0 leading-tight min-h-14 #{compact? ? "" : "md:flex-row md:items-center"} #{@classes || ""} #{extra_classes || ""} #{@field.get_html(:classes, view: view, element: :wrapper)}"
+    "relative flex flex-col flex-grow pb-2 md:pb-0 leading-tight min-h-14 #{stacked? ? "" : "md:flex-row md:items-center"} #{@classes || ""} #{extra_classes || ""} #{@field.get_html(:classes, view: view, element: :wrapper)}"
   end
 
   def style
@@ -96,7 +96,7 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
     attributes
   end
 
-  def compact?
-    @compact
+  def stacked?
+    @stacked
   end
 end
