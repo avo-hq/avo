@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "DefaultField", type: :system do
+RSpec.describe "DefaultField", type: :feature do
   describe "with a default value (team - description)" do
     context "create" do
       it "checks presence of default team description" do

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "NullableField", type: :system do
+RSpec.describe "NullableField", type: :feature do
   describe 'without input (specifying null_values: ["", "0", "null", "nil"])' do
     let!(:team) { create :team, description: nil, url: "http://google.com" }
 
@@ -92,7 +92,7 @@ RSpec.describe "NullableField", type: :system do
       it "has the projects status empty" do
         visit "/admin/resources/projects/#{project.id}/edit"
 
-        expect(find_field("project_status").value).to eq ""
+        expect(find_field("project_status").value.to_s).to eq ""
       end
     end
   end

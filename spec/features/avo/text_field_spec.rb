@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "TextField", type: :system do
+RSpec.describe "TextField", type: :feature do
   describe "with regular input" do
     let!(:user) { create :user }
     let!(:person) { create :person }
