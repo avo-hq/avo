@@ -24,14 +24,6 @@ class FishResource < Avo::BaseResource
   field :id, as: :id
   field :id, as: :number, only_on: :forms, readonly: -> { view != :new }
   field :name, as: :text, required: -> { view == :new }, help: "help text"
-  # , html: {
-  #   edit: {
-  #     wrapper: {
-  #       style: 'background: green',
-  #       classes: 'opacity-80'
-  #     }
-  #   }
-  # }
   field :user, as: :belongs_to
   field :type, as: :text, hide_on: :forms
 

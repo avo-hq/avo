@@ -2,7 +2,6 @@ class City < ApplicationRecord
   enum status: {Open: "open", Closed: "closed"}
 
   def random_image=(value)
-
   end
 
   def random_image
