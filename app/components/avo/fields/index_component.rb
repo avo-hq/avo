@@ -25,4 +25,11 @@ class Avo::Fields::IndexComponent < ViewComponent::Base
 
     helpers.resource_view_path(model: @resource.model, resource: @resource, **args)
   end
+
+  def field_wrapper_args
+    {
+      field: @field,
+      resource: @resource
+    }
+  end
 end

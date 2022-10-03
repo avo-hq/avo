@@ -1,4 +1,4 @@
-<%= index_field_wrapper field: @field, resource: @resource do %>
+<%= index_field_wrapper **field_wrapper_args do %>
   <%= link_to @field.label, helpers.resource_view_path(model: @field.value, resource: @field.target_resource)
  %>
 <% end %>

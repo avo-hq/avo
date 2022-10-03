@@ -6,6 +6,8 @@
 #  name       :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  type       :string
+#  user_id    :bigint
 #
 class Fish < ApplicationRecord
   belongs_to :user, optional: true

@@ -1,3 +1,3 @@
-<%= show_field_wrapper field: @field, resource: @resource, index: @index do %>
+<%= field_wrapper **field_wrapper_args do %>
   <%= render Avo::Fields::Common::ProgressBarComponent.new value: @field.value, display_value: @field.display_value, value_suffix: @field.value_suffix, max: @field.max, view: view %>
 <% end %>

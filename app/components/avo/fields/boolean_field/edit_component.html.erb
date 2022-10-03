@@ -1,4 +1,4 @@
-<%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, dash_if_blank: false, displayed_in_modal: @displayed_in_modal do %>
+<%= field_wrapper **field_wrapper_args, dash_if_blank: false do %>
   <div class="h-8 flex items-center">
     <%= @form.check_box @field.id,
       checked: @field.value,

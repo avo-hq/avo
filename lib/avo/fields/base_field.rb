@@ -76,6 +76,8 @@ module Avo
         @as_description = args[:as_description] || false
         @index_text_align = args[:index_text_align] || :left
         @html = args[:html] || nil
+        @view = args[:view] || nil
+        @value = args[:value] || nil
 
         @args = args
 
@@ -155,6 +157,8 @@ module Avo
       end
 
       def value(property = nil)
+        return @value if @value.present?
+
         property ||= id
 
         # Get model value
