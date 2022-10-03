@@ -1,4 +1,4 @@
-<%= index_field_wrapper field: @field, resource: @resource, flush: true do %>
+<%= index_field_wrapper **field_wrapper_args, flush: true do %>
   <%= render Avo::Fields::Common::GravatarViewerComponent.new(
     md5: @field.md5,
     default: @field.default,
