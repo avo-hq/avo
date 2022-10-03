@@ -9,15 +9,7 @@ module Generators
 
       namespace 'avo:resource'
 
-      argument :additional_fields,
-               type: :hash,
-               required: false
-      class_option :'generate-fields',
-                   type: :boolean,
-                   required: false,
-                   default: false,
-                   desc: 'Looks for fields in the model and generates them.'
-      class_option :'model-class',
+      class_option :'model_class',
                    type: :string,
                    required: false,
                    desc: 'The name of the model.'
@@ -49,16 +41,18 @@ module Generators
         end
       end
 
-      def model_class_from_args
-        class_from_args = options[:'model-class']
+      def class_from_args
+        class_from_args ||= options[:'model_class'].capitalize
+      end
 
+      def model_class_from_args
         "\n  self.model_class = ::#{class_from_args}" if class_from_args.present?
       end
 
       private
 
       def model_class
-        @model_class ||= options[:'model-class'] || singular_name
+        @model_class ||= class_from_args || singular_name
       end
 
       def model
@@ -75,12 +69,16 @@ module Generators
 
       def reflections
         @reflections ||= model.reflections.reject do |name, _|
-          reflections_to_ignore.include? name.split('_').pop
+          reflections_sufixes_to_ignore.include?(name.split('_').pop) || reflections_to_ignore.include?(name)
         end
       end
 
-      def reflections_to_ignore
+      def reflections_sufixes_to_ignore
         %w[blob blobs tags]
+      end
+
+      def reflections_to_ignore
+        %w[taggings]
       end
 
       def attachments
@@ -90,7 +88,7 @@ module Generators
       end
 
       def tags
-        @tags ||= reflections.select do |_, reflection|
+        @tags ||= reflections.select do |name, reflection|
           reflection.options[:as] == :taggable
         end
       end
@@ -104,21 +102,16 @@ module Generators
       end
 
       def generate_fields
-        return unless options[:'generate-fields'] || additional_fields.present?
-
-        if options[:'generate-fields']
-          if model.present?
-            generate_params_from_model
-            generate_select_from_model
-            generate_attachements_from_model
-            generate_associations_from_model
-            generate_tags_from_model
-          else
-            puts "Can't generate fields from model. '#{model_class}.rb' not found!"
-          end
+        if model.blank?
+          puts "Can't generate fields from model. '#{model_class}.rb' not found!"
+          return
         end
 
-        fields.merge generate_additional_params_from_argument if additional_fields.present?
+        fields_from_model_db_columns
+        fields_from_model_enums
+        fields_from_model_attachements
+        fields_from_model_associations
+        fields_from_model_tags
 
         generated_fields_template if fields.present?
       end
@@ -140,13 +133,13 @@ module Generators
         "field :#{name}, as: :#{type}#{options}"
       end
 
-      def generate_tags_from_model
+      def fields_from_model_tags
         tags.each do |name, _|
           fields[(remove_last_word_from name).pluralize] = { field: 'tags' }
         end
       end
 
-      def generate_associations_from_model
+      def fields_from_model_associations
         associations.each do |name, association|
           fields[name] = associations_mapping[association.class]
 
@@ -156,7 +149,7 @@ module Generators
         end
       end
 
-      def generate_attachements_from_model
+      def fields_from_model_attachements
         attachments.each do |name, attachment|
           fields[remove_last_word_from name] = attachments_mapping[attachment.class]
         end
@@ -171,7 +164,7 @@ module Generators
         snake_case_string.join('_')
       end
 
-      def generate_select_from_model
+      def fields_from_model_enums
         model.defined_enums.each_key do |enum|
           fields[enum] = {
             field: 'select',
@@ -182,45 +175,10 @@ module Generators
         end
       end
 
-      def generate_params_from_model
+      def fields_from_model_db_columns
         model_db_columns.each do |name, data|
           fields[name] = field(name, data.type)
         end
-      end
-
-      # TODO: check things here
-      def generate_additional_params_from_argument
-        result = {}
-
-        additional_fields.each do |name, type|
-          result[name] = if avo_fields.include? type
-                           { field: type }
-                         else
-                           field(name, type)
-                         end
-        end
-
-        result
-      end
-
-      # TODO: check things here
-      def avo_fields
-        avo_fields = []
-
-        avo_fields_files = Dir["#{File.join(ENGINE_PATH, 'lib', 'avo', 'app', 'fields')}/*.rb"]
-
-        avo_fields_files.each do |file|
-          filename = file.match('[^/]*$').to_s
-          if filename.include? 'field'
-            avo_fields.push(filename.first(-9))
-          else
-            avo_fields.push(filename.first(-3))
-          end
-        end
-
-        avo_fields.delete('')
-
-        avo_fields
       end
 
       def field(name, type)
