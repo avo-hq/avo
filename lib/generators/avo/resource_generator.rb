@@ -42,7 +42,7 @@ module Generators
       end
 
       def class_from_args
-        @class_from_args ||= options[:'model_class'].capitalize
+        @class_from_args ||= options[:'model_class']&.capitalize
       end
 
       def model_class_from_args
