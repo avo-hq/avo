@@ -12,7 +12,7 @@
     data-association="<%= @field.id %>"
     data-association-class="<%= @field&.target_resource&.model_class || nil %>"
   >
-    <%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal, help: @field.polymorphic_help || ''  do %>
+    <%= field_wrapper **field_wrapper_args, help: @field.polymorphic_help || '' do %>
       <%= @form.select @field.type_input_foreign_key, @field.types.map { |type| [::Avo::App.get_resource_by_model_name(type.to_s).name, type.to_s] },
       {
         value: @field.value,
@@ -40,7 +40,7 @@
         data-belongs-to-field-target="type"
         data-type="<%= type %>"
       >
-        <%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal, label: ::Avo::App.get_resource_by_model_name(type.to_s).name do %>
+        <%= field_wrapper **field_wrapper_args, label: ::Avo::App.get_resource_by_model_name(type.to_s).name do %>
           <% if @field.searchable %>
             <%= render Avo::Fields::BelongsToField::AutocompleteComponent.new form: @form,
               disabled: disabled,
@@ -79,7 +79,7 @@
     <% end %>
   </div>
 <% else %>
-  <%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal do %>
+  <%= field_wrapper **field_wrapper_args do %>
     <% if @field.searchable %>
       <%= render Avo::Fields::BelongsToField::AutocompleteComponent.new form: @form,
         field: @field,

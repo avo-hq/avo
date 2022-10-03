@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Ordering", type: :system do
+RSpec.describe "Ordering", type: :feature do
   let!(:course) { create :course }
   let!(:links) { create_list :course_link, 4, course: course }
   let(:default_order) { links.map(&:id) }

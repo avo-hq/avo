@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "HelpText", type: :system do
+RSpec.describe "HelpText", type: :feature do
   describe "with regular input" do
     let!(:user) { create :user }
 
