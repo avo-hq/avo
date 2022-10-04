@@ -93,7 +93,7 @@ module Avo
       def initialize(user = nil, record = nil, policy_class: nil)
         @user = user
         @record = record
-        @policy_class = policy_class || Pundit.policy(user, record)&.class
+        set_policy_class(policy_class)
       end
 
       def authorize(action, **args)
@@ -108,6 +108,12 @@ module Avo
 
       def set_user(user)
         @user = user
+
+        self
+      end
+
+      def set_policy_class(policy_class)
+        @policy_class = policy_class || Pundit.policy(@user, @record)&.class
 
         self
       end

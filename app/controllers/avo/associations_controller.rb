@@ -21,6 +21,7 @@ module Avo
       @resource = @related_resource
       @parent_model = @parent_resource.class.find_scope.find(params[:id])
       @parent_resource.hydrate(model: @parent_model)
+      set_authorization_policy
       @query = @authorization.apply_policy @parent_model.public_send(params[:related_name])
       @association_field = @parent_resource.get_field params[:related_name]
 
@@ -134,6 +135,13 @@ module Avo
       if @authorization.has_method?(method.to_sym)
         @authorization.authorize_action method.to_sym
       end
+    end
+
+    # Sets authorization service policy class if defined.
+    # If not defined, it will fall back on the record's model class default policy, instead of the parent's
+    def set_authorization_policy
+      @authorization.set_record(@model)
+      @authorization.set_policy_class(@resource.authorization_policy)
     end
 
     def authorize_index_action
