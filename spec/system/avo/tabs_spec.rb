@@ -10,7 +10,7 @@ RSpec.describe "Tabs", type: :system do
 
         expect(find("table thead").text).to eq "ID\nAVATAR\nFIRST NAME\nLAST NAME\nUSER EMAIL\nIS ACTIVE\nCV\nIS ADMIN\nROLES\nBIRTHDAY\nIS WRITER"
         within find("tr[data-resource-id='#{user.id}']") do
-          expect(find_all("table tbody tr td")[11].text).to eq "Wednesday, 10 February 1988"
+          expect(find_all("table tbody tr td")[10].text).to eq "Wednesday, 10 February 1988"
         end
       end
     end
