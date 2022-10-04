@@ -83,6 +83,8 @@ group :development do
   gem 'htmlbeautifier'
 
   gem "hotwire-livereload", "~> 1.1"
+
+  gem 'brakeman'
 end
 
 group :development, :test do

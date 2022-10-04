@@ -19,6 +19,7 @@ class Avo::BaseComponent < ViewComponent::Base
   # Fetch the resource and hydrate it with the model
   def relation_resource
     model = params[:via_resource_class] || params[:via_relation_class]
+    puts ["model->", model].inspect
     model_klass = model.safe_constantize
 
     resource = ::Avo::App.get_resource_by_model_name model_klass

@@ -98,6 +98,8 @@ module Avo
     end
 
     def apply_has_many_scope
+      raise 'here'
+      puts ["parent, params->", parent, params].inspect
       scope = parent.send(params[:via_association_id])
 
       Avo::Hosts::SearchScopeHost.new(block: @resource.search_query, params: params, scope: scope).handle
