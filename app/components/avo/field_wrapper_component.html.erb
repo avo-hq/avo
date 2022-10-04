@@ -2,7 +2,7 @@
   class: classes,
   style: style,
   data: data do %>
-  <div class="h-full pt-4 md:pt-0 md:h-14 flex self-start items-center text-slate-800">
+  <div class="h-full <% if stacked? %> md:pt-4 <% else %> md:pt-0 md:h-14 <% end %> pt-4 flex self-start items-center text-slate-800">
     <div class="<% if compact %> md:w-48 <% else %> md:w-64 px-6 md:px-6 <% end %> w-48 flex uppercase font-semibold text-gray-500 text-sm" data-slot="label">
       <% if form.present? %>
         <%= form.label field.id, label %>

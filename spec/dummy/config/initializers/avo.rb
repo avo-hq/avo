@@ -28,7 +28,7 @@ Avo.configure do |config|
   config.id_links_to_resource = true
   config.full_width_container = true
   config.buttons_on_form_footers = false
-  config.resource_controls_placement = ENV["AVO_RESOURCE_CONTROLS_PLACEMENT"]&.to_sym || :right
+  # config.resource_controls_placement = ENV["AVO_RESOURCE_CONTROLS_PLACEMENT"]&.to_sym || :right
   config.resource_default_view = :show
   config.search_debounce = 300
 
