@@ -31,8 +31,8 @@ jobs:
     - name: Check out code
       uses: actions/checkout@v1
     - run: pwd && ls -la
-    - name: Brakeman
-      uses: devmasx/brakeman-linter-action@v1.0.0
-      env:
-        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        # PROJECT_PATH: /home/runner/work/avo/avo
+    - name: brakeman
+      uses: reviewdog/action-brakeman@v2
+      with:
+        brakeman_version: 4.8.2
+        reporter: github-pr-review # Default is github-pr-check
