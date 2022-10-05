@@ -1,4 +1,4 @@
-<%= field_wrapper  **field_wrapper_args, full_width: true do %>
+<%= field_wrapper **field_wrapper_args, full_width: true do %>
   <div data-controller="code-field" style="--height: <%= @field.height %>">
     <%= text_area_tag @field.id, @field.value,
       class: helpers.input_classes('w-full'),
