@@ -33,4 +33,4 @@ jobs:
       uses: devmasx/brakeman-linter-action@v1.0.0
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        PROJECT_PATH: ./
+        PROJECT_PATH: /home/runner/work/avo/avo
