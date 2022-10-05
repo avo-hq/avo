@@ -117,6 +117,16 @@ module Avo
           return association_name if name == "#{association_name}_attachment" || name == "#{association_name}_attachments"
         end
       end
+
+      def get_available_models
+        ApplicationRecord.descendants
+      end
+
+      def valid_model_class(model_class)
+        get_available_models.find do |m|
+          m.to_s == model_class
+        end
+      end
     end
 
     def initialize
