@@ -38,5 +38,5 @@ jobs:
     - name: brakeman
       uses: reviewdog/action-brakeman@v2
       with:
-        brakeman_version: 4.8.2
+        brakeman_version: 5.3.1
         reporter: github-pr-review # Default is github-pr-check
