@@ -28,8 +28,8 @@ jobs:
   brakeman:
     runs-on: ubuntu-latest
     steps:
-      - name: Brakeman code scanning
-        uses: artplan1/brakeman-action@v1.2.1
-        with:
-          flags: "--color"
+      - name: Brakeman
+        uses: devmasx/brakeman-linter-action@v1.0.0
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
