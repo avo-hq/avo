@@ -101,7 +101,13 @@ module Generators
         @fields ||= {}
       end
 
+      def invoked_by_model_generator?
+        @options.dig('from_model_generator')
+      end
+
       def generate_fields
+        return generate_fields_from_args if invoked_by_model_generator?
+
         if model.blank?
           puts "Can't generate fields from model. '#{model_class}.rb' not found!"
           return
@@ -113,10 +119,12 @@ module Generators
         fields_from_model_associations
         fields_from_model_tags
 
-        generated_fields_template if fields.present?
+        generated_fields_template
       end
 
       def generated_fields_template
+        return if fields.blank?
+
         fields_string = "\n  # Generated fields from model"
 
         fields.each do |field_name, field_options|
@@ -131,6 +139,16 @@ module Generators
 
       def field_string(name, type, options)
         "field :#{name}, as: :#{type}#{options}"
+      end
+
+      def generate_fields_from_args
+        @args.each do |arg|
+          name, type = arg.split(':')
+          type = 'string' if type.blank?
+          fields[name] = field(name, type.to_sym)
+        end
+
+        generated_fields_template
       end
 
       def fields_from_model_tags
@@ -177,6 +195,7 @@ module Generators
 
       def fields_from_model_db_columns
         model_db_columns.each do |name, data|
+          byebug
           fields[name] = field(name, data.type)
         end
       end

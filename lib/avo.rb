@@ -1,6 +1,7 @@
 require "zeitwerk"
 require_relative "avo/version"
 require_relative "avo/engine" if defined?(Rails)
+require 'avo/railtie' if defined?(Rails)
 
 loader = Zeitwerk::Loader.for_gem
 loader.inflector.inflect(
