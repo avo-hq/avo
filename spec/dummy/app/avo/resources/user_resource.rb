@@ -17,19 +17,29 @@ class UserResource < Avo::BaseResource
   self.devise_password_optional = true
 
   field :id, as: :id, link_to_resource: true
-  field :email, as: :gravatar, link_to_resource: true, as_avatar: :circle
+  field :email, as: :gravatar, link_to_resource: true, as_avatar: :circle, only_on: :index
   heading "User Information"
   field :first_name, as: :text, placeholder: "John"
   field :last_name, as: :text, placeholder: "Doe"
   field :email, as: :text, name: "User Email", required: true, protocol: :mailto
-  field :active, as: :boolean, name: "Is active", show_on: :show
   field :cv, as: :file, name: "CV"
   field :is_admin?, as: :boolean, name: "Is admin", only_on: :index
   field :roles, as: :boolean_group, options: {admin: "Administrator", manager: "Manager", writer: "Writer"}
   field :roles, as: :text, hide_on: :all, as_description: true do |model, resource, view, field|
     "This user has the following roles: #{model.roles.select { |key, value| value }.keys.join(", ")}"
   end
-  field :birthday,
+
+  field :password, as: :password, name: "User Password", required: false, except_on: :forms, help: 'You may verify the password strength <a href="http://www.passwordmeter.com/" target="_blank">here</a>.'
+  field :password_confirmation, as: :password, name: "Password confirmation", required: false, only_on: :new
+
+  heading '<div class="underline uppercase font-bold">DEV</div>', as_html: true
+  field :team_id, as: :hidden, default: 0 # For testing purposes
+
+  sidebar do
+    field :email, as: :gravatar, link_to_resource: true, as_avatar: :circle, only_on: :show
+    field :active, as: :boolean, name: "Is active", show_on: :show
+    field :is_admin?, as: :boolean, name: "Is admin", only_on: :index
+    field :birthday,
     as: :date,
     first_day_of_week: 1,
     picker_format: "F J Y",
@@ -37,22 +47,19 @@ class UserResource < Avo::BaseResource
     placeholder: "Feb 24th 1955",
     required: true,
     only_on: [:index, :show]
-  field :is_writer, as: :text, format_using: ->(value) { value.truncate 3 }, sortable: ->(query, direction) {
-    # Order by something else completely, just to make a test case that clearly and reliably does what we want.
-    query.order(id: direction)
-  }, hide_on: :edit do |model, resource, view, field|
-    model.posts.to_a.size > 0 ? "yes" : "no"
-  end
-
-  field :password, as: :password, name: "User Password", required: false, except_on: :forms, help: 'You may verify the password strength <a href="http://www.passwordmeter.com/" target="_blank">here</a>.'
-  field :password_confirmation, as: :password, name: "Password confirmation", required: false, only_on: :new
-
-  heading '<div class="underline uppercase font-bold">DEV</div>', as_html: true
-  field :custom_css, as: :code, theme: "dracula", language: "css", help: "This enables you to edit the user's custom styles.", height: "250px"
-  field :team_id, as: :hidden, default: 0 # For testing purposes
-
-  field :outside_link, as: :text, only_on: [:show], format_using: ->(url) { link_to("hey", url, target: "_blank") } do |model, *args|
-    main_app.hey_url
+    field :is_writer, as: :text,
+    format_using: ->(value) { value.truncate 3 },
+    sortable: ->(query, direction) {
+      # Order by something else completely, just to make a test case that clearly and reliably does what we want.
+      query.order(id: direction)
+    },
+    hide_on: :edit do |model, resource, view, field|
+      model.posts.to_a.size > 0 ? "yes" : "no"
+    end
+    field :outside_link, as: :text, only_on: [:show], format_using: ->(url) { link_to("hey", url, target: "_blank") } do |model, *args|
+      main_app.hey_url
+    end
+    field :custom_css, as: :code, theme: "dracula", language: "css", help: "This enables you to edit the user's custom styles.", height: "250px"
   end
 
   tabs do

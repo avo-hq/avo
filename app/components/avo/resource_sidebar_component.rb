@@ -24,8 +24,8 @@ class Avo::ResourceSidebarComponent < ViewComponent::Base
     ).component_for_view(view).new(
       field: field,
       resource: resource,
-      form: form
+      form: form,
+      stacked: true
     )
   end
-
 end
