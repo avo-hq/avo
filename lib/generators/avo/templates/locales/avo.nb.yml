@@ -1,4 +1,4 @@
-nb-NO:
+nb:
   avo:
     dashboard: 'Dashboard'
     dashboards: 'Dashboards'
@@ -41,6 +41,10 @@ nb-NO:
       zero: 'ingen %{item}'
       one: 'en %{item}'
       other: '%{count} %{item}'
+    x_items_more:
+      zero: 'ingen flere elementer'
+      one: 'ett element til'
+      other: '%{count} flere elementer'
     are_you_sure: 'Er du sikker?'
     filters: 'Filter'
     per_page: 'Per side'
@@ -61,6 +65,7 @@ nb-NO:
     and_x_other_resources: 'og %{count} andre ressurser'
     go_back: 'Gå tilbake'
     home: 'Hjem'
+    new: 'ny'
     attach_item: 'Legg til %{item}'
     choose_item: 'Velge %{item}'
     create_new_item: 'Lag ny %{item}'
@@ -74,6 +79,10 @@ nb-NO:
         zero: 'filer'
         one: 'fil'
         other: 'filer'
+      people:
+        zero: 'personer'
+        one: 'person'
+        other: 'personer'
     resource_translations:
       user:
         zero: 'brukere'
@@ -81,13 +90,29 @@ nb-NO:
         other: 'brukere'
     reset_filters: 'Nullstill filter'
     not_authorized: 'Du er ikke autorisert til å gjøre denne handlingen.'
-    search_placeholder: 'Søk'
-    search_cancel_button: 'Avbryt'
+    search:
+      placeholder: 'Søk'
+      cancel_button: 'Avbryt'
     sign_out: 'Logg ut'
-    tools: Redskapene
-    empty_dashboard_message: Legg til kort i dette dashbordet
-    no_cards_present: Ingen kort til stede
-    no_options_available: Ingen tilgjengelige alternativer
-    x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> poster valgt på denne siden fra totalt <span class="font-bold text-gray-700">%{count}</span>
-    x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> poster valgt fra alle sider
-
+    failed: 'Feilet'
+    failed_to_load: 'Lasting feilet'
+    key_value_field:
+      key: 'Nøkkel'
+      value: 'Verdi'
+      add_row: 'Legg til rad'
+      delete_row: 'Slett rad'
+    was_successfully_created: 'ble opprettet'
+    was_successfully_updated: 'ble oppdatert'
+    clear_value: 'Nullstill verdi'
+    tools: 'Redskapene'
+    order:
+      reorder_record: 'Sorter elementer'
+      higher: 'Flytt elementet høyere'
+      lower: 'Flytt elementet lavere'
+      to_top: 'Flytt elementet til toppen'
+      to_bottom: 'Flytt elementet til bunnen'
+    empty_dashboard_message: 'Legg til kort i dette dashbordet'
+    no_cards_present: 'Ingen kort til stede'
+    no_options_available: 'Ingen tilgjengelige alternativer'
+    x_records_selected_from_a_total_of_x_html: '<span class="font-bold text-gray-700">%{selected}</span> poster valgt på denne siden fra totalt <span class="font-bold text-gray-700">%{count}</span>'
+    x_records_selected_from_all_pages_html: '<span class="font-bold text-gray-700">%{count}</span> poster valgt fra alle sider'

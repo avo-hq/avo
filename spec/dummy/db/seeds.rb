@@ -20,6 +20,7 @@ TeamMembership.delete_all
 Team.delete_all
 Comment.delete_all
 Post.delete_all
+Product.delete_all
 # ProjectUser.delete_all
 Project.delete_all
 User.delete_all
@@ -198,4 +199,38 @@ puts "Creating courses"
 courses = FactoryBot.create_list(:course, 150)
 courses.each do |course|
   FactoryBot.create_list(:course_link, 3, course: course)
+end
+
+puts "Creating products"
+
+products = Product.create([
+  {
+    title: 'iPod',
+    description: "1000 songs in your pocket",
+    price: "250",
+    category: "Music players",
+  },
+  {
+    title: 'MacBook Pro',
+    description: "Supercharged for pros",
+    price: "2250",
+    category: "Computers",
+  },
+  {
+    title: 'Apple watch',
+    description: "A heathly leap ahead",
+    price: "750",
+    category: "Wearables",
+  },
+  {
+    title: 'iPhone',
+    description: "A magical new way to interact with iPhone",
+    price: "999",
+    category: "Phones",
+  },
+])
+
+['ipod.jpg', 'macbook.jpg', 'watch.jpg', 'iphone.jpg'].each_with_index do |img, index|
+  file = Rails.root.join('db', 'seed_files', img)
+  products[index].image.attach io: file.open, filename: img
 end

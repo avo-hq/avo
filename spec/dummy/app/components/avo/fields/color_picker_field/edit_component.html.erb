@@ -1,4 +1,4 @@
-<%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal do %>
+<%= field_wrapper **field_wrapper_args do %>
   <%= @form.color_field @field.id,
     class: helpers.input_classes('w-full py-0', has_error: @field.model_errors.include?(@field.id)).gsub('py-2', ''),
     placeholder: @field.placeholder,

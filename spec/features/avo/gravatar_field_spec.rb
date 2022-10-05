@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "GravatarFields", type: :system do
+RSpec.describe "GravatarFields", type: :feature do
   describe "without gravatar (default image)" do
     let!(:user) { create :user }
 

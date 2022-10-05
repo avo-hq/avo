@@ -46,7 +46,11 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def destroy_path
-    helpers.resource_path(model: @resource.model, resource: @resource)
+    if params[:via_resource_class].present?
+      helpers.resource_path(model: @resource.model, resource: @resource, referrer: back_path)
+    else
+      helpers.resource_path(model: @resource.model, resource: @resource)
+    end
   end
 
   def authorize_association_for(policy_method)

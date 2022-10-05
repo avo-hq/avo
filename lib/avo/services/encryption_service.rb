@@ -40,7 +40,7 @@ module Avo
       end
 
       def secret_key_base
-        ENV['SECRET_KEY_BASE'] || Rails.application.credentials.secret_key_base || Rails.application.secrets.secret_key_base
+        ENV["SECRET_KEY_BASE"] || Rails.application.credentials.secret_key_base || Rails.application.secrets.secret_key_base
       end
     end
   end

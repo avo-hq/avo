@@ -13,7 +13,7 @@ module Avo
 
     def initialize(**args)
       # Set the visibility
-      show_on :show
+      show_on Avo.configuration.resource_default_view
 
       show_on args[:show_on] if args[:show_on].present?
       hide_on args[:hide_on] if args[:hide_on].present?

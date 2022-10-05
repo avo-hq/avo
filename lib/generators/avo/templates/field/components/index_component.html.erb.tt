@@ -1,3 +1,3 @@
-<%%= index_field_wrapper field: @field, resource: @resource do %>
+<%%= index_field_wrapper **field_wrapper_args do %>
   <%%= @field.value %>
 <%% end %>

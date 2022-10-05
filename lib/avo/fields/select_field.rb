@@ -30,6 +30,7 @@ module Avo
           if display_value
             options.invert
           else
+            # We need to use the label attribute as the option value because Rails casts it like that
             options.map { |label, value| [label, label] }.to_h
           end
         elsif display_value
