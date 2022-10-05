@@ -60,6 +60,7 @@ module Avo
     )
 
     config.generators do |g|
+      g.orm :avo_resource
       g.test_framework :rspec, view_specs: false
     end
 
