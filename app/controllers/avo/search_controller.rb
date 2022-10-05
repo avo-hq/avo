@@ -93,8 +93,7 @@ module Avo
         reflection_class = BaseResource.valid_model_class params[:via_reflection_class]
 
         grandparent = parent_resource_class.find params[:via_parent_resource_id]
-        parent = params[:via_reflection_class].safe_constantize.new(
-        # parent = reflection_class.new(
+        parent = reflection_class.new(
           params[:via_relation] => grandparent
         )
       end
