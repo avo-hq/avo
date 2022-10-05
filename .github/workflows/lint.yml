@@ -29,6 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Brakeman code scanning
-        uses: standardnotes/brakeman-action@v1.0.0
+        uses: artplan1/brakeman-action@v1.2.1
         with:
-          options: "--quiet"
+          flags: "--color"
+
