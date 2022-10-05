@@ -28,9 +28,9 @@ jobs:
   brakeman:
     runs-on: ubuntu-latest
     steps:
-    - run: pwd && ls -la
     - name: Check out code
       uses: actions/checkout@v1
+    - run: pwd && ls -la
     - name: Brakeman
       uses: devmasx/brakeman-linter-action@v1.0.0
       env:
