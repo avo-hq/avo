@@ -20,7 +20,6 @@ env:
   POSTGRES_PORT: 5432
   BUNDLE_PATH_RELATIVE_TO_CWD: true
   AVO_LICENSE_KEY: license_123
-  AVO_RESOURCE_CONTROLS_PLACEMENT: left
 
 jobs:
   feature_specs:

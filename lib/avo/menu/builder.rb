@@ -57,7 +57,7 @@ class Avo::Menu::Builder
   # Add all the resources
   def all_resources(**args)
     Avo::App.resources_for_navigation.each do |res|
-      resource res.model_class, **args
+      resource res.route_key, **args
     end
   end
 

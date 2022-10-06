@@ -3,8 +3,8 @@
     <% c.body do %>
       <% if form.present? %>
         <%= field_container do %>
-          <%= avo_edit_field(:name, as: :text, form: form, help: 'The name of your city', required: true, component_options: {stacked: false}) %>
-          <%= avo_edit_field(:number, :population, form: form) %>
+          <%= avo_edit_field(:name, as: :text, form: form, help: "The name of your city", required: true, component_options: {stacked: true}) %>
+          <%= avo_edit_field(:number, :population, form: form, help: "The population of the city.") %>
           <%= avo_edit_field(:is_capital, as: :boolean, form: form) %>
           <%= avo_edit_field(:features, as: :key_value, form: form) %>
           <%= avo_show_field(:metadata, as: :code, form: form) %>
