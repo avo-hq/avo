@@ -15,7 +15,7 @@
           <%= avo_edit_field(:description, as: :trix, form: form, component_options: {resource_name: 'cities', resource_id: @resource.model&.id}) %>
           <%= avo_edit_field(:tiny_description, as: :markdown, form: form) %>
           <%= avo_edit_field(:status, as: :select, enum: ::City.statuses, form: form) %>
-          <%= avo_edit_field(:status, as: :badge, enum: ::City.statuses, form: form) %>
+          <%= avo_show_field(:status, as: :badge, enum: ::City.statuses, form: form) %>
         <% end %>
       <% end %>
     <% end %>

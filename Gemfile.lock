@@ -122,6 +122,7 @@ GEM
     bindex (0.8.1)
     bootsnap (1.13.0)
       msgpack (~> 1.2)
+    brakeman (5.3.1)
     breadcrumbs_on_rails (4.1.0)
       railties (>= 5.0)
     builder (3.2.4)
@@ -431,6 +432,7 @@ DEPENDENCIES
   awesome_print
   aws-sdk-s3
   bootsnap (>= 1.4.2)
+  brakeman
   breadcrumbs_on_rails
   bump
   bundler-integrity (~> 1.0)
