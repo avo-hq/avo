@@ -86,9 +86,7 @@ module Generators
       end
 
       def tags
-        @tags ||= reflections.select do |name, reflection|
-          reflection.options[:as] == :taggable
-        end
+        @tags ||= reflections.select { |_, reflection| reflection.options[:as] == :taggable }
       end
 
       def associations
