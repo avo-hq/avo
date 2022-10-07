@@ -9,6 +9,7 @@ class Avo::SidebarBuilder
 
   delegate :field, to: :items_holder
   delegate :items, to: :items_holder
+  delegate :heading, to: :items_holder
 
   def initialize(name: nil, **args)
     @sidebar = Avo::Sidebar.new(**args)

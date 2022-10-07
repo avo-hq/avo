@@ -2,7 +2,6 @@
 
 class Avo::ResourceSidebarComponent < ViewComponent::Base
   attr_reader :resource
-  attr_reader :fields
   attr_reader :params
   attr_reader :view
   attr_reader :form
@@ -15,17 +14,9 @@ class Avo::ResourceSidebarComponent < ViewComponent::Base
     @form = form
   end
 
-  def render_field(field)
-    render field.hydrate(
-      resource: resource,
-      model: resource.model,
-      user: resource.user,
-      view: view
-    ).component_for_view(view).new(
-      field: field,
-      resource: resource,
-      form: form,
-      stacked: true
-    )
+  def fields
+    @fields.filter do |field|
+      field.visible_on? view
+    end
   end
 end
