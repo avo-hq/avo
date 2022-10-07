@@ -1,22 +1,20 @@
-# frozen_string_literal: true
-
-require_relative 'named_base_generator'
+require_relative "named_base_generator"
 
 module Generators
   module Avo
     class ResourceGenerator < NamedBaseGenerator
-      source_root File.expand_path('templates', __dir__)
+      source_root File.expand_path("templates", __dir__)
 
-      namespace 'avo:resource'
+      namespace "avo:resource"
 
-      class_option :'model_class',
+      class_option :"model_class",
                    type: :string,
                    required: false,
-                   desc: 'The name of the model.'
+                   desc: "The name of the model."
 
       def create
-        template 'resource/resource.tt', "app/avo/resources/#{resource_name}.rb"
-        template 'resource/controller.tt', "app/controllers/avo/#{controller_name}.rb"
+        template "resource/resource.tt", "app/avo/resources/#{resource_name}.rb"
+        template "resource/controller.tt", "app/controllers/avo/#{controller_name}.rb"
       end
 
       def resource_class
