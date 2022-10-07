@@ -124,8 +124,13 @@ module Avo
 
       def valid_model_class(model_class)
         get_available_models.find do |m|
-          m.to_s == model_class
+          m.to_s == model_class.to_s
         end
+      end
+
+      def ewe
+
+
       end
     end
 
