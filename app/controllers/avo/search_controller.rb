@@ -90,10 +90,10 @@ module Avo
       # Example usage: Got to a project, create a new review, and search for a user.
       if parent.blank? && params[:via_parent_resource_id].present? && params[:via_parent_resource_class].present? && params[:via_relation].present?
         parent_resource_class = BaseResource.valid_model_class params[:via_parent_resource_class]
+
         reflection_class = BaseResource.valid_model_class params[:via_reflection_class]
 
         grandparent = parent_resource_class.find params[:via_parent_resource_id]
-
         parent = reflection_class.new(
           params[:via_relation] => grandparent
         )
