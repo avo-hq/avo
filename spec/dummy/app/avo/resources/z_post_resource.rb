@@ -1,4 +1,4 @@
-class ZhotoPostResource < Avo::BaseResource
+class ZPostResource < Avo::BaseResource
   self.title = :name
   self.search_query = -> do
     scope.ransack(id_eq: params[:q], name_cont: params[:q], body_cont: params[:q], m: "or").result(distinct: false)

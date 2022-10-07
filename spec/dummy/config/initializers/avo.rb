@@ -95,7 +95,7 @@ Avo.configure do |config|
       end
 
       group "Blog", collapsable: true do
-        resource :zhoto_posts
+        # resource :z_posts
         resource :posts
         resource :comments
         resource :photo_comments, visible: -> do
