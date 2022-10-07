@@ -17,7 +17,7 @@ class Avo::BaseComponent < ViewComponent::Base
   end
 
   # Fetch the resource and hydrate it with the model
-  def relation_resource
+  def association_resource
     resource = ::Avo::App.get_resource(params[:via_resource_class])
     model_class_name = params[:via_relation_class] || resource.model_class
 
