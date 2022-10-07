@@ -141,8 +141,9 @@ module Avo
           # find the record
           via_resource = ::Avo::App.get_resource_by_model_name(params[:via_relation_class]).dup
           @related_record = via_resource.model_class.find params[:via_resource_id]
+          association_name = BaseResource.valid_association_name(@model, params[:via_relation])
 
-          @model.send(params[:via_relation]) << @related_record
+          @model.send(association_name) << @related_record
         end
       end
 
@@ -414,9 +415,10 @@ module Avo
       # If this is an associated record return to the association show page
       if is_associated_record?
         parent_resource = ::Avo::App.get_resource_by_model_name(params[:via_relation_class]).dup
+        association_name = BaseResource.valid_association_name(@model, params[:via_relation])
 
         return resource_view_path(
-          model: @model.send(params[:via_relation]),
+          model: @model.send(association_name),
           resource: parent_resource,
           resource_id: params[:via_resource_id]
         )
