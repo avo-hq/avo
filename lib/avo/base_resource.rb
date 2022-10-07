@@ -127,11 +127,6 @@ module Avo
           m.to_s == model_class.to_s
         end
       end
-
-      def ewe
-
-
-      end
     end
 
     def initialize
