@@ -191,7 +191,6 @@ module Generators
 
       def fields_from_model_db_columns
         model_db_columns.each do |name, data|
-          byebug
           fields[name] = field(name, data.type)
         end
       end
