@@ -85,7 +85,7 @@ RSpec.feature "SkipShowView", type: :feature do
       expect(current_path).to eql "/admin/resources/courses/#{course.id}/edit"
 
       # Delete
-      visit "/admin/resources/course_links/#{course.links.first.id}/edit?via_resource_class=Course&via_resource_id=#{course.id}"
+      visit "/admin/resources/course_links/#{course.links.first.id}/edit?via_resource_class=CourseResource&via_resource_id=#{course.id}"
 
       click_on "Delete"
 
@@ -172,10 +172,10 @@ RSpec.feature "SkipShowView", type: :feature do
       expect(current_path).to eql "/admin/resources/courses/#{course.id}"
 
       # Delete
-      visit "/admin/resources/course_links/#{course.links.first.id}/edit?via_resource_class=Course&via_resource_id=#{course.id}"
+      visit "/admin/resources/course_links/#{course.links.first.id}/edit?via_resource_class=CourseResource&via_resource_id=#{course.id}"
       expect(page).to_not have_selector("[data-control='destroy']")
 
-      visit "/admin/resources/course_links/#{course.links.first.id}?via_resource_class=Course&via_resource_id=#{course.id}"
+      visit "/admin/resources/course_links/#{course.links.first.id}?via_resource_class=CourseResource&via_resource_id=#{course.id}"
       click_on "Delete"
 
       expect(page).to have_text("Record destroyed")

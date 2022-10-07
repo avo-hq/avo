@@ -59,14 +59,14 @@ RSpec.feature "HasManyField", type: :feature do
 
         ## Table Rows
         # show link
-        show_path = "/admin/resources/posts/#{post.id}?via_resource_class=User&via_resource_id=#{user.id}"
+        show_path = "/admin/resources/posts/#{post.id}?via_resource_class=UserResource&via_resource_id=#{user.id}"
         expect(page).to have_css("a[data-control='show'][href='#{show_path}']")
 
         # id field show link
-        expect(field_element_by_resource_id("id", post.id)).to have_css("a[href='/admin/resources/posts/#{post.id}?via_resource_class=User&via_resource_id=#{user.id}']")
+        expect(field_element_by_resource_id("id", post.id)).to have_css("a[href='/admin/resources/posts/#{post.id}?via_resource_class=UserResource&via_resource_id=#{user.id}']")
 
         # edit link
-        edit_path = "/admin/resources/posts/#{post.id}/edit?via_resource_class=User&via_resource_id=#{user.id}"
+        edit_path = "/admin/resources/posts/#{post.id}/edit?via_resource_class=UserResource&via_resource_id=#{user.id}"
         expect(page).to have_selector("[data-component='resources-index'] a[data-control='edit'][data-resource-id='#{post.id}'][href='#{edit_path}']")
 
         # detach form
@@ -136,7 +136,7 @@ RSpec.feature "HasManyField", type: :feature do
       expect(link.link).to eq "https://google.com"
       expect(link.course.id).to eq course.id
 
-      visit "/admin/resources/course_links/#{link.id}/edit?via_resource_class=Course&via_resource_id=#{course.id}"
+      visit "/admin/resources/course_links/#{link.id}/edit?via_resource_class=CourseResource&via_resource_id=#{course.id}"
       fill_in "course_link_link", with: "https://apple.com"
       click_on "Save"
       link.reload
