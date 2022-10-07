@@ -10,7 +10,6 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
   attr_reader :view
 
   def initialize(
-    stacked: false,
     dash_if_blank: true,
     data: {},
     compact: false,
@@ -20,13 +19,13 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
     full_width: false,
     label: nil, # do we really need it?
     resource: nil,
+    stacked: false,
     style: "",
     view: :show,
     **args
   )
     @args = args
     @classes = args[:class].present? ? args[:class] : ""
-    @stacked = stacked
     @dash_if_blank = dash_if_blank
     @data = data
     @compact = compact
@@ -36,6 +35,7 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
     @full_width = full_width
     @label = label
     @resource = resource
+    @stacked = stacked
     @style = style
     @view = view
   end
@@ -92,5 +92,13 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
 
   def stacked?
     @stacked
+  end
+
+  def compact?
+    @compact
+  end
+
+  def full_width?
+    @full_width
   end
 end

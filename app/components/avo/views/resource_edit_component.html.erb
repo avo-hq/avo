@@ -59,10 +59,11 @@
           <% c.body do %>
             <div class="divide-y">
               <% main_panel.items.each_with_index do |field, index| %>
-                <%= render field.hydrate(resource: @resource, model: @resource.model, user: @resource.user, view: view_for(field))
-                .component_for_view(view_for field)
-                .new(field: field, resource: @resource, index: index, form: form)
-              %>
+                <%= render field
+                  .hydrate(resource: @resource, model: @resource.model, user: @resource.user, view: view_for(field))
+                  .component_for_view(view_for field)
+                  .new(field: field, resource: @resource, index: index, form: form, compact: sidebar.present?)
+                %>
               <% end %>
             </div>
           <% end %>

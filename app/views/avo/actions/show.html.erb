@@ -23,7 +23,7 @@
       <%= form.hidden_field :avo_resource_ids, value: params[:resource_ids], 'data-action-target': 'resourceIds' %>
       <%= form.hidden_field :avo_selected_query, 'data-action-target': 'selectedAllQuery' %>
       <% if @action.get_fields.present? %>
-        <div class="mt-4">
+        <div class="my-4 -mx-6">
           <% @action.get_fields.each_with_index do |field, index| %>
             <%= render field
               .hydrate(resource: @resource, model: @resource.model, user: @resource.user, view: @view)
