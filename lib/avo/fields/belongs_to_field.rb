@@ -58,13 +58,14 @@ module Avo
     # - is_disabled?
 
     class BelongsToField < BaseField
+      attr_accessor :inside_tab
+
       attr_reader :polymorphic_as
       attr_reader :relation_method
       attr_reader :types # for Polymorphic associations
       attr_reader :allow_via_detaching
       attr_reader :attach_scope
       attr_reader :polymorphic_help
-      attr_reader :inside_tab
 
       def initialize(id, **args, &block)
         args[:placeholder] ||= I18n.t("avo.choose_an_option")
