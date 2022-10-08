@@ -1,8 +1,6 @@
 module Avo
   module DynamicRouter
     def self.routes(router)
-      Rails.application.eager_load! unless Rails.env.production?
-
       BaseResource.descendants
         .select do |resource|
           resource != :BaseResource

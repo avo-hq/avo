@@ -2,6 +2,8 @@ module Avo
   class BaseResource
     extend ActiveSupport::DescendantsTracker
 
+    include Avo::Concerns::PreloadsSubclasses
+    self.subclass_directory_name = "resources"
     include ActionView::Helpers::UrlHelper
     include Avo::Concerns::HasFields
     include Avo::Concerns::HasEditableControls
