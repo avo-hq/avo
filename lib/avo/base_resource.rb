@@ -30,6 +30,7 @@ module Avo
     class_attribute :search_query, default: nil
     class_attribute :search_query_help, default: ""
     class_attribute :includes, default: []
+    class_attribute :authorization_policy
     class_attribute :translation_key
     class_attribute :default_view_type, default: :table
     class_attribute :devise_password_optional, default: false
@@ -92,13 +93,39 @@ module Avo
       end
 
       def authorization
-        Avo::Services::AuthorizationService.new Avo::App.current_user
+        Avo::Services::AuthorizationService.new Avo::App.current_user, model_class, policy_class: authorization_policy
       end
 
       def order_actions
         return {} if ordering.blank?
 
         ordering.dig(:actions) || {}
+      end
+
+      def get_record_associations(record)
+        record._reflections
+      end
+
+      def valid_association_name(record, association_name)
+        get_record_associations(record).keys.find do |name|
+          name == association_name
+        end
+      end
+
+      def valid_attachment_name(record, association_name)
+        get_record_associations(record).keys.each do |name|
+          return association_name if name == "#{association_name}_attachment" || name == "#{association_name}_attachments"
+        end
+      end
+
+      def get_available_models
+        ApplicationRecord.descendants
+      end
+
+      def valid_model_class(model_class)
+        get_available_models.find do |m|
+          m.to_s == model_class
+        end
       end
     end
 
@@ -263,7 +290,7 @@ module Avo
           field.computed
         end
         .map do |field|
-          [field.database_id(model).to_s, field]
+          [field.database_id.to_s, field]
         end
         .to_h
 
@@ -285,8 +312,9 @@ module Avo
       model
     end
 
-    def authorization
-      Avo::Services::AuthorizationService.new(user, model || model_class)
+    def authorization(user: nil)
+      current_user = user || Avo::App.current_user
+      Avo::Services::AuthorizationService.new(current_user, model || model_class, policy_class: authorization_policy)
     end
 
     def file_hash

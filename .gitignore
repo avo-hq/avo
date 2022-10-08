@@ -14,6 +14,7 @@ spec/dummy/public/javascripts/
 spec/dummy/tmp/
 spec/dummy/.env
 spec/dummy/.env.test
+spec/examples.txt
 vendor/cache/
 public/javascripts/
 
@@ -70,3 +71,4 @@ avo*.gem
 app/assets/builds
 
 TAGS
+brakeman_results.html

@@ -1,11 +1,13 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.feature "RequiredTakesABlock", type: :feature do
   context "new" do
     it "is required" do
       visit "/admin/resources/fish/new"
 
-      expect(page).to have_selector ".text-red-600.ml-1"
+      within '[data-resource-edit-target="nameTextWrapper"][data-field-id="name"]' do
+        expect(page).to have_selector ".text-red-600.ml-1"
+      end
     end
   end
 
@@ -15,7 +17,9 @@ RSpec.feature "RequiredTakesABlock", type: :feature do
     it "is required" do
       visit "/admin/resources/fish/#{fish.id}/edit"
 
-      expect(page).not_to have_selector ".text-red-600.ml-1"
+      within '[data-resource-edit-target="nameTextWrapper"][data-field-id="name"]' do
+        expect(page).not_to have_selector ".text-red-600.ml-1"
+      end
     end
   end
 end

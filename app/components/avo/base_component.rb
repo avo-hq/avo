@@ -16,9 +16,15 @@ class Avo::BaseComponent < ViewComponent::Base
     nil
   end
 
+  # Fetch the resource and hydrate it with the model
   def relation_resource
-    model = params[:via_resource_class] || params[:via_relation_class]
-    ::Avo::App.get_resource_by_model_name model.safe_constantize
+    model_class_name = params[:via_resource_class] || params[:via_relation_class]
+    model_klass = ::Avo::BaseResource.valid_model_class model_class_name
+
+    resource = ::Avo::App.get_resource_by_model_name model_klass
+    model = model_klass.find params[:via_resource_id]
+
+    resource.dup.hydrate model: model
   end
 
   # Get the resource for the resource using the klass attribute so we get the namespace too

@@ -1,9 +1,9 @@
 class CommentResource < Avo::BaseResource
   self.title = :tiny_name
   self.includes = [:user, :commentable]
-  # self.search_query = -> do
-  #   scope.ransack(id_eq: params[:q], m: "or").result(distinct: false)
-  # end
+  self.search_query = -> do
+    scope.ransack(id_eq: params[:q], body_cont: params[:q], m: "or").result(distinct: false)
+  end
   self.record_selector = false
 
   self.after_create_path = :index

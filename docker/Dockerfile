@@ -7,7 +7,7 @@ RUN apt-get install -yqq libxml2-dev libxslt1-dev build-essential patch ruby-dev
 RUN gem install nokogiri selenium-webdriver ffi ruby-debug-ide tilt
 
 # node
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
 RUN apt-get install -y nodejs
 
 # yarn

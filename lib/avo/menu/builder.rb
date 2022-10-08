@@ -22,9 +22,11 @@ class Avo::Menu::Builder
   end
 
   # Adds a link
-  def link(name, **args)
-    @menu.items << Avo::Menu::Link.new(name: name, **args)
+  def link(name, path = nil, **args)
+    path ||= args[:path]
+    @menu.items << Avo::Menu::Link.new(name: name, path: path, **args)
   end
+  alias_method :link_to, :link
 
   # Validates and adds a resource
   def resource(name, **args)
@@ -55,7 +57,7 @@ class Avo::Menu::Builder
   # Add all the resources
   def all_resources(**args)
     Avo::App.resources_for_navigation.each do |res|
-      resource res.model_class, **args
+      resource res.route_key, **args
     end
   end
 

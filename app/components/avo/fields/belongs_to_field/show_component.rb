@@ -4,4 +4,13 @@ class Avo::Fields::BelongsToField::ShowComponent < Avo::Fields::ShowComponent
   def target
     @field.inside_tab ? "_top" : nil
   end
+
+  def resource_view_path
+    helpers.resource_view_path(
+      model: @field.value,
+      resource: @field.target_resource,
+      via_resource_class: @resource.model_class,
+      via_resource_id: @resource.model.id
+    )
+  end
 end

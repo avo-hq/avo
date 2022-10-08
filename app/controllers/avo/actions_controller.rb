@@ -4,9 +4,15 @@ module Avo
   class ActionsController < ApplicationController
     before_action :set_resource_name
     before_action :set_resource
+    before_action :set_model, only: :show, if: ->(request) do
+      # Try to se the model only if the user is on the record page.
+      # set_model will fail if it's tried to be used from the Index page.
+      request.params[:id].present?
+    end
     before_action :set_action, only: [:show, :handle]
 
     def show
+      @resource.hydrate(model: @model, view: :show, user: _current_user, params: params)
       @model = ActionModel.new @action.get_attributes_for_action
     end
 
@@ -42,13 +48,17 @@ module Avo
     end
 
     def set_action
-      action_class = params[:action_id].gsub("avo_actions_", "").camelize.safe_constantize
+      @action = action_class.new(model: @model, resource: @resource, user: _current_user, view: :edit)
+    end
 
-      if params[:id].present?
-        model = @resource.class.find_scope.find params[:id]
+    def action_class
+      klass_name = params[:action_id].gsub("avo_actions_", "").camelize
+
+      valid_klass = Avo::BaseAction.descendants.find do |action|
+        action.to_s == klass_name
       end
 
-      @action = action_class.new(model: model, resource: resource, user: _current_user, view: :edit)
+      valid_klass
     end
 
     def respond(response)

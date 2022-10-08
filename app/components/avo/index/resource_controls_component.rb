@@ -23,6 +23,8 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   end
 
   def can_view?
+    return false if Avo.configuration.resource_default_view == :edit
+
     return authorize_association_for(:show) if @reflection.present?
 
     # Even if there's a @reflection object present, for show we're going to fallback to the original policy.
@@ -65,6 +67,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   end
 
   def parent_resource
+    return @parent_resource if @parent_resource.present?
     return nil if @parent_model.blank?
 
     ::Avo::App.get_resource_by_model_name @parent_model.class

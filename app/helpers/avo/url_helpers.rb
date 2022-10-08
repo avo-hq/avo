@@ -76,5 +76,13 @@ module Avo
 
       avo.resources_associations_index_path(parent_model.model_name.route_key, record.id, **existing_params, **args)
     end
+
+    def resource_view_path(**args)
+      if Avo.configuration.resource_default_view == :edit
+        edit_resource_path(**args)
+      else
+        resource_path(**args)
+      end
+    end
   end
 end
