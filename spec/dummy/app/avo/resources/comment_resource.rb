@@ -22,12 +22,14 @@ class CommentResource < Avo::BaseResource
     picker_format: "Y-m-d H:i:S",
     format: "cccc, d LLLL yyyy, HH:mm ZZZZ" # Wednesday, 10 February 1988, 16:00 GMT
 
-  tabs do
-    tab "Associations" do
-      panel do
-        field :user, as: :belongs_to
-        field :commentable, as: :belongs_to, polymorphic_as: :commentable, types: [::Post, ::Project]
-      end
-    end
-  end
+  field :user, as: :belongs_to
+  field :commentable, as: :belongs_to, polymorphic_as: :commentable, types: [::Post, ::Project]
+
+  # tabs do
+  #   tab "Associations" do
+  #     panel do
+  # MOVE USER AND COMMENTABLE FIELDS TO HERE TO TEST BELONGS TO IN TABS FIX
+  #     end
+  #   end
+  # end
 end
