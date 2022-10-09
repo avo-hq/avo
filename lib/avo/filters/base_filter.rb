@@ -3,13 +3,18 @@ module Avo
     class BaseFilter
       PARAM_KEY = :filters unless const_defined?(:PARAM_KEY)
 
-      class_attribute :name, default: "Filter"
       class_attribute :component, default: "boolean-filter"
       class_attribute :default, default: nil
-      class_attribute :template, default: "avo/base/select_filter"
       class_attribute :empty_message
+      class_attribute :name, default: "Filter"
+      class_attribute :resource
+      class_attribute :template, default: "avo/base/select_filter"
+      class_attribute :user
+      class_attribute :visible
 
       delegate :params, to: Avo::App
+      delegate :resource, to: :class
+      delegate :user, to: :class
 
       class << self
         def decode_filters(filter_params)
@@ -21,6 +26,11 @@ module Avo
         def get_empty_message
           empty_message || I18n.t("avo.no_options_available")
         end
+      end
+
+      def initialize(resource: nil, user: nil)
+        self.class.resource = resource if resource.present?
+        self.class.user = user if user.present?
       end
 
       def apply_query(request, query, value)
@@ -51,6 +61,13 @@ module Avo
       # Fetch the applied filters from the params
       def applied_filters
         self.class.decode_filters params[PARAM_KEY]
+      end
+
+      def visible_in_view
+        return true if visible.blank?
+
+        # Run the visible block if available
+        instance_exec(resource: resource, user: user, &visible)
       end
     end
   end

@@ -302,11 +302,14 @@ module Avo
     end
 
     def set_filters
-      @filters = @resource.get_filters.map do |filter_class|
-        filter = filter_class.new
-
-        filter
-      end
+      @filters = @resource
+        .get_filters
+        .map do |filter_class|
+          filter_class.new(resource: @resource, user: _current_user)
+        end
+        .select do |filter|
+          filter.visible_in_view
+        end
     end
 
     def set_actions
