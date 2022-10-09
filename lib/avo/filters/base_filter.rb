@@ -7,14 +7,15 @@ module Avo
       class_attribute :default, default: nil
       class_attribute :empty_message
       class_attribute :name, default: "Filter"
-      class_attribute :resource
       class_attribute :template, default: "avo/base/select_filter"
-      class_attribute :user
       class_attribute :visible
 
+      attr_reader :parent_model
+      attr_reader :parent_resource
+      attr_reader :resource
+      attr_reader :user
+
       delegate :params, to: Avo::App
-      delegate :resource, to: :class
-      delegate :user, to: :class
 
       class << self
         def decode_filters(filter_params)
@@ -28,9 +29,11 @@ module Avo
         end
       end
 
-      def initialize(resource: nil, user: nil)
-        self.class.resource = resource if resource.present?
-        self.class.user = user if user.present?
+      def initialize(resource: nil, user: nil, parent_model: nil, parent_resource: nil)
+        @parent_model = parent_model
+        @parent_resource = parent_resource
+        @resource = resource
+        @user = user
       end
 
       def apply_query(request, query, value)
@@ -67,7 +70,14 @@ module Avo
         return true if visible.blank?
 
         # Run the visible block if available
-        instance_exec(resource: resource, user: user, &visible)
+        instance_exec(
+          parent_model: parent_model,
+          parent_resource: parent_resource,
+          resource: resource,
+          user: user,
+          &visible
+        )
+
       end
     end
   end

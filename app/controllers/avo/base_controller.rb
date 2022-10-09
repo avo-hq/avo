@@ -305,7 +305,12 @@ module Avo
       @filters = @resource
         .get_filters
         .map do |filter_class|
-          filter_class.new(resource: @resource, user: _current_user)
+          filter_class.new(
+            parent_model: @parent_model,
+            parent_resource: @parent_resource,
+            resource: @resource,
+            user: _current_user,
+          )
         end
         .select do |filter|
           filter.visible_in_view
