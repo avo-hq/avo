@@ -78,6 +78,8 @@ module Avo
         @as_description = args[:as_description] || false
         @index_text_align = args[:index_text_align] || :left
         @html = args[:html] || nil
+        @view = args[:view] || nil
+        @value = args[:value] || nil
 
         @args = args
 
@@ -157,6 +159,8 @@ module Avo
       end
 
       def value(property = nil)
+        return @value if @value.present?
+
         property ||= id
 
         # Get model value
@@ -193,7 +197,7 @@ module Avo
       end
 
       # Try to see if the field has a different database ID than it's name
-      def database_id(model)
+      def database_id
         foreign_key
       rescue
         id

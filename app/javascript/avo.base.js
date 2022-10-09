@@ -53,7 +53,6 @@ window.initTippy = initTippy
 ActiveStorage.start()
 
 document.addEventListener('turbo:load', () => {
-  document.body.classList.remove('turbo-loading')
   initTippy()
   isMac()
 
@@ -64,6 +63,9 @@ document.addEventListener('turbo:load', () => {
       scrollTop = 0
     }, 50)
   }
+  setTimeout(() => {
+    document.body.classList.remove('turbo-loading')
+  }, 1)
 })
 
 document.addEventListener('turbo:frame-load', () => {

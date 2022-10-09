@@ -35,7 +35,7 @@ Avo.configure do |config|
   # config.locale = 'en-US'
 
   ## == Resource options ==
-  # config.resource_controls = :right
+  # config.resource_controls_placement = :right
   # config.model_resource_mapping = {}
   # config.default_view_type = :table
   # config.per_page = 24
@@ -71,6 +71,7 @@ Avo.configure do |config|
   #   chart_colors: ["#0B8AE2", "#34C683", "#2AB1EE", "#34C6A8"],
   #   logo: "/avo-assets/logo.png",
   #   logomark: "/avo-assets/logomark.png"
+  #   placeholder: "/avo-assets/placeholder.svg"
   # }
 
   ## == Breadcrumbs ==

@@ -58,6 +58,8 @@ module Avo
     # - is_disabled?
 
     class BelongsToField < BaseField
+      attr_accessor :target
+
       attr_reader :polymorphic_as
       attr_reader :relation_method
       attr_reader :types # for Polymorphic associations
@@ -77,6 +79,7 @@ module Avo
         @allow_via_detaching = args[:allow_via_detaching] == true
         @attach_scope = args[:attach_scope]
         @polymorphic_help = args[:polymorphic_help]
+        @target = args[:target]
       end
 
       def searchable
@@ -210,7 +213,7 @@ module Avo
         model
       end
 
-      def database_id(model)
+      def database_id
         # If the field is a polymorphic value, return the polymorphic_type as key and pre-fill the _id in fill_field.
         return "#{polymorphic_as}_type" if polymorphic_as.present?
 

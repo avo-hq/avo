@@ -1,4 +1,4 @@
-<%= index_field_wrapper field: @field, resource: @resource do %>
+<%= index_field_wrapper **field_wrapper_args do %>
   <% if @field.display_code %>
     <%= @field.value %>
   <% else %>

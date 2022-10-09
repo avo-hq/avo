@@ -41,6 +41,5 @@ export default class extends Controller {
     } catch (error) {
       return []
     }
-
   }
 }

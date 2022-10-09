@@ -23,7 +23,7 @@ RSpec.feature "CreateHasOne", type: :feature do
 
     wait_for_loaded
     expect(page).to have_text "Post was successfully created."
-    expect(page).to have_current_path("/admin/resources/users/#{user.id}")
+    expect(page).to have_current_path("/admin/resources/users/#{user.slug}")
 
     visit "/admin/resources/users/#{user.id}/post/#{user.post.id}?turbo_frame=has_one_field_show_post"
 

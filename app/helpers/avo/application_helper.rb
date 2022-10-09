@@ -17,18 +17,18 @@ module Avo
     end
 
     def empty_state(**args)
-      render Avo::EmptyStateComponent.new **args
+      render Avo::EmptyStateComponent.new(**args)
     end
 
     def a_button(**args, &block)
       render Avo::ButtonComponent.new(is_link: false, **args) do
-        capture(&block) if block_given?
+        capture(&block) if block.present?
       end
     end
 
     def a_link(path = nil, **args, &block)
       render Avo::ButtonComponent.new(path, is_link: true, **args) do
-        capture(&block) if block_given?
+        capture(&block) if block.present?
       end
     end
 
@@ -76,7 +76,7 @@ module Avo
     end
 
     def input_classes(extra_classes = "", has_error: false)
-      classes = "appearance-none inline-flex bg-gray-25 disabled:cursor-not-allowed text-gray-600 disabled:opacity-50 rounded py-2 px-3 leading-tight border focus:border-gray-600 focus-visible:ring-0 focus:text-gray-700"
+      classes = "appearance-none inline-flex bg-gray-25 disabled:cursor-not-allowed text-gray-600 disabled:opacity-50 rounded py-2 px-3 leading-tight border focus:border-gray-600 focus-visible:ring-0 focus:text-gray-700 placeholder:text-gray-300"
 
       classes += if has_error
         " border-red-600"
@@ -113,6 +113,34 @@ module Avo
       Thread.current[:inline_svg_asset_finder] = nil
 
       output
+    end
+
+    def avo_field(type = nil, id = nil, as: nil, view: :show, form: nil, component_options: {}, **args, &block)
+      if as.present?
+        id = type
+        type = as
+      end
+      field_klass = "Avo::Fields::#{type.to_s.camelize}Field".safe_constantize
+      field = field_klass.new id, form: form, view: view, **args, &block
+
+      # Add the form record to the field so all fields have access to it.
+      field.hydrate(model: form.object)
+
+      render field.component_for_view(view).new field: field, form: form, **component_options
+    end
+
+    def avo_show_field(id, type = nil, view: :show, **args, &block)
+      avo_field(id, type, **args, view: view, &block)
+    end
+
+    def avo_edit_field(id, type = nil, view: :edit, **args, &block)
+      avo_field(id, type, **args, view: view, &block)
+    end
+
+    def field_container(**args, &block)
+      classes = args[:class] || ""
+      classes << "flex flex-col divide-y"
+      content_tag :div, **args, class: classes, &block
     end
   end
 end

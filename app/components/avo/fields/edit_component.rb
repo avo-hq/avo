@@ -3,15 +3,23 @@
 class Avo::Fields::EditComponent < ViewComponent::Base
   include Avo::ResourcesHelper
 
+  attr_reader :compact
   attr_reader :field
+  attr_reader :form
+  attr_reader :index
+  attr_reader :multiple
+  attr_reader :resource
+  attr_reader :stacked
   attr_reader :view
 
-  def initialize(field: nil, resource: nil, index: 0, form: nil, displayed_in_modal: false)
+  def initialize(field: nil, resource: nil, index: 0, form: nil, compact: false, stacked: false, multiple: false, **kwargs)
+    @compact = compact
     @field = field
-    @resource = resource
-    @index = index
     @form = form
-    @displayed_in_modal = displayed_in_modal
+    @index = index
+    @multiple = multiple
+    @resource = resource
+    @stacked = stacked
     @view = :edit
   end
 
@@ -21,5 +29,17 @@ class Avo::Fields::EditComponent < ViewComponent::Base
 
   def render?
     !field.computed
+  end
+
+  def field_wrapper_args
+    {
+      stacked: stacked,
+      compact: compact,
+      field: field,
+      form: form,
+      index: index,
+      resource: resource,
+      view: view
+    }
   end
 end

@@ -1,4 +1,4 @@
-<%= show_field_wrapper field: @field, resource: @resource, index: @index do %>
+<%= field_wrapper **field_wrapper_args do %>
   <div class="flex gap-1 items-center flex-wrap">
     <% @field.field_value.each do |item| %>
       <%= render Avo::Fields::TagsField::TagComponent.new(label: label_from_item(item)) %>
