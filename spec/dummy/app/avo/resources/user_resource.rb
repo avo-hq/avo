@@ -43,22 +43,22 @@ class UserResource < Avo::BaseResource
     # end
     field :is_admin?, as: :boolean, name: "Is admin", only_on: :index
     field :birthday,
-    as: :date,
-    first_day_of_week: 1,
-    picker_format: "F J Y",
-    format: "cccc, d LLLL yyyy", # Wednesday, 10 February 1988
-    placeholder: "Feb 24th 1955",
-    required: true,
-    only_on: [:index, :show]
+      as: :date,
+      first_day_of_week: 1,
+      picker_format: "F J Y",
+      format: "cccc, d LLLL yyyy", # Wednesday, 10 February 1988
+      placeholder: "Feb 24th 1955",
+      required: true,
+      only_on: [:index, :show]
     field :is_writer, as: :text,
-    format_using: ->(value) { value.truncate 3 },
-    sortable: ->(query, direction) {
-      # Order by something else completely, just to make a test case that clearly and reliably does what we want.
-      query.order(id: direction)
-    },
-    hide_on: :edit do |model, resource, view, field|
-      model.posts.to_a.size > 0 ? "yes" : "no"
-    end
+      format_using: ->(value) { value.truncate 3 },
+      sortable: ->(query, direction) {
+        # Order by something else completely, just to make a test case that clearly and reliably does what we want.
+        query.order(id: direction)
+      },
+      hide_on: :edit do |model, resource, view, field|
+        model.posts.to_a.size > 0 ? "yes" : "no"
+      end
     field :outside_link, as: :text, only_on: [:show], format_using: ->(url) { link_to("hey", url, target: "_blank") } do |model, *args|
       main_app.hey_url
     end
