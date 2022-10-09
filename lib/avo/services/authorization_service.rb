@@ -5,33 +5,32 @@ module Avo
       attr_accessor :record
 
       class << self
+        def client
+          Avo::Services::AuthorizationClients::PunditClient.new
+        end
+
         def authorize(user, record, action, policy_class: nil, **args)
           return true if skip_authorization
           return true if user.nil?
+          # This clause was present but also NoPolicyError was being rescued
+          # Unsure what the intent was, but removing this clause breaks tests
+          # in after_create_update_path_spec.rb
+          # Is the NoPolicyError rescue for policies that call other policies?
+          return true unless client.policy(user, record).present?
 
-          policy_class ||= Pundit.policy(user, record)&.class
-          begin
-            if policy_class&.new(user, record)
-              Pundit.authorize user, record, action, policy_class: policy_class
-            end
+          client.authorize user, record, action, policy_class: policy_class
 
-            true
-          rescue Pundit::NotDefinedError => e
-            return false unless Avo.configuration.raise_error_on_missing_policy
+          true
+        rescue NoPolicyError => error
+          return false unless Avo.configuration.raise_error_on_missing_policy
 
-            raise NoPolicyError
-          rescue Pundit::NotAuthorizedError
-            if args[:raise_exception] == false
-              false
-            else
-              raise Avo::NotAuthorizedError
-            end
-          rescue => error
-            if args[:raise_exception] == false
-              false
-            else
-              raise error
-            end
+          # Should this respect a `raise_exception` argument?
+          raise error
+        rescue => error
+          if args[:raise_exception] == false
+            false
+          else
+            raise error
           end
         end
 
@@ -54,17 +53,11 @@ module Avo
         def apply_policy(user, model, policy_class: nil)
           return model if skip_authorization || user.nil?
 
-          begin
-            if policy_class
-              policy_class::Scope.new(user, model).resolve
-            else
-              Pundit.policy_scope! user, model
-            end
-          rescue Pundit::NotDefinedError => e
-            return model unless Avo.configuration.raise_error_on_missing_policy
+          client.apply_policy(user, model, policy_class: policy_class)
+        rescue NoPolicyError => error
+          return model unless Avo.configuration.raise_error_on_missing_policy
 
-            raise NoPolicyError
-          end
+          raise error
         end
 
         def skip_authorization
@@ -78,15 +71,15 @@ module Avo
         end
 
         def defined_methods(user, record, policy_class: nil, **args)
-          return Pundit.policy!(user, record).methods if policy_class.nil?
+          return client.policy!(user, record).methods if policy_class.nil?
 
           # I'm aware this will not raise a Pundit error.
           # Should the policy not exist, it will however raise an uninitialized constant error, which is probably what we want when specifying a custom policy
           policy_class.new(user, record).methods
-        rescue Pundit::NotDefinedError => e
+        rescue NoPolicyError => error
           return [] unless Avo.configuration.raise_error_on_missing_policy
 
-          raise NoPolicyError
+          raise error
         rescue => error
           if args[:raise_exception] == false
             []
@@ -99,7 +92,7 @@ module Avo
       def initialize(user = nil, record = nil, policy_class: nil)
         @user = user
         @record = record
-        @policy_class = policy_class || Pundit.policy(user, record)&.class
+        @policy_class = policy_class || self.class.client.policy(user, record)&.class
       end
 
       def authorize(action, **args)
