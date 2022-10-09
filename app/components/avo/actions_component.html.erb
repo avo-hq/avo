@@ -28,7 +28,7 @@
           },
           title: action.action_name,
           class: "flex items-center px-4 py-3 w-full font-semibold text-sm hover:bg-primary-100 #{is_disabled?(action) ? 'text-gray-500' : 'text-black'}" do %>
-          <%= svg 'play', class: 'h-5 mr-1 inline' %> <%= action.action_name %>
+          <%= svg 'play', class: 'h-5 mr-1 inline pointer-events-none' %> <%= action.action_name %>
         <% end %>
       <% end %>
     </div>
