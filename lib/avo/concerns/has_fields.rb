@@ -277,6 +277,17 @@ module Avo
           end
         end
 
+        # Make sure all tabs panelfull_items are setted as inside tabs
+        panelfull_items.grep(Avo::TabGroup).each do |tab_group|
+          tab_group.items.grep(Avo::Tab).each do |tab|
+            tab.items.grep(Avo::Panel).each do |panel|
+              panel.items.grep(Avo::Fields::BelongsToField).each do |field|
+                field.target = :_top
+              end
+            end
+          end
+        end
+
         # Add all the panelles fields to a new panel
         main_panel_holder = Avo::ItemsHolder.new
         main_panel_holder.items = panelless_items

@@ -24,4 +24,12 @@ class CommentResource < Avo::BaseResource
 
   field :user, as: :belongs_to
   field :commentable, as: :belongs_to, polymorphic_as: :commentable, types: [::Post, ::Project]
+
+  # tabs do
+  #   tab "Associations" do
+  #     panel do
+  # MOVE USER AND COMMENTABLE FIELDS TO HERE TO TEST BELONGS TO IN TABS FIX
+  #     end
+  #   end
+  # end
 end
