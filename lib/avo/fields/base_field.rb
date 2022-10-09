@@ -3,6 +3,8 @@ module Avo
     class BaseField
       extend ActiveSupport::DescendantsTracker
       extend Avo::Fields::FieldExtensions::HasFieldName
+      include Avo::Concerns::PreloadsSubclasses
+      self.subclass_directory_name = "fields"
 
       include Avo::Concerns::IsResourceItem
       include Avo::Concerns::HandlesFieldArgs

@@ -2,6 +2,8 @@ module Avo
   module Dashboards
     class BaseDashboard
       extend ActiveSupport::DescendantsTracker
+      include Avo::Concerns::PreloadsSubclasses
+      self.subclass_directory_name = "dashboards"
 
       class_attribute :id
       class_attribute :name
