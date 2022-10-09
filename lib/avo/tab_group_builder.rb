@@ -15,7 +15,7 @@ class Avo::TabGroupBuilder
   end
 
   def field(field_name, **args, &block)
-    parsed = Avo::Dsl::FieldParser.new(id: field_name, order_index: @items_index, **args.merge(inside_tab: true), &block).parse
+    parsed = Avo::Dsl::FieldParser.new(id: field_name, order_index: @items_index, **args, &block).parse
     field_instance = parsed.instance
 
     name = field_instance.name

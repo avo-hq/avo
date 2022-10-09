@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 class Avo::Fields::BelongsToField::ShowComponent < Avo::Fields::ShowComponent
-  def target
-    @field.inside_tab ? "_top" : nil
-  end
-
   def resource_view_path
     helpers.resource_view_path(
       model: @field.value,

@@ -282,7 +282,7 @@ module Avo
           tab_group.items.grep(Avo::Tab).each do |tab|
             tab.items.grep(Avo::Panel).each do |panel|
               panel.items.grep(Avo::Fields::BelongsToField).each do |field|
-                field.inside_tab = true
+                field.target = :_top
               end
             end
           end
