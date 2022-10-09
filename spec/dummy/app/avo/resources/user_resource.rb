@@ -28,6 +28,14 @@ class UserResource < Avo::BaseResource
   field :roles, as: :text, hide_on: :all, as_description: true do |model, resource, view, field|
     "This user has the following roles: #{model.roles.select { |key, value| value }.keys.join(", ")}"
   end
+  field :birthday,
+    as: :date,
+    first_day_of_week: 1,
+    picker_format: "F J Y",
+    format: "cccc, d LLLL yyyy", # Wednesday, 10 February 1988
+    placeholder: "Feb 24th 1955",
+    required: true,
+    only_on: [:index]
 
   field :password, as: :password, name: "User Password", required: false, except_on: :forms, help: 'You may verify the password strength <a href="http://www.passwordmeter.com/" target="_blank">here</a>.'
   field :password_confirmation, as: :password, name: "Password confirmation", required: false, only_on: :new
@@ -49,7 +57,7 @@ class UserResource < Avo::BaseResource
       format: "cccc, d LLLL yyyy", # Wednesday, 10 February 1988
       placeholder: "Feb 24th 1955",
       required: true,
-      only_on: [:index, :show]
+      only_on: [:show]
     field :is_writer, as: :text,
       format_using: ->(value) { value.truncate 3 },
       sortable: ->(query, direction) {
