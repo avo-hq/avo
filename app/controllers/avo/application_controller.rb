@@ -257,18 +257,16 @@ module Avo
       instance_eval(&Avo.configuration.authenticate)
     end
 
-    def render_unauthorized(exception)
-      if !exception.is_a? Pundit::NotDefinedError
-        flash.now[:notice] = t "avo.not_authorized"
+    def render_unauthorized(_exception)
+      flash.now[:notice] = t "avo.not_authorized"
 
-        redirect_url = if request.referrer.blank? || (request.referrer == request.url)
-          root_url
-        else
-          request.referrer
-        end
+      redirect_url = if request.referrer.blank? || (request.referrer == request.url)
+                       root_url
+                     else
+                       request.referrer
+                     end
 
-        redirect_to(redirect_url)
-      end
+      redirect_to(redirect_url)
     end
 
     def set_authorization
