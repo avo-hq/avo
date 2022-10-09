@@ -19,7 +19,13 @@ module Avo
           rescue Pundit::NotDefinedError => e
             return false unless Avo.configuration.raise_error_on_missing_policy
 
-            raise e
+            raise NoPolicyError
+          rescue Pundit::NotAuthorizedError
+            if args[:raise_exception] == false
+              false
+            else
+              raise Avo::NotAuthorizedError
+            end
           rescue => error
             if args[:raise_exception] == false
               false
@@ -35,7 +41,7 @@ module Avo
           # If no action passed we should raise error if the user wants that.
           # If not, just allow it.
           if action.nil?
-            raise Pundit::NotDefinedError.new "Policy method is missing" if Avo.configuration.raise_error_on_missing_policy
+            raise NoPolicyError.new "Policy method is missing" if Avo.configuration.raise_error_on_missing_policy
 
             return true
           end
@@ -57,7 +63,7 @@ module Avo
           rescue Pundit::NotDefinedError => e
             return model unless Avo.configuration.raise_error_on_missing_policy
 
-            raise e
+            raise NoPolicyError
           end
         end
 
@@ -80,7 +86,7 @@ module Avo
         rescue Pundit::NotDefinedError => e
           return [] unless Avo.configuration.raise_error_on_missing_policy
 
-          raise e
+          raise NoPolicyError
         rescue => error
           if args[:raise_exception] == false
             []

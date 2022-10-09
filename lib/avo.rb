@@ -44,6 +44,10 @@ module Avo
   class LicenseVerificationTemperedError < StandardError; end
 
   class LicenseInvalidError < StandardError; end
+
+  class NotAuthorizedError < StandardError; end
+
+  class NoPolicyError < StandardError; end
 end
 
 loader.eager_load
