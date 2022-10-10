@@ -12,7 +12,7 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
 
     # When visiting the record through it's association we keep the field disabled by default
     # We make an exception when the user deliberately instructs Avo to allow detaching in this scenario
-    return !@field.allow_via_detaching if @field.target_resource.present? && @field.target_resource.model_class.name == params[:via_resource_class]
+    return !@field.allow_via_detaching if @field.target_resource.present? && visit_through_association?
     return !@field.allow_via_detaching if @field.id.to_s == params[:via_relation].to_s
 
     false
@@ -51,5 +51,11 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
 
   def field_html_action
     @field.get_html(:data, view: @resource.view, element: :input).fetch(:action, nil)
+  end
+
+  private
+
+  def visit_through_association?
+    @field.target_resource.class.to_s == params[:via_resource_class].to_s
   end
 end
