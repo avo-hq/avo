@@ -1,4 +1,3 @@
-import { AttributeObserver } from '@stimulus/mutation-observers'
 import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
@@ -10,6 +9,10 @@ export default class extends Controller {
 
   get targetIsDisabled() {
     return this.target.dataset.disabled === 'true'
+  }
+
+  get actionsShowTurboFrame() {
+    return document.querySelector('turbo-frame#actions_show')
   }
 
   enableTarget() {
@@ -36,13 +39,9 @@ export default class extends Controller {
     }
 
     this.disableTarget()
-
-    const observer = new AttributeObserver(document.querySelector('turbo-frame#actions_show'), 'busy', {
-      elementUnmatchedAttribute: () => {
-        this.enableTarget(this.target)
-        if (observer) observer.stop()
-      },
-    })
-    observer.start()
+    const that = this
+    setTimeout(() => {
+      this.actionsShowTurboFrame.loaded.then(() => that.enableTarget(that.target))
+    }, 1)
   }
 }
