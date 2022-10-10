@@ -112,8 +112,9 @@ module Avo
         self
       end
 
-      def set_policy_class(policy_class)
-        @policy_class = policy_class || Pundit.policy(@user, @record)&.class
+      def set_policy_class(policy_class, model_class: nil)
+        policy_record = model_class&.new || @record
+        @policy_class = policy_class || Pundit.policy(@user, policy_record)&.class
 
         self
       end

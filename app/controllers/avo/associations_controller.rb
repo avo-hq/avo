@@ -137,11 +137,15 @@ module Avo
       end
     end
 
-    # Sets authorization service policy class if defined.
-    # If not defined, it will fall back on the record's model class default policy, instead of the parent's
+    # Sets authorization service to reflect the association policy instead of the parent resource
+    # If defined in the resource, it will use the specified authorization_policy class
+    # If not, it should fallback on the current resource's default policy, instead of the parent's
+    # Since @model returns the parent model (we're likely to have a collection of associated objects),
+    # we need to pass the current resource's class as well as a potential fallback
     def set_authorization_policy
+      # From my tests, this is needed as a safety net, otherwise the AuthorizationService#record would sometimes refer to current_user for some reason
       @authorization.set_record(@model)
-      @authorization.set_policy_class(@resource.authorization_policy)
+      @authorization.set_policy_class(@resource.authorization_policy, model_class: @resource.model_class)
     end
 
     def authorize_index_action

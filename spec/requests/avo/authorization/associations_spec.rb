@@ -33,6 +33,28 @@ RSpec.describe "Avo::TeamsController", type: :feature do
         expect(page).to have_text "Loading team members"
         expect(page).to have_selector "turbo-frame#has_many_field_show_team_members"
       end
+
+      describe "it uses the right scope" do
+        before do
+          allow_any_instance_of(TeamPolicy).to receive(:view_team_members?).and_return true
+        end
+
+        context "when the scope returns no objects" do
+          it "doesn't display any members" do
+            allow_any_instance_of(UserPolicy::Scope).to receive(:resolve).and_return User.none
+            visit "/admin/resources/teams/#{team.id}/team_members?turbo_frame=has_many_field_show_team_members"
+            expect(page).not_to have_text(user.last_name)
+          end
+        end
+
+        context "when the scope returns all objects" do
+          it "displays all team members" do
+            allow_any_instance_of(UserPolicy::Scope).to receive(:resolve).and_return User.all
+            visit "/admin/resources/teams/#{team.id}/team_members?turbo_frame=has_many_field_show_team_members"
+            expect(page).to have_text(user.last_name)
+          end
+        end
+      end
     end
 
     describe "detach has_one" do
