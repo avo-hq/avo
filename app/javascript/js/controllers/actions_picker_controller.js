@@ -16,7 +16,6 @@ export default class extends Controller {
   }
 
   enableTarget() {
-    console.log('enableTarget')
     if (this.targetIsDisabled) {
       this.target.classList.remove(...this.disabledClasses)
       this.target.classList.add(...this.enabledClasses)
@@ -25,7 +24,6 @@ export default class extends Controller {
   }
 
   disableTarget() {
-    console.log('disableTarget')
     this.target.classList.remove(...this.enabledClasses)
     this.target.classList.add(...this.disabledClasses)
     this.target.dataset.disabled = true
