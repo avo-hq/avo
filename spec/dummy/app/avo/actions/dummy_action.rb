@@ -9,8 +9,16 @@ class DummyAction < Avo::BaseAction
     end
   end
 
+  field :fail_and_keep_modal_open, as: :boolean
+  field :keep_text, as: :text
+
   def handle(**args)
     # Do something here
+
+    # Test keep modal open feature
+    if args[:fields][:fail_and_keep_modal_open]
+      fail "Error response and keep modal open ✌️", keep_modal_open: true
+    end
 
     succeed "Success response ✌️"
     warn "Warning response ✌️"

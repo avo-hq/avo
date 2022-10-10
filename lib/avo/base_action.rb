@@ -135,8 +135,8 @@ module Avo
       self
     end
 
-    def fail(text)
-      add_message text, :error
+    def fail(text, keep_modal_open: false)
+      add_message text, keep_modal_open ? :keep_modal_open : :error
 
       self
     end

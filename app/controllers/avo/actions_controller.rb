@@ -69,23 +69,34 @@ module Avo
         return send_data response[:path], filename: response[:filename]
       end
 
-      respond_to do |format|
-        format.html do
-          # Flash the messages collected from the action
-          messages.each do |message|
-            flash[message[:type]] = message[:body]
+      keep_modal_open = messages.select {|message| message[:type] == :keep_modal_open }.first
+
+      if keep_modal_open
+        respond_to do |format|
+          format.html do
+            flash.now[:error] = keep_modal_open[:body]
+            render :show, status: :unprocessable_entity
           end
-
-          if response[:type] == :redirect
-            path = response[:path]
-
-            if path.respond_to? :call
-              path = instance_eval(&path)
+        end
+      else
+        respond_to do |format|
+          format.html do
+            # Flash the messages collected from the action
+            messages.each do |message|
+              flash[message[:type]] = message[:body]
             end
 
-            redirect_to path
-          elsif response[:type] == :reload
-            redirect_back fallback_location: resources_path(resource: @resource)
+            if response[:type] == :redirect
+              path = response[:path]
+
+              if path.respond_to? :call
+                path = instance_eval(&path)
+              end
+
+              redirect_to path
+            elsif response[:type] == :reload
+              redirect_back fallback_location: resources_path(resource: @resource)
+            end
           end
         end
       end
