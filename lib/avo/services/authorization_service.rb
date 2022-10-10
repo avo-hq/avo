@@ -64,12 +64,6 @@ module Avo
           Avo::App.license.lacks_with_trial :authorization
         end
 
-        def authorized_methods(user, record)
-          [:new, :edit, :update, :show, :destroy].map do |method|
-            [method, authorize(user, record, Avo.configuration.authorization_methods[method])]
-          end.to_h
-        end
-
         def defined_methods(user, record, policy_class: nil, **args)
           return client.policy!(user, record).methods if policy_class.nil?
 
@@ -95,18 +89,8 @@ module Avo
         @policy_class = policy_class || self.class.client.policy(user, record)&.class
       end
 
-      def authorize(action, **args)
-        self.class.authorize(user, record, action, policy_class: @policy_class, **args)
-      end
-
       def set_record(record)
         @record = record
-
-        self
-      end
-
-      def set_user(user)
-        @user = user
 
         self
       end
