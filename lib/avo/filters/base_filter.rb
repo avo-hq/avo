@@ -70,13 +70,13 @@ module Avo
         return true if visible.blank?
 
         # Run the visible block if available
-        instance_exec(
+        Avo::Hosts::VisibilityHost.new(
+          block: visible,
+          params: params,
           parent_model: parent_model,
           parent_resource: parent_resource,
-          resource: resource,
-          user: user,
-          &visible
-        )
+          resource: resource
+        ).handle
 
       end
     end

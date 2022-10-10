@@ -1,7 +1,16 @@
 class NameFilter < Avo::Filters::TextFilter
   self.name = "Name filter"
   self.button_label = "Filter by name"
-  # self.visible = ->(parent_model:, parent_resource:, resource:, user:) do
+  # self.visible = -> do
+  #   Access to:
+  #   block
+  #   view_context
+  #   current_user
+  #   params
+  #   parent_model
+  #   parent_resource
+  #   resource
+  #   view_context
   # end
 
   def apply(request, query, value)
