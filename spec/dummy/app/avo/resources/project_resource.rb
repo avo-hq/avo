@@ -29,7 +29,7 @@ class ProjectResource < Avo::BaseResource
   field :meta, as: :key_value, key_label: "Meta key", value_label: "Meta value", action_text: "New item", delete_text: "Remove item", disable_editing_keys: false, disable_adding_rows: false, disable_deleting_rows: false
 
   field :users, as: :has_and_belongs_to_many
-  field :comments, as: :has_many
+  field :comments, as: :has_many, searchable: true
   field :reviews, as: :has_many
 
   # filter PeopleFilter

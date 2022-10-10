@@ -22,7 +22,8 @@ module Avo
       @parent_model = @parent_resource.class.find_scope.find(params[:id])
       @parent_resource.hydrate(model: @parent_model)
       set_authorization_policy
-      @query = @authorization.apply_policy @parent_model.public_send(params[:related_name])
+      association_name = BaseResource.valid_association_name(@parent_model, params[:related_name])
+      @query = @authorization.apply_policy @parent_model.send(association_name)
       @association_field = @parent_resource.get_field params[:related_name]
 
       if @association_field.present? && @association_field.scope.present?
@@ -58,10 +59,12 @@ module Avo
     end
 
     def create
+      association_name = BaseResource.valid_association_name(@model, params[:related_name])
+
       if reflection_class == "HasManyReflection"
-        @model.send(params[:related_name].to_s) << @attachment_model
+        @model.send(association_name) << @attachment_model
       else
-        @model.send("#{params[:related_name]}=", @attachment_model)
+        @model.send("#{association_name}=", @attachment_model)
       end
 
       respond_to do |format|
@@ -74,10 +77,12 @@ module Avo
     end
 
     def destroy
+      association_name = BaseResource.valid_association_name(@model, params[:related_name])
+
       if reflection_class == "HasManyReflection"
-        @model.send(params[:related_name].to_s).delete @attachment_model
+        @model.send(association_name).delete @attachment_model
       else
-        @model.send("#{params[:related_name]}=", nil)
+        @model.send("#{association_name}=", nil)
       end
 
       respond_to do |format|

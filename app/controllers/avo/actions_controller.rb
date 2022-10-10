@@ -48,9 +48,17 @@ module Avo
     end
 
     def set_action
-      action_class = params[:action_id].gsub("avo_actions_", "").camelize.safe_constantize
-
       @action = action_class.new(model: @model, resource: @resource, user: _current_user, view: :edit)
+    end
+
+    def action_class
+      klass_name = params[:action_id].gsub("avo_actions_", "").camelize
+
+      valid_klass = Avo::BaseAction.descendants.find do |action|
+        action.to_s == klass_name
+      end
+
+      valid_klass
     end
 
     def respond(response)
