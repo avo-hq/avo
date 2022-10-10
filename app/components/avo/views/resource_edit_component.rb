@@ -31,7 +31,7 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   end
 
   def resource_view_path
-    helpers.resource_view_path(model: relation_resource.model, resource: relation_resource)
+    helpers.resource_view_path(model: association_resource.model, resource: association_resource)
   end
 
   def can_see_the_destroy_button?

@@ -1,0 +1,40 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 4,
+      "fingerprint": "590cf164dd928ef0bd277c5369426130af896d9fdec6389084d9d4a27076ef13",
+      "check_name": "LinkToHref",
+      "message": "Unsafe parameter value in `link_to` href",
+      "file": "app/views/avo/home/failed_to_load.html.erb",
+      "line": 15,
+      "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
+      "code": "link_to(\"this page\", (params.permit(:src).fetch(:src) or nil), :target => :_blank)",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "Avo::HomeController",
+          "method": "failed_to_load",
+          "line": 23,
+          "file": "app/controllers/avo/home_controller.rb",
+          "rendered": {
+            "name": "avo/home/failed_to_load",
+            "file": "app/views/avo/home/failed_to_load.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "avo/home/failed_to_load"
+      },
+      "user_input": "params.permit(:src).fetch(:src)",
+      "confidence": "High",
+      "cwe_id": [
+        79
+      ],
+      "note": ""
+    }
+  ],
+  "updated": "2022-10-05 13:24:40 +0300",
+  "brakeman_version": "5.3.1"
+}

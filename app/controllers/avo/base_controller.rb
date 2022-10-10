@@ -84,7 +84,7 @@ module Avo
 
       # If we're accessing this resource via another resource add the parent to the breadcrumbs.
       if params[:via_resource_class].present? && params[:via_resource_id].present?
-        via_resource = Avo::App.get_resource_by_model_name(params[:via_resource_class]).dup
+        via_resource = Avo::App.get_resource(params[:via_resource_class]).dup
         via_model = via_resource.class.find_scope.find params[:via_resource_id]
         via_resource.hydrate model: via_model
 
@@ -141,8 +141,9 @@ module Avo
           # find the record
           via_resource = ::Avo::App.get_resource_by_model_name(params[:via_relation_class]).dup
           @related_record = via_resource.model_class.find params[:via_resource_id]
+          association_name = BaseResource.valid_association_name(@model, params[:via_relation])
 
-          @model.send(params[:via_relation]) << @related_record
+          @model.send(association_name) << @related_record
         end
       end
 
@@ -370,7 +371,7 @@ module Avo
       last_crumb_args = {}
       # If we're accessing this resource via another resource add the parent to the breadcrumbs.
       if params[:via_resource_class].present? && params[:via_resource_id].present?
-        via_resource = Avo::App.get_resource_by_model_name(params[:via_resource_class]).dup
+        via_resource = Avo::App.get_resource(params[:via_resource_class]).dup
         via_model = via_resource.class.find_scope.find params[:via_resource_id]
         via_resource.hydrate model: via_model
 
@@ -414,9 +415,10 @@ module Avo
       # If this is an associated record return to the association show page
       if is_associated_record?
         parent_resource = ::Avo::App.get_resource_by_model_name(params[:via_relation_class]).dup
+        association_name = BaseResource.valid_association_name(@model, params[:via_relation])
 
         return resource_view_path(
-          model: @model.send(params[:via_relation]),
+          model: @model.send(association_name),
           resource: parent_resource,
           resource_id: params[:via_resource_id]
         )

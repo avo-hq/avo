@@ -1,4 +1,3 @@
-import { AttributeObserver } from '@stimulus/mutation-observers'
 import { Controller } from '@hotwired/stimulus'
 import { castBoolean } from '../helpers/cast_boolean'
 
@@ -16,24 +15,22 @@ export default class extends Controller {
     )
   }
 
-  targetTab(id) {
-    return this.tabTargets.find((element) => element.dataset.tabsIdParam === id)
-  }
-
   targetTabPanel(id) {
     return this.tabPanelTargets.find((element) => element.dataset.tabId === id)
   }
 
-  changeTab(e) {
+  async changeTab(e) {
+    // Stopping the link execution.
+    // We're going to reveal a lazy-loaded frame to fulfill the tab change.
     e.preventDefault()
 
     const { params } = e
     const { id } = params
 
-    this.setTheTargetPanelHeight(id)
+    await this.setTheTargetPanelHeight(id)
 
-    this.hideTabs()
-    this.showTab(id)
+    this.hideAllTabs()
+    this.revealTab(id)
     this.markTabLoaded(id)
 
     this.activeTabValue = id
@@ -42,7 +39,7 @@ export default class extends Controller {
   /**
    * Sets the target container height to the previous panel height so we don't get jerky tab changes.
    */
-  setTheTargetPanelHeight(id) {
+  async setTheTargetPanelHeight(id) {
     // Ignore this on edit.
     // All tabs are loaded beforehand, they have their own height, and the page won't jiggle when the user toggles between them.
     if (this.viewValue === 'edit' || this.viewValue === 'new') {
@@ -60,31 +57,21 @@ export default class extends Controller {
     this.targetTabPanel(id).style.height = `${height}px`
 
     // Wait until the panel loaded it's content and then remove the forced height
-    const observer = new AttributeObserver(this.targetTabPanel(id), 'busy', {
-      elementUnmatchedAttribute: () => {
-        // The content is not available in an instant so delay the height reset a bit.
-        setTimeout(() => {
-          this.targetTab(id).style.height = ''
-        }, 300)
-        if (observer) observer.stop()
-      },
-    })
-    observer.start()
+    await this.targetTabPanel(id).loaded
+    this.targetTabPanel(id).style.height = ''
   }
 
+  // Marking tab as loaded so we know to skip some things the next time the user clicks on it
   markTabLoaded(id) {
     this.targetTabPanel(id).dataset.loaded = true
   }
 
-  showTab(id) {
-    this.tabPanelTargets.forEach((element) => {
-      if (element.dataset.tabId === id) {
-        element.classList.remove('hidden')
-      }
-    })
+  // We're revealing the new tab that's lazy loaded by Turbo.
+  revealTab(id) {
+    this.targetTabPanel(id).classList.remove('hidden')
   }
 
-  hideTabs() {
+  hideAllTabs() {
     this.tabPanelTargets.map((element) => element.classList.add('hidden'))
   }
 }
