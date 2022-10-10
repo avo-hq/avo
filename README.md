@@ -48,7 +48,7 @@ Avo is a beautiful next-generation framework that empowers you, the developer, t
   - **Menu builder** - Group and surface information as you need to
   - **Branding** - Make it look
 
-## Some of the things we're going focusing on next
+## Some of the things we're going to focus on next
 
 Theming ⭐️  &nbsp;notifications ⭐️  &nbsp;Resource segmentation ⭐️  &nbsp;filterable fields ⭐️  &nbsp;inline editing ⭐️  &nbsp;multilingual records ⭐️  &nbsp;keyboard shortcuts ⭐️  &nbsp;track resource changes ⭐️  &nbsp;smart resource generation ⭐️  &nbsp;live resources ⭐️  &nbsp;columns view ⭐️  &nbsp;list view ⭐️  &nbsp;custom action items ⭐️  &nbsp;command bar ⭐️  &nbsp; use fields DSL in your custom views
 
