@@ -4,7 +4,7 @@ class NameFilter < Avo::Filters::TextFilter
   # self.visible = -> do
   #   Access to:
   #   block
-  #   view_context
+  #   context
   #   current_user
   #   params
   #   parent_model

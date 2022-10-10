@@ -1,7 +1,7 @@
 class ToggleAdmin < Avo::BaseAction
   self.name = "Toggle admin"
   self.no_confirmation = true
-  self.visible = -> (resource:, view:) {
+  self.visible = -> {
     # puts ["view->", view].inspect
     # view == :edit
     # view == :new

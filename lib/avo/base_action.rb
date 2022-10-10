@@ -20,6 +20,9 @@ module Avo
     attr_accessor :resource
     attr_accessor :user
 
+    attr_reader :parent_model
+    attr_reader :parent_resource
+
     delegate :view, to: :class
     delegate :context, to: ::Avo::App
     delegate :current_user, to: ::Avo::App
@@ -56,8 +59,10 @@ module Avo
       self.class.to_s.demodulize.underscore.humanize(keep_id_suffix: true)
     end
 
-    def initialize(model: nil, resource: nil, user: nil, view: nil)
+    def initialize(model: nil, parent_model: nil, parent_resource: nil, resource: nil, user: nil, view: nil)
       self.class.model = model if model.present?
+      @parent_model = parent_model
+      @parent_resource = parent_resource
       self.class.resource = resource if resource.present?
       self.class.user = user if user.present?
       self.class.view = view if view.present?
@@ -115,14 +120,24 @@ module Avo
     end
 
     def visible_in_view
+      if visible.blank?
+        # Hide on the :new view by default
+        return false if view == :new
+
+        # Show on all other views
+        return true
+      end
+
       # Run the visible block if available
-      return instance_exec(resource: self.class.resource, view: view, &visible) if visible.present?
-
-      # Hide on the :new view by default
-      return false if view == :new
-
-      # Show on all other views
-      true
+      Avo::Hosts::VisibilityHost.new(
+        block: visible,
+        model: self.class.model,
+        params: params,
+        parent_model: parent_model,
+        parent_resource: parent_resource,
+        resource: self.class.resource,
+        view: self.class.view,
+      ).handle
     end
 
     def param_id

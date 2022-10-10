@@ -13,7 +13,6 @@ module Avo
       attr_reader :parent_model
       attr_reader :parent_resource
       attr_reader :resource
-      attr_reader :user
 
       delegate :params, to: Avo::App
 
@@ -29,11 +28,10 @@ module Avo
         end
       end
 
-      def initialize(resource: nil, user: nil, parent_model: nil, parent_resource: nil)
+      def initialize(resource: nil, parent_model: nil, parent_resource: nil)
         @parent_model = parent_model
         @parent_resource = parent_resource
         @resource = resource
-        @user = user
       end
 
       def apply_query(request, query, value)
