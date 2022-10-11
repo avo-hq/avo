@@ -42,7 +42,7 @@
         type: :submit,
         data: {
           target: 'control:detach',
-          confirm: t('avo.are_you_sure_detach_item', item: singular_resource_name),
+          turbo_confirm: t('avo.are_you_sure_detach_item', item: singular_resource_name),
           control: :detach,
           'resource-id': @resource.model.id,
           'tippy': 'tooltip',
@@ -66,7 +66,7 @@
         type: :submit,
         data: {
           target: 'control:destroy',
-          confirm: t('avo.are_you_sure',  item: singular_resource_name),
+          turbo_confirm: t('avo.are_you_sure',  item: singular_resource_name),
           control: :destroy,
           'resource-id': @resource.model.id,
           'tippy': 'tooltip',
