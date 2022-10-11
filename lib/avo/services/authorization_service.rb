@@ -49,11 +49,10 @@ module Avo
           return model if skip_authorization || user.nil?
 
           begin
-            if policy_class
-              policy_class::Scope.new(user, model).resolve
-            else
-              Pundit.policy_scope! user, model
-            end
+            # Figure out the scope from a given policy or auto-detected one
+            scope = scope_for_policy_class(policy_class) || Pundit.policy_scope!(user, model)
+
+            scope.new(user, model).resolve
           rescue Pundit::NotDefinedError => e
             return model unless Avo.configuration.raise_error_on_missing_policy
 
@@ -88,6 +87,16 @@ module Avo
             raise error
           end
         end
+
+        # Fetches the scope for a given policy
+        def scope_for_policy_class(policy_class = nil)
+          return if policy_class.blank?
+
+          if policy_class.present? && defined?(policy_class::Scope)
+            policy_class::Scope
+          end
+        end
+
       end
 
       def initialize(user = nil, record = nil, policy_class: nil)
