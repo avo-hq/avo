@@ -57,8 +57,6 @@ class UserResource < Avo::BaseResource
     field :email, as: :gravatar, link_to_resource: true, as_avatar: :circle, only_on: :show
     heading
     field :active, as: :boolean, name: "Is active", only_on: :show
-    # panel do
-    # end
     field :is_admin?, as: :boolean, name: "Is admin", only_on: :index
     field :birthday,
       as: :date,
