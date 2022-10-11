@@ -27,7 +27,6 @@ gem "rubocop-shopify", require: false
 gem "zeitwerk", "~> 2.3"
 gem "httparty"
 gem "iso"
-gem "hotwire-rails"
 gem "active_link_to"
 gem "addressable"
 gem "appraisal"
@@ -53,6 +52,7 @@ group :development do
   gem "annotate"
   gem "htmlbeautifier"
   gem "hotwire-livereload", "~> 1.1"
+  gem "brakeman"
 end
 
 group :development, :test do
