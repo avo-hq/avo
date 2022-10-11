@@ -19,12 +19,12 @@
       <%= render Avo::PanelComponent.new(name: title, description: @resource.resource_description, display_breadcrumbs: @reflection.blank?, index: 0, data: { panel_id: "main" }) do |c| %>
         <% c.tools do %>
           <%= a_link back_path,
-        style: :text,
-        icon: 'arrow-left' do %>
-          <%= t('avo.cancel').capitalize %>
-        <% end %>
-        <% if can_see_the_destroy_button? %>
-          <%= a_link destroy_path,
+            style: :text,
+            icon: 'arrow-left' do %>
+            <%= t('avo.cancel').capitalize %>
+          <% end %>
+          <% if can_see_the_destroy_button? %>
+            <%= a_link destroy_path,
             method: :delete,
             local: true,
             style: :text,
@@ -37,34 +37,40 @@
               control: :destroy,
               'resource-id': @resource.model.id,
             } do %>
-            <%= t('avo.delete').capitalize %>
+              <%= t('avo.delete').capitalize %>
+            <% end %>
           <% end %>
-        <% end %>
-        <% if can_see_the_actions_button? %>
-          <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>
-        <% end %>
-        <% if can_see_the_save_button? %>
-          <%= a_button color: :primary,
+          <% if can_see_the_actions_button? %>
+            <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>
+          <% end %>
+          <% if can_see_the_save_button? %>
+            <%= a_button color: :primary,
             style: :primary,
             loading: true,
             type: :submit,
             icon: 'save' do %>
-            <%= t('avo.save').capitalize %>
+              <%= t('avo.save').capitalize %>
+            <% end %>
           <% end %>
         <% end %>
-      <% end %>
-      <%# Extract the main panel and display the fields here. %>
-      <%# This way we'll be able to render the footer buttons under the main fields. %>
-      <% if main_panel.present? %>
-        <% c.body do %>
-          <div class="divide-y">
-            <% main_panel.items.each_with_index do |field, index| %>
-              <%= render field.hydrate(resource: @resource, model: @resource.model, user: @resource.user, view: view_for(field))
-                .component_for_view(view_for field)
-                .new(field: field, resource: @resource, index: index, form: form)
-              %>
+        <%# Extract the main panel and display the fields here. %>
+        <%# This way we'll be able to render the footer buttons under the main fields. %>
+        <% if main_panel.present? %>
+          <% c.body do %>
+            <div class="divide-y">
+              <% main_panel.items.each_with_index do |field, index| %>
+                <%= render field
+                  .hydrate(resource: @resource, model: @resource.model, user: @resource.user, view: view_for(field))
+                  .component_for_view(view_for field)
+                  .new(field: field, resource: @resource, index: index, form: form, compact: sidebar.present?)
+                %>
               <% end %>
             </div>
+          <% end %>
+        <% end %>
+        <% if sidebar.present? %>
+          <% c.sidebar do %>
+            <%= render sidebar_component form: form %>
           <% end %>
         <% end %>
         <% if Avo.configuration.buttons_on_form_footers %>

@@ -160,12 +160,18 @@
       <% c.body do %>
         <div class="divide-y">
           <% main_panel.items.each_with_index do |field, index| %>
-            <%= render field.hydrate(resource: @resource, model: @resource.model, user: @resource.user, view: view)
+            <%= render field
+              .hydrate(resource: @resource, model: @resource.model, user: @resource.user, view: view)
               .component_for_view(view)
-              .new(field: field, resource: @resource, index: index)
+              .new(field: field, resource: @resource, index: index, compact: sidebar.present?)
             %>
           <% end %>
         </div>
+      <% end %>
+    <% end %>
+    <% if sidebar.present? %>
+      <% c.sidebar do %>
+        <%= render sidebar_component %>
       <% end %>
     <% end %>
   <% end %>

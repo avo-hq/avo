@@ -3,7 +3,7 @@
   style: style,
   data: data do %>
   <div class="h-full <% if stacked? %> md:pt-4 <% else %> md:pt-0 md:h-14 <% end %> pt-4 flex self-start items-center text-slate-800">
-    <div class="<% if compact %> md:w-48 <% else %> md:w-64 px-6 md:px-6 <% end %> w-48 flex uppercase font-semibold text-gray-500 text-sm" data-slot="label">
+    <div class="w-48 <% if compact? %> md:w-48 xl:w-64 <% else %> md:w-64 <% end %> px-6 flex uppercase font-semibold text-gray-500 text-sm" data-slot="label">
       <% if form.present? %>
         <%= form.label field.id, label %>
       <% else %>
@@ -12,17 +12,15 @@
       <% if on_edit? && field.is_required? %> <span class="text-red-600 ml-1">*</span> <% end %>
     </div>
   </div>
-  <div class="flex-1 flex flex-row md:min-h-inherit py-2 <% unless compact %> px-6 <% end %>">
-    <% if on_show? %>
-      <div class="self-center <% if full_width %> w-full <% else %> w-full md:w-8/12 <% end %>" data-slot="value">
+  <div class="flex-1 flex flex-row md:min-h-inherit py-2 <% if stacked? %> pb-4 <% else %><% end %> px-6">
+    <div class="self-center <% if full_width? || compact? || stacked? %> w-full <% else %> md:w-8/12 <% end %>" data-slot="value">
+      <% if on_show? %>
         <% if field.value.blank? and dash_if_blank %>
           —
         <% else %>
           <%= content %>
         <% end %>
-      </div>
-    <% elsif on_edit? %>
-      <div class="self-center <% if compact or full_width or stacked? %> w-full <% else %> w-full md:w-8/12 <% end %>" data-slot="value">
+      <% elsif on_edit? %>
         <%= content %>
         <% if record.present? and record.errors.include? field.id %>
           <div class="text-red-600 mt-2 text-sm"><%= record.errors.full_messages_for(field.id).to_sentence %></div>
@@ -30,8 +28,8 @@
         <% if help.present? %>
           <div class="text-gray-600 mt-2 text-sm"><%== help %></div>
         <% end %>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
   </div>
   <% if params[:avo_debug].present? %>
     <!-- Raw value: -->
