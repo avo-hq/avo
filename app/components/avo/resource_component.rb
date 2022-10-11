@@ -86,6 +86,8 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def sidebar
+    return if Avo::App.license.lacks_with_trial(:resource_sidebar)
+
     @sidebar ||= search_for_sidebar
   end
 

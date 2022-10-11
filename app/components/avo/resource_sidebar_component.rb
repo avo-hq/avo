@@ -19,4 +19,8 @@ class Avo::ResourceSidebarComponent < ViewComponent::Base
       field.visible_on? view
     end
   end
+
+  def render?
+    Avo::App.license.has_with_trial(:resource_sidebar)
+  end
 end
