@@ -19,6 +19,7 @@ export default class extends Controller {
     firstDayOfWeek: Number,
     time24Hr: Boolean,
     disableMobile: Boolean,
+    noCalendar: Boolean,
   }
 
   flatpickrInstance;
@@ -91,7 +92,7 @@ export default class extends Controller {
     let value = this.parsedValue
 
     // Set the zone only if the type of field is date time.
-    if (this.enableTimeValue) {
+    if (this.enableTimeValue && !this.noCalendarValue) {
       value = value.setZone(this.displayTimezone)
     }
 
@@ -109,6 +110,7 @@ export default class extends Controller {
       },
       altInput: true,
       onChange: this.onChange.bind(this),
+      noCalendar: false
     }
 
     // Set the format of the displayed input field.
@@ -124,8 +126,11 @@ export default class extends Controller {
     options.enableTime = this.enableTimeValue
     options.enableSeconds = this.enableTimeValue
 
+    // Hide calendar and only keep time picker.
+    options.noCalendar = this.noCalendarValue
+
     // enable timezone display
-    if (this.enableTimeValue) {
+    if (this.enableTimeValue && !this.noCalendarValue) {
       options.defaultDate = this.parsedValue.setZone(this.displayTimezone).toISO()
 
       options.dateFormat = 'Y-m-d H:i:S'
@@ -137,7 +142,7 @@ export default class extends Controller {
 
     this.flatpickrInstance = flatpickr(this.fakeInputTarget, options)
 
-    if (this.enableTimeValue) {
+    if (this.enableTimeValue && !this.noCalendarValue) {
       this.updateRealInput(this.parsedValue.setZone(this.displayTimezone).toISO())
     } else {
       this.updateRealInput(universalTimestamp(this.initialValue))
@@ -161,7 +166,7 @@ export default class extends Controller {
       args = { keepLocalTime: false }
     }
 
-    if (this.enableTimeValue) {
+    if (this.enableTimeValue && !this.noCalendarValue) {
       time = DateTime.fromISO(selectedDates[0].toISOString()).setZone('UTC', args)
     } else {
       time = DateTime.fromISO(selectedDates[0].toISOString()).setZone('UTC', { keepLocalTime: true })

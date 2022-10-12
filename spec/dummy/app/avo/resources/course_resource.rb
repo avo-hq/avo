@@ -47,6 +47,11 @@ class CourseResource < Avo::BaseResource
       end
     end
   end
+
+  field :starting_at, as: :time,
+    picker_format: "H:i",
+    format: "HH:mm"
+
   field :country,
     as: :select,
     options: Course.countries.map { |country| [country, country] }.prepend(["-", nil]).to_h,
