@@ -15,6 +15,11 @@ RDoc::Task.new(:rdoc) do |rdoc|
 end
 
 APP_RAKEFILE = File.expand_path("spec/dummy/Rakefile", __dir__)
+namespace :assets do
+  task :clobber
+  task :precompile
+end
+
 load "rails/tasks/engine.rake"
 
 load "rails/tasks/statistics.rake"

@@ -1,7 +1,26 @@
 # requires all dependencies
-Gem.loaded_specs["avo"].dependencies.each do |d|
-  require d.name
-end
+require "rails"
+
+require "active_record/railtie"
+require "active_storage/engine"
+require "action_controller/railtie"
+require "action_view/railtie"
+require "pagy"
+require "zeitwerk"
+require "countries"
+require "pundit"
+require "httparty"
+require "active_link_to"
+require "image_processing"
+require "view_component"
+require "turbo-rails"
+require "addressable"
+require "meta-tags"
+require "breadcrumbs_on_rails"
+require "chartkick"
+require "dry-initializer"
+require "docile"
+require "inline_svg"
 
 # In development we should load the engine so we get the autoload for components
 if ENV["RAILS_ENV"] === "development"
