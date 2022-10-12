@@ -15,6 +15,8 @@ RDoc::Task.new(:rdoc) do |rdoc|
 end
 
 APP_RAKEFILE = File.expand_path("spec/dummy/Rakefile", __dir__)
+
+# N.B. This is a hack to get around engine.rake assuming these tasks exist.
 namespace :assets do
   task :clobber
   task :precompile
