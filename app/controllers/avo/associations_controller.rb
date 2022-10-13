@@ -5,6 +5,7 @@ module Avo
     before_action :set_model, only: [:show, :index, :new, :create, :destroy, :order]
     before_action :set_related_resource_name
     before_action :set_related_resource, only: [:show, :index, :new, :create, :destroy, :order]
+    before_action :set_related_authorization
     before_action :set_reflection_field
     before_action :hydrate_related_resource, only: [:show, :index, :create, :destroy, :order]
     before_action :set_related_model, only: [:show, :order]
@@ -151,6 +152,16 @@ module Avo
 
     def authorize_detach_action
       authorize_if_defined "detach_#{@field.id}?"
+    end
+
+    private
+
+    def set_related_authorization
+      @authorization = if related_resource
+        related_resource.authorization(user: _current_user)
+      else
+        Services::AuthorizationService.new _current_user
+      end
     end
   end
 end
