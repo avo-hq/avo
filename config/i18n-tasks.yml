@@ -112,7 +112,13 @@ search:
 #   # deepl_version: "v2"
 
 ## Do not consider these keys missing:
-# ignore_missing:
+ignore_missing:
+  - 'avo.field_translations.file'
+  - 'avo.field_translations.people'
+  - 'avo.number_of_items'
+  - 'avo.resource_translations.user'
+  - 'avo.x_items_more'
+
 # - 'errors.messages.{accepted,blank,invalid,too_short,too_long}'
 # - '{devise,simple_form}.*'
 
