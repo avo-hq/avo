@@ -85,6 +85,8 @@ group :development do
   gem "hotwire-livereload", "~> 1.1"
 
   gem "brakeman"
+
+  gem 'i18n-tasks', '~> 1.0.12'
 end
 
 group :development, :test do
