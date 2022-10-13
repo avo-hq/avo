@@ -17,7 +17,8 @@ ro:
     choose_a_country: Alege o tara
     choose_an_option: Alege o optiune
     choose_item: Alege %{item}
-    clear_value: Valoare clară
+
+    clear_value: Sterge valoarea
     click_to_reveal_filters: Faceți clic pentru a afișa filtrele
     confirm: Confirm
     create_new_item: Creeaza %{item}
@@ -29,7 +30,7 @@ ro:
     detach_item: detaseaza %{item}
     details: detalii
     download: Descarca
-    download_file: Descărcare fișier
+    download_file: Descărcă fișier
     download_item: Descarca %{item}
     edit: modifica
     edit_item: modifica %{item}
@@ -75,8 +76,8 @@ ro:
       higher: Mutați înregistrarea mai sus
       lower: Mutați înregistrarea mai jos
       reorder_record: Reordonați înregistrarea
-      to_bottom: Mutați înregistrarea în jos
-      to_top: Mutați înregistrarea sus
+      to_bottom: Mutați înregistrarea jos de tot
+      to_top: Mutați înregistrarea sus de tot
     per_page: Pe pagina
     prev_page: Pagina anterioara
     remove_selection: Sterge selectia
@@ -113,7 +114,7 @@ ro:
     x_items_more:
       one: încă un articol
       other: "%{count} mai multe articole"
-      zero: nu mai multe articole
+      zero: zero articole
     x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> selectate dintr-un total de <span class="font-bold text-gray-700">%{count}</span>
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> selectate din toate paginile
     you_missed_something_check_form: S-ar putea să fi omis ceva. Vă rugăm să verificați formularul.
