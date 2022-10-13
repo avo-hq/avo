@@ -64,7 +64,7 @@ tr:
     no_cards_present: Kart yok
     no_item_found: Hiç %{item} bulunamadı
     no_options_available: Seçenek yok
-    no_related_item_found: İlişkili öğe bulunamadı
+    no_related_item_found: İlişkili %{item} bulunamadı
     not_authorized: Bu eylemi gerçekleştirme yetkiniz yok.
     number_of_items:
       one: bir %{item}
