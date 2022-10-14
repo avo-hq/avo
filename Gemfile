@@ -90,6 +90,7 @@ end
 group :development, :test do
   gem "awesome_print"
   gem "faker", require: false
+  gem "i18n-tasks", "~> 1.0.12"
 end
 
 group :test do
