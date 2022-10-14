@@ -38,7 +38,7 @@ Thank you!
 
 NOTE: We're using our local Postgres instance.
 
-You may use docker with the provided `docker-compose.yml` file, however, you will have to change the database credentials from port `5432` to `5433` so the app can connect to the docker-exposed postgres port.
+You may use docker with the provided `docker-compose.yml` file.
 
 Once you pull the code down to your machine, modify `spec/dummy/config/database.yml` as appropriate to your environment (no changes needed if you're using local Postgres). Do not commit these changes. From here, running `bin/init` will get you up-and-running.
 
