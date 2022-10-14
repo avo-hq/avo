@@ -17,7 +17,6 @@ ro:
     choose_a_country: Alege o tara
     choose_an_option: Alege o optiune
     choose_item: Alege %{item}
-
     clear_value: Sterge valoarea
     click_to_reveal_filters: Faceți clic pentru a afișa filtrele
     confirm: Confirm
