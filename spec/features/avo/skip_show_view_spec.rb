@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.feature "SkipShowView", type: :feature do
   let!(:course) { create :course }
