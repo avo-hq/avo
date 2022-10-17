@@ -66,9 +66,7 @@ RSpec.feature "SkipShowView", type: :feature do
       expect(page).to have_text("Awesome course (edited)")
       expect(current_path).to eql "/admin/resources/courses/#{Course.last.id}/edit"
 
-      accept_alert do
-        click_on "Delete"
-      end
+      click_on "Delete"
 
       wait_for_loaded
       expect(page).to have_text("Course destroyed for ever!")
