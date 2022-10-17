@@ -7,7 +7,7 @@ nn:
     are_you_sure_you_want_to_run_this_option: 'Er du sikker?'
     are_you_sure_detach_item: 'Er du sikker på at du vil koble frå %{item}.'
     run: 'Køyr'
-    cancel: 'Avslutt'
+    cancel: 'Avbryt'
     action_ran_successfully: 'Suksess!'
     details: "detaljar"
     unauthorized: 'Ikkje autorisert'
@@ -62,7 +62,7 @@ nn:
     resources: 'Ressursar'
     oops_nothing_found: 'Oops! Fann ikkje noko...'
     type_to_search: 'Søk.'
-    and_x_other_resources: 'og %{count} andre ressurar'
+    and_x_other_resources: 'og %{count} andre ressursar'
     go_back: 'Gå tilbake'
     home: 'Heim'
     new: 'ny'
@@ -72,8 +72,8 @@ nn:
     table_view: 'Tabellvisning'
     grid_view: 'Gridvisning'
     next_page: 'Neste side'
-    prev_page: 'Forrige side'
-    list_is_empty: 'Listen er tom'
+    prev_page: 'Førre side'
+    list_is_empty: 'Lista er tom'
     field_translations:
       file:
         zero: 'filer'
@@ -86,7 +86,7 @@ nn:
     resource_translations:
       user:
         zero: 'brukarar'
-        one: 'bruker'
+        one: 'brukar'
         other: 'brukarar'
     reset_filters: 'Nullstill filter'
     not_authorized: 'Du er ikkje autorisert til å gjere denne handlinga.'
@@ -110,7 +110,7 @@ nn:
       higher: 'Flytt elementet opp'
       lower: 'Flytt elementet ned'
       to_top: 'Flytt elementet til toppen'
-      to_bottom: 'Flytt elementet til bunnen'
+      to_bottom: 'Flytt elementet til botnen'
     empty_dashboard_message: 'Legg til kort i dette dashbordet'
     no_cards_present: 'Ingen kort til stades'
     no_options_available: 'Ingen tilgjengelege alternativ'

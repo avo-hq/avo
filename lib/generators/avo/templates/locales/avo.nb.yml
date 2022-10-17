@@ -7,7 +7,7 @@ nb:
     are_you_sure_you_want_to_run_this_option: 'Er du sikker?'
     are_you_sure_detach_item: 'Er du sikker på at du vil koble fra %{item}.'
     run: 'Kjør'
-    cancel: 'Avslutt'
+    cancel: 'Avbryt'
     action_ran_successfully: 'Suksess!'
     details: "detaljer"
     unauthorized: 'Ikke autorisert'
