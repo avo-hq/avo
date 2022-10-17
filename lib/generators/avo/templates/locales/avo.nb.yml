@@ -13,7 +13,7 @@ nb:
     attachment_class_attached: "%{attachment_class} lagt til."
     attachment_class_detached: "%{attachment_class} fjernet."
     attachment_destroyed: Vedlett slettet
-    cancel: Avslutt
+    cancel: Avbryt
     choose_a_country: Velg et land
     choose_an_option: Velg et alternativ
     choose_item: Velge %{item}
