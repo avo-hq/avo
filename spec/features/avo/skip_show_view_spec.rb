@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.feature "SkipShowView", type: :feature do
   let!(:course) { create :course }
@@ -64,7 +64,6 @@ RSpec.feature "SkipShowView", type: :feature do
       expect(page).to have_text("Course updated!")
       expect(page).to have_text("Awesome course (edited)")
       expect(current_path).to eql "/admin/resources/courses/#{Course.last.id}/edit"
-
 
       click_on "Delete"
       expect(page).to have_text("Course destroyed for ever!")
