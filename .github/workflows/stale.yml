@@ -19,5 +19,5 @@ jobs:
           stale-pr-message: 'This PR has been marked as stale because there was no activity for the past 15 days.'
           close-issue-message: 'Closing this because there was no activity for the past 15 days. Feel free to reopen if new information pops up ✌️'
           close-pr-message: 'Closing this because there was no activity for the past 15 days. Feel free to reopen if new information pops up ✌️'
-          exempt-issue-labels: Stale exempt, Good first issue, Help wanted, bug, RFC
-          exempt-pr-labels: Stale exempt, Good first issue, Help wanted, bug, RFC
+          exempt-issue-labels: Stale exempt, Good first issue, Help wanted, bug, RFC, Task
+          exempt-pr-labels: Stale exempt, Good first issue, Help wanted, bug, RFC, Task
