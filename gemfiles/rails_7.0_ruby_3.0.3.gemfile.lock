@@ -17,7 +17,7 @@ PATH
       pundit
       rails (>= 6.0)
       turbo-rails
-      view_component (= 2.60)
+      view_component
       zeitwerk
 
 GEM
