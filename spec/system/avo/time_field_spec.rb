@@ -20,18 +20,34 @@ RSpec.describe "Time field", type: :system do
     end
 
     context "edit" do
-      it "sets the proper time" do
+      it "keeps the proper time" do
         visit "/admin/resources/courses/#{course.id}/edit"
 
-        wait_for_turbo_frame_id "avo-tabgroup-2-avo-tab-starting-at"
-
-        expect(find('[data-field-id="starting_at"] [data-controller="date-field"] input[type="hidden"]', visible: false).value).to eq "16:30:00"
+        expect(find('[data-field-id="starting_at"] [data-controller="date-field"] input[name="course[starting_at]"]', visible: false).value).to eq "16:30:00"
         expect(find('[data-field-id="starting_at"] [data-controller="date-field"] input[type="text"]').value).to eq "16:30"
 
         click_on "Save"
         wait_for_loaded
 
         expect(find_field_value_element("starting_at").text).to eq "16:30"
+      end
+
+      it "sets the proper time" do
+        visit "/admin/resources/courses/#{course.id}/edit"
+
+        expect(find('[data-field-id="starting_at"] [data-controller="date-field"] input[name="course[starting_at]"]', visible: false).value).to eq "16:30:00"
+        expect(find('[data-field-id="starting_at"] [data-controller="date-field"] input[type="text"]').value).to eq "16:30"
+
+        find('[data-field-id="starting_at"] [data-controller="date-field"] input[type="text"]').click
+        sleep 0.1
+        find(".numInput.flatpickr-hour").set "17"
+        find('[data-target="title"]').click
+        sleep 0.3
+
+        click_on "Save"
+        wait_for_loaded
+
+        expect(find_field_value_element("starting_at").text).to eq "17:30"
       end
     end
   end
