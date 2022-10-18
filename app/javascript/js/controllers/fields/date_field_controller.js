@@ -20,6 +20,7 @@ export default class extends Controller {
     time24Hr: Boolean,
     disableMobile: Boolean,
     noCalendar: Boolean,
+    absolute: Boolean,
   }
 
   flatpickrInstance;
@@ -91,8 +92,8 @@ export default class extends Controller {
   initShow() {
     let value = this.parsedValue
 
-    // Set the zone only if the type of field is date time.
-    if (this.enableTimeValue && !this.noCalendarValue) {
+    // Set the zone only if the type of field is date time or relative time.
+    if (this.enableTimeValue && !this.absoluteValue) {
       value = value.setZone(this.displayTimezone)
     }
 
@@ -110,7 +111,8 @@ export default class extends Controller {
       },
       altInput: true,
       onChange: this.onChange.bind(this),
-      noCalendar: false
+      noCalendar: false,
+      absolute: true,
     }
 
     // Set the format of the displayed input field.
@@ -129,8 +131,11 @@ export default class extends Controller {
     // Hide calendar and only keep time picker.
     options.noCalendar = this.noCalendarValue
 
-    // enable timezone display
-    if (this.enableTimeValue && !this.noCalendarValue) {
+    // Enable absolute time if needed.
+    options.absolute = this.absoluteValue
+
+    // Enable timezone display
+    if (this.enableTimeValue && !this.absoluteValue) {
       options.defaultDate = this.parsedValue.setZone(this.displayTimezone).toISO()
 
       options.dateFormat = 'Y-m-d H:i:S'
@@ -142,7 +147,7 @@ export default class extends Controller {
 
     this.flatpickrInstance = flatpickr(this.fakeInputTarget, options)
 
-    if (this.enableTimeValue && !this.noCalendarValue) {
+    if (this.enableTimeValue && !this.absoluteValue) {
       this.updateRealInput(this.parsedValue.setZone(this.displayTimezone).toISO())
     } else {
       this.updateRealInput(universalTimestamp(this.initialValue))
@@ -166,7 +171,7 @@ export default class extends Controller {
       args = { keepLocalTime: false }
     }
 
-    if (this.enableTimeValue && !this.noCalendarValue) {
+    if (this.enableTimeValue && !this.absoluteValue) {
       time = DateTime.fromISO(selectedDates[0].toISOString()).setZone('UTC', args)
     } else {
       time = DateTime.fromISO(selectedDates[0].toISOString()).setZone('UTC', { keepLocalTime: true })
