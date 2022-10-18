@@ -51,7 +51,12 @@ class CourseResource < Avo::BaseResource
   field :starting_at, as: :time,
     picker_format: "H:i",
     format: "HH:mm",
-    absolute: true
+    picker_options: {
+      hourIncrement: 1,
+      minuteIncrement: 1,
+      secondsIncrement: 1
+    },
+    relative: true
 
   field :country,
     as: :select,

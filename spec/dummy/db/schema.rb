@@ -84,7 +84,7 @@ ActiveRecord::Schema.define(version: 2022_10_11_150126) do
     t.text "skills", default: [], array: true
     t.string "country"
     t.string "city"
-    t.datetime "starting_at"
+    t.time "starting_at"
   end
 
   create_table "fish", force: :cascade do |t|

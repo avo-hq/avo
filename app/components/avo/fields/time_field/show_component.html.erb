@@ -7,7 +7,8 @@
     date_field_timezone_value: @field.timezone,
     date_field_picker_format_value: @field.picker_format,
     date_field_no_calendar_value: true,
-    date_field_absolute_value: @field.absolute,
+    date_field_relative_value: @field.relative,
+    date_field_field_type_value: "time",
   } do %>
     <%= @field.formatted_value %>
   <% end %>

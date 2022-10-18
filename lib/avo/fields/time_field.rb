@@ -5,7 +5,7 @@ module Avo
       attr_reader :picker_format
       attr_reader :time_24hr
       attr_reader :timezone
-      attr_reader :absolute
+      attr_reader :relative
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
@@ -14,14 +14,13 @@ module Avo
         add_string_prop args, :picker_format, "H:i:S"
         add_string_prop args, :format, "TT"
         add_string_prop args, :timezone
-        add_string_prop args, :absolute
+        add_boolean_prop args, :relative, true
       end
 
       def formatted_value
         return nil if value.nil?
 
         value.utc.to_time.iso8601
-
       end
 
       def edit_formatted_value

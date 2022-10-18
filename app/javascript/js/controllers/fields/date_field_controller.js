@@ -7,6 +7,9 @@ function universalTimestamp(timestampStr) {
   return new Date(new Date(timestampStr).getTime() + (new Date(timestampStr).getTimezoneOffset() * 60 * 1000))
 }
 
+const RAW_DATE_FORMAT = 'y/LL/dd'
+const RAW_TIME_FORMAT = 'TT'
+
 export default class extends Controller {
   static targets = ['input', 'fakeInput']
 
@@ -20,7 +23,9 @@ export default class extends Controller {
     time24Hr: Boolean,
     disableMobile: Boolean,
     noCalendar: Boolean,
-    absolute: Boolean,
+    relative: Boolean,
+    fieldType: { type: String, default: 'dateTime' },
+    pickerOptions: { type: Object, default: {} },
   }
 
   flatpickrInstance;
@@ -93,7 +98,7 @@ export default class extends Controller {
     let value = this.parsedValue
 
     // Set the zone only if the type of field is date time or relative time.
-    if (this.enableTimeValue && !this.absoluteValue) {
+    if (this.enableTimeValue && this.relativeValue) {
       value = value.setZone(this.displayTimezone)
     }
 
@@ -112,7 +117,7 @@ export default class extends Controller {
       altInput: true,
       onChange: this.onChange.bind(this),
       noCalendar: false,
-      absolute: true,
+      ...this.pickerOptionsValue,
     }
 
     // Set the format of the displayed input field.
@@ -131,11 +136,8 @@ export default class extends Controller {
     // Hide calendar and only keep time picker.
     options.noCalendar = this.noCalendarValue
 
-    // Enable absolute time if needed.
-    options.absolute = this.absoluteValue
-
     // Enable timezone display
-    if (this.enableTimeValue && !this.absoluteValue) {
+    if (this.enableTimeValue && this.relativeValue) {
       options.defaultDate = this.parsedValue.setZone(this.displayTimezone).toISO()
 
       options.dateFormat = 'Y-m-d H:i:S'
@@ -147,11 +149,22 @@ export default class extends Controller {
 
     this.flatpickrInstance = flatpickr(this.fakeInputTarget, options)
 
-    if (this.enableTimeValue && !this.absoluteValue) {
-      this.updateRealInput(this.parsedValue.setZone(this.displayTimezone).toISO())
-    } else {
-      this.updateRealInput(universalTimestamp(this.initialValue))
+    let value
+    switch (this.fieldTypeValue) {
+      case 'time':
+        // For time values, we should maintain the real value and format it to a time-friendly format.
+        value = this.parsedValue.setZone(this.displayTimezone, { keepLocalTime: true }).toFormat(RAW_TIME_FORMAT)
+        break
+      case 'date':
+        value = DateTime.fromJSDate(universalTimestamp(this.initialValue)).toFormat(RAW_DATE_FORMAT)
+        break
+      default:
+      case 'dateTime':
+        value = this.parsedValue.setZone(this.displayTimezone).toISO()
+        break
     }
+
+    this.updateRealInput(value)
   }
 
   onChange(selectedDates) {
@@ -162,24 +175,34 @@ export default class extends Controller {
       return
     }
 
-    let time
     let args = {}
 
-    if (this.timezoneValue) {
+    // For values that involve time we should keep the local time.
+    if (this.timezoneValue || !this.relativeValue) {
       args = { keepLocalTime: true }
     } else {
       args = { keepLocalTime: false }
     }
 
-    if (this.enableTimeValue && !this.absoluteValue) {
-      time = DateTime.fromISO(selectedDates[0].toISOString()).setZone('UTC', args)
-    } else {
-      time = DateTime.fromISO(selectedDates[0].toISOString()).setZone('UTC', { keepLocalTime: true })
+    let value
+    switch (this.fieldTypeValue) {
+      case 'time':
+        // For time values, we should maintain the real value and format it to a time-friendly format.
+        value = DateTime.fromISO(selectedDates[0].toISOString()).setZone('UTC', args).toFormat(RAW_TIME_FORMAT)
+        break
+      case 'date':
+        value = DateTime.fromISO(selectedDates[0].toISOString()).setZone('UTC', { keepLocalTime: true }).toFormat(RAW_DATE_FORMAT)
+        break
+      default:
+      case 'dateTime':
+        value = DateTime.fromISO(selectedDates[0].toISOString()).setZone('UTC', args).toISO()
+        break
     }
 
-    this.updateRealInput(time)
+    this.updateRealInput(value)
   }
 
+  // Value should be a string
   updateRealInput(value) {
     this.inputTarget.value = value
   }

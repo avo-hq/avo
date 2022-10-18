@@ -7,6 +7,8 @@
       date_field_picker_format_value: @field.picker_format,
       date_field_first_day_of_week_value: @field.first_day_of_week,
       date_field_disable_mobile_value: @field.disable_mobile,
+      date_field_field_type_value: "date",
+      date_field_picker_options_value: @field.picker_options,
   } do %>
     <%= datetime_field "fake_#{@field.id}", "fake",
       value: @field.edit_formatted_value,

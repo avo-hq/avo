@@ -8,7 +8,9 @@
       date_field_time24_hr_value: @field.time_24hr,
       date_field_no_calendar_value: true,
       date_field_timezone_value: @field.timezone,
-      date_field_absolute_value: @field.absolute,
+      date_field_relative_value: @field.relative,
+      date_field_field_type_value: "time",
+      date_field_picker_options_value: @field.picker_options,
   } do %>
     <%= datetime_field "fake_#{@field.id}", "fake",
       value: @field.edit_formatted_value,
