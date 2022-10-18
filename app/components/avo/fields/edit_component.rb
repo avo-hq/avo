@@ -33,12 +33,12 @@ class Avo::Fields::EditComponent < ViewComponent::Base
 
   def field_wrapper_args
     {
-      stacked: stacked,
       compact: compact,
       field: field,
       form: form,
       index: index,
       resource: resource,
+      stacked: stacked,
       view: view
     }
   end

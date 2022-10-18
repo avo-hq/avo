@@ -7,9 +7,9 @@ volumes:
 services:
   db:
     image: postgres:11.5
-    volumes:
-      - avo-db-data:/var/lib/postgresql/data
+    # volumes:
+    #   - avo-db-data:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=postgres
     ports:
-      - '127.0.0.1:5433:5432'
+      - '127.0.0.1:5432:5432'

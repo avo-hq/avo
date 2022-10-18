@@ -1,118 +1,119 @@
+---
 nb:
   avo:
-    dashboard: 'Dashboard'
-    dashboards: 'Dashboards'
-    choose_a_country: 'Velg et land'
-    choose_an_option: 'Velg et alternativ'
-    are_you_sure_you_want_to_run_this_option: 'Er du sikker?'
-    are_you_sure_detach_item: 'Er du sikker på at du vil koble fra %{item}.'
-    run: 'Kjør'
-    cancel: 'Avslutt'
-    action_ran_successfully: 'Suksess!'
-    details: "detaljer"
-    unauthorized: 'Ikke autorisert'
-    attachment_class_attached: '%{attachment_class} lagt til.'
-    attachment_class_detached: '%{attachment_class} fjernet.'
-    resource_updated: 'Ressurs oppdatert'
-    resource_created: 'Ressurs generert'
-    resource_destroyed: 'Ressurs slettet'
-    switch_to_view: "Bytt til %{view_type} vis"
-    click_to_reveal_filters: "Vis filter"
-    attachment_destroyed: 'Vedlett slettet'
-    failed_to_find_attachment: 'Fant ikke vedlegg'
-    you_missed_something_check_form: 'Her mangler du noe. Vennligst sjekk skjemaet.'
-    remove_selection: 'Fjern valg'
-    select_item: 'Velg'
-    select_all: 'Velg alle'
-    select_all_matching: 'Velg alle samsvarende'
-    undo: angre
-    delete_file: 'Slett fil'
-    delete: 'slett'
-    delete_item: 'Slett %{item}'
-    download_item: 'Last ned %{item}'
-    download_file: 'Last ned fil'
-    download: 'Last ned'
-    view: 'Vis'
-    view_item: 'vis %{item}'
-    edit: 'endre'
-    edit_item: 'endre %{item}'
-    detach_item: 'koble fra %{item}'
-    number_of_items:
-      zero: 'ingen %{item}'
-      one: 'en %{item}'
-      other: '%{count} %{item}'
-    x_items_more:
-      zero: 'ingen flere elementer'
-      one: 'ett element til'
-      other: '%{count} flere elementer'
-    are_you_sure: 'Er du sikker?'
-    filters: 'Filter'
-    per_page: 'Per side'
-    more: 'Mer'
-    attach: 'Legg til'
-    save: 'Lagre'
-    attach_and_attach_another: 'Legg til & Legg til ny'
-    hide_content: 'Skjul innhold'
-    show_content: 'Vis innhold'
-    no_related_item_found: 'Ingen relaterte %{item} funnet'
-    no_item_found: 'Ingen %{item} funnet'
-    loading: 'Laster'
-    confirm: 'Bekreft'
-    actions: 'Handlinger'
-    resources: 'Ressurser'
-    oops_nothing_found: 'Oops! Ingen ting funnet...'
-    type_to_search: 'Søk.'
-    and_x_other_resources: 'og %{count} andre ressurser'
-    go_back: 'Gå tilbake'
-    home: 'Hjem'
-    new: 'ny'
-    attach_item: 'Legg til %{item}'
-    choose_item: 'Velge %{item}'
-    create_new_item: 'Lag ny %{item}'
-    table_view: 'Tabell visning'
-    grid_view: 'Grid visning'
-    next_page: 'Neste side'
-    prev_page: 'Forrige side'
-    list_is_empty: 'Listen er tom'
+    action_ran_successfully: Suksess!
+    actions: Handlinger
+    and_x_other_resources: og %{count} andre ressurser
+    are_you_sure: Er du sikker?
+    are_you_sure_detach_item: Er du sikker på at du vil koble fra %{item}.
+    are_you_sure_you_want_to_run_this_option: Er du sikker?
+    attach: Legg til
+    attach_and_attach_another: Legg til & Legg til ny
+    attach_item: Legg til %{item}
+    attachment_class_attached: "%{attachment_class} lagt til."
+    attachment_class_detached: "%{attachment_class} fjernet."
+    attachment_destroyed: Vedlett slettet
+    cancel: Avslutt
+    choose_a_country: Velg et land
+    choose_an_option: Velg et alternativ
+    choose_item: Velge %{item}
+    clear_value: Nullstill verdi
+    click_to_reveal_filters: Vis filter
+    confirm: Bekreft
+    create_new_item: Lag ny %{item}
+    dashboard: Dashboard
+    dashboards: Dashboards
+    delete: slett
+    delete_file: Slett fil
+    delete_item: Slett %{item}
+    detach_item: koble fra %{item}
+    details: detaljer
+    download: Last ned
+    download_file: Last ned fil
+    download_item: Last ned %{item}
+    edit: endre
+    edit_item: endre %{item}
+    empty_dashboard_message: Legg til kort i dette dashbordet
+    failed: Feilet
+    failed_to_find_attachment: Fant ikke vedlegg
+    failed_to_load: Lasting feilet
     field_translations:
       file:
-        zero: 'filer'
-        one: 'fil'
-        other: 'filer'
+        one: fil
+        other: filer
+        zero: filer
       people:
-        zero: 'personer'
-        one: 'person'
-        other: 'personer'
+        one: person
+        other: personer
+        zero: personer
+    filters: Filter
+    go_back: Gå tilbake
+    grid_view: Grid visning
+    hide_content: Skjul innhold
+    home: Hjem
+    key_value_field:
+      add_row: Legg til rad
+      delete_row: Slett rad
+      key: Nøkkel
+      value: Verdi
+    list_is_empty: Listen er tom
+    loading: Laster
+    more: Mer
+    new: ny
+    next_page: Neste side
+    no_cards_present: Ingen kort til stede
+    no_item_found: Ingen %{item} funnet
+    no_options_available: Ingen tilgjengelige alternativer
+    no_related_item_found: Ingen relaterte %{item} funnet
+    not_authorized: Du er ikke autorisert til å gjøre denne handlingen.
+    number_of_items:
+      one: en %{item}
+      other: "%{count} %{item}"
+      zero: ingen %{item}
+    oops_nothing_found: Oops! Ingen ting funnet...
+    order:
+      higher: Flytt elementet høyere
+      lower: Flytt elementet lavere
+      reorder_record: Sorter elementer
+      to_bottom: Flytt elementet til bunnen
+      to_top: Flytt elementet til toppen
+    per_page: Per side
+    prev_page: Forrige side
+    remove_selection: Fjern valg
+    reset_filters: Nullstill filter
+    resource_created: Ressurs generert
+    resource_destroyed: Ressurs slettet
     resource_translations:
       user:
-        zero: 'brukere'
-        one: 'bruker'
-        other: 'brukere'
-    reset_filters: 'Nullstill filter'
-    not_authorized: 'Du er ikke autorisert til å gjøre denne handlingen.'
+        one: bruker
+        other: brukere
+        zero: brukere
+    resource_updated: Ressurs oppdatert
+    resources: Ressurser
+    run: Kjør
+    save: Lagre
     search:
-      placeholder: 'Søk'
-      cancel_button: 'Avbryt'
-    sign_out: 'Logg ut'
-    failed: 'Feilet'
-    failed_to_load: 'Lasting feilet'
-    key_value_field:
-      key: 'Nøkkel'
-      value: 'Verdi'
-      add_row: 'Legg til rad'
-      delete_row: 'Slett rad'
-    was_successfully_created: 'ble opprettet'
-    was_successfully_updated: 'ble oppdatert'
-    clear_value: 'Nullstill verdi'
-    tools: 'Redskapene'
-    order:
-      reorder_record: 'Sorter elementer'
-      higher: 'Flytt elementet høyere'
-      lower: 'Flytt elementet lavere'
-      to_top: 'Flytt elementet til toppen'
-      to_bottom: 'Flytt elementet til bunnen'
-    empty_dashboard_message: 'Legg til kort i dette dashbordet'
-    no_cards_present: 'Ingen kort til stede'
-    no_options_available: 'Ingen tilgjengelige alternativer'
-    x_records_selected_from_a_total_of_x_html: '<span class="font-bold text-gray-700">%{selected}</span> poster valgt på denne siden fra totalt <span class="font-bold text-gray-700">%{count}</span>'
-    x_records_selected_from_all_pages_html: '<span class="font-bold text-gray-700">%{count}</span> poster valgt fra alle sider'
+      cancel_button: Avbryt
+      placeholder: Søk
+    select_all: Velg alle
+    select_all_matching: Velg alle samsvarende
+    select_item: Velg
+    show_content: Vis innhold
+    sign_out: Logg ut
+    switch_to_view: Bytt til %{view_type} vis
+    table_view: Tabell visning
+    tools: Redskapene
+    type_to_search: Søk.
+    unauthorized: Ikke autorisert
+    undo: angre
+    view: Vis
+    view_item: vis %{item}
+    was_successfully_created: ble opprettet
+    was_successfully_updated: ble oppdatert
+    x_items_more:
+      one: ett element til
+      other: "%{count} flere elementer"
+      zero: ingen flere elementer
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> poster valgt på denne siden fra totalt <span class="font-bold text-gray-700">%{count}</span>
+    x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> poster valgt fra alle sider
+    you_missed_something_check_form: Her mangler du noe. Vennligst sjekk skjemaet.

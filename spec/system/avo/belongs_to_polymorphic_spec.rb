@@ -41,7 +41,7 @@ RSpec.feature "belongs_to", type: :system do
             return_to_comment_page
 
             expect(find_field_value_element("body")).to have_text "Sample comment"
-            expect(find_field_value_element("user")).to have_link user.name, href: "/admin/resources/users/#{user.slug}?via_resource_class=Comment&via_resource_id=#{Comment.last.id}"
+            expect(find_field_value_element("user")).to have_link user.name, href: "/admin/resources/users/#{user.slug}?via_resource_class=CommentResource&via_resource_id=#{Comment.last.id}"
             expect(find_field_value_element("commentable")).to have_text empty_dash
           end
         end
@@ -70,7 +70,7 @@ RSpec.feature "belongs_to", type: :system do
               expect(current_path).to eq "/admin/resources/comments/#{comment.id}"
 
               expect(find_field_value_element("body")).to have_text "Sample comment"
-              expect(page).to have_link post.name, href: "/admin/resources/posts/#{post.id}?via_resource_class=Comment&via_resource_id=#{Comment.last.id}"
+              expect(page).to have_link post.name, href: "/admin/resources/posts/#{post.id}?via_resource_class=CommentResource&via_resource_id=#{Comment.last.id}"
 
               click_on "Edit"
 
@@ -211,13 +211,13 @@ RSpec.feature "belongs_to", type: :system do
           visit "/admin/resources/projects/#{project.id}"
 
           expect(find('turbo-frame[id="has_many_field_show_comments"]')).not_to have_text "Commentable"
-          expect(find('turbo-frame[id="has_many_field_show_comments"]')).to have_link comment.id.to_s, href: "/admin/resources/comments/#{comment.id}?via_resource_class=Project&via_resource_id=#{project.id}"
+          expect(find('turbo-frame[id="has_many_field_show_comments"]')).to have_link comment.id.to_s, href: "/admin/resources/comments/#{comment.id}?via_resource_class=ProjectResource&via_resource_id=#{project.id}"
 
           click_on comment.id.to_s
 
           expect(find_field_value_element("body")).to have_text "hey there"
-          expect(find_field_value_element("user")).to have_link user.name, href: "/admin/resources/users/#{user.slug}?via_resource_class=Comment&via_resource_id=#{comment.id}"
-          expect(find_field_value_element("commentable")).to have_link project.name, href: "/admin/resources/projects/#{project.id}?via_resource_class=Comment&via_resource_id=#{comment.id}"
+          expect(find_field_value_element("user")).to have_link user.name, href: "/admin/resources/users/#{user.slug}?via_resource_class=CommentResource&via_resource_id=#{comment.id}"
+          expect(find_field_value_element("commentable")).to have_link project.name, href: "/admin/resources/projects/#{project.id}?via_resource_class=CommentResource&via_resource_id=#{comment.id}"
 
           click_on "Edit"
 

@@ -36,9 +36,11 @@ Thank you!
 
 ## Getting your local environment set up
 
-NOTE: We're using `docker-compose` to run Postgres. While we find this incredibly helpful, it's not a requirement, but you'll have to BYOD (Bring Your Own Database).
+NOTE: We're using our local Postgres instance.
 
-Once you pull the code down to your machine, modify `spec/dummy/config/database.yml` as appropriate to your environment (no changes needed if you're using Docker). Do not commit these changes. From here, running `bin/init` will get you up-and-running.
+You may use docker with the provided `docker-compose.yml` file.
+
+Once you pull the code down to your machine, modify `spec/dummy/config/database.yml` as appropriate to your environment (no changes needed if you're using local Postgres). Do not commit these changes. From here, running `bin/init` will get you up-and-running.
 
 # Local development
 

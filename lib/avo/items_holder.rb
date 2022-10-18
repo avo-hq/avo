@@ -55,6 +55,10 @@ module Avo
       add_item field
     end
 
+    def sidebar(instance)
+      add_item instance
+    end
+
     def add_item(instance)
       @items << instance
 
