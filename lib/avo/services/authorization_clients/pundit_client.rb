@@ -15,6 +15,7 @@ module Avo
         end
 
         def policy!(user, record)
+
           Pundit.policy!(user, record)
         rescue Pundit::NotDefinedError
           raise NoPolicyError
