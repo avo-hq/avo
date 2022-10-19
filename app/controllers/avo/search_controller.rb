@@ -10,7 +10,7 @@ module Avo
     def index
       raise ActionController::BadRequest.new("This feature requires the pro license https://avohq.io/purchase/pro") if App.license.lacks_with_trial(:global_search)
 
-      resources = Avo::App.resources.reject do |resource|
+      resources = Avo::Current.resources.reject do |resource|
         resource.class.hide_from_global_search
       end
 

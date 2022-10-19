@@ -6,7 +6,7 @@ module Avo
       end
 
       def method_missing(method, *args, &block)
-        matched_field = Avo::App.fields.find do |field|
+        matched_field = ::Avo::Current.fields.find do |field|
           field[:name].to_s == method.to_s
         end
 

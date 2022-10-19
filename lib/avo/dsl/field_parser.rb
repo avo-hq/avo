@@ -72,7 +72,7 @@ module Avo
       end
 
       def field_class_from_symbol(symbol)
-        matched_field = Avo::App.fields.find do |field|
+        matched_field = Avo::Current.fields.find do |field|
           field[:name].to_s == symbol.to_s
         end
 

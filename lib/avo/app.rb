@@ -2,8 +2,8 @@ module Avo
   class App
     include Avo::Concerns::FetchesThings
 
-    class_attribute :resources, default: []
-    class_attribute :dashboards, default: []
+    # class_attribute :resources, default: []
+    # class_attribute :dashboards, default: []
     class_attribute :cache_store, default: nil
     class_attribute :fields, default: []
     class_attribute :request, default: nil
@@ -17,14 +17,52 @@ module Avo
     class_attribute :error_messages
 
     class << self
+      def resources
+        Avo::Current.resources || []
+      end
+
+      def dashboards
+        Avo::Current.dashboards || []
+      end
+
+      def cache_store
+        Avo::Current.cache_store
+      end
+      # def error_messages
+      #   Avo::Current.error_messages
+      # end
+      # def context
+      #   Avo::Current.context
+      # end
+      # def current_user
+      #   Avo::Current.current_user
+      # end
+      # def params
+      #   Avo::Current.params || {}
+      # end
+      # def request
+      #   Avo::Current.request
+      # end
+      # def view_context
+      #   Avo::Current.view_context
+      # end
+      # def license
+      #   Avo::Current.license
+      # end
+      # def translation_enabled
+      #   Avo::Current.translation_enabled
+      # end
+
       def boot
+        puts ["boot->"].inspect
         init_fields
 
         if Rails.cache.instance_of?(ActiveSupport::Cache::NullStore)
-          self.cache_store ||= ActiveSupport::Cache::MemoryStore.new
+          Avo::Current.cache_store ||= ActiveSupport::Cache::MemoryStore.new
         else
-          self.cache_store = Rails.cache
+          Avo::Current.cache_store = Rails.cache
         end
+        puts ["Avo::Current.cache_store->", Avo::Current.cache_store].inspect
       end
 
       # Renerate a dynamic root path using the URIService
@@ -43,8 +81,10 @@ module Avo
         self.request = request
         self.view_context = view_context
 
+        puts ["request->", request.to_s].inspect
+
         self.license = Licensing::LicenseManager.new(Licensing::HQ.new(request).response).license
-        self.translation_enabled = license.has(:localization)
+        Avo::Current.translation_enabled = license.has(:localization)
 
         # Set the current host for ActiveStorage
         begin
@@ -70,6 +110,7 @@ module Avo
       # Avo::Fields::TextField -> text
       # Avo::Fields::DateTimeField -> date_time
       def init_fields
+        Avo::Current.fields ||= []
         Avo::Fields::BaseField.descendants.each do |class_name|
           next if class_name.to_s == "BaseField"
 
@@ -80,7 +121,7 @@ module Avo
       end
 
       def load_field(method_name, klass)
-        fields.push(
+        Current.fields.push(
           name: method_name,
           class: klass
         )
@@ -103,7 +144,7 @@ module Avo
       end
 
       def init_resources
-        self.resources = BaseResource.descendants
+        Avo::Current.resources = BaseResource.descendants
           .select do |resource|
             # Remove the BaseResource. We only need the descendants
             resource != BaseResource
@@ -119,7 +160,7 @@ module Avo
       end
 
       def init_dashboards
-        self.dashboards = Dashboards::BaseDashboard.descendants
+        Avo::Current.dashboards = Dashboards::BaseDashboard.descendants
           .select do |dashboard|
             dashboard != Dashboards::BaseDashboard
           end
@@ -168,7 +209,7 @@ module Avo
         payload[:hq_payload] = hq&.payload
         payload[:thread_count] = get_thread_count
         payload[:license_abilities] = Avo::App&.license&.abilities
-        payload[:cache_store] = self.cache_store&.class&.to_s
+        payload[:cache_store] = cache_store&.class&.to_s
         payload[:avo_metadata] = hq&.avo_metadata
         payload[:app_timezone] = Time.current.zone
         payload[:cache_key] = Avo::Licensing::HQ.cache_key
