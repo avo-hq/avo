@@ -114,7 +114,7 @@ end
 gem "rubocop"
 gem "rubocop-shopify", require: false
 
-gem "zeitwerk", "~> 2.3"
+# gem "zeitwerk", "~> 2.3"
 
 gem "httparty"
 
@@ -153,3 +153,4 @@ gem 'acts-as-taggable-on', '~> 9.0'
 gem "bundler-integrity", "~> 1.0"
 
 gem 'erb-formatter'
+gem "zeitwerk", github: "fxn/zeitwerk"

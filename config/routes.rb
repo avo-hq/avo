@@ -33,7 +33,7 @@ Avo::Engine.routes.draw do
 
     # Generate resource routes as below:
     # resources :posts
-    Avo::DynamicRouter.routes(self)
+    Avo::DynamicRouter.routes
 
     # Associations
     get "/:resource_name/:id/:related_name/new", to: "associations#new", as: "associations_new"

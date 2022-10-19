@@ -17,6 +17,12 @@ module Avo
     class_attribute :error_messages
 
     class << self
+      def eager_load_resources
+        Rails.autoloaders.each do |loader|
+          loader.eager_load_dir(Rails.root.join("app", "avo", "resources").to_s)
+        end
+      end
+
       def boot
         init_fields
 

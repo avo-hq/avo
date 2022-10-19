@@ -34,7 +34,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "rails", ">= 6.0"
   spec.add_dependency "pagy"
-  spec.add_dependency "zeitwerk"
+  # spec.add_dependency "zeitwerk", git: "https://github.com/fxn/zeitwerk"
   spec.add_dependency "countries"
   spec.add_dependency "pundit"
   spec.add_dependency "httparty"
