@@ -43,6 +43,12 @@ module Avo
 
           items_holder.heading body, **args
         end
+
+        def sidebar(**args, &block)
+          ensure_items_holder_initialized
+
+          items_holder.sidebar Avo::SidebarBuilder.parse_block(**args, &block)
+        end
         # END DSL methods
 
         def items
@@ -75,6 +81,11 @@ module Avo
                 item.items.map do |tab|
                   fields << extract_fields_from_items(tab)
                 end
+              end
+
+              # Dive into sidebar to fetch their fields
+              if item.is_sidebar?
+                fields << extract_fields_from_items(item)
               end
             end
 
@@ -274,6 +285,17 @@ module Avo
             end
           else
             panelfull_items << item
+          end
+        end
+
+        # Make sure all tabs panelfull_items are setted as inside tabs
+        panelfull_items.grep(Avo::TabGroup).each do |tab_group|
+          tab_group.items.grep(Avo::Tab).each do |tab|
+            tab.items.grep(Avo::Panel).each do |panel|
+              panel.items.grep(Avo::Fields::BelongsToField).each do |field|
+                field.target = :_top
+              end
+            end
           end
         end
 

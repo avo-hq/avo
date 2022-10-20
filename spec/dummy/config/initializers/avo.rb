@@ -26,9 +26,9 @@ Avo.configure do |config|
 
   ## == Customization ==
   config.id_links_to_resource = true
-  config.full_width_container = true
+  config.full_width_container = false
   config.buttons_on_form_footers = false
-  config.resource_controls_placement = ENV["AVO_RESOURCE_CONTROLS_PLACEMENT"]&.to_sym || :right
+  # config.resource_controls_placement = ENV["AVO_RESOURCE_CONTROLS_PLACEMENT"]&.to_sym || :right
   config.resource_default_view = :show
   config.search_debounce = 300
 
@@ -95,6 +95,7 @@ Avo.configure do |config|
       end
 
       group "Blog", collapsable: true do
+        # resource :z_posts
         resource :posts
         resource :comments
         resource :photo_comments, visible: -> do
@@ -111,7 +112,11 @@ Avo.configure do |config|
       end
     end
 
-    section "Tools", icon: "bolt", collapsable: true, collapsed: true do
+    section "Geography", icon: "heroicons/outline/globe", collapsable: true, collapsed: true do
+      resource :city
+    end
+
+    section "Tools", icon: "heroicons/outline/finger-print", collapsable: true, collapsed: true do
       all_tools
     end
 

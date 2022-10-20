@@ -1,10 +1,10 @@
-<%= edit_field_wrapper field: @field, index: @index, form: @form, resource: @resource, displayed_in_modal: @displayed_in_modal, full_width: true do %>
+<%= field_wrapper **field_wrapper_args, full_width: true do %>
   <%= content_tag :div, class: "relative block overflow-x-auto max-w-full",
     data: {
       controller: "trix-field",
       trix_field_target: "controller",
-      resource_name: @resource.model_key,
-      resource_id: @resource.model.methods.include?(:id) ? @resource.model&.id : nil,
+      resource_name: resource_name,
+      resource_id: resource_id,
       attachments_disabled: @field.attachments_disabled,
       attachment_key: @field.attachment_key,
       hide_attachment_filename: @field.hide_attachment_filename,

@@ -143,10 +143,12 @@ module Avo
     end
 
     def set_related_model
+      association_name = BaseResource.valid_association_name(@model, params[:related_name])
+
       @related_model = if @field.is_a? Avo::Fields::HasOneField
-        @model.send params[:related_name]
+        @model.send association_name
       else
-        eager_load_files(@related_resource, @model.send(params[:related_name])).find params[:related_id]
+        eager_load_files(@related_resource, @model.send(association_name)).find params[:related_id]
       end
     end
 

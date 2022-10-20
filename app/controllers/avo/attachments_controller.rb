@@ -8,8 +8,9 @@ module Avo
 
     def create
       blob = ActiveStorage::Blob.create_and_upload! io: params[:file], filename: params[:filename]
+      association_name = BaseResource.valid_attachment_name(@model, params[:attachment_key])
 
-      @model.send(params[:attachment_key]).attach blob
+      @model.send(association_name).attach blob
 
       render json: {
         url: main_app.url_for(blob),

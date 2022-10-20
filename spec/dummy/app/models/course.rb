@@ -2,13 +2,14 @@
 #
 # Table name: courses
 #
-#  id         :bigint           not null, primary key
-#  name       :string
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  skills     :text             default([]), is an Array
-#  country    :string
-#  city       :string
+#  id           :bigint           not null, primary key
+#  name         :string
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  skills       :text             default([]), is an Array
+#  country      :string
+#  city         :string
+#  starting_at  :date_time
 #
 class Course < ApplicationRecord
   has_many :links, -> { order(position: :asc) }, class_name: "Course::Link", inverse_of: :course

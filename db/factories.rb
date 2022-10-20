@@ -69,10 +69,31 @@ FactoryBot.define do
     skills { [Faker::Educator.subject, Faker::Educator.subject, Faker::Educator.subject, Faker::Educator.subject, Faker::Educator.subject] }
     country { Course.countries.sample }
     city { Course.cities.stringify_keys[country].sample }
+    starting_at { Time.now }
   end
 
   factory :course_link, class: "Course::Link" do
     link { Faker::Internet.url }
     course { create :course }
+  end
+
+  factory :city do
+    name { Faker::Address.city }
+    population { rand(10000..999000) }
+    is_capital { [true, false].sample }
+    features { Faker::Address.community }
+    metadata { Faker::Address.community }
+    # image_url { "MyString" }
+    description { Faker::Address.community }
+    status { ["open", "closed"].sample }
+    tiny_description { Faker::Address.community }
+  end
+
+  factory :product do
+    title { "MyString" }
+    description { "MyText" }
+    price { 1 }
+    status { "MyString" }
+    category { "MyString" }
   end
 end

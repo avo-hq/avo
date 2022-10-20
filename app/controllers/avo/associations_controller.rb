@@ -5,6 +5,7 @@ module Avo
     before_action :set_model, only: [:show, :index, :new, :create, :destroy, :order]
     before_action :set_related_resource_name
     before_action :set_related_resource, only: [:show, :index, :new, :create, :destroy, :order]
+    before_action :set_related_authorization
     before_action :set_reflection_field
     before_action :hydrate_related_resource, only: [:show, :index, :create, :destroy, :order]
     before_action :set_related_model, only: [:show, :order]
@@ -21,7 +22,8 @@ module Avo
       @resource = @related_resource
       @parent_model = @parent_resource.class.find_scope.find(params[:id])
       @parent_resource.hydrate(model: @parent_model)
-      @query = @authorization.apply_policy @parent_model.public_send(params[:related_name])
+      association_name = BaseResource.valid_association_name(@parent_model, params[:related_name])
+      @query = @authorization.apply_policy @parent_model.send(association_name)
       @association_field = @parent_resource.get_field params[:related_name]
 
       if @association_field.present? && @association_field.scope.present?
@@ -57,10 +59,12 @@ module Avo
     end
 
     def create
+      association_name = BaseResource.valid_association_name(@model, params[:related_name])
+
       if reflection_class == "HasManyReflection"
-        @model.send(params[:related_name].to_s) << @attachment_model
+        @model.send(association_name) << @attachment_model
       else
-        @model.send("#{params[:related_name]}=", @attachment_model)
+        @model.send("#{association_name}=", @attachment_model)
       end
 
       respond_to do |format|
@@ -73,10 +77,12 @@ module Avo
     end
 
     def destroy
+      association_name = BaseResource.valid_association_name(@model, params[:related_name])
+
       if reflection_class == "HasManyReflection"
-        @model.send(params[:related_name].to_s).delete @attachment_model
+        @model.send(association_name).delete @attachment_model
       else
-        @model.send("#{params[:related_name]}=", nil)
+        @model.send("#{association_name}=", nil)
       end
 
       respond_to do |format|
@@ -146,6 +152,16 @@ module Avo
 
     def authorize_detach_action
       authorize_if_defined "detach_#{@field.id}?"
+    end
+
+    private
+
+    def set_related_authorization
+      @authorization = if related_resource
+        related_resource.authorization(user: _current_user)
+      else
+        Services::AuthorizationService.new _current_user
+      end
     end
   end
 end

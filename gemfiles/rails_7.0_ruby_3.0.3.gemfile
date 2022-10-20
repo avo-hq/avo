@@ -53,11 +53,13 @@ group :development do
   gem "annotate"
   gem "htmlbeautifier"
   gem "hotwire-livereload", "~> 1.1"
+  gem "brakeman"
 end
 
 group :development, :test do
   gem "awesome_print"
   gem "faker", require: false
+  gem "i18n-tasks", "~> 1.0.12"
 end
 
 group :test do

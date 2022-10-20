@@ -76,6 +76,8 @@ module Avo
         @as_description = args[:as_description] || false
         @index_text_align = args[:index_text_align] || :left
         @html = args[:html] || nil
+        @view = args[:view] || nil
+        @value = args[:value] || nil
 
         @args = args
 
@@ -155,10 +157,12 @@ module Avo
       end
 
       def value(property = nil)
+        return @value if @value.present?
+
         property ||= id
 
         # Get model value
-        final_value = @model.send(property) if (model_or_class(@model) == "model") && @model.respond_to?(property)
+        final_value = @model.send(property) if is_model?(@model) && @model.respond_to?(property)
 
         # On new views and actions modals we need to prefill the fields
         if @view.in?([:new, :create]) || @action.present?
@@ -258,6 +262,10 @@ module Avo
         else
           "model"
         end
+      end
+
+      def is_model?(model)
+        model_or_class(model) == "model"
       end
     end
   end

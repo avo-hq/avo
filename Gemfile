@@ -68,7 +68,7 @@ group :development do
   gem "bump", require: false
   gem "gem-release", require: false
 
-  gem 'annotate'
+  gem "annotate"
 
   # gem 'rack-mini-profiler'
   # gem 'memory_profiler'
@@ -77,14 +77,17 @@ group :development do
 
   # gem 'pry-rails'
 
-  gem 'htmlbeautifier'
+  gem "htmlbeautifier"
 
   gem "hotwire-livereload", "~> 1.1"
+
+  gem "brakeman"
 end
 
 group :development, :test do
   gem "awesome_print"
   gem "faker", require: false
+  gem "i18n-tasks", "~> 1.0.12"
 end
 
 group :test do
