@@ -46,10 +46,8 @@
       </div>
       <% if view_type.to_sym == :table %>
         <% if @resources.present? %>
-          <div class="w-full overflow-auto flex flex-col mt-0 mac-styled-scrollbar">
-            <div class="relative flex-1 flex">
-              <%= render(Avo::Index::ResourceTableComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_model: @parent_model, parent_resource: @parent_resource, pagy: @pagy, query: @query)) %>
-            </div>
+          <div class="w-full relative flex-1 flex mac-styled-scrollbar overflow-auto mt-0">
+            <%= render(Avo::Index::ResourceTableComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_model: @parent_model, parent_resource: @parent_resource, pagy: @pagy, query: @query)) %>
           </div>
         <% else %>
           <%= helpers.empty_state resource_name: @resource.name.downcase.pluralize, related_name: params[:related_name], view_type: view_type, add_background: true %>
