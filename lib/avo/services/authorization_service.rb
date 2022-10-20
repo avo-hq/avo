@@ -18,9 +18,9 @@ module Avo
 
           true
         rescue NoPolicyError => error
-          return false unless Avo.configuration.raise_error_on_missing_policy
+          # By default, Avo allows anything if you don't have a policy present.
+          return true unless Avo.configuration.raise_error_on_missing_policy
 
-          # Should this respect a `raise_exception` argument?
           raise error
         rescue => error
           if args[:raise_exception] == false
