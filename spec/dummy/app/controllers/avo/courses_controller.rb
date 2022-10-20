@@ -4,7 +4,7 @@ class Avo::CoursesController < Avo::ResourcesController
   end
 
   def after_destroy_path
-    Avo::Engine.routes.url_helpers.new_resources_course_path
+    avo.new_resources_course_path
   end
 
   def create_success_message

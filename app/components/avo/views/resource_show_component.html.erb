@@ -21,17 +21,15 @@
             <% end %>
           <% elsif control.delete_button? %>
             <% if can_see_the_destroy_button? %>
-              <%= a_button url: helpers.resource_path(model: @resource.model, resource: @resource),
-                method: :delete,
-                local: true,
+              <%= a_link helpers.resource_path(model: @resource.model, resource: @resource),
                 style: :text,
-                loading: true,
-                confirm: t('avo.are_you_sure', item: @resource.model.model_name.name.downcase),
                 color: :red,
                 icon: 'trash',
                 form_class: 'flex flex-col sm:flex-row sm:inline-flex',
                 title: control.title,
                 data: {
+                  turbo_confirm: t('avo.are_you_sure', item: @resource.model.model_name.name.downcase),
+                  turbo_method: :delete,
                   control: :destroy,
                   tippy: control.title ? :tooltip : nil,
                   'resource-id': @resource.model.id,
@@ -84,13 +82,13 @@
           <% elsif control.detach_button? %>
             <% if @reflection.present? && @resource.model.present? && can_detach? %>
               <%= a_button url: detach_path,
-                  icon: 'detach',
-                  method: :delete,
-                  form_class: 'flex flex-col sm:flex-row sm:inline-flex',
-                  style: :text,
-                  data: {
-                    confirm: "Are you sure you want to detach this #{title}."
-                  } do %>
+                icon: 'detach',
+                method: :delete,
+                form_class: 'flex flex-col sm:flex-row sm:inline-flex',
+                style: :text,
+                data: {
+                  confirm: "Are you sure you want to detach this #{title}."
+                } do %>
                 <%= control.label %>
               <% end %>
             <% end %>
@@ -126,19 +124,17 @@
             <%= t('avo.go_back') %>
           <% end %>
           <% if can_see_the_destroy_button? %>
-            <%= a_button url: destroy_path,
-                method: :delete,
-                local: true,
-                style: :text,
-                loading: true,
-                confirm: t('avo.are_you_sure', item: @resource.model.model_name.name.downcase),
-                color: :red,
-                icon: 'trash',
-                form_class: 'flex flex-col sm:flex-row sm:inline-flex',
-                data: {
-                  control: :destroy,
-                  'resource-id': @resource.model.id,
-                } do %>
+            <%= a_link destroy_path,
+              style: :text,
+              color: :red,
+              icon: 'trash',
+              form_class: 'flex flex-col sm:flex-row sm:inline-flex',
+              data: {
+                turbo_confirm: t('avo.are_you_sure', item: @resource.model.model_name.name.downcase),
+                turbo_method: :delete,
+                control: :destroy,
+                'resource-id': @resource.model.id,
+              } do %>
               <%= t('avo.delete').capitalize %>
             <% end %>
           <% end %>
