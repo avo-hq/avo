@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.feature "SkipShowView", type: :feature do
+RSpec.feature "SkipShowView", type: :system do
   let!(:course) { create :course }
   let!(:post) { create :post }
 
@@ -66,7 +66,9 @@ RSpec.feature "SkipShowView", type: :feature do
       expect(page).to have_text("Awesome course (edited)")
       expect(current_path).to eql "/admin/resources/courses/#{Course.last.id}/edit"
 
-      click_on "Delete"
+      accept_alert do
+        click_on "Delete"
+      end
 
       wait_for_loaded
       expect(page).to have_text("Course destroyed for ever!")
@@ -89,7 +91,9 @@ RSpec.feature "SkipShowView", type: :feature do
       # Delete
       visit "/admin/resources/course_links/#{course.links.first.id}/edit?via_resource_class=CourseResource&via_resource_id=#{course.id}"
 
-      click_on "Delete"
+      accept_alert do
+        click_on "Delete"
+      end
 
       expect(page).to have_text("Record destroyed")
       expect(current_path).to eql "/admin/resources/courses/#{course.id}/edit"
@@ -101,7 +105,7 @@ RSpec.feature "SkipShowView", type: :feature do
       # Create
       visit "/admin/resources/posts"
 
-      click_on "#{post.name}"
+      click_on post.name.to_s
       wait_for_loaded
 
       expect(current_path).to eql "/admin/resources/posts/#{post.id}/edit"
@@ -155,7 +159,11 @@ RSpec.feature "SkipShowView", type: :feature do
       expect(page).to have_text("Awesome course (edited)")
       expect(current_path).to eql "/admin/resources/courses/#{Course.last.id}"
 
-      click_on "Delete"
+      accept_alert do
+        click_on "Delete"
+      end
+      wait_for_loaded
+
       expect(page).to have_text("Course destroyed for ever!")
       # Actual behaviour of deleting a course is to redirect to new page
       expect(current_path).to eql "/admin/resources/courses/new"
@@ -178,7 +186,11 @@ RSpec.feature "SkipShowView", type: :feature do
       expect(page).to_not have_selector("[data-control='destroy']")
 
       visit "/admin/resources/course_links/#{course.links.first.id}?via_resource_class=CourseResource&via_resource_id=#{course.id}"
-      click_on "Delete"
+
+      accept_alert do
+        click_on "Delete"
+      end
+      wait_for_loaded
 
       expect(page).to have_text("Record destroyed")
       expect(current_path).to eql "/admin/resources/courses/#{course.id}"
@@ -190,11 +202,10 @@ RSpec.feature "SkipShowView", type: :feature do
       # Create
       visit "/admin/resources/posts"
 
-      click_on "#{post.name}"
+      click_on post.name.to_s
       wait_for_loaded
 
       expect(current_path).to eql "/admin/resources/posts/#{post.id}"
     end
   end
-
- end
+end
