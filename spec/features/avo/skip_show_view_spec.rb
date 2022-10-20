@@ -60,12 +60,15 @@ RSpec.feature "SkipShowView", type: :feature do
 
       fill_in "course_name", with: "Awesome course (edited)"
       click_on "Save"
+      wait_for_loaded
 
       expect(page).to have_text("Course updated!")
       expect(page).to have_text("Awesome course (edited)")
       expect(current_path).to eql "/admin/resources/courses/#{Course.last.id}/edit"
 
       click_on "Delete"
+
+      wait_for_loaded
       expect(page).to have_text("Course destroyed for ever!")
       # Actual behaviour of deleting a course is to redirect to new page
       expect(current_path).to eql "/admin/resources/courses/new"

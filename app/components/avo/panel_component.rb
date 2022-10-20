@@ -5,6 +5,8 @@ class Avo::PanelComponent < ViewComponent::Base
   attr_reader :name
   attr_reader :classes
 
+  delegate :white_panel_classes, to: :helpers
+
   renders_one :tools
   renders_one :body
   renders_one :sidebar
@@ -25,10 +27,6 @@ class Avo::PanelComponent < ViewComponent::Base
   end
 
   private
-
-  def white_panel_classes
-    "bg-white rounded shadow"
-  end
 
   def data_attributes
     @data.merge({"panel-index": @index})
