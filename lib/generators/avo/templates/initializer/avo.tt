@@ -30,6 +30,7 @@ Avo.configure do |config|
   #   destroy: 'destroy?',
   # }
   # config.raise_error_on_missing_policy = false
+  # config.authorization_client = false
 
   ## == Localization ==
   # config.locale = 'en-US'
