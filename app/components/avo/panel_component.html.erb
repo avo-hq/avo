@@ -25,7 +25,7 @@
   <% end %>
   <% if body? %>
     <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:gap-4 w-full">
-      <div class="relative flex-1 overflow-auto <%= white_panel_classes %> <%= @body_classes %> <% if sidebar? %> w-2/3 <% end %>">
+      <div class="relative flex-1 <%= white_panel_classes %> <%= @body_classes %> <% if sidebar? %> w-2/3 overflow-auto <% else %> w-full <% end %>">
         <%= body %>
       </div>
       <% if sidebar? %>
