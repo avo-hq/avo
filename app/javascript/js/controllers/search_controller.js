@@ -73,6 +73,8 @@ export default class extends Controller {
       Mousetrap.bind(['command+k', 'ctrl+k'], () => this.showSearchPanel())
     }
 
+    this.autocompleteTarget.innerHTML = ""
+
     autocomplete({
       container: this.autocompleteTarget,
       placeholder: this.translationKeys.placeholder,
