@@ -17,11 +17,6 @@ gemspec
 gem 'jsbundling-rails'
 gem 'cssbundling-rails'
 
-gem "countries"
-
-# Authorization
-gem "pundit"
-
 #
 # Dependencies for dummy_app
 #
@@ -152,3 +147,9 @@ gem 'acts-as-taggable-on', '~> 9.0'
 gem "bundler-integrity", "~> 1.0"
 
 gem 'erb-formatter'
+
+# Avo country field requires this gem
+gem "countries"
+
+# Avo dashbaords requires this gem
+gem "chartkick"

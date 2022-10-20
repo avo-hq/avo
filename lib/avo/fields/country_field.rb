@@ -11,7 +11,11 @@ module Avo
 
         super(id, **args, &block)
 
-        @countries = ISO3166::Country.translations.sort_by { |code, name| name }.to_h
+        begin
+          @countries = ISO3166::Country.translations.sort_by { |code, name| name }.to_h
+        rescue
+          @countries = {none: "You need to install the countries gem for this field to work properly"}
+        end
         @display_code = args[:display_code].present? ? args[:display_code] : false
       end
 
