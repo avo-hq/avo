@@ -501,6 +501,7 @@ DEPENDENCIES
   simplecov-cobertura
   spring
   spring-commands-rspec
+  sprockets-rails
   standard
   test-prof
   tzinfo-data

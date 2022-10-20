@@ -5,6 +5,8 @@ Gem.loaded_specs["avo"].dependencies.each do |d|
     require "active_record/railtie"
   when "actionview"
     require "action_view/railtie"
+  when "activestorage"
+    require "active_storage/engine"
   else
     require d.name
   end
