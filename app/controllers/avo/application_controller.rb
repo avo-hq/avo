@@ -255,10 +255,10 @@ module Avo
       flash.now[:notice] = t "avo.not_authorized"
 
       redirect_url = if request.referrer.blank? || (request.referrer == request.url)
-                       root_url
-                     else
-                       request.referrer
-                     end
+        root_url
+      else
+        request.referrer
+      end
 
       redirect_to(redirect_url)
     end

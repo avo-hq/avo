@@ -3,6 +3,7 @@ module Avo
     class AuthorizationService
       attr_accessor :user
       attr_accessor :record
+      attr_accessor :policy_class
 
       class << self
         def client
@@ -12,11 +13,6 @@ module Avo
         def authorize(user, record, action, policy_class: nil, **args)
           return true if skip_authorization
           return true if user.nil?
-          # This clause was present but also NoPolicyError was being rescued
-          # Unsure what the intent was, but removing this clause breaks tests
-          # in after_create_update_path_spec.rb
-          # Is the NoPolicyError rescue for policies that call other policies?
-          return true unless client.policy(user, record).present?
 
           client.authorize user, record, action, policy_class: policy_class
 
@@ -96,15 +92,15 @@ module Avo
       end
 
       def authorize_action(action, **args)
-        self.class.authorize_action(user, record, action, policy_class: @policy_class, **args)
+        self.class.authorize_action(user, record, action, policy_class: policy_class, **args)
       end
 
       def apply_policy(model)
-        self.class.apply_policy(user, model, policy_class: @policy_class)
+        self.class.apply_policy(user, model, policy_class: policy_class)
       end
 
       def defined_methods(model, **args)
-        self.class.defined_methods(user, model, policy_class: @policy_class, **args)
+        self.class.defined_methods(user, model, policy_class: policy_class, **args)
       end
 
       def has_method?(method, **args)
