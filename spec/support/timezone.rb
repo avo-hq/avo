@@ -3,7 +3,9 @@ RSpec.configure do |config|
     Time.use_zone(example.metadata[:tz]) do
       initial_timezone = ENV["TZ"]
       ENV["TZ"] = example.metadata[:tz]
+
       example.run
+
       ENV["TZ"] = initial_timezone
     end
   end

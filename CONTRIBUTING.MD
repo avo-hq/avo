@@ -109,6 +109,50 @@ POSTGRES_USERNAME=postgres
 POSTGRES_PASSWORD=
 ```
 
+## Test helpers
+
+### Saving a record
+
+If before we'd use something manual like `click_on "Save"` and follow it with a `wait_for_loaded` to make sure the page navigation happened, we can use the `save` helper.
+
+### Working with datepickers
+
+The prerequisite for these helpers is to ensure you have the two inputs mapped in your test file like so and you update the `FIELD_ID` attribute to the field you decalred on your resource `created_at`, `starting_at`, etc.
+
+```ruby
+subject(:text_input) { find '[data-field-id="FIELD_ID"] [data-controller="date-field"] input[type="text"]' }
+```
+
+Then you may use the `open_picker`, `close_picker`, `set_picker_day`, `set_picker_hour`, `set_picker_minute`, `set_picker_second` like so:
+
+```ruby
+open_picker
+close_picker
+set_picker_day "January 2, 2000"
+set_picker_hour 17
+set_picker_minute 17
+set_picker_second 17
+```
+
+### Working with timezones
+
+You may want to spoof the timezone for a test. you may use the `tz` helper.
+
+```ruby
+describe "soemthing", tz: "America/Los_Angeles" do
+  # run your test here
+end
+```
+
+When running system tests you need to reset the browser in order to have it read the newly declared timezone. To do that use the `reset_browser` helper.
+Unfortunately, that helper does not work as expected in the `before`, `after`, or `around` hooks and you must manually call them at the beginning of a suite.
+
+```ruby
+describe "something", tz: "America/Los_Angeles"do
+  it { reset_browser }
+end
+```
+
 # Release details
 
 ## Update appraisal gemfiles

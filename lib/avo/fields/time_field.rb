@@ -1,6 +1,6 @@
 module Avo
   module Fields
-    class TimeField < DateField
+    class TimeField < DateTimeField
       attr_reader :format
       attr_reader :picker_format
 

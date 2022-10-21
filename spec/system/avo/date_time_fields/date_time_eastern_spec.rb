@@ -1,9 +1,14 @@
 require "rails_helper"
 
-RSpec.describe "Date field", type: :system do
+# Even though we have the date time field tested in projects, this covers a different resource.
+RSpec.describe "Date field on eastern zone", type: :system do
   let!(:comment) { create :comment, posted_at: Time.new(1988, 2, 10, 16, 22, 0, "UTC") }
 
-  describe "on UTC" do
+  subject(:text_input) { find '[data-field-id="posted_at"] [data-controller="date-field"] input[type="text"]' }
+
+  describe "in an eastern (positive) Timezone", tz: "Europe/Bucharest" do
+    it { reset_browser }
+
     context "index" do
       it "displays the time" do
         visit "/admin/resources/comments"
@@ -24,10 +29,9 @@ RSpec.describe "Date field", type: :system do
       it "keeps the same value on save" do
         visit "/admin/resources/comments/#{comment.id}/edit"
 
-        expect(hidden_input.value).to eq "1988-02-10 16:22:00"
         expect(text_input.value).to eq "1988-02-10 16:22:00"
 
-        click_on "Save"
+        save
 
         expect(field_element_by_resource_id("posted_at", comment.id).text).to eq "Wednesday, 10 February 1988, 16:22 UTC"
       end
@@ -35,30 +39,16 @@ RSpec.describe "Date field", type: :system do
       it "keeps the right value on update and save" do
         visit "/admin/resources/comments/#{comment.id}/edit"
 
-        # Open the picker.
-        text_input.click
-        find('.flatpickr-day[aria-label="February 11, 1988"]').click
-        find('.flatpickr-hour').set(17)
-        find('.flatpickr-minute').set(17)
-        find('.flatpickr-second').set(17)
+        open_picker
+        set_picker_day "February 11, 1988"
+        set_picker_hour 19
+        set_picker_minute 17
+        set_picker_minute 17
+        close_picker
+        save
 
-        # Close the picker.
-        find_field_value_element("body").click
-        # Wait for the picker to close.
-        sleep 0.3
-
-        click_on "Save"
-
-        expect(field_element_by_resource_id("posted_at", comment.id).text).to eq "Thursday, 11 February 1988, 17:17 UTC"
+        expect(field_element_by_resource_id("posted_at", comment.id).text).to eq "Thursday, 11 February 1988, 19:17 UTC"
       end
     end
   end
-end
-
-def text_input
-  find '[data-field-id="posted_at"] [data-controller="date-field"] input[type="text"]'
-end
-
-def hidden_input
-  find '[data-field-id="posted_at"] [data-controller="date-field"] input[type="hidden"]', visible: false
 end

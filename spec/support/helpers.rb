@@ -154,3 +154,34 @@ def save
   click_on "Save"
   wait_for_loaded
 end
+
+# Closes and reopens the browser window in system tests.
+# That will reset any mocks/stubs/timezone setting you do at the code level.
+def reset_browser
+  Capybara.current_session.quit
+end
+
+def set_picker_day(date)
+  find(".flatpickr-day[aria-label=\"#{date}\"]").click
+end
+
+def set_picker_hour(value)
+  find(".flatpickr-hour").set(value)
+end
+
+def set_picker_minute(value)
+  find(".flatpickr-minute").set(value)
+end
+
+def set_picker_second(value)
+  find(".flatpickr-second").set(value)
+end
+
+def open_picker
+  text_input.click
+end
+
+def close_picker
+  find('[data-target="title"]').click
+  sleep 0.3
+end
