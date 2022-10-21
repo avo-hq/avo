@@ -1,4 +1,6 @@
 <%= content_tag :div,
+  # the overflow helps with long values
+  class: "overflow-auto",
   data: {
     'model-id': @resource.model.id,
     selected_resources_name: @resource.model_key,
