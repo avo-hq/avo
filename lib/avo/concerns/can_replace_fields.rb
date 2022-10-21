@@ -27,6 +27,10 @@ module Avo
           instance_eval(&block)
         end
       end
+
+      def with_new_items(&block)
+        self.class.with_new_items(&block)
+      end
     end
   end
 end

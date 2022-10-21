@@ -311,10 +311,6 @@ module Avo
         [main_panel, *panelfull_items]
       end
 
-      def with_new_items(&block)
-        self.class.with_new_items(&block)
-      end
-
       private
 
       def check_license
