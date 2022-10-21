@@ -69,6 +69,7 @@ FactoryBot.define do
     skills { [Faker::Educator.subject, Faker::Educator.subject, Faker::Educator.subject, Faker::Educator.subject, Faker::Educator.subject] }
     country { Course.countries.sample }
     city { Course.cities.stringify_keys[country].sample }
+    starting_at { Time.now }
   end
 
   factory :course_link, class: "Course::Link" do

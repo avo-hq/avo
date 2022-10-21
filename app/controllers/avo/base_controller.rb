@@ -84,7 +84,7 @@ module Avo
 
       # If we're accessing this resource via another resource add the parent to the breadcrumbs.
       if params[:via_resource_class].present? && params[:via_resource_id].present?
-        via_resource = Avo::App.get_resource_by_model_name(params[:via_resource_class]).dup
+        via_resource = Avo::App.get_resource(params[:via_resource_class]).dup
         via_model = via_resource.class.find_scope.find params[:via_resource_id]
         via_resource.hydrate model: via_model
 
@@ -371,7 +371,7 @@ module Avo
       last_crumb_args = {}
       # If we're accessing this resource via another resource add the parent to the breadcrumbs.
       if params[:via_resource_class].present? && params[:via_resource_id].present?
-        via_resource = Avo::App.get_resource_by_model_name(params[:via_resource_class]).dup
+        via_resource = Avo::App.get_resource(params[:via_resource_class]).dup
         via_model = via_resource.class.find_scope.find params[:via_resource_id]
         via_resource.hydrate model: via_model
 
