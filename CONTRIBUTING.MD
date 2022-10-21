@@ -172,7 +172,7 @@ set_picker_second 17
 You may want to spoof the timezone for a test. you may use the `tz` helper.
 
 ```ruby
-describe "soemthing", tz: "America/Los_Angeles" do
+describe "something", tz: "America/Los_Angeles" do
   # run your test here
 end
 ```
