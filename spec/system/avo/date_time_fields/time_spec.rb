@@ -1,8 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "Time field", type: :system do
-  # let!(:course) { create :course, starting_at: "16:30" }
-  # we set the date because...
+  # We set the date so we can test out the DST too.
   let!(:course) { create :course, starting_at: Time.new(2022, 10, 2, 16, 30, 0, "UTC") }
 
   subject(:text_input) { find '[data-field-id="starting_at"] [data-controller="date-field"] input[type="text"]' }
