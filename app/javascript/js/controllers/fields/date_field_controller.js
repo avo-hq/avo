@@ -60,6 +60,18 @@ export default class extends Controller {
     return this.viewValue === 'show'
   }
 
+  get fieldIsDate() {
+    return this.fieldTypeValue === 'date'
+  }
+
+  get fieldIsDateTime() {
+    return this.fieldTypeValue === 'dateTime'
+  }
+
+  get fieldIsTime() {
+    return this.fieldTypeValue === 'time'
+  }
+
   // Parse the time as if it were UTC
   get parsedValue() {
     return DateTime.fromISO(this.initialValue, { zone: 'UTC' })

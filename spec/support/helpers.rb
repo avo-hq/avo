@@ -18,6 +18,18 @@ def field_element_by_resource_id(field_id, resource_id = nil)
   end
 end
 
+def show_field_value(field_id)
+  find_field_value_element(field_id).text
+end
+
+def edit_field_value(field_id)
+  find_field_value_element(field_id).find('input').value
+end
+
+def index_field_value(field_id, resource_id)
+  field_element_by_resource_id(field_id, resource_id).text
+end
+
 def empty_dash
   "—"
 end
@@ -135,4 +147,10 @@ def click_on_sidebar_item(label)
   within main_sidebar do
     click_on label
   end
+end
+
+# Save a record and wait for the page to load
+def save
+  click_on "Save"
+  wait_for_loaded
 end

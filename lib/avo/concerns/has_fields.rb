@@ -10,6 +10,8 @@ module Avo
         class_attribute :tabs_tabs_holder
         class_attribute :raw_tabs
         class_attribute :tools_holder
+
+        class_attribute :backup_items_holder
       end
 
       class_methods do
@@ -101,6 +103,25 @@ module Avo
           items.select do |item|
             item.instance_of? Avo::TabGroup
           end
+        end
+
+        def with_temporary_items(&block)
+          # back-up the previous items
+          self.backup_items_holder = items_holder
+
+          self.items_holder = Avo::ItemsHolder.new
+
+          instance_eval(&block)
+        end
+
+        def restore_items_from_backup
+          self.items_holder = backup_items_holder if backup_items_holder.present?
+        end
+
+        def with_new_items(&block)
+          self.items_holder = Avo::ItemsHolder.new
+
+          instance_eval(&block)
         end
 
         private
@@ -309,6 +330,10 @@ module Avo
 
         # Return all the items but this time with all the panelless ones inside the main panel
         [main_panel, *panelfull_items]
+      end
+
+      def with_new_items(&block)
+        self.class.with_new_items(&block)
       end
 
       private
