@@ -7,7 +7,7 @@ RSpec.describe "Time field", type: :system do
   subject(:text_input) { find '[data-field-id="starting_at"] [data-controller="date-field"] input[type="text"]' }
 
   after do
-    ProjectResource.restore_items_from_backup
+    CourseResource.restore_items_from_backup
   end
 
   describe "relative: false", tz: "Europe/Bucharest" do
