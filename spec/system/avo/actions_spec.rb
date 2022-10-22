@@ -127,7 +127,7 @@ RSpec.describe "Actions", type: :system do
       visit "/admin/resources/users/#{user.slug}/actions/toggle_inactive"
 
       expect(page).to have_field "fields[notify_user]", checked: true
-      expect(page).to have_field "fields[message]", text: "Your account has been marked as inactive."
+      expect(page).to have_field "fields[message]", with: "Your account has been marked as inactive."
     end
   end
 
