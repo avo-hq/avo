@@ -19,8 +19,9 @@ module Avo
     class << self
       def eager_load(entity)
         entities = {
+          cards: ["app", "avo", "cards"],
+          resources: ["app", "avo", "resources"],
           dashboards: ["app", "avo", "dashboards"],
-          resources: ["app", "avo", "resources"]
         }
 
         paths = entities.fetch entity
@@ -28,14 +29,6 @@ module Avo
         return unless paths.present?
 
         Rails.autoloaders.main.eager_load_dir(Rails.root.join(*paths).to_s)
-      end
-
-      def eager_load_resources
-        eager_load :resources
-      end
-
-      def eager_load_dashboards
-        eager_load :dashboards
       end
 
       def boot
@@ -112,7 +105,7 @@ module Avo
           has_model = resource.model_class.present?
 
           unless has_model
-            possible_model = resource.class.to_s.gsub 'Resource', ''
+            possible_model = resource.class.to_s.gsub "Resource", ""
 
             Avo::App.error_messages.push({
               url: "https://docs.avohq.io/2.0/resources.html#custom-model-class",
@@ -140,7 +133,7 @@ module Avo
       end
 
       def init_dashboards
-        eager_load_dashboards
+        eager_load :dashboards
 
         self.dashboards = Dashboards::BaseDashboard.descendants
           .select do |dashboard|

@@ -162,6 +162,8 @@ gem "chartkick"
 
 # Avo file filed requires this gem
 gem "activestorage"
+# Required by Avo
+gem "sprockets-rails", :require => "sprockets/railtie"
 
 # Avo file filed requires this gem
 # Use Active Storage variant

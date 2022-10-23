@@ -26,23 +26,14 @@ module Avo
       ::Avo::App.boot
     end
 
-    # initializer "eager load resources" do |app|
-    #   # puts ["app.root->", app.root.join('app', 'avo', 'resources')].inspect
-    #   app.config.to_prepare do
-    #     puts ["app.config.to_prepare->", app.root.join('app', 'avo', 'resources')].inspect
-    #     Rails.autoloaders.main.eager_load_dir(app.root.join('app', 'avo', 'resources'))
-    #     puts [".to_prepare BaseResource.descendants->", BaseResource.descendants].inspect
-    #   end
-    # end
-
     initializer "avo.autoload" do |app|
       [
+        ["app", "avo", "cards"],
         ["app", "avo", "fields"],
         ["app", "avo", "filters"],
         ["app", "avo", "actions"],
         ["app", "avo", "resources"],
         ["app", "avo", "dashboards"],
-        ["app", "avo", "cards"],
         ["app", "avo", "resource_tools"]
       ].each do |path_params|
         path = Rails.root.join(*path_params)
