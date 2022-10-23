@@ -4,10 +4,10 @@ module Avo
       class PunditClient
         def authorize(user, record, action, policy_class: nil)
           Pundit.authorize(user, record, action, policy_class: policy_class)
-        rescue Pundit::NotDefinedError
-          raise NoPolicyError
-        rescue Pundit::NotAuthorizedError
-          raise NotAuthorizedError
+        rescue Pundit::NotDefinedError => error
+          raise NoPolicyError.new error.message
+        rescue Pundit::NotAuthorizedError => error
+          raise NotAuthorizedError.new error.message
         end
 
         def policy(user, record)
@@ -16,8 +16,8 @@ module Avo
 
         def policy!(user, record)
           Pundit.policy!(user, record)
-        rescue Pundit::NotDefinedError
-          raise NoPolicyError
+        rescue Pundit::NotDefinedError => error
+          raise NoPolicyError.new error.message
         end
 
         def apply_policy(user, model, policy_class: nil)
@@ -32,7 +32,7 @@ module Avo
             Pundit.policy_scope!(user, model)
           end
         rescue Pundit::NotDefinedError => error
-          raise NoPolicyError
+          raise NoPolicyError.new error.message
         end
 
         private
