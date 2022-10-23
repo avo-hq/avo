@@ -11,6 +11,8 @@ class Avo::TabSwitcherComponent < Avo::BaseComponent
   attr_reader :view
   attr_reader :style
 
+  delegate :white_panel_classes, to: :helpers
+
   def initialize(resource:, group:, current_tab:, active_tab_name:, view:, style:)
     @active_tab_name = active_tab_name
     @resource = resource

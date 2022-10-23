@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.feature "SkipShowView", type: :feature do
+RSpec.feature "SkipShowView", type: :system do
   let!(:course) { create :course }
   let!(:post) { create :post }
 
@@ -19,8 +19,13 @@ RSpec.feature "SkipShowView", type: :feature do
   end
 
   describe "skip_show_view = true" do
-    it "don't have the show button on each row of index" do
+    around do |example|
       Avo.configuration.resource_default_view = :edit
+      example.run
+      Avo.configuration.resource_default_view = :show
+    end
+
+    it "don't have the show button on each row of index" do
       visit "/admin/resources/courses"
 
       expect(page).to have_selector("[data-target='control:edit']")
@@ -28,7 +33,6 @@ RSpec.feature "SkipShowView", type: :feature do
     end
 
     it "id link (id_links_to_resource) get edit page" do
-      Avo.configuration.resource_default_view = :edit
       visit "/admin/resources/courses"
 
       find('[data-field-id="id"]').find("a").click
@@ -38,7 +42,6 @@ RSpec.feature "SkipShowView", type: :feature do
     end
 
     it "create redirect to edit page" do
-      Avo.configuration.resource_default_view = :edit
       visit "/admin/resources/courses"
 
       click_on "Create new course"
@@ -53,7 +56,6 @@ RSpec.feature "SkipShowView", type: :feature do
     end
 
     it "can save and destroy on edit page" do
-      Avo.configuration.resource_default_view = :edit
       visit "/admin/resources/courses/#{Course.last.id}/edit"
 
       expect(page).to have_selector("[data-control='destroy']")
@@ -66,7 +68,9 @@ RSpec.feature "SkipShowView", type: :feature do
       expect(page).to have_text("Awesome course (edited)")
       expect(current_path).to eql "/admin/resources/courses/#{Course.last.id}/edit"
 
-      click_on "Delete"
+      accept_alert do
+        click_on "Delete"
+      end
 
       wait_for_loaded
       expect(page).to have_text("Course destroyed for ever!")
@@ -75,8 +79,6 @@ RSpec.feature "SkipShowView", type: :feature do
     end
 
     it "create and delete association redirects to the edit page" do
-      Avo.configuration.resource_default_view = :edit
-
       # Create
       visit "/admin/resources/course_links/new?via_relation=course&via_relation_class=Course&via_resource_id=#{course.id}"
 
@@ -89,19 +91,19 @@ RSpec.feature "SkipShowView", type: :feature do
       # Delete
       visit "/admin/resources/course_links/#{course.links.first.id}/edit?via_resource_class=CourseResource&via_resource_id=#{course.id}"
 
-      click_on "Delete"
+      accept_alert do
+        click_on "Delete"
+      end
 
       expect(page).to have_text("Record destroyed")
       expect(current_path).to eql "/admin/resources/courses/#{course.id}/edit"
     end
 
     it "grid item redirects to the edit page" do
-      Avo.configuration.resource_default_view = :edit
-
       # Create
       visit "/admin/resources/posts"
 
-      click_on "#{post.name}"
+      click_on post.name.to_s
       wait_for_loaded
 
       expect(current_path).to eql "/admin/resources/posts/#{post.id}/edit"
@@ -109,8 +111,11 @@ RSpec.feature "SkipShowView", type: :feature do
   end
 
   describe "skip_show_view = false" do
-    it "have the show button on each row of index" do
+    before do
       Avo.configuration.resource_default_view = :show
+    end
+
+    it "have the show button on each row of index" do
       visit "/admin/resources/courses"
 
       expect(page).to have_selector("[data-target='control:edit']")
@@ -118,7 +123,6 @@ RSpec.feature "SkipShowView", type: :feature do
     end
 
     it "id link (id_links_to_resource) get show page" do
-      Avo.configuration.resource_default_view = :show
       visit "/admin/resources/courses"
 
       find('[data-field-id="id"]').find("a").click
@@ -128,7 +132,6 @@ RSpec.feature "SkipShowView", type: :feature do
     end
 
     it "create redirect to show page" do
-      Avo.configuration.resource_default_view = :show
       visit "/admin/resources/courses"
 
       click_on "Create new course"
@@ -143,7 +146,6 @@ RSpec.feature "SkipShowView", type: :feature do
     end
 
     it "can save but can't destroy on edit page" do
-      Avo.configuration.resource_default_view = :show
       visit "/admin/resources/courses/#{Course.last.id}/edit"
 
       expect(page).to_not have_selector("[data-control='destroy']")
@@ -155,15 +157,17 @@ RSpec.feature "SkipShowView", type: :feature do
       expect(page).to have_text("Awesome course (edited)")
       expect(current_path).to eql "/admin/resources/courses/#{Course.last.id}"
 
-      click_on "Delete"
+      accept_alert do
+        click_on "Delete"
+      end
+      wait_for_loaded
+
       expect(page).to have_text("Course destroyed for ever!")
       # Actual behaviour of deleting a course is to redirect to new page
       expect(current_path).to eql "/admin/resources/courses/new"
     end
 
     it "create and delete association redirects to the show page" do
-      Avo.configuration.resource_default_view = :show
-
       # Create
       visit "/admin/resources/course_links/new?via_relation=course&via_relation_class=Course&via_resource_id=#{course.id}"
 
@@ -178,23 +182,24 @@ RSpec.feature "SkipShowView", type: :feature do
       expect(page).to_not have_selector("[data-control='destroy']")
 
       visit "/admin/resources/course_links/#{course.links.first.id}?via_resource_class=CourseResource&via_resource_id=#{course.id}"
-      click_on "Delete"
+
+      accept_alert do
+        click_on "Delete"
+      end
+      wait_for_loaded
 
       expect(page).to have_text("Record destroyed")
       expect(current_path).to eql "/admin/resources/courses/#{course.id}"
     end
 
     it "grid item redirects to the show page" do
-      Avo.configuration.resource_default_view = :show
-
       # Create
       visit "/admin/resources/posts"
 
-      click_on "#{post.name}"
+      click_on post.name.to_s
       wait_for_loaded
 
       expect(current_path).to eql "/admin/resources/posts/#{post.id}"
     end
   end
-
- end
+end

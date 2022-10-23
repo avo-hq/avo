@@ -20,6 +20,8 @@ RSpec.feature "SignOutDropdown", type: :system do
 
       dots_button.click
       click_button "Sign out"
+      accept_alert
+      wait_for_loaded
 
       expect(current_path).to eql "/users/sign_in"
     end

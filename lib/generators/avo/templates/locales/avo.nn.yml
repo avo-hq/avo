@@ -3,7 +3,7 @@ nn:
   avo:
     action_ran_successfully: Suksess!
     actions: Handlingar
-    and_x_other_resources: og %{count} andre ressurar
+    and_x_other_resources: og %{count} andre ressursar
     are_you_sure: Er du sikker?
     are_you_sure_detach_item: Er du sikker på at du vil koble frå %{item}.
     are_you_sure_you_want_to_run_this_option: Er du sikker?
@@ -13,7 +13,7 @@ nn:
     attachment_class_attached: "%{attachment_class} lagt til."
     attachment_class_detached: "%{attachment_class} fjerna."
     attachment_destroyed: Vedlegg sletta
-    cancel: Avslutt
+    cancel: Avbryt
     choose_a_country: Vel eit land
     choose_an_option: Vel eit alternativ
     choose_item: Vel %{item}
@@ -56,7 +56,7 @@ nn:
       delete_row: Slett rad
       key: Nøkkel
       value: Verdi
-    list_is_empty: Listen er tom
+    list_is_empty: Lista er tom
     loading: Lastar
     more: Meir
     new: ny
@@ -75,17 +75,17 @@ nn:
       higher: Flytt elementet opp
       lower: Flytt elementet ned
       reorder_record: Sorter element
-      to_bottom: Flytt elementet til bunnen
+      to_bottom: Flytt elementet til botnen
       to_top: Flytt elementet til toppen
     per_page: Per side
-    prev_page: Forrige side
+    prev_page: Førre side
     remove_selection: Fjern val
     reset_filters: Nullstill filter
     resource_created: Ressurs generert
     resource_destroyed: Ressurs sletta
     resource_translations:
       user:
-        one: bruker
+        one: brukar
         other: brukarar
         zero: brukarar
     resource_updated: Ressurs oppdatert
@@ -111,7 +111,7 @@ nn:
     was_successfully_created: vart oppretta
     was_successfully_updated: vart oppdatert
     x_items_more:
-      one: ett element til
+      one: eitt element til
       other: "%{count} fleire element"
       zero: ingen fleire element
     x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> valde postar på denne sida av totalt <span class="font-bold text-gray-700">%{count}</span>

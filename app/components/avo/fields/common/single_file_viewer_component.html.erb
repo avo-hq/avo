@@ -36,15 +36,15 @@
         <% if @resource.authorization.authorize_action(:delete_attachments?, raise_exception: false) %>
           <%= a_link destroy_path,
             icon: 'heroicons/outline/trash',
-            method: :delete,
             color: :red,
             compact: true,
             size: :xs,
             class: 'text-center',
             title: t('avo.delete_file', item: file.filename),
             data: {
-              'turbo-frame': 'destroy_attachment_form',
-              confirm: t('avo.are_you_sure'),
+              turbo_method: :delete,
+              turbo_frame: 'destroy_attachment_form',
+              turbo_confirm: t('avo.are_you_sure'),
               tippy: :tooltip
             } %>
         <% end %>

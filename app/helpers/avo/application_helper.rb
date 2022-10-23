@@ -89,6 +89,10 @@ module Avo
       classes
     end
 
+    def white_panel_classes
+      "bg-white rounded shadow-md"
+    end
+
     def get_model_class(model)
       if model.instance_of?(Class)
         model

@@ -73,6 +73,9 @@ export default class extends Controller {
       Mousetrap.bind(['command+k', 'ctrl+k'], () => this.showSearchPanel())
     }
 
+    // This line fixes a bug where the search box would be duplicated on back navigation.
+    this.autocompleteTarget.innerHTML = ''
+
     autocomplete({
       container: this.autocompleteTarget,
       placeholder: this.translationKeys.placeholder,

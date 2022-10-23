@@ -17,7 +17,7 @@ PATH
       pundit
       rails (>= 6.0)
       turbo-rails
-      view_component (= 2.60)
+      view_component
       zeitwerk
 
 GEM
@@ -260,7 +260,7 @@ GEM
       net-protocol
       timeout
     nio4r (2.5.8)
-    nokogiri (1.13.7-arm64-darwin)
+    nokogiri (1.13.9-arm64-darwin)
       racc (~> 1.4)
     orm_adapter (0.5.0)
     pagy (5.10.1)

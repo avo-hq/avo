@@ -7,6 +7,9 @@ function universalTimestamp(timestampStr) {
   return new Date(new Date(timestampStr).getTime() + (new Date(timestampStr).getTimezoneOffset() * 60 * 1000))
 }
 
+const RAW_DATE_FORMAT = 'y/LL/dd'
+const RAW_TIME_FORMAT = 'TT'
+
 export default class extends Controller {
   static targets = ['input', 'fakeInput']
 
@@ -19,6 +22,10 @@ export default class extends Controller {
     firstDayOfWeek: Number,
     time24Hr: Boolean,
     disableMobile: Boolean,
+    noCalendar: Boolean,
+    relative: Boolean,
+    fieldType: { type: String, default: 'dateTime' },
+    pickerOptions: { type: Object, default: {} },
   }
 
   flatpickrInstance;
@@ -51,6 +58,22 @@ export default class extends Controller {
 
   get isOnShow() {
     return this.viewValue === 'show'
+  }
+
+  get fieldIsDate() {
+    return this.fieldTypeValue === 'date'
+  }
+
+  get fieldIsDateTime() {
+    return this.fieldTypeValue === 'dateTime'
+  }
+
+  get fieldIsTime() {
+    return this.fieldTypeValue === 'time'
+  }
+
+  get fieldHasTime() {
+    return this.fieldIsTime || this.fieldIsDateTime
   }
 
   // Parse the time as if it were UTC
@@ -90,8 +113,8 @@ export default class extends Controller {
   initShow() {
     let value = this.parsedValue
 
-    // Set the zone only if the type of field is date time.
-    if (this.enableTimeValue) {
+    // Set the zone only if the type of field is date time or relative time.
+    if (this.fieldHasTime && this.relativeValue) {
       value = value.setZone(this.displayTimezone)
     }
 
@@ -109,6 +132,8 @@ export default class extends Controller {
       },
       altInput: true,
       onChange: this.onChange.bind(this),
+      noCalendar: false,
+      ...this.pickerOptionsValue,
     }
 
     // Set the format of the displayed input field.
@@ -124,24 +149,51 @@ export default class extends Controller {
     options.enableTime = this.enableTimeValue
     options.enableSeconds = this.enableTimeValue
 
-    // enable timezone display
-    if (this.enableTimeValue) {
-      options.defaultDate = this.parsedValue.setZone(this.displayTimezone).toISO()
+    // Hide calendar and only keep time picker.
+    options.noCalendar = this.noCalendarValue
 
+    if (this.fieldHasTime) {
       options.dateFormat = 'Y-m-d H:i:S'
-    } else {
-      // Because the browser treats the date like a timestamp and updates it at 00:00 hour, when on a western timezone the date will be converted with one day offset.
-      // Ex: 2022-01-30 will render as 2022-01-29 on an American timezone
-      options.defaultDate = universalTimestamp(this.initialValue)
+    }
+
+    if (this.initialValue) {
+      switch (this.fieldTypeValue) {
+        case 'date':
+          options.defaultDate = universalTimestamp(this.initialValue)
+          break
+        default:
+        case 'time':
+          options.defaultDate = this.parsedValue.setZone(this.displayTimezone, { keepLocalTime: !this.relativeValue }).toISO()
+          break
+        case 'dateTime':
+          options.defaultDate = this.parsedValue.setZone(this.displayTimezone, { keepLocalTime: !this.relativeValue }).toISO()
+          break
+      }
     }
 
     this.flatpickrInstance = flatpickr(this.fakeInputTarget, options)
 
-    if (this.enableTimeValue) {
-      this.updateRealInput(this.parsedValue.setZone(this.displayTimezone).toISO())
-    } else {
-      this.updateRealInput(universalTimestamp(this.initialValue))
+    // Don't try to parse the value if the input is empty.
+    if (!this.initialValue) {
+      return
     }
+
+    let value
+    switch (this.fieldTypeValue) {
+      case 'time':
+        // For time values, we should maintain the real value and format it to a time-friendly format.
+        value = this.parsedValue.setZone(this.displayTimezone, { keepLocalTime: true }).toFormat(RAW_TIME_FORMAT)
+        break
+      case 'date':
+        value = DateTime.fromJSDate(universalTimestamp(this.initialValue)).toFormat(RAW_DATE_FORMAT)
+        break
+      default:
+      case 'dateTime':
+        value = this.parsedValue.setZone(this.displayTimezone).toISO()
+        break
+    }
+
+    this.updateRealInput(value)
   }
 
   onChange(selectedDates) {
@@ -152,24 +204,25 @@ export default class extends Controller {
       return
     }
 
-    let time
-    let args = {}
-
-    if (this.timezoneValue) {
-      args = { keepLocalTime: true }
-    } else {
-      args = { keepLocalTime: false }
+    let value
+    switch (this.fieldTypeValue) {
+      case 'time':
+        // For time values, we should maintain the real value and format it to a time-friendly format.
+        value = DateTime.fromISO(selectedDates[0].toISOString()).setZone('UTC', { keepLocalTime: !this.relativeValue }).toFormat(RAW_TIME_FORMAT)
+        break
+      case 'date':
+        value = DateTime.fromISO(selectedDates[0].toISOString()).setZone('UTC', { keepLocalTime: true }).toFormat(RAW_DATE_FORMAT)
+        break
+      default:
+      case 'dateTime':
+        value = DateTime.fromISO(selectedDates[0].toISOString()).setZone('UTC', { keepLocalTime: !this.relativeValue }).toISO()
+        break
     }
 
-    if (this.enableTimeValue) {
-      time = DateTime.fromISO(selectedDates[0].toISOString()).setZone('UTC', args)
-    } else {
-      time = DateTime.fromISO(selectedDates[0].toISOString()).setZone('UTC', { keepLocalTime: true })
-    }
-
-    this.updateRealInput(time)
+    this.updateRealInput(value)
   }
 
+  // Value should be a string
   updateRealInput(value) {
     this.inputTarget.value = value
   }
