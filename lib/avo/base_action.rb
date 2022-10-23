@@ -72,7 +72,7 @@ module Avo
 
     def get_attributes_for_action
       get_fields.map do |field|
-        [field.id, field.value]
+        [field.id, field.value || field.default]
       end.to_h
     end
 

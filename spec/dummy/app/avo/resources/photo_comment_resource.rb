@@ -2,7 +2,7 @@
 
 class PhotoCommentResource < Avo::BaseResource
   self.title = :tiny_name
-  self.includes = []
+  self.includes = [:user]
   self.model_class = ::Comment
   self.authorization_policy = PhotoCommentPolicy
   self.search_query = -> do

@@ -23,7 +23,10 @@ class ProjectResource < Avo::BaseResource
     index_text_align: :left,
     include_blank: "No country"
   field :users_required, as: :number, min: 10, max: 1000000, step: 1, index_text_align: :right
-  field :started_at, as: :date_time, name: "Started", time_24hr: true, relative: true, timezone: "EET", nullable: true
+  field :started_at, as: :date_time, name: "Started", time_24hr: true, nullable: true,
+    relative: true,
+    timezone: "EET",
+    format: "MMMM dd, y HH:mm:ss z"
   field :description, as: :markdown, height: "350px"
   field :files, as: :files, translation_key: "avo.field_translations.file", is_image: true, direct_upload: true
   field :meta, as: :key_value, key_label: "Meta key", value_label: "Meta value", action_text: "New item", delete_text: "Remove item", disable_editing_keys: false, disable_adding_rows: false, disable_deleting_rows: false

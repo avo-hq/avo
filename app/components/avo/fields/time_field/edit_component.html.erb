@@ -2,12 +2,14 @@
   <%= content_tag :div, data: {
       controller: "date-field",
       date_field_view_value: @view,
-      date_field_enable_time_value: false,
-      date_field_format_value: @field.format,
+      date_field_enable_time_value: true,
       date_field_picker_format_value: @field.picker_format,
-      date_field_first_day_of_week_value: @field.first_day_of_week,
       date_field_disable_mobile_value: @field.disable_mobile,
-      date_field_field_type_value: "date",
+      date_field_time24_hr_value: @field.time_24hr,
+      date_field_no_calendar_value: true,
+      date_field_timezone_value: @field.timezone,
+      date_field_relative_value: @field.relative,
+      date_field_field_type_value: "time",
       date_field_picker_options_value: @field.picker_options,
   } do %>
     <%= @form.text_field @field.id,

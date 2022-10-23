@@ -43,6 +43,14 @@ class PostPolicy < ApplicationPolicy
     true
   end
 
+  def view_comments?
+    true
+  end
+
+  def edit_comments?
+    true
+  end
+
   class Scope < Scope
     def resolve
       scope.all
