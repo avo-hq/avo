@@ -9,7 +9,7 @@
           date_field_disable_mobile_value: false,
           date_field_relative_value: false,
       } do %>
-    <%= datetime_field("fake_#{id}", "fake",
+    <%= text_field_tag("fake_#{id}", "fake",
             value: date,
             class: "w-full appearance-none inline-flex bg-gray-25 disabled:cursor-not-allowed text-gray-600 disabled:opacity-50 rounded py-2 px-3 leading-tight border focus:border-gray-600 focus-visible:ring-0 focus:text-gray-700 border-gray-200 w-full form-control input",
             data: {

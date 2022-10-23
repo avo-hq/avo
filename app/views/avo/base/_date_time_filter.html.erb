@@ -1,5 +1,7 @@
 <%
   start_date, end_date =  @applied_filters[filter.class.to_s]&.values_at("start","end")
+  start_date = start_date&.to_datetime&.iso8601
+  end_date = end_date&.to_datetime&.iso8601
 %>
 <div
   data-controller="date-time-filter"
