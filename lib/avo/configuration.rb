@@ -86,7 +86,7 @@ module Avo
       @model_resource_mapping = {}
       @tabs_style = :tabs
       @resource_default_view = :show
-      @authorization_client = nil
+      @authorization_client = :pundit
     end
 
     def current_user_method(&block)

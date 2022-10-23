@@ -7,7 +7,20 @@ module Avo
 
       class << self
         def client
-          (configuration_client || default_client).new
+          client = Avo.configuration.authorization_client
+
+          klass = case client
+          when :pundit, nil
+            pundit_client
+          else
+            if client.is_a?(String)
+              client.safe_constantize
+            else
+              client
+            end
+          end
+
+          klass.new
         end
 
         def authorize(user, record, action, policy_class: nil, **args)
@@ -78,19 +91,7 @@ module Avo
           end
         end
 
-        def configuration_client
-          client = Avo.configuration.authorization_client
-
-          return if client.blank?
-
-          if client.is_a?(String)
-            client.safe_constantize
-          else
-            client
-          end
-        end
-
-        def default_client
+        def pundit_client
           Avo::Services::AuthorizationClients::PunditClient
         end
       end
