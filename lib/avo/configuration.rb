@@ -37,6 +37,7 @@ module Avo
     attr_accessor :model_resource_mapping
     attr_accessor :tabs_style
     attr_accessor :resource_default_view
+    attr_accessor :authorization_client
     attr_writer :branding
 
     def initialize
@@ -85,6 +86,7 @@ module Avo
       @model_resource_mapping = {}
       @tabs_style = :tabs
       @resource_default_view = :show
+      @authorization_client = :pundit
     end
 
     def current_user_method(&block)

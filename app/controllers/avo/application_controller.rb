@@ -1,11 +1,5 @@
 module Avo
   class ApplicationController < ::ActionController::Base
-    if defined?(Pundit::Authorization)
-      include Pundit::Authorization
-    else
-      include Pundit
-    end
-
     include Pagy::Backend
     include Avo::ApplicationHelper
     include Avo::UrlHelpers
@@ -24,7 +18,7 @@ module Avo
     before_action :set_view
     before_action :set_sidebar_open
 
-    rescue_from Pundit::NotAuthorizedError, with: :render_unauthorized
+    rescue_from Avo::NotAuthorizedError, with: :render_unauthorized
     rescue_from ActiveRecord::RecordInvalid, with: :exception_logger
 
     helper_method :_current_user, :resources_path, :resource_path, :new_resource_path, :edit_resource_path, :resource_attach_path, :resource_detach_path, :related_resources_path, :turbo_frame_request?, :resource_view_path
@@ -257,18 +251,16 @@ module Avo
       instance_eval(&Avo.configuration.authenticate)
     end
 
-    def render_unauthorized(exception)
-      if !exception.is_a? Pundit::NotDefinedError
-        flash.now[:notice] = t "avo.not_authorized"
+    def render_unauthorized(_exception)
+      flash.now[:notice] = t "avo.not_authorized"
 
-        redirect_url = if request.referrer.blank? || (request.referrer == request.url)
-          root_url
-        else
-          request.referrer
-        end
-
-        redirect_to(redirect_url)
+      redirect_url = if request.referrer.blank? || (request.referrer == request.url)
+        root_url
+      else
+        request.referrer
       end
+
+      redirect_to(redirect_url)
     end
 
     def set_authorization

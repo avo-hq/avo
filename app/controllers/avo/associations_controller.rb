@@ -157,7 +157,7 @@ module Avo
     private
 
     def set_related_authorization
-      @authorization = if related_resource
+      @related_authorization = if related_resource
         related_resource.authorization(user: _current_user)
       else
         Services::AuthorizationService.new _current_user
