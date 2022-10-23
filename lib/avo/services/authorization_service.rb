@@ -3,29 +3,43 @@ module Avo
     class AuthorizationService
       attr_accessor :user
       attr_accessor :record
+      attr_accessor :policy_class
 
       class << self
+        def client
+          client = Avo.configuration.authorization_client
+
+          klass = case client
+          when :pundit, nil
+            pundit_client
+          else
+            if client.is_a?(String)
+              client.safe_constantize
+            else
+              client
+            end
+          end
+
+          klass.new
+        end
+
         def authorize(user, record, action, policy_class: nil, **args)
           return true if skip_authorization
           return true if user.nil?
 
-          policy_class ||= Pundit.policy(user, record)&.class
-          begin
-            if policy_class&.new(user, record)
-              Pundit.authorize user, record, action, policy_class: policy_class
-            end
+          client.authorize user, record, action, policy_class: policy_class
 
-            true
-          rescue Pundit::NotDefinedError => e
-            return false unless Avo.configuration.raise_error_on_missing_policy
+          true
+        rescue NoPolicyError => error
+          # By default, Avo allows anything if you don't have a policy present.
+          return true unless Avo.configuration.raise_error_on_missing_policy
 
-            raise e
-          rescue => error
-            if args[:raise_exception] == false
-              false
-            else
-              raise error
-            end
+          raise error
+        rescue => error
+          if args[:raise_exception] == false
+            false
+          else
+            raise error
           end
         end
 
@@ -35,7 +49,7 @@ module Avo
           # If no action passed we should raise error if the user wants that.
           # If not, just allow it.
           if action.nil?
-            raise Pundit::NotDefinedError.new "Policy method is missing" if Avo.configuration.raise_error_on_missing_policy
+            raise NoPolicyError.new "Policy method is missing" if Avo.configuration.raise_error_on_missing_policy
 
             return true
           end
@@ -48,44 +62,27 @@ module Avo
         def apply_policy(user, model, policy_class: nil)
           return model if skip_authorization || user.nil?
 
-          begin
-            # Try and figure out the scope from a given policy or auto-detected one
-            scope_from_policy_class = scope_for_policy_class(policy_class)
+          client.apply_policy(user, model, policy_class: policy_class)
+        rescue NoPolicyError => error
+          return model unless Avo.configuration.raise_error_on_missing_policy
 
-            # If we discover one use it.
-            # Else fallback to pundit.
-            if scope_from_policy_class.present?
-              scope_from_policy_class.new(user, model).resolve
-            else
-              Pundit.policy_scope!(user, model)
-            end
-          rescue Pundit::NotDefinedError => e
-            return model unless Avo.configuration.raise_error_on_missing_policy
-
-            raise e
-          end
+          raise error
         end
 
         def skip_authorization
           Avo::App.license.lacks_with_trial :authorization
         end
 
-        def authorized_methods(user, record)
-          [:new, :edit, :update, :show, :destroy].map do |method|
-            [method, authorize(user, record, Avo.configuration.authorization_methods[method])]
-          end.to_h
-        end
-
         def defined_methods(user, record, policy_class: nil, **args)
-          return Pundit.policy!(user, record).methods if policy_class.nil?
+          return client.policy!(user, record).methods if policy_class.nil?
 
           # I'm aware this will not raise a Pundit error.
           # Should the policy not exist, it will however raise an uninitialized constant error, which is probably what we want when specifying a custom policy
           policy_class.new(user, record).methods
-        rescue Pundit::NotDefinedError => e
+        rescue NoPolicyError => error
           return [] unless Avo.configuration.raise_error_on_missing_policy
 
-          raise e
+          raise error
         rescue => error
           if args[:raise_exception] == false
             []
@@ -94,24 +91,15 @@ module Avo
           end
         end
 
-        # Fetches the scope for a given policy
-        def scope_for_policy_class(policy_class = nil)
-          return if policy_class.blank?
-
-          if policy_class.present? && defined?(policy_class::Scope)
-            policy_class::Scope
-          end
+        def pundit_client
+          Avo::Services::AuthorizationClients::PunditClient
         end
       end
 
       def initialize(user = nil, record = nil, policy_class: nil)
         @user = user
         @record = record
-        @policy_class = policy_class || Pundit.policy(user, record)&.class
-      end
-
-      def authorize(action, **args)
-        self.class.authorize(user, record, action, policy_class: @policy_class, **args)
+        @policy_class = policy_class || self.class.client.policy(user, record)&.class
       end
 
       def set_record(record)
@@ -120,22 +108,16 @@ module Avo
         self
       end
 
-      def set_user(user)
-        @user = user
-
-        self
-      end
-
       def authorize_action(action, **args)
-        self.class.authorize_action(user, record, action, policy_class: @policy_class, **args)
+        self.class.authorize_action(user, record, action, policy_class: policy_class, **args)
       end
 
       def apply_policy(model)
-        self.class.apply_policy(user, model, policy_class: @policy_class)
+        self.class.apply_policy(user, model, policy_class: policy_class)
       end
 
       def defined_methods(model, **args)
-        self.class.defined_methods(user, model, policy_class: @policy_class, **args)
+        self.class.defined_methods(user, model, policy_class: policy_class, **args)
       end
 
       def has_method?(method, **args)
