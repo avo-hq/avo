@@ -24,7 +24,6 @@ gem "database_cleaner"
 gem "ruby-debug-ide", require: false
 gem "rubocop"
 gem "rubocop-shopify", require: false
-gem "zeitwerk", "~> 2.3"
 gem "httparty"
 gem "iso"
 gem "active_link_to"
@@ -44,6 +43,7 @@ gem "acts_as_list"
 gem "acts-as-taggable-on", "~> 9.0"
 gem "bundler-integrity", "~> 1.0"
 gem "erb-formatter"
+gem "zeitwerk", git: "https://github.com/fxn/zeitwerk.git"
 
 group :development do
   gem "standard"

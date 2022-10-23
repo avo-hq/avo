@@ -1,3 +1,9 @@
+GIT
+  remote: https://github.com/fxn/zeitwerk.git
+  revision: 7d26ff4915ae04c81cea8e3268fe63418af9b10e
+  specs:
+    zeitwerk (2.6.1)
+
 PATH
   remote: ..
   specs:
@@ -18,7 +24,6 @@ PATH
       rails (>= 6.0)
       turbo-rails
       view_component
-      zeitwerk
 
 GEM
   remote: https://rubygems.org/
@@ -432,7 +437,6 @@ GEM
     websocket-extensions (0.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.6.0)
 
 PLATFORMS
   arm64-darwin-21
@@ -502,7 +506,7 @@ DEPENDENCIES
   web-console (>= 3.3.0)
   webdrivers
   webmock
-  zeitwerk (~> 2.3)
+  zeitwerk!
 
 BUNDLED WITH
    2.3.23
