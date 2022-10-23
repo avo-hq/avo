@@ -307,6 +307,10 @@ RSpec.describe "Filters", type: :system do
     end
   end
 
+  describe "Date Time Filter" do
+    let(:reviews) { create_list(:review,) }
+  end
+
   describe "pagination resets when filters change" do
     let!(:published_posts) { create_list(:post, 40, published_at: rand((DateTime.now - 3.months)..DateTime.now)) }
     let!(:unpublished_post) { create :post, name: "Unpublished post", published_at: nil }
