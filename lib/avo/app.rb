@@ -17,10 +17,27 @@ module Avo
     class_attribute :error_messages
 
     class << self
-      def eager_load_resources
+      def eager_load(entity)
+        entities = {
+          dashboards: ["app", "avo", "dashboards"],
+          resources: ["app", "avo", "resources"]
+        }
+
+        paths = entities.fetch entity
+
+        return unless paths.present?
+
         Rails.autoloaders.each do |loader|
-          loader.eager_load_dir(Rails.root.join("app", "avo", "resources").to_s)
+          loader.eager_load_dir(Rails.root.join(**paths).to_s)
         end
+      end
+
+      def eager_load_resources
+        eager_load :resources
+      end
+
+      def eager_load_dashboards
+        eager_load :dashboards
       end
 
       def boot
@@ -125,6 +142,8 @@ module Avo
       end
 
       def init_dashboards
+        eager_load_dashboards
+
         self.dashboards = Dashboards::BaseDashboard.descendants
           .select do |dashboard|
             dashboard != Dashboards::BaseDashboard
