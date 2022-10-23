@@ -1,6 +1,4 @@
 <%= content_tag :div,
-  # the overflow helps with long values
-  class: "overflow-auto",
   data: {
     'model-id': @resource.model.id,
     selected_resources_name: @resource.model_key,
@@ -156,7 +154,8 @@
     <% end %>
     <% if main_panel.present? %>
       <% c.body do %>
-        <div class="divide-y">
+        <%# the overflow helps with long values %>
+        <div class="divide-y overflow-auto">
           <% main_panel.items.each_with_index do |field, index| %>
             <%= render field
               .hydrate(resource: @resource, model: @resource.model, user: @resource.user, view: view)
