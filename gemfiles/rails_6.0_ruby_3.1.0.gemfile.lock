@@ -13,7 +13,6 @@ PATH
       inline_svg
       meta-tags
       pagy
-      pundit
       turbo-rails
       view_component
       zeitwerk
@@ -483,6 +482,7 @@ DEPENDENCIES
   net-smtp
   pg (>= 0.18, < 2.0)
   puma (~> 5.6.4)
+  pundit
   rails (~> 6.0.0)
   rails-controller-testing
   ransack
@@ -496,6 +496,7 @@ DEPENDENCIES
   simplecov-cobertura
   spring
   spring-commands-rspec
+  sprockets-rails
   standard
   test-prof
   tzinfo-data

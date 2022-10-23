@@ -13,7 +13,6 @@ PATH
       inline_svg
       meta-tags
       pagy
-      pundit
       turbo-rails
       view_component
       zeitwerk
@@ -489,6 +488,7 @@ DEPENDENCIES
   net-smtp
   pg (>= 0.18, < 2.0)
   puma (~> 5.6.4)
+  pundit
   rails-controller-testing
   ransack
   redis (~> 4.0)
