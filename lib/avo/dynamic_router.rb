@@ -12,9 +12,6 @@ module Avo
             .select do |resource|
               resource.is_a? Class
             end
-            # .select do |resource|
-            #   resource.model_class.present?
-            # end
             .map do |resource|
               resources resource.new.route_key
             end
