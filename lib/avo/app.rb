@@ -27,9 +27,7 @@ module Avo
 
         return unless paths.present?
 
-        Rails.autoloaders.each do |loader|
-          loader.eager_load_dir(Rails.root.join(**paths).to_s)
-        end
+        Rails.autoloaders.main.eager_load_dir(Rails.root.join(*paths).to_s)
       end
 
       def eager_load_resources
