@@ -2,20 +2,17 @@ PATH
   remote: ..
   specs:
     avo (2.17.0)
+      actionview (>= 6.0)
       active_link_to
+      activerecord (>= 6.0)
       addressable
       breadcrumbs_on_rails
-      chartkick
-      countries
       docile
       dry-initializer
       httparty
-      image_processing
       inline_svg
       meta-tags
       pagy
-      pundit
-      rails (>= 6.0)
       turbo-rails
       view_component
       zeitwerk
@@ -403,6 +400,13 @@ GEM
     spring (4.0.0)
     spring-commands-rspec (1.0.4)
       spring (>= 0.9.1)
+    sprockets (4.1.1)
+      concurrent-ruby (~> 1.0)
+      rack (> 1, < 3)
+    sprockets-rails (3.4.2)
+      actionpack (>= 5.2)
+      activesupport (>= 5.2)
+      sprockets (>= 3.0.0)
     standard (1.13.0)
       rubocop (= 1.31.2)
       rubocop-performance (= 1.14.3)
@@ -419,8 +423,9 @@ GEM
     tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.2.0)
-    view_component (2.60.0)
+    view_component (2.74.1)
       activesupport (>= 5.0.0, < 8.0)
+      concurrent-ruby (~> 1.0)
       method_source (~> 1.0)
     warden (1.2.9)
       rack (>= 2.0.9)
@@ -451,6 +456,7 @@ PLATFORMS
 DEPENDENCIES
   active_link_to
   active_median
+  activestorage
   acts-as-taggable-on (~> 9.0)
   acts_as_list
   addressable
@@ -466,6 +472,7 @@ DEPENDENCIES
   bundler-integrity (~> 1.0)
   byebug
   capybara (= 3.36)
+  chartkick
   countries
   cssbundling-rails
   database_cleaner
@@ -507,6 +514,7 @@ DEPENDENCIES
   simplecov-cobertura
   spring
   spring-commands-rspec
+  sprockets-rails
   standard
   test-prof
   tzinfo-data

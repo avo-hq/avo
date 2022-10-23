@@ -4,13 +4,9 @@ source "https://rubygems.org"
 
 gem "jsbundling-rails"
 gem "cssbundling-rails"
-gem "countries"
-gem "pundit"
-gem "rails", "~> 6.1.0"
 gem "pg", ">= 0.18", "< 2.0"
 gem "puma", "~> 5.6.4"
 gem "redis", "~> 4.0"
-gem "image_processing", "~> 1.12"
 gem "bootsnap", ">= 1.4.2", require: false
 gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
 gem "dotenv-rails"
@@ -44,6 +40,12 @@ gem "acts_as_list"
 gem "acts-as-taggable-on", "~> 9.0"
 gem "bundler-integrity", "~> 1.0"
 gem "erb-formatter"
+gem "pundit"
+gem "countries"
+gem "chartkick"
+gem "activestorage"
+gem "image_processing", "~> 1.12"
+gem "rails", "~> 6.1.0"
 
 group :development do
   gem "standard"
@@ -74,6 +76,7 @@ group :test do
   gem "spring-commands-rspec"
   gem "launchy", require: false
   gem "test-prof"
+  gem "sprockets-rails"
 end
 
 gemspec path: "../"
