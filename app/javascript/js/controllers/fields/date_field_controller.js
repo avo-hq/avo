@@ -60,6 +60,22 @@ export default class extends Controller {
     return this.viewValue === 'show'
   }
 
+  get fieldIsDate() {
+    return this.fieldTypeValue === 'date'
+  }
+
+  get fieldIsDateTime() {
+    return this.fieldTypeValue === 'dateTime'
+  }
+
+  get fieldIsTime() {
+    return this.fieldTypeValue === 'time'
+  }
+
+  get fieldHasTime() {
+    return this.fieldIsTime || this.fieldIsDateTime
+  }
+
   // Parse the time as if it were UTC
   get parsedValue() {
     return DateTime.fromISO(this.initialValue, { zone: 'UTC' })
@@ -98,7 +114,7 @@ export default class extends Controller {
     let value = this.parsedValue
 
     // Set the zone only if the type of field is date time or relative time.
-    if (this.enableTimeValue && this.relativeValue) {
+    if (this.fieldHasTime && this.relativeValue) {
       value = value.setZone(this.displayTimezone)
     }
 
@@ -136,16 +152,22 @@ export default class extends Controller {
     // Hide calendar and only keep time picker.
     options.noCalendar = this.noCalendarValue
 
-    if (this.initialValue) {
-      // Enable timezone display
-      if (this.enableTimeValue && this.relativeValue) {
-        options.defaultDate = this.parsedValue.setZone(this.displayTimezone).toISO()
+    if (this.fieldHasTime) {
+      options.dateFormat = 'Y-m-d H:i:S'
+    }
 
-        options.dateFormat = 'Y-m-d H:i:S'
-      } else {
-        // Because the browser treats the date like a timestamp and updates it at 00:00 hour, when on a western timezone the date will be converted with one day offset.
-        // Ex: 2022-01-30 will render as 2022-01-29 on an American timezone
-        options.defaultDate = universalTimestamp(this.initialValue)
+    if (this.initialValue) {
+      switch (this.fieldTypeValue) {
+        case 'date':
+          options.defaultDate = universalTimestamp(this.initialValue)
+          break
+        default:
+        case 'time':
+          options.defaultDate = this.parsedValue.setZone(this.displayTimezone, { keepLocalTime: !this.relativeValue }).toISO()
+          break
+        case 'dateTime':
+          options.defaultDate = this.parsedValue.setZone(this.displayTimezone, { keepLocalTime: !this.relativeValue }).toISO()
+          break
       }
     }
 
@@ -182,27 +204,18 @@ export default class extends Controller {
       return
     }
 
-    let args = {}
-
-    // For values that involve time we should keep the local time.
-    if (this.timezoneValue || !this.relativeValue) {
-      args = { keepLocalTime: true }
-    } else {
-      args = { keepLocalTime: false }
-    }
-
     let value
     switch (this.fieldTypeValue) {
       case 'time':
         // For time values, we should maintain the real value and format it to a time-friendly format.
-        value = DateTime.fromISO(selectedDates[0].toISOString()).setZone('UTC', args).toFormat(RAW_TIME_FORMAT)
+        value = DateTime.fromISO(selectedDates[0].toISOString()).setZone('UTC', { keepLocalTime: !this.relativeValue }).toFormat(RAW_TIME_FORMAT)
         break
       case 'date':
         value = DateTime.fromISO(selectedDates[0].toISOString()).setZone('UTC', { keepLocalTime: true }).toFormat(RAW_DATE_FORMAT)
         break
       default:
       case 'dateTime':
-        value = DateTime.fromISO(selectedDates[0].toISOString()).setZone('UTC', args).toISO()
+        value = DateTime.fromISO(selectedDates[0].toISOString()).setZone('UTC', { keepLocalTime: !this.relativeValue }).toISO()
         break
     }
 

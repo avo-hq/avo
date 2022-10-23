@@ -5,6 +5,7 @@ module Avo
       attr_reader :picker_format
       attr_reader :time_24hr
       attr_reader :timezone
+      attr_reader :relative
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
@@ -13,6 +14,7 @@ module Avo
         add_string_prop args, :picker_format, "Y-m-d H:i:S"
         add_string_prop args, :format, "yyyy-LL-dd TT"
         add_string_prop args, :timezone
+        add_boolean_prop args, :relative, true
       end
 
       def formatted_value

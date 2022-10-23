@@ -8,14 +8,15 @@
       date_field_disable_mobile_value: @field.disable_mobile,
       date_field_time24_hr_value: @field.time_24hr,
       date_field_timezone_value: @field.timezone,
+      date_field_relative_value: @field.relative,
       date_field_field_type_value: "dateTime",
       date_field_picker_options_value: @field.picker_options,
   } do %>
-    <%= datetime_field "fake_#{@field.id}", "fake",
+    <%= @form.text_field @field.id,
       value: @field.edit_formatted_value,
-      class: classes("w-full"),
+      class: classes("w-full #{"hidden" unless params[:avo_show_hidden_inputs]}"),
       data: {
-        'date-field-target': 'fakeInput',
+        'date-field-target': 'input',
         placeholder: @field.placeholder,
         **@field.get_html(:data, view: view, element: :input)
       },
@@ -23,11 +24,11 @@
       placeholder: @field.placeholder,
       style: @field.get_html(:style, view: view, element: :input)
     %>
-    <%= @form.text_field @field.id,
+    <%= datetime_field "fake_#{@field.id}", "fake",
       value: @field.edit_formatted_value,
-      class: classes("w-full hidden"),
+      class: classes("w-full"),
       data: {
-        'date-field-target': 'input',
+        'date-field-target': 'fakeInput',
         placeholder: @field.placeholder,
         **@field.get_html(:data, view: view, element: :input)
       },
