@@ -19,7 +19,7 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
     full_width: false,
     label: nil, # do we really need it?
     resource: nil,
-    stacked: false,
+    stacked: nil,
     style: "",
     view: :show,
     **args
@@ -91,7 +91,14 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
   end
 
   def stacked?
-    @stacked
+    # Override on the declaration level
+    return @stacked unless @stacked.nil?
+
+    # Fetch it from the field
+    return field.stacked unless field.stacked.nil?
+
+    # Fallback to defaults
+    Avo.configuration.field_wrapper_layout == :stacked
   end
 
   def compact?

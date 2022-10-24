@@ -36,6 +36,7 @@ module Avo
       attr_reader :as_avatar
       attr_reader :as_description
       attr_reader :index_text_align
+      attr_reader :stacked
 
       # Private options
       attr_reader :updatable
@@ -78,6 +79,7 @@ module Avo
         @html = args[:html] || nil
         @view = args[:view] || nil
         @value = args[:value] || nil
+        @stacked = args[:stacked] || nil
 
         @args = args
 

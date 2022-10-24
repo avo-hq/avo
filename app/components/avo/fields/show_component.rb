@@ -10,7 +10,7 @@ class Avo::Fields::ShowComponent < ViewComponent::Base
   attr_reader :stacked
   attr_reader :view
 
-  def initialize(field: nil, resource: nil, index: 0, form: nil, compact: false, stacked: false)
+  def initialize(field: nil, resource: nil, index: 0, form: nil, compact: false, stacked: nil)
     @compact = compact
     @field = field
     @index = index
