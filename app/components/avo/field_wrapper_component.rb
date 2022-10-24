@@ -41,7 +41,7 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
   end
 
   def classes(extra_classes = "")
-    "relative flex flex-col flex-grow pb-2 md:pb-0 leading-tight min-h-14 #{stacked? ? "" : "md:flex-row md:items-center"} #{@classes || ""} #{extra_classes || ""} #{@field.get_html(:classes, view: view, element: :wrapper)}"
+    "relative flex flex-col flex-grow pb-2 md:pb-0 leading-tight min-h-14 #{stacked? ? "field-wrapper-layout-stacked" : "field-wrapper-layout-inline md:flex-row md:items-center"} #{@classes || ""} #{extra_classes || ""} #{@field.get_html(:classes, view: view, element: :wrapper)}"
   end
 
   def style
