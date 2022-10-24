@@ -6,6 +6,10 @@ def find_field_element(field_id)
   find("[data-field-id='#{field_id}']")
 end
 
+def field_wrapper(field_id)
+  find("[data-field-id='#{field_id}']")
+end
+
 def find_field_value_element(field_id)
   find("[data-field-id='#{field_id}'] [data-slot='value']")
 end

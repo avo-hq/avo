@@ -33,6 +33,7 @@ Avo.configure do |config|
   # config.resource_controls_placement = ENV["AVO_RESOURCE_CONTROLS_PLACEMENT"]&.to_sym || :right
   config.resource_default_view = :show
   config.search_debounce = 300
+  # config.field_wrapper_layout = :stacked
 
   ## == Branding ==
   config.branding = {

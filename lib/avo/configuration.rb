@@ -38,6 +38,7 @@ module Avo
     attr_accessor :tabs_style
     attr_accessor :resource_default_view
     attr_accessor :authorization_client
+    attr_accessor :field_wrapper_layout
     attr_writer :branding
 
     def initialize
@@ -87,6 +88,7 @@ module Avo
       @tabs_style = :tabs
       @resource_default_view = :show
       @authorization_client = :pundit
+      @field_wrapper_layout = :inline
     end
 
     def current_user_method(&block)
