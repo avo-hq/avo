@@ -59,6 +59,7 @@ Avo.configure do |config|
   # config.resource_controls = :right
   # config.tabs_style = :tabs # can be :tabs or :pills
   # config.buttons_on_form_footers = true
+  # config.field_wrapper_layout = true
 
   ## == Branding ==
   # config.branding = {

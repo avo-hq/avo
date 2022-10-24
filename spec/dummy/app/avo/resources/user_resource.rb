@@ -19,7 +19,7 @@ class UserResource < Avo::BaseResource
   field :id, as: :id, link_to_resource: true
   field :email, as: :gravatar, link_to_resource: true, as_avatar: :circle, only_on: :index
   heading "User Information"
-  field :first_name, as: :text, placeholder: "John"
+  field :first_name, as: :text, placeholder: "John", stacked: true
   field :last_name, as: :text, placeholder: "Doe"
   field :email, as: :text, name: "User Email", required: true, protocol: :mailto
   field :active, as: :boolean, name: "Is active", only_on: :index

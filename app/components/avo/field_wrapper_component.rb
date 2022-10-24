@@ -19,7 +19,7 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
     full_width: false,
     label: nil, # do we really need it?
     resource: nil,
-    stacked: false,
+    stacked: nil,
     style: "",
     view: :show,
     **args
@@ -41,7 +41,7 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
   end
 
   def classes(extra_classes = "")
-    "relative flex flex-col flex-grow pb-2 md:pb-0 leading-tight min-h-14 #{stacked? ? "" : "md:flex-row md:items-center"} #{@classes || ""} #{extra_classes || ""} #{@field.get_html(:classes, view: view, element: :wrapper)}"
+    "relative flex flex-col flex-grow pb-2 md:pb-0 leading-tight min-h-14 #{stacked? ? "field-wrapper-layout-stacked" : "field-wrapper-layout-inline md:flex-row md:items-center"} #{compact? ? "field-wrapper-size-compact" : "field-wrapper-size-regular"} #{full_width? ? "field-width-full" : "field-width-regular"} #{@classes || ""} #{extra_classes || ""} #{@field.get_html(:classes, view: view, element: :wrapper)}"
   end
 
   def style
@@ -91,7 +91,14 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
   end
 
   def stacked?
-    @stacked
+    # Override on the declaration level
+    return @stacked unless @stacked.nil?
+
+    # Fetch it from the field
+    return field.stacked unless field.stacked.nil?
+
+    # Fallback to defaults
+    Avo.configuration.field_wrapper_layout == :stacked
   end
 
   def compact?

@@ -12,7 +12,7 @@ class Avo::Fields::EditComponent < ViewComponent::Base
   attr_reader :stacked
   attr_reader :view
 
-  def initialize(field: nil, resource: nil, index: 0, form: nil, compact: false, stacked: false, multiple: false, **kwargs)
+  def initialize(field: nil, resource: nil, index: 0, form: nil, compact: false, stacked: nil, multiple: false, **kwargs)
     @compact = compact
     @field = field
     @form = form
