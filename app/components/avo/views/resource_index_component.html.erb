@@ -1,5 +1,7 @@
 <%= content_tag :div,
   data: {
+    model_name: @resource.model_name.to_s,
+    resource_name: @resource.class.to_s,
     **@resource.stimulus_data_attributes
   } do %>
   <%= render Avo::PanelComponent.new(name: title, description: description, data: { component: 'resources-index' }, display_breadcrumbs: @reflection.blank?) do |c| %>
