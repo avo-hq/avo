@@ -4,7 +4,16 @@ class ProductResource < Avo::BaseResource
   self.default_view_type = :grid
 
   field :id, as: :id
-  field :title, as: :text
+  field :title, as: :text, html: {
+    show: {
+      label: {
+        classes: "bg-gray-50 !text-pink-600"
+      },
+      content: {
+        classes: "bg-gray-50 !text-pink-600"
+      }
+    }
+  }
   field :description, as: :trix
   field :image, as: :file, is_image: true
   field :price, as: :number
@@ -14,7 +23,7 @@ class ProductResource < Avo::BaseResource
     cover :image, as: :file, is_image: true, link_to_resource: true, html: {
       index: {
         wrapper: {
-          style: 'background: pink;'
+          style: "background: pink;"
         }
       }
     }
