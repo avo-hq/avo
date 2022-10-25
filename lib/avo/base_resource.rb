@@ -421,9 +421,7 @@ module Avo
     end
 
     def label
-      label_field.value || model_title
-    rescue
-      model_title
+      label_field&.value || model_title
     end
 
     def avatar_field
@@ -459,9 +457,7 @@ module Avo
     end
 
     def description
-      description_field.value
-    rescue
-      nil
+      description_field&.value
     end
 
     def form_scope
