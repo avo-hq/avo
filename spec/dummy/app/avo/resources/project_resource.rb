@@ -35,6 +35,8 @@ class ProjectResource < Avo::BaseResource
   field :comments, as: :has_many, searchable: true
   field :reviews, as: :has_many
 
+  action ExportCsv
+
   # filter PeopleFilter
   # filter People2Filter
   # filter FeaturedFilter
