@@ -69,6 +69,7 @@ FactoryBot.define do
     skills { [Faker::Educator.subject, Faker::Educator.subject, Faker::Educator.subject, Faker::Educator.subject, Faker::Educator.subject] }
     country { Course.countries.sample }
     city { Course.cities.stringify_keys[country].sample }
+    starting_at { Time.now }
   end
 
   factory :course_link, class: "Course::Link" do
@@ -89,10 +90,10 @@ FactoryBot.define do
   end
 
   factory :product do
-    title { "MyString" }
-    description { "MyText" }
-    price { 1 }
-    status { "MyString" }
-    category { "MyString" }
+    title { Faker::App.name }
+    description { Faker::Lorem.paragraphs(number: rand(1...3)).join("\n") }
+    price { rand(10000..999000) }
+    status { "status" }
+    category { ::Product.categories.values.sample }
   end
 end

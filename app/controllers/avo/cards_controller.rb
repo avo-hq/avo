@@ -2,10 +2,12 @@ require_dependency "avo/application_controller"
 
 module Avo
   class CardsController < ApplicationController
-    before_action :set_dashboard, only: :show
-    before_action :set_card, only: :show
+    before_action :set_dashboard
+    before_action :set_card
+    before_action :detect_chartkick
 
     def show
+      render(:chartkick_missing) unless @chartkick_installed
     end
 
     private
@@ -19,6 +21,14 @@ module Avo
     def set_card
       @card = @dashboard.item_at_index(params[:index].to_i).tap do |card|
         card.hydrate(dashboard: @dashboard, params: params)
+      end
+    end
+
+    def detect_chartkick
+      @chartkick_installed = if @card.class.ancestors.map(&:to_s).include?("Avo::Dashboards::ChartkickCard")
+        defined?(Chartkick)
+      else
+        true
       end
     end
   end

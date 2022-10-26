@@ -17,12 +17,15 @@ class Avo::BaseComponent < ViewComponent::Base
   end
 
   # Fetch the resource and hydrate it with the model
-  def relation_resource
-    model_class_name = params[:via_resource_class] || params[:via_relation_class]
+  def association_resource
+    resource = ::Avo::App.get_resource(params[:via_resource_class])
+    model_class_name = params[:via_relation_class] || resource.model_class
+
     model_klass = ::Avo::BaseResource.valid_model_class model_class_name
 
-    resource = ::Avo::App.get_resource_by_model_name model_klass
     model = model_klass.find params[:via_resource_id]
+
+    resource = ::Avo::App.get_resource_by_model_name model_klass if resource.blank?
 
     resource.dup.hydrate model: model
   end

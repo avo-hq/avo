@@ -23,14 +23,17 @@ Avo.configure do |config|
       params: request.params
     }
   end
+  # config.raise_error_on_missing_policy = true
+  # config.authorization_client = "Avo::Services::AuthorizationClients::ExtraPunditClient"
 
   ## == Customization ==
   config.id_links_to_resource = true
-  config.full_width_container = true
+  config.full_width_container = false
   config.buttons_on_form_footers = false
   # config.resource_controls_placement = ENV["AVO_RESOURCE_CONTROLS_PLACEMENT"]&.to_sym || :right
   config.resource_default_view = :show
   config.search_debounce = 300
+  # config.field_wrapper_layout = :stacked
 
   ## == Branding ==
   config.branding = {
@@ -95,6 +98,7 @@ Avo.configure do |config|
       end
 
       group "Blog", collapsable: true do
+        # resource :z_posts
         resource :posts
         resource :comments
         resource :photo_comments, visible: -> do

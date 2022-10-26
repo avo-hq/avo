@@ -17,6 +17,7 @@ module Avo
           :stimulus_js_integration,
           :resource_show_controls,
           :branding,
+          :resource_sidebar,
           :advanced_fields
         ]
       end

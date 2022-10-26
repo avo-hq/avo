@@ -36,7 +36,7 @@ module Avo
           possible_resource = "#{resource}Resource".gsub "ResourceResource", "Resource"
 
           resources.find do |available_resource|
-            possible_resource.safe_constantize == available_resource.class
+            possible_resource.to_s == available_resource.class.to_s
           end
         end
 

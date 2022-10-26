@@ -16,7 +16,7 @@ class Comment < ApplicationRecord
   validate :body_different
 
   has_one_attached :photo
-  
+
   belongs_to :commentable, polymorphic: true, optional: true
   belongs_to :user, optional: true
 

@@ -1,6 +1,15 @@
 # requires all dependencies
 Gem.loaded_specs["avo"].dependencies.each do |d|
-  require d.name
+  case d.name
+  when "activerecord"
+    require "active_record/railtie"
+  when "actionview"
+    require "action_view/railtie"
+  when "activestorage"
+    require "active_storage/engine"
+  else
+    require d.name
+  end
 end
 
 # In development we should load the engine so we get the autoload for components

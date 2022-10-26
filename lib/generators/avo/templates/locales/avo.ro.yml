@@ -1,91 +1,119 @@
+---
 ro:
   avo:
-    dashboard: 'Panou de control'
-    dashboards: 'Panouri de control'
-    choose_a_country: 'Alege o tara'
-    choose_an_option: 'Alege o optiune'
-    are_you_sure_you_want_to_run_this_option: 'Esti sigur ca vrei sa rulezi aceasta actiune?'
-    run: 'Ruleaza'
-    cancel: 'Anuleaza'
-    action_ran_successfully: 'Actiunea a rulat cu succes!'
-    details: "detalii"
-    unauthorized: 'Neautorizat'
-    attachment_class_attached: '%{attachment_class} anexat.'
-    attachment_class_detached: '%{attachment_class} separat.'
-    resource_updated: 'Resursa actualizata'
-    resource_created: 'Resursa creata'
-    resource_destroyed: 'Resursa stearsa'
-    remove_selection: 'Sterge selectia'
-    select_item: 'Selecteaza record'
-    select_all: 'Selecteaza totul'
-    select_all_matching: 'Selecteaza toate care se potrivesc'
-    undo: Anuleaza
-    delete_file: 'Sterge fisierul'
-    delete: 'sterge'
-    delete_item: 'Sterge %{item}'
-    download_item: 'Descarca %{item}'
-    download: 'Descarca'
-    view: 'vezi'
-    view_item: 'vezi %{item}'
-    edit: 'modifica'
-    edit_item: 'modifica %{item}'
-    detach_item: 'detaseaza %{item}'
-    number_of_items:
-      zero: '0 %{item}'
-      one: 'un %{item}'
-      other: '%{count} %{item}'
-    are_you_sure: 'Esti sigur?'
-    filters: 'Filtre'
-    per_page: 'Pe pagina'
-    more: 'Mai multe'
-    attach: 'Ataseaza'
-    save: 'Salveaza'
-    attach_and_attach_another: 'Ataseaza si ataseaza inca unul'
-    hide_content: 'Ascunde continutul'
-    show_content: 'Arata continutul'
-    no_related_item_found: 'Nu s-au gasit %{item} asociate'
-    no_item_found: 'Nu s-au gasit %{item}'
-    loading: 'Se incarca'
-    confirm: 'Confirm'
-    actions: 'Actiuni'
-    resources: 'Resurse'
-    oops_nothing_found: 'Oups! Nu am gasit rezultate...'
-    type_to_search: 'Cauta aici...'
-    and_x_other_resources: 'plus alte %{count} resources'
-    go_back: 'Inapoi'
-    home: 'Acasa'
-    attach_item: 'Anexeaza %{item}'
-    choose_item: 'Alege %{item}'
-    create_new_item: 'Creeaza %{item}'
-    table_view: 'Vezi sub forma de tabel'
-    grid_view: 'Vezi sub forma de grid'
-    next_page: 'Pagina urmatoare'
-    prev_page: 'Pagina anterioara'
-    list_is_empty: 'Lista este goala'
+    action_ran_successfully: Actiunea a rulat cu succes!
+    actions: Actiuni
+    and_x_other_resources: plus alte %{count} resources
+    are_you_sure: Esti sigur?
+    are_you_sure_detach_item: Sigur vrei să detașezi asta %{item}.
+    are_you_sure_you_want_to_run_this_option: Esti sigur ca vrei sa rulezi aceasta actiune?
+    attach: Ataseaza
+    attach_and_attach_another: Ataseaza si ataseaza inca unul
+    attach_item: Anexeaza %{item}
+    attachment_class_attached: "%{attachment_class} anexat."
+    attachment_class_detached: "%{attachment_class} separat."
+    attachment_destroyed: Atașamentul a fost distrus
+    cancel: Anuleaza
+    choose_a_country: Alege o tara
+    choose_an_option: Alege o optiune
+    choose_item: Alege %{item}
+    clear_value: Sterge valoarea
+    click_to_reveal_filters: Faceți clic pentru a afișa filtrele
+    confirm: Confirm
+    create_new_item: Creeaza %{item}
+    dashboard: Panou de control
+    dashboards: Panouri de control
+    delete: sterge
+    delete_file: Sterge fisierul
+    delete_item: Sterge %{item}
+    detach_item: detaseaza %{item}
+    details: detalii
+    download: Descarca
+    download_file: Descărcă fișier
+    download_item: Descarca %{item}
+    edit: modifica
+    edit_item: modifica %{item}
+    empty_dashboard_message: Adauga carduri in acest dashboard
+    failed: A eșuat
+    failed_to_find_attachment: Atașamentul nu a fost găsit
+    failed_to_load: Incarcarea a esuat
     field_translations:
       file:
-        zero: 'fisiere'
-        one: 'fisier'
-        other: 'fisiere'
+        one: fisier
+        other: fisiere
+        zero: fisiere
+      people:
+        one: peep
+        other: peeps
+        zero: peeps
+    filters: Filtre
+    go_back: Inapoi
+    grid_view: Vezi sub forma de grid
+    hide_content: Ascunde continutul
+    home: Acasa
+    key_value_field:
+      add_row: Adauga rand
+      delete_row: Sterge rand
+      key: Cheie
+      value: Valoare
+    list_is_empty: Lista este goala
+    loading: Se incarca
+    more: Mai multe
+    new: nou
+    next_page: Pagina urmatoare
+    no_cards_present: Niciun card disponibil
+    no_item_found: Nu s-au gasit %{item}
+    no_options_available: Nicio optiune disponibila
+    no_related_item_found: Nu s-au gasit %{item} asociate
+    not_authorized: Nu sunteți autorizat să efectuați această acțiune.
+    number_of_items:
+      one: un %{item}
+      other: "%{count} %{item}"
+      zero: 0 %{item}
+    oops_nothing_found: Oups! Nu am gasit rezultate...
+    order:
+      higher: Mutați înregistrarea mai sus
+      lower: Mutați înregistrarea mai jos
+      reorder_record: Reordonați înregistrarea
+      to_bottom: Mutați înregistrarea jos de tot
+      to_top: Mutați înregistrarea sus de tot
+    per_page: Pe pagina
+    prev_page: Pagina anterioara
+    remove_selection: Sterge selectia
+    reset_filters: Resetați filtrele
+    resource_created: Resursa creata
+    resource_destroyed: Resursa stearsa
     resource_translations:
       user:
-        zero: 'utilizatori'
-        one: 'utilizator'
-        other: 'utilizatori'
+        one: utilizator
+        other: utilizatori
+        zero: utilizatori
+    resource_updated: Resursa actualizata
+    resources: Resurse
+    run: Ruleaza
+    save: Salveaza
     search:
-      placeholder: 'Cauta'
-      cancel_button: 'Anulare'
-    sign_out: 'Delogare'
-    key_value_field:
-      key: 'Cheie'
-      value: 'Valoare'
-      add_row: 'Adauga rand'
-      delete_row: 'Sterge rand'
-    was_successfully_created: 'a fost creat'
-    was_successfully_updated: 'a fost actualizat'
+      cancel_button: Anulare
+      placeholder: Cauta
+    select_all: Selecteaza totul
+    select_all_matching: Selecteaza toate care se potrivesc
+    select_item: Selecteaza record
+    show_content: Arata continutul
+    sign_out: Delogare
+    switch_to_view: Comutați la vizualizarea %{view_type}
+    table_view: Vezi sub forma de tabel
     tools: Instrumente
-    empty_dashboard_message: Adauga carduri in acest dashboard
-    no_cards_present: Niciun card disponibil
-    no_options_available: Nicio optiune disponibila
+    type_to_search: Cauta aici...
+    unauthorized: Neautorizat
+    undo: Anuleaza
+    view: vezi
+    view_item: vezi %{item}
+    was_successfully_created: a fost creat
+    was_successfully_updated: a fost actualizat
+    x_items_more:
+      one: încă un articol
+      other: "%{count} mai multe articole"
+      zero: zero articole
     x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> selectate dintr-un total de <span class="font-bold text-gray-700">%{count}</span>
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> selectate din toate paginile
+    you_missed_something_check_form: S-ar putea să fi omis ceva. Vă rugăm să verificați formularul.

@@ -11,7 +11,7 @@ RSpec.describe "App", type: :system do
       visit "/admin/resources/projects/#{project.id}"
 
       expect(find('turbo-frame[id="has_many_field_show_comments"]')).not_to have_text "Commentable"
-      expect(find('turbo-frame[id="has_many_field_show_comments"]')).to have_link comment.id.to_s, href: "/admin/resources/comments/#{comment.id}?via_resource_class=Project&via_resource_id=#{project.id}"
+      expect(find('turbo-frame[id="has_many_field_show_comments"]')).to have_link comment.id.to_s, href: "/admin/resources/comments/#{comment.id}?via_resource_class=ProjectResource&via_resource_id=#{project.id}"
 
       within 'turbo-frame[id="has_many_field_show_comments"]' do
         click_on comment.id.to_s
@@ -37,7 +37,7 @@ RSpec.describe "App", type: :system do
       visit "/admin/resources/projects/#{project.id}"
 
       expect(find('turbo-frame[id="has_many_field_show_comments"]')).not_to have_text "Commentable"
-      expect(find('turbo-frame[id="has_many_field_show_comments"]')).to have_link comment.id.to_s, href: "/admin/resources/comments/#{comment.id}?via_resource_class=Project&via_resource_id=#{project.id}"
+      expect(find('turbo-frame[id="has_many_field_show_comments"]')).to have_link comment.id.to_s, href: "/admin/resources/comments/#{comment.id}?via_resource_class=ProjectResource&via_resource_id=#{project.id}"
 
       destroy_button = find("turbo-frame[id='has_many_field_show_comments'] tr[data-resource-id='#{comment.id}'] button[data-control=\"destroy\"]")
 

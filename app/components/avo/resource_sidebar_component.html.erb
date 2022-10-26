@@ -1,0 +1,19 @@
+<div class="resource-sidebar-component divide-y">
+  <% fields.each_with_index do |field, index| %>
+    <%= render field
+      .hydrate(
+        resource: resource,
+        model: resource.model,
+        user: resource.user,
+        view: view
+      ).component_for_view(view)
+      .new(
+        field: field,
+        resource: resource,
+        form: form,
+        stacked: true,
+        index: index
+      )
+    %>
+  <% end %>
+</div>

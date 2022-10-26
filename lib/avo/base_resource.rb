@@ -4,6 +4,7 @@ module Avo
 
     include ActionView::Helpers::UrlHelper
     include Avo::Concerns::HasFields
+    include Avo::Concerns::CanReplaceFields
     include Avo::Concerns::HasEditableControls
     include Avo::Concerns::HasStimulusControllers
     include Avo::Concerns::ModelClassConstantized
@@ -124,7 +125,7 @@ module Avo
 
       def valid_model_class(model_class)
         get_available_models.find do |m|
-          m.to_s == model_class
+          m.to_s == model_class.to_s
         end
       end
     end
@@ -421,9 +422,7 @@ module Avo
     end
 
     def label
-      label_field.value || model_title
-    rescue
-      model_title
+      label_field&.value || model_title
     end
 
     def avatar_field
@@ -459,9 +458,7 @@ module Avo
     end
 
     def description
-      description_field.value
-    rescue
-      nil
+      description_field&.value
     end
 
     def form_scope

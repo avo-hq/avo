@@ -12,8 +12,8 @@ assignees: ''
 ### Current workarounds
 <!-- Is there a way to achieve this behavior at the moment through some hack? -->
 
-### Screenshots
-<!-- If applicable, add screenshots to help explain the feature. -->
+### Screenshots or screen recordings
+<!-- If applicable, add screenshots or recordings to help explain your problem. -->
 
 ### Additional context
 <!-- Have you seen this behavior somewhere else where we can test it? -->
