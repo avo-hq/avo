@@ -311,6 +311,14 @@ module Avo
         [main_panel, *panelfull_items]
       end
 
+      def sidebar_items
+
+      end
+
+      def main_panel_items
+
+      end
+
       private
 
       def check_license

@@ -10,6 +10,8 @@ class Avo::Menu::BaseItem
   option :name, default: proc { "" }
   option :visible, default: proc { true }
   option :data, default: proc { {} }
+  option :sidebar_item, optional: false
+  option :main_panel_item, optional: false
 
   def visible?
     return visible if visible.in? [true, false]
