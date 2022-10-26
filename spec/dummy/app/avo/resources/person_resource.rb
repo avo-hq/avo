@@ -13,10 +13,14 @@ class PersonResource < Avo::BaseResource
     "<a href='https://avohq.io'>#{model.name}</a>"
   end
   field :spouses, as: :has_many, hide_search_input: true
-  field :relatives, as: :has_many, hide_search_input: true,link_to_child_resource: true,
-    description: %{ People resources is using single table inheritance, we demonstrate the usage of
-    link_to_child_resource.</br> If enabled like in this case, child resources
-      will be used instead of parent resources }
-  field :peoples, as: :has_many, hide_search_input: true, link_to_child_resource: false,
+  field :relatives,
+    as: :has_many,
+    hide_search_input: true,
+    link_to_child_resource: true,
+    description: "People resources is using single table inheritance, we demonstrate the usage oflink_to_child_resource.</br> If enabled like in this case, child resources will be used instead of parent resources"
+  field :peoples,
+    as: :has_many,
+    hide_search_input: true,
+    link_to_child_resource: false,
     description: "Default behaviour with link_to_child_resource disabled"
 end

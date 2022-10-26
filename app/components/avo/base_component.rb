@@ -57,7 +57,6 @@ class Avo::BaseComponent < ViewComponent::Base
   end
 
   def field_linked_to_child_resource?
-    field&.respond_to?(:link_to_child_resource) && field.link_to_child_resource
+    field.present? && field.respond_to?(:link_to_child_resource) && field.link_to_child_resource
   end
-
 end
