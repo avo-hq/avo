@@ -11,7 +11,7 @@ RSpec.feature "Selects", type: :feature do
       it "shows the placeholder" do
         visit avo.edit_resources_person_path person
 
-        expect(page).to have_select "person_type", selected: nil, options: [placeholder, "Spouse"]
+        expect(page).to have_select "person_type", selected: nil, options: [placeholder, "Spouse", "Sibling"]
       end
     end
 
@@ -19,7 +19,7 @@ RSpec.feature "Selects", type: :feature do
       it "shows the placeholder" do
         visit avo.new_resources_person_path
 
-        expect(page).to have_select "person_type", selected: nil, options: [placeholder, "Spouse"]
+        expect(page).to have_select "person_type", selected: nil, options: [placeholder, "Spouse", "Sibling"]
       end
     end
   end
@@ -31,7 +31,7 @@ RSpec.feature "Selects", type: :feature do
       it "shows the placeholder" do
         visit avo.edit_resources_person_path person
 
-        expect(page).to have_select "person_type", selected: "Spouse", options: [placeholder, "Spouse"]
+        expect(page).to have_select "person_type", selected: "Spouse", options: [placeholder, "Spouse", "Sibling"]
       end
     end
   end

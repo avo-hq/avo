@@ -41,7 +41,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
       }
     end
 
-    helpers.resource_path(model: @resource.model, resource: @resource, **args)
+    helpers.resource_path(model: @resource.model, resource: parent_or_child_resource , **args)
   end
 
   def edit_path
@@ -55,7 +55,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
       }
     end
 
-    helpers.edit_resource_path(model: @resource.model, resource: @resource, **args)
+    helpers.edit_resource_path(model: @resource.model, resource: parent_or_child_resource, **args)
   end
 
   def singular_resource_name

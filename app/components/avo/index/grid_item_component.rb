@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::Index::GridItemComponent < ViewComponent::Base
+class Avo::Index::GridItemComponent < Avo::BaseComponent
   include Avo::ResourcesHelper
 
   attr_reader :parent_resource
@@ -37,6 +37,6 @@ class Avo::Index::GridItemComponent < ViewComponent::Base
       }
     end
 
-    helpers.resource_view_path(model: @resource.model, resource: @resource, **args)
+    helpers.resource_view_path(model: @resource.model, resource: parent_or_child_resource, **args)
   end
 end

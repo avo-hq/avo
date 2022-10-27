@@ -10,9 +10,6 @@
 #  user_id    :bigint
 #  person_id  :bigint
 #
-class Person < ApplicationRecord
-  belongs_to :user, optional: true
+class Sibling < Person
   has_many :spouses, foreign_key: :person_id
-  has_many :relatives, foreign_key: :person_id, class_name: "Person"
-  has_many :peoples, foreign_key: :person_id, class_name: "Person"
 end
