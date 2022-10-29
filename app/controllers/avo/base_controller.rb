@@ -2,6 +2,8 @@ require_dependency "avo/application_controller"
 
 module Avo
   class BaseController < ApplicationController
+    include Avo::FiltersHelper
+
     before_action :set_resource_name
     before_action :set_resource
     before_action :hydrate_resource
@@ -321,7 +323,9 @@ module Avo
     end
 
     def set_applied_filters
-      @applied_filters = Avo::Filters::BaseFilter.decode_filters(params[Avo::Filters::BaseFilter::PARAM_KEY])
+      reset_filters if params[:reset_filter]
+
+      @applied_filters = Avo::Filters::BaseFilter.decode_filters(fetch_filters)
 
       # Some filters react to others and will have to be merged into this
       @applied_filters = @applied_filters.merge reactive_filters
