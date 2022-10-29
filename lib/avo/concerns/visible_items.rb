@@ -28,7 +28,10 @@ module Avo
         end
 
         def visible?
-          visible_items.any?
+          any_item_visible = visible_items.any?
+          return any_item_visible unless respond_to?(:visible_on?)
+            
+          visible_on?(view) && any_item_visible
         end
 
         def hydrate(view: nil)
