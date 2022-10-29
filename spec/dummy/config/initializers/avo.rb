@@ -56,7 +56,7 @@ Avo.configure do |config|
     # chart_colors: ['#FFB435', "#FFA102", "#CC8102", '#FFB435', "#FFA102", "#CC8102"],
     logo: "/avo-assets/logo.png",
     logomark: "/avo-assets/logomark.png",
-    # placeholder: "placeholder.svg",
+    # placeholder: "/avo-assets/placeholder.svg",
   }
 
   ## == Menus ==
