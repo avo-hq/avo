@@ -1,0 +1,36 @@
+# This concern helps us figure out what items are visible for each tab, panel or sidebar
+module Avo
+    module Concerns
+      module VisibleItems
+        extend ActiveSupport::Concern
+  
+        def items
+          if self.items_holder.present?
+            self.items_holder.items
+          else
+            []
+          end
+        end
+    
+        def visible_items
+          items.map do |item|
+            visible(item) ? item : nil
+          end
+          .compact
+        end
+    
+        def visible(item)
+          if item.is_field?
+            item.visible? && item.visible_on?(view)
+          else
+            item.visible?
+          end
+        end
+
+        def visible?
+          visible_items.any?
+        end
+      end
+    end
+  end
+  
