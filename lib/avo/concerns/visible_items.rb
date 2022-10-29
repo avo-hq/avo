@@ -30,6 +30,12 @@ module Avo
         def visible?
           visible_items.any?
         end
+
+        def hydrate(view: nil)
+          @view = view
+      
+          self
+        end
       end
     end
   end

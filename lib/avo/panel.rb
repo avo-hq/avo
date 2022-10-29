@@ -25,10 +25,4 @@ class Avo::Panel
   def has_items?
     @items.present?
   end
-
-  def hydrate(view: nil)
-    @view = view
-
-    self
-  end
 end

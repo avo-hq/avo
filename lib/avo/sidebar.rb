@@ -24,12 +24,6 @@ class Avo::Sidebar
     except_on args[:except_on] if args[:except_on].present?
   end
 
-  def hydrate(view: nil)
-    @view = view
-
-    self
-  end
-
   def empty?
     visible_items.blank?
   end
