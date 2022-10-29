@@ -83,7 +83,7 @@ module Avo
 
         @args = args
 
-        @updatable = true
+        @updatable = !readonly
         @computable = true
         @computed = block.present?
         @computed_value = nil
