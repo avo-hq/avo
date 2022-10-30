@@ -1,6 +1,8 @@
 <%= content_tag :div,
   data: {
-    'model-id': @resource.model.id,
+    model_name: @resource.model_name.to_s,
+    resource_name: @resource.class.to_s,
+    model_id: @resource.model.id,
     selected_resources_name: @resource.model_key,
     selected_resources: [@resource.model.id],
     **@resource.stimulus_data_attributes

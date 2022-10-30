@@ -13,6 +13,8 @@ class Avo::HTML::Builder
   attr_accessor :edit_stack
   attr_accessor :index_stack
   attr_accessor :input_stack
+  attr_accessor :label_stack
+  attr_accessor :content_stack
 
   attr_accessor :record
   attr_accessor :resource
@@ -30,6 +32,8 @@ class Avo::HTML::Builder
     @edit_stack = {}
     @index_stack = {}
     @input_stack = {}
+    @label_stack = {}
+    @content_stack = {}
 
     @record = record
     @resource = resource
@@ -75,6 +79,16 @@ class Avo::HTML::Builder
   # Takes a block
   def input(&block)
     capture_block :input, &block
+  end
+
+  # Takes a block
+  def label(&block)
+    capture_block :label, &block
+  end
+
+  # Takes a block
+  def content(&block)
+    capture_block :content, &block
   end
 
   # Takes a block

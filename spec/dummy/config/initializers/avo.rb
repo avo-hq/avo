@@ -33,6 +33,7 @@ Avo.configure do |config|
   # config.resource_controls_placement = ENV["AVO_RESOURCE_CONTROLS_PLACEMENT"]&.to_sym || :right
   config.resource_default_view = :show
   config.search_debounce = 300
+  # config.field_wrapper_layout = :stacked
 
   ## == Branding ==
   config.branding = {
@@ -55,7 +56,7 @@ Avo.configure do |config|
     # chart_colors: ['#FFB435', "#FFA102", "#CC8102", '#FFB435', "#FFA102", "#CC8102"],
     logo: "/avo-assets/logo.png",
     logomark: "/avo-assets/logomark.png",
-    # placeholder: "placeholder.svg",
+    # placeholder: "/avo-assets/placeholder.svg",
   }
 
   ## == Menus ==
