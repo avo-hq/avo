@@ -1,9 +1,9 @@
 class CommentResource < Avo::BaseResource
   self.title = :tiny_name
   self.includes = [:user, :commentable]
-  # self.search_query = -> do
-  #   scope.ransack(id_eq: params[:q], m: "or").result(distinct: false)
-  # end
+  self.search_query = -> do
+    scope.ransack(id_eq: params[:q], body_cont: params[:q], m: "or").result(distinct: false)
+  end
   self.record_selector = false
 
   self.after_create_path = :index
@@ -24,4 +24,12 @@ class CommentResource < Avo::BaseResource
 
   field :user, as: :belongs_to
   field :commentable, as: :belongs_to, polymorphic_as: :commentable, types: [::Post, ::Project]
+
+  # tabs do
+  #   tab "Associations" do
+  #     panel do
+  # MOVE USER AND COMMENTABLE FIELDS TO HERE TO TEST BELONGS TO IN TABS FIX
+  #     end
+  #   end
+  # end
 end

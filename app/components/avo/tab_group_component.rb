@@ -39,7 +39,7 @@ class Avo::TabGroupComponent < Avo::BaseComponent
 
   def visible_tabs
     tabs.select do |tab|
-      !tab.empty?
+      tab.visible?
     end
   end
 

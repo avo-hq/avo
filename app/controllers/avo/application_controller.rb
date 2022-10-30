@@ -1,9 +1,9 @@
 module Avo
   class ApplicationController < ::ActionController::Base
     if defined?(Pundit::Authorization)
-      include Pundit::Authorization
-    else
-      include Pundit
+      Avo::ApplicationController.include Pundit::Authorization
+    elsif defined?(Pundit)
+      Avo::ApplicationController.include Pundit
     end
 
     include Pagy::Backend
@@ -24,7 +24,7 @@ module Avo
     before_action :set_view
     before_action :set_sidebar_open
 
-    rescue_from Pundit::NotAuthorizedError, with: :render_unauthorized
+    rescue_from Avo::NotAuthorizedError, with: :render_unauthorized
     rescue_from ActiveRecord::RecordInvalid, with: :exception_logger
 
     helper_method :_current_user, :resources_path, :resource_path, :new_resource_path, :edit_resource_path, :resource_attach_path, :resource_detach_path, :related_resources_path, :turbo_frame_request?, :resource_view_path
@@ -143,10 +143,12 @@ module Avo
     end
 
     def set_related_model
+      association_name = BaseResource.valid_association_name(@model, params[:related_name])
+
       @related_model = if @field.is_a? Avo::Fields::HasOneField
-        @model.send params[:related_name]
+        @model.send association_name
       else
-        eager_load_files(@related_resource, @model.send(params[:related_name])).find params[:related_id]
+        eager_load_files(@related_resource, @model.send(association_name)).find params[:related_id]
       end
     end
 
@@ -255,18 +257,16 @@ module Avo
       instance_eval(&Avo.configuration.authenticate)
     end
 
-    def render_unauthorized(exception)
-      if !exception.is_a? Pundit::NotDefinedError
-        flash.now[:notice] = t "avo.not_authorized"
+    def render_unauthorized(_exception)
+      flash.now[:notice] = t "avo.not_authorized"
 
-        redirect_url = if request.referrer.blank? || (request.referrer == request.url)
-          root_url
-        else
-          request.referrer
-        end
-
-        redirect_to(redirect_url)
+      redirect_url = if request.referrer.blank? || (request.referrer == request.url)
+        root_url
+      else
+        request.referrer
       end
+
+      redirect_to(redirect_url)
     end
 
     def set_authorization

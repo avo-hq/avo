@@ -36,12 +36,12 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
 
     if @parent_model.present?
       args = {
-        via_resource_class: parent_resource.model_class,
+        via_resource_class: parent_resource.class.to_s,
         via_resource_id: @parent_model.id
       }
     end
 
-    helpers.resource_path(model: @resource.model, resource: @resource, **args)
+    helpers.resource_path(model: @resource.model, resource: parent_or_child_resource , **args)
   end
 
   def edit_path
@@ -50,12 +50,12 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
 
     if @parent_model.present?
       args = {
-        via_resource_class: parent_resource.model_class,
+        via_resource_class: parent_resource.class.to_s,
         via_resource_id: @parent_model.id
       }
     end
 
-    helpers.edit_resource_path(model: @resource.model, resource: @resource, **args)
+    helpers.edit_resource_path(model: @resource.model, resource: parent_or_child_resource, **args)
   end
 
   def singular_resource_name

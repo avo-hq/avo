@@ -17,12 +17,15 @@ class Avo::BaseComponent < ViewComponent::Base
   end
 
   # Fetch the resource and hydrate it with the model
-  def relation_resource
-    model = params[:via_resource_class] || params[:via_relation_class]
-    model_klass = model.safe_constantize
+  def association_resource
+    resource = ::Avo::App.get_resource(params[:via_resource_class])
+    model_class_name = params[:via_relation_class] || resource.model_class
 
-    resource = ::Avo::App.get_resource_by_model_name model_klass
+    model_klass = ::Avo::BaseResource.valid_model_class model_class_name
+
     model = model_klass.find params[:via_resource_id]
+
+    resource = ::Avo::App.get_resource_by_model_name model_klass if resource.blank?
 
     resource.dup.hydrate model: model
   end
@@ -39,5 +42,21 @@ class Avo::BaseComponent < ViewComponent::Base
     ::Avo::App.get_resource_by_model_name(@reflection.active_record.to_s)
   rescue
     nil
+  end
+
+  def parent_or_child_resource
+    return @resource unless link_to_child_resource_is_enabled?
+
+    ::Avo::App.get_resource_by_model_name(@resource.model.class).dup
+  end
+
+  def link_to_child_resource_is_enabled?
+    return field_linked_to_child_resource? if @parent_resource
+
+    @resource.link_to_child_resource
+  end
+
+  def field_linked_to_child_resource?
+    field.present? && field.respond_to?(:link_to_child_resource) && field.link_to_child_resource
   end
 end

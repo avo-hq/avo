@@ -1,4 +1,4 @@
-name: Reviewdog
+name: Linting
 on: [pull_request]
 jobs:
   standardrb:

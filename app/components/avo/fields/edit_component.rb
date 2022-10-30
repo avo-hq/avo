@@ -12,7 +12,7 @@ class Avo::Fields::EditComponent < ViewComponent::Base
   attr_reader :stacked
   attr_reader :view
 
-  def initialize(field: nil, resource: nil, index: 0, form: nil, compact: false, stacked: false, multiple: false, **kwargs)
+  def initialize(field: nil, resource: nil, index: 0, form: nil, compact: false, stacked: nil, multiple: false, **kwargs)
     @compact = compact
     @field = field
     @form = form
@@ -33,12 +33,12 @@ class Avo::Fields::EditComponent < ViewComponent::Base
 
   def field_wrapper_args
     {
-      stacked: stacked,
       compact: compact,
       field: field,
       form: form,
       index: index,
       resource: resource,
+      stacked: stacked,
       view: view
     }
   end

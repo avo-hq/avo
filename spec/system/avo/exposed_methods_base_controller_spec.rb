@@ -1,8 +1,7 @@
 require "rails_helper"
 
-RSpec.feature "ExposedMethodsBaseController", type: :feature do
+RSpec.feature "ExposedMethodsBaseController", type: :system do
   describe "message" do
-
     let(:new_course_url) { "/admin/resources/courses/new" }
 
     it "create_fail_message" do
@@ -10,7 +9,6 @@ RSpec.feature "ExposedMethodsBaseController", type: :feature do
 
       save_and_wait_for_loaded
 
-      expect(page).to have_http_status(:unprocessable_entity)
       expect(page).to have_text "Course not created!"
     end
 
@@ -33,7 +31,6 @@ RSpec.feature "ExposedMethodsBaseController", type: :feature do
       fill_in "course_name", with: ""
       save_and_wait_for_loaded
 
-      expect(page).to have_http_status(:unprocessable_entity)
       expect(page).to have_text "Course not updated!"
       expect(page).to have_text "Validation failed: Name can't be blank"
     end
@@ -53,7 +50,9 @@ RSpec.feature "ExposedMethodsBaseController", type: :feature do
     it "after_destroy_path && destroy_success_message" do
       visit course_url
 
-      click_on "Delete"
+      accept_alert do
+        click_on "Delete"
+      end
       wait_for_loaded
 
       expect(current_path).to eq new_course_url

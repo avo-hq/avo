@@ -58,6 +58,8 @@ module Avo
     # - is_disabled?
 
     class BelongsToField < BaseField
+      attr_accessor :target
+
       attr_reader :polymorphic_as
       attr_reader :relation_method
       attr_reader :types # for Polymorphic associations
@@ -77,6 +79,7 @@ module Avo
         @allow_via_detaching = args[:allow_via_detaching] == true
         @attach_scope = args[:attach_scope]
         @polymorphic_help = args[:polymorphic_help]
+        @target = args[:target]
       end
 
       def searchable

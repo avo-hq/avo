@@ -31,6 +31,10 @@ module Avo
       def is_tab_group?
         self.class.item_type == :tab_group
       end
+
+      def is_sidebar?
+        self.class.item_type == :sidebar
+      end
     end
   end
 end

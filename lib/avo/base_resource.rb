@@ -4,6 +4,7 @@ module Avo
 
     include ActionView::Helpers::UrlHelper
     include Avo::Concerns::HasFields
+    include Avo::Concerns::CanReplaceFields
     include Avo::Concerns::HasEditableControls
     include Avo::Concerns::HasStimulusControllers
     include Avo::Concerns::ModelClassConstantized
@@ -48,6 +49,7 @@ module Avo
     class_attribute :record_selector, default: true
     class_attribute :keep_filters_panel_open, default: false
     class_attribute :extra_params
+    class_attribute :link_to_child_resource, default: false
 
     class << self
       delegate :t, to: ::I18n
@@ -100,6 +102,32 @@ module Avo
         return {} if ordering.blank?
 
         ordering.dig(:actions) || {}
+      end
+
+      def get_record_associations(record)
+        record._reflections
+      end
+
+      def valid_association_name(record, association_name)
+        get_record_associations(record).keys.find do |name|
+          name == association_name
+        end
+      end
+
+      def valid_attachment_name(record, association_name)
+        get_record_associations(record).keys.each do |name|
+          return association_name if name == "#{association_name}_attachment" || name == "#{association_name}_attachments"
+        end
+      end
+
+      def get_available_models
+        ApplicationRecord.descendants
+      end
+
+      def valid_model_class(model_class)
+        get_available_models.find do |m|
+          m.to_s == model_class.to_s
+        end
       end
     end
 
@@ -395,9 +423,7 @@ module Avo
     end
 
     def label
-      label_field.value || model_title
-    rescue
-      model_title
+      label_field&.value || model_title
     end
 
     def avatar_field
@@ -433,9 +459,7 @@ module Avo
     end
 
     def description
-      description_field.value
-    rescue
-      nil
+      description_field&.value
     end
 
     def form_scope

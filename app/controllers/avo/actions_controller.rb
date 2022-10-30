@@ -12,7 +12,10 @@ module Avo
     before_action :set_action, only: [:show, :handle]
 
     def show
-      @resource.hydrate(model: @model, view: :show, user: _current_user, params: params)
+      # Se the view to :new so the default value gets prefilled
+      @view = :new
+
+      @resource.hydrate(model: @model, view: @view, user: _current_user, params: params)
       @model = ActionModel.new @action.get_attributes_for_action
     end
 
@@ -48,9 +51,15 @@ module Avo
     end
 
     def set_action
-      action_class = params[:action_id].gsub("avo_actions_", "").camelize.safe_constantize
+      @action = action_class.new(model: @model, resource: @resource, user: _current_user, view: @view)
+    end
 
-      @action = action_class.new(model: @model, resource: @resource, user: _current_user, view: :edit)
+    def action_class
+      klass_name = params[:action_id].gsub("avo_actions_", "").camelize
+
+      Avo::BaseAction.descendants.find do |action|
+        action.to_s == klass_name
+      end
     end
 
     def respond(response)
