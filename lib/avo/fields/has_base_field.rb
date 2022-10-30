@@ -7,6 +7,7 @@ module Avo
       attr_accessor :description
       attr_accessor :discreet_pagination
       attr_accessor :hide_search_input
+      attr_reader :link_to_child_resource
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
@@ -19,6 +20,7 @@ module Avo
         @description = args[:description]
         @use_resource = args[:use_resource] || nil
         @discreet_pagination = args[:discreet_pagination] || false
+        @link_to_child_resource = args[:link_to_child_resource] || false
       end
 
       def searchable

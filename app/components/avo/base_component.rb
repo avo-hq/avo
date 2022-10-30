@@ -43,4 +43,20 @@ class Avo::BaseComponent < ViewComponent::Base
   rescue
     nil
   end
+
+  def parent_or_child_resource
+    return @resource unless link_to_child_resource_is_enabled?
+
+    ::Avo::App.get_resource_by_model_name(@resource.model.class).dup
+  end
+
+  def link_to_child_resource_is_enabled?
+    return field_linked_to_child_resource? if @parent_resource
+
+    @resource.link_to_child_resource
+  end
+
+  def field_linked_to_child_resource?
+    field.present? && field.respond_to?(:link_to_child_resource) && field.link_to_child_resource
+  end
 end

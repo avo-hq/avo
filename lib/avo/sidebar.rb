@@ -45,16 +45,12 @@ class Avo::Sidebar
     items.map do |item|
       # Remove the fields that shouldn't be visible in this view
       # eg: has_many fields on edit
-      if not_visible_field(item)
-        nil
-      else
-        item
-      end
+      visible_field(item) ? item : nil
     end
     .compact
   end
 
-  def not_visible_field(item)
-    item.is_field? && !item.visible_on?(view)
+  def visible_field(item)
+    item.is_field? && item.visible? && item.visible_on?(view)
   end
 end

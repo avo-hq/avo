@@ -16,7 +16,7 @@ class Avo::Configuration::Branding
     @default_chart_colors = ["#0B8AE2", "#34C683", "#2AB1EE", "#34C6A8"]
     @default_logo = "/avo-assets/logo.png"
     @default_logomark = "/avo-assets/logomark.png"
-    @default_placeholder = "placeholder.svg"
+    @default_placeholder = "/avo-assets/placeholder.svg"
   end
 
   def css_colors

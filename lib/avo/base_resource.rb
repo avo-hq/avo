@@ -49,6 +49,7 @@ module Avo
     class_attribute :record_selector, default: true
     class_attribute :keep_filters_panel_open, default: false
     class_attribute :extra_params
+    class_attribute :link_to_child_resource, default: false
 
     class << self
       delegate :t, to: ::I18n

@@ -7,7 +7,7 @@ Avo::Engine.routes.draw do
   post "/rails/active_storage/direct_uploads", to: "/active_storage/direct_uploads#create"
 
   resources :dashboards do
-    resources :cards
+    resources :cards, controller: "dashboards/cards"
   end
 
   scope "avo_api", as: "avo_api" do
