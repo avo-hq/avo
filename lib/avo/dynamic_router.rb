@@ -3,7 +3,7 @@ module Avo
     def self.routes
       Avo::Engine.routes.draw do
         scope "resources", as: "resources" do
-          Avo::App.eager_load :resources
+          Avo::App.eager_load(:resources) unless Rails.application.config.eager_load
 
           BaseResource.descendants
             .select do |resource|

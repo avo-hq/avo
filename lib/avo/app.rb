@@ -18,13 +18,7 @@ module Avo
 
     class << self
       def eager_load(entity)
-        entities = {
-          cards: ["app", "avo", "cards"],
-          resources: ["app", "avo", "resources"],
-          dashboards: ["app", "avo", "dashboards"],
-        }
-
-        paths = entities.fetch entity
+        paths = Avo::ENTITIES.fetch entity
 
         return unless paths.present?
 
@@ -133,7 +127,7 @@ module Avo
       end
 
       def init_dashboards
-        eager_load :dashboards
+        eager_load :dashboards unless Rails.application.config.eager_load
 
         self.dashboards = Dashboards::BaseDashboard.descendants
           .select do |dashboard|

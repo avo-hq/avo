@@ -34,8 +34,8 @@ class Avo::Sidebar
   end
 
   def items
-    if self.items_holder.present?
-      self.items_holder.items
+    if items_holder.present?
+      items_holder.items
     else
       []
     end
