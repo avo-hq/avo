@@ -102,8 +102,6 @@ group :test do
   gem "launchy", require: false
 
   gem "test-prof"
-
-  gem "sprockets-rails"
 end
 
 gem "rubocop"

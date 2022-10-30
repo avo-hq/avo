@@ -77,7 +77,6 @@ group :test do
   gem "spring-commands-rspec"
   gem "launchy", require: false
   gem "test-prof"
-  gem "sprockets-rails"
 end
 
 gemspec path: "../"
