@@ -1,5 +1,6 @@
 class Avo::Tab
   include Avo::Concerns::IsResourceItem
+  include Avo::Concerns::VisibleItems
   include Avo::Fields::FieldExtensions::VisibleInDifferentViews
 
   class_attribute :item_type, default: :tab
@@ -30,6 +31,10 @@ class Avo::Tab
   def hydrate(view: nil)
     @view = view
 
+    items_holder.items.grep(Avo::Panel).each do |panel|
+      panel.hydrate(view: view)
+    end
+
     self
   end
 
@@ -52,27 +57,5 @@ class Avo::Tab
     else
       super(view)
     end
-  end
-
-  def items
-    if self.items_holder.present?
-      self.items_holder.items
-    else
-      []
-    end
-  end
-
-  def visible_items
-    items.map do |item|
-      if item.is_field?
-        visible = item.visible_on?(view)
-        # Remove the fields that shouldn't be visible in this view
-        # eg: has_many fields on edit
-        item = nil unless visible
-      end
-
-      item
-    end
-    .compact
   end
 end
