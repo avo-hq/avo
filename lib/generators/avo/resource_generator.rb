@@ -7,10 +7,10 @@ module Generators
 
       namespace "avo:resource"
 
-      class_option :"model_class",
-                   type: :string,
-                   required: false,
-                   desc: "The name of the model."
+      class_option :model_class,
+        type: :string,
+        required: false,
+        desc: "The name of the model."
 
       def create
         template "resource/resource.tt", "app/avo/resources/#{resource_name}.rb"
@@ -40,7 +40,7 @@ module Generators
       end
 
       def class_from_args
-        @class_from_args ||= options[:'model_class']&.capitalize
+        @class_from_args ||= options[:model_class]&.capitalize
       end
 
       def model_class_from_args
@@ -81,7 +81,7 @@ module Generators
 
       def attachments
         @attachments ||= reflections.select do |_, reflection|
-          reflection.options[:class_name] == 'ActiveStorage::Attachment'
+          reflection.options[:class_name] == "ActiveStorage::Attachment"
         end
       end
 
@@ -90,7 +90,7 @@ module Generators
       end
 
       def associations
-        @associations ||= reflections.reject { |key| attachments.keys.include?(key) || tags.keys.include?(key) }
+        @associations ||= reflections.reject { |key| attachments.key?(key) || tags.key?(key) }
       end
 
       def fields
@@ -98,7 +98,7 @@ module Generators
       end
 
       def invoked_by_model_generator?
-        @options.dig('from_model_generator')
+        @options.dig("from_model_generator")
       end
 
       def generate_fields
@@ -121,7 +121,7 @@ module Generators
       def generated_fields_template
         return if fields.blank?
 
-        fields_string = "\n  # Generated fields from model"
+        fields_string = "\n  # Fields generated from the model"
 
         fields.each do |field_name, field_options|
           options = ''
@@ -140,7 +140,7 @@ module Generators
       def generate_fields_from_args
         @args.each do |arg|
           name, type = arg.split(':')
-          type = 'string' if type.blank?
+          type = "string" if type.blank?
           fields[name] = field(name, type.to_sym)
         end
 
@@ -149,7 +149,7 @@ module Generators
 
       def fields_from_model_tags
         tags.each do |name, _|
-          fields[(remove_last_word_from name).pluralize] = { field: 'tags' }
+          fields[(remove_last_word_from name).pluralize] = { field: "tags" }
         end
       end
 
@@ -173,15 +173,15 @@ module Generators
       # ['hello', 'world', 'hehe'].pop => ['hello', 'world']
       # ['hello', 'world'].join('_') => "hello_world"
       def remove_last_word_from(snake_case_string)
-        snake_case_string = snake_case_string.split('_')
+        snake_case_string = snake_case_string.split("_")
         snake_case_string.pop
-        snake_case_string.join('_')
+        snake_case_string.join("_")
       end
 
       def fields_from_model_enums
         model.defined_enums.each_key do |enum|
           fields[enum] = {
-            field: 'select',
+            field: "select",
             options: {
               enum: "::#{model_class.capitalize}.#{enum.pluralize}"
             }
@@ -196,28 +196,28 @@ module Generators
       end
 
       def field(name, type)
-        names_mapping[name.to_sym] || fields_mapping[type.to_sym] || { field: 'text' }
+        names_mapping[name.to_sym] || fields_mapping[type.to_sym] || {field: "text"}
       end
 
       def associations_mapping
         {
           ActiveRecord::Reflection::BelongsToReflection => {
-            field: 'belongs_to'
+            field: "belongs_to"
           },
           ActiveRecord::Reflection::HasOneReflection => {
-            field: 'has_one'
+            field: "has_one"
           },
           ActiveRecord::Reflection::HasManyReflection => {
-            field: 'has_many'
+            field: "has_many"
           },
           ActiveRecord::Reflection::ThroughReflection => {
-            field: 'has_many',
+            field: "has_many",
             options: {
-              through: ':...'
+              through: ":..."
             }
           },
           ActiveRecord::Reflection::HasAndBelongsToManyReflection => {
-            field: 'has_and_belongs_to_many'
+            field: "has_and_belongs_to_many"
           }
         }
       end
@@ -225,10 +225,10 @@ module Generators
       def attachments_mapping
         {
           ActiveRecord::Reflection::HasOneReflection => {
-            field: 'file'
+            field: "file"
           },
           ActiveRecord::Reflection::HasManyReflection => {
-            field: 'files'
+            field: "files"
           }
         }
       end
@@ -236,34 +236,34 @@ module Generators
       def names_mapping
         {
           id: {
-            field: 'id'
+            field: "id"
           },
           description: {
-            field: 'textarea'
+            field: "textarea"
           },
           gravatar: {
-            field: 'gravatar'
+            field: "gravatar"
           },
           email: {
-            field: 'text'
+            field: "text"
           },
           password: {
-            field: 'password'
+            field: "password"
           },
           password_confirmation: {
-            field: 'password'
+            field: "password"
           },
           stage: {
-            field: 'select'
+            field: "select"
           },
           budget: {
-            field: 'currency'
+            field: "currency"
           },
           money: {
-            field: 'currency'
+            field: "currency"
           },
           country: {
-            field: 'country'
+            field: "country"
           }
         }
       end
@@ -271,46 +271,46 @@ module Generators
       def fields_mapping
         {
           primary_key: {
-            field: 'id'
+            field: "id"
           },
           string: {
-            field: 'text'
+            field: "text"
           },
           text: {
-            field: 'textarea'
+            field: "textarea"
           },
           integer: {
-            field: 'number'
+            field: "number"
           },
           float: {
-            field: 'number'
+            field: "number"
           },
           decimal: {
-            field: 'number'
+            field: "number"
           },
           datetime: {
-            field: 'datetime'
+            field: "datetime"
           },
           timestamp: {
-            field: 'datetime'
+            field: "datetime"
           },
           time: {
-            field: 'datetime'
+            field: "datetime"
           },
           date: {
-            field: 'date'
+            field: "date"
           },
           binary: {
-            field: 'number'
+            field: "number"
           },
           boolean: {
-            field: 'boolean'
+            field: "boolean"
           },
           references: {
-            field: 'belongs_to'
+            field: "belongs_to"
           },
           json: {
-            field: 'code'
+            field: "code"
           }
         }
       end
