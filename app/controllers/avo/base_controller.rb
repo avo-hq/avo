@@ -320,16 +320,10 @@ module Avo
       @actions = @resource
         .get_actions
         .map do |action|
-          action.new(
-            model: @model,
-            parent_model: @parent_model,
-            parent_resource: @parent_resource,
-            resource: @resource,
-            view: @view,
-          )
+          action.new(model: @model, resource: @resource, view: @view)
         end
         .select do |action|
-          action.visible_in_view
+          action.visible_in_view(parent_model: @parent_model, parent_resource: @parent_resource)
         end
     end
 
