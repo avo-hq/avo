@@ -107,7 +107,7 @@ end
 gem "rubocop"
 gem "rubocop-shopify", require: false
 
-gem "zeitwerk", github: "fxn/zeitwerk"
+gem "zeitwerk"
 
 gem "httparty"
 
