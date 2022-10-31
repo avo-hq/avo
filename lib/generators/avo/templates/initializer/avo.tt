@@ -30,6 +30,7 @@ Avo.configure do |config|
   #   destroy: 'destroy?',
   # }
   # config.raise_error_on_missing_policy = false
+  # config.authorization_client = :pundit
 
   ## == Localization ==
   # config.locale = 'en-US'
@@ -58,6 +59,7 @@ Avo.configure do |config|
   # config.resource_controls = :right
   # config.tabs_style = :tabs # can be :tabs or :pills
   # config.buttons_on_form_footers = true
+  # config.field_wrapper_layout = true
 
   ## == Branding ==
   # config.branding = {

@@ -51,7 +51,7 @@ Rails.application.configure do
   # config.assets.debug = true
 
   # Suppress logger output for asset requests.
-  config.assets.quiet = true
+  # config.assets.quiet = true
 
   # Raises error for missing translations.
   # config.action_view.raise_on_missing_translations = true
@@ -69,7 +69,7 @@ Rails.application.configure do
   config.action_mailer.default_url_options = {host: "localhost", port: 3030}
 
   config.action_view.logger = nil
-  config.assets.logger = nil
+  # config.assets.logger = nil
 
   config.hotwire_livereload.listen_paths << Avo::Engine.root.join("app/assets/stylesheets")
   config.hotwire_livereload.listen_paths << Rails.root.join("app/avo")

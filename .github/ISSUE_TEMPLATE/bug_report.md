@@ -39,8 +39,14 @@ Steps to reproduce the behavior:
  - [ ] Community
  - [ ] Pro
 
-### Screenshots
-<!-- If applicable, add screenshots to help explain your problem. -->
+**Are you using Avo monkey patches or overriding views or view components?**
+<!-- (Mark [x] inside the brackets) -->
+
+ - [ ] Yes. If so, please post code samples.
+ - [ ] No
+
+### Screenshots or screen recordings
+<!-- If applicable, add screenshots or recordings to help explain your problem. -->
 
 ### Additional context
 <!-- Add any other context about the problem here. -->

@@ -40,10 +40,23 @@ module Avo
   IN_DEVELOPMENT = ENV["AVO_IN_DEVELOPMENT"] == "1"
   PACKED = !IN_DEVELOPMENT
   COOKIES_KEY = "avo"
+  ENTITIES = {
+    cards: ["app", "avo", "cards"],
+    fields: ["app", "avo", "fields"],
+    filters: ["app", "avo", "filters"],
+    actions: ["app", "avo", "actions"],
+    resources: ["app", "avo", "resources"],
+    dashboards: ["app", "avo", "dashboards"],
+    resource_tools: ["app", "avo", "resource_tools"]
+  }
 
   class LicenseVerificationTemperedError < StandardError; end
 
   class LicenseInvalidError < StandardError; end
+
+  class NotAuthorizedError < StandardError; end
+
+  class NoPolicyError < StandardError; end
 end
 
 loader.eager_load

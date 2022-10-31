@@ -1,24 +1,21 @@
 PATH
   remote: ..
   specs:
-    avo (2.16.0)
+    avo (2.18.0)
+      actionview (>= 6.0)
       active_link_to
+      activerecord (>= 6.0)
       addressable
       breadcrumbs_on_rails
-      chartkick
-      countries
       docile
       dry-initializer
-      hotwire-rails
       httparty
-      image_processing
       inline_svg
       meta-tags
       pagy
-      pundit
-      rails (>= 6.0)
-      view_component (= 2.60)
-      zeitwerk
+      turbo-rails
+      view_component
+      zeitwerk (>= 2.6.2)
 
 GEM
   remote: https://rubygems.org/
@@ -119,9 +116,17 @@ GEM
     aws-sigv4 (1.5.1)
       aws-eventstream (~> 1, >= 1.0.2)
     bcrypt (3.1.18)
+    better_html (2.0.1)
+      actionview (>= 6.0)
+      activesupport (>= 6.0)
+      ast (~> 2.0)
+      erubi (~> 1.4)
+      parser (>= 2.4)
+      smart_properties
     bindex (0.8.1)
     bootsnap (1.12.0)
       msgpack (~> 1.2)
+    brakeman (5.3.1)
     breadcrumbs_on_rails (4.1.0)
       railties (>= 5.0)
     builder (3.2.4)
@@ -188,21 +193,29 @@ GEM
     groupdate (6.1.0)
       activesupport (>= 5.2)
     hashdiff (1.0.1)
+    highline (2.0.3)
     hightop (0.3.0)
       activesupport (>= 5.2)
     hotwire-livereload (1.2.0)
       listen (>= 3.0.0)
       rails (>= 6.0.0)
-    hotwire-rails (0.1.3)
-      rails (>= 6.0.0)
-      stimulus-rails
-      turbo-rails
     htmlbeautifier (1.4.2)
     httparty (0.20.0)
       mime-types (~> 3.0)
       multi_xml (>= 0.5.2)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
+    i18n-tasks (1.0.12)
+      activesupport (>= 4.0.2)
+      ast (>= 2.1.0)
+      better_html (>= 1.0, < 3.0)
+      erubi
+      highline (>= 2.0.0)
+      i18n
+      parser (>= 2.2.3.0)
+      rails-i18n
+      rainbow (>= 2.2.2, < 4.0)
+      terminal-table (>= 1.5.1)
     image_processing (1.12.2)
       mini_magick (>= 4.9.5, < 5)
       ruby-vips (>= 2.0.17, < 3)
@@ -248,7 +261,7 @@ GEM
       net-protocol
       timeout
     nio4r (2.5.8)
-    nokogiri (1.13.7-arm64-darwin)
+    nokogiri (1.13.9-arm64-darwin)
       racc (~> 1.4)
     orm_adapter (0.5.0)
     pagy (5.10.1)
@@ -290,6 +303,9 @@ GEM
       nokogiri (>= 1.6)
     rails-html-sanitizer (1.4.3)
       loofah (~> 2.3)
+    rails-i18n (7.0.5)
+      i18n (>= 0.7, < 2)
+      railties (>= 6.0.0, < 8)
     railties (6.1.6.1)
       actionpack (= 6.1.6.1)
       activesupport (= 6.1.6.1)
@@ -366,6 +382,7 @@ GEM
     simplecov-html (0.12.3)
     simplecov_json_formatter (0.1.4)
     sixarm_ruby_unaccent (1.2.0)
+    smart_properties (1.17.0)
     spring (4.0.0)
     spring-commands-rspec (1.0.4)
       spring (>= 0.9.1)
@@ -379,20 +396,21 @@ GEM
     standard (1.13.0)
       rubocop (= 1.31.2)
       rubocop-performance (= 1.14.3)
-    stimulus-rails (1.1.0)
-      railties (>= 6.0.0)
+    terminal-table (3.0.2)
+      unicode-display_width (>= 1.1.1, < 3)
     test-prof (1.0.9)
     thor (1.2.1)
     timeout (0.3.0)
-    turbo-rails (1.1.1)
+    turbo-rails (1.3.2)
       actionpack (>= 6.0.0)
       activejob (>= 6.0.0)
       railties (>= 6.0.0)
     tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.2.0)
-    view_component (2.60.0)
+    view_component (2.74.1)
       activesupport (>= 5.0.0, < 8.0)
+      concurrent-ruby (~> 1.0)
       method_source (~> 1.0)
     warden (1.2.9)
       rack (>= 2.0.9)
@@ -415,7 +433,7 @@ GEM
     websocket-extensions (0.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.6.0)
+    zeitwerk (2.6.2)
 
 PLATFORMS
   arm64-darwin-21
@@ -423,6 +441,7 @@ PLATFORMS
 DEPENDENCIES
   active_link_to
   active_median
+  activestorage
   acts-as-taggable-on (~> 9.0)
   acts_as_list
   addressable
@@ -432,11 +451,13 @@ DEPENDENCIES
   awesome_print
   aws-sdk-s3
   bootsnap (>= 1.4.2)
+  brakeman
   breadcrumbs_on_rails
   bump
   bundler-integrity (~> 1.0)
   byebug
   capybara (= 3.36)
+  chartkick
   countries
   cssbundling-rails
   database_cleaner
@@ -451,9 +472,9 @@ DEPENDENCIES
   groupdate
   hightop
   hotwire-livereload (~> 1.1)
-  hotwire-rails
   htmlbeautifier
   httparty
+  i18n-tasks (~> 1.0.12)
   image_processing (~> 1.12)
   iso
   jsbundling-rails
@@ -478,13 +499,14 @@ DEPENDENCIES
   simplecov-cobertura
   spring
   spring-commands-rspec
+  sprockets-rails
   standard
   test-prof
   tzinfo-data
   web-console (>= 3.3.0)
   webdrivers
   webmock
-  zeitwerk (~> 2.3)
+  zeitwerk
 
 BUNDLED WITH
-   2.3.5
+   2.3.24

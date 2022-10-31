@@ -18,6 +18,7 @@ RSpec.describe "CustomPolicies" do
 
     it "should not allow access to PhotoComments#index" do
       get "/admin/resources/photo_comments"
+
       expect(response).to redirect_to("/admin/")
     end
 

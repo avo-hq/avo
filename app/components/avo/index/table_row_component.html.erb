@@ -17,7 +17,7 @@
     </td>
   <% end %>
   <% @resource.get_fields(reflection: @reflection, only_root: true).each_with_index do |field, index| %>
-    <%= render field.component_for_view(:index).new(field: field, resource: @resource, index: index, parent_model: @parent_model, parent_resource: @parent_resource) %>
+    <%= render field.component_for_view(:index).new(field: field, resource: @resource, reflection: @reflection, index: index, parent_model: @parent_model, parent_resource: @parent_resource) %>
   <% end %>
   <% if Avo.configuration.resource_controls_on_the_right? %>
     <td class="text-right whitespace-nowrap px-2" data-control="resource-controls">

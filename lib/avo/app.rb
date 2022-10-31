@@ -17,6 +17,14 @@ module Avo
     class_attribute :error_messages
 
     class << self
+      def eager_load(entity)
+        paths = Avo::ENTITIES.fetch entity
+
+        return unless paths.present?
+
+        Rails.autoloaders.main.eager_load_dir(Rails.root.join(*paths).to_s)
+      end
+
       def boot
         init_fields
 
@@ -91,7 +99,7 @@ module Avo
           has_model = resource.model_class.present?
 
           unless has_model
-            possible_model = resource.class.to_s.gsub 'Resource', ''
+            possible_model = resource.class.to_s.gsub "Resource", ""
 
             Avo::App.error_messages.push({
               url: "https://docs.avohq.io/2.0/resources.html#custom-model-class",
@@ -119,6 +127,8 @@ module Avo
       end
 
       def init_dashboards
+        eager_load :dashboards unless Rails.application.config.eager_load
+
         self.dashboards = Dashboards::BaseDashboard.descendants
           .select do |dashboard|
             dashboard != Dashboards::BaseDashboard
