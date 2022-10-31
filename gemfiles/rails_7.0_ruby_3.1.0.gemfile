@@ -20,7 +20,7 @@ gem "database_cleaner"
 gem "ruby-debug-ide", require: false
 gem "rubocop"
 gem "rubocop-shopify", require: false
-gem "zeitwerk", "~> 2.3"
+gem "zeitwerk"
 gem "httparty"
 gem "iso"
 gem "active_link_to"
@@ -44,6 +44,7 @@ gem "pundit"
 gem "countries"
 gem "chartkick"
 gem "activestorage"
+gem "sprockets-rails"
 gem "image_processing", "~> 1.12"
 gem "rails", "~> 7.0.0"
 
@@ -76,7 +77,6 @@ group :test do
   gem "spring-commands-rspec"
   gem "launchy", require: false
   gem "test-prof"
-  gem "sprockets-rails"
 end
 
 gemspec path: "../"

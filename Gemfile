@@ -102,14 +102,12 @@ group :test do
   gem "launchy", require: false
 
   gem "test-prof"
-
-  gem "sprockets-rails"
 end
 
 gem "rubocop"
 gem "rubocop-shopify", require: false
 
-gem "zeitwerk", "~> 2.3"
+gem "zeitwerk"
 
 gem "httparty"
 
@@ -160,6 +158,8 @@ gem "chartkick"
 
 # Avo file filed requires this gem
 gem "activestorage"
+# Required by Avo
+gem "sprockets-rails"
 
 # Avo file filed requires this gem
 # Use Active Storage variant

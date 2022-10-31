@@ -27,15 +27,7 @@ module Avo
     end
 
     initializer "avo.autoload" do |app|
-      [
-        ["app", "avo", "fields"],
-        ["app", "avo", "filters"],
-        ["app", "avo", "actions"],
-        ["app", "avo", "resources"],
-        ["app", "avo", "dashboards"],
-        ["app", "avo", "cards"],
-        ["app", "avo", "resource_tools"]
-      ].each do |path_params|
+      Avo::ENTITIES.values.each do |path_params|
         path = Rails.root.join(*path_params)
 
         if File.directory? path.to_s
