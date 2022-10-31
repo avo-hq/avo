@@ -305,10 +305,10 @@ module Avo
       @filters = @resource
         .get_filters
         .map do |filter_class|
-          filter_class.new(resource: @resource)
+          filter_class.new
         end
         .select do |filter|
-          filter.visible_in_view(parent_model: @parent_model, parent_resource: @parent_resource)
+          filter.visible_in_view(resource: @resource, parent_model: @parent_model, parent_resource: @parent_resource)
         end
     end
 
