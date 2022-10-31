@@ -1,5 +1,6 @@
 class Avo::Sidebar
   include Avo::Concerns::IsResourceItem
+  include Avo::Concerns::VisibleItems
   include Avo::Fields::FieldExtensions::VisibleInDifferentViews
 
   class_attribute :item_type, default: :sidebar
@@ -23,38 +24,7 @@ class Avo::Sidebar
     except_on args[:except_on] if args[:except_on].present?
   end
 
-  def hydrate(view: nil)
-    @view = view
-
-    self
-  end
-
   def empty?
     visible_items.blank?
-  end
-
-  def items
-    if items_holder.present?
-      items_holder.items
-    else
-      []
-    end
-  end
-
-  def visible_items
-    items.map do |item|
-      # Remove the fields that shouldn't be visible in this view
-      # eg: has_many fields on edit
-      if not_visible_field(item)
-        nil
-      else
-        item
-      end
-    end
-    .compact
-  end
-
-  def not_visible_field(item)
-    item.is_field? && !item.visible_on?(view)
   end
 end

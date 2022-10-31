@@ -270,6 +270,8 @@ module Avo
           end
           # each field has it's own visibility checker
           if item.respond_to? :visible?
+            item.hydrate(view: view) if item.view.nil?
+
             next unless item.visible?
           end
           # check if the user is authorized to view it
