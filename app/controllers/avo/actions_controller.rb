@@ -73,6 +73,9 @@ module Avo
       keep_modal_open = messages.select {|message| message[:type] == :keep_modal_open }.first
 
       if keep_modal_open
+        @view = :new
+        @model = ActionModel.new get_attributes_from_params
+
         respond_to do |format|
           format.html do
             flash.now[:error] = keep_modal_open[:body]
@@ -124,6 +127,18 @@ module Avo
         message: @selected_query,
         purpose: :select_all
       )
+    end
+
+    def get_attributes_from_params
+      params[:fields].permit(permited_fields).to_h
+    end
+
+    def permited_fields
+      params[:fields].keys.reject { |key| fields_to_ignore.include? key }
+    end
+
+    def fields_to_ignore
+      %w[avo_resource_ids, avo_selected_query]
     end
   end
 end

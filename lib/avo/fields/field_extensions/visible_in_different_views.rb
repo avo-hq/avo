@@ -61,6 +61,11 @@ module Avo
           show_on_edit
         end
 
+        # When form submision from an action fails and have fail_and_keep_modal_open param, the new page will be hanle but we don't have a visibility marker for handle so we'll default to new
+        def show_on_handle
+          show_on_new
+        end
+
         private
 
         def show_on_view(view)

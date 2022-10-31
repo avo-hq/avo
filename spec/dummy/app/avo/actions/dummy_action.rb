@@ -11,6 +11,7 @@ class DummyAction < Avo::BaseAction
 
   field :fail_and_keep_modal_open, as: :boolean
   field :keep_text, as: :text
+  field :message, as: :trix, help: "Just testing."
 
   def handle(**args)
     # Do something here
