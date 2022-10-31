@@ -81,7 +81,7 @@ module Avo
           new_value = {}
         end
 
-        model[key] = new_value
+        model.send("#{key}=", new_value)
 
         model
       end
