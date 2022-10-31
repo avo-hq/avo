@@ -10,8 +10,6 @@ module Avo
       class_attribute :template, default: "avo/base/select_filter"
       class_attribute :visible
 
-      attr_reader :parent_model
-      attr_reader :parent_resource
       attr_reader :resource
 
       delegate :params, to: Avo::App
@@ -28,9 +26,7 @@ module Avo
         end
       end
 
-      def initialize(resource: nil, parent_model: nil, parent_resource: nil)
-        @parent_model = parent_model
-        @parent_resource = parent_resource
+      def initialize(resource: nil)
         @resource = resource
       end
 
@@ -64,7 +60,7 @@ module Avo
         self.class.decode_filters params[PARAM_KEY]
       end
 
-      def visible_in_view
+      def visible_in_view(parent_model: nil, parent_resource: nil)
         return true if visible.blank?
 
         # Run the visible block if available
