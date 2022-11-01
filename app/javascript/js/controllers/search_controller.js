@@ -113,8 +113,8 @@ export default class extends Controller {
     // Don't leave open autocompletes around when disconnected. Otherwise it will still
     // be visible when navigating back to this page.
     if (this.destroyMethod) {
-      this.destroyMethod();
-      this.destroyMethod = nil;
+      this.destroyMethod()
+      this.destroyMethod = nil
     }
   }
 
