@@ -46,4 +46,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "dry-initializer"
   spec.add_dependency "docile"
   spec.add_dependency "inline_svg"
+  spec.add_dependency "pundit"
 end
