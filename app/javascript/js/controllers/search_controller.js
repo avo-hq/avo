@@ -76,7 +76,7 @@ export default class extends Controller {
     // This line fixes a bug where the search box would be duplicated on back navigation.
     this.autocompleteTarget.innerHTML = ''
 
-    autocomplete({
+    const { destroy } = autocomplete({
       container: this.autocompleteTarget,
       placeholder: this.translationKeys.placeholder,
       translations: {
@@ -101,11 +101,20 @@ export default class extends Controller {
     })
 
     // document.addEventListener('turbo:before-render', destroy)
-    // this.destroyMethod = destroy
+    this.destroyMethod = destroy
 
     // When using search for belongs-to
     if (this.buttonTarget.dataset.shouldBeDisabled !== 'true') {
       this.buttonTarget.removeAttribute('disabled')
+    }
+  }
+
+  disconnect() {
+    // Don't leave open autocompletes around when disconnected. Otherwise it will still
+    // be visible when navigating back to this page.
+    if (this.destroyMethod) {
+      this.destroyMethod()
+      this.destroyMethod = nil
     }
   }
 
