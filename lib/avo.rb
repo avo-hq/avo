@@ -48,6 +48,8 @@ module Avo
   class NotAuthorizedError < StandardError; end
 
   class NoPolicyError < StandardError; end
+
+  class MissingGemError < StandardError; end
 end
 
 loader.eager_load
