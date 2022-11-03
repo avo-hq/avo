@@ -68,4 +68,29 @@ RSpec.describe "DefaultField", type: :feature do
       end
     end
   end
+
+  describe "with a computed default value" do
+    before :all do
+      TeamResource.with_temporary_items do
+        field :name, as: :text, default: -> do
+          result = []
+          result << resource.class.to_s
+          result << view.to_s
+          result << record.class.to_s
+
+          result.join " - "
+        end
+      end
+    end
+
+    after :all do
+      TeamResource.restore_items_from_backup
+    end
+
+    it "fills the field with a computed default value" do
+      visit avo.new_resources_team_path
+
+      expect(page).to have_field id: "team_name", with: "TeamResource - new - Team"
+    end
+  end
 end
