@@ -64,6 +64,11 @@ module Avo
       g.test_framework :rspec, view_specs: false
     end
 
+    generators do |app|
+      Rails::Generators.configure! app.config.generators
+      require_relative "../generators/model_generator"
+    end
+
     # After deploy we want to make sure the license response is being cleared.
     # We need a fresh license response.
     # This is disabled in development because the initialization process might be triggered more than once.
