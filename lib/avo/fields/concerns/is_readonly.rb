@@ -6,7 +6,7 @@ module Avo
 
         def is_readonly?
           if readonly.respond_to? :call
-            Avo::Hosts::ViewRecordHost.new(block: readonly, record: model, view: view).handle
+            Avo::Hosts::ResourceViewRecordHost.new(block: readonly, record: model, view: view, resource: resource).handle
           else
             readonly
           end

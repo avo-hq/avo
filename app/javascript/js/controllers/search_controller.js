@@ -114,7 +114,7 @@ export default class extends Controller {
     // be visible when navigating back to this page.
     if (this.destroyMethod) {
       this.destroyMethod()
-      this.destroyMethod = nil
+      this.destroyMethod = null
     }
   }
 
