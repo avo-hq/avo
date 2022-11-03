@@ -32,4 +32,6 @@ class CommentResource < Avo::BaseResource
   #     end
   #   end
   # end
+
+  filter CommentBodyFilter
 end
