@@ -44,6 +44,10 @@ Avo.configure do |config|
   # config.via_per_page = 8
   # config.id_links_to_resource = false
   # config.cache_resources_on_index_view = true
+  ## permanent enable or disable cache_resource_filters, default value is false
+  # config.cache_resource_filters = false
+  ## provide a lambda to enable or disable cache_resource_filters per user/resource.
+  # config.cache_resource_filters = ->(current_user:, resource:) { current_user.cache_resource_filters?}
 
   ## == Customization ==
   # config.app_name = 'Avocadelicious'

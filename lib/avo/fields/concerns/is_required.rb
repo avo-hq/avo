@@ -6,7 +6,7 @@ module Avo
 
         def is_required?
           if required.respond_to? :call
-            Avo::Hosts::ViewRecordHost.new(block: required, record: model, view: view).handle
+            Avo::Hosts::ResourceViewRecordHost.new(block: required, record: model, view: view, resource: resource).handle
           else
             required.nil? ? required_from_validators : required
           end
@@ -18,7 +18,7 @@ module Avo
           return false if model.nil?
 
           validators.any? do |validator|
-            validator.kind_of? ActiveModel::Validations::PresenceValidator
+            validator.is_a? ActiveModel::Validations::PresenceValidator
           end
         end
 

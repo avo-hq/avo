@@ -1,5 +1,8 @@
 class <%= class_name.camelize %> < Avo::Filters::BooleanFilter
   self.name = "<%= name.underscore.humanize %>"
+  # self.visible = -> do
+  #   true
+  # end
 
   def apply(request, query, values)
     query
