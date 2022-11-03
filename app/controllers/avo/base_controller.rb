@@ -2,7 +2,7 @@ require_dependency "avo/application_controller"
 
 module Avo
   class BaseController < ApplicationController
-    include Avo::FiltersHelper
+    include Avo::Concerns::FiltersSessionHandler
 
     before_action :set_resource_name
     before_action :set_resource
