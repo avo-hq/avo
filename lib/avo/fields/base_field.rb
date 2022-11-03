@@ -170,7 +170,12 @@ module Avo
         if @view.in?([:new, :create]) || @action.present?
           if default.present?
             final_value = if default.respond_to?(:call)
-              default.call resource: @resource
+              # support parameters and no parameters to maintain original behavior
+              if default.call.arity.zero?
+                default.call
+              else
+                default.call resource: @resource
+              end
             else
               default
             end
