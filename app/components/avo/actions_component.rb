@@ -17,9 +17,7 @@ class Avo::ActionsComponent < ViewComponent::Base
   end
 
   def actions
-    @actions.select do |action|
-      !action.class.in?(@exclude)
-    end
+    @actions.reject { |action| action.class.in?(@exclude) }
   end
 
   # When running an action for one record we should do it on a special path.

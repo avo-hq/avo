@@ -302,11 +302,14 @@ module Avo
     end
 
     def set_filters
-      @filters = @resource.get_filters.map do |filter_class|
-        filter = filter_class.new
-
-        filter
-      end
+      @filters = @resource
+        .get_filters
+        .map do |filter_class|
+          filter_class.new
+        end
+        .select do |filter|
+          filter.visible_in_view(resource: @resource, parent_model: @parent_model, parent_resource: @parent_resource)
+        end
     end
 
     def set_actions
@@ -316,7 +319,7 @@ module Avo
           action.new(model: @model, resource: @resource, view: @view)
         end
         .select do |action|
-          action.visible_in_view
+          action.visible_in_view(parent_model: @parent_model, parent_resource: @parent_resource)
         end
     end
 
