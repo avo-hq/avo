@@ -13,10 +13,10 @@ app_root do
   current_upstream = `git config --get remote.upstream.url`.chomp
   if current_upstream.nil? || current_upstream.empty?
     puts "Adding new remote 'upstream' to #{target_upstream}"
-    `git remote add upstream #{target_upstream}`
+    run! "git remote add upstream #{target_upstream}"
   elsif current_upstream != target_upstream
     puts "Updating existing remote 'upstream' to #{target_upstream}"
-    `git remote set-url upstream #{target_upstream}`
+    run! "git remote set-url upstream #{target_upstream}"
   else
     puts "Remote 'upstream' already points to #{target_upstream}, no change"
   end
