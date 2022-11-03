@@ -67,7 +67,7 @@ module Generators
 
       def reflections
         @reflections ||= model.reflections.reject do |name, _|
-          reflections_sufixes_to_ignore.include?(name.split('_').pop) || reflections_to_ignore.include?(name)
+          reflections_sufixes_to_ignore.include?(name.split("_").pop) || reflections_to_ignore.include?(name)
         end
       end
 
@@ -124,7 +124,7 @@ module Generators
         fields_string = "\n  # Fields generated from the model"
 
         fields.each do |field_name, field_options|
-          options = ''
+          options = ""
           field_options[:options].each { |k, v| options += ", #{k}: #{v}" } if field_options[:options].present?
 
           fields_string += "\n  #{field_string field_name, field_options[:field], options}"
@@ -139,7 +139,7 @@ module Generators
 
       def generate_fields_from_args
         @args.each do |arg|
-          name, type = arg.split(':')
+          name, type = arg.split(":")
           type = "string" if type.blank?
           fields[name] = field(name, type.to_sym)
         end
@@ -149,7 +149,7 @@ module Generators
 
       def fields_from_model_tags
         tags.each do |name, _|
-          fields[(remove_last_word_from name).pluralize] = { field: "tags" }
+          fields[(remove_last_word_from name).pluralize] = {field: "tags"}
         end
       end
 
