@@ -7,7 +7,7 @@ module Generators
 
       namespace "avo:resource"
 
-      class_option :model_class,
+      class_option "model-class",
         type: :string,
         required: false,
         desc: "The name of the model."
