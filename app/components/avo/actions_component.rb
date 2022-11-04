@@ -2,14 +2,16 @@
 
 class Avo::ActionsComponent < ViewComponent::Base
   include Avo::ApplicationHelper
+  attr_reader :label
 
-  def initialize(actions: [], resource: nil, view: nil, exclude: [], style: :outline, color: :primary)
+  def initialize(actions: [], resource: nil, view: nil, exclude: [], style: :outline, color: :primary, label: nil)
     @actions = actions || []
     @resource = resource
     @view = view
     @exclude = exclude
     @color = color
     @style = style
+    @label = label || t("avo.actions")
   end
 
   def render?
