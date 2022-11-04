@@ -9,6 +9,7 @@ module Avo
     include Pagy::Backend
     include Avo::ApplicationHelper
     include Avo::UrlHelpers
+    include Avo::Concerns::Breadcrumbs
 
     protect_from_forgery with: :exception
     around_action :set_avo_locale

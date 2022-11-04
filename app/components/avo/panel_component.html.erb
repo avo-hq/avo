@@ -4,7 +4,7 @@
       <div class="overflow-hidden flex flex-col">
         <% if display_breadcrumbs? %>
           <div class="breadcrumbs truncate mb-2">
-            <%= helpers.render_breadcrumbs(separator: helpers.svg('chevron-right', class: 'inline-block h-3 stroke-current relative top-[-1px] ml-1' )) if Avo.configuration.display_breadcrumbs %>
+            <%= helpers.render_avo_breadcrumbs(separator: helpers.svg('chevron-right', class: 'inline-block h-3 stroke-current relative top-[-1px] ml-1' )) if Avo.configuration.display_breadcrumbs %>
           </div>
         <% end %>
         <div class="text-2xl tracking-normal font-semibold text-gray-800 truncate items-center flex flex-1" data-target="title">
