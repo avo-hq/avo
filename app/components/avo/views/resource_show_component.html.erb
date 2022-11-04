@@ -40,7 +40,7 @@
               <% end %>
             <% end %>
           <% elsif can_see_the_actions_button? && control.actions_list? %>
-            <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view, exclude: control.exclude, style: control.style, color: control.color %>
+            <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view, exclude: control.exclude, style: control.style, color: control.color, label: control.label %>
           <% elsif control.edit_button? %>
             <% if @resource.authorization.authorize_action(:edit, raise_exception: false) %>
             <% end %>
