@@ -38,10 +38,9 @@ class Avo::Fields::HasOneField::ShowComponent < Avo::Fields::ShowComponent
   def create_path
     args = {
       via_relation: @resource.singular_model_key,
-      via_relation_class: @resource.name,
+      via_relation_class: @resource.model_class.to_s,
       via_resource_id: @resource.model.id
     }
-
     helpers.new_resource_path(resource: @field.target_resource, **args)
   end
 end
