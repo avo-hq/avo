@@ -132,7 +132,7 @@ module Avo
 
     def render_show(error)
       @view = :new
-      @model = ActionModel.new get_attributes_from_params.merge(keep_modal_open: true)
+      @model = ActionModel.new get_attributes_from_params
 
       respond_to do |format|
         format.html do

@@ -36,7 +36,7 @@ module Avo
         if may_download_file
           {turbo: false, remote: false, action_target: :form}
         else
-          {turbo_frame: :actions_show, action_target: :form}
+          {turbo_frame: :_top, action_target: :form}
         end
       end
 

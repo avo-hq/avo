@@ -9,10 +9,6 @@ module Avo
       super(attributes)
     end
 
-    def keep_modal_open?
-      @keep_modal_open.presence
-    end
-
     private
 
     def set_attr_accessors(attributes)
