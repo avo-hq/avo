@@ -66,7 +66,9 @@ module Avo
       response[:type] ||= :reload
       messages = get_messages response
 
-      return send_data response[:path], filename: response[:filename] if response[:type] == :download
+      if response[:type] == :download
+        return send_data response[:path], filename: response[:filename]
+      end
 
       keep_modal_open = messages.find {|message| message[:type] == :keep_modal_open }
       return render_show keep_modal_open[:body] if keep_modal_open
