@@ -26,10 +26,22 @@
         <div class="my-4 -mx-6">
           <% @action.get_fields.each_with_index do |field, index| %>
             <%= render field
-              .hydrate(resource: @resource, model: @resource.model, user: @resource.user, view: @view)
+              .hydrate(resource: @resource, model: @model, user: @resource.user, view: @view)
               .component_for_view(@view)
               .new(field: field, resource: @resource, index: index, form: form, compact: true)
             %>
+          <% end %>
+          <% if @model.fail_and_keep_modal_open == "1" %>
+            <%# @todo: refactor because this is a copy paste from application.html.erb %>
+            <%= turbo_frame_tag 'alerts', class: "fixed inset-0 bottom-0 flex flex-col space-y-4 items-end justify-right px-4 py-6 sm:p-6 justify-end z-50 pointer-events-none" do %>
+              <%= render Avo::FlashAlertsComponent.new flashes: flash %>
+              <% # In case we have other general error messages %>
+              <% if @errors.present? %>
+                <% @errors.each do |message| %>
+                  <%= render Avo::AlertComponent.new :error, message %>
+                <% end %>
+              <% end %>
+            <% end %>
           <% end %>
         </div>
       <% end %>
