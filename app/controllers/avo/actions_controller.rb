@@ -66,33 +66,28 @@ module Avo
       response[:type] ||= :reload
       messages = get_messages response
 
-      if response[:type] == :download
-        return send_data response[:path], filename: response[:filename]
-      end
+      return send_data response[:path], filename: response[:filename] if response[:type] == :download
 
       keep_modal_open = messages.find {|message| message[:type] == :keep_modal_open }
+      return render_show keep_modal_open[:body] if keep_modal_open
 
-      if keep_modal_open
-        render_show keep_modal_open[:body]
-      else
-        respond_to do |format|
-          format.html do
-            # Flash the messages collected from the action
-            messages.each do |message|
-              flash[message[:type]] = message[:body]
+      respond_to do |format|
+        format.html do
+          # Flash the messages collected from the action
+          messages.each do |message|
+            flash[message[:type]] = message[:body]
+          end
+
+          if response[:type] == :redirect
+            path = response[:path]
+
+            if path.respond_to? :call
+              path = instance_eval(&path)
             end
 
-            if response[:type] == :redirect
-              path = response[:path]
-
-              if path.respond_to? :call
-                path = instance_eval(&path)
-              end
-
-              redirect_to path
-            elsif response[:type] == :reload
-              redirect_back fallback_location: resources_path(resource: @resource)
-            end
+            redirect_to path
+          elsif response[:type] == :reload
+            redirect_back fallback_location: resources_path(resource: @resource)
           end
         end
       end
