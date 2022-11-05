@@ -70,7 +70,7 @@ module Avo
         return send_data response[:path], filename: response[:filename]
       end
 
-      keep_modal_open = messages.select {|message| message[:type] == :keep_modal_open }.first
+      keep_modal_open = messages.find {|message| message[:type] == :keep_modal_open }
 
       if keep_modal_open
         @view = :new
