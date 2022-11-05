@@ -74,7 +74,7 @@ module Avo
 
       if keep_modal_open
         @view = :new
-        @model = ActionModel.new get_attributes_from_params
+        @model = ActionModel.new get_attributes_from_params.merge(keep_modal_open: true)
 
         respond_to do |format|
           format.html do
