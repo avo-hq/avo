@@ -73,15 +73,7 @@ module Avo
       keep_modal_open = messages.find {|message| message[:type] == :keep_modal_open }
 
       if keep_modal_open
-        @view = :new
-        @model = ActionModel.new get_attributes_from_params.merge(keep_modal_open: true)
-
-        respond_to do |format|
-          format.html do
-            flash.now[:error] = keep_modal_open[:body]
-            render :show, status: :unprocessable_entity
-          end
-        end
+        render_show keep_modal_open[:body]
       else
         respond_to do |format|
           format.html do
@@ -139,6 +131,18 @@ module Avo
 
     def fields_to_ignore
       %w[avo_resource_ids, avo_selected_query]
+    end
+
+    def render_show(error)
+      @view = :new
+      @model = ActionModel.new get_attributes_from_params.merge(keep_modal_open: true)
+
+      respond_to do |format|
+        format.html do
+          flash.now[:error] = error
+          render :show, status: :unprocessable_entity
+        end
+      end
     end
   end
 end
