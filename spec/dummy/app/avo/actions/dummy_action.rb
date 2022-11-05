@@ -1,7 +1,18 @@
 class DummyAction < Avo::BaseAction
   self.name = "Dummy action"
   self.standalone = true
-  self.visible = ->(resource:, view:) do
+  self.visible = -> do
+    #   Access to:
+    #   block
+    #   context
+    #   current_user
+    #   params
+    #   parent_model
+    #   parent_resource
+    #   resource
+    #   view
+    #   view_context
+
     if resource.is_a? UserResource
       view == :index
     else

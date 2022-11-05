@@ -21,7 +21,7 @@
         <%= render partial: filter.class.template, locals: {filter: filter} %>
       <% end %>
       <div class="p-4 border-gray-300 border-t">
-        <% if params[:filters].present? %>
+        <% if @applied_filters.present? %>
           <%= a_link reset_path, data: {turbo_frame: params[:turbo_frame]}, color: :gray, size: :sm, class: 'w-full justify-center' do %>
             <%= t('avo.reset_filters') %>
           <% end %>

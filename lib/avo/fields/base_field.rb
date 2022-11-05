@@ -14,6 +14,7 @@ module Avo
       include Avo::Concerns::HasHTMLAttributes
       include Avo::Fields::Concerns::IsRequired
       include Avo::Fields::Concerns::IsReadonly
+      include Avo::Fields::Concerns::HasDefault
 
       delegate :view_context, to: ::Avo::App
       delegate :simple_format, :content_tag, to: :view_context
@@ -166,15 +167,9 @@ module Avo
         # Get model value
         final_value = @model.send(property) if is_model?(@model) && @model.respond_to?(property)
 
-        # On new views and actions modals we need to prefill the fields
-        if @view.in?([:new, :create]) || @action.present?
-          if default.present?
-            final_value = if default.respond_to?(:call)
-              default.call
-            else
-              default
-            end
-          end
+        # On new views and actions modals we need to prefill the fields with the default value
+        if should_fill_with_default_value? && default.present?
+          final_value = computed_default_value
         end
 
         # Run computable callback block if present
@@ -268,6 +263,18 @@ module Avo
 
       def is_model?(model)
         model_or_class(model) == "model"
+      end
+
+      def should_fill_with_default_value?
+        on_create? || in_action?
+      end
+
+      def on_create?
+        @view.in?([:new, :create])
+      end
+
+      def in_action?
+        @action.present?
       end
     end
   end

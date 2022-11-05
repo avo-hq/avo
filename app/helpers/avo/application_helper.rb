@@ -102,7 +102,11 @@ module Avo
     end
 
     def root_path_without_url
-      Avo::App.root_path.to_s.delete_prefix(request.base_url.to_s).delete_suffix "/"
+      Avo::App.root_path
+        .to_s
+        .delete_prefix(request.base_url.to_s)
+        .delete_suffix("/")
+        .gsub("/?", "?")
     rescue
       Avo.configuration.root_path
     end

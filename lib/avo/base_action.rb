@@ -114,15 +114,25 @@ module Avo
       self
     end
 
-    def visible_in_view
+    def visible_in_view(parent_model: nil, parent_resource: nil)
+      if visible.blank?
+        # Hide on the :new view by default
+        return false if view == :new
+
+        # Show on all other views
+        return true
+      end
+
       # Run the visible block if available
-      return instance_exec(resource: self.class.resource, view: view, &visible) if visible.present?
-
-      # Hide on the :new view by default
-      return false if view == :new
-
-      # Show on all other views
-      true
+      Avo::Hosts::VisibilityHost.new(
+        block: visible,
+        model: self.class.model,
+        params: params,
+        parent_model: parent_model,
+        parent_resource: parent_resource,
+        resource: self.class.resource,
+        view: self.class.view,
+      ).handle
     end
 
     def param_id

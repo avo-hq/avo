@@ -14,9 +14,7 @@ module Avo
         end
 
         def action
-          return @instance if @instance.present?
-
-          @instance = @klass.new(model: @model, resource: @resource, view: @view)
+          @instance ||= @klass.new(model: @model, resource: @resource, view: @view)
         end
 
         def path
