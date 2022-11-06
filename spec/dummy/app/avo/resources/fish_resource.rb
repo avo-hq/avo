@@ -32,7 +32,9 @@ class FishResource < Avo::BaseResource
   }
 
 
-  action DummyAction
+  action DummyAction, options: {
+    special_message: true
+  }
   action ReleaseFish
 
   tool FishInformation, show_on: :forms

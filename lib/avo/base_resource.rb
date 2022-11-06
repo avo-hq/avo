@@ -62,10 +62,11 @@ module Avo
         self.grid_loader = grid_collector
       end
 
-      def action(action_class)
+      def action(action_class, options: {})
         self.actions_loader ||= Avo::Loaders::Loader.new
 
-        self.actions_loader.use action_class
+        action = { class: action_class, options: options }
+        self.actions_loader.use action
       end
 
       def filter(filter_class, options: {})
@@ -181,6 +182,12 @@ module Avo
       return [] if self.class.actions_loader.blank?
 
       self.class.actions_loader.bag
+    end
+
+    def get_action_options(action_class)
+      action = get_actions.find { |action| action[:class].to_s == action_class.to_s }
+
+      action[:options]
     end
 
     def default_panel_name

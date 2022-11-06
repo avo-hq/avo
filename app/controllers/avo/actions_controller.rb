@@ -51,7 +51,15 @@ module Avo
     end
 
     def set_action
-      @action = action_class.new(model: @model, resource: @resource, user: _current_user, view: @view)
+      options = @resource.get_action_options action_class
+
+      @action = action_class.new(
+        model: @model,
+        resource: @resource,
+        user: _current_user,
+        view: @view,
+        options: options,
+      )
     end
 
     def action_class

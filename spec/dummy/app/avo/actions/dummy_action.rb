@@ -22,8 +22,12 @@ class DummyAction < Avo::BaseAction
 
   def handle(**args)
     # Do something here
+    if options[:special_message]
+      succeed "I love 🥑"
+    else
+      succeed "Success response ✌️"
+    end
 
-    succeed "Success response ✌️"
     warn "Warning response ✌️"
     inform "Info response ✌️"
     fail "Error response ✌️"

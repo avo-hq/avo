@@ -322,7 +322,7 @@ module Avo
       @actions = @resource
         .get_actions
         .map do |action|
-          action.new(model: @model, resource: @resource, view: @view)
+          action[:class].new(model: @model, resource: @resource, view: @view, options: action[:options])
         end
         .select do |action|
           action.visible_in_view(parent_model: @parent_model, parent_resource: @parent_resource)
