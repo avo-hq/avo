@@ -123,7 +123,6 @@ gem 'meta-tags'
 
 gem 'breadcrumbs_on_rails'
 
-gem 'manifester'
 
 # Search
 gem 'ransack'
