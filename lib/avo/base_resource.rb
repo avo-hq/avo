@@ -68,10 +68,11 @@ module Avo
         self.actions_loader.use action_class
       end
 
-      def filter(filter_class)
+      def filter(filter_class, options: {})
         self.filters_loader ||= Avo::Loaders::Loader.new
 
-        self.filters_loader.use filter_class
+        filter = { class: filter_class , options: options }
+        self.filters_loader.use filter
       end
 
       # This is the search_query scope
@@ -168,6 +169,12 @@ module Avo
       return [] if self.class.filters_loader.blank?
 
       self.class.filters_loader.bag
+    end
+
+    def get_filter_options(filter_class)
+      filter = get_filters.find { |filter| filter[:class] == filter_class.constantize }
+
+      filter[:options]
     end
 
     def get_actions
