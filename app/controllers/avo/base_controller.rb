@@ -60,6 +60,7 @@ module Avo
       # Apply filters to the current query
       filters_to_be_applied.each do |filter_class, filter_value|
         options = @resource.get_filter_options filter_class
+
         @query = filter_class.safe_constantize.new(
           options: options
         ).apply_query request, @query, filter_value
