@@ -1,6 +1,7 @@
 module Avo
   class App
     include Avo::Concerns::FetchesThings
+    extend Avo::Concerns::ChecksRequirements
 
     class_attribute :resources, default: []
     class_attribute :dashboards, default: []
@@ -27,6 +28,8 @@ module Avo
 
       def boot
         init_fields
+
+        check_requirements
 
         if Rails.cache.instance_of?(ActiveSupport::Cache::NullStore)
           self.cache_store ||= ActiveSupport::Cache::MemoryStore.new
