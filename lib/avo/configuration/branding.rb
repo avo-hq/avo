@@ -1,10 +1,11 @@
 class Avo::Configuration::Branding
-  def initialize(colors: nil, chart_colors: nil, logo: nil, logomark: nil, placeholder: nil)
+  def initialize(colors: nil, chart_colors: nil, logo: nil, logomark: nil, placeholder: nil, favicon: nil)
     @colors = colors || {}
     @chart_colors = chart_colors
     @logo = logo
     @logomark = logomark
     @placeholder = placeholder
+    @favicon = favicon
 
     @default_colors = {
       background: "#F6F6F7",
@@ -17,6 +18,7 @@ class Avo::Configuration::Branding
     @default_logo = "/avo-assets/logo.png"
     @default_logomark = "/avo-assets/logomark.png"
     @default_placeholder = "/avo-assets/placeholder.svg"
+    @default_favicon = "/avo-assets/favicon.ico"
   end
 
   def css_colors
@@ -51,6 +53,12 @@ class Avo::Configuration::Branding
     return @default_chart_colors if Avo::App.license.lacks_with_trial(:branding)
 
     @chart_colors || @default_chart_colors
+  end
+
+  def favicon
+    return @default_favicon if Avo::App.license.lacks_with_trial(:branding)
+
+    @favicon || @default_favicon
   end
 
   private
