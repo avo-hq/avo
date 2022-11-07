@@ -29,7 +29,7 @@ class DummyAction < Avo::BaseAction
 
     # Test keep modal open feature
     if args[:fields][:fail_and_keep_modal_open]
-      fail "Error response and keep modal open ✌️", keep_modal_open: true
+      persistent_error "Error response and keep modal open ✌️"
     end
 
     succeed "Success response ✌️"

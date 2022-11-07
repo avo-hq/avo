@@ -70,8 +70,8 @@ module Avo
         return send_data response[:path], filename: response[:filename]
       end
 
-      keep_modal_open = messages.find {|message| message[:type] == :keep_modal_open }
-      return render_show keep_modal_open[:body] if keep_modal_open
+      persistent_error = messages.find {|message| message[:type] == :persistent_error }
+      return render_show persistent_error[:body] if persistent_error
 
       respond_to do |format|
         format.html do
@@ -130,13 +130,13 @@ module Avo
       %w[avo_resource_ids, avo_selected_query]
     end
 
-    def render_show(error)
+    def render_show(message)
       @view = :new
       @model = ActionModel.new get_attributes_from_params
 
       respond_to do |format|
         format.html do
-          flash.now[:error] = error
+          flash.now[:error] = message
           render :show, status: :unprocessable_entity
         end
       end
