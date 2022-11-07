@@ -145,11 +145,11 @@ module Avo
       end
 
       def placeholder
-        if @placeholder.present? && @placeholder.respond_to?(:call)
-          @placeholder.call resource: @resource
-        else
-          @placeholder || name
+        if @placeholder.respond_to?(:call)
+          return Avo::Hosts::RecordHost.new(block: @placeholder, record: model).handle
         end
+
+        @placeholder || name
       end
 
       def visible?

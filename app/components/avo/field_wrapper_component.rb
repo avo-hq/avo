@@ -61,13 +61,13 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
   end
 
   def help
-    help_obj = @help || @field.help
+    help_value = @help || @field.help
 
-    if help_obj.respond_to?(:call)
-      help_obj.call
-    else
-      help_obj
+    if help_value.respond_to?(:call)
+      return Avo::Hosts::RecordHost.new(block: help_value, record: record).handle
     end
+
+    help_value
   end
 
   def record
