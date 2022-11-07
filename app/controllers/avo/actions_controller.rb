@@ -70,7 +70,7 @@ module Avo
         return send_data response[:path], filename: response[:filename]
       end
 
-      persistent_error = messages.find {|message| message[:type] == :persistent_error }
+      persistent_error = messages.find { |message| message[:type] == :persistent_error }
       return render_show persistent_error[:body] if persistent_error
 
       respond_to do |format|
@@ -134,10 +134,13 @@ module Avo
       @view = :new
       @model = ActionModel.new get_attributes_from_params
 
+      flash.now[:error] = message
       respond_to do |format|
-        format.html do
-          flash.now[:error] = message
-          render :show, status: :unprocessable_entity
+        # format.html do
+        #   render :show, status: :unprocessable_entity, turbo_frame: :actions_show
+        # end
+        format.turbo_stream do
+          render "handle_persistent_error"
         end
       end
     end

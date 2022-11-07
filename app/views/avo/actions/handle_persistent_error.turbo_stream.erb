@@ -1,0 +1,5 @@
+<turbo-stream action="append" target="alerts">
+  <template>
+    <%= render Avo::AlertComponent.new :error, flash[:error] %>
+  </template>
+</turbo-stream>

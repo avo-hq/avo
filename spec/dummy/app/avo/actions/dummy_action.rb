@@ -27,9 +27,14 @@ class DummyAction < Avo::BaseAction
   def handle(**args)
     # Do something here
 
-    # Test keep modal open feature
-    if args[:fields][:fail_and_keep_modal_open]
-      persistent_error "Error response and keep modal open ✌️"
+    if fail_and_keep_modal_open
+      begin
+        raise "ceva"
+      rescue
+        warn "hoho"
+
+        raise PersistentActionError.new("error message")
+      end
     end
 
     succeed "Success response ✌️"
