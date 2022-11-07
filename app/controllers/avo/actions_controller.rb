@@ -41,6 +41,9 @@ module Avo
 
       performed_action = @action.handle_action(**args)
 
+    rescue Avo::PersistentActionError => error
+      persistent error
+    else
       respond performed_action.response
     end
 
@@ -69,9 +72,6 @@ module Avo
       if response[:type] == :download
         return send_data response[:path], filename: response[:filename]
       end
-
-      persistent_error = messages.find { |message| message[:type] == :persistent_error }
-      return render_show persistent_error[:body] if persistent_error
 
       respond_to do |format|
         format.html do
@@ -118,27 +118,16 @@ module Avo
       )
     end
 
-    def get_attributes_from_params
-      params[:fields].permit(permited_fields).to_h
+    def permitted_message_types
+      [:success, :info, :warning, :error]
     end
 
-    def permited_fields
-      params[:fields].keys.reject { |key| fields_to_ignore.include? key }
-    end
+    def persistent(error)
+      type = permitted_message_types.include?(error.type) ? error.type : :error
 
-    def fields_to_ignore
-      %w[avo_resource_ids, avo_selected_query]
-    end
+      flash.now[type] = error.message
 
-    def render_show(message)
-      @view = :new
-      @model = ActionModel.new get_attributes_from_params
-
-      flash.now[:error] = message
       respond_to do |format|
-        # format.html do
-        #   render :show, status: :unprocessable_entity, turbo_frame: :actions_show
-        # end
         format.turbo_stream do
           render "handle_persistent_error"
         end

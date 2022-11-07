@@ -72,7 +72,7 @@ module Avo
 
     def get_attributes_for_action
       get_fields.map do |field|
-        [field.id, field.default]
+        [field.id, field.value || field.default]
       end.to_h
     end
 
@@ -147,19 +147,12 @@ module Avo
 
     def fail(text)
       Rails.logger.warn "DEPRECATION WARNING: Action fail method is deprecated in favor of error method and will be removed from avo version 3.0.0"
-      add_message text, :error
 
-      self
+      error text
     end
 
     def error(text)
       add_message text, :error
-
-      self
-    end
-
-    def persistent_error(text)
-      add_message text, :persistent_error
 
       self
     end

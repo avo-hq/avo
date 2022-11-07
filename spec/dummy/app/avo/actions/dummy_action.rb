@@ -20,22 +20,16 @@ class DummyAction < Avo::BaseAction
     end
   end
 
-  field :fail_and_keep_modal_open, as: :boolean
+  field :persistent_error, as: :boolean
   field :keep_text, as: :text
-  field :message, as: :trix, help: "Just testing."
 
   def handle(**args)
     # Do something here
 
-    if fail_and_keep_modal_open
-      begin
-        raise "ceva"
-      rescue
-        warn "hoho"
-
-        raise PersistentActionError.new("error message")
-      end
-    end
+  # Test persistent error
+  if args[:fields][:persistent_error]
+    raise Avo::PersistentActionError.new "Avo::PersistentActionError raised!", :info
+  end
 
     succeed "Success response ✌️"
     warn "Warning response ✌️"

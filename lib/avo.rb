@@ -59,6 +59,15 @@ module Avo
   class NoPolicyError < StandardError; end
 
   class MissingGemError < StandardError; end
+
+  class PersistentActionError < StandardError
+    attr_reader :type
+
+    def initialize(message, type)
+      super(message)
+      @type = type
+    end
+  end
 end
 
 loader.eager_load
