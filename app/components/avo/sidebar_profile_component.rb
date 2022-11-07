@@ -33,8 +33,11 @@ class Avo::SidebarProfileComponent < ViewComponent::Base
     end
   end
 
+  # The name of the path for destroying the current user session (not the path itself).
   def destroy_user_session_path
-    "destroy_#{Avo.configuration.current_user_resource_name}_session_path".to_sym
+    # If `destroy_user_session_path` is configured, use it. Otherwise construct the
+    # path name based on `current_user_resource_name`.
+    (Avo.configuration.destroy_user_session_path || "destroy_#{Avo.configuration.current_user_resource_name}_session_path").to_sym
   end
 
   def can_destroy_user?
