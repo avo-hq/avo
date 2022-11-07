@@ -28,7 +28,8 @@ class DummyAction < Avo::BaseAction
 
   # Test persistent error
   if args[:fields][:persistent_error]
-    raise Avo::PersistentActionError.new "Avo::PersistentActionError raised!", :info
+    warn "We want this warning too."
+    return persistent :info, "We want it to persist."
   end
 
     succeed "Success response ✌️"

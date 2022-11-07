@@ -169,6 +169,18 @@ module Avo
       self
     end
 
+    def permitted_message_types
+      [:success, :info, :warning, :error]
+    end
+
+    def persistent(type, text)
+      type = :error unless permitted_message_types.include? type
+      add_message text, type
+      response[:persistent] = true
+
+      self
+    end
+
     # Add a placeholder silent message from when a user wants to do a redirect action or something similar
     def silent
       add_message nil, :silent

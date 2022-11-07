@@ -40,11 +40,9 @@ module Avo
       end
 
       performed_action = @action.handle_action(**args)
+      response = performed_action.response
 
-    rescue Avo::PersistentActionError => error
-      persistent error
-    else
-      respond performed_action.response
+      response[:persistent] ? persistent(response) : respond(response)
     end
 
     private
@@ -118,14 +116,12 @@ module Avo
       )
     end
 
-    def permitted_message_types
-      [:success, :info, :warning, :error]
-    end
+    def persistent(response)
+      messages = get_messages response
 
-    def persistent(error)
-      type = permitted_message_types.include?(error.type) ? error.type : :error
-
-      flash.now[type] = error.message
+      messages.each do |message|
+        flash[message[:type]] = message[:body]
+      end
 
       respond_to do |format|
         format.turbo_stream do
