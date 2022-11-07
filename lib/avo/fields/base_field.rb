@@ -145,9 +145,11 @@ module Avo
       end
 
       def placeholder
-        return @placeholder if @placeholder.present?
-
-        name
+        if @placeholder.present? && @placeholder.respond_to?(:call)
+          @placeholder.call resource: @resource
+        else
+          @placeholder || name
+        end
       end
 
       def visible?
