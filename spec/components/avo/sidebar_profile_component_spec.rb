@@ -49,14 +49,14 @@ RSpec.describe Avo::SidebarProfileComponent, type: :component do
       end
     end
 
-    context 'with destroy_user_session_path' do
+    context 'with sign_out_path_name' do
       before do
         without_partial_double_verification do
           # Stub an additional route
-          allow(Rails.application.routes.url_helpers).to receive(:custom_signout_path).and_return("/custom/sign_out")
+          allow(Rails.application.routes.url_helpers).to receive(:custom_sign_out_path).and_return("/custom/sign_out")
         end
 
-        Avo.configuration.destroy_user_session_path = :custom_signout_path
+        Avo.configuration.sign_out_path_name = :custom_sign_out_path
       end
 
       it "renders sign out link" do
