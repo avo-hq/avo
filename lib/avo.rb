@@ -59,7 +59,6 @@ module Avo
   class NoPolicyError < StandardError; end
 
   class MissingGemError < StandardError; end
-
 end
 
 loader.eager_load
