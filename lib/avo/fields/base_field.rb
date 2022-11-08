@@ -147,7 +147,7 @@ module Avo
 
       def placeholder
         if @placeholder.respond_to?(:call)
-          return Avo::Hosts::RecordHost.new(block: @placeholder, record: model).handle
+          return Avo::Hosts::ResourceViewRecordHost.new(block: @placeholder, record: @model, resource: @resource, view: @view).handle
         end
 
         @placeholder || name

@@ -64,7 +64,7 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
     help_value = @help || @field.help
 
     if help_value.respond_to?(:call)
-      return Avo::Hosts::RecordHost.new(block: help_value, record: record).handle
+      return Avo::Hosts::ResourceViewRecordHost.new(block: help_value, record: record, resource: resource, view: view).handle
     end
 
     help_value
