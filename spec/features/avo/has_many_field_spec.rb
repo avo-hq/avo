@@ -144,4 +144,15 @@ RSpec.feature "HasManyField", type: :feature do
       expect(link.course.id).to eq course.id
     end
   end
+
+  describe "same model no resource" do
+    let!(:person) { create :person }
+    let!(:brother) { create :brother }
+
+    it "does not raise an error" do
+      expect {
+        visit "/admin/resources/people"
+      }.not_to raise_error
+    end
+  end
 end

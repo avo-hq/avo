@@ -65,6 +65,11 @@ FactoryBot.define do
     type { "Sibling" }
   end
 
+  factory :brother do
+    name { "#{Faker::Name.first_name} #{Faker::Name.last_name}" }
+    type { "Brother" }
+  end
+
   factory :fish do
     name { %w[Tilapia Salmon Trout Catfish Pangasius Carp].sample }
   end
