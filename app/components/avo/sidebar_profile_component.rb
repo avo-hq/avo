@@ -34,7 +34,9 @@ class Avo::SidebarProfileComponent < ViewComponent::Base
   end
 
   def destroy_user_session_path
-    "destroy_#{Avo.configuration.current_user_resource_name}_session_path".to_sym
+    # If `sign_out_path_name` is configured, use it. Otherwise construct the
+    # path name based on `current_user_resource_name`.
+    (Avo.configuration.sign_out_path_name || "destroy_#{Avo.configuration.current_user_resource_name}_session_path").to_sym
   end
 
   def can_destroy_user?

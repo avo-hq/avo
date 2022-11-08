@@ -17,9 +17,9 @@ class Avo::FiltersComponent < ViewComponent::Base
   def reset_path
     # If come from a association page
     if @parent_model.present?
-      helpers.related_resources_path(@parent_model, @parent_model, filters: nil, keep_query_params: true)
+      helpers.related_resources_path(@parent_model, @parent_model, filters: nil, reset_filter: true, keep_query_params: true)
     else
-      helpers.resources_path(resource: @resource, filters: nil, keep_query_params: true)
+      helpers.resources_path(resource: @resource, filters: nil, reset_filter: true, keep_query_params: true)
     end
   end
 end

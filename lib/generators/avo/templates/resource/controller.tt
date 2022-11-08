@@ -1,4 +1,4 @@
 # This controller has been generated to enable Rails' resource routes.
-# You shouldn't need to modify it in order to use Avo.
+# More information on https://docs.avohq.io/2.0/controllers.html
 class <%= controller_class %> < Avo::ResourcesController
 end

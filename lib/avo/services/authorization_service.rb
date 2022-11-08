@@ -9,8 +9,12 @@ module Avo
         def client
           client = Avo.configuration.authorization_client
 
+          client = nil if Avo::App.license.lacks(:authorization)
+
           klass = case client
-          when :pundit, nil
+          when nil
+            nil_client
+          when :pundit
             pundit_client
           else
             if client.is_a?(String)
@@ -92,7 +96,13 @@ module Avo
         end
 
         def pundit_client
+          raise Avo::MissingGemError.new("Please add `gem 'pundit'` to your Gemfile.") unless defined?(Pundit)
+
           Avo::Services::AuthorizationClients::PunditClient
+        end
+
+        def nil_client
+          Avo::Services::AuthorizationClients::NilClient
         end
       end
 

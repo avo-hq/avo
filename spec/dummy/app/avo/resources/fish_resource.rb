@@ -16,7 +16,7 @@ class FishResource < Avo::BaseResource
       }
     delete_button label: "", title: "something"
     detach_button label: "", title: "something"
-    actions_list exclude: [ReleaseFish], style: :primary, color: :slate
+    actions_list exclude: [ReleaseFish], style: :primary, color: :slate, label: "Runnables"
     action ReleaseFish, style: :primary, color: :fuchsia, icon: "heroicons/outline/globe"
     edit_button label: ""
   end

@@ -3,11 +3,12 @@ module Avo
     class BaseFilter
       PARAM_KEY = :filters unless const_defined?(:PARAM_KEY)
 
-      class_attribute :name, default: "Filter"
       class_attribute :component, default: "boolean-filter"
       class_attribute :default, default: nil
-      class_attribute :template, default: "avo/base/select_filter"
       class_attribute :empty_message
+      class_attribute :name, default: "Filter"
+      class_attribute :template, default: "avo/base/select_filter"
+      class_attribute :visible
 
       delegate :params, to: Avo::App
 
@@ -51,6 +52,20 @@ module Avo
       # Fetch the applied filters from the params
       def applied_filters
         self.class.decode_filters params[PARAM_KEY]
+      end
+
+      def visible_in_view(resource: nil, parent_model: nil, parent_resource: nil)
+        return true if visible.blank?
+
+        # Run the visible block if available
+        Avo::Hosts::VisibilityHost.new(
+          block: visible,
+          params: params,
+          parent_model: parent_model,
+          parent_resource: parent_resource,
+          resource: resource
+        ).handle
+
       end
     end
   end
