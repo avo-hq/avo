@@ -487,6 +487,7 @@ DEPENDENCIES
   pg (>= 0.18, < 2.0)
   puma (~> 5.6.4)
   pundit
+  rails (~> 6.1.0)
   rails-controller-testing
   ransack
   redis (~> 4.0)
