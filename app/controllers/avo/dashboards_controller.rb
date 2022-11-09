@@ -5,6 +5,7 @@ module Avo
     before_action :set_dashboard, only: :show
 
     def show
+      @page_title = @dashboard.name
     end
 
     private

@@ -13,6 +13,8 @@ RSpec.describe "Dashboards", type: :system do
       expect(content).to have_text "Tiny dashboard description"
       expect(content).to have_text "No cards present"
       expect(content).to have_css "[data-target='table-empty-state-svg']"
+
+      expect(page).to have_title "Sales — Avocadelicious"
     end
   end
 
@@ -36,6 +38,8 @@ RSpec.describe "Dashboards", type: :system do
       expect(content).to have_text "The first dashbaord"
       expect(content).not_to have_text "No cards present"
       expect(content).not_to have_css "[data-target='table-empty-state-svg']"
+
+      expect(page).to have_title "Dashy — Avocadelicious"
     end
 
     describe "metric card" do
