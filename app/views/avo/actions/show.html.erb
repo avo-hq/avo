@@ -34,7 +34,8 @@
         </div>
       <% end %>
       <% c.controls do %>
-        <%= a_button data: { action: 'click->modal#close' },
+        <%= a_button type: :button,
+          data: { action: 'click->modal#close' },
           size: :sm,
           color: :gray do %>
           <%= @action.cancel_button_label %>
