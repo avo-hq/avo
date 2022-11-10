@@ -14,7 +14,7 @@ module Avo
       included do |base|
         helper HelperMethods
         extend ClassMethods
-        helper_method :add_avo_breadcrumb, :avo_breadcrumbs
+        helper_method :add_breadcrumb, :avo_breadcrumbs
       end
 
       Crumb = Struct.new(:name, :path)
@@ -69,21 +69,19 @@ module Avo
       end
 
       module ClassMethods
-        def add_avo_breadcrumb(name, path = nil)
-          avo_breadcrumbs << Crumb.new(name, path)
-        end
-
-        def avo_breadcrumbs
-          @avo_breadcrumbs ||= []
+        def add_breadcrumb(name, path = nil)
+          before_action(filter_options) do |controller|
+            controller.send(:add_breadcrumb, name, path)
+          end
         end
       end
 
-      def add_avo_breadcrumb(name, path = nil)
-        self.class.add_avo_breadcrumb(name, path)
+      def add_breadcrumb(name, path = nil)
+        avo_breadcrumbs << Crumb.new(name, path)
       end
 
       def avo_breadcrumbs
-        self.class.avo_breadcrumbs
+        @avo_breadcrumbs ||= []
       end
 
       module HelperMethods
