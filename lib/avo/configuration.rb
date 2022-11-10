@@ -72,7 +72,7 @@ module Avo
       @cache_resource_filters = false
       @context = proc {}
       @initial_breadcrumbs = proc {
-        add_avo_breadcrumb I18n.t("avo.home").humanize, avo.root_path
+        add_breadcrumb I18n.t("avo.home").humanize, avo.root_path
       }
       @display_breadcrumbs = true
       @hide_layout_when_printing = false

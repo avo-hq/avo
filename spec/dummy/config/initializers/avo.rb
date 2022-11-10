@@ -4,7 +4,7 @@ Avo.configure do |config|
   config.app_name = "Avocadelicious"
   config.home_path = -> { avo.dashboard_path(:dashy) }
   config.set_initial_breadcrumbs do
-    add_avo_breadcrumb "Dashboard", "/admin/dashboards/dashy"
+    add_breadcrumb "Dashboard", "/admin/dashboards/dashy"
   end
 
   ## == Licensing ==

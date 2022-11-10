@@ -17,7 +17,7 @@ module Avo
 
     def index
       @page_title = @resource.plural_name.humanize
-      add_avo_breadcrumb @resource.plural_name.humanize
+      add_breadcrumb @resource.plural_name.humanize
 
       set_index_params
       set_filters
@@ -90,14 +90,14 @@ module Avo
         via_model = via_resource.class.find_scope.find params[:via_resource_id]
         via_resource.hydrate model: via_model
 
-        add_avo_breadcrumb via_resource.plural_name, resources_path(resource: via_resource)
-        add_avo_breadcrumb via_resource.model_title, resource_path(model: via_model, resource: via_resource)
+        add_breadcrumb via_resource.plural_name, resources_path(resource: via_resource)
+        add_breadcrumb via_resource.model_title, resource_path(model: via_model, resource: via_resource)
       else
-        add_avo_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
+        add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
       end
 
-      add_avo_breadcrumb @resource.model_title
-      add_avo_breadcrumb I18n.t("avo.details").upcase_first
+      add_breadcrumb @resource.model_title
+      add_breadcrumb I18n.t("avo.details").upcase_first
     end
 
     def new
@@ -113,12 +113,12 @@ module Avo
         via_model = via_resource.class.find_scope.find params[:via_resource_id]
         via_resource.hydrate model: via_model
 
-        add_avo_breadcrumb via_resource.plural_name, resources_path(resource: via_resource)
-        add_avo_breadcrumb via_resource.model_title, resource_path(model: via_model, resource: via_resource)
+        add_breadcrumb via_resource.plural_name, resources_path(resource: via_resource)
+        add_breadcrumb via_resource.model_title, resource_path(model: via_model, resource: via_resource)
       end
 
-      add_avo_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
-      add_avo_breadcrumb t("avo.new").humanize
+      add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
+      add_breadcrumb t("avo.new").humanize
     end
 
     def create
@@ -149,8 +149,8 @@ module Avo
         end
       end
 
-      add_avo_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
-      add_avo_breadcrumb t("avo.new").humanize
+      add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
+      add_breadcrumb t("avo.new").humanize
       set_actions
 
       if saved
@@ -382,19 +382,19 @@ module Avo
         via_model = via_resource.class.find_scope.find params[:via_resource_id]
         via_resource.hydrate model: via_model
 
-        add_avo_breadcrumb via_resource.plural_name, resources_path(resource: @resource)
-        add_avo_breadcrumb via_resource.model_title, resource_path(model: via_model, resource: via_resource)
+        add_breadcrumb via_resource.plural_name, resources_path(resource: @resource)
+        add_breadcrumb via_resource.model_title, resource_path(model: via_model, resource: via_resource)
 
         last_crumb_args = {
           via_resource_class: params[:via_resource_class],
           via_resource_id: params[:via_resource_id]
         }
       else
-        add_avo_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
+        add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
       end
 
-      add_avo_breadcrumb @resource.model_title, resource_path(model: @resource.model, resource: @resource, **last_crumb_args)
-      add_avo_breadcrumb t("avo.edit").humanize
+      add_breadcrumb @resource.model_title, resource_path(model: @resource.model, resource: @resource, **last_crumb_args)
+      add_breadcrumb t("avo.edit").humanize
     end
 
     def create_success_action

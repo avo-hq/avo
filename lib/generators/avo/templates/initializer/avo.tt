@@ -83,7 +83,7 @@ Avo.configure do |config|
   ## == Breadcrumbs ==
   # config.display_breadcrumbs = true
   # config.set_initial_breadcrumbs do
-  #   add_avo_breadcrumb "Home", '/<%= options[:path] %>'
+  #   add_breadcrumb "Home", '/<%= options[:path] %>'
   # end
 
   ## == Menus ==

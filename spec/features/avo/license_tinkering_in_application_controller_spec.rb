@@ -23,7 +23,7 @@ RSpec.feature "LicenseTinkeringInApplicationController", type: :feature do
         class Avo::ToolsController < Avo::ApplicationController
           def dashboard
             @page_title = "Dashboard"
-            add_avo_breadcrumb "Dashboard"
+            add_breadcrumb "Dashboard"
           end
         end
       end
