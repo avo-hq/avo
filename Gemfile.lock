@@ -6,7 +6,6 @@ PATH
       active_link_to
       activerecord (>= 6.0)
       addressable
-      breadcrumbs_on_rails
       docile
       dry-initializer
       httparty
@@ -127,8 +126,6 @@ GEM
     bootsnap (1.13.0)
       msgpack (~> 1.2)
     brakeman (5.3.1)
-    breadcrumbs_on_rails (4.1.0)
-      railties (>= 5.0)
     builder (3.2.4)
     bump (0.10.0)
     bundler-integrity (1.0.9)
@@ -238,6 +235,9 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.7.1)
       mini_mime (>= 0.1.1)
+    manifester (0.1.8)
+      rails (>= 6.0)
+      zeitwerk
     marcel (1.0.2)
     matrix (0.4.2)
     meta-tags (2.17.0)
@@ -454,7 +454,6 @@ DEPENDENCIES
   aws-sdk-s3
   bootsnap (>= 1.4.2)
   brakeman
-  breadcrumbs_on_rails
   bump
   bundler-integrity (~> 1.0)
   byebug
@@ -482,6 +481,7 @@ DEPENDENCIES
   jsbundling-rails
   launchy
   listen (>= 3.5.1)
+  manifester
   meta-tags
   net-smtp
   pg (>= 0.18, < 2.0)
