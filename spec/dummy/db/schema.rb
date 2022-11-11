@@ -213,6 +213,13 @@ ActiveRecord::Schema.define(version: 2022_10_11_150126) do
     t.string "color"
   end
 
+  create_table "types", force: :cascade do |t|
+    t.string "title"
+    t.bigint "fish_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "first_name"
