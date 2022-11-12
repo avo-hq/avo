@@ -20,16 +20,18 @@ class DummyAction < Avo::BaseAction
     end
   end
 
-  field :persistent_error, as: :boolean
-  field :keep_text, as: :text
+  field :persistent, as: :boolean
+  field :persistent_text, as: :text
 
   def handle(**args)
     # Do something here
 
   # Test persistent error
-  if args[:fields][:persistent_error]
-    warn "We want this warning too."
-    return persistent :info, "We want it to persist."
+  if args[:fields][:persistent]
+    succeed "Persistent success response ✌️"
+    warn "Persistent warning response ✌️"
+    fail "Persistent error response ✌️"
+    return persistent :info, "Persistent info response ✌️"
   end
 
     succeed "Success response ✌️"
