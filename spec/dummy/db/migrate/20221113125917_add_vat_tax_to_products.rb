@@ -1,4 +1,4 @@
-class AddVatTaxToProducts < ActiveRecord::Migration[6.1]
+class AddVatTaxToProducts < ActiveRecord::Migration[6.0]
   def change
     add_column :products, :vat_tax, :integer, null: false, default: 0
   end
