@@ -14,6 +14,8 @@ module Avo
     before_action :fill_model, only: [:create, :update]
     # Don't run base authorizations for associations
     before_action :authorize_base_action, if: -> { controller_name != "associations" }
+    # Set pagy locale from params or from avo configuration, if both nil locale = "en"
+    before_action { @pagy_locale = params[:force_locale] || Avo.configuration.locale || "en" }
 
     def index
       @page_title = @resource.plural_name.humanize
