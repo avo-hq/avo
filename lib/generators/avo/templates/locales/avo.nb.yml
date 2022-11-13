@@ -47,6 +47,7 @@ nb:
         other: personer
         zero: personer
     filters: Filter
+    filter_by: Filtrer etter
     go_back: Gå tilbake
     grid_view: Grid visning
     hide_content: Skjul innhold

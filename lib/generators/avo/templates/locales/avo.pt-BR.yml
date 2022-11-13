@@ -47,6 +47,7 @@ pt-BR:
         other: pessoas
         zero: ninguém
     filters: Filtros
+    filter_by: Filtrar por
     go_back: Voltar
     grid_view: Visualização em grade
     hide_content: Esconder conteúdo

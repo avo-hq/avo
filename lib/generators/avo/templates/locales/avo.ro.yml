@@ -47,6 +47,7 @@ ro:
         other: peeps
         zero: peeps
     filters: Filtre
+    filter_by: Filtează dupa
     go_back: Inapoi
     grid_view: Vezi sub forma de grid
     hide_content: Ascunde continutul
