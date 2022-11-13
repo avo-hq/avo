@@ -46,8 +46,8 @@ tr:
         one: kişi
         other: kişi
         zero: kişi
-    filters: Filtreler
     filter_by: Tarafından filtre
+    filters: Filtreler
     go_back: Geri dön
     grid_view: Grid görünümü
     hide_content: İçeriği gizle

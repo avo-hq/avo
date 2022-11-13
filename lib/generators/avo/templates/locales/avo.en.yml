@@ -46,8 +46,8 @@ en:
         one: peep
         other: peeps
         zero: peeps
-    filters: Filters
     filter_by: Filter by
+    filters: Filters
     go_back: Go back
     grid_view: Grid view
     hide_content: Hide content

@@ -46,8 +46,8 @@ fr:
         one: personne
         other: personnes
         zero: personne
-    filters: Filtres
     filter_by: Filtrer par
+    filters: Filtres
     go_back: Retourner en arrière
     grid_view: Vue grille
     hide_content: Cacher le contenu

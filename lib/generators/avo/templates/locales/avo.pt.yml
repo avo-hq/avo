@@ -46,8 +46,8 @@ pt:
         one: pessoa
         other: pessoas
         zero: ninguém
-    filters: Filtros
     filter_by: Filtrar por
+    filters: Filtros
     go_back: Voltar
     grid_view: Visualização em grelha
     hide_content: Esconder conteúdo

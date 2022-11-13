@@ -46,8 +46,8 @@ nn:
         one: person
         other: personar
         zero: personar
-    filters: Filter
     filter_by: Filtrer etter
+    filters: Filter
     go_back: Gå tilbake
     grid_view: Gridvisning
     hide_content: Skjul innhald
