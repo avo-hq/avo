@@ -2,7 +2,7 @@ require "pagy/extras/trim"
 
 # For locales without native pagy i18n support
 def pagy_locale_path(file_name)
-  "../../lib/generators/avo/templates/locales/pagy/#{file_name}"
+  Avo::Engine.root.join("lib", "generators", "avo", "templates", "locales", "pagy", file_name)
 end
 
 Pagy::I18n.load(
