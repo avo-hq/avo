@@ -19,45 +19,50 @@ module Avo
       end
 
       def options_for_select
-        if options.respond_to? :call
-          computed_options = options.call model: model, resource: resource, view: view, field: self
-          if display_value
-            computed_options.map { |label, value| [value, value] }.to_h
-          else
-            computed_options
-          end
-        elsif enum.present?
-          if display_value
-            options.invert
-          else
-            # We need to use the label attribute as the option value because Rails casts it like that
-            options.map { |label, value| [label, label] }.to_h
-          end
-        elsif display_value
-          options.map { |label, value| [value, value] }.to_h
-        else
-          options
-        end
+        return options_from_computed_options if options.respond_to? :call
+        return options_from_enum if enum.present?
+        return options.map { |label, value| [value, value] }.to_h if display_value
+        options
       end
 
       def label
-        if options.respond_to? :call
-          computed_options = options.call model: model, resource: resource, view: view, field: self
+        return value_from_computed_options if options.respond_to? :call
+        return value_from_enum if enum.present?
+        return value if display_value
+        value_from_options
+      end
 
-          return value if display_value
+      private
 
-          computed_options.invert.stringify_keys[value]
-        elsif enum.present?
-          if display_value
-            options[value]
-          else
-            value
-          end
-        elsif display_value
-          value
-        else
-          options.invert.stringify_keys[value]
-        end
+      def options_from_computed_options
+        return computed_options unless display_value
+
+        computed_options = options.call model: model, resource: resource, view: view, field: self
+        computed_options.map { |label, value| [value, value] }.to_h
+      end
+
+      def options_from_enum
+        return options.invert if display_value
+
+        # We need to use the label attribute as the option value because Rails casts it like that
+        options.map { |label, value| [label, label] }.to_h
+      end
+
+      def value_from_computed_options
+        return value if display_value
+
+        computed_options = options.call model: model, resource: resource, view: view, field: self
+        return computed_options.invert.stringify_keys[value]
+      end
+
+      def value_from_enum
+        display_value ? options[value] : value
+      end
+
+      def value_from_options
+        return options.invert.stringify_keys[value] if value.is_a? String
+
+        options.invert[value]
       end
     end
   end

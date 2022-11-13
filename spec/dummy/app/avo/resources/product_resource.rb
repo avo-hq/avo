@@ -11,6 +11,9 @@ class ProductResource < Avo::BaseResource
       },
       content: {
         classes: "bg-gray-50 !text-pink-600"
+      },
+      wrapper: {
+        classes: "bg-gray-50 !text-pink-600"
       }
     }
   }
@@ -18,6 +21,12 @@ class ProductResource < Avo::BaseResource
   field :image, as: :file, is_image: true
   field :price, as: :number
   field :category, as: :select, enum: ::Product.categories
+  field :vat_tax, as: :select, options: {
+    'Zero': 0,
+    'Low': 13,
+    'Standard': 16,
+    'High': 23,
+  }
 
   grid do
     cover :image, as: :file, is_image: true, link_to_resource: true, html: {
