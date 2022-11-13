@@ -3,7 +3,7 @@ require "rails/generators"
 
 RSpec.feature "locales generator", type: :feature do
   it "generates the files" do
-    locales = %w[en fr nn nb pt-BR ro tr]
+    locales = %w[en fr nn nb pt-BR pt ro tr]
 
     files = locales.map do |locale|
       Rails.root.join("config", "locales", "avo.#{locale}.yml").to_s
