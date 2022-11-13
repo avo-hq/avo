@@ -25,11 +25,7 @@
               %> <%= t('avo.per_page').downcase %>
             </div>
             <% per_page_options.each do |option| %>
-              <% if parent_model.present? %>
-                <%= link_to "Change to #{option} items per page", helpers.related_resources_path(parent_model, parent_model, per_page: option, keep_query_params: true, page: 1), class: 'hidden', 'data-per-page-option': option, 'data-turbo-frame': turbo_frame %>
-              <% else %>
-                <%= link_to "Change to #{option} items per page", helpers.resources_path(resource: resource, per_page: option, keep_query_params: true, page: 1), class: 'hidden', 'data-per-page-option': option, 'data-turbo-frame': turbo_frame %>
-              <% end %>
+              <%= link_to "Change to #{option} items per page", change_items_per_page_url(option), class: 'hidden', 'data-per-page-option': option, 'data-turbo-frame': turbo_frame %>
             <% end %>
           </div>
         </div>
