@@ -46,7 +46,7 @@
     <%= turbo_frame_tag 'actions_show' %>
     <%= turbo_frame_tag 'attach_modal' %>
     <%= turbo_frame_tag 'destroy_attachment_form' %>
-    <%= turbo_frame_tag 'alerts', class: "fixed inset-0 bottom-0 flex flex-col space-y-4 items-end justify-right px-4 py-6 sm:p-6 justify-end z-50 pointer-events-none" do %>
+    <%= turbo_frame_tag 'alerts', class: "fixed inset-0 bottom-0 flex flex-col space-y-4 items-end justify-right px-4 py-6 sm:p-6 justify-end z-[100] pointer-events-none" do %>
       <%= render Avo::FlashAlertsComponent.new flashes: flash %>
       <% # In case we have other general error messages %>
       <% if @errors.present? %>

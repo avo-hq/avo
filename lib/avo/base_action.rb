@@ -146,6 +146,12 @@ module Avo
     end
 
     def fail(text)
+      Rails.logger.warn "DEPRECATION WARNING: Action fail method is deprecated in favor of error method and will be removed from avo version 3.0.0"
+
+      error text
+    end
+
+    def error(text)
       add_message text, :error
 
       self
@@ -159,6 +165,12 @@ module Avo
 
     def warn(text)
       add_message text, :warning
+
+      self
+    end
+
+    def keep_modal_open
+      response[:keep_modal_open] = true
 
       self
     end

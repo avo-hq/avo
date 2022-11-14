@@ -16,12 +16,14 @@ module Avo
           default_attribute_value name
         end
 
-        attributes = if html_builder.is_a? Hash
-          get_html_from_hash name, element: element, view: view
-        elsif html_builder.is_a? Avo::HTML::Builder
-          get_html_from_block name, element: element, view: view
-        elsif html_builder.nil?
-          # Handle empty html_builder by returning an empty state
+        parsed = parse_html
+
+        attributes = if parsed.is_a? Hash
+          get_html_from_hash name, element: element, hash: parsed, view: view
+        elsif parsed.is_a? Avo::HTML::Builder
+          get_html_from_block name, element: element, html_builder: parsed, view: view
+        elsif parsed.nil?
+          # Handle empty parsed by returning an empty state
           default_attribute_value name
         end
 
@@ -30,19 +32,15 @@ module Avo
 
       private
 
-      def html_builder
-        return @parsed_html if @parsed_html.present?
-
+      # Returns Hash, HTML::Builder, or nil.
+      def parse_html
         return if @html.nil?
 
-        # Memoize the value
-        @parsed_html = if @html.is_a? Hash
+        if @html.is_a? Hash
           @html
         elsif @html.respond_to? :call
           Avo::HTML::Builder.parse_block(record: model, resource: resource, &@html)
         end
-
-        @parsed_html
       end
 
       def default_attribute_value(name)
@@ -64,7 +62,7 @@ module Avo
         end
       end
 
-      def get_html_from_block(name = nil, element:, view:)
+      def get_html_from_block(name = nil, element:, html_builder:, view:)
         values = []
 
         # get view ancestor
@@ -83,9 +81,9 @@ module Avo
         merge_values_as(as: values_type, values: values)
       end
 
-      def get_html_from_hash(name = nil, element:, view:)
+      def get_html_from_hash(name = nil, element:, hash:, view:)
         # @todo: what if this is not a Hash but a string?
-        html_builder.dig(view, element, name) || {}
+        hash.dig(view, element, name) || {}
       end
 
       # Merge the values from all possible locations.

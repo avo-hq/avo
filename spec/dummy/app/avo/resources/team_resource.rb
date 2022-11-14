@@ -6,7 +6,18 @@ class TeamResource < Avo::BaseResource
   end
 
   field :id, as: :id
-  field :name, as: :text, sortable: true
+  field :name, as: :text, sortable: true, html: -> do
+    index do
+      wrapper do
+        style do
+          if record.color
+            "color: #{record.color}"
+          end
+        end
+      end
+    end
+  end
+
   field :logo, as: :external_image,hide_on: :show, as_avatar: :rounded do |model|
     if model.url
       "//logo.clearbit.com/#{URI.parse(model.url).host}?size=180"
