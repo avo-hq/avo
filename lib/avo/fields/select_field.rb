@@ -29,7 +29,7 @@ module Avo
         return value_from_computed_options if options.respond_to? :call
         return value_from_enum if enum.present?
         return value if display_value
-        value_from_options
+        options.invert.with_indifferent_access[value]
       end
 
       private
@@ -57,12 +57,6 @@ module Avo
 
       def value_from_enum
         display_value ? options[value] : value
-      end
-
-      def value_from_options
-        return options.invert.stringify_keys[value] if value.is_a? String
-
-        options.invert[value]
       end
     end
   end
