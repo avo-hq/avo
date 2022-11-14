@@ -36,7 +36,7 @@ RSpec.feature "Selects", type: :feature do
     end
   end
 
-  describe "when options are enum hash" do
+  describe "when options hash" do
     context "create and show" do
       it "show key but save value" do
         CityResource.with_temporary_items do
