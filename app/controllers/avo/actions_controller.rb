@@ -40,7 +40,8 @@ module Avo
       end
 
       performed_action = @action.handle_action(**args)
-      respond(performed_action.response)
+
+      respond performed_action.response
     end
 
     private
