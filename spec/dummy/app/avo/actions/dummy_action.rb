@@ -19,6 +19,7 @@ class DummyAction < Avo::BaseAction
       warn "Persistent warning response ✌️"
       inform "Persistent info response ✌️"
       error "Persistent error response ✌️"
+
       return keep_modal_open
     end
 
