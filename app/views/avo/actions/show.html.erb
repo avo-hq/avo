@@ -26,7 +26,7 @@
         <div class="my-4 -mx-6">
           <% @action.get_fields.each_with_index do |field, index| %>
             <%= render field
-              .hydrate(resource: @resource, model: @resource.model || @model, user: @resource.user, view: @view)
+              .hydrate(resource: @resource, model: @resource.model, user: @resource.user, view: @view)
               .component_for_view(@view)
               .new(field: field, resource: @resource, index: index, form: form, compact: true)
             %>
