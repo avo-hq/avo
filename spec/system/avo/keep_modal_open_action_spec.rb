@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "PersistentAction", type: :system do
+RSpec.describe "KeepModalOpenOnAction", type: :system do
   describe "persistent action" do
     context "index" do
       it "dummy action normal behaviour" do
@@ -21,7 +21,7 @@ RSpec.describe "PersistentAction", type: :system do
 
         click_on "Actions"
         click_on "Dummy action"
-        check("Persistent")
+        check("Keep modal open")
         fill_in "fields_persistent_text", with: "Persistent =)"
         click_on "Run"
 
@@ -31,7 +31,7 @@ RSpec.describe "PersistentAction", type: :system do
         expect(page).to have_text "Persistent error response ✌️"
         expect(page).to have_field type: "text", id: "fields_persistent_text", with: "Persistent =)"
 
-        uncheck("Persistent")
+        uncheck("Keep modal open")
         click_on "Run"
 
         expect(page).to have_text "Success response ✌️"

@@ -169,14 +169,8 @@ module Avo
       self
     end
 
-    def permitted_message_types
-      [:success, :info, :warning, :error]
-    end
-
-    def persistent(type, text)
-      type = :error unless permitted_message_types.include? type
-      add_message text, type
-      response[:persistent] = true
+    def keep_modal_open
+      response[:keep_modal_open] = true
 
       self
     end

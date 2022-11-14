@@ -42,7 +42,7 @@ module Avo
       performed_action = @action.handle_action(**args)
       response = performed_action.response
 
-      response[:persistent] ? persistent(response) : respond(response)
+      response[:keep_modal_open] ? keep_modal_open(response) : respond(response)
     end
 
     private
@@ -74,9 +74,7 @@ module Avo
       respond_to do |format|
         format.html do
           # Flash the messages collected from the action
-          messages.each do |message|
-            flash[message[:type]] = message[:body]
-          end
+          flash_messages messages
 
           if response[:type] == :redirect
             path = response[:path]
@@ -116,16 +114,19 @@ module Avo
       )
     end
 
-    def persistent(response)
-      messages = get_messages response
-
+    def flash_messages(messages)
       messages.each do |message|
         flash[message[:type]] = message[:body]
       end
+    end
+
+    def keep_modal_open(response)
+      messages = get_messages response
+      flash_messages messages
 
       respond_to do |format|
         format.turbo_stream do
-          render "handle_persistent_error"
+          render "keep_modal_open"
         end
       end
     end
