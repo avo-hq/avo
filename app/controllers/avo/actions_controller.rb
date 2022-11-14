@@ -40,9 +40,7 @@ module Avo
       end
 
       performed_action = @action.handle_action(**args)
-      response = performed_action.response
-
-      response[:keep_modal_open] ? keep_modal_open(response) : respond(response)
+      respond(performed_action.response)
     end
 
     private
@@ -64,8 +62,10 @@ module Avo
     end
 
     def respond(response)
-      response[:type] ||= :reload
       messages = get_messages response
+      return keep_modal_open(messages) if response[:keep_modal_open]
+
+      response[:type] ||= :reload
 
       if response[:type] == :download
         return send_data response[:path], filename: response[:filename]
@@ -120,8 +120,7 @@ module Avo
       end
     end
 
-    def keep_modal_open(response)
-      messages = get_messages response
+    def keep_modal_open(messages)
       flash_messages messages
 
       respond_to do |format|
