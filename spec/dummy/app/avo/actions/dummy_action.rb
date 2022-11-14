@@ -25,6 +25,6 @@ class DummyAction < Avo::BaseAction
     succeed "Success response ✌️"
     warn "Warning response ✌️"
     inform "Info response ✌️"
-    fail "Error response ✌️"
+    error "Error response ✌️"
   end
 end
