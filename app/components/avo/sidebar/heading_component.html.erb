@@ -1,14 +1,21 @@
-<div class="flex justify-between px-4 pr-2 py-1 text-gray-500">
-  <div class="flex items-center text-sm uppercase font-semibold leading-none space-x-1">
-    <span class="min-w-[20px]"><%= icon %></span> <span><%= label %></span>
-  </div>
-  <% if collapsable %>
-    <div class="cursor-pointer <%= 'rotate-90' if collapsed %>"
-      data-action="click->menu#triggerCollapse"
-      data-menu-key-param="<%= key %>"
+<% if collapsable %>
+  <div class="flex justify-between cursor-pointer px-4 pr-2 py-1 text-gray-500"
+    data-action="click->menu#triggerCollapse"
+    data-menu-key-param="<%= key %>"
+  >
+    <div class="flex items-center text-sm uppercase font-semibold leading-none space-x-1">
+      <span class="min-w-[20px]"><%= icon %></span> <span><%= label %></span>
+    </div>
+    <div class="<%= 'rotate-90' if collapsed %>"
       data-menu-target="svg"
     >
       <%= helpers.svg 'heroicons/outline/chevron-down', class: 'h-5'%>
     </div>
-  <% end %>
-</div>
+  </div>
+<% else %>
+  <div class="flex justify-between px-4 pr-2 py-1 text-gray-500">
+    <div class="flex items-center text-sm uppercase font-semibold leading-none space-x-1">
+      <span class="min-w-[20px]"><%= icon %></span> <span><%= label %></span>
+    </div>
+  </div>
+<% end %>

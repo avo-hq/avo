@@ -7,22 +7,28 @@
   <% end %>
 >
   <% if item.name.present? %>
-    <div
-      class="flex justify-between px-10 pr-2 pt-2 pb-0 text-gray-400"
-    >
-      <div class="flex items-center text-xs uppercase font-semibold leading-none">
-        <%= item.name %>
-      </div>
-      <% if collapsable %>
-        <div class="cursor-pointer <%= 'rotate-90' if collapsed %>"
-          data-action="click->menu#triggerCollapse"
+    <% if collapsable %>
+      <div
+        class="flex justify-between cursor-pointer px-10 pr-2 pt-2 pb-0 text-gray-400"
+        data-action="click->menu#triggerCollapse"
+        data-menu-key-param="<%= key %>"
+      >
+        <div class="flex items-center text-xs uppercase font-semibold leading-none">
+          <%= item.name %>
+        </div>
+        <div class="<%= 'rotate-90' if collapsed %>"
           data-menu-target="svg"
-          data-menu-key-param="<%= key %>"
           >
           <%= helpers.svg 'heroicons/outline/chevron-down', class: "h-4 mr-0.5"%>
         </div>
-      <% end %>
-    </div>
+      </div>
+    <% else %>
+      <div class="flex justify-between px-10 pr-2 pt-2 pb-0 text-gray-400">
+        <div class="flex items-center text-xs uppercase font-semibold leading-none">
+          <%= item.name %>
+        </div>
+      </div>
+    <% end %>
   <% end %>
   <div class="w-full space-y-1 <%= 'hidden' if collapsed %>" data-menu-target="items">
     <% items.each do |item| %>
