@@ -46,7 +46,7 @@ module Avo
 
           return value if display_value
 
-          computed_options.invert.stringify_keys[value]
+          computed_options.invert.stringify_keys[value.to_s]
         elsif enum.present?
           if display_value
             options[value]
@@ -56,7 +56,7 @@ module Avo
         elsif display_value
           value
         else
-          options.invert.stringify_keys[value]
+          options.invert.stringify_keys[value.to_s]
         end
       end
     end
