@@ -19,6 +19,7 @@ module Avo
       end
 
       def options_for_select
+        return options if options.is_a?(Array)
         return options_from_computed_options if options.respond_to? :call
         return options_from_enum if enum.present?
         return options.map { |label, value| [value, value] }.to_h if display_value
@@ -26,6 +27,7 @@ module Avo
       end
 
       def label
+        return value if options.is_a?(Array)
         return value_from_computed_options if options.respond_to? :call
         return value_from_enum if enum.present?
         return value if display_value
@@ -35,9 +37,8 @@ module Avo
       private
 
       def options_from_computed_options
+        return computed_options if computed_options.is_a?(Array)
         return computed_options unless display_value
-
-        computed_options = options.call model: model, resource: resource, view: view, field: self
         computed_options.map { |label, value| [value, value] }.to_h
       end
 
@@ -49,14 +50,17 @@ module Avo
       end
 
       def value_from_computed_options
-        return value if display_value
-
-        computed_options = options.call model: model, resource: resource, view: view, field: self
-        return computed_options.invert.stringify_keys[value]
+        return value if display_value || computed_options.is_a?(Array)
+        return computed_options.invert.with_indifferent_access[value]
       end
 
       def value_from_enum
         display_value ? options[value] : value
+      end
+
+      # TODO: Host required
+      def computed_options
+        @computed_options ||= options.call model: model, resource: resource, view: view, field: self
       end
     end
   end
