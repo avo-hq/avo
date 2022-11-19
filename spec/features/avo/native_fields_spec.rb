@@ -21,7 +21,7 @@ RSpec.feature "NativeFields", type: :feature do
     expect(page).to have_css 'div[data-controller="code-field"]'
     expect(find_field('city[tiny_description]', visible: false).value).to eq city.tiny_description
 
-    expect(page).to have_select 'city[status]', options: ["Open", "Closed"], selected: city.status
+    expect(page).to have_select 'city[status]', options: ["Open", "Closed", "Quarantine"], selected: city.status
   end
 
   it "updates the record through the custom fields" do
