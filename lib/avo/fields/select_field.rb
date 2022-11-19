@@ -3,8 +3,9 @@ module Avo
     class SelectField < BaseField
       include Avo::Fields::FieldExtensions::HasIncludeBlank
 
-      attr_reader :options
+      attr_reader :options_from_args
       attr_reader :enum
+      attr_reader :enum_type
       attr_reader :display_value
 
       def initialize(id, **args, &block)
@@ -12,55 +13,51 @@ module Avo
 
         super(id, **args, &block)
 
-        @options = args[:options] || args[:enum]
-        @options = ActiveSupport::HashWithIndifferentAccess.new @options if @options.is_a? Hash
+        @options_from_args = args[:options]
+        if @options_from_args.is_a? Hash
+          @options_from_args = ActiveSupport::HashWithIndifferentAccess.new @options_from_args
+        end
         @enum = args[:enum].present? ? args[:enum] : nil
+        @enum_type = args[:type].presence || :array if enum
         @display_value = args[:display_value].present? ? args[:display_value] : false
       end
 
       def options_for_select
-        return options if options.is_a?(Array)
-        return options_from_computed_options if options.respond_to? :call
         return options_from_enum if enum.present?
-        return options.map { |label, value| [value, value] }.to_h if display_value
+        return options_values if display_value
         options
       end
 
       def label
-        return value if options.is_a?(Array)
-        return value_from_computed_options if options.respond_to? :call
         return value_from_enum if enum.present?
-        return value if display_value
+        return value if display_value || options.is_a?(Array)
         options.invert.with_indifferent_access[value]
       end
 
       private
 
-      def options_from_computed_options
-        return computed_options if computed_options.is_a?(Array)
-        return computed_options unless display_value
-        computed_options.map { |label, value| [value, value] }.to_h
+      def options_values
+        options.is_a?(Array) ? options : options.values
       end
 
       def options_from_enum
-        return options.invert if display_value
-
-        # We need to use the label attribute as the option value because Rails casts it like that
-        options.map { |label, value| [label, label] }.to_h
-      end
-
-      def value_from_computed_options
-        return value if display_value || computed_options.is_a?(Array)
-        return computed_options.invert.with_indifferent_access[value]
+        return enum.invert if display_value
+        return enum if enum_type == :hash
+        enum.map { |label, value| [label, label] }.to_h
       end
 
       def value_from_enum
-        display_value ? options[value] : value
+        display_value ? enum[value] : value
       end
 
-      # TODO: Host required
+      def options
+        @options ||= computed_options || options_from_args
+      end
+
       def computed_options
-        @computed_options ||= options.call model: model, resource: resource, view: view, field: self
+        return nil unless options_from_args.respond_to? :call
+
+        options_from_args.call model: model, resource: resource, view: view, field: self
       end
     end
   end

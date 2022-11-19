@@ -61,7 +61,14 @@ RSpec.feature "Select", type: :feature do
       expect(page).to have_text "250000"
       expect(City.last.population).to eq 250000
     end
-
+    # subject(:test_hash) {
+    #   visit avo.new_resources_city_path
+    #   expect(page).to have_select "city_population", selected: nil, options: ["Zero", "Low", "Medium", "High"]
+    #   select "Medium", from: "city_population"
+    #   save
+    #   expect(page).to have_text "Medium"
+    #   expect(City.last.population).to eq 100000
+    # }
     context "simple" do
       it "show key but save value" do
         CityResource.with_temporary_items do
@@ -189,7 +196,7 @@ RSpec.feature "Select", type: :feature do
         expect(page).to have_select "post_status", selected: "0", options: ["0", "1", "2"]
 
         fill_in "post_name", with: "Published post =)"
-        select "2", from: "post_status"
+        select "2", from: "post_status" #don't test where we want
         save
         expect(page).to have_text "2"
         expect(Post.last.status).to eq "archived"
@@ -198,28 +205,30 @@ RSpec.feature "Select", type: :feature do
   end
 
   describe "when options are an enum hash" do
-    ENUM_HASH_OPTIONS = {
-      "Zero": "None",
-      "Low": "From 1.000 to 50.000",
-      "Medium": "From 100.000 to 250.000",
-      "High": "From 250.000 to 500.000",
-    }
-
-    def test_enum_hash
-      visit avo.new_resources_city_path
-      expect(page).to have_select "city_description", selected: nil, options: ["Zero", "Low", "Medium", "High"]
-      select "Medium", from: "city_description"
-      save
-      expect(page).to have_text "Medium"
-      #TODO: Here in DB is saved Medium but im not sure if that is right...
-      # expect(City.last.description).to eq "From 100.000 to 250.000"
-    end
     context "simple" do
-      it "show key but save value" do
+      it "without display value" do
         CityResource.with_temporary_items do
-          field :description, as: :select, enum: ENUM_HASH_OPTIONS
+          field :status, as: :select, enum: City.statuses, type: :hash
         end
-        test_enum_hash
+        visit avo.new_resources_city_path
+        expect(page).to have_select "city_status", selected: nil, options: ["Open", "Closed", "Quarantine"]
+        select "Quarantine", from: "city_status"
+        save
+        expect(page).to have_text "Quarantine"
+        expect(City.last.status).to eq "Quarantine"
+        CityResource.restore_items_from_backup
+      end
+
+      it "display_value true" do
+        CityResource.with_temporary_items do
+          field :status, as: :select, enum: City.statuses, type: :hash, display_value: true
+        end
+        visit avo.new_resources_city_path
+        expect(page).to have_select "city_status", selected: nil, options: ["open", "closed", "On Quarantine"]
+        select "On Quarantine", from: "city_status"
+        save
+        expect(page).to have_text "On Quarantine"
+        expect(City.last.status).to eq "Quarantine"
         CityResource.restore_items_from_backup
       end
     end
