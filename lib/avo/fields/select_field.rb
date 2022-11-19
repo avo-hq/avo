@@ -13,9 +13,10 @@ module Avo
 
         super(id, **args, &block)
 
-        @options_from_args = args[:options]
-        if @options_from_args.is_a? Hash
-          @options_from_args = ActiveSupport::HashWithIndifferentAccess.new @options_from_args
+        @options_from_args = if args[:options].is_a? Hash
+          ActiveSupport::HashWithIndifferentAccess.new args[:options]
+        else
+          args[:options]
         end
         @enum = args[:enum].present? ? args[:enum] : nil
         @enum_type = args[:type].presence || :array if enum
@@ -51,13 +52,11 @@ module Avo
       end
 
       def options
-        @options ||= computed_options || options_from_args
-      end
-
-      def computed_options
-        return nil unless options_from_args.respond_to? :call
-
-        options_from_args.call model: model, resource: resource, view: view, field: self
+        @options ||= if options_from_args.respond_to? :call
+          options_from_args.call model: model, resource: resource, view: view, field: self
+        else
+          options_from_args
+        end
       end
     end
   end
