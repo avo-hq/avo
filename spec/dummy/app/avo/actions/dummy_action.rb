@@ -13,10 +13,6 @@ class DummyAction < Avo::BaseAction
   field :persistent_text, as: :text
 
   def handle(**args)
-    if options[:special_message]
-      succeed "I love 🥑"
-    end
-
     # Test keep modal open
     if args[:fields][:keep_modal_open]
       succeed "Persistent success response ✌️"
@@ -26,7 +22,11 @@ class DummyAction < Avo::BaseAction
       return keep_modal_open
     end
 
-    succeed "Success response ✌️"
+    if arguments[:special_message]
+      succeed "I love 🥑"
+    else
+      succeed "Success response ✌️"
+    end
     warn "Warning response ✌️"
     inform "Info response ✌️"
     error "Error response ✌️"

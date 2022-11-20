@@ -62,17 +62,17 @@ module Avo
         self.grid_loader = grid_collector
       end
 
-      def action(action_class, options: {})
+      def action(action_class, arguments: {})
         self.actions_loader ||= Avo::Loaders::Loader.new
 
-        action = { class: action_class, options: options }
+        action = { class: action_class, arguments: arguments }
         self.actions_loader.use action
       end
 
-      def filter(filter_class, options: {})
+      def filter(filter_class, arguments: {})
         self.filters_loader ||= Avo::Loaders::Loader.new
 
-        filter = { class: filter_class , options: options }
+        filter = { class: filter_class , arguments: arguments }
         self.filters_loader.use filter
       end
 
@@ -172,10 +172,10 @@ module Avo
       self.class.filters_loader.bag
     end
 
-    def get_filter_options(filter_class)
+    def get_filter_arguments(filter_class)
       filter = get_filters.find { |filter| filter[:class] == filter_class.constantize }
 
-      filter[:options]
+      filter[:arguments]
     end
 
     def get_actions
@@ -184,10 +184,10 @@ module Avo
       self.class.actions_loader.bag
     end
 
-    def get_action_options(action_class)
+    def get_action_arguments(action_class)
       action = get_actions.find { |action| action[:class].to_s == action_class.to_s }
 
-      action[:options]
+      action[:arguments]
     end
 
     def default_panel_name

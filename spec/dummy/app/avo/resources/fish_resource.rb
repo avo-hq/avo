@@ -27,14 +27,14 @@ class FishResource < Avo::BaseResource
   field :user, as: :belongs_to
   field :type, as: :text, hide_on: :forms
 
-  filter NameFilter, options: {
+  filter NameFilter, arguments: {
     case_insensitive: true
   }
 
-
-  action DummyAction, options: {
+  action DummyAction, arguments: {
     special_message: true
   }
+
   action ReleaseFish
 
   tool FishInformation, show_on: :forms

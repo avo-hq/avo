@@ -19,7 +19,7 @@ module Avo
     attr_accessor :model
     attr_accessor :resource
     attr_accessor :user
-    attr_reader :options
+    attr_reader :arguments
 
     delegate :view, to: :class
     delegate :context, to: ::Avo::App
@@ -57,12 +57,12 @@ module Avo
       self.class.to_s.demodulize.underscore.humanize(keep_id_suffix: true)
     end
 
-    def initialize(model: nil, resource: nil, user: nil, view: nil, options: {})
+    def initialize(model: nil, resource: nil, user: nil, view: nil, arguments: {})
       self.class.model = model if model.present?
       self.class.resource = resource if resource.present?
       self.class.user = user if user.present?
       self.class.view = view if view.present?
-      @options = options
+      @arguments = arguments
 
       self.class.message ||= I18n.t("avo.are_you_sure_you_want_to_run_this_option")
       self.class.confirm_button_label ||= I18n.t("avo.run")
@@ -134,7 +134,7 @@ module Avo
         parent_resource: parent_resource,
         resource: self.class.resource,
         view: self.class.view,
-        options: options
+        arguments: arguments
       ).handle
     end
 

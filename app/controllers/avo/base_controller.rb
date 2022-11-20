@@ -59,10 +59,8 @@ module Avo
 
       # Apply filters to the current query
       filters_to_be_applied.each do |filter_class, filter_value|
-        options = @resource.get_filter_options filter_class
-
         @query = filter_class.safe_constantize.new(
-          options: options
+          arguments: @resource.get_filter_arguments(filter_class)
         ).apply_query request, @query, filter_value
       end
 
@@ -314,7 +312,7 @@ module Avo
       @filters = @resource
         .get_filters
         .map do |filter|
-          filter[:class].new options: filter[:options]
+          filter[:class].new arguments: filter[:arguments]
         end
         .select do |filter|
           filter.visible_in_view(resource: @resource, parent_model: @parent_model, parent_resource: @parent_resource)
@@ -325,7 +323,7 @@ module Avo
       @actions = @resource
         .get_actions
         .map do |action|
-          action[:class].new(model: @model, resource: @resource, view: @view, options: action[:options])
+          action[:class].new(model: @model, resource: @resource, view: @view, arguments: action[:arguments])
         end
         .select do |action|
           action.visible_in_view(parent_model: @parent_model, parent_resource: @parent_resource)
@@ -353,7 +351,7 @@ module Avo
         end
         .each do |filter|
           # Run the react method if it's present
-          reaction = filter[:class].new(options: filter[:options]).react
+          reaction = filter[:class].new(arguments: filter[:arguments]).react
 
           next if reaction.nil?
 
@@ -368,7 +366,7 @@ module Avo
       filter_defaults = {}
 
       @resource.get_filters.each do |filter|
-        filter = filter[:class].new options: filter[:options]
+        filter = filter[:class].new arguments: filter[:arguments]
 
         unless filter.default.nil?
           filter_defaults[filter.class.to_s] = filter.default

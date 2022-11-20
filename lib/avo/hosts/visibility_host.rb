@@ -4,7 +4,7 @@ module Avo
       option :parent_model
       option :parent_resource
       option :resource
-      option :options
+      option :arguments
 
       # View is optional because in filter context the view is always :index
       option :view, optional: true

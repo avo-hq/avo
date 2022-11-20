@@ -10,7 +10,7 @@ module Avo
       class_attribute :template, default: "avo/base/select_filter"
       class_attribute :visible
 
-      attr_reader :options
+      attr_reader :arguments
 
       delegate :params, to: Avo::App
 
@@ -26,8 +26,8 @@ module Avo
         end
       end
 
-      def initialize(options: {})
-        @options = options
+      def initialize(arguments: {})
+        @arguments = arguments
       end
 
       def apply_query(request, query, value)
@@ -70,7 +70,7 @@ module Avo
           parent_model: parent_model,
           parent_resource: parent_resource,
           resource: resource,
-          options: options
+          arguments: arguments
         ).handle
 
       end
