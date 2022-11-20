@@ -22,7 +22,10 @@ module Avo
 
         return unless paths.present?
 
-        Rails.autoloaders.main.eager_load_dir(Rails.root.join(*paths).to_s)
+        pathname = Rails.root.join(*paths)
+        if pathname.exist? && pathname.directory?
+          Rails.autoloaders.main.eager_load_dir(pathname.to_s)
+        end
       end
 
       def boot
