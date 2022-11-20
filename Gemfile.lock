@@ -1,12 +1,11 @@
 PATH
   remote: .
   specs:
-    avo (2.18.0)
+    avo (2.19.0)
       actionview (>= 6.0)
       active_link_to
       activerecord (>= 6.0)
       addressable
-      breadcrumbs_on_rails
       docile
       dry-initializer
       httparty
@@ -127,8 +126,6 @@ GEM
     bootsnap (1.13.0)
       msgpack (~> 1.2)
     brakeman (5.3.1)
-    breadcrumbs_on_rails (4.1.0)
-      railties (>= 5.0)
     builder (3.2.4)
     bump (0.10.0)
     bundler-integrity (1.0.9)
@@ -457,7 +454,6 @@ DEPENDENCIES
   aws-sdk-s3
   bootsnap (>= 1.4.2)
   brakeman
-  breadcrumbs_on_rails
   bump
   bundler-integrity (~> 1.0)
   byebug
@@ -491,6 +487,7 @@ DEPENDENCIES
   pg (>= 0.18, < 2.0)
   puma (~> 5.6.4)
   pundit
+  rails (~> 6.1.0)
   rails-controller-testing
   ransack
   redis (~> 4.0)

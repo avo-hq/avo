@@ -46,8 +46,9 @@ class Avo::BaseComponent < ViewComponent::Base
 
   def parent_or_child_resource
     return @resource unless link_to_child_resource_is_enabled?
+    return @resource if @resource.model.class.base_class == @resource.model.class
 
-    ::Avo::App.get_resource_by_model_name(@resource.model.class).dup
+    ::Avo::App.get_resource_by_model_name(@resource.model.class).dup || @resource
   end
 
   def link_to_child_resource_is_enabled?

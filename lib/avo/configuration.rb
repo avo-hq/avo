@@ -40,6 +40,7 @@ module Avo
     attr_accessor :resource_default_view
     attr_accessor :authorization_client
     attr_accessor :field_wrapper_layout
+    attr_accessor :sign_out_path_name
     attr_writer :branding
 
     def initialize

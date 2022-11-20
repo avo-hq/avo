@@ -228,6 +228,9 @@ module Avo
         @errors = Array.wrap(exception.message)
       end
 
+      # Add the errors from the model
+      @errors = Array.wrap([@errors, @model.errors.full_messages]).compact
+
       succeeded
     end
 
@@ -487,7 +490,7 @@ module Avo
     end
 
     def destroy_fail_message
-      @errors.present? ? @errors.first : t("avo.failed")
+      @errors.present? ? @errors.join(". ") : t("avo.failed")
     end
 
     def after_destroy_path

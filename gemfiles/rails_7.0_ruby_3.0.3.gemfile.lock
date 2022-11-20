@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    avo (2.18.0)
+    avo (2.19.0)
       actionview (>= 6.0)
       active_link_to
       activerecord (>= 6.0)
@@ -244,9 +244,6 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.7.1)
       mini_mime (>= 0.1.1)
-    manifester (0.1.8)
-      rails (>= 6.0)
-      zeitwerk
     marcel (1.0.2)
     matrix (0.4.2)
     meta-tags (2.17.0)
@@ -423,7 +420,7 @@ GEM
     tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.2.0)
-    view_component (2.74.1)
+    view_component (2.75.0)
       activesupport (>= 5.0.0, < 8.0)
       concurrent-ruby (~> 1.0)
       method_source (~> 1.0)
@@ -495,7 +492,6 @@ DEPENDENCIES
   jsbundling-rails
   launchy
   listen (>= 3.5.1)
-  manifester
   meta-tags
   net-smtp
   pg (>= 0.18, < 2.0)
