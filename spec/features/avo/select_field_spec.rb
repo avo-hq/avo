@@ -49,7 +49,7 @@ RSpec.feature "Select", type: :feature do
       expect(page).to have_select "city_population", selected: nil, options: ["Zero", "Low", "Medium", "High"]
       select "Medium", from: "city_population"
       save
-      expect(page).to have_text "Medium"
+      expect(find_field_element(:population)).to have_text("Medium")
       expect(City.last.population).to eq 100000
     end
 
@@ -58,17 +58,10 @@ RSpec.feature "Select", type: :feature do
       expect(page).to have_select "city_population", selected: nil, options: ["0", "50000", "100000", "250000"]
       select "250000", from: "city_population"
       save
-      expect(page).to have_text "250000"
+      expect(find_field_element(:population)).to have_text("250000")
       expect(City.last.population).to eq 250000
     end
-    # subject(:test_hash) {
-    #   visit avo.new_resources_city_path
-    #   expect(page).to have_select "city_population", selected: nil, options: ["Zero", "Low", "Medium", "High"]
-    #   select "Medium", from: "city_population"
-    #   save
-    #   expect(page).to have_text "Medium"
-    #   expect(City.last.population).to eq 100000
-    # }
+
     context "simple" do
       it "show key but save value" do
         CityResource.with_temporary_items do
@@ -179,7 +172,7 @@ RSpec.feature "Select", type: :feature do
         fill_in "post_name", with: "Published post =)"
         select "published", from: "post_status"
         save
-        expect(page).to have_text "published"
+        expect(find_field_element(:status)).to have_text("published")
         expect(Post.last.status).to eq "published"
       end
     end
@@ -196,9 +189,9 @@ RSpec.feature "Select", type: :feature do
         expect(page).to have_select "post_status", selected: "0", options: ["0", "1", "2"]
 
         fill_in "post_name", with: "Published post =)"
-        select "2", from: "post_status" #don't test where we want
+        select "2", from: "post_status"
         save
-        expect(page).to have_text "2"
+        expect(find_field_element(:status)).to have_text("2")
         expect(Post.last.status).to eq "archived"
       end
     end
@@ -214,7 +207,7 @@ RSpec.feature "Select", type: :feature do
         expect(page).to have_select "city_status", selected: nil, options: ["Open", "Closed", "Quarantine"]
         select "Quarantine", from: "city_status"
         save
-        expect(page).to have_text "Quarantine"
+        expect(find_field_element(:status)).to have_text("Quarantine")
         expect(City.last.status).to eq "Quarantine"
         CityResource.restore_items_from_backup
       end
@@ -227,7 +220,7 @@ RSpec.feature "Select", type: :feature do
         expect(page).to have_select "city_status", selected: nil, options: ["open", "closed", "On Quarantine"]
         select "On Quarantine", from: "city_status"
         save
-        expect(page).to have_text "On Quarantine"
+        expect(find_field_element(:status)).to have_text("On Quarantine")
         expect(City.last.status).to eq "Quarantine"
         CityResource.restore_items_from_backup
       end
