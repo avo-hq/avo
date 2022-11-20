@@ -201,7 +201,7 @@ RSpec.feature "Select", type: :feature do
     context "simple" do
       it "without display value" do
         CityResource.with_temporary_items do
-          field :status, as: :select, enum: City.statuses, type: :hash
+          field :status, as: :select, enum: City.statuses
         end
         visit avo.new_resources_city_path
         expect(page).to have_select "city_status", selected: nil, options: ["Open", "Closed", "Quarantine"]
@@ -214,7 +214,7 @@ RSpec.feature "Select", type: :feature do
 
       it "display_value true" do
         CityResource.with_temporary_items do
-          field :status, as: :select, enum: City.statuses, type: :hash, display_value: true
+          field :status, as: :select, enum: City.statuses, display_value: true
         end
         visit avo.new_resources_city_path
         expect(page).to have_select "city_status", selected: nil, options: ["open", "closed", "On Quarantine"]
