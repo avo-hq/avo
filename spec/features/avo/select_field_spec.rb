@@ -4,6 +4,11 @@ RSpec.feature "Select", type: :feature do
   let(:project) { create :project }
   let(:placeholder) { "Choose an option" }
 
+  after :each do
+    CityResource.restore_items_from_backup
+    PostResource.restore_items_from_backup
+  end
+
   describe "when type is nil" do
     let(:person) { create :person, type: nil }
 
@@ -68,7 +73,6 @@ RSpec.feature "Select", type: :feature do
           field :population, as: :select, options: HASH_OPTIONS
         end
         test_hash
-        CityResource.restore_items_from_backup
       end
 
       it "show value and save value (display_value true)" do
@@ -76,7 +80,6 @@ RSpec.feature "Select", type: :feature do
           field :population, as: :select, options: HASH_OPTIONS, display_value: true
         end
         test_hash_display_value
-        CityResource.restore_items_from_backup
       end
     end
 
@@ -88,7 +91,6 @@ RSpec.feature "Select", type: :feature do
           end
         end
         test_hash
-        CityResource.restore_items_from_backup
       end
 
       it "show value and save value (display_value true)" do
@@ -98,7 +100,6 @@ RSpec.feature "Select", type: :feature do
           end
         end
         test_hash_display_value
-        CityResource.restore_items_from_backup
       end
     end
   end
@@ -121,7 +122,6 @@ RSpec.feature "Select", type: :feature do
           field :name, as: :select, options: ARRAY_OPTIONS
         end
         test_array
-        CityResource.restore_items_from_backup
       end
 
       it "normal behaviour with display_value" do
@@ -129,7 +129,6 @@ RSpec.feature "Select", type: :feature do
           field :name, as: :select, options: ARRAY_OPTIONS, display_value: true
         end
         test_array
-        CityResource.restore_items_from_backup
       end
     end
 
@@ -141,7 +140,6 @@ RSpec.feature "Select", type: :feature do
           end
         end
         test_array
-        CityResource.restore_items_from_backup
       end
 
       it "normal behaviour with display_value" do
@@ -151,7 +149,6 @@ RSpec.feature "Select", type: :feature do
           end
         end
         test_array
-        CityResource.restore_items_from_backup
       end
     end
 
@@ -209,7 +206,6 @@ RSpec.feature "Select", type: :feature do
         save
         expect(find_field_element(:status)).to have_text("Quarantine")
         expect(City.last.status).to eq "Quarantine"
-        CityResource.restore_items_from_backup
       end
 
       it "display_value true" do
@@ -222,7 +218,6 @@ RSpec.feature "Select", type: :feature do
         save
         expect(find_field_element(:status)).to have_text("On Quarantine")
         expect(City.last.status).to eq "Quarantine"
-        CityResource.restore_items_from_backup
       end
     end
   end
