@@ -149,7 +149,7 @@ module Avo
     end
 
     def fail(text)
-      Rails.logger.warn "DEPRECATION WARNING: Action fail method is deprecated in favor of error method and will be removed from avo version 3.0.0"
+      Rails.logger.warn "DEPRECATION WARNING: Action fail method is deprecated in favor of error method and will be removed from Avo version 3.0.0"
 
       error text
     end
