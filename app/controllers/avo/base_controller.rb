@@ -59,7 +59,9 @@ module Avo
 
       # Apply filters to the current query
       filters_to_be_applied.each do |filter_class, filter_value|
-        @query = filter_class.safe_constantize.new.apply_query request, @query, filter_value
+        @query = filter_class.safe_constantize.new(
+          arguments: @resource.get_filter_arguments(filter_class)
+        ).apply_query request, @query, filter_value
       end
 
       extra_pagy_params = {}
@@ -309,8 +311,8 @@ module Avo
     def set_filters
       @filters = @resource
         .get_filters
-        .map do |filter_class|
-          filter_class.new
+        .map do |filter|
+          filter[:class].new arguments: filter[:arguments]
         end
         .select do |filter|
           filter.visible_in_view(resource: @resource, parent_model: @parent_model, parent_resource: @parent_resource)
@@ -321,7 +323,7 @@ module Avo
       @actions = @resource
         .get_actions
         .map do |action|
-          action.new(model: @model, resource: @resource, view: @view)
+          action[:class].new(model: @model, resource: @resource, view: @view, arguments: action[:arguments])
         end
         .select do |action|
           action.visible_in_view(parent_model: @parent_model, parent_resource: @parent_resource)
@@ -344,16 +346,16 @@ module Avo
 
       # Go through all filters
       @resource.get_filters
-        .select do |filter_class|
-          filter_class.instance_methods(false).include? :react
+        .select do |filter|
+          filter[:class].instance_methods(false).include? :react
         end
-        .each do |filter_class|
+        .each do |filter|
           # Run the react method if it's present
-          reaction = filter_class.new.react
+          reaction = filter[:class].new(arguments: filter[:arguments]).react
 
           next if reaction.nil?
 
-          filter_reactions[filter_class.to_s] = filter_class.new.react
+          filter_reactions[filter[:class].to_s] = reaction
         end
 
       filter_reactions
@@ -363,11 +365,11 @@ module Avo
     def filters_to_be_applied
       filter_defaults = {}
 
-      @resource.get_filters.each do |filter_class|
-        filter = filter_class.new
+      @resource.get_filters.each do |filter|
+        filter = filter[:class].new arguments: filter[:arguments]
 
         unless filter.default.nil?
-          filter_defaults[filter_class.to_s] = filter.default
+          filter_defaults[filter.class.to_s] = filter.default
         end
       end
 

@@ -14,6 +14,10 @@ class NameFilter < Avo::Filters::TextFilter
   # end
 
   def apply(request, query, value)
-    query.where("name LIKE ?", "%#{value}%")
+    if arguments[:case_insensitive]
+      query.where("LOWER(name) LIKE ?", "%#{value.downcase}%")
+    else
+      query.where("name LIKE ?", "%#{value}%")
+    end
   end
 end

@@ -51,7 +51,13 @@ module Avo
     end
 
     def set_action
-      @action = action_class.new(model: @model, resource: @resource, user: _current_user, view: @view)
+      @action = action_class.new(
+        model: @model,
+        resource: @resource,
+        user: _current_user,
+        view: @view,
+        arguments: @resource.get_action_arguments(action_class)
+      )
     end
 
     def action_class

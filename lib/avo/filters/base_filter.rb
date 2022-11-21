@@ -10,6 +10,8 @@ module Avo
       class_attribute :template, default: "avo/base/select_filter"
       class_attribute :visible
 
+      attr_reader :arguments
+
       delegate :params, to: Avo::App
 
       class << self
@@ -22,6 +24,10 @@ module Avo
         def get_empty_message
           empty_message || I18n.t("avo.no_options_available")
         end
+      end
+
+      def initialize(arguments: {})
+        @arguments = arguments
       end
 
       def apply_query(request, query, value)
@@ -63,7 +69,8 @@ module Avo
           params: params,
           parent_model: parent_model,
           parent_resource: parent_resource,
-          resource: resource
+          resource: resource,
+          arguments: arguments
         ).handle
 
       end

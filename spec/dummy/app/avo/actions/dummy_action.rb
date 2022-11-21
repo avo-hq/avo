@@ -22,7 +22,11 @@ class DummyAction < Avo::BaseAction
       return keep_modal_open
     end
 
-    succeed "Success response ✌️"
+    if arguments[:special_message]
+      succeed "I love 🥑"
+    else
+      succeed "Success response ✌️"
+    end
     warn "Warning response ✌️"
     inform "Info response ✌️"
     error "Error response ✌️"

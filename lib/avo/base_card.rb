@@ -15,6 +15,7 @@ module Avo
 
     attr_accessor :dashboard
     attr_accessor :options
+    attr_accessor :arguments
     attr_accessor :index
     attr_accessor :params
 
@@ -26,9 +27,10 @@ module Avo
       end
     end
 
-    def initialize(dashboard:, options: {}, index: 0, cols: nil, rows: nil, label: nil, description: nil, refresh_every: nil)
+    def initialize(dashboard:, options: {}, arguments: {}, index: 0, cols: nil, rows: nil, label: nil, description: nil, refresh_every: nil)
       @dashboard = dashboard
       @options = options
+      @arguments = arguments
       @index = index
       @cols = cols
       @rows = rows
