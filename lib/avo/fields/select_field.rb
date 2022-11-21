@@ -3,7 +3,7 @@ module Avo
     class SelectField < BaseField
       include Avo::Fields::FieldExtensions::HasIncludeBlank
 
-      attr_reader :options
+      attr_reader :options_from_args
       attr_reader :enum
       attr_reader :display_value
 
@@ -12,51 +12,56 @@ module Avo
 
         super(id, **args, &block)
 
-        @options = args[:options] || args[:enum]
-        @options = ActiveSupport::HashWithIndifferentAccess.new @options if @options.is_a? Hash
+        @options_from_args = if args[:options].is_a? Hash
+          ActiveSupport::HashWithIndifferentAccess.new args[:options]
+        else
+          args[:options]
+        end
         @enum = args[:enum].present? ? args[:enum] : nil
         @display_value = args[:display_value].present? ? args[:display_value] : false
       end
 
       def options_for_select
-        if options.respond_to? :call
-          computed_options = options.call model: model, resource: resource, view: view, field: self
-          if display_value
-            computed_options.map { |label, value| [value, value] }.to_h
-          else
-            computed_options
-          end
-        elsif enum.present?
-          if display_value
-            options.invert
-          else
-            # We need to use the label attribute as the option value because Rails casts it like that
-            options.map { |label, value| [label, label] }.to_h
-          end
-        elsif display_value
-          options.map { |label, value| [value, value] }.to_h
-        else
-          options
+        # If options are array don't need any pre-process
+        return options if options.is_a?(Array)
+
+        # If options are enum we invert the enum if display value, else (see next comment)
+        if enum.present?
+          return enum.invert if display_value
+
+          # We need to use the label attribute as the option value because Rails casts it like that
+          return enum.map { |label, value| [label, label] }.to_h
         end
+
+        # When code arrive here it means options are Hash
+        # If display_value is true we only need to return the values of the Hash
+        display_value ? options.values : options
       end
 
       def label
-        if options.respond_to? :call
-          computed_options = options.call model: model, resource: resource, view: view, field: self
+        # If options are array don't need any pre-process
+        return value if options.is_a?(Array)
 
-          return value if display_value
+        # If options are enum and display_value is true we return the Value of that key-value pair, else return key of that key-value pair
+        # WARNING: value here is the DB stored value and not the value of a key-value pair.
+        if enum.present?
+          return enum[value] if display_value
+          return value
+        end
 
-          computed_options.invert.stringify_keys[value]
-        elsif enum.present?
-          if display_value
-            options[value]
-          else
-            value
-          end
-        elsif display_value
-          value
+        # When code arrive here it means options are Hash
+        # If display_value is true we only need to return the value stored in DB
+        display_value ? value : options.invert[value]
+      end
+
+      private
+
+      # Cache options as options given on block or as options received from arguments
+      def options
+        @options ||= if options_from_args.respond_to? :call
+          options_from_args.call model: model, resource: resource, view: view, field: self
         else
-          options.invert.stringify_keys[value]
+          options_from_args
         end
       end
     end
