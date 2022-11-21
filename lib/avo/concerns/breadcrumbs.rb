@@ -17,10 +17,10 @@ module Avo
         helper_method :add_breadcrumb, :avo_breadcrumbs
       end
 
-      Crumb = Struct.new(:name, :path)
+      Crumb = Struct.new(:name, :path) unless defined?(Crumb)
 
       class Builder
-        DEFAULT_SEPARATOR = " &raquo; ".freeze
+        DEFAULT_SEPARATOR = " &raquo; ".freeze unless defined?(DEFAULT_SEPARATOR)
 
         attr_reader :context, :options
 
