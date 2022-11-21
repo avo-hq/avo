@@ -64,17 +64,23 @@ module Avo
         end
 
         # Dives deep into panels and tabs to fetch all the fields for a resource.
-        def fields(only_root: false)
+        def fields(only_root: false, view: nil)
           fields = []
 
           items.each do |item|
             next if item.nil?
 
-            unless only_root
+            if only_root
               # Dive into panels to fetch their fields
-              if item.is_panel?
-                fields << extract_fields_from_items(item)
+              # puts ["item.class->", item.class, view].inspect
+              if item.is_panel? && item.visible_on?(view)
+              # if item.is_panel?
+                t = extract_fields_from_items(item)
+                fields << t
               end
+            end
+
+            unless only_root
 
               # Dive into tabs to fetch their fields
               if item.is_tab_group?
@@ -106,17 +112,13 @@ module Avo
         private
 
         def extract_fields_from_items(thing)
-          fields = []
-
-          thing.items.each do |item|
+          thing.items.map do |item|
             if item.is_field?
-              fields << item
+              item
             elsif item.is_panel?
-              fields << extract_fields_from_items(item)
+              extract_fields_from_items(item)
             end
           end
-
-          fields
         end
 
         def ensure_items_holder_initialized
@@ -158,7 +160,7 @@ module Avo
       end
 
       def get_field_definitions(only_root: false)
-        fields = self.fields(only_root: only_root)
+        fields = self.fields(only_root: only_root, view: view)
 
         return [] if fields.blank?
 

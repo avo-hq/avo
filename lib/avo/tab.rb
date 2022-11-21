@@ -50,10 +50,12 @@ class Avo::Tab
     visible_items.blank?
   end
 
-  # Checks for visibility on itself or on theone field it holds
+  # Checks for visibility on itself or on the one field it holds
   def visible_on?(view)
     if holds_one_field
+      # puts 1.inspect
       super(view) && items.first.visible_on?(view)
+      # puts 2.inspect
     else
       super(view)
     end
