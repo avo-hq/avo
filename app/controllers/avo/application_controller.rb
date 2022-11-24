@@ -176,7 +176,7 @@ module Avo
     end
 
     def hydrate_related_resource
-      model = @related_resource.model_class.descendants.include?(@model.class) ? @model : nil
+      model = @related_resource.model_class == @model.class ? @model : nil
       @related_resource.hydrate(view: action_name.to_sym, user: _current_user, model: model)
     end
 
