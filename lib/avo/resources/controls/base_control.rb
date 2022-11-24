@@ -2,28 +2,35 @@ module Avo
   module Resources
     module Controls
       class BaseControl
+
+        attr_reader :args
+
         def initialize(**args)
           @args = args
         end
 
         def label
-          @args[:label] || @label
+          args[:label] || @label
         end
 
         def title
-          @args[:title]
+          args[:title]
         end
 
         def color
-          @args[:color] || :gray
+          args[:color] || :gray
         end
 
         def style
-          @args[:style] || :text
+          args[:style] || :text
         end
 
         def icon
-          @args[:icon] || nil
+          args[:icon] || nil
+        end
+
+        def arguments
+          args[:arguments] || {}
         end
 
         def back_button?

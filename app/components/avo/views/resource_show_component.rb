@@ -4,6 +4,8 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
   include Avo::ResourcesHelper
   include Avo::ApplicationHelper
 
+  attr_reader :resource
+
   def initialize(resource: nil, reflection: nil, parent_resource: nil, parent_model: nil, resource_panel: nil, actions: [])
     @resource = resource
     @reflection = reflection
@@ -45,14 +47,46 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
     helpers.edit_resource_path(model: @resource.model, resource: @resource, **args)
   end
 
+  def back_buttons
+    show_controlls.grep(Avo::Resources::Controls::BackButton)
+  end
+
+  def delete_buttons
+    show_controlls.grep(Avo::Resources::Controls::DeleteButton)
+  end
+
+  def edit_buttons
+    show_controlls.grep(Avo::Resources::Controls::EditButton)
+  end
+
+  def actions_lists
+    show_controlls.grep(Avo::Resources::Controls::ActionsList)
+  end
+
+  def actions
+    show_controlls.grep(Avo::Resources::Controls::Action)
+  end
+
+  def links
+    show_controlls.grep(Avo::Resources::Controls::LinkTo)
+  end
+
+  def register_action(action, index)
+    resource.class.action(action.klass, arguments: action.arguments, only_on: :show_controls, index: index)
+  end
+
   private
 
-  # In development and test environments we shoudl show the invalid field errors
+  # In development and test environments we should show the invalid field errors
   def should_display_invalid_fields_errors?
     (Rails.env.development? || Rails.env.test?) && @resource.invalid_fields.present?
   end
 
   def has_one_field?
     field.present? and field.instance_of? Avo::Fields::HasOneField
+  end
+
+  def show_controlls
+    @show_controlls ||= resource.render_show_controls
   end
 end

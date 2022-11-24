@@ -21,5 +21,6 @@ class ReleaseFish < Avo::BaseAction
     message = ActionView::Base.full_sanitizer.sanitize fields[:message]
 
     succeed "#{models.count} fish released with message '#{message}' by #{user&.name}."
+    inform arguments[:index]
   end
 end

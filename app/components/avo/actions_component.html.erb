@@ -19,7 +19,7 @@
   >
     <div class="w-full space divide-y">
       <% actions.each_with_index do |action, index| %>
-        <%= link_to action_path(action.param_id),
+        <%= link_to action_path(action.param_id, action.index),
           data: {
             'turbo-frame': 'actions_show',
             'action': 'click->actions-picker#visitAction',

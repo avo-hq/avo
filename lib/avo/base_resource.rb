@@ -62,10 +62,15 @@ module Avo
         self.grid_loader = grid_collector
       end
 
-      def action(action_class, arguments: {})
+      def action(action_class, arguments: {}, only_on: nil, index: nil)
         self.actions_loader ||= Avo::Loaders::Loader.new
 
-        action = { class: action_class, arguments: arguments }
+        index = 0 if index.blank?
+        self.actions_loader.bag.each do |action|
+          return if action.class == action_class && action.dig(:index) == index
+        end
+
+        action = { class: action_class, arguments: arguments, index: index, only_on: only_on }
         self.actions_loader.use action
       end
 
@@ -184,8 +189,8 @@ module Avo
       self.class.actions_loader.bag
     end
 
-    def get_action_arguments(action_class)
-      action = get_actions.find { |action| action[:class].to_s == action_class.to_s }
+    def get_action_arguments(action_class, index: nil)
+      action = get_actions.find { |action| action[:class].to_s == action_class.to_s && action[:index] == index.to_i }
 
       action[:arguments]
     end

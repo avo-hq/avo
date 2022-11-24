@@ -56,7 +56,8 @@ module Avo
         resource: @resource,
         user: _current_user,
         view: @view,
-        arguments: @resource.get_action_arguments(action_class)
+        arguments: @resource.get_action_arguments(action_class, index: params[:index]),
+        index: params[:index],
       )
     end
 

@@ -9,7 +9,7 @@
   >
     <%= form_with model: @model,
       scope: 'fields',
-      url: "#{@resource.records_path}/actions/#{@action.param_id}",
+      url: "#{@resource.records_path}/actions/#{@action.param_id}/#{@action.index}",
       local: true,
       data: @action.class.form_data_attributes do |form|
     %>

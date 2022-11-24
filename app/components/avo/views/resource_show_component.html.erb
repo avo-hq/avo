@@ -10,89 +10,117 @@
   <%= render Avo::PanelComponent.new(name: title, description: @resource.resource_description, display_breadcrumbs: @reflection.blank?, index: 0, data: { panel_id: "main" }) do |c| %>
     <% c.tools do %>
       <% if @resource.has_show_controls? %>
-        <% @resource.render_show_controls.each do |control| %>
-          <% if control.back_button? %>
-            <%= a_link back_path,
-                style: :text,
-                title: control.title,
-                data: {
-                  tippy: control.title ? :tooltip : nil,
-                },
-                icon: 'arrow-left' do %>
-              <%= control.label %>
+        <%# RENDER BACK BUTTONS %>
+        <% back_buttons.each do |back_button| %>
+          <%= a_link back_path,
+            style: :text,
+            title: back_button.title,
+            icon: 'arrow-left',
+            data: {
+              tippy: back_button.title ? :tooltip : nil,
+            } do %>
+            <%= back_button.label %>
+          <% end %>
+        <% end %>
+
+        <%# RENDER DELETE BUTTONS %>
+        <% if can_see_the_destroy_button? %>
+          <% delete_buttons.each do |delete_button| %>
+            <%= a_link helpers.resource_path(model: @resource.model, resource: @resource),
+              style: :text,
+              color: :red,
+              icon: 'trash',
+              form_class: 'flex flex-col sm:flex-row sm:inline-flex',
+              title: delete_button.title,
+              data: {
+                turbo_confirm: t('avo.are_you_sure', item: @resource.model.model_name.name.downcase),
+                turbo_method: :delete,
+                control: :destroy,
+                tippy: delete_button.title ? :tooltip : nil,
+                'resource-id': @resource.model.id,
+              } do %>
+              <%= delete_button.label %>
             <% end %>
-          <% elsif control.delete_button? %>
-            <% if can_see_the_destroy_button? %>
-              <%= a_link helpers.resource_path(model: @resource.model, resource: @resource),
-                style: :text,
-                color: :red,
-                icon: 'trash',
-                form_class: 'flex flex-col sm:flex-row sm:inline-flex',
-                title: control.title,
-                data: {
-                  turbo_confirm: t('avo.are_you_sure', item: @resource.model.model_name.name.downcase),
-                  turbo_method: :delete,
-                  control: :destroy,
-                  tippy: control.title ? :tooltip : nil,
-                  'resource-id': @resource.model.id,
-                } do %>
-                <%= control.label %>
-              <% end %>
-            <% end %>
-          <% elsif can_see_the_actions_button? && control.actions_list? %>
-            <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view, exclude: control.exclude, style: control.style, color: control.color, label: control.label %>
-          <% elsif control.edit_button? %>
-            <% if @resource.authorization.authorize_action(:edit, raise_exception: false) %>
-            <% end %>
+          <% end %>
+        <% end %>
+
+        <%# RENDER ACTIONS LIST %>
+        <% if can_see_the_actions_button? %>
+          <% actions_lists.each do |actions_list| %>
+            <%= render Avo::ActionsComponent.new(
+                actions: @actions,
+                resource: @resource,
+                view: @view,
+                exclude: actions_list.exclude,
+                style: actions_list.style,
+                color: actions_list.color,
+                label: actions_list.label ,
+              ) %>
+          <% end %>
+        <% end %>
+
+        <%# RENDER EDIT BUTTONS %>
+        <% if @resource.authorization.authorize_action(:edit, raise_exception: false) %>
+          <% edit_buttons.each do |edit_button| %>
             <%= a_link edit_path,
-                color: :primary,
-                style: :primary,
-                title: control.title,
-                data: {
-                  tippy: control.title ? :tooltip : nil,
-                },
-                icon: 'edit' do %>
-              <%= control.label %>
+              color: :primary,
+              style: :primary,
+              title: edit_button.title,
+              data: {
+                tippy: edit_button.title ? :tooltip : nil,
+              },
+              icon: 'edit' do %>
+              <%= edit_button.label %>
             <% end %>
-          <% elsif control.action? %>
-            <%= a_link control.path,
-                color: control.color,
-                style: control.style,
-                icon: control.icon,
-                title: control.title,
-                data: {
-                  tippy: control.title ? :tooltip : nil,
-                  'turbo-frame': 'actions_show',
-                  'action': 'click->actions-picker#visitAction',
-                } do %>
-              <%= control.label %>
-            <% end %>
-          <% elsif control.link_to? %>
-            <%= a_link control.path,
-                color: control.color,
-                style: control.style,
-                icon: control.icon,
-                title: control.title,
-                target: control.target,
-                class: control.class,
-                data: {
-                  **control.data,
-                  tippy: control.title ? :tooltip : nil,
-                } do %>
-              <%= control.label %>
-            <% end %>
-          <% elsif control.detach_button? %>
-            <% if @reflection.present? && @resource.model.present? && can_detach? %>
-              <%= a_button url: detach_path,
-                icon: 'detach',
-                method: :delete,
-                form_class: 'flex flex-col sm:flex-row sm:inline-flex',
-                style: :text,
-                data: {
-                  confirm: "Are you sure you want to detach this #{title}."
-                } do %>
-                <%= control.label %>
-              <% end %>
+          <% end %>
+        <% end %>
+
+        <%# RENDER ACTIONS %>
+        <% actions.each_with_index do |action, index| %>
+          <% register_action(action, index + 1) %>
+          <%= a_link action.path,
+              color: action.color,
+              style: action.style,
+              icon: action.icon,
+              title: action.title,
+              data: {
+                tippy: action.title ? :tooltip : nil,
+                'turbo-frame': 'actions_show',
+                'action': 'click->actions-picker#visitAction',
+              } do %>
+            <%= action.label %>
+          <% end %>
+        <% end %>
+
+        <%# RENDER LINKS %>
+        <% links.each do |link| %>
+          <%= a_link link.path,
+            color: link.color,
+            style: link.style,
+            icon: link.icon,
+            title: link.title,
+            target: link.target,
+            class: link.class,
+            data: {
+              **link.data,
+              tippy: link.title ? :tooltip : nil,
+            } do %>
+            <%= link.label %>
+          <% end %>
+        <% end %>
+
+        <%# RENDER DETTACH BUTTONS %>
+        <% if @reflection.present? && @resource.model.present? && can_detach? %>
+          <% dettach_buttons.each do |detach_button| %>
+            <%= a_button url: detach_path,
+              icon: 'detach',
+              method: :delete,
+              form_class: 'flex flex-col sm:flex-row sm:inline-flex',
+              style: :text,
+              data: {
+                confirm: "Are you sure you want to detach this #{title}."
+              } do %>
+              <%= detach_button.label %>
             <% end %>
           <% end %>
         <% end %>

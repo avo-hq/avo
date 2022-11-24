@@ -19,18 +19,18 @@ class Avo::ActionsComponent < ViewComponent::Base
   end
 
   def actions
-    @actions.reject { |action| action.class.in?(@exclude) }
+    @actions.reject { |action| action.class.in?(@exclude) || action.only_on == :show_controls }
   end
 
   # When running an action for one record we should do it on a special path.
   # We do that so we get the `model` param inside the action so we can prefill fields.
-  def action_path(id)
-    return many_records_path(id) unless @resource.has_model_id?
+  def action_path(id, index)
+    return many_records_path(id, index) unless @resource.has_model_id?
 
     if on_record_page?
-      single_record_path id
+      single_record_path id, index
     else
-      many_records_path id
+      many_records_path id, index
     end
   end
 
@@ -51,15 +51,15 @@ class Avo::ActionsComponent < ViewComponent::Base
     !on_record_page?
   end
 
-  def single_record_path(id)
+  def single_record_path(id, index)
     Avo::Services::URIService.parse(@resource.record_path)
-      .append_paths("actions", id)
+      .append_paths("actions", id, index)
       .to_s
   end
 
-  def many_records_path(id)
+  def many_records_path(id, index)
     Avo::Services::URIService.parse(@resource.records_path)
-      .append_paths("actions", id)
+      .append_paths("actions", id, index)
       .to_s
   end
 end
