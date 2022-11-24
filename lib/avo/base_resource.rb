@@ -151,7 +151,7 @@ module Avo
       @user = user if user.present?
       @params = params if params.present?
 
-      if model.present?
+      if model.present? && model.class == model_class
         @model = model
 
         hydrate_model_with_default_values if @view == :new
