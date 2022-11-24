@@ -146,16 +146,12 @@ module Avo
     end
     alias :model :record
 
-    def belongs_to_resource_family(model)
-      model_class.descendants.include?(model.class) || model_class.ancestors.include?(model.class)
-    end
-
     def hydrate(model: nil, view: nil, user: nil, params: nil)
       @view = view if view.present?
       @user = user if user.present?
       @params = params if params.present?
 
-      if model.present? && belongs_to_resource_family(model)
+      if model.present?
         @model = model
 
         hydrate_model_with_default_values if @view == :new
