@@ -62,10 +62,10 @@ module Avo
         self.grid_loader = grid_collector
       end
 
-      def action(action_class, arguments: {}, only_on: nil, index: nil)
+      def action(action_class, arguments: {}, only_on: nil, index: 0)
         self.actions_loader ||= Avo::Loaders::Loader.new
 
-        action = { class: action_class, arguments: arguments, index: index || 0, only_on: only_on }
+        action = { class: action_class, arguments: arguments, index: index, only_on: only_on }
         self.actions_loader.use action
       end
 
