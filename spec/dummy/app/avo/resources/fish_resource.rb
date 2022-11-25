@@ -17,7 +17,7 @@ class FishResource < Avo::BaseResource
     delete_button label: "", title: "something"
     detach_button label: "", title: "something"
     actions_list style: :primary, color: :slate, label: "Runnables"
-    action ReleaseFish, style: :primary, color: :fuchsia, icon: "heroicons/outline/globe", arguments: { index: "I'm index 1"}
+    action ReleaseFish, style: :primary, color: :fuchsia, icon: "heroicons/outline/globe", arguments: { custom_message: "I'm inside show_controls ;)"}
     # action ReleaseFish, style: :primary, color: :fuchsia, icon: "heroicons/outline/globe", arguments: { index: "I'm index 2"}
     edit_button label: ""
   end
@@ -36,7 +36,7 @@ class FishResource < Avo::BaseResource
     special_message: true
   }
 
-  action ReleaseFish, arguments: { index: "I'm index 0"}
+  action ReleaseFish, arguments: { custom_message: "I'm inside actions list :D"}
 
   tool FishInformation, show_on: :forms
 
