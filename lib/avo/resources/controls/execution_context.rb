@@ -50,7 +50,16 @@ module Avo
         end
 
         def action(klass, **args)
-          items_holder.add_item Avo::Resources::Controls::Action.new(klass, record: record, resource: resource, view: view, index: action_index, **args)
+          index = action_index
+          resource.class.action(klass, arguments: args[:arguments] || {}, only_on: :show_controls, index: index)
+          items_holder.add_item Avo::Resources::Controls::Action.new(
+            klass,
+            record: record,
+            resource: resource,
+            view: view,
+            index: index,
+            **args
+          )
         end
 
         def action_index

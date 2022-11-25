@@ -76,8 +76,7 @@
         <% end %>
 
         <%# RENDER ACTIONS %>
-        <% actions.each_with_index do |action, index| %>
-          <% register_action(action, index + 1) %>
+        <% actions.each do |action| %>
           <%= a_link action.path,
               color: action.color,
               style: action.style,

@@ -71,10 +71,6 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
     show_controlls.grep(Avo::Resources::Controls::LinkTo)
   end
 
-  def register_action(action, index)
-    resource.class.action(action.klass, arguments: action.arguments, only_on: :show_controls, index: index)
-  end
-
   private
 
   # In development and test environments we should show the invalid field errors
