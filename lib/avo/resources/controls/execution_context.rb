@@ -71,10 +71,8 @@ module Avo
           if @action_index.nil?
             @action_index = 1
           else
-            @action_index = @action_index + 1
+            @action_index += 1
           end
-
-          @action_index
         end
       end
     end
