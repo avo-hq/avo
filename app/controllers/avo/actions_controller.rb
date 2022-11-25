@@ -33,7 +33,11 @@ module Avo
 
       unless @action.standalone
         args[:models] = if @selected_query.present?
-          @resource.model_class.find_by_sql decrypted_query
+          begin
+            @resource.model_class.find_by_sql decrypted_query
+          rescue
+            decrypted_query
+          end
         else
           @resource.class.find_scope.find resource_ids
         end

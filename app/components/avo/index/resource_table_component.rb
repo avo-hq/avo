@@ -2,7 +2,7 @@
 
 class Avo::Index::ResourceTableComponent < ViewComponent::Base
   include Avo::ApplicationHelper
-  attr_reader :pagy
+  attr_reader :pagy, :query
 
   def initialize(resources: nil, resource: nil, reflection: nil, parent_model: nil, parent_resource: nil, pagy: nil, query: nil)
     @resources = resources
@@ -15,11 +15,23 @@ class Avo::Index::ResourceTableComponent < ViewComponent::Base
   end
 
   def encrypted_query
-    return if @query.nil?
+    return if query.nil?
 
     Avo::Services::EncryptionService.encrypt(
-      message: @query.all.to_sql,
+      message: message_to_encrypt,
       purpose: :select_all
     )
+  end
+
+  def message_to_encrypt
+    if query.respond_to? :all
+      if query.all.respond_to? :to_sql
+        query.all.to_sql
+      else
+        query.all
+      end
+    else
+      query
+    end
   end
 end
