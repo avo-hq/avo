@@ -65,12 +65,7 @@ module Avo
       def action(action_class, arguments: {}, only_on: nil, index: nil)
         self.actions_loader ||= Avo::Loaders::Loader.new
 
-        index = 0 if index.blank?
-        self.actions_loader.bag.each do |action|
-          return if action.class == action_class && action.dig(:index) == index
-        end
-
-        action = { class: action_class, arguments: arguments, index: index, only_on: only_on }
+        action = { class: action_class, arguments: arguments, index: index || 0, only_on: only_on }
         self.actions_loader.use action
       end
 

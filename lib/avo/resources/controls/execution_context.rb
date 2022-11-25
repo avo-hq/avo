@@ -51,7 +51,12 @@ module Avo
 
         def action(klass, **args)
           index = action_index
-          resource.class.action(klass, arguments: args[:arguments] || {}, only_on: :show_controls, index: index)
+
+          # Check if action is already registred, if not, register action on resource
+          unless resource.get_actions.pluck(:class, :index).include? [klass, index]
+            resource.class.action(klass, arguments: args[:arguments] || {}, only_on: :show_controls, index: index)
+          end
+
           items_holder.add_item Avo::Resources::Controls::Action.new(
             klass,
             record: record,
