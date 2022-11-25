@@ -50,6 +50,7 @@ module Avo
     class_attribute :keep_filters_panel_open, default: false
     class_attribute :extra_params
     class_attribute :link_to_child_resource, default: false
+    class_attribute :empty_state_name
 
     class << self
       delegate :t, to: ::I18n

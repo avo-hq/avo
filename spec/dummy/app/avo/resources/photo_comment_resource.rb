@@ -5,6 +5,7 @@ class PhotoCommentResource < Avo::BaseResource
   self.includes = [:user]
   self.model_class = ::Comment
   self.authorization_policy = PhotoCommentPolicy
+  self.empty_state_name = "comments"
   self.search_query = -> do
     if params[:via_association] == "has_many"
       scope.ransack(id_eq: params[:q], m: "or").result(distinct: false).joins(:photo_attachment)
