@@ -29,10 +29,6 @@ module Avo
           args[:icon] || nil
         end
 
-        def arguments
-          args[:arguments] || {}
-        end
-
         def back_button?
           is_a? Avo::Resources::Controls::BackButton
         end

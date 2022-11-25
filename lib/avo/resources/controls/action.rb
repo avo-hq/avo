@@ -2,12 +2,7 @@ module Avo
   module Resources
     module Controls
       class Action < BaseControl
-        attr_reader :klass
-        attr_reader :model
-        attr_reader :resource
-        attr_reader :view
-        attr_reader :index
-        attr_reader :args
+        attr_reader :klass, :model, :resource, :view, :index, :args
 
         def initialize(klass, model: nil, resource: nil, view: nil, index: nil, **args)
           super(**args)
@@ -25,7 +20,7 @@ module Avo
 
         def path
           Avo::Services::URIService
-            .parse(@resource.record_path)
+            .parse(resource.record_path)
             .append_paths("actions", action.param_id, action.index).to_s
         end
 

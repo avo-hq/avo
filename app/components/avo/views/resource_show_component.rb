@@ -48,27 +48,27 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
   end
 
   def back_buttons
-    show_controlls.grep(Avo::Resources::Controls::BackButton)
+    show_controlls.select { |control| control.back_button? }
   end
 
   def delete_buttons
-    show_controlls.grep(Avo::Resources::Controls::DeleteButton)
+    show_controlls.select { |control| control.delete_button? }
   end
 
   def edit_buttons
-    show_controlls.grep(Avo::Resources::Controls::EditButton)
+    show_controlls.select { |control| control.edit_button? }
   end
 
   def actions_lists
-    show_controlls.grep(Avo::Resources::Controls::ActionsList)
+    show_controlls.select { |control| control.actions_list? }
   end
 
   def actions
-    show_controlls.grep(Avo::Resources::Controls::Action)
+    show_controlls.select { |control| control.action? }
   end
 
   def links
-    show_controlls.grep(Avo::Resources::Controls::LinkTo)
+    show_controlls.select { |control| control.link_to? }
   end
 
   private
