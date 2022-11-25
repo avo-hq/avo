@@ -18,7 +18,7 @@ class FishResource < Avo::BaseResource
     detach_button label: "", title: "something"
     actions_list style: :primary, color: :slate, label: "Runnables"
     action ReleaseFish, style: :primary, color: :fuchsia, icon: "heroicons/outline/globe", arguments: { index: "I'm index 1"}
-    action ReleaseFish, style: :primary, color: :fuchsia, icon: "heroicons/outline/globe", arguments: { index: "I'm index 2"}
+    # action ReleaseFish, style: :primary, color: :fuchsia, icon: "heroicons/outline/globe", arguments: { index: "I'm index 2"}
     edit_button label: ""
   end
 
