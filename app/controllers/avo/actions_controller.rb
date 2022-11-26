@@ -33,11 +33,7 @@ module Avo
 
       unless @action.standalone
         args[:models] = if @selected_query.present?
-          begin
-            @resource.model_class.find_by_sql decrypted_query
-          rescue
-            decrypted_query
-          end
+          models_or_decrypted_object
         else
           @resource.class.find_scope.find resource_ids
         end
@@ -138,6 +134,14 @@ module Avo
         format.turbo_stream do
           render "keep_modal_open"
         end
+      end
+    end
+
+    def models_or_decrypted_object
+      begin
+        @resource.model_class.find_by_sql decrypted_query
+      rescue
+        decrypted_query
       end
     end
   end
