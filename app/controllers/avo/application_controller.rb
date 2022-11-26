@@ -172,12 +172,11 @@ module Avo
     end
 
     def hydrate_resource
-      @resource.hydrate(view: action_name.to_sym, user: _current_user)
+      @resource.hydrate(view: action_name.to_sym, user: _current_user, model: @model)
     end
 
     def hydrate_related_resource
-      model = @related_resource.model_class == @model.class ? @model : nil
-      @related_resource.hydrate(view: action_name.to_sym, user: _current_user, model: model)
+      @related_resource.hydrate(view: action_name.to_sym, user: _current_user, model: @related_model)
     end
 
     def authorize_base_action
