@@ -50,7 +50,6 @@ module Avo
     class_attribute :keep_filters_panel_open, default: false
     class_attribute :extra_params
     class_attribute :link_to_child_resource, default: false
-    class_attribute :empty_state_name
 
     class << self
       delegate :t, to: ::I18n
@@ -236,13 +235,13 @@ module Avo
       self.class.translation_key
     end
 
-    def name
+    def name(count: 1)
       default = class_name_without_resource.to_s.gsub('::', ' ').underscore.humanize
 
       return @name if @name.present?
 
       if translation_key && ::Avo::App.translation_enabled
-        t(translation_key, count: 1, default: default).capitalize
+        t(translation_key, count: count, default: default).capitalize
       else
         default
       end

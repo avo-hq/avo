@@ -9,6 +9,6 @@
   </div>
 <% else %>
   <div class="bg-white rounded shadow-panel">
-    <%= helpers.empty_state resource_name: @resource.name.downcase.pluralize, related_name: params[:related_name], view_type: :grid %>
+    <%= helpers.empty_state resource_name: @resource.name(count: 0).downcase, related_name: params[:related_name], view_type: :grid %>
   </div>
 <% end %>
