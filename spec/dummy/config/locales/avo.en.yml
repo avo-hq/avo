@@ -5,3 +5,7 @@ en:
         zero: posts
         one: post
         other: posts
+      comment:
+        zero: comments
+        one: comment
+        other: comments
