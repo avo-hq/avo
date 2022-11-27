@@ -1,0 +1,7 @@
+en:
+  avo:
+    resource_translations:
+      post:
+        zero: posts
+        one: post
+        other: posts
