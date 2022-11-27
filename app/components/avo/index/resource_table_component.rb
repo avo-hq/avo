@@ -15,23 +15,11 @@ class Avo::Index::ResourceTableComponent < ViewComponent::Base
   end
 
   def encrypted_query
-    return if query.nil?
+    return :select_all_disabled if query.nil? || !query.respond_to?(:all) || !query.all.respond_to?(:to_sql)
 
     Avo::Services::EncryptionService.encrypt(
-      message: message_to_encrypt,
+      message: query.all.to_sql,
       purpose: :select_all
     )
-  end
-
-  def message_to_encrypt
-    if query.respond_to? :all
-      if query.all.respond_to? :to_sql
-        query.all.to_sql
-      else
-        query.all
-      end
-    else
-      query
-    end
   end
 end
