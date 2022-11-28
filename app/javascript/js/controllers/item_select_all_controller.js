@@ -18,7 +18,7 @@ export default class extends Controller {
     document.querySelectorAll(`[data-controller="item-selector"][data-resource-name="${this.resourceName}"] input[type=checkbox]`)
       .forEach((checkbox) => checkbox.checked !== checked && checkbox.click())
 
-    if (this.selectAllEnable()) {
+    if (this.selectAllEnabled()) {
       this.selectAllOverlay(checked)
 
       // When de-selecting everything, ensure the selectAll toggle is false and hide overlay.
