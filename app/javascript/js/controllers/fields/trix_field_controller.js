@@ -93,7 +93,10 @@ export default class extends Controller {
 
     xhr.open('POST', this.uploadUrl, true)
 
-    xhr.setRequestHeader('X-CSRF-Token', document.querySelector('meta[name="csrf-token"]').content)
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content
+    if (csrfToken) {
+      xhr.setRequestHeader('X-CSRF-Token', csrfToken)
+    }
 
     xhr.upload.addEventListener('progress', (event) => {
       // eslint-disable-next-line no-mixed-operators
