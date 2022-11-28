@@ -9,6 +9,8 @@ module Avo
       # That may be a string, boolean, or array
       # Each args should also have a default value
       def add_prop_from_args(args = {}, name: nil, type: :string, default: nil)
+        value = default
+
         if type == :boolean
           case args[name.to_sym]
           when nil

@@ -10,7 +10,6 @@ module Avo
       include ActionView::Helpers::UrlHelper
       include Avo::Fields::FieldExtensions::VisibleInDifferentViews
 
-      include Avo::Concerns::HandlesFieldArgs
       include Avo::Concerns::HasHTMLAttributes
       include Avo::Fields::Concerns::IsRequired
       include Avo::Fields::Concerns::IsReadonly
