@@ -55,7 +55,7 @@ export default class extends Controller {
         }
 
         // Prevent file uploads for resources that haven't been saved yet.
-        if (this.resourceId === '') {
+        if (!this.resourceId) {
           event.preventDefault()
           alert("You can't upload files into the Trix editor until you save the resource.")
 
@@ -63,7 +63,7 @@ export default class extends Controller {
         }
 
         // Prevent file uploads for fields without an attachment key.
-        if (this.attachmentKey === '') {
+        if (!this.attachmentKey) {
           event.preventDefault()
           alert("You haven't set an `attachment_key` to this Trix field.")
         }

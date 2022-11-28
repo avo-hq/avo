@@ -117,9 +117,10 @@ module Avo
       end
 
       def valid_attachment_name(record, association_name)
-        get_record_associations(record).keys.each do |name|
-          return association_name if name == "#{association_name}_attachment" || name == "#{association_name}_attachments"
+        association_exists = get_record_associations(record).keys.any? do |name|
+          name == "#{association_name}_attachment" || name == "#{association_name}_attachments"
         end
+        return association_name if association_exists
       end
 
       def get_available_models
