@@ -58,7 +58,7 @@ module Avo
 
       # Cache options as options given on block or as options received from arguments
       def options
-        @options ||= if options_from_args.respond_to? :call
+        if options_from_args.respond_to? :call
           options_from_args.call model: model, resource: resource, view: view, field: self
         else
           options_from_args
