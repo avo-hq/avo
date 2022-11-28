@@ -60,14 +60,13 @@ module Avo
         self.class.decode_filters params[PARAM_KEY]
       end
 
-      def visible_in_view(resource: nil, parent_model: nil, parent_resource: nil)
+      def visible_in_view(resource: nil, parent_resource: nil)
         return true if visible.blank?
 
         # Run the visible block if available
         Avo::Hosts::VisibilityHost.new(
           block: visible,
           params: params,
-          parent_model: parent_model,
           parent_resource: parent_resource,
           resource: resource,
           arguments: arguments
