@@ -18,8 +18,7 @@ export default class extends Controller {
     document.querySelectorAll(`[data-controller="item-selector"][data-resource-name="${this.resourceName}"] input[type=checkbox]`)
       .forEach((checkbox) => checkbox.checked !== checked && checkbox.click())
 
-    // Only run "all matching" if there are more pages available
-    if (this.pageCountValue > 1) {
+    if (this.selectAllEnabled()) {
       this.selectAllOverlay(checked)
 
       // When de-selecting everything, ensure the selectAll toggle is false and hide overlay.
@@ -35,8 +34,7 @@ export default class extends Controller {
     this.itemCheckboxTargets.forEach((checkbox) => allSelected = allSelected && checkbox.checked)
     this.checkboxTarget.checked = allSelected
 
-    // Only run "all matching" if there are more pages available
-    if (this.pageCountValue > 1) {
+    if (this.selectAllEnabled()) {
       this.selectAllOverlay(allSelected)
       this.resetUnselected()
     }
@@ -62,5 +60,10 @@ export default class extends Controller {
     } else {
       this.selectAllOverlayTarget.classList.add('hidden')
     }
+  }
+
+  // True if there are more pages available and if query encryption run successfully
+  selectAllEnabled() {
+    return this.pageCountValue > 1 && this.selectedAllQueryValue !== 'select_all_disabled'
   }
 }
