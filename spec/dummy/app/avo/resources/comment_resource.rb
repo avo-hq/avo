@@ -18,7 +18,8 @@ class CommentResource < Avo::BaseResource
     end
   end
   field :tiny_name, as: :text, only_on: :index, as_description: true
-  field :posted_at, as: :date_time,
+  field :posted_at,
+    as: :date_time,
     picker_format: "Y-m-d H:i:S",
     format: "cccc, d LLLL yyyy, HH:mm ZZZZ" # Wednesday, 10 February 1988, 16:00 GMT
 

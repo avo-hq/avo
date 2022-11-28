@@ -6,6 +6,27 @@ RSpec.describe "Date field", type: :system do
   subject(:text_input) { find '[data-field-id="posted_at"] [data-controller="date-field"] input[type="text"]' }
   subject(:hidden_input) { find '[data-field-id="posted_at"] [data-controller="date-field"] input[type="hidden"]', visible: false }
 
+  before do
+    CommentResource.with_temporary_items do
+      field :body, as: :textarea, format_using: ->(value) do
+        if view == :show
+          content_tag(:div, style: "white-space: pre-line") { value }
+        else
+          value
+        end
+      end
+      field :posted_at,
+        as: :date_time,
+        relative: false,
+        picker_format: "Y-m-d H:i:S",
+        format: "cccc, d LLLL yyyy, HH:mm ZZZZ" # Wednesday, 10 February 1988, 16:00 GMT
+    end
+  end
+
+  after do
+    CommentResource.restore_items_from_backup
+  end
+
   describe "on UTC" do
     context "index" do
       it "displays the time" do
