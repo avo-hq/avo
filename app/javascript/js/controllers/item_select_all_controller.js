@@ -63,7 +63,7 @@ export default class extends Controller {
   }
 
   // True if there are more pages available and if query encryption run successfully
-  selectAllEnable() {
+  selectAllEnabled() {
     return this.pageCountValue > 1 && this.selectedAllQueryValue !== 'select_all_disabled'
   }
 }
