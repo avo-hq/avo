@@ -116,7 +116,7 @@ module Avo
       self
     end
 
-    def visible_in_view(parent_model: nil, parent_resource: nil)
+    def visible_in_view(parent_resource: nil)
       if visible.blank?
         # Hide on the :new view by default
         return false if view == :new
@@ -128,9 +128,7 @@ module Avo
       # Run the visible block if available
       Avo::Hosts::VisibilityHost.new(
         block: visible,
-        model: self.class.model,
         params: params,
-        parent_model: parent_model,
         parent_resource: parent_resource,
         resource: self.class.resource,
         view: self.class.view,

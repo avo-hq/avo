@@ -315,7 +315,7 @@ module Avo
           filter[:class].new arguments: filter[:arguments]
         end
         .select do |filter|
-          filter.visible_in_view(resource: @resource, parent_model: @parent_model, parent_resource: @parent_resource)
+          filter.visible_in_view(resource: @resource, parent_resource: @parent_resource)
         end
     end
 
@@ -326,7 +326,7 @@ module Avo
           action[:class].new(model: @model, resource: @resource, view: @view, arguments: action[:arguments])
         end
         .select do |action|
-          action.visible_in_view(parent_model: @parent_model, parent_resource: @parent_resource)
+          action.visible_in_view(parent_resource: @parent_resource)
         end
     end
 

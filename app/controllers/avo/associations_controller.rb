@@ -3,12 +3,13 @@ require_dependency "avo/base_controller"
 module Avo
   class AssociationsController < BaseController
     before_action :set_model, only: [:show, :index, :new, :create, :destroy, :order]
+    before_action :hydrate_resource, only: [:show, :index, :new, :create, :destroy, :order]
     before_action :set_related_resource_name
     before_action :set_related_resource, only: [:show, :index, :new, :create, :destroy, :order]
     before_action :set_related_authorization
     before_action :set_reflection_field
-    before_action :hydrate_related_resource, only: [:show, :index, :create, :destroy, :order]
     before_action :set_related_model, only: [:show, :order]
+    before_action :hydrate_related_resource, only: [:show, :index, :create, :destroy, :order]
     before_action :set_reflection
     before_action :set_attachment_class, only: [:show, :index, :new, :create, :destroy, :order]
     before_action :set_attachment_resource, only: [:show, :index, :new, :create, :destroy, :order]
