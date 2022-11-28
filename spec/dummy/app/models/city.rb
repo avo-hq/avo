@@ -16,7 +16,7 @@
 #  updated_at       :datetime         not null
 #
 class City < ApplicationRecord
-  enum status: {Open: "open", Closed: "closed"}
+  enum status: {Open: "open", Closed: "closed", Quarantine: "On Quarantine"}
 
   def random_image=(value)
   end

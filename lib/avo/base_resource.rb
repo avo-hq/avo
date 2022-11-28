@@ -62,16 +62,18 @@ module Avo
         self.grid_loader = grid_collector
       end
 
-      def action(action_class)
+      def action(action_class, arguments: {})
         self.actions_loader ||= Avo::Loaders::Loader.new
 
-        self.actions_loader.use action_class
+        action = { class: action_class, arguments: arguments }
+        self.actions_loader.use action
       end
 
-      def filter(filter_class)
+      def filter(filter_class, arguments: {})
         self.filters_loader ||= Avo::Loaders::Loader.new
 
-        self.filters_loader.use filter_class
+        filter = { class: filter_class , arguments: arguments }
+        self.filters_loader.use filter
       end
 
       # This is the search_query scope
@@ -170,10 +172,22 @@ module Avo
       self.class.filters_loader.bag
     end
 
+    def get_filter_arguments(filter_class)
+      filter = get_filters.find { |filter| filter[:class] == filter_class.constantize }
+
+      filter[:arguments]
+    end
+
     def get_actions
       return [] if self.class.actions_loader.blank?
 
       self.class.actions_loader.bag
+    end
+
+    def get_action_arguments(action_class)
+      action = get_actions.find { |action| action[:class].to_s == action_class.to_s }
+
+      action[:arguments]
     end
 
     def default_panel_name

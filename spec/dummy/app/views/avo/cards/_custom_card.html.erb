@@ -8,8 +8,14 @@
     <br>
     Options: <%= @card.options %>
     <br>
+    Arguments: <br>
+    <%= @card.arguments %>
+    <br>
     Range: <%= @card.range %>
     <br>
     Options block: <%= @card.options[:block].call params %>
+    <br>
+    Arguments block: <br>
+    <%= @card.arguments[:block].call params %>
   </div>
 </div>

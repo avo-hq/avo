@@ -2,17 +2,6 @@ class DummyAction < Avo::BaseAction
   self.name = "Dummy action"
   self.standalone = true
   self.visible = -> do
-    #   Access to:
-    #   block
-    #   context
-    #   current_user
-    #   params
-    #   parent_model
-    #   parent_resource
-    #   resource
-    #   view
-    #   view_context
-
     if resource.is_a? UserResource
       view == :index
     else
@@ -20,12 +9,26 @@ class DummyAction < Avo::BaseAction
     end
   end
 
-  def handle(**args)
-    # Do something here
+  field :keep_modal_open, as: :boolean
+  field :persistent_text, as: :text
 
-    succeed "Success response ✌️"
+  def handle(**args)
+    # Test keep modal open
+    if args[:fields][:keep_modal_open]
+      succeed "Persistent success response ✌️"
+      warn "Persistent warning response ✌️"
+      inform "Persistent info response ✌️"
+      error "Persistent error response ✌️"
+      return keep_modal_open
+    end
+
+    if arguments[:special_message]
+      succeed "I love 🥑"
+    else
+      succeed "Success response ✌️"
+    end
     warn "Warning response ✌️"
     inform "Info response ✌️"
-    fail "Error response ✌️"
+    error "Error response ✌️"
   end
 end

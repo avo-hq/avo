@@ -12,7 +12,12 @@ module Avo
       class_attribute :index, default: 0
 
       class << self
-        def card(klass, label: nil, description: nil, cols: nil, rows: nil, refresh_every: nil, options: {})
+        def options_deprecation_message
+          Rails.logger.warn "DEPRECATION WARNING: Card options parameter is deprecated in favor of arguments parameter and will be removed from Avo version 3.0.0"
+        end
+
+        def card(klass, label: nil, description: nil, cols: nil, rows: nil, refresh_every: nil, options: {}, arguments: {})
+          options_deprecation_message if options.present?
           self.items_holder ||= []
 
           self.items_holder << klass.new(dashboard: self,
@@ -22,6 +27,7 @@ module Avo
             rows: rows,
             refresh_every: refresh_every,
             options: options,
+            arguments: arguments,
             index: index
           )
           self.index += 1
