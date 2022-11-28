@@ -34,7 +34,7 @@ export default class extends Controller {
     this.itemCheckboxTargets.forEach((checkbox) => allSelected = allSelected && checkbox.checked)
     this.checkboxTarget.checked = allSelected
 
-    if (this.selectAllEnable()) {
+    if (this.selectAllEnabled()) {
       this.selectAllOverlay(allSelected)
       this.resetUnselected()
     }
