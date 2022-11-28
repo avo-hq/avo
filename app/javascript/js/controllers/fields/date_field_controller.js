@@ -114,7 +114,7 @@ export default class extends Controller {
     let value = this.parsedValue
 
     // Set the zone only if the type of field is date time or relative time.
-    if (this.fieldHasTime || this.relativeValue) {
+    if (this.fieldHasTime && this.relativeValue) {
       value = value.setZone(this.displayTimezone)
     }
 

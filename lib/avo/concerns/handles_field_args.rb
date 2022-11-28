@@ -12,10 +12,7 @@ module Avo
         value = default
 
         if type == :boolean
-          # If there's a property thats defined in the BaseField, check against that, if not, use the default.
-          if args[name.to_sym].present?
-            value = args[name.to_sym] == true
-          end
+          value = args[name.to_sym] == true
         else
           value = args[name.to_sym] unless args.dig(name.to_sym).nil?
         end
