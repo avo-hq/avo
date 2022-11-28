@@ -9,10 +9,15 @@ module Avo
       # That may be a string, boolean, or array
       # Each args should also have a default value
       def add_prop_from_args(args = {}, name: nil, type: :string, default: nil)
-        value = default
-
         if type == :boolean
-          value = args[name.to_sym] == true
+          case args[name.to_sym]
+          when nil
+            value = default
+          when false
+            value = false
+          when true
+            value = true
+          end
         else
           value = args[name.to_sym] unless args.dig(name.to_sym).nil?
         end
