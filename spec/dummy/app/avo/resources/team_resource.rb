@@ -18,7 +18,7 @@ class TeamResource < Avo::BaseResource
     end
   end
 
-  field :logo, as: :external_image,hide_on: :show, as_avatar: :rounded do |model|
+  field :logo, as: :external_image, hide_on: :show, as_avatar: :rounded do |model|
     if model.url
       "//logo.clearbit.com/#{URI.parse(model.url).host}?size=180"
     end

@@ -6,6 +6,27 @@ RSpec.describe "Date field on western zone", type: :system do
 
   subject(:text_input) { find '[data-field-id="posted_at"] [data-controller="date-field"] input[type="text"]' }
 
+  before do
+    CommentResource.with_temporary_items do
+      field :body, as: :textarea, format_using: ->(value) do
+        if view == :show
+          content_tag(:div, style: "white-space: pre-line") { value }
+        else
+          value
+        end
+      end
+      field :posted_at,
+        as: :date_time,
+        relative: false,
+        picker_format: "Y-m-d H:i:S",
+        format: "cccc, d LLLL yyyy, HH:mm ZZZZ" # Wednesday, 10 February 1988, 16:00 GMT
+    end
+  end
+
+  after do
+    CommentResource.restore_items_from_backup
+  end
+
   describe "in a western (negative) Timezone", tz: "America/Chicago" do
     it { reset_browser }
 

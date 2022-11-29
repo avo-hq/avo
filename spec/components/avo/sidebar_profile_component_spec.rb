@@ -9,7 +9,7 @@ RSpec.describe Avo::SidebarProfileComponent, type: :component do
   describe 'destroy_user_session_path' do
     context 'with default configuration' do
       it "renders sign out link" do
-        with_controller_class Avo::BaseController do      
+        with_controller_class Avo::BaseController do
           render_inline(described_class.new(user: nil))
           expect(page).to have_css "form[action='/users/sign_out']", text: "Sign out"
         end
@@ -24,7 +24,7 @@ RSpec.describe Avo::SidebarProfileComponent, type: :component do
       end
 
       it "does not render sign out link" do
-        with_controller_class Avo::BaseController do      
+        with_controller_class Avo::BaseController do
           render_inline(described_class.new(user: nil))
           expect(page).to_not have_css "form", text: "Sign out"
         end
@@ -41,8 +41,12 @@ RSpec.describe Avo::SidebarProfileComponent, type: :component do
         Avo.configuration.current_user_resource_name = :account
       end
 
+      after do
+        Avo.configuration.current_user_resource_name = nil
+      end
+
       it "renders sign out link" do
-        with_controller_class Avo::BaseController do      
+        with_controller_class Avo::BaseController do
           render_inline(described_class.new(user: nil))
           expect(page).to have_css "form[action='/accounts/sign_out']", text: "Sign out"
         end
@@ -53,14 +57,14 @@ RSpec.describe Avo::SidebarProfileComponent, type: :component do
       before do
         without_partial_double_verification do
           # Stub an additional route
-          allow(Rails.application.routes.url_helpers).to receive(:custom_sign_out_path).and_return("/custom/sign_out")
+          allow(Rails.application.routes.url_helpers).to receive(:sign_out_path_name).and_return("/custom/sign_out")
         end
 
-        Avo.configuration.sign_out_path_name = :custom_sign_out_path
+        Avo.configuration.sign_out_path_name = :sign_out_path_name
       end
 
       it "renders sign out link" do
-        with_controller_class Avo::BaseController do      
+        with_controller_class Avo::BaseController do
           render_inline(described_class.new(user: nil))
           expect(page).to have_css "form[action='/custom/sign_out']", text: "Sign out"
         end

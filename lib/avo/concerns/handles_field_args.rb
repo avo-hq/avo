@@ -12,7 +12,14 @@ module Avo
         value = default
 
         if type == :boolean
-          value = args[name.to_sym] == true
+          case args[name.to_sym]
+          when nil
+            value = default
+          when false
+            value = false
+          when true
+            value = true
+          end
         else
           value = args[name.to_sym] unless args.dig(name.to_sym).nil?
         end
