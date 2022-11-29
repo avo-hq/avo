@@ -72,6 +72,14 @@ module Avo
       @response[:messages] = []
     end
 
+    def get_message
+      if self.class.message.respond_to? :call
+        Avo::Hosts::ResourceRecordHost.new(block: self.class.message, record: self.class.model, resource: self.class.resource).handle
+      else
+        self.class.message
+      end
+    end
+
     def get_attributes_for_action
       get_fields.map do |field|
         [field.id, field.value || field.default]
