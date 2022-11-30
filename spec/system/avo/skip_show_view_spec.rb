@@ -51,6 +51,7 @@ RSpec.feature "SkipShowView", type: :system do
       click_on "Save"
 
       wait_for_loaded
+      wait_for_loaded
 
       expect(current_path).to eql "/admin/resources/courses/#{Course.last.id}/edit"
     end

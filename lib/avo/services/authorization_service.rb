@@ -119,7 +119,7 @@ module Avo
       end
 
       def authorize_action(action, **args)
-        self.class.authorize_action(user, record, action, policy_class: policy_class, **args)
+        self.class.authorize_action(user, args[:record] || record, action, policy_class: policy_class, **args)
       end
 
       def apply_policy(model)
@@ -131,7 +131,7 @@ module Avo
       end
 
       def has_method?(method, **args)
-        defined_methods(record, **args).include? method.to_sym
+        defined_methods(args[:record] || record, **args).include? method.to_sym
       end
     end
   end
