@@ -53,6 +53,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
     end
   end
 
+  # Ex: A Post has many Comments
   def authorize_association_for(policy_method)
     policy_result = true
 
@@ -67,11 +68,12 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
       if association_name.present?
         method_name = "#{policy_method}_#{association_name}?".to_sym
-        # Prepare the authorization service
+        # Use the policy methods from the parent (Post)
         service = reflection_resource.authorization
 
         if service.has_method?(method_name, raise_exception: false)
-          policy_result = service.authorize_action(method_name, raise_exception: false)
+          # Override the record with the child record (Comment not Post)
+          policy_result = service.authorize_action(method_name, record: resource.model, raise_exception: false)
         end
       end
     end

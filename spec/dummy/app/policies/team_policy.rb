@@ -59,7 +59,7 @@ class TeamPolicy < ApplicationPolicy
   end
 
   def edit_team_members?
-    true
+    Pundit.policy!(user, record).edit?
   end
 
   def attach_team_members?
