@@ -19,7 +19,7 @@ RSpec.feature "CustomResourceControls", type: :system do
       click_on "Release fish"
       wait_for_loaded
 
-      expect(page).to have_text "Are you sure you want to release this fish?"
+      expect(page).to have_text "Are you sure you want to release the #{fish.name}?"
     end
   end
 end

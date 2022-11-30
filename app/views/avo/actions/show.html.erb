@@ -18,7 +18,7 @@
         <%= @action.action_name %>
       <% end %>
       <div class="flex-1 flex">
-        <%= @action.message %>
+        <%= @action.get_message %>
       </div>
       <%= form.hidden_field :avo_resource_ids, value: params[:resource_ids], 'data-action-target': 'resourceIds' %>
       <%= form.hidden_field :avo_selected_query, 'data-action-target': 'selectedAllQuery' %>
