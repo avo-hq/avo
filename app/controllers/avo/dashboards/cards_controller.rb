@@ -21,7 +21,7 @@ module Avo
 
       def set_card
         @card = @dashboard.item_at_index(params[:index].to_i).tap do |card|
-          card.hydrate(dashboard: @dashboard, params: params)
+          card.hydrate(dashboard: @dashboard)
         end
       end
 

@@ -20,6 +20,10 @@ module Avo
     attr_accessor :params
 
     delegate :context, to: ::Avo::App
+    delegate :current_user, to: ::Avo::App
+    delegate :view_context, to: ::Avo::App
+    delegate :params, to: ::Avo::App
+    delegate :request, to: ::Avo::App
 
     class << self
       def query(&block)
@@ -106,9 +110,8 @@ module Avo
       self
     end
 
-    def hydrate(dashboard: nil, params: nil)
+    def hydrate(dashboard: nil)
       @dashboard = dashboard if dashboard.present?
-      @params = params if params.present?
 
       self
     end
