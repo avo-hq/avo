@@ -44,11 +44,17 @@ module Avo
     end
 
     def search_resource(resource)
-      query =  Avo::Hosts::SearchScopeHost.new(
+      query = Avo::Hosts::SearchScopeHost.new(
         block: resource.search_query,
         params: params,
-        scope: resource.class.scope.limit(8)
+        scope: resource.class.scope
       ).handle
+
+      # Get the count
+      results_count = query.count
+
+      # Get the results
+      query = query.limit(8)
 
       query = apply_scope(query) if should_apply_any_scope?
 
@@ -56,15 +62,15 @@ module Avo
 
       header = resource.plural_name
 
-      if results.length > 0
-        header += " (#{results.length})"
+      if results_count > 0
+        header = "#{header} (#{results_count})"
       end
 
       result_object = {
         header: header,
         help: resource.class.search_query_help,
         results: results,
-        count: results.length
+        count: results_count
       }
 
       [resource.name.pluralize.downcase, result_object]

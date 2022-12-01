@@ -11,6 +11,9 @@ class ProductResource < Avo::BaseResource
       },
       content: {
         classes: "bg-gray-50 !text-pink-600"
+      },
+      wrapper: {
+        classes: "bg-gray-50"
       }
     }
   }

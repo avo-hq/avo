@@ -51,7 +51,13 @@ module Avo
     end
 
     def set_action
-      @action = action_class.new(model: @model, resource: @resource, user: _current_user, view: @view)
+      @action = action_class.new(
+        model: @model,
+        resource: @resource,
+        user: _current_user,
+        view: @view,
+        arguments: @resource.get_action_arguments(action_class)
+      )
     end
 
     def action_class
@@ -63,8 +69,10 @@ module Avo
     end
 
     def respond(response)
-      response[:type] ||= :reload
       messages = get_messages response
+      return keep_modal_open(messages) if response[:keep_modal_open]
+
+      response[:type] ||= :reload
 
       if response[:type] == :download
         return send_data response[:path], filename: response[:filename]
@@ -73,9 +81,7 @@ module Avo
       respond_to do |format|
         format.html do
           # Flash the messages collected from the action
-          messages.each do |message|
-            flash[message[:type]] = message[:body]
-          end
+          flash_messages messages
 
           if response[:type] == :redirect
             path = response[:path]
@@ -113,6 +119,22 @@ module Avo
         message: @selected_query,
         purpose: :select_all
       )
+    end
+
+    def flash_messages(messages)
+      messages.each do |message|
+        flash[message[:type]] = message[:body]
+      end
+    end
+
+    def keep_modal_open(messages)
+      flash_messages messages
+
+      respond_to do |format|
+        format.turbo_stream do
+          render "keep_modal_open"
+        end
+      end
     end
   end
 end

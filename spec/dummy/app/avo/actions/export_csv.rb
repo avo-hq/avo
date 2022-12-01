@@ -6,7 +6,7 @@ class ExportCsv < Avo::BaseAction
   def handle(**args)
     models, resource = args.values_at(:models, :resource)
 
-    return fail "No record selected" if models.blank?
+    return error "No record selected" if models.blank?
 
     attributes = get_attributes models.first
 
