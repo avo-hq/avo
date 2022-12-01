@@ -2,5 +2,5 @@
   <%%= @form.text_field @field.id,
     class: classes("w-full"),
     placeholder: @field.placeholder,
-    disabled: @field.is_readonly? %>
+    disabled: disabled? %>
 <%% end %>

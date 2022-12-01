@@ -2,6 +2,6 @@
   <%= @form.color_field @field.id,
     class: helpers.input_classes('w-full py-0', has_error: @field.model_errors.include?(@field.id)).gsub('py-2', ''),
     placeholder: @field.placeholder,
-    disabled: @field.is_readonly?
+    disabled: disabled?
   %>
 <% end %>

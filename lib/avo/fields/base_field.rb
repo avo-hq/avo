@@ -13,6 +13,7 @@ module Avo
       include Avo::Concerns::HasHTMLAttributes
       include Avo::Fields::Concerns::IsRequired
       include Avo::Fields::Concerns::IsReadonly
+      include Avo::Fields::Concerns::IsDisabled
       include Avo::Fields::Concerns::HasDefault
 
       delegate :view_context, to: ::Avo::App
@@ -64,6 +65,7 @@ module Avo
         @block = block
         @required = args.dig(:required) # Value if :required present on args, nil otherwise
         @readonly = args[:readonly] || false
+        @disabled = args[:disabled] || false
         @sortable = args[:sortable] || false
         @nullable = args[:nullable] || false
         @null_values = args[:null_values] || [nil, ""]

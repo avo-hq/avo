@@ -42,4 +42,8 @@ class Avo::Fields::EditComponent < ViewComponent::Base
       view: view
     }
   end
+
+  def disabled?
+    field.is_readonly? || field.is_disabled?
+  end
 end
