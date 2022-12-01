@@ -188,6 +188,8 @@ module Avo
     def get_action_arguments(action_class)
       action = get_actions.find { |action| action[:class].to_s == action_class.to_s }
 
+      return {} if action.blank?
+
       action[:arguments]
     end
 
