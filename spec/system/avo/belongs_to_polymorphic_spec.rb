@@ -29,7 +29,7 @@ RSpec.feature "belongs_to", type: :system do
           it "creates the comment" do
             visit "/admin/resources/comments/"
 
-            expect(page).to have_text "No comments found"
+            expect(page).to have_text "No record found"
 
             click_on "Create new comment"
             fill_in "comment_body", with: "Sample comment"
