@@ -82,6 +82,11 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-test-yarn-${{ hashFiles('**/yarn.lock') }}
 
+    - name: Yarn install the dummy app
+      run: |
+        cd spec/dummy
+        yarn
+
     - name: Yarn install
       run: yarn
 
