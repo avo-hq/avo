@@ -4,7 +4,7 @@ RSpec.describe "UserForms", type: :system do
   it "Shows the empty posts page" do
     visit "/admin/resources/posts"
 
-    expect(page).to have_text("No posts found")
+    expect(page).to have_text("No record found")
   end
 
   it "accesses the create user page" do
@@ -30,7 +30,7 @@ RSpec.describe "UserForms", type: :system do
 
     click_on "Cancel"
 
-    expect(page).to have_text "No posts found"
+    expect(page).to have_text "No record found"
     expect(page).to have_css "a", text: "Create new post"
     expect(current_path).to eq "/admin/resources/posts"
   end

@@ -16,4 +16,12 @@ class Avo::PaginatorComponent < ViewComponent::Base
     @parent_model = parent_model
     @discreet_pagination = discreet_pagination
   end
+
+  def change_items_per_page_url(option)
+    if parent_model.present?
+      helpers.related_resources_path(parent_model, parent_model, per_page: option, keep_query_params: true, page: 1)
+    else
+      helpers.resources_path(resource: resource, per_page: option, keep_query_params: true, page: 1)
+    end
+  end
 end

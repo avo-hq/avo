@@ -2,7 +2,7 @@
   <div class="w-full"
     data-search-target="autocomplete"
     data-search-resource="<%= resource %>"
-    data-translation-keys='{"no_item_found": "<%= I18n.translate 'avo.no_item_found' %>"}'
+    data-translation-keys='{"no_item_found": "<%= I18n.translate 'avo.no_item_found' %>", "placeholder": "<%= I18n.translate 'avo.search.placeholder' %>", "cancel_button": "<%= I18n.translate 'avo.search.cancel_button' %>"}'
     <% if via_reflection.present? %>
       data-via-association="<%= via_reflection[:association] %>"
       data-via-association-id="<%= via_reflection[:association_id] %>"

@@ -37,9 +37,9 @@ RSpec.feature "Search", type: :system do
 
         write_in_search "wwwww"
 
-        expect(page).to have_content "No posts found"
-        expect(page).to have_content "No users found"
-        expect(page).to have_content "No projects found"
+        expect(page).to have_content "No record found"
+        expect(page).to have_content "No record found"
+        expect(page).to have_content "No record found"
       end
     end
 
@@ -55,8 +55,8 @@ RSpec.feature "Search", type: :system do
 
         write_in_search "hehe"
 
-        expect(page).not_to have_content "No posts found"
-        expect(page).not_to have_content "No users found"
+        expect(page).not_to have_content "No record found"
+        expect(page).not_to have_content "No record found"
         expect(page).to have_content "New hehe post"
         expect(page).to have_content "New hehe post description."
         expect(page).to have_content "Hehe user"

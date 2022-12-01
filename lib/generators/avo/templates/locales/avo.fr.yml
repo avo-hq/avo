@@ -46,6 +46,7 @@ fr:
         one: personne
         other: personnes
         zero: personne
+    filter_by: Filtrer par
     filters: Filtres
     go_back: Retourner en arrière
     grid_view: Vue grille
@@ -62,9 +63,9 @@ fr:
     new: Nouveau
     next_page: Page suivante
     no_cards_present: Aucune carte présente
-    no_item_found: Aucun %{item} trouvé
+    no_item_found: Enregistrement non trouvé
     no_options_available: Aucune option disponible
-    no_related_item_found: Aucun %{item} apparenté n'a été trouvé
+    no_related_item_found: Enregistrement connexe introuvable
     not_authorized: Vous n'êtes pas autorisé à effectuer cette action.
     number_of_items:
       one: un %{item}

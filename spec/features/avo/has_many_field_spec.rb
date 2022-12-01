@@ -13,7 +13,7 @@ RSpec.feature "HasManyField", type: :feature do
     let(:url) { "/admin/resources/users/#{user.id}/posts?turbo_frame=has_many_field_posts&view_type=table" }
 
     describe "without a related post" do
-      it { is_expected.to have_text "No related posts found" }
+      it { is_expected.to have_text "No related record found" }
 
       it "creates a post" do
         visit url

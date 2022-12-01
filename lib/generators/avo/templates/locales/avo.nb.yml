@@ -46,6 +46,7 @@ nb:
         one: person
         other: personer
         zero: personer
+    filter_by: Filtrer etter
     filters: Filter
     go_back: Gå tilbake
     grid_view: Grid visning
@@ -62,9 +63,9 @@ nb:
     new: ny
     next_page: Neste side
     no_cards_present: Ingen kort til stede
-    no_item_found: Ingen %{item} funnet
+    no_item_found: Ingen funnet
     no_options_available: Ingen tilgjengelige alternativer
-    no_related_item_found: Ingen relaterte %{item} funnet
+    no_related_item_found: Ingen relaterte funnet
     not_authorized: Du er ikke autorisert til å gjøre denne handlingen.
     number_of_items:
       one: en %{item}

@@ -46,6 +46,7 @@ en:
         one: peep
         other: peeps
         zero: peeps
+    filter_by: Filter by
     filters: Filters
     go_back: Go back
     grid_view: Grid view
@@ -62,9 +63,9 @@ en:
     new: new
     next_page: Next page
     no_cards_present: No cards present
-    no_item_found: No %{item} found
+    no_item_found: No record found
     no_options_available: No options available
-    no_related_item_found: No related %{item} found
+    no_related_item_found: No related record found
     not_authorized: You are not authorized to perform this action.
     number_of_items:
       one: one %{item}

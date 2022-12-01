@@ -46,6 +46,7 @@ nn:
         one: person
         other: personar
         zero: personar
+    filter_by: Filtrer etter
     filters: Filter
     go_back: Gå tilbake
     grid_view: Gridvisning
@@ -62,9 +63,9 @@ nn:
     new: ny
     next_page: Neste side
     no_cards_present: Ingen kort til stades
-    no_item_found: Fann ingen %{item}
+    no_item_found: Fann ingen
     no_options_available: Ingen tilgjengelege alternativ
-    no_related_item_found: Fann ingen relaterte %{item}
+    no_related_item_found: Fann ingen relaterte
     not_authorized: Du er ikkje autorisert til å gjere denne handlinga.
     number_of_items:
       one: en %{item}

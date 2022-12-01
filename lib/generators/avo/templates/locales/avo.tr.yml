@@ -46,6 +46,7 @@ tr:
         one: kişi
         other: kişi
         zero: kişi
+    filter_by: Tarafından filtre
     filters: Filtreler
     go_back: Geri dön
     grid_view: Grid görünümü
@@ -62,9 +63,9 @@ tr:
     new: yeni
     next_page: Sonraki sayfa
     no_cards_present: Kart yok
-    no_item_found: Hiç %{item} bulunamadı
+    no_item_found: Hiç bulunamadı
     no_options_available: Seçenek yok
-    no_related_item_found: İlişkili %{item} bulunamadı
+    no_related_item_found: İlişkili bulunamadı
     not_authorized: Bu eylemi gerçekleştirme yetkiniz yok.
     number_of_items:
       one: bir %{item}

@@ -52,7 +52,7 @@
             <%= render(Avo::Index::ResourceTableComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_model: @parent_model, parent_resource: @parent_resource, pagy: @pagy, query: @query)) %>
           </div>
         <% else %>
-          <%= helpers.empty_state resource_name: @resource.name.downcase.pluralize, related_name: params[:related_name], view_type: view_type, add_background: true %>
+          <%= helpers.empty_state by_association: params[:related_name].present?, view_type: view_type, add_background: true %>
         <% end %>
       <% end %>
     <% end %>

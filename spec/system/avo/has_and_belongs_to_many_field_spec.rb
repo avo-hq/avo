@@ -14,7 +14,7 @@ RSpec.describe "HasAndBelongsToManyField", type: :system do
     let(:url) { "/admin/resources/projects/#{project.id}/users?turbo_frame=has_and_belongs_to_many_field_projects" }
 
     describe "without a related user" do
-      it { is_expected.to have_text "No related users found" }
+      it { is_expected.to have_text "No related record found" }
       it { is_expected.to have_link "Attach user", href: /\/admin\/resources\/projects\/#{project.id}\/users\/new/ }
 
       it "displays valid links" do
@@ -38,7 +38,7 @@ RSpec.describe "HasAndBelongsToManyField", type: :system do
 
         expect(current_path).to eql "/admin/resources/projects/#{project.id}/users"
         expect(page).not_to have_text "Choose user"
-        expect(page).not_to have_text "No related users found"
+        expect(page).not_to have_text "No related record found"
       end
 
       it "removes the modal" do
@@ -60,7 +60,7 @@ RSpec.describe "HasAndBelongsToManyField", type: :system do
 
         expect(current_path).to eql "/admin/resources/projects/#{project.id}/users"
         expect(page).not_to have_text "Choose user"
-        expect(page).to have_text "No related users found"
+        expect(page).to have_text "No related record found"
       end
 
       # it 'attaches two users' do
@@ -105,7 +105,7 @@ RSpec.describe "HasAndBelongsToManyField", type: :system do
         visit url
         wait_for_loaded
 
-        expect(page).not_to have_text "No related users found"
+        expect(page).not_to have_text "No related record found"
 
         expect {
           find("[data-resource-name='users'][data-resource-id='#{user.id}'] [data-control='detach']").click
@@ -114,7 +114,7 @@ RSpec.describe "HasAndBelongsToManyField", type: :system do
         }.to change(project.users, :count).by(-1)
 
         expect(current_path).to eql "/admin/resources/projects/#{project.id}/users"
-        expect(page).to have_text "No related users found"
+        expect(page).to have_text "No related record found"
       end
     end
   end
