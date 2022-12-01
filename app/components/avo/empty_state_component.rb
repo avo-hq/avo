@@ -1,24 +1,26 @@
 # frozen_string_literal: true
 
 class Avo::EmptyStateComponent < ViewComponent::Base
-  def initialize(message: nil, resource_name: nil, related_name: nil, view_type: :table, add_background: false)
+  attr_reader :message, :view_type, :add_background, :by_association
+
+  def initialize(message: nil, view_type: :table, add_background: false, by_association: false)
     @message = message
     @view_type = view_type
-    @related_name = related_name
-    @resource_name = resource_name
     @add_background = add_background
+    @by_association = by_association
   end
 
-  def message
-    return @message if @message.present?
-
-    translation_tag = @related_name.present? ? 'avo.no_related_item_found' : 'avo.no_item_found'
-    helpers.t translation_tag, item: @resource_name
+  def text
+    message || locale_message
   end
 
   def view_type_svg
-    return "grid-empty-state" if @view_type.to_sym == :grid
+    "#{view_type}-empty-state"
+  end
 
-    "table-empty-state"
+  private
+
+  def locale_message
+    helpers.t by_association ? 'avo.no_related_item_found' : 'avo.no_item_found'
   end
 end

@@ -63,9 +63,9 @@ ro:
     new: nou
     next_page: Pagina următoare
     no_cards_present: Niciun card disponibil
-    no_item_found: Nu s-au găsit %{item}
+    no_item_found: Nici un articol găsit
     no_options_available: Nicio opțiune disponibilă
-    no_related_item_found: Nu s-au găsit %{item} asociate
+    no_related_item_found: Nici un articol asociat găsit
     not_authorized: Nu sunteți autorizat să efectuați această acțiune.
     number_of_items:
       one: un %{item}

@@ -235,13 +235,13 @@ module Avo
       self.class.translation_key
     end
 
-    def name(count: 1)
+    def name
       default = class_name_without_resource.to_s.gsub('::', ' ').underscore.humanize
 
       return @name if @name.present?
 
       if translation_key && ::Avo::App.translation_enabled
-        t(translation_key, count: count, default: default).capitalize
+        t(translation_key, count: 1, default: default).capitalize
       else
         default
       end

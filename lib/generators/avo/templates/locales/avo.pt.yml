@@ -63,9 +63,9 @@ pt:
     new: novo
     next_page: Próxima página
     no_cards_present: Nenhum cartão presente
-    no_item_found: Nenhum %{item} encontrado
+    no_item_found: Nenhum registro encontrado
     no_options_available: Nenhuma opção disponível
-    no_related_item_found: Nenhum %{item} relacionado encontrado
+    no_related_item_found: Nenhum registro relacionado encontrado
     not_authorized: Não está autorizado a executar essa ação.
     number_of_items:
       one: um %{item}
