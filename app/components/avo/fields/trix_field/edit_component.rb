@@ -20,6 +20,10 @@ class Avo::Fields::TrixField::EditComponent < Avo::Fields::EditComponent
   end
 
   def trix_id
-    "trix_#{resource_name}_#{@field.id}"
+    if resource_name.present?
+      "trix_#{resource_name}_#{@field.id}"
+    elsif form.present?
+      "trix_#{form.index}_#{@field.id}"
+    end
   end
 end
