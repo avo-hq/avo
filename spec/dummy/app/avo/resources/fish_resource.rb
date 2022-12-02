@@ -4,7 +4,7 @@ class FishResource < Avo::BaseResource
   self.search_query = -> do
     scope.ransack(id_eq: params[:q], name_cont: params[:q], m: "or").result(distinct: false)
   end
-  self.extra_params = [:fish_type, :something_else, properties: [], information: [:name, :history]]
+  self.extra_params = [:fish_type, :something_else, properties: [], information: [:name, :history], reviews_attributes: [:body, :user_id]]
 
   self.show_controls = -> do
     back_button label: "", title: "Go back now"
@@ -26,6 +26,7 @@ class FishResource < Avo::BaseResource
   field :name, as: :text, required: -> { view == :new }, help: "help text"
   field :user, as: :belongs_to
   field :type, as: :text, hide_on: :forms
+  field :reviews, as: :has_many
 
   filter NameFilter, arguments: {
     case_insensitive: true
@@ -37,6 +38,7 @@ class FishResource < Avo::BaseResource
 
   action ReleaseFish
 
+  tool NestedFishReviews, only_on: :new
   tool FishInformation, show_on: :forms
 
   tabs style: :pills do
