@@ -224,11 +224,11 @@ module Avo
         # In case there's an error somewhere else than the model
         # Example: When you save a license that should create a user for it and creating that user throws and error.
         # Example: When you Try to delete a record and has a foreign key constraint.
-        @errors = Array.wrap(exception.message)
+        exception_message = exception.message
       end
 
       # Add the errors from the model
-      @errors = Array.wrap([@errors, @model.errors.full_messages]).compact
+      @errors = @model.errors.full_messages.reject { |error| exception_message.include? error }.unshift exception_message
 
       succeeded
     end
