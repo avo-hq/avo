@@ -8,18 +8,20 @@
               <%= render "avo/partials/fish_review", f: todo_fields %>
             <% end %>
           </template>
-          <div class="space-y-4">
-            <%= form.fields_for :reviews, Review.new, multiple: true do |todo_fields| %>
-              <%= render "avo/partials/fish_review", f: todo_fields %>
+          <% if false %>
+            <div class="space-y-4">
+              <%= form.fields_for :reviews, Review.new, multiple: true do |todo_fields| %>
+                <%= render "avo/partials/fish_review", f: todo_fields %>
+              <% end %>
+              <div data-nested-form-target="target"></div>
             <% end %>
-            <div data-nested-form-target="target"></div>
           </div>
         <% end %>
       <% end %>
       <% c.footer_tools do %>
         <div class="mt-4">
           <%= a_link 'javascript:void(0);', icon: 'plus', color: :primary, style: :outline, data: {action: "click->nested-form#add"} do %>
-            Add another review
+            Add a review
           <% end %>
         </div>
       <% end %>
