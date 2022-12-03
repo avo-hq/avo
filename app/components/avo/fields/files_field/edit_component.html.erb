@@ -7,7 +7,7 @@
         accept: @field.accept,
         data: @field.get_html(:data, view: view, element: :input),
         direct_upload: @field.direct_upload,
-        disabled: @field.is_readonly?,
+        disabled: disabled?,
         multiple: true,
         style: @field.get_html(:style, view: view, element: :input),
         class: "w-full"

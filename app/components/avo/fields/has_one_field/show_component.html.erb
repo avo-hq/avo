@@ -5,7 +5,7 @@
 <% else %>
   <%= render Avo::PanelComponent.new(name: @field.name) do |c| %>
     <% c.tools do %>
-      <% if !@field.is_readonly? && can_attach? %>
+      <% if !@field.is_readonly? && !@field.is_disabled? && can_attach? %>
         <%= a_link attach_path,
           icon: 'heroicons/outline/link',
           color: :primary,
@@ -13,7 +13,7 @@
           <%= t('avo.attach_item', item: @field.name.downcase) %>
         <% end %>
       <% end %>
-      <% if !@field.is_readonly? && can_see_the_create_button? %>
+      <% if !@field.is_readonly? && !@field.is_disabled? && can_see_the_create_button? %>
         <%= a_link create_path,
           icon: 'heroicons/outline/plus',
           'data-target': 'create',
