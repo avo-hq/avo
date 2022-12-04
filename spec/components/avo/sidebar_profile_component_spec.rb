@@ -63,6 +63,10 @@ RSpec.describe Avo::SidebarProfileComponent, type: :component do
         Avo.configuration.sign_out_path_name = :sign_out_path_name
       end
 
+      after do
+        Avo.configuration.sign_out_path_name = nil
+      end
+
       it "renders sign out link" do
         with_controller_class Avo::BaseController do
           render_inline(described_class.new(user: nil))
