@@ -8,14 +8,14 @@
               <%= render "avo/partials/fish_review", f: todo_fields %>
             <% end %>
           </template>
-          <% if false %>
-            <div class="space-y-4">
-              <%= form.fields_for :reviews, Review.new, multiple: true do |todo_fields| %>
-                <%= render "avo/partials/fish_review", f: todo_fields %>
-              <% end %>
-              <div data-nested-form-target="target"></div>
+            <% if false %>
+              <div class="space-y-4">
+                <%= form.fields_for :reviews, Review.new, multiple: true do |todo_fields| %>
+                  <%= render "avo/partials/fish_review", f: todo_fields %>
+                <% end %>
+              </div>
             <% end %>
-          </div>
+            <div data-nested-form-target="target"></div>
         <% end %>
       <% end %>
       <% c.footer_tools do %>
