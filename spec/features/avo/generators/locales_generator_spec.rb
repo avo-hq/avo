@@ -9,6 +9,10 @@ RSpec.feature "locales generator", type: :feature do
       Rails.root.join("config", "locales", "avo.#{locale}.yml").to_s
     end
 
+    # Add the extra pagy translations
+    files.push(Rails.root.join("config", "locales", "pagy", "nn.yml").to_s)
+    files.push(Rails.root.join("config", "locales", "pagy", "ro.yml").to_s)
+
     Rails::Generators.invoke("avo:locales", ["-q"], {destination_root: Rails.root})
 
     check_files_and_clean_up files
