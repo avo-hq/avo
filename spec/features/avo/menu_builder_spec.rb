@@ -59,6 +59,7 @@ RSpec.feature "MenuBuilders", type: :feature do
     allow_message_expectations_on_nil
     allow(Avo::App.license).to receive(:lacks_with_trial) { :resource_ordering }.and_return(false)
     allow(Avo::App.license).to receive(:lacks_with_trial) { :custom_tools }.and_return(false)
+    allow(Avo::App.view_context).to receive(:avo).and_return(OpenStruct.new(root_url: "/"))
   end
 
   it "builds the menu" do
