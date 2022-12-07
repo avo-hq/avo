@@ -1,5 +1,7 @@
 /* eslint-disable no-alert */
 import 'trix'
+import URI from 'urijs'
+
 import { Controller } from '@hotwired/stimulus'
 import { castBoolean } from '../../helpers/cast_boolean'
 
@@ -35,7 +37,16 @@ export default class extends Controller {
   }
 
   get uploadUrl() {
-    return `${window.location.origin}${window.Avo.configuration.root_path}/avo_api/resources/${this.resourceName}/${this.resourceId}/attachments`
+    // Parse the current URL
+    const url = new URI(window.location.origin)
+    // Parse the root path
+    const rootPath = new URI(window.Avo.configuration.root_path)
+    // Build the trix field path
+    url.path(`${rootPath.path()}/avo_api/resources/${this.resourceName}/${this.resourceId}/attachments`)
+    // Add the params back
+    url.query(rootPath.query())
+
+    return url.toString()
   }
 
   connect() {
