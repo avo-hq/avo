@@ -19,9 +19,9 @@ class Avo::HTML::Builder
   attr_accessor :record
   attr_accessor :resource
 
-  delegate :root_path, to: Avo::App
-  delegate :params, to: Avo::App
-  delegate :current_user, to: Avo::App
+  delegate :root_path, to: ::Avo::App
+  delegate :params, to: ::Avo::Current
+  delegate :current_user, to: ::Avo::Current
 
   def initialize(record: nil, resource: nil)
     @wrapper_stack = {}

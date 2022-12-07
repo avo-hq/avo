@@ -19,11 +19,11 @@ module Avo
     attr_accessor :index
     attr_accessor :params
 
-    delegate :context, to: ::Avo::App
-    delegate :current_user, to: ::Avo::App
-    delegate :view_context, to: ::Avo::App
-    delegate :params, to: ::Avo::App
-    delegate :request, to: ::Avo::App
+    delegate :context, to: ::Avo::Current
+    delegate :current_user, to: ::Avo::Current
+    delegate :view_context, to: ::Avo::Current
+    delegate :params, to: ::Avo::Current
+    delegate :request, to: ::Avo::Current
 
     class << self
       def query(&block)
@@ -65,7 +65,7 @@ module Avo
     def frame_url(enforced_range: nil, params: {})
       enforced_range ||= initial_range || ranges.first
 
-      Avo::App.view_context.avo.dashboard_card_path(dashboard.id, id, turbo_frame: turbo_frame, index: index, range: enforced_range, **params.permit!)
+      Avo::Current.view_context.avo.dashboard_card_path(dashboard.id, id, turbo_frame: turbo_frame, index: index, range: enforced_range, **params.permit!)
     end
 
     def card_classes

@@ -71,7 +71,7 @@ module Avo
         end
 
         def navigation_path
-          Avo::App.view_context.avo.dashboard_path id
+          Avo::Current.view_context.avo.dashboard_path id
         end
 
         def is_visible?

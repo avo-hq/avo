@@ -12,7 +12,7 @@ module Avo
 
       attr_reader :arguments
 
-      delegate :params, to: Avo::App
+      delegate :params, to: ::Avo::Current
 
       class << self
         def decode_filters(filter_params)

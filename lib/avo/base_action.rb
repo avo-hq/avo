@@ -22,15 +22,15 @@ module Avo
     attr_reader :arguments
 
     delegate :view, to: :class
-    delegate :context, to: ::Avo::App
-    delegate :current_user, to: ::Avo::App
-    delegate :params, to: ::Avo::App
-    delegate :view_context, to: ::Avo::App
+    delegate :context, to: ::Avo::Current
+    delegate :current_user, to: ::Avo::Current
+    delegate :params, to: ::Avo::Current
+    delegate :view_context, to: ::Avo::Current
     delegate :avo, to: :view_context
     delegate :main_app, to: :view_context
 
     class << self
-      delegate :context, to: ::Avo::App
+      delegate :context, to: ::Avo::Current
 
       def form_data_attributes
         # We can't respond with a file download from Turbo se we disable it on the form

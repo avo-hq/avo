@@ -6,17 +6,18 @@ module Avo
     class_attribute :dashboards, default: []
     class_attribute :cache_store, default: nil
     class_attribute :fields, default: []
-    class_attribute :request, default: nil
-    class_attribute :context, default: nil
-    class_attribute :license, default: nil
-    class_attribute :current_user, default: nil
     class_attribute :root_path, default: nil
-    class_attribute :view_context, default: nil
-    class_attribute :params, default: {}
     class_attribute :translation_enabled, default: false
     class_attribute :error_messages
 
     class << self
+      delegate :request, to: Avo::Current
+      delegate :context, to: Avo::Current
+      delegate :current_user, to: Avo::Current
+      delegate :view_context, to: Avo::Current
+      delegate :params, to: Avo::Current
+      delegate :license, to: Avo::Current
+
       def eager_load(entity)
         paths = Avo::ENTITIES.fetch entity
 
@@ -40,7 +41,7 @@ module Avo
 
       # Renerate a dynamic root path using the URIService
       def root_path(paths: [], query: {}, **args)
-        Avo::Services::URIService.parse(view_context.avo.root_url.to_s)
+        Avo::Services::URIService.parse(Avo::Current.view_context.avo.root_url.to_s)
           .append_paths(paths)
           .append_query(query)
           .to_s
@@ -48,13 +49,8 @@ module Avo
 
       def init(request:, context:, current_user:, view_context:, params:)
         self.error_messages = []
-        self.context = context
-        self.current_user = current_user
-        self.params = params
-        self.request = request
-        self.view_context = view_context
 
-        self.license = Licensing::LicenseManager.new(Licensing::HQ.new(request).response).license
+        Avo::Current.license = Licensing::LicenseManager.new(Licensing::HQ.new(request).response).license
         self.translation_enabled = license.has(:localization)
 
         # Set the current host for ActiveStorage

@@ -7,10 +7,10 @@ module Avo
       class ExecutionContext
         extend Dry::Initializer
 
-        option :context, default: proc { Avo::App.context }
-        option :params, default: proc { Avo::App.params }
-        option :view_context, default: proc { Avo::App.view_context }
-        option :current_user, default: proc { Avo::App.current_user }
+        option :context, default: proc { Avo::Current.context }
+        option :params, default: proc { Avo::Current.params }
+        option :view_context, default: proc { Avo::Current.view_context }
+        option :current_user, default: proc { Avo::Current.current_user }
         option :items_holder, default: proc { Avo::Resources::Controls::ItemsHolder.new }
         option :resource, optional: true
         option :record, optional: true

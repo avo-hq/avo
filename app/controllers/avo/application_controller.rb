@@ -32,6 +32,12 @@ module Avo
     add_flash_types :info, :warning, :success, :error
 
     def init_app
+      Avo::Current.params = params
+      Avo::Current.request = request
+      Avo::Current.context = context
+      Avo::Current.current_user = current_user
+      Avo::Current.view_context = view_context
+
       Avo::App.init request: request, context: context, current_user: _current_user, view_context: view_context, params: params
 
       @license = Avo::App.license

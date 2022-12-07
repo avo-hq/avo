@@ -6,10 +6,10 @@ module Avo
       extend Dry::Initializer
 
       option :block, default: proc { proc {} }
-      option :current_user, default: proc { ::Avo::App.current_user }
-      option :context, default: proc { ::Avo::App.context }
+      option :current_user, default: proc { ::Avo::Current.current_user }
+      option :context, default: proc { ::Avo::Current.context }
       option :dashboard
-      option :params, default: proc { ::Avo::App.params }
+      option :params, default: proc { ::Avo::Current.params }
 
       def handle
         instance_exec(&block)

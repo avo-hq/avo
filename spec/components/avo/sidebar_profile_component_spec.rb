@@ -63,6 +63,14 @@ RSpec.describe Avo::SidebarProfileComponent, type: :component do
         Avo.configuration.sign_out_path_name = :sign_out_path_name
       end
 
+      after do
+        without_partial_double_verification do
+          allow(Rails.application.routes.url_helpers).to receive(:sign_out_path_name).and_return(nil)
+        end
+
+        Avo.configuration.sign_out_path_name = nil
+      end
+
       it "renders sign out link" do
         with_controller_class Avo::BaseController do
           render_inline(described_class.new(user: nil))

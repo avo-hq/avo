@@ -9,16 +9,16 @@ module Avo
     include Avo::Concerns::HasStimulusControllers
     include Avo::Concerns::ModelClassConstantized
 
-    delegate :view_context, to: ::Avo::App
-    delegate :current_user, to: ::Avo::App
-    delegate :params, to: ::Avo::App
+    delegate :view_context, to: ::Avo::Current
+    delegate :current_user, to: ::Avo::Current
+    delegate :params, to: ::Avo::Current
     delegate :simple_format, :content_tag, to: :view_context
     delegate :main_app, to: :view_context
     delegate :avo, to: :view_context
     delegate :resource_path, to: :view_context
     delegate :resources_path, to: :view_context
     delegate :t, to: ::I18n
-    delegate :context, to: ::Avo::App
+    delegate :context, to: ::Avo::Current
 
     attr_accessor :view
     attr_accessor :reflection
@@ -53,7 +53,7 @@ module Avo
 
     class << self
       delegate :t, to: ::I18n
-      delegate :context, to: ::Avo::App
+      delegate :context, to: ::Avo::Current
 
       def grid(&block)
         grid_collector = GridCollector.new
@@ -97,7 +97,7 @@ module Avo
       end
 
       def authorization
-        Avo::Services::AuthorizationService.new Avo::App.current_user, model_class, policy_class: authorization_policy
+        Avo::Services::AuthorizationService.new Avo::Current.current_user, model_class, policy_class: authorization_policy
       end
 
       def order_actions
@@ -330,7 +330,7 @@ module Avo
     end
 
     def authorization(user: nil)
-      current_user = user || Avo::App.current_user
+      current_user = user || Avo::Current.current_user
       Avo::Services::AuthorizationService.new(current_user, model || model_class, policy_class: authorization_policy)
     end
 

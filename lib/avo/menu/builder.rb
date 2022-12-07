@@ -5,12 +5,12 @@ class Avo::Menu::Builder
     end
   end
 
-  delegate :context, to: ::Avo::App
-  delegate :current_user, to: ::Avo::App
-  delegate :params, to: ::Avo::App
-  delegate :request, to: ::Avo::App
+  delegate :context, to: ::Avo::Current
+  delegate :current_user, to: ::Avo::Current
+  delegate :params, to: ::Avo::Current
+  delegate :request, to: ::Avo::Current
   delegate :root_path, to: ::Avo::App
-  delegate :view_context, to: ::Avo::App
+  delegate :view_context, to: ::Avo::Current
   delegate :main_app, to: :view_context
   delegate :avo, to: :view_context
 

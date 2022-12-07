@@ -26,7 +26,7 @@ class PhotoCommentResource < Avo::BaseResource
   field :user, as: :belongs_to
 
   field :commentable_type, as: :hidden, default: "Post"
-  field :commentable_id, as: :hidden, default: -> { Avo::App.params[:via_resource_id] }
+  field :commentable_id, as: :hidden, default: -> { Avo::Current.params[:via_resource_id] }
 
   action DeleteComment
 

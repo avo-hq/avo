@@ -16,7 +16,7 @@ module Avo
       include Avo::Fields::Concerns::IsDisabled
       include Avo::Fields::Concerns::HasDefault
 
-      delegate :view_context, to: ::Avo::App
+      delegate :view_context, to: ::Avo::Current
       delegate :simple_format, :content_tag, to: :view_context
       delegate :main_app, to: :view_context
       delegate :avo, to: :view_context
