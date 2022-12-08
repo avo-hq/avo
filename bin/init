@@ -26,6 +26,8 @@ app_root do
 
   header 'Installing Yarn packages'
   run! 'yarn'
+  run! '(cd spec/dummy; yarn)'
+  run! '(cp spec/dummy/.env.test.sample spec/dummy/.env.test)'
 
   if use_docker == 'y'
     header 'Creating the Docker volume'

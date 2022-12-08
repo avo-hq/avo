@@ -59,10 +59,12 @@ module Avo
 
         # Set the current host for ActiveStorage
         begin
-          if Rails::VERSION::MAJOR === 6
-            ActiveStorage::Current.host = request.base_url
-          elsif Rails::VERSION::MAJOR === 7
-            ActiveStorage::Current.url_options = request.base_url
+          if defined?(ActiveStorage::Current)
+            if Rails::VERSION::MAJOR === 6
+              ActiveStorage::Current.host = request.base_url
+            elsif Rails::VERSION::MAJOR === 7
+              ActiveStorage::Current.url_options = request.base_url
+            end
           end
         rescue => exception
           Rails.logger.debug "[Avo] Failed to set ActiveStorage::Current.url_options, #{exception.inspect}"
