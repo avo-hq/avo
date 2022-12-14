@@ -81,11 +81,7 @@ class UserPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      if Rails.env.test?
-        scope.where("first_name ILIKE ?", "%J%")
-      else
-        scope.all
-      end
+      scope.all
     end
   end
 end
