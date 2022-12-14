@@ -29,7 +29,6 @@ module Avo
 
         def authorize(user, record, action, policy_class: nil, **args)
           return true if skip_authorization
-          return true if user.nil?
 
           client.authorize user, record, action, policy_class: policy_class
 
@@ -64,7 +63,7 @@ module Avo
         end
 
         def apply_policy(user, model, policy_class: nil)
-          return model if skip_authorization || user.nil?
+          return model if skip_authorization
 
           client.apply_policy(user, model, policy_class: policy_class)
         rescue NoPolicyError => error
