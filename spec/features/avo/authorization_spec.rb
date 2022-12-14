@@ -26,4 +26,25 @@ RSpec.feature "Authorizations", type: :feature do
 
     visit "/admin/resources/teams/#{team.id}/team_members?turbo_frame=has_many_field_show_team_members"
   end
+
+  describe "association scope" do
+    let(:team) { create :team }
+    let(:adrian) { create :user, first_name: "Adrian" }
+    let(:john) { create :user, first_name: "John" }
+
+    before do
+      team.team_members << adrian
+      team.team_members << john
+    end
+
+    it "applies the association scope to the query" do
+      # In a test environment therese a custom scope applied.
+      # Check the UserPolicy
+
+      visit "/admin/resources/teams/#{team.id}/team_members?turbo_frame=has_many_field_show_team_members"
+
+      expect(page).not_to have_text("Adrian")
+      expect(page).to have_text("John")
+    end
+  end
 end
