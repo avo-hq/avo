@@ -24,7 +24,7 @@ module Avo
       @parent_model = @parent_resource.class.find_scope.find(params[:id])
       @parent_resource.hydrate(model: @parent_model)
       association_name = BaseResource.valid_association_name(@parent_model, params[:related_name])
-      @query = @authorization.apply_policy @parent_model.send(association_name)
+      @query = @related_authorization.apply_policy @parent_model.send(association_name)
       @association_field = @parent_resource.get_field params[:related_name]
 
       if @association_field.present? && @association_field.scope.present?
@@ -46,7 +46,7 @@ module Avo
       @resource.hydrate(model: @model)
 
       if @field.present? && !@field.searchable
-        query = @authorization.apply_policy @attachment_class
+        query = @related_authorization.apply_policy @attachment_class
 
         # Add the association scope to the query scope
         if @field.attach_scope.present?

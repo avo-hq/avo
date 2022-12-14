@@ -44,48 +44,56 @@ class TeamPolicy < ApplicationPolicy
   # index? method
   def view_team_members?
     # This logger is here for testing purposes. Please do not remove.
+    # record.class should be Team
     Rails.logger.info "view_team_members?->#{record.class}"
     true
   end
 
   def show_team_members?
     # This logger is here for testing purposes. Please do not remove.
+    # record.class should be User
     Rails.logger.info "show_team_members?->#{record.class}"
     true
   end
 
   def create_team_members?
     # This logger is here for testing purposes. Please do not remove.
+    # record.class should be Team
     Rails.logger.info "create_team_members?->#{record.class}"
     true
   end
 
   def destroy_team_members?
     # This logger is here for testing purposes. Please do not remove.
+    # record.class should be User
     Rails.logger.info "destroy_team_members?->#{record.class}"
     true
   end
 
   def edit_team_members?
     # This logger is here for testing purposes. Please do not remove.
+    # record.class should be User
     Rails.logger.info "edit_team_members?->#{record.class}"
     Pundit.policy!(user, record).edit?
   end
 
   def attach_team_members?
     # This logger is here for testing purposes. Please do not remove.
+    # record.class should be Team
     Rails.logger.info "attach_team_members?->#{record.class}"
     true
   end
 
   def detach_team_members?
     # This logger is here for testing purposes. Please do not remove.
+    # record.class should be User
     Rails.logger.info "detach_team_members?->#{record.class}"
     true
   end
 
   def act_on_team_members?
     # This logger is here for testing purposes. Please do not remove.
+    # record.class should be Team
     Rails.logger.info "act_on_team_members?->#{record.class}"
     true
   end
