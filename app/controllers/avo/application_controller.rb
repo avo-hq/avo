@@ -259,7 +259,7 @@ module Avo
     end
 
     def render_unauthorized(_exception)
-      flash.now[:notice] = t "avo.not_authorized"
+      flash[:notice] = t "avo.not_authorized"
 
       redirect_url = if request.referrer.blank? || (request.referrer == request.url)
         root_url

@@ -10,6 +10,7 @@ module Avo
       class_attribute :grid_cols, default: 3
       class_attribute :visible, default: true
       class_attribute :index, default: 0
+      class_attribute :authorize, default: -> { true }
 
       class << self
         def options_deprecation_message
