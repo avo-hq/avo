@@ -7,6 +7,10 @@ class Dashy < Avo::Dashboards::BaseDashboard
   #   true
   # end
 
+  self.authorize = -> do
+    current_user.is_admin?
+  end
+
   card ExampleMetric
   card ExampleAreaChart
   card ExampleScatterChart
