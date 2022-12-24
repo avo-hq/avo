@@ -62,7 +62,7 @@ module Generators
       end
 
       def db_columns_to_ignore
-        %w[id encrypted_password reset_password_token reset_password_sent_at remember_created_at created_at updated_at]
+        %w[id encrypted_password reset_password_token reset_password_sent_at remember_created_at created_at updated_at password_digest]
       end
 
       def reflections
