@@ -289,13 +289,13 @@ module Generators
             field: "number"
           },
           datetime: {
-            field: "datetime"
+            field: "date_time"
           },
           timestamp: {
-            field: "datetime"
+            field: "date_time"
           },
           time: {
-            field: "datetime"
+            field: "date_time"
           },
           date: {
             field: "date"
