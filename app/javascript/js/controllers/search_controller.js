@@ -211,19 +211,18 @@ export default class extends Controller {
   searchUrl(query) {
     const url = URI()
 
-    return url.segment(this.searchSegments()).search(this.searchParams(query)).toString()
+    return url.segment([window.Avo.configuration.root_path, ...this.searchSegments()]).search(this.searchParams(query)).readable().toString()
   }
 
   searchSegments() {
     let segments = [
-      window.Avo.configuration.root_path,
       'avo_api',
       this.dataset.searchResource,
       'search',
     ]
 
     if (this.isGlobalSearch) {
-      segments = [window.Avo.configuration.root_path, 'avo_api', 'search']
+      segments = ['avo_api', 'search']
     }
 
     return segments
