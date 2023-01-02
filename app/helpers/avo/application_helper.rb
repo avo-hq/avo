@@ -107,6 +107,7 @@ module Avo
         .delete_prefix(request.base_url.to_s)
         .delete_suffix("/")
         .gsub("/?", "?")
+        .query = ""
     rescue
       Avo.configuration.root_path
     end
