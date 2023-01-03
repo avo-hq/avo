@@ -48,9 +48,11 @@ class CourseResource < Avo::BaseResource
     end
   end
 
-  field :starting_at, as: :time,
+  field :starting_at,
+    as: :time,
     picker_format: "H:i",
     format: "HH:mm:ss z",
+    timezone: -> { "Europe/Berlin" },
     picker_options: {
       hourIncrement: 1,
       minuteIncrement: 1,

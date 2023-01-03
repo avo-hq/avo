@@ -36,14 +36,6 @@ module Avo
 
         model
       end
-
-      def utc_time(value)
-        if timezone.present?
-          ActiveSupport::TimeZone.new(timezone).local_to_utc(Time.parse(value))
-        else
-          value
-        end
-      end
     end
   end
 end

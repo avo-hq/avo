@@ -4,7 +4,6 @@ module Avo
       attr_reader :format
       attr_reader :picker_format
       attr_reader :time_24hr
-      attr_reader :timezone
       attr_reader :relative
 
       def initialize(id, **args, &block)
@@ -49,6 +48,14 @@ module Avo
         else
           value
         end
+      end
+
+      def timezone
+        if @timezone.respond_to?(:call)
+          return Avo::Hosts::ResourceViewRecordHost.new(block: @timezone, record: resource.model, resource: resource, view: view).handle
+        end
+
+        @timezone
       end
     end
   end
