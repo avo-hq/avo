@@ -51,7 +51,7 @@ module Avo
       ).handle
 
       # Get the count
-      results_count = query.unscope(:select).count
+      results_count = query.reselect(:id).count
 
       # Get the results
       query = query.limit(8)
