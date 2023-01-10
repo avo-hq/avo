@@ -19,6 +19,7 @@ import MenuController from './controllers/menu_controller'
 import ModalController from './controllers/modal_controller'
 import MultipleSelectFilterController from './controllers/multiple_select_filter_controller'
 import PerPageController from './controllers/per_page_controller'
+import ProgressBarFieldController from './controllers/fields/progress_bar_field_controller'
 import ResourceEditController from './controllers/resource_edit_controller'
 import ResourceIndexController from './controllers/resource_index_controller'
 import ResourceShowController from './controllers/resource_show_controller'
@@ -67,6 +68,7 @@ application.register('belongs-to-field', BelongsToFieldController)
 application.register('code-field', CodeFieldController)
 application.register('date-field', DateFieldController)
 application.register('key-value', KeyValueController)
+application.register('progress-bar-field', ProgressBarFieldController)
 application.register('simple-mde', SimpleMdeController)
 application.register('trix-field', TrixFieldController)
 
