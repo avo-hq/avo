@@ -1,29 +1,22 @@
 <%= field_wrapper **field_wrapper_args do %>
-  <% if @field.display_value %>
-    <div class="text-center text-sm font-semibold w-full leading-none mb-1">
-      <span class="js-progress-bar-value-<%= @field.id %>"><%= @field.value %></span><%= @field.value_suffix if @field.value_suffix.present? %>
-    </div>
+  <%= content_tag :div, data: {controller: "progress-bar-field"} do %>
+    <% if @field.display_value %>
+      <div class="text-center text-sm font-semibold w-full leading-none mb-1">
+        <span data-progress-bar-field-target="label"><%= @field.value %></span><%= @field.value_suffix if @field.value_suffix.present? %>
+      </div>
+    <% end %>
+    <%= @form.range_field @field.id,
+      class: "w-full #{@field.get_html(:classes, view: view, element: :input)}",
+      data: {
+        action: "input->progress-bar-field#update",
+        **@field.get_html(:data, view: view, element: :input)
+      },
+      disabled: disabled?,
+      max: @field.max,
+      min: 0,
+      placeholder: @field.placeholder,
+      step: @field.step,
+      style: @field.get_html(:style, view: view, element: :input)
+    %>
   <% end %>
-  <%= @form.range_field @field.id,
-    class: "w-full #{@field.get_html(:classes, view: view, element: :input)}",
-    data: @field.get_html(:data, view: view, element: :input),
-    disabled: disabled?,
-    max: @field.max,
-    min: 0,
-    placeholder: @field.placeholder,
-    step: @field.step,
-    style: @field.get_html(:style, view: view, element: :input)
-  %>
 <% end %>
-
-
-<script>
-var input = document.getElementById('project_progress');
-var log = document.querySelector('.js-progress-bar-value-<%= @field.id %>');
-
-input.addEventListener('input', updateValue);
-
-function updateValue(e) {
-  log.textContent = e.target.value;
-}
-</script>
