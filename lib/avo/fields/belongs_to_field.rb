@@ -1,6 +1,5 @@
 module Avo
   module Fields
-
     # The field can be in multiple scenarios where it needs different types of data and displays the state differently.
     # For example the non-polymorphic, non-searchable variant is the easiest to support. You only need to populate a simple select with the ID of the associated record and the list of records.
     # For the searchable polymorphic variant you need to provide the type of the association (Post, Project, Team), the label of the associated record ("Cool post title") and the ID of that record.
@@ -118,7 +117,7 @@ module Avo
         resource = target_resource
         resource = App.get_resource_by_model_name model if model.present?
 
-        query = Avo::Services::AuthorizationService.apply_policy(user, resource.class.query_scope)
+        query = resource.class.query_scope
 
         if attach_scope.present?
           query = Avo::Hosts::AssociationScopeHost.new(block: attach_scope, query: query, parent: get_model).handle
