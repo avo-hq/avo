@@ -133,7 +133,7 @@ module Avo
       field = field_klass.new id, form: form, view: view, **args, &block
 
       # Add the form record to the field so all fields have access to it.
-      field.hydrate(model: form.object)
+      field.hydrate(model: form.object) if form.present?
 
       render field.component_for_view(view).new field: field, form: form, **component_options
     end
