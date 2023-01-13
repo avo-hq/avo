@@ -7,7 +7,7 @@ class MembershipResource < Avo::BaseResource
   end
   self.hide_from_global_search = true
   self.model_class = "TeamMembership"
-  self.stimulus_controllers = "test-controller"
+  self.stimulus_controllers = "test"
 
   field :id, as: :id
   field :id, as: :number, only_on: :edit
