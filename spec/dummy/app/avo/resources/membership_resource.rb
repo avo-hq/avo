@@ -35,5 +35,5 @@ class MembershipResource < Avo::BaseResource
   }
   field :team, as: :belongs_to
 
-  tool TeamMembershipToolPlayground, show_on: :all
+  # tool TeamMembershipToolPlayground, show_on: :all
 end
