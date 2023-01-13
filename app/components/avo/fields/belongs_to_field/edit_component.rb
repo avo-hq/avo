@@ -50,7 +50,7 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
   end
 
   def field_html_action
-    @field.get_html(:data, view: @resource.view, element: :input).fetch(:action, nil)
+    @field.get_html(:data, view: view, element: :input).fetch(:action, nil)
   end
 
   private

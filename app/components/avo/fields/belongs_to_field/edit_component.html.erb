@@ -52,7 +52,7 @@
               style: @field.get_html(:style, view: view, element: :input),
               type: type,
               classes: classes("w-full"),
-              view: @resource.view
+              view: view
           %>
           <% else %>
             <%= @form.select @field.id_input_foreign_key,
@@ -88,7 +88,7 @@
         resource: @resource,
         disabled: disabled,
         classes: classes("w-full"),
-        view: @resource.view,
+        view: view,
         style: @field.get_html(:style, view: view, element: :input)
       %>
     <% else %>
