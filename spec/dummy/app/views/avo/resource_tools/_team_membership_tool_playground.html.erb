@@ -1,0 +1,20 @@
+<div class="flex flex-col">
+  <%= render Avo::PanelComponent.new do |c| %>
+    <% c.body do %>
+      <% if form.present? %>
+        <%= field_container do %>
+        <%= @resource.get_stimulus_controllers %>
+          <%= avo_edit_field :team, form: form, as: :belongs_to, resource: @resource.hydrate(model: @model), html: {
+            edit: {
+              input: {
+                data: {
+                  foo: :barr
+                }
+              }
+            }
+          } %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>

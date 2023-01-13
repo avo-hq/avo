@@ -82,6 +82,7 @@ module Avo
         @view = args[:view] || nil
         @value = args[:value] || nil
         @stacked = args[:stacked] || nil
+        @resource = args[:resource]
 
         @args = args
 
