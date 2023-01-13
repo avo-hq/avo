@@ -167,6 +167,7 @@ end
 
 def set_picker_day(date)
   find(".flatpickr-day[aria-label=\"#{date}\"]").click
+  sleep 0.2
 end
 
 def set_picker_hour(value)
