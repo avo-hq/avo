@@ -48,8 +48,8 @@
       class: "text-left uppercase px-3 py-3 whitespace-nowrap rounded-l",
       data: {
         control: "resource-field-th",
-        field_id: field.id,
-        field_type: field.type,
+        table_header_field_id: field.id,
+        table_header_field_type: field.type,
       } do %>
       <% if field.sortable %>
         <%= link_to params.permit!.merge(sort_by: sort_by, sort_direction: sort_direction), class: "flex items-center #{classes} #{'cursor-pointer' if field.sortable}", 'data-turbo-frame': params[:turbo_frame] do %>
