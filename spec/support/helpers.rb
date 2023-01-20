@@ -3,7 +3,7 @@ def parsed_response
 end
 
 def find_field_element(field_id)
-  find("[data-field-id='#{field_id}']")
+  find("[data-field-id='#{field_id}']:not([data-control='resource-field-th'])")
 end
 
 def field_wrapper(field_id)
