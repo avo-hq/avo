@@ -17,7 +17,8 @@ Avo.configure do |config|
 
   ## == Authentication ==
   # config.current_user_method = {}
-  # config.authenticate_with = {}
+  # config.authenticate_with do
+  # end
 
   ## == Authorization ==
   # config.authorization_methods = {
