@@ -247,7 +247,7 @@ module Avo
             "attachment"
           end
 
-          return query.includes "#{field.id}_#{attachment}": :blob
+          query = query.includes "#{field.id}_#{attachment}": :blob
         end
       end
 
