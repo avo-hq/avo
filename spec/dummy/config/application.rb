@@ -41,6 +41,8 @@ module AvoDummy
     # ---
 
     config.action_view.form_with_generates_remote_forms = false
-    config.active_record.strict_loading_by_default = true
+    if Rails::VERSION::MAJOR >= 6 && Rails::VERSION::MINOR >= 1
+      config.active_record.strict_loading_by_default = true
+    end
   end
 end
