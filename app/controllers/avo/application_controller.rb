@@ -136,7 +136,7 @@ module Avo
     end
 
     def model_find_scope
-      eager_load_files(@resource, model_scope)
+      eager_load_associations(@resource, model_scope)
     end
 
     def model_scope
@@ -149,7 +149,7 @@ module Avo
       @related_model = if @field.is_a? Avo::Fields::HasOneField
         @model.send association_name
       else
-        eager_load_files(@related_resource, @model.send(association_name)).find params[:related_id]
+        eager_load_associations(@related_resource, @model.send(association_name)).find params[:related_id]
       end
     end
 
@@ -235,7 +235,7 @@ module Avo
       App.get_resource_by_model_name reflected_model
     end
 
-    def eager_load_files(resource, query)
+    def eager_load_associations(resource, query)
       if resource.attached_file_fields.present?
         resource.attached_file_fields.map do |field|
           attachment = case field.class.to_s
@@ -249,6 +249,10 @@ module Avo
 
           return query.includes "#{field.id}_#{attachment}": :blob
         end
+      end
+
+      if resource.includes.present?
+        query = query.includes(*resource.includes)
       end
 
       query

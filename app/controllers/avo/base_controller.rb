@@ -34,13 +34,8 @@ module Avo
         @query = @query.unscoped
       end
 
-      # Eager load the associations
-      if @resource.includes.present?
-        @query = @query.includes(*@resource.includes)
-      end
-
-      # Eager load the active storage attachments
-      @query = eager_load_files(@resource, @query)
+      # Eager load the active storage attachments and associations
+      @query = eager_load_associations(@resource, @query)
 
       # Sort the items
       if @index_params[:sort_by].present?
