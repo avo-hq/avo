@@ -157,22 +157,27 @@ module Generators
 
       def fields_from_model_associations
         associations.each do |name, association|
-          # Check if the association is not a ThroughReflection
-          unless association.is_a? ActiveRecord::Reflection::ThroughReflection
-            next fields[name] = associations_mapping[association.class]
-          end
-
-          # Check if the through_reflection is a HasManyReflection
-          if association.through_reflection.is_a? ActiveRecord::Reflection::HasManyReflection
-            fields[name] = associations_mapping[association.class]
-            # Add the through option to the options hash in fields[name]. Notice, only has_many associations have the through option
-            fields[name][:options][:through] = ":#{association.options[:through]}"
+          fields[name] = if association.is_a? ActiveRecord::Reflection::ThroughReflection
+            field_from_through_association(association)
           else
-            # If the through_reflection is not a HasManyReflection, add it to the fields hash using the class of the through_reflection
-            # ex (team.rb): has_one :admin, through: :admin_membership, source: :user
-            # we use the class of the through_reflection (HasOneReflection -> has_one :admin) to generate the field
-            fields[name] = associations_mapping[association.through_reflection.class]
+            associations_mapping[association.class]
           end
+        end
+      end
+
+      def field_from_through_association(association)
+        if association.through_reflection.is_a? ActiveRecord::Reflection::HasManyReflection
+          {
+            field: "has_many",
+            options: {
+              through: ":#{association.options[:through]}"
+            }
+          }
+        else
+          # If the through_reflection is not a HasManyReflection, add it to the fields hash using the class of the through_reflection
+          # ex (team.rb): has_one :admin, through: :admin_membership, source: :user
+          # we use the class of the through_reflection (HasOneReflection -> has_one :admin) to generate the field
+          associations_mapping[association.through_reflection.class]
         end
       end
 
@@ -222,12 +227,6 @@ module Generators
           },
           ActiveRecord::Reflection::HasManyReflection => {
             field: "has_many"
-          },
-          ActiveRecord::Reflection::ThroughReflection => {
-            field: "has_many",
-            options: {
-              through: ":..."
-            }
           },
           ActiveRecord::Reflection::HasAndBelongsToManyReflection => {
             field: "has_and_belongs_to_many"
