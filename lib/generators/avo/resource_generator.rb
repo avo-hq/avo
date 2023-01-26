@@ -18,19 +18,19 @@ module Generators
       end
 
       def resource_class
-        "#{class_name}Resource"
+        "#{class_name.remove(":")}Resource"
       end
 
       def controller_class
-        "Avo::#{class_name.camelize.pluralize}Controller"
+        "Avo::#{class_name.remove(":").pluralize}Controller"
       end
 
       def resource_name
-        "#{singular_name}_resource"
+        "#{model_resource_name}_resource"
       end
 
       def controller_name
-        "#{plural_name}_controller"
+        "#{model_resource_name.pluralize}_controller"
       end
 
       def current_models
@@ -40,11 +40,13 @@ module Generators
       end
 
       def class_from_args
-        @class_from_args ||= options["model-class"]&.capitalize
+        @class_from_args ||= options["model-class"]&.camelize || (class_name if class_name.include?("::"))
       end
 
       def model_class_from_args
-        "\n  self.model_class = ::#{class_from_args}" if class_from_args.present?
+        if class_from_args.present? || class_name.include?("::")
+          "\n  self.model_class = ::#{class_from_args || class_name}"
+        end
       end
 
       private
@@ -58,7 +60,7 @@ module Generators
       end
 
       def model_db_columns
-        @model_db_columns ||= model.columns_hash.reject { |name, _| db_columns_to_ignore.include? name }
+        @model_db_columns ||= model.columns_hash.except(*db_columns_to_ignore)
       end
 
       def db_columns_to_ignore
@@ -155,10 +157,21 @@ module Generators
 
       def fields_from_model_associations
         associations.each do |name, association|
-          fields[name] = associations_mapping[association.class]
+          # Check if the association is not a ThroughReflection
+          unless association.is_a? ActiveRecord::Reflection::ThroughReflection
+            next fields[name] = associations_mapping[association.class]
+          end
 
-          if association.is_a? ActiveRecord::Reflection::ThroughReflection
+          # Check if the through_reflection is a HasManyReflection
+          if association.through_reflection.is_a? ActiveRecord::Reflection::HasManyReflection
+            fields[name] = associations_mapping[association.class]
+            # Add the through option to the options hash in fields[name]. Notice, only has_many associations have the through option
             fields[name][:options][:through] = ":#{association.options[:through]}"
+          else
+            # If the through_reflection is not a HasManyReflection, add it to the fields hash using the class of the through_reflection
+            # ex (team.rb): has_one :admin, through: :admin_membership, source: :user
+            # we use the class of the through_reflection (HasOneReflection -> has_one :admin) to generate the field
+            fields[name] = associations_mapping[association.through_reflection.class]
           end
         end
       end
