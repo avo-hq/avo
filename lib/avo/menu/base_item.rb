@@ -3,6 +3,7 @@ require "dry-initializer"
 class Avo::Menu::BaseItem
   extend Dry::Initializer
 
+  option :collapsible, optional: true
   option :collapsable, default: proc { false }
   option :collapsed, default: proc { false }
   option :icon, optional: true

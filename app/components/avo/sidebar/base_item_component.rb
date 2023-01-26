@@ -22,7 +22,7 @@ class Avo::Sidebar::BaseItemComponent < ViewComponent::Base
   end
 
   def collapsable
-    item.collapsable
+    item.collapsible || item.collapsable
   end
 
   def collapsed
