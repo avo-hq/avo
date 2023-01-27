@@ -263,4 +263,30 @@ RSpec.describe "StatusField", type: :feature do
       end
     end
   end
+
+  describe "with 'Hold On' loading_when value" do
+    let!(:project) { create :project, status: "Hold On" }
+
+    context "index" do
+      it "displays the projects status" do
+        visit "/admin/resources/projects"
+
+        expect(find_field_element("status")).to have_text "Hold On"
+        expect(find_field_element("status")).to have_css ".spinner"
+      end
+    end
+  end
+
+  describe "with 'user_reject' failed_when value" do
+    let!(:project) { create :project, status: "user_reject" }
+
+    context "index" do
+      it "displays the projects status" do
+        visit "/admin/resources/projects"
+
+        expect(find_field_element("status")).to have_text "user_reject"
+        expect(find_field_element("status")).to have_css ".text-red-600"
+      end
+    end
+  end
 end
