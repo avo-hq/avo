@@ -9,7 +9,7 @@ class ProjectResource < Avo::BaseResource
   field :id, as: :id, link_to_resource: true
   field :name, as: :text, required: true, as_label: true, sortable: true
   field :progress, as: :progress_bar, value_suffix: "%", display_value: true
-  field :status, as: :status, failed_when: [:closed, :rejected, :failed], loading_when: [:loading, :running, :waiting], nullable: true
+  field :status, as: :status, failed_when: ['closed', :rejected, :failed, 'user_reject'], loading_when: ['loading', :running, :waiting, 'Hold On'], nullable: true
   field :stage,
     as: :select,
     hide_on: [:show, :index],
