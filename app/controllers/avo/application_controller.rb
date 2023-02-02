@@ -128,11 +128,7 @@ module Avo
     end
 
     def set_model
-      @model = model_find_scope.find record_id
-    end
-
-    def record_id
-      params.permit(:id).dig(:id)
+      @model = model_find_scope.find params[:id]
     end
 
     def model_find_scope
