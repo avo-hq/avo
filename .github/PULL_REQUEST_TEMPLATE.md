@@ -22,3 +22,8 @@ Fixes # (issue)
 1. Step 2
 
 Manual reviewer: please leave a comment with output from the test if that's the case.
+
+<!--
+  By submitting the Contribution, you acknowledge that you have read the [Contributor License Agreement](https://avohq.io/cla) and agree to be bound by its terms.
+  https://avohq.io/cla
+-->
