@@ -186,7 +186,7 @@ GEM
       rspec-core (~> 3.0)
       ruby-progressbar (~> 1.4)
     gem-release (2.2.2)
-    globalid (1.0.0)
+    globalid (1.0.1)
       activesupport (>= 5.0)
     groupdate (6.1.0)
       activesupport (>= 5.2)
