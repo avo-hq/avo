@@ -36,9 +36,7 @@ class PostResource < Avo::BaseResource
   field :cover_photo, as: :external_image, name: "Cover photo", required: true, hide_on: :all, link_to_resource: true, as_avatar: :rounded, format_using: ->(value) { value.present? ? value&.url : nil }
   field :audio, as: :file, is_audio: true, accept: "audio/*"
   field :excerpt, as: :text, hide_on: :all, as_description: true do |model|
-    ActionView::Base.full_sanitizer.sanitize(model.body).truncate 130
-  rescue
-    ""
+    extract_excerpt model.body
   end
 
   field :is_featured, as: :boolean, visible: ->(resource:) { context[:user].is_admin? }
@@ -53,9 +51,7 @@ class PostResource < Avo::BaseResource
     cover :cover_photo, as: :file, is_image: true, link_to_resource: true
     title :name, as: :text, required: true, link_to_resource: true
     body :excerpt, as: :text do |model|
-      ActionView::Base.full_sanitizer.sanitize(model.body).truncate 130
-    rescue
-      ""
+      extract_excerpt model.body
     end
   end
 
