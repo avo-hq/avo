@@ -31,6 +31,12 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     @resource.authorization.authorize_action(:show, raise_exception: false)
   end
 
+  def can_reorder?
+    return authorize_association_for(:reorder) if @reflection.present?
+
+    @resource.authorization.authorize_action(:reorder, raise_exception: false)
+  end
+
   def show_path
     args = {}
 

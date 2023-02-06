@@ -2,13 +2,14 @@ class CourseLinkResource < Avo::BaseResource
   self.title = :link
   self.includes = [:course]
   self.model_class = Course::Link
+  self.authorization_policy = CourseLinkPolicy
   self.search_query = -> do
     scope.ransack(id_eq: params[:q], link_cont: params[:q], m: "or").result(distinct: false)
   end
 
   self.ordering = {
     display_inline: true,
-    visible_on: :index, # :index or :association
+    visible_on: %i[index association], # :index or :association or both
     actions: {
       higher: -> { record.move_higher }, # has access to record, resource, options, params
       lower: -> { record.move_lower },

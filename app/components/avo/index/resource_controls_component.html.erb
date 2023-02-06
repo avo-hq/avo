@@ -1,6 +1,9 @@
 <div class="space-x-2 flex flex-row justify-around w-full">
   <% button_classes = "text-gray-600 h-6 hover:text-gray-600" %>
-  <%= render Avo::Index::Ordering::ButtonsComponent.new resource: @resource, reflection: @reflection, view_type: @view_type %>
+
+  <% if can_reorder? %>
+    <%= render Avo::Index::Ordering::ButtonsComponent.new resource: @resource, reflection: @reflection, view_type: @view_type %>
+  <% end %>
 
   <% if can_view? %>
     <%= link_to helpers.svg('eye', class: button_classes),
