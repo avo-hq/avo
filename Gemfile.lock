@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    avo (2.25.0)
+    avo (2.26.0)
       actionview (>= 6.0)
       active_link_to
       activerecord (>= 6.0)
@@ -170,7 +170,7 @@ GEM
     dotenv-rails (2.8.1)
       dotenv (= 2.8.1)
       railties (>= 3.2)
-    dry-initializer (3.0.4)
+    dry-initializer (3.1.1)
     erb-formatter (0.3.0)
     erubi (1.12.0)
     factory_bot (6.2.1)
