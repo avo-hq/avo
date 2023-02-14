@@ -137,7 +137,10 @@ module Avo
         # Fills in the required infor for belongs_to and has_many
         # Get the foreign key and set it to the id we received in the params
         if @reflection.is_a?(ActiveRecord::Reflection::BelongsToReflection) || @reflection.is_a?(ActiveRecord::Reflection::HasManyReflection)
-          @model.send("#{@reflection.foreign_key}=", params[:via_resource_id])
+          related_resource = Avo::App.get_resource_by_model_name @reflection.active_record
+          related_record = related_resource.find_record params[:via_resource_id]
+
+          @model.send("#{@reflection.foreign_key}=", related_record.id)
           @model.save
         end
 
