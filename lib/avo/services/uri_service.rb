@@ -3,13 +3,13 @@ module Avo
     class URIService
       class << self
         def parse(path)
-          self.new path
+          new path
         end
       end
 
       attr_reader :uri
 
-      def initialize(path = '')
+      def initialize(path = "")
         @uri = Addressable::URI.parse(path)
       end
 
