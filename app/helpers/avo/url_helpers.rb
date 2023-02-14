@@ -26,9 +26,7 @@ module Avo
       keep_query_params: false,
       **args
     )
-      if model.respond_to? :to_param
-        id = model.to_param
-      elsif model.respond_to? :id
+      if model.respond_to? :id
         id = model
       elsif resource_id.present?
         id = resource_id
