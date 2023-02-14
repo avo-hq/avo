@@ -141,11 +141,8 @@ module Avo
 
     def set_related_model
       association_name = BaseResource.valid_association_name(@model, params[:related_name])
-puts ["set_related->"].inspect
       @related_model = if @field.is_a? Avo::Fields::HasOneField
-        puts ["association_name->", association_name].inspect
         @model.send association_name
-        # abort params[:related_id].inspect
       else
         @related_resource.find_record params[:related_id], query: eager_load_files(@related_resource, @model.send(association_name))
       end

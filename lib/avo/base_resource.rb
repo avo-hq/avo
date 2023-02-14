@@ -43,7 +43,6 @@ module Avo
     class_attribute :resolve_query_scope
     class_attribute :resolve_find_scope
     class_attribute :find_record_method, default: ->(model_class:, id:) {
-      puts ["model_class->", model_class.class, id].inspect
       model_class.find id
     }
     class_attribute :ordering

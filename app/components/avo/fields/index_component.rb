@@ -20,9 +20,15 @@ class Avo::Fields::IndexComponent < Avo::BaseComponent
     args = {}
 
     if @parent_model.present?
+      via_resource_id = if @parent_model.respond_to? :to_param
+        @parent_model.to_param
+      else
+        @parent_model.id
+      end
+
       args = {
         via_resource_class: @parent_resource.class,
-        via_resource_id: @parent_model.id
+        via_resource_id: via_resource_id
       }
     end
 
