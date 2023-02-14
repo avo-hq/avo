@@ -25,7 +25,7 @@ class Avo::Fields::HasOneField::ShowComponent < Avo::Fields::ShowComponent
   end
 
   def can_see_the_create_button?
-    create = "create_#{@field.id.to_s}?"
+    create = "create_#{@field.id}?"
 
     authorization_service = @resource.authorization
 

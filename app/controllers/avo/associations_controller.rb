@@ -21,7 +21,7 @@ module Avo
     def index
       @parent_resource = @resource.dup
       @resource = @related_resource
-      @parent_model = @parent_resource.class.find_scope.find(params[:id])
+      @parent_model = @parent_resource.find_record(params[:id])
       @parent_resource.hydrate(model: @parent_model)
       association_name = BaseResource.valid_association_name(@parent_model, params[:related_name])
       @query = @related_authorization.apply_policy @parent_model.send(association_name)

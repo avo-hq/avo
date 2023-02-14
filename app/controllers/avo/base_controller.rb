@@ -90,7 +90,7 @@ module Avo
       # If we're accessing this resource via another resource add the parent to the breadcrumbs.
       if params[:via_resource_class].present? && params[:via_resource_id].present?
         via_resource = Avo::App.get_resource(params[:via_resource_class]).dup
-        via_model = via_resource.class.find_scope.find params[:via_resource_id]
+        via_model = via_resource.find_record params[:via_resource_id]
         via_resource.hydrate model: via_model
 
         add_breadcrumb via_resource.plural_name, resources_path(resource: via_resource)
@@ -113,7 +113,7 @@ module Avo
 
       if is_associated_record?
         via_resource = Avo::App.get_resource_by_model_name(params[:via_relation_class]).dup
-        via_model = via_resource.class.find_scope.find params[:via_resource_id]
+        via_model = via_resource.find_record params[:via_resource_id]
         via_resource.hydrate model: via_model
 
         add_breadcrumb via_resource.plural_name, resources_path(resource: via_resource)
@@ -145,7 +145,7 @@ module Avo
         if @reflection.is_a? ActiveRecord::Reflection::ThroughReflection
           # find the record
           via_resource = ::Avo::App.get_resource_by_model_name(params[:via_relation_class]).dup
-          @related_record = via_resource.model_class.find params[:via_resource_id]
+          @related_record = via_resource.find_record params[:via_resource_id]
           association_name = BaseResource.valid_association_name(@model, params[:via_relation])
 
           @model.send(association_name) << @related_record
@@ -385,7 +385,7 @@ module Avo
       # If we're accessing this resource via another resource add the parent to the breadcrumbs.
       if params[:via_resource_class].present? && params[:via_resource_id].present?
         via_resource = Avo::App.get_resource(params[:via_resource_class]).dup
-        via_model = via_resource.class.find_scope.find params[:via_resource_id]
+        via_model = via_resource.find_record params[:via_resource_id]
         via_resource.hydrate model: via_model
 
         add_breadcrumb via_resource.plural_name, resources_path(resource: @resource)
