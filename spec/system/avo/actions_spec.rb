@@ -74,7 +74,7 @@ RSpec.describe "Actions", type: :system do
 
     context "show" do
       it "does not see the actions button" do
-        visit "/admin/resources/people/#{person.id}"
+        visit "/admin/resources/people/#{person.to_param}"
 
         expect(page).not_to have_button "Actions"
       end
