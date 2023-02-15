@@ -37,7 +37,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     if @parent_model.present?
       args = {
         via_resource_class: parent_resource.class.to_s,
-        via_resource_id: @parent_model.id
+        via_resource_id: @parent_model.to_param
       }
     end
 
@@ -51,7 +51,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     if @parent_model.present?
       args = {
         via_resource_class: parent_resource.class.to_s,
-        via_resource_id: @parent_model.id
+        via_resource_id: @parent_model.to_param
       }
     end
 

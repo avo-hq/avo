@@ -113,7 +113,7 @@ module Avo
     end
 
     def set_attachment_model
-      @attachment_model = @attachment_class.find attachment_id
+      @attachment_model = @related_resource.find_record attachment_id
     end
 
     def set_reflection_field

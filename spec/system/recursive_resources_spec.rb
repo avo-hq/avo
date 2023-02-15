@@ -5,7 +5,7 @@ RSpec.feature "RecursiveResources", type: :system do
   let!(:spouse) { create :spouse, person: person }
 
   it "allows for recursive resources" do
-    visit "/admin/resources/people/#{person.to_param}"
+    visit "/admin/resources/people/#{person.id}"
 
     wait_for_loaded
 
@@ -18,6 +18,6 @@ RSpec.feature "RecursiveResources", type: :system do
 
     wait_for_loaded
 
-    expect(page).to have_current_path(avo.resources_spouse_path(spouse, via_resource_class: "PersonResource", via_resource_id: person.to_param))
+    expect(page).to have_current_path(avo.resources_spouse_path(spouse, via_resource_class: "PersonResource", via_resource_id: person.id))
   end
 end

@@ -382,7 +382,11 @@ module Avo
               # set the value to the actual record
               value = @params[:via_relation_class].safe_constantize.find(@params[:via_resource_id])
             elsif reflection.present? && reflection.foreign_key.present? && field.id.to_s == @params[:via_relation].to_s
-              value = @params[:via_resource_id]
+              resource = Avo::App.get_resource_by_model_name params[:via_relation_class]
+              model = resource.find_record @params[:via_resource_id]
+              id_param = reflection.options[:primary_key] || :id
+
+              value = model.send(id_param)
             end
           end
 

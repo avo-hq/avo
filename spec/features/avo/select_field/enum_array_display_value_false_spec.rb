@@ -43,7 +43,7 @@ RSpec.describe "SelectField", type: :feature do
     end
 
     context "show" do
-      let(:url) { "/admin/resources/posts/#{post.id}" }
+      let(:url) { "/admin/resources/posts/#{post.slug}" }
 
       describe "without status" do
         let!(:post) { create :post, status: nil }
@@ -78,7 +78,7 @@ RSpec.describe "SelectField", type: :feature do
     let(:statuses_with_placeholder) { statuses_without_placeholder.prepend(placeholder) }
 
     context "edit" do
-      let(:url) { "/admin/resources/posts/#{post.id}/edit" }
+      let(:url) { "/admin/resources/posts/#{post.slug}/edit" }
 
       describe "without status" do
         let!(:post) { create :post, status: nil }
@@ -95,7 +95,7 @@ RSpec.describe "SelectField", type: :feature do
 
           click_on "Save"
 
-          expect(current_path).to eql "/admin/resources/posts/#{post.id}"
+          expect(current_path).to eql "/admin/resources/posts/#{post.slug}"
           expect(page).to have_text new_status
         end
       end
@@ -115,7 +115,7 @@ RSpec.describe "SelectField", type: :feature do
 
           click_on "Save"
 
-          expect(current_path).to eql "/admin/resources/posts/#{post.id}"
+          expect(current_path).to eql "/admin/resources/posts/#{post.slug}"
           expect(page).to have_text new_status
         end
       end
@@ -127,19 +127,19 @@ RSpec.describe "SelectField", type: :feature do
 
       describe "creates new post with status published" do
         it "checks placeholder" do
-          is_expected.to have_select "post_status", selected: 'draft', options: statuses_without_placeholder
+          is_expected.to have_select "post_status", selected: "draft", options: statuses_without_placeholder
         end
 
         it "saves the resource with status published" do
           visit url
-          expect(page).to have_select "post_status", selected: 'draft', options: statuses_without_placeholder
+          expect(page).to have_select "post_status", selected: "draft", options: statuses_without_placeholder
 
           fill_in "post_name", with: "Post X"
           select new_status, from: "post_status"
 
           click_on "Save"
 
-          expect(current_path).to eql "/admin/resources/posts/#{Post.last.id}"
+          expect(current_path).to eql "/admin/resources/posts/#{Post.last.slug}"
           expect(page).to have_text "Post X"
           expect(page).to have_text "published"
         end

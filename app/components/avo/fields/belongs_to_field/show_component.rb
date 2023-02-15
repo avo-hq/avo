@@ -6,7 +6,7 @@ class Avo::Fields::BelongsToField::ShowComponent < Avo::Fields::ShowComponent
       model: @field.value,
       resource: @field.target_resource,
       via_resource_class: @resource.class.to_s,
-      via_resource_id: @resource.model.id
+      via_resource_id: @resource.model.to_param
     )
   end
 end

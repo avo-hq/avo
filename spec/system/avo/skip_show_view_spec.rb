@@ -107,7 +107,7 @@ RSpec.feature "SkipShowView", type: :system do
       click_on post.name.to_s
       wait_for_loaded
 
-      expect(current_path).to eql "/admin/resources/posts/#{post.id}/edit"
+      expect(current_path).to eql "/admin/resources/posts/#{post.slug}/edit"
     end
   end
 
@@ -200,7 +200,7 @@ RSpec.feature "SkipShowView", type: :system do
       click_on post.name.to_s
       wait_for_loaded
 
-      expect(current_path).to eql "/admin/resources/posts/#{post.id}"
+      expect(current_path).to eql "/admin/resources/posts/#{post.slug}"
     end
   end
 end

@@ -26,12 +26,12 @@ RSpec.describe "resource panel description", type: :feature do
       end
 
       context "show" do
-        let(:url) { "/admin/resources/people/#{person.to_param}" }
+        let(:url) { "/admin/resources/people/#{person.id}" }
         it { is_expected.to have_text empty }
       end
 
       context "edit" do
-        let(:url) { "/admin/resources/people/#{person.to_param}/edit" }
+        let(:url) { "/admin/resources/people/#{person.id}/edit" }
         it { is_expected.to have_text empty }
       end
 

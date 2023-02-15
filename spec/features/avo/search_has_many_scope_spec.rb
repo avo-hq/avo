@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.feature Avo::SearchController, type: :controller do
   let!(:course_without_links) { create :course }

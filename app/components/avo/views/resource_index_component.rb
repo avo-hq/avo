@@ -74,7 +74,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     if @reflection.present?
       args = {
         via_relation_class: reflection_model_class,
-        via_resource_id: @parent_model.id
+        via_resource_id: @parent_model.to_param
       }
 
       if @reflection.is_a? ActiveRecord::Reflection::ThroughReflection
@@ -144,10 +144,10 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     return unless @reflection.present?
 
     {
-      association: 'has_many',
+      association: "has_many",
       association_id: @reflection.name,
       class: reflection_model_class,
-      id: @parent_model.id
+      id: @parent_model.to_param
     }
   end
 end

@@ -2,9 +2,6 @@ class PersonResource < Avo::BaseResource
   self.title = :name
   self.description = "Demo resource to illustrate Avo's Single Table Inheritance support (Spouse < Person)"
   self.includes = []
-  self.find_record_method = ->(model_class:, id:) {
-    model_class.find_by name: id
-  }
 
   self.link_to_child_resource = true
   # self.search_query = -> do

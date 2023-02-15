@@ -14,18 +14,17 @@ RSpec.feature "CreateHasOne", type: :feature do
     visit "admin/resources/users/#{user.id}?active_tab_name=Main+post&tab_turbo_frame=avo-tabgroup-3"
 
     click_on "Create new main post"
-    expect(page).to have_current_path("/admin/resources/posts/new?via_relation=user&via_relation_class=User&via_resource_id=#{user.id}")
+    expect(page).to have_current_path("/admin/resources/posts/new?via_relation=user&via_relation_class=User&via_resource_id=#{user.slug}")
     expect(page).to have_text user.name
 
     fill_in "post_name", with: "Main post name"
     click_on "Save"
-    # abort [Post.all, user].inspect
 
     wait_for_loaded
     expect(page).to have_text "Post was successfully created."
     expect(page).to have_current_path("/admin/resources/users/#{user.slug}")
 
-    visit "/admin/resources/users/#{user.id}/post/#{user.post.id}?turbo_frame=has_one_field_show_post"
+    visit "/admin/resources/users/#{user.id}/post/#{user.post.slug}?turbo_frame=has_one_field_show_post"
 
     expect(page).to have_text "Detach main post"
     expect(page).to have_text "Main post name"
