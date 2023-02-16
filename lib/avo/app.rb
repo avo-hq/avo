@@ -144,9 +144,11 @@ module Avo
         end
 
         resources.map do |resource|
-          return resource if resource.is_a?(Class)
-
-          resource.to_s.safe_constantize
+          if resource.is_a?(Class)
+            resource
+          else
+            resource.to_s.safe_constantize
+          end
         end
       end
 
