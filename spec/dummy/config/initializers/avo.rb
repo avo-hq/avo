@@ -59,6 +59,12 @@ Avo.configure do |config|
     # placeholder: "/avo-assets/placeholder.svg",
   }
 
+  # Uncomment to test out manual resource loading.
+  # config.resources = [
+  #   "UserResource",
+  #   "FishResource",
+  # ]
+
   ## == Menus ==
   config.main_menu = -> do
     section I18n.t("avo.dashboards"), icon: "dummy-adjustments.svg" do

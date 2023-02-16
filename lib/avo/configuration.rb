@@ -41,6 +41,7 @@ module Avo
     attr_accessor :authorization_client
     attr_accessor :field_wrapper_layout
     attr_accessor :sign_out_path_name
+    attr_accessor :resources
     attr_writer :branding
 
     def initialize
@@ -92,6 +93,7 @@ module Avo
       @resource_default_view = :show
       @authorization_client = :pundit
       @field_wrapper_layout = :inline
+      @resources = nil
     end
 
     def current_user_method(&block)
