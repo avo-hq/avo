@@ -26,7 +26,7 @@ class FishResource < Avo::BaseResource
   field :name, as: :text, required: -> { view == :new }, help: "help text"
   field :user, as: :belongs_to
   field :type, as: :text, hide_on: :forms
-  field :reviews, as: :has_many
+  # field :reviews, as: :has_many
 
   filter NameFilter, arguments: {
     case_insensitive: true

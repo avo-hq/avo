@@ -32,6 +32,36 @@ module Avo
       end
     end
 
+    def an_avo_link(action)
+
+    end
+
+    def avo_action(action_class = nil, params = {}, model: nil, resource: nil, view: nil, arguments: {}, **args, &block)
+      action = action_class.new(model: @model, resource: @resource, view: @view, arguments: arguments)
+      args = {
+        data: {
+          turbo_frame: :actions_show,
+          action: "click->actions-picker#visitAction",
+          actions_picker_target: action.standalone ? "standaloneAction" : "resourceAction",
+        },
+        title: action.action_name,
+        class: args[:class]
+      }
+
+      path = Avo::Services::URIService.parse(resource.record_path)
+        .append_paths("actions", action.param_id)
+        .to_s
+      label = action.name
+
+      if block.present?
+        link_to path, **args do
+          yield
+        end
+      else
+        link_to label, path, **args
+      end
+    end
+
     def button_classes(extra_classes = nil, color: nil, variant: nil, size: :md, active: false)
       classes = "inline-flex flex-grow-0 items-center text-sm font-semibold leading-6 fill-current whitespace-nowrap transition duration-100 rounded transform transition duration-100 active:translate-x-px active:translate-y-px cursor-pointer disabled:cursor-not-allowed #{extra_classes}"
 

@@ -164,7 +164,13 @@ module Avo
       end
 
       def value(property = nil)
-        return @value if @value.present?
+        if @value.present?
+          if @value.respond_to? :call
+            return Avo::Hosts::ResourceViewRecordHost.new(block: @value, record: model, view: view, resource: resource).handle
+          else
+            return @value
+          end
+        end
 
         property ||= id
 
