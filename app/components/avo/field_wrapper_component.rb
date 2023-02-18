@@ -77,7 +77,8 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
   def data
     attributes = {
       field_id: @field.id,
-      field_type: @field.type
+      field_type: @field.type,
+      **@data
     }
 
     # Add the built-in stimulus integration data tags.
