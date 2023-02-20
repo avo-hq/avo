@@ -23,6 +23,8 @@ module DownloadHelpers
     sleep 0.1 # Add extra sleep to make sure we capture that download
 
     Timeout.timeout(TIMEOUT) do
+      puts ["downloading?->", downloading?].inspect
+      puts ["downloads->", downloads].inspect
       sleep 0.1 until downloaded?
     end
   end
