@@ -1,9 +1,9 @@
 require "rails_helper"
 
 RSpec.describe "Tags", type: :system do
-  let!(:post) { create :post, tag_list: [] }
-
   describe "acts_as_taggable" do
+    let!(:post) { create :post, tag_list: [] }
+
     context "show" do
       let(:path) { "/admin/resources/posts/#{post.id}" }
 
@@ -79,6 +79,7 @@ RSpec.describe "Tags", type: :system do
 
         tag_input.find(input_textbox).click
         tag_input.find(input_textbox).set("one, two, five,")
+        sleep 0.3
 
         click_on "Save"
         wait_for_loaded
@@ -86,6 +87,35 @@ RSpec.describe "Tags", type: :system do
         expect(post.reload.tag_list.sort).to eq ["1", "2"].sort
       end
     end
+  end
+
+  describe "ajax request" do
+    let(:field_value_slot) { tags_element(find_field_value_element("user_id")) }
+    let(:tags_input) { field_value_slot.find("span[contenteditable]") }
+    let!(:zezel) { create :user, first_name: "Zezel", last_name: "Nunu" }
+    let!(:users) { create_list :user, 15 }
+
+    it "fetches the users" do
+      expect(TestBuddy).to receive(:hi).with(zezel.id.to_s).at_least :once
+
+      visit "/admin/resources/users/#{admin.slug}/actions/toggle_inactive"
+
+      tags_input.click
+      tags_input.set("Zezel")
+      wait_for_tags_to_load(field_value_slot)
+      tags_input.send_keys :arrow_down
+      tags_input.send_keys :return
+
+      sleep 0.3
+      click_on "Run"
+    end
+  end
+end
+
+def wait_for_tags_to_load(element, time = Capybara.default_max_wait_time)
+  klass = "tagify--loading"
+  Timeout.timeout(time) do
+    sleep(0.05) until !element[:class].to_s.include?(klass)
   end
 end
 

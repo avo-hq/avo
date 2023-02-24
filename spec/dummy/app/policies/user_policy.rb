@@ -27,6 +27,10 @@ class UserPolicy < ApplicationPolicy
     true
   end
 
+  def get_users?
+    true
+  end
+
   def act_on?
     true
   end

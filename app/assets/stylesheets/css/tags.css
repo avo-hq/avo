@@ -14,6 +14,11 @@ tags.tagify {
 
   span.tagify__input {
     @apply my-1;
+
+    &:after {
+      /* The loader is not centered by default. This will make it look better. */
+      margin-top: 0.25rem;
+    }
   }
 }
 
@@ -21,3 +26,7 @@ tag.tagify__tag {
   @apply text-sm my-1 mb-0;
 }
 
+/* When the tags field is used to select just one value there's a weird ZeroWidthSpace (\u200B) character that breaks the vertical spacing. */
+[data-tags-field-mode-value="select"] tags.tagify {
+  height: 40px;
+}
