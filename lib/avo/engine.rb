@@ -54,6 +54,12 @@ module Avo
       # app.config.logger = ::Logger.new(STDOUT)
     end
 
+    initializer "avo.test_buddy" do |app|
+      if Avo::IN_DEVELOPMENT
+        Rails.autoloaders.main.push_dir Avo::Engine.root.join("spec", "helpers")
+      end
+    end
+
     config.app_middleware.use(
       Rack::Static,
       urls: ["/avo-assets"],
