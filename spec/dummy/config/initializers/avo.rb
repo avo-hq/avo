@@ -133,6 +133,7 @@ Avo.configure do |config|
   end
 end
 
+Rails.configuration.to_prepare do
 module FieldExtensions
   # Include all helpers
   helper_names = ActionController::Base.all_helpers_from_path Rails.root.join("app", "helpers")
@@ -142,6 +143,5 @@ module FieldExtensions
   end
 end
 
-Rails.configuration.to_prepare do
   Avo::Fields::BaseField.include FieldExtensions
 end

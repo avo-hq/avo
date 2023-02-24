@@ -17,8 +17,6 @@ export default class extends BaseController {
     delimiters: { type: Array, default: [] },
     mode: String,
     fetchValuesFrom: String,
-    idAttribute: String,
-    labelAttribute: String,
   }
 
   tagify = null;
@@ -45,7 +43,6 @@ export default class extends BaseController {
       },
     }
 
-    // console.log('this.modeValue->', this.modeValue)
     if (this.modeValue) {
       options.mode = this.modeValue // null or "select"
     }
@@ -55,21 +52,14 @@ export default class extends BaseController {
         tagTextProp: 'label',
         dropdown: {
           searchKeys: ['label'],
+          mapValueTo: 'value',
         },
         templates: {
-          tag: tagTemplate(this.idAttributeValue, this.labelAttributeValue),
-          dropdownItem: suggestionItemTemplate(this.idAttributeValue, this.labelAttributeValue),
+          tag: tagTemplate,
+          dropdownItem: suggestionItemTemplate,
         },
+        originalInputValueFormat: (valuesArr) => valuesArr.map((item) => item.value),
       })
-    }
-
-    // If the value attribute is present use that key of the object as the field value.
-    // If not, let the field use the object that was originally received.
-    //
-    // In some cases the user might want the full object from selection ({value: 101, label: "Adrian"}) instead of just one attribute (101)
-    // For that scenario we hardcode a "nil" string to tell Avo to pass that object further.
-    if (this.idAttributeValue) {
-      options.originalInputValueFormat = (valuesArr) => valuesArr.map((item) => item[this.idAttributeValue])
     }
 
     return options

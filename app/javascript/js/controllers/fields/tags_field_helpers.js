@@ -1,14 +1,15 @@
-export function tagTemplate(idAttribute, labelAttribute) {
-  return function tagTemplate(tagData) {
-    const suggestions = this.settings.whitelist || []
+export function tagTemplate(tagData) {
+  const suggestions = this.settings.whitelist || []
 
+  const possibleSuggestion = suggestions.find(
     // eslint-disable-next-line eqeqeq
-    const possibleSuggestion = suggestions.find((item) => item[idAttribute] == tagData[idAttribute])
-    const possibleLabel = possibleSuggestion
-      ? possibleSuggestion[labelAttribute]
-      : tagData[idAttribute]
+    (item) => item.value == tagData.value,
+  )
+  const possibleLabel = possibleSuggestion
+    ? possibleSuggestion.label
+    : tagData.value
 
-    return `
+  return `
 <tag title="${tagData.value}"
   contenteditable='false'
   spellcheck='false'
@@ -22,11 +23,10 @@ export function tagTemplate(idAttribute, labelAttribute) {
   </div>
 </tag>
 `
-  }
 }
-export function suggestionItemTemplate(idAttribute, labelAttribute) {
-  return function suggestionItemTemplate(tagData) {
-    return `
+
+export function suggestionItemTemplate(tagData) {
+  return `
 <div ${this.getAttributes(tagData)}
   class='tagify__dropdown__item flex items-center ${
   tagData.class ? tagData.class : ''
@@ -41,8 +41,7 @@ export function suggestionItemTemplate(idAttribute, labelAttribute) {
   </div>`
     : ''
 }
-  <span>${tagData[labelAttribute]}</span>
+  <span>${tagData.label}</span>
 </div>
 `
-  }
 }

@@ -6,8 +6,6 @@ module Avo
       attr_reader :delimiters
       attr_reader :enforce_suggestions
       attr_reader :mode
-      attr_reader :id_attribute
-      attr_reader :label_attribute
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
@@ -20,8 +18,6 @@ module Avo
         add_array_prop args, :suggestions
         add_string_prop args, :mode, nil
         add_string_prop args, :fetch_values_from
-        add_string_prop args, :id_attribute, :value
-        add_string_prop args, :label_attribute, :label
       end
 
       def field_value
