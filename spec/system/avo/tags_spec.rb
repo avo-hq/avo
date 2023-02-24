@@ -3,6 +3,7 @@ require "rails_helper"
 RSpec.describe "Tags", type: :system do
   describe "acts_as_taggable" do
     let!(:post) { create :post, tag_list: [] }
+
     context "show" do
       let(:path) { "/admin/resources/posts/#{post.id}" }
 

@@ -19,7 +19,8 @@ class ToggleInactive < Avo::BaseAction
 
   def handle(**args)
     models, fields, _ = args.values_at(:models, :fields, :current_user, :resource)
-    puts ["fields->", fields, TestBuddy.hi(fields["user_id"])].inspect
+    # for testing purposes
+    TestBuddy.hi(fields["user_id"])
 
     models.each do |model|
       if model.active
