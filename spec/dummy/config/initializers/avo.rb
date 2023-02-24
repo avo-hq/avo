@@ -135,4 +135,5 @@ end
 
 Rails.configuration.to_prepare do
   Avo::Fields::BaseField.include FieldExtensions
+  Avo::ApplicationController.include ApplicationControllerExtensions
 end
