@@ -128,7 +128,7 @@ module Avo
     end
 
     def set_model
-      @model = @resource.find_record(params[:id], query: model_find_scope)
+      @model = @resource.find_record(params[:id], query: model_find_scope, params: params)
     end
 
     def model_find_scope
@@ -144,7 +144,7 @@ module Avo
       @related_model = if @field.is_a? Avo::Fields::HasOneField
         @model.send association_name
       else
-        @related_resource.find_record params[:related_id], query: eager_load_files(@related_resource, @model.send(association_name))
+        @related_resource.find_record params[:related_id], query: eager_load_files(@related_resource, @model.send(association_name)), params: params
       end
     end
 

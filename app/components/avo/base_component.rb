@@ -25,7 +25,7 @@ class Avo::BaseComponent < ViewComponent::Base
 
     resource = ::Avo::App.get_resource_by_model_name model_klass if resource.blank?
 
-    model = resource.find_record params[:via_resource_id], query: model_klass
+    model = resource.find_record params[:via_resource_id], query: model_klass, params: params
 
     resource.dup.hydrate model: model
   end

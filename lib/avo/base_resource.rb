@@ -42,7 +42,8 @@ module Avo
     class_attribute :unscoped_queries_on_index, default: false
     class_attribute :resolve_query_scope
     class_attribute :resolve_find_scope
-    class_attribute :find_record_method, default: ->(model_class:, id:) {
+    # TODO: refactor this into a Host
+    class_attribute :find_record_method, default: ->(model_class:, id:, params:) {
       model_class.find id
     }
     class_attribute :ordering
@@ -383,7 +384,7 @@ module Avo
               value = @params[:via_relation_class].safe_constantize.find(@params[:via_resource_id])
             elsif reflection.present? && reflection.foreign_key.present? && field.id.to_s == @params[:via_relation].to_s
               resource = Avo::App.get_resource_by_model_name params[:via_relation_class]
-              model = resource.find_record @params[:via_resource_id]
+              model = resource.find_record @params[:via_resource_id], params: params
               id_param = reflection.options[:primary_key] || :id
 
               value = model.send(id_param)
@@ -496,10 +497,10 @@ module Avo
       model.present? && model.id.present?
     end
 
-    def find_record(id, query: nil)
+    def find_record(id, query: nil, params: nil)
       query ||= self.class.find_scope
 
-      self.class.find_record_method.call(model_class: query, id: id)
+      self.class.find_record_method.call(model_class: query, id: id, params: params)
     end
   end
 end

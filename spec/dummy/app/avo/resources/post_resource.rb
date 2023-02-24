@@ -6,7 +6,7 @@ class PostResource < Avo::BaseResource
   self.search_query_help = "- search by id, name or body"
   self.includes = [:user]
   self.default_view_type = :grid
-  self.find_record_method = ->(model_class:, id:) {
+  self.find_record_method = ->(model_class:, id:, params:) {
     id.to_i == 0 ? model_class.find_by_slug(id) : model_class.find(id)
   }
 

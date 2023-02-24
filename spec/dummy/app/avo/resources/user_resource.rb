@@ -13,7 +13,7 @@ class UserResource < Avo::BaseResource
   self.resolve_find_scope = ->(model_class:) do
     model_class.friendly
   end
-  self.find_record_method = ->(model_class:, id:) {
+  self.find_record_method = ->(model_class:, id:, params:) {
     model_class.friendly.find id
   }
   self.includes = [:posts, :post]
