@@ -51,44 +51,60 @@ Avo::App.boot
 require "support/download_helpers"
 require "support/request_helpers"
 
+# Settings and profile for the Chrome Browser
+def chrome_options(headless: false)
+  opts = Selenium::WebDriver::Chrome::Options.new
+  opts.add_argument("--headless") if headless
+  opts.add_argument("--no-sandbox")
+  opts.add_argument("--disable-gpu")
+  opts.add_argument("--disable-dev-shm-usage")
+  opts.add_argument("--window-size=1400,1024")
+
+  opts.add_preference(
+    :download,
+    directory_upgrade: true,
+    prompt_for_download: false,
+    default_directory: DownloadHelpers::PATH.to_s
+  )
+
+  opts.add_preference(:browser, set_download_behavior: {behavior: "allow"})
+  opts
+end
+
+# Needed setup for headless download
+def headless_download_setup(driver)
+  bridge = driver.browser.send(:bridge)
+
+  path = "/session/:session_id/chromium/send_command"
+  path[":session_id"] = bridge.session_id
+
+  bridge.http.call(:post, path, cmd: "Page.setDownloadBehavior",
+    params: {
+      behavior: "allow",
+      downloadPath: DownloadHelpers::PATH.to_s
+    })
+
+  driver
+end
+
 Capybara.register_driver :chrome_headless do |app|
-  puts ["DownloadHelpers::PATH.to_s->", DownloadHelpers::PATH.to_s].inspect
-  Capybara::Selenium::Driver.new app,
+  driver = Capybara::Selenium::Driver.new app,
     browser: :chrome,
     clear_session_storage: true,
     clear_local_storage: true,
-    capabilities: [
-      Selenium::WebDriver::Chrome::Options.new(
-        :args => %w[
-          headless
-          disable-gpu
-          no-sandbox
-          window-size=1440,1024
-        ],
-        "prefs" => {
-          "download.default_directory" => DownloadHelpers::PATH.to_s
-        }
-      )
-    ]
+    options: chrome_options(headless: true)
+  headless_download_setup(driver)
+  driver
 end
 
 Capybara.register_driver :chrome do |app|
-  Capybara::Selenium::Driver.new app,
+  driver = Capybara::Selenium::Driver.new app,
     browser: :chrome,
     clear_session_storage: true,
     clear_local_storage: true,
-    capabilities: [
-      Selenium::WebDriver::Chrome::Options.new(
-        :args => %w[
-          disable-gpu
-          no-sandbox
-          window-size=1440,1024
-        ],
-        "prefs" => {
-          "download.default_directory" => DownloadHelpers::PATH.to_s
-        }
-      )
-    ]
+    options: chrome_options
+  headless_download_setup(driver)
+  driver
 end
 
 test_driver = ENV["HEADFULL"] ? :chrome : :chrome_headless
