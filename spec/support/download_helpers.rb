@@ -2,7 +2,7 @@
 
 module DownloadHelpers
   TIMEOUT = 10
-  PATH = Rails.root.join("tmp/downloads").to_s
+  PATH = Rails.root.join("tmp/downloads")
 
   extend self
 
