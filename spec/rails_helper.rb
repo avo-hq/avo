@@ -50,6 +50,7 @@ require "support/download_helpers"
 require "support/request_helpers"
 
 Capybara.register_driver :chrome_headless do |app|
+  puts ["DownloadHelpers::PATH.to_s->", DownloadHelpers::PATH.to_s].inspect
   Capybara::Selenium::Driver.new app,
     browser: :chrome,
     clear_session_storage: true,
