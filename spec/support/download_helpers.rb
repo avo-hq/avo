@@ -2,11 +2,12 @@
 
 module DownloadHelpers
   TIMEOUT = 10
-  PATH    = Rails.root.join("tmp/downloads")
+  PATH = Rails.root.join("tmp/downloads").to_s
 
   extend self
 
   def downloads
+    puts ["PATH->", PATH, Dir[PATH.join("*")], Dir[Rails.root.to_s]].inspect
     Dir[PATH.join("*")]
   end
 

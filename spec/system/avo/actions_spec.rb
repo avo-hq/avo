@@ -83,25 +83,25 @@ RSpec.describe "Actions", type: :system do
 
   # Disabled for now. Somehow this fails in the CI
   # https://github.com/avo-hq/avo/actions/runs/4265231475/jobs/7424318383
-  # describe "downloading files" do
-  #   context "without File.open().read" do
-  #     let(:content) { "On the fly dummy content." }
-  #     let(:file_name) { "dummy-content.txt" }
+  describe "downloading files" do
+    context "without File.open().read" do
+      let(:content) { "On the fly dummy content." }
+      let(:file_name) { "dummy-content.txt" }
 
-  #     it "downloads the file and closes the modal" do
-  #       visit "/admin/resources/users"
+      it "downloads the file and closes the modal" do
+        visit "/admin/resources/users"
 
-  #       click_on "Actions"
-  #       click_on "Download file"
-  #       click_on "Run"
+        click_on "Actions"
+        click_on "Download file"
+        click_on "Run"
 
-  #       wait_for_download
+        wait_for_download
 
-  #       expect(downloaded?).to be true
-  #       expect(download_content).to eq content
-  #       expect(download.split("/").last).to eq file_name
-  #     end
-  #   end
+        expect(downloaded?).to be true
+        expect(download_content).to eq content
+        expect(download.split("/").last).to eq file_name
+      end
+    end
 
   #   context "with File.open().read" do
   #     let(:content) { "Dummy content from the file.\n" }
@@ -122,7 +122,7 @@ RSpec.describe "Actions", type: :system do
   #       expect(download.split("/").last).to eq file_name
   #     end
   #   end
-  # end
+  end
 
   describe "default values" do
     it "displays the default value" do
