@@ -1,5 +1,7 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require "spec_helper"
+require "fileutils"
+
 ENV["RAILS_ENV"] = "test"
 
 require_relative "dummy/config/environment"
@@ -117,6 +119,13 @@ RSpec.configure do |config|
 
   config.before(:example) { Rails.cache.clear }
 
+  config.before(:all) do
+    # Ensure the downloads directory exists
+    dirname = File.dirname(DownloadHelpers::PATH)
+    unless File.directory?(dirname)
+      FileUtils.mkdir_p(dirname)
+    end
+  end
   config.before(:example) { clear_downloads }
   config.after(:example) { clear_downloads }
 
