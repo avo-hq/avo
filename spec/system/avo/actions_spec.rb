@@ -97,6 +97,8 @@ RSpec.describe "Actions", type: :system do
 
         wait_for_download
 
+        puts ["Dir.entries(DownloadHelpers::PATH)->", Dir.entries(DownloadHelpers::PATH)].inspect
+
         expect(downloaded?).to be true
         expect(download_content).to eq content
         expect(download.split("/").last).to eq file_name
