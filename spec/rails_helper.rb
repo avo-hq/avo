@@ -122,7 +122,7 @@ RSpec.configure do |config|
   config.before(:all) do
     puts "Ensuring the downloads directory exists."
     # Ensure the downloads directory exists
-    dirname = File.dirname(DownloadHelpers::PATH)
+    dirname = DownloadHelpers::PATH
     unless File.directory?(dirname)
       FileUtils.mkdir_p(dirname)
     end
