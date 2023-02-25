@@ -95,6 +95,7 @@ RSpec.describe "Actions", type: :system do
         click_on "Download file"
         click_on "Run"
 
+        puts ["Dir.entries(DownloadHelpers::PATH)->", Dir.entries(DownloadHelpers::PATH)].inspect
         wait_for_download
 
         puts ["Dir.entries(DownloadHelpers::PATH)->", Dir.entries(DownloadHelpers::PATH)].inspect
