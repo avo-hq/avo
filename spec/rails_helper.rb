@@ -120,11 +120,13 @@ RSpec.configure do |config|
   config.before(:example) { Rails.cache.clear }
 
   config.before(:all) do
+    puts "Ensuring the downloads directory exists."
     # Ensure the downloads directory exists
     dirname = File.dirname(DownloadHelpers::PATH)
     unless File.directory?(dirname)
       FileUtils.mkdir_p(dirname)
     end
+    puts ["File.directory?(dirname)->", dirname, File.directory?(dirname)].inspect
   end
   config.before(:example) { clear_downloads }
   config.after(:example) { clear_downloads }
