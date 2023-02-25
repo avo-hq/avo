@@ -48,6 +48,6 @@ module DownloadHelpers
     unless File.directory?(PATH)
       FileUtils.mkdir_p(PATH)
     end
-    puts ["File.directory?(PATH)->", dirname, DownloadHelpers::PATH, File.directory?(dirname)].inspect
+    puts ["File.directory?(PATH)->", PATH, DownloadHelpers::PATH, File.directory?(PATH)].inspect
   end
 end
