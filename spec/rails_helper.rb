@@ -126,7 +126,7 @@ RSpec.configure do |config|
     unless File.directory?(dirname)
       FileUtils.mkdir_p(dirname)
     end
-    puts ["File.directory?(dirname)->", dirname, File.directory?(dirname)].inspect
+    puts ["File.directory?(dirname)->", dirname, DownloadHelpers::PATH, File.directory?(dirname)].inspect
   end
   config.before(:example) { clear_downloads }
   config.after(:example) { clear_downloads }
