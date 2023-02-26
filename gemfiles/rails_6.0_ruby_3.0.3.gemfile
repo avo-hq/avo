@@ -46,6 +46,7 @@ gem "chartkick"
 gem "activestorage"
 gem "sprockets-rails"
 gem "image_processing", "~> 1.12"
+gem "prefixed_ids"
 
 group :development do
   gem "standard"

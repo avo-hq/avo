@@ -22,7 +22,7 @@ RSpec.describe "resource panel description", type: :feature do
 
       context "index" do
         let(:url) { "/admin/resources/people" }
-        it { is_expected.to have_text "Demo resource to illustrate Avo\'s Single Table Inheritance support (Spouse < Person)" }
+        it { is_expected.to have_text "Demo resource to illustrate Avo's Single Table Inheritance support (Spouse < Person)" }
       end
 
       context "show" do

@@ -6,6 +6,9 @@ class PostResource < Avo::BaseResource
   self.search_query_help = "- search by id, name or body"
   self.includes = [:user]
   self.default_view_type = :grid
+  self.find_record_method = ->(model_class:, id:, params:) {
+    id.to_i == 0 ? model_class.find_by_slug(id) : model_class.find(id)
+  }
 
   # self.show_controls = -> do
   #   detach_button
@@ -45,6 +48,7 @@ class PostResource < Avo::BaseResource
   end
   field :user, as: :belongs_to, placeholder: "—"
   field :status, as: :select, enum: ::Post.statuses, display_value: false
+  field :slug, as: :text
   field :comments, as: :has_many, use_resource: PhotoCommentResource
 
   grid do

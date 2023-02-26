@@ -3,13 +3,13 @@ module Avo
     class URIService
       class << self
         def parse(path)
-          self.new path
+          new path
         end
       end
 
       attr_reader :uri
 
-      def initialize(path = '')
+      def initialize(path = "")
         @uri = Addressable::URI.parse(path)
       end
 
@@ -56,19 +56,20 @@ module Avo
       private
 
       def join_paths(paths)
-        paths.map do |path|
-          sanitize_path path
-        end
-        .join("/")
+        paths
+          .map do |path|
+            sanitize_path path
+          end
+          .join("/")
       end
 
       # Removes the forward slash if it's present at the start of the path
       def sanitize_path(path)
-        if path.to_s.starts_with? '/'
-          path = path[1..-1]
+        if path.to_s.starts_with? "/"
+          path = path[1..]
         end
 
-        path
+        ERB::Util.url_encode path
       end
     end
   end

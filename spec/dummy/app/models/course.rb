@@ -12,6 +12,8 @@
 #  starting_at  :date_time
 #
 class Course < ApplicationRecord
+  has_prefix_id :course
+
   has_many :links, -> { order(position: :asc) }, class_name: "Course::Link", inverse_of: :course
 
   validates :name, presence: true

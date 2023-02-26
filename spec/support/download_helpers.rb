@@ -2,7 +2,7 @@
 
 module DownloadHelpers
   TIMEOUT = 10
-  PATH    = Rails.root.join("tmp/downloads")
+  PATH = Rails.root.join("tmp", "downloads")
 
   extend self
 
@@ -37,5 +37,11 @@ module DownloadHelpers
 
   def clear_downloads
     FileUtils.rm_f(downloads)
+  end
+
+  def ensure_directory_exists
+    unless File.directory?(PATH)
+      FileUtils.mkdir_p(PATH)
+    end
   end
 end

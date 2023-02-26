@@ -27,6 +27,8 @@ class Post < ApplicationRecord
 
   acts_as_taggable_on :tags
 
+  before_save :update_slug
+
   def self.tags_suggestions
     [
       {
@@ -45,5 +47,17 @@ class Post < ApplicationRecord
         avatar: "https://images.unsplash.com/photo-1560765447-da05a55e72f8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&w=256&h=256&fit=crop"
       }
     ]
+  end
+
+  def to_param
+    slug || id
+  end
+
+  def self.find(input)
+    input.to_i == 0 ? find_by_slug(input) : super
+  end
+
+  def update_slug
+    self.slug = name.parameterize
   end
 end

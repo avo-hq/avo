@@ -6,6 +6,8 @@ If you came across a bug or want to suggest a feature, feel free to [say somethi
 
 If you'd like to contribute code, the steps below will help you get up and running.
 
+## Legal
+
 By submitting the Contribution, You acknowledge that You have read this [Contributor License Agreement](https://avohq.io/cla) and agree to be bound by its terms.
 
 ## Elements naming

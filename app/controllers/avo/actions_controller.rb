@@ -35,7 +35,7 @@ module Avo
         args[:models] = if @selected_query.present?
           @resource.model_class.find_by_sql decrypted_query
         else
-          @resource.class.find_scope.find resource_ids
+          @resource.find_record resource_ids, params: params
         end
       end
 

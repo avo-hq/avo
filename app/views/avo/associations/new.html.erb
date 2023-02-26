@@ -1,6 +1,11 @@
 <%= turbo_frame_tag 'attach_modal' do %>
+  <%
+    url = Avo::Services::URIService.parse(avo.root_url.to_s)
+      .append_paths('resources', params[:resource_name], params[:id], params[:related_name])
+      .to_s
+  %>
   <%= form_with scope: 'fields',
-    url: "#{avo.root_path}resources/#{params[:resource_name]}/#{params[:id]}/#{params[:related_name]}/",
+    url: url,
     local: true,
     data: {
       'turbo-frame': '_top'
