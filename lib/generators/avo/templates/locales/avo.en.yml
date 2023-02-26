@@ -89,6 +89,10 @@ en:
         one: user
         other: users
         zero: users
+      tm:
+        one: tm
+        other: tms
+        zero: tms
     resource_updated: Record updated
     resources: Resources
     run: Run

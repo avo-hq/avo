@@ -7,6 +7,7 @@
     tabs_active_tab_value: active_tab_name
   } do %>
   <% visible_tabs.each_with_index do |tab, index| %>
+  <%= tab.inspect %>
     <%
       args = {
         # Hide the turbo frames that aren't in the current tab

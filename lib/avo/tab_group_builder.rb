@@ -17,8 +17,14 @@ class Avo::TabGroupBuilder
   def field(field_name, **args, &block)
     parsed = Avo::Dsl::FieldParser.new(id: field_name, order_index: @items_index, **args, &block).parse
     field_instance = parsed.instance
+    field = parsed.instance
 
-    name = field_instance.name
+    # abort field.inspect
+    # name = field_instance.plural_name
+    name = field.name
+    # byebug
+    # puts ["field_instance->", field_instance].inspect
+
     tab = Avo::Tab.new name: name
 
     if field_instance.has_own_panel?
