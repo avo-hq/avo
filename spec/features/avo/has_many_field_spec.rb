@@ -10,7 +10,7 @@ RSpec.feature "HasManyField", type: :feature do
 
   context "show" do
     # Test the frame directly
-    let(:url) { "/admin/resources/users/#{user.id}/posts?turbo_frame=has_many_field_posts&view_type=table" }
+    let(:url) { "/admin/resources/users/#{user.slug}/posts?turbo_frame=has_many_field_posts&view_type=table" }
 
     describe "without a related post" do
       it { is_expected.to have_text "No related record found" }
@@ -20,7 +20,7 @@ RSpec.feature "HasManyField", type: :feature do
 
         click_on "Create new post"
 
-        expect(page).to have_current_path "/admin/resources/posts/new?via_relation=user&via_relation_class=User&via_resource_id=#{user.id}"
+        expect(page).to have_current_path "/admin/resources/posts/new?via_relation=user&via_relation_class=User&via_resource_id=#{user.slug}"
         expect(page).to have_select "post_user_id", selected: user.name, disabled: true
 
         fill_in "post_name", with: "New post name"
@@ -42,42 +42,42 @@ RSpec.feature "HasManyField", type: :feature do
 
         click_on "Create new post"
 
-        expect(page).to have_current_path "/admin/resources/posts/new?via_relation=user&via_relation_class=User&via_resource_id=#{user.id}"
+        expect(page).to have_current_path "/admin/resources/posts/new?via_relation=user&via_relation_class=User&via_resource_id=#{user.slug}"
       end
 
       it "displays valid links to resources" do
         visit url
 
         # grid view button
-        expect(page).to have_selector "[data-control='view-type-toggle-grid'][href='/admin/resources/users/#{user.id}/posts?turbo_frame=has_many_field_posts&view_type=grid']"
+        expect(page).to have_selector "[data-control='view-type-toggle-grid'][href='/admin/resources/users/#{user.slug}/posts?turbo_frame=has_many_field_posts&view_type=grid']"
 
         # create new button
-        expect(page).to have_link("Create new post", href: "/admin/resources/posts/new?via_relation=user&via_relation_class=User&via_resource_id=#{user.id}")
+        expect(page).to have_link("Create new post", href: "/admin/resources/posts/new?via_relation=user&via_relation_class=User&via_resource_id=#{user.slug}")
 
         # attach button
-        expect(page).to have_link("Attach post", href: /\/admin\/resources\/users\/#{user.id}\/posts\/new/)
+        expect(page).to have_link("Attach post", href: /\/admin\/resources\/users\/#{user.slug}\/posts\/new/)
 
         ## Table Rows
         # show link
-        show_path = "/admin/resources/posts/#{post.id}?via_resource_class=UserResource&via_resource_id=#{user.id}"
+        show_path = "/admin/resources/posts/#{post.slug}?via_resource_class=UserResource&via_resource_id=#{user.slug}"
         expect(page).to have_css("a[data-control='show'][href='#{show_path}']")
 
         # id field show link
-        expect(field_element_by_resource_id("id", post.id)).to have_css("a[href='/admin/resources/posts/#{post.id}?via_resource_class=UserResource&via_resource_id=#{user.id}']")
+        expect(field_element_by_resource_id("id", post.id)).to have_css("a[href='/admin/resources/posts/#{post.slug}?via_resource_class=UserResource&via_resource_id=#{user.slug}']")
 
         # edit link
-        edit_path = "/admin/resources/posts/#{post.id}/edit?via_resource_class=UserResource&via_resource_id=#{user.id}"
+        edit_path = "/admin/resources/posts/#{post.slug}/edit?via_resource_class=UserResource&via_resource_id=#{user.slug}"
         expect(page).to have_selector("[data-component='resources-index'] a[data-control='edit'][data-resource-id='#{post.id}'][href='#{edit_path}']")
 
         # detach form
-        form = "form[action='/admin/resources/users/#{user.id}/posts/#{post.id}'][data-turbo-frame='has_many_field_posts']"
+        form = "form[action='/admin/resources/users/#{user.slug}/posts/#{post.id}'][data-turbo-frame='has_many_field_posts']"
         expect(page).to have_selector("[data-component='resources-index'] #{form}")
         expect(page).to have_selector(:css, "#{form} input[type='hidden'][name='_method'][value='delete']", visible: false)
-        # expect(page).to have_selector(:css, "#{form} input#referrer_detach_#{post.id}[value='/admin/resources/users/#{user.slug}/posts?turbo_frame=has_many_field_posts']", visible: false)
+        # expect(page).to have_selector(:css, "#{form} input#referrer_detach_#{post.slug}[value='/admin/resources/users/#{user.slug}/posts?turbo_frame=has_many_field_posts']", visible: false)
         expect(page).to have_selector("[data-component='resources-index'] #{form} button[data-control='detach'][data-resource-id='#{post.id}']")
 
         # destroy form
-        form = "form[action='/admin/resources/posts/#{post.id}'][data-turbo-frame='has_many_field_posts']"
+        form = "form[action='/admin/resources/posts/#{post.slug}'][data-turbo-frame='has_many_field_posts']"
         expect(page).to have_selector("[data-component='resources-index'] #{form}")
         expect(page).to have_selector("#{form} input[type='hidden'][name='_method'][value='delete']", visible: false)
         # expect(page).to have_selector("#{form} input#referrer_destroy_#{post.id}[value='/admin/resources/users/#{user.slug}/posts?turbo_frame=has_many_field_posts']", visible: false)

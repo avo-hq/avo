@@ -6,6 +6,9 @@ class SiblingResource < Avo::BaseResource
   self.search_query = -> do
     scope.ransack(id_eq: params[:q], name_cont: params[:q], m: "or").result(distinct: false)
   end
+  self.find_record_method = ->(model_class:, id:, params:) {
+    model_class.find_by! name: id
+  }
 
   field :id, as: :id
   field :name, as: :text

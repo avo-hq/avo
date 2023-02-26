@@ -18,12 +18,12 @@ RSpec.feature "ExposedMethodsBaseController", type: :system do
       fill_in "course_name", with: "Great Course"
       save_and_wait_for_loaded
 
-      expect(current_path).to eq "/admin/resources/courses/#{Course.last.id}"
+      expect(current_path).to eq "/admin/resources/courses/#{Course.last.prefix_id}"
       expect(page).to have_text "Course created!"
     end
 
     let(:course) { create :course }
-    let(:edit_course_url) { "/admin/resources/courses/#{course.id}/edit" }
+    let(:edit_course_url) { "/admin/resources/courses/#{course.prefix_id}/edit" }
 
     it "update_fail_message" do
       visit edit_course_url
@@ -35,7 +35,7 @@ RSpec.feature "ExposedMethodsBaseController", type: :system do
       expect(page).to have_text "Validation failed: Name can't be blank"
     end
 
-    let(:course_url) { "/admin/resources/courses/#{course.id}" }
+    let(:course_url) { "/admin/resources/courses/#{course.prefix_id}" }
 
     it "update_success_message" do
       visit edit_course_url

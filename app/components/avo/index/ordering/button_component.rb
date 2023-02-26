@@ -18,6 +18,6 @@ class Avo::Index::Ordering::ButtonComponent < Avo::Index::Ordering::BaseComponen
   end
 
   def order_path(args)
-    Avo::App.view_context.avo.reorder_order_path(resource.route_key, resource.model.id, **args)
+    Avo::App.view_context.avo.reorder_order_path(resource.route_key, resource.model.to_param, **args)
   end
 end

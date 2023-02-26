@@ -70,7 +70,7 @@ RSpec.feature "belongs_to", type: :system do
               expect(current_path).to eq "/admin/resources/comments/#{comment.id}"
 
               expect(find_field_value_element("body")).to have_text "Sample comment"
-              expect(page).to have_link post.name, href: "/admin/resources/posts/#{post.id}?via_resource_class=CommentResource&via_resource_id=#{Comment.last.id}"
+              expect(page).to have_link post.name, href: "/admin/resources/posts/#{post.slug}?via_resource_class=CommentResource&via_resource_id=#{Comment.last.id}"
 
               click_on "Edit"
 

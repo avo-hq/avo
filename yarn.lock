@@ -371,9 +371,9 @@
   integrity sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==
 
 "@yaireo/tagify@^4.11.0":
-  version "4.11.0"
-  resolved "https://registry.yarnpkg.com/@yaireo/tagify/-/tagify-4.11.0.tgz#e7c4e886d74476fa64d4c23706d59179a61f220b"
-  integrity sha512-J70gWNNlgHw+60azyJTsu0YHPsH7qXowQIi7PGMuhDQAfjTGNUH/Tx2TCzruTDocOTcoD6ol/iZXpNm8+VOg7g==
+  version "4.17.7"
+  resolved "https://registry.yarnpkg.com/@yaireo/tagify/-/tagify-4.17.7.tgz#662eb9676818c7490752f7e99d537397cc1b9b02"
+  integrity sha512-kMk179PY4aXdc5tIw4t65I6IvB5Dyes30DF0XTUagqcCe+pCyi60g4eUGScFsJByF/u25An0RkVqZ4+IcPVxVg==
 
 acorn-jsx@^5.2.0:
   version "5.3.1"

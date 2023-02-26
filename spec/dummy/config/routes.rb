@@ -18,6 +18,7 @@ if defined? ::Avo
   Avo::Engine.routes.draw do
     scope :resources do
       get "courses/cities", to: "courses#cities"
+      get "users/get_users", to: "users#get_users"
     end
   end
 end

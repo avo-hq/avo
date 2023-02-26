@@ -3,7 +3,6 @@ class PersonResource < Avo::BaseResource
   self.description = "Demo resource to illustrate Avo's Single Table Inheritance support (Spouse < Person)"
   self.includes = []
 
-
   self.link_to_child_resource = true
   # self.search_query = -> do
   #   scope.ransack(id_eq: params[:q], m: "or").result(distinct: false)

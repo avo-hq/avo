@@ -21,11 +21,11 @@ class Avo::Fields::HasOneField::ShowComponent < Avo::Fields::ShowComponent
   end
 
   def attach_path
-    helpers.avo.resources_associations_new_path(@resource.singular_model_key, @resource.model.id, @field.id)
+    helpers.avo.resources_associations_new_path(@resource.singular_model_key, @resource.model.to_param, @field.id)
   end
 
   def can_see_the_create_button?
-    create = "create_#{@field.id.to_s}?"
+    create = "create_#{@field.id}?"
 
     authorization_service = @resource.authorization
 
@@ -39,7 +39,7 @@ class Avo::Fields::HasOneField::ShowComponent < Avo::Fields::ShowComponent
     args = {
       via_relation: @resource.singular_model_key,
       via_relation_class: @resource.model_class.to_s,
-      via_resource_id: @resource.model.id
+      via_resource_id: @resource.model.to_param
     }
     helpers.new_resource_path(resource: @field.target_resource, **args)
   end

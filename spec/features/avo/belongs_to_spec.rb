@@ -34,12 +34,12 @@ RSpec.feature "belongs_to", type: :feature do
   end
 
   context "show" do
-    let(:url) { "/admin/resources/posts/#{post.id}" }
+    let(:url) { "/admin/resources/posts/#{post.slug}" }
 
     describe "with user attached" do
       let!(:post) { create :post, user: admin }
 
-      it { is_expected.to have_link admin.name, href: "/admin/resources/users/#{admin.slug}?via_resource_class=PostResource&via_resource_id=#{post.id}" }
+      it { is_expected.to have_link admin.name, href: "/admin/resources/users/#{admin.slug}?via_resource_class=PostResource&via_resource_id=#{post.slug}" }
     end
 
     describe "without user attached" do
@@ -65,8 +65,8 @@ RSpec.feature "belongs_to", type: :feature do
 
         click_on "Save"
 
-        expect(current_path).to eql "/admin/resources/posts/#{post.id}"
-        expect(page).to have_link admin.name, href: "/admin/resources/users/#{admin.slug}?via_resource_class=PostResource&via_resource_id=#{post.id}"
+        expect(current_path).to eql "/admin/resources/posts/#{post.slug}"
+        expect(page).to have_link admin.name, href: "/admin/resources/users/#{admin.slug}?via_resource_class=PostResource&via_resource_id=#{post.slug}"
       end
     end
 
@@ -84,8 +84,8 @@ RSpec.feature "belongs_to", type: :feature do
 
         click_on "Save"
 
-        expect(current_path).to eql "/admin/resources/posts/#{post.id}"
-        expect(page).to have_link second_user.name, href: "/admin/resources/users/#{second_user.slug}?via_resource_class=PostResource&via_resource_id=#{post.id}"
+        expect(current_path).to eql "/admin/resources/posts/#{post.slug}"
+        expect(page).to have_link second_user.name, href: "/admin/resources/users/#{second_user.slug}?via_resource_class=PostResource&via_resource_id=#{post.slug}"
       end
 
       it "nullifies the user" do
@@ -96,7 +96,7 @@ RSpec.feature "belongs_to", type: :feature do
 
         click_on "Save"
 
-        expect(current_path).to eql "/admin/resources/posts/#{post.id}"
+        expect(current_path).to eql "/admin/resources/posts/#{post.slug}"
         expect(find_field_value_element("user")).to have_text empty_dash
       end
     end

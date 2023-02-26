@@ -26,7 +26,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   def detach_path
     return "/" if @reflection.blank?
 
-    helpers.resource_detach_path(params[:resource_name], params[:id], @reflection.name.to_s, @resource.model.id)
+    helpers.resource_detach_path(params[:resource_name], params[:id], @reflection.name.to_s, @resource.model.to_param)
   end
 
   def can_see_the_edit_button?

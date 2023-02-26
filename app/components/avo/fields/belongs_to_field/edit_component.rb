@@ -44,7 +44,7 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
 
     return @polymorphic_record if @polymorphic_record.present?
 
-    @polymorphic_record = polymorphic_class.safe_constantize.find polymorphic_id
+    @polymorphic_record = @resource.find_record polymorphic_id, query: polymorphic_class.safe_constantize, params: params
 
     @polymorphic_record
   end
