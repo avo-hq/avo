@@ -7,7 +7,6 @@ module DownloadHelpers
   extend self
 
   def downloads
-    # puts ["PATH->", PATH, Dir[PATH.join("*")], Dir[Rails.root.to_s]].inspect
     Dir[PATH.join("*")]
   end
 

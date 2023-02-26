@@ -81,8 +81,6 @@ RSpec.describe "Actions", type: :system do
     end
   end
 
-  # Disabled for now. Somehow this fails in the CI
-  # https://github.com/avo-hq/avo/actions/runs/4265231475/jobs/7424318383
   describe "downloading files" do
     context "without File.open().read" do
       let(:content) { "On the fly dummy content." }
