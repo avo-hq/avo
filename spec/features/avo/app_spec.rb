@@ -11,4 +11,13 @@ RSpec.describe "App", type: :feature do
       expect(page).to have_text "Fishies"
     end
   end
+
+  describe "Current.user is set" do
+    it "displayes the current user" do
+      visit "/admin/custom_tool"
+
+      # Label on the menu builder
+      expect(page).to have_text "Current.user.id = #{admin.id}"
+    end
+  end
 end

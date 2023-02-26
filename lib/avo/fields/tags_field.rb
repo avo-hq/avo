@@ -5,6 +5,7 @@ module Avo
       attr_reader :close_on_select
       attr_reader :delimiters
       attr_reader :enforce_suggestions
+      attr_reader :mode
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
@@ -15,6 +16,8 @@ module Avo
         add_array_prop args, :disallowed
         add_array_prop args, :delimiters, [","]
         add_array_prop args, :suggestions
+        add_string_prop args, :mode, nil
+        add_string_prop args, :fetch_values_from
       end
 
       def field_value
@@ -33,9 +36,16 @@ module Avo
 
       def fill_field(model, key, value, params)
         if acts_as_taggable_on.present?
-          model.send(act_as_taggable_attribute(key), parsed_value(value))
+          model.send(act_as_taggable_attribute(key), value)
         else
-          model.send("#{key}=", parsed_value(value))
+          val = if value.is_a?(String)
+            value.split(",")
+          elsif value.is_a?(Array)
+            value
+          else
+            value
+          end
+          model.send("#{key}=", val)
         end
 
         model
@@ -61,21 +71,18 @@ module Avo
         []
       end
 
+      def fetch_values_from
+        if @fetch_values_from.respond_to?(:call)
+          Avo::Hosts::ResourceRecordHost.new(block: @fetch_values_from, resource: resource, record: model).handle
+        else
+          @fetch_values_from
+        end
+      end
+
       private
 
       def act_as_taggable_attribute(key)
         "#{key.singularize}_list="
-      end
-
-      def parsed_value(value)
-        JSON.parse(value).pluck("value")
-      rescue
-        []
-      end
-
-      private
-
-      def parse_suggestions_from_args(args)
       end
     end
   end

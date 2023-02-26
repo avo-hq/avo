@@ -89,7 +89,6 @@ module Avo
         5 => " h-[45rem]",
         6 => " h-[54rem]"
       }
-      # puts ["cols->", cols, classes_for_cols, classes_for_rows, classes_for_cols[cols.to_i]].inspect
 
       result += classes_for_cols[cols.to_i] if classes_for_cols[cols.to_i].present?
       result += classes_for_rows[rows.to_i] if classes_for_rows[rows.to_i].present?
@@ -98,9 +97,9 @@ module Avo
     end
 
     def type
-      return :metric if self.class.superclass == ::Avo::Dashboards::MetricCard
-      return :chartkick if self.class.superclass == ::Avo::Dashboards::ChartkickCard
-      return :partial if self.class.superclass == ::Avo::Dashboards::PartialCard
+      return :metric if is_a?(::Avo::Dashboards::MetricCard)
+      return :chartkick if is_a?(::Avo::Dashboards::ChartkickCard)
+      return :partial if is_a?(::Avo::Dashboards::PartialCard)
     end
 
     def compute_result
