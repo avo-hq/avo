@@ -29,7 +29,6 @@ module Avo
       end
 
       def fill_field(model, key, value, params)
-        puts ["!!!!!!!!->"].inspect
         if value.blank?
           related_model = nil
         else
