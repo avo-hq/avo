@@ -87,22 +87,23 @@ def headless_download_setup(driver)
   driver
 end
 
-Capybara.register_driver :chrome_headless do |app|
-  driver = Capybara::Selenium::Driver.new app,
+def driver_options(headless: false)
+  {
     browser: :chrome,
     clear_session_storage: true,
     clear_local_storage: true,
-    options: chrome_options(headless: true)
+    options: chrome_options(headless: headless)
+  }
+end
+
+Capybara.register_driver :chrome_headless do |app|
+  driver = Capybara::Selenium::Driver.new app, **driver_options(headless: true)
   headless_download_setup(driver)
   driver
 end
 
 Capybara.register_driver :chrome do |app|
-  driver = Capybara::Selenium::Driver.new app,
-    browser: :chrome,
-    clear_session_storage: true,
-    clear_local_storage: true,
-    options: chrome_options
+  driver = Capybara::Selenium::Driver.new app, **driver_options(headless: false)
   headless_download_setup(driver)
   driver
 end
