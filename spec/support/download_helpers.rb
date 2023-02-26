@@ -23,9 +23,7 @@ module DownloadHelpers
   def wait_for_download
     sleep 0.1 # Add extra sleep to make sure we capture that download
 
-    puts ["Dir.entries(DownloadHelpers::PATH)->", Dir.entries(DownloadHelpers::PATH)].inspect
     Timeout.timeout(TIMEOUT) do
-      puts ["Dir.entries(DownloadHelpers::PATH)->", Dir.entries(DownloadHelpers::PATH)].inspect
       sleep 0.1 until downloaded?
     end
   end
@@ -43,11 +41,8 @@ module DownloadHelpers
   end
 
   def ensure_directory_exists
-    puts ["ensure_directory_exists->"].inspect
-    # dirname = DownloadHelpers::PATH
     unless File.directory?(PATH)
       FileUtils.mkdir_p(PATH)
     end
-    puts ["File.directory?(PATH)->", PATH, DownloadHelpers::PATH, File.directory?(PATH)].inspect
   end
 end
