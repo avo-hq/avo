@@ -1,7 +1,6 @@
 require "rails_helper"
 
 RSpec.feature "HasManyField", type: :feature do
-# RSpec.feature "HasManyField", type: :system do
   let!(:user) { create :user, first_name: "Alicia" }
 
   subject do
