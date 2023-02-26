@@ -44,7 +44,6 @@ RSpec.feature "create_through_record", type: :feature do
     let(:url) { "/admin/resources/spouses/new?via_relation=spouses&via_relation_class=Person&via_resource_id=#{person.id}" }
 
     it "attaches the spouse to a person" do
-      # TODO: This is failing
       expect(Person.count).to eq 1
       expect(person.spouses.first).to be nil
       visit url
