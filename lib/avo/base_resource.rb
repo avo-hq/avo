@@ -42,7 +42,7 @@ module Avo
     class_attribute :unscoped_queries_on_index, default: false
     class_attribute :resolve_query_scope
     class_attribute :resolve_find_scope
-    # TODO: refactor this into a Host
+    # TODO: refactor this into a Host without args
     class_attribute :find_record_method, default: ->(model_class:, id:, params:) {
       model_class.find id
     }
