@@ -162,3 +162,5 @@ gem "sprockets-rails"
 # Avo file filed requires this gem
 # Use Active Storage variant
 gem "image_processing", "~> 1.12"
+
+gem "prefixed_ids"
