@@ -120,10 +120,8 @@ module Avo
       # Secondly we'll try to find a translation key
       # We'll fallback to humanizing the id
       def name
-        # puts ["field name->"].inspect
         return @name if custom_name?
 
-        # puts ["translation_key->", translation_key, ::Avo::App.translation_enabled, t(translation_key, count: 1, default: default_name).capitalize].inspect
         if translation_key && ::Avo::App.translation_enabled
           t(translation_key, count: 1, default: default_name).capitalize
         else
@@ -133,13 +131,10 @@ module Avo
 
       def plural_name
         default = name.pluralize
-        # puts ["translation_key->", translation_key, ::Avo::App.translation_enabled, t(translation_key, count: 2, default: default).capitalize].inspect
 
         if translation_key && ::Avo::App.translation_enabled
-          # puts ["i1->"].inspect
           t(translation_key, count: 2, default: default).capitalize
         else
-          # puts ["i2->"].inspect
           default
         end
       end
