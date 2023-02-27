@@ -117,6 +117,7 @@ ignore_missing:
   - 'avo.field_translations.people'
   - 'avo.number_of_items'
   - 'avo.resource_translations.user'
+  - 'avo.resource_translations.team_members'
   - 'avo.x_items_more'
 
 # - 'errors.messages.{accepted,blank,invalid,too_short,too_long}'

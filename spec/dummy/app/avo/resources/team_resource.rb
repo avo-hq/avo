@@ -48,11 +48,7 @@ class TeamResource < Avo::BaseResource
     end
 
   field :admin, as: :has_one
-  tabs do
-    tab -> { I18n.t("avo.resource_translations.team_members", count: 2).capitalize } do
-      field :team_members, as: :has_many, through: :memberships, translation_key: "avo.resource_translations.team_members"
-    end
-  end
+  field :team_members, as: :has_many, through: :memberships, translation_key: "avo.resource_translations.team_members"
   field :reviews, as: :has_many
 
   grid do

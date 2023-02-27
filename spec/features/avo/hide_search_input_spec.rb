@@ -24,7 +24,7 @@ RSpec.describe 'Hide search input', type: :feature do
     it 'false, finds global and association search' do
       visit_team_page
 
-      expect(page).to have_text('Team members')
+      expect(page).to have_text('Team memberz')
       expect(page).to have_text('Avatar')
       expect(page).to have_text('First name')
       expect(page).to have_text('Last name')
