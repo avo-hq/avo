@@ -29,11 +29,11 @@ class Avo::Tab
   end
 
   def name
-    # if @name.respond_to?(:call)
-    #   Avo::Hosts::BaseHost.new(block: @name).handle
-    # else
-    # end
-    @name
+    if @name.respond_to?(:call)
+      Avo::Hosts::BaseHost.new(block: @name).handle
+    else
+      @name
+    end
   end
 
   def hydrate(view: nil)
