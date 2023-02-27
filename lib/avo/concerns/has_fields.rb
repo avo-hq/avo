@@ -264,6 +264,10 @@ module Avo
         panelfull_items = []
 
         items.each do |item|
+          if item.respond_to? :hydrate
+            item.hydrate(view: view)
+          end
+
           # fields and tabs can be hidden on some views
           if item.respond_to? :visible_on?
             next unless item.visible_on?(view)
