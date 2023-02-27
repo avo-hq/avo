@@ -115,8 +115,45 @@ module Avo
         end
       end
 
+      # Fetches the resources available to the application.
+      # We have two ways of doing that.
+      #
+      # 1. Through eager loading.
+      # We automatically eager load the resources directory and fetch the descendants from the scanned files.
+      # This is the simple way to get started.
+      #
+      # 2. Manually, declared by the user.
+      # We have this option to load the resources because when they are loaded automatically through eager loading,
+      # those Resource classes and their methods may trigger loading other classes. And that may disrupt Rails booting process.
+      # Ex: AdminResource may use self.model_class = User. That will trigger Ruby to load the User class and itself load
+      # other classes in a chain reaction.
+      # The scenario that comes up most often is when Rails boots, the routes are being computed which eager loads the resource files.
+      # At that boot time some migration might have not been run yet, but Rails tries to access them through model associations,
+      # and they are not available.
+      #
+      # To enable this feature add a `resources` array config in your Avo initializer.
+      # config.resources = [
+      #   "UserResource",
+      #   "FishResource",
+      # ]
+      def fetch_resources
+        resources = if Avo.configuration.resources.nil?
+          BaseResource.descendants
+        else
+          Avo.configuration.resources
+        end
+
+        resources.map do |resource|
+          if resource.is_a?(Class)
+            resource
+          else
+            resource.to_s.safe_constantize
+          end
+        end
+      end
+
       def init_resources
-        self.resources = BaseResource.descendants
+        self.resources = fetch_resources
           .select do |resource|
             # Remove the BaseResource. We only need the descendants
             resource != BaseResource
