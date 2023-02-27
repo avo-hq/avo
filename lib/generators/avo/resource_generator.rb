@@ -214,7 +214,7 @@ module Generators
       end
 
       def field(name, type)
-        names_mapping[name.to_sym] || fields_mapping[type.to_sym] || {field: "text"}
+        names_mapping[name.to_sym] || fields_mapping[type&.to_sym] || {field: "text"}
       end
 
       def associations_mapping

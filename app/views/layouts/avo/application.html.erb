@@ -36,7 +36,7 @@
             <div class="content p-4 lg:p-6 flex-1 flex flex-col justify-between items-stretch <%= @container_classes %>">
               <%= render partial: "avo/partials/custom_tools_alert" %>
               <div class="flex flex-1 flex-col justify-between items-stretch space-y-8">
-                <%= yield %>
+                <%= yield.force_encoding('UTF-8') %>
                 <%= render partial: "avo/partials/footer" %>
               </div>
             </div>
