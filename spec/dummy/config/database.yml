@@ -17,4 +17,4 @@ test:
 
 production:
   <<: *default
-  database: dummy_production
+  database: dummy_development
