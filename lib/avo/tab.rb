@@ -12,7 +12,6 @@ class Avo::Tab
   attr_accessor :holds_one_field
 
   def initialize(name: nil, description: nil, view: nil, holds_one_field: false, **args)
-    # puts ["tab name->", name].inspect
     # Initialize the visibility markers
     super
 
