@@ -1,4 +1,4 @@
-<div class="flex items-center justify-center">
+<div class="flex items-center justify-center" data-component="<%= self.class.to_s.underscore %>">
   <% if display_inline? %>
     <div class="flex max-w-xs rounded">
       <%= render Avo::Index::Ordering::ButtonComponent.new resource: @resource, reflection: @reflection, direction: :higher, svg: 'arrow-up' %>
