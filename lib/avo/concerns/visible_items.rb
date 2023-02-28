@@ -14,6 +14,13 @@ module Avo
       def visible_items
         items
           .map do |item|
+            if item.respond_to? :hydrate
+              item.hydrate(view: view)
+            end
+
+            item
+          end
+          .map do |item|
             visible(item) ? item : nil
           end
           .compact
