@@ -15,10 +15,6 @@ class CoursePolicy < ApplicationPolicy
     true
   end
 
-  def reorder_links?
-    false
-  end
-
   def create?
     true
   end
@@ -28,6 +24,10 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def destroy?
+    true
+  end
+
+  def cities?
     true
   end
 
@@ -53,6 +53,10 @@ class CoursePolicy < ApplicationPolicy
 
   def edit_comments?
     true
+  end
+
+  def reorder_links?
+    false
   end
 
   class Scope < Scope
