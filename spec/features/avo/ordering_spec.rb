@@ -136,6 +136,20 @@ RSpec.describe "Ordering", type: :feature do
       expect(order).to eq default_order
     end
   end
+
+  describe "authorization" do
+    it "does not display the ordering buttons" do
+      visit "/admin/resources/courses/#{course.id}"
+
+      expect(page).not_to have_selector "[data-component='avo/index/ordering/buttons_component']"
+    end
+
+    it "displays the ordering buttons" do
+      visit "/admin/resources/course_links"
+
+      expect(page).to have_selector "[data-component='avo/index/ordering/buttons_component']"
+    end
+  end
 end
 
 def order
