@@ -6,7 +6,6 @@ class Avo::Tab
   class_attribute :item_type, default: :tab
   delegate :items, :add_item, to: :items_holder
 
-  attr_reader :name
   attr_reader :view
   attr_accessor :description
   attr_accessor :items_holder
@@ -26,6 +25,14 @@ class Avo::Tab
     hide_on args[:hide_on] if args[:hide_on].present?
     only_on args[:only_on] if args[:only_on].present?
     except_on args[:except_on] if args[:except_on].present?
+  end
+
+  def name
+    if @name.respond_to?(:call)
+      Avo::Hosts::BaseHost.new(block: @name).handle
+    else
+      @name
+    end
   end
 
   def hydrate(view: nil)

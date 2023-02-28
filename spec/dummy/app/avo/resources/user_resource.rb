@@ -80,7 +80,7 @@ class UserResource < Avo::BaseResource
   end
 
   tabs do
-    tab "Birthday", description: "hey you", hide_on: :show do
+    tab -> { "Birthday" }, description: "hey you", hide_on: :show do
       panel do
         field :birthday,
           as: :date,

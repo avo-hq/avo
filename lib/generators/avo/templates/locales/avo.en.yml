@@ -85,6 +85,10 @@ en:
     resource_created: Record created
     resource_destroyed: Record destroyed
     resource_translations:
+      team_members:
+        one: team member
+        other: team memberz
+        zero: team memberz
       user:
         one: user
         other: users

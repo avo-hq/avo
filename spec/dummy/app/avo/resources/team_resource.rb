@@ -48,7 +48,7 @@ class TeamResource < Avo::BaseResource
     end
 
   field :admin, as: :has_one
-  field :team_members, as: :has_many, through: :memberships
+  field :team_members, as: :has_many, through: :memberships, translation_key: "avo.resource_translations.team_members"
   field :reviews, as: :has_many
 
   grid do
