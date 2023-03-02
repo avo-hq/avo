@@ -18,8 +18,8 @@ module Avo
     before_action :init_app
     before_action :check_avo_license
     before_action :set_resource_name
-    before_action :set_authorization
     before_action :_authenticate!
+    before_action :set_authorization
     before_action :set_container_classes
     before_action :add_initial_breadcrumbs
     before_action :set_view
