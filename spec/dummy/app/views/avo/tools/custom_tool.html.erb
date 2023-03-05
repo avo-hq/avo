@@ -22,6 +22,10 @@
           <p>
             A new <code class='p-1 rounded bg-gray-500 text-white text-sm'>Custom tool</code> item should have been added to the sidebar. Edit it in <code class='p-1 rounded bg-gray-500 text-white text-sm'>app/views/avo/sidebar/items/_custom_tool.html.erb</code>
           </p>
+
+          <% if Rails.env == "test" %>
+            <p>Current.user.id = <%= Current.user&.id %></p>
+          <% end %>
         </div>
       </div>
     <% end %>
