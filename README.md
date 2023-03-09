@@ -72,19 +72,33 @@ Please read the [RELEASE.MD](./RELEASE.MD)
 
 # ✨ [Contributors](https://avohq.io/contributors)
 
-<a href="https://github.com/avo-hq/avo/graphs/contributors">
+<a href="https://avohq.io/contributors">
   <img src="https://contrib.rocks/image?repo=avo-hq/avo" />
 </a>
 <!--  https://contrib.rocks -->
 
-# 🥇 Business & Agency Sponsors
+# 🥇 Sponsors
 
-<a href="https://equipetechnique.com/?utm_source=github&utm_medium=link&utm_campaign=avo_code_without_borders" target="_blank">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://avohq.io/img/sponsors/ET-dark.jpeg">
-    <img alt="Equipe Technique Busines Sponsor" src="https://avohq.io/img/sponsors/ET-light.jpeg" width="240px">
-  </picture>
-</a>
+<table>
+<tr>
+  <td>
+    <a href="https://equipetechnique.com/?utm_source=github&utm_medium=link&utm_campaign=avo" target="_blank">
+      <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="https://avohq.io/img/sponsors/ET-dark.jpeg">
+        <img alt="Equipe Technique Busines Sponsor" src="https://avohq.io/img/sponsors/ET-light.jpeg" width="180px">
+      </picture>
+    </a>
+  </td>
+  <td>
+    <a href="https://www.greenhats.com/?utm_source=github&utm_medium=link&utm_campaign=avo" target="_blank">
+      <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="https://avohq.io/img/sponsors/greenhats-dark.png">
+        <img alt="Greenhats Start-up Sponsor" src="https://avohq.io/img/sponsors/greenhats-light.png" width="360px">
+      </picture>
+    </a>
+  </td>
+</tr>
+</table>
 
 [Become a sponsor ](https://github.com/sponsors/adrianthedev)
 
