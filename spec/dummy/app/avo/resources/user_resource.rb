@@ -13,9 +13,9 @@ class UserResource < Avo::BaseResource
   self.resolve_find_scope = ->(model_class:) do
     model_class.friendly
   end
-  self.find_record_method = ->(model_class:, id:, params:) {
+  self.find_record_method = ->(model_class:, id:, params:) do
     model_class.friendly.find id
-  }
+  end
   self.includes = [:posts, :post]
   self.devise_password_optional = true
 
