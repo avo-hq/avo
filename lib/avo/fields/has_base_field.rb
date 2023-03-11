@@ -1,6 +1,8 @@
 module Avo
   module Fields
     class HasBaseField < BaseField
+      include Avo::Fields::Concerns::UseResource
+
       attr_accessor :display
       attr_accessor :scope
       attr_accessor :attach_scope
@@ -25,10 +27,6 @@ module Avo
 
       def searchable
         @searchable && ::Avo::App.license.has_with_trial(:searchable_associations)
-      end
-
-      def use_resource
-        App.get_resource @use_resource
       end
 
       def resource

@@ -5,7 +5,7 @@ require "rails_helper"
 RSpec.describe "Post comments use_resource PhotoCommentResource", type: :feature do
   let!(:post) { create :post, user: admin }
   let!(:comments) { create_list :comment, 20, commentable: post }
-  let!(:comment) { create :comment }
+  let!(:comment) { create :comment, user: admin }
 
   describe "tests" do
     it "if have diferent fields from original comment resource" do
@@ -63,6 +63,19 @@ RSpec.describe "Post comments use_resource PhotoCommentResource", type: :feature
       click_on "Attach"
       expect(page).to have_text "Photo comment attached."
       expect(page).to have_text comment.tiny_name
+    end
+
+    it "applyes on belongs to" do
+      visit "admin/resources/comments/#{comment.id}"
+
+      expect(page).to have_link comment.user.name,
+        href: "/admin/resources/compact_users/#{comment.user.slug}?via_resource_class=CommentResource&via_resource_id=#{comment.id}"
+
+      click_on comment.user.name
+      expect(page).to have_current_path "/admin/resources/compact_users/#{comment.user.slug}?via_resource_class=CommentResource&via_resource_id=#{comment.id}"
+
+      expect(page).to have_text "Personal information"
+      expect(page).to have_text "Contact"
     end
   end
 end
