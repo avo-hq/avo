@@ -119,9 +119,9 @@ RSpec.describe "Tags", type: :system do
       CourseResource.with_temporary_items do
         field :skills, as: :tags,
           fetch_labels: -> {
-            User.where(id: resource.model.skills)
+            User.where(id: record.skills)
               .pluck(:first_name, :last_name)
-              .map { |first_name, last_name| "FL #{first_name} #{last_name}" }.presence || resource.model.skills
+              .map { |first_name, last_name| "FL #{first_name} #{last_name}" }
           }
       end
 
