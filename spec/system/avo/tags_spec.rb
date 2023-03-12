@@ -138,7 +138,7 @@ end
 def wait_for_tags_to_load(element, time = Capybara.default_max_wait_time)
   klass = "tagify--loading"
   Timeout.timeout(time) do
-    sleep(0.05) until !element[:class].to_s.include?(klass)
+    sleep(0.05) while element[:class].to_s.include?(klass)
   end
 end
 
