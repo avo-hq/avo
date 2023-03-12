@@ -1,7 +1,7 @@
 <%= field_wrapper **field_wrapper_args, full_width: true do %>
   <%= render Avo::Fields::Common::FilesListViewerComponent.new(field: @field, resource: @resource) if @field.value.present? %>
 
-  <% if @resource.authorization.authorize_action(:upload_attachments?, raise_exception: false) %>
+  <% if can_upload_file? %>
     <div class="mt-2">
       <%= @form.file_field @field.id,
         accept: @field.accept,

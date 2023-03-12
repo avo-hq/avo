@@ -5,7 +5,7 @@
     </div>
   <% end %>
 
-  <% if @resource.authorization.authorize_action(:upload_attachments?, raise_exception: false) %>
+  <% if can_upload_file? %>
     <%= @form.file_field @field.id,
       accept: @field.accept,
       data: @field.get_html(:data, view: view, element: :input),
