@@ -132,7 +132,6 @@ RSpec.describe "Tags", type: :system do
 
       CourseResource.restore_items_from_backup
     end
-
   end
 end
 
