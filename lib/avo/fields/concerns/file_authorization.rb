@@ -8,15 +8,23 @@ module Avo
         delegate :authorize_action, to: :authorization
         delegate :id, :model, to: :@field
 
-        # Dynamically generate can_upload_file?, can_delete_file?, and can_download_file? methods
-        [:upload, :delete, :download].each do |action|
-          define_method "can_#{action}_file?" do
-            # Check if the current user can perform the corresponding actions
-            # upload_attachments?, delete_attachments?, and download_attachments?
-            if authorize_action("#{action}_attachments?".to_sym, raise_exception: false)
-              # Check if the current user can perform the action on the current file
-              authorize_action("#{action}_#{id}?", record: model, raise_exception: false)
-            end
+        def can_upload_file?
+          authorize_file_action(:upload)
+        end
+
+        def can_delete_file?
+          authorize_file_action(:delete)
+        end
+
+        def can_download_file?
+          authorize_file_action(:download)
+        end
+
+        private
+
+        def authorize_file_action(action)
+          if authorize_action("#{action}_attachments?", raise_exception: false)
+            authorize_action("#{action}_#{id}?", record: model, raise_exception: false)
           end
         end
       end
