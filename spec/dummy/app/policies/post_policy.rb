@@ -43,6 +43,14 @@ class PostPolicy < ApplicationPolicy
     true
   end
 
+  [:cover_photo, :audio].each do |file|
+    [:upload, :download, :delete].each do |action|
+      define_method "#{action}_#{file}?" do
+        true
+      end
+    end
+  end
+
   def view_comments?
     true
   end

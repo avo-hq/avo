@@ -83,6 +83,12 @@ class UserPolicy < ApplicationPolicy
     true
   end
 
+  [:upload, :download, :delete].each do |action|
+    define_method "#{action}_cv?" do
+      true
+    end
+  end
+
   class Scope < Scope
     def resolve
       scope.all

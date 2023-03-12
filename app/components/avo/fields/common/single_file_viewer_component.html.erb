@@ -20,7 +20,7 @@
     </div>
     <div class="flex space-x-2">
       <div class="flex">
-        <% if @resource.authorization.authorize_action(:download_attachments?, raise_exception: false) %>
+        <% if can_download_file? %>
           <%= a_link Rails.application.routes.url_helpers.rails_blob_path(file, only_path: true, disposition: :attachment),
             icon: 'heroicons/outline/download',
             color: :primary,
@@ -33,7 +33,7 @@
         <% end %>
       </div>
       <div>
-        <% if @resource.authorization.authorize_action(:delete_attachments?, raise_exception: false) %>
+        <% if can_delete_file? %>
           <%= a_link destroy_path,
             icon: 'heroicons/outline/trash',
             color: :red,
