@@ -120,8 +120,8 @@ RSpec.describe "Tags", type: :system do
         field :skills, as: :tags,
           fetch_labels: -> {
             User.where(id: resource.model.skills)
-              .pluck(:id, :first_name, :last_name)
-              .map { |id, first_name, last_name| "FL #{first_name} #{last_name}" }.presence || resource.model.skills
+              .pluck(:first_name, :last_name)
+              .map { |first_name, last_name| "FL #{first_name} #{last_name}" }.presence || resource.model.skills
           }
       end
 
