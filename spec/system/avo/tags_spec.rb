@@ -110,6 +110,30 @@ RSpec.describe "Tags", type: :system do
       click_on "Run"
     end
   end
+
+  describe "fetch labels" do
+    let!(:users) { create_list :user, 2 }
+    let!(:courses) { create_list :course, 2, skills: users.pluck(:id) }
+
+    it "fetches the labels" do
+      CourseResource.with_temporary_items do
+        field :skills, as: :tags,
+          fetch_labels: -> {
+            User.where(id: record.skills)
+              .pluck(:first_name, :last_name)
+              .map { |first_name, last_name| "FL #{first_name} #{last_name}" }
+          }
+      end
+
+      visit "/admin/resources/courses"
+
+      expect(page).to have_text "FL #{users[0].first_name} #{users[0].last_name}"
+      expect(page).to have_text "FL #{users[1].first_name} #{users[1].last_name}"
+
+      CourseResource.restore_items_from_backup
+    end
+
+  end
 end
 
 def wait_for_tags_to_load(element, time = Capybara.default_max_wait_time)

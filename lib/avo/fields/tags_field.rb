@@ -18,9 +18,12 @@ module Avo
         add_array_prop args, :suggestions
         add_string_prop args, :mode, nil
         add_string_prop args, :fetch_values_from
+        add_string_prop args, :fetch_labels
       end
 
       def field_value
+        return fetched_labels if @fetch_labels.present?
+
         return json_value if acts_as_taggable_on.present?
 
         value || []
@@ -80,6 +83,14 @@ module Avo
       end
 
       private
+
+      def fetched_labels
+        if @fetch_labels.respond_to?(:call)
+          Avo::Hosts::ResourceRecordHost.new(block: @fetch_labels, resource: resource, record: model).handle
+        else
+          @fetch_labels
+        end
+      end
 
       def act_as_taggable_attribute(key)
         "#{key.singularize}_list="
