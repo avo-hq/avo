@@ -10,6 +10,7 @@ class CityResource < Avo::BaseResource
   with_options hide_on: :forms do
     field :name, as: :text, help: "The name of your city"
     field :population, as: :number
+    field :coordinates, as: :location
     field :is_capital, as: :boolean
     field :features, as: :key_value
     field :metadata, as: :code

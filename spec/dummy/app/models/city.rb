@@ -25,4 +25,13 @@ class City < ApplicationRecord
   def random_image
     'https://source.unsplash.com/random'
   end
+
+  def coordinates
+    [latitude, longitude]
+  end
+
+  def coordinates=(value)
+    self.latitude = value.first
+    self.longitude = value.last
+  end
 end
