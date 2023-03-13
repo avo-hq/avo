@@ -27,7 +27,11 @@ class City < ApplicationRecord
   end
 
   def coordinates
-    [latitude, longitude]
+    if latitude.nil? && longitude.nil?
+      nil
+    else
+      [latitude, longitude]
+    end
   end
 
   def coordinates=(value)
