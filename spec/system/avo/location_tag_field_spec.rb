@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'LocationTagField', type: :system do
   describe 'without value' do
-    let!(:city) { create :city, coordinates: [] }
+    let(:city) { create :city, coordinates: [] }
     context 'show' do
       it 'shows empty location field' do
         visit "/admin/resources/cities/#{city.id}"
@@ -13,6 +13,16 @@ RSpec.describe 'LocationTagField', type: :system do
       end
     end
     context 'edit' do
+      it "has a field for latitude" do
+        visit "/admin/resources/cities/#{city.id}/edit"
+
+        latitude_element = find_field_element("latitude")
+
+        expect(latitude_element).to have_text "LATITUDE"
+
+        expect(find("#city_latitude", visible: false)).to have_text("")
+        expect(find("#city_latitude", visible: false)[:placeholder]).to have_text("Enter latitude")
+      end
     end
   end
 
