@@ -11,6 +11,8 @@ class CityResource < Avo::BaseResource
     field :name, as: :text, help: "The name of your city"
     field :population, as: :number
     field :coordinates, as: :location
+    field :latitude,
+          as: :location
     field :is_capital, as: :boolean
     field :features, as: :key_value
     field :metadata, as: :code
