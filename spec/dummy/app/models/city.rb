@@ -18,20 +18,16 @@
 #  longitude        :float
 #
 class City < ApplicationRecord
-  enum status: { Open: 'open', Closed: 'closed', Quarantine: 'On Quarantine' }
+  enum status: {Open: 'open', Closed: 'closed', Quarantine: 'On Quarantine'}
 
   def random_image=(value); end
 
   def random_image
-    'https://source.unsplash.com/random'
+    "https://source.unsplash.com/random"
   end
 
   def coordinates
-    if latitude.nil? && longitude.nil?
-      nil
-    else
-      [latitude, longitude]
-    end
+    "#{latitude},#{longitude}"
   end
 
   def coordinates=(value)

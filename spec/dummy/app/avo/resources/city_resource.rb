@@ -7,12 +7,11 @@ class CityResource < Avo::BaseResource
   self.extra_params = [:fish_type, :something_else, properties: [], information: [:name, :history]]
 
   field :id, as: :id
+  # field :coordinates, as: :location
+  field :coordinates, as: :location, stored_as: [:latitude, :longitude]
   with_options hide_on: :forms do
     field :name, as: :text, help: "The name of your city"
     field :population, as: :number
-    field :coordinates, as: :location
-    field :latitude,
-          as: :location
     field :is_capital, as: :boolean
     field :features, as: :key_value
     field :metadata, as: :code

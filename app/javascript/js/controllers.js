@@ -15,6 +15,7 @@ import ItemSelectAllController from './controllers/item_select_all_controller'
 import ItemSelectorController from './controllers/item_selector_controller'
 import KeyValueController from './controllers/fields/key_value_controller'
 import LoadingButtonController from './controllers/loading_button_controller'
+import LocationController from './controllers/fields/location_controller'
 import MenuController from './controllers/menu_controller'
 import ModalController from './controllers/modal_controller'
 import MultipleSelectFilterController from './controllers/multiple_select_filter_controller'
@@ -68,6 +69,7 @@ application.register('belongs-to-field', BelongsToFieldController)
 application.register('code-field', CodeFieldController)
 application.register('date-field', DateFieldController)
 application.register('key-value', KeyValueController)
+application.register('location-field', LocationController)
 application.register('progress-bar-field', ProgressBarFieldController)
 application.register('simple-mde', SimpleMdeController)
 application.register('trix-field', TrixFieldController)

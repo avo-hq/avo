@@ -1,6 +1,22 @@
 <%= field_wrapper **field_wrapper_args do %>
-  <%= @form.number_field @field.id,
-    class: classes("w-full"),
-    placeholder: @field.placeholder
-  %>
+  <% if field.as_lat_long? %>
+    <div class="flex gap-4">
+      <%= @form.text_field @field.as_lat_long_id(get: :lat),
+        value: @field.as_lat_long_value(get: :lat),
+        class: classes("w-full"),
+        placeholder: @field.placeholder
+      %>
+      <%= @form.text_field @field.as_lat_long_id(get: :long),
+        value: @field.as_lat_long_value(get: :long),
+        class: classes("w-full"),
+        placeholder: @field.placeholder
+      %>
+    </div>
+  <% else %>
+    <%= @form.text_field @field.id,
+      value: @field.value,
+      class: classes("w-full"),
+      placeholder: @field.placeholder
+    %>
+  <% end %>
 <% end %>
