@@ -35,6 +35,10 @@ class CourseLinkPolicy < ApplicationPolicy
     true
   end
 
+  def search?
+    true
+  end
+
   def upload_attachments?
     true
   end

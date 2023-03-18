@@ -129,6 +129,7 @@ RSpec.configure do |config|
   # examples within a transaction, remove the following line or assign false
   # instead of true.
   config.use_transactional_fixtures = true
+  config.filter_run_when_matching :focus
 
   config.before(:each, type: :system) { driven_by test_driver }
 

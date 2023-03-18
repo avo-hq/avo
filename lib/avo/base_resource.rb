@@ -30,6 +30,7 @@ module Avo
     class_attribute :description, default: :id
     class_attribute :search_query, default: nil
     class_attribute :search_query_help, default: ""
+    class_attribute :search_result_path
     class_attribute :includes, default: []
     class_attribute :authorization_policy
     class_attribute :translation_key

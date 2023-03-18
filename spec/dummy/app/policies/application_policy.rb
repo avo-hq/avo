@@ -26,6 +26,10 @@ class ApplicationPolicy
     false
   end
 
+  def search?
+    false
+  end
+
   def edit?
     update?
   end

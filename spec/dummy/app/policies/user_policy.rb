@@ -35,6 +35,10 @@ class UserPolicy < ApplicationPolicy
     true
   end
 
+  def search?
+    true
+  end
+
   def attach_post?
     true
   end
