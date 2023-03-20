@@ -13,4 +13,4 @@ application.register('course-resource', CourseResourceController)
 application.register('nested-form', NestedForm)
 
 // eslint-disable-next-line no-console
-console.log('Hi from Avo custom JS 👋', window.Stimulus)
+console.log('Hi from Avo custom JS 👋')
