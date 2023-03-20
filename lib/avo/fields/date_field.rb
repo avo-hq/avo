@@ -20,11 +20,22 @@ module Avo
       def formatted_value
         return if value.blank?
 
-        value.iso8601
+        try_iso8601
       end
 
       def edit_formatted_value
         return nil if value.nil?
+
+        try_iso8601
+      end
+
+      private
+
+      def try_iso8601
+        if value.is_a?(String)
+          parsed = DateTime.parse(value)
+          value = parsed
+        end
 
         value.iso8601
       end
