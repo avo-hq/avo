@@ -1996,6 +1996,11 @@ luxon@^1.28.1:
   resolved "https://registry.yarnpkg.com/luxon/-/luxon-1.28.1.tgz#528cdf3624a54506d710290a2341aa8e6e6c61b0"
   integrity sha512-gYHAa180mKrNIUJCbwpmD0aTu9kV0dREDrwNnuyFAsO1Wt0EVYSZelPnJlbj9HplzXX/YWXHFTL45kvZ53M0pw==
 
+mapkick@^0.2.5:
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/mapkick/-/mapkick-0.2.5.tgz#c9a5c1cd5320d6fceb6d01b63831915663ee79bd"
+  integrity sha512-Ucj+RQ4IIzbUosrZ0GHMtDqVOsgR5se2e7y0rQ3UADpNqAv6Tz7aO6d0mX+S/hS6afBtNBXlcQP7bU8qDNhunQ==
+
 marked@*:
   version "4.0.10"
   resolved "https://registry.yarnpkg.com/marked/-/marked-4.0.10.tgz#423e295385cc0c3a70fa495e0df68b007b879423"

@@ -165,3 +165,5 @@ gem "sprockets-rails"
 gem "image_processing", "~> 1.12"
 
 gem "prefixed_ids"
+
+gem "mapkick-rb", "~> 0.1.4"
