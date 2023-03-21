@@ -27,7 +27,7 @@ class City < ApplicationRecord
   end
 
   def coordinates
-    "#{latitude},#{longitude}"
+    [latitude, longitude]
   end
 
   def coordinates=(value)
