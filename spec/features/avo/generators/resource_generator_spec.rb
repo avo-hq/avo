@@ -28,5 +28,19 @@ RSpec.feature "resource generator", type: :feature do
     end
   end
 
+  context 'when generating resources from a rich texts' do
+    it 'generates with the correct trix field type' do
+      files = [
+        Rails.root.join("app", "avo", "resources", "event_resource.rb").to_s,
+        Rails.root.join("app", "controllers", "avo", "events_controller.rb").to_s
+      ]
+
+      Rails::Generators.invoke("avo:resource", ["event", "-q"], {destination_root: Rails.root})
+
+      expect(File.read(files[0])).to include('field :body, as: :trix')
+
+      check_files_and_clean_up files
+    end
+  end
 
 end
