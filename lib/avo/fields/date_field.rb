@@ -24,20 +24,22 @@ module Avo
       end
 
       def edit_formatted_value
-        return nil if value.nil?
-
-        try_iso8601
+        formatted_value
       end
 
       private
 
       def try_iso8601
-        if value.is_a?(String)
-          parsed = DateTime.parse(value)
-          value = parsed
+        if value.respond_to?(:iso8601)
+          value.iso8601
+        elsif value.is_a?(String)
+          parsed = DateTime.parse(value.dup)
+          if parsed.present?
+            parsed
+          end
+        else
+          value
         end
-
-        value.iso8601
       end
     end
   end
