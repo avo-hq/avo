@@ -7,7 +7,7 @@ class PostResource < Avo::BaseResource
   self.includes = [:user]
   self.default_view_type = :grid
   self.find_record_method = ->(model_class:, id:, params:) {
-    id.to_i == 0 ? model_class.find_by_slug(id) : model_class.find(id)
+    !id.is_a?(Array) && id.to_i == 0 ? model_class.find_by_slug(id) : model_class.find(id)
   }
 
   # self.show_controls = -> do
