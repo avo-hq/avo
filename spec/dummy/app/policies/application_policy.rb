@@ -26,6 +26,10 @@ class ApplicationPolicy
     false
   end
 
+  def avo_search?
+    false
+  end
+
   def edit?
     update?
   end

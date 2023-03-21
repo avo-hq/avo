@@ -29,6 +29,7 @@ Avo.configure do |config|
   #   update: 'update?',
   #   create: 'create?',
   #   destroy: 'destroy?',
+  #   search: 'search?',
   # }
   # config.raise_error_on_missing_policy = false
   # config.authorization_client = :pundit

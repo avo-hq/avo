@@ -31,6 +31,10 @@ class PostPolicy < ApplicationPolicy
     true
   end
 
+  def avo_search?
+    true
+  end
+
   def upload_attachments?
     true
   end

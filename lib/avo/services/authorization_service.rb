@@ -130,7 +130,15 @@ module Avo
       end
 
       def has_method?(method, **args)
+        method = "#{method}?" unless method.to_s.end_with? "?"
         defined_methods(args[:record] || record, **args).include? method.to_sym
+      end
+
+      # Check the received method to see if the user overrode it in their config and then checks if it's present on the policy.
+      def has_action_method?(method, **args)
+        method = Avo.configuration.authorization_methods.stringify_keys[method.to_s] || method
+
+        has_method? method, **args
       end
     end
   end

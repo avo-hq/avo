@@ -10,6 +10,8 @@ module Avo
       option :params, default: proc { Avo::App.params }
       option :view_context, default: proc { Avo::App.view_context }
       option :current_user, default: proc { Avo::App.current_user }
+      option :main_app, default: proc { view_context.main_app }
+      option :avo, default: proc { view_context.avo }
       # This is optional because we might instantiate the `Host` first and later hydrate it with a block.
       option :block, optional: true
 

@@ -23,6 +23,9 @@ Avo.configure do |config|
       params: request.params
     }
   end
+  config.authorization_methods = {
+    search: "avo_search?" # override this method
+  }
   # config.raise_error_on_missing_policy = true
   # config.authorization_client = "Avo::Services::AuthorizationClients::ExtraPunditClient"
 

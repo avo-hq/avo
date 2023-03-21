@@ -31,7 +31,7 @@
     <% end %>
     <% c.body do %>
       <div class="flex flex-col xs:flex-row xs:justify-between space-y-2 xs:space-y-0 py-4 <%= 'hidden' if @resource.search_query.nil? && @filters.empty? && available_view_types.count <= 1 %>">
-        <% unless hide_search_input %>
+        <% if show_search_input %>
           <div class="flex items-center px-4 w-64">
             <%= render partial: 'avo/partials/resource_search', locals: {resource: @resource.route_key, via_reflection: via_reflection} %>
           </div>
