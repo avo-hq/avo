@@ -87,12 +87,20 @@ module Generators
         end
       end
 
+      def rich_texts
+        @rich_texts ||= reflections.select do |_, reflection|
+          reflection.options[:class_name] == "ActionText::RichText"
+        end
+      end
+
       def tags
         @tags ||= reflections.select { |_, reflection| reflection.options[:as] == :taggable }
       end
 
       def associations
-        @associations ||= reflections.reject { |key| attachments.key?(key) || tags.key?(key) }
+        @associations ||= reflections.reject do |key|
+          attachments.key?(key) || tags.key?(key) || rich_texts.key?(key)
+        end
       end
 
       def fields
@@ -115,6 +123,7 @@ module Generators
         fields_from_model_enums
         fields_from_model_attachements
         fields_from_model_associations
+        fields_from_model_rich_texts
         fields_from_model_tags
 
         generated_fields_template
@@ -147,6 +156,12 @@ module Generators
         end
 
         generated_fields_template
+      end
+
+      def fields_from_model_rich_texts
+        rich_texts.each do |name, _|
+          fields[(name.delete_prefix("rich_text_"))] = {field: "trix"}
+        end
       end
 
       def fields_from_model_tags
