@@ -59,6 +59,10 @@ class CoursePolicy < ApplicationPolicy
     false
   end
 
+  def avo_search?
+    true
+  end
+
   class Scope < Scope
     def resolve
       scope.all

@@ -35,7 +35,7 @@ class CourseLinkPolicy < ApplicationPolicy
     true
   end
 
-  def search?
+  def avo_search?
     true
   end
 

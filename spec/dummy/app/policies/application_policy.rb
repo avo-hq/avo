@@ -26,7 +26,7 @@ class ApplicationPolicy
     false
   end
 
-  def search?
+  def avo_search?
     false
   end
 

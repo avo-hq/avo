@@ -125,6 +125,9 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def hide_search_input
+    if @resource.authorization.has_action_method?("search")
+      return true unless @resource.authorization.authorize_action("search", raise_exception: false)
+    end
     return true unless @resource.search_query.present?
 
     field&.hide_search_input || false

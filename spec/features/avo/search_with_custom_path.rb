@@ -19,11 +19,10 @@ RSpec.feature "Search with custom path", type: :system do
 
         write_in_search "São Paulo"
         expect(page).to have_content "São Paulo"
-        find(".aa-Panel").find('.aa-Item div', text: 'São Paulo', match: :first).click
+        find(".aa-Panel").find(".aa-Item div", text: "São Paulo", match: :first).click
         sleep 0.8
-        # wait_for_loaded # -> didn't work, had to use sleep above
 
-        expect(page.current_url).to include('custom=yup')
+        expect(page.current_url).to include("custom=yup")
       end
     end
   end
