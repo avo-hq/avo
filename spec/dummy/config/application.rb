@@ -31,7 +31,7 @@ module AvoDummy
 
     # Use this to test root_path_without_url helper
     # ---
-    # config.relative_url_root = '/development/internal-api'
+    # config.relative_url_root = "/development/internal-api"
     # ---
 
     # Use this to test the locale configuration

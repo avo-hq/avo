@@ -28,7 +28,7 @@ module Avo
     rescue_from Avo::NotAuthorizedError, with: :render_unauthorized
     rescue_from ActiveRecord::RecordInvalid, with: :exception_logger
 
-    helper_method :_current_user, :resources_path, :resource_path, :new_resource_path, :edit_resource_path, :resource_attach_path, :resource_detach_path, :related_resources_path, :turbo_frame_request?, :resource_view_path
+    helper_method :_current_user, :resources_path, :resource_path, :new_resource_path, :edit_resource_path, :resource_attach_path, :resource_detach_path, :related_resources_path, :turbo_frame_request?, :resource_view_path, :mount_path
     add_flash_types :info, :warning, :success, :error
 
     def init_app
@@ -99,6 +99,10 @@ module Avo
 
     def context
       instance_eval(&Avo.configuration.context)
+    end
+
+    def mount_path
+      Avo::Engine.routes.find_script_name(params.permit!.to_h.symbolize_keys)
     end
 
     # This is coming from Turbo::Frames::FrameRequest module.
