@@ -30,6 +30,7 @@ module AvoDummy
     # the framework and any gems in your application.
 
     # Use this to test root_path_without_url helper
+    # Also enable in config.ru & avo.rb (prefix_path)
     # ---
     # config.relative_url_root = "/development/internal-api"
     # ---

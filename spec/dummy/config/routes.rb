@@ -14,7 +14,7 @@ Rails.application.routes.draw do
     # Uncomment to test constraints /123/en/admin
     # scope ":course", constraints: {course: /\w+(-\w+)*/} do
     #   scope ":locale", constraints: {locale: /\w[-\w]*/} do
-    #     mount Avo::Engine, at: "/nested-admin", as: "nested-admin"
+    #     mount Avo::Engine, at: Avo.configuration.root_path
     #   end
     # end
   end
