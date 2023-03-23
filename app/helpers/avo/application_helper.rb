@@ -102,14 +102,13 @@ module Avo
     end
 
     def root_path_without_url
-      Avo::App.root_path
-        .to_s
-        .delete_prefix(request.base_url.to_s)
-        .delete_suffix("/")
-        .gsub("/?", "?")
-        .query = ""
+      "#{Avo.configuration.prefix_path}#{mount_path}"
     rescue
       Avo.configuration.root_path
+    end
+
+    def mount_path
+      Avo::Engine.routes.find_script_name(params.permit!.to_h.symbolize_keys)
     end
 
     private

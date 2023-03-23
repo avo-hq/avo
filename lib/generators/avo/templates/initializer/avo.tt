@@ -2,6 +2,8 @@
 Avo.configure do |config|
   ## == Routing ==
   config.root_path = '/<%= options[:path] %>'
+  # used only when you have custom `map` configuration in your config.ru
+  # config.prefix_path = "/internal"
 
   # Where should the user be redirected when visting the `/<%= options[:path] %>` url
   # config.home_path = nil

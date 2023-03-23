@@ -6,6 +6,11 @@ Avo.configure do |config|
   config.set_initial_breadcrumbs do
     add_breadcrumb "Dashboard", "/admin/dashboards/dashy"
   end
+  # Use this to test root_path_without_url helper
+  # Also enable in config.ru & application.rb
+  # ---
+  # config.prefix_path = "/development/internal-api"
+  # ---
 
   ## == Licensing ==
   config.license = "pro"
