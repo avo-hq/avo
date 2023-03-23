@@ -89,6 +89,29 @@ RSpec.describe "Tags", type: :system do
     end
   end
 
+  describe 'without acts_as_taggable' do
+    let(:course) { create :course, skills: [] }
+    let(:path) { "/admin/resources/courses/#{course.id}/edit" }
+    let(:tag_input) { tags_element(find_field_value_element("skills")) }
+    let(:input_textbox) { 'span[contenteditable][data-placeholder="Skills"]' }
+
+    it "adds skills" do
+      course.skills = ["some", "skills"]
+      course.save
+
+      visit path
+
+      tag_input.find(input_textbox).click
+      tag_input.find(input_textbox).set("one, two, three,")
+      sleep 0.3
+
+      click_on "Save"
+      wait_for_loaded
+
+      expect(course.reload.skills.sort).to eq ["some", "skills", "one", "two", "three"].sort
+    end
+  end
+
   describe "ajax request" do
     let(:field_value_slot) { tags_element(find_field_value_element("user_id")) }
     let(:tags_input) { field_value_slot.find("span[contenteditable]") }
