@@ -85,10 +85,6 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
         args[:via_relation] = @reflection.name
       end
 
-      if @reflection.parent_reflection.present? && @reflection.parent_reflection.inverse_of.present?
-        args[:via_relation] = @reflection.parent_reflection.inverse_of.name
-      end
-
       if @reflection.inverse_of.present?
         args[:via_relation] = @reflection.inverse_of.name
       end
