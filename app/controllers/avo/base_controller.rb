@@ -151,7 +151,12 @@ module Avo
           @related_record = via_resource.find_record params[:via_resource_id], params: params
           association_name = BaseResource.valid_association_name(@model, params[:via_relation])
 
-          @model.send(association_name) << @related_record
+          if params[:via_association_type] == "has_one"
+            # On has_one scenarios we should switch the @record and @related_record
+            @related_record.send("#{@reflection.parent_reflection.inverse_of.name}=", @model)
+          else
+            @model.send(association_name) << @related_record
+          end
         end
       end
 

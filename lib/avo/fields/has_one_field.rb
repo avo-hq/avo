@@ -33,7 +33,8 @@ module Avo
           related_model = nil
         else
           related_class = model.class.reflections[name.to_s.downcase].class_name
-          related_model = related_class.safe_constantize.find value
+          related_resource = ::Avo::App.get_resource_by_model_name(related_class)
+          related_model = related_resource.find_record value
         end
 
         model.public_send("#{key}=", related_model)

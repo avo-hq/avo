@@ -14,7 +14,7 @@ RSpec.feature "CreateHasOne", type: :feature do
     visit "admin/resources/users/#{user.id}?active_tab_name=Main+post&tab_turbo_frame=avo-tabgroup-3"
 
     click_on "Create new main post"
-    expect(page).to have_current_path("/admin/resources/posts/new?via_relation=user&via_relation_class=User&via_resource_id=#{user.slug}")
+    expect(page).to have_current_path("/admin/resources/posts/new?via_association_type=has_one&via_relation=user&via_relation_class=User&via_resource_id=#{user.slug}")
     expect(page).to have_text user.name
 
     fill_in "post_name", with: "Main post name"

@@ -31,6 +31,10 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
     @resource.model["#{@field.foreign_key}_type"]
   end
 
+  def polymorphic_resource
+    ::Avo::App.get_resource_by_model_name(polymorphic_class)
+  end
+
   # Get the polymorphic id
   def polymorphic_id
     @resource.model["#{@field.foreign_key}_id"]
@@ -44,7 +48,7 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
 
     return @polymorphic_record if @polymorphic_record.present?
 
-    @polymorphic_record = @resource.find_record polymorphic_id, query: polymorphic_class.safe_constantize, params: params
+    @polymorphic_record = polymorphic_resource.find_record polymorphic_id, query: polymorphic_class.safe_constantize, params: params
 
     @polymorphic_record
   end
