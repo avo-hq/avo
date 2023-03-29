@@ -1,6 +1,7 @@
+import 'mapkick/bundle'
+
 import { Alert, Popover } from 'tailwindcss-stimulus-components'
 import { Application } from '@hotwired/stimulus'
-import "mapkick/bundle"
 
 const application = Application.start()
 

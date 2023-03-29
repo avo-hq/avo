@@ -18,9 +18,10 @@
 #  longitude        :float
 #
 class City < ApplicationRecord
-  enum status: {Open: 'open', Closed: 'closed', Quarantine: 'On Quarantine'}
+  enum status: {Open: "open", Closed: "closed", Quarantine: "On Quarantine"}
 
-  def random_image=(value); end
+  def random_image=(value)
+  end
 
   def random_image
     "https://source.unsplash.com/random"

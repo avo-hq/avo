@@ -1,4 +1,3 @@
 <%= field_wrapper **field_wrapper_args, data: {controller: "location-field"} do %>
-  <%= @field.value %>
   <%= js_map [{latitude: @field.value[0], longitude: @field.value[1]}] %>
 <% end %>
