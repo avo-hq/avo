@@ -30,6 +30,7 @@ module Avo
     class_attribute :description, default: :id
     class_attribute :search_query, default: nil
     class_attribute :search_query_help, default: ""
+    class_attribute :search_result_path
     class_attribute :includes, default: []
     class_attribute :authorization_policy
     class_attribute :translation_key
@@ -381,7 +382,8 @@ module Avo
 
             if field.polymorphic_as.present? && field.types.map(&:to_s).include?(@params[:via_relation_class])
               # set the value to the actual record
-              value = @params[:via_relation_class].safe_constantize.find(@params[:via_resource_id])
+              via_resource = ::Avo::App.get_resource_by_model_name(@params[:via_relation_class])
+              value = via_resource.find_record(@params[:via_resource_id])
             elsif reflection.present? && reflection.foreign_key.present? && field.id.to_s == @params[:via_relation].to_s
               resource = Avo::App.get_resource_by_model_name params[:via_relation_class]
               model = resource.find_record @params[:via_resource_id], params: params

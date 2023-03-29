@@ -6,7 +6,7 @@ RSpec.feature Avo::SearchController, type: :controller do
   let!(:team_membership) { team.team_members << user }
 
   describe "global search" do
-    it "does not return the ream membership" do
+    it "does not return the team membership" do
       get :index
 
       expect(json['users']['count']).to eq 1
@@ -17,7 +17,7 @@ RSpec.feature Avo::SearchController, type: :controller do
   end
 
   describe "resource search" do
-    it "does not return the ream membership" do
+    it "does not return the team membership" do
       get :show, params: {
         resource_name: 'memberships'
       }

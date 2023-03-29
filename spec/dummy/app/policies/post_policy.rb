@@ -31,6 +31,10 @@ class PostPolicy < ApplicationPolicy
     true
   end
 
+  def avo_search?
+    true
+  end
+
   def upload_attachments?
     true
   end
@@ -41,6 +45,14 @@ class PostPolicy < ApplicationPolicy
 
   def delete_attachments?
     true
+  end
+
+  [:cover_photo, :audio].each do |file|
+    [:upload, :download, :delete].each do |action|
+      define_method "#{action}_#{file}?" do
+        true
+      end
+    end
   end
 
   def view_comments?

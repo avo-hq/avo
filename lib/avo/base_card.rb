@@ -1,5 +1,7 @@
 module Avo
   class BaseCard
+    include Avo::Concerns::VisibleInDashboard
+
     class_attribute :id
     class_attribute :label
     class_attribute :description
@@ -31,7 +33,7 @@ module Avo
       end
     end
 
-    def initialize(dashboard:, options: {}, arguments: {}, index: 0, cols: nil, rows: nil, label: nil, description: nil, refresh_every: nil)
+    def initialize(dashboard:, options: {}, arguments: {}, index: 0, cols: nil, rows: nil, label: nil, description: nil, refresh_every: nil, visible: nil)
       @dashboard = dashboard
       @options = options
       @arguments = arguments
@@ -41,6 +43,7 @@ module Avo
       @label = label
       @refresh_every = refresh_every
       @description = description
+      @visible = visible
     end
 
     def label
@@ -135,6 +138,14 @@ module Avo
 
     def is_divider?
       false
+    end
+
+    def visible
+      @visible || self.class.visible
+    end
+
+    def call_block
+      ::Avo::Hosts::CardVisibility.new(block: visible, card: self, parent: dashboard).handle
     end
 
     private

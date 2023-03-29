@@ -9,4 +9,5 @@
 #  updated_at :datetime         not null
 #
 class Event < ApplicationRecord
+  has_rich_text :body
 end

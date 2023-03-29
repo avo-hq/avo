@@ -35,6 +35,10 @@ class UserPolicy < ApplicationPolicy
     true
   end
 
+  def avo_search?
+    true
+  end
+
   def attach_post?
     true
   end
@@ -81,6 +85,12 @@ class UserPolicy < ApplicationPolicy
 
   def delete_attachments?
     true
+  end
+
+  [:upload, :download, :delete].each do |action|
+    define_method "#{action}_cv?" do
+      true
+    end
   end
 
   class Scope < Scope

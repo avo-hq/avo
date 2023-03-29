@@ -27,7 +27,8 @@ module Avo
       resources
         .map do |resource|
           # Apply authorization
-          next unless @authorization.set_record(resource.model_class).authorize_action(:index, raise_exception: false)
+          next unless @authorization.set_record(resource.model_class).authorize_action(:search, raise_exception: false)
+
           # Filter out the models without a search_query
           next if resource.search_query.nil?
 
@@ -120,10 +121,16 @@ module Avo
       models.map do |model|
         resource = avo_resource.dup.hydrate(model: model).hydrate_fields(model: model)
 
+        record_path = if resource.search_result_path.present?
+          Avo::Hosts::ResourceRecordHost.new(block: resource.search_result_path, resource: resource, record: model).handle
+        else
+          resource.record_path
+        end
+
         result = {
           _id: model.id,
           _label: resource.label,
-          _url: resource.record_path,
+          _url: record_path
         }
 
         if App.license.has_with_trial(:enhanced_search_results)

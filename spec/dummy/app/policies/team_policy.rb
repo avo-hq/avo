@@ -27,6 +27,10 @@ class TeamPolicy < ApplicationPolicy
     true
   end
 
+  def avo_search?
+    true
+  end
+
   # Attachments
   def upload_attachments?
     true

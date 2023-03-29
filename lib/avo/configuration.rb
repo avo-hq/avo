@@ -42,6 +42,7 @@ module Avo
     attr_accessor :field_wrapper_layout
     attr_accessor :sign_out_path_name
     attr_accessor :resources
+    attr_accessor :prefix_path
     attr_writer :branding
 
     def initialize
@@ -94,6 +95,7 @@ module Avo
       @authorization_client = :pundit
       @field_wrapper_layout = :inline
       @resources = nil
+      @prefix_path = nil
     end
 
     def current_user_method(&block)
@@ -117,8 +119,8 @@ module Avo
     end
 
     def namespace
-      if computed_root_path.present?
-        computed_root_path.delete "/"
+      if Avo.configuration.root_path.present?
+        Avo.configuration.root_path.delete "/"
       else
         root_path.delete "/"
       end
@@ -128,10 +130,6 @@ module Avo
       return "" if @root_path === "/"
 
       @root_path
-    end
-
-    def computed_root_path
-      Avo.configuration.root_path
     end
 
     def feature_enabled?(feature)

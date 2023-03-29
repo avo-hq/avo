@@ -7,10 +7,10 @@ require "active_storage/engine"
 require "action_controller/railtie"
 require "action_view/railtie"
 require "action_mailer/railtie"
+require "action_text/engine"
 # require "active_job/railtie"
 # require "action_cable/engine"
 # require "action_mailbox/engine"
-# require "action_text/engine"
 # require "rails/test_unit/railtie"
 
 Bundler.require(*Rails.groups)
@@ -30,8 +30,9 @@ module AvoDummy
     # the framework and any gems in your application.
 
     # Use this to test root_path_without_url helper
+    # Also enable in config.ru & avo.rb (prefix_path)
     # ---
-    # config.relative_url_root = '/development/internal-api'
+    # config.relative_url_root = "/development/internal-api"
     # ---
 
     # Use this to test the locale configuration

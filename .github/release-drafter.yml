@@ -44,4 +44,6 @@ references:
 template: |
   ## Release notes
 
+  More information and release video [here](https://avohq.io/releases/$NEXT_PATCH_VERSION)
+
   $CHANGES

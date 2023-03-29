@@ -60,6 +60,10 @@ export default class extends BaseController {
         },
         originalInputValueFormat: (valuesArr) => valuesArr.map((item) => item.value),
       })
+    } else {
+      options = merge(options, {
+        originalInputValueFormat: (valuesArr) => valuesArr.map((item) => item.value).join(','),
+      })
     }
 
     return options

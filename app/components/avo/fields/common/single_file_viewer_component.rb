@@ -2,8 +2,9 @@
 
 class Avo::Fields::Common::SingleFileViewerComponent < ViewComponent::Base
   include Avo::ApplicationHelper
+  include Avo::Fields::Concerns::FileAuthorization
 
-  def initialize(file: nil, field:, resource:)
+  def initialize(field:, resource:, file: nil)
     @file = file
     @field = field
     @resource = resource
@@ -45,7 +46,7 @@ class Avo::Fields::Common::SingleFileViewerComponent < ViewComponent::Base
     record_persisted?
   end
 
-   # If model is not persistent blob is automatically destroyed otherwise it can be "lost" on storage
+  # If model is not persistent blob is automatically destroyed otherwise it can be "lost" on storage
   def record_persisted?
     return true if @resource.model.persisted?
 

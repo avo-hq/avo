@@ -11,7 +11,7 @@ class Dashy < Avo::Dashboards::BaseDashboard
     current_user.is_admin?
   end
 
-  card ExampleMetric
+  card ExampleMetric, visible: -> { true }
   card ExampleAreaChart
   card ExampleScatterChart
   card ExampleMetric,
