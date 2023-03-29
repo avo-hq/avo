@@ -51,6 +51,12 @@ module Avo
           super
         end
       end
+
+      def value_present?
+        return value.first.present? && value.second.present? if value.is_a?(Array) && value.count == 2
+
+        value.present?
+      end
     end
   end
 end
