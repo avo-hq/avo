@@ -11,7 +11,7 @@ module Avo
 
       class_attribute :id
 
-      def initialize(dashboard: nil, label: nil, invisible: false, index: nil, visible: nil)
+      def initialize(dashboard: nil, label: nil, invisible: false, index: nil, visible: true)
         @dashboard = dashboard
         @label = label
         @invisible = invisible
