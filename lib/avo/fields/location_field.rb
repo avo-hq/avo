@@ -25,6 +25,14 @@ module Avo
         end
       end
 
+      def as_lat_long_placeholder(get: nil)
+        if get == :lat
+          placeholder = "Enter #{stored_as.first}"
+        elsif get == :long
+          placeholder = "Enter #{stored_as.last}"
+        end
+      end
+
       def as_lat_long_value(get: nil)
         if get == :lat
           model.send(stored_as.first)
