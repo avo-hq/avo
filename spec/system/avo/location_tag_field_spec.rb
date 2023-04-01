@@ -13,7 +13,7 @@ RSpec.describe 'LocationTagField', type: :system do
       end
     end
     context 'edit' do
-      it "has a field for latitude" do
+      it "has a field for latitude and longitude" do
         visit "/admin/resources/cities/#{city.id}/edit"
 
         latitude_element = find_field_element("coordinates")
@@ -22,6 +22,9 @@ RSpec.describe 'LocationTagField', type: :system do
 
         expect(find_by_id("city_coordinates[latitude]", visible: false)).to have_text("")
         expect(find_by_id("city_coordinates[latitude]", visible: false)[:placeholder]).to have_text("Enter latitude")
+
+        expect(find_by_id("city_coordinates[longitude]", visible: false)).to have_text("")
+        expect(find_by_id("city_coordinates[longitude]", visible: false)[:placeholder]).to have_text("Enter longitude")
       end
     end
   end
