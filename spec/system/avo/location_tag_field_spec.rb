@@ -29,8 +29,8 @@ RSpec.describe 'LocationTagField', type: :system do
       it "changes the city coordinates" do
         visit "/admin/resources/cities/#{city.id}/edit"
 
-        fill_in "Enter latitude", with: "48.8584"
-        fill_in "Enter longitude", with: "2.2945"
+        fill_in "Enter latitude", with: "1.0"
+        fill_in "Enter longitude", with: "2.0"
 
         click_on "Save"
 
@@ -38,13 +38,14 @@ RSpec.describe 'LocationTagField', type: :system do
 
         click_on "Edit"
 
-        expect(find_by_id("city_coordinates[latitude]").value).to eq("48.8584")
-        expect(find_by_id("city_coordinates[longitude]").value).to eq("2.2945")
+        expect(find_by_id("city_coordinates[latitude]").value).to eq("1.0")
+        expect(find_by_id("city_coordinates[longitude]").value).to eq("2.0")
       end
     end
   end
 
   describe 'with regular value' do
+    # Eiffel Tower coordinates used
     let!(:city) { create :city, latitude: 48.8584, longitude: 2.2945 }
     context "show" do
       it "renders a map" do
