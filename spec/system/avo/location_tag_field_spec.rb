@@ -53,5 +53,14 @@ RSpec.describe 'LocationTagField', type: :system do
         expect(page).to have_css("canvas.mapboxgl-canvas")
       end
     end
+
+    context "edit" do
+      it "has filled lat/long values in editor" do
+        visit "/admin/resources/cities/#{city.id}/edit"
+
+        expect(find_by_id("city_coordinates[latitude]").value).to eq("48.8584")
+        expect(find_by_id("city_coordinates[longitude]").value).to eq("2.2945")
+      end
+    end
   end
 end
