@@ -13,7 +13,6 @@ RSpec.describe 'LocationTagField', type: :system do
       end
     end
     context 'edit' do
-      it "has a field for latitude and longitude" do
       it "has lat/long fields and placeholders" do
         visit "/admin/resources/cities/#{city.id}/edit"
 
@@ -46,9 +45,12 @@ RSpec.describe 'LocationTagField', type: :system do
   end
 
   describe 'with regular value' do
+    let!(:city) { create :city, latitude: 48.8584, longitude: 2.2945 }
+    context "show" do
+      it "renders a map" do
+        visit "/admin/resources/cities/#{city.id}"
+        expect(page).to have_css("canvas.mapboxgl-canvas")
+      end
+    end
   end
-end
-
-def fill_in_trix_editor(id, with:)
-  find("trix-editor[input='#{id}']").click.set(with)
 end
