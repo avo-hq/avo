@@ -22,8 +22,21 @@ module Avo
 
         private
 
+        # First we check if user have authorization to act on attachments
+        # If attachemnts level authorization is defined and user have authorization to act on attachments
+        # We check field level authorization
+        # If field level authorization is not defined or user do NOT have authorization to act on attachments
+        # We return false
         def authorize_file_action(action)
-          authorize_action("#{action}_attachments?", raise_exception: false) || authorize_action("#{action}_#{id}?", record: model, raise_exception: false)
+          # If act on atachments (upload, download, delete) is defined
+          # Check if user have authorization to act on attachments
+          if authorization.has_method?("#{action}_attachments?", raise_exception: false)
+            return false unless authorize_action("#{action}_attachments?", raise_exception: false)
+          end
+
+          # If act on attachemnts is not defined or user have authorization to act on attachments
+          # Check  field level authorization
+          authorize_action("#{action}_#{id}?", record: model, raise_exception: false)
         end
       end
     end
