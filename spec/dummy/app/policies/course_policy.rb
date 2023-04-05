@@ -35,18 +35,6 @@ class CoursePolicy < ApplicationPolicy
     true
   end
 
-  def upload_attachments?
-    true
-  end
-
-  def download_attachments?
-    true
-  end
-
-  def delete_attachments?
-    true
-  end
-
   def view_comments?
     true
   end
