@@ -7,6 +7,7 @@ module Avo
       attr_accessor :is_audio
       attr_accessor :direct_upload
       attr_accessor :accept
+      attr_reader :display_filename
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
@@ -17,6 +18,7 @@ module Avo
         @is_audio = args[:is_audio].present? ? args[:is_audio] : false
         @direct_upload = args[:direct_upload].present? ? args[:direct_upload] : false
         @accept = args[:accept].present? ? args[:accept] : nil
+        @display_filename = args[:display_filename].nil? ? true : args[:display_filename]
       end
 
       def path

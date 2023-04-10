@@ -4,6 +4,8 @@ class Avo::Fields::Common::SingleFileViewerComponent < ViewComponent::Base
   include Avo::ApplicationHelper
   include Avo::Fields::Concerns::FileAuthorization
 
+  attr_reader :field
+
   def initialize(field:, resource:, file: nil)
     @file = file
     @field = field
@@ -15,29 +17,29 @@ class Avo::Fields::Common::SingleFileViewerComponent < ViewComponent::Base
   end
 
   def id
-    @field.id
+    field.id
   end
 
   def file
-    @file || @field.value.attachment
+    @file || field.value.attachment
   rescue
     nil
   end
 
   def is_image?
-    file.image? || @field.is_image
+    file.image? || field.is_image
   rescue
     false
   end
 
   def is_audio?
-    file.audio? || @field.is_audio
+    file.audio? || field.is_audio
   rescue
     false
   end
 
   def is_video?
-    file.video? || @field.is_video
+    file.video? || field.is_video
   rescue
     false
   end
