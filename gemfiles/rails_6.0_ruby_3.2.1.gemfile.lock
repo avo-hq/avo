@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    avo (2.29.1)
+    avo (2.30.0)
       actionview (>= 6.0)
       active_link_to
       activerecord (>= 6.0)
@@ -262,7 +262,7 @@ GEM
     nokogiri (1.14.2-arm64-darwin)
       racc (~> 1.4)
     orm_adapter (0.5.0)
-    pagy (6.0.2)
+    pagy (6.0.3)
     parallel (1.22.1)
     parser (3.2.1.0)
       ast (~> 2.4.1)
