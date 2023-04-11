@@ -90,6 +90,7 @@ FactoryBot.define do
   factory :city do
     name { Faker::Address.city }
     population { rand(10000..999000) }
+    coordinates { [Faker::Address.latitude, Faker::Address.longitude] }
     is_capital { [true, false].sample }
     features { Faker::Address.community }
     metadata { Faker::Address.community }

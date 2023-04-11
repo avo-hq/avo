@@ -65,6 +65,8 @@ ActiveRecord::Schema.define(version: 2023_03_21_133502) do
     t.text "tiny_description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.float "longitude"
+    t.float "latitude"
   end
 
   create_table "comments", force: :cascade do |t|

@@ -249,6 +249,7 @@ GEM
     manifester (0.1.8)
       rails (>= 6.0)
       zeitwerk
+    mapkick-rb (0.1.4)
     marcel (1.0.2)
     matrix (0.4.2)
     meta-tags (2.18.0)
@@ -493,6 +494,7 @@ DEPENDENCIES
   launchy
   listen (>= 3.5.1)
   manifester
+  mapkick-rb (~> 0.1.4)
   meta-tags
   net-smtp
   pg (>= 0.18, < 2.0)

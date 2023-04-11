@@ -14,6 +14,8 @@
 #  tiny_description :text
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  latitude         :float
+#  longitude        :float
 #
 class City < ApplicationRecord
   enum status: {Open: "open", Closed: "closed", Quarantine: "On Quarantine"}
@@ -22,6 +24,15 @@ class City < ApplicationRecord
   end
 
   def random_image
-    'https://source.unsplash.com/random'
+    "https://source.unsplash.com/random"
+  end
+
+  def coordinates
+    [latitude, longitude]
+  end
+
+  def coordinates=(value)
+    self.latitude = value.first
+    self.longitude = value.last
   end
 end

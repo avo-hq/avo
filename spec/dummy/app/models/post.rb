@@ -11,6 +11,7 @@
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  status       :integer          default("draft")
+#  slug         :string
 #
 class Post < ApplicationRecord
   enum status: [:draft, :published, :archived]
