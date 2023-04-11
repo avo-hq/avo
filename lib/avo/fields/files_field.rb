@@ -14,7 +14,7 @@ module Avo
         @is_image = args[:is_image].present? ? args[:is_image] : @is_avatar
         @direct_upload = args[:direct_upload].present? ? args[:direct_upload] : false
         @accept = args[:accept].present? ? args[:accept] : nil
-        @display_filename = args[:display_filename].present? ? args[:display_filename] : true
+        @display_filename = args[:display_filename].nil? ? true : args[:display_filename]
       end
 
       def view_component_name
