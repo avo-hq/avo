@@ -13,11 +13,11 @@ module Avo
         @stored_as = args[:stored_as].present? ? args[:stored_as] : nil # You can pass it an array of db columns [:latitude, :longitude]
       end
 
-      def as_lat_long?
+      def value_as_array?
         stored_as.is_a?(Array) && stored_as.count == 2
       end
 
-      def as_lat_long_id(get: nil)
+      def as_lat_long_field_id(get)
         if get == :lat
           "#{id}[#{stored_as.first}]"
         elsif get == :long
@@ -25,15 +25,15 @@ module Avo
         end
       end
 
-      def as_lat_long_placeholder(get: nil)
+      def as_lat_long_placeholder(get)
         if get == :lat
-          placeholder = "Enter #{stored_as.first}"
+          "Enter #{stored_as.first}"
         elsif get == :long
-          placeholder = "Enter #{stored_as.last}"
+          "Enter #{stored_as.last}"
         end
       end
 
-      def as_lat_long_value(get: nil)
+      def as_lat_long_value(get)
         if get == :lat
           model.send(stored_as.first)
         elsif get == :long
@@ -42,7 +42,7 @@ module Avo
       end
 
       def fill_field(model, key, value, params)
-        if as_lat_long?
+        if value_as_array?
           latitude_field, longitude_field = stored_as
           model.send("#{latitude_field}=", value[latitude_field])
           model.send("#{longitude_field}=", value[longitude_field])
@@ -53,7 +53,7 @@ module Avo
       end
 
       def to_permitted_param
-        if as_lat_long?
+        if value_as_array?
           [:"#{id}", "#{id}": {}]
         else
           super

@@ -1,20 +1,20 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require "rails_helper"
 
-RSpec.describe 'LocationTagField', type: :system do
-  describe 'without value' do
+RSpec.describe "LocationField", type: :system do
+  describe "without value" do
     let(:city) { create :city, coordinates: [] }
 
-    context 'show' do
-      it 'shows empty location field' do
+    context "show" do
+      it "shows empty location field" do
         visit "/admin/resources/cities/#{city.id}"
 
-        expect(find_field_element('coordinates')).to have_text empty_dash
+        expect(find_field_element("coordinates")).to have_text empty_dash
       end
     end
 
-    context 'edit' do
+    context "edit" do
       it "has lat/long fields and placeholders" do
         visit "/admin/resources/cities/#{city.id}/edit"
 
@@ -47,7 +47,7 @@ RSpec.describe 'LocationTagField', type: :system do
     end
   end
 
-  describe 'with regular value' do
+  describe "with regular value" do
     # Eiffel Tower coordinates used
     let!(:city) { create :city, latitude: 48.8584, longitude: 2.2945 }
 
