@@ -55,6 +55,7 @@ module Avo
     class_attribute :keep_filters_panel_open, default: false
     class_attribute :extra_params
     class_attribute :link_to_child_resource, default: false
+    class_attribute :map
 
     class << self
       delegate :t, to: ::I18n
@@ -295,8 +296,15 @@ module Avo
       view_types = [:table]
 
       view_types << :grid if get_grid_fields.present?
+      view_types << :map if mappable?
 
       view_types
+    end
+
+    def mappable?
+      get_field_definitions.any? do |field|
+        field.instance_of?(Avo::Fields::LocationField) && field.id == :coordinates
+      end
     end
 
     def attached_file_fields

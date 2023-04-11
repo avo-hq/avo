@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 module Avo
+  # :nodoc:
   module ResourcesHelper
     def resource_table(resources, resource)
       render partial: "avo/partials/resource_table", locals: {
@@ -65,6 +68,51 @@ module Avo
           item_select_all_target: "checkbox",
           tippy: "tooltip",
         }
+    end
+
+    def map_view_table_layout_class(resource_map_options)
+      case resource_map_options.dig(:table, :layout)
+      when :left
+        'table-left'
+      when :bottom
+        'table-bottom'
+      when :top
+        'table-top'
+      else
+        'table-right'
+      end
+    end
+
+    def render_map_view_table?(resource_map_options)
+      resource_map_options.dig(:table, :visible)
+    end
+
+    def resource_location_markers(resources, map_options)
+      # If we have no proc and no default location method, don't try to create markers
+      return [] if map_options[:record_marker].blank? && !resources.first.record.respond_to?(:coordinates)
+
+      marker_proc = map_options[:record_marker] || default_record_marker_proc
+
+      resources.map do |resource|
+        marker_proc.call(record: resource.record)
+      end.compact
+    end
+
+    def resource_mapkick_options(map_options)
+      return {} unless map_options.present?
+
+      map_options[:mapkick_options] || {}
+    end
+
+    private
+
+    def default_record_marker_proc
+      lambda { |record:|
+        {
+          latitude: record.coordinates.first,
+          longitude: record.coordinates.last
+        }
+      }
     end
   end
 end

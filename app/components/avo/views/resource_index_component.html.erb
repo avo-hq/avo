@@ -46,6 +46,15 @@
           </div>
         <% end %>
       </div>
+      <% if view_type.to_sym == :map %>
+        <% if @resources.present? %>
+          <div>
+            <%= render(Avo::Index::ResourceMapComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_model: @parent_model, parent_resource: @parent_resource, pagy: @pagy, query: @query)) %>
+          </div>
+        <% else %>
+          <%= helpers.empty_state by_association: params[:related_name].present?, view_type: view_type, add_background: true %>
+        <% end %>
+      <% end %>
       <% if view_type.to_sym == :table %>
         <% if @resources.present? %>
           <div class="w-full relative flex-1 flex mt-0">

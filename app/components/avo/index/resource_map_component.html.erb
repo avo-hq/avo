@@ -1,0 +1,16 @@
+<% if @resources.present? %>
+  <div class="map-view-container <%= helpers.map_view_table_layout_class(@resource.map) %>">
+    <div class="map-component">
+      <%= js_map(helpers.resource_location_markers(@resources, @resource.map), **helpers.resource_mapkick_options(@resource.map))  %>
+    </div>
+    <% if helpers.render_map_view_table?(@resource.map) %>
+      <div class="map-table-component">
+        <%= render(Avo::Index::ResourceTableComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_model: @parent_model, parent_resource: @parent_resource, pagy: @pagy, query: @query)) %>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <div class="bg-white rounded shadow-panel">
+    <%= helpers.empty_state by_association: params[:related_name].present?, view_type: :map %>
+  </div>
+<% end %>
