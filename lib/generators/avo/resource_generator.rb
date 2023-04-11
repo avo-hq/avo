@@ -216,7 +216,7 @@ module Generators
           fields[enum] = {
             field: "select",
             options: {
-              enum: "::#{model_class.capitalize}.#{enum.pluralize}"
+              enum: "::#{model_class.classify}.#{enum.pluralize}"
             }
           }
         end

@@ -16,7 +16,9 @@
           </div>
         </div>
       <% end %>
-      <span class="text-gray-500 mt-2 text-sm truncate" title="<%= file.filename %>"><%= file.filename %></span>
+      <% if field.display_filename %>
+        <span class="text-gray-500 mt-2 text-sm truncate" title="<%= file.filename %>"><%= file.filename %></span>
+      <% end %>
     </div>
     <div class="flex space-x-2">
       <div class="flex">
