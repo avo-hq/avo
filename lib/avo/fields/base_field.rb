@@ -73,7 +73,7 @@ module Avo
         @placeholder = args[:placeholder]
         @help = args[:help] || nil
         @default = args[:default] || nil
-        @visible = args[:visible] || true
+        @visible = args[:visible]
         @as_label = args[:as_label] || false
         @as_avatar = args[:as_avatar] || false
         @as_description = args[:as_description] || false
@@ -156,7 +156,9 @@ module Avo
       end
 
       def visible?
-        if visible.present? && visible.respond_to?(:call)
+        return true if visible.nil?
+
+        if visible.respond_to?(:call)
           visible.call resource: @resource
         else
           visible
