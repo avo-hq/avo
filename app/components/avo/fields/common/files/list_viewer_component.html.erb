@@ -1,12 +1,14 @@
-<%= turbo_frame_tag @field.id do %>
-  <% unless @field.hide_view_type_changer %>
-    <div class="justify-self-end flex justify-start xs:justify-end items-center space-x-3">
-      <%= render partial: 'avo/partials/view_toggle_button', locals: { available_view_types: available_view_types, view_type: @field.view_type, turbo_frame: @field.id } %>
+<div class="-mt-9">
+  <%= turbo_frame_tag @field.id do %>
+    <% unless @field.hide_view_type_changer %>
+      <div class="justify-self-end flex justify-end items-center space-x-3">
+        <%= render partial: 'avo/partials/view_toggle_button', locals: { available_view_types: available_view_types, view_type: @field.view_type, turbo_frame: @field.id } %>
+      </div>
+    <% end %>
+    <div class="<%= classes %>">
+      <% @field.value.attachments.each do |file| %>
+        <%= render @field.viewer_component.new field: @field, resource: @resource, file: file %>
+      <% end %>
     </div>
   <% end %>
-  <div class="<%= classes %>">
-    <% @field.value.attachments.each do |file| %>
-      <%= render @field.viewer_component.new field: @field, resource: @resource, file: file %>
-    <% end %>
-  </div>
-<% end %>
+</div>

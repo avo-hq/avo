@@ -9,15 +9,15 @@ class Avo::Fields::Common::Files::ListViewerComponent < ViewComponent::Base
   end
 
   def classes
-    base_class = "py-3 gap-3 rounded-xl"
+    base_classes = "py-4 rounded-xl"
 
-    view_type_class = if @field.view_type == :list
-      "flex flex-col"
+    view_type_classes = if @field.view_type == :list
+      "flex flex-col space-y-2"
     else
-      "relative grid xs:grid-cols-2 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+      "relative grid xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-6"
     end
 
-    "#{base_class} #{view_type_class}"
+    "#{base_classes} #{view_type_classes}"
   end
 
   def available_view_types
