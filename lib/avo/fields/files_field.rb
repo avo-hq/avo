@@ -42,8 +42,6 @@ module Avo
       end
 
       def viewer_component
-        # Avo::Fields::Common::Files::ViewType::GridComponent
-        # Avo::Fields::Common::Files::ViewType::ListComponent
         "Avo::Fields::Common::Files::ViewType::#{view_type.to_s.capitalize}Component".constantize
       end
 
