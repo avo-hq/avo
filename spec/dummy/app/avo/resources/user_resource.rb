@@ -19,7 +19,7 @@ class UserResource < Avo::BaseResource
   self.includes = [:posts, :post]
   self.devise_password_optional = true
 
-  field :id, as: :id, link_to_resource: true
+  field :id, as: :id, link_to_resource: true, sortable: false
   field :email, as: :gravatar, link_to_resource: true, as_avatar: :circle, only_on: :index
   heading "User Information"
   field :first_name, as: :text, placeholder: "John", stacked: true
