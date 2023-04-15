@@ -1,0 +1,22 @@
+<div class="relative min-h-full max-w-full flex-1 flex flex-col justify-between space-y-3">
+  <% if file.present? %>
+    <div class="grid grid-cols-12 gap-3 items-center">
+      <div class="flex flex-row col-span-7 items-center">
+        <div class="rounded-full bg-slate-100 border-2 border-gray-500 p-1 flex items-center justify-center m-2">
+          <%= render_icon %>
+        </div>
+        <p class="overflow-x-scroll items-center h-full p-2 whitespace-nowrap">
+          <%= file.filename %>
+        </p>
+      </div>
+      <div class="col-span-4">
+        <%= helpers.number_to_human_size(file.byte_size) %>
+      </div>
+      <div class="flex space-x-2 justify-end col-span-1">
+        <%= render Avo::Fields::Common::Files::ControlsComponent.new(field: field, file: file, resource: resource) %>
+      </div>
+    </div>
+  <% else %>
+    –
+  <% end %>
+</div>

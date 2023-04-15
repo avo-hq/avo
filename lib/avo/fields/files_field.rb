@@ -6,6 +6,7 @@ module Avo
       attr_accessor :direct_upload
       attr_accessor :accept
       attr_reader :display_filename
+      attr_reader :hide_view_type_changer
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
@@ -15,6 +16,8 @@ module Avo
         @direct_upload = args[:direct_upload].present? ? args[:direct_upload] : false
         @accept = args[:accept].present? ? args[:accept] : nil
         @display_filename = args[:display_filename].nil? ? true : args[:display_filename]
+        @view_type = args[:view_type] || :grid
+        @hide_view_type_changer = args[:hide_view_type_changer]
       end
 
       def view_component_name
@@ -36,6 +39,16 @@ module Avo
         end
 
         model
+      end
+
+      def viewer_component
+        # Avo::Fields::Common::Files::ViewType::GridComponent
+        # Avo::Fields::Common::Files::ViewType::ListComponent
+        "Avo::Fields::Common::Files::ViewType::#{view_type.to_s.capitalize}Component".constantize
+      end
+
+      def view_type
+        (@resource.params.dig(:view_type) || @view_type).to_sym
       end
     end
   end

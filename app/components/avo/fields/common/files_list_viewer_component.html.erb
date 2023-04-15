@@ -1,5 +1,0 @@
-<div class="relative py-3 grid xs:grid-cols-2 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3 rounded-xl">
-  <% @field.value.attachments.each do |file| %>
-    <%= render Avo::Fields::Common::SingleFileViewerComponent.new field: @field, resource: @resource, file: file %>
-  <% end %>
-</div>

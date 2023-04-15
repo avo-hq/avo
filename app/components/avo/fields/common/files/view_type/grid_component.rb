@@ -1,19 +1,12 @@
 # frozen_string_literal: true
 
-class Avo::Fields::Common::SingleFileViewerComponent < ViewComponent::Base
-  include Avo::ApplicationHelper
-  include Avo::Fields::Concerns::FileAuthorization
-
-  attr_reader :field
+class Avo::Fields::Common::Files::ViewType::GridComponent < ViewComponent::Base
+  attr_reader :field, :resource
 
   def initialize(field:, resource:, file: nil)
     @file = file
     @field = field
     @resource = resource
-  end
-
-  def destroy_path
-    Avo::Services::URIService.parse(@resource.record_path).append_paths("active_storage_attachments", id, file.id).to_s
   end
 
   def id
