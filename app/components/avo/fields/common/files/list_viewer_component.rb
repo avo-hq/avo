@@ -23,7 +23,7 @@ class Avo::Fields::Common::Files::ListViewerComponent < ViewComponent::Base
   end
 
   def wrapper_classes
-    field.stacked ? "-mt-9" : ""
+    (field.stacked && !field.hide_view_type_switcher) ? "-mt-9" : ""
   end
 
   def available_view_types

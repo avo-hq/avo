@@ -6,7 +6,7 @@ module Avo
       attr_accessor :direct_upload
       attr_accessor :accept
       attr_reader :display_filename
-      attr_reader :hide_view_type_changer
+      attr_reader :hide_view_type_switcher
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
@@ -17,7 +17,7 @@ module Avo
         @accept = args[:accept].present? ? args[:accept] : nil
         @display_filename = args[:display_filename].nil? ? true : args[:display_filename]
         @view_type = args[:view_type] || :grid
-        @hide_view_type_changer = args[:hide_view_type_changer]
+        @hide_view_type_switcher = args[:hide_view_type_switcher]
       end
 
       def view_component_name
