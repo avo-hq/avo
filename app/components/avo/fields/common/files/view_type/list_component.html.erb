@@ -1,15 +1,15 @@
 <div class="relative min-h-full max-w-full flex-1 flex">
   <% if file.present? %>
-    <div class="flex gap-2 items-center max-w-full w-full">
-      <div class="flex-1 flex flex-row col-span-7 items-center text-gray-700 truncate">
+    <div class="grid grid-cols-6 gap-2 items-center max-w-full w-full">
+      <div class="col-span-4 flex-1 flex flex-row items-center text-gray-700 overflow-x-auto mac-styled-scrollbar ">
         <div class="rounded-full bg-slate-100 border border-gray-500 p-1.5 flex items-center justify-center">
           <%= helpers.svg icon_for_file, class: "h-5 text-gray-600" %>
         </div>
-        <p class="overflow-x-scroll items-center h-full p-2 whitespace-nowrap">
+        <p class="items-center h-full p-2 flex-shrink-0">
           <%= file.filename %>
         </p>
       </div>
-      <div class="col-span-4 text-gray-700 flex-shrink-0 text-sm">
+      <div class="text-gray-700 flex-shrink-0 text-sm">
         <%= helpers.number_to_human_size(file.byte_size) %>
       </div>
       <div class="flex space-x-2 justify-end col-span-1 flex-shrink-0">
