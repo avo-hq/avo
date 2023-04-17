@@ -40,9 +40,7 @@ module Avo
     private
 
     def authorized_to(action)
-      if @resource.authorization.authorize_action("#{action}_attachments?".to_sym, raise_exception: false)
-        @resource.authorization.authorize_action("#{action}_#{params[:attachment_name]}?", record: @model, raise_exception: false)
-      end
+      @resource.authorization.authorize_action("#{action}_#{params[:attachment_name]}?", record: @model, raise_exception: false)
     end
   end
 end

@@ -31,19 +31,6 @@ class TeamPolicy < ApplicationPolicy
     true
   end
 
-  # Attachments
-  def upload_attachments?
-    true
-  end
-
-  def download_attachments?
-    true
-  end
-
-  def delete_attachments?
-    true
-  end
-
   # Team members association
   # index? method
   def view_team_members?
