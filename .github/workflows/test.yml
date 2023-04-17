@@ -100,7 +100,7 @@ jobs:
         yarn build:css
 
     - name: Create storage directory
-      run: mkdir -p tmp/storage
+      run: mkdir -p spec/dummy/tmp/storage
 
     - name: Run tests
       id: run_tests
