@@ -1,0 +1,7 @@
+<%= turbo_stream.remove dom_id(@destroyed) if @destroyed.present? %>
+
+<turbo-stream action="append" target="alerts">
+  <template>
+    <%= render Avo::FlashAlertsComponent.new flashes: flash %>
+  </template>
+</turbo-stream>

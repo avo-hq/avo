@@ -23,17 +23,24 @@ module Avo
     end
 
     def destroy
-      raise Avo::NotAuthorizedError.new unless authorized_to :delete
+      if authorized_to :delete
+        attachment = ActiveStorage::Attachment.find(params[:attachment_id])
 
-      attachment = ActiveStorage::Attachment.find(params[:attachment_id])
-      path = resource_path(model: @model, resource: @resource)
+        flash[:notice] = if attachment.present?
+          @destroyed = attachment.destroy
 
-      if attachment.present?
-        attachment.destroy
-
-        redirect_to params[:referrer] || path, notice: t("avo.attachment_destroyed")
+          t("avo.attachment_destroyed")
+        else
+          t("avo.failed_to_find_attachment")
+        end
       else
-        redirect_back fallback_location: path, notice: t("avo.failed_to_find_attachment")
+        flash[:notice] = t("avo.not_authorized")
+      end
+
+      respond_to do |format|
+        format.turbo_stream do
+          render "destroy"
+        end
       end
     end
 
