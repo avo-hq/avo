@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.feature "Fields view types", type: :system do
+RSpec.feature "Fields view types", type: :feature do
   let(:project) { create :project, :with_files }
 
   after :each do
