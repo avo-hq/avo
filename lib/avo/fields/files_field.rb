@@ -6,6 +6,7 @@ module Avo
       attr_accessor :direct_upload
       attr_accessor :accept
       attr_reader :display_filename
+      attr_reader :view_type
       attr_reader :hide_view_type_switcher
 
       def initialize(id, **args, &block)
@@ -39,14 +40,6 @@ module Avo
         end
 
         model
-      end
-
-      def viewer_component
-        "Avo::Fields::Common::Files::ViewType::#{view_type.to_s.capitalize}Component".constantize
-      end
-
-      def view_type
-        (@resource.params.dig(:view_type) || @view_type).to_sym
       end
     end
   end
