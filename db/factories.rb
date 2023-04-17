@@ -59,12 +59,12 @@ FactoryBot.define do
 
       ["watch.jpg", "dummy-video.mp4"].each do |filename|
         file = Rails.root.join("db", "seed_files", filename)
-        project.files.attach(io: file.open, filename: filename, service_name: :test)
+        project.files.attach(io: file.open, filename: filename)
       end
 
       ["dummy-file.txt", "dummy-audio.mp3"].each do |filename|
         file = Avo::Engine.root.join("spec", "dummy", filename)
-        project.files.attach(io: file.open, filename: filename, service_name: :test)
+        project.files.attach(io: file.open, filename: filename)
       end
     end
   end
