@@ -99,6 +99,9 @@ jobs:
         yarn build:custom-js
         yarn build:css
 
+    - name: Create storage directory
+      run: mkdir -p tmp/storage
+
     - name: Run tests
       id: run_tests
       run: bundle exec rspec spec/features
