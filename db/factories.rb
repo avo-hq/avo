@@ -45,6 +45,18 @@ FactoryBot.define do
   trait :with_files do
     after(:create) do |project|
       puts "service -> " + Rails.application.config.active_storage.service.inspect
+      puts "tmp ls"
+      Dir.chdir(Rails.root.join("tmp")) do
+        # Execute the command
+        system "ls -l"
+      end
+
+      puts "tmp/storage ls"
+      Dir.chdir(Rails.root.join("tmp", "storage")) do
+        # Execute the command
+        system "ls -l"
+      end
+
       ["watch.jpg", "dummy-video.mp4"].each do |filename|
         file = Rails.root.join("db", "seed_files", filename)
         project.files.attach(io: file.open, filename: filename)
