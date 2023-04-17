@@ -21,6 +21,10 @@ module Avo
           {}
         end
 
+        def encode_filters(filter_params)
+          Base64.encode64(filter_params.to_json)
+        end
+
         def get_empty_message
           empty_message || I18n.t("avo.no_options_available")
         end

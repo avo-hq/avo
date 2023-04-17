@@ -111,6 +111,14 @@ module Avo
       Avo::Engine.routes.find_script_name(params.permit!.to_h.symbolize_keys)
     end
 
+    def decode_filter_params(encoded_params)
+      Avo::Filters::BaseFilter.decode_filters(encoded_params)
+    end
+
+    def encode_filter_params(filter_params)
+      Avo::Filters::BaseFilter.encode_filters(filter_params)
+    end
+
     private
 
     # Taken from the original library
