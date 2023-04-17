@@ -6,7 +6,8 @@ spec/dummy/db/*.sqlite3
 spec/dummy/db/*.sqlite3-journal
 spec/dummy/db/*.sqlite3-*
 spec/dummy/log/*.log
-spec/dummy/storage/
+spec/dummy/storage/*
+!spec/dummy/storage/test.yml
 spec/dummy/node_modules/
 spec/dummy/assets/
 spec/dummy/public/packs/
