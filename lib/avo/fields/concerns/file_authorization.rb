@@ -23,7 +23,7 @@ module Avo
         private
 
         def authorize_file_action(action)
-          authorize_action("#{action}_attachments?", raise_exception: false) || authorize_action("#{action}_#{id}?", record: model, raise_exception: false)
+          authorize_action("#{action}_#{id}?", record: model, raise_exception: false)
         end
       end
     end

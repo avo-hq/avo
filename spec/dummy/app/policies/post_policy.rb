@@ -35,18 +35,6 @@ class PostPolicy < ApplicationPolicy
     true
   end
 
-  def upload_attachments?
-    true
-  end
-
-  def download_attachments?
-    true
-  end
-
-  def delete_attachments?
-    true
-  end
-
   [:cover_photo, :audio].each do |file|
     [:upload, :download, :delete].each do |action|
       define_method "#{action}_#{file}?" do
