@@ -71,7 +71,7 @@ module Avo
       @id_links_to_resource = false
       @full_width_container = false
       @full_width_index_view = false
-      @cache_resources_on_index_view = false
+      @cache_resources_on_index_view = Avo::PACKED
       @cache_resource_filters = false
       @context = proc {}
       @initial_breadcrumbs = proc {
