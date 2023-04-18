@@ -28,7 +28,7 @@ class ProjectResource < Avo::BaseResource
     timezone: "EET",
     format: "MMMM dd, y HH:mm:ss z"
   field :description, as: :markdown, height: "350px"
-  field :files, as: :files, translation_key: "avo.field_translations.file", is_image: true, direct_upload: true
+  field :files, as: :files, translation_key: "avo.field_translations.files", view_type: :list, stacked: false, hide_view_type_switcher: false
   field :meta, as: :key_value, key_label: "Meta key", value_label: "Meta value", action_text: "New item", delete_text: "Remove item", disable_editing_keys: false, disable_adding_rows: false, disable_deleting_rows: false
 
   field :users, as: :has_and_belongs_to_many

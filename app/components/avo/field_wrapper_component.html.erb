@@ -2,7 +2,7 @@
   class: classes,
   style: style,
   data: data do %>
-  <div class="h-full <% if stacked? %> md:pt-4 <% else %> md:pt-0 md:h-14 <% end %> pt-4 flex self-start items-center <%= @field.get_html(:classes, view: view, element: :label) %> w-48 <% if compact? %> md:w-48 xl:w-64 <% else %> md:w-64 <% end %> px-6 uppercase font-semibold text-gray-500 text-sm" data-slot="label">
+  <div class="h-full <% if stacked? %> md:pt-4 <% else %> md:pt-0 md:h-14 <% end %> pt-4 flex self-start items-center flex-shrink-0 <%= @field.get_html(:classes, view: view, element: :label) %> w-48 <% if compact? %> md:w-48 xl:w-64 <% else %> md:w-64 <% end %> px-6 uppercase font-semibold text-gray-500 text-sm" data-slot="label">
     <% if form.present? %>
       <%= form.label field.id, label %>
     <% else %>
@@ -11,7 +11,7 @@
     <% if on_edit? && field.is_required? %> <span class="text-red-600 ml-1">*</span> <% end %>
   </div>
   <div class="flex-1 flex flex-row md:min-h-inherit py-2 <% if stacked? %> pb-4 <% else %><% end %> px-6 <%= @field.get_html(:classes, view: view, element: :content) %>" data-slot="value">
-    <div class="self-center <% if full_width? || compact? || stacked? %> w-full <% else %> md:w-8/12 <% end %>">
+    <div class="self-center w-full <% unless full_width? || compact? || stacked? %> md:w-8/12 <% end %>">
       <% if on_show? %>
         <% if field.value.blank? and dash_if_blank %>
           —

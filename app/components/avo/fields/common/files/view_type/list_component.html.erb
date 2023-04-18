@@ -1,0 +1,22 @@
+<div id="<%= dom_id file %>" class="relative min-h-full max-w-full flex-1 flex">
+  <% if file.present? %>
+    <div class="grid grid-cols-6 gap-2 items-center max-w-full w-full">
+      <div class="col-span-4 flex-1 flex flex-row items-center text-gray-700 overflow-x-auto mac-styled-scrollbar ">
+        <div class="rounded-full bg-slate-100 border border-gray-500 p-1.5 flex items-center justify-center">
+          <%= helpers.svg icon_for_file, class: "h-5 text-gray-600" %>
+        </div>
+        <p class="items-center h-full p-2 flex-shrink-0">
+          <%= file.filename %>
+        </p>
+      </div>
+      <div class="text-gray-700 flex-shrink-0 text-sm">
+        <%= helpers.number_to_human_size(file.byte_size) %>
+      </div>
+      <div class="flex space-x-2 justify-end col-span-1 flex-shrink-0">
+        <%= render Avo::Fields::Common::Files::ControlsComponent.new(field: field, file: file, resource: resource) %>
+      </div>
+    </div>
+  <% else %>
+    –
+  <% end %>
+</div>

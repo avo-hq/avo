@@ -1,0 +1,20 @@
+<%= content_tag :div, class: wrapper_classes do %>
+  <%= turbo_frame_tag @field.id do %>
+    <% unless @field.hide_view_type_switcher %>
+      <div class="justify-self-end flex justify-end items-center space-x-3">
+        <%= render partial: 'avo/partials/view_toggle_button',
+          locals: {
+            available_view_types: available_view_types,
+            view_type: view_type,
+            turbo_frame: @field.id,
+          }
+        %>
+      </div>
+    <% end %>
+    <div class="<%= classes %>">
+      <% @field.value.attachments.each do |file| %>
+        <%= render view_type_component(file) %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

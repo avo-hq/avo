@@ -1,0 +1,29 @@
+<div class="flex">
+  <% if can_download_file? %>
+    <%= a_link Rails.application.routes.url_helpers.rails_blob_path(file, only_path: true, disposition: :attachment),
+      icon: 'heroicons/outline/download',
+      color: :primary,
+      download: true,
+      class: 'text-center',
+      title: t('avo.download_file'),
+      data: { tippy: :tooltip },
+      compact: true,
+      size: :xs %>
+  <% end %>
+</div>
+<div>
+  <% if can_delete_file? %>
+    <%= a_link destroy_path,
+      icon: 'heroicons/outline/trash',
+      color: :red,
+      compact: true,
+      size: :xs,
+      class: 'text-center',
+      title: t('avo.delete_file', item: file.filename),
+      data: {
+        turbo_method: :delete,
+        turbo_confirm: t('avo.are_you_sure'),
+        tippy: :tooltip
+      } %>
+  <% end %>
+</div>
