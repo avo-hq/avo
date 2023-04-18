@@ -21,7 +21,7 @@ module Generators
           end
 
           if Rails.root.join("Procfile.dev").exist?
-            append_to_file "Procfile.dev", "avo_css: bin/rails avo:tailwindcss:watch\n"
+            append_to_file "Procfile.dev", "avo_css: yarn avo:tailwindcss --watch\n"
           else
             say "Add default Procfile.dev"
             copy_file template_path("Procfile.dev"), "Procfile.dev"
@@ -38,6 +38,9 @@ module Generators
 
           say "Adding the CSS asset to the partial"
           prepend_to_file Rails.root.join("app", "views", "avo", "partials", "_pre_head.html.erb"), "<%= stylesheet_link_tag \"avo.tailwind.css\", media: \"all\" %>"
+
+          say "Ensure you have the following script in your package.json file.", :yellow
+          say %("scripts": { "avo:tailwindcss": "tailwindcss -i ./app/assets/stylesheets/avo.tailwind.css -o ./app/assets/builds/avo.tailwind.css --minify" }), :green
         end
 
         no_tasks do
