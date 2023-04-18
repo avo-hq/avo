@@ -40,7 +40,6 @@ module Avo
       attr_reader :stacked
 
       # Private options
-      attr_reader :updatable
       attr_reader :computable # if allowed to be computable
       attr_reader :computed # if block is present
       attr_reader :computed_value # the value after computation
@@ -255,6 +254,10 @@ module Avo
 
       def hidden_in_reflection?
         !visible_in_reflection?
+      end
+
+      def updatable
+        @updatable && visible?
       end
 
       private
