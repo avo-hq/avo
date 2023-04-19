@@ -11,6 +11,7 @@ class CityResource < Avo::BaseResource
 
   field :id, as: :id
   field :coordinates, as: :location, stored_as: [:latitude, :longitude]
+  field :coordinates, as: :area
   with_options hide_on: :forms do
     field :name, as: :text, help: "The name of your city"
     field :population, as: :number
