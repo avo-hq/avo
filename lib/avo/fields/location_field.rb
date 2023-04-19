@@ -7,7 +7,6 @@ module Avo
 
       def initialize(id, **args, &block)
         hide_on :index
-
         super(id, **args, &block)
 
         @stored_as = args[:stored_as].present? ? args[:stored_as] : nil # You can pass it an array of db columns [:latitude, :longitude]
