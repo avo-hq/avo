@@ -6,6 +6,7 @@ module Avo
       attr_reader :geometry
       attr_reader :style
       attr_reader :options
+      attr_reader :datapoint_options
       def initialize(id, **args, &block)
         hide_on :index
         super(id, **args, &block)
@@ -13,16 +14,12 @@ module Avo
         @geometry = args[:geometry].present? ? args[:geometry] : :polygon # Defaults to `polygon`; Possible values: `:polygon`, `:multi_polygon`
         @style = args[:style].present? ? args[:style] : nil
         @options = args[:options].present? ? args[:options] : {}
+        @datapoint_options = args[:datapoint_options].present? ? args[:datapoint_options] : {}
       end
 
       def map_data
-        data = [{ geometry: { type: @geometry.to_s.classify, coordinates: JSON.parse(value) }}]
-
-        if @options.present?
-          [data[0].merge(@options)]
-        else
-          data
-        end
+        data_source = { geometry: { type: @geometry.to_s.classify, coordinates: JSON.parse(value) }}
+        [data_source.merge(datapoint_options)]
       end
 
       def coordinates

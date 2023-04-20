@@ -20,11 +20,11 @@ class CityResource < Avo::BaseResource
     field :image_url, as: :external_image
     field :description, as: :trix
     field :tiny_description, as: :markdown
-    field :city_center_area, as: :area, geometry: :multi_polygon,
-                             style: 'mapbox://styles/mapbox/satellite-v9',
-                             options: { label: 'Paris City Center',
-                                        tooltip: 'Bonjour mes amis!',
-                                        color: '#009099' }
+    field :city_center_area, as: :area, geometry: :polygon,
+                             options: { style: 'mapbox://styles/mapbox/satellite-v9', controls: true },
+                             datapoint_options: { label: 'Paris City Center',
+                                                  tooltip: 'Bonjour mes amis!',
+                                                  color: '#009099' }
     field :status, as: :badge, enum: ::City.statuses
   end
 
