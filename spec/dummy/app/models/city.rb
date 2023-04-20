@@ -16,6 +16,7 @@
 #  updated_at       :datetime         not null
 #  latitude         :float
 #  longitude        :float
+#  city_center_area :json
 #
 class City < ApplicationRecord
   enum status: {Open: "open", Closed: "closed", Quarantine: "On Quarantine"}
