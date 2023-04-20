@@ -18,8 +18,11 @@ module Avo
       def map_data
         data = [{ geometry: { type: @geometry.to_s.classify, coordinates: JSON.parse(value) }}]
 
-        data = data[0].merge(@options) if @options.present?
-        [data]
+        if @options.present?
+          [data[0].merge(@options)]
+        else
+          data
+        end
       end
 
       def coordinates
