@@ -75,7 +75,7 @@ group :development do
 
   gem "htmlbeautifier"
 
-  gem "hotwire-livereload", "~> 1.1"
+  gem "hotwire-livereload", "~> 1.2"
 
   gem "brakeman"
 end
