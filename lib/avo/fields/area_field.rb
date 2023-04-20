@@ -10,7 +10,7 @@ module Avo
         hide_on :index
         super(id, **args, &block)
 
-        @geometry = args[:geometry].present? ? args[:geometry] : :polygon # Defaults to `polygon`; Possible values: `Polygon`, `multi_polygon`
+        @geometry = args[:geometry].present? ? args[:geometry] : :polygon # Defaults to `polygon`; Possible values: `:polygon`, `:multi_polygon`
         @style = args[:style].present? ? args[:style] : nil
         @options = args[:options].present? ? args[:options] : {}
       end
@@ -18,8 +18,8 @@ module Avo
       def map_data
         data = [{ geometry: { type: @geometry.to_s.classify, coordinates: JSON.parse(value) }}]
 
-        data[0].merge(@options) if @options
-        data
+        data = data[0].merge(@options) if @options.present?
+        [data]
       end
 
       def coordinates
