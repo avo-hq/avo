@@ -1,5 +1,5 @@
 <%= render Avo::PanelComponent.new(name: @dashboard.name, description: @dashboard.description) do |c| %>
-  <% c.bare_content do %>
+  <% c.with_bare_content do %>
     <% if @dashboard.items.present? %>
       <div class="min-h-24">
         <%= content_tag(:div, class: "grid gap-4 grid-cols-1 #{@dashboard.classes}") do %>
@@ -23,7 +23,7 @@
       <div class="w-full h-full">
         <% if Rails.env.development? %>
           <%= render Avo::PanelComponent.new do |c| %>
-            <% c.body do %>
+            <% c.with_body do %>
               <div class="p-6">
                 <%= t 'avo.empty_dashboard_message' %>. <%= link_to 'Docs', 'https://docs.avohq.io/2.0/dashboards.html', target: '_blank' %>
               </div>

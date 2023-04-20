@@ -15,9 +15,9 @@
 %>
 <div class="flex flex-col">
   <%= render Avo::PanelComponent.new(name: 'Debug Avo', description: 'Use this page to debug the Avo license.') do |c| %>
-    <% c.tools do %>
+    <% c.with_tools do %>
     <% end %>
-    <% c.bare_content do %>
+    <% c.with_bare_content do %>
       <div class="grid gap-4 sm:grid-cols-3">
         <div class="relative flex flex-col bg-white rounded shadow-panel p-4 space-y-4 h-full col-span-1">
         <div class="flex justify-between w-full">

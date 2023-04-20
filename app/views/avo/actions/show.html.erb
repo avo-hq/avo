@@ -14,7 +14,7 @@
       data: @action.class.form_data_attributes do |form|
     %>
     <%= render Avo::ModalComponent.new do |c| %>
-      <% c.heading do %>
+      <% c.with_heading do %>
         <%= @action.action_name %>
       <% end %>
       <div class="flex-1 flex">
@@ -33,7 +33,7 @@
           <% end %>
         </div>
       <% end %>
-      <% c.controls do %>
+      <% c.with_controls do %>
         <%= a_button type: :button,
           data: { action: 'click->modal#close' },
           size: :sm,

@@ -19,7 +19,7 @@
     <%= render Avo::ReferrerParamsComponent.new back_path: back_path %>
     <%= content_tag :div, class: 'space-y-12' do %>
       <%= render Avo::PanelComponent.new(name: title, description: @resource.resource_description, display_breadcrumbs: @reflection.blank?, index: 0, data: { panel_id: "main" }) do |c| %>
-        <% c.tools do %>
+        <% c.with_tools do %>
           <%= a_link back_path,
             style: :text,
             icon: 'arrow-left' do %>
@@ -56,7 +56,7 @@
         <%# Extract the main panel and display the fields here. %>
         <%# This way we'll be able to render the footer buttons under the main fields. %>
         <% if main_panel.present? %>
-          <% c.body do %>
+          <% c.with_body do %>
             <div class="divide-y">
               <% main_panel.items.each_with_index do |field, index| %>
                 <%= render field
@@ -69,12 +69,12 @@
           <% end %>
         <% end %>
         <% if sidebar.present? %>
-          <% c.sidebar do %>
+          <% c.with_sidebar do %>
             <%= render sidebar_component form: form %>
           <% end %>
         <% end %>
         <% if Avo.configuration.buttons_on_form_footers %>
-          <% c.footer_tools do %>
+          <% c.with_footer_tools do %>
             <div class="mt-4">
               <%= a_link back_path,
               style: :text,
