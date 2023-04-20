@@ -4,7 +4,6 @@ module Avo
   module Fields
     class AreaField < BaseField
       attr_reader :geometry
-      attr_reader :style
       attr_reader :options
       attr_reader :datapoint_options
       def initialize(id, **args, &block)
@@ -12,7 +11,6 @@ module Avo
         super(id, **args, &block)
 
         @geometry = args[:geometry].present? ? args[:geometry] : :polygon # Defaults to `polygon`; Possible values: `:polygon`, `:multi_polygon`
-        @style = args[:style].present? ? args[:style] : nil
         @options = args[:options].present? ? args[:options] : {}
         @datapoint_options = args[:datapoint_options].present? ? args[:datapoint_options] : {}
       end
