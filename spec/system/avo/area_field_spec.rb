@@ -26,7 +26,7 @@ RSpec.describe "AreaField", type: :system do
       it "changes the city center area" do
         visit "/admin/resources/cities/#{city.id}/edit"
 
-        fill_in "city_city_center_area", with: "[[[10.0,11.2], [10.5, 11.9],[10.8, 12.0], [10.0,11.2]]]"
+        fill_in "city_city_center_area", with: "[[[2.312955267531237, 48.88063965390646], [2.312955267531237, 48.831194952976006], [2.3842221159307257, 48.831194952976006], [2.3842221159307257, 48.88063965390646], [2.312955267531237, 48.88063965390646]]]"
 
         click_on "Save"
 
@@ -34,13 +34,13 @@ RSpec.describe "AreaField", type: :system do
 
         click_on "Edit"
 
-        expect(find_by_id("city_city_center_area").value).to eq("[[[10.0,11.2], [10.5, 11.9],[10.8, 12.0], [10.0,11.2]]]")
+        expect(find_by_id("city_city_center_area").value).to eq("[[[2.312955267531237, 48.88063965390646], [2.312955267531237, 48.831194952976006], [2.3842221159307257, 48.831194952976006], [2.3842221159307257, 48.88063965390646], [2.312955267531237, 48.88063965390646]]]")
       end
     end
   end
 
   describe "with regular value" do
-    let!(:city) { create :city, city_center_area: [[[10.0,11.2], [10.5, 11.9],[10.8, 12.0], [10.0,11.2]]].to_json }
+    let!(:city) { create :city, city_center_area: [[[2.312955267531237, 48.88063965390646], [2.312955267531237, 48.831194952976006], [2.3842221159307257, 48.831194952976006], [2.3842221159307257, 48.88063965390646], [2.312955267531237, 48.88063965390646]]].to_json }
 
     context "show" do
       it "renders a map" do
@@ -55,7 +55,7 @@ RSpec.describe "AreaField", type: :system do
       it "has filled city_center_area values in editor" do
         visit "/admin/resources/cities/#{city.id}/edit"
 
-        expect(find_by_id("city_city_center_area").value).to eq("[[[10.0,11.2],[10.5,11.9],[10.8,12.0],[10.0,11.2]]]")
+        expect(find_by_id("city_city_center_area").value).to eq("[[[2.312955267531237,48.88063965390646],[2.312955267531237,48.831194952976006],[2.3842221159307257,48.831194952976006],[2.3842221159307257,48.88063965390646],[2.312955267531237,48.88063965390646]]]")
       end
     end
   end

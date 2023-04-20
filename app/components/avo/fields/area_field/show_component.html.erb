@@ -1,6 +1,5 @@
 <%= field_wrapper **field_wrapper_args do %>
   <% if field.value.present? %>
-    <%= field.map_data %>
     <%= area_map field.map_data,
                  id: "area-map",
                  style: field.style%>
