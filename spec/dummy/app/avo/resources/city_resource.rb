@@ -20,7 +20,9 @@ class CityResource < Avo::BaseResource
     field :image_url, as: :external_image
     field :description, as: :trix
     field :tiny_description, as: :markdown
-    field :city_center_area, as: :area, geometry: :multi_polygon
+    field :city_center_area, as: :area, geometry: :polygon, style: 'mapbox://styles/mapbox/satellite-v9', options: { label: "Hot Chicken Takeover",
+                                                                             tooltip: "5 stars",
+                                                                             color: "#009099" }
     field :status, as: :badge, enum: ::City.statuses
   end
 

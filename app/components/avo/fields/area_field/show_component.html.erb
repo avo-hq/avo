@@ -1,13 +1,8 @@
 <%= field_wrapper **field_wrapper_args do %>
   <% if field.value.present? %>
-    <h1><%= field.geometry %></h1>
-    <%= area_map [
-                   {
-                     geometry: {
-                       type: field.geometry, coordinates: field.coordinates
-                     }
-                   }
-                 ], id: "area-map", style: 'mapbox://styles/mapbox/satellite-v9' %>
+    <%= area_map field.map_data,
+                 id: "area-map",
+                 style: field.style%>
   <% else %>
     —
   <% end %>
