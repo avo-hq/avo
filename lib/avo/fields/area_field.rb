@@ -10,9 +10,9 @@ module Avo
         hide_on :index
         super(id, **args, &block)
 
-        @geometry = args[:geometry].presence || :polygon # Defaults to `polygon`; Possible values: `:polygon`, `:multi_polygon`
-        @options = args[:options].present? ? args[:options] : {}
-        @datapoint_options = args[:datapoint_options].present? ? args[:datapoint_options] : {}
+        @geometry = args[:geometry].presence || :polygon # Accepts: `:polygon` or `:multi_polygon`
+        @options = args[:options].presence || {}
+        @datapoint_options = args[:datapoint_options].presence || {}
       end
 
       def map_data
