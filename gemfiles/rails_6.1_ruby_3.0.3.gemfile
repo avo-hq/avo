@@ -56,7 +56,7 @@ group :development do
   gem "gem-release", require: false
   gem "annotate"
   gem "htmlbeautifier"
-  gem "hotwire-livereload", "~> 1.1"
+  gem "hotwire-livereload", "~> 1.2"
   gem "brakeman"
 end
 
