@@ -119,7 +119,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
     end
 
     if filtered_fields.present?
-      filtered_fields.find { |f| f.id == @reflection.name }.readonly
+      filtered_fields.find { |f| f.id == @reflection.name }.is_readonly?
     else
       false
     end
