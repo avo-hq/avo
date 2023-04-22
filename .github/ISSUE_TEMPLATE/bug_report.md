@@ -58,12 +58,12 @@ Steps to reproduce the behavior:
   (Mark [x] inside the brackets)
 -->
 
- - [ ] High impact
- - [ ] Medium impact
- - [ ] Low impact
+ - [ ] High impact (It makes my app un-usable.)
+ - [ ] Medium impact (I'm annoyed, but I'll live.)
+ - [ ] Low impact (It's really a tiny thing that I could live with.)
 
 #### Urgency
 
- - [ ] High urgency
- - [ ] Medium urgency
- - [ ] low urgency
+ - [ ] High urgency (I can't continue development without it.)
+ - [ ] Medium urgency (I found a workaround, but I'd love to have it fixed.)
+ - [ ] Low urgency (It can wait. I just wanted you to know about it.)
