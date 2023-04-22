@@ -3,11 +3,12 @@
 module Avo
   module Fields
     class AreaField < BaseField
-      attr_reader :geometry
       attr_reader :options
       attr_reader :datapoint_options
+
       def initialize(id, **args, &block)
         hide_on :index
+
         super(id, **args, &block)
 
         @geometry = args[:geometry].presence || :polygon # Accepts: `:polygon` or `:multi_polygon`
@@ -16,7 +17,13 @@ module Avo
       end
 
       def map_data
-        data_source = { geometry: { type: @geometry.to_s.classify, coordinates: JSON.parse(value) }}
+        data_source = {
+          geometry: {
+            type: @geometry.to_s.classify,
+            coordinates: JSON.parse(value)
+          }
+        }
+
         [data_source.merge(datapoint_options)]
       end
 
