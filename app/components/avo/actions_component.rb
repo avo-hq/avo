@@ -11,7 +11,7 @@ class Avo::ActionsComponent < ViewComponent::Base
     @exclude = exclude
     @color = color
     @style = style
-    @label = label || t("avo.actions")
+    @label = label || I18n.t("avo.actions")
   end
 
   def render?
