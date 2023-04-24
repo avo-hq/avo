@@ -63,7 +63,7 @@ module Avo
             if Rails::VERSION::MAJOR === 6
               ActiveStorage::Current.host = request.base_url
             elsif Rails::VERSION::MAJOR === 7
-              ActiveStorage::Current.url_options = request.base_url
+              ActiveStorage::Current.url_options = {protocol: request.protocol, host: request.host, port: request.port}
             end
           end
         rescue => exception
