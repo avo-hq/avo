@@ -27,9 +27,13 @@ jobs:
       matrix:
         ruby:
           - '3.0.3'
+          - '3.2.2'
         rails:
           - '6.0'
           - '6.1'
+        exclude:
+          - ruby: '3.2.2'
+            rails: '6.0'
     runs-on: ubuntu-latest
 
     env:

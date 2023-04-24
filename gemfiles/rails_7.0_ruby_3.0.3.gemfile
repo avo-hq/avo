@@ -30,7 +30,7 @@ gem "addressable"
 gem "appraisal"
 gem "meta-tags"
 gem "manifester"
-gem "ransack"
+gem "ransack", "~> 3.1.0"
 gem "friendly_id", "~> 5.4.0"
 gem "aws-sdk-s3", require: false
 gem "net-smtp", require: false
@@ -56,7 +56,7 @@ group :development do
   gem "gem-release", require: false
   gem "annotate"
   gem "htmlbeautifier"
-  gem "hotwire-livereload", "~> 1.1"
+  gem "hotwire-livereload", "~> 1.2"
   gem "brakeman"
 end
 

@@ -5,7 +5,7 @@
     **@resource.stimulus_data_attributes
   } do %>
   <%= render Avo::PanelComponent.new(name: title, description: description, data: { component: 'resources-index' }, display_breadcrumbs: @reflection.blank?) do |c| %>
-    <% c.tools do %>
+    <% c.with_tools do %>
       <% if can_attach? %>
         <%= a_link attach_path,
           icon: 'heroicons/outline/link',
@@ -29,7 +29,7 @@
         <% end %>
       <% end %>
     <% end %>
-    <% c.body do %>
+    <% c.with_body do %>
       <div class="flex flex-col xs:flex-row xs:justify-between space-y-2 xs:space-y-0 py-4 <%= 'hidden' if @resource.search_query.nil? && @filters.empty? && available_view_types.count <= 1 %>">
         <% if show_search_input %>
           <div class="flex items-center px-4 w-64">
@@ -56,7 +56,7 @@
         <% end %>
       <% end %>
     <% end %>
-    <% c.bare_content do %>
+    <% c.with_bare_content do %>
       <% if view_type.to_sym == :table %>
         <% if @models.present? %>
           <div class="mt-4">

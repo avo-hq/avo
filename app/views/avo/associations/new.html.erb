@@ -11,7 +11,7 @@
       'turbo-frame': '_top'
     } do |form| %>
     <%= render Avo::ModalComponent.new do |c| %>
-      <% c.heading do %>
+      <% c.with_heading do %>
         <%= t 'avo.choose_item', item: @related_resource.name.downcase %>
       <% end %>
 
@@ -39,7 +39,7 @@
         <% end %>
       </div>
 
-      <% c.controls do %>
+      <% c.with_controls do %>
         <%= a_button 'data-action': 'click->modal#close', size: :sm, style: :outline, color: :gray do %>
           <%= t('avo.cancel') %>
         <% end %>

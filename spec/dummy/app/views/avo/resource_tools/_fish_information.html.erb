@@ -1,12 +1,12 @@
 <div class="flex flex-col">
   <%= render Avo::PanelComponent.new(name: @resource.model.name, description: "There should be an image of this fish below 🐠") do |c| %>
-    <% c.tools do %>
+    <% c.with_tools do %>
       <%= a_link('/admin', icon: 'heroicons/solid/academic-cap', style: :primary) do %>
         Primary
       <% end %>
     <% end %>
     <% if form.present? %>
-      <% c.body do %>
+      <% c.with_body do %>
         <div class="divide-y">
           <%= avo_edit_field :fish_type, as: :text, form: form, helwp: "Set the fish type", required: true, component_options: {compact: false, stacked: false} %>
           <%= avo_edit_field :properties, as: :text, form: form, name: "Property 1", help: "Prop 1", required: true, component_options: {multiple: true} %>
@@ -20,7 +20,7 @@
         </div>
       <% end %>
     <% else %>
-      <% c.body do %>
+      <% c.with_body do %>
         <div class="flex flex-col p-4 min-h-24">
           <div class="space-y-4">
             <p>

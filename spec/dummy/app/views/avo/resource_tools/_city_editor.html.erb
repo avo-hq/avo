@@ -1,6 +1,6 @@
 <div class="flex flex-col">
   <%= render Avo::PanelComponent.new do |c| %>
-    <% c.body do %>
+    <% c.with_body do %>
       <% if form.present? %>
         <%= field_container do %>
           <%= avo_edit_field(:name, as: :text, form: form, help: "The name of your city", required: true, component_options: {stacked: true}) %>

@@ -21,7 +21,7 @@ RSpec.describe "Avo::TeamsController", type: :feature do
 
         visit "/admin/resources/teams/#{team.id}"
 
-        expect(page).not_to have_text "Loading team members"
+        expect(page).not_to have_text "Loading team memberz"
         expect(page).not_to have_selector "turbo-frame#has_many_field_show_team_members"
       end
 
@@ -30,7 +30,7 @@ RSpec.describe "Avo::TeamsController", type: :feature do
 
         visit "/admin/resources/teams/#{team.id}"
 
-        expect(page).to have_text "Loading team members"
+        expect(page).to have_text "Loading team memberz"
         expect(page).to have_selector "turbo-frame#has_many_field_show_team_members"
       end
     end
