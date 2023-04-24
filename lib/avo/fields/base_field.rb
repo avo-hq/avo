@@ -85,7 +85,6 @@ module Avo
 
         @args = args
 
-        @updatable = !readonly
         @computable = true
         @computed = block.present?
         @computed_value = nil
@@ -257,7 +256,7 @@ module Avo
       end
 
       def updatable
-        @updatable && visible?
+        !is_readonly? && visible?
       end
 
       private
