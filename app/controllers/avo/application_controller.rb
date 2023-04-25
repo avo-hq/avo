@@ -157,8 +157,7 @@ module Avo
       @model_to_fill = @model if @view == :update
 
       # If resource.model is nil, most likely the user is creating a new record.
-      # In that case, in order to give the user the ability to access resource.model in visible and readonly blocks
-      # we need to hydrate the resource with a new model.
+      # In that case, to access resource.model in visible and readonly blocks we need to hydrate the resource with a new model.
       @resource.hydrate(model: @model_to_fill) if @resource.model.nil?
     end
 
