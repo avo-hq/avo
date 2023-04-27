@@ -22,17 +22,34 @@ module Avo
         @query = query
       end
 
-      def map_view_table_layout_class
-        return '' unless render_map_view_table?
+      def grid_layout_classes
+        return unless render_map_view_table?
 
-        table_layout_classes = {
-          bottom: 'table-bottom',
-          left: 'table-left',
-          right: 'table-right',
-          top: 'table-top'
-        }
+        if %i[left right].include?(map_view_table_layout)
+          'grid-flow-col grid-rows-1 auto-cols-fr'
+        elsif %i[bottom top].include?(map_view_table_layout)
+          'grid-flow-row grid-cols-1 auto-rows-fr'
+        end
+      end
 
-        table_layout_classes[map_options.dig(:table, :layout)]
+      def map_component_order_class
+        if render_map_view_table? && %i[left top].include?(map_view_table_layout)
+          'order-last'
+        else
+          'order-first'
+        end
+      end
+
+      def table_component_order_class
+        if %i[left top].include? map_view_table_layout
+          'order-first'
+        else
+          'order-last'
+        end
+      end
+
+      def map_view_table_layout
+        map_options.dig(:table, :layout)
       end
 
       def resource_location_markers
