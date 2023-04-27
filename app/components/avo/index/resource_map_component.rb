@@ -23,16 +23,16 @@ module Avo
       end
 
       def map_view_table_layout_class
-        case map_options.dig(:table, :layout)
-        when :left
-          'table-left'
-        when :bottom
-          'table-bottom'
-        when :top
-          'table-top'
-        else
-          'table-right'
-        end
+        return '' unless render_map_view_table?
+
+        table_layout_classes = {
+          bottom: 'table-bottom',
+          left: 'table-left',
+          right: 'table-right',
+          top: 'table-top'
+        }
+
+        table_layout_classes[map_options.dig(:table, :layout)]
       end
 
       def resource_location_markers
