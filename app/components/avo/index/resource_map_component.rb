@@ -59,9 +59,7 @@ module Avo
         @resources.map do |marker_resource|
           coordinates = marker_proc.call(record: marker_resource.record)
 
-          next unless coordinates[:latitude].present? && coordinates[:longitude].present?
-
-          coordinates
+          coordinates[:latitude].present? && coordinates[:longitude].present? && coordinates
         end.compact
       end
 
