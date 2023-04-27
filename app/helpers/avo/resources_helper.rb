@@ -94,7 +94,11 @@ module Avo
       marker_proc = map_options[:record_marker] || default_record_marker_proc
 
       resources.map do |resource|
-        marker_proc.call(record: resource.record)
+        coordinates = marker_proc.call(record: resource.record)
+
+        next unless coordinates[:latitude].present? && coordinates[:longitude].present?
+
+        coordinates
       end.compact
     end
 
