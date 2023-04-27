@@ -1,9 +1,9 @@
 <% if @resources.present? %>
-  <div class="map-view-container <%= helpers.map_view_table_layout_class(@resource.map) %>">
+  <div class="map-view-container <%= map_view_table_layout_class %>">
     <div class="map-component">
-      <%= js_map(helpers.resource_location_markers(@resources, @resource.map), **helpers.resource_mapkick_options(@resource.map))  %>
+      <%= js_map(resource_location_markers, **resource_mapkick_options)  %>
     </div>
-    <% if helpers.render_map_view_table?(@resource.map) %>
+    <% if render_map_view_table? %>
       <div class="map-table-component">
         <%= render(Avo::Index::ResourceTableComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_model: @parent_model, parent_resource: @parent_resource, pagy: @pagy, query: @query)) %>
       </div>
