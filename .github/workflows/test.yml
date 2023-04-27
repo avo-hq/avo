@@ -31,6 +31,7 @@ jobs:
         rails:
           - '6.0'
           - '6.1'
+          - '7.0'
         exclude:
           - ruby: '3.2.2'
             rails: '6.0'
