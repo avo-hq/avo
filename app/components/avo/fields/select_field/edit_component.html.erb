@@ -10,6 +10,7 @@
     disabled: disabled?,
     style: @field.get_html(:style, view: view, element: :input),
     value: @field.model.present? ? @field.model[@field.id] : @field.value,
-    placeholder: @field.include_blank.present? ? nil : @field.placeholder
+    placeholder: @field.include_blank.present? ? nil : @field.placeholder,
+    autocomplete: @field.autocomplete
   %>
 <% end %>
