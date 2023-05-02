@@ -58,10 +58,10 @@ module Avo
     end
 
     def initialize(model: nil, resource: nil, user: nil, view: nil, arguments: {})
-      self.class.model = model if model.present?
-      self.class.resource = resource if resource.present?
-      self.class.user = user if user.present?
-      self.class.view = view if view.present?
+      self.class.model = model
+      self.class.resource = resource
+      self.class.user = user
+      self.class.view = view
       @arguments = arguments
 
       self.class.message ||= I18n.t("avo.are_you_sure_you_want_to_run_this_option")
