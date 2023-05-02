@@ -36,7 +36,7 @@
     "chartkick": "^4.1.1",
     "codemirror": "5.59.1",
     "core-js": "^3.21.0",
-    "css-loader": "^5.2.0",
+    "css-loader": "^6.7.0",
     "el-transition": "^0.0.7",
     "esbuild": "^0.14.25",
     "eslint-config-airbnb": "^18.1.0",
