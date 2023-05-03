@@ -46,6 +46,8 @@ module Avo
           else
             ActiveSupport::Cache::FileStore.new
           end
+        elsif Rails.env.test?
+          Rails.cache
         else
           ActiveSupport::Cache::MemoryStore.new
         end
