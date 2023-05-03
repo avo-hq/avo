@@ -106,6 +106,7 @@ module Avo
           **other_metadata(:filters),
           main_menu_present: Avo.configuration.main_menu.present?,
           profile_menu_present: Avo.configuration.profile_menu.present?,
+          cache_store: Avo::App.cache_store&.class&.to_s,
           **config_metadata
         }
       rescue

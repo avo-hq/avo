@@ -31,10 +31,25 @@ module Avo
       def boot
         init_fields
 
-        if Rails.cache.instance_of?(ActiveSupport::Cache::NullStore)
-          self.cache_store ||= ActiveSupport::Cache::MemoryStore.new
+        self.cache_store = get_cache_store
+      end
+
+      # When not in production we'll just use the MemoryStore which is good enough.
+      # Wehn running in production we'll try to use memcached or redis if available.
+      # If not, we'll use the FileStore.
+      # We decided against the MemoryStore in production because it will not be shared between multiple processes (when using Puma).
+      def get_cache_store
+        if Rails.env.production?
+          case Rails.cache.class
+          when ActiveSupport::Cache::MemCacheStore, ActiveSupport::Cache::RedisCacheStore
+            Rails.cache
+          else
+            ActiveSupport::Cache::FileStore.new
+          end
+        elsif Rails.env.test?
+          Rails.cache
         else
-          self.cache_store = Rails.cache
+          ActiveSupport::Cache::MemoryStore.new
         end
       end
 
