@@ -6,6 +6,7 @@
     placeholder: @field.placeholder,
     style: @field.get_html(:style, view: view, element: :input),
     # value: @field.value,
-    multiple: multiple
+    multiple: multiple,
+    autocomplete: @field.autocomplete
   %>
 <% end %>

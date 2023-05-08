@@ -30,6 +30,7 @@ module Avo
       attr_reader :nullable
       attr_reader :null_values
       attr_reader :format_using
+      attr_reader :autocomplete
       attr_reader :help
       attr_reader :default
       attr_reader :visible
@@ -70,6 +71,7 @@ module Avo
         @null_values = args[:null_values] || [nil, ""]
         @format_using = args[:format_using] || nil
         @placeholder = args[:placeholder]
+        @autocomplete = args[:autocomplete] || nil
         @help = args[:help] || nil
         @default = args[:default] || nil
         @visible = args[:visible]
