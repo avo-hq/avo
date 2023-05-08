@@ -66,7 +66,7 @@ module Avo
 
         resources
           .map do |resource|
-            marker_proc.call(record: resource.record)
+            Avo::Hosts::ResourceRecordHost.new(block: marker_proc, resource: resource, record: resource.record).handle
           end
           .compact
           .filter do |coordinates|
@@ -85,7 +85,7 @@ module Avo
       private
 
       def default_record_marker_proc
-        lambda { |record:|
+        lambda {
           {
             latitude: record.coordinates.first,
             longitude: record.coordinates.last

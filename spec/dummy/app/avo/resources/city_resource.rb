@@ -15,7 +15,7 @@ class CityResource < Avo::BaseResource
     mapkick_options: {
       controls: true
     },
-    record_marker: lambda { |record:|
+    record_marker: -> {
       {
         latitude: record.coordinates.first,
         longitude: record.coordinates.last,
