@@ -55,6 +55,7 @@ module Avo
     class_attribute :keep_filters_panel_open, default: false
     class_attribute :extra_params
     class_attribute :link_to_child_resource, default: false
+    class_attribute :map_view
 
     class << self
       delegate :t, to: ::I18n
@@ -295,6 +296,7 @@ module Avo
       view_types = [:table]
 
       view_types << :grid if get_grid_fields.present?
+      view_types << :map if map_view.present?
 
       view_types
     end

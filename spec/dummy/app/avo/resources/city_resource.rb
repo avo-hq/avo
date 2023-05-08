@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CityResource < Avo::BaseResource
   self.title = :name
   self.includes = []
@@ -8,6 +10,23 @@ class CityResource < Avo::BaseResource
     avo.resources_city_path record, custom: "yup"
   end
   self.extra_params = [:fish_type, :something_else, properties: [], information: [:name, :history]]
+  self.default_view_type = :map
+  self.map_view = {
+    mapkick_options: {
+      controls: true
+    },
+    record_marker: lambda { |record:|
+      {
+        latitude: record.coordinates.first,
+        longitude: record.coordinates.last,
+        tooltip: record.name
+      }
+    },
+    table: {
+      visible: true,
+      layout: :bottom
+    }
+  }
 
   field :id, as: :id
   field :coordinates, as: :location, stored_as: [:latitude, :longitude]

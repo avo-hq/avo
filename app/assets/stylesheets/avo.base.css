@@ -71,7 +71,6 @@ body {
   @apply opacity-0 translate-y-1;
 }
 
-
 .turbo-progress-bar {
   @apply bg-primary-400;
 }
