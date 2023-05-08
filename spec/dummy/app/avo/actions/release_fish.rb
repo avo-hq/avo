@@ -1,7 +1,7 @@
 class ReleaseFish < Avo::BaseAction
   self.name = "Release fish"
   self.message = -> {
-    "Are you sure you want to release the #{record.name}?"
+    "Are you sure you want to release the #{record&.name || :fish}?"
   }
 
   field :message, as: :trix, help: "Tell the fish something before releasing."
