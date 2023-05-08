@@ -20,7 +20,7 @@ module Avo
         data_source = {
           geometry: {
             type: @geometry.to_s.classify,
-            coordinates: JSON.parse(value)
+            coordinates: value
           }
         }
 

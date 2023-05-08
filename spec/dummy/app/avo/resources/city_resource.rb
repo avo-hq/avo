@@ -30,6 +30,18 @@ class CityResource < Avo::BaseResource
 
   field :id, as: :id
   field :coordinates, as: :location, stored_as: [:latitude, :longitude]
+  field :city_center_area,
+    as: :area,
+    geometry: :polygon,
+    options: {
+      style: "mapbox://styles/mapbox/satellite-v9",
+      controls: true
+    },
+    datapoint_options: {
+      label: "Paris City Center",
+      tooltip: "Bonjour mes amis!",
+      color: "#009099"
+    }
   with_options hide_on: :forms do
     field :name, as: :text, help: "The name of your city"
     field :population, as: :number
@@ -39,18 +51,6 @@ class CityResource < Avo::BaseResource
     field :image_url, as: :external_image
     field :description, as: :trix
     field :tiny_description, as: :markdown
-    field :city_center_area,
-      as: :area,
-      geometry: :polygon,
-      options: {
-        style: "mapbox://styles/mapbox/satellite-v9",
-        controls: true
-      },
-      datapoint_options: {
-        label: "Paris City Center",
-        tooltip: "Bonjour mes amis!",
-        color: "#009099"
-      }
     field :status, as: :badge, enum: ::City.statuses
   end
 
