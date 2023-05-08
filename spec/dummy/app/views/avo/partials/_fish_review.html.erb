@@ -1,5 +1,5 @@
 <%= render Avo::PanelComponent.new do |c| %>
-  <% c.body do %>
+  <% c.with_body do %>
     <div class="nested-form-wrapper divide-y" data-new-record="<%= f.object.new_record? %>">
       <%= avo_edit_field :body, as: :trix, form: f, help: "What should the review say", required: true %>
       <%= avo_edit_field :user, as: :belongs_to, form: f, help: "Who created the review", required: true %>

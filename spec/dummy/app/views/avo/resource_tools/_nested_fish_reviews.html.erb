@@ -1,7 +1,7 @@
 <div class="flex flex-col">
   <%= content_tag :div,data: { controller: 'nested-form', nested_form_wrapper_selector_value: '.nested-form-wrapper' } do %>
     <%= render Avo::PanelComponent.new(name: "Reviews", description: "Create some reviews for this fish") do |c| %>
-      <% c.bare_content do %>
+      <% c.with_bare_content do %>
         <% if form.present? %>
           <template data-nested-form-target="template">
             <%= form.fields_for :reviews, Review.new, multiple: true, child_index: 'NEW_RECORD' do |todo_fields| %>
@@ -18,7 +18,7 @@
           </div>
         <% end %>
       <% end %>
-      <% c.footer_tools do %>
+      <% c.with_footer_tools do %>
         <div class="mt-4">
           <%= a_link 'javascript:void(0);', icon: 'plus', color: :primary, style: :outline, data: {action: "click->nested-form#add"} do %>
             Add a review

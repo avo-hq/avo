@@ -1,4 +1,7 @@
 class CoursePolicy < ApplicationPolicy
+  include Avo::Concerns::PolicyHelpers
+  inherit_association_from_policy :links, CourseLinkPolicy
+
   def index?
     true
   end

@@ -38,7 +38,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "zeitwerk", ">= 2.6.2"
   spec.add_dependency "httparty"
   spec.add_dependency "active_link_to"
-  spec.add_dependency "view_component"
+  spec.add_dependency "view_component", ">= 2.54.0"
   spec.add_dependency "turbo-rails"
   spec.add_dependency "addressable"
   spec.add_dependency "meta-tags"

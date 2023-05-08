@@ -4,6 +4,7 @@
     data: @field.get_html(:data, view: view, element: :input),
     disabled: disabled?,
     placeholder: @field.placeholder,
-    style: @field.get_html(:style, view: view, element: :input)
+    style: @field.get_html(:style, view: view, element: :input),
+    autocomplete: @field.autocomplete
     %>
 <% end %>

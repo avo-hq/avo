@@ -1,0 +1,16 @@
+<% if @resources.present? %>
+  <div class="map-view-container grid <%= grid_layout_classes %>">
+    <div class="map-component min-h-full <%= map_component_order_class %>">
+      <%= js_map(resource_location_markers, **resource_mapkick_options) %>
+    </div>
+    <% if render_table? %>
+      <div class="overflow-auto<%= table_component_order_class %>">
+        <%= render(Avo::Index::ResourceTableComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_model: @parent_model, parent_resource: @parent_resource, pagy: @pagy, query: @query)) %>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <div class="bg-white rounded shadow-panel">
+    <%= helpers.empty_state by_association: params[:related_name].present?, view_type: :map %>
+  </div>
+<% end %>

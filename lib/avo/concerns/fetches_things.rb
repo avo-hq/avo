@@ -24,9 +24,7 @@ module Avo
 
         # Filters out the resources that are missing the model_class
         def valid_resources
-          resources.select do |resource|
-            resource.model_class.present?
-          end
+          resources.select { |resource| resource.model_class.present? }.sort_by(&:name)
         end
 
         # Returns the Avo resource by camelized name

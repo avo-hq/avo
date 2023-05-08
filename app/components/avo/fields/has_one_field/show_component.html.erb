@@ -4,7 +4,7 @@
   </turbo-frame>
 <% else %>
   <%= render Avo::PanelComponent.new(name: @field.name) do |c| %>
-    <% c.tools do %>
+    <% c.with_tools do %>
       <% if !@field.is_readonly? && !@field.is_disabled? && can_attach? %>
         <%= a_link attach_path,
           icon: 'heroicons/outline/link',
@@ -25,7 +25,7 @@
       <% end %>
     <% end %>
 
-    <% c.body do %>
+    <% c.with_body do %>
       <div class="py-8 flex justify-center items-center">
         <%= empty_state by_association: params[:related_name].present? %>
       </div>

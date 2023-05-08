@@ -4,7 +4,7 @@
   <% end %>
 <% elsif item.is_panel? %>
   <%= render Avo::PanelComponent.new(name: item.name, description: item.description, index: index) do |c| %>
-    <% c.body do %>
+    <% c.with_body do %>
       <div class="divide-y">
         <% item.visible_items.each_with_index do |field, index| %>
           <%= render field
