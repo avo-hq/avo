@@ -5,13 +5,9 @@ module Avo
     # Render a map view for a list of resources, where each resource is
     # expected to have an attribute/attribute set representing its location.
     class ResourceMapComponent < ViewComponent::Base
-      def initialize(resources: nil,
-                     resource: nil,
-                     reflection: nil,
-                     parent_model: nil,
-                     parent_resource: nil,
-                     pagy: nil,
-                     query: nil)
+      attr_reader :resources
+
+      def initialize(resources: nil, resource: nil, reflection: nil, parent_model: nil, parent_resource: nil, pagy: nil, query: nil)
         super
         @resources = resources
         @resource = resource
@@ -23,29 +19,41 @@ module Avo
       end
 
       def grid_layout_classes
-        return unless render_map_view_table?
+        return unless render_table?
 
-        if %i[left right].include?(map_view_table_layout)
-          'grid-flow-col grid-rows-1 auto-cols-fr'
-        elsif %i[bottom top].include?(map_view_table_layout)
-          'grid-flow-row grid-cols-1 auto-rows-fr'
+        if table_positioned_horizontally
+          "grid-flow-row sm:grid-flow-col grid-rows-1 auto-cols-fr"
+        elsif table_positioned_vertically
+          "grid-flow-row grid-cols-1"
         end
       end
 
+      def table_positioned_horizontally
+        %i[left right].include?(map_view_table_layout)
+      end
+
+      def table_positioned_vertically
+        %i[bottom top].include?(map_view_table_layout)
+      end
+
       def map_component_order_class
-        if render_map_view_table? && %i[left top].include?(map_view_table_layout)
-          'order-last'
+        if render_table? && table_positioned_at_the_start
+          "order-last"
         else
-          'order-first'
+          "order-first"
         end
       end
 
       def table_component_order_class
-        if %i[left top].include? map_view_table_layout
-          'order-first'
+        if table_positioned_at_the_start
+          "order-first"
         else
-          'order-last'
+          "order-last"
         end
+      end
+
+      def table_positioned_at_the_start
+        %i[left top].include?(map_view_table_layout)
       end
 
       def map_view_table_layout
@@ -56,18 +64,21 @@ module Avo
         # If we have no proc and no default location method, don't try to create markers
         return [] unless resource_mappable?
 
-        @resources.map do |marker_resource|
-          coordinates = marker_proc.call(record: marker_resource.record)
-
-          coordinates[:latitude].present? && coordinates[:longitude].present? && coordinates
-        end.compact
+        resources
+          .map do |resource|
+            marker_proc.call(record: resource.record)
+          end
+          .compact
+          .filter do |coordinates|
+            coordinates[:latitude].present? && coordinates[:longitude].present?
+          end
       end
 
       def resource_mapkick_options
         map_options[:mapkick_options] || {}
       end
 
-      def render_map_view_table?
+      def render_table?
         map_options.dig(:table, :visible)
       end
 
@@ -83,7 +94,7 @@ module Avo
       end
 
       def map_options
-        @resource.map || {}
+        @resource.map_view || {}
       end
 
       def marker_proc

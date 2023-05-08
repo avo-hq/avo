@@ -10,7 +10,8 @@ class CityResource < Avo::BaseResource
     avo.resources_city_path record, custom: "yup"
   end
   self.extra_params = [:fish_type, :something_else, properties: [], information: [:name, :history]]
-  self.map = {
+  self.default_view_type = :map
+  self.map_view = {
     mapkick_options: {
       controls: true
     },
@@ -23,7 +24,7 @@ class CityResource < Avo::BaseResource
     },
     table: {
       visible: true,
-      layout: :right
+      layout: :bottom
     }
   }
 
