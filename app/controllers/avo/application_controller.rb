@@ -155,6 +155,10 @@ module Avo
     def set_model_to_fill
       @model_to_fill = @resource.model_class.new if @view == :create
       @model_to_fill = @model if @view == :update
+
+      # If resource.model is nil, most likely the user is creating a new record.
+      # In that case, to access resource.model in visible and readonly blocks we hydrate the resource with a new model.
+      @resource.hydrate(model: @model_to_fill) if @resource.model.nil?
     end
 
     def fill_model
