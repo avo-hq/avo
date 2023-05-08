@@ -7,6 +7,7 @@
     min: @field.min,
     placeholder: @field.placeholder,
     step: @field.step,
-    style: @field.get_html(:style, view: view, element: :input)
+    style: @field.get_html(:style, view: view, element: :input),
+    autocomplete: @field.autocomplete
   %>
 <% end %>
