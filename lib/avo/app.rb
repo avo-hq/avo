@@ -40,8 +40,8 @@ module Avo
       # We decided against the MemoryStore in production because it will not be shared between multiple processes (when using Puma).
       def get_cache_store
         if Rails.env.production?
-          case Rails.cache.class
-          when ActiveSupport::Cache::MemCacheStore, ActiveSupport::Cache::RedisCacheStore
+          case Rails.cache.class.to_s
+          when 'ActiveSupport::Cache::MemCacheStore', 'ActiveSupport::Cache::RedisCacheStore'
             Rails.cache
           else
             ActiveSupport::Cache::FileStore.new
