@@ -33,7 +33,7 @@ class CityResource < Avo::BaseResource
   field :city_center_area,
     as: :area,
     geometry: :polygon,
-    options: {
+    mapkick_options: {
       style: "mapbox://styles/mapbox/satellite-v9",
       controls: true
     },
