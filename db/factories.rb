@@ -112,6 +112,7 @@ FactoryBot.define do
     description { Faker::Address.community }
     status { ["open", "closed"].sample }
     tiny_description { Faker::Address.community }
+    city_center_area { [[[10.0, 11.2], [10.5, 11.9], [10.8, 12.0], [10.0, 11.2]]].to_json }
   end
 
   factory :product do

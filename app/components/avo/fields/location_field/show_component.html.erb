@@ -1,6 +1,6 @@
 <%= field_wrapper **field_wrapper_args do %>
   <% if field.value_present? %>
-    <%= js_map [{latitude: field.value[0], longitude: field.value[1]}] %>
+    <%= js_map [{latitude: field.value[0], longitude: field.value[1]}], id: "location-map" %>
   <% else %>
     —
   <% end %>
