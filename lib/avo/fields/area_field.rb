@@ -3,7 +3,7 @@
 module Avo
   module Fields
     class AreaField < BaseField
-      attr_reader :options
+      attr_reader :mapkick_options
       attr_reader :datapoint_options
 
       def initialize(id, **args, &block)
@@ -12,7 +12,7 @@ module Avo
         super(id, **args, &block)
 
         @geometry = args[:geometry].presence || :polygon # Accepts: `:polygon` or `:multi_polygon`
-        @options = args[:options].presence || {}
+        @mapkick_options = args[:mapkick_options].presence || {}
         @datapoint_options = args[:datapoint_options].presence || {}
       end
 
