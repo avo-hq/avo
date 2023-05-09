@@ -41,10 +41,10 @@ module Avo
       def get_cache_store
         if Rails.env.production?
           case Rails.cache.class.to_s
-          when 'ActiveSupport::Cache::MemCacheStore', 'ActiveSupport::Cache::RedisCacheStore'
+          when "ActiveSupport::Cache::MemCacheStore", "ActiveSupport::Cache::RedisCacheStore"
             Rails.cache
           else
-            ActiveSupport::Cache::FileStore.new
+            ActiveSupport::Cache.lookup_store(:file_store, "/tmp/cache")
           end
         elsif Rails.env.test?
           Rails.cache
