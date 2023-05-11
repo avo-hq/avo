@@ -15,7 +15,7 @@ module Avo
 
         # Returns the Avo dashboard by name
         #
-        # get_dashboard_by_name(:dashy) -> Dashy
+        # get_dashboard_by_name(:dashy) -> instance of Dashy
         def get_dashboard_by_name(name)
           dashboards.find do |dashboard|
             dashboard.name == name
@@ -29,7 +29,7 @@ module Avo
 
         # Returns the Avo resource by camelized name
         #
-        # get_resource_by_name('User') => UserResource
+        # get_resource_by_name('User') => instance of UserResource
         def get_resource(resource)
           possible_resource = "#{resource}Resource".gsub "ResourceResource", "Resource"
 
@@ -40,7 +40,7 @@ module Avo
 
         # Returns the Avo resource by singular snake_cased name
         #
-        # get_resource_by_name('user') => UserResource
+        # get_resource_by_name('user') => instance of UserResource
         def get_resource_by_name(name)
           get_resource name.singularize.camelize
         end
@@ -48,8 +48,8 @@ module Avo
         # Returns the Avo resource by singular snake_cased name
         # From all the resources that use the same model_class, it will fetch the first one in alphabetical order
         #
-        # get_resource_by_name('User') => UserResource
-        # get_resource_by_name(User) => UserResource
+        # get_resource_by_name('User') => instance of UserResource
+        # get_resource_by_name(User) => instance of UserResource
 
         def get_resource_by_model_name(klass)
           # Fetch the mappings imposed by the user.
@@ -65,8 +65,8 @@ module Avo
 
         # Returns the Avo resource by singular snake_cased name
         #
-        # get_resource_by_controller_name('delayed_backend_active_record_jobs') => DelayedJobResource
-        # get_resource_by_controller_name('users') => UserResource
+        # get_resource_by_controller_name('delayed_backend_active_record_jobs') => instance of DelayedJobResource
+        # get_resource_by_controller_name('users') => instance of UserResource
         def get_resource_by_controller_name(name)
           valid_resources
             .find do |resource|
