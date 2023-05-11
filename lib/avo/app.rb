@@ -49,7 +49,7 @@ module Avo
         elsif Rails.env.test?
           Rails.cache
         else
-          ActiveSupport::Cache::MemoryStore.new
+          ActiveSupport::Cache.lookup_store(:memory_store)
         end
       end
 
