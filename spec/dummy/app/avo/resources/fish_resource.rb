@@ -32,7 +32,7 @@ class FishResource < Avo::BaseResource
     case_insensitive: true
   }
 
-  action DummyAction, arguments: {
+  action Sub::DummyAction, arguments: {
     special_message: true
   }
 

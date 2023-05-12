@@ -74,5 +74,5 @@ class TeamResource < Avo::BaseResource
   filter MembersFilter
   filter NameFilter
 
-  action DummyAction
+  action Sub::DummyAction
 end

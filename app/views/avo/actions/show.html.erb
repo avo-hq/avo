@@ -9,7 +9,7 @@
   >
     <%= form_with model: @model,
       scope: 'fields',
-      url: "#{@resource.records_path}/actions/#{@action.param_id}",
+      url: "#{@resource.records_path}/actions",
       local: true,
       data: @action.class.form_data_attributes do |form|
     %>
@@ -20,6 +20,7 @@
       <div class="flex-1 flex">
         <%= @action.get_message %>
       </div>
+      <%= hidden_field_tag :action_id, @action.param_id %>
       <%= form.hidden_field :avo_resource_ids, value: params[:resource_ids], 'data-action-target': 'resourceIds' %>
       <%= form.hidden_field :avo_selected_query, 'data-action-target': 'selectedAllQuery' %>
       <% if @action.get_fields.present? %>

@@ -145,7 +145,7 @@ module Avo
     end
 
     def param_id
-      self.class.to_s.demodulize.underscore.tr "/", "_"
+      self.class.to_s
     end
 
     def succeed(text)

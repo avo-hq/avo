@@ -19,10 +19,10 @@ RSpec.feature "CustomResourceControls", type: :feature do
 
         # actions_list
         expect(page).to have_button "Runnables"
-        expect(page).to have_link "Dummy action", href: /\/admin\/resources\/fish\/#{fish.id}\/actions\/dummy_action/, visible: false
+        expect(page).to have_link "Dummy action", href: /\/admin\/resources\/fish\/#{fish.id}\/actions\?action_id=Sub::DummyAction/, visible: false
 
         # action link
-        expect(page).to have_link "Release fish", href: /\/admin\/resources\/fish\/#{fish.id}\/actions\/release_fish/
+        expect(page).to have_link "Release fish", href: /\/admin\/resources\/fish\/#{fish.id}\/actions\?action_id=ReleaseFish/
         expect(page).to have_selector 'a[data-turbo-frame="actions_show"][data-action="click->actions-picker#visitAction"]', text: "Release fish"
 
         # edit button

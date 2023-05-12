@@ -18,7 +18,10 @@ module Avo
         end
 
         def path
-          Avo::Services::URIService.parse(@resource.record_path).append_paths("actions", action.param_id).to_s
+          Avo::Services::URIService.parse(@resource.record_path)
+            .append_paths("actions")
+            .append_query(action_id: action.param_id)
+            .to_s
         end
 
         def label
