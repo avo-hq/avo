@@ -16,7 +16,8 @@ class FishResource < Avo::BaseResource
       }
     delete_button label: "", title: "something"
     detach_button label: "", title: "something"
-    actions_list exclude: [ReleaseFish], style: :primary, color: :slate, label: "Runnables"
+    actions_list exclude: [ReleaseFish, DownloadFile], style: :primary, color: :slate, label: "Excluded"
+    actions_list include: [ExportCsv, DownloadFile], style: :primary, color: :green, label: "Included"
     action ReleaseFish, style: :primary, color: :fuchsia, icon: "heroicons/outline/globe"
     edit_button label: ""
   end
@@ -37,6 +38,8 @@ class FishResource < Avo::BaseResource
   }
 
   action ReleaseFish
+  action ExportCsv
+  action DownloadFile
 
   tool NestedFishReviews, only_on: :new
   tool FishInformation, show_on: :forms
