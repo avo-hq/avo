@@ -53,13 +53,15 @@ class Avo::ActionsComponent < ViewComponent::Base
 
   def single_record_path(id)
     Avo::Services::URIService.parse(@resource.record_path)
-      .append_paths("actions", id)
+      .append_paths("actions")
+      .append_query("action_id": id)
       .to_s
   end
 
   def many_records_path(id)
     Avo::Services::URIService.parse(@resource.records_path)
-      .append_paths("actions", id)
+      .append_paths("actions")
+      .append_query("action_id": id)
       .to_s
   end
 end

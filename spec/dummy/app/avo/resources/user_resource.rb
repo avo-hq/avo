@@ -126,7 +126,7 @@ class UserResource < Avo::BaseResource
 
   action ToggleInactive
   action ToggleAdmin
-  action DummyAction
+  action Sub::DummyAction
   action DownloadFile
 
   filter UserNamesFilter
