@@ -20,10 +20,13 @@ class Avo::ActionsComponent < ViewComponent::Base
   end
 
   def actions
-    @actions.reject { |action| action.class.in?(@exclude) }
-
+    if @exclude.present?
+      @actions.reject { |action| action.class.in?(@exclude) }
+    elsif @include.present?
+      @actions.select { |action| action.class.in?(@include) }
+    end
     #todo use this query for selecting only actions from include option
-    #@actions.select { |action| action.class.in?(@einclude) }
+    #@actions.select { |action| action.class.in?(@include) }
   end
 
   # When running an action for one record we should do it on a special path.
