@@ -18,6 +18,8 @@ RSpec.feature "CustomResourceControls", type: :feature do
         expect(page).to have_link "Turbo demo", href: /\/admin\/resources\/fish\/#{fish.id}/
 
         # actions_list
+        expect(page).to have_button "Runnables with exclude"
+        expect(page).to have_button "Runnables with include"
         expect(page).to have_button "Runnables"
         expect(page).to have_link "Dummy action", href: /\/admin\/resources\/fish\/#{fish.id}\/actions\?action_id=Sub::DummyAction/, visible: false
 

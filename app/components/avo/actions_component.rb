@@ -24,6 +24,8 @@ class Avo::ActionsComponent < ViewComponent::Base
       @actions.reject { |action| action.class.in?(@exclude) }
     elsif @include.present?
       @actions.select { |action| action.class.in?(@include) }
+    else
+      @actions
     end
   end
 
