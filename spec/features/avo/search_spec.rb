@@ -47,6 +47,7 @@ RSpec.feature "Search", type: :system do
       let!(:post) { create :post, name: "New hehe post", body: "New hehe post description." }
       let!(:user) { create :user, first_name: "Hehe", last_name: "user", roles: {admin: true, manager: true, writer: true} }
       let!(:user2) { create :user, first_name: "Hehe ahi", last_name: "user", roles: {admin: true, manager: true, writer: true} }
+      let!(:user3) { create :user, first_name: "Hehe+a$i", last_name: "user", roles: {admin: true, manager: true, writer: true} }
 
       it "goes to the search result" do
         visit url
@@ -60,6 +61,7 @@ RSpec.feature "Search", type: :system do
         expect(page).to have_content "New hehe post"
         expect(page).to have_content "New hehe post description."
         expect(page).to have_content "Hehe user"
+        expect(page).to have_content "Hehe+a$i user"
         expect(page).to have_content "This user has the following roles: admin, manager, writer"
 
         find(".aa-Input").send_keys :arrow_down
@@ -69,6 +71,15 @@ RSpec.feature "Search", type: :system do
         wait_for_loaded
 
         expect(current_path).to eql "/admin/resources/users/#{user2.slug}"
+      end
+
+      it 'should display results with special characters' do
+        visit url
+        open_global_search_box
+        expect_search_panel_open
+
+        write_in_search "hehe+a$"
+        expect(page).to have_content "Hehe+a$i user"
       end
     end
   end
