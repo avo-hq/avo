@@ -43,16 +43,16 @@
             <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view, exclude: control.exclude, include: control.include, style: control.style, color: control.color, label: control.label %>
           <% elsif control.edit_button? %>
             <% if @resource.authorization.authorize_action(:edit, raise_exception: false) %>
-            <% end %>
-            <%= a_link edit_path,
-                color: :primary,
-                style: :primary,
-                title: control.title,
-                data: {
-                  tippy: control.title ? :tooltip : nil,
-                },
-                icon: 'edit' do %>
-              <%= control.label %>
+              <%= a_link edit_path,
+                  color: :primary,
+                  style: :primary,
+                  title: control.title,
+                  data: {
+                    tippy: control.title ? :tooltip : nil,
+                  },
+                  icon: 'edit' do %>
+                <%= control.label %>
+              <% end %>
             <% end %>
           <% elsif control.action? %>
             <%= a_link control.path,
