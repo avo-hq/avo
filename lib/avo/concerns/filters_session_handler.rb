@@ -1,4 +1,3 @@
-
 module Avo
   module Concerns
     module FiltersSessionHandler
