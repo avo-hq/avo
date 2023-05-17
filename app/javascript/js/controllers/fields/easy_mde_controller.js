@@ -1,5 +1,5 @@
 import { Controller } from '@hotwired/stimulus'
-import SimpleMDE from 'simplemde'
+import EasyMDE from 'easymde'
 
 export default class extends Controller {
   static targets = ['element']
@@ -27,9 +27,9 @@ export default class extends Controller {
       options.status = false
     }
 
-    const simpleMde = new SimpleMDE(options)
+    const easyMde = new EasyMDE(options)
     if (this.view === 'show') {
-      simpleMde.codemirror.options.readOnly = true
+      easyMde.codemirror.options.readOnly = true
     }
   }
 }

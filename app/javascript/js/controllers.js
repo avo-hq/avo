@@ -9,6 +9,7 @@ import CodeFieldController from './controllers/fields/code_field_controller'
 import CopyToClipboardController from './controllers/copy_to_clipboard_controller'
 import DashboardCardController from './controllers/dashboard_card_controller'
 import DateFieldController from './controllers/fields/date_field_controller'
+import EasyMdeController from './controllers/fields/easy_mde_controller'
 import FilterController from './controllers/filter_controller'
 import HiddenInputController from './controllers/hidden_input_controller'
 import ItemSelectAllController from './controllers/item_select_all_controller'
@@ -27,7 +28,6 @@ import SearchController from './controllers/search_controller'
 import SelectController from './controllers/select_controller'
 import SelectFilterController from './controllers/select_filter_controller'
 import SidebarController from './controllers/sidebar_controller'
-import SimpleMdeController from './controllers/fields/simple_mde_controller'
 import TabsController from './controllers/tabs_controller'
 import TagsFieldController from './controllers/fields/tags_field_controller'
 import TextFilterController from './controllers/text_filter_controller'
@@ -67,9 +67,9 @@ application.register('toggle-panel', TogglePanelController)
 application.register('belongs-to-field', BelongsToFieldController)
 application.register('code-field', CodeFieldController)
 application.register('date-field', DateFieldController)
+application.register('easy-mde', EasyMdeController)
 application.register('key-value', KeyValueController)
 application.register('progress-bar-field', ProgressBarFieldController)
-application.register('simple-mde', SimpleMdeController)
 application.register('trix-field', TrixFieldController)
 
 // Custom controllers
