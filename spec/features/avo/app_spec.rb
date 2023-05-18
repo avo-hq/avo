@@ -20,4 +20,13 @@ RSpec.describe "App", type: :feature do
       expect(page).to have_text "Current.user.id = #{admin.id}"
     end
   end
+
+  describe "callable app_name" do
+    it "displayes the app name with a param" do
+      visit "/admin/custom_tool?app_name_suffix=yup"
+
+      # Label on the menu builder
+      expect(page).to have_text "Avocadelicious yup"
+    end
+  end
 end
