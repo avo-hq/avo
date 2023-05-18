@@ -2,8 +2,9 @@ module Avo
   class Configuration
     include ResourceConfiguration
 
+    attr_writer :app_name
+    attr_writer :branding
     attr_writer :root_path
-    attr_accessor :app_name
     attr_accessor :timezone
     attr_accessor :per_page
     attr_accessor :per_page_steps
@@ -43,7 +44,6 @@ module Avo
     attr_accessor :sign_out_path_name
     attr_accessor :resources
     attr_accessor :prefix_path
-    attr_writer :branding
 
     def initialize
       @root_path = "/avo"
@@ -138,6 +138,14 @@ module Avo
 
     def branding
       Avo::Configuration::Branding.new(**@branding || {})
+    end
+
+    def app_name
+      if @app_name.respond_to? :call
+        Avo::Hosts::BaseHost.new(block: @app_name).handle
+      else
+        @app_name
+      end
     end
   end
 
