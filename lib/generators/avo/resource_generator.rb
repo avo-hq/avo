@@ -181,7 +181,7 @@ module Generators
       end
 
       def field_from_through_association(association)
-        if association.through_reflection.is_a? ActiveRecord::Reflection::HasManyReflection
+        if association.through_reflection.is_a?(ActiveRecord::Reflection::HasManyReflection) || association.through_reflection.is_a?(ActiveRecord::Reflection::ThroughReflection)
           {
             field: "has_many",
             options: {
