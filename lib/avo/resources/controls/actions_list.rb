@@ -6,6 +6,10 @@ module Avo
           Array.wrap(@args[:exclude]) || []
         end
 
+        def include
+          Array.wrap(@args[:include]) || []
+        end
+
         def color
           @args[:color] || :primary
         end

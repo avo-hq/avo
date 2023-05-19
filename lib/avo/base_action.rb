@@ -82,7 +82,12 @@ module Avo
 
     def get_attributes_for_action
       get_fields.map do |field|
-        [field.id, field.value || field.default]
+        default_value = if field.default.respond_to? :call
+          Avo::Hosts::ResourceViewRecordHost.new(block: field.default, record: self.class.model, view: view, resource: self.class.resource).handle
+        else
+          field.default
+        end
+        [field.id, field.value || default_value]
       end.to_h
     end
 

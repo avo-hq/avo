@@ -1,10 +1,10 @@
 <%= field_wrapper **field_wrapper_args, full_width: true do %>
-  <div data-controller="simple-mde">
+  <div data-controller="easy-mde">
     <%= @form.text_area @field.id,
-      class: classes("w-full js-has-simple-mde-editor"),
+      class: classes("w-full js-has-easy-mde-editor"),
       data: {
         view: view,
-        'simple-mde-target': 'element',
+        'easy-mde-target': 'element',
         'component-options': @field.options.to_json,
       },
       disabled: disabled?,

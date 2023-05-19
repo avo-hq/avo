@@ -1,7 +1,7 @@
 Avo.configure do |config|
   ## == Base configs ==
   config.root_path = "/admin"
-  config.app_name = "Avocadelicious"
+  config.app_name = -> { "Avocadelicious #{params[:app_name_suffix]}" }
   config.home_path = -> { avo.dashboard_path(:dashy) }
   config.set_initial_breadcrumbs do
     add_breadcrumb "Dashboard", "/admin/dashboards/dashy"

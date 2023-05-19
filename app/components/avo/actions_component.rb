@@ -4,11 +4,12 @@ class Avo::ActionsComponent < ViewComponent::Base
   include Avo::ApplicationHelper
   attr_reader :label
 
-  def initialize(actions: [], resource: nil, view: nil, exclude: [], style: :outline, color: :primary, label: nil)
+  def initialize(actions: [], resource: nil, view: nil, exclude: [], include: [], style: :outline, color: :primary, label: nil)
     @actions = actions || []
     @resource = resource
     @view = view
     @exclude = exclude
+    @include = include
     @color = color
     @style = style
     @label = label || I18n.t("avo.actions")
@@ -19,7 +20,13 @@ class Avo::ActionsComponent < ViewComponent::Base
   end
 
   def actions
-    @actions.reject { |action| action.class.in?(@exclude) }
+    if @exclude.present?
+      @actions.reject { |action| action.class.in?(@exclude) }
+    elsif @include.present?
+      @actions.select { |action| action.class.in?(@include) }
+    else
+      @actions
+    end
   end
 
   # When running an action for one record we should do it on a special path.
