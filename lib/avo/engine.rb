@@ -23,7 +23,11 @@ module Avo
       ::Avo::App.boot
     end
 
-    config.i18n.load_path += Dir[Avo::Engine.root.join("lib", "generators", "avo", "templates", "locales", "*.{rb,yml}")]
+    LOCALES_PATH = File.join(__dir__, "config", "locales")
+
+    unless File.directory?(LOCALES_PATH)
+      config.i18n.load_path += Dir[Avo::Engine.root.join("lib", "generators", "avo", "templates", "locales", "*.{rb,yml}")]
+    end
 
     initializer "avo.autoload" do |app|
       Avo::ENTITIES.values.each do |path_params|

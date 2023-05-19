@@ -1,4 +1,6 @@
 Rails.application.configure do
+   LOCALES_PATH = Rails.root.join("config", "locales")
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded on
@@ -78,4 +80,8 @@ Rails.application.configure do
   config.hotwire_livereload.listen_paths << Avo::Engine.root.join("app/javascript")
   config.hotwire_livereload.listen_paths << Avo::Engine.root.join("app/views")
   config.hotwire_livereload.listen_paths << Avo::Engine.root.join("lib")
+
+  if File.directory?(LOCALES_PATH)
+    config.i18n.load_path += Dir[Rails.root.join("config", "locales", "*.{rb,yml}")]
+  end
 end
