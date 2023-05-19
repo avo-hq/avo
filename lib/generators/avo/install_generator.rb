@@ -13,7 +13,6 @@ module Generators
         route "mount Avo::Engine, at: Avo.configuration.root_path"
 
         template "initializer/avo.tt", "config/initializers/avo.rb"
-        directory File.join(__dir__, "templates", "locales"), "config/locales"
         create_resources
       end
 
