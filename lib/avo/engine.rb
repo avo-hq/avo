@@ -23,6 +23,8 @@ module Avo
       ::Avo::App.boot
     end
 
+    config.i18n.load_path += Dir[Avo::Engine.root.join("lib", "generators", "avo", "templates", "locales", "*.{rb,yml}")]
+
     initializer "avo.autoload" do |app|
       Avo::ENTITIES.values.each do |path_params|
         path = Rails.root.join(*path_params)
