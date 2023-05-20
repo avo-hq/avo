@@ -52,7 +52,7 @@ module Avo
       ).handle
 
       # Get the count
-      results_count = query.reselect(:id).count
+      results_count = query.reselect(resource.model_class.primary_key).count
 
       # Get the results
       query = query.limit(8)
