@@ -23,12 +23,6 @@ module Avo
       ::Avo::App.boot
     end
 
-    LOCALES_PATH = File.join(__dir__, "config", "locales")
-
-    unless File.directory?(LOCALES_PATH)
-      config.i18n.load_path += Dir[Avo::Engine.root.join("lib", "generators", "avo", "templates", "locales", "*.{rb,yml}")]
-    end
-
     initializer "avo.autoload" do |app|
       Avo::ENTITIES.values.each do |path_params|
         path = Rails.root.join(*path_params)
@@ -77,6 +71,14 @@ module Avo
       Rails::Generators.configure! app.config.generators
       require_relative "../generators/model_generator"
     end
+
+    LOCALES_PATH = File.join(__dir__, "config", "locales")
+
+    config.i18n.load_path += if File.directory?(LOCALES_PATH)
+                               Dir[Rails.root.join("config", "locales", "*.{rb,yml}")]
+                             else
+                               Dir[Avo::Engine.root.join("lib", "generators", "avo", "templates", "locales", "*.{rb,yml}")]
+                             end
 
     # After deploy we want to make sure the license response is being cleared.
     # We need a fresh license response.
