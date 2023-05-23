@@ -44,7 +44,7 @@ module Avo
           when "ActiveSupport::Cache::MemCacheStore", "ActiveSupport::Cache::RedisCacheStore"
             Rails.cache
           else
-            ActiveSupport::Cache.lookup_store(:file_store, "/tmp/cache")
+            ActiveSupport::Cache.lookup_store(:file_store, Rails.root.join("tmp", "cache"))
           end
         elsif Rails.env.test?
           Rails.cache
