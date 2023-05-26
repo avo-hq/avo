@@ -135,6 +135,9 @@ module Generators
         fields_string = "\n  # Fields generated from the model"
 
         fields.each do |field_name, field_options|
+          # if field_options are not available (likely a missing resource for an association), skip the field
+          fields_string += "\n  # Could not generate a field for #{field_name}" and next unless field_options
+          
           options = ""
           field_options[:options].each { |k, v| options += ", #{k}: #{v}" } if field_options[:options].present?
 
