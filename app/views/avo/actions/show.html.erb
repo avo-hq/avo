@@ -9,7 +9,7 @@
   >
     <%= form_with model: @model,
       scope: 'fields',
-      url: "#{@resource.records_path}/actions",
+      url: Avo::Services::URIService.parse(@resource.records_path).append_paths("actions").to_s,
       local: true,
       data: @action.class.form_data_attributes do |form|
     %>
