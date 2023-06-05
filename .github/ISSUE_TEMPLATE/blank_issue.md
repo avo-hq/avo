@@ -22,7 +22,7 @@ assignees: ''
  - [ ] Community
  - [ ] Pro
 
-**Are you using Avo monkey patches or overriding views or view components?**
+**Are you using Avo monkey patches, overriding views or view components?**
 <!-- (Mark [x] inside the brackets) -->
 
  - [ ] Yes. If so, please post code samples.
