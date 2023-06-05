@@ -3,7 +3,7 @@
     <% if empty %>
     <% elsif value.present? %>
       <% if as_html %>
-        <%== value %>
+        <%= sanitize value %>
       <% else %>
         <div class="font-semibold uppercase"><%= value %></div>
       <% end %>
