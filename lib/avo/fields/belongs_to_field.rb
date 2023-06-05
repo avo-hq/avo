@@ -199,11 +199,13 @@ module Avo
       def fill_field(model, key, value, params)
         return model unless model.methods.include? key.to_sym
 
+        valid_model_class = valid_polymorphic_class params["#{polymorphic_as}_type"]
+
         if polymorphic_as.present?
-          model.send("#{polymorphic_as}_type=", params["#{polymorphic_as}_type"])
+          model.send("#{polymorphic_as}_type=", valid_model_class)
 
           # If the type is blank, reset the id too.
-          if params["#{polymorphic_as}_type"].blank?
+          if valid_model_class.blank?
             model.send("#{polymorphic_as}_id=", nil)
           else
             model.send("#{polymorphic_as}_id=", params["#{polymorphic_as}_id"])
@@ -213,6 +215,12 @@ module Avo
         end
 
         model
+      end
+
+      def valid_polymorphic_class(possible_class)
+        types.find do |type|
+          type.to_s == possible_class.to_s
+        end
       end
 
       def database_id
