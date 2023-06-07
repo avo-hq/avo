@@ -33,7 +33,7 @@
           <% end %>
         </div>
       <% end %>
-      <%= render "avo/partials/profile_menu" %>
+      <%= render "avo/partials/profile_menu_extra" %>
       <% if can_destroy_user? %>
         <%= button_to helpers.main_app.send(destroy_user_session_path),
           form: { "data-turbo" => "false" },
