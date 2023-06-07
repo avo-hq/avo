@@ -199,9 +199,9 @@ module Avo
       def fill_field(model, key, value, params)
         return model unless model.methods.include? key.to_sym
 
-        valid_model_class = valid_polymorphic_class params["#{polymorphic_as}_type"]
-
         if polymorphic_as.present?
+          valid_model_class = valid_polymorphic_class params["#{polymorphic_as}_type"]
+
           model.send("#{polymorphic_as}_type=", valid_model_class)
 
           # If the type is blank, reset the id too.
