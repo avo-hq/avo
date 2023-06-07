@@ -1,3 +1,18 @@
-<%= link_to path, class: "flex-1 flex items-center justify-center bg-white text-left cursor-pointer text-gray-800 font-semibold hover:bg-primary-100 block px-4 py-1 w-full py-3 text-center rounded w-full", target: target, title: title do %>
-  <%= helpers.svg(icon, class: 'h-4 mr-1') if icon.present? %> <%= label %>
+<% if method.present? %>
+  <%= button_to path,
+    form_class: "flex-1 flex",
+    class: button_classes,
+    target: target,
+    title: title,
+    method: method,
+    params: params do %>
+    <%= helpers.svg(icon, class: 'h-4 mr-1') if icon.present? %> <%= label %>
+  <% end %>
+<% else %>
+  <%= link_to path,
+    class: button_classes,
+    target: target,
+    title: title do %>
+    <%= helpers.svg(icon, class: 'h-4 mr-1') if icon.present? %> <%= label %>
+  <% end %>
 <% end %>

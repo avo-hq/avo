@@ -17,6 +17,7 @@ module Generators
         pre_head: "app/views/avo/partials/_pre_head.html.erb",
         scripts: "app/views/avo/partials/_scripts.html.erb",
         sidebar_extra: "app/views/avo/partials/_sidebar_extra.html.erb",
+        profile_menu_extra: "app/views/avo/partials/_profile_menu_extra.html.erb",
       }
 
       def handle
