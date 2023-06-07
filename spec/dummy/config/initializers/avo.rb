@@ -144,7 +144,7 @@ Avo.configure do |config|
   end
   config.profile_menu = -> do
     link "Profile", path: "/profile", icon: "user-circle"
-    # link_to "Sign out new", path: "/profile", icon: "user-circle", method: :post, params: {hehe: :hoho}
+    # link_to "Sign out", path: main_app.destroy_user_session_path, icon: "user-circle", method: :post, params: {hehe: :hoho}
   end
 end
 
