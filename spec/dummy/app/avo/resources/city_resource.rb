@@ -42,7 +42,7 @@ class CityResource < Avo::BaseResource
       tooltip: "Bonjour mes amis!",
       color: "#009099"
     }
-  field :description, as: :trix, attachment_key: :description_file
+  field :description, as: :trix, attachment_key: :description_file, visible: ->(resource:) { resource.params[:show_native_fields].blank? }
   with_options hide_on: :forms do
     field :name, as: :text, help: "The name of your city"
     field :population, as: :number

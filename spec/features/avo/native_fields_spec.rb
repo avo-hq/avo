@@ -4,7 +4,7 @@ RSpec.feature "NativeFields", type: :feature do
   let(:city) { create :city, is_capital: true }
 
   it "has the fields prefilled" do
-    visit avo.edit_resources_city_path(city)
+    visit avo.edit_resources_city_path(city, show_native_fields: 1)
 
     expect(find_field('Name').value).to eq city.name
     expect(find_field('Population').value).to eq city.population.to_s
@@ -16,7 +16,7 @@ RSpec.feature "NativeFields", type: :feature do
     expect(find_field('Image url').value).to eq city.image_url
 
     expect(page).to have_css 'trix-editor'
-    expect(find_field('city[description]', visible: false).value).to eq city.description
+    expect(find_field('city[description]', visible: false).value).to include city.description.to_plain_text
 
     expect(page).to have_css 'div[data-controller="code-field"]'
     expect(find_field('city[tiny_description]', visible: false).value).to eq city.tiny_description
