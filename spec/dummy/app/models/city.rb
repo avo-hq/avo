@@ -20,6 +20,8 @@
 #
 class City < ApplicationRecord
   enum status: {Open: "open", Closed: "closed", Quarantine: "On Quarantine"}
+  has_rich_text :description
+  has_one_attached :description_file
 
   def random_image=(value)
   end

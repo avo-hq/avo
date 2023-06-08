@@ -8,7 +8,7 @@
       <%= link_to t('avo.show_content'), 'javascript:void(0);', class: 'font-bold inline-block', data: { action: 'click->hidden-input#showContent' } %>
     <% end %>
     <div class="<%= content_classes %> " data-hidden-input-target="content">
-      <%= sanitize @field.value %>
+      <%= sanitize @field.value.to_s %>
     </div>
   </div>
 <% end %>
