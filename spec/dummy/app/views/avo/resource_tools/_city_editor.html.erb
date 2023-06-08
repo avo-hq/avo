@@ -12,7 +12,9 @@
             'https://images.unsplash.com/photo-1660061993776-098c0ee403ac?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY2MDMxMzc4NA&ixlib=rb-1.2.1&q=80&w=1080'
           end %>
           <%= avo_edit_field(:image_url, as: :external_image, form: form) %>
-          <%= avo_edit_field(:description, as: :trix, form: form, component_options: {resource_name: 'cities', resource_id: @resource.model&.id}) %>
+          <% if params[:show_native_fields].present? %>
+            <%= avo_edit_field(:description, as: :trix, form: form, component_options: {resource_name: 'cities', resource_id: @resource.model&.id}) %>
+          <% end %>
           <%= avo_edit_field(:tiny_description, as: :markdown, form: form) %>
           <%= avo_edit_field(:status, as: :select, enum: ::City.statuses, form: form) %>
           <%= avo_show_field(:status, as: :badge, enum: ::City.statuses, form: form) %>
