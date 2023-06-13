@@ -3,6 +3,7 @@
 class Avo::Fields::IndexComponent < Avo::BaseComponent
   include Avo::ResourcesHelper
 
+  attr_reader :field
   attr_reader :parent_resource
   attr_reader :view
 

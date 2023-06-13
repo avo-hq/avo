@@ -301,7 +301,7 @@ module Avo
       view_types
     end
 
-    def attached_file_fields
+    def attachment_fields
       get_field_definitions.select do |field|
         [Avo::Fields::FileField, Avo::Fields::FilesField].include? field.class
       end
