@@ -124,6 +124,11 @@ class UserResource < Avo::BaseResource
     body :url, as: :text
   end
 
+  # Uncomment this to test computed file fields
+  # field :first_post_image, as: :file, is_image: true do |model|
+  #   model&.posts&.first&.cover_photo
+  # end
+
   action ToggleInactive
   action ToggleAdmin
   action Sub::DummyAction

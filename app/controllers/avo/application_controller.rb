@@ -235,8 +235,15 @@ module Avo
     end
 
     def eager_load_files(resource, query)
-      if resource.attached_file_fields.present?
-        resource.attached_file_fields.map do |field|
+      # Get the non-computed file fields and try to eager load them
+      attachment_fields = resource
+        .attachment_fields
+        .reject do |field|
+          field.computed
+        end
+
+      if attachment_fields.present?
+        attachment_fields.map do |field|
           attachment = case field.class.to_s
           when "Avo::Fields::FileField"
             "attachment"

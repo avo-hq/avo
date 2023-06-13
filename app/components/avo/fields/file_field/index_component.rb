@@ -6,10 +6,10 @@ class Avo::Fields::FileField::IndexComponent < Avo::Fields::IndexComponent
   end
 
   def has_image_tag?
-    @field.value.attached? && @field.value.representable? && @field.is_image
+    field.value.present? && field.value.attached? && field.value.representable? && field.is_image
   end
 
   def has_audio_tag?
-    @field.value.attached? && @field.is_audio
+    field.value.present? && field.value.attached? && field.is_audio
   end
 end
