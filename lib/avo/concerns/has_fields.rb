@@ -26,6 +26,13 @@ module Avo
           items_holder.panel name, **args, &block
         end
 
+        def row(**args, &block)
+          ensure_items_holder_initialized
+
+          Rails.logger.info "that's a row!"
+          items_holder.row(**args, &block)
+        end
+
         def tabs(**args, &block)
           ensure_items_holder_initialized
 
@@ -49,14 +56,11 @@ module Avo
 
           items_holder.sidebar Avo::SidebarBuilder.parse_block(**args, &block)
         end
+
         # END DSL methods
 
         def items
-          if items_holder.present?
-            items_holder.items
-          else
-            []
-          end
+          items_holder.present? ? items_holder.items : []
         end
 
         def tools
@@ -72,9 +76,7 @@ module Avo
 
             unless only_root
               # Dive into panels to fetch their fields
-              if item.is_panel?
-                fields << extract_fields_from_items(item)
-              end
+              fields << extract_fields_from_items(item) if item.is_panel?
 
               # Dive into tabs to fetch their fields
               if item.is_tab_group?
@@ -84,23 +86,17 @@ module Avo
               end
 
               # Dive into sidebar to fetch their fields
-              if item.is_sidebar?
-                fields << extract_fields_from_items(item)
-              end
+              fields << extract_fields_from_items(item) if item.is_sidebar?
             end
 
-            if item.is_field?
-              fields << item
-            end
+            fields << item if item.is_field?
           end
 
           fields.flatten
         end
 
         def tab_groups
-          items.select do |item|
-            item.instance_of? Avo::TabGroup
-          end
+          items.select { |item| item.instance_of? Avo::TabGroup }
         end
 
         private
@@ -162,66 +158,58 @@ module Avo
 
         return [] if fields.blank?
 
-        items = fields.map do |field|
-          field.hydrate(resource: self, user: user, view: view)
-        end
+        items =
+          fields.map do |field|
+            field.hydrate(resource: self, user: user, view: view)
+          end
 
         if Avo::App.license.lacks_with_trial(:custom_fields)
-          items = items.reject do |field|
-            field.custom?
-          end
+          items = items.reject { |field| field.custom? }
         end
 
         if Avo::App.license.lacks_with_trial(:advanced_fields)
-          items = items.reject do |field|
-            field.type == "tags"
-          end
+          items = items.reject { |field| field.type == 'tags' }
         end
 
         items
       end
 
       def get_fields(panel: nil, reflection: nil, only_root: false)
-        fields = get_field_definitions(only_root: only_root)
-          .select do |field|
-            field.visible_on?(view)
-          end
-          .select do |field|
-            field.visible?
-          end
-          .select do |field|
-            is_valid = true
+        fields =
+          get_field_definitions(only_root: only_root)
+            .select { |field| field.visible_on?(view) }
+            .select { |field| field.visible? }
+            .select do |field|
+              is_valid = true
 
-            # Strip out the reflection field in index queries with a parent association.
-            if reflection.present?
-              # regular non-polymorphic association
-              # we're matching the reflection inverse_of foriegn key with the field's foreign_key
-              if field.is_a?(Avo::Fields::BelongsToField)
-                if field.respond_to?(:foreign_key) &&
-                    reflection.inverse_of.present? &&
-                    reflection.inverse_of.respond_to?(:foreign_key) &&
-                    reflection.inverse_of.foreign_key == field.foreign_key
-                  is_valid = false
-                end
+              # Strip out the reflection field in index queries with a parent association.
+              if reflection.present?
+                # regular non-polymorphic association
+                # we're matching the reflection inverse_of foriegn key with the field's foreign_key
+                if field.is_a?(Avo::Fields::BelongsToField)
+                  if field.respond_to?(:foreign_key) &&
+                       reflection.inverse_of.present? &&
+                       reflection.inverse_of.respond_to?(:foreign_key) &&
+                       reflection.inverse_of.foreign_key == field.foreign_key
+                    is_valid = false
+                  end
 
-                # polymorphic association
-                if field.respond_to?(:foreign_key) &&
-                    field.is_polymorphic? &&
-                    reflection.respond_to?(:polymorphic?) &&
-                    reflection.inverse_of.respond_to?(:foreign_key) &&
-                    reflection.inverse_of.foreign_key == field.reflection.foreign_key
-                  is_valid = false
+                  # polymorphic association
+                  if field.respond_to?(:foreign_key) && field.is_polymorphic? &&
+                       reflection.respond_to?(:polymorphic?) &&
+                       reflection.inverse_of.respond_to?(:foreign_key) &&
+                       reflection.inverse_of.foreign_key ==
+                         field.reflection.foreign_key
+                    is_valid = false
+                  end
                 end
               end
+
+              is_valid
             end
 
-            is_valid
-          end
-
         if panel.present?
-          fields = fields.select do |field|
-            field.panel_name == panel
-          end
+          fields = fields.select { |field| field.panel_name == panel }
         end
 
         hydrate_fields(model: @model, view: @view)
@@ -230,9 +218,7 @@ module Avo
       end
 
       def get_field(id)
-        get_field_definitions.find do |f|
-          f.id == id.to_sym
-        end
+        get_field_definitions.find { |f| f.id == id.to_sym }
       end
 
       def tools
@@ -241,7 +227,8 @@ module Avo
         return [] if App.license.lacks_with_trial :resource_tools
         return [] if self.class.tools.blank?
 
-        self.items
+        self
+          .items
           .select do |item|
             next if item.nil?
 
@@ -251,9 +238,7 @@ module Avo
             tool.hydrate view: view
             tool
           end
-          .select do |item|
-            item.visible_on?(view)
-          end
+          .select { |item| item.visible_on?(view) }
       end
 
       # Separates the fields that are in a panel and those that are just hanging out.
@@ -264,20 +249,20 @@ module Avo
         panelfull_items = []
 
         items.each do |item|
-          if item.respond_to? :hydrate
-            item.hydrate(view: view)
-          end
+          item.hydrate(view: view) if item.respond_to? :hydrate
 
           # fields and tabs can be hidden on some views
           if item.respond_to? :visible_on?
             next unless item.visible_on?(view)
           end
+
           # each field has it's own visibility checker
           if item.respond_to? :visible?
             item.hydrate(view: view) if item.view.nil?
 
             next unless item.visible?
           end
+
           # check if the user is authorized to view it
           if item.respond_to? :authorized?
             next unless item.hydrate(model: @model).authorized?
@@ -295,15 +280,24 @@ module Avo
         end
 
         # Make sure all tabs panelfull_items are setted as inside tabs
-        panelfull_items.grep(Avo::TabGroup).each do |tab_group|
-          tab_group.items.grep(Avo::Tab).each do |tab|
-            tab.items.grep(Avo::Panel).each do |panel|
-              panel.items.grep(Avo::Fields::BelongsToField).each do |field|
-                field.target = :_top
+        panelfull_items
+          .grep(Avo::TabGroup)
+          .each do |tab_group|
+            tab_group
+              .items
+              .grep(Avo::Tab)
+              .each do |tab|
+                tab
+                  .items
+                  .grep(Avo::Panel)
+                  .each do |panel|
+                    panel
+                      .items
+                      .grep(Avo::Fields::BelongsToField)
+                      .each { |field| field.target = :_top }
+                  end
               end
-            end
           end
-        end
 
         # Add all the panelles fields to a new panel
         main_panel_holder = Avo::ItemsHolder.new
@@ -320,9 +314,11 @@ module Avo
       private
 
       def check_license
-        if !Rails.env.production? && App.license.present? && App.license.lacks(:resource_tools)
+        if !Rails.env.production? && App.license.present? &&
+             App.license.lacks(:resource_tools)
           # Add error message to let the developer know the resource tool will not be available in a production environment.
-          Avo::App.error_messages.push "Warning: Your license is invalid or doesn't support resource tools. The resource tools will not be visible in a production environment."
+          Avo::App
+            .error_messages.push "Warning: Your license is invalid or doesn't support resource tools. The resource tools will not be visible in a production environment."
         end
       end
     end

@@ -35,6 +35,10 @@ module Avo
       def is_sidebar?
         self.class.item_type == :sidebar
       end
+
+      def is_row?
+        self.class.item_type == :row
+      end
     end
   end
 end

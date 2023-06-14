@@ -38,6 +38,10 @@ module Avo
       add_item Avo::TabBuilder.parse_block(name: name, **args, &block)
     end
 
+    def row(**args, &block)
+      add_item Avo::RowBuilder.parse_block(**args, &block)
+    end
+
     def tool(klass, **args)
       instance = klass.new(**args)
       add_item instance
