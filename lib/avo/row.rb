@@ -14,6 +14,12 @@ class Avo::Row
     @items_holder = Avo::ItemsHolder.new
   end
 
+  def hydrate(view: nil, **args)
+    @view = view
+
+    self
+  end
+
   def has_items?
     @items.present?
   end

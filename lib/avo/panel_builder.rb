@@ -7,6 +7,7 @@ class Avo::PanelBuilder
 
   delegate :heading, to: :items_holder
   delegate :field, to: :items_holder
+  delegate :row, to: :items_holder
   delegate :items, to: :items_holder
 
   attr_reader :items_holder

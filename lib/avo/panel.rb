@@ -18,10 +18,6 @@ class Avo::Panel
     @items_holder = Avo::ItemsHolder.new
   end
 
-  def add_item(item)
-    @items << item
-  end
-
   def has_items?
     @items.present?
   end
