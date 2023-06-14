@@ -6,8 +6,12 @@ def find_field_element(field_id)
   find("[data-field-id='#{field_id}']")
 end
 
-def field_wrapper(field_id)
-  find("[data-field-id='#{field_id}']")
+def field_wrapper(field_id, field_type = nil)
+  if field_type.present?
+    find("[data-field-id='#{field_id}'][data-field-type='#{field_type}']")
+  else
+    find("[data-field-id='#{field_id}']")
+  end
 end
 
 def find_field_value_element(field_id)

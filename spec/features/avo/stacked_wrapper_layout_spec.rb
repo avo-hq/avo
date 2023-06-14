@@ -9,7 +9,7 @@ RSpec.feature "StackedWrapperLayouts", type: :feature do
         it "displays the inline layout" do
           subject
 
-          expect(field_wrapper(:last_name)[:class]).to include "field-wrapper-layout-inline"
+          expect(field_wrapper(:email, :text)[:class]).to include "field-wrapper-layout-inline"
         end
       end
 
@@ -33,7 +33,7 @@ RSpec.feature "StackedWrapperLayouts", type: :feature do
         it "displays the stacked layout" do
           subject
 
-          expect(field_wrapper(:last_name)[:class]).to include "field-wrapper-layout-stacked"
+          expect(field_wrapper(:email, :text)[:class]).to include "field-wrapper-layout-stacked"
         end
       end
 
@@ -55,7 +55,7 @@ RSpec.feature "StackedWrapperLayouts", type: :feature do
         it "displays the inline layout" do
           subject
 
-          expect(field_wrapper(:last_name)[:class]).to include "field-wrapper-layout-inline"
+          expect(field_wrapper(:email, :text)[:class]).to include "field-wrapper-layout-inline"
         end
       end
 
