@@ -7,10 +7,7 @@
     <% c.with_body do %>
       <div class="divide-y">
         <% item.visible_items.each_with_index do |field, index| %>
-          <%= render field
-            .hydrate(resource: @resource, model: @resource.model, user: resource.user, view: view)
-            .component_for_view(view)
-            .new(field: field, resource: @resource, index: index, form: form) %>
+          <%= render Avo::ItemSwitcherComponent.new resource: @resource, item: field, index: index, view: @view, form: form %>
         <% end %>
       </div>
     <% end %>
@@ -19,4 +16,12 @@
   <%= render tab_group_component %>
 <% elsif item.is_field? %>
   <%= render field_component %>
+<% elsif item.is_row? %>
+  <%= render Avo::RowComponent.new do |c| %>
+    <% c.with_body do %>
+      <% item.visible_items.each_with_index do |field, index| %>
+        <%= render Avo::ItemSwitcherComponent.new resource: @resource, item: field, index: index, view: @view, form: form %>
+      <% end %>
+    <% end %>
+  <% end %>
 <% end %>

@@ -42,6 +42,7 @@ class Avo::ItemSwitcherComponent < Avo::BaseComponent
   end
 
   def field_component
-    item.component_for_view(@view).new(field: item.hydrate(resource: @resource, view: @view, model: @resource.model), resource: @resource, index: index, form: form)
+    final_item = item.dup.hydrate(resource: @resource, model: @resource.model, user: resource.user, view: view)
+    final_item.component_for_view(@view).new(field: final_item, resource: @resource, index: index, form: form)
   end
 end

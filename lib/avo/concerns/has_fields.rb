@@ -26,6 +26,12 @@ module Avo
           items_holder.panel name, **args, &block
         end
 
+        def row(**args, &block)
+          ensure_items_holder_initialized
+
+          items_holder.row(**args, &block)
+        end
+
         def tabs(**args, &block)
           ensure_items_holder_initialized
 

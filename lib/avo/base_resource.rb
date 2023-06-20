@@ -218,7 +218,7 @@ module Avo
       # get the model class off of the static property
       return self.class.model_class if self.class.model_class.present?
 
-      # get the model class off of the model
+      # get the model class off of the model for STI models
       return @model.base_class if @model.present?
 
       # generate a model class
