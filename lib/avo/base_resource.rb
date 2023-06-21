@@ -151,7 +151,8 @@ module Avo
     def record
       @model
     end
-    alias :model :record
+    alias_method :model, :record
+
 
     def hydrate(model: nil, view: nil, user: nil, params: nil)
       @view = view if view.present?
@@ -307,9 +308,9 @@ module Avo
       end
     end
 
-    def fill_model(model, params, extra_params: [])
-      # Map the received params to their actual fields
-      fields_by_database_id = get_field_definitions
+    # Map the received params to their actual fields.
+    def fields_by_database_id
+      get_field_definitions
         .reject do |field|
           field.computed
         end
@@ -317,7 +318,9 @@ module Avo
           [field.database_id.to_s, field]
         end
         .to_h
+    end
 
+    def fill_model(model, params, extra_params: [])
       # Write the field values
       params.each do |key, value|
         field = fields_by_database_id[key]
@@ -329,8 +332,11 @@ module Avo
 
       # Write the user configured extra params to the model
       if extra_params.present?
-        # Let Rails fill in the rest of the params
-        model.assign_attributes params.permit(extra_params)
+        # Get the extra missing params
+        # We do a diff here in order to omit overwriting the model with un-processed values from the resource tools.
+        params_diff = extra_params.map(&:to_s) - fields_by_database_id.keys
+
+        model.assign_attributes params.permit(params_diff)
       end
 
       model

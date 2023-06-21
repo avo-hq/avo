@@ -1,6 +1,7 @@
 <%= field_wrapper **field_wrapper_args, full_width: true do %>
   <div data-controller="easy-mde">
     <%= @form.text_area @field.id,
+      value: @field.value,
       class: classes("w-full js-has-easy-mde-editor"),
       data: {
         view: view,

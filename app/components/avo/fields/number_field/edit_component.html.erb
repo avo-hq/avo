@@ -1,5 +1,6 @@
 <%= field_wrapper **field_wrapper_args do %>
   <%= @form.number_field @field.id,
+    value: @field.value,
     class: classes("w-full"),
     data: @field.get_html(:data, view: view, element: :input),
     disabled: disabled?,

@@ -1,11 +1,11 @@
 <%= field_wrapper **field_wrapper_args do %>
   <%= form.text_field @field.id,
+    value: @field.value,
     class: classes("w-full"),
     data: @field.get_html(:data, view: view, element: :input),
     disabled: disabled?,
     placeholder: @field.placeholder,
     style: @field.get_html(:style, view: view, element: :input),
-    # value: @field.value,
     multiple: multiple,
     autocomplete: @field.autocomplete
   %>

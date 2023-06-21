@@ -1,5 +1,6 @@
 <%= field_wrapper **field_wrapper_args do %>
   <%= @form.select @field.id, @field.select_options, {
+      value: @field.value,
       selected: @field.value,
       include_blank: @field.include_blank
     },

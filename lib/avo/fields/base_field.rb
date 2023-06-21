@@ -83,6 +83,8 @@ module Avo
         @view = args[:view] || nil
         @value = args[:value] || nil
         @stacked = args[:stacked] || nil
+        @update_as = args[:update_as] || nil
+        @format_as = args[:format_as] || nil
         @resource = args[:resource]
 
         @args = args
@@ -183,18 +185,31 @@ module Avo
           final_value = instance_exec(@model, @resource, @view, self, &block)
         end
 
-        # Run the value through resolver if present
-        final_value = instance_exec(final_value, &@format_using) if @format_using.present?
-
-        final_value
+        if @format_as.present?
+          Avo::ExecutionContext.new(target: @format_as, model: model, key: property, value: final_value, resource: resource, view: view, field: self).handle
+        elsif @format_using.present?
+          # Run the value through resolver if present
+          instance_exec(final_value, &@format_using)
+        else
+          final_value
+        end
       end
 
+      # Fills the model with the received value on create and update actions.
       def fill_field(model, key, value, params)
         return model unless model.methods.include? key.to_sym
 
-        model.send("#{key}=", value)
+        if @update_as.present?
+          value = update_as(model, key, value, params)
+        end
+
+        model.public_send("#{key}=", value)
 
         model
+      end
+
+      def update_as(model, key, value, params)
+        Avo::ExecutionContext.new(target: @update_as, model: model, key: key, value: value, resource: resource, field: self).handle
       end
 
       # Try to see if the field has a different database ID than it's name
