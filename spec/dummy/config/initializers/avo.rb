@@ -76,7 +76,7 @@ Avo.configure do |config|
   ## == Menus ==
   config.main_menu = -> do
     section I18n.t("avo.dashboards"), icon: "dummy-adjustments.svg" do
-      dashboard :dashy, visible: -> { true }
+      dashboard :dashy, visible: -> { true }, icon: "bolt"
       dashboard "Sales", visible: -> { true }
 
       group "All dashboards", visible: false, collapsable: true do
@@ -114,7 +114,7 @@ Avo.configure do |config|
       group "Blog", collapsable: true do
         # resource :z_posts
         resource :posts
-        resource :comments
+        resource :comments, icon: "chat-bubble-bottom-center-text"
         resource :photo_comments, visible: -> do
           authorize current_user, Comment, "index?", policy_class: PhotoCommentPolicy, raise_exception: false
         end

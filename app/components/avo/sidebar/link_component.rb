@@ -30,6 +30,6 @@ class Avo::Sidebar::LinkComponent < ViewComponent::Base
   end
 
   def classes
-    "px-4 pr-0 flex-1 flex mx-6 leading-none py-2 text-black rounded font-medium hover:bg-gray-100 gap-2 items-center"
+    "px-4 pr-0 flex-1 flex mx-6 leading-none py-2 text-black rounded font-medium hover:bg-gray-100 gap-1"
   end
 end
