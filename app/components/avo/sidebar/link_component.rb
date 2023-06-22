@@ -6,13 +6,15 @@ class Avo::Sidebar::LinkComponent < ViewComponent::Base
   attr_reader :label
   attr_reader :path
   attr_reader :data
+  attr_reader :icon
 
-  def initialize(label: nil, path: nil, active: :inclusive, target: nil, data: {})
+  def initialize(label: nil, path: nil, active: :inclusive, target: nil, data: {}, icon: nil)
     @label = label
     @path = path
     @active = active
     @target = target
     @data = data
+    @icon = icon
   end
 
   def is_external?
@@ -28,6 +30,6 @@ class Avo::Sidebar::LinkComponent < ViewComponent::Base
   end
 
   def classes
-    "px-4 pr-0 flex-1 flex mx-6 leading-none py-2 text-black rounded font-medium hover:bg-gray-100"
+    "px-4 pr-0 flex-1 flex mx-6 leading-none py-2 text-black rounded font-medium hover:bg-gray-100 gap-1"
   end
 end
