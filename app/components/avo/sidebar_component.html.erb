@@ -25,7 +25,7 @@
 
               <div class="w-full space-y-1">
                 <% dashboards.sort_by { |r| r.navigation_label }.each do |dashboard| %>
-                  <%= render Avo::Sidebar::LinkComponent.new label: dashboard.navigation_label, path: dashboard.navigation_path, icon: resource.icon %>
+                  <%= render Avo::Sidebar::LinkComponent.new label: dashboard.navigation_label, path: dashboard.navigation_path %>
                 <% end %>
               </div>
             </div>
@@ -36,7 +36,7 @@
 
             <div class="w-full space-y-1">
               <% resources.sort_by { |r| r.navigation_label }.each do |resource| %>
-                <%= render Avo::Sidebar::LinkComponent.new label: resource.navigation_label, path: helpers.resources_path(resource: resource), icon: resource.icon %>
+                <%= render Avo::Sidebar::LinkComponent.new label: resource.navigation_label, path: helpers.resources_path(resource: resource) %>
               <% end %>
             </div>
           </div>
