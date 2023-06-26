@@ -78,23 +78,12 @@ module Avo
     end
 
     def destroy
-      Rails.logger.debug "Destroying something with params: #{params.inspect}}"
-
       association_name = BaseResource.valid_association_name(@model, params[:related_name])
 
       if reflection_class == "HasManyReflection"
-        detached = false
-
-        if params[:destroy_as]&.to_sym == :detach # means we're detaching the record
-          relationship = @attachment_model.class.reflect_on_all_associations.find { |r| r.plural_name == @model.class.table_name }
-
-          if relationship && (relationship.options || {})[:optional]
-            @attachment_model.update_attribute(relationship.foreign_key, nil)
-            detached = true
-          end
+        unless params[:destroy_as]&.to_sym == :detach && detach_and_get_confirmation
+          @model.send(association_name).delete(@attachment_model)
         end
-
-        @model.send(association_name).delete(@attachment_model) unless detached
       else
         @model.send("#{association_name}=", nil)
       end
@@ -112,6 +101,17 @@ module Avo
     end
 
     private
+
+    def detach_and_get_confirmation
+      relationship = @attachment_model.class.reflect_on_all_associations.find { |r| r.plural_name == @model.class.table_name }
+
+      if relationship && (relationship.options || {})[:optional]
+        @attachment_model.update_attribute(relationship.foreign_key, nil)
+        return true
+      end
+
+      false
+    end
 
     def set_reflection
       @reflection = @model._reflections[params[:related_name].to_s]
