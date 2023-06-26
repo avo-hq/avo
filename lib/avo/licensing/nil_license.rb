@@ -1,9 +1,9 @@
 module Avo
   module Licensing
-    class NullLicense < License
+    class NilLicense < License
       def initialize(response = nil)
         response ||= {
-          id: "community",
+          id: Rails.env.test? ? "pro" : "community",
           valid: true
         }
 

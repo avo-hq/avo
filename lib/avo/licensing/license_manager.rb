@@ -6,13 +6,15 @@ module Avo
       end
 
       def license
+        return @hq_response if @hq_response.class.ancestors.find { |a| a == Avo::Licensing::License }.present?
+
         case @hq_response["id"]
         when "community"
           CommunityLicense.new @hq_response
         when "pro"
           ProLicense.new @hq_response
         else
-          NullLicense.new @hq_response
+          NilLicense.new @hq_response
         end
       end
 
