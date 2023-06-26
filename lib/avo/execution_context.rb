@@ -10,6 +10,13 @@ module Avo
         end
       end
 
+      # If you want this block to behave like a view you can delegate the missing methods to the view_context
+      #
+      # Ex: Avo::ExecutionContext.new(target: ..., delegate_missing_to: :view_context).handle
+      if args[:delegate_missing_to].present?
+        self.class.send(:delegate_missing_to, args[:delegate_missing_to])
+      end
+
       # If target doesn't respond to call, we don't need to initialize the others attr_accessors.
       return unless (@target = args[:target]).respond_to? :call
 

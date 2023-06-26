@@ -187,7 +187,7 @@ module Avo
 
         if @format_using.present?
           # Apply the changes in the
-          Avo::ExecutionContext.new(target: @format_using, model: model, key: property, value: final_value, resource: resource, view: view, field: self).handle
+          Avo::ExecutionContext.new(target: @format_using, model: model, key: property, value: final_value, resource: resource, view: view, field: self, delegate_missing_to: :view_context).handle
         else
           final_value
         end
