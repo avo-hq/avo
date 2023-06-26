@@ -53,7 +53,7 @@ module Avo
       related_name, # admin
       related_id = nil
     )
-      avo.resources_associations_destroy_path(model_name, model_id, related_name, related_id)
+      avo.resources_associations_destroy_path(model_name, model_id, related_name, related_id, destroy_as: :detach)
     end
 
     def related_resources_path(
