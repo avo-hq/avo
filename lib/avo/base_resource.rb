@@ -332,11 +332,8 @@ module Avo
 
       # Write the user configured extra params to the model
       if extra_params.present?
-        # Get the extra missing params
-        # We do a diff here in order to omit overwriting the model with un-processed values from the resource tools.
-        params_diff = extra_params.map(&:to_s) - fields_by_database_id.keys
-
-        model.assign_attributes params.permit(params_diff)
+        # Let Rails fill in the rest of the params
+        model.assign_attributes params.permit(extra_params)
       end
 
       model

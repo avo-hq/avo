@@ -9,7 +9,7 @@ class CityResource < Avo::BaseResource
   self.search_result_path = -> {
     avo.resources_city_path record, custom: "yup"
   }
-  self.extra_params = [:name, :metadata, :coordinates, :city_center_area, :description, :population, :is_capital, :features, :image_url, :tiny_description, :status]
+  self.extra_params = [city: [:name, :metadata, :coordinates, :city_center_area, :description, :population, :is_capital, :image_url, :tiny_description, :status, :features, features: {}, metadata: {}]]
   self.default_view_type = :map
   self.map_view = {
     mapkick_options: {
@@ -43,7 +43,8 @@ class CityResource < Avo::BaseResource
       color: "#009099"
     }
   field :description, as: :trix, attachment_key: :description_file, visible: ->(resource:) { resource.params[:show_native_fields].blank? }
-  field :metadata, as: :code,
+  field :metadata,
+    as: :code,
     format_as: -> {
       if view == :edit
         JSON.generate(value)
