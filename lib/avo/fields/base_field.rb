@@ -70,6 +70,7 @@ module Avo
         @nullable = args[:nullable] || false
         @null_values = args[:null_values] || [nil, ""]
         @format_using = args[:format_using] || nil
+        @update_using = args[:update_using] || nil
         @placeholder = args[:placeholder]
         @autocomplete = args[:autocomplete] || nil
         @help = args[:help] || nil
@@ -83,8 +84,6 @@ module Avo
         @view = args[:view] || nil
         @value = args[:value] || nil
         @stacked = args[:stacked] || nil
-        @update_as = args[:update_as] || nil
-        @format_as = args[:format_as] || nil
         @resource = args[:resource]
 
         @args = args
@@ -206,8 +205,8 @@ module Avo
         model
       end
 
-      def update_as(model, key, value, params)
-        Avo::ExecutionContext.new(target: @update_as, model: model, key: key, value: value, resource: resource, field: self).handle
+      def update_using(model, key, value, params)
+        Avo::ExecutionContext.new(target: @update_using, model: model, key: key, value: value, resource: resource, field: self).handle
       end
 
       # Try to see if the field has a different database ID than it's name
