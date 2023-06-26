@@ -39,12 +39,12 @@ class City < ApplicationRecord
     self.longitude = value.last
   end
 
-  # alternative to format_as and update_as
-  def json_metadata
-    ActiveSupport::JSON.encode(metadata)
-  end
+  # alternative to format_using and update_using
+  # def json_metadata
+  #   ActiveSupport::JSON.encode(metadata)
+  # end
 
-  def json_metadata=(value)
-    self.metadata = ActiveSupport::JSON.decode(value)
-  end
+  # def json_metadata=(value)
+  #   self.metadata = ActiveSupport::JSON.decode(value)
+  # end
 end

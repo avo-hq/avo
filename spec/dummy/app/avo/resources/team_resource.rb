@@ -31,7 +31,7 @@ class TeamResource < Avo::BaseResource
     rows: 5,
     readonly: false,
     hide_on: :index,
-    format_using: ->(value) { value.to_s.truncate 30 },
+    format_using: -> { value.to_s.truncate 30 },
     default: "This is a wonderful team!",
     nullable: true,
     null_values: ["0", "", "null", "nil"]

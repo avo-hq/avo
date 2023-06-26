@@ -185,11 +185,9 @@ module Avo
           final_value = instance_exec(@model, @resource, @view, self, &block)
         end
 
-        if @format_as.present?
-          Avo::ExecutionContext.new(target: @format_as, model: model, key: property, value: final_value, resource: resource, view: view, field: self).handle
-        elsif @format_using.present?
-          # Run the value through resolver if present
-          instance_exec(final_value, &@format_using)
+        if @format_using.present?
+          # Apply the changes in the
+          Avo::ExecutionContext.new(target: @format_using, model: model, key: property, value: final_value, resource: resource, view: view, field: self).handle
         else
           final_value
         end
@@ -199,8 +197,8 @@ module Avo
       def fill_field(model, key, value, params)
         return model unless model.methods.include? key.to_sym
 
-        if @update_as.present?
-          value = update_as(model, key, value, params)
+        if @update_using.present?
+          value = update_using(model, key, value, params)
         end
 
         model.public_send("#{key}=", value)
