@@ -163,13 +163,13 @@ module Avo
         self.class.tab_groups
       end
 
-      def get_field_definitions(only_root: false)
+      def get_field_definitions(only_root: false, for_view: nil)
         fields = self.fields(only_root: only_root)
 
         return [] if fields.blank?
 
         items = fields.map do |field|
-          field.hydrate(resource: self, user: user, view: view)
+          field.hydrate(resource: self, user: user, view: for_view || view)
         end
 
         if Avo::App.license.lacks_with_trial(:custom_fields)
@@ -235,10 +235,14 @@ module Avo
         fields
       end
 
-      def get_field(id)
-        get_field_definitions.find do |f|
-          f.id == id.to_sym
-        end
+      def get_field(id, for_view: nil)
+        get_field_definitions
+          .select do |f|
+            f.visible_on?(for_view || view)
+          end
+          .find do |f|
+            f.id == id.to_sym
+          end
       end
 
       def tools

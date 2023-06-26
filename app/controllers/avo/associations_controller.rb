@@ -109,7 +109,11 @@ module Avo
     end
 
     def set_attachment_resource
-      @attachment_resource = @field.use_resource || (App.get_resource_by_model_name @attachment_class)
+      @attachment_resource = if @field.present? && @field.respond_to?(:use_resource) && @field.use_resource.present?
+        @field.use_resource
+      else
+        App.get_resource_by_model_name @attachment_class
+      end
     end
 
     def set_attachment_model

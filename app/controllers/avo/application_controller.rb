@@ -223,7 +223,7 @@ module Avo
 
     def related_resource
       # Find the field from the parent resource
-      field = @resource.get_field params[:related_name]
+      field = @resource.get_field params[:related_name], for_view: :show
 
       return field.use_resource if field&.use_resource.present?
 
