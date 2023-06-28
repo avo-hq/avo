@@ -1,6 +1,7 @@
 module Avo
   class ItemsHolder
     attr_reader :tools
+    attr_writer :items
     attr_accessor :invalid_fields
 
     def items
