@@ -7,11 +7,11 @@ module Avo
       items = @items
 
       if Avo::App.license.lacks_with_trial(:custom_fields)
-        items = items.reject { |item| item.is_field? && item.custom? }
+        items.reject! { |item| item.is_field? && item.custom? }
       end
 
       if Avo::App.license.lacks_with_trial(:advanced_fields)
-        items = items.reject { |item| item.is_field? && item.type == "tags" }
+        items.reject! { |item| item.is_field? && item.type == "tags" }
       end
 
       items
