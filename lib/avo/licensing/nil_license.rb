@@ -1,6 +1,6 @@
 module Avo
   module Licensing
-    class NullLicense < License
+    class NilLicense < License
       def initialize(response = nil)
         response ||= {
           id: "community",

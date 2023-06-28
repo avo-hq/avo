@@ -185,7 +185,11 @@ module Avo
       def perform_request
         ::Rails.logger.debug "[Avo] Performing request to avohq.io API to check license availability." if Rails.env.development?
 
-        HTTParty.post ENDPOINT, body: payload.to_json, headers: {"Content-type": "application/json"}, timeout: REQUEST_TIMEOUT
+        if Rails.env.test?
+          OpenStruct.new({code: 200, parsed_response: {id: "pro", valid: true}})
+        else
+          HTTParty.post ENDPOINT, body: payload.to_json, headers: {"Content-type": "application/json"}, timeout: REQUEST_TIMEOUT
+        end
       end
 
       def app_name

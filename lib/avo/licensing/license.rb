@@ -6,7 +6,7 @@ module Avo
       attr_accessor :valid
       attr_accessor :payload
 
-      def initialize(response)
+      def initialize(response = {})
         @response = response
         @id = response["id"]
         @valid = response["valid"]
