@@ -7,7 +7,7 @@
     selected_resources: [@resource.model.id],
     **@resource.stimulus_data_attributes
   } do %>
-  <%= form_with model: @resource.model,
+  <%= form_with model: @resource.record,
     scope: @resource.form_scope,
     url: form_url,
     method: form_method,

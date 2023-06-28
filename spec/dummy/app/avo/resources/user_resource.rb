@@ -85,7 +85,7 @@ class UserResource < Avo::BaseResource
       hide_on: :edit do |model, resource, view, field|
         model.posts.to_a.size > 0 ? "yes" : "no"
       end
-    field :outside_link, as: :text, only_on: [:show], format_using: ->(url) { link_to("hey", url, target: "_blank") } do |model, *args|
+    field :outside_link, as: :text, only_on: [:show], format_using: -> { link_to("hey", value, target: "_blank") } do |model, *args|
       main_app.hey_url
     end
   end

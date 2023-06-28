@@ -9,7 +9,7 @@ class CityResource < Avo::BaseResource
   self.search_result_path = -> {
     avo.resources_city_path record, custom: "yup"
   }
-  self.extra_params = [:fish_type, :something_else, properties: [], information: [:name, :history]]
+  self.extra_params = [city: [:name, :metadata, :coordinates, :city_center_area, :description, :population, :is_capital, :image_url, :tiny_description, :status, features: {}, metadata: {}]]
   self.default_view_type = :map
   self.map_view = {
     mapkick_options: {
@@ -43,12 +43,23 @@ class CityResource < Avo::BaseResource
       color: "#009099"
     }
   field :description, as: :trix, attachment_key: :description_file, visible: ->(resource:) { resource.params[:show_native_fields].blank? }
+  field :metadata,
+    as: :code,
+    format_using: -> {
+      if view == :edit
+        JSON.generate(value)
+      else
+        value
+      end
+    },
+    update_using: -> do
+      ActiveSupport::JSON.decode(value)
+    end
   with_options hide_on: :forms do
     field :name, as: :text, help: "The name of your city"
     field :population, as: :number
     field :is_capital, as: :boolean
     field :features, as: :key_value
-    field :metadata, as: :code
     field :image_url, as: :external_image
     field :tiny_description, as: :markdown
     field :status, as: :badge, enum: ::City.statuses

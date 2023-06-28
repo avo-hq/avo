@@ -1,6 +1,7 @@
 <%= field_wrapper **field_wrapper_args, dash_if_blank: false do %>
   <div class="h-8 flex items-center">
     <%= @form.check_box @field.id,
+      value: @field.value,
       checked: @field.value,
       class: "text-lg h-4 w-4 checked:bg-primary-400 focus:checked:!bg-primary-400 #{@field.get_html(:classes, view: view, element: :input)}",
       data: @field.get_html(:data, view: view, element: :input),
