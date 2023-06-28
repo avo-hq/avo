@@ -3,7 +3,7 @@ module Avo
     class NilLicense < License
       def initialize(response = nil)
         response ||= {
-          id: Rails.env.test? ? "pro" : "community",
+          id: "community",
           valid: true
         }
 

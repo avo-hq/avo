@@ -69,7 +69,7 @@ module Avo
         self.request = request
         self.view_context = view_context
 
-        self.license = Licensing::LicenseManager.new(Rails.env.test? ? Avo::Licensing::NilLicense.new : Licensing::HQ.new(request).response).license
+        self.license = Licensing::LicenseManager.new(Licensing::HQ.new(request).response).license
         self.translation_enabled = license.has(:localization)
 
         # Set the current host for ActiveStorage
