@@ -82,6 +82,10 @@ module Avo
         end
       end
 
+      def visible?
+        super if Avo::App.license.has_with_trial(:advanced_fields)
+      end
+
       private
 
       def fetched_labels
