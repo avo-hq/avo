@@ -105,7 +105,7 @@ module Avo
     def detach_and_get_confirmation
       relationship = @attachment_model.class.reflect_on_all_associations.find { |r| r.plural_name == @model.class.table_name }
 
-      if relationship && (relationship.options || {})[:optional]
+      if relationship && (relationship.options || {})[:optional] == true
         @attachment_model.update_attribute(relationship.foreign_key, nil)
         return true
       end
