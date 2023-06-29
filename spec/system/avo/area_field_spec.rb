@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe "AreaField", type: :system do
   describe "without value" do
-    let(:city) { create :city, coordinates: [], city_center_area: nil }
+    let(:city) { create :city, city_center_area: nil }
 
     context "show" do
       it "shows empty area field" do
