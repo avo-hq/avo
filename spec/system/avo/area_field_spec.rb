@@ -44,7 +44,7 @@ RSpec.describe "AreaField", type: :system do
 
     context "show" do
       it "renders a map" do
-        Avo::Fields::AreaField::ShowComponent.any_instance.stub(:area_map).and_return("map_content_here")
+        expect_any_instance_of(Avo::Fields::AreaField::ShowComponent).to receive(:area_map).and_return("map_content_here")
         visit "/admin/resources/cities/#{city.id}"
 
         expect(page).to have_text("map_content_here")

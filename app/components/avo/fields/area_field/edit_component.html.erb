@@ -1,8 +1,7 @@
 <%= field_wrapper **field_wrapper_args do %>
   <%= @form.text_field @field.id,
-    value: @field.value,
-    class: classes("w-full"),
     value: field.value.to_s,
+    class: classes("w-full"),
     placeholder: @field.placeholder,
     disabled: disabled? %>
 <% end %>
