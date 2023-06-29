@@ -64,6 +64,15 @@
           <%= helpers.empty_state by_association: params[:related_name].present?, view_type: view_type, add_background: true %>
         <% end %>
       <% end %>
+      <% if view_type.to_sym == :table_countless %>
+        <% if @resources.present? %>
+          <div class="w-full relative flex-1 flex mt-0">
+            <%= render(Avo::Index::ResourceTableCountlessComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_model: @parent_model, parent_resource: @parent_resource, pagy_countless: @pagy_countless, query: @query)) %>
+          </div>
+        <% else %>
+          <%= helpers.empty_state by_association: params[:related_name].present?, view_type: view_type, add_background: true %>
+        <% end %>
+      <% end %>
     <% end %>
     <% c.with_bare_content do %>
       <% if view_type.to_sym == :table || view_type.to_sym == :map %>
@@ -72,6 +81,11 @@
             <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: @turbo_frame || 'none', index_params: @index_params, resource: @resource, parent_model: @parent_model, discreet_pagination: field&.discreet_pagination %>
           </div>
         <% end %>
+      <% end %>
+      <% if view_type.to_sym == :table_countless %>
+        <div class="mt-6">
+          <%= render Avo::PaginatorCountlessComponent.new pagy_countless: @pagy_countless, turbo_frame: @turbo_frame || 'none', index_params: @index_params, resource: @resource, parent_model: @parent_model, discreet_pagination: field&.discreet_pagination %>
+        </div>
       <% end %>
       <% if view_type.to_sym == :grid %>
         <%= render Avo::Index::ResourceGridComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_model: @parent_model, parent_resource: @parent_resource) %>

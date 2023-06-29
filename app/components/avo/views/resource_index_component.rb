@@ -9,6 +9,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     resources: nil,
     models: [],
     pagy: nil,
+    pagy_countless: nil,
     index_params: {},
     filters: [],
     actions: [],
@@ -23,6 +24,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     @resources = resources
     @models = models
     @pagy = pagy
+    @pagy_countless = pagy_countless
     @index_params = index_params
     @filters = filters
     @actions = actions

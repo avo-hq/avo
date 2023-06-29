@@ -294,7 +294,7 @@ module Avo
     end
 
     def available_view_types
-      view_types = [:table]
+      view_types = [:table, :table_countless]
 
       view_types << :grid if get_grid_fields.present?
       view_types << :map if map_view.present?

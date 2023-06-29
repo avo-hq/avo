@@ -107,6 +107,7 @@ en:
     sign_out: Sign out
     switch_to_view: Switch to %{view_type} view
     table_view: Table view
+    table_countless_view: Table countless view
     tools: Tools
     type_to_search: Type to search.
     unauthorized: Unauthorized

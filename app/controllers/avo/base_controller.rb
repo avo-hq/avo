@@ -72,7 +72,11 @@ module Avo
         "0"
       end
 
-      @pagy, @models = pagy(@query, items: @index_params[:per_page], link_extra: "data-turbo-frame=\"#{params[:turbo_frame]}\"", size: [1, 2, 2, 1], params: extra_pagy_params)
+      if current_view_type.to_sym == :table_countless
+        @pagy_countless, @models = pagy_countless(@query, items: @index_params[:per_page], link_extra: "data-turbo-frame=\"#{params[:turbo_frame]}\"", size: [1, 2, 2, 1], params: extra_pagy_params)
+      else
+        @pagy, @models = pagy(@query, items: @index_params[:per_page], link_extra: "data-turbo-frame=\"#{params[:turbo_frame]}\"", size: [1, 2, 2, 1], params: extra_pagy_params)
+      end
 
       # Create resources for each model
       @resources = @models.map do |model|
@@ -523,6 +527,10 @@ module Avo
     # Set pagy locale from params or from avo configuration, if both nil locale = "en"
     def set_pagy_locale
       @pagy_locale = locale.to_s || Avo.configuration.locale || "en"
+    end
+
+    def current_view_type
+      params[:view_type] || @resource.default_view_type || Avo.configuration.default_view_type
     end
   end
 end

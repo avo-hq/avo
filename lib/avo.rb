@@ -1,4 +1,5 @@
 require "zeitwerk"
+require 'pagy/extras/countless'
 require_relative "avo/version"
 require_relative "avo/engine" if defined?(Rails)
 
