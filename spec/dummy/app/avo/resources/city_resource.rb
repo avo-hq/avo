@@ -17,8 +17,8 @@ class CityResource < Avo::BaseResource
     },
     record_marker: -> {
       {
-        latitude: record.coordinates.first,
-        longitude: record.coordinates.last,
+        latitude: record.latitude,
+        longitude: record.longitude,
         tooltip: record.name
       }
     },
