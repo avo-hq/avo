@@ -221,7 +221,12 @@ module Avo
 
     def destroy_model
       perform_action_and_record_errors do
-        @model.destroy!
+        # If the resource has a custom destroy method, use that instead of the default destroy!
+        destroy_method = @resource.destroy_record_method
+        # If a custom destroy method is not a valid lambda, raise an error. Don't fall back to the default destroy!
+        # If a custom faulty destroy method is defined, the user likely does not want to lose data.
+        raise ArgumentError unless destroy_method.lambda?
+        destroy_method.call(record: @model)
       end
     end
 
