@@ -65,4 +65,8 @@ class Avo::Tab
       super(view)
     end
   end
+
+  def has_a_single_item?
+    items.count == 1
+  end
 end

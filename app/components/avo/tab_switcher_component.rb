@@ -66,12 +66,9 @@ class Avo::TabSwitcherComponent < Avo::BaseComponent
     tabs.select do |tab|
       next false if tab.items.blank?
       next false if tab.is_field? && !tab.authorized?
-
-      if tab.items.count == 1
-        next false if !single_item_visible?(tab.items.first)
-      end
-
-      next false if !tab.visible? || !tab.visible_on?(view)
+      next false if tab.has_a_single_item? && !single_item_visible?(tab.items.first)
+      next false if !tab.visible?
+      next false if !tab.visible_on?(view)
 
       true
     end
@@ -81,7 +78,8 @@ class Avo::TabSwitcherComponent < Avo::BaseComponent
 
   def single_item_visible?(item)
     # Item is visible if is not a field or don't have its own panel
-    return true if !item.is_field? || !item.has_own_panel?
+    return true if !item.is_field?
+    return true if !item.has_own_panel?
 
     return false unless item.visible_on?(view)
 
