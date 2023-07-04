@@ -1,4 +1,4 @@
-class AttachmentResource < Avo::BaseResource
+class ActiveRecordAttachmentResource < Avo::BaseResource
   self.title = :filename
   self.model_class = "ActiveStorage::Attachment"
 
