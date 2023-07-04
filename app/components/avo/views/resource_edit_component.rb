@@ -80,6 +80,6 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
 
   # Render :show view for read only trix fields
   def view_for(field)
-    (field.is_a? Avo::Fields::TrixField) && field.is_readonly? ? :show : view
+    (field.is_a?(Avo::Fields::TrixField) && field.is_readonly?) ? :show : view
   end
 end
