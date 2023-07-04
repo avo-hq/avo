@@ -47,9 +47,6 @@ module Avo
     class_attribute :find_record_method, default: ->(model_class:, id:, params:) {
       model_class.find id
     }
-    class_attribute :destroy_record_method, default: -> (record:) {
-      record.destroy!
-    }
     class_attribute :ordering
     class_attribute :hide_from_global_search, default: false
     class_attribute :after_create_path, default: :show
