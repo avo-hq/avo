@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    avo (2.35.0)
+    avo (2.36.0)
       actionview (>= 6.0)
       active_link_to
       activerecord (>= 6.0)
@@ -416,7 +416,7 @@ GEM
       concurrent-ruby (~> 1.0)
     unaccent (0.4.0)
     unicode-display_width (2.4.2)
-    view_component (3.2.0)
+    view_component (3.3.0)
       activesupport (>= 5.2.0, < 8.0)
       concurrent-ruby (~> 1.0)
       method_source (~> 1.0)
