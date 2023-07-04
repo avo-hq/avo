@@ -77,5 +77,10 @@ RSpec.feature Avo::SearchController, type: :controller do
     3.times do |index|
       expect(json["course links"]["results"][index]["_id"]).to eq course_with_five_links.links[index].id
     end
+
+    # Undo the policy scope resolve method for future tests
+    CourseLinkPolicy::Scope.define_method(:resolve) do
+      scope.all
+    end
   end
 end
