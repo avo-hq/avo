@@ -42,6 +42,8 @@ class PostResource < Avo::BaseResource
     extract_excerpt model.body
   end
 
+  field :cover_photo_attachment, as: :has_one
+
   field :is_featured, as: :boolean, visible: ->(resource:) { context[:user].is_admin? }
   field :is_published, as: :boolean do |model|
     model.published_at.present?
