@@ -81,7 +81,7 @@ class Avo::TabSwitcherComponent < Avo::BaseComponent
     return true if !item.is_field?
     return true if !item.has_own_panel?
 
-    return false unless item.visible_on?(view)
+    return false if !item.visible_on?(view)
 
     # If item is hydrated with the correct resource and is not authorized, it's not visible
     return false if item.resource.present? && !item.authorized?
