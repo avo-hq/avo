@@ -88,6 +88,10 @@ class Avo::TabSwitcherComponent < Avo::BaseComponent
         visible = item.authorized?
       end
 
+      if item.items.count == 1 && first_item.is_field? && first_item.has_own_panel? && first_item.respond_to?(:authorized?) && first_item.resource.present?
+        visible = first_item.authorized?
+      end
+
       visible
     end
   end
