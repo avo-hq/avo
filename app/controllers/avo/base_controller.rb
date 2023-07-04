@@ -215,21 +215,21 @@ module Avo
 
     def save_model
       perform_action_and_record_errors do
-        save_record_action
+        save_model_action
       end
     end
 
-    def save_record_action
+    def save_model_action
       @model.save!
     end
 
     def destroy_model
       perform_action_and_record_errors do
-        destroy_record_action
+        destroy_model_action
       end
     end
 
-    def destroy_record_action
+    def destroy_model_action
       @model.destroy!
     end
 
