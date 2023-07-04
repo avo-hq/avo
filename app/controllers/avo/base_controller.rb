@@ -261,7 +261,7 @@ module Avo
     end
 
     def permitted_params
-      @resource.get_field_definitions.select(&:updatable).map(&:to_permitted_param).concat extra_params
+      @resource.get_field_definitions.select(&:updatable).map(&:to_permitted_param).concat(extra_params).uniq
     end
 
     def extra_params
