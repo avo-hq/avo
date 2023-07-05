@@ -55,17 +55,19 @@
               <% end %>
             <% end %>
           <% elsif control.action? %>
-            <%= a_link control.path,
-                color: control.color,
-                style: control.style,
-                icon: control.icon,
-                title: control.title,
-                data: {
-                  tippy: control.title ? :tooltip : nil,
-                  'turbo-frame': 'actions_show',
-                  'action': 'click->actions-picker#visitAction',
-                } do %>
-              <%= control.label %>
+            <% if control.action.visible_in_view(parent_resource: @parent_resource) %>
+              <%= a_link control.path,
+                  color: control.color,
+                  style: control.style,
+                  icon: control.icon,
+                  title: control.title,
+                  data: {
+                    tippy: control.title ? :tooltip : nil,
+                    'turbo-frame': 'actions_show',
+                    'action': 'click->actions-picker#visitAction',
+                  } do %>
+                <%= control.label %>
+              <% end %>
             <% end %>
           <% elsif control.link_to? %>
             <%= a_link control.path,
