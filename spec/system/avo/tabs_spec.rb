@@ -75,6 +75,22 @@ RSpec.describe "Tabs", type: :system do
           end
         end
       end
+
+      it "hides has_many tab header button by policy" do
+        visit avo.resources_user_path user
+
+        expect(page).to have_selector("a.button-component[data-tabs-id-param='Teams']", text: "Teams")
+
+        UserPolicy.define_method(:view_teams?) do
+          false
+        end
+
+        visit avo.resources_user_path user
+
+        expect(page).to have_no_selector("a.button-component[data-tabs-id-param='Teams']", text: "Teams")
+
+        UserPolicy.remove_method(:view_teams?)
+      end
     end
 
     context "edit" do
