@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
-  def initialize(field: nil, resource: nil, index: 0, form: nil, compact: false)
-    super field: field, resource: resource, index: index, form: form, compact: compact
+  def initialize(**args)
+    super(**args)
 
     @polymorphic_record = nil
   end

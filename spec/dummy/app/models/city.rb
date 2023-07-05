@@ -30,12 +30,22 @@ class City < ApplicationRecord
     "https://source.unsplash.com/random"
   end
 
-  def coordinates
-    [latitude, longitude]
-  end
+  # Alternative to stored_as location field
+  # def coordinates
+  #   [latitude, longitude]
+  # end
 
-  def coordinates=(value)
-    self.latitude = value.first
-    self.longitude = value.last
-  end
+  # def coordinates=(value)
+  #   self.latitude = value.first
+  #   self.longitude = value.last
+  # end
+
+  # alternative to format_using and update_using
+  # def json_metadata
+  #   ActiveSupport::JSON.encode(metadata)
+  # end
+
+  # def json_metadata=(value)
+  #   self.metadata = ActiveSupport::JSON.decode(value)
+  # end
 end

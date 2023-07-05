@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe "LocationField", type: :system do
   describe "without value" do
-    let(:city) { create :city, coordinates: [] }
+    let(:city) { create :city, latitude: nil, longitude: nil }
 
     context "show" do
       it "shows empty location field" do

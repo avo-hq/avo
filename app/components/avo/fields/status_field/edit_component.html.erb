@@ -5,6 +5,6 @@
     disabled: disabled?,
     placeholder: @field.placeholder,
     style: @field.get_html(:style, view: view, element: :input),
-    value: @resource.model.present? ? @resource.model[@field.id] : @field.value
+    value: @field.value
   %>
 <% end %>

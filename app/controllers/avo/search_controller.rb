@@ -112,7 +112,12 @@ module Avo
     # This scope is applied if the search is being performed on a has_many association
     def apply_has_many_scope
       association_name = BaseResource.valid_association_name(parent, params[:via_association_id])
+
+      # Get association records
       scope = parent.send(association_name)
+
+      # Apply policy scope if authorization is present
+      scope = resource.authorization&.apply_policy scope
 
       Avo::Hosts::SearchScopeHost.new(block: @resource.search_query, params: params, scope: scope).handle
     end

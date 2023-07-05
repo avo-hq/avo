@@ -12,7 +12,7 @@ module Avo
         when "pro"
           ProLicense.new @hq_response
         else
-          NullLicense.new @hq_response
+          NilLicense.new @hq_response
         end
       end
 

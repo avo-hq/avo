@@ -216,8 +216,8 @@ RSpec.describe "Filters", type: :system do
 
   describe "Multiple select filter" do
     let!(:draft) { create :post, name: "draft post", status: "draft" }
-    let!(:published) { create :post, name: "draft post", status: "published" }
-    let!(:archived) { create :post, name: "draft post", status: "archived" }
+    let!(:published) { create :post, name: "published post", status: "published" }
+    let!(:archived) { create :post, name: "archived post", status: "archived" }
 
     let(:url) { "/admin/resources/posts?view_type=table" }
 

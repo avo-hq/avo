@@ -6,6 +6,7 @@
       </div>
     <% end %>
     <%= @form.range_field @field.id,
+      value: @field.value,
       class: "w-full #{@field.get_html(:classes, view: view, element: :input)}",
       data: {
         action: "input->progress-bar-field#update",

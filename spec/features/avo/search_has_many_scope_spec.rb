@@ -54,4 +54,33 @@ RSpec.feature Avo::SearchController, type: :controller do
       expect(json["course links"]["results"][index]["_id"]).to eq course_with_five_links.links[index].id
     end
   end
+
+  it "applys the policy scope" do
+    CourseLinkPolicy::Scope.define_method(:resolve) do
+      scope.where("link like ?", "%test_link_%")
+    end
+
+    course_with_five_links.links.first(3).each_with_index do |link, index|
+      link.update!(link: "test_link_#{index}")
+    end
+
+    get :show, params: {
+      resource_name: "course_links",
+      via_association: "has_many",
+      via_association_id: "links",
+      via_reflection_class: "Course",
+      via_reflection_id: course_with_five_links.id
+    }
+
+    expect(json["course links"]["results"].count).to eq 3
+
+    3.times do |index|
+      expect(json["course links"]["results"][index]["_id"]).to eq course_with_five_links.links[index].id
+    end
+
+    # Undo the policy scope resolve method for future tests
+    CourseLinkPolicy::Scope.define_method(:resolve) do
+      scope.all
+    end
+  end
 end

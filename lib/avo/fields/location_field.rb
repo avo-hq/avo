@@ -59,6 +59,14 @@ module Avo
         end
       end
 
+      def value
+        if value_as_array?
+          [@model.send(stored_as.first), @model.send(stored_as.last)]
+        else
+          super
+        end
+      end
+
       def value_present?
         return value.first.present? && value.second.present? if value.is_a?(Array) && value.count == 2
 

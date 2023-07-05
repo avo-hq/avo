@@ -98,6 +98,10 @@ module Avo
             if item.is_field?
               fields << item
             end
+
+            if item.is_row?
+              fields << extract_fields_from_items(tab)
+            end
           end
 
           fields.flatten
@@ -117,7 +121,7 @@ module Avo
           thing.items.each do |item|
             if item.is_field?
               fields << item
-            elsif item.is_panel?
+            elsif item.is_panel? || item.is_row?
               fields << extract_fields_from_items(item)
             end
           end
@@ -168,23 +172,9 @@ module Avo
 
         return [] if fields.blank?
 
-        items = fields.map do |field|
+        fields.map do |field|
           field.hydrate(resource: self, user: user, view: view)
         end
-
-        if Avo::App.license.lacks_with_trial(:custom_fields)
-          items = items.reject do |field|
-            field.custom?
-          end
-        end
-
-        if Avo::App.license.lacks_with_trial(:advanced_fields)
-          items = items.reject do |field|
-            field.type == "tags"
-          end
-        end
-
-        items
       end
 
       def get_fields(panel: nil, reflection: nil, only_root: false)

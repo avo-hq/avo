@@ -1,8 +1,22 @@
 module Avo
   class ItemsHolder
     attr_reader :tools
-    attr_accessor :items
+    attr_writer :items
     attr_accessor :invalid_fields
+
+    def items
+      items = @items
+
+      if Avo::App.license.lacks_with_trial(:custom_fields)
+        items.reject! { |item| item.is_field? && item.custom? }
+      end
+
+      if Avo::App.license.lacks_with_trial(:advanced_fields)
+        items.reject! { |item| item.is_field? && item.type == "tags" }
+      end
+
+      items
+    end
 
     def initialize
       @items = []

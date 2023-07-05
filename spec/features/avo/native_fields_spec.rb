@@ -10,7 +10,6 @@ RSpec.feature "NativeFields", type: :feature do
     expect(find_field('Population').value).to eq city.population.to_s
     expect(find_field('Is capital').value).to eq "1"
     expect(find_field('Features').value).to eq "\"#{city.features}\""
-    expect(find_field('metadata', visible: false, disabled: true).value).to eq city.metadata
 
     expect(page).to have_css 'img[src="https://images.unsplash.com/photo-1660061993776-098c0ee403ac?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY2MDMxMzc4NA&ixlib=rb-1.2.1&q=80&w=1080"]'
     expect(find_field('Image url').value).to eq city.image_url
@@ -31,7 +30,6 @@ RSpec.feature "NativeFields", type: :feature do
     fill_in 'city[population]', with: 101
     find('[name="city[is_capital]"]').set(false)
     fill_in 'city[features]', with: "{\"hey\": \"features\"}"
-    find_field('metadata', visible: false, disabled: true).set("{\"hey\": \"metadata\"}")
 
     click_on "Save"
 
