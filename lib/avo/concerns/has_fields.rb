@@ -98,6 +98,10 @@ module Avo
             if item.is_field?
               fields << item
             end
+
+            if item.is_row?
+              fields << extract_fields_from_items(tab)
+            end
           end
 
           fields.flatten
@@ -117,7 +121,7 @@ module Avo
           thing.items.each do |item|
             if item.is_field?
               fields << item
-            elsif item.is_panel?
+            elsif item.is_panel? || item.is_row?
               fields << extract_fields_from_items(item)
             end
           end

@@ -215,14 +215,22 @@ module Avo
 
     def save_model
       perform_action_and_record_errors do
-        @model.save!
+        save_model_action
       end
+    end
+
+    def save_model_action
+      @model.save!
     end
 
     def destroy_model
       perform_action_and_record_errors do
-        @model.destroy!
+        destroy_model_action
       end
+    end
+
+    def destroy_model_action
+      @model.destroy!
     end
 
     def perform_action_and_record_errors(&block)
@@ -253,7 +261,7 @@ module Avo
     end
 
     def permitted_params
-      @resource.get_field_definitions.select(&:updatable).map(&:to_permitted_param).concat extra_params
+      @resource.get_field_definitions.select(&:updatable).map(&:to_permitted_param).concat(extra_params).uniq
     end
 
     def extra_params
