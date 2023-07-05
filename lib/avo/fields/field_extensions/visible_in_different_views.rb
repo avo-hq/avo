@@ -18,7 +18,7 @@ module Avo
         def visible_on?(view)
           raise "No view specified on visibility check." if view.blank?
 
-          send :"show_on_#{view.to_s}"
+          send :"show_on_#{view}"
         end
 
         def show_on(*where)

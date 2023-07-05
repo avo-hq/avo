@@ -63,32 +63,29 @@ class Avo::TabSwitcherComponent < Avo::BaseComponent
   # Because the developer hasn't specified that it should be visible on edit views (with the show_on: :edit option),
   # the field should not be visible in the item switcher either.
   def visible_items
-    tabs.select do |item|
-      visible = true
+    tabs.select do |tab|
+      next false if tab.items.blank?
+      next false if tab.is_field? && !tab.authorized?
+      next false if tab.has_a_single_item? && !single_item_visible?(tab.items.first)
+      next false if !tab.visible?
+      next false if !tab.visible_on?(view)
 
-      if item.items.blank?
-        visible = false
-      end
-
-      first_item = item.items.first
-      if item.items.count == 1 && first_item.is_field? && first_item.has_own_panel? && !first_item.visible_on?(view)
-        # Return nil if tab contians a has_many type of fields and it's hidden in current view
-        visible = false
-      end
-
-      if item.respond_to?(:visible_on?)
-        visible = item.visible_on? view
-      end
-
-      if item.respond_to?(:visible?)
-        visible = item.visible?
-      end
-
-      if item.respond_to?(:authorized?)
-        visible = item.authorized?
-      end
-
-      visible
+      true
     end
+  end
+
+  private
+
+  def single_item_visible?(item)
+    # Item is visible if is not a field or don't have its own panel
+    return true if !item.is_field?
+    return true if !item.has_own_panel?
+
+    return false if !item.visible_on?(view)
+
+    # If item is hydrated with the correct resource and is not authorized, it's not visible
+    return false if item.resource.present? && !item.authorized?
+
+    true
   end
 end
