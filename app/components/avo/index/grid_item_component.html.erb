@@ -13,7 +13,7 @@
     <% elsif cover.respond_to?(:to_image) && cover.to_image.present? %>
       <%= link_to_if cover.link_to_resource, image_tag(cover.to_image, class: 'absolute h-full w-full object-cover'), resource_view_path, class: 'absolute h-full w-full object-cover', title: title.value %>
     <% elsif cover.type == 'file' %>
-      <% if cover.value.attached? && cover.value.representable? %>
+      <% if cover.value&.attached? && cover.value.representable? %>
         <%= link_to_if cover.link_to_resource, image_tag(helpers.main_app.url_for(cover.value.variant(resize_to_limit: [480, 480])), class: 'absolute h-full w-full object-cover'), resource_view_path, class: 'absolute h-full w-full object-cover', title: title.value %>
       <% else %>
         <%= link_to resource_view_path do %>
