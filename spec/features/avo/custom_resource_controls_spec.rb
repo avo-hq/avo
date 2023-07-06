@@ -70,5 +70,25 @@ RSpec.feature "CustomResourceControls", type: :feature do
         expect(page).to have_link "", href: /\/admin\/resources\/fish\/#{fish.id}\/edit/
       end
     end
+
+    it "runs visible block on show controls actions" do
+      visit "/admin/resources/fish/#{fish.id}"
+
+      expect(page).to have_link "Release fish", href: /\/admin\/resources\/fish\/#{fish.id}\/actions\?action_id=ReleaseFish/
+
+      ReleaseFish.define_singleton_method(:visible) do
+        define_method(:visible) do
+          -> {
+            false
+          }
+        end
+      end
+
+      visit "/admin/resources/fish/#{fish.id}"
+
+      expect(page).not_to have_link "Release fish", href: /\/admin\/resources\/fish\/#{fish.id}\/actions\?action_id=ReleaseFish/
+
+      ReleaseFish.singleton_class.send(:undef_method, :visible)
+    end
   end
 end
