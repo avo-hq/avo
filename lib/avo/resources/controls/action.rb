@@ -14,7 +14,12 @@ module Avo
         end
 
         def action
-          @instance ||= @klass.new(model: @record, resource: @resource, view: @view)
+          @instance ||= @klass.new(
+            model: @record,
+            resource: @resource,
+            view: @view,
+            arguments: @resource.get_action_arguments(klass)
+          )
         end
 
         def path
