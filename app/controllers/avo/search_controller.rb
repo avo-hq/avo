@@ -182,9 +182,8 @@ module Avo
     def fetch_parent
       return unless params[:via_reflection_id].present?
 
-      parent_class = BaseResource.valid_model_class params[:via_reflection_class]
-
-      parent_class.find params[:via_reflection_id]
+      parent_resource = ::Avo::App.get_resource_by_model_name params[:via_reflection_class]
+      parent_resource.find_record params[:via_reflection_id], params: params
     end
   end
 end
