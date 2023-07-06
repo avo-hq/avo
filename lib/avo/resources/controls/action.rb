@@ -4,17 +4,22 @@ module Avo
       class Action < BaseControl
         attr_reader :klass
 
-        def initialize(klass, model: nil, resource: nil, view: nil, **args)
+        def initialize(klass, record: nil, resource: nil, view: nil, **args)
           super(**args)
 
           @klass = klass
           @resource = resource
-          @model = model
+          @record = record
           @view = view
         end
 
         def action
-          @instance ||= @klass.new(model: @model, resource: @resource, view: @view)
+          @instance ||= @klass.new(
+            model: @record,
+            resource: @resource,
+            view: @view,
+            arguments: @resource.get_action_arguments(klass)
+          )
         end
 
         def path
