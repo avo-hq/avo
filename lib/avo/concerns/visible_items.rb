@@ -27,11 +27,11 @@ module Avo
       end
 
       def visible(item)
-        if item.is_field?
-          item.visible? && item.visible_on?(view)
-        else
-          item.visible?
-        end
+        return item.visible? unless item.is_field?
+
+        return false if item.respond_to?(:authorized?) && item.resource.present? && !item.authorized?
+
+        item.visible? && item.visible_on?(view)
       end
 
       def visible?
