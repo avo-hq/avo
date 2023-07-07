@@ -3,13 +3,14 @@
 module Avo
   module Fields
     class LocationField < BaseField
-      attr_reader :stored_as
+      attr_reader :stored_as, :zoom
 
       def initialize(id, **args, &block)
         hide_on :index
         super(id, **args, &block)
 
         @stored_as = args[:stored_as].present? ? args[:stored_as] : nil # You can pass it an array of db columns [:latitude, :longitude]
+        @zoom = args[:zoom].present? ? args[:zoom].to_i : 15
       end
 
       def value_as_array?
