@@ -74,7 +74,7 @@ module Avo
         value.present?
       end
 
-      def fill_record(record:, value:)
+      def assign_value(record:, value:)
         return super if stored_as.blank?
 
         stored_as.each_with_index do |database_id, index|

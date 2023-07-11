@@ -404,7 +404,7 @@ module Avo
         end
 
       default_values.each do |field, value|
-        field.fill_record record: @model, value: value
+        field.assign_value record: @model, value: value
       end
     end
 
