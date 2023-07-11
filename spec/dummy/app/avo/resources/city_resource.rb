@@ -29,7 +29,7 @@ class CityResource < Avo::BaseResource
   }
 
   field :id, as: :id
-  field :coordinates, as: :location, stored_as: [:latitude, :longitude]
+  field :coordinates, as: :location, stored_as: [:latitude, :longitude], default: -> { {latitude: 12, longitude: 13} }
   field :city_center_area,
     as: :area,
     geometry: :polygon,

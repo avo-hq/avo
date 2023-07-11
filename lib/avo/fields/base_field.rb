@@ -205,6 +205,12 @@ module Avo
         model
       end
 
+      def hydrate_record(record:, resource:, id:, value:)
+        if record.send(id).nil?
+          record.send("#{id}=", value)
+        end
+      end
+
       def update_using(model, key, value, params)
         Avo::ExecutionContext.new(target: @update_using, model: model, key: key, value: value, resource: resource, field: self).handle
       end

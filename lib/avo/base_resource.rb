@@ -153,7 +153,6 @@ module Avo
     end
     alias_method :model, :record
 
-
     def hydrate(model: nil, view: nil, user: nil, params: nil)
       @view = view if view.present?
       @user = user if user.present?
@@ -372,7 +371,7 @@ module Avo
 
     # We will not overwrite any attributes that come pre-filled in the model.
     def hydrate_model_with_default_values
-      default_values = get_fields
+      default_values_for_fields = get_fields
         .select do |field|
           !field.computed
         end
@@ -398,18 +397,23 @@ module Avo
             end
           end
 
-          [id, value]
+          [id, {
+            field: field,
+            value: value,
+          }]
         end
         .to_h
-        .select do |id, value|
-          value.present?
+        .select do |id, item|
+          item[:value].present?
         end
 
-      default_values.each do |id, value|
-        if @model.send(id).nil?
-          @model.send("#{id}=", value)
-        end
+      default_values_for_fields.each do |id, item|
+        item[:field].fill_field(@model, id, item[:value], params: params)
       end
+      # if @model.send(id).nil?
+      #   @model.send("#{id}=", value)
+      # end
+    # end
     end
 
     def route_key
