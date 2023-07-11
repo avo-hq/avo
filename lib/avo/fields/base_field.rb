@@ -273,6 +273,12 @@ module Avo
         !is_readonly? && visible?
       end
 
+      def fill_record(record:, value:)
+        if record.send(database_id).nil?
+          record.send("#{database_id}=", value)
+        end
+      end
+
       private
 
       def model_or_class(model)
