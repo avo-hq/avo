@@ -273,6 +273,7 @@ module Avo
         !is_readonly? && visible?
       end
 
+      # Used by Avo to fill the record with the default value on :new and :edit views
       def assign_value(record:, value:)
         if record.send(database_id).nil?
           record.send("#{database_id}=", value)
