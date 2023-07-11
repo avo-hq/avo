@@ -6,6 +6,14 @@ RSpec.describe "LocationField", type: :system do
   describe "without value" do
     let(:city) { create :city, latitude: nil, longitude: nil }
 
+    context "new" do
+      it "shows empty location field" do
+        visit "/admin/resources/cities/new"
+
+        expect(find_field_element("coordinates")).to have_text ""
+      end
+    end
+
     context "show" do
       it "shows empty location field" do
         visit "/admin/resources/cities/#{city.id}"

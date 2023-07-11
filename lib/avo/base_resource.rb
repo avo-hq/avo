@@ -377,11 +377,9 @@ module Avo
           !field.computed
         end
         .map do |field|
-          id = field.id
           value = field.value
 
           if field.type == "belongs_to"
-            id = field.foreign_key.to_sym
 
             reflection = @model._reflections[@params[:via_relation]]
 
@@ -398,17 +396,15 @@ module Avo
             end
           end
 
-          [id, value]
+          [field, value]
         end
         .to_h
-        .select do |id, value|
+        .select do |_, value|
           value.present?
         end
 
-      default_values.each do |id, value|
-        if @model.send(id).nil?
-          @model.send("#{id}=", value)
-        end
+      default_values.each do |field, value|
+        field.assign_value record: @model, value: value
       end
     end
 

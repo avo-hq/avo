@@ -73,6 +73,14 @@ module Avo
 
         value.present?
       end
+
+      def assign_value(record:, value:)
+        return super if stored_as.blank?
+
+        stored_as.each_with_index do |database_id, index|
+          record.send("#{database_id}=", value[index])
+        end
+      end
     end
   end
 end
