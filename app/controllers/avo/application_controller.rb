@@ -31,6 +31,8 @@ module Avo
     helper_method :_current_user, :resources_path, :resource_path, :new_resource_path, :edit_resource_path, :resource_attach_path, :resource_detach_path, :related_resources_path, :turbo_frame_request?, :resource_view_path
     add_flash_types :info, :warning, :success, :error
 
+    layout :compute_turbo_frame_layout
+
     def init_app
       Avo::App.init request: request, context: context, current_user: _current_user, view_context: view_context, params: params
 
@@ -360,6 +362,17 @@ module Avo
     def set_sidebar_open
       value = cookies["#{Avo::COOKIES_KEY}.sidebar.open"]
       @sidebar_open = value.blank? || value == "1"
+    end
+
+    def compute_turbo_frame_layout
+      # return "avo/popover" if params[:avo_layout] == "popover"
+      # puts [" params[:turbo_frame].present?->",  params[:turbo_frame].present?].inspect
+      params[:turbo_frame].blank? ? nil : "application"
+      # if params[:turbo_frame].present?
+      #   nil
+      # else
+      #   "avo/application"
+      # end
     end
   end
 end

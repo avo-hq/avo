@@ -6,5 +6,11 @@
 <% if helpers.turbo_frame_request? %>
   <%= helpers.turbo_stream_action_tag :append, target: 'alerts', template: render(Avo::FlashAlertsComponent.new(flashes: helpers.flash)) %>
 <% end %>
-<%= content %>
+  <% if params[:avo_layout] == "popover" %>
+    <div class="absolute border-4 bg-white inset-auto bottom-0">
+  <% end %>
+  <%= content %>
+  <% if params[:avo_layout] == "popover" %>
+    </div>
+  <% end %>
 <% if name.present? %></turbo-frame><% end %>

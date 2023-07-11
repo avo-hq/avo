@@ -1,6 +1,7 @@
 import { Application } from '@hotwired/stimulus'
 import CourseResourceController from './avo_custom/course_resource_controller'
 import NestedForm from 'stimulus-rails-nested-form'
+import Popover from './avo_custom/popover_controller.js'
 
 // Use you own stimulus install
 const application = Application.start()
@@ -11,6 +12,7 @@ const application = Application.start()
 application.debug = window?.localStorage.getItem('avo.debug')
 application.register('course-resource', CourseResourceController)
 application.register('nested-form', NestedForm)
+application.register('stimulus-popover', Popover)
 
 // eslint-disable-next-line no-console
 console.log('Hi from Avo custom JS 👋')

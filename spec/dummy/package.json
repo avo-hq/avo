@@ -5,7 +5,9 @@
     "@hotwired/turbo-rails": "^7.0.0-beta.2",
     "@rails/actioncable": "^6.0.0",
     "@rails/activestorage": "^6.0.0",
+    "@rails/request.js": "^0.0.8",
     "@rails/ujs": "^6.0.0",
+    "stimulus-popover": "^6.2.0",
     "stimulus-rails-nested-form": "^4.0.0"
   },
   "version": "0.1.0",

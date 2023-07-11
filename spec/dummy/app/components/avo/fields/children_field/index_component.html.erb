@@ -1,0 +1,11 @@
+<%= index_field_wrapper **field_wrapper_args, dash_if_blank: false do %>
+<div data-controller="stimulus-popover" data-stimulus-popover-url-value="/admin/resources/teams/3/memberships?turbo_frame=<%= "popover_#{@resource.record.id}" %>&avo_layout=popover" data-stimulus-popover-turbo-frame-value="popover">
+  <div data-action="click->stimulus-popover#show moeuseleave->stimulus-popover#hide">profile card</div>
+<div data-stimulus-popover-target="container"></div>
+  <%#= turbo_frame_tag :"popover_#{@resource.record.id}" %>
+</div>
+<%# 123123 %>
+  <%# <turbo-frame id="has_many_field_show_memberships" src="http://localhost:3030/admin/resources/teams/3/memberships?turbo_frame=has_many_field_show_memberships" target="_top" class="block" complete=""></turbo-frame> %>
+<%= @field.value %>
+
+<% end %>
