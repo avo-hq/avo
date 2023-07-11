@@ -40,16 +40,23 @@ module Avo
         end
       end
 
+      # Fills field
       def fill_field(model, key, value, params)
-        if value_as_array?
-          latitude_field, longitude_field = stored_as
-          model.send("#{latitude_field}=", value[latitude_field])
-          model.send("#{longitude_field}=", value[longitude_field])
-          model
-        else
+        # if value_as_array?
+        #   latitude_field, longitude_field = stored_as
+        #   model.send("#{latitude_field}=", value[latitude_field])
+        #   model.send("#{longitude_field}=", value[longitude_field])
+        #   model
+        # else
           super(model, key, value.split(","), params)
-        end
+        # end
       end
+
+      # def hydrate_record(record:, resource:, id:, value:)
+      #   if record.send(id).nil?
+      #     record.send("#{id}=", value)
+      #   end
+      # end
 
       def to_permitted_param
         if value_as_array?
