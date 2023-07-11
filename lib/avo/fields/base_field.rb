@@ -273,6 +273,7 @@ module Avo
         !is_readonly? && visible?
       end
 
+      # Used by Avo to fill the model on :new and :edit views
       def fill_record(record:, value:)
         if record.send(database_id).nil?
           record.send("#{database_id}=", value)
