@@ -37,8 +37,8 @@ class Avo::ResourceComponent < Avo::BaseComponent
     @resource.authorization.authorize_action(:destroy, raise_exception: false)
   end
 
-  def can_see_the_actions_button?
-    return false if @actions.blank?
+  def can_see_the_actions_button?(check_for_controls: false)
+    return false if @actions.blank? && !check_for_controls
 
     return authorize_association_for(:act_on) if @reflection.present?
 
