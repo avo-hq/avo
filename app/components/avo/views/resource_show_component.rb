@@ -46,7 +46,7 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
   end
 
   def render_action_control?(action)
-    can_see_the_actions_button?(check_for_controls: true) && action.visible_in_view(parent_resource: @parent_resource)
+    can_act_on? && action.visible_in_view(parent_resource: @parent_resource)
   end
 
   private
