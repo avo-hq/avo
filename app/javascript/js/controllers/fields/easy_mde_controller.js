@@ -20,6 +20,7 @@ export default class extends Controller {
     const options = {
       element: this.elementTarget,
       spellChecker: this.componentOptions.spell_checker,
+      autoRefresh: { delay: 500},
     }
 
     if (this.view === 'show') {
