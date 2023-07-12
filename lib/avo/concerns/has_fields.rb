@@ -294,8 +294,10 @@ module Avo
         panelfull_items.grep(Avo::TabGroup).each do |tab_group|
           tab_group.items.grep(Avo::Tab).each do |tab|
             tab.items.grep(Avo::Panel).each do |panel|
-              panel.items.grep(Avo::Fields::BelongsToField).each do |field|
-                field.target = :_top
+              set_target_to_top panel.items.grep(Avo::Fields::BelongsToField)
+
+              panel.items.grep(Avo::Row).each do |row|
+                set_target_to_top row.items.grep(Avo::Fields::BelongsToField)
               end
             end
           end
@@ -314,6 +316,12 @@ module Avo
       end
 
       private
+
+      def set_target_to_top(fields)
+        fields.each do |field|
+          field.target = :_top
+        end
+      end
 
       def check_license
         if !Rails.env.production? && App.license.present? && App.license.lacks(:resource_tools)
