@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    avo (2.36.1)
+    avo (2.36.2)
       actionview (>= 6.0)
       active_link_to
       activerecord (>= 6.0)
@@ -266,6 +266,8 @@ GEM
     nio4r (2.5.9)
     nokogiri (1.14.3-arm64-darwin)
       racc (~> 1.4)
+    nokogiri (1.14.3-x86_64-linux)
+      racc (~> 1.4)
     orm_adapter (0.5.0)
     pagy (6.0.4)
     parallel (1.22.1)
@@ -416,7 +418,7 @@ GEM
       concurrent-ruby (~> 1.0)
     unaccent (0.4.0)
     unicode-display_width (2.4.2)
-    view_component (3.3.0)
+    view_component (3.4.0)
       activesupport (>= 5.2.0, < 8.0)
       concurrent-ruby (~> 1.0)
       method_source (~> 1.0)
@@ -445,6 +447,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-22
+  x86_64-linux
 
 DEPENDENCIES
   active_link_to
