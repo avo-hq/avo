@@ -16,7 +16,7 @@
           <%= t('avo.attach_item', item: singular_resource_name).capitalize %>
         <% end %>
       <% end %>
-      <% if can_see_the_actions_button? %>
+      <% if can_act_on? %>
         <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>
       <% end %>
       <% if can_see_the_create_button? %>

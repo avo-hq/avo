@@ -45,6 +45,10 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
     helpers.edit_resource_path(model: @resource.model, resource: @resource, **args)
   end
 
+  def render_action_control?(action)
+    can_act_on? && action.visible_in_view(parent_resource: @parent_resource)
+  end
+
   private
 
   # In development and test environments we shoudl show the invalid field errors
