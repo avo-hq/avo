@@ -7,7 +7,7 @@ module Avo
     before_action :set_model, only: [:destroy, :create]
 
     def create
-      blob = ActiveStorage::Blob.create_and_upload! io: params[:file], filename: params[:filename]
+      blob = ActiveStorage::Blob.create_and_upload! io: params[:file].to_io, filename: params[:filename]
       association_name = BaseResource.valid_attachment_name(@model, params[:attachment_key])
 
       if association_name.blank?
