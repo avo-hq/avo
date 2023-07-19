@@ -10,10 +10,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   end
 
   def can_detach?
-    @reflection.present? &&
-      @resource.model.present? &&
-      is_has_many_association &&
-      authorize_association_for(:detach)
+    is_has_many_association ? super : false
   end
 
   def can_edit?

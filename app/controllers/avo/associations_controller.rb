@@ -81,7 +81,7 @@ module Avo
       association_name = BaseResource.valid_association_name(@model, params[:related_name])
 
       if reflection_class == "HasManyReflection"
-        @model.send(association_name).delete @attachment_model
+        @model.send(association_name).destroy @attachment_model
       else
         @model.send("#{association_name}=", nil)
       end
