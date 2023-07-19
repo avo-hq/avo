@@ -20,7 +20,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def can_detach?
-    return false if @reflection.blank? && @resource.model.blank? && !authorize_association_for(:detach)
+    return false if @reflection.blank? || @resource.model.blank? || !authorize_association_for(:detach)
 
     # If the inverse_of is a belongs_to, we need to check if it's optional in order to know if we can detach it.
     if @reflection.inverse_of.is_a?(ActiveRecord::Reflection::BelongsToReflection)
