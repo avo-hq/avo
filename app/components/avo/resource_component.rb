@@ -22,10 +22,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   def can_detach?
     return false if @reflection.blank? || @resource.model.blank? || !authorize_association_for(:detach)
 
-    # Check if the inverse_of is defined on the model, except for HABTM relationships.
-    if !@reflection.parent_reflection.is_a?(ActiveRecord::Reflection::HasAndBelongsToManyReflection) && @reflection.inverse_of.blank?
-      raise "Failed to fetch the 'inverse_of' for ':#{@reflection.name}' relationship. Please define it on '#{@reflection.active_record.name}' model."
-    end
+    alert_unless_inverse_of_is_defined
 
     # If the inverse_of is a belongs_to, we need to check if it's optional in order to know if we can detach it.
     if @reflection.inverse_of.is_a?(ActiveRecord::Reflection::BelongsToReflection)
@@ -136,6 +133,13 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   private
+
+  def alert_unless_inverse_of_is_defined
+    # Check if the inverse_of is defined on the model, except for HABTM relationships.
+    if !@reflection.parent_reflection.is_a?(ActiveRecord::Reflection::HasAndBelongsToManyReflection) && @reflection.inverse_of.blank?
+      raise "Failed to fetch the 'inverse_of' for ':#{@reflection.name}' relationship. Please define it on '#{@reflection.active_record.name}' model."
+    end
+  end
 
   def via_resource?
     (params[:via_resource_class].present? || params[:via_relation_class].present?) && params[:via_resource_id].present?
