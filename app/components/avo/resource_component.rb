@@ -22,11 +22,9 @@ class Avo::ResourceComponent < Avo::BaseComponent
   def can_detach?
     return false if @reflection.blank? || @resource.model.blank? || !authorize_association_for(:detach)
 
-    alert_unless_inverse_of_is_defined
-
     # If the inverse_of is a belongs_to, we need to check if it's optional in order to know if we can detach it.
-    if @reflection.inverse_of.is_a?(ActiveRecord::Reflection::BelongsToReflection)
-      @reflection.inverse_of.options[:optional]
+    if inverse_of.is_a?(ActiveRecord::Reflection::BelongsToReflection)
+      inverse_of.options[:optional]
     else
       true
     end
@@ -134,15 +132,6 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
   private
 
-  # Check if the inverse_of is defined on the model, except for HABTM relationships.
-  def alert_unless_inverse_of_is_defined
-    return if @reflection.parent_reflection.is_a?(ActiveRecord::Reflection::HasAndBelongsToManyReflection)
-
-    if @reflection.inverse_of.blank?
-      raise "Failed to fetch the 'inverse_of' for ':#{@reflection.name}' relationship. Please define it on '#{@reflection.active_record.name}' model."
-    end
-  end
-
   def via_resource?
     (params[:via_resource_class].present? || params[:via_relation_class].present?) && params[:via_resource_id].present?
   end
@@ -153,5 +142,18 @@ class Avo::ResourceComponent < Avo::BaseComponent
     end
 
     item&.hydrate(view: view)
+  end
+
+  def inverse_of
+    @inverse_of ||= @reflection.active_record.reflect_on_all_associations.find do |reflection|
+      reflection.name == @reflection.name.to_sym
+    end&.inverse_of
+
+    if @inverse_of.blank?
+      raise "Failed to fetch the 'inverse_of' for ':#{@reflection.name}' association on '#{@reflection.active_record.name}' model while rendering the ':#{field.id}' field on the '#{@parent_resource.class}' resource.\n" \
+      "Please configure the 'inverse_of' option for the ':#{@reflection.name}' association on the '#{@reflection.active_record.name}' model."
+    end
+
+    @inverse_of
   end
 end
