@@ -134,9 +134,11 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
   private
 
+  # Check if the inverse_of is defined on the model, except for HABTM relationships.
   def alert_unless_inverse_of_is_defined
-    # Check if the inverse_of is defined on the model, except for HABTM relationships.
-    if !@reflection.parent_reflection.is_a?(ActiveRecord::Reflection::HasAndBelongsToManyReflection) && @reflection.inverse_of.blank?
+    return if @reflection.parent_reflection.is_a?(ActiveRecord::Reflection::HasAndBelongsToManyReflection)
+
+    if @reflection.inverse_of.blank?
       raise "Failed to fetch the 'inverse_of' for ':#{@reflection.name}' relationship. Please define it on '#{@reflection.active_record.name}' model."
     end
   end
