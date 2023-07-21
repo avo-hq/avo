@@ -10,7 +10,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   end
 
   def can_detach?
-    is_has_many_association ? super : false
+    is_has_many_association? ? super : false
   end
 
   def can_edit?
@@ -76,7 +76,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     ::Avo::App.get_resource_by_model_name @parent_model.class
   end
 
-  def is_has_many_association
+  def is_has_many_association?
     @reflection.is_a?(::ActiveRecord::Reflection::HasManyReflection) || @reflection.is_a?(::ActiveRecord::Reflection::ThroughReflection)
   end
 
