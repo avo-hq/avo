@@ -145,15 +145,17 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def inverse_of
-    @inverse_of ||= @reflection.active_record.reflect_on_all_associations.find do |reflection|
+    current_reflection = @reflection.active_record.reflect_on_all_associations.find do |reflection|
       reflection.name == @reflection.name.to_sym
-    end&.inverse_of
-
-    if @inverse_of.blank?
-      raise "Failed to fetch the 'inverse_of' for ':#{@reflection.name}' association on '#{@reflection.active_record.name}' model while rendering the ':#{field.id}' field on the '#{@parent_resource.class}' resource.\n" \
-      "Please configure the 'inverse_of' option for the ':#{@reflection.name}' association on the '#{@reflection.active_record.name}' model."
     end
 
-    @inverse_of
+    inverse_of = current_reflection.inverse_of
+
+    if inverse_of.blank?
+      # Please configure the 'inverse_of' option for the ':users' association on the 'Project' model.
+      raise "Please configure the 'inverse_of' option for the '#{current_reflection.macro} :#{current_reflection.name}' association on the '#{current_reflection.active_record.name}' model."
+    end
+
+    inverse_of
   end
 end
