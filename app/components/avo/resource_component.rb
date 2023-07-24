@@ -20,7 +20,14 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def can_detach?
-    authorize_association_for(:detach)
+    return false if @reflection.blank? || @resource.model.blank? || !authorize_association_for(:detach)
+
+    # If the inverse_of is a belongs_to, we need to check if it's optional in order to know if we can detach it.
+    if inverse_of.is_a?(ActiveRecord::Reflection::BelongsToReflection)
+      inverse_of.options[:optional]
+    else
+      true
+    end
   end
 
   def detach_path
@@ -135,5 +142,20 @@ class Avo::ResourceComponent < Avo::BaseComponent
     end
 
     item&.hydrate(view: view)
+  end
+
+  def inverse_of
+    current_reflection = @reflection.active_record.reflect_on_all_associations.find do |reflection|
+      reflection.name == @reflection.name.to_sym
+    end
+
+    inverse_of = current_reflection.inverse_of
+
+    if inverse_of.blank?
+      # Please configure the 'inverse_of' option for the ':users' association on the 'Project' model.
+      raise "Please configure the 'inverse_of' option for the '#{current_reflection.macro} :#{current_reflection.name}' association on the '#{current_reflection.active_record.name}' model."
+    end
+
+    inverse_of
   end
 end

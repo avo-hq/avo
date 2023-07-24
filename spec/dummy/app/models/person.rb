@@ -12,7 +12,8 @@
 #
 class Person < ApplicationRecord
   belongs_to :user, optional: true
-  has_many :spouses, foreign_key: :person_id
-  has_many :relatives, foreign_key: :person_id, class_name: "Person"
-  has_many :peoples, foreign_key: :person_id, class_name: "Person"
+  belongs_to :person, foreign_key: :person_id, optional: true
+  has_many :spouses, foreign_key: :person_id, inverse_of: :person
+  has_many :relatives, foreign_key: :person_id, class_name: "Person", inverse_of: :person
+  has_many :peoples, foreign_key: :person_id, class_name: "Person", inverse_of: :person
 end

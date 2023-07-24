@@ -26,7 +26,7 @@ class Project < ApplicationRecord
 
   has_many :comments, as: :commentable
   has_many :reviews, as: :reviewable
-  has_and_belongs_to_many :users
+  has_and_belongs_to_many :users, inverse_of: :projects
 
   default_scope { order(name: :asc) }
 end
