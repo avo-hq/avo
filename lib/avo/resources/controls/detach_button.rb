@@ -5,7 +5,7 @@ module Avo
         def initialize(**args)
           super(**args)
 
-          @label = I18n.t("avo.detach_item", item: title).capitalize
+          @label = I18n.t("avo.detach_item", item: title).humanize
         end
       end
     end

@@ -9,7 +9,7 @@
     <%= link_to helpers.svg('eye', class: button_classes),
       show_path,
       class: 'flex items-center',
-      title: t('avo.view_item', item: singular_resource_name).capitalize,
+      title: t('avo.view_item', item: singular_resource_name).humanize,
       data: {
         target: 'control:view',
         control: :show,
@@ -22,7 +22,7 @@
     <%= link_to helpers.svg('edit', class: button_classes),
       edit_path,
       class: 'flex items-center',
-      title: t('avo.edit_item', item: singular_resource_name).capitalize,
+      title: t('avo.edit_item', item: singular_resource_name).humanize,
       data: {
         target: 'control:edit',
         control: :edit,
@@ -41,7 +41,7 @@
         'data-turbo-frame': params[:turbo_frame]
       } do |form| %>
       <%= form.button helpers.svg('detach', class: button_classes),
-        title: t('avo.detach_item', item: singular_resource_name).capitalize,
+        title: t('avo.detach_item', item: singular_resource_name).humanize,
         type: :submit,
         data: {
           target: 'control:detach',
@@ -65,7 +65,7 @@
         'data-turbo-frame': params[:turbo_frame]
       } do |form| %>
       <%= form.button helpers.svg('trash', class: button_classes),
-        title: t('avo.delete_item',  item: singular_resource_name).capitalize,
+        title: t('avo.delete_item',  item: singular_resource_name).humanize,
         type: :submit,
         data: {
           target: 'control:destroy',

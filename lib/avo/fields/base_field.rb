@@ -124,7 +124,7 @@ module Avo
         return @name if custom_name?
 
         if translation_key && ::Avo::App.translation_enabled
-          t(translation_key, count: 1, default: default_name).capitalize
+          t(translation_key, count: 1, default: default_name).humanize
         else
           default_name
         end
@@ -134,7 +134,7 @@ module Avo
         default = name.pluralize
 
         if translation_key && ::Avo::App.translation_enabled
-          t(translation_key, count: 2, default: default).capitalize
+          t(translation_key, count: 2, default: default).humanize
         else
           default
         end

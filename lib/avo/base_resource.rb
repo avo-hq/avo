@@ -263,7 +263,7 @@ module Avo
       return @name if @name.present?
 
       if translation_key && ::Avo::App.translation_enabled
-        t(translation_key, count: 1, default: default).capitalize
+        t(translation_key, count: 1, default: default).humanize
       else
         default
       end
@@ -277,7 +277,7 @@ module Avo
       default = name.pluralize
 
       if translation_key && ::Avo::App.translation_enabled
-        t(translation_key, count: 2, default: default).capitalize
+        t(translation_key, count: 2, default: default).humanize
       else
         default
       end
