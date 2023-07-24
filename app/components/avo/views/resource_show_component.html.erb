@@ -109,7 +109,7 @@
                 data: {
                   confirm: "Are you sure you want to detach this #{title}."
                 } do %>
-              <%= t('avo.detach_item', item: title).capitalize %>
+              <%= t('avo.detach_item', item: title).humanize %>
             <% end %>
           <% end %>
           <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>

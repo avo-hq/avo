@@ -13,7 +13,7 @@
           style: :text,
           'data-turbo-frame': 'attach_modal',
           'data-target': 'attach' do %>
-          <%= t('avo.attach_item', item: singular_resource_name).capitalize %>
+          <%= t('avo.attach_item', item: singular_resource_name).humanize %>
         <% end %>
       <% end %>
       <% if can_act_on? %>
@@ -25,7 +25,7 @@
           'data-target': 'create',
           style: :primary,
           color: :primary do %>
-          <%= t('avo.create_new_item', item: singular_resource_name.downcase ) %>
+          <%= t('avo.create_new_item', item: singular_resource_name.humanize(capitalize: false) ) %>
         <% end %>
       <% end %>
     <% end %>
