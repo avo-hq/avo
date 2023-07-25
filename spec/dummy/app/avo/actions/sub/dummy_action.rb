@@ -11,6 +11,18 @@ class Sub::DummyAction < Avo::BaseAction
 
   field :keep_modal_open, as: :boolean
   field :persistent_text, as: :text
+  field :parent_id,
+    as: :hidden,
+    default: -> do
+      # get_id(Avo::App.request.referer) # strip the id from the referer string
+      1
+    end
+  field :parent_type,
+    as: :hidden,
+    default: -> do
+      # get_type(Avo::App.request.referer) # strip the type from the referer string
+      "users"
+    end
 
   def handle(**args)
     # Test keep modal open
