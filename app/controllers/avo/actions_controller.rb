@@ -55,7 +55,7 @@ module Avo
         model: @model,
         resource: @resource,
         user: _current_user,
-        view: @view,
+        view: :new, # force the action view to in order to render new-related fields (hidden field)
         arguments: @resource.get_action_arguments(action_class)
       )
     end
