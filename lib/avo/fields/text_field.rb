@@ -3,6 +3,7 @@ module Avo
     class TextField < BaseField
       attr_reader :link_to_resource
       attr_reader :as_html
+      attr_reader :url
       attr_reader :protocol
 
       def initialize(id, **args, &block)
@@ -10,6 +11,7 @@ module Avo
 
         add_boolean_prop args, :link_to_resource
         add_boolean_prop args, :as_html
+        add_boolean_prop args, :url
         add_string_prop args, :protocol
       end
     end

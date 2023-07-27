@@ -1,6 +1,8 @@
 <%= index_field_wrapper **field_wrapper_args do %>
   <% if @field.as_html %>
     <%== @field.value %>
+  <% elsif @field.url.present? %>
+    <%= link_to @field.value, @field.value, target: "_blank" %>
   <% elsif @field.protocol.present? %>
     <%= link_to @field.value, "#{@field.protocol}:#{@field.value}" %>
   <% else %>
