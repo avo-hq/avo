@@ -245,8 +245,9 @@ module Avo
 
         reflection_key = polymorphic_as || id
 
-        if @model._reflections[reflection_key.to_s].klass.present?
-          App.get_resource_by_model_name @model._reflections[reflection_key.to_s].klass.to_s
+        klass = @model._reflections[reflection_key.to_s].klass
+        if klass.present?
+          App.get_resource_by_model_name(klass.to_s) || App.get_resource_by_name(klass.name)
         elsif @model._reflections[reflection_key.to_s].options[:class_name].present?
           App.get_resource_by_model_name @model._reflections[reflection_key.to_s].options[:class_name]
         else
