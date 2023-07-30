@@ -4,11 +4,12 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   include Avo::ResourcesHelper
   include Avo::ApplicationHelper
 
-  def initialize(resource: nil, model: nil, actions: [], view: :edit)
+  def initialize(resource: nil, model: nil, actions: [], view: :edit, display_breadcrumbs: true)
     @resource = resource
     @model = model
     @actions = actions
     @view = view
+    @display_breadcrumbs = display_breadcrumbs
   end
 
   def title
@@ -16,6 +17,7 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   end
 
   def back_path
+    return resource_edit_or_new_path if via_belongs_to?
     return resource_view_path if via_resource?
     return resources_path if via_index?
 
@@ -34,6 +36,23 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
     helpers.resource_view_path(model: association_resource.model, resource: association_resource)
   end
 
+  def resource_edit_or_new_path
+    modal_id = "new_via_belongs_to"
+
+    if params[:via_resource_id].present?
+      # Back to edit path with param indicating turbo stream should simply close modal
+      related_resource = params[:via_belongs_to_resource_class].constantize.new
+      related_record = related_resource.model_class.find(params[:via_resource_id])
+      helpers.edit_resource_path(resource: related_resource,
+                                 model: related_record,
+                                 close_modal: modal_id)
+    else
+      # Back to new path with param indicating turbo stream should close modal
+      helpers.new_resource_path(resource: @resource,
+                                close_modal: modal_id)
+    end
+  end
+
   def can_see_the_destroy_button?
     return super if is_edit? && Avo.configuration.resource_default_view == :edit
 
@@ -46,10 +65,18 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
     @resource.authorization.authorize_action @view, raise_exception: false
   end
 
+  def display_breadcrumbs?
+    @reflection.blank? && @display_breadcrumbs
+  end
+
   private
 
   def via_index?
     params[:via_view] == "index"
+  end
+
+  def via_belongs_to?
+    params[:via_belongs_to_resource_class].present?
   end
 
   def is_edit?
