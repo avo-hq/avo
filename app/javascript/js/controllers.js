@@ -21,6 +21,7 @@ import ModalController from './controllers/modal_controller'
 import MultipleSelectFilterController from './controllers/multiple_select_filter_controller'
 import PerPageController from './controllers/per_page_controller'
 import ProgressBarFieldController from './controllers/fields/progress_bar_field_controller'
+import ReloadBelongsToFieldController from './controllers/fields/reload_belongs_to_field_controller'
 import ResourceEditController from './controllers/resource_edit_controller'
 import ResourceIndexController from './controllers/resource_index_controller'
 import ResourceShowController from './controllers/resource_show_controller'
@@ -70,6 +71,7 @@ application.register('date-field', DateFieldController)
 application.register('easy-mde', EasyMdeController)
 application.register('key-value', KeyValueController)
 application.register('progress-bar-field', ProgressBarFieldController)
+application.register("reload-belongs-to-field", ReloadBelongsToFieldController)
 application.register('trix-field', TrixFieldController)
 
 // Custom controllers
