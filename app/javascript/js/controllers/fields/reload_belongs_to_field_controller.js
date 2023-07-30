@@ -16,11 +16,18 @@ export default class extends Controller {
 
         if (this.polymorphicValue) {
         } else {
-          // Update the id component
-          document.querySelector(`input[name="${this.targetNameValue}"][type="hidden"]`).value = targetResourceId
           if (this.searchableValue) {
+            // Update the id component
+            document.querySelector(`input[name="${this.targetNameValue}"][type="hidden"]`).value = targetResourceId
             // Update the label
             document.querySelector(`input[name="${this.targetNameValue}"][type="text"]`).value = targetResourceLabel
+          } else{
+            const select = document.querySelector(`select[name="${this.targetNameValue}"]`)
+            const option = document.createElement('option')
+            option.value = targetResourceId
+            option.text = targetResourceLabel
+            option.selected = true
+            select.appendChild(option)
           }
         }
 

@@ -118,7 +118,7 @@
             <%= @form.hidden_field @field.id_input_foreign_key %>
           <% end %>
         <% end %>
-        <% if !disabled %>
+        <% if !disabled && create_path.present? %>
           <%= link_to t("avo.create_new_item", item: @field.name.downcase), create_path, class: "text-sm" %>
         <% end %>
       </div>

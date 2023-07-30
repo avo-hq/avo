@@ -58,6 +58,8 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
   end
 
   def create_path
+    return nil if @resource.blank?
+
     helpers.new_resource_path(**{
       via_relation: @field.id.to_s,
       resource: @field.target_resource,
