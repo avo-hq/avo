@@ -1,0 +1,11 @@
+<%= turbo_frame_tag "new_via_belongs_to" do %>
+  <%= render(Avo::ModalComponent.new) do |c| %>
+    <% c.with_controls do %>
+      <%= render Avo::Views::ResourceEditComponent.new(resource: @resource,
+                                                       model: @model,
+                                                       view: @view,
+                                                       display_breadcrumbs: false
+      ) %>
+    <% end %>
+  <% end %>
+<% end %>

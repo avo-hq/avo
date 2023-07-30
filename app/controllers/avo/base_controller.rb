@@ -107,6 +107,13 @@ module Avo
       @model = @resource.model_class.new
       @resource = @resource.hydrate(model: @model, view: :new, user: _current_user)
 
+      # Handle special cases when creating a new record via a belongs_to relationship
+      if params[:via_belongs_to_resource_class].present?
+        return render turbo_stream: turbo_stream.append('attach_modal', partial: 'avo/base/new_via_belongs_to')
+      elsif params[:close_modal].present?
+        return render turbo_stream: turbo_stream.remove(params[:close_modal])
+      end
+
       set_actions
 
       @page_title = @resource.default_panel_name.to_s
@@ -130,7 +137,7 @@ module Avo
       @resource.hydrate(model: @model, view: :new, user: _current_user)
 
       # This means that the record has been created through another parent record and we need to attach it somehow.
-      if params[:via_resource_id].present?
+      if params[:via_resource_id].present? && params[:via_belongs_to_resource_class].nil?
         @reflection = @model._reflections[params[:via_relation]]
         # Figure out what kind of association does the record have with the parent record
 
@@ -172,6 +179,10 @@ module Avo
     end
 
     def edit
+      if params[:close_modal].present?
+        return render turbo_stream: turbo_stream.remove(params[:close_modal])
+      end
+
       set_actions
     end
 
@@ -420,6 +431,27 @@ module Avo
     end
 
     def create_success_action
+      if params[:via_belongs_to_resource_class].present?
+        @via_belongs_to_resource = Avo::App.get_resource(params[:via_belongs_to_resource_class]).dup
+        @via_belongs_to_model = if params[:via_resource_id].present?
+                                  @via_belongs_to_resource.model_class.find(params[:via_resource_id])
+                                else
+                                  @via_belongs_to_resource.model_class.new
+                                end
+
+        @via_belongs_to_model.send("#{params[:via_relation]}=", @model)
+        @via_belongs_to_resource = @via_belongs_to_resource.hydrate model: @via_belongs_to_model,
+                                                                    user: current_user
+
+        @via_belongs_to_field = @via_belongs_to_resource.get_field_definitions.find { |field| field.id.to_s == params[:via_relation] }
+        @via_belongs_to_field = @via_belongs_to_field.hydrate(model: @via_belongs_to_model,
+                                                              resource: @via_belongs_to_resource,
+                                                              user: @resource.user,
+                                                              view: :edit)
+
+        return render "close_modal_and_reload_field"
+      end
+
       respond_to do |format|
         format.html { redirect_to after_create_path, notice: create_success_message}
       end
@@ -429,6 +461,7 @@ module Avo
       respond_to do |format|
         flash.now[:error] = create_fail_message
         format.html { render :new, status: :unprocessable_entity }
+        format.turbo_stream { render partial: "avo/partials/keep_modal_open" }
       end
     end
 

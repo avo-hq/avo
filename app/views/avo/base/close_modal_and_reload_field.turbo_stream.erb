@@ -1,0 +1,8 @@
+<%= turbo_stream.remove("new_via_belongs_to") %>
+
+<turbo-stream action="update-belongs-to"
+              data-relation-name="<%= params[:via_relation] %>"
+              data-target-resource-id="<%= @model.id %>"
+              data-target-resource-label="<%= @resource.label %>"
+              data-target-resource-class="<%= @model.class.name %>">
+</turbo-stream>
