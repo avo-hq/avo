@@ -1,5 +1,4 @@
 require_relative "named_base_generator"
-require "avo"
 
 module Generators
   module Avo
