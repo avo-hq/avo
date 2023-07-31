@@ -9,32 +9,43 @@ export default class extends Controller {
   }
 
   beforeStreamRender(event) {
-    const { relationName, targetResourceId, targetResourceLabel, targetResourceClass } = event.target.dataset
-
+    const { relationName } = event.target.dataset
     if (event.target.action !== "update-belongs-to" || this.relationNameValue !== relationName) {
       return false;
     }
 
     event.detail.render = (stream) => {
       if (this.searchableValue) {
-        // Update the id component
-        document.querySelector(`input[name="${this.targetNameValue}"][type="hidden"]`).value = targetResourceId
-        // Update the label
-        document.querySelector(`input[name="${this.targetNameValue}"][type="text"]`).value = targetResourceLabel
+        this.updateSearchable(stream)
       } else{
-        let searchContext = document;
-        // if polymorphic, search for the select in the correct sub-container
-        if (this.polymorphicValue) {
-          searchContext = document.querySelector(`[data-type="${targetResourceClass}"]`)
-        }
-
-        const select = searchContext.querySelector(`select[name="${this.targetNameValue}"]`)
-        const option = document.createElement('option')
-        option.value = targetResourceId
-        option.text = targetResourceLabel
-        option.selected = true
-        select.appendChild(option)
+        this.updateNonSearchable(stream)
       }
     };
+  }
+
+  updateSearchable(stream) {
+    // Update the id component
+    document.querySelector(`input[name="${this.targetNameValue}"][type="hidden"]`).value = stream.dataset.targetResourceId
+    // Update the label
+    document.querySelector(`input[name="${this.targetNameValue}"][type="text"]`).value = stream.dataset.targetResourceLabel
+  }
+
+  updateNonSearchable(stream) {
+    const select = this.selectorContext(stream).querySelector(`select[name="${this.targetNameValue}"]`)
+    const option = document.createElement('option')
+    option.value = stream.dataset.targetResourceId
+    option.text = stream.dataset.targetResourceLabel
+    option.selected = true
+    select.appendChild(option)
+  }
+
+  selectorContext(stream) {
+    let context = document;
+    // if polymorphic, search for the select in the correct sub-container
+    if (this.polymorphicValue) {
+      context = document.querySelector(`[data-type="${stream.dataset.targetResourceClass}"]`)
+    }
+
+    return context
   }
 }
