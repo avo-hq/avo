@@ -40,12 +40,11 @@ export default class extends Controller {
   }
 
   selectorContext(stream) {
-    let context = document;
     // if polymorphic, search for the select in the correct sub-container
     if (this.polymorphicValue) {
-      context = document.querySelector(`[data-type="${stream.dataset.targetResourceClass}"]`)
+      return document.querySelector(`[data-type="${stream.dataset.targetResourceClass}"]`)
     }
 
-    return context
+    return document
   }
 }
