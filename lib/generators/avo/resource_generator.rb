@@ -1,8 +1,11 @@
 require_relative "named_base_generator"
+require_relative "concerns/parent_controller"
 
 module Generators
   module Avo
     class ResourceGenerator < NamedBaseGenerator
+      include Generators::Avo::Concerns::ParentController
+
       source_root File.expand_path("templates", __dir__)
 
       namespace "avo:resource"
@@ -12,18 +15,9 @@ module Generators
         type: :string,
         required: false
 
-      class_option "parent-controller",
-        desc: "The name of the parent controller.",
-        type: :string,
-        required: false
-
       def create
         template "resource/resource.tt", "app/avo/resources/#{resource_name}.rb"
         template "resource/controller.tt", "app/controllers/avo/#{controller_name}.rb"
-      end
-
-      def parent_controller
-        options["parent-controller"] || ::Avo.configuration.parent_controller
       end
 
       def resource_class

@@ -1,8 +1,11 @@
 require_relative "named_base_generator"
+require_relative "concerns/parent_controller"
 
 module Generators
   module Avo
     class ControllerGenerator < NamedBaseGenerator
+      include Generators::Avo::Concerns::ParentController
+
       source_root File.expand_path("templates", __dir__)
 
       namespace "avo:controller"
