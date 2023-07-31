@@ -195,3 +195,6 @@ require "support/js_error_detector"
 require "support/devise"
 require "support/shared_contexts"
 require "support/timezone"
+
+# https://github.com/titusfortner/webdrivers/issues/247
+Webdrivers::Chromedriver.required_version = "114.0.5735.90"

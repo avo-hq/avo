@@ -151,9 +151,11 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
     inverse_of = current_reflection.inverse_of
 
-    if inverse_of.blank?
-      # Please configure the 'inverse_of' option for the ':users' association on the 'Project' model.
-      raise "Please configure the 'inverse_of' option for the '#{current_reflection.macro} :#{current_reflection.name}' association on the '#{current_reflection.active_record.name}' model."
+    if inverse_of.blank? && Rails.env.development?
+      puts "WARNING! Avo uses the 'inverse_of' option to determine the inverse association and figure out if the association permit or not detaching."
+      # Ex: Please configure the 'inverse_of' option for the ':users' association on the 'Project' model.
+      puts "Please configure the 'inverse_of' option for the '#{current_reflection.macro} :#{current_reflection.name}' association on the '#{current_reflection.active_record.name}' model."
+      puts "Otherwise the detach button will be visible by default.\n\n"
     end
 
     inverse_of
