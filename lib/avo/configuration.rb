@@ -44,6 +44,7 @@ module Avo
     attr_accessor :sign_out_path_name
     attr_accessor :resources
     attr_accessor :prefix_path
+    attr_accessor :parent_controller
 
     def initialize
       @root_path = "/avo"
@@ -96,6 +97,7 @@ module Avo
       @field_wrapper_layout = :inline
       @resources = nil
       @prefix_path = nil
+      @parent_controller = "Avo::ResourcesController"
     end
 
     def current_user_method(&block)
