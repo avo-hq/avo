@@ -57,14 +57,14 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
     @field.get_html(:data, view: view, element: :input).fetch(:action, nil)
   end
 
-  def create_path
+  def create_path(target_resource = nil)
     return nil if @resource.blank?
 
     helpers.new_resource_path(**{
       via_relation: @field.id.to_s,
-      resource: @field.target_resource,
-      via_resource_id: @resource.model.id,
-      via_belongs_to_resource_class: @resource.class.name
+      resource: target_resource || @field.target_resource,
+      via_resource_id: resource.model.id,
+      via_belongs_to_resource_class: resource.class.name
     }.compact)
   end
 
