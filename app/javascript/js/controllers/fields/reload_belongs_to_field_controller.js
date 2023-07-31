@@ -21,9 +21,7 @@ export default class extends Controller {
         document.querySelector(`input[name="${this.targetNameValue}"][type="hidden"]`).value = targetResourceId
         // Update the label
         document.querySelector(`input[name="${this.targetNameValue}"][type="text"]`).value = targetResourceLabel
-
       } else{
-
         let searchContext = document;
         // if polymorphic, search for the select in the correct sub-container
         if (this.polymorphicValue) {

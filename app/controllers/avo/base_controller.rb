@@ -431,26 +431,7 @@ module Avo
     end
 
     def create_success_action
-      if params[:via_belongs_to_resource_class].present?
-        @via_belongs_to_resource = Avo::App.get_resource(params[:via_belongs_to_resource_class]).dup
-        @via_belongs_to_model = if params[:via_resource_id].present?
-                                  @via_belongs_to_resource.model_class.find(params[:via_resource_id])
-                                else
-                                  @via_belongs_to_resource.model_class.new
-                                end
-
-        @via_belongs_to_model.send("#{params[:via_relation]}=", @model)
-        @via_belongs_to_resource = @via_belongs_to_resource.hydrate model: @via_belongs_to_model,
-                                                                    user: current_user
-
-        @via_belongs_to_field = @via_belongs_to_resource.get_field_definitions.find { |field| field.id.to_s == params[:via_relation] }
-        @via_belongs_to_field = @via_belongs_to_field.hydrate(model: @via_belongs_to_model,
-                                                              resource: @via_belongs_to_resource,
-                                                              user: @resource.user,
-                                                              view: :edit)
-
-        return render "close_modal_and_reload_field"
-      end
+      return render "close_modal_and_reload_field" if params[:via_belongs_to_resource_class].present?
 
       respond_to do |format|
         format.html { redirect_to after_create_path, notice: create_success_message}
