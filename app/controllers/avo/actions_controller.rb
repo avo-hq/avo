@@ -90,7 +90,7 @@ module Avo
               path = instance_eval(&path)
             end
 
-            redirect_to path
+            redirect_to path, **{allow_other_host: response[:allow_other_host], status: response[:status]}.compact
           elsif response[:type] == :reload
             redirect_back fallback_location: resources_path(resource: @resource)
           end
