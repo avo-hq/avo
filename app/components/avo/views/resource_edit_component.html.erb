@@ -1,5 +1,5 @@
 <%= content_tag :div,
-  class: class_names({ "w-full": params[:via_belongs_to_resource_class].present? }),
+  class: params[:via_belongs_to_resource_class].present? ? "w-full" : "",
   data: {
     model_name: @resource.model_name.to_s,
     resource_name: @resource.class.to_s,
