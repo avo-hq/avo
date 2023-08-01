@@ -14,6 +14,7 @@ module Avo
     class_attribute :standalone, default: false
     class_attribute :visible
     class_attribute :may_download_file, default: false
+    class_attribute :turbo
 
     attr_accessor :response
     attr_accessor :model
@@ -37,7 +38,7 @@ module Avo
         if may_download_file
           {turbo: false, remote: false, action_target: :form}
         else
-          {turbo_frame: :_top, action_target: :form}
+          {turbo: turbo, turbo_frame: :_top, action_target: :form}.compact
         end
       end
 
@@ -196,8 +197,10 @@ module Avo
       self
     end
 
-    def redirect_to(path = nil, &block)
+    def redirect_to(path = nil, allow_other_host: nil, status: nil, &block)
       response[:type] = :redirect
+      response[:allow_other_host] = allow_other_host
+      response[:status] = status
       response[:path] = if block.present?
         block
       else

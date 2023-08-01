@@ -1,6 +1,7 @@
 class Sub::DummyAction < Avo::BaseAction
   self.name = "Dummy action"
   self.standalone = true
+  # self.turbo = false
   self.visible = -> do
     if resource.is_a? UserResource
       view == :index
@@ -42,5 +43,7 @@ class Sub::DummyAction < Avo::BaseAction
     warn "Warning response ✌️"
     inform "Info response ✌️"
     error "Error response ✌️"
+
+    # redirect_to "https://www.google.com/"
   end
 end
