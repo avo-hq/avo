@@ -36,7 +36,7 @@ module Avo
       def form_data_attributes
         # We can't respond with a file download from Turbo se we disable it on the form
         if may_download_file
-          {turbo: false, remote: false, action_target: :form}
+          {turbo: turbo || false, remote: false, action_target: :form}
         else
           {turbo: turbo, turbo_frame: :_top, action_target: :form}.compact
         end
