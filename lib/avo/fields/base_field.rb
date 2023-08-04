@@ -264,9 +264,7 @@ module Avo
       end
 
       def model_errors
-        return {} if model.nil?
-
-        model.errors
+        model.nil? ? {} : model.errors
       end
 
       def type
@@ -303,11 +301,7 @@ module Avo
       private
 
       def model_or_class(model)
-        if model.instance_of?(String)
-          "class"
-        else
-          "model"
-        end
+        model.instance_of?(String) ? "class" : "model"
       end
 
       def is_model?(model)
