@@ -498,7 +498,7 @@ DEPENDENCIES
   pundit
   rails (~> 6.0.0)
   rails-controller-testing
-  ransack
+  ransack (~> 3.1.0)
   redis (~> 4.0)
   rspec-rails (~> 4.0.0)
   rubocop
