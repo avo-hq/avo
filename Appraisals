@@ -2,7 +2,6 @@
   ["6.0", "6.1", "7.0"].each do |rails_version|
     appraise "rails-#{rails_version}-ruby-#{ruby_version}" do
       gem "rails", "~> #{rails_version}.0"
-      gem "ransack", "~> 3.1.0"
     end
   end
 end

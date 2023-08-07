@@ -443,6 +443,7 @@ GEM
     zeitwerk (2.6.7)
 
 PLATFORMS
+  arm64-darwin-21
   arm64-darwin-22
   x86_64-linux
 
@@ -497,7 +498,7 @@ DEPENDENCIES
   pundit
   rails (~> 6.0.0)
   rails-controller-testing
-  ransack (~> 3.1.0)
+  ransack
   redis (~> 4.0)
   rspec-rails (~> 4.0.0)
   rubocop
@@ -518,4 +519,4 @@ DEPENDENCIES
   zeitwerk
 
 BUNDLED WITH
-   2.3.24
+   2.4.14
