@@ -40,4 +40,9 @@ class Fish < ApplicationRecord
     # properties should be a hash
     puts ["information in the Fish model->", value].inspect unless Rails.env.test?
   end
+
+  def self.ransackable_attributes(auth_object = nil)
+    %w(id name)
+  end
+
 end

@@ -74,4 +74,8 @@ class User < ApplicationRecord
   def avo_title
     is_admin? ? "Admin" : "Member"
   end
+
+  def self.ransackable_attributes(auth_object = nil)
+    %w(id first_name last_name created_at)
+  end
 end

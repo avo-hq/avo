@@ -29,4 +29,8 @@ class Project < ApplicationRecord
   has_and_belongs_to_many :users
 
   default_scope { order(name: :asc) }
+
+  def self.ransackable_attributes(auth_object = nil)
+    %w(id name country)
+  end
 end

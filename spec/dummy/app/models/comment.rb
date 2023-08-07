@@ -22,6 +22,10 @@ class Comment < ApplicationRecord
 
   scope :starts_with, ->(prefix) { where("LOWER(body) LIKE ?", "#{prefix}%") }
 
+  def self.ransackable_attributes(auth_object = nil)
+    %w(id body)
+  end
+
   def tiny_name
     ActionView::Base.full_sanitizer.sanitize(body.to_s).truncate 60
   end
