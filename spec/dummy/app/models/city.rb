@@ -30,6 +30,10 @@ class City < ApplicationRecord
     "https://source.unsplash.com/random"
   end
 
+  def self.ransackable_attributes(auth_object = nil)
+    %w(name)
+  end
+
   # Alternative to stored_as location field
   # def coordinates
   #   [latitude, longitude]

@@ -61,4 +61,8 @@ class Post < ApplicationRecord
   def update_slug
     self.slug = name.parameterize
   end
+
+  def self.ransackable_attributes(auth_object = nil)
+    %w(id name body)
+  end
 end

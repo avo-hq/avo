@@ -30,7 +30,7 @@ gem "addressable"
 gem "appraisal"
 gem "meta-tags"
 gem "manifester"
-gem "ransack", "~> 3.1.0"
+gem "ransack", "~> 4.0.0"
 gem "friendly_id", "~> 5.4.0"
 gem "aws-sdk-s3", require: false
 gem "net-smtp", require: false

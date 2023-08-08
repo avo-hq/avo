@@ -13,6 +13,11 @@ class TeamMembership < ApplicationRecord
   belongs_to :team
   belongs_to :user
 
+  def self.ransackable_attributes(auth_object = nil)
+    %w(id)
+  end
+
+
   def name
     "#{team&.name} - #{user&.name}"
   end

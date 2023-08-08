@@ -20,4 +20,8 @@ class Team < ApplicationRecord
   has_one :admin, through: :admin_membership, source: :user, inverse_of: :teams
 
   has_many :reviews, as: :reviewable
+
+  def self.ransackable_attributes(auth_object = nil)
+    %w(id name)
+  end
 end
