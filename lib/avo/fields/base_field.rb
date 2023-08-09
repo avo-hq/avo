@@ -186,7 +186,17 @@ module Avo
 
         if @format_using.present?
           # Apply the changes in the
-          Avo::ExecutionContext.new(target: @format_using, model: model, key: property, value: final_value, resource: resource, view: view, field: self, delegate_missing_to: :view_context).handle
+          Avo::ExecutionContext.new(
+            target: @format_using,
+            model: model,
+            key: property,
+            value: final_value,
+            resource: resource,
+            view: view,
+            field: self,
+            delegate_missing_to: :view_context,
+            include: self.class.included_modules
+          ).handle
         else
           final_value
         end
@@ -206,7 +216,15 @@ module Avo
       end
 
       def update_using(model, key, value, params)
-        Avo::ExecutionContext.new(target: @update_using, model: model, key: key, value: value, resource: resource, field: self).handle
+        Avo::ExecutionContext.new(
+          target: @update_using,
+          model: model,
+          key: key,
+          value: value,
+          resource: resource,
+          field: self,
+          include: self.class.included_modules
+        ).handle
       end
 
       # Try to see if the field has a different database ID than it's name
@@ -246,9 +264,7 @@ module Avo
       end
 
       def model_errors
-        return {} if model.nil?
-
-        model.errors
+        model.nil? ? {} : model.errors
       end
 
       def type
@@ -285,11 +301,7 @@ module Avo
       private
 
       def model_or_class(model)
-        if model.instance_of?(String)
-          "class"
-        else
-          "model"
-        end
+        model.instance_of?(String) ? "class" : "model"
       end
 
       def is_model?(model)
