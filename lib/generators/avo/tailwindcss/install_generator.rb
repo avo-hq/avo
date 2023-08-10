@@ -39,15 +39,19 @@ module Generators
           say "Adding the CSS asset to the partial"
           prepend_to_file Rails.root.join("app", "views", "avo", "partials", "_pre_head.html.erb"), "<%= stylesheet_link_tag \"avo.tailwind.css\", media: \"all\" %>"
 
-          tailwind_config_path = tailwindcss_config_path()
-          tailwind_script = "tailwindcss -i ./app/assets/stylesheets/avo.tailwind.css -o ./app/assets/builds/avo.tailwind.css"
-          tailwind_script += " -c #{tailwind_config_path}" if tailwind_config_path
-
+          tailwind_script = setup_tailwind_script
           say "Ensure you have the following script in your package.json file.", :yellow
           say %("scripts": { "avo:tailwindcss": "#{tailwind_script}" --minify }), :green
         end
 
         no_tasks do
+          def setup_tailwind_script
+            tailwind_config_path = tailwindcss_config_path()
+            tailwind_script = "tailwindcss -i ./app/assets/stylesheets/avo.tailwind.css -o ./app/assets/builds/avo.tailwind.css"
+            tailwind_script += " -c #{tailwind_config_path}" if tailwind_config_path
+            tailwind_script
+          end  
+
           def template_path(filename)
             Pathname.new(__dir__).join("..", "templates", "tailwindcss", filename).to_s
           end
