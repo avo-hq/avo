@@ -46,7 +46,8 @@ class Avo::Tab
   end
 
   def turbo_frame_id(parent: nil)
-    id = "#{Avo::Tab.to_s.parameterize} #{name}".parameterize
+    digest_name = Digest::MD5.hexdigest(name)
+    id = "#{Avo::Tab.to_s.parameterize} #{digest_name}".parameterize
 
     return id if parent.nil?
 
