@@ -61,6 +61,17 @@ RSpec.describe "badge", type: :feature do
         is_expected.to have_css ".bg-red-500"
       }
     end
+
+    describe "with secondary value" do
+      let(:stage) { "Drafting" }
+      let!(:project) { create :project, users_required: 15, stage: stage }
+
+      it {
+        is_expected.to have_text stage
+        is_expected.to have_css ".rounded-md"
+        is_expected.to have_css ".bg-gray-500"
+      }
+    end
   end
 
   context "show" do
@@ -121,6 +132,17 @@ RSpec.describe "badge", type: :feature do
         is_expected.to have_text stage
         is_expected.to have_css ".rounded-md"
         is_expected.to have_css ".bg-red-500"
+      }
+    end
+
+    describe "with secondary value" do
+      let(:stage) { "Drafting" }
+      let!(:project) { create :project, users_required: 15, stage: stage }
+
+      it {
+        is_expected.to have_text stage
+        is_expected.to have_css ".rounded-md"
+        is_expected.to have_css ".bg-gray-500"
       }
     end
   end

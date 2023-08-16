@@ -32,7 +32,7 @@ FactoryBot.define do
   factory :project do
     name { Faker::App.name }
     status { ['closed', :rejected, :failed, 'loading', :running, :waiting].sample }
-    stage { ["Discovery", "Idea", "Done", "On hold", "Cancelled"].sample }
+    stage { ["Discovery", "Idea", "Done", "On hold", "Cancelled", "Drafting"].sample }
     budget { Faker::Number.decimal(l_digits: 4) }
     country { Faker::Address.country_code }
     description { Faker::Markdown.sandwich(sentences: 5) }
