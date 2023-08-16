@@ -43,6 +43,13 @@ RSpec.describe "SelectField", type: :feature do
 
         it { is_expected.to have_text stage.humanize }
       end
+
+      describe "with secondary stage" do
+        let(:stage) { "secondary" }
+        let!(:project) { create :project, users_required: 15, stage: stage }
+
+        it { is_expected.to have_text stage.humanize }
+      end
     end
 
     subject do
