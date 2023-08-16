@@ -8,7 +8,7 @@ module Avo
 
         hide_on [:edit, :new]
 
-        default_options = {info: :info, success: :success, danger: :danger, warning: :warning}
+        default_options = {info: :info, success: :success, danger: :danger, warning: :warning, secondary: :secondary}
         @options = args[:options].present? ? default_options.merge(args[:options]) : default_options
       end
     end

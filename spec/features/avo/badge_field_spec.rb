@@ -87,4 +87,31 @@ RSpec.describe "BadgeField", type: :feature do
       it { is_expected.not_to have_css ".bg-blue-500" }
     end
   end
+
+  describe "with a secondary status" do
+    let!(:project) { create :project, stage: "drafting" }
+
+    subject {
+      visit url
+      find_field_element(:stage)
+    }
+
+    context "index" do
+      let!(:url) { "/admin/resources/projects" }
+
+      it { is_expected.to have_text "Drafting" }
+      it { is_expected.to have_css ".rounded-md" }
+      it { is_expected.to have_css ".bg-gray-500" }
+      it { is_expected.not_to have_css ".bg-blue-500" }
+    end
+
+    context "show" do
+      let!(:url) { "/admin/resources/projects/#{project.id}" }
+
+      it { is_expected.to have_text "Drafting" }
+      it { is_expected.to have_css ".rounded-md" }
+      it { is_expected.to have_css ".bg-gray-500" }
+      it { is_expected.not_to have_css ".bg-blue-500" }
+    end
+  end
 end

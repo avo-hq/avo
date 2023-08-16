@@ -88,7 +88,7 @@ RSpec.describe "SelectField", type: :feature do
       end
     end
 
-    let(:stages_without_placeholder) { ["discovery", "idea", "done", "on hold", "cancelled"] }
+    let(:stages_without_placeholder) { ["discovery", "idea", "done", "on hold", "cancelled", "Drafting"] }
     let(:placeholder) { "Choose the stage" }
     let(:stages_with_placeholder) { stages_without_placeholder.prepend(placeholder) }
 
