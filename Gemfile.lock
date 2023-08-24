@@ -283,7 +283,7 @@ GEM
       hashids (>= 1.0.0, < 2.0.0)
       rails (>= 6.0.0)
     public_suffix (5.0.3)
-    puma (5.6.5)
+    puma (6.3.1)
       nio4r (~> 2.0)
     pundit (2.2.0)
       activesupport (>= 3.0.0)
@@ -499,7 +499,7 @@ DEPENDENCIES
   net-smtp
   pg (>= 0.18, < 2.0)
   prefixed_ids
-  puma (~> 5.6.4)
+  puma (~> 6.3.1)
   pundit
   rails (~> 6.1.0)
   rails-controller-testing
