@@ -153,7 +153,7 @@ RSpec.configure do |config|
     WebMock.disable_net_connect!(
       net_http_connect_on_start: true,
       allow_localhost: true,
-      allow: "chromedriver.storage.googleapis.com"
+      allow: ["googlechromelabs.github.io", "edgedl.me.gvt1.com"]
     )
     example.run
 
@@ -197,4 +197,4 @@ require "support/shared_contexts"
 require "support/timezone"
 
 # https://github.com/titusfortner/webdrivers/issues/247
-Webdrivers::Chromedriver.required_version = "114.0.5735.90"
+# Webdrivers::Chromedriver.required_version = "114.0.5735.90"
