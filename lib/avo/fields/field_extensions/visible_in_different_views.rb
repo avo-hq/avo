@@ -47,7 +47,7 @@ module Avo
         def except_on(*where)
           show_on_all
           normalize_views(where).flatten.each do |view|
-            show_on_view view
+            hide_on_view view
           end
         end
 
