@@ -60,7 +60,7 @@ class UserResource < Avo::BaseResource
       model.posts.to_a.size > 0 ? "yes" : "no"
     end
 
-  field :password, as: :password, name: "User Password", required: false, except_on: :forms, help: 'You may verify the password strength <a href="http://www.passwordmeter.com/" target="_blank">here</a>.'
+  field :password, as: :password, name: "User Password", required: false, only_on: :forms, help: 'You may verify the password strength <a href="http://www.passwordmeter.com/" target="_blank">here</a>.'
   field :password_confirmation, as: :password, name: "Password confirmation", required: false, only_on: :new
 
   heading '<div class="underline uppercase font-bold">DEV</div>', as_html: true
