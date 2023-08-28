@@ -439,10 +439,11 @@ module Avo
     end
 
     def create_fail_action
+      flash.now[:error] = create_fail_message
+
       respond_to do |format|
-        flash.now[:error] = create_fail_message
         format.html { render :new, status: :unprocessable_entity }
-        format.turbo_stream { render partial: "avo/partials/flash_alerts" }
+        format.turbo_stream { render "create_fail_action" }
       end
     end
 

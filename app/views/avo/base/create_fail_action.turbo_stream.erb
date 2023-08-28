@@ -1,0 +1,13 @@
+<%= turbo_stream.replace(frame_id(@resource), template: "avo/base/new")  %>
+
+<%= turbo_stream.append "alerts" do %>
+  <%= render Avo::FlashAlertsComponent.new flashes: flash %>
+<% end %>
+
+<% if @model.errors.any? %>
+  <%= turbo_stream.append("alerts") do %>
+    <% @model.errors.full_messages.each do |message| %>
+      <%= render Avo::AlertComponent.new :error, message %>
+    <% end %>
+  <% end %>
+<% end %>

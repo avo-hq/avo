@@ -1,4 +1,5 @@
 <%= content_tag :div,
+  id: helpers.frame_id(@resource),
   class: params[:via_belongs_to_resource_class].present? ? "w-full" : "",
   data: {
     model_name: @resource.model_name.to_s,

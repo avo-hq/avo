@@ -119,6 +119,10 @@ module Avo
       Avo::Filters::BaseFilter.encode_filters(filter_params)
     end
 
+    def frame_id(resource)
+      ["frame", resource.model_name.singular, resource.model.id].compact.join("-")
+    end
+
     private
 
     # Taken from the original library
