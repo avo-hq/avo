@@ -20,7 +20,10 @@
     multipart: true do |form| %>
     <%= render Avo::ReferrerParamsComponent.new back_path: back_path %>
     <%= content_tag :div, class: 'space-y-12' do %>
-      <%= render Avo::PanelComponent.new(name: title, description: @resource.resource_description, display_breadcrumbs: display_breadcrumbs?, index: 0, data: { panel_id: "main" }) do |c| %>
+      <%= render Avo::PanelComponent.new(name: title, description: @resource.resource_description,
+                                         display_breadcrumbs: display_breadcrumbs?,
+                                         in_modal: params[:via_belongs_to_resource_class].present?,
+                                         index: 0, data: { panel_id: "main" }) do |c| %>
         <% c.with_tools do %>
           <%= a_link back_path,
             style: :text,
