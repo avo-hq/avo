@@ -63,7 +63,7 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
     helpers.new_resource_path(**{
       via_relation: @field.id.to_s,
       resource: target_resource || @field.target_resource,
-      via_resource_id: resource.model.id,
+      via_resource_id: resource.model.to_param,
       via_belongs_to_resource_class: resource.class.name
     }.compact)
   end

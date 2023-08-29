@@ -42,7 +42,7 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
     if params[:via_resource_id].present?
       # Back to edit path with param indicating turbo stream should simply close modal
       related_resource = params[:via_belongs_to_resource_class].constantize.new
-      related_record = related_resource.model_class.find(params[:via_resource_id])
+      related_record = related_resource.find_record(params[:via_resource_id])
       helpers.edit_resource_path(resource: related_resource,
                                  model: related_record,
                                  close_modal: modal_id)
