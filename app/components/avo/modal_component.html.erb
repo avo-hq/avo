@@ -6,12 +6,17 @@
   <div aria-expanded="true" role="dialog" aria-modal="true" class="modal-body rounded-lg inset-auto w-11/12 lg:w-1/2 sm:max-w-168 min-h-1/4 bg-white flex z-50 relative shadow-modal overflow-auto max-h-[80vh]">
     <div class="flex-1 flex flex-col justify-between">
       <div>
-        <div class="p-6 text-2xl tracking-normal font-semibold text-black">
-          <%= heading %>
-        </div>
-        <div class="px-6 text-base text-gray-500">
-          <%= content %>
-        </div>
+        <% if heading.present? %>
+          <div class="p-6 text-2xl tracking-normal font-semibold text-black">
+            <%= heading %>
+          </div>
+        <% end %>
+
+        <% if content.present? %>
+          <div class="px-6 text-base text-gray-500">
+            <%= content %>
+          </div>
+        <% end %>
       </div>
       <div class="flex justify-end items-baseline space-x-4 p-4 bg-gray-100">
         <%= controls %>
