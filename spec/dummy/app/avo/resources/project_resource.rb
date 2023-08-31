@@ -17,7 +17,7 @@ class ProjectResource < Avo::BaseResource
     placeholder: "Choose the stage",
     display_value: true,
     include_blank: false
-  field :stage, as: :badge, options: {info: ["Discovery", "Idea"], success: "Done", warning: "On hold", danger: "Cancelled", secondary: "Drafting"}
+  field :stage, as: :badge, options: {info: ["Discovery", "Idea"], success: "Done", warning: "On hold", danger: "Cancelled", neutral: "Drafting"}
   field :country,
     as: :country,
     index_text_align: :left,
