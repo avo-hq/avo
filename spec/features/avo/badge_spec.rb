@@ -62,7 +62,7 @@ RSpec.describe "badge", type: :feature do
       }
     end
 
-    describe "with secondary value" do
+    describe "with neutral value" do
       let(:stage) { "Drafting" }
       let!(:project) { create :project, users_required: 15, stage: stage }
 
@@ -135,7 +135,7 @@ RSpec.describe "badge", type: :feature do
       }
     end
 
-    describe "with secondary value" do
+    describe "with neutral value" do
       let(:stage) { "Drafting" }
       let!(:project) { create :project, users_required: 15, stage: stage }
 
