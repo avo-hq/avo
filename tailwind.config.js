@@ -64,9 +64,6 @@ module.exports = {
     './app/components/avo/**/*.rb',
     './app/controllers/avo/**/*.rb',
     './app/javascript/**/*.js',
-
-    './spec/dummy/app/avo/resources/**/*.rb',
-    './spec/dummy/app/views/**/*.erb',
   ],
 
   theme: {
