@@ -32,7 +32,7 @@ class Avo::Fields::Common::Files::ListViewerComponent < ViewComponent::Base
 
   def view_type_component(file)
     component = "Avo::Fields::Common::Files::ViewType::#{view_type.to_s.capitalize}ItemComponent".constantize
-    component.new(field: field, resource: resource, file: file)
+    component.new(field: field, resource: resource, file: file, extra_classes: "aspect-video")
   end
 
   def view_type

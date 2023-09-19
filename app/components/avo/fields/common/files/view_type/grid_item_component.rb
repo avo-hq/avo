@@ -3,10 +3,11 @@
 class Avo::Fields::Common::Files::ViewType::GridItemComponent < ViewComponent::Base
   attr_reader :field, :resource
 
-  def initialize(field:, resource:, file: nil)
+  def initialize(field:, resource:, file: nil, extra_classes: nil)
     @file = file
     @field = field
     @resource = resource
+    @extra_classes = extra_classes
   end
 
   def id
