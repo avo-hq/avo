@@ -1,7 +1,7 @@
 <%= field_wrapper **field_wrapper_args do %>
   <% if @field.value.present? %>
     <div class="mb-2">
-      <%= render Avo::Fields::Common::Files::ViewType::GridComponent.new resource: @resource, field: @field %>
+      <%= render Avo::Fields::Common::Files::ViewType::GridItemComponent.new resource: @resource, field: @field %>
     </div>
   <% end %>
 
