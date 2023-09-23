@@ -30,7 +30,7 @@ RSpec.feature "MenuBuilders", type: :feature do
         end
 
         group "People" do
-          resource "UserResource"
+          resource "UserResource", params: { filters: "eyJJc0FkbWluIjpbIm5vbl9hZG1pbnMiXX0%3D%0A" }
           resource :people
           resource :spouses
         end
@@ -83,5 +83,10 @@ RSpec.feature "MenuBuilders", type: :feature do
     expect(subject.items.last.name).to eq "JSP"
     expect(subject.items.last.path).to eq "https://jumpstartrails.com/"
     expect(subject.items.last.target).to eq :_blank
+
+    # Checking path generated when :params used
+    users = subject.items.second.items[3].items.first
+    expect(users.resource).to eq "UserResource"
+    expect(users.params).to eq filters: "eyJJc0FkbWluIjpbIm5vbl9hZG1pbnMiXX0%3D%0A"
   end
 end

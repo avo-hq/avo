@@ -3,6 +3,7 @@ class Avo::Menu::Resource < Avo::Menu::BaseItem
 
   option :resource
   option :label, optional: true
+  option :params, default: proc { {} }
 
   def parsed_resource
     Avo::App.guess_resource resource.to_s
@@ -10,5 +11,12 @@ class Avo::Menu::Resource < Avo::Menu::BaseItem
 
   def entity_label
     parsed_resource.navigation_label
+  end
+
+  def fetch_params
+    Avo::ExecutionContext.new(
+      target: params,
+      resource: resource
+    ).handle
   end
 end

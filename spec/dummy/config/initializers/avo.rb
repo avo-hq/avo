@@ -99,7 +99,11 @@ Avo.configure do |config|
       end
 
       group "People", collapsable: true do
-        resource "UserResource", visible: -> do
+        resource "UserResource", params: -> do
+          decoded_filter = {"IsAdmin"=>["non_admins"]}
+
+          { filters: Avo::Filters::BaseFilter.encode_filters(decoded_filter)}
+        end, visible: -> do
           authorize current_user, User, "index?", raise_exception: false
         end
         resource :people
