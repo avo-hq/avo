@@ -17,7 +17,7 @@ Avo is a beautiful next-generation framework that empowers you, the developer, t
 ✨ **Website**: [avohq.io](https://avohq.io)\
 📚 **Documentation**: [docs.avohq.io](https://docs.avohq.io)\
 🗺 **Roadmap**: [GitHub Roadmap](https://github.com/orgs/avo-hq/projects/3)\
-🎸 **Demo app**: [Avodemo](https://avodemo.herokuapp.com/)\
+🎸 **Demo app**: [Avodemo](https://main.avodemo.com/)\
 🐤 **Twitter**: [avo_hq](https://twitter.com/avo_hq)\
 💬 **Community chat**: [discord](https://discord.gg/pkTF6y8)\
 🔧 **Issue tracker**: [GitHub issues](http://github.com/avo-hq/avo/issues)\
