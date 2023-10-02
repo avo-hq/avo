@@ -53,7 +53,7 @@ module Avo
         end
       end
 
-      # Renerate a dynamic root path using the URIService
+      # Generate a dynamic root path using the URIService
       def root_path(paths: [], query: {}, **args)
         Avo::Services::URIService.parse(view_context.avo.root_url.to_s)
           .append_paths(paths)
