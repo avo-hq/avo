@@ -6,7 +6,7 @@ class Avo::Menu::Resource < Avo::Menu::BaseItem
   option :params, default: proc { {} }
 
   def parsed_resource
-    Avo::App.guess_resource resource.to_s
+    @parsed_resource ||= Avo::App.guess_resource resource.to_s
   end
 
   def entity_label
@@ -16,7 +16,7 @@ class Avo::Menu::Resource < Avo::Menu::BaseItem
   def fetch_params
     Avo::ExecutionContext.new(
       target: params,
-      resource: resource
+      resource: parsed_resource
     ).handle
   end
 end
