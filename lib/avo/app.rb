@@ -35,7 +35,7 @@ module Avo
       end
 
       # When not in production we'll just use the MemoryStore which is good enough.
-      # Wehn running in production we'll try to use memcached or redis if available.
+      # When running in production we'll try to use memcached or redis if available.
       # If not, we'll use the FileStore.
       # We decided against the MemoryStore in production because it will not be shared between multiple processes (when using Puma).
       def get_cache_store
@@ -53,7 +53,7 @@ module Avo
         end
       end
 
-      # Renerate a dynamic root path using the URIService
+      # Generate a dynamic root path using the URIService
       def root_path(paths: [], query: {}, **args)
         Avo::Services::URIService.parse(view_context.avo.root_url.to_s)
           .append_paths(paths)
