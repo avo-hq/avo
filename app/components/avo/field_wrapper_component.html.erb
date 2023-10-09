@@ -11,7 +11,7 @@
     <% if on_edit? && field.is_required? %> <span class="text-red-600 ml-1">*</span> <% end %>
   </div>
   <div class="flex-1 flex flex-row md:min-h-inherit py-2 <% if stacked? %> pb-4 <% else %><% end %> px-6 <%= @field.get_html(:classes, view: view, element: :content) %>" data-slot="value">
-    <div class="self-center w-full <% unless full_width? || compact? || stacked? %> md:w-8/12 <% end %>">
+    <div class="self-center max-w-full <% unless full_width? || compact? || stacked? %> md:max-w-8/12 <% end %>">
       <% if on_show? %>
         <% if field.value.blank? and dash_if_blank %>
           —
