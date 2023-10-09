@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::Fields::Common::Files::ViewType::ListComponent < Avo::Fields::Common::Files::ViewType::GridComponent
+class Avo::Fields::Common::Files::ViewType::ListItemComponent < Avo::Fields::Common::Files::ViewType::GridItemComponent
   def icon_for_file
     if is_image?
       "photo"

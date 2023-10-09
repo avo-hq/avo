@@ -31,11 +31,11 @@ class Avo::Fields::Common::Files::ListViewerComponent < ViewComponent::Base
   end
 
   def view_type_component(file)
-    component = "Avo::Fields::Common::Files::ViewType::#{view_type.to_s.capitalize}Component".constantize
-    component.new(field: field, resource: resource, file: file)
+    component = "Avo::Fields::Common::Files::ViewType::#{view_type.to_s.capitalize}ItemComponent".constantize
+    component.new(field: field, resource: resource, file: file, extra_classes: "aspect-video")
   end
 
   def view_type
-    (resource.params.dig(:view_type) || field.view_type).to_sym
+    @view_type ||= (resource.params.dig(:view_type) || field.view_type).to_sym
   end
 end
