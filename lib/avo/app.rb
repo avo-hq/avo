@@ -41,7 +41,7 @@ module Avo
       def get_cache_store
         if Rails.env.production?
           case Rails.cache.class.to_s
-          when "ActiveSupport::Cache::MemCacheStore", "ActiveSupport::Cache::RedisCacheStore"
+          when "ActiveSupport::Cache::MemCacheStore", "ActiveSupport::Cache::RedisCacheStore", "SolidCache::Store"
             Rails.cache
           else
             ActiveSupport::Cache.lookup_store(:file_store, Rails.root.join("tmp", "cache"))
