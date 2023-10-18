@@ -47,6 +47,13 @@ Avo.configure do |config|
   # config.per_page_steps = [12, 24, 48, 72]
   # config.via_per_page = 8
   # config.id_links_to_resource = false
+
+  ## == Cache options ==
+  ## Provide a lambda to customize the cache store used by Avo.
+  ## We compute the cache store by default, this is NOT the default, just an example.
+  # config.cache_store = -> {
+  #   ActiveSupport::Cache.lookup_store(:solid_cache_store)
+  # }
   # config.cache_resources_on_index_view = true
   ## permanent enable or disable cache_resource_filters, default value is false
   # config.cache_resource_filters = false
