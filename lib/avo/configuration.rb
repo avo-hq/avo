@@ -5,6 +5,7 @@ module Avo
     attr_writer :app_name
     attr_writer :branding
     attr_writer :root_path
+    attr_writer :cache_store
     attr_accessor :timezone
     attr_accessor :per_page
     attr_accessor :per_page_steps
@@ -96,6 +97,7 @@ module Avo
       @field_wrapper_layout = :inline
       @resources = nil
       @prefix_path = nil
+      @cache_store = computed_cache_store
     end
 
     def current_user_method(&block)
@@ -146,6 +148,33 @@ module Avo
       else
         @app_name
       end
+    end
+
+    def cache_store
+      Avo::ExecutionContext.new(
+        target: @cache_store,
+        production_rejected_cache_stores: %w[ActiveSupport::Cache::MemoryStore ActiveSupport::Cache::NullStore]
+      ).handle
+    end
+
+    # When not in production or test we'll just use the MemoryStore which is good enough.
+    # When running in production we'll use Rails.cache if it's not ActiveSupport::Cache::MemoryStore or ActiveSupport::Cache::NullStore.
+    # If it's one of rejected cache stores, we'll use the FileStore.
+    # We decided against the MemoryStore in production because it will not be shared between multiple processes (when using Puma).
+    def computed_cache_store
+      -> {
+        if Rails.env.production?
+          if Rails.cache.class.to_s.in?(production_rejected_cache_stores)
+            ActiveSupport::Cache.lookup_store(:file_store, Rails.root.join("tmp", "cache"))
+          else
+            Rails.cache
+          end
+        elsif Rails.env.test?
+          Rails.cache
+        else
+          ActiveSupport::Cache.lookup_store(:memory_store)
+        end
+      }
     end
   end
 

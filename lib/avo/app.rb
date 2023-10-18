@@ -31,26 +31,7 @@ module Avo
       def boot
         init_fields
 
-        self.cache_store = get_cache_store
-      end
-
-      # When not in production we'll just use the MemoryStore which is good enough.
-      # When running in production we'll try to use memcached or redis if available.
-      # If not, we'll use the FileStore.
-      # We decided against the MemoryStore in production because it will not be shared between multiple processes (when using Puma).
-      def get_cache_store
-        if Rails.env.production?
-          case Rails.cache.class.to_s
-          when "ActiveSupport::Cache::MemCacheStore", "ActiveSupport::Cache::RedisCacheStore", "SolidCache::Store"
-            Rails.cache
-          else
-            ActiveSupport::Cache.lookup_store(:file_store, Rails.root.join("tmp", "cache"))
-          end
-        elsif Rails.env.test?
-          Rails.cache
-        else
-          ActiveSupport::Cache.lookup_store(:memory_store)
-        end
+        self.cache_store = Avo.configuration.cache_store
       end
 
       # Generate a dynamic root path using the URIService

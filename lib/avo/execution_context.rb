@@ -30,9 +30,9 @@ module Avo
       @params ||= Avo::App.params
       @view_context ||= Avo::App.view_context
       @current_user ||= Avo::App.current_user
-      @request ||= view_context.request
-      @main_app ||= view_context.main_app
-      @avo ||= view_context.avo
+      @request ||= view_context&.request
+      @main_app ||= view_context&.main_app
+      @avo ||= view_context&.avo
     end
 
     # Return target if target is not callable, otherwise, execute target on this instance context
