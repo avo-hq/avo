@@ -165,15 +165,15 @@ module Avo
       -> {
         if Rails.env.production?
           if Rails.cache.class.to_s.in?(production_rejected_cache_stores)
-            ActiveSupport::Cache.lookup_store(:file_store, Rails.root.join("tmp", "cache"))
-          else
-            Rails.cache
+            return ActiveSupport::Cache.lookup_store(:file_store, Rails.root.join("tmp", "cache"))
           end
-        elsif Rails.env.test?
-          Rails.cache
-        else
-          ActiveSupport::Cache.lookup_store(:memory_store)
+
+          return Rails.cache
         end
+
+        return Rails.cache if Rails.env.test?
+
+        ActiveSupport::Cache.lookup_store(:memory_store)
       }
     end
   end
