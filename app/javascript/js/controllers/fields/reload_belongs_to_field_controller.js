@@ -1,5 +1,6 @@
 import { Controller } from '@hotwired/stimulus'
 
+// Used as a custom Stream Action <turbo-stream action="update-belongs-to" />
 export default class extends Controller {
   static values = {
     polymorphic: Boolean,

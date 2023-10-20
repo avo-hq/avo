@@ -1,6 +1,5 @@
 <%= content_tag :div,
   id: helpers.frame_id(@resource),
-  class: params[:via_belongs_to_resource_class].present? ? "w-full" : "",
   data: {
     model_name: @resource.model_name.to_s,
     resource_name: @resource.class.to_s,
@@ -22,13 +21,14 @@
     <%= content_tag :div, class: 'space-y-12' do %>
       <%= render Avo::PanelComponent.new(name: title, description: @resource.resource_description,
                                          display_breadcrumbs: display_breadcrumbs?,
-                                         in_modal: params[:via_belongs_to_resource_class].present?,
                                          index: 0, data: { panel_id: "main" }) do |c| %>
         <% c.with_tools do %>
-          <%= a_link back_path,
-            style: :text,
-            icon: 'arrow-left' do %>
-            <%= t('avo.cancel').capitalize %>
+          <% if back_path.present? %>
+            <%= a_link back_path,
+              style: :text,
+              icon: 'arrow-left' do %>
+              <%= t('avo.cancel').capitalize %>
+            <% end %>
           <% end %>
           <% if can_see_the_destroy_button? %>
             <%= a_link destroy_path,
@@ -73,7 +73,7 @@
             </div>
           <% end %>
         <% end %>
-        <% if sidebar.present? %>
+        <% if sidebar.present? && sidebar.visible_items.present? %>
           <% c.with_sidebar do %>
             <%= render sidebar_component form: form %>
           <% end %>

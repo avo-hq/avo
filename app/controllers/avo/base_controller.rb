@@ -110,8 +110,6 @@ module Avo
       # Handle special cases when creating a new record via a belongs_to relationship
       if params[:via_belongs_to_resource_class].present?
         return render turbo_stream: turbo_stream.append('attach_modal', partial: 'avo/base/new_via_belongs_to')
-      elsif params[:close_modal].present?
-        return render turbo_stream: turbo_stream.remove(params[:close_modal])
       end
 
       set_actions
@@ -179,10 +177,6 @@ module Avo
     end
 
     def edit
-      if params[:close_modal].present?
-        return render turbo_stream: turbo_stream.remove(params[:close_modal])
-      end
-
       set_actions
     end
 

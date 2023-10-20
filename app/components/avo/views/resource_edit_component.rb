@@ -17,7 +17,7 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   end
 
   def back_path
-    return resource_edit_or_new_path if via_belongs_to?
+    return if via_belongs_to?
     return resource_view_path if via_resource?
     return resources_path if via_index?
 
@@ -34,23 +34,6 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
 
   def resource_view_path
     helpers.resource_view_path(model: association_resource.model, resource: association_resource)
-  end
-
-  def resource_edit_or_new_path
-    modal_id = "new_via_belongs_to"
-
-    if params[:via_resource_id].present?
-      # Back to edit path with param indicating turbo stream should simply close modal
-      related_resource = params[:via_belongs_to_resource_class].constantize.new
-      related_record = related_resource.find_record(params[:via_resource_id])
-      helpers.edit_resource_path(resource: related_resource,
-                                 model: related_record,
-                                 close_modal: modal_id)
-    else
-      # Back to new path with param indicating turbo stream should close modal
-      helpers.new_resource_path(resource: @resource,
-                                close_modal: modal_id)
-    end
   end
 
   def can_see_the_destroy_button?

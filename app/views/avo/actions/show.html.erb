@@ -17,6 +17,7 @@
       <% c.with_heading do %>
         <%= @action.action_name %>
       <% end %>
+
       <div class="flex-1 flex">
         <%= @action.get_message %>
       </div>
@@ -34,6 +35,7 @@
           <% end %>
         </div>
       <% end %>
+
       <% c.with_controls do %>
         <%= a_button type: :button,
           data: { action: 'click->modal#close' },
