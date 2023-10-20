@@ -109,8 +109,10 @@ module Avo
           cache_store: Avo::App.cache_store&.class&.to_s,
           **config_metadata
         }
-      rescue
-        {}
+      rescue => e
+        {
+          error: e.message
+        }
       end
 
       def cached_response
