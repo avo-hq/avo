@@ -1,115 +1,137 @@
-<% if is_polymorphic? %>
-  <%
-    # Set the model keys so we can pass them over
-    model_keys = @field.types.map do |type|
-      resource = Avo::App.get_resource_by_model_name(type.to_s)
-      [type.to_s, resource.model_key]
-    end.to_h
-  %>
-  <div class="divide-y"
-    data-controller="belongs-to-field"
-    data-searchable="<%= @field.searchable %>"
-    data-association="<%= @field.id %>"
-    data-association-class="<%= @field&.target_resource&.model_class || nil %>"
-  >
-    <%= field_wrapper **field_wrapper_args, help: @field.polymorphic_help || '' do %>
-      <%= @form.select @field.type_input_foreign_key, @field.types.map { |type| [::Avo::App.get_resource_by_model_name(type.to_s).name, type.to_s] },
-      {
-        value: @field.value,
-        include_blank: @field.placeholder,
-      },
-      {
-        class: classes("w-full"),
-        data: {
-          **@field.get_html(:data, view: view, element: :input),
-          action: "change->belongs-to-field#changeType #{field_html_action}",
-          'belongs-to-field-target': "select",
-        },
-        disabled: disabled
-      }
+<div data-controller="reload-belongs-to-field"
+     data-action="turbo:before-stream-render@document->reload-belongs-to-field#beforeStreamRender"
+     data-reload-belongs-to-field-polymorphic-value="<%= is_polymorphic? %>"
+     data-reload-belongs-to-field-searchable-value="<%= @field.searchable %>"
+     data-reload-belongs-to-field-relation-name-value="<%= @field.id %>"
+     data-reload-belongs-to-field-target-name-value="<%= form.object_name %>[<%= @field.id_input_foreign_key %>]"
+>
+  <% if is_polymorphic? %>
+    <%
+      # Set the model keys so we can pass them over
+      model_keys = @field.types.map do |type|
+        resource = Avo::App.get_resource_by_model_name(type.to_s)
+        [type.to_s, resource.model_key]
+      end.to_h
     %>
-      <%
-        # If the select field is disabled, no value will be sent. It's how HTML works.
-        # Thus the extra hidden field to actually send the related id to the server.
-        if disabled %>
-        <%= @form.hidden_field @field.type_input_foreign_key %>
+    <div class="divide-y"
+      data-controller="belongs-to-field"
+      data-searchable="<%= @field.searchable %>"
+      data-association="<%= @field.id %>"
+      data-association-class="<%= @field&.target_resource&.model_class || nil %>"
+    >
+      <%= field_wrapper **field_wrapper_args, help: @field.polymorphic_help || '' do %>
+        <%= @form.select @field.type_input_foreign_key, @field.types.map { |type| [::Avo::App.get_resource_by_model_name(type.to_s).name, type.to_s] },
+        {
+          value: @field.value,
+          include_blank: @field.placeholder,
+        },
+        {
+          class: classes("w-full"),
+          data: {
+            **@field.get_html(:data, view: view, element: :input),
+            action: "change->belongs-to-field#changeType #{field_html_action}",
+            'belongs-to-field-target': "select",
+          },
+          disabled: disabled
+        }
+      %>
+        <%
+          # If the select field is disabled, no value will be sent. It's how HTML works.
+          # Thus the extra hidden field to actually send the related id to the server.
+          if disabled %>
+          <%= @form.hidden_field @field.type_input_foreign_key %>
+        <% end %>
       <% end %>
-    <% end %>
-    <% @field.types.each do |type| %>
-      <div class="hidden"
-        data-belongs-to-field-target="type"
-        data-type="<%= type %>"
-      >
-        <%= field_wrapper **field_wrapper_args, label: ::Avo::App.get_resource_by_model_name(type.to_s).name do %>
-          <% if @field.searchable %>
-            <%= render Avo::Fields::BelongsToField::AutocompleteComponent.new form: @form,
-              disabled: disabled,
-              field: @field,
-              foreign_key: @field.id_input_foreign_key,
-              model_key: model_keys[type.to_s],
-              polymorphic_record: polymorphic_record,
-              resource: @resource,
-              style: @field.get_html(:style, view: view, element: :input),
-              type: type,
-              classes: classes("w-full"),
-              view: view
+      <% @field.types.each do |type| %>
+        <div class="hidden"
+          data-belongs-to-field-target="type"
+          data-type="<%= type %>"
+        >
+          <%= field_wrapper **field_wrapper_args, label: ::Avo::App.get_resource_by_model_name(type.to_s).name do %>
+            <div class="flex flex-col gap-1">
+              <% if @field.searchable %>
+                <%= render Avo::Fields::BelongsToField::AutocompleteComponent.new form: @form,
+                  disabled: disabled,
+                  field: @field,
+                  foreign_key: @field.id_input_foreign_key,
+                  model_key: model_keys[type.to_s],
+                  polymorphic_record: polymorphic_record,
+                  resource: @resource,
+                  style: @field.get_html(:style, view: view, element: :input),
+                  type: type,
+                  classes: classes("w-full"),
+                  view: view
+              %>
+              <% else %>
+                <%= @form.select @field.id_input_foreign_key,
+                options_for_select(@field.values_for_type(type), @resource.present? && @resource.model.present? ? @resource.model[@field.id_input_foreign_key] : nil),
+                {
+                  value: @resource.model[@field.id_input_foreign_key].to_s,
+                  include_blank: @field.placeholder,
+                },
+                {
+                  class: classes("w-full"),
+                  data: @field.get_html(:data, view: view, element: :input),
+                  disabled: disabled
+                }
+              %>
+                <%
+                # If the select field is disabled, no value will be sent. It's how HTML works.
+                # Thus the extra hidden field to actually send the related id to the server.
+                if disabled %>
+                  <%= @form.hidden_field @field.id_input_foreign_key %>
+                <% end %>
+              <% end %>
+              <% create_href = create_path(::Avo::App.get_resource_by_model_name(type.to_s)) %>
+              <% if !disabled && create_href.present? %>
+                <%= link_to t("avo.create_new_item", item: type.to_s.downcase),
+                            create_href,
+                            class: "text-sm"
+                %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <%= field_wrapper **field_wrapper_args do %>
+      <div class="flex flex-col gap-1">
+        <% if @field.searchable %>
+          <%= render Avo::Fields::BelongsToField::AutocompleteComponent.new form: @form,
+            field: @field,
+            model_key: @field.target_resource&.model_key,
+            foreign_key: @field.id_input_foreign_key,
+            resource: @resource,
+            disabled: disabled,
+            classes: classes("w-full"),
+            view: view,
+            style: @field.get_html(:style, view: view, element: :input)
           %>
-          <% else %>
-            <%= @form.select @field.id_input_foreign_key,
-            options_for_select(@field.values_for_type(type), @resource.present? && @resource.model.present? ? @resource.model[@field.id_input_foreign_key] : nil),
+        <% else %>
+          <%= @form.select @field.id_input_foreign_key, @field.options,
             {
-              value: @resource.model[@field.id_input_foreign_key].to_s,
               include_blank: @field.placeholder,
+              value: @field.value
             },
             {
               class: classes("w-full"),
               data: @field.get_html(:data, view: view, element: :input),
-              disabled: disabled
+              disabled: disabled,
+              style: @field.get_html(:style, view: view, element: :input)
             }
           %>
-            <%
+          <%
             # If the select field is disabled, no value will be sent. It's how HTML works.
             # Thus the extra hidden field to actually send the related id to the server.
             if disabled %>
-              <%= @form.hidden_field @field.id_input_foreign_key %>
-            <% end %>
+            <%= @form.hidden_field @field.id_input_foreign_key %>
           <% end %>
+        <% end %>
+        <% if !disabled && create_path.present? %>
+          <%= link_to t("avo.create_new_item", item: @field.name.downcase), create_path, class: "text-sm" %>
         <% end %>
       </div>
     <% end %>
-  </div>
-<% else %>
-  <%= field_wrapper **field_wrapper_args do %>
-    <% if @field.searchable %>
-      <%= render Avo::Fields::BelongsToField::AutocompleteComponent.new form: @form,
-        field: @field,
-        model_key: @field.target_resource&.model_key,
-        foreign_key: @field.id_input_foreign_key,
-        resource: @resource,
-        disabled: disabled,
-        classes: classes("w-full"),
-        view: view,
-        style: @field.get_html(:style, view: view, element: :input)
-      %>
-    <% else %>
-      <%= @form.select @field.id_input_foreign_key, @field.options,
-        {
-          include_blank: @field.placeholder,
-          value: @field.value
-        },
-        {
-          class: classes("w-full"),
-          data: @field.get_html(:data, view: view, element: :input),
-          disabled: disabled,
-          style: @field.get_html(:style, view: view, element: :input)
-        }
-      %>
-      <%
-        # If the select field is disabled, no value will be sent. It's how HTML works.
-        # Thus the extra hidden field to actually send the related id to the server.
-        if disabled %>
-        <%= @form.hidden_field @field.id_input_foreign_key %>
-      <% end %>
-    <% end %>
   <% end %>
-<% end %>
+</div>

@@ -107,6 +107,11 @@ module Avo
       @model = @resource.model_class.new
       @resource = @resource.hydrate(model: @model, view: :new, user: _current_user)
 
+      # Handle special cases when creating a new record via a belongs_to relationship
+      if params[:via_belongs_to_resource_class].present?
+        return render turbo_stream: turbo_stream.append('attach_modal', partial: 'avo/base/new_via_belongs_to')
+      end
+
       set_actions
 
       @page_title = @resource.default_panel_name.to_s
@@ -130,7 +135,7 @@ module Avo
       @resource.hydrate(model: @model, view: :new, user: _current_user)
 
       # This means that the record has been created through another parent record and we need to attach it somehow.
-      if params[:via_resource_id].present?
+      if params[:via_resource_id].present? && params[:via_belongs_to_resource_class].nil?
         @reflection = @model._reflections[params[:via_relation]]
         # Figure out what kind of association does the record have with the parent record
 
@@ -420,15 +425,19 @@ module Avo
     end
 
     def create_success_action
+      return render "close_modal_and_reload_field" if params[:via_belongs_to_resource_class].present?
+
       respond_to do |format|
         format.html { redirect_to after_create_path, notice: create_success_message}
       end
     end
 
     def create_fail_action
+      flash.now[:error] = create_fail_message
+
       respond_to do |format|
-        flash.now[:error] = create_fail_message
         format.html { render :new, status: :unprocessable_entity }
+        format.turbo_stream { render "create_fail_action" }
       end
     end
 

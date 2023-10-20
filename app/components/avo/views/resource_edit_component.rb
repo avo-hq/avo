@@ -4,11 +4,12 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   include Avo::ResourcesHelper
   include Avo::ApplicationHelper
 
-  def initialize(resource: nil, model: nil, actions: [], view: :edit)
+  def initialize(resource: nil, model: nil, actions: [], view: :edit, display_breadcrumbs: true)
     @resource = resource
     @model = model
     @actions = actions
     @view = view
+    @display_breadcrumbs = display_breadcrumbs
   end
 
   def title
@@ -16,6 +17,7 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   end
 
   def back_path
+    return if via_belongs_to?
     return resource_view_path if via_resource?
     return resources_path if via_index?
 
@@ -46,10 +48,18 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
     @resource.authorization.authorize_action @view, raise_exception: false
   end
 
+  def display_breadcrumbs?
+    @reflection.blank? && @display_breadcrumbs
+  end
+
   private
 
   def via_index?
     params[:via_view] == "index"
+  end
+
+  def via_belongs_to?
+    params[:via_belongs_to_resource_class].present?
   end
 
   def is_edit?

@@ -3,4 +3,5 @@
 <%= hidden_field_tag :via_resource_class, params[:via_resource_class] if params[:via_resource_class] %>
 <%= hidden_field_tag :via_resource_id, params[:via_resource_id] if params[:via_resource_id] %>
 <%= hidden_field_tag :via_relation, params[:via_relation] if params[:via_relation] %>
+<%= hidden_field_tag :via_belongs_to_resource_class, params[:via_belongs_to_resource_class] if params[:via_belongs_to_resource_class] %>
 <%= hidden_field_tag :referrer, back_path if params[:via_resource_class] %>

@@ -132,7 +132,7 @@ module Avo
 
       respond_to do |format|
         format.turbo_stream do
-          render "keep_modal_open"
+          render partial: "avo/partials/flash_alerts"
         end
       end
     end

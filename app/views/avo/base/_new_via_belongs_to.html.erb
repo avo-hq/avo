@@ -1,0 +1,12 @@
+<%= turbo_frame_tag "new_via_belongs_to" do %>
+  <%= render(Avo::ModalComponent.new(width: :xl, body_class: "bg-application")) do |c| %>
+    <div class="pt-4 pb-8">
+      <%= render Avo::Views::ResourceEditComponent.new(
+        resource: @resource,
+        model: @model,
+        view: @view,
+        display_breadcrumbs: false
+      ) %>
+    </div>
+  <% end %>
+<% end %>
