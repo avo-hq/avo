@@ -5,6 +5,7 @@ module Avo
       attr_reader :close_on_select
       attr_reader :delimiters
       attr_reader :enforce_suggestions
+      attr_reader :suggestions_max_items
       attr_reader :mode
 
       def initialize(id, **args, &block)
@@ -16,6 +17,7 @@ module Avo
         add_array_prop args, :disallowed
         add_array_prop args, :delimiters, [","]
         add_array_prop args, :suggestions
+        add_string_prop args, :suggestions_max_items
         add_string_prop args, :mode, nil
         add_string_prop args, :fetch_values_from
         add_string_prop args, :fetch_labels

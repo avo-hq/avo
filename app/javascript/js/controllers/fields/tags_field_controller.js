@@ -15,6 +15,7 @@ export default class extends BaseController {
     enforceSuggestions: { type: Boolean, default: false },
     closeOnSelect: { type: Boolean, default: false },
     delimiters: { type: Array, default: [] },
+    suggestionsMaxItems: { type: Number, default: 20 },
     mode: String,
     fetchValuesFrom: String,
   }
@@ -36,7 +37,7 @@ export default class extends BaseController {
       enforceWhitelist: this.enforceSuggestionsValue || this.fetchValuesFromValue,
       delimiters: this.delimitersValue.join('|'),
       dropdown: {
-        maxItems: 20,
+        maxItems: this.suggestionsMaxItemsValue,
         enabled: 0,
         searchKeys: [this.labelAttributeValue],
         closeOnSelect: this.closeOnSelectValue,

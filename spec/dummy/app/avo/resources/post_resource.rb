@@ -34,6 +34,7 @@ class PostResource < Avo::BaseResource
     placeholder: "add some tags",
     suggestions: -> { Post.tags_suggestions },
     enforce_suggestions: true,
+    suggestions_max_items: 2,
     help: "The only allowed values here are `one`, `two`, and `three`"
   field :cover_photo, as: :file, is_image: true, as_avatar: :rounded, full_width: true, hide_on: [], accept: "image/*", display_filename: false#, format_using: -> { value.variant(resize_to_limit: [100, 100]).processed.image }
   field :cover_photo, as: :external_image, name: "Cover photo", required: true, hide_on: :all, link_to_resource: true, as_avatar: :rounded, format_using: -> { value.present? ? value&.url : nil }
