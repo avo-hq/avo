@@ -16,7 +16,7 @@ module Avo
       @view = :new
 
       @resource.hydrate(model: @model, view: @view, user: _current_user, params: params)
-      @model = ActionModel.new @action.get_attributes_for_action
+      @model = ActionModel.new @action.get_attributes_for_action if @model.blank?
     end
 
     def handle
