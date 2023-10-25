@@ -7,8 +7,7 @@
     data-resource-id="<%= params[:id] %>"
     class="hidden text-slate-800"
   >
-    <%= form_with model: @model,
-      scope: 'fields',
+    <%= form_with scope: 'fields',
       url: Avo::Services::URIService.parse(@resource.records_path).append_paths("actions").to_s,
       local: true,
       data: @action.class.form_data_attributes do |form|

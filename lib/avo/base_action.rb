@@ -77,17 +77,6 @@ module Avo
       end
     end
 
-    def get_attributes_for_action
-      get_fields.map do |field|
-        default_value = if field.default.respond_to? :call
-          Avo::Hosts::ResourceViewRecordHost.new(block: field.default, record: @model, view: @view, resource: @resource).handle
-        else
-          field.default
-        end
-        [field.id, field.value || default_value]
-      end.to_h
-    end
-
     def handle_action(**args)
       models, fields, current_user, resource = args.values_at(:models, :fields, :current_user, :resource)
       # Fetching the field definitions and not the actual fields (get_fields) because they will break if the user uses a `visible` block and adds a condition using the `params` variable. The params are different in the show method and the handle method.
