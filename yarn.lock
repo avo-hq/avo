@@ -3275,6 +3275,11 @@ tsconfig-paths@^3.14.1:
     minimist "^1.2.6"
     strip-bom "^3.0.0"
 
+turbo_power@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/turbo_power/-/turbo_power-0.5.0.tgz#3c9e68f49a8b701be195893b7d335633087287c5"
+  integrity sha512-IzCjy+pL5ohwJf26d4XTxlOp2gHLxhSyifRsysZeare7qjxnlHTuBUoeAx98+PlyKBMDYGQeitu+EFDwqxXVfw==
+
 type-check@^0.4.0, type-check@~0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/type-check/-/type-check-0.4.0.tgz#07b8203bfa7056c0657050e3ccd2c37730bab8f1"
