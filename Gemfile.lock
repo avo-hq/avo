@@ -13,6 +13,7 @@ PATH
       meta-tags
       pagy
       turbo-rails
+      turbo_power (~> 0.5.0)
       view_component (>= 2.54.0)
       zeitwerk (>= 2.6.2)
 
