@@ -72,7 +72,13 @@ module Avo
         "0"
       end
 
-      @pagy, @models = pagy(@query, items: @index_params[:per_page], link_extra: "data-turbo-frame=\"#{params[:turbo_frame]}\"", size: [1, 2, 2, 1], params: extra_pagy_params)
+      pagy_method, pagy_size = if @resource.countless?
+        [:pagy_countless, []]
+      else
+        [:pagy, [1, 2, 2, 1]]
+      end
+
+      @pagy, @models = send(pagy_method, @query, items: @index_params[:per_page], link_extra: "data-turbo-frame=\"#{params[:turbo_frame]}\"", size: pagy_size, params: extra_pagy_params)
 
       # Create resources for each model
       @resources = @models.map do |model|
