@@ -9,7 +9,7 @@ assignees: ''
 ### Describe the bug
 <!--
 A clear and concise description of what the bug is.
-You can use https://avodemo.herokuapp.com as the base app for the given instructions.
+You can use https://main.avodemo.com/ as the base app for the given instructions.
 -->
 
 ### Steps to Reproduce
