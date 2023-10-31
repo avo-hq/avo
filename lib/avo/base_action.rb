@@ -7,22 +7,18 @@ module Avo
     class_attribute :confirm_button_label
     class_attribute :cancel_button_label
     class_attribute :no_confirmation, default: false
-    class_attribute :model
-    class_attribute :view
-    class_attribute :user
-    class_attribute :resource
     class_attribute :standalone, default: false
     class_attribute :visible
     class_attribute :may_download_file, default: false
     class_attribute :turbo
 
+    attr_accessor :view
     attr_accessor :response
     attr_accessor :model
     attr_accessor :resource
     attr_accessor :user
     attr_reader :arguments
 
-    delegate :view, to: :class
     delegate :context, to: ::Avo::App
     delegate :current_user, to: ::Avo::App
     delegate :params, to: ::Avo::App
@@ -59,10 +55,10 @@ module Avo
     end
 
     def initialize(model: nil, resource: nil, user: nil, view: nil, arguments: {})
-      self.class.model = model
-      self.class.resource = resource
-      self.class.user = user
-      self.class.view = view
+      @model = model
+      @resource = resource
+      @user = user
+      @view = view
       @arguments = arguments
 
       self.class.message ||= I18n.t("avo.are_you_sure_you_want_to_run_this_option")
@@ -75,21 +71,10 @@ module Avo
 
     def get_message
       if self.class.message.respond_to? :call
-        Avo::Hosts::ResourceRecordHost.new(block: self.class.message, record: self.class.model, resource: self.class.resource).handle
+        Avo::Hosts::ResourceRecordHost.new(block: self.class.message, record: @model, resource: @resource).handle
       else
         self.class.message
       end
-    end
-
-    def get_attributes_for_action
-      get_fields.map do |field|
-        default_value = if field.default.respond_to? :call
-          Avo::Hosts::ResourceViewRecordHost.new(block: field.default, record: self.class.model, view: view, resource: self.class.resource).handle
-        else
-          field.default
-        end
-        [field.id, field.value || default_value]
-      end.to_h
     end
 
     def handle_action(**args)
@@ -144,8 +129,8 @@ module Avo
         block: visible,
         params: params,
         parent_resource: parent_resource,
-        resource: self.class.resource,
-        view: self.class.view,
+        resource: @resource,
+        view: @view,
         arguments: arguments
       ).handle
     end
