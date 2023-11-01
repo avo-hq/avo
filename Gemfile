@@ -167,3 +167,5 @@ gem "image_processing", "~> 1.12"
 gem "prefixed_ids"
 
 gem "mapkick-rb", "~> 0.1.4"
+
+gem "turbo_power", "~> 0.5.0"

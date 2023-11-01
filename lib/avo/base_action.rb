@@ -182,10 +182,9 @@ module Avo
       self
     end
 
-    def redirect_to(path = nil, allow_other_host: nil, status: nil, &block)
+    def redirect_to(path = nil, **args, &block)
       response[:type] = :redirect
-      response[:allow_other_host] = allow_other_host
-      response[:status] = status
+      response[:redirect_args] = args
       response[:path] = if block.present?
         block
       else

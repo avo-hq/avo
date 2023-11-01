@@ -40,6 +40,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "active_link_to"
   spec.add_dependency "view_component", ">= 2.54.0"
   spec.add_dependency "turbo-rails"
+  spec.add_dependency "turbo_power", "~> 0.5.0"
   spec.add_dependency "addressable"
   spec.add_dependency "meta-tags"
   spec.add_dependency "dry-initializer"

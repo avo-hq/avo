@@ -78,19 +78,18 @@ module Avo
       end
 
       respond_to do |format|
-        format.html do
+        format.turbo_stream do
           # Flash the messages collected from the action
           flash_messages messages
 
           if response[:type] == :redirect
-            path = response[:path]
-
-            if path.respond_to? :call
-              path = instance_eval(&path)
-            end
-
-            redirect_to path, **{allow_other_host: response[:allow_other_host], status: response[:status]}.compact
-          elsif response[:type] == :reload
+            render turbo_stream: turbo_stream.redirect_to(
+              Avo::ExecutionContext.new(target: response[:path]).handle,
+              nil,
+              response[:redirect_args][:turbo_frame],
+              **response[:redirect_args].except(:turbo_frame)
+            )
+          else
             redirect_back fallback_location: resources_path(resource: @resource)
           end
         end
