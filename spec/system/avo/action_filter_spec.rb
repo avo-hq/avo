@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.feature "Actions", type: :feature do
+RSpec.feature "Actions", type: :system do
   it "shows the different types of alerts" do
     visit "/admin/resources/users"
 

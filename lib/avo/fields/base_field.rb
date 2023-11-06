@@ -99,14 +99,20 @@ module Avo
         except_on args[:except_on] if args[:except_on].present?
       end
 
-      def hydrate(model: nil, resource: nil, action: nil, view: nil, panel_name: nil, user: nil)
-        @model = model if model.present?
-        @view = view if view.present?
-        @resource = resource if resource.present?
-        @action = action if action.present?
-        @user = user if user.present?
-        @panel_name = panel_name if panel_name.present?
+      def hydrate(**kwargs)
+        # List of permitted keyword argument keys as symbols
+        permited_kwargs_keys = %i[model resource action view panel_name user]
 
+        # Check for unrecognized keys
+        unrecognized_keys = kwargs.keys - permited_kwargs_keys
+        raise ArgumentError, "Unrecognized argument(s): #{unrecognized_keys.join(', ')}" if unrecognized_keys.any?
+
+        # Set instance variables with provided values
+        kwargs.each do |key, value|
+          instance_variable_set("@#{key}", value)
+        end
+
+        # Return self for method chaining, if desired
         self
       end
 

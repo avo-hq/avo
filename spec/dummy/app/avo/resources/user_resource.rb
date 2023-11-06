@@ -144,6 +144,8 @@ class UserResource < Avo::BaseResource
   action ToggleAdmin
   action Sub::DummyAction
   action DownloadFile
+  action PreUpdate
+  action Update
 
   filter UserNamesFilter
   filter IsAdmin
