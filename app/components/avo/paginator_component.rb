@@ -26,7 +26,7 @@ class Avo::PaginatorComponent < ViewComponent::Base
   end
 
   def render?
-    return if discreet_pagination
+    return false if discreet_pagination && pagy.pages <= 1
 
     @pagy.items > 0
   end
