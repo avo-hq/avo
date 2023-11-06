@@ -30,4 +30,16 @@ class Avo::PaginatorComponent < ViewComponent::Base
 
     @pagy.items > 0
   end
+
+  def per_page_options
+    @per_page_options ||= begin
+      options = [*Avo.configuration.per_page_steps, Avo.configuration.per_page.to_i, index_params[:per_page].to_i]
+
+      if parent_model.present?
+        options.prepend Avo.configuration.via_per_page
+      end
+
+      options.sort.uniq
+    end
+  end
 end
