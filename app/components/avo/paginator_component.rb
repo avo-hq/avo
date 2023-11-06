@@ -24,4 +24,10 @@ class Avo::PaginatorComponent < ViewComponent::Base
       helpers.resources_path(resource: resource, per_page: option, keep_query_params: true, page: 1)
     end
   end
+
+  def render?
+    return if discreet_pagination
+
+    @pagy.items > 0
+  end
 end

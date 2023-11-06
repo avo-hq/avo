@@ -8,7 +8,7 @@ module Avo
     include Avo::Concerns::HasEditableControls
     include Avo::Concerns::HasStimulusControllers
     include Avo::Concerns::ModelClassConstantized
-    include Avo::Concerns::Countless
+    include Avo::Concerns::Pagination
 
     delegate :view_context, to: ::Avo::App
     delegate :current_user, to: ::Avo::App

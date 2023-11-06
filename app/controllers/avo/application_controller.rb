@@ -6,7 +6,6 @@ module Avo
       Avo::ApplicationController.include Pundit
     end
 
-    include Pagy::Backend
     include Avo::ApplicationHelper
     include Avo::UrlHelpers
     include Avo::Concerns::Breadcrumbs
