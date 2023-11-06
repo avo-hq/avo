@@ -6,14 +6,17 @@ module Avo
       included do
         include Pagy::Backend
 
-        class_attribute :pagination, default: {
-          type: :normal
-        }
+        class_attribute :pagination, default: {}
 
         PAGINATION_METHOD = {
           normal: :pagy,
           countless: :pagy_countless,
         } unless defined? PAGINATION_METHOD
+
+        PAGINATION_DEFAULTS = {
+          type: :normal,
+          size: [1, 2, 2, 1],
+        } unless defined? PAGINATION_DEFAULTS
       end
 
       def pagination_type
@@ -33,13 +36,13 @@ module Avo
           items: index_params[:per_page],
           link_extra: "data-turbo-frame=\"#{params[:turbo_frame]}\"",
           params: extra_pagy_params,
-          size: pagination_hash[:size] || [1, 2, 2, 1]
+          size: pagination_hash[:size]
       end
 
       private
 
       def pagination_hash
-        @pagination = Avo::ExecutionContext.new(
+        @pagination = PAGINATION_DEFAULTS.merge! Avo::ExecutionContext.new(
           target: pagination,
           resource: self,
           view: @view
