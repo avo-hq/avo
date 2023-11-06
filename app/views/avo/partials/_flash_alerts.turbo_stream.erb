@@ -1,3 +1,3 @@
 <%= turbo_stream.append "alerts" do %>
-  <%= render Avo::FlashAlertsComponent.new flashes: flash %>
+  <%= render Avo::FlashAlertsComponent.new flashes: flash.discard %>
 <% end %>
