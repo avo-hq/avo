@@ -81,10 +81,12 @@
         <% if Avo.configuration.buttons_on_form_footers %>
           <% c.with_footer_tools do %>
             <div class="mt-4">
-              <%= a_link back_path,
-              style: :text,
-              icon: 'arrow-left' do %>
-                <%= t('avo.cancel').capitalize %>
+              <% if back_path.present? %>
+                <%= a_link back_path,
+                style: :text,
+                icon: 'arrow-left' do %>
+                  <%= t('avo.cancel').capitalize %>
+                <% end %>
               <% end %>
               <% if can_see_the_save_button? %>
                 <%= a_button color: :primary,
