@@ -80,6 +80,7 @@ fr:
       to_top: Déplacer tout en haut
     per_page: Par page
     prev_page: Page précédente
+    records_selected_from_all_pages_html: tous les éléments sélectionnés de toutes les pages
     remove_selection: Supprimer la sélection
     reset_filters: Réinitialiser les filtres
     resource_created: Ressource créee
@@ -117,4 +118,5 @@ fr:
       zero: aucun élément supplémentaire
     x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> enregistrements sélectionnés sur cette page sur un total de <span class="font-bold text-gray-700">%{count}</span>
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> enregistrements sélectionnés dans toutes les pages
+    x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> éléments sélectionnés de cette page
     you_missed_something_check_form: Vous avez peut-être oublié quelque chose. Veuillez vérifier le formulaire
