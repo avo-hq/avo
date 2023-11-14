@@ -1,0 +1,124 @@
+---
+es:
+  avo:
+    action_ran_successfully: ¡Acción ejecutada con éxito!
+    actions: Acciones
+    and_x_other_resources: y %{count} otros recursos
+    are_you_sure: ¿Estás seguro?
+    are_you_sure_detach_item: ¿Estás seguro de que quieres separar este/a %{item}?
+    are_you_sure_you_want_to_run_this_option: ¿Estás seguro de que quieres ejectuar esta acción?
+    attach: Adjuntar
+    attach_and_attach_another: Adjuntar y adjuntar otro
+    attach_item: Adjuntar %{item}
+    attachment_class_attached: "%{attachment_class} adjuntado/a."
+    attachment_class_detached: "%{attachment_class} adjuntado/a."
+    attachment_destroyed: Adjunto eliminado
+    cancel: Cancelar
+    choose_a_country: Elige un país
+    choose_an_option: Elige una opción
+    choose_item: Elige %{item}
+    clear_value: Borrar el valor
+    click_to_reveal_filters: Pulsa para mostrar los filtros
+    confirm: Confirmar
+    create_new_item: Crear nuevo/a %{item}
+    dashboard: Panel
+    dashboards: Paneles
+    delete: eliminar
+    delete_file: Eliminar fichero
+    delete_item: Eliminar %{item}
+    detach_item: separar %{item}
+    details: detalles
+    download: Descargar
+    download_file: Descargar fichero
+    download_item: Descargar %{item}
+    edit: editar
+    edit_item: editar %{item}
+    empty_dashboard_message: Añadir tarjetas a este panel
+    failed: Fallo
+    failed_to_find_attachment: No se ha encontrado el archivo adjunto
+    failed_to_load: No se ha podido cargar
+    field_translations:
+      file:
+        one: fichero
+        other: ficheros
+        zero: ficheros
+      people:
+        one: persona
+        other: personas
+        zero: personas
+    filter_by: Filtrar por
+    filters: Filtros
+    go_back: Volver
+    grid_view: Vista en cuardrícula
+    hide_content: Ocultar contenido
+    home: Inicio
+    key_value_field:
+      add_row: Añadir fila
+      delete_row: Eliminar fila
+      key: Clave
+      value: Valor
+    list_is_empty: La lista está vacía
+    loading: Cargando
+    more: Más
+    new: nuevo/a
+    next_page: Página siguiente
+    no_cards_present: No hay tarjetas
+    no_item_found: No se ha encontrado ningún elemento
+    no_options_available: No hay opciones disponibles
+    no_related_item_found: No se ha encontrado ningún elemento relacionado
+    not_authorized: No estás autorizado/a a realizar esta acción.
+    number_of_items:
+      one: un/a %{item}
+      other: "%{count} %{item}"
+      zero: ningún/a %{item}
+    oops_nothing_found: Oops! No se ha encontrado nada...
+    order:
+      higher: Mover arriba
+      lower: Mover abajo
+      reorder_record: Reordenar registro
+      to_bottom: Mover abajo del todo
+      to_top: Mover arriba del todo
+    per_page: Por página
+    prev_page: Página anterior
+    remove_selection: Quitar la selección
+    reset_filters: Reiniciar filtros
+    resource_created: Recurso creado
+    resource_destroyed: Recurso eliminado
+    resource_translations:
+      team_members:
+        one: miembro del equipo
+        other: miembros del equipo
+        zero: miembros del equipo
+      user:
+        one: usuario/a
+        other: usuarios/as
+        zero: usuarios/as
+    resource_updated: Recurso actualizado
+    resources: Recursos
+    run: Ejecutar
+    save: Guardar
+    search:
+      cancel_button: Cancelar
+      placeholder: Buscar
+    select_all: Seleccionar todo
+    select_all_matching: Seleccionar todas las coincidencias
+    select_item: Selecionar elemento
+    show_content: Mostrar contenido
+    sign_out: Salir
+    switch_to_view: Cambiar a la vista %{view_type}
+    table_view: Vista en tabla
+    tools: Herramientas
+    type_to_search: Escribe para buscar.
+    unauthorized: No autorizado
+    undo: deshacer
+    view: Vista
+    view_item: ver %{item}
+    was_successfully_created: se ha creado con éxito
+    was_successfully_updated: se ha actualizado con éxito
+    x_items_more:
+      one: un elemento más
+      other: "%{count} elementos más"
+      zero: ningún elemento más
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> registros seleccionados en esta página de un total de <span class="font-bold text-gray-700">%{count}</span>
+    x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> registros seleccionados en todas las páginas
+    you_missed_something_check_form: Es posible que hayas pasado algo por alto. Comprueba el formulario.
