@@ -9,18 +9,18 @@ module Avo
         class_attribute :pagination, default: {}
 
         PAGINATION_METHOD = {
-          normal: :pagy,
+          default: :pagy,
           countless: :pagy_countless,
         } unless defined? PAGINATION_METHOD
 
         PAGINATION_DEFAULTS = {
-          type: :normal,
+          type: :default,
           size: [1, 2, 2, 1],
         } unless defined? PAGINATION_DEFAULTS
       end
 
       def pagination_type
-        @pagination_type ||= pagination_hash[:type].to_sym
+        @pagination_type ||= ActiveSupport::StringInquirer.new(pagination_hash[:type].to_s)
       end
 
       def apply_pagination(index_params:, query:)
@@ -31,7 +31,7 @@ module Avo
           "0"
         end
 
-        send PAGINATION_METHOD[pagination_type],
+        send PAGINATION_METHOD[pagination_type.to_sym],
           query,
           items: index_params[:per_page],
           link_extra: "data-turbo-frame=\"#{params[:turbo_frame]}\"",
