@@ -504,8 +504,10 @@ module Avo
     end
 
     def destroy_fail_action
+      flash[:error] = destroy_fail_message
+
       respond_to do |format|
-        format.html { redirect_back fallback_location: params[:referrer] || resources_path(resource: @resource, turbo_frame: params[:turbo_frame], view_type: params[:view_type]), error: destroy_fail_message }
+        format.turbo_stream { render partial: "avo/partials/flash_alerts" }
       end
     end
 
