@@ -64,6 +64,42 @@ RSpec.feature "HasManyField", type: :system do
         sleep 0.8
         expect(page).to have_text("Record destroyed").twice
       end
+
+      it "shows the notification when delete fails" do
+        Comment.class_eval do
+          def destroy
+            raise "Record failed to destroy"
+          end
+        end
+
+        visit url
+
+        expect {
+          find("[data-resource-id='#{comments.first.id}'] [data-control='destroy']").click
+          sleep 0.2
+          page.driver.browser.switch_to.alert.accept
+          sleep 0.2
+          find("[data-resource-id='#{comments.third.id}'] [data-control='destroy']").click
+          sleep 0.2
+          page.driver.browser.switch_to.alert.accept
+          sleep 0.2
+        }.to change(Comment, :count).by(0)
+
+        expect(page).to have_current_path url
+
+        expect(page).to have_text comments.third.tiny_name.to_s
+        expect(page).to have_text comments.first.tiny_name.to_s
+        expect(page).to have_text comments.second.tiny_name.to_s
+
+        sleep 0.8
+        expect(page).to have_text("Record failed to destroy").twice
+
+        Comment.class_eval do
+          def destroy
+            super
+          end
+        end
+      end
     end
   end
 
