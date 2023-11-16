@@ -11,7 +11,7 @@
     <div class="absolute z-30 w-full ml-10 pt-px hidden" data-item-select-all-target="selectAllOverlay">
       <div class="bg-white flex items-center h-9 mt-0.5">
         <div class="mt-1.5" data-item-select-all-target="unselectedMessage">
-          <%= t "avo.x_records_selected_from_a_total_of_x_html", selected: pagy.in, count: pagy.count %>
+          <%= selected_page_label %>
           <%= a_link request.url,
             size: :xs,
             color: :primary,
@@ -22,7 +22,7 @@
           <% end %>
         </div>
         <div class="mt-1.5" data-item-select-all-target="selectedMessage" class="hidden">
-          <%= t "avo.x_records_selected_from_all_pages_html", count: pagy.count %>
+          <%= selected_all_label %>
           <%= a_link request.url,
             size: :xs,
             color: :primary,

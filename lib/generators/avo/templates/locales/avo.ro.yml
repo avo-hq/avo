@@ -80,6 +80,7 @@ ro:
       to_top: Mutați înregistrarea sus de tot
     per_page: Pe pagină
     prev_page: Pagina anterioara
+    records_selected_from_all_pages_html: Toate selectate din toate paginile
     remove_selection: Șterge selecția
     reset_filters: Resetați filtrele
     resource_created: Resursă creata
@@ -117,4 +118,5 @@ ro:
       zero: zero articole
     x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> selectate dintr-un total de <span class="font-bold text-gray-700">%{count}</span>
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> selectate din toate paginile
+    x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> selectate
     you_missed_something_check_form: S-ar putea să fi omis ceva. Vă rugăm să verificați formularul.

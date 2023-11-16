@@ -80,6 +80,7 @@ en:
       to_top: Move record to top
     per_page: Per page
     prev_page: Previous page
+    records_selected_from_all_pages_html: All records selected from all pages
     remove_selection: Remove selection
     reset_filters: Reset filters
     resource_created: Record created
@@ -121,4 +122,5 @@ en:
       zero: no more items
     x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> records selected on this page from a total of <span class="font-bold text-gray-700">%{count}</span>
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> records selected from all pages
+    x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> records selected on this page
     you_missed_something_check_form: You might have missed something. Please check the form.

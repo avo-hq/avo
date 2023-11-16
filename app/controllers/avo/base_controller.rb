@@ -65,14 +65,7 @@ module Avo
         ).apply_query request, @query, filter_value
       end
 
-      extra_pagy_params = {}
-
-      # Reset open filters when a user navigates to a new page
-      extra_pagy_params[:keep_filters_panel_open] = if params[:keep_filters_panel_open] == "1"
-        "0"
-      end
-
-      @pagy, @models = pagy(@query, items: @index_params[:per_page], link_extra: "data-turbo-frame=\"#{params[:turbo_frame]}\"", size: [1, 2, 2, 1], params: extra_pagy_params)
+      apply_pagination
 
       # Create resources for each model
       @resources = @models.map do |model|
@@ -542,6 +535,10 @@ module Avo
     # Set pagy locale from params or from avo configuration, if both nil locale = "en"
     def set_pagy_locale
       @pagy_locale = locale.to_s || Avo.configuration.locale || "en"
+    end
+
+    def apply_pagination
+      @pagy, @models = @resource.apply_pagination(index_params: @index_params, query: @query)
     end
   end
 end

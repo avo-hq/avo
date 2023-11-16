@@ -80,6 +80,7 @@ pt-BR:
       to_top: Mover registro para cima
     per_page: Por página
     prev_page: Página anterior
+    records_selected_from_all_pages_html: Todos os registros de todas as páginas selecionados
     remove_selection: Remover seleção
     reset_filters: Limpar filtros
     resource_created: Recurso criado
@@ -117,4 +118,5 @@ pt-BR:
       zero: mais nenhum item
     x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> registros selecionados nesta página de um total de <span class="font-bold text-gray-700">%{count}</span>
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> registros selecionados de todas as páginas
+    x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> registros selecionados nesta página
     you_missed_something_check_form: Você pode ter esquecido algo. Por favor, cheque o formulário.

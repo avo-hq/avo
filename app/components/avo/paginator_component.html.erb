@@ -1,47 +1,36 @@
-<%
-  per_page_options = [*Avo.configuration.per_page_steps, Avo.configuration.per_page.to_i, index_params[:per_page].to_i]
-
-  if parent_model.present?
-    per_page_options.prepend Avo.configuration.via_per_page
-  end
-
-  per_page_options = per_page_options.sort.uniq
-%>
-<% unless @pagy.pages <= 1 && discreet_pagination %>
-  <div class="flex flex-col sm:flex-row items-center justify-between aborder-t aborder-slate-200 rounded-xl space-y-2 sm:space-y-0">
-    <div class="flex-2 sm:flex sm:items-center sm:justify-between">
-      <div>
-        <div class="text-sm leading-5 text-slate-600 flex items-center">
-          <div data-controller="per-page">
-            <div class="flex items-center">
-              <%= select_tag 'per_page',
-                options_for_select(per_page_options, index_params[:per_page]),
-                class: 'appearance-none inline-flex bg-white-100 disabled:bg-white-400 disabled:cursor-not-allowed focus:bg-white text-slate-700 disabled:text-slate-600 rounded-md py-1 px-2 leading-tight border border-slate-300 outline-none focus:border-slate-400 outline w-16 mr-1 text-sm',
-                data: {
-                  'turbo-frame': turbo_frame,
-                  'per-page-target': 'selector',
-                  action: 'change->per-page#reload'
-                }
-              %> <%= t('avo.per_page').downcase %>
-            </div>
-            <% per_page_options.each do |option| %>
-              <%= link_to "Change to #{option} items per page", change_items_per_page_url(option), class: 'hidden', 'data-per-page-option': option, 'data-turbo-frame': turbo_frame %>
-            <% end %>
+<div class="flex flex-col sm:flex-row items-center justify-between aborder-t aborder-slate-200 rounded-xl space-y-2 sm:space-y-0">
+  <div class="flex-2 sm:flex sm:items-center sm:justify-between">
+    <div>
+      <div class="text-sm leading-5 text-slate-600 flex items-center">
+        <div data-controller="per-page">
+          <div class="flex items-center">
+            <%= select_tag 'per_page',
+              options_for_select(per_page_options, index_params[:per_page]),
+              class: 'appearance-none inline-flex bg-white-100 disabled:bg-white-400 disabled:cursor-not-allowed focus:bg-white text-slate-700 disabled:text-slate-600 rounded-md py-1 px-2 leading-tight border border-slate-300 outline-none focus:border-slate-400 outline w-16 mr-1 text-sm',
+              data: {
+                'turbo-frame': turbo_frame,
+                'per-page-target': 'selector',
+                action: 'change->per-page#reload'
+              }
+            %> <%= t('avo.per_page').downcase %>
           </div>
+          <% per_page_options.each do |option| %>
+            <%= link_to "Change to #{option} items per page", change_items_per_page_url(option), class: 'hidden', 'data-per-page-option': option, 'data-turbo-frame': turbo_frame %>
+          <% end %>
         </div>
       </div>
     </div>
-    <div class="flex">
-      <div class="flex-2 sm:flex sm:items-center sm:justify-between space-y-2 sm:space-y-0 text-center sm:text-left">
-        <% if @pagy.count > 0 %>
-          <div class="text-sm text-slate-600 mr-4"><%== helpers.pagy_info @pagy %></div>
-        <% end %>
+  </div>
+  <div class="flex">
+    <div class="flex-2 sm:flex sm:items-center sm:justify-between space-y-2 sm:space-y-0 text-center sm:text-left">
+      <% if @resource.pagination_type.default? %>
+        <div class="text-sm text-slate-600 mr-4"><%== helpers.pagy_info @pagy %></div>
+      <% end %>
 
-        <% if @pagy.pages > 1 %>
-          <%# @todo: add first & last page. make the first and last buttons rounded %>
-          <%== helpers.pagy_nav @pagy %>
-        <% end %>
-      </div>
+      <% if pagy.pages > 1 %>
+        <%# @todo: add first & last page. make the first and last buttons rounded %>
+        <%== helpers.pagy_nav @pagy %>
+      <% end %>
     </div>
   </div>
-<% end %>
+</div>

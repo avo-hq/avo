@@ -37,68 +37,115 @@ RSpec.describe "SelectAll", type: :system do
 
         expect(page).to have_text "#{total_fish} fish released with message '' by ."
       end
+    end
 
-      context "press undo" do
-        it "releases the fish from the selected page" do
-          visit url
+    context "press undo" do
+      it "releases the fish from the selected page" do
+        visit url
 
-          check_select_all
-          expect_all_message
+        check_select_all
+        expect_all_message
 
-          click_on "Select all matching"
-          expect_all_matching_message
+        click_on "Select all matching"
+        expect_all_matching_message
 
-          click_on "Undo"
-          expect_all_message
+        click_on "Undo"
+        expect_all_message
 
-          release_fish
+        release_fish
 
-          expect(page).to have_text "#{per_page} fish released with message '' by ."
-        end
-      end
-
-      context "uncheck one of them" do
-        it "releases the fish from the selected page - 1" do
-          visit url
-
-          check_select_all
-          expect_all_message
-
-          click_on "Select all matching"
-          expect_all_matching_message
-
-          uncheck_first_record
-          release_fish
-
-          expect(page).to have_text "#{per_page - 1} fish released with message '' by ."
-        end
+        expect(page).to have_text "#{per_page} fish released with message '' by ."
       end
     end
 
-    describe "with applyed filters" do
+    context "uncheck one of them" do
+      it "releases the fish from the selected page - 1" do
+        visit url
+
+        check_select_all
+        expect_all_message
+
+        click_on "Select all matching"
+        expect_all_matching_message
+
+        uncheck_first_record
+        release_fish
+
+        expect(page).to have_text "#{per_page - 1} fish released with message '' by ."
+      end
+    end
+  end
+
+  describe "with applyed filters" do
+    context "select all" do
+      it "releases all fish from applyed filter" do
+        visit url
+
+        open_filters_menu
+        expect(page).to have_text "Name filter"
+        fill_in "avo_filters_name_filter", with: "Spec Salmon"
+        click_on "Filter by name"
+        wait_for_loaded
+
+        check_select_all
+        expect(page).to have_text "#{per_page} records selected on this page from a total of #{spec_salmon_number}"
+
+        click_on "Select all matching"
+
+        expect(page).to have_text "#{spec_salmon_number} records selected from all pages"
+        release_fish
+
+        expect(page).to have_text "#{spec_salmon_number} fish released with message '' by ."
+      end
+    end
+
+    describe "countless resource" do
       context "select all" do
-        it "releases all fish from applyed filter" do
+        it "display contless messages" do
+          pagination = FishResource.pagination
+          FishResource.pagination = -> do
+            {
+              type: :countless
+            }
+          end
+
           visit url
 
-          open_filters_menu
-          expect(page).to have_text "Name filter"
-          fill_in "avo_filters_name_filter", with: "Spec Salmon"
-          click_on "Filter by name"
-          wait_for_loaded
+          within('nav.pagy-nav.pagination') do
+            expect(page).to have_css('span.page.active', text: '1')
+            expect(page).to have_css('span.page', text: '2')
+          end
 
           check_select_all
-          expect(page).to have_text "#{per_page} records selected on this page from a total of #{spec_salmon_number}"
+          expect(page).to have_text "2 records selected on this page"
 
           click_on "Select all matching"
+          expect(page).to have_text "All records selected from all pages"
 
-          expect(page).to have_text "#{spec_salmon_number} records selected from all pages"
-          release_fish
+          FishResource.pagination = -> do
+            {
+              type: :countless,
+              size: []
+            }
+          end
 
-          expect(page).to have_text "#{spec_salmon_number} fish released with message '' by ."
+          visit url
+
+          within('nav.pagy-nav.pagination') do
+            expect(page).not_to have_css('span.page.active', text: '1')
+            expect(page).not_to have_css('span.page', text: '2')
+          end
+
+          check_select_all
+          expect(page).to have_text "2 records selected on this page"
+
+          click_on "Select all matching"
+          expect(page).to have_text "All records selected from all pages"
+
+          FishResource.pagination = pagination
         end
       end
     end
-
   end
 end
 
