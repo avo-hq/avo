@@ -27,7 +27,10 @@ module Avo
           default_attribute_value name
         end
 
-        add_default_data_attributes attributes, name, element, view
+        add_action_data_attributes(attributes, name, element)
+        add_resource_data_attributes(attributes, name, element, view)
+
+        attributes
       end
 
       private
@@ -47,14 +50,17 @@ module Avo
         name == :data ? {} : ""
       end
 
-      def add_default_data_attributes(attributes, name, element, view)
-        if !attributes.nil? && name == :data && element == :input && view.in?([:edit, :new]) && resource.present? && resource.respond_to?(:get_stimulus_controllers)
-          resource_stimulus_attributes = stimulus_attributes_for(resource)
-          action_stimulus_attributes = action ? stimulus_attributes_for(action) : {}
+      def add_action_data_attributes(attributes, name, element)
+        if can_add_stimulus_attributes_for?(action, attributes, name, element)
+          attributes.merge!(stimulus_attributes_for(action))
+        end
+      end
 
-          attributes.merge(resource_stimulus_attributes, action_stimulus_attributes)
-        else
-          attributes
+      def add_resource_data_attributes(attributes, name, element, view)
+        if can_add_stimulus_attributes_for?(resource, attributes, name, element) && view.in?([:edit, :new])
+          resource_stimulus_attributes = stimulus_attributes_for(resource)
+
+          attributes.merge!(resource_stimulus_attributes)
         end
       end
 
@@ -98,6 +104,10 @@ module Avo
         end
 
         result if result.present?
+      end
+
+      def can_add_stimulus_attributes_for?(entity, attributes, name, element)
+        !attributes.nil? && name == :data && element == :input && entity.present? && entity.respond_to?(:get_stimulus_controllers)
       end
 
       def stimulus_attributes_for(entity)
