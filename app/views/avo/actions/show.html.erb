@@ -1,6 +1,6 @@
 <%= turbo_frame_tag "actions_show" do %>
   <div
-    data-controller="action"
+    data-controller="<%= ["action", @action.get_stimulus_controllers].join(" ") %>"
     data-no-confirmation="<%= @action.no_confirmation %>"
     data-action-target="controllerDiv"
     data-resource-name="<%= @resource.model_key %>"

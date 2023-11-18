@@ -84,9 +84,11 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
 
     # Add the built-in stimulus integration data tags.
     if @resource.present?
-      @resource.get_stimulus_controllers.split(" ").each do |controller|
-        attributes["#{controller}-target"] = "#{@field.id.to_s.underscore}_#{@field.type.to_s.underscore}_wrapper".camelize(:lower)
-      end
+      add_stimulus_controllers_for(@resource, attributes)
+    end
+
+    if @action.present?
+      add_stimulus_controllers_for(@action, attributes)
     end
 
     # Fetch the data attributes off the html option
@@ -115,5 +117,13 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
 
   def full_width?
     @full_width
+  end
+
+  private
+
+  def add_stimulus_controllers_for(entity, attributes)
+    entity.get_stimulus_controllers.split(" ").each do |controller|
+      attributes["#{controller}-target"] = "#{@field.id.to_s.underscore}_#{@field.type.to_s.underscore}_wrapper".camelize(:lower)
+    end
   end
 end

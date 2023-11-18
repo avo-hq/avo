@@ -49,14 +49,10 @@ module Avo
 
       def add_default_data_attributes(attributes, name, element, view)
         if !attributes.nil? && name == :data && element == :input && view.in?([:edit, :new]) && resource.present? && resource.respond_to?(:get_stimulus_controllers)
-          extra_attributes = resource.get_stimulus_controllers
-            .split(" ")
-            .map do |controller|
-              [:"#{controller}-target", "#{id.to_s.underscore}_#{type.to_s.underscore}_input".camelize(:lower)]
-            end
-            .to_h
+          resource_stimulus_attributes = stimulus_attributes_for(resource)
+          action_stimulus_attributes = action ? stimulus_attributes_for(action) : {}
 
-          attributes.merge extra_attributes
+          attributes.merge(resource_stimulus_attributes, action_stimulus_attributes)
         else
           attributes
         end
@@ -102,6 +98,15 @@ module Avo
         end
 
         result if result.present?
+      end
+
+      def stimulus_attributes_for(entity)
+        entity.get_stimulus_controllers
+          .split(" ")
+          .map do |controller|
+            [:"#{controller}-target", "#{id.to_s.underscore}_#{type.to_s.underscore}_input".camelize(:lower)]
+          end
+          .to_h
       end
     end
   end
