@@ -35,6 +35,7 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
     @full_width = full_width
     @label = label
     @resource = resource
+    @action = field.action
     @stacked = stacked
     @style = style
     @view = view
