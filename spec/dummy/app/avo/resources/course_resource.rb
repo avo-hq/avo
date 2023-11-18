@@ -82,4 +82,6 @@ class CourseResource < Avo::BaseResource
 
   filter CourseCountryFilter
   filter CourseCityFilter
+
+  action ShowCurrentTime
 end
