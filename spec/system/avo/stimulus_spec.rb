@@ -15,7 +15,7 @@ RSpec.describe "StimulusJS", type: :system do
     end
   end
 
-  describe "course_controller#onCountryChange" do
+  describe "city-in-country#onCountryChange" do
     it "changes the cities" do
       visit "/admin/resources/courses/#{course.id}/edit"
 

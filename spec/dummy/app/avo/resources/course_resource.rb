@@ -6,7 +6,7 @@ class CourseResource < Avo::BaseResource
     scope.ransack(id_eq: params[:q], name_cont: params[:q], m: "or").result(distinct: false)
   end
   self.keep_filters_panel_open = true
-  self.stimulus_controllers = "course-resource toggle-fields"
+  self.stimulus_controllers = "city-in-country toggle-fields"
 
   field :id, as: :id
   field :name, as: :text, html: {
@@ -68,7 +68,7 @@ class CourseResource < Avo::BaseResource
       edit: {
         input: {
           data: {
-            action: "course-resource#onCountryChange"
+            action: "city-in-country#onCountryChange"
           }
         }
       }
