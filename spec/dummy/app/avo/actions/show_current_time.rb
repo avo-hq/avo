@@ -1,7 +1,7 @@
 class ShowCurrentTime < Avo::BaseAction
   self.name = "Show current time"
   self.standalone = true
-  self.stimulus_controllers = ["city-in-country"]
+  self.stimulus_controllers = "city-in-country"
 
   field :country,
     as: :select,
