@@ -4,7 +4,7 @@ module Avo
       extend ActiveSupport::Concern
 
       included do
-        class_attribute :stimulus_controllers, default: ""
+        class_attribute :stimulus_controllers, default: []
       end
 
       def get_stimulus_controllers
