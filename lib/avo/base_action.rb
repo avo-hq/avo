@@ -1,6 +1,7 @@
 module Avo
   class BaseAction
     include Avo::Concerns::HasFields
+    include Avo::Concerns::HasActionStimulusControllers
 
     class_attribute :name, default: nil
     class_attribute :message
@@ -11,7 +12,6 @@ module Avo
     class_attribute :visible
     class_attribute :may_download_file, default: false
     class_attribute :turbo
-    class_attribute :stimulus_controllers, default: ""
 
     attr_accessor :view
     attr_accessor :response
@@ -216,10 +216,6 @@ module Avo
       end
 
       self
-    end
-
-    def get_stimulus_controllers
-      self.class.stimulus_controllers.join(" ")
     end
 
     private

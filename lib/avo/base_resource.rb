@@ -6,7 +6,7 @@ module Avo
     include Avo::Concerns::HasFields
     include Avo::Concerns::CanReplaceFields
     include Avo::Concerns::HasEditableControls
-    include Avo::Concerns::HasStimulusControllers
+    include Avo::Concerns::HasResourceStimulusControllers
     include Avo::Concerns::ModelClassConstantized
     include Avo::Concerns::Pagination
 
