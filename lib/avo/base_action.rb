@@ -32,19 +32,21 @@ module Avo
       def form_data_attributes
         # We can't respond with a file download from Turbo se we disable it on the form
         if may_download_file
-          {turbo: turbo || false, remote: false, action_target: :form}
+          {turbo: turbo || false, remote: false}
         else
-          {turbo: turbo, turbo_frame: :_top, action_target: :form}.compact
+          {turbo: turbo, turbo_frame: :_top}.compact
         end
       end
 
       # We can't respond with a file download from Turbo se we disable close the modal manually after a while (it's a hack, we know)
       def submit_button_data_attributes
+        attributes = { action_target: "submit" }
+
         if may_download_file
-          {action: "click->modal#delayedClose"}
-        else
-          {}
+          attributes[:action] = "click->modal#delayedClose"
         end
+
+        attributes
       end
     end
 
