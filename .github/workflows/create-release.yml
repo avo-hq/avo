@@ -1,0 +1,13 @@
+name: Create release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  create_release:
+    uses: avo-hq/support/.github/workflows/create-release.yml@main
