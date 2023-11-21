@@ -23,6 +23,7 @@ es:
     create_new_item: Crear nuevo/a %{item}
     dashboard: Panel
     dashboards: Paneles
+    default_scope: Todos
     delete: eliminar
     delete_file: Eliminar fichero
     delete_item: Eliminar %{item}
