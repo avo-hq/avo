@@ -56,6 +56,7 @@ js_bundle_metadata.json
 /public/avo-assets/avo.base.js.map
 /public/packs-test
 /node_modules
+node_modules
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
@@ -73,3 +74,6 @@ app/assets/builds
 
 TAGS
 brakeman_results.html
+
+.env
+.env.test

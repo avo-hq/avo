@@ -10,7 +10,7 @@ RSpec.describe "BooleanGroupField", type: :system do
 
         expect(page).to have_text "ROLES"
         expect(page).to have_text "View"
-        find("tr[data-resource-id='#{user.id}'] [data-field-id='roles']").find("a", text: "View").hover
+        find("tr[data-resource-id='#{user.to_param}'] [data-field-id='roles']").find("a", text: "View").hover
         sleep 0.1
         wait_for_loaded
 

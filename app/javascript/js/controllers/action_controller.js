@@ -2,10 +2,12 @@ import { Controller } from '@hotwired/stimulus'
 import { castBoolean } from '../helpers/cast_boolean'
 
 export default class extends Controller {
-  static targets = ['controllerDiv', 'resourceIds', 'submit', 'selectedAllQuery']
+  static targets = ['controllerDiv', 'resourceIds', 'form', 'selectedAllQuery']
 
   connect() {
-    this.resourceIdsTarget.value = this.resourceIds
+    if (this.resourceIdsTarget.value === '') {
+      this.resourceIdsTarget.value = this.resourceIds
+    }
 
     // This value is picked up from the DOM so we check true/false as strings
     if (this.selectionOptions.itemSelectAllSelectedAllValue === 'true') {
@@ -13,7 +15,7 @@ export default class extends Controller {
     }
 
     if (this.noConfirmation) {
-      this.submitTarget.click()
+      this.formTarget.submit()
     } else {
       this.controllerDivTarget.classList.remove('hidden')
     }

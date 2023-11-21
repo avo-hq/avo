@@ -2,42 +2,22 @@
 module Avo
   module Concerns
     module IsResourceItem
-      extend ActiveSupport::Concern
+      include Avo::Concerns::Hydration
 
-      included do
-        class_attribute :item_type, default: nil
-      end
+      # These attributes are required to be hydrated in order to properly find the visible_items
+      attr_accessor :resource
+      attr_accessor :view
 
-      def is_field?
-        self.class.item_type == :field
-      end
+      # Returns the final state of if an item is visible or not
+      # For items that have children it checks to see if it contains any visible children.
+      def visible?
+        # For items that may contains other items like tabs and panels we should also check
+        # if any on their children have visible items.
+        if self.class.ancestors.include?(Avo::Concerns::HasItems)
+          return false unless visible_items.any?
+        end
 
-      def is_panel?
-        self.class.item_type == :panel || self.class.item_type == :main_panel
-      end
-
-      def is_main_panel?
-        self.class.item_type == :main_panel
-      end
-
-      def is_tool?
-        self.class.item_type == :tool
-      end
-
-      def is_tab?
-        self.class.item_type == :tab
-      end
-
-      def is_tab_group?
-        self.class.item_type == :tab_group
-      end
-
-      def is_sidebar?
-        self.class.item_type == :sidebar
-      end
-
-      def is_row?
-        self.class.item_type == :row
+        super
       end
     end
   end

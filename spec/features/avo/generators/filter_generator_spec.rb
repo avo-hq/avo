@@ -8,7 +8,7 @@ RSpec.feature "filter generator", type: :feature do
 
       Rails::Generators.invoke("avo:filter", ["cats", "-q"], {destination_root: Rails.root})
 
-      expect(File.read(filter)).to start_with "class Cats < Avo::Filters::BooleanFilter"
+      expect(File.read(filter)).to start_with "class Avo::Filters::Cats < Avo::Filters::BooleanFilter"
 
       check_files_and_clean_up filter
     end
@@ -18,9 +18,9 @@ RSpec.feature "filter generator", type: :feature do
     it "generates the files" do
       filter = Rails.root.join("app", "avo", "filters", "cats.rb").to_s
 
-      Rails::Generators.invoke("avo:filter", ["cats", "--boolean", "-q"], {destination_root: Rails.root})
+      Rails::Generators.invoke("avo:filter", ["cats", "--type", "boolean", "-q"], {destination_root: Rails.root})
 
-      expect(File.read(filter)).to start_with "class Cats < Avo::Filters::BooleanFilter"
+      expect(File.read(filter)).to start_with "class Avo::Filters::Cats < Avo::Filters::BooleanFilter"
 
       check_files_and_clean_up filter
     end
@@ -30,9 +30,9 @@ RSpec.feature "filter generator", type: :feature do
     it "generates the files" do
       filter = Rails.root.join("app", "avo", "filters", "cats.rb").to_s
 
-      Rails::Generators.invoke("avo:filter", ["cats", "--select", "-q"], {destination_root: Rails.root})
+      Rails::Generators.invoke("avo:filter", ["cats", "--type", "select", "-q"], {destination_root: Rails.root})
 
-      expect(File.read(filter)).to start_with "class Cats < Avo::Filters::SelectFilter"
+      expect(File.read(filter)).to start_with "class Avo::Filters::Cats < Avo::Filters::SelectFilter"
 
       check_files_and_clean_up filter
     end
@@ -42,9 +42,9 @@ RSpec.feature "filter generator", type: :feature do
     it "generates the files" do
       filter = Rails.root.join("app", "avo", "filters", "cats.rb").to_s
 
-      Rails::Generators.invoke("avo:filter", ["cats", "--text", "-q"], {destination_root: Rails.root})
+      Rails::Generators.invoke("avo:filter", ["cats", "--type", "text", "-q"], {destination_root: Rails.root})
 
-      expect(File.read(filter)).to start_with "class Cats < Avo::Filters::TextFilter"
+      expect(File.read(filter)).to start_with "class Avo::Filters::Cats < Avo::Filters::TextFilter"
 
       check_files_and_clean_up filter
     end
@@ -54,9 +54,9 @@ RSpec.feature "filter generator", type: :feature do
     it "generates the files" do
       filter = Rails.root.join("app", "avo", "filters", "cats.rb").to_s
 
-      Rails::Generators.invoke("avo:filter", ["cats", "--multiple_select", "-q"], {destination_root: Rails.root})
+      Rails::Generators.invoke("avo:filter", ["cats", "--type", "multiple_select", "-q"], {destination_root: Rails.root})
 
-      expect(File.read(filter)).to start_with "class Cats < Avo::Filters::MultipleSelectFilter"
+      expect(File.read(filter)).to start_with "class Avo::Filters::Cats < Avo::Filters::MultipleSelectFilter"
 
       check_files_and_clean_up filter
     end

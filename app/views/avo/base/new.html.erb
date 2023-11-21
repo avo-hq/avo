@@ -1,1 +1,2 @@
-<%= render Avo::Views::ResourceEditComponent.new(resource: @resource, model: @model, view: @view, actions: @actions) %>
+<%= render @component.new(resource: @resource, record: @record, view: @view, actions: @actions) %>
+

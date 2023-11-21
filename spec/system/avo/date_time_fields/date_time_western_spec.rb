@@ -7,9 +7,9 @@ RSpec.describe "Date field on western zone", type: :system do
   subject(:text_input) { find '[data-field-id="posted_at"] [data-controller="date-field"] input[type="text"]' }
 
   before do
-    CommentResource.with_temporary_items do
+    Avo::Resources::Comment.with_temporary_items do
       field :body, as: :textarea, format_using: -> do
-        if view == :show
+        if view.show?
           content_tag(:div, style: "white-space: pre-line") { value }
         else
           value
@@ -24,7 +24,7 @@ RSpec.describe "Date field on western zone", type: :system do
   end
 
   after do
-    CommentResource.restore_items_from_backup
+    Avo::Resources::Comment.restore_items_from_backup
   end
 
   describe "in a western (negative) Timezone", tz: "America/Chicago" do

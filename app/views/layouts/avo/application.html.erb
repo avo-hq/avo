@@ -9,16 +9,17 @@
     <%= render partial: 'avo/partials/javascript' %>
     <%= render partial: 'avo/partials/branding' %>
     <%= render partial: 'avo/partials/pre_head' %>
+    <%= render Avo::AssetManager::StylesheetComponent.new asset_manager: Avo.asset_manager %>
+    <%= stylesheet_link_tag @stylesheet_assets_path, "data-turbo-track": "reload", defer: true %>
     <% if Avo::PACKED %>
       <%= javascript_include_tag "/avo-assets/avo.base", "data-turbo-track": "reload", defer: true %>
-      <%= stylesheet_link_tag "/avo-assets/avo.base", "data-turbo-track": "reload", defer: true %>
     <% else %>
       <%= javascript_include_tag "avo.base", "data-turbo-track": "reload", defer: true %>
-      <%= stylesheet_link_tag "avo.base", "data-turbo-track": "reload", defer: true %>
       <% if Rails.env.development? %>
         <%= javascript_include_tag "hotwire-livereload", defer: true %>
       <% end %>
     <% end %>
+    <%= render Avo::AssetManager::JavascriptComponent.new asset_manager: Avo.asset_manager %>
     <%= render partial: 'avo/partials/head' %>
   </head>
   <body class="bg-application os-mac">
@@ -58,8 +59,8 @@
     <%= render partial: "avo/partials/scripts" %>
     <!-- Avo version: <%= Avo::VERSION %> -->
     <!-- Environment: <%= Rails.env %> -->
-    <!-- License ID: <%= Avo::App.license.id %> -->
-    <!-- License valid?: <%= Avo::App.license.valid ? "valid" : "invalid" %>  -->
+    <!-- License ID: <%= Avo.license.id %> -->
+    <!-- License valid?: <%= Avo.license.valid ? "valid" : "invalid" %>  -->
   </body>
 </html>
 <!-- ✨ Built with Avo • https://www.avohq.io/ -->

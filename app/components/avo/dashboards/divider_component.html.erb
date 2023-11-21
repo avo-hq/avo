@@ -1,9 +1,0 @@
-<% if invisible? %>
-  <div class="relative col-span-full gap-0"></div>
-<% else %>
-  <div class="relative col-span-full border-t border-gray-300 my-4">
-    <% if label.present? %>
-      <div class="absolute inset-auto -translate-y-1/2 -translate-x-1/2 ml-1/2 z-20 text-xs font-semibold uppercase leading-none text-gray-500 bg-application px-2"><%= label %></div>
-    <% end %>
-  </div>
-<% end %>

@@ -23,6 +23,7 @@ fr:
     create_new_item: Créer un nouveau %{item}
     dashboard: Tableau de bord
     dashboards: Tableaux de bord
+    default_scope: Tout
     delete: supprimer
     delete_file: Supprimer le fichier
     delete_item: Supprimer %{item}

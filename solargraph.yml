@@ -1,0 +1,29 @@
+---
+include:
+  - ".solargraph_definitions.rb"
+  - "app/**/*.rb"
+  - "config/**/*.rb"
+  - "lib/**/*.rb"
+exclude:
+  - test/**/*
+  - vendor/**/*
+  - ".bundle/**/*"
+require:
+  - actionmailer
+  - actionpack
+  - actionview
+  - activejob
+  - activemodel
+  - activerecord
+  - activesupport
+domains: []
+reporters:
+  - standardrb
+  - require_not_found
+  - typecheck
+  - update_errors
+require_paths: []
+plugins:
+  - solargraph-rails
+  - solargraph-standardrb
+max_files: 5000

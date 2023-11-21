@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
-  def initialize(**args)
-    super(**args)
+  def initialize(...)
+    super(...)
 
     @polymorphic_record = nil
   end
@@ -28,16 +28,16 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
 
   # Get the polymorphic class
   def polymorphic_class
-    @resource.model["#{@field.foreign_key}_type"]
+    @resource.record["#{@field.foreign_key}_type"]
   end
 
   def polymorphic_resource
-    ::Avo::App.get_resource_by_model_name(polymorphic_class)
+    Avo.resource_manager.get_resource_by_model_class(polymorphic_class)
   end
 
   # Get the polymorphic id
   def polymorphic_id
-    @resource.model["#{@field.foreign_key}_id"]
+    @resource.record["#{@field.foreign_key}_id"]
   end
 
   # Get the actual resource
@@ -63,7 +63,7 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
     helpers.new_resource_path(**{
       via_relation: @field.id.to_s,
       resource: target_resource || @field.target_resource,
-      via_resource_id: resource.model.to_param,
+      via_record_id: resource.record.to_param,
       via_belongs_to_resource_class: resource.class.name
     }.compact)
   end
@@ -71,6 +71,6 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
   private
 
   def visit_through_association?
-    @field.target_resource.class.to_s == params[:via_resource_class].to_s
+    @field.target_resource.to_s == params[:via_resource_class].to_s
   end
 end

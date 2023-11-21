@@ -40,7 +40,10 @@ class Avo::ButtonComponent < ViewComponent::Base
   end
 
   def button_classes
-    classes = "button-component inline-flex flex-grow-0 items-center font-semibold leading-6 fill-current whitespace-nowrap transition duration-100 transform transition duration-100 cursor-pointer disabled:cursor-not-allowed disabled:opacity-70 border justify-center active:outline active:outline-1 #{@class}"
+    classes = "button-component inline-flex flex-grow-0 items-center font-semibold leading-6 fill-current whitespace-nowrap transition duration-100 transform transition duration-100 cursor-pointer disabled:cursor-not-allowed disabled:opacity-70 justify-center #{@class}"
+
+    # For non-icon-styled buttons we should not add borders.
+    classes += " border active:outline active:outline-1" unless is_icon?
 
     classes += " rounded" if @rounded.present?
     classes += style_classes
@@ -55,18 +58,26 @@ class Avo::ButtonComponent < ViewComponent::Base
     @is_link
   end
 
+  def is_icon?
+    @style == :icon
+  end
+
+  def is_not_icon?
+    !is_icon?
+  end
+
   def full_content
     result = ""
     icon_classes = @icon_class
     # space out the icon from the text if text is present
-    icon_classes += " mr-1" if content.present?
+    icon_classes += " mr-1" if content.present? && is_not_icon?
     # add the icon height
     icon_classes += icon_size_classes
 
     # Add the icon
     result += helpers.svg(@icon, class: icon_classes) if @icon.present?
 
-    if content.present?
+    if is_not_icon? && content.present?
       result += "<span>#{content}</span>"
     end
 
@@ -102,6 +113,8 @@ class Avo::ButtonComponent < ViewComponent::Base
   private
 
   def vertical_padding_classes
+    return " py-0" if is_icon?
+
     case @size.to_sym
     when :xs
       " py-0"
@@ -119,6 +132,7 @@ class Avo::ButtonComponent < ViewComponent::Base
   end
 
   def horizontal_padding_classes
+    return " px-0" if is_icon?
     return " px-1" if @compact
 
     case @size.to_sym
@@ -154,6 +168,8 @@ class Avo::ButtonComponent < ViewComponent::Base
       " bg-white text-#{@color}-500 border-#{@color}-500 hover:bg-#{@color}-100 active:bg-#{@color}-100 active:border-#{@color}-500 active:outline-#{@color}-500"
     when :text
       " text-#{@color}-500 active:outline-#{@color}-500 hover:bg-gray-100 border-transparent"
+    when :icon
+      " text-#{@color}-600"
     else
       ""
     end
@@ -161,6 +177,7 @@ class Avo::ButtonComponent < ViewComponent::Base
 
   def icon_size_classes
     icon_classes = ""
+    return icon_classes if is_icon?
 
     case @size
     when :xs

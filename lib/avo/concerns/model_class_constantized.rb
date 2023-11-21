@@ -4,8 +4,6 @@ module Avo
       extend ActiveSupport::Concern
 
       class_methods do
-        attr_reader :model_class
-
         # Cast the model class to a constantized version and memoize it like that
         def model_class=(value)
           @model_class = case value

@@ -57,6 +57,7 @@ module Avo
     # - is_disabled?
 
     class BelongsToField < BaseField
+      include Avo::Fields::Concerns::IsSearchable
       include Avo::Fields::Concerns::UseResource
 
       attr_accessor :target
@@ -84,10 +85,6 @@ module Avo
         @use_resource = args[:use_resource] || nil
       end
 
-      def searchable
-        @searchable && ::Avo::App.license.has_with_trial(:searchable_associations)
-      end
-
       def value
         if is_polymorphic?
           # Get the value from the pre-filled assoociation record
@@ -107,9 +104,7 @@ module Avo
 
       # What the user sees in the text field
       def field_label
-        value.send(target_resource.class.title)
-      rescue
-        nil
+        label
       end
 
       def options
@@ -118,16 +113,16 @@ module Avo
 
       def values_for_type(model = nil)
         resource = target_resource
-        resource = App.get_resource_by_model_name model if model.present?
+        resource = Avo.resource_manager.get_resource_by_model_class model if model.present?
 
-        query = resource.class.query_scope
+        query = resource.query_scope
 
         if attach_scope.present?
-          query = Avo::Hosts::AssociationScopeHost.new(block: attach_scope, query: query, parent: get_model).handle
+          query = Avo::ExecutionContext.new(target: attach_scope, query: query, parent: get_model).handle
         end
 
-        query.all.map do |model|
-          [model.send(resource.class.title), model.id]
+        query.all.map do |record|
+          [resource.new(record: record).record_title, record.id]
         end
       end
 
@@ -160,8 +155,8 @@ module Avo
       def foreign_key
         return polymorphic_as if polymorphic_as.present?
 
-        if @model.present?
-          get_model_class(@model).reflections[@relation_method].foreign_key
+        if @record.present?
+          get_model_class(@record).reflections[@relation_method].foreign_key
         elsif @resource.present? && @resource.model_class.reflections[@relation_method].present?
           @resource.model_class.reflections[@relation_method].foreign_key
         end
@@ -185,7 +180,8 @@ module Avo
       end
 
       def label
-        value.send(target_resource.class.title)
+        return if target_resource.blank?
+        target_resource.new(record: value)&.record_title
       end
 
       def to_permitted_param
@@ -237,7 +233,7 @@ module Avo
 
         if is_polymorphic?
           if value.present?
-            return App.get_resource_by_model_name(value.class)
+            return Avo.resource_manager.get_resource_by_model_class(value.class)
           else
             return nil
           end
@@ -245,25 +241,25 @@ module Avo
 
         reflection_key = polymorphic_as || id
 
-        if @model._reflections[reflection_key.to_s].klass.present?
-          App.get_resource_by_model_name @model._reflections[reflection_key.to_s].klass.to_s
-        elsif @model._reflections[reflection_key.to_s].options[:class_name].present?
-          App.get_resource_by_model_name @model._reflections[reflection_key.to_s].options[:class_name]
+        if @record._reflections[reflection_key.to_s].klass.present?
+          Avo.resource_manager.get_resource_by_model_class @record._reflections[reflection_key.to_s].klass.to_s
+        elsif @record._reflections[reflection_key.to_s].options[:class_name].present?
+          Avo.resource_manager.get_resource_by_model_class @record._reflections[reflection_key.to_s].options[:class_name]
         else
           App.get_resource_by_name reflection_key.to_s
         end
       end
 
       def get_model
-        return @model if @model.present?
+        return @record if @record.present?
 
-        @resource.model
+        @resource.record
       rescue
         nil
       end
 
       def name
-        return polymorphic_as.to_s.humanize if polymorphic_as.present? && view == :index
+        return polymorphic_as.to_s.humanize if polymorphic_as.present? && view.index?
 
         super
       end

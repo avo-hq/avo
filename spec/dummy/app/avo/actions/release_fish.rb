@@ -1,17 +1,19 @@
-class ReleaseFish < Avo::BaseAction
+class Avo::Actions::ReleaseFish < Avo::BaseAction
   self.name = "Release fish"
   self.message = -> {
-    "Are you sure you want to release the #{record&.name || :fish}?"
+    "Are you sure you want to release the #{record&.name || "selected fish"}?"
   }
 
-  field :message, as: :trix, help: "Tell the fish something before releasing."
-  field :user, as: :belongs_to, searchable: true, visible: ->(resource:) {
-    resource.params[:id].present?
-  }
+  def fields
+    field :message, as: :trix, help: "Tell the fish something before releasing."
+    field :user, as: :belongs_to, searchable: true, visible: -> {
+      resource.params[:id].present?
+    }
+  end
 
-  def handle(models:, fields:, **)
-    models.each do |model|
-      model.release
+  def handle(records:, fields:, **)
+    records.each do |record|
+      record.release
     end
 
     # Try and find that user
@@ -22,6 +24,6 @@ class ReleaseFish < Avo::BaseAction
 
     message = ActionView::Base.full_sanitizer.sanitize fields[:message]
 
-    succeed "#{models.count} fish released with message '#{message}' by #{user&.name}."
+    succeed "#{records.count} fish released with message '#{message}' by #{user&.name}."
   end
 end

@@ -6,7 +6,7 @@ RSpec.describe "SelectField", type: :feature do
       let(:url) { "/admin/resources/posts?view_type=table" }
       subject do
         visit url
-        field_element_by_resource_id "status", post.id
+        field_element_by_resource_id "status", post.to_param
       end
 
       describe "without status" do

@@ -8,15 +8,17 @@ class Avo::Fields::ShowComponent < ViewComponent::Base
   attr_reader :index
   attr_reader :resource
   attr_reader :stacked
+  attr_reader :short
   attr_reader :view
 
-  def initialize(field: nil, resource: nil, index: 0, form: nil, compact: false, stacked: nil)
+  def initialize(field: nil, resource: nil, index: 0, form: nil, compact: false, short: false, stacked: nil)
     @compact = compact
     @field = field
     @index = index
     @resource = resource
     @stacked = stacked
-    @view = :show
+    @short = short
+    @view = Avo::ViewInquirer.new("show")
   end
 
   def wrapper_data
@@ -48,6 +50,7 @@ class Avo::Fields::ShowComponent < ViewComponent::Base
       field: field,
       index: index,
       resource: resource,
+      short: short,
       stacked: stacked,
       view: view
     }

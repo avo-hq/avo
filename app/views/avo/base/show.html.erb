@@ -1,9 +1,9 @@
 <%= render Avo::TurboFrameWrapperComponent.new(params[:turbo_frame]) do %>
-  <%= render Avo::Views::ResourceShowComponent.new(
+  <%= render @component.new(
     resource: @resource,
     reflection: @reflection,
     actions: @actions,
-    parent_model: @parent_model,
+    parent_record: @parent_record,
     parent_resource: @parent_resource,
   ) %>
 <% end %>

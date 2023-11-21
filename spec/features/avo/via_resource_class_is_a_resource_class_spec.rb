@@ -10,12 +10,12 @@ RSpec.feature "ViaResourceClassIsAResourceClasses", type: :feature do
     visit "/admin/resources/z_posts/#{post.id}/comments?turbo_frame=has_many_field_show_photo_comments"
 
     within "tr[data-resource-id=\"#{comment.id}\"] [data-field-id=\"id\"]" do
-      expect(page).to have_link comment.id, href: "/admin/resources/photo_comments/#{comment.id}?via_resource_class=ZPostResource&via_resource_id=#{post.slug}"
+      expect(page).to have_link comment.id, href: "/admin/resources/photo_comments/#{comment.id}?via_record_id=#{post.slug}&via_resource_class=Avo%3A%3AResources%3A%3AZPost"
     end
   end
 
   it "displays the right breadcrumb link" do
-    visit "/admin/resources/photo_comments/#{comment.id}?via_resource_class=ZPostResource&via_resource_id=#{post.id}"
+    visit "/admin/resources/photo_comments/#{comment.id}?via_resource_class=Avo%3A%3AResources%3A%3AZPost&via_record_id=#{post.id}"
 
     within ".breadcrumbs" do
       expect(page).to have_link post.name, href: "/admin/resources/z_posts/#{post.slug}"
@@ -23,7 +23,7 @@ RSpec.feature "ViaResourceClassIsAResourceClasses", type: :feature do
   end
 
   it "displays the right breadcrumb link" do
-    visit "/admin/resources/photo_comments/#{comment.id}?via_resource_class=PostResource&via_resource_id=#{post.slug}"
+    visit "/admin/resources/photo_comments/#{comment.id}?via_resource_class=Avo%3A%3AResources%3A%3APost&via_record_id=#{post.slug}"
 
     within ".breadcrumbs" do
       expect(page).to have_link post.name, href: "/admin/resources/posts/#{post.slug}"

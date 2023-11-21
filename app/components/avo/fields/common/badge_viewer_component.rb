@@ -17,7 +17,7 @@ class Avo::Fields::Common::BadgeViewerComponent < ViewComponent::Base
     background = :info
 
     @options.invert.each do |values, type|
-      if [values].flatten.map { |value| value }.include? @value
+      if [values].flatten.map { |value| value.to_s }.include? @value.to_s
         background = type.to_sym
         next
       end

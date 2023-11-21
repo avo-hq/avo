@@ -1,6 +1,8 @@
 module Avo
   class ExecutionContext
-    attr_accessor :target, :context, :params, :view_context, :current_user, :request, :include, :main_app, :avo
+    include Avo::Concerns::HasHelpers
+
+    attr_accessor :target, :context, :params, :view_context, :current_user, :request, :include, :main_app, :avo, :locale
 
     def initialize(**args)
       # Extend the class with custom modules if required.
@@ -8,13 +10,6 @@ module Avo
         args[:include].each do |mod|
           self.class.send(:include, mod)
         end
-      end
-
-      # If you want this block to behave like a view you can delegate the missing methods to the view_context
-      #
-      # Ex: Avo::ExecutionContext.new(target: ..., delegate_missing_to: :view_context).handle
-      if args[:delegate_missing_to].present?
-        self.class.send(:delegate_missing_to, args[:delegate_missing_to])
       end
 
       # If target doesn't respond to call, we don't need to initialize the others attr_accessors.
@@ -26,14 +21,18 @@ module Avo
       end
 
       # Set defaults on not initialized accessors
-      @context ||= Avo::App.context
-      @params ||= Avo::App.params
-      @view_context ||= Avo::App.view_context
-      @current_user ||= Avo::App.current_user
-      @request ||= view_context&.request
-      @main_app ||= view_context&.main_app
-      @avo ||= view_context&.avo
+      @context ||= Avo::Current.context
+      @current_user ||= Avo::Current.user
+      @params ||= Avo::Current.params
+      @request ||= Avo::Current.request
+      @view_context ||= Avo::Current.view_context
+      @locale ||= Avo::Current.locale
+      @main_app ||= @view_context&.main_app
+      @avo ||= @view_context&.avo
     end
+
+    delegate :result, to: :card
+    delegate :authorize, to: Avo::Services::AuthorizationService
 
     # Return target if target is not callable, otherwise, execute target on this instance context
     def handle

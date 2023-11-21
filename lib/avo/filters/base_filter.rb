@@ -12,7 +12,13 @@ module Avo
 
       attr_reader :arguments
 
-      delegate :params, to: Avo::App
+      delegate :params, to: Avo::Current
+      delegate :request, to: Avo::Current
+      delegate :view_context, to: Avo::Current
+
+      def current_user
+        Avo::Current.user
+      end
 
       class << self
         def decode_filters(filter_params)
@@ -68,14 +74,13 @@ module Avo
         return true if visible.blank?
 
         # Run the visible block if available
-        Avo::Hosts::VisibilityHost.new(
-          block: visible,
+        Avo::ExecutionContext.new(
+          target: visible,
           params: params,
           parent_resource: parent_resource,
           resource: resource,
           arguments: arguments
         ).handle
-
       end
     end
   end

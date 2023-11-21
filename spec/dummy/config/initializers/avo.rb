@@ -2,10 +2,8 @@ Avo.configure do |config|
   ## == Base configs ==
   config.root_path = "/admin"
   config.app_name = -> { "Avocadelicious #{params[:app_name_suffix]}" }
-  config.home_path = -> { avo.dashboard_path(:dashy) }
-  config.set_initial_breadcrumbs do
-    add_breadcrumb "Dashboard", "/admin/dashboards/dashy"
-  end
+  config.home_path = -> { "/admin/resources/projects" }
+
   # Use this to test root_path_without_url helper
   # Also enable in config.ru & application.rb
   # ---
@@ -13,13 +11,12 @@ Avo.configure do |config|
   # ---
 
   ## == Licensing ==
-  config.license = "pro"
   config.license_key = ENV["AVO_LICENSE_KEY"]
 
   ## == App context ==
   config.current_user_method = :current_user
   config.model_resource_mapping = {
-    User: "UserResource"
+    User: "User"
   }
   config.set_context do
     {
@@ -28,9 +25,6 @@ Avo.configure do |config|
       params: request.params
     }
   end
-  config.authorization_methods = {
-    search: "avo_search?" # override this method
-  }
   # config.raise_error_on_missing_policy = true
   # config.authorization_client = "Avo::Services::AuthorizationClients::ExtraPunditClient"
 
@@ -42,6 +36,7 @@ Avo.configure do |config|
   config.resource_default_view = :show
   config.search_debounce = 300
   # config.field_wrapper_layout = :stacked
+  config.cache_resource_filters = false
 
   ## == Branding ==
   config.branding = {
@@ -54,7 +49,7 @@ Avo.configure do |config|
       100 => "#CEE7F8",
       400 => "#399EE5",
       500 => "#0886DE",
-      600 => "#066BB2"
+      600 => "#066BB2",
       # # ORANGE
       # 100 => "#FFECCC",
       # 400 => "#FFB435",
@@ -69,43 +64,22 @@ Avo.configure do |config|
 
   # Uncomment to test out manual resource loading.
   # config.resources = [
-  #   "UserResource",
-  #   "FishResource",
+  #   "Avo::Resources::User",
+  #   "Avo::Resources::Fish"
   # ]
 
   ## == Menus ==
   config.main_menu = -> do
-    section I18n.t("avo.dashboards"), icon: "dummy-adjustments.svg" do
-      dashboard :dashy, visible: -> { true }, icon: "bolt"
-      dashboard "Sales", visible: -> { true }
-
-      group "All dashboards", visible: false, collapsable: true do
-        all_dashboards
-      end
-    end
-
     section "Resources", icon: "heroicons/solid/building-storefront", collapsable: true, collapsed: false do
       group "Company", collapsable: true do
         resource :projects
-        resource :team, visible: -> {
-          authorize current_user, Team, "index?", raise_exception: false
-        }
-        resource :team_membership, visible: -> {
-          authorize current_user, TeamMembership, "index?", raise_exception: false
-
-          false
-        }
+        resource :team
+        resource :team_membership
         resource :reviews
       end
 
       group "People", collapsable: true do
-        resource "UserResource", params: -> do
-          decoded_filter = {"IsAdmin"=>["non_admins"]}
-
-          { filters: Avo::Filters::BaseFilter.encode_filters(decoded_filter)}
-        end, visible: -> do
-          authorize current_user, User, "index?", raise_exception: false
-        end
+        resource "User"
         resource :people
         resource :spouses
       end
@@ -118,10 +92,8 @@ Avo.configure do |config|
       group "Blog", collapsable: true do
         # resource :z_posts
         resource :posts
-        resource :comments, icon: "chat-bubble-bottom-center-text"
-        resource :photo_comments, visible: -> do
-          authorize current_user, Comment, "index?", policy_class: PhotoCommentPolicy, raise_exception: false
-        end
+        resource :comments
+        resource :photo_comments
       end
 
       section "Store", icon: "currency-dollar" do
@@ -152,7 +124,19 @@ Avo.configure do |config|
   end
 end
 
+if defined?(Avo::DynamicFilters)
+  Avo::DynamicFilters.configure do |config|
+    config.button_label = "Advanced filters"
+    config.always_expanded = true
+  end
+end
+
 Rails.configuration.to_prepare do
-  Avo::Fields::BaseField.include FieldExtensions
+  Avo::Fields::BaseField.include ActionView::Helpers::UrlHelper
+  Avo::Fields::BaseField.include ActionView::Context
   Avo::ApplicationController.include ApplicationControllerExtensions
+end
+
+Avo.on_load(:boot) do
+  Avo.plugin_manager.register_field :color_pickerrr, Avo::Fields::ColorPickerField
 end

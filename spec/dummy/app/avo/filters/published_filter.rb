@@ -1,4 +1,4 @@
-class PublishedFilter < Avo::Filters::SelectFilter
+class Avo::Filters::PublishedFilter < Avo::Filters::SelectFilter
   self.name = "Published status"
   self.empty_message = "Published or unpublished"
 

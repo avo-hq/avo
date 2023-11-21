@@ -23,6 +23,7 @@ pt:
     create_new_item: Criar novo %{item}
     dashboard: Painel
     dashboards: Painéis
+    default_scope: Todos
     delete: apagar
     delete_file: Apagar arquivo
     delete_item: Apagar %{item}

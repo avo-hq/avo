@@ -5,8 +5,8 @@
     </a>
   </div>
 <% end %>
-<% if Avo::App.error_messages.present? %>
-  <% Avo::App.error_messages.each do |error| %>
+<% if Avo.error_manager.has_errors?.present? %>
+  <% Avo.error_manager.all.each do |error| %>
     <% if error.is_a? Hash %>
       <%
         url, message, target = error.values_at :url, :message, :target

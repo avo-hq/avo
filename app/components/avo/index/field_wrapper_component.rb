@@ -11,7 +11,7 @@ class Avo::Index::FieldWrapperComponent < ViewComponent::Base
     @classes = args[:class].present? ? args[:class] : ""
     @args = args
     @flush = flush
-    @view = :index
+    @view = Avo::ViewInquirer.new("index")
   end
 
   def classes
@@ -21,7 +21,6 @@ class Avo::Index::FieldWrapperComponent < ViewComponent::Base
       result += " py-3"
     end
 
-    result += " #{text_align_classes}"
     result += " #{@field.get_html(:classes, view: view, element: :wrapper)}"
 
     result
@@ -44,16 +43,5 @@ class Avo::Index::FieldWrapperComponent < ViewComponent::Base
     end
 
     attributes
-  end
-
-  private
-
-  def text_align_classes
-    case @field.index_text_align.to_sym
-    when :right
-      "text-right"
-    when :center
-      "text-center"
-    end
   end
 end

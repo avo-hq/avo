@@ -7,13 +7,13 @@ RSpec.describe "LinkToChildResource", type: :feature do
     context "Resource linking to child resources" do
       let!(:sibling) { create :sibling, name: "sibling" }
       it "dispaly records linked to the child resource sibling " do
-        PersonResource.link_to_child_resource = true
+        Avo::Resources::Person.link_to_child_resource = true
         visit "/admin/resources/people"
         expect(page).to have_link(href: "/admin/resources/siblings/#{sibling.id}")
       end
 
       it "dispaly records linked to the child resource sibling " do
-        PersonResource.link_to_child_resource = false
+        Avo::Resources::Person.link_to_child_resource = false
         visit "/admin/resources/people"
         expect(page).to have_link(href: "/admin/resources/people/#{sibling.id}")
       end
@@ -29,8 +29,8 @@ RSpec.describe "LinkToChildResource", type: :feature do
         wait_for_loaded
         expect(current_path).to eql "/admin/resources/people/#{john.id}/relatives"
         expect(page).to have_text "demonstrate"
-        expect(page).to have_link(href: "/admin/resources/siblings/#{paul.id}/edit?via_resource_class=PersonResource&via_resource_id=#{john.id}")
-        expect(page).to have_link(href: "/admin/resources/spouses/#{lisa.id}/edit?via_resource_class=PersonResource&via_resource_id=#{john.id}")
+        expect(page).to have_link(href: "/admin/resources/siblings/#{paul.id}/edit?via_record_id=#{john.id}&via_resource_class=Avo%3A%3AResources%3A%3APerson")
+        expect(page).to have_link(href: "/admin/resources/spouses/#{lisa.id}/edit?via_record_id=#{john.id}&via_resource_class=Avo%3A%3AResources%3A%3APerson")
       end
 
       it "display records linked to the parent resource people " do
@@ -39,8 +39,8 @@ RSpec.describe "LinkToChildResource", type: :feature do
 
         expect(current_path).to eql "/admin/resources/people/#{john.id}/peoples"
 
-        expect(page).to have_link(href: "/admin/resources/people/#{paul.id}/edit?via_resource_class=PersonResource&via_resource_id=#{john.id}")
-        expect(page).to have_link(href: "/admin/resources/people/#{lisa.id}/edit?via_resource_class=PersonResource&via_resource_id=#{john.id}")
+        expect(page).to have_link(href: "/admin/resources/people/#{paul.id}/edit?via_record_id=#{john.id}&via_resource_class=Avo%3A%3AResources%3A%3APerson")
+        expect(page).to have_link(href: "/admin/resources/people/#{lisa.id}/edit?via_record_id=#{john.id}&via_resource_class=Avo%3A%3AResources%3A%3APerson")
       end
     end
   end

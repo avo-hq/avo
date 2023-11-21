@@ -1,4 +1,4 @@
-<div data-controller="toggle-panel">
+<div data-controller="toggle" data-component-name="<%= self.class.to_s.underscore %>">
   <div class="relative w-full flex justify-between">
     <%= a_button class: 'focus:outline-none',
       color: :primary,
@@ -6,7 +6,7 @@
       icon: 'filter',
       title: t('avo.click_to_reveal_filters'),
       'data-button': 'resource-filters',
-      'data-action': 'click->toggle-panel#togglePanel',
+      'data-action': 'click->toggle#togglePanel',
       'data-tippy': 'tooltip' do %>
       <%= t 'avo.filters' %>
       <% if @applied_filters.present? %>
@@ -15,7 +15,13 @@
     <% end %>
     <div
       class="absolute block inset-auto sm:right-0 top-full bg-white min-w-[300px] mt-2 z-40 shadow-modal rounded divide-y divide-gray-300 <%= 'hidden' unless params[:keep_filters_panel_open] == '1' %>"
-      data-toggle-panel-target="panel"
+      data-toggle-target="panel"
+      data-transition-enter="transition ease-out duration-100"
+      data-transition-enter-start="transform opacity-0 -translate-y-1"
+      data-transition-enter-end="transform opacity-100 translate-y-0"
+      data-transition-leave="transition ease-in duration-75"
+      data-transition-leave-start="transform opacity-100 translate-y-0"
+      data-transition-leave-end="transform opacity-0 -translate-y-1"
     >
       <% @filters.each do |filter| %>
         <%= render partial: filter.class.template, locals: {filter: filter} %>

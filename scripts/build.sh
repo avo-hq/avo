@@ -11,8 +11,8 @@ sed -i '' 's/avo \(.*\)/avo (1.0.0)/' ./tmp/Gemfile_v1.lock
 cp ./lib/avo/version.rb ./tmp/version_v1.rb
 sed -i '' 's/VERSION = ".*"/VERSION = "1.0.0"/' ./tmp/version_v1.rb
 
+docker build -t avo-3-build -f docker/Dockerfile . --progress plain
+IMAGE_ID=$(docker create avo-3-build)
 
-docker build -t avo-build -f docker/Dockerfile .
-IMAGE_ID=$(docker create avo-build)
 rm -f ./pkg/latest-avo.gem
 docker cp $IMAGE_ID:/avo/pkg/avo-$VERSION.gem ./pkg/latest-avo.gem

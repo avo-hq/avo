@@ -1,4 +1,4 @@
-class PostStatusFilter < Avo::Filters::MultipleSelectFilter
+class Avo::Filters::PostStatusFilter < Avo::Filters::MultipleSelectFilter
   self.name = "Status"
 
   def apply(request, query, value)

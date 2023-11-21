@@ -1,29 +1,31 @@
-class Sub::DummyAction < Avo::BaseAction
+class Avo::Actions::Sub::DummyAction < Avo::BaseAction
   self.name = "Dummy action"
   self.standalone = true
   # self.turbo = false
   self.visible = -> do
-    if resource.is_a? UserResource
-      view == :index
+    if resource.is_a? Avo::Resources::User
+      view.index?
     else
       true
     end
   end
 
-  field :keep_modal_open, as: :boolean
-  field :persistent_text, as: :text
-  field :parent_id,
-    as: :hidden,
-    default: -> do
-      # get_id(Avo::App.request.referer) # strip the id from the referer string
-      1
-    end
-  field :parent_type,
-    as: :hidden,
-    default: -> do
-      # get_type(Avo::App.request.referer) # strip the type from the referer string
-      "users"
-    end
+  def fields
+    field :keep_modal_open, as: :boolean
+    field :persistent_text, as: :text
+    field :parent_id,
+      as: :hidden,
+      default: -> do
+        # get_id(Avo::App.request.referer) # strip the id from the referer string
+        1
+      end
+    field :parent_type,
+      as: :hidden,
+      default: -> do
+        # get_type(Avo::App.request.referer) # strip the type from the referer string
+        "users"
+      end
+  end
 
   def handle(**args)
     # Test keep modal open

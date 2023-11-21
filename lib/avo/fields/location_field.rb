@@ -19,9 +19,9 @@ module Avo
 
       def as_lat_long_field_id(get)
         if get == :lat
-          "#{id}[#{stored_as.first}]"
+          stored_as.first
         elsif get == :long
-          "#{id}[#{stored_as.last}]"
+          stored_as.last
         end
       end
 
@@ -35,20 +35,20 @@ module Avo
 
       def as_lat_long_value(get)
         if get == :lat
-          model.send(stored_as.first)
+          record.send(stored_as.first)
         elsif get == :long
-          model.send(stored_as.last)
+          record.send(stored_as.last)
         end
       end
 
-      def fill_field(model, key, value, params)
+      def fill_field(record, key, value, params)
         if value_as_array?
           latitude_field, longitude_field = stored_as
-          model.send("#{latitude_field}=", value[latitude_field])
-          model.send("#{longitude_field}=", value[longitude_field])
-          model
+          record.send("#{latitude_field}=", value[latitude_field])
+          record.send("#{longitude_field}=", value[longitude_field])
+          record
         else
-          super(model, key, value.split(","), params)
+          super(record, key, value.split(","), params)
         end
       end
 
@@ -62,7 +62,7 @@ module Avo
 
       def value
         if value_as_array?
-          [@model.send(stored_as.first), @model.send(stored_as.last)]
+          [@record.send(stored_as.first), @record.send(stored_as.last)]
         else
           super
         end

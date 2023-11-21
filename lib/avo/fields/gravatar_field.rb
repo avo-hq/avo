@@ -4,7 +4,7 @@ require "erb"
 module Avo
   module Fields
     class GravatarField < BaseField
-      attr_reader :link_to_resource
+      attr_reader :link_to_record
       attr_reader :rounded
       attr_reader :size
       attr_reader :default
@@ -16,7 +16,7 @@ module Avo
 
         hide_on [:edit, :new]
 
-        @link_to_resource = args[:link_to_resource].present? ? args[:link_to_resource] : false
+        @link_to_record = args[:link_to_record].present? ? args[:link_to_record] : false
         @rounded = args[:rounded].nil? ? true : args[:rounded]
         @size = args[:size].present? ? args[:size].to_i : 32
         @default = args[:default].present? ? ERB::Util.url_encode(args[:default]).to_s : ""

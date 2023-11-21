@@ -7,12 +7,12 @@ RSpec.describe "Time field", type: :system do
   subject(:text_input) { find '[data-field-id="starting_at"] [data-controller="date-field"] input[type="text"]' }
 
   after do
-    CourseResource.restore_items_from_backup
+    Avo::Resources::Course.restore_items_from_backup
   end
 
   describe "relative: false", tz: "Europe/Bucharest" do
     before do
-      CourseResource.with_temporary_items do
+      Avo::Resources::Course.with_temporary_items do
         field :starting_at, as: :time, relative: false, format: "HH:mm", picker_format: "H:i"
       end
     end
@@ -23,7 +23,7 @@ RSpec.describe "Time field", type: :system do
       it "formats the time" do
         visit "/admin/resources/courses"
 
-        expect(field_element_by_resource_id("starting_at", course.id).text).to eq "16:30"
+        expect(field_element_by_resource_id("starting_at", course.to_param).text).to eq "16:30"
       end
     end
 
@@ -64,7 +64,7 @@ RSpec.describe "Time field", type: :system do
 
   describe "relative: false", tz: "America/Los_Angeles" do
     before do
-      CourseResource.with_temporary_items do
+      Avo::Resources::Course.with_temporary_items do
         field :starting_at, as: :time, relative: false, format: "HH:mm", picker_format: "H:i"
       end
     end
@@ -75,7 +75,7 @@ RSpec.describe "Time field", type: :system do
       it "formats the time" do
         visit "/admin/resources/courses"
 
-        expect(field_element_by_resource_id("starting_at", course.id).text).to eq "16:30"
+        expect(field_element_by_resource_id("starting_at", course.to_param).text).to eq "16:30"
       end
     end
 
@@ -116,7 +116,7 @@ RSpec.describe "Time field", type: :system do
 
   describe "relative: true", tz: "Europe/Bucharest" do
     before do
-      CourseResource.with_temporary_items do
+      Avo::Resources::Course.with_temporary_items do
         field :starting_at, as: :time, relative: true, format: "HH:mm", picker_format: "H:i"
       end
     end
@@ -127,7 +127,7 @@ RSpec.describe "Time field", type: :system do
       it "formats the time" do
         visit "/admin/resources/courses"
 
-        expect(field_element_by_resource_id("starting_at", course.id).text).to eq "18:30"
+        expect(field_element_by_resource_id("starting_at", course.to_param).text).to eq "18:30"
       end
     end
 
@@ -168,7 +168,7 @@ RSpec.describe "Time field", type: :system do
 
   describe "relative: true", tz: "America/Los_Angeles" do
     before do
-      CourseResource.with_temporary_items do
+      Avo::Resources::Course.with_temporary_items do
         field :starting_at, as: :time, relative: true, format: "HH:mm", picker_format: "H:i"
       end
     end
@@ -179,7 +179,7 @@ RSpec.describe "Time field", type: :system do
       it "formats the time" do
         visit "/admin/resources/courses"
 
-        expect(field_element_by_resource_id("starting_at", course.id).text).to eq "08:30"
+        expect(field_element_by_resource_id("starting_at", course.to_param).text).to eq "08:30"
       end
     end
 

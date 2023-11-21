@@ -88,8 +88,7 @@ RSpec.describe "KeyValueFields", type: :system do
         expect(meta_element).to have_css ".appearance-none"
         expect(meta_element).to have_selector '[data-button="delete-row"]'
 
-        click_on "Save"
-        wait_for_loaded
+        save
 
         expect(current_path).to eql "/admin/resources/projects/#{project.id}"
 

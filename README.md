@@ -13,7 +13,7 @@ Avo is a beautiful next-generation framework that empowers you, the developer, t
 
 ## Get started
 
-⚡️ **Install**: [docs.avohq.io/2.0/installation](https://docs.avohq.io/2.0/installation.html)\
+⚡️ **Install**: [docs.avohq.io/3.0/installation](https://docs.avohq.io/3.0/installation.html)\
 ✨ **Website**: [avohq.io](https://avohq.io)\
 📚 **Documentation**: [docs.avohq.io](https://docs.avohq.io)\
 🗺 **Roadmap**: [GitHub Roadmap](https://github.com/orgs/avo-hq/projects/3)\
@@ -26,23 +26,23 @@ Avo is a beautiful next-generation framework that empowers you, the developer, t
 ## Features
 
   - **Powered by Hotwire** - Rails ❤️  Hotwire
-  - **Code driven configuration** - Configure your Rails dashboard entirely by writing Ruby code. [docs](https://docs.avohq.io/2.0/resources.html#defining-resources)
+  - **Code driven configuration** - Configure your Rails dashboard entirely by writing Ruby code. [docs](https://docs.avohq.io/3.0/resources.html#defining-resources)
   - **Resource Management** - Create a CRUD interface for Active Record from one command. No more copy-pasting view and controller files around.
-  - **Dashboard widgets and metrics** - Create metrics, charts, and custom cards amazingly fast. [docs](https://docs.avohq.io/2.0/dashboards.html)
-  - **Resource Search** - Quickly run a search through one or more resources at once. [docs](https://docs.avohq.io/2.0/resources.html#filters)
-  - **Associations enabled** - Link your models together with all types of associations (belongs_to, has_many, polymorphic, etc.). [docs](https://docs.avohq.io/2.0/associations.html)
-  - **Fuzzy-searchable associations** - Do you have a ton of records and don't want to scroll through a big dropdown? Avo's got you covered. [docs](https://docs.avohq.io/2.0/associations.html#searchable-belongs-to)
-  - **Active Storage support** - Amazingly easy, **one-line**, single or multi-file integration with **ActiveStorage**. [docs](https://docs.avohq.io/2.0/fields.html#file)
-  - **Records Ordering** - Sorting records is a breeze. [docs](https://docs.avohq.io/2.0/resources.html#records-ordering)
-  - **Grid view** - Beautiful card layout to showcase your content. [docs](https://docs.avohq.io/2.0/grid-view.html)
-  - **Actions** - Run custom actions to one or more of your resources with as little as pressing a button 💪 &nbsp; [docs](https://docs.avohq.io/2.0/actions.html)
-  - **Filters** - Write your own custom filters to quickly segment your data. [docs](https://docs.avohq.io/2.0/filters.html)
-  - **Keeps your app clean** - You don't need to change your app to use Avo. Drop it in your existing app or add it to a new one and you're done 🙌 [docs](https://docs.avohq.io/2.0/installation.html)
-  - **Custom fields**- No worries if we missed a field you need. Generate a custom field in a jiffy. [docs](https://docs.avohq.io/2.0/custom-fields.html)
-  - **Custom tools** - Break out of the CRUD. Do you need to add a page with something completely new? You've got it! [docs](https://docs.avohq.io/2.0/custom-tools.html)
-  - **Authorization** - Leverage Pundit policies to build a robust and scalable authorization system. [docs](https://docs.avohq.io/2.0/authorization.html)
-  - **Localization** - Have it available in any language you need. [docs](https://docs.avohq.io/2.0/localization.html)
-  - **No asset pipeline pollution** - Bring your own asset pipeline. [docs](https://docs.avohq.io/2.0/custom-asset-pipeline.html)
+  - **Dashboard widgets and metrics** - Create metrics, charts, and custom cards amazingly fast. [docs](https://docs.avohq.io/3.0/dashboards.html)
+  - **Resource Search** - Quickly run a search through one or more resources at once. [docs](https://docs.avohq.io/3.0/search.html)
+  - **Associations enabled** - Link your models together with all types of associations (belongs_to, has_many, polymorphic, etc.). [docs](https://docs.avohq.io/3.0/associations.html)
+  - **Fuzzy-searchable associations** - Do you have a ton of records and don't want to scroll through a big dropdown? Avo's got you covered. [docs](https://docs.avohq.io/3.0/associations/belongs_to.html#searchable)
+  - **Active Storage support** - Amazingly easy, **one-line**, single or multi-file integration with **ActiveStorage**. [docs](https://docs.avohq.io/3.0/fields/file.html)
+  - **Records Ordering** - Sorting records is a breeze. [docs](https://docs.avohq.io/3.0/records-reordering.html)
+  - **Grid view** - Beautiful card layout to showcase your content. [docs](https://docs.avohq.io/3.0/grid-view.html)
+  - **Actions** - Run custom actions to one or more of your resources with as little as pressing a button 💪 &nbsp; [docs](https://docs.avohq.io/3.0/actions.html)
+  - **Filters** - Write your own custom filters to quickly segment your data. [docs](https://docs.avohq.io/3.0/filters.html)
+  - **Keeps your app clean** - You don't need to change your app to use Avo. Drop it in your existing app or add it to a new one and you're done 🙌 [docs](https://docs.avohq.io/3.0/installation.html)
+  - **Custom fields**- No worries if we missed a field you need. Generate a custom field in a jiffy. [docs](https://docs.avohq.io/3.0/custom-fields.html)
+  - **Custom tools** - Break out of the CRUD. Do you need to add a page with something completely new? You've got it! [docs](https://docs.avohq.io/3.0/custom-tools.html)
+  - **Authorization** - Leverage Pundit policies to build a robust and scalable authorization system. [docs](https://docs.avohq.io/3.0/authorization.html)
+  - **Localization** - Have it available in any language you need. [docs](https://docs.avohq.io/3.0/localization.html)
+  - **No asset pipeline pollution** - Bring your own asset pipeline. [docs](https://docs.avohq.io/3.0/custom-asset-pipeline.html)
   - **Mobile interface** - Check your data on the go from any mobile device.
   - **Tabbed interface** - Conditionally show the data you need
   - **Menu builder** - Group and surface information as you need to
@@ -56,7 +56,7 @@ For more up-to-date info check out our 🗺 [Roadmap](https://github.com/orgs/av
 
 # Installation
 
-Use this RailsBytes template to get started quick `rails app:template LOCATION='https://avohq.io/app-template'`. If you need a more detailed guide, follow [this page](https://docs.avohq.io/2.0/installation.html).
+Use this RailsBytes template to get started quick `rails app:template LOCATION='https://avohq.io/app-template'`. If you need a more detailed guide, follow [this page](https://docs.avohq.io/3.0/installation.html).
 
 # Contributing
 
@@ -64,7 +64,7 @@ Please read [CONTRIBUTING.MD](./CONTRIBUTING.MD)
 
 # Upgrade Guide
 
-Please read the [UPGRADE_GUIDE.MD](https://docs.avohq.io/2.0/upgrade.html)
+Please read the [UPGRADE_GUIDE.MD](https://docs.avohq.io/3.0/upgrade.html)
 
 # Release schedule
 
@@ -81,14 +81,6 @@ Please read the [RELEASE.MD](./RELEASE.MD)
 
 <table>
 <tr>
-  <td>
-    <a href="https://equipetechnique.com/?utm_source=github&utm_medium=link&utm_campaign=avo" target="_blank">
-      <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="https://avohq.io/img/sponsors/ET-dark.jpeg">
-        <img alt="Equipe Technique Busines Sponsor" src="https://avohq.io/img/sponsors/ET-light.jpeg" width="180px">
-      </picture>
-    </a>
-  </td>
   <td>
     <a href="https://www.greenhats.com/?utm_source=github&utm_medium=link&utm_campaign=avo" target="_blank">
       <picture>

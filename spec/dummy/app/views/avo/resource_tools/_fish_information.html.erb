@@ -1,5 +1,5 @@
 <div class="flex flex-col">
-  <%= render Avo::PanelComponent.new(name: @resource.model.name, description: "There should be an image of this fish below 🐠") do |c| %>
+  <%= render Avo::PanelComponent.new(name: @resource.record.name, description: "There should be an image of this fish below 🐠") do |c| %>
     <% c.with_tools do %>
       <%= a_link('/admin', icon: 'heroicons/solid/academic-cap', style: :primary) do %>
         Primary
@@ -8,8 +8,10 @@
     <% if form.present? %>
       <% c.with_body do %>
         <div class="divide-y">
-          <%= avo_edit_field :fish_type, as: :text, form: form, helwp: "Set the fish type", required: true, component_options: {compact: false, stacked: false} %>
+        <div class="flex">
+          <%= avo_edit_field :fish_type, as: :text, form: form, help: "Set the fish type", required: true, component_options: {compact: false, stacked: false} %>
           <%= avo_edit_field :properties, as: :text, form: form, name: "Property 1", help: "Prop 1", required: true, component_options: {multiple: true} %>
+        </div>
           <%= avo_edit_field :properties, as: :text, form: form, name: "Property 2", help: "Prop 2", required: true, component_options: {multiple: true} %>
 
           <%= form.fields_for :information do |information_form| %>
@@ -24,7 +26,7 @@
         <div class="flex flex-col p-4 min-h-24">
           <div class="space-y-4">
             <p>
-              The fish's name is <strong><%= @resource.model.name %></strong>. The ID of the record is <%= @resource.model.id %> and the tool's name is <strong><%= tool.class.to_s %></strong>.
+              The fish's name is <strong><%= @resource.record.name %></strong>. The ID of the record is <%= @resource.record.id %> and the tool's name is <strong><%= tool.class.to_s %></strong>.
             </p>
             <p>
               <%= turbo_frame_tag "fish_custom_action_demo" do %>
@@ -35,13 +37,13 @@
                 <% end %>
               <% end %>
             </p>
-            <% if tool.has_fish_image? @resource.model.name.to_s.downcase.to_sym %>
-              <%= image_tag tool.images[@resource.model.name.to_s.downcase.to_sym], loading: :lazy, class: 'rounded' %>
+            <% if tool.has_fish_image? @resource.record.name.to_s.downcase.to_sym %>
+              <%= image_tag tool.images[@resource.record.name.to_s.downcase.to_sym], loading: :lazy, class: 'rounded' %>
             <% end %>
-            <%#== ap @resource.model %>
+            <%#== ap @resource.record %>
             <%#== ap tool %>
             <%#== ap params %>
-            <%#== ap Avo::App.context %>
+            <%#== ap Avo::Current.context %>
             <%#== ap current_user %>
           </div>
         </div>

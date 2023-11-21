@@ -1,41 +1,18 @@
-<% if style == :tabs %>
-  <div class="flex overflow-auto mac-styled-scrollbar" data-target="tab-switcher" data-style="tabs">
-    <div class="button-group">
-      <% visible_items.each do |tab| %>
-        <%= a_link tab_path(tab),
-          color: selected?(tab) ? :primary : :gray ,
-          rounded: false,
-          size: :sm,
-          class: "active:outline-0 #{selected?(tab) ? "z-20" : "bg-gray-100 border-gray-300"}",
-          title: tab.description,
-          data: {
-            tippy: tab.description.present? ? 'tooltip' : '',
-            selected: selected?(tab),
-            action: 'click->tabs#changeTab',
-            tabs_id_param: tab.name
-          } do %>
-          <%= tab.name %>
-        <% end %>
-      <% end %>
-    </div>
-  </div>
-<% else %>
-  <div class="flex flex-wrap gap-2 p-2 <%= white_panel_classes %>" data-target="tab-switcher" data-style="pills">
-    <% visible_items.each do |tab| %>
-      <%= a_link tab_path(tab),
-      color: selected?(tab) ? :primary : :gray,
-      style: selected?(tab) ? :outline : :text,
-      size: :sm,
-      class: selected?(tab) ? "z-20 bg-primary-100" : "",
-      title: tab.description,
-      data: {
-        tippy: tab.description.present? ? 'tooltip' : '',
-        selected: selected?(tab),
-        action: 'click->tabs#changeTab',
-        tabs_id_param: tab.name
-      } do %>
-        <%= tab.name %>
-      <% end %>
+<div class="flex flex-wrap gap-2 p-2 <%= white_panel_classes %>" data-target="tab-switcher">
+  <% group.visible_items.each do |tab| %>
+    <%= a_link tab_path(tab),
+    color: selected?(tab) ? :primary : :gray,
+    style: selected?(tab) ? :outline : :text,
+    size: :sm,
+    class: selected?(tab) ? "z-20 bg-primary-100" : "",
+    title: tab.description,
+    data: {
+      tippy: tab.description.present? ? 'tooltip' : '',
+      selected: selected?(tab),
+      action: 'click->tabs#changeTab',
+      tabs_id_param: tab.name
+    } do %>
+      <%= tab.name %>
     <% end %>
-  </div>
-<% end %>
+  <% end %>
+</div>

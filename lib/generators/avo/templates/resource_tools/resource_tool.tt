@@ -1,4 +1,4 @@
-class <%= class_name %> < Avo::BaseResourceTool
+class Avo::ResourceTools::<%= class_name %> < Avo::BaseResourceTool
   self.name = "<%= human_name %>"
   # self.partial = "avo/resource_tools/<%= file_name %>"
 end

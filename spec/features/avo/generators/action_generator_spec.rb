@@ -15,7 +15,7 @@ RSpec.feature "action generator", type: :feature do
 
     Rails::Generators.invoke("avo:action", ["remove_user", "--standalone", "-q"], {destination_root: Rails.root})
 
-    expect(File.read(file)).to include "self.standalone = true\n\n"
+    expect(File.read(file)).to include "self.standalone = true\n"
     check_files_and_clean_up file
   end
 end

@@ -20,11 +20,11 @@ class Avo::Fields::EditComponent < ViewComponent::Base
     @multiple = multiple
     @resource = resource
     @stacked = stacked
-    @view = :edit
+    @view = Avo::ViewInquirer.new("edit")
   end
 
   def classes(extra_classes = "")
-    helpers.input_classes("#{@field.get_html(:classes, view: view, element: :input)} #{extra_classes}", has_error: @field.model_errors.include?(@field.id))
+    helpers.input_classes("#{@field.get_html(:classes, view: view, element: :input)} #{extra_classes}", has_error: @field.record_errors.include?(@field.id))
   end
 
   def render?

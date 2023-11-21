@@ -16,4 +16,12 @@ class Person < ApplicationRecord
   has_many :spouses, foreign_key: :person_id, inverse_of: :person
   has_many :relatives, foreign_key: :person_id, class_name: "Person", inverse_of: :person
   has_many :peoples, foreign_key: :person_id, class_name: "Person", inverse_of: :person
+
+  def link
+    "<a href='https://avohq.io'>#{name}</a>"
+  end
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["created_at", "id", "name", "person_id", "type", "updated_at", "user_id"]
+  end
 end

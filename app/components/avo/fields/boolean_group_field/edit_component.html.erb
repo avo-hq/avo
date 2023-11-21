@@ -1,8 +1,8 @@
 <%= field_wrapper **field_wrapper_args do %>
   <div class="flex items-center">
     <div class="space-y-2">
-      <% model_param_key = model_name_from_record_or_class(@resource.model).param_key %>
-      <%= check_box_tag "#{model_name_from_record_or_class(@resource.model).param_key}[#{@field.id}][]", '', true, { class: "hidden" } %>
+      <% model_param_key = model_name_from_record_or_class(@resource.record).param_key %>
+      <%= check_box_tag "#{model_param_key}[#{@field.id}][]", '', true, { class: "hidden" } %>
       <% @field.options.each do |id, label| %>
         <%
           checked = false
@@ -18,7 +18,7 @@
         %>
         <label class="block">
           <%= check_box_tag "#{model_param_key}[#{@field.id}][]", id, checked, {
-              class: "w-4 h-4 #{@field.get_html(:classes, view: view, element: :input)}",
+              class: "w-4 h-4 rounded checked:bg-primary-400 focus:checked:!bg-primary-400 #{@field.get_html(:classes, view: view, element: :input)}",
               data: @field.get_html(:data, view: view, element: :input),
               disabled: disabled?,
               id: "#{model_param_key}_#{@field.id}_#{id}",

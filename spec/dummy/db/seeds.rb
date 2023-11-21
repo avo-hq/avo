@@ -149,7 +149,7 @@ puts "Creating posts"
 25.times do
   post = FactoryBot.create(:post, user_id: users.sample.id)
 
-  post.cover_photo.attach(io: URI.open("https://source.unsplash.com/random/#{[1000, 1100, 1200, 1300].sample}x#{[1000, 1100, 1200, 1300].sample}"), filename: "cover.jpg")
+  post.cover_photo.attach(io: URI.open("https://source.unsplash.com/random/#{[1000, 1100, 1200, 1300].sample}x#{[1000, 1100, 1200, 1300].sample}/?all"), filename: "cover.jpg")
 
   puts "Creating posts comments"
 
@@ -260,13 +260,7 @@ end
     latitude: "22.3193",
     longitude: "114.1694",
     population: "7_500_000"
-  },
-  {
-    name: "Slab City",
-    latitude: "33.2580",
-    longitude: "-115.4623",
-    population: "3_500"
   }
 ].each do |city|
-  FactoryBot.create(:city, **city)
+  City.create(**city)
 end

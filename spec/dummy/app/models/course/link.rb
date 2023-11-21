@@ -14,11 +14,11 @@ class Course::Link < ApplicationRecord
   acts_as_list
   default_scope -> { order(position: :asc) }
 
-  def self.ransackable_attributes(auth_object = nil)
-    %w(id link)
-  end
-
   def self.table_name_prefix
     "course_"
+  end
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["course_id", "created_at", "id", "link", "position", "updated_at"]
   end
 end

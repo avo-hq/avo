@@ -10,7 +10,7 @@ module Avo
 
       def initialize(id:, order_index: 0, **args, &block)
         @id = id
-        @as = args.fetch(:as, nil)
+        @as = args.fetch(:as, :text)
         @order_index = order_index
         @args = args
         @block = block
@@ -47,7 +47,7 @@ module Avo
         else
           # The symbol can be transformed to a class and found.
           class_name = as.to_s.camelize
-          field_class = "#{class_name}Field"
+          field_class = "Avo::Fields::#{class_name}Field"
 
           # Discover & load custom field classes
           if Object.const_defined? field_class
@@ -72,7 +72,7 @@ module Avo
       end
 
       def field_class_from_symbol(symbol)
-        matched_field = Avo::App.fields.find do |field|
+        matched_field = Avo.field_manager.all.find do |field|
           field[:name].to_s == symbol.to_s
         end
 

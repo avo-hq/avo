@@ -1,0 +1,15 @@
+<div class="flex flex-col p-2">
+  <% if tool.render_panel%>
+    <%= render Avo::PanelComponent.new(name: "Sidebar tool") do |c| %>
+      <% c.with_body do %>
+        <div class="flex flex-col p-4 min-h-24">
+          <div class="space-y-4">
+            <h3>🪧 This sidebar partial is waiting to be updated</h3>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  <% else %>
+    <h3>🪧 This sidebar partial is waiting to be updated</h3>
+  <% end %>
+</div>

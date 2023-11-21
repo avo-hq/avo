@@ -4,8 +4,7 @@ module Avo
       def initialize(id, **args, &block)
         args[:updatable] = false
 
-        hide_on :all
-        show_on Avo.configuration.resource_default_view
+        only_on Avo.configuration.resource_default_view
 
         super(id, **args, &block)
       end

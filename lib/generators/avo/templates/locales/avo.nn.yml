@@ -23,6 +23,7 @@ nn:
     create_new_item: Lag ny %{item}
     dashboard: Dashboard
     dashboards: Dashboards
+    default_scope: Alle
     delete: slett
     delete_file: Slett fil
     delete_item: Slett %{item}

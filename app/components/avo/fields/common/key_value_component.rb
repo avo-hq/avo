@@ -5,9 +5,9 @@ class Avo::Fields::Common::KeyValueComponent < ViewComponent::Base
 
   attr_reader :view
 
-  def initialize(field:, form: nil, view: :show)
+  def initialize(field:, form: nil, view: "show")
     @field = field
     @form = form
-    @view = view
+    @view = Avo::ViewInquirer.new(view)
   end
 end

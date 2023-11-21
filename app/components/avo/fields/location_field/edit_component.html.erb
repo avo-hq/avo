@@ -1,16 +1,18 @@
 <%= field_wrapper **field_wrapper_args do %>
   <% if field.value_as_array? %>
     <div class="flex gap-4">
-      <%= @form.text_field @field.as_lat_long_field_id(:lat),
-        value: @field.as_lat_long_value(:lat),
-        class: classes("w-full"),
-        placeholder: @field.as_lat_long_placeholder(:lat)
-      %>
-      <%= @form.text_field @field.as_lat_long_field_id(:long),
-        value: @field.as_lat_long_value(:long),
-        class: classes("w-full"),
-        placeholder: @field.as_lat_long_placeholder(:long)
-      %>
+      <%= @form.fields_for @field.id do |coordinates_form| %>
+        <%= coordinates_form.text_field @field.as_lat_long_field_id(:lat),
+          value: @field.as_lat_long_value(:lat),
+          class: classes("w-full"),
+          placeholder: @field.as_lat_long_placeholder(:lat)
+        %>
+        <%= coordinates_form.text_field @field.as_lat_long_field_id(:long),
+          value: @field.as_lat_long_value(:long),
+          class: classes("w-full"),
+          placeholder: @field.as_lat_long_placeholder(:long)
+        %>
+    <% end %>
     </div>
   <% else %>
     <%= @form.text_field @field.id,

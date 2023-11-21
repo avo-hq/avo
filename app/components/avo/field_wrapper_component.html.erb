@@ -2,7 +2,7 @@
   class: classes,
   style: style,
   data: data do %>
-  <div class="h-full <% if stacked? %> md:pt-4 <% else %> md:pt-0 md:h-14 <% end %> pt-4 flex self-start items-center flex-shrink-0 <%= @field.get_html(:classes, view: view, element: :label) %> w-48 <% if compact? %> md:w-48 xl:w-64 <% else %> md:w-64 <% end %> px-6 uppercase font-semibold text-gray-500 text-sm" data-slot="label">
+  <div class="h-full <% if stacked? %> md:pt-4 md:w-full <% else %> md:pt-0 <% if short? %> md:h-10 <% else %> md:h-14 <% end %> <% end %> pt-4 flex self-start items-center flex-shrink-0 <%= @field.get_html(:classes, view: view, element: :label) %> w-48 <% if compact? %> md:w-48 xl:w-64 <% else %> md:w-64 <% end %> px-6 uppercase font-semibold text-gray-500 text-sm" data-slot="label">
     <% if form.present? %>
       <%= form.label field.id, label %>
     <% else %>

@@ -23,6 +23,7 @@ en:
     create_new_item: Create new %{item}
     dashboard: Dashboard
     dashboards: Dashboards
+    default_scope: All
     delete: delete
     delete_file: Delete file
     delete_item: Delete %{item}
@@ -43,9 +44,9 @@ en:
         other: files
         zero: files
       people:
-        one: peep
-        other: peeps
-        zero: peeps
+        one: person
+        other: people
+        zero: people
     filter_by: Filter by
     filters: Filters
     go_back: Go back

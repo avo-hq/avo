@@ -23,6 +23,7 @@ ro:
     create_new_item: Creează %{item}
     dashboard: Panou de control
     dashboards: Panouri de control
+    default_scope: Tot
     delete: șterge
     delete_file: Șterge fișierul
     delete_item: Șterge %{item}
@@ -43,9 +44,9 @@ ro:
         other: fișiere
         zero: fișiere
       people:
-        one: peep
-        other: peeps
-        zero: peeps
+        one: persoana
+        other: persoane
+        zero: persoane
     filter_by: Filtează după
     filters: Filtre
     go_back: Înapoi
@@ -62,7 +63,7 @@ ro:
     more: Mai multe
     new: nou
     next_page: Pagina următoare
-    no_cards_present: Niciun card disponibil
+    no_cards_present: Nici un card găsit
     no_item_found: Nici un articol găsit
     no_options_available: Nicio opțiune disponibilă
     no_related_item_found: Nici un articol asociat găsit
@@ -90,7 +91,7 @@ ro:
         one: utilizator
         other: utilizatori
         zero: utilizatori
-    resource_updated: Resursă actualizata
+    resource_updated: Resursă actualizată
     resources: Resurse
     run: Rulează
     save: Salvează

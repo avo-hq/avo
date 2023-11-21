@@ -212,8 +212,8 @@ export default class extends Controller {
     const url = URI()
 
     return url.segment([window.Avo.configuration.root_path, ...this.searchSegments()])
-              .search(this.searchParams(encodeURIComponent(query)))
-              .readable().toString()
+      .search(this.searchParams(encodeURIComponent(query)))
+      .readable().toString()
   }
 
   searchSegments() {
@@ -279,6 +279,8 @@ export default class extends Controller {
       via_reflection_class: this.dataset.viaReflectionClass,
       // eslint-disable-next-line camelcase
       via_reflection_id: this.dataset.viaReflectionId,
+      // eslint-disable-next-line camelcase
+      via_reflection_view: this.dataset.viaReflectionView,
     }
 
     return params

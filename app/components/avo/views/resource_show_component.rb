@@ -1,17 +1,19 @@
 # frozen_string_literal: true
 
 class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
-  include Avo::ResourcesHelper
   include Avo::ApplicationHelper
 
-  def initialize(resource: nil, reflection: nil, parent_resource: nil, parent_model: nil, resource_panel: nil, actions: [])
+  attr_reader :actions, :display_breadcrumbs
+
+  def initialize(resource: nil, reflection: nil, parent_resource: nil, parent_record: nil, resource_panel: nil, actions: [])
     @resource = resource
     @reflection = reflection
     @resource_panel = resource_panel
     @actions = actions
-    @parent_model = parent_model
+    @parent_record = parent_record
     @parent_resource = parent_resource
-    @view = :show
+    @view = Avo::ViewInquirer.new("show")
+    @display_breadcrumbs = reflection.blank?
   end
 
   def title
@@ -26,7 +28,7 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
 
   def back_path
     if via_resource?
-      helpers.resource_path(model: association_resource.model_class, resource: association_resource, resource_id: params[:via_resource_id])
+      helpers.resource_path(record: association_resource.model_class, resource: association_resource, resource_id: params[:via_record_id])
     else
       helpers.resources_path(resource: @resource)
     end
@@ -38,20 +40,24 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
     if via_resource?
       args = {
         via_resource_class: params[:via_resource_class],
-        via_resource_id: params[:via_resource_id]
+        via_record_id: params[:via_record_id]
       }
     end
 
-    helpers.edit_resource_path(model: @resource.model, resource: @resource, **args)
+    helpers.edit_resource_path(record: @resource.record, resource: @resource, **args)
   end
 
-  def render_action_control?(action)
-    can_act_on? && action.visible_in_view(parent_resource: @parent_resource)
+  def controls
+    @resource.render_show_controls
+  end
+
+  def view_for(field)
+    @view
   end
 
   private
 
-  # In development and test environments we shoudl show the invalid field errors
+  # In development and test environments we should show the invalid field errors
   def should_display_invalid_fields_errors?
     (Rails.env.development? || Rails.env.test?) && @resource.invalid_fields.present?
   end

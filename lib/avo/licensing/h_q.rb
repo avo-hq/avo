@@ -4,9 +4,9 @@ module Avo
       attr_accessor :current_request
       attr_accessor :cache_store
 
-      ENDPOINT = "https://avohq.io/api/v1/licenses/check".freeze unless const_defined?(:ENDPOINT)
+      ENDPOINT = "https://v3.avohq.io/api/v3/licenses/check".freeze unless const_defined?(:ENDPOINT)
       REQUEST_TIMEOUT = 5 unless const_defined?(:REQUEST_TIMEOUT) # seconds
-      CACHE_TIME = 3600 unless const_defined?(:CACHE_TIME) # seconds
+      CACHE_TIME = 6.hours.to_i unless const_defined?(:CACHE_TIME) # seconds
 
       class << self
         def cache_key
@@ -16,7 +16,7 @@ module Avo
 
       def initialize(current_request = nil)
         @current_request = current_request
-        @cache_store = Avo::App.cache_store
+        @cache_store = Avo.cache_store
       end
 
       def response
@@ -35,14 +35,12 @@ module Avo
 
       # Some cache stores don't auto-expire their keys and payloads so we need to do it for them
       def expire_cache_if_overdue
-        return unless cached_response.present?
-        return unless cached_response["fetched_at"].present?
+        return unless cached_response.present? || cached_response&.fetch(:fetched_at, nil).present?
 
-        allowed_time = 1.hour
         parsed_time = Time.parse(cached_response["fetched_at"].to_s)
-        time_has_passed = parsed_time < Time.now - allowed_time
+        cache_should_expire = parsed_time < Time.now - CACHE_TIME
 
-        clear_response if time_has_passed
+        clear_response if cache_should_expire
       end
 
       def fresh_response
@@ -69,50 +67,12 @@ module Avo
           app_name: app_name
         }
 
-        metadata = avo_metadata
-        if metadata[:resources_count] != 0
-          result[:avo_metadata] = metadata
-        end
+        # metadata = Avo::Services::DebugService.avo_metadata
+        # if metadata[:resources_count] != 0
+        #   result[:avo_metadata] = "metadata"
+        # end
 
         result
-      end
-
-      def avo_metadata
-        resources = App.resources
-        dashboards = App.dashboards
-        field_definitions = resources.map(&:get_field_definitions)
-        fields_count = field_definitions.map(&:count).sum
-        fields_per_resource = sprintf("%0.01f", fields_count / (resources.count + 0.0))
-
-        field_types = {}
-        custom_fields_count = 0
-        field_definitions.each do |fields|
-          fields.each do |field|
-            field_types[field.type] ||= 0
-            field_types[field.type] += 1
-
-            custom_fields_count += 1 if field.custom?
-          end
-        end
-
-        {
-          resources_count: resources.count,
-          dashboards_count: dashboards.count,
-          fields_count: fields_count,
-          fields_per_resource: fields_per_resource,
-          custom_fields_count: custom_fields_count,
-          field_types: field_types,
-          **other_metadata(:actions),
-          **other_metadata(:filters),
-          main_menu_present: Avo.configuration.main_menu.present?,
-          profile_menu_present: Avo.configuration.profile_menu.present?,
-          cache_store: Avo::App.cache_store&.class&.to_s,
-          **config_metadata
-        }
-      rescue => e
-        {
-          error: e.message
-        }
       end
 
       def cached_response
@@ -185,7 +145,7 @@ module Avo
       end
 
       def perform_request
-        ::Rails.logger.debug "[Avo] Performing request to avohq.io API to check license availability." if Rails.env.development?
+        Avo.logger.debug "Performing request to avohq.io API to check license availability." if Rails.env.development?
 
         if Rails.env.test?
           OpenStruct.new({code: 200, parsed_response: {id: "pro", valid: true}})
@@ -198,28 +158,6 @@ module Avo
         Rails.application.class.to_s.split("::").first
       rescue
         nil
-      end
-
-      def other_metadata(type = :actions)
-        resources = App.resources
-
-        types = resources.map(&:"get_#{type}")
-        type_count = types.flatten.uniq.count
-        type_per_resource = sprintf("%0.01f", types.map(&:count).sum / (resources.count + 0.0))
-
-        {
-          "#{type}_count": type_count,
-          "#{type}_per_resource": type_per_resource
-        }
-      end
-
-      def config_metadata
-        {
-          config: {
-            root_path: Avo.configuration.root_path,
-            app_name: Avo.configuration.app_name
-          }
-        }
       end
 
       def cache_and_return_error(error, exception_message = "")

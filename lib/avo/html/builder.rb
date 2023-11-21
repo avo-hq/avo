@@ -19,9 +19,13 @@ class Avo::HTML::Builder
   attr_accessor :record
   attr_accessor :resource
 
-  delegate :root_path, to: Avo::App
-  delegate :params, to: Avo::App
-  delegate :current_user, to: Avo::App
+  delegate :app, to: Avo::Current
+  delegate :root_path, to: :app
+  delegate :params, to: Avo::Current
+
+  def current_user
+    Avo::Current.user
+  end
 
   def initialize(record: nil, resource: nil)
     @wrapper_stack = {}
@@ -120,11 +124,7 @@ class Avo::HTML::Builder
 
   # Parse the properties and assign them to the blocks
   def assign_property(property = :data, payload = nil, &block)
-    value = if block.present?
-      Avo::Hosts::RecordHost.new(block: block, record: record).handle
-    else
-      payload
-    end
+    value = Avo::ExecutionContext.new(target: block || payload, record: record).handle
 
     send("#{property}_stack=", value)
   end

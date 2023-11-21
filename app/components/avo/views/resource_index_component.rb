@@ -4,35 +4,39 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   include Avo::ResourcesHelper
   include Avo::ApplicationHelper
 
+  attr_reader :scopes, :query, :turbo_frame, :parent_record, :parent_resource, :resource, :actions
+
   def initialize(
     resource: nil,
     resources: nil,
-    models: [],
+    records: [],
     pagy: nil,
     index_params: {},
     filters: [],
     actions: [],
     reflection: nil,
     turbo_frame: "",
-    parent_model: nil,
+    parent_record: nil,
     parent_resource: nil,
     applied_filters: [],
-    query: nil
+    query: nil,
+    scopes: nil
   )
     @resource = resource
     @resources = resources
-    @models = models
+    @records = records
     @pagy = pagy
     @index_params = index_params
     @filters = filters
     @actions = actions
     @reflection = reflection
     @turbo_frame = turbo_frame
-    @parent_model = parent_model
+    @parent_record = parent_record
     @parent_resource = parent_resource
     @applied_filters = applied_filters
-    @view = :index
+    @view = Avo::ViewInquirer.new("index")
     @query = query
+    @scopes = scopes
   end
 
   def title
@@ -73,8 +77,9 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
     if @reflection.present?
       args = {
+        via_resource_class: @parent_resource.class,
         via_relation_class: reflection_model_class,
-        via_resource_id: @parent_model.to_param
+        via_record_id: @parent_record.to_param
       }
 
       if @reflection.is_a? ActiveRecord::Reflection::ThroughReflection
@@ -96,7 +101,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   def attach_path
     current_path = CGI.unescape(request.env["PATH_INFO"]).split("/").select(&:present?)
 
-    Avo::App.root_path(paths: [*current_path, "new"])
+    Avo.root_path(paths: [*current_path, "new"])
   end
 
   def singular_resource_name
@@ -117,12 +122,12 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
       return
     end
 
-    @resource.resource_description
+    @resource.description
   end
 
   def show_search_input
     return false unless authorized_to_search?
-    return false unless @resource.search_query.present?
+    return false unless resource.class.search_query.present?
     return false if field&.hide_search_input
 
     true
@@ -130,9 +135,40 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
   def authorized_to_search?
     # Hide the search if the authorization prevents it
-    return true unless @resource.authorization.has_action_method?("search")
+    return true unless resource.authorization.respond_to?(:has_action_method?)
+    return true unless resource.authorization.has_action_method?("search")
 
-    @resource.authorization.authorize_action("search", raise_exception: false)
+    resource.authorization.authorize_action("search", raise_exception: false)
+  end
+
+  def render_dynamic_filters_button
+    return unless Avo.avo_dynamic_filters_installed?
+    return unless resource.has_filters?
+    return if Avo::DynamicFilters.configuration.always_expanded
+
+    a_button size: :sm,
+      color: :primary,
+      icon: "filter",
+      data: {
+        controller: "avo-filters",
+        action: "click->avo-filters#toggleFiltersArea",
+        avo_filters_dynamic_filters_component_id_value: dynamic_filters_component_id
+      } do
+      Avo::DynamicFilters.configuration.button_label
+    end
+  end
+
+  def scopes_list
+    Avo::Pro::Scopes::ListComponent.new(
+      scopes: scopes,
+      resource: resource,
+      turbo_frame: turbo_frame,
+      parent_record: parent_record
+    )
+  end
+
+  def can_render_scopes?
+    defined?(Avo::Pro)
   end
 
   private
@@ -152,7 +188,34 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
       association: "has_many",
       association_id: @reflection.name,
       class: reflection_model_class,
-      id: @parent_model.to_param
+      id: @parent_record.to_param,
+      view: @parent_resource.view
     }
+  end
+
+  def header_visible?
+    search_query_present? || filters_present? || has_many_view_types? || has_dynamic_filters?
+  end
+
+  def has_dynamic_filters?
+    Avo.avo_dynamic_filters_installed? && resource.has_filters?
+  end
+
+  def search_query_present?
+    @resource.class.search_query.present?
+  end
+
+  def filters_present?
+    @filters.present?
+  end
+
+  def has_many_view_types?
+    available_view_types.count > 1
+  end
+
+  # Generate a unique component id for the current component.
+  # This is used to identify the component in the DOM.
+  def dynamic_filters_component_id
+    @dynamic_filters_component_id ||= "dynamic_filters_component_id_#{SecureRandom.hex(3)}"
   end
 end

@@ -102,8 +102,8 @@ RSpec.describe "SelectAll", type: :system do
     describe "countless resource" do
       context "select all" do
         it "display contless messages" do
-          pagination = FishResource.pagination
-          FishResource.pagination = -> do
+          pagination = Avo::Resources::Fish.pagination
+          Avo::Resources::Fish.pagination = -> do
             {
               type: :countless
             }
@@ -122,7 +122,7 @@ RSpec.describe "SelectAll", type: :system do
           click_on "Select all matching"
           expect(page).to have_text "All records selected from all pages"
 
-          FishResource.pagination = -> do
+          Avo::Resources::Fish.pagination = -> do
             {
               type: :countless,
               size: []
@@ -142,15 +142,11 @@ RSpec.describe "SelectAll", type: :system do
           click_on "Select all matching"
           expect(page).to have_text "All records selected from all pages"
 
-          FishResource.pagination = pagination
+          Avo::Resources::Fish.pagination = pagination
         end
       end
     end
   end
-end
-
-def check_select_all
-  find(:css, 'input[type="checkbox"][data-action="input->item-select-all#toggle"]').set(true)
 end
 
 def uncheck_first_record
@@ -159,16 +155,13 @@ def uncheck_first_record
 end
 
 def press_button_and_expect(button:, selected:, total:, string:)
-  find('span', text: button).click
+  find("span", text: button).click
   # expect(page).to have_text selected_info_string(selected, total)
 end
 
 def release_fish
-  click_on "Actions"
-  click_on "Release fish"
-  wait_for_loaded
-  click_on "Run"
-  wait_for_loaded
+  open_panel_action(action_name: "Release fish")
+  run_action
 end
 
 def expect_all_message

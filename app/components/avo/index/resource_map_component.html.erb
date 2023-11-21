@@ -5,7 +5,7 @@
     </div>
     <% if render_table? %>
       <div class="overflow-auto <%= table_component_order_class %>">
-        <%= render(Avo::Index::ResourceTableComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_model: @parent_model, parent_resource: @parent_resource, pagy: @pagy, query: @query)) %>
+        <%= render(Avo::Index::ResourceTableComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_record: @parent_record, parent_resource: @parent_resource, pagy: @pagy, query: @query)) %>
       </div>
     <% end %>
   </div>

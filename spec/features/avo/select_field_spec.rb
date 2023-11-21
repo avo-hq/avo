@@ -4,9 +4,17 @@ RSpec.feature "Select", type: :feature do
   let(:project) { create :project }
   let(:placeholder) { "Choose an option" }
 
+  before do
+    Avo::Resources::Person.with_temporary_items do
+      field :name, as: :text, link_to_record: true, sortable: true, stacked: true
+      field :type, as: :select, name: "Type", options: {Spouse: "Spouse", Sibling: "Sibling"}, include_blank: true
+    end
+  end
+
   after :each do
-    CityResource.restore_items_from_backup
-    PostResource.restore_items_from_backup
+    Avo::Resources::Person.restore_items_from_backup
+    Avo::Resources::City.restore_items_from_backup
+    Avo::Resources::Post.restore_items_from_backup
   end
 
   describe "when type is nil" do
@@ -69,14 +77,14 @@ RSpec.feature "Select", type: :feature do
 
     context "simple" do
       it "show key but save value" do
-        CityResource.with_temporary_items do
+        Avo::Resources::City.with_temporary_items do
           field :population, as: :select, options: HASH_OPTIONS
         end
         test_hash
       end
 
       it "show value and save value (display_value true)" do
-        CityResource.with_temporary_items do
+        Avo::Resources::City.with_temporary_items do
           field :population, as: :select, options: HASH_OPTIONS, display_value: true
         end
         test_hash_display_value
@@ -85,8 +93,8 @@ RSpec.feature "Select", type: :feature do
 
     context "inside block" do
       it "show key but save value" do
-        CityResource.with_temporary_items do
-          field :population, as: :select, options: ->(model:, resource:, view:, field:) do
+        Avo::Resources::City.with_temporary_items do
+          field :population, as: :select, options: -> do
             HASH_OPTIONS
           end
         end
@@ -94,8 +102,8 @@ RSpec.feature "Select", type: :feature do
       end
 
       it "show value and save value (display_value true)" do
-        CityResource.with_temporary_items do
-          field :population, as: :select, display_value: true, options: ->(model:, resource:, view:, field:) do
+        Avo::Resources::City.with_temporary_items do
+          field :population, as: :select, display_value: true, options: -> do
             HASH_OPTIONS
           end
         end
@@ -118,14 +126,14 @@ RSpec.feature "Select", type: :feature do
 
     context "simple" do
       it "show and save the value" do
-        CityResource.with_temporary_items do
+        Avo::Resources::City.with_temporary_items do
           field :name, as: :select, options: ARRAY_OPTIONS
         end
         test_array
       end
 
       it "normal behaviour with display_value" do
-        CityResource.with_temporary_items do
+        Avo::Resources::City.with_temporary_items do
           field :name, as: :select, options: ARRAY_OPTIONS, display_value: true
         end
         test_array
@@ -134,8 +142,8 @@ RSpec.feature "Select", type: :feature do
 
     context "inside block" do
       it "show and save the value" do
-        CityResource.with_temporary_items do
-          field :name, as: :select, options: ->(model:, resource:, view:, field:) do
+        Avo::Resources::City.with_temporary_items do
+          field :name, as: :select, options: -> do
             ARRAY_OPTIONS
           end
         end
@@ -143,8 +151,8 @@ RSpec.feature "Select", type: :feature do
       end
 
       it "normal behaviour with display_value" do
-        CityResource.with_temporary_items do
-          field :name, as: :select, display_value: true, options: ->(model:, resource:, view:, field:) do
+        Avo::Resources::City.with_temporary_items do
+          field :name, as: :select, display_value: true, options: -> do
             ARRAY_OPTIONS
           end
         end
@@ -157,7 +165,7 @@ RSpec.feature "Select", type: :feature do
   describe "when options are enum array" do
     context "simple" do
       it "show key but save value" do
-        PostResource.with_temporary_items do
+        Avo::Resources::Post.with_temporary_items do
           field :name, as: :text
           field :status, as: :select, enum: ::Post.statuses
         end
@@ -176,7 +184,7 @@ RSpec.feature "Select", type: :feature do
 
     context "display_value true" do
       it "show value and save value" do
-        PostResource.with_temporary_items do
+        Avo::Resources::Post.with_temporary_items do
           field :name, as: :text
           field :status, as: :select, enum: ::Post.statuses, display_value: true
         end
@@ -197,7 +205,7 @@ RSpec.feature "Select", type: :feature do
   describe "when options are an enum hash" do
     context "simple" do
       it "without display value" do
-        CityResource.with_temporary_items do
+        Avo::Resources::City.with_temporary_items do
           field :status, as: :select, enum: City.statuses
         end
         visit avo.new_resources_city_path
@@ -209,7 +217,7 @@ RSpec.feature "Select", type: :feature do
       end
 
       it "display_value true" do
-        CityResource.with_temporary_items do
+        Avo::Resources::City.with_temporary_items do
           field :status, as: :select, enum: City.statuses, display_value: true
         end
         visit avo.new_resources_city_path

@@ -6,7 +6,7 @@ module Avo
 
         delegate :authorization, to: :@resource
         delegate :authorize_action, to: :authorization
-        delegate :id, :model, to: :@field
+        delegate :id, :record, to: :@field
 
         def can_upload_file?
           authorize_file_action(:upload)
@@ -23,7 +23,7 @@ module Avo
         private
 
         def authorize_file_action(action)
-          authorize_action("#{action}_#{id}?", record: model, raise_exception: false)
+          authorize_action("#{action}_#{id}?", record: record, raise_exception: false)
         end
       end
     end

@@ -6,16 +6,18 @@ class Avo::ResourceSidebarComponent < ViewComponent::Base
   attr_reader :view
   attr_reader :form
   attr_reader :fields
+  attr_reader :index
 
-  def initialize(resource: nil, fields: nil, index: nil, params: nil, form: nil, view: nil)
+  def initialize(resource: nil, sidebar: nil, index: nil, params: nil, form: nil, view: nil)
     @resource = resource
-    @fields = fields
+    @sidebar = sidebar
     @params = params
     @view = view
     @form = form
+    @index = index
   end
 
   def render?
-    Avo::App.license.has_with_trial(:resource_sidebar)
+    Avo.license.has_with_trial(:resource_sidebar)
   end
 end

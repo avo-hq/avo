@@ -1,10 +1,10 @@
-class <%= resource_class %> < Avo::BaseResource
-  self.title = :id
+class Avo::Resources::<%= resource_class %> < Avo::BaseResource
   self.includes = []<%= model_class_from_args %>
-  # self.search_query = -> do
-  #   scope.ransack(id_eq: params[:q], m: "or").result(distinct: false)
-  # end
+  # self.search = {
+  #   query: -> { query.ransack(id_eq: params[:q], m: "or").result(distinct: false) }
+  # }
 
-  field :id, as: :id<%= generate_fields %>
-  # add fields here
+  def fields
+    field :id, as: :id<%= generate_fields %>
+  end
 end

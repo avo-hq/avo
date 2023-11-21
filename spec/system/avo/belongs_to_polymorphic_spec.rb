@@ -41,7 +41,7 @@ RSpec.feature "belongs_to", type: :system do
             return_to_comment_page
 
             expect(find_field_value_element("body")).to have_text "Sample comment"
-            expect(find_field_value_element("user")).to have_link user.name, href: "/admin/resources/compact_users/#{user.slug}?via_resource_class=CommentResource&via_resource_id=#{Comment.last.id}"
+            expect(find_field_value_element("user")).to have_link user.name, href: "/admin/resources/compact_users/#{user.slug}?via_record_id=#{Comment.last.id}&via_resource_class=Avo%3A%3AResources%3A%3AComment"
             expect(find_field_value_element("commentable")).to have_text empty_dash
           end
         end
@@ -70,7 +70,7 @@ RSpec.feature "belongs_to", type: :system do
               expect(current_path).to eq "/admin/resources/comments/#{comment.id}"
 
               expect(find_field_value_element("body")).to have_text "Sample comment"
-              expect(page).to have_link post.name, href: "/admin/resources/posts/#{post.slug}?via_resource_class=CommentResource&via_resource_id=#{Comment.last.id}"
+              expect(page).to have_link post.name, href: "/admin/resources/posts/#{post.slug}?via_record_id=#{Comment.last.id}&via_resource_class=Avo%3A%3AResources%3A%3AComment"
 
               click_on "Edit"
 
@@ -198,7 +198,7 @@ RSpec.feature "belongs_to", type: :system do
       let!(:comment) { create :comment, body: "hey there", user: user, commentable: project }
 
       it "has the associated record details prefilled" do
-        visit "/admin/resources/comments/new?via_relation=commentable&via_relation_class=Project&via_resource_id=#{project.id}"
+        visit "/admin/resources/comments/new?via_relation=commentable&via_relation_class=Project&via_record_id=#{project.id}"
 
         expect(find("#comment_commentable_type").value).to eq "Project"
         expect(find("#comment_commentable_type").disabled?).to be true
@@ -211,13 +211,13 @@ RSpec.feature "belongs_to", type: :system do
           visit "/admin/resources/projects/#{project.id}"
 
           expect(find('turbo-frame[id="has_many_field_show_comments"]')).not_to have_text "Commentable"
-          expect(find('turbo-frame[id="has_many_field_show_comments"]')).to have_link comment.id.to_s, href: "/admin/resources/comments/#{comment.id}?via_resource_class=ProjectResource&via_resource_id=#{project.id}"
+          expect(find('turbo-frame[id="has_many_field_show_comments"]')).to have_link comment.id.to_s, href: "/admin/resources/comments/#{comment.id}?via_record_id=#{project.id}&via_resource_class=Avo%3A%3AResources%3A%3AProject"
 
           click_on comment.id.to_s
 
           expect(find_field_value_element("body")).to have_text "hey there"
-          expect(find_field_value_element("user")).to have_link user.name, href: "/admin/resources/compact_users/#{user.slug}?via_resource_class=CommentResource&via_resource_id=#{comment.id}"
-          expect(find_field_value_element("commentable")).to have_link project.name, href: "/admin/resources/projects/#{project.id}?via_resource_class=CommentResource&via_resource_id=#{comment.id}"
+          expect(find_field_value_element("user")).to have_link user.name, href: "/admin/resources/compact_users/#{user.slug}?via_record_id=#{comment.id}&via_resource_class=Avo%3A%3AResources%3A%3AComment"
+          expect(find_field_value_element("commentable")).to have_link project.name, href: "/admin/resources/projects/#{project.id}?via_record_id=#{comment.id}&via_resource_class=Avo%3A%3AResources%3A%3AComment"
 
           click_on "Edit"
 
@@ -240,220 +240,14 @@ RSpec.feature "belongs_to", type: :system do
     end
   end
 
-  describe "searchable" do
-    context "new" do
-      context "without an association" do
-        it "searches for a user" do
-          visit "/admin/resources/reviews/new"
-
-          expect(page).to have_field "review_user_id"
-          expect(page).to have_select "review_reviewable_type", selected: "Choose an option", options: ["Choose an option", "Fish", "Post", "Project", "Team"]
-
-          select "Post", from: "review_reviewable_type"
-
-          expect(page).to have_field "review_reviewable_id", placeholder: "Choose an option"
-
-          fill_in "review_body", with: "Yup"
-          find("#review_reviewable_id").click
-
-          write_in_search "pl"
-
-          wait_for_search_loaded
-
-          expect(find(".aa-Panel")).to have_content "Plates"
-          expect(find(".aa-Panel")).to have_content "Plums"
-          expect(find(".aa-Panel")).not_to have_content "TEAMS"
-
-          write_in_search "Plates"
-
-          wait_for_search_loaded
-
-          select_first_result_in_search
-          wait_for_search_to_dissapear
-
-          text_input = find '[name="review[reviewable_id]"][type="text"]', visible: true
-          expect(text_input.value).to eq "Plates are required"
-
-          click_on "Save"
-
-          wait_for_loaded
-
-          review = Review.first
-
-          expect(review.reviewable).to eq post
-          expect(page).to have_text("Review was successfully created.").once
-          expect(find_field_value_element("reviewable")).to have_text post.name
-        end
-      end
-
-      context "edit" do
-        let!(:review) { create :review, body: "Avo rules", reviewable: post, user: amber }
-
-        context "belongs_to" do
-          it "prefills the searchable belongs_to field" do
-            visit "/admin/resources/reviews/#{review.id}/edit"
-
-            text_field = find '#review_user_id[type="text"]'
-            hidden_field = find '#review_user_id[type="hidden"]', visible: false
-
-            expect(text_field.value).to eq amber.name
-            expect(hidden_field.value).to eq amber.id.to_s
-          end
-        end
-
-        context "belongs_to polymorphic" do
-          it "changes the reviewable item" do
-            visit "/admin/resources/reviews/#{review.id}/edit"
-
-            expect(page).to have_field "review_reviewable_id", with: post.name
-            expect(page).to have_select "review_reviewable_type", selected: "Post", options: ["Choose an option", "Fish", "Post", "Project", "Team"]
-            expect(page).to have_field type: "text", name: "review[reviewable_id]", with: post.name
-            expect(page).to have_field type: "hidden", name: "review[reviewable_id]", with: post.id, visible: false
-
-            fill_in "review_body", with: "Avo rules!"
-            find("#review_reviewable_id").click
-
-            write_in_search "Plums"
-            wait_for_search_loaded
-
-            expect(find(".aa-Panel")).not_to have_content "Plates"
-            expect(find(".aa-Panel")).to have_content "Plums"
-
-            select_first_result_in_search
-            wait_for_search_to_dissapear
-
-            expect(page).to have_field type: "text", name: "review[reviewable_id]", with: second_post.name
-            expect(page).to have_field type: "hidden", name: "review[reviewable_id]", with: second_post.id, visible: false
-
-            click_on "Save"
-
-            wait_for_loaded
-
-            review.reload
-
-            expect(review.reviewable).to eq second_post
-            expect(review.body).to eq "Avo rules!"
-          end
-        end
-
-        it "nullifies the reviewable item" do
-          visit "/admin/resources/reviews/#{review.id}/edit"
-
-          expect(page).to have_field "review_reviewable_id", with: post.name
-          expect(page).to have_select "review_reviewable_type", selected: "Post", options: ["Choose an option", "Fish", "Post", "Project", "Team"]
-          expect(page).to have_field type: "text", name: "review[reviewable_id]", with: post.name
-          expect(page).to have_field type: "hidden", name: "review[reviewable_id]", with: post.id, visible: false
-
-          fill_in "review_body", with: "Avo rules!"
-          find('[data-type="Post"] [data-field-id="reviewable"] [data-action="click->search#clearValue"]').click
-          expect(find('[data-type="Post"] [data-field-id="reviewable"]', visible: true)).not_to have_selector '[data-action="click->search#clearValue"]'
-
-          click_on "Save"
-
-          wait_for_loaded
-
-          review.reload
-
-          expect(review.reviewable).to be nil
-        end
-
-        it "toggles the reviewable item" do
-          visit "/admin/resources/reviews/#{review.id}/edit"
-
-          expect(page).to have_field "review_reviewable_id", with: post.name
-          expect(page).to have_select "review_reviewable_type", selected: "Post", options: ["Choose an option", "Fish", "Post", "Project", "Team"]
-          expect(page).to have_field type: "text", name: "review[reviewable_id]", with: post.name
-          expect(page).to have_field type: "hidden", name: "review[reviewable_id]", with: post.id, visible: false
-
-          # Change reviewable to Team and check for empty inputs
-          select "Team", from: "review_reviewable_type"
-
-          expect(page).to have_field type: "text", name: "review[reviewable_id]", with: ""
-          expect(page).to have_field type: "hidden", name: "review[reviewable_id]", with: "", visible: false
-
-          find("#review_reviewable_id").click
-          write_in_search "Apple"
-
-          wait_for_search_loaded
-
-          expect(find(".aa-Panel")).to have_content "Apple"
-
-          find(".aa-Input").send_keys :arrow_down
-          find(".aa-Input").send_keys :return
-
-          wait_for_search_loaded
-          wait_for_loaded
-
-          expect(page).to have_field type: "text", name: "review[reviewable_id]", with: "Apple"
-          expect(page).to have_field type: "hidden", name: "review[reviewable_id]", with: team.id, visible: false
-
-          # Change reviewable to Fish and check for empty inputs
-          select "Fish", from: "review_reviewable_type"
-
-          expect(page).to have_field type: "text", name: "review[reviewable_id]", with: ""
-          expect(page).to have_field type: "hidden", name: "review[reviewable_id]", with: "", visible: false
-
-          # Change reviewable to Post and check for inputs filled with the post details
-          select "Post", from: "review_reviewable_type"
-
-          expect(page).to have_field type: "text", name: "review[reviewable_id]", with: post.name
-          expect(page).to have_field type: "hidden", name: "review[reviewable_id]", with: post.id, visible: false
-
-          # Change reviewable to Team and check for inputs filled with the team details
-          select "Team", from: "review_reviewable_type"
-
-          expect(page).to have_field type: "text", name: "review[reviewable_id]", with: "Apple"
-          expect(page).to have_field type: "hidden", name: "review[reviewable_id]", with: team.id, visible: false
-
-          click_on "Save"
-
-          wait_for_loaded
-
-          review.reload
-
-          expect(review.reviewable).to eq team
-        end
-
-        it "nullifies the reviewable type" do
-          visit "/admin/resources/reviews/#{review.id}/edit"
-
-          expect(page).to have_field "review_reviewable_id", with: post.name
-          expect(page).to have_select "review_reviewable_type", selected: "Post", options: ["Choose an option", "Fish", "Post", "Project", "Team"]
-          expect(page).to have_field type: "text", name: "review[reviewable_id]", with: post.name
-          expect(page).to have_field type: "hidden", name: "review[reviewable_id]", with: post.id, visible: false
-
-          select "Choose an option", from: "review_reviewable_type"
-
-          click_on "Save"
-
-          wait_for_loaded
-
-          review.reload
-
-          expect(review.reviewable).to be nil
-        end
-      end
-    end
-
-    describe "with associated record" do
-      it "prefills the associated record details" do
-        visit "/admin/resources/reviews/new?via_relation=reviewable&via_relation_class=Team&via_resource_id=#{team.id}"
-
-        expect(find("#review_reviewable_type").value).to eq "Team"
-        expect(find("[data-type='Team'] #review_reviewable_id[type='text']").value).to eq team.name
-        expect(find("[data-type='Team'] #review_reviewable_id[type='hidden']", visible: false).value).to eq team.id.to_s
-      end
-    end
-  end
-
   describe "with namespaced model" do
     let!(:course) { create :course }
 
     it "has the prefilled association details" do
-      visit "/admin/resources/course_links/new?via_relation=course&via_relation_class=Course&via_resource_id=#{course.id}"
+      visit "/admin/resources/course_links/new?via_relation=course&via_relation_class=Course&via_record_id=#{course.id}"
 
-      expect(page).to have_field type: "text", name: "course/link[course_id]", disabled: true, with: course.name
-      expect(page).to have_field type: "hidden", name: "course/link[course_id]", visible: false, with: course.id
+      expect(page).to have_field type: :select, name: "course/link[course_id]", disabled: true, text: course.name
+      expect(page).to have_field type: :hidden, name: "course/link[course_id]", visible: false, with: course.id
     end
   end
 end

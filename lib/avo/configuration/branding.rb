@@ -32,40 +32,28 @@ class Avo::Configuration::Branding
   end
 
   def logo
-    return @default_logo if Avo::App.license.lacks_with_trial(:branding)
-
     @logo || @default_logo
   end
 
   def logomark
-    return @default_logomark if Avo::App.license.lacks_with_trial(:branding)
-
     @logomark || @default_logomark
   end
 
   def placeholder
-    return @default_placeholder if Avo::App.license.lacks_with_trial(:branding)
-
     @placeholder || @default_placeholder
   end
 
   def chart_colors
-    return @default_chart_colors if Avo::App.license.lacks_with_trial(:branding)
-
     @chart_colors || @default_chart_colors
   end
 
   def favicon
-    return @default_favicon if Avo::App.license.lacks_with_trial(:branding)
-
     @favicon || @default_favicon
   end
 
   private
 
   def colors
-    return @default_colors if Avo::App.license.lacks_with_trial(:branding)
-
     @default_colors.merge(@colors) || @default_colors
   end
 

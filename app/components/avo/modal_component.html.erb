@@ -3,17 +3,16 @@
   data-modal-target="modal"
 >
   <div aria-expanded="true" class="modal-overlay absolute w-full h-full bg-opacity-25 bg-gray-800 flex justify-center items-center" data-action="click->modal#close"></div>
-  <div aria-expanded="true" role="dialog" aria-modal="true" class="modal-body rounded-lg inset-auto bg-white flex z-50 relative shadow-modal overflow-auto  <%= width_classes %> <%= height_classes %>">
+  <div aria-expanded="true" role="dialog" aria-modal="true" class="modal-body rounded-lg inset-auto bg-white flex z-50 relative shadow-modal overflow-auto <%= width_classes %> <%= height_classes %>">
     <div class="flex-1 flex flex-col justify-between">
       <div>
         <% if heading? %>
-          <div class="p-6 text-2xl tracking-normal font-semibold text-black">
+          <div class="p-6 pb-0 text-2xl tracking-normal font-semibold text-black">
             <%= heading %>
           </div>
         <% end %>
-
         <% if content? %>
-          <div class="px-6 text-base text-gray-500 <%= body_class %>">
+          <div class="p-6 text-base text-gray-500">
             <%= content %>
           </div>
         <% end %>

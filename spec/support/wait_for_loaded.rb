@@ -39,12 +39,9 @@ end
 
 def wait_for_body_class_missing(klass = "turbo-loading", time = Capybara.default_max_wait_time)
   Timeout.timeout(time) do
-    if page.present? &&
-        page.find("body").present? &&
-        page.find("body")[:class].present? &&
-        page.find("body")[:class].is_a?(String)
-
-      sleep(0.05) until page.present? && !page.find("body")[:class].to_s.include?(klass)
+    body = page.find(:xpath, "//body")
+    if page.present? && body.present? && body[:class].present? && body[:class].is_a?(String)
+      sleep(0.05) until page.present? && !body[:class].to_s.include?(klass)
     else
       sleep 0.1
     end
@@ -63,4 +60,26 @@ end
 
 def wait_for_loaded
   wait_for_turbo_loaded
+end
+
+def wait_for_action_dialog_to_disappear(time = Capybara.default_max_wait_time)
+  wait_for_element_missing("[role='dialog']", time)
+end
+
+def wait_for_tag_to_disappear(tag, time = Capybara.default_max_wait_time)
+  Capybara.using_wait_time(time) do
+    page.has_no_css?(".tagify__tag", text: tag)
+  end
+end
+
+def wait_for_tag_to_appear(tag, time = Capybara.default_max_wait_time)
+  Capybara.using_wait_time(time) do
+    page.has_css?(".tagify__tag", text: tag)
+  end
+end
+
+def wait_for_tag_suggestions_to_appear(time = Capybara.default_max_wait_time)
+  Capybara.using_wait_time(time) do
+    page.has_css?(".tagify__dropdown")
+  end
 end

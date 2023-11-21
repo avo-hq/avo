@@ -1,0 +1,10 @@
+<%= index_field_wrapper **field_wrapper_args, dash_if_blank: false, class: 'whitespace-no-wrap w-[1%]', flush: true, center_content: true do %>
+  <%= link_to resource_view_path,
+    title: t('avo.view_item', item: @resource.name).humanize,
+    data: {
+      controller: "preview",
+      preview_url_value: helpers.preview_resource_path(record: @record, resource: @resource, resource_id: @resource.record_id, turbo_frame: :preview_modal),
+    } do %>
+    <%= helpers.svg("magnifying-glass-circle", class: "block h-6 text-gray-600") %>
+  <% end %>
+<% end %>

@@ -3,6 +3,7 @@ require "spec_helper"
 require "fileutils"
 
 ENV["RAILS_ENV"] = "test"
+ENV["SECRET_KEY_BASE"] = "secret_key_base_to_avoid DEPRECATION WARNING: `Rails.application.secrets` is deprecated in favor of `Rails.application.credentials` and will be removed in Rails 7.2."
 
 require_relative "dummy/config/environment"
 # Prevent database truncation if the environment is production
@@ -44,7 +45,7 @@ ENV["TZ"] ||= "UTC"
 #   exit 1
 # end
 
-Avo::App.boot
+Avo.boot
 
 # ActiveRecord::Migrator.migrate(File.join(Rails.root, 'db/migrate'))
 
@@ -96,6 +97,8 @@ def driver_options(headless: false)
   }
 end
 
+Capybara::save_path = "tmp/screenshots"
+
 Capybara.register_driver :chrome_headless do |app|
   driver = Capybara::Selenium::Driver.new app, **driver_options(headless: true)
   headless_download_setup(driver)
@@ -111,6 +114,8 @@ end
 test_driver = ENV["HEADFULL"] ? :chrome : :chrome_headless
 
 require "support/controller_routes"
+require "support/avo_helpers"
+require "support/filter_helpers"
 
 RSpec.configure do |config|
   config.include TestHelpers::ControllerRoutes, type: :controller
@@ -118,9 +123,17 @@ RSpec.configure do |config|
   config.include TestHelpers::DisableAuthentication, type: :system
   config.include TestHelpers::DisableAuthentication, type: :feature
   config.include TestHelpers::DisableHQRequest
+  config.include TestHelpers::AvoHelpers, type: :feature
+  config.include TestHelpers::AvoHelpers, type: :system
+  config.include TestHelpers::FilterHelpers, type: :feature
+  config.include TestHelpers::FilterHelpers, type: :system
   config.include Warden::Test::Helpers
   config.include DownloadHelpers
   config.include ViewComponent::TestHelpers, type: :component
+  config.include Avo::TestHelpers
+
+  # Include Avo::PrefixedTestHelpers if you want to use the avo_ prefixed helpers
+  # config.include Avo::PrefixedTestHelpers
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   # config.fixture_path = "#{::Rails.root}/spec/fixtures"
@@ -129,7 +142,6 @@ RSpec.configure do |config|
   # examples within a transaction, remove the following line or assign false
   # instead of true.
   config.use_transactional_fixtures = true
-  config.filter_run_when_matching :focus
 
   config.before(:each, type: :system) { driven_by test_driver }
 
@@ -198,3 +210,4 @@ require "support/timezone"
 
 # https://github.com/titusfortner/webdrivers/issues/247
 # Webdrivers::Chromedriver.required_version = "114.0.5735.90"
+# Webdrivers::Chromedriver.required_version = "116.0.5845.96"

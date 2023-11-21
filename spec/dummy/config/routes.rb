@@ -17,6 +17,11 @@ Rails.application.routes.draw do
     #     mount Avo::Engine, at: Avo.configuration.root_path
     #   end
     # end
+
+    # TODO: support locale based routes
+    scope "(:locale)" do
+      # mount Avo::Engine, at: Avo.configuration.root_path
+    end
   end
 end
 

@@ -1,0 +1,3 @@
+<% javascripts.each do |path| %>
+  <%= javascript_include_tag path, "data-turbo-track": "reload", defer: true %>
+<% end %>

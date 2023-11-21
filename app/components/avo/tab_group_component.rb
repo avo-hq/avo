@@ -7,14 +7,13 @@ class Avo::TabGroupComponent < Avo::BaseComponent
   attr_reader :form
   attr_reader :resource
 
-  def initialize(resource:, group:, index:, form:, params:, view:, tabs_style:)
+  def initialize(resource:, group:, index:, form:, params:, view:)
     @resource = resource
     @group = group
     @index = index
     @form = form
     @params = params
     @view = view
-    @tabs_style = tabs_style
 
     @group.index = index
   end
@@ -49,9 +48,5 @@ class Avo::TabGroupComponent < Avo::BaseComponent
     group.visible_items.find do |tab|
       tab.name.to_s == active_tab_name.to_s
     end
-  end
-
-  def tabs_style
-    @tabs_style || Avo.configuration.tabs_style
   end
 end

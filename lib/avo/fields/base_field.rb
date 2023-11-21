@@ -2,21 +2,26 @@ module Avo
   module Fields
     class BaseField
       extend ActiveSupport::DescendantsTracker
-      extend Avo::Fields::FieldExtensions::HasFieldName
 
-      include Avo::Concerns::IsResourceItem
-      include Avo::Concerns::HandlesFieldArgs
-
-      include ActionView::Helpers::UrlHelper
-      include Avo::Fields::FieldExtensions::VisibleInDifferentViews
-
-      include Avo::Concerns::HasHTMLAttributes
-      include Avo::Fields::Concerns::IsRequired
+      prepend Avo::Concerns::HasItemType
+      prepend Avo::Concerns::IsResourceItem
+      include Avo::Concerns::IsVisible
+      include Avo::Concerns::VisibleInDifferentViews
+      include Avo::Concerns::HasHelpers
+      include Avo::Fields::Concerns::HasFieldName
+      include Avo::Fields::Concerns::HasDefault
+      include Avo::Fields::Concerns::HasHTMLAttributes
+      include Avo::Fields::Concerns::HandlesFieldArgs
       include Avo::Fields::Concerns::IsReadonly
       include Avo::Fields::Concerns::IsDisabled
-      include Avo::Fields::Concerns::HasDefault
+      include Avo::Fields::Concerns::IsRequired
+      include Avo::Fields::Concerns::UseViewComponents
 
-      delegate :view_context, to: ::Avo::App
+      include ActionView::Helpers::UrlHelper
+
+      delegate :app, to: ::Avo::Current
+      delegate :view_context, to: :app
+      delegate :context, to: :app
       delegate :simple_format, :content_tag, to: :view_context
       delegate :main_app, to: :view_context
       delegate :avo, to: :view_context
@@ -33,12 +38,9 @@ module Avo
       attr_reader :autocomplete
       attr_reader :help
       attr_reader :default
-      attr_reader :visible
-      attr_reader :as_label
       attr_reader :as_avatar
-      attr_reader :as_description
-      attr_reader :index_text_align
       attr_reader :stacked
+      attr_reader :for_presentation_only
 
       # Private options
       attr_reader :computable # if allowed to be computable
@@ -46,19 +48,14 @@ module Avo
       attr_reader :computed_value # the value after computation
 
       # Hydrated payload
-      attr_reader :model
-      attr_reader :view
-      attr_reader :resource
-      attr_reader :action
-      attr_reader :user
-      attr_reader :panel_name
+      attr_accessor :record
+      attr_accessor :action
+      attr_accessor :user
+      attr_accessor :panel_name
 
       class_attribute :field_name_attribute
-      class_attribute :item_type, default: :field
 
       def initialize(id, **args, &block)
-        super(id, **args, &block)
-
         @id = id
         @name = args[:name]
         @translation_key = args[:translation_key]
@@ -76,15 +73,14 @@ module Avo
         @help = args[:help] || nil
         @default = args[:default] || nil
         @visible = args[:visible]
-        @as_label = args[:as_label] || false
         @as_avatar = args[:as_avatar] || false
-        @as_description = args[:as_description] || false
-        @index_text_align = args[:index_text_align] || :left
         @html = args[:html] || nil
-        @view = args[:view] || nil
+        @view = Avo::ViewInquirer.new(args[:view]) || nil
         @value = args[:value] || nil
         @stacked = args[:stacked] || nil
+        @for_presentation_only = args[:for_presentation_only] || false
         @resource = args[:resource]
+        @components = args[:components] || {}
 
         @args = args
 
@@ -92,34 +88,19 @@ module Avo
         @computed = block.present?
         @computed_value = nil
 
-        # Set the visibility
-        show_on args[:show_on] if args[:show_on].present?
-        hide_on args[:hide_on] if args[:hide_on].present?
-        only_on args[:only_on] if args[:only_on].present?
-        except_on args[:except_on] if args[:except_on].present?
-      end
-
-      def hydrate(**kwargs)
-        # List of permitted keyword argument keys as symbols
-        permited_kwargs_keys = %i[model resource action view panel_name user]
-
-        # Check for unrecognized keys
-        unrecognized_keys = kwargs.keys - permited_kwargs_keys
-        raise ArgumentError, "Unrecognized argument(s): #{unrecognized_keys.join(', ')}" if unrecognized_keys.any?
-
-        # Set instance variables with provided values
-        kwargs.each do |key, value|
-          instance_variable_set("@#{key}", value)
-        end
-
-        # Return self for method chaining, if desired
-        self
+        post_initialize if respond_to?(:post_initialize)
       end
 
       def translation_key
-        return @translation_key if @translation_key.present?
+        @translation_key || "avo.field_translations.#{@id}"
+      end
 
-        "avo.field_translations.#{@id}"
+      def translated_name(default:)
+        t(translation_key, count: 1, default: default).humanize
+      end
+
+      def translated_plural_name(default:)
+        t(translation_key, count: 2, default: default).humanize
       end
 
       # Getting the name of the resource (user/users, post/posts)
@@ -129,8 +110,8 @@ module Avo
       def name
         return @name if custom_name?
 
-        if translation_key && ::Avo::App.translation_enabled
-          t(translation_key, count: 1, default: default_name).humanize
+        if translation_key
+          translated_name default: default_name
         else
           default_name
         end
@@ -139,15 +120,19 @@ module Avo
       def plural_name
         default = name.pluralize
 
-        if translation_key && ::Avo::App.translation_enabled
-          t(translation_key, count: 2, default: default).humanize
+        if translation_key
+          translated_plural_name default: default
         else
           default
         end
       end
 
+      def table_header_label
+        name
+      end
+
       def custom_name?
-        @name.present?
+        !@name.nil?
       end
 
       def default_name
@@ -155,21 +140,7 @@ module Avo
       end
 
       def placeholder
-        if @placeholder.respond_to?(:call)
-          return Avo::Hosts::ResourceViewRecordHost.new(block: @placeholder, record: @model, resource: @resource, view: @view).handle
-        end
-
-        @placeholder || name
-      end
-
-      def visible?
-        return true if visible.nil?
-
-        if visible.respond_to?(:call)
-          visible.call resource: @resource
-        else
-          visible
-        end
+        Avo::ExecutionContext.new(target: @placeholder || name, record: record, resource: @resource, view: @view).handle
       end
 
       def value(property = nil)
@@ -177,8 +148,8 @@ module Avo
 
         property ||= id
 
-        # Get model value
-        final_value = @model.send(property) if is_model?(@model) && @model.respond_to?(property)
+        # Get record value
+        final_value = record.send(property) if is_model?(record) && record.respond_to?(property)
 
         # On new views and actions modals we need to prefill the fields with the default value
         if should_fill_with_default_value? && default.present?
@@ -187,50 +158,55 @@ module Avo
 
         # Run computable callback block if present
         if computable && block.present?
-          final_value = instance_exec(@model, @resource, @view, self, &block)
+          final_value = execute_block
         end
 
-        if @format_using.present?
-          # Apply the changes in the
-          Avo::ExecutionContext.new(
-            target: @format_using,
-            model: model,
-            key: property,
+        # Run the value through resolver if present
+        if format_using.present?
+          final_value = Avo::ExecutionContext.new(
+            target: format_using,
             value: final_value,
+            record: record,
             resource: resource,
             view: view,
             field: self,
-            delegate_missing_to: :view_context,
             include: self.class.included_modules
           ).handle
-        else
-          final_value
-        end
-      end
-
-      # Fills the model with the received value on create and update actions.
-      def fill_field(model, key, value, params)
-        return model unless model.methods.include? key.to_sym
-
-        if @update_using.present?
-          value = update_using(model, key, value, params)
         end
 
-        model.public_send("#{key}=", value)
-
-        model
+        final_value
       end
 
-      def update_using(model, key, value, params)
+      def execute_block
         Avo::ExecutionContext.new(
-          target: @update_using,
-          model: model,
-          key: key,
-          value: value,
+          target: block,
+          record: record,
           resource: resource,
+          view: view,
           field: self,
           include: self.class.included_modules
         ).handle
+      end
+
+      # Fills the record with the received value on create and update actions.
+      def fill_field(record, key, value, params)
+        return record unless record.methods.include? key.to_sym
+
+        if @update_using.present?
+          value = Avo::ExecutionContext.new(
+            target: @update_using,
+            record: record,
+            key: key,
+            value: value,
+            resource: resource,
+            field: self,
+            include: self.class.included_modules
+          ).handle
+        end
+
+        record.public_send("#{key}=", value)
+
+        record
       end
 
       # Try to see if the field has a different database ID than it's name
@@ -252,25 +228,8 @@ module Avo
         id.to_sym
       end
 
-      def view_component_name
-        "#{type.camelize}Field"
-      end
-
-      # Try and build the component class or fallback to a blank one
-      def component_for_view(view = :index)
-        # Use the edit variant for all "update" views
-        view = :edit if view.in? [:new, :create, :update]
-
-        component_class = "::Avo::Fields::#{view_component_name}::#{view.to_s.camelize}Component"
-        component_class.constantize
-      rescue
-        # When returning nil, a race condition happens and throws an error in some environments.
-        # See https://github.com/avo-hq/avo/pull/365
-        ::Avo::BlankFieldComponent
-      end
-
-      def model_errors
-        model.nil? ? {} : model.errors
+      def record_errors
+        record.nil? ? {} : record.errors
       end
 
       def type
@@ -291,8 +250,12 @@ module Avo
         !visible_in_reflection?
       end
 
+      def options_for_filter
+        options
+      end
+
       def updatable
-        !is_readonly? && visible?
+        !is_disabled? && visible?
       end
 
       # Used by Avo to fill the record with the default value on :new and :edit views
@@ -319,7 +282,7 @@ module Avo
       end
 
       def on_create?
-        @view.in?([:new, :create])
+        @view.in?(%w[new create])
       end
 
       def in_action?

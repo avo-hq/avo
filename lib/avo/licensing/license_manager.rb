@@ -9,7 +9,7 @@ module Avo
         case @hq_response["id"]
         when "community"
           CommunityLicense.new @hq_response
-        when "pro"
+        when "pro", "advanced"
           ProLicense.new @hq_response
         else
           NilLicense.new @hq_response

@@ -9,7 +9,7 @@ RSpec.describe "KeepDefaultsOnfFilterSelection", type: :system do
 
       expect(page).to have_select "avo_filters_dummy_multiple_select_filter", selected: ["Yes"], options: ["Yes", "No"]
 
-      fill_in "avo_filters_user_names_filter", with: 'avo'
+      fill_in "avo_filters_user_names_filter", with: "avo"
       find('[data-filter-name="User names filter"] button').click
       wait_for_loaded
 
@@ -19,4 +19,3 @@ RSpec.describe "KeepDefaultsOnfFilterSelection", type: :system do
     end
   end
 end
-

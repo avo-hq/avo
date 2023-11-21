@@ -2,56 +2,22 @@ module Avo
   module Resources
     module Controls
       class BaseControl
+        attr_reader :label, :title, :color, :style, :icon, :icon_class, :confirmation_message, :size, :as_index_control
+
         def initialize(**args)
-          @args = args
+          @label = args[:label]
+          @title = args[:title]
+          @color = args[:color] || :gray
+          @style = args[:style] || :text
+          @icon = args[:icon]
+          @icon_class = @style == :icon ? " text-gray-600 h-6 hover:text-gray-600" : ""
+          @confirmation_message = args[:confirmation_message]
+          @size = args[:size] || :md
+          @as_index_control = args[:as_index_control]
         end
 
-        def label
-          @args[:label] || @label
-        end
-
-        def title
-          @args[:title]
-        end
-
-        def color
-          @args[:color] || :gray
-        end
-
-        def style
-          @args[:style] || :text
-        end
-
-        def icon
-          @args[:icon] || nil
-        end
-
-        def back_button?
-          is_a? Avo::Resources::Controls::BackButton
-        end
-
-        def edit_button?
-          is_a? Avo::Resources::Controls::EditButton
-        end
-
-        def delete_button?
-          is_a? Avo::Resources::Controls::DeleteButton
-        end
-
-        def actions_list?
-          is_a? Avo::Resources::Controls::ActionsList
-        end
-
-        def link_to?
-          is_a? Avo::Resources::Controls::LinkTo
-        end
-
-        def detach_button?
-          is_a? Avo::Resources::Controls::DetachButton
-        end
-
-        def action?
-          is_a? Avo::Resources::Controls::Action
+        def type
+          self.class.name.demodulize.underscore.to_sym
         end
       end
     end

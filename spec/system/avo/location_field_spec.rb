@@ -30,11 +30,11 @@ RSpec.describe "LocationField", type: :system do
 
         expect(coordinates_element).to have_text "COORDINATES"
 
-        expect(find_by_id("city_coordinates[latitude]", visible: false)).to have_text("")
-        expect(find_by_id("city_coordinates[latitude]", visible: false)[:placeholder]).to have_text("Enter latitude")
+        expect(find_by_id("city_coordinates_latitude", visible: false)).to have_text("")
+        expect(find_by_id("city_coordinates_latitude", visible: false)[:placeholder]).to have_text("Enter latitude")
 
-        expect(find_by_id("city_coordinates[longitude]", visible: false)).to have_text("")
-        expect(find_by_id("city_coordinates[longitude]", visible: false)[:placeholder]).to have_text("Enter longitude")
+        expect(find_by_id("city_coordinates_longitude", visible: false)).to have_text("")
+        expect(find_by_id("city_coordinates_longitude", visible: false)[:placeholder]).to have_text("Enter longitude")
       end
 
       it "changes the city coordinates" do
@@ -49,8 +49,8 @@ RSpec.describe "LocationField", type: :system do
 
         click_on "Edit"
 
-        expect(find_by_id("city_coordinates[latitude]").value).to eq("1.0")
-        expect(find_by_id("city_coordinates[longitude]").value).to eq("2.0")
+        expect(find_by_id("city_coordinates_latitude").value).to eq("1.0")
+        expect(find_by_id("city_coordinates_longitude").value).to eq("2.0")
       end
     end
   end
@@ -72,8 +72,8 @@ RSpec.describe "LocationField", type: :system do
       it "has filled lat/long values in editor" do
         visit "/admin/resources/cities/#{city.id}/edit"
 
-        expect(find_by_id("city_coordinates[latitude]").value).to eq("48.8584")
-        expect(find_by_id("city_coordinates[longitude]").value).to eq("2.2945")
+        expect(find_by_id("city_coordinates_latitude").value).to eq("48.8584")
+        expect(find_by_id("city_coordinates_longitude").value).to eq("2.2945")
       end
     end
   end

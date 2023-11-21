@@ -22,6 +22,6 @@ class Team < ApplicationRecord
   has_many :reviews, as: :reviewable
 
   def self.ransackable_attributes(auth_object = nil)
-    %w(id name)
+    ["color", "created_at", "description", "id", "name", "updated_at", "url"]
   end
 end

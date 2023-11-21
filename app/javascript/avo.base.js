@@ -12,6 +12,7 @@ import 'chartkick/chart.js/chart.esm'
 
 import './js/active-storage'
 import './js/controllers'
+import './js/custom-stream-actions'
 
 Rails.start()
 

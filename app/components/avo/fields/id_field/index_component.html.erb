@@ -1,3 +1,3 @@
 <%= index_field_wrapper **field_wrapper_args, class: 'whitespace-no-wrap w-[1%]' do %>
-  <% link_to_if (@field.link_to_resource or Avo.configuration.id_links_to_resource), @field.value, resource_view_path, title: t('avo.view_item', item: @resource.name).humanize %>
+  <% link_to_if (@field.link_to_record or Avo.configuration.id_links_to_resource), @field.value, resource_view_path, title: t('avo.view_item', item: @resource.name).humanize %>
 <% end %>

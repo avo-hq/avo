@@ -5,7 +5,7 @@ module Avo
         def initialize(**args)
           super(**args)
 
-          @label = I18n.t("avo.go_back")
+          @label = args[:label] || I18n.t("avo.go_back")
         end
       end
     end

@@ -4,21 +4,17 @@ Avo::Engine.routes.draw do
   get "resources", to: redirect(Avo.configuration.root_path)
   get "dashboards", to: redirect(Avo.configuration.root_path)
 
-  post "/rails/active_storage/direct_uploads", to: "/active_storage/direct_uploads#create"
-
-  resources :dashboards do
-    resources :cards, controller: "dashboards/cards"
+  # Mount Avo engines routes by default but leave it configurable in case the user wants to nest these under a scope.
+  if Avo.configuration.mount_avo_engines
+    instance_exec(&Avo.mount_engines)
   end
+
+  post "/rails/active_storage/direct_uploads", to: "/active_storage/direct_uploads#create"
 
   scope "avo_api", as: "avo_api" do
     get "/search", to: "search#index"
     get "/:resource_name/search", to: "search#show"
     post "/resources/:resource_name/:id/attachments/", to: "attachments#create"
-  end
-
-  # Records ordering
-  scope "reorder", as: "reorder" do
-    patch "/:resource_name/:id", to: "reorder#order", as: "order"
   end
 
   get "failed_to_load", to: "home#failed_to_load"
@@ -44,7 +40,8 @@ Avo::Engine.routes.draw do
   end
 
   scope "/avo_private", as: "avo_private" do
-    get "/debug", to: "debug#index", as: "debug_index"
+    get "/status", to: "debug#status", as: "status"
+    post "/status/send_to_hq", to: "debug#send_to_hq", as: "send_to_hq"
     get "/debug/report", to: "debug#report", as: "debug_report"
     post "/debug/refresh_license", to: "debug#refresh_license"
   end

@@ -98,7 +98,7 @@ export default class extends Controller {
 
     url.query(query)
 
-    this.urlRedirectTarget.href = url
+    this.urlRedirectTarget.href = url.readable().toString()
     this.urlRedirectTarget.click()
   }
 }

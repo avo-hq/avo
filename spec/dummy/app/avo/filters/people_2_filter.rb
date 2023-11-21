@@ -1,4 +1,4 @@
-class People2Filter < Avo::Filters::BooleanFilter
+class Avo::Filters::People2Filter < Avo::Filters::BooleanFilter
   self.name = "People 2 status (temporary)"
 
   def apply(request, query, value = {})

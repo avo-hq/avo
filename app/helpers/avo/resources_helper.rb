@@ -38,7 +38,7 @@ module Avo
     end
 
     def item_selector_init(resource)
-      "data-resource-name='#{resource.model_key}' data-resource-id='#{resource.model.id}' data-controller='item-selector'"
+      "data-resource-name='#{resource.model_key}' data-resource-id='#{resource.record.to_param}' data-controller='item-selector'"
     end
 
     def item_selector_input(floating: false, size: :md)

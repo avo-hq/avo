@@ -81,7 +81,7 @@ RSpec.feature "SkipShowView", type: :system do
 
     it "create and delete association redirects to the edit page" do
       # Create
-      visit "/admin/resources/course_links/new?via_relation=course&via_relation_class=Course&via_resource_id=#{course.prefix_id}"
+      visit "/admin/resources/course_links/new?via_relation=course&via_relation_class=Course&via_record_id=#{course.prefix_id}"
 
       fill_in "course_link_link", with: "Awesome course link"
       click_on "Save"
@@ -90,7 +90,7 @@ RSpec.feature "SkipShowView", type: :system do
       expect(current_path).to eql "/admin/resources/courses/#{course.prefix_id}/edit"
 
       # Delete
-      visit "/admin/resources/course_links/#{course.links.first.id}/edit?via_resource_class=CourseResource&via_resource_id=#{course.prefix_id}"
+      visit "/admin/resources/course_links/#{course.links.first.id}/edit?via_resource_class=Avo::Resources::Course&via_record_id=#{course.prefix_id}"
 
       accept_alert do
         click_on "Delete"
@@ -170,7 +170,7 @@ RSpec.feature "SkipShowView", type: :system do
 
     it "create and delete association redirects to the show page" do
       # Create
-      visit "/admin/resources/course_links/new?via_relation=course&via_relation_class=Course&via_resource_id=#{course.prefix_id}"
+      visit "/admin/resources/course_links/new?via_relation=course&via_relation_class=Course&via_record_id=#{course.prefix_id}"
 
       fill_in "course_link_link", with: "Awesome course link"
       click_on "Save"
@@ -179,10 +179,10 @@ RSpec.feature "SkipShowView", type: :system do
       expect(current_path).to eql "/admin/resources/courses/#{course.prefix_id}"
 
       # Delete
-      visit "/admin/resources/course_links/#{course.links.first.id}/edit?via_resource_class=CourseResource&via_resource_id=#{course.prefix_id}"
+      visit "/admin/resources/course_links/#{course.links.first.id}/edit?via_resource_class=Avo::Resources::Course&via_record_id=#{course.prefix_id}"
       expect(page).to_not have_selector("[data-control='destroy']")
 
-      visit "/admin/resources/course_links/#{course.links.first.id}?via_resource_class=CourseResource&via_resource_id=#{course.prefix_id}"
+      visit "/admin/resources/course_links/#{course.links.first.id}?via_resource_class=Avo::Resources::Course&via_record_id=#{course.prefix_id}"
 
       accept_alert do
         click_on "Delete"

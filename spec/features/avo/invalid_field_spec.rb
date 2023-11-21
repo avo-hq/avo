@@ -9,7 +9,7 @@ RSpec.feature "InvalidField", type: :feature do
       visit "/admin/resources/teams/#{team.id}"
 
       expect(page.body).to include "There's an invalid field configuration for this resource."
-      expect(page.body).to include "field :invalid, as: invalid_field"
+      expect(page.body).to include "field :invalid, as: :invalid_field"
     end
   end
 

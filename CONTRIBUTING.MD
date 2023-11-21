@@ -140,12 +140,12 @@ You may do that using the `RESOURCE_CLASS.with_temporary_items` method.
 ```ruby
 RSpec.describe "Time field", type: :system do
   after do
-    CourseResource.restore_items_from_backup
+    Avo::Resources::Course.restore_items_from_backup
   end
 
   describe "relative: false"
     before do
-      CourseResource.with_temporary_items do
+      Avo::Resources::Course.with_temporary_items do
         field :starting_at, as: :time, relative: false
       end
     end
@@ -154,7 +154,7 @@ RSpec.describe "Time field", type: :system do
 
   describe "relative: true"
     before do
-      CourseResource.with_temporary_items do
+      Avo::Resources::Course.with_temporary_items do
         field :starting_at, as: :time, relative: true
       end
     end

@@ -1,6 +1,6 @@
 <%= index_field_wrapper **field_wrapper_args, flush: true do %>
   <% if @field.value.present? %>
-    <%= link_to_if @field.link_to_resource.present?,
+    <%= link_to_if @field.link_to_record.present?,
                    image_tag(@field.value,
                              height: @field.height,
                              style: "border-radius: #{@field.radius}px; max-height: #{@field.height}#{@field.height.to_s&.ends_with?('px') ? '' : 'px'};"),

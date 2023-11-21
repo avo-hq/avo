@@ -21,6 +21,6 @@ class Avo::EmptyStateComponent < ViewComponent::Base
   private
 
   def locale_message
-    helpers.t by_association ? 'avo.no_related_item_found' : 'avo.no_item_found'
+    helpers.t by_association ? "avo.no_related_item_found" : "avo.no_item_found"
   end
 end

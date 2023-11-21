@@ -3,6 +3,8 @@ Gem.loaded_specs["avo"].dependencies.each do |d|
   case d.name
   when "activerecord"
     require "active_record/railtie"
+  when "activesupport"
+    require "active_support/railtie"
   when "actionview"
     require "action_view/railtie"
   when "activestorage"
@@ -19,23 +21,40 @@ module Avo
     isolate_namespace Avo
 
     config.after_initialize do
+      # Reset before reloads in development
+      ::Avo.asset_manager.reset
+
       # Boot Avo
-      ::Avo::App.boot
-    end
+      ::Avo.boot
 
-    initializer "avo.autoload" do |app|
-      Avo::ENTITIES.values.each do |path_params|
-        path = Rails.root.join(*path_params)
-
-        if File.directory? path.to_s
-          Rails.autoloaders.main.push_dir path.to_s
+      # After deploy we want to make sure the license response is being cleared.
+      # We need a fresh license response.
+      # This is disabled in development because the initialization process might be triggered more than once.
+      unless Rails.env.development?
+        begin
+          Licensing::HQ.new.clear_response
+        rescue => exception
+          Avo.logger.info "Failed to clear Avo HQ response: #{exception.message}"
         end
       end
     end
 
-    initializer "avo.init_fields" do |app|
-      # Init the fields
-      ::Avo::App.init_fields
+    # Ensure we reboot the app when something changes
+    config.to_prepare do
+      # Boot Avo
+      ::Avo.boot
+    end
+
+    initializer "avo.autoload" do |app|
+      # This undoes Rails' previous nested directories behavior in the `app` dir.
+      # More on this: https://github.com/fxn/zeitwerk/issues/250
+      avo_directory = Rails.root.join("app", "avo").to_s
+      ActiveSupport::Dependencies.autoload_paths.delete(avo_directory)
+
+      if Dir.exist?(avo_directory)
+        Rails.autoloaders.main.push_dir(avo_directory, namespace: Avo)
+        app.config.watchable_dirs[avo_directory] = [:rb]
+      end
     end
 
     initializer "avo.reloader" do |app|
@@ -46,15 +65,14 @@ module Avo
       end
     end
 
-    initializer "debug_exception_response_format" do |app|
-      app.config.debug_exception_response_format = :api
-      # app.config.logger = ::Logger.new(STDOUT)
-    end
-
     initializer "avo.test_buddy" do |app|
       if Avo::IN_DEVELOPMENT
-        Rails.autoloaders.main.push_dir Avo::Engine.root.join("spec", "helpers")
+        Rails.autoloaders.main.push_dir Avo::Engine.root.join("spec", "testing_helpers")
       end
+    end
+
+    initializer "debug_exception_response_format" do |app|
+      app.config.debug_exception_response_format = :api
     end
 
     config.app_middleware.use(
@@ -74,19 +92,6 @@ module Avo
 
     initializer "avo.locales" do |app|
       I18n.load_path += Dir[Avo::Engine.root.join("lib", "generators", "avo", "templates", "locales", "*.{rb,yml}")]
-    end
-
-    # After deploy we want to make sure the license response is being cleared.
-    # We need a fresh license response.
-    # This is disabled in development because the initialization process might be triggered more than once.
-    config.after_initialize do
-      unless Rails.env.development?
-        begin
-          Licensing::HQ.new.clear_response
-        rescue => exception
-          puts "Failed to clear Avo HQ response: #{exception.message}"
-        end
-      end
     end
   end
 end
