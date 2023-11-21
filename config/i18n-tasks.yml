@@ -119,6 +119,9 @@ ignore_missing:
   - 'avo.resource_translations.user'
   - 'avo.resource_translations.team_members'
   - 'avo.x_items_more'
+  - 'avo.records_selected_from_all_pages_html'
+  - 'avo.x_records_selected_from_page_html'
+
 
 # - 'errors.messages.{accepted,blank,invalid,too_short,too_long}'
 # - '{devise,simple_form}.*'
