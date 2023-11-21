@@ -1,7 +1,7 @@
 ---
 ar:
   avo:
-    action_ran_successfully: 'تم تنفيذ الأمر بنجاح!'
+    action_ran_successfully: تم تنفيذ الأمر بنجاح!
     actions: أوامر
     and_x_other_resources: و %{count} موارد أخرى
     are_you_sure: هل أنت متأكد؟
@@ -10,8 +10,8 @@ ar:
     attach: ربط
     attach_and_attach_another: ربط وربط آخر
     attach_item: ربط %{item}
-    attachment_class_attached: '%{attachment_class} تم ربط'
-    attachment_class_detached: '%{attachment_class} تم فصل'
+    attachment_class_attached: "%{attachment_class} تم ربط"
+    attachment_class_detached: "%{attachment_class} تم فصل"
     attachment_destroyed: تم حذف المرفق
     cancel: إلغاء
     choose_a_country: اختر دولة
@@ -80,6 +80,7 @@ ar:
       to_top: حرك السجل للأعلى بشكل كامل
     per_page: لكل صفحة
     prev_page: الصفحة السابقة
+    records_selected_from_all_pages_html: جميع السجلات مختارة من جميع الصفحات
     remove_selection: إزالة التحديد
     reset_filters: إعادة تعيين الفلاتر
     resource_created: تم إنشاء السجل
@@ -121,6 +122,5 @@ ar:
       zero: لا توجد عناصر إضافية
     x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> السجلات المحددة في هذه الصفحة من إجمالي<span class="font-bold text-gray-700">%{count}</span>
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> السجلات المحددة من كل الصفحات
+    x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> السجلات المختارة في هذه الصفحة
     you_missed_something_check_form: ربما نسيت شيئًا، يرجى التحقق من البيانات.
-
-
