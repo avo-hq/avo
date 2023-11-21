@@ -14,11 +14,14 @@ module Avo
 
         @options_from_args = if args[:options].is_a? Hash
           ActiveSupport::HashWithIndifferentAccess.new args[:options]
+        elsif args[:enum].present?
+          args[:enum]
         else
           args[:options]
         end
-        @enum = args[:enum].present? ? args[:enum] : nil
-        @display_value = args[:display_value].present? ? args[:display_value] : false
+
+        @enum = args[:enum]
+        @display_value = args[:display_value] || false
       end
 
       def options_for_select
@@ -56,13 +59,14 @@ module Avo
 
       private
 
-      # Cache options as options given on block or as options received from arguments
       def options
-        if options_from_args.respond_to? :call
-          options_from_args.call model: model, resource: resource, view: view, field: self
-        else
-          options_from_args
-        end
+        Avo::ExecutionContext.new(
+          target: options_from_args,
+          record: record,
+          resource: resource,
+          view: view,
+          field: self
+        ).handle
       end
     end
   end

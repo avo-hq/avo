@@ -27,7 +27,7 @@
         <div class="text-sm text-slate-600 mr-4"><%== helpers.pagy_info @pagy %></div>
       <% end %>
 
-      <% if pagy.pages > 1 %>
+      <% if @pagy.pages > 1 %>
         <%# @todo: add first & last page. make the first and last buttons rounded %>
         <%== helpers.pagy_nav @pagy %>
       <% end %>

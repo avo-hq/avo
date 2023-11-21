@@ -4,23 +4,24 @@ class Avo::Index::ResourceTableComponent < ViewComponent::Base
   include Avo::ApplicationHelper
   attr_reader :pagy, :query
 
-  def initialize(resources: nil, resource: nil, reflection: nil, parent_model: nil, parent_resource: nil, pagy: nil, query: nil)
+  def initialize(resources: nil, resource: nil, reflection: nil, parent_record: nil, parent_resource: nil, pagy: nil, query: nil, actions: nil)
     @resources = resources
     @resource = resource
     @reflection = reflection
-    @parent_model = parent_model
+    @parent_record = parent_record
     @parent_resource = parent_resource
     @pagy = pagy
     @query = query
+    @actions = actions
   end
 
   def encrypted_query
-    return :select_all_disabled if query.nil? || !query.respond_to?(:all) || !query.all.respond_to?(:to_sql)
+    # TODO: move this to the resource where we can apply the adapter pattern
+    if Module.const_defined?("Ransack::Search") && query.instance_of?(Ransack::Search)
+      @query = @query.result
+    end
 
-    Avo::Services::EncryptionService.encrypt(
-      message: query.all.to_sql,
-      purpose: :select_all
-    )
+    Avo::Services::EncryptionService.encrypt(message: @query, purpose: :select_all, serializer: Marshal)
   end
 
   def selected_page_label

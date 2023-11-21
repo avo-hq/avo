@@ -6,29 +6,6 @@ RSpec.describe 'Create Via Belongs to', type: :system do
   describe 'edit' do
     let(:course_link) { create(:course_link) }
 
-    context 'with searchable belongs_to' do
-      it 'successfully creates a new course and assigns it to the course link', :aggregate_failures do
-        visit "/admin/resources/course_links/#{course_link.id}/edit"
-
-        click_on 'Create new course'
-
-        expect do
-          within('.modal-container') do
-            fill_in 'course_name', with: 'Test course'
-            click_on 'Save'
-            sleep 0.2
-          end
-        end.to change(Course, :count).by(1)
-
-        expect(find_field(id: 'course_link_course_id').value).to eq 'Test course'
-
-        click_on 'Save'
-        sleep 0.2
-
-        expect(course_link.reload.course).to eq Course.last
-      end
-    end
-
     context 'with non-searchable belongs_to' do
       let(:fish) { create(:fish, user: create(:user)) }
 
@@ -81,60 +58,6 @@ RSpec.describe 'Create Via Belongs to', type: :system do
         sleep 0.2
 
         expect(comment.reload.commentable).to eq Post.last
-      end
-    end
-
-    context 'with searchable, polymorphic belongs_to' do
-      let(:review) { create(:review, user: create(:user), reviewable: create(:project)) }
-
-      it 'successfully creates reviewable and assigns it to the review', :aggregate_failures do
-        visit "/admin/resources/reviews/#{review.id}/edit"
-
-        page.select 'Fish', from: 'review_reviewable_type'
-        click_on 'Create new fish'
-
-        expect do
-          within('.modal-container') do
-            fill_in 'fish_name', with: 'Test fish'
-            click_on 'Save'
-            sleep 0.2
-          end
-        end.to change(Fish, :count).by(1)
-
-        expect(find_field(id: 'review_reviewable_id').value).to eq 'Test fish'
-
-        click_on 'Save'
-        sleep 0.2
-
-        expect(review.reload.reviewable).to eq Fish.last
-      end
-    end
-  end
-
-  describe 'new' do
-    context 'with searchable belongs_to' do
-      it 'successfully creates a new course and assigns the value to the field in the form' do
-        visit '/admin/resources/course_links/new'
-
-        click_on 'Create new course'
-
-        expect do
-          within('.modal-container') do
-            fill_in 'course_name', with: 'Test course'
-            click_on 'Save'
-            sleep 0.2
-          end
-        end.to change(Course, :count).by(1)
-
-        expect(find_field(id: 'course_link_course_id').value).to eq 'Test course'
-
-        expect do
-          fill_in('course_link_link', with: 'https://www.example.com')
-          click_on 'Save'
-          sleep 0.2
-        end.to change(Course::Link, :count).by(1)
-
-        expect(Course::Link.last.course).to eq Course.last
       end
     end
   end
@@ -199,35 +122,6 @@ RSpec.describe 'Create Via Belongs to', type: :system do
       expect(Comment.last).to have_attributes(
         body: 'Test Comment',
         commentable: Post.last
-      )
-    end
-  end
-
-  context 'with searchable, polymorphic belongs_to' do
-    it 'successfully creates reviewable and assigns it to the review', :aggregate_failures do
-      visit '/admin/resources/reviews/new'
-
-      page.select 'Fish', from: 'review_reviewable_type'
-      click_on 'Create new fish'
-
-      expect do
-        within('.modal-container') do
-          fill_in 'fish_name', with: 'Test fish'
-          click_on 'Save'
-          sleep 0.2
-        end
-      end.to change(Fish, :count).by(1)
-
-      expect(find_field(id: 'review_reviewable_id').value).to eq 'Test fish'
-
-      expect do
-        fill_in 'review_body', with: 'Test review'
-        click_on 'Save'
-        sleep 0.2
-      end.to change(Review, :count).by(1)
-      expect(Review.last).to have_attributes(
-        body: 'Test review',
-        reviewable: Fish.last
       )
     end
   end

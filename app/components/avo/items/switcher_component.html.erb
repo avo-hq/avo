@@ -1,0 +1,17 @@
+<% if item.is_panel? || item.is_main_panel? %>
+  <%= render panel_component %>
+<% elsif item.is_tool? %>
+  <% if item&.partial.present? %>
+    <%= render item.partial, tool: item, form: @form %>
+  <% end %>
+<% elsif item.is_tab_group? %>
+  <%= render tab_group_component %>
+<% elsif item.is_field? %>
+  <%= render field_component %>
+<% elsif item.is_row? %>
+  <%= render Avo::RowComponent.new do |c| %>
+    <% c.with_body do %>
+      <%= render Avo::Items::VisibleItemsComponent.new resource: @resource, item: @item, view: @view, form: @form %>
+    <% end %>
+  <% end %>
+<% end %>

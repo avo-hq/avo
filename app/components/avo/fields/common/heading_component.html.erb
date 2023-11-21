@@ -1,14 +1,9 @@
 <div class="flex items-start py-1 leading-tight bg-gray-100 text-gray-500 text-xs">
   <div class="py-2 px-6 h-full w-full">
-    <% if empty %>
-    <% elsif value.present? %>
-      <% if as_html %>
-        <%= sanitize value %>
-      <% else %>
-        <div class="font-semibold uppercase"><%= value %></div>
-      <% end %>
+    <% if as_html %>
+      <%= sanitize value %>
     <% else %>
-      —
+      <div class="font-semibold uppercase"><%= value %></div>
     <% end %>
   </div>
 </div>

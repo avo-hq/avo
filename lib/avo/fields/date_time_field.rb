@@ -51,11 +51,7 @@ module Avo
       end
 
       def timezone
-        if @timezone.respond_to?(:call)
-          return Avo::Hosts::ResourceViewRecordHost.new(block: @timezone, record: resource.model, resource: resource, view: view).handle
-        end
-
-        @timezone
+        Avo::ExecutionContext.new(target: @timezone, record: resource.record, resource: resource, view: view).handle
       end
     end
   end

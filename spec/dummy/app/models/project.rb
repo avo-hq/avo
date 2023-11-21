@@ -17,7 +17,14 @@
 #  progress       :integer
 #
 class Project < ApplicationRecord
-  enum stage: {Discovery: "discovery", Idea: "idea", Done: "done", "On hold": "on hold", Cancelled: "cancelled", Drafting: "drafting"}
+  enum stage: {
+    Discovery: "discovery",
+    Idea: "idea",
+    Done: "done",
+    "On hold": "on hold",
+    Cancelled: "cancelled",
+    Drafting: "drafting"
+  }
 
   validates :name, presence: true
   validates :users_required, numericality: {greater_than: 9, less_than: 1000000}
@@ -26,11 +33,11 @@ class Project < ApplicationRecord
 
   has_many :comments, as: :commentable
   has_many :reviews, as: :reviewable
-  has_and_belongs_to_many :users
+  has_and_belongs_to_many :users, inverse_of: :projects
 
   default_scope { order(name: :asc) }
 
   def self.ransackable_attributes(auth_object = nil)
-    %w(id name country)
+    ["budget", "country", "created_at", "description", "id", "meta", "name", "progress", "stage", "started_at", "status", "updated_at", "users_required"]
   end
 end

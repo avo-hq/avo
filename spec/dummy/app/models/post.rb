@@ -55,14 +55,16 @@ class Post < ApplicationRecord
   end
 
   def self.find(input)
-    input.to_i == 0 ? find_by_slug(input) : super
+    (input.to_i == 0) ? find_by_slug(input) : super
   end
 
   def update_slug
-    self.slug = name.parameterize
+    return if slug&.start_with?(name.parameterize)
+
+    self.slug = "#{name.parameterize}-#{SecureRandom.hex(4)}"
   end
 
   def self.ransackable_attributes(auth_object = nil)
-    %w(id name body)
+    ["body", "created_at", "id", "is_featured", "name", "published_at", "slug", "status", "updated_at", "user_id"]
   end
 end

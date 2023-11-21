@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.feature "create_through_record", type: :feature do
   # create post on user
   describe "belongs_to" do
-    let(:url) { "/admin/resources/posts/new?via_relation=user&via_relation_class=User&via_resource_id=#{admin.id}" }
+    let(:url) { "/admin/resources/posts/new?via_relation=user&via_relation_class=User&via_record_id=#{admin.id}" }
 
     it "attaches the user to the post" do
       expect(Post.count).to eq 0
@@ -21,7 +21,7 @@ RSpec.feature "create_through_record", type: :feature do
   end
 
   describe "belongs_to comment" do
-    let(:url) { "/admin/resources/comments/new?via_relation=user&via_relation_class=User&via_resource_id=#{admin.id}" }
+    let(:url) { "/admin/resources/comments/new?via_relation=user&via_relation_class=User&via_record_id=#{admin.id}" }
 
     it "attaches the user to the team" do
       expect(Comment.count).to eq 0
@@ -41,7 +41,7 @@ RSpec.feature "create_through_record", type: :feature do
   # create person on spouse
   describe "has_many" do
     let!(:person) { create :person }
-    let(:url) { "/admin/resources/spouses/new?via_relation=spouses&via_relation_class=Person&via_resource_id=#{person.id}" }
+    let(:url) { "/admin/resources/spouses/new?via_relation=spouses&via_relation_class=Person&via_record_id=#{person.id}" }
 
     it "attaches the spouse to a person" do
       expect(Person.count).to eq 1
@@ -62,7 +62,7 @@ RSpec.feature "create_through_record", type: :feature do
   # create user on team
   describe "has_many through" do
     let!(:team) { create :team }
-    let(:url) { "/admin/resources/users/new?via_relation=teams&via_relation_class=Team&via_resource_id=#{team.id}" }
+    let(:url) { "/admin/resources/users/new?via_relation=teams&via_relation_class=Team&via_record_id=#{team.id}" }
 
     it "attaches the user to the team" do
       expect(User.count).to eq 1 # the admin is there
@@ -85,7 +85,7 @@ RSpec.feature "create_through_record", type: :feature do
 
   # create project on user
   describe "has_and_belongs_to_many" do
-    let(:url) { "/admin/resources/projects/new?via_relation=users&via_relation_class=User&via_resource_id=#{admin.id}" }
+    let(:url) { "/admin/resources/projects/new?via_relation=users&via_relation_class=User&via_record_id=#{admin.id}" }
 
     it "attaches the user to the team" do
       expect(Project.count).to eq 0
@@ -106,7 +106,7 @@ RSpec.feature "create_through_record", type: :feature do
   # create create comment on user
   describe "polymorphic" do
     let!(:project) { create :project }
-    let(:url) { "/admin/resources/comments/new?via_relation=commentable&via_relation_class=Project&via_resource_id=#{project.id}" }
+    let(:url) { "/admin/resources/comments/new?via_relation=commentable&via_relation_class=Project&via_record_id=#{project.id}" }
 
     it "attaches the user to the team" do
       expect(Comment.count).to eq 0

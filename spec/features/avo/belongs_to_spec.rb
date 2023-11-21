@@ -12,7 +12,7 @@ RSpec.feature "belongs_to", type: :feature do
 
     subject do
       visit url
-      find("[data-resource-id='#{post.id}'] [data-field-id='user']")
+      find("[data-resource-id='#{post.to_param}'] [data-field-id='user']")
     end
 
     describe "with a related user" do
@@ -39,7 +39,7 @@ RSpec.feature "belongs_to", type: :feature do
     describe "with user attached" do
       let!(:post) { create :post, user: admin }
 
-      it { is_expected.to have_link admin.name, href: "/admin/resources/users/#{admin.slug}?via_resource_class=PostResource&via_resource_id=#{post.slug}" }
+      it { is_expected.to have_link admin.name, href: "/admin/resources/users/#{admin.slug}?via_record_id=#{post.slug}&via_resource_class=Avo%3A%3AResources%3A%3APost" }
     end
 
     describe "without user attached" do
@@ -66,7 +66,7 @@ RSpec.feature "belongs_to", type: :feature do
         click_on "Save"
 
         expect(current_path).to eql "/admin/resources/posts/#{post.slug}"
-        expect(page).to have_link admin.name, href: "/admin/resources/users/#{admin.slug}?via_resource_class=PostResource&via_resource_id=#{post.slug}"
+        expect(page).to have_link admin.name, href: "/admin/resources/users/#{admin.slug}?via_record_id=#{post.slug}&via_resource_class=Avo%3A%3AResources%3A%3APost"
       end
     end
 
@@ -85,7 +85,7 @@ RSpec.feature "belongs_to", type: :feature do
         click_on "Save"
 
         expect(current_path).to eql "/admin/resources/posts/#{post.slug}"
-        expect(page).to have_link second_user.name, href: "/admin/resources/users/#{second_user.slug}?via_resource_class=PostResource&via_resource_id=#{post.slug}"
+        expect(page).to have_link second_user.name, href: "/admin/resources/users/#{second_user.slug}?via_record_id=#{post.slug}&via_resource_class=Avo%3A%3AResources%3A%3APost"
       end
 
       it "nullifies the user" do
@@ -103,7 +103,7 @@ RSpec.feature "belongs_to", type: :feature do
   end
 
   context "new" do
-    let(:url) { "/admin/resources/posts/new?via_relation=user&via_relation_class=User&via_resource_id=#{admin.id}" }
+    let(:url) { "/admin/resources/posts/new?via_relation=user&via_record_id=#{admin.id}&via_relation_class=User" }
 
     it { is_expected.to have_select "post_user_id", selected: admin.name, options: [empty_dash, admin.name], disabled: true }
 
@@ -113,7 +113,7 @@ RSpec.feature "belongs_to", type: :feature do
       it "saves the related comment" do
         expect(Course::Link.count).to be 0
 
-        visit "/admin/resources/course_links/new?via_relation=course&via_relation_class=Course&via_resource_id=#{course.id}"
+        visit "/admin/resources/course_links/new?via_relation=course&via_record_id=#{course.id}&via_relation_class=Course"
 
         fill_in "course_link_link", with: "https://avo.cool"
 

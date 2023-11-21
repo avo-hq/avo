@@ -1,6 +1,7 @@
 module Avo
   module Fields
     class HasBaseField < BaseField
+      include Avo::Fields::Concerns::IsSearchable
       include Avo::Fields::Concerns::UseResource
 
       attr_accessor :display
@@ -25,12 +26,8 @@ module Avo
         @link_to_child_resource = args[:link_to_child_resource] || false
       end
 
-      def searchable
-        @searchable && ::Avo::App.license.has_with_trial(:searchable_associations)
-      end
-
-      def resource
-        @resource || Avo::App.get_resource_by_model_name(@model.class)
+      def field_resource
+        resource || Avo.resource_manager.get_resource_by_model_class(@record.class)
       end
 
       def turbo_frame
@@ -38,9 +35,9 @@ module Avo
       end
 
       def frame_url
-        Avo::Services::URIService.parse(@resource.record_path)
+        Avo::Services::URIService.parse(field_resource.record_path)
           .append_path(id.to_s)
-          .append_query(turbo_frame: turbo_frame.to_s)
+          .append_query(query_params)
           .to_s
       end
 
@@ -53,18 +50,18 @@ module Avo
 
       # What the user sees in the text field
       def field_label
-        value.send(target_resource.class.title)
+        target_resource.new(record: value, view: view, user: user).record_title
       rescue
         nil
       end
 
       def target_resource
-        if @model._reflections[id.to_s].klass.present?
-          Avo::App.get_resource_by_model_name @model._reflections[id.to_s].klass.to_s
-        elsif @model._reflections[id.to_s].options[:class_name].present?
-          Avo::App.get_resource_by_model_name @model._reflections[id.to_s].options[:class_name]
+        if @record._reflections[id.to_s].klass.present?
+          Avo.resource_manager.get_resource_by_model_class @record._reflections[id.to_s].klass.to_s
+        elsif @record._reflections[id.to_s].options[:class_name].present?
+          Avo.resource_manager.get_resource_by_model_class @record._reflections[id.to_s].options[:class_name]
         else
-          Avo::App.get_resource_by_name id.to_s
+          Avo.resource_manager.get_resource_by_name id.to_s
         end
       end
 
@@ -82,15 +79,15 @@ module Avo
 
       # Adds the view override component
       # has_one, has_many, has_and_belongs_to_many fields don't have edit views
-      def component_for_view(view = :index)
-        view = :show if view.in? [:new, :create, :update, :edit]
+      def component_for_view(view = Avo::ViewInquirer.new("index"))
+        view = Avo::ViewInquirer.new("show") if view.in? %w[new create update edit]
 
         super view
       end
 
       def authorized?
         method = "view_#{id}?".to_sym
-        service = resource.authorization
+        service = field_resource.authorization
 
         if service.has_method? method
           service.authorize_action(method, raise_exception: false)
@@ -101,6 +98,13 @@ module Avo
 
       def default_name
         use_resource&.name || super
+      end
+
+      def query_params
+        {
+          turbo_frame: turbo_frame,
+          view: view
+        }
       end
 
       private

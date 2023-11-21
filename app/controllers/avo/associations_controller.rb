@@ -2,18 +2,16 @@ require_dependency "avo/base_controller"
 
 module Avo
   class AssociationsController < BaseController
-    before_action :set_model, only: [:show, :index, :new, :create, :destroy, :order]
-    before_action :hydrate_resource, only: [:show, :index, :new, :create, :destroy, :order]
+    before_action :set_record, only: [:show, :index, :new, :create, :destroy]
     before_action :set_related_resource_name
-    before_action :set_related_resource, only: [:show, :index, :new, :create, :destroy, :order]
+    before_action :set_related_resource, only: [:show, :index, :new, :create, :destroy]
     before_action :set_related_authorization
     before_action :set_reflection_field
-    before_action :set_related_model, only: [:show, :order]
-    before_action :hydrate_related_resource, only: [:show, :index, :create, :destroy, :order]
+    before_action :set_related_record, only: [:show]
     before_action :set_reflection
-    before_action :set_attachment_class, only: [:show, :index, :new, :create, :destroy, :order]
-    before_action :set_attachment_resource, only: [:show, :index, :new, :create, :destroy, :order]
-    before_action :set_attachment_model, only: [:create, :destroy, :order]
+    before_action :set_attachment_class, only: [:show, :index, :new, :create, :destroy]
+    before_action :set_attachment_resource, only: [:show, :index, :new, :create, :destroy]
+    before_action :set_attachment_record, only: [:create, :destroy]
     before_action :authorize_index_action, only: :index
     before_action :authorize_attach_action, only: :new
     before_action :authorize_detach_action, only: :destroy
@@ -21,55 +19,55 @@ module Avo
     def index
       @parent_resource = @resource.dup
       @resource = @related_resource
-      @parent_model = @parent_resource.find_record(params[:id], params: params)
-      @parent_resource.hydrate(model: @parent_model)
-      association_name = BaseResource.valid_association_name(@parent_model, params[:related_name])
-      @query = @related_authorization.apply_policy @parent_model.send(association_name)
+      @parent_record = @parent_resource.find_record(params[:id], params: params)
+      @parent_resource.hydrate(record: @parent_record)
+      association_name = BaseResource.valid_association_name(@parent_record, params[:related_name])
+      @query = @related_authorization.apply_policy @parent_record.send(association_name)
       @association_field = @parent_resource.get_field params[:related_name]
 
       if @association_field.present? && @association_field.scope.present?
-        @query = Avo::Hosts::AssociationScopeHost.new(block: @association_field.scope, query: @query, parent: @parent_model).handle
+        @query = Avo::ExecutionContext.new(target: @association_field.scope, query: @query, parent: @parent_record).handle
       end
 
       super
     end
 
     def show
-      @parent_resource, @parent_model = @resource, @model
+      @parent_resource, @parent_record = @resource, @record
 
-      @resource, @model = @related_resource, @related_model
+      @resource, @record = @related_resource, @related_record
 
       super
     end
 
     def new
-      @resource.hydrate(model: @model)
+      @resource.hydrate(record: @record)
 
-      if @field.present? && !@field.searchable
+      if @field.present? && !@field.is_searchable?
         query = @related_authorization.apply_policy @attachment_class
 
         # Add the association scope to the query scope
         if @field.attach_scope.present?
-          query = Avo::Hosts::AssociationScopeHost.new(block: @field.attach_scope, query: query, parent: @model).handle
+          query = Avo::ExecutionContext.new(target: @field.attach_scope, query: query, parent: @record).handle
         end
 
-        @options = query.all.map do |model|
-          [model.send(@attachment_resource.class.title), model.id]
+        @options = query.all.map do |record|
+          [@attachment_resource.new(record: record).record_title, record.id]
         end
       end
     end
 
     def create
-      association_name = BaseResource.valid_association_name(@model, params[:related_name])
+      association_name = BaseResource.valid_association_name(@record, params[:related_name])
 
       if reflection_class == "HasManyReflection"
-        @model.send(association_name) << @attachment_model
+        @record.send(association_name) << @attachment_record
       else
-        @model.send("#{association_name}=", @attachment_model)
+        @record.send("#{association_name}=", @attachment_record)
       end
 
       respond_to do |format|
-        if @model.save
+        if @record.save
           format.html { redirect_back fallback_location: resource_view_response_path, notice: t("avo.attachment_class_attached", attachment_class: @related_resource.name) }
         else
           format.html { render :new }
@@ -78,12 +76,12 @@ module Avo
     end
 
     def destroy
-      association_name = BaseResource.valid_association_name(@model, params[:related_name])
+      association_name = BaseResource.valid_association_name(@record, params[:related_name])
 
       if reflection_class == "HasManyReflection"
-        @model.send(association_name).delete @attachment_model
+        @record.send(association_name).destroy @attachment_record
       else
-        @model.send("#{association_name}=", nil)
+        @record.send("#{association_name}=", nil)
       end
 
       respond_to do |format|
@@ -91,17 +89,10 @@ module Avo
       end
     end
 
-    def order
-      @parent_resource = @resource.dup
-      @resource, @model = @related_resource, @related_model
-
-      super
-    end
-
     private
 
     def set_reflection
-      @reflection = @model._reflections[params[:related_name].to_s]
+      @reflection = @record._reflections[params[:related_name].to_s]
     end
 
     def set_attachment_class
@@ -109,16 +100,16 @@ module Avo
     end
 
     def set_attachment_resource
-      @attachment_resource = @field.use_resource || (App.get_resource_by_model_name @attachment_class)
+      @attachment_resource = @field.use_resource || (Avo.resource_manager.get_resource_by_model_class @attachment_class)
     end
 
-    def set_attachment_model
-      @attachment_model = @related_resource.find_record attachment_id, params: params
+    def set_attachment_record
+      @attachment_record = @related_resource.find_record attachment_id, params: params
     end
 
     def set_reflection_field
       @field = @resource.get_field_definitions.find { |f| f.id == @related_resource_name.to_sym }
-      @field.hydrate(resource: @resource, model: @model, view: :new)
+      @field.hydrate(resource: @resource, record: @record, view: :new)
     rescue
     end
 
@@ -127,7 +118,7 @@ module Avo
     end
 
     def reflection_class
-      reflection = @model._reflections[params[:related_name]]
+      reflection = @record._reflections[params[:related_name]]
 
       klass = reflection.class.name.demodulize.to_s
       klass = reflection.through_reflection.class.name.demodulize.to_s if klass == "ThroughReflection"
@@ -136,7 +127,7 @@ module Avo
     end
 
     def authorize_if_defined(method)
-      @authorization.set_record(@model)
+      @authorization.set_record(@record)
 
       if @authorization.has_method?(method.to_sym)
         @authorization.authorize_action method.to_sym
@@ -158,8 +149,8 @@ module Avo
     private
 
     def set_related_authorization
-      @related_authorization = if related_resource
-        related_resource.authorization(user: _current_user)
+      @related_authorization = if @related_resource.present?
+        @related_resource.authorization(user: _current_user)
       else
         Services::AuthorizationService.new _current_user
       end

@@ -1,4 +1,4 @@
-class PhotoFilter < Avo::Filters::SelectFilter
+class Avo::Filters::PhotoFilter < Avo::Filters::SelectFilter
   self.name = "Photo filter"
 
   def apply(request, query, value)

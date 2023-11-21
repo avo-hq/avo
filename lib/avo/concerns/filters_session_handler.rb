@@ -26,16 +26,18 @@ module Avo
       end
 
       def filters_session_key
-        @filters_session_key ||= '/filters/' << %w[
+        @filters_session_key ||= "/filters/" << %w[
           turbo_frame controller resource_name related_name
           action id
-        ].map { |key| params[key] }.compact.join('/')
+        ].map { |key| params[key] }.compact.join("/")
       end
 
       def cache_resource_filters?
-        return Avo.configuration.cache_resource_filters unless Avo.configuration.cache_resource_filters.is_a?(Proc)
-
-        Avo.configuration.cache_resource_filters.call(current_user: current_user, resource: @resource)
+        Avo::ExecutionContext.new(
+          target: Avo.configuration.cache_resource_filters,
+          current_user: _current_user,
+          resource: @resource
+        ).handle
       end
     end
   end

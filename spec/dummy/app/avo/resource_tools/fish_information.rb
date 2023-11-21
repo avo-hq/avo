@@ -1,4 +1,4 @@
-class FishInformation < Avo::BaseResourceTool
+class Avo::ResourceTools::FishInformation < Avo::BaseResourceTool
   self.name = "Fish information"
   # self.partial = "avo/resource_tools/_fish_information"
 

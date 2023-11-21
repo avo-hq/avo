@@ -19,7 +19,7 @@ RSpec.feature "CustomTools", type: :feature do
       expect(page.body).to have_text "app/views/avo/tools/custom_tool.html.erb"
       expect(page.body).to have_text "app/views/avo/sidebar/items/_custom_tool.html.erb"
       expect(find(".text-sm.italic")).to have_text "This is the panels tools section."
-      expect(find(".breadcrumbs")).to have_text "Dashboard"
+      expect(find(".breadcrumbs")).to have_text "Home"
     end
   end
 end

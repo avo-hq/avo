@@ -1,9 +1,9 @@
-class DeleteComment < Avo::BaseAction
-  self.name = 'Delete'
+class Avo::Actions::DeleteComment < Avo::BaseAction
+  self.name = "Delete"
 
   def handle(**args)
-    models, _fields, _current_user, _resource = args.values_at(:models, :fields, :current_user, :resource)
+    records, _fields, _current_user, _resource = args.values_at(:records, :fields, :current_user, :resource)
 
-    models.each(&:destroy!)
+    records.each(&:destroy!)
   end
 end

@@ -7,8 +7,8 @@ RSpec.describe "App", type: :feature do
 
       expect(current_path).to eq "/admin/custom_tool"
 
-      # Label on the menu builder
-      expect(page).to have_text "Fishies"
+      # Label on the menu
+      expect(page).to have_text "Fish"
     end
   end
 

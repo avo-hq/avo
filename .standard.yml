@@ -8,3 +8,7 @@ ignore:                 # default: []
     - Style/MissingRespondToMissing
   - 'spec/requests/avo/authorization/scopes_spec.rb':
     - Lint/ConstantDefinitionInBlock
+  - 'lib/**/*':
+    - Style/TrailingCommaInHashLiteral
+  - 'app/**/*':
+    - Style/TrailingCommaInHashLiteral

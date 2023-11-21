@@ -3,11 +3,12 @@
   data: {
     model_name: @resource.model_name.to_s,
     resource_name: @resource.class.to_s,
-    model_id: @resource.model.id,
+    record_id: @resource.record.id,
     selected_resources_name: @resource.model_key,
-    selected_resources: [@resource.model.id],
+    selected_resources: [@resource.record.id],
     **@resource.stimulus_data_attributes
   } do %>
+  <%= render_cards_component %>
   <%= form_with model: @resource.record,
     scope: @resource.form_scope,
     url: form_url,
@@ -19,92 +20,28 @@
     multipart: true do |form| %>
     <%= render Avo::ReferrerParamsComponent.new back_path: back_path %>
     <%= content_tag :div, class: 'space-y-12' do %>
-      <%= render Avo::PanelComponent.new(name: title, description: @resource.resource_description,
-                                         display_breadcrumbs: display_breadcrumbs?,
-                                         index: 0, data: { panel_id: "main" }) do |c| %>
-        <% c.with_tools do %>
-          <% if back_path.present? %>
-            <%= a_link back_path,
-              style: :text,
-              icon: 'arrow-left' do %>
-              <%= t('avo.cancel').capitalize %>
-            <% end %>
-          <% end %>
-          <% if can_see_the_destroy_button? %>
-            <%= a_link destroy_path,
-              style: :text,
-              color: :red,
-              icon: 'trash',
-              form_class: 'flex flex-col sm:flex-row sm:inline-flex',
-              data: {
-                turbo_confirm: t('avo.are_you_sure', item: @resource.model.model_name.name.downcase),
-                turbo_method: :delete,
-                control: :destroy,
-                'resource-id': @resource.model.id,
-              } do %>
-              <%= t('avo.delete').capitalize %>
-            <% end %>
-          <% end %>
-          <% if can_act_on? %>
-            <%= render Avo::ActionsComponent.new actions: @actions, resource: @resource, view: @view %>
-          <% end %>
-          <% if can_see_the_save_button? %>
-            <%= a_button color: :primary,
-            style: :primary,
-            loading: true,
-            type: :submit,
-            icon: 'save' do %>
-              <%= t('avo.save').capitalize %>
-            <% end %>
-          <% end %>
-        <% end %>
-        <%# Extract the main panel and display the fields here. %>
-        <%# This way we'll be able to render the footer buttons under the main fields. %>
-        <% if main_panel.present? %>
-          <% c.with_body do %>
-            <div class="divide-y">
-              <% main_panel.items.each_with_index do |field, index| %>
-                <%= render field
-                  .hydrate(resource: @resource, model: @resource.model, user: @resource.user, view: view_for(field))
-                  .component_for_view(view_for field)
-                  .new(field: field, resource: @resource, index: index, form: form, compact: sidebar.present?)
-                %>
-              <% end %>
-            </div>
-          <% end %>
-        <% end %>
-        <% if sidebar.present? && sidebar.visible_items.present? %>
-          <% c.with_sidebar do %>
-            <%= render sidebar_component form: form %>
-          <% end %>
-        <% end %>
-        <% if Avo.configuration.buttons_on_form_footers %>
-          <% c.with_footer_tools do %>
-            <div class="mt-4">
-              <% if back_path.present? %>
-                <%= a_link back_path,
-                style: :text,
-                icon: 'arrow-left' do %>
-                  <%= t('avo.cancel').capitalize %>
-                <% end %>
-              <% end %>
-              <% if can_see_the_save_button? %>
-                <%= a_button color: :primary,
-                style: :primary,
-                loading: true,
-                type: :submit,
-                icon: 'save' do %>
-                  <%= t('avo.save').capitalize %>
-                <% end %>
-              <% end %>
-            </div>
-          <% end %>
-        <% end %>
+      <% @resource.get_items.each_with_index do |item, index| %>
+        <%= render Avo::Items::SwitcherComponent.new(
+          resource: @resource,
+          reflection: @reflection,
+          item: item,
+          index: index + 1,
+          view: @view,
+          parent_resource: @parent_resource,
+          parent_record: @parent_record,
+          form: form,
+          parent_component: self,
+          actions: @actions
+        )%>
       <% end %>
-      <%= content_tag :div, class: 'space-y-12' do %>
-        <% @resource.get_items.each_with_index do |item, index| %>
-          <% next if item.nil? %>
-          <%= render Avo::ItemSwitcherComponent.new resource: @resource, item: item, index: index + 1, view: @view, form: form %>
+
+      <% if Avo.configuration.buttons_on_form_footers %>
+        <%= render Avo::PanelComponent.new do |c| %>
+          <% c.with_footer_tools do %>
+            <% @resource.render_edit_controls.each do |control| %>
+              <%= render_control control %>
+            <% end %>
+          <% end %>
         <% end %>
       <% end %>
     <% end %>

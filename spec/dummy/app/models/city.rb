@@ -30,10 +30,6 @@ class City < ApplicationRecord
     "https://source.unsplash.com/random"
   end
 
-  def self.ransackable_attributes(auth_object = nil)
-    %w(name)
-  end
-
   # Alternative to stored_as location field
   # def coordinates
   #   [latitude, longitude]
@@ -52,4 +48,8 @@ class City < ApplicationRecord
   # def json_metadata=(value)
   #   self.metadata = ActiveSupport::JSON.decode(value)
   # end
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["created_at", "description", "features", "id", "image_url", "is_capital", "metadata", "name", "population", "status", "tiny_description", "updated_at"]
+  end
 end

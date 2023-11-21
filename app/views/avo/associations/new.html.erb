@@ -16,8 +16,8 @@
       <% end %>
 
       <div class="flex-1 flex items-center justify-center px-0 lg:px-8 text-lg mt-8 mb-12">
-        <% if @field.searchable %>
-          <%= render Avo::Fields::BelongsToField::AutocompleteComponent.new form: form,
+        <% if @field.is_searchable? %>
+          <%= render Avo::Pro::SearchableAssociations::AutocompleteComponent.new form: form,
             classes: input_classes("w-full"),
             field: @field,
             model_key: @field.target_resource&.model_key,

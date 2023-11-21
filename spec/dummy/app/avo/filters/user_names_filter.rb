@@ -1,4 +1,4 @@
-class UserNamesFilter < Avo::Filters::TextFilter
+class Avo::Filters::UserNamesFilter < Avo::Filters::TextFilter
   self.name = "User names filter"
   self.button_label = "Filter by user names"
   self.empty_message = "Search by name"

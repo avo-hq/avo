@@ -16,7 +16,7 @@ class Avo::Fields::TrixField::EditComponent < Avo::Fields::EditComponent
   end
 
   def resource_id
-    @resource_id || resource&.model&.id
+    @resource_id || resource&.record&.id
   end
 
   def trix_id

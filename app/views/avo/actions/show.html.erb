@@ -20,14 +20,15 @@
       <div class="flex-1 flex">
         <%= @action.get_message %>
       </div>
-      <%= hidden_field_tag :action_id, @action.param_id %>
-      <%= form.hidden_field :avo_resource_ids, value: params[:resource_ids], 'data-action-target': 'resourceIds' %>
+      <%= hidden_field_tag :action_id, @action.to_param %>
+      <%= form.hidden_field :avo_resource_ids, value: params[:id] || params[:resource_ids], 'data-action-target': 'resourceIds' %>
       <%= form.hidden_field :avo_selected_query, 'data-action-target': 'selectedAllQuery' %>
+      <%= form.hidden_field :arguments, value: params[:arguments] %>
       <% if @action.get_fields.present? %>
-        <div class="my-4 -mx-6">
+        <div class="mt-4 -mx-6">
           <% @action.get_fields.each_with_index do |field, index| %>
             <%= render field
-              .hydrate(resource: @resource, model: @resource.model, user: @resource.user, view: @view)
+              .hydrate(resource: @resource, record: @resource.record, user: @resource.user, view: @view)
               .component_for_view(@view)
               .new(field: field, resource: @resource, index: index, form: form, compact: true)
             %>
@@ -46,7 +47,10 @@
             color: :green,
             style: :primary,
             size: :sm,
-            data: @action.class.submit_button_data_attributes do %>
+            data: {
+              target: :submit_action,
+              **@action.class.submit_button_data_attributes
+            } do %>
           <%= @action.confirm_button_label %>
         <% end %>
       <% end %>

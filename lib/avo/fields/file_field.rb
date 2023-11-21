@@ -1,7 +1,7 @@
 module Avo
   module Fields
     class FileField < BaseField
-      attr_accessor :link_to_resource
+      attr_accessor :link_to_record
       attr_accessor :is_avatar
       attr_accessor :is_image
       attr_accessor :is_audio
@@ -12,7 +12,7 @@ module Avo
       def initialize(id, **args, &block)
         super(id, **args, &block)
 
-        @link_to_resource = args[:link_to_resource].present? ? args[:link_to_resource] : false
+        @link_to_record = args[:link_to_record].present? ? args[:link_to_record] : false
         @is_avatar = args[:is_avatar].present? ? args[:is_avatar] : false
         @is_image = args[:is_image].present? ? args[:is_image] : @is_avatar
         @is_audio = args[:is_audio].present? ? args[:is_audio] : false

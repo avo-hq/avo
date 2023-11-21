@@ -12,8 +12,4 @@
 #
 class Sibling < Person
   has_many :spouses, foreign_key: :person_id
-
-  def self.ransackable_attributes(auth_object = nil)
-    %w(id name)
-  end
 end

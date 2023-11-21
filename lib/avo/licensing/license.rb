@@ -25,6 +25,10 @@ module Avo
         id == "pro"
       end
 
+      def advanced?
+        id == "advanced"
+      end
+
       def error
         @response["error"]
       end
@@ -64,7 +68,7 @@ module Avo
         if id.present?
           id.humanize
         else
-          self.class.to_s.split('::').last.underscore.humanize.gsub ' license', ''
+          self.class.to_s.split("::").last.underscore.humanize.gsub " license", ""
         end
       end
     end

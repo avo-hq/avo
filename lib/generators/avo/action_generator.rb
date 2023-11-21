@@ -5,20 +5,20 @@ module Generators
     class ActionGenerator < NamedBaseGenerator
       source_root File.expand_path("templates", __dir__)
 
-      class_option :standalone, type: :boolean
+      class_option :standalone, type: :boolean, default: false
+      class_option :name, type: :string
 
       namespace "avo:action"
 
       def create_resource_file
-        type = "resource"
+        template "action.tt", "app/avo/actions/#{singular_name}.rb"
+      end
 
-        type = "standalone" if options[:standalone]
+      def configuration_options
+        configuration = "  self.name = \"#{options[:name] || name.titleize}\""
+        configuration += "\n  self.standalone = true" if options[:standalone]
 
-        if type == "standalone"
-          template "standalone_action.tt", "app/avo/actions/#{singular_name}.rb"
-        else
-          template "action.tt", "app/avo/actions/#{singular_name}.rb"
-        end
+        configuration
       end
     end
   end

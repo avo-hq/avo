@@ -7,7 +7,7 @@ RSpec.feature "dashboard generator", type: :feature do
 
     Rails::Generators.invoke("avo:dashboard", ["cats", "-q"], {destination_root: Rails.root})
 
-    expect(File.read(file)).to start_with "class Cats < Avo::Dashboards::BaseDashboard"
+    expect(File.read(file)).to start_with "class Avo::Dashboards::Cats < Avo::Dashboards::BaseDashboard"
 
     check_files_and_clean_up file
   end

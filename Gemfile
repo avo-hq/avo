@@ -21,12 +21,12 @@ gem 'cssbundling-rails'
 # Dependencies for dummy_app
 #
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem "rails", "~> 6.1.0"
+gem "rails", "~> 7.1.0"
 
 # Use postgresql as the database for Active Record
 gem "pg", ">= 0.18", "< 2.0"
 # Use Puma as the app server
-gem "puma", "~> 5.6.4"
+gem "puma", "~> 6.4"
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem "jbuilder", "~> 2.7"
 # Use Redis adapter to run Action Cable in production
@@ -44,13 +44,10 @@ gem "web-console", ">= 3.3.0"
 gem "listen", ">= 3.5.1"
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 gem "spring"
-
-gem "factory_bot_rails"
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "devise"
-gem "database_cleaner"
 
 gem "ruby-debug-ide", require: false
 #
@@ -75,20 +72,17 @@ group :development do
 
   gem "htmlbeautifier"
 
-  gem "hotwire-livereload", "~> 1.2"
+  gem "hotwire-livereload", "~> 1.2.3"
 
   gem "brakeman"
-end
 
-gem "awesome_print"
-
-group :development, :test do
-  gem "faker", require: false
-  gem "i18n-tasks", "~> 1.0.12"
+  gem "rubocop"
+  gem "ripper-tags"
+  gem "rubocop-shopify", require: false
 end
 
 group :test do
-  gem "rspec-rails", "~> 4.0.0"
+  gem "rspec-rails", "~> 6.0", ">= 6.0.3"
   gem "rails-controller-testing"
   # Adds support for Capybara system testing and selenium driver
   gem "capybara"
@@ -103,10 +97,22 @@ group :test do
   gem "launchy", require: false
 
   gem "test-prof"
+  gem "database_cleaner"
 end
 
-gem "rubocop"
-gem "rubocop-shopify", require: false
+gem "awesome_print"
+
+group :development, :test do
+  gem "faker", require: false
+  gem "i18n-tasks", "~> 1.0.12"
+  gem "erb-formatter"
+  gem "solargraph"
+  gem "solargraph-rails"
+
+  gem "factory_bot_rails"
+
+  gem "appraisal"
+end
 
 gem "zeitwerk"
 
@@ -118,14 +124,10 @@ gem "active_link_to"
 
 gem "addressable"
 
-gem "appraisal"
-
 gem 'meta-tags'
 
-gem 'manifester'
-
 # Search
-gem 'ransack'
+gem "ransack", "~> 4.1", ">= 4.1.1"
 
 gem 'friendly_id', '~> 5.4.0'
 
@@ -140,14 +142,9 @@ gem "active_median"
 
 gem 'acts_as_list'
 
-gem 'acts-as-taggable-on', '~> 9.0'
+gem 'acts-as-taggable-on', '~> 10.0'
 
 gem "bundler-integrity", "~> 1.0"
-
-gem 'erb-formatter'
-
-# Avo authorization requires this gem
-gem "pundit"
 
 # Avo country field requires this gem
 gem "countries"
@@ -164,8 +161,13 @@ gem "sprockets-rails"
 # Use Active Storage variant
 gem "image_processing", "~> 1.12"
 
+# source "https://rubygems.pkg.github.com/avo-hq" do
+#   gem "avo-dynamic_filters"
+# end
 gem "prefixed_ids"
 
 gem "mapkick-rb", "~> 0.1.4"
+
+gem "pluggy", path: "./pluggy"
 
 gem "turbo_power", "~> 0.5.0"

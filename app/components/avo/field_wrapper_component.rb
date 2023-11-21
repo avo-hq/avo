@@ -19,6 +19,7 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
     full_width: false,
     label: nil, # do we really need it?
     resource: nil,
+    short: false,
     stacked: nil,
     style: "",
     view: :show,
@@ -35,6 +36,7 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
     @full_width = full_width
     @label = label
     @resource = resource
+    @short = short
     @stacked = stacked
     @style = style
     @view = view
@@ -52,26 +54,14 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
     @label || @field.name
   end
 
-  def on_show?
-    view == :show
-  end
-
-  def on_edit?
-    view == :edit
-  end
+  delegate :show?, :edit?, to: :view, prefix: :on
 
   def help
-    help_value = @help || @field.help
-
-    if help_value.respond_to?(:call)
-      return Avo::Hosts::ResourceViewRecordHost.new(block: help_value, record: record, resource: resource, view: view).handle
-    end
-
-    help_value
+    Avo::ExecutionContext.new(target: @help || @field.help, record: record, resource: resource, view: view).handle
   end
 
   def record
-    resource.present? ? resource.model : nil
+    resource.present? ? resource.record : nil
   end
 
   def data
@@ -110,6 +100,10 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
 
   def compact?
     @compact
+  end
+
+  def short?
+    @short
   end
 
   def full_width?

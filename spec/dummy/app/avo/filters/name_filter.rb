@@ -1,4 +1,4 @@
-class NameFilter < Avo::Filters::TextFilter
+class Avo::Filters::NameFilter < Avo::Filters::TextFilter
   self.name = "Name filter"
   self.button_label = "Filter by name"
   # self.visible = -> do
@@ -7,7 +7,7 @@ class NameFilter < Avo::Filters::TextFilter
   #   context
   #   current_user
   #   params
-  #   parent_model
+  #   parent_record
   #   parent_resource
   #   resource
   #   view_context

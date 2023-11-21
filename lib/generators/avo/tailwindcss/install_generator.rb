@@ -11,17 +11,31 @@ module Generators
 
         def create_files
           unless tailwindcss_installed?
+            say "Installing Tailwindcss"
             system "./bin/bundle add tailwindcss-rails"
             system "./bin/rails tailwindcss:install"
           end
 
-          unless Rails.root.join("app", "assets", "stylesheets", "avo.tailwind.css").exist?
-            say "Add default app/assets/stylesheets/avo.tailwind.css"
-            copy_file template_path("avo.tailwind.css"), "app/assets/stylesheets/avo.tailwind.css"
+          unless (path = Rails.root.join("config", "avo", "tailwind.config.js")).exist?
+            say "Generating the Avo config file."
+            copy_file template_path("tailwind.config.js"), path
           end
 
+          unless (path = Rails.root.join("app", "assets", "stylesheets", "avo", "tailwindcss")).exist?
+            say "Generating the tailwindcss directory."
+            directory ::Avo::Engine.root.join("app", "assets", "stylesheets", "css", "tailwindcss"), path
+          end
+
+
+          unless (path = Rails.root.join("app", "assets", "stylesheets", "avo" ,"tailwind.css")).exist?
+            say "Add default tailwind.css"
+            copy_file template_path("avo.tailwind.css"), path
+          end
+
+          script_name = "avo:tailwind:css"
           if Rails.root.join("Procfile.dev").exist?
-            append_to_file "Procfile.dev", "avo_css: yarn avo:tailwindcss --watch\n"
+            say "Add #{cmd = "avo_css: yarn #{script_name} --watch"} to Procfile.dev"
+            append_to_file "Procfile.dev", "#{cmd}\n"
           else
             say "Add default Procfile.dev"
             copy_file template_path("Procfile.dev"), "Procfile.dev"
@@ -30,40 +44,70 @@ module Generators
             run "gem install foreman"
           end
 
-          # Ensure that the _pre_head.html.erb template is available
-          unless Rails.root.join("app", "views", "avo", "partials", "_pre_head.html.erb").exist?
-            say "Ejecting the _pre_head.html.erb partial"
-            Rails::Generators.invoke("avo:eject", [":pre_head", "--skip-avo-version"], {destination_root: Rails.root})
+          script_command = "tailwindcss -i ./app/assets/stylesheets/avo/tailwind.css -o ./app/assets/builds/avo.tailwind.css -c ./config/avo/tailwind.config.js --minify"
+          pretty_script_command = "\"#{script_name}\": \"#{script_command}\""
+
+          if (path = Rails.root.join("package.json")).exist?
+            say "Add #{pretty_script_command} to package.json"
+            json_data = JSON.parse(File.read(path))
+            json_data["scripts"] ||= {}
+            json_data["scripts"][script_name] = script_command
+
+            File.open(path, 'w') do |file|
+              file.write(JSON.pretty_generate(json_data) + "\n")
+            end
+          else
+            say "package.json not found.", :yellow
+            say "Ensure you have the following script in your package.json file.", :yellow
+            say "\"scripts\": {\n" \
+              "  #{pretty_script_command}\n" \
+            "}", :green
           end
 
-          say "Adding the CSS asset to the partial"
-          prepend_to_file Rails.root.join("app", "views", "avo", "partials", "_pre_head.html.erb"), "<%= stylesheet_link_tag \"avo.tailwind.css\", media: \"all\" %>"
+          rake_enhance = <<~RUBY
 
-          tailwind_script = setup_tailwind_script
-          say "Ensure you have the following script in your package.json file.", :yellow
-          say %("scripts": { "avo:tailwindcss": "#{tailwind_script}" --minify }), :green
+            # When running `rake assets:precompile` this is the order of events:
+            # 1 - Task `avo:yarn_install`
+            # 2 - Task `avo:sym_link`
+            # 3 - Cmd  `yarn avo:tailwind:css`
+            # 4 - Task `assets:precompile`
+            Rake::Task["assets:precompile"].enhance(["avo:sym_link"])
+            Rake::Task["avo:sym_link"].enhance(["avo:yarn_install"])
+            Rake::Task["avo:sym_link"].enhance do
+              `yarn avo:tailwind:css`
+            end
+
+          RUBY
+
+          if (path = Rails.root.join("Rakefile")).exist?
+            say "Add #{rake_enhance.strip} to Rakefile"
+            append_to_file path, rake_enhance
+          else
+            say "Rakefile not found.", :yellow
+            say "Ensure you have the following code in your Rakefile file.", :yellow
+            say rake_enhance, :green
+          end
+
+          say "Make sure you run \"bundle exec rake avo:sym_link\" and \"bundle exec rake avo:yarn_install\" before compiling the assets with the \"#{script_name}\" task.", :green
+          if (path = Rails.root.join("bin", "dev")).exist?
+            lines = File.read(path).lines
+
+            # Insert the task after the shebang line (the first line)
+            shebang = lines.first
+            lines[0] = "#{shebang}\nbundle exec rake avo:sym_link\nbundle exec rake avo:yarn_install\n"
+
+
+            File.write(path, lines.join)
+          end
         end
 
         no_tasks do
-          def setup_tailwind_script
-            tailwind_config_path = tailwindcss_config_path()
-            tailwind_script = "tailwindcss -i ./app/assets/stylesheets/avo.tailwind.css -o ./app/assets/builds/avo.tailwind.css"
-            tailwind_script += " -c #{tailwind_config_path}" if tailwind_config_path
-            tailwind_script
-          end  
-
           def template_path(filename)
             Pathname.new(__dir__).join("..", "templates", "tailwindcss", filename).to_s
           end
 
           def tailwindcss_installed?
             Rails.root.join("config", "tailwind.config.js").exist? || Rails.root.join("tailwind.config.js").exist?
-          end
-
-          def tailwindcss_config_path
-            if Rails.root.join("config", "tailwind.config.js").exist?
-              "./config/tailwind.config.js"
-            end
           end
         end
       end

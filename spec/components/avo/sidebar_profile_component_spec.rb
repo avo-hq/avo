@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe Avo::SidebarProfileComponent, type: :component do
   before do
     allow_message_expectations_on_nil
-    allow(Avo::App.license).to receive(:lacks_with_trial) { :menu_editor }.and_return(false)
+    allow(Avo.license).to receive(:lacks_with_trial) { :menu_editor }.and_return(false)
   end
 
   describe 'destroy_user_session_path' do
@@ -42,7 +42,7 @@ RSpec.describe Avo::SidebarProfileComponent, type: :component do
       end
 
       after do
-        Avo.configuration.current_user_resource_name = nil
+        Avo.configuration.current_user_resource_name = :user
       end
 
       it "renders sign out link" do

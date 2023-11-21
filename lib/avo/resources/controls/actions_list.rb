@@ -2,20 +2,15 @@ module Avo
   module Resources
     module Controls
       class ActionsList < BaseControl
-        def exclude
-          Array.wrap(@args[:exclude]) || []
-        end
+        attr_reader :color, :exclude, :include, :style
 
-        def include
-          Array.wrap(@args[:include]) || []
-        end
+        def initialize(**args)
+          super(**args)
 
-        def color
-          @args[:color] || :primary
-        end
-
-        def style
-          @args[:style] || :outline
+          @color = args[:color] || :primary
+          @exclude = args[:exclude] || []
+          @include = args[:include] || []
+          @style = args[:style] || :outline
         end
       end
     end

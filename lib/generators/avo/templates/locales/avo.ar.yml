@@ -5,7 +5,7 @@ ar:
     actions: أوامر
     and_x_other_resources: و %{count} موارد أخرى
     are_you_sure: هل أنت متأكد؟
-    are_you_sure_detach_item: هل أنت متأكد أنك تريد فصل هذا الـ٪{item}؟
+    are_you_sure_detach_item: هل أنت متأكد أنك تريد فصل هذا الـ%{item}؟
     are_you_sure_you_want_to_run_this_option: هل أنت متأكد أنك تريد تشغيل هذا الخيار؟
     attach: ربط
     attach_and_attach_another: ربط وربط آخر
@@ -23,6 +23,7 @@ ar:
     create_new_item: إنشاء %{item} جديد
     dashboard: لوحة القيادة
     dashboards: لوحات القيادة
+    default_scope: الجميع
     delete: حذف
     delete_file: حذف الملف
     delete_item: حذف %{item}

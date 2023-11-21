@@ -19,12 +19,12 @@
 @import './css/scrollbar.css';
 @import './css/sidebar.css';
 @import './css/spinner.css';
-@import './css/tags.css';
 
 @import './css/fields/status.css';
 @import './css/fields/code.css';
 @import './css/fields/progress.css';
 @import './css/fields/trix.css';
+@import './css/fields/tags.css';
 
 @import 'tailwindcss/components';
 

@@ -1,4 +1,4 @@
-class CourseCityFilter < Avo::Filters::BooleanFilter
+class Avo::Filters::CourseCityFilter < Avo::Filters::BooleanFilter
   self.name = "Course city filter"
   self.empty_message = "Please select a country to view options."
 
@@ -12,9 +12,9 @@ class CourseCityFilter < Avo::Filters::BooleanFilter
 
   def react
     # Check if the user selected a country
-    if applied_filters["CourseCountryFilter"].present? && applied_filters["CourseCityFilter"].blank?
+    if applied_filters["Avo::Filters::CourseCountryFilter"].present? && applied_filters["CourseCityFilter"].blank?
       # Get the selected countries, get their cities, and select the first one.
-      selected_countries = applied_filters["CourseCountryFilter"].select do |name, selected|
+      selected_countries = applied_filters["Avo::Filters::CourseCountryFilter"].select do |name, selected|
         selected
       end
 
@@ -46,7 +46,7 @@ class CourseCityFilter < Avo::Filters::BooleanFilter
   # Get the value of the selected countries
   # Example payload:
   # applied_filters = {
-  #   "CourseCountryFilter" => {
+  #   "Avo::Filters::CourseCountryFilter" => {
   #     "USA" => true,
   #     "Japan" => true,
   #     "Spain" => false,
@@ -54,9 +54,9 @@ class CourseCityFilter < Avo::Filters::BooleanFilter
   #   }
   # }
   def countries
-    if applied_filters["CourseCountryFilter"].present?
+    if applied_filters["Avo::Filters::CourseCountryFilter"].present?
       # Fetch the value of the countries filter
-      applied_filters["CourseCountryFilter"]
+      applied_filters["Avo::Filters::CourseCountryFilter"]
         .select { |k, v| v } # Keep only the ones selected
         .keys # Pluck the name of the country
     else

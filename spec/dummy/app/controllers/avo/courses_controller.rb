@@ -1,4 +1,12 @@
 class Avo::CoursesController < Avo::ResourcesController
+  def update
+    @record.skills = JSON.parse(params.dig(:course).dig(:skills))
+  rescue
+    @record.skills = []
+  ensure
+    super
+  end
+
   def cities
     render json: get_cities(params[:country])
   end
@@ -8,23 +16,23 @@ class Avo::CoursesController < Avo::ResourcesController
   end
 
   def create_success_message
-    "#{@model.class.name} created!"
+    "#{@record.class.name} created!"
   end
 
   def create_fail_message
-    "#{@model.class.name} not created!"
+    "#{@record.class.name} not created!"
   end
 
   def update_success_message
-    "#{@model.class.name} updated!"
+    "#{@record.class.name} updated!"
   end
 
   def update_fail_message
-    "#{@model.class.name} not updated!"
+    "#{@record.class.name} not updated!"
   end
 
   def destroy_success_message
-    "#{@model.class.name} destroyed for ever!"
+    "#{@record.class.name} destroyed for ever!"
   end
 
   private

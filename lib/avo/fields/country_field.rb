@@ -30,6 +30,10 @@ module Avo
           end
         end
       end
+
+      def options_for_filter
+        select_options
+      end
     end
   end
 end

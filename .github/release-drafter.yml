@@ -47,3 +47,5 @@ template: |
   More information and release video [here](https://avohq.io/releases/$NEXT_PATCH_VERSION)
 
   $CHANGES
+
+  For more information, check out [Avo's release notes page](https://avohq.io/releases)

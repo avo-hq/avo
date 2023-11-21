@@ -6,13 +6,14 @@ RSpec.feature "AllowViaDetachings", type: :feature do
     let(:review) { create :review, reviewable: team }
 
     it "is enabled" do
-      visit "/admin/resources/reviews/#{review.id}/edit?via_resource_class=TeamResource&via_resource_id=#{team.id}"
+      visit "/admin/resources/reviews/#{review.id}/edit?via_record_id=#{team.id}&via_resource_class=Avo::Resources::Team"
 
+      # Searchable is a pro feature so will be disabled even if the field defines it as enabled.
+      # That's why all fields are type: :select.
+      # Avo::Pro tests allow via detachings on searchable fields.
       expect(page).to have_field "review_reviewable_type", type: :select, disabled: false
-      # review_reviewable_id is disabled because it"s a searchable field
-      expect(page).to have_field "review_reviewable_id", type: :text, disabled: true
-      # review_user_id is disabled because it"s a searchable field
-      expect(page).to have_field "review_user_id", type: :text, disabled: true
+      expect(page).to have_field "review_reviewable_id", type: :select, disabled: false
+      expect(page).to have_field "review_user_id", type: :select, disabled: false
     end
   end
 
@@ -21,7 +22,7 @@ RSpec.feature "AllowViaDetachings", type: :feature do
     let(:comment) { create :comment, commentable: post }
 
     it "is enabled" do
-      visit "/admin/resources/comments/#{comment.id}/edit?via_resource_class=PostResource&via_resource_id=#{post.id}"
+      visit "/admin/resources/comments/#{comment.id}/edit?via_record_id=#{post.id}&via_resource_class=Avo::Resources::Post"
 
       expect(page).to have_field "comment_commentable_type", type: :select, disabled: true
       expect(page).to have_field "comment_commentable_id", type: :select, disabled: true

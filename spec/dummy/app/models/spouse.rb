@@ -11,7 +11,4 @@
 #  person_id  :bigint
 #
 class Spouse < Person
-  def self.ransackable_attributes(auth_object = nil)
-    %w(id name)
-  end
 end

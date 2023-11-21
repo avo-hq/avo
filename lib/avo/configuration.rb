@@ -13,7 +13,6 @@ module Avo
     attr_accessor :locale
     attr_accessor :currency
     attr_accessor :default_view_type
-    attr_accessor :license
     attr_accessor :license_key
     attr_accessor :authorization_methods
     attr_accessor :authenticate
@@ -38,13 +37,14 @@ module Avo
     attr_accessor :main_menu
     attr_accessor :profile_menu
     attr_accessor :model_resource_mapping
-    attr_accessor :tabs_style
-    attr_accessor :resource_default_view
+    attr_reader :resource_default_view
     attr_accessor :authorization_client
     attr_accessor :field_wrapper_layout
     attr_accessor :sign_out_path_name
     attr_accessor :resources
     attr_accessor :prefix_path
+    attr_accessor :resource_parent_controller
+    attr_accessor :mount_avo_engines
 
     def initialize
       @root_path = "/avo"
@@ -56,7 +56,6 @@ module Avo
       @locale = nil
       @currency = "USD"
       @default_view_type = :table
-      @license = "community"
       @license_key = nil
       @current_user = proc {}
       @authenticate = proc {}
@@ -91,12 +90,12 @@ module Avo
       @main_menu = nil
       @profile_menu = nil
       @model_resource_mapping = {}
-      @tabs_style = :tabs
-      @resource_default_view = :show
+      @resource_default_view = Avo::ViewInquirer.new("show")
       @authorization_client = :pundit
       @field_wrapper_layout = :inline
       @resources = nil
-      @prefix_path = nil
+      @resource_parent_controller = "Avo::ResourcesController"
+      @mount_avo_engines = true
       @cache_store = computed_cache_store
     end
 
@@ -143,11 +142,29 @@ module Avo
     end
 
     def app_name
-      if @app_name.respond_to? :call
-        Avo::Hosts::BaseHost.new(block: @app_name).handle
-      else
-        @app_name
+      Avo::ExecutionContext.new(target: @app_name).handle
+    end
+
+    def license=(value)
+      if Rails.env.development?
+        puts "[Avo DEPRECATION WARNING]: The `config.license` configuration option is no longer supported and will be removed in future versions. Please discontinue its use and solely utilize the `license_key` instead."
       end
+    end
+
+    def license
+      gems = Gem::Specification.map {|gem| gem.name}
+
+      @license ||= if gems.include?("avo-advanced")
+        "advanced"
+      elsif gems.include?("avo-pro")
+        "pro"
+      elsif gems.include?("avo")
+        "community"
+      end
+    end
+
+    def resource_default_view=(view)
+      @resource_default_view = Avo::ViewInquirer.new(view.to_s)
     end
 
     def cache_store

@@ -42,9 +42,9 @@ class Avo::Fields::Common::Files::ViewType::GridItemComponent < ViewComponent::B
     record_persisted?
   end
 
-  # If model is not persistent blob is automatically destroyed otherwise it can be "lost" on storage
+  # If record is not persistent blob is automatically destroyed otherwise it can be "lost" on storage
   def record_persisted?
-    return true if @resource.model.persisted?
+    return true if @resource.record.persisted?
 
     ActiveStorage::Blob.destroy(file.blob_id) if file.blob_id.present?
     false

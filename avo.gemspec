@@ -1,7 +1,7 @@
-$:.push File.expand_path("lib", __dir__)
+# $:.push File.expand_path("lib", __dir__)
 
 # Maintain your gem's version:
-require "avo/version"
+require_relative "lib/avo/version"
 
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |spec|
@@ -27,18 +27,20 @@ Gem::Specification.new do |spec|
       "public gem pushes."
   end
 
-  spec.required_ruby_version = ">= 2.6.0"
+  spec.required_ruby_version = ">= 3.0.0"
   spec.post_install_message = "Thank you for using Avo 💪  Docs are available at https://docs.avohq.io"
 
-  spec.files = Dir["{bin,app,config,db,lib,public}/**/*", "MIT-LICENSE", "Rakefile", "README.md", "avo.gemspec", "Gemfile", "Gemfile.lock"]
+  spec.files = Dir["{bin,app,config,db,lib,public}/**/*", "MIT-LICENSE", "Rakefile", "README.md", "avo.gemspec", "Gemfile", "Gemfile.lock", "tailwind.preset.js", "tailwind.custom.js"]
+  spec.files.reject! { |file_name| %w[avo.custom.js avo.custom.js.map].any? { |rejected_file| file_name.include? rejected_file } }
 
-  spec.add_dependency "activerecord", ">= 6.0"
-  spec.add_dependency "actionview", ">= 6.0"
+  spec.add_dependency "activerecord", ">= 6.1"
+  spec.add_dependency "activesupport", ">= 6.1"
+  spec.add_dependency "actionview", ">= 6.1"
   spec.add_dependency "pagy"
-  spec.add_dependency "zeitwerk", ">= 2.6.2"
+  spec.add_dependency "zeitwerk", ">= 2.6.12"
   spec.add_dependency "httparty"
   spec.add_dependency "active_link_to"
-  spec.add_dependency "view_component", ">= 2.54.0"
+  spec.add_dependency "view_component", ">= 3.7.0"
   spec.add_dependency "turbo-rails"
   spec.add_dependency "turbo_power", "~> 0.5.0"
   spec.add_dependency "addressable"

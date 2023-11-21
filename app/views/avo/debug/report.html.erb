@@ -1,22 +1,37 @@
 <turbo-frame id="debug-report">
-  <div class="font-semibold">Debug report <small class="font-normal">(don't post this anywhere public)</small></div>
-  <div>
-    <% if defined?(ap) %>
-      <%== ap Avo::App.debug_report(request) %>
-    <% else %>
-      <pre><%== JSON.pretty_generate(Avo::App.debug_report(request)) %></pre>
+  <div class="flex gap-2">
+    <%= form_with url: avo.avo_private_send_to_hq_path, data: {turbo_frame: :send_to_hq}, class: "w-full" do |f| %>
+      <div class="space-y-8 divide-y divide-gray-200">
+        <div>
+          <div>
+            <h3 class="text-lg font-medium leading-6 text-gray-900">Send in a bug report (pro feature)</h3>
+            <p class="mt-1 text-sm text-gray-500">If you think there is something wrong with Avo and you'd like to report with some (anonymized) telemetry about the app, please fill in any relevant details and send it in.</p>
+            <p class="mt-1 text-sm text-gray-500">Otherwise, please <a href="https://avo.cool/new-issue" target="_blank">create a GitHub issue</a> where everyone can contribute.</p>
+          </div>
+
+          <div class="sm:col-span-6 mt-4">
+            <label for="about" class="block text-sm font-medium text-gray-700">Details</label>
+            <div class="mt-1">
+              <%= f.text_area :body, rows: 3, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm disabled:bg-gray-100", disabled: !Avo::Current.license.pro? %>
+            </div>
+          </div>
+          <%= f.hidden_field :license_key, value: Avo::Services::DebugService.debug_report(request)[:license_response]["license_key"] %>
+          <%= a_button icon: 'heroicons/outline/paper-airplane',
+            color: :primary,
+            style: :primary,
+            class: "mt-4",
+            disabled: !Avo::Current.license.pro?,
+            type: :submit do %>
+            Send to HQ
+          <% end %>
+        </div>
+      </div>
     <% end %>
   </div>
-  <div class="flex justify-end">
-    <%= a_button icon: 'heroicons/outline/clipboard',
-      color: :primary,
-      style: :primary,
-      data: {
-        controller: 'copy-to-clipboard',
-        action: "click->copy-to-clipboard#copy",
-        text: Avo::App.debug_report(request),
-      } do %>
-      Copy debug info
-    <% end %>
+  <div class="text-right">
+    <%= turbo_frame_tag :send_to_hq %>
+  </div>
+  <div class="overflow-auto max-w-full">
+
   </div>
 </turbo-frame>

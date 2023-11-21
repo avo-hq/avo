@@ -7,12 +7,12 @@ module Avo
     class ResourceMapComponent < ViewComponent::Base
       attr_reader :resources
 
-      def initialize(resources: nil, resource: nil, reflection: nil, parent_model: nil, parent_resource: nil, pagy: nil, query: nil)
+      def initialize(resources: nil, resource: nil, reflection: nil, parent_record: nil, parent_resource: nil, pagy: nil, query: nil)
         super
         @resources = resources
         @resource = resource
         @reflection = reflection
-        @parent_model = parent_model
+        @parent_record = parent_record
         @parent_resource = parent_resource
         @pagy = pagy
         @query = query
@@ -66,7 +66,7 @@ module Avo
 
         resources
           .map do |resource|
-            Avo::Hosts::ResourceRecordHost.new(block: marker_proc, resource: resource, record: resource.record).handle
+            Avo::ExecutionContext.new(target: marker_proc, record: resource.record).handle
           end
           .compact
           .filter do |coordinates|

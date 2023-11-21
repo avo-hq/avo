@@ -1,0 +1,6 @@
+class Avo::Scopes::<%= class_name.camelize %> < Avo::Pro::Scopes::BaseScope
+  self.name = "<%= name.underscore.humanize %>"
+  self.description = "<%= name.underscore.humanize %>"
+  self.scope = -> { query.all }
+  self.visible = -> { true }
+end

@@ -4,14 +4,8 @@ RSpec.feature "Actions", type: :system do
   it "shows the different types of alerts" do
     visit "/admin/resources/users"
 
-    click_on "Actions"
-    click_on "Dummy action"
-
-    wait_for_loaded
-
-    click_on "Run"
-
-    wait_for_loaded
+    open_panel_action(action_name: "Dummy action")
+    run_action
 
     base_classes = ".max-w-lg.w-full.shadow-lg.rounded.px-4.py-3.rounded.relative.border.text-white.pointer-events-auto"
 

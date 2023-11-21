@@ -1,4 +1,4 @@
-class <%= class_name.camelize %> < Avo::Dashboards::MetricCard
+class Avo::Cards::<%= class_name.camelize %> < Avo::Dashboards::MetricCard
   self.id = "<%= name.underscore %>"
   self.label = "<%= name.underscore.humanize %>"
   # self.description = "Some description"

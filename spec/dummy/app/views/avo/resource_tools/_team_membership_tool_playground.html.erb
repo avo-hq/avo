@@ -4,7 +4,7 @@
       <% if form.present? %>
         <%= field_container do %>
         <%= @resource.get_stimulus_controllers %>
-          <%= avo_edit_field :team, form: form, as: :belongs_to, resource: @resource.hydrate(model: @model), html: {
+          <%= avo_edit_field :team, form: form, as: :belongs_to, resource: @resource.hydrate(record: @record), html: {
             edit: {
               input: {
                 data: {

@@ -9,7 +9,7 @@
     data: @field.get_html(:data, view: view, element: :input),
     disabled: disabled?,
     style: @field.get_html(:style, view: view, element: :input),
-    value: @field.model.present? ? @field.model[@field.id] : @field.value,
+    value: @field.record.present? ? @field.record[@field.id] : @field.value,
     placeholder: @field.include_blank.present? ? nil : @field.placeholder,
     autocomplete: @field.autocomplete
   %>

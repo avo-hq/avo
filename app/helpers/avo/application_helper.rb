@@ -1,12 +1,7 @@
 module Avo
   module ApplicationHelper
     include ::Pagy::Frontend
-
-    def render_license_warnings
-      render partial: "avo/sidebar/license_warnings", locals: {
-        license: Avo::App.license.properties
-      }
-    end
+    include Avo::ResourcesHelper
 
     def render_license_warning(title: "", message: "", icon: "exclamation")
       render partial: "avo/sidebar/license_warning", locals: {
@@ -119,8 +114,23 @@ module Avo
       Avo::Filters::BaseFilter.encode_filters(filter_params)
     end
 
+    def number_to_social(number, start_at: 10_000)
+      return number_with_delimiter(number) if number < start_at
+
+      number_to_human(number,
+        precision: 1,
+        significant: false,
+        round_mode: :down,
+        format: "%n%u",
+        units: {
+          thousand: "K",
+          million: "M",
+          billion: "B"
+        })
+    end
+
     def frame_id(resource)
-      ["frame", resource.model_name.singular, resource.model.id].compact.join("-")
+      ["frame", resource.model_name.singular, resource.record.id].compact.join("-")
     end
 
     private
@@ -144,7 +154,7 @@ module Avo
       field = field_klass.new id, form: form, view: view, **args, &block
 
       # Add the form record to the field so all fields have access to it.
-      field.hydrate(model: form.object) if form.present?
+      field.hydrate(record: form.object) if form.present?
 
       render field.component_for_view(view).new field: field, form: form, **component_options
     end

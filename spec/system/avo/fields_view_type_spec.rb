@@ -4,11 +4,11 @@ RSpec.feature "Fields view types", type: :system do
   let(:project) { create :project, :with_files }
 
   after :each do
-    ProjectResource.restore_items_from_backup
+    Avo::Resources::Project.restore_items_from_backup
   end
 
   it "default" do
-    ProjectResource.with_temporary_items do
+    Avo::Resources::Project.with_temporary_items do
       field :files, as: :files
     end
 
@@ -27,7 +27,7 @@ RSpec.feature "Fields view types", type: :system do
   end
 
   it "hide view type switcher" do
-    ProjectResource.with_temporary_items do
+    Avo::Resources::Project.with_temporary_items do
       field :files, as: :files, hide_view_type_switcher: true
     end
 
@@ -38,7 +38,7 @@ RSpec.feature "Fields view types", type: :system do
   end
 
   it "list view and change to grid, delete works on both" do
-    ProjectResource.with_temporary_items do
+    Avo::Resources::Project.with_temporary_items do
       field :files, as: :files, view_type: :list
     end
 

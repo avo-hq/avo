@@ -10,7 +10,7 @@ require "rails_helper"
 #   end
 
 #   def fields(request)
-#     f.id :iddd, link_to_resource: true do |model, resource, view, field|
+#     f.id :iddd, link_to_record: true do |model, resource, view, field|
 #       # abort ['qwe'].inspect
 #       '123'
 #     end
@@ -27,7 +27,7 @@ require "rails_helper"
 #   end
 
 #   def fields(request)
-#     f.id :iddd, link_to_resource: true do |model, resource, view, field|
+#     f.id :iddd, link_to_record: true do |model, resource, view, field|
 #       # abort ['qwe'].inspect
 #       123
 #     end

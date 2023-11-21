@@ -20,16 +20,26 @@ const buttonClasses = [
 ]
 
 const buttonColors = Object.keys(colors)
-buttonColors.push('primary')
-buttonColors.push('text-white')
+buttonColors.push(
+  'primary',
+  'text-white',
+)
 
-const ignoredButtonClasses = buttonColors.map((color) => buttonClasses.map((buttonClass) => buttonClass.replace('${color}', kebabCase(color))))
+const ignoredDynamicClasses = buttonColors.map((color) => buttonClasses.map((buttonClass) => buttonClass.replace('${color}', kebabCase(color))))
 
-// Add the whitespace class for newlines
-ignoredButtonClasses.push('whitespace-pre-line')
+// Add the whitespace class for newlines and text alignment
+ignoredDynamicClasses.push(
+  'whitespace-pre-line',
+  'text-right',
+  'text-left',
+  'text-center',
+  'font-sans',
+  'font-serif',
+  'font-mono',
+)
 
 // Write them into a safelist.txt file until @tailwindcss/jit supports PurgeCSS options
-fs.writeFile('./safelist.txt', ignoredButtonClasses.flat().join(' '), () => {
+fs.writeFile('./safelist.txt', ignoredDynamicClasses.flat().join(' '), () => {
   // eslint-disable-next-line no-console
-  console.log(`Generated safelist.txt file with ${ignoredButtonClasses.flat().length} classes.`)
+  console.log(`Generated safelist.txt file with ${ignoredDynamicClasses.flat().length} classes.`)
 })

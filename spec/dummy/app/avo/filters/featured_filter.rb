@@ -1,4 +1,4 @@
-class FeaturedFilter < Avo::Filters::BooleanFilter
+class Avo::Filters::FeaturedFilter < Avo::Filters::BooleanFilter
   self.name = "Featured status"
 
   def apply(request, query, values)

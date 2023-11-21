@@ -18,6 +18,8 @@ Fixes # (issue)
 - [ ] I have made corresponding changes to the [documentation](https://github.com/avo-hq/avodocs)
 - [ ] I have added tests that prove my fix is effective or that my feature works
 
+## Screenshots
+<!-- Does the PR introduce any visual changes? Can you show us before and after? -->
 
 ## Manual review steps
 <!-- Please describe the tests that you ran to verify your changes. Provide instructions so we can reproduce. Please also list any relevant details for your test configuration. -->

@@ -1,26 +1,40 @@
 <div class="relative flex flex-col w-full sm:w-auto js-actions-dropdown"
-  data-controller="toggle-panel actions-picker"
+  data-component-name="<%= self.class.to_s.underscore %>"
+  data-controller="toggle actions-picker"
   data-actions-picker-enabled-class="text-black hover:bg-primary-500 hover:text-white"
   data-actions-picker-disabled-class="cursor-wait text-gray-500"
+  data-resource-name="<%= @resource.class.to_s %>"
+  <% if @resource.record.present? %> data-record-id="<%= @resource.record.id %>" <% end %>
 >
   <%= a_button style: @style,
     type: :button,
     color: @color,
+    size: size,
     class: "focus:outline-none",
     icon: 'arrow-circle-right',
     icon_class: 'transform rotate-90',
-    'data-action': "click->toggle-panel#togglePanel",
+    'data-action': "click->toggle#togglePanel",
     'data-actions-dropdown-button': @resource.model_key do %>
     <%= label %>
   <% end %>
   <div
     class="absolute flex inset-auto xl:right-0 top-full bg-white w-full sm:w-auto sm:min-w-[300px] mt-2 z-40 shadow-modal rounded overflow-hidden hidden"
-    data-toggle-panel-target="panel"
+    data-toggle-target="panel"
+    data-controller="actions-overflow"
+    data-actions-overflow-panel-list-value="<%= !@as_row_control %>"
+    data-actions-overflow-target="content"
+    data-transition-enter="transition ease-out duration-100"
+    data-transition-enter-start="transform opacity-0 -translate-y-1"
+    data-transition-enter-end="transform opacity-100 translate-y-0"
+    data-transition-leave="transition ease-in duration-75"
+    data-transition-leave-start="transform opacity-100 translate-y-0"
+    data-transition-leave-end="transform opacity-0 -translate-y-1"
   >
-    <div class="w-full space divide-y">
+    <div data-target="actions-list" class="w-full space divide-y">
       <% actions.each_with_index do |action, index| %>
-        <%= link_to action_path(action.param_id),
+        <%= link_to action_path(action),
           data: {
+            action_name: action.action_name,
             'turbo-frame': 'actions_show',
             'action': 'click->actions-picker#visitAction',
             'actions-picker-target': action.standalone ? 'standaloneAction' : 'resourceAction',

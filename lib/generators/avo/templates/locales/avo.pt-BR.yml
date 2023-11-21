@@ -23,6 +23,7 @@ pt-BR:
     create_new_item: Criar novo %{item}
     dashboard: Painel
     dashboards: Painéis
+    default_scope: Todos
     delete: deletar
     delete_file: Deletar arquivo
     delete_item: Deletar %{item}

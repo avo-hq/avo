@@ -7,12 +7,12 @@ RSpec.describe "Date field", type: :system do
   subject(:text_input) { find '[data-field-id="started_at"] [data-controller="date-field"] input[type="text"]' }
 
   after do
-    ProjectResource.restore_items_from_backup
+    Avo::Resources::Project.restore_items_from_backup
   end
 
   describe "with relative: true", tz: "Europe/Bucharest" do
     before do
-      ProjectResource.with_temporary_items do
+      Avo::Resources::Project.with_temporary_items do
         field :started_at, as: :date_time, relative: true, time_24hr: true, format: "MMMM dd, y HH:mm:ss z"
       end
     end
@@ -23,7 +23,7 @@ RSpec.describe "Date field", type: :system do
       it "displays the date in a valid tz" do
         visit "/admin/resources/projects"
 
-        expect(index_field_value(:started_at, project.id)).to eq "January 01, 2000 08:00:00 Europe/Bucharest"
+        expect(index_field_value(id: :started_at, record_id: project.id)).to eq "January 01, 2000 08:00:00 Europe/Bucharest"
       end
     end
 
@@ -31,7 +31,7 @@ RSpec.describe "Date field", type: :system do
       it "displays the date in a valid tz" do
         visit "/admin/resources/projects/#{project.id}"
 
-        expect(show_field_value(:started_at)).to eq "January 01, 2000 08:00:00 Europe/Bucharest"
+        expect(show_field_value(id: :started_at)).to eq "January 01, 2000 08:00:00 Europe/Bucharest"
       end
     end
 
@@ -44,7 +44,7 @@ RSpec.describe "Date field", type: :system do
 
           save
 
-          expect(show_field_value(:started_at)).to eq "January 01, 2000 08:00:00 Europe/Bucharest"
+          expect(show_field_value(id: :started_at)).to eq "January 01, 2000 08:00:00 Europe/Bucharest"
         end
       end
 
@@ -64,7 +64,7 @@ RSpec.describe "Date field", type: :system do
 
           save
 
-          expect(show_field_value(:started_at)).to eq "January 02, 2000 17:17:17 Europe/Bucharest"
+          expect(show_field_value(id: :started_at)).to eq "January 02, 2000 17:17:17 Europe/Bucharest"
         end
       end
     end
@@ -72,7 +72,7 @@ RSpec.describe "Date field", type: :system do
 
   describe "with relative: true", tz: "America/Los_Angeles" do
     before do
-      ProjectResource.with_temporary_items do
+      Avo::Resources::Project.with_temporary_items do
         field :started_at, as: :date_time, relative: true, time_24hr: true, format: "MMMM dd, y HH:mm:ss z"
       end
     end
@@ -85,7 +85,7 @@ RSpec.describe "Date field", type: :system do
       it "displays the date in a valid tz" do
         visit "/admin/resources/projects"
 
-        expect(index_field_value(:started_at, project.id)).to eq "December 31, 1999 22:00:00 America/Los_Angeles"
+        expect(index_field_value(id: :started_at, record_id: project.id)).to eq "December 31, 1999 22:00:00 America/Los_Angeles"
       end
     end
 
@@ -93,7 +93,7 @@ RSpec.describe "Date field", type: :system do
       it "displays the date in a valid tz" do
         visit "/admin/resources/projects/#{project.id}"
 
-        expect(show_field_value(:started_at)).to eq "December 31, 1999 22:00:00 America/Los_Angeles"
+        expect(show_field_value(id: :started_at)).to eq "December 31, 1999 22:00:00 America/Los_Angeles"
       end
     end
 
@@ -106,7 +106,7 @@ RSpec.describe "Date field", type: :system do
 
           save
 
-          expect(show_field_value(:started_at)).to eq "December 31, 1999 22:00:00 America/Los_Angeles"
+          expect(show_field_value(id: :started_at)).to eq "December 31, 1999 22:00:00 America/Los_Angeles"
         end
       end
 
@@ -126,7 +126,7 @@ RSpec.describe "Date field", type: :system do
 
           save
 
-          expect(show_field_value(:started_at)).to eq "January 02, 2000 17:17:17 America/Los_Angeles"
+          expect(show_field_value(id: :started_at)).to eq "January 02, 2000 17:17:17 America/Los_Angeles"
         end
       end
     end
@@ -134,7 +134,7 @@ RSpec.describe "Date field", type: :system do
 
   describe "with relative: false", tz: "Europe/Bucharest" do
     before do
-      ProjectResource.with_temporary_items do
+      Avo::Resources::Project.with_temporary_items do
         field :started_at, as: :date_time, relative: false, time_24hr: true, format: "MMMM dd, y HH:mm:ss z"
       end
     end
@@ -145,7 +145,7 @@ RSpec.describe "Date field", type: :system do
       it "displays the date in a valid tz" do
         visit "/admin/resources/projects"
 
-        expect(index_field_value(:started_at, project.id)).to eq "January 01, 2000 06:00:00 UTC"
+        expect(index_field_value(id: :started_at, record_id: project.id)).to eq "January 01, 2000 06:00:00 UTC"
       end
     end
 
@@ -153,7 +153,7 @@ RSpec.describe "Date field", type: :system do
       it "displays the date in a valid tz" do
         visit "/admin/resources/projects/#{project.id}"
 
-        expect(show_field_value(:started_at)).to eq "January 01, 2000 06:00:00 UTC"
+        expect(show_field_value(id: :started_at)).to eq "January 01, 2000 06:00:00 UTC"
       end
     end
 
@@ -166,7 +166,7 @@ RSpec.describe "Date field", type: :system do
 
           save
 
-          expect(show_field_value(:started_at)).to eq "January 01, 2000 06:00:00 UTC"
+          expect(show_field_value(id: :started_at)).to eq "January 01, 2000 06:00:00 UTC"
         end
       end
 
@@ -185,7 +185,7 @@ RSpec.describe "Date field", type: :system do
           close_picker
           save
 
-          expect(show_field_value(:started_at)).to eq "January 02, 2000 17:17:17 UTC"
+          expect(show_field_value(id: :started_at)).to eq "January 02, 2000 17:17:17 UTC"
         end
       end
     end
@@ -193,7 +193,7 @@ RSpec.describe "Date field", type: :system do
 
   describe "with relative: false", tz: "America/Los_Angeles" do
     before do
-      ProjectResource.with_temporary_items do
+      Avo::Resources::Project.with_temporary_items do
         field :started_at, as: :date_time, relative: false, time_24hr: true, format: "MMMM dd, y HH:mm:ss z"
       end
     end
@@ -204,7 +204,7 @@ RSpec.describe "Date field", type: :system do
       it "displays the date in a valid tz" do
         visit "/admin/resources/projects"
 
-        expect(index_field_value(:started_at, project.id)).to eq "January 01, 2000 06:00:00 UTC"
+        expect(index_field_value(id: :started_at, record_id: project.id)).to eq "January 01, 2000 06:00:00 UTC"
       end
     end
 
@@ -212,7 +212,7 @@ RSpec.describe "Date field", type: :system do
       it "displays the date in a valid tz" do
         visit "/admin/resources/projects/#{project.id}"
 
-        expect(show_field_value(:started_at)).to eq "January 01, 2000 06:00:00 UTC"
+        expect(show_field_value(id: :started_at)).to eq "January 01, 2000 06:00:00 UTC"
       end
     end
 
@@ -225,7 +225,7 @@ RSpec.describe "Date field", type: :system do
 
           save
 
-          expect(show_field_value(:started_at)).to eq "January 01, 2000 06:00:00 UTC"
+          expect(show_field_value(id: :started_at)).to eq "January 01, 2000 06:00:00 UTC"
         end
       end
 
@@ -244,7 +244,7 @@ RSpec.describe "Date field", type: :system do
           close_picker
           save
 
-          expect(show_field_value(:started_at)).to eq "January 02, 2000 17:17:17 UTC"
+          expect(show_field_value(id: :started_at)).to eq "January 02, 2000 17:17:17 UTC"
         end
       end
     end

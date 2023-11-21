@@ -1,46 +1,23 @@
 <div
   class="relative bg-white rounded shadow-modal flex flex-col group"
+  data-component-name="<%= self.class.to_s.underscore %>"
   <%== item_selector_init @resource %>
+  data-resource-name="<%= @resource.class.to_s %>"
+  data-record-id="<%= @resource.record.id %>"
 >
-  <%= content_tag :div, class: "relative w-full pb-3/4 rounded-t overflow-hidden #{cover.present? ? cover.get_html(:classes, view: :index, element: :wrapper) : ""}", style: cover.present? ? cover.get_html(:style, view: :index, element: :wrapper) : "" do %>
-    <% if @resource.record_selector %>
-      <%== item_selector_input floating: true, size: :lg %>
-    <% end %>
-    <% if cover.blank? %>
-      <%= link_to resource_view_path do %>
-        <%= render Avo::Index::GridCoverEmptyStateComponent.new %>
-      <% end %>
-    <% elsif cover.respond_to?(:to_image) && cover.to_image.present? %>
-      <%= link_to_if cover.link_to_resource, image_tag(cover.to_image, class: 'absolute h-full w-full object-cover'), resource_view_path, class: 'absolute h-full w-full object-cover', title: title.value %>
-    <% elsif cover.type == 'file' %>
-      <% if cover.value&.attached? && cover.value.representable? %>
-        <%= link_to_if cover.link_to_resource, image_tag(helpers.main_app.url_for(cover.value.variant(resize_to_limit: [480, 480])), class: 'absolute h-full w-full object-cover'), resource_view_path, class: 'absolute h-full w-full object-cover', title: title.value %>
-      <% else %>
-        <%= link_to resource_view_path do %>
-          <%= render Avo::Index::GridCoverEmptyStateComponent.new %>
-        <% end %>
-      <% end %>
-    <% elsif cover.value.present? %>
-      <%= link_to_if cover.link_to_resource, image_tag(cover.value, class: 'absolute h-full w-full object-cover'), resource_view_path, class: 'absolute h-full w-full object-cover', title: title.value %>
-    <% else %>
-      <%= render Avo::Index::GridCoverEmptyStateComponent.new %>
-    <% end %>
+  <%= content_tag :div,
+    class: "relative w-full pb-3/4 rounded-t overflow-hidden #{html(:cover, :classes)}",
+    style: html(:cover, :style) do %>
+    <%= item_selector_input(floating: true, size: :lg) if @resource.record_selector%>
+    <%= render_cover %>
   <% end %>
-  <%= content_tag :div, class: "grid grid-cols-1 place-content-between p-4 h-full" do %>
+  <div class="grid grid-cols-1 place-content-between p-4 h-full">
     <div class="mb-4 h-full flex flex-col space-between">
-      <% if title.present? %>
-        <%= content_tag :div, class: "grid font-semibold leading-tight text-lg mb-2 #{title.get_html(:classes, view: :index, element: :wrapper)}", style: title.get_html(:style, view: :index, element: :wrapper) do %>
-          <%= link_to_if title.link_to_resource, title.value, resource_view_path %>
-        <% end %>
-      <% end %>
-      <% if body.present? %>
-        <%= content_tag :div, class: "text-sm break-words text-gray-500 #{body.get_html(:classes, view: :index, element: :wrapper)}", style: body.get_html(:style, view: :index, element: :wrapper) do %>
-          <%= body.value %>
-        <% end %>
-      <% end %>
+      <%= render_title %>
+      <%= render_body %>
     </div>
     <div class="w-full place-self-end">
-      <%= render(Avo::Index::ResourceControlsComponent.new(resource: @resource, reflection: @reflection, parent_model: @parent_model, parent_resource: @parent_resource, view_type: :grid)) %>
+      <%= render(Avo::Index::ResourceControlsComponent.new(resource: @resource, reflection: @reflection, parent_record: @parent_record, parent_resource: @parent_resource, view_type: :grid, actions: actions)) %>
     </div>
-  <% end %>
+  </div>
 </div>

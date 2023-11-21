@@ -9,6 +9,12 @@ FactoryBot.define do
     custom_css { ".header {\n  color: red;\n}" }
   end
 
+  trait :with_post do
+    after(:create) do |user|
+      create(:post, user_id: user.id)
+    end
+  end
+
   factory :team do
     name { Faker::Company.name }
     description { Faker::Lorem.paragraph(sentence_count: 4) }

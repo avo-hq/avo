@@ -4,21 +4,13 @@ module Avo
   class SearchController < ApplicationController
     include Rails.application.routes.url_helpers
 
-    before_action :set_resource_name, only: [:show]
-    before_action :set_resource, only: [:show]
-
-    def index
-      raise ActionController::BadRequest.new("This feature requires the pro license https://avohq.io/purchase/pro") if App.license.lacks_with_trial(:global_search)
-
-      resources = Avo::App.resources.reject do |resource|
-        resource.class.hide_from_global_search
-      end
-
-      render json: search_resources(resources)
-    end
+    before_action :set_resource_name, only: :show
+    before_action :set_resource, only: :show
 
     def show
       render json: search_resources([resource])
+    rescue => error
+      render_search_error(error)
     end
 
     private
@@ -28,7 +20,6 @@ module Avo
         .map do |resource|
           # Apply authorization
           next unless @authorization.set_record(resource.model_class).authorize_action(:search, raise_exception: false)
-
           # Filter out the models without a search_query
           next if resource.search_query.nil?
 
@@ -45,10 +36,10 @@ module Avo
     end
 
     def search_resource(resource)
-      query = Avo::Hosts::SearchScopeHost.new(
-        block: resource.search_query,
+      query = Avo::ExecutionContext.new(
+        target: resource.search_query,
         params: params,
-        scope: resource.class.scope
+        query: resource.query_scope
       ).handle
 
       query = apply_scope(query) if should_apply_any_scope?
@@ -69,9 +60,9 @@ module Avo
 
       result_object = {
         header: header,
-        help: resource.class.search_query_help,
+        help: resource.fetch_search(:help) || "",
         results: results,
-        count: results_count
+        count: results.count
       }
 
       [resource.name.pluralize.downcase, result_object]
@@ -96,9 +87,9 @@ module Avo
       # to scope the query.
       # Example usage: Got to a project, create a new review, and search for a user.
       if parent.blank? && params[:via_parent_resource_id].present? && params[:via_parent_resource_class].present? && params[:via_relation].present?
-        parent_resource_class = BaseResource.valid_model_class params[:via_parent_resource_class]
+        parent_resource_class = BaseResource.get_model_by_name params[:via_parent_resource_class]
 
-        reflection_class = BaseResource.valid_model_class params[:via_reflection_class]
+        reflection_class = BaseResource.get_model_by_name params[:via_reflection_class]
 
         grandparent = parent_resource_class.find params[:via_parent_resource_id]
         parent = reflection_class.new(
@@ -106,7 +97,7 @@ module Avo
         )
       end
 
-      Avo::Hosts::AssociationScopeHost.new(block: attach_scope, query: query, parent: parent).handle
+      Avo::ExecutionContext.new(target: attach_scope, query: query, parent: parent).handle
     end
 
     # This scope is applied if the search is being performed on a has_many association
@@ -114,44 +105,34 @@ module Avo
       association_name = BaseResource.valid_association_name(parent, params[:via_association_id])
 
       # Get association records
-      scope = parent.send(association_name)
+      query = parent.send(association_name)
 
       # Apply policy scope if authorization is present
-      scope = resource.authorization&.apply_policy scope
+      query = resource.authorization&.apply_policy query
 
-      Avo::Hosts::SearchScopeHost.new(block: @resource.search_query, params: params, scope: scope).handle
+      Avo::ExecutionContext.new(target: @resource.class.search_query, params: params, query: query).handle
     end
 
-    def apply_search_metadata(models, avo_resource)
-      models.map do |model|
-        resource = avo_resource.dup.hydrate(model: model).hydrate_fields(model: model)
+    def apply_search_metadata(records, avo_resource)
+      records.map do |record|
+        resource = avo_resource.new(record: record)
 
-        record_path = if resource.search_result_path.present?
-          Avo::Hosts::ResourceRecordHost.new(block: resource.search_result_path, resource: resource, record: model).handle
-        else
-          resource.record_path
-        end
-
-        result = {
-          _id: model.id,
-          _label: resource.label,
-          _url: record_path
-        }
-
-        if App.license.has_with_trial(:enhanced_search_results)
-          result[:_description] = resource.description
-          result[:_avatar] = resource.avatar.present? ? main_app.url_for(resource.avatar) : nil
-          result[:_avatar_type] = resource.avatar_type
-        end
-
-        result
+        fetch_result_information record, resource, resource.class.fetch_search(:item, record: record)
       end
     end
 
     private
 
+    def fetch_result_information(record, resource, item)
+      {
+        _id: record.id,
+        _label: item&.dig(:title) || resource.record_title,
+        _url: resource.class.fetch_search(:result_path, record: resource.record) || resource.record_path
+      }
+    end
+
     def should_apply_has_many_scope?
-      params[:via_association] == "has_many" && @resource.search_query.present?
+      params[:via_association] == "has_many" && @resource.class.search_query.present?
     end
 
     def should_apply_attach_scope?
@@ -175,15 +156,40 @@ module Avo
     end
 
     def fetch_field
-      fields = ::Avo::App.get_resource_by_model_name(params[:via_reflection_class]).get_field_definitions
-      fields.find { |f| f.id.to_s == params[:via_association_id] }
+      return if params[:via_association_id].nil?
+
+      reflection_resource = Avo.resource_manager.get_resource_by_model_class(params[:via_reflection_class]).new(
+        view: Avo::ViewInquirer.new(params[:via_reflection_view]),
+        record: parent,
+        params: params,
+        user: current_user
+      )
+
+      reflection_resource.detect_fields.get_field_definitions.find do |field|
+        field.id.to_s == params[:via_association_id]
+      end
     end
 
     def fetch_parent
       return unless params[:via_reflection_id].present?
 
-      parent_resource = ::Avo::App.get_resource_by_model_name params[:via_reflection_class]
+      parent_resource = Avo.resource_manager.get_resource_by_model_class params[:via_reflection_class]
       parent_resource.find_record params[:via_reflection_id], params: params
+    end
+
+    def render_search_error(error)
+      raise error unless Rails.env.development?
+
+      render json: {
+        error: {
+          header: "🚨 An error occurred while searching. 🚨",
+          help: "Please see the error and fix it before deploying.",
+          results: {
+            _label: error.message
+          },
+          count: 1
+        }
+      }, status: 500
     end
   end
 end

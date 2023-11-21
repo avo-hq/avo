@@ -3,53 +3,64 @@ module Avo
     extend ActiveSupport::DescendantsTracker
 
     include ActionView::Helpers::UrlHelper
-    include Avo::Concerns::HasFields
-    include Avo::Concerns::CanReplaceFields
-    include Avo::Concerns::HasEditableControls
+    include Avo::Concerns::HasItems
+    include Avo::Concerns::CanReplaceItems
+    include Avo::Concerns::HasControls
     include Avo::Concerns::HasStimulusControllers
     include Avo::Concerns::ModelClassConstantized
+    include Avo::Concerns::HasDescription
+    include Avo::Concerns::HasHelpers
+    include Avo::Concerns::Hydration
     include Avo::Concerns::Pagination
 
-    delegate :view_context, to: ::Avo::App
-    delegate :current_user, to: ::Avo::App
-    delegate :params, to: ::Avo::App
+    # Avo::Current methods
+    delegate :context, to: Avo::Current
+    def current_user
+      Avo::Current.user
+    end
+    delegate :params, to: Avo::Current
+    delegate :request, to: Avo::Current
+    delegate :view_context, to: Avo::Current
+
+    # view_context methods
     delegate :simple_format, :content_tag, to: :view_context
     delegate :main_app, to: :view_context
     delegate :avo, to: :view_context
     delegate :resource_path, to: :view_context
     delegate :resources_path, to: :view_context
+
+    # I18n methods
     delegate :t, to: ::I18n
-    delegate :context, to: ::Avo::App
+
+    # class methods
+    delegate :class_name, to: :class
+    delegate :route_key, to: :class
+    delegate :singular_route_key, to: :class
 
     attr_accessor :view
     attr_accessor :reflection
     attr_accessor :user
-    attr_accessor :params
+    attr_accessor :record
 
     class_attribute :id, default: :id
-    class_attribute :title, default: :id
-    class_attribute :description, default: :id
-    class_attribute :search_query, default: nil
-    class_attribute :search_query_help, default: ""
-    class_attribute :search_result_path
+    class_attribute :title
+    class_attribute :search, default: {}
     class_attribute :includes, default: []
     class_attribute :authorization_policy
     class_attribute :translation_key
     class_attribute :default_view_type, default: :table
     class_attribute :devise_password_optional, default: false
-    class_attribute :actions_loader
+    class_attribute :scopes_loader
     class_attribute :filters_loader
-    class_attribute :grid_loader
+    class_attribute :view_types
+    class_attribute :grid_view
     class_attribute :visible_on_sidebar, default: true
-    class_attribute :unscoped_queries_on_index, default: false
-    class_attribute :resolve_query_scope
-    class_attribute :resolve_find_scope
-    # TODO: refactor this into a Host without args
-    class_attribute :find_record_method, default: ->(model_class:, id:, params:) {
-      model_class.find id
+    class_attribute :index_query, default: -> {
+      query
     }
-    class_attribute :ordering
-    class_attribute :hide_from_global_search, default: false
+    class_attribute :find_record_method, default: -> {
+      query.find id
+    }
     class_attribute :after_create_path, default: :show
     class_attribute :after_update_path, default: :show
     class_attribute :record_selector, default: true
@@ -57,60 +68,46 @@ module Avo
     class_attribute :extra_params
     class_attribute :link_to_child_resource, default: false
     class_attribute :map_view
+    class_attribute :components, default: {}
+
+    # EXTRACT:
+    class_attribute :ordering
 
     class << self
       delegate :t, to: ::I18n
-      delegate :context, to: ::Avo::App
-
-      def grid(&block)
-        grid_collector = GridCollector.new
-        grid_collector.instance_eval(&block)
-
-        self.grid_loader = grid_collector
-      end
+      delegate :context, to: ::Avo::Current
 
       def action(action_class, arguments: {})
-        self.actions_loader ||= Avo::Loaders::Loader.new
-
-        action = { class: action_class, arguments: arguments }
-        self.actions_loader.use action
+        deprecated_dsl_api __method__, "actions"
       end
 
       def filter(filter_class, arguments: {})
-        self.filters_loader ||= Avo::Loaders::Loader.new
-
-        filter = { class: filter_class , arguments: arguments }
-        self.filters_loader.use filter
+        deprecated_dsl_api __method__, "filters"
       end
 
-      # This is the search_query scope
-      # This should be removed and passed to the search block
-      def scope
-        query_scope
+      def scope(scope_class)
+        deprecated_dsl_api __method__, "scopes"
       end
 
       # This resolves the scope when doing "where" queries (not find queries)
+      #
+      # It's used to apply the authorization feature.
       def query_scope
-        final_scope = resolve_query_scope.present? ? resolve_query_scope.call(model_class: model_class) : model_class
-
-        authorization.apply_policy final_scope
+        authorization.apply_policy Avo::ExecutionContext.new(
+          target: index_query,
+          query: model_class
+        ).handle
       end
 
       # This resolves the scope when finding records (not "where" queries)
+      #
+      # It's used to apply the authorization feature.
       def find_scope
-        final_scope = resolve_find_scope.present? ? resolve_find_scope.call(model_class: model_class) : model_class
-
-        authorization.apply_policy final_scope
+        authorization.apply_policy model_class
       end
 
       def authorization
-        Avo::Services::AuthorizationService.new Avo::App.current_user, model_class, policy_class: authorization_policy
-      end
-
-      def order_actions
-        return {} if ordering.blank?
-
-        ordering.dig(:actions) || {}
+        Avo::Services::AuthorizationService.new Avo::Current.user, model_class, policy_class: authorization_policy
       end
 
       def get_record_associations(record)
@@ -134,14 +131,122 @@ module Avo
         ApplicationRecord.descendants
       end
 
-      def valid_model_class(model_class)
+      def get_model_by_name(model_name)
         get_available_models.find do |m|
-          m.to_s == model_class.to_s
+          m.to_s == model_name.to_s
         end
+      end
+
+      # Returns the model class being used for this resource.
+      #
+      # The Resource instance has a model_class method too so it can support the STI use cases
+      # where we figure out the model class from the record
+      def model_class(record_class: nil)
+        # get the model class off of the static property
+        return @model_class if @model_class.present?
+
+        # get the model class off of the record for STI models
+        return record_class if record_class.present?
+
+        # generate a model class
+        class_name.safe_constantize
+      end
+
+      # This is used as the model class ID
+      # We use this instead of the route_key to maintain compatibility with uncountable models
+      # With uncountable models route key appends an _index suffix (Fish->fish_index)
+      # Example: User->users, MediaItem->media_items, Fish->fish
+      def model_key
+        model_class.model_name.plural
+      end
+
+      def class_name
+        to_s.demodulize
+      end
+
+      def route_key
+        class_name.underscore.pluralize
+      end
+
+      def singular_route_key
+        route_key.singularize
+      end
+
+      def translation_key
+        @translation_key || "avo.resource_translations.#{class_name.underscore}"
+      end
+
+      def name
+        default = class_name.underscore.humanize
+
+        if translation_key
+          t(translation_key, count: 1, default: default).humanize
+        else
+          default
+        end
+      end
+      alias_method :singular_name, :name
+
+      def plural_name
+        default = name.pluralize
+
+        if translation_key
+          t(translation_key, count: 2, default: default).humanize
+        else
+          default
+        end
+      end
+
+      def underscore_name
+        return @name if @name.present?
+
+        name.demodulize.underscore
+      end
+
+      def navigation_label
+        plural_name.humanize
+      end
+
+      def find_record(id, query: nil, params: nil)
+        Avo::ExecutionContext.new(
+          target: find_record_method,
+          query: query || find_scope, # If no record is given we'll use the default
+          id: id,
+          params: params
+        ).handle
+      end
+
+      def search_query
+        search.dig(:query)
+      end
+
+      def fetch_search(key, record: nil)
+        # self.class.fetch_search
+        Avo::ExecutionContext.new(target: search[key], resource: self, record: record).handle
       end
     end
 
-    def initialize
+    delegate :context, to: ::Avo::Current
+    delegate :name, to: :class
+    delegate :singular_name, to: :class
+    delegate :plural_name, to: :class
+    delegate :underscore_name, to: :class
+    delegate :underscore_name, to: :class
+    delegate :find_record, to: :class
+    delegate :model_key, to: :class
+    delegate :tab, to: :items_holder
+
+    def initialize(record: nil, view: nil, user: nil, params: nil)
+      @view = Avo::ViewInquirer.new(view) if view.present?
+      @user = user if user.present?
+      @params = params if params.present?
+
+      if record.present?
+        @record = record
+
+        hydrate_model_with_default_values if @view&.new?
+      end
+
       unless self.class.model_class.present?
         if model_class.present? && model_class.respond_to?(:base_class)
           self.class.model_class = model_class.base_class
@@ -149,155 +254,138 @@ module Avo
       end
     end
 
-    def record
-      @model
-    end
-    alias_method :model, :record
+    def detect_fields
+      self.items_holder = Avo::Resources::Items::Holder.new(parent: self)
 
-
-    def hydrate(model: nil, view: nil, user: nil, params: nil)
-      @view = view if view.present?
-      @user = user if user.present?
-      @params = params if params.present?
-
-      if model.present?
-        @model = model
-
-        hydrate_model_with_default_values if @view == :new
+      # Used in testing to replace items
+      if temporary_items.present?
+        instance_eval(&temporary_items)
+      else
+        fetch_fields
       end
 
       self
     end
 
-    def get_grid_fields
-      return if self.class.grid_loader.blank?
+    VIEW_METHODS_MAPPING = {
+      index: [:index_fields, :display_fields],
+      show: [:show_fields, :display_fields],
+      edit: [:edit_fields, :form_fields],
+      update: [:edit_fields, :form_fields],
+      new: [:new_fields, :form_fields],
+      create: [:new_fields, :form_fields]
+    } unless defined? VIEW_METHODS_MAPPING
 
-      self.class.grid_loader.hydrate(model: @model, view: @view, resource: self)
+    def fetch_fields
+      possible_methods_for_view = VIEW_METHODS_MAPPING[view.to_sym]
+
+      # Safe navigation operator is used because the view can be "destroy" or "preview"
+      possible_methods_for_view&.each do |method_for_view|
+        return send(method_for_view) if respond_to?(method_for_view)
+      end
+
+      fields
     end
 
-    def get_filters
-      return [] if self.class.filters_loader.blank?
-
-      self.class.filters_loader.bag
+    def fields
+      # blank fields method
     end
 
-    def get_filter_arguments(filter_class)
-      filter = get_filters.find { |filter| filter[:class] == filter_class.constantize }
+    [:action, :filter, :scope].each do |entity|
+      plural_entity = entity.to_s.pluralize
 
-      filter[:arguments]
+      # def actions / def filters / def scopes
+      define_method plural_entity do
+        # blank entity method
+      end
+
+      # def action / def filter / def scope
+      define_method entity do |entity_class, arguments: {}|
+        entity_loader(entity).use({class: entity_class, arguments: arguments})
+      end
+
+      # def get_actions / def get_filters / def get_scopes
+      define_method "get_#{plural_entity}" do
+        return entity_loader(entity).bag if entity_loader(entity).present?
+
+        instance_variable_set("@#{plural_entity}_loader", Avo::Loaders::Loader.new)
+        send plural_entity
+
+        entity_loader(entity).bag
+      end
+
+      # def get_action_arguments / def get_filter_arguments / def get_scope_arguments
+      define_method "get_#{entity}_arguments" do |entity_class|
+        klass = send("get_#{plural_entity}").find { |entity| entity[:class].to_s == entity_class.to_s }
+
+        raise "Couldn't find '#{entity_class}' in the 'def #{plural_entity}' method on your '#{self.class}' resource." if klass.nil?
+
+        klass[:arguments]
+      end
     end
 
-    def get_actions
-      return [] if self.class.actions_loader.blank?
+    def hydrate(...)
+      super(...)
 
-      self.class.actions_loader.bag
-    end
+      if @record.present?
+        hydrate_model_with_default_values if @view&.new?
+      end
 
-    def get_action_arguments(action_class)
-      action = get_actions.find { |action| action[:class].to_s == action_class.to_s }
-
-      action[:arguments]
+      self
     end
 
     def default_panel_name
       return @params[:related_name].capitalize if @params.present? && @params[:related_name].present?
 
-      case @view
+      case @view.to_sym
       when :show
-        model_title
+        record_title
       when :edit
-        model_title
+        record_title
       when :new
-        t("avo.create_new_item", item: name.downcase).upcase_first
+        t("avo.create_new_item", item: name.humanize(capitalize: false)).upcase_first
       end
     end
 
-    def class_name_without_resource
-      self.class.name.demodulize.delete_suffix("Resource")
-    end
-
+    # Returns the model class being used for this resource.
+    #
+    # We use the class method as a fallback but we pass it the record too so it can support the STI use cases
+    # where we figure out the model class from that record.
     def model_class
-      # get the model class off of the static property
-      return self.class.model_class if self.class.model_class.present?
+      record_class = @record&.class
 
-      # get the model class off of the model for STI models
-      return @model.base_class if @model.present?
-
-      # generate a model class
-      class_name_without_resource.safe_constantize
+      self.class.model_class record_class: record_class
     end
 
-    def model_id
-      @model.send id
-    end
+    def record_title
+      return name if @record.nil?
 
-    def model_title
-      return name if @model.nil?
+      # Get the title from the record if title is not set, try to get the name, title or label, or fallback to the id
+      return @record.try(:name) || @record.try(:title) || @record.try(:label) || @record.id  if title.nil?
 
-      the_title = @model.send title
-      return the_title if the_title.present?
-
-      model_id
-    rescue
-      name
-    end
-
-    def resource_description
-      return instance_exec(&self.class.description) if self.class.description.respond_to? :call
-
-      # Show the description only on the resource index view.
-      # If the user wants to conditionally it on all pages, they should use a block.
-      if view == :index
-        return self.class.description if self.class.description.is_a? String
+      # If the title is a symbol, get the value from the record else execute the block/string
+      case title
+      when Symbol
+        @record.send title
+      when Proc
+        Avo::ExecutionContext.new(target: title, resource: self, record: @record).handle
       end
-    end
-
-    def translation_key
-      return "avo.resource_translations.#{class_name_without_resource.underscore}" if ::Avo::App.translation_enabled
-
-      self.class.translation_key
-    end
-
-    def name
-      default = class_name_without_resource.to_s.gsub('::', ' ').underscore.humanize
-
-      return @name if @name.present?
-
-      if translation_key && ::Avo::App.translation_enabled
-        t(translation_key, count: 1, default: default).humanize
-      else
-        default
-      end
-    end
-
-    def singular_name
-      name
-    end
-
-    def plural_name
-      default = name.pluralize
-
-      if translation_key && ::Avo::App.translation_enabled
-        t(translation_key, count: 2, default: default).humanize
-      else
-        default
-      end
-    end
-
-    def underscore_name
-      return @name if @name.present?
-
-      self.class.name.demodulize.underscore
-    end
-
-    def navigation_label
-      plural_name.humanize
     end
 
     def available_view_types
+      if self.class.view_types.present?
+        return Array(
+          Avo::ExecutionContext.new(
+            target: self.class.view_types,
+            resource: self,
+            record: record
+          ).handle
+        )
+      end
+
       view_types = [:table]
 
-      view_types << :grid if get_grid_fields.present?
+      view_types << :grid if self.class.grid_view.present?
       view_types << :map if map_view.present?
 
       view_types
@@ -309,7 +397,7 @@ module Avo
       end
     end
 
-    # Map the received params to their actual fields.
+    # Map the received params to their actual fields
     def fields_by_database_id
       get_field_definitions
         .reject do |field|
@@ -321,28 +409,28 @@ module Avo
         .to_h
     end
 
-    def fill_model(model, params, extra_params: [])
+    def fill_record(record, params, extra_params: [])
       # Write the field values
       params.each do |key, value|
         field = fields_by_database_id[key]
 
         next unless field.present?
 
-        model = field.fill_field model, key, value, params
+        record = field.fill_field record, key, value, params
       end
 
-      # Write the user configured extra params to the model
+      # Write the user configured extra params to the record
       if extra_params.present?
         # Let Rails fill in the rest of the params
-        model.assign_attributes params.permit(extra_params)
+        record.assign_attributes params.permit(extra_params)
       end
 
-      model
+      record
     end
 
     def authorization(user: nil)
-      current_user = user || Avo::App.current_user
-      Avo::Services::AuthorizationService.new(current_user, model || model_class, policy_class: authorization_policy)
+      current_user = user || Avo::Current.user
+      Avo::Services::AuthorizationService.new(current_user, record || model_class, policy_class: authorization_policy)
     end
 
     def file_hash
@@ -363,37 +451,37 @@ module Avo
       Digest::MD5.hexdigest(content_to_be_hashed)
     end
 
-    def cache_hash(parent_model)
-      if parent_model.present?
-        [model, file_hash, parent_model]
+    def cache_hash(parent_record)
+      if parent_record.present?
+        [record, file_hash, parent_record]
       else
-        [model, file_hash]
+        [record, file_hash]
       end
     end
 
-    # We will not overwrite any attributes that come pre-filled in the model.
+    # We will not overwrite any attributes that come pre-filled in the record.
     def hydrate_model_with_default_values
       default_values = get_fields
         .select do |field|
-          !field.computed
+          !field.computed && !field.is_a?(Avo::Fields::HeadingField)
         end
         .map do |field|
           value = field.value
 
           if field.type == "belongs_to"
 
-            reflection = @model._reflections[@params[:via_relation]]
+            reflection = @record._reflections[@params[:via_relation]]
 
             if field.polymorphic_as.present? && field.types.map(&:to_s).include?(@params[:via_relation_class])
               # set the value to the actual record
-              via_resource = ::Avo::App.get_resource_by_model_name(@params[:via_relation_class])
-              value = via_resource.find_record(@params[:via_resource_id])
+              via_resource = Avo.resource_manager.get_resource_by_model_class(@params[:via_relation_class])
+              value = via_resource.find_record(@params[:via_record_id])
             elsif reflection.present? && reflection.foreign_key.present? && field.id.to_s == @params[:via_relation].to_s
-              resource = Avo::App.get_resource_by_model_name params[:via_relation_class]
-              model = resource.find_record @params[:via_resource_id], params: params
+              resource = Avo.resource_manager.get_resource_by_model_class params[:via_relation_class]
+              record = resource.find_record @params[:via_record_id], params: params
               id_param = reflection.options[:primary_key] || :id
 
-              value = model.send(id_param)
+              value = record.send(id_param)
             end
           end
 
@@ -405,24 +493,8 @@ module Avo
         end
 
       default_values.each do |field, value|
-        field.assign_value record: @model, value: value
+        field.assign_value record: @record, value: value
       end
-    end
-
-    def route_key
-      class_name_without_resource.underscore.pluralize
-    end
-
-    def singular_route_key
-      route_key.singularize
-    end
-
-    # This is used as the model class ID
-    # We use this instead of the route_key to maintain compatibility with uncountable models
-    # With uncountable models route key appends an _index suffix (Fish->fish_index)
-    # Example: User->users, MediaItem->media_items, Fish->fish
-    def model_key
-      model_class.model_name.plural
     end
 
     def model_name
@@ -434,23 +506,11 @@ module Avo
     end
 
     def record_path
-      resource_path(model: model, resource: self)
+      resource_path(record: record, resource: self)
     end
 
     def records_path
       resources_path(resource: self)
-    end
-
-    def label_field
-      get_field_definitions.find do |field|
-        field.as_label.present?
-      end
-    rescue
-      nil
-    end
-
-    def label
-      label_field&.value || model_title
     end
 
     def avatar_field
@@ -477,34 +537,34 @@ module Avo
       nil
     end
 
-    def description_field
-      get_field_definitions.find do |field|
-        field.as_description.present?
-      end
-    rescue
-      nil
-    end
-
-    def description
-      description_field&.value
-    end
-
     def form_scope
       model_class.base_class.to_s.underscore.downcase
     end
 
-    def ordering_host(**args)
-      Avo::Hosts::Ordering.new resource: self, options: self.class.ordering, **args
+    def has_record_id?
+      record.present? && record_id.present?
     end
 
-    def has_model_id?
-      model.present? && model.id.present?
+    def id_attribute
+      :id
     end
 
-    def find_record(id, query: nil, params: nil)
-      query ||= self.class.find_scope
+    def record_id
+      record.send(id_attribute)
+    end
 
-      self.class.find_record_method.call(model_class: query, id: id, params: params)
+    def description_attributes
+      {
+        view: view,
+        resource: self,
+        record: record
+      }
+    end
+
+    private
+
+    def entity_loader(entity)
+      instance_variable_get("@#{entity.to_s.pluralize}_loader")
     end
   end
 end

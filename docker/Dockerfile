@@ -20,9 +20,9 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN gem install bundler -v 2.3.5
 
-ENV RAILS_ENV=production
-ENV NODE_ENV=production
-ENV BUNDLE_WITHOUT=development:test
+ENV RAILS_ENV=production \
+  NODE_ENV=production \
+  BUNDLE_WITHOUT=development:test
 
 WORKDIR /avo/
 
@@ -36,6 +36,7 @@ RUN mkdir /avo/lib/avo
 # Cache the bundle install command with a fake version
 COPY ./tmp/Gemfile_v1.lock /avo/Gemfile.lock
 COPY ./tmp/version_v1.rb /avo/lib/avo/version.rb
+# RUN bundle config set --local without 'development:test'
 RUN bundle install --jobs 4 --retry 3
 
 COPY package.json /avo/
@@ -46,11 +47,16 @@ RUN yarn check --integrity
 
 # re-run bundle install with the appropriate version number
 COPY ./lib/avo/version.rb /avo/lib/avo/version.rb
+# Remove gems used to test things locally
 RUN bundle install --jobs 4 --retry 3
 
 # Copy the files
 COPY . /avo
 
+COPY ./pluggy /pluggy
+
+# Build assets
+RUN bundle exec rails avo:sym_link
 RUN yarn prod:build:js
 RUN yarn prod:build:css
 

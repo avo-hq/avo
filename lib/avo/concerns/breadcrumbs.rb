@@ -50,7 +50,7 @@ module Avo
           when Symbol
             context.send(name)
           when Proc
-            name.call(context)
+            Avo::ExecutionContext.new(target: name, context: context).handle
           else
             name.to_s
           end
@@ -61,7 +61,7 @@ module Avo
           when Symbol
             context.send(path)
           when Proc
-            path.call(context)
+            Avo::ExecutionContext.new(target: path, context: context).handle
           else
             context.url_for(path)
           end

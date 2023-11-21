@@ -1,0 +1,9 @@
+<% if valid %>
+  <span class="text-green-700 text-xl">
+    <%= svg "check-badge", class: "h-5 inline -mt-1 relative" %> <span>Valid</span>
+  </span>
+<% else %>
+  <span class="text-orange-700 text-xl">
+    <%= svg "exclamation-circle", class: "h-5 inline -mt-1 relative" %> <span>Invalid</span>
+  </span>
+<% end %>

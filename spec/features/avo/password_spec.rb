@@ -35,10 +35,9 @@ RSpec.feature "password", type: :feature do
         expect(page).to have_field type: "password", id: "user_password", placeholder: "User Password", text: nil
 
         fill_in "user_password", with: new_password
+        fill_in "user_password_confirmation", with: new_password
 
-        click_on "Save"
-
-        wait_for_loaded
+        save
 
         expect(current_path).to eql "/admin/resources/users/#{user.slug}"
 

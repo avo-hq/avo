@@ -1,4 +1,4 @@
-class CourseCountryFilter < Avo::Filters::BooleanFilter
+class Avo::Filters::CourseCountryFilter < Avo::Filters::BooleanFilter
   self.name = "Course country filter"
 
   def apply(request, query, values)

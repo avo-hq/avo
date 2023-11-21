@@ -45,6 +45,9 @@ class Avo::Reloader
     # watch the lib directory in Avo development
     if reload_lib?
       dirs[Avo::Engine.root.join("lib", "avo").to_s] = ["rb"]
+      if Avo.avo_dynamic_filters_installed?
+        dirs[Avo::DynamicFilters::Engine.root.join("lib", "avo", "dynamic_filters").to_s] = ["rb"]
+      end
     end
 
     dirs

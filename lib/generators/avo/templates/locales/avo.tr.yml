@@ -23,6 +23,7 @@ tr:
     create_new_item: Yeni bir %{item} oluşturun
     dashboard: Yönetim Paneli
     dashboards: Yönetim Panelleri
+    default_scope: Herşey
     delete: sil
     delete_file: Dosyayı sil
     delete_item: "%{item} öğresini sil"

@@ -4,6 +4,6 @@
   <% elsif @field.protocol.present? %>
     <%= link_to @field.value, "#{@field.protocol}:#{@field.value}" %>
   <% else %>
-    <%= link_to_if @field.link_to_resource, @field.value, resource_view_path %>
+    <%= link_to_if @field.link_to_record, @field.value, resource_view_path %>
   <% end %>
 <% end %>

@@ -1,14 +1,16 @@
-class <%= class_name.camelize %> < Avo::BaseAction
-  self.name = "<%= name.underscore.humanize %>"
+class Avo::Actions::<%= class_name.camelize %> < Avo::BaseAction
+<%= configuration_options %>
   # self.visible = -> do
   #   true
   # end
 
-  def handle(**args)
-    models, fields, current_user, resource = args.values_at(:models, :fields, :current_user, :resource)
+  # def fields
+  #   # Add Action fields here
+  # end
 
-    models.each do |model|
-      # Do something with your models.
+  def handle(records:, fields:, current_user:, resource:, **args)
+    records.each do |record|
+      # Do something with your records.
     end
   end
 end

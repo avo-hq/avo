@@ -1,19 +1,16 @@
-<div class="resource-sidebar-component divide-y">
-  <% fields.each_with_index do |field, index| %>
-    <%= render field
-      .hydrate(
-        resource: resource,
-        model: resource.model,
-        user: resource.user,
-        view: view
-      ).component_for_view(view)
-      .new(
-        field: field,
-        resource: resource,
-        form: form,
-        stacked: true,
-        index: index
-      )
-    %>
-  <% end %>
+<div class="resource-sidebar-component divide-y"
+  data-component-name="<%= self.class.to_s.underscore %>"
+  data-component-index="<%= index %>"
+  data-resource-name="<%= @resource.class.to_s %>"
+  data-record-id="<%= @resource.record.id %>"
+>
+  <%= render Avo::Items::VisibleItemsComponent.new(
+    resource: @resource,
+    item: @sidebar,
+    view: @view,
+    form: @form,
+    field_component_extra_args: {
+      stacked: true
+    }
+  )%>
 </div>

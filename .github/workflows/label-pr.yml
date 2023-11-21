@@ -1,17 +1,15 @@
-name: PR Labeler
+name: Label PR
+
 on:
-  pull_request:
+  pull_request_target:
     types: [opened]
 
 permissions:
   contents: read
 
 jobs:
-  pr-labeler:
+  label-pr:
     permissions:
-      pull-requests: write
-    runs-on: ubuntu-latest
-    steps:
-      - uses: TimonVS/pr-labeler-action@v3
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      contents: read # for TimonVS/pr-labeler-action to read config file
+      pull-requests: write # for TimonVS/pr-labeler-action to add labels in PR
+    uses: avo-hq/support/.github/workflows/label-pr.yml@main

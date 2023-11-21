@@ -1,4 +1,4 @@
-class <%= class_name %>Field < Avo::Fields::BaseField
+class Avo::Fields::<%= class_name %>Field < Avo::Fields::BaseField
   def initialize(name, **args, &block)
     super(name, **args, &block)
   end

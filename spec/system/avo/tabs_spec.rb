@@ -9,7 +9,7 @@ RSpec.describe "Tabs", type: :system do
         visit "/admin/resources/users"
 
         expect(find("table thead").text).to eq "ID\nAVATAR\nFIRST NAME\nLAST NAME\nUSER EMAIL\nIS ACTIVE\nCV\nIS ADMIN\nROLES\nBIRTHDAY\nIS WRITER"
-        within find("tr[data-resource-id='#{user.id}']") do
+        within find("tr[data-resource-id='#{user.to_param}']") do
           expect(find_all("table tbody tr td")[10].text).to eq "Wednesday, 10 February 1988"
         end
       end
@@ -25,11 +25,11 @@ RSpec.describe "Tabs", type: :system do
 
         expect(page).not_to have_selector 'turbo-frame[id="has_many_field_show_posts"]'
 
-        click_tab "Posts", within: second_tab_group
+        click_tab "Posts", within_target: second_tab_group
 
         expect(find('turbo-frame[id="has_many_field_show_posts"]')).to have_text "Posts"
         expect(find('turbo-frame[id="has_many_field_show_posts"]')).to have_link "Attach post"
-        expect(find('turbo-frame[id="has_many_field_show_posts"]')).to have_link "Create new post", href: "/admin/resources/posts/new?via_relation=user&via_relation_class=User&via_resource_id=#{user.slug}"
+        expect(find('turbo-frame[id="has_many_field_show_posts"]')).to have_link "Create new post", href: "/admin/resources/posts/new?via_record_id=#{user.slug}&via_relation=user&via_relation_class=User&via_resource_class=Avo%3A%3AResources%3A%3AUser"
 
         click_on "Attach post"
 
@@ -37,59 +37,19 @@ RSpec.describe "Tabs", type: :system do
 
         click_on "Cancel"
 
-        click_tab "Teams", within: first_tab_group
+        click_tab "Teams", within_target: first_tab_group
 
         expect(find("turbo-frame#has_and_belongs_to_many_field_show_teams")).to have_text "Teams"
         expect(find("turbo-frame#has_and_belongs_to_many_field_show_teams")).to have_link "Attach team"
-        expect(find("turbo-frame#has_and_belongs_to_many_field_show_teams")).to have_link "Create new team", href: "/admin/resources/teams/new?via_relation=users&via_relation_class=User&via_resource_id=#{user.slug}"
+        expect(find("turbo-frame#has_and_belongs_to_many_field_show_teams")).to have_link "Create new team", href: "/admin/resources/teams/new?via_record_id=#{user.slug}&via_relation=users&via_relation_class=User&via_resource_class=Avo%3A%3AResources%3A%3AUser"
       end
 
       it "hides the birthday tab" do
         visit avo.resources_user_path user
 
         within first_tab_group do
-          expect(find('[data-target="tab-switcher"]').text).to eq "Fish\nTeams\nPeople\nSpouses\nProjects"
+          expect(find('[data-target="tab-switcher"]').text).to eq "Fish\nTeams\nPeople\nSpouses\nProjects\nTeam memberships"
         end
-      end
-
-      describe "type: pills" do
-        it "displays the switcher as pills" do
-          visit avo.resources_user_path user
-
-          scroll_to second_tab_group
-
-          within second_tab_group do
-            expect(page).to have_selector '[data-target="tab-switcher"][data-style="pills"]'
-          end
-        end
-      end
-
-      describe "type: tabs" do
-        it "displays the switcher as pills" do
-          visit avo.resources_user_path user
-
-          scroll_to second_tab_group
-
-          within first_tab_group do
-            expect(page).to have_selector '[data-target="tab-switcher"][data-style="tabs"]'
-          end
-        end
-      end
-
-      it "hides has_many tab header button by policy" do
-        visit avo.resources_user_path user
-
-        expect(page).to have_selector("a.button-component[data-tabs-id-param='Teams']", text: "Teams")
-
-        UserPolicy.define_method(:view_teams?) do
-          false
-        end
-
-        visit avo.resources_user_path user
-
-        expect(page).to have_no_selector("a.button-component[data-tabs-id-param='Teams']", text: "Teams")
-
-        UserPolicy.remove_method(:view_teams?)
       end
     end
 
@@ -130,6 +90,18 @@ RSpec.describe "Tabs", type: :system do
         within second_tab_group do
           expect(find('[data-target="tab-switcher"]').text).to eq "Posts"
         end
+      end
+    end
+  end
+
+  describe "un-authorized tabs" do
+    it "hides the tab" do
+      visit "/admin/resources/users/#{user.slug}"
+
+      scroll_to first_tab_group
+
+      within first_tab_group do
+        expect(find('[data-target="tab-switcher"]')).to have_text "Fish\nTeams\nPeople\nSpouses\nProjects\nTeam memberships", exact: true
       end
     end
   end

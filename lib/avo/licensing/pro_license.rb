@@ -4,19 +4,13 @@ module Avo
       def abilities
         [
           :authorization,
-          :localization,
-          :custom_tools,
-          :custom_fields,
-          :resource_tools,
           :global_search,
           :enhanced_search_results,
           :searchable_associations,
           :resource_ordering,
           :dashboards,
           :menu_editor,
-          :stimulus_js_integration,
-          :resource_show_controls,
-          :branding,
+          :customizable_controls,
           :resource_sidebar,
           :advanced_fields
         ]

@@ -15,7 +15,7 @@ RSpec.feature "field generator", type: :feature do
 
     Rails::Generators.invoke("avo:field", ["cats", "-q"], {destination_root: Rails.root})
 
-    expect(File.read(file)).to start_with "class CatsField < Avo::Fields::BaseField"
+    expect(File.read(file)).to start_with "class Avo::Fields::CatsField < Avo::Fields::BaseField"
 
     check_files_and_clean_up file
 

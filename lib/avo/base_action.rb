@@ -1,6 +1,6 @@
 module Avo
   class BaseAction
-    include Avo::Concerns::HasFields
+    include Avo::Concerns::HasItems
 
     class_attribute :name, default: nil
     class_attribute :message
@@ -11,42 +11,62 @@ module Avo
     class_attribute :visible
     class_attribute :may_download_file, default: false
     class_attribute :turbo
+    class_attribute :authorize, default: true
 
     attr_accessor :view
     attr_accessor :response
-    attr_accessor :model
+    attr_accessor :record
     attr_accessor :resource
     attr_accessor :user
     attr_reader :arguments
 
-    delegate :context, to: ::Avo::App
-    delegate :current_user, to: ::Avo::App
-    delegate :params, to: ::Avo::App
-    delegate :view_context, to: ::Avo::App
+    # TODO: find a differnet way to delegate this to the uninitialized Current variable
+    delegate :context, to: Avo::Current
+    def current_user
+      Avo::Current.user
+    end
+    delegate :params, to: Avo::Current
+    delegate :view_context, to: Avo::Current
     delegate :avo, to: :view_context
     delegate :main_app, to: :view_context
+    delegate :to_param, to: :class
 
     class << self
-      delegate :context, to: ::Avo::App
+      delegate :context, to: ::Avo::Current
 
       def form_data_attributes
         # We can't respond with a file download from Turbo se we disable it on the form
         if may_download_file
-          {turbo: turbo || false, remote: false}
+          {turbo: turbo || false, remote: false, action_target: :form}
         else
-          {turbo: turbo, turbo_frame: :_top}.compact
+          {turbo: turbo, turbo_frame: :_top, action_target: :form}.compact
         end
       end
 
       # We can't respond with a file download from Turbo se we disable close the modal manually after a while (it's a hack, we know)
       def submit_button_data_attributes
-        attributes = { action_target: "submit" }
-
         if may_download_file
-          attributes[:action] = "click->modal#delayedClose"
+          {action: "click->modal#delayedClose"}
+        else
+          {}
         end
+      end
 
-        attributes
+      def to_param
+        to_s
+      end
+
+      def link_arguments(resource:, **args)
+        path = Avo::Services::URIService.parse(resource.record.present? ? resource.record_path : resource.records_path)
+          .append_paths("actions")
+          .append_query(action_id: to_param, **args)
+          .to_s
+
+        data = {
+          turbo_frame: "actions_show",
+        }
+
+        [path, data]
       end
     end
 
@@ -56,79 +76,87 @@ module Avo
       self.class.to_s.demodulize.underscore.humanize(keep_id_suffix: true)
     end
 
-    def initialize(model: nil, resource: nil, user: nil, view: nil, arguments: {})
-      @model = model
+    def initialize(record: nil, resource: nil, user: nil, view: nil, arguments: {})
+      @record = record
       @resource = resource
       @user = user
-      @view = view
-      @arguments = arguments
+      @view = Avo::ViewInquirer.new(view)
+      @arguments = Avo::ExecutionContext.new(
+        target: arguments,
+        resource: resource,
+        record: record
+      ).handle.with_indifferent_access
 
       self.class.message ||= I18n.t("avo.are_you_sure_you_want_to_run_this_option")
       self.class.confirm_button_label ||= I18n.t("avo.run")
       self.class.cancel_button_label ||= I18n.t("avo.cancel")
 
+      self.items_holder = Avo::Resources::Items::Holder.new
+      fields
+
       @response ||= {}
       @response[:messages] = []
     end
 
+    # Blank method
+    def fields
+    end
+
     def get_message
-      if self.class.message.respond_to? :call
-        Avo::Hosts::ResourceRecordHost.new(block: self.class.message, record: @model, resource: @resource).handle
-      else
-        self.class.message
-      end
+      Avo::ExecutionContext.new(target: self.class.message, record: @record, resource: @resource).handle
     end
 
     def handle_action(**args)
-      models, fields, current_user, resource = args.values_at(:models, :fields, :current_user, :resource)
-      # Fetching the field definitions and not the actual fields (get_fields) because they will break if the user uses a `visible` block and adds a condition using the `params` variable. The params are different in the show method and the handle method.
-      action_fields = get_field_definitions.map { |field| [field.id, field] }.to_h
+      processed_fields = if args[:fields].present?
+        # Fetching the field definitions and not the actual fields (get_fields) because they will break if the user uses a `visible` block and adds a condition using the `params` variable. The params are different in the show method and the handle method.
+        action_fields = get_field_definitions.map do |field|
+          field.hydrate(resource: @resource)
 
-      # For some fields, like belongs_to, the id and database_id differ (user vs user_id).
-      # That's why we need to fetch the database_id for when we process the action.
-      action_fields_by_database_id = action_fields.map do |id, value|
-        [value.database_id.to_sym, value]
-      end.to_h
+          [field.id, field]
+        end.to_h
 
-      if fields.present?
-        processed_fields = fields.to_unsafe_h.map do |name, value|
+        # For some fields, like belongs_to, the id and database_id differ (user vs user_id).
+        # That's why we need to fetch the database_id for when we process the action.
+        action_fields_by_database_id = action_fields.map do |id, value|
+          [value.database_id.to_sym, value]
+        end.to_h
+
+        args[:fields].to_unsafe_h.map do |name, value|
           field = action_fields_by_database_id[name.to_sym]
 
           next if field.blank?
 
           [name, field.resolve_attribute(value)]
-        end
-
-        processed_fields = processed_fields.reject(&:blank?).to_h
+        end.reject(&:blank?).to_h
       else
-        processed_fields = {}
+        {}
       end
 
-      args = {
+      handle(
         fields: processed_fields.with_indifferent_access,
-        current_user: current_user,
-        resource: resource
-      }
-
-      args[:models] = models unless standalone
-
-      handle(**args)
+        current_user: args[:current_user],
+        resource: args[:resource],
+        records: args[:query],
+        query: args[:query]
+      )
 
       self
     end
 
     def visible_in_view(parent_resource: nil)
+      return false unless authorized?
+
       if visible.blank?
         # Hide on the :new view by default
-        return false if view == :new
+        return false if view.new?
 
         # Show on all other views
         return true
       end
 
       # Run the visible block if available
-      Avo::Hosts::VisibilityHost.new(
-        block: visible,
+      Avo::ExecutionContext.new(
+        target: visible,
         params: params,
         parent_resource: parent_resource,
         resource: @resource,
@@ -137,20 +165,10 @@ module Avo
       ).handle
     end
 
-    def param_id
-      self.class.to_s
-    end
-
     def succeed(text)
       add_message text, :success
 
       self
-    end
-
-    def fail(text)
-      Rails.logger.warn "DEPRECATION WARNING: Action fail method is deprecated in favor of error method and will be removed from Avo version 3.0.0"
-
-      error text
     end
 
     def error(text)
@@ -210,13 +228,11 @@ module Avo
       self
     end
 
-    # We're overriding this method to hydrate with the proper resource attribute.
-    def hydrate_fields(model: nil, view: nil)
-      fields.map do |field|
-        field.hydrate(model: @model, view: @view, resource: resource)
-      end
-
-      self
+    def authorized?
+      Avo::ExecutionContext.new(
+        target: authorize,
+        action: self
+      ).handle
     end
 
     private

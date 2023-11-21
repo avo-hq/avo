@@ -14,7 +14,7 @@ module Avo
         redirect_to computed_path
       elsif !Rails.env.development?
         @page_title = "Get started"
-        resource = Avo::App.resources.min_by { |resource| resource.model_key }
+        resource = Avo.resource_manager.all.min_by { |resource| resource.model_key }
         redirect_to resources_path(resource: resource)
       end
     end

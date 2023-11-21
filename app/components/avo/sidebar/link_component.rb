@@ -19,7 +19,7 @@ class Avo::Sidebar::LinkComponent < ViewComponent::Base
 
   def is_external?
     # If the path contains the scheme, check if it includes the root path or not
-    return !path.include?(Avo::App.root_path) if URI(path).scheme.present?
+    return !path.include?(Avo.mount_path) if URI(path).scheme.present?
 
     false
   end

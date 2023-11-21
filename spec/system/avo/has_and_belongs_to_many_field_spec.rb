@@ -108,8 +108,8 @@ RSpec.describe "HasAndBelongsToManyField", type: :system do
         expect(page).not_to have_text "No related record found"
 
         expect {
-          find("[data-resource-name='users'][data-resource-id='#{user.id}'] [data-control='detach']").click
-          page.driver.browser.switch_to.alert.accept
+          find("[data-resource-name='users'][data-resource-id='#{user.to_param}'] [data-control='detach']").click
+          confirm_alert
           sleep 0.1
         }.to change(project.users, :count).by(-1)
 

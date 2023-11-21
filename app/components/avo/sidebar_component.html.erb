@@ -13,8 +13,8 @@
       <div class="space-y-6 mb-4">
         <%= render Avo::Sidebar::LinkComponent.new label: 'Get started', path: helpers.avo.root_path, active: :exclusive if Rails.env.development? && Avo.configuration.home_path.nil? %>
 
-        <% if Avo::App.has_main_menu? %>
-          <% Avo::App.main_menu.items.each do |item| %>
+        <% if Avo.plugin_manager.installed?("avo-menu") && Avo.has_main_menu? %>
+          <% Avo.main_menu.items.each do |item| %>
             <%= render Avo::Sidebar::ItemSwitcherComponent.new item: item %>
           <% end %>
         <% else %>
@@ -57,7 +57,14 @@
         <%= render partial: "/avo/partials/sidebar_extra" %>
       </div>
     </div>
-    <%= helpers.render_license_warnings unless Rails.env.production? %>
+    <% if Rails.env.development? %>
+      <div class="p-4 border-t group">
+        <%= link_to helpers.avo.avo_private_status_path, class: "block px-4 py-2 border rounded flex justify-between items-center w-full text-black text-sm" do %>
+          <span>Avo Status</span> <span><div class="rounded-full w-4 h-4 <%= Avo.app_status ? "bg-green-400" : "bg-orange-400" %>"></div></span>
+        <% end %>
+        <div class="absolute text-xs text-gray-700 group-hover:block hidden text-center w-full -ml-4">👆Visible only in development👆</div>
+      </div>
+    <% end %>
     <%= render Avo::SidebarProfileComponent.new user: helpers._current_user %>
   </div>
 </div>

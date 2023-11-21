@@ -1,3 +1,5 @@
+# TODO: enable these back when a fix on telemetry has been added
+
 # require "rails_helper"
 # WebMock.disable_net_connect!
 
@@ -118,11 +120,11 @@
 #             expect(Rails.cache.read(Avo::Licensing::HQ.cache_key)).to include({error: "Request timeout.", exception_message: "execution expired", expiry: 5.minutes}.as_json)
 #             expect(Rails.cache.read(Avo::Licensing::HQ.cache_key)).not_to include :valid
 
-#             # visit url
+#             visit url
 
-#             # expect(page).to have_text "Avo HQ Error"
-#             # expect(page).to have_text "Request timeout."
-#             # expect(page).to have_text "Checking back every 5 minutes."
+#             expect(page).to have_text "Avo HQ Error"
+#             expect(page).to have_text "Request timeout."
+#             expect(page).to have_text "Checking back every 5 minutes."
 #           end
 #         end
 

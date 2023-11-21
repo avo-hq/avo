@@ -5,11 +5,7 @@ module Avo
         extend ActiveSupport::Concern
 
         def is_readonly?
-          if readonly.respond_to? :call
-            Avo::Hosts::ResourceViewRecordHost.new(block: readonly, record: model, view: view, resource: resource).handle
-          else
-            readonly
-          end
+          Avo::ExecutionContext.new(target: readonly, record: record, view: view, resource: resource).handle
         end
       end
     end

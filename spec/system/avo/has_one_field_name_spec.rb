@@ -4,10 +4,10 @@ RSpec.describe "HasOneFieldName", type: :system do
   let!(:user) { create :user }
   let!(:post) { create :post }
 
-  subject {
+  subject do
     visit url
     page
-  }
+  end
 
   context "show" do
     let(:url) { "/admin/resources/users/#{user.id}" }
@@ -18,7 +18,7 @@ RSpec.describe "HasOneFieldName", type: :system do
 
         scroll_to second_tab_group
 
-        click_tab "Main post", within: second_tab_group
+        click_tab "Main post", within_target: second_tab_group
         expect(page).to have_text "Attach main post"
 
         click_on "Attach main post"
@@ -32,9 +32,10 @@ RSpec.describe "HasOneFieldName", type: :system do
 
         click_on "Attach"
         wait_for_loaded
+
         scroll_to second_tab_group
 
-        click_tab "Main post", within: second_tab_group
+        click_tab "Main post", within_target: second_tab_group
 
         expect(page).to have_text "Post attached."
         expect(page).not_to have_text "Choose post"
@@ -50,7 +51,7 @@ RSpec.describe "HasOneFieldName", type: :system do
         end
         wait_for_loaded
 
-        click_tab "Main post", within: second_tab_group
+        click_tab "Main post", within_target: second_tab_group
 
         expect(page).to have_text "Post detached."
         expect(page).not_to have_text "Detach main post"

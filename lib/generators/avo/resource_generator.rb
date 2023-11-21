@@ -1,16 +1,19 @@
 require_relative "named_base_generator"
+require_relative "concerns/parent_controller"
 
 module Generators
   module Avo
     class ResourceGenerator < NamedBaseGenerator
+      include Generators::Avo::Concerns::ParentController
+
       source_root File.expand_path("templates", __dir__)
 
       namespace "avo:resource"
 
       class_option "model-class",
+        desc: "The name of the model.",
         type: :string,
-        required: false,
-        desc: "The name of the model."
+        required: false
 
       def create
         template "resource/resource.tt", "app/avo/resources/#{resource_name}.rb"
@@ -18,7 +21,7 @@ module Generators
       end
 
       def resource_class
-        "#{class_name.remove(":")}Resource"
+        class_name.remove(":").to_s
       end
 
       def controller_class
@@ -26,7 +29,7 @@ module Generators
       end
 
       def resource_name
-        "#{model_resource_name}_resource"
+        model_resource_name.to_s
       end
 
       def controller_name
@@ -132,16 +135,16 @@ module Generators
       def generated_fields_template
         return if fields.blank?
 
-        fields_string = "\n  # Fields generated from the model"
+        fields_string = ""
 
         fields.each do |field_name, field_options|
           # if field_options are not available (likely a missing resource for an association), skip the field
-          fields_string += "\n  # Could not generate a field for #{field_name}" and next unless field_options
-          
+          fields_string += "\n    # Could not generate a field for #{field_name}" and next unless field_options
+
           options = ""
           field_options[:options].each { |k, v| options += ", #{k}: #{v}" } if field_options[:options].present?
 
-          fields_string += "\n  #{field_string field_name, field_options[:field], options}"
+          fields_string += "\n    #{field_string field_name, field_options[:field], options}"
         end
 
         fields_string
@@ -163,7 +166,7 @@ module Generators
 
       def fields_from_model_rich_texts
         rich_texts.each do |name, _|
-          fields[(name.delete_prefix("rich_text_"))] = {field: "trix"}
+          fields[name.delete_prefix("rich_text_")] = {field: "trix"}
         end
       end
 

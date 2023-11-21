@@ -12,7 +12,7 @@ RSpec.describe "Date field", type: :system do
       it "formats the date" do
         visit "/admin/resources/users"
 
-        expect(field_element_by_resource_id("birthday", user.id).text).to eq "Wednesday, 10 February 1988"
+        expect(field_element_by_resource_id("birthday", user.to_param).text).to eq "Wednesday, 10 February 1988"
       end
     end
 
@@ -63,7 +63,7 @@ RSpec.describe "Date field", type: :system do
       it "formats the date" do
         visit "/admin/resources/users"
 
-        expect(field_element_by_resource_id("birthday", user.id).text).to eq "Wednesday, 10 February 1988"
+        expect(field_element_by_resource_id("birthday", user.to_param).text).to eq "Wednesday, 10 February 1988"
       end
     end
 
@@ -85,6 +85,7 @@ RSpec.describe "Date field", type: :system do
         wait_for_turbo_frame_id "avo-tabgroup-2-avo-tab-birthday"
 
         save
+        sleep 0.1
 
         expect(find_field_value_element("birthday").text).to eq "Wednesday, 10 February 1988"
       end
@@ -101,6 +102,7 @@ RSpec.describe "Date field", type: :system do
         set_picker_day "February 9, 1988"
 
         save
+        sleep 0.1
 
         expect(find_field_value_element("birthday").text).to eq "Tuesday, 9 February 1988"
       end

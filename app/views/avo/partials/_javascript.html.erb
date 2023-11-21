@@ -4,4 +4,9 @@
   Avo.configuration.root_path = '<%= root_path_without_url %>'
   Avo.configuration.search_debounce = '<%= Avo.configuration.search_debounce %>'
   Avo.configuration.cookies_key = '<%= Avo::COOKIES_KEY %>'
+  <% if Avo.avo_dynamic_filters_installed? %>
+  Avo.configuration.avo_filters = {
+    param_key: '<%= Avo::DynamicFilters.configuration.param_key %>'
+  }
+  <% end %>
 <% end %>

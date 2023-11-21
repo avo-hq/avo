@@ -4,9 +4,9 @@
   <%= render Avo::FlashAlertsComponent.new flashes: flash %>
 <% end %>
 
-<% if @model.errors.any? %>
+<% if @record.errors.any? %>
   <%= turbo_stream.append("alerts") do %>
-    <% @model.errors.full_messages.each do |message| %>
+    <% @record.errors.full_messages.each do |message| %>
       <%= render Avo::AlertComponent.new :error, message %>
     <% end %>
   <% end %>

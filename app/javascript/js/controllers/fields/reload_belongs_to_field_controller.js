@@ -6,27 +6,27 @@ export default class extends Controller {
     polymorphic: Boolean,
     searchable: Boolean,
     targetName: String,
-    relationName: String
+    relationName: String,
   }
 
   beforeStreamRender(event) {
     const { relationName } = event.target.dataset
-    if (event.target.action !== "update-belongs-to" || this.relationNameValue !== relationName) {
-      return false;
+    if (event.target.action !== 'update-belongs-to' || this.relationNameValue !== relationName) {
+      return false
     }
 
     event.detail.render = (stream) => {
       if (this.searchableValue) {
         this.updateSearchable(stream)
-      } else{
+      } else {
         this.updateNonSearchable(stream)
       }
-    };
+    }
   }
 
   updateSearchable(stream) {
     // Update the id component
-    document.querySelector(`input[name="${this.targetNameValue}"][type="hidden"]`).value = stream.dataset.targetResourceId
+    document.querySelector(`input[name="${this.targetNameValue}"][type="hidden"]`).value = stream.dataset.targetRecordId
     // Update the label
     document.querySelector(`input[name="${this.targetNameValue}"][type="text"]`).value = stream.dataset.targetResourceLabel
   }
@@ -34,7 +34,7 @@ export default class extends Controller {
   updateNonSearchable(stream) {
     const select = this.selectorContext(stream).querySelector(`select[name="${this.targetNameValue}"]`)
     const option = document.createElement('option')
-    option.value = stream.dataset.targetResourceId
+    option.value = stream.dataset.targetRecordId
     option.text = stream.dataset.targetResourceLabel
     option.selected = true
     select.appendChild(option)

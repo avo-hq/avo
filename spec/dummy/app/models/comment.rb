@@ -22,10 +22,6 @@ class Comment < ApplicationRecord
 
   scope :starts_with, ->(prefix) { where("LOWER(body) LIKE ?", "#{prefix}%") }
 
-  def self.ransackable_attributes(auth_object = nil)
-    %w(id body)
-  end
-
   def tiny_name
     ActionView::Base.full_sanitizer.sanitize(body.to_s).truncate 60
   end
@@ -35,5 +31,9 @@ class Comment < ApplicationRecord
     if possible_comment.present?
       errors.add :body, message: "exists in another Comment."
     end
+  end
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["body", "commentable_id", "commentable_type", "created_at", "id", "posted_at", "updated_at", "user_id"]
   end
 end

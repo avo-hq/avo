@@ -1,61 +1,46 @@
 require "rails_helper"
 
 RSpec.describe "Multiple Actions Flux", type: :system do
-  let!(:user) { create :user, first_name: "Spec", last_name: "User", active: false }
+  let!(:city) { create :city, name: "Spec City", population: 123456 }
 
   describe "multiple actions flux" do
     context "index" do
       it "present the first action and render the second one with data from arguments" do
-        visit "/admin/resources/users"
+        visit "/admin/resources/cities"
 
-        within("tr[data-resource-name=\"users\"][data-resource-id=\"#{user.id}\"][data-controller=\"item-selector\"]") do
-          find(:css, 'input[type="checkbox"][data-action="input->item-selector#toggle input->item-select-all#selectRow"]', match: :first).set(true)
-        end
+        expect(page).to have_text "Spec City"
+        expect(page).to have_text "123456"
 
-        click_on "Actions"
-        within("[data-toggle-panel-target='panel']") do
-          click_on "Update"
-        end
+        find(:css, 'input[type="checkbox"][data-action="input->item-selector#toggle input->item-select-all#selectRow"]', match: :first).set(true)
+
+        open_panel_action(action_name: "Update")
 
         within(find("[role='dialog']")) do
-          expect(page).to have_text "FIRST NAME"
-          expect(page).to have_text "LAST NAME"
-          expect(page).to have_text "USER EMAIL"
-          expect(page).to have_text "ACTIVE"
-          expect(page).to have_text "ADMIN"
+          expect(page).to have_text "POPULATION"
+          expect(page).to have_text "NAME"
         end
 
-        check("First name")
-        check("Last name")
-        check("Admin")
+        check("Population")
 
         within(find("[role='dialog']")) do
-          click_on "Run"
-          expect(page).to have_text "FIRST NAME"
-          expect(page).to have_text "LAST NAME"
-          expect(page).not_to have_text "USER EMAIL"
-          expect(page).not_to have_text "ACTIVE"
-          expect(page).to have_text "ADMIN"
+          # Don't use "run_action" because that would expect the dialog to close
+          find("[data-target='submit_action']").click
+          expect(page).to have_text "POPULATION"
+          expect(page).to_not have_text "NAME"
         end
 
-        expect(page).to have_text "FIRST NAME"
-        expect(page).to have_text "LAST NAME"
-        expect(page).to have_text "USER EMAIL"
-        expect(page).to have_text "ACTIVE"
-        expect(page).to have_text "ADMIN"
+        expect(page).to have_text "IS CAPITAL"
+        expect(page).to have_text "Spec City"
+        expect(page).to have_text "123456"
 
-        fill_in "fields_first_name", with: "1"
-        fill_in "fields_last_name", with: "2"
-        check "Admin"
+        fill_in "fields_population", with: "654321"
 
-        click_on "Run"
+        run_action
 
-        sleep 0.1
-
-        expect(page).to have_text "User(s) updated!"
-        expect(user.reload.first_name).to eq "1"
-        expect(user.last_name).to eq "2"
-        expect(user.is_admin?).to eq true
+        expect(page).to have_text "City updated!"
+        expect(page).to have_text "Spec City"
+        expect(page).not_to have_text "123456"
+        expect(page).to have_text "654321"
       end
     end
   end

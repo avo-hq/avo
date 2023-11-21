@@ -42,7 +42,6 @@ class Fish < ApplicationRecord
   end
 
   def self.ransackable_attributes(auth_object = nil)
-    %w(id name)
+    ["created_at", "id", "name", "type", "updated_at", "user_id"]
   end
-
 end

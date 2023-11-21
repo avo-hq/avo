@@ -7,43 +7,43 @@ RSpec.describe Avo::UsersController, type: :controller do
     it "assigns the @widget" do
       get :index
 
-      expect(assigns(:view)).to be :index
+      assert assigns(:view).index?
     end
 
     it "assigns the @widget" do
       get :show, params: {id: user.id}
 
-      expect(assigns(:view)).to be :show
+      assert assigns(:view).show?
     end
 
     it "assigns the @widget" do
       get :edit, params: {id: user.id}
 
-      expect(assigns(:view)).to be :edit
+      assert assigns(:view).edit?
     end
 
     it "assigns the @widget" do
       get :new
 
-      expect(assigns(:view)).to be :new
+      assert assigns(:view).new?
     end
 
     it "assigns the @widget" do
       post :create, params: {user: {name: "Adrian"}}
 
-      expect(assigns(:view)).to be :create
+      assert assigns(:view).create?
     end
 
     it "assigns the @widget" do
       put :update, params: {id: user.id, user: {name: "Adrian"}}
 
-      expect(assigns(:view)).to be :update
+      assert assigns(:view).update?
     end
 
     it "assigns the @widget" do
       delete :destroy, params: {id: user.id}
 
-      expect(assigns(:view)).to be :destroy
+      assert assigns(:view).destroy?
     end
   end
 end

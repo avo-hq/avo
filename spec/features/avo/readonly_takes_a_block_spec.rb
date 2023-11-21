@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.feature "ReadonlyTakesABlock", type: :feature do
   context "new" do
     it "is readonly" do
       visit "/admin/resources/fish/new"
 
-      expect(page).to have_field 'fish[id]', disabled: false
+      expect(page).to have_field "fish[id]", disabled: false
     end
   end
 
@@ -17,7 +17,7 @@ RSpec.feature "ReadonlyTakesABlock", type: :feature do
     it "is readonly" do
       visit "/admin/resources/fish/#{fish.id}/edit"
 
-      expect(page).to have_field 'fish[id]', disabled: true
+      expect(page).to have_field "fish[id]", disabled: true
     end
   end
 end

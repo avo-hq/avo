@@ -6,7 +6,7 @@ module Avo
 
         super(id, **args, &block)
 
-        hide_on [:index, :show]
+        hide_on :index, :show
       end
     end
   end

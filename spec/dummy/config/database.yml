@@ -9,12 +9,12 @@ default: &default
 
 development:
   <<: *default
-  database: dummy_development
+  database: dummy_3_development
 
 test:
   <<: *default
-  database: dummy_test
+  database: dummy_3_test
 
 production:
   <<: *default
-  database: dummy_development
+  database: dummy_3_development

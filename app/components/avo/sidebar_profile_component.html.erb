@@ -1,12 +1,12 @@
 <div class="text-black border-gray-150 p-4 flex border-t">
-  <div class="flex-1 flex space-x-4">
+  <div class="flex-1 flex space-x-4 w-full">
     <% if avatar.present? %>
-      <div class="relative aspect-square w-10 h-10 overflow-hidden rounded">
-        <%= image_tag avatar, class: "object-cover min-w-full min-h-full h-full" %>
+      <div class="relative aspect-square w-10 h-10 overflow-hidden rounded shrink-0">
+        <%= image_tag helpers.main_app.url_for(avatar), class: "object-cover min-w-full min-h-full h-full" %>
       </div>
     <% end %>
-    <div class="flex flex-col">
-      <div class="font-medium">
+    <div class="flex flex-col pr-3 min-w-0">
+      <div class="font-medium text-ellipsis overflow-hidden">
         <%= name %>
       </div>
       <% if title.present? %>
@@ -16,17 +16,23 @@
       <% end %>
     </div>
   </div>
-  <div class="relative" data-controller="toggle-panel">
-    <a class="flex items-center h-full cursor-pointer" data-control="profile-dots" data-action="click->toggle-panel#togglePanel">
+  <div class="relative" data-controller="toggle">
+    <a class="flex items-center h-full cursor-pointer" data-control="profile-dots" data-action="click->toggle#togglePanel">
       <%= helpers.svg 'three-dots', class: 'h-4' %>
     </a>
     <div
       class="hidden absolute flex flex-col inset-auto right-0 -mt-12 bg-white rounded min-w-[200px] shadow-context -translate-y-full z-40"
-      data-toggle-panel-target="panel"
+      data-toggle-target="panel"
+      data-transition-enter="transition ease-out duration-100"
+      data-transition-enter-start="transform opacity-0 translate-y-1"
+      data-transition-enter-end="transform opacity-100 translate-y-0"
+      data-transition-leave="transition ease-in duration-75"
+      data-transition-leave-start="transform opacity-100 translate-y-0"
+      data-transition-leave-end="transform opacity-0 translate-y-1"
     >
-      <% if Avo::App.has_profile_menu? %>
-        <div class="text-black">
-          <% Avo::App.profile_menu.items.each do |item| %>
+      <% if Avo.plugin_manager.installed?("avo-menu") && Avo.has_profile_menu? %>
+        <div class="text-black space-y-4">
+          <% Avo.profile_menu.items.each do |item| %>
             <% if item.is_a? Avo::Menu::Link %>
               <%= render Avo::ProfileItemComponent.new label: item.name, path: item.path, icon: item.icon, method: item.method, params: item.params %>
             <% end %>
@@ -45,7 +51,7 @@
           form_class: 'flex-1' do %>
           <%= helpers.svg 'logout', class: 'h-4 mr-1' %> <%= t('avo.sign_out') %>
         <% end %>
-      <% end %>
+    <% end %>
     </div>
   </div>
 </div>

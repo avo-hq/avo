@@ -1,0 +1,3 @@
+<% stylesheets.each do |path| %>
+  <%= stylesheet_link_tag path, "data-turbo-track": "reload", defer: true %>
+<% end %>

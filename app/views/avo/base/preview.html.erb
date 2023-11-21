@@ -1,0 +1,19 @@
+<%= turbo_frame_tag params[:turbo_frame] do %>
+  <%= content_tag :div, class: "-mx-2" do %>
+    <%= content_tag :div, class: "px-4 py-2" do %>
+      <div class="text-base font-semibold text-gray-800">Previewing <%= @resource.record_title %></div>
+    <% end %>
+
+    <% if @resource.get_preview_fields.present? %>
+      <div class="mt-4 divide-y border-t">
+        <% @resource.get_preview_fields.each_with_index do |field, index| %>
+          <%= render field
+            .hydrate(resource: @resource, record: @resource.record, user: @resource.user, view: :show)
+            .component_for_view(:show)
+            .new(field: field, resource: @resource, index: index, compact: true, short: true, stacked: false)
+          %>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

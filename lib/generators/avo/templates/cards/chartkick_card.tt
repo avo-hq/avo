@@ -1,4 +1,4 @@
-class <%= class_name.camelize %> < Avo::Dashboards::ChartkickCard
+class Avo::Cards::<%= class_name.camelize %> < Avo::Dashboards::ChartkickCard
   self.id = "<%= name.underscore %>"
   self.label = "<%= name.underscore.humanize %>"
   self.chart_type = :area_chart

@@ -5,17 +5,15 @@ module Avo
         extend ActiveSupport::Concern
 
         def is_required?
-          if required.respond_to? :call
-            Avo::Hosts::ResourceViewRecordHost.new(block: required, record: model, view: view, resource: resource).handle
-          else
-            required.nil? ? required_from_validators : required
-          end
+          return required_from_validators if required.nil?
+
+          Avo::ExecutionContext.new(target: required, record: record, view: view, resource: resource).handle
         end
 
         private
 
         def required_from_validators
-          return false if model.nil?
+          return false if record.nil?
 
           validators.any? do |validator|
             validator.is_a? ActiveModel::Validations::PresenceValidator
@@ -23,7 +21,7 @@ module Avo
         end
 
         def validators
-          model.class.validators_on(id)
+          record.class.validators_on(id)
         end
       end
     end

@@ -4,41 +4,30 @@ module Avo
   class ActionsController < ApplicationController
     before_action :set_resource_name
     before_action :set_resource
-    before_action :set_model, only: :show, if: ->(request) do
-      # Try to se the model only if the user is on the record page.
-      # set_model will fail if it's tried to be used from the Index page.
+    before_action :set_record, only: :show, if: ->(request) do
+      # Try to se the record only if the user is on the record page.
+      # set_record will fail if it's tried to be used from the Index page.
       request.params[:id].present?
     end
     before_action :set_action, only: [:show, :handle]
+    before_action :verify_authorization, only: [:show, :handle]
 
     def show
       # Se the view to :new so the default value gets prefilled
-      @view = :new
+      @view = Avo::ViewInquirer.new("new")
 
-      @resource.hydrate(model: @model, view: @view, user: _current_user, params: params)
+      @resource.hydrate(record: @record, view: @view, user: _current_user, params: params)
     end
 
     def handle
       resource_ids = action_params[:fields][:avo_resource_ids].split(",")
-      @selected_query = action_params[:fields][:avo_selected_query]
 
-      fields = action_params[:fields].except(:avo_resource_ids, :avo_selected_query)
-
-      args = {
-        fields: fields,
+      performed_action = @action.handle_action(
+        fields: action_params[:fields].except(:avo_resource_ids, :avo_selected_query),
         current_user: _current_user,
-        resource: resource
-      }
-
-      unless @action.standalone
-        args[:models] = if @selected_query.present?
-          @resource.model_class.find_by_sql decrypted_query
-        else
-          @resource.find_record resource_ids, params: params
-        end
-      end
-
-      performed_action = @action.handle_action(**args)
+        resource: resource,
+        query: decrypted_query || @resource.find_record(resource_ids, params: params)
+      )
 
       respond performed_action.response
     end
@@ -51,19 +40,17 @@ module Avo
 
     def set_action
       @action = action_class.new(
-        model: @model,
+        record: @record,
         resource: @resource,
         user: _current_user,
         view: :new, # force the action view to in order to render new-related fields (hidden field)
-        arguments: @resource.get_action_arguments(action_class)
+        arguments: decrypted_arguments || {}
       )
     end
 
     def action_class
-      klass_name = params[:action_id].gsub("avo_actions_", "").camelize
-
       Avo::BaseAction.descendants.find do |action|
-        action.to_s == klass_name
+        action.to_s == params[:action_id]
       end
     end
 
@@ -96,8 +83,6 @@ module Avo
       end
     end
 
-    private
-
     def get_messages(response)
       default_message = {
         type: :info,
@@ -113,9 +98,18 @@ module Avo
     end
 
     def decrypted_query
+      return if (encrypted_query = action_params[:fields][:avo_selected_query]).blank?
+
+      Avo::Services::EncryptionService.decrypt(message: encrypted_query, purpose: :select_all, serializer: Marshal)
+    end
+
+    def decrypted_arguments
+      arguments = params[:arguments] || params.dig(:fields, :arguments)
+      return if arguments.blank?
+
       Avo::Services::EncryptionService.decrypt(
-        message: @selected_query,
-        purpose: :select_all
+        message: Base64.decode64(arguments),
+        purpose: :action_arguments
       )
     end
 
@@ -133,6 +127,10 @@ module Avo
           render partial: "avo/partials/flash_alerts"
         end
       end
+    end
+
+    def verify_authorization
+      raise Avo::NotAuthorizedError.new unless @action.authorized?
     end
   end
 end
