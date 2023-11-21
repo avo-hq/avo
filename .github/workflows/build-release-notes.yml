@@ -1,0 +1,10 @@
+name: Build release notes
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update_release_notes:
+    uses: avo-hq/support/.github/workflows/build-release-notes.yml@main

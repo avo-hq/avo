@@ -1,27 +1,8 @@
-name: Linting
-on: [pull_request]
-jobs:
-  standardrb:
-    name: runner / standardrb
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v1
-      - name: standardrb
-        uses: adrianthedev/action-standardrb@master
-        with:
-          github_token: ${{ secrets.github_token }}
-          reporter: github-pr-review # Default is github-pr-check
-          rubocop_version: 0.1.6
-          rubocop_flags: --format progress
+name: Lint
 
-  eslint:
-    name: runner / eslint
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - run: yarn
-      - name: eslint
-        uses: reviewdog/action-eslint@v1
-        with:
-          reporter: github-pr-review
+on:
+  - pull_request
+
+jobs:
+  lint:
+    uses: avo-hq/support/.github/workflows/lint.yml@main

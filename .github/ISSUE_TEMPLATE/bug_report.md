@@ -38,6 +38,7 @@ Steps to reproduce the behavior:
 
  - [ ] Community
  - [ ] Pro
+ - [ ] Advanced
 
 **Are you using Avo monkey patches, overriding views or view components?**
 <!-- (Mark [x] inside the brackets) -->
