@@ -8,7 +8,7 @@ RSpec.describe 'Create Via Belongs to', type: :system do
 
     context 'with searchable belongs_to' do
       it 'successfully creates a new course and assigns it to the course link', :aggregate_failures do
-        visit "/admin/resources/course_links/#{course_link.id}/edit"
+        visit "/admin/resources/course_links/#{course_link.to_param}/edit"
 
         click_on 'Create new course'
 
@@ -228,6 +228,36 @@ RSpec.describe 'Create Via Belongs to', type: :system do
       expect(Review.last).to have_attributes(
         body: 'Test review',
         reviewable: Fish.last
+      )
+    end
+  end
+
+  context 'with models that uses prefix_id' do
+    it 'successfully creates a new course and assigns it to the course link', :aggregate_failures do
+      visit '/admin/resources/course_links/new'
+
+      fill_in 'course_link_link', with: 'Test link'
+
+      click_on 'Create new course'
+
+      expect do
+        within('.modal-container') do
+          fill_in 'course_name', with: 'Another Test course'
+          click_on 'Save'
+          sleep 0.2
+        end
+      end.to change(Course, :count).by(1)
+
+      expect(find_field(id: 'course_link_course_id').value).to eq Course.last.name
+
+      expect do
+        click_on 'Save'
+        sleep 0.2
+      end.to change(Course::Link, :count).by(1)
+
+      expect(Course::Link.last).to have_attributes(
+        link: 'Test link',
+        course: Course.last
       )
     end
   end
