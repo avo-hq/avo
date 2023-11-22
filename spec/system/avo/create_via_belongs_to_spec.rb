@@ -125,4 +125,34 @@ RSpec.describe 'Create Via Belongs to', type: :system do
       )
     end
   end
+
+  context 'with models that uses prefix_id' do
+    it 'successfully creates a new course and assigns it to the course link', :aggregate_failures do
+      visit '/admin/resources/course_links/new'
+
+      fill_in 'course_link_link', with: 'Test link'
+
+      click_on 'Create new course'
+
+      expect do
+        within('.modal-container') do
+          fill_in 'course_name', with: 'Test course'
+          click_on 'Save'
+          sleep 0.2
+        end
+      end.to change(Course, :count).by(1)
+
+      expect(page).to have_select('course_link_course_id', selected: Course.last.name)
+
+      expect do
+        click_on 'Save'
+        sleep 0.2
+      end.to change(Course::Link, :count).by(1)
+
+      expect(Course::Link.last).to have_attributes(
+        link: 'Test link',
+        course: Course.last
+      )
+    end
+  end
 end
