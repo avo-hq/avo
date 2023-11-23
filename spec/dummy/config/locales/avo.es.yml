@@ -1,12 +1,12 @@
 ---
 es:
   avo:
-    action_ran_successfully: ¡Acción ejecutada con éxito!
+    action_ran_successfully: "¡Acción ejecutada con éxito!"
     actions: Acciones
     and_x_other_resources: y %{count} otros recursos
-    are_you_sure: ¿Estás seguro?
-    are_you_sure_detach_item: ¿Estás seguro de que quieres separar este/a %{item}?
-    are_you_sure_you_want_to_run_this_option: ¿Estás seguro de que quieres ejectuar esta acción?
+    are_you_sure: "¿Estás seguro?"
+    are_you_sure_detach_item: "¿Estás seguro de que quieres separar este/a %{item}?"
+    are_you_sure_you_want_to_run_this_option: "¿Estás seguro de que quieres ejectuar esta acción?"
     attach: Adjuntar
     attach_and_attach_another: Adjuntar y adjuntar otro
     attach_item: Adjuntar %{item}
@@ -23,6 +23,7 @@ es:
     create_new_item: Crear nuevo/a %{item}
     dashboard: Panel
     dashboards: Paneles
+    default_scope: Todos
     delete: eliminar
     delete_file: Eliminar fichero
     delete_item: Eliminar %{item}
@@ -80,6 +81,7 @@ es:
       to_top: Mover arriba del todo
     per_page: Por página
     prev_page: Página anterior
+    records_selected_from_all_pages_html: Todos los registros seleccionados de todas las páginas.
     remove_selection: Quitar la selección
     reset_filters: Reiniciar filtros
     resource_created: Recurso creado
@@ -121,4 +123,5 @@ es:
       zero: ningún elemento más
     x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> registros seleccionados en esta página de un total de <span class="font-bold text-gray-700">%{count}</span>
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> registros seleccionados en todas las páginas
+    x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> registros seleccionados en esta página
     you_missed_something_check_form: Es posible que hayas pasado algo por alto. Comprueba el formulario.

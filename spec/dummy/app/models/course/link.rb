@@ -10,6 +10,8 @@
 #  position   :integer
 #
 class Course::Link < ApplicationRecord
+  has_prefix_id :course_link
+
   belongs_to :course, optional: true
   acts_as_list
   default_scope -> { order(position: :asc) }
