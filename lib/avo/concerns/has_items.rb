@@ -309,11 +309,20 @@ module Avo
         end
       end
 
+      # Extracts fields from a structure
+      # Structures can be panels, rows and sidebars
       def extract_fields(structure)
         structure.items.map do |item|
           next item if item.is_field?
-          next extract_fields(item) if item.is_panel? || item.is_row? || (item.is_sidebar? && !view.index?)
+
+          extract_fields(item) if extractable_structure?(item)
         end.compact
+      end
+
+      # Extractable structures are panels, rows and sidebars
+      # Sidebars are only extractable if they are not on the index view
+      def extractable_structure?(structure)
+        structure.is_panel? || structure.is_row? || (structure.is_sidebar? && !view.index?)
       end
 
       # Standalone items are fields that don't have their own panel
