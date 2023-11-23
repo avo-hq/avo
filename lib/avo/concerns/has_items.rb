@@ -313,9 +313,13 @@ module Avo
       # Structures can be panels, rows and sidebars
       def extract_fields(structure)
         structure.items.map do |item|
-          next item if item.is_field?
-
-          extract_fields(item) if extractable_structure?(item)
+          if item.is_field?
+            item
+          elsif extractable_structure?(item)
+            extract_fields(item)
+          else
+            nil
+          end
         end.compact
       end
 
