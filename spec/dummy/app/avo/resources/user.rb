@@ -121,7 +121,7 @@ class Avo::Resources::User < Avo::BaseResource
     field :password, as: :password, name: "User Password", required: false, only_on: :forms, help: 'You may verify the password strength <a href="http://www.passwordmeter.com/" target="_blank">here</a>.'
     field :password_confirmation, as: :password, name: "Password confirmation", required: false
 
-    with_options only_on: :display do
+    with_options only_on: :show do
       field :dev, as: :heading, label: '<div class="underline uppercase font-bold">DEV</div>', as_html: true
       field :custom_css, as: :code, theme: "dracula", language: "css", help: "This enables you to edit the user's custom styles.", height: "250px"
     end
