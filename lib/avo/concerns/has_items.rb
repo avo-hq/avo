@@ -315,7 +315,7 @@ module Avo
         thing.items.each do |item|
           if item.is_field?
             fields << item
-          elsif item.is_panel? || item.is_row? || item.is_sidebar?
+          elsif item.is_panel? || item.is_row? || (item.is_sidebar? && !view.index?)
             fields << extract_fields_from_items(item)
           end
         end
