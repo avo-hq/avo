@@ -1,0 +1,8 @@
+<div class="flex flex-col shrink-0 h-full grow-1 w-64 bg-gray-50 border border-gray-100 rounded shadow space-y-2 p-2">
+  <div class="font-bold"><%= name %> <small class="font-smibold">(<%= records.count %>)</small></div>
+  <div class="flex flex-col space-y-2 list-group" data-kanban-view-target="column">
+    <% records.each do |record| %>
+      <%= render Avo::Index::KanbanItemComponent.new record: record, resource: resource, column_name: name %>
+    <% end %>
+  </div>
+</div>

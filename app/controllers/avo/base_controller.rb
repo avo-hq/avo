@@ -7,7 +7,7 @@ module Avo
     before_action :set_resource_name
     before_action :set_resource
     before_action :set_applied_filters, only: :index
-    before_action :set_record, only: [:show, :edit, :destroy, :update, :preview]
+    before_action :set_record, only: [:show, :edit, :destroy, :update, :preview, :kanban_update]
     before_action :detect_fields
     before_action :set_record_to_fill
     before_action :set_edit_title_and_breadcrumbs, only: [:edit, :update]
@@ -204,6 +204,19 @@ module Avo
       @resource.hydrate(record: @record, view: :show, user: _current_user, params: params)
 
       render layout: params[:turbo_frame].blank?
+    end
+
+    def kanban_update
+      # TODO: update column for record
+      # TODO: somehow change position
+      # puts ["self->", @record, @resource].inspect
+      # @resource.hydrate(record: @record, view: :show, user: _current_user, params: params)
+
+      # render layout: params[:turbo_frame].blank?
+
+      # TODO: use turbo 8 morph
+      # TODO: fix this path
+      redirect_back fallback_location: root_path
     end
 
     private

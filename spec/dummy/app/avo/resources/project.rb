@@ -11,6 +11,14 @@ class Avo::Resources::Project < Avo::BaseResource
     query.unscoped
   }
 
+  self.kanban_view = {
+    column: :status,
+    record: {
+      title: :name,
+      description: :description,
+    }
+  }
+
   def fields
     field :id, as: :id, link_to_record: true
     field :status,

@@ -68,6 +68,7 @@ module Avo
     class_attribute :extra_params
     class_attribute :link_to_child_resource, default: false
     class_attribute :map_view
+    class_attribute :kanban_view
     class_attribute :components, default: {}
 
     # EXTRACT:
@@ -387,6 +388,7 @@ module Avo
 
       view_types << :grid if self.class.grid_view.present?
       view_types << :map if map_view.present?
+      view_types << :kanban if kanban_view.present?
 
       view_types
     end

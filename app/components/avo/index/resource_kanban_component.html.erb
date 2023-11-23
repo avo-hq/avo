@@ -1,0 +1,11 @@
+<% if resources.present? %>
+  <div class="flex overflow-scroll space-x-2 py-4" data-controller="kanban-view">
+    <% columns.each do |name| %>
+      <%= render Avo::Index::KanbanColumnComponent.new name: name, records: records_for_column(name), resource: resources.first %>
+    <% end %>
+  </div>
+<% else %>
+  <div class="bg-white rounded shadow-panel">
+    <%= helpers.empty_state by_association: params[:related_name].present?, view_type: :kanban %>
+  </div>
+<% end %>

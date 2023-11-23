@@ -1,0 +1,10 @@
+<%= content_tag :div,
+  class: "bg-white rounded p-1 list-group-item",
+  data: {
+    record_id: record.to_param,
+    url: helpers.kanban_update_resource_path(resource: resource, record: record),
+  } do
+%>
+  <%= title %>
+  <small class="block mt-2"><%= description %></small>
+<% end %>

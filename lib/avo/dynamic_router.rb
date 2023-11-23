@@ -31,6 +31,7 @@ module Avo
               resources resource.route_key do
                 member do
                   get :preview
+                  put :kanban_update, as: :kanban_update
                 end
               end
             end

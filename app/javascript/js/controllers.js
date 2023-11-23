@@ -27,6 +27,7 @@ import ProgressBarFieldController from './controllers/fields/progress_bar_field_
 import ReloadBelongsToFieldController from './controllers/fields/reload_belongs_to_field_controller'
 import ResourceEditController from './controllers/resource_edit_controller'
 import ResourceIndexController from './controllers/resource_index_controller'
+import KanbanViewController from './controllers/kanban_view_controller'
 import ResourceShowController from './controllers/resource_show_controller'
 import SearchController from './controllers/search_controller'
 import SelectController from './controllers/select_controller'
@@ -59,6 +60,7 @@ application.register('per-page', PerPageController)
 application.register('preview', PreviewController)
 application.register('resource-edit', ResourceEditController)
 application.register('resource-index', ResourceIndexController)
+application.register('kanban-view', KanbanViewController)
 application.register('resource-show', ResourceShowController)
 application.register('search', SearchController)
 application.register('select', SelectController)
