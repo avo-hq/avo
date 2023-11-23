@@ -87,19 +87,19 @@ module Avo
           unless only_root
             # Dive into panels to fetch their fields
             if item.is_panel?
-              fields << extract_fields_from_items(item)
+              fields << extract_fields(item)
             end
 
             # Dive into tabs to fetch their fields
             if item.is_tab_group?
               item.items.map do |tab|
-                fields << extract_fields_from_items(tab)
+                fields << extract_fields(tab)
               end
             end
 
             # Dive into sidebar to fetch their fields
             if item.is_sidebar?
-              fields << extract_fields_from_items(item)
+              fields << extract_fields(item)
             end
           end
 
@@ -108,11 +108,11 @@ module Avo
           end
 
           if item.is_row?
-            fields << extract_fields_from_items(tab)
+            fields << extract_fields(tab)
           end
 
           if item.is_main_panel?
-            fields << extract_fields_from_items(item)
+            fields << extract_fields(item)
           end
         end
 
@@ -309,18 +309,24 @@ module Avo
         end
       end
 
-      def extract_fields_from_items(thing)
-        fields = []
-
-        thing.items.each do |item|
+      # Extracts fields from a structure
+      # Structures can be panels, rows and sidebars
+      def extract_fields(structure)
+        structure.items.map do |item|
           if item.is_field?
-            fields << item
-          elsif item.is_panel? || item.is_row?
-            fields << extract_fields_from_items(item)
+            item
+          elsif extractable_structure?(item)
+            extract_fields(item)
+          else
+            nil
           end
-        end
+        end.compact
+      end
 
-        fields
+      # Extractable structures are panels, rows and sidebars
+      # Sidebars are only extractable if they are not on the index view
+      def extractable_structure?(structure)
+        structure.is_panel? || structure.is_row? || (structure.is_sidebar? && !view.index?)
       end
 
       # Standalone items are fields that don't have their own panel

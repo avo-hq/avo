@@ -121,8 +121,10 @@ class Avo::Resources::User < Avo::BaseResource
     field :password, as: :password, name: "User Password", required: false, only_on: :forms, help: 'You may verify the password strength <a href="http://www.passwordmeter.com/" target="_blank">here</a>.'
     field :password_confirmation, as: :password, name: "Password confirmation", required: false
 
-    field :dev, as: :heading, label: '<div class="underline uppercase font-bold">DEV</div>', as_html: true
-    field :custom_css, as: :code, theme: "dracula", language: "css", help: "This enables you to edit the user's custom styles.", height: "250px"
+    with_options hide_on: :forms do
+      field :dev, as: :heading, label: '<div class="underline uppercase font-bold">DEV</div>', as_html: true
+      field :custom_css, as: :code, theme: "dracula", language: "css", help: "This enables you to edit the user's custom styles.", height: "250px"
+    end
     field :team_id, as: :hidden, default: 0 # For testing purposes
 
     test_sidebar
@@ -165,6 +167,10 @@ class Avo::Resources::User < Avo::BaseResource
         end
       field :outside_link, as: :text, only_on: [:show], format_using: -> { link_to("hey", value, target: "_blank") } do
         main_app.hey_url
+      end
+      with_options only_on: :forms do
+        field :dev, as: :heading, label: '<div class="underline uppercase font-bold">DEV</div>', as_html: true
+        field :custom_css, as: :code, theme: "dracula", language: "css", help: "This enables you to edit the user's custom styles.", height: "250px"
       end
     end
   end
