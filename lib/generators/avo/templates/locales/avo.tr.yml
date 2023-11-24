@@ -80,6 +80,7 @@ tr:
       to_top: Kaydı en üste taşı
     per_page: Sayfa başına
     prev_page: Önceki sayfa
+    records_selected_from_all_pages_html: Tüm sayfalardan seçilen tüm kayıtlar
     remove_selection: Seçimi sil
     reset_filters: Filtreleri sıfırla
     resource_created: Kayıt oluşturuldu
@@ -117,4 +118,5 @@ tr:
       zero: daha fazla öğe yok
     x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> bu sayfada seçilen toplam kayıtlar <span class="font-bold text-gray-700">%{count}</span>
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> tüm sayfalardan seçilen kayıtlar
+    x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> bu sayfada seçilen kayıtlar
     you_missed_something_check_form: Bir şeyleri kaçırmış olabilirsiniz. Lütfen formu kontrol edin.

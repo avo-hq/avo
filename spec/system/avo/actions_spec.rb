@@ -131,6 +131,35 @@ RSpec.describe "Actions", type: :system do
     end
   end
 
+  describe "redirects when no confirmation" do
+    it "redirects to hey page" do
+      no_confirmation = Sub::DummyAction.no_confirmation
+
+      Sub::DummyAction.class_eval do
+        self.no_confirmation = true
+
+        define_method(:redirect_handle) do |**args|
+          redirect_to main_app.hey_path
+        end
+
+        alias_method :handle, :redirect_handle
+      end
+
+      visit "/admin/resources/users"
+
+      click_on "Actions"
+      click_on "Dummy action"
+
+      expect(page).to have_text "hey en"
+
+
+      Sub::DummyAction.class_eval do
+        undef_method :redirect_handle
+      end
+
+      Sub::DummyAction.no_confirmation = no_confirmation
+    end
+  end
   #   let!(:roles) { { admin: false, manager: false, writer: false } }
   #   let!(:user) { create :user, active: true, roles: roles }
 
