@@ -5,10 +5,12 @@ on:
     branches:
       - main
       - 1.x
+      - 2.x
   push:
     branches:
       - main
       - 1.x
+      - 2.x
 
 env:
   RAILS_ENV: test
