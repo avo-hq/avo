@@ -31,6 +31,8 @@ module Avo
 
   class DeprecatedAPIError < StandardError; end
 
+  class MissingResourceError < StandardError; end
+
   class << self
     attr_reader :logger
     attr_reader :cache_store

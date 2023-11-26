@@ -125,7 +125,15 @@ module Avo
     end
 
     def set_related_resource
+      raise Avo::MissingResourceError.new missing_resource_message(related_resource_name) if related_resource.nil?
+
       @related_resource = related_resource.new(params: params, view: action_name.to_sym, user: _current_user, record: @related_record).detect_fields
+    end
+
+    def missing_resource_message(resource_name)
+      "Missing resource detected while rendering 'field :#{resource_name}, as: :has_many'. " \
+      "You can generate that resource running 'rails generate avo:resource #{resource_name.singularize}'. " \
+      "Alternatively use 'use_resource' option to specify the resource to be used on the field."
     end
 
     def set_record
