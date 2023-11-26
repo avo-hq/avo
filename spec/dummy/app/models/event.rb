@@ -7,6 +7,7 @@
 #  event_time :datetime
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  body       :text
 #
 class Event < ApplicationRecord
   has_rich_text :body
