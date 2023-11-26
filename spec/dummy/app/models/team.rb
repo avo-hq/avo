@@ -15,6 +15,7 @@ class Team < ApplicationRecord
 
   has_many :memberships, class_name: "TeamMembership"
   has_many :team_members, through: :memberships, class_name: "User", source: :user, inverse_of: :teams
+  has_many :locations
 
   has_one :admin_membership, -> { where level: :admin }, class_name: "TeamMembership", dependent: :destroy
   has_one :admin, through: :admin_membership, source: :user, inverse_of: :teams
