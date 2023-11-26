@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_08_121005) do
+ActiveRecord::Schema.define(version: 2023_11_26_035843) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -114,6 +114,18 @@ ActiveRecord::Schema.define(version: 2023_06_08_121005) do
     t.string "type"
     t.bigint "user_id"
     t.index ["user_id"], name: "index_fish_on_user_id"
+  end
+
+  create_table "locations", force: :cascade do |t|
+    t.bigint "city_id", null: false
+    t.bigint "team_id", null: false
+    t.text "name"
+    t.string "address"
+    t.string "size"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["city_id"], name: "index_locations_on_city_id"
+    t.index ["team_id"], name: "index_locations_on_team_id"
   end
 
   create_table "people", force: :cascade do |t|
@@ -260,6 +272,8 @@ ActiveRecord::Schema.define(version: 2023_06_08_121005) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "comments", "users"
   add_foreign_key "fish", "users"
+  add_foreign_key "locations", "cities"
+  add_foreign_key "locations", "teams"
   add_foreign_key "people", "people"
   add_foreign_key "people", "users"
   add_foreign_key "reviews", "users"
