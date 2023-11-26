@@ -1,6 +1,6 @@
 class TeamResource < Avo::BaseResource
   self.title = :name
-  self.includes = [:admin, :team_members]
+  self.includes = [:admin, :team_members, :locations]
   self.search_query = -> do
     scope.ransack(id_eq: params[:q], name_cont: params[:q], m: "or").result(distinct: false)
   end
@@ -50,6 +50,9 @@ class TeamResource < Avo::BaseResource
   field :admin, as: :has_one
   field :team_members, as: :has_many, through: :memberships, translation_key: "avo.resource_translations.team_members"
   field :reviews, as: :has_many
+
+  # Example for error message when resource is missing
+  field :locations, as: :has_many
 
   grid do
     cover :logo, as: :external_image, link_to_resource: true do |model|
