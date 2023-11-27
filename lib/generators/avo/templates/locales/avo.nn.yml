@@ -80,6 +80,7 @@ nn:
       to_top: Flytt elementet til toppen
     per_page: Per side
     prev_page: Førre side
+    records_selected_from_all_pages_html: Alle poster valgt fra alle sider
     remove_selection: Fjern val
     reset_filters: Nullstill filter
     resource_created: Ressurs generert
@@ -117,4 +118,5 @@ nn:
       zero: ingen fleire element
     x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> valde postar på denne sida av totalt <span class="font-bold text-gray-700">%{count}</span>
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> valde postar frå alle sider
+    x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> poster valgt på denne siden
     you_missed_something_check_form: Her manglar du noko. Ver venleg og sjekk skjemaet.
