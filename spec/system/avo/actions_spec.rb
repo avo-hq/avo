@@ -151,8 +151,6 @@ RSpec.describe "Actions", type: :system do
 
   describe "redirects when no confirmation" do
     it "redirects to hey page" do
-      original_dummy_action = Avo::Actions::Sub::DummyAction.dup
-
       Avo::Actions::Sub::DummyAction.class_eval do
         self.no_confirmation = true
 
@@ -169,7 +167,7 @@ RSpec.describe "Actions", type: :system do
       expect(page).to have_text "hey en"
 
       Avo::Actions::Sub.send(:remove_const, "DummyAction")
-      Avo::Actions::Sub.const_set("DummyAction", original_dummy_action)
+      load(Rails.root.join("app/avo/actions/sub/dummy_action.rb"))
     end
   end
 
