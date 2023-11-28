@@ -1,6 +1,6 @@
 <%# hover:z-[21] removed from tr class to solve flickering actions component on row controls and z-20 changed to z-21%>
 <tr
-  class="bg-white hover:bg-gray-50 hover:shadow-row relative z-21 border-b"
+  class="bg-white hover:bg-gray-50 hover:shadow-row z-21 border-b"
   data-component-name="<%= self.class.to_s.underscore %>"
   <%== item_selector_init @resource %>
   data-resource-name="<%= @resource.class.to_s %>"
