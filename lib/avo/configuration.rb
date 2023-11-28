@@ -6,6 +6,7 @@ module Avo
     attr_writer :branding
     attr_writer :root_path
     attr_writer :cache_store
+    attr_writer :logger
     attr_accessor :timezone
     attr_accessor :per_page
     attr_accessor :per_page_steps
@@ -97,6 +98,7 @@ module Avo
       @resource_parent_controller = "Avo::ResourcesController"
       @mount_avo_engines = true
       @cache_store = computed_cache_store
+      @logger = default_logger
     end
 
     def current_user_method(&block)
@@ -191,6 +193,25 @@ module Avo
         else
           ActiveSupport::Cache.lookup_store(:memory_store)
         end
+      }
+    end
+
+    def logger
+      Avo::ExecutionContext.new(target: @logger).handle
+    end
+
+    def default_logger
+      -> {
+        file_logger = ActiveSupport::Logger.new(Rails.root.join("log", "avo.log"))
+
+        file_logger.datetime_format = "%Y-%m-%d %H:%M:%S"
+        file_logger.formatter = proc do |severity, time, progname, msg|
+          "[Avo] #{time}: #{msg}\n".tap do |i|
+            puts i
+          end
+        end
+
+        file_logger
       }
     end
   end

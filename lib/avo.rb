@@ -49,8 +49,8 @@ module Avo
     delegate :license, :app, :error_manager, :tool_manager, :resource_manager, to: Avo::Current
 
     def boot
-      boot_logger
-      boot_fields
+      @logger = Avo.configuration.logger
+      @field_manager = Avo::Fields::FieldManager.build
       @cache_store = Avo.configuration.cache_store
       plugin_manager.boot_plugins
       Avo.run_load_hooks(:boot, self)
@@ -123,25 +123,6 @@ module Avo
         mount Avo::Dashboards::Engine, at: "/dashboards" if defined?(Avo::Dashboards::Engine)
         mount Avo::Pro::Engine, at: "/avo-pro" if defined?(Avo::Pro::Engine)
       }
-    end
-
-    private
-
-    def boot_logger
-      file_logger = ActiveSupport::Logger.new(Rails.root.join("log", "avo.log"))
-
-      file_logger.datetime_format = "%Y-%m-%d %H:%M:%S"
-      file_logger.formatter = proc do |severity, time, progname, msg|
-        "[Avo] #{time}: #{msg}\n".tap do |i|
-          puts i
-        end
-      end
-
-      @logger = file_logger
-    end
-
-    def boot_fields
-      @field_manager = Avo::Fields::FieldManager.build
     end
   end
 end
