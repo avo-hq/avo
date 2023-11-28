@@ -67,6 +67,7 @@ class Avo::Resources::User < Avo::BaseResource
     action Avo::Actions::ToggleAdmin
     action Avo::Actions::Sub::DummyAction
     action Avo::Actions::DownloadFile
+    action Avo::Actions::Test::NoConfirmationRedirect
   end
 
   def filters
