@@ -146,6 +146,7 @@ class UserResource < Avo::BaseResource
   action DownloadFile
   action PreUpdate
   action Update
+  action Test::NoConfirmationRedirect
 
   filter UserNamesFilter
   filter IsAdmin
