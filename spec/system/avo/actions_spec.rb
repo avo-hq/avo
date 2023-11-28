@@ -156,11 +156,9 @@ RSpec.describe "Actions", type: :system do
       Avo::Actions::Sub::DummyAction.class_eval do
         self.no_confirmation = true
 
-        define_method(:redirect_handle) do |**args|
+        def handle(**args)
           redirect_to main_app.hey_path
         end
-
-        alias_method :handle, :redirect_handle
       end
 
       visit "/admin/resources/users"
