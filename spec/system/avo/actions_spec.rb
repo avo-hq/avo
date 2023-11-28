@@ -133,7 +133,7 @@ RSpec.describe "Actions", type: :system do
 
   describe "redirects when no confirmation" do
     it "redirects to hey page" do
-      no_confirmation = Sub::DummyAction.no_confirmation
+      original_dummy_action = Sub::DummyAction.dup
 
       Sub::DummyAction.class_eval do
         self.no_confirmation = true
@@ -152,12 +152,8 @@ RSpec.describe "Actions", type: :system do
 
       expect(page).to have_text "hey en"
 
-
-      Sub::DummyAction.class_eval do
-        undef_method :redirect_handle
-      end
-
-      Sub::DummyAction.no_confirmation = no_confirmation
+      Sub.send(:remove_const, "DummyAction")
+      Sub.const_set("DummyAction", original_dummy_action)
     end
   end
   #   let!(:roles) { { admin: false, manager: false, writer: false } }
