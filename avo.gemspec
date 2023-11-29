@@ -31,7 +31,7 @@ Gem::Specification.new do |spec|
   spec.post_install_message = "Thank you for using Avo 💪  Docs are available at https://docs.avohq.io"
 
   spec.files = Dir["{bin,app,config,db,lib,public}/**/*", "MIT-LICENSE", "Rakefile", "README.md", "avo.gemspec", "Gemfile", "Gemfile.lock", "tailwind.preset.js", "tailwind.custom.js"]
-  spec.files.reject! { |file_name| %w[avo.custom.js avo.custom.js.map].any? { |rejected_file| file_name.include? rejected_file } }
+  spec.files.reject! { |file_name| %w[application.js application.js.map avo.custom.js avo.custom.js.map].any? { |rejected_file| file_name.include? rejected_file } }
 
   spec.add_dependency "activerecord", ">= 6.1"
   spec.add_dependency "activesupport", ">= 6.1"
