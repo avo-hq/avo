@@ -155,4 +155,20 @@ RSpec.describe 'Create Via Belongs to', type: :system do
       )
     end
   end
+
+  context 'disable' do
+    it 'dont show the link', :aggregate_failures do
+      Avo::Resources::CourseLink.with_temporary_items do
+        field :course, as: :belongs_to, searchable: true, can_create: false
+      end
+
+      visit '/admin/resources/course_links/new'
+
+      within field_wrapper(:course) do
+        expect(page).not_to have_text 'Create new course'
+      end
+
+      Avo::Resources::CourseLink.restore_items_from_backup
+    end
+  end
 end

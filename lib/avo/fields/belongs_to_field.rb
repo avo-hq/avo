@@ -83,6 +83,7 @@ module Avo
         @polymorphic_help = args[:polymorphic_help]
         @target = args[:target]
         @use_resource = args[:use_resource] || nil
+        @can_create = args[:can_create].nil? ? true : args[:can_create]
       end
 
       def value
@@ -262,6 +263,10 @@ module Avo
         return polymorphic_as.to_s.humanize if polymorphic_as.present? && view.index?
 
         super
+      end
+
+      def can_create?
+        @can_create
       end
 
       private
