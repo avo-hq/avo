@@ -64,6 +64,20 @@ Avo.configure do |config|
   ## provide a lambda to enable or disable cache_resource_filters per user/resource.
   # config.cache_resource_filters = -> { current_user.cache_resource_filters? }
 
+  ## == Logger ==
+  # config.logger = -> {
+  #   file_logger = ActiveSupport::Logger.new(Rails.root.join("log", "avo.log"))
+  #
+  #   file_logger.datetime_format = "%Y-%m-%d %H:%M:%S"
+  #   file_logger.formatter = proc do |severity, time, progname, msg|
+  #     "[Avo] #{time}: #{msg}\n".tap do |i|
+  #       puts i
+  #     end
+  #   end
+  #
+  #   file_logger
+  # }
+
   ## == Customization ==
   # config.app_name = 'Avocadelicious'
   # config.timezone = 'UTC'
