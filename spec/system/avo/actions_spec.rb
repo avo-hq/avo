@@ -149,6 +149,17 @@ RSpec.describe "Actions", type: :system do
     end
   end
 
+  describe "redirects when no confirmation" do
+    it "redirects to hey page" do
+      visit "/admin/resources/users"
+
+      click_on "Actions"
+      click_on "Test No Confirmation Redirect"
+
+      expect(page).to have_text "hey en"
+    end
+  end
+
   #   let!(:roles) { { admin: false, manager: false, writer: false } }
   #   let!(:user) { create :user, active: true, roles: roles }
 

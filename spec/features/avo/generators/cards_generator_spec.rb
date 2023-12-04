@@ -11,7 +11,7 @@ RSpec.feature "cards generator", type: :feature do
 
       Rails::Generators.invoke("avo:card", ["partial_custom_for_spec", "--type", "partial", "-q"], {destination_root: Rails.root})
 
-      expect(File.read(files.first)).to include "class Avo::Cards::PartialCustomForSpec < Avo::Dashboards::PartialCard"
+      expect(File.read(files.first)).to include "class Avo::Cards::PartialCustomForSpec < Avo::Cards::PartialCard"
       expect(File.read(files.second)).to include "Customize this partial under <code class='p-1 rounded bg-gray-500 text-white text-sm'>app/views/avo/cards/_partial_custom_for_spec.html.erb</code>"
 
       check_files_and_clean_up files
@@ -24,7 +24,7 @@ RSpec.feature "cards generator", type: :feature do
 
       Rails::Generators.invoke("avo:card", ["metric_card_for_spec", "--type", "metric", "-q"], {destination_root: Rails.root})
 
-      expect(File.read(file)).to include "class Avo::Cards::MetricCardForSpec < Avo::Dashboards::MetricCard"
+      expect(File.read(file)).to include "class Avo::Cards::MetricCardForSpec < Avo::Cards::MetricCard"
 
       check_files_and_clean_up file
     end
@@ -36,7 +36,7 @@ RSpec.feature "cards generator", type: :feature do
 
       Rails::Generators.invoke("avo:card", ["chartkick_card_for_spec", "--type", "chartkick", "-q"], {destination_root: Rails.root})
 
-      expect(File.read(file)).to include "class Avo::Cards::ChartkickCardForSpec < Avo::Dashboards::ChartkickCard"
+      expect(File.read(file)).to include "class Avo::Cards::ChartkickCardForSpec < Avo::Cards::ChartkickCard"
 
       check_files_and_clean_up file
     end

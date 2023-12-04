@@ -114,7 +114,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def sidebars
-    return if Avo.license.lacks_with_trial(:resource_sidebar)
+    return [] if Avo.license.lacks_with_trial(:resource_sidebar)
 
     @item.items.select do |item|
       item.is_sidebar?
