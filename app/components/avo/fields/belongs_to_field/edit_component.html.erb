@@ -81,7 +81,7 @@
                 <%= @form.hidden_field @field.id_input_foreign_key %>
               <% end %>
             <% end %>
-            <% if field.allow_creation? %>
+            <% if field.can_create? %>
               <% create_href = create_path(Avo.resource_manager.get_resource_by_model_class(type.to_s)) %>
               <% if !disabled && create_href.present? %>
                 <%= link_to t("avo.create_new_item", item: type.to_s.downcase),
@@ -127,7 +127,7 @@
           <%= @form.hidden_field @field.id_input_foreign_key %>
         <% end %>
       <% end %>
-      <% if field.allow_creation? %>
+      <% if field.can_create? %>
         <% if !disabled && create_path.present? %>
           <%= link_to t("avo.create_new_item", item: @field.name.downcase), create_path, class: "text-sm" %>
         <% end %>

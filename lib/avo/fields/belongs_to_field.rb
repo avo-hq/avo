@@ -83,7 +83,7 @@ module Avo
         @polymorphic_help = args[:polymorphic_help]
         @target = args[:target]
         @use_resource = args[:use_resource] || nil
-        @allow_creation = args[:allow_creation].nil? ? true : args[:allow_creation]
+        @can_create = args[:can_create].nil? ? true : args[:can_create]
       end
 
       def value
@@ -265,8 +265,8 @@ module Avo
         super
       end
 
-      def allow_creation?
-        @allow_creation
+      def can_create?
+        @can_create
       end
 
       private
