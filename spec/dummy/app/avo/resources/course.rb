@@ -6,8 +6,6 @@ class Avo::Resources::Course < Avo::BaseResource
   self.stimulus_controllers = "course-resource toggle-fields"
 
   def fields
-    field :links, as: :has_many, searchable: true, placeholder: "Click to choose a link",
-      discreet_pagination: true
 
     field :id, as: :id
     field :name, as: :text, html: {
@@ -72,6 +70,9 @@ class Avo::Resources::Course < Avo::BaseResource
       as: :select,
       options: Course.cities.values.flatten.map { |city| [city, city] }.to_h,
       display_value: false
+
+    field :links, as: :has_many, searchable: true, placeholder: "Click to choose a link",
+      discreet_pagination: true
   end
 
   def filters
