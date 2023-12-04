@@ -1,4 +1,4 @@
-class Avo::Cards::<%= class_name.camelize %> < Avo::Dashboards::PartialCard
+class Avo::Cards::<%= class_name.camelize %> < Avo::Cards::PartialCard
   self.id = "<%= name.underscore %>"
   self.label = "<%= name.underscore.humanize %>"
   self.partial = "avo/cards/<%= name.underscore %>"
