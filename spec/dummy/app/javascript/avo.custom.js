@@ -9,7 +9,7 @@ const application = Application.start()
 
 // Configure Stimulus development experience
 application.debug = window?.localStorage.getItem('avo.debug')
-application.register('city-in-country', CityInCountryController);
+application.register('city-in-country', CityInCountryController)
 application.register('nested-form', NestedForm)
 
 // eslint-disable-next-line no-console
