@@ -1,6 +1,7 @@
 module Avo
   class BaseAction
     include Avo::Concerns::HasItems
+    include Avo::Concerns::HasActionStimulusControllers
 
     class_attribute :name, default: nil
     class_attribute :message
