@@ -105,7 +105,7 @@ RSpec.feature "Search", type: :system do
       wait_for_search_loaded
       wait_for_loaded
 
-      expect(current_path).to eql "/admin/resources/course_links/#{link.id}"
+      expect(current_path).to eql "/admin/resources/course_links/#{link.to_param}"
     end
   end
 end
