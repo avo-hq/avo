@@ -27,7 +27,7 @@ module Avo
         current_user: _current_user,
         resource: resource,
         query: decrypted_query ||
-          resource_ids.any? ? @resource.find_record(resource_ids, params: params) : []
+          (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])
       )
 
       respond performed_action.response
