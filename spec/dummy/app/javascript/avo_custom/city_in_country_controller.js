@@ -13,7 +13,7 @@ export default class extends Controller {
   static initialValue
 
   get placeholder() {
-    return this.citySelectInputTarget.ariaPlaceholder
+    return this.citySelectInputTarget.getAttribute('aria-placeholder')
   }
 
   set loading(isLoading) {
@@ -34,13 +34,10 @@ export default class extends Controller {
   }
 
   async connect() {
-    // Add the controller functionality only on forms
-    if (['edit', 'new'].includes(this.viewValue)) {
-      this.captureTheInitialValue()
+    this.captureTheInitialValue()
 
-      // Trigger the change on load
-      await this.onCountryChange()
-    }
+    // Trigger the change on load
+    await this.onCountryChange()
   }
 
   // Read the country select.

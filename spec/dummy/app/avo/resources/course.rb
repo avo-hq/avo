@@ -3,7 +3,7 @@ class Avo::Resources::Course < Avo::BaseResource
     query: -> { query.ransack(id_eq: params[:q], name_cont: params[:q], m: "or").result(distinct: false) }
   }
   self.keep_filters_panel_open = true
-  self.stimulus_controllers = "course-resource toggle-fields"
+  self.stimulus_controllers = "city-in-country toggle-fields"
 
   def fields
 
@@ -61,7 +61,7 @@ class Avo::Resources::Course < Avo::BaseResource
         edit: {
           input: {
             data: {
-              action: "course-resource#onCountryChange"
+              action: "city-in-country#onCountryChange"
             }
           }
         }
@@ -78,5 +78,9 @@ class Avo::Resources::Course < Avo::BaseResource
   def filters
     filter Avo::Filters::CourseCountryFilter
     filter Avo::Filters::CourseCityFilter
+  end
+
+  def actions
+    action Avo::Actions::ShowCurrentTime
   end
 end

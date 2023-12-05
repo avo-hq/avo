@@ -1,6 +1,6 @@
 <%= turbo_frame_tag "actions_show" do %>
   <div
-    data-controller="action"
+    data-controller="<%= ["action", @action.get_stimulus_controllers].join(" ") %>"
     data-no-confirmation="<%= @action.no_confirmation %>"
     data-action-target="controllerDiv"
     data-resource-name="<%= @resource.model_key %>"
@@ -28,7 +28,7 @@
         <div class="mt-4 -mx-6">
           <% @action.get_fields.each_with_index do |field, index| %>
             <%= render field
-              .hydrate(resource: @resource, record: @resource.record, user: @resource.user, view: @view)
+              .hydrate(resource: @resource, record: @resource.record, user: @resource.user, view: @view, action: @action)
               .component_for_view(@view)
               .new(field: field, resource: @resource, index: index, form: form, compact: true)
             %>
