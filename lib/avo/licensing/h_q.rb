@@ -6,7 +6,7 @@ module Avo
 
       ENDPOINT = "https://avohq.io/api/v1/licenses/check".freeze unless const_defined?(:ENDPOINT)
       REQUEST_TIMEOUT = 5 unless const_defined?(:REQUEST_TIMEOUT) # seconds
-      CACHE_TIME = 3600 unless const_defined?(:CACHE_TIME) # seconds
+      CACHE_TIME = 3600*12 unless const_defined?(:CACHE_TIME) # seconds
 
       class << self
         def cache_key
