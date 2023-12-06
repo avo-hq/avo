@@ -1,6 +1,6 @@
 <% if is_polymorphic? %>
   <%= content_tag(
-    :div, "",
+    :div,
     class: "divide-y",
     data: data) do %>
     <%= field_wrapper **field_wrapper_args, help: @field.polymorphic_help || '' do %>
