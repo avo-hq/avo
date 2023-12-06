@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_11_26_035843) do
-
+ActiveRecord::Schema[7.1].define(version: 2023_12_05_153910) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -97,6 +96,15 @@ ActiveRecord::Schema.define(version: 2023_11_26_035843) do
     t.string "country"
     t.string "city"
     t.time "starting_at"
+  end
+
+  create_table "courses_locations", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "course_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["course_id"], name: "index_courses_locations_on_course_id"
+    t.index ["user_id"], name: "index_courses_locations_on_user_id"
   end
 
   create_table "events", force: :cascade do |t|
@@ -272,6 +280,8 @@ ActiveRecord::Schema.define(version: 2023_11_26_035843) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "comments", "users"
+  add_foreign_key "courses_locations", "courses"
+  add_foreign_key "courses_locations", "users"
   add_foreign_key "fish", "users"
   add_foreign_key "locations", "cities"
   add_foreign_key "locations", "teams"
