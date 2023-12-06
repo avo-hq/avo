@@ -1,8 +1,7 @@
 <% if is_polymorphic? %>
-  <%= content_tag(
-    :div,
+  <%= content_tag :div,
     class: "divide-y",
-    data: data) do %>
+    data: data do %>
     <%= field_wrapper **field_wrapper_args, help: @field.polymorphic_help || '' do %>
       <%= @form.select @field.type_input_foreign_key, @field.types.map { |type| [Avo.resource_manager.get_resource_by_model_class(type.to_s).name, type.to_s] },
       {
