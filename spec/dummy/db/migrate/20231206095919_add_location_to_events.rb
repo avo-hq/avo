@@ -1,4 +1,4 @@
-class AddLocationToEvents < ActiveRecord::Migration[7.1]
+class AddLocationToEvents < ActiveRecord::Migration[6.1]
   def change
     add_reference :events, :location, null: true, foreign_key: true
   end
