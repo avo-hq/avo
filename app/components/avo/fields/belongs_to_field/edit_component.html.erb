@@ -1,5 +1,12 @@
 <% if is_polymorphic? %>
-  <div class="divide-y" <%= tag.attributes(data: data) %>>
+  <%= content_tag :div,
+    class: "divide-y",
+    data: {
+      controller: "belongs-to-field",
+      searchable: @field.is_searchable?,
+      association: @field.id,
+      association_class: @field&.target_resource&.model_class || nil
+    } do %>
     <%= field_wrapper **field_wrapper_args, help: @field.polymorphic_help || '' do %>
       <%= @form.select @field.type_input_foreign_key, @field.types.map { |type| [Avo.resource_manager.get_resource_by_model_class(type.to_s).name, type.to_s] },
       {
@@ -74,9 +81,9 @@
         <% end %>
       </div>
     <% end %>
-  </div>
+  <% end %>
 <% else %>
-  <%= field_wrapper **field_wrapper_args.merge!(data: data) do %>
+  <%= field_wrapper **field_wrapper_args do %>
     <% if @field.is_searchable? %>
       <%= render Avo::Pro::SearchableAssociations::AutocompleteComponent.new form: @form,
         field: @field,
