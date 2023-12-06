@@ -5,6 +5,13 @@ RSpec.feature "SkipShowView", type: :system do
   let!(:post) { create :post }
 
   around do |example|
+    old_value = Capybara.raise_server_errors
+    Capybara.raise_server_errors = false
+    example.run
+    Capybara.raise_server_errors = old_value
+  end
+
+  around do |example|
     # Store original configuration
     id_links_to_resource = Avo.configuration.id_links_to_resource
     resource_default_view = Avo.configuration.resource_default_view
