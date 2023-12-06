@@ -132,7 +132,6 @@ FactoryBot.define do
 
   factory :location do
     team { create :team }
-    city { create :city }
     name { Faker::Address.street_name }
     address { Faker::Address.full_address }
     size { ["small", "medium", "large"].sample }
@@ -143,5 +142,10 @@ FactoryBot.define do
     name { Faker::Lorem.sentence }
     event_time { DateTime.now }
     body { Faker::Lorem.paragraphs(number: rand(1...3)).join("\n") }
+  end
+
+  factory :store do
+    name { Faker::Company.name }
+    size { ["small", "medium", "large"].sample }
   end
 end
