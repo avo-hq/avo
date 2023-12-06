@@ -1,11 +1,4 @@
 <% if is_polymorphic? %>
-  <%
-    # Set the model keys so we can pass them over
-    model_keys = @field.types.map do |type|
-      resource = Avo.resource_manager.get_resource_by_model_class(type.to_s)
-      [type.to_s, resource.model_key]
-    end.to_h
-  %>
   <%= content_tag(
     :div, "",
     class: "divide-y",

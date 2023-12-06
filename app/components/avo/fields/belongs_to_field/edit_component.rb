@@ -76,7 +76,7 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
 
   def data
     attributes = {
-      controller: ["reload-belongs-to-field"],
+      controller: "reload-belongs-to-field",
       action: 'turbo:before-stream-render@document->reload-belongs-to-field#beforeStreamRender',
       reload_belongs_to_field_polymorphic_value: is_polymorphic?,
       reload_belongs_to_field_searchable_value: @field.is_searchable?,
@@ -85,7 +85,7 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
     }
 
     if is_polymorphic?
-      attributes[:controller].push "belongs-to-field"
+      attributes[:controller] += " belongs-to-field"
 
       attributes.merge!({
         searchable: @field.is_searchable?,
@@ -95,5 +95,12 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
     end
 
     attributes
+  end
+
+  def model_keys
+    @field.types.map do |type|
+      resource = Avo.resource_manager.get_resource_by_model_class(type.to_s)
+      [type.to_s, resource.model_key]
+    end.to_h
   end
 end
