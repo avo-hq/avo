@@ -13,5 +13,4 @@ class Event < ApplicationRecord
   has_rich_text :body
 
   belongs_to :location
-  belongs_to :team
 end
