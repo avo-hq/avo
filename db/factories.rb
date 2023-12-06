@@ -129,4 +129,19 @@ FactoryBot.define do
     status { "status" }
     category { ::Product.categories.values.sample }
   end
+
+  factory :location do
+    team { create :team }
+    city { create :city }
+    name { Faker::Address.street_name }
+    address { Faker::Address.full_address }
+    size { ["small", "medium", "large"].sample }
+  end
+
+  factory :event do
+    location { create :location }
+    name { Faker::Lorem.sentence }
+    event_time { DateTime.now }
+    body { Faker::Lorem.paragraphs(number: rand(1...3)).join("\n") }
+  end
 end
