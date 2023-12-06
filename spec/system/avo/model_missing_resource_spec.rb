@@ -8,6 +8,20 @@ RSpec.feature "MissingResourceError", type: :system do
     Capybara.raise_server_errors = old_value
   end
 
+  context "when has_one field" do
+    let!(:store) { create :store }
+    let!(:location) { create :location, store: store }
+
+    it "shows informative error with suggested solution for missing resource" do
+      visit "/admin/resources/stores/#{store.id}/location/#{location.id}?turbo_frame=has_one_field_show_location"
+
+      expect(page).to have_content("Missing resource detected while rendering field for location.")
+      expect(page).to have_content("You can generate that resource running 'rails generate avo:resource location'.")
+      expect(page).to have_content("Alternatively use 'use_resource' option to specify the resource to be used on the field.")
+      expect(page).to have_content("Check more at https://docs.avohq.io/3.0/resources.html.")
+    end
+  end
+
   context "when belongs_to field" do
     let!(:event) { create :event }
 
