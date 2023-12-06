@@ -36,6 +36,27 @@ RSpec.feature "HasManyField", type: :system do
       end
     end
 
+    context "team -> locations" do
+      let!(:team) { create :team }
+
+      around do |example|
+        old_value = Capybara.raise_server_errors
+        Capybara.raise_server_errors = false
+        example.run
+        Capybara.raise_server_errors = old_value
+      end
+
+      it "shows informative error with suggested solution for missing resource" do
+        visit "/admin/resources/teams/#{team.id}/locations?turbo_frame=has_many_field_show_locations"
+
+        expect(page).to have_content("Avo::MissingResourceError")
+        expect(page).to have_content("Missing resource detected while rendering field for locations.")
+        expect(page).to have_content("You can generate that resource running 'rails generate avo:resource location'.")
+        expect(page).to have_content("Alternatively use 'use_resource' option to specify the resource to be used on the field.")
+        expect(page).to have_content("Check more at https://docs.avohq.io/3.0/resources.html.")
+      end
+    end
+
     describe "delete notification visible" do
       let!(:project) { create :project }
       let!(:comments) { create_list :comment, 3, commentable: project }
