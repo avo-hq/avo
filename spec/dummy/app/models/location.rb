@@ -3,7 +3,7 @@
 # Table name: locations
 #
 #  id         :bigint           not null, primary key
-#  city_id    :bigint           not null
+#  store_id   :bigint           not null
 #  team_id    :bigint           not null
 #  name       :text
 #  address    :string
@@ -12,7 +12,7 @@
 #  updated_at :datetime         not null
 #
 class Location < ApplicationRecord
-  belongs_to :city
+  belongs_to :store, optional: true
   belongs_to :team
 
   has_and_belongs_to_many :courses, inverse_of: :locations

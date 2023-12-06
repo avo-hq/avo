@@ -265,9 +265,14 @@ end
   City.create(**city)
 end
 
+store = Store.create(
+  name: "Apple Store Prime",
+  size: "large"
+)
+
 location = Location.create(
   team: Team.find_by(name: "Apple"),
-  city: City.find_by(name: "New York"),
+  store: store,
   name: "Apple Park - Barbecue Area",
   address: "1 Orchard Street, 12345 New York",
   size: "medium"
