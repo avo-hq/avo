@@ -39,8 +39,10 @@ module Avo
     private
 
     def missing_resource_message(resource_name)
-      "Missing resource detected while rendering field for #{resource_name}.\n" \
-      "You can generate that resource running 'rails generate avo:resource #{resource_name.singularize}'.\n" \
+      name = resource_name.to_s.downcase
+
+      "Missing resource detected while rendering field for #{name}.\n" \
+      "You can generate that resource running 'rails generate avo:resource #{name.singularize}'.\n" \
       "Alternatively use 'use_resource' option to specify the resource to be used on the field.\n" \
       "Check more at https://docs.avohq.io/#{Avo::VERSION[0]}.0/resources.html."
     end
