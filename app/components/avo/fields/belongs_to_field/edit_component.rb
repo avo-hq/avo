@@ -74,18 +74,26 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
     @field.target_resource.to_s == params[:via_resource_class].to_s
   end
 
-  def reload_belongs_to_field_data_attributes
-    {
-      controller: 'reload-belongs-to-field',
+  def data
+    attributes = {
+      controller: ["reload-belongs-to-field"],
       action: 'turbo:before-stream-render@document->reload-belongs-to-field#beforeStreamRender',
       reload_belongs_to_field_polymorphic_value: is_polymorphic?,
       reload_belongs_to_field_searchable_value: @field.is_searchable?,
       reload_belongs_to_field_relation_name_value: @field.id,
       reload_belongs_to_field_target_name_value: "#{form.object_name}[#{@field.id_input_foreign_key}]"
     }
-  end
 
-  def reload_belongs_to_field_data
-    content_tag(:div, "", class: "hidden", data: reload_belongs_to_field_data_attributes)
+    if is_polymorphic?
+      attributes[:controller].push "belongs-to-field"
+
+      attributes.merge!({
+        searchable: @field.is_searchable?,
+        association: @field.id,
+        association_class: @field&.target_resource&.model_class || nil
+      })
+    end
+
+    attributes
   end
 end
