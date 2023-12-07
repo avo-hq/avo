@@ -1,50 +1,89 @@
 {
-    "env": {
-        "browser": true,
-        "es6": true
-    },
-    "extends": [
-        "airbnb-base"
-    ],
-    "globals": {
-        "Atomics": "readonly",
-        "SharedArrayBuffer": "readonly"
-    },
-    "parser": "babel-eslint",
-    "parserOptions": {
-        "ecmaVersion": 2018,
-        "sourceType": "module"
-    },
-    "plugins": [
-        "sort-imports-es6-autofix"
-    ],
-    "rules": {
-        "sort-imports-es6-autofix/sort-imports-es6": [2, {
-            "ignoreCase": false,
-            "ignoreMemberSort": false,
-            "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
-        }],
-        // "sort-imports": ["error"],
-        "semi": ["error", "never"],
-        "no-empty": ["error", { "allowEmptyCatch": true }],
-        "no-multi-spaces": 0,
-        "no-shadow": 0,
-        "no-plusplus": 0,
-        "no-param-reassign": 0,
-        "import/prefer-default-export": 0,
-        "camelcase": ["error", {"ignoreDestructuring": true}],
-        "newline-before-return": 1,
-        "max-len": ["error", { "code": 180 }],
-        "class-methods-use-this": 0
-    },
-    "settings": {
-        "import/resolver": {
-            "alias": {
-                "map": [
-                    ["@", "./app/packs"],
-                    ["~", "./node_modules"]
-                ]
-            }
-        }
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "extends": [
+    "airbnb-base"
+  ],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "requireConfigFile": false,
+    "babelOptions": {
+      "babelrc": false,
+      "configFile": false
+      // your babel options
+      // "presets": [
+      //   // "@babel/preset-env"
+      // ]
     }
+  },
+  "plugins": [
+    "sort-imports-es6-autofix"
+  ],
+  "rules": {
+    "sort-imports-es6-autofix/sort-imports-es6": [
+      2,
+      {
+        "ignoreCase": false,
+        "ignoreMemberSort": false,
+        "memberSyntaxSortOrder": [
+          "none",
+          "all",
+          "multiple",
+          "single"
+        ]
+      }
+    ],
+    // "sort-imports": ["error"],
+    "semi": [
+      "error",
+      "never"
+    ],
+    "no-empty": [
+      "error",
+      {
+        "allowEmptyCatch": true
+      }
+    ],
+    "no-multi-spaces": 0,
+    "no-shadow": 0,
+    "no-plusplus": 0,
+    "no-param-reassign": 0,
+    "import/prefer-default-export": 0,
+    "camelcase": [
+      "error",
+      {
+        "ignoreDestructuring": true
+      }
+    ],
+    "newline-before-return": 1,
+    "max-len": [
+      "error",
+      {
+        "code": 180
+      }
+    ],
+    "class-methods-use-this": 0
+  },
+  "settings": {
+    "import/resolver": {
+      "alias": {
+        "map": [
+          [
+            "@",
+            "./app/packs"
+          ],
+          [
+            "~",
+            "./node_modules"
+          ]
+        ]
+      }
+    }
+  }
 }
