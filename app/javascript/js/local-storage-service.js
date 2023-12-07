@@ -1,5 +1,5 @@
 export class LocalStorageService {
-  prefix = "avo"
+  prefix = 'avo'
 
   prefixedKey(key) {
     return `${this.prefix}.${key}`
@@ -14,6 +14,6 @@ export class LocalStorageService {
   }
 
   remove(key) {
-    return window.localStorage.removeItem(this.prefixedKey(key), value)
+    return window.localStorage.removeItem(this.prefixedKey(key))
   }
 }
