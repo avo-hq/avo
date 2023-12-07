@@ -26,12 +26,16 @@ class Avo::TabGroupComponent < Avo::BaseComponent
     visible_tabs.present?
   end
 
+  def group_param
+    group.id
+  end
+
   def active_tab_name
-    params[:active_tab_name] || group.visible_items&.first&.name
+    CGI.unescape(params[group_param] || group.visible_items&.first&.name)
   end
 
   def tabs
-    @group.items.map do |tab|
+    @group.visible_items.map do |tab|
       tab.hydrate(view: view)
     end
   end

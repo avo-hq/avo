@@ -67,7 +67,7 @@ RSpec.describe "Main menu and fields across multiple methods", type: :system do
 
     # Tabs
     within("#avo-resources-items-tabgroup-4-avo-resources-items-tab-test_tab") do
-      within('[data-target="tab-switcher"]') do
+      within('[data-tabs-target="tabSwitcher"]') do
         expect(page).to have_text("test_tab")
         expect(page).to have_text("Inside tabs")
         expect(page).to have_text("Fish")

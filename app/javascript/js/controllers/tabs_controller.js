@@ -1,5 +1,4 @@
 import { Controller } from '@hotwired/stimulus'
-import { castBoolean } from '../helpers/cast_boolean'
 
 export default class extends Controller {
   static targets = ['tabPanel'];
@@ -7,68 +6,57 @@ export default class extends Controller {
   static values = {
     view: String,
     activeTab: String,
+    groupId: String,
   };
 
-  get currentTab() {
-    return this.tabPanelTargets.find(
-      (element) => element.dataset.tabId === this.activeTabValue,
-    )
+  connect() {
+    this.selectCurrentTab()
   }
 
-  targetTabPanel(id) {
+  selectCurrentTab() {
+    const params = {}
+    Array.from(new URL(window.location).searchParams.entries()).forEach((item) => params[item[0]] = item[1])
+
+    // LocalStorage value
+    const lsValue = window.Avo.localStorage.get(`resources.user.tabgroups.${this.groupIdValue}.selectedTab`)
+
+    // if this tab group has a param in the address, select it
+    if (params[this.groupParam(this.groupIdValue)]) {
+      this.hideAllTabs()
+      this.revealTabByName(decodeURIComponent(params[this.groupParam(this.groupIdValue)]))
+    } else if (lsValue) {
+      this.hideAllTabs()
+      this.revealTabByName(decodeURIComponent(lsValue))
+    }
+  }
+
+  getTabByName(id) {
     return this.tabPanelTargets.find((element) => element.dataset.tabId === id)
   }
 
+  groupParam(groupId) {
+    return encodeURIComponent(`tab-group_${groupId}`)
+  }
+
   async changeTab(e) {
-    // Stopping the link execution.
-    // We're going to reveal a lazy-loaded frame to fulfill the tab change.
     e.preventDefault()
+    const {params} = e
+    const {groupId, tabName, resourceName} = params
+    const key = `resources.${resourceName}.tabgroups.${groupId}.selectedTab`
 
-    const { params } = e
-    const { id } = params
+    const u = new URL(window.location);
+    u.searchParams.set(this.groupParam(groupId), encodeURIComponent(tabName));
+    history.replaceState(null, '', u.pathname+u.search);
 
-    await this.setTheTargetPanelHeight(id)
+    window.Avo.localStorage.set(key, tabName)
 
     this.hideAllTabs()
-    this.revealTab(id)
-    this.markTabLoaded(id)
-
-    this.activeTabValue = id
-  }
-
-  /**
-   * Sets the target container height to the previous panel height so we don't get jerky tab changes.
-   */
-  async setTheTargetPanelHeight(id) {
-    // Ignore this on edit.
-    // All tabs are loaded beforehand, they have their own height, and the page won't jiggle when the user toggles between them.
-    if (this.viewValue === 'edit' || this.viewValue === 'new') {
-      return
-    }
-
-    // We don't need to add a height to this panel because it was loaded before
-    if (castBoolean(this.targetTabPanel(id).dataset.loaded)) {
-      return
-    }
-
-    // Get the height of the active panel
-    const { height } = this.currentTab.getBoundingClientRect()
-    // Set it to the target panel
-    this.targetTabPanel(id).style.height = `${height}px`
-
-    // Wait until the panel loaded it's content and then remove the forced height
-    await this.targetTabPanel(id).loaded
-    this.targetTabPanel(id).style.height = ''
-  }
-
-  // Marking tab as loaded so we know to skip some things the next time the user clicks on it
-  markTabLoaded(id) {
-    this.targetTabPanel(id).dataset.loaded = true
+    this.revealTabByName(tabName)
   }
 
   // We're revealing the new tab that's lazy loaded by Turbo.
-  revealTab(id) {
-    this.targetTabPanel(id).classList.remove('hidden')
+  revealTabByName(name) {
+    this.getTabByName(name).classList.remove('hidden')
   }
 
   hideAllTabs() {

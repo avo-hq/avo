@@ -37,11 +37,11 @@ class Avo::Resources::Items::Holder
     add_item field_parser.instance
   end
 
-  def tabs(tab = nil, **kwargs, &block)
+  def tabs(tab = nil, id: nil, name: nil, **kwargs, &block)
     if tab.present?
       add_item tab
     else
-      add_item Avo::Resources::Items::TabGroup::Builder.parse_block(parent: @parent, **kwargs, &block)
+      add_item Avo::Resources::Items::TabGroup::Builder.parse_block(parent: @parent, id: id, name: name, **kwargs, &block)
     end
   end
 

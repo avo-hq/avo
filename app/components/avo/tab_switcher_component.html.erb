@@ -1,17 +1,19 @@
-<div class="flex flex-wrap gap-2 p-2 <%= white_panel_classes %>" data-target="tab-switcher">
+<div class="flex flex-wrap gap-2 p-2 <%= white_panel_classes %>" data-tabs-target="tabSwitcher">
   <% group.visible_items.each do |tab| %>
     <%= a_link tab_path(tab),
-    color: selected?(tab) ? :primary : :gray,
-    style: selected?(tab) ? :outline : :text,
-    size: :sm,
-    class: selected?(tab) ? "z-20 bg-primary-100" : "",
-    title: tab.description,
-    data: {
-      tippy: tab.description.present? ? 'tooltip' : '',
-      selected: selected?(tab),
-      action: 'click->tabs#changeTab',
-      tabs_id_param: tab.name
-    } do %>
+      color: current_one?(tab) ? :primary : :gray,
+      style: current_one?(tab) ? :outline : :text,
+      size: :sm,
+      class: current_one?(tab) ? "z-20 bg-primary-100" : "",
+      title: tab.description,
+      data: {
+        tippy: tab.description.present? ? 'tooltip' : '',
+        selected: current_one?(tab),
+        action: 'click->tabs#changeTab',
+        tabs_tab_name_param: tab.name,
+        tabs_group_id_param: group.to_param,
+        tabs_resource_name_param: resource.to_param,
+      } do %>
       <%= tab.name %>
     <% end %>
   <% end %>

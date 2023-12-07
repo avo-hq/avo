@@ -149,12 +149,12 @@ module Avo
     def click_tab(tab_name = "", within_target: nil, **args)
       if within_target.present?
         within within_target do
-          within find('[data-controller="tabs"] turbo-frame:not(.hidden) [data-target="tab-switcher"]') do
+          within find('[data-controller="tabs"] turbo-frame:not(.hidden) [data-tabs-target="tabSwitcher"]') do
             find_link(tab_name).click
           end
         end
       else
-        within find('[data-controller="tabs"] turbo-frame:not(.hidden) [data-target="tab-switcher"]') do
+        within find('[data-controller="tabs"] turbo-frame:not(.hidden) [data-tabs-target="tabSwitcher"]') do
           find_link(tab_name).click
         end
       end

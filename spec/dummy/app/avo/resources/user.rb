@@ -226,7 +226,7 @@ class Avo::Resources::User < Avo::BaseResource
   end
 
   def second_tabs_group
-    tabs do
+    tabs id: :second_tabs_group do
       field :post,
         as: :has_one,
         name: "Main post",
