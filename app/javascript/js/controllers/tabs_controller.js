@@ -1,13 +1,13 @@
 import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
-  static targets = ['tabPanel'];
+  static targets = ['tabPanel']
 
   static values = {
     view: String,
     activeTab: String,
     groupId: String,
-  };
+  }
 
   connect() {
     this.selectCurrentTab()
@@ -15,7 +15,7 @@ export default class extends Controller {
 
   selectCurrentTab() {
     const params = {}
-    Array.from(new URL(window.location).searchParams.entries()).forEach((item) => params[item[0]] = item[1])
+    Array.from(new URL(window.location).searchParams.entries()).forEach(([key, value]) => { params[key] = value })
 
     // LocalStorage value
     const lsValue = window.Avo.localStorage.get(`resources.user.tabgroups.${this.groupIdValue}.selectedTab`)
@@ -40,13 +40,13 @@ export default class extends Controller {
 
   async changeTab(e) {
     e.preventDefault()
-    const {params} = e
-    const {groupId, tabName, resourceName} = params
+    const { params } = e
+    const { groupId, tabName, resourceName } = params
     const key = `resources.${resourceName}.tabgroups.${groupId}.selectedTab`
 
-    const u = new URL(window.location);
-    u.searchParams.set(this.groupParam(groupId), encodeURIComponent(tabName));
-    history.replaceState(null, '', u.pathname+u.search);
+    const u = new URL(window.location)
+    u.searchParams.set(this.groupParam(groupId), encodeURIComponent(tabName))
+    window.history.replaceState(null, '', u.pathname + u.search)
 
     window.Avo.localStorage.set(key, tabName)
 
