@@ -1,6 +1,6 @@
 module Avo
   module Concerns
-    module HasStimulusControllers
+    module HasResourceStimulusControllers
       extend ActiveSupport::Concern
 
       included do

@@ -80,6 +80,7 @@ module Avo
         @stacked = args[:stacked] || nil
         @for_presentation_only = args[:for_presentation_only] || false
         @resource = args[:resource]
+        @action = args[:action]
         @components = args[:components] || {}
 
         @args = args

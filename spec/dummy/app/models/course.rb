@@ -47,6 +47,16 @@ class Course < ApplicationRecord
     }
   end
 
+  def self.timezones
+    {
+      "America/New_York" => ["New York", "Boston", "Philadelphia"],
+      "America/Los_Angeles" => ["Los Angeles", "San Francisco"],
+      "Asia/Tokyo" => ["Tokyo", "Osaka", "Kyoto", "Hiroshima", "Yokohama", "Nagoya", "Kobe"],
+      "Europe/Madrid" => ["Madrid", "Valencia", "Barcelona"],
+      "Asia/Bangkok" => ["Chiang Mai", "Bangkok", "Phuket"]
+    }
+  end
+
   def self.ransackable_attributes(auth_object = nil)
     ["city", "country", "created_at", "id", "name", "skills", "starting_at", "updated_at"]
   end

@@ -8,8 +8,8 @@ class Avo::Actions::<%= class_name.camelize %> < Avo::BaseAction
   #   # Add Action fields here
   # end
 
-  def handle(records:, fields:, current_user:, resource:, **args)
-    records.each do |record|
+  def handle(query:, fields:, current_user:, resource:, **args)
+    query.each do |record|
       # Do something with your records.
     end
   end

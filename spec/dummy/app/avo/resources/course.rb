@@ -3,11 +3,9 @@ class Avo::Resources::Course < Avo::BaseResource
     query: -> { query.ransack(id_eq: params[:q], name_cont: params[:q], m: "or").result(distinct: false) }
   }
   self.keep_filters_panel_open = true
-  self.stimulus_controllers = "course-resource toggle-fields"
+  self.stimulus_controllers = "city-in-country toggle-fields"
 
   def fields
-    field :links, as: :has_many, searchable: true, placeholder: "Click to choose a link",
-      discreet_pagination: true
 
     field :id, as: :id
     field :name, as: :text, html: {
@@ -63,7 +61,7 @@ class Avo::Resources::Course < Avo::BaseResource
         edit: {
           input: {
             data: {
-              action: "course-resource#onCountryChange"
+              action: "city-in-country#onCountryChange"
             }
           }
         }
@@ -72,10 +70,17 @@ class Avo::Resources::Course < Avo::BaseResource
       as: :select,
       options: Course.cities.values.flatten.map { |city| [city, city] }.to_h,
       display_value: false
+
+    field :links, as: :has_many, searchable: true, placeholder: "Click to choose a link",
+      discreet_pagination: true
   end
 
   def filters
     filter Avo::Filters::CourseCountryFilter
     filter Avo::Filters::CourseCityFilter
+  end
+
+  def actions
+    action Avo::Actions::ShowCurrentTime
   end
 end
