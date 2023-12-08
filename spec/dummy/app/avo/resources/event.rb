@@ -7,7 +7,9 @@ class Avo::Resources::Event < Avo::BaseResource
     field :name, as: :text, link_to_record: true, sortable: true, stacked: true
     field :event_time, as: :datetime, sortable: true
 
-    # Example for error message when resource is missing
-    field :location, as: :belongs_to
+    if params[:show_location_field] == '1'
+      # Example for error message when resource is missing
+      field :location, as: :belongs_to
+    end
   end
 end
