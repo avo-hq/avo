@@ -6,10 +6,6 @@ class Avo::Fields::HasManyField::ShowComponent < Avo::Fields::ShowComponent
   def turbo_frame_loading = kwargs[:turbo_frame_loading]
 
   def loading
-    return turbo_frame_loading if turbo_frame_loading
-
-    return params[:turbo_frame_loading] if params[:turbo_frame_loading]
-
-    "eager"
+    turbo_frame_loading || params[:turbo_frame_loading] || "eager"
   end
 end
