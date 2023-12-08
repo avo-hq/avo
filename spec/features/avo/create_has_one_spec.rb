@@ -15,7 +15,7 @@ RSpec.feature "CreateHasOne", type: :feature do
 
     click_on "Create new main post"
 
-    expect(page).to have_current_path("/admin/resources/posts/new?via_association_type=has_one&via_record_id=#{user.slug}&via_relation=user&via_relation_class=User")
+    expect(page).to have_current_path("/admin/resources/posts/new?via_association_type=has_one&via_record_id=#{user.slug}&via_relation=user&via_relation_class=User&via_resource_class=Avo%3A%3AResources%3A%3AUser")
     expect(page).to have_text user.name
 
     fill_in "post_name", with: "Main post name"

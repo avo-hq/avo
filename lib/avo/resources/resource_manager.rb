@@ -8,7 +8,6 @@ module Avo
       class << self
         def build
           instance = new
-          instance.init_resources
           instance.check_bad_resources
           instance
         end
@@ -35,37 +34,30 @@ module Avo
         #   "FishResource",
         # ]
         def fetch_resources
-          resources = if Avo.configuration.resources.nil?
-            BaseResource.descendants
+          if Avo.configuration.resources.present?
+            load_configured_resources
           else
-            Avo.configuration.resources
+            load_resources_namespace
           end
 
-          resources.map do |resource|
-            if resource.is_a?(Class)
-              resource
-            else
-              resource.to_s.safe_constantize
-            end
+          BaseResource.descendants
+        end
+
+        def load_resources_namespace
+          Rails.autoloaders.main.eager_load_namespace(Avo::Resources)
+        end
+
+        def load_configured_resources
+          raise 'Resources configuration must be an array' unless Avo.configuration.resources.is_a? Array
+
+          Avo.configuration.resources.each do |resource|
+            resource.to_s.safe_constantize
           end
         end
       end
 
       def initialize
-        @resources = []
-      end
-
-      def init_resources
-        self.resources = self.class.fetch_resources
-          .reject do |resource|
-            # Remove the BaseResource. We only need the descendants
-            resource == Avo::BaseResource
-          end
-          .uniq do |klass|
-            # On invalid resource configuration the resource classes get duplicated in `ObjectSpace`
-            # We need to de-duplicate them
-            klass.name
-          end
+        @resources = self.class.fetch_resources
       end
 
       def check_bad_resources
