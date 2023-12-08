@@ -202,7 +202,6 @@ module Avo
 
         name.demodulize.underscore
       end
-      alias_method :to_param, :underscore_name
 
       def navigation_label
         plural_name.humanize
