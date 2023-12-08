@@ -44,6 +44,8 @@ RSpec.feature "HasManyField", type: :system do
       it "shows the notification" do
         visit url
 
+        scroll_to find('turbo-frame[id="has_many_field_show_comments"]')
+
         expect {
           find("[data-resource-id='#{comments.first.id}'] [data-control='destroy']").click
           sleep 0.2
@@ -73,6 +75,8 @@ RSpec.feature "HasManyField", type: :system do
         end
 
         visit url
+
+        scroll_to find('turbo-frame[id="has_many_field_show_comments"]')
 
         expect {
           find("[data-resource-id='#{comments.first.id}'] [data-control='destroy']").click
