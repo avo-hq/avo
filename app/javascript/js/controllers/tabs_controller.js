@@ -20,13 +20,18 @@ export default class extends Controller {
     // LocalStorage value
     const lsValue = window.Avo.localStorage.get(`resources.user.tabgroups.${this.groupIdValue}.selectedTab`)
 
+    let group_id = null
+
     // if this tab group has a param in the address, select it
     if (params[this.groupParam(this.groupIdValue)]) {
-      this.hideAllTabs()
-      this.revealTabByName(decodeURIComponent(params[this.groupParam(this.groupIdValue)]))
+      group_id = params[this.groupParam(this.groupIdValue)]
     } else if (lsValue) {
+      group_id = lsValue
+    }
+
+    if (this.getTabByName(group_id)) {
       this.hideAllTabs()
-      this.revealTabByName(decodeURIComponent(lsValue))
+      this.revealTabByName(group_id)
     }
   }
 
