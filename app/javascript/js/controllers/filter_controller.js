@@ -30,7 +30,7 @@ export default class extends Controller {
       new TextDecoder().decode(
         Uint8Array.from(
           atob(
-            decodeURIComponent(filters)
+            decodeURIComponent(filters),
           ), (m) => m.codePointAt(0)
         )
       )
