@@ -34,7 +34,7 @@ export default class extends Controller {
           ), (m) => m.codePointAt(0),
         ),
       ),
-    );
+    )
   }
 
   encode(filtered) {
