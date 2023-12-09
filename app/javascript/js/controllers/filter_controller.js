@@ -25,17 +25,28 @@ export default class extends Controller {
     return param
   }
 
-  b64EncodeUnicode(str) {
-    // first we use encodeURIComponent to get percent-encoded UTF-8,
-    // then we convert the percent encodings into raw bytes which
-    // can be fed into btoa.
-    return encodeURIComponent(btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
-      (match, p1) => String.fromCharCode(`0x${p1}`))))
+  decode(filters) {
+    return JSON.parse(
+      new TextDecoder().decode(
+        Uint8Array.from(
+          atob(
+            decodeURIComponent(filters)
+          ), (m) => m.codePointAt(0)
+        )
+      )
+    );
   }
 
-  b64DecodeUnicode(str) {
-    // Going backwards: from bytestream, to percent-encoding, to original string.
-    return decodeURIComponent(atob(decodeURIComponent(str)).split('').map((c) => `%${(`00${c.charCodeAt(0). toString(16)}`).slice(-2)}`).join(''))
+  encode(filtered) {
+    return encodeURIComponent(
+      btoa(
+        String.fromCodePoint(
+          ...new TextEncoder().encode(
+            JSON.stringify(filtered)
+          )
+        )
+      )
+    );
   }
 
   changeFilter() {
@@ -47,7 +58,7 @@ export default class extends Controller {
 
     // Decode the filters
     if (filters) {
-      filters = JSON.parse(this.b64DecodeUnicode(filters))
+      filters = this.decode(filters)
     } else {
       filters = {}
     }
@@ -68,7 +79,7 @@ export default class extends Controller {
 
     // Encode the filters and their values
     if (filtered && Object.keys(filtered).length > 0) {
-      encodedFilters = this.b64EncodeUnicode(JSON.stringify(filtered))
+      encodedFilters = this.encode(filtered)
     }
 
     this.navigateToURLWithFilters(encodedFilters)
