@@ -270,12 +270,12 @@ RSpec.describe "Filters", type: :system do
 
     let!(:team_without_members) { create :team, name: "Without Members" }
     let!(:team_with_members) { create :team, name: "With Members" }
-    let!(:team_音楽) { create :team, name: "音楽 ✓" }
+    let!(:team) { create :team, name: "音楽 ✓" }
 
     before do
       team_with_members.team_members << user
       team_without_members.team_members << user
-      team_音楽.team_members << user
+      team.team_members << user
     end
 
     let(:url) { "/admin/resources/teams?view_type=table" }
