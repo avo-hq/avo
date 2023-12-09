@@ -32,7 +32,7 @@ export default class extends Controller {
           atob(
             decodeURIComponent(filters),
           ), (m) => m.codePointAt(0),
-        )
+        ),
       )
     );
   }
