@@ -51,7 +51,6 @@ module Avo
       end
 
       # Apply filters to the current query
-
       filters_to_be_applied.each do |filter_class, filter_value|
         @query = filter_class.safe_constantize.new(
           arguments: @resource.get_filter_arguments(filter_class)
