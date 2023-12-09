@@ -42,7 +42,7 @@ export default class extends Controller {
       btoa(
         String.fromCodePoint(
           ...new TextEncoder().encode(
-            JSON.stringify(filtered)
+            JSON.stringify(filtered),
           )
         )
       )
