@@ -65,7 +65,9 @@ module Avo
 
       # Fetch the applied filters from the params
       def applied_filters
-        self.class.decode_filters params[PARAM_KEY]
+        return {} if (filters_from_params = params[PARAM_KEY]).blank?
+
+        self.class.decode_filters filters_from_params
       end
 
       def visible_in_view(resource: nil, parent_resource: nil)
