@@ -45,7 +45,7 @@ export default class extends Controller {
             JSON.stringify(filtered),
           ),
         ),
-      )
+      ),
     )
   }
 
