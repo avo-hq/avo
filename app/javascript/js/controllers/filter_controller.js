@@ -43,7 +43,7 @@ export default class extends Controller {
         String.fromCodePoint(
           ...new TextEncoder().encode(
             JSON.stringify(filtered),
-          )
+          ),
         )
       )
     );
