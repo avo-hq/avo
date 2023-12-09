@@ -30,11 +30,11 @@ export default class extends Controller {
       new TextDecoder().decode(
         Uint8Array.from(
           atob(
-            decodeURIComponent(filters)
-          ), (m) => m.codePointAt(0)
-        )
-      )
-    );
+            decodeURIComponent(filters),
+          ), (m) => m.codePointAt(0),
+        ),
+      ),
+    )
   }
 
   encode(filtered) {
@@ -42,11 +42,11 @@ export default class extends Controller {
       btoa(
         String.fromCodePoint(
           ...new TextEncoder().encode(
-            JSON.stringify(filtered)
-          )
-        )
-      )
-    );
+            JSON.stringify(filtered),
+          ),
+        ),
+      ),
+    )
   }
 
   changeFilter() {
