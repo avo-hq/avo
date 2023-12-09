@@ -31,7 +31,7 @@ export default class extends Controller {
         Uint8Array.from(
           atob(
             decodeURIComponent(filters),
-          ), (m) => m.codePointAt(0)
+          ), (m) => m.codePointAt(0),
         )
       )
     );
