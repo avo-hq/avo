@@ -46,7 +46,7 @@ export default class extends Controller {
           ),
         )
       )
-    );
+    )
   }
 
   changeFilter() {
