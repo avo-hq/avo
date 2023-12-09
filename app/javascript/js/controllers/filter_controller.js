@@ -33,7 +33,7 @@ export default class extends Controller {
             decodeURIComponent(filters),
           ), (m) => m.codePointAt(0),
         ),
-      )
+      ),
     );
   }
 
