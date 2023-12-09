@@ -44,7 +44,7 @@ export default class extends Controller {
           ...new TextEncoder().encode(
             JSON.stringify(filtered),
           ),
-        )
+        ),
       )
     )
   }
