@@ -23,8 +23,6 @@ module Avo
       class << self
         def decode_filters(filter_params)
           JSON.parse(Base64.decode64(filter_params))
-        rescue
-          {}
         end
 
         def encode_filters(filter_params)

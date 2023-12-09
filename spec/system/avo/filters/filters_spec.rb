@@ -270,10 +270,12 @@ RSpec.describe "Filters", type: :system do
 
     let!(:team_without_members) { create :team, name: "Without Members" }
     let!(:team_with_members) { create :team, name: "With Members" }
+    let!(:team_音楽) { create :team, name: "音楽 ✓" }
 
     before do
       team_with_members.team_members << user
       team_without_members.team_members << user
+      team_音楽.team_members << user
     end
 
     let(:url) { "/admin/resources/teams?view_type=table" }
@@ -288,7 +290,7 @@ RSpec.describe "Filters", type: :system do
 
       it "filters by name" do
         visit url
-        expect(page).to have_text("Displaying 2 item")
+        expect(page).to have_text("Displaying 3 item")
 
         open_filters_menu
         fill_in "avo_filters_name_filter", with: "With Members"
@@ -302,7 +304,26 @@ RSpec.describe "Filters", type: :system do
 
         click_on "Reset filters"
         wait_for_loaded
-        expect(page).to have_text("Displaying 2 item")
+        expect(page).to have_text("Displaying 3 item")
+      end
+
+      it "filters by 音楽 ✓" do
+        visit url
+        expect(page).to have_text("Displaying 3 item")
+
+        open_filters_menu
+        fill_in "avo_filters_name_filter", with: "音楽 ✓"
+        click_on "Filter by name"
+        wait_for_loaded
+        expect(page).to have_text("Displaying 1 item")
+
+        open_filters_menu
+        expect(page).to have_text "音楽 ✓"
+        expect(page).to have_link("Reset filters")
+
+        click_on "Reset filters"
+        wait_for_loaded
+        expect(page).to have_text("Displaying 3 item")
       end
     end
   end
