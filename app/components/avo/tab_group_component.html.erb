@@ -5,7 +5,8 @@
     controller: "tabs",
     tabs_view_value: view,
     tabs_group_id_value: group.id,
-    tabs_active_tab_value: active_tab_name
+    tabs_active_tab_value: active_tab_name,
+    tabs_resource_name_value: resource.underscore_name
   } do %>
   <% visible_tabs.each_with_index do |tab, index| %>
     <%= content_tag :div, **args(tab) do %>

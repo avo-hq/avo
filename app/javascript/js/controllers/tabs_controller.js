@@ -7,6 +7,7 @@ export default class extends Controller {
     view: String,
     activeTab: String,
     groupId: String,
+    resourceName: String,
   }
 
   connect() {
@@ -17,8 +18,10 @@ export default class extends Controller {
     const params = {}
     Array.from(new URL(window.location).searchParams.entries()).forEach(([key, value]) => { params[key] = value })
 
+    const key = `resources.${this.resourceNameValue}.tabgroups.${this.groupIdValue}.selectedTab`
+
     // LocalStorage value
-    const lsValue = window.Avo.localStorage.get(`resources.user.tabgroups.${this.groupIdValue}.selectedTab`)
+    const lsValue = window.Avo.localStorage.get(key)
 
     let groupId = null
 
