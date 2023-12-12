@@ -13,7 +13,7 @@
 #
 class Location < ApplicationRecord
   belongs_to :store, optional: true
-  belongs_to :team
+  belongs_to :team, optional: true
 
   has_and_belongs_to_many :courses, inverse_of: :locations
 end
