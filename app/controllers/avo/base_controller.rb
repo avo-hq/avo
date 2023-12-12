@@ -357,12 +357,12 @@ module Avo
     def set_applied_filters
       reset_filters if params[:reset_filter]
 
-      @applied_filters = Avo::Filters::BaseFilter.decode_filters(fetch_filters)
+      return @applied_filters = {} if (fetched_filters = fetch_filters).blank?
+
+      @applied_filters = Avo::Filters::BaseFilter.decode_filters(fetched_filters)
 
       # Some filters react to others and will have to be merged into this
       @applied_filters = @applied_filters.merge reactive_filters
-    rescue
-      @applied_filters = {}
     end
 
     def reactive_filters
