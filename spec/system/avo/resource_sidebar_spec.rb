@@ -4,13 +4,6 @@ RSpec.feature "ResourceSidebars", type: :system do
   let(:fish) { create :fish }
   let(:team) { create :team }
 
-  around do |example|
-    old_value = Capybara.raise_server_errors
-    Capybara.raise_server_errors = false
-    example.run
-    Capybara.raise_server_errors = old_value
-  end
-
   it "does not display the sidebar on a resource that does not have a sidebar" do
     visit avo.resources_fish_path(fish)
 

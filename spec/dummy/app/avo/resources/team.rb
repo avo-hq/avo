@@ -80,8 +80,10 @@ class Avo::Resources::Team < Avo::BaseResource
     field :team_members, as: :has_many, through: :memberships, translation_key: "avo.resource_translations.team_members"
     field :reviews, as: :has_many
 
-    # Example for error message when resource is missing
-    field :locations, as: :has_many
+    if params[:show_location_field] == '1'
+      # Example for error message when resource is missing
+      field :locations, as: :has_many
+    end
   end
 
   def filters

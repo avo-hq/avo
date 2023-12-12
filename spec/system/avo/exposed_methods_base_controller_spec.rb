@@ -1,13 +1,6 @@
 require "rails_helper"
 
 RSpec.feature "ExposedMethodsBaseController", type: :system do
-  around do |example|
-    old_value = Capybara.raise_server_errors
-    Capybara.raise_server_errors = false
-    example.run
-    Capybara.raise_server_errors = old_value
-  end
-
   describe "message" do
     let(:new_course_url) { "/admin/resources/courses/new" }
 

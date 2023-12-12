@@ -74,8 +74,10 @@ class Avo::Resources::Course < Avo::BaseResource
     field :links, as: :has_many, searchable: true, placeholder: "Click to choose a link",
       discreet_pagination: true
 
-    # Example for error message when resource is missing
-    field :locations, as: :has_and_belongs_to_many
+    if params[:show_location_field] == '1'
+      # Example for error message when resource is missing
+      field :locations, as: :has_and_belongs_to_many
+    end
   end
 
   def filters
