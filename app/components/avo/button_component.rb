@@ -78,7 +78,7 @@ class Avo::ButtonComponent < ViewComponent::Base
     result += helpers.svg(@icon, class: icon_classes) if @icon.present?
 
     if is_not_icon? && content.present?
-      result += "<span>#{content}</span>"
+      result += content
     end
 
     result.html_safe

@@ -4,13 +4,15 @@ class Avo::Fields::IndexComponent < Avo::BaseComponent
   include Avo::ResourcesHelper
 
   attr_reader :field
+  attr_reader :kwargs
   attr_reader :parent_resource
   attr_reader :view
 
-  def initialize(field: nil, resource: nil, reflection: nil, index: 0, parent_record: nil, parent_resource: nil)
+  def initialize(field: nil, resource: nil, reflection: nil, index: 0, parent_record: nil, parent_resource: nil, **kwargs)
     @field = field
     @resource = resource
     @index = index
+    @kwargs = kwargs
     @parent_record = parent_record
     @parent_resource = parent_resource
     @view = Avo::ViewInquirer.new("index")

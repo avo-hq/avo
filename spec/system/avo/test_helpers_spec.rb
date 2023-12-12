@@ -52,7 +52,7 @@ RSpec.describe "TestHelpers", type: :system do
       it "finds the wrapper" do
         visit "admin/resources/projects/#{projects.first.id}"
 
-        has_and_belongs_to_many_users = has_and_belongs_to_many_field_wrapper(id: :users)
+        scroll_to has_and_belongs_to_many_users = has_and_belongs_to_many_field_wrapper(id: :users)
 
         users.each do |user|
           first_name_wrapper = within(has_and_belongs_to_many_users) {

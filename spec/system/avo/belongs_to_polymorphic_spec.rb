@@ -210,8 +210,10 @@ RSpec.feature "belongs_to", type: :system do
         it "has the comment listed" do
           visit "/admin/resources/projects/#{project.id}"
 
-          expect(find('turbo-frame[id="has_many_field_show_comments"]')).not_to have_text "Commentable"
-          expect(find('turbo-frame[id="has_many_field_show_comments"]')).to have_link comment.id.to_s, href: "/admin/resources/comments/#{comment.id}?via_record_id=#{project.id}&via_resource_class=Avo%3A%3AResources%3A%3AProject"
+          scroll_to comments_frame = find('turbo-frame[id="has_many_field_show_comments"]')
+
+          expect(comments_frame).not_to have_text "Commentable"
+          expect(comments_frame).to have_link comment.id.to_s, href: "/admin/resources/comments/#{comment.id}?via_record_id=#{project.id}&via_resource_class=Avo%3A%3AResources%3A%3AProject"
 
           click_on comment.id.to_s
 

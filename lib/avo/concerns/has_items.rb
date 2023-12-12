@@ -275,16 +275,23 @@ module Avo
             end
           end
           .select do |item|
-            # On location field we can have field coordinates and setters with different names like latitude and longitude
-            if !item.is_a?(Avo::Fields::LocationField) && !item.is_heading? && view.in?(%w[edit update new create])
-              if item.respond_to?(:id)
-                item.resource.record.respond_to?("#{item.id}=")
-              else
-                true
-              end
-            else
-              true
-            end
+            # Check if record has the setter method
+            # Next if the view is not on forms
+            next true if !view.in?(%w[edit update new create])
+
+            # Skip items that don't have an id
+            next true if !item.respond_to?(:id)
+
+            # Skip tab groups
+            # Skip headings
+            # Skip location fields
+            # On location field we can have field coordinates and setters with different names
+            #   like latitude and longitude
+            next true if item.is_a?(Avo::Resources::Items::TabGroup) ||
+              item.is_heading? ||
+              item.is_a?(Avo::Fields::LocationField)
+
+            item.resource.record.respond_to?("#{item.id}=")
           end
           .select do |item|
             # Check if the user is authorized to view it.

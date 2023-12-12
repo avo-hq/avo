@@ -10,8 +10,10 @@ RSpec.describe "App", type: :system do
     it "only displays one alert on record update" do
       visit "/admin/resources/projects/#{project.id}"
 
-      expect(find('turbo-frame[id="has_many_field_show_comments"]')).not_to have_text "Commentable"
-      expect(find('turbo-frame[id="has_many_field_show_comments"]')).to have_link comment.id.to_s, href: "/admin/resources/comments/#{comment.id}?via_record_id=#{project.id}&via_resource_class=Avo%3A%3AResources%3A%3AProject"
+      scroll_to comments_frame = find('turbo-frame[id="has_many_field_show_comments"]')
+
+      expect(comments_frame).not_to have_text "Commentable"
+      expect(comments_frame).to have_link comment.id.to_s, href: "/admin/resources/comments/#{comment.id}?via_record_id=#{project.id}&via_resource_class=Avo%3A%3AResources%3A%3AProject"
 
       within 'turbo-frame[id="has_many_field_show_comments"]' do
         click_on comment.id.to_s
@@ -36,8 +38,10 @@ RSpec.describe "App", type: :system do
     it "only displays one alert on record destroy from has_many" do
       visit "/admin/resources/projects/#{project.id}"
 
-      expect(find('turbo-frame[id="has_many_field_show_comments"]')).not_to have_text "Commentable"
-      expect(find('turbo-frame[id="has_many_field_show_comments"]')).to have_link comment.id.to_s, href: "/admin/resources/comments/#{comment.id}?via_record_id=#{project.id}&via_resource_class=Avo%3A%3AResources%3A%3AProject"
+      scroll_to comments_frame = find('turbo-frame[id="has_many_field_show_comments"]')
+
+      expect(comments_frame).not_to have_text "Commentable"
+      expect(comments_frame).to have_link comment.id.to_s, href: "/admin/resources/comments/#{comment.id}?via_record_id=#{project.id}&via_resource_class=Avo%3A%3AResources%3A%3AProject"
 
       destroy_button = find("turbo-frame[id='has_many_field_show_comments'] tr[data-resource-id='#{comment.id}'] button[data-control=\"destroy\"]")
 

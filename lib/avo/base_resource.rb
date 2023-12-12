@@ -231,7 +231,7 @@ module Avo
     delegate :singular_name, to: :class
     delegate :plural_name, to: :class
     delegate :underscore_name, to: :class
-    delegate :underscore_name, to: :class
+    delegate :to_param, to: :class
     delegate :find_record, to: :class
     delegate :model_key, to: :class
     delegate :tab, to: :items_holder

@@ -8,16 +8,30 @@ class Avo::Resources::Items::TabGroup
 
   attr_accessor :index
   attr_accessor :style
+  attr_accessor :name
 
-  def initialize(index: 0, view: nil, style: nil, **args)
+  def initialize(index: 0, view: nil, style: nil, id: nil, name: nil, **args)
     @index = index
     @items_holder = Avo::Resources::Items::Holder.new
     @view = Avo::ViewInquirer.new view
     @style = style
+    @id = id
+    @name = name
     @args = args
 
     post_initialize if respond_to?(:post_initialize)
   end
+
+  # The user might assign an id to a group.
+  # If not, we'll use the name.
+  # If not, we'll use the index
+  def id
+    return @id if @id.present?
+    return @name.parameterize if @name.present?
+
+    index
+  end
+  alias_method :to_param, :id
 
   def turbo_frame_id
     "#{Avo::Resources::Items::TabGroup.to_s.parameterize} #{index}".parameterize
@@ -48,8 +62,8 @@ class Avo::Resources::Items::TabGroup
       @items_holder.tabs tab
     end
 
-    def initialize(parent: ,style: nil)
-      @group = Avo::Resources::Items::TabGroup.new(style: style)
+    def initialize(name:, id:, parent:, style: nil)
+      @group = Avo::Resources::Items::TabGroup.new(name: name, id: id, style: style)
       @items_holder = Avo::Resources::Items::Holder.new(parent: parent, from: self)
     end
 

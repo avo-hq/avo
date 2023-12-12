@@ -24,6 +24,11 @@ class Avo::Resources::Items::Tab
     Avo::ExecutionContext.new(target: @name).handle
   end
 
+  def id
+    name.to_s.parameterize
+  end
+  alias_method :to_param, :id
+
   def turbo_frame_id(parent: nil)
     id = "#{Avo::Resources::Items::Tab.to_s.parameterize} #{name}".parameterize
 

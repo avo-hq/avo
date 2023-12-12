@@ -9,6 +9,7 @@ class Avo::TabSwitcherComponent < Avo::BaseComponent
   attr_reader :current_tab
   attr_reader :tabs
   attr_reader :view
+  attr_reader :resource
 
   delegate :white_panel_classes, to: :helpers
 
@@ -40,17 +41,18 @@ class Avo::TabSwitcherComponent < Avo::BaseComponent
     @view.in?(%w[new create])
   end
 
-  def is_initial_load?
-    params[:active_tab_name].blank?
+  # We'll mark the tab as selected if it's the current one
+  def current_one?(tab)
+    tab.name == active_tab_name
   end
 
-  # On initial load we want that each tab button to be the selected one.
-  # We do that so we don't get the wrongly selected item for a quick brief when first switching from one panel to another.
-  def selected?(tab)
-    if is_initial_load?
-      current_tab.name.to_s == tab.name.to_s
-    else
-      tab.name.to_s == active_tab_name.to_s
-    end
+  private
+
+  def group_param
+    "tab-group_#{group.id}"
+  end
+
+  def tab_param_missing?
+    params[group_param].blank?
   end
 end

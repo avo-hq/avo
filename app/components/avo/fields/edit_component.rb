@@ -7,6 +7,7 @@ class Avo::Fields::EditComponent < ViewComponent::Base
   attr_reader :field
   attr_reader :form
   attr_reader :index
+  attr_reader :kwargs
   attr_reader :multiple
   attr_reader :resource
   attr_reader :stacked
@@ -17,6 +18,7 @@ class Avo::Fields::EditComponent < ViewComponent::Base
     @field = field
     @form = form
     @index = index
+    @kwargs = kwargs
     @multiple = multiple
     @resource = resource
     @stacked = stacked

@@ -8,7 +8,11 @@ import { Turbo } from '@hotwired/turbo-rails'
 import Rails from '@rails/ujs'
 import tippy from 'tippy.js'
 
+import { LocalStorageService } from './js/local-storage-service'
+
 import 'chartkick/chart.js/chart.esm'
+
+window.Avo.localStorage = new LocalStorageService()
 
 import './js/active-storage'
 import './js/controllers'

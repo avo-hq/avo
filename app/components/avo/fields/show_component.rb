@@ -6,18 +6,20 @@ class Avo::Fields::ShowComponent < ViewComponent::Base
   attr_reader :compact
   attr_reader :field
   attr_reader :index
+  attr_reader :kwargs
   attr_reader :resource
   attr_reader :stacked
   attr_reader :short
   attr_reader :view
 
-  def initialize(field: nil, resource: nil, index: 0, form: nil, compact: false, short: false, stacked: nil)
+  def initialize(field: nil, resource: nil, index: 0, form: nil, compact: false, short: false, stacked: nil, **kwargs)
     @compact = compact
     @field = field
     @index = index
     @resource = resource
     @stacked = stacked
     @short = short
+    @kwargs = kwargs
     @view = Avo::ViewInquirer.new("show")
   end
 
