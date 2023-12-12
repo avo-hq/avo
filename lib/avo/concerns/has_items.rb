@@ -101,6 +101,13 @@ module Avo
             if item.is_sidebar?
               fields << extract_fields(item)
             end
+          else
+            # When `item.is_main_panel? == true` then also `item.is_panel? == true`
+            # But when only_root == true we want to extract main_panel items
+            # In all other circumstances items will get extracted when checking for `item.is_panel?`
+            if item.is_main_panel?
+              fields << extract_fields(item)
+            end
           end
 
           if item.is_field?
@@ -109,10 +116,6 @@ module Avo
 
           if item.is_row?
             fields << extract_fields(tab)
-          end
-
-          if item.is_main_panel?
-            fields << extract_fields(item)
           end
         end
 
