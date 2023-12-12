@@ -69,7 +69,7 @@ module Avo
             possible_model = possible_model.gsub "Resource", ""
 
             Avo.error_manager.add({
-              url: "https://docs.avohq.io/2.0/resources.html#custom-model-class",
+              url: "https://docs.avohq.io/3.0/resources.html#self_model_class",
               target: "_blank",
               message: "#{resource} does not have a valid model assigned. It failed to find the #{possible_model} model. \n\r Please create that model or assign one using self.model_class = YOUR_MODEL"
             })

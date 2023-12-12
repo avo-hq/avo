@@ -19,6 +19,6 @@ RSpec.feature "ResourceMissingModels", type: :feature do
     click_on_sidebar_item "Fish"
     expect(page).to have_text "Avo::Resources::Bad does not have a valid model assigned. It failed to find the Bad model."
     expect(page).to have_text "Please create that model or assign one using self.model_class = YOUR_MODEL"
-    expect(page).to have_link href: "https://docs.avohq.io/2.0/resources.html#custom-model-class"
+    expect(page).to have_link href: "https://docs.avohq.io/3.0/resources.html#self_model_class"
   end
 end
