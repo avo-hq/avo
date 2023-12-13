@@ -357,7 +357,8 @@ module Avo
     def set_applied_filters
       reset_filters if params[:reset_filter]
 
-      return @applied_filters = {} if (fetched_filters = fetch_filters).blank?
+      # Return if there are no filters or if the filters are actualy ActionController::Parameters (used by dynamic filters)
+      return @applied_filters = {} if (fetched_filters = fetch_filters).blank? || fetched_filters.is_a?(ActionController::Parameters)
 
       @applied_filters = Avo::Filters::BaseFilter.decode_filters(fetched_filters)
 
