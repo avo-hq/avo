@@ -105,4 +105,39 @@ RSpec.describe "Tabs", type: :system do
       end
     end
   end
+
+  describe "durable tabs" do
+    it "keeps same tab between show and edit" do
+      visit "/admin/resources/users/#{user.slug}"
+
+      # Fish tab is selected
+      find('a[data-selected="true"][data-tabs-tab-name-param="Fish"]')
+      # Click on Team memberships tab
+      find('a[data-selected="false"][data-tabs-tab-name-param="Team memberships"]').click
+
+      # Team memberships tab is selected now and Fish tab is not
+      find('a[data-selected="false"][data-tabs-tab-name-param="Fish"]')
+      find('a[data-selected="true"][data-tabs-tab-name-param="Team memberships"]')
+
+      click_on "Edit"
+
+      # On edit page, Birthday tab and Posts is selected
+      find('a[data-selected="true"][data-tabs-tab-name-param="Birthday"]')
+      find('a[data-selected="true"][data-tabs-tab-name-param="Posts"]')
+
+      click_on "Cancel"
+
+      # On show page, Team memberships tab still selected
+      find('a[data-selected="false"][data-tabs-tab-name-param="Fish"]')
+      find('a[data-selected="true"][data-tabs-tab-name-param="Team memberships"]')
+      # Click on People tab
+      find('a[data-selected="false"][data-tabs-tab-name-param="People"]').click
+
+      click_on "Edit"
+
+      # On edit page, People instead Birthday tab and Posts is selected
+      find('a[data-selected="true"][data-tabs-tab-name-param="People"]')
+      find('a[data-selected="true"][data-tabs-tab-name-param="Posts"]')
+    end
+  end
 end
