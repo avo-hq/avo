@@ -162,7 +162,7 @@ module Avo
         view: Avo::ViewInquirer.new(params[:via_reflection_view]),
         record: parent,
         params: params,
-        user: current_user
+        user: _current_user
       )
 
       reflection_resource.detect_fields.get_field_definitions.find do |field|
