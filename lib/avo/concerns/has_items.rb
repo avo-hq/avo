@@ -282,12 +282,13 @@ module Avo
             # Skip items that don't have an id
             next true if !item.respond_to?(:id)
 
-            # Skip tab groups
+            # Skip tab groups and tabs
             # Skip headings
             # Skip location fields
             # On location field we can have field coordinates and setters with different names
             #   like latitude and longitude
             next true if item.is_a?(Avo::Resources::Items::TabGroup) ||
+              item.is_a?(Avo::Resources::Items::Tab) ||
               item.is_heading? ||
               item.is_a?(Avo::Fields::LocationField)
 
