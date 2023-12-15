@@ -1,6 +1,8 @@
 class Avo::Resources::Project < Avo::BaseResource
   self.title = :name
 
+  self.base_field_translation_key = "avo.field_translations.project"
+
   self.search = {
     query: -> {
       query.ransack(id_eq: params[:q], name_cont: params[:q], country_cont: params[:q], m: "or").result(distinct: false)
