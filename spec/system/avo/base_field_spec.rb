@@ -29,7 +29,7 @@ RSpec.feature "Base Fields", type: :system do
       visit "/admin/resources/projects"
 
       status_wrapper = find('[data-table-header-field-type="status"]')
-      expect(status_wrapper).to have_text("Status nested")
+      expect(status_wrapper).to have_text("Status Nested")
     end
   end
 end
