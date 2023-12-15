@@ -22,7 +22,7 @@
     "@algolia/autocomplete-js": "^1.0.0-alpha.46",
     "@algolia/autocomplete-theme-classic": "^1.0.0-alpha.46",
     "@babel/plugin-proposal-class-properties": "^7.12.1",
-    "@hotwired/stimulus": "^3.0.1",
+    "@hotwired/stimulus": "^3.2.2",
     "@hotwired/turbo-rails": "^7.3.0",
     "@rails/activestorage": "^6.0.2-1",
     "@rails/ujs": "^6.1.0",
