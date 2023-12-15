@@ -48,6 +48,7 @@ module Avo
     class_attribute :includes, default: []
     class_attribute :authorization_policy
     class_attribute :translation_key
+    class_attribute :base_field_translation_key
     class_attribute :default_view_type, default: :table
     class_attribute :devise_password_optional, default: false
     class_attribute :scopes_loader
