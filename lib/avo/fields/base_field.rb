@@ -95,7 +95,7 @@ module Avo
       def translation_key
         return @translation_key if @translation_key.present?
 
-        return "#{@resource.base_field_translation_key}.#{@id}" if @resource.base_field_translation_key.present?
+        return "#{@resource.base_field_translation_key}.#{@id}" if @resource.try(:base_field_translation_key)
 
         "avo.field_translations.#{@id}"
       end
