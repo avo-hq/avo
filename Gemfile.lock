@@ -108,7 +108,7 @@ GEM
       activerecord (>= 6.1, < 7.2)
     acts_as_list (1.0.4)
       activerecord (>= 4.2)
-    addressable (2.8.5)
+    addressable (2.8.6)
       public_suffix (>= 2.0.2, < 6.0)
     annotate (3.2.0)
       activerecord (>= 3.2, < 8.0)
@@ -318,7 +318,7 @@ GEM
       rails (>= 6.0.0)
     psych (5.1.1.1)
       stringio
-    public_suffix (5.0.3)
+    public_suffix (5.0.4)
     puma (6.4.0)
       nio4r (~> 2.0)
     racc (1.7.3)
