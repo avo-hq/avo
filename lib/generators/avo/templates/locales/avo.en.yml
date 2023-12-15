@@ -52,7 +52,6 @@ en:
           one: Status Nested
           other: Status Nesteds
           zero: Status Nesteds
-      status: Status
     filter_by: Filter by
     filters: Filters
     go_back: Go back
