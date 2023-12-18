@@ -77,6 +77,14 @@ module Avo
       delegate :t, to: ::I18n
       delegate :context, to: ::Avo::Current
 
+      alias_method :_ordering=, :ordering=
+      private :_ordering=
+      def ordering= value
+        # Using HashWithIndifferentAccess removes the need to intern
+        # user input, and thus protects from symbol DoS.
+        self._ordering = value&.with_indifferent_access
+      end
+
       def action(action_class, arguments: {})
         deprecated_dsl_api __method__, "actions"
       end

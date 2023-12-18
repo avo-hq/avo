@@ -36,6 +36,7 @@ ignoredDynamicClasses.push(
   'font-sans',
   'font-serif',
   'font-mono',
+  '!bg-gray-100', // avo-pro drag and drop feature
 )
 
 // Write them into a safelist.txt file until @tailwindcss/jit supports PurgeCSS options
