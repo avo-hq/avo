@@ -1337,18 +1337,20 @@
   resolved "https://registry.yarnpkg.com/@hotwired/stimulus/-/stimulus-3.2.2.tgz#071aab59c600fed95b97939e605ff261a4251608"
   integrity sha512-eGeIqNOQpXoPAIP7tC1+1Yc1yl1xnwYqg+3mzqxyrbE5pg5YFBZcA6YoTiByJB6DKAEsiWtl6tjTJS4IYtbB7A==
 
-"@hotwired/turbo-rails@^7.3.0":
-  version "7.3.0"
-  resolved "https://registry.yarnpkg.com/@hotwired/turbo-rails/-/turbo-rails-7.3.0.tgz#422c21752509f3edcd6c7b2725bbe9e157815f51"
-  integrity sha512-fvhO64vp/a2UVQ3jue9WTc2JisMv9XilIC7ViZmXAREVwiQ2S4UC7Go8f9A1j4Xu7DBI6SbFdqILk5ImqVoqyA==
+"@hotwired/turbo-rails@^8.0.0-beta.1":
+  version "8.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/@hotwired/turbo-rails/-/turbo-rails-8.0.0-beta.1.tgz#7d5bd2843caa5d8d224eb36f22078311163128bd"
+  integrity sha512-x9G95vehf5LR4yYGvhD4z6wBMbmAVi0V87FTfenrmXPru4SfOVDsCwdEINBWsLqOvCgRPQD9eY2nGyDfZlsukg==
   dependencies:
-    "@hotwired/turbo" "^7.3.0"
+    "@hotwired/turbo" "^8.0.0-beta.1"
     "@rails/actioncable" "^7.0"
 
-"@hotwired/turbo@^7.3.0":
-  version "7.3.0"
-  resolved "https://registry.yarnpkg.com/@hotwired/turbo/-/turbo-7.3.0.tgz#2226000fff1aabda9fd9587474565c9929dbf15d"
-  integrity sha512-Dcu+NaSvHLT7EjrDrkEmH4qET2ZJZ5IcCWmNXxNQTBwlnE5tBZfN6WxZ842n5cHV52DH/AKNirbPBtcEXDLW4g==
+"@hotwired/turbo@^8.0.0-beta.1":
+  version "8.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/@hotwired/turbo/-/turbo-8.0.0-beta.1.tgz#35a7086c4c959445db059ea4a9b9af85cdafa616"
+  integrity sha512-g66YmO/Oa+EThB3KkNDhrM9mFnNyRn6tqgwGiBHh4Vf+d3XjCznuWSG2o2e2cO/RlddVRtCwvBSMuG6sYQWX+g==
+  dependencies:
+    idiomorph "https://github.com/basecamp/idiomorph#rollout-build"
 
 "@humanwhocodes/config-array@^0.11.13":
   version "0.11.13"
@@ -1458,21 +1460,22 @@
   resolved "https://registry.yarnpkg.com/@rails/ujs/-/ujs-6.1.0.tgz#9a48df6511cb2b472c9f596c1f37dc0af022e751"
   integrity sha512-kQNKyM4ePAc4u9eR1c4OqrbAHH+3SJXt++8izIjeaZeg+P7yBtgoF/dogMD/JPPowNC74ACFpM/4op0Ggp/fPw==
 
-"@tailwindcss/forms@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@tailwindcss/forms/-/forms-0.4.0.tgz#a46715e347a32d216a3973eb67473bd29ae3798e"
-  integrity sha512-DeaQBx6EgEeuZPQACvC+mKneJsD8am1uiJugjgQK1+/Vt+Ai0GpFBC2T2fqnUad71WgOxyrZPE6BG1VaI6YqfQ==
+"@tailwindcss/forms@^0.5.7":
+  version "0.5.7"
+  resolved "https://registry.yarnpkg.com/@tailwindcss/forms/-/forms-0.5.7.tgz#db5421f062a757b5f828bc9286ba626c6685e821"
+  integrity sha512-QE7X69iQI+ZXwldE+rzasvbJiyV/ju1FGHH0Qn2W3FKbuYtqp8LKcy6iSw79fVUT5/Vvf+0XgLCeYVG+UV6hOw==
   dependencies:
     mini-svg-data-uri "^1.2.3"
 
-"@tailwindcss/typography@^0.5.1":
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/@tailwindcss/typography/-/typography-0.5.1.tgz#486248a9426501f11a9b0295f7cfc0eb29659c46"
-  integrity sha512-AmSzZSgLhHKlILKduU+PKBTHL6c+al82syZlRid1xgmlWwXagLigO+O++B4C0scpMfzW//f/3YCRcwwEHWoU3w==
+"@tailwindcss/typography@^0.5.10":
+  version "0.5.10"
+  resolved "https://registry.yarnpkg.com/@tailwindcss/typography/-/typography-0.5.10.tgz#2abde4c6d5c797ab49cf47610830a301de4c1e0a"
+  integrity sha512-Pe8BuPJQJd3FfRnm6H0ulKIGoMEQS+Vq01R6M5aCrFB/ccR/shT+0kXLjouGC1gFLm9hopTFN+DMP0pfwRWzPw==
   dependencies:
     lodash.castarray "^4.4.0"
     lodash.isplainobject "^4.0.6"
     lodash.merge "^4.6.2"
+    postcss-selector-parser "6.0.10"
 
 "@types/codemirror@^5.60.4":
   version "5.60.7"
@@ -2730,6 +2733,10 @@ icss-utils@^5.0.0, icss-utils@^5.1.0:
   resolved "https://registry.yarnpkg.com/icss-utils/-/icss-utils-5.1.0.tgz#c6be6858abd013d768e98366ae47e25d5887b1ae"
   integrity sha512-soFhflCVWLfRNOPU3iv5Z9VUdT44xFRbzjLsEzSr5AQmgqPMTHdU3PMT1Cf1ssx8fLNJDA1juftYl+PUcv3MqA==
 
+"idiomorph@https://github.com/basecamp/idiomorph#rollout-build":
+  version "0.0.8"
+  resolved "https://github.com/basecamp/idiomorph#e906820368e4c9c52489a3336b8c3826b1bf6de5"
+
 ignore@^5.2.0:
   version "5.2.4"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-5.2.4.tgz#a291c0c6178ff1b960befe47fcdec301674a6324"
@@ -3650,6 +3657,14 @@ postcss-selector-not@^7.0.1:
   dependencies:
     postcss-selector-parser "^6.0.10"
 
+postcss-selector-parser@6.0.10:
+  version "6.0.10"
+  resolved "https://registry.yarnpkg.com/postcss-selector-parser/-/postcss-selector-parser-6.0.10.tgz#79b61e2c0d1bfc2602d549e11d0876256f8df88d"
+  integrity sha512-IQ7TZdoaqbT+LCpShg46jnZVlhWD2w6iQYAcYXfHARZ7X1t/UGhhceQDs5X0cGqKvYlHNOuv7Oa1xmb0oQuA3w==
+  dependencies:
+    cssesc "^3.0.0"
+    util-deprecate "^1.0.2"
+
 postcss-selector-parser@^6.0.10:
   version "6.0.12"
   resolved "https://registry.yarnpkg.com/postcss-selector-parser/-/postcss-selector-parser-6.0.12.tgz#2efae5ffab3c8bfb2b7fbf0c426e3bca616c4abb"
@@ -3996,10 +4011,10 @@ tailwindcss-stimulus-components@^3.0.3:
   dependencies:
     "@hotwired/stimulus" ">=3.0.0"
 
-tailwindcss@^3.2.4:
-  version "3.3.5"
-  resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-3.3.5.tgz#22a59e2fbe0ecb6660809d9cc5f3976b077be3b8"
-  integrity sha512-5SEZU4J7pxZgSkv7FP1zY8i2TIAOooNZ1e/OGtxIEv6GltpoiXUqWvLy89+a10qYTB1N5Ifkuw9lqQkN9sscvA==
+tailwindcss@^3.3.6:
+  version "3.3.6"
+  resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-3.3.6.tgz#4dd7986bf4902ad385d90d45fd4b2fa5fab26d5f"
+  integrity sha512-AKjF7qbbLvLaPieoKeTjG1+FyNZT6KaJMJPFeQyLfIp7l82ggH1fbHJSsYIvnbTFQOlkh+gBYpyby5GT1LIdLw==
   dependencies:
     "@alloc/quick-lru" "^5.2.0"
     arg "^5.0.2"
@@ -4082,10 +4097,10 @@ tsconfig-paths@^3.14.1:
     minimist "^1.2.6"
     strip-bom "^3.0.0"
 
-turbo_power@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/turbo_power/-/turbo_power-0.5.0.tgz#3c9e68f49a8b701be195893b7d335633087287c5"
-  integrity sha512-IzCjy+pL5ohwJf26d4XTxlOp2gHLxhSyifRsysZeare7qjxnlHTuBUoeAx98+PlyKBMDYGQeitu+EFDwqxXVfw==
+turbo_power@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/turbo_power/-/turbo_power-0.6.0.tgz#894b261af7209c02911185666e681d9e37e2554b"
+  integrity sha512-1zWR7mtZr9oZ6ypdQUkVpi5sHCoMbSdmcsBHNqcuftDqn35LHg/alh+vgbB8q5Z3MlMFnnOmQ/QkHeW7Mjcb7A==
 
 type-check@^0.4.0, type-check@~0.4.0:
   version "0.4.0"
