@@ -5,7 +5,6 @@ import 'regenerator-runtime/runtime'
 import * as ActiveStorage from '@rails/activestorage'
 import * as Mousetrap from 'mousetrap'
 import { Turbo } from '@hotwired/turbo-rails'
-import Rails from '@rails/ujs'
 import tippy from 'tippy.js'
 
 import { LocalStorageService } from './js/local-storage-service'
@@ -17,8 +16,6 @@ window.Avo.localStorage = new LocalStorageService()
 import './js/active-storage'
 import './js/controllers'
 import './js/custom-stream-actions'
-
-Rails.start()
 
 window.Turbolinks = Turbo
 
