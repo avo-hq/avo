@@ -134,7 +134,6 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
       icon: "trash",
       form_class: "flex flex-col sm:flex-row sm:inline-flex",
       title: control.title,
-      method: :delete,
       params: hidden_params,
       data: {
         turbo_frame: params[:turbo_frame],
@@ -156,11 +155,11 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
       icon: "detach",
       form_class: "flex items-center",
       title: control.title,
-      method: :delete,
       params: hidden_params,
       data: {
         turbo_frame: params[:turbo_frame],
         turbo_confirm: control.confirmation_message,
+        turbo_method: :delete,
         target: "control:detach",
         control: :detach,
         "resource-id": @resource.record.id,

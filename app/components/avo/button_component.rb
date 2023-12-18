@@ -100,7 +100,7 @@ class Avo::ButtonComponent < ViewComponent::Base
 
   def output_button
     if args.dig(:method).present? || args.dig(:data, :turbo_method).present?
-      button_to args[:url], **args do
+      link_to args.delete(:url), **args do
         full_content
       end
     else

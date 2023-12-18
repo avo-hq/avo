@@ -4,7 +4,9 @@
     class: button_classes,
     target: target,
     title: title,
-    method: method,
+    data: {
+      turbo_method: method,
+    },
     params: params do %>
     <%= helpers.svg(icon, class: 'h-4 mr-1') if icon.present? %> <%= label %>
   <% end %>

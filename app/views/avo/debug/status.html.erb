@@ -25,7 +25,9 @@
               <%= a_button style: :outline,
                 color: :blue,
                 url: "#{root_path}avo_private/debug/refresh_license",
-                method: :post,
+                data: {
+                  turbo_method: :post,
+                },
                 loading: true,
                 size: :xs,
                 icon: 'heroicons/outline/refresh' do %>

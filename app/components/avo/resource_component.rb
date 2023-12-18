@@ -242,11 +242,11 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
     a_button url: detach_path,
       icon: "detach",
-      method: :delete,
       form_class: "flex flex-col sm:flex-row sm:inline-flex",
       style: :text,
       data: {
-        confirm: "Are you sure you want to detach this #{title}."
+        turbo_method: :delete,
+        turbo_confirm: "Are you sure you want to detach this #{title}."
       } do
       control.label || t("avo.detach_item", item: title).humanize
     end
