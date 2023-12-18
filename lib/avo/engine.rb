@@ -1,3 +1,5 @@
+require "active_support/core_ext/module/attribute_accessors_per_thread"
+
 # requires all dependencies
 Gem.loaded_specs["avo"].dependencies.each do |d|
   case d.name
