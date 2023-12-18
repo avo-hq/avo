@@ -21,6 +21,18 @@ RSpec.feature "Base Fields", type: :system do
 
     it "renders the nested translated key" do
       Avo::Resources::Project.with_temporary_items do
+        I18n.backend.store_translations :en, avo: {
+          field_translations: {
+            project: {
+              status: {
+                one: "Status Nested",
+                other: "Status Nesteds",
+                zero: "Status Nesteds",
+              }
+            }
+          }
+        }
+
         self.base_field_translation_key = "avo.field_translations.project"
         field :status, as: :text
       end
