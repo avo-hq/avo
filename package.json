@@ -42,7 +42,7 @@
     "eslint-config-airbnb": "^19.0.4",
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-plugin-sort-imports-es6-autofix": "^0.6.0",
-    "flatpickr": "^4.6.9",
+    "flatpickr": "^4.6.13",
     "heroicons": "^2.0.1",
     "js-cookie": "^3.0.1",
     "lodash": "^4.17.21",
