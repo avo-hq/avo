@@ -234,7 +234,10 @@ module Avo
     def authorized?
       Avo::ExecutionContext.new(
         target: authorize,
-        action: self
+        action: self,
+        resource: @resource,
+        view: @view,
+        arguments: arguments
       ).handle
     end
 
