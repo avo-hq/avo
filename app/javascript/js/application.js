@@ -2,7 +2,10 @@ import 'mapkick/bundle'
 
 import { Alert, Popover } from 'tailwindcss-stimulus-components'
 import { Application } from '@hotwired/stimulus'
+import { Turbo } from '@hotwired/turbo-rails'
 import TurboPower from 'turbo_power'
+
+console.log('Turbo.StreamActions->', Turbo.StreamActions)
 
 TurboPower.initialize(Turbo.StreamActions)
 
