@@ -169,5 +169,3 @@ gem "prefixed_ids"
 gem "mapkick-rb", "~> 0.1.4"
 
 gem "pluggy", path: "./pluggy"
-
-gem "turbo_power", "~> 0.5.0"
