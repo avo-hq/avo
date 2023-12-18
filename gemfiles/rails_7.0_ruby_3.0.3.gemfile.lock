@@ -107,7 +107,7 @@ GEM
       tzinfo (~> 2.0)
     acts-as-taggable-on (10.0.0)
       activerecord (>= 6.1, < 7.2)
-    acts_as_list (1.0.4)
+    acts_as_list (1.1.0)
       activerecord (>= 4.2)
     addressable (2.8.6)
       public_suffix (>= 2.0.2, < 6.0)
