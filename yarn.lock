@@ -1332,10 +1332,10 @@
   resolved "https://registry.yarnpkg.com/@hotwired/stimulus/-/stimulus-3.0.1.tgz#141f15645acaa3b133b7c247cad58ae252ffae85"
   integrity sha512-oHsJhgY2cip+K2ED7vKUNd2P+BEswVhrCYcJ802DSsblJFv7mPFVk3cQKvm2vHgHeDVdnj7oOKrBbzp1u8D+KA==
 
-"@hotwired/stimulus@^3.0.1":
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/@hotwired/stimulus/-/stimulus-3.2.1.tgz#e3de23623b0c52c247aba4cd5d530d257008676b"
-  integrity sha512-HGlzDcf9vv/EQrMJ5ZG6VWNs8Z/xMN+1o2OhV1gKiSG6CqZt5MCBB1gRg5ILiN3U0jEAxuDTNPRfBcnZBDmupQ==
+"@hotwired/stimulus@^3.2.2":
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/@hotwired/stimulus/-/stimulus-3.2.2.tgz#071aab59c600fed95b97939e605ff261a4251608"
+  integrity sha512-eGeIqNOQpXoPAIP7tC1+1Yc1yl1xnwYqg+3mzqxyrbE5pg5YFBZcA6YoTiByJB6DKAEsiWtl6tjTJS4IYtbB7A==
 
 "@hotwired/turbo-rails@^7.3.0":
   version "7.3.0"
@@ -1508,10 +1508,10 @@
   resolved "https://registry.yarnpkg.com/@ungap/structured-clone/-/structured-clone-1.2.0.tgz#756641adb587851b5ccb3e095daf27ae581c8406"
   integrity sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==
 
-"@yaireo/tagify@^4.11.0":
-  version "4.17.7"
-  resolved "https://registry.yarnpkg.com/@yaireo/tagify/-/tagify-4.17.7.tgz#662eb9676818c7490752f7e99d537397cc1b9b02"
-  integrity sha512-kMk179PY4aXdc5tIw4t65I6IvB5Dyes30DF0XTUagqcCe+pCyi60g4eUGScFsJByF/u25An0RkVqZ4+IcPVxVg==
+"@yaireo/tagify@^4.17.9":
+  version "4.17.9"
+  resolved "https://registry.yarnpkg.com/@yaireo/tagify/-/tagify-4.17.9.tgz#ff10ae832001200dbd4e354aedb6d1df7074c266"
+  integrity sha512-x9aZy22hzte7BNmMrFcYNrZH71ombgH5PnzcOVXqPevRV/m/ItSnWIvY5fOHYzpC9Uxy0+h/1P5v62fIvwq2MA==
 
 acorn-jsx@^5.3.2:
   version "5.3.2"

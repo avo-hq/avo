@@ -6,11 +6,11 @@ Avo.configure do |config|
   # used only when you have custom `map` configuration in your config.ru
   # config.prefix_path = "/internal"
 
-  # Sometimes you migth want to mount Avo's engines yourself.
+  # Sometimes you might want to mount Avo's engines yourself.
   # https://docs.avohq.io/3.0/routing.html
   # config.mount_avo_engines = true
 
-  # Where should the user be redirected when visting the `/<%= options[:path] %>` url
+  # Where should the user be redirected when visiting the `/<%= options[:path] %>` url
   # config.home_path = nil
 
   ## == Licensing ==
