@@ -52,7 +52,7 @@
     "postcss": "^8.4.32",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-import": "^15.1.0",
-    "postcss-loader": "^7.3.0",
+    "postcss-loader": "^7.3.3",
     "postcss-nested": "^6.0.1",
     "postcss-nested-ancestors": "^3.0.0",
     "postcss-preset-env": "^8.3.2",
