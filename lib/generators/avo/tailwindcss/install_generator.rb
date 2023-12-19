@@ -27,12 +27,12 @@ module Generators
           end
 
 
-          unless (path = Rails.root.join("app", "assets", "stylesheets", "avo" ,"tailwind.css")).exist?
+          unless (path = Rails.root.join("app", "assets", "stylesheets", "avo" ,"avo.tailwind.css")).exist?
             say "Add default tailwind.css"
             copy_file template_path("avo.tailwind.css"), path
           end
 
-          script_name = "avo:tailwind:css"
+          script_name = "avo:tailwindcss"
           if Rails.root.join("Procfile.dev").exist?
             say "Add #{cmd = "avo_css: yarn #{script_name} --watch"} to Procfile.dev"
             append_to_file "Procfile.dev", "#{cmd}\n"
@@ -44,7 +44,7 @@ module Generators
             run "gem install foreman"
           end
 
-          script_command = "tailwindcss -i ./app/assets/stylesheets/avo/tailwind.css -o ./app/assets/builds/avo.tailwind.css -c ./config/avo/tailwind.config.js --minify"
+          script_command = "tailwindcss -i ./app/assets/stylesheets/avo/avo.tailwind.css -o ./app/assets/builds/avo.tailwind.css -c ./config/avo/tailwind.config.js --minify"
           pretty_script_command = "\"#{script_name}\": \"#{script_command}\""
 
           if (path = Rails.root.join("package.json")).exist?
@@ -69,12 +69,12 @@ module Generators
             # When running `rake assets:precompile` this is the order of events:
             # 1 - Task `avo:yarn_install`
             # 2 - Task `avo:sym_link`
-            # 3 - Cmd  `yarn avo:tailwind:css`
+            # 3 - Cmd  `yarn avo:tailwindcss`
             # 4 - Task `assets:precompile`
             Rake::Task["assets:precompile"].enhance(["avo:sym_link"])
             Rake::Task["avo:sym_link"].enhance(["avo:yarn_install"])
             Rake::Task["avo:sym_link"].enhance do
-              `yarn avo:tailwind:css`
+              `yarn avo:tailwindcss`
             end
 
           RUBY
