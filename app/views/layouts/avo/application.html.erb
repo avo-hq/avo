@@ -21,8 +21,6 @@
     <% end %>
     <%= render Avo::AssetManager::JavascriptComponent.new asset_manager: Avo.asset_manager %>
     <%= render partial: 'avo/partials/head' %>
-    <%= turbo_refreshes_with method: :morph, scroll: :preserve %>
-    <%= content_for :head %>
   </head>
   <body class="bg-application os-mac">
     <div class="relative flex flex-1 w-full min-h-full" data-controller="sidebar" data-sidebar-open-value="<%= @sidebar_open %>">
