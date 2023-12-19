@@ -43,10 +43,10 @@ RSpec.describe "App", type: :system do
       expect(comments_frame).not_to have_text "Commentable"
       expect(comments_frame).to have_link comment.id.to_s, href: "/admin/resources/comments/#{comment.id}?via_record_id=#{project.id}&via_resource_class=Avo%3A%3AResources%3A%3AProject"
 
-      destroy_button = find("turbo-frame[id='has_many_field_show_comments'] tr[data-resource-id='#{comment.id}'] button[data-control=\"destroy\"]")
+      destroy_link = find("turbo-frame[id='has_many_field_show_comments'] tr[data-resource-id='#{comment.id}'] a[data-control=\"destroy\"]")
 
       expect {
-        destroy_button.click
+        destroy_link.click
         confirm_alert
         wait_for_loaded
       }.to change(Comment, :count).by(-1)
