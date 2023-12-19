@@ -208,7 +208,7 @@ GEM
     faker (3.2.2)
       i18n (>= 1.8.11, < 2)
     ffi (1.16.3)
-    friendly_id (5.4.2)
+    friendly_id (5.5.1)
       activerecord (>= 4.0.0)
     fuubar (2.5.1)
       rspec-core (~> 3.0)
@@ -564,7 +564,7 @@ DEPENDENCIES
   erb-formatter
   factory_bot_rails
   faker
-  friendly_id (~> 5.4.0)
+  friendly_id (~> 5.5.1)
   fuubar
   gem-release
   groupdate
