@@ -34,7 +34,7 @@
     "chart.js": "^3.7.0",
     "chartkick": "^4.1.1",
     "codemirror": "5.59.1",
-    "core-js": "^3.21.0",
+    "core-js": "^3.34.0",
     "css-loader": "^6.7.3",
     "easymde": "^2.18.0",
     "el-transition": "^0.0.7",
