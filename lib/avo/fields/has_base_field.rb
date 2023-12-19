@@ -27,7 +27,7 @@ module Avo
       end
 
       def field_resource
-        resource || Avo.resource_manager.get_resource_by_model_class(@record.class)
+        resource || get_resource_by_model_class(@record.class)
       end
 
       def turbo_frame
@@ -57,9 +57,9 @@ module Avo
 
       def target_resource
         if @record._reflections[id.to_s].klass.present?
-          Avo.resource_manager.get_resource_by_model_class @record._reflections[id.to_s].klass.to_s
+          get_resource_by_model_class(@record._reflections[id.to_s].klass.to_s)
         elsif @record._reflections[id.to_s].options[:class_name].present?
-          Avo.resource_manager.get_resource_by_model_class @record._reflections[id.to_s].options[:class_name]
+          get_resource_by_model_class(@record._reflections[id.to_s].options[:class_name])
         else
           Avo.resource_manager.get_resource_by_name id.to_s
         end

@@ -234,7 +234,7 @@ module Avo
 
         if is_polymorphic?
           if value.present?
-            return Avo.resource_manager.get_resource_by_model_class(value.class)
+            return get_resource_by_model_class(value.class)
           else
             return nil
           end
@@ -243,9 +243,9 @@ module Avo
         reflection_key = polymorphic_as || id
 
         if @record._reflections[reflection_key.to_s].klass.present?
-          Avo.resource_manager.get_resource_by_model_class @record._reflections[reflection_key.to_s].klass.to_s
+          get_resource_by_model_class(@record._reflections[reflection_key.to_s].klass.to_s)
         elsif @record._reflections[reflection_key.to_s].options[:class_name].present?
-          Avo.resource_manager.get_resource_by_model_class @record._reflections[reflection_key.to_s].options[:class_name]
+          get_resource_by_model_class(@record._reflections[reflection_key.to_s].options[:class_name])
         else
           App.get_resource_by_name reflection_key.to_s
         end
