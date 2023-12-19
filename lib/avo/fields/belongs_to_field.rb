@@ -259,8 +259,8 @@ module Avo
         nil
       end
 
-      def name
-        return polymorphic_as.to_s.humanize if polymorphic_as.present? && view.index?
+      def default_name
+        return polymorphic_as.to_s.humanize if polymorphic_as.present?
 
         super
       end
