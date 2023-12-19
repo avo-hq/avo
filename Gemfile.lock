@@ -315,7 +315,7 @@ GEM
     prefixed_ids (1.4.0)
       hashids (>= 1.0.0, < 2.0.0)
       rails (>= 6.0.0)
-    psych (5.1.1.1)
+    psych (5.1.2)
       stringio
     public_suffix (5.0.4)
     puma (6.4.0)
@@ -395,7 +395,7 @@ GEM
     rspec-mocks (3.12.6)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.12.0)
-    rspec-rails (6.0.3)
+    rspec-rails (6.1.0)
       actionpack (>= 6.1)
       activesupport (>= 6.1)
       railties (>= 6.1)
