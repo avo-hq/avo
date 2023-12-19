@@ -75,7 +75,7 @@
     "eslint": "^8.56.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.29.1",
-    "prettier": "^2.5.1",
+    "prettier": "^2.8.8",
     "prettier-plugin-erb": "^0.4.0"
   },
   "browserslist": [
