@@ -38,7 +38,7 @@
     "css-loader": "^6.7.3",
     "easymde": "^2.18.0",
     "el-transition": "^0.0.7",
-    "esbuild": "^0.14.25",
+    "esbuild": "^0.14.54",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-plugin-sort-imports-es6-autofix": "^0.6.0",
