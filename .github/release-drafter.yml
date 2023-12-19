@@ -15,6 +15,7 @@ categories:
     labels:
       - 'Chore'
       - 'Dependencies'
+      - 'depfu'
   - title: '🧪 Test'
     label: 'Test'
   - title: '✏️ Docs'
