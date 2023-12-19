@@ -7,7 +7,7 @@ gem "cssbundling-rails"
 gem "rails", "~> 7.1"
 gem "pg", ">= 0.18", "< 2.0"
 gem "puma", "~> 6.4"
-gem "redis", "~> 4.0"
+gem "redis", "~> 5.0"
 gem "bootsnap", ">= 1.4.2", require: false
 gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
 gem "dotenv-rails"
