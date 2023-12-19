@@ -379,7 +379,10 @@ GEM
     rbs (2.8.4)
     rdoc (6.6.2)
       psych (>= 4.0.0)
-    redis (4.8.1)
+    redis (5.0.8)
+      redis-client (>= 0.17.0)
+    redis-client (0.19.0)
+      connection_pool
     regexp_parser (2.8.3)
     reline (0.4.1)
       io-console (~> 0.5)
@@ -588,7 +591,7 @@ DEPENDENCIES
   rails (~> 7.1.0)
   rails-controller-testing
   ransack (~> 4.1, >= 4.1.1)
-  redis (~> 4.0)
+  redis (~> 5.0)
   ripper-tags
   rspec-rails (~> 6.0, >= 6.0.3)
   rubocop
