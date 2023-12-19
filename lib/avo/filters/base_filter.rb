@@ -65,7 +65,11 @@ module Avo
 
       # Fetch the applied filters from the params
       def applied_filters
+        # Return empty hash if no filters are present
         return {} if (filters_from_params = params[PARAM_KEY]).blank?
+
+        # Return empty hash if the filters are not a string, decode_filters method expects a Base64 encoded string
+        # Dynamic filters also use the "filters" param key, but they are not Base64 encoded, they are a hash
         return {} if !filters_from_params.is_a?(String)
 
         self.class.decode_filters filters_from_params
