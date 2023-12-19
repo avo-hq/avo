@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_12_231204) do
+ActiveRecord::Schema[7.1].define(version: 2023_12_12_231204) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -19,8 +19,8 @@ ActiveRecord::Schema.define(version: 2023_12_12_231204) do
     t.text "body"
     t.string "record_type", null: false
     t.bigint "record_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["record_type", "record_id", "name"], name: "index_action_text_rich_texts_uniqueness", unique: true
   end
 
@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(version: 2023_12_12_231204) do
     t.string "record_type", null: false
     t.bigint "record_id", null: false
     t.bigint "blob_id", null: false
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(version: 2023_12_12_231204) do
     t.text "metadata"
     t.bigint "byte_size", null: false
     t.string "checksum", null: false
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
@@ -61,8 +61,8 @@ ActiveRecord::Schema.define(version: 2023_12_12_231204) do
     t.string "image_url"
     t.string "status"
     t.text "tiny_description"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.float "longitude"
     t.float "latitude"
     t.json "city_center_area"
@@ -73,25 +73,25 @@ ActiveRecord::Schema.define(version: 2023_12_12_231204) do
     t.integer "commentable_id"
     t.text "body"
     t.bigint "user_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.datetime "posted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "posted_at", precision: nil
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
   create_table "course_links", force: :cascade do |t|
     t.string "link"
     t.bigint "course_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "position"
     t.index ["course_id"], name: "index_course_links_on_course_id"
   end
 
   create_table "courses", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.text "skills", default: [], array: true
     t.string "country"
     t.string "city"
@@ -109,9 +109,9 @@ ActiveRecord::Schema.define(version: 2023_12_12_231204) do
 
   create_table "events", force: :cascade do |t|
     t.string "name"
-    t.datetime "event_time"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "event_time", precision: nil
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.text "body"
     t.bigint "location_id"
     t.index ["location_id"], name: "index_events_on_location_id"
@@ -119,8 +119,8 @@ ActiveRecord::Schema.define(version: 2023_12_12_231204) do
 
   create_table "fish", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "type"
     t.bigint "user_id"
     t.index ["user_id"], name: "index_fish_on_user_id"
@@ -131,8 +131,8 @@ ActiveRecord::Schema.define(version: 2023_12_12_231204) do
     t.text "name"
     t.string "address"
     t.string "size"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "store_id"
     t.index ["store_id"], name: "index_locations_on_store_id"
     t.index ["team_id"], name: "index_locations_on_team_id"
@@ -141,8 +141,8 @@ ActiveRecord::Schema.define(version: 2023_12_12_231204) do
   create_table "people", force: :cascade do |t|
     t.string "name"
     t.string "type"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "user_id"
     t.bigint "person_id"
     t.index ["person_id"], name: "index_people_on_person_id"
@@ -153,10 +153,10 @@ ActiveRecord::Schema.define(version: 2023_12_12_231204) do
     t.string "name"
     t.text "body"
     t.boolean "is_featured"
-    t.datetime "published_at"
+    t.datetime "published_at", precision: nil
     t.bigint "user_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "status", default: 0
     t.string "slug"
     t.index ["slug"], name: "index_posts_on_slug", unique: true
@@ -169,8 +169,8 @@ ActiveRecord::Schema.define(version: 2023_12_12_231204) do
     t.integer "price"
     t.string "status"
     t.string "category"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "projects", force: :cascade do |t|
@@ -180,10 +180,10 @@ ActiveRecord::Schema.define(version: 2023_12_12_231204) do
     t.string "budget"
     t.string "country"
     t.integer "users_required"
-    t.datetime "started_at"
+    t.datetime "started_at", precision: nil
     t.json "meta"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.text "description"
     t.integer "progress"
   end
@@ -191,8 +191,8 @@ ActiveRecord::Schema.define(version: 2023_12_12_231204) do
   create_table "projects_users", force: :cascade do |t|
     t.bigint "project_id"
     t.bigint "user_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_projects_users_on_project_id"
     t.index ["user_id"], name: "index_projects_users_on_user_id"
   end
@@ -202,8 +202,8 @@ ActiveRecord::Schema.define(version: 2023_12_12_231204) do
     t.integer "reviewable_id"
     t.text "body"
     t.bigint "user_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_reviews_on_user_id"
   end
 
@@ -221,7 +221,7 @@ ActiveRecord::Schema.define(version: 2023_12_12_231204) do
     t.string "tagger_type"
     t.bigint "tagger_id"
     t.string "context", limit: 128
-    t.datetime "created_at"
+    t.datetime "created_at", precision: nil
     t.string "tenant", limit: 128
     t.index ["context"], name: "index_taggings_on_context"
     t.index ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], name: "taggings_idx", unique: true
@@ -239,8 +239,8 @@ ActiveRecord::Schema.define(version: 2023_12_12_231204) do
 
   create_table "tags", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "taggings_count", default: 0
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
@@ -249,8 +249,8 @@ ActiveRecord::Schema.define(version: 2023_12_12_231204) do
     t.bigint "team_id", null: false
     t.bigint "user_id", null: false
     t.string "level"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["team_id"], name: "index_team_memberships_on_team_id"
     t.index ["user_id"], name: "index_team_memberships_on_user_id"
   end
@@ -258,8 +258,8 @@ ActiveRecord::Schema.define(version: 2023_12_12_231204) do
   create_table "teams", force: :cascade do |t|
     t.string "name"
     t.text "description"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "url"
     t.string "color"
   end
@@ -274,10 +274,10 @@ ActiveRecord::Schema.define(version: 2023_12_12_231204) do
     t.bigint "team_id"
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "reset_password_sent_at", precision: nil
+    t.datetime "remember_created_at", precision: nil
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "active", default: true
     t.string "slug"
     t.index ["email"], name: "index_users_on_email", unique: true
