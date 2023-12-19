@@ -19,7 +19,7 @@
   <% end %>
   <%= content_tag :div, class: class_names("flex-1 flex flex-row md:min-h-inherit py-2 px-6", @field.get_html(:classes, view: view, element: :content), {
     "pb-4": stacked?,
-  }), data: {slot: "label"} do %>
+  }), data: {slot: "value"} do %>
     <div class="self-center w-full <% unless full_width? || compact? || stacked? %> md:w-8/12 <% end %>">
       <% if on_show? %>
         <% if field.value.blank? and dash_if_blank %>
