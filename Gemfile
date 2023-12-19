@@ -129,7 +129,7 @@ gem 'meta-tags'
 # Search
 gem "ransack", "~> 4.1", ">= 4.1.1"
 
-gem 'friendly_id', '~> 5.4.0'
+gem 'friendly_id', '~> 5.5.1'
 
 gem 'aws-sdk-s3', require: false
 
