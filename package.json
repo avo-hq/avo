@@ -47,7 +47,7 @@
     "js-cookie": "^3.0.5",
     "lodash": "^4.17.21",
     "luxon": "^3.4.4",
-    "mapkick": "^0.2.5",
+    "mapkick": "^0.2.6",
     "mousetrap": "^1.6.5",
     "postcss": "^8.4.32",
     "postcss-flexbugs-fixes": "^5.0.2",
