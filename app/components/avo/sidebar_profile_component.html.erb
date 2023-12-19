@@ -41,11 +41,12 @@
       <% end %>
       <%= render "avo/partials/profile_menu_extra" %>
       <% if can_destroy_user? %>
-        <%= button_to helpers.main_app.send(destroy_user_session_path),
+        <%= link_to helpers.main_app.send(destroy_user_session_path),
           form: { "data-turbo" => "false" },
           method: :delete,
           data: {
-            confirm: t('avo.are_you_sure')
+            turbo_method: :delete,
+            turbo_confirm: t('avo.are_you_sure')
           },
           class: "flex-1 flex items-center justify-center bg-white text-left cursor-pointer text-red-600 font-semibold hover:bg-red-100 block px-4 py-1 w-full py-3 text-center rounded w-full",
           form_class: 'flex-1' do %>
