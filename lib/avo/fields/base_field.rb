@@ -289,6 +289,12 @@ module Avo
       def in_action?
         @action.present?
       end
+
+      def get_resource_by_model_class(model_class)
+        resource = Avo.resource_manager.get_resource_by_model_class(model_class)
+
+        resource || (raise Avo::MissingResourceError.new(model_class))
+      end
     end
   end
 end

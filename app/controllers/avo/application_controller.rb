@@ -125,6 +125,8 @@ module Avo
     end
 
     def set_related_resource
+      raise Avo::MissingResourceError.new(related_resource_name) if related_resource.nil?
+
       @related_resource = related_resource.new(params: params, view: action_name.to_sym, user: _current_user, record: @related_record).detect_fields
     end
 
