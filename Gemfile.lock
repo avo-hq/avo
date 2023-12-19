@@ -311,7 +311,7 @@ GEM
     parser (3.2.2.4)
       ast (~> 2.4.1)
       racc
-    pg (1.4.3)
+    pg (1.5.4)
     prefixed_ids (1.4.0)
       hashids (>= 1.0.0, < 2.0.0)
       rails (>= 6.0.0)
