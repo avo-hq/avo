@@ -78,8 +78,8 @@ GEM
     active_link_to (1.0.5)
       actionpack
       addressable
-    active_median (0.3.3)
-      activesupport (>= 5.2)
+    active_median (0.4.1)
+      activesupport (>= 6.1)
     activejob (7.1.2)
       activesupport (= 7.1.2)
       globalid (>= 0.3.6)
