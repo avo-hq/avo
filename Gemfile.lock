@@ -198,7 +198,8 @@ GEM
       ruby2_keywords
     dry-initializer (3.1.1)
     e2mmap (0.1.0)
-    erb-formatter (0.3.0)
+    erb-formatter (0.6.0)
+      syntax_tree (~> 6.0)
     erubi (1.12.0)
     factory_bot (6.4.2)
       activesupport (>= 5.0.0)
@@ -315,6 +316,7 @@ GEM
     prefixed_ids (1.4.0)
       hashids (>= 1.0.0, < 2.0.0)
       rails (>= 6.0.0)
+    prettier_print (1.2.1)
     psych (5.1.1.1)
       stringio
     public_suffix (5.0.4)
@@ -474,6 +476,8 @@ GEM
       rubocop (= 1.35.0)
       rubocop-performance (= 1.14.3)
     stringio (3.1.0)
+    syntax_tree (6.2.0)
+      prettier_print (>= 1.2.0)
     terminal-table (3.0.2)
       unicode-display_width (>= 1.1.1, < 3)
     test-prof (1.0.10)
