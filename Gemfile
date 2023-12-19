@@ -30,7 +30,7 @@ gem "puma", "~> 6.4"
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem "jbuilder", "~> 2.7"
 # Use Redis adapter to run Action Cable in production
-gem 'redis', '~> 4.0'
+gem 'redis', '~> 5.0'
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -72,7 +72,7 @@ group :development do
 
   gem "htmlbeautifier"
 
-  gem "hotwire-livereload", "~> 1.2.3"
+  gem "hotwire-livereload", "~> 1.3.0"
 
   gem "brakeman"
 
@@ -129,7 +129,7 @@ gem 'meta-tags'
 # Search
 gem "ransack", "~> 4.1", ">= 4.1.1"
 
-gem 'friendly_id', '~> 5.4.0'
+gem 'friendly_id', '~> 5.5.1'
 
 gem 'aws-sdk-s3', require: false
 

@@ -1,11 +1,6 @@
 /* eslint-disable camelcase */
 import { StreamActions } from '@hotwired/turbo'
 
-StreamActions.close_modal = () => {
-  document.querySelector('turbo_frame#actions_show').innerHTML = ''
-  document.querySelector('turbo_frame#attach_modal').innerHTML = ''
-}
-
 // TODO: move these to the avo_filters gem
 
 StreamActions.close_filters_dropdown = () => {
