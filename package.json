@@ -55,7 +55,7 @@
     "postcss-loader": "^7.3.3",
     "postcss-nested": "^6.0.1",
     "postcss-nested-ancestors": "^3.0.0",
-    "postcss-preset-env": "^8.3.2",
+    "postcss-preset-env": "^8.5.1",
     "regenerator-runtime": "^0.13.9",
     "stimulus-rails-nested-form": "^4.1.0",
     "stimulus-use": "^0.50.0",
