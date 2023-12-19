@@ -54,12 +54,16 @@ module Avo
         end
 
         def add_action_data_attributes(attributes, name, element)
+          return unless respond_to? :action
+
           if can_add_stimulus_attributes_for?(action, attributes, name, element)
             attributes.merge!(stimulus_attributes_for(action))
           end
         end
 
         def add_resource_data_attributes(attributes, name, element, view)
+          return unless respond_to? :resource
+
           if can_add_stimulus_attributes_for?(resource, attributes, name, element) && view.in?([:edit, :new])
             resource_stimulus_attributes = stimulus_attributes_for(resource)
 
