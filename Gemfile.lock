@@ -314,7 +314,7 @@ GEM
       ast (~> 2.4.1)
       racc
     pg (1.5.4)
-    prefixed_ids (1.4.0)
+    prefixed_ids (1.6.1)
       hashids (>= 1.0.0, < 2.0.0)
       rails (>= 6.0.0)
     psych (5.1.2)
