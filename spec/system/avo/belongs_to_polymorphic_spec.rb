@@ -230,6 +230,7 @@ RSpec.feature "belongs_to", type: :system do
 
           click_on "Save"
           wait_for_loaded
+          sleep 0.5
 
           expect(current_path).to eq "/admin/resources/projects/#{project.id}"
 
