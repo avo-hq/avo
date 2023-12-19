@@ -1346,20 +1346,18 @@
   resolved "https://registry.yarnpkg.com/@hotwired/stimulus/-/stimulus-3.2.2.tgz#071aab59c600fed95b97939e605ff261a4251608"
   integrity sha512-eGeIqNOQpXoPAIP7tC1+1Yc1yl1xnwYqg+3mzqxyrbE5pg5YFBZcA6YoTiByJB6DKAEsiWtl6tjTJS4IYtbB7A==
 
-"@hotwired/turbo-rails@^8.0.0-beta.1":
-  version "8.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@hotwired/turbo-rails/-/turbo-rails-8.0.0-beta.1.tgz#7d5bd2843caa5d8d224eb36f22078311163128bd"
-  integrity sha512-x9G95vehf5LR4yYGvhD4z6wBMbmAVi0V87FTfenrmXPru4SfOVDsCwdEINBWsLqOvCgRPQD9eY2nGyDfZlsukg==
+"@hotwired/turbo-rails@^7.3.0":
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/@hotwired/turbo-rails/-/turbo-rails-7.3.0.tgz#422c21752509f3edcd6c7b2725bbe9e157815f51"
+  integrity sha512-fvhO64vp/a2UVQ3jue9WTc2JisMv9XilIC7ViZmXAREVwiQ2S4UC7Go8f9A1j4Xu7DBI6SbFdqILk5ImqVoqyA==
   dependencies:
-    "@hotwired/turbo" "^8.0.0-beta.1"
+    "@hotwired/turbo" "^7.3.0"
     "@rails/actioncable" "^7.0"
 
-"@hotwired/turbo@^8.0.0-beta.1":
-  version "8.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@hotwired/turbo/-/turbo-8.0.0-beta.1.tgz#35a7086c4c959445db059ea4a9b9af85cdafa616"
-  integrity sha512-g66YmO/Oa+EThB3KkNDhrM9mFnNyRn6tqgwGiBHh4Vf+d3XjCznuWSG2o2e2cO/RlddVRtCwvBSMuG6sYQWX+g==
-  dependencies:
-    idiomorph "https://github.com/basecamp/idiomorph#rollout-build"
+"@hotwired/turbo@^7.3.0":
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/@hotwired/turbo/-/turbo-7.3.0.tgz#2226000fff1aabda9fd9587474565c9929dbf15d"
+  integrity sha512-Dcu+NaSvHLT7EjrDrkEmH4qET2ZJZ5IcCWmNXxNQTBwlnE5tBZfN6WxZ842n5cHV52DH/AKNirbPBtcEXDLW4g==
 
 "@humanwhocodes/config-array@^0.11.13":
   version "0.11.13"
@@ -2882,10 +2880,6 @@ icss-utils@^5.0.0, icss-utils@^5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/icss-utils/-/icss-utils-5.1.0.tgz#c6be6858abd013d768e98366ae47e25d5887b1ae"
   integrity sha512-soFhflCVWLfRNOPU3iv5Z9VUdT44xFRbzjLsEzSr5AQmgqPMTHdU3PMT1Cf1ssx8fLNJDA1juftYl+PUcv3MqA==
-
-"idiomorph@https://github.com/basecamp/idiomorph#rollout-build":
-  version "0.0.8"
-  resolved "https://github.com/basecamp/idiomorph#e906820368e4c9c52489a3336b8c3826b1bf6de5"
 
 ignore@^5.2.0:
   version "5.2.4"
