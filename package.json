@@ -74,7 +74,7 @@
     "esbuild-visualizer": "^0.3.1",
     "eslint": "^8.55.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-import": "^2.29.1",
     "prettier": "^2.5.1",
     "prettier-plugin-erb": "^0.4.0"
   },
