@@ -34,6 +34,7 @@ RSpec.describe "Date field", type: :system do
         expect(text_input.value).to eq "February 10th 1988"
 
         save
+        sleep 1
 
         expect(find_field_value_element("birthday").text).to eq "Wednesday, 10 February 1988"
       end
