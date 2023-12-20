@@ -10,6 +10,7 @@ import CodeFieldController from './controllers/fields/code_field_controller'
 import CopyToClipboardController from './controllers/copy_to_clipboard_controller'
 import DashboardCardController from './controllers/dashboard_card_controller'
 import DateFieldController from './controllers/fields/date_field_controller'
+import DownloadController from './controllers/download_controller'
 import EasyMdeController from './controllers/fields/easy_mde_controller'
 import FilterController from './controllers/filter_controller'
 import HiddenInputController from './controllers/hidden_input_controller'
@@ -19,7 +20,6 @@ import ItemSelectorController from './controllers/item_selector_controller'
 import KeyValueController from './controllers/fields/key_value_controller'
 import LoadingButtonController from './controllers/loading_button_controller'
 import MenuController from './controllers/menu_controller'
-import ModalController from './controllers/modal_controller'
 import MultipleSelectFilterController from './controllers/multiple_select_filter_controller'
 import PerPageController from './controllers/per_page_controller'
 import PreviewController from './controllers/preview_controller'
@@ -46,6 +46,7 @@ application.register('attachments', AttachmentsController)
 application.register('boolean-filter', BooleanFilterController)
 application.register('copy-to-clipboard', CopyToClipboardController)
 application.register('dashboard-card', DashboardCardController)
+application.register('download', DownloadController)
 application.register('filter', FilterController)
 application.register('hidden-input', HiddenInputController)
 application.register('input-autofocus', InputAutofocusController)
@@ -53,7 +54,6 @@ application.register('item-select-all', ItemSelectAllController)
 application.register('item-selector', ItemSelectorController)
 application.register('loading-button', LoadingButtonController)
 application.register('menu', MenuController)
-application.register('modal', ModalController)
 application.register('multiple-select-filter', MultipleSelectFilterController)
 application.register('per-page', PerPageController)
 application.register('preview', PreviewController)
