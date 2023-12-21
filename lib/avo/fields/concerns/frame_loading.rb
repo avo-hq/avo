@@ -3,7 +3,6 @@ module Avo
     module Concerns
       module FrameLoading
         extend ActiveSupport::Concern
-        include Turbo::FramesHelper
 
         def turbo_frame_loading = kwargs[:turbo_frame_loading]
 
