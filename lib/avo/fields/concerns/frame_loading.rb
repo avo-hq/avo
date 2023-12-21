@@ -15,5 +15,3 @@ module Avo
   end
 end
 
-
-
