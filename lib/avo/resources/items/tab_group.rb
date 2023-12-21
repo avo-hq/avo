@@ -37,6 +37,10 @@ class Avo::Resources::Items::TabGroup
     "#{Avo::Resources::Items::TabGroup.to_s.parameterize} #{index}".parameterize
   end
 
+  def group_param
+    "tab-group_#{id}"
+  end
+
   class Builder
     include Avo::Concerns::BorrowItemsHolder
 
