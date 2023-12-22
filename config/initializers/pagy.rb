@@ -10,6 +10,7 @@ extra_locales = [
   {locale: "en"},
   {locale: "es"},
   {locale: "fr"},
+  {locale: "ja"},
   {locale: "nb"},
   {locale: "pt-BR"},
   {locale: "pt"},
