@@ -151,7 +151,8 @@ GEM
     bindex (0.8.1)
     bootsnap (1.16.0)
       msgpack (~> 1.2)
-    brakeman (5.4.0)
+    brakeman (6.1.1)
+      racc
     builder (3.2.4)
     bump (0.10.0)
     bundler-integrity (1.0.9)
