@@ -151,7 +151,6 @@ GEM
     bindex (0.8.1)
     bootsnap (1.17.0)
       msgpack (~> 1.2)
-    brakeman (6.1.0)
     builder (3.2.4)
     bump (0.10.0)
     bundler-integrity (1.0.9)
@@ -558,7 +557,6 @@ DEPENDENCIES
   awesome_print
   aws-sdk-s3
   bootsnap (>= 1.4.2)
-  brakeman
   bump
   bundler-integrity (~> 1.0)
   byebug
