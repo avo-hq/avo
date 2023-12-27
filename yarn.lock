@@ -2902,10 +2902,10 @@ hasown@^2.0.0:
   dependencies:
     function-bind "^1.1.2"
 
-heroicons@^2.0.18:
-  version "2.0.18"
-  resolved "https://registry.yarnpkg.com/heroicons/-/heroicons-2.0.18.tgz#e4a5d7d0884fb1859f7171d2e41a7d89181c768e"
-  integrity sha512-3iaqznaz5GJ8Mox/eDfKHo7tYKuPiZV4vbg6pB6wjJhBa7ZKQlXT1KuUnsjkEiPy/ezyiqppOX6wUqYguMIq8w==
+heroicons@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/heroicons/-/heroicons-2.1.1.tgz#b574c2d87bc504bf7f4fefacc20960c5672b0202"
+  integrity sha512-54kHbrxsTyAJJU7z07XN1OrVBX8ogN/tbclP8Doxk0X4IQmR6LEhLzJBkFK9Yc814NoXG6ZJBh9Bi/qvauzjfA==
 
 hotkeys-js@>=3:
   version "3.8.7"
