@@ -76,9 +76,7 @@ module Avo
           when :redirect
             # Turbo redirect to the path
             render turbo_stream: turbo_stream.redirect_to(
-              Avo::ExecutionContext.new(
-                target: @response[:path]
-              ).handle,
+              Avo::ExecutionContext.new(target: @response[:path]).handle,
               nil,
               @response[:redirect_args][:turbo_frame],
               **@response[:redirect_args].except(:turbo_frame)
