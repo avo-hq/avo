@@ -63,31 +63,31 @@ module Avo
       respond_to do |format|
         format.turbo_stream do
           case @response[:type]
+          when :keep_modal_open
             # Only render the flash messages if the action keeps the modal open
-            when :keep_modal_open
-              turbo_stream.flash_alerts
+            turbo_stream.flash_alerts
 
+          when :download
             # Trigger download, removes modal and flash the messages
-            when :download
-              render turbo_stream: [
-                turbo_stream.download(content: @response[:path], filename: @response[:filename]),
-                turbo_stream.remove("actions_show"),
-                turbo_stream.flash_alerts
-              ]
+            render turbo_stream: [
+              turbo_stream.download(content: @response[:path], filename: @response[:filename]),
+              turbo_stream.remove("actions_show"),
+              turbo_stream.flash_alerts
+            ]
 
+          when :redirect
             # Turbo redirect to the path
-            when :redirect
-              render turbo_stream: turbo_stream.redirect_to(
-                Avo::ExecutionContext.new(
-                  target: @response[:path]
-                ).handle,
-                nil,
-                @response[:redirect_args][:turbo_frame],
-                **@response[:redirect_args].except(:turbo_frame)
-              )
-            else
-              # Reload the page
-              redirect_back fallback_location: resources_path(resource: @resource)
+            render turbo_stream: turbo_stream.redirect_to(
+              Avo::ExecutionContext.new(
+                target: @response[:path]
+              ).handle,
+              nil,
+              @response[:redirect_args][:turbo_frame],
+              **@response[:redirect_args].except(:turbo_frame)
+            )
+          else
+            # Reload the page
+            redirect_back fallback_location: resources_path(resource: @resource)
           end
         end
       end
