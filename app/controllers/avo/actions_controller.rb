@@ -66,7 +66,6 @@ module Avo
           when :keep_modal_open
             # Only render the flash messages if the action keeps the modal open
             turbo_stream.flash_alerts
-
           when :download
             # Trigger download, removes modal and flash the messages
             render turbo_stream: [
@@ -74,7 +73,6 @@ module Avo
               turbo_stream.remove("actions_show"),
               turbo_stream.flash_alerts
             ]
-
           when :redirect
             # Turbo redirect to the path
             render turbo_stream: turbo_stream.redirect_to(
