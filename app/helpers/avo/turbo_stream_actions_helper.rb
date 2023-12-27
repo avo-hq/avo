@@ -5,9 +5,9 @@ module Avo
     end
 
     def flash_alerts
-      turbo_stream_action_tag :append, target: "alerts" do
-        render Avo::FlashAlertsComponent.new flashes: flash.discard
-      end
+      turbo_stream_action_tag :append,
+        target: "alerts",
+        template: @view_context.render(Avo::FlashAlertsComponent.new(flashes: @view_context.flash.discard))
     end
   end
 end
