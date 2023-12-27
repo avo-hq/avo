@@ -65,7 +65,7 @@ module Avo
           case @response[:type]
           when :keep_modal_open
             # Only render the flash messages if the action keeps the modal open
-            turbo_stream.flash_alerts
+            render turbo_stream: turbo_stream.flash_alerts
           when :download
             # Trigger download, removes modal and flash the messages
             render turbo_stream: [
