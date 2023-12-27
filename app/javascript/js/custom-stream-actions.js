@@ -16,7 +16,7 @@ StreamActions.open_filter = function () {
 }
 // END TODO: move these to the avo_filters gem
 
-StreamActions.download_file = function() {
+StreamActions.download = function() {
   saveAs(
     new Blob(
       [this.getAttribute('content')],

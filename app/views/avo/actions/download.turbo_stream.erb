@@ -1,8 +1,0 @@
-<%# Trigger download %>
-<turbo-stream action="download_file" content="<%= @response[:path] %>" filename="<%= @response[:filename] %>"></turbo-stream>
-
-<%# Remove the actions_show div %>
-<%= turbo_stream.remove "actions_show" %>
-
-<%# Trigger the flash alerts %>
-<%= render partial: "avo/partials/flash_alerts" %>
