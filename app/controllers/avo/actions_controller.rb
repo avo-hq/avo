@@ -85,9 +85,8 @@ module Avo
                 @response[:redirect_args][:turbo_frame],
                 **@response[:redirect_args].except(:turbo_frame)
               )
-
-            # Reload the page
             else
+              # Reload the page
               redirect_back fallback_location: resources_path(resource: @resource)
           end
         end
