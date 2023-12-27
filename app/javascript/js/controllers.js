@@ -10,7 +10,6 @@ import CodeFieldController from './controllers/fields/code_field_controller'
 import CopyToClipboardController from './controllers/copy_to_clipboard_controller'
 import DashboardCardController from './controllers/dashboard_card_controller'
 import DateFieldController from './controllers/fields/date_field_controller'
-import DownloadController from './controllers/download_controller'
 import EasyMdeController from './controllers/fields/easy_mde_controller'
 import FilterController from './controllers/filter_controller'
 import HiddenInputController from './controllers/hidden_input_controller'
@@ -46,7 +45,6 @@ application.register('attachments', AttachmentsController)
 application.register('boolean-filter', BooleanFilterController)
 application.register('copy-to-clipboard', CopyToClipboardController)
 application.register('dashboard-card', DashboardCardController)
-application.register('download', DownloadController)
 application.register('filter', FilterController)
 application.register('hidden-input', HiddenInputController)
 application.register('input-autofocus', InputAutofocusController)

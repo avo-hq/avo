@@ -1,13 +1,5 @@
-<%# Append a div that triggers the download_controller.js %>
-<%= turbo_stream.append "actions_show" do %>
-  <%= content_tag :div,
-    data: {
-      controller: "download",
-      content: @response[:path],
-      filename: @response[:filename],
-    } do %>
-  <% end %>
-<% end %>
+<%# Trigger download %>
+<turbo-stream action="download_file" content="<%= @response[:path] %>" filename="<%= @response[:filename] %>"></turbo-stream>
 
 <%# Remove the actions_show div %>
 <%= turbo_stream.remove "actions_show" %>
