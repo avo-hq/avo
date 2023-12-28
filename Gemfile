@@ -74,8 +74,6 @@ group :development do
 
   gem "hotwire-livereload", "~> 1.3.0"
 
-  gem "brakeman"
-
   gem "rubocop"
   gem "ripper-tags"
   gem "rubocop-shopify", require: false
