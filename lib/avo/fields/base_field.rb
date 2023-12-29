@@ -152,8 +152,8 @@ module Avo
         # Get record value
         final_value = record.send(property) if is_model?(record) && record.respond_to?(property)
 
-        # On new views and actions modals we need to prefill the fields with the default value
-        if should_fill_with_default_value? && default.present?
+        # On new views and actions modals we need to prefill the fields with the default value if value is nil
+        if final_value.nil? && should_fill_with_default_value? && default.present?
           final_value = computed_default_value
         end
 

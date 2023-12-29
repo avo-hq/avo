@@ -53,12 +53,29 @@ class Avo::Items::SwitcherComponent < Avo::BaseComponent
   end
 
   def tab_group_component
-    Avo::TabGroupComponent.new resource: @resource, group: item.hydrate(view: view), index: index, params: params, form: form, view: view
+    Avo::TabGroupComponent.new(
+      resource: @resource,
+      group: item.hydrate(view: view),
+      index: index, params: params,
+      form: form,
+      view: view
+    )
   end
 
   def field_component
-    final_item = item.dup.hydrate(resource: @resource, record: @resource.record, user: resource.user, view: view)
-    final_item.component_for_view(@view).new(field: final_item, resource: @resource, index: index, form: form, turbo_frame_loading: :lazy, **@field_component_extra_args)
+    item.hydrate(
+      resource: @resource,
+      record: @resource.record,
+      user: resource.user,
+      view: view,
+    ).component_for_view(@view).new(
+      field: item,
+      resource: @resource,
+      index: index,
+      form: form,
+      turbo_frame_loading: :lazy,
+      **@field_component_extra_args
+    )
   end
 
   def panel_component
