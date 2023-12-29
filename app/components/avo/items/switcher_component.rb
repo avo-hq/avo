@@ -56,7 +56,8 @@ class Avo::Items::SwitcherComponent < Avo::BaseComponent
     Avo::TabGroupComponent.new(
       resource: @resource,
       group: item.hydrate(view: view),
-      index: index, params: params,
+      index: index,
+      params: params,
       form: form,
       view: view
     )
