@@ -6,7 +6,7 @@ PATH
 PATH
   remote: ..
   specs:
-    avo (3.2.2)
+    avo (3.2.3)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
@@ -197,7 +197,7 @@ GEM
       ruby2_keywords
     dry-initializer (3.1.1)
     e2mmap (0.1.0)
-    erb-formatter (0.4.3)
+    erb-formatter (0.7.0)
       syntax_tree (~> 6.0)
     erubi (1.12.0)
     factory_bot (6.2.1)
