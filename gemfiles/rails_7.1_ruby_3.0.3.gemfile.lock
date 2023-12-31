@@ -197,7 +197,7 @@ GEM
       ruby2_keywords
     dry-initializer (3.1.1)
     e2mmap (0.1.0)
-    erb-formatter (0.4.3)
+    erb-formatter (0.7.0)
       syntax_tree (~> 6.0)
     erubi (1.12.0)
     factory_bot (6.4.5)
