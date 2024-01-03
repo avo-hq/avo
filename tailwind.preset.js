@@ -10,7 +10,7 @@ function contentPaths(basePath) {
     `${basePath}/safelist.txt`,
     `${basePath}/lib/avo/**/*.rb`,
     `${basePath}/app/helpers/**/*.rb`,
-    `${basePath}/app/views/**/*.erb`,
+    `${basePath}/app/views/**/*.{html.erb,rb}`,
     `${basePath}/app/javascript/**/*.js`,
     `${basePath}/app/components/**/*.{html.erb,rb}`,
     `${basePath}/app/controllers/**/*.rb`,
