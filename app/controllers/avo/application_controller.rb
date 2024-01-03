@@ -45,14 +45,6 @@ module Avo
       end
     end
 
-    def _current_user
-      instance_eval(&Avo.configuration.current_user)
-    end
-
-    def context
-      instance_eval(&Avo.configuration.context)
-    end
-
     # This is coming from Turbo::Frames::FrameRequest module.
     # Exposing it as public method
     def turbo_frame_request?
