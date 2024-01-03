@@ -140,4 +140,26 @@ RSpec.describe "Tabs", type: :system do
       find('a[data-selected="true"][data-tabs-tab-name-param="Posts"]')
     end
   end
+
+  describe "tabs with names that have spaces" do
+    it "keeps tab on reload" do
+      visit avo.resources_user_path user
+
+      find('a[data-selected="true"][data-tabs-tab-name-param="Fish"]')
+      find('a[data-selected="false"][data-tabs-tab-name-param="Projects"]').click
+      find('a[data-selected="false"][data-tabs-tab-name-param="Team memberships"]')
+
+      refresh
+
+      find('a[data-selected="false"][data-tabs-tab-name-param="Fish"]')
+      find('a[data-selected="true"][data-tabs-tab-name-param="Projects"]')
+      find('a[data-selected="false"][data-tabs-tab-name-param="Team memberships"]').click
+
+      refresh
+
+      find('a[data-selected="false"][data-tabs-tab-name-param="Fish"]')
+      find('a[data-selected="false"][data-tabs-tab-name-param="Projects"]')
+      find('a[data-selected="true"][data-tabs-tab-name-param="Team memberships"]')
+    end
+  end
 end

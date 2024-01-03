@@ -163,7 +163,8 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
       scopes: scopes,
       resource: resource,
       turbo_frame: turbo_frame,
-      parent_record: parent_record
+      parent_record: parent_record,
+      query: query
     )
   end
 
