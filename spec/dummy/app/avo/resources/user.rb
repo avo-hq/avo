@@ -227,14 +227,14 @@ class Avo::Resources::User < Avo::BaseResource
 
   def second_tabs_group
     tabs id: :second_tabs_group do
-      field :post,
-        as: :has_one,
-        name: "Main post",
-        translation_key: "avo.field_translations.people"
       field :posts,
         as: :has_many,
         show_on: :edit,
         attach_scope: -> { query.where.not(user_id: parent.id).or(query.where(user_id: nil)) }
+      field :post,
+        as: :has_one,
+        name: "Main post",
+        translation_key: "avo.field_translations.people"
       field :comments,
         as: :has_many,
         # show_on: :edit,
