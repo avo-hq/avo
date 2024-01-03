@@ -162,4 +162,12 @@ RSpec.describe "Tabs", type: :system do
       find('a[data-selected="true"][data-tabs-tab-name-param="Team memberships"]')
     end
   end
+
+  it "lazy loads has_one tabs" do
+    visit avo.resources_user_path user
+
+    find('a[data-selected="false"][data-tabs-tab-name-param="Main comment"]').click
+
+    expect(page).not_to have_text 'Invalid DateTime'
+  end
 end
