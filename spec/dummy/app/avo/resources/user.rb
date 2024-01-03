@@ -222,6 +222,11 @@ class Avo::Resources::User < Avo::BaseResource
       test_tab
       test_field("Inside tabs")
       first_tabs_group_fields
+      tab "Created at" do
+        panel do
+          field :created_at, as: :date_time
+        end
+      end
     end
   end
 
