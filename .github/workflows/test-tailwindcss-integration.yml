@@ -8,6 +8,7 @@ on:
     branches:
       - main
 # env:
+#   workspace: 
 #   RAILS_ENV: test
 #   PGHOST: localhost
 #   PGUSER: postgres
@@ -54,7 +55,7 @@ jobs:
     - name: Write test file
       uses: DamianReeves/write-file-action@master
       with:
-        path: $GITHUB_WORKSPACE/test.rb
+        path: ${{github.workspace}}/test.rb
         contents: |
           #!/usr/bin/env ruby
           def get_compiled_file_contents
@@ -109,4 +110,4 @@ jobs:
 
     - name: Run test
       run: |
-        ruby $GITHUB_WORKSPACE/test_repo/test.rb
+        ruby ${{github.workspace}}/test_repo/test.rb
