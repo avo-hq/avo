@@ -48,11 +48,15 @@ jobs:
       run: ls -la .
     - name: PWD 2
       run: pwd
+    - name: PWD 3
+      run: echo $GITHUB_WORKSPACE
+    - name: PWD 4
+      run: $GITHUB_WORKSPACE/ruby.rb
 
     - name: Write test file
       uses: DamianReeves/write-file-action@master
       with:
-        path: ./ruby.rb
+        path: $GITHUB_WORKSPACE/ruby.rb
         contents: |
           #!/usr/bin/env ruby
           def get_compiled_file_contents
@@ -86,6 +90,8 @@ jobs:
           end
         write-mode: append
 
+    - name: PWD 1
+      run: ls -la .
 
     - name: Set up Rails
       run: |
