@@ -561,8 +561,6 @@ module Avo
       }
     end
 
-    private
-
     def entity_loader(entity)
       instance_variable_get("@#{entity.to_s.pluralize}_loader")
     end
