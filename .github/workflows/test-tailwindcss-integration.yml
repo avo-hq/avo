@@ -117,4 +117,4 @@ jobs:
 
     - name: Run test
       run: |
-        ruby ${{github.workspace}}/test_repo/test.rb
+        bundle exec ruby ${{github.workspace}}/test_repo/test.rb
