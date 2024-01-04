@@ -106,4 +106,4 @@ jobs:
 
     - name: Run test
       run: |
-        ruby test.rb
+        ruby $GITHUB_WORKSPACE/ruby.rb
