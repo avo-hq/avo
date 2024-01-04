@@ -44,11 +44,12 @@ jobs:
         bundler: default
         ruby-version: 3.3.0
 
-    - name: Set up Rails
-      run: |
-        ls -la test_repo
-        pwd
-        la -la ${{ env.home}}
+    - name: PWD 1
+      run: ls -la test_repo
+    - name: PWD 2
+      run: pwd
+    - name: PWD 3
+      run: la -la ${{ env.home}}
 
     - name: Set up Rails
       run: |
