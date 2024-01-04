@@ -45,6 +45,10 @@ jobs:
         bundler: default
         ruby-version: 3.3.0
 
+    - name: Set up Rails
+      run: |
+        gem install rails
+
     - name: Set up repo
       run: |
         rails new test_repo -a propshaft
