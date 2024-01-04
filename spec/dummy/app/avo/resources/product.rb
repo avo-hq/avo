@@ -7,7 +7,7 @@ class Avo::Resources::Product < Avo::BaseResource
       {
         cover_url: record.image.attached? ? main_app.url_for(record.image.variant(resize: "300x300")) : nil,
         title: record.title,
-        body: view_context.simple_format(record.description)
+        body: simple_format(record.description)
       }
     end,
     html: -> do
