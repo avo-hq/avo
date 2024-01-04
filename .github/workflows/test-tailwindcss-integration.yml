@@ -49,19 +49,6 @@ jobs:
     - name: PWD 2
       run: pwd
 
-    - name: Set up Rails
-      run: |
-        gem install rails
-
-    - name: Set up repo
-      run: |
-        rails new test_repo -a propshaft
-        cd test_repo
-        bin/rails app:template LOCATION='https://avohq.io/app-template'
-        bin/rails generate avo:tailwindcss:install
-        bin/rails generate avo:tool custom_tool
-        echo '<div class="aspect-video break-before-avoid float-end order-9 col-end-13 box-decoration-slice bg-gradient-to-r from-indigo-600 to-pink-500 text-white text-2xl font-bold">Test<br>DIV</div>' >> ./app/views/avo/tools/custom_tool.html.erb
-
     - name: Write test file
       uses: DamianReeves/write-file-action@master
       with:
@@ -99,6 +86,19 @@ jobs:
           end
         write-mode: append
 
+
+    - name: Set up Rails
+      run: |
+        gem install rails
+
+    - name: Set up repo
+      run: |
+        rails new test_repo -a propshaft
+        cd test_repo
+        bin/rails app:template LOCATION='https://avohq.io/app-template'
+        bin/rails generate avo:tailwindcss:install
+        bin/rails generate avo:tool custom_tool
+        echo '<div class="aspect-video break-before-avoid float-end order-9 col-end-13 box-decoration-slice bg-gradient-to-r from-indigo-600 to-pink-500 text-white text-2xl font-bold">Test<br>DIV</div>' >> ./app/views/avo/tools/custom_tool.html.erb
 
     - name: Run test
       run: |
