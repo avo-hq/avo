@@ -69,7 +69,7 @@ jobs:
         rails new test_repo -a propshaft
         cd test_repo
         bin/rails app:template LOCATION='https://avohq.io/app-template'
-        echo '{"name": "avo_tailwindcss_test_repo","version": "1.0.0"}' >> ./package.json
+        yarn init --yes
         bin/rails generate avo:tailwindcss:install
         bin/rails generate avo:tool custom_tool
         rake assets:precompile
