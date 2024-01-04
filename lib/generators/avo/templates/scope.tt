@@ -1,4 +1,4 @@
-class Avo::Scopes::<%= class_name.camelize %> < Avo::Pro::Scopes::BaseScope
+class Avo::Scopes::<%= class_name.camelize %> < Avo::Advanced::Scopes::BaseScope
   self.name = "<%= name.underscore.humanize %>"
   # self.description = "<%= name.underscore.humanize %> description."
   self.scope = -> { query.all }
