@@ -1,5 +1,5 @@
 <% if @field.value %>
-  <turbo-frame id="<%= @field.turbo_frame %>" src="<%= @field.frame_url %>" target="_top" class="block">
+  <turbo-frame id="<%= @field.turbo_frame %>" src="<%= @field.frame_url %>"  loading=<%= turbo_frame_loading %> target="_top" class="block">
     <%= render(Avo::LoadingComponent.new(title: @field.name)) %>
   </turbo-frame>
 <% else %>

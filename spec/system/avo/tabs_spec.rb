@@ -48,7 +48,7 @@ RSpec.describe "Tabs", type: :system do
         visit avo.resources_user_path user
 
         within first_tab_group do
-          expect(find('[data-tabs-target="tabSwitcher"]').text).to eq "Fish\nTeams\nPeople\nSpouses\nProjects\nTeam memberships"
+          expect(find('[data-tabs-target="tabSwitcher"]').text).to eq "Fish\nTeams\nPeople\nSpouses\nProjects\nTeam memberships\nCreated at"
         end
       end
     end
@@ -101,7 +101,7 @@ RSpec.describe "Tabs", type: :system do
       scroll_to first_tab_group
 
       within first_tab_group do
-        expect(find('[data-tabs-target="tabSwitcher"]')).to have_text "Fish\nTeams\nPeople\nSpouses\nProjects\nTeam memberships", exact: true
+        expect(find('[data-tabs-target="tabSwitcher"]')).to have_text "Fish\nTeams\nPeople\nSpouses\nProjects\nTeam memberships\nCreated at", exact: true
       end
     end
   end
@@ -161,5 +161,15 @@ RSpec.describe "Tabs", type: :system do
       find('a[data-selected="false"][data-tabs-tab-name-param="Projects"]')
       find('a[data-selected="true"][data-tabs-tab-name-param="Team memberships"]')
     end
+  end
+
+  it "date_time field works on tabs" do
+    visit avo.resources_user_path user
+
+    find('a[data-selected="false"][data-tabs-tab-name-param="Main comment"]').click
+    expect(page).not_to have_text 'Invalid DateTime'
+
+    find('a[data-selected="false"][data-tabs-tab-name-param="Created at"]').click
+    expect(page).not_to have_text 'Invalid DateTime'
   end
 end

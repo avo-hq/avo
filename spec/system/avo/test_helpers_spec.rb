@@ -73,7 +73,7 @@ RSpec.describe "TestHelpers", type: :system do
       it "finds the wrapper" do
         users.each do |user|
           visit "admin/resources/users/#{user.id}"
-          has_one_post = has_one_field_wrapper(id: :post)
+          scroll_to(has_one_post = has_one_field_wrapper(id: :post))
 
           name_wrapper = within(has_one_post) { show_field_wrapper(id: "name", type: "text") }
           name_wrapper_without_type = within(has_one_post) { show_field_wrapper(id: "name") }
