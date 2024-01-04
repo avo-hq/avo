@@ -8,7 +8,39 @@ on:
     branches:
       - main
 
-# env:
+env:
+  test_file: <<EOF
+#!/usr/bin/env ruby
+def get_compiled_file_contents
+  asset_name = 'avo.tailwind'
+  compiled_assets_path = File.join('public', 'assets').to_s
+
+  # Find the compiled file with a matching name
+  compiled_file = Dir[File.join(compiled_assets_path, "#{asset_name}-*")].first
+
+  # Read the contents of the file, if it exists
+  if compiled_file
+    file_contents = File.read(compiled_file)
+    # Now, `file_contents` holds the CSS content
+  else
+    # Handle the case where the file is not found
+    puts "Compiled file for '#{asset_name}' not found."
+  end
+end
+
+# Classes that are available in custom_tool.html.erb and most likely not available in the base Avo bundle
+test_classes = %w(aspect-video break-before-avoid float-end order-9 col-end-13 box-decoration-slice bg-gradient-to-r from-indigo-600 to-pink-500)
+
+# Build the assets
+`rake assets:precompile`
+
+contents = get_compiled_file_contents
+
+# Test if the built assets containe these classes
+test_classes.each do |class_name|
+  exit(1) unless contents.include?(class_name)
+end
+EOF
 #   RAILS_ENV: test
 #   PGHOST: localhost
 #   PGUSER: postgres
@@ -60,37 +92,7 @@ jobs:
 
     - name: Write test file
       run: |
-        cat << EOF >> test.rb
-        def get_compiled_file_contents
-          asset_name = 'avo.tailwind'
-          compiled_assets_path = File.join('public', 'assets').to_s
-
-          # Find the compiled file with a matching name
-          compiled_file = Dir[File.join(compiled_assets_path, "#{asset_name}-*")].first
-
-          # Read the contents of the file, if it exists
-          if compiled_file
-            file_contents = File.read(compiled_file)
-            # Now, `file_contents` holds the CSS content
-          else
-            # Handle the case where the file is not found
-            puts "Compiled file for '#{asset_name}' not found."
-          end
-        end
-
-        # Classes that are available in custom_tool.html.erb and most likely not available in the base Avo bundle
-        test_classes = %w(aspect-video break-before-avoid float-end order-9 col-end-13 box-decoration-slice bg-gradient-to-r from-indigo-600 to-pink-500)
-
-        # Build the assets
-        `rake assets:precompile`
-
-        contents = get_compiled_file_contents
-
-        # Test if the built assets containe these classes
-        test_classes.each do |class_name|
-          exit(1) unless contents.include?(class_name)
-        end
-        EOF
+        cat ${{env.test_file}} >> test.rb
 
     - name: Run test
       run: |
