@@ -54,7 +54,7 @@ jobs:
     - name: Write test file
       uses: DamianReeves/write-file-action@master
       with:
-        path: $GITHUB_WORKSPACE/ruby.rb
+        path: $GITHUB_WORKSPACE/test.rb
         contents: |
           #!/usr/bin/env ruby
           def get_compiled_file_contents
@@ -106,4 +106,4 @@ jobs:
 
     - name: Run test
       run: |
-        ruby $GITHUB_WORKSPACE/ruby.rb
+        ruby $GITHUB_WORKSPACE/test.rb
