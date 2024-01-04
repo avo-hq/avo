@@ -16,6 +16,8 @@ class Course < ApplicationRecord
 
   has_many :links, -> { order(position: :asc) }, class_name: "Course::Link", inverse_of: :course
 
+  has_and_belongs_to_many :locations, inverse_of: :courses
+
   validates :name, presence: true
 
   def has_skills

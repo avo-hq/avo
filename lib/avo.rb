@@ -31,6 +31,24 @@ module Avo
 
   class DeprecatedAPIError < StandardError; end
 
+  class MissingResourceError < StandardError
+    def initialize(resource_name)
+      super(missing_resource_message(resource_name))
+    end
+
+    private
+
+    def missing_resource_message(resource_name)
+      name = resource_name.to_s.downcase
+
+      "Failed to find a resource while rendering the :#{name} field.\n" \
+      "You may generate a resource for it by running 'rails generate avo:resource #{name.singularize}'.\n" \
+      "\n" \
+      "Alternatively add the 'use_resource' option to the :#{name} field to specify a custom resource to be used.\n" \
+      "More info on https://docs.avohq.io/#{Avo::VERSION[0]}.0/resources.html."
+    end
+  end
+
   class << self
     attr_reader :logger
     attr_reader :cache_store

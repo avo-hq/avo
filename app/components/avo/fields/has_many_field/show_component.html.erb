@@ -1,3 +1,3 @@
-<%= turbo_frame_tag @field.turbo_frame, src: @field.frame_url, loading: loading, target: :_top, class: "block" do %>
+<%= turbo_frame_tag @field.turbo_frame, src: @field.frame_url, loading: turbo_frame_loading, target: :_top, class: "block" do %>
   <%= render(Avo::LoadingComponent.new(title: @field.plural_name)) %>
 <% end %>

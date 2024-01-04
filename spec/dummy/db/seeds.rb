@@ -264,3 +264,23 @@ end
 ].each do |city|
   City.create(**city)
 end
+
+store = Store.create(
+  name: "Apple Store Prime",
+  size: "large"
+)
+
+location = Location.create(
+  team: Team.find_by(name: "Apple"),
+  store: store,
+  name: "Apple Park - Barbecue Area",
+  address: "1 Orchard Street, 12345 New York",
+  size: "medium"
+)
+
+Event.create(
+  location: location,
+  name: "M3 release celebration",
+  event_time: DateTime.new(2023, 11, 11, 11, 11, 11),
+  body: "We're celebrating the release of the new M3 chip!"
+)

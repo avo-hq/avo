@@ -6,7 +6,7 @@ PATH
 PATH
   remote: ..
   specs:
-    avo (3.1.7)
+    avo (3.2.3)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
@@ -120,21 +120,21 @@ GEM
       thor (>= 0.14.0)
     ast (2.4.2)
     awesome_print (1.9.2)
-    aws-eventstream (1.2.0)
-    aws-partitions (1.848.0)
-    aws-sdk-core (3.186.0)
-      aws-eventstream (~> 1, >= 1.0.2)
+    aws-eventstream (1.3.0)
+    aws-partitions (1.873.0)
+    aws-sdk-core (3.190.1)
+      aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.651.0)
-      aws-sigv4 (~> 1.5)
+      aws-sigv4 (~> 1.8)
       jmespath (~> 1, >= 1.6.1)
-    aws-sdk-kms (1.72.0)
-      aws-sdk-core (~> 3, >= 3.184.0)
+    aws-sdk-kms (1.75.0)
+      aws-sdk-core (~> 3, >= 3.188.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-s3 (1.136.0)
-      aws-sdk-core (~> 3, >= 3.181.0)
+    aws-sdk-s3 (1.142.0)
+      aws-sdk-core (~> 3, >= 3.189.0)
       aws-sdk-kms (~> 1)
-      aws-sigv4 (~> 1.6)
-    aws-sigv4 (1.6.1)
+      aws-sigv4 (~> 1.8)
+    aws-sigv4 (1.8.0)
       aws-eventstream (~> 1, >= 1.0.2)
     backport (1.2.0)
     base64 (0.2.0)
@@ -151,7 +151,6 @@ GEM
     bindex (0.8.1)
     bootsnap (1.17.0)
       msgpack (~> 1.2)
-    brakeman (6.0.1)
     builder (3.2.4)
     bump (0.10.0)
     bundler-integrity (1.0.9)
@@ -198,18 +197,18 @@ GEM
       ruby2_keywords
     dry-initializer (3.1.1)
     e2mmap (0.1.0)
-    erb-formatter (0.4.3)
+    erb-formatter (0.7.0)
       syntax_tree (~> 6.0)
     erubi (1.12.0)
-    factory_bot (6.2.1)
+    factory_bot (6.4.5)
       activesupport (>= 5.0.0)
-    factory_bot_rails (6.2.0)
-      factory_bot (~> 6.2.0)
+    factory_bot_rails (6.4.3)
+      factory_bot (~> 6.4)
       railties (>= 5.0.0)
     faker (3.2.2)
       i18n (>= 1.8.11, < 2)
     ffi (1.16.3)
-    friendly_id (5.4.2)
+    friendly_id (5.5.1)
       activerecord (>= 4.0.0)
     fuubar (2.5.1)
       rspec-core (~> 3.0)
@@ -224,9 +223,10 @@ GEM
     highline (2.1.0)
     hightop (0.4.0)
       activesupport (>= 6.1)
-    hotwire-livereload (1.2.3)
+    hotwire-livereload (1.3.0)
+      actioncable (>= 6.0.0)
       listen (>= 3.0.0)
-      rails (>= 6.0.0)
+      railties (>= 6.0.0)
     htmlbeautifier (1.4.2)
     httparty (0.21.0)
       mini_mime (>= 1.0.0)
@@ -250,8 +250,8 @@ GEM
     inline_svg (1.9.0)
       activesupport (>= 3.0)
       nokogiri (>= 1.6)
-    io-console (0.7.0)
-    irb (1.10.1)
+    io-console (0.7.1)
+    irb (1.11.0)
       rdoc
       reline (>= 0.3.8)
     iso (0.4.0)
@@ -260,7 +260,7 @@ GEM
     jmespath (1.6.2)
     jsbundling-rails (1.2.1)
       railties (>= 6.0.0)
-    json (2.6.3)
+    json (2.7.1)
     kramdown (2.4.0)
       rexml
     kramdown-parser-gfm (1.1.0)
@@ -283,8 +283,8 @@ GEM
     mapkick-rb (0.1.5)
     marcel (1.0.2)
     matrix (0.4.2)
-    meta-tags (2.19.0)
-      actionpack (>= 3.2.0, < 7.2)
+    meta-tags (2.20.0)
+      actionpack (>= 6.0.0, < 7.2)
     method_source (1.0.0)
     mini_magick (4.12.0)
     mini_mime (1.1.5)
@@ -302,11 +302,13 @@ GEM
     net-smtp (0.4.0)
       net-protocol
     nio4r (2.7.0)
-    nokogiri (1.15.5-x86_64-linux)
+    nokogiri (1.16.0-arm64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.16.0-x86_64-linux)
       racc (~> 1.4)
     orm_adapter (0.5.0)
     pagy (6.1.0)
-    parallel (1.23.0)
+    parallel (1.24.0)
     parser (3.2.2.4)
       ast (~> 2.4.1)
       racc
@@ -375,8 +377,11 @@ GEM
       ffi (~> 1.0)
     rbs (2.8.4)
     rdoc (6.3.3)
-    redis (4.8.1)
-    regexp_parser (2.8.2)
+    redis (5.0.8)
+      redis-client (>= 0.17.0)
+    redis-client (0.19.0)
+      connection_pool
+    regexp_parser (2.8.3)
     reline (0.4.1)
       io-console (~> 0.5)
     responders (3.1.1)
@@ -403,7 +408,7 @@ GEM
       rspec-mocks (~> 3.12)
       rspec-support (~> 3.12)
     rspec-support (3.12.1)
-    rubocop (1.57.2)
+    rubocop (1.59.0)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
@@ -411,14 +416,14 @@ GEM
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 1.8, < 3.0)
       rexml (>= 3.2.5, < 4.0)
-      rubocop-ast (>= 1.28.1, < 2.0)
+      rubocop-ast (>= 1.30.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 3.0)
     rubocop-ast (1.30.0)
       parser (>= 3.2.1.0)
-    rubocop-performance (1.19.1)
-      rubocop (>= 1.7.0, < 2.0)
-      rubocop-ast (>= 0.4.0)
+    rubocop-performance (1.20.1)
+      rubocop (>= 1.48.1, < 2.0)
+      rubocop-ast (>= 1.30.0, < 2.0)
     rubocop-shopify (2.14.0)
       rubocop (~> 1.51)
     ruby-debug-ide (0.7.3)
@@ -471,18 +476,18 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
-    standard (1.32.0)
+    standard (1.33.0)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.0)
-      rubocop (~> 1.57.2)
+      rubocop (~> 1.59.0)
       standard-custom (~> 1.0.0)
-      standard-performance (~> 1.2)
+      standard-performance (~> 1.3)
     standard-custom (1.0.2)
       lint_roller (~> 1.0)
       rubocop (~> 1.50)
-    standard-performance (1.2.1)
+    standard-performance (1.3.0)
       lint_roller (~> 1.1)
-      rubocop-performance (~> 1.19.1)
+      rubocop-performance (~> 1.20.1)
     syntax_tree (6.2.0)
       prettier_print (>= 1.2.0)
     terminal-table (3.0.2)
@@ -531,6 +536,7 @@ GEM
     zeitwerk (2.6.12)
 
 PLATFORMS
+  arm64-darwin-23
   x86_64-linux
 
 DEPENDENCIES
@@ -546,7 +552,6 @@ DEPENDENCIES
   awesome_print
   aws-sdk-s3
   bootsnap (>= 1.4.2)
-  brakeman
   bump
   bundler-integrity (~> 1.0)
   byebug
@@ -560,12 +565,12 @@ DEPENDENCIES
   erb-formatter
   factory_bot_rails
   faker
-  friendly_id (~> 5.4.0)
+  friendly_id (~> 5.5.1)
   fuubar
   gem-release
   groupdate
   hightop
-  hotwire-livereload (~> 1.2.3)
+  hotwire-livereload (~> 1.3.0)
   htmlbeautifier
   httparty
   i18n-tasks (~> 1.0.12)
@@ -585,7 +590,7 @@ DEPENDENCIES
   rails (~> 7.1)
   rails-controller-testing
   ransack (~> 4.1, >= 4.1.1)
-  redis (~> 4.0)
+  redis (~> 5.0)
   ripper-tags
   rspec-rails (~> 6.0, >= 6.0.3)
   rubocop

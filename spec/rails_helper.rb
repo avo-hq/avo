@@ -3,7 +3,6 @@ require "spec_helper"
 require "fileutils"
 
 ENV["RAILS_ENV"] = "test"
-ENV["SECRET_KEY_BASE"] = "secret_key_base_to_avoid DEPRECATION WARNING: `Rails.application.secrets` is deprecated in favor of `Rails.application.credentials` and will be removed in Rails 7.2."
 
 require_relative "dummy/config/environment"
 # Prevent database truncation if the environment is production

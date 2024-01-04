@@ -45,14 +45,6 @@ module Avo
       end
     end
 
-    def _current_user
-      instance_eval(&Avo.configuration.current_user)
-    end
-
-    def context
-      instance_eval(&Avo.configuration.context)
-    end
-
     # This is coming from Turbo::Frames::FrameRequest module.
     # Exposing it as public method
     def turbo_frame_request?
@@ -125,6 +117,8 @@ module Avo
     end
 
     def set_related_resource
+      raise Avo::MissingResourceError.new(related_resource_name) if related_resource.nil?
+
       @related_resource = related_resource.new(params: params, view: action_name.to_sym, user: _current_user, record: @related_record).detect_fields
     end
 
