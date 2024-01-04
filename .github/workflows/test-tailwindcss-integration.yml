@@ -52,7 +52,7 @@ jobs:
     - name: Write test file
       uses: DamianReeves/write-file-action@master
       with:
-        path: ./test_repo/ruby.rb
+        path: ./ruby.rb
         contents: |
           #!/usr/bin/env ruby
           def get_compiled_file_contents
