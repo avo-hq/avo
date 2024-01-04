@@ -4,10 +4,8 @@ module Avo
       module FrameLoading
         extend ActiveSupport::Concern
 
-        def turbo_frame_loading = kwargs[:turbo_frame_loading]
-
-        def loading
-          turbo_frame_loading || params[:turbo_frame_loading] || "eager"
+        def turbo_frame_loading
+          kwargs[:turbo_frame_loading] || params[:turbo_frame_loading] || "eager"
         end
       end
     end
