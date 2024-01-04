@@ -110,4 +110,4 @@ jobs:
 
     - name: Run test
       run: |
-        ruby ${{github.workspace}}/test_repo/test.rb
+        ruby ${{github.workspace}}/test.rb
