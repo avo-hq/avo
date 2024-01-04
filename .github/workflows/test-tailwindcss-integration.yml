@@ -48,8 +48,6 @@ jobs:
       run: ls -la .
     - name: PWD 2
       run: pwd
-    - name: PWD 3
-      run: la -la ${{ env.home}}
 
     - name: Set up Rails
       run: |
@@ -67,7 +65,7 @@ jobs:
     - name: Write test file
       uses: DamianReeves/write-file-action@master
       with:
-        path: ${{ env.home}}/test_repo/ruby.rb
+        path: ./test_repo/ruby.rb
         contents: |
           #!/usr/bin/env ruby
           def get_compiled_file_contents
