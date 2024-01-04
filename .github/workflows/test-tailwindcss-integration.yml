@@ -91,6 +91,10 @@ jobs:
 
     - name: PWD 1
       run: ls -la .
+    - name: PWD 7
+      run: |
+        cd ${{github.workspace}}
+        pwd
 
     - name: Set up Rails
       run: |
