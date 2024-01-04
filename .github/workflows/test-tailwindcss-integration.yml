@@ -45,7 +45,7 @@ jobs:
         ruby-version: 3.3.0
 
     - name: PWD 1
-      run: ls -la test_repo
+      run: ls -la .
     - name: PWD 2
       run: pwd
     - name: PWD 3
