@@ -277,7 +277,7 @@ GEM
       timeout
     net-smtp (0.3.3)
       net-protocol
-    nio4r (2.5.8)
+    nio4r (2.7.0)
     nokogiri (1.16.0-arm64-darwin)
       racc (~> 1.4)
     nokogiri (1.16.0-x86_64-linux)
@@ -295,7 +295,7 @@ GEM
     prettier_print (1.2.1)
     psych (3.3.4)
     public_suffix (5.0.4)
-    puma (6.4.0)
+    puma (6.4.1)
       nio4r (~> 2.0)
     racc (1.7.3)
     rack (2.2.8)
