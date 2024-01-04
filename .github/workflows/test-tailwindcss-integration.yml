@@ -46,6 +46,12 @@ jobs:
 
     - name: Set up Rails
       run: |
+        ls -la test_repo
+        pwd
+        la -la ${{ env.home}}
+
+    - name: Set up Rails
+      run: |
         gem install rails
 
     - name: Set up repo
