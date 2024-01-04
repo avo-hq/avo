@@ -2,6 +2,7 @@
 
 class Avo::Fields::HasOneField::ShowComponent < Avo::Fields::ShowComponent
   include Avo::ApplicationHelper
+  include Avo::Fields::Concerns::FrameLoading
 
   def can_attach?
     policy_result = true

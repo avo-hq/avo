@@ -222,6 +222,11 @@ class Avo::Resources::User < Avo::BaseResource
       test_tab
       test_field("Inside tabs")
       first_tabs_group_fields
+      tab "Created at" do
+        panel do
+          field :created_at, as: :date_time
+        end
+      end
     end
   end
 
@@ -240,6 +245,7 @@ class Avo::Resources::User < Avo::BaseResource
         # show_on: :edit,
         scope: -> { query.starts_with parent.first_name[0].downcase },
         description: "The comments listed in the attach modal all start with the name of the parent user."
+      field :comment, as: :has_one, name: "Main comment"
     end
   end
 
