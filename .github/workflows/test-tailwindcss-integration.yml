@@ -105,6 +105,7 @@ jobs:
           `rake assets:precompile`
 
           contents = get_compiled_file_contents
+          puts ['contents->', contents]
 
           # Test if the built assets containe these classes
           test_classes.each do |class_name|
@@ -113,8 +114,11 @@ jobs:
         write-mode: append
 
     - name: PWD 1
-      run: ls -la ./test_repo
+      run: |
+        ls -la ./test_repo
+        ls -la ./test_repo/public
+        ls -la ./test_repo/public/assets
 
     - name: Run test
       run: |
-        bundle exec ruby ${{github.workspace}}/test_repo/test.rb
+        ruby ${{github.workspace}}/test_repo/test.rb
