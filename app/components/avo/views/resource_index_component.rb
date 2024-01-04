@@ -159,7 +159,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def scopes_list
-    Avo::Pro::Scopes::ListComponent.new(
+    Avo::Advanced::Scopes::ListComponent.new(
       scopes: scopes,
       resource: resource,
       turbo_frame: turbo_frame,
@@ -169,7 +169,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def can_render_scopes?
-    defined?(Avo::Pro)
+    defined?(Avo::Advanced)
   end
 
   private
