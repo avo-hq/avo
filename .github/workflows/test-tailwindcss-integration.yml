@@ -50,8 +50,6 @@ jobs:
       run: pwd
     - name: PWD 3
       run: echo $GITHUB_WORKSPACE
-    - name: PWD 4
-      run: $GITHUB_WORKSPACE/ruby.rb
 
     - name: Write test file
       uses: DamianReeves/write-file-action@master
