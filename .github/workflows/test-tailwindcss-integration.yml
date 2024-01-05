@@ -37,7 +37,7 @@ jobs:
 
     - name: Set up repo
       run: |
-        bundle add "avo" --git='git://github.com/avo-hq/avo.git' --ref="${{ github.sha }}"
+        bundle add "avo" --git='https://github.com/avo-hq/avo.git' --ref="${{ github.sha }}"
         bundle install
         run "rails generate avo:install"
         rake avo:build-assets
