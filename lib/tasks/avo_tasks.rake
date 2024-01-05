@@ -15,6 +15,7 @@ task "avo:build-assets" do
     path = spec.full_gem_path
 
     Dir.chdir(path) do
+      system "bundle"
       system "yarn"
       system "bundle exec rails avo:sym_link"
       system "yarn prod:build"
