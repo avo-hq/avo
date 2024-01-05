@@ -72,8 +72,8 @@ jobs:
         yarn init --yes
         bin/rails generate avo:tailwindcss:install
         bin/rails generate avo:tool custom_tool
-        rake assets:precompile
         echo '<div class="aspect-video break-before-avoid float-end order-9 col-end-13 box-decoration-slice bg-gradient-to-r from-indigo-600 to-pink-500 text-white text-2xl font-bold">Test<br>DIV</div>' >> ./app/views/avo/tools/custom_tool.html.erb
+        rake assets:precompile
         pwd
 
 
