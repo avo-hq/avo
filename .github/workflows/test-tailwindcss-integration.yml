@@ -1,0 +1,82 @@
+name: TailwindCSS integration test
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  tailwindcss_integration_test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        repository: avo-hq/avo_tailwindcss_test_repo
+
+    - uses: actions/cache@v3
+      with:
+        path: vendor/bundle
+        key: ${{ runner.os }}-test-gems-${{ hashFiles('**/Gemfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-test-gems-${{ hashFiles('**/Gemfile.lock') }}
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        bundler: default
+        ruby-version: 3.3.0
+
+    - name: Bundle install
+      run: |
+        bundle config path vendor/bundle
+        bundle install --jobs 4 --retry 3
+
+    - name: Set up repo
+      run: |
+        bin/rails app:template LOCATION='https://avohq.io/app-template'
+        yarn init --yes
+        bin/rails generate avo:tailwindcss:install
+        bin/rails generate avo:tool custom_tool
+        echo '<div class="aspect-video break-before-avoid float-end order-9 col-end-13 box-decoration-slice bg-gradient-to-r from-indigo-600 to-pink-500 text-white text-2xl font-bold">Test<br>DIV</div>' >> ./app/views/avo/tools/custom_tool.html.erb
+        rake assets:precompile
+
+    - name: Write test file
+      uses: DamianReeves/write-file-action@master
+      with:
+        path: ${{github.workspace}}/test.rb
+        contents: |
+          #!/usr/bin/env ruby
+          def get_compiled_file_contents
+            asset_name = 'avo.tailwind'
+            compiled_assets_path = File.join(File.dirname(__FILE__), 'public', 'assets').to_s
+
+            # Find the compiled file with a matching name
+            compiled_file = Dir[File.join(compiled_assets_path, "#{asset_name}-*")].first
+
+            # Read the contents of the file, if it exists
+            if compiled_file
+              File.read(compiled_file)
+            else
+              # Handle the case where the file is not found
+              raise "Compiled file for '#{asset_name}' not found."
+            end
+          end
+
+          # Classes that are available in custom_tool.html.erb and most likely not available in the base Avo bundle
+          test_classes = %w(aspect-video break-before-avoid float-end order-9 col-end-13 box-decoration-slice bg-gradient-to-r from-indigo-600 to-pink-500)
+
+          contents = get_compiled_file_contents
+
+          # Test if the built assets containe these classes
+          test_classes.each do |class_name|
+            raise "Failed to find the custom classes." unless contents.include?(class_name)
+          end
+        write-mode: append
+
+    - name: Run test
+      run: |
+        ruby ${{github.workspace}}/test.rb
