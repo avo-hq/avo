@@ -59,6 +59,13 @@ jobs:
         rake assets:precompile
 
 
+    - name: PWD 1
+      run: |
+        ls -la ./
+        ls -la ./avo_tailwindcss_test_repo
+        ls -la ./avo_tailwindcss_test_repo/public
+        ls -la ./avo_tailwindcss_test_repo/public/assets
+
     - name: Write test file
       uses: DamianReeves/write-file-action@master
       with:
