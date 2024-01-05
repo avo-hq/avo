@@ -62,9 +62,8 @@ jobs:
     - name: PWD 1
       run: |
         ls -la ./
-        ls -la ./avo_tailwindcss_test_repo
-        ls -la ./avo_tailwindcss_test_repo/public
-        ls -la ./avo_tailwindcss_test_repo/public/assets
+        ls -la ./public
+        ls -la ./public/assets
 
     - name: Write test file
       uses: DamianReeves/write-file-action@master
@@ -98,6 +97,12 @@ jobs:
             raise "Failed to find the custom classes." unless contents.include?(class_name)
           end
         write-mode: append
+
+    - name: PWD 2
+      run: |
+        ls -la ./
+        ls -la ./public
+        ls -la ./public/assets
 
     - name: Run test
       run: |
