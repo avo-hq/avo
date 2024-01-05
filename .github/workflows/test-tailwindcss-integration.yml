@@ -21,7 +21,7 @@ on:
 #   BUNDLE_RUBYGEMS__PKG__GITHUB__COM: adrianthedev:${{secrets.GH_REGISTRY_AVO_FILTERS_TOKEN}}
 
 jobs:
-  feature_specs:
+  tailwindcss_integration_test:
     runs-on: ubuntu-latest
 
     # env:
@@ -35,30 +35,22 @@ jobs:
     #     options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
-    # - uses: actions/checkout@v4
-    #   repository
+    - uses: actions/checkout@v4
+      with:
+        repository: avo-hq/avo_tailwindcss_test_repo
+
+    - uses: actions/cache@v3
+      with:
+        path: vendor/bundle
+        key: ${{ runner.os }}-test-gems-${{ hashFiles('**/Gemfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-test-gems-${{ hashFiles('**/Gemfile.lock') }}
 
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
-        # bundler-cache: true
         bundler: default
         ruby-version: 3.3.0
-
-    - name: PWD 1
-      run: ls -la .
-    - name: PWD 2
-      run: pwd
-    - name: PWD 3
-      run: echo $GITHUB_WORKSPACE
-
-    - name: PWD 1
-      run: ls -la .
-    - name: PWD 7
-      run: |
-        cd ${{github.workspace}}
-        pwd
-        ls -la
 
     - name: Set up Rails
       run: |
@@ -66,28 +58,23 @@ jobs:
 
     - name: Set up repo
       run: |
-        rails new test_repo -a propshaft
-        cd test_repo
         bin/rails app:template LOCATION='https://avohq.io/app-template'
         yarn init --yes
         bin/rails generate avo:tailwindcss:install
         bin/rails generate avo:tool custom_tool
         echo '<div class="aspect-video break-before-avoid float-end order-9 col-end-13 box-decoration-slice bg-gradient-to-r from-indigo-600 to-pink-500 text-white text-2xl font-bold">Test<br>DIV</div>' >> ./app/views/avo/tools/custom_tool.html.erb
         rake assets:precompile
-        pwd
 
 
     - name: Write test file
       uses: DamianReeves/write-file-action@master
       with:
-        path: ${{github.workspace}}/test_repo/test.rb
+        path: ${{github.workspace}}/avo_tailwindcss_test_repo/test.rb
         contents: |
           #!/usr/bin/env ruby
           def get_compiled_file_contents
             asset_name = 'avo.tailwind'
             compiled_assets_path = File.join(File.dirname(__FILE__), 'public', 'assets').to_s
-
-            puts ["Dir[File.join(compiled_assets_path)]->", Dir[File.join(compiled_assets_path)], Dir[File.join(compiled_assets_path, "#{asset_name}-*")]].inspect
 
             # Find the compiled file with a matching name
             compiled_file = Dir[File.join(compiled_assets_path, "#{asset_name}-*")].first
@@ -104,11 +91,7 @@ jobs:
           # Classes that are available in custom_tool.html.erb and most likely not available in the base Avo bundle
           test_classes = %w(aspect-video break-before-avoid float-end order-9 col-end-13 box-decoration-slice bg-gradient-to-r from-indigo-600 to-pink-500)
 
-          # Build the assets
-          # `rake assets:precompile`
-
           contents = get_compiled_file_contents
-          puts ['contents->', contents]
 
           # Test if the built assets containe these classes
           test_classes.each do |class_name|
@@ -116,12 +99,6 @@ jobs:
           end
         write-mode: append
 
-    - name: PWD 1
-      run: |
-        ls -la ./test_repo
-        ls -la ./test_repo/public
-        ls -la ./test_repo/public/assets
-
     - name: Run test
       run: |
-        ruby ${{github.workspace}}/test_repo/test.rb
+        ruby ${{github.workspace}}/avo_tailwindcss_test_repo/test.rb
