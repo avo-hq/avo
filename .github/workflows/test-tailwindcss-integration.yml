@@ -106,4 +106,4 @@ jobs:
 
     - name: Run test
       run: |
-        ruby ${{github.workspace}}/avo_tailwindcss_test_repo/test.rb
+        ruby ${{github.workspace}}/test.rb
