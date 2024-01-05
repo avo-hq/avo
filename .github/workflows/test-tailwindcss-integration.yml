@@ -69,7 +69,7 @@ jobs:
     - name: Write test file
       uses: DamianReeves/write-file-action@master
       with:
-        path: ${{github.workspace}}/avo_tailwindcss_test_repo/test.rb
+        path: ${{github.workspace}}/test.rb
         contents: |
           #!/usr/bin/env ruby
           def get_compiled_file_contents
