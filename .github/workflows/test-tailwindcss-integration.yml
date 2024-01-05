@@ -35,15 +35,21 @@ jobs:
         bundle config path vendor/bundle
         bundle install --jobs 4 --retry 3
 
-    - name: Set up repo
+    - name: Add Avo
       run: |
         bundle add "avo" --git='https://github.com/avo-hq/avo.git' --ref="${{ github.sha }}"
         bundle install
         bin/rails generate avo:install
         rake avo:build-assets
+
+    - name: Add the TailwindCSS integration
+      run: |
         yarn init --yes
         bin/rails generate avo:tailwindcss:install
         bin/rails generate avo:tool custom_tool
+
+    - name: Add custom CSS
+      run: |
         echo '<div class="aspect-video break-before-avoid float-end order-9 col-end-13 box-decoration-slice bg-gradient-to-r from-indigo-600 to-pink-500 text-white text-2xl font-bold">Test<br>DIV</div>' >> ./app/views/avo/tools/custom_tool.html.erb
         rake assets:precompile
 
@@ -79,6 +85,12 @@ jobs:
             raise "Failed to find the custom classes." unless contents.include?(class_name)
           end
         write-mode: append
+
+    - name: PWD
+      run: |
+        ls -la ./
+        ls -la ./public
+        ls -la ./public/assets
 
     - name: Run test
       run: |
