@@ -92,11 +92,10 @@ jobs:
 
             # Read the contents of the file, if it exists
             if compiled_file
-              file_contents = File.read(compiled_file)
-              # Now, `file_contents` holds the CSS content
+              File.read(compiled_file)
             else
               # Handle the case where the file is not found
-              puts "Compiled file for '#{asset_name}' not found."
+              raise "Compiled file for '#{asset_name}' not found."
             end
           end
 
@@ -104,7 +103,7 @@ jobs:
           test_classes = %w(aspect-video break-before-avoid float-end order-9 col-end-13 box-decoration-slice bg-gradient-to-r from-indigo-600 to-pink-500)
 
           # Build the assets
-          `rake assets:precompile`
+          # `rake assets:precompile`
 
           contents = get_compiled_file_contents
           puts ['contents->', contents]
