@@ -39,7 +39,7 @@ jobs:
       run: |
         bundle add "avo" --git='https://github.com/avo-hq/avo.git' --ref="${{ github.sha }}"
         bundle install
-        rails generate avo:install
+        bin/rails generate avo:install
         rake avo:build-assets
         yarn init --yes
         bin/rails generate avo:tailwindcss:install
