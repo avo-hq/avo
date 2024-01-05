@@ -85,7 +85,7 @@ jobs:
           #!/usr/bin/env ruby
           def get_compiled_file_contents
             asset_name = 'avo.tailwind'
-            compiled_assets_path = File.join('public', 'assets').to_s
+            compiled_assets_path = File.join(File.dirname(__FILE__), 'public', 'assets').to_s
 
             puts ["Dir[File.join(compiled_assets_path)]->", Dir[File.join(compiled_assets_path)], Dir[File.join(compiled_assets_path, "#{asset_name}-*")]].inspect
 
