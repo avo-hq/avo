@@ -12,16 +12,6 @@ jobs:
   tailwindcss_integration_test:
     runs-on: ubuntu-latest
 
-    # env:
-      # RAILS_VERSION: ${{matrix.rails}}
-      # BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}.gemfile
-
-    # services:
-    #   postgres:
-    #     image: postgres:10.8
-    #     ports: ["5432:5432"]
-    #     options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-
     steps:
     - uses: actions/checkout@v4
       with:
@@ -58,13 +48,6 @@ jobs:
         echo '<div class="aspect-video break-before-avoid float-end order-9 col-end-13 box-decoration-slice bg-gradient-to-r from-indigo-600 to-pink-500 text-white text-2xl font-bold">Test<br>DIV</div>' >> ./app/views/avo/tools/custom_tool.html.erb
         rake assets:precompile
 
-
-    - name: PWD 1
-      run: |
-        ls -la ./
-        ls -la ./public
-        ls -la ./public/assets
-
     - name: Write test file
       uses: DamianReeves/write-file-action@master
       with:
@@ -97,12 +80,6 @@ jobs:
             raise "Failed to find the custom classes." unless contents.include?(class_name)
           end
         write-mode: append
-
-    - name: PWD 2
-      run: |
-        ls -la ./
-        ls -la ./public
-        ls -la ./public/assets
 
     - name: Run test
       run: |
