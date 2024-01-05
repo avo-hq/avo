@@ -30,10 +30,6 @@ jobs:
         bundler: default
         ruby-version: 3.3.0
 
-    - name: Set up Rails
-      run: |
-        gem install rails
-
     - name: Bundle install
       run: |
         bundle config path vendor/bundle
