@@ -37,7 +37,10 @@ jobs:
 
     - name: Set up repo
       run: |
-        bin/rails app:template LOCATION='https://avohq.io/app-template'
+        gem "avo", github: "avo-hq/avo"
+        bundle install
+        run "rails generate avo:install"
+        rake avo:build-assets
         yarn init --yes
         bin/rails generate avo:tailwindcss:install
         bin/rails generate avo:tool custom_tool
