@@ -86,6 +86,7 @@ jobs:
           # Test if the built assets containe these classes
           test_classes.each do |class_name|
             raise "Failed to find the custom classes." unless contents.include?(class_name)
+            puts "[Avo->] Found #{class_name}."
           end
         write-mode: append
 
