@@ -75,8 +75,6 @@ group :development do
   gem "rubocop"
   gem "ripper-tags"
   gem "rubocop-shopify", require: false
-
-  gem "ruby-debug-ide", require: false
 end
 
 group :test do
