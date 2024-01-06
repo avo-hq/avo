@@ -57,6 +57,9 @@ jobs:
         # bundler-cache: true
         bundler: default
         ruby-version: ${{ matrix.ruby }}
+    - name:
+      run: |
+        gem install ruby-debug-ide
 
     - uses: actions/cache@v3
       with:
