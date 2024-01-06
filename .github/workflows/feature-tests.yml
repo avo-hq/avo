@@ -96,7 +96,8 @@ jobs:
         RAILS_ENV: production
         NODE_ENV: production
       run: |
-        yarn prod:build
+        yarn build:js
+        yarn build:css
         yarn build:custom-js
 
     - name: Run tests
