@@ -94,7 +94,7 @@ task "avo:sym_link" do
   elsif File.exist?(public_css_path.to_s)
     public_css_path
   else
-    raise "Failed to find avo.base.css."
+    raise "[Avo->] Failed to find avo.base.css."
   end
 
   dest_css_path = "#{base_path}/avo.base.css"
