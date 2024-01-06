@@ -54,7 +54,7 @@ jobs:
 
     - name: Compile assets
       run: |
-        rake assets:precompile
+        bundle exec rake assets:precompile
 
     - name: Write test file
       uses: DamianReeves/write-file-action@master
