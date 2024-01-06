@@ -53,6 +53,7 @@ function initTippy() {
 }
 
 // Detect whether an element is in view inside a parent element.
+// Original here: https://gist.github.com/jjmu15/8646226
 function isInViewport(element, parentElement) {
   const rect = element.getBoundingClientRect()
   const html = document.documentElement
