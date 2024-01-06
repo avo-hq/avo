@@ -90,12 +90,6 @@ jobs:
           end
         write-mode: append
 
-    - name: PWD
-      run: |
-        ls -la ./
-        ls -la ./public
-        ls -la ./public/assets
-
     - name: Run test
       run: |
         ruby ${{github.workspace}}/test.rb
