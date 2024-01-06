@@ -60,8 +60,8 @@ jobs:
 
     - name: ruby debug prerequisite
       run: |
-        gem install ruby-debug-ide
         sudo apt-get install build-essential
+        gem install ruby-debug-ide
 
     - uses: actions/cache@v3
       with:
