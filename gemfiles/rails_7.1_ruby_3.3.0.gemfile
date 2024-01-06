@@ -68,7 +68,7 @@ group :test do
   gem "spring-commands-rspec"
   gem "launchy", require: false
   gem "test-prof"
-  gem "database_cleaner"
+  gem "database_cleaner-active_record"
 end
 
 group :development, :test do

@@ -157,8 +157,6 @@ GEM
     crass (1.0.6)
     cssbundling-rails (1.1.2)
       railties (>= 6.0.0)
-    database_cleaner (2.0.1)
-      database_cleaner-active_record (~> 2.0.0)
     database_cleaner-active_record (2.0.1)
       activerecord (>= 5.a)
       database_cleaner-core (~> 2.0.0)
@@ -392,8 +390,6 @@ GEM
       rubocop-ast (>= 1.30.0, < 2.0)
     rubocop-shopify (2.11.1)
       rubocop (~> 1.42)
-    ruby-debug-ide (0.7.3)
-      rake (>= 0.8.1)
     ruby-progressbar (1.13.0)
     ruby-vips (2.1.4)
       ffi (~> 1.12)
@@ -526,7 +522,7 @@ DEPENDENCIES
   chartkick
   countries
   cssbundling-rails
-  database_cleaner
+  database_cleaner-active_record
   devise
   dotenv-rails
   erb-formatter
@@ -562,7 +558,6 @@ DEPENDENCIES
   rspec-rails (~> 6.0, >= 6.0.3)
   rubocop
   rubocop-shopify
-  ruby-debug-ide
   selenium-webdriver
   simplecov
   simplecov-cobertura

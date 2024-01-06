@@ -93,7 +93,7 @@ group :test do
   gem "launchy", require: false
 
   gem "test-prof"
-  gem "database_cleaner"
+  gem "database_cleaner-active_record"
 end
 
 gem "awesome_print"
