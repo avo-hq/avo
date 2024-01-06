@@ -99,6 +99,10 @@ jobs:
         yarn build:custom-js
         yarn build:css
 
+    - name: Run avo:sym_link
+      run: |
+        bundle exec rake avo:sym_link
+
     - name: Run tests
       id: run_tests
       run: bundle exec rspec spec/system
