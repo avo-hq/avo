@@ -61,7 +61,7 @@ jobs:
     - name: ruby debug prerequisite
       run: |
         sudo apt-get install build-essential
-        gem install ruby-debug-ide
+        gem install ruby-debug-ide -- --use-system-libraries
 
     - uses: actions/cache@v3
       with:
