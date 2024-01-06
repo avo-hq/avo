@@ -95,9 +95,9 @@ jobs:
         RAILS_ENV: production
         NODE_ENV: production
       run: |
-        yarn build:js
+        bundle exec rake assets:precompile
+        yarn prod:build
         yarn build:custom-js
-        yarn build:css
 
     - name: Run avo:sym_link
       run: |

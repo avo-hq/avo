@@ -96,6 +96,7 @@ jobs:
         RAILS_ENV: production
         NODE_ENV: production
       run: |
+        bundle exec rake assets:precompile
         yarn prod:build
         yarn build:custom-js
 
