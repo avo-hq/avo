@@ -57,9 +57,11 @@ jobs:
         # bundler-cache: true
         bundler: default
         ruby-version: ${{ matrix.ruby }}
-    - name:
+
+    - name: ruby debug prerequisite
       run: |
         gem install ruby-debug-ide
+        sudo apt-get install build-essential
 
     - uses: actions/cache@v3
       with:
