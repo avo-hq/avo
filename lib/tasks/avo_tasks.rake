@@ -82,20 +82,41 @@ task "avo:sym_link" do
     end
 
     puts "[Avo->] Linking #{gem} to #{path}"
-    `ln -s #{path} #{packages_path}/#{gem}`
+    symlink_path path, "#{packages_path}/#{gem}"
   end
 
-  base_css_path = Avo::Engine.root.join("app", "assets", "builds", "avo.base.css")
-  dest_css_path = "#{base_path}/base.css"
-  `rm #{dest_css_path}` if File.exist?("#{dest_css_path}")
+
+  builds_css_path = Avo::Engine.root.join("app", "assets", "builds", "avo.base.css")
+  public_css_path = Avo::Engine.root.join("public", "avo-assets", "avo.base.css")
+
+  base_css_path = if File.exist?(builds_css_path.to_s)
+    builds_css_path
+  elsif File.exist?(public_css_path.to_s)
+    public_css_path
+  else
+    raise "Failed to find avo.base.css."
+  end
+
+  dest_css_path = "#{base_path}/avo.base.css"
+  remove_file_if_exists dest_css_path
+
   puts "[Avo->] Linking avo.base.css to #{base_css_path}"
-  `ln -s #{base_css_path} #{dest_css_path}`
+  symlink_path base_css_path, dest_css_path
 
   base_preset_path = Avo::Engine.root.join("tailwind.preset.js")
   dest_preset_path = "#{base_path}/tailwind.preset.js"
-  `rm #{dest_preset_path}` if File.exist?("#{dest_preset_path}")
+  remove_file_if_exists dest_preset_path
+
   puts "[Avo->] Linking tailwind.preset.js to #{base_preset_path}"
-  `ln -s #{base_preset_path} #{dest_preset_path}`
+  symlink_path base_preset_path, dest_preset_path
+end
+
+def remove_file_if_exists(path)
+  `rm #{path}` if File.exist?(path)
+end
+
+def symlink_path(from, to)
+  `ln -s #{from} #{to}`
 end
 
 desc "Installs yarn dependencies for Avo"
