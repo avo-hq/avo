@@ -102,9 +102,9 @@ jobs:
 
     - name: PWD
       run: |
-        ls -la .
-        ls -la ./public
-        ls -la ./public/assets
+        ls -la ./spec/dummy
+        ls -la ./spec/dummy/public
+        ls -la ./spec/dummy/public/assets
 
     - name: Run tests
       id: run_tests
