@@ -90,9 +90,9 @@ jobs:
     - name: Yarn install
       run: yarn
 
-    - name: Run avo:sym_link
-      run: |
-        bundle exec rake avo:sym_link
+    # - name: Run avo:sym_link
+    #   run: |
+    #     bundle exec rake avo:sym_link
 
     - name: Build assets
       env:

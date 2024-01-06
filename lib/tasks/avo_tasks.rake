@@ -85,7 +85,6 @@ task "avo:sym_link" do
     symlink_path path, "#{packages_path}/#{gem}"
   end
 
-
   builds_css_path = Avo::Engine.root.join("app", "assets", "builds", "avo.base.css")
   public_css_path = Avo::Engine.root.join("public", "avo-assets", "avo.base.css")
 
@@ -112,10 +111,12 @@ task "avo:sym_link" do
 end
 
 def remove_file_if_exists(path)
-  `rm #{path}` if File.exist?(path)
+  `rm #{path}` if File.exist?(path) || File.symlink?(path)
 end
 
 def symlink_path(from, to)
+  remove_file_if_exists to
+
   `ln -s #{from} #{to}`
 end
 
