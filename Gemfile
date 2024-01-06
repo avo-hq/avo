@@ -48,8 +48,6 @@ gem "spring"
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "devise"
-
-gem "ruby-debug-ide", require: false
 #
 # END Dependencies for dummy_app
 #
@@ -77,6 +75,8 @@ group :development do
   gem "rubocop"
   gem "ripper-tags"
   gem "rubocop-shopify", require: false
+
+  gem "ruby-debug-ide", require: false
 end
 
 group :test do
