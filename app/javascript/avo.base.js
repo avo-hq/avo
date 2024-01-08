@@ -9,14 +9,13 @@ import tippy from 'tippy.js'
 
 import { LocalStorageService } from './js/local-storage-service'
 
-import 'chartkick/chart.js/chart.esm'
-
-window.Avo.localStorage = new LocalStorageService()
-
 import './js/active-storage'
 import './js/controllers'
 import './js/custom-stream-actions'
+import 'chartkick/chart.js/chart.esm'
+import 'mapkick/bundle'
 
+window.Avo.localStorage = new LocalStorageService()
 
 window.Turbolinks = Turbo
 
@@ -68,7 +67,7 @@ function isInViewport(element, parentElement) {
 }
 
 // Used on initial page load to scroll to the first active sidebar item if it's not in view.
-function scrollMenuItemIntoView() {
+function scrollSidebarMenuItemIntoView() {
   if (!isInViewport(document.querySelector('.avo-sidebar .mac-styled-scrollbar a.active'), document.querySelector('.avo-sidebar .mac-styled-scrollbar'))) {
     document.querySelector('.avo-sidebar .mac-styled-scrollbar a.active').scrollIntoView({ block: 'end', inline: 'nearest' })
   }
@@ -83,10 +82,12 @@ let sidebarScrollPosition = null
 document.addEventListener('turbo:load', () => {
   initTippy()
   isMac()
-  scrollMenuItemIntoView()
+  if (window.Avo.configuration.focus_sidebar_menu_item) {
+    scrollSidebarMenuItemIntoView()
+  }
 
   // Restore sidebar scroll position
-  if (sidebarScrollPosition) {
+  if (sidebarScrollPosition && window.Avo.configuration.preserve_sidebar_scroll) {
     document.querySelector('.avo-sidebar .mac-styled-scrollbar').scrollTo({
       top: sidebarScrollPosition,
       behavior: 'instant',
