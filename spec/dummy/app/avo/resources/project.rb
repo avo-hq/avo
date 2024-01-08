@@ -20,7 +20,7 @@ class Avo::Resources::Project < Avo::BaseResource
       success_when: ["Done"],
       nullable: true,
       filterable: true
-    field :name, as: :text, required: true, sortable: true
+    field :name, as: :text, required: true, sortable: true, default: "New project default name"
     field :progress, as: :progress_bar, value_suffix: "%", display_value: true
     field :stage,
       as: :select,
