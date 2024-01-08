@@ -22,6 +22,7 @@ RSpec.feature "SignOutDropdown", type: :system do
       accept_alert do
         click_link "Sign out"
       end
+      sleep 1
       wait_for_loaded
 
       expect(current_path).to eql "/users/sign_in"
