@@ -21,6 +21,7 @@ RSpec.feature "SignOutDropdown", type: :system do
       dots_link.click
       sleep 0.2
       click_link "Sign out"
+      sleep 0.2
       accept_alert
       sleep 0.2
       wait_for_loaded
