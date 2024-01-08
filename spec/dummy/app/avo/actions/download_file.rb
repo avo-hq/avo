@@ -1,7 +1,6 @@
 class Avo::Actions::DownloadFile < Avo::BaseAction
   self.name = "Download file"
   self.standalone = true
-  self.may_download_file = true
 
   # TODO: fix fields for actions
   def fields

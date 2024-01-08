@@ -40,6 +40,7 @@
     "eslint-config-airbnb": "^19.0.4",
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-plugin-sort-imports-es6-autofix": "^0.6.0",
+    "file-saver": "^2.0.5",
     "flatpickr": "^4.6.13",
     "heroicons": "^2.1.1",
     "js-cookie": "^3.0.5",

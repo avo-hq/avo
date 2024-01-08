@@ -1,7 +1,6 @@
 class Avo::Actions::ExportCsv < Avo::BaseAction
   self.name = "Export csv"
   self.no_confirmation = false
-  self.may_download_file = true
 
   def handle(**args)
     records, resource = args.values_at(:records, :resource)
