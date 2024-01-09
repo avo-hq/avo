@@ -130,6 +130,7 @@ module Generators
         fields_from_model_tags
 
         generated_fields_template
+      rescue StandardError => e
       end
 
       def generated_fields_template
