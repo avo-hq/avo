@@ -40,6 +40,12 @@ module Generators
         ActiveRecord::Base.connection.tables.map do |model|
           model.capitalize.singularize.camelize
         end
+      rescue ActiveRecord::NoDatabaseError
+        puts "Database not found, please create your database and regenerate the resource."
+        []
+      rescue ActiveRecord::ConnectionNotEstablished
+        puts "Database connection error, please create your database and regenerate the resource."
+        []
       end
 
       def class_from_args
@@ -130,8 +136,6 @@ module Generators
         fields_from_model_tags
 
         generated_fields_template
-      rescue StandardError
-        puts "Raised an error while getting the fields, however, it should not affect creating the file"
       end
 
       def generated_fields_template
@@ -234,6 +238,10 @@ module Generators
         model_db_columns.each do |name, data|
           fields[name] = field(name, data.type)
         end
+      rescue ActiveRecord::NoDatabaseError
+        puts "Database not found, please create your database and regenerate the resource."
+      rescue ActiveRecord::ConnectionNotEstablished
+        puts "Database connection error, please create your database and regenerate the resource."
       end
 
       def field(name, type)
