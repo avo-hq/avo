@@ -4341,10 +4341,10 @@ tsconfig-paths@^3.15.0:
     minimist "^1.2.6"
     strip-bom "^3.0.0"
 
-turbo_power@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/turbo_power/-/turbo_power-0.6.0.tgz#894b261af7209c02911185666e681d9e37e2554b"
-  integrity sha512-1zWR7mtZr9oZ6ypdQUkVpi5sHCoMbSdmcsBHNqcuftDqn35LHg/alh+vgbB8q5Z3MlMFnnOmQ/QkHeW7Mjcb7A==
+turbo_power@^0.6.1:
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/turbo_power/-/turbo_power-0.6.1.tgz#e0ca3a7cfdaaad57c2b780617851761b65b0375b"
+  integrity sha512-OVHTgaYvvFrYnVE/vfw9u+17ipQrXqNlUcaZ2lkVCBfsEdgZv00fmCv/dOH8ilKRFzrcP+tK3Yl2pMZGbui+4g==
 
 type-check@^0.4.0, type-check@~0.4.0:
   version "0.4.0"

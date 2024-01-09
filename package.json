@@ -62,7 +62,7 @@
     "tailwindcss-stimulus-components": "^3.0.4",
     "tippy.js": "^6.3.7",
     "trix": "^2.0.8",
-    "turbo_power": "^0.6.0",
+    "turbo_power": "^0.6.1",
     "urijs": "^1.19.11"
   },
   "devDependencies": {
