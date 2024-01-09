@@ -42,8 +42,6 @@
       <%= render "avo/partials/profile_menu_extra" %>
       <% if can_destroy_user? %>
         <%= link_to helpers.main_app.send(destroy_user_session_path),
-          form: { "data-turbo" => "false" },
-          method: :delete,
           data: {
             turbo_method: :delete,
             turbo_confirm: t('avo.are_you_sure')

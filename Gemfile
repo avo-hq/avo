@@ -48,8 +48,6 @@ gem "spring"
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "devise"
-
-gem "ruby-debug-ide", require: false
 #
 # END Dependencies for dummy_app
 #
@@ -95,7 +93,7 @@ group :test do
   gem "launchy", require: false
 
   gem "test-prof"
-  gem "database_cleaner"
+  gem "database_cleaner-active_record"
 end
 
 gem "awesome_print"
