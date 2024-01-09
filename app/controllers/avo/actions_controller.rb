@@ -81,7 +81,8 @@ module Avo
               @response[:redirect_args][:turbo_frame],
               **@response[:redirect_args].except(:turbo_frame)
             )
-          when :close_modal_and_flash_alerts
+          when :close_modal
+            # Close the modal and flash the messages
             render turbo_stream: [
               turbo_stream.flash_alerts,
               turbo_stream.remove("actions_show")

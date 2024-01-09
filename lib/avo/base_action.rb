@@ -189,8 +189,8 @@ module Avo
       self
     end
 
-    def close_modal_and_flash_alerts
-      response[:type] = :close_modal_and_flash_alerts
+    def close_modal
+      response[:type] = :close_modal
 
       self
     end
