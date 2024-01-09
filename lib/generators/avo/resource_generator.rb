@@ -130,7 +130,8 @@ module Generators
         fields_from_model_tags
 
         generated_fields_template
-      rescue StandardError => e
+      rescue StandardError
+        puts "Raised an error while getting the fields, however, it should not affect creating the file"
       end
 
       def generated_fields_template
