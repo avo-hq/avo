@@ -21,14 +21,9 @@ RSpec.feature "SignOutDropdown", type: :system do
       dots_link.click
       expect(page.body).to have_link "Sign out"
 
-      sleep 2
       accept_alert do
-        sleep 2
         click_link "Sign out"
-        sleep 2
       end
-      sleep 1
-      sleep 2
       wait_for_loaded
 
       expect(current_path).to eql "/users/sign_in"
