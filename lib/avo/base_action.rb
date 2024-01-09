@@ -189,6 +189,12 @@ module Avo
       self
     end
 
+    def close_modal
+      response[:type] = :close_modal
+
+      self
+    end
+
     # Add a placeholder silent message from when a user wants to do a redirect action or something similar
     def silent
       add_message nil, :silent
