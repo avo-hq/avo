@@ -84,8 +84,8 @@ module Avo
           when :close_modal
             # Close the modal and flash the messages
             render turbo_stream: [
-              turbo_stream.flash_alerts,
-              turbo_stream.remove("actions_show")
+              turbo_stream.remove("actions_show"),
+              turbo_stream.flash_alerts
             ]
           else
             # Reload the page
