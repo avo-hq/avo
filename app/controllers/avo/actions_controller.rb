@@ -81,6 +81,11 @@ module Avo
               @response[:redirect_args][:turbo_frame],
               **@response[:redirect_args].except(:turbo_frame)
             )
+          when :close_modal_and_flash_alerts
+            render turbo_stream: [
+              turbo_stream.flash_alerts,
+              turbo_stream.remove("actions_show")
+            ]
           else
             # Reload the page
             redirect_back fallback_location: resources_path(resource: @resource)
