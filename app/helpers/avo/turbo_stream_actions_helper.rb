@@ -9,6 +9,10 @@ module Avo
         target: "alerts",
         template: @view_context.render(Avo::FlashAlertsComponent.new(flashes: @view_context.flash.discard))
     end
+
+    def close_action_modal
+      turbo_stream_action_tag :remove , target: "actions_show"
+    end
   end
 end
 
