@@ -7,6 +7,7 @@ module Avo
     attr_writer :root_path
     attr_writer :cache_store
     attr_writer :logger
+    attr_writer :audit
     attr_accessor :timezone
     attr_accessor :per_page
     attr_accessor :per_page_steps
@@ -99,6 +100,7 @@ module Avo
       @mount_avo_engines = true
       @cache_store = computed_cache_store
       @logger = default_logger
+      @audit = false
     end
 
     def current_user_method(&block)
@@ -156,7 +158,9 @@ module Avo
     def license
       gems = Gem::Specification.map {|gem| gem.name}
 
-      @license ||= if gems.include?("avo-advanced")
+      @license ||= if gems.include?("avo-enterprise")
+        "enterprise"
+      elsif gems.include?("avo-advanced")
         "advanced"
       elsif gems.include?("avo-pro")
         "pro"
@@ -213,6 +217,10 @@ module Avo
 
         file_logger
       }
+    end
+
+    def audit?
+      Avo.plugin_manager.installed?("avo-enterprise") && @audit && ActiveRecord::Base.connection.table_exists?(:avo_audits)
     end
   end
 

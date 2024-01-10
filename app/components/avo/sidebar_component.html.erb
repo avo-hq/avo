@@ -54,6 +54,16 @@
           <% end %>
         <% end %>
 
+        <% if Avo.configuration.audit? %>
+          <div>
+            <%= render Avo::Sidebar::HeadingComponent.new label: t('avo.audits'), icon: helpers.svg('presentation-chart-bar', class: 'h-4') %>
+            <div class="w-full space-y-1">
+              <%= render Avo::Sidebar::LinkComponent.new label: t('avo.audits'), path: helpers.avo_enterprise.audits_path %>
+              <%= render Avo::Sidebar::LinkComponent.new label: t('avo.actions'), path: helpers.avo_enterprise.audits_actions_path %>
+            </div>
+          </div>
+        <% end %>
+
         <%= render partial: "/avo/partials/sidebar_extra" %>
       </div>
     </div>

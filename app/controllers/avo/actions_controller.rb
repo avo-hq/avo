@@ -30,8 +30,19 @@ module Avo
           (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])
       )
 
-      @response = performed_action.response
-      respond
+      AvoAudit.create!(
+        auditable_class: @action.class,
+        action: "avo_action",
+        author_id: _current_user.id,
+        author_type: _current_user.class,
+        payload: {
+          fields: action_params[:fields].except(:avo_resource_ids, :avo_selected_query),
+          resource: resource,
+          query: (decrypted_query || (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])).map(&:id)
+        }.to_json
+      )
+
+      respond performed_action.response
     end
 
     private
