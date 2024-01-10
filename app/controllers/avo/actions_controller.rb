@@ -42,7 +42,8 @@ module Avo
         }.to_json
       )
 
-      respond performed_action.response
+      @response = performed_action.response
+      respond
     end
 
     private
