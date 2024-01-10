@@ -165,7 +165,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
       turbo_frame: turbo_frame,
       parent_record: parent_record,
       query: query,
-      remove_scope_all: resource.entity_loader(:scope).remove_scope_all
+      loader: resource.entity_loader(:scope)
     )
   end
 

@@ -1,7 +1,7 @@
 module Avo
   module Loaders
     class Loader
-      attr_accessor :bag, :remove_scope_all
+      attr_accessor :bag
 
       def initialize
         @bag = []
