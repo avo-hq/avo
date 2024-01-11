@@ -70,7 +70,7 @@ module Avo
             # Trigger download, removes modal and flash the messages
             render turbo_stream: [
               turbo_stream.download(content: @response[:path], filename: @response[:filename]),
-              turbo_stream.remove("actions_show"),
+              turbo_stream.close_action_modal,
               turbo_stream.flash_alerts
             ]
           when :redirect
@@ -81,6 +81,12 @@ module Avo
               @response[:redirect_args][:turbo_frame],
               **@response[:redirect_args].except(:turbo_frame)
             )
+          when :close_modal
+            # Close the modal and flash the messages
+            render turbo_stream: [
+              turbo_stream.close_action_modal,
+              turbo_stream.flash_alerts
+            ]
           else
             # Reload the page
             redirect_back fallback_location: resources_path(resource: @resource)

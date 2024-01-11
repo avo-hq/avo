@@ -1,5 +1,10 @@
 PATH
-  remote: .
+  remote: ../pluggy
+  specs:
+    pluggy (0.0.1)
+
+PATH
+  remote: ..
   specs:
     avo (3.2.3)
       actionview (>= 6.1)
@@ -18,14 +23,10 @@ PATH
       view_component (>= 3.7.0)
       zeitwerk (>= 2.6.12)
 
-PATH
-  remote: pluggy
-  specs:
-    pluggy (0.0.1)
-
 GEM
   remote: https://rubygems.org/
   specs:
+    abbrev (0.1.2)
     actioncable (7.1.2)
       actionpack (= 7.1.2)
       activesupport (= 7.1.2)
@@ -121,13 +122,13 @@ GEM
     ast (2.4.2)
     awesome_print (1.9.2)
     aws-eventstream (1.3.0)
-    aws-partitions (1.873.0)
+    aws-partitions (1.877.0)
     aws-sdk-core (3.190.1)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.651.0)
       aws-sigv4 (~> 1.8)
       jmespath (~> 1, >= 1.6.1)
-    aws-sdk-kms (1.75.0)
+    aws-sdk-kms (1.76.0)
       aws-sdk-core (~> 3, >= 3.188.0)
       aws-sigv4 (~> 1.1)
     aws-sdk-s3 (1.142.0)
@@ -138,7 +139,7 @@ GEM
       aws-eventstream (~> 1, >= 1.0.2)
     backport (1.2.0)
     base64 (0.2.0)
-    bcrypt (3.1.19)
+    bcrypt (3.1.20)
     benchmark (0.3.0)
     better_html (2.0.2)
       actionview (>= 6.0)
@@ -218,7 +219,8 @@ GEM
       activesupport (>= 6.1)
     hashdiff (1.1.0)
     hashids (1.0.6)
-    highline (2.1.0)
+    highline (3.0.0)
+      abbrev
     hightop (0.4.0)
       activesupport (>= 6.1)
     hotwire-livereload (1.3.1)
@@ -249,9 +251,9 @@ GEM
       activesupport (>= 3.0)
       nokogiri (>= 1.6)
     io-console (0.7.1)
-    irb (1.11.0)
+    irb (1.11.1)
       rdoc
-      reline (>= 0.3.8)
+      reline (>= 0.4.2)
     iso (0.4.0)
       i18n
     jaro_winkler (1.5.6)
@@ -284,14 +286,13 @@ GEM
     meta-tags (2.20.0)
       actionpack (>= 6.0.0, < 7.2)
     method_source (1.0.0)
-    mini_magick (4.11.0)
+    mini_magick (4.12.0)
     mini_mime (1.1.5)
-    mini_portile2 (2.8.5)
     minitest (5.20.0)
     msgpack (1.7.2)
     multi_xml (0.6.0)
     mutex_m (0.2.0)
-    net-imap (0.4.8)
+    net-imap (0.4.9.1)
       date
       net-protocol
     net-pop (0.1.2)
@@ -301,15 +302,12 @@ GEM
     net-smtp (0.4.0.1)
       net-protocol
     nio4r (2.7.0)
-    nokogiri (1.16.0)
-      mini_portile2 (~> 2.8.2)
-      racc (~> 1.4)
     nokogiri (1.16.0-x86_64-linux)
       racc (~> 1.4)
     orm_adapter (0.5.0)
     pagy (6.2.0)
     parallel (1.24.0)
-    parser (3.2.2.4)
+    parser (3.3.0.2)
       ast (~> 2.4.1)
       racc
     pg (1.5.4)
@@ -317,8 +315,7 @@ GEM
       hashids (>= 1.0.0, < 2.0.0)
       rails (>= 6.0.0)
     prettier_print (1.2.1)
-    psych (5.1.2)
-      stringio
+    psych (3.3.4)
     public_suffix (5.0.4)
     puma (6.4.2)
       nio4r (~> 2.0)
@@ -377,13 +374,12 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     rbs (2.8.4)
-    rdoc (6.6.2)
-      psych (>= 4.0.0)
+    rdoc (6.3.3)
     redis (5.0.8)
       redis-client (>= 0.17.0)
-    redis-client (0.19.0)
+    redis-client (0.19.1)
       connection_pool
-    regexp_parser (2.8.3)
+    regexp_parser (2.9.0)
     reline (0.4.2)
       io-console (~> 0.5)
     responders (3.1.1)
@@ -423,13 +419,13 @@ GEM
       unicode-display_width (>= 2.4.0, < 3.0)
     rubocop-ast (1.30.0)
       parser (>= 3.2.1.0)
-    rubocop-performance (1.20.1)
+    rubocop-performance (1.20.2)
       rubocop (>= 1.48.1, < 2.0)
       rubocop-ast (>= 1.30.0, < 2.0)
     rubocop-shopify (2.14.0)
       rubocop (~> 1.51)
     ruby-progressbar (1.13.0)
-    ruby-vips (2.1.4)
+    ruby-vips (2.2.0)
       ffi (~> 1.12)
     ruby2_keywords (0.0.5)
     rubyzip (2.3.2)
@@ -488,7 +484,6 @@ GEM
     standard-performance (1.3.0)
       lint_roller (~> 1.1)
       rubocop-performance (~> 1.20.1)
-    stringio (3.1.0)
     syntax_tree (6.2.0)
       prettier_print (>= 1.2.0)
     terminal-table (3.0.2)
@@ -527,7 +522,7 @@ GEM
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
     webrick (1.8.1)
-    websocket (1.2.9)
+    websocket (1.2.10)
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -537,7 +532,6 @@ GEM
     zeitwerk (2.6.12)
 
 PLATFORMS
-  ruby
   x86_64-linux
 
 DEPENDENCIES
@@ -586,8 +580,9 @@ DEPENDENCIES
   pg (>= 0.18, < 2.0)
   pluggy!
   prefixed_ids
+  psych (< 4)
   puma (~> 6.4)
-  rails (~> 7.1.0)
+  rails (~> 7.0)
   rails-controller-testing
   ransack (~> 4.1, >= 4.1.1)
   redis (~> 5.0)
@@ -612,4 +607,4 @@ DEPENDENCIES
   zeitwerk
 
 BUNDLED WITH
-   2.4.6
+   2.2.32
