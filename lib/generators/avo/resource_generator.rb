@@ -70,6 +70,12 @@ module Generators
 
       def model_db_columns
         @model_db_columns ||= model.columns_hash.except(*db_columns_to_ignore)
+      rescue ActiveRecord::NoDatabaseError
+        puts "Database not found, please create your database and regenerate the resource."
+        []
+      rescue ActiveRecord::ConnectionNotEstablished
+        puts "Database connection error, please create your database and regenerate the resource."
+        []
       end
 
       def db_columns_to_ignore
@@ -238,10 +244,6 @@ module Generators
         model_db_columns.each do |name, data|
           fields[name] = field(name, data.type)
         end
-      rescue ActiveRecord::NoDatabaseError
-        puts "Database not found, please create your database and regenerate the resource."
-      rescue ActiveRecord::ConnectionNotEstablished
-        puts "Database connection error, please create your database and regenerate the resource."
       end
 
       def field(name, type)
