@@ -150,7 +150,7 @@ GEM
       smart_properties
     bigdecimal (3.1.5)
     bindex (0.8.1)
-    bootsnap (1.17.0)
+    bootsnap (1.17.1)
       msgpack (~> 1.2)
     builder (3.2.4)
     bump (0.10.0)
