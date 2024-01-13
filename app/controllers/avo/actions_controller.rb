@@ -22,25 +22,31 @@ module Avo
     def handle
       resource_ids = action_params[:fields][:avo_resource_ids].split(",")
 
+      query = decrypted_query || (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])
+
       performed_action = @action.handle_action(
         fields: action_params[:fields].except(:avo_resource_ids, :avo_selected_query),
         current_user: _current_user,
         resource: resource,
-        query: decrypted_query ||
-          (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])
+        query: query
       )
 
-      AvoAudit.create!(
-        auditable_class: @action.class,
-        action: "avo_action",
-        author_id: _current_user.id,
-        author_type: _current_user.class,
-        payload: {
-          fields: action_params[:fields].except(:avo_resource_ids, :avo_selected_query),
-          resource: resource,
-          query: (decrypted_query || (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])).map(&:id)
-        }.to_json
-      )
+      if Avo.configuration.audit?
+        (query.presence || [nil]).each do |record|
+          AvoAudit.create!(
+            auditable_class: @action.class,
+            auditable_id: record&.to_param,
+            auditable_type: record&.class,
+            action: "avo_action",
+            author_id: _current_user.id,
+            author_type: _current_user.class,
+            payload: {
+              fields: action_params[:fields].except(:avo_resource_ids, :avo_selected_query),
+              resource: resource,
+            }.to_json
+          )
+        end
+      end
 
       @response = performed_action.response
       respond
