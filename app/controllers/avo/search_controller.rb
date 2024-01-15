@@ -1,5 +1,7 @@
 require_dependency "avo/application_controller"
 
+include ActionView::Helpers::TextHelper
+
 module Avo
   class SearchController < ApplicationController
     include Rails.application.routes.url_helpers
@@ -61,11 +63,19 @@ module Avo
       result_object = {
         header: header,
         help: resource.fetch_search(:help) || "",
-        results: results,
+        results: highlight_search_results(results, params[:q]),
         count: results.count
       }
 
       [resource.name.pluralize.downcase, result_object]
+    end
+
+    def highlight_search_results(results, search_term)
+      results.map do |result|
+        result.transform_values do |value|
+          highlight(value.to_s, search_term)
+        end
+      end
     end
 
     # When searching in a `has_many` association and will scope out the records against the parent record.
