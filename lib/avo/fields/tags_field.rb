@@ -40,18 +40,22 @@ module Avo
       end
 
       def fill_field(model, key, value, params)
-        if acts_as_taggable_on.present?
-          model.send(act_as_taggable_attribute(key), value)
+        return fill_acts_as_taggable(model, key, value, params) if acts_as_taggable_on.present?
+
+        val = if value.is_a?(String)
+          value.split(",")
+        elsif value.is_a?(Array)
+          value
         else
-          val = if value.is_a?(String)
-            value.split(",")
-          elsif value.is_a?(Array)
-            value
-          else
-            value
-          end
-          model.send("#{key}=", val)
+          value
         end
+        model.send(:"#{key}=", val)
+
+        model
+      end
+
+      def fill_acts_as_taggable(model, key, value, params)
+        model.send(act_as_taggable_attribute(key), value)
 
         model
       end
