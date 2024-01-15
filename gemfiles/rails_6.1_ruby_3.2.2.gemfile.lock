@@ -281,7 +281,7 @@ GEM
     nokogiri (1.16.0-x86_64-linux)
       racc (~> 1.4)
     orm_adapter (0.5.0)
-    pagy (6.0.3)
+    pagy (6.3.0)
     parallel (1.24.0)
     parser (3.2.2.4)
       ast (~> 2.4.1)
