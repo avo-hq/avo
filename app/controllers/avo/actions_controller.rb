@@ -23,28 +23,29 @@ module Avo
       resource_ids = action_params[:fields][:avo_resource_ids].split(",")
 
       query = decrypted_query || (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])
+      field = action_params[:fields].except(:avo_resource_ids, :avo_selected_query)
 
       performed_action = @action.handle_action(
-        fields: action_params[:fields].except(:avo_resource_ids, :avo_selected_query),
+        fields: fields,
         current_user: _current_user,
         resource: resource,
         query: query
       )
 
       if Avo.configuration.audit?
-        (query.presence || [nil]).each do |record|
-          AvoAudit.create!(
+          audit = Avo::Audit.create!(
             auditable_class: @action.class,
-            auditable_id: record&.to_param,
-            auditable_type: record&.class,
             action: "avo_action",
             author_id: _current_user.id,
             author_type: _current_user.class,
             payload: {
-              fields: action_params[:fields].except(:avo_resource_ids, :avo_selected_query),
+              fields: fields,
               resource: resource,
             }.to_json
           )
+
+        query.each do |record|
+          audit.avo_audit_records.create!(record: record)
         end
       end
 
