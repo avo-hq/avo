@@ -5,7 +5,7 @@ RSpec.describe "Tags", type: :system do
     let!(:post) { create :post, tag_list: [] }
 
     context "show" do
-      let(:path) { "/avo-pro/resources/posts/#{post.id}" }
+      let(:path) { "/admin/resources/posts/#{post.id}" }
 
       it "shows empty state" do
         visit path
@@ -25,12 +25,13 @@ RSpec.describe "Tags", type: :system do
     end
 
     context "index" do
-      let(:path) { "/avo-pro/resources/posts?view_type=table" }
+      let(:path) { "/admin/resources/posts?view_type=table" }
 
       it "shows empty state" do
         visit path
 
-        expect(field_element_by_resource_id("tags", post.id)).to have_text empty_dash
+        # sleep 10
+        expect(field_element_by_resource_id("tags", post.slug)).to have_text empty_dash
       end
 
       it "shows filled state" do
@@ -39,7 +40,7 @@ RSpec.describe "Tags", type: :system do
 
         visit path
 
-        field_element = field_element_by_resource_id("tags", post.id)
+        field_element = field_element_by_resource_id("tags", post.slug)
 
         expect(field_element).not_to have_text empty_dash
         expect(field_element).not_to have_text "some tags here ..."
@@ -50,7 +51,7 @@ RSpec.describe "Tags", type: :system do
     end
 
     context "edit" do
-      let(:path) { "/avo-pro/resources/posts/#{post.id}/edit" }
+      let(:path) { "/admin/resources/posts/#{post.id}/edit" }
       let(:tag_input) { tags_element(find_field_value_element("tags")) }
       let(:input_textbox) { 'span[contenteditable][data-placeholder="add some tags"]' }
 
@@ -91,7 +92,7 @@ RSpec.describe "Tags", type: :system do
 
   describe 'without acts_as_taggable' do
     let(:course) { create :course, skills: [] }
-    let(:path) { "/avo-pro/resources/courses/#{course.id}/edit" }
+    let(:path) { "/admin/resources/courses/#{course.id}/edit" }
     let(:tag_input) { tags_element(find_field_value_element("skills")) }
     let(:input_textbox) { 'span[contenteditable][data-placeholder="Skills"]' }
 
@@ -121,7 +122,7 @@ RSpec.describe "Tags", type: :system do
     it "fetches the users" do
       expect(TestBuddy).to receive(:hi).with(zezel.id.to_s).at_least :once
 
-      visit "/avo-pro/resources/users/#{admin.slug}/actions?action_id=Avo::Actions::ToggleInactive"
+      visit "/admin/resources/users/#{admin.slug}/actions?action_id=Avo::Actions::ToggleInactive"
 
       tags_input.click
       tags_input.set("Zezel")
@@ -148,7 +149,7 @@ RSpec.describe "Tags", type: :system do
           }
       end
 
-      visit "/avo-pro/resources/courses"
+      visit "/admin/resources/courses"
 
       expect(page).to have_text "FL #{users[0].first_name} #{users[0].last_name}"
       expect(page).to have_text "FL #{users[1].first_name} #{users[1].last_name}"

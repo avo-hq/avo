@@ -6,7 +6,6 @@ class Avo::Resources::Course < Avo::BaseResource
   self.stimulus_controllers = "city-in-country toggle-fields"
 
   def fields
-
     field :id, as: :id
     field :name, as: :text, html: {
       edit: {
@@ -21,19 +20,6 @@ class Avo::Resources::Course < Avo::BaseResource
         }
       }
     }
-
-    field :skills, as: :tags, disallowed: -> { record.skill_disallowed }, suggestions: -> { record.skill_suggestions }, html: -> do
-      edit do
-        wrapper do
-          classes do
-            unless record.has_skills
-              "hidden"
-            end
-          end
-          # classes: "hidden"
-        end
-      end
-    end
 
     panel do
       field :has_skills, as: :boolean, filterable: true, html: -> do
@@ -50,9 +36,24 @@ class Avo::Resources::Course < Avo::BaseResource
           end
         end
       end
-      field :skills, as: :textarea
-    end
 
+      field :skills,
+        as: :tags,
+        disallowed: -> { record.skill_disallowed },
+        suggestions: -> { record.skill_suggestions },
+        html: -> do
+          edit do
+            wrapper do
+              classes do
+                unless record.has_skills
+                  "hidden"
+                end
+              end
+              # classes: "hidden"
+            end
+          end
+        end
+    end
 
     field :starting_at,
       as: :time,
