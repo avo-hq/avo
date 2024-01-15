@@ -1,6 +1,8 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'core-js/stable'
 // eslint-disable-next-line import/no-extraneous-dependencies
+import 'chartkick/chart.js/chart.esm'
+import 'mapkick/bundle'
 import 'regenerator-runtime/runtime'
 import * as ActiveStorage from '@rails/activestorage'
 import * as Mousetrap from 'mousetrap'
@@ -12,8 +14,6 @@ import { LocalStorageService } from './js/local-storage-service'
 import './js/active-storage'
 import './js/controllers'
 import './js/custom-stream-actions'
-import 'chartkick/chart.js/chart.esm'
-import 'mapkick/bundle'
 
 window.Avo.localStorage = new LocalStorageService()
 
@@ -68,8 +68,10 @@ function isInViewport(element, parentElement) {
 
 // Used on initial page load to scroll to the first active sidebar item if it's not in view.
 function scrollSidebarMenuItemIntoView() {
-  if (!isInViewport(document.querySelector('.avo-sidebar .mac-styled-scrollbar a.active'), document.querySelector('.avo-sidebar .mac-styled-scrollbar'))) {
-    document.querySelector('.avo-sidebar .mac-styled-scrollbar a.active').scrollIntoView({ block: 'end', inline: 'nearest' })
+  const activeSidebarItem = document.querySelector('.avo-sidebar .mac-styled-scrollbar a.active')
+  const sidebarScrollingArea = document.querySelector('.avo-sidebar .mac-styled-scrollbar')
+  if (!isInViewport(activeSidebarItem, sidebarScrollingArea)) {
+    activeSidebarItem.scrollIntoView({ block: 'end', inline: 'nearest' })
   }
 }
 
