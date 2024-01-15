@@ -22,6 +22,19 @@ class Avo::Resources::Course < Avo::BaseResource
       }
     }
 
+    field :skills, as: :tags, disallowed: -> { record.skill_disallowed }, suggestions: -> { record.skill_suggestions }, html: -> do
+      edit do
+        wrapper do
+          classes do
+            unless record.has_skills
+              "hidden"
+            end
+          end
+          # classes: "hidden"
+        end
+      end
+    end
+
     panel do
       field :has_skills, as: :boolean, filterable: true, html: -> do
         edit do
