@@ -54,8 +54,7 @@ RSpec.describe "KeyValueFields", type: :system do
         find('input[placeholder="Meta key"]').set("Test Key")
         find('input[placeholder="Meta value"]').set("Test Value")
 
-        click_on "Save"
-        wait_for_loaded
+        save
 
         expect(current_path).to eql "/admin/resources/projects/#{project.id}"
 
@@ -201,8 +200,7 @@ RSpec.describe "KeyValueFields", type: :system do
         first('[data-button="delete-row"]').click
         expect(meta_element).not_to have_selector('[data-button="delete-row"]')
 
-        click_on "Save"
-        wait_for_loaded
+        save
 
         expect(current_path).to eql "/admin/resources/projects/#{project.id}"
 
@@ -241,8 +239,7 @@ RSpec.describe "KeyValueFields", type: :system do
         keys[2].set("Test Key")
         values[2].set("Test Value")
 
-        click_on "Save"
-        wait_for_loaded
+        save
 
         expect(current_path).to eql "/admin/resources/projects/#{project.id}"
 
@@ -269,8 +266,7 @@ RSpec.describe "KeyValueFields", type: :system do
 
         keys[2].set("Test Key")
 
-        click_on "Save"
-        wait_for_loaded
+        save
 
         expect(current_path).to eql "/admin/resources/projects/#{project.id}"
 
