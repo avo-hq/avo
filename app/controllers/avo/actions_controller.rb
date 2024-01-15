@@ -23,7 +23,7 @@ module Avo
       resource_ids = action_params[:fields][:avo_resource_ids].split(",")
 
       query = decrypted_query || (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])
-      field = action_params[:fields].except(:avo_resource_ids, :avo_selected_query)
+      fields = action_params[:fields].except(:avo_resource_ids, :avo_selected_query)
 
       performed_action = @action.handle_action(
         fields: fields,
