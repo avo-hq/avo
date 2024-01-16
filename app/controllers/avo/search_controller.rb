@@ -1,4 +1,4 @@
-require_dependency 'avo/application_controller'
+require_dependency "avo/application_controller"
 
 include ActionView::Helpers::TextHelper
 
@@ -56,7 +56,9 @@ module Avo
 
       header = resource.plural_name
 
-      header = "#{header} (#{results_count})" if results_count > 0
+      if results_count > 0
+        header = "#{header} (#{results_count})"
+      end
 
       result_object = {
         header: header,
@@ -133,11 +135,11 @@ module Avo
     end
 
     def should_apply_has_many_scope?
-      params[:via_association] == 'has_many' && @resource.class.search_query.present?
+      params[:via_association] == "has_many" && @resource.class.search_query.present?
     end
 
     def should_apply_attach_scope?
-      params[:via_association] == 'belongs_to' && attach_scope.present?
+      params[:via_association] == "belongs_to" && attach_scope.present?
     end
 
     def should_apply_any_scope?
@@ -183,8 +185,8 @@ module Avo
 
       render json: {
         error: {
-          header: '🚨 An error occurred while searching. 🚨',
-          help: 'Please see the error and fix it before deploying.',
+          header: "🚨 An error occurred while searching. 🚨",
+          help: "Please see the error and fix it before deploying.",
           results: {
             _label: error.message
           },
