@@ -1,10 +1,9 @@
 require_dependency "avo/application_controller"
 
-include ActionView::Helpers::TextHelper
-
 module Avo
   class SearchController < ApplicationController
     include Rails.application.routes.url_helpers
+    include ActionView::Helpers::TextHelper
 
     before_action :set_resource_name, only: :show
     before_action :set_resource, only: :show
