@@ -75,4 +75,7 @@ def wait_for_tag_suggestions_to_appear(time = Capybara.default_max_wait_time)
     last_dropdown_item = page.all('.tagify__dropdown__item').last
     page.document.synchronize { last_dropdown_item&.visible? }
   end
+
+  # Make sure all are visible TODO: fix me
+  sleep 0.5
 end
