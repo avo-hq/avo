@@ -1,4 +1,4 @@
-require_dependency "avo/application_controller"
+require_dependency 'avo/application_controller'
 
 include ActionView::Helpers::TextHelper
 
@@ -11,8 +11,8 @@ module Avo
 
     def show
       render json: search_resources([resource])
-    rescue => error
-      render_search_error(error)
+    rescue StandardError => e
+      render_search_error(e)
     end
 
     private
@@ -56,28 +56,21 @@ module Avo
 
       header = resource.plural_name
 
-      if results_count > 0
-        header = "#{header} (#{results_count})"
-      end
+      header = "#{header} (#{results_count})" if results_count > 0
 
       result_object = {
         header: header,
-        help: resource.fetch_search(:help) || "",
-        results: highlight_search_results(results, params[:q]),
+        help: resource.fetch_search(:help) || '',
+        results: results.map do |result|
+                   result.transform_values do |value|
+                     highlight(value.to_s, params[:q])
+                   end
+                 end,
         count: results.count
       }
 
       [resource.name.pluralize.downcase, result_object]
     end
-
-    def highlight_search_results(results, search_term)
-      results.map do |result|
-        result.transform_values do |value|
-          highlight(value.to_s, search_term)
-        end
-      end
-    end
-
     # When searching in a `has_many` association and will scope out the records against the parent record.
     # This is also used when looking for `belongs_to` associations, and this method applies the parents `attach_scope` if present.
     def apply_scope(query)
@@ -131,8 +124,6 @@ module Avo
       end
     end
 
-    private
-
     def fetch_result_information(record, resource, item)
       {
         _id: record.id,
@@ -142,11 +133,11 @@ module Avo
     end
 
     def should_apply_has_many_scope?
-      params[:via_association] == "has_many" && @resource.class.search_query.present?
+      params[:via_association] == 'has_many' && @resource.class.search_query.present?
     end
 
     def should_apply_attach_scope?
-      params[:via_association] == "belongs_to" && attach_scope.present?
+      params[:via_association] == 'belongs_to' && attach_scope.present?
     end
 
     def should_apply_any_scope?
@@ -192,8 +183,8 @@ module Avo
 
       render json: {
         error: {
-          header: "🚨 An error occurred while searching. 🚨",
-          help: "Please see the error and fix it before deploying.",
+          header: '🚨 An error occurred while searching. 🚨',
+          help: 'Please see the error and fix it before deploying.',
           results: {
             _label: error.message
           },
