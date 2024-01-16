@@ -63,11 +63,7 @@ module Avo
       result_object = {
         header: header,
         help: resource.fetch_search(:help) || '',
-        results: results.map do |result|
-                   result.transform_values do |value|
-                     highlight(value.to_s, params[:q])
-                   end
-                 end,
+        results: results,
         count: results.count
       }
 
@@ -127,9 +123,10 @@ module Avo
     end
 
     def fetch_result_information(record, resource, item)
+      highlighted_title = highlight(item&.dig(:title) || resource.record_title, params[:q])
       {
         _id: record.id,
-        _label: item&.dig(:title) || resource.record_title,
+        _label: highlighted_title,
         _url: resource.class.fetch_search(:result_path, record: resource.record) || resource.record_path
       }
     end
