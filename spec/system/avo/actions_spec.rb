@@ -160,6 +160,25 @@ RSpec.describe "Actions", type: :system do
     end
   end
 
+  describe "close_modal" do
+    it "closes the modal and flahses messages" do
+      allow(TestBuddy).to receive(:hi).and_call_original
+      visit "/admin/resources/users/new"
+
+      fill_in "user_first_name", with: "First name should persist after action."
+
+
+      click_on "Actions"
+      click_on "Close modal"
+      expect(page).to have_css('turbo-frame#actions_show')
+      click_on "Run"
+      expect(TestBuddy).to receive(:hi).with("Hello from Avo::Actions::Test::CloseModal handle method").at_least :once
+      expect(page).not_to have_css('turbo-frame#actions_show')
+      expect(page).to have_text "Modal closed!!"
+      expect(page).to have_field('user_first_name', with: 'First name should persist after action.')
+    end
+  end
+
   #   let!(:roles) { { admin: false, manager: false, writer: false } }
   #   let!(:user) { create :user, active: true, roles: roles }
 

@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import { StreamActions } from '@hotwired/turbo'
+import { saveAs } from 'file-saver'
 
 // TODO: move these to the avo_filters gem
 
@@ -12,4 +13,14 @@ StreamActions.open_filter = function () {
   setTimeout(() => {
     document.querySelector(`[data-filter-id="${id}"] .pill`).click()
   }, 150)
+}
+// END TODO: move these to the avo_filters gem
+
+StreamActions.download = function () {
+  saveAs(
+    new Blob(
+      [this.getAttribute('content')],
+    ),
+    this.getAttribute('filename'),
+  )
 }

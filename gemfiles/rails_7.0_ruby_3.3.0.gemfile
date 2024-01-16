@@ -4,7 +4,7 @@ source "https://rubygems.org"
 
 gem "jsbundling-rails"
 gem "cssbundling-rails"
-gem "rails", "~> 6.0"
+gem "rails", "~> 7.0"
 gem "pg", ">= 0.18", "< 2.0"
 gem "puma", "~> 6.4"
 gem "redis", "~> 5.0"
@@ -16,7 +16,6 @@ gem "listen", ">= 3.5.1"
 gem "spring"
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "devise"
-gem "ruby-debug-ide", require: false
 gem "awesome_print"
 gem "zeitwerk"
 gem "httparty"
@@ -69,7 +68,7 @@ group :test do
   gem "spring-commands-rspec"
   gem "launchy", require: false
   gem "test-prof"
-  gem "database_cleaner"
+  gem "database_cleaner-active_record"
 end
 
 group :development, :test do
