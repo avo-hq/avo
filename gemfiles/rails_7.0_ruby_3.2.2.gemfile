@@ -59,8 +59,7 @@ group :test do
   gem "rspec-rails", "~> 6.0", ">= 6.0.3"
   gem "rails-controller-testing"
   gem "capybara"
-  gem "selenium-webdriver"
-  gem "webdrivers", ">= 5.3.0"
+  gem "cuprite"
   gem "fuubar"
   gem "simplecov", require: false
   gem "simplecov-cobertura"
