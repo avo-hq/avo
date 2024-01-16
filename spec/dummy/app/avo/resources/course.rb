@@ -31,7 +31,7 @@ class Avo::Resources::Course < Avo::BaseResource
               # resource: resource,
               action: "input->resource-edit#toggle",
               resource_edit_toggle_target_param: "skills_textarea_wrapper",
-              # resource_edit_toggle_targets_param: ["country_select_wrapper"]
+              resource_edit_toggle_targets_param: ["skills_tags_wrapper"]
             })
           end
         end
