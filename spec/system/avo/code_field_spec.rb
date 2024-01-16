@@ -26,7 +26,7 @@ RSpec.describe "CodeField", type: :system do
         expect(page).to have_editor_display text: ""
       end
 
-      it "change the projects custom_css code" do
+      it "change the projects custom_css code", focus: true do
         visit "/admin/resources/users/#{user.id}/edit"
         wait_for_loaded
 
@@ -80,12 +80,20 @@ RSpec.describe "CodeField", type: :system do
   end
 
   def fill_in_editor_field(text)
+    # TODO: this still isn't fixed
     sleep 0.1
+    element = find(".CodeMirror textarea", visible: false)
+    element
+    puts ["element->", element].inspect
+    wait_for_element_present ".CodeMirror"
+    puts ["waited->"].inspect
+    sleep 2
 
     within ".CodeMirror" do
-      current_scope.click
       field = current_scope.find("textarea", visible: false)
-      field.send_keys text
+      field.click
+      # field = current_scope.find("textarea", visible: false)
+      field.focus.type text
     end
   end
 

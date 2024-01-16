@@ -50,6 +50,16 @@ def wait_for_element_missing(identifier = ".element", time = Capybara.default_ma
   end
 end
 
+def wait_for_element_present(identifier = ".element", time = Capybara.default_max_wait_time)
+  Timeout.timeout(time) do
+    if page.present?
+      break if page.has_css?(identifier, wait: time)
+    else
+      sleep 0.05
+    end
+  end
+end
+
 def wait_for_loaded
   wait_for_turbo_loaded
 end

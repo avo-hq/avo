@@ -12,6 +12,7 @@ end
 
 require "rspec/rails"
 require "webmock/rspec"
+require "capybara/cuprite"
 
 require "test_prof/any_fixture"
 require "test_prof/any_fixture/dsl"
@@ -51,26 +52,6 @@ Avo.boot
 require "support/download_helpers"
 require "support/request_helpers"
 
-# Settings and profile for the Chrome Browser
-def chrome_options(headless: false)
-  opts = Selenium::WebDriver::Chrome::Options.new
-  opts.add_argument("--headless") if headless
-  opts.add_argument("--no-sandbox")
-  opts.add_argument("--disable-gpu")
-  opts.add_argument("--disable-dev-shm-usage")
-  opts.add_argument("--window-size=1400,1024")
-
-  opts.add_preference(
-    :download,
-    directory_upgrade: true,
-    prompt_for_download: false,
-    default_directory: DownloadHelpers::PATH.to_s
-  )
-
-  opts.add_preference(:browser, set_download_behavior: {behavior: "allow"})
-  opts
-end
-
 # Needed setup for headless download
 def headless_download_setup(driver)
   bridge = driver.browser.send(:bridge)
@@ -87,30 +68,7 @@ def headless_download_setup(driver)
   driver
 end
 
-def driver_options(headless: false)
-  {
-    browser: :chrome,
-    clear_session_storage: true,
-    clear_local_storage: true,
-    options: chrome_options(headless: headless)
-  }
-end
-
-Capybara::save_path = "tmp/screenshots"
-
-Capybara.register_driver :chrome_headless do |app|
-  driver = Capybara::Selenium::Driver.new app, **driver_options(headless: true)
-  headless_download_setup(driver)
-  driver
-end
-
-Capybara.register_driver :chrome do |app|
-  driver = Capybara::Selenium::Driver.new app, **driver_options(headless: false)
-  headless_download_setup(driver)
-  driver
-end
-
-test_driver = ENV["HEADFULL"] ? :chrome : :chrome_headless
+Capybara.save_path = "tmp/screenshots"
 
 require "support/controller_routes"
 require "support/avo_helpers"
@@ -141,10 +99,33 @@ RSpec.configure do |config|
   # examples within a transaction, remove the following line or assign false
   # instead of true.
   config.use_transactional_fixtures = true
+  config.filter_run focus: true
+  config.run_all_when_everything_filtered = true
 
-  config.before(:each, type: :system) { driven_by test_driver }
+  config.before(:each, type: :system) {
+    browser_options = {
+      save_path: DownloadHelpers::PATH
+    }
+    if ENV["DOCKER"]
+      browser_options["no-sandbox"] = nil
+    end
 
-  config.before(:each, type: :system, js: true) { driven_by test_driver }
+    driven_by(
+      :cuprite,
+      screen_size: [1440, 810],
+      options: {
+        save_path: DownloadHelpers::PATH,
+        js_errors: true,
+        headless: %w[0 false].exclude?(ENV["HEADLESS"]),
+        slowmo: ENV["SLOWMO"]&.to_f,
+        process_timeout: 15,
+        timeout: 10,
+        browser_options: browser_options
+      }
+    )
+  }
+
+  config.filter_gems_from_backtrace("capybara", "cuprite", "ferrum")
 
   config.before(:example) { Rails.cache.clear }
 

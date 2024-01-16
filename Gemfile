@@ -80,11 +80,8 @@ end
 group :test do
   gem "rspec-rails", "~> 6.0", ">= 6.0.3"
   gem "rails-controller-testing"
-  # Adds support for Capybara system testing and selenium driver
   gem "capybara"
-  gem "selenium-webdriver"
-  # Easy installation and use of web drivers to run system tests with browsers
-  gem "webdrivers", ">= 5.3.0"
+  gem "cuprite"
   gem "fuubar"
   gem "simplecov", require: false
   gem "simplecov-cobertura"
