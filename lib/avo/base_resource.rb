@@ -308,7 +308,12 @@ module Avo
       define_method "get_#{plural_entity}" do
         return entity_loader(entity).bag if entity_loader(entity).present?
 
-        instance_variable_set("@#{plural_entity}_loader", Avo::Loaders::Loader.new)
+        # ex: @actions_loader = Avo::Loaders::ActionsLoader.new
+        instance_variable_set(
+          "@#{plural_entity}_loader",
+          "Avo::Loaders::#{plural_entity.humanize}Loader".constantize.new
+        )
+
         send plural_entity
 
         entity_loader(entity).bag
@@ -560,8 +565,6 @@ module Avo
         record: record
       }
     end
-
-    private
 
     def entity_loader(entity)
       instance_variable_get("@#{entity.to_s.pluralize}_loader")
