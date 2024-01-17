@@ -298,11 +298,12 @@ module Avo
       input_area = find("[data-field-id='#{field}'] [data-slot='value'] [role='textbox']")
 
       # If the input argument is present, enter it into the input field
-      # Else, just click on the middle of the input field to display the dropdown
+      # Else, set input to "open" than to " " to trigger dropdown
       if input.present?
         input_area.set(input)
       else
-        input_area.click(x: input_area.native.size.width / 2, y: input_area.native.size.height / 2)
+        input_area.set("open")
+        input_area.set(" ")
       end
       wait_for_tag_suggestions_to_appear
 

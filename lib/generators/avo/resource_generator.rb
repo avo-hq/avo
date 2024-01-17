@@ -40,6 +40,12 @@ module Generators
         ActiveRecord::Base.connection.tables.map do |model|
           model.capitalize.singularize.camelize
         end
+      rescue ActiveRecord::NoDatabaseError
+        puts "Database not found, please create your database and regenerate the resource."
+        []
+      rescue ActiveRecord::ConnectionNotEstablished
+        puts "Database connection error, please create your database and regenerate the resource."
+        []
       end
 
       def class_from_args
@@ -64,6 +70,12 @@ module Generators
 
       def model_db_columns
         @model_db_columns ||= model.columns_hash.except(*db_columns_to_ignore)
+      rescue ActiveRecord::NoDatabaseError
+        puts "Database not found, please create your database and regenerate the resource."
+        []
+      rescue ActiveRecord::ConnectionNotEstablished
+        puts "Database connection error, please create your database and regenerate the resource."
+        []
       end
 
       def db_columns_to_ignore

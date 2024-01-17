@@ -34,6 +34,7 @@ import SelectFilterController from './controllers/select_filter_controller'
 import SelfDestroyController from './controllers/self_destroy_controller'
 import SidebarController from './controllers/sidebar_controller'
 import TabsController from './controllers/tabs_controller'
+import TagsFieldController from './controllers/fields/tags_field_controller'
 import TextFilterController from './controllers/text_filter_controller'
 import TippyController from './controllers/tippy_controller'
 import ToggleController from './controllers/toggle_controller'
@@ -78,6 +79,7 @@ application.register('easy-mde', EasyMdeController)
 application.register('key-value', KeyValueController)
 application.register('progress-bar-field', ProgressBarFieldController)
 application.register('reload-belongs-to-field', ReloadBelongsToFieldController)
+application.register('tags-field', TagsFieldController)
 application.register('trix-field', TrixFieldController)
 
 // Custom controllers

@@ -200,5 +200,30 @@ RSpec.describe "TestHelpers", type: :system do
         expect(page).to have_content "1 fish released with message 'Hello world' by ."
       end
     end
+
+    context "tags" do
+      # Uncomment and test several times locally if want to remove or reduce sleep time on tags helpers
+      # 20.times do
+      it "suggestions" do
+        visit "admin/resources/posts/new"
+
+        expect(tag_suggestions(field: :tags, input: "")).to eq ["one", "two", "three"]
+        expect(tag_suggestions(field: :tags, input: "t")).to eq ["two", "three"]
+        expect(tag_suggestions(field: :tags, input: "tw")).to eq ["two"]
+      end
+
+      it "add checks and remove tags" do
+        visit "admin/resources/posts/new"
+
+        expect(tags(field: :tags)).to eq []
+        expect(add_tag(field: :tags, tag: "one")).to eq ["one"]
+        expect(tag_suggestions(field: :tags, input: "")).to eq ["two", "three"]
+        expect(add_tag(field: :tags, tag: "three")).to eq ["one", "three"]
+        expect(tag_suggestions(field: :tags, input: "")).to eq ["two"]
+        expect(remove_tag(field: :tags, tag: "one")).to eq ["three"]
+        expect(tag_suggestions(field: :tags, input: "")).to eq ["one", "two"]
+      end
+      # end
+    end
   end
 end

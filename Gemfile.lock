@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    avo (3.2.3)
+    avo (3.3.0)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
@@ -149,7 +149,7 @@ GEM
       smart_properties
     bigdecimal (3.1.5)
     bindex (0.8.1)
-    bootsnap (1.17.0)
+    bootsnap (1.17.1)
       msgpack (~> 1.2)
     builder (3.2.4)
     bump (0.10.0)
@@ -195,7 +195,7 @@ GEM
       ruby2_keywords
     dry-initializer (3.1.1)
     e2mmap (0.1.0)
-    erb-formatter (0.7.0)
+    erb-formatter (0.7.1)
       syntax_tree (~> 6.0)
     erubi (1.12.0)
     factory_bot (6.4.5)
@@ -203,7 +203,7 @@ GEM
     factory_bot_rails (6.4.3)
       factory_bot (~> 6.4)
       railties (>= 5.0.0)
-    faker (3.2.2)
+    faker (3.2.3)
       i18n (>= 1.8.11, < 2)
     ffi (1.16.3)
     friendly_id (5.5.1)
@@ -307,7 +307,7 @@ GEM
     nokogiri (1.16.0-x86_64-linux)
       racc (~> 1.4)
     orm_adapter (0.5.0)
-    pagy (6.2.0)
+    pagy (6.3.0)
     parallel (1.24.0)
     parser (3.2.2.4)
       ast (~> 2.4.1)
@@ -507,7 +507,7 @@ GEM
       concurrent-ruby (~> 1.0)
     unaccent (0.4.0)
     unicode-display_width (2.5.0)
-    view_component (3.9.0)
+    view_component (3.10.0)
       activesupport (>= 5.2.0, < 8.0)
       concurrent-ruby (~> 1.0)
       method_source (~> 1.0)

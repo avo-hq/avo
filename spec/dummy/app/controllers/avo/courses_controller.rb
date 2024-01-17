@@ -1,11 +1,4 @@
 class Avo::CoursesController < Avo::ResourcesController
-  def update
-    @record.skills = JSON.parse(params.dig(:course).dig(:skills))
-  rescue
-    @record.skills = []
-  ensure
-    super
-  end
 
   def cities
     render json: get_cities(params[:country])
