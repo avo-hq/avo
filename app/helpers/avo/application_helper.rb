@@ -133,6 +133,23 @@ module Avo
       ["frame", resource.model_name.singular, resource.record.id].compact.join("-")
     end
 
+    def audit(auditable_class:, payload:, action:, records: [])
+      return unless Avo.configuration.audit?
+
+      Avo::Current.audit = Avo::Audit.create!(
+        auditable_class: auditable_class,
+        action: action,
+        author_id: _current_user.id,
+        author_type: _current_user.class,
+        payload: payload.to_json
+      )
+
+
+      Array(records).each do |record|
+        Avo::Current.audit.avo_audit_records.create!(record: record)
+      end
+    end
+
     private
 
     # Taken from the original library
