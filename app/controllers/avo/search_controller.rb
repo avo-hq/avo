@@ -10,8 +10,8 @@ module Avo
 
     def show
       render json: search_resources([resource])
-    rescue StandardError => e
-      render_search_error(e)
+    rescue => error
+      render_search_error(error)
     end
 
     private
@@ -61,7 +61,7 @@ module Avo
 
       result_object = {
         header: header,
-        help: resource.fetch_search(:help) || '',
+        help: resource.fetch_search(:help) || "",
         results: results,
         count: results.count
       }
