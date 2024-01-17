@@ -3,6 +3,7 @@ require_dependency "avo/application_controller"
 module Avo
   class SearchController < ApplicationController
     include Rails.application.routes.url_helpers
+    include ActionView::Helpers::TextHelper
 
     before_action :set_resource_name, only: :show
     before_action :set_resource, only: :show
@@ -121,12 +122,11 @@ module Avo
       end
     end
 
-    private
-
     def fetch_result_information(record, resource, item)
+      highlighted_title = highlight(item&.dig(:title) || resource.record_title, params[:q])
       {
         _id: record.id,
-        _label: item&.dig(:title) || resource.record_title,
+        _label: highlighted_title,
         _url: resource.class.fetch_search(:result_path, record: resource.record) || resource.record_path
       }
     end
