@@ -14,7 +14,14 @@ class Avo::Configuration::Branding
       500 => "8 134 222",
       600 => "6 107 178"
     }
-    @default_chart_colors = ["#0B8AE2", "#34C683", "#2AB1EE", "#34C6A8"]
+    # We're using same default colors as the Chartkick gem
+    # which is based on this list:
+    # http://there4.io/2012/05/02/google-chart-color-list/
+    @default_chart_colors = [
+      "#3366CC", "#DC3912", "#FF9900", "#109618", "#990099", "#3B3EAC", "#0099C6",
+      "#DD4477", "#66AA00", "#B82E2E", "#316395", "#994499", "#22AA99", "#AAAA11",
+      "#6633CC", "#E67300", "#8B0707", "#329262", "#5574A6", "#651067"
+    ];
     @default_logo = "/avo-assets/logo.png"
     @default_logomark = "/avo-assets/logomark.png"
     @default_placeholder = "/avo-assets/placeholder.svg"
