@@ -34,27 +34,7 @@ module.exports = {
         teal: colors.teal,
         slate: colors.slate,
         indigo: colors.indigo,
-        application: 'rgb(var(--color-application-background))',
-        'chart-color-0': '#3366CC',
-        'chart-color-1': '#DC3912',
-        'chart-color-2': '#FF9900',
-        'chart-color-3': '#109618',
-        'chart-color-4': '#990099',
-        'chart-color-5': '#3B3EAC',
-        'chart-color-6': '#0099C6',
-        'chart-color-7': '#DD4477',
-        'chart-color-8': '#66AA00',
-        'chart-color-9': '#B82E2E',
-        'chart-color-10': '#316395',
-        'chart-color-11': '#994499',
-        'chart-color-12': '#22AA99',
-        'chart-color-13': '#AAAA11',
-        'chart-color-14': '#6633CC',
-        'chart-color-15': '#E67300',
-        'chart-color-16': '#8B0707',
-        'chart-color-17': '#329262',
-        'chart-color-18': '#5574A6',
-        'chart-color-19': '#651067'
+        application: 'rgb(var(--color-application-background))'
       },
       fontFamily: {
         // eslint-disable-next-line max-len
