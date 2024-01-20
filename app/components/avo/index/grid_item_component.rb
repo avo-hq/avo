@@ -38,17 +38,17 @@ class Avo::Index::GridItemComponent < Avo::BaseComponent
   end
 
   def render_cover
-    return link_to_cover if @card[:cover_url].present?
-
-    link_to resource_view_path do
-      render Avo::Index::GridCoverEmptyStateComponent.new
+    classes = "object-cover"
+    unless @card[:cover_url].present?
+      classes = "bg-gray-50"
+      image_classes = "relative transform -translate-x-1/2 -translate-y-1/2 h-20 inset-auto top-1/2 left-1/2" 
     end
-  end
 
-  def link_to_cover
-    classes = "absolute h-full w-full object-cover"
-
-    link_to image_tag(@card[:cover_url], class: classes), resource_view_path, class: classes, title: @card[:title]
+    link_to resource_view_path, title: @card[:title] do
+      content_tag :div, class: "absolute h-full w-full #{classes}" do
+        image_tag @card[:cover_url] || Avo.configuration.branding.placeholder, class: image_classes
+      end
+    end
   end
 
   def render_title

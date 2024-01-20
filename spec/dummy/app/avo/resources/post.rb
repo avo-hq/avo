@@ -87,6 +87,13 @@ class Avo::Resources::Post < Avo::BaseResource
     #           classes: "bg-gray-50 rounded-md p-1"
     #         }
     #       }
+    #     },
+    #     cover: {
+    #       index: {
+    #         wrapper: {
+    #           classes: "blur-sm"
+    #         }
+    #       }
     #     }
     #   }
     # end
