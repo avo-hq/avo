@@ -19,7 +19,8 @@ class Avo::Resources::Project < Avo::BaseResource
       loading_when: ["loading", :running, :waiting, "Hold On"],
       success_when: ["Done"],
       nullable: true,
-      filterable: true
+      filterable: true,
+      summarizable: true
     field :name, as: :text, required: true, sortable: true, default: "New project default name"
     field :progress, as: :progress_bar, value_suffix: "%", display_value: true
     field :stage,
