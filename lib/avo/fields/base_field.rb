@@ -32,6 +32,7 @@ module Avo
       attr_reader :required
       attr_reader :readonly
       attr_reader :sortable
+      attr_reader :summarizable
       attr_reader :nullable
       attr_reader :null_values
       attr_reader :format_using
@@ -64,6 +65,7 @@ module Avo
         @readonly = args[:readonly] || false
         @disabled = args[:disabled] || false
         @sortable = args[:sortable] || false
+        @summarizable = args[:summarizable] || false
         @nullable = args[:nullable] || false
         @null_values = args[:null_values] || [nil, ""]
         @format_using = args[:format_using] || nil
@@ -266,6 +268,10 @@ module Avo
         if record.send(id).nil?
           record.send("#{id}=", value)
         end
+      end
+
+      def values_summary
+        record.class.group(id).reorder("count_all desc").count
       end
 
       private
