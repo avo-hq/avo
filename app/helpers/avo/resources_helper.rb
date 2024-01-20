@@ -43,15 +43,19 @@ module Avo
 
     def item_selector_input(floating: false, size: :md, classes: "")
       if floating
-        classes += " absolute inset-auto mt-3 z-10 hidden group-hover:block checked:block #{floating == :right ? "right-0" : "left-0"}"
+        floating_class = { left: "left-0", right: "right-0" }
+        floating_class.default = "left-0"
+        classes += " absolute inset-auto mt-3 z-10 hidden group-hover:block checked:block #{floating_class[floating]}"
       end
 
+      size_classes = { md: "w-4 h-4", lg: "w-5 h-5" }
+      size_classes.default = "w-4 h-4"
       tag :input,
         type: "checkbox",
         name: t("avo.select_item"),
         title: t("avo.select_item"),
         autocomplete: :off,
-        class: "#{classes} mx-3 rounded checked:bg-primary-400 focus:checked:!bg-primary-400 #{size.to_sym == :lg ? "w-5 h-5" : "w-4 h-4"}",
+        class: "#{classes} mx-3 rounded checked:bg-primary-400 focus:checked:!bg-primary-400 #{size_classes[size.to_sym]}",
         data: {
           action: 'input->item-selector#toggle input->item-select-all#selectRow',
           item_select_all_target: 'itemCheckbox',
