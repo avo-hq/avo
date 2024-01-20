@@ -34,7 +34,7 @@ module.exports = {
         teal: colors.teal,
         slate: colors.slate,
         indigo: colors.indigo,
-        application: 'rgb(var(--color-application-background))'
+        application: 'rgb(var(--color-application-background))',
       },
       fontFamily: {
         // eslint-disable-next-line max-len
