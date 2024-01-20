@@ -57,12 +57,12 @@
           <%= helpers.svg 'heroicons/solid/chart-bar', class: 'h-3 ml-1' %>
         </div>
         <div
-            class="absolute grid grid-cols-12 inset-auto bg-white w-full sm:w-auto sm:min-w-[300px] mt-2 p-4 z-40 shadow-modal rounded overflow-hidden hidden"
+            class="absolute grid grid-cols-12 inset-auto bg-white w-full sm:w-auto sm:w-[350px] mt-2 p-4 z-40 shadow-modal rounded overflow-hidden hidden"
             data-toggle-target="panel"
           >
           <ul class="col-span-5">
             <% field.values_summary.each_with_index do |(key, value), index| %>
-              <li class="font-normal normal-case grid grid-cols-6">
+              <li class="font-normal normal-case grid grid-cols-6 gap-3">
                 <div class="col-span-5 truncate">
                   <span class="<%= "inline-block w-[0.75rem] h-[0.75rem] rounded-full bg-chart-color-#{index}" %>"></span>
                   <%= key %>
