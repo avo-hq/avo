@@ -9,12 +9,16 @@
     <%= content_tag :div,
       class: "relative w-full pb-3/4 rounded-t overflow-hidden #{html(:cover, :classes)}",
       style: html(:cover, :style) do %>
-      <%= item_selector_input(floating: true, size: :lg) if @resource.record_selector%>
+      <%= item_selector_input(floating: :right, size: :lg) if @resource.record_selector %>
       <%= render_cover %>
     <% end %>
   <% end %>
   <div class="grid grid-cols-1 place-content-between p-4 h-full">
     <div class="mb-4 h-full flex flex-col space-between">
+      <% if @resource.record_selector && !@card.key?(:cover_url) %>
+        <%= item_selector_input(floating: :right, size: :lg, classes: "!mt-0") %>
+      <% end %>
+
       <%= render_title %>
       <%= render_body %>
     </div>
