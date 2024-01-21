@@ -60,7 +60,7 @@
             class="absolute grid grid-cols-12 inset-auto bg-white w-full sm:w-auto sm:w-[350px] mt-2 p-4 z-40 shadow-modal rounded overflow-hidden hidden"
             data-toggle-target="panel"
           >
-          <ul class="col-span-5">
+          <ul class="col-span-5" id="<%= field.id %>-summary">
             <% field.values_summary.each_with_index do |(key, value), index| %>
               <li class="font-normal normal-case grid grid-cols-6 gap-3">
                 <div class="col-span-5 truncate">
