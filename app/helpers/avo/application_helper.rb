@@ -134,7 +134,7 @@ module Avo
     end
 
     def audit(auditable_class:, payload:, action:, records: [])
-      return unless Avo.configuration.audit?
+      return unless Avo.configuration.audit? && auditable_class.has_avo_audit
 
       Avo::Current.audit = Avo::Audit.create!(
         auditable_class: auditable_class,
