@@ -33,10 +33,16 @@ module Avo
           add_action_data_attributes(attributes, name, element)
           add_resource_data_attributes(attributes, name, element, view)
 
-          attributes
+          value_or_default name, attributes
         end
 
         private
+
+        def value_or_default(name, attributes)
+          return attributes if attributes.present?
+
+          default_attribute_value name
+        end
 
         # Returns Hash, HTML::Builder, or nil.
         def parse_html
@@ -50,7 +56,7 @@ module Avo
         end
 
         def default_attribute_value(name)
-          name == :data ? {} : ""
+          (name == :data) ? {} : ""
         end
 
         def add_action_data_attributes(attributes, name, element)
