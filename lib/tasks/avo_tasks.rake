@@ -1,6 +1,6 @@
 desc "Runs the update command for all Avo gems."
 task "avo:update" do
-  system "bundle update avo avo-pro avo-advanced avo-dashboards avo_filters avo-menu avo_upgrade"
+  system "bundle update avo avo-pro avo-advanced avo-dashboards avo_filters avo-menu"
 end
 
 desc "Installs Avo assets and bundles them for when you want to use the GitHub repo in your app"

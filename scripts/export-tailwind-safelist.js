@@ -1,9 +1,14 @@
+/**
+  This command should only be run when updating one of the dynamic components or when we add a suport for a custom class on the docs.
+  EX: - Avo::ButtonComponent
+*/
+
 /* eslint-disable no-template-curly-in-string */
 const fs = require('fs')
 const kebabCase = require('lodash/kebabCase')
 const colors = require('tailwindcss/colors')
 
-// Dynamically built buttons need these classes in prod.
+// Dynamically-built buttons need these classes in prod.
 const buttonClasses = [
   'bg-${color}-500',
   'border-${color}-500',
