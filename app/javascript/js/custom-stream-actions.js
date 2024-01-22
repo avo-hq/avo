@@ -18,12 +18,12 @@ StreamActions.open_filter = function () {
 
 // https://stackoverflow.com/a/77850750/9067704
 StreamActions.download = function () {
-  var byteCharacters = atob(this.getAttribute('content'););
-  var byteNumbers = new Array(byteCharacters.length);
-  for (var i = 0; i < byteCharacters.length; i++) {
-    byteNumbers[i] = byteCharacters.charCodeAt(i);
+  const byteCharacters = atob(this.getAttribute('content'))
+  const byteNumbers = new Array(byteCharacters.length)
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i)
   }
-  var byteArray = new Uint8Array(byteNumbers);
+  const byteArray = new Uint8Array(byteNumbers)
 
   saveAs(
     new Blob(
