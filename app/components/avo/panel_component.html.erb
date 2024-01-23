@@ -9,7 +9,9 @@
         <% end %>
         <div class="text-2xl tracking-normal font-semibold text-gray-800 truncate items-center flex flex-1" data-target="title">
           <span><%= @name %></span>
-            <%=link_to image_tag('arrow-path-rounded-square.svg', class: "ml-2", style: 'width: 20px; height: 20px;', alt: 'Reload'), request.url %>
+          <%= button_tag data: { controller: "has-many-refresh", has_many_refresh_turbo_frame_id_value: "has_many_fields_show_links" } do %>
+            <%= image_tag('arrow-path-rounded-square.svg', class: "ml-2", style: 'width: 20px; height: 20px;', alt: 'Reload') %>
+          <% end %>
         </div>
         <% if description.present? %>
           <div class="text-sm tracking-normal font-medium text-gray-600" data-target="description">
