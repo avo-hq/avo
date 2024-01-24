@@ -1,16 +1,14 @@
 module Avo
   module UrlHelpers
-    def resources_path(resource:, keep_query_params: false, **args)
+    def resources_path(
+      resource:,
+      keep_query_params: false,
+      exclude_query_params: [],
+      **args
+    )
       return if resource.nil?
 
-      existing_params = {}
-      if keep_query_params
-        begin
-          existing_params =
-            Addressable::URI.parse(request.fullpath).query_values.symbolize_keys
-        rescue
-        end
-      end
+      existing_params = keep_query_params ? fetch_existing_params(exclude_query_params) : {}
 
       route_key = resource.route_key
       # Add the `_index` suffix for the uncountable names so they get the correct path (`fish_index`)
@@ -76,19 +74,12 @@ module Avo
       parent_record,
       record,
       keep_query_params: false,
+      exclude_query_params: [],
       **args
     )
       return if record.nil?
 
-      existing_params = {}
-
-      begin
-        if keep_query_params
-          existing_params =
-            Addressable::URI.parse(request.fullpath).query_values.symbolize_keys
-        end
-      rescue
-      end
+      existing_params = keep_query_params ? fetch_existing_params(exclude_query_params) : {}
 
       avo.resources_associations_index_path(parent_record.model_name.route_key, record.id, **existing_params, **args)
     end
@@ -99,6 +90,16 @@ module Avo
       else
         resource_path(**args)
       end
+    end
+
+    def fetch_existing_params(exclude_query_params = [])
+      existing_params = Addressable::URI.parse(request.fullpath).query_values.symbolize_keys
+
+      return existing_params if (exclude_query_params = Array(exclude_query_params)).empty?
+
+      existing_params.reject { |key, _| exclude_query_params.include?(key) }
+    rescue
+      {}
     end
   end
 end
