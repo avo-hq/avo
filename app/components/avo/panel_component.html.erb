@@ -9,7 +9,7 @@
         <% end %>
         <div class="text-2xl tracking-normal font-semibold text-gray-800 truncate items-center flex flex-1" data-target="title">
           <span><%= @name %></span>
-          <%= button_tag data: { controller: "has-many-refresh", has_many_refresh_turbo_frame_id_value: "has_many_fields_show_links" } do %>
+          <%= button_tag data: { controller: "has-many-refresh", has_many_refresh_turbo_frame_id_value: "has_many_field_show_"+ @name.gsub(' ', '_').downcase, action: "click->has-many-refresh#refresh" } do %>
             <%= image_tag('arrow-path-rounded-square.svg', class: "ml-2", style: 'width: 20px; height: 20px;', alt: 'Reload') %>
           <% end %>
         </div>
