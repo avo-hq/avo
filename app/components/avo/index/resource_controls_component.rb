@@ -182,6 +182,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     hidden = {}
 
     hidden[:view_type] = params[:view_type] if params[:view_type]
+    hidden[:view] = params[:view]
 
     if params[:turbo_frame]
       hidden[:turbo_frame] = params[:turbo_frame]
