@@ -10,7 +10,7 @@ class Avo::Resources::Course < Avo::BaseResource
     fields_bag
   end
 
-  def forms_fields
+  def form_fields
     fields_bag
   end
 
