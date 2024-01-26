@@ -119,9 +119,19 @@ module Avo
     def set_related_resource
       raise Avo::MissingResourceError.new(related_resource_name) if related_resource.nil?
 
+      action_view = action_name.to_sym
+
+      # Get view from params unless actions is index or show or forms...
+      # Else, for example for detach action we want the view from params to can fetch the correct fields
+      view = if action_view.in?([:index, :show, :new, :edit, :create])
+        action_view
+      else
+        params[:view] || action_view
+      end
+
       @related_resource = related_resource.new(
         params: params,
-        view: params[:view] || action_name.to_sym,
+        view: view,
         user: _current_user,
         record: @related_record
       ).detect_fields
