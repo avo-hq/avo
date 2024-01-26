@@ -15,9 +15,6 @@ class Avo::Resources::Course < Avo::BaseResource
   end
 
   def fields_bag
-    field :links, as: :has_many, searchable: true, placeholder: "Click to choose a link",
-      discreet_pagination: true
-
     field :id, as: :id
     field :name, as: :text, html: {
       edit: {
@@ -97,7 +94,8 @@ class Avo::Resources::Course < Avo::BaseResource
       options: Course.cities.values.flatten.map { |city| [city, city] }.to_h,
       display_value: false
 
-
+    field :links, as: :has_many, searchable: true, placeholder: "Click to choose a link",
+      discreet_pagination: true
 
     if params[:show_location_field] == '1'
       # Example for error message when resource is missing
