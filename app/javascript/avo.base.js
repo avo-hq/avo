@@ -51,50 +51,13 @@ function initTippy() {
   })
 }
 
-// Detect whether an element is in view inside a parent element.
-// Original here: https://gist.github.com/jjmu15/8646226
-function isInViewport(element, parentElement) {
-  const rect = element.getBoundingClientRect()
-  const html = document.documentElement
-  const parent = parentElement.getBoundingClientRect()
-
-  return (
-    rect.top >= 0
-    && rect.left >= 0
-    && rect.bottom <= (parent.height || window.innerHeight || html.clientHeight)
-    && rect.right <= (parent.width || window.innerWidth || html.clientWidth)
-  )
-}
-
-// Used on initial page load to scroll to the first active sidebar item if it's not in view.
-function scrollSidebarMenuItemIntoView() {
-  const activeSidebarItem = document.querySelector('.avo-sidebar .mac-styled-scrollbar a.active')
-  const sidebarScrollingArea = document.querySelector('.avo-sidebar .mac-styled-scrollbar')
-  if (!isInViewport(activeSidebarItem, sidebarScrollingArea)) {
-    activeSidebarItem.scrollIntoView({ block: 'end', inline: 'nearest' })
-  }
-}
-
 window.initTippy = initTippy
 
 ActiveStorage.start()
 
-let sidebarScrollPosition = null
-
 document.addEventListener('turbo:load', () => {
   initTippy()
   isMac()
-  if (window.Avo.configuration.focus_sidebar_menu_item) {
-    scrollSidebarMenuItemIntoView()
-  }
-
-  // Restore sidebar scroll position
-  if (sidebarScrollPosition && window.Avo.configuration.preserve_sidebar_scroll) {
-    document.querySelector('.avo-sidebar .mac-styled-scrollbar').scrollTo({
-      top: sidebarScrollPosition,
-      behavior: 'instant',
-    })
-  }
 
   // Restore scroll position after r r r turbo reload
   if (scrollTop) {
@@ -124,9 +87,6 @@ document.addEventListener('turbo:before-fetch-response', async (e) => {
 })
 
 document.addEventListener('turbo:visit', () => {
-  // Remeber sidebar scroll position before changing pages.
-  sidebarScrollPosition = document.querySelector('.avo-sidebar .mac-styled-scrollbar').scrollTop
-
   document.body.classList.add('turbo-loading')
 })
 document.addEventListener('turbo:submit-start', () => document.body.classList.add('turbo-loading'))
