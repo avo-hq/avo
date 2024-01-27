@@ -53,10 +53,6 @@ export default class extends Controller {
     Cookies.set(this.cookieKey, state === true ? 1 : 0)
   }
 
-  initialize() {
-    this.rememberScrollPosition = this.rememberScrollPosition.bind(this)
-  }
-
   connect() {
     this.attachScrollVisibilityAnchor()
 
@@ -67,16 +63,18 @@ export default class extends Controller {
         behavior: 'instant',
       })
     }
-    document.addEventListener('turbo:visit', this.rememberScrollPosition)
-  }
-
-  disconnect() {
-    document.removeEventListener('turbo:visit', this.rememberScrollPosition)
+    this.rememberScrollPosition()
   }
 
   rememberScrollPosition() {
-    // Remeber sidebar scroll position before changing pages.
-    this.sidebarScrollPosition = document.querySelector('.avo-sidebar .mac-styled-scrollbar').scrollTop
+    let handler
+
+    document.addEventListener('turbo:visit', handler = () => {
+      // Remeber sidebar scroll position before changing pages.
+      this.sidebarScrollPosition = document.querySelector('.avo-sidebar .mac-styled-scrollbar').scrollTop
+      // remove event handler after disconnection
+      document.removeEventListener('turbo:visit', handler)
+    })
   }
 
   attachScrollVisibilityAnchor() {
