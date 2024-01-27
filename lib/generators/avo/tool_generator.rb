@@ -44,7 +44,7 @@ module Generators
 
 if defined? ::Avo
   Avo::Engine.routes.draw do
-    get "#{file_name}", to: "avo/tools##{file_name}", as: :#{file_name}
+    get "#{file_name}", to: "tools##{file_name}", as: :#{file_name}
   end
 end
         ROUTE
