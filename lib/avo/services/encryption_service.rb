@@ -32,15 +32,11 @@ module Avo
       private
 
       def encryption_key
-        secret_key_base[0..31]
+        Rails.application.secret_key_base[0..31]
       rescue
         # This will fail the decryption process.
         # It's here only to keep Avo from crashing
         SecureRandom.random_bytes(32)
-      end
-
-      def secret_key_base
-        ENV["SECRET_KEY_BASE"] || Rails.application.credentials.secret_key_base || Rails.application.secrets.secret_key_base
       end
     end
   end
