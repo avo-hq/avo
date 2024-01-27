@@ -9,7 +9,7 @@ module Avo
 
       # Insert any partials that we find in app/views/avo/sidebar/items.
       def get_sidebar_partials
-        tool_partials
+        tool_sidebar_partials
           .map do |path|
             File.basename path
           end
