@@ -10,6 +10,7 @@ en:
     attach: Attach
     attach_and_attach_another: Attach & Attach another
     attach_item: Attach %{item}
+    reload_items: Reload %{item}
     attachment_class_attached: "%{attachment_class} attached."
     attachment_class_detached: "%{attachment_class} detached."
     attachment_destroyed: Attachment destroyed

@@ -20,7 +20,10 @@ module Avo
       end
 
       def render_index_controls(item:)
-        [AttachButton.new(item: item), ActionsList.new(as_index_control: true), CreateButton.new(item: item)]
+        [
+          AttachButton.new(item: item), ActionsList.new(as_index_control: true),
+          ReloadButton.new(item: item), CreateButton.new(item: item)
+        ]
       end
 
       def render_row_controls(item:)

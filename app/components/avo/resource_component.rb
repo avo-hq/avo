@@ -282,6 +282,18 @@ class Avo::ResourceComponent < Avo::BaseComponent
     end
   end
 
+  def render_reload_button(control)
+    # return unless can_see_the_create_button?
+
+    a_button color: :primary,
+      style: :text,
+      type: :button,
+      onclick: "this.closest('turbo-frame').reload()",
+      icon: "heroicons/outline/arrow-path" do
+      control.label
+    end
+  end
+
   def render_link_to(link)
     a_link link.path,
       color: link.color,
