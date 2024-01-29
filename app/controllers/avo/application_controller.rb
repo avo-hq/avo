@@ -123,6 +123,10 @@ module Avo
 
       # Get view from params unless actions is index or show or forms...
       # Else, for example for detach action we want the view from params to can fetch the correct fields
+      # This logic avoid the following scenario:
+      # When a has many field is rendered the action is index and params[:view] is show or edit but we want to
+      # keep @view as index for the related_resource
+      # Same do not happen with other actions except the list below.
       view = if action_view.in?([:index, :show, :new, :edit, :create])
         action_view
       else
