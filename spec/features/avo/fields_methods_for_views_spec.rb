@@ -69,6 +69,9 @@ RSpec.feature "Fields methods for each view", type: :feature do
     end
 
     it "shows only the specified fields for display views" do
+      # Store the original method
+      original_display_fields = Avo::Resources::Course.instance_method(:display_fields)
+
       Avo::Resources::Course.class_eval do
         def display_fields
           field :id, as: :id
@@ -102,12 +105,16 @@ RSpec.feature "Fields methods for each view", type: :feature do
       expect(page).not_to have_selector 'turbo-frame[id="has_many_field_show_links"]'
 
 
+      # Restore the original method
       Avo::Resources::Course.class_eval do
-        remove_method :display_fields
+        define_method(:display_fields, original_display_fields)
       end
     end
 
     it "shows only the specified fields for form views" do
+      # Store the original method
+      original_form_fields = Avo::Resources::Course.instance_method(:form_fields)
+
       Avo::Resources::Course.class_eval do
         def form_fields
           field :name, as: :text
@@ -138,9 +145,9 @@ RSpec.feature "Fields methods for each view", type: :feature do
       expect(page).not_to have_css "[data-field-id='city']"
       expect(page).not_to have_selector 'turbo-frame[id="has_many_field_show_links"]'
 
-
+      # Restore the original method
       Avo::Resources::Course.class_eval do
-        remove_method :form_fields
+        define_method(:form_fields, original_form_fields)
       end
     end
   end

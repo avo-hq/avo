@@ -5,7 +5,16 @@ class Avo::Resources::Course < Avo::BaseResource
   self.keep_filters_panel_open = true
   self.stimulus_controllers = "city-in-country toggle-fields"
 
-  def fields
+
+  def display_fields
+    fields_bag
+  end
+
+  def form_fields
+    fields_bag
+  end
+
+  def fields_bag
     field :id, as: :id
     field :name, as: :text, html: {
       edit: {
