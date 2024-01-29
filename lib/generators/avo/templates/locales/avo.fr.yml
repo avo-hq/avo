@@ -10,6 +10,7 @@ fr:
     attach: Attacher
     attach_and_attach_another: joindre et joindre un autre
     attach_item: Attacher %{item}
+    reload_items: Recharger %{item}
     attachment_class_attached: "%{attachment_class} attaché."
     attachment_class_detached: "%{attachment_class} détaché."
     attachment_destroyed: Pièce jointe détruite

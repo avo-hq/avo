@@ -10,6 +10,7 @@ pt:
     attach: Anexar
     attach_and_attach_another: Anexar & anexar outro
     attach_item: Anexar %{item}
+    reload_items: Recarregar %{item}
     attachment_class_attached: "%{attachment_class} anexado."
     attachment_class_detached: "%{attachment_class} separado."
     attachment_destroyed: Anexo destruído

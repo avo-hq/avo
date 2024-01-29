@@ -10,6 +10,7 @@ tr:
     attach: İlişkilendir
     attach_and_attach_another: İlişkilendir & Bir başka daha İlişkilendir
     attach_item: "%{item} öğesini ilişkilendir"
+    reload_items: "%{item} tekrar yükle"
     attachment_class_attached: "%{attachment_class} ilişkilendirildi."
     attachment_class_detached: "%{attachment_class} ilişkisi kesildi."
     attachment_destroyed: Ek silindi

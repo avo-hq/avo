@@ -10,6 +10,7 @@ es:
     attach: Adjuntar
     attach_and_attach_another: Adjuntar y adjuntar otro
     attach_item: Adjuntar %{item}
+    reload_items: Recargar %{item}
     attachment_class_attached: "%{attachment_class} adjuntado/a."
     attachment_class_detached: "%{attachment_class} adjuntado/a."
     attachment_destroyed: Adjunto eliminado

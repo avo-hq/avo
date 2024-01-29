@@ -10,6 +10,7 @@ ro:
     attach: Atașează
     attach_and_attach_another: Atașează și atașează inca unul
     attach_item: Atașează %{item}
+    reload_items: Reîncărcați %{item}
     attachment_class_attached: "%{attachment_class} anexat."
     attachment_class_detached: "%{attachment_class} separat."
     attachment_destroyed: Atașamentul a fost distrus

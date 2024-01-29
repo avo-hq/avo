@@ -9,6 +9,7 @@ ja:
     attach: 添付
     attach_and_attach_another: アタッチして別のものをアタッチ
     attach_item: "%{item}をアタッチ"
+    reload_items: "%{item} リロード"
     attachment_class_attached: "%{attachment_class}をアタッチしました。"
     attachment_class_detached: "%{attachment_class}をデタッチしました。"
     attachment_destroyed: アタッチは削除されました
