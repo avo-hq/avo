@@ -208,7 +208,7 @@ export default class extends Controller {
   handleOnSelect({ item }) {
     if (this.isBelongsToSearch) {
       this.updateFieldAttribute(this.hiddenIdTarget, 'value', item._id)
-      this.updateFieldAttribute(this.buttonTarget, 'value', item._label)
+      this.updateFieldAttribute(this.buttonTarget, 'value', this.removeHTMLTags(item._label))
 
       document.querySelector('.aa-DetachedOverlay').remove()
 
@@ -315,5 +315,11 @@ export default class extends Controller {
   updateFieldAttribute(target, attribute, value) {
     target.setAttribute(attribute, value)
     target.dispatchEvent(new Event('input'))
+  }
+
+  removeHTMLTags(str) {
+    const doc = new DOMParser().parseFromString(str, 'text/html')
+
+    return doc.body.textContent || ''
   }
 }
