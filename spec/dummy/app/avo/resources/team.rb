@@ -68,22 +68,22 @@ class Avo::Resources::Team < Avo::BaseResource
       end
     end
 
-    field :memberships,
-      as: :has_many,
-      searchable: true,
-      filterable: true,
-      attach_scope: -> do
-        query.where.not(user_id: parent.id).or(query.where(user_id: nil))
-      end
-
     field :admin, as: :has_one
-    field :team_members, as: :has_many, through: :memberships, translation_key: "avo.resource_translations.team_members"
-    field :reviews, as: :has_many
+    # field :memberships,
+    #   as: :has_many,
+    #   searchable: true,
+    #   filterable: true,
+    #   attach_scope: -> do
+    #     query.where.not(user_id: parent.id).or(query.where(user_id: nil))
+    #   end
 
-    if params[:show_location_field] == '1'
-      # Example for error message when resource is missing
-      field :locations, as: :has_many
-    end
+    # field :team_members, as: :has_many, through: :memberships, translation_key: "avo.resource_translations.team_members"
+    # field :reviews, as: :has_many
+
+    # if params[:show_location_field] == '1'
+    #   # Example for error message when resource is missing
+    #   field :locations, as: :has_many
+    # end
   end
 
   def filters

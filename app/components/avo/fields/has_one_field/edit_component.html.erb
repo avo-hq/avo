@@ -1,0 +1,40 @@
+
+!!!!!!!!!
+
+<% # import the form from that resource %>
+
+<%#= abort [form, field, resource].inspect %>
+<%
+resource_user = field.target_resource.new(record: field.value, view: field.view, user: field.user).detect_fields
+ %>
+<% resource_user.only_fields(only_root: true).inspect %>
+<%#= field.target_resource.only_fields(only_root: true).inspect %>
+      <% resource_user.only_fields(only_root: true).each_with_index do |item, index| %>
+        <%= render Avo::Items::SwitcherComponent.new(
+          resource: @resource,
+          reflection: @reflection,
+          item: item,
+          index: index + 1,
+          view: @view,
+          parent_resource: @parent_resource,
+          parent_record: @parent_record,
+          form: form,
+          parent_component: self,
+          actions: @actions
+        ) %>
+      <% end %>
+<%# Avo::Views::ResourceEditComponent.new(resource: resource, record: resource.record, actions: [], view: "edit", display_breadcrumbs: true) %>
+
+<%#= field.component_for_view(:edit).new(
+  resource: resource,
+  record: resource.record,
+  actions: [],
+  view: "edit",
+  display_breadcrumbs: true,
+  field: field,
+  index: 0,
+  # form: form,
+  # compact: false,
+  # stacked: nil,
+  # multiple: false
+  ) %>

@@ -77,13 +77,14 @@ module Avo
         false
       end
 
+      # TODO: mind this. we might need to bring it back
       # Adds the view override component
       # has_one, has_many, has_and_belongs_to_many fields don't have edit views
-      def component_for_view(view = Avo::ViewInquirer.new("index"))
-        view = Avo::ViewInquirer.new("show") if view.in? %w[new create update edit]
+      # def component_for_view(view = Avo::ViewInquirer.new("index"))
+      #   # view = Avo::ViewInquirer.new("show") if view.in? %w[new create update edit]
 
-        super view
-      end
+      #   super view
+      # end
 
       def authorized?
         method = "view_#{id}?".to_sym

@@ -4,7 +4,7 @@ module Avo
       attr_accessor :relation_method
 
       def initialize(id, **args, &block)
-        hide_on :forms
+        # hide_on :forms
 
         super(id, **args, &block)
 
