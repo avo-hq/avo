@@ -15,7 +15,10 @@ module Avo
 
         @always_show = args[:always_show] || false
         @attachment_key = args[:attachment_key]
-        @attachments_disabled = args[:attachments_disabled] || !@attachment_key.present?
+        # If we don't have an attachment_key, we disable attachments.  There's no point in having
+        # attachments if we can't store them.
+        @attachments_disabled = args[:attachments_disabled] || true
+        @attachments_disabled = false unless @attachment_key.present?
         @hide_attachment_filename = args[:hide_attachment_filename] || false
         @hide_attachment_filesize = args[:hide_attachment_filesize] || false
         @hide_attachment_url = args[:hide_attachment_url] || false
