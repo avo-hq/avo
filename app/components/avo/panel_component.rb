@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Avo::PanelComponent < ViewComponent::Base
+  include Avo::ApplicationHelper
+
   attr_reader :title # deprecating title in favor of name
   attr_reader :name
   attr_reader :classes
