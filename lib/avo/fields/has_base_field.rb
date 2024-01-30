@@ -16,7 +16,6 @@ module Avo
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
-
         @scope = args[:scope].present? ? args[:scope] : nil
         @attach_scope = args[:attach_scope].present? ? args[:attach_scope] : nil
         @display = args[:display].present? ? args[:display] : :show
@@ -27,7 +26,6 @@ module Avo
         @discreet_pagination = args[:discreet_pagination] || false
         @link_to_child_resource = args[:link_to_child_resource] || false
         @reload_button = args[:reload_button].present? ? args[:reload_button] : false
-        # byebug
       end
 
       def field_resource
