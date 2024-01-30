@@ -10,7 +10,6 @@ module Avo
 
         def reload_icon_enabled?
           # @reload_button = @reload_button.present? ? @reload_button : false
-          # byebug
           @reload_button = true
         end
       end
