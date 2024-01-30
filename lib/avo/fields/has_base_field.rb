@@ -3,6 +3,7 @@ module Avo
     class HasBaseField < BaseField
       include Avo::Fields::Concerns::IsSearchable
       include Avo::Fields::Concerns::UseResource
+      include Avo::Fields::Concerns::ReloadIcon
 
       attr_accessor :display
       attr_accessor :scope
@@ -10,6 +11,7 @@ module Avo
       attr_accessor :description
       attr_accessor :discreet_pagination
       attr_accessor :hide_search_input
+      attr_accessor :reload_button
       attr_reader :link_to_child_resource
 
       def initialize(id, **args, &block)
@@ -24,6 +26,8 @@ module Avo
         @use_resource = args[:use_resource] || nil
         @discreet_pagination = args[:discreet_pagination] || false
         @link_to_child_resource = args[:link_to_child_resource] || false
+        @reload_button = args[:reload_button].present? ? args[:reload_button] : false
+        # byebug
       end
 
       def field_resource
