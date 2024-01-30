@@ -3,6 +3,7 @@
 class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   include Avo::ResourcesHelper
   include Avo::ApplicationHelper
+  include Avo::Fields::Concerns::ReloadIcon
 
   attr_reader :scopes, :query, :turbo_frame, :parent_record, :parent_resource, :resource, :actions
 
@@ -219,5 +220,9 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   # This is used to identify the component in the DOM.
   def dynamic_filters_component_id
     @dynamic_filters_component_id ||= "dynamic_filters_component_id_#{SecureRandom.hex(3)}"
+  end
+
+  def reload_button
+    reload_icon_enabled?
   end
 end
