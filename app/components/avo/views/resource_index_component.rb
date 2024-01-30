@@ -3,7 +3,6 @@
 class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   include Avo::ResourcesHelper
   include Avo::ApplicationHelper
-  include Avo::Fields::Concerns::ReloadIcon
 
   attr_reader :scopes, :query, :turbo_frame, :parent_record, :parent_resource, :resource, :actions
 
@@ -223,6 +222,6 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def reload_button
-    reload_icon_enabled?
+    field&.reload_icon_enabled?
   end
 end
