@@ -34,7 +34,7 @@ jobs:
         rails:
           - '6.1'
           - '7.1'
-    runs-on: ubuntu-latest
+    runs-on: macos-14
 
     env:
       RAILS_VERSION: ${{matrix.rails}}
