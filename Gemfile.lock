@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    avo (3.3.2)
+    avo (3.3.3)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
@@ -612,4 +612,4 @@ DEPENDENCIES
   zeitwerk
 
 BUNDLED WITH
-   2.4.6
+   2.4.7
