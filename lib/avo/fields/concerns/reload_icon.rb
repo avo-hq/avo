@@ -4,6 +4,10 @@ module Avo
       module ReloadIcon
         extend ActiveSupport::Concern
 
+        include do
+          attr_accessor :reload_button
+        end
+
         def reload_icon_enabled?
           @reload_button
         end
