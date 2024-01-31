@@ -11,7 +11,6 @@ module Avo
       attr_accessor :description
       attr_accessor :discreet_pagination
       attr_accessor :hide_search_input
-      attr_accessor :reload_button
       attr_reader :link_to_child_resource
 
       def initialize(id, **args, &block)
