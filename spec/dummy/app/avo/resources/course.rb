@@ -22,8 +22,6 @@ class Avo::Resources::Course < Avo::BaseResource
 
   def form_fields
     fields_bag
-    # TODO: figure out why links should be here to attach
-    links
   end
 
   def fields_bag
