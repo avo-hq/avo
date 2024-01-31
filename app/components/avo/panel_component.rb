@@ -6,7 +6,6 @@ class Avo::PanelComponent < ViewComponent::Base
   attr_reader :title # deprecating title in favor of name
   attr_reader :name
   attr_reader :classes
-  attr_reader :reload_button
 
   delegate :white_panel_classes, to: :helpers
 
