@@ -11,6 +11,7 @@ import CopyToClipboardController from './controllers/copy_to_clipboard_controlle
 import DashboardCardController from './controllers/dashboard_card_controller'
 import DateFieldController from './controllers/fields/date_field_controller'
 import EasyMdeController from './controllers/fields/easy_mde_controller'
+import FileFieldController from './controllers/fields/file_field_controller'
 import FilterController from './controllers/filter_controller'
 import HiddenInputController from './controllers/hidden_input_controller'
 import InputAutofocusController from './controllers/input_autofocus_controller'
@@ -76,6 +77,7 @@ application.register('belongs-to-field', BelongsToFieldController)
 application.register('code-field', CodeFieldController)
 application.register('date-field', DateFieldController)
 application.register('easy-mde', EasyMdeController)
+application.register('file-field', FileFieldController)
 application.register('key-value', KeyValueController)
 application.register('progress-bar-field', ProgressBarFieldController)
 application.register('reload-belongs-to-field', ReloadBelongsToFieldController)

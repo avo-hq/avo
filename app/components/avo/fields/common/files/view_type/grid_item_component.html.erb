@@ -2,11 +2,11 @@
   <% if file.present? %>
     <div class="flex h-full">
       <% if file.representable? && is_image? %>
-        <%= image_tag helpers.main_app.url_for(file), class: "rounded-lg max-w-full #{@extra_classes}" %>
+        <%= image_tag helpers.main_app.url_for(file), "data-file-field-target": "preview", class: "rounded-lg max-w-full #{@extra_classes}" %>
       <% elsif is_audio? %>
-        <%= audio_tag(helpers.main_app.url_for(file), controls: true, preload: false, class: 'w-full') %>
+        <%= audio_tag(helpers.main_app.url_for(file), "data-file-field-target": "preview", controls: true, preload: false, class: 'w-full') %>
       <% elsif is_video? %>
-        <%= video_tag(helpers.main_app.url_for(file), controls: true, preload: false, class: 'w-full') %>
+        <%= video_tag(helpers.main_app.url_for(file), "data-file-field-target": "preview", controls: true, preload: false, class: 'w-full') %>
       <% else %>
         <div class="relative flex flex-col justify-evenly items-center px-2 rounded-lg border bg-white border-gray-500 min-h-24">
           <div class="flex flex-col justify-center items-center w-full">
