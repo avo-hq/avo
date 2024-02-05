@@ -9,7 +9,7 @@ module Avo
         end
 
         def reload_icon_enabled?
-          @reload_button
+          Avo::ExecutionContext.new(target: @reload_button).handle
         end
       end
     end
