@@ -5,15 +5,10 @@ class Avo::Resources::Course < Avo::BaseResource
   self.keep_filters_panel_open = true
   self.stimulus_controllers = "city-in-country toggle-fields"
 
-
-  def links
-    field :links, as: :has_many, searchable: true, placeholder: "Click to choose a link",
-      discreet_pagination: true
-  end
-
   def show_fields
     fields_bag
-    links
+    field :links, as: :has_many, searchable: true, placeholder: "Click to choose a link",
+      discreet_pagination: true
   end
 
   def index_fields

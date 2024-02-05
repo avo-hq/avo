@@ -20,6 +20,8 @@ RSpec.feature "Fields methods for each view", type: :feature do
 
   context "with `view_fields` declaration" do
     it "shows only the specified fields for show view" do
+      original_show_fields = Avo::Resources::Course.instance_method(:show_fields)
+
       Avo::Resources::Course.class_eval do
         def show_fields
           field :name, as: :text
@@ -40,11 +42,13 @@ RSpec.feature "Fields methods for each view", type: :feature do
       expect(page).not_to have_selector 'turbo-frame[id="has_many_field_show_links"]'
 
       Avo::Resources::Course.class_eval do
-        remove_method :show_fields
+        define_method(:show_fields, original_show_fields)
       end
     end
 
     it "shows only the specified fields for index view" do
+      original_index_fields = Avo::Resources::Course.instance_method(:index_fields)
+
       Avo::Resources::Course.class_eval do
         def index_fields
           field :id, as: :id
@@ -64,15 +68,19 @@ RSpec.feature "Fields methods for each view", type: :feature do
       expect(page).not_to have_selector 'turbo-frame[id="has_many_field_show_links"]'
 
       Avo::Resources::Course.class_eval do
-        remove_method :index_fields
+        define_method(:index_fields, original_index_fields)
       end
     end
 
     it "shows only the specified fields for display views" do
       # Store the original method
-      original_display_fields = Avo::Resources::Course.instance_method(:display_fields)
+      original_show_fields = Avo::Resources::Course.instance_method(:show_fields)
+      original_index_fields = Avo::Resources::Course.instance_method(:index_fields)
 
       Avo::Resources::Course.class_eval do
+        remove_method :show_fields
+        remove_method :index_fields
+
         def display_fields
           field :id, as: :id
           field :name, as: :text
@@ -107,7 +115,8 @@ RSpec.feature "Fields methods for each view", type: :feature do
 
       # Restore the original method
       Avo::Resources::Course.class_eval do
-        define_method(:display_fields, original_display_fields)
+        define_method(:show_fields, original_show_fields)
+        define_method(:index_fields, original_index_fields)
       end
     end
 
