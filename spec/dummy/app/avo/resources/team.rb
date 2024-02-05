@@ -80,7 +80,7 @@ class Avo::Resources::Team < Avo::BaseResource
     field :team_members, as: :has_many, through: :memberships, translation_key: "avo.resource_translations.team_members"
     field :reviews, as: :has_many,
       reload_button: -> {
-        current_user.admin?
+        current_user.is_admin?
       }
 
     if params[:show_location_field] == "1"
