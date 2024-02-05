@@ -43,8 +43,10 @@ ignoredDynamicClasses.push(
   'font-mono',
 )
 
+const content = `# This file was auto-generated using the \`yarn export:tailwind-safelist\` command in \`export-tailwind-safelist.js\`\n${ignoredDynamicClasses.flat().join(' ')}`
+
 // Write them into a safelist.txt file until @tailwindcss/jit supports PurgeCSS options
-fs.writeFile('./safelist.txt', ignoredDynamicClasses.flat().join(' '), () => {
+fs.writeFile('./safelist.txt', content, () => {
   // eslint-disable-next-line no-console
   console.log(`Generated safelist.txt file with ${ignoredDynamicClasses.flat().length} classes.`)
 })
