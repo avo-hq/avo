@@ -2,7 +2,11 @@
   <% if @field.as_html %>
     <%== @field.value %>
   <% elsif @field.protocol.present? %>
-    <%= link_to @field.value, "#{@field.protocol}:#{@field.value}" %>
+    <% if @field.protocol.to_sym == :link %>
+      <%= link_to @field.value, @field.value %>
+    <% else %>
+      <%= link_to @field.value, "#{@field.protocol}:#{@field.value}" %>
+    <% end %>
   <% else %>
     <%= @field.value %>
   <% end %>
