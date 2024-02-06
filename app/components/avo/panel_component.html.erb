@@ -11,7 +11,7 @@
           <span><%= @name %></span>
           <% if @reload_button %>
             <%= button_tag data: { controller: "panel-refresh", action: "click->panel-refresh#refresh" } do %>
-              <%= svg "arrow-path-rounded-square", class: "ml-2 text-2xl h-6", alt: 'Reload' %>
+              <%= svg "heroicons/outline/arrow-path-rounded-square", class: "ml-2 text-2xl h-6", alt: 'Reload' %>
             <% end %>
           <% end %>
         </div>
