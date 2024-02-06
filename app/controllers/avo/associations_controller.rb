@@ -21,7 +21,7 @@ module Avo
       @resource = @related_resource
       @parent_record = @parent_resource.find_record(params[:id], params: params)
       @parent_resource.hydrate(record: @parent_record)
-      association_name = Resources::Base.valid_association_name(@parent_record, params[:related_name])
+      association_name = Resources::ActiveRecord.valid_association_name(@parent_record, params[:related_name])
       @query = @related_authorization.apply_policy @parent_record.send(association_name)
       @association_field = @parent_resource.get_field params[:related_name]
 
@@ -58,7 +58,7 @@ module Avo
     end
 
     def create
-      association_name = Resources::Base.valid_association_name(@record, params[:related_name])
+      association_name = Resources::ActiveRecord.valid_association_name(@record, params[:related_name])
 
       if reflection_class == "HasManyReflection"
         @record.send(association_name) << @attachment_record
@@ -76,7 +76,7 @@ module Avo
     end
 
     def destroy
-      association_name = Resources::Base.valid_association_name(@record, params[:related_name])
+      association_name = Resources::ActiveRecord.valid_association_name(@record, params[:related_name])
 
       if reflection_class == "HasManyReflection"
         @record.send(association_name).delete @attachment_record

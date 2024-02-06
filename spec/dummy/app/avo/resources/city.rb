@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::Resources::City < Avo::Resources::Base
+class Avo::Resources::City < Avo::Resources::ActiveRecord
   self.search = {
     query: -> { query.ransack(id_eq: params[:q], m: "or").result(distinct: false) }
   }

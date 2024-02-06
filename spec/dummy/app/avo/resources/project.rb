@@ -1,4 +1,4 @@
-class Avo::Resources::Project < Avo::Resources::Base
+class Avo::Resources::Project < Avo::Resources::ActiveRecord
   self.title = :name
 
   self.search = {

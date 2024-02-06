@@ -147,7 +147,7 @@ module Avo
           # find the record
           via_resource = Avo.resource_manager.get_resource_by_model_class(params[:via_relation_class])
           @related_record = via_resource.find_record params[:via_record_id], params: params
-          association_name = Resources::Base.valid_association_name(@record, params[:via_relation])
+          association_name = Resources::ActiveRecord.valid_association_name(@record, params[:via_relation])
 
           if params[:via_association_type] == "has_one"
             # On has_one scenarios we should switch the @record and @related_record
@@ -461,7 +461,7 @@ module Avo
           Avo.resource_manager.get_resource_by_model_class(params[:via_relation_class])
         end
 
-        association_name = Resources::Base.valid_association_name(@record, params[:via_relation])
+        association_name = Resources::ActiveRecord.valid_association_name(@record, params[:via_relation])
 
         return resource_view_path(
           record: @record.send(association_name),

@@ -1,4 +1,4 @@
-class Avo::Resources::Post < Avo::Resources::Base
+class Avo::Resources::Post < Avo::Resources::ActiveRecord
   self.title = :name
   self.search = {
     query: -> {

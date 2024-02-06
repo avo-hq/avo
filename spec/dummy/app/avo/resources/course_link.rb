@@ -1,4 +1,4 @@
-class Avo::Resources::CourseLink < Avo::Resources::Base
+class Avo::Resources::CourseLink < Avo::Resources::ActiveRecord
   self.title = :link
   self.includes = [:course]
   self.model_class = Course::Link

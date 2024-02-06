@@ -1,4 +1,4 @@
-class Avo::Resources::ActiveRecordAttachment < Avo::Resources::Base
+class Avo::Resources::ActiveRecordAttachment < Avo::Resources::ActiveRecord
   self.title = :filename
   self.model_class = "ActiveStorage::Attachment"
   self.visible_on_sidebar = false

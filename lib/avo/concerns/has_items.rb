@@ -330,7 +330,7 @@ module Avo
       def hydrate_item(item)
         return unless item.respond_to? :hydrate
 
-        res = self.class.ancestors.include?(Avo::Resources::Base) ? self : resource
+        res = self.class.ancestors.include?(Avo::Resources::ActiveRecord) ? self : resource
         item.hydrate(view: view, resource: res)
       end
     end

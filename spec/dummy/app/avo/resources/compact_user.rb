@@ -1,4 +1,4 @@
-class Avo::Resources::CompactUser < Avo::Resources::Base
+class Avo::Resources::CompactUser < Avo::Resources::ActiveRecord
   self.model_class = ::User
   self.find_record_method = -> {
     query.friendly.find id

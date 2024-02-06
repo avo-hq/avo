@@ -1,4 +1,4 @@
-class Avo::Resources::Sibling < Avo::Resources::Base
+class Avo::Resources::Sibling < Avo::Resources::ActiveRecord
   self.description = "Demo resource to illustrate Avo\'s Single Table Inheritance support (Sibling < Person)"
   self.model_class = ::Sibling
   self.search = {

@@ -1,4 +1,4 @@
-class Avo::Resources::Course < Avo::Resources::Base
+class Avo::Resources::Course < Avo::Resources::ActiveRecord
   self.search = {
     query: -> { query.ransack(id_eq: params[:q], name_cont: params[:q], m: "or").result(distinct: false) }
   }

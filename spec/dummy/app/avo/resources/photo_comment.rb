@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::Resources::PhotoComment < Avo::Resources::Base
+class Avo::Resources::PhotoComment < Avo::Resources::ActiveRecord
   self.title = :tiny_name
   self.includes = [:user, [photo_attachment: :blob]]
   self.model_class = ::Comment

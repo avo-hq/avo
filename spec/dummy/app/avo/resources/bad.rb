@@ -1,4 +1,4 @@
-class Avo::Resources::Bad < Avo::Resources::Base
+class Avo::Resources::Bad < Avo::Resources::ActiveRecord
   self.title = :id
   self.includes = []
   # self.search = {

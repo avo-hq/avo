@@ -1,4 +1,4 @@
-class Avo::Resources::TeamUser < Avo::Resources::Base
+class Avo::Resources::TeamUser < Avo::Resources::ActiveRecord
   self.model_class = "User"
   self.find_record_method = -> {
     # When using friendly_id, we need to check if the id is a slug or an id.

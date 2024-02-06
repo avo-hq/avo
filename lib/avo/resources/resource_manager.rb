@@ -40,7 +40,7 @@ module Avo
             load_resources_namespace
           end
 
-          Resources::Base.descendants
+          Resources::Base.descendants.reject { |resource| resource == Avo::Resources::ActiveRecord }
         end
 
         def load_resources_namespace

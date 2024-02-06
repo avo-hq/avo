@@ -1,4 +1,4 @@
-class Avo::Resources::Comment < Avo::Resources::Base
+class Avo::Resources::Comment < Avo::Resources::ActiveRecord
   self.title = :tiny_name
   self.includes = [:user, :commentable]
   self.search = {

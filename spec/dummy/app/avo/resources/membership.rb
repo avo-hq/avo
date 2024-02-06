@@ -1,4 +1,4 @@
-class Avo::Resources::Membership < Avo::Resources::Base
+class Avo::Resources::Membership < Avo::Resources::ActiveRecord
   self.includes = [:user, :team]
   self.visible_on_sidebar = false
   self.search = {
