@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
+class Avo::Views::Resources::ActiveRecord::Show < Avo::ResourceComponent
   include Avo::ApplicationHelper
 
   attr_reader :actions, :display_breadcrumbs

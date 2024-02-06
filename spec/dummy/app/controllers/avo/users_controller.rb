@@ -1,4 +1,4 @@
-class Avo::UsersController < Avo::ResourcesController
+class Avo::UsersController < Avo::ActiveRecordResourcesController
   def get_users
     users = User.all.map do |user|
       {

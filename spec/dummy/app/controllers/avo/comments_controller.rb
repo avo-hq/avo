@@ -1,2 +1,2 @@
-class Avo::CommentsController < Avo::ResourcesController
+class Avo::CommentsController < Avo::ActiveRecordResourcesController
 end

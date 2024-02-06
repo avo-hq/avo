@@ -1,2 +1,2 @@
-class Avo::FishController < Avo::ResourcesController
+class Avo::FishController < Avo::ActiveRecordResourcesController
 end

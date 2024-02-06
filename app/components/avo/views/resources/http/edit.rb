@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
+class Avo::Views::Resources::Http::Edit < Avo::ResourceComponent
   include Avo::ApplicationHelper
 
   attr_reader :actions, :display_breadcrumbs

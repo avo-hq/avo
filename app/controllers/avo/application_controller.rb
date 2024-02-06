@@ -147,7 +147,7 @@ module Avo
     end
 
     def set_related_record
-      association_name = BaseResource.valid_association_name(@record, params[:related_name])
+      association_name = Resources::ActiveRecord.valid_association_name(@record, params[:related_name])
       @related_record = if @field.is_a? Avo::Fields::HasOneField
         @record.send association_name
       else
@@ -242,7 +242,7 @@ module Avo
 
       if Avo.configuration.full_width_container
         contain = false
-      elsif Avo.configuration.full_width_index_view && action_name.to_sym == :index && self.class.superclass.to_s == "Avo::ResourcesController"
+      elsif Avo.configuration.full_width_index_view && action_name.to_sym == :index && self.class.superclass.to_s == "Avo::ActiveRecordResourcesController"
         contain = false
       end
 

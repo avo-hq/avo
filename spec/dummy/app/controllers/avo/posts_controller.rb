@@ -1,2 +1,2 @@
-class Avo::PostsController < Avo::ResourcesController
+class Avo::PostsController < Avo::ActiveRecordResourcesController
 end

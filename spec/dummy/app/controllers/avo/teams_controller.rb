@@ -1,2 +1,2 @@
-class Avo::TeamsController < Avo::ResourcesController
+class Avo::TeamsController < Avo::ActiveRecordResourcesController
 end

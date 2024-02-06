@@ -1,2 +1,2 @@
-class Avo::MembershipsController < Avo::ResourcesController
+class Avo::MembershipsController < Avo::ActiveRecordResourcesController
 end

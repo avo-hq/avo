@@ -91,7 +91,7 @@ Avo.configure do |config|
   # config.disabled_features = []
   # config.buttons_on_form_footers = true
   # config.field_wrapper_layout = true
-  # config.resource_parent_controller = "Avo::ResourcesController"
+  # config.resource_parent_controller = "Avo::ActiveRecordResourcesController"
 
   ## == Branding ==
   # config.branding = {

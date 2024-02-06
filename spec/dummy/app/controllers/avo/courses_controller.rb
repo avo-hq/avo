@@ -1,4 +1,4 @@
-class Avo::CoursesController < Avo::ResourcesController
+class Avo::CoursesController < Avo::ActiveRecordResourcesController
 
   def cities
     render json: get_cities(params[:country])
