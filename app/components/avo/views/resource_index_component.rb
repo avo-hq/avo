@@ -101,7 +101,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   def attach_path
     current_path = CGI.unescape(request.env["PATH_INFO"]).split("/").select(&:present?)
 
-    Avo.root_path(paths: [*current_path, "new"])
+    Avo.root_path(paths: [*current_path, "new"], query: { view: @parent_resource&.view&.to_s })
   end
 
   def singular_resource_name
