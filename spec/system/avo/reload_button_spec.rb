@@ -12,7 +12,7 @@ RSpec.describe "Reload button", type: :system do
         expect(page).to have_content("Initial review body")
         review.update(body: "Updated review body")
         expect(page).to have_content("Initial review body")
-        find("#reloadButton").click
+        find("button[data-controller='panel-refresh']").click
         expect(page).to have_content("Updated review body")
       end
     end
