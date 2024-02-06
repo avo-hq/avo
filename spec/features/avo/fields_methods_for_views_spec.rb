@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 RSpec.feature "Fields methods for each view", type: :feature do
-  let!(:course) { create :course }
+  let!(:links) { create_list :course_link, 3 }
+  let!(:course) { create :course, links: links }
 
   context "with `fields` declaration" do
     it "shows all the fields" do
@@ -158,6 +159,14 @@ RSpec.feature "Fields methods for each view", type: :feature do
       Avo::Resources::Course.class_eval do
         define_method(:form_fields, original_form_fields)
       end
+    end
+
+    it "detach works using show and index fields api" do
+      visit "#{Avo::Engine.routes.url_helpers.resources_course_path(course)}/links?turbo_frame=has_many_field_links&view=show"
+
+      expect {
+        find("tr[data-resource-id='#{course.links.first.to_param}'] [data-control='detach']").click
+      }.to change(course.links, :count).by(-1)
     end
   end
 end
