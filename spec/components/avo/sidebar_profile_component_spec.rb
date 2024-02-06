@@ -9,7 +9,7 @@ RSpec.describe Avo::SidebarProfileComponent, type: :component do
   describe 'destroy_user_session_path' do
     context 'with default configuration' do
       it "renders sign out link" do
-        with_controller_class Avo::BaseController do
+        with_controller_class Avo::ActiveRecordController do
           render_inline(described_class.new(user: nil))
           expect(page).to have_css "form[action='/users/sign_out']", text: "Sign out"
         end
@@ -24,7 +24,7 @@ RSpec.describe Avo::SidebarProfileComponent, type: :component do
       end
 
       it "does not render sign out link" do
-        with_controller_class Avo::BaseController do
+        with_controller_class Avo::ActiveRecordController do
           render_inline(described_class.new(user: nil))
           expect(page).to_not have_css "form", text: "Sign out"
         end
@@ -46,7 +46,7 @@ RSpec.describe Avo::SidebarProfileComponent, type: :component do
       end
 
       it "renders sign out link" do
-        with_controller_class Avo::BaseController do
+        with_controller_class Avo::ActiveRecordController do
           render_inline(described_class.new(user: nil))
           expect(page).to have_css "form[action='/accounts/sign_out']", text: "Sign out"
         end
@@ -68,7 +68,7 @@ RSpec.describe Avo::SidebarProfileComponent, type: :component do
       end
 
       it "renders sign out link" do
-        with_controller_class Avo::BaseController do
+        with_controller_class Avo::ActiveRecordController do
           render_inline(described_class.new(user: nil))
           expect(page).to have_css "form[action='/custom/sign_out']", text: "Sign out"
         end

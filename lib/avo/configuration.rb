@@ -95,7 +95,7 @@ module Avo
       @authorization_client = :pundit
       @field_wrapper_layout = :inline
       @resources = nil
-      @resource_parent_controller = "Avo::ResourcesController"
+      @resource_parent_controller = "Avo::ActiveRecordResourcesController"
       @mount_avo_engines = true
       @cache_store = computed_cache_store
       @logger = default_logger

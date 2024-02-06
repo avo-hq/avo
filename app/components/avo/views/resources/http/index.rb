@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
+class Avo::Views::Resources::Http::Index < Avo::ResourceComponent
   include Avo::ResourcesHelper
   include Avo::ApplicationHelper
 

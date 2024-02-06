@@ -1,0 +1,35 @@
+<%= content_tag :div,
+  data: {
+    model_name: @resource.model_name.to_s,
+    resource_name: @resource.class.to_s,
+    record_id: @resource.record.id,
+    selected_resources_name: @resource.model_key,
+    selected_resources: [@resource.record.to_param],
+    **@resource.stimulus_data_attributes
+  } do %>
+  <%= content_tag :div, class: 'space-y-12' do %>
+    <%= render_cards_component %>
+    <% @resource.get_items.each_with_index do |item, index| %>
+      <%= render Avo::Items::SwitcherComponent.new(
+        resource: @resource,
+        reflection: @reflection,
+        item: item,
+        index: index + 1,
+        view: @view,
+        parent_resource: @parent_resource,
+        parent_record: @parent_record,
+        parent_component: self,
+        actions: @actions
+      )%>
+    <% end %>
+  <% end %>
+  <% if should_display_invalid_fields_errors? %>
+    <turbo-stream action="append" target="alerts">
+      <template>
+        <% @resource.invalid_fields.each do |error| %>
+          <%= render Avo::AlertComponent.new :error, error[:message] %>
+        <% end %>
+      </template>
+    </turbo-stream>
+  <% end %>
+<% end %>

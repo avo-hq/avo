@@ -1,2 +1,2 @@
-class Avo::ReviewsController < Avo::ResourcesController
+class Avo::ReviewsController < Avo::ActiveRecordResourcesController
 end

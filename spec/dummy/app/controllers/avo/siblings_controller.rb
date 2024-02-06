@@ -1,2 +1,2 @@
-class Avo::SiblingsController < Avo::ResourcesController
+class Avo::SiblingsController < Avo::ActiveRecordResourcesController
 end

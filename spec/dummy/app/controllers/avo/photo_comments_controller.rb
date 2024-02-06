@@ -1,2 +1,2 @@
-class Avo::PhotoCommentsController < Avo::ResourcesController
+class Avo::PhotoCommentsController < Avo::ActiveRecordResourcesController
 end

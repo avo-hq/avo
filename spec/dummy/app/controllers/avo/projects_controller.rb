@@ -1,2 +1,2 @@
-class Avo::ProjectsController < Avo::ResourcesController
+class Avo::ProjectsController < Avo::ActiveRecordResourcesController
 end

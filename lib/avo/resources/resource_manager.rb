@@ -40,7 +40,7 @@ module Avo
             load_resources_namespace
           end
 
-          Resources::Base.descendants.reject { |resource| resource == Avo::Resources::ActiveRecord }
+          Resources::Base.descendants.reject { |resource| resource == Avo::Resources::ActiveRecord || resource == Avo::Resources::Http }
         end
 
         def load_resources_namespace
@@ -62,6 +62,9 @@ module Avo
 
       def check_bad_resources
         resources.each do |resource|
+          # Check model_class only for active record resources
+          next if !resource.is_active_record_resource?
+
           has_model = resource.model_class.present?
 
           unless has_model
@@ -79,7 +82,7 @@ module Avo
 
       # Filters out the resources that are missing the model_class
       def valid_resources
-        resources.select { |resource| resource.model_class.present? }.sort_by(&:name)
+        resources.select { |resource| resource.is_http_resource? || resource.model_class.present? }.sort_by(&:name)
       end
 
       # Returns the Avo resource by camelized name
@@ -113,6 +116,7 @@ module Avo
         return get_resource(mapping) if mapping.present?
 
         valid_resources
+          .select { |resource| resource.is_active_record_resource? }
           .find do |resource|
             resource.model_class.model_name.name == klass.to_s
           end
@@ -146,7 +150,7 @@ module Avo
           .select do |resource|
             resource.authorization.class.authorize(
               user,
-              resource.model_class,
+              resource.try(:model_class),
               Avo.configuration.authorization_methods.stringify_keys["index"],
               raise_exception: false
             )

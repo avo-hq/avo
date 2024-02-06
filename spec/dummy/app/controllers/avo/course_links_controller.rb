@@ -1,2 +1,2 @@
-class Avo::CourseLinksController < Avo::ResourcesController
+class Avo::CourseLinksController < Avo::ActiveRecordResourcesController
 end

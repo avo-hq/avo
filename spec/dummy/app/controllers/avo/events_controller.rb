@@ -1,2 +1,2 @@
-class Avo::EventsController < Avo::ResourcesController
+class Avo::EventsController < Avo::ActiveRecordResourcesController
 end

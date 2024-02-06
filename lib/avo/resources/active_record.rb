@@ -6,10 +6,7 @@ module Avo
       include ActionView::Helpers::UrlHelper
       include Avo::Concerns::HasItems
       include Avo::Concerns::CanReplaceItems
-      include Avo::Concerns::HasControls
-      include Avo::Concerns::HasResourceStimulusControllers
       include Avo::Concerns::ModelClassConstantized
-      include Avo::Concerns::HasDescription
       include Avo::Concerns::HasHelpers
       include Avo::Concerns::Hydration
       include Avo::Concerns::Pagination
@@ -36,26 +33,19 @@ module Avo
       # class methods
       delegate :class_name, to: :class
       delegate :route_key, to: :class
-      delegate :singular_route_key, to: :class
 
-      attr_accessor :view
       attr_accessor :reflection
       attr_accessor :user
       attr_accessor :record
 
       class_attribute :id, default: :id
       class_attribute :title
-      class_attribute :search, default: {}
       class_attribute :includes, default: []
-      class_attribute :authorization_policy
       class_attribute :translation_key
       class_attribute :default_view_type, default: :table
       class_attribute :devise_password_optional, default: false
       class_attribute :scopes_loader
       class_attribute :filters_loader
-      class_attribute :view_types
-      class_attribute :grid_view
-      class_attribute :visible_on_sidebar, default: true
       class_attribute :index_query, default: -> {
         query
       }
@@ -68,8 +58,6 @@ module Avo
       class_attribute :keep_filters_panel_open, default: false
       class_attribute :extra_params
       class_attribute :link_to_child_resource, default: false
-      class_attribute :map_view
-      class_attribute :components, default: {}
 
       # EXTRACT:
       class_attribute :ordering
@@ -161,52 +149,12 @@ module Avo
           model_class.model_name.plural
         end
 
-        def class_name
-          to_s.demodulize
-        end
-
-        def route_key
-          class_name.underscore.pluralize
-        end
-
-        def singular_route_key
-          route_key.singularize
-        end
-
-        def translation_key
-          @translation_key || "avo.resource_translations.#{class_name.underscore}"
-        end
-
-        def name
-          default = class_name.underscore.humanize
-
-          if translation_key
-            t(translation_key, count: 1, default: default).humanize
-          else
-            default
-          end
-        end
-        alias_method :singular_name, :name
-
-        def plural_name
-          default = name.pluralize
-
-          if translation_key
-            t(translation_key, count: 2, default: default).humanize
-          else
-            default
-          end
-        end
-
         def underscore_name
           return @name if @name.present?
 
           name.demodulize.underscore
         end
 
-        def navigation_label
-          plural_name.humanize
-        end
 
         def find_record(id, query: nil, params: nil)
           Avo::ExecutionContext.new(
@@ -217,10 +165,6 @@ module Avo
           ).handle
         end
 
-        def search_query
-          search.dig(:query)
-        end
-
         def fetch_search(key, record: nil)
           # self.class.fetch_search
           Avo::ExecutionContext.new(target: search[key], resource: self, record: record).handle
@@ -229,8 +173,6 @@ module Avo
 
       delegate :context, to: ::Avo::Current
       delegate :name, to: :class
-      delegate :singular_name, to: :class
-      delegate :plural_name, to: :class
       delegate :underscore_name, to: :class
       delegate :to_param, to: :class
       delegate :find_record, to: :class
@@ -376,25 +318,6 @@ module Avo
         when Proc
           Avo::ExecutionContext.new(target: title, resource: self, record: @record).handle
         end
-      end
-
-      def available_view_types
-        if self.class.view_types.present?
-          return Array(
-            Avo::ExecutionContext.new(
-              target: self.class.view_types,
-              resource: self,
-              record: record
-            ).handle
-          )
-        end
-
-        view_types = [:table]
-
-        view_types << :grid if self.class.grid_view.present?
-        view_types << :map if map_view.present?
-
-        view_types
       end
 
       def attachment_fields
@@ -569,6 +492,10 @@ module Avo
 
       def entity_loader(entity)
         instance_variable_get("@#{entity.to_s.pluralize}_loader")
+      end
+
+      def type
+        :active_record
       end
     end
   end

@@ -1,2 +1,2 @@
-class Avo::PeopleController < Avo::ResourcesController
+class Avo::PeopleController < Avo::ActiveRecordResourcesController
 end
