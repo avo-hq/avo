@@ -147,7 +147,7 @@ module Avo
     end
 
     def set_related_record
-      association_name = BaseResource.valid_association_name(@record, params[:related_name])
+      association_name = Resources::Base.valid_association_name(@record, params[:related_name])
       @related_record = if @field.is_a? Avo::Fields::HasOneField
         @record.send association_name
       else

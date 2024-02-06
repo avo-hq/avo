@@ -21,7 +21,7 @@ class Avo::BaseComponent < ViewComponent::Base
     resource = Avo.resource_manager.get_resource(params[:via_resource_class])
 
     model_class = if params[:via_relation_class].present?
-      ::Avo::BaseResource.get_model_by_name params[:via_relation_class]
+      ::Avo::Resources::Base.get_model_by_name params[:via_relation_class]
     else
       resource.model_class
     end

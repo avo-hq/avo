@@ -1,4 +1,4 @@
-class Avo::Resources::User < Avo::BaseResource
+class Avo::Resources::User < Avo::Resources::Base
   self.title = -> {
     record.name
   }

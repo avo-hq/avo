@@ -1,4 +1,4 @@
-class Avo::Resources::Product < Avo::BaseResource
+class Avo::Resources::Product < Avo::Resources::Base
   self.title = :title
   self.includes = []
   self.default_view_type = :grid

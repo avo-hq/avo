@@ -1,4 +1,4 @@
-class Avo::Resources::Person < Avo::BaseResource
+class Avo::Resources::Person < Avo::Resources::Base
   self.title = :name
   self.description = "Demo resource to illustrate Avo's Single Table Inheritance support (Spouse < Person)"
   self.includes = []

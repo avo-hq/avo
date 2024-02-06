@@ -1,4 +1,4 @@
-class Avo::Resources::Fish < Avo::BaseResource
+class Avo::Resources::Fish < Avo::Resources::Base
   self.includes = []
   self.search = {
     query: -> { query.ransack(id_eq: params[:q], name_cont: params[:q], m: "or").result(distinct: false) }

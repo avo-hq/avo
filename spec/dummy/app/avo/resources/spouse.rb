@@ -1,4 +1,4 @@
-class Avo::Resources::Spouse < Avo::BaseResource
+class Avo::Resources::Spouse < Avo::Resources::Base
   self.description = "Demo resource to illustrate Avo\'s Single Table Inheritance support (Spouse < Person)"
   self.model_class = ::Spouse
   self.search = {

@@ -1,4 +1,4 @@
-class Avo::Resources::Team < Avo::BaseResource
+class Avo::Resources::Team < Avo::Resources::Base
   self.includes = [:admin, :team_members, :locations]
   self.search = {
     query: -> { query.ransack(id_eq: params[:q], name_cont: params[:q], m: "or").result(distinct: false) }

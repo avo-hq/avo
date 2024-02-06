@@ -1,4 +1,4 @@
-class Avo::Resources::ZPost < Avo::BaseResource
+class Avo::Resources::ZPost < Avo::Resources::Base
   self.search = {
     query: -> {
       query.ransack(id_eq: params[:q], name_cont: params[:q], body_cont: params[:q], m: "or").result(distinct: false)

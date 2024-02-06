@@ -1,4 +1,4 @@
-class Avo::Resources::Review < Avo::BaseResource
+class Avo::Resources::Review < Avo::Resources::Base
   self.title = :tiny_name
   self.includes = [:user, :reviewable]
   self.description = "Demo resource to illustrate searchable belongs_to associations. Visit a team and create a review for it."

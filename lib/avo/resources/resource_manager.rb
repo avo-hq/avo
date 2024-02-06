@@ -40,7 +40,7 @@ module Avo
             load_resources_namespace
           end
 
-          BaseResource.descendants
+          Resources::Base.descendants
         end
 
         def load_resources_namespace

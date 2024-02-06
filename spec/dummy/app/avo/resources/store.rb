@@ -1,4 +1,4 @@
-class Avo::Resources::Store < Avo::BaseResource
+class Avo::Resources::Store < Avo::Resources::Base
   self.includes = [:location]
 
   def fields
