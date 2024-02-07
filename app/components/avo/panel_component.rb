@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Avo::PanelComponent < ViewComponent::Base
+  include Avo::ApplicationHelper
+
   attr_reader :title # deprecating title in favor of name
   attr_reader :name
   attr_reader :classes
@@ -15,7 +17,7 @@ class Avo::PanelComponent < ViewComponent::Base
   renders_one :footer_tools
   renders_one :footer
 
-  def initialize(name: nil, description: nil, body_classes: nil, data: {}, display_breadcrumbs: false, index: nil, classes: nil, **args)
+  def initialize(name: nil, description: nil, body_classes: nil, data: {}, display_breadcrumbs: false, index: nil, classes: nil, reload_button: nil, **args)
     # deprecating title in favor of name
     @title = args[:title]
     @name = name || title
@@ -25,6 +27,7 @@ class Avo::PanelComponent < ViewComponent::Base
     @data = data
     @display_breadcrumbs = display_breadcrumbs
     @index = index
+    @reload_button = reload_button
   end
 
   private
