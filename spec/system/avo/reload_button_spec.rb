@@ -9,10 +9,15 @@ RSpec.describe "Reload button", type: :system do
       it "press the reload button and it will refresh the Turbo-Frame", js: true do
         visit "/admin/resources/teams/4"
         scroll_to find('turbo-frame[id="has_many_field_show_reviews"]')
+
         expect(page).to have_content("Initial review body")
+
         review.update(body: "Updated review body")
+
         expect(page).to have_content("Initial review body")
+
         find("button[data-controller='panel-refresh']").click
+
         expect(page).to have_content("Updated review body")
       end
     end
