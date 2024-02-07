@@ -24,7 +24,7 @@ module Avo
         @use_resource = args[:use_resource] || nil
         @discreet_pagination = args[:discreet_pagination] || false
         @link_to_child_resource = args[:link_to_child_resource] || false
-        @reload_button = args[:reload_button].present? ? args[:reload_button] : false
+        @reloadable = args[:reloadable].present? ? args[:reloadable] : false
       end
 
       def field_resource

@@ -221,7 +221,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     @dynamic_filters_component_id ||= "dynamic_filters_component_id_#{SecureRandom.hex(3)}"
   end
 
-  def reload_button
+  def reloadable
     field&.reload_icon_enabled?
   end
 end

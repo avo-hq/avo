@@ -9,7 +9,7 @@
         <% end %>
         <div class="text-2xl tracking-normal font-semibold text-gray-800 truncate items-center flex flex-1" data-target="title">
           <span><%= @name %></span>
-          <% if @reload_button %>
+          <% if @reloadable %>
             <%= button_tag data: { controller: "panel-refresh", action: "click->panel-refresh#refresh" } do %>
               <%= svg "heroicons/outline/arrow-path", class: "ml-2 text-2xl h-6 " %>
             <% end %>

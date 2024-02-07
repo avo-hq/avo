@@ -6,7 +6,7 @@
     **@resource.stimulus_data_attributes
   } do %>
   <%= render_cards_component %>
-  <%= render Avo::PanelComponent.new(name: title, description: description, data: { component: 'resources-index' }, display_breadcrumbs: @reflection.blank?, reload_button: reload_button) do |c| %>
+  <%= render Avo::PanelComponent.new(name: title, description: description, data: { component: 'resources-index' }, display_breadcrumbs: @reflection.blank?, reloadable: reloadable) do |c| %>
     <% c.with_tools do %>
       <% @resource.render_index_controls(item: singular_resource_name.downcase).each do |control| %>
         <%= render_control control %>

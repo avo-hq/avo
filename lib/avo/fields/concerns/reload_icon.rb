@@ -5,11 +5,11 @@ module Avo
         extend ActiveSupport::Concern
 
         included do
-          attr_accessor :reload_button
+          attr_accessor :reloadable
         end
 
         def reload_icon_enabled?
-          Avo::ExecutionContext.new(target: @reload_button).handle
+          Avo::ExecutionContext.new(target: @reloadable).handle
         end
       end
     end
