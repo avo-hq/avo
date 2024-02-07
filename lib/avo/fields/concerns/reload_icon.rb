@@ -8,7 +8,7 @@ module Avo
           attr_accessor :reloadable
         end
 
-        def reload_icon_enabled?
+        def reloadable?
           Avo::ExecutionContext.new(target: @reloadable).handle
         end
       end

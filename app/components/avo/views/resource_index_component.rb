@@ -222,6 +222,6 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def reloadable
-    field&.reload_icon_enabled?
+    field&.reloadable?
   end
 end
