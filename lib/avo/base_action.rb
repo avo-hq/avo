@@ -53,7 +53,7 @@ module Avo
           .to_s
 
         data = {
-          turbo_frame: "actions_show",
+          turbo_frame: Avo::ACTIONS_TURBO_FRAME_ID,
         }
 
         [path, data]

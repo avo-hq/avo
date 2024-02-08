@@ -90,7 +90,12 @@ module Avo
           else
             # Reload the page
             back_path = request.referer || params[:referrer].presence || resources_path(resource: @resource)
-            render turbo_stream: turbo_stream.redirect_to(back_path)
+
+            render turbo_stream: [
+              # we're clearing out the actions turbo frame so if the user runs a no_confirmation action twice it will not get cached and go into a redirect loop.
+              turbo_stream.inner_html("turbo-frame##{Avo::ACTIONS_TURBO_FRAME_ID}", ""),
+              turbo_stream.redirect_to(back_path)
+            ]
           end
         end
       end

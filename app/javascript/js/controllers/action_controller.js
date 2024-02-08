@@ -1,8 +1,12 @@
 import { Controller } from '@hotwired/stimulus'
-import { castBoolean } from '../helpers/cast_boolean'
 
 export default class extends Controller {
-  static targets = ['controllerDiv', 'resourceIds', 'submit', 'selectedAllQuery']
+  static targets = ['resourceIds', 'form', 'selectedAllQuery']
+
+  static values = {
+    noConfirmation: Boolean,
+    resourceName: Boolean,
+  }
 
   connect() {
     if (this.resourceIdsTarget.value === '') {
@@ -14,19 +18,11 @@ export default class extends Controller {
       this.selectedAllQueryTarget.value = this.selectionOptions.itemSelectAllSelectedAllQueryValue
     }
 
-    if (this.noConfirmation) {
-      this.submitTarget.click()
+    if (this.noConfirmationValue) {
+      this.formTarget.requestSubmit()
     } else {
-      this.controllerDivTarget.classList.remove('hidden')
+      this.element.classList.remove('hidden')
     }
-  }
-
-  get noConfirmation() {
-    return castBoolean(this.controllerDivTarget.dataset.noConfirmation)
-  }
-
-  get resourceName() {
-    return this.controllerDivTarget.dataset.resourceName
   }
 
   get resourceIds() {
@@ -39,7 +35,7 @@ export default class extends Controller {
 
   get selectionOptions() {
     try {
-      return document.querySelector(`[data-selected-resources-name="${this.resourceName}"]`).dataset
+      return document.querySelector(`[data-selected-resources-name="${this.resourceNameValue}"]`).dataset
     } catch (error) {
       return []
     }

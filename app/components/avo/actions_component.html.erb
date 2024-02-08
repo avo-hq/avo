@@ -35,7 +35,7 @@
         <%= link_to action_path(action),
           data: {
             action_name: action.action_name,
-            'turbo-frame': 'actions_show',
+            'turbo-frame': Avo::ACTIONS_TURBO_FRAME_ID,
             'action': 'click->actions-picker#visitAction',
             'actions-picker-target': action.standalone ? 'standaloneAction' : 'resourceAction',
             'disabled': is_disabled?(action),
