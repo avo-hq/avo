@@ -1,0 +1,112 @@
+.tiptap {
+  border: 1px solid #bbb;
+  border-radius: 3px;
+  margin: 0;
+  padding: 0.4em 0.6em;
+  outline: none;
+  min-height: 180px;
+}
+
+.tiptap a {
+  border-bottom: 2px solid black;
+}
+
+.tiptap ul,
+.tiptap ol {
+  padding-left: 1.5rem;
+  list-style-position: outside;
+}
+
+.tiptap ul {
+  list-style-type: disc;
+}
+
+.tiptap ol {
+  list-style-type: decimal;
+}
+
+.tiptap__link-area {
+  padding: 0.2rem;
+  transition: all 0.2s;
+  opacity: 1;
+  display: flex;
+  gap: 3px;
+}
+
+.tiptap__link-area--hidden {
+  display: none;
+}
+
+.tiptap__link-field::placeholder {
+  font-style: italic;
+  color: #737373;
+}
+
+.tiptap__link-field {
+  border: 1px solid #b3b3b3;
+  border-radius: 20px;
+  padding: 0.2rem 1rem;
+  width: 100%;
+  font-size: 0.9rem;
+}
+
+.tiptap__link-field:focus::placeholder {
+  color: rgba(0, 0, 0, 0);
+}
+
+.tiptap__link-button {
+  background-color: #eaeaea !important;
+  padding: 0.2rem 0.5rem;
+  border-radius: 5px;
+}
+
+.tiptap__link-button:hover {
+  background-color: #a4f09e !important;
+  transition: all 0.2s;
+}
+
+.tiptap__container {
+  display: flex;
+  flex-direction: column;
+}
+
+.tiptap__toolbar {
+  padding: 0 1vw;
+  display: flex;
+  gap: 2vw;
+  white-space: nowrap;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  background-color: #ebebeb;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  justify-content: start;
+}
+
+.tiptap__button-row {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
+.tiptap__button-group {
+  display: flex;
+  width: min-content;
+  gap: 2px;
+}
+
+.tiptap__button {
+  height: 2rem;
+  padding: 0 0.7vw;
+  opacity: 0.6;
+  border-radius: 5px;
+}
+
+.tiptap__button:hover {
+  opacity: 1;
+}
+
+.tiptap__button--selected {
+  background-color: #e7d113 !important;
+  opacity: 1 !important;
+}

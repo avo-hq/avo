@@ -26,14 +26,15 @@ class Avo::Resources::Post < Avo::BaseResource
     field :id, as: :id
     field :name, required: true, sortable: true
     field :created_at, as: :date_time
-    field :body,
-      as: :trix,
-      placeholder: "Enter text",
-      always_show: false,
-      attachment_key: :attachments,
-      hide_attachment_url: true,
-      hide_attachment_filename: true,
-      hide_attachment_filesize: true
+    # field :body,
+    #   as: :trix,
+    #   placeholder: "Enter text",
+    #   always_show: false,
+    #   attachment_key: :attachments,
+    #   hide_attachment_url: true,
+    #   hide_attachment_filename: true,
+    #   hide_attachment_filesize: true
+    field :body, as: :tiptap, placeholder: "Enter text", always_show: false, height: "auto"
     field :cover_photo, as: :file, is_image: true, as_avatar: :rounded, full_width: true, hide_on: [], accept: "image/*"
     field :cover_photo, as: :external_image, name: "Cover photo", required: true, hide_on: :all, link_to_record: true, as_avatar: :rounded, format_using: -> { value.present? ? value&.url : nil }
     field :audio, as: :file, is_audio: true, accept: "audio/*"
