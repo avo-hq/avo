@@ -73,12 +73,15 @@ module Avo
               turbo_stream.close_action_modal,
               turbo_stream.flash_alerts
             ]
+          when :navigate_to_action
+            frame_id = Avo::ACTIONS_TURBO_FRAME_ID
+            src, _ = @response[:action].link_arguments(resource: @action.resource, **@response[:navigate_to_action_args])
+
+            render turbo_stream: turbo_stream.turbo_frame_set_src(frame_id, src)
           when :redirect
-            # Turbo redirect to the path
             render turbo_stream: turbo_stream.redirect_to(
               Avo::ExecutionContext.new(target: @response[:path]).handle,
-              nil,
-              @response[:redirect_args][:turbo_frame],
+              turbo_frame: @response[:redirect_args][:turbo_frame],
               **@response[:redirect_args].except(:turbo_frame)
             )
           when :close_modal
@@ -91,11 +94,7 @@ module Avo
             # Reload the page
             back_path = request.referer || params[:referrer].presence || resources_path(resource: @resource)
 
-            render turbo_stream: [
-              # we're clearing out the actions turbo frame so if the user runs a no_confirmation action twice it will not get cached and go into a redirect loop.
-              turbo_stream.inner_html("turbo-frame##{Avo::ACTIONS_TURBO_FRAME_ID}", ""),
-              turbo_stream.redirect_to(back_path)
-            ]
+            render turbo_stream: turbo_stream.redirect_to(back_path)
           end
         end
       end

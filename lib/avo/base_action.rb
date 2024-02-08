@@ -87,7 +87,7 @@ module Avo
       @response ||= {}
       @response[:messages] = []
 
-      if self.may_download_file.present?
+      if may_download_file.present?
         puts "[Avo->] WARNING! Since version 3.2.2 'may_download_file' is unecessary and deprecated on actions. Can be safely removed from #{self.class.name}"
       end
     end
@@ -216,6 +216,14 @@ module Avo
 
     def reload
       response[:type] = :reload
+
+      self
+    end
+
+    def navigate_to_action(action, **kwargs)
+      response[:type] = :navigate_to_action
+      response[:action] = action
+      response[:navigate_to_action_args] = kwargs
 
       self
     end

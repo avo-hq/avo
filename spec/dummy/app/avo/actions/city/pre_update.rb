@@ -16,6 +16,6 @@ class Avo::Actions::City::PreUpdate < Avo::BaseAction
       purpose: :action_arguments
     )
 
-    redirect_to "/admin/resources/city/actions?action_id=Avo::Actions::City::Update&arguments=#{arguments}", turbo_frame: "actions_show"
+    navigate_to_action Avo::Actions::City::Update, arguments:
   end
 end

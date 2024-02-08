@@ -4,7 +4,6 @@
     data-action-no-confirmation-value="<%= @action.no_confirmation %>"
     data-action-resource-name-value="<%= @resource.model_key %>"
     data-resource-id="<%= params[:id] %>"
-    data-turbo-permanent
     class="hidden text-slate-800"
   >
     <%= form_with scope: 'fields',
@@ -12,7 +11,8 @@
       local: true,
       data: {
         action_target: :form,
-        **@action.class.form_data_attributes
+        **@action.class.form_data_attributes,
+        turbo_frame: Avo::ACTIONS_TURBO_FRAME_ID,
       } do |form|
     %>
     <%= render Avo::ModalComponent.new do |c| %>
