@@ -1,7 +1,7 @@
 # Use the user provided asset or use the default
-ASSET_FILE = ARGV[0] || "app/assets/builds/avo.tailwind.css"
+ASSET_FILE = ARGV[0] || "app/assets/builds/avo.tailwind.css" unless defined?(ASSET_FILE)
 # Se the tailwindcss-rails package name
-TAILWINDCSS_RAILS = "tailwindcss-rails"
+TAILWINDCSS_RAILS = "tailwindcss-rails"  unless defined?(TAILWINDCSS_RAILS)
 
 # Check if tailwindcss-rails is being used
 if Gem.loaded_specs.key? TAILWINDCSS_RAILS

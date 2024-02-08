@@ -72,6 +72,12 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
       **@data
     }
 
+    # Fetch the data attributes off the html option
+    wrapper_data_attributes = @field.get_html :data, view: view, element: :wrapper
+    if wrapper_data_attributes.present?
+      attributes.merge! wrapper_data_attributes
+    end
+
     # Add the built-in stimulus integration data tags.
     if @resource.present?
       add_stimulus_attributes_for(@resource, attributes)
@@ -79,12 +85,6 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
 
     if @action.present?
       add_stimulus_attributes_for(@action, attributes)
-    end
-
-    # Fetch the data attributes off the html option
-    wrapper_data_attributes = @field.get_html :data, view: view, element: :wrapper
-    if wrapper_data_attributes.present?
-      attributes.merge! wrapper_data_attributes
     end
 
     attributes

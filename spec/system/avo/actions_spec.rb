@@ -120,6 +120,25 @@ RSpec.describe "Actions", type: :system do
         expect(download.split("/").last).to eq file_name
       end
     end
+
+    context "with File.open().read on pdf" do
+      let(:file_name) { "dummy-file.pdf" }
+
+      it "downloads the file and closes the modal" do
+        visit "/admin/resources/users"
+
+        click_on "Actions"
+        click_on "Download file"
+        check "fields[read_from_pdf_file]"
+        click_on "Run"
+
+        wait_for_download
+
+        expect(downloaded?).to be true
+        expect(download_content).to eq File.read(Rails.root.join(file_name))
+        expect(download.split("/").last).to eq file_name
+      end
+    end
   end
 
   describe "default values" do

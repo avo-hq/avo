@@ -192,24 +192,6 @@ module Avo
         end
       end
 
-      def tools
-        return [] if self.class.tools.blank?
-
-        items
-          .select do |item|
-            next if item.nil?
-
-            item.is_tool?
-          end
-          .map do |tool|
-            tool.hydrate view: view
-            tool
-          end
-          .select do |item|
-            item.visible_in_view?(view: view)
-          end
-      end
-
       def get_items
         # Each group is built only by standalone items or items that have their own panel, keeping the items order
         grouped_items = visible_items.slice_when do |prev, curr|

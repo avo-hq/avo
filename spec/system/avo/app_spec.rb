@@ -56,5 +56,15 @@ RSpec.describe "App", type: :system do
 
       expect(page).to have_text("Record destroyed").once
     end
+
+    it "destroy from index page" do
+      visit "/admin/resources/projects"
+
+      expect {
+        find("[data-resource-id='#{project.id}'] [data-control='destroy']").click
+        confirm_alert
+        wait_for_loaded
+      }.to change(Project, :count).by(-1)
+    end
   end
 end

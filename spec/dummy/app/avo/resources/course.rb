@@ -5,7 +5,21 @@ class Avo::Resources::Course < Avo::BaseResource
   self.keep_filters_panel_open = true
   self.stimulus_controllers = "city-in-country toggle-fields"
 
-  def fields
+  def show_fields
+    fields_bag
+    field :links, as: :has_many, searchable: true, placeholder: "Click to choose a link",
+      discreet_pagination: true
+  end
+
+  def index_fields
+    fields_bag
+  end
+
+  def form_fields
+    fields_bag
+  end
+
+  def fields_bag
     field :id, as: :id
     field :name, as: :text, html: {
       edit: {
@@ -84,9 +98,6 @@ class Avo::Resources::Course < Avo::BaseResource
       as: :select,
       options: Course.cities.values.flatten.map { |city| [city, city] }.to_h,
       display_value: false
-
-    field :links, as: :has_many, searchable: true, placeholder: "Click to choose a link",
-      discreet_pagination: true
 
     if params[:show_location_field] == '1'
       # Example for error message when resource is missing
