@@ -189,6 +189,6 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
       hidden[:referrer] = referrer_path
     end
 
-    hidden
+    hidden.compact
   end
 end
