@@ -89,7 +89,7 @@ module Avo
             ]
           else
             # Reload the page
-            redirect_back fallback_location: resources_path(resource: @resource)
+            render turbo_stream: turbo_stream.redirect_to(resources_path(resource: @resource))
           end
         end
       end
