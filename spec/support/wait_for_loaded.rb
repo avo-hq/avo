@@ -10,9 +10,12 @@ end
 
 def wait_for_turbo_loaded(time = Capybara.default_max_wait_time)
   wait_for_body_class_missing("turbo-loading", time)
+  # TODO: Find a better way and remove this
+  sleep 0.05
 end
 
 def wait_for_search_loaded(time = Capybara.default_max_wait_time)
+  # TODO: Find a better way and remove this
   sleep 0.05
   wait_for_body_class_missing("search-loading", time)
 end
