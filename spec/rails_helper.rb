@@ -112,10 +112,10 @@ RSpec.configure do |config|
 
     driven_by(
       :cuprite,
-      screen_size: [1440, 810],
+      screen_size: [1400, 1024],
       options: {
         save_path: DownloadHelpers::PATH,
-        js_errors: true,
+        # js_errors: true, # consider it
         headless: %w[0 false].exclude?(ENV["HEADLESS"]),
         slowmo: ENV["SLOWMO"]&.to_f,
         process_timeout: 15,

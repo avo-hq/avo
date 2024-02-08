@@ -47,14 +47,13 @@ RSpec.feature "HasManyField", type: :system do
         scroll_to find('turbo-frame[id="has_many_field_show_comments"]')
 
         expect {
-          find("[data-resource-id='#{comments.first.id}'] [data-control='destroy']").click
-          sleep 0.2
-          confirm_alert
-          sleep 0.2
-          find("[data-resource-id='#{comments.third.id}'] [data-control='destroy']").click
-          sleep 0.2
-          confirm_alert
-          sleep 0.2
+          accept_alert do
+            find("[data-resource-id='#{comments.first.id}'] [data-control='destroy']").click
+          end
+
+          accept_alert do
+            find("[data-resource-id='#{comments.third.id}'] [data-control='destroy']").click
+          end
         }.to change(Comment, :count).by(-2)
 
         expect(page).to have_current_path url
@@ -79,14 +78,13 @@ RSpec.feature "HasManyField", type: :system do
         scroll_to find('turbo-frame[id="has_many_field_show_comments"]')
 
         expect {
-          find("[data-resource-id='#{comments.first.id}'] [data-control='destroy']").click
-          sleep 0.2
-          page.driver.browser.switch_to.alert.accept
-          sleep 0.2
-          find("[data-resource-id='#{comments.third.id}'] [data-control='destroy']").click
-          sleep 0.2
-          page.driver.browser.switch_to.alert.accept
-          sleep 0.2
+          accept_alert do
+            find("[data-resource-id='#{comments.first.id}'] [data-control='destroy']").click
+          end
+
+          accept_alert do
+            find("[data-resource-id='#{comments.third.id}'] [data-control='destroy']").click
+          end
         }.to change(Comment, :count).by(0)
 
         expect(page).to have_current_path url

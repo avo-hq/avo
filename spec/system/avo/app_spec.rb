@@ -46,8 +46,9 @@ RSpec.describe "App", type: :system do
       destroy_button = find("turbo-frame[id='has_many_field_show_comments'] tr[data-resource-id='#{comment.id}'] button[data-control=\"destroy\"]")
 
       expect {
-        destroy_button.click
-        confirm_alert
+        accept_alert do
+          destroy_button.click
+        end
         wait_for_loaded
       }.to change(Comment, :count).by(-1)
 

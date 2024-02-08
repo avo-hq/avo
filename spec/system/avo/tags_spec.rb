@@ -127,8 +127,7 @@ RSpec.describe "Tags", type: :system do
       tags_input.click
       tags_input.set("Zezel")
       wait_for_tags_to_load(field_value_slot)
-      tags_input.send_keys :arrow_down
-      tags_input.send_keys :return
+      type(:down, :return)
 
       sleep 0.3
       click_on "Run"

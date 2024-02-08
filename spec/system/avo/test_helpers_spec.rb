@@ -170,10 +170,9 @@ RSpec.describe "TestHelpers", type: :system do
       it "confirms the alert" do
         visit "admin/resources/projects/#{projects.first.id}"
         expect {
-          click_on "Delete"
-          confirm_alert
-          wait_for_loaded
-          sleep 0.2
+          accept_alert do
+            click_on "Delete"
+          end
         }.to change(Project, :count).by(-1)
       end
     end
