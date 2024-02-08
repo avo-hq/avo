@@ -107,7 +107,7 @@ module Avo
     def set_resource
       raise ActionController::RoutingError.new "No route matches" if resource.nil?
 
-      @resource = resource.new(view: params[:view] || action_name.to_s, user: _current_user, params: params)
+      @resource = resource.new(view: params[:view].presence || action_name.to_s, user: _current_user, params: params)
 
       set_authorization
     end
@@ -130,7 +130,7 @@ module Avo
       view = if action_view.in?([:index, :show, :new, :edit, :create])
         action_view
       else
-        params[:view] || action_view
+        params[:view].presence || action_view
       end
 
       @related_resource = related_resource.new(
