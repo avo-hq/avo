@@ -89,7 +89,7 @@ module Avo
             ]
           else
             # Reload the page
-            back_path = request.referer || params[:referrer] || resources_path(resource: @resource)
+            back_path = request.referer || params[:referrer].presence || resources_path(resource: @resource)
             render turbo_stream: turbo_stream.redirect_to(back_path)
           end
         end
