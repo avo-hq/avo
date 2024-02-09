@@ -8,7 +8,7 @@ RSpec.describe "Tabs", type: :system do
       it "doesn't display the birthday from the tab content" do
         visit "/admin/resources/users"
 
-        expect(find("table thead").text).to eq "ID\nAVATAR\nFIRST NAME\nLAST NAME\nUSER EMAIL\nIS ACTIVE\nCV\nIS ADMIN\nROLES\nBIRTHDAY\nIS WRITER"
+        expect(find("table thead").text).to eq "ID\n\t\nAVATAR\n\t\nFIRST NAME\n\t\nLAST NAME\n\t\nUSER EMAIL\n\t\nIS ACTIVE\n\t\nCV\n\t\nIS ADMIN\n\t\nROLES\n\t\nBIRTHDAY\n\t\nIS WRITER"
         within find("tr[data-resource-id='#{user.to_param}']") do
           expect(find_all("table tbody tr td")[10].text).to eq "Wednesday, 10 February 1988"
         end
@@ -38,10 +38,11 @@ RSpec.describe "Tabs", type: :system do
         click_on "Cancel"
 
         click_tab "Teams", within_target: first_tab_group
+        scroll_to teams_frame = find("turbo-frame#has_and_belongs_to_many_field_show_teams")
 
-        expect(find("turbo-frame#has_and_belongs_to_many_field_show_teams")).to have_text "Teams"
-        expect(find("turbo-frame#has_and_belongs_to_many_field_show_teams")).to have_link "Attach team"
-        expect(find("turbo-frame#has_and_belongs_to_many_field_show_teams")).to have_link "Create new team", href: "/admin/resources/teams/new?via_record_id=#{user.slug}&via_relation=users&via_relation_class=User&via_resource_class=Avo%3A%3AResources%3A%3AUser"
+        expect(teams_frame).to have_text "Teams"
+        expect(teams_frame).to have_link "Attach team"
+        expect(teams_frame).to have_link "Create new team", href: "/admin/resources/teams/new?via_record_id=#{user.slug}&via_relation=users&via_relation_class=User&via_resource_class=Avo%3A%3AResources%3A%3AUser"
       end
 
       it "hides the birthday tab" do

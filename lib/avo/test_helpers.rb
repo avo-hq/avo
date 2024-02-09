@@ -149,6 +149,7 @@ module Avo
           find_link(tab_name).trigger("click")
         end
       end
+      wait_for_loaded
     end
 
     def tab_group(index = 0)
