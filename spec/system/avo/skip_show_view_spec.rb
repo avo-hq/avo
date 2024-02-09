@@ -50,7 +50,7 @@ RSpec.feature "SkipShowView", type: :system do
       fill_in "course_name", with: "Awesome course"
       save
 
-      expect(current_path).to eql "/admin/resources/courses/#{Course.last.prefix_id}/edit"
+      expect(page).to have_current_path "/admin/resources/courses/#{Course.last.prefix_id}/edit"
     end
 
     it "can save and destroy on edit page" do
@@ -60,11 +60,10 @@ RSpec.feature "SkipShowView", type: :system do
 
       fill_in "course_name", with: "Awesome course (edited)"
       save
-      wait_for_loaded
 
       expect(page).to have_text("Course updated!")
       expect(page).to have_text("Awesome course (edited)")
-      expect(current_path).to eql "/admin/resources/courses/#{Course.last.prefix_id}/edit"
+      expect(page).to have_current_path "/admin/resources/courses/#{Course.last.prefix_id}/edit"
 
       accept_alert do
         click_on "Delete"
@@ -73,7 +72,7 @@ RSpec.feature "SkipShowView", type: :system do
       wait_for_loaded
       expect(page).to have_text("Course destroyed for ever!")
       # Actual behaviour of deleting a course is to redirect to new page
-      expect(current_path).to eql "/admin/resources/courses/new"
+      expect(page).to have_current_path "/admin/resources/courses/new"
     end
 
     it "create and delete association redirects to the edit page" do
@@ -137,8 +136,6 @@ RSpec.feature "SkipShowView", type: :system do
 
       fill_in "course_name", with: "Awesome course"
       save
-
-      wait_for_loaded
 
       expect(current_path).to eql "/admin/resources/courses/#{Course.last.prefix_id}"
     end
