@@ -26,7 +26,7 @@ RSpec.describe "CodeField", type: :system do
         expect(page).to have_editor_display text: ""
       end
 
-      it "change the projects custom_css code", focus: true do
+      it "change the projects custom_css code" do
         visit "/admin/resources/users/#{user.id}/edit"
         wait_for_loaded
 
