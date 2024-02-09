@@ -250,14 +250,11 @@ module Avo
     #   expect(add_tag(field: :tags, tag: "one")).to eq ["one"]
     #   add_tag(field: :tags, tag: "two")
     def add_tag(field:, tag:)
-      # Find the input field for the specified field
-      input = find("[data-field-id='#{field}'] [data-slot='value'] [role='textbox']")
+      # Find the input field for the specified field and click it
+      find("[data-field-id='#{field}'] [data-slot='value'] [role='textbox']").click
 
       # Enter the specified tag into the input field
-      input.set(tag)
-      sleep 0.1
-
-      input.send_keys :return
+      type tag, :return
       wait_for_tag_to_appear(tag)
 
       # Return an array of the current tags

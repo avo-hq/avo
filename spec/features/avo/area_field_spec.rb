@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "AreaField", type: :system do
+RSpec.describe "AreaField", type: :feature do
   describe "without value" do
     let(:city) { create :city, city_center_area: nil }
 
@@ -18,9 +18,7 @@ RSpec.describe "AreaField", type: :system do
       it "has area field" do
         visit "/admin/resources/cities/#{city.id}/edit"
 
-        area_element = find_field_element("city_center_area")
-
-        expect(area_element).to have_text "CITY CENTER AREA"
+        expect(find_field_element("city_center_area")).to have_text "City center area"
       end
 
       it "changes the city center area" do

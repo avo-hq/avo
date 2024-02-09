@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.feature "ProgressBar", type: :system do
+RSpec.feature "ProgressBar", type: :feature do
   let!(:project) { create :project, progress: 27 }
 
   before do
