@@ -69,7 +69,7 @@ def headless_download_setup(driver)
 end
 
 Capybara.save_path = "tmp/screenshots"
-Capybara.default_max_wait_time = 10
+Capybara.default_max_wait_time = 5
 
 require "support/controller_routes"
 require "support/avo_helpers"
