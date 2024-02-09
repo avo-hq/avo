@@ -14,6 +14,29 @@
       },
       input: "tiptapid",
       placeholder: @field.placeholder do %>
+
+      <%= content_tag :div, class: "tiptap-toolbar m-1 flex items-center gap-0.5 rounded-lg p-1" do %>
+        <%= button_tag type: "button", class: "tiptap__button tiptap__button--bold", data: { action: "click->tiptap-field#bold" } do %>
+          <%= helpers.svg("editor-bold", class: "block h-6 text-gray-600") %>
+        <% end %>
+
+        <button type="button" class="tiptap__button tiptap__button--italic" data-action="click->tiptap-field#italic">
+          <%= helpers.svg("editor-italic", class: "block h-6 text-gray-600") %>
+        </button>
+
+        <button type="button" class="tiptap__button tiptap__button--underline" data-action="click->tiptap-field#underline">
+          <%= helpers.svg("editor-underline", class: "block h-6 text-gray-600") %>
+        </button>
+
+        <button type="button" class="tiptap__button tiptap__button--ul" data-action="click->tiptap-field#unorderedList">
+          <%= helpers.svg("editor-list", class: "block h-6 text-gray-600") %>
+        </button>
+
+        <button type="button" class="tiptap__button tiptap__button--ol" data-action="click->tiptap-field#orderedList">
+          <%= helpers.svg("editor-ordered-list", class: "block h-6 text-gray-600") %>
+        </button>
+      <% end %>
+
     <% end %>
 
     <%= @form.text_area @field.id,

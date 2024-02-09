@@ -1662,6 +1662,11 @@
   resolved "https://registry.yarnpkg.com/@tiptap/extension-text/-/extension-text-2.2.2.tgz#a9033220157cb175fc767b396eee73f8a438b00f"
   integrity sha512-Zj53Vp/9MSQj5uiaObFaD3y7grUpMy+PfHmrK5XAZSFhRx+QpGUp+oItlKod6IJEIu8rq4dChgE7i6kT9uwWlA==
 
+"@tiptap/extension-underline@^2.2.2":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-underline/-/extension-underline-2.2.2.tgz#cfa73b33a8a5ff1cf7d03c225f3a8a044a1416f8"
+  integrity sha512-sCgbFbBU1fMWKCmDjZ6Am257kXM6ZjCV24AwbNusweieQnnD3aTXC7/iZg101sa2VshLsXozm8t2QDTyafnL+Q==
+
 "@tiptap/pm@^2.2.2":
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/@tiptap/pm/-/pm-2.2.2.tgz#cbbf6383dee5ae1547b5523932f1d11eae52ef50"
