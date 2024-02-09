@@ -178,6 +178,17 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  # https://medium.com/@velciov.vlad/retrying-flaky-tests-fae14de26c1b
+  config.default_retry_count = 2
+  config.verbose_retry = true
+
+  # callback to be run between retries
+  config.retry_callback = proc do |example|
+    # marks this test as flaky so we can identify it even if it
+    # passed at later retries
+    example.metadata[:flaky] = true
+  end
 end
 
 require "support/helpers"

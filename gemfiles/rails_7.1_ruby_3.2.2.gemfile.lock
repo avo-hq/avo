@@ -414,6 +414,8 @@ GEM
       rspec-expectations (~> 3.12)
       rspec-mocks (~> 3.12)
       rspec-support (~> 3.12)
+    rspec-retry (0.6.2)
+      rspec-core (> 3.3)
     rspec-support (3.13.0)
     rubocop (1.59.0)
       json (~> 2.3)
@@ -589,6 +591,7 @@ DEPENDENCIES
   redis (~> 5.0)
   ripper-tags
   rspec-rails (~> 6.0, >= 6.0.3)
+  rspec-retry (~> 0.6.2)
   rubocop
   rubocop-shopify
   simplecov

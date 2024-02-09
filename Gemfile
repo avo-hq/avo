@@ -79,6 +79,7 @@ end
 
 group :test do
   gem "rspec-rails", "~> 6.0", ">= 6.0.3"
+  gem "rspec-retry", "~> 0.6.2"
   gem "rails-controller-testing"
   gem "capybara"
   gem "cuprite"
