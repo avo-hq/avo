@@ -41,7 +41,7 @@ def wait_for_body_class_missing(klass = "turbo-loading", time = Capybara.default
     end
   end
 rescue Timeout::Error
-  puts "#{__method__} Timeout::Error after #{time}s"
+  puts "#{__method__} eTimeout::Error after #{time}s"
 end
 
 def wait_for_element_missing(identifier = ".element", time = Capybara.default_max_wait_time)
