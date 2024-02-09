@@ -132,8 +132,15 @@ module Avo
     end
 
     # Save a record and wait for the page to load
+    # For most cases `.click` works
+    # Sometimes other element may be overlapping the button so the `.trigger("click")` solves the issue
+    # Trigger can't be used by default because it breaks on some feature specs
     def save
-      find('button.button-component', text: "Save").click
+      button = find('button.button-component', text: "Save")
+      button.click
+    rescue Capybara::Cuprite::MouseEventFailed
+      button.trigger("click")
+    ensure
       wait_for_loaded
     end
 
