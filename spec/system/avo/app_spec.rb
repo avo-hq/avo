@@ -27,7 +27,7 @@ RSpec.describe "App", type: :system do
       fill_in "comment_body", with: "yes"
       save
 
-      expect(current_path).to eq "/admin/resources/projects/#{project.id}"
+      expect(page).to have_current_path "/admin/resources/projects/#{project.id}"
       expect(page).to have_text("Comment was successfully updated.").once
 
       comment.reload
