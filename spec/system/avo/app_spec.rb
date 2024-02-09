@@ -61,8 +61,9 @@ RSpec.describe "App", type: :system do
       visit "/admin/resources/projects"
 
       expect {
-        find("[data-resource-id='#{project.id}'] [data-control='destroy']").click
-        confirm_alert
+        accept_alert do
+          find("[data-resource-id='#{project.id}'] [data-control='destroy']").click
+        end
         wait_for_loaded
       }.to change(Project, :count).by(-1)
     end
