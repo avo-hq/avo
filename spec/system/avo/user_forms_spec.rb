@@ -38,7 +38,7 @@ RSpec.describe "UserForms", type: :system do
   it "displays valdation errors", skip_js_error_detect: true do
     visit "/admin/resources/users/new"
 
-    click_on "Save"
+    save
 
     expect(page).to have_text("First name can't be blank")
     expect(page).to have_text("Last name can't be blank")
@@ -66,7 +66,7 @@ RSpec.describe "UserForms", type: :system do
     fill_in "user_password", with: "secret_password"
     fill_in "user_password_confirmation", with: "secret_password"
 
-    click_on "Save"
+    save
 
     expect(page).to have_text("John")
     expect(page).to have_text("Doe")

@@ -32,8 +32,7 @@
 
 #         fill_in_editor_field "Hello World"
 
-#         click_on "Save"
-#         wait_for_loaded
+#         save
 
 #         expect(page).to have_editor_display text: "Hello World"
 #       end
@@ -62,8 +61,7 @@
 
 #         fill_in_editor_field ".input { background: #ffffff; }"
 
-#         click_on "Save"
-#         wait_for_loaded
+#         save
 
 #         expect(page).to have_editor_display text: ".input { background: #ffffff; }"
 #       end

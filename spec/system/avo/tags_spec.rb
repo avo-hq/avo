@@ -82,8 +82,7 @@ RSpec.describe "Tags", type: :system do
         tag_input.find(input_textbox).set("one, two, five,")
         sleep 0.3
 
-        click_on "Save"
-        wait_for_loaded
+        save
 
         expect(post.reload.tag_list.sort).to eq ["1", "2"].sort
       end
@@ -106,8 +105,7 @@ RSpec.describe "Tags", type: :system do
       tag_input.find(input_textbox).set("one, two, three,")
       sleep 0.3
 
-      click_on "Save"
-      wait_for_loaded
+      save
 
       expect(course.reload.skills.sort).to eq ["some", "skills", "one", "two", "three"].sort
     end

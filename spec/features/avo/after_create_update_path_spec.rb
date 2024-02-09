@@ -7,7 +7,7 @@ RSpec.feature "AfterCreateUpdatePath", type: :feature do
 
       fill_in "comment_body", with: "Something"
 
-      click_on "Save"
+      save
 
       expect(current_path).to eq "/admin/resources/comments"
     end
@@ -21,7 +21,7 @@ RSpec.feature "AfterCreateUpdatePath", type: :feature do
 
       fill_in "comment_body", with: "Something else"
 
-      click_on "Save"
+      save
 
       expect(current_path).to eq "/admin/resources/comments"
     end

@@ -48,10 +48,7 @@ RSpec.feature "SkipShowView", type: :system do
       wait_for_loaded
 
       fill_in "course_name", with: "Awesome course"
-      click_on "Save"
-
-      wait_for_loaded
-      wait_for_loaded
+      save
 
       expect(current_path).to eql "/admin/resources/courses/#{Course.last.prefix_id}/edit"
     end
@@ -62,7 +59,7 @@ RSpec.feature "SkipShowView", type: :system do
       expect(page).to have_selector("[data-control='destroy']")
 
       fill_in "course_name", with: "Awesome course (edited)"
-      click_on "Save"
+      save
       wait_for_loaded
 
       expect(page).to have_text("Course updated!")
@@ -84,7 +81,7 @@ RSpec.feature "SkipShowView", type: :system do
       visit "/admin/resources/course_links/new?via_relation=course&via_relation_class=Course&via_record_id=#{course.prefix_id}"
 
       fill_in "course_link_link", with: "Awesome course link"
-      click_on "Save"
+      save
 
       expect(page).to have_text("Course link was successfully created.")
       expect(current_path).to eql "/admin/resources/courses/#{course.prefix_id}/edit"
@@ -139,7 +136,7 @@ RSpec.feature "SkipShowView", type: :system do
       wait_for_loaded
 
       fill_in "course_name", with: "Awesome course"
-      click_on "Save"
+      save
 
       wait_for_loaded
 
@@ -152,7 +149,7 @@ RSpec.feature "SkipShowView", type: :system do
       expect(page).to_not have_selector("[data-control='destroy']")
 
       fill_in "course_name", with: "Awesome course (edited)"
-      click_on "Save"
+      save
 
       expect(page).to have_text("Course updated!")
       expect(page).to have_text("Awesome course (edited)")
@@ -173,7 +170,7 @@ RSpec.feature "SkipShowView", type: :system do
       visit "/admin/resources/course_links/new?via_relation=course&via_relation_class=Course&via_record_id=#{course.prefix_id}"
 
       fill_in "course_link_link", with: "Awesome course link"
-      click_on "Save"
+      save
 
       expect(page).to have_text("Course link was successfully created.")
       expect(current_path).to eql "/admin/resources/courses/#{course.prefix_id}"

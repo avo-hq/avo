@@ -133,7 +133,7 @@ module Avo
 
     # Save a record and wait for the page to load
     def save
-      find('button.button-component', text: "Save").trigger("click")
+      find('button.button-component', text: "Save").click
       wait_for_loaded
     end
 

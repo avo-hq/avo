@@ -35,8 +35,7 @@ RSpec.describe "NullableField", type: :feature do
         visit "/admin/resources/teams/#{team.id}/edit"
 
         fill_in "team_description", with: ""
-        click_on "Save"
-        wait_for_loaded
+        save
 
         expect(current_path).to eql "/admin/resources/teams/#{team.id}"
         expect(find_field_value_element("description")).to have_text empty_dash
@@ -46,8 +45,7 @@ RSpec.describe "NullableField", type: :feature do
         visit "/admin/resources/teams/#{team.id}/edit"
 
         fill_in "team_description", with: "0"
-        click_on "Save"
-        wait_for_loaded
+        save
 
         expect(current_path).to eql "/admin/resources/teams/#{team.id}"
         expect(find_field_value_element("description")).to have_text empty_dash
@@ -57,8 +55,7 @@ RSpec.describe "NullableField", type: :feature do
         visit "/admin/resources/teams/#{team.id}/edit"
 
         fill_in "team_description", with: "nil"
-        click_on "Save"
-        wait_for_loaded
+        save
 
         expect(current_path).to eql "/admin/resources/teams/#{team.id}"
         expect(find_field_value_element("description")).to have_text empty_dash
@@ -68,8 +65,7 @@ RSpec.describe "NullableField", type: :feature do
         visit "/admin/resources/teams/#{team.id}/edit"
 
         fill_in "team_description", with: "null"
-        click_on "Save"
-        wait_for_loaded
+        save
 
         expect(current_path).to eql "/admin/resources/teams/#{team.id}"
         expect(find_field_value_element("description")).to have_text empty_dash
@@ -111,9 +107,7 @@ RSpec.describe "NullableField", type: :feature do
         visit "/admin/resources/projects/#{project.id}/edit"
 
         fill_in "project_status", with: ""
-        click_on "Save"
-        wait_for_loaded
-        sleep 0.1
+        save
 
         expect(current_path).to eql "/admin/resources/projects/#{project.id}"
         expect(find_field_value_element("status")).to have_text empty_dash

@@ -25,8 +25,7 @@ RSpec.feature "HasManyField", type: :feature do
 
         fill_in "post_name", with: "New post name"
 
-        click_on "Save"
-        wait_for_loaded
+        save
 
         expect(current_path).to eql "/admin/resources/users/#{user.slug}"
         expect(user.posts.last.name).to eql "New post name"
@@ -129,7 +128,7 @@ RSpec.feature "HasManyField", type: :feature do
       visit "/admin/resources/course_links/new?via_record_id=#{course.id}&via_relation=course&via_relation_class=Course"
 
       fill_in "course_link_link", with: "https://google.com"
-      click_on "Save"
+      save
 
       link = Course::Link.last
       expect(Course::Link.count).to be 1
@@ -138,7 +137,7 @@ RSpec.feature "HasManyField", type: :feature do
 
       visit "/admin/resources/course_links/#{link.id}/edit?via_resource_class=Avo::Resources::Course&via_record_id=#{course.id}"
       fill_in "course_link_link", with: "https://apple.com"
-      click_on "Save"
+      save
       link.reload
       expect(link.link).to eq "https://apple.com"
       expect(link.course.id).to eq course.id

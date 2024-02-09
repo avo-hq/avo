@@ -43,9 +43,7 @@ RSpec.describe "LocationField", type: :system do
         fill_in "Enter latitude", with: "1.0"
         fill_in "Enter longitude", with: "2.0"
 
-        click_on "Save"
-
-        wait_for_loaded
+        save
 
         click_on "Edit"
 

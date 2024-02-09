@@ -51,7 +51,7 @@ RSpec.describe "Date field", type: :system do
         expect(hidden_input.value).to eq "1988-02-10 16:22:00"
         expect(text_input.value).to eq "1988-02-10 16:22:00"
 
-        click_on "Save"
+        save
 
         expect(field_element_by_resource_id("posted_at", comment.id).text).to eq "Wednesday, 10 February 1988, 16:22 UTC"
       end
@@ -71,7 +71,7 @@ RSpec.describe "Date field", type: :system do
         # Wait for the picker to close.
         sleep 0.3
 
-        click_on "Save"
+        save
 
         expect(field_element_by_resource_id("posted_at", comment.id).text).to eq "Thursday, 11 February 1988, 17:17 UTC"
       end

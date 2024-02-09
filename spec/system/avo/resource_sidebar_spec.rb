@@ -31,8 +31,7 @@ RSpec.feature "ResourceSidebars", type: :system do
       type "Some custom css"
     end
 
-    click_on "Save"
-    wait_for_loaded
+    save
 
     expect(page).to have_css(".CodeMirror-code", text: "Some custom css")
   end
