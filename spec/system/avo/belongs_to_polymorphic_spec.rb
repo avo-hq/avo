@@ -60,7 +60,7 @@ RSpec.feature "belongs_to", type: :system do
               expect(Comment.count).to eq 1
               comment = Comment.first
 
-              expect(current_path).to eq "/admin/resources/comments"
+              expect(page).to have_current_path "/admin/resources/comments"
 
               return_to_comment_page
 
