@@ -67,7 +67,7 @@ RSpec.describe "Date field", type: :system do
         find('.flatpickr-second').set(17)
 
         # Close the picker.
-        find_field_value_element("body").click
+        find_field_value_element("body").trigger("click")
         # Wait for the picker to close.
         sleep 0.3
 
