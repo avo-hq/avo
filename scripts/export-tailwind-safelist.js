@@ -38,6 +38,9 @@ ignoredDynamicClasses.push(
   'font-mono',
 )
 
+// Add the backgrounds colors that are used by the charts
+ignoredDynamicClasses.push('bg-[#0B8AE2]', 'bg-[#34C683]', 'bg-[#2AB1EE]', 'bg-[#34C6A8]')
+
 // Write them into a safelist.txt file until @tailwindcss/jit supports PurgeCSS options
 fs.writeFile('./safelist.txt', ignoredDynamicClasses.flat().join(' '), () => {
   // eslint-disable-next-line no-console
