@@ -1,10 +1,10 @@
 # lib/formatters/flakiness.rb
-require 'rspec/core/formatters/console_codes'
-require 'rspec/core/formatters/documentation_formatter'
+require "rspec/core/formatters/console_codes"
+require "rspec/core/formatters/documentation_formatter"
 
 class Flakiness < RSpec::Core::Formatters::DocumentationFormatter
+  RSpec::Core::Formatters.register self, :example_group_started, :example_group_finished, :example_passed, :example_pending, :example_failed
 
-RSpec::Core::Formatters.register self, :example_group_started, :example_group_finished,:example_passed, :example_pending, :example_failed
   def example_passed(notification)
     return super unless notification.example.metadata[:flaky]
     output.puts flaky_output(notification.example)
@@ -25,6 +25,7 @@ RSpec::Core::Formatters.register self, :example_group_started, :example_group_fi
   end
 
 private
+
   def flaky?(example)
     example.metadata[:flaky] && example.execution_result.status == :passed
   end
