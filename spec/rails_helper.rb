@@ -68,7 +68,7 @@ def headless_download_setup(driver)
   driver
 end
 
-Capybara.save_path = "tmp/screenshots"
+Capybara.save_path = DownloadHelpers::PATH
 Capybara.default_max_wait_time = 5
 
 require "support/controller_routes"
