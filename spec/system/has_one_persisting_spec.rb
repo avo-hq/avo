@@ -28,8 +28,10 @@ RSpec.describe "has_one persisting", type: :system do
         click_link("Main comment")
         scroll_to second_tab_group
         scroll_to find('turbo-frame[id="has_one_field_show_comment"]')
+
         expect(page).to have_text "This is an updated comment"
       end
+
       it "redirects back when cancel is clicked", js: true do
         visit "/admin/resources/users/amado-armstrong"
 
