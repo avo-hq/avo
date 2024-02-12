@@ -136,7 +136,7 @@ module Avo
     # Sometimes other element may be overlapping the button so the `.trigger("click")` solves the issue
     # Trigger can't be used by default because it breaks on some feature specs
     def save
-      button = find('button.button-component', text: "Save")
+      button = find("button.button-component", text: "Save")
       button.click
     rescue Capybara::Cuprite::MouseEventFailed
       button.trigger("click")

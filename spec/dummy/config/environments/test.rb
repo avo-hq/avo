@@ -25,10 +25,10 @@ Rails.application.configure do
   config.cache_store = :memory_store
 
   # Raise exceptions instead of rendering exception templates.
-  if Rails::VERSION::MAJOR < 7
-    config.action_dispatch.show_exceptions = false
+  config.action_dispatch.show_exceptions = if Rails::VERSION::MAJOR < 7
+    false
   else
-    config.action_dispatch.show_exceptions = :none
+    :none
   end
 
   # Disable request forgery protection in test environment.

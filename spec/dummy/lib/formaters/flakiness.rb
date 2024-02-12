@@ -26,8 +26,7 @@ RSpec::Core::Formatters.register self, :example_group_started, :example_group_fi
 
 private
   def flaky?(example)
-    example.metadata[:flaky]
-       && example.execution_result.status == :passed
+    example.metadata[:flaky] && example.execution_result.status == :passed
   end
 
   def flaky_with_location(example)
