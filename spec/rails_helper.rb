@@ -68,6 +68,8 @@ def headless_download_setup(driver)
   driver
 end
 
+# Fix this. Rails 6.1 with ruby 3.3.0 need this to pass actions test. Uses this path as download path
+# Issue: screenshots also go to same path
 Capybara.save_path = DownloadHelpers::PATH
 Capybara.default_max_wait_time = 5
 
