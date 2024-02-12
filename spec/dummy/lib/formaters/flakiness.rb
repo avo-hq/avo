@@ -24,21 +24,21 @@ class Flakiness < RSpec::Core::Formatters::DocumentationFormatter
     end
   end
 
-private
+  private
 
   def flaky?(example)
     example.metadata[:flaky] && example.execution_result.status == :passed
   end
 
   def flaky_with_location(example)
-    location         = paint example.location, :yellow
+    location = paint example.location, :yellow
     full_description = paint example.full_description, :cyan
     "#{location}: #{full_description}"
   end
 
   def flaky_output(example)
     paint "#{current_indentation}
-          #{example.description.strip}",:yellow
+          #{example.description.strip}", :yellow
   end
 
   def paint(string, color)
