@@ -1587,6 +1587,11 @@
   resolved "https://registry.yarnpkg.com/@tiptap/extension-document/-/extension-document-2.2.2.tgz#2fbb4987f49626b8d88961df73b1dae9d381a8b6"
   integrity sha512-eUhpYq8ErVAlxuTg5wslc96mniEQs+VN+tFmRrx9Q0n0nG/aDKUQFDgcSMpAMpHK7+h7tGc/rDq+ydpzZhFXlQ==
 
+"@tiptap/extension-hard-break@^2.2.2":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-hard-break/-/extension-hard-break-2.2.2.tgz#26c5fab8771a9eec354bfdb6a25337dfd291f168"
+  integrity sha512-zbG6/7xyMim2fnRESIx2FiFHjdY7BXKMe+GUgLGPnRfXrJqSZhdVguBrtYGBnBFCnuSiOZZ6rFy+k5uORGSrhA==
+
 "@tiptap/extension-italic@^2.2.2":
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/@tiptap/extension-italic/-/extension-italic-2.2.2.tgz#fe8ac8abd39f723f4885502341e3d088ed003e7a"

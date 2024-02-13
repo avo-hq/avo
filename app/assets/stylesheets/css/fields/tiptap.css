@@ -1,7 +1,23 @@
-/* CONTAINER STYLES */
+/* EDIT STYLES */
 
 .tiptap {
   @apply m-0 p-4 outline-none min-h-44;
+
+  > * + * {
+    @apply mt-4;
+  }
+
+  ul, ol {
+    @apply pl-6 list-outside;
+  }
+
+  ul {
+    @apply list-disc;
+  }
+
+  ol {
+    @apply list-decimal;
+  }
 }
 
 .tiptap__field {
@@ -20,80 +36,96 @@
   @apply flex flex-wrap items-center divide-gray-200 sm:divide-x sm:rtl:divide-x-reverse;
 }
 
-.tiptap__button-group:first-child {
-  @apply flex flex-wrap items-center space-x-1 rtl:space-x-reverse sm:pe-4;
-}
+.tiptap__button-group {
+  @apply flex flex-wrap items-center space-x-1 rtl:space-x-reverse;
 
-.tiptap__button-group:not(:first-child):not(:last-child) {
-  @apply flex flex-wrap items-center space-x-1 rtl:space-x-reverse sm:px-4;
-}
+  &:not(:first-child):not(:last-child) {
+    @apply px-4;
+  }
 
-.tiptap__button-group:last-child {
-  @apply flex flex-wrap items-center space-x-1 rtl:space-x-reverse sm:ps-4;
+  &:first-child {
+    @apply pe-4;
+  }
+
+  &:last-child {
+    @apply ps-4;
+  }
 }
 
 .tiptap__button {
   @apply p-1 text-gray-500 rounded cursor-pointer;
-}
 
-.tiptap__button:hover {
-  @apply bg-gray-900/10;
+  &:hover {
+    @apply bg-gray-100;
+  }
+
+  &:active {
+    @apply bg-gray-200;
+  }
+
+  svg {
+    @apply block h-6;
+  }
 }
 
 .tiptap__button--selected {
   @apply bg-gray-900/10;
 }
 
-/* EDITOR STYLES */
+/* LINK STYLES */
 
-.tiptap ul, .tiptap ol {
-  @apply pl-6 list-outside;
+.tiptap__link-area {
+  transition: all 0.2s;
+  opacity: 1;
+  display: flex;
+  gap: 12px;
 }
 
-.tiptap ul {
-  @apply list-disc;
+.tiptap__link-area--hidden {
+  display: none;
 }
 
-.tiptap ol {
-  @apply list-decimal;
+.tiptap__link-field::placeholder {
+  font-style: italic;
+  color: #737373;
 }
 
-/* .tiptap__link-area { */
-/*   padding: 0.2rem; */
-/*   transition: all 0.2s; */
-/*   opacity: 1; */
-/*   display: flex; */
-/*   gap: 3px; */
-/* } */
-/*  */
-/* .tiptap__link-area--hidden { */
-/*   display: none; */
-/* } */
-/*  */
-/* .tiptap__link-field::placeholder { */
-/*   font-style: italic; */
-/*   color: #737373; */
-/* } */
-/*  */
-/* .tiptap__link-field { */
-/*   border: 1px solid #b3b3b3; */
-/*   border-radius: 20px; */
-/*   padding: 0.2rem 1rem; */
-/*   width: 100%; */
-/*   font-size: 0.9rem; */
-/* } */
-/*  */
-/* .tiptap__link-field:focus::placeholder { */
-/*   color: rgba(0, 0, 0, 0); */
-/* } */
+.tiptap__link-field {
+  border: 1px solid #b3b3b3;
+  border-radius: 20px;
+  padding: 0.2rem 1rem;
+  width: 100%;
+  font-size: 0.9rem;
+}
 
-/* .tiptap__link-button { */
-/*   background-color: #eaeaea !important; */
-/*   padding: 0.2rem 0.5rem; */
-/*   border-radius: 5px; */
-/* } */
+.tiptap__link-field:focus::placeholder {
+  color: rgba(0, 0, 0, 0);
+}
 
-/* .tiptap__link-button:hover { */
-/*   background-color: #a4f09e !important; */
-/*   transition: all 0.2s; */
-/* } */
+.tiptap__link-button {
+  background-color: #eaeaea !important;
+  padding: 0.2rem 0.5rem;
+  border-radius: 5px;
+}
+
+/* SHOW STYLES */
+
+.tiptap__content {
+  @apply py-2 max-w-4xl;
+
+  > * + * {
+    @apply mt-4;
+  }
+
+  ul, ol {
+    @apply pl-6 list-outside;
+  }
+
+  ul {
+    @apply list-disc;
+  }
+
+  ol {
+    @apply list-decimal;
+  }
+}

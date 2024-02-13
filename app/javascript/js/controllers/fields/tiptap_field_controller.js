@@ -4,14 +4,15 @@ import { Editor } from '@tiptap/core'
 import Bold from '@tiptap/extension-bold'
 import BulletList from '@tiptap/extension-bullet-list'
 import Document from '@tiptap/extension-document'
+import HardBreak from '@tiptap/extension-hard-break'
 import Italic from '@tiptap/extension-italic'
+import Link from '@tiptap/extension-link'
 import ListItem from '@tiptap/extension-list-item'
 import OrderedList from '@tiptap/extension-ordered-list'
 import Paragraph from '@tiptap/extension-paragraph'
 import Strike from '@tiptap/extension-strike'
 import Text from '@tiptap/extension-text'
 import Underline from '@tiptap/extension-underline'
-import Link from '@tiptap/extension-link'
 
 export default class extends Controller {
   static targets = ['editor', 'controller', 'input']
@@ -35,6 +36,7 @@ export default class extends Controller {
         Bold,
         BulletList,
         Document,
+        HardBreak,
         Italic,
         Link.configure({
           openOnClick: false,
