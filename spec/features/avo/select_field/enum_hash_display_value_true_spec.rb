@@ -115,7 +115,7 @@ RSpec.describe "SelectField", type: :feature do
 
           select new_stage, from: "project_stage"
 
-          click_on "Save"
+          save
 
           expect(current_path).to eql "/admin/resources/projects/#{project.id}"
           expect(page).to have_text new_stage.humanize
@@ -135,7 +135,7 @@ RSpec.describe "SelectField", type: :feature do
 
           select new_stage, from: "project_stage"
 
-          click_on "Save"
+          save
 
           expect(current_path).to eql "/admin/resources/projects/#{project.id}"
           expect(page).to have_text new_stage.humanize
@@ -160,7 +160,7 @@ RSpec.describe "SelectField", type: :feature do
           fill_in "project_users_required", with: 15
           select new_stage, from: "project_stage"
 
-          click_on "Save"
+          save
 
           expect(current_path).to eql "/admin/resources/projects/#{Project.last.id}"
           expect(page).to have_text "Project X"

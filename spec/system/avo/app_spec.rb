@@ -25,10 +25,9 @@ RSpec.describe "App", type: :system do
       expect(find_field("comment_body").value).to eql "hey there"
 
       fill_in "comment_body", with: "yes"
-      click_on "Save"
-      wait_for_loaded
+      save
 
-      expect(current_path).to eq "/admin/resources/projects/#{project.id}"
+      expect(page).to have_current_path "/admin/resources/projects/#{project.id}"
       expect(page).to have_text("Comment was successfully updated.").once
 
       comment.reload
@@ -46,8 +45,9 @@ RSpec.describe "App", type: :system do
       destroy_button = find("turbo-frame[id='has_many_field_show_comments'] tr[data-resource-id='#{comment.id}'] button[data-control=\"destroy\"]")
 
       expect {
-        destroy_button.click
-        confirm_alert
+        accept_alert do
+          destroy_button.click
+        end
         wait_for_loaded
       }.to change(Comment, :count).by(-1)
 
@@ -60,8 +60,9 @@ RSpec.describe "App", type: :system do
       visit "/admin/resources/projects"
 
       expect {
-        find("[data-resource-id='#{project.id}'] [data-control='destroy']").click
-        confirm_alert
+        accept_alert do
+          find("[data-resource-id='#{project.id}'] [data-control='destroy']").click
+        end
         wait_for_loaded
       }.to change(Project, :count).by(-1)
     end

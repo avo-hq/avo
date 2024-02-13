@@ -32,8 +32,7 @@ RSpec.describe "CodeField", type: :system do
 
         fill_in_editor_field "Hello World"
 
-        click_on "Save"
-        wait_for_loaded
+        save
 
         expect(page).to have_editor_display text: "Hello World"
       end
@@ -62,8 +61,7 @@ RSpec.describe "CodeField", type: :system do
 
         fill_in_editor_field ".input { background: #ffffff; }"
 
-        click_on "Save"
-        wait_for_loaded
+        save
 
         expect(page).to have_editor_display text: ".input { background: #ffffff; }"
       end
@@ -80,12 +78,9 @@ RSpec.describe "CodeField", type: :system do
   end
 
   def fill_in_editor_field(text)
-    sleep 0.1
-
     within ".CodeMirror" do
       current_scope.click
-      field = current_scope.find("textarea", visible: false)
-      field.send_keys text
+      type text
     end
   end
 
