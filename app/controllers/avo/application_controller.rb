@@ -108,7 +108,7 @@ module Avo
     def set_resource
       raise ActionController::RoutingError.new "No route matches" if resource.nil?
 
-      @resource = resource.new(view: params[:view] || action_name.to_s, user: _current_user, params: params)
+      @resource = resource.new(view: params[:view].presence || action_name.to_s, user: _current_user, params: params)
 
       set_authorization
     end
@@ -120,7 +120,26 @@ module Avo
     def set_related_resource
       raise Avo::MissingResourceError.new(related_resource_name) if related_resource.nil?
 
-      @related_resource = related_resource.new(params: params, view: action_name.to_sym, user: _current_user, record: @related_record).detect_fields
+      action_view = action_name.to_sym
+
+      # Get view from params unless actions is index or show or forms...
+      # Else, for example for detach action we want the view from params to can fetch the correct fields
+      # This logic avoid the following scenario:
+      # When a has many field is rendered the action is index and params[:view] is show or edit but we want to
+      # keep @view as index for the related_resource
+      # Same do not happen with other actions except the list below.
+      view = if action_view.in?([:index, :show, :new, :edit, :create])
+        action_view
+      else
+        params[:view].presence || action_view
+      end
+
+      @related_resource = related_resource.new(
+        params: params,
+        view: view,
+        user: _current_user,
+        record: @related_record
+      ).detect_fields
     end
 
     def set_record

@@ -26,7 +26,7 @@ RSpec.describe "StiPersonSpouse", type: :feature do
 
       fill_in "person_name", with: "John"
 
-      click_on "Save"
+      save
       click_on "Go back"
 
       click_on "Create new person"
@@ -34,7 +34,7 @@ RSpec.describe "StiPersonSpouse", type: :feature do
       fill_in "person_name", with: "Mary"
       select "Spouse", from: "person_type"
 
-      click_on "Save"
+      save
 
       people = Person.all
 

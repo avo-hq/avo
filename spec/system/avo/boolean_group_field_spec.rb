@@ -45,8 +45,7 @@ RSpec.describe "BooleanGroupField", type: :system do
         uncheck "user_roles_manager"
         uncheck "user_roles_writer"
 
-        click_on "Save"
-        wait_for_loaded
+        save
 
         user_id = page.find('[data-field-id="id"] [data-slot="value"]').text
         user_slug = User.find(user_id).slug

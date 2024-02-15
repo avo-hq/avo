@@ -20,6 +20,7 @@ const handle = async () => {
     outline: '24/outline',
     solid: '24/solid',
     mini: '20/solid',
+    micro: '16/solid',
   }
   const destinationPath = path.join(
     __dirname,
