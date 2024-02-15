@@ -1,6 +1,7 @@
 fix: true               # default: false
 parallel: true          # default: false
 format: progress        # default: Standard::Formatter
+ruby_version: 3.3.0     # default: RUBY_VERSION
 default_ignores: true   # default: true
 
 ignore:                 # default: []

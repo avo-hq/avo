@@ -50,7 +50,7 @@ RSpec.describe "number", type: :feature do
 
         fill_in "project_users_required", with: new_users_required
 
-        click_on "Save"
+        save
 
         expect(current_path).to eql "/admin/resources/projects/#{project.id}"
         is_expected.to have_text new_users_required
@@ -61,7 +61,7 @@ RSpec.describe "number", type: :feature do
 
         fill_in "project_users_required", with: under_min_users_required
 
-        click_on "Save"
+        save
 
         expect(current_path).to eql "/admin/resources/projects/#{project.id}"
         is_expected.to have_text "Users required must be greater than 9"
@@ -72,7 +72,7 @@ RSpec.describe "number", type: :feature do
 
         fill_in "project_users_required", with: over_max_users_required
 
-        click_on "Save"
+        save
 
         expect(current_path).to eql "/admin/resources/projects/#{project.id}"
         is_expected.to have_text "Users required must be less than 1000000"
@@ -83,7 +83,7 @@ RSpec.describe "number", type: :feature do
 
         fill_in "project_users_required", with: 'nil'
 
-        click_on "Save"
+        save
 
         expect(current_path).to eql "/admin/resources/projects/#{project.id}"
         is_expected.to have_text "Users required is not a number"

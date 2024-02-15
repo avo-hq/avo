@@ -45,7 +45,7 @@ RSpec.describe "textarea", type: :feature do
 
         fill_in "team_description", with: new_description
 
-        click_on "Save"
+        save
 
         expect(current_path).to eql "/admin/resources/teams/#{team.id}"
         expect(page).to have_text new_description
@@ -58,7 +58,7 @@ RSpec.describe "textarea", type: :feature do
 
         fill_in "team_description", with: nil
 
-        click_on "Save"
+        save
 
         expect(current_path).to eql "/admin/resources/teams/#{team.id}"
         expect(find_field_value_element("description")).to have_text empty_dash
@@ -78,7 +78,7 @@ RSpec.describe "textarea", type: :feature do
 
         fill_in "team_description", with: new_description
 
-        click_on "Save"
+        save
 
         expect(current_path).to eql "/admin/resources/teams/#{team.id}"
         expect(page).to have_text new_description
