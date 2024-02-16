@@ -31,7 +31,7 @@ RSpec.describe "Filters", type: :system do
       expect(page).not_to have_text "Unfeatured post"
       expect(page).to have_checked_field "Featured"
       expect(page).to have_unchecked_field "Unfeatured"
-      expect(current_url).to include "filters="
+      expect(current_url).to include "encoded_filters="
       expect(page).to have_link("Reset filters")
     end
 
@@ -45,7 +45,7 @@ RSpec.describe "Filters", type: :system do
 
       expect(page).to have_text "Featured post"
       expect(page).not_to have_text "Unfeatured post"
-      expect(current_url).to include "filters="
+      expect(current_url).to include "encoded_filters="
       expect(page).to have_link("Reset filters")
 
       uncheck "Featured"
@@ -79,7 +79,7 @@ RSpec.describe "Filters", type: :system do
       expect(page).to have_text "Unfeatured post"
       expect(page).to have_unchecked_field "Featured"
       expect(page).to have_unchecked_field "Unfeatured"
-      expect(current_url).not_to include "filters="
+      expect(current_url).not_to include "encoded_filters="
       expect(page).to have_button("Reset filters", disabled: true)
     end
   end
@@ -163,7 +163,7 @@ RSpec.describe "Filters", type: :system do
         expect(page).to have_text "Published post"
         expect(page).not_to have_text "Unpublished post"
         expect(page).to have_select "avo_filters_published_status", selected: "Published", options: ["Published or unpublished", "Published", "Unpublished"]
-        expect(current_url).to include "filters="
+        expect(current_url).to include "encoded_filters="
         expect(page).to have_link("Reset filters")
       end
 
@@ -178,7 +178,7 @@ RSpec.describe "Filters", type: :system do
         expect(page).to have_text "Published post"
         expect(page).not_to have_text "Unpublished post"
         expect(page).to have_select "avo_filters_published_status", selected: "Published", options: ["Published or unpublished", "Published", "Unpublished"]
-        expect(current_url).to include "filters="
+        expect(current_url).to include "encoded_filters="
         expect(page).to have_link("Reset filters")
 
         select "Published or unpublished", from: "avo_filters_published_status"
@@ -188,7 +188,7 @@ RSpec.describe "Filters", type: :system do
         expect(page).to have_text "Published post"
         expect(page).to have_text "Unpublished post"
         expect(page).to have_select "avo_filters_published_status", selected: "Published or unpublished", options: ["Published or unpublished", "Published", "Unpublished"]
-        expect(current_url).not_to include "filters="
+        expect(current_url).not_to include "encoded_filters="
         expect(page).to have_button("Reset filters", disabled: true)
 
         select "Unpublished", from: "avo_filters_published_status"
@@ -198,7 +198,7 @@ RSpec.describe "Filters", type: :system do
         expect(page).not_to have_text "Published post"
         expect(page).to have_text "Unpublished post"
         expect(page).to have_select "avo_filters_published_status", selected: "Unpublished", options: ["Published or unpublished", "Published", "Unpublished"]
-        expect(current_url).to include "filters="
+        expect(current_url).to include "encoded_filters="
         expect(page).to have_link("Reset filters")
 
         click_on "Reset filters"
@@ -246,7 +246,7 @@ RSpec.describe "Filters", type: :system do
         open_filters_menu
 
         expect(page).to have_select "avo_filters_status", selected: ["draft"], options: ["draft", "published", "archived"]
-        expect(current_url).to include "filters="
+        expect(current_url).to include "encoded_filters="
         expect(page).to have_link("Reset filters")
       end
 
