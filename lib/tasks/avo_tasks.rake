@@ -71,7 +71,7 @@ task "avo:sym_link" do
     `touch #{packages_path}/.keep`
   end
 
-  ["avo-advanced", "avo-pro", "avo-dynamic_filters", "avo-dashboards", "avo-menu"].each do |gem|
+  ["avo-advanced", "avo-pro", "avo-dynamic_filters", "avo-dashboards", "avo-menu", "avo-enterprise"].each do |gem|
     path = `bundle show #{gem} 2> /dev/null`.chomp
 
     # If path is emty we check if package is defined outside of root (on release process it is)

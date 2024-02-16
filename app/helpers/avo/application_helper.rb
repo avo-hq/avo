@@ -133,11 +133,11 @@ module Avo
       ["frame", resource.model_name.singular, resource.record.id].compact.join("-")
     end
 
-    def audit(auditable_class:, payload:, action:, records: [])
-      return unless Avo.configuration.audit? && auditable_class.has_avo_audit
+    def audit(activity_class:, payload:, action:, records: [])
+      return unless Avo.configuration.audit? && activity_class.has_avo_activity
 
-      Avo::Current.audit = Avo::Audit.create!(
-        auditable_class: auditable_class,
+      Avo::Current.activity = Avo::Activity.create!(
+        activity_class: activity_class,
         action: action,
         author_id: _current_user.id,
         author_type: _current_user.class,
@@ -146,7 +146,7 @@ module Avo
 
 
       Array(records).each do |record|
-        Avo::Current.audit.avo_audit_records.create!(record: record)
+        Avo::Current.activity.avo_activity_pivots.create!(record: record)
       end
     end
 

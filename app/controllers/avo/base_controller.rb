@@ -124,7 +124,7 @@ module Avo
 
     def create
       # record gets instantiated and filled in the fill_record method
-      audit(auditable_class: @resource.class, payload: params, action: __method__)
+      audit(activity_class: @resource.class, payload: params, action: __method__)
       saved = save_record
       @resource.hydrate(record: @record, view: :new, user: _current_user)
 
@@ -179,7 +179,7 @@ module Avo
     end
 
     def update
-      audit(auditable_class: @resource.class, payload: params, action: __method__, records: @record)
+      audit(activity_class: @resource.class, payload: params, action: __method__, records: @record)
 
       # record gets instantiated and filled in the fill_record method
       saved = save_record
@@ -196,7 +196,7 @@ module Avo
     end
 
     def destroy
-      audit(auditable_class: @resource.class, payload: params, action: __method__, records: @record)
+      audit(activity_class: @resource.class, payload: params, action: __method__, records: @record)
       if destroy_model
         destroy_success_action
       else

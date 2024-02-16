@@ -26,7 +26,7 @@ module Avo
       fields = action_params[:fields].except(:avo_resource_ids, :avo_selected_query)
 
       audit(
-        auditable_class: @action.class,
+        activity_class: @action.class,
         payload: {
           fields: fields,
           resource: resource,

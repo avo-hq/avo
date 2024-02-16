@@ -25,7 +25,7 @@ class Avo::Current < ActiveSupport::CurrentAttributes
   attribute :tool_manager
   attribute :plugin_manager
   attribute :locale
-  attribute :audit
+  attribute :activity
 
   # Protect from error #<RuntimeError: Missing rack.input> when request is ActionDispatch::Request.empty
   def params
