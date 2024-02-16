@@ -220,7 +220,7 @@ module Avo
     end
 
     def audit?
-      Avo.plugin_manager.installed?("avo-enterprise") && @audit && ActiveRecord::Base.connection.table_exists?(:avo_audits)
+      Avo.plugin_manager.installed?("avo-enterprise") && @audit && ActiveRecord::Base.connection.table_exists?(:avo_activities)
     end
   end
 
