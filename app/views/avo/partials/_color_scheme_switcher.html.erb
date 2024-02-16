@@ -1,0 +1,11 @@
+<a href="javascript:void(0);" class="border p-2 block rounded-lg">
+  <%= svg "moon-plus-plus", class: "h-5" %>
+|<%= cookies[:color_scheme] %>|
+  <%#= form_with url: color_scheme_path, method: :post do |f| %>
+    <%#= f.hidden_input color_scheme: :light %>
+    <%#= f.button "Light" %>
+  <%# end %>
+  <%= link_to :auto, color_scheme_path(color_scheme: :auto), data: {turbo_method: :post, turbo_frame: :_top} %>
+  <%= link_to :light, color_scheme_path(color_scheme: :light), data: {turbo_method: :post, turbo_frame: :_top} %>
+  <%= link_to :dark, color_scheme_path(color_scheme: :dark), data: {turbo_method: :post, turbo_frame: :_top} %>
+</a>

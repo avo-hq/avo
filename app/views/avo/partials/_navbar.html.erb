@@ -1,4 +1,4 @@
-<%= content_tag :div, class: class_names("fixed bg-white p-2 w-full flex flex-shrink-0 items-center z-[100] px-4 lg:px-4 border-b space-x-4 lg:space-x-0 h-16", {"print:hidden": Avo.configuration.hide_layout_when_printing}) do %>
+<%= content_tag :div, class: class_names("fixed bg-white dark:bg-[#383838] p-2 w-full flex flex-shrink-0 items-center z-[100] px-4 lg:px-4 border-b space-x-4 lg:space-x-0 h-16", {"print:hidden": Avo.configuration.hide_layout_when_printing}) do %>
   <div class="flex items-center space-x-2 w-auto lg:w-64 flex-shrink-0 h-full">
     <div>
       <%= a_button class: 'lg:hidden', icon: 'menu', size: :xs, compact: true, style: :text, data: { action: 'click->sidebar#toggleSidebarOnMobile' } %>
@@ -8,8 +8,13 @@
   </div>
   <div class="flex-1 flex items-center justify-between lg:justify-start space-x-2 sm:space-x-8 lg:px-2">
     <%= render Avo::Pro::GlobalSearchComponent.new rescue nil %>
-    <div class="m-0">
-      <%= render partial: "avo/partials/header" %>
+    <div class="flex-1 flex justify-between w-full m-0">
+      <div class="flex items-center">
+        <%= render partial: "avo/partials/header" %>
+      </div>
+      <div>
+        <%= render partial: "avo/partials/color_scheme_switcher" %>
+      </div>
     </div>
   </div>
 <% end %>

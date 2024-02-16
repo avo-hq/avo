@@ -95,6 +95,13 @@ document.addEventListener('turbo:before-cache', () => {
   document.querySelectorAll('[data-turbo-remove-before-cache]').forEach((element) => element.remove())
 })
 
+// Watch for live changes when the user has "auto" as the default setting.
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
+  const method = event.matches ? 'add' : 'remove'
+
+  document.documentElement.classList[method]('dark')
+})
+
 window.Avo = window.Avo || { configuration: {} }
 
 window.Avo.menus = {

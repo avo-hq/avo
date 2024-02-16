@@ -46,6 +46,8 @@ Avo::Engine.routes.draw do
     post "/debug/refresh_license", to: "debug#refresh_license"
   end
 
+  resource :color_scheme
+
   if Rails.env.development? || Rails.env.staging?
     scope "/avo_private", as: "avo_private" do
       get "/design", to: "private#design"

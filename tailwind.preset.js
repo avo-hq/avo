@@ -20,6 +20,7 @@ function contentPaths(basePath) {
 }
 
 module.exports = {
+  darkMode: 'class',
   content: [
     ...contentPaths('./tmp/avo/packages/*'),
     ...contentPaths(avoPath),

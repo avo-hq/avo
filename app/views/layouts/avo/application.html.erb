@@ -21,9 +21,10 @@
     <% end %>
     <%= render Avo::AssetManager::JavascriptComponent.new asset_manager: Avo.asset_manager %>
     <%= render partial: 'avo/partials/head' %>
+    <%= render partial: 'avo/partials/color_theme_override' %>
   </head>
-  <body class="bg-application os-mac">
-    <div class="relative flex flex-1 w-full min-h-full" data-controller="sidebar" data-sidebar-open-value="<%= @sidebar_open %>">
+  <body class="bg-application os-mac dark:bg-[#282828] transition-colors">
+    <div class="relative flex flex-1 w-full min-h-dvh" data-controller="sidebar" data-sidebar-open-value="<%= @sidebar_open %>">
       <div class="flex-1 flex flex-col max-w-full">
         <%= render partial: "avo/partials/navbar" %>
         <div data-sidebar-target="mainArea" class="content-area flex-1 flex pt-16 relative <%= 'sidebar-open' if @sidebar_open %>">
@@ -33,7 +34,7 @@
           <div class="flex lg:hidden">
             <%= render Avo::SidebarComponent.new sidebar_open: false, for_mobile: true %>
           </div>
-          <div class="main-content-area flex-1 flex flex-col min-h-full max-w-full">
+          <div class="main-content-area flex-1 flex flex-col min-h-dvh max-w-full">
             <div class="content p-4 lg:p-6 flex-1 flex flex-col justify-between items-stretch <%= @container_classes %>">
               <%= render partial: "avo/partials/custom_tools_alert" %>
               <div class="flex flex-1 flex-col justify-between items-stretch space-y-8">
