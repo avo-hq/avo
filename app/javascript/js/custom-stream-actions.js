@@ -16,10 +16,18 @@ StreamActions.open_filter = function () {
 }
 // END TODO: move these to the avo_filters gem
 
+// https://stackoverflow.com/a/77850750/9067704
 StreamActions.download = function () {
+  const byteCharacters = atob(this.getAttribute('content'))
+  const byteNumbers = new Array(byteCharacters.length)
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i)
+  }
+  const byteArray = new Uint8Array(byteNumbers)
+
   saveAs(
     new Blob(
-      [this.getAttribute('content')],
+      [byteArray],
     ),
     this.getAttribute('filename'),
   )

@@ -91,14 +91,6 @@ module Avo
       "—"
     end
 
-    def confirm_alert
-      Capybara.using_wait_time(1) do
-        page.driver.browser.switch_to.alert.accept
-      rescue Selenium::WebDriver::Error::NoSuchAlertError
-        retry
-      end
-    end
-
     # Example usage:
     #   click_resource_search_input # opens the first search box on the given page
     #   opens the search box for the "users" resource
@@ -135,14 +127,20 @@ module Avo
     #   write_in_search("John Doe")
     #   select_first_result_in_search
     def select_first_result_in_search
-      find(".aa-Input").send_keys :arrow_down
-      find(".aa-Input").send_keys :enter
+      type :down, :enter
       wait_for_search_loaded
     end
 
     # Save a record and wait for the page to load
+    # For most cases `.click` works
+    # Sometimes other element may be overlapping the button so the `.trigger("click")` solves the issue
+    # Trigger can't be used by default because it breaks on some feature specs
     def save
-      click_on "Save"
+      button = find("button.button-component", text: "Save")
+      button.click
+    rescue Capybara::Cuprite::MouseEventFailed
+      button.trigger("click")
+    ensure
       wait_for_loaded
     end
 
@@ -150,14 +148,15 @@ module Avo
       if within_target.present?
         within within_target do
           within find('[data-controller="tabs"] [data-tabs-target="tabSwitcher"]') do
-            find_link(tab_name).click
+            find_link(tab_name).trigger("click")
           end
         end
       else
         within find('[data-controller="tabs"] [data-tabs-target="tabSwitcher"]') do
-          find_link(tab_name).click
+          find_link(tab_name).trigger("click")
         end
       end
+      wait_for_loaded
     end
 
     def tab_group(index = 0)
@@ -204,7 +203,7 @@ module Avo
     end
 
     def close_picker
-      find('[data-target="title"]').click
+      find('[data-target="title"]').trigger("click")
       sleep 0.3
     end
 
@@ -251,14 +250,11 @@ module Avo
     #   expect(add_tag(field: :tags, tag: "one")).to eq ["one"]
     #   add_tag(field: :tags, tag: "two")
     def add_tag(field:, tag:)
-      # Find the input field for the specified field
-      input = find("[data-field-id='#{field}'] [data-slot='value'] [role='textbox']")
+      # Find the input field for the specified field and click it
+      find("[data-field-id='#{field}'] [data-slot='value'] [role='textbox']").click
 
       # Enter the specified tag into the input field
-      input.set(tag)
-      sleep 0.1
-
-      input.send_keys :return
+      type tag, :return
       wait_for_tag_to_appear(tag)
 
       # Return an array of the current tags
@@ -310,6 +306,10 @@ module Avo
       # Find all elements with class 'tagify_dropdown_item' within the dropdown
       # Map the elements to their 'label' attribute values and return the array of labels
       page.all(".tagify__dropdown__item").map { |element| element[:label] }
+    end
+
+    def type(...)
+      page.driver.browser.keyboard.type(...)
     end
 
     private

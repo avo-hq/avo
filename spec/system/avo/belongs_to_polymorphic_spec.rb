@@ -34,9 +34,7 @@ RSpec.feature "belongs_to", type: :system do
             click_on "Create new comment"
             fill_in "comment_body", with: "Sample comment"
             select user.name, from: "comment_user_id"
-            click_on "Save"
-
-            wait_for_loaded
+            save
 
             return_to_comment_page
 
@@ -57,13 +55,12 @@ RSpec.feature "belongs_to", type: :system do
               fill_in "comment_body", with: "Sample comment"
               select "Post", from: "comment_commentable_type"
               select post.name, from: "comment_commentable_id"
-              click_on "Save"
-              wait_for_loaded
+              save
 
               expect(Comment.count).to eq 1
               comment = Comment.first
 
-              expect(current_path).to eq "/admin/resources/comments"
+              expect(page).to have_current_path "/admin/resources/comments"
 
               return_to_comment_page
 
@@ -89,8 +86,7 @@ RSpec.feature "belongs_to", type: :system do
               select "Post", from: "comment_commentable_type"
               select other_posts.last.name, from: "comment_commentable_id"
 
-              click_on "Save"
-              wait_for_loaded
+              save
 
               expect(Comment.last.commentable_type).to eql "Post"
               expect(Comment.last.commentable_id).to eql other_posts.last.id
@@ -117,9 +113,7 @@ RSpec.feature "belongs_to", type: :system do
               visit "/admin/resources/comments/#{comment.id}/edit"
 
               select "Choose an option", from: "comment_commentable_type"
-              click_on "Save"
-
-              wait_for_loaded
+              save
 
               return_to_comment_page
 
@@ -138,9 +132,7 @@ RSpec.feature "belongs_to", type: :system do
               expect(page).to have_select "comment_commentable_id", options: ["Choose an option", project.name], selected: project.name
 
               select "Post", from: "comment_commentable_type"
-              click_on "Save"
-
-              wait_for_loaded
+              save
 
               return_to_comment_page
 
@@ -155,9 +147,7 @@ RSpec.feature "belongs_to", type: :system do
 
               select "Post", from: "comment_commentable_type"
               select post.name, from: "comment_commentable_id"
-              click_on "Save"
-
-              wait_for_loaded
+              save
 
               return_to_comment_page
 
@@ -228,9 +218,7 @@ RSpec.feature "belongs_to", type: :system do
           expect(page).to have_select "comment_commentable_type", options: ["Choose an option", "Post", "Project"], selected: "Project", disabled: true
           expect(page).to have_select "comment_commentable_id", options: ["Choose an option", project.name], selected: project.name, disabled: true
 
-          click_on "Save"
-          wait_for_loaded
-          sleep 0.5
+          save
 
           expect(current_path).to eq "/admin/resources/projects/#{project.id}"
 

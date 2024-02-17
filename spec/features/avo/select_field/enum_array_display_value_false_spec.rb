@@ -93,7 +93,7 @@ RSpec.describe "SelectField", type: :feature do
 
           select new_status, from: "post_status"
 
-          click_on "Save"
+          save
 
           expect(current_path).to eql "/admin/resources/posts/#{post.slug}"
           expect(page).to have_text new_status
@@ -113,7 +113,7 @@ RSpec.describe "SelectField", type: :feature do
 
           select new_status, from: "post_status"
 
-          click_on "Save"
+          save
 
           expect(current_path).to eql "/admin/resources/posts/#{post.slug}"
           expect(page).to have_text new_status
@@ -137,7 +137,7 @@ RSpec.describe "SelectField", type: :feature do
           fill_in "post_name", with: "Post X"
           select new_status, from: "post_status"
 
-          click_on "Save"
+          save
 
           expect(current_path).to eql "/admin/resources/posts/#{Post.last.slug}"
           expect(page).to have_text "Post X"

@@ -17,7 +17,7 @@ RSpec.feature "multiple names model", type: :feature do
       it "sets the right form_scope" do
         visit "admin/resources/memberships/#{team_membership.id}/edit"
 
-        click_on "Save"
+        save
       end
     end
   end

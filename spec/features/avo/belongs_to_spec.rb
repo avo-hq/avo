@@ -63,7 +63,7 @@ RSpec.feature "belongs_to", type: :feature do
 
         select admin.name, from: "post_user_id"
 
-        click_on "Save"
+        save
 
         expect(current_path).to eql "/admin/resources/posts/#{post.slug}"
         expect(page).to have_link admin.name, href: "/admin/resources/users/#{admin.slug}?via_record_id=#{post.slug}&via_resource_class=Avo%3A%3AResources%3A%3APost"
@@ -82,7 +82,7 @@ RSpec.feature "belongs_to", type: :feature do
 
         select second_user.name, from: "post_user_id"
 
-        click_on "Save"
+        save
 
         expect(current_path).to eql "/admin/resources/posts/#{post.slug}"
         expect(page).to have_link second_user.name, href: "/admin/resources/users/#{second_user.slug}?via_record_id=#{post.slug}&via_resource_class=Avo%3A%3AResources%3A%3APost"
@@ -94,7 +94,7 @@ RSpec.feature "belongs_to", type: :feature do
 
         select empty_dash, from: "post_user_id"
 
-        click_on "Save"
+        save
 
         expect(current_path).to eql "/admin/resources/posts/#{post.slug}"
         expect(find_field_value_element("user")).to have_text empty_dash
@@ -117,8 +117,7 @@ RSpec.feature "belongs_to", type: :feature do
 
         fill_in "course_link_link", with: "https://avo.cool"
 
-        click_on "Save"
-        wait_for_loaded
+        save
 
         # When the validation fails for any reason, the user is redirected to this weird `/new` path with the newly created model populating the form
         # This test is valid only as a system test. The feature test does not cover this edge-case

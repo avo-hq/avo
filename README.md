@@ -16,7 +16,7 @@ Avo is a beautiful next-generation framework that empowers you, the developer, t
 ⚡️ **Install**: [docs.avohq.io/3.0/installation](https://docs.avohq.io/3.0/installation.html)\
 ✨ **Website**: [avohq.io](https://avohq.io)\
 📚 **Documentation**: [docs.avohq.io](https://docs.avohq.io)\
-🗺 **Roadmap**: [GitHub Roadmap](https://github.com/orgs/avo-hq/projects/3)\
+🗺 **Roadmap**: [GitHub Roadmap](https://github.com/orgs/avo-hq/projects/8)\
 🎸 **Demo app**: [Avodemo](https://main.avodemo.com/)\
 🐤 **Twitter**: [avo_hq](https://twitter.com/avo_hq)\
 💬 **Community chat**: [discord](https://discord.gg/pkTF6y8)\
@@ -52,7 +52,7 @@ Avo is a beautiful next-generation framework that empowers you, the developer, t
 
 Theming ⭐️  &nbsp;notifications ⭐️  &nbsp;Resource segmentation ⭐️  &nbsp;filterable fields ⭐️  &nbsp;inline editing ⭐️  &nbsp;multilingual records ⭐️  &nbsp;keyboard shortcuts ⭐️  &nbsp;track resource changes ⭐️  &nbsp;smart resource generation ⭐️  &nbsp;live resources ⭐️  &nbsp;columns view ⭐️  &nbsp;list view ⭐️  &nbsp;custom action items ⭐️  &nbsp;command bar ⭐️  &nbsp; use fields DSL in your custom views
 
-For more up-to-date info check out our 🗺 [Roadmap](https://github.com/orgs/avo-hq/projects/3).
+For more up-to-date info check out our 🗺 [Roadmap](https://github.com/orgs/avo-hq/projects/8).
 
 # Installation
 

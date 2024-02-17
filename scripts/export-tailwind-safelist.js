@@ -1,9 +1,14 @@
+/**
+  This command should only be run when updating one of the dynamic components or when we add a suport for a custom class on the docs.
+  EX: - Avo::ButtonComponent
+*/
+
 /* eslint-disable no-template-curly-in-string */
 const fs = require('fs')
 const kebabCase = require('lodash/kebabCase')
 const colors = require('tailwindcss/colors')
 
-// Dynamically built buttons need these classes in prod.
+// Dynamically-built buttons need these classes in prod.
 const buttonClasses = [
   'bg-${color}-500',
   'border-${color}-500',
@@ -41,8 +46,10 @@ ignoredDynamicClasses.push(
 // Add the backgrounds colors that are used by the charts
 ignoredDynamicClasses.push('bg-[#0B8AE2]', 'bg-[#34C683]', 'bg-[#2AB1EE]', 'bg-[#34C6A8]')
 
+const content = `# This file was auto-generated using the \`yarn export:tailwind-safelist\` command in \`export-tailwind-safelist.js\`\n${ignoredDynamicClasses.flat().join(' ')}`
+
 // Write them into a safelist.txt file until @tailwindcss/jit supports PurgeCSS options
-fs.writeFile('./safelist.txt', ignoredDynamicClasses.flat().join(' '), () => {
+fs.writeFile('./safelist.txt', content, () => {
   // eslint-disable-next-line no-console
   console.log(`Generated safelist.txt file with ${ignoredDynamicClasses.flat().length} classes.`)
 })
