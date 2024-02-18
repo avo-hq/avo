@@ -13,7 +13,7 @@ RSpec.feature "Field Summarizing", type: :feature do
 
       expect(page).to have_css "turbo-frame[id='summary-frame-status']", visible: false
 
-      find('#summary-header-status').click
+      find("#summary-header-status").click
 
       expect(page).to have_css "turbo-frame[id='summary-frame-status']", visible: true
 
@@ -39,8 +39,8 @@ RSpec.feature "Field Summarizing", type: :feature do
       visit avo.resources_projects_path
 
       expect(page).to have_css 'th[data-table-header-field-id="status"] div svg'
-      expect(page).not_to have_css 'th[data-table-header-field-id="country"] div svg'
-      expect(page).not_to have_css 'th[data-table-header-field-id="stage"] div svg'
+      expect(page).not_to have_css 'th[data-table-header-field-id="progress"] div svg'
+      expect(page).not_to have_css 'th[data-table-header-field-id="description"] div svg'
     end
   end
 end
