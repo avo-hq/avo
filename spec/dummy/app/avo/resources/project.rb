@@ -39,12 +39,14 @@ class Avo::Resources::Project < Avo::BaseResource
         danger: :Cancelled,
         neutral: :Drafting
       },
-      filterable: true
+      filterable: true,
+      summarizable: true
     field :country,
       as: :country,
       include_blank: "No country",
-      filterable: true
-    field :users_required, as: :number, min: 10, max: 1000000, step: 1, html: {index: {wrapper: {classes: "text-right"}}}
+      filterable: true,
+      summarizable: true
+    field :users_required, as: :number, min: 10, max: 1000000, step: 1, html: {index: {wrapper: {classes: "text-right"}}}, summarizable: true
     field :started_at, as: :date_time, name: "Started", time_24hr: true, nullable: true,
       relative: true,
       timezone: "EET",
