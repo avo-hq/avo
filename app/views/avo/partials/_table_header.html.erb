@@ -52,7 +52,7 @@
           <%= render partial: 'avo/partials/sortable_component', locals: {field: field} %>
         <% end %>
       <% elsif field.summarizable %>
-        <div class="flex items-center space-between w-full cursor-pointer <%= classes %>" data-action="click->toggle#togglePanel">
+        <div id="summary-header-<%= field.id %>" class="flex items-center space-between w-full cursor-pointer <%= classes %>" data-action="click->toggle#togglePanel">
           <%= field.table_header_label %>
           <%= svg 'heroicons/solid/chart-bar', class: 'h-3 ml-1' %>
         </div>
@@ -60,7 +60,7 @@
             class="absolute inset-auto bg-white w-full sm:w-[400px] mt-2 p-4 z-40 shadow-modal rounded overflow-hidden hidden"
             data-toggle-target="panel"
           >
-          <turbo-frame id="summary-frame" loading="lazy" src="<%= distribution_chart_path(resource_name: field.record.class.to_s.downcase, field_id: field.id) %>" >
+          <turbo-frame id="summary-frame-<%= field.id %>" loading="lazy" src="<%= distribution_chart_path(resource_name: field.record.class.to_s.downcase, field_id: field.id) %>" >
             <%= render(Avo::LoadingComponent.new(title: "Summary")) %>
           </turbo-frame>
         </div>

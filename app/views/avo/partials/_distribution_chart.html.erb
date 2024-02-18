@@ -1,4 +1,4 @@
-<turbo-frame id="summary-frame" >
+<turbo-frame id="summary-frame-<%= @field_id %>" >
   <div class="grid grid-cols-12 items-center">
     <ul class="col-span-5" id="<%= @field_id %>-summary">
       <% @values_summary.each_with_index do |(key, value), index| %>
