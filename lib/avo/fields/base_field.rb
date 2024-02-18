@@ -270,10 +270,6 @@ module Avo
         end
       end
 
-      def values_summary
-        record.class.group(id).reorder("count_all desc").count
-      end
-
       private
 
       def model_or_class(model)
