@@ -30,8 +30,7 @@ RSpec.describe "Post comments use_resource PhotoComment", type: :feature do
 
       fill_in "comment_body", with: "I'm a photo comment!"
 
-      click_on "Save"
-      wait_for_loaded
+      save
 
       expect(current_path).to eql "/admin/resources/posts/#{post.slug}"
 

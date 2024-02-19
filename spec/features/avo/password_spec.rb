@@ -22,7 +22,7 @@ RSpec.feature "password", type: :feature do
 
         fill_in "user_first_name", with: "Johnny"
 
-        click_on "Save"
+        save
 
         expect(current_path).to eql "/admin/resources/users/#{user.slug}"
         expect(page).to have_text "Johnny"
@@ -70,7 +70,7 @@ RSpec.feature "password", type: :feature do
         fill_in "user_password", with: "passwordtest"
         fill_in "user_password_confirmation", with: "passwordtest"
 
-        click_on "Save"
+        save
 
         expect(current_path).to eql "/admin/resources/users/#{User.last.slug}"
         expect(page).to have_text "John"

@@ -35,18 +35,32 @@ end
 def wait_for_body_class_missing(klass = "turbo-loading", time = Capybara.default_max_wait_time)
   Timeout.timeout(time) do
     body = page.find(:xpath, "//body")
+    break if !body[:class].to_s.include?(klass)
+
     if page.present? && body.present? && body[:class].present? && body[:class].is_a?(String)
       sleep(0.1) until page.present? && !body[:class].to_s.include?(klass)
     else
       sleep 0.1
     end
   end
+rescue Timeout::Error
+  puts "\n\nMethod '#{__method__}' raised 'Timeout::Error' after #{time}s"
 end
 
 def wait_for_element_missing(identifier = ".element", time = Capybara.default_max_wait_time)
   Timeout.timeout(time) do
     if page.present?
       break if page.has_no_css?(identifier, wait: time)
+    else
+      sleep 0.05
+    end
+  end
+end
+
+def wait_for_element_present(identifier = ".element", time = Capybara.default_max_wait_time)
+  Timeout.timeout(time) do
+    if page.present?
+      break if page.has_css?(identifier, wait: time)
     else
       sleep 0.05
     end

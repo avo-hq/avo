@@ -18,8 +18,7 @@ RSpec.describe "DefaultField", type: :feature do
 
         fill_in "team_name", with: "Joshua Josh"
 
-        click_on "Save"
-        wait_for_loaded
+        save
 
         expect(current_path).to eql "/admin/resources/teams/#{Team.last.id}"
         expect(find_field_element(:description)).to have_text "This is a wonderful team!"
@@ -52,8 +51,7 @@ RSpec.describe "DefaultField", type: :feature do
         select "Mihai Marin", from: "team_membership[user_id]"
         select "Apple", from: "team_membership[team_id]"
 
-        click_on "Save"
-        wait_for_loaded
+        save
 
         expect(current_path).to eql "/admin/resources/memberships/#{TeamMembership.last.id}"
 
@@ -102,8 +100,7 @@ RSpec.describe "DefaultField", type: :feature do
 
     fill_in "project_name", with: "New name for project"
 
-    click_on "Save"
-    wait_for_loaded
+    save
 
     expect(page).to have_text "You might have missed something. Please check the form."
     expect(find("#project_name").value).to have_text "New name for project"

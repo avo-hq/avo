@@ -247,6 +247,7 @@ export default class extends Controller {
 
   searchParams(query) {
     let params = {
+      ...Object.fromEntries(new URLSearchParams(window.location.search)),
       q: query,
       global: false,
     }

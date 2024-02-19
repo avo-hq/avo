@@ -73,7 +73,7 @@ RSpec.feature "Fields view types", type: :system do
 
     destroy_path = "/admin/resources/projects/#{project.id}/active_storage_attachments/files/#{project.files.last.id}"
     accept_alert "Are you sure?" do
-      find("a[data-turbo-method='delete'][href='#{destroy_path}']").click
+      find("a[data-turbo-method='delete'][href='#{destroy_path}']").trigger("click")
     end
     wait_for_loaded
     expect(page).to have_text("Attachment destroyed")
