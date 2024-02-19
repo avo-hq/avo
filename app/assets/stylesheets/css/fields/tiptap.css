@@ -20,6 +20,14 @@
   }
 }
 
+.tiptap .is-editor-empty:first-child::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
 .tiptap__field {
   @apply w-full mb-4 border border-gray-200 rounded;
 }
