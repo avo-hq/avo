@@ -10,9 +10,7 @@ RSpec.feature "create_through_record", type: :feature do
       visit url
 
       fill_in "post_name", with: "post name"
-      click_on "Save"
-
-      wait_for_loaded
+      save
 
       post = Post.first
       expect(post.user).to eq admin
@@ -28,9 +26,7 @@ RSpec.feature "create_through_record", type: :feature do
       visit url
 
       fill_in "comment_body", with: "Comment body"
-      click_on "Save"
-
-      wait_for_loaded
+      save
 
       comment = Comment.last
       expect(comment.user).to eq admin
@@ -49,9 +45,7 @@ RSpec.feature "create_through_record", type: :feature do
       visit url
 
       fill_in "person_name", with: "Mary"
-      click_on "Save"
-
-      wait_for_loaded
+      save
 
       spouse = Spouse.last
       expect(person.spouses.first).to eq spouse
@@ -73,9 +67,7 @@ RSpec.feature "create_through_record", type: :feature do
       fill_in "user_email", with: "user@email.com"
       fill_in "user_password", with: "passpasspass"
       fill_in "user_password_confirmation", with: "passpasspass"
-      click_on "Save"
-
-      wait_for_loaded
+      save
 
       user = User.last
       expect(user.teams.first).to eq team
@@ -93,9 +85,7 @@ RSpec.feature "create_through_record", type: :feature do
 
       fill_in "project_name", with: "Projy"
       fill_in "project_users_required", with: "15"
-      click_on "Save"
-
-      wait_for_loaded
+      save
 
       project = Project.last
       expect(project.users.first).to eq admin
@@ -113,9 +103,7 @@ RSpec.feature "create_through_record", type: :feature do
       visit url
 
       fill_in "comment_body", with: "Comment body"
-      click_on "Save"
-
-      wait_for_loaded
+      save
 
       comment = Comment.first
       expect(comment.commentable).to eq project

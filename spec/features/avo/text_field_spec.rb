@@ -53,8 +53,7 @@ RSpec.describe "TextField", type: :feature do
 
         fill_in "user_first_name", with: "Jack Jack Jack"
 
-        click_on "Save"
-        wait_for_loaded
+        save
 
         expect(current_path).to eql "/admin/resources/users/#{user.slug}"
         expect(page).to have_text "Jack Jack Jack"

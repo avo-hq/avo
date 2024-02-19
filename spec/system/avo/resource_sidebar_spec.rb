@@ -28,12 +28,10 @@ RSpec.feature "ResourceSidebars", type: :system do
 
     within ".CodeMirror" do
       current_scope.click
-      field = current_scope.find("textarea", visible: false)
-      field.send_keys "Some custom css"
+      type "Some custom css"
     end
 
-    click_on "Save"
-    wait_for_loaded
+    save
 
     expect(page).to have_css(".CodeMirror-code", text: "Some custom css")
   end

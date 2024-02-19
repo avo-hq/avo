@@ -162,9 +162,7 @@ RSpec.describe "KeyValueFields", type: :system do
         delete_buttons = page.all('[data-button="delete-row"]')
         delete_buttons[0].click
 
-        click_on "Save"
-        sleep 0.2
-        wait_for_loaded
+        save
 
         expect(current_path).to eql "/admin/resources/projects/#{project.id}"
 

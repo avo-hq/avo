@@ -19,9 +19,8 @@ RSpec.feature "CreateHasOne", type: :feature do
     expect(page).to have_text user.name
 
     fill_in "post_name", with: "Main post name"
-    click_on "Save"
+    save
 
-    wait_for_loaded
     expect(page).to have_text "Post was successfully created."
     expect(page).to have_current_path("/admin/resources/users/#{user.slug}")
 
