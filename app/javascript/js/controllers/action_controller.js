@@ -5,7 +5,7 @@ export default class extends Controller {
 
   static values = {
     noConfirmation: Boolean,
-    resourceName: Boolean,
+    resourceName: String,
   }
 
   connect() {
