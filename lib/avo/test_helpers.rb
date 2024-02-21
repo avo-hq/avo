@@ -128,6 +128,10 @@ module Avo
     #   select_first_result_in_search
     def select_first_result_in_search
       type :down, :enter
+    rescue
+      find(".aa-Input").send_keys :arrow_down
+      find(".aa-Input").send_keys :enter
+    ensure
       wait_for_search_loaded
     end
 
