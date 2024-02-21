@@ -2,13 +2,13 @@
   class: classes,
   style: style,
   data: data do %>
-  <%= content_tag :div, class: class_names("pt-4 flex self-start items-center flex-shrink-0 w-48 px-6 uppercase font-semibold text-gray-500 text-sm", @field.get_html(:classes, view: view, element: :label), {
-    "md:pt-4 md:w-full": stacked?,
-    "h-full md:pt-0": !stacked?,
-    "md:h-10 ": !stacked? && short?,
-    "md:h-14 ": !stacked? && !short?,
-    "md:w-48 xl:w-64": compact?,
-    "md:w-64": !compact?,
+  <%= content_tag :div, class: class_names("py-field-wrapper-y flex self-start items-center flex-shrink-0 w-48 px-field-wrapper-x uppercase font-semibold text-gray-500 text-sm", @field.get_html(:classes, view: view, element: :label), {
+    # "md:pt-4 md:w-full": stacked?,
+    # "h-full md:pt-0": !stacked?,
+    # "md:h-10 ": !stacked? && short?,
+    # "md:h-14 ": !stacked? && !short?,
+    # "md:w-48 xl:w-64": compact?,
+    # "md:w-64": !compact?,
   }), data: {slot: "label"} do %>
     <% if form.present? %>
       <%= form.label field.id, label %>
@@ -17,7 +17,7 @@
     <% end %>
     <% if on_edit? && field.is_required? %> <span class="text-red-600 ml-1">*</span> <% end %>
   <% end %>
-  <%= content_tag :div, class: class_names("flex-1 flex flex-row md:min-h-inherit py-2 px-6", @field.get_html(:classes, view: view, element: :content), {
+  <%= content_tag :div, class: class_names("flex-1 flex flex-row md:min-h-inherit py-field-wrapper px-6", @field.get_html(:classes, view: view, element: :content), {
     "pb-4": stacked?,
   }), data: {slot: "value"} do %>
     <div class="self-center w-full <% unless full_width? || compact? || stacked? %> md:w-8/12 <% end %>">

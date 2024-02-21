@@ -47,6 +47,7 @@ Avo::Engine.routes.draw do
   end
 
   resource :color_scheme
+  resource :theme_option
 
   if Rails.env.development? || Rails.env.staging?
     scope "/avo_private", as: "avo_private" do

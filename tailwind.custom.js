@@ -1,17 +1,52 @@
+// const primary = {
+//   50: 'rgb(var(--color-primary-50))',
+//   100: 'rgb(var(--color-primary-100))',
+//   150: 'rgb(var(--color-primary-150))',
+//   200: 'rgb(var(--color-primary-200))',
+//   300: 'rgb(var(--color-primary-300))',
+//   400: 'rgb(var(--color-primary-400))',
+//   500: 'rgb(var(--color-primary-500))',
+//   600: 'rgb(var(--color-primary-600))',
+//   700: 'rgb(var(--color-primary-700))',
+//   800: 'rgb(var(--color-primary-800))',
+//   850: 'rgb(var(--color-primary-850))',
+//   900: 'rgb(var(--color-primary-900))',
+// }
+
 const primary = {
-  50: 'rgb(var(--color-primary-50))',
-  100: 'rgb(var(--color-primary-100))',
-  150: 'rgb(var(--color-primary-150))',
-  200: 'rgb(var(--color-primary-200))',
-  300: 'rgb(var(--color-primary-300))',
-  400: 'rgb(var(--color-primary-400))',
-  500: 'rgb(var(--color-primary-500))',
-  600: 'rgb(var(--color-primary-600))',
-  700: 'rgb(var(--color-primary-700))',
-  800: 'rgb(var(--color-primary-800))',
-  850: 'rgb(var(--color-primary-850))',
-  900: 'rgb(var(--color-primary-900))',
+  50: 'var(--color-primary-50)',
+  100: 'var(--color-primary-100)',
+  150: 'var(--color-primary-150)',
+  200: 'var(--color-primary-200)',
+  300: 'var(--color-primary-300)',
+  400: 'var(--color-primary-400)',
+  500: 'var(--color-primary-500)',
+  600: 'var(--color-primary-600)',
+  700: 'var(--color-primary-700)',
+  800: 'var(--color-primary-800)',
+  850: 'var(--color-primary-850)',
+  900: 'var(--color-primary-900)',
 }
+
+// 767676 gray
+// 30668E blue
+// 275327 green
+// const neutral = 'rgb(var(--color-neutral))'
+const neutral = 'var(--color-neutral)'
+// {
+//   50: 'rgb(var(--color-neutral-50))',
+//   100: 'rgb(var(--color-neutral-100))',
+//   150: 'rgb(var(--color-neutral-150))',
+//   200: 'rgb(var(--color-neutral-200))',
+//   300: 'rgb(var(--color-neutral-300))',
+//   400: 'rgb(var(--color-neutral-400))',
+//   500: 'rgb(var(--color-neutral-500))',
+//   600: 'rgb(var(--color-neutral-600))',
+//   700: 'rgb(var(--color-neutral-700))',
+//   800: 'rgb(var(--color-neutral-800))',
+//   850: 'rgb(var(--color-neutral-850))',
+//   900: 'rgb(var(--color-neutral-900))',
+// }
 
 const blue = {
   50: '#E6F3FC',
@@ -44,4 +79,6 @@ const gray = {
   900: '#17191C',
 }
 
-module.exports = { primary, blue, gray }
+module.exports = {
+  primary, neutral, blue, gray,
+}

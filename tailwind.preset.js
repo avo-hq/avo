@@ -3,7 +3,9 @@ const colors = require('tailwindcss/colors')
 const defaultTheme = require('tailwindcss/defaultTheme')
 
 const avoPath = require('child_process').execSync('bundle show avo', { encoding: 'utf-8' }).trim()
-const { primary, blue, gray } = require('./tailwind.custom')
+const {
+  primary, neutral, blue, gray,
+} = require('./tailwind.custom')
 
 function contentPaths(basePath) {
   return [
@@ -31,11 +33,40 @@ module.exports = {
         blue,
         gray,
         primary,
+        neutral,
         sky: colors.sky,
         teal: colors.teal,
         slate: colors.slate,
         indigo: colors.indigo,
         application: 'rgb(var(--color-application-background))',
+        // accent: {
+        //   50: 'var(--color-accent-50, var(--color-primary-50))',
+        //   100: 'var(--color-accent-100, var(--color-primary-100))',
+        //   150: 'var(--color-accent-150, var(--color-primary-150))',
+        //   200: 'var(--color-accent-200, var(--color-primary-200))',
+        //   300: 'var(--color-accent-300, var(--color-primary-300))',
+        //   400: 'var(--color-accent-400, var(--color-primary-400))',
+        //   500: 'var(--color-accent-500, var(--color-primary-500))',
+        //   600: 'var(--color-accent-600, var(--color-primary-600))',
+        //   700: 'var(--color-accent-700, var(--color-primary-700))',
+        //   800: 'var(--color-accent-800, var(--color-primary-800))',
+        //   850: 'var(--color-accent-850, var(--color-primary-850))',
+        //   900: 'var(--color-accent-900, var(--color-primary-900))',
+        // },
+        // neutral: {
+        //   50: 'var(--color-neutral-50)',
+        //   100: 'var(--color-neutral-100)',
+        //   150: 'var(--color-neutral-150)',
+        //   200: 'var(--color-neutral-200)',
+        //   300: 'var(--color-neutral-300)',
+        //   400: 'var(--color-neutral-400)',
+        //   500: 'var(--color-neutral-500)',
+        //   600: 'var(--color-neutral-600)',
+        //   700: 'var(--color-neutral-700)',
+        //   800: 'var(--color-neutral-800)',
+        //   850: 'var(--color-neutral-850)',
+        //   900: 'var(--color-neutral-900)',
+        // },
       },
       fontFamily: {
         // eslint-disable-next-line max-len
@@ -47,6 +78,15 @@ module.exports = {
       },
       borderRadius: {
         xl: '1rem',
+        panel: 'var(--border-radius-panel)',
+      },
+      borderWidth: {
+        stroke: 'var(--stroke-width)',
+      },
+      padding: {
+        'index-field-wrapper': 'var(--padding-index-field-wrapper)',
+        'field-wrapper-x': 'var(--padding-field-wrapper-x)',
+        'field-wrapper-y': 'var(--padding-field-wrapper-y)',
       },
       boxShadow: {
         row: '0 0 15px -5px rgba(0, 0, 0, 0.25)',

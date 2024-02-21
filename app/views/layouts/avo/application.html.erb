@@ -22,8 +22,10 @@
     <%= render Avo::AssetManager::JavascriptComponent.new asset_manager: Avo.asset_manager %>
     <%= render partial: 'avo/partials/head' %>
     <%= render partial: 'avo/partials/color_theme_override' %>
+    <%= render partial: 'avo/partials/css_variables' %>
   </head>
-  <body class="bg-application os-mac dark:bg-[#282828] transition-colors">
+  <body class="bg-application os-mac dark:bg-neutral transition-colors">
+    <%= render partial: 'avo/partials/theme_options' %>
     <div class="relative flex flex-1 w-full min-h-dvh" data-controller="sidebar" data-sidebar-open-value="<%= @sidebar_open %>">
       <div class="flex-1 flex flex-col max-w-full">
         <%= render partial: "avo/partials/navbar" %>
