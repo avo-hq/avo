@@ -16,8 +16,7 @@ RSpec.describe "uncountable fish resource", type: :feature do
 
         fill_in "fish_name", with: "Nemo"
 
-        click_on "Save"
-        wait_for_loaded
+        save
 
         nemo = Fish.first
 

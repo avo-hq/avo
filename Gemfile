@@ -30,7 +30,7 @@ gem "puma", "~> 6.4"
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem "jbuilder", "~> 2.7"
 # Use Redis adapter to run Action Cable in production
-gem 'redis', '~> 4.0'
+gem 'redis', '~> 5.0'
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -48,8 +48,6 @@ gem "spring"
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "devise"
-
-gem "ruby-debug-ide", require: false
 #
 # END Dependencies for dummy_app
 #
@@ -72,9 +70,7 @@ group :development do
 
   gem "htmlbeautifier"
 
-  gem "hotwire-livereload", "~> 1.2.3"
-
-  gem "brakeman"
+  gem "hotwire-livereload", "~> 1.3.0"
 
   gem "rubocop"
   gem "ripper-tags"
@@ -83,12 +79,10 @@ end
 
 group :test do
   gem "rspec-rails", "~> 6.0", ">= 6.0.3"
+  gem "rspec-retry", "~> 0.6.2"
   gem "rails-controller-testing"
-  # Adds support for Capybara system testing and selenium driver
   gem "capybara"
-  gem "selenium-webdriver"
-  # Easy installation and use of web drivers to run system tests with browsers
-  gem "webdrivers", ">= 5.3.0"
+  gem "cuprite"
   gem "fuubar"
   gem "simplecov", require: false
   gem "simplecov-cobertura"
@@ -97,7 +91,7 @@ group :test do
   gem "launchy", require: false
 
   gem "test-prof"
-  gem "database_cleaner"
+  gem "database_cleaner-active_record"
 end
 
 gem "awesome_print"
@@ -129,7 +123,7 @@ gem 'meta-tags'
 # Search
 gem "ransack", "~> 4.1", ">= 4.1.1"
 
-gem 'friendly_id', '~> 5.4.0'
+gem 'friendly_id', '~> 5.5.1'
 
 gem 'aws-sdk-s3', require: false
 
@@ -169,5 +163,3 @@ gem "prefixed_ids"
 gem "mapkick-rb", "~> 0.1.4"
 
 gem "pluggy", path: "./pluggy"
-
-gem "turbo_power", "~> 0.5.0"

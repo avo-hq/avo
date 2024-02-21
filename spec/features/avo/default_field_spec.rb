@@ -18,8 +18,7 @@ RSpec.describe "DefaultField", type: :feature do
 
         fill_in "team_name", with: "Joshua Josh"
 
-        click_on "Save"
-        wait_for_loaded
+        save
 
         expect(current_path).to eql "/admin/resources/teams/#{Team.last.id}"
         expect(find_field_element(:description)).to have_text "This is a wonderful team!"
@@ -52,8 +51,7 @@ RSpec.describe "DefaultField", type: :feature do
         select "Mihai Marin", from: "team_membership[user_id]"
         select "Apple", from: "team_membership[team_id]"
 
-        click_on "Save"
-        wait_for_loaded
+        save
 
         expect(current_path).to eql "/admin/resources/memberships/#{TeamMembership.last.id}"
 
@@ -92,5 +90,19 @@ RSpec.describe "DefaultField", type: :feature do
 
       expect(page).to have_field id: "team_name", with: "Avo::Resources::Team - new - Team"
     end
+  end
+
+  it "default do not override value when creation fail" do
+    visit avo.new_resources_project_path
+    wait_for_loaded
+
+    expect(find("#project_name").value).to have_text "New project default name"
+
+    fill_in "project_name", with: "New name for project"
+
+    save
+
+    expect(page).to have_text "You might have missed something. Please check the form."
+    expect(find("#project_name").value).to have_text "New name for project"
   end
 end

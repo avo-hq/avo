@@ -10,20 +10,19 @@ tags.tagify {
 }
 
 tags.tagify {
-  @apply !p-0;
+  @apply !p-1 !gap-1 !border-gray-200;
+
+  &.tagify--focus {
+    @apply !border-gray-600;
+  }
 
   span.tagify__input {
-    @apply my-1;
-
-    &:after {
-      /* The loader is not centered by default. This will make it look better. */
-      margin-top: 0.25rem;
-    }
+    @apply !m-0 !pl-1;
   }
 }
 
 tag.tagify__tag {
-  @apply text-sm my-1 mb-0;
+  @apply text-sm !m-0;
 }
 
 /* When the tags field is used to select just one value there's a weird ZeroWidthSpace (\u200B) character that breaks the vertical spacing. */

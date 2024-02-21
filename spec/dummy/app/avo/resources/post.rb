@@ -25,6 +25,7 @@ class Avo::Resources::Post < Avo::BaseResource
   def fields
     field :id, as: :id
     field :name, required: true, sortable: true
+    field :created_at, as: :date_time
     field :body,
       as: :trix,
       placeholder: "Enter text",
@@ -46,6 +47,14 @@ class Avo::Resources::Post < Avo::BaseResource
     field :user, as: :belongs_to, placeholder: "—"
     field :status, as: :select, enum: ::Post.statuses, display_value: false
     field :slug, as: :text
+    field :tags, as: :tags,
+      acts_as_taggable_on: :tags,
+      close_on_select: false,
+      placeholder: "add some tags",
+      suggestions: -> { Post.tags_suggestions },
+      enforce_suggestions: true,
+      # suggestions_max_items: 2,
+      help: "The only allowed values here are `one`, `two`, and `three`"
 
     field :cover_photo_attachment, as: :has_one
 

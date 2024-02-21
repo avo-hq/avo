@@ -12,6 +12,7 @@ import DashboardCardController from './controllers/dashboard_card_controller'
 import DateFieldController from './controllers/fields/date_field_controller'
 import EasyMdeController from './controllers/fields/easy_mde_controller'
 import FilterController from './controllers/filter_controller'
+import PanelRefreshController from './controllers/fields/panel_refresh_controller'
 import HiddenInputController from './controllers/hidden_input_controller'
 import InputAutofocusController from './controllers/input_autofocus_controller'
 import ItemSelectAllController from './controllers/item_select_all_controller'
@@ -34,6 +35,7 @@ import SelectFilterController from './controllers/select_filter_controller'
 import SelfDestroyController from './controllers/self_destroy_controller'
 import SidebarController from './controllers/sidebar_controller'
 import TabsController from './controllers/tabs_controller'
+import TagsFieldController from './controllers/fields/tags_field_controller'
 import TextFilterController from './controllers/text_filter_controller'
 import TippyController from './controllers/tippy_controller'
 import ToggleController from './controllers/toggle_controller'
@@ -47,6 +49,7 @@ application.register('boolean-filter', BooleanFilterController)
 application.register('copy-to-clipboard', CopyToClipboardController)
 application.register('dashboard-card', DashboardCardController)
 application.register('filter', FilterController)
+application.register('panel-refresh', PanelRefreshController)
 application.register('hidden-input', HiddenInputController)
 application.register('input-autofocus', InputAutofocusController)
 application.register('item-select-all', ItemSelectAllController)
@@ -78,6 +81,7 @@ application.register('easy-mde', EasyMdeController)
 application.register('key-value', KeyValueController)
 application.register('progress-bar-field', ProgressBarFieldController)
 application.register('reload-belongs-to-field', ReloadBelongsToFieldController)
+application.register('tags-field', TagsFieldController)
 application.register('trix-field', TrixFieldController)
 
 // Custom controllers

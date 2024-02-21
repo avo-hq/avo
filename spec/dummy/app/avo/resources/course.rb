@@ -5,8 +5,21 @@ class Avo::Resources::Course < Avo::BaseResource
   self.keep_filters_panel_open = true
   self.stimulus_controllers = "city-in-country toggle-fields"
 
-  def fields
+  def show_fields
+    fields_bag
+    field :links, as: :has_many, searchable: true, placeholder: "Click to choose a link",
+      discreet_pagination: true
+  end
 
+  def index_fields
+    fields_bag
+  end
+
+  def form_fields
+    fields_bag
+  end
+
+  def fields_bag
     field :id, as: :id
     field :name, as: :text, html: {
       edit: {
@@ -32,14 +45,29 @@ class Avo::Resources::Course < Avo::BaseResource
               # resource: resource,
               action: "input->resource-edit#toggle",
               resource_edit_toggle_target_param: "skills_textarea_wrapper",
-              # resource_edit_toggle_targets_param: ["country_select_wrapper"]
+              resource_edit_toggle_targets_param: ["skills_tags_wrapper"]
             })
           end
         end
       end
-      field :skills, as: :textarea
-    end
 
+      field :skills,
+        as: :tags,
+        disallowed: -> { record.skill_disallowed },
+        suggestions: -> { record.skill_suggestions },
+        html: -> do
+          edit do
+            wrapper do
+              classes do
+                unless record.has_skills
+                  "hidden"
+                end
+              end
+              # classes: "hidden"
+            end
+          end
+        end
+    end
 
     field :starting_at,
       as: :time,
@@ -71,8 +99,10 @@ class Avo::Resources::Course < Avo::BaseResource
       options: Course.cities.values.flatten.map { |city| [city, city] }.to_h,
       display_value: false
 
-    field :links, as: :has_many, searchable: true, placeholder: "Click to choose a link",
-      discreet_pagination: true
+    if params[:show_location_field] == '1'
+      # Example for error message when resource is missing
+      field :locations, as: :has_and_belongs_to_many
+    end
   end
 
   def filters

@@ -515,7 +515,7 @@ module Avo
       flash[:error] = destroy_fail_message
 
       respond_to do |format|
-        format.turbo_stream { render partial: "avo/partials/flash_alerts" }
+        format.turbo_stream { render turbo_stream: turbo_stream.flash_alerts }
       end
     end
 

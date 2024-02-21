@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
   authenticate :user, ->(user) { user.is_admin? } do
     scope :admin do
-      get "custom_tool", to: "avo/tools#custom_tool"
+      get "custom_tool", to: "avo/tools#custom_tool", as: :custom_tool
     end
 
     mount Avo::Engine, at: Avo.configuration.root_path

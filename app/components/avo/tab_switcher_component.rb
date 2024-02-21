@@ -12,6 +12,7 @@ class Avo::TabSwitcherComponent < Avo::BaseComponent
   attr_reader :resource
 
   delegate :white_panel_classes, to: :helpers
+  delegate :group_param, to: :@group
 
   def initialize(resource:, group:, current_tab:, active_tab_name:, view:)
     @active_tab_name = active_tab_name
@@ -47,10 +48,6 @@ class Avo::TabSwitcherComponent < Avo::BaseComponent
   end
 
   private
-
-  def group_param
-    "tab-group_#{group.id}"
-  end
 
   def tab_param_missing?
     params[group_param].blank?

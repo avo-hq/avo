@@ -6,7 +6,7 @@ class Avo::Resources::Project < Avo::BaseResource
       query.ransack(id_eq: params[:q], name_cont: params[:q], country_cont: params[:q], m: "or").result(distinct: false)
     }
   }
-  self.includes = :users
+  self.includes = [:users, :files_attachments]
   self.index_query = -> {
     query.unscoped
   }
@@ -20,7 +20,7 @@ class Avo::Resources::Project < Avo::BaseResource
       success_when: ["Done"],
       nullable: true,
       filterable: true
-    field :name, as: :text, required: true, sortable: true
+    field :name, as: :text, required: true, sortable: true, default: "New project default name"
     field :progress, as: :progress_bar, value_suffix: "%", display_value: true
     field :stage,
       as: :select,
@@ -54,7 +54,11 @@ class Avo::Resources::Project < Avo::BaseResource
       translation_key: "avo.field_translations.files",
       view_type: :list, stacked: false,
       hide_view_type_switcher: false
-    field :meta, as: :key_value, key_label: "Meta key", value_label: "Meta value", action_text: "New item", delete_text: "Remove item", disable_editing_keys: false, disable_adding_rows: false, disable_deleting_rows: false
+    field :meta, as: :key_value, key_label: "Meta key", value_label: "Meta value", action_text: "New item", delete_text: "Remove item", disable_editing_keys: false, disable_adding_rows: false, disable_deleting_rows: false, html: -> do
+      show do
+        wrapper { classes("spoon") }
+      end
+    end
 
     field :users, as: :has_and_belongs_to_many
     field :comments, as: :has_many, searchable: true

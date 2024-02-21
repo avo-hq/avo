@@ -200,13 +200,14 @@ class Avo::ResourceComponent < Avo::BaseComponent
   def render_detach_button(control)
     return unless is_a_related_resource? && can_detach?
 
-    a_button url: detach_path,
+    a_link detach_path,
       icon: "detach",
       method: :delete,
       form_class: "flex flex-col sm:flex-row sm:inline-flex",
       style: :text,
       data: {
-        confirm: "Are you sure you want to detach this #{title}."
+        turbo_method: :delete,
+        turbo_confirm: "Are you sure you want to detach this #{title}."
       } do
       control.label || t("avo.detach_item", item: title).humanize
     end

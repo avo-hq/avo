@@ -1,24 +1,21 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'core-js/stable'
 // eslint-disable-next-line import/no-extraneous-dependencies
+import 'chartkick/chart.js/chart.esm'
+import 'mapkick/bundle'
 import 'regenerator-runtime/runtime'
 import * as ActiveStorage from '@rails/activestorage'
 import * as Mousetrap from 'mousetrap'
 import { Turbo } from '@hotwired/turbo-rails'
-import Rails from '@rails/ujs'
 import tippy from 'tippy.js'
 
 import { LocalStorageService } from './js/local-storage-service'
-
-import 'chartkick/chart.js/chart.esm'
-
-window.Avo.localStorage = new LocalStorageService()
 
 import './js/active-storage'
 import './js/controllers'
 import './js/custom-stream-actions'
 
-Rails.start()
+window.Avo.localStorage = new LocalStorageService()
 
 window.Turbolinks = Turbo
 
@@ -53,6 +50,7 @@ function initTippy() {
     },
   })
 }
+
 window.initTippy = initTippy
 
 ActiveStorage.start()
@@ -88,7 +86,9 @@ document.addEventListener('turbo:before-fetch-response', async (e) => {
   }
 })
 
-document.addEventListener('turbo:visit', () => document.body.classList.add('turbo-loading'))
+document.addEventListener('turbo:visit', () => {
+  document.body.classList.add('turbo-loading')
+})
 document.addEventListener('turbo:submit-start', () => document.body.classList.add('turbo-loading'))
 document.addEventListener('turbo:submit-end', () => document.body.classList.remove('turbo-loading'))
 document.addEventListener('turbo:before-cache', () => {

@@ -6,8 +6,8 @@ RSpec.describe Avo::SidebarProfileComponent, type: :component do
     allow(Avo.license).to receive(:lacks_with_trial) { :menu_editor }.and_return(false)
   end
 
-  describe 'destroy_user_session_path' do
-    context 'with default configuration' do
+  describe "destroy_user_session_path" do
+    context "with default configuration" do
       it "renders sign out link" do
         with_controller_class Avo::BaseController do
           render_inline(described_class.new(user: nil))
@@ -16,7 +16,7 @@ RSpec.describe Avo::SidebarProfileComponent, type: :component do
       end
     end
 
-    context 'with missing route' do
+    context "with missing route" do
       before do
         # Change the current_user_resource_name to generate a path
         # that does not exist
@@ -31,7 +31,7 @@ RSpec.describe Avo::SidebarProfileComponent, type: :component do
       end
     end
 
-    context 'with current_user_resource_name' do
+    context "with current_user_resource_name" do
       before do
         without_partial_double_verification do
           # Stub an additional route
@@ -53,7 +53,7 @@ RSpec.describe Avo::SidebarProfileComponent, type: :component do
       end
     end
 
-    context 'with sign_out_path_name' do
+    context "with sign_out_path_name" do
       before do
         without_partial_double_verification do
           # Stub an additional route

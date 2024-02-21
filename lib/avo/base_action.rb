@@ -10,7 +10,7 @@ module Avo
     class_attribute :no_confirmation, default: false
     class_attribute :standalone, default: false
     class_attribute :visible
-    class_attribute :may_download_file, default: false
+    class_attribute :may_download_file
     class_attribute :turbo
     class_attribute :authorize, default: true
 
@@ -36,23 +36,10 @@ module Avo
       delegate :context, to: ::Avo::Current
 
       def form_data_attributes
-        # We can't respond with a file download from Turbo se we disable it on the form
-        if may_download_file
-          {turbo: turbo || false, remote: false}
-        else
-          {turbo: turbo, turbo_frame: :_top}.compact
-        end
-      end
-
-      # We can't respond with a file download from Turbo se we disable close the modal manually after a while (it's a hack, we know)
-      def submit_button_data_attributes
-        attributes = { action_target: "submit" }
-
-        if may_download_file
-          attributes[:action] = "click->modal#delayedClose"
-        end
-
-        attributes
+        {
+          turbo: turbo,
+          turbo_frame: :_top
+        }.compact
       end
 
       def to_param
@@ -99,6 +86,10 @@ module Avo
 
       @response ||= {}
       @response[:messages] = []
+
+      if self.may_download_file.present?
+        puts "[Avo->] WARNING! Since version 3.2.2 'may_download_file' is unecessary and deprecated on actions. Can be safely removed from #{self.class.name}"
+      end
     end
 
     # Blank method
@@ -193,7 +184,13 @@ module Avo
     end
 
     def keep_modal_open
-      response[:keep_modal_open] = true
+      response[:type] = :keep_modal_open
+
+      self
+    end
+
+    def close_modal
+      response[:type] = :close_modal
 
       self
     end
@@ -234,7 +231,10 @@ module Avo
     def authorized?
       Avo::ExecutionContext.new(
         target: authorize,
-        action: self
+        action: self,
+        resource: @resource,
+        view: @view,
+        arguments: arguments
       ).handle
     end
 

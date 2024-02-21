@@ -2,15 +2,15 @@ const plugin = require('tailwindcss/plugin')
 const colors = require('tailwindcss/colors')
 const defaultTheme = require('tailwindcss/defaultTheme')
 
-const { primary, blue, gray } = require('./tailwind.custom')
 const avoPath = require('child_process').execSync('bundle show avo', { encoding: 'utf-8' }).trim()
+const { primary, blue, gray } = require('./tailwind.custom')
 
 function contentPaths(basePath) {
   return [
     `${basePath}/safelist.txt`,
     `${basePath}/lib/avo/**/*.rb`,
     `${basePath}/app/helpers/**/*.rb`,
-    `${basePath}/app/views/**/*.erb`,
+    `${basePath}/app/views/**/*.{html.erb,rb}`,
     `${basePath}/app/javascript/**/*.js`,
     `${basePath}/app/components/**/*.{html.erb,rb}`,
     `${basePath}/app/controllers/**/*.rb`,

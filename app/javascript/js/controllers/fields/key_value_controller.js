@@ -1,4 +1,5 @@
 /* eslint-disable max-len */
+import * as DOMPurify from 'dompurify'
 import { Controller } from '@hotwired/stimulus'
 import { castBoolean } from '../../helpers/cast_boolean'
 
@@ -80,7 +81,7 @@ export default class extends Controller {
     let index = 0
     this.fieldValue.forEach((row) => {
       const [key, value] = row
-      result += this.interpolatedRow(key, value, index)
+      result += this.interpolatedRow(DOMPurify.sanitize(key), DOMPurify.sanitize(value), index)
       index++
     })
     this.rowsTarget.innerHTML = result

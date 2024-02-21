@@ -49,7 +49,7 @@
             size: :sm,
             data: {
               target: :submit_action,
-              **@action.class.submit_button_data_attributes
+              action_target: "submit"
             } do %>
           <%= @action.confirm_button_label %>
         <% end %>
