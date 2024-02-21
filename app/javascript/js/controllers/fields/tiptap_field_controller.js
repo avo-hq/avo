@@ -63,9 +63,9 @@ export default class extends Controller {
       link: this.element.querySelector(".tiptap__button--link")
     };
 
-    this.linkArea = this.element.querySelector(".tiptap__link-area");
-    this.linkInput = this.element.querySelector(".tiptap__link-field");
-    this.unsetButton = this.element.querySelector(".tiptap__link-button--unset");
+    this.linkArea = this.element.querySelector(".tiptap__link-area")
+    this.linkInput = this.element.querySelector(".tiptap__link-field")
+    this.unsetButton = this.element.querySelector(".tiptap__link-button--unset")
   }
 
   onUpdate = () => {
@@ -74,13 +74,13 @@ export default class extends Controller {
 
   onSelectionUpdate = () => {
     Object.keys(this.buttons).forEach(action => {
-      const isActive = this.editor.isActive(action);
-      this.buttons[action].classList.toggle("tiptap__button--selected", isActive);
+      const isActive = this.editor.isActive(action)
+      this.buttons[action].classList.toggle("tiptap__button--selected", isActive)
 
       if (action === "link") {
         this.buttons[action].disabled = this.editor.view.state.selection.empty && !isActive
       }
-    });
+    })
 
     this.updateLinkArea()
     this.updateLinkButtonState()
@@ -89,27 +89,24 @@ export default class extends Controller {
   handleButtonClick(event) {
     const action = event.target.dataset.action;
     if (action && this[action]) {
-      this[action](event);
+      this[action](event)
     }
   }
 
-  updateButtonState() {
-    this.editorTarget.querySelectorAll(".tiptap__button").forEach(button => {
-      const action = button.dataset.action;
-      button.classList.toggle("tiptap__button--selected", this.editor.isActive(action));
-    });
+  updateButtonState(action) {
+    this.buttons[action].classList.toggle("tiptap__button--selected", this.editor.isActive(action))
   }
 
   updateLinkButtonState() {
-    const isLinkActive = this.editor.isActive('link');
+    const isLinkActive = this.editor.isActive('link')
     const isSelectionEmpty = this.editor.view.state.selection.empty;
     this.buttons.link.disabled = isSelectionEmpty && !isLinkActive;
   }
 
   updateLinkArea() {
-    const isLinkActive = this.editor.isActive('link');
-    this.linkArea.classList.toggle("hidden", !isLinkActive);
-    this.unsetButton.classList.toggle("hidden", !isLinkActive);
+    const isLinkActive = this.editor.isActive('link')
+    this.linkArea.classList.toggle("hidden", !isLinkActive)
+    this.unsetButton.classList.toggle("hidden", !isLinkActive)
 
     if (isLinkActive) {
       const previousUrl = this.editor.getAttributes('link').href;
@@ -120,33 +117,33 @@ export default class extends Controller {
   }
 
   bold() {
-    this.editor.chain().focus().toggleBold().run();
-    this.updateButtonState();
+    this.editor.chain().focus().toggleBold().run()
+    this.updateButtonState("bold")
   }
 
   italic() {
-    this.editor.chain().focus().toggleItalic().run();
-    this.updateButtonState();
+    this.editor.chain().focus().toggleItalic().run()
+    this.updateButtonState("italic")
   }
 
   underline() {
-    this.editor.chain().focus().toggleUnderline().run();
-    this.updateButtonState();
+    this.editor.chain().focus().toggleUnderline().run()
+    this.updateButtonState("underline")
   }
 
   strike() {
-    this.editor.chain().focus().toggleStrike().run();
-    this.updateButtonState();
+    this.editor.chain().focus().toggleStrike().run()
+    this.updateButtonState("strike")
   }
 
   unorderedList() {
-    this.editor.chain().focus().toggleBulletList().run();
-    this.updateButtonState();
+    this.editor.chain().focus().toggleBulletList().run()
+    this.updateButtonState("bulletList")
   }
 
   orderedList() {
-    this.editor.chain().focus().toggleOrderedList().run();
-    this.updateButtonState();
+    this.editor.chain().focus().toggleOrderedList().run()
+    this.updateButtonState("orderedList")
   }
 
   toggleLinkArea(event) {
