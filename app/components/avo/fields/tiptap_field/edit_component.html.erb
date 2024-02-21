@@ -47,17 +47,17 @@
           <% end %>
 
           <%= content_tag :div, class: "tiptap__button-group" do %>
-            <%= button_tag type: "button", class: "tiptap__button tiptap__button--link", data: { action: "click->tiptap-field#toggleLinkArea" } do %>
+            <%= button_tag type: "button", disabled: true, class: "tiptap__button tiptap__button--link", data: { action: "click->tiptap-field#toggleLinkArea" } do %>
               <%= helpers.svg("editor-link") %>
             <% end %>
           <% end %>
 
-          <%= content_tag :div, class: "tiptap__link-area hidden" do %>
-            <%= text_field_tag nil, nil, class: "tiptap__link-field", placeholder: "enter URL here ...", data: { action: "keydown->tiptap-field#preventEnter" } %>
-            <%= button_tag type: "button", class: "tiptap__link-button", data: { action: "click->tiptap-field#setLink" } do %>
+          <%= content_tag :div, class: "tiptap__button-group tiptap__link-area hidden" do %>
+            <%= text_field_tag nil, nil, class: "tiptap__link-field", placeholder: "Enter URL here ...", data: { action: "keydown->tiptap-field#preventEnter" } %>
+            <%= button_tag type: "button", class: "tiptap__button", data: { action: "click->tiptap-field#setLink" } do %>
               <%= helpers.svg("check-circle") %>
             <% end %>
-            <%= button_tag type: "button", class: "tiptap__link-button tiptap__link-button--unset", data: { action: "click->tiptap-field#unsetLink" } do %>
+            <%= button_tag type: "button", class: "tiptap__button tiptap__link-button--unset", data: { action: "click->tiptap-field#unsetLink" } do %>
               <%= helpers.svg("trash") %>
             <% end %>
           <% end %>

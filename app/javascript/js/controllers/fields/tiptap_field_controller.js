@@ -75,6 +75,12 @@ export default class extends Controller {
     this.linkInput = this.element.querySelector(".tiptap__link-field")
     this.unsetButton = this.element.querySelector(".tiptap__link-button--unset")
 
+    if(this.editor.view.state.selection.empty && !this.editor.isActive('link')) {
+      this.linkButton.disabled = true
+    } else {
+      this.linkButton.disabled = false
+    }
+
     if (!this.editor.isActive('link')) {
       this.linkArea.classList.toggle("hidden", true)
       this.linkInput.value = ""
@@ -200,12 +206,9 @@ export default class extends Controller {
     }
   }
 
-  setLink(event) {
-    const button = event.target.closest(".tiptap__button")
+  setLink() {
     const linkInput = this.element.querySelector(".tiptap__link-field").value
-    const previousUrl = this.editor.getAttributes('link').href
     const unsetButton = this.element.querySelector(".tiptap__link-button--unset")
-
 
     if (linkInput) {
       this.editor.chain().focus().extendMarkRange('link').setLink({ href: linkInput }).run()
@@ -214,21 +217,16 @@ export default class extends Controller {
       this.editor.chain().focus().extendMarkRange('link').unsetLink().run()
       unsetButton.classList.toggle("hidden", true)
     }
-
   }
 
-  unsetLink(event) {
-    const button = event.target.closest(".tiptap__button")
-    const linkInput = this.element.querySelector(".tiptap__link-field").value
-    const previousUrl = this.editor.getAttributes('link').href
+  unsetLink() {
     const unsetButton = this.element.querySelector(".tiptap__link-button--unset")
 
     this.editor.chain().focus().extendMarkRange('link').unsetLink().run()
     unsetButton.classList.toggle("hidden", true)
-
   }
 
-  preventEnter(event){
+  preventEnter(event) {
     if (event.key === 'Enter' || event.keyCode === 13) {
       event.preventDefault()
     }

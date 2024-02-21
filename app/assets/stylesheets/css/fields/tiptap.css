@@ -3,11 +3,12 @@
 .tiptap {
   @apply m-0 p-4 outline-none min-h-44;
 
-  > * + * {
+  >*+* {
     @apply mt-4;
   }
 
-  ul, ol {
+  ul,
+  ol {
     @apply pl-6 list-outside;
   }
 
@@ -18,14 +19,6 @@
   ol {
     @apply list-decimal;
   }
-}
-
-.tiptap .is-editor-empty:first-child::before {
-  color: #adb5bd;
-  content: attr(data-placeholder);
-  float: left;
-  height: 0;
-  pointer-events: none;
 }
 
 .tiptap__field {
@@ -63,12 +56,16 @@
 .tiptap__button {
   @apply p-1 text-gray-500 rounded cursor-pointer;
 
-  &:hover {
+  &:hover:enabled {
     @apply bg-gray-100;
   }
 
-  &:active {
+  &:active:enabled {
     @apply bg-gray-200;
+  }
+
+  &:disabled {
+    @apply text-gray-200 cursor-default;
   }
 
   svg {
@@ -83,37 +80,21 @@
 /* LINK STYLES */
 
 .tiptap__link-area {
-  transition: all 0.2s;
-  opacity: 1;
-  display: flex;
-  gap: 12px;
-}
-
-.tiptap__link-area--hidden {
-  display: none;
-}
-
-.tiptap__link-field::placeholder {
-  font-style: italic;
-  color: #737373;
+  @apply opacity-100 tansition-opacity;
 }
 
 .tiptap__link-field {
-  border: 1px solid #b3b3b3;
-  border-radius: 20px;
-  padding: 0.2rem 1rem;
-  width: 100%;
-  font-size: 0.9rem;
+  &:placeholder {
+    @apply italic text-gray-400;
+  }
+
+  &:focus::placeholder {
+    @apply text-transparent;
+  }
 }
 
-.tiptap__link-field:focus::placeholder {
-  color: rgba(0, 0, 0, 0);
-}
-
-.tiptap__link-button {
-  background-color: #eaeaea !important;
-  padding: 0.2rem 0.5rem;
-  border-radius: 5px;
+.tiptap__link-field {
+  @apply text-sm mr-2 py-1 border border-gray-200 rounded;
 }
 
 /* SHOW STYLES */
@@ -121,11 +102,12 @@
 .tiptap__content {
   @apply py-2 max-w-4xl;
 
-  > * + * {
+  >*+* {
     @apply mt-4;
   }
 
-  ul, ol {
+  ul,
+  ol {
     @apply pl-6 list-outside;
   }
 
