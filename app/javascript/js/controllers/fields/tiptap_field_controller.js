@@ -20,17 +20,10 @@ export default class extends Controller {
 
   connect() {
     this.initEditor()
+    this.initToolbar()
   }
 
   initEditor = () => {
-    this.boldButton = this.editorTarget.querySelector(".tiptap__button--bold")
-    this.italicButton = this.editorTarget.querySelector(".tiptap__button--italic")
-    this.underlineButton = this.editorTarget.querySelector(".tiptap__button--underline")
-    this.strikeButton = this.editorTarget.querySelector(".tiptap__button--strike")
-    this.olButton = this.editorTarget.querySelector(".tiptap__button--ol")
-    this.ulButton = this.editorTarget.querySelector(".tiptap__button--ul")
-    this.linkButton = this.editorTarget.querySelector(".tiptap__button--link")
-
     this.editor = new Editor({
       element: this.editorTarget,
       extensions: [
@@ -59,38 +52,38 @@ export default class extends Controller {
     })
   }
 
+  initToolbar = () => {
+    this.buttons = {
+      bold: this.element.querySelector(".tiptap__button--bold"),
+      italic: this.element.querySelector(".tiptap__button--italic"),
+      underline: this.element.querySelector(".tiptap__button--underline"),
+      strike: this.element.querySelector(".tiptap__button--strike"),
+      bulletList: this.element.querySelector(".tiptap__button--ul"),
+      orderedList: this.element.querySelector(".tiptap__button--ol"),
+      link: this.element.querySelector(".tiptap__button--link")
+    };
+
+    this.linkArea = this.element.querySelector(".tiptap__link-area");
+    this.linkInput = this.element.querySelector(".tiptap__link-field");
+    this.unsetButton = this.element.querySelector(".tiptap__link-button--unset");
+  }
+
   onUpdate = () => {
     this.inputTarget.value = this.editor.getHTML()
   }
 
   onSelectionUpdate = () => {
-    this.boldButton.classList.toggle("tiptap__button--selected", this.editor.isActive('bold'))
-    this.italicButton.classList.toggle("tiptap__button--selected", this.editor.isActive('italic'))
-    this.underlineButton.classList.toggle("tiptap__button--selected", this.editor.isActive('underline'))
-    this.strikeButton.classList.toggle("tiptap__button--selected", this.editor.isActive('strike'))
-    this.ulButton.classList.toggle("tiptap__button--selected", this.editor.isActive('bulletList'))
-    this.olButton.classList.toggle("tiptap__button--selected", this.editor.isActive('orderedList'))
-    this.linkButton.classList.toggle("tiptap__button--selected", this.editor.isActive('link'))
-    this.linkArea = this.element.querySelector(".tiptap__link-area")
-    this.linkInput = this.element.querySelector(".tiptap__link-field")
-    this.unsetButton = this.element.querySelector(".tiptap__link-button--unset")
+    Object.keys(this.buttons).forEach(action => {
+      const isActive = this.editor.isActive(action);
+      this.buttons[action].classList.toggle("tiptap__button--selected", isActive);
 
-    if(this.editor.view.state.selection.empty && !this.editor.isActive('link')) {
-      this.linkButton.disabled = true
-    } else {
-      this.linkButton.disabled = false
-    }
+      if (action === "link") {
+        this.buttons[action].disabled = this.editor.view.state.selection.empty && !isActive
+      }
+    });
 
-    if (!this.editor.isActive('link')) {
-      this.linkArea.classList.toggle("hidden", true)
-      this.linkInput.value = ""
-      this.unsetButton.classList.toggle("hidden", true)
-    } else {
-      this.linkArea.classList.toggle("hidden", false)
-      let previousUrl = this.editor.getAttributes('link').href
-      this.linkInput.value = previousUrl
-      this.unsetButton.classList.toggle("hidden", false)
-    }
+    this.updateLinkArea()
+    this.updateLinkButtonState()
   }
 
   handleButtonClick(event) {
@@ -105,6 +98,25 @@ export default class extends Controller {
       const action = button.dataset.action;
       button.classList.toggle("tiptap__button--selected", this.editor.isActive(action));
     });
+  }
+
+  updateLinkButtonState() {
+    const isLinkActive = this.editor.isActive('link');
+    const isSelectionEmpty = this.editor.view.state.selection.empty;
+    this.buttons.link.disabled = isSelectionEmpty && !isLinkActive;
+  }
+
+  updateLinkArea() {
+    const isLinkActive = this.editor.isActive('link');
+    this.linkArea.classList.toggle("hidden", !isLinkActive);
+    this.unsetButton.classList.toggle("hidden", !isLinkActive);
+
+    if (isLinkActive) {
+      const previousUrl = this.editor.getAttributes('link').href;
+      this.linkInput.value = previousUrl || "";
+    } else {
+      this.linkInput.value = "";
+    }
   }
 
   bold() {
