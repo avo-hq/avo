@@ -47,7 +47,7 @@ class Avo::HTML::Builder
     # We don't have an edit component for new so we should use edit
     name = :edit if name == :new
 
-    send "#{name}_stack"
+    send :"#{name}_stack"
   end
 
   def dig_stack(*names)
@@ -115,17 +115,17 @@ class Avo::HTML::Builder
     self
   end
 
-  protected
+  private
 
   # Capture and parse the blocks for the nested structure
   def capture_block(property = nil, &block)
-    send("#{property}_stack=", self.class.parse_block(record: record, resource: resource, &block).build)
+    send(:"#{property}_stack=", self.class.parse_block(record: record, resource: resource, &block).build)
   end
 
   # Parse the properties and assign them to the blocks
   def assign_property(property = :data, payload = nil, &block)
     value = Avo::ExecutionContext.new(target: block || payload, record: record).handle
 
-    send("#{property}_stack=", value)
+    send(:"#{property}_stack=", value)
   end
 end

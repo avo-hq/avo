@@ -31,7 +31,7 @@ RSpec.feature "NativeFields", type: :feature do
     find('[name="city[is_capital]"]').set(false)
     fill_in 'city[features]', with: "{\"hey\": \"features\"}"
 
-    click_on "Save"
+    save
 
     city.reload
 

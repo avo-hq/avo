@@ -22,7 +22,7 @@ RSpec.describe "Action link", type: :system do
         run_action
 
         expect(page).to have_text "City updated!"
-        expect(page).to have_text "Action link Updated City "
+        expect(page).to have_text "Action link Updated City"
         expect(page).not_to have_text "Action link City"
       end
     end

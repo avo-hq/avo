@@ -7,6 +7,8 @@ class Avo::TabGroupComponent < Avo::BaseComponent
   attr_reader :form
   attr_reader :resource
 
+  delegate :group_param, to: :@group
+
   def initialize(resource:, group:, index:, form:, params:, view:)
     @resource = resource
     @group = group
@@ -24,10 +26,6 @@ class Avo::TabGroupComponent < Avo::BaseComponent
 
   def tabs_have_content?
     visible_tabs.present?
-  end
-
-  def group_param
-    group.id
   end
 
   def active_tab_name

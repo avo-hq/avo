@@ -4,6 +4,8 @@
   Avo.configuration.root_path = '<%= root_path_without_url %>'
   Avo.configuration.search_debounce = '<%= Avo.configuration.search_debounce %>'
   Avo.configuration.cookies_key = '<%= Avo::COOKIES_KEY %>'
+  Avo.configuration.preserve_sidebar_scroll = '<%= ::Avo.configuration.feature_enabled?(:preserve_sidebar_scroll) %>'
+  Avo.configuration.focus_sidebar_menu_item = '<%= ::Avo.configuration.feature_enabled?(:focus_sidebar_menu_item) %>'
   <% if Avo.avo_dynamic_filters_installed? %>
   Avo.configuration.avo_filters = {
     param_key: '<%= Avo::DynamicFilters.configuration.param_key %>'

@@ -98,10 +98,12 @@ Avo.configure do |config|
 
       section "Store", icon: "currency-dollar" do
         resource :products
+        resource :stores
       end
 
       group "Other", collapsable: true, collapsed: true do
         resource :fish, label: "Fishies"
+        resource :events
       end
     end
 

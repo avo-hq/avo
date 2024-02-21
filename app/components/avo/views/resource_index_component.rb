@@ -101,7 +101,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   def attach_path
     current_path = CGI.unescape(request.env["PATH_INFO"]).split("/").select(&:present?)
 
-    Avo.root_path(paths: [*current_path, "new"])
+    Avo.root_path(paths: [*current_path, "new"], query: { view: @parent_resource&.view&.to_s })
   end
 
   def singular_resource_name
@@ -159,16 +159,18 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def scopes_list
-    Avo::Pro::Scopes::ListComponent.new(
+    Avo::Advanced::Scopes::ListComponent.new(
       scopes: scopes,
       resource: resource,
       turbo_frame: turbo_frame,
-      parent_record: parent_record
+      parent_record: parent_record,
+      query: query,
+      loader: resource.entity_loader(:scope)
     )
   end
 
   def can_render_scopes?
-    defined?(Avo::Pro)
+    defined?(Avo::Advanced)
   end
 
   private
@@ -217,5 +219,9 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   # This is used to identify the component in the DOM.
   def dynamic_filters_component_id
     @dynamic_filters_component_id ||= "dynamic_filters_component_id_#{SecureRandom.hex(3)}"
+  end
+
+  def reloadable
+    field&.reloadable?
   end
 end

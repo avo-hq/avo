@@ -25,7 +25,11 @@ Rails.application.configure do
   config.cache_store = :memory_store
 
   # Raise exceptions instead of rendering exception templates.
-  config.action_dispatch.show_exceptions = false
+  config.action_dispatch.show_exceptions = if Rails::VERSION::MAJOR < 7
+    false
+  else
+    :none
+  end
 
   # Disable request forgery protection in test environment.
   config.action_controller.allow_forgery_protection = false
@@ -51,7 +55,10 @@ Rails.application.configure do
 
   config.factory_bot.definition_file_paths = ["../../db"]
 
-  config.log_level = :fatal
+  if ENV["RAILS_LOG"].blank?
+    config.logger = Logger.new(nil)
+    config.log_level = :fatal
+  end
 
   config.i18n.load_path += Dir[Avo::Engine.root.join("lib", "generators", "avo", "templates", "locales", "*.{rb,yml}")]
 

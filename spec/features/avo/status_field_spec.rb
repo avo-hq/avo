@@ -102,7 +102,7 @@ RSpec.describe "StatusField", type: :feature do
 
         fill_in "project_status", with: fail_status
 
-        click_on "Save"
+        save
 
         expect(current_path).to eql "/admin/resources/projects/#{project.id}"
         expect(find_field_value_element("status")).to have_text fail_status
@@ -115,7 +115,7 @@ RSpec.describe "StatusField", type: :feature do
 
         fill_in "project_status", with: load_status
 
-        click_on "Save"
+        save
 
         expect(current_path).to eql "/admin/resources/projects/#{project.id}"
         expect(find_field_value_element("status")).to have_text load_status
@@ -128,7 +128,7 @@ RSpec.describe "StatusField", type: :feature do
 
         fill_in "project_status", with: nil
 
-        click_on "Save"
+        save
 
         expect(current_path).to eql "/admin/resources/projects/#{project.id}"
         expect(find_field_value_element("status")).to have_text empty_dash
@@ -147,7 +147,7 @@ RSpec.describe "StatusField", type: :feature do
 
         fill_in "project_status", with: status
 
-        click_on "Save"
+        save
 
         expect(current_path).to eql "/admin/resources/projects/#{project.id}"
         expect(find_field_value_element("status")).to have_text status
@@ -223,8 +223,7 @@ RSpec.describe "StatusField", type: :feature do
 
         fill_in "project_status", with: "normal"
 
-        click_on "Save"
-        wait_for_loaded
+        save
 
         expect(current_path).to eql "/admin/resources/projects/#{project.id}"
 
@@ -238,8 +237,7 @@ RSpec.describe "StatusField", type: :feature do
 
         fill_in "project_status", with: "failed"
 
-        click_on "Save"
-        wait_for_loaded
+        save
 
         expect(current_path).to eql "/admin/resources/projects/#{project.id}"
         expect(find_field_value_element("status")).to have_text "failed"
@@ -252,8 +250,7 @@ RSpec.describe "StatusField", type: :feature do
 
         fill_in "project_status", with: "waiting"
 
-        click_on "Save"
-        wait_for_loaded
+        save
 
         expect(current_path).to eql "/admin/resources/projects/#{project.id}"
 

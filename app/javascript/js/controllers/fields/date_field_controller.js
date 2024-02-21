@@ -78,7 +78,7 @@ export default class extends Controller {
 
   // Parse the time as if it were UTC
   get parsedValue() {
-    return DateTime.fromISO(this.initialValue, { zone: 'UTC' })
+    return DateTime.fromISO(this.initialValue.trim(), { zone: 'UTC' })
   }
 
   get displayTimezone() {

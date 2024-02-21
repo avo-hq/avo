@@ -3,6 +3,7 @@ import * as Mousetrap from 'mousetrap'
 import { Controller } from '@hotwired/stimulus'
 import { Turbo } from '@hotwired/turbo-rails'
 import { autocomplete } from '@algolia/autocomplete-js'
+import { sanitize } from 'dompurify'
 import URI from 'urijs'
 import debouncePromise from '../helpers/debounce_promise'
 
@@ -21,11 +22,11 @@ export default class extends Controller {
     'visibleLabel',
     'clearValue',
     'clearButton',
-  ];
+  ]
 
-  debouncedFetch = debouncePromise(fetch, this.searchDebounce);
+  debouncedFetch = debouncePromise(fetch, this.searchDebounce)
 
-  destroyMethod;
+  destroyMethod
 
   get dataset() {
     return this.autocompleteTarget.dataset
@@ -157,15 +158,29 @@ export default class extends Controller {
             )
           }
 
-          const labelChildren = [item._label]
+          const label = sanitize(item._label)
+
+          const labelChildren = [
+            createElement(
+              'div',
+              {
+                dangerouslySetInnerHTML: { __html: label },
+              },
+              label,
+            ),
+          ]
+
           if (item._description) {
+            const description = sanitize(item._description)
+
             labelChildren.push(
               createElement(
                 'div',
                 {
                   class: 'aa-ItemDescription',
+                  dangerouslySetInnerHTML: { __html: description },
                 },
-                item._description,
+                description,
               ),
             )
           }
@@ -193,7 +208,7 @@ export default class extends Controller {
   handleOnSelect({ item }) {
     if (this.isBelongsToSearch) {
       this.updateFieldAttribute(this.hiddenIdTarget, 'value', item._id)
-      this.updateFieldAttribute(this.buttonTarget, 'value', item._label)
+      this.updateFieldAttribute(this.buttonTarget, 'value', this.removeHTMLTags(item._label))
 
       document.querySelector('.aa-DetachedOverlay').remove()
 
@@ -232,6 +247,7 @@ export default class extends Controller {
 
   searchParams(query) {
     let params = {
+      ...Object.fromEntries(new URLSearchParams(window.location.search)),
       q: query,
       global: false,
     }
@@ -300,5 +316,11 @@ export default class extends Controller {
   updateFieldAttribute(target, attribute, value) {
     target.setAttribute(attribute, value)
     target.dispatchEvent(new Event('input'))
+  }
+
+  removeHTMLTags(str) {
+    const doc = new DOMParser().parseFromString(str, 'text/html')
+
+    return doc.body.textContent || ''
   }
 }

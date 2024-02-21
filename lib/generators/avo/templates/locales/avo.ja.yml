@@ -1,0 +1,126 @@
+ja:
+  avo:
+    action_ran_successfully: アクションは正常に実行されました！
+    actions: アクション
+    and_x_other_resources: その他%{count}件のリソース
+    are_you_sure: 本当によろしいですか？
+    are_you_sure_detach_item: この%{item}をデタッチしてもよろしいですか？
+    are_you_sure_you_want_to_run_this_option: このアクションを実行してもよろしいですか？
+    attach: 添付
+    attach_and_attach_another: アタッチして別のものをアタッチ
+    attach_item: "%{item}をアタッチ"
+    attachment_class_attached: "%{attachment_class}をアタッチしました。"
+    attachment_class_detached: "%{attachment_class}をデタッチしました。"
+    attachment_destroyed: アタッチは削除されました
+    cancel: キャンセル
+    choose_a_country: 国を選択
+    choose_an_option: オプションを選択
+    choose_item: "%{item}を選択"
+    clear_value: 値をクリア
+    click_to_reveal_filters: フィルターを表示するにはクリック
+    confirm: 確認
+    create_new_item: 新しい%{item}を作成
+    dashboard: ダッシュボード
+    dashboards: ダッシュボード
+    default_scope: 全て
+    delete: 削除
+    delete_file: ファイルを削除
+    delete_item: "%{item}を削除"
+    detach_item: "%{item}を切り離す"
+    details: 詳細
+    download: ダウンロード
+    download_file: ファイルをダウンロード
+    download_item: "%{item}をダウンロード"
+    edit: 編集
+    edit_item: "%{item}を編集"
+    empty_dashboard_message: このダッシュボードにカードを追加
+    failed: 失敗
+    failed_to_find_attachment: アタッチメントを見つけるのに失敗
+    failed_to_load: 読み込みに失敗
+    field_translations:
+      file:
+        one: ファイル
+        other: ファイル
+        zero: ファイル
+      people:
+        one: 人
+        other: 人々
+        zero: 人々
+    filter_by: フィルター条件
+    filters: フィルター
+    go_back: 戻る
+    grid_view: グリッドビュー
+    hide_content: 内容を非表示
+    home: ホーム
+    key_value_field:
+      add_row: 行を追加
+      delete_row: 行を削除
+      key: キー
+      value: 値
+    list_is_empty: リストは空です
+    loading: 読み込み中
+    more: もっと
+    new: 新規
+    next_page: 次のページ
+    no_cards_present: カードがありません
+    no_item_found: レコードが見つかりませんでした
+    no_options_available: 利用可能なオプションがありません
+    no_related_item_found: 関連するレコードが見つかりませんでした
+    not_authorized: このアクションを実行する権限がありません。
+    number_of_items:
+      one: 一つの%{item}
+      other: "%{count}の%{item}"
+      zero: "%{item}がありません"
+    oops_nothing_found: おっと！ 何も見つかりませんでした...
+    order:
+      higher: レコードを上に移動
+      lower: レコードを下に移動
+      reorder_record: レコードを並べ替える
+      to_bottom: レコードを一番下に移動
+      to_top: レコードを一番上に移動
+    per_page: ページあたり
+    prev_page: 前のページ
+    records_selected_from_all_pages_html: 全ページから選択された全レコード
+    remove_selection: 選択を解除
+    reset_filters: フィルターをリセット
+    resource_created: レコードが作成されました
+    resource_destroyed: レコードが破棄されました
+    resource_translations:
+      team_members:
+        one: チームメンバー
+        other: チームメンバー
+        zero: チームメンバー
+      user:
+        one: ユーザー
+        other: ユーザー
+        zero: ユーザー
+    resource_updated: レコードが更新されました
+    resources: リソース
+    run: 実行
+    save: 保存
+    search:
+      cancel_button: キャンセル
+      placeholder: 検索
+    select_all: すべて選択
+    select_all_matching: 一致するすべてを選択
+    select_item: アイテムを選択
+    show_content: 内容を表示
+    sign_out: サインアウト
+    switch_to_view: "%{view_type}ビューに切り替える"
+    table_view: テーブルビュー
+    tools: ツール
+    type_to_search: 検索する内容を入力してください。
+    unauthorized: 許可されていません
+    undo: 元に戻す
+    view: ビュー
+    view_item: "%{item}を表示"
+    was_successfully_created: は正常に作成されました
+    was_successfully_updated: は正常に更新されました
+    x_items_more:
+      one: もう一つのアイテム
+      other: "%{count}個のその他のアイテム"
+      zero: その他のアイテムはありません
+    x_records_selected_from_a_total_of_x_html: このページの<span class="font-bold text-gray-700">%{count}</span>個中、<span class="font-bold text-gray-700">%{selected}</span>個のレコードが選択されました
+    x_records_selected_from_all_pages_html: すべてのページから<span class="font-bold text-gray-700">%{count}</span>個のレコードが選択されました
+    x_records_selected_from_page_html: このページから<span class="font-bold text-gray-700">%{selected}</span>個のレコードが選択されました
+    you_missed_something_check_form: 何か見落としているかもしれません。フォームを確認してください。

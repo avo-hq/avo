@@ -7,7 +7,7 @@ RSpec.feature "ExposedMethodsBaseController", type: :system do
     it "create_fail_message" do
       visit new_course_url
 
-      save_and_wait_for_loaded
+      save
 
       expect(page).to have_text "Course not created!"
     end
@@ -16,7 +16,7 @@ RSpec.feature "ExposedMethodsBaseController", type: :system do
       visit new_course_url
 
       fill_in "course_name", with: "Great Course"
-      save_and_wait_for_loaded
+      save
 
       expect(current_path).to eq "/admin/resources/courses/#{Course.last.prefix_id}"
       expect(page).to have_text "Course created!"
@@ -29,7 +29,7 @@ RSpec.feature "ExposedMethodsBaseController", type: :system do
       visit edit_course_url
 
       fill_in "course_name", with: ""
-      save_and_wait_for_loaded
+      save
 
       expect(page).to have_text "Course not updated!"
       expect(page).to have_text "Validation failed: Name can't be blank"
@@ -41,7 +41,7 @@ RSpec.feature "ExposedMethodsBaseController", type: :system do
       visit edit_course_url
 
       fill_in "course_name", with: "Guitar Course"
-      save_and_wait_for_loaded
+      save
 
       expect(current_path).to eq course_url
       expect(page).to have_text "Course updated!"
@@ -59,9 +59,4 @@ RSpec.feature "ExposedMethodsBaseController", type: :system do
       expect(page).to have_text "Course destroyed for ever!"
     end
   end
-end
-
-def save_and_wait_for_loaded
-  click_on "Save"
-  wait_for_loaded
 end

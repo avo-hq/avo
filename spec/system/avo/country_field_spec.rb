@@ -66,8 +66,7 @@ RSpec.describe "CountryField", type: :feature do
 
         select "United States Minor Outlying Islands", from: "project[country]"
 
-        click_on "Save"
-        wait_for_loaded
+        save
 
         expect(current_path).to eql "/admin/resources/projects/#{project.id}"
         expect(find_field_element(:country)).to have_text "United States Minor Outlying Islands"
