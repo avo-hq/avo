@@ -153,7 +153,7 @@ RSpec.configure do |config|
     WebMock.disable_net_connect!(
       net_http_connect_on_start: true,
       allow_localhost: true,
-      allow: ["googlechromelabs.github.io", "edgedl.me.gvt1.com"]
+      allow: ["googlechromelabs.github.io", "edgedl.me.gvt1.com", "storage.googleapis.com"]
     )
     example.run
 
