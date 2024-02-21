@@ -41,7 +41,10 @@ ignoredDynamicClasses.push(
   'font-sans',
   'font-serif',
   'font-mono',
-  '!bg-gray-100', // avo-pro drag and drop feature
+  // avo-pro drag and drop feature
+  '!bg-gray-100',
+  'opacity-50',
+  'select-none'
 )
 
 const content = `# This file was auto-generated using the \`yarn export:tailwind-safelist\` command in \`export-tailwind-safelist.js\`\n${ignoredDynamicClasses.flat().join(' ')}`
