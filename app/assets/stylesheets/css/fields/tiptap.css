@@ -80,7 +80,7 @@
 /* LINK STYLES */
 
 .tiptap__link-area {
-  @apply opacity-100 tansition-opacity;
+  @apply opacity-100 transition-all;
 }
 
 .tiptap__link-field {
