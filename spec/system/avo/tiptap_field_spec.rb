@@ -2,80 +2,80 @@ require 'rails_helper'
 
 RSpec.describe 'TiptapField', type: :system do
   describe 'without value' do
-    let!(:post) { create :post, body: '' }
+    let!(:product) { create :product, description: '' }
 
     context 'show' do
-      it 'displays the posts empty body (dash)' do
-        visit "/admin/resources/posts/#{post.id}"
+      it 'displays the products empty description (dash)' do
+        visit "/admin/resources/products/#{product.id}"
 
-        expect(find_field_element('body')).to have_text empty_dash
+        expect(find_field_element('description')).to have_text empty_dash
       end
     end
 
     context 'edit' do
-      it 'has the posts body label and empty tiptap editor and placeholder' do
-        visit "/admin/resources/posts/#{post.id}/edit"
+      it 'has the products description label and empty tiptap editor and placeholder' do
+        visit "/admin/resources/products/#{product.id}/edit"
 
-        body_element = find_field_element('body')
+        description_element = find_field_element('description')
 
-        expect(body_element).to have_text 'BODY'
+        expect(description_element).to have_text 'DESCRIPTION'
 
-        expect(find('#tiptap_post_body_editor', visible: false)[:placeholder]).to have_text('Enter text')
-        expect(find('#tiptap_post_body_editor', visible: false)).to have_text('')
+        expect(find('#tiptap_product_description_editor', visible: false)[:placeholder]).to have_text('Enter text')
+        expect(find('#tiptap_product_description_editor', visible: false)).to have_text('')
       end
 
-      it 'change the posts body text' do
-        visit "/admin/resources/posts/#{post.id}/edit"
+      it 'change the products description text' do
+        visit "/admin/resources/products/#{product.id}/edit"
 
-        fill_in_tiptap_editor 'tiptap_post_body', with: 'Works for us!!!'
+        fill_in_tiptap_editor 'tiptap_product_description', with: 'Works for us!!!'
 
         save
 
         click_on 'Show content'
 
-        expect(find_field_value_element('body')).to have_text 'Works for us!!!'
+        expect(find_field_value_element('description')).to have_text 'Works for us!!!'
       end
     end
   end
 
   describe 'with regular value' do
-    let!(:body) { '<div>Example tiptap text.</div>' }
-    let!(:post) { create :post, body: }
+    let!(:description) { '<div>Example tiptap text.</div>' }
+    let!(:product) { create :product, description: }
 
     context 'show' do
-      it 'displays the posts body' do
-        visit "/admin/resources/posts/#{post.id}"
+      it 'displays the products description' do
+        visit "/admin/resources/products/#{product.id}"
 
         click_on 'Show content'
 
-        expect(find_field_value_element('body')).to have_text ActionView::Base.full_sanitizer.sanitize(body)
+        expect(find_field_value_element('description')).to have_text ActionView::Base.full_sanitizer.sanitize(description)
       end
     end
 
     context 'edit' do
-      it 'has the posts body label' do
-        visit "/admin/resources/posts/#{post.id}/edit"
+      it 'has the products description label' do
+        visit "/admin/resources/products/#{product.id}/edit"
 
-        body_element = find_field_element('body')
+        description_element = find_field_element('description')
 
-        expect(body_element).to have_text 'BODY'
+        expect(description_element).to have_text 'DESCRIPTION'
       end
 
       it 'has filled simple text in tiptap editor' do
-        visit "/admin/resources/posts/#{post.id}/edit"
+        visit "/admin/resources/products/#{product.id}/edit"
 
-        expect(find('#tiptap_post_body', visible: false).value).to eq(body)
+        expect(find('#tiptap_product_description', visible: false).value).to eq(description)
       end
 
-      it 'change the posts body tiptap to another simple text value' do
-        visit "/admin/resources/posts/#{post.id}/edit"
+      it 'change the products description tiptap to another simple text value' do
+        visit "/admin/resources/products/#{product.id}/edit"
 
-        fill_in_tiptap_editor 'tiptap_post_body', with: 'New example!'
+        fill_in_tiptap_editor 'tiptap_product_description', with: 'New example!'
 
         save
         click_on 'Show content'
 
-        expect(find_field_value_element('body')).to have_text 'New example!'
+        expect(find_field_value_element('description')).to have_text 'New example!'
       end
     end
   end
