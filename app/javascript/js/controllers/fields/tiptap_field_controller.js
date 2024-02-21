@@ -93,96 +93,48 @@ export default class extends Controller {
     }
   }
 
-  bold(event) {
-    const button = event.target.closest(".tiptap__button")
-
-    if (!this.editor.view.state.selection.empty) {
-      if (this.editor.isActive('bold')) {
-        this.editor.chain().focus().extendMarkRange('bold').toggleBold().run()
-      } else {
-        this.editor.chain().focus().toggleBold().run()
-      }
-      button.classList.toggle("tiptap__button--selected", this.editor.isActive('bold'))
-    } else {
-      if (this.editor.isActive('bold')) {
-        this.editor.chain().focus().extendMarkRange('bold').toggleBold().run()
-      }
+  handleButtonClick(event) {
+    const action = event.target.dataset.action;
+    if (action && this[action]) {
+      this[action](event);
     }
   }
 
-  italic(event) {
-    const button = event.target.closest(".tiptap__button")
-
-    if (!this.editor.view.state.selection.empty) {
-      if (this.editor.isActive('italic')) {
-        this.editor.chain().focus().extendMarkRange('italic').toggleItalic().run()
-      } else {
-        this.editor.chain().focus().toggleItalic().run()
-      }
-      button.classList.toggle("tiptap__button--selected", this.editor.isActive('italic'))
-    } else {
-      if (this.editor.isActive('italic')) {
-        this.editor.chain().focus().extendMarkRange('italic').toggleItalic().run()
-      }
-    }
+  updateButtonState() {
+    this.editorTarget.querySelectorAll(".tiptap__button").forEach(button => {
+      const action = button.dataset.action;
+      button.classList.toggle("tiptap__button--selected", this.editor.isActive(action));
+    });
   }
 
-  underline(event) {
-    const button = event.target.closest(".tiptap__button")
-
-    if (!this.editor.view.state.selection.empty) {
-      if (this.editor.isActive('underline')) {
-        this.editor.chain().focus().extendMarkRange('underline').toggleUnderline().run()
-      } else {
-        this.editor.chain().focus().toggleUnderline().run()
-      }
-      button.classList.toggle("tiptap__button--selected", this.editor.isActive('underline'))
-    } else {
-      if (this.editor.isActive('underline')) {
-        this.editor.chain().focus().extendMarkRange('underline').toggleUnderline().run()
-      }
-    }
+  bold() {
+    this.editor.chain().focus().toggleBold().run();
+    this.updateButtonState();
   }
 
-  strike(event) {
-    const button = event.target.closest(".tiptap__button")
-
-    if (!this.editor.view.state.selection.empty) {
-      if (this.editor.isActive('strike')) {
-        this.editor.chain().focus().extendMarkRange('strike').toggleStrike().run()
-      } else {
-        this.editor.chain().focus().toggleStrike().run()
-      }
-      button.classList.toggle("tiptap__button--selected", this.editor.isActive('strike'))
-    } else {
-      if (this.editor.isActive('strike')) {
-        this.editor.chain().focus().extendMarkRange('strike').toggleStrike().run()
-      }
-    }
+  italic() {
+    this.editor.chain().focus().toggleItalic().run();
+    this.updateButtonState();
   }
 
-  unorderedList(event) {
-    const button = event.target.closest(".tiptap__button")
-
-    if (this.editor.isActive("orderedList") && !this.editor.isActive("bulletList")) {
-      this.editor.chain().focus().extendMarkRange('link').toggleOrderedList().run()
-      this.olButton.classList.toggle("tiptap__button--selected", this.editor.isActive('orderedList'))
-    }
-
-    this.editor.chain().focus().toggleBulletList().run()
-    button.classList.toggle("tiptap__button--selected", this.editor.isActive('bulletList'))
+  underline() {
+    this.editor.chain().focus().toggleUnderline().run();
+    this.updateButtonState();
   }
 
-  orderedList(event) {
-    const button = event.target.closest(".tiptap__button")
+  strike() {
+    this.editor.chain().focus().toggleStrike().run();
+    this.updateButtonState();
+  }
 
-    if (!this.editor.isActive("orderedList") && this.editor.isActive("bulletList")) {
-      this.editor.chain().focus().extendMarkRange('link').toggleBulletList().run()
-      this.ulButton.classList.toggle("tiptap__button--selected", this.editor.isActive('bulletList'))
-    }
+  unorderedList() {
+    this.editor.chain().focus().toggleBulletList().run();
+    this.updateButtonState();
+  }
 
-    this.editor.chain().focus().toggleOrderedList().run()
-    button.classList.toggle("tiptap__button--selected", this.editor.isActive('orderedList'))
+  orderedList() {
+    this.editor.chain().focus().toggleOrderedList().run();
+    this.updateButtonState();
   }
 
   toggleLinkArea(event) {
