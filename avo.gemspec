@@ -7,7 +7,7 @@ require_relative "lib/avo/version"
 Gem::Specification.new do |spec|
   spec.name = "avo"
   spec.version = Avo::VERSION
-  spec.authors = ["Adrian Marin", "Mihai Marin", "Paul Ionut Bob"]
+  spec.authors = ["Adrian Marin", "Mihai Marin", "Paul Bob"]
   spec.email = ["avo@avohq.io"]
   spec.homepage = "https://avohq.io"
   spec.summary = "Admin panel framework and Content Management System for Ruby on Rails."
