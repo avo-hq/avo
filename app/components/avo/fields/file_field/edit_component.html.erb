@@ -1,20 +1,33 @@
 <%= field_wrapper **field_wrapper_args do %>
-  <% if @field.value.present? %>
+  <%= content_tag :div, data: {
+    controller: "file-field",
+  } do %>
     <div class="mb-2">
-      <%= render Avo::Fields::Common::Files::ViewType::GridItemComponent.new resource: @resource, field: @field %>
+      <% if @field.value.present? %>
+        <%= render Avo::Fields::Common::Files::ViewType::GridItemComponent.new resource: @resource, field: @field %>
+      <% elsif @field.is_image %>
+        <%= image_tag "", "data-file-field-target": "preview", class: "rounded-lg max-w-full" %>
+      <% elsif @field.is_audio %>
+        <%= audio_tag("", "data-file-field-target": "preview", controls: true, preload: false, class: 'w-full') %>
+      <% elsif @field.is_video %>
+        <%= video_tag("", "data-file-field-target": "preview", controls: true, preload: false, class: 'w-full') %>
+      <% end %>
     </div>
-  <% end %>
 
-  <% if can_upload_file? %>
-    <%= @form.file_field @field.id,
-      accept: @field.accept,
-      data: @field.get_html(:data, view: view, element: :input),
-      direct_upload: @field.direct_upload,
-      disabled: disabled?,
-      style: @field.get_html(:style, view: view, element: :input),
-      class: "w-full"
-    %>
-  <% else %>
-    —
+    <% if can_upload_file? %>
+      <%= @form.file_field @field.id,
+        accept: @field.accept,
+        data: {
+          action: "input->file-field#update",
+          **@field.get_html(:data, view: view, element: :input),
+        },
+        direct_upload: @field.direct_upload,
+        disabled: disabled?,
+        style: @field.get_html(:style, view: view, element: :input),
+        class: "w-full"
+      %>
+    <% else %>
+      —
+    <% end %>
   <% end %>
 <% end %>
