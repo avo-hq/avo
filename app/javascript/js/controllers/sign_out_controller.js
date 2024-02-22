@@ -18,7 +18,8 @@ export default class extends Controller {
 
     // eslint-disable-next-line no-alert
     if (window.confirm(this.confirmValue)) {
-      fetch(`${window.Avo.configuration.root_path}/avo_clear_cache`)
+      window.Turbo.cache.clear()
+
       this.element.submit()
     }
   }

@@ -51,6 +51,4 @@ Avo::Engine.routes.draw do
       get "/design", to: "private#design"
     end
   end
-
-  get "/avo_clear_cache", as: "avo_clear_cache", to: "application#clear_cache"
 end
