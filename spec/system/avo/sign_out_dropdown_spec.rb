@@ -6,23 +6,28 @@ RSpec.feature "SignOutDropdown", type: :system do
       visit "/admin/resources/posts"
 
       expect(page.body).to have_text admin.name
-      expect(page.body).to have_link "Sign out", visible: false
+      expect(page.body).to have_css("form[data-controller='sign-out'][data-action='submit->sign-out#handle']", visible: false)
+
 
       dots_link = find("[data-control='profile-dots']")
 
       dots_link.click
 
-      expect(page.body).to have_link "Sign out", visible: true
+      expect(page.body).to have_css("form[data-controller='sign-out'][data-action='submit->sign-out#handle']", visible: true)
 
       # Test click away
       page.find("body").click
-      expect(page.body).to have_link "Sign out", visible: false
+      expect(page.body).to have_css("form[data-controller='sign-out'][data-action='submit->sign-out#handle']", visible: false)
+
 
       dots_link.click
-      expect(page.body).to have_link "Sign out"
+      expect(page.body).to have_css("form[data-controller='sign-out'][data-action='submit->sign-out#handle']")
+
 
       accept_alert do
-        click_link "Sign out"
+        within "form[data-controller='sign-out'][data-action='submit->sign-out#handle']" do
+          click_button "Sign out"
+        end
       end
       wait_for_loaded
 
