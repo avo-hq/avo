@@ -25,6 +25,10 @@ module Avo
         @crypt.decrypt_and_verify(@message, purpose: @purpose)
       end
 
+      def encode_arguments(args)
+        Base64.encode64(message: args, purpose: :action_arguments)
+      end
+
       private
 
       def encryption_key
