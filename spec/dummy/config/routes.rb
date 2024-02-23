@@ -31,5 +31,7 @@ if defined? ::Avo
       get "courses/cities", to: "courses#cities"
       get "users/get_users", to: "users#get_users"
     end
+
+    put "switch_accounts/:id", to: "switch_accounts#update", as: :switch_account
   end
 end

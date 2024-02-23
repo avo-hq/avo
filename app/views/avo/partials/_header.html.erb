@@ -1,1 +1,11 @@
-<%= link_to Avo.configuration.app_name, '/', class: 'text-primary-500 font-semibold', target: :_blank %>
+<div class="flex">
+  <%= link_to Avo.configuration.app_name, '/', class: 'text-primary-500 font-semibold', target: :_blank %>
+
+  <% if false %>
+    <div class="ml-12">
+      <% current_user.accounts.each do |account| %>
+        <%= link_to account.name, switch_account_path(account.id), class: class_names({"underline": session[:tenant_id].to_s == account.id.to_s}), data: {turbo_method: :put} %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
