@@ -56,14 +56,30 @@ module Avo
 
     delegate :license, :app, :error_manager, :tool_manager, :resource_manager, to: Avo::Current
 
+    # Runs when the app boots up
     def boot
       @logger = Avo.configuration.logger
       @field_manager = Avo::Fields::FieldManager.build
       @cache_store = Avo.configuration.cache_store
       plugin_manager.boot_plugins
       Avo.run_load_hooks(:boot, self)
+
+      Rails.configuration.to_prepare do
+        Avo.configuration.extend_controllers_with.each do |concern|
+          concern = concern.safe_constantize
+          Avo::ApplicationController.include concern
+
+          # Add the concern to all of Avo's engines
+          Avo.extra_gems.each do |gem_name|
+            if defined?("Avo::#{gem_name.capitalize}::Engine".safe_constantize)
+              "Avo::#{gem_name}::ApplicationController".safe_constantize.include concern
+            end
+          end
+        end
+      end
     end
 
+    # Runs on each request
     def init
       Avo::Current.error_manager = Avo::ErrorManager.build
       Avo::Current.resource_manager = Avo::Resources::ResourceManager.build
@@ -131,6 +147,10 @@ module Avo
         mount Avo::Dashboards::Engine, at: "/dashboards" if defined?(Avo::Dashboards::Engine)
         mount Avo::Pro::Engine, at: "/avo-pro" if defined?(Avo::Pro::Engine)
       }
+    end
+
+    def extra_gems
+      [:pro, :advanced, :menu, :dynamic_filters, :dashboards, :enterprise, :audits]
     end
   end
 end

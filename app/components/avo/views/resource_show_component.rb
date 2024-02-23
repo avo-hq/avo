@@ -35,13 +35,18 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
   end
 
   def edit_path
-    args = {}
-
-    if via_resource?
-      args = {
+    args = if via_resource?
+      {
         via_resource_class: params[:via_resource_class],
         via_record_id: params[:via_record_id]
       }
+    elsif @parent_resource.present?
+      {
+        via_resource_class: @parent_resource.class,
+        via_record_id: @parent_record.id
+      }
+    else
+      {}
     end
 
     helpers.edit_resource_path(record: @resource.record, resource: @resource, **args)
