@@ -14,7 +14,7 @@
       <% end %>
     </ul>
     <div class="col-start-7 col-span-6">
-      <%= pie_chart @values_summary, legend: false, height: "200px", colors: Avo.configuration.branding.chart_colors %>
+      <%= pie_chart @values_summary, id: "chart-#{@field_id}", legend: false, height: "200px", colors: Avo.configuration.branding.chart_colors %>
     </div>
   </div>
 </turbo-frame>
