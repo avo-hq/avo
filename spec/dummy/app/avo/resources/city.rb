@@ -65,11 +65,9 @@ class Avo::Resources::City < Avo::BaseResource
     field :name, as: :text, hide_on: [:index, :forms]
     with_options hide_on: :forms do
       field :name, as: :text, filterable: true, name: "name (click to edit)", only_on: :index do
-        arguments = Base64.encode64 Avo::Services::EncryptionService.encrypt(
-          message: {
-            cities: Array[resource.record.id],
-            render_name: true,
-          },
+        arguments = Avo::Services::EncryptionService.encode_arguments(
+          cities: Array[resource.record.id],
+          render_name: true,
           purpose: :action_arguments
         )
 
