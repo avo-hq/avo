@@ -56,7 +56,7 @@ module Avo
 
     delegate :license, :app, :error_manager, :tool_manager, :resource_manager, to: Avo::Current
 
-    # Run when the app boots up
+    # Runs when the app boots up
     def boot
       @logger = Avo.configuration.logger
       @field_manager = Avo::Fields::FieldManager.build
@@ -79,7 +79,7 @@ module Avo
       end
     end
 
-    # Run on each request
+    # Runs on each request
     def init
       Avo::Current.error_manager = Avo::ErrorManager.build
       Avo::Current.resource_manager = Avo::Resources::ResourceManager.build
