@@ -6,6 +6,7 @@ loader = Zeitwerk::Loader.for_gem
 loader.inflector.inflect(
   "html" => "HTML",
   "uri_service" => "URIService",
+  "url_helpers" => "URLHelpers",
   "has_html_attributes" => "HasHTMLAttributes"
 )
 loader.ignore("#{__dir__}/generators")

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Avo::TabSwitcherComponent < Avo::BaseComponent
-  include Avo::UrlHelpers
+  include Avo::URLHelpers
   include Avo::ApplicationHelper
 
   attr_reader :active_tab_name

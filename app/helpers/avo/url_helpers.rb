@@ -1,5 +1,5 @@
 module Avo
-  module UrlHelpers
+  module URLHelpers
     def resources_path(resource:, keep_query_params: false, **args)
       return if resource.nil?
 

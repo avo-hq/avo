@@ -8,7 +8,7 @@ module Avo
 
     include Avo::InitializesAvo
     include Avo::ApplicationHelper
-    include Avo::UrlHelpers
+    include Avo::URLHelpers
     include Avo::Concerns::Breadcrumbs
 
     protect_from_forgery with: :exception
