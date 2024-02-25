@@ -12,7 +12,7 @@ RSpec.feature "NativeFields", type: :feature do
     expect(find_field('Features').value).to eq "\"#{city.features}\""
 
     expect(page).to have_css 'img[src="https://images.unsplash.com/photo-1660061993776-098c0ee403ac?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY2MDMxMzc4NA&ixlib=rb-1.2.1&q=80&w=1080"]'
-    expect(find_field('Image url').value).to eq city.image_url
+    expect(find_field('Image URL').value).to eq city.image_url
 
     expect(page).to have_css 'trix-editor'
     expect(find_field('city[description]', visible: false).value).to include city.description.to_plain_text
