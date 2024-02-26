@@ -120,6 +120,25 @@ RSpec.describe "Actions", type: :system do
         expect(download.split("/").last).to eq file_name
       end
     end
+
+    context "with File.open().read on pdf" do
+      let(:file_name) { "dummy-file.pdf" }
+
+      it "downloads the file and closes the modal" do
+        visit "/admin/resources/users"
+
+        click_on "Actions"
+        click_on "Download file"
+        check "fields[read_from_pdf_file]"
+        click_on "Run"
+
+        wait_for_download
+
+        expect(downloaded?).to be true
+        expect(download_content).to eq File.read(Rails.root.join(file_name))
+        expect(download.split("/").last).to eq file_name
+      end
+    end
   end
 
   describe "default values" do
@@ -157,6 +176,26 @@ RSpec.describe "Actions", type: :system do
       click_on "Test No Confirmation Redirect"
 
       expect(page).to have_text "hey en"
+    end
+  end
+
+  describe "close_modal" do
+    it "closes the modal and flahses messages" do
+      allow(TestBuddy).to receive(:hi).and_call_original
+      expect(TestBuddy).to receive(:hi).with("Hello from Avo::Actions::Test::CloseModal handle method").at_least :once
+
+      visit "/admin/resources/users/new"
+
+      fill_in "user_first_name", with: "First name should persist after action."
+
+
+      click_on "Actions"
+      click_on "Close modal"
+      expect(page).to have_css('turbo-frame#actions_show')
+      click_on "Run"
+      expect(page).not_to have_css('turbo-frame#actions_show')
+      expect(page).to have_text "Modal closed!!"
+      expect(page).to have_field('user_first_name', with: 'First name should persist after action.')
     end
   end
 

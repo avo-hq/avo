@@ -33,17 +33,25 @@ module Generators
         # Add view file
         template "tool/view.tt", "app/views/avo/tools/#{file_name}.html.erb"
 
-        if ::Avo.configuration.root_path == ""
-          route <<-ROUTE
-  get "#{file_name}", to: "avo/tools##{file_name}"
-          ROUTE
-        else
-          route <<-ROUTE
-scope :#{::Avo.configuration.namespace} do
-  get "#{file_name}", to: "avo/tools##{file_name}"
+        # Add the route in the `routes.rb` file.
+        # The route should be defined inside the Avo engine.
+        # The new tool has a dedicated path helper.
+        # EX:
+        #   bin/rails generate avo:tool lolo
+        #   will generate the avo.lolo_path helper
+        # THe fact that it will always generate the definded? and Avo::Engine.routes.draw wraps is unfortunate. We'd love a PR to fix that.
+        route_contents = <<-ROUTE
+
+if defined? ::Avo
+  Avo::Engine.routes.draw do
+    get "#{file_name}", to: "tools##{file_name}", as: :#{file_name}
+  end
 end
-          ROUTE
-        end
+        ROUTE
+        append_to_file "config/routes.rb", route_contents
+
+        # Restart the server so the new routes go into effect.
+        Rails::Command.invoke "restart"
       end
 
       no_tasks do

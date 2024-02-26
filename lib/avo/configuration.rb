@@ -46,6 +46,7 @@ module Avo
     attr_accessor :prefix_path
     attr_accessor :resource_parent_controller
     attr_accessor :mount_avo_engines
+    attr_accessor :extend_controllers_with
 
     def initialize
       @root_path = "/avo"
@@ -97,6 +98,7 @@ module Avo
       @resources = nil
       @resource_parent_controller = "Avo::ResourcesController"
       @mount_avo_engines = true
+      @extend_controllers_with = []
       @cache_store = computed_cache_store
       @logger = default_logger
     end

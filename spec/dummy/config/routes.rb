@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
   authenticate :user, ->(user) { user.is_admin? } do
     scope :admin do
-      get "custom_tool", to: "avo/tools#custom_tool"
+      get "custom_tool", to: "avo/tools#custom_tool", as: :custom_tool
     end
 
     mount Avo::Engine, at: Avo.configuration.root_path
@@ -31,5 +31,7 @@ if defined? ::Avo
       get "courses/cities", to: "courses#cities"
       get "users/get_users", to: "users#get_users"
     end
+
+    put "switch_accounts/:id", to: "switch_accounts#update", as: :switch_account
   end
 end

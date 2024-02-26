@@ -8,7 +8,7 @@ RSpec.describe "Tabs", type: :system do
       it "doesn't display the birthday from the tab content" do
         visit "/admin/resources/users"
 
-        expect(find("table thead").text).to eq "ID\nAVATAR\nFIRST NAME\nLAST NAME\nUSER EMAIL\nIS ACTIVE\nCV\nIS ADMIN\nROLES\nBIRTHDAY\nIS WRITER"
+        expect(find("table thead").text).to eq "ID\n\t\nAVATAR\n\t\nFIRST NAME\n\t\nLAST NAME\n\t\nUSER EMAIL\n\t\nIS ACTIVE\n\t\nCV\n\t\nIS ADMIN\n\t\nROLES\n\t\nBIRTHDAY\n\t\nIS WRITER"
         within find("tr[data-resource-id='#{user.to_param}']") do
           expect(find_all("table tbody tr td")[10].text).to eq "Wednesday, 10 February 1988"
         end
@@ -38,17 +38,18 @@ RSpec.describe "Tabs", type: :system do
         click_on "Cancel"
 
         click_tab "Teams", within_target: first_tab_group
+        scroll_to teams_frame = find("turbo-frame#has_and_belongs_to_many_field_show_teams")
 
-        expect(find("turbo-frame#has_and_belongs_to_many_field_show_teams")).to have_text "Teams"
-        expect(find("turbo-frame#has_and_belongs_to_many_field_show_teams")).to have_link "Attach team"
-        expect(find("turbo-frame#has_and_belongs_to_many_field_show_teams")).to have_link "Create new team", href: "/admin/resources/teams/new?via_record_id=#{user.slug}&via_relation=users&via_relation_class=User&via_resource_class=Avo%3A%3AResources%3A%3AUser"
+        expect(teams_frame).to have_text "Teams"
+        expect(teams_frame).to have_link "Attach team"
+        expect(teams_frame).to have_link "Create new team", href: "/admin/resources/teams/new?via_record_id=#{user.slug}&via_relation=users&via_relation_class=User&via_resource_class=Avo%3A%3AResources%3A%3AUser"
       end
 
       it "hides the birthday tab" do
         visit avo.resources_user_path user
 
         within first_tab_group do
-          expect(find('[data-tabs-target="tabSwitcher"]').text).to eq "Fish\nTeams\nPeople\nSpouses\nProjects\nTeam memberships"
+          expect(find('[data-tabs-target="tabSwitcher"]').text).to eq "Fish\nTeams\nPeople\nSpouses\nProjects\nTeam memberships\nCreated at"
         end
       end
     end
@@ -69,8 +70,7 @@ RSpec.describe "Tabs", type: :system do
         end
 
         find('[aria-label="February 9, 1988"]').click
-        click_on "Save"
-        wait_for_loaded
+        save
 
         expect(current_path).to eq avo.resources_user_path user
         expect(find_field_value_element("birthday")).to have_text "Tuesday, 9 February 1988"
@@ -101,7 +101,7 @@ RSpec.describe "Tabs", type: :system do
       scroll_to first_tab_group
 
       within first_tab_group do
-        expect(find('[data-tabs-target="tabSwitcher"]')).to have_text "Fish\nTeams\nPeople\nSpouses\nProjects\nTeam memberships", exact: true
+        expect(find('[data-tabs-target="tabSwitcher"]')).to have_text "Fish\nTeams\nPeople\nSpouses\nProjects\nTeam memberships\nCreated at", exact: true
       end
     end
   end
@@ -139,5 +139,37 @@ RSpec.describe "Tabs", type: :system do
       find('a[data-selected="true"][data-tabs-tab-name-param="People"]')
       find('a[data-selected="true"][data-tabs-tab-name-param="Posts"]')
     end
+  end
+
+  describe "tabs with names that have spaces" do
+    it "keeps tab on reload" do
+      visit avo.resources_user_path user
+
+      find('a[data-selected="true"][data-tabs-tab-name-param="Fish"]')
+      find('a[data-selected="false"][data-tabs-tab-name-param="Projects"]').click
+      find('a[data-selected="false"][data-tabs-tab-name-param="Team memberships"]')
+
+      refresh
+
+      find('a[data-selected="false"][data-tabs-tab-name-param="Fish"]')
+      find('a[data-selected="true"][data-tabs-tab-name-param="Projects"]')
+      find('a[data-selected="false"][data-tabs-tab-name-param="Team memberships"]').click
+
+      refresh
+
+      find('a[data-selected="false"][data-tabs-tab-name-param="Fish"]')
+      find('a[data-selected="false"][data-tabs-tab-name-param="Projects"]')
+      find('a[data-selected="true"][data-tabs-tab-name-param="Team memberships"]')
+    end
+  end
+
+  it "date_time field works on tabs" do
+    visit avo.resources_user_path user
+
+    find('a[data-selected="false"][data-tabs-tab-name-param="Main comment"]').click
+    expect(page).not_to have_text 'Invalid DateTime'
+
+    find('a[data-selected="false"][data-tabs-tab-name-param="Created at"]').click
+    expect(page).not_to have_text 'Invalid DateTime'
   end
 end

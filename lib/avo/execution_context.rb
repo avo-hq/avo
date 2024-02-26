@@ -4,6 +4,8 @@ module Avo
 
     attr_accessor :target, :context, :params, :view_context, :current_user, :request, :include, :main_app, :avo, :locale
 
+    delegate_missing_to :@view_context
+
     def initialize(**args)
       # Extend the class with custom modules if required.
       if args[:include].present?

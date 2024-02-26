@@ -31,6 +31,24 @@ module Avo
 
   class DeprecatedAPIError < StandardError; end
 
+  class MissingResourceError < StandardError
+    def initialize(resource_name)
+      super(missing_resource_message(resource_name))
+    end
+
+    private
+
+    def missing_resource_message(resource_name)
+      name = resource_name.to_s.downcase
+
+      "Failed to find a resource while rendering the :#{name} field.\n" \
+      "You may generate a resource for it by running 'rails generate avo:resource #{name.singularize}'.\n" \
+      "\n" \
+      "Alternatively add the 'use_resource' option to the :#{name} field to specify a custom resource to be used.\n" \
+      "More info on https://docs.avohq.io/#{Avo::VERSION[0]}.0/resources.html."
+    end
+  end
+
   class << self
     attr_reader :logger
     attr_reader :cache_store
@@ -38,14 +56,30 @@ module Avo
 
     delegate :license, :app, :error_manager, :tool_manager, :resource_manager, to: Avo::Current
 
+    # Runs when the app boots up
     def boot
       @logger = Avo.configuration.logger
       @field_manager = Avo::Fields::FieldManager.build
       @cache_store = Avo.configuration.cache_store
       plugin_manager.boot_plugins
       Avo.run_load_hooks(:boot, self)
+
+      Rails.configuration.to_prepare do
+        Avo.configuration.extend_controllers_with.each do |concern|
+          concern = concern.safe_constantize
+          Avo::ApplicationController.include concern
+
+          # Add the concern to all of Avo's engines
+          Avo.extra_gems.each do |gem_name|
+            if defined?("Avo::#{gem_name.capitalize}::Engine".safe_constantize)
+              "Avo::#{gem_name}::ApplicationController".safe_constantize.include concern
+            end
+          end
+        end
+      end
     end
 
+    # Runs on each request
     def init
       Avo::Current.error_manager = Avo::ErrorManager.build
       Avo::Current.resource_manager = Avo::Resources::ResourceManager.build
@@ -113,6 +147,10 @@ module Avo
         mount Avo::Dashboards::Engine, at: "/dashboards" if defined?(Avo::Dashboards::Engine)
         mount Avo::Pro::Engine, at: "/avo-pro" if defined?(Avo::Pro::Engine)
       }
+    end
+
+    def extra_gems
+      [:pro, :advanced, :menu, :dynamic_filters, :dashboards, :enterprise, :audits]
     end
   end
 end

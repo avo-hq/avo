@@ -29,9 +29,7 @@ RSpec.describe "TrixField", type: :system do
 
         fill_in_trix_editor "trix_post_body", with: "Works for us!!!"
 
-        click_on "Save"
-
-        wait_for_loaded
+        save
 
         click_on "Show content"
 
@@ -74,7 +72,7 @@ RSpec.describe "TrixField", type: :system do
 
         fill_in_trix_editor "trix_post_body", with: "New example!"
 
-        click_on "Save"
+        save
         click_on "Show content"
 
         expect(find_field_value_element("body")).to have_text "New example!"

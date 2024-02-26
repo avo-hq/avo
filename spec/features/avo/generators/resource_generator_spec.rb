@@ -20,11 +20,13 @@ RSpec.feature "resource generator", type: :feature do
         Rails.root.join("app", "controllers", "avo", "events_controller.rb").to_s
       ]
 
-      Rails::Generators.invoke("avo:resource", ["event", "-q"], {destination_root: Rails.root})
+      keeping_original_files(files) do
+        Rails::Generators.invoke("avo:resource", ["event", "-q"], {destination_root: Rails.root})
 
-      expect(File.read(files[0])).to include("field :event_time, as: :date_time")
+        expect(File.read(files[0])).to include("field :event_time, as: :date_time")
 
-      check_files_and_clean_up files
+        check_files_and_clean_up files
+      end
     end
   end
 
@@ -35,11 +37,27 @@ RSpec.feature "resource generator", type: :feature do
         Rails.root.join("app", "controllers", "avo", "events_controller.rb").to_s
       ]
 
-      Rails::Generators.invoke("avo:resource", ["event", "-q"], {destination_root: Rails.root})
+      keeping_original_files(files) do
+        Rails::Generators.invoke("avo:resource", ["event", "-q"], {destination_root: Rails.root})
 
-      expect(File.read(files[0])).to include("field :body, as: :trix")
+        expect(File.read(files[0])).to include("field :body, as: :trix")
 
-      check_files_and_clean_up files
+        check_files_and_clean_up files
+      end
     end
+  end
+end
+
+def keeping_original_files(files)
+  # Add _temp to the end of the files name in order to keep the original ones
+  files.each do |file_path|
+    FileUtils.mv(file_path, "#{file_path}_temp")
+  end
+
+  yield
+
+  # Remove the _temp from the end of the files name in order to restore the original ones
+  files.each do |file_path|
+    FileUtils.mv("#{file_path}_temp", file_path)
   end
 end

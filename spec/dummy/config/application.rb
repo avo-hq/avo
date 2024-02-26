@@ -16,7 +16,7 @@ require "action_text/engine"
 Bundler.require(*Rails.groups)
 
 # Tell spring where the new dummy ap is located
-Spring.application_root = "."
+Spring.application_root = "." if defined?(Spring)
 
 module Avo3Dummy
   class Application < Rails::Application

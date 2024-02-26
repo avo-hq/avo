@@ -33,10 +33,16 @@ module Avo
           add_action_data_attributes(attributes, name, element)
           add_resource_data_attributes(attributes, name, element, view)
 
-          attributes
+          value_or_default name, attributes
         end
 
         private
+
+        def value_or_default(name, attributes)
+          return attributes if attributes.present?
+
+          default_attribute_value name
+        end
 
         # Returns Hash, HTML::Builder, or nil.
         def parse_html
@@ -50,16 +56,20 @@ module Avo
         end
 
         def default_attribute_value(name)
-          name == :data ? {} : ""
+          (name == :data) ? {} : ""
         end
 
         def add_action_data_attributes(attributes, name, element)
+          return unless respond_to? :action
+
           if can_add_stimulus_attributes_for?(action, attributes, name, element)
             attributes.merge!(stimulus_attributes_for(action))
           end
         end
 
         def add_resource_data_attributes(attributes, name, element, view)
+          return unless respond_to? :resource
+
           if can_add_stimulus_attributes_for?(resource, attributes, name, element) && view.in?([:edit, :new])
             resource_stimulus_attributes = stimulus_attributes_for(resource)
 

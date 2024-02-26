@@ -1,5 +1,5 @@
 class Avo::Resources::Items::Holder
-  attr_reader :tools, :from
+  attr_reader :tools, :from, :parent
   attr_accessor :items
   attr_accessor :invalid_fields
 
@@ -54,7 +54,7 @@ class Avo::Resources::Items::Holder
   end
 
   def tool(klass, **args)
-    add_item klass.new(**args)
+    add_item klass.new(**args, view: self.parent.view, parent: self.parent)
   end
 
   def panel(panel_name = nil, **args, &block)

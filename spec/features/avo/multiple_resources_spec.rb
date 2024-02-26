@@ -26,7 +26,7 @@ RSpec.describe "Multiple resources on same model", type: :feature do
 
       fill_in "post_name", with: "I'm a post from compact user!"
 
-      click_on "Save"
+      save
       expect(current_path).to eql "/admin/resources/compact_users/#{user.to_param}"
     end
   end

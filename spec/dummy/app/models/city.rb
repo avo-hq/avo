@@ -9,13 +9,12 @@
 #  features         :json
 #  metadata         :json
 #  image_url        :string
-#  description      :text
 #  status           :string
 #  tiny_description :text
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  latitude         :float
 #  longitude        :float
+#  latitude         :float
 #  city_center_area :json
 #
 class City < ApplicationRecord

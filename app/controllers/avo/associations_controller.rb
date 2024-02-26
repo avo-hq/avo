@@ -81,7 +81,7 @@ module Avo
       if reflection_class == "HasManyReflection"
         @record.send(association_name).delete @attachment_record
       else
-        @record.send("#{association_name}=", nil)
+        @record.send(:"#{association_name}=", nil)
       end
 
       respond_to do |format|

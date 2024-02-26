@@ -3,7 +3,7 @@
 module Avo
   class ViewInquirer < ActiveSupport::StringInquirer
     DISPLAY_VIEWS = %w[index show].freeze unless defined? DISPLAY_VIEWS
-    FORM_VIEWS = %w[new edit].freeze unless defined? FORM_VIEWS
+    FORM_VIEWS = %w[new edit create update].freeze unless defined? FORM_VIEWS
 
     def initialize(view)
       super(view.to_s)

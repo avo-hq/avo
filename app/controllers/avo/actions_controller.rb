@@ -30,7 +30,8 @@ module Avo
           (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])
       )
 
-      respond performed_action.response
+      @response = performed_action.response
+      respond
     end
 
     private
@@ -55,44 +56,54 @@ module Avo
       end
     end
 
-    def respond(response)
-      messages = get_messages response
-      return keep_modal_open(messages) if response[:keep_modal_open]
-
-      response[:type] ||= :reload
-
-      if response[:type] == :download
-        return send_data response[:path], filename: response[:filename]
-      end
+    def respond
+      # Flash the messages collected from the action
+      flash_messages
 
       respond_to do |format|
         format.turbo_stream do
-          # Flash the messages collected from the action
-          flash_messages messages
-
-          if response[:type] == :redirect
+          case @response[:type]
+          when :keep_modal_open
+            # Only render the flash messages if the action keeps the modal open
+            render turbo_stream: turbo_stream.flash_alerts
+          when :download
+            # Trigger download, removes modal and flash the messages
+            render turbo_stream: [
+              turbo_stream.download(content: Base64.encode64(@response[:path]), filename: @response[:filename]),
+              turbo_stream.close_action_modal,
+              turbo_stream.flash_alerts
+            ]
+          when :redirect
+            # Turbo redirect to the path
             render turbo_stream: turbo_stream.redirect_to(
-              Avo::ExecutionContext.new(target: response[:path]).handle,
+              Avo::ExecutionContext.new(target: @response[:path]).handle,
               nil,
-              response[:redirect_args][:turbo_frame],
-              **response[:redirect_args].except(:turbo_frame)
+              @response[:redirect_args][:turbo_frame],
+              **@response[:redirect_args].except(:turbo_frame)
             )
+          when :close_modal
+            # Close the modal and flash the messages
+            render turbo_stream: [
+              turbo_stream.close_action_modal,
+              turbo_stream.flash_alerts
+            ]
           else
+            # Reload the page
             redirect_back fallback_location: resources_path(resource: @resource)
           end
         end
       end
     end
 
-    def get_messages(response)
+    def get_messages
       default_message = {
         type: :info,
         body: I18n.t("avo.action_ran_successfully")
       }
 
-      return [default_message] if response[:messages].blank?
+      return [default_message] if @response[:messages].blank?
 
-      response[:messages].select do |message|
+      @response[:messages].select do |message|
         # Remove the silent placeholder messages
         message[:type] != :silent
       end
@@ -114,19 +125,9 @@ module Avo
       )
     end
 
-    def flash_messages(messages)
-      messages.each do |message|
+    def flash_messages
+      get_messages.each do |message|
         flash[message[:type]] = message[:body]
-      end
-    end
-
-    def keep_modal_open(messages)
-      flash_messages messages
-
-      respond_to do |format|
-        format.turbo_stream do
-          render partial: "avo/partials/flash_alerts"
-        end
       end
     end
 

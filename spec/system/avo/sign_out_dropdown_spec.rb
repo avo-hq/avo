@@ -6,22 +6,29 @@ RSpec.feature "SignOutDropdown", type: :system do
       visit "/admin/resources/posts"
 
       expect(page.body).to have_text admin.name
-      expect(page.body).to have_button "Sign out", visible: false
+      expect(page.body).to have_css("form[data-controller='sign-out'][data-action='submit->sign-out#handle']", visible: false)
 
-      dots_button = find("[data-control='profile-dots']")
 
-      dots_button.click
+      dots_link = find("[data-control='profile-dots']")
 
-      expect(page.body).to have_button "Sign out", visible: true
+      dots_link.click
+
+      expect(page.body).to have_css("form[data-controller='sign-out'][data-action='submit->sign-out#handle']", visible: true)
 
       # Test click away
-      # FIXME: Selenium::WebDriver::Error::ElementNotInteractableError: element not interactable
-      # page.find("body").click
-      # expect(page.body).to have_button "Sign out", visible: false
+      page.find("body").click
+      expect(page.body).to have_css("form[data-controller='sign-out'][data-action='submit->sign-out#handle']", visible: false)
 
-      # dots_button.click
-      click_button "Sign out"
-      accept_alert
+
+      dots_link.click
+      expect(page.body).to have_css("form[data-controller='sign-out'][data-action='submit->sign-out#handle']")
+
+
+      accept_alert do
+        within "form[data-controller='sign-out'][data-action='submit->sign-out#handle']" do
+          click_button "Sign out"
+        end
+      end
       wait_for_loaded
 
       expect(current_path).to eql "/users/sign_in"
