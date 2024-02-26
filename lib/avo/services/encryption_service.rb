@@ -25,8 +25,9 @@ module Avo
         @crypt.decrypt_and_verify(@message, purpose: @purpose)
       end
 
-      def encode_arguments(args)
-        Base64.encode64(message: args, purpose: :action_arguments)
+      def self.encode_arguments(args)
+        encoded_message = ActiveSupport::JSON.encode(args)
+        Base64.encode64(encoded_message)
       end
 
       private
