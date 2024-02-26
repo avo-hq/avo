@@ -124,10 +124,7 @@ module Avo
       arguments = params[:arguments] || params.dig(:fields, :arguments)
       return if arguments.blank?
 
-      Avo::Services::EncryptionService.decrypt(
-        message: Base64.decode64(arguments),
-        purpose: :action_arguments
-      )
+      BaseAction.decode_argumets(params[:arguments] || params.dig(:fields, :arguments))
     end
 
     def flash_messages
