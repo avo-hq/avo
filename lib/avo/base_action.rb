@@ -46,10 +46,10 @@ module Avo
         to_s
       end
 
-      def link_arguments(resource:, **args)
+      def link_arguments(resource:, arguments: {}, **args)
         path = Avo::Services::URIService.parse(resource.record.present? ? resource.record_path : resource.records_path)
           .append_paths("actions")
-          .append_query(action_id: to_param, **args)
+          .append_query(action_id: to_param, arguments: encode_argumets(arguments), **args)
           .to_s
 
         data = {
@@ -57,6 +57,16 @@ module Avo
         }
 
         [path, data]
+      end
+
+      def encode_argumets(arguments)
+        return if arguments.blank?
+        Base64.encode64(arguments.to_json)
+      end
+
+      def decode_argumets(arguments)
+        return if arguments.blank?
+        JSON.parse(Base64.decode64(arguments))
       end
     end
 
@@ -220,10 +230,10 @@ module Avo
       self
     end
 
-    def navigate_to_action(action, **kwargs)
+    def navigate_to_action(action, arguments: {}, **kwargs)
       response[:type] = :navigate_to_action
-      response[:action] = action
-      response[:navigate_to_action_args] = kwargs
+      encoded_argument = action.encode_arguments(arguments)
+      response[:navigate_to_action_args] = kwargs.merge(argumetns: encoded_argument)
 
       self
     end
