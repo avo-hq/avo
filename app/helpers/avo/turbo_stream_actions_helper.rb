@@ -11,7 +11,7 @@ module Avo
     end
 
     def close_action_modal
-      turbo_stream_action_tag :remove , target: "actions_show"
+      turbo_stream_action_tag :update , target: "actions_show"
     end
   end
 end
