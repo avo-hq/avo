@@ -47,6 +47,11 @@ en:
         one: person
         other: people
         zero: people
+      project:
+        status:
+          one: Status Nested
+          other: Status Nesteds
+          zero: Status Nesteds
     filter_by: Filter by
     filters: Filters
     go_back: Go back
