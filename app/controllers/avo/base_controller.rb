@@ -123,10 +123,6 @@ module Avo
     end
 
     def create
-      # record gets instantiated and filled in the fill_record method
-      saved = save_record
-      @resource.hydrate(record: @record, view: :new, user: _current_user)
-
       # This means that the record has been created through another parent record and we need to attach it somehow.
       if params[:via_record_id].present? && params[:via_belongs_to_resource_class].nil?
         @reflection = @record._reflections[params[:via_relation]]
@@ -139,7 +135,6 @@ module Avo
           related_record = related_resource.find_record params[:via_record_id], params: params
 
           @record.send("#{@reflection.foreign_key}=", related_record.id)
-          @record.save
         end
 
         # For when working with has_one, has_one_through, has_many_through, has_and_belongs_to_many, polymorphic
@@ -157,6 +152,10 @@ module Avo
           end
         end
       end
+
+      # record gets instantiated and filled in the fill_record method
+      saved = save_record
+      @resource.hydrate(record: @record, view: :new, user: _current_user)
 
       add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
       add_breadcrumb t("avo.new").humanize

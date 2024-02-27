@@ -37,15 +37,6 @@ ja:
     failed: 失敗
     failed_to_find_attachment: アタッチメントを見つけるのに失敗
     failed_to_load: 読み込みに失敗
-    field_translations:
-      file:
-        one: ファイル
-        other: ファイル
-        zero: ファイル
-      people:
-        one: 人
-        other: 人々
-        zero: 人々
     filter_by: フィルター条件
     filters: フィルター
     go_back: 戻る
@@ -85,15 +76,6 @@ ja:
     reset_filters: フィルターをリセット
     resource_created: レコードが作成されました
     resource_destroyed: レコードが破棄されました
-    resource_translations:
-      team_members:
-        one: チームメンバー
-        other: チームメンバー
-        zero: チームメンバー
-      user:
-        one: ユーザー
-        other: ユーザー
-        zero: ユーザー
     resource_updated: レコードが更新されました
     resources: リソース
     run: 実行
