@@ -46,7 +46,7 @@ module Avo
         resource: @resource,
         user: _current_user,
         view: :new, # force the action view to in order to render new-related fields (hidden field)
-        arguments: decrypted_arguments || {}
+        arguments: BaseAction.decode_arguments(params[:arguments] || params.dig(:fields, :arguments)) || {}
       )
     end
 
@@ -118,13 +118,6 @@ module Avo
       return if (encrypted_query = action_params[:fields][:avo_selected_query]).blank?
 
       Avo::Services::EncryptionService.decrypt(message: encrypted_query, purpose: :select_all, serializer: Marshal)
-    end
-
-    def decrypted_arguments
-      arguments = params[:arguments] || params.dig(:fields, :arguments)
-      return if arguments.blank?
-
-      Avo::BaseAction.decode_arguments(arguments)
     end
 
     def flash_messages

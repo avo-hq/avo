@@ -354,8 +354,10 @@ module Avo
         end
       end
 
+      expect(page).to have_selector(modal = "[role='dialog']")
+
       # Within the dialog, ensure that the action name is present
-      within(find("[role='dialog']")) do
+      within(find(modal)) do
         expect(page).to have_content(action_name)
       end
     end

@@ -59,14 +59,25 @@ module Avo
         [path, data]
       end
 
+      # Encrypt the arguments so we can pass sensible data as a query param.
+      # EncryptionService can generate special characters that can break the URL.
+      # We use Base64 to encode the encrypted string so we can safely pass it as a query param and don't break the URL.
       def encode_arguments(arguments)
         return if arguments.blank?
-        Base64.encode64(arguments.to_json)
+
+        Base64.encode64 Avo::Services::EncryptionService.encrypt(
+          message: arguments,
+          purpose: :action_arguments
+        )
       end
 
       def decode_arguments(arguments)
         return if arguments.blank?
-        JSON.parse(Base64.decode64(arguments))
+
+        Avo::Services::EncryptionService.decrypt(
+          message: Base64.decode64(arguments),
+          purpose: :action_arguments
+        )
       end
     end
 
@@ -81,6 +92,7 @@ module Avo
       @resource = resource
       @user = user
       @view = Avo::ViewInquirer.new(view)
+      puts ["arguments->", arguments].inspect
       @arguments = Avo::ExecutionContext.new(
         target: arguments,
         resource: resource,
@@ -230,10 +242,10 @@ module Avo
       self
     end
 
-    def navigate_to_action(action, arguments: {}, **kwargs)
+    def navigate_to_action(action, **kwargs)
       response[:type] = :navigate_to_action
-      encoded_argument = action.encode_arguments(arguments)
-      response[:navigate_to_action_args] = kwargs.merge(argumetns: encoded_argument)
+      response[:action] = action
+      response[:navigate_to_action_args] = kwargs
 
       self
     end
