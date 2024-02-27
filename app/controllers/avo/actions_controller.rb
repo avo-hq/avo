@@ -124,7 +124,7 @@ module Avo
       arguments = params[:arguments] || params.dig(:fields, :arguments)
       return if arguments.blank?
 
-      BaseAction.decode_argumets(params[:arguments] || params.dig(:fields, :arguments))
+      BaseAction.decode_argumets(arguments)
     end
 
     def flash_messages
