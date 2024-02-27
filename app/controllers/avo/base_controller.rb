@@ -61,9 +61,12 @@ module Avo
       safe_call :apply_dynamic_filters
       apply_pagination
 
+      # Duplicate the resource to avoid hydrating the @resource with the last record from @records
+      dup_resource = @resource.dup
+
       # Create resources for each record
       @resources = @records.map do |record|
-        @resource.hydrate(record: record, params: params).dup
+        dup_resource.hydrate(record: record, params: params).dup
       end
 
       set_component_for __method__
