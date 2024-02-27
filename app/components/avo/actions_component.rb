@@ -86,6 +86,6 @@ class Avo::ActionsComponent < ViewComponent::Base
   def encrypted_arguments(action)
     return if action.arguments.blank?
 
-    BaseAction.encode_arguments(action.arguments)
+    Avo::BaseAction.encode_arguments(action.arguments)
   end
 end
