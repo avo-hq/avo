@@ -105,7 +105,13 @@ module Avo
     end
 
     def get_message
-      Avo::ExecutionContext.new(target: self.class.message, record: @record, resource: @resource).handle
+      Avo::ExecutionContext.new(
+        target: self.class.message,
+        resource: @resource,
+        record: @record,
+        view: @view,
+        arguments: @arguments
+      ).handle
     end
 
     def handle_action(**args)
