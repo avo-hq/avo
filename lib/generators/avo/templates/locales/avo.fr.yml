@@ -38,15 +38,6 @@ fr:
     failed: Échec
     failed_to_find_attachment: Impossible de trouver la pièce jointe
     failed_to_load: Impossible de charger
-    field_translations:
-      file:
-        one: fichier
-        other: fichiers
-        zero: fichier
-      people:
-        one: personne
-        other: personnes
-        zero: personne
     filter_by: Filtrer par
     filters: Filtres
     go_back: Retourner en arrière
@@ -86,11 +77,6 @@ fr:
     reset_filters: Réinitialiser les filtres
     resource_created: Ressource créee
     resource_destroyed: Ressource détruite
-    resource_translations:
-      user:
-        one: utilisateurs
-        other: utilisateurs
-        zero: utilisateur
     resource_updated: Ressource mise à jour
     resources: Ressources
     run: Exécuter
