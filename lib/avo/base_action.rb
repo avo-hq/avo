@@ -92,7 +92,6 @@ module Avo
       @resource = resource
       @user = user
       @view = Avo::ViewInquirer.new(view)
-      puts ["arguments->", arguments].inspect
       @arguments = Avo::ExecutionContext.new(
         target: arguments,
         resource: resource,
