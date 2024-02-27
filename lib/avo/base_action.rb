@@ -61,7 +61,15 @@ module Avo
     end
 
     def action_name
-      return name if name.present?
+      if name.present?
+        return Avo::ExecutionContext.new(
+          target: name,
+          resource: @resource,
+          record: @record,
+          view: @view,
+          arguments: @arguments
+        ).handle
+      end
 
       self.class.to_s.demodulize.underscore.humanize(keep_id_suffix: true)
     end

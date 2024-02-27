@@ -100,5 +100,6 @@ class Avo::Resources::City < Avo::BaseResource
   def actions
     action Avo::Actions::City::PreUpdate
     action Avo::Actions::City::Update
+    action Avo::Actions::Sub::DummyAction, arguments: { test_action_name: " city resource" }
   end
 end
