@@ -1,6 +1,6 @@
 desc "Runs the update command for all Avo gems."
 task "avo:update" do
-  gems = Gem::Specification.map {|gem| gem.name}
+  gems = Gem::Specification.map { |gem| gem.name }
 
   @license ||= if gems.include?("avo-advanced")
     system "bundle update avo avo-advanced"
