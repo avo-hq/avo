@@ -49,7 +49,13 @@ module Avo
       def link_arguments(resource:, arguments: {}, **args)
         path = Avo::Services::URIService.parse(resource.record&.persisted? ? resource.record_path : resource.records_path)
           .append_paths("actions")
-          .append_query(action_id: to_param, arguments: encode_arguments(arguments), **args)
+          .append_query(
+            **{
+              action_id: to_param,
+              arguments: encode_arguments(arguments),
+              **args
+            }.compact
+          )
           .to_s
 
         data = {
