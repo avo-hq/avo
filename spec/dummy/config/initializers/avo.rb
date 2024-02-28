@@ -2,7 +2,9 @@ Avo.configure do |config|
   ## == Base configs ==
   config.root_path = "/admin"
   config.app_name = -> { "Avocadelicious #{params[:app_name_suffix]}" }
-  config.home_path = -> { "/admin/resources/projects" }
+  config.home_path = -> { avo.resources_projects_path }
+  config.mount_avo_engines = false
+  config.default_url_options = [:tenant_id]
 
   # Use this to test root_path_without_url helper
   # Also enable in config.ru & application.rb
