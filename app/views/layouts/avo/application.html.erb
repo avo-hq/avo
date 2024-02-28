@@ -3,6 +3,9 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <% if !Avo.configuration.turbo[:instantclick] %>
+      <meta name="turbo-prefetch" content="false">
+    <% end %>
     <%= display_meta_tags site: Avo.configuration.app_name, reverse: true, separator: "—" %>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>

@@ -65,6 +65,13 @@ Avo.configure do |config|
   ## provide a lambda to enable or disable cache_resource_filters per user/resource.
   # config.cache_resource_filters = -> { current_user.cache_resource_filters? }
 
+  ## == Turbo options ==
+  # config.turbo = -> do
+  #   {
+  #     instantclick: true
+  #   }
+  # end
+
   ## == Logger ==
   # config.logger = -> {
   #   file_logger = ActiveSupport::Logger.new(Rails.root.join("log", "avo.log"))
