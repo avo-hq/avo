@@ -199,6 +199,24 @@ RSpec.describe "Actions", type: :system do
     end
   end
 
+  describe "flexibility" do
+    context "index" do
+      it "finds same action on index with different name" do
+        visit "/admin/resources/users"
+
+        click_on "Actions"
+
+        expect(page.find("a", text: "Dummy action")["data-disabled"]).to eq "false"
+
+        visit "/admin/resources/cities"
+
+        click_on "Actions"
+
+        expect(page.find("a", text: "Dummy action city resource")["data-disabled"]).to eq "false"
+      end
+    end
+  end
+
   #   let!(:roles) { { admin: false, manager: false, writer: false } }
   #   let!(:user) { create :user, active: true, roles: roles }
 

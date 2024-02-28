@@ -88,7 +88,15 @@ module Avo
     end
 
     def action_name
-      return name if name.present?
+      if name.present?
+        return Avo::ExecutionContext.new(
+          target: name,
+          resource: @resource,
+          record: @record,
+          view: @view,
+          arguments: @arguments
+        ).handle
+      end
 
       self.class.to_s.demodulize.underscore.humanize(keep_id_suffix: true)
     end
@@ -124,7 +132,13 @@ module Avo
     end
 
     def get_message
-      Avo::ExecutionContext.new(target: self.class.message, record: @record, resource: @resource).handle
+      Avo::ExecutionContext.new(
+        target: self.class.message,
+        resource: @resource,
+        record: @record,
+        view: @view,
+        arguments: @arguments
+      ).handle
     end
 
     def handle_action(**args)
