@@ -38,15 +38,6 @@ es:
     failed: Fallo
     failed_to_find_attachment: No se ha encontrado el archivo adjunto
     failed_to_load: No se ha podido cargar
-    field_translations:
-      file:
-        one: fichero
-        other: ficheros
-        zero: ficheros
-      people:
-        one: persona
-        other: personas
-        zero: personas
     filter_by: Filtrar por
     filters: Filtros
     go_back: Volver
@@ -86,15 +77,6 @@ es:
     reset_filters: Reiniciar filtros
     resource_created: Recurso creado
     resource_destroyed: Recurso eliminado
-    resource_translations:
-      team_members:
-        one: miembro del equipo
-        other: miembros del equipo
-        zero: miembros del equipo
-      user:
-        one: usuario/a
-        other: usuarios/as
-        zero: usuarios/as
     resource_updated: Recurso actualizado
     resources: Recursos
     run: Ejecutar

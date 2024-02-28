@@ -62,8 +62,9 @@ module Avo
       apply_pagination
 
       # Create resources for each record
+      # Duplicate the @resource before hydration to avoid @resource keeping last record.
       @resources = @records.map do |record|
-        @resource.hydrate(record: record, params: params).dup
+        @resource.dup.hydrate(record: record, params: params)
       end
 
       set_component_for __method__

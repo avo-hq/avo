@@ -7,6 +7,7 @@ module Avo
     attr_writer :root_path
     attr_writer :cache_store
     attr_writer :logger
+    attr_writer :turbo
     attr_accessor :timezone
     attr_accessor :per_page
     attr_accessor :per_page_steps
@@ -102,6 +103,7 @@ module Avo
       @extend_controllers_with = []
       @cache_store = computed_cache_store
       @logger = default_logger
+      @turbo = default_turbo
       @default_url_options = []
     end
 
@@ -217,6 +219,18 @@ module Avo
 
         file_logger
       }
+    end
+
+    def turbo
+      Avo::ExecutionContext.new(target: @turbo).handle
+    end
+
+    def default_turbo
+      -> do
+        {
+          instantclick: true
+        }
+      end
     end
   end
 
