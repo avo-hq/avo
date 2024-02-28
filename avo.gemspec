@@ -42,7 +42,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "httparty"
   spec.add_dependency "active_link_to"
   spec.add_dependency "view_component", ">= 3.7.0"
-  spec.add_dependency "turbo-rails"
+  spec.add_dependency "turbo-rails", ">= 2.0.0"
   spec.add_dependency "turbo_power", ">= 0.6.0"
   spec.add_dependency "addressable"
   spec.add_dependency "meta-tags"
