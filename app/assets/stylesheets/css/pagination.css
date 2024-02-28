@@ -15,9 +15,9 @@
 }
 
 .pagy-nav .page a,
-.pagy-nav .page.active,
-.pagy-nav .page.prev.disabled,
-.pagy-nav .page.next.disabled,
+.pagy-nav .page.active a,
+.pagy-nav .page.prev.disabled a,
+.pagy-nav .page.next.disabled a,
 .pagy-nav-js .page a,
 .pagy-combo-nav-js .page a,
 .pagy-combo-nav-js .pagy-combo-input a {
@@ -32,12 +32,12 @@
   }
 }
 
-.pagy-nav .page.prev.disabled,
-.pagy-nav-js .page.prev.disabled,
-.pagy-combo-nav-js .page.prev.disabled,
-.pagy-nav .page.next.disabled,
-.pagy-nav-js .page.next.disabled,
-.pagy-combo-nav-js .page.next.disabled {
+.pagy-nav .page.prev.disabled a,
+.pagy-nav-js .page.prev.disabled a,
+.pagy-combo-nav-js .page.prev.disabled a,
+.pagy-nav .page.next.disabled a,
+.pagy-nav-js .page.next.disabled a,
+.pagy-combo-nav-js .page.next.disabled a {
   @apply text-gray-300 cursor-default;
 
   &:hover {
@@ -49,8 +49,8 @@
   }
 }
 
-.pagy-nav .page.active,
-.pagy-nav-js .page.active {
+.pagy-nav .page.active a,
+.pagy-nav-js .page.active a {
   @apply text-white cursor-default bg-gray-500 border-gray-500;
 
   &:hover {
