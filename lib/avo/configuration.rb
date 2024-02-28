@@ -47,6 +47,7 @@ module Avo
     attr_accessor :resource_parent_controller
     attr_accessor :mount_avo_engines
     attr_accessor :extend_controllers_with
+    attr_accessor :default_url_options
 
     def initialize
       @root_path = "/avo"
@@ -101,6 +102,7 @@ module Avo
       @extend_controllers_with = []
       @cache_store = computed_cache_store
       @logger = default_logger
+      @default_url_options = []
     end
 
     def current_user_method(&block)
