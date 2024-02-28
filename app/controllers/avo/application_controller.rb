@@ -277,21 +277,11 @@ module Avo
     end
 
     def default_url_options
-      result = super
-
       if params[:force_locale].present?
-        result[:force_locale] = params[:force_locale]
+        {**super, force_locale: params[:force_locale]}
+      else
+        super
       end
-
-      extra_options = get_extra_default_url_options
-
-      if extra_options.present?
-        extra_options.each do |param_name|
-          result[param_name] = params[param_name]
-        end
-      end
-
-      result
     end
 
     def set_sidebar_open
@@ -320,18 +310,6 @@ module Avo
         "/avo-assets/avo.base"
       else
         "avo.base"
-      end
-    end
-
-    private
-
-    def get_extra_default_url_options
-      block_or_array = Avo.configuration.default_url_options
-
-      if block_or_array.respond_to?(:call)
-        instance_eval(&block_or_array)
-      else
-        block_or_array
       end
     end
   end
