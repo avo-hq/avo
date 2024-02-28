@@ -38,6 +38,7 @@ import SignOutController from './controllers/sign_out_controller'
 import TabsController from './controllers/tabs_controller'
 import TagsFieldController from './controllers/fields/tags_field_controller'
 import TextFilterController from './controllers/text_filter_controller'
+import ThemeOptionsController from './controllers/theme_options_controller'
 import TippyController from './controllers/tippy_controller'
 import ToggleController from './controllers/toggle_controller'
 import TrixFieldController from './controllers/fields/trix_field_controller'
@@ -72,6 +73,7 @@ application.register('sidebar', SidebarController)
 application.register('sign-out', SignOutController)
 application.register('tabs', TabsController)
 application.register('text-filter', TextFilterController)
+application.register('theme-options', ThemeOptionsController)
 application.register('tippy', TippyController)
 application.register('toggle', ToggleController)
 

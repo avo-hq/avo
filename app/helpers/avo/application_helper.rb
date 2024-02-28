@@ -85,7 +85,7 @@ module Avo
     end
 
     def white_panel_classes
-      "bg-white rounded shadow-md"
+      "bg-white rounded-panel shadow-md"
     end
 
     def get_model_class(model)

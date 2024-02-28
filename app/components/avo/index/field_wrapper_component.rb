@@ -18,7 +18,7 @@ class Avo::Index::FieldWrapperComponent < ViewComponent::Base
     result = @classes
 
     unless @flush
-      result += " py-3"
+      result += " py-index-field-wrapper"
     end
 
     result += " #{@field.get_html(:classes, view: view, element: :wrapper)}"

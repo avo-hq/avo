@@ -1,0 +1,77 @@
+<div class="absolute inset-auto right-0 top-0 z-[1000]"
+  data-controller="theme-options"
+  data-theme-options-path-value="<%= avo.theme_option_path %>"
+>
+  <div class="relative flex flex-col border-stroke bg-white rounded shadow w-48 h-60 p-4">
+    <div>
+      <div class="text-center text-sm font-semibold w-full leading-none mb-1">
+        <span data-theme-options-target="label"></span>
+      </div>
+      <label>
+        Border Radius
+        <input
+          type="range"
+          min="0.1"
+          max="2"
+          step="0.1"
+          data-action="theme-options#updateProperty"
+          data-theme-options-property-param="borderRadius"
+        >
+      </label>
+    </div>
+    <div>
+      <div class="text-center text-sm font-semibold w-full leading-none mb-1">
+        <span data-theme-options-target="label"></span>
+      </div>
+      <label>
+        Stroke width
+        <input
+          type="range"
+          min="0.01"
+          max="0.25"
+          step="0.01"
+          data-action="theme-options#updateProperty"
+          data-theme-options-property-param="strokeWidth"
+        >
+      </label>
+    </div>
+    <div>
+      <div class="text-center text-sm font-semibold w-full leading-none mb-1">
+        <span data-theme-options-target="label"></span>
+      </div>
+      <label>
+        Density
+        <input
+          type="range"
+          min="-4"
+          max="2"
+          step="1"
+          value="0"
+          data-action="theme-options#updateProperty"
+          data-theme-options-property-param="density"
+        >
+      </label>
+    </div>
+    <div>
+      <label for="primary-color">Primary Color
+        <input
+          type="color"
+          data-action="theme-options#updateProperty"
+          data-theme-options-property-param="colorPrimary"
+        >
+      </label>
+    </div>
+    <div>
+      <label for="neutral-color">Neutral color
+        <input
+          type="color"
+          data-action="theme-options#updateProperty"
+          data-theme-options-property-param="colorNeutral"
+        >
+      </label>
+    </div>
+    <div>
+      <%= button_tag :save, data: {action: "theme-options#save"} %>
+    </div>
+  </div>
+</div>
