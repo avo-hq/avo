@@ -27,11 +27,8 @@ class Avo::Actions::ToggleInactive < Avo::BaseAction
     # for testing purposes
     TestBuddy.hi(fields["user_id"])
 
-    puts ["query->", query].inspect
     query.each do |record|
-      puts ["record.active->", record.active].inspect
       record.update! active: !record.active
-      puts ["record.active->", record.active].inspect
 
       record.notify fields[:message] if fields[:notify_user]
     end
