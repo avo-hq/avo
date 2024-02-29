@@ -219,7 +219,7 @@ RSpec.describe "Actions", type: :system do
 
   # Double download action should keep page
   describe "turbo" do
-    let!(:projects) { create_list :project, 4}
+    let!(:projects) { create_list :project, 4 }
     context "double action" do
       it "page persist" do
         visit "/admin/resources/projects"
