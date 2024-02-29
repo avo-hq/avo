@@ -217,6 +217,26 @@ RSpec.describe "Actions", type: :system do
     end
   end
 
+  # Double download action should keep page
+  describe "turbo" do
+    let!(:projects) { create_list :project, 4}
+    context "double action" do
+      it "page persist" do
+        visit "/admin/resources/projects"
+        expect(page).to have_css('[data-component-name="avo/views/resource_index_component"]')
+
+        check_select_all
+        open_panel_action(action_name: "Export CSV")
+        run_action
+        expect(page).to have_css('[data-component-name="avo/views/resource_index_component"]')
+
+        open_panel_action(action_name: "Export CSV")
+        run_action
+        expect(page).to have_css('[data-component-name="avo/views/resource_index_component"]')
+      end
+    end
+  end
+
   #   let!(:roles) { { admin: false, manager: false, writer: false } }
   #   let!(:user) { create :user, active: true, roles: roles }
 
