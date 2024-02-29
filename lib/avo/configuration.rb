@@ -228,7 +228,7 @@ module Avo
     def default_turbo
       -> do
         {
-          instantclick: true
+          instant_click: true
         }
       end
     end
