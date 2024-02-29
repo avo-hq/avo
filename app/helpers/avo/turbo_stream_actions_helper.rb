@@ -11,7 +11,9 @@ module Avo
     end
 
     def close_action_modal
-      turbo_stream_action_tag :remove , target: "actions_show"
+      turbo_stream_action_tag :replace,
+        target: Avo::ACTIONS_TURBO_FRAME_ID,
+        html: @view_context.turbo_frame_tag(Avo::ACTIONS_TURBO_FRAME_ID)
     end
   end
 end

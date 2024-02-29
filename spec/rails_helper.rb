@@ -70,7 +70,12 @@ end
 
 # Fix this. Rails 6.1 with ruby 3.3.0 need this to pass actions test. Uses this path as download path
 # Issue: screenshots also go to same path
-Capybara.save_path = DownloadHelpers::PATH
+Capybara.save_path = if Rails::VERSION::MAJOR == 6 && Rails::VERSION::MINOR == 1
+  DownloadHelpers::PATH
+else
+  "tmp/screenshots"
+end
+
 Capybara.default_max_wait_time = 5
 
 require "support/controller_routes"

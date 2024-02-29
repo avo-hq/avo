@@ -39,7 +39,7 @@ Avo.configure do |config|
   #   search: 'search?',
   # }
   # config.raise_error_on_missing_policy = false
-  # config.authorization_client = :pundit
+  config.authorization_client = nil
 
   ## == Localization ==
   # config.locale = 'en-US'
@@ -64,6 +64,13 @@ Avo.configure do |config|
   # config.cache_resource_filters = false
   ## provide a lambda to enable or disable cache_resource_filters per user/resource.
   # config.cache_resource_filters = -> { current_user.cache_resource_filters? }
+
+  ## == Turbo options ==
+  # config.turbo = -> do
+  #   {
+  #     instantclick: true
+  #   }
+  # end
 
   ## == Logger ==
   # config.logger = -> {
