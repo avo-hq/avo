@@ -1,10 +1,12 @@
 require_relative "named_base_generator"
 require_relative "concerns/parent_controller"
+require_relative "concerns/override_controller"
 
 module Generators
   module Avo
     class ResourceGenerator < NamedBaseGenerator
-      include Generators::Avo::Concerns::ParentController
+      include Concerns::ParentController
+      include Concerns::OverrideController
 
       source_root File.expand_path("templates", __dir__)
 
@@ -16,8 +18,10 @@ module Generators
         required: false
 
       def create
+        return if override_controller?
+
         template "resource/resource.tt", "app/avo/resources/#{resource_name}.rb"
-        template "resource/controller.tt", "app/controllers/avo/#{controller_name}.rb"
+        invoke "avo:controller", [resource_name], options
       end
 
       def resource_class
