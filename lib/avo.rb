@@ -40,7 +40,7 @@ module Avo
     private
 
     def missing_resource_message(resource_name)
-      name = resource_name.to_s.downcase
+      name = resource_name.to_s.underscore
 
       "Failed to find a resource while rendering the :#{name} field.\n" \
       "You may generate a resource for it by running 'rails generate avo:resource #{name.singularize}'.\n" \
