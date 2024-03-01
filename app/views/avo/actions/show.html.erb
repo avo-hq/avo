@@ -30,7 +30,7 @@
             <%= render field
               .hydrate(resource: @resource, record: @resource.record, user: @resource.user, view: @view, action: @action)
               .component_for_view(@view)
-              .new(field: field, resource: @resource, index: index, form: form, compact: true)
+              .new(field: field, resource: @resource, index: index, form: form, compact: true, autofocus: index.zero?)
             %>
           <% end %>
         </div>
