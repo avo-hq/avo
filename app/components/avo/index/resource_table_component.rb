@@ -24,14 +24,14 @@ class Avo::Index::ResourceTableComponent < ViewComponent::Base
         # Store each row visible fields on @header_fields variable
         @header_fields.concat row_fields = resource.get_fields(reflection: reflection, only_root: true)
 
-        Avo::Index::TableRowComponent.new(
+        {
           resource: resource,
           fields: row_fields,
           reflection: reflection,
           parent_record: parent_record,
           parent_resource: parent_resource,
           actions: actions
-        )
+        }
       end
 
       # Render only uniq fields on header
