@@ -8,6 +8,8 @@ export default class extends Controller {
     keepFiltersPanelOpen: Boolean,
   }
 
+  PARAM_KEY = 'encoded_filters'
+
   // eslint-disable-next-line class-methods-use-this
   uriParams() {
     return URI(window.location.toString()).query(true)
@@ -28,11 +30,9 @@ export default class extends Controller {
   decode(filters) {
     return JSON.parse(
       new TextDecoder().decode(
-        Uint8Array.from(
-          atob(
-            decodeURIComponent(filters),
-          ), (m) => m.codePointAt(0),
-        ),
+        Uint8Array.from(atob(
+          decodeURIComponent(filters),
+        ), (m) => m.codePointAt(0)),
       ),
     )
   }
@@ -53,8 +53,8 @@ export default class extends Controller {
     const value = this.getFilterValue()
     const filterClass = this.getFilterClass()
 
-    // Get the `filters` param for all params
-    let filters = this.uriParams()[this.uriParam('filters')]
+    // Get the `encoded_filters` param for all params
+    let filters = this.uriParams()[this.uriParam(this.PARAM_KEY)]
 
     // Decode the filters
     if (filters) {
@@ -102,9 +102,9 @@ export default class extends Controller {
     query.page = 1
 
     if (encodedFilters) {
-      query.filters = encodedFilters
+      query[this.PARAM_KEY] = encodedFilters
     } else {
-      delete query.filters
+      delete query[this.PARAM_KEY]
     }
 
     url.query(query)

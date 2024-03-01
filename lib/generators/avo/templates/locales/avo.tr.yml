@@ -38,15 +38,6 @@ tr:
     failed: Başarısız
     failed_to_find_attachment: Ek bulunamadı
     failed_to_load: Yüklenemedi
-    field_translations:
-      file:
-        one: dosya
-        other: dosya
-        zero: dosya
-      people:
-        one: kişi
-        other: kişi
-        zero: kişi
     filter_by: Tarafından filtre
     filters: Filtreler
     go_back: Geri dön
@@ -86,11 +77,6 @@ tr:
     reset_filters: Filtreleri sıfırla
     resource_created: Kayıt oluşturuldu
     resource_destroyed: Kayıt silindi
-    resource_translations:
-      user:
-        one: kullanıcı
-        other: kullanıcı
-        zero: kullanıcı
     resource_updated: Kayıt güncellendi
     resources: Kaynaklar
     run: Başlat

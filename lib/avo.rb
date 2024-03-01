@@ -18,6 +18,7 @@ module Avo
   IN_DEVELOPMENT = ENV["AVO_IN_DEVELOPMENT"] == "1"
   PACKED = !IN_DEVELOPMENT
   COOKIES_KEY = "avo"
+  ACTIONS_TURBO_FRAME_ID = :actions_show
 
   class LicenseVerificationTemperedError < StandardError; end
 
@@ -39,7 +40,7 @@ module Avo
     private
 
     def missing_resource_message(resource_name)
-      name = resource_name.to_s.downcase
+      name = resource_name.to_s.underscore
 
       "Failed to find a resource while rendering the :#{name} field.\n" \
       "You may generate a resource for it by running 'rails generate avo:resource #{name.singularize}'.\n" \

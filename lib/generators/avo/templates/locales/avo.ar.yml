@@ -38,15 +38,6 @@ ar:
     failed: فشل
     failed_to_find_attachment: فشل في العثور على المرفق
     failed_to_load: فشل التحميل
-    field_translations:
-      file:
-        one: ملف
-        other: ملفات
-        zero: ملفات
-      people:
-        one: شخص
-        other: أشخاص
-        zero: أشخاص
     filter_by: تصفية حسب
     filters: مرشحات
     go_back: العودة للخلف
@@ -86,15 +77,6 @@ ar:
     reset_filters: إعادة تعيين الفلاتر
     resource_created: تم إنشاء السجل
     resource_destroyed: تم حذف السجل
-    resource_translations:
-      team_members:
-        one: عضو فريق
-        other: أعضاء الفريق
-        zero: أعضاء الفريق
-      user:
-        one: مستخدم
-        other: مستخدمين
-        zero: مستخدمين
     resource_updated: تم تحديث السجل
     resources: المصادر
     run: تشغيل

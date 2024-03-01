@@ -38,15 +38,6 @@ ro:
     failed: A eșuat
     failed_to_find_attachment: Atașamentul nu a fost găsit
     failed_to_load: Încărcarea a eșuat
-    field_translations:
-      file:
-        one: fișier
-        other: fișiere
-        zero: fișiere
-      people:
-        one: persoana
-        other: persoane
-        zero: persoane
     filter_by: Filtează după
     filters: Filtre
     go_back: Înapoi
@@ -86,11 +77,6 @@ ro:
     reset_filters: Resetați filtrele
     resource_created: Resursă creata
     resource_destroyed: Resursă ștearsă
-    resource_translations:
-      user:
-        one: utilizator
-        other: utilizatori
-        zero: utilizatori
     resource_updated: Resursă actualizată
     resources: Resurse
     run: Rulează

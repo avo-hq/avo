@@ -1,16 +1,18 @@
-<%= turbo_frame_tag "actions_show" do %>
+<%= turbo_frame_tag Avo::ACTIONS_TURBO_FRAME_ID do %>
   <div
     data-controller="<%= ["action", @action.get_stimulus_controllers].join(" ") %>"
-    data-no-confirmation="<%= @action.no_confirmation %>"
-    data-action-target="controllerDiv"
-    data-resource-name="<%= @resource.model_key %>"
+    data-action-no-confirmation-value="<%= @action.no_confirmation %>"
+    data-action-resource-name-value="<%= @resource.model_key %>"
     data-resource-id="<%= params[:id] %>"
     class="hidden text-slate-800"
   >
     <%= form_with scope: 'fields',
       url: Avo::Services::URIService.parse(@resource.records_path).append_paths("actions").to_s,
       local: true,
-      data: @action.class.form_data_attributes do |form|
+      data: {
+        action_target: :form,
+        **@action.class.form_data_attributes,
+      } do |form|
     %>
     <%= render Avo::ModalComponent.new do |c| %>
       <% c.with_heading do %>

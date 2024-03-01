@@ -38,15 +38,6 @@ pt-BR:
     failed: Falhou
     failed_to_find_attachment: Falhou ao achar anexo
     failed_to_load: Falha ao carregar
-    field_translations:
-      file:
-        one: arquivo
-        other: arquivos
-        zero: arquivos
-      people:
-        one: pessoa
-        other: pessoas
-        zero: ninguém
     filter_by: Filtrar por
     filters: Filtros
     go_back: Voltar
@@ -86,11 +77,6 @@ pt-BR:
     reset_filters: Limpar filtros
     resource_created: Recurso criado
     resource_destroyed: Recurso destruído
-    resource_translations:
-      user:
-        one: usuário
-        other: usuários
-        zero: usuários
     resource_updated: Recurso atualizado
     resources: Recursos
     run: Executar
