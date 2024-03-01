@@ -68,11 +68,6 @@ module Avo
         @resource.dup.hydrate(record: record)
       end
 
-      # Temporary fix for visible blocks when geting fields for header
-      # Hydrating with last record so resource.record != nil
-      # This is keeping same behavior from <= 3.4.1
-      @resource.hydrate(record: @records.last)
-
       set_component_for __method__
     end
 

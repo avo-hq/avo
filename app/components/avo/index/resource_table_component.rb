@@ -13,6 +13,30 @@ class Avo::Index::ResourceTableComponent < ViewComponent::Base
     @pagy = pagy
     @query = query
     @actions = actions
+
+    cache_if Avo.configuration.cache_resources_on_index_view, resource.cache_hash(parent_record), expires_in: 1.day do
+      # Keep unique header fields, builded by joining all row visible fields.
+      @header_fields = []
+
+      # Rows keep each Avo::Index::TableRowComponent initialized to be rendered
+      # It is initialized here in order to know what fields are visible to render them as column on header.
+      @rows = @resources.map do |resource|
+        # Store each row visible fields on @header_fields variable
+        @header_fields.concat row_fields = resource.get_fields(reflection: reflection, only_root: true)
+
+        Avo::Index::TableRowComponent.new(
+          resource: resource,
+          fields: row_fields,
+          reflection: reflection,
+          parent_record: parent_record,
+          parent_resource: parent_resource,
+          actions: actions
+        )
+      end
+
+      # Render only uniq fields on header
+      @header_fields.uniq! { |field| field.id }
+    end
   end
 
   def encrypted_query
