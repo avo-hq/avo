@@ -192,8 +192,9 @@ RSpec.describe "Actions", type: :system do
       click_on "Actions"
       click_on "Close modal"
       expect(page).to have_css('turbo-frame#actions_show')
+      expect(page).to have_selector(modal = "[role='dialog']")
       click_on "Run"
-      expect(page).not_to have_css('turbo-frame#actions_show')
+      expect(page).not_to have_selector(modal)
       expect(page).to have_text "Modal closed!!"
       expect(page).to have_field('user_first_name', with: 'First name should persist after action.')
     end
@@ -213,6 +214,26 @@ RSpec.describe "Actions", type: :system do
         click_on "Actions"
 
         expect(page.find("a", text: "Dummy action city resource")["data-disabled"]).to eq "false"
+      end
+    end
+  end
+
+  # Double download action should keep page
+  describe "turbo" do
+    let!(:projects) { create_list :project, 4 }
+    context "double action" do
+      it "page persist" do
+        visit "/admin/resources/projects"
+        expect(page).to have_css('[data-component-name="avo/views/resource_index_component"]')
+
+        check_select_all
+        open_panel_action(action_name: "Export CSV")
+        run_action
+        expect(page).to have_css('[data-component-name="avo/views/resource_index_component"]')
+
+        open_panel_action(action_name: "Export CSV")
+        run_action
+        expect(page).to have_css('[data-component-name="avo/views/resource_index_component"]')
       end
     end
   end

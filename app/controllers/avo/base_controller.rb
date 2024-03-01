@@ -63,8 +63,9 @@ module Avo
 
       # Create resources for each record
       # Duplicate the @resource before hydration to avoid @resource keeping last record.
+      @resource.hydrate(params: params)
       @resources = @records.map do |record|
-        @resource.dup.hydrate(record: record, params: params)
+        @resource.dup.hydrate(record: record)
       end
 
       set_component_for __method__
