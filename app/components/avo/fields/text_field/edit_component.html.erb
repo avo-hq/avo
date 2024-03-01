@@ -7,6 +7,7 @@
     placeholder: @field.placeholder,
     style: @field.get_html(:style, view: view, element: :input),
     multiple: multiple,
-    autocomplete: @field.autocomplete
+    autocomplete: @field.autocomplete,
+    autofocus: index.zero?
   %>
 <% end %>
