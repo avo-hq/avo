@@ -17,6 +17,7 @@ module Avo
       @view = Avo::ViewInquirer.new("new")
 
       @resource.hydrate(record: @record, view: @view, user: _current_user, params: params)
+      @fields = @action.get_fields
     end
 
     def handle
@@ -48,7 +49,6 @@ module Avo
         view: :new, # force the action view to in order to render new-related fields (hidden field)
         arguments: BaseAction.decode_arguments(params[:arguments] || params.dig(:fields, :arguments)) || {}
       )
-      @fields = @action.get_fields
     end
 
     def action_class
