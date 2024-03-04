@@ -52,7 +52,7 @@
             data: {
               target: :submit_action,
               action_target: "submit"
-            }, autofocus: (@fields.count == 2 ? true : false)  do %>
+            }, autofocus: @fields.empty?  do %>
           <%= @action.confirm_button_label %>
         <% end %>
       <% end %>
