@@ -25,6 +25,7 @@ module Avo
         @discreet_pagination = args[:discreet_pagination] || false
         @link_to_child_resource = args[:link_to_child_resource] || false
         @reloadable = args[:reloadable].present? ? args[:reloadable] : false
+        @association = args[:association]
       end
 
       def field_resource
@@ -104,8 +105,9 @@ module Avo
       def query_params
         {
           turbo_frame: turbo_frame,
-          view: view
-        }
+          view: view,
+          association: @association
+      }.compact
       end
 
       private

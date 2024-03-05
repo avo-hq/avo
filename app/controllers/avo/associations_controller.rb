@@ -21,7 +21,7 @@ module Avo
       @resource = @related_resource
       @parent_record = @parent_resource.find_record(params[:id], params: params)
       @parent_resource.hydrate(record: @parent_record)
-      association_name = BaseResource.valid_association_name(@parent_record, params[:related_name])
+      association_name = BaseResource.valid_association_name(@parent_record, association_from_params)
       @query = @related_authorization.apply_policy @parent_record.send(association_name)
       @association_field = @parent_resource.get_field params[:related_name]
 
@@ -92,7 +92,7 @@ module Avo
     private
 
     def set_reflection
-      @reflection = @record._reflections[params[:related_name].to_s]
+      @reflection = @record._reflections[association_from_params]
     end
 
     def set_attachment_class
@@ -118,7 +118,7 @@ module Avo
     end
 
     def reflection_class
-      reflection = @record._reflections[params[:related_name]]
+      reflection = @record._reflections[association_from_params]
 
       klass = reflection.class.name.demodulize.to_s
       klass = reflection.through_reflection.class.name.demodulize.to_s if klass == "ThroughReflection"
@@ -154,6 +154,10 @@ module Avo
       else
         Services::AuthorizationService.new _current_user
       end
+    end
+
+    def association_from_params
+      params[:association] || params[:related_name]
     end
   end
 end
