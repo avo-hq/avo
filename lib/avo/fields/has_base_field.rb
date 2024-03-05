@@ -107,7 +107,7 @@ module Avo
           turbo_frame: turbo_frame,
           view: view,
           association: @association
-      }.compact
+        }.compact
       end
 
       private
