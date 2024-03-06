@@ -53,6 +53,7 @@ class Avo::Resources::City < Avo::BaseResource
       },
       update_using: -> do
         ActiveSupport::JSON.decode(value)
+      rescue JSON::ParserError => e
       end
 
     field :created_at, as: :date_time, filterable: true
