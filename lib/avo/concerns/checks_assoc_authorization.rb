@@ -17,7 +17,7 @@ module Avo
           association_name = @reflection.name
 
           if association_name.present?
-            method_name = "#{policy_method}_#{association_name}?".to_sym
+            method_name = :"#{policy_method}_#{association_name}?".to_sym
 
             # Use the policy methods from the parent (Post)
             service = reflection_resource.authorization
