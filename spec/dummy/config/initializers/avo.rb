@@ -6,7 +6,6 @@ Avo.configure do |config|
   config.home_path = -> { avo.resources_projects_path }
   # config.mount_avo_engines = false
   # config.default_url_options = [:tenant_id]
-  config.extend_controllers_with = ["ApplicationControllerExtensions"]
   # Use this to test root_path_without_url helper
   # Also enable in config.ru & application.rb
   # ---

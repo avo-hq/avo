@@ -45,22 +45,6 @@ module Avo
       ::Avo.boot
     end
 
-    # Prepend controller extensions
-    config.to_prepare do
-      Avo.configuration.extend_controllers_with.each do |concern|
-        concern = concern.safe_constantize
-        # Add the concern to all of Avo's main ApplicationController
-        Avo::ApplicationController&.prepend concern
-
-        # Add the concern to all of Avo's engines
-        Avo.extra_gems.each do |gem_name|
-          if defined?("Avo::#{gem_name.camelize}::Engine".safe_constantize)
-            "Avo::#{gem_name}::ApplicationController".safe_constantize&.prepend concern
-          end
-        end
-      end
-    end
-
     initializer "avo.autoload" do |app|
       # This undoes Rails' previous nested directories behavior in the `app` dir.
       # More on this: https://github.com/fxn/zeitwerk/issues/250
