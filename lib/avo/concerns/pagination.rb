@@ -8,15 +8,19 @@ module Avo
 
         class_attribute :pagination, default: {}
 
-        PAGINATION_METHOD = {
-          default: :pagy,
-          countless: :pagy_countless,
-        } unless defined? PAGINATION_METHOD
+        unless defined? PAGINATION_METHOD
+          PAGINATION_METHOD = {
+            default: :pagy,
+            countless: :pagy_countless,
+          }
+        end
 
-        PAGINATION_DEFAULTS = {
-          type: :default,
-          size: [1, 2, 2, 1],
-        } unless defined? PAGINATION_DEFAULTS
+        unless defined? PAGINATION_DEFAULTS
+          PAGINATION_DEFAULTS = {
+            type: :default,
+            size: [1, 2, 2, 1],
+          }
+        end
       end
 
       def pagination_type
@@ -27,8 +31,8 @@ module Avo
         extra_pagy_params = {}
 
         # Reset open filters when a user navigates to a new page
-        extra_pagy_params[:keep_filters_panel_open] = if params[:keep_filters_panel_open] == "1"
-          "0"
+        if params[:keep_filters_panel_open] == "1"
+          extra_pagy_params[:keep_filters_panel_open] = "0"
         end
 
         send PAGINATION_METHOD[pagination_type.to_sym],

@@ -271,7 +271,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       title: action.title,
       size: action.size,
       data: {
-        turbo_frame: "actions_show",
+        turbo_frame: Avo::ACTIONS_TURBO_FRAME_ID,
         action_name: action.action.action_name,
         tippy: action.title ? :tooltip : nil,
         action: "click->actions-picker#visitAction",

@@ -3,7 +3,7 @@
     title: t('avo.view_item', item: @resource.name).humanize,
     data: {
       controller: "preview",
-      preview_url_value: helpers.preview_resource_path(record: @record, resource: @resource, resource_id: @resource.record_id, turbo_frame: :preview_modal),
+      preview_url_value: helpers.preview_resource_path(resource: @resource,  turbo_frame: :preview_modal),
     } do %>
     <%= helpers.svg("magnifying-glass-circle", class: "block h-6 text-gray-600") %>
   <% end %>

@@ -26,9 +26,11 @@ class Avo::Resources::User < Avo::BaseResource
     # If it's an id, we need to use the find method.
     # If the id is an array, we need to use the where method in order to return a collection.
     if id.is_a?(Array)
-      (id.first.to_i == 0) ? query.where(slug: id) : query.where(id: id)
+      first_is_number = true if Float(id.first, exception: false)
+      first_is_number ? query.where(id: id) : query.where(slug: id)
     else
-      (id.to_i == 0) ? query.find_by_slug(id) : query.find(id)
+      first_is_number = true if Float(id, exception: false)
+      first_is_number ? query.find(id) : query.find_by_slug(id)
     end
   }
   self.includes = [:posts, :post]

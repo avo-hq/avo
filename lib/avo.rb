@@ -18,6 +18,7 @@ module Avo
   IN_DEVELOPMENT = ENV["AVO_IN_DEVELOPMENT"] == "1"
   PACKED = !IN_DEVELOPMENT
   COOKIES_KEY = "avo"
+  ACTIONS_TURBO_FRAME_ID = :actions_show
 
   class LicenseVerificationTemperedError < StandardError; end
 
@@ -39,7 +40,7 @@ module Avo
     private
 
     def missing_resource_message(resource_name)
-      name = resource_name.to_s.downcase
+      name = resource_name.to_s.underscore
 
       "Failed to find a resource while rendering the :#{name} field.\n" \
       "You may generate a resource for it by running 'rails generate avo:resource #{name.singularize}'.\n" \
@@ -63,20 +64,6 @@ module Avo
       @cache_store = Avo.configuration.cache_store
       plugin_manager.boot_plugins
       Avo.run_load_hooks(:boot, self)
-
-      Rails.configuration.to_prepare do
-        Avo.configuration.extend_controllers_with.each do |concern|
-          concern = concern.safe_constantize
-          Avo::ApplicationController.include concern
-
-          # Add the concern to all of Avo's engines
-          Avo.extra_gems.each do |gem_name|
-            if defined?("Avo::#{gem_name.capitalize}::Engine".safe_constantize)
-              "Avo::#{gem_name}::ApplicationController".safe_constantize.include concern
-            end
-          end
-        end
-      end
     end
 
     # Runs on each request

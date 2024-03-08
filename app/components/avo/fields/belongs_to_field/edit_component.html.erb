@@ -71,8 +71,11 @@
             <% create_href = create_path(Avo.resource_manager.get_resource_by_model_class(type.to_s)) %>
             <% if !disabled && create_href.present? %>
               <%= link_to t("avo.create_new_item", item: type.to_s.downcase),
-                          create_href,
-                          class: "text-sm"
+                    create_href,
+                    class: "text-sm",
+                    data: {
+                      turbo_prefetch: false
+                    }
               %>
             <% end %>
           <% end %>
@@ -115,7 +118,13 @@
     <% end %>
     <% if field.can_create? %>
       <% if !disabled && create_path.present? %>
-        <%= link_to t("avo.create_new_item", item: @field.name.downcase), create_path, class: "text-sm" %>
+        <%= link_to t("avo.create_new_item", item: @field.name.downcase),
+              create_path,
+              class: "text-sm",
+              data: {
+                turbo_prefetch: false
+              }
+        %>
       <% end %>
     <% end %>
   <% end %>
