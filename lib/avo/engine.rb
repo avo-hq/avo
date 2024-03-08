@@ -54,7 +54,7 @@ module Avo
 
         # Add the concern to all of Avo's engines
         Avo.extra_gems.each do |gem_name|
-          if defined?("Avo::#{gem_name.capitalize}::Engine".safe_constantize)
+          if defined?("Avo::#{gem_name.camelize}::Engine".safe_constantize)
             "Avo::#{gem_name}::ApplicationController".safe_constantize&.prepend concern
           end
         end
