@@ -4,7 +4,7 @@ module Avo
   module Index
     # Render a map view for a list of resources, where each resource is
     # expected to have an attribute/attribute set representing its location.
-    class ResourceMapComponent < ViewComponent::Base
+    class ResourceMapComponent < Avo::BaseComponent
       attr_reader :resources
 
       def initialize(resources: nil, resource: nil, reflection: nil, parent_record: nil, parent_resource: nil, pagy: nil, query: nil)
