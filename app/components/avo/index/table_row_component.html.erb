@@ -20,8 +20,13 @@
       </div>
     </td>
   <% end %>
-  <% @resource.get_fields(reflection: @reflection, only_root: true).each_with_index do |field, index| %>
-    <%= render field.component_for_view(:index).new(field: field, resource: @resource, reflection: @reflection, index: index, parent_record: @parent_record, parent_resource: @parent_resource) %>
+  <% @header_fields.each_with_index do |header_field, index| %>
+    <% field = @fields.find { |field| field.id == header_field } %>
+    <% if field.present? %>
+      <%= render field.component_for_view(:index).new(field: field, resource: @resource, reflection: @reflection, index: index, parent_record: @parent_record, parent_resource: @parent_resource) %>
+    <% else %>
+      <td class="text-center">—</td>
+    <% end %>
   <% end %>
   <% if Avo.configuration.resource_controls_on_the_right? %>
     <td class="text-right whitespace-nowrap px-2" data-control="resource-controls">

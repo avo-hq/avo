@@ -179,11 +179,9 @@ module Avo
         end
 
         # hydrate_fields fields
-        fields.each do |field|
-          field.hydrate(record: @record, view: @view, resource: self)
+        fields.map do |field|
+          field.dup.hydrate(record: @record, view: @view, resource: self)
         end
-
-        fields
       end
 
       def get_field(id)
