@@ -103,5 +103,34 @@ RSpec.feature "HasManyField", type: :system do
         end
       end
     end
+
+    describe "association option" do
+      let!(:project) { create :project }
+      let!(:reviews) { create_list :review, 6, reviewable: project, user: user }
+
+      it "renders 2 tables for same association with different scopes" do
+        visit avo.resources_project_path(project)
+
+        scroll_to reviews_frame = find('turbo-frame[id="has_many_field_show_reviews"]')
+
+        within reviews_frame do
+          reviews.each do |review|
+            find("[data-resource-name='reviews'][data-resource-id='#{review.id}']")
+          end
+        end
+
+        scroll_to even_reviews_frame = find('turbo-frame[id="has_many_field_show_even_reviews"]')
+
+        within even_reviews_frame do
+          reviews.each do |review|
+            if review.id % 2 == 0
+              find("[data-resource-name='reviews'][data-resource-id='#{review.id}']")
+            else
+              expect(page).not_to have_selector("[data-resource-name='reviews'][data-resource-id='#{review.id}']")
+            end
+          end
+        end
+      end
+    end
   end
 end
