@@ -18,11 +18,11 @@ module Avo
       end
 
       def drag_reorder_attributes
-        ''
+        ""
       end
 
       def drag_reorder_item_attributes
-        ''
+        ""
       end
     end
   end
