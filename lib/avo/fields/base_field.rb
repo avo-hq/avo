@@ -191,7 +191,7 @@ module Avo
 
       # Fills the record with the received value on create and update actions.
       def fill_field(record, key, value, params)
-        return record unless has_attribute?(key)
+        return record unless has_attribute?(record, key)
 
         if @update_using.present?
           value = Avo::ExecutionContext.new(
@@ -210,7 +210,7 @@ module Avo
         record
       end
 
-      def has_attribute?(attribute)
+      def has_attribute?(record, attribute)
         record.methods.include? attribute.to_sym
       end
 
