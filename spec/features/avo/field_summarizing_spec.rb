@@ -24,9 +24,9 @@ RSpec.feature "Field Summarizing", type: :system do
       expect(page).to have_css "#chart-status", visible: true
 
       within "#status-summary" do
-        expect(page).to have_content "rejected\n3"
-        expect(page).to have_content "closed\n1"
-        expect(page).to have_content "loading\n4"
+        expect(page).to have_content "REJECTED\n3"
+        expect(page).to have_content "CLOSED\n1"
+        expect(page).to have_content "LOADING\n4"
       end
 
       find('th[data-table-header-field-id="status"] div svg').click
