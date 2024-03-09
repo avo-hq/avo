@@ -16,6 +16,8 @@ module Avo
     before_action :authorize_attach_action, only: :new
     before_action :authorize_detach_action, only: :destroy
 
+    layout "avo/blank"
+
     def index
       @parent_resource = @resource.dup
       @resource = @related_resource
