@@ -6,7 +6,7 @@ module Avo
       @values_summary = resource.model_class.group(params[:field_id]).reorder("count_all desc").count
       @field_id = params[:field_id]
 
-      render partial: "avo/partials/distribution_chart"
+      render "avo/partials/distribution_chart", layout: "avo/blank"
     end
   end
 end

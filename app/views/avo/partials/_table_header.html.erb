@@ -64,14 +64,15 @@
           <div id="summary-header-<%= field.id %>" class="<%= text_classes %> cursor-pointer" data-action="click->toggle#togglePanel">
             <%= svg 'heroicons/solid/chart-bar', class: 'h-3 ml-1' %>
           </div>
-          <div
-              class="absolute inset-auto bg-white w-full sm:w-[400px] top-0 mt-6 p-4 z-40 shadow-modal rounded overflow-hidden hidden"
-              data-toggle-target="panel"
-            >
-            <turbo-frame id="summary-frame-<%= field.id %>" loading="lazy" src="<%= distribution_chart_path(resource_name: field.resource.model_class, field_id: field.id) %>" >
-              <%= render(Avo::LoadingComponent.new(title: "Summary")) %>
-            </turbo-frame>
-          </div>
+          <turbo-frame
+            id="summary-frame-<%= field.id %>"
+            loading="lazy"
+            src="<%= distribution_chart_path(resource_name: field.resource.model_class, field_id: field.id) %>"
+            class="absolute inset-auto bg-white w-full sm:w-[400px] top-0 mt-6 p-4 z-40 shadow-modal rounded overflow-hidden hidden border border-gray-50"
+            data-toggle-target="panel"
+          >
+            <%= render(Avo::LoadingComponent.new(title: "Summary")) %>
+          </turbo-frame>
         <% end %>
       <% end %>
     <% end %>

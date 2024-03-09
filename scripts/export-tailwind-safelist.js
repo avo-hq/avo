@@ -48,18 +48,10 @@ ignoredDynamicClasses.push(
 )
 
 // Add the backgrounds colors that are used by the charts
-ignoredDynamicClasses.push(
-  'bg-[#0B8AE2]',
-  'bg-[#34C683]',
-  'bg-[#FFBE4F]',
-  'bg-[#FF7676]',
-  'bg-[#2AB1EE]',
-  'bg-[#34C6A8]',
-  'bg-[#EC8CFF]',
-  'bg-[#80FF91]',
-  'bg-[#FFFC38]',
-  'bg-[#1BDBE8]',
-)
+const chartColors = ['#0B8AE2', '#34C683', '#FFBE4F', '#FF7676', '#2AB1EE', '#34C6A8', '#EC8CFF', '#80FF91', '#FFFC38', '#1BDBE8']
+chartColors.forEach((color) => {
+  ignoredDynamicClasses.push(`bg-[${color}]`)
+})
 
 const content = `# This file was auto-generated using the \`yarn export:tailwind-safelist\` command in \`export-tailwind-safelist.js\`\n${ignoredDynamicClasses.flat().join(' ')}`
 
