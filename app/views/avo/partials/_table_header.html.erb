@@ -71,7 +71,7 @@
             class="absolute inset-auto bg-white w-full sm:w-[400px] top-0 mt-6 p-4 z-40 shadow-modal rounded overflow-hidden hidden border border-gray-50"
             data-toggle-target="panel"
           >
-            <%= render(Avo::LoadingComponent.new(title: "Summary")) %>
+            <%= render Avo::LoadingComponent.new %>
           </turbo-frame>
         <% end %>
       <% end %>
