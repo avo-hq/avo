@@ -36,38 +36,43 @@
         sort_by = field.id
         sort_direction = 'desc'
       end
-      classes = "text-gray-500 tracking-tight leading-tight text-xs font-semibold"
+      text_classes = "text-gray-500 tracking-tight leading-tight text-xs font-semibold"
     %>
     <%= content_tag :th,
-      class: "text-left uppercase px-3 py-3 whitespace-nowrap rounded-l",
+      class: "relative text-left uppercase px-3 py-3 whitespace-nowrap rounded-l",
       data: {
         control: "resource-field-th",
         controller: "toggle",
         table_header_field_id: field.id,
         table_header_field_type: field.type,
       } do %>
-      <% if field.sortable %>
-        <%= link_to params.permit!.merge(sort_by: sort_by, sort_direction: sort_direction), class: "flex items-center cursor-pointer #{classes}", 'data-turbo-frame': params[:turbo_frame] do %>
-          <%= field.table_header_label %>
-          <%= render partial: 'avo/partials/sortable_component', locals: {field: field} %>
+      <%= content_tag :div,
+        class: "relative flex items-center justify-between w-full" do %>
+        <% if field.sortable %>
+          <%= link_to params.permit!.merge(sort_by: sort_by, sort_direction: sort_direction),
+            class: class_names("flex-1 flex justify-between", text_classes),
+            'data-turbo-frame': params[:turbo_frame] do %>
+            <%= field.table_header_label %>
+            <%= render partial: 'avo/partials/sortable_component', locals: {field: field} %>
+          <% end %>
+        <% else %>
+          <%= content_tag :div, class: text_classes do %>
+            <%= field.table_header_label %>
+          <% end %>
         <% end %>
-      <% elsif field.summarizable %>
-        <div id="summary-header-<%= field.id %>" class="flex items-center space-between w-full cursor-pointer <%= classes %>" data-action="click->toggle#togglePanel">
-          <%= field.table_header_label %>
-          <%= svg 'heroicons/solid/chart-bar', class: 'h-3 ml-1' %>
-        </div>
-        <div
-            class="absolute inset-auto bg-white w-full sm:w-[400px] mt-2 p-4 z-40 shadow-modal rounded overflow-hidden hidden"
-            data-toggle-target="panel"
-          >
-          <turbo-frame id="summary-frame-<%= field.id %>" loading="lazy" src="<%= distribution_chart_path(resource_name: field.resource.model_class, field_id: field.id) %>" >
-            <%= render(Avo::LoadingComponent.new(title: "Summary")) %>
-          </turbo-frame>
-        </div>
-      <% else %>
-        <div class="block w-full <%= classes %>">
-          <%= field.table_header_label %>
-        </div>
+        <% if field.summarizable %>
+          <div id="summary-header-<%= field.id %>" class="<%= text_classes %> cursor-pointer" data-action="click->toggle#togglePanel">
+            <%= svg 'heroicons/solid/chart-bar', class: 'h-3 ml-1' %>
+          </div>
+          <div
+              class="absolute inset-auto bg-white w-full sm:w-[400px] top-0 mt-6 p-4 z-40 shadow-modal rounded overflow-hidden hidden"
+              data-toggle-target="panel"
+            >
+            <turbo-frame id="summary-frame-<%= field.id %>" loading="lazy" src="<%= distribution_chart_path(resource_name: field.resource.model_class, field_id: field.id) %>" >
+              <%= render(Avo::LoadingComponent.new(title: "Summary")) %>
+            </turbo-frame>
+          </div>
+        <% end %>
       <% end %>
     <% end %>
   <% end %>

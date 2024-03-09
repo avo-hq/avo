@@ -40,6 +40,7 @@ class Avo::Resources::Project < Avo::BaseResource
         neutral: :Drafting
       },
       filterable: true,
+      sortable: true,
       summarizable: true
     field :country,
       as: :country,
