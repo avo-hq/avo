@@ -52,16 +52,8 @@
     </div>
     <%= turbo_frame_tag Avo::ACTIONS_TURBO_FRAME_ID, data: {turbo_temporary: 1} %>
     <%= turbo_frame_tag 'attach_modal' %>
-    <%= turbo_frame_tag 'alerts', class: "fixed inset-0 bottom-0 flex flex-col space-y-4 items-end justify-right px-4 py-6 sm:p-6 justify-end z-[100] pointer-events-none" do %>
-      <%= render Avo::FlashAlertsComponent.new flashes: flash %>
-      <% # In case we have other general error messages %>
-      <% if @errors.present? %>
-        <% @errors.each do |message| %>
-          <%= render Avo::AlertComponent.new :error, message %>
-        <% end %>
-      <% end %>
-    <% end %>
-    <%= render partial: "avo/partials/scripts" %>
+    <%= render partial: 'avo/partials/alerts' %>
+    <%= render partial: 'avo/partials/scripts' %>
     <!-- Avo version: <%= Avo::VERSION %> -->
     <!-- Environment: <%= Rails.env %> -->
     <!-- License ID: <%= Avo.license.id %> -->

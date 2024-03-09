@@ -65,7 +65,7 @@ module Avo
       if reflection_class == "HasManyReflection"
         @record.send(association_name) << @attachment_record
       else
-        @record.send("#{association_name}=", @attachment_record)
+        @record.send(:"#{association_name}=", @attachment_record)
       end
 
       respond_to do |format|
