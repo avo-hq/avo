@@ -41,6 +41,10 @@ ignoredDynamicClasses.push(
   'font-sans',
   'font-serif',
   'font-mono',
+  // avo-pro drag and drop feature:
+  '!bg-gray-100',
+  'opacity-50',
+  'select-none',
 )
 
 // Add the backgrounds colors that are used by the charts

@@ -25,6 +25,7 @@
 @import './css/fields/progress.css';
 @import './css/fields/trix.css';
 @import './css/fields/tags.css';
+@import './css/fields/tiptap.css';
 
 @import 'tailwindcss/components';
 

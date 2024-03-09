@@ -8,7 +8,10 @@ class Avo::Actions::ToggleInactive < Avo::BaseAction
       as: :tags,
       mode: :select,
       close_on_select: true,
-      fetch_values_from: -> { "/admin/resources/users/get_users?hey=you&record_id=#{resource.record.id}" },
+      fetch_values_from: -> {
+        # record is nil when selecting on index
+        "/admin/resources/users/get_users?hey=you&record_id=#{resource&.record&.id}"
+      },
       suggestions: -> do
         User.take(5).map do |user|
           {
@@ -25,11 +28,7 @@ class Avo::Actions::ToggleInactive < Avo::BaseAction
     TestBuddy.hi(fields["user_id"])
 
     query.each do |record|
-      if record.active
-        record.update active: false
-      else
-        record.update active: true
-      end
+      record.update! active: !record.active
 
       record.notify fields[:message] if fields[:notify_user]
     end

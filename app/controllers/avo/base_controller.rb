@@ -63,9 +63,15 @@ module Avo
 
       # Create resources for each record
       # Duplicate the @resource before hydration to avoid @resource keeping last record.
+      @resource.hydrate(params: params)
       @resources = @records.map do |record|
-        @resource.dup.hydrate(record: record, params: params)
+        @resource.dup.hydrate(record: record)
       end
+
+      # Temporary fix for visible blocks when geting fields for header
+      # Hydrating with last record so resource.record != nil
+      # This is keeping same behavior from <= 3.4.1
+      @resource.hydrate(record: @records.last)
 
       set_component_for __method__
     end

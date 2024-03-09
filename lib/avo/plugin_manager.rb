@@ -43,6 +43,14 @@ module Avo
       end
     end
 
+    def to_s
+      plugins.map do |plugin|
+        plugin.klass.to_s
+      end.join(",")
+    rescue
+      "Failed to fetch plugins."
+    end
+
     def installed?(name)
       plugins.any? do |plugin|
         plugin.klass.to_s.chomp("::Plugin").underscore.tr("/", "-") == name.to_s

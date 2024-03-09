@@ -12,7 +12,6 @@
       data: {
         action_target: :form,
         **@action.class.form_data_attributes,
-        turbo_frame: Avo::ACTIONS_TURBO_FRAME_ID,
       } do |form|
     %>
     <%= render Avo::ModalComponent.new do |c| %>

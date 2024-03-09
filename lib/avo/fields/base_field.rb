@@ -193,7 +193,7 @@ module Avo
 
       # Fills the record with the received value on create and update actions.
       def fill_field(record, key, value, params)
-        return record unless record.methods.include? key.to_sym
+        return record unless has_attribute?(record, key)
 
         if @update_using.present?
           value = Avo::ExecutionContext.new(
@@ -207,9 +207,13 @@ module Avo
           ).handle
         end
 
-        record.public_send("#{key}=", value)
+        record.public_send(:"#{key}=", value)
 
         record
+      end
+
+      def has_attribute?(record, attribute)
+        record.methods.include? attribute.to_sym
       end
 
       # Try to see if the field has a different database ID than it's name

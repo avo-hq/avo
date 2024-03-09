@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <% if !Avo.configuration.turbo[:instantclick] %>
+    <% if !Avo.configuration.turbo[:instant_click] %>
       <meta name="turbo-prefetch" content="false">
     <% end %>
     <%= display_meta_tags site: Avo.configuration.app_name, reverse: true, separator: "—" %>
@@ -66,6 +66,7 @@
     <!-- Environment: <%= Rails.env %> -->
     <!-- License ID: <%= Avo.license.id %> -->
     <!-- License valid?: <%= Avo.license.valid ? "valid" : "invalid" %>  -->
+    <!-- Plugins: <%= Avo.plugin_manager.to_s %> -->
   </body>
 </html>
 <!-- ✨ Built with Avo • https://www.avohq.io/ -->
