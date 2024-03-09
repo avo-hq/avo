@@ -56,7 +56,7 @@
             <%= render partial: 'avo/partials/sortable_component', locals: {field: field} %>
           <% end %>
         <% else %>
-          <%= content_tag :div, class: text_classes do %>
+          <%= content_tag :div, class: text_classes, data: {sortable: false} do %>
             <%= field.table_header_label %>
           <% end %>
         <% end %>
