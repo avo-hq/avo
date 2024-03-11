@@ -73,7 +73,7 @@ module Avo
           format.turbo_stream {
             render turbo_stream: [
               turbo_stream.turbo_frame_reload(:has_and_belongs_to_many_field_show_users),
-              turbo_stream.replace(:attach_modal, partial: "avo/partials/attach_modal"),
+              turbo_stream.replace(:attach_modal, partial: "avo/partials/attach_modal")
             ]
           }
           format.html { redirect_to resource_view_response_path, notice: t("avo.attachment_class_attached", attachment_class: @related_resource.name) }
