@@ -145,12 +145,12 @@ RSpec.feature "HasManyField", type: :system do
 
         select review.tiny_name, from: "fields_related_id"
 
-          expect {
-            within '[aria-modal="true"]' do
-              click_on "Attach"
-            end
-            wait_for_loaded
-          }.to change(project.reviews, :count).by 1
+        expect {
+          within '[aria-modal="true"]' do
+            click_on "Attach"
+          end
+          wait_for_loaded
+        }.to change(project.reviews, :count).by 1
 
         expect(current_path).to eql avo.resources_project_path(project)
         expect(page).not_to have_text "Choose review"
