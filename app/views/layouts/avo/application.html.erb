@@ -51,7 +51,7 @@
       </div>
     </div>
     <%= turbo_frame_tag Avo::ACTIONS_TURBO_FRAME_ID, data: {turbo_temporary: 1} %>
-    <%= turbo_frame_tag 'attach_modal' %>
+    <%= render partial: 'avo/partials/attach_modal' %>
     <%= render partial: 'avo/partials/alerts' %>
     <%= render partial: 'avo/partials/scripts' %>
     <!-- Avo version: <%= Avo::VERSION %> -->

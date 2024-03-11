@@ -11,7 +11,6 @@
     data: {
       'turbo-frame': '_top'
     } do |form| %>
-    <%= hidden_field_tag :referrer, related_resources_path(@record, @record) %>
     <%= render Avo::ModalComponent.new do |c| %>
       <% c.with_heading do %>
         <%= t 'avo.choose_item', item: @related_resource.name.downcase %>
@@ -42,7 +41,7 @@
       </div>
 
       <% c.with_controls do %>
-        <%= a_button 'data-action': 'click->modal#close', size: :sm, style: :outline, color: :gray do %>
+        <%= a_button 'data-action': 'click->modal#close', type: :button, size: :sm, style: :outline, color: :gray do %>
           <%= t('avo.cancel') %>
         <% end %>
         <%= a_button type: :submit, style: :primary, color: :green, size: :sm do %>
