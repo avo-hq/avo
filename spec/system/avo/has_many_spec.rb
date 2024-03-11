@@ -107,6 +107,7 @@ RSpec.feature "HasManyField", type: :system do
     describe "association option" do
       let!(:project) { create :project }
       let!(:reviews) { create_list :review, 6, reviewable: project, user: user }
+      let!(:review) { create :review, user: user }
 
       it "renders 2 tables for same association with different scopes" do
         visit avo.resources_project_path(project)
@@ -130,6 +131,30 @@ RSpec.feature "HasManyField", type: :system do
             end
           end
         end
+      end
+
+      it "attach" do
+        visit avo.resources_project_path(project)
+
+        scroll_to reviews_frame = find('turbo-frame[id="has_many_field_show_reviews"]')
+
+        click_on "Attach even review"
+
+        expect(page).to have_text "Choose review"
+        expect(page).to have_select "fields_related_id", selected: "Choose an option"
+
+        select review.tiny_name, from: "fields_related_id"
+
+          expect {
+            within '[aria-modal="true"]' do
+              click_on "Attach"
+            end
+            wait_for_loaded
+          }.to change(project.reviews, :count).by 1
+
+        expect(current_path).to eql avo.resources_project_path(project)
+        expect(page).not_to have_text "Choose review"
+        expect(page).not_to have_text "No related record found"
       end
     end
   end

@@ -12,6 +12,7 @@ module Avo
       attr_accessor :discreet_pagination
       attr_accessor :hide_search_input
       attr_reader :link_to_child_resource
+      attr_reader :association
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
@@ -58,12 +59,12 @@ module Avo
       end
 
       def target_resource
-        if @record._reflections[id.to_s].klass.present?
-          get_resource_by_model_class(@record._reflections[id.to_s].klass.to_s)
-        elsif @record._reflections[id.to_s].options[:class_name].present?
-          get_resource_by_model_class(@record._reflections[id.to_s].options[:class_name])
+        if @record._reflections[(@association || id).to_s].klass.present?
+          get_resource_by_model_class(@record._reflections[association_name].klass.to_s)
+        elsif @record._reflections[association_name].options[:class_name].present?
+          get_resource_by_model_class(@record._reflections[association_name].options[:class_name])
         else
-          Avo.resource_manager.get_resource_by_name id.to_s
+          Avo.resource_manager.get_resource_by_name association_name
         end
       end
 
@@ -108,6 +109,10 @@ module Avo
           view: view,
           association: @association
         }.compact
+      end
+
+      def association_name
+        @association_name ||= (@association || id).to_s
       end
 
       private

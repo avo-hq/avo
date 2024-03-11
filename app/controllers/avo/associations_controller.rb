@@ -58,7 +58,7 @@ module Avo
     end
 
     def create
-      association_name = BaseResource.valid_association_name(@record, params[:related_name])
+      association_name = BaseResource.valid_association_name(@record, association_from_params)
 
       if reflection_class == "HasManyReflection"
         @record.send(association_name) << @attachment_record
