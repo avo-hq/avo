@@ -19,7 +19,8 @@ class Avo::Resources::Project < Avo::BaseResource
       loading_when: ["loading", :running, :waiting, "Hold On"],
       success_when: ["Done"],
       nullable: true,
-      filterable: true
+      filterable: true,
+      summarizable: true
     field :name, as: :text, required: true, sortable: true, default: "New project default name"
     field :progress, as: :progress_bar, value_suffix: "%", display_value: true
     field :stage,
@@ -38,12 +39,15 @@ class Avo::Resources::Project < Avo::BaseResource
         danger: :Cancelled,
         neutral: :Drafting
       },
-      filterable: true
+      filterable: true,
+      sortable: true,
+      summarizable: true
     field :country,
       as: :country,
       include_blank: "No country",
-      filterable: true
-    field :users_required, as: :number, min: 10, max: 1000000, step: 1, html: {index: {wrapper: {classes: "text-right"}}}
+      filterable: true,
+      summarizable: true
+    field :users_required, as: :number, min: 10, max: 1000000, step: 1, html: {index: {wrapper: {classes: "text-right"}}}, summarizable: true
     field :started_at, as: :date_time, name: "Started", time_24hr: true, nullable: true,
       relative: true,
       timezone: "EET",
