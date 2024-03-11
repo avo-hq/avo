@@ -136,7 +136,7 @@ RSpec.feature "HasManyField", type: :system do
       it "attach" do
         visit avo.resources_project_path(project)
 
-        scroll_to reviews_frame = find('turbo-frame[id="has_many_field_show_reviews"]')
+        scroll_to find('turbo-frame[id="has_many_field_show_reviews"]')
 
         click_on "Attach even review"
 
