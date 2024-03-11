@@ -32,6 +32,7 @@ module Avo
       attr_reader :required
       attr_reader :readonly
       attr_reader :sortable
+      attr_reader :summarizable
       attr_reader :nullable
       attr_reader :null_values
       attr_reader :format_using
@@ -64,6 +65,7 @@ module Avo
         @readonly = args[:readonly] || false
         @disabled = args[:disabled] || false
         @sortable = args[:sortable] || false
+        @summarizable = args[:summarizable] || false
         @nullable = args[:nullable] || false
         @null_values = args[:null_values] || [nil, ""]
         @format_using = args[:format_using] || nil
