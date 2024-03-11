@@ -93,6 +93,13 @@ module Avo
       end
 
       respond_to do |format|
+        format.turbo_stream {
+          turbo_frame_name = @resource.get_field(association_name).turbo_frame
+          render turbo_stream: [
+            turbo_stream.turbo_frame_reload(turbo_frame_name),
+            turbo_stream.replace(:attach_modal, partial: "avo/partials/attach_modal"),
+          ]
+        }
         format.html { redirect_to params[:referrer] || resource_view_response_path, notice: t("avo.attachment_class_detached", attachment_class: @attachment_class) }
       end
     end
