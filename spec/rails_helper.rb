@@ -187,7 +187,8 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
 
   # https://medium.com/@velciov.vlad/retrying-flaky-tests-fae14de26c1b
-  config.default_retry_count = 2
+  # only retry in CI environment
+  config.default_retry_count = ENV['CI'] ? 2 : 0
   config.verbose_retry = true
 
   # callback to be run between retries

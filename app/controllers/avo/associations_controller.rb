@@ -70,7 +70,7 @@ module Avo
 
       respond_to do |format|
         if @record.save
-          format.html { redirect_back fallback_location: resource_view_response_path, notice: t("avo.attachment_class_attached", attachment_class: @related_resource.name) }
+          format.html { redirect_to params[:referrer].presence || resource_view_response_path || request.referer, notice: t("avo.attachment_class_attached", attachment_class: @related_resource.name) }
         else
           format.html { render :new }
         end
