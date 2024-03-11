@@ -188,7 +188,7 @@ RSpec.configure do |config|
 
   # https://medium.com/@velciov.vlad/retrying-flaky-tests-fae14de26c1b
   # only retry in CI environment
-  config.default_retry_count = ENV['CI'] ? 2 : 0
+  config.default_retry_count = ENV["CI"] ? 2 : 0
   config.verbose_retry = true
 
   # callback to be run between retries
