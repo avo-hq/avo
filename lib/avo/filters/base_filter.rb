@@ -1,7 +1,7 @@
 module Avo
   module Filters
     class BaseFilter
-      PARAM_KEY = :filters unless const_defined?(:PARAM_KEY)
+      PARAM_KEY = :encoded_filters unless const_defined?(:PARAM_KEY)
 
       class_attribute :component, default: "boolean-filter"
       class_attribute :default, default: nil

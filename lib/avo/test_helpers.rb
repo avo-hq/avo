@@ -128,6 +128,10 @@ module Avo
     #   select_first_result_in_search
     def select_first_result_in_search
       type :down, :enter
+    rescue
+      find(".aa-Input").send_keys :arrow_down
+      find(".aa-Input").send_keys :enter
+    ensure
       wait_for_search_loaded
     end
 
@@ -350,8 +354,10 @@ module Avo
         end
       end
 
+      expect(page).to have_selector(modal = "[role='dialog']")
+
       # Within the dialog, ensure that the action name is present
-      within(find("[role='dialog']")) do
+      within(find(modal)) do
         expect(page).to have_content(action_name)
       end
     end

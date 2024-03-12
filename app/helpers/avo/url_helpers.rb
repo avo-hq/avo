@@ -36,19 +36,10 @@ module Avo
     end
 
     def preview_resource_path(
-      record:,
       resource:,
-      resource_id: nil,
-      keep_query_params: false,
       **args
     )
-      if record.respond_to? resource.id_attribute
-        id = record
-      elsif resource_id.present?
-        id = resource_id
-      end
-
-      avo.send :"preview_resources_#{resource.singular_route_key}_path", id, **args
+      avo.send :"preview_resources_#{resource.singular_route_key}_path", resource.record, **args
     end
 
     def new_resource_path(resource:, **args)

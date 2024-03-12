@@ -41,7 +41,7 @@ class Avo::Resources::Product < Avo::BaseResource
         }
       }
     }
-    field :description, as: :trix
+    field :description, as: :tiptap, placeholder: "Enter text", always_show: false
     field :image, as: :file, is_image: true
     field :price, as: :number
     field :category, as: :select, enum: ::Product.categories

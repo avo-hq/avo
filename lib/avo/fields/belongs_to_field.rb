@@ -119,7 +119,7 @@ module Avo
         query = resource.query_scope
 
         if attach_scope.present?
-          query = Avo::ExecutionContext.new(target: attach_scope, query: query, parent: get_model).handle
+          query = Avo::ExecutionContext.new(target: attach_scope, query: query, parent: get_record).handle
         end
 
         query.all.map do |record|
@@ -164,7 +164,7 @@ module Avo
       end
 
       def reflection_for_key(key)
-        get_model_class(get_model).reflections[key.to_s]
+        get_model_class(get_record).reflections[key.to_s]
       rescue
         nil
       end
@@ -251,12 +251,8 @@ module Avo
         end
       end
 
-      def get_model
-        return @record if @record.present?
-
-        @resource.record
-      rescue
-        nil
+      def get_record
+        @record || @resource.record
       end
 
       def default_name
@@ -271,11 +267,13 @@ module Avo
 
       private
 
-      def get_model_class(model)
-        if model.instance_of?(Class)
-          model
+      def get_model_class(record)
+        if record.nil?
+          @resource.model_class
+        elsif record.instance_of?(Class)
+          record
         else
-          model.class
+          record.class
         end
       end
     end

@@ -26,7 +26,7 @@ module Avo
       end
 
       def filters_session_key
-        @filters_session_key ||= "/filters/" << %w[
+        @filters_session_key ||= "/encoded_filters/" << %w[
           turbo_frame controller resource_name related_name
           action id
         ].map { |key| params[key] }.compact.join("/")

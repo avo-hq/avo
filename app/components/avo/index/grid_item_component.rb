@@ -2,6 +2,7 @@
 
 class Avo::Index::GridItemComponent < Avo::BaseComponent
   include Avo::ResourcesHelper
+  include Avo::Concerns::CanReorderItems
   include Avo::Fields::Concerns::HasHTMLAttributes
 
   attr_reader :parent_resource, :actions

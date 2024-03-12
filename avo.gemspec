@@ -7,12 +7,13 @@ require_relative "lib/avo/version"
 Gem::Specification.new do |spec|
   spec.name = "avo"
   spec.version = Avo::VERSION
-  spec.authors = ["Adrian Marin", "Mihai Marin"]
+  spec.authors = ["Adrian Marin", "Mihai Marin", "Paul Bob"]
   spec.email = ["avo@avohq.io"]
   spec.homepage = "https://avohq.io"
-  spec.summary = "Configuration-based, no-maintenance, extendable Ruby on Rails admin panel framework."
-  spec.description = "Avo abstracts away the common parts of building apps, letting your engineers work on your app's essential components. The result is a full-featured admin panel that works out of the box, ready to give to your end-users."
-  spec.license = "Commercial"
+  spec.summary = "Admin panel framework and Content Management System for Ruby on Rails."
+  spec.description = "Avo is a very custom Content Management System for Ruby on Rails that saves engineers and teams months of development time by building user interfaces and logic using configuration rather than traditional coding; When configuration is not enough, you can fallback to familiar Ruby on Rails code."
+  spec.license = "LGPL-3.0"
+  spec.licenses = ["LGPL-3.0", "Commercial"]
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
@@ -36,12 +37,12 @@ Gem::Specification.new do |spec|
   spec.add_dependency "activerecord", ">= 6.1"
   spec.add_dependency "activesupport", ">= 6.1"
   spec.add_dependency "actionview", ">= 6.1"
-  spec.add_dependency "pagy"
+  spec.add_dependency "pagy", ">= 7.0.0"
   spec.add_dependency "zeitwerk", ">= 2.6.12"
   spec.add_dependency "httparty"
   spec.add_dependency "active_link_to"
   spec.add_dependency "view_component", ">= 3.7.0"
-  spec.add_dependency "turbo-rails"
+  spec.add_dependency "turbo-rails", ">= 2.0.0"
   spec.add_dependency "turbo_power", ">= 0.6.0"
   spec.add_dependency "addressable"
   spec.add_dependency "meta-tags"

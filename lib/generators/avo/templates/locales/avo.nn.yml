@@ -38,15 +38,6 @@ nn:
     failed: Feila
     failed_to_find_attachment: Fann ikkje vedlegg
     failed_to_load: Lasting feila
-    field_translations:
-      file:
-        one: fil
-        other: filer
-        zero: filer
-      people:
-        one: person
-        other: personar
-        zero: personar
     filter_by: Filtrer etter
     filters: Filter
     go_back: Gå tilbake
@@ -86,11 +77,6 @@ nn:
     reset_filters: Nullstill filter
     resource_created: Ressurs generert
     resource_destroyed: Ressurs sletta
-    resource_translations:
-      user:
-        one: brukar
-        other: brukarar
-        zero: brukarar
     resource_updated: Ressurs oppdatert
     resources: Ressursar
     run: Køyr

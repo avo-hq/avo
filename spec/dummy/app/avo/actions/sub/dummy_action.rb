@@ -1,5 +1,5 @@
 class Avo::Actions::Sub::DummyAction < Avo::BaseAction
-  self.name = "Dummy action"
+  self.name = -> { "Dummy action#{arguments[:test_action_name]}" }
   self.standalone = true
   # self.turbo = false
   self.visible = -> do
