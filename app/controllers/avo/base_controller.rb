@@ -91,9 +91,9 @@ module Avo
 
         add_breadcrumb via_resource.plural_name, resources_path(resource: via_resource)
         add_breadcrumb via_resource.record_title, resource_path(record: via_record, resource: via_resource)
-      else
-        add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
       end
+
+      add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
 
       add_breadcrumb @resource.record_title
       add_breadcrumb I18n.t("avo.details").upcase_first
