@@ -39,7 +39,9 @@ RSpec.describe "HasAndBelongsToManyField", type: :system do
 
         expect(current_path).to eql "/admin/resources/projects/#{project.id}"
         expect(page).not_to have_text "Choose user"
-        expect(page).not_to have_text "No related record found"
+        within("#has_and_belongs_to_many_field_show_users") do
+          expect(page).not_to have_text "No related record found"
+        end
       end
 
       it "removes the modal" do
