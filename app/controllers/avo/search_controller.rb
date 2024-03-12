@@ -19,8 +19,11 @@ module Avo
     def search_resources(resources)
       resources
         .map do |resource|
-          # Apply authorization
-          next unless @authorization.set_record(resource.model_class).authorize_action(:search, raise_exception: false)
+          # Apply authorization if present
+          if resource.authorization.respond_to?(:has_action_method?) && resource.authorization.has_action_method?("search")
+            next unless @authorization.set_record(resource.model_class).authorize_action(:search, raise_exception: false)
+          end
+
           # Filter out the models without a search_query
           next if resource.search_query.nil?
 
