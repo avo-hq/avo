@@ -81,7 +81,7 @@ module Avo
       rescue
       end
 
-      avo.resources_associations_index_path(parent_record.model_name.route_key, record.id, **existing_params, **args)
+      avo.resources_associations_index_path(parent_record.model_name.route_key, record.to_param, **existing_params, **args)
     end
 
     def resource_view_path(**args)

@@ -12,6 +12,8 @@ module Avo
     before_action :set_action, only: [:show, :handle]
     before_action :verify_authorization, only: [:show, :handle]
 
+    layout "avo/blank"
+
     def show
       # Se the view to :new so the default value gets prefilled
       @view = Avo::ViewInquirer.new("new")

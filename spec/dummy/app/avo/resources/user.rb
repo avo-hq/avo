@@ -71,6 +71,7 @@ class Avo::Resources::User < Avo::BaseResource
     action Avo::Actions::DownloadFile
     action Avo::Actions::Test::NoConfirmationRedirect
     action Avo::Actions::Test::CloseModal
+    action Avo::Actions::DetachUser
   end
 
   def filters
