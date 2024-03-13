@@ -5,19 +5,16 @@
         <span data-progress-bar-field-target="label"><%= @field.value %></span><%= @field.value_suffix if @field.value_suffix.present? %>
       </div>
     <% end %>
-    <%= @form.range_field @field.id,
-      value: @field.value,
+    <%= @form.range_field @field.id, **field_input_args.merge({
       class: "w-full #{@field.get_html(:classes, view: view, element: :input)}",
       data: {
         action: "input->progress-bar-field#update",
         **@field.get_html(:data, view: view, element: :input)
       },
-      disabled: disabled?,
       max: @field.max,
       min: 0,
       placeholder: @field.placeholder,
-      step: @field.step,
-      style: @field.get_html(:style, view: view, element: :input)
-    %>
+      step: @field.step
+    })%>
   <% end %>
 <% end %>

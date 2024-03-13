@@ -48,4 +48,16 @@ class Avo::Fields::EditComponent < ViewComponent::Base
   def disabled?
     field.is_readonly? || field.is_disabled?
   end
+
+  def field_input_args
+    {
+      value: @field.value,
+      checked: @field.value,
+      class: "text-lg h-4 w-4 checked:bg-primary-400 focus:checked:!bg-primary-400 rounded #{@field.get_html(:classes, view: view, element: :input)}",
+      data: @field.get_html(:data, view: view, element: :input),
+      disabled: disabled?,
+      autofocus: true,
+      style: @field.get_html(:style, view: view, element: :input)
+    }
+  end
 end

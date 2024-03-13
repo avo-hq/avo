@@ -3,15 +3,13 @@
 
   <% if can_upload_file? %>
     <div class="mt-2">
-      <%= @form.file_field @field.id,
+      <%= @form.file_field @field.id, **field_input_args.merge({
         accept: @field.accept,
-        data: @field.get_html(:data, view: view, element: :input),
         direct_upload: @field.direct_upload,
         disabled: disabled?,
         multiple: true,
-        style: @field.get_html(:style, view: view, element: :input),
         class: "w-full"
-      %>
+      })%>
     </div>
   <% else %>
     —

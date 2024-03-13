@@ -1,14 +1,11 @@
 <%= field_wrapper **field_wrapper_args do %>
-  <%= @form.number_field @field.id,
-    value: @field.value,
+  <%= @form.number_field @field.id, **field_input_args.merge({
     class: classes("w-full"),
-    data: @field.get_html(:data, view: view, element: :input),
     disabled: disabled?,
     max: @field.max,
     min: @field.min,
     placeholder: @field.placeholder,
     step: @field.step,
-    style: @field.get_html(:style, view: view, element: :input),
     autocomplete: @field.autocomplete
-  %>
+  })%>
 <% end %>

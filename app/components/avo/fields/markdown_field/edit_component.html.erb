@@ -1,16 +1,14 @@
 <%= field_wrapper **field_wrapper_args, full_width: true do %>
   <div data-controller="easy-mde">
-    <%= @form.text_area @field.id,
-      value: @field.value,
+    <%= @form.text_area @field.id, **field_input_args.merge({
       class: classes("w-full js-has-easy-mde-editor"),
       data: {
-        view: view,
-        'easy-mde-target': 'element',
-        'component-options': @field.options.to_json,
+      view: view,
+      'easy-mde-target': 'element',
+      'component-options': @field.options.to_json,
       },
       disabled: disabled?,
-      placeholder: @field.placeholder,
-      style: @field.get_html(:style, view: view, element: :input)
-    %>
+      placeholder: @field.placeholder
+    })%>
   </div>
 <% end %>
