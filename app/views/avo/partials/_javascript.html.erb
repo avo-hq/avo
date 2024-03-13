@@ -1,13 +1,13 @@
 <%= javascript_tag nonce: true do %>
-  window.Avo = window.Avo || { configuration: {} }
-  Avo.configuration.timezone = '<%= Avo.configuration.timezone %>'
-  Avo.configuration.root_path = '<%= root_path_without_url %>'
-  Avo.configuration.search_debounce = '<%= Avo.configuration.search_debounce %>'
-  Avo.configuration.cookies_key = '<%= Avo::COOKIES_KEY %>'
-  Avo.configuration.preserve_sidebar_scroll = '<%= ::Avo.configuration.feature_enabled?(:preserve_sidebar_scroll) %>'
-  Avo.configuration.focus_sidebar_menu_item = '<%= ::Avo.configuration.feature_enabled?(:focus_sidebar_menu_item) %>'
+  window.AvoConfiguration = window.AvoConfiguration || {}
+  AvoConfiguration.timezone = '<%= Avo.configuration.timezone %>'
+  AvoConfiguration.root_path = '<%= root_path_without_url %>'
+  AvoConfiguration.search_debounce = '<%= Avo.configuration.search_debounce %>'
+  AvoConfiguration.cookies_key = '<%= Avo::COOKIES_KEY %>'
+  AvoConfiguration.preserve_sidebar_scroll = '<%= ::Avo.configuration.feature_enabled?(:preserve_sidebar_scroll) %>'
+  AvoConfiguration.focus_sidebar_menu_item = '<%= ::Avo.configuration.feature_enabled?(:focus_sidebar_menu_item) %>'
   <% if Avo.avo_dynamic_filters_installed? %>
-  Avo.configuration.avo_filters = {
+  AvoConfiguration.avo_filters = {
     param_key: '<%= Avo::DynamicFilters.configuration.param_key %>'
   }
   <% end %>

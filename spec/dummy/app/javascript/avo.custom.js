@@ -9,8 +9,10 @@ const application = Application.start()
 
 // Configure Stimulus development experience
 application.debug = window?.localStorage.getItem('avo.debug')
-application.register('city-in-country', CityInCountryController)
-application.register('nested-form', NestedForm)
+window.Avo.registerController('city-in-country', CityInCountryController)
+window.Avo.registerController('nested-form', NestedForm)
+
+// window.Avo
 
 // eslint-disable-next-line no-console
 console.log('Hi from Avo custom JS 👋')

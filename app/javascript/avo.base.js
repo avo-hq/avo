@@ -9,19 +9,17 @@ import * as Mousetrap from 'mousetrap'
 import { Turbo } from '@hotwired/turbo-rails'
 import tippy from 'tippy.js'
 
-import { LocalStorageService } from './js/local-storage-service'
+import './js/avo'
 
 import './js/active-storage'
 import './js/controllers'
 import './js/custom-stream-actions'
 
-window.Avo.localStorage = new LocalStorageService()
-
 window.Turbolinks = Turbo
 
 let scrollTop = null
 Mousetrap.bind('r r r', () => {
-  // Cpture scroll position
+  // Capture scroll position
   scrollTop = document.scrollingElement.scrollTop
 
   Turbo.visit(window.location.href, { action: 'replace' })
@@ -94,16 +92,3 @@ document.addEventListener('turbo:submit-end', () => document.body.classList.remo
 document.addEventListener('turbo:before-cache', () => {
   document.querySelectorAll('[data-turbo-remove-before-cache]').forEach((element) => element.remove())
 })
-
-window.Avo = window.Avo || { configuration: {} }
-
-window.Avo.menus = {
-  resetCollapsedState() {
-    Array.from(document.querySelectorAll('[data-menu-key-param]'))
-      .map((i) => i.getAttribute('data-menu-key-param'))
-      .filter(Boolean)
-      .forEach((key) => {
-        window.localStorage.removeItem(key)
-      })
-  },
-}
