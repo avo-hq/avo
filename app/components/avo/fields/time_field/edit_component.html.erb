@@ -12,7 +12,7 @@
       date_field_field_type_value: "time",
       date_field_picker_options_value: @field.picker_options,
   } do %>
-    <%= @form.text_field @field.id,
+    <%= @form.text_field @field.id, **field_input_args.merge({
       value: @field.edit_formatted_value,
       class: classes("w-full #{"hidden" unless params[:avo_show_hidden_inputs]}"),
       data: {
@@ -20,10 +20,8 @@
         placeholder: @field.placeholder,
         **@field.get_html(:data, view: view, element: :input)
       },
-      disabled: disabled?,
-      placeholder: @field.placeholder,
-      style: @field.get_html(:style, view: view, element: :input)
-    %>
+      placeholder: @field.placeholder
+    })%>
     <%= datetime_field "fake_#{@field.id}", "fake",
       value: @field.edit_formatted_value,
       class: classes("w-full"),

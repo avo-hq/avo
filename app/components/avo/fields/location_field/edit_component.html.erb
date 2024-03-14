@@ -15,10 +15,9 @@
     <% end %>
     </div>
   <% else %>
-    <%= @form.text_field @field.id,
-      value: @field.value,
+    <%= @form.text_field @field.id, **field_input_args.merge({
       class: classes("w-full"),
       placeholder: @field.placeholder
-    %>
+    })%>
   <% end %>
 <% end %>
