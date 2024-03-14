@@ -195,11 +195,9 @@ module Avo
       #       product:
       #         save: "Save product"
       def name_from_translation_key(count:, default:)
-        begin
-          t(translation_key, count:, default:).humanize
-        rescue I18n::InvalidPluralizationData
-          default
-        end
+        t(translation_key, count:, default:).humanize
+      rescue I18n::InvalidPluralizationData
+        default
       end
 
       def underscore_name
