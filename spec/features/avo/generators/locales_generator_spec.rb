@@ -3,8 +3,11 @@ require "rails/generators"
 
 RSpec.feature "locales generator", type: :feature do
   it "generates the files" do
-    # Don't use en locale and don't override it, for testing purposes
-    locales = %w[fr nn nb pt-BR pt ro tr ar ja es]
+    # Backup the en locale
+    en_locale_backup = Rails.root.join("config", "locales", "avo.en.yml.bak")
+    FileUtils.cp(Rails.root.join("config", "locales", "avo.en.yml"), en_locale_backup)
+
+    locales = %w[en fr nn nb pt-BR pt ro tr ar ja es]
 
     files = locales.map do |locale|
       Rails.root.join("config", "locales", "avo.#{locale}.yml").to_s
@@ -17,5 +20,8 @@ RSpec.feature "locales generator", type: :feature do
     Rails::Generators.invoke("avo:locales", ["-q"], {destination_root: Rails.root})
 
     check_files_and_clean_up files
+
+    # Restore the en locale
+    FileUtils.mv(en_locale_backup, Rails.root.join("config", "locales", "avo.en.yml"))
   end
 end
