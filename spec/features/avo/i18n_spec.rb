@@ -18,7 +18,7 @@ RSpec.feature "i18n", type: :feature do
     it "have custom text" do
       visit avo.new_resources_product_path
 
-      expect(page).to have_button('Save the product!')
+      expect(page).to have_button("Save the product!")
     end
   end
 end
