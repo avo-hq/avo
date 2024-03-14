@@ -177,24 +177,27 @@ module Avo
       end
 
       def name
-        default = class_name.underscore.humanize
-
-        if translation_key
-          t(translation_key, count: 1, default: default).humanize
-        else
-          default
-        end
+        name_from_translation_key(count: 1, default: class_name.underscore.humanize)
       end
       alias_method :singular_name, :name
 
       def plural_name
-        default = name.pluralize
+        name_from_translation_key(count: 2, default: name.pluralize)
+      end
 
-        if translation_key
-          t(translation_key, count: 2, default: default).humanize
-        else
-          default
-        end
+      # Get the name from the translation_key and fallback to default
+      # It can raise I18n::InvalidPluralizationData when using only resource_translation without pluralization keys like: one, two or other key
+      # Example:
+      # ---
+      # en:
+      #   avo:
+      #     resource_translations:
+      #       product:
+      #         save: "Save product"
+      def name_from_translation_key(count:, default:)
+        t(translation_key, count:, default:).humanize
+      rescue I18n::InvalidPluralizationData
+        default
       end
 
       def underscore_name
