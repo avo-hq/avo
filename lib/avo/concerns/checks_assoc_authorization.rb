@@ -3,6 +3,7 @@ module Avo
     module ChecksAssocAuthorization
       extend ActiveSupport::Concern
 
+      # Ex: A Post has many Comments
       def authorize_association_for(policy_method)
         policy_result = true
 
