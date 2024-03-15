@@ -2,7 +2,6 @@
 
 class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   include Avo::ApplicationHelper
-  include Avo::Concerns::CanReorderItems
 
   def initialize(resource: nil, reflection: nil, parent_record: nil, parent_resource: nil, view_type: :table, actions: nil)
     @resource = resource
@@ -162,7 +161,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   end
 
   def render_order_controls(control)
-    if can_reorder?
+    if try(:can_reorder?)
       render Avo::Pro::Ordering::ButtonsComponent.new resource: @resource, reflection: @reflection, view_type: @view_type
     end
   end

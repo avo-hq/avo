@@ -4,7 +4,7 @@
   <%== item_selector_init @resource %>
   data-resource-name="<%= @resource.class.to_s %>"
   data-record-id="<%= @resource.record.id %>"
-  <%= drag_reorder_item_attributes %>
+  <%= try :drag_reorder_item_attributes %>
 >
   <%= content_tag :div,
     class: "relative w-full pb-3/4 rounded-t overflow-hidden #{html(:cover, :classes)}",

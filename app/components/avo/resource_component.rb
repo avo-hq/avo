@@ -1,4 +1,6 @@
 class Avo::ResourceComponent < Avo::BaseComponent
+  include Avo::Concerns::ChecksAssocAuthorization
+
   attr_reader :fields_by_panel
   attr_reader :has_one_panels
   attr_reader :has_many_panels
@@ -6,8 +8,6 @@ class Avo::ResourceComponent < Avo::BaseComponent
   attr_reader :resource_tools
   attr_reader :resource
   attr_reader :view
-
-  include Avo::Concerns::ChecksAssocAuthorization
 
   def can_create?
     return authorize_association_for(:create) if @reflection.present?
