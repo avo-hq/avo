@@ -51,7 +51,7 @@ class Avo::Fields::EditComponent < ViewComponent::Base
 
   def field_input_args
     {
-      value: @field.value,
+      value: @field.try(:value),
       checked: @field.value,
       disabled: disabled?,
       autofocus: true,

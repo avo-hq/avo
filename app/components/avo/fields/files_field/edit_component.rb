@@ -5,12 +5,13 @@ class Avo::Fields::FilesField::EditComponent < Avo::Fields::EditComponent
   def field_input_args
     super.merge(
       {
+        value: nil, # hack to exclud value for this  component
         accept: @field.accept,
         direct_upload: @field.direct_upload,
         disabled: disabled?,
         multiple: true,
         class: "w-full"
       }
-    )
+    ).compact
   end
 end
