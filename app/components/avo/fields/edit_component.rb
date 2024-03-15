@@ -54,7 +54,6 @@ class Avo::Fields::EditComponent < ViewComponent::Base
       value: @field.try(:value),
       checked: @field.value,
       disabled: disabled?,
-      autofocus: true,
       placeholder: @field.try(:placeholder),
       data: @field.get_html(:data, view: view, element: :input),
       style: @field.get_html(:style, view: view, element: :input)
