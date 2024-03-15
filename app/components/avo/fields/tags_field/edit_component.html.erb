@@ -22,14 +22,12 @@
       value: ''
     %>
     <%# real field %>
-    <%= @form.text_field @field.id,
+    <%= @form.text_field @field.id, **field_input_args.merge({
       class: classes("hidden w-full border-primary-500 focus-within:border-primary-500"),
       data: {
         tags_field_target: :input,
       },
-      disabled: disabled?,
       placeholder: @field.placeholder,
-      style: @field.get_html(:style, view: view, element: :input),
       value: @field.field_value.to_json
-    %>
+    })%>
 <% end %>
