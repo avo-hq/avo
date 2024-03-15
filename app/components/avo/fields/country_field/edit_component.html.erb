@@ -8,7 +8,6 @@
       placeholder: @field.placeholder
       },
       class: classes("w-full"),
-      placeholder: @field.include_blank.present? ? nil : @field.placeholder,
-      autocomplete: @field.autocomplete
+      placeholder: @field.include_blank.present? ? nil : @field.placeholder
     })%>
 <% end %>

@@ -65,14 +65,6 @@
       <% end %>
     <% end %>
 
-    <%= @form.text_area @field.id, **field_input_args.merge({
-      class: classes("w-full hidden"),
-      data: {
-        tiptap_field_target: "input",
-        **@field.get_html(:data, view: view, element: :input)
-      },
-      id: tiptap_id,
-      placeholder: @field.placeholder
-    })%>
+    <%= @form.text_area @field.id, **field_input_args %>
   <% end %>
 <% end %>

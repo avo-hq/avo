@@ -6,12 +6,7 @@
   <% end %>
 
   <% if can_upload_file? %>
-    <%= @form.file_field @field.id, **field_input_args.merge({
-      accept: @field.accept,
-      direct_upload: @field.direct_upload,
-      disabled: disabled?,
-      class: "w-full"
-    })%>
+    <%= @form.file_field @field.id, **field_input_args %>
   <% else %>
     —
   <% end %>

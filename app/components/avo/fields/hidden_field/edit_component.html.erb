@@ -1,4 +1,1 @@
-<%= @form.hidden_field @field.id, **field_input_args.merge({
-  class: @field.get_html(:classes, view: view, element: :input),
-  data: @field.get_html(:data, view: view, element: :input),
-})%>
+<%= @form.hidden_field @field.id, **field_input_args %>

@@ -1,14 +1,5 @@
 <%= field_wrapper **field_wrapper_args, full_width: true do %>
   <div data-controller="easy-mde">
-    <%= @form.text_area @field.id, **field_input_args.merge({
-      class: classes("w-full js-has-easy-mde-editor"),
-      data: {
-      view: view,
-      'easy-mde-target': 'element',
-      'component-options': @field.options.to_json,
-      },
-      disabled: disabled?,
-      placeholder: @field.placeholder
-    })%>
+    <%= @form.text_area @field.id, **field_input_args %>
   </div>
 <% end %>

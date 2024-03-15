@@ -1,6 +1,3 @@
 <%= field_wrapper **field_wrapper_args do %>
-  <%= @form.text_field field.id, **field_input_args.merge({
-    value: field.value.to_s,
-    class: classes("w-full")
-  }) %>
+  <%= @form.text_field field.id, **field_input_args %>
 <% end %>

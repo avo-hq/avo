@@ -22,10 +22,6 @@
       placeholder: @field.placeholder do %>
       <%= sanitize @field.value.to_s %>
     <% end %>
-    <%= @form.text_area @field.id, **field_input_args.merge({
-      class: classes("w-full hidden"),
-      id: trix_id,
-      placeholder: @field.placeholder
-    })%>
+    <%= @form.text_area @field.id, **field_input_args %>
   <% end %>
 <% end %>

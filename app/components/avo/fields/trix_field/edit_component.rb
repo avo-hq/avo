@@ -26,4 +26,13 @@ class Avo::Fields::TrixField::EditComponent < Avo::Fields::EditComponent
       "trix_#{form.index}_#{@field.id}"
     end
   end
+
+  def field_input_args
+    super.merge(
+      {
+        class: classes("w-full hidden"),
+        id: trix_id
+      }
+    )
+  end
 end

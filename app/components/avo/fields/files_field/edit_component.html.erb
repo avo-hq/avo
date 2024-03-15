@@ -3,13 +3,7 @@
 
   <% if can_upload_file? %>
     <div class="mt-2">
-      <%= @form.file_field @field.id, **field_input_args.merge({
-        accept: @field.accept,
-        direct_upload: @field.direct_upload,
-        disabled: disabled?,
-        multiple: true,
-        class: "w-full"
-      })%>
+      <%= @form.file_field @field.id, **field_input_args %>
     </div>
   <% else %>
     —
