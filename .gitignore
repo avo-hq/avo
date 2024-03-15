@@ -70,7 +70,6 @@ coverage/
 
 avo*.gem
 
-app/assets/builds
 
 TAGS
 brakeman_results.html
