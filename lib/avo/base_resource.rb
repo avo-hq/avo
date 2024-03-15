@@ -451,14 +451,14 @@ module Avo
     def file_hash
       content_to_be_hashed = ""
 
-      # resource file hash
-      resource_path = Rails.root.join("app", "avo", "resources", "#{self.class.name.underscore}.rb").to_s
+      file_name = self.class.underscore_name.tr(" ", "_")
+      resource_path = Rails.root.join("app", "avo", "resources", "#{file_name}.rb").to_s
       if File.file? resource_path
         content_to_be_hashed += File.read(resource_path)
       end
 
       # policy file hash
-      policy_path = Rails.root.join("app", "policies", "#{self.class.name.underscore.gsub("_resource", "")}_policy.rb").to_s
+      policy_path = Rails.root.join("app", "policies", "#{file_name.gsub("_resource", "")}_policy.rb").to_s
       if File.file? policy_path
         content_to_be_hashed += File.read(policy_path)
       end
