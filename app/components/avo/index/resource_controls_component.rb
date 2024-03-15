@@ -161,7 +161,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   end
 
   def render_order_controls(control)
-    if can_reorder?
+    if try(:can_reorder?)
       render Avo::Pro::Ordering::ButtonsComponent.new resource: @resource, reflection: @reflection, view_type: @view_type
     end
   end
