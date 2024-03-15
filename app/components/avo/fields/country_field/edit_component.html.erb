@@ -3,11 +3,5 @@
       value: @field.value,
       selected: @field.value,
       include_blank: @field.include_blank
-    }, **field_input_args.merge({
-      aria: {
-      placeholder: @field.placeholder
-      },
-      class: classes("w-full"),
-      placeholder: @field.include_blank.present? ? nil : @field.placeholder
-    })%>
+    }, **field_input_args %>
 <% end %>
