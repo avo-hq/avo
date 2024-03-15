@@ -2,7 +2,6 @@
 
 class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   include Avo::ApplicationHelper
-  include Avo::Concerns::CanReorderItems
 
   def initialize(resource: nil, reflection: nil, parent_record: nil, parent_resource: nil, view_type: :table, actions: nil)
     @resource = resource
@@ -30,6 +29,14 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
 
     # Even if there's a @reflection object present, for show we're going to fallback to the original policy.
     @resource.authorization.authorize_action(:show, raise_exception: false)
+  end
+
+  def can_reorder?
+    return false unless Object.const_defined? "Avo::Pro::Ordering"
+
+    return authorize_association_for(:reorder) if @reflection.present?
+
+    @resource.authorization.authorize_action(:reorder, raise_exception: false)
   end
 
   def show_path

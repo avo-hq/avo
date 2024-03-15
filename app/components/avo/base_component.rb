@@ -2,6 +2,7 @@
 
 class Avo::BaseComponent < ViewComponent::Base
   include Turbo::FramesHelper
+  include Avo::Concerns::CanReorderItems
 
   def has_with_trial(ability)
     Avo.license.has_with_trial(ability)
