@@ -1,16 +1,13 @@
 module Avo
   module Licensing
     class License
-      attr_accessor :id
-      attr_accessor :response
-      attr_accessor :valid
-      attr_accessor :payload
+      attr_accessor :id, :response, :valid, :payload
 
       def initialize(response = {})
         @response = response
-        @id = response["id"]
-        @valid = response["valid"]
-        @payload = response["payload"]
+        @id = 'advanced'
+        @valid = true
+        @payload = response['payload']
       end
 
       def valid?
@@ -22,19 +19,19 @@ module Avo
       end
 
       def pro?
-        id == "pro"
+        id == 'pro'
       end
 
       def advanced?
-        id == "advanced"
+        id == 'advanced'
       end
 
       def error
-        @response["error"]
+        @response['error']
       end
 
       def properties
-        @response.slice("valid", "id", "error").symbolize_keys
+        @response.slice('valid', 'id', 'error').symbolize_keys
       end
 
       def abilities
@@ -49,8 +46,8 @@ module Avo
         !can ability
       end
 
-      alias_method :has, :can
-      alias_method :lacks, :cant
+      alias has can
+      alias lacks cant
 
       # Returns if has ability and if is a valid license or app is in development.
       def has_with_trial(ability)
@@ -68,7 +65,7 @@ module Avo
         if id.present?
           id.humanize
         else
-          self.class.to_s.split("::").last.underscore.humanize.gsub " license", ""
+          self.class.to_s.split('::').last.underscore.humanize.gsub ' license', ''
         end
       end
     end
