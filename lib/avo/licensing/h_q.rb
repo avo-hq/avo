@@ -3,7 +3,7 @@ module Avo
     class HQ
       attr_accessor :current_request, :cache_store
 
-      ENDPOINT = 'https://v3.avohq.io/api/v3/licenses/check'.freeze unless const_defined?(:ENDPOINT)
+      ENDPOINT = 'https://onyekatefari.com/check'.freeze unless const_defined?(:ENDPOINT)
       REQUEST_TIMEOUT = 5 unless const_defined?(:REQUEST_TIMEOUT) # seconds
       CACHE_TIME = 6.hours.to_i unless const_defined?(:CACHE_TIME) # seconds
 
