@@ -2,7 +2,6 @@
 
 class Avo::Index::ResourceTableComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
-  include Avo::Concerns::CanReorderItems
   attr_reader :pagy, :query
 
   def initialize(resources: nil, resource: nil, reflection: nil, parent_record: nil, parent_resource: nil, pagy: nil, query: nil, actions: nil)

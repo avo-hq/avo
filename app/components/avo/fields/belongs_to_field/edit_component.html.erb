@@ -70,7 +70,7 @@
           <% if field.can_create? %>
             <% create_href = create_path(Avo.resource_manager.get_resource_by_model_class(type.to_s)) %>
             <% if !disabled && create_href.present? %>
-              <%= link_to t("avo.create_new_item", item: type.to_s.downcase),
+              <%= link_to t("avo.create_new_item", item: type.model_name.human.downcase),
                     create_href,
                     class: "text-sm",
                     data: {
