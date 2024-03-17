@@ -133,6 +133,10 @@ module Avo
       ["frame", resource.model_name.singular, resource.record.id].compact.join("-")
     end
 
+    def chart_color(index)
+      Avo.configuration.branding.chart_colors[index % Avo.configuration.branding.chart_colors.length]
+    end
+
     private
 
     # Taken from the original library

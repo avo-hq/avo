@@ -136,7 +136,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   def authorized_to_search?
     # Hide the search if the authorization prevents it
     return true unless resource.authorization.respond_to?(:has_action_method?)
-    return true unless resource.authorization.has_action_method?("search")
+    return false unless resource.authorization.has_action_method?("search")
 
     resource.authorization.authorize_action("search", raise_exception: false)
   end

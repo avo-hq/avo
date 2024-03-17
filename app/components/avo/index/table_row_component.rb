@@ -2,7 +2,6 @@
 
 class Avo::Index::TableRowComponent < Avo::BaseComponent
   include Avo::ResourcesHelper
-  include Avo::Concerns::CanReorderItems
 
   def initialize(resource: nil, reflection: nil, parent_record: nil, parent_resource: nil, actions: nil)
     @resource = resource
