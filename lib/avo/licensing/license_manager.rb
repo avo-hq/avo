@@ -2,7 +2,7 @@ module Avo
   module Licensing
     class LicenseManager
       def initialize(_hq_response)
-        @hq_response = _hq_response
+        @hq_response = []
         @hq_response['id'] = 'advanced'
       end
 
