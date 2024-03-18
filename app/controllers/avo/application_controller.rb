@@ -162,10 +162,12 @@ module Avo
     end
 
     # Force actions to have specific view
-    VIEW_ACTION_MAPPING = {
-      update: :edit,
-      create: :new
-    } unless defined? VIEW_ACTION_MAPPING
+    unless defined? VIEW_ACTION_MAPPING
+      VIEW_ACTION_MAPPING = {
+        update: :edit,
+        create: :new
+      }
+    end
 
     def set_view
       @view = Avo::ViewInquirer.new(VIEW_ACTION_MAPPING[action_name.to_sym] || action_name)
