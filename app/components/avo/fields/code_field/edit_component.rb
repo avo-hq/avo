@@ -4,6 +4,7 @@ class Avo::Fields::CodeField::EditComponent < Avo::Fields::EditComponent
   def field_input_args
     super.merge(
       {
+        class: classes("w-full"),
         data: {
           "code-field-target": "element",
           view: view,
