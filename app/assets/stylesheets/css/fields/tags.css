@@ -10,7 +10,7 @@ tags.tagify {
 }
 
 tags.tagify {
-  @apply !p-1 !gap-1 !border-gray-200;
+  @apply !ml-0 !gap-1 !border-gray-200;
 
   &.tagify--focus {
     @apply !border-gray-600;
@@ -22,10 +22,5 @@ tags.tagify {
 }
 
 tag.tagify__tag {
-  @apply text-sm !m-0;
-}
-
-/* When the tags field is used to select just one value there's a weird ZeroWidthSpace (\u200B) character that breaks the vertical spacing. */
-[data-tags-field-mode-value="select"] tags.tagify {
-  height: 40px;
+  @apply text-sm !ml-0;
 }
