@@ -1,4 +1,4 @@
-<div class="space-x-2 flex flex-row [&>*:first-child]:pl-2 [&>*:last-child]:pr-2">
+<div class="space-x-2 flex flex-row justify-between">
   <% @resource.render_row_controls(item: singular_resource_name).each do |control| %>
     <%= render_control control %>
   <% end %>
