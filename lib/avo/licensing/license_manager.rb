@@ -2,7 +2,8 @@ module Avo
   module Licensing
     class LicenseManager
       def initialize(_hq_response)
-        @hq_response = [id: 'advanced', valid: true]
+        @hq_response = [%w[id advanced], ['valid', true]].to_h
+
         # @hq_response['id'] = 'advanced'
       end
 
