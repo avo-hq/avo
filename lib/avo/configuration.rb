@@ -7,6 +7,7 @@ module Avo
     attr_writer :root_path
     attr_writer :cache_store
     attr_writer :logger
+    attr_writer :turbo
     attr_accessor :timezone
     attr_accessor :per_page
     attr_accessor :per_page_steps
@@ -46,7 +47,7 @@ module Avo
     attr_accessor :prefix_path
     attr_accessor :resource_parent_controller
     attr_accessor :mount_avo_engines
-    attr_accessor :extend_controllers_with
+    attr_accessor :default_url_options
 
     def initialize
       @root_path = "/avo"
@@ -98,9 +99,10 @@ module Avo
       @resources = nil
       @resource_parent_controller = "Avo::ResourcesController"
       @mount_avo_engines = true
-      @extend_controllers_with = []
       @cache_store = computed_cache_store
       @logger = default_logger
+      @turbo = default_turbo
+      @default_url_options = []
     end
 
     def current_user_method(&block)
@@ -215,6 +217,18 @@ module Avo
 
         file_logger
       }
+    end
+
+    def turbo
+      Avo::ExecutionContext.new(target: @turbo).handle
+    end
+
+    def default_turbo
+      -> do
+        {
+          instant_click: true
+        }
+      end
     end
   end
 

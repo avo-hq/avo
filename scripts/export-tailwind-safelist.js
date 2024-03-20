@@ -41,7 +41,17 @@ ignoredDynamicClasses.push(
   'font-sans',
   'font-serif',
   'font-mono',
+  // avo-pro drag and drop feature:
+  '!bg-gray-100',
+  'opacity-50',
+  'select-none',
 )
+
+// Add the backgrounds colors that are used by the charts
+const chartColors = ['#0B8AE2', '#34C683', '#FFBE4F', '#FF7676', '#2AB1EE', '#34C6A8', '#EC8CFF', '#80FF91', '#FFFC38', '#1BDBE8']
+chartColors.forEach((color) => {
+  ignoredDynamicClasses.push(`bg-[${color}]`)
+})
 
 const content = `# This file was auto-generated using the \`yarn export:tailwind-safelist\` command in \`export-tailwind-safelist.js\`\n${ignoredDynamicClasses.flat().join(' ')}`
 

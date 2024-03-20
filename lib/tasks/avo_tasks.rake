@@ -1,6 +1,14 @@
 desc "Runs the update command for all Avo gems."
 task "avo:update" do
-  system "bundle update avo avo-pro avo-advanced avo-dashboards avo_filters avo-menu"
+  gems = Gem::Specification.map { |gem| gem.name }
+
+  @license ||= if gems.include?("avo-advanced")
+    system "bundle update avo avo-advanced"
+  elsif gems.include?("avo-pro")
+    system "bundle update avo avo-pro"
+  elsif gems.include?("avo")
+    system "bundle update avo"
+  end
 end
 
 desc "Installs Avo assets and bundles them for when you want to use the GitHub repo in your app"
