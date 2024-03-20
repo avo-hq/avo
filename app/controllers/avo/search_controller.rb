@@ -123,7 +123,9 @@ module Avo
     end
 
     def fetch_result_information(record, resource, item)
-      highlighted_title = highlight(item&.dig(:title) || resource.record_title&.to_s, params[:q])
+      title = item&.dig(:title) || resource.record_title
+      highlighted_title = highlight(title&.to_s, params[:q])
+
       {
         _id: record.id,
         _label: highlighted_title,
