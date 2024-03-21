@@ -43,8 +43,10 @@ module Avo
       end
 
       def utc_time(value)
-        if timezone.present?
-          ActiveSupport::TimeZone.new(timezone).local_to_utc(Time.parse(value))
+        time = Time.parse(value)
+
+        if timezone.present? && !time.utc?
+          ActiveSupport::TimeZone.new(timezone).local_to_utc(time)
         else
           value
         end
