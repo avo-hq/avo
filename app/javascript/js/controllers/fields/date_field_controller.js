@@ -204,7 +204,7 @@ export default class extends Controller {
       return
     }
 
-    let timezonedDate = DateTime.fromISO(selectedDates[0].toISOString())
+    const timezonedDate = DateTime.fromISO(selectedDates[0].toISOString())
       .setZone(this.displayTimezone, { keepLocalTime: true })
       .setZone('UTC', { keepLocalTime: !this.relativeValue })
 
