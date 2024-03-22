@@ -79,4 +79,9 @@ class Avo::ActionsComponent < ViewComponent::Base
         }.compact
       ).to_s
   end
+
+  def icon(action)
+    icon_class = action.arguments[:icon].present? ? action.arguments[:icon] : "play"
+    svg icon_class, class: "h-5 mr-1 inline pointer-events-none"
+  end
 end

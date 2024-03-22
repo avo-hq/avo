@@ -65,10 +65,10 @@ class Avo::Resources::User < Avo::BaseResource
   end
 
   def actions
-    action Avo::Actions::ToggleInactive
+    action Avo::Actions::ToggleInactive, arguments: {icon: "heroicons/outline/globe"}
     action Avo::Actions::ToggleAdmin
     action Avo::Actions::Sub::DummyAction
-    action Avo::Actions::DownloadFile
+    action Avo::Actions::DownloadFile, arguments: {icon: "heroicons/outline/arrow-left"}
     action Avo::Actions::Test::NoConfirmationRedirect
     action Avo::Actions::Test::CloseModal
   end
