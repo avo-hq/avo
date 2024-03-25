@@ -245,9 +245,14 @@ module Avo
       end
 
       # Add the errors from the record
-      @errors = @record.errors.full_messages.reject { |error| exception_message.include? error }.unshift exception_message
+      @errors = @record.errors.full_messages
 
-      succeeded
+      # Remove duplicated errors
+      if exception_message.present?
+        @errors = @errors.reject { |error| exception_message.include? error }.unshift exception_message
+      end
+
+      @errors.any? ? false : succeeded
     end
 
     def model_params
