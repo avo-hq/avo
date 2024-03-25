@@ -9,7 +9,7 @@ module Avo
     before_action :set_resource, only: :show
 
     def show
-            render json: search_resources([resource])
+      render json: search_resources([resource])
     rescue => error
       render_search_error(error)
     end
