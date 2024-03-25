@@ -43,7 +43,7 @@ class Avo::Resources::Product < Avo::BaseResource
     }
     field :description, as: :tiptap, placeholder: "Enter text", always_show: false
     field :image, as: :file, is_image: true
-    field :price, as: :number
+    field :price, as: :money, currencies: %w[CHF EUR USD RON SVC], disabled: false
     field :category, as: :select, enum: ::Product.categories
   end
 end
