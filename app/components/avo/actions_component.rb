@@ -81,6 +81,23 @@ class Avo::ActionsComponent < ViewComponent::Base
   end
 
   def icon(action)
-    svg action.arguments[:icon] || "play", class: "h-5 mr-1 inline pointer-events-none"
+    svg action.icon || "play", class: "h-5 mr-1 inline pointer-events-none"
+  end
+
+  def render_entity(action)
+    link_to action_path(action),
+      data: {
+        action_name: action.action_name,
+        "turbo-frame": Avo::ACTIONS_TURBO_FRAME_ID,
+        action: "click->actions-picker#visitAction",
+        "actions-picker-target": action.standalone ? "standaloneAction" : "resourceAction",
+        disabled: is_disabled?(action),
+        # for some reason InstantClick fetches the URL even if it's prefetched.
+        turbo_prefetch: false,
+      },
+      title: action.action_name,
+      class: "flex items-center px-4 py-3 w-full font-semibold text-sm hover:bg-primary-100 #{is_disabled?(action) ? "text-gray-500" : "text-black"}" do
+      raw("#{icon(action)} #{action.action_name}")
+    end
   end
 end

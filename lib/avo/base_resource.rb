@@ -310,8 +310,8 @@ module Avo
       end
 
       # def action / def filter / def scope
-      define_method entity do |entity_class, arguments: {}|
-        entity_loader(entity).use({class: entity_class, arguments: arguments})
+      define_method entity do |entity_class, arguments: {}, icon: nil|
+        entity_loader(entity).use({class: entity_class, arguments: arguments, icon: icon})
       end
 
       # def get_actions / def get_filters / def get_scopes
