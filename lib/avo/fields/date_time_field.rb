@@ -56,7 +56,7 @@ module Avo
         timezone = Avo::ExecutionContext.new(target: @timezone, record: resource.record, resource: resource, view: view).handle
 
         # Fix for https://github.com/moment/luxon/issues/1358#issuecomment-2017477897
-        return "Etc/UTC" if timezone.downcase == "utc" && view.form?
+        return "Etc/UTC" if timezone&.downcase == "utc" && view.form?
 
         timezone
       end
