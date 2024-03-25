@@ -68,7 +68,6 @@ RSpec.describe "timezone", type: :system do
     end
   end
 
-
   describe "On Romania (EET) with UTC timezone configured", tz: "Europe/Bucharest" do
     before do
       Avo::Resources::Project.with_temporary_items do
