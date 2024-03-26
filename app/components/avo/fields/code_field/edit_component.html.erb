@@ -1,22 +1,5 @@
 <%= field_wrapper **field_wrapper_args, full_width: true do %>
   <div data-controller="code-field">
-    <%= @form.text_area @field.id,
-      value: @field.value,
-      class: classes("w-full"),
-      data: {
-        'code-field-target': 'element',
-        view: view,
-        language: @field.language,
-        theme: @field.theme,
-        'tab-size': @field.tab_size,
-        'read-only': disabled?,
-        'indent-with-tabs': @field.indent_with_tabs,
-        'line-wrapping': @field.line_wrapping,
-        **@field.get_html(:data, view: view, element: :input),
-      },
-      disabled: disabled?,
-      placeholder: @field.placeholder,
-      style: @field.get_html(:style, view: view, element: :input)
-    %>
+    <%= @form.text_area @field.id, **field_input_args %>
   </div>
 <% end %>

@@ -48,4 +48,15 @@ class Avo::Fields::EditComponent < ViewComponent::Base
   def disabled?
     field.is_readonly? || field.is_disabled?
   end
+
+  def field_input_args
+    {
+      value: @field.try(:value),
+      checked: @field.value,
+      disabled: disabled?,
+      placeholder: @field.try(:placeholder),
+      data: @field.get_html(:data, view: view, element: :input),
+      style: @field.get_html(:style, view: view, element: :input)
+    }.compact
+  end
 end

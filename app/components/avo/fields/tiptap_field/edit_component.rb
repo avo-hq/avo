@@ -26,4 +26,17 @@ class Avo::Fields::TiptapField::EditComponent < Avo::Fields::EditComponent
       "tiptap_#{form.index}_#{@field.id}"
     end
   end
+
+  def field_input_args
+    super.merge(
+      {
+        class: classes("w-full hidden"),
+        data: {
+          tiptap_field_target: "input",
+          **@field.get_html(:data, view: view, element: :input)
+        },
+        id: tiptap_id
+      }
+    )
+  end
 end
