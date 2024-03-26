@@ -129,8 +129,8 @@ export default class extends Controller {
     const day = date.toISOString().slice(0, 10)
     const name = `${date.getTime()}-${  file.name}`
     
-return ['tmp', day, name].join('/')
     return ['tmp', day, name].join('/')
+  }
 
   createFormData(file) {
     const data = new FormData()
