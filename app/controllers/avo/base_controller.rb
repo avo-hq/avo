@@ -250,7 +250,7 @@ module Avo
       # Remove duplicated errors
       if exception_message.present?
         @errors = @errors.reject { |error| exception_message.include? error }.unshift exception_message
-end
+      end
 
       @errors.any? ? false : succeeded
     end
