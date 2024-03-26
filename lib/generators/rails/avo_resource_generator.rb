@@ -4,7 +4,7 @@ module Rails
   module Generators
     class AvoResourceGenerator < ::Rails::Generators::Base
       def invoke_avo_command
-        invoke "avo:resource", @args, {from_model_generator: true}
+        invoke "avo:resource", @args, {from_model_generator: true}.merge(options)
       end
     end
   end
