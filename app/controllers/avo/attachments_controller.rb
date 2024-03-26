@@ -17,7 +17,7 @@ module Avo
       elsif params[:key].blank?
         raise ActionController::BadRequest.new("Could not find the attachment association for #{params[:attachment_key]} (check the `attachment_key` for this Trix field)")
       end
-      
+
       render json: {
         url: main_app.url_for(blob),
         href: main_app.url_for(blob)

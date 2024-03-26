@@ -7,6 +7,7 @@ import { castBoolean } from '../../helpers/cast_boolean'
 
 export default class extends Controller {
   static targets = ['editor', 'controller']
+
   static values = {
     resourceName: String,
     resourceId: String,
@@ -124,10 +125,10 @@ export default class extends Controller {
   }
 
   createStorageKey(file) {
-    var date = new Date()
-    var day = date.toISOString().slice(0,10)
-    var name = date.getTime() + "-" + file.name
-    return [ "tmp", day, name ].join("/")
+    const date = new Date()
+    const day = date.toISOString().slice(0, 10)
+    const name = date.getTime() + '-' + file.name
+    return ['tmp', day, name].join('/')
   }
 
   createFormData(file) {
@@ -136,7 +137,7 @@ export default class extends Controller {
     data.append('file', file)
     data.append('filename', file.name)
     if (!this.attachmentKeyValue) {
-      data.append("key", this.createStorageKey(file))
+      data.append('key', this.createStorageKey(file))
     } else {
       data.append('attachment_key', this.attachmentKeyValue)
     }
