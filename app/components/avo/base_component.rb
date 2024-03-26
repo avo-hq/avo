@@ -11,7 +11,8 @@ class Avo::BaseComponent < ViewComponent::Base
 
   # Use the @parent_resource to fetch the field using the @reflection name.
   def field
-    @parent_resource.get_field_definitions.find { |f| f.id == @reflection.name }
+    reflection_name = params[:related_name]&.to_sym || @reflection.name
+    @parent_resource.get_field_definitions.find { |f| f.id == reflection_name }
   rescue
     nil
   end
