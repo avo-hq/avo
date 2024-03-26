@@ -130,7 +130,7 @@ export default class extends Controller {
     const name = `${date.getTime()}-${  file.name}`
     
 return ['tmp', day, name].join('/')
-  }
+    return ['tmp', day, name].join('/')
 
   createFormData(file) {
     const data = new FormData()
