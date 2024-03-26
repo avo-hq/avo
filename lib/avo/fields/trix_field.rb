@@ -22,7 +22,7 @@ module Avo
       end
 
       # Identify if field is bonded to a rich text model attribute
-      def is_active_text?
+      def is_action_text?
         record&.send(id).is_a?(ActionText::RichText)
       end
 

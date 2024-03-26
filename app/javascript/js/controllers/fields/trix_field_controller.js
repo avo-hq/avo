@@ -16,7 +16,7 @@ export default class extends Controller {
     hideAttachmentFilename: Boolean,
     hideAttachmentFilesize: Boolean,
     hideAttachmentUrl: Boolean,
-    isActiveText: Boolean,
+    isActionText: Boolean,
   }
 
   get uploadUrl() {
@@ -58,7 +58,7 @@ export default class extends Controller {
 
         // Prevent file uploads for fields without an attachment key.
         // When is rich text, attachment key is not needed.
-        if (!this.isActiveTextValue && !this.attachmentKeyValue) {
+        if (!this.isActionTextValue && !this.attachmentKeyValue) {
           event.preventDefault()
           alert("You haven't set an `attachment_key` to this Trix field.")
         }

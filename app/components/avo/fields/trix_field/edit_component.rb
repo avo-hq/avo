@@ -28,7 +28,7 @@ class Avo::Fields::TrixField::EditComponent < Avo::Fields::EditComponent
       hide_attachment_filename: @field.hide_attachment_filename,
       hide_attachment_filesize: @field.hide_attachment_filesize,
       hide_attachment_url: @field.hide_attachment_url,
-      is_active_text: @field.is_active_text?,
+      is_action_text: @field.is_action_text?,
     }.transform_keys { |key| "trix_field_#{key}_value" }
   end
 end
