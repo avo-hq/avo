@@ -18,6 +18,7 @@
 #  city_center_area :json
 #
 class City < ApplicationRecord
+  include Hashid::Rails
   enum status: {Open: "open", Closed: "closed", Quarantine: "On Quarantine"}
   has_rich_text :description
   has_one_attached :description_file
