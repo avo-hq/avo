@@ -146,8 +146,6 @@ module Avo
       authorize_if_defined "detach_#{@field.id}?"
     end
 
-    private
-
     def set_related_authorization
       @related_authorization = if @related_resource.present?
         @related_resource.authorization(user: _current_user)
