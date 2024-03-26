@@ -21,6 +21,11 @@ module Avo
         @hide_attachment_url = args[:hide_attachment_url] || false
       end
 
+      # Identify if field is bonded to a rich text model attribute
+      def is_active_text?
+        record.send(id).is_a?(ActionText::RichText)
+      end
+
       private
 
       def disable_attachments?(args)
