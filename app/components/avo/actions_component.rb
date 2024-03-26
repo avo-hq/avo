@@ -85,7 +85,11 @@ class Avo::ActionsComponent < ViewComponent::Base
   end
 
   def render_entity(action)
-    render_action_link(action)
+    if action.is_a?(Avo::DividerComponent)
+      render Avo::DividerComponent.new
+    else
+      render_action_link(action)
+    end
   end
 
   private

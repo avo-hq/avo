@@ -294,6 +294,10 @@ module Avo
       cards
     end
 
+    def divider
+      action DividerComponent
+    end
+
     # def fields / def cards
     [:fields, :cards].each do |method_name|
       define_method method_name do
