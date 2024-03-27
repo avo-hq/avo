@@ -84,21 +84,21 @@ class Avo::ActionsComponent < ViewComponent::Base
     svg action.icon || "play", class: "h-5 mr-1 inline pointer-events-none"
   end
 
-  def render_entity(action)
+  def render_entity(action, next_action)
     if action.is_a?(Avo::DividerComponent)
       render Avo::DividerComponent.new
     else
-      render_action_link(action)
+      render_action_link(action, next_action)
     end
   end
 
   private
 
-  def render_action_link(action)
+  def render_action_link(action, next_action)
     link_to action_path(action),
       data: action_data_attributes(action),
       title: action.action_name,
-      class: action_css_class(action) do
+      class: action_css_class(action, next_action) do
         raw("#{icon(action)} #{action.action_name}")
       end
   end
@@ -114,7 +114,10 @@ class Avo::ActionsComponent < ViewComponent::Base
     }
   end
 
-  def action_css_class(action)
-    "flex items-center px-4 py-3 w-full font-semibold text-sm hover:bg-primary-100 #{is_disabled?(action) ? "text-gray-500" : "text-black"}"
+  def action_css_class(action, next_action)
+    classes = "flex items-center px-4 py-3 w-full font-semibold text-sm hover:bg-primary-100"
+    classes += " border-b" unless next_action.is_a?(Avo::DividerComponent)
+    classes += is_disabled?(action) ? " text-gray-500" : " text-black"
+    classes
   end
 end
