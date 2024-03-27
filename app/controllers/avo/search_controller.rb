@@ -126,10 +126,16 @@ module Avo
       title = item&.dig(:title) || resource.record_title
       highlighted_title = highlight(title&.to_s, params[:q])
 
+      record_path = if resource.link_to_child_resource
+        Avo.resource_manager.get_resource_by_model_class(record.class).new(record: record).record_path
+      else
+        resource.record_path
+      end
+
       {
         _id: record.id,
         _label: highlighted_title,
-        _url: resource.class.fetch_search(:result_path, record: resource.record) || resource.record_path
+        _url: resource.class.fetch_search(:result_path, record: resource.record) || record_path
       }
     end
 
