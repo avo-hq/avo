@@ -10,11 +10,13 @@ module Avo
       blob = ActiveStorage::Blob.create_and_upload! io: params[:file].to_io, filename: params[:filename]
       association_name = BaseResource.valid_attachment_name(@record, params[:attachment_key])
 
-      if association_name.blank?
+      # If association name is present attach the blob to it
+      if association_name
+        @record.send(association_name).attach blob
+      # If key is present use the blob from the key else raise error
+      elsif params[:key].blank?
         raise ActionController::BadRequest.new("Could not find the attachment association for #{params[:attachment_key]} (check the `attachment_key` for this Trix field)")
       end
-
-      @record.send(association_name).attach blob
 
       render json: {
         url: main_app.url_for(blob),

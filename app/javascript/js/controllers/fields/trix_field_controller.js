@@ -8,32 +8,15 @@ import { castBoolean } from '../../helpers/cast_boolean'
 export default class extends Controller {
   static targets = ['editor', 'controller']
 
-  get resourceId() {
-    return this.controllerTarget.dataset.resourceId
-  }
-
-  get resourceName() {
-    return this.controllerTarget.dataset.resourceName
-  }
-
-  get attachmentKey() {
-    return this.controllerTarget.dataset.attachmentKey
-  }
-
-  get attachmentsDisabled() {
-    return castBoolean(this.controllerTarget.dataset.attachmentsDisabled)
-  }
-
-  get hideAttachmentFilename() {
-    return castBoolean(this.controllerTarget.dataset.hideAttachmentFilename)
-  }
-
-  get hideAttachmentFilesize() {
-    return castBoolean(this.controllerTarget.dataset.hideAttachmentFilesize)
-  }
-
-  get hideAttachmentUrl() {
-    return castBoolean(this.controllerTarget.dataset.hideAttachmentUrl)
+  static values = {
+    resourceName: String,
+    resourceId: String,
+    attachmentsDisabled: Boolean,
+    attachmentKey: String,
+    hideAttachmentFilename: Boolean,
+    hideAttachmentFilesize: Boolean,
+    hideAttachmentUrl: Boolean,
+    isActionText: Boolean,
   }
 
   get uploadUrl() {
@@ -42,7 +25,7 @@ export default class extends Controller {
     // Parse the root path
     const rootPath = new URI(window.Avo.configuration.root_path)
     // Build the trix field path
-    url.path(`${rootPath.path()}/avo_api/resources/${this.resourceName}/${this.resourceId}/attachments`)
+    url.path(`${rootPath.path()}/avo_api/resources/${this.resourceNameValue}/${this.resourceIdValue}/attachments`)
     // Add the params back
     url.query(rootPath.query())
 
@@ -50,7 +33,7 @@ export default class extends Controller {
   }
 
   connect() {
-    if (this.attachmentsDisabled) {
+    if (this.attachmentsDisabledValue) {
       // Remove the attachments button
       this.controllerTarget.querySelector('.trix-button-group--file-tools').remove()
     }
@@ -58,7 +41,7 @@ export default class extends Controller {
     window.addEventListener('trix-file-accept', (event) => {
       if (event.target === this.editorTarget) {
         // Prevent file uploads for fields that have attachments disabled.
-        if (this.attachmentsDisabled) {
+        if (this.attachmentsDisabledValue) {
           event.preventDefault()
           alert('This field has attachments disabled.')
 
@@ -66,7 +49,7 @@ export default class extends Controller {
         }
 
         // Prevent file uploads for resources that haven't been saved yet.
-        if (!this.resourceId) {
+        if (!this.resourceIdValue) {
           event.preventDefault()
           alert("You can't upload files into the Trix editor until you save the resource.")
 
@@ -74,7 +57,8 @@ export default class extends Controller {
         }
 
         // Prevent file uploads for fields without an attachment key.
-        if (!this.attachmentKey) {
+        // When is rich text, attachment key is not needed.
+        if (!this.isActionTextValue && !this.attachmentKeyValue) {
           event.preventDefault()
           alert("You haven't set an `attachment_key` to this Trix field.")
         }
@@ -129,9 +113,9 @@ export default class extends Controller {
           href: response.href,
         }
 
-        if (this.hideAttachmentFilename) attributes.filename = null
-        if (this.hideAttachmentFilesize) attributes.filesize = null
-        if (this.hideAttachmentUrl) attributes.href = null
+        if (this.hideAttachmentFilenameValue) attributes.filename = null
+        if (this.hideAttachmentFilesizeValue) attributes.filesize = null
+        if (this.hideAttachmentUrlValue) attributes.href = null
 
         successCallback(attributes)
       }
@@ -140,12 +124,24 @@ export default class extends Controller {
     xhr.send(formData)
   }
 
+  createStorageKey(file) {
+    const date = new Date()
+    const day = date.toISOString().slice(0, 10)
+    const name = `${date.getTime()}-${file.name}`
+
+    return ['tmp', day, name].join('/')
+  }
+
   createFormData(file) {
     const data = new FormData()
     data.append('Content-Type', file.type)
     data.append('file', file)
     data.append('filename', file.name)
-    data.append('attachment_key', this.attachmentKey)
+    if (!this.attachmentKeyValue) {
+      data.append('key', this.createStorageKey(file))
+    } else {
+      data.append('attachment_key', this.attachmentKeyValue)
+    }
 
     return data
   }
