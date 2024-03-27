@@ -41,6 +41,7 @@ gem "image_processing", "~> 1.12"
 gem "prefixed_ids"
 gem "mapkick-rb", "~> 0.1.4"
 gem "pluggy", path: "../pluggy"
+gem "money-rails"
 gem "psych", "< 4"
 
 group :development do
