@@ -6,6 +6,7 @@ if ENV["COVERAGE"]
     add_filter "/spec/support/"
     add_filter "/spec/rails_helper"
     add_filter "/spec/spec_helper"
+    enable_coverage(:branch)
   end
 
   if ENV["CI"]

@@ -86,6 +86,7 @@ group :test do
   gem "fuubar"
   gem "simplecov", require: false
   gem "simplecov-cobertura"
+  gem "simplecov-lcov"
   gem "webmock"
   gem "spring-commands-rspec"
   gem "launchy", require: false

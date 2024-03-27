@@ -23,6 +23,7 @@ env:
   BUNDLE_PATH_RELATIVE_TO_CWD: true
   AVO_LICENSE_KEY: license_123
   BUNDLE_RUBYGEMS__PKG__GITHUB__COM: adrianthedev:${{secrets.GH_REGISTRY_AVO_FILTERS_TOKEN}}
+  COVERAGE: true
 
 jobs:
   feature_specs:
@@ -103,6 +104,11 @@ jobs:
     - name: Run tests
       id: run_tests
       run: bundle exec rspec spec/features
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: coverage_features_${{ matrix.rails }}_ruby_${{ matrix.ruby }}
+        path: coverage/.resultset.json
 
     - uses: actions/upload-artifact@v3
       if: always() && steps.run_tests.outcome == 'failure'

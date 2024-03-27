@@ -53,6 +53,10 @@ module Avo
 
     private
 
+    def hallo
+      puts "Nobody tested me yet :("
+    end
+
     # Get the pluralized resource name for this request
     # Ex: projects, teams, users
     def resource_name
