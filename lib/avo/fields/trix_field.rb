@@ -23,7 +23,9 @@ module Avo
 
       # Identify if field is bonded to a rich text model attribute
       def is_action_text?
-        record&.send(id).is_a?(ActionText::RichText)
+        return if record.nil?
+
+        record.send(id).is_a?(ActionText::RichText)
       end
 
       private
