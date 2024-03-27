@@ -207,9 +207,15 @@ module Avo
           ).handle
         end
 
-        record.public_send(:"#{key}=", value)
+        fill_record(record, key, value, params)
 
         record
+      end
+
+      # Some fields send multiple values (money_field)
+      # Using this method we can do that without overriding `fill_field`
+      def fill_record(record, key, value, params)
+        record.public_send(:"#{key}=", value)
       end
 
       def has_attribute?(record, attribute)

@@ -163,3 +163,5 @@ gem "prefixed_ids"
 gem "mapkick-rb", "~> 0.1.4"
 
 gem "pluggy", path: "./pluggy"
+
+gem "money-rails"

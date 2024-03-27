@@ -1,0 +1,22 @@
+<%= field_wrapper **field_wrapper_args do %>
+  <div class="w-full flex space-x-2">
+    <%= form.text_field @field.id,
+      value: @field.value,
+      class: classes("flex-1"),
+      data: @field.get_html(:data, view: view, element: :input),
+      disabled: disabled?,
+      placeholder: @field.placeholder,
+      style: @field.get_html(:style, view: view, element: :input),
+      multiple: multiple,
+      autocomplete: @field.autocomplete
+    %>
+    <%= @form.select @field.currency_column,
+      options_for_select(@field.currencies, selected: @field.currency),
+      {},
+      class: classes("w-24"),
+      disabled: disabled?,
+      value: @field.currency,
+      autocomplete: @field.autocomplete
+    %>
+  </div>
+<% end %>

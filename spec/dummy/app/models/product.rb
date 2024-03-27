@@ -12,6 +12,8 @@
 #  updated_at  :datetime         not null
 #
 class Product < ApplicationRecord
+  monetize :price_cents
+
   enum category: [
     "Music players",
     "Phones",
