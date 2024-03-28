@@ -115,9 +115,6 @@ class Avo::ActionsComponent < ViewComponent::Base
   end
 
   def action_css_class(action, next_action)
-    classes = "flex items-center px-4 py-3 w-full font-semibold text-sm hover:bg-primary-100"
-    classes += " border-b" unless next_action.is_a?(Avo::DividerComponent)
-    classes += is_disabled?(action) ? " text-gray-500" : " text-black"
-    classes
+    "flex items-center px-4 py-3 w-full font-semibold text-sm hover:bg-primary-100 border-b#{is_disabled?(action) ? " text-gray-500" : " text-black"}"
   end
 end
