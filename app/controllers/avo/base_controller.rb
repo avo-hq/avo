@@ -358,7 +358,7 @@ module Avo
       @actions = @resource
         .get_actions
         .map do |action|
-          action.is_a?(DividerComponent) ? [action] : action[:class].new(record: @record, resource: @resource, view: @view, arguments: action[:arguments], icon: action[:icon])
+          action[:class].new(record: @record, resource: @resource, view: @view, arguments: action[:arguments], icon: action[:icon])
         end
         .select do |action|
           action.is_a?(DividerComponent) || action.visible_in_view(parent_resource: @parent_resource)
