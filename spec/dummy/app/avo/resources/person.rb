@@ -7,6 +7,14 @@ class Avo::Resources::Person < Avo::BaseResource
   self.search = {
     query: -> { query.ransack(id_eq: params[:q], m: "or").result(distinct: false) }
   }
+  self.index_query = -> {
+    if @parent.present?
+      # use different order when loaded via association
+      query.order(name: :asc)
+    else
+      query.order(created_at: :desc)
+    end
+  }
 
   def fields
     field :name, as: :text, link_to_record: true, sortable: true, stacked: true

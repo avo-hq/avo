@@ -24,6 +24,7 @@ module Avo
       association_name = BaseResource.valid_association_name(@parent_record, params[:related_name])
       @query = @related_authorization.apply_policy @parent_record.send(association_name)
       @association_field = @parent_resource.get_field params[:related_name]
+      @query = Avo::ExecutionContext.new(target: @resource.class.index_query, query: @query, parent: @parent_record).handle
 
       if @association_field.present? && @association_field.scope.present?
         @query = Avo::ExecutionContext.new(target: @association_field.scope, query: @query, parent: @parent_record).handle
