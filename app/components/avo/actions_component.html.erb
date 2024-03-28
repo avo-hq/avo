@@ -33,7 +33,7 @@
     <div data-target="actions-list" class="w-full space">
       <% actions.each_with_index do |action, index| %>
         <% next_action = actions[index + 1] %>
-        <%= render_entity(action, next_action)%>
+        <%= render_item(action, next_action)%>
       <% end %>
     </div>
   </div>

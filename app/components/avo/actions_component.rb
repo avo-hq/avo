@@ -84,7 +84,7 @@ class Avo::ActionsComponent < ViewComponent::Base
     svg action.icon || "play", class: "h-5 mr-1 inline pointer-events-none"
   end
 
-  def render_entity(action, next_action)
+  def render_item(action, next_action)
     if action.is_a?(Avo::DividerComponent)
       render Avo::DividerComponent.new
     else
