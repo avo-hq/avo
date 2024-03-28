@@ -358,10 +358,10 @@ module Avo
       @actions = @resource
         .get_actions
         .map do |action|
-          action[:class].new(record: @record, resource: @resource, view: @view, arguments: action[:arguments])
+          action[:class].new(record: @record, resource: @resource, view: @view, arguments: action[:arguments], icon: action[:icon])
         end
         .select do |action|
-          action.visible_in_view(parent_resource: @parent_resource)
+          action.is_a?(DividerComponent) || action.visible_in_view(parent_resource: @parent_resource)
         end
     end
 
