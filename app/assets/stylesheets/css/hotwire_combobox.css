@@ -1,12 +1,15 @@
+.hw-combobox {
+    @apply w-full;
+}
 .hw-combobox__main__wrapper {
-   @apply w-96;
+    @apply w-full;
 }
 .hw-combobox__input {
-    @apply focus:ring-0 !w-full !bg-transparent;
+    @apply focus:ring-0 !bg-transparent w-full !p-0;
 }
 .hw-combobox__handle {
     @apply !right-3;
 }
 .hw-combobox__listbox {
-    @apply !rounded-2xl;
+    @apply !rounded-md;
 }

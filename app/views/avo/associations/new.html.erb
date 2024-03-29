@@ -27,7 +27,7 @@
             view: :new
           %>
         <% else %>
-          <div class="flex-1 flex flex-col items-center justify-center px-0 md:px-24 text-base">
+          <div class="flex-1 flex flex-col items-center justify-center px-0 md:px-24 text-base w-full">
             <%= form.combobox :related_id,
               resources_associations_options_path(params[:resource_name], params[:id], params[:related_name], params[:view]),
               id: :related_id 
