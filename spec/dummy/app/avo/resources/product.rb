@@ -27,23 +27,27 @@ class Avo::Resources::Product < Avo::BaseResource
   }
 
   def fields
-    field :id, as: :id
-    field :title, as: :text, html: {
-      show: {
-        label: {
-          classes: "bg-gray-50 !text-pink-600"
-        },
-        content: {
-          classes: "bg-gray-50 !text-pink-600"
-        },
-        wrapper: {
-          classes: "bg-gray-50"
+    main_panel do
+      field :id, as: :id
+      field :title, as: :text, html: {
+        show: {
+          label: {
+            classes: "bg-gray-50 !text-pink-600"
+          },
+          content: {
+            classes: "bg-gray-50 !text-pink-600"
+          },
+          wrapper: {
+            classes: "bg-gray-50"
+          }
         }
       }
-    }
-    field :description, as: :tiptap, placeholder: "Enter text", always_show: false
-    field :image, as: :file, is_image: true
-    field :price, as: :money, currencies: %w[CHF EUR USD RON SVC PEN], disabled: false
-    field :category, as: :select, enum: ::Product.categories
+      field :price, as: :money, currencies: %w[CHF EUR USD RON SVC PEN], disabled: false
+      sidebar do
+        # field :description, as: :tiptap, placeholder: "Enter text", always_show: false
+        # field :image, as: :file, is_image: true
+        field :category, as: :select, enum: ::Product.categories
+      end
+    end
   end
 end

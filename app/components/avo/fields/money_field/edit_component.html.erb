@@ -1,8 +1,8 @@
-<%= field_wrapper **field_wrapper_args do %>
-  <div class="w-full flex space-x-2">
+<%= field_wrapper **field_wrapper_args, class: "flex field-wrapper-test" do %>
+  <div class="w-full flex flex-1 space-x-2 grow-0">
     <%= form.text_field @field.id,
       value: @field.value,
-      class: classes("flex-1"),
+      class: classes("w-full"),
       data: @field.get_html(:data, view: view, element: :input),
       disabled: disabled?,
       placeholder: @field.placeholder,

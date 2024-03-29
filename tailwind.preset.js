@@ -148,5 +148,9 @@ module.exports = {
 
       addUtilities(newUtilities, ['group-hover'])
     }),
+
+    plugin(function({ addVariant }) {
+      addVariant('os-pc', 'body.os-pc & ')
+    })
   ],
 }
