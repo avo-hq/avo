@@ -139,18 +139,16 @@ module.exports = {
   plugins: [
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
-    plugin(({ addUtilities }) => {
+    plugin(({ addUtilities, addVariant }) => {
       const newUtilities = {
         '.backface-hidden': {
           backfaceVisibility: 'hidden',
         },
       }
 
+      // Add has-sidebar variant to make it easier to target fields in panels and use the full-width
+      addVariant('has-sidebar', '.has-sidebar & ')
       addUtilities(newUtilities, ['group-hover'])
     }),
-
-    plugin(function({ addVariant }) {
-      addVariant('os-pc', 'body.os-pc & ')
-    })
   ],
 }
