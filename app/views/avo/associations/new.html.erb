@@ -28,13 +28,9 @@
           %>
         <% else %>
           <div class="flex-1 flex flex-col items-center justify-center px-0 md:px-24 text-base">
-            <%= form.select :related_id, options_for_select(@options, nil),
-              {
-                include_blank: t('avo.choose_an_option'),
-              },
-              {
-                class: input_classes('w-full'),
-              }
+            <%= form.combobox :related_id,
+              resources_associations_options_path(params[:resource_name], params[:id], params[:related_name], params[:view]),
+              id: :related_id 
             %>
           </div>
         <% end %>

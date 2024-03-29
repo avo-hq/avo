@@ -3,6 +3,7 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%= combobox_style_tag "data-turbo-track": "reload" %>
     <% if !Avo.configuration.turbo[:instant_click] %>
       <meta name="turbo-prefetch" content="false">
     <% end %>

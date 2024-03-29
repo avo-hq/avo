@@ -2,18 +2,20 @@ require_dependency "avo/base_controller"
 
 module Avo
   class AssociationsController < BaseController
-    before_action :set_record, only: [:show, :index, :new, :create, :destroy]
+    include Pagy::Backend
+
+    before_action :set_record, only: [:show, :index, :new, :create, :destroy, :options]
     before_action :set_related_resource_name
-    before_action :set_related_resource, only: [:show, :index, :new, :create, :destroy]
+    before_action :set_related_resource, only: [:show, :index, :new, :create, :destroy, :options]
     before_action :set_related_authorization
     before_action :set_reflection_field
     before_action :set_related_record, only: [:show]
     before_action :set_reflection
-    before_action :set_attachment_class, only: [:show, :index, :new, :create, :destroy]
-    before_action :set_attachment_resource, only: [:show, :index, :new, :create, :destroy]
+    before_action :set_attachment_class, only: [:show, :index, :new, :create, :destroy, :options]
+    before_action :set_attachment_resource, only: [:show, :index, :new, :create, :destroy, :options]
     before_action :set_attachment_record, only: [:create, :destroy]
     before_action :authorize_index_action, only: :index
-    before_action :authorize_attach_action, only: :new
+    before_action :authorize_attach_action, only: [:new, :options]
     before_action :authorize_detach_action, only: :destroy
 
     def index
@@ -42,7 +44,9 @@ module Avo
 
     def new
       @resource.hydrate(record: @record)
+    end
 
+    def options
       if @field.present? && !@field.is_searchable?
         query = @related_authorization.apply_policy @attachment_class
 
@@ -50,11 +54,14 @@ module Avo
         if @field.attach_scope.present?
           query = Avo::ExecutionContext.new(target: @field.attach_scope, query: query, parent: @record).handle
         end
-
-        @options = query.all.map do |record|
-          [@attachment_resource.new(record: record).record_title, record.id]
-        end
       end
+
+      @pagy, @options = pagy query.all
+      render turbo_stream: helpers.async_combobox_options(
+        @options,
+        next_page: @pagy.next,
+        display: Proc.new { |record| @attachment_resource.new(record: record).record_title }
+      )
     end
 
     def create

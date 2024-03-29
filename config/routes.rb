@@ -36,6 +36,7 @@ Avo::Engine.routes.draw do
 
     # Associations
     get "/:resource_name/:id/:related_name/new", to: "associations#new", as: "associations_new"
+    get "/:resource_name/:id/:related_name/:view/options", to: "associations#options", as: "associations_options"
     get "/:resource_name/:id/:related_name/", to: "associations#index", as: "associations_index"
     get "/:resource_name/:id/:related_name/:related_id", to: "associations#show", as: "associations_show"
     post "/:resource_name/:id/:related_name", to: "associations#create", as: "associations_create"

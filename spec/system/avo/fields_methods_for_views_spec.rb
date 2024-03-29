@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.feature "Fields methods for each view", type: :feature do
+RSpec.feature "Fields methods for each view", type: :system do
   let!(:links) { create_list :course_link, 3 }
   let!(:attach_link) { create :course_link }
   let!(:course) { create :course, links: links }
@@ -177,7 +177,11 @@ RSpec.feature "Fields methods for each view", type: :feature do
 
       expect(page).to have_text "Choose course link"
 
-      select attach_link.link, from: "fields_related_id"
+      find('#related_id').click
+
+      # Scroll down until finding the text "seeee" and click on it
+      page.execute_script("window.scrollBy(0,500)") until page.has_text?(attach_link.link)
+      find('li', text: attach_link.link).click
 
       expect {
         within '[aria-modal="true"]' do

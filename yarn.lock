@@ -1469,6 +1469,11 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-2.0.2.tgz#d9fae00a2d5cb40f92cfe64b47ad749fbc38f917"
   integrity sha512-6EwiSjwWYP7pTckG6I5eyFANjPhmPjUX9JRLUSfNPC7FX7zK9gyZAfUEaECL6ALTpGX5AjnBq3C9XmVWPitNpw==
 
+"@josefarias/hotwire_combobox@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@josefarias/hotwire_combobox/-/hotwire_combobox-0.2.0.tgz#93ea22056acf2ec4a042ae037ad7a12fa409aa77"
+  integrity sha512-Xgq5hr5vOtTEyJvgjNBaKw4SsaFfz/1IiaqxJjhdxmolGPSTcRhd7u0QHSQ4cqcpGSAiGyCPxMBwYgpb8ycPnQ==
+
 "@jridgewell/gen-mapping@^0.3.0", "@jridgewell/gen-mapping@^0.3.2":
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/@jridgewell/gen-mapping/-/gen-mapping-0.3.3.tgz#7e02e6eb5df901aaedb08514203b096614024098"
