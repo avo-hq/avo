@@ -42,7 +42,7 @@ jobs:
           ruby scripts/merge_coverage.rb coverage_all.lcov
       - run: |
           ruby -e "$(curl -s https://undercover-ci.com/uploader.rb)" -- \
-            --repo grodowski/avo \
+            --repo avo-hq/avo \
             --commit ${{ env.COVERAGE_COMPARE_COMMIT_SHA }}
             --lcov coverage_all.lcov
       - uses: actions/upload-artifact@v3
