@@ -15,15 +15,18 @@ jobs:
   coverage:
     runs-on: ubuntu-latest
     needs: [await-tests]
+    env:
+      COVERAGE_COMPARE_COMMIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      COVERAGE_COMPARE_BRANCH: ${{ github.event.workflow_run.head_branch }}
     steps:
       - uses: actions/checkout@v3
-      - run: echo 'Merging coverage reports for ${{ github.event.workflow_run.head_branch }}@${{ github.sha }}'
+      - run: echo "Merging coverage reports for $COVERAGE_COMPARE_BRANCH @ $COVERAGE_COMPARE_COMMIT_SHA"
       - uses: dawidd6/action-download-artifact@v3 # supports downloads between workflows
         with:
           workflow: feature-tests.yml
           workflow_search: true
           search_artifacts: true
-          commit: ${{ github.event.pull_request.head.sha || github.sha }}
+          commit: ${{ env.COVERAGE_COMPARE_COMMIT_SHA }}
           name: coverage_features_7.1_ruby_3.3.0
           path: coverage_features # creates coverage_features/.resultset.json
       - uses: dawidd6/action-download-artifact@v3
@@ -31,7 +34,7 @@ jobs:
           workflow: system-tests.yml
           workflow_search: true
           search_artifacts: true
-          commit: ${{ github.event.pull_request.head.sha || github.sha }}
+          commit: ${{ env.COVERAGE_COMPARE_COMMIT_SHA }}
           name: coverage_system_7.1_ruby_3.3.0
           path: coverage_system # creates coverage_system/.resultset.json
       - run: |
@@ -40,7 +43,7 @@ jobs:
       - run: |
           ruby -e "$(curl -s https://undercover-ci.com/uploader.rb)" -- \
             --repo grodowski/avo \
-            --commit ${{ github.event.pull_request.head.sha || github.sha }} \
+            --commit ${{ env.COVERAGE_COMPARE_COMMIT_SHA }}
             --lcov coverage_all.lcov
       - uses: actions/upload-artifact@v3
         with:
