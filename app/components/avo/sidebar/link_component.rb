@@ -5,12 +5,14 @@ class Avo::Sidebar::LinkComponent < ViewComponent::Base
   attr_reader :target
   attr_reader :label
   attr_reader :path
+  attr_reader :new_path
   attr_reader :data
   attr_reader :icon
 
-  def initialize(label: nil, path: nil, active: :inclusive, target: nil, data: {}, icon: nil)
+  def initialize(label: nil, path: nil, new_path: nil, active: :inclusive, target: nil, data: {}, icon: nil)
     @label = label
     @path = path
+    @new_path = new_path
     @active = active
     @target = target
     @data = data
@@ -30,6 +32,6 @@ class Avo::Sidebar::LinkComponent < ViewComponent::Base
   end
 
   def classes
-    "px-4 pr-0 flex-1 flex mx-6 leading-none py-2 text-black rounded font-medium hover:bg-gray-100 gap-1"
+    "px-4 leading-none py-2 text-black rounded font-medium hover:bg-gray-100"
   end
 end

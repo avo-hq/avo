@@ -36,7 +36,7 @@
 
             <div class="w-full space-y-1">
               <% resources.sort_by { |r| r.navigation_label }.each do |resource| %>
-                <%= render Avo::Sidebar::LinkComponent.new label: resource.navigation_label, path: helpers.resources_path(resource: resource) %>
+                <%= render Avo::Sidebar::LinkComponent.new label: resource.navigation_label, path: helpers.resources_path(resource: resource), new_path: helpers.new_resource_path(resource: resource) %>
               <% end %>
             </div>
           </div>

@@ -26,6 +26,7 @@ module Avo
     attr_accessor :cache_resource_filters
     attr_accessor :context
     attr_accessor :display_breadcrumbs
+    attr_accessor :create_links_in_sidebar
     attr_accessor :hide_layout_when_printing
     attr_accessor :initial_breadcrumbs
     attr_accessor :home_path
@@ -92,6 +93,7 @@ module Avo
       @buttons_on_form_footers = false
       @main_menu = nil
       @profile_menu = nil
+      @create_links_in_sidebar = true
       @model_resource_mapping = {}
       @resource_default_view = Avo::ViewInquirer.new("show")
       @authorization_client = :pundit
