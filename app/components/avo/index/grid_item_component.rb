@@ -14,6 +14,7 @@ class Avo::Index::GridItemComponent < Avo::BaseComponent
     @actions = actions
     @card = Avo::ExecutionContext.new(target: resource.grid_view[:card], resource: resource, record: resource.record).handle
     @whole_html = Avo::ExecutionContext.new(target: resource.grid_view[:html], resource: resource, record: resource.record).handle
+    @view = Avo::ViewInquirer.new(:index)
   end
 
   private

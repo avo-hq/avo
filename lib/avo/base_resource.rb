@@ -270,14 +270,16 @@ module Avo
       self
     end
 
-    VIEW_METHODS_MAPPING = {
-      index: [:index_fields, :display_fields],
-      show: [:show_fields, :display_fields],
-      edit: [:edit_fields, :form_fields],
-      update: [:edit_fields, :form_fields],
-      new: [:new_fields, :form_fields],
-      create: [:new_fields, :form_fields]
-    } unless defined? VIEW_METHODS_MAPPING
+    unless defined? VIEW_METHODS_MAPPING
+      VIEW_METHODS_MAPPING = {
+        index: [:index_fields, :display_fields],
+        show: [:show_fields, :display_fields],
+        edit: [:edit_fields, :form_fields],
+        update: [:edit_fields, :form_fields],
+        new: [:new_fields, :form_fields],
+        create: [:new_fields, :form_fields]
+      }
+    end
 
     def fetch_fields
       possible_methods_for_view = VIEW_METHODS_MAPPING[view.to_sym]

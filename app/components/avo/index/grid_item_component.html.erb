@@ -16,9 +16,25 @@
     <div class="mb-4 h-full flex flex-col space-between">
       <%= render_title %>
       <%= render_body %>
+      <% fields = Avo::FieldsExecutionContext.new(target: @card[:extra]).detect_fields %>
+
+      <% fields.items_holder.items.each_with_index do |item, index| %>
+        <%= render Avo::Items::SwitcherComponent.new(
+          resource: @resource,
+          reflection: @reflection,
+          item: item,
+          index: index + 1,
+          view: @view,
+          view_variant: :grid,
+          parent_resource: @parent_resource,
+          parent_record: @parent_record,
+          parent_component: self,
+          actions: @actions
+        )%>
+      <% end %>
     </div>
     <div class="w-full place-self-end">
-      <%= render(Avo::Index::ResourceControlsComponent.new(resource: @resource, reflection: @reflection, parent_record: @parent_record, parent_resource: @parent_resource, view_type: :grid, actions: actions)) %>
+      <%= render(Avo::Index::ResourceControlsComponent.new(resource: @resource, reflection: @reflection, parent_record: @parent_record, parent_resource: @parent_resource, view_variant: :grid, actions: actions)) %>
     </div>
   </div>
 </div>

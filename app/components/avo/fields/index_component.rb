@@ -8,7 +8,7 @@ class Avo::Fields::IndexComponent < Avo::BaseComponent
   attr_reader :parent_resource
   attr_reader :view
 
-  def initialize(field: nil, resource: nil, reflection: nil, index: 0, parent_record: nil, parent_resource: nil, **kwargs)
+  def initialize(field: nil, resource: nil, reflection: nil, index: 0, parent_record: nil, parent_resource: nil, view_variant: nil, **kwargs)
     @field = field
     @resource = resource
     @index = index
@@ -16,6 +16,7 @@ class Avo::Fields::IndexComponent < Avo::BaseComponent
     @parent_record = parent_record
     @parent_resource = parent_resource
     @view = Avo::ViewInquirer.new("index")
+    @view_variant = view_variant
     @reflection = reflection
   end
 
@@ -35,7 +36,8 @@ class Avo::Fields::IndexComponent < Avo::BaseComponent
   def field_wrapper_args
     {
       field: @field,
-      resource: @resource
+      view_variant: @view_variant,
+      resource: @resource,
     }
   end
 end

@@ -1,0 +1,27 @@
+<%= content_tag :td,
+  class: "min-h-[3rem] px-3 leading-tight whitespace-nowrap h-full text-slate-800 text-base #{classes}",
+  data: {
+    field_id: @field.id,
+    field_type: @field.type,
+    **stimulus_attributes
+  },
+  style: style do %>
+  <%= content_tag :div, class: "pt-4 flex self-start items-center flex-shrink-0 w-48 uppercase font-semibold text-gray-500 text-sm" do %>
+    <%= @field.name %>
+  <% end %>
+  <% if @field.value.blank? && @dash_if_blank %>
+    —
+  <% else %>
+    <% if @center_content %>
+      <div class="flex items-center justify-center">
+        <%= content %>
+      </div>
+    <% else %>
+      <%= content %>
+    <% end %>
+  <% end %>
+  <% if params[:avo_debug].present? %>
+    <!-- Raw value: -->
+    <!-- <%= sanitize @field.value.inspect %> -->
+  <% end %>
+<% end %>

@@ -3,12 +3,12 @@
 class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   include Avo::ApplicationHelper
 
-  def initialize(resource: nil, reflection: nil, parent_record: nil, parent_resource: nil, view_type: :table, actions: nil)
+  def initialize(resource: nil, reflection: nil, parent_record: nil, parent_resource: nil, view_variant: :table, actions: nil)
     @resource = resource
     @reflection = reflection
     @parent_record = parent_record
     @parent_resource = parent_resource
-    @view_type = view_type
+    @view_variant = view_variant
     @actions = actions
   end
 
@@ -162,7 +162,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
 
   def render_order_controls(control)
     if try(:can_reorder?)
-      render Avo::Pro::Ordering::ButtonsComponent.new resource: @resource, reflection: @reflection, view_type: @view_type
+      render Avo::Pro::Ordering::ButtonsComponent.new resource: @resource, reflection: @reflection, view_variant: @view_variant
     end
   end
 
@@ -173,7 +173,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   def hidden_params
     hidden = {}
 
-    hidden[:view_type] = params[:view_type] if params[:view_type]
+    hidden[:view_variant] = params[:view_variant] if params[:view_variant]
     hidden[:view] = parent_resource&.view&.to_s
 
     if params[:turbo_frame]

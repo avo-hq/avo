@@ -15,7 +15,13 @@ module Avo
     end
 
     def index_field_wrapper(**args, &block)
-      render Index::FieldWrapperComponent.new(**args) do
+      component_klass = if args[:view_variant] == :grid
+        Grid::FieldWrapperComponent
+      else
+        Index::FieldWrapperComponent
+      end
+
+      render component_klass.new(**args) do
         capture(&block)
       end
     end

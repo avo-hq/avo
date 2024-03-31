@@ -11,7 +11,7 @@ class Avo::Index::FieldWrapperComponent < ViewComponent::Base
     @classes = args[:class].present? ? args[:class] : ""
     @args = args
     @flush = flush
-    @view = Avo::ViewInquirer.new("index")
+    @view = Avo::ViewInquirer.new(:index)
   end
 
   def classes

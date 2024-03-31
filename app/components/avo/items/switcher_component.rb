@@ -20,6 +20,7 @@ class Avo::Items::SwitcherComponent < Avo::BaseComponent
     parent_record: nil,
     parent_component: nil,
     actions: nil,
+    view_variant: nil,
     field_component_extra_args: {}
   )
     @resource = resource
@@ -32,6 +33,7 @@ class Avo::Items::SwitcherComponent < Avo::BaseComponent
     @parent_record = parent_record
     @parent_component = parent_component
     @actions = actions
+    @view_variant = view_variant
     @field_component_extra_args = field_component_extra_args
   end
 
@@ -65,7 +67,7 @@ class Avo::Items::SwitcherComponent < Avo::BaseComponent
 
   def field_component
     final_item = item.dup.hydrate(resource: @resource, record: @resource.record, user: resource.user, view: view)
-    final_item.component_for_view(@view).new(field: final_item, resource: @resource, index: index, form: form, turbo_frame_loading: :lazy, **@field_component_extra_args)
+    final_item.component_for_view(@view).new(field: final_item, resource: @resource, index: index, form: form, turbo_frame_loading: :lazy, view_variant: @view_variant, **@field_component_extra_args)
   end
 
   def panel_component
