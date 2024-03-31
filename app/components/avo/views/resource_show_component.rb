@@ -30,7 +30,9 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
     if via_resource?
       helpers.resource_path(record: association_resource.model_class, resource: association_resource, resource_id: params[:via_record_id])
     else
-      helpers.resources_path(resource: @resource)
+      via_page? ?
+        helpers.resources_path(resource: @resource, page: referrer_params["page"]) :
+        helpers.resources_path(resource: @resource)
     end
   end
 

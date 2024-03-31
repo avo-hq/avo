@@ -1,5 +1,6 @@
 class Avo::ResourceComponent < Avo::BaseComponent
   include Avo::Concerns::ChecksAssocAuthorization
+  include Avo::Concerns::RequestMethods
 
   attr_reader :fields_by_panel
   attr_reader :has_one_panels
@@ -114,6 +115,10 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
   def via_resource?
     (params[:via_resource_class].present? || params[:via_relation_class].present?) && params[:via_record_id].present?
+  end
+
+  def via_page?
+    referrer_params["page"].present?
   end
 
   def render_back_button(control)
