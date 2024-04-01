@@ -102,7 +102,7 @@ module Avo
       self.class.to_s.demodulize.underscore.humanize(keep_id_suffix: true)
     end
 
-    def initialize(record: nil, resource: nil, user: nil, view: nil, arguments: {}, icon: "play")
+    def initialize(record: nil, resource: nil, user: nil, view: nil, arguments: {}, icon: :play)
       @record = record
       @resource = resource
       @user = user
