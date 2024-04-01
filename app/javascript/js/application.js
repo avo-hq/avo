@@ -14,6 +14,6 @@ window.Stimulus = application
 // Register stimulus-components controller
 application.register('alert', Alert)
 application.register('popover', Popover)
-application.register("hw-combobox", HwComboboxController)
+application.register('hw-combobox', HwComboboxController)
 
 export { application }
