@@ -1,0 +1,51 @@
+name: "Undercover: Merge coverage"
+on:
+  workflow_run:
+    workflows: ["Feature Tests", "System Tests"]
+    types:
+      - completed
+jobs:
+  await-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: ahmadnassri/action-workflow-run-wait@v1
+        with:
+          timeout: 600000 # 10 minutes
+  coverage:
+    runs-on: ubuntu-latest
+    needs: [await-tests]
+    env:
+      COVERAGE_COMPARE_COMMIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      COVERAGE_COMPARE_BRANCH: ${{ github.event.workflow_run.head_branch }}
+    steps:
+      - uses: actions/checkout@v3
+      - run: echo "Merging coverage reports for $COVERAGE_COMPARE_BRANCH @ $COVERAGE_COMPARE_COMMIT_SHA"
+      - uses: dawidd6/action-download-artifact@v3 # supports downloads between workflows
+        with:
+          workflow: feature-tests.yml
+          workflow_search: true
+          search_artifacts: true
+          commit: ${{ env.COVERAGE_COMPARE_COMMIT_SHA }}
+          name: coverage_features_7.1_ruby_3.3.0
+          path: coverage_features # creates coverage_features/.resultset.json
+      - uses: dawidd6/action-download-artifact@v3
+        with:
+          workflow: system-tests.yml
+          workflow_search: true
+          search_artifacts: true
+          commit: ${{ env.COVERAGE_COMPARE_COMMIT_SHA }}
+          name: coverage_system_7.1_ruby_3.3.0
+          path: coverage_system # creates coverage_system/.resultset.json
+      - run: |
+          sudo gem install simplecov simplecov-lcov
+          ruby scripts/merge_coverage.rb coverage_all.lcov
+      - run: |
+          ruby -e "$(curl -s https://undercover-ci.com/uploader.rb)" -- \
+            --repo avo-hq/avo \
+            --commit ${{ env.COVERAGE_COMPARE_COMMIT_SHA }}
+            --lcov coverage_all.lcov
+      - uses: actions/upload-artifact@v3
+        with:
+          name: avo_coverage_merged_lcov
+          path: coverage_all.lcov
