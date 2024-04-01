@@ -60,7 +60,7 @@ module Avo
       render turbo_stream: helpers.async_combobox_options(
         @options,
         next_page: @pagy.next,
-        display: Proc.new { |record| @attachment_resource.new(record: record).record_title }
+        display: proc { |record| @attachment_resource.new(record: record).record_title }
       )
     end
 
