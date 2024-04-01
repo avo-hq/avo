@@ -177,11 +177,11 @@ RSpec.feature "Fields methods for each view", type: :system do
 
       expect(page).to have_text "Choose course link"
 
-      find('#related_id').click
+      find("#related_id").click
 
       # Scroll down until finding the text "seeee" and click on it
       page.execute_script("window.scrollBy(0,500)") until page.has_text?(attach_link.link)
-      find('li', text: attach_link.link).click
+      find("li", text: attach_link.link).click
 
       expect {
         within '[aria-modal="true"]' do

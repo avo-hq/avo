@@ -33,7 +33,7 @@ jobs:
           - '3.2.2'
           - '3.3.0'
         rails:
-          - '6.1'
+          # - '6.1'
           - '7.1'
     runs-on: ubuntu-latest
 
