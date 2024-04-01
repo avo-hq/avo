@@ -1,7 +1,7 @@
 import { Alert, Popover } from 'tailwindcss-stimulus-components'
 import { Application } from '@hotwired/stimulus'
-import TurboPower from 'turbo_power'
 import HwComboboxController from "@josefarias/hotwire_combobox"
+import TurboPower from 'turbo_power'
 
 TurboPower.initialize(window.Turbo.StreamActions)
 
