@@ -224,7 +224,10 @@ module Avo
     end
 
     def audit?
-      Avo.plugin_manager.installed?("avo-enterprise") && @audit && ActiveRecord::Base.connection.table_exists?(:avo_activities)
+      Avo.plugin_manager.installed?("avo-enterprise") &&
+        @audit &&
+        ActiveRecord::Base.connected? &&
+        ActiveRecord::Base.connection.table_exists?(:avo_activities)
     end
 
     def turbo
