@@ -12,7 +12,6 @@ import DashboardCardController from './controllers/dashboard_card_controller'
 import DateFieldController from './controllers/fields/date_field_controller'
 import EasyMdeController from './controllers/fields/easy_mde_controller'
 import FilterController from './controllers/filter_controller'
-import PanelRefreshController from './controllers/fields/panel_refresh_controller'
 import HiddenInputController from './controllers/hidden_input_controller'
 import InputAutofocusController from './controllers/input_autofocus_controller'
 import ItemSelectAllController from './controllers/item_select_all_controller'
@@ -22,6 +21,7 @@ import LoadingButtonController from './controllers/loading_button_controller'
 import MenuController from './controllers/menu_controller'
 import ModalController from './controllers/modal_controller'
 import MultipleSelectFilterController from './controllers/multiple_select_filter_controller'
+import PanelRefreshController from './controllers/fields/panel_refresh_controller'
 import PerPageController from './controllers/per_page_controller'
 import PreviewController from './controllers/preview_controller'
 import ProgressBarFieldController from './controllers/fields/progress_bar_field_controller'
@@ -34,12 +34,14 @@ import SelectController from './controllers/select_controller'
 import SelectFilterController from './controllers/select_filter_controller'
 import SelfDestroyController from './controllers/self_destroy_controller'
 import SidebarController from './controllers/sidebar_controller'
+import SignOutController from './controllers/sign_out_controller'
 import TabsController from './controllers/tabs_controller'
 import TagsFieldController from './controllers/fields/tags_field_controller'
 import TextFilterController from './controllers/text_filter_controller'
 import TippyController from './controllers/tippy_controller'
 import ToggleController from './controllers/toggle_controller'
 import TrixFieldController from './controllers/fields/trix_field_controller'
+import TiptapFieldController from './controllers/fields/tiptap_field_controller'
 
 application.register('action', ActionController)
 application.register('actions-overflow', ActionsOverflowController)
@@ -68,6 +70,7 @@ application.register('select', SelectController)
 application.register('select-filter', SelectFilterController)
 application.register('self-destroy', SelfDestroyController)
 application.register('sidebar', SidebarController)
+application.register('sign-out', SignOutController)
 application.register('tabs', TabsController)
 application.register('text-filter', TextFilterController)
 application.register('tippy', TippyController)
@@ -83,5 +86,6 @@ application.register('progress-bar-field', ProgressBarFieldController)
 application.register('reload-belongs-to-field', ReloadBelongsToFieldController)
 application.register('tags-field', TagsFieldController)
 application.register('trix-field', TrixFieldController)
+application.register('tiptap-field', TiptapFieldController)
 
 // Custom controllers

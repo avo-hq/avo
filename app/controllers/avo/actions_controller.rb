@@ -38,7 +38,7 @@ module Avo
       performed_action = @action.handle_action(
         fields: fields,
         current_user: _current_user,
-        resource: resource,
+        resource: @resource,
         query: query
       )
 
@@ -58,7 +58,7 @@ module Avo
         resource: @resource,
         user: _current_user,
         view: :new, # force the action view to in order to render new-related fields (hidden field)
-        arguments: decrypted_arguments || {}
+        arguments: BaseAction.decode_arguments(params[:arguments] || params.dig(:fields, :arguments)) || {}
       )
     end
 
@@ -85,12 +85,15 @@ module Avo
               turbo_stream.close_action_modal,
               turbo_stream.flash_alerts
             ]
+          when :navigate_to_action
+            frame_id = Avo::ACTIONS_TURBO_FRAME_ID
+            src, _ = @response[:action].link_arguments(resource: @action.resource, **@response[:navigate_to_action_args])
+
+            render turbo_stream: turbo_stream.turbo_frame_set_src(frame_id, src)
           when :redirect
-            # Turbo redirect to the path
             render turbo_stream: turbo_stream.redirect_to(
               Avo::ExecutionContext.new(target: @response[:path]).handle,
-              nil,
-              @response[:redirect_args][:turbo_frame],
+              turbo_frame: @response[:redirect_args][:turbo_frame],
               **@response[:redirect_args].except(:turbo_frame)
             )
           when :close_modal
@@ -101,7 +104,9 @@ module Avo
             ]
           else
             # Reload the page
-            redirect_back fallback_location: resources_path(resource: @resource)
+            back_path = request.referer || params[:referrer].presence || resources_path(resource: @resource)
+
+            render turbo_stream: turbo_stream.redirect_to(back_path)
           end
         end
       end
@@ -125,16 +130,6 @@ module Avo
       return if (encrypted_query = action_params[:fields][:avo_selected_query]).blank?
 
       Avo::Services::EncryptionService.decrypt(message: encrypted_query, purpose: :select_all, serializer: Marshal)
-    end
-
-    def decrypted_arguments
-      arguments = params[:arguments] || params.dig(:fields, :arguments)
-      return if arguments.blank?
-
-      Avo::Services::EncryptionService.decrypt(
-        message: Base64.decode64(arguments),
-        purpose: :action_arguments
-      )
     end
 
     def flash_messages

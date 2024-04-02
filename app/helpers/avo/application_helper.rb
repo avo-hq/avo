@@ -150,6 +150,10 @@ module Avo
       end
     end
 
+    def chart_color(index)
+      Avo.configuration.branding.chart_colors[index % Avo.configuration.branding.chart_colors.length]
+    end
+
     private
 
     # Taken from the original library

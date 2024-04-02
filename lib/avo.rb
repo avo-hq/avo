@@ -18,6 +18,7 @@ module Avo
   IN_DEVELOPMENT = ENV["AVO_IN_DEVELOPMENT"] == "1"
   PACKED = !IN_DEVELOPMENT
   COOKIES_KEY = "avo"
+  ACTIONS_TURBO_FRAME_ID = :actions_show
 
   class LicenseVerificationTemperedError < StandardError; end
 
@@ -39,7 +40,7 @@ module Avo
     private
 
     def missing_resource_message(resource_name)
-      name = resource_name.to_s.downcase
+      name = resource_name.to_s.underscore
 
       "Failed to find a resource while rendering the :#{name} field.\n" \
       "You may generate a resource for it by running 'rails generate avo:resource #{name.singularize}'.\n" \
@@ -56,6 +57,7 @@ module Avo
 
     delegate :license, :app, :error_manager, :tool_manager, :resource_manager, to: Avo::Current
 
+    # Runs when the app boots up
     def boot
       @logger = Avo.configuration.logger
       @field_manager = Avo::Fields::FieldManager.build
@@ -64,6 +66,7 @@ module Avo
       Avo.run_load_hooks(:boot, self)
     end
 
+    # Runs on each request
     def init
       Avo::Current.error_manager = Avo::ErrorManager.build
       Avo::Current.resource_manager = Avo::Resources::ResourceManager.build
@@ -131,6 +134,10 @@ module Avo
         mount Avo::Dashboards::Engine, at: "/dashboards" if defined?(Avo::Dashboards::Engine)
         mount Avo::Pro::Engine, at: "/avo-pro" if defined?(Avo::Pro::Engine)
       }
+    end
+
+    def extra_gems
+      [:pro, :advanced, :menu, :dynamic_filters, :dashboards, :enterprise, :audits]
     end
   end
 end

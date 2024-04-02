@@ -70,7 +70,12 @@ end
 
 # Fix this. Rails 6.1 with ruby 3.3.0 need this to pass actions test. Uses this path as download path
 # Issue: screenshots also go to same path
-Capybara.save_path = DownloadHelpers::PATH
+Capybara.save_path = if Rails::VERSION::MAJOR == 6 && Rails::VERSION::MINOR == 1
+  DownloadHelpers::PATH
+else
+  "tmp/screenshots"
+end
+
 Capybara.default_max_wait_time = 5
 
 require "support/controller_routes"
@@ -182,7 +187,7 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
 
   # https://medium.com/@velciov.vlad/retrying-flaky-tests-fae14de26c1b
-  config.default_retry_count = 2
+  config.default_retry_count = 3
   config.verbose_retry = true
 
   # callback to be run between retries

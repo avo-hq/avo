@@ -75,20 +75,8 @@ class Avo::ActionsComponent < ViewComponent::Base
       .append_query(
         {
           action_id: action.to_param,
-          arguments: encrypted_arguments(action)
+          arguments: Avo::BaseAction.encode_arguments(action.arguments)
         }.compact
       ).to_s
-  end
-
-  # Encrypt the arguments so we can pass them as a query param.
-  # EncryptionService can generate special characters that can break the URL.
-  # We use Base64 to encode the encrypted string so we can safely pass it as a query param and don't break the URL.
-  def encrypted_arguments(action)
-    return if action.arguments.blank?
-
-    Base64.encode64 Avo::Services::EncryptionService.encrypt(
-      message: action.arguments,
-      purpose: :action_arguments
-    )
   end
 end

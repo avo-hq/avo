@@ -1,0 +1,22 @@
+<turbo-frame id="summary-frame-<%= @field_id %>">
+  <div class="grid grid-cols-12 items-center">
+    <ul class="col-span-5" id="<%= @field_id %>-summary">
+      <% @values_summary.each_with_index do |(key, value), index| %>
+        <li class="grid grid-cols-6 gap-3 items-center font-semibold text-sm text-gray-600 uppercase">
+          <div class="flex items-center space-x-1 col-span-5 truncate">
+            <span class="<%= "inline-block w-[0.75rem] h-[0.75rem] rounded-full bg-[#{chart_color(index)}]" %>"></span>
+            <span>
+              <%= key %>
+            </span>
+          </div>
+          <div class="col-span-1 text-right">
+            <%= value %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+    <div class="col-start-7 col-span-6">
+      <%= pie_chart @values_summary, id: "chart-#{@field_id}", legend: false, height: "200px", colors: Avo.configuration.branding.chart_colors %>
+    </div>
+  </div>
+</turbo-frame>

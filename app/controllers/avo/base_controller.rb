@@ -62,9 +62,16 @@ module Avo
       apply_pagination
 
       # Create resources for each record
+      # Duplicate the @resource before hydration to avoid @resource keeping last record.
+      @resource.hydrate(params: params)
       @resources = @records.map do |record|
-        @resource.hydrate(record: record, params: params).dup
+        @resource.dup.hydrate(record: record)
       end
+
+      # Temporary fix for visible blocks when geting fields for header
+      # Hydrating with last record so resource.record != nil
+      # This is keeping same behavior from <= 3.4.1
+      @resource.hydrate(record: @records.last)
 
       set_component_for __method__
     end
@@ -84,9 +91,9 @@ module Avo
 
         add_breadcrumb via_resource.plural_name, resources_path(resource: via_resource)
         add_breadcrumb via_resource.record_title, resource_path(record: via_record, resource: via_resource)
-      else
-        add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
       end
+
+      add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
 
       add_breadcrumb @resource.record_title
       add_breadcrumb I18n.t("avo.details").upcase_first
@@ -123,11 +130,6 @@ module Avo
     end
 
     def create
-      # record gets instantiated and filled in the fill_record method
-      audit(activity_class: @resource.class, payload: params, action: __method__)
-      saved = save_record
-      @resource.hydrate(record: @record, view: :new, user: _current_user)
-
       # This means that the record has been created through another parent record and we need to attach it somehow.
       if params[:via_record_id].present? && params[:via_belongs_to_resource_class].nil?
         @reflection = @record._reflections[params[:via_relation]]
@@ -140,7 +142,6 @@ module Avo
           related_record = related_resource.find_record params[:via_record_id], params: params
 
           @record.send("#{@reflection.foreign_key}=", related_record.id)
-          @record.save
         end
 
         # For when working with has_one, has_one_through, has_many_through, has_and_belongs_to_many, polymorphic
@@ -158,6 +159,11 @@ module Avo
           end
         end
       end
+
+      # record gets instantiated and filled in the fill_record method
+      audit(activity_class: @resource.class, payload: params, action: __method__)
+      saved = save_record
+      @resource.hydrate(record: @record, view: :new, user: _current_user)
 
       add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
       add_breadcrumb t("avo.new").humanize
@@ -243,9 +249,14 @@ module Avo
       end
 
       # Add the errors from the record
-      @errors = @record.errors.full_messages.reject { |error| exception_message.include? error }.unshift exception_message
+      @errors = @record.errors.full_messages
 
-      succeeded
+      # Remove duplicated errors
+      if exception_message.present?
+        @errors = @errors.reject { |error| exception_message.include? error }.unshift exception_message
+      end
+
+      @errors.any? ? false : succeeded
     end
 
     def model_params
