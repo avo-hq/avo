@@ -338,7 +338,6 @@ module Avo
         Avo::ExecutionContext.new(
           target: @resource.default_view_type || Avo.configuration.default_view_type,
           resource: @resource,
-          record: @record,
           view: @view
         ).handle
       end
