@@ -223,10 +223,19 @@ module Avo
       }
     end
 
+    def database_exists?
+      ActiveRecord::Base.connection
+    rescue ActiveRecord::NoDatabaseError
+      false
+    else
+      true
+    end
+
+
     def audit?
       Avo.plugin_manager.installed?("avo-enterprise") &&
         @audit &&
-        ActiveRecord::Base.connected? &&
+        database_exists? &&
         ActiveRecord::Base.connection.table_exists?(:avo_activities)
     end
 
