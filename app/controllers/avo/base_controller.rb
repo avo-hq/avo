@@ -335,7 +335,11 @@ module Avo
       elsif available_view_types.size == 1
         available_view_types.first
       else
-        @resource.default_view_type || Avo.configuration.default_view_type
+        Avo::ExecutionContext.new(
+          target: @resource.default_view_type || Avo.configuration.default_view_type,
+          resource: @resource,
+          view: @view
+        ).handle
       end
 
       if available_view_types.exclude? @index_params[:view_type].to_sym
