@@ -357,8 +357,8 @@ module Avo
     def set_actions
       @actions = @resource
         .get_actions
-        .map do |action|
-          action[:class].new(record: @record, resource: @resource, view: @view, arguments: action[:arguments], icon: action[:icon])
+        .map do |action_bag|
+          action_bag.delete(:class).new(record: @record, resource: @resource, view: @view, **action_bag)
         end
         .select do |action|
           action.is_a?(DividerComponent) || action.visible_in_view(parent_resource: @parent_resource)
