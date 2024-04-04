@@ -339,7 +339,11 @@ module Avo
       elsif available_view_types.size == 1
         available_view_types.first
       else
-        @resource.default_view_type || Avo.configuration.default_view_type
+        Avo::ExecutionContext.new(
+          target: @resource.default_view_type || Avo.configuration.default_view_type,
+          resource: @resource,
+          view: @view
+        ).handle
       end
 
       if available_view_types.exclude? @index_params[:view_type].to_sym
@@ -361,11 +365,11 @@ module Avo
     def set_actions
       @actions = @resource
         .get_actions
-        .map do |action|
-          action[:class].new(record: @record, resource: @resource, view: @view, arguments: action[:arguments])
+        .map do |action_bag|
+          action_bag.delete(:class).new(record: @record, resource: @resource, view: @view, **action_bag)
         end
         .select do |action|
-          action.visible_in_view(parent_resource: @parent_resource)
+          action.is_a?(DividerComponent) || action.visible_in_view(parent_resource: @parent_resource)
         end
     end
 
