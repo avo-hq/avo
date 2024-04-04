@@ -8,7 +8,7 @@ module Avo
     before_action :set_resource
     before_action :set_applied_filters, only: :index
     before_action :set_record, only: [:show, :edit, :destroy, :update, :preview]
-    before_action :set_record_to_fill
+    before_action :set_record_to_fill, only: [:new, :edit]
     before_action :detect_fields
     before_action :set_edit_title_and_breadcrumbs, only: [:edit, :update]
     before_action :fill_record, only: [:create, :update]
