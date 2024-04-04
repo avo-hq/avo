@@ -8,6 +8,7 @@ module Avo
     before_action :set_resource
     before_action :set_applied_filters, only: :index
     before_action :set_record, only: [:show, :edit, :destroy, :update, :preview]
+    before_action :set_new_record, only: :new
     before_action :detect_fields
     before_action :set_record_to_fill
     before_action :set_edit_title_and_breadcrumbs, only: [:edit, :update]
@@ -102,9 +103,6 @@ module Avo
     end
 
     def new
-      @record = @resource.model_class.new
-      @resource = @resource.hydrate(record: @record, view: :new, user: _current_user)
-
       # Handle special cases when creating a new record via a belongs_to relationship
       if params[:via_belongs_to_resource_class].present?
         return render turbo_stream: turbo_stream.append('attach_modal', partial: 'avo/base/new_via_belongs_to')
@@ -603,6 +601,11 @@ module Avo
 
     def apply_pagination
       @pagy, @records = @resource.apply_pagination(index_params: @index_params, query: pagy_query)
+    end
+
+    def set_new_record
+      @record = @resource.model_class.new
+      @resource.hydrate(record: @record, view: :new, user: _current_user)
     end
   end
 end
