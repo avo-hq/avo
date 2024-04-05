@@ -35,7 +35,7 @@ class Avo::Index::ResourceTableComponent < Avo::BaseComponent
       end
 
       # Render only uniq fields on header
-      @header_fields.uniq! { |field| field.id }
+      @header_fields.uniq! { |field| field.table_header_label }
     end
   end
 
