@@ -58,7 +58,7 @@ class Avo::Resources::Project < Avo::BaseResource
       translation_key: "avo.field_translations.files",
       view_type: :list, stacked: false,
       hide_view_type_switcher: false
-    field :meta, as: :key_value, key_label: "Meta key", value_label: "Meta value", action_text: "New item", delete_text: "Remove item", disable_editing_keys: true, disable_editing_values: true, disable_adding_rows: false, disable_deleting_rows: true, html: -> do
+    field :meta, as: :key_value, key_label: "Meta key", value_label: "Meta value", action_text: "New item", delete_text: "Remove item", disable_editing_keys: true, disable_editing_values: false, disable_adding_rows: false, disable_deleting_rows: false, html: -> do
       show do
         wrapper { classes("spoon") }
       end
