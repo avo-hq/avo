@@ -6,8 +6,6 @@ RSpec.feature "ModelErrors", type: :system do
   around do |example|
     Comment.before_destroy do
       errors.add(:base, "Some Errors")
-
-      throw(:abort)
     end
 
     example.run
