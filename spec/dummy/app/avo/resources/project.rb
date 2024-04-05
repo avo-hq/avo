@@ -22,7 +22,11 @@ class Avo::Resources::Project < Avo::BaseResource
       filterable: true,
       summarizable: true
     field :name, as: :text, required: true, sortable: true, default: "New project default name"
-    field :progress, as: :progress_bar, value_suffix: "%", display_value: true, visible: -> { resource.record.progress > 0 }
+    field :progress,
+      as: :progress_bar,
+      value_suffix: "%",
+      display_value: true,
+      visible: -> { resource.view.form? || resource.record.progress.positive? }
     field :stage,
       as: :select,
       hide_on: :display,
