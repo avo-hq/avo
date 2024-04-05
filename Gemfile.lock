@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    avo (3.4.3)
+    avo (3.5.7)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
@@ -386,7 +386,7 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     rbs (2.8.4)
-    rdoc (6.6.2)
+    rdoc (6.6.3.1)
       psych (>= 4.0.0)
     redis (5.0.8)
       redis-client (>= 0.17.0)
@@ -451,6 +451,7 @@ GEM
       rexml
       simplecov (~> 0.19)
     simplecov-html (0.12.3)
+    simplecov-lcov (0.8.0)
     simplecov_json_formatter (0.1.4)
     smart_properties (1.17.0)
     solargraph (0.50.0)
@@ -600,6 +601,7 @@ DEPENDENCIES
   rubocop-shopify
   simplecov
   simplecov-cobertura
+  simplecov-lcov
   solargraph
   solargraph-rails
   spring

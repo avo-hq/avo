@@ -21,7 +21,7 @@ module Generators
           Rails::Generators.invoke("avo:resource", ["user", "-q"], {destination_root: Rails.root })
         end
 
-        if defined?(Account).present?
+        if defined?(Account) && Account.is_a?(ActiveRecord::Base)
           Rails::Generators.invoke("avo:resource", ["account", "-q"], {destination_root: Rails.root })
         end
       end

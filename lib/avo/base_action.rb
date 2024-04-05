@@ -20,6 +20,7 @@ module Avo
     attr_accessor :resource
     attr_accessor :user
     attr_reader :arguments
+    attr_reader :icon
 
     # TODO: find a differnet way to delegate this to the uninitialized Current variable
     delegate :context, to: Avo::Current
@@ -101,11 +102,12 @@ module Avo
       self.class.to_s.demodulize.underscore.humanize(keep_id_suffix: true)
     end
 
-    def initialize(record: nil, resource: nil, user: nil, view: nil, arguments: {})
+    def initialize(record: nil, resource: nil, user: nil, view: nil, arguments: {}, icon: :play)
       @record = record
       @resource = resource
       @user = user
       @view = Avo::ViewInquirer.new(view)
+      @icon = icon
       @arguments = Avo::ExecutionContext.new(
         target: arguments,
         resource: resource,
