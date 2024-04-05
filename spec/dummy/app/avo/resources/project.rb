@@ -26,7 +26,7 @@ class Avo::Resources::Project < Avo::BaseResource
       as: :progress_bar,
       value_suffix: "%",
       display_value: true,
-      visible: -> { resource.view.form? || resource.record.progress.positive? }
+      visible: -> { resource.view.form? || resource.record.progress&.positive? }
     field :stage,
       as: :select,
       hide_on: :display,
