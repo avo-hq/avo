@@ -16,6 +16,8 @@ module Avo
     before_action :authorize_attach_action, only: :new
     before_action :authorize_detach_action, only: :destroy
 
+    layout "avo/blank"
+
     def index
       @parent_resource = @resource.dup
       @resource = @related_resource
@@ -63,7 +65,7 @@ module Avo
       if reflection_class == "HasManyReflection"
         @record.send(association_name) << @attachment_record
       else
-        @record.send("#{association_name}=", @attachment_record)
+        @record.send(:"#{association_name}=", @attachment_record)
       end
 
       respond_to do |format|
