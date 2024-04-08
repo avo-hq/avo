@@ -8,8 +8,8 @@ module Avo
     before_action :set_resource
     before_action :set_applied_filters, only: :index
     before_action :set_record, only: [:show, :edit, :destroy, :update, :preview]
+    before_action :set_record_to_fill, only: [:new, :edit, :create, :update]
     before_action :detect_fields
-    before_action :set_record_to_fill
     before_action :set_edit_title_and_breadcrumbs, only: [:edit, :update]
     before_action :fill_record, only: [:create, :update]
     # Don't run base authorizations for associations
@@ -102,8 +102,9 @@ module Avo
     end
 
     def new
-      @record = @resource.model_class.new
-      @resource = @resource.hydrate(record: @record, view: :new, user: _current_user)
+      # Record is already hydrated on set_record_to_fill method
+      @record = @resource.record
+      @resource.hydrate(view: :new, user: _current_user)
 
       # Handle special cases when creating a new record via a belongs_to relationship
       if params[:via_belongs_to_resource_class].present?
@@ -335,7 +336,11 @@ module Avo
       elsif available_view_types.size == 1
         available_view_types.first
       else
-        @resource.default_view_type || Avo.configuration.default_view_type
+        Avo::ExecutionContext.new(
+          target: @resource.default_view_type || Avo.configuration.default_view_type,
+          resource: @resource,
+          view: @view
+        ).handle
       end
 
       if available_view_types.exclude? @index_params[:view_type].to_sym
@@ -357,11 +362,11 @@ module Avo
     def set_actions
       @actions = @resource
         .get_actions
-        .map do |action|
-          action[:class].new(record: @record, resource: @resource, view: @view, arguments: action[:arguments])
+        .map do |action_bag|
+          action_bag.delete(:class).new(record: @record, resource: @resource, view: @view, **action_bag)
         end
         .select do |action|
-          action.visible_in_view(parent_resource: @parent_resource)
+          action.is_a?(DividerComponent) || action.visible_in_view(parent_resource: @parent_resource)
         end
     end
 
@@ -511,7 +516,7 @@ module Avo
       redirect_path_from_resource_option(:after_update_path) || resource_view_response_path
     end
 
-    # Needs a different name, otwherwise, in some places, this can be called instead helpers.resource_view_path
+    # Requires a different/special name, otherwise, in some places, this can be called instead helpers.resource_view_path
     def resource_view_response_path
       helpers.resource_view_path(record: @record, resource: @resource)
     end
