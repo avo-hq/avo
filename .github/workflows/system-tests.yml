@@ -22,6 +22,7 @@ env:
   POSTGRES_PORT: 5432
   BUNDLE_PATH_RELATIVE_TO_CWD: true
   AVO_LICENSE_KEY: license_123
+  COVERAGE: true
 
 jobs:
   system_specs:
@@ -102,6 +103,11 @@ jobs:
     - name: Run tests
       id: run_tests
       run: bundle exec rspec spec/system
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: coverage_system_${{ matrix.rails }}_ruby_${{ matrix.ruby }}
+        path: coverage/.resultset.json
 
     - uses: actions/upload-artifact@v3
       if: always() && steps.run_tests.outcome == 'failure'

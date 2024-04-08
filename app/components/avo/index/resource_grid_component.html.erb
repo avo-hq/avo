@@ -1,7 +1,7 @@
 <% if @resources.present? %>
   <turbo-frame id="<%= @resource.model_key %>_list" target="_top" class="relative w-full">
     <div class="w-full grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-6 mt-8"
-    <%= drag_reorder_attributes %>
+    <%= try :drag_reorder_attributes %>
     data-component-name="<%= self.class.to_s.underscore %>"
     data-selected-resources-name="<%= @resource.model_key %>" data-selected-resources="[]">
       <% @resources.each_with_index do |resource, index| %>
