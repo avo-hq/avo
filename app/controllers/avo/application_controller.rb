@@ -51,6 +51,10 @@ module Avo
       super
     end
 
+    def hello
+      puts "Nobody tested me :("
+    end
+
     private
 
     # Get the pluralized resource name for this request
