@@ -162,7 +162,7 @@ module Avo
     def license
       gems = Gem::Specification.map {|gem| gem.name}
 
-      @license ||= if gems.include?("avo-enterprise")
+      @license ||= if gems.include?("avo-audits")
         "enterprise"
       elsif gems.include?("avo-advanced")
         "advanced"
@@ -233,7 +233,7 @@ module Avo
 
 
     def audit?
-      Avo.plugin_manager.installed?("avo-enterprise") &&
+      Avo.plugin_manager.installed?("avo-audits") &&
         @audit &&
         database_exists? &&
         ActiveRecord::Base.connection.table_exists?(:avo_activities)
