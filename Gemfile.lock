@@ -667,6 +667,7 @@ DEPENDENCIES
   listen (>= 3.5.1)
   mapkick-rb (~> 0.1.4)
   meta-tags
+  money-rails (~> 1.12)
   net-smtp
   pg (>= 0.18, < 2.0)
   pluggy!
