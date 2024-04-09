@@ -75,6 +75,7 @@ group :development do
   gem "rubocop"
   gem "ripper-tags"
   gem "rubocop-shopify", require: false
+  gem "rubycritic", require: false
 end
 
 group :test do
@@ -152,7 +153,7 @@ gem "activestorage"
 # Required by Avo
 gem "sprockets-rails"
 
-# Avo file filed requires this gem
+# Avo file field requires this gem
 # Use Active Storage variant
 gem "image_processing", "~> 1.12"
 
@@ -164,3 +165,8 @@ gem "prefixed_ids"
 gem "mapkick-rb", "~> 0.1.4"
 
 gem "pluggy", path: "./pluggy"
+
+# Avo money field
+# gem "avo-money_field", path: "./../avo-money_field"
+gem "money-rails", "~> 1.12"
+gem "avo-money_field"

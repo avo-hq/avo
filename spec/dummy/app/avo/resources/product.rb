@@ -41,9 +41,9 @@ class Avo::Resources::Product < Avo::BaseResource
         }
       }
     }
+    field :price, as: :money, currencies: %w[EUR USD RON PEN]
     field :description, as: :tiptap, placeholder: "Enter text", always_show: false
     field :image, as: :file, is_image: true
-    field :price, as: :number
     field :category, as: :select, enum: ::Product.categories
   end
 end
