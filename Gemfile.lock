@@ -119,8 +119,8 @@ GEM
       rake
       thor (>= 0.14.0)
     ast (2.4.2)
-    avo-money_field (0.0.2)
-      money-rails
+    avo-money_field (0.0.3)
+      money-rails (~> 1.12)
     awesome_print (1.9.2)
     aws-eventstream (1.3.0)
     aws-partitions (1.888.0)
