@@ -146,7 +146,12 @@ module Avo
     end
 
     def set_record
-      id = @resource.model_class.primary_key.is_a?(Array) ? params.extract_value(:id) : params[:id]
+      id = if @resource.model_class.primary_key.is_a?(Array) && params.respond_to?(:extract_value)
+        params.extract_value(:id)
+      else
+        params[:id]
+      end
+
       @record = @resource.find_record(id, query: model_scope, params:)
       @resource.hydrate(record: @record)
     end
