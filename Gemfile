@@ -169,3 +169,4 @@ gem "pluggy", path: "./pluggy"
 # Avo money field
 # gem "avo-money_field", path: "./../avo-money_field"
 gem "avo-money_field"
+gem "money-rails", "~> 1.12"
