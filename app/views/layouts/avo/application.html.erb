@@ -3,6 +3,9 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <% if !Avo.configuration.turbo[:instant_click] %>
+      <meta name="turbo-prefetch" content="false">
+    <% end %>
     <%= display_meta_tags site: Avo.configuration.app_name, reverse: true, separator: "—" %>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -21,6 +24,8 @@
     <% end %>
     <%= render Avo::AssetManager::JavascriptComponent.new asset_manager: Avo.asset_manager %>
     <%= render partial: 'avo/partials/head' %>
+    <%= turbo_refreshes_with method: :replace, scroll: :reset %>
+    <%= content_for :head %>
   </head>
   <body class="bg-application os-mac">
     <div class="relative flex flex-1 w-full min-h-full" data-controller="sidebar" data-sidebar-open-value="<%= @sidebar_open %>">
@@ -45,22 +50,15 @@
         </div>
       </div>
     </div>
-    <%= turbo_frame_tag 'actions_show' %>
-    <%= turbo_frame_tag 'attach_modal' %>
-    <%= turbo_frame_tag 'alerts', class: "fixed inset-0 bottom-0 flex flex-col space-y-4 items-end justify-right px-4 py-6 sm:p-6 justify-end z-[100] pointer-events-none" do %>
-      <%= render Avo::FlashAlertsComponent.new flashes: flash %>
-      <% # In case we have other general error messages %>
-      <% if @errors.present? %>
-        <% @errors.each do |message| %>
-          <%= render Avo::AlertComponent.new :error, message %>
-        <% end %>
-      <% end %>
-    <% end %>
-    <%= render partial: "avo/partials/scripts" %>
+    <%= turbo_frame_tag Avo::ACTIONS_TURBO_FRAME_ID, data: {turbo_temporary: 1} %>
+    <%= render partial: 'avo/partials/attach_modal' %>
+    <%= render partial: 'avo/partials/alerts' %>
+    <%= render partial: 'avo/partials/scripts' %>
     <!-- Avo version: <%= Avo::VERSION %> -->
     <!-- Environment: <%= Rails.env %> -->
     <!-- License ID: <%= Avo.license.id %> -->
     <!-- License valid?: <%= Avo.license.valid ? "valid" : "invalid" %>  -->
+    <!-- Plugins: <%= Avo.plugin_manager.to_s %> -->
   </body>
 </html>
 <!-- ✨ Built with Avo • https://www.avohq.io/ -->

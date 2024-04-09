@@ -8,7 +8,11 @@ class Avo::Resources::Post < Avo::BaseResource
   }
 
   self.includes = [:user]
-  self.default_view_type = :grid
+  self.default_view_type = -> {
+    mobile_user = request.user_agent =~ /Mobile/
+
+    mobile_user ? :table : :grid
+  }
   self.find_record_method = -> {
     # When using friendly_id, we need to check if the id is a slug or an id.
     # If it's a slug, we need to use the find_by_slug method.
@@ -34,7 +38,7 @@ class Avo::Resources::Post < Avo::BaseResource
       hide_attachment_url: true,
       hide_attachment_filename: true,
       hide_attachment_filesize: true
-    field :cover_photo, as: :file, is_image: true, as_avatar: :rounded, full_width: true, hide_on: [], accept: "image/*"
+    field :cover_photo, as: :file, is_image: true, as_avatar: :rounded, full_width: true, hide_on: [], accept: "image/*", stacked: true
     field :cover_photo, as: :external_image, name: "Cover photo", required: true, hide_on: :all, link_to_record: true, as_avatar: :rounded, format_using: -> { value.present? ? value&.url : nil }
     field :audio, as: :file, is_audio: true, accept: "audio/*"
 

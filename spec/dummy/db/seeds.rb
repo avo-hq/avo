@@ -24,7 +24,7 @@ Product.delete_all
 Project.delete_all
 User.delete_all
 City.delete_all
-['active_storage_blobs', 'active_storage_attachments', 'posts', 'projects', 'projects_users', 'team_memberships', 'teams', 'users', 'comments', 'people', 'reviews', 'courses', 'course_links', 'fish'].each do |table_name|
+["active_storage_blobs", "active_storage_attachments", "posts", "projects", "projects_users", "team_memberships", "teams", "users", "comments", "people", "reviews", "courses", "course_links", "fish"].each do |table_name|
   ActiveRecord::Base.connection.execute("TRUNCATE #{table_name} RESTART IDENTITY CASCADE")
 end
 
@@ -47,7 +47,7 @@ User.create(
   first_name: "Avo",
   last_name: "Cado",
   email: "avo@avohq.io",
-  password: (ENV["AVO_ADMIN_PASSWORD"] || :secret),
+  password: ENV["AVO_ADMIN_PASSWORD"] || :secret,
   birthday: "2020-03-28",
   roles: {
     admin: true,
@@ -58,68 +58,83 @@ User.create(
 
 famous_users = [
   {
-    first_name: 'David Heinemeier',
-    last_name: 'Hansson',
-    email: 'david@hey.com'
+    first_name: "David Heinemeier",
+    last_name: "Hansson",
+    email: "david@hey.com"
   },
   {
-    first_name: 'Chris',
-    last_name: 'Oliver',
-    email: 'chris@gorails.com'
+    first_name: "Eric",
+    last_name: "Berry",
+    email: "eric@berry.sh"
   },
   {
-    first_name: 'Jason',
-    last_name: 'Charnes',
-    email: 'jason@jasoncharnes.com'
+    first_name: "Vladimir",
+    last_name: "Dementyev",
+    email: "palkan@evilmartians.com"
   },
   {
-    first_name: 'Jason',
-    last_name: 'Swett',
-    email: 'jason@benfranklinlabs.com'
+    first_name: "Jason",
+    last_name: "Charnes",
+    email: "jason@jasoncharnes.com"
+  },
+  {
+    first_name: "Andrew",
+    last_name: "Culver",
+    email: "andrew.culver@gmail.com"
+  },
+  {
+    first_name: "Yaroslav",
+    last_name: "Shmarov",
+    email: "yashm@outlook.com"
+  },
+  {
+    first_name: "Jason",
+    last_name: "Swett",
+    email: "jason@benfranklinlabs.com"
   },
   {
     first_name: 'Yukihiro "Matz"',
-    last_name: 'Matsumoto',
-    email: 'matz@ruby.or.jp'
+    last_name: "Matsumoto",
+    email: "matz@ruby.or.jp"
   },
   {
-    first_name: 'Joe',
-    last_name: 'Masilotti',
-    email: 'joe@masilotti.com'
+    first_name: "Joe",
+    last_name: "Masilotti",
+    email: "joe@masilotti.com"
   },
   {
-    first_name: 'Lucian',
-    last_name: 'Ghinda',
-    email: 'lucian@ghinda.com'
+    first_name: "Lucian",
+    last_name: "Ghinda",
+    email: "lucian@ghinda.com"
   },
   {
-    first_name: 'Mike',
-    last_name: 'Perham',
-    email: 'mperham@gmail.com'
+    first_name: "Mike",
+    last_name: "Perham",
+    email: "mperham@gmail.com"
   },
   {
-    first_name: 'Taylor',
-    last_name: 'Otwell',
-    email: 'taylor@laravel.com'
+    first_name: "Taylor",
+    last_name: "Otwell",
+    email: "taylor@laravel.com"
   },
   {
-    first_name: 'Adam',
-    last_name: 'Watham',
-    email: 'adam@adamwathan.me'
+    first_name: "Adam",
+    last_name: "Watham",
+    email: "adam@adamwathan.me"
   },
   {
-    first_name: 'Jeffery',
-    last_name: 'Way',
-    email: 'jeffrey@laracasts.com'
+    first_name: "Jeffery",
+    last_name: "Way",
+    email: "jeffrey@laracasts.com"
   },
   {
-    first_name: 'Adrian',
-    last_name: 'Marin',
-    email: 'adrian@adrianthedev.com'
-  },
+    first_name: "Adrian",
+    last_name: "Marin",
+    email: "adrian@adrianthedev.com"
+  }
 ]
 
-famous_users.reverse.each do |user|
+famous_users.reverse_each do |user|
   users.push(FactoryBot.create(:user, team_id: teams.sample.id, **user))
 end
 
@@ -206,33 +221,33 @@ puts "Creating products"
 
 products = Product.create([
   {
-    title: 'iPod',
+    title: "iPod",
     description: "1000 songs in your pocket",
     price: "250",
-    category: "Music players",
+    category: "Music players"
   },
   {
-    title: 'MacBook Pro',
+    title: "MacBook Pro",
     description: "Supercharged for pros",
     price: "2250",
-    category: "Computers",
+    category: "Computers"
   },
   {
-    title: 'Apple watch',
+    title: "Apple watch",
     description: "A heathly leap ahead",
     price: "750",
-    category: "Wearables",
+    category: "Wearables"
   },
   {
-    title: 'iPhone',
+    title: "iPhone",
     description: "A magical new way to interact with iPhone",
     price: "999",
-    category: "Phones",
-  },
+    category: "Phones"
+  }
 ])
 
-['ipod.jpg', 'macbook.jpg', 'watch.jpg', 'iphone.jpg'].each_with_index do |img, index|
-  file = Rails.root.join('db', 'seed_files', img)
+["ipod.jpg", "macbook.jpg", "watch.jpg", "iphone.jpg"].each_with_index do |img, index|
+  file = Rails.root.join("db", "seed_files", img)
   products[index].image.attach io: file.open, filename: img
 end
 

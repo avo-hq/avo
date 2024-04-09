@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::Index::ResourceTableComponent < ViewComponent::Base
+class Avo::Index::ResourceTableComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
   attr_reader :pagy, :query
 

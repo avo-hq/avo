@@ -20,6 +20,7 @@ module Avo
     attr_accessor :resource
     attr_accessor :user
     attr_reader :arguments
+    attr_reader :icon
 
     # TODO: find a differnet way to delegate this to the uninitialized Current variable
     delegate :context, to: Avo::Current
@@ -46,31 +47,67 @@ module Avo
         to_s
       end
 
-      def link_arguments(resource:, **args)
-        path = Avo::Services::URIService.parse(resource.record.present? ? resource.record_path : resource.records_path)
+      def link_arguments(resource:, arguments: {}, **args)
+        path = Avo::Services::URIService.parse(resource.record&.persisted? ? resource.record_path : resource.records_path)
           .append_paths("actions")
-          .append_query(action_id: to_param, **args)
+          .append_query(
+            **{
+              action_id: to_param,
+              arguments: encode_arguments(arguments),
+              **args
+            }.compact
+          )
           .to_s
 
         data = {
-          turbo_frame: "actions_show",
+          turbo_frame: Avo::ACTIONS_TURBO_FRAME_ID,
         }
 
         [path, data]
       end
+
+      # Encrypt the arguments so we can pass sensible data as a query param.
+      # EncryptionService can generate special characters that can break the URL.
+      # We use Base64 to encode the encrypted string so we can safely pass it as a query param and don't break the URL.
+      def encode_arguments(arguments)
+        return if arguments.blank?
+
+        Base64.encode64 Avo::Services::EncryptionService.encrypt(
+          message: arguments,
+          purpose: :action_arguments
+        )
+      end
+
+      def decode_arguments(arguments)
+        return if arguments.blank?
+
+        Avo::Services::EncryptionService.decrypt(
+          message: Base64.decode64(arguments),
+          purpose: :action_arguments
+        )
+      end
     end
 
     def action_name
-      return name if name.present?
+      if name.present?
+        return Avo::ExecutionContext.new(
+          target: name,
+          resource: @resource,
+          record: @record,
+          view: @view,
+          arguments: @arguments
+        ).handle
+      end
 
       self.class.to_s.demodulize.underscore.humanize(keep_id_suffix: true)
     end
 
-    def initialize(record: nil, resource: nil, user: nil, view: nil, arguments: {})
+    def initialize(record: nil, resource: nil, user: nil, view: nil, arguments: {}, icon: :play)
       @record = record
       @resource = resource
       @user = user
       @view = Avo::ViewInquirer.new(view)
+      @icon = icon
       @arguments = Avo::ExecutionContext.new(
         target: arguments,
         resource: resource,
@@ -87,7 +124,7 @@ module Avo
       @response ||= {}
       @response[:messages] = []
 
-      if self.may_download_file.present?
+      if may_download_file.present?
         puts "[Avo->] WARNING! Since version 3.2.2 'may_download_file' is unecessary and deprecated on actions. Can be safely removed from #{self.class.name}"
       end
     end
@@ -97,7 +134,13 @@ module Avo
     end
 
     def get_message
-      Avo::ExecutionContext.new(target: self.class.message, record: @record, resource: @resource).handle
+      Avo::ExecutionContext.new(
+        target: self.class.message,
+        resource: @resource,
+        record: @record,
+        view: @view,
+        arguments: @arguments
+      ).handle
     end
 
     def handle_action(**args)
@@ -216,6 +259,14 @@ module Avo
 
     def reload
       response[:type] = :reload
+
+      self
+    end
+
+    def navigate_to_action(action, **kwargs)
+      response[:type] = :navigate_to_action
+      response[:action] = action
+      response[:navigate_to_action_args] = kwargs
 
       self
     end

@@ -120,7 +120,8 @@ RSpec.describe "Tags", type: :system do
     it "fetches the users" do
       expect(TestBuddy).to receive(:hi).with(zezel.id.to_s).at_least :once
 
-      visit "/admin/resources/users/#{admin.slug}/actions?action_id=Avo::Actions::ToggleInactive"
+      visit "/admin/resources/users/#{admin.slug}"
+      open_panel_action(action_name: "Toggle inactive")
 
       tags_input.click
       tags_input.set("Zezel")

@@ -51,6 +51,10 @@ module Avo
       super
     end
 
+    def hello
+      puts "Nobody tested me :("
+    end
+
     private
 
     # Get the pluralized resource name for this request
@@ -161,13 +165,24 @@ module Avo
       @resource.class.find_scope
     end
 
+    # Force actions to have specific view
+    unless defined? VIEW_ACTION_MAPPING
+      VIEW_ACTION_MAPPING = {
+        update: :edit,
+        create: :new
+      }
+    end
+
     def set_view
-      @view = Avo::ViewInquirer.new(action_name.to_s)
+      @view = Avo::ViewInquirer.new(VIEW_ACTION_MAPPING[action_name.to_sym] || action_name)
     end
 
     def set_record_to_fill
-      @record_to_fill = @resource.model_class.new if @view.create?
-      @record_to_fill = @record if @view.update?
+      @record_to_fill = if @view.new?
+        @resource.model_class.new
+      elsif @view.edit?
+        @record
+      end
 
       # If resource.record is nil, most likely the user is creating a new record.
       # In that case, to access resource.record in visible and readonly blocks we hydrate the resource with a new record.
@@ -277,11 +292,21 @@ module Avo
     end
 
     def default_url_options
+      result = super
+
       if params[:force_locale].present?
-        {**super, force_locale: params[:force_locale]}
-      else
-        super
+        result[:force_locale] = params[:force_locale]
       end
+
+      extra_options = get_extra_default_url_options
+
+      if extra_options.present?
+        extra_options.each do |param_name|
+          result[param_name] = params[param_name]
+        end
+      end
+
+      result
     end
 
     def set_sidebar_open
@@ -310,6 +335,18 @@ module Avo
         "/avo-assets/avo.base"
       else
         "avo.base"
+      end
+    end
+
+    private
+
+    def get_extra_default_url_options
+      block_or_array = Avo.configuration.default_url_options
+
+      if block_or_array.respond_to?(:call)
+        instance_eval(&block_or_array)
+      else
+        block_or_array
       end
     end
   end

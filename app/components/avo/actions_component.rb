@@ -75,20 +75,46 @@ class Avo::ActionsComponent < ViewComponent::Base
       .append_query(
         {
           action_id: action.to_param,
-          arguments: encrypted_arguments(action)
+          arguments: Avo::BaseAction.encode_arguments(action.arguments)
         }.compact
       ).to_s
   end
 
-  # Encrypt the arguments so we can pass them as a query param.
-  # EncryptionService can generate special characters that can break the URL.
-  # We use Base64 to encode the encrypted string so we can safely pass it as a query param and don't break the URL.
-  def encrypted_arguments(action)
-    return if action.arguments.blank?
+  def icon(action)
+    svg action.icon, class: "h-5 mr-1 inline pointer-events-none"
+  end
 
-    Base64.encode64 Avo::Services::EncryptionService.encrypt(
-      message: action.arguments,
-      purpose: :action_arguments
-    )
+  def render_item(action)
+    if action.is_a?(Avo::DividerComponent)
+      render Avo::DividerComponent.new
+    else
+      render_action_link(action)
+    end
+  end
+
+  private
+
+  def render_action_link(action)
+    link_to action_path(action),
+      data: action_data_attributes(action),
+      title: action.action_name,
+      class: action_css_class(action) do
+        raw("#{icon(action)} #{action.action_name}")
+      end
+  end
+
+  def action_data_attributes(action)
+    {
+      action_name: action.action_name,
+      "turbo-frame": Avo::ACTIONS_TURBO_FRAME_ID,
+      action: "click->actions-picker#visitAction",
+      "actions-picker-target": action.standalone ? "standaloneAction" : "resourceAction",
+      disabled: is_disabled?(action),
+      turbo_prefetch: false,
+    }
+  end
+
+  def action_css_class(action)
+    "flex items-center px-4 py-3 w-full font-semibold text-sm hover:bg-primary-100 border-b#{is_disabled?(action) ? " text-gray-500" : " text-black"}"
   end
 end
