@@ -167,4 +167,5 @@ gem "mapkick-rb", "~> 0.1.4"
 gem "pluggy", path: "./pluggy"
 
 # Avo money field
+# gem "avo-money_field", path: "./../avo-money_field"
 gem "avo-money_field"
