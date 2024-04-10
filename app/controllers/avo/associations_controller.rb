@@ -16,7 +16,7 @@ module Avo
     before_action :authorize_attach_action, only: :new
     before_action :authorize_detach_action, only: :destroy
 
-    layout "avo/blank"
+    layout :choose_layout
 
     def index
       @parent_resource = @resource.dup
@@ -153,6 +153,14 @@ module Avo
         @related_resource.authorization(user: _current_user)
       else
         Services::AuthorizationService.new _current_user
+      end
+    end
+
+    def choose_layout
+      if turbo_frame_request?
+        "avo/blank"
+      else
+        "avo/application"
       end
     end
   end
