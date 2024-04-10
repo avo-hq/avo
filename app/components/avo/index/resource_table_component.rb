@@ -13,30 +13,7 @@ class Avo::Index::ResourceTableComponent < Avo::BaseComponent
     @pagy = pagy
     @query = query
     @actions = actions
-
-    cache_if Avo.configuration.cache_resources_on_index_view, resource.cache_hash(parent_record), expires_in: 1.day do
-      # Keep unique header fields, builded by joining all row visible fields.
-      @header_fields = []
-
-      # Rows keep each Avo::Index::TableRowComponent initialized to be rendered
-      # It is initialized here in order to know what fields are visible to render them as column on header.
-      @rows = @resources.map do |resource|
-        # Store each row visible fields on @header_fields variable
-        @header_fields.concat row_fields = resource.get_fields(reflection: reflection, only_root: true)
-
-        {
-          resource: resource,
-          fields: row_fields,
-          reflection: reflection,
-          parent_record: parent_record,
-          parent_resource: parent_resource,
-          actions: actions
-        }
-      end
-
-      # Render only uniq fields on header
-      @header_fields.uniq! { |field| field.table_header_label }
-    end
+    cache_table_rows
   end
 
   def encrypted_query
@@ -61,6 +38,46 @@ class Avo::Index::ResourceTableComponent < Avo::BaseComponent
       t "avo.records_selected_from_all_pages_html"
     else
       t "avo.x_records_selected_from_all_pages_html", count: pagy.count
+    end
+  end
+
+  def cache_table_rows
+    # Cache the execution of the following block if caching is enabled in Avo configuration
+    cache_if Avo.configuration.cache_resources_on_index_view, @resource.cache_hash(@parent_record), expires_in: 1.day do
+      # Initialize arrays to hold header fields and table row components
+      @header_fields = []
+      @table_row_components = []
+
+      generate_table_row_components
+
+      # Remove duplicate header fields based on table_header_label
+      @header_fields.uniq!(&:table_header_label)
+
+      # Create an array of header field labels used for each row to render values on the right column
+      @header_fields_ids = @header_fields.map(&:table_header_label)
+
+      # Assign header field IDs to each TableRowComponent
+      # We assign it here because only complete header fields array after last table row.
+      @table_row_components.map { |table_row_component| table_row_component.header_fields = @header_fields_ids }
+    end
+  end
+
+  def generate_table_row_components
+    # Loop through each resource in @resources
+    @resources.each do |resource|
+      # Get fields for the current resource and concat them to the @header_fields
+      row_fields = resource.get_fields(reflection: @reflection, only_root: true)
+      @header_fields.concat row_fields
+
+      # Create a TableRowComponent instance for the resource and add it to @table_row_components
+      @table_row_components << Avo::Index::TableRowComponent.new(
+        resource: resource,
+        fields: row_fields,
+        reflection: @reflection,
+        parent_record: @parent_record,
+        parent_resource: @parent_resource,
+        actions: @actions
+      )
     end
   end
 end

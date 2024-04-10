@@ -40,8 +40,8 @@
     <table class="w-full px-4 bg-white">
       <%= render partial: 'avo/partials/table_header', locals: {fields: @header_fields} %>
       <tbody class="divide-y" <%= try :drag_reorder_attributes %>>
-        <% @rows.each do |row| %>
-          <%= render Avo::Index::TableRowComponent.new **row.merge(header_fields: @header_fields.map { |field| field.id }) %>
+        <% @table_row_components.each do |table_row_component| %>
+          <%= render table_row_component %>
         <% end %>
       </tbody>
     </table>
