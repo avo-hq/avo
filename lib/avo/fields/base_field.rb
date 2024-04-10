@@ -267,10 +267,10 @@ module Avo
 
       # Used by Avo to fill the record with the default value on :new and :edit views
       def assign_value(record:, value:)
-        id = type == "belongs_to" ? foreign_key : database_id
+        id = (type == "belongs_to") ? foreign_key : database_id
 
         if record.send(id).nil?
-          record.send("#{id}=", value)
+          record.send(:"#{id}=", value)
         end
       end
 
