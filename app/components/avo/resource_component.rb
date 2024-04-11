@@ -117,8 +117,8 @@ class Avo::ResourceComponent < Avo::BaseComponent
     (params[:via_resource_class].present? || params[:via_relation_class].present?) && params[:via_record_id].present?
   end
 
-  def via_page?
-    referrer_params["page"].present?
+  def keep_referrer_params
+    { page: referrer_params["page"] }.compact
   end
 
   def render_back_button(control)
