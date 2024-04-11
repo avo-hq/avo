@@ -139,6 +139,7 @@ Rails.configuration.to_prepare do
   Avo::Fields::BaseField.include ActionView::Helpers::UrlHelper
   Avo::Fields::BaseField.include ActionView::Context
   Avo::ApplicationController.include ApplicationControllerExtensions
+  Avo::ApplicationController.helper Rails.application.helpers
 end
 
 Avo.on_load(:boot) do

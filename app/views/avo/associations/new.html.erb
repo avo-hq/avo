@@ -41,7 +41,7 @@
       </div>
 
       <% c.with_controls do %>
-        <%= a_button 'data-action': 'click->modal#close', size: :sm, style: :outline, color: :gray do %>
+        <%= a_button 'data-action': 'click->modal#close', type: :button, size: :sm, style: :outline, color: :gray do %>
           <%= t('avo.cancel') %>
         <% end %>
         <%= a_button type: :submit, style: :primary, color: :green, size: :sm do %>
