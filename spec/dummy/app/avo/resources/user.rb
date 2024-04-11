@@ -73,6 +73,7 @@ class Avo::Resources::User < Avo::BaseResource
     divider
     action Avo::Actions::Test::NoConfirmationRedirect
     action Avo::Actions::Test::CloseModal
+    action Avo::Actions::DetachUser
   end
 
   def filters
