@@ -52,6 +52,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_22_003900) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "activities", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "cities", force: :cascade do |t|
     t.string "name"
     t.integer "population"
@@ -107,6 +113,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_22_003900) do
     t.index ["user_id"], name: "index_courses_locations_on_user_id"
   end
 
+  create_table "entries", force: :cascade do |t|
+    t.integer "account_id"
+    t.integer "creator_id"
+    t.string "entryable_type"
+    t.integer "entryable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "events", force: :cascade do |t|
     t.string "name"
     t.datetime "event_time", precision: nil
@@ -136,6 +151,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_22_003900) do
     t.bigint "store_id"
     t.index ["store_id"], name: "index_locations_on_store_id"
     t.index ["team_id"], name: "index_locations_on_team_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.string "subject"
+    t.string "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "people", force: :cascade do |t|

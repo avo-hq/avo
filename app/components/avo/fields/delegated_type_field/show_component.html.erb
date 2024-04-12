@@ -1,0 +1,3 @@
+<%= field_wrapper **field_wrapper_args.merge(dash_if_blank: false) do %>
+  <%= link_to @field.label, resource_view_path, data: {Xturbo_frame: "@field.target"} %>
+<% end %>

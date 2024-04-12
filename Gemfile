@@ -170,3 +170,7 @@ gem "pluggy", path: "./pluggy"
 # gem "avo-money_field", path: "./../avo-money_field"
 gem "money-rails", "~> 1.12"
 gem "avo-money_field"
+
+# Avo record link field
+gem "avo-record_link_field", path: "./../avo-record_link_field"
+# gem "avo-record_link_field"

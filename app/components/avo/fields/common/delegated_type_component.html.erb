@@ -1,0 +1,15 @@
+hey
+<%= @field %>
+<%= content_tag :div,
+  class: "divide-y",
+  data: {
+    # controller: "belongs-to-field",
+    # searchable: @field.is_searchable?,
+    # association: @field.id,
+    # association_class: @field&.target_resource&.model_class || nil,
+  } do %>
+  <%= helpers.field_wrapper **field_wrapper_args, label: @field.type_input_foreign_key, help: "@field.polymorphic_help" || '' do %>
+    <%#= field_wrapper_args %>
+    <%= @field.type_input_foreign_key %>
+  <% end %>
+<% end %>
