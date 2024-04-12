@@ -204,18 +204,22 @@ export default class extends Controller {
       return
     }
 
+    const timezonedDate = DateTime.fromISO(selectedDates[0].toISOString())
+      .setZone(this.displayTimezone, { keepLocalTime: true })
+      .setZone('UTC', { keepLocalTime: !this.relativeValue })
+
     let value
     switch (this.fieldTypeValue) {
       case 'time':
         // For time values, we should maintain the real value and format it to a time-friendly format.
-        value = DateTime.fromISO(selectedDates[0].toISOString()).setZone('UTC', { keepLocalTime: !this.relativeValue }).toFormat(RAW_TIME_FORMAT)
+        value = timezonedDate.toFormat(RAW_TIME_FORMAT)
         break
       case 'date':
-        value = DateTime.fromISO(selectedDates[0].toISOString()).setZone('UTC', { keepLocalTime: true }).toFormat(RAW_DATE_FORMAT)
+        value = timezonedDate.toFormat(RAW_DATE_FORMAT)
         break
       default:
       case 'dateTime':
-        value = DateTime.fromISO(selectedDates[0].toISOString()).setZone('UTC', { keepLocalTime: !this.relativeValue }).toISO()
+        value = timezonedDate.toISO()
         break
     }
 

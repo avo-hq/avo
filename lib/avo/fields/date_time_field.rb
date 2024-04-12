@@ -43,19 +43,26 @@ module Avo
       end
 
       def utc_time(value)
-        if timezone.present?
-          ActiveSupport::TimeZone.new(timezone).local_to_utc(Time.parse(value))
+        time = Time.parse(value)
+
+        if timezone.present? && !time.utc?
+          ActiveSupport::TimeZone.new(timezone).local_to_utc(time)
         else
           value
         end
       end
 
       def timezone
-        if @timezone.respond_to?(:call)
+        timezone = if @timezone.respond_to?(:call)
           return Avo::Hosts::ResourceViewRecordHost.new(block: @timezone, record: resource.model, resource: resource, view: view).handle
+        else
+          @timezone
         end
 
-        @timezone
+        # Fix for https://github.com/moment/luxon/issues/1358#issuecomment-2017477897
+        return "Etc/UTC" if timezone&.downcase == "utc" && view.in?([:new, :create, :edit, :update])
+
+        timezone
       end
     end
   end
