@@ -15,8 +15,8 @@
     </td>
   <% end %>
   <% if Avo.configuration.resource_controls_on_the_left? %>
-    <td class="text-right whitespace-nowrap px-2" data-control="resource-controls">
-      <div class="flex items-center justify-end flex-grow-0 h-full w-full">
+    <td class="text-right whitespace-nowrap w-px" data-control="resource-controls">
+      <div class="flex items-center justify-end flex-grow-0 h-full">
         <%= render(Avo::Index::ResourceControlsComponent.new(resource: @resource, reflection: @reflection, parent_record: @parent_record, parent_resource: @parent_resource, view_type: :table, actions: @actions)) %>
       </div>
     </td>
@@ -25,8 +25,8 @@
     <%= render field.component_for_view(:index).new(field: field, resource: @resource, reflection: @reflection, index: index, parent_record: @parent_record, parent_resource: @parent_resource) %>
   <% end %>
   <% if Avo.configuration.resource_controls_on_the_right? %>
-    <td class="text-right whitespace-nowrap px-2" data-control="resource-controls">
-      <div class="flex items-center justify-end flex-grow-0 h-full w-full">
+    <td class="text-right whitespace-nowrap" data-control="resource-controls">
+      <div class="flex items-center justify-end flex-grow-0 h-full">
         <%= render(Avo::Index::ResourceControlsComponent.new(resource: @resource, reflection: @reflection, parent_record: @parent_record, parent_resource: @parent_resource, view_type: :table, actions: @actions)) %>
       </div>
     </td>
