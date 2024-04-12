@@ -4,13 +4,7 @@
     data: {
       controller: "trix-field",
       trix_field_target: "controller",
-      resource_name: resource_name,
-      resource_id: resource_id,
-      attachments_disabled: @field.attachments_disabled,
-      attachment_key: @field.attachment_key,
-      hide_attachment_filename: @field.hide_attachment_filename,
-      hide_attachment_filesize: @field.hide_attachment_filesize,
-      hide_attachment_url: @field.hide_attachment_url,
+      **data_values,
     } do %>
     <%= content_tag 'trix-editor',
       class: 'trix-content',
