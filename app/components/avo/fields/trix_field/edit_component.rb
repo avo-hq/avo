@@ -5,7 +5,7 @@ class Avo::Fields::TrixField::EditComponent < Avo::Fields::EditComponent
 
   def initialize(**args)
     @resource = args[:resource]
-    @resource_id = args[:resource_id] || @resource&.record&.id
+    @resource_id = args[:resource_id] || @resource&.record&.to_param
     @resource_name = args[:resource_name] || @resource&.singular_route_key
 
     super(**args)
