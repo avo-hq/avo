@@ -26,7 +26,7 @@ class Avo::Resources::Project < Avo::BaseResource
       as: :progress_bar,
       value_suffix: "%",
       display_value: true,
-      visible: -> do 
+      visible: -> do
         # conditionally hiding the fields we can test that it's not going to break the table layout
         resource.view.form? || resource.record.progress&.positive?
       end
