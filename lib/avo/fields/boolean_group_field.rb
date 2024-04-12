@@ -34,7 +34,8 @@ module Avo
           new_value[id] = value.include? id.to_s
         end
 
-        model[id] = new_value
+        # Don't override existing values unless specified in options
+        model[id] = (model[id] || {}).merge(new_value)
 
         model
       end
