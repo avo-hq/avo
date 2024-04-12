@@ -118,7 +118,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def keep_referrer_params
-    { page: referrer_params["page"] }.compact
+    {page: referrer_params["page"]}.compact
   end
 
   def render_back_button(control)
