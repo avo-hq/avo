@@ -31,6 +31,19 @@ class Avo::ActionsComponent < ViewComponent::Base
     end
   end
 
+  # When running an action for one record we should do it on a special path.
+  # We do that so we get the `record` param inside the action so we can prefill fields.
+  def action_path(action)
+    return single_record_path(action) if as_row_control
+    return many_records_path(action) unless @resource.has_record_id?
+
+    if on_record_page?
+      single_record_path action
+    else
+      many_records_path action
+    end
+  end
+
   # How should the action be displayed by default
   def is_disabled?(action)
     return false if action.standalone || as_row_control
@@ -46,5 +59,62 @@ class Avo::ActionsComponent < ViewComponent::Base
 
   def on_index_page?
     !on_record_page?
+  end
+
+  def single_record_path(action)
+    action_url(action, @resource.record_path)
+  end
+
+  def many_records_path(action)
+    action_url(action, @resource.records_path)
+  end
+
+  def action_url(action, path)
+    Avo::Services::URIService.parse(path)
+      .append_paths("actions")
+      .append_query(
+        {
+          action_id: action.to_param,
+          arguments: Avo::BaseAction.encode_arguments(action.arguments)
+        }.compact
+      ).to_s
+  end
+
+  def icon(action)
+    svg action.icon, class: "h-5 mr-1 inline pointer-events-none"
+  end
+
+  def render_item(action)
+    if action.is_a?(Avo::DividerComponent)
+      render Avo::DividerComponent.new
+    else
+      render_action_link(action)
+    end
+  end
+
+  private
+
+  def render_action_link(action)
+    link_to action_path(action),
+      data: action_data_attributes(action),
+      title: action.action_name,
+      class: action_css_class(action) do
+        raw("#{icon(action)} #{action.action_name}")
+      end
+  end
+
+  def action_data_attributes(action)
+    {
+      action_name: action.action_name,
+      "turbo-frame": Avo::ACTIONS_TURBO_FRAME_ID,
+      action: "click->actions-picker#visitAction",
+      "actions-picker-target": action.standalone ? "standaloneAction" : "resourceAction",
+      disabled: is_disabled?(action),
+      turbo_prefetch: false,
+    }
+  end
+
+  def action_css_class(action)
+    "flex items-center px-4 py-3 w-full font-semibold text-sm hover:bg-primary-100 border-b#{is_disabled?(action) ? " text-gray-500" : " text-black"}"
   end
 end

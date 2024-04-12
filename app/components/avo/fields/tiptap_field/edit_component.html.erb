@@ -1,0 +1,81 @@
+<%= field_wrapper **field_wrapper_args do %>
+  <%= content_tag :div,
+    class: "tiptap__field",
+    data: {
+      controller: "tiptap-field",
+      tiptap_field_target: "controller"
+    } do %>
+
+    <%= content_tag "tiptap-editor",
+      class: "tiptap__editor",
+      data: {
+        tiptap_field_target: "editor",
+        **@field.get_html(:data, view: view, element: :input)
+      },
+      id: "#{tiptap_id}_editor",
+      input: tiptap_id,
+      placeholder: @field.placeholder do %>
+
+      <%= content_tag :div, class: "tiptap__toolbar" do %>
+        <%= content_tag :div, class: "tiptap__toolbar-area" do %>
+          <%= content_tag :div, class: "tiptap__button-group" do %>
+            <%= button_tag type: "button", class: "tiptap__button tiptap__button--bold", data: { action: "click->tiptap-field#bold" } do %>
+              <%= helpers.svg("editor-bold") %>
+            <% end %>
+
+            <%= button_tag type: "button", class: "tiptap__button tiptap__button--italic", data: { action: "click->tiptap-field#italic" } do %>
+              <%= helpers.svg("editor-italic") %>
+            <% end %>
+
+            <%= button_tag type: "button", class: "tiptap__button tiptap__button--underline", data: { action: "click->tiptap-field#underline" } do %>
+              <%= helpers.svg("editor-underline") %>
+            <% end %>
+
+            <%= button_tag type: "button", class: "tiptap__button tiptap__button--strike", data: { action: "click->tiptap-field#strike" } do %>
+              <%= helpers.svg("editor-strike") %>
+            <% end %>
+          <% end %>
+
+          <%= content_tag :div, class: "tiptap__button-group" do %>
+            <%= button_tag type: "button", class: "tiptap__button tiptap__button--ul", data: { action: "click->tiptap-field#unorderedList" } do %>
+              <%= helpers.svg("editor-list") %>
+            <% end %>
+
+            <%= button_tag type: "button", class: "tiptap__button tiptap__button--ol", data: { action: "click->tiptap-field#orderedList" } do %>
+              <%= helpers.svg("editor-ordered-list") %>
+            <% end %>
+          <% end %>
+
+          <%= content_tag :div, class: "tiptap__button-group" do %>
+            <%= button_tag type: "button", disabled: true, class: "tiptap__button tiptap__button--link", data: { action: "click->tiptap-field#toggleLinkArea" } do %>
+              <%= helpers.svg("editor-link") %>
+            <% end %>
+          <% end %>
+
+          <%= content_tag :div, class: "tiptap__button-group tiptap__link-area hidden" do %>
+            <%= text_field_tag nil, nil, class: "tiptap__link-field", placeholder: "Enter URL here ...", data: { action: "keydown->tiptap-field#preventEnter" } %>
+            <%= button_tag type: "button", class: "tiptap__button", data: { action: "click->tiptap-field#setLink" } do %>
+              <%= helpers.svg("check-circle") %>
+            <% end %>
+            <%= button_tag type: "button", class: "tiptap__button tiptap__link-button--unset", data: { action: "click->tiptap-field#unsetLink" } do %>
+              <%= helpers.svg("trash") %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <%= @form.text_area @field.id,
+      value: @field.value,
+      class: classes("w-full hidden"),
+      data: {
+        tiptap_field_target: "input",
+        **@field.get_html(:data, view: view, element: :input)
+      },
+      disabled: disabled?,
+      id: tiptap_id,
+      placeholder: @field.placeholder,
+      style: @field.get_html(:style, view: view, element: :input)
+    %>
+  <% end %>
+<% end %>

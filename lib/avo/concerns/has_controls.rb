@@ -16,7 +16,7 @@ module Avo
       end
 
       def render_edit_controls
-        [BackButton.new(label: I18n.t("avo.cancel").capitalize), DeleteButton.new, ActionsList.new, SaveButton.new]
+        [BackButton.new(label: I18n.t("avo.cancel").capitalize), DeleteButton.new, ActionsList.new, SaveButton.new(resource: self)]
       end
 
       def render_index_controls(item:)

@@ -12,11 +12,13 @@
 #  updated_at  :datetime         not null
 #
 class Product < ApplicationRecord
+  monetize :price_cents
+
   enum category: [
     "Music players",
     "Phones",
     "Computers",
-    "Wearables",
+    "Wearables"
   ]
 
   has_one_attached :image
