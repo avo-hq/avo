@@ -12,13 +12,7 @@ class Avo::Resources::Comment < Avo::BaseResource
 
   def fields
     field :id, as: :id
-    field :body, as: :textarea, format_using: -> do
-      if view.show?
-        content_tag(:div, style: "white-space: pre-line") { value }
-      else
-        value
-      end
-    end
+    field :body, as: :textarea
     field :tiny_name, as: :text, only_on: :index
     field :posted_at,
       as: :date_time,

@@ -1,12 +1,22 @@
 module Avo
   module Fields
     class BooleanGroupField < BaseField
-      attr_reader :options
+      attr_reader :options_from_args
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
 
-        @options = args[:options].present? ? args[:options] : {}
+        @options_from_args = args[:options].present? ? args[:options] : {}
+      end
+
+      def options
+        Avo::ExecutionContext.new(
+          target: options_from_args,
+          record: record,
+          resource: resource,
+          view: view,
+          field: self
+        ).handle
       end
 
       def to_permitted_param
