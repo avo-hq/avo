@@ -31,7 +31,7 @@
     </div>
   <% end %>
   <% if body? %>
-    <div data-target="panel-body" class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:gap-4 w-full">
+    <div data-target="panel-body" class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:gap-4 w-full <% if sidebar? %> has-sidebar <% end %>">
       <div class="relative flex-1 w-full <% if sidebar? %> sm:w-2/3 <% end %>">
         <% # The body is wrapped inside another div in order to avoid long & tall panels next to sidebars when the sidebar taller. %>
         <div class="relative <%= white_panel_classes %> <%= @body_classes %>">
@@ -51,7 +51,7 @@
     </div>
   <% end %>
   <% if bare_content? %>
-    <div data-target="panel-bare-content" class="relative">
+    <div data-target="panel-bare-content" class="relative <% if sidebar? %> has-sidebar <% end %>">
       <%= bare_content %>
     </div>
   <% end %>

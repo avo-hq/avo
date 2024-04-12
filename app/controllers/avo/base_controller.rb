@@ -136,13 +136,13 @@ module Avo
         @reflection = @record._reflections[params[:via_relation]]
         # Figure out what kind of association does the record have with the parent record
 
-        # Fills in the required infor for belongs_to and has_many
+        # Fills in the required info for belongs_to and has_many
         # Get the foreign key and set it to the id we received in the params
         if @reflection.is_a?(ActiveRecord::Reflection::BelongsToReflection) || @reflection.is_a?(ActiveRecord::Reflection::HasManyReflection)
           related_resource = Avo.resource_manager.get_resource_by_model_class params[:via_relation_class]
           related_record = related_resource.find_record params[:via_record_id], params: params
 
-          @record.send("#{@reflection.foreign_key}=", related_record.id)
+          @record.send(:"#{@reflection.foreign_key}=", related_record.id)
         end
 
         # For when working with has_one, has_one_through, has_many_through, has_and_belongs_to_many, polymorphic
