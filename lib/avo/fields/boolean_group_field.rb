@@ -1,17 +1,15 @@
 module Avo
   module Fields
     class BooleanGroupField < BaseField
-      attr_reader :options_from_args
-
       def initialize(id, **args, &block)
         super(id, **args, &block)
 
-        @options_from_args = args[:options].present? ? args[:options] : {}
+        @options = args[:options] || {}
       end
 
       def options
         Avo::ExecutionContext.new(
-          target: options_from_args,
+          target: @options,
           record: record,
           resource: resource,
           view: view,
