@@ -18,8 +18,8 @@ class Avo::Resources::Comment < Avo::BaseResource
       as: :date_time,
       picker_format: "Y-m-d H:i:S",
       format: "cccc, d LLLL yyyy, HH:mm ZZZZ" # Wednesday, 10 February 1988, 16:00 GMT
-      field :user, as: :belongs_to, use_resource: Avo::Resources::CompactUser
-      field :commentable, as: :belongs_to, polymorphic_as: :commentable, types: [::Post, ::Project]
+    field :user, as: :belongs_to, use_resource: Avo::Resources::CompactUser
+    field :commentable, as: :belongs_to, polymorphic_as: :commentable, types: [::Post, ::Project]
   end
 
   def filters
