@@ -26,7 +26,7 @@ class Avo::Fields::HasOneField::ShowComponent < Avo::Fields::ShowComponent
       @resource.singular_model_key,
       @resource.record.to_param,
       @field.id,
-      association: @field.association
+      for_attribute: @field.for_attribute
     )
   end
 
@@ -42,7 +42,7 @@ class Avo::Fields::HasOneField::ShowComponent < Avo::Fields::ShowComponent
   end
 
   def create_path
-    association_id = @field.resource.model_class._reflections[@field.association_name].inverse_of.name
+    association_id = @field.resource.model_class._reflections[@field.for_attribute].inverse_of.name
 
     args = {
       via_relation: association_id,

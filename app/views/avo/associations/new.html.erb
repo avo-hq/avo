@@ -5,7 +5,7 @@
       .append_query(
         {
           view: @resource&.view&.to_s,
-          association: @field&.try(:association)
+          for_attribute: @field&.try(:for_attribute)
         }.compact
       )
       .to_s

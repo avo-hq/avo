@@ -105,7 +105,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
       paths: [*current_path, "new"],
       query: {
         view: @parent_resource&.view&.to_s,
-        association: field&.try(:association)
+        for_attribute: field&.try(:for_attribute)
       }.compact
     )
   end

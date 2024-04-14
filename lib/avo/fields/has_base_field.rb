@@ -12,7 +12,7 @@ module Avo
       attr_accessor :discreet_pagination
       attr_accessor :hide_search_input
       attr_reader :link_to_child_resource
-      attr_reader :association
+      attr_reader :for_attribute
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
@@ -26,7 +26,7 @@ module Avo
         @discreet_pagination = args[:discreet_pagination] || false
         @link_to_child_resource = args[:link_to_child_resource] || false
         @reloadable = args[:reloadable].present? ? args[:reloadable] : false
-        @association = args[:association]
+        @for_attribute = args[:for_attribute]
       end
 
       def field_resource
@@ -59,7 +59,7 @@ module Avo
       end
 
       def target_resource
-        if @record._reflections[(@association || id).to_s].klass.present?
+        if @record._reflections[(@for_attribute || id).to_s].klass.present?
           get_resource_by_model_class(@record._reflections[association_name].klass.to_s)
         elsif @record._reflections[association_name].options[:class_name].present?
           get_resource_by_model_class(@record._reflections[association_name].options[:class_name])
@@ -107,12 +107,12 @@ module Avo
         {
           turbo_frame: turbo_frame,
           view: view,
-          association: @association
+          for_attribute: @for_attribute
         }.compact
       end
 
       def association_name
-        @association_name ||= (@association || id).to_s
+        @association_name ||= (@for_attribute || id).to_s
       end
 
       private
