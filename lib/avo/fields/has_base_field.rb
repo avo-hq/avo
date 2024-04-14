@@ -83,7 +83,7 @@ module Avo
       def component_for_view(view = Avo::ViewInquirer.new("index"))
         view = Avo::ViewInquirer.new("show") if view.in? %w[new create update edit]
 
-        super view
+        super(view)
       end
 
       def authorized?

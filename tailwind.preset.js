@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 const plugin = require('tailwindcss/plugin')
 const colors = require('tailwindcss/colors')
 const defaultTheme = require('tailwindcss/defaultTheme')
@@ -139,13 +140,15 @@ module.exports = {
   plugins: [
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
-    plugin(({ addUtilities }) => {
+    plugin(({ addUtilities, addVariant }) => {
       const newUtilities = {
         '.backface-hidden': {
           backfaceVisibility: 'hidden',
         },
       }
 
+      // Add has-sidebar variant to make it easier to target fields in panels and use the full-width
+      addVariant('has-sidebar', '.has-sidebar & ')
       addUtilities(newUtilities, ['group-hover'])
     }),
   ],

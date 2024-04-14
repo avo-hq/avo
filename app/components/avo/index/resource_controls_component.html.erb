@@ -1,9 +1,4 @@
-<div class="space-x-2 flex flex-row justify-end w-full">
-  <% if can_dnd_reorder? %>
-    <div class="handle">
-      <%= helpers.svg 'heroicons/outline/bars-3', class: 'text-gray-400 h-6 hover:text-gray-600 cursor-pointer' %>
-    </div>
-  <% end %>
+<div class="space-x-2 flex flex-row justify-between">
   <% @resource.render_row_controls(item: singular_resource_name).each do |control| %>
     <%= render_control control %>
   <% end %>

@@ -4,7 +4,7 @@
   <%== item_selector_init @resource %>
   data-resource-name="<%= @resource.class.to_s %>"
   data-record-id="<%= @resource.record.id %>"
-  <%= drag_reorder_item_attributes %>
+  <%= try :drag_reorder_item_attributes %>
 >
   <%= content_tag :div,
     class: "relative w-full pb-3/4 rounded-t overflow-hidden #{html(:cover, :classes)}",
@@ -17,7 +17,7 @@
       <%= render_title %>
       <%= render_body %>
     </div>
-    <div class="w-full place-self-end">
+    <div class="place-self-end w-full">
       <%= render(Avo::Index::ResourceControlsComponent.new(resource: @resource, reflection: @reflection, parent_record: @parent_record, parent_resource: @parent_resource, view_type: :grid, actions: actions)) %>
     </div>
   </div>

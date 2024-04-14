@@ -23,14 +23,14 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
     return resources_path if via_index?
 
     if is_edit? && Avo.configuration.resource_default_view.show? # via resource show or edit page
-      return helpers.resource_path(record: @resource.record, resource: @resource)
+      return helpers.resource_path(record: @resource.record, resource: @resource, **keep_referrer_params)
     end
 
     resources_path
   end
 
   def resources_path
-    helpers.resources_path(resource: @resource)
+    helpers.resources_path(resource: @resource, **keep_referrer_params)
   end
 
   def resource_view_path

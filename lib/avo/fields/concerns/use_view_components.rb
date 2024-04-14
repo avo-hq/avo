@@ -29,7 +29,7 @@ module Avo
             view: view
           ).handle
 
-          component_class = custom_components.dig("#{view}_component".to_sym) || "#{view_component_namespace}::#{view.to_s.camelize}Component"
+          component_class = custom_components.dig(:"#{view}_component") || "#{view_component_namespace}::#{view.to_s.camelize}Component"
           component_class.to_s.constantize
         rescue
           unless Rails.env.test?

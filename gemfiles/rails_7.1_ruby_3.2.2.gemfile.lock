@@ -6,7 +6,7 @@ PATH
 PATH
   remote: ..
   specs:
-    avo (3.4.2)
+    avo (3.6.0)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
@@ -119,6 +119,8 @@ GEM
       rake
       thor (>= 0.14.0)
     ast (2.4.2)
+    avo-money_field (0.0.4)
+      money-rails (~> 1.12)
     awesome_print (1.9.2)
     aws-eventstream (1.3.0)
     aws-partitions (1.888.0)
@@ -136,6 +138,10 @@ GEM
       aws-sigv4 (~> 1.8)
     aws-sigv4 (1.8.0)
       aws-eventstream (~> 1, >= 1.0.2)
+    axiom-types (0.1.1)
+      descendants_tracker (~> 0.0.4)
+      ice_nine (~> 0.11.0)
+      thread_safe (~> 0.3, >= 0.3.1)
     backport (1.2.0)
     base64 (0.2.0)
     bcrypt (3.1.20)
@@ -165,6 +171,8 @@ GEM
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
     chartkick (5.0.4)
+    coercible (1.0.0)
+      descendants_tracker (~> 0.0.1)
     concurrent-ruby (1.2.3)
     connection_pool (2.4.1)
     countries (5.7.0)
@@ -183,6 +191,8 @@ GEM
       database_cleaner-core (~> 2.0.0)
     database_cleaner-core (2.0.1)
     date (3.3.4)
+    descendants_tracker (0.0.4)
+      thread_safe (~> 0.3, >= 0.3.1)
     devise (4.9.3)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -197,7 +207,33 @@ GEM
       railties (>= 3.2)
     drb (2.2.0)
       ruby2_keywords
+    dry-configurable (1.1.0)
+      dry-core (~> 1.0, < 2)
+      zeitwerk (~> 2.6)
+    dry-core (1.0.1)
+      concurrent-ruby (~> 1.0)
+      zeitwerk (~> 2.6)
+    dry-inflector (1.0.0)
     dry-initializer (3.1.1)
+    dry-logic (1.5.0)
+      concurrent-ruby (~> 1.0)
+      dry-core (~> 1.0, < 2)
+      zeitwerk (~> 2.6)
+    dry-schema (1.13.3)
+      concurrent-ruby (~> 1.0)
+      dry-configurable (~> 1.0, >= 1.0.1)
+      dry-core (~> 1.0, < 2)
+      dry-initializer (~> 3.0)
+      dry-logic (>= 1.4, < 2)
+      dry-types (>= 1.7, < 2)
+      zeitwerk (~> 2.6)
+    dry-types (1.7.2)
+      bigdecimal (~> 3.0)
+      concurrent-ruby (~> 1.0)
+      dry-core (~> 1.0)
+      dry-inflector (~> 1.0)
+      dry-logic (~> 1.4)
+      zeitwerk (~> 2.6)
     e2mmap (0.1.0)
     erb-formatter (0.7.1)
       syntax_tree (~> 6.0)
@@ -215,6 +251,15 @@ GEM
       webrick (~> 1.7)
       websocket-driver (>= 0.6, < 0.8)
     ffi (1.16.3)
+    flay (2.13.2)
+      erubi (~> 1.10)
+      path_expander (~> 1.0)
+      ruby_parser (~> 3.0)
+      sexp_processor (~> 4.0)
+    flog (4.8.0)
+      path_expander (~> 1.0)
+      ruby_parser (~> 3.1, > 3.1.0)
+      sexp_processor (~> 4.8)
     friendly_id (5.5.1)
       activerecord (>= 4.0.0)
     fuubar (2.5.1)
@@ -251,6 +296,7 @@ GEM
       rails-i18n
       rainbow (>= 2.2.2, < 4.0)
       terminal-table (>= 1.5.1)
+    ice_nine (0.11.2)
     image_processing (1.12.2)
       mini_magick (>= 4.9.5, < 5)
       ruby-vips (>= 2.0.17, < 3)
@@ -296,6 +342,15 @@ GEM
     mini_magick (4.12.0)
     mini_mime (1.1.5)
     minitest (5.22.2)
+    monetize (1.13.0)
+      money (~> 6.12)
+    money (6.19.0)
+      i18n (>= 0.6.4, <= 2)
+    money-rails (1.15.0)
+      activesupport (>= 3.0)
+      monetize (~> 1.9)
+      money (~> 6.13)
+      railties (>= 3.0)
     msgpack (1.7.2)
     multi_xml (0.6.0)
     mutex_m (0.2.0)
@@ -319,6 +374,7 @@ GEM
     parser (3.3.0.5)
       ast (~> 2.4.1)
       racc
+    path_expander (1.1.1)
     pg (1.5.4)
     prefixed_ids (1.6.0)
       hashids (>= 1.0.0, < 2.0.0)
@@ -388,6 +444,11 @@ GEM
       redis-client (>= 0.17.0)
     redis-client (0.19.1)
       connection_pool
+    reek (6.3.0)
+      dry-schema (~> 1.13.0)
+      parser (~> 3.3.0)
+      rainbow (>= 2.0, < 4.0)
+      rexml (~> 3.1)
     regexp_parser (2.9.0)
     reline (0.4.3)
       io-console (~> 0.5)
@@ -439,6 +500,22 @@ GEM
     ruby-vips (2.2.0)
       ffi (~> 1.12)
     ruby2_keywords (0.0.5)
+    ruby_parser (3.21.0)
+      racc (~> 1.5)
+      sexp_processor (~> 4.16)
+    rubycritic (4.9.0)
+      flay (~> 2.13)
+      flog (~> 4.7)
+      launchy (>= 2.5.2)
+      parser (>= 3.2.2.1)
+      rainbow (~> 3.1.1)
+      reek (~> 6.0, < 7.0)
+      rexml
+      ruby_parser (~> 3.20)
+      simplecov (>= 0.22.0)
+      tty-which (~> 0.5.0)
+      virtus (~> 2.0)
+    sexp_processor (4.17.1)
     simplecov (0.22.0)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
@@ -447,6 +524,7 @@ GEM
       rexml
       simplecov (~> 0.19)
     simplecov-html (0.12.3)
+    simplecov-lcov (0.8.0)
     simplecov_json_formatter (0.1.4)
     smart_properties (1.17.0)
     solargraph (0.49.0)
@@ -496,8 +574,10 @@ GEM
       unicode-display_width (>= 1.1.1, < 3)
     test-prof (1.2.3)
     thor (1.3.0)
+    thread_safe (0.3.6)
     tilt (2.3.0)
     timeout (0.4.1)
+    tty-which (0.5.0)
     turbo-rails (2.0.1)
       actionpack (>= 6.0.0)
       activejob (>= 6.0.0)
@@ -512,6 +592,10 @@ GEM
       activesupport (>= 5.2.0, < 8.0)
       concurrent-ruby (~> 1.0)
       method_source (~> 1.0)
+    virtus (2.0.0)
+      axiom-types (~> 0.1)
+      coercible (~> 1.0)
+      descendants_tracker (~> 0.0, >= 0.0.3)
     warden (1.2.9)
       rack (>= 2.0.9)
     web-console (4.2.1)
@@ -533,6 +617,7 @@ GEM
     zeitwerk (2.6.13)
 
 PLATFORMS
+  arm64-darwin-22
   arm64-darwin-23
   x86_64-linux
 
@@ -546,6 +631,7 @@ DEPENDENCIES
   annotate
   appraisal
   avo!
+  avo-money_field
   awesome_print
   aws-sdk-s3
   bootsnap (>= 1.4.2)
@@ -579,6 +665,7 @@ DEPENDENCIES
   listen (>= 3.5.1)
   mapkick-rb (~> 0.1.4)
   meta-tags
+  money-rails (~> 1.12)
   net-smtp
   pg (>= 0.18, < 2.0)
   pluggy!
@@ -594,8 +681,10 @@ DEPENDENCIES
   rspec-retry (~> 0.6.2)
   rubocop
   rubocop-shopify
+  rubycritic
   simplecov
   simplecov-cobertura
+  simplecov-lcov
   solargraph
   solargraph-rails
   spring

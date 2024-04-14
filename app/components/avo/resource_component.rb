@@ -1,4 +1,7 @@
 class Avo::ResourceComponent < Avo::BaseComponent
+  include Avo::Concerns::ChecksAssocAuthorization
+  include Avo::Concerns::RequestMethods
+
   attr_reader :fields_by_panel
   attr_reader :has_one_panels
   attr_reader :has_many_panels
@@ -6,8 +9,6 @@ class Avo::ResourceComponent < Avo::BaseComponent
   attr_reader :resource_tools
   attr_reader :resource
   attr_reader :view
-
-  include Avo::Concerns::ChecksAssocAuthorization
 
   def can_create?
     return authorize_association_for(:create) if @reflection.present?
@@ -114,6 +115,10 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
   def via_resource?
     (params[:via_resource_class].present? || params[:via_relation_class].present?) && params[:via_record_id].present?
+  end
+
+  def keep_referrer_params
+    {page: referrer_params["page"]}.compact
   end
 
   def render_back_button(control)

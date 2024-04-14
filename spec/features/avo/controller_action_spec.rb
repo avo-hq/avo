@@ -31,13 +31,15 @@ RSpec.describe Avo::UsersController, type: :controller do
     it "assigns the @widget" do
       post :create, params: {user: {name: "Adrian"}}
 
-      assert assigns(:view).create?
+      assert assigns(:view).new?
+      assert assigns(:view).form?
     end
 
     it "assigns the @widget" do
       put :update, params: {id: user.id, user: {name: "Adrian"}}
 
-      assert assigns(:view).update?
+      assert assigns(:view).edit?
+      assert assigns(:view).form?
     end
 
     it "assigns the @widget" do
