@@ -128,8 +128,8 @@ module Avo
       klass
     end
 
-    def authorize_if_defined(method)
-      @authorization.set_record(@record)
+    def authorize_if_defined(method, record = @record)
+      @authorization.set_record(record)
 
       if @authorization.has_method?(method.to_sym)
         @authorization.authorize_action method.to_sym
@@ -145,7 +145,7 @@ module Avo
     end
 
     def authorize_detach_action
-      authorize_if_defined "detach_#{@field.id}?"
+      authorize_if_defined "detach_#{@field.id}?", @attachment_record
     end
 
     def set_related_authorization
