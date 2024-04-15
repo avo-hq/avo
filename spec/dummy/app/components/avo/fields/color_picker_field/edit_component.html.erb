@@ -2,6 +2,7 @@
   <%= @form.color_field @field.id,
     class: helpers.input_classes('w-full py-0', has_error: @field.record_errors.include?(@field.id)).gsub('py-2', ''),
     placeholder: @field.placeholder,
-    disabled: disabled?
+    disabled: disabled?,
+    autofocus: @autofocus
   %>
 <% end %>
