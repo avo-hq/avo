@@ -16,7 +16,9 @@ RSpec.describe "Reload button", type: :system do
 
         expect(page).to have_content("Initial review body")
 
-        find("button[data-controller='panel-refresh']").click
+        within('[data-resource-name="Avo::Resources::Review"]') do
+          find("button[data-controller='panel-refresh']").click
+        end
 
         expect(page).to have_content("Updated review body")
       end
