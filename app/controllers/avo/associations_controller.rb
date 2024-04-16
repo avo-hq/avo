@@ -155,13 +155,5 @@ module Avo
         Services::AuthorizationService.new _current_user
       end
     end
-
-    def choose_layout
-      if turbo_frame_request?
-        "avo/blank"
-      else
-        "avo/application"
-      end
-    end
   end
 end
