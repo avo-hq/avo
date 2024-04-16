@@ -7,9 +7,13 @@
   <% end %>
 >
   <%= render Avo::Sidebar::HeadingComponent.new label: item.name, icon: helpers.svg(icon, class: "h-5"), collapsable: item.collapsable, collapsed: collapsed, key: key %>
-  <div class="w-full space-y-1 <%= 'hidden' if collapsed %>" data-menu-target="items">
+  <%= content_tag :div, class: class_names("w-full space-y-1", {"hidden": collapsed}),
+    data: {
+      menu_target: :items,
+      **section_collapse_data_animation
+    } do %>
     <% items.each do |item| %>
       <%= render Avo::Sidebar::ItemSwitcherComponent.new item: item %>
     <% end %>
-  </div>
+  <% end %>
 </div>

@@ -298,7 +298,7 @@ module Avo
     end
 
     def default_url_options
-      result = super
+      result = super.dup
 
       if params[:force_locale].present?
         result[:force_locale] = params[:force_locale]
@@ -353,6 +353,14 @@ module Avo
         instance_eval(&block_or_array)
       else
         block_or_array
+      end
+    end
+
+    def choose_layout
+      if turbo_frame_request?
+        "avo/blank"
+      else
+        "avo/application"
       end
     end
   end
