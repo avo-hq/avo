@@ -298,7 +298,7 @@ module Avo
     end
 
     def default_url_options
-      result = super
+      result = super.dup
 
       if params[:force_locale].present?
         result[:force_locale] = params[:force_locale]
