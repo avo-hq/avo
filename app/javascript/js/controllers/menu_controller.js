@@ -1,9 +1,10 @@
 import { Controller } from '@hotwired/stimulus'
+import { enter, leave } from 'el-transition'
 
 export default class extends Controller {
-  static targets = ['svg', 'items', 'self'];
+  static targets = ['svg', 'items', 'self']
 
-  collapsed = true;
+  collapsed = true
 
   get key() {
     return this.selfTarget.getAttribute('data-menu-key-param')
@@ -56,11 +57,11 @@ export default class extends Controller {
 
   markCollapsed() {
     this.svgTarget.classList.add('rotate-90')
-    this.itemsTarget.classList.add('hidden')
+    leave(this.itemsTarget)
   }
 
   markExpanded() {
     this.svgTarget.classList.remove('rotate-90')
-    this.itemsTarget.classList.remove('hidden')
+    enter(this.itemsTarget)
   }
 }
