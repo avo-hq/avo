@@ -68,7 +68,7 @@ module Avo
         @resource.dup.hydrate(record: record)
       end
 
-      # Temporary fix for visible blocks when geting fields for header
+      # Temporary fix for visible blocks when getting fields for header
       # Hydrating with last record so resource.record != nil
       # This is keeping same behavior from <= 3.4.1
       @resource.hydrate(record: @records.last)
@@ -373,7 +373,7 @@ module Avo
     def set_applied_filters
       reset_filters if params[:reset_filter]
 
-      # Return if there are no filters or if the filters are actualy ActionController::Parameters (used by dynamic filters)
+      # Return if there are no filters or if the filters are actually ActionController::Parameters (used by dynamic filters)
       return @applied_filters = {} if (fetched_filters = fetch_filters).blank? || fetched_filters.is_a?(ActionController::Parameters)
 
       @applied_filters = Avo::Filters::BaseFilter.decode_filters(fetched_filters)
@@ -447,7 +447,7 @@ module Avo
       return render "close_modal_and_reload_field" if params[:via_belongs_to_resource_class].present?
 
       respond_to do |format|
-        format.html { redirect_to after_create_path, notice: create_success_message}
+        format.html { redirect_to after_create_path, notice: create_success_message }
       end
     end
 
@@ -588,7 +588,7 @@ module Avo
       ).handle
 
       # If the component is not set, use the default one
-      if (custom_component = components.dig("resource_#{view}_component".to_sym)).nil?
+      if (custom_component = components.dig(:"resource_#{view}_component")).nil?
         return @component = "Avo::Views::Resource#{(fallback_view || view).to_s.classify}Component".constantize
       end
 
