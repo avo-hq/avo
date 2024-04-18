@@ -133,7 +133,7 @@ module Avo
       end
 
       def table_header_label
-        name
+        @table_header_label ||= name
       end
 
       def custom_name?

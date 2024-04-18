@@ -22,7 +22,14 @@ class Avo::Resources::Project < Avo::BaseResource
       filterable: true,
       summarizable: true
     field :name, as: :text, required: true, sortable: true, default: "New project default name"
-    field :progress, as: :progress_bar, value_suffix: "%", display_value: true
+    field :progress,
+      as: :progress_bar,
+      value_suffix: "%",
+      display_value: true,
+      visible: -> do
+        # conditionally hiding the fields we can test that it's not going to break the table layout
+        resource.view.form? || resource.record.progress&.positive?
+      end
     field :stage,
       as: :select,
       hide_on: :display,
