@@ -12,7 +12,7 @@ module Avo
     before_action :set_action, only: [:show, :handle]
     before_action :verify_authorization, only: [:show, :handle]
 
-    layout "avo/blank"
+    layout :choose_layout
 
     def show
       # Se the view to :new so the default value gets prefilled
