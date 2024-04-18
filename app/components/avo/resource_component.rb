@@ -207,7 +207,6 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
     a_link detach_path,
       icon: "detach",
-      method: :delete,
       form_class: "flex flex-col sm:flex-row sm:inline-flex",
       style: :text,
       data: {

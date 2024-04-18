@@ -471,11 +471,13 @@ module Avo
     end
 
     def cache_hash(parent_record)
+      result = [record, file_hash]
+
       if parent_record.present?
-        [record, file_hash, parent_record]
-      else
-        [record, file_hash]
+        result << parent_record
       end
+
+      result
     end
 
     # We will not overwrite any attributes that come pre-filled in the record.

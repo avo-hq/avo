@@ -221,4 +221,8 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   def reloadable
     field&.reloadable?
   end
+
+  def linkable
+    field&.linkable?
+  end
 end

@@ -4,6 +4,7 @@ module Avo
       include Avo::Fields::Concerns::IsSearchable
       include Avo::Fields::Concerns::UseResource
       include Avo::Fields::Concerns::ReloadIcon
+      include Avo::Fields::Concerns::LinkableTitle
 
       attr_accessor :display
       attr_accessor :scope
@@ -25,6 +26,7 @@ module Avo
         @discreet_pagination = args[:discreet_pagination] || false
         @link_to_child_resource = args[:link_to_child_resource] || false
         @reloadable = args[:reloadable].present? ? args[:reloadable] : false
+        @linkable = args[:linkable].present? ? args[:linkable] : false
       end
 
       def field_resource
@@ -35,10 +37,10 @@ module Avo
         "#{self.class.name.demodulize.to_s.underscore}_#{display}_#{frame_id}"
       end
 
-      def frame_url
+      def frame_url(add_turbo_frame: true)
         Avo::Services::URIService.parse(field_resource.record_path)
           .append_path(id.to_s)
-          .append_query(query_params)
+          .append_query(query_params(add_turbo_frame:))
           .to_s
       end
 
@@ -87,7 +89,7 @@ module Avo
       end
 
       def authorized?
-        method = "view_#{id}?".to_sym
+        method = :"view_#{id}?"
         service = field_resource.authorization
 
         if service.has_method? method
@@ -101,11 +103,14 @@ module Avo
         use_resource&.name || super
       end
 
-      def query_params
-        {
-          turbo_frame: turbo_frame,
-          view: view
+      def query_params(add_turbo_frame: true)
+        params = {
+          view:
         }
+
+        params[:turbo_frame] = turbo_frame if add_turbo_frame
+
+        params
       end
 
       private

@@ -72,6 +72,8 @@ class Avo::Resources::Team < Avo::BaseResource
       as: :has_many,
       searchable: true,
       filterable: true,
+      linkable: true,
+      reloadable: true,
       attach_scope: -> do
         query.where.not(user_id: parent.id).or(query.where(user_id: nil))
       end

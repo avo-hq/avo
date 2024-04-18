@@ -16,7 +16,7 @@ module Avo
     before_action :authorize_attach_action, only: :new
     before_action :authorize_detach_action, only: :destroy
 
-    layout "avo/blank"
+    layout :choose_layout
 
     def index
       @parent_resource = @resource.dup
@@ -147,8 +147,6 @@ module Avo
     def authorize_detach_action
       authorize_if_defined "detach_#{@field.id}?"
     end
-
-    private
 
     def set_related_authorization
       @related_authorization = if @related_resource.present?
