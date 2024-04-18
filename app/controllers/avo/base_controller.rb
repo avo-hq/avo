@@ -154,7 +154,7 @@ module Avo
 
           if params[:via_association_type] == "has_one"
             # On has_one scenarios we should switch the @record and @related_record
-            @related_record.send("#{@reflection.parent_reflection.inverse_of.name}=", @record)
+            @related_record.send(:"#{@reflection.parent_reflection.inverse_of.name}=", @record)
           else
             @record.send(association_name) << @related_record
           end
