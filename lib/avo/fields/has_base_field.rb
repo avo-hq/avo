@@ -108,14 +108,11 @@ module Avo
       end
 
       def query_params(add_turbo_frame: true)
-        params = {
-          view:
-          for_attribute: @for_attribute
+        {
+          view:,
+          for_attribute: @for_attribute,
+          turbo_frame: add_turbo_frame ? turbo_frame : nil
         }.compact
-
-        params[:turbo_frame] = turbo_frame if add_turbo_frame
-
-        params
       end
 
       private
