@@ -25,7 +25,7 @@ module Avo
           @disable_editing_keys = args[:disable_editing_keys].present? ? args[:disable_editing_keys] : false
           @disable_editing_values = args[:disable_editing_values].present? ? args[:disable_editing_values] : false
           # disabling editing keys also disables adding rows (doesn't take into account the value of disable_adding_rows)
-          @disable_adding_rows = if args[:disable_editing_keys].present? && args[:disable_editing_keys] == true && args[:disable_editing_values].present? && args[:disable_editing_values] == true
+          @disable_adding_rows = if args[:disable_editing_keys].present? && args[:disable_editing_keys] == true
             true
           elsif args[:disable_adding_rows].present?
             args[:disable_adding_rows]
