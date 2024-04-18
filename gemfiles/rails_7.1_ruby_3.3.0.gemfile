@@ -43,6 +43,7 @@ gem "mapkick-rb", "~> 0.1.4"
 gem "pluggy", path: "../pluggy"
 gem "money-rails", "~> 1.12"
 gem "avo-money_field"
+gem "avo-record_link_field"
 gem "psych", "< 4"
 
 group :development do
