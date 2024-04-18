@@ -75,6 +75,7 @@ group :development do
   gem "rubocop"
   gem "ripper-tags"
   gem "rubocop-shopify", require: false
+  gem "rubycritic", require: false
 end
 
 group :test do
@@ -86,6 +87,7 @@ group :test do
   gem "fuubar"
   gem "simplecov", require: false
   gem "simplecov-cobertura"
+  gem "simplecov-lcov"
   gem "webmock"
   gem "spring-commands-rspec"
   gem "launchy", require: false
@@ -151,7 +153,7 @@ gem "activestorage"
 # Required by Avo
 gem "sprockets-rails"
 
-# Avo file filed requires this gem
+# Avo file field requires this gem
 # Use Active Storage variant
 gem "image_processing", "~> 1.12"
 
@@ -165,3 +167,11 @@ gem "mapkick-rb", "~> 0.1.4"
 gem "pluggy", path: "./pluggy"
 
 gem "hashid-rails", "~> 1.4", ">= 1.4.1"
+# Avo money field
+# gem "avo-money_field", path: "./../avo-money_field"
+gem "money-rails", "~> 1.12"
+gem "avo-money_field"
+
+# Avo record_link field
+# gem "avo-record_link_field", path: "./../avo-record_link_field"
+gem "avo-record_link_field"
