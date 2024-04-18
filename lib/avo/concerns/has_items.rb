@@ -179,11 +179,9 @@ module Avo
         end
 
         # hydrate_fields fields
-        fields.each do |field|
-          field.hydrate(record: @record, view: @view, resource: self)
+        fields.map do |field|
+          field.dup.hydrate(record: @record, view: @view, resource: self)
         end
-
-        fields
       end
 
       def get_field(id)
@@ -274,7 +272,7 @@ module Avo
               item.is_heading? ||
               item.is_a?(Avo::Fields::LocationField)
 
-            item.resource.record.respond_to?("#{item.id}=")
+            item.resource.record.respond_to?(:"#{item.try(:for_attribute) || item.id}=")
           end
           .select do |item|
             # Check if the user is authorized to view it.

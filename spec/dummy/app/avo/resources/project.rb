@@ -19,9 +19,17 @@ class Avo::Resources::Project < Avo::BaseResource
       loading_when: ["loading", :running, :waiting, "Hold On"],
       success_when: ["Done"],
       nullable: true,
-      filterable: true
+      filterable: true,
+      summarizable: true
     field :name, as: :text, required: true, sortable: true, default: "New project default name"
-    field :progress, as: :progress_bar, value_suffix: "%", display_value: true
+    field :progress,
+      as: :progress_bar,
+      value_suffix: "%",
+      display_value: true,
+      visible: -> do
+        # conditionally hiding the fields we can test that it's not going to break the table layout
+        resource.view.form? || resource.record.progress&.positive?
+      end
     field :stage,
       as: :select,
       hide_on: :display,
@@ -38,12 +46,15 @@ class Avo::Resources::Project < Avo::BaseResource
         danger: :Cancelled,
         neutral: :Drafting
       },
-      filterable: true
+      filterable: true,
+      sortable: true,
+      summarizable: true
     field :country,
       as: :country,
       include_blank: "No country",
-      filterable: true
-    field :users_required, as: :number, min: 10, max: 1000000, step: 1, html: {index: {wrapper: {classes: "text-right"}}}
+      filterable: true,
+      summarizable: true
+    field :users_required, as: :number, min: 10, max: 1000000, step: 1, html: {index: {wrapper: {classes: "text-right"}}}, summarizable: true
     field :started_at, as: :date_time, name: "Started", time_24hr: true, nullable: true,
       relative: true,
       timezone: "EET",
@@ -54,7 +65,7 @@ class Avo::Resources::Project < Avo::BaseResource
       translation_key: "avo.field_translations.files",
       view_type: :list, stacked: false,
       hide_view_type_switcher: false
-    field :meta, as: :key_value, key_label: "Meta key", value_label: "Meta value", action_text: "New item", delete_text: "Remove item", disable_editing_keys: false, disable_adding_rows: false, disable_deleting_rows: false, html: -> do
+    field :meta, as: :key_value, key_label: "Meta key", value_label: "Meta value", action_text: "New item", delete_text: "Remove item", disable_editing_keys: false, disable_editing_values: true, disable_adding_rows: false, disable_deleting_rows: false, html: -> do
       show do
         wrapper { classes("spoon") }
       end
@@ -62,6 +73,7 @@ class Avo::Resources::Project < Avo::BaseResource
 
     field :users, as: :has_and_belongs_to_many
     field :comments, as: :has_many, searchable: true
+    field :even_reviews, as: :has_many, for_attribute: :reviews, scope: -> { query.where("reviews.id % 2 = ?", "0") }
     field :reviews, as: :has_many
     field :files_attachments, as: :has_many
   end

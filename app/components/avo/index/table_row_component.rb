@@ -1,13 +1,28 @@
 # frozen_string_literal: true
 
-class Avo::Index::TableRowComponent < ViewComponent::Base
+class Avo::Index::TableRowComponent < Avo::BaseComponent
   include Avo::ResourcesHelper
 
-  def initialize(resource: nil, reflection: nil, parent_record: nil, parent_resource: nil, actions: nil)
+  attr_writer :header_fields
+
+  def initialize(resource: nil, reflection: nil, parent_record: nil, parent_resource: nil, actions: nil, fields: nil, header_fields: nil)
     @resource = resource
     @reflection = reflection
     @parent_record = parent_record
     @parent_resource = parent_resource
     @actions = actions
+    @fields = fields
+    @header_fields = header_fields
+  end
+
+  def resource_controls_component
+    Avo::Index::ResourceControlsComponent.new(
+      resource: @resource,
+      reflection: @reflection,
+      parent_record: @parent_record,
+      parent_resource: @parent_resource,
+      view_type: :table,
+      actions: @actions
+    )
   end
 end

@@ -1,3 +1,9 @@
+<%
+  # Currently there isn't a way to summarize records on associations.
+  # We'd love to support this feature so please send in a PR.
+  should_summarize = @parent_record.blank?
+%>
+
 <thead
   data-component-name="avo/partials/table_header"
   class="bg-white border-b border-gray-200 pb-1">
@@ -7,7 +13,7 @@
     </th>
   <% end %>
   <% if Avo.configuration.resource_controls_on_the_left? %>
-    <th class="w-24" data-control="resource-controls-th">
+    <th class="max-w-24" data-control="resource-controls-th">
       <!-- Item controls cell -->
     </th>
   <% end %>
@@ -36,29 +42,49 @@
         sort_by = field.id
         sort_direction = 'desc'
       end
-      classes = "text-gray-500 tracking-tight leading-tight text-xs font-semibold"
+      text_classes = "text-gray-500 tracking-tight leading-tight text-xs font-semibold"
     %>
     <%= content_tag :th,
-      class: "text-left uppercase px-3 py-3 whitespace-nowrap rounded-l",
+      class: "relative text-left uppercase px-3 py-3 whitespace-nowrap rounded-l",
       data: {
         control: "resource-field-th",
+        controller: "toggle",
         table_header_field_id: field.id,
         table_header_field_type: field.type,
       } do %>
-      <% if field.sortable %>
-        <%= link_to params.permit!.merge(sort_by: sort_by, sort_direction: sort_direction), class: "flex items-center #{classes} #{'cursor-pointer' if field.sortable}", 'data-turbo-frame': params[:turbo_frame] do %>
-          <%= field.table_header_label %>
-          <%= render partial: 'avo/partials/sortable_component', locals: {field: field} %>
+      <%= content_tag :div,
+        class: "relative flex items-center justify-between w-full" do %>
+        <% if field.sortable %>
+          <%= link_to params.permit!.merge(sort_by: sort_by, sort_direction: sort_direction),
+            class: class_names("flex-1 flex justify-between", text_classes),
+            'data-turbo-frame': params[:turbo_frame] do %>
+            <%= field.table_header_label %>
+            <%= render partial: 'avo/partials/sortable_component', locals: {field: field} %>
+          <% end %>
+        <% else %>
+          <%= content_tag :div, class: text_classes, data: {sortable: false} do %>
+            <%= field.table_header_label %>
+          <% end %>
         <% end %>
-      <% else %>
-        <div class="block w-full <%= classes %>">
-          <%= field.table_header_label %>
-        </div>
+        <% if field.summarizable && should_summarize %>
+          <div id="summary-header-<%= field.id %>" class="<%= text_classes %> cursor-pointer" data-action="click->toggle#togglePanel">
+            <%= svg 'heroicons/solid/chart-bar', class: 'h-3 ml-1' %>
+          </div>
+          <turbo-frame
+            id="summary-frame-<%= field.id %>"
+            loading="lazy"
+            src="<%= distribution_chart_path(resource_name: field.resource.model_class, field_id: field.id) %>"
+            class="absolute inset-auto bg-white w-full sm:w-[400px] top-0 mt-6 p-4 z-40 shadow-modal rounded overflow-hidden hidden border border-gray-50"
+            data-toggle-target="panel"
+          >
+            <%= render Avo::LoadingComponent.new %>
+          </turbo-frame>
+        <% end %>
       <% end %>
     <% end %>
   <% end %>
   <% if Avo.configuration.resource_controls_on_the_right? %>
-    <th class="w-24" data-control="resource-controls-th">
+    <th class="w-px max-w-24" data-control="resource-controls-th">
       <!-- Item controls cell -->
     </th>
   <% end %>

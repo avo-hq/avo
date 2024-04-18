@@ -8,8 +8,8 @@ module Avo
     before_action :set_resource
     before_action :set_applied_filters, only: :index
     before_action :set_record, only: [:show, :edit, :destroy, :update, :preview]
+    before_action :set_record_to_fill, only: [:new, :edit, :create, :update]
     before_action :detect_fields
-    before_action :set_record_to_fill
     before_action :set_edit_title_and_breadcrumbs, only: [:edit, :update]
     before_action :fill_record, only: [:create, :update]
     # Don't run base authorizations for associations
@@ -68,11 +68,6 @@ module Avo
         @resource.dup.hydrate(record: record)
       end
 
-      # Temporary fix for visible blocks when geting fields for header
-      # Hydrating with last record so resource.record != nil
-      # This is keeping same behavior from <= 3.4.1
-      @resource.hydrate(record: @records.last)
-
       set_component_for __method__
     end
 
@@ -91,9 +86,9 @@ module Avo
 
         add_breadcrumb via_resource.plural_name, resources_path(resource: via_resource)
         add_breadcrumb via_resource.record_title, resource_path(record: via_record, resource: via_resource)
-      else
-        add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
       end
+
+      add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
 
       add_breadcrumb @resource.record_title
       add_breadcrumb I18n.t("avo.details").upcase_first
@@ -102,12 +97,13 @@ module Avo
     end
 
     def new
-      @record = @resource.model_class.new
-      @resource = @resource.hydrate(record: @record, view: :new, user: _current_user)
+      # Record is already hydrated on set_record_to_fill method
+      @record = @resource.record
+      @resource.hydrate(view: :new, user: _current_user)
 
       # Handle special cases when creating a new record via a belongs_to relationship
       if params[:via_belongs_to_resource_class].present?
-        return render turbo_stream: turbo_stream.append('attach_modal', partial: 'avo/base/new_via_belongs_to')
+        return render turbo_stream: turbo_stream.append("attach_modal", partial: "avo/base/new_via_belongs_to")
       end
 
       set_actions
@@ -135,13 +131,13 @@ module Avo
         @reflection = @record._reflections[params[:via_relation]]
         # Figure out what kind of association does the record have with the parent record
 
-        # Fills in the required infor for belongs_to and has_many
+        # Fills in the required info for belongs_to and has_many
         # Get the foreign key and set it to the id we received in the params
         if @reflection.is_a?(ActiveRecord::Reflection::BelongsToReflection) || @reflection.is_a?(ActiveRecord::Reflection::HasManyReflection)
           related_resource = Avo.resource_manager.get_resource_by_model_class params[:via_relation_class]
           related_record = related_resource.find_record params[:via_record_id], params: params
 
-          @record.send("#{@reflection.foreign_key}=", related_record.id)
+          @record.send(:"#{@reflection.foreign_key}=", related_record.id)
         end
 
         # For when working with has_one, has_one_through, has_many_through, has_and_belongs_to_many, polymorphic
@@ -153,7 +149,7 @@ module Avo
 
           if params[:via_association_type] == "has_one"
             # On has_one scenarios we should switch the @record and @related_record
-            @related_record.send("#{@reflection.parent_reflection.inverse_of.name}=", @record)
+            @related_record.send(:"#{@reflection.parent_reflection.inverse_of.name}=", @record)
           else
             @record.send(association_name) << @related_record
           end
@@ -245,9 +241,14 @@ module Avo
       end
 
       # Add the errors from the record
-      @errors = @record.errors.full_messages.reject { |error| exception_message.include? error }.unshift exception_message
+      @errors = @record.errors.full_messages
 
-      succeeded
+      # Remove duplicated errors
+      if exception_message.present?
+        @errors = @errors.reject { |error| exception_message.include? error }.unshift exception_message
+      end
+
+      @errors.any? ? false : succeeded
     end
 
     def model_params
@@ -330,7 +331,11 @@ module Avo
       elsif available_view_types.size == 1
         available_view_types.first
       else
-        @resource.default_view_type || Avo.configuration.default_view_type
+        Avo::ExecutionContext.new(
+          target: @resource.default_view_type || Avo.configuration.default_view_type,
+          resource: @resource,
+          view: @view
+        ).handle
       end
 
       if available_view_types.exclude? @index_params[:view_type].to_sym
@@ -352,18 +357,18 @@ module Avo
     def set_actions
       @actions = @resource
         .get_actions
-        .map do |action|
-          action[:class].new(record: @record, resource: @resource, view: @view, arguments: action[:arguments])
+        .map do |action_bag|
+          action_bag.delete(:class).new(record: @record, resource: @resource, view: @view, **action_bag)
         end
         .select do |action|
-          action.visible_in_view(parent_resource: @parent_resource)
+          action.is_a?(DividerComponent) || action.visible_in_view(parent_resource: @parent_resource)
         end
     end
 
     def set_applied_filters
       reset_filters if params[:reset_filter]
 
-      # Return if there are no filters or if the filters are actualy ActionController::Parameters (used by dynamic filters)
+      # Return if there are no filters or if the filters are actually ActionController::Parameters (used by dynamic filters)
       return @applied_filters = {} if (fetched_filters = fetch_filters).blank? || fetched_filters.is_a?(ActionController::Parameters)
 
       @applied_filters = Avo::Filters::BaseFilter.decode_filters(fetched_filters)
@@ -437,7 +442,7 @@ module Avo
       return render "close_modal_and_reload_field" if params[:via_belongs_to_resource_class].present?
 
       respond_to do |format|
-        format.html { redirect_to after_create_path, notice: create_success_message}
+        format.html { redirect_to after_create_path, notice: create_success_message }
       end
     end
 
@@ -506,7 +511,7 @@ module Avo
       redirect_path_from_resource_option(:after_update_path) || resource_view_response_path
     end
 
-    # Needs a different name, otwherwise, in some places, this can be called instead helpers.resource_view_path
+    # Requires a different/special name, otherwise, in some places, this can be called instead helpers.resource_view_path
     def resource_view_response_path
       helpers.resource_view_path(record: @record, resource: @resource)
     end
@@ -578,7 +583,7 @@ module Avo
       ).handle
 
       # If the component is not set, use the default one
-      if (custom_component = components.dig("resource_#{view}_component".to_sym)).nil?
+      if (custom_component = components.dig(:"resource_#{view}_component")).nil?
         return @component = "Avo::Views::Resource#{(fallback_view || view).to_s.classify}Component".constantize
       end
 

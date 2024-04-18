@@ -1,4 +1,7 @@
 class Avo::ResourceComponent < Avo::BaseComponent
+  include Avo::Concerns::ChecksAssocAuthorization
+  include Avo::Concerns::RequestMethods
+
   attr_reader :fields_by_panel
   attr_reader :has_one_panels
   attr_reader :has_many_panels
@@ -65,50 +68,8 @@ class Avo::ResourceComponent < Avo::BaseComponent
     helpers.resource_path(**args)
   end
 
-  # Ex: A Post has many Comments
-  def authorize_association_for(policy_method)
-    policy_result = true
-
-    if @reflection.present?
-      # Fetch the appropiate resource
-      reflection_resource = field.resource
-      # Fetch the record
-      # Hydrate the resource with the record if we have one
-      reflection_resource.hydrate(record: @parent_record) if @parent_record.present?
-      # Use the related_name as the base of the association
-      association_name = @reflection.name
-
-      if association_name.present?
-        method_name = "#{policy_method}_#{association_name}?".to_sym
-
-        # Use the policy methods from the parent (Post)
-        service = reflection_resource.authorization
-
-        if service.has_method?(method_name, raise_exception: false)
-          # Some policy methods should get the parent record in order to have the necessarry information to do the authorization
-          # Example: Post->has_many->Comments
-          #
-          # When you want to authorize the creation/attaching of a Comment, you don't have the Comment instance.
-          # But you do have the Post instance and you can get that in your policy to authorize against.
-          parent_policy_methods = [:view, :create, :attach, :act_on]
-
-          record = if parent_policy_methods.include?(policy_method)
-            # Use the parent record (Post)
-            reflection_resource.record
-          else
-            # Override the record with the child record (Comment)
-            resource.record
-          end
-          policy_result = service.authorize_action(method_name, record: record, raise_exception: false)
-        end
-      end
-    end
-
-    policy_result
-  end
-
   def main_panel
-    @resource.get_items.find do |item|
+    @main_panel ||= @resource.get_items.find do |item|
       item.is_main_panel?
     end
   end
@@ -116,12 +77,13 @@ class Avo::ResourceComponent < Avo::BaseComponent
   def sidebars
     return [] if Avo.license.lacks_with_trial(:resource_sidebar)
 
-    @item.items.select do |item|
-      item.is_sidebar?
-    end
-    .map do |sidebar|
-      sidebar.hydrate(view: view, resource: resource)
-    end
+    @sidebars ||= @item.items
+      .select do |item|
+        item.is_sidebar?
+      end
+      .map do |sidebar|
+        sidebar.hydrate(view: view, resource: resource)
+      end
   end
 
   def has_reflection_and_is_read_only
@@ -141,7 +103,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def render_control(control)
-    send "render_#{control.type}", control
+    send :"render_#{control.type}", control
   end
 
   def render_cards_component
@@ -154,6 +116,10 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
   def via_resource?
     (params[:via_resource_class].present? || params[:via_relation_class].present?) && params[:via_record_id].present?
+  end
+
+  def keep_referrer_params
+    {page: referrer_params["page"]}.compact
   end
 
   def render_back_button(control)
@@ -242,7 +208,6 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
     a_link detach_path,
       icon: "detach",
-      method: :delete,
       form_class: "flex flex-col sm:flex-row sm:inline-flex",
       style: :text,
       data: {

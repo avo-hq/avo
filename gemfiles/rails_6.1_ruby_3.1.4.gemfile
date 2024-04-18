@@ -41,6 +41,8 @@ gem "image_processing", "~> 1.12"
 gem "prefixed_ids"
 gem "mapkick-rb", "~> 0.1.4"
 gem "pluggy", path: "../pluggy"
+gem "money-rails", "~> 1.12"
+gem "avo-money_field"
 gem "psych", "< 4"
 
 group :development do
@@ -53,6 +55,7 @@ group :development do
   gem "rubocop"
   gem "ripper-tags"
   gem "rubocop-shopify", require: false
+  gem "rubycritic", require: false
 end
 
 group :test do
@@ -64,6 +67,7 @@ group :test do
   gem "fuubar"
   gem "simplecov", require: false
   gem "simplecov-cobertura"
+  gem "simplecov-lcov"
   gem "webmock"
   gem "spring-commands-rspec"
   gem "launchy", require: false

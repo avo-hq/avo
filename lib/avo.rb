@@ -64,20 +64,6 @@ module Avo
       @cache_store = Avo.configuration.cache_store
       plugin_manager.boot_plugins
       Avo.run_load_hooks(:boot, self)
-
-      Rails.configuration.to_prepare do
-        Avo.configuration.extend_controllers_with.each do |concern|
-          concern = concern.safe_constantize
-          Avo::ApplicationController.include concern
-
-          # Add the concern to all of Avo's engines
-          Avo.extra_gems.each do |gem_name|
-            if defined?("Avo::#{gem_name.capitalize}::Engine".safe_constantize)
-              "Avo::#{gem_name}::ApplicationController".safe_constantize.include concern
-            end
-          end
-        end
-      end
     end
 
     # Runs on each request

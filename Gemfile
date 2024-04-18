@@ -167,6 +167,7 @@ gem "mapkick-rb", "~> 0.1.4"
 gem "pluggy", path: "./pluggy"
 
 gem "hashid-rails", "~> 1.4", ">= 1.4.1"
+
 # Avo money field
 # gem "avo-money_field", path: "./../avo-money_field"
 gem "money-rails", "~> 1.12"

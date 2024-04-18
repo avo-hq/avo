@@ -6,7 +6,6 @@ Avo.configure do |config|
   config.home_path = -> { avo.resources_projects_path }
   # config.mount_avo_engines = false
   # config.default_url_options = [:tenant_id]
-
   # Use this to test root_path_without_url helper
   # Also enable in config.ru & application.rb
   # ---
@@ -140,6 +139,7 @@ Rails.configuration.to_prepare do
   Avo::Fields::BaseField.include ActionView::Helpers::UrlHelper
   Avo::Fields::BaseField.include ActionView::Context
   Avo::ApplicationController.include ApplicationControllerExtensions
+  Avo::ApplicationController.helper Rails.application.helpers
 end
 
 Avo.on_load(:boot) do

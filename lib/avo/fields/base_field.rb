@@ -32,6 +32,7 @@ module Avo
       attr_reader :required
       attr_reader :readonly
       attr_reader :sortable
+      attr_reader :summarizable
       attr_reader :nullable
       attr_reader :null_values
       attr_reader :format_using
@@ -41,6 +42,7 @@ module Avo
       attr_reader :as_avatar
       attr_reader :stacked
       attr_reader :for_presentation_only
+      attr_reader :for_attribute
 
       # Private options
       attr_reader :computable # if allowed to be computable
@@ -64,6 +66,7 @@ module Avo
         @readonly = args[:readonly] || false
         @disabled = args[:disabled] || false
         @sortable = args[:sortable] || false
+        @summarizable = args[:summarizable] || false
         @nullable = args[:nullable] || false
         @null_values = args[:null_values] || [nil, ""]
         @format_using = args[:format_using] || nil
@@ -82,6 +85,7 @@ module Avo
         @resource = args[:resource]
         @action = args[:action]
         @components = args[:components] || {}
+        @for_attribute = args[:for_attribute]
 
         @args = args
 
@@ -129,7 +133,7 @@ module Avo
       end
 
       def table_header_label
-        name
+        @table_header_label ||= name
       end
 
       def custom_name?
@@ -147,7 +151,7 @@ module Avo
       def value(property = nil)
         return @value if @value.present?
 
-        property ||= id
+        property ||= @for_attribute || id
 
         # Get record value
         final_value = record.send(property) if is_model?(record) && record.respond_to?(property)
@@ -191,7 +195,8 @@ module Avo
 
       # Fills the record with the received value on create and update actions.
       def fill_field(record, key, value, params)
-        return record unless record.methods.include? key.to_sym
+        key = @for_attribute.to_s if @for_attribute.present?
+        return record unless has_attribute?(record, key)
 
         if @update_using.present?
           value = Avo::ExecutionContext.new(
@@ -205,9 +210,13 @@ module Avo
           ).handle
         end
 
-        record.public_send("#{key}=", value)
+        record.public_send(:"#{key}=", value)
 
         record
+      end
+
+      def has_attribute?(record, attribute)
+        record.methods.include? attribute.to_sym
       end
 
       # Try to see if the field has a different database ID than it's name
@@ -261,10 +270,10 @@ module Avo
 
       # Used by Avo to fill the record with the default value on :new and :edit views
       def assign_value(record:, value:)
-        id = type == "belongs_to" ? foreign_key : database_id
+        id = (type == "belongs_to") ? foreign_key : database_id
 
         if record.send(id).nil?
-          record.send("#{id}=", value)
+          record.send(:"#{id}=", value)
         end
       end
 

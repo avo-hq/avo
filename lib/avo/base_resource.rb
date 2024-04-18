@@ -177,24 +177,27 @@ module Avo
       end
 
       def name
-        default = class_name.underscore.humanize
-
-        if translation_key
-          t(translation_key, count: 1, default: default).humanize
-        else
-          default
-        end
+        name_from_translation_key(count: 1, default: class_name.underscore.humanize)
       end
       alias_method :singular_name, :name
 
       def plural_name
-        default = name.pluralize
+        name_from_translation_key(count: 2, default: name.pluralize)
+      end
 
-        if translation_key
-          t(translation_key, count: 2, default: default).humanize
-        else
-          default
-        end
+      # Get the name from the translation_key and fallback to default
+      # It can raise I18n::InvalidPluralizationData when using only resource_translation without pluralization keys like: one, two or other key
+      # Example:
+      # ---
+      # en:
+      #   avo:
+      #     resource_translations:
+      #       product:
+      #         save: "Save product"
+      def name_from_translation_key(count:, default:)
+        t(translation_key, count:, default:).humanize
+      rescue I18n::InvalidPluralizationData
+        default
       end
 
       def underscore_name
@@ -291,6 +294,10 @@ module Avo
       cards
     end
 
+    def divider
+      action DividerComponent
+    end
+
     # def fields / def cards
     [:fields, :cards].each do |method_name|
       define_method method_name do
@@ -307,8 +314,8 @@ module Avo
       end
 
       # def action / def filter / def scope
-      define_method entity do |entity_class, arguments: {}|
-        entity_loader(entity).use({class: entity_class, arguments: arguments})
+      define_method entity do |entity_class, arguments: {}, icon: nil|
+        entity_loader(entity).use({class: entity_class, arguments: arguments, icon: icon}.compact)
       end
 
       # def get_actions / def get_filters / def get_scopes
@@ -448,14 +455,14 @@ module Avo
     def file_hash
       content_to_be_hashed = ""
 
-      # resource file hash
-      resource_path = Rails.root.join("app", "avo", "resources", "#{self.class.name.underscore}.rb").to_s
+      file_name = self.class.underscore_name.tr(" ", "_")
+      resource_path = Rails.root.join("app", "avo", "resources", "#{file_name}.rb").to_s
       if File.file? resource_path
         content_to_be_hashed += File.read(resource_path)
       end
 
       # policy file hash
-      policy_path = Rails.root.join("app", "policies", "#{self.class.name.underscore.gsub("_resource", "")}_policy.rb").to_s
+      policy_path = Rails.root.join("app", "policies", "#{file_name.gsub("_resource", "")}_policy.rb").to_s
       if File.file? policy_path
         content_to_be_hashed += File.read(policy_path)
       end
@@ -464,11 +471,13 @@ module Avo
     end
 
     def cache_hash(parent_record)
+      result = [record, file_hash]
+
       if parent_record.present?
-        [record, file_hash, parent_record]
-      else
-        [record, file_hash]
+        result << parent_record
       end
+
+      result
     end
 
     # We will not overwrite any attributes that come pre-filled in the record.

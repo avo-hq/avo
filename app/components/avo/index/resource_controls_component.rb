@@ -81,14 +81,6 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     Avo.root_path(paths: ["resources", params[:resource_name], params[:id], params[:related_name]], query: request.query_parameters.to_h)
   end
 
-  def can_reorder?
-    return false unless Object.const_defined? "Avo::Pro::Ordering"
-
-    return authorize_association_for(:reorder) if @reflection.present?
-
-    @resource.authorization.authorize_action(:reorder, raise_exception: false)
-  end
-
   private
 
   def render_edit_button(control)
@@ -169,7 +161,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   end
 
   def render_order_controls(control)
-    if can_reorder?
+    if try(:can_reorder?)
       render Avo::Pro::Ordering::ButtonsComponent.new resource: @resource, reflection: @reflection, view_type: @view_type
     end
   end
