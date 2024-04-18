@@ -274,7 +274,7 @@ module Avo
               item.is_heading? ||
               item.is_a?(Avo::Fields::LocationField)
 
-            item.resource.record.respond_to?(:"#{item.id}=")
+            item.resource.record.respond_to?(:"#{item.try(:for_attribute) || item.id}=")
           end
           .select do |item|
             # Check if the user is authorized to view it.

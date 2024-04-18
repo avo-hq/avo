@@ -22,7 +22,12 @@ class Avo::Fields::HasOneField::ShowComponent < Avo::Fields::ShowComponent
   end
 
   def attach_path
-    helpers.avo.resources_associations_new_path(@resource.singular_model_key, @resource.record.to_param, @field.id)
+    helpers.avo.resources_associations_new_path(
+      @resource.singular_model_key,
+      @resource.record.to_param,
+      @field.id,
+      for_attribute: @field.for_attribute
+    )
   end
 
   def can_see_the_create_button?
@@ -37,7 +42,7 @@ class Avo::Fields::HasOneField::ShowComponent < Avo::Fields::ShowComponent
   end
 
   def create_path
-    association_id = @field.resource.model_class._reflections[@field.id.to_s].inverse_of.name
+    association_id = @field.resource.model_class._reflections[@field.association_name].inverse_of.name
 
     args = {
       via_relation: association_id,

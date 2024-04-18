@@ -42,6 +42,7 @@ module Avo
       attr_reader :as_avatar
       attr_reader :stacked
       attr_reader :for_presentation_only
+      attr_reader :for_attribute
 
       # Private options
       attr_reader :computable # if allowed to be computable
@@ -84,6 +85,7 @@ module Avo
         @resource = args[:resource]
         @action = args[:action]
         @components = args[:components] || {}
+        @for_attribute = args[:for_attribute]
 
         @args = args
 
@@ -149,7 +151,7 @@ module Avo
       def value(property = nil)
         return @value if @value.present?
 
-        property ||= id
+        property ||= @for_attribute || id
 
         # Get record value
         final_value = record.send(property) if is_model?(record) && record.respond_to?(property)
@@ -193,6 +195,7 @@ module Avo
 
       # Fills the record with the received value on create and update actions.
       def fill_field(record, key, value, params)
+        key = @for_attribute.to_s if @for_attribute.present?
         return record unless has_attribute?(record, key)
 
         if @update_using.present?

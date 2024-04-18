@@ -93,7 +93,7 @@ module Avo
 
       return field.use_resource if field&.use_resource.present?
 
-      reflection = @record._reflections[params[:related_name]]
+      reflection = @record._reflections[params[:for_attribute] || params[:related_name]]
 
       reflected_model = reflection.klass
 
