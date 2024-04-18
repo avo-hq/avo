@@ -23,7 +23,7 @@ module Avo
       @resource = @related_resource
       @parent_record = @parent_resource.find_record(params[:id], params: params)
       @parent_resource.hydrate(record: @parent_record)
-      association_name = BaseResource.valid_association_name(@parent_record, params[:related_name])
+      association_name = BaseResource.valid_association_name(@parent_record, association_from_params)
       @query = @related_authorization.apply_policy @parent_record.send(association_name)
       @association_field = @parent_resource.get_field params[:related_name]
 
@@ -60,7 +60,7 @@ module Avo
     end
 
     def create
-      association_name = BaseResource.valid_association_name(@record, params[:related_name])
+      association_name = BaseResource.valid_association_name(@record, association_from_params)
 
       if reflection_class == "HasManyReflection"
         @record.send(association_name) << @attachment_record
@@ -94,7 +94,7 @@ module Avo
     private
 
     def set_reflection
-      @reflection = @record._reflections[params[:related_name].to_s]
+      @reflection = @record._reflections[association_from_params]
     end
 
     def set_attachment_class
@@ -120,7 +120,7 @@ module Avo
     end
 
     def reflection_class
-      reflection = @record._reflections[params[:related_name]]
+      reflection = @record._reflections[association_from_params]
 
       klass = reflection.class.name.demodulize.to_s
       klass = reflection.through_reflection.class.name.demodulize.to_s if klass == "ThroughReflection"
@@ -128,8 +128,8 @@ module Avo
       klass
     end
 
-    def authorize_if_defined(method)
-      @authorization.set_record(@record)
+    def authorize_if_defined(method, record = @record)
+      @authorization.set_record(record)
 
       if @authorization.has_method?(method.to_sym)
         @authorization.authorize_action method.to_sym
@@ -145,7 +145,7 @@ module Avo
     end
 
     def authorize_detach_action
-      authorize_if_defined "detach_#{@field.id}?"
+      authorize_if_defined "detach_#{@field.id}?", @attachment_record
     end
 
     def set_related_authorization
@@ -156,12 +156,8 @@ module Avo
       end
     end
 
-    def choose_layout
-      if turbo_frame_request?
-        "avo/blank"
-      else
-        "avo/application"
-      end
+    def association_from_params
+      params[:for_attribute] || params[:related_name]
     end
   end
 end
