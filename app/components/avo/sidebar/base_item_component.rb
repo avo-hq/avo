@@ -2,9 +2,11 @@
 
 class Avo::Sidebar::BaseItemComponent < ViewComponent::Base
   attr_reader :item
+  attr_reader :index
 
-  def initialize(item: nil)
+  def initialize(item: nil, index: 0)
     @item = item
+    @index = index
   end
 
   def items

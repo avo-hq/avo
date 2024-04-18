@@ -38,6 +38,7 @@ module Avo
     attr_accessor :buttons_on_form_footers
     attr_accessor :main_menu
     attr_accessor :profile_menu
+    attr_accessor :floating_menu
     attr_accessor :model_resource_mapping
     attr_reader :resource_default_view
     attr_accessor :authorization_client
@@ -92,6 +93,7 @@ module Avo
       @buttons_on_form_footers = false
       @main_menu = nil
       @profile_menu = nil
+      @floating_menu = nil
       @model_resource_mapping = {}
       @resource_default_view = Avo::ViewInquirer.new("show")
       @authorization_client = :pundit

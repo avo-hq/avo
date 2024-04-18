@@ -105,6 +105,15 @@ module Avo
       Avo::Menu::Builder.parse_menu(&Avo.configuration.profile_menu)
     end
 
+    def floating_menu
+      return unless Avo.plugin_manager.installed?("avo-menu")
+
+      # Return empty menu if the app doesn't have the floating menu configured
+      return Avo::Menu::Builder.new.build unless has_floating_menu?
+
+      Avo::Menu::Builder.parse_menu(&Avo.configuration.floating_menu)
+    end
+
     def app_status
       license.valid?
     end
@@ -123,6 +132,13 @@ module Avo
     def has_profile_menu?
       return false if Avo.license.lacks_with_trial(:menu_editor)
       return false if Avo.configuration.profile_menu.nil?
+
+      true
+    end
+
+    def has_floating_menu?
+      return false if Avo.license.lacks_with_trial(:menu_editor)
+      return false if Avo.configuration.floating_menu.nil?
 
       true
     end

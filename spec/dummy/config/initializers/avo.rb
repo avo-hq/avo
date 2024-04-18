@@ -126,6 +126,11 @@ Avo.configure do |config|
     link "Profile", path: "/profile", icon: "user-circle"
     # link_to "Sign out", path: main_app.destroy_user_session_path, icon: "user-circle", method: :post, params: {hehe: :hoho}
   end
+
+  config.floating_menu = -> do
+    link "Profile", path: "/profile", icon: "user-circle"
+    # link_to "Sign out", path: main_app.destroy_user_session_path, icon: "user-circle", method: :post, params: {hehe: :hoho}
+  end
 end
 
 if defined?(Avo::DynamicFilters)

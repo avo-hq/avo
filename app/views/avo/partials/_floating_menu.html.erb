@@ -1,0 +1,7 @@
+<% if Avo.plugin_manager.installed?("avo-menu") && Avo.has_floating_menu? %>
+  <div class="fixed block inset-auto right-4 bottom-4" data-controller="floating-menu">
+    <% Avo.floating_menu.items.each_with_index do |item, index| %>
+      <%= render Avo::FloatingMenu::ItemSwitcherComponent.new item: item, index: index %>
+    <% end %>
+  </div>
+<% end %>

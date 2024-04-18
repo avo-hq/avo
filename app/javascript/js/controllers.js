@@ -12,6 +12,7 @@ import DashboardCardController from './controllers/dashboard_card_controller'
 import DateFieldController from './controllers/fields/date_field_controller'
 import EasyMdeController from './controllers/fields/easy_mde_controller'
 import FilterController from './controllers/filter_controller'
+import FloatingMenuController from './controllers/floating_menu_controller'
 import HiddenInputController from './controllers/hidden_input_controller'
 import InputAutofocusController from './controllers/input_autofocus_controller'
 import ItemSelectAllController from './controllers/item_select_all_controller'
@@ -39,9 +40,9 @@ import TabsController from './controllers/tabs_controller'
 import TagsFieldController from './controllers/fields/tags_field_controller'
 import TextFilterController from './controllers/text_filter_controller'
 import TippyController from './controllers/tippy_controller'
+import TiptapFieldController from './controllers/fields/tiptap_field_controller'
 import ToggleController from './controllers/toggle_controller'
 import TrixFieldController from './controllers/fields/trix_field_controller'
-import TiptapFieldController from './controllers/fields/tiptap_field_controller'
 
 application.register('action', ActionController)
 application.register('actions-overflow', ActionsOverflowController)
@@ -51,6 +52,7 @@ application.register('boolean-filter', BooleanFilterController)
 application.register('copy-to-clipboard', CopyToClipboardController)
 application.register('dashboard-card', DashboardCardController)
 application.register('filter', FilterController)
+application.register('floating-menu', FloatingMenuController)
 application.register('panel-refresh', PanelRefreshController)
 application.register('hidden-input', HiddenInputController)
 application.register('input-autofocus', InputAutofocusController)
