@@ -14,4 +14,15 @@ class Avo::Index::TableRowComponent < Avo::BaseComponent
     @fields = fields
     @header_fields = header_fields
   end
+
+  def resource_controls_component
+    Avo::Index::ResourceControlsComponent.new(
+      resource: @resource,
+      reflection: @reflection,
+      parent_record: @parent_record,
+      parent_resource: @parent_resource,
+      view_type: :table,
+      actions: @actions
+    )
+  end
 end
