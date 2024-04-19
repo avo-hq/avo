@@ -57,7 +57,7 @@ module Avo
       end
 
       def initialize
-        @resources = self.class.fetch_resources
+        @resources ||= self.class.fetch_resources
       end
 
       def check_bad_resources
