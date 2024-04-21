@@ -69,7 +69,7 @@ class Avo::Resources::City < Avo::BaseResource
         path, data = Avo::Actions::City::Update.link_arguments(
           resource: resource,
           arguments: {
-            cities: [resource.record.id],
+            cities: [resource.record.to_param],
             render_name: true
           }
         )

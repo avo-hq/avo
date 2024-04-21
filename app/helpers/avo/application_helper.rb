@@ -130,7 +130,7 @@ module Avo
     end
 
     def frame_id(resource)
-      ["frame", resource.model_name.singular, resource.record.id].compact.join("-")
+      ["frame", resource.model_name.singular, resource.record.to_param].compact.join("-")
     end
 
     def chart_color(index)

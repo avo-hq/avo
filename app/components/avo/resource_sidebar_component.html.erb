@@ -2,7 +2,7 @@
   data-component-name="<%= self.class.to_s.underscore %>"
   data-component-index="<%= index %>"
   data-resource-name="<%= @resource.class.to_s %>"
-  data-record-id="<%= @resource.record.id %>"
+  data-record-id="<%= @resource.record.to_param %>"
 >
   <%= render Avo::Items::VisibleItemsComponent.new(
     resource: @resource,

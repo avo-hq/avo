@@ -172,7 +172,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
         target: "control:destroy",
         control: :destroy,
         tippy: control.title ? :tooltip : nil,
-        "resource-id": @resource.record.id,
+        "resource-id": @resource.record.to_param,
       } do
       control.label
     end

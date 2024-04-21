@@ -133,7 +133,7 @@ module Avo
       end
 
       {
-        _id: record.id,
+        _id: record.to_param,
         _label: highlighted_title,
         _url: resource.class.fetch_search(:result_path, record: resource.record) || record_path
       }
