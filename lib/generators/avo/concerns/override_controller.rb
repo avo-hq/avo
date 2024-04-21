@@ -12,7 +12,7 @@ module Generators
         end
 
         def controllers_list
-          Dir["app/controllers/avo/*.rb"].map { |file_path| File.basename(file_path, ".rb") }
+          Dir[::Avo::Engine.root.join("app", "controllers", "avo", "*.rb")].map { |file_path| File.basename(file_path, ".rb") }
         end
       end
     end
