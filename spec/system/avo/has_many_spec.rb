@@ -48,11 +48,11 @@ RSpec.feature "HasManyField", type: :system do
 
         expect {
           accept_alert do
-            find("[data-resource-id='#{comments.first.id}'] [data-control='destroy']").click
+            find("[data-resource-id='#{comments.first.to_param}'] [data-control='destroy']").click
           end
 
           accept_alert do
-            find("[data-resource-id='#{comments.third.id}'] [data-control='destroy']").click
+            find("[data-resource-id='#{comments.third.to_param}'] [data-control='destroy']").click
           end
         }.to change(Comment, :count).by(-2)
 
