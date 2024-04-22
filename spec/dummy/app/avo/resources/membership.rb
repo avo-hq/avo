@@ -20,7 +20,7 @@ class Avo::Resources::Membership < Avo::BaseResource
           Beginner: :beginner,
           Intermediate: :intermediate,
           Advanced: :advanced,
-          "#{record.to_param}": "record_id",
+          "#{record.id}": "record_id",
           "#{resource.name}": "resource_name",
           "#{view}": "view",
           "#{field.id}": "field"

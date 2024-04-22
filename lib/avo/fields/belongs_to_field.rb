@@ -123,7 +123,7 @@ module Avo
         end
 
         query.all.map do |record|
-          [resource.new(record: record).record_title, record.to_param]
+          [resource.new(record: record).record_title, record.id]
         end
       end
 

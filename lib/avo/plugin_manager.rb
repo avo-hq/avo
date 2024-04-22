@@ -1,3 +1,4 @@
+require "ostruct"
 module Avo
   class PluginManager
     attr_reader :plugins
