@@ -4,6 +4,9 @@ class Avo::Resources::Course < Avo::BaseResource
   }
   self.keep_filters_panel_open = true
   self.stimulus_controllers = "city-in-country toggle-fields"
+  self.pagination = {
+    type: :default
+  }
 
   def show_fields
     fields_bag

@@ -5,6 +5,9 @@ class Avo::Resources::CourseLink < Avo::BaseResource
   self.search = {
     query: -> { query.ransack(id_eq: params[:q], link_cont: params[:q], m: "or").result(distinct: false) }
   }
+  self.pagination = {
+    type: :default
+  }
 
   def display_fields
     field :id, as: :id
