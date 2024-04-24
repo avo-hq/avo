@@ -21,5 +21,22 @@ module Avo
 
     def failed_to_load
     end
+
+    def lolo
+      resource = Avo.resource_manager.get_resource(params[:resource_class])
+      # abort resource.inspect
+      @results = Avo::Services::SearchService.new(
+        params:,
+        authorization: @authorization,
+        id_attribute: :value,
+        label_attribute: :display,
+        mark_labels: false
+      ).search_resources([resource])[resource.route_key][:results].map do |item|
+        item.slice(:display, :value)
+        # item
+      end
+      # abort @results.inspect
+      render turbo_stream: helpers.async_combobox_options(@results)
+    end
   end
 end

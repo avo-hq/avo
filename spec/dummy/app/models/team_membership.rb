@@ -16,4 +16,8 @@ class TeamMembership < ApplicationRecord
   def name
     "#{team&.name} - #{user&.name}"
   end
+
+  def self.ransackable_attributes(auth_object = nil)
+    authorizable_ransackable_attributes
+  end
 end

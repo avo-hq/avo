@@ -84,6 +84,20 @@ module Avo
         @target = args[:target]
         @use_resource = args[:use_resource] || nil
         @can_create = args[:can_create].nil? ? true : args[:can_create]
+
+        # if target_resource.model_class.respond_to?(:to_combobox_display)
+        #   abort :responds.inspect
+
+        #   puts 'responds->'.inspect
+        # else
+        #   # abort :no_responds.inspect
+        #   # title = self.title
+        #   target_resource.model_class.define_method(:to_combobox_display) do
+        #     # puts ["title->", title].inspect
+        #     self.name
+        #   end
+        #   # puts ["model_class.respond_to->", record, model_class, model_class.respond_to?(:to_combobox_display), record.respond_to?(:to_combobox_display)].inspect
+        # end
       end
 
       def value
@@ -249,6 +263,24 @@ module Avo
             App.get_resource_by_name reflection_key.to_s
           end
         end
+
+
+        # if @target_resource.model_class.respond_to?(:to_combobox_display)
+        #   abort :responds.inspect
+
+        #   puts 'responds->'.inspect
+        # else
+        #   # abort :no_responds.inspect
+        #   # title = self.title
+        #   @target_resource.model_class.define_method(:to_combobox_display) do
+        #     # puts ["title->", title].inspect
+        #     self.name
+        #   end
+        #   # puts ["model_class.respond_to->", record, model_class, model_class.respond_to?(:to_combobox_display), record.respond_to?(:to_combobox_display)].inspect
+        # end
+
+
+        # @target_resource
       end
 
       def get_record

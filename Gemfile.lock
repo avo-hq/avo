@@ -279,6 +279,10 @@ GEM
       actioncable (>= 6.0.0)
       listen (>= 3.0.0)
       railties (>= 6.0.0)
+    hotwire_combobox (0.2.2)
+      rails (>= 7.0.7.2)
+      stimulus-rails (>= 1.2)
+      turbo-rails (>= 1.2)
     htmlbeautifier (1.4.2)
     httparty (0.21.0)
       mini_mime (>= 1.0.0)
@@ -571,6 +575,8 @@ GEM
     standard-performance (1.3.1)
       lint_roller (~> 1.1)
       rubocop-performance (~> 1.20.2)
+    stimulus-rails (1.3.3)
+      railties (>= 6.0.0)
     stringio (3.1.0)
     syntax_tree (6.2.0)
       prettier_print (>= 1.2.0)
@@ -659,6 +665,7 @@ DEPENDENCIES
   groupdate
   hightop
   hotwire-livereload (~> 1.3.0)
+  hotwire_combobox
   htmlbeautifier
   httparty
   i18n-tasks (~> 1.0.12)

@@ -33,5 +33,7 @@ if defined? ::Avo
     end
 
     put "switch_accounts/:id", to: "switch_accounts#update", as: :switch_account
+
+    get :lolo, to: "home#lolo"
   end
 end

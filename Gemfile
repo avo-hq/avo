@@ -174,3 +174,5 @@ gem "avo-money_field"
 # Avo record_link field
 # gem "avo-record_link_field", path: "./../avo-record_link_field"
 gem "avo-record_link_field"
+
+gem "hotwire_combobox"

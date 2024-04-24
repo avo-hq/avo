@@ -1508,6 +1508,11 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-2.0.2.tgz#d9fae00a2d5cb40f92cfe64b47ad749fbc38f917"
   integrity sha512-6EwiSjwWYP7pTckG6I5eyFANjPhmPjUX9JRLUSfNPC7FX7zK9gyZAfUEaECL6ALTpGX5AjnBq3C9XmVWPitNpw==
 
+"@josefarias/hotwire_combobox@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@josefarias/hotwire_combobox/-/hotwire_combobox-0.2.2.tgz#05ec28032a2cd0080a6ffd2da6403e62f535be27"
+  integrity sha512-9I93yFDQmA9PgqYSe95Z3MCPmzejyBmJ37E+zCjbt1QhVp0IZvfJWAsEJhJp1IDTpQ73v8X0I+Nqe7HLpq+NrA==
+
 "@jridgewell/gen-mapping@^0.3.0", "@jridgewell/gen-mapping@^0.3.2":
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/@jridgewell/gen-mapping/-/gen-mapping-0.3.3.tgz#7e02e6eb5df901aaedb08514203b096614024098"

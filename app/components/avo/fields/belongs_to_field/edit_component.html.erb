@@ -1,3 +1,7 @@
+<%= [@field.id, @field.target_resource].inspect %>
+<%= @form.combobox @field.id, "/admin/lolo?resource_class=#{@field.target_resource}", id: "#{@field.id}_id" %>
+
+
 <% if is_polymorphic? %>
   <div class="divide-y"
       data-controller="belongs-to-field"
