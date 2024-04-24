@@ -95,6 +95,29 @@ RSpec.describe "KeyValueFields", type: :system do
         expect(meta_element).not_to have_selector 'input[placeholder="Meta value"][disabled="disabled"]'
       end
     end
+
+    it "won't change the value" do
+      visit "/admin/resources/projects/#{project.id}/edit"
+      wait_for_loaded
+
+      meta_element = find_field_element("meta")
+
+      find('[data-button="add-row"]').click
+
+      fill_in "Meta key", with: "foo20"
+      disabled_field = find('input[placeholder="Meta value"][disabled="disabled"]')
+      page.execute_script("arguments[0].value = 'bazz';", disabled_field)
+      disabled_field.trigger("input")
+
+      save
+
+      expect(current_path).to eql "/admin/resources/projects/#{project.id}"
+
+      scroll_to find_field_element("meta")
+
+      expect(meta_element).to have_field("Meta key", with: "foo20", disabled: true)
+      expect(page).to have_field("Meta value", with: "", disabled: true)
+    end
   end
 
   describe "with value" do
@@ -285,7 +308,6 @@ RSpec.describe "KeyValueFields", type: :system do
       it "does not show null keys or values" do
         visit "/admin/resources/projects/#{project.id}"
         wait_for_loaded
-
 
         keys = page.all('input[placeholder="Meta key"][disabled="disabled"]')
         values = page.all('input[placeholder="Meta value"][disabled="disabled"]')

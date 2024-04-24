@@ -49,19 +49,27 @@ export default class extends Controller {
 
   updateDom() {
     if (this.collapsed) {
-      this.markCollapsed()
+      this.markCollapsed(true)
     } else {
-      this.markExpanded()
+      this.markExpanded(true)
     }
   }
 
-  markCollapsed() {
+  markCollapsed(animate = false) {
     this.svgTarget.classList.add('rotate-90')
-    leave(this.itemsTarget)
+    if (animate) {
+      leave(this.itemsTarget)
+    } else {
+      this.itemsTarget.classList.add('hidden')
+    }
   }
 
-  markExpanded() {
+  markExpanded(animate = false) {
     this.svgTarget.classList.remove('rotate-90')
-    enter(this.itemsTarget)
+    if (animate) {
+      enter(this.itemsTarget)
+    } else {
+      this.itemsTarget.classList.remove('hidden')
+    }
   }
 }

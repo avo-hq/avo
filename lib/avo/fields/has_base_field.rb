@@ -59,12 +59,12 @@ module Avo
       end
 
       def target_resource
-        if @record._reflections[id.to_s].klass.present?
-          get_resource_by_model_class(@record._reflections[id.to_s].klass.to_s)
-        elsif @record._reflections[id.to_s].options[:class_name].present?
-          get_resource_by_model_class(@record._reflections[id.to_s].options[:class_name])
+        if @record._reflections[(@for_attribute || id).to_s].klass.present?
+          get_resource_by_model_class(@record._reflections[association_name].klass.to_s)
+        elsif @record._reflections[association_name].options[:class_name].present?
+          get_resource_by_model_class(@record._reflections[association_name].options[:class_name])
         else
-          Avo.resource_manager.get_resource_by_name id.to_s
+          Avo.resource_manager.get_resource_by_name association_name
         end
       end
 
@@ -103,14 +103,16 @@ module Avo
         use_resource&.name || super
       end
 
+      def association_name
+        @association_name ||= (@for_attribute || id).to_s
+      end
+
       def query_params(add_turbo_frame: true)
-        params = {
-          view:
-        }
-
-        params[:turbo_frame] = turbo_frame if add_turbo_frame
-
-        params
+        {
+          view:,
+          for_attribute: @for_attribute,
+          turbo_frame: add_turbo_frame ? turbo_frame : nil
+        }.compact
       end
 
       private
