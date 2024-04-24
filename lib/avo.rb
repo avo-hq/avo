@@ -64,6 +64,7 @@ module Avo
       @cache_store = Avo.configuration.cache_store
       plugin_manager.boot_plugins
       Avo.run_load_hooks(:boot, self)
+      eager_load_actions
     end
 
     # Runs on each request
@@ -138,6 +139,10 @@ module Avo
 
     def extra_gems
       [:pro, :advanced, :menu, :dynamic_filters, :dashboards, :enterprise, :audits]
+    end
+
+    def eager_load_actions
+      Rails.autoloaders.main.eager_load_namespace(Avo::Actions)
     end
   end
 end
