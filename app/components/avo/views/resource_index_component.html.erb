@@ -8,7 +8,7 @@
   <%= render_cards_component %>
   <%= render Avo::PanelComponent.new(description: description, data: { component: 'resources-index' }, display_breadcrumbs: @reflection.blank?) do |c| %>
     <% c.with_name_slot do %>
-      <%= render Avo::PanelNameComponent.new name: title, url: "/admin/resources/users", target: :_blank do |panel_name_component| %>
+      <%= render Avo::PanelNameComponent.new name: title, url: params[:turbo_frame].present? ? field.frame_url(add_turbo_frame: false) : nil, target: :_blank do |panel_name_component| %>
         <% panel_name_component.with_body do %>
           <% if reloadable %>
             <%= button_tag data: { controller: "panel-refresh", action: "click->panel-refresh#refresh" } do %>

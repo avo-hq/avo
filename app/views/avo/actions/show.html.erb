@@ -1,4 +1,4 @@
-<%= turbo_frame_tag "index", src: "http://localhost:3030/admin/resources/users?turbo_frame=index", loading: :lazy, target: :_top, class: "block" do %>
+<%= turbo_frame_tag "index", src: request.url.gsub("/actions", ""), loading: :lazy, target: :_top, class: "block" do %>
   <%= render(Avo::LoadingComponent.new(title: "hopa")) %>
 <% end %>
 
