@@ -123,7 +123,7 @@ module Avo
         end
 
         query.all.map do |record|
-          [resource.new(record: record).record_title, record.id]
+          [resource.new(record: record).record_title, record.to_param]
         end
       end
 
@@ -195,7 +195,7 @@ module Avo
 
       def fill_field(model, key, value, params)
         return model unless model.methods.include? key.to_sym
-
+        value = update_using(record, key, value, params)
         if polymorphic_as.present?
           valid_model_class = valid_polymorphic_class params[:"#{polymorphic_as}_type"]
 

@@ -193,13 +193,9 @@ module Avo
         ).handle
       end
 
-      # Fills the record with the received value on create and update actions.
-      def fill_field(record, key, value, params)
-        key = @for_attribute.to_s if @for_attribute.present?
-        return record unless has_attribute?(record, key)
-
+      def update_using(record, key, value, params)
         if @update_using.present?
-          value = Avo::ExecutionContext.new(
+          Avo::ExecutionContext.new(
             target: @update_using,
             record: record,
             key: key,
@@ -208,7 +204,17 @@ module Avo
             field: self,
             include: self.class.included_modules
           ).handle
+        else
+          value
         end
+      end
+
+      # Fills the record with the received value on create and update actions.
+      def fill_field(record, key, value, params)
+        key = @for_attribute.to_s if @for_attribute.present?
+        return record unless has_attribute?(record, key)
+
+        value = update_using(record, key, value, params)
 
         record.public_send(:"#{key}=", value)
 
