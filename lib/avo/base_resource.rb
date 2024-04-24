@@ -124,7 +124,8 @@ module Avo
         association_exists = get_record_associations(record).keys.any? do |name|
           name == "#{association_name}_attachment" || name == "#{association_name}_attachments"
         end
-        return association_name if association_exists
+
+        association_name if association_exists
       end
 
       def get_available_models
