@@ -46,7 +46,7 @@ module Avo
       private
 
       def pagination_hash
-        @pagination ||= PAGINATION_DEFAULTS.merge Avo::ExecutionContext.new(
+        @pagination ||= PAGINATION_DEFAULTS.merge(Avo.configuration.pagination).merge Avo::ExecutionContext.new(
           target: pagination,
           resource: self,
           view: @view
