@@ -69,7 +69,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def main_panel
-    @resource.get_items.find do |item|
+    @main_panel ||= @resource.get_items.find do |item|
       item.is_main_panel?
     end
   end
@@ -77,12 +77,13 @@ class Avo::ResourceComponent < Avo::BaseComponent
   def sidebars
     return [] if Avo.license.lacks_with_trial(:resource_sidebar)
 
-    @item.items.select do |item|
-      item.is_sidebar?
-    end
-    .map do |sidebar|
-      sidebar.hydrate(view: view, resource: resource)
-    end
+    @sidebars ||= @item.items
+      .select do |item|
+        item.is_sidebar?
+      end
+      .map do |sidebar|
+        sidebar.hydrate(view: view, resource: resource)
+      end
   end
 
   def has_reflection_and_is_read_only
@@ -102,7 +103,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def render_control(control)
-    send "render_#{control.type}", control
+    send :"render_#{control.type}", control
   end
 
   def render_cards_component

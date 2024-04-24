@@ -23,6 +23,11 @@ class Avo::Resources::Fish < Avo::BaseResource
     field :id, as: :id
     field :id, as: :number, only_on: :forms, readonly: -> { !view.new? }
     field :name, as: :text, required: -> { view.new? }, help: "help text"
+    field :secondary_field_for_name,
+      as: :text,
+      for_attribute: :name,
+      only_on: :edit,
+      help: "secondary field for name using for_attribute option"
     field :reviews, as: :has_many
     field :user, as: :belongs_to
     field :type, as: :text, hide_on: :forms
