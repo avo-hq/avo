@@ -9,6 +9,9 @@ class Avo::Resources::Event < Avo::BaseResource
     field :event_time, as: :datetime, sortable: true
     field :body, as: :trix
 
+    field :profile_photo, as: :file, is_image: true
+    field :cover_photo, as: :file, is_image: true
+
     if params[:show_location_field] == "1"
       # Example for error message when resource is missing
       field :location, as: :belongs_to
