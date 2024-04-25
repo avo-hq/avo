@@ -59,7 +59,11 @@ module Avo
 
       safe_call :set_and_apply_scopes
       safe_call :apply_dynamic_filters
-      apply_pagination
+      
+      if params[:view_type] == :calendar
+      else
+        apply_pagination
+      end
 
       # Create resources for each record
       # Duplicate the @resource before hydration to avoid @resource keeping last record.

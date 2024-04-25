@@ -24,7 +24,7 @@ class Avo::Resources::Post < Avo::BaseResource
       id.to_i == 0 ? query.find_by_slug(id) : query.find(id)
     end
   }
-  self.view_types = [:grid, :table]
+  self.view_types = [:grid, :table, :calendar]
 
   def fields
     field :id, as: :id
