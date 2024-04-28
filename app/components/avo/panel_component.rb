@@ -52,4 +52,12 @@ class Avo::PanelComponent < ViewComponent::Base
   def render_header?
     @name.present? || description.present? || tools.present? || display_breadcrumbs?
   end
+
+  def has_cover_photo?
+    @cover_photo.present?
+  end
+
+  def has_profile_photo?
+    @profile_photo.present?
+  end
 end

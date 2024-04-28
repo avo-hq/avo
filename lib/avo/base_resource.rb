@@ -9,6 +9,8 @@ module Avo
     include Avo::Concerns::HasResourceStimulusControllers
     include Avo::Concerns::ModelClassConstantized
     include Avo::Concerns::HasDescription
+    include Avo::Concerns::HasCoverPhoto
+    include Avo::Concerns::HasProfilePhoto
     include Avo::Concerns::HasHelpers
     include Avo::Concerns::Hydration
     include Avo::Concerns::Pagination

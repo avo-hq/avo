@@ -27,6 +27,11 @@ module.exports = {
   ],
   theme: {
     extend: {
+      aspectRatio: {
+        'cover-sm': '9/2',
+        'cover-md': '9/3',
+        'cover-lg': '9/4',
+      },
       colors: {
         blue,
         gray,

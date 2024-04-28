@@ -1,37 +1,42 @@
 <%= content_tag :div, data: data_attributes, class: classes do %>
-  <% if cover_slot? %>
-    <%= cover_slot %>
+  <% if has_cover_photo? %>
+    <div class="related w-full -mt-[5.7rem] mb-4 flex flex-col">
+      <%= image_tag helpers.main_app.url_for(@cover_photo), class: "w-full aspect-cover-md object-cover" %>
+    </div>
   <% end %>
 
   <% if render_header? %>
-    <div data-target="panel-header" class="mb-4">
-      <% if display_breadcrumbs? %>
-        <div class="breadcrumbs mb-2">
-          <%= helpers.render_avo_breadcrumbs(separator: helpers.svg('chevron-right', class: 'inline-block h-3 stroke-current relative top-[-1px] ml-1' )) if Avo.configuration.display_breadcrumbs %>
-        </div>
-      <% end %>
-
-    <% if true && @profile_photo.present? %>
-      <%= image_tag helpers.main_app.url_for(@profile_photo), class: "relative ml-8 mr-4 -mt-12 rounded-full w-48 h-48 object-cover border-4 border-application" %>
-    <% end %>
-      <div class="flex-1 flex flex-col xl:flex-row justify-between gap-1">
-        <div class="overflow-hidden flex flex-col">
-          <% if name_slot? %>
-            <%= name_slot %>
-          <% else %>
-            <%= render Avo::PanelNameComponent.new name: @name %>
-          <% end %>
-          <% if description.present? %>
-            <div class="text-sm tracking-normal font-medium text-gray-600" data-target="description">
-              <%== description %>
+    <div data-target="panel-header" class="block mb-4">
+      <div class="flex flex-col sm:flex-row w-full flex-1">
+        <% if has_profile_photo? %>
+          <%= image_tag helpers.main_app.url_for(@profile_photo), class: class_names("relative self-center sm:self-start ml-8 sm:mr-2 rounded-full w-48 h-48 object-cover aspect-square border-4 border-application mb-4 sm:mb-0", "-mt-[7.5rem]": has_cover_photo?) %>
+        <% end %>
+        <div class="flex flex-col flex-1">
+          <% if display_breadcrumbs? %>
+            <div class="breadcrumbs text-center sm:text-left">
+              <%= helpers.render_avo_breadcrumbs(separator: helpers.svg('chevron-right', class: 'inline-block h-3 stroke-current relative top-[-1px] ml-1')) if Avo.configuration.display_breadcrumbs %>
             </div>
           <% end %>
-        </div>
-        <% if tools.present? %>
-          <div class="flex-1 w-full flex flex-col sm:flex-row xl:justify-end sm:items-end gap-2 mt-4 xl:mt-0" data-target="panel-tools">
-            <%= tools %>
+          <div class="flex-1 flex flex-col xl:flex-row justify-between gap-1 grow-0">
+            <div class="overflow-hidden flex flex-col">
+              <% if name_slot? %>
+                <%= name_slot %>
+              <% else %>
+                <%= render Avo::PanelNameComponent.new name: @name %>
+              <% end %>
+              <% if description.present? %>
+                <div class="text-sm tracking-normal font-medium text-gray-600 text-center sm:text-left" data-target="description">
+                  <%== description %>
+                </div>
+              <% end %>
+            </div>
+            <% if tools.present? %>
+              <div class="flex-1 w-full flex flex-col sm:flex-row xl:justify-end sm:items-end gap-2 mt-4 xl:mt-0" data-target="panel-tools">
+                <%= tools %>
+              </div>
+            <% end %>
           </div>
-        <% end %>
+        </div>
       </div>
     </div>
   <% end %>

@@ -2,6 +2,8 @@ class Avo::Resources::Event < Avo::BaseResource
   self.title = :name
   self.description = "An event that happened at a certain time."
   self.includes = [:location]
+  self.cover_photo = :cover_photo
+  self.profile_photo = :profile_photo
 
   def fields
     field :name, as: :text, link_to_record: true, sortable: true, stacked: true

@@ -1,10 +1,5 @@
 <%= render Avo::PanelComponent.new(**args) do |c| %>
   <% if @is_main_panel %>
-    <% c.with_cover_slot do %>
-      <%= render Avo::CoverPhotoComponent.new resource: @resource %>
-    <% end %>
-  <% end %>
-  <% if @is_main_panel %>
     <% c.with_tools do %>
       <% controls.each do |control| %>
         <%= render_control control %>
