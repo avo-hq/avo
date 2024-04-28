@@ -8,7 +8,7 @@ class Avo::Configuration::Branding
     @favicon = favicon
 
     @default_colors = {
-      background: "#F6F6F7",
+      :background => "#F6F6F7",
       100 => "206 231 248",
       400 => "57 158 229",
       500 => "8 134 222",
