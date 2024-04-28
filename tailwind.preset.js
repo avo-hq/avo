@@ -152,9 +152,10 @@ module.exports = {
         },
       }
 
+      addUtilities(newUtilities, ['group-hover'])
+
       // Add has-sidebar variant to make it easier to target fields in panels and use the full-width
       addVariant('has-sidebar', '.has-sidebar & ')
-      addUtilities(newUtilities, ['group-hover'])
     }),
   ],
 }

@@ -9,10 +9,10 @@ module Avo
       end
 
       def profile_photo_value
-        if self.class.profile_photo.is_a?(Symbol)
-          record.send(self.class.profile_photo)
-        elsif self.class.profile_photo.respond_to?(:call)
-          Avo::ExecutionContext.new(target: self.class.profile_photo, record:, resource:, view:).handle
+        if self.class.profile_photo[:source].is_a?(Symbol)
+          record.send(self.class.profile_photo[:source])
+        elsif self.class.profile_photo[:source].respond_to?(:call)
+          Avo::ExecutionContext.new(target: self.class.profile_photo[:source], record:, resource:, view:).handle
         end
       end
     end

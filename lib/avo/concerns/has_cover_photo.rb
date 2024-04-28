@@ -8,11 +8,15 @@ module Avo
         attr_accessor :cover_photo
       end
 
+      def cover_photo_size
+        self.class.cover_photo[:size] || :md
+      end
+
       def cover_photo_value
-        if self.class.cover_photo.is_a?(Symbol)
-          record.send(self.class.cover_photo)
-        elsif self.class.cover_photo.respond_to?(:call)
-          Avo::ExecutionContext.new(target: self.class.cover_photo, record:, resource: self, view:).handle
+        if self.class.cover_photo[:source].is_a?(Symbol)
+          record.send(self.class.cover_photo[:source])
+        elsif self.class.cover_photo[:source].respond_to?(:call)
+          Avo::ExecutionContext.new(target: self.class.cover_photo[:source], record:, resource: self, view:).handle
         end
       end
     end
