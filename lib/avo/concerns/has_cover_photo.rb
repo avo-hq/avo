@@ -9,10 +9,12 @@ module Avo
       end
 
       def cover_photo_size
-        self.class.cover_photo[:size] || :md
+        self.class&.cover_photo&.fetch(:size) || :md
       end
 
       def cover_photo_value
+        return unless self.class&.cover_photo&.fetch(:source).present?
+
         if self.class.cover_photo[:source].is_a?(Symbol)
           record.send(self.class.cover_photo[:source])
         elsif self.class.cover_photo[:source].respond_to?(:call)

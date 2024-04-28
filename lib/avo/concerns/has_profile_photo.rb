@@ -9,6 +9,8 @@ module Avo
       end
 
       def profile_photo_value
+        return unless self.class&.profile_photo&.fetch(:source).present?
+
         if self.class.profile_photo[:source].is_a?(Symbol)
           record.send(self.class.profile_photo[:source])
         elsif self.class.profile_photo[:source].respond_to?(:call)
