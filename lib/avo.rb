@@ -142,7 +142,7 @@ module Avo
     end
 
     def eager_load_actions
-      Rails.autoloaders.main.eager_load_namespace(Avo::Actions)
+      Rails.autoloaders.main.eager_load_namespace(Avo::Actions) if defined?(Avo::Actions)
     end
   end
 end
