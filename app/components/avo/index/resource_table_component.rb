@@ -4,6 +4,8 @@ class Avo::Index::ResourceTableComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
   attr_reader :pagy, :query
 
+  def before_render = cache_table_rows
+
   def initialize(resources: nil, resource: nil, reflection: nil, parent_record: nil, parent_resource: nil, pagy: nil, query: nil, actions: nil)
     @resources = resources
     @resource = resource
@@ -13,7 +15,6 @@ class Avo::Index::ResourceTableComponent < Avo::BaseComponent
     @pagy = pagy
     @query = query
     @actions = actions
-    cache_table_rows
   end
 
   def encrypted_query
