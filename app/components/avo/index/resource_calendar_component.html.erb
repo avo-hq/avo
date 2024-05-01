@@ -6,7 +6,9 @@
     data-selected-resources-name="<%= @resource.model_key %>" data-selected-resources="[]">
 
       <div class="flex justify-between py-2">
+        <%= link_to "← Last month", helpers.resources_path(resource: @resource, view_type: 'calendar', date: Date.parse(params.fetch(:date, Date.today.to_s)).last_month) %>
         <p class="font-bold text-xl"><%= @date.strftime('%B %Y') %></p>
+        <%= link_to "Next month →", helpers.resources_path(resource: @resource, view_type: 'calendar', date: Date.parse(params.fetch(:date, Date.today.to_s)).next_month) %>
       </div>
       <div class="grid grid-cols-7 bg-white">
         <% Date::ABBR_DAYNAMES.rotate.each do |day| %>
