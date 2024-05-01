@@ -27,12 +27,12 @@ module Avo
     def build_background_url
       uri = URI.parse(request.url)
 
-      # Remove the '/actions' segment from the path
+      # Remove the "/actions" segment from the path
       path_without_actions = uri.path.sub("/actions", "")
 
       params = URI.decode_www_form(uri.query || "").to_h
 
-      params.delete('action_id')
+      params.delete("action_id")
       params[:turbo_frame] = ACTIONS_BACKGROUND_FRAME
 
       # Reconstruct the query string
