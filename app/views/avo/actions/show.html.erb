@@ -1,4 +1,4 @@
-<%= turbo_frame_tag "index", src: @background_url, loading: :lazy, target: :_top, class: "block" do %>
+<%= turbo_frame_tag Avo::ACTIONS_BACKGROUND_FRAME, src: @background_url, loading: :lazy, target: :_top, class: "block" do %>
   <%= render Avo::LoadingComponent.new(title: "...") %>
 <% end %>
 
