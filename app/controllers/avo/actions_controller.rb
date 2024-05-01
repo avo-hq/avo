@@ -28,9 +28,9 @@ module Avo
       uri = URI.parse(request.url)
 
       # Remove the '/actions' segment from the path
-      path_without_actions = uri.path.sub(/\/actions/, '')
+      path_without_actions = uri.path.sub("/actions", "")
 
-      params = URI.decode_www_form(uri.query || '').to_h
+      params = URI.decode_www_form(uri.query || "").to_h
 
       params.delete('action_id')
       params[:turbo_frame] = ACTIONS_BACKGROUND_FRAME
@@ -40,7 +40,7 @@ module Avo
 
       # Update the URI components
       uri.path = path_without_actions
-      uri.query = (new_query_string == '') ? nil : new_query_string
+      uri.query = (new_query_string == "") ? nil : new_query_string
 
       # Reconstruct the modified URL
       @background_url = uri.to_s
