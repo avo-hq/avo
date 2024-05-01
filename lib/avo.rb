@@ -19,6 +19,7 @@ module Avo
   PACKED = !IN_DEVELOPMENT
   COOKIES_KEY = "avo"
   ACTIONS_TURBO_FRAME_ID = :actions_show
+  ACTIONS_BACKGROUND_FRAME = :actions_background
 
   class LicenseVerificationTemperedError < StandardError; end
 
