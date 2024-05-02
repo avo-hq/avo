@@ -14,7 +14,7 @@ module Avo
         if self.class.profile_photo[:source].is_a?(Symbol)
           record.send(self.class.profile_photo[:source])
         elsif self.class.profile_photo[:source].respond_to?(:call)
-          Avo::ExecutionContext.new(target: self.class.profile_photo[:source], record:, resource:, view:).handle
+          Avo::ExecutionContext.new(target: self.class.profile_photo[:source], record:, resource: self, view:).handle
         end
       end
     end

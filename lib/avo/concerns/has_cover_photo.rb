@@ -9,7 +9,7 @@ module Avo
       end
 
       def cover_photo_size
-        self.class&.cover_photo&.fetch(:size) || :md
+        self.class&.cover_photo&.fetch(:size, :md)
       end
 
       def cover_photo_value

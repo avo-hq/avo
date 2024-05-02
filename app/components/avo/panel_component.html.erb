@@ -6,18 +6,18 @@
   <% end %>
 
   <% if render_header? %>
-    <div data-target="panel-header" class="block mb-4">
-      <div class="flex flex-col sm:flex-row w-full flex-1">
+    <div data-target="panel-header" class="flex flex-col flex-1 w-full mb-4">
+      <div class="flex justify-center sm:justify-start flex-row w-full flex-1">
         <% if has_profile_photo? %>
-          <%= image_tag helpers.main_app.url_for(@profile_photo), class: class_names("relative self-center sm:self-start ml-8 sm:mr-2 rounded-full w-48 h-48 object-cover aspect-square border-4 border-application mb-4 sm:mb-0", "-mt-[7.5rem]": has_cover_photo?) %>
+          <%= image_tag helpers.main_app.url_for(@profile_photo), class: class_names("relative sm:ml-8 sm:mr-2 rounded-full w-36 h-36 sm:w-48 sm:h-48 object-cover aspect-square border-4 border-application -mt-12") %>
         <% end %>
-        <div class="flex flex-col flex-1">
+        <div class="flex flex-col flex-1 w-full">
           <% if display_breadcrumbs? %>
-            <div class="breadcrumbs text-center sm:text-left">
+            <div class="breadcrumbs text-center sm:text-left mb-2">
               <%= helpers.render_avo_breadcrumbs(separator: helpers.svg('chevron-right', class: 'inline-block h-3 stroke-current relative top-[-1px] ml-1')) if Avo.configuration.display_breadcrumbs %>
             </div>
           <% end %>
-          <div class="flex-1 flex flex-col xl:flex-row justify-between gap-1 grow-0 mt-2">
+          <div class="flex-1 flex flex-col xl:flex-row justify-between gap-1 grow-0">
             <div class="overflow-hidden flex flex-col">
               <% if name_slot? %>
                 <%= name_slot %>

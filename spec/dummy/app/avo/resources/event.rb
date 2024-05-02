@@ -3,7 +3,7 @@ class Avo::Resources::Event < Avo::BaseResource
   self.description = "An event that happened at a certain time."
   self.includes = [:location]
   self.cover_photo = {
-    size: :sm,
+    # size: :sm,
     source: :cover_photo
   }
   self.profile_photo = {
