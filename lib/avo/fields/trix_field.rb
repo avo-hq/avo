@@ -23,7 +23,7 @@ module Avo
 
       # Identify if field is bonded to a rich text model attribute
       def is_action_text?
-        return false if record.nil? || !record.respond_to?(id)
+        return false if !defined?(ActionText::RichText) || record.nil? || !record.respond_to?(id)
 
         record.send(id).is_a?(ActionText::RichText)
       end
