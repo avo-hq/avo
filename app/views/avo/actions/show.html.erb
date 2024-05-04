@@ -1,3 +1,7 @@
+<%= turbo_frame_tag Avo::ACTIONS_BACKGROUND_FRAME, src: @background_url, loading: :lazy, target: :_top, class: "block" do %>
+  <%= render Avo::LoadingComponent.new(title: "...") %>
+<% end %>
+
 <%= turbo_frame_tag Avo::ACTIONS_TURBO_FRAME_ID do %>
   <div
     data-controller="<%= ["action", @action.get_stimulus_controllers].join(" ") %>"
