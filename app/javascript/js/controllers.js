@@ -29,6 +29,7 @@ import ReloadBelongsToFieldController from './controllers/fields/reload_belongs_
 import ResourceEditController from './controllers/resource_edit_controller'
 import ResourceIndexController from './controllers/resource_index_controller'
 import ResourceShowController from './controllers/resource_show_controller'
+import RangeSliderFilterController from './controllers/range_slider_filter_controller'
 import SearchController from './controllers/search_controller'
 import SelectController from './controllers/select_controller'
 import SelectFilterController from './controllers/select_filter_controller'
@@ -65,6 +66,7 @@ application.register('preview', PreviewController)
 application.register('resource-edit', ResourceEditController)
 application.register('resource-index', ResourceIndexController)
 application.register('resource-show', ResourceShowController)
+application.register('range-slider-filter', RangeSliderFilterController)
 application.register('search', SearchController)
 application.register('select', SelectController)
 application.register('select-filter', SelectFilterController)

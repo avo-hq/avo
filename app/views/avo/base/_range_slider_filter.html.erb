@@ -1,0 +1,34 @@
+<div
+  data-controller="range-slider-filter"
+  data-filter-name="<%= filter.name %>"
+  data-target="range-slider-filter.rangeSlider"
+  data-range-slider-filter-min="<%= filter.min %>"
+  data-range-slider-filter-max="<%= filter.max %>"
+  data-range-slider-filter-suffix="<%= filter.suffix %>"
+  data-range-slider-filter-max_word="<%= filter.max_word %>"
+  data-range-slider-filter-keep-filters-panel-open-value="<%= @resource.keep_filters_panel_open %>"
+>
+  <%= filter_wrapper name: filter.name do %>
+    <br>
+    <div id="range-slider-filter" class="slider-round" data-target="range-slider-filter.rangeSlider"></div>
+    <%= link_to 'url_redirect', request.url, data: { 'range-slider-filter-target': 'urlRedirect', 'turbo-frame': params[:turbo_frame] }, style: 'hidden', class: 'hidden' %>
+  <% end %>
+</div>
+
+<style>
+  .noUi-connect {
+    background: #0586DD;
+  }
+
+  .slider-round {
+    height: 15px;
+  }
+
+  .slider-round .noUi-handle {
+    height: 22px;
+    width: 22px;
+    top: -5px;
+    right: -11px; /* half the width */
+    border-radius: 9px;
+  }
+</style>
