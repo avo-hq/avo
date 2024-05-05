@@ -10,7 +10,6 @@ export default class extends BaseFilterController {
     maxWord: String,
     filterClass: String,
   };
-  sliderInitialized = false;
   slider = null;
 
   connect() {
@@ -18,47 +17,39 @@ export default class extends BaseFilterController {
   }
 
   initialize() {
-    let min = this.minValue;
-    let max = this.maxValue;
-    let suffix = this.suffixValue;
-    let maxWord = this.maxWordValue;
     let sliderElement = document.getElementById('range-slider-filter');
     let savedValue = sessionStorage.getItem('sliderValue');
-    savedValue = savedValue ? JSON.parse(savedValue) : [min, max];
-      this.slider = noUiSlider.create(sliderElement, {
-        start: savedValue,
-        connect: true,
-        tooltips: true,
-        range: {min: min, max: max},
-        format: {
-          to: function(value) {
-            if (value >= max) {
-              return maxWord;
-            }
-            return Math.floor(value) + suffix;
-          },
-          from: function(value) {
-            if (value === maxWord) {
-              return max;
-            }
-            return Number(value.replace(suffix, ''));
-          },
-        },
-      });
-
+    savedValue = savedValue ? JSON.parse(savedValue) : [this.minValue, this.maxValue];
+    this.slider = noUiSlider.create(sliderElement, this.setupSlider(savedValue));
     this.slider.on('change', (values) => {
         sessionStorage.setItem('sliderValue', JSON.stringify(values));
         this.changeFilter();
       });
-    // this.sliderInitialized = true;
+  }
+
+  setupSlider(savedValue) {
+    return {
+      start: savedValue,
+      connect: true,
+      tooltips: true,
+      range: {
+        min: this.minValue,
+        max: this.maxValue,
+      },
+      format: {
+        to: (value) => value >= this.maxValue ?
+          this.maxWordValue :
+          Math.floor(value) + this.suffixValue,
+        from: (value) => value === this.maxWordValue ?
+          this.maxValue :
+          Number(value.replace(this.suffixValue, '')),
+      },
+    };
   }
 
   checkResetFilter() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const resetFilter = urlParams.get('reset_filter');
-    const encodedFilters = urlParams.get('encoded_filters');
-
-    if (resetFilter === 'true' && !encodedFilters) {
+    let urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('reset_filter') === 'true' && !urlParams.get('encoded_filters')) {
       sessionStorage.removeItem('sliderValue');
       this.resetSlider();
     }
