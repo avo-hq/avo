@@ -9,23 +9,23 @@ export default class extends BaseFilterController {
     suffix: String,
     maxWord: String,
     filterClass: String,
-    uuid: String,
+    uniqSliderId: String,
   };
   slider = null;
 
   connect() {
     this.checkResetFilter();
+    this.slider.on('change', (values) => {
+      sessionStorage.setItem('sliderValue' + this.uniqSliderIdValue, JSON.stringify(values));
+      this.changeFilter();
+    });
   }
 
   initialize() {
-    let sliderElement = document.getElementById('range-slider-filter-' + this.uuidValue);
-    let savedValue = sessionStorage.getItem('sliderValue' + this.uuidValue);
+    let sliderElement = document.getElementById('range-slider-filter-' + this.uniqSliderIdValue);
+    let savedValue = sessionStorage.getItem('sliderValue' + this.uniqSliderIdValue);
     savedValue = savedValue ? JSON.parse(savedValue) : [this.minValue, this.maxValue];
     this.slider = noUiSlider.create(sliderElement, this.setupSlider(savedValue));
-    this.slider.on('change', (values) => {
-        sessionStorage.setItem('sliderValue' + this.uuidValue, JSON.stringify(values));
-        this.changeFilter();
-      });
   }
 
   setupSlider(savedValue) {
@@ -51,7 +51,7 @@ export default class extends BaseFilterController {
   checkResetFilter() {
     let urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('reset_filter') === 'true' && !urlParams.get('encoded_filters')) {
-      sessionStorage.removeItem('sliderValue' + this.uuidValue);
+      sessionStorage.removeItem('sliderValue' + this.uniqSliderIdValue);
       this.resetSlider();
     }
   }
@@ -59,7 +59,7 @@ export default class extends BaseFilterController {
   resetSlider() {
     let defaultValues = [this.minValue, this.maxValue];
     this.slider.set(defaultValues);
-    sessionStorage.setItem('sliderValue' + this.uuidValue, JSON.stringify(defaultValues));
+    sessionStorage.removeItem('sliderValue' + this.uniqSliderIdValue);
   }
 
   getFilterValue() {
