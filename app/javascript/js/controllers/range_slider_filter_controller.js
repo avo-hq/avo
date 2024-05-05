@@ -9,6 +9,7 @@ export default class extends BaseFilterController {
     suffix: String,
     maxWord: String,
     filterClass: String,
+    uuid: String,
   };
   slider = null;
 
@@ -17,12 +18,12 @@ export default class extends BaseFilterController {
   }
 
   initialize() {
-    let sliderElement = document.getElementById('range-slider-filter');
-    let savedValue = sessionStorage.getItem('sliderValue');
+    let sliderElement = document.getElementById('range-slider-filter-' + this.uuidValue);
+    let savedValue = sessionStorage.getItem('sliderValue' + this.uuidValue);
     savedValue = savedValue ? JSON.parse(savedValue) : [this.minValue, this.maxValue];
     this.slider = noUiSlider.create(sliderElement, this.setupSlider(savedValue));
     this.slider.on('change', (values) => {
-        sessionStorage.setItem('sliderValue', JSON.stringify(values));
+        sessionStorage.setItem('sliderValue' + this.uuidValue, JSON.stringify(values));
         this.changeFilter();
       });
   }
@@ -50,7 +51,7 @@ export default class extends BaseFilterController {
   checkResetFilter() {
     let urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('reset_filter') === 'true' && !urlParams.get('encoded_filters')) {
-      sessionStorage.removeItem('sliderValue');
+      sessionStorage.removeItem('sliderValue' + this.uuidValue);
       this.resetSlider();
     }
   }
@@ -58,7 +59,7 @@ export default class extends BaseFilterController {
   resetSlider() {
     let defaultValues = [this.minValue, this.maxValue];
     this.slider.set(defaultValues);
-    sessionStorage.setItem('sliderValue', JSON.stringify(defaultValues));
+    sessionStorage.setItem('sliderValue' + this.uuidValue, JSON.stringify(defaultValues));
   }
 
   getFilterValue() {

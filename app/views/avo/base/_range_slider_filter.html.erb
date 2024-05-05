@@ -6,11 +6,12 @@
   data-range-slider-filter-suffix-value="<%= filter.suffix %>"
   data-range-slider-filter-max-word-value="<%= filter.max_word %>"
   data-range-slider-filter-filter-class-value="<%= filter.class %>"
+  data-range-slider-filter-uuid-value="<%= filter.uuid %>"
   data-range-slider-filter-keep-filters-panel-open-value="<%= @resource.keep_filters_panel_open %>"
 >
   <%= filter_wrapper name: filter.name do %>
     <br>
-    <div id="range-slider-filter" class="slider-round" data-range-slider-filter-target="rangeSlider"></div>
+    <div id="range-slider-filter-<%= filter.uuid %>" class="slider-round"></div>
     <%= link_to 'url_redirect', request.url, data: { 'range-slider-filter-target': 'urlRedirect', 'turbo-frame': params[:turbo_frame] }, style: 'hidden', class: 'hidden' %>
   <% end %>
 </div>
