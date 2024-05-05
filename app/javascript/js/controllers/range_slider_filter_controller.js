@@ -16,6 +16,7 @@ export default class extends BaseFilterController {
   connect() {
     this.checkResetFilter();
     this.slider.on('change', (values) => {
+      // Store the current slider values in sessionStorage
       sessionStorage.setItem('sliderValue' + this.uniqSliderIdValue, JSON.stringify(values));
       this.changeFilter();
     });
@@ -23,8 +24,10 @@ export default class extends BaseFilterController {
 
   initialize() {
     let sliderElement = document.getElementById('range-slider-filter-' + this.uniqSliderIdValue);
+    // Retrieve saved values from sessionStorage or use default values
     let savedValue = sessionStorage.getItem('sliderValue' + this.uniqSliderIdValue);
     savedValue = savedValue ? JSON.parse(savedValue) : [this.minValue, this.maxValue];
+    // Create a new noUiSlider instance with the saved or default values
     this.slider = noUiSlider.create(sliderElement, this.setupSlider(savedValue));
   }
 
@@ -49,20 +52,24 @@ export default class extends BaseFilterController {
   }
 
   checkResetFilter() {
+    // Check URL parameters for reset conditions
     let urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('reset_filter') === 'true' && !urlParams.get('encoded_filters')) {
+      // Clear saved slider values if reset conditions are met
       sessionStorage.removeItem('sliderValue' + this.uniqSliderIdValue);
       this.resetSlider();
     }
   }
 
   resetSlider() {
+    // Reset the slider to its default values
     let defaultValues = [this.minValue, this.maxValue];
     this.slider.set(defaultValues);
     sessionStorage.removeItem('sliderValue' + this.uniqSliderIdValue);
   }
 
   getFilterValue() {
+    // Retrieve the current values from the slider and remove any suffixes
     return this.slider.get().map(value => {
       return value.includes(this.suffixValue) ?
         value.replace(this.suffixValue, '') : value;
