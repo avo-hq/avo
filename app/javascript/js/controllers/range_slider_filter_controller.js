@@ -3,53 +3,54 @@ import noUiSlider from 'nouislider';
 
 export default class extends BaseFilterController {
   static targets = ['rangeSlider'];
+  static values = {
+    min: Number,
+    max: Number,
+    suffix: String,
+    maxWord: String,
+    filterClass: String,
+  };
   sliderInitialized = false;
   slider = null;
 
   connect() {
-    this.initializeSlider();
     this.checkResetFilter();
   }
 
-  initializeSlider() {
-    if (!this.sliderInitialized) {
-      let sliderElement = document.getElementById('range-slider-filter');
-      let savedValue = sessionStorage.getItem('sliderValue');
-      savedValue = savedValue ? JSON.parse(savedValue) : [1, 65];
-
-      // 既存のスライダーがあれば削除する
-      if (this.slider) {
-        this.slider.destroy();
-      }
-
+  initialize() {
+    let min = this.minValue;
+    let max = this.maxValue;
+    let suffix = this.suffixValue;
+    let maxWord = this.maxWordValue;
+    let sliderElement = document.getElementById('range-slider-filter');
+    let savedValue = sessionStorage.getItem('sliderValue');
+    savedValue = savedValue ? JSON.parse(savedValue) : [min, max];
       this.slider = noUiSlider.create(sliderElement, {
         start: savedValue,
         connect: true,
         tooltips: true,
-        range: {min: 1, max: 65},
+        range: {min: min, max: max},
         format: {
           to: function(value) {
-            if (value >= 65) {
-              return '上限なし';
+            if (value >= max) {
+              return maxWord;
             }
-            return Math.floor(value) + '分';
+            return Math.floor(value) + suffix;
           },
           from: function(value) {
-            if (value === '上限なし') {
-              return 65;
+            if (value === maxWord) {
+              return max;
             }
-            return Number(value.replace('分', ''));
+            return Number(value.replace(suffix, ''));
           },
         },
       });
 
-      this.slider.on('change', (values, handle) => {
+    this.slider.on('change', (values) => {
         sessionStorage.setItem('sliderValue', JSON.stringify(values));
         this.changeFilter();
       });
-
-      this.sliderInitialized = true;
-    }
+    // this.sliderInitialized = true;
   }
 
   checkResetFilter() {
@@ -64,19 +65,19 @@ export default class extends BaseFilterController {
   }
 
   resetSlider() {
-    let defaultValues = [1, 65];
+    let defaultValues = [this.minValue, this.maxValue];
     this.slider.set(defaultValues);
     sessionStorage.setItem('sliderValue', JSON.stringify(defaultValues));
   }
 
   getFilterValue() {
-    let values = this.slider.get();
-    return values.map(value => {
-      return value.includes('分') ? value.replace('分', '') : value;
+    return this.slider.get().map(value => {
+      return value.includes(this.suffixValue) ?
+        value.replace(this.suffixValue, '') : value;
     });
   }
 
   getFilterClass() {
-    return 'Avo::Filters::SliderVideoDurationFilter';
+    return this.filterClassValue;
   }
 }
