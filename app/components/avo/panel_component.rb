@@ -5,7 +5,6 @@ class Avo::PanelComponent < ViewComponent::Base
 
   attr_reader :title # deprecating title in favor of name
   attr_reader :name
-  attr_reader :classes
 
   delegate :white_panel_classes, to: :helpers
 
@@ -34,6 +33,10 @@ class Avo::PanelComponent < ViewComponent::Base
     @cover_photo_size = cover_photo_size
   end
 
+  def classes
+    class_names(@classes, "has-cover-photo": @cover_photo.present?, "has-profile-photo": @profile_photo.present?)
+  end
+
   private
 
   def data_attributes
@@ -52,20 +55,5 @@ class Avo::PanelComponent < ViewComponent::Base
 
   def render_header?
     @name.present? || description.present? || tools.present? || display_breadcrumbs?
-  end
-
-  def has_cover_photo?
-    @cover_photo.present?
-  end
-
-  def has_profile_photo?
-    @profile_photo.present?
-  end
-
-  # aspect-cover-sm
-  # aspect-cover-md
-  # aspect-cover-lg
-  def cover_photo_size_class
-    "aspect-cover-#{@cover_photo_size}"
   end
 end
