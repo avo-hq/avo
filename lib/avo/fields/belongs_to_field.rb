@@ -96,6 +96,10 @@ module Avo
         end
       end
 
+      def selected
+        value.to_param
+      end
+
       # The value
       def field_value
         value.send(database_value)
