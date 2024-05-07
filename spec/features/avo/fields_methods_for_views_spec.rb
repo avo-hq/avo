@@ -166,7 +166,7 @@ RSpec.feature "Fields methods for each view", type: :feature do
       visit "#{Avo::Engine.routes.url_helpers.resources_course_path(course)}/links?turbo_frame=has_many_field_links&view=show"
 
       expect {
-        find("tr[data-resource-id='#{course.links.first.id}'] [data-control='detach']").click
+        find("tr[data-resource-id='#{course.links.first.to_param}'] [data-control='detach']").click
       }.to change(course.links, :count).by(-1)
     end
 
