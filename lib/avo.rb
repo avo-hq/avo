@@ -19,6 +19,7 @@ module Avo
   PACKED = !IN_DEVELOPMENT
   COOKIES_KEY = "avo"
   ACTIONS_TURBO_FRAME_ID = :actions_show
+  ACTIONS_BACKGROUND_FRAME = :actions_background
 
   class LicenseVerificationTemperedError < StandardError; end
 
@@ -142,7 +143,7 @@ module Avo
     end
 
     def eager_load_actions
-      Rails.autoloaders.main.eager_load_namespace(Avo::Actions)
+      Rails.autoloaders.main.eager_load_namespace(Avo::Actions) if defined?(Avo::Actions)
     end
   end
 end
