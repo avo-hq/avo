@@ -42,4 +42,10 @@ class Avo::PaginatorComponent < ViewComponent::Base
       options.sort.uniq
     end
   end
+
+  def pagy_major_version
+    return nil unless defined?(Pagy::VERSION)
+
+    Pagy::VERSION&.split(".")&.first&.to_i
+  end
 end

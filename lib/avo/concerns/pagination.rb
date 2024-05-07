@@ -38,7 +38,7 @@ module Avo
         send PAGINATION_METHOD[pagination_type.to_sym],
           query,
           items: index_params[:per_page],
-          link_extra: "data-turbo-frame=\"#{params[:turbo_frame]}\"",
+          anchor_string: "data-turbo-frame=\"#{params[:turbo_frame]}\"",
           params: extra_pagy_params,
           size: pagination_hash[:size]
       end
