@@ -1,6 +1,19 @@
 import { Controller } from '@hotwired/stimulus'
 import URI from 'urijs'
 
+function updateQueryParam(url, key, value) {
+  const uri = new URI(url)
+  uri.setQuery(key, value)
+
+  return uri.toString()
+}
+
+function getDateParam(url) {
+  const queryString = url.split('?')[1]
+  const params = new URLSearchParams(queryString)
+
+  return params.get('date')
+}
 export default class extends Controller {
   static targets = ['cardsElements']
 
@@ -16,18 +29,4 @@ export default class extends Controller {
       })
     }
   }
-}
-
-function updateQueryParam(url, key, value) {
-  const uri = new URI(url)
-  uri.setQuery(key, value)
-
-  return uri.toString()
-}
-
-function getDateParam(url) {
-  const queryString = url.split('?')[1]
-  const params = new URLSearchParams(queryString)
-
-  return params.get('date')
 }
