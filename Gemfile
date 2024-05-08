@@ -176,3 +176,6 @@ gem "avo-money_field"
 # Avo record_link field
 # gem "avo-record_link_field", path: "./../avo-record_link_field"
 gem "avo-record_link_field"
+
+# gem "pagy", "< 8.0.0"
+gem "pagy", "> 8"

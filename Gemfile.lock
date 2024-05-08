@@ -376,7 +376,7 @@ GEM
     nokogiri (1.16.4-x86_64-linux)
       racc (~> 1.4)
     orm_adapter (0.5.0)
-    pagy (8.2.1)
+    pagy (8.4.0)
     parallel (1.24.0)
     parser (3.3.0.5)
       ast (~> 2.4.1)
@@ -677,6 +677,7 @@ DEPENDENCIES
   meta-tags
   money-rails (~> 1.12)
   net-smtp
+  pagy (> 8)
   pg (>= 0.18, < 2.0)
   pluggy!
   prefixed_ids
