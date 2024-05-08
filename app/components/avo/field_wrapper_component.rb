@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Avo::FieldWrapperComponent < ViewComponent::Base
+  include Avo::Concerns::HasResourceStimulusControllers
+
   attr_reader :dash_if_blank
   attr_reader :compact
   attr_reader :field
@@ -111,13 +113,5 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
 
   def full_width?
     @full_width
-  end
-
-  private
-
-  def add_stimulus_attributes_for(entity, attributes)
-    entity.get_stimulus_controllers.split(" ").each do |controller|
-      attributes["#{controller}-target"] = "#{@field.id.to_s.underscore}_#{@field.type.to_s.underscore}_wrapper".camelize(:lower)
-    end
   end
 end
