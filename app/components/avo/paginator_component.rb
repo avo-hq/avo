@@ -45,7 +45,10 @@ class Avo::PaginatorComponent < ViewComponent::Base
 
   def pagy_major_version
     return nil unless defined?(Pagy::VERSION)
+    version = Pagy::VERSION&.split(".")&.first&.to_i
 
-    Pagy::VERSION&.split(".")&.first&.to_i
+    return "8-or-more" if version >= 8
+
+    version
   end
 end

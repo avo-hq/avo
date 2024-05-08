@@ -22,10 +22,7 @@
     </div>
   </div>
   <div class="flex">
-    <%= content_tag :div, class: class_names("flex-2 sm:flex sm:items-center sm:justify-between space-y-2 sm:space-y-0 text-center sm:text-left", {
-      "pagy-gem-version-7": pagy_major_version <= 7,
-      "pagy-gem-version-8": pagy_major_version >= 8,
-    }) do %>
+    <div class="flex-2 sm:flex sm:items-center sm:justify-between space-y-2 sm:space-y-0 text-center sm:text-left pagy-gem-version-<%= pagy_major_version %>">
       <% if @resource.pagination_type.default? %>
         <div class="text-sm text-slate-600 mr-4"><%== helpers.pagy_info @pagy %></div>
       <% end %>
@@ -34,6 +31,6 @@
         <%# @todo: add first & last page. make the first and last buttons rounded %>
         <%== helpers.pagy_nav @pagy %>
       <% end %>
-    <% end %>
+    </div>
   </div>
 </div>

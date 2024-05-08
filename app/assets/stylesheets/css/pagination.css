@@ -64,7 +64,7 @@
   }
 }
 
-.pagy-gem-version-8 {
+.pagy-gem-version-8-or-more {
   .pagy.nav {
     @apply relative z-0 flex space-x-2;
 
