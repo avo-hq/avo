@@ -1,9 +1,9 @@
-<div class="flex items-start py-1 leading-tight bg-gray-100 text-gray-500 text-xs">
+<%= content_tag :div, class: "flex items-start py-1 leading-tight bg-gray-100 text-gray-500 text-xs", data: @data do %>
   <div class="py-2 px-6 h-full w-full">
-    <% if as_html %>
-      <%= sanitize value %>
+    <% if @field.as_html %>
+      <%= sanitize @field.value %>
     <% else %>
-      <div class="font-semibold uppercase"><%= value %></div>
+      <div class="font-semibold uppercase"><%= @field.value %></div>
     <% end %>
   </div>
-</div>
+<% end %>

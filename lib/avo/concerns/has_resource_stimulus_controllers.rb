@@ -8,11 +8,11 @@ module Avo
       end
 
       def get_stimulus_controllers
-        return "" if view.nil?
+        return "" if @view.nil?
 
         controllers = []
 
-        case view.to_sym
+        case @view.to_sym
         when :show
           controllers << "resource-show"
         when :new, :edit
@@ -32,10 +32,16 @@ module Avo
         }
 
         get_stimulus_controllers.split(" ").each do |controller|
-          attributes["#{controller}-view-value"] = view
+          attributes["#{controller}-view-value"] = @view
         end
 
         attributes
+      end
+
+      def add_stimulus_attributes_for(entity, attributes)
+        entity.get_stimulus_controllers.split(" ").each do |controller|
+          attributes["#{controller}-target"] = "#{@field.id.to_s.underscore}_#{@field.type.to_s.underscore}_wrapper".camelize(:lower)
+        end
       end
     end
   end
