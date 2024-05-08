@@ -180,7 +180,6 @@ gem "avo-record_link_field"
 # gem "pagy", "< 8.0.0"
 gem "pagy", "> 8"
 
-gem "hashid-rails", "~> 1.4", ">= 1.4.1"
 # Avo money field
 # gem "avo-money_field", path: "./../avo-money_field"
 gem "money-rails", "~> 1.12"
