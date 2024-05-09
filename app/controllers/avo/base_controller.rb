@@ -605,7 +605,7 @@ module Avo
       # Check if the sortable field option is actually a proc and we need to do a custom sort
       @query = if field.sortable.is_a?(Proc)
         Avo::ExecutionContext.new(target: field.sortable, query: @query, direction: sort_direction).handle
-      else
+      elsif sort_direction.present?
         @query.order("#{@resource.model_class.table_name}.#{sort_by} #{sort_direction}")
       end
     end
