@@ -84,7 +84,14 @@ module Avo
         items.each do |item|
           next if item.nil?
 
-          unless only_root
+          if only_root
+            # When `item.is_main_panel? == true` then also `item.is_panel? == true`
+            # But when only_root == true we want to extract main_panel items
+            # In all other circumstances items will get extracted when checking for `item.is_panel?`
+            if item.is_main_panel?
+              fields << extract_fields(item)
+            end
+          else
             # Dive into panels to fetch their fields
             if item.is_panel?
               fields << extract_fields(item)
@@ -99,13 +106,6 @@ module Avo
 
             # Dive into sidebar to fetch their fields
             if item.is_sidebar?
-              fields << extract_fields(item)
-            end
-          else
-            # When `item.is_main_panel? == true` then also `item.is_panel? == true`
-            # But when only_root == true we want to extract main_panel items
-            # In all other circumstances items will get extracted when checking for `item.is_panel?`
-            if item.is_main_panel?
               fields << extract_fields(item)
             end
           end
@@ -308,8 +308,6 @@ module Avo
             item
           elsif extractable_structure?(item)
             extract_fields(item)
-          else
-            nil
           end
         end.compact
       end

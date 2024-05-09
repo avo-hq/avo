@@ -32,7 +32,7 @@ module Avo
       def visible_in_view?(view:)
         raise "No view specified on visibility check." if view.blank?
 
-        send "show_on_#{view}"
+        send :"show_on_#{view}"
       end
 
       def show_on(*where)
@@ -78,11 +78,11 @@ module Avo
       private
 
       def show_on_view(view)
-        send("show_on_#{view}=", true)
+        send(:"show_on_#{view}=", true)
       end
 
       def hide_on_view(view)
-        send("show_on_#{view}=", false)
+        send(:"show_on_#{view}=", false)
       end
 
       def only_on_view(view)
