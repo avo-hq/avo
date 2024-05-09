@@ -173,9 +173,7 @@ module Avo
         user: _current_user
       )
 
-      reflection_resource.detect_fields.get_field_definitions.find do |field|
-        field.id.to_s == params[:via_association_id]
-      end
+      reflection_resource.detect_fields.get_field(params[:via_association_id])
     end
 
     def fetch_parent
