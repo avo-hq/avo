@@ -597,17 +597,21 @@ module Avo
 
       # Verify that sort_by param actually is bonded to a field.
       field = @resource.get_field(sort_by)
-      return if field.nil?
 
-      # Sanitize sort_direction param
-      sort_direction = @index_params[:sort_direction].presence_in(["asc", "desc"])
-
-      # Check if the sortable field option is actually a proc and we need to do a custom sort
-      if field.sortable.is_a?(Proc)
-        @query = Avo::ExecutionContext.new(target: field.sortable, query: @query, direction: sort_direction).handle
-      elsif sort_direction.present?
-        @query = @query.order("#{@resource.model_class.table_name}.#{sort_by} #{sort_direction}")
+      # If field is nil order by table name
+      @query = if field.nil?
+        @query.order("#{@resource.model_class.table_name}")
+      # Check if the sortable field option is a proc and if there is a need to do a custom sort
+      elsif field.sortable.is_a?(Proc)
+        Avo::ExecutionContext.new(target: field.sortable, query: @query, direction: sanitized_sort_direction).handle
+      else
+        @query.order("#{@resource.model_class.table_name}.#{sort_by} #{sanitized_sort_direction}")
       end
+    end
+
+    # Sanitize sort_direction param
+    def sanitized_sort_direction
+      @index_params[:sort_direction].presence_in(["asc", "desc"])
     end
   end
 end
