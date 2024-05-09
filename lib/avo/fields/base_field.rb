@@ -277,6 +277,10 @@ module Avo
         end
       end
 
+      def form_field_label
+        id
+      end
+
       private
 
       def model_or_class(model)

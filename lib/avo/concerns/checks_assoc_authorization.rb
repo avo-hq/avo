@@ -8,7 +8,7 @@ module Avo
         policy_result = true
 
         if @reflection.present?
-          # Fetch the appropiate resource
+          # Fetch the appropriate resource
           reflection_resource = field.resource
           # Fetch the record
           # Hydrate the resource with the record if we have one
@@ -23,7 +23,7 @@ module Avo
             service = reflection_resource.authorization
 
             if service.has_method?(method_name, raise_exception: false)
-              # Some policy methods should get the parent record in order to have the necessarry information to do the authorization
+              # Some policy methods should get the parent record in order to have the necessary information to do the authorization
               # Example: Post->has_many->Comments
               #
               # When you want to authorize the creation/attaching of a Comment, you don't have the Comment instance.
