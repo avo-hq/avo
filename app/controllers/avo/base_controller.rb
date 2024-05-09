@@ -34,21 +34,7 @@ module Avo
         @query = @query.includes(*@resource.includes)
       end
 
-      # Sort the items
-      if @index_params[:sort_by].present?
-        unless @index_params[:sort_by].eql? :created_at
-          @query = @query.unscope(:order)
-        end
-
-        # Check if the sortable field option is actually a proc and we need to do a custom sort
-        field_id = @index_params[:sort_by].to_sym
-        field = @resource.get_field_definitions.find { |field| field.id == field_id }
-        @query = if field&.sortable.is_a?(Proc)
-          Avo::ExecutionContext.new(target: field.sortable, query: @query, direction: @index_params[:sort_direction]).handle
-        else
-          @query.order("#{@resource.model_class.table_name}.#{@index_params[:sort_by]} #{@index_params[:sort_direction]}")
-        end
-      end
+      apply_sorting
 
       # Apply filters to the current query
       filters_to_be_applied.each do |filter_class, filter_value|
@@ -599,6 +585,34 @@ module Avo
 
     def apply_pagination
       @pagy, @records = @resource.apply_pagination(index_params: @index_params, query: pagy_query)
+    end
+
+    def apply_sorting
+      return if @index_params[:sort_by].nil?
+
+      sort_by = @index_params[:sort_by].to_sym
+      if sort_by != :created_at
+        @query = @query.unscope(:order)
+      end
+
+      # Verify that sort_by param actually is bonded to a field.
+      field = @resource.get_field(sort_by)
+
+      # Check if the sortable field option is a proc and if there is a need to do a custom sort
+      @query = if field.present? && field.sortable.is_a?(Proc)
+        Avo::ExecutionContext.new(target: field.sortable, query: @query, direction: sanitized_sort_direction).handle
+      # Sanitize sort_by param by checking if have bounded field.
+      elsif field.present? && sanitized_sort_direction
+        @query.order("#{@resource.model_class.table_name}.#{sort_by} #{sanitized_sort_direction}")
+      # Transform Model to ActiveRecord::Relation because Avo expects one.
+      else
+        @query.where("1=1")
+      end
+    end
+
+    # Sanitize sort_direction param
+    def sanitized_sort_direction
+      @sanitized_sort_direction ||= @index_params[:sort_direction].presence_in(["asc", "desc"])
     end
   end
 end
