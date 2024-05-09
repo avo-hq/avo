@@ -36,17 +36,25 @@ module Avo
 
       # Sort the items
       if @index_params[:sort_by].present?
-        unless @index_params[:sort_by].eql? :created_at
+        sort_by = @index_params[:sort_by].to_sym
+
+        if sort_by != :created_at
           @query = @query.unscope(:order)
         end
 
-        # Check if the sortable field option is actually a proc and we need to do a custom sort
-        field_id = @index_params[:sort_by].to_sym
-        field = @resource.get_field_definitions.find { |field| field.id == field_id }
-        @query = if field&.sortable.is_a?(Proc)
-          Avo::ExecutionContext.new(target: field.sortable, query: @query, direction: @index_params[:sort_direction]).handle
-        else
-          @query.order("#{@resource.model_class.table_name}.#{@index_params[:sort_by]} #{@index_params[:sort_direction]}")
+        field = @resource.get_field_definitions.find { |field| field.id == sort_by }
+
+        # Verify that sort_by param actually is bonded to a field.
+        if field.present?
+          # Sanitize sort_direction param
+          sort_direction = @index_params[:sort_direction].presence_in(["asc", "desc"])
+
+          # Check if the sortable field option is actually a proc and we need to do a custom sort
+          @query = if field.sortable.is_a?(Proc)
+            Avo::ExecutionContext.new(target: field.sortable, query: @query, direction: sort_direction).handle
+          else
+            @query.order("#{@resource.model_class.table_name}.#{sort_by} #{sort_direction}")
+          end
         end
       end
 
