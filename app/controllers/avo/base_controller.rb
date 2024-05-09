@@ -596,7 +596,7 @@ module Avo
         @query = @query.unscope(:order)
       end
 
-      field = @resource.get_field_definitions.find { |field| field.id == sort_by }
+      field = @resource.get_field(sort_by)
 
       # Verify that sort_by param actually is bonded to a field.
       return if field.nil?
