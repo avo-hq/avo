@@ -607,6 +607,8 @@ module Avo
         Avo::ExecutionContext.new(target: field.sortable, query: @query, direction: sort_direction).handle
       elsif sort_direction.present?
         @query.order("#{@resource.model_class.table_name}.#{sort_by} #{sort_direction}")
+      else
+        @query
       end
     end
   end
