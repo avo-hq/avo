@@ -6,7 +6,6 @@ import ActionsPickerController from './controllers/actions_picker_controller'
 import AttachmentsController from './controllers/attachments_controller'
 import BelongsToFieldController from './controllers/fields/belongs_to_field_controller'
 import BooleanFilterController from './controllers/boolean_filter_controller'
-import CardsController from './controllers/cards_controller'
 import CodeFieldController from './controllers/fields/code_field_controller'
 import CopyToClipboardController from './controllers/copy_to_clipboard_controller'
 import DashboardCardController from './controllers/dashboard_card_controller'
@@ -49,7 +48,6 @@ application.register('actions-overflow', ActionsOverflowController)
 application.register('actions-picker', ActionsPickerController)
 application.register('attachments', AttachmentsController)
 application.register('boolean-filter', BooleanFilterController)
-application.register('avo-cards', CardsController)
 application.register('copy-to-clipboard', CopyToClipboardController)
 application.register('dashboard-card', DashboardCardController)
 application.register('filter', FilterController)
