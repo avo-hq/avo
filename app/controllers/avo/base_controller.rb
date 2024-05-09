@@ -612,7 +612,7 @@ module Avo
 
     # Sanitize sort_direction param
     def sanitized_sort_direction
-      @sanitized_sort_direction ||= @index_params[:sort_direction].presence_in(["asc", "desc"])
+      @sanitized_sort_direction ||= @index_params[:sort_direction].presence_in(["asc", :asc, "desc", :desc])
     end
   end
 end
