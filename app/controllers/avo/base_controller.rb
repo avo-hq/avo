@@ -48,13 +48,18 @@ module Avo
           @query = @query.unscope(:order)
         end
 
+        sanitized_sort_direction = @index_params[:sort_direction].presence_in(["asc", "desc"])
+
         # Check if the sortable field option is actually a proc and we need to do a custom sort
-        field_id = @index_params[:sort_by].to_sym
-        field = @resource.get_field_definitions.find { |field| field.id == field_id }
+        sort_by = @index_params[:sort_by].to_sym
+        field = @resource.get_field(sort_by)
         @query = if field&.sortable.is_a?(Proc)
-          field.sortable.call(@query, @index_params[:sort_direction])
+          field.sortable.call(@query, sanitized_sort_direction)
+        elsif field.present? && sanitized_sort_direction
+          @query.order("#{@resource.model_class.table_name}.#{sort_by} #{sanitized_sort_direction}")
+        # Transform Model to ActiveRecord::Relation because Avo expects one.
         else
-          @query.order("#{@resource.model_class.table_name}.#{@index_params[:sort_by]} #{@index_params[:sort_direction]}")
+          @query.where("1=1")
         end
       end
 
