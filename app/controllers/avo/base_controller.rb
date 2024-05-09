@@ -34,29 +34,7 @@ module Avo
         @query = @query.includes(*@resource.includes)
       end
 
-      # Sort the items
-      if @index_params[:sort_by].present?
-        sort_by = @index_params[:sort_by].to_sym
-
-        if sort_by != :created_at
-          @query = @query.unscope(:order)
-        end
-
-        field = @resource.get_field_definitions.find { |field| field.id == sort_by }
-
-        # Verify that sort_by param actually is bonded to a field.
-        if field.present?
-          # Sanitize sort_direction param
-          sort_direction = @index_params[:sort_direction].presence_in(["asc", "desc"])
-
-          # Check if the sortable field option is actually a proc and we need to do a custom sort
-          @query = if field.sortable.is_a?(Proc)
-            Avo::ExecutionContext.new(target: field.sortable, query: @query, direction: sort_direction).handle
-          else
-            @query.order("#{@resource.model_class.table_name}.#{sort_by} #{sort_direction}")
-          end
-        end
-      end
+      apply_sorting
 
       # Apply filters to the current query
       filters_to_be_applied.each do |filter_class, filter_value|
@@ -607,6 +585,31 @@ module Avo
 
     def apply_pagination
       @pagy, @records = @resource.apply_pagination(index_params: @index_params, query: pagy_query)
+    end
+
+    def apply_sorting
+      return if @index_params[:sort_by].nil?
+
+      sort_by = @index_params[:sort_by].to_sym
+
+      if sort_by != :created_at
+        @query = @query.unscope(:order)
+      end
+
+      field = @resource.get_field_definitions.find { |field| field.id == sort_by }
+
+      # Verify that sort_by param actually is bonded to a field.
+      return if field.nil?
+
+      # Sanitize sort_direction param
+      sort_direction = @index_params[:sort_direction].presence_in(["asc", "desc"])
+
+      # Check if the sortable field option is actually a proc and we need to do a custom sort
+      @query = if field.sortable.is_a?(Proc)
+        Avo::ExecutionContext.new(target: field.sortable, query: @query, direction: sort_direction).handle
+      else
+        @query.order("#{@resource.model_class.table_name}.#{sort_by} #{sort_direction}")
+      end
     end
   end
 end
