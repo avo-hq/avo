@@ -591,14 +591,12 @@ module Avo
       return if @index_params[:sort_by].nil?
 
       sort_by = @index_params[:sort_by].to_sym
-
       if sort_by != :created_at
         @query = @query.unscope(:order)
       end
 
-      field = @resource.get_field(sort_by)
-
       # Verify that sort_by param actually is bonded to a field.
+      field = @resource.get_field(sort_by)
       return if field.nil?
 
       # Sanitize sort_direction param
