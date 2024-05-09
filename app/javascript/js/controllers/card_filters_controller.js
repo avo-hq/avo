@@ -8,26 +8,14 @@ function updateQueryParam(url, key, value) {
   return uri.toString()
 }
 
-function getDateParam(url) {
-  const uri = new URI(url)
-  const { date } = uri.search(true)
-
-  return date
-}
-
 export default class extends Controller {
-  static targets = ['cardsElements']
-
   updateCards(event) {
-    const href = event.currentTarget.getAttribute('href')
-    const dateParam = getDateParam(href)
-    if (this.cardsElementsTarget) {
-      const frames = this.cardsElementsTarget.querySelectorAll('turbo-frame')
-      frames.forEach((frame) => {
-        let src = frame.getAttribute('src')
-        src = updateQueryParam(src, 'date', dateParam)
-        frame.setAttribute('src', src)
-      })
-    }
+    const dateParam = event.target.dataset.days
+    const frames = this.element.querySelectorAll('turbo-frame[data-card-index]')
+    frames.forEach((frame) => {
+      const src = frame.getAttribute('src')
+      const srcUpdated = updateQueryParam(src, 'date', dateParam)
+      frame.setAttribute('src', srcUpdated)
+    })
   }
 }
