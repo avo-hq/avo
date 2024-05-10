@@ -602,7 +602,7 @@ module Avo
       @query = if field.present? && field.sortable.is_a?(Proc)
         Avo::ExecutionContext.new(target: field.sortable, query: @query, direction: sanitized_sort_direction).handle
       # Sanitize sort_by param by checking if have bounded field.
-      elsif field.present? && sanitized_sort_direction
+      elsif (field.present? || sort_by == :created_at) && sanitized_sort_direction
         @query.order("#{@resource.model_class.table_name}.#{sort_by} #{sanitized_sort_direction}")
       # Transform Model to ActiveRecord::Relation because Avo expects one.
       else
@@ -612,7 +612,7 @@ module Avo
 
     # Sanitize sort_direction param
     def sanitized_sort_direction
-      @sanitized_sort_direction ||= @index_params[:sort_direction].presence_in(["asc", "desc"])
+      @sanitized_sort_direction ||= @index_params[:sort_direction].presence_in(["asc", :asc, "desc", :desc])
     end
   end
 end
