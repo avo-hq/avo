@@ -17,9 +17,7 @@ export default class extends Controller {
   }
 
   #showType(type) {
-    const target = this.typeTargets.find(
-      (typeTarget) => typeTarget.dataset.type === type,
-    )
+    const target = this.typeTargets.find((typeTarget) => typeTarget.dataset.type === type)
     if (target) {
       this.containerTarget.appendChild(target.content)
     }
