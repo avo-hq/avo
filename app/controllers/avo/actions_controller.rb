@@ -12,13 +12,38 @@ module Avo
     before_action :set_action, only: [:show, :handle]
     before_action :verify_authorization, only: [:show, :handle]
 
-    layout "avo/blank"
+    layout :choose_layout
 
     def show
       # Se the view to :new so the default value gets prefilled
       @view = Avo::ViewInquirer.new("new")
 
       @resource.hydrate(record: @record, view: @view, user: _current_user, params: params)
+      @fields = @action.get_fields
+
+      build_background_url
+    end
+
+    def build_background_url
+      uri = URI.parse(request.url)
+
+      # Remove the "/actions" segment from the path
+      path_without_actions = uri.path.sub("/actions", "")
+
+      params = URI.decode_www_form(uri.query || "").to_h
+
+      params.delete("action_id")
+      params[:turbo_frame] = ACTIONS_BACKGROUND_FRAME
+
+      # Reconstruct the query string
+      new_query_string = URI.encode_www_form(params)
+
+      # Update the URI components
+      uri.path = path_without_actions
+      uri.query = (new_query_string == "") ? nil : new_query_string
+
+      # Reconstruct the modified URL
+      @background_url = uri.to_s
     end
 
     def handle

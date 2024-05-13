@@ -94,7 +94,7 @@ module Avo
 
       return field.use_resource if field&.use_resource.present?
 
-      reflection = @record._reflections[params[:related_name]]
+      reflection = @record._reflections[params[:for_attribute] || params[:related_name]]
 
       reflected_model = reflection.klass
 
@@ -299,7 +299,7 @@ module Avo
     end
 
     def default_url_options
-      result = super
+      result = super.dup
 
       if params[:force_locale].present?
         result[:force_locale] = params[:force_locale]
@@ -354,6 +354,14 @@ module Avo
         instance_eval(&block_or_array)
       else
         block_or_array
+      end
+    end
+
+    def choose_layout
+      if turbo_frame_request?
+        "avo/blank"
+      else
+        "avo/application"
       end
     end
   end

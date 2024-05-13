@@ -1,5 +1,5 @@
-<div class="space-x-2 flex flex-row justify-end w-full">
+<%= content_tag :div, class: "space-x-2 flex flex-row justify-between ml-2 has-record-selector:ml-0" do %>
   <% @resource.render_row_controls(item: singular_resource_name).each do |control| %>
     <%= render_control control %>
   <% end %>
-</div>
+<% end %>

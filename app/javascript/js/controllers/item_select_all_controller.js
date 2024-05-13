@@ -1,7 +1,13 @@
 import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
-  static targets = ['itemCheckbox', 'checkbox', 'selectAllOverlay', 'unselectedMessage', 'selectedMessage']
+  static targets = [
+    'itemCheckbox',
+    'checkbox',
+    'selectAllOverlay',
+    'unselectedMessage',
+    'selectedMessage',
+  ]
 
   static values = {
     pageCount: Number,
@@ -15,8 +21,7 @@ export default class extends Controller {
 
   toggle(event) {
     const checked = !!event.target.checked
-    document.querySelectorAll(`[data-controller="item-selector"][data-resource-name="${this.resourceName}"] input[type=checkbox]`)
-      .forEach((checkbox) => checkbox.checked !== checked && checkbox.click())
+    this.itemCheckboxTargets.forEach((checkbox) => checkbox.checked !== checked && checkbox.click())
 
     if (this.selectAllEnabled()) {
       this.selectAllOverlay(checked)

@@ -9,6 +9,7 @@ module Avo
     attr_writer :logger
     attr_writer :audit
     attr_writer :turbo
+    attr_writer :pagination
     attr_accessor :timezone
     attr_accessor :per_page
     attr_accessor :per_page_steps
@@ -105,6 +106,7 @@ module Avo
       @audit = false
       @turbo = default_turbo
       @default_url_options = []
+      @pagination = {}
     end
 
     def current_user_method(&block)
@@ -249,6 +251,10 @@ module Avo
           instant_click: true
         }
       end
+    end
+
+    def pagination
+      Avo::ExecutionContext.new(target: @pagination).handle
     end
   end
 

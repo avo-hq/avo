@@ -1,4 +1,5 @@
 require "zeitwerk"
+require "ostruct"
 require_relative "avo/version"
 require_relative "avo/engine" if defined?(Rails)
 
@@ -19,6 +20,7 @@ module Avo
   PACKED = !IN_DEVELOPMENT
   COOKIES_KEY = "avo"
   ACTIONS_TURBO_FRAME_ID = :actions_show
+  ACTIONS_BACKGROUND_FRAME = :actions_background
 
   class LicenseVerificationTemperedError < StandardError; end
 
@@ -64,6 +66,7 @@ module Avo
       @cache_store = Avo.configuration.cache_store
       plugin_manager.boot_plugins
       Avo.run_load_hooks(:boot, self)
+      eager_load_actions
     end
 
     # Runs on each request
@@ -138,6 +141,10 @@ module Avo
 
     def extra_gems
       [:pro, :advanced, :menu, :dynamic_filters, :dashboards, :enterprise, :audits]
+    end
+
+    def eager_load_actions
+      Rails.autoloaders.main.eager_load_namespace(Avo::Actions) if defined?(Avo::Actions)
     end
   end
 end

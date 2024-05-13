@@ -8,14 +8,11 @@
       <% end %>
       <div class="flex-1 flex flex-col xl:flex-row justify-between gap-1">
         <div class="overflow-hidden flex flex-col">
-          <div class="text-2xl tracking-normal font-semibold text-gray-800 items-center flex flex-1" data-target="title">
-            <span><%= @name %></span>
-            <% if @reloadable %>
-              <%= button_tag data: { controller: "panel-refresh", action: "click->panel-refresh#refresh" } do %>
-                <%= svg "heroicons/outline/arrow-path", class: "ml-2 text-2xl h-6 " %>
-              <% end %>
-            <% end %>
-          </div>
+          <% if name_slot? %>
+            <%= name_slot %>
+          <% else %>
+            <%= render Avo::PanelNameComponent.new name: @name %>
+          <% end %>
           <% if description.present? %>
             <div class="text-sm tracking-normal font-medium text-gray-600" data-target="description">
               <%== description %>
@@ -31,7 +28,7 @@
     </div>
   <% end %>
   <% if body? %>
-    <div data-target="panel-body" class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:gap-4 w-full">
+    <div data-target="panel-body" class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:gap-4 w-full <% if sidebar? %> has-sidebar <% end %>">
       <div class="relative flex-1 w-full <% if sidebar? %> sm:w-2/3 <% end %>">
         <% # The body is wrapped inside another div in order to avoid long & tall panels next to sidebars when the sidebar taller. %>
         <div class="relative <%= white_panel_classes %> <%= @body_classes %>">
@@ -51,7 +48,7 @@
     </div>
   <% end %>
   <% if bare_content? %>
-    <div data-target="panel-bare-content" class="relative">
+    <div data-target="panel-bare-content" class="relative <% if sidebar? %> has-sidebar <% end %>">
       <%= bare_content %>
     </div>
   <% end %>

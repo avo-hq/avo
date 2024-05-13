@@ -1,5 +1,6 @@
 class Avo::ResourceComponent < Avo::BaseComponent
   include Avo::Concerns::ChecksAssocAuthorization
+  include Avo::Concerns::RequestMethods
 
   attr_reader :fields_by_panel
   attr_reader :has_one_panels
@@ -68,7 +69,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def main_panel
-    @resource.get_items.find do |item|
+    @main_panel ||= @resource.get_items.find do |item|
       item.is_main_panel?
     end
   end
@@ -76,12 +77,13 @@ class Avo::ResourceComponent < Avo::BaseComponent
   def sidebars
     return [] if Avo.license.lacks_with_trial(:resource_sidebar)
 
-    @item.items.select do |item|
-      item.is_sidebar?
-    end
-    .map do |sidebar|
-      sidebar.hydrate(view: view, resource: resource)
-    end
+    @sidebars ||= @item.items
+      .select do |item|
+        item.is_sidebar?
+      end
+      .map do |sidebar|
+        sidebar.hydrate(view: view, resource: resource)
+      end
   end
 
   def has_reflection_and_is_read_only
@@ -101,7 +103,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def render_control(control)
-    send "render_#{control.type}", control
+    send :"render_#{control.type}", control
   end
 
   def render_cards_component
@@ -114,6 +116,10 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
   def via_resource?
     (params[:via_resource_class].present? || params[:via_relation_class].present?) && params[:via_record_id].present?
+  end
+
+  def keep_referrer_params
+    {page: referrer_params["page"]}.compact
   end
 
   def render_back_button(control)
@@ -202,7 +208,6 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
     a_link detach_path,
       icon: "detach",
-      method: :delete,
       form_class: "flex flex-col sm:flex-row sm:inline-flex",
       style: :text,
       data: {

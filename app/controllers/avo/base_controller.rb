@@ -34,21 +34,7 @@ module Avo
         @query = @query.includes(*@resource.includes)
       end
 
-      # Sort the items
-      if @index_params[:sort_by].present?
-        unless @index_params[:sort_by].eql? :created_at
-          @query = @query.unscope(:order)
-        end
-
-        # Check if the sortable field option is actually a proc and we need to do a custom sort
-        field_id = @index_params[:sort_by].to_sym
-        field = @resource.get_field_definitions.find { |field| field.id == field_id }
-        @query = if field&.sortable.is_a?(Proc)
-          Avo::ExecutionContext.new(target: field.sortable, query: @query, direction: @index_params[:sort_direction]).handle
-        else
-          @query.order("#{@resource.model_class.table_name}.#{@index_params[:sort_by]} #{@index_params[:sort_direction]}")
-        end
-      end
+      apply_sorting
 
       # Apply filters to the current query
       filters_to_be_applied.each do |filter_class, filter_value|
@@ -67,11 +53,6 @@ module Avo
       @resources = @records.map do |record|
         @resource.dup.hydrate(record: record)
       end
-
-      # Temporary fix for visible blocks when geting fields for header
-      # Hydrating with last record so resource.record != nil
-      # This is keeping same behavior from <= 3.4.1
-      @resource.hydrate(record: @records.last)
 
       set_component_for __method__
     end
@@ -108,7 +89,7 @@ module Avo
 
       # Handle special cases when creating a new record via a belongs_to relationship
       if params[:via_belongs_to_resource_class].present?
-        return render turbo_stream: turbo_stream.append('attach_modal', partial: 'avo/base/new_via_belongs_to')
+        return render turbo_stream: turbo_stream.append("attach_modal", partial: "avo/base/new_via_belongs_to")
       end
 
       set_actions
@@ -136,13 +117,13 @@ module Avo
         @reflection = @record._reflections[params[:via_relation]]
         # Figure out what kind of association does the record have with the parent record
 
-        # Fills in the required infor for belongs_to and has_many
+        # Fills in the required info for belongs_to and has_many
         # Get the foreign key and set it to the id we received in the params
         if @reflection.is_a?(ActiveRecord::Reflection::BelongsToReflection) || @reflection.is_a?(ActiveRecord::Reflection::HasManyReflection)
           related_resource = Avo.resource_manager.get_resource_by_model_class params[:via_relation_class]
           related_record = related_resource.find_record params[:via_record_id], params: params
 
-          @record.send("#{@reflection.foreign_key}=", related_record.id)
+          @record.send(:"#{@reflection.foreign_key}=", related_record.id)
         end
 
         # For when working with has_one, has_one_through, has_many_through, has_and_belongs_to_many, polymorphic
@@ -154,7 +135,7 @@ module Avo
 
           if params[:via_association_type] == "has_one"
             # On has_one scenarios we should switch the @record and @related_record
-            @related_record.send("#{@reflection.parent_reflection.inverse_of.name}=", @record)
+            @related_record.send(:"#{@reflection.parent_reflection.inverse_of.name}=", @record)
           else
             @record.send(association_name) << @related_record
           end
@@ -377,7 +358,7 @@ module Avo
     def set_applied_filters
       reset_filters if params[:reset_filter]
 
-      # Return if there are no filters or if the filters are actualy ActionController::Parameters (used by dynamic filters)
+      # Return if there are no filters or if the filters are actually ActionController::Parameters (used by dynamic filters)
       return @applied_filters = {} if (fetched_filters = fetch_filters).blank? || fetched_filters.is_a?(ActionController::Parameters)
 
       @applied_filters = Avo::Filters::BaseFilter.decode_filters(fetched_filters)
@@ -451,7 +432,7 @@ module Avo
       return render "close_modal_and_reload_field" if params[:via_belongs_to_resource_class].present?
 
       respond_to do |format|
-        format.html { redirect_to after_create_path, notice: create_success_message}
+        format.html { redirect_to after_create_path, notice: create_success_message }
       end
     end
 
@@ -592,7 +573,7 @@ module Avo
       ).handle
 
       # If the component is not set, use the default one
-      if (custom_component = components.dig("resource_#{view}_component".to_sym)).nil?
+      if (custom_component = components.dig(:"resource_#{view}_component")).nil?
         return @component = "Avo::Views::Resource#{(fallback_view || view).to_s.classify}Component".constantize
       end
 
@@ -608,6 +589,34 @@ module Avo
 
     def apply_pagination
       @pagy, @records = @resource.apply_pagination(index_params: @index_params, query: pagy_query)
+    end
+
+    def apply_sorting
+      return if @index_params[:sort_by].nil?
+
+      sort_by = @index_params[:sort_by].to_sym
+      if sort_by != :created_at
+        @query = @query.unscope(:order)
+      end
+
+      # Verify that sort_by param actually is bonded to a field.
+      field = @resource.get_field(sort_by)
+
+      # Check if the sortable field option is a proc and if there is a need to do a custom sort
+      @query = if field.present? && field.sortable.is_a?(Proc)
+        Avo::ExecutionContext.new(target: field.sortable, query: @query, direction: sanitized_sort_direction).handle
+      # Sanitize sort_by param by checking if have bounded field.
+      elsif (field.present? || sort_by == :created_at) && sanitized_sort_direction
+        @query.order("#{@resource.model_class.table_name}.#{sort_by} #{sanitized_sort_direction}")
+      # Transform Model to ActiveRecord::Relation because Avo expects one.
+      else
+        @query.where("1=1")
+      end
+    end
+
+    # Sanitize sort_direction param
+    def sanitized_sort_direction
+      @sanitized_sort_direction ||= @index_params[:sort_direction].presence_in(["asc", :asc, "desc", :desc])
     end
   end
 end

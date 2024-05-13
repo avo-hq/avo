@@ -72,11 +72,13 @@ class Avo::Resources::Team < Avo::BaseResource
       as: :has_many,
       searchable: true,
       filterable: true,
+      linkable: true,
+      reloadable: true,
       attach_scope: -> do
         query.where.not(user_id: parent.id).or(query.where(user_id: nil))
       end
 
-    field :admin, as: :has_one
+    field :admin, as: :has_one, linkable: true
     field :team_members, as: :has_many, through: :memberships, translation_key: "avo.resource_translations.team_members"
     field :reviews, as: :has_many,
       reloadable: -> {

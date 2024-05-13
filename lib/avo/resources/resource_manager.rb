@@ -48,7 +48,7 @@ module Avo
         end
 
         def load_configured_resources
-          raise 'Resources configuration must be an array' unless Avo.configuration.resources.is_a? Array
+          raise "Resources configuration must be an array" unless Avo.configuration.resources.is_a? Array
 
           Avo.configuration.resources.each do |resource|
             resource.to_s.safe_constantize

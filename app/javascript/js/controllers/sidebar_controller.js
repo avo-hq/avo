@@ -21,7 +21,7 @@ function isInViewport(element, parentElement) {
 function scrollSidebarMenuItemIntoView() {
   const activeSidebarItem = document.querySelector('.avo-sidebar .mac-styled-scrollbar a.active')
   const sidebarScrollingArea = document.querySelector('.avo-sidebar .mac-styled-scrollbar')
-  if (!isInViewport(activeSidebarItem, sidebarScrollingArea)) {
+  if (activeSidebarItem && !isInViewport(activeSidebarItem, sidebarScrollingArea)) {
     activeSidebarItem.scrollIntoView({ block: 'end', inline: 'nearest' })
   }
 }

@@ -14,4 +14,8 @@ class Event < ApplicationRecord
   has_rich_text :body
 
   belongs_to :location, optional: true
+
+  def first_user
+    User.first
+  end
 end

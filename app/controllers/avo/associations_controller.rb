@@ -16,14 +16,14 @@ module Avo
     before_action :authorize_attach_action, only: :new
     before_action :authorize_detach_action, only: :destroy
 
-    layout "avo/blank"
+    layout :choose_layout
 
     def index
       @parent_resource = @resource.dup
       @resource = @related_resource
       @parent_record = @parent_resource.find_record(params[:id], params: params)
       @parent_resource.hydrate(record: @parent_record)
-      association_name = BaseResource.valid_association_name(@parent_record, params[:related_name])
+      association_name = BaseResource.valid_association_name(@parent_record, association_from_params)
       @query = @related_authorization.apply_policy @parent_record.send(association_name)
       @association_field = @parent_resource.get_field params[:related_name]
 
@@ -60,7 +60,7 @@ module Avo
     end
 
     def create
-      association_name = BaseResource.valid_association_name(@record, params[:related_name])
+      association_name = BaseResource.valid_association_name(@record, association_from_params)
 
       if reflection_class == "HasManyReflection"
         @record.send(association_name) << @attachment_record
@@ -94,7 +94,7 @@ module Avo
     private
 
     def set_reflection
-      @reflection = @record._reflections[params[:related_name].to_s]
+      @reflection = @record._reflections[association_from_params]
     end
 
     def set_attachment_class
@@ -110,7 +110,7 @@ module Avo
     end
 
     def set_reflection_field
-      @field = @resource.get_field_definitions.find { |f| f.id == @related_resource_name.to_sym }
+      @field = @resource.get_field(@related_resource_name.to_sym)
       @field.hydrate(resource: @resource, record: @record, view: :new)
     rescue
     end
@@ -120,7 +120,7 @@ module Avo
     end
 
     def reflection_class
-      reflection = @record._reflections[params[:related_name]]
+      reflection = @record._reflections[association_from_params]
 
       klass = reflection.class.name.demodulize.to_s
       klass = reflection.through_reflection.class.name.demodulize.to_s if klass == "ThroughReflection"
@@ -128,8 +128,8 @@ module Avo
       klass
     end
 
-    def authorize_if_defined(method)
-      @authorization.set_record(@record)
+    def authorize_if_defined(method, record = @record)
+      @authorization.set_record(record)
 
       if @authorization.has_method?(method.to_sym)
         @authorization.authorize_action method.to_sym
@@ -145,10 +145,8 @@ module Avo
     end
 
     def authorize_detach_action
-      authorize_if_defined "detach_#{@field.id}?"
+      authorize_if_defined "detach_#{@field.id}?", @attachment_record
     end
-
-    private
 
     def set_related_authorization
       @related_authorization = if @related_resource.present?
@@ -156,6 +154,10 @@ module Avo
       else
         Services::AuthorizationService.new _current_user
       end
+    end
+
+    def association_from_params
+      params[:for_attribute] || params[:related_name]
     end
   end
 end

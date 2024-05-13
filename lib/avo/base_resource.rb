@@ -124,7 +124,8 @@ module Avo
         association_exists = get_record_associations(record).keys.any? do |name|
           name == "#{association_name}_attachment" || name == "#{association_name}_attachments"
         end
-        return association_name if association_exists
+
+        association_name if association_exists
       end
 
       def get_available_models
@@ -471,11 +472,13 @@ module Avo
     end
 
     def cache_hash(parent_record)
+      result = [record, file_hash]
+
       if parent_record.present?
-        [record, file_hash, parent_record]
-      else
-        [record, file_hash]
+        result << parent_record
       end
+
+      result
     end
 
     # We will not overwrite any attributes that come pre-filled in the record.

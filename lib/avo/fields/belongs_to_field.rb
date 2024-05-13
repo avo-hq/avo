@@ -88,10 +88,10 @@ module Avo
 
       def value
         if is_polymorphic?
-          # Get the value from the pre-filled assoociation record
+          # Get the value from the pre-filled association record
           super(polymorphic_as)
         else
-          # Get the value from the pre-filled assoociation record
+          # Get the value from the pre-filled association record
           super(relation_method)
         end
       end
@@ -154,9 +154,9 @@ module Avo
       end
 
       def foreign_key
-        return polymorphic_as if polymorphic_as.present?
-
-        if @record.present?
+        @foreign_key ||= if polymorphic_as.present?
+          polymorphic_as
+        elsif @record.present?
           get_model_class(@record).reflections[@relation_method].foreign_key
         elsif @resource.present? && @resource.model_class.reflections[@relation_method].present?
           @resource.model_class.reflections[@relation_method].foreign_key
@@ -187,7 +187,7 @@ module Avo
 
       def to_permitted_param
         if polymorphic_as.present?
-          return ["#{polymorphic_as}_type".to_sym, "#{polymorphic_as}_id".to_sym]
+          return [:"#{polymorphic_as}_type", :"#{polymorphic_as}_id"]
         end
 
         foreign_key.to_sym
@@ -197,15 +197,15 @@ module Avo
         return model unless model.methods.include? key.to_sym
 
         if polymorphic_as.present?
-          valid_model_class = valid_polymorphic_class params["#{polymorphic_as}_type"]
+          valid_model_class = valid_polymorphic_class params[:"#{polymorphic_as}_type"]
 
-          model.send("#{polymorphic_as}_type=", valid_model_class)
+          model.send(:"#{polymorphic_as}_type=", valid_model_class)
 
           # If the type is blank, reset the id too.
           if valid_model_class.blank?
-            model.send("#{polymorphic_as}_id=", nil)
+            model.send(:"#{polymorphic_as}_id=", nil)
           else
-            model.send("#{polymorphic_as}_id=", params["#{polymorphic_as}_id"])
+            model.send(:"#{polymorphic_as}_id=", params["#{polymorphic_as}_id"])
           end
         else
           model.send("#{key}=", value)
@@ -222,7 +222,7 @@ module Avo
 
       def database_id
         # If the field is a polymorphic value, return the polymorphic_type as key and pre-fill the _id in fill_field.
-        return "#{polymorphic_as}_type" if polymorphic_as.present?
+        return :"#{polymorphic_as}_type" if polymorphic_as.present?
 
         foreign_key
       rescue
@@ -230,24 +230,24 @@ module Avo
       end
 
       def target_resource
-        return use_resource if use_resource.present?
-
-        if is_polymorphic?
+        @target_resource ||= if use_resource.present?
+          use_resource
+        elsif is_polymorphic?
           if value.present?
-            return get_resource_by_model_class(value.class)
+            get_resource_by_model_class(value.class)
           else
             return nil
           end
-        end
-
-        reflection_key = polymorphic_as || id
-
-        if @record._reflections[reflection_key.to_s].klass.present?
-          get_resource_by_model_class(@record._reflections[reflection_key.to_s].klass.to_s)
-        elsif @record._reflections[reflection_key.to_s].options[:class_name].present?
-          get_resource_by_model_class(@record._reflections[reflection_key.to_s].options[:class_name])
         else
-          App.get_resource_by_name reflection_key.to_s
+          reflection_key = polymorphic_as || id
+
+          if @record._reflections[reflection_key.to_s].klass.present?
+            get_resource_by_model_class(@record._reflections[reflection_key.to_s].klass.to_s)
+          elsif @record._reflections[reflection_key.to_s].options[:class_name].present?
+            get_resource_by_model_class(@record._reflections[reflection_key.to_s].options[:class_name])
+          else
+            App.get_resource_by_name reflection_key.to_s
+          end
         end
       end
 
@@ -263,6 +263,10 @@ module Avo
 
       def can_create?
         @can_create
+      end
+
+      def form_field_label
+        id
       end
 
       private
