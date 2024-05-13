@@ -143,7 +143,7 @@ module Avo
       end
 
       # record gets instantiated and filled in the fill_record method
-      audit(activity_class: @resource.class, payload: params, action: __method__)
+      safe_call :audit, activity_class: @resource.class, payload: params, action: __method__
       saved = save_record
       @resource.hydrate(record: @record, view: :new, user: _current_user)
 
@@ -167,7 +167,7 @@ module Avo
     end
 
     def update
-      audit(activity_class: @resource.class, payload: params, action: __method__, records: @record)
+      safe_call :audit, activity_class: @resource.class, payload: params, action: __method__, records: @record
 
       # record gets instantiated and filled in the fill_record method
       saved = save_record
@@ -184,7 +184,7 @@ module Avo
     end
 
     def destroy
-      audit(activity_class: @resource.class, payload: params, action: __method__, records: @record)
+      safe_call :audit, activity_class: @resource.class, payload: params, action: __method__, records: @record
       if destroy_model
         destroy_success_action
       else
@@ -551,10 +551,6 @@ module Avo
     # Set pagy locale from params or from avo configuration, if both nil locale = "en"
     def set_pagy_locale
       @pagy_locale = locale.to_s || Avo.configuration.locale || "en"
-    end
-
-    def safe_call(method)
-      send(method) if respond_to?(method, true)
     end
 
     def pagy_query

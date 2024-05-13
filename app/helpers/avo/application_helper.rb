@@ -133,21 +133,8 @@ module Avo
       ["frame", resource.model_name.singular, resource.record.id].compact.join("-")
     end
 
-    def audit(activity_class:, payload:, action:, records: [])
-      return unless Avo.configuration.audit? && activity_class.has_avo_activity
-
-      Avo::Current.activity = Avo::Activity.create!(
-        activity_class: activity_class,
-        action: action,
-        author_id: _current_user.id,
-        author_type: _current_user.class,
-        payload: payload.to_json
-      )
-
-
-      Array(records).each do |record|
-        Avo::Current.activity.avo_activity_pivots.create!(record: record)
-      end
+    def safe_call(method, **args)
+      send(method, **args) if respond_to?(method, true)
     end
 
     def chart_color(index)

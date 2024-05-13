@@ -52,7 +52,7 @@ module Avo
       query = decrypted_query || (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])
       fields = action_params[:fields].except(:avo_resource_ids, :avo_selected_query)
 
-      audit(
+      safe_call :audit,
         activity_class: @action.class,
         payload: {
           fields: fields,
@@ -60,7 +60,6 @@ module Avo
         },
         action: __method__,
         records: query
-      )
 
       performed_action = @action.handle_action(
         fields: fields,
