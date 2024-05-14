@@ -232,6 +232,7 @@ module Avo
     else
       true
     end
+
     def audit?
       Avo.plugin_manager.installed?("avo-audits") &&
         @audit &&
