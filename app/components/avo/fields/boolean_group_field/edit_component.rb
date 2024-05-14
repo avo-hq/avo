@@ -9,13 +9,13 @@ class Avo::Fields::BooleanGroupField::EditComponent < Avo::Fields::EditComponent
       "#{@field.get_html(:classes, view: view, element: :input)}"
     @data = @field.get_html(:data, view: view, element: :input)
     @style = @field.get_html(:style, view: view, element: :input)
-    @model_param_key = model_name_from_record_or_class(@resource.record).param_key
+    @form_scope = form.object_name
   end
 
   # Get the state of each checkboxe from either the form that returns a validation error or from the model itself.
   def checked?(id)
-    if params[@model_param_key].present? && params[@model_param_key][@field.id.to_s].present?
-      params[@model_param_key][@field.id.to_s].include?(id.to_s)
+    if params[@form_scope].present? && params[@form_scope][@field.id.to_s].present?
+      params[@form_scope][@field.id.to_s].include?(id.to_s)
     else
       if @field.value.present?
         @field.value[id.to_s]

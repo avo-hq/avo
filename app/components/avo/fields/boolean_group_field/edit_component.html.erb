@@ -8,7 +8,7 @@
               class: @classes,
               data: @data,
               disabled: disabled?,
-              id: @field.id,
+              id: "#{@form_scope}_#{@field.id}_#{id}",
               style: @style,
               multiple: true,
               checked: checked?(id),
