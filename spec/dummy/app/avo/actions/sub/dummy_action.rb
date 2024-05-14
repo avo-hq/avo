@@ -47,8 +47,8 @@ class Avo::Actions::Sub::DummyAction < Avo::BaseAction
 
     if arguments[:special_message]
       succeed "I love 🥑"
-    elsif (fun_switch = args[:fields][:fun_switch]).present?
-      succeed "#{fun_switch.map(&:humanize).join(",")}, I love 🥑"
+    elsif (fun_switch = args[:fields][:fun_switch].reject! { |option| option == "" }).any?
+      succeed "#{fun_switch.map(&:humanize).join(", ")}, I love 🥑"
     else
       succeed "Success response ✌️"
     end
