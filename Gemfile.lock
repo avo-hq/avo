@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    avo (3.7.0)
+    avo (3.7.4)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
@@ -368,10 +368,10 @@ GEM
     net-smtp (0.4.0.1)
       net-protocol
     nio4r (2.7.0)
-    nokogiri (1.16.4)
+    nokogiri (1.16.5)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
-    nokogiri (1.16.4-x86_64-linux)
+    nokogiri (1.16.5-x86_64-linux)
       racc (~> 1.4)
     orm_adapter (0.5.0)
     pagy (8.4.0)
