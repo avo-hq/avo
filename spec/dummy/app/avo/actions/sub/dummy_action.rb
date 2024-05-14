@@ -25,6 +25,14 @@ class Avo::Actions::Sub::DummyAction < Avo::BaseAction
         # get_type(Avo::App.request.referer) # strip the type from the referer string
         "users"
       end
+
+    field :fun_switch,
+      as: :boolean_group,
+      options: {
+        yes: "Yes",
+        sure: "Sure",
+        why_not: "Why not"
+      }
   end
 
   def handle(**args)
@@ -39,6 +47,8 @@ class Avo::Actions::Sub::DummyAction < Avo::BaseAction
 
     if arguments[:special_message]
       succeed "I love 🥑"
+    elsif (fun_switch = args[:fields][:fun_switch]).present?
+      succeed "#{fun_switch.map(&:humanize).join(",")}, I love 🥑"
     else
       succeed "Success response ✌️"
     end

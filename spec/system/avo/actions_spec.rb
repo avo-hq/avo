@@ -238,6 +238,20 @@ RSpec.describe "Actions", type: :system do
     end
   end
 
+  describe "fields" do
+    context "boolean group fields" do
+      it "pass through fields params" do
+        visit avo.resources_user_path(user)
+
+        open_panel_action(action_name: "Dummy action")
+        find(:xpath, '(//input[@id="fun_switch"])[2]').check
+
+        run_action
+        expect(page).to have_text "Sure, I love 🥑"
+      end
+    end
+  end
+
   #   let!(:roles) { { admin: false, manager: false, writer: false } }
   #   let!(:user) { create :user, active: true, roles: roles }
 
