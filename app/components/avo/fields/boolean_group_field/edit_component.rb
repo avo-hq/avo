@@ -16,10 +16,8 @@ class Avo::Fields::BooleanGroupField::EditComponent < Avo::Fields::EditComponent
   def checked?(id)
     if params[@form_scope].present? && params[@form_scope][@field.id.to_s].present?
       params[@form_scope][@field.id.to_s].include?(id.to_s)
-    else
-      if @field.value.present?
-        @field.value[id.to_s]
-      end
+    elsif @field.value.present?
+      @field.value[id.to_s]
     end
   end
 end
