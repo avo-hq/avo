@@ -9,7 +9,7 @@ class Avo::Fields::BooleanGroupField::EditComponent < Avo::Fields::EditComponent
       "#{@field.get_html(:classes, view: view, element: :input)}"
     @data = @field.get_html(:data, view: view, element: :input)
     @style = @field.get_html(:style, view: view, element: :input)
-    @form_scope = form.object_name
+    @form_scope = @form.object_name
   end
 
   # Get the state of each checkboxe from either the form that returns a validation error or from the model itself.
