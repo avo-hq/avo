@@ -21,23 +21,20 @@ module Avo
         ["#{id}": []]
       end
 
-      def fill_field(model, key, value, params)
+      def fill_field(record, _, values, _)
         new_value = {}
 
-        # Filter out the empty ("") value boolean group generates
-        value = value.filter do |arr_value|
-          arr_value.present?
-        end
+        # Reject empty values passed by hidden inputs
+        values.reject! { |value| value == "" }
 
-        # Cast values to booleans
-        options.each do |id, label|
-          new_value[id] = value.include? id.to_s
+        options.each do |key, _|
+          new_value[key] = values.include? key.to_s
         end
 
         # Don't override existing values unless specified in options
-        model[id] = (model[id] || {}).merge(new_value)
+        record[id] = (record[id] || {}).merge(new_value)
 
-        model
+        record
       end
     end
   end

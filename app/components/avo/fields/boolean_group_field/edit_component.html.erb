@@ -3,7 +3,7 @@
     <div class="space-y-2">
       <% @field.options.each do |id, label| %>
         <label class="block">
-          <%= form.check_box @field.id,
+          <%= @form.check_box @field.id,
             {
               class: @classes,
               data: @data,
@@ -11,10 +11,10 @@
               id: "#{@form_scope}_#{@field.id}_#{id}",
               style: @style,
               multiple: true,
-              checked: checked?(id),
-              include_hidden: false
+              checked: checked?(id)
             },
-            id
+            id,
+            ""
           %>
           <%= label %>
         </label>
