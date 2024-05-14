@@ -241,10 +241,10 @@ RSpec.describe "Actions", type: :system do
   describe "fields" do
     context "boolean group fields" do
       it "pass through fields params" do
-        visit avo.resources_user_path(user)
+        visit avo.resources_users_path
 
         open_panel_action(action_name: "Dummy action")
-        find(:xpath, '(//input[@id="fun_switch"])[2]').check
+        check("fields_fun_switch_sure")
 
         run_action
         expect(page).to have_text "Sure, I love 🥑"
