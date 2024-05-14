@@ -27,6 +27,7 @@ module Avo
         # Reject empty values passed by hidden inputs
         values.reject! { |value| value == "" }
 
+        # Cast values to booleans
         options.each do |key, _|
           new_value[key] = values.include? key.to_s
         end
