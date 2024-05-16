@@ -214,7 +214,7 @@ RSpec.feature "belongs_to", type: :system do
           click_on "Edit"
 
           expect(find_field("comment_body").value).to eql "hey there"
-          expect(find_field("comment_user_id").value).to eql user.id.to_s
+          expect(find_field("comment_user_id").value).to eql user.to_param.to_s
           expect(page).to have_select "comment_commentable_type", options: ["Choose an option", "Post", "Project"], selected: "Project", disabled: true
           expect(page).to have_select "comment_commentable_id", options: ["Choose an option", project.name], selected: project.name, disabled: true
 

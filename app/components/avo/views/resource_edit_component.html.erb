@@ -3,9 +3,9 @@
   data: {
     model_name: @resource.model_name.to_s,
     resource_name: @resource.class.to_s,
-    record_id: @resource.record.to_param,
+    record_id: @resource.record_param,
     selected_resources_name: @resource.model_key,
-    selected_resources: [@resource.record.to_param],
+    selected_resources: [@resource.record_param],
     **@resource.stimulus_data_attributes
   } do %>
   <%= render_cards_component %>

@@ -36,7 +36,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   def detach_path
     return "/" if @reflection.blank?
 
-    helpers.resource_detach_path(params[:resource_name], params[:id], @reflection.name.to_s, @resource.record.to_param)
+    helpers.resource_detach_path(params[:resource_name], params[:id], @reflection.name.to_s, @resource.record_param)
   end
 
   def can_see_the_edit_button?
@@ -172,7 +172,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
         target: "control:destroy",
         control: :destroy,
         tippy: control.title ? :tooltip : nil,
-        "resource-id": @resource.record.to_param,
+        "resource-id": @resource.record_param,
       } do
       control.label
     end

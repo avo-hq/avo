@@ -4,7 +4,7 @@
   data-component-name="<%= self.class.to_s.underscore %>"
   <%== item_selector_init @resource %>
   data-resource-name="<%= @resource.class.to_s %>"
-  data-record-id="<%= @resource.record.to_param %>"
+  data-record-id="<%= @resource.record_param %>"
   <%= try :drag_reorder_item_attributes %>
 >
   <% if @resource.record_selector %>

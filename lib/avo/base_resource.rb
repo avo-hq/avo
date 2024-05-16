@@ -586,5 +586,9 @@ module Avo
     def entity_loader(entity)
       instance_variable_get("@#{entity.to_s.pluralize}_loader")
     end
+
+    def record_param
+      @record_param ||= @record.persisted? ? @record.to_param : nil
+    end
   end
 end

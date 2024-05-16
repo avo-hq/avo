@@ -97,7 +97,7 @@ module Avo
       end
 
       def selected
-        value.to_param
+        @selected ||= value.to_param
       end
 
       # The value
@@ -199,20 +199,25 @@ module Avo
 
       def fill_field(model, key, value, params)
         return model unless model.methods.include? key.to_sym
-        value = update_using(record, key, value, params)
         if polymorphic_as.present?
           valid_model_class = valid_polymorphic_class params[:"#{polymorphic_as}_type"]
 
           model.send(:"#{polymorphic_as}_type=", valid_model_class)
 
           # If the type is blank, reset the id too.
-          if valid_model_class.blank?
+          id_from_param = params["#{polymorphic_as}_id"]
+
+          if valid_model_class.blank? || id_from_param.blank?
             model.send(:"#{polymorphic_as}_id=", nil)
           else
-            model.send(:"#{polymorphic_as}_id=", params["#{polymorphic_as}_id"])
+            record_id = target_resource(record: model, polymorphic_model_class: value.safe_constantize).find_record(id_from_param).id
+
+            model.send(:"#{polymorphic_as}_id=", record_id)
           end
         else
-          model.send("#{key}=", value)
+          record_id = value.blank? ? value : target_resource(record: model).find_record(value).id
+
+          model.send(:"#{key}=", record_id)
         end
 
         model
@@ -233,22 +238,22 @@ module Avo
         id
       end
 
-      def target_resource
+      def target_resource(record: @record, polymorphic_model_class: value&.class)
         @target_resource ||= if use_resource.present?
           use_resource
         elsif is_polymorphic?
-          if value.present?
-            get_resource_by_model_class(value.class)
+          if polymorphic_model_class.present?
+            get_resource_by_model_class(polymorphic_model_class)
           else
-            return nil
+            nil
           end
         else
           reflection_key = polymorphic_as || id
 
-          if @record._reflections[reflection_key.to_s].klass.present?
-            get_resource_by_model_class(@record._reflections[reflection_key.to_s].klass.to_s)
-          elsif @record._reflections[reflection_key.to_s].options[:class_name].present?
-            get_resource_by_model_class(@record._reflections[reflection_key.to_s].options[:class_name])
+          if record._reflections[reflection_key.to_s].klass.present?
+            get_resource_by_model_class(record._reflections[reflection_key.to_s].klass.to_s)
+          elsif record._reflections[reflection_key.to_s].options[:class_name].present?
+            get_resource_by_model_class(record._reflections[reflection_key.to_s].options[:class_name])
           else
             App.get_resource_by_name reflection_key.to_s
           end
