@@ -244,7 +244,7 @@ module Avo
         elsif is_polymorphic?
           if polymorphic_model_class.present?
             get_resource_by_model_class(polymorphic_model_class)
-          elsif
+          else
             nil
           end
         else
