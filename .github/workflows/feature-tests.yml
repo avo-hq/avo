@@ -6,13 +6,11 @@ on:
       - main
       - 1.x
       - 2.x
-      - feature/support-alternative-ids
   push:
     branches:
       - main
       - 1.x
       - 2.x
-      - feature/support-alternative-ids
 
 env:
   RAILS_ENV: test
