@@ -113,7 +113,7 @@ RSpec.feature "belongs_to", type: :feature do
       it "saves the related comment" do
         expect(Course::Link.count).to be 0
 
-        visit "/admin/resources/course_links/new?via_relation=course&via_record_id=#{course.id}&via_relation_class=Course"
+        visit "/admin/resources/course_links/new?via_relation=course&via_record_id=#{course.to_param}&via_relation_class=Course"
 
         fill_in "course_link_link", with: "https://avo.cool"
 
