@@ -11,7 +11,7 @@
     "md:w-64": !compact?,
   }), data: {slot: "label"} do %>
     <% if form.present? %>
-      <%= form.label field.id, label %>
+      <%= form.label label_for, label %>
     <% else %>
       <%= field.name %>
     <% end %>

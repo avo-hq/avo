@@ -110,7 +110,7 @@ module Avo
     end
 
     def set_reflection_field
-      @field = @resource.get_field_definitions.find { |f| f.id == @related_resource_name.to_sym }
+      @field = @resource.get_field(@related_resource_name.to_sym)
       @field.hydrate(resource: @resource, record: @record, view: :new)
     rescue
     end

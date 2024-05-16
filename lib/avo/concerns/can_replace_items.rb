@@ -24,8 +24,8 @@ module Avo
         end
       end
 
-      def with_new_items(&block)
-        self.class.with_new_items(&block)
+      def with_new_items(&)
+        self.class.with_new_items(&)
       end
     end
   end

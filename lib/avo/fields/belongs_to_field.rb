@@ -269,6 +269,14 @@ module Avo
         @can_create
       end
 
+      def form_field_label
+        "#{id}_id"
+      end
+
+      def polymorphic_form_field_label
+        "#{id}_type"
+      end
+
       private
 
       def get_model_class(record)
