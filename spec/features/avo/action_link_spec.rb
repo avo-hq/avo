@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Action link", type: :system do
+RSpec.describe "Action link", type: :feature do
   let!(:city) { create :city, name: "Action link City" }
 
   describe "on computed field" do
