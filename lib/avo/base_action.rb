@@ -292,7 +292,7 @@ module Avo
     private
 
     def add_message(body, type = :info)
-      body = body.truncate(320)
+      body = body&.truncate(320)
       response[:messages] << {
         type: type,
         body: body
