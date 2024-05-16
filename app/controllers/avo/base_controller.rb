@@ -155,6 +155,15 @@ module Avo
           end
         end
       end
+      @record.class.reflect_on_all_associations.each do |association|
+        if association&.foreign_key == @record._reflections[association.class_name.underscore]&.foreign_key && params[@record.model_name.name.underscore.to_sym][@record._reflections[association.class_name.underscore].foreign_key.to_sym].present?
+          # Find the associated record by the obfuscated id
+          associated_record = association.class_name.constantize.find(params[@record.model_name.name.underscore.to_sym][@record._reflections[association.class_name.underscore].foreign_key.to_sym])
+
+          # Override the foreign key with the real one
+          @record.send(:"#{association.foreign_key}=", associated_record.send(association.association_primary_key))
+        end
+      end
 
       # record gets instantiated and filled in the fill_record method
       saved = save_record
@@ -238,6 +247,7 @@ module Avo
         # Example: When you save a license that should create a user for it and creating that user throws and error.
         # Example: When you Try to delete a record and has a foreign key constraint.
         exception_message = exception.message
+        puts ["exception->", exception].inspect
       end
 
       # Add the errors from the record
