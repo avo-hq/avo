@@ -214,7 +214,7 @@ module Avo
 
             model.send(:"#{polymorphic_as}_id=", record_id)
           end
-        elsif
+        else
           record_id = value.blank? ? value : target_resource(record: model).find_record(value).id
 
           model.send("#{key}=", record_id)
