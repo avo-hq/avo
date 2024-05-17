@@ -19,7 +19,7 @@ module Avo
 
       args.except(:target).each do |key, value|
         singleton_class.class_eval { attr_accessor key }
-        instance_variable_set("@#{key}", value)
+        instance_variable_set(:"@#{key}", value)
       end
 
       # Set defaults on not initialized accessors

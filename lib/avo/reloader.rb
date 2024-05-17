@@ -28,7 +28,7 @@ class Avo::Reloader
   def files
     # we want to watch some files no matter what
     paths = [
-      Rails.root.join("config", "initializers", "avo.rb"),
+      Rails.root.join("config", "initializers", "avo.rb")
     ]
 
     # we want to watch some files only in Avo development

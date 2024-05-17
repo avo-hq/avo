@@ -46,8 +46,8 @@ class Avo::Resources::Items::TabGroup
 
     delegate :tab, to: :items_holder
 
-    def field(field_name, **args, &block)
-      parsed = Avo::Dsl::FieldParser.new(id: field_name, order_index: @items_index, **args, &block).parse
+    def field(field_name, **args, &)
+      parsed = Avo::Dsl::FieldParser.new(id: field_name, order_index: @items_index, **args, &).parse
       field_instance = parsed.instance
 
       name = field_instance.name

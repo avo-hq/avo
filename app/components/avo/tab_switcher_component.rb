@@ -23,7 +23,7 @@ class Avo::TabSwitcherComponent < Avo::BaseComponent
     @view = view
   end
 
-  #TOD: helper to record:
+  # TODO: helper to record:
   def tab_path(tab)
     if is_edit?
       helpers.edit_resource_path(resource: @resource, record: @resource.record, keep_query_params: true, active_tab_name: tab.name, tab_turbo_frame: group.turbo_frame_id)

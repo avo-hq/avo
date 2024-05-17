@@ -26,8 +26,7 @@ module Generators
             directory ::Avo::Engine.root.join("app", "assets", "stylesheets", "css", "tailwindcss"), path
           end
 
-
-          unless (path = Rails.root.join("app", "assets", "stylesheets", "avo" ,"avo.tailwind.css")).exist?
+          unless (path = Rails.root.join("app", "assets", "stylesheets", "avo", "avo.tailwind.css")).exist?
             say "Add default tailwind.css"
             copy_file template_path("avo.tailwind.css"), path
           end
@@ -53,9 +52,7 @@ module Generators
             json_data["scripts"] ||= {}
             json_data["scripts"][script_name] = script_command
 
-            File.open(path, 'w') do |file|
-              file.write(JSON.pretty_generate(json_data) + "\n")
-            end
+            File.write(path, JSON.pretty_generate(json_data) + "\n")
           else
             say "package.json not found.", :yellow
             say "Ensure you have the following script in your package.json file.", :yellow
@@ -95,7 +92,6 @@ module Generators
             # Insert the task after the shebang line (the first line)
             shebang = lines.first
             lines[0] = "#{shebang}\nbundle exec rake avo:sym_link\nbundle exec rake avo:yarn_install\n"
-
 
             File.write(path, lines.join)
           end

@@ -99,7 +99,7 @@ class Avo::Resources::Course < Avo::BaseResource
       options: Course.cities.values.flatten.map { |city| [city, city] }.to_h,
       display_value: false
 
-    if params[:show_location_field] == '1'
+    if params[:show_location_field] == "1"
       # Example for error message when resource is missing
       field :locations, as: :has_and_belongs_to_many
     end

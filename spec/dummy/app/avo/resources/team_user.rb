@@ -6,9 +6,9 @@ class Avo::Resources::TeamUser < Avo::BaseResource
     # If it's an id, we need to use the find method.
     # If the id is an array, we need to use the where method in order to return a collection.
     if id.is_a?(Array)
-      id.first.to_i == 0 ? query.where(slug: id) : query.where(id: id)
+      (id.first.to_i == 0) ? query.where(slug: id) : query.where(id: id)
     else
-      id.to_i == 0 ? query.find_by_slug(id) : query.find(id)
+      (id.to_i == 0) ? query.find_by_slug(id) : query.find(id)
     end
   }
 

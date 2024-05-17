@@ -14,7 +14,7 @@ class Avo::Resources::Membership < Avo::BaseResource
     field :level,
       as: :select,
       display_value: true,
-      default: -> { Time.now.hour < 12 ? "advanced" : "beginner" },
+      default: -> { (Time.now.hour < 12) ? "advanced" : "beginner" },
       options: -> do
         {
           Beginner: :beginner,

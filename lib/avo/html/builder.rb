@@ -1,7 +1,7 @@
 class Avo::HTML::Builder
   class << self
-    def parse_block(record: nil, resource: nil, &block)
-      Docile.dsl_eval(Avo::HTML::Builder.new(record: record, resource: resource), &block).build
+    def parse_block(record: nil, resource: nil, &)
+      Docile.dsl_eval(Avo::HTML::Builder.new(record: record, resource: resource), &).build
     end
   end
 
@@ -61,53 +61,53 @@ class Avo::HTML::Builder
   end
 
   # payload or block
-  def data(payload = nil, &block)
-    assign_property :data, payload, &block
+  def data(payload = nil, &)
+    assign_property(:data, payload, &)
   end
 
   # payload or block
-  def style(payload = nil, &block)
-    assign_property :style, payload, &block
+  def style(payload = nil, &)
+    assign_property(:style, payload, &)
   end
 
   # payload or block
-  def classes(payload = nil, &block)
-    assign_property :classes, payload, &block
+  def classes(payload = nil, &)
+    assign_property(:classes, payload, &)
   end
 
   # Takes a block
-  def wrapper(&block)
-    capture_block :wrapper, &block
+  def wrapper(&)
+    capture_block(:wrapper, &)
   end
 
   # Takes a block
-  def input(&block)
-    capture_block :input, &block
+  def input(&)
+    capture_block(:input, &)
   end
 
   # Takes a block
-  def label(&block)
-    capture_block :label, &block
+  def label(&)
+    capture_block(:label, &)
   end
 
   # Takes a block
-  def content(&block)
-    capture_block :content, &block
+  def content(&)
+    capture_block(:content, &)
   end
 
   # Takes a block
-  def show(&block)
-    capture_block :show, &block
+  def show(&)
+    capture_block(:show, &)
   end
 
   # Takes a block
-  def edit(&block)
-    capture_block :edit, &block
+  def edit(&)
+    capture_block(:edit, &)
   end
 
   # Takes a block
-  def index(&block)
-    capture_block :index, &block
+  def index(&)
+    capture_block(:index, &)
   end
 
   # Fetch the menu
@@ -118,8 +118,8 @@ class Avo::HTML::Builder
   private
 
   # Capture and parse the blocks for the nested structure
-  def capture_block(property = nil, &block)
-    send(:"#{property}_stack=", self.class.parse_block(record: record, resource: resource, &block).build)
+  def capture_block(property = nil, &)
+    send(:"#{property}_stack=", self.class.parse_block(record: record, resource: resource, &).build)
   end
 
   # Parse the properties and assign them to the blocks

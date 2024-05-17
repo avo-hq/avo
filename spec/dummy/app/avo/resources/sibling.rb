@@ -1,5 +1,5 @@
 class Avo::Resources::Sibling < Avo::BaseResource
-  self.description = "Demo resource to illustrate Avo\'s Single Table Inheritance support (Sibling < Person)"
+  self.description = "Demo resource to illustrate Avo's Single Table Inheritance support (Sibling < Person)"
   self.model_class = ::Sibling
   self.search = {
     query: -> { query.ransack(id_eq: params[:q], name_cont: params[:q], m: "or").result(distinct: false) }

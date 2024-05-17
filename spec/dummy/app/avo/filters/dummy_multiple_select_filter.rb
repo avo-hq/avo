@@ -7,12 +7,12 @@ class Avo::Filters::DummyMultipleSelectFilter < Avo::Filters::MultipleSelectFilt
 
   def options
     {
-      'yes': 'Yes',
-      'no': 'No',
+      yes: "Yes",
+      no: "No"
     }
   end
 
   def default
-    ['yes']
+    ["yes"]
   end
 end

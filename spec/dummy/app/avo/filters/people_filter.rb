@@ -14,8 +14,8 @@ class Avo::Filters::PeopleFilter < Avo::Filters::SelectFilter
 
   def options
     {
-      'a_lot': "A lot",
-      'few': "Few (< 30)"
+      a_lot: "A lot",
+      few: "Few (< 30)"
     }
   end
 

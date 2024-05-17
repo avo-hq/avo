@@ -196,7 +196,7 @@ module Avo
           # Slice when the item type changes from standalone to panel or vice-versa
           is_standalone?(prev) != is_standalone?(curr)
         end.to_a.map do |group|
-          { elements: group, is_standalone: is_standalone?(group.first) }
+          {elements: group, is_standalone: is_standalone?(group.first)}
         end
 
         # Creates a main panel if it's missing and adds first standalone group of items if present
@@ -205,7 +205,7 @@ module Avo
             calculated_main_panel = Avo::Resources::Items::MainPanel.new
             hydrate_item calculated_main_panel
             calculated_main_panel.items_holder.items = standalone_group[:elements]
-            grouped_items[grouped_items.index standalone_group] = { elements: [calculated_main_panel], is_standalone: false }
+            grouped_items[grouped_items.index standalone_group] = {elements: [calculated_main_panel], is_standalone: false}
           end
         end
 

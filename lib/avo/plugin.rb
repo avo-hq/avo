@@ -7,7 +7,7 @@ module Avo
       def name
         return gemspec.name if gemspec.present?
 
-        self.to_s.split("::").first
+        to_s.split("::").first
       end
 
       def version
@@ -29,7 +29,7 @@ module Avo
 
         gemspec_path = Dir["#{engine.root}/*.gemspec"].first
 
-        Gem::Specification::load(gemspec_path)
+        Gem::Specification.load(gemspec_path)
       end
     end
   end

@@ -11,10 +11,10 @@ module Avo
         end
       end
 
-      def initialize(message:, purpose:, **kwargs)
+      def initialize(message:, purpose:, **)
         @message = message
         @purpose = purpose
-        @crypt = ActiveSupport::MessageEncryptor.new(encryption_key, **kwargs)
+        @crypt = ActiveSupport::MessageEncryptor.new(encryption_key, **)
       end
 
       def encrypt
@@ -38,7 +38,7 @@ module Avo
         # If key is blank and Rails version is less than 7.2.0
         # Try to fetch the secret key base from the secrets file
         # Rails 7.2.0 made secret_key_base from secrets obsolete
-        if key.blank? && (Rails.gem_version < Gem::Version.new('7.2.0'))
+        if key.blank? && (Rails.gem_version < Gem::Version.new("7.2.0"))
           key = Rails.application.secrets.secret_key_base
         end
 

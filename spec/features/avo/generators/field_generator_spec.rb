@@ -10,7 +10,7 @@ RSpec.feature "field generator", type: :feature do
       Rails.root.join("app", "components", "avo", "fields", "cats_field", "index_component.rb").to_s,
       Rails.root.join("app", "components", "avo", "fields", "cats_field", "index_component.html.erb").to_s,
       Rails.root.join("app", "components", "avo", "fields", "cats_field", "show_component.rb").to_s,
-      Rails.root.join("app", "components", "avo", "fields", "cats_field", "show_component.html.erb").to_s,
+      Rails.root.join("app", "components", "avo", "fields", "cats_field", "show_component.html.erb").to_s
     ]
 
     Rails::Generators.invoke("avo:field", ["cats", "-q"], {destination_root: Rails.root})

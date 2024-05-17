@@ -14,8 +14,8 @@ gemspec
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
 
-gem 'jsbundling-rails'
-gem 'cssbundling-rails'
+gem "jsbundling-rails"
+gem "cssbundling-rails"
 
 #
 # Dependencies for dummy_app
@@ -30,7 +30,7 @@ gem "puma", "~> 6.4"
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem "jbuilder", "~> 2.7"
 # Use Redis adapter to run Action Cable in production
-gem 'redis', '~> 5.0'
+gem "redis", "~> 5.0"
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -120,25 +120,25 @@ gem "active_link_to"
 
 gem "addressable"
 
-gem 'meta-tags'
+gem "meta-tags"
 
 # Search
 gem "ransack", "~> 4.1", ">= 4.1.1"
 
-gem 'friendly_id', '~> 5.5.1'
+gem "friendly_id", "~> 5.5.1"
 
-gem 'aws-sdk-s3', require: false
+gem "aws-sdk-s3", require: false
 
-gem 'net-smtp', require: false
+gem "net-smtp", require: false
 
 # Dashboard charts
 gem "groupdate"
 gem "hightop"
 gem "active_median"
 
-gem 'acts_as_list'
+gem "acts_as_list"
 
-gem 'acts-as-taggable-on', '~> 10.0'
+gem "acts-as-taggable-on", "~> 10.0"
 
 gem "bundler-integrity", "~> 1.0"
 

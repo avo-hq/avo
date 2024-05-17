@@ -153,13 +153,13 @@ module Avo
       output
     end
 
-    def avo_field(type = nil, id = nil, as: nil, view: :show, form: nil, component_options: {}, **args, &block)
+    def avo_field(type = nil, id = nil, as: nil, view: :show, form: nil, component_options: {}, **args, &)
       if as.present?
         id = type
         type = as
       end
       field_klass = "Avo::Fields::#{type.to_s.camelize}Field".safe_constantize
-      field = field_klass.new id, form: form, view: view, **args, &block
+      field = field_klass.new(id, form: form, view: view, **args, &)
 
       # Add the form record to the field so all fields have access to it.
       field.hydrate(record: form.object) if form.present?
@@ -167,18 +167,18 @@ module Avo
       render field.component_for_view(view).new field: field, form: form, **component_options
     end
 
-    def avo_show_field(id, type = nil, view: :show, **args, &block)
-      avo_field(id, type, **args, view: view, &block)
+    def avo_show_field(id, type = nil, view: :show, **args, &)
+      avo_field(id, type, **args, view: view, &)
     end
 
-    def avo_edit_field(id, type = nil, view: :edit, **args, &block)
-      avo_field(id, type, **args, view: view, &block)
+    def avo_edit_field(id, type = nil, view: :edit, **args, &)
+      avo_field(id, type, **args, view: view, &)
     end
 
-    def field_container(**args, &block)
+    def field_container(**args, &)
       classes = args[:class] || ""
       classes << "flex flex-col divide-y"
-      content_tag :div, **args, class: classes, &block
+      content_tag(:div, **args, class: classes, &)
     end
   end
 end

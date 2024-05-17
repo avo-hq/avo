@@ -76,7 +76,7 @@ module Avo
           field[:name].to_s == symbol.to_s
         end
 
-        return matched_field[:class] if matched_field.present? && matched_field[:class].present?
+        matched_field[:class] if matched_field.present? && matched_field[:class].present?
       end
     end
   end

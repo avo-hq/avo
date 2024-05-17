@@ -32,7 +32,7 @@ class Avo::Resources::Items::Sidebar
     delegate :items, to: :items_holder
     delegate :heading, to: :items_holder
 
-    def initialize(parent: , name: nil, **args)
+    def initialize(parent:, name: nil, **args)
       @sidebar = Avo::Resources::Items::Sidebar.new(**args)
       @items_holder = Avo::Resources::Items::Holder.new(parent: parent)
     end

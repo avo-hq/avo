@@ -18,11 +18,11 @@ module Generators
 
       def create_resources
         if defined?(User).present?
-          Rails::Generators.invoke("avo:resource", ["user", "-q"], {destination_root: Rails.root })
+          Rails::Generators.invoke("avo:resource", ["user", "-q"], {destination_root: Rails.root})
         end
 
         if defined?(Account) && Account.is_a?(ActiveRecord::Base)
-          Rails::Generators.invoke("avo:resource", ["account", "-q"], {destination_root: Rails.root })
+          Rails::Generators.invoke("avo:resource", ["account", "-q"], {destination_root: Rails.root})
         end
       end
     end

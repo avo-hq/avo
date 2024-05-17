@@ -56,7 +56,7 @@ class Avo::TabGroupComponent < Avo::BaseComponent
     {
       # Hide the turbo frames that aren't in the current tab
       # This way we can lazy load the un-selected tabs on the show view
-      class: "block #{'hidden' unless tab.name == active_tab_name}",
+      class: "block #{"hidden" unless tab.name == active_tab_name}",
       data: {
         # Add a marker to know if we already loaded a turbo frame
         loaded: tab.name == active_tab_name,

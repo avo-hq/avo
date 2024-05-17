@@ -37,7 +37,7 @@ module Avo
         format.html { raise exception }
         format.json {
           render json: {
-            errors: exception.respond_to?(:record) && exception.record.present? ? exception.record.errors : [],
+            errors: (exception.respond_to?(:record) && exception.record.present?) ? exception.record.errors : [],
             message: exception.message,
             traces: exception.backtrace
           }, status: ActionDispatch::ExceptionWrapper.status_code_for_exception(exception.class.name)
@@ -66,7 +66,7 @@ module Avo
 
       begin
         request.path
-          .match(/\/?#{Avo.root_path.delete('/')}\/resources\/([a-z1-9\-_]*)\/?/mi)
+          .match(/\/?#{Avo.root_path.delete("/")}\/resources\/([a-z1-9\-_]*)\/?/mi)
           .captures
           .first
       rescue

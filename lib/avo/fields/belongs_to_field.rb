@@ -208,7 +208,7 @@ module Avo
             model.send(:"#{polymorphic_as}_id=", params["#{polymorphic_as}_id"])
           end
         else
-          model.send("#{key}=", value)
+          model.send(:"#{key}=", value)
         end
 
         model

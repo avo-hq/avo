@@ -89,7 +89,7 @@ RSpec.describe "Tags", type: :system do
     end
   end
 
-  describe 'without acts_as_taggable' do
+  describe "without acts_as_taggable" do
     let(:course) { create :course, skills: [] }
     let(:path) { "/admin/resources/courses/#{course.id}/edit" }
     let(:tag_input) { tags_element(find_field_value_element("skills")) }

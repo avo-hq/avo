@@ -83,7 +83,7 @@ class Avo::Resources::User < Avo::BaseResource
   end
 
   def test_field(id)
-    return unless ENV['testing_methods']
+    return unless ENV["testing_methods"]
 
     field id.to_sym, as: :text do
       id
@@ -122,7 +122,7 @@ class Avo::Resources::User < Avo::BaseResource
         query.order(id: direction)
       },
       hide_on: :edit do
-        record.posts.to_a.size > 0 ? "yes" : "no"
+        (record.posts.to_a.size > 0) ? "yes" : "no"
       end
 
     field :password, as: :password, name: "User Password", required: false, only_on: :forms, help: 'You may verify the password strength <a href="http://www.passwordmeter.com/" target="_blank">here</a>.'
@@ -140,7 +140,7 @@ class Avo::Resources::User < Avo::BaseResource
   end
 
   def test_sidebar
-    return unless ENV['testing_methods']
+    return unless ENV["testing_methods"]
 
     sidebar panel_wrapper: false do
       tool Avo::ResourceTools::SidebarTool, render_panel: true
@@ -170,7 +170,7 @@ class Avo::Resources::User < Avo::BaseResource
         hide_on: :edit do
           raise "This should not execut on Index" if view.index?
 
-          record.posts.to_a.size > 0 ? "yes" : "no"
+          (record.posts.to_a.size > 0) ? "yes" : "no"
         end
       field :outside_link, as: :text, only_on: [:show], format_using: -> { link_to("hey", value, target: "_blank") } do
         main_app.hey_url
@@ -197,7 +197,7 @@ class Avo::Resources::User < Avo::BaseResource
   end
 
   def panel_test_sidebars
-    return unless ENV['testing_methods']
+    return unless ENV["testing_methods"]
 
     sidebar do
       field :sidebar_test, as: :text do
@@ -270,7 +270,7 @@ class Avo::Resources::User < Avo::BaseResource
   end
 
   def test_tab
-    return unless ENV['testing_methods']
+    return unless ENV["testing_methods"]
 
     tab "test_tab" do
       panel do

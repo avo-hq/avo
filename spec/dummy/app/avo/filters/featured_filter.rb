@@ -2,11 +2,11 @@ class Avo::Filters::FeaturedFilter < Avo::Filters::BooleanFilter
   self.name = "Featured status"
 
   def apply(request, query, values)
-    return query if values['is_featured'] && values['is_unfeatured']
+    return query if values["is_featured"] && values["is_unfeatured"]
 
-    if values['is_featured']
+    if values["is_featured"]
       query = query.where(is_featured: true)
-    elsif values['is_unfeatured']
+    elsif values["is_unfeatured"]
       query = query.where(is_featured: false)
     end
 

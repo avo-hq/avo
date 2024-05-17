@@ -90,7 +90,7 @@ module Avo
           new_value = {}
         end
 
-        model.send("#{key}=", new_value)
+        model.send(:"#{key}=", new_value)
 
         model
       end
