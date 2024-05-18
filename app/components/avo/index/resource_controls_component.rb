@@ -90,6 +90,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
       edit_path,
       class: "flex items-center",
       title: control.title,
+      aria: {label: control.title},
       data: {
         target: "control:edit",
         control: :edit,
@@ -105,6 +106,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
       show_path,
       class: "flex items-center",
       title: control.title,
+      aria: {label: control.title},
       data: {
         target: "control:view",
         control: :show,
@@ -126,6 +128,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
       icon: "trash",
       form_class: "flex flex-col sm:flex-row sm:inline-flex",
       title: control.title,
+      aria: {label: control.title},
       method: :delete,
       params: hidden_params,
       data: {
@@ -148,6 +151,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
       icon: "detach",
       form_class: "flex items-center",
       title: control.title,
+      aria: {label: control.title},
       method: :delete,
       params: hidden_params,
       data: {
