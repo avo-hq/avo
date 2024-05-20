@@ -6,7 +6,7 @@
 %>
   <div class="relative flex-1 py-4">
     <div class="relative block text-gray-300 h-64 w-full">
-      <%= svg 'failed_to_load', class: "#{classes} h-52 text-gray-400" %>
+      <%= svg 'heroicons/outline/failed_to_load', class: "#{classes} h-52 text-gray-400" %>
     </div>
     <div class="relative block text-center text-lg text-gray-400 font-semibold pb-6"><%= label %> <span class="border-b-2 border-dashed"><%= params[:turbo_frame].to_s.humanize.downcase if params[:turbo_frame].present? %></span> frame</div>
     <% if Rails.env.development? && src_url %>
