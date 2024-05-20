@@ -13,3 +13,7 @@ ignore:                 # default: []
     - Style/TrailingCommaInHashLiteral
   - 'app/**/*':
     - Style/TrailingCommaInHashLiteral
+
+custom:
+  'lib/rubo_cop/cop/custom/heroicons_svg_check.rb':
+    - Custom/HeroiconsSvgCheck

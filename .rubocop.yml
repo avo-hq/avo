@@ -1,0 +1,5 @@
+require:
+  - ./lib/rubo_cop/cop/custom/heroicons_svg_check.rb
+
+Custom/HeroiconsSvgCheck:
+  Enabled: true
