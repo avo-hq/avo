@@ -7,9 +7,7 @@ export default class extends Controller {
   updateCards(event) {
     this.cardsTargets.forEach((frame) => {
       // Add date param to the existing frame.src
-      console.log(frame.src)
       frame.src = new URI(frame.src).setQuery('global_range[date]', event.target.dataset.days).toString()
-      console.log(frame.src)
     })
   }
 }
