@@ -25,7 +25,7 @@ RSpec.describe RuboCop::Cop::Custom::HeroiconsSvgCheck, :config do
     RUBY
 
     expect_no_offenses(<<~RUBY)
-      svg('heroicons/outline/three-dots')
+      svg('avo/three-dots')
     RUBY
   end
 end

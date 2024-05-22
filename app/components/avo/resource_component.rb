@@ -130,7 +130,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       style: :text,
       title: control.title,
       data: {tippy: tippy},
-      icon: "arrow-left" do
+      icon: "heroicons/outline/arrow-left" do
       control.label
     end
   end
@@ -185,7 +185,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       style: :primary,
       loading: true,
       type: :submit,
-      icon: "save" do
+      icon: "avo/save" do
       control.label
     end
   end
@@ -198,7 +198,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       style: :primary,
       title: control.title,
       data: {tippy: control.title ? :tooltip : nil},
-      icon: "edit" do
+      icon: "avo/edit" do
       control.label
     end
   end
@@ -207,7 +207,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
     return unless is_a_related_resource? && can_detach?
 
     a_link detach_path,
-      icon: "detach",
+      icon: "avo/detach",
       form_class: "flex flex-col sm:flex-row sm:inline-flex",
       style: :text,
       data: {

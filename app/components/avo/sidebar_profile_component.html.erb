@@ -18,7 +18,7 @@
   </div>
   <div class="relative" data-controller="toggle">
     <a class="flex items-center h-full cursor-pointer" data-control="profile-dots" data-action="click->toggle#togglePanel">
-      <%= helpers.svg 'heroicons/outline/three-dots', class: 'h-4' %>
+      <%= helpers.svg "avo/three-dots", class: 'h-4' %>
     </a>
     <div
       class="hidden absolute flex flex-col inset-auto right-0 -mt-12 bg-white rounded min-w-[200px] shadow-context -translate-y-full z-40"
@@ -50,7 +50,7 @@
           },
           class: 'flex-1' do |form| %>
           <%= form.button turbo_confirm: t('avo.are_you_sure'), class: "flex-1 flex items-center justify-center bg-white text-left cursor-pointer text-red-600 font-semibold hover:bg-red-100 block px-4 py-1 w-full py-3 text-center rounded w-full" do %>
-          <%= helpers.svg 'heroicons/outline/logout', class: 'h-4 mr-1' %> <%= t('avo.sign_out') %>
+          <%= helpers.svg "avo/logout", class: 'h-4 mr-1' %> <%= t('avo.sign_out') %>
           <% end %>
         <% end %>
     <% end %>

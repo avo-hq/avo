@@ -17,7 +17,7 @@ module RuboCop
 
         def heroicons?(node)
           svg_arg = node.arguments[0].source
-          svg_arg.match?(/\A['"](edit|three-dots|some_icon)['"]\z/)
+          svg_arg.match?(/svg[ |(]['|"].[^heroicons|avo]/)
         end
       end
     end
