@@ -86,7 +86,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   def render_edit_button(control)
     return unless can_edit?
 
-    link_to helpers.svg("edit", class: svg_classes),
+    link_to helpers.svg("avo/edit", class: svg_classes),
       edit_path,
       class: "flex items-center",
       title: control.title,
