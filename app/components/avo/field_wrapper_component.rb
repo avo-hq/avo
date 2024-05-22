@@ -25,6 +25,7 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
     stacked: nil,
     style: "",
     view: :show,
+    label_for: nil,
     **args
   )
     @args = args
@@ -43,6 +44,7 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
     @stacked = stacked
     @style = style
     @view = view
+    @label_for = label_for
   end
 
   def classes(extra_classes = "")
@@ -55,6 +57,10 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
 
   def label
     @label || @field.name
+  end
+
+  def label_for
+    @label_for || @field.form_field_label
   end
 
   delegate :show?, :edit?, to: :view, prefix: :on

@@ -266,7 +266,11 @@ module Avo
       end
 
       def form_field_label
-        id
+        "#{id}_id"
+      end
+
+      def polymorphic_form_field_label
+        "#{id}_type"
       end
 
       private
