@@ -342,10 +342,13 @@ RSpec.describe "Filters", type: :system do
         wait_for_loaded
         check "Featured"
 
-        expect(page).to have_css ".page.next"
-        expect(page).to have_css ".page.active"
-        expect(find(".page.active")).to have_text "1"
-        expect(find(".page.active")).not_to have_text "2"
+        expect(page).to have_css "[data-turbo-frame][aria-label='Next']"
+        # expect to have the previous link disabled (no turbo-frame attached)
+        expect(page).to have_css "[data-turbo-frame][aria-label='Previous']"
+        expect(page).not_to have_css "[data-turbo-frame][aria-label='Previous']"
+
+        expect(find(".current")).to have_text "1"
+        expect(find(".current")).not_to have_text "2"
       end
     end
   end

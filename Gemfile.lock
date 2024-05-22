@@ -237,6 +237,13 @@ GEM
     e2mmap (0.1.0)
     erb-formatter (0.7.1)
       syntax_tree (~> 6.0)
+    erb_lint (0.5.0)
+      activesupport
+      better_html (>= 2.0.1)
+      parser (>= 2.7.1.4)
+      rainbow
+      rubocop
+      smart_properties
     erubi (1.12.0)
     factory_bot (6.4.6)
       activesupport (>= 5.0.0)
@@ -651,6 +658,7 @@ DEPENDENCIES
   devise
   dotenv-rails
   erb-formatter
+  erb_lint
   factory_bot_rails
   faker
   friendly_id (~> 5.5.1)
