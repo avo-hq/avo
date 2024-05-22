@@ -2,8 +2,8 @@
   ["6.1", "7.1"].each do |rails_version|
     appraise "rails-#{rails_version}-ruby-#{ruby_version}" do
       gem "psych", "< 4"
-      if rails_version == 'main'
-        gem "rails", github: 'rails/rails', branch: "main"
+      if rails_version == "main"
+        gem "rails", github: "rails/rails", branch: "main"
       else
         gem "rails", "~> #{rails_version}"
       end
@@ -15,11 +15,11 @@
     end
   end
 
-  appraise "rails-8-ruby-#{ruby_version}" do
+  appraise "rails-8.0-ruby-#{ruby_version}" do
     gem "psych", "< 4"
-    gem "rails", github: 'rails/rails', branch: "main"
-    gem "activestorage", github: 'rails/rails', branch: "main"
-    gem "acts-as-taggable-on", github: 'avo-hq/acts-as-taggable-on'
+    gem "rails", github: "rails/rails", branch: "main"
+    gem "activestorage", github: "rails/rails", branch: "main"
+    gem "acts-as-taggable-on", github: "avo-hq/acts-as-taggable-on"
     gem "ransack", "~> 4.1", ">= 4.1.1"
   end
 end
