@@ -9,7 +9,12 @@ RSpec.describe RuboCop::Cop::Custom::HeroiconsSvgCheck, :config do
 
   it "registers an offense when svg does not use heroicons prefix" do
     expect_offense(<<~RUBY)
-      svg("edit")
+      svg("heart")
+      ^^^^^^^^^^^^ SVG declaration does not adhere to naming convention
+    RUBY
+
+    expect_offense(<<~RUBY)
+      svg "heart"
       ^^^^^^^^^^^ SVG declaration does not adhere to naming convention
     RUBY
 
@@ -17,15 +22,28 @@ RSpec.describe RuboCop::Cop::Custom::HeroiconsSvgCheck, :config do
       svg('edit')
       ^^^^^^^^^^^ SVG declaration does not adhere to naming convention
     RUBY
+
+    expect_offense(<<~RUBY)
+      svg 'edit'
+      ^^^^^^^^^^ SVG declaration does not adhere to naming convention
+    RUBY
   end
 
-  it "does not register an offense when svg uses heroicons prefix" do
+  it "does not register an offense when svg uses heroicons or avo prefixes" do
     expect_no_offenses(<<~RUBY)
       svg("heroicons/outline/edit")
     RUBY
 
     expect_no_offenses(<<~RUBY)
+      svg "heroicons/outline/edit"
+    RUBY
+
+    expect_no_offenses(<<~RUBY)
       svg('avo/three-dots')
+    RUBY
+
+    expect_no_offenses(<<~RUBY)
+      svg 'avo/three-dots'
     RUBY
   end
 end

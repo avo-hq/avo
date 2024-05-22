@@ -8,16 +8,12 @@ module RuboCop
 
         def on_send(node)
           return unless node.method_name == :svg
-          return if heroicons?(node)
+          return unless node.arguments[0]
+
+          svg_arg = node.arguments[0].source
+          return if svg_arg.match?(/\A['"](?:avo|heroicons)/)
 
           add_offense(node, message: MSG)
-        end
-
-        private
-
-        def heroicons?(node)
-          svg_arg = node.arguments[0].source
-          svg_arg.match?(/svg[ |(]['|"](?!avo|heroicons)/)
         end
       end
     end
