@@ -36,6 +36,7 @@ jobs:
         rails:
           - '6.1'
           - '7.1'
+          - '8'
     runs-on: ubuntu-latest
 
     env:
