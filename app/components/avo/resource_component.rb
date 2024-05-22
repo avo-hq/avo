@@ -163,7 +163,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
     a_link destroy_path,
       style: :text,
       color: :red,
-      icon: "trash",
+      icon: "heroicons/outline/trash",
       form_class: "flex flex-col sm:flex-row sm:inline-flex",
       title: control.title,
       data: {
