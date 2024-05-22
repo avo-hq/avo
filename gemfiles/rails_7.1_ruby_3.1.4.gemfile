@@ -44,6 +44,7 @@ gem "pluggy", path: "../pluggy"
 gem "money-rails", "~> 1.12"
 gem "avo-money_field"
 gem "avo-record_link_field"
+gem "pagy", "> 8"
 gem "psych", "< 4"
 
 group :development do
@@ -80,6 +81,7 @@ group :development, :test do
   gem "faker", require: false
   gem "i18n-tasks", "~> 1.0.12"
   gem "erb-formatter"
+  gem "erb_lint"
   gem "solargraph"
   gem "solargraph-rails"
   gem "factory_bot_rails"
