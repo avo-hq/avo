@@ -21,6 +21,7 @@ module Avo
     attr_accessor :user
     attr_reader :arguments
     attr_reader :icon
+    attr_reader :enhanced_turbo_streams
 
     # TODO: find a differnet way to delegate this to the uninitialized Current variable
     delegate :context, to: Avo::Current
@@ -289,6 +290,10 @@ module Avo
       ).handle
     end
 
+    def enhance_response(turbo_stream:)
+      @enhanced_turbo_streams = turbo_stream
+    end
+
     private
 
     def add_message(body, type = :info)
@@ -299,3 +304,5 @@ module Avo
     end
   end
 end
+
+
