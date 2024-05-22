@@ -98,7 +98,7 @@ Avo.configure do |config|
         resource :photo_comments
       end
 
-      section "Store", icon: "currency-dollar" do
+      section "Store", icon: "heroicons/outline/currency-dollar" do
         resource :products
         resource :stores
       end
