@@ -111,7 +111,7 @@ RSpec.describe "SelectAll", type: :system do
 
           visit url
 
-          within('nav.pagy-nav.pagination') do
+          within('nav.pagy.nav.pagination') do
             expect(page).to have_css('span.page.active', text: '1')
             expect(page).to have_css('span.page', text: '2')
           end
@@ -131,7 +131,7 @@ RSpec.describe "SelectAll", type: :system do
 
           visit url
 
-          within('nav.pagy-nav.pagination') do
+          within('nav.pagy.nav.pagination') do
             expect(page).not_to have_css('span.page.active', text: '1')
             expect(page).not_to have_css('span.page', text: '2')
           end
