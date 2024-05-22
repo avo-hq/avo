@@ -123,7 +123,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     a_button url: helpers.resource_path(record: @resource.record, resource: @resource),
       style: :icon,
       color: :gray,
-      icon: "heroicons/outline/trash",
+      icon: "avo/trash",
       form_class: "flex flex-col sm:flex-row sm:inline-flex",
       title: control.title,
       method: :delete,
