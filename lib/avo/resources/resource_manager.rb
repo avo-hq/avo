@@ -148,6 +148,7 @@ module Avo
               user,
               resource.model_class,
               Avo.configuration.authorization_methods.stringify_keys["index"],
+              policy_class: resource.authorization_policy,
               raise_exception: false
             )
           end
