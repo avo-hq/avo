@@ -10,7 +10,6 @@ loader.inflector.inflect(
   "has_html_attributes" => "HasHTMLAttributes"
 )
 loader.ignore("#{__dir__}/generators")
-loader.ignore("#{__dir__}/rubo_cop")
 loader.setup
 
 module Avo

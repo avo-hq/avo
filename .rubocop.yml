@@ -1,9 +1,0 @@
-require:
-  - ./lib/rubo_cop/cop/custom/heroicons_svg_check.rb
-
-AllCops:
-  DisabledByDefault: true
-  NewCops: enable
-
-Custom/HeroiconsSvgCheck:
-  Enabled: true
