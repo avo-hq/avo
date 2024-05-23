@@ -1,6 +1,6 @@
 <div class="flex">
   <% if can_download_file? %>
-    <%= a_link Rails.application.routes.url_helpers.rails_blob_path(file, only_path: true, disposition: :attachment),
+    <%= a_link helpers.main_app.rails_blob_path(file, only_path: true, disposition: :attachment),
       icon: "heroicons/outline/download",
       color: :primary,
       download: true,
