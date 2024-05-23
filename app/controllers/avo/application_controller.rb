@@ -7,6 +7,7 @@ module Avo
     end
 
     include Avo::InitializesAvo
+    include Avo::CommonController
     include Avo::ApplicationHelper
     include Avo::UrlHelpers
     include Avo::Concerns::Breadcrumbs
