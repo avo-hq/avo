@@ -1,12 +1,12 @@
 <%
-  icon = 'selector'
+  icon = "avo/selector"
 
   if params[:sort_by] == field.id.to_s
     case params[:sort_direction]
       when 'asc'
-        icon = 'sort-ascending'
+        icon = "avo/sort-ascending"
       when 'desc'
-        icon = 'sort-descending'
+        icon = "avo/sort-descending"
       end
   end
 %>

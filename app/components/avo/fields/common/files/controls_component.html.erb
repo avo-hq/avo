@@ -1,7 +1,7 @@
 <div class="flex">
   <% if can_download_file? %>
     <%= a_link helpers.main_app.rails_blob_path(file, only_path: true, disposition: :attachment),
-      icon: 'heroicons/outline/download',
+      icon: "heroicons/outline/download",
       color: :primary,
       download: true,
       class: 'text-center',
@@ -14,7 +14,7 @@
 <div>
   <% if can_delete_file? %>
     <%= a_link destroy_path,
-      icon: 'heroicons/outline/trash',
+      icon: "avo/trash",
       color: :red,
       compact: true,
       size: :xs,
