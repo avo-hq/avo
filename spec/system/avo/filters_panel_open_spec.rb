@@ -30,7 +30,7 @@ RSpec.feature "FiltersPanelOpen", type: :system do
       toggle_filters_menu
 
       # Change the page
-      within ".pagy-nav" do
+      within ".pagy.nav" do
         click_on "2"
       end
 

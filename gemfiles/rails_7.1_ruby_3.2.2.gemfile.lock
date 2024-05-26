@@ -6,7 +6,7 @@ PATH
 PATH
   remote: ..
   specs:
-    avo (3.6.1)
+    avo (3.7.4)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
@@ -238,6 +238,13 @@ GEM
     e2mmap (0.1.0)
     erb-formatter (0.7.1)
       syntax_tree (~> 6.0)
+    erb_lint (0.5.0)
+      activesupport
+      better_html (>= 2.0.1)
+      parser (>= 2.7.1.4)
+      rainbow
+      rubocop
+      smart_properties
     erubi (1.12.0)
     factory_bot (6.4.6)
       activesupport (>= 5.0.0)
@@ -365,12 +372,12 @@ GEM
     net-smtp (0.4.0.1)
       net-protocol
     nio4r (2.7.0)
-    nokogiri (1.16.2-arm64-darwin)
+    nokogiri (1.16.5-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.16.2-x86_64-linux)
+    nokogiri (1.16.5-x86_64-linux)
       racc (~> 1.4)
     orm_adapter (0.5.0)
-    pagy (7.0.6)
+    pagy (8.4.0)
     parallel (1.24.0)
     parser (3.3.0.5)
       ast (~> 2.4.1)
@@ -649,6 +656,7 @@ DEPENDENCIES
   devise
   dotenv-rails
   erb-formatter
+  erb_lint
   factory_bot_rails
   faker
   friendly_id (~> 5.5.1)
@@ -669,6 +677,7 @@ DEPENDENCIES
   meta-tags
   money-rails (~> 1.12)
   net-smtp
+  pagy (> 8)
   pg (>= 0.18, < 2.0)
   pluggy!
   prefixed_ids

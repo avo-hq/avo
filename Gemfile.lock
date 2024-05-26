@@ -237,6 +237,13 @@ GEM
     e2mmap (0.1.0)
     erb-formatter (0.7.1)
       syntax_tree (~> 6.0)
+    erb_lint (0.5.0)
+      activesupport
+      better_html (>= 2.0.1)
+      parser (>= 2.7.1.4)
+      rainbow
+      rubocop
+      smart_properties
     erubi (1.12.0)
     factory_bot (6.4.6)
       activesupport (>= 5.0.0)
@@ -341,7 +348,7 @@ GEM
     method_source (1.0.0)
     mini_magick (4.12.0)
     mini_mime (1.1.5)
-    mini_portile2 (2.8.5)
+    mini_portile2 (2.8.6)
     minitest (5.22.3)
     monetize (1.13.0)
       money (~> 6.12)
@@ -365,10 +372,10 @@ GEM
     net-smtp (0.4.0.1)
       net-protocol
     nio4r (2.7.0)
-    nokogiri (1.16.3)
+    nokogiri (1.16.5)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
-    nokogiri (1.16.3-x86_64-linux)
+    nokogiri (1.16.5-x86_64-linux)
       racc (~> 1.4)
     orm_adapter (0.5.0)
     pagy (8.4.0)
@@ -651,6 +658,7 @@ DEPENDENCIES
   devise
   dotenv-rails
   erb-formatter
+  erb_lint
   factory_bot_rails
   faker
   friendly_id (~> 5.5.1)
