@@ -21,7 +21,7 @@
 
           <% if dashboards.present? %>
             <div>
-              <%= render Avo::Sidebar::HeadingComponent.new label: t('avo.dashboards'), icon: helpers.svg('dashboards', class: 'h-4') %>
+              <%= render Avo::Sidebar::HeadingComponent.new label: t('avo.dashboards'), icon: helpers.svg("avo/dashboards", class: 'h-4') %>
 
               <div class="w-full space-y-1">
                 <% dashboards.sort_by { |r| r.navigation_label }.each do |dashboard| %>
@@ -32,7 +32,7 @@
           <% end %>
 
           <div>
-            <%= render Avo::Sidebar::HeadingComponent.new label: t('avo.resources'), icon: helpers.svg('resources', class: 'h-4') %>
+            <%= render Avo::Sidebar::HeadingComponent.new label: t('avo.resources'), icon: helpers.svg("avo/resources", class: 'h-4') %>
 
             <div class="w-full space-y-1">
               <% resources.sort_by { |r| r.navigation_label }.each do |resource| %>
@@ -43,7 +43,7 @@
 
           <% if tools.present? %>
             <div>
-              <%= render Avo::Sidebar::HeadingComponent.new label: t('avo.tools'), icon: helpers.svg('tools', class: 'h-4') %>
+              <%= render Avo::Sidebar::HeadingComponent.new label: t('avo.tools'), icon: helpers.svg("avo/tools", class: 'h-4') %>
 
               <div class="w-full space-y-1">
                 <% tools.each do |partial| %>
