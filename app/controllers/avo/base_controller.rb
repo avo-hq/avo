@@ -477,9 +477,11 @@ module Avo
     end
 
     def update_fail_action
+      flash.now[:error] = create_fail_message
+
       respond_to do |format|
-        flash.now[:error] = update_fail_message
-        format.html { render :edit, status: :unprocessable_entity }
+        format.html { render :new, status: :unprocessable_entity }
+        format.turbo_stream { render "update_fail_action" }
       end
     end
 

@@ -6,3 +6,6 @@ Layout/InitialIndentation:
 
 Lint/UselessAssignment:
   Enabled: false
+
+Layout/FirstArgumentIndentation:
+  Enabled: false
