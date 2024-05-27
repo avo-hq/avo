@@ -148,6 +148,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       color: actions_list.color,
       label: actions_list.label,
       size: actions_list.size,
+      icon: actions_list.icon,
       as_row_control: instance_of?(Avo::Index::ResourceControlsComponent)
     )
   end
