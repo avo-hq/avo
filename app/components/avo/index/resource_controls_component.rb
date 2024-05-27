@@ -86,7 +86,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   def render_edit_button(control)
     return unless can_edit?
 
-    link_to helpers.svg("edit", class: svg_classes),
+    link_to helpers.svg("avo/edit", class: svg_classes),
       edit_path,
       class: "flex items-center",
       title: control.title,
@@ -102,7 +102,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   def render_show_button(control)
     return unless can_view?
 
-    link_to helpers.svg("eye", class: svg_classes),
+    link_to helpers.svg("avo/eye", class: svg_classes),
       show_path,
       class: "flex items-center",
       title: control.title,
@@ -125,7 +125,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     a_button url: helpers.resource_path(record: @resource.record, resource: @resource),
       style: :icon,
       color: :gray,
-      icon: "trash",
+      icon: "avo/trash",
       form_class: "flex flex-col sm:flex-row sm:inline-flex",
       title: control.title,
       aria: {label: control.title},

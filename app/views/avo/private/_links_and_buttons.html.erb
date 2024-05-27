@@ -28,7 +28,7 @@
                   %>
                   <%
                     a_button_or_link = "a_#{entity}"
-                    args = {icon: 'arrow-left', style: style, color: color, size: size, class: extra_classes, disabled: state == :disabled}
+                    args = {icon: "heroicons/outline/arrow-left", style: style, color: color, size: size, class: extra_classes, disabled: state == :disabled}
                   %>
                   <% if entity == :link %>
                     <div>
@@ -43,7 +43,7 @@
                       <% end %>
                     </div>
                     <div>
-                      <%= a_button icon: 'bell', style: style, color: color, size: size, class: extra_classes, disabled: state == :disabled %>
+                      <%= a_button icon: "avo/bell", style: style, color: color, size: size, class: extra_classes, disabled: state == :disabled %>
                     </div>
                   <% end %>
                 <% end %>
