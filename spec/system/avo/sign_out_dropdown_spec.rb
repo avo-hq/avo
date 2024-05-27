@@ -21,7 +21,7 @@ RSpec.feature "SignOutDropdown", type: :system do
 
       dots_link.click
 
-      accept_alert do
+      accept_custom_alert do
         within "form[data-controller='sign-out'][data-action='submit->sign-out#handle']" do
           click_button "Sign out"
         end

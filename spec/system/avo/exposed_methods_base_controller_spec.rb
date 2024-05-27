@@ -9,7 +9,7 @@ RSpec.feature "ExposedMethodsBaseController", type: :system do
     it "after_destroy_path && destroy_success_message" do
       visit course_url
 
-      accept_alert do
+      accept_custom_alert do
         click_on "Delete"
       end
       wait_for_loaded
