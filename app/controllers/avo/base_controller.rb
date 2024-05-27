@@ -231,7 +231,17 @@ module Avo
 
       # Remove duplicated errors
       if exception_message.present?
-        @errors = @errors.reject { |error| exception_message.include? error }.unshift exception_message
+        @errors = @errors.reject { |error| exception_message.include? error }
+      end
+
+      # Figure out if we have to output the exception_message
+      # Usually it means that it's not a validation error but something else
+      if exception_message.present?
+        exception_is_validation = @errors.select { |error| exception_message.include? error }.present?
+      end
+
+      if exception_is_validation
+        @errors << exception_message
       end
 
       @errors.any? ? false : succeeded
@@ -477,10 +487,10 @@ module Avo
     end
 
     def update_fail_action
-      flash.now[:error] = create_fail_message
+      flash.now[:error] = update_fail_message
 
       respond_to do |format|
-        format.html { render :new, status: :unprocessable_entity }
+        format.html { render :edit, status: :unprocessable_entity }
         format.turbo_stream { render "update_fail_action" }
       end
     end
