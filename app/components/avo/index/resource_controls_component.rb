@@ -101,7 +101,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   def render_show_button(control)
     return unless can_view?
 
-    link_to helpers.svg("heroicons/outline/eye", class: svg_classes),
+    link_to helpers.svg("avo/eye", class: svg_classes),
       show_path,
       class: "flex items-center",
       title: control.title,
