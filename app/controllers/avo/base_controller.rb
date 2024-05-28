@@ -240,7 +240,7 @@ module Avo
         exception_is_validation = @errors.select { |error| exception_message.include? error }.present?
       end
 
-      if exception_is_validation
+      if exception_is_validation || (@errors.blank? && exception_message.present?)
         @errors << exception_message
       end
 
