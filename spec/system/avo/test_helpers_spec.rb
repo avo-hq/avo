@@ -25,7 +25,7 @@ RSpec.describe "TestHelpers", type: :system do
         users.each do |user|
           grid_item_wrapper = grid_field_wrapper(record_id: user.to_param)
 
-          expect(grid_item_wrapper.find_all('a')[1].text).to eql user.name
+          expect(grid_item_wrapper.find_all("a")[1].text).to eql user.name
         end
       end
     end
