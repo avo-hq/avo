@@ -11,8 +11,7 @@
     color: @color,
     size: size,
     class: "focus:outline-none",
-    icon: "avo/arrow-circle-right",
-    icon_class: 'transform rotate-90',
+    icon: @icon,
     'data-action': "click->toggle#togglePanel",
     'data-actions-dropdown-button': @resource.model_key do %>
     <%= label %>

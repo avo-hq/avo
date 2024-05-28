@@ -1,4 +1,4 @@
-<%= turbo_stream.replace(frame_id(@resource), template: "avo/base/new") %>
+<%= turbo_stream.replace(frame_id(@resource), template: "avo/base/edit") %>
 
 <%= turbo_stream.append "alerts" do %>
   <%= render Avo::FlashAlertsComponent.new flashes: flash %>

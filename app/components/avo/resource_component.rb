@@ -148,6 +148,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       color: actions_list.color,
       label: actions_list.label,
       size: actions_list.size,
+      icon: actions_list.icon,
       as_row_control: instance_of?(Avo::Index::ResourceControlsComponent)
     )
   end
@@ -166,6 +167,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       icon: "avo/trash",
       form_class: "flex flex-col sm:flex-row sm:inline-flex",
       title: control.title,
+      aria_label: control.title,
       data: {
         turbo_confirm: t("avo.are_you_sure", item: @resource.record.model_name.name.downcase),
         turbo_method: :delete,

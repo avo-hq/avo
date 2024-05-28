@@ -15,7 +15,7 @@ class Avo::EmptyStateComponent < ViewComponent::Base
   end
 
   def view_type_svg
-    "#{view_type}-empty-state"
+    "avo/#{view_type}-empty-state"
   end
 
   private
