@@ -56,7 +56,7 @@ RSpec.feature "Fields view types", type: :system do
     end
 
     destroy_path = "/admin/resources/projects/#{project.id}/active_storage_attachments/files/#{project.files.first.id}"
-    accept_custom_alert "Are you sure?" do
+    accept_custom_alert do
       find("a[data-turbo-method='delete'][href='#{destroy_path}']").click
     end
     wait_for_loaded
@@ -72,7 +72,7 @@ RSpec.feature "Fields view types", type: :system do
     end
 
     destroy_path = "/admin/resources/projects/#{project.id}/active_storage_attachments/files/#{project.files.last.id}"
-    accept_custom_alert "Are you sure?" do
+    accept_custom_alert do
       find("a[data-turbo-method='delete'][href='#{destroy_path}']").trigger("click")
     end
     wait_for_loaded
