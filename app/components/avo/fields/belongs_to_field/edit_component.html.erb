@@ -48,9 +48,9 @@
             %>
             <% else %>
               <%= @form.select @field.id_input_foreign_key,
-              options_for_select(@field.values_for_type(type), @field.selected),
+              options_for_select(@field.values_for_type(type), @resource.present? && @resource.record.present? && @field.value.class == type ? @resource.record[@field.id_input_foreign_key] : nil),
               {
-                value: @field.selected,
+                value: @field.value.class == type ? @resource.record[@field.id_input_foreign_key].to_s : nil,
                 include_blank: @field.placeholder,
               },
               {
@@ -100,7 +100,7 @@
       <%= @form.select @field.id_input_foreign_key, @field.options,
         {
           include_blank: @field.placeholder,
-          selected: @field.selected
+          value: @field.value
         },
         {
           class: classes("w-full"),
