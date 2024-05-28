@@ -9,7 +9,21 @@
   class="bg-white border-b border-gray-200 pb-1">
   <% if @resource.record_selector %>
     <th class="rounded-lg" data-control="item-select-th">
-      <%== item_select_all_input %>
+      <%= content_tag :label, name: t("avo.select_all") do %>
+        <%= content_tag :span, t("avo.select_all"), class: 'sr-only' %>
+        <%= tag :input,
+          type: "checkbox",
+          name: t("avo.select_all"),
+          title: t("avo.select_all"),
+          autocomplete: :off,
+          class: "mx-3 rounded w-4 h-4 checked:bg-primary-400 focus:checked:!bg-primary-400",
+          data: {
+            action: "input->item-select-all#toggle",
+            item_select_all_target: "checkbox",
+            tippy: "tooltip",
+          }
+        %>
+      <% end %>
     </th>
   <% end %>
   <% if Avo.configuration.resource_controls_on_the_left? %>
@@ -42,7 +56,7 @@
         sort_by = field.id
         sort_direction = 'desc'
       end
-      text_classes = "text-gray-500 tracking-tight leading-tight text-xs font-semibold"
+      text_classes = "text-gray-600 tracking-tight leading-tight text-xs font-semibold"
     %>
     <%= content_tag :th,
       class: "relative text-left uppercase px-3 py-3 whitespace-nowrap rounded-l",

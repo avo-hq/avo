@@ -31,7 +31,7 @@
     <div data-belongs-to-field-target="container"></div>
     <% @field.types.each do |type| %>
       <template data-belongs-to-field-target="type" data-type="<%= type %>">
-        <div>
+        <div data-polymorphic-type="<%= type %>">
           <%= field_wrapper **field_wrapper_args.merge!(data: reload_data), label: Avo.resource_manager.get_resource_by_model_class(type.to_s).name do %>
             <% if @field.is_searchable? %>
               <%= render Avo::Pro::SearchableAssociations::AutocompleteComponent.new form: @form,

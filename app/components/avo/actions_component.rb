@@ -4,7 +4,7 @@ class Avo::ActionsComponent < ViewComponent::Base
   include Avo::ApplicationHelper
   attr_reader :label, :size, :as_row_control
 
-  def initialize(actions: [], resource: nil, view: nil, exclude: [], include: [], style: :outline, color: :primary, label: nil, size: :md, as_row_control: false)
+  def initialize(actions: [], resource: nil, view: nil, exclude: [], include: [], style: :outline, color: :primary, label: nil, size: :md, as_row_control: false, icon: "heroicons/outline/arrow-down-circle")
     @actions = actions || []
     @resource = resource
     @view = view
@@ -14,6 +14,7 @@ class Avo::ActionsComponent < ViewComponent::Base
     @style = style
     @label = label || I18n.t("avo.actions")
     @size = size
+    @icon = icon
     @as_row_control = as_row_control
   end
 
@@ -81,7 +82,7 @@ class Avo::ActionsComponent < ViewComponent::Base
   end
 
   def icon(action)
-    svg action.icon, class: "h-5 mr-1 inline pointer-events-none"
+    svg action.icon, class: "h-5 shrink-0 mr-1 inline pointer-events-none"
   end
 
   def render_item(action)

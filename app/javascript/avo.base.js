@@ -13,6 +13,7 @@ import { LocalStorageService } from './js/local-storage-service'
 
 import './js/active-storage'
 import './js/controllers'
+import './js/custom-confirm'
 import './js/custom-stream-actions'
 
 window.Avo.localStorage = new LocalStorageService()
