@@ -106,7 +106,7 @@ RSpec.describe "HasAndBelongsToManyField", type: :system do
         expect(page).not_to have_text "No related record found"
 
         expect {
-          accept_alert do
+          accept_custom_alert do
             find("[data-resource-name='users'][data-resource-id='#{user.to_param}'] [data-control='detach']").click
           end
           sleep 0.1

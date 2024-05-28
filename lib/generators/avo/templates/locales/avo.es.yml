@@ -19,6 +19,7 @@ es:
     choose_item: Elige %{item}
     clear_value: Borrar el valor
     click_to_reveal_filters: Pulsa para mostrar los filtros
+    close_modal: Cerrar modal
     confirm: Confirmar
     create_new_item: Crear nuevo/a %{item}
     dashboard: Panel
@@ -54,6 +55,7 @@ es:
     more: Más
     new: nuevo/a
     next_page: Página siguiente
+    no_cancel: No, cancelar
     no_cards_present: No hay tarjetas
     no_item_found: No se ha encontrado ningún elemento
     no_options_available: No hay opciones disponibles
@@ -106,4 +108,5 @@ es:
     x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> registros seleccionados en esta página de un total de <span class="font-bold text-gray-700">%{count}</span>
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> registros seleccionados en todas las páginas
     x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> registros seleccionados en esta página
+    yes_confirm: Sí, estoy seguro
     you_missed_something_check_form: Es posible que hayas pasado algo por alto. Comprueba el formulario.

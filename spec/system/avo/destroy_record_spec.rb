@@ -10,7 +10,7 @@ RSpec.feature "DestroyRecord", type: :system do
       visit url
 
       expect {
-        accept_confirm do
+        accept_custom_alert do
           click_on "Delete"
         end
         wait_for_loaded

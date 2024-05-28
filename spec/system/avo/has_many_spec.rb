@@ -48,11 +48,11 @@ RSpec.feature "HasManyField", type: :system do
       #   scroll_to find('turbo-frame[id="has_many_field_show_comments"]')
 
       #   expect {
-      #     accept_alert do
+      #     accept_custom_alert do
       #       find("[data-resource-id='#{comments.first.id}'] [data-control='destroy']").click
       #     end
 
-      #     accept_alert do
+      #     accept_custom_alert do
       #       find("[data-resource-id='#{comments.third.id}'] [data-control='destroy']").click
       #     end
       #   }.to change(Comment, :count).by(-2)
@@ -79,11 +79,11 @@ RSpec.feature "HasManyField", type: :system do
         scroll_to find('turbo-frame[id="has_many_field_show_comments"]')
 
         expect {
-          accept_alert do
+          accept_custom_alert do
             find("[data-resource-id='#{comments.first.id}'] [data-control='destroy']").click
           end
 
-          accept_alert do
+          accept_custom_alert do
             find("[data-resource-id='#{comments.third.id}'] [data-control='destroy']").click
           end
         }.to change(Comment, :count).by(0)
