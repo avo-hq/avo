@@ -100,7 +100,7 @@
       <%= @form.select @field.id_input_foreign_key, @field.options,
         {
           include_blank: @field.placeholder,
-          value: @field.value
+          value: @field.value.to_param
         },
         {
           class: classes("w-full"),
