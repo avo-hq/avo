@@ -316,7 +316,7 @@ module Avo
       page.driver.browser.keyboard.type(...)
     end
 
-    def accept_custom_alert(&block)
+    def accept_custom_alert(label = nil, &block)
       block.call
       find('#turbo-confirm button[value="confirm"]').click
     end
