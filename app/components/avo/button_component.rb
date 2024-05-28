@@ -4,7 +4,7 @@
 # style: primary/outline/text
 # size: :xs :sm, :md, :lg
 class Avo::ButtonComponent < ViewComponent::Base
-  def initialize(path = nil, size: :md, style: :outline, color: :gray, icon: nil, icon_class: "", is_link: false, rounded: true, compact: false, **args)
+  def initialize(path = nil, size: :md, style: :outline, color: :gray, icon: nil, icon_class: "", is_link: false, rounded: true, compact: false, aria: {}, **args)
     # Main settings
     @size = size
     @style = style
@@ -20,6 +20,7 @@ class Avo::ButtonComponent < ViewComponent::Base
     # Other settings
     @class = args[:class]
     @is_link = is_link
+    @aria = aria
     @args = args || {}
   end
 
@@ -35,6 +36,7 @@ class Avo::ButtonComponent < ViewComponent::Base
     end
 
     @args[:class] = button_classes
+    @args[:aria] = @aria
 
     @args
   end
