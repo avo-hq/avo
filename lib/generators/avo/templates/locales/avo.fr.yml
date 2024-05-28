@@ -19,6 +19,7 @@ fr:
     choose_item: Choisir %{item}
     clear_value: Effacer la valeur
     click_to_reveal_filters: Cliquez pour révéler les filtres
+    close_modal: Fermer la fenêtre modale
     confirm: Confirmer
     create_new_item: Créer un nouveau %{item}
     dashboard: Tableau de bord
@@ -55,6 +56,7 @@ fr:
     new: Nouveau
     next_page: Page suivante
     no_cards_present: Aucune carte présente
+    no_cancel: Non, annuler
     no_item_found: Enregistrement non trouvé
     no_options_available: Aucune option disponible
     no_related_item_found: Enregistrement connexe introuvable
@@ -106,4 +108,5 @@ fr:
     x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> enregistrements sélectionnés sur cette page sur un total de <span class="font-bold text-gray-700">%{count}</span>
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> enregistrements sélectionnés dans toutes les pages
     x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> éléments sélectionnés de cette page
+    yes_confirm: Oui, je suis sûr
     you_missed_something_check_form: Vous avez peut-être oublié quelque chose. Veuillez vérifier le formulaire

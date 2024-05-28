@@ -19,6 +19,7 @@ ar:
     choose_item: اختر %{item}
     clear_value: مسح القيمة
     click_to_reveal_filters: انقر لإظهار المرشحات
+    close_modal: أغلق النافذة
     confirm: تأكيد
     create_new_item: إنشاء %{item} جديد
     dashboard: لوحة القيادة
@@ -55,6 +56,7 @@ ar:
     new: جديد
     next_page: الصفحة التالية
     no_cards_present: لا توجد بطاقات
+    no_cancel: لا، إلغاء
     no_item_found: لا يوجد سجلات
     no_options_available: لا توجد خيارات متاحة
     no_related_item_found: لم يتم العثور على سجلات متعلقة
@@ -106,4 +108,5 @@ ar:
     x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> السجلات المحددة في هذه الصفحة من إجمالي<span class="font-bold text-gray-700">%{count}</span>
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> السجلات المحددة من كل الصفحات
     x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> السجلات المختارة في هذه الصفحة
+    yes_confirm: نعم، أنا متأكد
     you_missed_something_check_form: ربما نسيت شيئًا، يرجى التحقق من البيانات.
