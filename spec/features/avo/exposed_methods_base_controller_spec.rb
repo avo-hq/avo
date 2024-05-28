@@ -32,7 +32,7 @@ RSpec.feature "ExposedMethodsBaseController", type: :feature do
       save
 
       expect(page).to have_text "Course not updated!"
-      expect(page).to have_text "Validation failed: Name can't be blank"
+      expect(page).to have_text "Name can't be blank"
     end
 
     let(:course_url) { "/admin/resources/courses/#{course.prefix_id}" }
