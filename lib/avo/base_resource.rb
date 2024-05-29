@@ -295,7 +295,7 @@ module Avo
       cards
     end
 
-    def divider
+    def divider(label = nil)
       action DividerComponent
     end
 

@@ -87,7 +87,7 @@ class Avo::ActionsComponent < ViewComponent::Base
 
   def render_item(action)
     if action.is_a?(Avo::DividerComponent)
-      render Avo::DividerComponent.new
+      render Avo::DividerComponent.new(@label)
     else
       render_action_link(action)
     end
