@@ -18,6 +18,7 @@ ja:
     choose_item: "%{item}を選択"
     clear_value: 値をクリア
     click_to_reveal_filters: フィルターを表示するにはクリック
+    close_modal: モーダルを閉じる
     confirm: 確認
     create_new_item: 新しい%{item}を作成
     dashboard: ダッシュボード
@@ -54,6 +55,7 @@ ja:
     new: 新規
     next_page: 次のページ
     no_cards_present: カードがありません
+    no_cancel: いいえ、キャンセル
     no_item_found: レコードが見つかりませんでした
     no_options_available: 利用可能なオプションがありません
     no_related_item_found: 関連するレコードが見つかりませんでした
@@ -105,4 +107,5 @@ ja:
     x_records_selected_from_a_total_of_x_html: このページの<span class="font-bold text-gray-700">%{count}</span>個中、<span class="font-bold text-gray-700">%{selected}</span>個のレコードが選択されました
     x_records_selected_from_all_pages_html: すべてのページから<span class="font-bold text-gray-700">%{count}</span>個のレコードが選択されました
     x_records_selected_from_page_html: このページから<span class="font-bold text-gray-700">%{selected}</span>個のレコードが選択されました
+    yes_confirm: はい、私は確信しています
     you_missed_something_check_form: 何か見落としているかもしれません。フォームを確認してください。

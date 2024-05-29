@@ -1,8 +1,8 @@
 <%= content_tag :div, class: class_names("fixed bg-white p-2 w-full flex flex-shrink-0 items-center z-[100] px-4 lg:px-4 border-b space-x-4 lg:space-x-0 h-16", {"print:hidden": Avo.configuration.hide_layout_when_printing}) do %>
   <div class="flex items-center space-x-2 w-auto lg:w-64 flex-shrink-0 h-full">
     <div>
-      <%= a_button class: 'lg:hidden', icon: "avo/menu", size: :xs, compact: true, style: :text, data: { action: 'click->sidebar#toggleSidebarOnMobile' } %>
-      <%= a_button class: 'hidden lg:block', icon: "avo/menu", size: :xs, compact: true, style: :text, data: { action: 'click->sidebar#toggleSidebar' } %>
+      <%= a_button class: 'lg:hidden', icon: 'avo/menu', size: :xs, compact: true, style: :text, data: { action: 'click->sidebar#toggleSidebarOnMobile' }, aria: {label: "Toggle sidebar"} %>
+      <%= a_button class: 'hidden lg:block', icon: 'avo/menu', size: :xs, compact: true, style: :text, data: { action: 'click->sidebar#toggleSidebar' }, aria: {label: "Toggle sidebar"} %>
     </div>
     <%= render partial: "avo/partials/logo" %>
   </div>

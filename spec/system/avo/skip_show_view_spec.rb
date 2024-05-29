@@ -65,7 +65,7 @@ RSpec.feature "SkipShowView", type: :system do
       expect(page).to have_text("Awesome course (edited)")
       expect(page).to have_current_path "/admin/resources/courses/#{Course.last.prefix_id}/edit"
 
-      accept_alert do
+      accept_custom_alert do
         click_on "Delete"
       end
 
@@ -88,7 +88,7 @@ RSpec.feature "SkipShowView", type: :system do
       # Delete
       visit "/admin/resources/course_links/#{course.links.first.id}/edit?via_resource_class=Avo::Resources::Course&via_record_id=#{course.prefix_id}"
 
-      accept_alert do
+      accept_custom_alert do
         click_on "Delete"
       end
 
@@ -152,7 +152,7 @@ RSpec.feature "SkipShowView", type: :system do
       expect(page).to have_text("Awesome course (edited)")
       expect(current_path).to eql "/admin/resources/courses/#{Course.last.prefix_id}"
 
-      accept_alert do
+      accept_custom_alert do
         click_on "Delete"
       end
       wait_for_loaded
@@ -178,7 +178,7 @@ RSpec.feature "SkipShowView", type: :system do
 
       visit "/admin/resources/course_links/#{course.links.first.id}?via_resource_class=Avo::Resources::Course&via_record_id=#{course.prefix_id}"
 
-      accept_alert do
+      accept_custom_alert do
         click_on "Delete"
       end
       wait_for_loaded
