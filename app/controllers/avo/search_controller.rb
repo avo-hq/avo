@@ -124,7 +124,7 @@ module Avo
 
     def fetch_result_information(record, resource, item)
       title = item&.dig(:title) || resource.record_title
-      highlighted_title = highlight(title&.to_s, params[:q])
+      highlighted_title = highlight(title&.to_s, CGI.escapeHTML(params[:q]))
 
       record_path = if resource.link_to_child_resource
         Avo.resource_manager.get_resource_by_model_class(record.class).new(record: record).record_path
