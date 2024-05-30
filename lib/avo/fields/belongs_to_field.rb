@@ -206,14 +206,10 @@ module Avo
           if valid_model_class.blank? || id_from_param.blank?
             model.send(:"#{polymorphic_as}_id=", nil)
           else
-            record_id = target_resource(record: model, polymorphic_model_class: value.safe_constantize).find_record(id_from_param).id
-
-            model.send(:"#{polymorphic_as}_id=", record_id)
+            model.send(:"#{polymorphic_as}_id=", params["#{polymorphic_as}_id"])
           end
         else
-          record_id = value.blank? ? value : target_resource(record: model).find_record(value).id
-
-          model.send(:"#{key}=", record_id)
+          model.send(:"#{key}=", value.to_param)
         end
 
         model
@@ -234,22 +230,22 @@ module Avo
         id
       end
 
-      def target_resource(record: @record, polymorphic_model_class: value&.class)
+      def target_resource
         @target_resource ||= if use_resource.present?
           use_resource
         elsif is_polymorphic?
-          if polymorphic_model_class.present?
-            get_resource_by_model_class(polymorphic_model_class)
+          if value&.class.present?
+            get_resource_by_model_class(value&.class)
           else
-            nil
+            return nil
           end
         else
           reflection_key = polymorphic_as || id
 
-          if record._reflections[reflection_key.to_s].klass.present?
-            get_resource_by_model_class(record._reflections[reflection_key.to_s].klass.to_s)
-          elsif record._reflections[reflection_key.to_s].options[:class_name].present?
-            get_resource_by_model_class(record._reflections[reflection_key.to_s].options[:class_name])
+          if @record._reflections[reflection_key.to_s].klass.present?
+            get_resource_by_model_class(@record._reflections[reflection_key.to_s].klass.to_s)
+          elsif @record._reflections[reflection_key.to_s].options[:class_name].present?
+            get_resource_by_model_class(@record._reflections[reflection_key.to_s].options[:class_name])
           else
             App.get_resource_by_name reflection_key.to_s
           end
