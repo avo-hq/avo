@@ -37,8 +37,12 @@ module Avo
       end
     end
 
-    def item_selector_init(resource)
-      "data-resource-name='#{resource.model_key}' data-resource-id='#{resource.record.to_param}' data-controller='item-selector'"
+    def item_selector_data_attributes(resource)
+      {
+        resource_name: resource.model_key,
+        resource_id: resource.record.to_param,
+        controller: "item-selector"
+      }
     end
   end
 end
