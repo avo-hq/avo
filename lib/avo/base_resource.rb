@@ -321,10 +321,6 @@ module Avo
 
       # def get_actions / def get_filters / def get_scopes
       define_method :"get_#{plural_entity}" do
-        if entity_loader(entity).present? && entity_loader(entity).is_a?(Avo::DividerComponent)
-          return entity_loader(entity).bag.except(:arguments, :icon)
-        end
-
         return entity_loader(entity).bag if entity_loader(entity).present?
 
         # ex: @actions_loader = Avo::Loaders::ActionsLoader.new
