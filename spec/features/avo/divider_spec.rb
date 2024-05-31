@@ -17,7 +17,6 @@ RSpec.feature "Divider", type: :feature do
     end
 
     it "renders divider with label" do
-
       expect(page).to have_css ".relative.col-span-full.border-t"
       expect(@dividers.text.strip).to eq("Other actions")
     end
