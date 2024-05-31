@@ -94,7 +94,7 @@ module Avo
     private
 
     def set_reflection
-      @reflection = @record._reflections[association_from_params]
+      @reflection = @record._reflections.with_indifferent_access[association_from_params]
     end
 
     def set_attachment_class

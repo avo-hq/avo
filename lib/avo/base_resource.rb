@@ -111,7 +111,7 @@ module Avo
       end
 
       def get_record_associations(record)
-        record._reflections
+        record._reflections.with_indifferent_access
       end
 
       def valid_association_name(record, association_name)
