@@ -32,16 +32,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   end
 
   def show_path
-    args = {}
-
-    if @parent_record.present?
-      args = {
-        via_resource_class: parent_resource.class.to_s,
-        via_record_id: @parent_record.to_param
-      }
-    end
-
-    helpers.resource_path(record: @resource.record, resource: parent_or_child_resource, **args)
+    helpers.resource_show_path(resource: @resource, parent_or_child_resource: parent_or_child_resource, parent_resource: parent_resource, parent_record: @parent_record)
   end
 
   def edit_path
