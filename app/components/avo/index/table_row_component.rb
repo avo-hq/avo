@@ -26,5 +26,5 @@ class Avo::Index::TableRowComponent < Avo::BaseComponent
     )
   end
 
-  def click_row_to_view = Avo.configuration.click_row_to_view
+  def click_row_to_view_record = Avo.configuration.click_row_to_view_record
 end
