@@ -354,9 +354,7 @@ module Avo
       @actions = @resource
         .get_actions
         .map do |action_bag|
-          puts ["action_bag->", action_bag].inspect
           klass = action_bag.delete(:class)
-          puts ["klass->", klass].inspect
           klass.new(record: @record, resource: @resource, view: @view, **action_bag)
         end
         .select do |action|
