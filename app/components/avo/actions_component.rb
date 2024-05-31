@@ -86,7 +86,8 @@ class Avo::ActionsComponent < ViewComponent::Base
   end
 
   def render_item(action)
-    if action.is_a?(Avo::Divider)
+    case action
+    when Avo::Divider
       label = action.label.is_a?(Hash) ? action.label[:label] : nil
       render Avo::DividerComponent.new(label)
     else
