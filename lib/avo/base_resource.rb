@@ -320,7 +320,7 @@ module Avo
       end
 
       # def get_actions / def get_filters / def get_scopes
-      define_method :"get_#{plural_entity}" do
+      define_method "get_#{plural_entity}" do
         return entity_loader(entity).bag if entity_loader(entity).present?
 
         # ex: @actions_loader = Avo::Loaders::ActionsLoader.new
