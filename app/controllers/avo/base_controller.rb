@@ -354,7 +354,10 @@ module Avo
       @actions = @resource
         .get_actions
         .map do |action_bag|
-          action_bag.delete(:class).new(record: @record, resource: @resource, view: @view, **action_bag)
+          puts ["action_bag->", action_bag].inspect
+          klass = action_bag.delete(:class)
+          puts ["klass->", klass].inspect
+          klass.new(record: @record, resource: @resource, view: @view, **action_bag)
         end
         .select do |action|
           action.is_a?(DividerComponent) || action.visible_in_view(parent_resource: @parent_resource)
