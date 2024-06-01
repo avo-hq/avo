@@ -20,7 +20,11 @@ module Avo
       resources
         .map do |resource|
           # Apply authorization
-          next unless @authorization.set_record(resource.model_class).authorize_action(:search, raise_exception: false)
+          next unless @authorization.set_record(resource.model_class).authorize_action(
+            :search,
+            policy_class: resource.authorization_policy,
+            raise_exception: false
+          )
           # Filter out the models without a search_query
           next if resource.search_query.nil?
 
