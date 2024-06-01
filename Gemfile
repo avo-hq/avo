@@ -145,8 +145,8 @@ gem "active_median"
 
 gem 'acts_as_list'
 
-gem 'acts-as-taggable-on', '~> 10.0'
-# gem 'acts-as-taggable-on', github: 'avo-hq/acts-as-taggable-on'
+# gem 'acts-as-taggable-on', '~> 10.0'
+gem 'acts-as-taggable-on', github: 'avo-hq/acts-as-taggable-on'
 
 gem "bundler-integrity", "~> 1.0"
 
@@ -156,9 +156,6 @@ gem "countries"
 # Avo dashbaords requires this gem
 gem "chartkick"
 
-# Avo file filed requires this gem
-gem "activestorage"
-# gem "activestorage", github: "rails/rails", branch: "main"
 # Required by Avo
 gem "sprockets-rails"
 
