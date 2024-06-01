@@ -18,7 +18,11 @@
 #  city_center_area :json
 #
 class City < ApplicationRecord
-  enum status: {Open: "open", Closed: "closed", Quarantine: "On Quarantine"}
+  if Gem::Version.new(Rails.version) >= Gem::Version.new('7.3.0')
+    enum :status, {Open: "open", Closed: "closed", Quarantine: "On Quarantine"}
+  else
+    enum status: {Open: "open", Closed: "closed", Quarantine: "On Quarantine"}
+  end
   has_rich_text :description
   has_one_attached :description_file
 

@@ -94,7 +94,7 @@ module Avo
 
       return field.use_resource if field&.use_resource.present?
 
-      reflection = @record.class.reflect_on_association(params[:for_attribute] || params[:related_name])
+      reflection = @record._reflections.with_indifferent_access[params[:for_attribute] || params[:related_name]]
 
       reflected_model = reflection.klass
 

@@ -14,7 +14,11 @@
 #  slug         :string
 #
 class Post < ApplicationRecord
-  enum status: [:draft, :published, :archived]
+  if Gem::Version.new(Rails.version) >= Gem::Version.new('7.3.0')
+    enum :status, [:draft, :published, :archived]
+  else
+    enum status: [:draft, :published, :archived]
+  end
 
   validates :name, presence: true
 
