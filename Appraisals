@@ -16,7 +16,9 @@
     gem "psych", "< 4"
     gem "rails", github: "rails/rails", branch: "main"
     gem "activestorage", github: "rails/rails", branch: "main"
+
+    # Temporary Rails 8 support
     gem "acts-as-taggable-on", github: "avo-hq/acts-as-taggable-on"
-    gem "ransack", "~> 4.1", ">= 4.1.1"
+    gem "ransack", github: "avo-hq/ransack", branch: "fix/rails-8/delegate-alias-tracker-to-relation"
   end
 end
