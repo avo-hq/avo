@@ -111,7 +111,7 @@ module Avo
       end
 
       def valid_association_name(record, association_name)
-        association_name if record.class.reflect_on_association(association_name).present?
+        association_name if record._reflections.with_indifferent_access[association_name].present?
       end
 
       def valid_attachment_name(record, association_name)
@@ -482,7 +482,7 @@ module Avo
 
           if field.type == "belongs_to"
 
-            reflection = @record.class.reflect_on_association(@params[:via_relation])
+            reflection = @record._reflections.with_indifferent_access[@params[:via_relation]]
 
             if field.polymorphic_as.present? && field.types.map(&:to_s).include?(@params[:via_relation_class])
               # set the value to the actual record
