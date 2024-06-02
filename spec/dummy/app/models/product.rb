@@ -13,7 +13,7 @@
 #
 class Product < ApplicationRecord
   monetize :price_cents
-  if Gem::Version.new(Rails.version) >= Gem::Version.new('7.3.0')
+  if Gem::Version.new(Rails.version) >= Gem::Version.new("7.3.0")
     enum :category, [
       "Music players",
       "Phones",

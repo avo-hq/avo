@@ -17,7 +17,7 @@
 #  progress       :integer
 #
 class Project < ApplicationRecord
-  if Gem::Version.new(Rails.version) >= Gem::Version.new('7.3.0')
+  if Gem::Version.new(Rails.version) >= Gem::Version.new("7.3.0")
     enum :stage, {
       Discovery: "discovery",
       Idea: "idea",
