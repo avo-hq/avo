@@ -6,6 +6,16 @@ GIT
       activerecord (>= 6.1)
 
 GIT
+  remote: https://github.com/avo-hq/ransack.git
+  revision: 0af36d53a784e19b5a56f3b112f433c54f4d709f
+  branch: fix/rails-8/delegate-alias-tracker-to-relation
+  specs:
+    ransack (4.1.1)
+      activerecord (>= 6.1.5)
+      activesupport (>= 6.1.5)
+      i18n
+
+GIT
   remote: https://github.com/rails/rails.git
   revision: 5fea59c0763c83390300a5a26fdd2197673e2689
   branch: main
@@ -445,10 +455,6 @@ GEM
       railties (>= 6.0.0, < 8)
     rainbow (3.1.1)
     rake (13.2.1)
-    ransack (4.1.1)
-      activerecord (>= 6.1.5)
-      activesupport (>= 6.1.5)
-      i18n
     rb-fsevent (0.11.2)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
@@ -691,7 +697,7 @@ DEPENDENCIES
   puma (~> 6.4)
   rails!
   rails-controller-testing
-  ransack (~> 4.1, >= 4.1.1)
+  ransack!
   redis (~> 5.0)
   ripper-tags
   rspec-rails (~> 6.0, >= 6.0.3)
