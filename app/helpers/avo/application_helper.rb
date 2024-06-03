@@ -141,6 +141,10 @@ module Avo
       Avo.configuration.branding.chart_colors[index % Avo.configuration.branding.chart_colors.length]
     end
 
+    def grid_view?(params, resource)
+      params[:view_type] == "grid" || resource.default_view_type == :grid
+    end
+
     private
 
     # Taken from the original library
