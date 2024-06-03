@@ -130,11 +130,11 @@ Avo.configure do |config|
 
   ## == Menus ==
   # config.main_menu = -> {
-  #   section "Dashboards", icon: "dashboards" do
+  #   section "Dashboards", icon: "avo/dashboards" do
   #     all_dashboards
   #   end
 
-  #   section "Resources", icon: "resources" do
+  #   section "Resources", icon: "avo/resources" do
   #     all_resources
   #   end
 

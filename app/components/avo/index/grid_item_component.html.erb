@@ -1,13 +1,14 @@
-<div
-  class="relative bg-white rounded shadow-modal flex flex-col group"
-  data-component-name="<%= self.class.to_s.underscore %>"
-  <%== item_selector_init @resource %>
-  data-resource-name="<%= @resource.class.to_s %>"
-  data-record-id="<%= @resource.record_param %>"
-  <%= try :drag_reorder_item_attributes %>
->
+<%= content_tag :div,
+  class: "relative bg-white rounded shadow-modal flex flex-col group",
+  data: {
+    component_name: self.class.to_s.underscore,
+    resource_name: @resource.class.to_s,
+    record_id: @resource.record.id,
+    **item_selector_data_attributes(@resource),
+    **(try(:drag_reorder_item_data_attributes) || {}),
+  } do %>
   <%= content_tag :div,
-    class: "relative w-full pb-3/4 rounded-t overflow-hidden #{html(:cover, :classes)}",
+    class: class_names("relative w-full pb-3/4 rounded-t overflow-hidden", html(:cover, :classes)),
     style: html(:cover, :style) do %>
     <%= render Avo::RowSelectorComponent.new(floating: true, size: :lg) if @resource.record_selector%>
     <%= render_cover %>
@@ -21,4 +22,4 @@
       <%= render(Avo::Index::ResourceControlsComponent.new(resource: @resource, reflection: @reflection, parent_record: @parent_record, parent_resource: @parent_resource, view_type: :grid, actions: actions)) %>
     </div>
   </div>
-</div>
+<% end %>
