@@ -149,7 +149,7 @@ gem "active_median"
 gem 'acts_as_list'
 
 # gem 'acts-as-taggable-on', '~> 10.0'
-gem "acts-as-taggable-on", github: `avo-hq/acts-as-taggable-on`
+gem "acts-as-taggable-on", github: "avo-hq/acts-as-taggable-on"
 
 gem "bundler-integrity", "~> 1.0"
 
