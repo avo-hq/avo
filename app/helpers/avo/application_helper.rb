@@ -142,7 +142,7 @@ module Avo
     end
 
     def view_type(params, resource)
-      params[:view_type]&.to_sym || resource.available_view_types.first || resource.default_view_type
+      params[:view_type]&.to_sym || resource.default_view_type
     end
 
     def grid_view?(params, resource)
