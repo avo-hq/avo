@@ -89,7 +89,7 @@ class Avo::ActionsComponent < ViewComponent::Base
     case action
     when Avo::Divider
       render_divider(action)
-    else
+    when Avo::BaseAction
       render_action_link(action)
     end
   end
