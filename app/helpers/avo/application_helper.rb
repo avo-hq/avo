@@ -141,12 +141,12 @@ module Avo
       Avo.configuration.branding.chart_colors[index % Avo.configuration.branding.chart_colors.length]
     end
 
-    def view_type(params, resource)
-      params[:view_type]&.to_sym || resource.default_view_type
+    def view_type
+      @index_params[:view_type].to_sym
     end
 
-    def grid_view?(params, resource)
-      view_type(params, resource) == :grid
+    def grid_view?
+      view_type == :grid
     end
 
     private
