@@ -10,13 +10,15 @@ RSpec.feature "Divider", type: :feature do
 
   describe "Divider in actions" do
     it "renders divider without label" do
-      expect(page.all(".relative.col-span-full.border-t").count).to be >= 1
-      unlabeled_dividers = page.all(".relative.col-span-full.border-t").select { |divider| divider.find(".absolute").text.strip.empty? }
-      expect(unlabeled_dividers.count).to be > 0
+      dividers = page.all(".relative.col-span-full.border-t")
+      second_divider = dividers[1]
+      expect(second_divider).to have_css(".absolute", text: "")
     end
 
     it "renders divider with label" do
       expect(page).to have_css ".relative.col-span-full.border-t"
+      dividers = page.all(".relative.col-span-full.border-t")
+      expect(dividers.first.find(".absolute").text.strip).to eq "Other actions"
       expect(page).to have_content "Other actions"
     end
   end
