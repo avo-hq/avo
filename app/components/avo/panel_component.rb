@@ -18,7 +18,7 @@ class Avo::PanelComponent < ViewComponent::Base
   renders_one :footer_tools
   renders_one :footer
 
-  def initialize(name: nil, description: nil, body_classes: nil, data: {}, display_breadcrumbs: false, index: nil, classes: nil, profile_photo: nil, cover_photo: nil, cover_photo_size: :md, **args)
+  def initialize(name: nil, description: nil, body_classes: nil, data: {}, display_breadcrumbs: false, index: nil, classes: nil, profile_photo: nil, cover_photo: nil, **args)
     # deprecating title in favor of name
     @title = args[:title]
     @name = name || title
@@ -30,7 +30,6 @@ class Avo::PanelComponent < ViewComponent::Base
     @index = index
     @profile_photo = profile_photo
     @cover_photo = cover_photo
-    @cover_photo_size = cover_photo_size
   end
 
   def classes

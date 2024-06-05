@@ -1,23 +1,14 @@
 <%= content_tag :div, data: data_attributes, class: classes do %>
-  <%= render Avo::CoverPhotoComponent.new cover_photo: @cover_photo, size: @cover_photo_size %>
-<%= render Avo::ProfilePhotoComponent.new profile_photo: @profile_photo %>
+  <%= render Avo::CoverPhotoComponent.new cover_photo: @cover_photo %>
+
   <% if render_header? %>
-    <div data-target="panel-header" class="mb-4">
-      <% if display_breadcrumbs? %>
-        <div class="breadcrumbs mb-2">
-          <%= helpers.render_avo_breadcrumbs(separator: helpers.svg("heroicons/outline/chevron-right", class: 'inline-block h-3 stroke-current relative top-[-1px] ml-1' )) if Avo.configuration.display_breadcrumbs %>
-        </div>
-      <% end %>
-      <div class="flex-1 flex flex-col xl:flex-row justify-between gap-1">
-        <div class="overflow-hidden flex flex-col">
-          <% if name_slot? %>
-            <%= name_slot %>
-          <% else %>
-            <%= render Avo::PanelNameComponent.new name: @name %>
-          <% end %>
-          <% if description.present? %>
-            <div class="text-sm tracking-normal font-medium text-gray-600" data-target="description">
-              <%== description %>
+    <div data-target="panel-header" class="flex flex-col flex-1 w-full mb-4">
+      <div class="flex justify-center sm:justify-start flex-col sm:flex-row w-full flex-1 has-cover-photo:mt-0">
+        <%= render Avo::ProfilePhotoComponent.new profile_photo: @profile_photo %>
+        <div class="flex flex-col flex-1 w-full">
+          <% if display_breadcrumbs? %>
+            <div class="breadcrumbs text-center sm:text-left mb-2">
+              <%= helpers.render_avo_breadcrumbs(separator: helpers.svg("chevron-right", class: "inline-block h-3 stroke-current relative top-[-1px] ml-1")) if Avo.configuration.display_breadcrumbs %>
             </div>
           <% end %>
           <div class="flex-1 flex flex-col xl:flex-row justify-between gap-1 grow-0">

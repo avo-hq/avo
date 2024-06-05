@@ -2,9 +2,17 @@ class Avo::Resources::Event < Avo::BaseResource
   self.title = :name
   self.description = "An event that happened at a certain time."
   self.includes = [:location]
+
   self.cover_photo = {
     # size: :sm,
-    source: :cover_photo
+    visible_on: [:show, :index],
+    source: -> {
+      if record.present?
+        record.cover_photo
+      else
+        Event.find(1).cover_photo
+      end
+    }
   }
   self.profile_photo = {
     source: :profile_photo

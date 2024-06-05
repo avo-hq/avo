@@ -5,17 +5,13 @@ module Avo
       extend ActiveSupport::Concern
 
       class_methods do
+        # Add class property to capture the settings
         attr_accessor :profile_photo
       end
 
-      def profile_photo_value
-        return unless self.class&.profile_photo&.fetch(:source).present?
-
-        if self.class.profile_photo[:source].is_a?(Symbol)
-          record.send(self.class.profile_photo[:source])
-        elsif self.class.profile_photo[:source].respond_to?(:call)
-          Avo::ExecutionContext.new(target: self.class.profile_photo[:source], record:, resource: self, view:).handle
-        end
+      # Add instance property to compute the options
+      def profile_photo
+        ProfilePhoto.new resource: self
       end
     end
   end

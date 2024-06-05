@@ -30,7 +30,7 @@ module Avo
     end
 
     def in?(another_object)
-      super another_object.map(&:to_s)
+      super(another_object.map(&:to_s))
     end
   end
 end

@@ -1,5 +1,5 @@
 <%= content_tag :div,
-  class: class_names('has-record-selector': @resource.record_selector),
+  class: class_names("has-record-selector": @resource.record_selector),
   data: {
     component_name: self.class.to_s.underscore,
     model_name: @resource.model_name.to_s,
@@ -7,9 +7,14 @@
     **@resource.stimulus_data_attributes
   } do %>
   <%= render_cards_component %>
-  <%= render Avo::PanelComponent.new(description: description, data: { component: 'resources-index' }, display_breadcrumbs: @reflection.blank?) do |c| %>
+  <%= render Avo::PanelComponent.new(
+      description: description,
+      cover_photo: resource.cover_photo,
+      data: {component: "resources-index"},
+      display_breadcrumbs: @reflection.blank?
+    ) do |c| %>
     <% c.with_name_slot do %>
-      <%= render Avo::PanelNameComponent.new name: title, url: params[:turbo_frame].present? && linkable? ? field.frame_url(add_turbo_frame: false) : nil, target: :_blank do |panel_name_component| %>
+      <%= render Avo::PanelNameComponent.new name: title, url: (params[:turbo_frame].present? && linkable?) ? field.frame_url(add_turbo_frame: false) : nil, target: :_blank do |panel_name_component| %>
         <% panel_name_component.with_body do %>
           <% if reloadable %>
             <%= button_tag data: { controller: "panel-refresh", action: "click->panel-refresh#refresh" } do %>
@@ -28,10 +33,10 @@
       <div class="flex flex-col">
         <%= render scopes_list if can_render_scopes? %>
         <div class="flex flex-col">
-          <div class="flex flex-col xs:flex-row xs:justify-between space-y-2 xs:space-y-0 py-4 <%= 'hidden' unless header_visible? %>">
+          <div class="flex flex-col xs:flex-row xs:justify-between space-y-2 xs:space-y-0 py-4 <%= "hidden" unless header_visible? %>">
             <div class="flex items-center px-4 w-64">
               <% if show_search_input %>
-                <%= render partial: 'avo/partials/resource_search', locals: {resource: @resource.route_key, via_reflection: via_reflection} %>
+                <%= render partial: "avo/partials/resource_search", locals: {resource: @resource.route_key, via_reflection: via_reflection} %>
               <% else %>
                 <%# Offset for the space-y-2 property when the search is missing %>
                 <div class="-mb-2"></div>
@@ -43,7 +48,7 @@
 
               <%= render Avo::FiltersComponent.new filters: @filters, resource: @resource, applied_filters: @applied_filters, parent_record: parent_record %>
 
-              <%= render partial: 'avo/partials/view_toggle_button', locals: { available_view_types: available_view_types, view_type: view_type, turbo_frame: turbo_frame } %>
+              <%= render partial: "avo/partials/view_toggle_button", locals: { available_view_types: available_view_types, view_type: view_type, turbo_frame: turbo_frame } %>
             </div>
           </div>
           <% if has_dynamic_filters? %>
@@ -74,7 +79,7 @@
       <% if view_type.to_sym == :table || view_type.to_sym == :map %>
         <% if @records.present? %>
           <div class="mt-4">
-            <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: turbo_frame || 'none', index_params: @index_params, resource: @resource, parent_record: parent_record, discreet_pagination: field&.discreet_pagination %>
+            <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: turbo_frame || "none", index_params: @index_params, resource: @resource, parent_record: parent_record, discreet_pagination: field&.discreet_pagination %>
           </div>
         <% end %>
       <% end %>
@@ -83,7 +88,7 @@
           <%= render Avo::Index::ResourceGridComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_record: parent_record, parent_resource: parent_resource, actions: actions) %>
         </div>
         <div class="mt-6">
-          <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: turbo_frame || 'none', index_params: @index_params, resource: @resource, parent_record: parent_record, discreet_pagination: field&.discreet_pagination %>
+          <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: turbo_frame || "none", index_params: @index_params, resource: @resource, parent_record: parent_record, discreet_pagination: field&.discreet_pagination %>
         </div>
       <% end %>
     <% end %>

@@ -6,6 +6,6 @@ class Avo::ProfilePhotoComponent < ViewComponent::Base
   end
 
   def render?
-    @profile_photo.present?
+    @profile_photo.present? && @profile_photo.visible_in_current_view?
   end
 end

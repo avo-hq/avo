@@ -35,9 +35,8 @@ class Avo::Items::PanelComponent < Avo::ResourceComponent
         display_breadcrumbs: display_breadcrumbs,
         index: 0,
         data: {panel_id: "main"},
-        cover_photo: @resource.cover_photo_value,
-        cover_photo_size: @resource.cover_photo_size,
-        profile_photo: @resource.profile_photo_value
+        cover_photo: @resource.cover_photo,
+        profile_photo: @resource.profile_photo
       }
     else
       {name: @item.name, description: @item.description, index: @index}

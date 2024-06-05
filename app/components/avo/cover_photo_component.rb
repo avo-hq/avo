@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class Avo::CoverPhotoComponent < ViewComponent::Base
-  def initialize(cover_photo:, size:)
+  def initialize(cover_photo:)
     @cover_photo = cover_photo
-    @size = size
+    @size = cover_photo&.size
   end
 
   # aspect-cover-sm
@@ -14,6 +14,6 @@ class Avo::CoverPhotoComponent < ViewComponent::Base
   end
 
   def render?
-    @cover_photo.present?
+    @cover_photo.present? && @cover_photo.visible_in_current_view?
   end
 end
