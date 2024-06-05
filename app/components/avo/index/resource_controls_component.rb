@@ -86,10 +86,11 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   def render_edit_button(control)
     return unless can_edit?
 
-    link_to helpers.svg("edit", class: svg_classes),
+    link_to helpers.svg("avo/edit", class: svg_classes),
       edit_path,
       class: "flex items-center",
       title: control.title,
+      aria: {label: control.title},
       data: {
         target: "control:edit",
         control: :edit,
@@ -101,10 +102,11 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   def render_show_button(control)
     return unless can_view?
 
-    link_to helpers.svg("eye", class: svg_classes),
+    link_to helpers.svg("avo/eye", class: svg_classes),
       show_path,
       class: "flex items-center",
       title: control.title,
+      aria: {label: control.title},
       data: {
         target: "control:view",
         control: :show,
@@ -123,9 +125,10 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     a_button url: helpers.resource_path(record: @resource.record, resource: @resource),
       style: :icon,
       color: :gray,
-      icon: "trash",
+      icon: "avo/trash",
       form_class: "flex flex-col sm:flex-row sm:inline-flex",
       title: control.title,
+      aria: {label: control.title},
       method: :delete,
       params: hidden_params,
       data: {
@@ -145,9 +148,10 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     a_button url: helpers.resource_detach_path(params[:resource_name], params[:id], params[:related_name], @resource.record.id),
       style: :icon,
       color: :gray,
-      icon: "detach",
+      icon: "avo/detach",
       form_class: "flex items-center",
       title: control.title,
+      aria: {label: control.title},
       method: :delete,
       params: hidden_params,
       data: {

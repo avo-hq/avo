@@ -71,7 +71,7 @@ Rails.application.configure do
   config.action_mailer.default_url_options = {host: "localhost", port: 3030}
 
   config.action_view.logger = nil
-  # config.assets.logger = nil
+  config.assets.logger = nil
 
   config.hotwire_livereload.listen_paths << Avo::Engine.root.join("app/assets/stylesheets")
   config.hotwire_livereload.listen_paths << Rails.root.join("app/avo")

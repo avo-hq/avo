@@ -130,19 +130,19 @@ Avo.configure do |config|
 
   ## == Menus ==
   # config.main_menu = -> {
-  #   section "Dashboards", icon: "dashboards" do
+  #   section "Dashboards", icon: "avo/dashboards" do
   #     all_dashboards
   #   end
 
-  #   section "Resources", icon: "resources" do
+  #   section "Resources", icon: "avo/resources" do
   #     all_resources
   #   end
 
-  #   section "Tools", icon: "tools" do
+  #   section "Tools", icon: "avo/tools" do
   #     all_tools
   #   end
   # }
   # config.profile_menu = -> {
-  #   link "Profile", path: "/<%= options[:path] %>/profile", icon: "user-circle"
+  #   link "Profile", path: "/<%= options[:path] %>/profile", icon: "heroicons/outline/user-circle"
   # }
 end

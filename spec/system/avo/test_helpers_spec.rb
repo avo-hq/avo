@@ -25,7 +25,7 @@ RSpec.describe "TestHelpers", type: :system do
         users.each do |user|
           grid_item_wrapper = grid_field_wrapper(record_id: user.to_param)
 
-          expect(grid_item_wrapper.text).to eql user.name
+          expect(grid_item_wrapper.find_all("a")[1].text).to eql user.name
         end
       end
     end
@@ -170,7 +170,7 @@ RSpec.describe "TestHelpers", type: :system do
       it "confirms the alert" do
         visit "admin/resources/projects/#{projects.first.id}"
         expect {
-          accept_alert do
+          accept_custom_alert do
             click_on "Delete"
           end
         }.to change(Project, :count).by(-1)

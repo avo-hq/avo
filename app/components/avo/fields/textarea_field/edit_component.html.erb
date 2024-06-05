@@ -2,7 +2,7 @@
   <%= @form.text_area @field.id,
     value: @field.value,
     class: classes("w-full"),
-    data: @field.get_html(:data, view: view, element: :input),
+    data: @field.get_html(:data, view: view, element: :input).merge({controller: "textarea-autogrow"}),
     disabled: disabled?,
     placeholder: @field.placeholder,
     rows: @field.rows,

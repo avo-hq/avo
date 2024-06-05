@@ -43,6 +43,7 @@ users = []
   users.push(FactoryBot.create(:user, team_id: teams.sample.id))
 end
 
+# Login with this one
 User.create(
   first_name: "Avo",
   last_name: "Cado",

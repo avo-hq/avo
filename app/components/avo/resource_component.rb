@@ -130,7 +130,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       style: :text,
       title: control.title,
       data: {tippy: tippy},
-      icon: "arrow-left" do
+      icon: "heroicons/outline/arrow-left" do
       control.label
     end
   end
@@ -148,6 +148,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       color: actions_list.color,
       label: actions_list.label,
       size: actions_list.size,
+      icon: actions_list.icon,
       as_row_control: instance_of?(Avo::Index::ResourceControlsComponent)
     )
   end
@@ -163,9 +164,10 @@ class Avo::ResourceComponent < Avo::BaseComponent
     a_link destroy_path,
       style: :text,
       color: :red,
-      icon: "trash",
+      icon: "avo/trash",
       form_class: "flex flex-col sm:flex-row sm:inline-flex",
       title: control.title,
+      aria_label: control.title,
       data: {
         turbo_confirm: t("avo.are_you_sure", item: @resource.record.model_name.name.downcase),
         turbo_method: :delete,
@@ -185,7 +187,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       style: :primary,
       loading: true,
       type: :submit,
-      icon: "save" do
+      icon: "avo/save" do
       control.label
     end
   end
@@ -198,7 +200,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       style: :primary,
       title: control.title,
       data: {tippy: control.title ? :tooltip : nil},
-      icon: "edit" do
+      icon: "avo/edit" do
       control.label
     end
   end
@@ -207,7 +209,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
     return unless is_a_related_resource? && can_detach?
 
     a_link detach_path,
-      icon: "detach",
+      icon: "avo/detach",
       form_class: "flex flex-col sm:flex-row sm:inline-flex",
       style: :text,
       data: {

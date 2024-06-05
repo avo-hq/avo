@@ -112,22 +112,12 @@ module Avo
         Avo::Services::AuthorizationService.new Avo::Current.user, model_class, policy_class: authorization_policy
       end
 
-      def get_record_associations(record)
-        record._reflections
-      end
-
       def valid_association_name(record, association_name)
-        get_record_associations(record).keys.find do |name|
-          name == association_name
-        end
+        association_name if record._reflections.with_indifferent_access[association_name].present?
       end
 
       def valid_attachment_name(record, association_name)
-        association_exists = get_record_associations(record).keys.any? do |name|
-          name == "#{association_name}_attachment" || name == "#{association_name}_attachments"
-        end
-
-        association_name if association_exists
+        association_name if record.class.reflect_on_attachment(association_name).present?
       end
 
       def get_available_models
@@ -494,7 +484,7 @@ module Avo
 
           if field.type == "belongs_to"
 
-            reflection = @record._reflections[@params[:via_relation]]
+            reflection = @record._reflections.with_indifferent_access[@params[:via_relation]]
 
             if field.polymorphic_as.present? && field.types.map(&:to_s).include?(@params[:via_relation_class])
               # set the value to the actual record

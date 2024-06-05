@@ -1,4 +1,5 @@
 require "zeitwerk"
+require "ostruct"
 require_relative "avo/version"
 require_relative "avo/engine" if defined?(Rails)
 
@@ -83,10 +84,6 @@ module Avo
         .append_paths(paths)
         .append_query(query)
         .to_s
-    end
-
-    def mount_path
-      Avo::Engine.routes.find_script_name({})
     end
 
     def main_menu

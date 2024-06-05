@@ -2,7 +2,7 @@ module Avo
   module Resources
     module Controls
       class ActionsList < BaseControl
-        attr_reader :color, :exclude, :include, :style
+        attr_reader :color, :exclude, :include, :style, :icon
 
         def initialize(**args)
           super(**args)
@@ -11,6 +11,7 @@ module Avo
           @exclude = args[:exclude] || []
           @include = args[:include] || []
           @style = args[:style] || :outline
+          @icon = args[:icon]
         end
       end
     end
