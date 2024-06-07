@@ -70,6 +70,8 @@ Avo.configure do |config|
   #   "Avo::Resources::Fish"
   # ]
 
+  config.alert_dismiss_time = 5000
+
   ## == Menus ==
   config.main_menu = -> do
     section "Resources", icon: "heroicons/solid/building-storefront", collapsable: true, collapsed: false do
