@@ -206,10 +206,20 @@ module Avo
           if valid_model_class.blank? || id_from_param.blank?
             model.send(:"#{polymorphic_as}_id=", nil)
           else
-            model.send(:"#{polymorphic_as}_id=", params["#{polymorphic_as}_id"])
+            model.send(:"#{polymorphic_as}_id=", value.constantize.find(params["#{polymorphic_as}_id"]).id)
+
           end
         else
-          model.send(:"#{key}=", value.to_param)
+          association_reflection = model.class.reflect_on_all_associations.find do |association|
+            association.foreign_key.to_s == key
+          end
+          if association_reflection
+            associated_class = association_reflection.klass
+            associated_record = associated_class.find_by(slug: value)
+            model.send(:"#{key}=", associated_record&.id)
+          else
+            model.send(:"#{key}=", nil)
+          end
         end
 
         model
