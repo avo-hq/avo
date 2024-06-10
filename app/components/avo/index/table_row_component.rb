@@ -21,7 +21,7 @@ class Avo::Index::TableRowComponent < Avo::BaseComponent
       reflection: @reflection,
       parent_record: @parent_record,
       parent_resource: @parent_resource,
-      view_type: :table,
+      view_variant: :table,
       actions: @actions
     )
   end
