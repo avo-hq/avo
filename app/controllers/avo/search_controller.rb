@@ -20,7 +20,11 @@ module Avo
       resources
         .map do |resource|
           # Apply authorization
-          next unless @authorization.set_record(resource.model_class).authorize_action(:search, raise_exception: false)
+          next unless @authorization.set_record(resource.model_class).authorize_action(
+            :search,
+            policy_class: resource.authorization_policy,
+            raise_exception: false
+          )
           # Filter out the models without a search_query
           next if resource.search_query.nil?
 
@@ -124,7 +128,7 @@ module Avo
 
     def fetch_result_information(record, resource, item)
       title = item&.dig(:title) || resource.record_title
-      highlighted_title = highlight(title&.to_s, params[:q])
+      highlighted_title = highlight(title&.to_s, CGI.escapeHTML(params[:q] || ""))
 
       record_path = if resource.link_to_child_resource
         Avo.resource_manager.get_resource_by_model_class(record.class).new(record: record).record_path
@@ -173,9 +177,7 @@ module Avo
         user: _current_user
       )
 
-      reflection_resource.detect_fields.get_field_definitions.find do |field|
-        field.id.to_s == params[:via_association_id]
-      end
+      reflection_resource.detect_fields.get_field(params[:via_association_id])
     end
 
     def fetch_parent

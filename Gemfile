@@ -21,7 +21,12 @@ gem 'cssbundling-rails'
 # Dependencies for dummy_app
 #
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem "rails", "~> 7.1.0"
+# gem "rails", "~> 7.1.0"
+gem "rails", github: "rails/rails", branch: "main"
+
+# Avo file filed requires this gem
+# gem "activestorage"
+gem "activestorage", github: "rails/rails", branch: "main"
 
 # Use postgresql as the database for Active Record
 gem "pg", ">= 0.18", "< 2.0"
@@ -102,6 +107,8 @@ group :development, :test do
   gem "faker", require: false
   gem "i18n-tasks", "~> 1.0.12"
   gem "erb-formatter"
+  # https://thoughtbot.com/blog/a-standard-way-to-lint-your-views
+  gem "erb_lint"
   gem "solargraph"
   gem "solargraph-rails"
 
@@ -123,7 +130,10 @@ gem "addressable"
 gem 'meta-tags'
 
 # Search
-gem "ransack", "~> 4.1", ">= 4.1.1"
+# gem "ransack", "~> 4.1", ">= 4.1.1"
+
+# Temporary use of fork to add Rails 8 support
+gem "ransack", github: "avo-hq/ransack", branch: "fix/rails-8/delegate-alias-tracker-to-relation"
 
 gem 'friendly_id', '~> 5.5.1'
 
@@ -138,7 +148,8 @@ gem "active_median"
 
 gem 'acts_as_list'
 
-gem 'acts-as-taggable-on', '~> 10.0'
+# gem 'acts-as-taggable-on', '~> 10.0'
+gem "acts-as-taggable-on", github: "avo-hq/acts-as-taggable-on"
 
 gem "bundler-integrity", "~> 1.0"
 
@@ -148,8 +159,6 @@ gem "countries"
 # Avo dashbaords requires this gem
 gem "chartkick"
 
-# Avo file filed requires this gem
-gem "activestorage"
 # Required by Avo
 gem "sprockets-rails"
 
@@ -174,3 +183,6 @@ gem "avo-money_field"
 # Avo record_link field
 # gem "avo-record_link_field", path: "./../avo-record_link_field"
 gem "avo-record_link_field"
+
+# gem "pagy", "< 8.0.0"
+gem "pagy", "> 8"

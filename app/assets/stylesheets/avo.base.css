@@ -88,3 +88,7 @@ trix-editor {
   max-height: 320px !important;
   overflow-y: auto;
 }
+
+dialog#turbo-confirm {
+  @apply bg-transparent;
+}

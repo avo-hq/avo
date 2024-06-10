@@ -16,16 +16,24 @@ module Avo
         @action_text = args[:action_text] if args[:action_text].present? # This should be add_row_label
         @delete_text = args[:delete_text] if args[:delete_text].present?
 
-        @disable_editing_keys = args[:disable_editing_keys].present? ? args[:disable_editing_keys] : false
-        # disabling editing keys also disables adding rows (doesn't take into account the value of disable_adding_rows)
-        @disable_adding_rows = if args[:disable_editing_keys].present? && args[:disable_editing_keys] == true
-          true
-        elsif args[:disable_adding_rows].present?
-          args[:disable_adding_rows]
+        if args[:disabled] == true
+          @disable_editing_keys = true
+          @disable_editing_values = true
+          @disable_adding_rows = true
+          @disable_deleting_rows = true
         else
-          false
+          @disable_editing_keys = args[:disable_editing_keys].present? ? args[:disable_editing_keys] : false
+          @disable_editing_values = args[:disable_editing_values].present? ? args[:disable_editing_values] : false
+          # disabling editing keys also disables adding rows (doesn't take into account the value of disable_adding_rows)
+          @disable_adding_rows = if args[:disable_editing_keys].present? && args[:disable_editing_keys] == true
+            true
+          elsif args[:disable_adding_rows].present?
+            args[:disable_adding_rows]
+          else
+            false
+          end
+          @disable_deleting_rows = args[:disable_deleting_rows].present? ? args[:disable_deleting_rows] : false
         end
-        @disable_deleting_rows = args[:disable_deleting_rows].present? ? args[:disable_deleting_rows] : false
       end
 
       def key_label
@@ -69,6 +77,7 @@ module Avo
           action_text: action_text,
           delete_text: delete_text,
           disable_editing_keys: @disable_editing_keys,
+          disable_editing_values: @disable_editing_values,
           disable_adding_rows: @disable_adding_rows,
           disable_deleting_rows: @disable_deleting_rows
         }

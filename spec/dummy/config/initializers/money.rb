@@ -95,7 +95,7 @@ MoneyRails.configure do |config|
   #
   # For the legacy behaviour of "per currency" localization (formatting depends
   # only on currency):
-  # config.locale_backend = :currency
+  config.locale_backend = :currency
   #
   # Example:
   # Money.new(10_000_00, 'USD').format # => $10,000.00

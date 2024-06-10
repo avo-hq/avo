@@ -1,3 +1,5 @@
+require "csv"
+
 class Avo::Actions::ExportCsv < Avo::BaseAction
   self.name = "Export CSV"
   self.no_confirmation = false

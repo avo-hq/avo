@@ -85,10 +85,10 @@ module Avo
       end
 
       module HelperMethods
-        def render_avo_breadcrumbs(options = {}, &block)
+        def render_avo_breadcrumbs(options = {}, &)
           builder = Builder.new(self, options)
           content = builder.render.html_safe
-          block_given? ? capture(content, &block) : content
+          block_given? ? capture(content, &) : content
         end
       end
     end

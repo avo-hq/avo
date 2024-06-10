@@ -1,16 +1,17 @@
 <%# hover:z-[21] removed from tr class to solve flickering actions component on row controls and z-20 changed to z-21%>
-<tr
-  class="bg-white hover:bg-gray-50 hover:shadow-row z-21 border-b"
-  data-component-name="<%= self.class.to_s.underscore %>"
-  <%== item_selector_init @resource %>
-  data-resource-name="<%= @resource.class.to_s %>"
-  data-record-id="<%= @resource.record.id %>"
-  <%= try :drag_reorder_item_attributes %>
->
+<%= content_tag :tr,
+  class: "bg-white hover:bg-gray-50 hover:shadow-row z-21 border-b",
+  data: {
+    component_name: self.class.to_s.underscore,
+    resource_name: @resource.class.to_s,
+    record_id: @resource.record.id,
+    **item_selector_data_attributes(@resource),
+    **(try(:drag_reorder_item_data_attributes) || {}),
+  } do %>
   <% if @resource.record_selector %>
     <td class="w-10">
       <div class="flex justify-center h-full">
-        <%= item_selector_input floating: false %>
+        <%= render Avo::RowSelectorComponent.new floating: false %>
       </div>
     </td>
   <% end %>
@@ -43,4 +44,4 @@
       </div>
     </td>
   <% end %>
-</tr>
+<% end %>
