@@ -1,4 +1,5 @@
 <%= content_tag :div,
+  class: class_names('has-record-selector': @resource.record_selector),
   data: {
     component_name: self.class.to_s.underscore,
     model_name: @resource.model_name.to_s,
@@ -6,7 +7,18 @@
     **@resource.stimulus_data_attributes
   } do %>
   <%= render_cards_component %>
-  <%= render Avo::PanelComponent.new(name: title, description: description, data: { component: 'resources-index' }, display_breadcrumbs: @reflection.blank?, reloadable: reloadable) do |c| %>
+  <%= render Avo::PanelComponent.new(description: description, data: { component: 'resources-index' }, display_breadcrumbs: @reflection.blank?) do |c| %>
+    <% c.with_name_slot do %>
+      <%= render Avo::PanelNameComponent.new name: title, url: params[:turbo_frame].present? && linkable? ? field.frame_url(add_turbo_frame: false) : nil, target: :_blank do |panel_name_component| %>
+        <% panel_name_component.with_body do %>
+          <% if reloadable %>
+            <%= button_tag data: { controller: "panel-refresh", action: "click->panel-refresh#refresh" } do %>
+              <%= svg "heroicons/outline/arrow-path", class: "ml-2 text-2xl h-6 " %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
     <% c.with_tools do %>
       <% @resource.render_index_controls(item: singular_resource_name.downcase).each do |control| %>
         <%= render_control control %>

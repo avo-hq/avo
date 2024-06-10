@@ -33,7 +33,7 @@ module Avo
           related_record = related_resource.find_record value
         end
 
-        model.public_send("#{key}=", related_record)
+        model.public_send(:"#{key}=", related_record)
 
         model
       end

@@ -1,34 +1,47 @@
 <%# hover:z-[21] removed from tr class to solve flickering actions component on row controls and z-20 changed to z-21%>
-<tr
-  class="bg-white hover:bg-gray-50 hover:shadow-row z-21 border-b"
-  data-component-name="<%= self.class.to_s.underscore %>"
-  <%== item_selector_init @resource %>
-  data-resource-name="<%= @resource.class.to_s %>"
-  data-record-id="<%= @resource.record.id %>"
-  <%= try :drag_reorder_item_attributes %>
->
+<%= content_tag :tr,
+  class: "bg-white hover:bg-gray-50 hover:shadow-row z-21 border-b",
+  data: {
+    component_name: self.class.to_s.underscore,
+    resource_name: @resource.class.to_s,
+    record_id: @resource.record.id,
+    **item_selector_data_attributes(@resource),
+    **(try(:drag_reorder_item_data_attributes) || {}),
+  } do %>
   <% if @resource.record_selector %>
     <td class="w-10">
       <div class="flex justify-center h-full">
-        <%= item_selector_input floating: false %>
+        <%= render Avo::RowSelectorComponent.new floating: false %>
       </div>
     </td>
   <% end %>
   <% if Avo.configuration.resource_controls_on_the_left? %>
-    <td class="text-right whitespace-nowrap px-2" data-control="resource-controls">
-      <div class="flex items-center justify-end flex-grow-0 h-full w-full">
-        <%= render(Avo::Index::ResourceControlsComponent.new(resource: @resource, reflection: @reflection, parent_record: @parent_record, parent_resource: @parent_resource, view_type: :table, actions: @actions)) %>
+    <td class="text-right whitespace-nowrap w-px" data-control="resource-controls">
+      <div class="flex items-center justify-end flex-grow-0 h-full">
+        <%= render resource_controls_component %>
       </div>
     </td>
   <% end %>
-  <% @resource.get_fields(reflection: @reflection, only_root: true).each_with_index do |field, index| %>
-    <%= render field.component_for_view(:index).new(field: field, resource: @resource, reflection: @reflection, index: index, parent_record: @parent_record, parent_resource: @parent_resource) %>
+  <% @header_fields.each_with_index do |table_header_lable, index| %>
+    <% field = @fields.find { |field| field.table_header_label == table_header_lable } %>
+    <% if field.present? %>
+      <%= render field.component_for_view(:index).new(
+        field: field,
+        resource: @resource,
+        reflection: @reflection,
+        index: index,
+        parent_record: @parent_record,
+        parent_resource: @parent_resource
+      ) %>
+    <% else %>
+      <td class="text-center">—</td>
+    <% end %>
   <% end %>
   <% if Avo.configuration.resource_controls_on_the_right? %>
-    <td class="text-right whitespace-nowrap px-2" data-control="resource-controls">
-      <div class="flex items-center justify-end flex-grow-0 h-full w-full">
-        <%= render(Avo::Index::ResourceControlsComponent.new(resource: @resource, reflection: @reflection, parent_record: @parent_record, parent_resource: @parent_resource, view_type: :table, actions: @actions)) %>
+    <td class="text-right whitespace-nowrap" data-control="resource-controls">
+      <div class="flex items-center justify-end flex-grow-0 h-full">
+        <%= render resource_controls_component %>
       </div>
     </td>
   <% end %>
-</tr>
+<% end %>

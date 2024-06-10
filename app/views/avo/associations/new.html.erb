@@ -2,7 +2,12 @@
   <%
     url = Avo::Services::URIService.parse(avo.root_url.to_s)
       .append_paths('resources', params[:resource_name], params[:id], params[:related_name])
-      .append_query({view: @resource&.view&.to_s})
+      .append_query(
+        {
+          view: @resource&.view&.to_s,
+          for_attribute: @field&.try(:for_attribute)
+        }.compact
+      )
       .to_s
   %>
   <%= form_with scope: 'fields',
@@ -41,7 +46,7 @@
       </div>
 
       <% c.with_controls do %>
-        <%= a_button 'data-action': 'click->modal#close', size: :sm, style: :outline, color: :gray do %>
+        <%= a_button 'data-action': 'click->modal#close', type: :button, size: :sm, style: :outline, color: :gray do %>
           <%= t('avo.cancel') %>
         <% end %>
         <%= a_button type: :submit, style: :primary, color: :green, size: :sm do %>

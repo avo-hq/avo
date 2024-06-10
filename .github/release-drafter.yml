@@ -26,7 +26,7 @@ categories:
     label: 'Style'
   - title: '🎡 CI'
     label: 'CI'
-  - title: '⚡️ Perf'
+  - title: '⚡️ Performance'
     labels:
       - 'Perf'
       - 'Performance'

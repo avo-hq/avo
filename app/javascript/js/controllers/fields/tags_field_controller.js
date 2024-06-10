@@ -35,7 +35,7 @@ export default class extends Controller {
     let options = {
       whitelist: this.whitelistItemsValue,
       blacklist: this.disallowedItemsValue,
-      enforceWhitelist: this.enforceSuggestionsValue || this.fetchValuesFromValue,
+      enforceWhitelist: this.enforceSuggestionsValue,
       delimiters: this.delimitersValue.join('|'),
       dropdown: {
         maxItems: this.suggestionsMaxItemsValue,

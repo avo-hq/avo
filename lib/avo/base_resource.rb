@@ -110,21 +110,12 @@ module Avo
         Avo::Services::AuthorizationService.new Avo::Current.user, model_class, policy_class: authorization_policy
       end
 
-      def get_record_associations(record)
-        record._reflections
-      end
-
       def valid_association_name(record, association_name)
-        get_record_associations(record).keys.find do |name|
-          name == association_name
-        end
+        association_name if record._reflections.with_indifferent_access[association_name].present?
       end
 
       def valid_attachment_name(record, association_name)
-        association_exists = get_record_associations(record).keys.any? do |name|
-          name == "#{association_name}_attachment" || name == "#{association_name}_attachments"
-        end
-        return association_name if association_exists
+        association_name if record.class.reflect_on_attachment(association_name).present?
       end
 
       def get_available_models
@@ -296,6 +287,10 @@ module Avo
       cards
     end
 
+    def divider
+      action DividerComponent
+    end
+
     # def fields / def cards
     [:fields, :cards].each do |method_name|
       define_method method_name do
@@ -312,8 +307,8 @@ module Avo
       end
 
       # def action / def filter / def scope
-      define_method entity do |entity_class, arguments: {}|
-        entity_loader(entity).use({class: entity_class, arguments: arguments})
+      define_method entity do |entity_class, arguments: {}, icon: nil|
+        entity_loader(entity).use({class: entity_class, arguments: arguments, icon: icon}.compact)
       end
 
       # def get_actions / def get_filters / def get_scopes
@@ -469,11 +464,13 @@ module Avo
     end
 
     def cache_hash(parent_record)
+      result = [record, file_hash]
+
       if parent_record.present?
-        [record, file_hash, parent_record]
-      else
-        [record, file_hash]
+        result << parent_record
       end
+
+      result
     end
 
     # We will not overwrite any attributes that come pre-filled in the record.
@@ -487,7 +484,7 @@ module Avo
 
           if field.type == "belongs_to"
 
-            reflection = @record._reflections[@params[:via_relation]]
+            reflection = @record._reflections.with_indifferent_access[@params[:via_relation]]
 
             if field.polymorphic_as.present? && field.types.map(&:to_s).include?(@params[:via_relation_class])
               # set the value to the actual record

@@ -8,7 +8,11 @@ class Avo::Resources::Post < Avo::BaseResource
   }
 
   self.includes = [:user]
-  self.default_view_type = :grid
+  self.default_view_type = -> {
+    mobile_user = request.user_agent =~ /Mobile/
+
+    mobile_user ? :table : :grid
+  }
   self.find_record_method = -> {
     # When using friendly_id, we need to check if the id is a slug or an id.
     # If it's a slug, we need to use the find_by_slug method.

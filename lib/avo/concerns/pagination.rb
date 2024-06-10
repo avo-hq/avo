@@ -38,7 +38,8 @@ module Avo
         send PAGINATION_METHOD[pagination_type.to_sym],
           query,
           items: index_params[:per_page],
-          link_extra: "data-turbo-frame=\"#{params[:turbo_frame]}\"",
+          link_extra: "data-turbo-frame=\"#{params[:turbo_frame]}\"", # Add extra arguments in pagy 7.
+          anchor_string: "data-turbo-frame=\"#{params[:turbo_frame]}\"", # Add extra arguments in pagy 8.
           params: extra_pagy_params,
           size: pagination_hash[:size]
       end
@@ -46,7 +47,7 @@ module Avo
       private
 
       def pagination_hash
-        @pagination ||= PAGINATION_DEFAULTS.merge Avo::ExecutionContext.new(
+        @pagination ||= PAGINATION_DEFAULTS.merge(Avo.configuration.pagination).merge Avo::ExecutionContext.new(
           target: pagination,
           resource: self,
           view: @view

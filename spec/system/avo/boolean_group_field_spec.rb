@@ -63,6 +63,21 @@ RSpec.describe "BooleanGroupField", type: :system do
         expect(page.all(".tippy-content svg")[1][:class]).to have_text "text-red-500"
         expect(page.all(".tippy-content svg")[2][:class]).to have_text "text-red-500"
       end
+
+      it "doesn't affect unspecified options" do
+        user.update(roles: user.roles.merge({publisher: true}))
+
+        visit "/admin/resources/users/#{user.id}/edit"
+
+        uncheck "user_roles_admin"
+        uncheck "user_roles_manager"
+        uncheck "user_roles_writer"
+
+        save
+
+        user.reload
+        expect(user.roles).to eql({admin: false, manager: false, publisher: true, writer: false}.with_indifferent_access)
+      end
     end
   end
 end

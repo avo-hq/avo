@@ -44,11 +44,19 @@ module Avo
         end
       end
 
-      def load_field(method_name, klass)
+      def load_field(name, klass)
+        return if field_exists?(name)
+
         fields.push(
-          name: method_name.to_s,
+          name: name.to_s,
           class: klass
         )
+      end
+
+      private
+
+      def field_exists?(name)
+        fields.pluck(:name).map(&:to_sym).include?(name.to_sym)
       end
     end
   end

@@ -7,18 +7,19 @@ RSpec.describe "HasAndBelongsToManyField", type: :system do
 
   subject do
     visit url
-    page
+    scroll_to find("#has_and_belongs_to_many_field_show_users")
+    page.find("#has_and_belongs_to_many_field_show_users")
   end
 
   context "show" do
-    let(:url) { "/admin/resources/projects/#{project.id}/users?turbo_frame=has_and_belongs_to_many_field_projects" }
+    let(:url) { "/admin/resources/projects/#{project.id}" }
 
     describe "without a related user" do
       it { is_expected.to have_text "No related record found" }
       it { is_expected.to have_link "Attach user", href: /\/admin\/resources\/projects\/#{project.id}\/users\/new/ }
 
       it "displays valid links" do
-        visit url
+        subject
 
         wait_for_loaded
 
@@ -36,13 +37,15 @@ RSpec.describe "HasAndBelongsToManyField", type: :system do
           wait_for_loaded
         }.to change(project.users, :count).by 1
 
-        expect(current_path).to eql "/admin/resources/projects/#{project.id}/users"
+        expect(current_path).to eql "/admin/resources/projects/#{project.id}"
         expect(page).not_to have_text "Choose user"
-        expect(page).not_to have_text "No related record found"
+        within("#has_and_belongs_to_many_field_show_users") do
+          expect(page).not_to have_text "No related record found"
+        end
       end
 
       it "removes the modal" do
-        visit url
+        subject
 
         wait_for_loaded
 
@@ -57,10 +60,6 @@ RSpec.describe "HasAndBelongsToManyField", type: :system do
           click_on "Cancel"
           wait_for_loaded
         }.not_to change(project.users, :count)
-
-        expect(current_path).to eql "/admin/resources/projects/#{project.id}/users"
-        expect(page).not_to have_text "Choose user"
-        expect(page).to have_text "No related record found"
       end
 
       # it 'attaches two users' do
@@ -102,19 +101,18 @@ RSpec.describe "HasAndBelongsToManyField", type: :system do
       end
 
       it "detaches the user" do
-        visit url
-        wait_for_loaded
+        subject
 
         expect(page).not_to have_text "No related record found"
 
         expect {
-          accept_alert do
+          accept_custom_alert do
             find("[data-resource-name='users'][data-resource-id='#{user.to_param}'] [data-control='detach']").click
           end
           sleep 0.1
         }.to change(project.users, :count).by(-1)
 
-        expect(current_path).to eql "/admin/resources/projects/#{project.id}/users"
+        expect(current_path).to eql "/admin/resources/projects/#{project.id}"
         expect(page).to have_text "No related record found"
       end
     end

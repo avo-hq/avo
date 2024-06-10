@@ -101,7 +101,13 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   def attach_path
     current_path = CGI.unescape(request.env["PATH_INFO"]).split("/").select(&:present?)
 
-    Avo.root_path(paths: [*current_path, "new"], query: { view: @parent_resource&.view&.to_s })
+    Avo.root_path(
+      paths: [*current_path, "new"],
+      query: {
+        view: @parent_resource&.view&.to_s,
+        for_attribute: field&.try(:for_attribute)
+      }.compact
+    )
   end
 
   def singular_resource_name
@@ -135,9 +141,6 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
   def authorized_to_search?
     # Hide the search if the authorization prevents it
-    return true unless resource.authorization.respond_to?(:has_action_method?)
-    return false unless resource.authorization.has_action_method?("search")
-
     resource.authorization.authorize_action("search", raise_exception: false)
   end
 
@@ -148,7 +151,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
     a_button size: :sm,
       color: :primary,
-      icon: "filter",
+      icon: "avo/filter",
       data: {
         controller: "avo-filters",
         action: "click->avo-filters#toggleFiltersArea",
@@ -223,5 +226,9 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
   def reloadable
     field&.reloadable?
+  end
+
+  def linkable?
+    field&.linkable?
   end
 end

@@ -32,20 +32,12 @@ export default class extends Controller {
   }
 
   updateNonSearchable(stream) {
-    const select = this.selectorContext(stream).querySelector(`select[name="${this.targetNameValue}"]`)
+    const select = document.querySelector(`select[name="${this.targetNameValue}"]`)
     const option = document.createElement('option')
     option.value = stream.dataset.targetRecordId
     option.text = stream.dataset.targetResourceLabel
-    option.selected = true
+    option.selected = 'selected'
+
     select.appendChild(option)
-  }
-
-  selectorContext(stream) {
-    // if polymorphic, search for the select in the correct sub-container
-    if (this.polymorphicValue) {
-      return document.querySelector(`[data-type="${stream.dataset.targetResourceClass}"]`)
-    }
-
-    return document
   }
 }

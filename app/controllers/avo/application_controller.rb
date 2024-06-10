@@ -7,6 +7,7 @@ module Avo
     end
 
     include Avo::InitializesAvo
+    include Avo::CommonController
     include Avo::ApplicationHelper
     include Avo::UrlHelpers
     include Avo::Concerns::Breadcrumbs
@@ -51,6 +52,10 @@ module Avo
       super
     end
 
+    def hello
+      puts "Nobody tested me :("
+    end
+
     private
 
     # Get the pluralized resource name for this request
@@ -89,7 +94,7 @@ module Avo
 
       return field.use_resource if field&.use_resource.present?
 
-      reflection = @record._reflections[params[:related_name]]
+      reflection = @record._reflections.with_indifferent_access[params[:for_attribute] || params[:related_name]]
 
       reflected_model = reflection.klass
 
@@ -142,7 +147,13 @@ module Avo
     end
 
     def set_record
-      @record = @resource.find_record(params[:id], query: model_scope, params: params)
+      id = if @resource.model_class.primary_key.is_a?(Array) && params.respond_to?(:extract_value)
+        params.extract_value(:id)
+      else
+        params[:id]
+      end
+
+      @record = @resource.find_record(id, query: model_scope, params:)
       @resource.hydrate(record: @record)
     end
 
@@ -287,24 +298,6 @@ module Avo
       I18n.with_locale(locale, &action)
     end
 
-    def default_url_options
-      result = super
-
-      if params[:force_locale].present?
-        result[:force_locale] = params[:force_locale]
-      end
-
-      extra_options = get_extra_default_url_options
-
-      if extra_options.present?
-        extra_options.each do |param_name|
-          result[param_name] = params[param_name]
-        end
-      end
-
-      result
-    end
-
     def set_sidebar_open
       value = cookies["#{Avo::COOKIES_KEY}.sidebar.open"]
       @sidebar_open = value.blank? || value == "1"
@@ -336,13 +329,11 @@ module Avo
 
     private
 
-    def get_extra_default_url_options
-      block_or_array = Avo.configuration.default_url_options
-
-      if block_or_array.respond_to?(:call)
-        instance_eval(&block_or_array)
+    def choose_layout
+      if turbo_frame_request?
+        "avo/blank"
       else
-        block_or_array
+        "avo/application"
       end
     end
   end

@@ -45,7 +45,7 @@ RSpec.describe "App", type: :system do
       destroy_button = find("turbo-frame[id='has_many_field_show_comments'] tr[data-resource-id='#{comment.id}'] button[data-control=\"destroy\"]")
 
       expect {
-        accept_alert do
+        accept_custom_alert do
           destroy_button.click
         end
         wait_for_loaded
@@ -60,7 +60,7 @@ RSpec.describe "App", type: :system do
       visit "/admin/resources/projects"
 
       expect {
-        accept_alert do
+        accept_custom_alert do
           find("[data-resource-id='#{project.id}'] [data-control='destroy']").click
         end
         wait_for_loaded

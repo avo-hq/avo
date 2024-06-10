@@ -19,6 +19,7 @@ ro:
     choose_item: Alege %{item}
     clear_value: Șterge valoarea
     click_to_reveal_filters: Faceți clic pentru a afișa filtrele
+    close_modal: Închide modalul
     confirm: Confirm
     create_new_item: Creează %{item}
     dashboard: Panou de control
@@ -54,6 +55,7 @@ ro:
     more: Mai multe
     new: nou
     next_page: Pagina următoare
+    no_cancel: Nu, anulează
     no_cards_present: Nici un card găsit
     no_item_found: Nici un articol găsit
     no_options_available: Nicio opțiune disponibilă
@@ -106,4 +108,5 @@ ro:
     x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> selectate dintr-un total de <span class="font-bold text-gray-700">%{count}</span>
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> selectate din toate paginile
     x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> selectate
+    yes_confirm: Da, sunt sigur
     you_missed_something_check_form: S-ar putea să fi omis ceva. Vă rugăm să verificați formularul.

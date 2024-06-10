@@ -1,5 +1,6 @@
 class Avo::ResourceComponent < Avo::BaseComponent
   include Avo::Concerns::ChecksAssocAuthorization
+  include Avo::Concerns::RequestMethods
 
   attr_reader :fields_by_panel
   attr_reader :has_one_panels
@@ -68,7 +69,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def main_panel
-    @resource.get_items.find do |item|
+    @main_panel ||= @resource.get_items.find do |item|
       item.is_main_panel?
     end
   end
@@ -76,12 +77,13 @@ class Avo::ResourceComponent < Avo::BaseComponent
   def sidebars
     return [] if Avo.license.lacks_with_trial(:resource_sidebar)
 
-    @item.items.select do |item|
-      item.is_sidebar?
-    end
-    .map do |sidebar|
-      sidebar.hydrate(view: view, resource: resource)
-    end
+    @sidebars ||= @item.items
+      .select do |item|
+        item.is_sidebar?
+      end
+      .map do |sidebar|
+        sidebar.hydrate(view: view, resource: resource)
+      end
   end
 
   def has_reflection_and_is_read_only
@@ -101,7 +103,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def render_control(control)
-    send "render_#{control.type}", control
+    send :"render_#{control.type}", control
   end
 
   def render_cards_component
@@ -116,6 +118,10 @@ class Avo::ResourceComponent < Avo::BaseComponent
     (params[:via_resource_class].present? || params[:via_relation_class].present?) && params[:via_record_id].present?
   end
 
+  def keep_referrer_params
+    {page: referrer_params["page"]}.compact
+  end
+
   def render_back_button(control)
     return if back_path.blank? || is_a_related_resource?
 
@@ -124,7 +130,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       style: :text,
       title: control.title,
       data: {tippy: tippy},
-      icon: "arrow-left" do
+      icon: "heroicons/outline/arrow-left" do
       control.label
     end
   end
@@ -142,6 +148,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       color: actions_list.color,
       label: actions_list.label,
       size: actions_list.size,
+      icon: actions_list.icon,
       as_row_control: instance_of?(Avo::Index::ResourceControlsComponent)
     )
   end
@@ -157,9 +164,10 @@ class Avo::ResourceComponent < Avo::BaseComponent
     a_link destroy_path,
       style: :text,
       color: :red,
-      icon: "trash",
+      icon: "avo/trash",
       form_class: "flex flex-col sm:flex-row sm:inline-flex",
       title: control.title,
+      aria_label: control.title,
       data: {
         turbo_confirm: t("avo.are_you_sure", item: @resource.record.model_name.name.downcase),
         turbo_method: :delete,
@@ -179,7 +187,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       style: :primary,
       loading: true,
       type: :submit,
-      icon: "save" do
+      icon: "avo/save" do
       control.label
     end
   end
@@ -192,7 +200,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       style: :primary,
       title: control.title,
       data: {tippy: control.title ? :tooltip : nil},
-      icon: "edit" do
+      icon: "avo/edit" do
       control.label
     end
   end
@@ -201,8 +209,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
     return unless is_a_related_resource? && can_detach?
 
     a_link detach_path,
-      icon: "detach",
-      method: :delete,
+      icon: "avo/detach",
       form_class: "flex flex-col sm:flex-row sm:inline-flex",
       style: :text,
       data: {

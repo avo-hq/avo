@@ -11,7 +11,7 @@
     "md:w-64": !compact?,
   }), data: {slot: "label"} do %>
     <% if form.present? %>
-      <%= form.label field.id, label %>
+      <%= form.label label_for, label %>
     <% else %>
       <%= field.name %>
     <% end %>
@@ -20,7 +20,7 @@
   <%= content_tag :div, class: class_names("flex-1 flex flex-row md:min-h-inherit py-2 px-6", @field.get_html(:classes, view: view, element: :content), {
     "pb-4": stacked?,
   }), data: {slot: "value"} do %>
-    <div class="self-center w-full <% unless full_width? || compact? || stacked? %> md:w-8/12 <% end %>">
+    <div class="self-center w-full <% unless full_width? || compact? || stacked? %> md:w-8/12 has-sidebar:w-full <% end %>">
       <% if on_show? %>
         <% if field.value.blank? and dash_if_blank %>
           —

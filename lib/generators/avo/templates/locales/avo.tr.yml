@@ -19,6 +19,7 @@ tr:
     choose_item: "%{item} seçin"
     clear_value: Değeri temizle
     click_to_reveal_filters: Filtreleri ortaya çıkarmak için tıklayın
+    close_modal: Modali kapat
     confirm: Onayla
     create_new_item: Yeni bir %{item} oluşturun
     dashboard: Yönetim Paneli
@@ -54,6 +55,7 @@ tr:
     more: Daha fazla
     new: yeni
     next_page: Sonraki sayfa
+    no_cancel: Hayır, iptal et
     no_cards_present: Kart yok
     no_item_found: Hiç bulunamadı
     no_options_available: Seçenek yok
@@ -106,4 +108,5 @@ tr:
     x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> bu sayfada seçilen toplam kayıtlar <span class="font-bold text-gray-700">%{count}</span>
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> tüm sayfalardan seçilen kayıtlar
     x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> bu sayfada seçilen kayıtlar
+    yes_confirm: Evet, eminim
     you_missed_something_check_form: Bir şeyleri kaçırmış olabilirsiniz. Lütfen formu kontrol edin.

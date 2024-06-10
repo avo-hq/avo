@@ -15,7 +15,7 @@ export default class extends Controller {
   }
 
   get valueInputDisabled() {
-    return !this.options.editable
+    return !this.options.editable || this.options.disable_editing_values
   }
 
   connect() {

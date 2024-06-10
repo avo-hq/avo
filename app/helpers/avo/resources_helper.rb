@@ -43,36 +43,12 @@ module Avo
       end
     end
 
-    def item_selector_init(resource)
-      "data-resource-name='#{resource.model_key}' data-resource-id='#{resource.record.to_param}' data-controller='item-selector'"
-    end
-
-    def item_selector_input(floating: false, size: :md)
-      tag :input,
-        type: "checkbox",
-        name: t("avo.select_item"),
-        title: t("avo.select_item"),
-        autocomplete: :off,
-        class: "mx-3 rounded checked:bg-primary-400 focus:checked:!bg-primary-400 #{floating ? "absolute inset-auto left-0 mt-3 z-10 hidden group-hover:block checked:block" : ""} #{(size.to_sym == :lg) ? "w-5 h-5" : "w-4 h-4"}",
-        data: {
-          action: "input->item-selector#toggle input->item-select-all#selectRow",
-          item_select_all_target: "itemCheckbox",
-          tippy: "tooltip"
-        }
-    end
-
-    def item_select_all_input
-      tag :input,
-        type: "checkbox",
-        name: t("avo.select_all"),
-        title: t("avo.select_all"),
-        autocomplete: :off,
-        class: "mx-3 rounded w-4 h-4 checked:bg-primary-400 focus:checked:!bg-primary-400",
-        data: {
-          action: "input->item-select-all#toggle",
-          item_select_all_target: "checkbox",
-          tippy: "tooltip",
-        }
+    def item_selector_data_attributes(resource)
+      {
+        resource_name: resource.model_key,
+        resource_id: resource.record.to_param,
+        controller: "item-selector"
+      }
     end
   end
 end

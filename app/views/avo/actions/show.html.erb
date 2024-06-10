@@ -1,3 +1,7 @@
+<%= turbo_frame_tag Avo::ACTIONS_BACKGROUND_FRAME, src: @background_url, loading: :lazy, target: :_top, class: "block" do %>
+  <%= render Avo::LoadingComponent.new(title: "...") %>
+<% end %>
+
 <%= turbo_frame_tag Avo::ACTIONS_TURBO_FRAME_ID do %>
   <div
     data-controller="<%= ["action", @action.get_stimulus_controllers].join(" ") %>"
@@ -26,13 +30,13 @@
       <%= form.hidden_field :avo_resource_ids, value: params[:id] || params[:resource_ids], 'data-action-target': 'resourceIds' %>
       <%= form.hidden_field :avo_selected_query, 'data-action-target': 'selectedAllQuery' %>
       <%= form.hidden_field :arguments, value: params[:arguments] %>
-      <% if @action.get_fields.present? %>
+      <% if @fields.present? %>
         <div class="mt-4 -mx-6">
-          <% @action.get_fields.each_with_index do |field, index| %>
+          <% @fields.each_with_index do |field, index| %>
             <%= render field
               .hydrate(resource: @resource, record: @resource.record, user: @resource.user, view: @view, action: @action)
               .component_for_view(@view)
-              .new(field: field, resource: @resource, index: index, form: form, compact: true)
+              .new(field: field, resource: @resource, index: index, form: form, compact: true, autofocus: index == 0)
             %>
           <% end %>
         </div>
@@ -51,7 +55,7 @@
             size: :sm,
             data: {
               target: :submit_action,
-            } do %>
+            }, autofocus: @fields.reject { |field| field.is_a?(Avo::Fields::HiddenField) }.empty? do %>
           <%= @action.confirm_button_label %>
         <% end %>
       <% end %>
