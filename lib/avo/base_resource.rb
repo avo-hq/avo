@@ -578,7 +578,7 @@ module Avo
     end
 
     def record_param
-      @record_param ||= @record.to_param
+      @record_param ||= @record.persisted? ? @record.to_param : nil
     end
   end
 end
