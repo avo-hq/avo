@@ -14,7 +14,7 @@ class Avo::ActionsComponent < ViewComponent::Base
     @style = style
     @label = label || I18n.t("avo.actions")
     @size = size
-    @icon = icon || "heroicons/outline/arrow-down-circle"
+    @icon = icon
     @as_row_control = as_row_control
   end
 
