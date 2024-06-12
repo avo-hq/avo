@@ -15,7 +15,6 @@ module Avo
     protect_from_forgery with: :exception
     around_action :set_avo_locale
     around_action :set_force_locale, if: -> { params[:force_locale].present? }
-    before_action :set_default_locale, if: -> { params[:set_locale].present? }
     before_action :init_app
     before_action :set_active_storage_current_host
     before_action :set_resource_name
@@ -279,17 +278,11 @@ module Avo
       @resource.form_scope
     end
 
-    # Sets the locale set in avo.rb initializer
+    # Sets the locale set in avo.rb initializer or if to something that the user set using the `?set_locale=pt-BR` param
     def set_avo_locale(&action)
-      locale = Avo.configuration.locale || I18n.default_locale
-      I18n.with_locale(locale, &action)
-    end
-
-    # Enable the user to change the default locale with the `?set_locale=pt-BR` param
-    def set_default_locale
-      locale = params[:set_locale] || I18n.default_locale
-
+      locale = params[:set_locale] || Avo.configuration.locale || I18n.default_locale
       I18n.default_locale = locale
+      I18n.with_locale(locale, &action)
     end
 
     # Temporary set the locale and reverting at the end of the request.
