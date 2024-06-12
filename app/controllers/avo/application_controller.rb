@@ -51,10 +51,6 @@ module Avo
       super
     end
 
-    def hello
-      puts "Nobody tested me :("
-    end
-
     private
 
     # Get the pluralized resource name for this request
@@ -280,15 +276,19 @@ module Avo
 
     # Sets the locale set in avo.rb initializer or if to something that the user set using the `?set_locale=pt-BR` param
     def set_avo_locale(&action)
-      locale = params[:set_locale] || Avo.configuration.locale || I18n.default_locale
-      I18n.default_locale = locale
+      locale = Avo.configuration.default_locale
+
+      if params[:set_locale].present?
+        locale = params[:set_locale]
+        Avo.configuration.locale = locale
+      end
+
       I18n.with_locale(locale, &action)
     end
 
     # Temporary set the locale and reverting at the end of the request.
     def set_force_locale(&action)
-      locale = params[:force_locale] || I18n.default_locale
-      I18n.with_locale(locale, &action)
+      I18n.with_locale(params[:force_locale], &action)
     end
 
     def set_sidebar_open
@@ -319,8 +319,6 @@ module Avo
         "avo.base"
       end
     end
-
-    private
 
     def choose_layout
       if turbo_frame_request?

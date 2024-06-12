@@ -27,6 +27,7 @@ Avo.configure do |config|
       params: request.params
     }
   end
+  config.locale = :en
   # config.raise_error_on_missing_policy = true
   # config.authorization_client = "Avo::Services::AuthorizationClients::ExtraPunditClient"
 

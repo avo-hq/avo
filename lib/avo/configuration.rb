@@ -238,6 +238,10 @@ module Avo
     def pagination
       Avo::ExecutionContext.new(target: @pagination).handle
     end
+
+    def default_locale
+      @locale || I18n.default_locale
+    end
   end
 
   def self.configuration
