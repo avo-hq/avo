@@ -558,7 +558,7 @@ module Avo
 
     # Set pagy locale from params or from avo configuration, if both nil locale = "en"
     def set_pagy_locale
-      @pagy_locale = locale.to_s || Avo.configuration.locale || "en"
+      @pagy_locale = locale.to_s || Avo.configuration.default_locale || "en"
     end
 
     def safe_call(method)

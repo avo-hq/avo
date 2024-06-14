@@ -10,15 +10,14 @@ RSpec.feature "Divider", type: :feature do
 
   describe "Divider in actions" do
     it "renders divider without label" do
-      dividers = page.all(".relative.col-span-full.border-t")
+      dividers = page.all("[data-component-name='avo/divider_component']")
       second_divider = dividers[1]
-      expect(second_divider).to have_css(".absolute", text: "")
+      expect(second_divider).not_to have_selector(".absolute.inset-auto.rounded")
     end
 
     it "renders divider with label" do
-      expect(page).to have_css ".relative.col-span-full.border-t"
-      dividers = page.all(".relative.col-span-full.border-t")
-      expect(dividers.first.find(".absolute").text.strip).to eq "Other actions"
+      dividers = page.all("[data-component-name='avo/divider_component']")
+      expect(dividers.first.find(".absolute.inset-auto.rounded").text.strip).to eq "Other actions"
       expect(page).to have_content "Other actions"
     end
   end
