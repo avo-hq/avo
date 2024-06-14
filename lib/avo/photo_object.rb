@@ -17,7 +17,7 @@ class Avo::PhotoObject
   end
 
   def value
-    return unless options.fetch(:source).present?
+    return unless options.fetch(:source, nil).present?
 
     if options[:source].is_a?(Symbol)
       record.send(options[:source])
