@@ -84,7 +84,7 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
   def reload_data
     {
       controller: "reload-belongs-to-field",
-      action: 'turbo:before-stream-render@document->reload-belongs-to-field#beforeStreamRender',
+      action: "turbo:before-stream-render@document->reload-belongs-to-field#beforeStreamRender",
       reload_belongs_to_field_polymorphic_value: is_polymorphic?,
       reload_belongs_to_field_searchable_value: @field.is_searchable?,
       reload_belongs_to_field_relation_name_value: @field.id,

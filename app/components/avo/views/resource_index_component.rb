@@ -151,7 +151,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
     a_button size: :sm,
       color: :primary,
-      icon: "filter",
+      icon: "avo/filter",
       data: {
         controller: "avo-filters",
         action: "click->avo-filters#toggleFiltersArea",
@@ -228,7 +228,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     field&.reloadable?
   end
 
-  def linkable
+  def linkable?
     field&.linkable?
   end
 end

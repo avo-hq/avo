@@ -1,3 +1,7 @@
-<div class="relative col-span-full border-t border-gray-300 border-solid" style= "border-width: 1.75px;">
-  <div class="absolute inset-auto -translate-y-1/2 -translate-x-1/2 ml-1/2 z-20 text-xs font-semibold uppercase leading-none text-gray-500 bg-application px-2"></div>
+<div class="relative flex justify-center items-center w-full !border-b-2 border-gray-200 border-solid">
+  <div class="absolute inset-auto z-20 text-xs font-semibold uppercase leading-none text-gray-500 bg-white px-2">
+    <%if label.present?%>
+      <%=label%>
+    <%end%>
+  </div>
 </div>

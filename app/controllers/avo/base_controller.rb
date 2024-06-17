@@ -34,21 +34,7 @@ module Avo
         @query = @query.includes(*@resource.includes)
       end
 
-      # Sort the items
-      if @index_params[:sort_by].present?
-        unless @index_params[:sort_by].eql? :created_at
-          @query = @query.unscope(:order)
-        end
-
-        # Check if the sortable field option is actually a proc and we need to do a custom sort
-        field_id = @index_params[:sort_by].to_sym
-        field = @resource.get_field_definitions.find { |field| field.id == field_id }
-        @query = if field&.sortable.is_a?(Proc)
-          Avo::ExecutionContext.new(target: field.sortable, query: @query, direction: @index_params[:sort_direction]).handle
-        else
-          @query.order("#{@resource.model_class.table_name}.#{@index_params[:sort_by]} #{@index_params[:sort_direction]}")
-        end
-      end
+      apply_sorting
 
       # Apply filters to the current query
       filters_to_be_applied.each do |filter_class, filter_value|
@@ -128,7 +114,7 @@ module Avo
     def create
       # This means that the record has been created through another parent record and we need to attach it somehow.
       if params[:via_record_id].present? && params[:via_belongs_to_resource_class].nil?
-        @reflection = @record._reflections[params[:via_relation]]
+        @reflection = @record._reflections.with_indifferent_access[params[:via_relation]]
         # Figure out what kind of association does the record have with the parent record
 
         # Fills in the required info for belongs_to and has_many
@@ -245,7 +231,17 @@ module Avo
 
       # Remove duplicated errors
       if exception_message.present?
-        @errors = @errors.reject { |error| exception_message.include? error }.unshift exception_message
+        @errors = @errors.reject { |error| exception_message.include? error }
+      end
+
+      # Figure out if we have to output the exception_message
+      # Usually it means that it's not a validation error but something else
+      if exception_message.present?
+        exception_is_validation = @errors.select { |error| exception_message.include? error }.present?
+      end
+
+      if exception_is_validation || (@errors.blank? && exception_message.present?)
+        @errors << exception_message
       end
 
       @errors.any? ? false : succeeded
@@ -491,9 +487,11 @@ module Avo
     end
 
     def update_fail_action
+      flash.now[:error] = update_fail_message
+
       respond_to do |format|
-        flash.now[:error] = update_fail_message
         format.html { render :edit, status: :unprocessable_entity }
+        format.turbo_stream { render "update_fail_action" }
       end
     end
 
@@ -599,6 +597,34 @@ module Avo
 
     def apply_pagination
       @pagy, @records = @resource.apply_pagination(index_params: @index_params, query: pagy_query)
+    end
+
+    def apply_sorting
+      return if @index_params[:sort_by].nil?
+
+      sort_by = @index_params[:sort_by].to_sym
+      if sort_by != :created_at
+        @query = @query.unscope(:order)
+      end
+
+      # Verify that sort_by param actually is bonded to a field.
+      field = @resource.get_field(sort_by)
+
+      # Check if the sortable field option is a proc and if there is a need to do a custom sort
+      @query = if field.present? && field.sortable.is_a?(Proc)
+        Avo::ExecutionContext.new(target: field.sortable, query: @query, direction: sanitized_sort_direction).handle
+      # Sanitize sort_by param by checking if have bounded field.
+      elsif (field.present? || sort_by == :created_at) && sanitized_sort_direction
+        @query.order("#{@resource.model_class.table_name}.#{sort_by} #{sanitized_sort_direction}")
+      # Transform Model to ActiveRecord::Relation because Avo expects one.
+      else
+        @query.where("1=1")
+      end
+    end
+
+    # Sanitize sort_direction param
+    def sanitized_sort_direction
+      @sanitized_sort_direction ||= @index_params[:sort_direction].presence_in(["asc", :asc, "desc", :desc])
     end
   end
 end

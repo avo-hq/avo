@@ -8,6 +8,7 @@ module Avo
     attr_writer :cache_store
     attr_writer :logger
     attr_writer :turbo
+    attr_writer :pagination
     attr_accessor :timezone
     attr_accessor :per_page
     attr_accessor :per_page_steps
@@ -48,6 +49,7 @@ module Avo
     attr_accessor :resource_parent_controller
     attr_accessor :mount_avo_engines
     attr_accessor :default_url_options
+    attr_accessor :alert_dismiss_time
 
     def initialize
       @root_path = "/avo"
@@ -103,6 +105,8 @@ module Avo
       @logger = default_logger
       @turbo = default_turbo
       @default_url_options = []
+      @pagination = {}
+      @alert_dismiss_time = 5000
     end
 
     def current_user_method(&block)
@@ -229,6 +233,10 @@ module Avo
           instant_click: true
         }
       end
+    end
+
+    def pagination
+      Avo::ExecutionContext.new(target: @pagination).handle
     end
   end
 

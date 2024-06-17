@@ -20,7 +20,7 @@ class Avo::Filters::CourseCityFilter < Avo::Filters::BooleanFilter
 
       # Get the first city
       cities = cities_for_countries(selected_countries.keys)
-      first_city = cities.first.first
+      first_city = cities&.first&.first
 
       # Return the first city selected as a Hash
       [[first_city, true]].to_h

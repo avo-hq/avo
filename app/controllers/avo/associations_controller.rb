@@ -94,7 +94,7 @@ module Avo
     private
 
     def set_reflection
-      @reflection = @record._reflections[association_from_params]
+      @reflection = @record._reflections.with_indifferent_access[association_from_params]
     end
 
     def set_attachment_class
@@ -110,7 +110,7 @@ module Avo
     end
 
     def set_reflection_field
-      @field = @resource.get_field_definitions.find { |f| f.id == @related_resource_name.to_sym }
+      @field = @resource.get_field(@related_resource_name.to_sym)
       @field.hydrate(resource: @resource, record: @record, view: :new)
     rescue
     end
@@ -120,7 +120,7 @@ module Avo
     end
 
     def reflection_class
-      reflection = @record._reflections[association_from_params]
+      reflection = @record._reflections.with_indifferent_access[association_from_params]
 
       klass = reflection.class.name.demodulize.to_s
       klass = reflection.through_reflection.class.name.demodulize.to_s if klass == "ThroughReflection"
