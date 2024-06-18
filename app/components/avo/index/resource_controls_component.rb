@@ -139,7 +139,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     a_button url: helpers.resource_detach_path(params[:resource_name], params[:id], params[:related_name], @resource.record.id),
       style: :icon,
       color: :gray,
-      icon: "detach",
+      icon: "avo/detach",
       form_class: "flex items-center",
       title: control.title,
       aria: {label: control.title},

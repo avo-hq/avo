@@ -50,6 +50,7 @@ module Avo
     attr_accessor :mount_avo_engines
     attr_accessor :default_url_options
     attr_accessor :click_row_to_view_record
+    attr_accessor :alert_dismiss_time
 
     def initialize
       @root_path = "/avo"
@@ -107,6 +108,7 @@ module Avo
       @default_url_options = []
       @pagination = {}
       @click_row_to_view_record = false
+      @alert_dismiss_time = 5000
     end
 
     def current_user_method(&block)
@@ -237,6 +239,10 @@ module Avo
 
     def pagination
       Avo::ExecutionContext.new(target: @pagination).handle
+    end
+
+    def default_locale
+      @locale || I18n.default_locale
     end
   end
 

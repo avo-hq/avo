@@ -58,6 +58,9 @@ Avo.configure do |config|
   #   }
   # end
 
+  ## == Response messages dismiss time ==
+  # config.alert_dismiss_time = 5000
+
   ## == Cache options ==
   ## Provide a lambda to customize the cache store used by Avo.
   ## We compute the cache store by default, this is NOT the default, just an example.
@@ -131,11 +134,11 @@ Avo.configure do |config|
 
   ## == Menus ==
   # config.main_menu = -> {
-  #   section "Dashboards", icon: "dashboards" do
+  #   section "Dashboards", icon: "avo/dashboards" do
   #     all_dashboards
   #   end
 
-  #   section "Resources", icon: "resources" do
+  #   section "Resources", icon: "avo/resources" do
   #     all_resources
   #   end
 

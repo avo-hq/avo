@@ -18,8 +18,9 @@ class Avo::SvgFinder
       Rails.root.join("app", "assets", "svgs", @filename).to_s,
       Rails.root.join(@filename).to_s,
       Avo::Engine.root.join("app", "assets", "svgs", @filename).to_s,
+      Avo::Engine.root.join("app", "assets", "svgs", "avo", @filename).to_s,
       Avo::Engine.root.join("app", "assets", "svgs", "heroicons", "outline", @filename).to_s,
-      Avo::Engine.root.join(@filename).to_s,
+      Avo::Engine.root.join(@filename).to_s
     ]
 
     paths.find do |path|
