@@ -27,6 +27,7 @@ Avo.configure do |config|
       params: request.params
     }
   end
+  config.locale = :en
   # config.raise_error_on_missing_policy = true
   # config.authorization_client = "Avo::Services::AuthorizationClients::ExtraPunditClient"
 
@@ -70,6 +71,8 @@ Avo.configure do |config|
   #   "Avo::Resources::User",
   #   "Avo::Resources::Fish"
   # ]
+
+  config.alert_dismiss_time = 5000
 
   ## == Menus ==
   config.main_menu = -> do
