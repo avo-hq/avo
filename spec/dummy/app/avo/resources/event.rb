@@ -7,7 +7,11 @@ class Avo::Resources::Event < Avo::BaseResource
     field :name, as: :text, link_to_record: true, sortable: true, stacked: true
     field :first_user, as: :record_link
     field :event_time, as: :datetime, sortable: true
-    field :body, as: :trix
+    field :body,
+      as: :trix,
+      meta: {
+        foo: :bar,
+      }
 
     if params[:show_location_field] == "1"
       # Example for error message when resource is missing

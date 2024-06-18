@@ -54,6 +54,7 @@ module Avo
       attr_accessor :action
       attr_accessor :user
       attr_accessor :panel_name
+      attr_accessor :meta
 
       class_attribute :field_name_attribute
 
@@ -86,6 +87,7 @@ module Avo
         @action = args[:action]
         @components = args[:components] || {}
         @for_attribute = args[:for_attribute]
+        @meta = args[:meta]
 
         @args = args
 
