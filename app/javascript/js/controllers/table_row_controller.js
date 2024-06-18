@@ -4,8 +4,9 @@ export default class extends Controller {
   visitRecord(event) {
     if (event.type === 'click') {
       const isLinkOrButton = event.target.closest('a, button, svg')
+      const isCheckbox = event.target.closest('input[type="checkbox"]')
 
-      if (isLinkOrButton) {
+      if (isLinkOrButton || isCheckbox) {
         return // Don't navigate if a link or button is clicked
       }
 
