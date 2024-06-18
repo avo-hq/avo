@@ -87,6 +87,21 @@ RSpec.describe "Tags", type: :system do
         expect(post.reload.tag_list.sort).to eq ["1", "2"].sort
       end
     end
+
+    context "new" do
+      it "keeps acts as taggable tags on validation errors" do
+        visit avo.new_resources_post_path
+
+        add_tag(field: :tags, tag: "one")
+        add_tag(field: :tags, tag: "two")
+        add_tag(field: :tags, tag: "five")
+
+        save
+
+        expect(page).to have_text("Validation failed: Name can't be blank")
+        expect(page.all(".tagify__tag-text").map(&:text)).to eq ["one", "two"]
+      end
+    end
   end
 
   describe 'without acts_as_taggable' do
