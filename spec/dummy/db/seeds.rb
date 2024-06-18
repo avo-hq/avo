@@ -165,7 +165,18 @@ puts "Creating posts"
 25.times do
   post = FactoryBot.create(:post, user_id: users.sample.id)
 
-  post.cover_photo.attach(io: URI.open("https://source.unsplash.com/random/#{[1000, 1100, 1200, 1300].sample}x#{[1000, 1100, 1200, 1300].sample}/?all"), filename: "cover.jpg")
+  begin
+    width = [1000, 1100, 1200, 1300].sample
+    height = [1000, 1100, 1200, 1300].sample
+    url = "https://source.unsplash.com/random/#{width}x#{height}/?all"
+    io = URI.open(url)
+  rescue
+    puts "Failed to fetch cover photo from Unsplash"
+  end
+
+  if io
+    post.cover_photo.attach(io: io, filename: "cover.jpg")
+  end
 
   puts "Creating posts comments"
 
