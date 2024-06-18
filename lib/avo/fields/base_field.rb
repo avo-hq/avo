@@ -54,7 +54,6 @@ module Avo
       attr_accessor :action
       attr_accessor :user
       attr_accessor :panel_name
-      attr_accessor :meta
 
       class_attribute :field_name_attribute
 
@@ -281,6 +280,10 @@ module Avo
 
       def form_field_label
         id
+      end
+
+      def meta
+        Avo::ExecutionContext.new(target: @meta, record: record, resource: @resource, view: @view).handle
       end
 
       private
