@@ -169,7 +169,7 @@ puts "Creating posts"
     width = [1000, 1100, 1200, 1300].sample
     height = [1000, 1100, 1200, 1300].sample
     url = "https://source.unsplash.com/random/#{width}x#{height}/?all"
-    io = URI.open(url)
+    io = URI.open(url) # standard:disable Security/Open
   rescue
     puts "Failed to fetch cover photo from Unsplash"
   end
