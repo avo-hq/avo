@@ -32,11 +32,19 @@ module Avo
       end
 
       def json_value
-        value.map do |item|
-          {
-            value: item.name
-          }
-        end.as_json
+        acts_as_taggable_on_values.map { |value| { value: } }.as_json
+      end
+
+      def acts_as_taggable_on_values
+        # When record is DB persistent the values are fetched from the DB
+        # Else the array values are fetched from the record using the tag_list_on helper
+        # values_array examples: ["1", "2"]
+        #                        ["example suggestion","example tag"]
+        if record.persisted?
+          value.map { |item| item.name }
+        else
+          record.tag_list_on(acts_as_taggable_on)
+        end
       end
 
       def fill_field(model, key, value, params)
