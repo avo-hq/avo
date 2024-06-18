@@ -19,6 +19,13 @@ RSpec.feature "belongs_to", type: :feature do
       let!(:post) { create :post, user: admin }
 
       it { is_expected.to have_text admin.name }
+      it { is_expected.to have_link admin.name, href: "/admin/resources/users/#{admin.slug}?via_record_id=#{post.slug}&via_resource_class=Avo%3A%3AResources%3A%3APost" }
+    end
+
+    describe "with a related user with link to record enabled" do
+      let!(:post) { create :post, user: admin }
+
+      it { is_expected.to have_link admin.name, href: "/admin/resources/posts/#{post.slug}" }
     end
 
     describe "without a related user" do
