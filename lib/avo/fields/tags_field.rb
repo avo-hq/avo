@@ -32,7 +32,7 @@ module Avo
       end
 
       def json_value
-        acts_as_taggable_on_values.map { |value| { value: } }.as_json
+        acts_as_taggable_on_values.map { |value| {value:} }.as_json
       end
 
       def acts_as_taggable_on_values
