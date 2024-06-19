@@ -86,6 +86,7 @@ module Avo
         @action = args[:action]
         @components = args[:components] || {}
         @for_attribute = args[:for_attribute]
+        @meta = args[:meta]
 
         @args = args
 
@@ -279,6 +280,10 @@ module Avo
 
       def form_field_label
         id
+      end
+
+      def meta
+        Avo::ExecutionContext.new(target: @meta, record: record, resource: @resource, view: @view).handle
       end
 
       private
