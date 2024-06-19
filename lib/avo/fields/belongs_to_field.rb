@@ -123,7 +123,7 @@ module Avo
         end
 
         query.all.map do |record|
-          [resource.new(record: record).record_title, record.id]
+          [resource.new(record: record).record_title, record.to_param]
         end
       end
 
@@ -195,20 +195,31 @@ module Avo
 
       def fill_field(model, key, value, params)
         return model unless model.methods.include? key.to_sym
-
         if polymorphic_as.present?
           valid_model_class = valid_polymorphic_class params[:"#{polymorphic_as}_type"]
 
           model.send(:"#{polymorphic_as}_type=", valid_model_class)
 
           # If the type is blank, reset the id too.
-          if valid_model_class.blank?
+          id_from_param = params["#{polymorphic_as}_id"]
+
+          if valid_model_class.blank? || id_from_param.blank?
             model.send(:"#{polymorphic_as}_id=", nil)
           else
-            model.send(:"#{polymorphic_as}_id=", params["#{polymorphic_as}_id"])
+            model.send(:"#{polymorphic_as}_id=", value.constantize.find(params["#{polymorphic_as}_id"]).id)
+
           end
         else
-          model.send("#{key}=", value)
+          association_reflection = model.class.reflect_on_all_associations.find do |association|
+            association.foreign_key.to_s == key
+          end
+          if association_reflection
+            associated_class = association_reflection.klass
+            associated_record = associated_class.find_by(slug: value)
+            model.send(:"#{key}=", associated_record&.id)
+          else
+            model.send(:"#{key}=", nil)
+          end
         end
 
         model
@@ -233,8 +244,8 @@ module Avo
         @target_resource ||= if use_resource.present?
           use_resource
         elsif is_polymorphic?
-          if value.present?
-            get_resource_by_model_class(value.class)
+          if value&.class.present?
+            get_resource_by_model_class(value&.class)
           else
             return nil
           end
