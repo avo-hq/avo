@@ -23,9 +23,16 @@ RSpec.feature "belongs_to", type: :feature do
     end
 
     describe "with a related user with link to record enabled" do
-      let!(:post) { create :post, user: admin }
+      let!(:user) { create :user, first_name: "Alicia" }
+      let!(:comment) { create :comment, body: "a comment", user: user }
+      let(:url) { "/admin/resources/posts?view_type=table" }
 
-      it { is_expected.to have_link admin.name, href: "/admin/resources/posts/#{post.slug}" }
+      subject do
+        visit "/admin/resources/users/#{user.id}/comments"
+        find("[data-resource-id='#{comment.to_param}'] [data-field-id='user']")
+      end
+
+      it { is_expected.to have_link user.name, href: "/admin/resources/comments/#{comment.slug}" }
     end
 
     describe "without a related user" do
