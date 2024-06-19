@@ -47,25 +47,24 @@ module Avo
         end
       end
 
-      def fill_field(model, key, value, params)
-        return fill_acts_as_taggable(model, key, value, params) if acts_as_taggable_on.present?
+      def fill_field(record, key, value, params)
+        return fill_acts_as_taggable(record, key, value, params) if acts_as_taggable_on.present?
 
-        val = if value.is_a?(String)
+        value = if value.is_a?(String)
           value.split(",")
-        elsif value.is_a?(Array)
-          value
         else
           value
         end
-        model.send(:"#{key}=", val)
 
-        model
+        record.send(:"#{key}=", apply_update_using(record, key, value, resource))
+
+        record
       end
 
-      def fill_acts_as_taggable(model, key, value, params)
-        model.send(act_as_taggable_attribute(key), value)
+      def fill_acts_as_taggable(record, key, value, params)
+        record.send(act_as_taggable_attribute(key), value)
 
-        model
+        record
       end
 
       def suggestions
