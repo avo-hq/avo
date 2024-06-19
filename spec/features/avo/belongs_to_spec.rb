@@ -31,7 +31,7 @@ RSpec.feature "belongs_to", type: :feature do
         find("[data-resource-id='#{comment.to_param}'] [data-field-id='user']")
       end
 
-      it { is_expected.to have_link user.name, href: "/admin/resources/comments/#{comment.slug}" }
+      it { is_expected.to have_link user.name, href: "/admin/resources/comments/#{comment.id}" }
     end
 
     describe "without a related user" do
