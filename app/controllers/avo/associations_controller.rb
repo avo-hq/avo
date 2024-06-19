@@ -78,7 +78,7 @@ module Avo
     end
 
     def destroy
-      association_name = BaseResource.valid_association_name(@record, params[:related_name])
+      association_name = BaseResource.valid_association_name(@record, @field.for_attribute || params[:related_name])
 
       if reflection_class == "HasManyReflection"
         @record.send(association_name).delete @attachment_record
