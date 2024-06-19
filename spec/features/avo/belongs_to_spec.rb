@@ -27,7 +27,7 @@ RSpec.feature "belongs_to", type: :feature do
       let!(:comment) { create :comment, body: "a comment", user: user }
 
       subject do
-        visit "/admin/resources/users/#{user.id}/comments"
+        visit "/admin/resources/comments"
         find("[data-resource-id='#{comment.to_param}'] [data-field-id='user']")
       end
 
