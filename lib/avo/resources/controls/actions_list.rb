@@ -2,7 +2,7 @@ module Avo
   module Resources
     module Controls
       class ActionsList < BaseControl
-        ACTIONS_LIST_DROPDOWN_ICON = "heroicons/outline/arrow-down-circle"
+        ACTIONS_LIST_DROPDOWN_ICON = "heroicons/outline/arrow-down-circle" unless defined?(ACTIONS_LIST_DROPDOWN_ICON)
 
         attr_reader :color, :exclude, :include, :style, :icon
 
