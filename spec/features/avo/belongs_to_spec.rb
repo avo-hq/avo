@@ -25,7 +25,6 @@ RSpec.feature "belongs_to", type: :feature do
     describe "with a related user with link to record enabled" do
       let!(:user) { create :user, first_name: "Alicia" }
       let!(:comment) { create :comment, body: "a comment", user: user }
-      let(:url) { "/admin/resources/posts?view_type=table" }
 
       subject do
         visit "/admin/resources/users/#{user.id}/comments"
