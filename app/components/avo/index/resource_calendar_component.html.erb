@@ -1,0 +1,46 @@
+<% if @resources.present? %>
+  <turbo-frame id="<%= @resource.model_key %>_list" target="_top" class="relative w-full">
+    <div class="my-6 shadow-xl"
+    <%= try :drag_reorder_attributes %>
+    data-component-name="<%= self.class.to_s.underscore %>"
+    data-selected-resources-name="<%= @resource.model_key %>" data-selected-resources="[]">
+
+      <div class="flex justify-between py-2">
+        <%= link_to "← Last month", helpers.resources_path(resource: @resource, view_type: 'calendar', date: Date.parse(params.fetch(:date, Date.today.to_s)).last_month) %>
+        <p class="font-bold text-xl"><%= @date.strftime('%B %Y') %></p>
+        <%= link_to "Next month →", helpers.resources_path(resource: @resource, view_type: 'calendar', date: Date.parse(params.fetch(:date, Date.today.to_s)).next_month) %>
+      </div>
+      <div class="grid grid-cols-7 bg-white">
+        <% Date::ABBR_DAYNAMES.rotate.each do |day| %>
+          <div class="border border-gray-100 font-bold text-center">
+            <%= day %>
+          </div>
+        <% end %>
+        <% month_offset(@date).times do %>
+          <div></div>
+        <% end %>
+        <% @date.all_month.each do |day| %>
+          <div class="border border-gray-100 px-0.5 min-h-24 <%= today_class(day) %>">
+            <div class="text-right font-semibold">
+              <%= day.strftime('%d') %>
+            </div>
+            <div class="flex flex-col gap-2">
+              <% @resources.filter {|r| r.record.created_at.beginning_of_day == day }.each do |resource| %>
+                <%= link_to helpers.resource_view_path(record: resource.record, resource: resource),
+                            class: "bg-primary-100 hover:bg-primary-400 rounded px-1 py-0.5 text-xs text-black" do %>
+                  <%= resource.record.name %>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+  </turbo-frame>
+<% else %>
+  <div class="bg-white rounded shadow-panel"
+    data-component-name="<%= self.class.to_s.underscore %>">
+    <%= helpers.empty_state by_association: params[:related_name].present?, view_type: :grid %>
+  </div>
+<% end %>
