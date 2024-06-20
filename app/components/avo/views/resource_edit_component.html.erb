@@ -19,7 +19,7 @@
     },
     multipart: true do |form| %>
     <%= render Avo::ReferrerParamsComponent.new back_path: back_path %>
-    <%= content_tag :div, class: 'space-y-12' do %>
+    <%= content_tag :div, class: "space-y-12" do %>
       <% @resource.get_items.each_with_index do |item, index| %>
         <%= render Avo::Items::SwitcherComponent.new(
           resource: @resource,
@@ -32,7 +32,7 @@
           form: form,
           parent_component: self,
           actions: @actions
-        )%>
+        ) %>
       <% end %>
 
       <% if Avo.configuration.buttons_on_form_footers %>

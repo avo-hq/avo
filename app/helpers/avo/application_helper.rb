@@ -88,6 +88,10 @@ module Avo
       "bg-white rounded shadow-md"
     end
 
+    def card_classes
+      "bg-white rounded shadow-panel"
+    end
+
     def get_model_class(model)
       if model.instance_of?(Class)
         model

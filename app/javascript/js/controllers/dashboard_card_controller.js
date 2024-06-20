@@ -1,9 +1,9 @@
 import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
-  static targets = ['card'];
+  static targets = ['card']
 
-  interval;
+  interval
 
   get parentTurboFrame() {
     return this.context.scope.element.closest('turbo-frame')

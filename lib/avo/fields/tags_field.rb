@@ -32,32 +32,39 @@ module Avo
       end
 
       def json_value
-        value.map do |item|
-          {
-            value: item.name
-          }
-        end.as_json
+        acts_as_taggable_on_values.map { |value| {value:} }.as_json
       end
 
-      def fill_field(model, key, value, params)
-        return fill_acts_as_taggable(model, key, value, params) if acts_as_taggable_on.present?
+      def acts_as_taggable_on_values
+        # When record is DB persistent the values are fetched from the DB
+        # Else the array values are fetched from the record using the tag_list_on helper
+        # values_array examples: ["1", "2"]
+        #                        ["example suggestion","example tag"]
+        if record.persisted?
+          value.map { |item| item.name }
+        else
+          record.tag_list_on(acts_as_taggable_on)
+        end
+      end
 
-        val = if value.is_a?(String)
+      def fill_field(record, key, value, params)
+        return fill_acts_as_taggable(record, key, value, params) if acts_as_taggable_on.present?
+
+        value = if value.is_a?(String)
           value.split(",")
-        elsif value.is_a?(Array)
-          value
         else
           value
         end
-        model.send(:"#{key}=", val)
 
-        model
+        record.send(:"#{key}=", apply_update_using(record, key, value, resource))
+
+        record
       end
 
-      def fill_acts_as_taggable(model, key, value, params)
-        model.send(act_as_taggable_attribute(key), value)
+      def fill_acts_as_taggable(record, key, value, params)
+        record.send(act_as_taggable_attribute(key), value)
 
-        model
+        record
       end
 
       def suggestions

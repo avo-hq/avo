@@ -50,6 +50,7 @@ module Avo
     attr_accessor :resource_parent_controller
     attr_accessor :mount_avo_engines
     attr_accessor :default_url_options
+    attr_accessor :alert_dismiss_time
 
     def initialize
       @root_path = "/avo"
@@ -107,6 +108,7 @@ module Avo
       @turbo = default_turbo
       @default_url_options = []
       @pagination = {}
+      @alert_dismiss_time = 5000
     end
 
     def current_user_method(&block)
@@ -254,6 +256,10 @@ module Avo
 
     def pagination
       Avo::ExecutionContext.new(target: @pagination).handle
+    end
+
+    def default_locale
+      @locale || I18n.default_locale
     end
   end
 

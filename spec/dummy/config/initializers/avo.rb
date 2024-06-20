@@ -27,6 +27,7 @@ Avo.configure do |config|
       params: request.params
     }
   end
+  config.locale = :en
   # config.raise_error_on_missing_policy = true
   # config.authorization_client = "Avo::Services::AuthorizationClients::ExtraPunditClient"
 
@@ -70,6 +71,8 @@ Avo.configure do |config|
   #   "Avo::Resources::Fish"
   # ]
 
+  config.alert_dismiss_time = 5000
+
   ## == Menus ==
   config.main_menu = -> do
     section "Resources", icon: "heroicons/solid/building-storefront", collapsable: true, collapsed: false do
@@ -98,7 +101,7 @@ Avo.configure do |config|
         resource :photo_comments
       end
 
-      section "Store", icon: "currency-dollar" do
+      section "Store", icon: "heroicons/outline/currency-dollar" do
         resource :products
         resource :stores
       end
@@ -123,7 +126,7 @@ Avo.configure do |config|
     end
   end
   config.profile_menu = -> do
-    link "Profile", path: "/profile", icon: "user-circle"
+    link "Profile", path: "/profile", icon: "heroicons/outline/user-circle"
     # link_to "Sign out", path: main_app.destroy_user_session_path, icon: "user-circle", method: :post, params: {hehe: :hoho}
   end
 

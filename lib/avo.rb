@@ -86,10 +86,6 @@ module Avo
         .to_s
     end
 
-    def mount_path
-      Avo::Engine.routes.find_script_name({})
-    end
-
     def main_menu
       return unless Avo.plugin_manager.installed?("avo-menu")
 

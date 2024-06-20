@@ -19,6 +19,7 @@ nb:
     choose_item: Velge %{item}
     clear_value: Nullstill verdi
     click_to_reveal_filters: Vis filter
+    close_modal: Lukk modal
     confirm: Bekreft
     create_new_item: Lag ny %{item}
     dashboard: Dashboard
@@ -54,6 +55,7 @@ nb:
     more: Mer
     new: ny
     next_page: Neste side
+    no_cancel: Nei, avbryt
     no_cards_present: Ingen kort til stede
     no_item_found: Ingen funnet
     no_options_available: Ingen tilgjengelige alternativer
@@ -106,4 +108,5 @@ nb:
     x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> poster valgt på denne siden fra totalt <span class="font-bold text-gray-700">%{count}</span>
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> poster valgt fra alle sider
     x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> poster valgt på denne siden
+    yes_confirm: Ja, jeg er sikker
     you_missed_something_check_form: Her mangler du noe. Vennligst sjekk skjemaet.
