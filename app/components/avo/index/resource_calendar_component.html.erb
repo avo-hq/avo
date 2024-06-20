@@ -33,7 +33,7 @@
               <%= day.strftime('%d') %>
             </div>
             <div class="flex flex-col gap-2">
-              <% resources.filter {|r| r.record.send(date_attribute).beginning_of_day == day }.each do |resource| %>
+              <% resources_for_day(day).each do |resource| %>
                 <%= link_to helpers.resource_view_path(record: resource.record, resource:),
                             class: "bg-primary-100 hover:bg-primary-400 rounded px-1 py-0.5 text-xs text-black" do %>
                   <%= resource.record.name %>

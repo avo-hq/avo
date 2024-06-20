@@ -30,6 +30,10 @@ class Avo::Index::ResourceCalendarComponent < Avo::BaseComponent
     "bg-rose-200" if today?(day)
   end
 
+  def resources_for_day(day)
+    resources.filter { |r| r.record.send(date_attribute).beginning_of_day == day }
+  end
+
   def prev_date
     date.last_month
   end
