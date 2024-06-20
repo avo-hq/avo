@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Avo::Index::ResourceCalendarComponent < Avo::BaseComponent
-  attr_reader :actions
+  attr_reader :date
 
   def initialize(resources: nil, resource: nil, reflection: nil, parent_record: nil, parent_resource: nil, actions: nil, date: nil)
     @resources = resources
@@ -13,7 +13,7 @@ class Avo::Index::ResourceCalendarComponent < Avo::BaseComponent
     @date = date
   end
 
-  def month_offset(date)
+  def month_offset
     # you might want to update this based on your first day of the week (Sun/Mon)
     date.beginning_of_month.wday - 1
   end
@@ -24,5 +24,13 @@ class Avo::Index::ResourceCalendarComponent < Avo::BaseComponent
 
   def today_class(day)
     "bg-rose-200" if today?(day)
+  end
+
+  def prev_date
+    date.last_month
+  end
+
+  def next_date
+    date.next_month
   end
 end
