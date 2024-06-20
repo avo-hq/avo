@@ -32,7 +32,7 @@
             <% end %>
             <%= tag.div class: "flex flex-col gap-2" do %>
               <% resources_for_day(day).each do |resource| %>
-                <%= link_to helpers.resource_view_path(record: resource.record, resource:),
+                <%= link_to helpers.resource_view_path(record: resource.record, resource:, view_type: params[:view_type]),
                             class: "bg-primary-100 hover:bg-primary-400 rounded px-1 py-0.5 text-xs text-black" do %>
                   <%= resource.record.name %>
                 <% end %>
