@@ -66,7 +66,7 @@ class Avo::Resources::Post < Avo::BaseResource
   end
 
   self.calendar_view = {
-    date_attribute: :created_at
+    starts_at: :created_at
   }
 
   self.grid_view = {
