@@ -1,5 +1,5 @@
 <% if resources.present? %>
-  <turbo-frame id="<%= resource.model_key %>_list" target="_top" class="relative w-full">
+  <%= turbo_frame_tag "#{resource.model_key}_calendar", target: "_top", class: "relative w-full" do %>
     <div class="my-6 shadow-xl"
     <%= try :drag_reorder_attributes %>
     data-component-name="<%= self.class.to_s.underscore %>"
@@ -45,7 +45,7 @@
       </div>
     </div>
 
-  </turbo-frame>
+  <% end %>
 <% else %>
   <div class="bg-white rounded shadow-panel"
     data-component-name="<%= self.class.to_s.underscore %>">
