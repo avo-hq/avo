@@ -31,7 +31,8 @@ class Avo::Index::ResourceCalendarComponent < Avo::BaseComponent
   end
 
   def resources_for_day(day)
-    resources.filter { |r| r.record.send(date_attribute).beginning_of_day == day }
+    items = resources.filter { |r| r.record.send(date_attribute).beginning_of_day == day }
+    items.sort_by { |r| r.record.send(date_attribute) }
   end
 
   def prev_date
