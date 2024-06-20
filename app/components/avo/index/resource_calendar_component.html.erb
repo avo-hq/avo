@@ -1,11 +1,7 @@
 <% if resources.present? %>
   <%= turbo_frame_tag "#{resource.model_key}_calendar", target: "_top", class: "relative w-full" do %>
-    <div class="my-6 shadow-xl"
-    <%= try :drag_reorder_attributes %>
-    data-component-name="<%= self.class.to_s.underscore %>"
-    data-selected-resources-name="<%= resource.model_key %>" data-selected-resources="[]">
-
-      <div class="flex items-center pb-2">
+    <%= tag.div class: "my-6 shadow-xl" do %>
+      <%= tag.div class: "flex items-center pb-2" do %>
         <%= link_to helpers.resources_path(resource:, view_type: 'calendar', date: Date.today) do %>
           Today
         <% end %>
@@ -15,35 +11,37 @@
         <%= link_to helpers.resources_path(resource:, view_type: 'calendar', date: next_date) do %>
           <%= helpers.svg 'arrow-sm-right', class: 'h-6 w-6' %>
         <% end %>
-        <p class="font-bold text-xl"><%= date.strftime('%B %Y') %></p>
-      </div>
+        <p class="font-bold text-xl">
+          <%= date.strftime('%B %Y') %>
+        </p>
+      <% end %>
 
-      <div class="grid grid-cols-7 bg-white">
+      <%= tag.div class: "grid grid-cols-7 bg-white" do %>
         <% Date::ABBR_DAYNAMES.rotate.each do |day| %>
-          <div class="border border-gray-100 font-bold text-center">
+          <%= tag.div class: "border border-gray-100 font-bold text-center" do %>
             <%= day %>
-          </div>
+          <% end %>
         <% end %>
         <% month_offset.times do %>
           <div></div>
         <% end %>
         <% date.all_month.each do |day| %>
           <div class="border border-gray-100 px-0.5 min-h-24 <%= today_class(day) %>">
-            <div class="text-right font-semibold">
+            <%= tag.div class: "text-right font-semibold" do %>
               <%= day.strftime('%d') %>
-            </div>
-            <div class="flex flex-col gap-2">
+            <% end %>
+            <%= tag.div class: "flex flex-col gap-2" do %>
               <% resources_for_day(day).each do |resource| %>
                 <%= link_to helpers.resource_view_path(record: resource.record, resource:),
                             class: "bg-primary-100 hover:bg-primary-400 rounded px-1 py-0.5 text-xs text-black" do %>
                   <%= resource.record.name %>
                 <% end %>
               <% end %>
-            </div>
+            <% end %>
           </div>
         <% end %>
-      </div>
-    </div>
+      <% end %>
+    <% end %>
 
   <% end %>
 <% else %>
