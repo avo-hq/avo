@@ -54,6 +54,7 @@ module Avo
     class_attribute :filters_loader
     class_attribute :view_types
     class_attribute :grid_view
+    class_attribute :calendar_view
     class_attribute :visible_on_sidebar, default: true
     class_attribute :index_query, default: -> {
       query
@@ -396,6 +397,7 @@ module Avo
       view_types = [:table]
 
       view_types << :grid if self.class.grid_view.present?
+      view_types << :calendar if self.class.calendar_view.present?
       view_types << :map if map_view.present?
 
       view_types

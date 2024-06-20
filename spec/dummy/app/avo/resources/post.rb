@@ -65,6 +65,10 @@ class Avo::Resources::Post < Avo::BaseResource
     field :comments, as: :has_many, use_resource: Avo::Resources::PhotoComment
   end
 
+  self.calendar_view = {
+    date_attribute: :created_at
+  }
+
   self.grid_view = {
     card: -> do
       {
