@@ -1,21 +1,21 @@
-<% if @resources.present? %>
-  <turbo-frame id="<%= @resource.model_key %>_list" target="_top" class="relative w-full">
+<% if resources.present? %>
+  <turbo-frame id="<%= resource.model_key %>_list" target="_top" class="relative w-full">
     <div class="my-6 shadow-xl"
     <%= try :drag_reorder_attributes %>
     data-component-name="<%= self.class.to_s.underscore %>"
-    data-selected-resources-name="<%= @resource.model_key %>" data-selected-resources="[]">
+    data-selected-resources-name="<%= resource.model_key %>" data-selected-resources="[]">
 
       <div class="flex items-center pb-2">
-        <%= link_to helpers.resources_path(resource: @resource, view_type: 'calendar', date: Date.today) do %>
+        <%= link_to helpers.resources_path(resource:, view_type: 'calendar', date: Date.today) do %>
           Today
         <% end %>
-        <%= link_to helpers.resources_path(resource: @resource, view_type: 'calendar', date: prev_date) do %>
+        <%= link_to helpers.resources_path(resource:, view_type: 'calendar', date: prev_date) do %>
           <%= helpers.svg 'arrow-sm-left', class: 'h-6 w-6' %>
         <% end %>
-        <%= link_to helpers.resources_path(resource: @resource, view_type: 'calendar', date: next_date) do %>
+        <%= link_to helpers.resources_path(resource:, view_type: 'calendar', date: next_date) do %>
           <%= helpers.svg 'arrow-sm-right', class: 'h-6 w-6' %>
         <% end %>
-        <p class="font-bold text-xl"><%= @date.strftime('%B %Y') %></p>
+        <p class="font-bold text-xl"><%= date.strftime('%B %Y') %></p>
       </div>
 
       <div class="grid grid-cols-7 bg-white">
@@ -27,14 +27,14 @@
         <% month_offset.times do %>
           <div></div>
         <% end %>
-        <% @date.all_month.each do |day| %>
+        <% date.all_month.each do |day| %>
           <div class="border border-gray-100 px-0.5 min-h-24 <%= today_class(day) %>">
             <div class="text-right font-semibold">
               <%= day.strftime('%d') %>
             </div>
             <div class="flex flex-col gap-2">
-              <% @resources.filter {|r| r.record.send(date_attribute).beginning_of_day == day }.each do |resource| %>
-                <%= link_to helpers.resource_view_path(record: resource.record, resource: resource),
+              <% resources.filter {|r| r.record.send(date_attribute).beginning_of_day == day }.each do |resource| %>
+                <%= link_to helpers.resource_view_path(record: resource.record, resource:),
                             class: "bg-primary-100 hover:bg-primary-400 rounded px-1 py-0.5 text-xs text-black" do %>
                   <%= resource.record.name %>
                 <% end %>
