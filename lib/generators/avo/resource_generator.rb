@@ -31,11 +31,10 @@ module Generators
             ActiveRecord::Migration.check_all_pending!
 
             result = true
-
             # If all migrations were completed, try to generate some resource files
-          rescue ActiveRecord::ConnectionNotEstablished => e
+          rescue ActiveRecord::ConnectionNotEstablished
             puts error_message("Connection not established.\nRun 'rails db:setup' to resolve.")
-          rescue ActiveRecord::PendingMigrationError => e
+          rescue ActiveRecord::PendingMigrationError
             puts error_message("Migrations are pending.\nRun 'rails db:migrate' to resolve.")
           rescue => e
             puts "Something went wrong while trying to geenrate an Avo resource: #{e}"
