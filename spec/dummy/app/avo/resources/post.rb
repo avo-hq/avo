@@ -66,6 +66,7 @@ class Avo::Resources::Post < Avo::BaseResource
   end
 
   self.calendar_view = {
+    title: :name,
     starts_at: :created_at
   }
 

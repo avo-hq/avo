@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Avo::Index::ResourceCalendarComponent < Avo::BaseComponent
-  attr_reader :resources, :resource, :date, :starts_at
+  attr_reader :resources, :resource, :date, :starts_at, :title
 
   def initialize(resources: nil, resource: nil, reflection: nil, parent_record: nil, parent_resource: nil, actions: nil, date: nil)
     @resources = resources
@@ -11,6 +11,10 @@ class Avo::Index::ResourceCalendarComponent < Avo::BaseComponent
     @parent_resource = parent_resource
     @actions = actions
     @date = date
+  end
+
+  def title
+    @resource&.calendar_view&.dig(:title) || :id
   end
 
   def starts_at
