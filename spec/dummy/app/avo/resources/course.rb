@@ -67,6 +67,14 @@ class Avo::Resources::Course < Avo::BaseResource
             end
           end
         end
+
+      # Coment above tags field and uncomment below to test fetch_values_from with fetch_labels
+      # field :skills,
+      #   as: :tags,
+      #   fetch_values_from: "/admin/resources/users/get_users?hey=you&record_id=1",
+      #   fetch_labels: -> {
+      #     values.map { |id| User.find(id).name }
+      #   }
     end
 
     field :starting_at,

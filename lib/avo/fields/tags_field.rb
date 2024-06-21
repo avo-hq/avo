@@ -68,7 +68,14 @@ module Avo
       end
 
       def suggestions
-        Avo::ExecutionContext.new(target: @suggestions, record: record).handle
+        suggestions = Avo::ExecutionContext.new(target: @suggestions, record: record).handle
+
+        # Add field_value when suggestions are array, this is necessary for tagify to apply labels correctly using the tagTextProp option
+        if suggestions.is_a?(Array)
+          suggestions + field_value
+        else
+          suggestions
+        end
       end
 
       def disallowed
@@ -81,11 +88,20 @@ module Avo
 
       private
 
+      # fetch_labels option should always return an array that match the same values position
+      # for the values = [1, 2, 3]
+      # and fetch_values return ["One", "Two", "Three"]
+      # We'll build (only for forms) [{value: 1, label: "One"}, {value: 2, label: "Two"}, {value: 3, label: "Three"}]
       def fetched_labels
-        if @fetch_labels.respond_to?(:call)
-          Avo::ExecutionContext.new(target: @fetch_labels, resource: resource, record: record).handle
-        else
-          @fetch_labels
+        labels = Avo::ExecutionContext.new(target: @fetch_labels, resource: resource, record: record, values: value).handle
+
+        # Return array of labels (["One", "Two", "Three"]) on display views
+        return labels if view.display?
+
+        # Return computed array of hashes for forms
+        # [{value: 1, label: "One"}, {value: 2, label: "Two"}, {value: 3, label: "Three"}]
+        value.map.with_index do |value, index|
+          { value: value, label: labels[index] }
         end
       end
 
