@@ -32,12 +32,15 @@ module Generators
 
             result = true
             # If all migrations were completed, try to generate some resource files
+          rescue NoMethodError
+            # Ignore #<NoMethodError: undefined method `check_all_pending!' for an instance of ActiveRecord::Migration>]
+            result = true
           rescue ActiveRecord::ConnectionNotEstablished
             puts error_message("Connection not established.\nRun 'rails db:setup' to resolve.")
           rescue ActiveRecord::PendingMigrationError
             puts error_message("Migrations are pending.\nRun 'rails db:migrate' to resolve.")
           rescue => e
-            puts "Something went wrong while trying to geenrate an Avo resource: #{e}"
+            puts "Something went wrong while trying to generate an Avo resource: #{e}"
           end
 
           result
