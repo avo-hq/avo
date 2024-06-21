@@ -13,10 +13,6 @@ class Avo::Index::ResourceCalendarComponent < Avo::BaseComponent
     @date = date
   end
 
-  def title
-    @resource&.calendar_view&.dig(:title) || :id
-  end
-
   def starts_at
     @resource&.calendar_view&.dig(:starts_at) || :created_at
   end
