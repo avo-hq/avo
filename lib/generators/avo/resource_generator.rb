@@ -28,7 +28,7 @@ module Generators
         def can_connect_to_the_database?
           result = false
           begin
-            ActiveRecord::Migration.check_all_pending!
+            ActiveRecord::Migration.check_all_pending! if defined?(ActiveRecord::Migration)
 
             result = true
             # If all migrations were completed, try to generate some resource files
@@ -37,7 +37,7 @@ module Generators
           rescue ActiveRecord::PendingMigrationError
             puts error_message("Migrations are pending.\nRun 'rails db:migrate' to resolve.")
           rescue => e
-            puts "Something went wrong while trying to geenrate an Avo resource: #{e}"
+            puts "Something went wrong while trying to generate an Avo resource: #{e}"
           end
 
           result
