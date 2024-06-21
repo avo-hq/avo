@@ -28,10 +28,13 @@ module Generators
         def can_connect_to_the_database?
           result = false
           begin
-            ActiveRecord::Migration.check_all_pending! if defined?(ActiveRecord::Migration)
+            ActiveRecord::Migration.check_all_pending!
 
             result = true
             # If all migrations were completed, try to generate some resource files
+          rescue NoMethodError
+            # Ignore #<NoMethodError: undefined method `check_all_pending!' for an instance of ActiveRecord::Migration>]
+            result = true
           rescue ActiveRecord::ConnectionNotEstablished
             puts error_message("Connection not established.\nRun 'rails db:setup' to resolve.")
           rescue ActiveRecord::PendingMigrationError
