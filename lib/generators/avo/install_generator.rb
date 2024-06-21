@@ -20,7 +20,7 @@ module Generators
       no_tasks do
         def create_resources
           if defined?(User).present?
-            Rails::Generators.invoke("avo:resource", ["user", "-q"], {destination_root: Rails.root })
+            Rails::Generators.invoke("avo:resource", ["user", "-q"], {destination_root: Rails.root})
           end
         end
 
