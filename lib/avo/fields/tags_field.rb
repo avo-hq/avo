@@ -100,9 +100,7 @@ module Avo
 
         # Return computed array of hashes for forms
         # [{value: 1, label: "One"}, {value: 2, label: "Two"}, {value: 3, label: "Three"}]
-        value.map.with_index do |value, index|
-          { value: value, label: labels[index] }
-        end
+        value.map.with_index do { |value, index| {value: value, label: labels[index]} }
       end
 
       def act_as_taggable_attribute(key)
