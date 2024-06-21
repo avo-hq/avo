@@ -9,14 +9,12 @@ module Generators
         # Rails.application.eager_load!
         # get all models
         models = fetch_models
+        models.delete("ApplicationRecord")
 
         models
-          .reject do |model|
-            model.in?(%w[ApplicationRecord])
-          end
           .each do |model|
             begin
-              invoke "avo:resource", [model.underscore], {}
+              Rails::Generators.invoke "avo:resource", [model.underscore], {}
             rescue => e
               puts "Error: #{e.message}"
             end
