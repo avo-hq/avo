@@ -199,7 +199,7 @@ module Avo
         apply_formatter @update_using, value, record, resource, key:
       end
 
-      def apply_formatter(target, value, record, resource, **kwargs)
+      def apply_formatter(target, value, record, resource, **)
         return value if target.nil?
 
         Avo::ExecutionContext.new(
@@ -210,7 +210,7 @@ module Avo
           view:,
           field: self,
           include: self.class.included_modules,
-          **kwargs
+          **
         ).handle
       end
 
