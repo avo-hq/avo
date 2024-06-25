@@ -73,7 +73,7 @@ module Avo
       end
 
       def suggestions
-        Avo::ExecutionContext.new(target: @suggestions, record: record).handle
+        Avo::ExecutionContext.new(target: @suggestions, record: record).handle + field_value
       end
 
       def disallowed
