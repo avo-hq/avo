@@ -167,20 +167,7 @@ module Avo
           final_value = execute_block
         end
 
-        # Run the value through resolver if present
-        if format_using.present?
-          final_value = Avo::ExecutionContext.new(
-            target: format_using,
-            value: final_value,
-            record: record,
-            resource: resource,
-            view: view,
-            field: self,
-            include: self.class.included_modules
-          ).handle
-        end
-
-        final_value
+        apply_format_using final_value
       end
 
       def execute_block
@@ -204,17 +191,26 @@ module Avo
         record
       end
 
+      def apply_format_using(value)
+        apply_formatter @format_using, value, record, resource
+      end
+
       def apply_update_using(record, key, value, resource)
-        return value if @update_using.nil?
+        apply_formatter @update_using, value, record, resource, key:
+      end
+
+      def apply_formatter(target, value, record, resource, **kwargs)
+        return value if target.nil?
 
         Avo::ExecutionContext.new(
-          target: @update_using,
-          record:,
-          key:,
+          target:,
           value:,
+          record:,
           resource:,
+          view:,
           field: self,
-          include: self.class.included_modules
+          include: self.class.included_modules,
+          **kwargs
         ).handle
       end
 

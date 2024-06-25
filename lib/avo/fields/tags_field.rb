@@ -20,12 +20,17 @@ module Avo
         add_string_prop args, :suggestions_max_items
         add_string_prop args, :mode, nil
         add_string_prop args, :fetch_values_from
-        add_string_prop args, :fetch_labels
+
+        @format_using ||= args[:fetch_labels]
+
+        unless Rails.env.production?
+          if args[:fetch_labels].present?
+            puts "[Avo DEPRECATION WARNING]: The `fetch_labels` field configuration option is no longer supported and will be removed in future versions. Please discontinue its use and solely utilize the `format_using` instead."
+          end
+        end
       end
 
       def field_value
-        return fetched_labels if @fetch_labels.present?
-
         return json_value if acts_as_taggable_on.present?
 
         value || []
@@ -80,14 +85,6 @@ module Avo
       end
 
       private
-
-      def fetched_labels
-        if @fetch_labels.respond_to?(:call)
-          Avo::ExecutionContext.new(target: @fetch_labels, resource: resource, record: record).handle
-        else
-          @fetch_labels
-        end
-      end
 
       def act_as_taggable_attribute(key)
         "#{key.singularize}_list="
