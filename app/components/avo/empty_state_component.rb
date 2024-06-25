@@ -1,14 +1,12 @@
 # frozen_string_literal: true
 
 class Avo::EmptyStateComponent < Avo::BaseComponent
-  attr_reader :message, :view_type, :add_background, :by_association
+  ViewType = _Union(:map, :table, :grid)
 
-  def initialize(message: nil, view_type: :table, add_background: false, by_association: false)
-    @message = message
-    @view_type = view_type
-    @add_background = add_background
-    @by_association = by_association
-  end
+  prop :message, _Nilable(String), reader: :public
+  prop :view_type, ViewType, default: :table, reader: :public
+  prop :add_background, _Boolean, default: false, reader: :public
+  prop :by_association, _Boolean, default: false, reader: :public
 
   def text
     message || locale_message
