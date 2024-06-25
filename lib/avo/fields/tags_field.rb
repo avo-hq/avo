@@ -23,20 +23,39 @@ module Avo
         add_string_prop args, :fetch_labels
       end
 
+      # Always output an array of objects that follow this structure
+      # [{label: "hello world", value: 123}]
       def field_value
-        return fetched_labels if @fetch_labels.present?
+        return normalized_value if suggestions.blank?
 
-        return json_value if acts_as_taggable_on.present?
-
-        value || []
+        return normalized_value
       end
 
-      def json_value
+      def normalized_value
+        puts ["value->", value].inspect
+        # TODO:
+        return fetched_labels if @fetch_labels.present?
+
+        return acts_as_taggable_value if acts_as_taggable_on.present?
+
+        return hash_value if is_hash_like?
+
+        return make_hash value if value.present?
+
+        []
+      end
+
+      def make_hash(value)
         value.map do |item|
           {
-            value: item.name
+            value: item,
+            label: item,
           }
-        end.as_json
+        end
+      end
+
+      def hash_value
+        value
       end
 
       def fill_field(model, key, value, params)
@@ -72,7 +91,28 @@ module Avo
         Avo::ExecutionContext.new(target: @fetch_values_from, resource: resource, record: record).handle
       end
 
+      def suggestions_by_value
+        return {} unless suggestions_are_a_hash?
+
+        suggestions.map do |suggestion|
+          [suggestion[:value].to_s, suggestion]
+        end.to_h
+      end
+
       private
+
+      def acts_as_taggable_value
+        value.map do |item|
+          {
+            value: item.name,
+            label: item.name
+          }
+        end
+      end
+
+      def def_item_is_a_hash?(value)
+        item.present? && item.is_a?(Hash) && item.key?(:label) && item.key?(:value)
+      end
 
       def fetched_labels
         if @fetch_labels.respond_to?(:call)
@@ -84,6 +124,12 @@ module Avo
 
       def act_as_taggable_attribute(key)
         "#{key.singularize}_list="
+      end
+
+      def suggestions_are_a_hash?
+        return false if suggestions.blank?
+
+        def_item_is_a_hash?(suggestions.first)
       end
     end
   end
