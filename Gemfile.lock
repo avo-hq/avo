@@ -112,6 +112,11 @@ GIT
       zeitwerk (~> 2.6)
 
 PATH
+  remote: ../literal
+  specs:
+    literal (0.1.0)
+
+PATH
   remote: .
   specs:
     avo (3.9.2)
@@ -121,7 +126,6 @@ PATH
       activesupport (>= 6.1)
       addressable
       docile
-      dry-initializer
       httparty
       inline_svg
       meta-tags
@@ -692,6 +696,7 @@ DEPENDENCIES
   jsbundling-rails
   launchy
   listen (>= 3.5.1)
+  literal!
   mapkick-rb (~> 0.1.4)
   meta-tags
   money-rails (~> 1.12)

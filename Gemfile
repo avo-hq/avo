@@ -11,6 +11,9 @@ gemspec
 # Git. Remember to move these dependencies to your gemspec before releasing
 # your gem to rubygems.org.
 
+# TODO: Move this into the Gemspec
+gem "literal", path: "../literal"
+
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
 

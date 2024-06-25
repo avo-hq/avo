@@ -46,7 +46,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "turbo_power", ">= 0.6.0"
   spec.add_dependency "addressable"
   spec.add_dependency "meta-tags"
-  spec.add_dependency "dry-initializer"
   spec.add_dependency "docile"
   spec.add_dependency "inline_svg"
 end

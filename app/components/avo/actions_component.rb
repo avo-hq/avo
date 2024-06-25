@@ -2,33 +2,36 @@
 
 class Avo::ActionsComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
-  attr_reader :label, :size, :as_row_control
 
-  def initialize(actions: [], resource: nil, view: nil, exclude: [], include: [], style: :outline, color: :primary, label: nil, size: :md, as_row_control: false, icon: nil)
-    @actions = actions || []
-    @resource = resource
-    @view = view
-    @exclude = Array(exclude)
-    @include = include
-    @color = color
-    @style = style
-    @label = label || I18n.t("avo.actions")
-    @size = size
-    @icon = icon
-    @as_row_control = as_row_control
+  prop :actions, _Array(Avo::BaseAction), default: -> { [] }, reader: :public
+  prop :resource, _Nilable(Avo::BaseResource)
+  prop :view, _Nilable(String)
+  prop :exclude, Array, default: -> { [] } do |value|
+    Array(value)
+  end
+  prop :include, Array, default: -> { [] }
+  prop :style, Symbol, default: :outline
+  prop :color, Symbol, default: :primary
+  prop :label, _Nilable(String), reader: :public do |value|
+    value || I18n.t("avo.actions")
+  end
+  prop :size, Symbol, default: :md, reader: :public
+  prop :as_row_control, _Boolean, default: false, reader: :public
+  prop :icon, _Nilable(String)
+
+  def after_initialize
+    filter_actions
   end
 
   def render?
     actions.present?
   end
 
-  def actions
+  def filter_actions
     if @exclude.present?
-      @actions.reject { |action| action.class.in?(@exclude) }
+      @actions.reject! { |action| action.class.in?(@exclude) }
     elsif @include.present?
-      @actions.select { |action| action.class.in?(@include) }
-    else
-      @actions
+      @actions.select! { |action| action.class.in?(@include) }
     end
   end
 

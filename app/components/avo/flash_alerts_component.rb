@@ -3,7 +3,5 @@
 class Avo::FlashAlertsComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
 
-  def initialize(flashes: [])
-    @flashes = flashes
-  end
+  prop :flashes, Enumerable, default: -> { [] }
 end
