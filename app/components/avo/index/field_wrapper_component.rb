@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::Index::FieldWrapperComponent < ViewComponent::Base
+class Avo::Index::FieldWrapperComponent < Avo::BaseComponent
   attr_reader :view
 
   def initialize(field: nil, resource: nil, dash_if_blank: true, center_content: false, flush: false, **args)

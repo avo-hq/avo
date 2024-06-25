@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::Fields::Common::GravatarViewerComponent < ViewComponent::Base
+class Avo::Fields::Common::GravatarViewerComponent < Avo::BaseComponent
   def initialize(md5: nil, link: nil, default: nil, size: nil, rounded: false, link_to_record: false, title: nil)
     @md5 = md5
     @link = link
