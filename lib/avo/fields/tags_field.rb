@@ -31,13 +31,11 @@ module Avo
       end
 
       def field_value
-        return json_value if acts_as_taggable_on.present?
-
-        value || []
-      end
-
-      def json_value
-        acts_as_taggable_on_values.map { |value| {value:} }.as_json
+        @field_value ||= if acts_as_taggable_on.present?
+          acts_as_taggable_on_values.map { |value| {value:} }.as_json
+        else
+          value || []
+        end
       end
 
       def acts_as_taggable_on_values
@@ -72,8 +70,23 @@ module Avo
         record
       end
 
+      def whitelist_items
+        return suggestions.to_json if enforce_suggestions
+
+        whitelist_items = case [suggestions, field_value]
+        in Array, Array
+          suggestions + field_value
+        in Hash, Hash
+          suggestions.merge field_value
+        else
+          suggestions
+        end
+
+        whitelist_items.to_json
+      end
+
       def suggestions
-        Avo::ExecutionContext.new(target: @suggestions, record: record).handle + field_value
+        @fetched_suggestions ||= Avo::ExecutionContext.new(target: @suggestions, record: record).handle
       end
 
       def disallowed
