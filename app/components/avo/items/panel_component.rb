@@ -13,7 +13,7 @@ class Avo::Items::PanelComponent < Avo::ResourceComponent
   prop :parent_component, _Void
   prop :parent_record, _Nilable(ActiveRecord::Base)
   prop :parent_resource, _Nilable(Avo::BaseResource)
-  prop :reflection, _Void
+  prop :reflection, _Nilable(ActiveRecord::Reflection::AssociationReflection)
 
   delegate :controls,
     :title,

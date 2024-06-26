@@ -4,7 +4,7 @@ class Avo::EmptyStateComponent < Avo::BaseComponent
   VIEW_TYPE = _Union(:map, :table, :grid)
 
   prop :message, _Nilable(String), reader: :public
-  prop :view_type, VIEW_TYPE, default: :table, reader: :public
+  prop :view_type, VIEW_TYPE, default: :table, reader: :public, &:to_sym
   prop :add_background, _Boolean, default: false, reader: :public
   prop :by_association, _Boolean, default: false, reader: :public
 

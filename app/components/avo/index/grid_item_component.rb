@@ -5,10 +5,10 @@ class Avo::Index::GridItemComponent < Avo::BaseComponent
   include Avo::Fields::Concerns::HasHTMLAttributes
 
   prop :resource, Avo::BaseResource
-  prop :reflection, _Never
+  prop :reflection, _Nilable(ActiveRecord::Reflection::AssociationReflection)
   prop :parent_record, _Void
   prop :parent_resource, _Void, reader: :public
-  prop :actions, _Void, reader: :public
+  prop :actions, _Nilable(_Array(Avo::BaseAction)), reader: :public
 
   def after_initialize
     @card = Avo::ExecutionContext.new(target: @resource.grid_view[:card], resource: @resource, record: @resource.record).handle

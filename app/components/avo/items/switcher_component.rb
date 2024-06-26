@@ -3,37 +3,17 @@
 class Avo::Items::SwitcherComponent < Avo::BaseComponent
   include Turbo::FramesHelper
 
-  attr_reader :resource
-  attr_reader :reflection
-  attr_reader :index
-  attr_reader :item
-  attr_reader :view
-
-  def initialize(
-    resource: nil,
-    reflection: nil,
-    item: nil,
-    index: nil,
-    view: nil,
-    form: nil,
-    parent_resource: nil,
-    parent_record: nil,
-    parent_component: nil,
-    actions: nil,
-    field_component_extra_args: {}
-  )
-    @resource = resource
-    @reflection = reflection
-    @form = form
-    @index = index
-    @item = item
-    @view = view
-    @parent_resource = parent_resource
-    @parent_record = parent_record
-    @parent_component = parent_component
-    @actions = actions
-    @field_component_extra_args = field_component_extra_args
-  end
+  prop :resource, _Nilable(Avo::BaseResource), reader: :public
+  prop :reflection, _Nilable(ActiveRecord::Reflection::AssociationReflection)
+  prop :index, _Void, reader: :public
+  prop :item, _Void, reader: :public
+  prop :view, _Void, reader: :public
+  prop :form, _Nilable(ActionView::Helpers::FormBuilder)
+  prop :parent_resource, _Void
+  prop :parent_record, _Void
+  prop :parent_component, _Void
+  prop :actions, _Nilable(_Array(Avo::BaseAction))
+  prop :field_component_extra_args, Hash, default: -> { {} }
 
   def form
     @form || nil
