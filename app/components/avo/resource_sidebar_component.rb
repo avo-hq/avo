@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::ResourceSidebarComponent < ViewComponent::Base
+class Avo::ResourceSidebarComponent < Avo::BaseComponent
   attr_reader :resource
   attr_reader :params
   attr_reader :view

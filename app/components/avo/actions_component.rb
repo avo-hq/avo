@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::ActionsComponent < ViewComponent::Base
+class Avo::ActionsComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
   attr_reader :label, :size, :as_row_control
 
