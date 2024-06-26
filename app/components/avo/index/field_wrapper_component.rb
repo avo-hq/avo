@@ -3,19 +3,19 @@
 class Avo::Index::FieldWrapperComponent < Avo::BaseComponent
   attr_reader :view
 
-  def initialize(field: nil, resource: nil, dash_if_blank: true, center_content: false, flush: false, **args)
-    @field = field
-    @resource = resource
-    @dash_if_blank = dash_if_blank
-    @center_content = center_content
-    @classes = args[:class].present? ? args[:class] : ""
-    @args = args
-    @flush = flush
+  prop :field, Avo::Fields::BaseField
+  prop :resource, _Any
+  prop :dash_if_blank, _Boolean, default: true
+  prop :center_content, _Boolean, default: false
+  prop :flush, _Boolean, default: false
+  prop :class, String, default: ""
+
+  def after_initialize
     @view = Avo::ViewInquirer.new("index")
   end
 
   def classes
-    result = @classes
+    result = @class
 
     unless @flush
       result += " py-3"

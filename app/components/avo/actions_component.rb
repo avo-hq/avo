@@ -5,7 +5,7 @@ class Avo::ActionsComponent < Avo::BaseComponent
 
   prop :actions, _Array(Avo::BaseAction), default: -> { [] }, reader: :public
   prop :resource, _Nilable(Avo::BaseResource)
-  prop :view, _Nilable(String)
+  prop :view, _Nilable(Symbol), &:to_sym
   prop :exclude, Array, default: -> { [] } do |value|
     Array(value)
   end

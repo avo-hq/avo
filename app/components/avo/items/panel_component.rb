@@ -3,19 +3,17 @@
 class Avo::Items::PanelComponent < Avo::ResourceComponent
   include Avo::ApplicationHelper
 
-  def initialize(form:, item:, is_main_panel:, resource:, view:, actions: nil, index: nil, parent_component: nil, parent_record: nil, parent_resource: nil, reflection: nil)
-    @actions = actions
-    @form = form
-    @index = index
-    @is_main_panel = is_main_panel
-    @item = item
-    @parent_component = parent_component
-    @parent_record = parent_record
-    @parent_resource = parent_resource
-    @reflection = reflection
-    @resource = resource
-    @view = view
-  end
+  prop :form, _Nilable(ActionView::Helpers::FormBuilder)
+  prop :item, _Any
+  prop :is_main_panel, _Boolean
+  prop :resource, Avo::BaseResource
+  prop :view, Symbol, &:to_sym
+  prop :actions, _Nilable(_Array(Avo::BaseAction))
+  prop :index, _Nilable(Integer)
+  prop :parent_component, _Void
+  prop :parent_record, _Nilable(ActiveRecord::Base)
+  prop :parent_resource, _Nilable(Avo::BaseResource)
+  prop :reflection, _Void
 
   delegate :controls,
     :title,

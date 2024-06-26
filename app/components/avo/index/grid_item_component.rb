@@ -4,16 +4,15 @@ class Avo::Index::GridItemComponent < Avo::BaseComponent
   include Avo::ResourcesHelper
   include Avo::Fields::Concerns::HasHTMLAttributes
 
-  attr_reader :parent_resource, :actions
+  prop :resource, Avo::BaseResource
+  prop :reflection, _Never
+  prop :parent_record, _Void
+  prop :parent_resource, _Void, reader: :public
+  prop :actions, _Void, reader: :public
 
-  def initialize(resource: nil, reflection: nil, parent_record: nil, parent_resource: nil, actions: nil)
-    @resource = resource
-    @reflection = reflection
-    @parent_record = parent_record
-    @parent_resource = parent_resource
-    @actions = actions
-    @card = Avo::ExecutionContext.new(target: resource.grid_view[:card], resource: resource, record: resource.record).handle
-    @whole_html = Avo::ExecutionContext.new(target: resource.grid_view[:html], resource: resource, record: resource.record).handle
+  def after_initialize
+    @card = Avo::ExecutionContext.new(target: @resource.grid_view[:card], resource: @resource, record: @resource.record).handle
+    @whole_html = Avo::ExecutionContext.new(target: @resource.grid_view[:html], resource: @resource, record: @resource.record).handle
   end
 
   private
