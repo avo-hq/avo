@@ -3,7 +3,7 @@
 class Avo::ModalComponent < Avo::BaseComponent
   SIZE = _Union(:md, :xl)
 
-  prop :width, SIZE, default: :md
+  prop :width, SIZE, default: SIZE[:md]
   prop :body_class, _Nilable(String)
 
   renders_one :heading
