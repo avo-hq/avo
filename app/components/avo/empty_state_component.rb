@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 class Avo::EmptyStateComponent < Avo::BaseComponent
-  ViewType = _Union(:map, :table, :grid)
+  VIEW_TYPE = _Union(:map, :table, :grid)
 
   prop :message, _Nilable(String), reader: :public
-  prop :view_type, ViewType, default: :table, reader: :public
+  prop :view_type, VIEW_TYPE, default: :table, reader: :public
   prop :add_background, _Boolean, default: false, reader: :public
   prop :by_association, _Boolean, default: false, reader: :public
 

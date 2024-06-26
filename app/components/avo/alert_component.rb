@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 class Avo::AlertComponent < Avo::BaseComponent
-  Type = _Union(:alert, :error, :info, :notice, :success, :warning)
+  TYPE = _Union(:alert, :error, :info, :notice, :success, :warning)
 
   include Avo::ApplicationHelper
 
-  prop :type, Type, :positional, reader: :public
+  prop :type, TYPE, :positional, reader: :public
   prop :message, String, :positional, reader: :public
 
   def icon
