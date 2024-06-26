@@ -1,20 +1,13 @@
 # frozen_string_literal: true
 
 class Avo::PaginatorComponent < Avo::BaseComponent
-  attr_reader :pagy
-  attr_reader :turbo_frame
-  attr_reader :index_params
-  attr_reader :resource
-  attr_reader :parent_record
-  attr_reader :discreet_pagination
-
-  def initialize(resource: nil, parent_record: nil, pagy: nil, turbo_frame: nil, index_params: nil, discreet_pagination: nil)
-    @pagy = pagy
-    @turbo_frame = turbo_frame
-    @index_params = index_params
-    @resource = resource
-    @parent_record = parent_record
-    @discreet_pagination = discreet_pagination
+  prop :resource, _Nilable(_Any), reader: :public
+  prop :parent_record, _Nilable(_Any), reader: :public
+  prop :pagy, _Nilable(Pagy), reader: :public
+  prop :turbo_frame, _Nilable(String), reader: :public
+  prop :index_params, _Nilable(Hash), reader: :public
+  prop :discreet_pagination, _Boolean, default: false, reader: :public do |value|
+    !!value
   end
 
   def change_items_per_page_url(option)

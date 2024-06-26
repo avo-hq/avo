@@ -1,22 +1,19 @@
 # frozen_string_literal: true
 
 class Avo::ModalComponent < Avo::BaseComponent
+  SIZE = _Union(:md, :xl)
+
+  prop :width, SIZE, default: :md
+  prop :body_class, _Nilable(String)
+
   renders_one :heading
   renders_one :controls
 
-  attr_reader :width
-  attr_reader :body_class
-
-  def initialize(width: :md, body_class: nil)
-    @width = width
-    @body_class = body_class
-  end
-
   def width_classes
-    case width.to_sym
-    when :md
+    case @width
+    in :md
       "w-11/12 lg:w-1/2 sm:max-w-168"
-    when :xl
+    in :xl
       "w-11/12 lg:w-3/4"
     end
   end
