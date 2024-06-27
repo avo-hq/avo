@@ -73,16 +73,7 @@ module Avo
       def whitelist_items
         return suggestions.to_json if enforce_suggestions
 
-        whitelist_items = case [suggestions, field_value]
-        in Array, Array
-          suggestions + field_value
-        in Hash, Hash
-          suggestions.merge field_value
-        else
-          suggestions
-        end
-
-        whitelist_items.to_json
+        (suggestions + field_value).to_json
       end
 
       def suggestions
