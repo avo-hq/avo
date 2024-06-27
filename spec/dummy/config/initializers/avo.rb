@@ -72,6 +72,7 @@ Avo.configure do |config|
   # ]
 
   config.alert_dismiss_time = 5000
+  config.search_results_count = 8
 
   ## == Menus ==
   config.main_menu = -> do

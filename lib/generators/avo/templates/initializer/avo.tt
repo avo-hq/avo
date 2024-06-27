@@ -61,6 +61,10 @@ Avo.configure do |config|
   ## == Response messages dismiss time ==
   # config.alert_dismiss_time = 5000
 
+
+  ## == Number of search results to display ==
+  # config.search_results_count = 8
+
   ## == Cache options ==
   ## Provide a lambda to customize the cache store used by Avo.
   ## We compute the cache store by default, this is NOT the default, just an example.
