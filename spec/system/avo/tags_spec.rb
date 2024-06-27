@@ -189,9 +189,9 @@ RSpec.describe "Tags", type: :system do
     it "keep correct tags on validations error and edit" do
       visit avo.new_resources_course_path
 
-      input_element = find('.tagify__input')
+      input_element = find(".tagify__input")
       input_element.click
-      input_element.send_keys('Bob')
+      input_element.send_keys("Bob")
       sleep 1
       input_element.send_keys(:enter)
       sleep 1
@@ -202,9 +202,9 @@ RSpec.describe "Tags", type: :system do
 
       fill_in "course_name", with: "The course"
 
-      input_element = find('.tagify__input')
+      input_element = find(".tagify__input")
       input_element.click
-      input_element.send_keys('Bob')
+      input_element.send_keys("Bob")
       sleep 1
       input_element.send_keys(:enter)
       sleep 1
