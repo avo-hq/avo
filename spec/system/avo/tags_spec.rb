@@ -191,9 +191,10 @@ RSpec.describe "Tags", type: :system do
       input_element = find(".tagify__input")
       input_element.click
       input_element.send_keys("Bob")
-      sleep 1
+      wait_until { page.has_text?("#{users[0].first_name} #{users[0].last_name}") }
       input_element.send_keys(:enter)
-      sleep 1
+      wait_until { page.has_css?('.tagify__tag-text', count: 1) }
+      sleep 0.5
       save
 
       expect(page).to have_text "Name can't be blank"
@@ -204,9 +205,10 @@ RSpec.describe "Tags", type: :system do
       input_element = find(".tagify__input")
       input_element.click
       input_element.send_keys("Bob")
-      sleep 1
+      wait_until { page.has_text?("#{users[1].first_name} #{users[1].last_name}") }
       input_element.send_keys(:enter)
-      sleep 1
+      wait_until { page.has_css?('.tagify__tag-text', count: 2) }
+      sleep 0.5
       save
 
       expect(Course.last.skills.map(&:to_i)).to eql(users.pluck(:id))
@@ -225,4 +227,10 @@ end
 
 def tags_element(parent)
   parent.find "tags.tagify"
+end
+
+def wait_until
+  Timeout.timeout(Capybara.default_max_wait_time) do
+    loop until yield
+  end
 end
