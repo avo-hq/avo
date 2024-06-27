@@ -212,7 +212,7 @@ RSpec.describe "Tags", type: :system do
 
       expect(Course.last.skills.map(&:to_i)).to eql(users.pluck(:id))
 
-      ENV['TESTING_TAGS_FORMAT_USING'] = nil
+      ENV["TESTING_TAGS_FORMAT_USING"] = nil
     end
   end
 end
