@@ -3,7 +3,7 @@
 # A button/link can have the following settings:
 # style: primary/outline/text
 # size: :xs :sm, :md, :lg
-class Avo::ButtonComponent < ViewComponent::Base
+class Avo::ButtonComponent < Avo::BaseComponent
   def initialize(path = nil, size: :md, style: :outline, color: :gray, icon: nil, icon_class: "", is_link: false, rounded: true, compact: false, aria: {}, **args)
     # Main settings
     @size = size

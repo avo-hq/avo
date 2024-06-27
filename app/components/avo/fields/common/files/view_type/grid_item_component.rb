@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::Fields::Common::Files::ViewType::GridItemComponent < ViewComponent::Base
+class Avo::Fields::Common::Files::ViewType::GridItemComponent < Avo::BaseComponent
   attr_reader :field, :resource
 
   def initialize(field:, resource:, file: nil, extra_classes: nil)

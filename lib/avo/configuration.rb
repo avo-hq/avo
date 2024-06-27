@@ -49,6 +49,7 @@ module Avo
     attr_accessor :resource_parent_controller
     attr_accessor :mount_avo_engines
     attr_accessor :default_url_options
+    attr_accessor :click_row_to_view_record
     attr_accessor :alert_dismiss_time
 
     def initialize
@@ -106,6 +107,7 @@ module Avo
       @turbo = default_turbo
       @default_url_options = []
       @pagination = {}
+      @click_row_to_view_record = false
       @alert_dismiss_time = 5000
     end
 

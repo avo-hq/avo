@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::SidebarProfileComponent < ViewComponent::Base
+class Avo::SidebarProfileComponent < Avo::BaseComponent
   attr_reader :user
 
   def initialize(user:)

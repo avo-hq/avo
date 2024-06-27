@@ -108,6 +108,7 @@ Avo.configure do |config|
   # config.buttons_on_form_footers = true
   # config.field_wrapper_layout = true
   # config.resource_parent_controller = "Avo::ResourcesController"
+  # config.click_row_to_view_record = false
 
   ## == Branding ==
   # config.branding = {
