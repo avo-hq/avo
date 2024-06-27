@@ -176,7 +176,6 @@ RSpec.describe "Tags", type: :system do
     let!(:courses) { create_list :course, 2, skills: users.pluck(:id) }
     let(:tag_input) { tags_element(find_field_value_element("skills")) }
 
-
     it "fetches the labels" do
       ENV["TESTING_TAGS_FORMAT_USING"] = "1"
 
