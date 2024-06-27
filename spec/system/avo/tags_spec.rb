@@ -174,7 +174,8 @@ RSpec.describe "Tags", type: :system do
   describe "format_using (same as deprecated fetch_labels) with fetch_values_from" do
     let!(:users) { create_list :user, 2, first_name: "Bob" }
     let!(:courses) { create_list :course, 2, skills: users.pluck(:id) }
-    let(:tag_input) { tags_element(find_field_value_element("skills")) }
+    let(:field_value_slot) { tags_element(find_field_value_element("skills")) }
+    let(:tags_input) { field_value_slot.find("span[contenteditable]") }
 
     it "fetches the labels" do
       ENV["TESTING_TAGS_FORMAT_USING"] = "1"
@@ -189,12 +190,12 @@ RSpec.describe "Tags", type: :system do
     it "keep correct tags on validations error and edit" do
       visit avo.new_resources_course_path
 
-      tag_input.click
-      tag_input.send_keys("Bob")
-      wait_until { page.has_text?("#{users[0].first_name} #{users[0].last_name}") }
-      tag_input.send_keys(:enter)
-      wait_until { page.has_css?(".tagify__tag-text", count: 1) }
-      sleep 0.5
+      tags_input.click
+      tags_input.set("Bob")
+      wait_for_tags_to_load(field_value_slot)
+      type(:return)
+
+      sleep 0.3
       save
 
       expect(page).to have_text "Name can't be blank"
@@ -202,12 +203,12 @@ RSpec.describe "Tags", type: :system do
 
       fill_in "course_name", with: "The course"
 
-      tag_input.click
-      tag_input.send_keys("Bob")
-      wait_until { page.has_text?("#{users[1].first_name} #{users[1].last_name}") }
-      tag_input.send_keys(:enter)
-      wait_until { page.has_css?(".tagify__tag-text", count: 2) }
-      sleep 0.5
+      tags_input.click
+      tags_input.set("Bob")
+      wait_for_tags_to_load(field_value_slot)
+      type(:return)
+
+      sleep 0.3
       save
 
       expect(Course.last.skills.map(&:to_i)).to eql(users.pluck(:id))
