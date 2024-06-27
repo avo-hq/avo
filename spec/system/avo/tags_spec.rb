@@ -193,7 +193,8 @@ RSpec.describe "Tags", type: :system do
       tags_input.click
       tags_input.set("Bob")
       wait_for_tags_to_load(field_value_slot)
-      type(:return)
+      type(:down)
+      type(:down, :return)
 
       sleep 0.3
       save
@@ -206,7 +207,8 @@ RSpec.describe "Tags", type: :system do
       tags_input.click
       tags_input.set("Bob")
       wait_for_tags_to_load(field_value_slot)
-      type(:return)
+      type(:down)
+      type(:down, :return)
 
       sleep 0.3
       save
