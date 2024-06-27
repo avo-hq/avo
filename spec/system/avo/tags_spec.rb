@@ -178,12 +178,24 @@ RSpec.describe "Tags", type: :system do
     let(:tags_input) { field_value_slot.find("span[contenteditable]") }
 
     it "fetches the labels" do
-      ENV["TESTING_TAGS_FORMAT_USING"] = "1"
+      Avo::Resources::Course.with_temporary_items do
+        field :name
+        field :skills,
+        as: :tags,
+        fetch_values_from: "/admin/resources/users/get_users", # {value: 1, label: "Jose"}
+        format_using: -> {
+          User.find(value).map do |user|
+            {
+              value: user.id,
+              label: user.name
+            }
+          end
+        }
+      end
 
-      visit avo.resources_course_path(courses.first)
+      visit avo.resources_courses_path
+
       expect(page).to have_text "#{users[0].first_name} #{users[0].last_name}"
-
-      visit avo.resources_course_path(courses.last)
       expect(page).to have_text "#{users[1].first_name} #{users[1].last_name}"
     end
 
@@ -215,7 +227,7 @@ RSpec.describe "Tags", type: :system do
 
       expect(Course.last.skills.map(&:to_i)).to eql(users.pluck(:id))
 
-      ENV["TESTING_TAGS_FORMAT_USING"] = nil
+      Avo::Resources::Course.restore_items_from_backup
     end
   end
 end
