@@ -181,16 +181,16 @@ RSpec.describe "Tags", type: :system do
       Avo::Resources::Course.with_temporary_items do
         field :name
         field :skills,
-        as: :tags,
-        fetch_values_from: "/admin/resources/users/get_users", # {value: 1, label: "Jose"}
-        format_using: -> {
-          User.find(value).map do |user|
-            {
-              value: user.id,
-              label: user.name
-            }
-          end
-        }
+          as: :tags,
+          fetch_values_from: "/admin/resources/users/get_users", # {value: 1, label: "Jose"}
+          format_using: -> {
+            User.find(value).map do |user|
+              {
+                value: user.id,
+                label: user.name
+              }
+            end
+          }
       end
 
       visit avo.resources_courses_path
