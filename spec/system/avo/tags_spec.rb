@@ -170,6 +170,51 @@ RSpec.describe "Tags", type: :system do
       Avo::Resources::Course.restore_items_from_backup
     end
   end
+
+  describe "format_using (same as deprecated fetch_labels) with fetch_values_from" do
+    let!(:users) { create_list :user, 2, first_name: "Bob" }
+    let!(:courses) { create_list :course, 2, skills: users.pluck(:id) }
+
+    it "fetches the labels" do
+      ENV["TESTING_TAGS_FORMAT_USING"] = "1"
+
+      visit avo.resources_course_path(courses.first)
+      expect(page).to have_text "#{users[0].first_name} #{users[0].last_name}"
+
+      visit avo.resources_course_path(courses.last)
+      expect(page).to have_text "#{users[1].first_name} #{users[1].last_name}"
+
+    end
+
+    it "keep correct tags on validations error and edit" do
+      visit avo.new_resources_course_path
+
+      input_element = find('.tagify__input')
+      input_element.click
+      input_element.send_keys('Bob')
+      sleep 1
+      input_element.send_keys(:enter)
+      sleep 1
+      save
+
+      expect(page).to have_text "Name can't be blank"
+      expect(page).to have_text "#{users[0].first_name} #{users[0].last_name}"
+
+      fill_in "course_name", with: "The course"
+
+      input_element = find('.tagify__input')
+      input_element.click
+      input_element.send_keys('Bob')
+      sleep 1
+      input_element.send_keys(:enter)
+      sleep 1
+      save
+
+      expect(Course.last.skills.map(&:to_i)).to eql(users.pluck(:id))
+
+      ENV['TESTING_TAGS_FORMAT_USING'] = nil
+    end
+  end
 end
 
 def wait_for_tags_to_load(element, time = Capybara.default_max_wait_time)

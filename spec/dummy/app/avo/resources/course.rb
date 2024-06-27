@@ -51,22 +51,36 @@ class Avo::Resources::Course < Avo::BaseResource
         end
       end
 
-      field :skills,
+      if ENV["TESTING_TAGS_FORMAT_USING"] == "1"
+        field :skills,
         as: :tags,
-        disallowed: -> { record.skill_disallowed },
-        suggestions: -> { record.skill_suggestions },
-        html: -> do
-          edit do
-            wrapper do
-              classes do
-                unless record.has_skills
-                  "hidden"
+        fetch_values_from: "/admin/resources/users/get_users?hey=you&record_id=1", #{value: 1, label: "Jose"}
+        format_using: -> {
+          User.find(value).map do |user|
+            {
+              value: user.id,
+              label: user.name
+            }
+          end
+        }
+      else
+        field :skills,
+          as: :tags,
+          disallowed: -> { record.skill_disallowed },
+          suggestions: -> { record.skill_suggestions },
+          html: -> do
+            edit do
+              wrapper do
+                classes do
+                  unless record.has_skills
+                    "hidden"
+                  end
                 end
+                # classes: "hidden"
               end
-              # classes: "hidden"
             end
           end
-        end
+      end
     end
 
     field :starting_at,
