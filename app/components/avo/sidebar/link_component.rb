@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::Sidebar::LinkComponent < ViewComponent::Base
+class Avo::Sidebar::LinkComponent < Avo::BaseComponent
   attr_reader :active
   attr_reader :target
   attr_reader :label

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::DividerComponent < ViewComponent::Base
+class Avo::DividerComponent < Avo::BaseComponent
   attr_reader :label
 
   def initialize(label = nil, **args)

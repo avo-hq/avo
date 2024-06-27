@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::TurboFrameWrapperComponent < ViewComponent::Base
+class Avo::TurboFrameWrapperComponent < Avo::BaseComponent
   attr_reader :name
 
   def initialize(name = nil)

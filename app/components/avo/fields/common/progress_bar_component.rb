@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::Fields::Common::ProgressBarComponent < ViewComponent::Base
+class Avo::Fields::Common::ProgressBarComponent < Avo::BaseComponent
   attr_reader :value
   attr_reader :display_value
   attr_reader :value_suffix

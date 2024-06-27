@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::Sidebar::BaseItemComponent < ViewComponent::Base
+class Avo::Sidebar::BaseItemComponent < Avo::BaseComponent
   attr_reader :item
 
   def initialize(item: nil)
