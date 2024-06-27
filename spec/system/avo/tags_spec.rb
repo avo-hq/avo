@@ -193,7 +193,7 @@ RSpec.describe "Tags", type: :system do
       input_element.send_keys("Bob")
       wait_until { page.has_text?("#{users[0].first_name} #{users[0].last_name}") }
       input_element.send_keys(:enter)
-      wait_until { page.has_css?('.tagify__tag-text', count: 1) }
+      wait_until { page.has_css?(".tagify__tag-text", count: 1) }
       sleep 0.5
       save
 
@@ -207,7 +207,7 @@ RSpec.describe "Tags", type: :system do
       input_element.send_keys("Bob")
       wait_until { page.has_text?("#{users[1].first_name} #{users[1].last_name}") }
       input_element.send_keys(:enter)
-      wait_until { page.has_css?('.tagify__tag-text', count: 2) }
+      wait_until { page.has_css?(".tagify__tag-text", count: 2) }
       sleep 0.5
       save
 
