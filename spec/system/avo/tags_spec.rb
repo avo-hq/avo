@@ -183,7 +183,6 @@ RSpec.describe "Tags", type: :system do
 
       visit avo.resources_course_path(courses.last)
       expect(page).to have_text "#{users[1].first_name} #{users[1].last_name}"
-
     end
 
     it "keep correct tags on validations error and edit" do

@@ -53,16 +53,16 @@ class Avo::Resources::Course < Avo::BaseResource
 
       if ENV["TESTING_TAGS_FORMAT_USING"] == "1"
         field :skills,
-        as: :tags,
-        fetch_values_from: "/admin/resources/users/get_users?hey=you&record_id=1", #{value: 1, label: "Jose"}
-        format_using: -> {
-          User.find(value).map do |user|
-            {
-              value: user.id,
-              label: user.name
-            }
-          end
-        }
+          as: :tags,
+          fetch_values_from: "/admin/resources/users/get_users?hey=you&record_id=1", #{value: 1, label: "Jose"}
+          format_using: -> {
+            User.find(value).map do |user|
+              {
+                value: user.id,
+                label: user.name
+              }
+            end
+          }
       else
         field :skills,
           as: :tags,
