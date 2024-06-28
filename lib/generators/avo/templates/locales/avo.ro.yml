@@ -42,6 +42,9 @@ ro:
     failed: A eșuat
     failed_to_find_attachment: Atașamentul nu a fost găsit
     failed_to_load: Încărcarea a eșuat
+    file:
+      one: fişier
+      other: fişiere
     filter_by: Filtează după
     filters: Filtre
     go_back: Înapoi

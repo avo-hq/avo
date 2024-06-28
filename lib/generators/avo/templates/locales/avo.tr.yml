@@ -42,6 +42,9 @@ tr:
     failed: Başarısız
     failed_to_find_attachment: Ek bulunamadı
     failed_to_load: Yüklenemedi
+    file:
+      one: dosya
+      other: dosyalar
     filter_by: Tarafından filtre
     filters: Filtreler
     go_back: Geri dön

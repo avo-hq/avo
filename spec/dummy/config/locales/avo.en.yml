@@ -43,6 +43,9 @@ en:
     failed: Failed
     failed_to_find_attachment: Failed to find attachment
     failed_to_load: Failed to load
+    file:
+      one: file
+      other: files
     filter_by: Filter by
     filters: Filters
     go_back: Go back

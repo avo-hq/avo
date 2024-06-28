@@ -42,6 +42,9 @@ nb:
     failed: Feilet
     failed_to_find_attachment: Fant ikke vedlegg
     failed_to_load: Lasting feilet
+    file:
+      one: file
+      other: files
     filter_by: Filtrer etter
     filters: Filter
     go_back: Gå tilbake

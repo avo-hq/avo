@@ -42,6 +42,9 @@ fr:
     failed: Échec
     failed_to_find_attachment: Impossible de trouver la pièce jointe
     failed_to_load: Impossible de charger
+    file:
+      one: fichier
+      other: fichiers
     filter_by: Filtrer par
     filters: Filtres
     go_back: Retourner en arrière

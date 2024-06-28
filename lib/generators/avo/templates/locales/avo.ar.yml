@@ -42,6 +42,9 @@ ar:
     failed: فشل
     failed_to_find_attachment: فشل في العثور على المرفق
     failed_to_load: فشل التحميل
+    file:
+      one: ملف
+      other: ملفات
     filter_by: تصفية حسب
     filters: مرشحات
     go_back: العودة للخلف
