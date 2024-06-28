@@ -6,12 +6,6 @@
   <% end %>
 <% end %>
 
-<% if @errors&.any? %>
-  <% @errors.each do |message| %>
-    <%= render Avo::AlertComponent.new :error, message %>
-  <% end %>
-<% end %>
-
 <% if @backtrace&.present? && Avo::Current.user_is_developer? %>
   <%= render Avo::BacktraceAlertComponent.new backtrace: @backtrace %>
 <% end %>

@@ -219,22 +219,18 @@ module Avo
     def perform_action_and_record_errors(&block)
       begin
         succeeded = block.call
-      rescue ActiveRecord::RecordInvalid
+      rescue ActiveRecord::RecordInvalid => e
         # Do nothing as the record errors are already being displayed
       rescue => exception
         # In case there's an error somewhere else than the record
         # Example: When you save a license that should create a user for it and creating that user throws and error.
         # Example: When you Try to delete a record and has a foreign key constraint.
-        # puts ["exception.class->", exception.class].inspect
-        exception_message = exception.message
+        @record.errors.add(:base, exception.message)
         @backtrace = exception.backtrace
       end
 
-      @errors = []
-
-      @errors << exception_message if exception_message.present?
-
-      @errors.any? ? false : succeeded
+      # This method only needs to return true or false to indicate if the action was successful
+      @record.errors.any? ? false : succeeded
     end
 
     def model_params
@@ -523,7 +519,8 @@ module Avo
     end
 
     def destroy_fail_message
-      @errors.present? ? @errors.join(". ") : t("avo.failed")
+      errors = @record.errors.full_messages
+      errors.present? ? errors.join(". ") : t("avo.failed")
     end
 
     def after_destroy_path
