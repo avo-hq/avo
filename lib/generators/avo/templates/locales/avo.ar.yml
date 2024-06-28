@@ -4,6 +4,13 @@ ar:
     action_ran_successfully: تم تنفيذ الأمر بنجاح!
     actions: أوامر
     and_x_other_resources: و %{count} موارد أخرى
+    applied:
+      few: applied
+      many: applied
+      one: applied
+      other: applied
+      two: applied
+      zero: applied
     are_you_sure: هل أنت متأكد؟
     are_you_sure_detach_item: هل أنت متأكد أنك تريد فصل هذا الـ%{item}؟
     are_you_sure_you_want_to_run_this_option: هل أنت متأكد أنك تريد تشغيل هذا الخيار؟
@@ -39,6 +46,13 @@ ar:
     failed: فشل
     failed_to_find_attachment: فشل في العثور على المرفق
     failed_to_load: فشل التحميل
+    file:
+      few: ملفات
+      many: ملفات
+      one: ملف
+      other: ملفات
+      two: ملفات
+      zero:
     filter_by: تصفية حسب
     filters: مرشحات
     go_back: العودة للخلف

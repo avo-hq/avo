@@ -3,6 +3,9 @@ ja:
     action_ran_successfully: アクションは正常に実行されました！
     actions: アクション
     and_x_other_resources: その他%{count}件のリソース
+    applied:
+      one: applied
+      other: applied
     are_you_sure: 本当によろしいですか？
     are_you_sure_detach_item: この%{item}をデタッチしてもよろしいですか？
     are_you_sure_you_want_to_run_this_option: このアクションを実行してもよろしいですか？
@@ -38,6 +41,9 @@ ja:
     failed: 失敗
     failed_to_find_attachment: アタッチメントを見つけるのに失敗
     failed_to_load: 読み込みに失敗
+    file:
+      one: ファイル
+      other: ファイル
     filter_by: フィルター条件
     filters: フィルター
     go_back: 戻る
