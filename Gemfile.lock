@@ -670,6 +670,7 @@ DEPENDENCIES
   chartkick
   countries
   cssbundling-rails
+  csv
   cuprite
   database_cleaner-active_record
   devise
