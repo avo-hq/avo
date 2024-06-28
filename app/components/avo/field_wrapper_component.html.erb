@@ -22,6 +22,7 @@
       {
         "pb-4": stacked?,
         "py-2": !compact?,
+        "py-1": compact?,
       }), data: {slot: "value"} do %>
     <div class="self-center w-full <% unless full_width? || compact? || stacked? %> md:w-8/12 has-sidebar:w-full <% end %>">
       <% if on_show? %>
