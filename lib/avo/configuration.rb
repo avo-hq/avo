@@ -50,6 +50,8 @@ module Avo
     attr_accessor :mount_avo_engines
     attr_accessor :default_url_options
     attr_accessor :alert_dismiss_time
+    attr_accessor :is_admin_method
+    attr_accessor :is_developer_method
 
     def initialize
       @root_path = "/avo"
@@ -107,6 +109,8 @@ module Avo
       @default_url_options = []
       @pagination = {}
       @alert_dismiss_time = 5000
+      @is_admin_method = :is_admin?
+      @is_developer_method = :is_developer?
     end
 
     def current_user_method(&block)

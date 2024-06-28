@@ -224,6 +224,7 @@ module Avo
         # Example: When you save a license that should create a user for it and creating that user throws and error.
         # Example: When you Try to delete a record and has a foreign key constraint.
         exception_message = exception.message
+        @backtrace = exception.backtrace
       end
 
       # Add the errors from the record

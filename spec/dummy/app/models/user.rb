@@ -84,4 +84,8 @@ class User < ApplicationRecord
   def accounts
     [OpenStruct.new(id: 1, name: "Foo"), OpenStruct.new(id: 2, name: "Bar")]
   end
+
+  def is_developer?
+    true
+  end
 end
