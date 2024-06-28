@@ -188,3 +188,5 @@ gem "avo-record_link_field"
 
 # gem "pagy", "< 8.0.0"
 gem "pagy", "> 8"
+
+gem "csv"
