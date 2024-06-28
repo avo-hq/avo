@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::Fields::Common::Files::ListViewerComponent < ViewComponent::Base
+class Avo::Fields::Common::Files::ListViewerComponent < Avo::BaseComponent
   include Turbo::FramesHelper
 
   attr_reader :field, :resource

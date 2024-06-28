@@ -4,6 +4,9 @@ fr:
     action_ran_successfully: L'action s'est exécutée avec succès !
     actions: Actions
     and_x_other_resources: et %{count} autres ressources
+    applied:
+      one: appliqué
+      other: appliqués
     are_you_sure: Êtes-vous sûr ?
     are_you_sure_detach_item: Êtes-vous sûr de vouloir détacher %{item}.
     are_you_sure_you_want_to_run_this_option: Etes-vous sûr de vouloir exécuter cette action ?
@@ -39,6 +42,9 @@ fr:
     failed: Échec
     failed_to_find_attachment: Impossible de trouver la pièce jointe
     failed_to_load: Impossible de charger
+    file:
+      one: fichier
+      other: fichiers
     filter_by: Filtrer par
     filters: Filtres
     go_back: Retourner en arrière

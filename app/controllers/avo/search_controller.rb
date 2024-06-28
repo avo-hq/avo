@@ -53,7 +53,7 @@ module Avo
       results_count = query.reselect(resource.model_class.primary_key).count
 
       # Get the results
-      query = query.limit(8)
+      query = query.limit(Avo.configuration.search_results_count)
 
       results = apply_search_metadata(query, resource)
 

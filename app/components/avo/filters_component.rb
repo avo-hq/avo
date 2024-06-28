@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::FiltersComponent < ViewComponent::Base
+class Avo::FiltersComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
 
   def initialize(filters: [], resource: nil, applied_filters: [], parent_record: nil)
