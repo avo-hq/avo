@@ -7,6 +7,7 @@ en:
     action_ran_successfully: Action ran successfully!
     actions: Actions
     and_x_other_resources: and %{count} other resources
+    applied: applied
     are_you_sure: Are you sure?
     are_you_sure_detach_item: Are you sure you want to detach this %{item}.
     are_you_sure_you_want_to_run_this_option: Are you sure you want to run this action?

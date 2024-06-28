@@ -4,6 +4,9 @@ ro:
     action_ran_successfully: Acțiunea a rulat cu succes!
     actions: Acțiuni
     and_x_other_resources: plus alte %{count} recorduri
+    applied:
+      one: aplicat
+      other: aplicate
     are_you_sure: Ești sigur?
     are_you_sure_detach_item: Sigur vrei să detașezi asta %{item}.
     are_you_sure_you_want_to_run_this_option: Ești sigur că vrei să rulezi aceasta acțiune?

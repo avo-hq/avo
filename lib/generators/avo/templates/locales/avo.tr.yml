@@ -4,6 +4,9 @@ tr:
     action_ran_successfully: Eylem başarıyla gerçekleşti!
     actions: Aksiyonlar
     and_x_other_resources: ve %{count} diğer kaynak
+    applied:
+      one: uygulandı
+      other: uygulanan
     are_you_sure: Emin misiniz?
     are_you_sure_detach_item: "%{item} öğesini ayırmak istediğinizden emin misiniz?"
     are_you_sure_you_want_to_run_this_option: Bu işlemi gerçekleştirmek istediğinize emin misiniz?

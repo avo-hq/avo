@@ -4,6 +4,9 @@ es:
     action_ran_successfully: "¡Acción ejecutada con éxito!"
     actions: Acciones
     and_x_other_resources: y %{count} otros recursos
+    applied:
+      one: aplicado
+      other: aplicados
     are_you_sure: "¿Estás seguro?"
     are_you_sure_detach_item: "¿Estás seguro de que quieres separar este/a %{item}?"
     are_you_sure_you_want_to_run_this_option: "¿Estás seguro de que quieres ejectuar esta acción?"

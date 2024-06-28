@@ -10,7 +10,7 @@
       'data-tippy': 'tooltip' do %>
       <%= t 'avo.filters' %>
       <% if @applied_filters.present? %>
-        <span class="ml-1">(<%= @applied_filters.count %> applied)</span>
+        <span class="ml-1">(<%="#{@applied_filters.count} #{t('avo.applied', count: @applied_filters.count)}"%>)</span>
       <% end %>
     <% end %>
     <div

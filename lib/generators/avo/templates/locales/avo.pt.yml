@@ -4,6 +4,9 @@ pt:
     action_ran_successfully: Ação executada com sucesso!
     actions: Ações
     and_x_other_resources: e %{count} outros recursos
+    applied:
+      one: aplicado
+      other: aplicados
     are_you_sure: Tem a certeza?
     are_you_sure_detach_item: Tem a certeza que deseja separar este %{item}.
     are_you_sure_you_want_to_run_this_option: Tem a certeza que deseja executar esta ação?

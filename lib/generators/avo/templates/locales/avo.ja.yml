@@ -3,6 +3,9 @@ ja:
     action_ran_successfully: アクションは正常に実行されました！
     actions: アクション
     and_x_other_resources: その他%{count}件のリソース
+    applied:
+      one: applied
+      other: applied
     are_you_sure: 本当によろしいですか？
     are_you_sure_detach_item: この%{item}をデタッチしてもよろしいですか？
     are_you_sure_you_want_to_run_this_option: このアクションを実行してもよろしいですか？
