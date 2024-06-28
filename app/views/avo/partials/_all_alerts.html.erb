@@ -1,28 +1,17 @@
-<%= turbo_stream.append "alerts" do %>
-  <%= render Avo::FlashAlertsComponent.new flashes: flash %>
-<% end %>
+<%= render Avo::FlashAlertsComponent.new flashes: flash %>
 
-<%# Print out stack traces if we have any %>
 <% if @record&.errors&.any? %>
-  <%= turbo_stream.append("alerts") do %>
-    <% @record.errors.full_messages.each do |message| %>
-      <%= render Avo::AlertComponent.new :error, message %>
-    <% end %>
+  <% @record.errors.full_messages.each do |message| %>
+    <%= render Avo::AlertComponent.new :error, message %>
   <% end %>
 <% end %>
 
-<%# In case we have other general error messages %>
 <% if @errors&.any? %>
-  <%= turbo_stream.append("alerts") do %>
-    <% @errors.each do |message| %>
-      <%= render Avo::AlertComponent.new :error, message %>
-    <% end %>
+  <% @errors.each do |message| %>
+    <%= render Avo::AlertComponent.new :error, message %>
   <% end %>
 <% end %>
 
-<%# In case we have a backtrace from an error %>
 <% if @backtrace&.present? && Avo::Current.user_is_developer? %>
-  <%= turbo_stream.append("alerts") do %>
-    <%= render Avo::BacktraceAlertComponent.new backtrace: @backtrace %>
-  <% end %>
+  <%= render Avo::BacktraceAlertComponent.new backtrace: @backtrace %>
 <% end %>

@@ -1,3 +1,5 @@
 <%= turbo_stream.replace(frame_id(@resource), template: "avo/base/edit") %>
 
-<%= render partial: "avo/partials/all_alerts" %>
+<%= turbo_stream.append "alerts" do %>
+  <%= render partial: "avo/partials/all_alerts" %>
+<% end %>
