@@ -20,6 +20,12 @@ class Course < ApplicationRecord
 
   validates :name, presence: true
 
+  # Used to test the backtrace alert
+  after_save do
+    raise "raised" if ENV["TEST_BACKTRACE_ALERT"] == "1"
+    # raise "raised"
+  end
+
   def has_skills
     true
   end
@@ -29,7 +35,7 @@ class Course < ApplicationRecord
   end
 
   def skill_suggestions
-    ["example suggestion", "example tag", name]
+    ["example suggestion", "example tag", name].compact
   end
 
   def skill_disallowed

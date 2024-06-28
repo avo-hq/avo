@@ -37,8 +37,25 @@ module Avo
       end
     end
 
-    def item_selector_init(resource)
-      "data-resource-name='#{resource.model_key}' data-resource-id='#{resource.record.to_param}' data-controller='item-selector'"
+    def item_selector_data_attributes(resource, controller: "")
+      {
+        resource_name: resource.model_key,
+        resource_id: resource.record.to_param,
+        controller: "item-selector #{controller}"
+      }
+    end
+
+    def resource_show_path(resource:, parent_resource: nil, parent_record: nil, parent_or_child_resource: nil)
+      args = {}
+
+      if parent_record.present?
+        args = {
+          via_resource_class: parent_resource.class.to_s,
+          via_record_id: parent_record.to_param
+        }
+      end
+
+      resource_path(record: resource.record, resource: parent_or_child_resource, **args)
     end
   end
 end

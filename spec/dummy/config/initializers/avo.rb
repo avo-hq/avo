@@ -17,6 +17,8 @@ Avo.configure do |config|
 
   ## == App context ==
   config.current_user_method = :current_user
+  # config.is_admin_method = :is_admin?
+  # config.is_developer_method = :is_developer?
   config.model_resource_mapping = {
     User: "User"
   }
@@ -27,6 +29,7 @@ Avo.configure do |config|
       params: request.params
     }
   end
+  config.locale = :en
   # config.raise_error_on_missing_policy = true
   # config.authorization_client = "Avo::Services::AuthorizationClients::ExtraPunditClient"
 
@@ -39,6 +42,7 @@ Avo.configure do |config|
   config.search_debounce = 300
   # config.field_wrapper_layout = :stacked
   config.cache_resource_filters = false
+  config.click_row_to_view_record = true
 
   ## == Branding ==
   config.branding = {
@@ -69,6 +73,9 @@ Avo.configure do |config|
   #   "Avo::Resources::User",
   #   "Avo::Resources::Fish"
   # ]
+
+  config.alert_dismiss_time = 5000
+  config.search_results_count = 8
 
   ## == Menus ==
   config.main_menu = -> do

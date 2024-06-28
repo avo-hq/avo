@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-class Avo::ActionsComponent < ViewComponent::Base
+class Avo::ActionsComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
   attr_reader :label, :size, :as_row_control
 
-  def initialize(actions: [], resource: nil, view: nil, exclude: [], include: [], style: :outline, color: :primary, label: nil, size: :md, as_row_control: false, icon: "heroicons/outline/arrow-down-circle")
+  def initialize(actions: [], resource: nil, view: nil, exclude: [], include: [], style: :outline, color: :primary, label: nil, size: :md, as_row_control: false, icon: nil)
     @actions = actions || []
     @resource = resource
     @view = view
@@ -86,14 +86,20 @@ class Avo::ActionsComponent < ViewComponent::Base
   end
 
   def render_item(action)
-    if action.is_a?(Avo::DividerComponent)
-      render Avo::DividerComponent.new
-    else
+    case action
+    when Avo::Divider
+      render_divider(action)
+    when Avo::BaseAction
       render_action_link(action)
     end
   end
 
   private
+
+  def render_divider(action)
+    label = action.label.is_a?(Hash) ? action.label[:label] : nil
+    render Avo::DividerComponent.new(label)
+  end
 
   def render_action_link(action)
     link_to action_path(action),

@@ -1,12 +1,17 @@
 <%# hover:z-[21] removed from tr class to solve flickering actions component on row controls and z-20 changed to z-21%>
-<tr
-  class="bg-white hover:bg-gray-50 hover:shadow-row z-21 border-b"
-  data-component-name="<%= self.class.to_s.underscore %>"
-  <%== item_selector_init @resource %>
-  data-resource-name="<%= @resource.class.to_s %>"
-  data-record-id="<%= @resource.record.id %>"
-  <%= try :drag_reorder_item_attributes %>
->
+<%= content_tag :tr,
+  class: class_names("bg-white hover:bg-gray-50 hover:shadow-row z-21 border-b", {"cursor-pointer": click_row_to_view_record}),
+  data: {
+    component_name: self.class.to_s.underscore,
+    resource_name: @resource.class.to_s,
+    record_id: @resource.record.id,
+    **(click_row_to_view_record ? {
+      visit_path: helpers.resource_show_path(resource: @resource, parent_resource: @parent_resource, parent_record: @parent_record, parent_or_child_resource:),
+      action: "click->table-row#visitRecord keydown.enter->table-row#visitRecord keydown.space->table-row#visitRecord"
+    } : {}),
+    **item_selector_data_attributes(@resource, controller: class_names("table-row": click_row_to_view_record)),
+    **(try(:drag_reorder_item_data_attributes) || {}),
+  } do %>
   <% if @resource.record_selector %>
     <td class="w-10">
       <div class="flex justify-center h-full">
@@ -43,4 +48,4 @@
       </div>
     </td>
   <% end %>
-</tr>
+<% end %>

@@ -32,16 +32,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   end
 
   def show_path
-    args = {}
-
-    if @parent_record.present?
-      args = {
-        via_resource_class: parent_resource.class.to_s,
-        via_record_id: @parent_record.to_param
-      }
-    end
-
-    helpers.resource_path(record: @resource.record, resource: parent_or_child_resource, **args)
+    helpers.resource_show_path(resource: @resource, parent_or_child_resource: parent_or_child_resource, parent_resource: parent_resource, parent_record: @parent_record)
   end
 
   def edit_path
@@ -148,7 +139,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     a_button url: helpers.resource_detach_path(params[:resource_name], params[:id], params[:related_name], @resource.record.id),
       style: :icon,
       color: :gray,
-      icon: "detach",
+      icon: "avo/detach",
       form_class: "flex items-center",
       title: control.title,
       aria: {label: control.title},

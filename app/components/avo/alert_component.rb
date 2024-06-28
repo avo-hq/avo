@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::AlertComponent < ViewComponent::Base
+class Avo::AlertComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
 
   attr_reader :type
@@ -12,7 +12,7 @@ class Avo::AlertComponent < ViewComponent::Base
   end
 
   def icon
-    return "heroicons/solid/x-circle" if is_error?
+    return "heroicons/solid/exclamation-circle" if is_error?
     return "heroicons/solid/exclamation" if is_warning?
     return "heroicons/solid/exclamation-circle" if is_info?
     return "heroicons/solid/check-circle" if is_success?

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::ReferrerParamsComponent < ViewComponent::Base
+class Avo::ReferrerParamsComponent < Avo::BaseComponent
   attr_reader :back_path
 
   def initialize(back_path: nil)
