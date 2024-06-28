@@ -20,6 +20,12 @@ class Course < ApplicationRecord
 
   validates :name, presence: true
 
+  # Used to test the backtrace alert
+  after_save do
+    raise "raised" if ENV["TEST_BACKTRACE_ALERT"] == "1"
+    # raise "raised"
+  end
+
   def has_skills
     true
   end

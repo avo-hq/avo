@@ -219,32 +219,18 @@ module Avo
     def perform_action_and_record_errors(&block)
       begin
         succeeded = block.call
+      rescue ActiveRecord::RecordInvalid => e
+        # Do nothing as the record errors are already being displayed
       rescue => exception
         # In case there's an error somewhere else than the record
         # Example: When you save a license that should create a user for it and creating that user throws and error.
         # Example: When you Try to delete a record and has a foreign key constraint.
-        exception_message = exception.message
+        @record.errors.add(:base, exception.message)
+        @backtrace = exception.backtrace
       end
 
-      # Add the errors from the record
-      @errors = @record.errors.full_messages
-
-      # Remove duplicated errors
-      if exception_message.present?
-        @errors = @errors.reject { |error| exception_message.include? error }
-      end
-
-      # Figure out if we have to output the exception_message
-      # Usually it means that it's not a validation error but something else
-      if exception_message.present?
-        exception_is_validation = @errors.select { |error| exception_message.include? error }.present?
-      end
-
-      if exception_is_validation || (@errors.blank? && exception_message.present?)
-        @errors << exception_message
-      end
-
-      @errors.any? ? false : succeeded
+      # This method only needs to return true or false to indicate if the action was successful
+      @record.errors.any? ? false : succeeded
     end
 
     def model_params
@@ -533,7 +519,8 @@ module Avo
     end
 
     def destroy_fail_message
-      @errors.present? ? @errors.join(". ") : t("avo.failed")
+      errors = @record.errors.full_messages
+      errors.present? ? errors.join(". ") : t("avo.failed")
     end
 
     def after_destroy_path

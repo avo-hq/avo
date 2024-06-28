@@ -51,6 +51,8 @@ module Avo
     attr_accessor :default_url_options
     attr_accessor :click_row_to_view_record
     attr_accessor :alert_dismiss_time
+    attr_accessor :is_admin_method
+    attr_accessor :is_developer_method
     attr_accessor :search_results_count
 
     def initialize
@@ -110,6 +112,8 @@ module Avo
       @pagination = {}
       @click_row_to_view_record = false
       @alert_dismiss_time = 5000
+      @is_admin_method = :is_admin?
+      @is_developer_method = :is_developer?
       @search_results_count = 8
     end
 

@@ -17,6 +17,8 @@ Avo.configure do |config|
 
   ## == App context ==
   config.current_user_method = :current_user
+  # config.is_admin_method = :is_admin?
+  # config.is_developer_method = :is_developer?
   config.model_resource_mapping = {
     User: "User"
   }
