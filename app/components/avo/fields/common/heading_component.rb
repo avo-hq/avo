@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::Fields::Common::HeadingComponent < ViewComponent::Base
+class Avo::Fields::Common::HeadingComponent < Avo::BaseComponent
   include Avo::Concerns::HasResourceStimulusControllers
 
   def initialize(field:)

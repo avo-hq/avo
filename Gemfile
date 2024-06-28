@@ -81,6 +81,8 @@ group :development do
   gem "ripper-tags"
   gem "rubocop-shopify", require: false
   gem "rubycritic", require: false
+
+  gem "actual_db_schema"
 end
 
 group :test do

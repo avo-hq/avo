@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::ModalComponent < ViewComponent::Base
+class Avo::ModalComponent < Avo::BaseComponent
   renders_one :heading
   renders_one :controls
 

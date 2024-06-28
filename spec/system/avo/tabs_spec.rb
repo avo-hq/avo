@@ -72,7 +72,7 @@ RSpec.describe "Tabs", type: :system do
         find('[aria-label="February 9, 1988"]').click
         save
 
-        expect(current_path).to eq avo.resources_user_path user
+        expect(page).to have_current_path avo.resources_user_path(user)
         expect(find_field_value_element("birthday")).to have_text "Tuesday, 9 February 1988"
       end
 

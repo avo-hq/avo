@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::Fields::Common::Files::ControlsComponent < ViewComponent::Base
+class Avo::Fields::Common::Files::ControlsComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
   include Avo::Fields::Concerns::FileAuthorization
 

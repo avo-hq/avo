@@ -13,12 +13,15 @@ module Generators
         route "mount Avo::Engine, at: Avo.configuration.root_path"
 
         template "initializer/avo.tt", "config/initializers/avo.rb"
+
         create_resources
       end
 
-      def create_resources
-        if defined?(User).present?
-          Rails::Generators.invoke("avo:resource", ["user", "-q"], {destination_root: Rails.root })
+      no_tasks do
+        def create_resources
+          if defined?(User).present?
+            Rails::Generators.invoke("avo:resource", ["user", "-q"], {destination_root: Rails.root})
+          end
         end
 
         if defined?(Account) && Account.is_a?(ActiveRecord::Base)

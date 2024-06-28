@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::SidebarComponent < ViewComponent::Base
+class Avo::SidebarComponent < Avo::BaseComponent
   def initialize(sidebar_open: nil, for_mobile: false)
     @sidebar_open = sidebar_open
     @for_mobile = for_mobile

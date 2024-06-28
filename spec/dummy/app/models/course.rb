@@ -34,7 +34,7 @@ class Course < ApplicationRecord
   end
 
   def skill_suggestions
-    ["example suggestion", "example tag", name]
+    ["example suggestion", "example tag", name].compact
   end
 
   def skill_disallowed

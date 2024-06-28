@@ -1,4 +1,4 @@
 # frozen_string_literal: true
 
-class Avo::BlankFieldComponent < ViewComponent::Base
+class Avo::BlankFieldComponent < Avo::BaseComponent
 end

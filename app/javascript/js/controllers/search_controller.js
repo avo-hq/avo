@@ -86,6 +86,12 @@ export default class extends Controller {
       autoFocus: true,
       openOnFocus: true,
       detachedMediaQuery: '',
+      onStateChange({ prevState, state }) {
+        // If is closed and was open clear query value
+        if (!state.isOpen && prevState.isOpen) {
+          state.query = ''
+        }
+      },
       getSources: ({ query }) => {
         document.body.classList.add('search-loading')
         const endpoint = that.searchUrl(query)
