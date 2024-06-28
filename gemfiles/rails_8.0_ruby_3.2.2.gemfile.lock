@@ -17,7 +17,7 @@ GIT
 
 GIT
   remote: https://github.com/rails/rails.git
-  revision: a2b9e92401453b42859f5444aa60bfb46ddea00e
+  revision: b9d6759401c3d50a51e0a7650cb2331f4218d11f
   branch: main
   specs:
     actioncable (8.0.0.alpha)
@@ -86,6 +86,7 @@ GIT
       connection_pool (>= 2.2.5)
       drb
       i18n (>= 1.6, < 2)
+      logger (>= 1.4.2)
       minitest (>= 5.1)
       tzinfo (~> 2.0, >= 2.0.5)
     rails (8.0.0.alpha)
@@ -119,7 +120,7 @@ PATH
 PATH
   remote: ..
   specs:
-    avo (3.7.4)
+    avo (3.9.2)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
@@ -146,6 +147,10 @@ GEM
       activesupport (>= 6.1)
     acts_as_list (1.1.0)
       activerecord (>= 4.2)
+    actual_db_schema (0.7.5)
+      activerecord (>= 6.0.0)
+      activesupport (>= 6.0.0)
+      csv
     addressable (2.8.6)
       public_suffix (>= 2.0.2, < 6.0)
     annotate (3.2.0)
@@ -195,7 +200,7 @@ GEM
     bindex (0.8.1)
     bootsnap (1.18.3)
       msgpack (~> 1.2)
-    builder (3.2.4)
+    builder (3.3.0)
     bump (0.10.0)
     bundler-integrity (1.0.9)
     byebug (11.1.3)
@@ -212,7 +217,7 @@ GEM
     childprocess (5.0.0)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
-    concurrent-ruby (1.3.1)
+    concurrent-ruby (1.3.3)
     connection_pool (2.4.1)
     countries (6.0.1)
       unaccent (~> 0.3)
@@ -257,7 +262,7 @@ GEM
       rainbow
       rubocop
       smart_properties
-    erubi (1.12.0)
+    erubi (1.13.0)
     factory_bot (6.4.6)
       activesupport (>= 5.0.0)
     factory_bot_rails (6.4.3)
@@ -324,7 +329,7 @@ GEM
       activesupport (>= 3.0)
       nokogiri (>= 1.6)
     io-console (0.7.2)
-    irb (1.13.1)
+    irb (1.13.2)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
     iso (0.4.0)
@@ -347,6 +352,7 @@ GEM
     listen (3.9.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
+    logger (1.6.0)
     loofah (2.22.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -363,7 +369,7 @@ GEM
     method_source (1.1.0)
     mini_magick (4.12.0)
     mini_mime (1.1.5)
-    minitest (5.23.1)
+    minitest (5.24.0)
     monetize (1.13.0)
       money (~> 6.12)
     money (6.19.0)
@@ -376,7 +382,7 @@ GEM
     msgpack (1.7.2)
     multi_xml (0.7.1)
       bigdecimal (~> 3.1)
-    net-imap (0.4.11)
+    net-imap (0.4.14)
       date
       net-protocol
     net-pop (0.1.2)
@@ -386,7 +392,7 @@ GEM
     net-smtp (0.5.0)
       net-protocol
     nio4r (2.7.3)
-    nokogiri (1.16.5-arm64-darwin)
+    nokogiri (1.16.6-arm64-darwin)
       racc (~> 1.4)
     orm_adapter (0.5.0)
     pagy (8.4.0)
@@ -405,7 +411,7 @@ GEM
     puma (6.4.2)
       nio4r (~> 2.0)
     racc (1.8.0)
-    rack (3.0.11)
+    rack (3.1.4)
     rack-session (2.0.0)
       rack (>= 3.0.0)
     rack-test (2.1.0)
@@ -443,7 +449,7 @@ GEM
       parser (~> 3.2.0)
       rainbow (>= 2.0, < 4.0)
     regexp_parser (2.9.2)
-    reline (0.5.8)
+    reline (0.5.9)
       io-console (~> 0.5)
     responders (3.1.1)
       actionpack (>= 5.2)
@@ -609,7 +615,7 @@ GEM
     xpath (3.2.0)
       nokogiri (~> 1.8)
     yard (0.9.36)
-    zeitwerk (2.6.15)
+    zeitwerk (2.6.16)
 
 PLATFORMS
   arm64-darwin-23
@@ -620,6 +626,7 @@ DEPENDENCIES
   activestorage!
   acts-as-taggable-on!
   acts_as_list
+  actual_db_schema
   addressable
   annotate
   appraisal
@@ -636,6 +643,7 @@ DEPENDENCIES
   chartkick
   countries
   cssbundling-rails
+  csv
   cuprite
   database_cleaner-active_record
   devise

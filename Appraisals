@@ -4,6 +4,7 @@
       gem "psych", "< 4"
       gem "rails", "~> #{rails_version}"
       gem "ransack", "~> 4.1", ">= 4.1.1"
+      gem "activestorage"
 
       # source "https://rubygems.pkg.github.com/avo-hq" do
       #   gem "avo-dynamic_filters"
