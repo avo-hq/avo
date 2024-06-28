@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::AssetManager::JavascriptComponent < ViewComponent::Base
+class Avo::AssetManager::JavascriptComponent < Avo::BaseComponent
   attr_reader :asset_manager
 
   def initialize(asset_manager:)

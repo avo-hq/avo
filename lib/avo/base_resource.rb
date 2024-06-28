@@ -287,8 +287,8 @@ module Avo
       cards
     end
 
-    def divider
-      action DividerComponent
+    def divider(label = nil)
+      entity_loader(:action).use({class: Divider, label: label}.compact)
     end
 
     # def fields / def cards

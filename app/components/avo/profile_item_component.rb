@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::ProfileItemComponent < ViewComponent::Base
+class Avo::ProfileItemComponent < Avo::BaseComponent
   attr_reader :label
   attr_reader :icon
   attr_reader :path

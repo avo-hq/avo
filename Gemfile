@@ -81,6 +81,8 @@ group :development do
   gem "ripper-tags"
   gem "rubocop-shopify", require: false
   gem "rubycritic", require: false
+
+  gem "actual_db_schema"
 end
 
 group :test do
@@ -186,3 +188,5 @@ gem "avo-record_link_field"
 
 # gem "pagy", "< 8.0.0"
 gem "pagy", "> 8"
+
+gem "csv"

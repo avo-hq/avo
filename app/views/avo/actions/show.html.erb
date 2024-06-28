@@ -13,6 +13,9 @@
     <%= form_with scope: 'fields',
       url: Avo::Services::URIService.parse(@resource.records_path).append_paths("actions").to_s,
       local: true,
+      html: {
+        novalidate: true,
+      },
       data: {
         action_target: :form,
         **@action.class.form_data_attributes,

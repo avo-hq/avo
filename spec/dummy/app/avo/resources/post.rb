@@ -70,7 +70,7 @@ class Avo::Resources::Post < Avo::BaseResource
       {
         cover_url:
           if record.cover_photo.attached?
-            main_app.url_for(record.cover_photo.url)
+            main_app.url_for(record.cover_photo)
           end,
         title: record.name,
         body: helpers.extract_excerpt(record.body)

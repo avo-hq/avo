@@ -1,16 +1,17 @@
 <div data-controller="alert"
   data-alert-dismiss-after-value="<%= Avo.configuration.alert_dismiss_time %>"
   data-alert-remove-delay-value="0"
-  class="<%= classes %>"
+  class="w-full shadow-lg px-4 py-3 rounded relative border text-white pointer-events-auto bg-red-400 border-red-600"
 >
   <div class="px-2">
     <div class="flex h-full">
       <div class="flex items-center min-h-full">
-        <%= helpers.svg icon, class: "h-6" %>
+        <%= helpers.svg "heroicons/solid/exclamation-circle", class: "h-6" %>
       </div>
       <div class="ml-3 w-0 flex-1 pt-0.5">
         <p class="text-sm leading-5 font-semibold">
-          <%= sanitize message.to_s %>
+          <strong>Backtrace:</strong>
+          <pre class='overflow-y-scroll max-h-64 whitespace-pre-wrap text-xs'><%= @backtrace.join("\n") %></pre>
         </p>
       </div>
       <div class="ml-4 flex-shrink-0 flex items-center">

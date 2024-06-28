@@ -159,6 +159,8 @@ module.exports = {
       addVariant('has-record-selector', '.has-record-selector & ')
       addVariant('has-profile-photo', '.has-profile-photo & ')
       addVariant('has-cover-photo', '.has-cover-photo & ')
+      addVariant('index-grid-view', '.index-grid-view & ')
+      addVariant('index-table-view', '.index-table-view & ')
     }),
   ],
 }

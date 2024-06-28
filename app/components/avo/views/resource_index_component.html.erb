@@ -1,5 +1,5 @@
 <%= content_tag :div,
-  class: class_names("has-record-selector": @resource.record_selector),
+  class: class_names("index-#{@index_params[:view_type]}-view", {"has-record-selector": @resource.record_selector}),
   data: {
     component_name: self.class.to_s.underscore,
     model_name: @resource.model_name.to_s,

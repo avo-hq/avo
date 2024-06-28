@@ -86,6 +86,7 @@ module Avo
         @action = args[:action]
         @components = args[:components] || {}
         @for_attribute = args[:for_attribute]
+        @meta = args[:meta]
 
         @args = args
 
@@ -198,21 +199,23 @@ module Avo
         key = @for_attribute.to_s if @for_attribute.present?
         return record unless has_attribute?(record, key)
 
-        if @update_using.present?
-          value = Avo::ExecutionContext.new(
-            target: @update_using,
-            record: record,
-            key: key,
-            value: value,
-            resource: resource,
-            field: self,
-            include: self.class.included_modules
-          ).handle
-        end
-
-        record.public_send(:"#{key}=", value)
+        record.public_send(:"#{key}=", apply_update_using(record, key, value, resource))
 
         record
+      end
+
+      def apply_update_using(record, key, value, resource)
+        return value if @update_using.nil?
+
+        Avo::ExecutionContext.new(
+          target: @update_using,
+          record:,
+          key:,
+          value:,
+          resource:,
+          field: self,
+          include: self.class.included_modules
+        ).handle
       end
 
       def has_attribute?(record, attribute)
@@ -279,6 +282,10 @@ module Avo
 
       def form_field_label
         id
+      end
+
+      def meta
+        Avo::ExecutionContext.new(target: @meta, record: record, resource: @resource, view: @view).handle
       end
 
       private

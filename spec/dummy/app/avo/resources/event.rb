@@ -20,9 +20,17 @@ class Avo::Resources::Event < Avo::BaseResource
 
   def fields
     field :name, as: :text, link_to_record: true, sortable: true, stacked: true
-    field :first_user, as: :record_link
+    field :first_user,
+      as: :record_link,
+      meta: -> {
+        :foo
+      }
     field :event_time, as: :datetime, sortable: true
-    field :body, as: :trix
+    field :body,
+      as: :trix,
+      meta: {
+        foo: :bar,
+      }
 
     field :profile_photo, as: :file, is_image: true
     field :cover_photo, as: :file, is_image: true

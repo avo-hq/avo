@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::RowComponent < ViewComponent::Base
+class Avo::RowComponent < Avo::BaseComponent
   attr_reader :classes
 
   renders_one :body

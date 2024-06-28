@@ -4,6 +4,9 @@ nb:
     action_ran_successfully: Suksess!
     actions: Handlinger
     and_x_other_resources: og %{count} andre ressurser
+    applied:
+      one: applied
+      other: applied
     are_you_sure: Er du sikker?
     are_you_sure_detach_item: Er du sikker på at du vil koble fra %{item}.
     are_you_sure_you_want_to_run_this_option: Er du sikker?
@@ -39,6 +42,9 @@ nb:
     failed: Feilet
     failed_to_find_attachment: Fant ikke vedlegg
     failed_to_load: Lasting feilet
+    file:
+      one: file
+      other: files
     filter_by: Filtrer etter
     filters: Filter
     go_back: Gå tilbake
