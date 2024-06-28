@@ -51,6 +51,18 @@ class Avo::Resources::Course < Avo::BaseResource
         end
       end
 
+      # field :skills,
+      #   as: :tags,
+      #   fetch_values_from: "/admin/resources/users/get_users?hey=you&record_id=1", # {value: 1, label: "Jose"}
+      #   format_using: -> {
+      #     User.find(value).map do |user|
+      #       {
+      #         value: user.id,
+      #         label: user.name
+      #       }
+      #     end
+      #   }
+
       field :skills,
         as: :tags,
         disallowed: -> { record.skill_disallowed },

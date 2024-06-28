@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::FieldWrapperComponent < ViewComponent::Base
+class Avo::FieldWrapperComponent < Avo::BaseComponent
   include Avo::Concerns::HasResourceStimulusControllers
 
   attr_reader :dash_if_blank

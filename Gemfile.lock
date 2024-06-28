@@ -114,7 +114,7 @@ GIT
 PATH
   remote: .
   specs:
-    avo (3.9.1)
+    avo (3.9.2)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
@@ -146,6 +146,10 @@ GEM
       activesupport (>= 6.1)
     acts_as_list (1.1.0)
       activerecord (>= 4.2)
+    actual_db_schema (0.7.4)
+      activerecord (>= 6.0.0)
+      activesupport (>= 6.0.0)
+      csv
     addressable (2.8.6)
       public_suffix (>= 2.0.2, < 6.0)
     annotate (3.2.0)
@@ -221,6 +225,7 @@ GEM
     crass (1.0.6)
     cssbundling-rails (1.4.0)
       railties (>= 6.0.0)
+    csv (3.3.0)
     cuprite (0.15)
       capybara (~> 3.0)
       ferrum (~> 0.14.0)
@@ -648,6 +653,7 @@ DEPENDENCIES
   activestorage!
   acts-as-taggable-on!
   acts_as_list
+  actual_db_schema
   addressable
   annotate
   appraisal

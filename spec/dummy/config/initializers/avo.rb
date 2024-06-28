@@ -42,6 +42,7 @@ Avo.configure do |config|
   config.search_debounce = 300
   # config.field_wrapper_layout = :stacked
   config.cache_resource_filters = false
+  config.click_row_to_view_record = true
 
   ## == Branding ==
   config.branding = {
@@ -74,6 +75,7 @@ Avo.configure do |config|
   # ]
 
   config.alert_dismiss_time = 5000
+  config.search_results_count = 8
 
   ## == Menus ==
   config.main_menu = -> do

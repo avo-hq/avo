@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::AlertComponent < ViewComponent::Base
+class Avo::AlertComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
 
   attr_reader :type

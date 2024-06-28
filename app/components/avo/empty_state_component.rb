@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::EmptyStateComponent < ViewComponent::Base
+class Avo::EmptyStateComponent < Avo::BaseComponent
   attr_reader :message, :view_type, :add_background, :by_association
 
   def initialize(message: nil, view_type: :table, add_background: false, by_association: false)
