@@ -5,7 +5,11 @@ ar:
     actions: أوامر
     and_x_other_resources: و %{count} موارد أخرى
     applied:
+      zero: applied
       one: applied
+      two: applied
+      few: applied
+      many: applied
       other: applied
     are_you_sure: هل أنت متأكد؟
     are_you_sure_detach_item: هل أنت متأكد أنك تريد فصل هذا الـ%{item}؟
@@ -43,7 +47,11 @@ ar:
     failed_to_find_attachment: فشل في العثور على المرفق
     failed_to_load: فشل التحميل
     file:
+      zero:
       one: ملف
+      two: ملفات
+      few: ملفات
+      many: ملفات
       other: ملفات
     filter_by: تصفية حسب
     filters: مرشحات
