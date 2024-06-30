@@ -1,8 +1,8 @@
 # Release schedule
 
-A new Avo version is released every four-ish weeks, usually on Tuesday. The versioning scheme does not follow semver but a series release.
+A new Avo version is released on the first Tuesday of every month. The versioning scheme does not follow semver but a series release.
 
-The current series is series 3 (version `3.1`, `3.2`, `3.9`, etc). Every second Tuesday of the month we'll increment the minor version number (from `3.7` to `3.8`).
+The current series is series 3 (version `3.1`, `3.2`, `3.9`, etc). Every first Tuesday of the month we'll increment the minor version number (from `3.7` to `3.8`).
 
 ## Patch releases
 
