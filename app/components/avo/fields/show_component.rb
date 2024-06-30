@@ -3,24 +3,19 @@
 class Avo::Fields::ShowComponent < Avo::BaseComponent
   include Avo::ResourcesHelper
 
-  attr_reader :compact
-  attr_reader :field
-  attr_reader :index
-  attr_reader :kwargs
-  attr_reader :resource
-  attr_reader :stacked
-  attr_reader :short
+  prop :field, _Nilable(Avo::Fields::BaseField), reader: :public
+  prop :resource, _Nilable(Avo::BaseResource), reader: :public
+  prop :index, Integer, default: 0, reader: :public
+  prop :form, _Nilable(ActionView::Helpers::FormBuilder), reader: :public
+  prop :compact, _Boolean, default: false, reader: :public
+  prop :short, _Boolean, default: false, reader: :public
+  prop :stacked, _Boolean, default: false, reader: :public
+  prop :kwargs, Hash, :**
+
   attr_reader :view
 
-  def initialize(field: nil, resource: nil, index: 0, form: nil, compact: false, short: false, stacked: nil, **kwargs)
-    @compact = compact
-    @field = field
-    @index = index
-    @resource = resource
-    @stacked = stacked
-    @short = short
-    @kwargs = kwargs
-    @view = Avo::ViewInquirer.new("show")
+  def after_initialize
+  	@view = Avo::ViewInquirer.new("show")
   end
 
   def wrapper_data

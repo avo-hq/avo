@@ -4,14 +4,11 @@ class Avo::Fields::Common::Files::ControlsComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
   include Avo::Fields::Concerns::FileAuthorization
 
-  attr_reader :file, :field, :resource
   delegate :id, to: :field
 
-  def initialize(field:, file:, resource:)
-    @field = field
-    @file = file
-    @resource = resource
-  end
+  prop :file, ActiveStorage::Attachment, reader: :public
+  prop :field, Avo::Fields::FilesField, reader: :public
+  prop :resource, Avo::BaseResource, reader: :public
 
   def destroy_path
     Avo::Services::URIService.parse(@resource.record_path).append_paths("active_storage_attachments", id, file.id).to_s

@@ -5,14 +5,14 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
 
   prop :dash_if_blank, _Boolean, default: true, reader: :public
   prop :data, Hash, default: -> { {} }
-  prop :compact, _Boolean, default: false, reader: :public
+  prop :compact, _Boolean, default: false, reader: :public, predicate: :public
   prop :help, _Nilable(String) # do we really need it?
   prop :field, Avo::Fields::BaseField, reader: :public
   prop :form, _Nilable(ActionView::Helpers::FormBuilder), reader: :public
-  prop :full_width, _Boolean, default: false, reader: :public
+  prop :full_width, _Boolean, default: false, reader: :public, predicate: :public
   prop :label, _Nilable(String) # do we really need it?
   prop :resource, _Nilable(Avo::BaseResource), reader: :public
-  prop :short, _Boolean, default: false
+  prop :short, _Boolean, default: false, predicate: :public
   prop :stacked, _Boolean, default: false do |value|
     !!value
   end
@@ -79,17 +79,5 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
 
   def stacked?
     @stacked || field.stacked || Avo.configuration.field_wrapper_layout == :stacked
-  end
-
-  def compact?
-    @compact
-  end
-
-  def short?
-    @short
-  end
-
-  def full_width?
-    @full_width
   end
 end

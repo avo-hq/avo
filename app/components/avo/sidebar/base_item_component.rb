@@ -1,11 +1,7 @@
 # frozen_string_literal: true
 
 class Avo::Sidebar::BaseItemComponent < Avo::BaseComponent
-  attr_reader :item
-
-  def initialize(item: nil)
-    @item = item
-  end
+	prop :item, _Never, reader: :public
 
   def items
     item.items

@@ -3,11 +3,9 @@
 class Avo::Fields::Common::KeyValueComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
 
-  attr_reader :view
-
-  def initialize(field:, form: nil, view: "show")
-    @field = field
-    @form = form
-    @view = Avo::ViewInquirer.new(view)
+  prop :field, Avo::Fields::BaseField
+  prop :form, _Nilable(ActionView::Helpers::FormBuilder)
+  prop :view, Avo::ViewInquirer, default: :show, reader: :public do |value|
+    Avo::ViewInquirer.new(value)
   end
 end

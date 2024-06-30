@@ -48,4 +48,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "meta-tags"
   spec.add_dependency "docile"
   spec.add_dependency "inline_svg"
+  spec.add_dependency "literal"
 end
