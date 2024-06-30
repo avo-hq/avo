@@ -123,7 +123,7 @@ PATH
       docile
       httparty
       inline_svg
-      literal
+      literal (~> 0.2)
       meta-tags
       pagy (>= 7.0.0)
       turbo-rails (>= 2.0.0)
