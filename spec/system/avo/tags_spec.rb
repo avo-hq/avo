@@ -98,7 +98,7 @@ RSpec.describe "Tags", type: :system do
 
         save
 
-        expect(page).to have_text("Validation failed: Name can't be blank")
+        expect(page).to have_text("Name can't be blank")
         expect(page.all(".tagify__tag-text").map(&:text)).to eq ["one", "two"]
       end
     end

@@ -211,3 +211,20 @@ require "support/timezone"
 # https://github.com/titusfortner/webdrivers/issues/247
 # Webdrivers::Chromedriver.required_version = "114.0.5735.90"
 # Webdrivers::Chromedriver.required_version = "116.0.5845.96"
+
+# Temporary monkeypatch
+# https://github.com/rubycdp/cuprite/issues/269#issuecomment-2198532882
+module Ferrum
+  class Page
+
+    def resize(width: nil, height: nil, fullscreen: false)
+      if fullscreen
+        width, height = document_size
+        self.window_bounds = { window_state: "fullscreen" }
+      else
+        self.window_bounds = { window_state: "normal" }
+        self.window_bounds = { width: width, height: height }
+      end
+    end
+  end
+end
