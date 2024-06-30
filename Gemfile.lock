@@ -121,9 +121,9 @@ PATH
       activesupport (>= 6.1)
       addressable
       docile
-      dry-initializer
       httparty
       inline_svg
+      literal (~> 0.2)
       meta-tags
       pagy (>= 7.0.0)
       turbo-rails (>= 2.0.0)
@@ -374,6 +374,7 @@ GEM
     listen (3.8.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
+    literal (0.2.0)
     loofah (2.22.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
