@@ -13,16 +13,16 @@ PATH
 PATH
   remote: ..
   specs:
-    avo (3.7.4)
+    avo (3.9.2)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
       activesupport (>= 6.1)
       addressable
       docile
-      dry-initializer
       httparty
       inline_svg
+      literal (~> 0.2)
       meta-tags
       pagy (>= 7.0.0)
       turbo-rails (>= 2.0.0)
@@ -114,6 +114,10 @@ GEM
       tzinfo (~> 2.0)
     acts_as_list (1.1.0)
       activerecord (>= 4.2)
+    actual_db_schema (0.7.5)
+      activerecord (>= 6.0.0)
+      activesupport (>= 6.0.0)
+      csv
     addressable (2.8.6)
       public_suffix (>= 2.0.2, < 6.0)
     annotate (3.2.0)
@@ -214,7 +218,6 @@ GEM
       dotenv (= 3.1.2)
       railties (>= 6.1)
     drb (2.2.1)
-    dry-initializer (3.1.1)
     e2mmap (0.1.0)
     erb-formatter (0.7.2)
       syntax_tree (~> 6.0)
@@ -315,6 +318,7 @@ GEM
     listen (3.9.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
+    literal (0.2.1)
     loofah (2.22.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -611,9 +615,10 @@ PLATFORMS
 DEPENDENCIES
   active_link_to
   active_median
-  activestorage
+  activestorage (~> 7.1)
   acts-as-taggable-on!
   acts_as_list
+  actual_db_schema
   addressable
   annotate
   appraisal
@@ -630,6 +635,7 @@ DEPENDENCIES
   chartkick
   countries
   cssbundling-rails
+  csv
   cuprite
   database_cleaner-active_record
   devise
