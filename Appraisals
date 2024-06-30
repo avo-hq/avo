@@ -3,6 +3,7 @@
     appraise "rails-#{rails_version}-ruby-#{ruby_version}" do
       gem "psych", "< 4"
       gem "rails", "~> #{rails_version}"
+      gem "activestorage", "~> #{rails_version}"
       gem "ransack", "~> 4.1", ">= 4.1.1"
 
       # source "https://rubygems.pkg.github.com/avo-hq" do

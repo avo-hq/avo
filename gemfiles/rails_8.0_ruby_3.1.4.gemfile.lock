@@ -119,7 +119,7 @@ PATH
 PATH
   remote: ..
   specs:
-    avo (3.7.4)
+    avo (3.9.2)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
@@ -146,6 +146,10 @@ GEM
       activesupport (>= 6.1)
     acts_as_list (1.1.0)
       activerecord (>= 4.2)
+    actual_db_schema (0.7.5)
+      activerecord (>= 6.0.0)
+      activesupport (>= 6.0.0)
+      csv
     addressable (2.8.6)
       public_suffix (>= 2.0.2, < 6.0)
     annotate (3.2.0)
@@ -620,6 +624,7 @@ DEPENDENCIES
   activestorage!
   acts-as-taggable-on!
   acts_as_list
+  actual_db_schema
   addressable
   annotate
   appraisal
@@ -636,6 +641,7 @@ DEPENDENCIES
   chartkick
   countries
   cssbundling-rails
+  csv
   cuprite
   database_cleaner-active_record
   devise
