@@ -584,7 +584,7 @@ PLATFORMS
 DEPENDENCIES
   active_link_to
   active_median
-  activestorage
+  activestorage (~> 6.1)
   acts-as-taggable-on!
   acts_as_list
   actual_db_schema
