@@ -101,3 +101,11 @@
     }
   }
 }
+
+/* Media queries for mobile devices */
+@media (max-width: 640px) {
+  .pagy.nav a,
+  .pagy.nav span {
+    @apply px-2 py-1 text-xs;
+  }
+}
