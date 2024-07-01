@@ -3,6 +3,21 @@ class Avo::Resources::Event < Avo::BaseResource
   self.description = "An event that happened at a certain time."
   self.includes = [:location]
 
+  self.cover_photo = {
+    # size: :sm,
+    visible_on: [:show, :index],
+    source: -> {
+      if record.present?
+        record.cover_photo
+      else
+        Event.first&.cover_photo
+      end
+    }
+  }
+  self.profile_photo = {
+    source: :profile_photo
+  }
+
   def fields
     field :name, as: :text, link_to_record: true, sortable: true, stacked: true
     field :first_user,
@@ -16,6 +31,9 @@ class Avo::Resources::Event < Avo::BaseResource
       meta: {
         foo: :bar,
       }
+
+    field :profile_photo, as: :file, is_image: true
+    field :cover_photo, as: :file, is_image: true
 
     if params[:show_location_field] == "1"
       # Example for error message when resource is missing
