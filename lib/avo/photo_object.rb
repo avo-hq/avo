@@ -49,8 +49,6 @@ class Avo::PhotoObject
   private
 
   def visible_in_either?(*options)
-    options.map do |option|
-      visible_on.include?(option)
-    end.uniq.first.eql?(true)
+    options.intersection(visible_on).present?
   end
 end
