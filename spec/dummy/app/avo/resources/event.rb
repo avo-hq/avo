@@ -10,7 +10,7 @@ class Avo::Resources::Event < Avo::BaseResource
       if record.present?
         record.cover_photo
       else
-        Event.find(1).cover_photo
+        Event.first&.cover_photo
       end
     }
   }
