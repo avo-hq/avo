@@ -1,3 +1,4 @@
+---
 ja:
   avo:
     action_ran_successfully: アクションは正常に実行されました！
@@ -61,8 +62,8 @@ ja:
     more: もっと
     new: 新規
     next_page: 次のページ
-    no_cards_present: カードがありません
     no_cancel: いいえ、キャンセル
+    no_cards_present: カードがありません
     no_item_found: レコードが見つかりませんでした
     no_options_available: 利用可能なオプションがありません
     no_related_item_found: 関連するレコードが見つかりませんでした
