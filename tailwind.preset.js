@@ -152,6 +152,8 @@ module.exports = {
       // Add has-sidebar variant to make it easier to target fields in panels and use the full-width
       addVariant('has-sidebar', '.has-sidebar & ')
       addVariant('has-record-selector', '.has-record-selector & ')
+      addVariant('index-grid-view', '.index-grid-view & ')
+      addVariant('index-table-view', '.index-table-view & ')
     }),
   ],
 }

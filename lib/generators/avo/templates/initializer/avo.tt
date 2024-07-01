@@ -23,6 +23,8 @@ Avo.configure do |config|
 
   ## == Authentication ==
   # config.current_user_method = {}
+  # config.is_admin_method = :is_admin
+  # config.is_developer_method = :is_developer
   # config.authenticate_with do
   # end
 
@@ -60,6 +62,10 @@ Avo.configure do |config|
 
   ## == Response messages dismiss time ==
   # config.alert_dismiss_time = 5000
+
+
+  ## == Number of search results to display ==
+  # config.search_results_count = 8
 
   ## == Cache options ==
   ## Provide a lambda to customize the cache store used by Avo.

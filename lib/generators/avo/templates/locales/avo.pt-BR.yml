@@ -4,6 +4,9 @@ pt-BR:
     action_ran_successfully: Ação executada com sucesso!
     actions: Ações
     and_x_other_resources: e %{count} outros recursos
+    applied:
+      one: aplicado
+      other: aplicados
     are_you_sure: Você tem certeza?
     are_you_sure_detach_item: Você tem certeza que deseja separar este %{item}.
     are_you_sure_you_want_to_run_this_option: Você tem certeza que deseja executar esta ação?
@@ -39,6 +42,9 @@ pt-BR:
     failed: Falhou
     failed_to_find_attachment: Falhou ao achar anexo
     failed_to_load: Falha ao carregar
+    file:
+      one: ficheiro
+      other: ficheiros
     filter_by: Filtrar por
     filters: Filtros
     go_back: Voltar
