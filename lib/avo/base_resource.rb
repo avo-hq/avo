@@ -114,7 +114,7 @@ module Avo
       end
 
       def get_record_associations(record)
-        record._reflections
+        record.class.reflections
       end
 
       def valid_association_name(record, association_name)
@@ -382,7 +382,7 @@ module Avo
 
           if field.type == "belongs_to"
 
-            reflection = @model._reflections[@params[:via_relation]]
+            reflection = @model.class.reflections[@params[:via_relation]]
 
             if field.polymorphic_as.present? && field.types.map(&:to_s).include?(@params[:via_relation_class])
               # set the value to the actual record
