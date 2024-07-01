@@ -3,6 +3,7 @@ ar:
   avo:
     action_ran_successfully: تم تنفيذ الأمر بنجاح!
     actions: أوامر
+    add_filter: إضافة عامل تصفية
     and_x_other_resources: و %{count} موارد أخرى
     applied:
       few: applied

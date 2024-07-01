@@ -3,6 +3,7 @@ es:
   avo:
     action_ran_successfully: "¡Acción ejecutada con éxito!"
     actions: Acciones
+    add_filter: Añadir filtro
     and_x_other_resources: y %{count} otros recursos
     applied:
       one: aplicado

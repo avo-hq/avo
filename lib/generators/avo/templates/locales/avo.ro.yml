@@ -3,6 +3,7 @@ ro:
   avo:
     action_ran_successfully: Acțiunea a rulat cu succes!
     actions: Acțiuni
+    add_filter: Adăugați filtru
     and_x_other_resources: plus alte %{count} recorduri
     applied:
       few: aplicate

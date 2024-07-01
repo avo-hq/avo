@@ -2,6 +2,7 @@ ja:
   avo:
     action_ran_successfully: アクションは正常に実行されました！
     actions: アクション
+    add_filter: フィルターの追加
     and_x_other_resources: その他%{count}件のリソース
     applied:
       one: applied
