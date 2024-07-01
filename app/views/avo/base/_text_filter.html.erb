@@ -14,7 +14,7 @@
     %>
     <div class="flex justify-end">
       <%= a_button class: 'mt-4', color: :primary, data: { action: "text-filter#changeFilter" }, size: :xs do %>
-        <%= filter.button_label || "Filter by #{filter.name}" %>
+        <%= filter.button_label || "#{t("avo.filter_by")} #{filter.name}" %>
       <% end %>
     </div>
     <%= link_to 'url_redirect', request.url, data: { 'text-filter-target': 'urlRedirect', 'turbo-frame': params[:turbo_frame] }, style: 'hidden', class: 'hidden' %>

@@ -3,6 +3,7 @@ nb:
   avo:
     action_ran_successfully: Suksess!
     actions: Handlinger
+    add_filter: Legg til filter
     and_x_other_resources: og %{count} andre ressurser
     applied:
       one: applied
