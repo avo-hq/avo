@@ -206,7 +206,7 @@ module Avo
       if resource.search_results_count
         Avo::ExecutionContext.new(
           target: resource.search_results_count,
-          params: params,
+          params: params
         ).handle
       else
         Avo.configuration.search_results_count
