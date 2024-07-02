@@ -68,6 +68,7 @@ module Avo
       attr_reader :allow_via_detaching
       attr_reader :attach_scope
       attr_reader :polymorphic_help
+      attr_reader :link_to_record
 
       def initialize(id, **args, &block)
         args[:placeholder] ||= I18n.t("avo.choose_an_option")
@@ -84,6 +85,7 @@ module Avo
         @target = args[:target]
         @use_resource = args[:use_resource] || nil
         @can_create = args[:can_create].nil? ? true : args[:can_create]
+        @link_to_record = args[:link_to_record].present? ? args[:link_to_record] : false
       end
 
       def value
@@ -261,6 +263,22 @@ module Avo
         return polymorphic_as.to_s.humanize if polymorphic_as.present?
 
         super
+      end
+
+      def index_link_to_resource
+        if @link_to_record.present?
+          @resource
+        else
+          target_resource
+        end
+      end
+
+      def index_link_to_record
+        if @link_to_record.present?
+          get_record
+        else
+          value
+        end
       end
 
       def can_create?
