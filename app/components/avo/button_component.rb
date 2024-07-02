@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-# A button/link can have the following settings:
-# style: primary/outline/text
-# size: :xs :sm, :md, :lg
 class Avo::ButtonComponent < Avo::BaseComponent
+  SIZE = _Union(:xs, :sm, :md, :lg, :xl)
+  STYLE = _Union(:primary, :outline, :text, :icon)
+
   def initialize(path = nil, size: :md, style: :outline, color: :gray, icon: nil, icon_class: "", is_link: false, rounded: true, compact: false, aria: {}, **args)
     # Main settings
     @size = size

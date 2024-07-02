@@ -2,40 +2,47 @@
 
 class Avo::ActionsComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
-  attr_reader :label, :size, :as_row_control
 
-  def initialize(actions: [], resource: nil, view: nil, exclude: [], include: [], style: :outline, color: :primary, label: nil, size: :md, as_row_control: false, icon: nil)
-    @actions = actions || []
-    @resource = resource
-    @view = view
-    @exclude = Array(exclude)
-    @include = include
-    @color = color
-    @style = style
-    @label = label || I18n.t("avo.actions")
-    @size = size
-    @icon = icon
-    @as_row_control = as_row_control
+  ACTION_FILTER = _Set(_Class(Avo::BaseAction))
+
+  prop :actions, _Array(Avo::BaseAction), default: -> { [] }
+  prop :resource, _Nilable(Avo::BaseResource)
+  prop :view, _Nilable(Symbol), &:to_sym
+  prop :exclude, _Nilable(ACTION_FILTER), &:to_set
+  prop :include, _Nilable(ACTION_FILTER), &:to_set
+  prop :style, Avo::ButtonComponent::STYLE, default: :outline
+  prop :color, Symbol, default: :primary
+  prop :label, String do |value|
+    value || I18n.t("avo.actions")
+  end
+  prop :size, Avo::ButtonComponent::SIZE, default: :md
+  prop :as_row_control, _Boolean, default: false
+  prop :icon, _Nilable(String)
+
+  def after_initialize
+    filter_actions
   end
 
   def render?
-    actions.present?
+    @actions.present?
   end
 
-  def actions
-    if @exclude.present?
-      @actions.reject { |action| action.class.in?(@exclude) }
-    elsif @include.present?
-      @actions.select { |action| action.class.in?(@include) }
-    else
-      @actions
+  def filter_actions
+    @actions = @actions.dup
+
+    if @exclude.any?
+      @actions.reject! { |action| @exclude.include?(action.class) }
+    end
+
+    if @include.any?
+      @actions.select! { |action| @include.include?(action.class) }
     end
   end
 
   # When running an action for one record we should do it on a special path.
   # We do that so we get the `record` param inside the action so we can prefill fields.
   def action_path(action)
-    return single_record_path(action) if as_row_control
+    return single_record_path(action) if @as_row_control
     return many_records_path(action) unless @resource.has_record_id?
 
     if on_record_page?
@@ -47,7 +54,7 @@ class Avo::ActionsComponent < Avo::BaseComponent
 
   # How should the action be displayed by default
   def is_disabled?(action)
-    return false if action.standalone || as_row_control
+    return false if action.standalone || @as_row_control
 
     on_index_page?
   end
