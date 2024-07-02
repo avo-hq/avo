@@ -216,6 +216,10 @@ module Avo
         search.dig(:query)
       end
 
+      def search_results_count
+        search.dig(:results_count)
+      end
+
       def fetch_search(key, record: nil)
         # self.class.fetch_search
         Avo::ExecutionContext.new(target: search[key], resource: self, record: record).handle
