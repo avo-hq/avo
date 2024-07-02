@@ -32,8 +32,8 @@ class Avo::Resources::Event < Avo::BaseResource
         foo: :bar,
       }
 
-    field :profile_photo, as: :file, is_image: true
-    field :cover_photo, as: :file, is_image: true
+    field :profile_photo, as: :file, is_image: true, only_on: :forms
+    field :cover_photo, as: :file, is_image: true, only_on: :forms
 
     if params[:show_location_field] == "1"
       # Example for error message when resource is missing
