@@ -25,6 +25,7 @@ module Avo
     before_action :set_view
     before_action :set_sidebar_open
     before_action :set_stylesheet_assets_path
+    before_action :set_paper_trail_whodunnit, if: -> { defined? PaperTrail }
 
     rescue_from Avo::NotAuthorizedError, with: :render_unauthorized
     rescue_from ActiveRecord::RecordInvalid, with: :exception_logger

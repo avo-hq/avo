@@ -49,12 +49,23 @@ module Avo
     def handle
       resource_ids = action_params[:fields][:avo_resource_ids].split(",")
 
+      query = decrypted_query || (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])
+      fields = action_params[:fields].except(:avo_resource_ids, :avo_selected_query)
+
+      safe_call :audit,
+        activity_class: @action.class,
+        payload: {
+          fields: fields,
+          resource: resource,
+        },
+        action: __method__,
+        records: query
+
       performed_action = @action.handle_action(
-        fields: action_params[:fields].except(:avo_resource_ids, :avo_selected_query),
+        fields: fields,
         current_user: _current_user,
         resource: @resource,
-        query: decrypted_query ||
-          (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])
+        query: query
       )
 
       @response = performed_action.response

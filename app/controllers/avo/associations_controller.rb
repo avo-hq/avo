@@ -70,6 +70,8 @@ module Avo
 
       respond_to do |format|
         if @record.save
+          safe_call :audit, activity_class: @resource.class, payload: params, action: :attach, records: @record
+
           format.html { redirect_back fallback_location: resource_view_response_path, notice: t("avo.attachment_class_attached", attachment_class: @related_resource.name) }
         else
           format.html { render :new }
@@ -86,6 +88,7 @@ module Avo
         @record.send(:"#{association_name}=", nil)
       end
 
+      safe_call :audit, activity_class: @resource.class, payload: params, action: :detach, records: @record
       respond_to do |format|
         format.html { redirect_to params[:referrer] || resource_view_response_path, notice: t("avo.attachment_class_detached", attachment_class: @attachment_class) }
       end
