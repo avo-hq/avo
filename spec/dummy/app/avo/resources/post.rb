@@ -24,7 +24,7 @@ class Avo::Resources::Post < Avo::BaseResource
       id.to_i == 0 ? query.find_by_slug(id) : query.find(id)
     end
   }
-  self.view_types = [:grid, :table]
+  self.view_types = [:grid, :table, :calendar]
 
   def fields
     field :id, as: :id
@@ -64,6 +64,12 @@ class Avo::Resources::Post < Avo::BaseResource
 
     field :comments, as: :has_many, use_resource: Avo::Resources::PhotoComment
   end
+
+  self.calendar_view = {
+    # title: -> (record) { record.name },
+    title: -> (record) { "#{record.created_at.strftime("%H:%M")} - #{record.name}" },
+    starts_at: :created_at
+  }
 
   self.grid_view = {
     card: -> do
