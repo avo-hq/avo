@@ -285,10 +285,8 @@ module Avo
       # Only can create when:
       #   - `can_create: true` option is present
       #   - target resource's policy allow creation (UserPolicy in this example)
-      def can_create?(forced_target_resource)
-        return unless @can_create
-
-        (forced_target_resource || target_resource).authorization.authorize_action(:create, raise_exception: false)
+      def can_create?(final_target_resource = target_resource)
+        @can_create && final_target_resource.authorization.authorize_action(:create, raise_exception: false)
       end
 
       def form_field_label
