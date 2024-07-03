@@ -8,7 +8,6 @@ class Avo::Sidebar::BaseItemComponent < Avo::BaseComponent
     @item = item
   end
 
-
   def render?
     items.any?
   end
