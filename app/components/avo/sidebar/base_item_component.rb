@@ -2,31 +2,24 @@
 
 class Avo::Sidebar::BaseItemComponent < Avo::BaseComponent
   attr_reader :item
+  delegate :items, :collapsable, :collapsed, to: :@item
 
   def initialize(item: nil)
     @item = item
   end
 
-  def items
-    item.items
+  def render?
+    items.any?
   end
 
   def key
-    result = "avo.#{request.host}.main_menu.#{item.name.to_s.underscore}"
+    result = "avo.#{request.host}.main_menu.#{@item.name.to_s.underscore}"
 
-    if item.icon.present?
-      result += ".#{item.icon.parameterize.underscore}"
+    if @item.icon.present?
+      result += ".#{@item.icon.parameterize.underscore}"
     end
 
     result
-  end
-
-  def collapsable
-    item.collapsable
-  end
-
-  def collapsed
-    item.collapsed
   end
 
   def section_collapse_data_animation
