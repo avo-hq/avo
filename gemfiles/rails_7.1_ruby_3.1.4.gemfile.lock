@@ -13,7 +13,7 @@ PATH
 PATH
   remote: ..
   specs:
-    avo (3.9.2)
+    avo (3.10.1)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
@@ -382,7 +382,7 @@ GEM
     puma (6.4.2)
       nio4r (~> 2.0)
     racc (1.8.0)
-    rack (3.1.4)
+    rack (3.1.6)
     rack-session (2.0.0)
       rack (>= 3.0.0)
     rack-test (2.1.0)
