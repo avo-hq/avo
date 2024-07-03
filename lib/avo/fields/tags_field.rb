@@ -54,7 +54,7 @@ module Avo
         return fill_acts_as_taggable(record, key, value, params) if acts_as_taggable_on.present?
 
         value = if value.is_a?(String)
-          value.split(",")
+          value.split Regexp.union(delimiters)
         else
           value
         end
