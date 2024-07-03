@@ -27,7 +27,7 @@ class Avo::Index::ResourceCalendarComponent < Avo::BaseComponent
   end
 
   def today_class(day)
-    "bg-rose-200" if today?(day)
+    "bg-primary-100" if today?(day)
   end
 
   def resources_for_day(day)
