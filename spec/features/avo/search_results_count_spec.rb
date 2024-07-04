@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.feature Avo::SearchController, type: :controller do
-  let!(:courses) do 
+  let!(:courses) do
     create_list(:course, 10) do |course, idx|
       course.name = "course_#{idx + 1}"
       course.save!
