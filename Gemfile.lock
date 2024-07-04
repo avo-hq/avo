@@ -122,7 +122,6 @@ PATH
       activesupport (>= 6.1)
       addressable
       docile
-      httparty
       inline_svg
       literal (~> 0.2)
       meta-tags
@@ -333,10 +332,6 @@ GEM
       listen (>= 3.0.0)
       railties (>= 6.0.0)
     htmlbeautifier (1.4.3)
-    httparty (0.22.0)
-      csv
-      mini_mime (>= 1.0.0)
-      multi_xml (>= 0.5.2)
     i18n (1.14.5)
       concurrent-ruby (~> 1.0)
     i18n-tasks (1.0.14)
@@ -409,8 +404,6 @@ GEM
       money (~> 6.13)
       railties (>= 3.0)
     msgpack (1.7.2)
-    multi_xml (0.7.1)
-      bigdecimal (~> 3.1)
     net-imap (0.4.14)
       date
       net-protocol
@@ -696,7 +689,6 @@ DEPENDENCIES
   hightop
   hotwire-livereload (~> 1.3.0)
   htmlbeautifier
-  httparty
   i18n-tasks (~> 1.0.12)
   image_processing (~> 1.12)
   iso
