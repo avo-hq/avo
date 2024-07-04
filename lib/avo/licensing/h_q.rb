@@ -147,7 +147,7 @@ module Avo
         Avo.logger.debug "Performing request to avohq.io API to check license availability." if Rails.env.development?
 
         if Rails.env.test?
-          OpenStruct.new({code: 200, parsed_response: {id: "pro", valid: true}})
+          OpenStruct.new({code: 200, body: "{\"id\":\"pro\",\"valid\":true}"})
         else
           Avo::Licensing::Request.post ENDPOINT, body: payload.to_json, timeout: REQUEST_TIMEOUT
         end
