@@ -64,7 +64,7 @@ module Avo
         # If we have no proc and no default location method, don't try to create markers
         return [] unless resource_mappable?
 
-        resources
+        records_markers = resources
           .map do |resource|
             Avo::ExecutionContext.new(target: marker_proc, record: resource.record).handle
           end
@@ -72,6 +72,8 @@ module Avo
           .filter do |coordinates|
             coordinates[:latitude].present? && coordinates[:longitude].present?
           end
+
+        records_markers + Avo::ExecutionContext.new(target: map_options[:custom_markers]).handle
       end
 
       def resource_mapkick_options
@@ -102,7 +104,7 @@ module Avo
       end
 
       def resource_mappable?
-        map_options[:record_marker].present? || @resources.first.record.respond_to?(:coordinates)
+        map_options[:record_marker].present? || map_options[:custom_markers].present? || @resources.first.record.respond_to?(:coordinates)
       end
     end
   end
