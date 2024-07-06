@@ -36,5 +36,8 @@
       placeholder: @field.placeholder,
       style: @field.get_html(:style, view: view, element: :input)
     %>
+  <button type="button" data-action="click->date-field#clear">
+    <%= render Avo::Fields::Common::BooleanCheckComponent.new %>
+  </button>
   <% end %>
 <% end %>
