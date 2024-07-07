@@ -1,5 +1,5 @@
 <%= field_wrapper **field_wrapper_args do %>
-  <%= content_tag :div, data: {
+  <%= content_tag :div, class: "flex", data: {
       controller: "date-field",
       date_field_view_value: @view,
       date_field_enable_time_value: true,
@@ -36,5 +36,11 @@
       placeholder: @field.placeholder,
       style: @field.get_html(:style, view: view, element: :input)
     %>
+    <%= content_tag :button, type: :button, 
+                    title: "Reset Time", 
+                    data: {action: "click->date-field#clear", 
+                           tippy: :tooltip } do %>
+      <%= render Avo::Fields::Common::BooleanCheckComponent.new %>
+    <% end %>
   <% end %>
 <% end %>
