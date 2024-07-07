@@ -154,7 +154,7 @@ module Avo
       end
 
       def class_name
-        @class_name ||=to_s.demodulize
+        @class_name ||= to_s.demodulize
       end
 
       def route_key
