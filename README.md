@@ -5,24 +5,22 @@
 <a href="https://github.com/avo-hq/avo/discussions" target="_blank">
   <img alt="GitHub Discussions" src="https://img.shields.io/github/discussions/avo-hq/avo?color=168AFE&logo=github">
 </a>
-
 <a href="https://github.com/avo-hq/avo/issues" target="_blank">
   <img alt="GitHub Issues or Pull Requests" src="https://img.shields.io/github/issues-closed/avo-hq/avo?style=flat&link=https%3A%2F%2Fgithub.com%2Favo-hq%2Favo%2Fissues&logo=github">
 </a>
-
-[![codecov](https://codecov.io/gh/avo-hq/avo/branch/master/graph/badge.svg?token=Q2LMFE4989)](https://codecov.io/gh/avo-hq/avo)
-[![Maintainability](https://api.codeclimate.com/v1/badges/676a0afa2cc79f03aa29/maintainability)](https://codeclimate.com/github/avo-hq/avo/maintainability)
-
 <a href="https://rubygems.org/gems/avo">
   <img alt="GEM Downloads" src="https://img.shields.io/gem/dt/avo?color=168AFE&logo=ruby&logoColor=FE1616">
 </a>
-
 <a href="https://github.com/testdouble/standard">
   <img alt="Ruby Style" src="https://img.shields.io/badge/style-standard-168AFE?logo=ruby&logoColor=FE1616" />
 </a>
 <a href="https://discord.com/invite/vuuwFe4Km3">
   <img alt="Avo Rails Admin Discord Community" src="https://img.shields.io/discord/740892036978442260?color=8892F6&label=discord&logo=discord&logoColor=8892F6">
 </a>
+
+
+[![codecov](https://codecov.io/gh/avo-hq/avo/branch/master/graph/badge.svg?token=Q2LMFE4989)](https://codecov.io/gh/avo-hq/avo)
+[![Maintainability](https://api.codeclimate.com/v1/badges/676a0afa2cc79f03aa29/maintainability)](https://codeclimate.com/github/avo-hq/avo/maintainability)
 
 ![](./public/avo-assets/logo-on-white.png)
 
