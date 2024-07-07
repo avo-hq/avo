@@ -22,7 +22,7 @@
 
 ![](./public/avo-assets/logo-on-white.png)
 
-**<a href="https://avohq.io" title="Rails Admin Panel Framework">Avo - Ruby on Rails admin panel framework</a>**
+**<a href="https://avohq.io" title="Ruby on Rails Admin Panel Framework">Avo - Ruby on Rails Admin Panel Framework</a>**
 
 Avo is a very custom Admin Panel Framework, Content Management System, and Internal Tool Builder for Ruby on Rails that saves engineers and teams **months of development time**.
 
