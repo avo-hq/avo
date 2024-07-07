@@ -17,8 +17,6 @@
 <a href="https://discord.com/invite/vuuwFe4Km3">
   <img alt="Avo Rails Admin Discord Community" src="https://img.shields.io/discord/740892036978442260?color=8892F6&label=discord&logo=discord&logoColor=8892F6">
 </a>
-
-
 [![codecov](https://codecov.io/gh/avo-hq/avo/branch/master/graph/badge.svg?token=Q2LMFE4989)](https://codecov.io/gh/avo-hq/avo)
 [![Maintainability](https://api.codeclimate.com/v1/badges/676a0afa2cc79f03aa29/maintainability)](https://codeclimate.com/github/avo-hq/avo/maintainability)
 
