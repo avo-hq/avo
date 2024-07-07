@@ -72,7 +72,7 @@ RSpec.describe "Date field", type: :system do
 
           expect(text_input.value).to eq "2000-01-01 08:00:00"
 
-          click_button('reset')
+          click_button("reset")
 
           save
 

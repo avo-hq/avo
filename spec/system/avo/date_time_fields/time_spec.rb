@@ -65,7 +65,7 @@ RSpec.describe "Time field", type: :system do
 
         expect(text_input.value).to eq "16:30"
 
-        click_button('reset')
+        click_button("reset")
         save
 
         expect(find_field_value_element("starting_at").text).to eq "—"
