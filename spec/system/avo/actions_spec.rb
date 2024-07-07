@@ -179,8 +179,30 @@ RSpec.describe "Actions", type: :system do
     end
   end
 
+
+  describe "do_nothing" do
+    it "closes the modal and flashes messages" do
+      allow(TestBuddy).to receive(:hi).and_call_original
+      expect(TestBuddy).to receive(:hi).with("Hello from Avo::Actions::Test::DoNothing handle method").at_least :once
+
+      visit "/admin/resources/users/new"
+
+      fill_in "user_first_name", with: "First name should persist after action."
+
+
+      click_on "Actions"
+      click_on "Do Nothing"
+      expect(page).to have_css('turbo-frame#actions_show')
+      expect(page).to have_selector(modal = "[role='dialog']")
+      click_on "Run"
+      expect(page).not_to have_selector(modal)
+      expect(page).to have_text "Nothing Done!!"
+      expect(page).to have_field('user_first_name', with: 'First name should persist after action.')
+    end
+  end
+
   describe "close_modal" do
-    it "closes the modal and flahses messages" do
+    it "closes the modal and flashes messages" do
       allow(TestBuddy).to receive(:hi).and_call_original
       expect(TestBuddy).to receive(:hi).with("Hello from Avo::Actions::Test::CloseModal handle method").at_least :once
 
