@@ -121,8 +121,6 @@ end
 
 gem "zeitwerk"
 
-gem "httparty"
-
 gem "iso"
 
 gem "active_link_to"

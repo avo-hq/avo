@@ -3,6 +3,7 @@ en:
   avo:
     action_ran_successfully: Action ran successfully!
     actions: Actions
+    add_filter: Add filter
     and_x_other_resources: and %{count} other resources
     applied: applied
     are_you_sure: Are you sure?

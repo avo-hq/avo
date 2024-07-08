@@ -3,6 +3,7 @@ tr:
   avo:
     action_ran_successfully: Eylem başarıyla gerçekleşti!
     actions: Aksiyonlar
+    add_filter: Filtre ekle
     and_x_other_resources: ve %{count} diğer kaynak
     applied:
       one: uygulandı

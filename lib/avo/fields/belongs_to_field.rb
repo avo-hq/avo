@@ -68,6 +68,7 @@ module Avo
       attr_reader :allow_via_detaching
       attr_reader :attach_scope
       attr_reader :polymorphic_help
+      attr_reader :link_to_record
 
       def initialize(id, **args, &block)
         args[:placeholder] ||= I18n.t("avo.choose_an_option")
@@ -84,6 +85,7 @@ module Avo
         @target = args[:target]
         @use_resource = args[:use_resource] || nil
         @can_create = args[:can_create].nil? ? true : args[:can_create]
+        @link_to_record = args[:link_to_record].present? ? args[:link_to_record] : false
       end
 
       def value
@@ -263,8 +265,28 @@ module Avo
         super
       end
 
-      def can_create?
-        @can_create
+      def index_link_to_resource
+        if @link_to_record.present?
+          @resource
+        else
+          target_resource
+        end
+      end
+
+      def index_link_to_record
+        if @link_to_record.present?
+          get_record
+        else
+          value
+        end
+      end
+
+      # field :user, as: :belongs_to, can_create: true
+      # Only can create when:
+      #   - `can_create: true` option is present
+      #   - target resource's policy allow creation (UserPolicy in this example)
+      def can_create?(final_target_resource = target_resource)
+        @can_create && final_target_resource.authorization.authorize_action(:create, raise_exception: false)
       end
 
       def form_field_label

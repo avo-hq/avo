@@ -9,3 +9,6 @@ Lint/UselessAssignment:
 
 Layout/FirstArgumentIndentation:
   Enabled: false
+
+Layout/ArgumentAlignment:
+  Enabled: false
