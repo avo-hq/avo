@@ -7,7 +7,7 @@ class Avo::Resources::Post < Avo::BaseResource
     help: "- search by id, name or body"
   }
 
-  self.includes = [:user]
+  self.includes = [:user, :comments]
   self.attachments = [:cover_photo, :audio, :attachments]
   self.single_includes = [:user, :reviews]
   self.single_attachments = [:cover_photo, :audio, :attachments]
