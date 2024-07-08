@@ -83,7 +83,7 @@ nn:
     prev_page: Førre side
     records_selected_from_all_pages_html: Alle poster valgt fra alle sider
     remove_selection: Fjern val
-    reset: Nullstille
+    reset: nullstille
     reset_filters: Nullstill filter
     resource_created: Ressurs generert
     resource_destroyed: Ressurs sletta
