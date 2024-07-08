@@ -114,7 +114,7 @@ module Avo
     def create
       # This means that the record has been created through another parent record and we need to attach it somehow.
       if params[:via_record_id].present? && params[:via_belongs_to_resource_class].nil?
-        @reflection = @record._reflections[params[:via_relation]]
+        @reflection = @record._reflections.with_indifferent_access[params[:via_relation]]
         # Figure out what kind of association does the record have with the parent record
 
         # Fills in the required info for belongs_to and has_many
@@ -219,22 +219,18 @@ module Avo
     def perform_action_and_record_errors(&block)
       begin
         succeeded = block.call
+      rescue ActiveRecord::RecordInvalid => e
+        # Do nothing as the record errors are already being displayed
       rescue => exception
         # In case there's an error somewhere else than the record
         # Example: When you save a license that should create a user for it and creating that user throws and error.
         # Example: When you Try to delete a record and has a foreign key constraint.
-        exception_message = exception.message
+        @record.errors.add(:base, exception.message)
+        @backtrace = exception.backtrace
       end
 
-      # Add the errors from the record
-      @errors = @record.errors.full_messages
-
-      # Remove duplicated errors
-      if exception_message.present?
-        @errors = @errors.reject { |error| exception_message.include? error }.unshift exception_message
-      end
-
-      @errors.any? ? false : succeeded
+      # This method only needs to return true or false to indicate if the action was successful
+      @record.errors.any? ? false : succeeded
     end
 
     def model_params
@@ -477,9 +473,11 @@ module Avo
     end
 
     def update_fail_action
+      flash.now[:error] = update_fail_message
+
       respond_to do |format|
-        flash.now[:error] = update_fail_message
         format.html { render :edit, status: :unprocessable_entity }
+        format.turbo_stream { render "update_fail_action" }
       end
     end
 
@@ -521,7 +519,8 @@ module Avo
     end
 
     def destroy_fail_message
-      @errors.present? ? @errors.join(". ") : t("avo.failed")
+      errors = @record.errors.full_messages
+      errors.present? ? errors.join(". ") : t("avo.failed")
     end
 
     def after_destroy_path
@@ -546,7 +545,7 @@ module Avo
 
     # Set pagy locale from params or from avo configuration, if both nil locale = "en"
     def set_pagy_locale
-      @pagy_locale = locale.to_s || Avo.configuration.locale || "en"
+      @pagy_locale = locale.to_s || Avo.configuration.default_locale || "en"
     end
 
     def safe_call(method)

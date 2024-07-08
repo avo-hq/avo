@@ -3,7 +3,11 @@ nb:
   avo:
     action_ran_successfully: Suksess!
     actions: Handlinger
+    add_filter: Legg til filter
     and_x_other_resources: og %{count} andre ressurser
+    applied:
+      one: applied
+      other: applied
     are_you_sure: Er du sikker?
     are_you_sure_detach_item: Er du sikker på at du vil koble fra %{item}.
     are_you_sure_you_want_to_run_this_option: Er du sikker?
@@ -19,6 +23,7 @@ nb:
     choose_item: Velge %{item}
     clear_value: Nullstill verdi
     click_to_reveal_filters: Vis filter
+    close_modal: Lukk modal
     confirm: Bekreft
     create_new_item: Lag ny %{item}
     dashboard: Dashboard
@@ -38,6 +43,9 @@ nb:
     failed: Feilet
     failed_to_find_attachment: Fant ikke vedlegg
     failed_to_load: Lasting feilet
+    file:
+      one: file
+      other: files
     filter_by: Filtrer etter
     filters: Filter
     go_back: Gå tilbake
@@ -54,6 +62,7 @@ nb:
     more: Mer
     new: ny
     next_page: Neste side
+    no_cancel: Nei, avbryt
     no_cards_present: Ingen kort til stede
     no_item_found: Ingen funnet
     no_options_available: Ingen tilgjengelige alternativer
@@ -106,4 +115,5 @@ nb:
     x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> poster valgt på denne siden fra totalt <span class="font-bold text-gray-700">%{count}</span>
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> poster valgt fra alle sider
     x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> poster valgt på denne siden
+    yes_confirm: Ja, jeg er sikker
     you_missed_something_check_form: Her mangler du noe. Vennligst sjekk skjemaet.

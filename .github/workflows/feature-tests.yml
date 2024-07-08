@@ -31,11 +31,11 @@ jobs:
       matrix:
         ruby:
           - '3.1.4'
-          - '3.2.2'
           - '3.3.0'
         rails:
           - '6.1'
           - '7.1'
+          - '8.0'
     runs-on: ubuntu-latest
 
     env:

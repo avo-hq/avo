@@ -1,26 +1,49 @@
 [![Gem Version](https://badge.fury.io/rb/avo.svg)](https://badge.fury.io/rb/avo)
-![Tests](https://github.com/avo-hq/avo/workflows/Tests/badge.svg)
-![reviewdog](https://github.com/avo-hq/avo/workflows/reviewdog/badge.svg)
+[![System Tests](https://github.com/avo-hq/avo/actions/workflows/system-tests.yml/badge.svg)](https://github.com/avo-hq/avo/actions/workflows/system-tests.yml)
+[![Feature Tests](https://github.com/avo-hq/avo/actions/workflows/feature-tests.yml/badge.svg)](https://github.com/avo-hq/avo/actions/workflows/feature-tests.yml)
+[![Lint](https://github.com/avo-hq/avo/actions/workflows/lint.yml/badge.svg)](https://github.com/avo-hq/avo/actions/workflows/lint.yml)
+<a href="https://github.com/avo-hq/avo/discussions" target="_blank">
+  <img alt="GitHub Discussions" src="https://img.shields.io/github/discussions/avo-hq/avo?color=168AFE&logo=github">
+</a>
+<a href="https://github.com/avo-hq/avo/issues" target="_blank">
+  <img alt="GitHub Issues or Pull Requests" src="https://img.shields.io/github/issues-closed/avo-hq/avo?style=flat&link=https%3A%2F%2Fgithub.com%2Favo-hq%2Favo%2Fissues&logo=github">
+</a>
+<a href="https://rubygems.org/gems/avo">
+  <img alt="GEM Downloads" src="https://img.shields.io/gem/dt/avo?color=168AFE&logo=ruby&logoColor=FE1616">
+</a>
+<a href="https://github.com/testdouble/standard">
+  <img alt="Ruby Style" src="https://img.shields.io/badge/style-standard-168AFE?logo=ruby&logoColor=FE1616" />
+</a>
+<a href="https://discord.com/invite/vuuwFe4Km3">
+  <img alt="Avo Rails Admin Discord Community" src="https://img.shields.io/discord/740892036978442260?color=8892F6&label=discord&logo=discord&logoColor=8892F6">
+</a>
 [![codecov](https://codecov.io/gh/avo-hq/avo/branch/master/graph/badge.svg?token=Q2LMFE4989)](https://codecov.io/gh/avo-hq/avo)
 [![Maintainability](https://api.codeclimate.com/v1/badges/676a0afa2cc79f03aa29/maintainability)](https://codeclimate.com/github/avo-hq/avo/maintainability)
-[![Open Source Helpers](https://www.codetriage.com/avo-hq/avo/badges/users.svg)](https://www.codetriage.com/avo-hq/avo)
 
 ![](./public/avo-assets/logo-on-white.png)
 
-**Ruby on Rails application building framework.**
+**<a href="https://avohq.io" title="Ruby on Rails Admin Panel Framework">Avo - Ruby on Rails Admin Panel Framework</a>**
 
-Avo is a beautiful next-generation framework that empowers you, the developer, to create fantastic admin panels for your Ruby on Rails apps with the flexibility to fit your needs as you grow.
+Avo is a very custom Admin Panel Framework, Content Management System, and Internal Tool Builder for Ruby on Rails that saves engineers and teams **months of development time**.
 
 ## Get started
 
-⚡️ **Install**: [docs.avohq.io/3.0/installation](https://docs.avohq.io/3.0/installation.html)\
-✨ **Website**: [avohq.io](https://avohq.io)\
-📚 **Documentation**: [docs.avohq.io](https://docs.avohq.io)\
-🗺 **Roadmap**: [GitHub Roadmap](https://github.com/orgs/avo-hq/projects/8)\
-🎸 **Demo app**: [Avodemo](https://main.avodemo.com/)\
-🐤 **Twitter**: [avo_hq](https://twitter.com/avo_hq)\
-💬 **Community chat**: [discord](https://discord.gg/pkTF6y8)\
-🔧 **Issue tracker**: [GitHub issues](http://github.com/avo-hq/avo/issues)\
+⚡️ **Install**: [docs.avohq.io/3.0/installation](https://docs.avohq.io/3.0/installation.html)
+<br>
+✨ **Website**: [avohq.io](https://avohq.io)
+<br>
+📚 **Documentation**: [docs.avohq.io](https://docs.avohq.io)
+<br>
+🗺 **Roadmap**: [GitHub Roadmap](https://github.com/orgs/avo-hq/projects/14)
+<br>
+🎸 **Demo app**: [Avodemo](https://main.avodemo.com/)
+<br>
+🐤 **Twitter**: [avo_hq](https://twitter.com/avo_hq)
+<br>
+💬 **Community chat**: [discord](https://discord.gg/pkTF6y8)
+<br>
+🔧 **Issue tracker**: [GitHub issues](http://github.com/avo-hq/avo/issues)
+<br>
 🎙 **Discussions and feature requests**: [GitHub issues](http://github.com/avo-hq/avo/discussions)
 
 ## Features
@@ -50,9 +73,9 @@ Avo is a beautiful next-generation framework that empowers you, the developer, t
 
 ## Some of the things we're going to focus on next
 
-Theming ⭐️  &nbsp;notifications ⭐️  &nbsp;Resource segmentation ⭐️  &nbsp;filterable fields ⭐️  &nbsp;inline editing ⭐️  &nbsp;multilingual records ⭐️  &nbsp;keyboard shortcuts ⭐️  &nbsp;track resource changes ⭐️  &nbsp;smart resource generation ⭐️  &nbsp;live resources ⭐️  &nbsp;columns view ⭐️  &nbsp;list view ⭐️  &nbsp;custom action items ⭐️  &nbsp;command bar ⭐️  &nbsp; use fields DSL in your custom views
+Theming ⭐️  &nbsp;notifications ⭐️  &nbsp;Resource segmentation ⭐️  &nbsp;inline editing ⭐️  &nbsp;multilingual records ⭐️  &nbsp;keyboard shortcuts ⭐️  &nbsp;track resource changes ⭐️  &nbsp;live resources ⭐️  &nbsp;columns view ⭐️  &nbsp;list view ⭐️  &nbsp;custom action items ⭐️  &nbsp;command bar
 
-For more up-to-date info check out our 🗺 [Roadmap](https://github.com/orgs/avo-hq/projects/8).
+For more up-to-date info check out our 🗺 [Roadmap](https://github.com/orgs/avo-hq/projects/14).
 
 # Installation
 

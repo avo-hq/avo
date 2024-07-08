@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::FieldWrapperComponent < ViewComponent::Base
+class Avo::FieldWrapperComponent < Avo::BaseComponent
   include Avo::Concerns::HasResourceStimulusControllers
 
   attr_reader :dash_if_blank
@@ -48,7 +48,20 @@ class Avo::FieldWrapperComponent < ViewComponent::Base
   end
 
   def classes(extra_classes = "")
-    "field-wrapper relative flex flex-col grow pb-2 md:pb-0 leading-tight min-h-14 h-full #{stacked? ? "field-wrapper-layout-stacked" : "field-wrapper-layout-inline md:flex-row md:items-center"} #{compact? ? "field-wrapper-size-compact" : "field-wrapper-size-regular"} #{full_width? ? "field-width-full" : "field-width-regular"} #{@classes || ""} #{extra_classes || ""} #{@field.get_html(:classes, view: view, element: :wrapper)}"
+    class_names("field-wrapper relative flex flex-col grow pb-2 md:pb-0 leading-tight h-full",
+      @classes,
+      extra_classes,
+      @field.get_html(:classes, view: view, element: :wrapper),
+      {
+        "min-h-14": !short?,
+        "min-h-10": short?,
+        "field-wrapper-size-compact": compact?,
+        "field-wrapper-size-regular": !compact?,
+        "field-width-full": full_width?,
+        "field-width-regular": !full_width?,
+        "field-wrapper-layout-stacked": stacked?,
+        "field-wrapper-layout-inline md:flex-row md:items-center": !stacked?
+      })
   end
 
   def style

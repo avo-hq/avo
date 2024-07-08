@@ -1,4 +1,4 @@
 <div class="text-2xl tracking-normal font-semibold text-gray-800 items-center flex flex-1" data-target="title">
-  <span><%= link_to_if @url.present?, @name, @url, target: @target, class: class_names("text-gray-800", @classes) %></span>
+  <span class="block w-full text-center sm:text-left"><%= link_to_if @url.present?, @name, @url, target: @target, class: class_names("text-gray-800", @classes) %></span>
   <%= body %>
 </div>

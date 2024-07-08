@@ -46,7 +46,7 @@ RSpec.describe "HasOneFieldName", type: :system do
         expect(page).to have_text "Main post"
         expect(page).to have_text "Detach main post"
 
-        accept_alert do
+        accept_custom_alert do
           click_on "Detach main post"
         end
         wait_for_loaded

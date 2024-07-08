@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::Items::VisibleItemsComponent < ViewComponent::Base
+class Avo::Items::VisibleItemsComponent < Avo::BaseComponent
   def initialize(resource:, item:, view:, form:, field_component_extra_args: {})
     @resource = resource
     @item = item

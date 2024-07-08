@@ -15,6 +15,9 @@ class Event < ApplicationRecord
 
   belongs_to :location, optional: true
 
+  has_one_attached :profile_photo
+  has_one_attached :cover_photo
+
   def first_user
     User.first
   end

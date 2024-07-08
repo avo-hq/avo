@@ -3,7 +3,11 @@ pt-BR:
   avo:
     action_ran_successfully: Ação executada com sucesso!
     actions: Ações
+    add_filter: Adicionar filtro
     and_x_other_resources: e %{count} outros recursos
+    applied:
+      one: aplicado
+      other: aplicados
     are_you_sure: Você tem certeza?
     are_you_sure_detach_item: Você tem certeza que deseja separar este %{item}.
     are_you_sure_you_want_to_run_this_option: Você tem certeza que deseja executar esta ação?
@@ -19,6 +23,7 @@ pt-BR:
     choose_item: Escolher %{item}
     clear_value: Limpar valor
     click_to_reveal_filters: Clique para revelar os filtros
+    close_modal: Fechar modal
     confirm: Confirmar
     create_new_item: Criar novo %{item}
     dashboard: Painel
@@ -38,6 +43,9 @@ pt-BR:
     failed: Falhou
     failed_to_find_attachment: Falhou ao achar anexo
     failed_to_load: Falha ao carregar
+    file:
+      one: ficheiro
+      other: ficheiros
     filter_by: Filtrar por
     filters: Filtros
     go_back: Voltar
@@ -54,6 +62,7 @@ pt-BR:
     more: Mais
     new: novo
     next_page: Próxima página
+    no_cancel: Não, cancelar
     no_cards_present: Nenhum cartão presente
     no_item_found: Nenhum registro encontrado
     no_options_available: Nenhuma opção disponível
@@ -106,4 +115,5 @@ pt-BR:
     x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> registros selecionados nesta página de um total de <span class="font-bold text-gray-700">%{count}</span>
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> registros selecionados de todas as páginas
     x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> registros selecionados nesta página
+    yes_confirm: Sim, tenho certeza
     you_missed_something_check_form: Você pode ter esquecido algo. Por favor, cheque o formulário.

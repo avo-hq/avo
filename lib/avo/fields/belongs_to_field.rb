@@ -68,6 +68,7 @@ module Avo
       attr_reader :allow_via_detaching
       attr_reader :attach_scope
       attr_reader :polymorphic_help
+      attr_reader :link_to_record
 
       def initialize(id, **args, &block)
         args[:placeholder] ||= I18n.t("avo.choose_an_option")
@@ -84,6 +85,7 @@ module Avo
         @target = args[:target]
         @use_resource = args[:use_resource] || nil
         @can_create = args[:can_create].nil? ? true : args[:can_create]
+        @link_to_record = args[:link_to_record].present? ? args[:link_to_record] : false
       end
 
       def value
@@ -241,12 +243,14 @@ module Avo
         else
           reflection_key = polymorphic_as || id
 
-          if @record._reflections[reflection_key.to_s].klass.present?
-            get_resource_by_model_class(@record._reflections[reflection_key.to_s].klass.to_s)
-          elsif @record._reflections[reflection_key.to_s].options[:class_name].present?
-            get_resource_by_model_class(@record._reflections[reflection_key.to_s].options[:class_name])
+          reflection_object = @record._reflections.with_indifferent_access[reflection_key]
+
+          if reflection_object.klass.present?
+            get_resource_by_model_class(reflection_object.klass.to_s)
+          elsif reflection_object.options[:class_name].present?
+            get_resource_by_model_class(reflection_object.options[:class_name])
           else
-            App.get_resource_by_name reflection_key.to_s
+            App.get_resource_by_name reflection_key
           end
         end
       end
@@ -261,8 +265,28 @@ module Avo
         super
       end
 
-      def can_create?
-        @can_create
+      def index_link_to_resource
+        if @link_to_record.present?
+          @resource
+        else
+          target_resource
+        end
+      end
+
+      def index_link_to_record
+        if @link_to_record.present?
+          get_record
+        else
+          value
+        end
+      end
+
+      # field :user, as: :belongs_to, can_create: true
+      # Only can create when:
+      #   - `can_create: true` option is present
+      #   - target resource's policy allow creation (UserPolicy in this example)
+      def can_create?(final_target_resource = target_resource)
+        @can_create && final_target_resource.authorization.authorize_action(:create, raise_exception: false)
       end
 
       def form_field_label

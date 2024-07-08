@@ -7,6 +7,7 @@ en:
     action_ran_successfully: Action ran successfully!
     actions: Actions
     and_x_other_resources: and %{count} other resources
+    applied: applied
     are_you_sure: Are you sure?
     are_you_sure_detach_item: Are you sure you want to detach this %{item}.
     are_you_sure_you_want_to_run_this_option: Are you sure you want to run this action?
@@ -22,6 +23,7 @@ en:
     choose_item: Choose %{item}
     clear_value: Clear value
     click_to_reveal_filters: Click to reveal filters
+    close_modal: Close modal
     confirm: Confirm
     create_new_item: Create new %{item}
     dashboard: Dashboard
@@ -41,6 +43,9 @@ en:
     failed: Failed
     failed_to_find_attachment: Failed to find attachment
     failed_to_load: Failed to load
+    file:
+      one: file
+      other: files
     filter_by: Filter by
     filters: Filters
     go_back: Go back
@@ -57,6 +62,7 @@ en:
     more: More
     new: new
     next_page: Next page
+    no_cancel: No, cancel
     no_cards_present: No cards present
     no_item_found: No record found
     no_options_available: No options available
@@ -109,4 +115,5 @@ en:
     x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> records selected on this page from a total of <span class="font-bold text-gray-700">%{count}</span>
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> records selected from all pages
     x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> records selected on this page
+    yes_confirm: Yes, I'm sure
     you_missed_something_check_form: You might have missed something. Please check the form.

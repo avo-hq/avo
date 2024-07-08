@@ -21,8 +21,12 @@ gem 'cssbundling-rails'
 # Dependencies for dummy_app
 #
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem "rails", "~> 7.1.0"
-# gem 'rails', github: 'rails/rails'
+# gem "rails", "~> 7.1.0"
+gem "rails", github: "rails/rails", branch: "main"
+
+# Avo file filed requires this gem
+# gem "activestorage"
+gem "activestorage", github: "rails/rails", branch: "main"
 
 # Use postgresql as the database for Active Record
 gem "pg", ">= 0.18", "< 2.0"
@@ -77,6 +81,8 @@ group :development do
   gem "ripper-tags"
   gem "rubocop-shopify", require: false
   gem "rubycritic", require: false
+
+  gem "actual_db_schema"
 end
 
 group :test do
@@ -115,8 +121,6 @@ end
 
 gem "zeitwerk"
 
-gem "httparty"
-
 gem "iso"
 
 gem "active_link_to"
@@ -126,7 +130,10 @@ gem "addressable"
 gem 'meta-tags'
 
 # Search
-gem "ransack", "~> 4.1", ">= 4.1.1"
+# gem "ransack", "~> 4.1", ">= 4.1.1"
+
+# Temporary use of fork to add Rails 8 support
+gem "ransack", github: "avo-hq/ransack", branch: "fix/rails-8/delegate-alias-tracker-to-relation"
 
 gem 'friendly_id', '~> 5.5.1'
 
@@ -141,8 +148,8 @@ gem "active_median"
 
 gem 'acts_as_list'
 
-gem 'acts-as-taggable-on', '~> 10.0'
-# gem 'acts-as-taggable-on', github: 'avo-hq/acts-as-taggable-on'
+# gem 'acts-as-taggable-on', '~> 10.0'
+gem "acts-as-taggable-on", github: "avo-hq/acts-as-taggable-on"
 
 gem "bundler-integrity", "~> 1.0"
 
@@ -152,9 +159,6 @@ gem "countries"
 # Avo dashbaords requires this gem
 gem "chartkick"
 
-# Avo file filed requires this gem
-gem "activestorage"
-# gem "activestorage", github: "rails/rails", branch: "main"
 # Required by Avo
 gem "sprockets-rails"
 
@@ -182,3 +186,5 @@ gem "avo-record_link_field"
 
 # gem "pagy", "< 8.0.0"
 gem "pagy", "> 8"
+
+gem "csv"

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::Fields::Common::KeyValueComponent < ViewComponent::Base
+class Avo::Fields::Common::KeyValueComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
 
   attr_reader :view

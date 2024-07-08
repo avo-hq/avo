@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Avo::BaseComponent < ViewComponent::Base
+  extend Literal::Properties
   include Turbo::FramesHelper
 
   def has_with_trial(ability)

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::Sidebar::LinkComponent < ViewComponent::Base
+class Avo::Sidebar::LinkComponent < Avo::BaseComponent
   attr_reader :active
   attr_reader :target
   attr_reader :label
@@ -19,7 +19,7 @@ class Avo::Sidebar::LinkComponent < ViewComponent::Base
 
   def is_external?
     # If the path contains the scheme, check if it includes the root path or not
-    return !path.include?(Avo.mount_path) if URI(path).scheme.present?
+    return !path.include?(helpers.mount_path) if URI(path).scheme.present?
 
     false
   end

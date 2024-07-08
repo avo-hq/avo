@@ -3,7 +3,12 @@ ro:
   avo:
     action_ran_successfully: Acțiunea a rulat cu succes!
     actions: Acțiuni
+    add_filter: Adăugați filtru
     and_x_other_resources: plus alte %{count} recorduri
+    applied:
+      few: aplicate
+      one: aplicat
+      other: aplicate
     are_you_sure: Ești sigur?
     are_you_sure_detach_item: Sigur vrei să detașezi asta %{item}.
     are_you_sure_you_want_to_run_this_option: Ești sigur că vrei să rulezi aceasta acțiune?
@@ -19,6 +24,7 @@ ro:
     choose_item: Alege %{item}
     clear_value: Șterge valoarea
     click_to_reveal_filters: Faceți clic pentru a afișa filtrele
+    close_modal: Închide modalul
     confirm: Confirm
     create_new_item: Creează %{item}
     dashboard: Panou de control
@@ -38,6 +44,10 @@ ro:
     failed: A eșuat
     failed_to_find_attachment: Atașamentul nu a fost găsit
     failed_to_load: Încărcarea a eșuat
+    file:
+      few: fişiere
+      one: fişier
+      other: fişiere
     filter_by: Filtează după
     filters: Filtre
     go_back: Înapoi
@@ -54,6 +64,7 @@ ro:
     more: Mai multe
     new: nou
     next_page: Pagina următoare
+    no_cancel: Nu, anulează
     no_cards_present: Nici un card găsit
     no_item_found: Nici un articol găsit
     no_options_available: Nicio opțiune disponibilă
@@ -106,4 +117,5 @@ ro:
     x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> selectate dintr-un total de <span class="font-bold text-gray-700">%{count}</span>
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> selectate din toate paginile
     x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> selectate
+    yes_confirm: Da, sunt sigur
     you_missed_something_check_form: S-ar putea să fi omis ceva. Vă rugăm să verificați formularul.

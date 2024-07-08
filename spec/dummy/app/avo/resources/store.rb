@@ -6,7 +6,7 @@ class Avo::Resources::Store < Avo::BaseResource
     field :name, as: :text
     field :size, as: :text
 
-    if params[:show_location_field] == '1'
+    if params[:show_location_field] == "1"
       # Example for error message when resource is missing
       field :location, as: :has_one
     end

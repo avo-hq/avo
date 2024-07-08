@@ -7,6 +7,7 @@ module Avo
     end
 
     include Avo::InitializesAvo
+    include Avo::CommonController
     include Avo::ApplicationHelper
     include Avo::UrlHelpers
     include Avo::Concerns::Breadcrumbs
@@ -14,7 +15,6 @@ module Avo
     protect_from_forgery with: :exception
     around_action :set_avo_locale
     around_action :set_force_locale, if: -> { params[:force_locale].present? }
-    before_action :set_default_locale, if: -> { params[:set_locale].present? }
     before_action :init_app
     before_action :set_active_storage_current_host
     before_action :set_resource_name
@@ -49,10 +49,6 @@ module Avo
     # Exposing it as public method
     def turbo_frame_request?
       super
-    end
-
-    def hello
-      puts "Nobody tested me :("
     end
 
     private
@@ -93,7 +89,7 @@ module Avo
 
       return field.use_resource if field&.use_resource.present?
 
-      reflection = @record._reflections[params[:for_attribute] || params[:related_name]]
+      reflection = @record._reflections.with_indifferent_access[field&.for_attribute || params[:related_name]]
 
       reflected_model = reflection.klass
 
@@ -278,41 +274,21 @@ module Avo
       @resource.form_scope
     end
 
-    # Sets the locale set in avo.rb initializer
+    # Sets the locale set in avo.rb initializer or if to something that the user set using the `?set_locale=pt-BR` param
     def set_avo_locale(&action)
-      locale = Avo.configuration.locale || I18n.default_locale
+      locale = Avo.configuration.default_locale
+
+      if params[:set_locale].present?
+        locale = params[:set_locale]
+        Avo.configuration.locale = locale
+      end
+
       I18n.with_locale(locale, &action)
-    end
-
-    # Enable the user to change the default locale with the `?set_locale=pt-BR` param
-    def set_default_locale
-      locale = params[:set_locale] || I18n.default_locale
-
-      I18n.default_locale = locale
     end
 
     # Temporary set the locale and reverting at the end of the request.
     def set_force_locale(&action)
-      locale = params[:force_locale] || I18n.default_locale
-      I18n.with_locale(locale, &action)
-    end
-
-    def default_url_options
-      result = super.dup
-
-      if params[:force_locale].present?
-        result[:force_locale] = params[:force_locale]
-      end
-
-      extra_options = get_extra_default_url_options
-
-      if extra_options.present?
-        extra_options.each do |param_name|
-          result[param_name] = params[param_name]
-        end
-      end
-
-      result
+      I18n.with_locale(params[:force_locale], &action)
     end
 
     def set_sidebar_open
@@ -341,18 +317,6 @@ module Avo
         "/avo-assets/avo.base"
       else
         "avo.base"
-      end
-    end
-
-    private
-
-    def get_extra_default_url_options
-      block_or_array = Avo.configuration.default_url_options
-
-      if block_or_array.respond_to?(:call)
-        instance_eval(&block_or_array)
-      else
-        block_or_array
       end
     end
 

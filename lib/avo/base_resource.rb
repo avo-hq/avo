@@ -9,6 +9,8 @@ module Avo
     include Avo::Concerns::HasResourceStimulusControllers
     include Avo::Concerns::ModelClassConstantized
     include Avo::Concerns::HasDescription
+    include Avo::Concerns::HasCoverPhoto
+    include Avo::Concerns::HasProfilePhoto
     include Avo::Concerns::HasHelpers
     include Avo::Concerns::Hydration
     include Avo::Concerns::Pagination
@@ -110,22 +112,12 @@ module Avo
         Avo::Services::AuthorizationService.new Avo::Current.user, model_class, policy_class: authorization_policy
       end
 
-      def get_record_associations(record)
-        record._reflections
-      end
-
       def valid_association_name(record, association_name)
-        get_record_associations(record).keys.find do |name|
-          name == association_name
-        end
+        association_name if record._reflections.with_indifferent_access[association_name].present?
       end
 
       def valid_attachment_name(record, association_name)
-        association_exists = get_record_associations(record).keys.any? do |name|
-          name == "#{association_name}_attachment" || name == "#{association_name}_attachments"
-        end
-
-        association_name if association_exists
+        association_name if record.class.reflect_on_attachment(association_name).present?
       end
 
       def get_available_models
@@ -158,11 +150,11 @@ module Avo
       # With uncountable models route key appends an _index suffix (Fish->fish_index)
       # Example: User->users, MediaItem->media_items, Fish->fish
       def model_key
-        model_class.model_name.plural
+        @model_key ||= model_class.model_name.plural
       end
 
       def class_name
-        to_s.demodulize
+        @class_name ||= to_s.demodulize
       end
 
       def route_key
@@ -178,7 +170,7 @@ module Avo
       end
 
       def name
-        name_from_translation_key(count: 1, default: class_name.underscore.humanize)
+        @name ||= name_from_translation_key(count: 1, default: class_name.underscore.humanize)
       end
       alias_method :singular_name, :name
 
@@ -295,8 +287,8 @@ module Avo
       cards
     end
 
-    def divider
-      action DividerComponent
+    def divider(label = nil)
+      entity_loader(:action).use({class: Divider, label: label}.compact)
     end
 
     # def fields / def cards
@@ -456,7 +448,6 @@ module Avo
     def file_hash
       content_to_be_hashed = ""
 
-      file_name = self.class.underscore_name.tr(" ", "_")
       resource_path = Rails.root.join("app", "avo", "resources", "#{file_name}.rb").to_s
       if File.file? resource_path
         content_to_be_hashed += File.read(resource_path)
@@ -469,6 +460,10 @@ module Avo
       end
 
       Digest::MD5.hexdigest(content_to_be_hashed)
+    end
+
+    def file_name
+      @file_name ||= self.class.underscore_name.tr(" ", "_")
     end
 
     def cache_hash(parent_record)
@@ -492,7 +487,7 @@ module Avo
 
           if field.type == "belongs_to"
 
-            reflection = @record._reflections[@params[:via_relation]]
+            reflection = @record._reflections.with_indifferent_access[@params[:via_relation]]
 
             if field.polymorphic_as.present? && field.types.map(&:to_s).include?(@params[:via_relation_class])
               # set the value to the actual record
