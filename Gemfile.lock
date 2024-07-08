@@ -115,7 +115,7 @@ GIT
 PATH
   remote: .
   specs:
-    avo (3.10.1)
+    avo (3.10.2)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
