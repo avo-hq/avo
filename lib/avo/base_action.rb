@@ -238,7 +238,7 @@ module Avo
       self
     end
 
-    alias do_nothing close_modal
+    alias_method :do_nothing, :close_modal
 
     # Add a placeholder silent message from when a user wants to do a redirect action or something similar
     def silent
