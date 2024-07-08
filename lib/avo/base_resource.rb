@@ -48,6 +48,9 @@ module Avo
     class_attribute :title
     class_attribute :search, default: {}
     class_attribute :includes, default: []
+    class_attribute :attachments, default: []
+    class_attribute :single_includes, default: []
+    class_attribute :single_attachments, default: []
     class_attribute :authorization_policy
     class_attribute :translation_key
     class_attribute :default_view_type, default: :table
@@ -204,9 +207,21 @@ module Avo
       end
 
       def find_record(id, query: nil, params: nil)
+        query = query || find_scope # If no record is given we'll use the default
+
+        if single_includes.present?
+          query = query.includes(*single_includes)
+        end
+
+        if single_attachments.present?
+          single_attachments.each do |attachment|
+            query = query.send(:"with_attached_#{attachment}")
+          end
+        end
+
         Avo::ExecutionContext.new(
           target: find_record_method,
-          query: query || find_scope, # If no record is given we'll use the default
+          query: query,
           id: id,
           params: params
         ).handle
