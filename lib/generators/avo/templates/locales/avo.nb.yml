@@ -84,6 +84,7 @@ nb:
     records_selected_from_all_pages_html: Alle poster valgt fra alle sider
     remove_selection: Fjern valg
     reset_filters: Nullstill filter
+    reset: Nullstille
     resource_created: Ressurs generert
     resource_destroyed: Ressurs slettet
     resource_updated: Ressurs oppdatert
