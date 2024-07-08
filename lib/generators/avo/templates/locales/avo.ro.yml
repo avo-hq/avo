@@ -85,8 +85,8 @@ ro:
     prev_page: Pagina anterioara
     records_selected_from_all_pages_html: Toate selectate din toate paginile
     remove_selection: Șterge selecția
-    reset_filters: Resetați filtrele
     reset: Resetare
+    reset_filters: Resetați filtrele
     resource_created: Resursă creata
     resource_destroyed: Resursă ștearsă
     resource_updated: Resursă actualizată

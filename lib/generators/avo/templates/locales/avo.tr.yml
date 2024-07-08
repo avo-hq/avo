@@ -83,8 +83,8 @@ tr:
     prev_page: Önceki sayfa
     records_selected_from_all_pages_html: Tüm sayfalardan seçilen tüm kayıtlar
     remove_selection: Seçimi sil
-    reset_filters: Filtreleri sıfırla
     reset: Sıfırlama
+    reset_filters: Filtreleri sıfırla
     resource_created: Kayıt oluşturuldu
     resource_destroyed: Kayıt silindi
     resource_updated: Kayıt güncellendi

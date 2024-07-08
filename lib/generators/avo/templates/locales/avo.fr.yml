@@ -83,8 +83,8 @@ fr:
     prev_page: Page précédente
     records_selected_from_all_pages_html: tous les éléments sélectionnés de toutes les pages
     remove_selection: Supprimer la sélection
-    reset_filters: Réinitialiser les filtres
     reset: réinitialiser
+    reset_filters: Réinitialiser les filtres
     resource_created: Ressource créee
     resource_destroyed: Ressource détruite
     resource_updated: Ressource mise à jour

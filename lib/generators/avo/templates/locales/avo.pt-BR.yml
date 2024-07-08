@@ -83,8 +83,8 @@ pt-BR:
     prev_page: Página anterior
     records_selected_from_all_pages_html: Todos os registros de todas as páginas selecionados
     remove_selection: Remover seleção
-    reset_filters: Limpar filtros
     reset: Resetar
+    reset_filters: Limpar filtros
     resource_created: Recurso criado
     resource_destroyed: Recurso destruído
     resource_updated: Recurso atualizado
