@@ -73,6 +73,8 @@ module Avo
             coordinates[:latitude].present? && coordinates[:longitude].present?
           end
 
+        return records_markers if map_options[:extra_markers].nil?
+
         records_markers + Avo::ExecutionContext.new(target: map_options[:extra_markers]).handle
       end
 

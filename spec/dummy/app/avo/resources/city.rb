@@ -17,7 +17,7 @@ class Avo::Resources::City < Avo::BaseResource
         tooltip: record.name
       }
     },
-    custom_markers: -> do
+    extra_markers: -> do
       [
         {
           latitude: params[:lat] || 37.780411,
