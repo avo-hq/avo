@@ -73,7 +73,7 @@ module Avo
             coordinates[:latitude].present? && coordinates[:longitude].present?
           end
 
-        records_markers + Avo::ExecutionContext.new(target: map_options[:custom_markers]).handle
+        records_markers + Avo::ExecutionContext.new(target: map_options[:extra_markers]).handle
       end
 
       def resource_mapkick_options
@@ -104,7 +104,7 @@ module Avo
       end
 
       def resource_mappable?
-        map_options[:record_marker].present? || map_options[:custom_markers].present? || @resources.first.record.respond_to?(:coordinates)
+        map_options[:record_marker].present? || map_options[:extra_markers].present? || @resources.first.record.respond_to?(:coordinates)
       end
     end
   end
