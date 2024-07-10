@@ -145,7 +145,7 @@ module Avo
     end
 
     def check_rails_version_issues
-      if Rails.version.start_with?("7.1") && Avo.configuration.license.in? ["pro", "advanced"]
+      if Rails.version.start_with?("7.1") && Avo.configuration.license.in?(["pro", "advanced"])
         Avo.error_manager.add({
           url: "https://docs.avohq.io/3.0/upgrade.html#upgrade-from-3-7-4-to-3-9-1",
           target: "_blank",
