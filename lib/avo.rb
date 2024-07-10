@@ -153,7 +153,8 @@ module Avo
                     - Dashboards\n\r
                     - Ordering\n\r
                     - Dynamic filters\n\r
-                    We recommend you upgrade to Rails 7.2"
+                    We recommend you upgrade to Rails 7.2\n\r
+                    Click banner for more information."
         })
       end
     end
