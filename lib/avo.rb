@@ -149,10 +149,11 @@ module Avo
         Avo.error_manager.add({
           url: "https://docs.avohq.io/3.0/upgrade.html#upgrade-from-3-7-4-to-3-9-1",
           target: "_blank",
-          message: "Due a Rails 7.1 bug the following features may present issues:\n\r
+          message: "Due to a Rails 7.1 bug the following features won't work:\n\r
                     - Dashboards\n\r
                     - Ordering\n\r
-                    - Dynamic filters\n\r"
+                    - Dynamic filters\n\r
+                    We recommend you upgrade to Rails 7.2"
         })
       end
     end
