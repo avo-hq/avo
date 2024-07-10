@@ -124,8 +124,8 @@ module Avo
             turbo_stream.redirect_to(back_path)
           end
 
-          responses = if @action.enhanced_turbo_streams.present?
-            Array(turbo_response) + Array(instance_exec(&@action.enhanced_turbo_streams))
+          responses = if @action.appended_turbo_streams.present?
+            Array(turbo_response) + Array(instance_exec(&@action.appended_turbo_streams))
           else
             Array(turbo_response)
           end

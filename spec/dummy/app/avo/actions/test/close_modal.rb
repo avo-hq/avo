@@ -11,7 +11,7 @@ class Avo::Actions::Test::CloseModal < Avo::BaseAction
     close_modal
 
     # Test custom added turbo_streams
-    enhance_response turbo_stream: -> {
+    append_to_response -> {
       turbo_stream.set_title("Dummy action custom stream ;)")
     }
   end
