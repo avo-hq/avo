@@ -151,11 +151,11 @@ module Avo
       # With uncountable models route key appends an _index suffix (Fish->fish_index)
       # Example: User->users, MediaItem->media_items, Fish->fish
       def model_key
-        model_class.model_name.plural
+        @model_key ||= model_class.model_name.plural
       end
 
       def class_name
-        to_s.demodulize
+        @class_name ||= to_s.demodulize
       end
 
       def route_key
@@ -171,7 +171,7 @@ module Avo
       end
 
       def name
-        name_from_translation_key(count: 1, default: class_name.underscore.humanize)
+        @name ||= name_from_translation_key(count: 1, default: class_name.underscore.humanize)
       end
       alias_method :singular_name, :name
 
@@ -215,6 +215,10 @@ module Avo
 
       def search_query
         search.dig(:query)
+      end
+
+      def search_results_count
+        search.dig(:results_count)
       end
 
       def fetch_search(key, record: nil)
@@ -449,7 +453,6 @@ module Avo
     def file_hash
       content_to_be_hashed = ""
 
-      file_name = self.class.underscore_name.tr(" ", "_")
       resource_path = Rails.root.join("app", "avo", "resources", "#{file_name}.rb").to_s
       if File.file? resource_path
         content_to_be_hashed += File.read(resource_path)
@@ -462,6 +465,10 @@ module Avo
       end
 
       Digest::MD5.hexdigest(content_to_be_hashed)
+    end
+
+    def file_name
+      @file_name ||= self.class.underscore_name.tr(" ", "_")
     end
 
     def cache_hash(parent_record)

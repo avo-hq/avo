@@ -53,7 +53,7 @@ module Avo
       results_count = query.reselect(resource.model_class.primary_key).count
 
       # Get the results
-      query = query.limit(Avo.configuration.search_results_count)
+      query = query.limit(search_results_count(resource))
 
       results = apply_search_metadata(query, resource)
 
@@ -200,6 +200,17 @@ module Avo
           count: 1
         }
       }, status: 500
+    end
+
+    def search_results_count(resource)
+      if resource.search_results_count
+        Avo::ExecutionContext.new(
+          target: resource.search_results_count,
+          params: params
+        ).handle
+      else
+        Avo.configuration.search_results_count
+      end
     end
   end
 end
