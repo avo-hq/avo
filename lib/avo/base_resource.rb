@@ -57,6 +57,7 @@ module Avo
     class_attribute :view_types
     class_attribute :grid_view
     class_attribute :visible_on_sidebar, default: true
+    class_attribute :confirm_operation_message, default: nil
     class_attribute :index_query, default: -> {
       query
     }
