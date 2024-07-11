@@ -44,6 +44,20 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
         via_resource_class: parent_resource.class.to_s,
         via_record_id: @parent_record.to_param
       }
+
+      # TODO: extract
+      # Copy from https://github.com/avo-hq/avo/blob/main/app/components/avo/views/resource_index_component.rb#L85
+      if @reflection.is_a? ActiveRecord::Reflection::ThroughReflection
+        args[:via_relation] = params[:resource_name]
+      end
+
+      if @reflection.is_a? ActiveRecord::Reflection::HasManyReflection
+        args[:via_relation] = @reflection.name
+      end
+
+      if @reflection.inverse_of.present?
+        args[:via_relation] = @reflection.inverse_of.name
+      end
     end
 
     helpers.edit_resource_path(record: @resource.record, resource: parent_or_child_resource, **args)
@@ -113,7 +127,13 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     policy_method = is_a_related_resource? ? :can_delete? : :can_see_the_destroy_button?
     return unless send policy_method
 
-    a_button url: helpers.resource_path(record: @resource.record, resource: @resource),
+    a_button url: helpers.resource_path(
+        record: @resource.record,
+        resource: @resource,
+        via_resource_class: params[:via_resource_class],
+        via_record_id: params[:via_record_id],
+        related_name: params[:related_name]
+      ),
       style: :icon,
       color: :gray,
       icon: "avo/trash",

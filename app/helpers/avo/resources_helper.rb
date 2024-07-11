@@ -53,6 +53,20 @@ module Avo
           via_resource_class: parent_resource.class.to_s,
           via_record_id: parent_record.to_param
         }
+
+        # TODO: extract
+        # Copy from https://github.com/avo-hq/avo/blob/main/app/components/avo/views/resource_index_component.rb#L85
+        if @reflection.is_a? ActiveRecord::Reflection::ThroughReflection
+          args[:via_relation] = params[:resource_name]
+        end
+
+        if @reflection.is_a? ActiveRecord::Reflection::HasManyReflection
+          args[:via_relation] = @reflection.name
+        end
+
+        if @reflection.inverse_of.present?
+          args[:via_relation] = @reflection.inverse_of.name
+        end
       end
 
       resource_path(record: resource.record, resource: parent_or_child_resource, **args)

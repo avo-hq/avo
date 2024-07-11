@@ -113,7 +113,9 @@ module Avo
         {
           view:,
           for_attribute: @for_attribute,
-          turbo_frame: add_turbo_frame ? turbo_frame : nil
+          turbo_frame: add_turbo_frame ? turbo_frame : nil,
+          via_resource_class: @resource.class,
+          via_record_id: @record.to_param
         }.compact
       end
 
