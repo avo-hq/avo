@@ -11,8 +11,6 @@ class Avo::Resources::Project < Avo::BaseResource
     query.unscoped
   }
 
-  self.confirm_operation_message = "Are you sure?"
-
   def fields
     field :id, as: :id, link_to_record: true
     field :status,

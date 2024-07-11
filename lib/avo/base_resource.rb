@@ -57,7 +57,7 @@ module Avo
     class_attribute :view_types
     class_attribute :grid_view
     class_attribute :visible_on_sidebar, default: true
-    class_attribute :confirm_operation_message, default: nil
+    class_attribute :confirm_on_save, default: false
     class_attribute :index_query, default: -> {
       query
     }
@@ -253,6 +253,10 @@ module Avo
           self.class.model_class = model_class.base_class
         end
       end
+    end
+
+    def confirm_on_save_message
+      t("avo.are_you_sure") if confirm_on_save
     end
 
     def detect_fields
