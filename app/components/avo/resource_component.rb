@@ -26,8 +26,8 @@ class Avo::ResourceComponent < Avo::BaseComponent
     return false if @reflection.blank? || @resource.record.blank? || !authorize_association_for(:detach)
 
     # If the inverse_of is a belongs_to, we need to check if it's optional in order to know if we can detach it.
-    if inverse_of.is_a?(ActiveRecord::Reflection::BelongsToReflection)
-      inverse_of.options[:optional]
+    if inverse_of[:type].eql?(ActiveRecord::Reflection::BelongsToReflection)
+      inverse_of[:optional]
     else
       true
     end
@@ -294,19 +294,21 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def inverse_of
-    current_reflection = @reflection.active_record.reflect_on_all_associations.find do |reflection|
-      reflection.name == @reflection.name.to_sym
+    @inverse_of ||= begin
+      inverse_of = Avo.associations_information[@parent_record.class.name][@reflection.name.to_sym][:inverse_of]
+
+      if inverse_of.blank? && Rails.env.development?
+        Avo.error_manager.add({
+            url: "https://docs.avohq.io/3.0/upgrade.html#upgrade-from-3-7-4-to-3-9-1",
+            target: "_blank",
+            # Ex: Please configure the 'inverse_of' option for the ':users' association on the 'Project' model.
+            message: "Avo uses the 'inverse_of' option to determine the inverse association and figure out if the association permit or not detaching.\n\r
+                      Please configure the 'inverse_of' option for the '#{current_reflection.macro} :#{current_reflection.name}' association on the '#{current_reflection.active_record.name}' model.\n\r
+                      Otherwise the detach button will be visible by default."
+          })
+      end
+
+      inverse_of
     end
-
-    inverse_of = current_reflection.inverse_of
-
-    if inverse_of.blank? && Rails.env.development?
-      puts "WARNING! Avo uses the 'inverse_of' option to determine the inverse association and figure out if the association permit or not detaching."
-      # Ex: Please configure the 'inverse_of' option for the ':users' association on the 'Project' model.
-      puts "Please configure the 'inverse_of' option for the '#{current_reflection.macro} :#{current_reflection.name}' association on the '#{current_reflection.active_record.name}' model."
-      puts "Otherwise the detach button will be visible by default.\n\n"
-    end
-
-    inverse_of
   end
 end

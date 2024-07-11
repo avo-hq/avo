@@ -56,6 +56,7 @@ module Avo
     attr_reader :logger
     attr_reader :cache_store
     attr_reader :field_manager
+    attr_reader :associations_information
 
     delegate :license, :app, :error_manager, :tool_manager, :resource_manager, to: Avo::Current
 
@@ -67,6 +68,9 @@ module Avo
       plugin_manager.boot_plugins
       Avo.run_load_hooks(:boot, self)
       eager_load_actions
+      @associations_information = {}
+      eager_load_models
+      fetch_associations_information
     end
 
     # Runs on each request
@@ -142,6 +146,36 @@ module Avo
 
     def eager_load_actions
       Rails.autoloaders.main.eager_load_namespace(Avo::Actions) if defined?(Avo::Actions)
+    end
+
+    def eager_load_models
+      model_paths = Rails.root.join('app', 'models', '**', '*.rb')
+      Dir[model_paths].each do |file|
+        require_dependency file
+      end
+    end
+
+    def fetch_associations_information
+      ApplicationRecord.descendants.each do |model|
+        @associations_information[model.name] = model_associations(model)
+      end
+    end
+
+    def model_associations(model)
+      associations = {}
+      model.reflect_on_all_associations.each do |association|
+        inverse_of = association.inverse_of
+
+        associations[association.name] = {
+          class_name: association.class_name,
+          inverse_of: {
+            name: association.options[:inverse_of],
+            type: inverse_of&.class,
+            optional: inverse_of&.options&.dig(:optional)
+          }
+        }
+      end
+      associations
     end
 
     def check_rails_version_issues
