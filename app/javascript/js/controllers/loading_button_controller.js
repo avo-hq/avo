@@ -18,6 +18,9 @@ export default class extends Controller {
 
     this.dialog.addEventListener('close', this.dialogCloseHandler)
   }
+  disconnect() {
+    this.dialog.removeEventListener('close', this.dialogCloseHandler)
+  }
 
   attemptSubmit(e) {
     // If the user has to confirm the action
