@@ -198,7 +198,7 @@ RSpec.describe "Actions", type: :system do
       expect(page).not_to have_selector(modal)
       expect(page).to have_text "Modal closed!!"
       expect(page).to have_title("Cool title")
-      expect(page).to have_field('user_first_name', with: 'First name should persist after action.')
+      expect(page).to have_field("user_first_name", with: "First name should persist after action.")
     end
   end
 
