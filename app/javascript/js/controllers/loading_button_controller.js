@@ -11,6 +11,13 @@ export default class extends Controller {
     confirmationMessage: String,
     confirmed: Boolean,
   }
+  connect() {
+    this.button.setAttribute('data-original-content', this.button.innerHTML)
+    this.dialog = document.getElementById('turbo-confirm')
+    this.dialogCloseHandler = this.handleDialogClose.bind(this)
+
+    this.dialog.addEventListener('close', this.dialogCloseHandler)
+  }
 
   attemptSubmit(e) {
     // If the user has to confirm the action
@@ -51,6 +58,18 @@ export default class extends Controller {
       button.click()
       button.setAttribute('disabled', 'disabled')
     }, 1)
+  }
+
+  handleDialogClose() {
+    if (this.dialog.returnValue !== 'confirm') {
+      this.resetButton()
+    }
+  }
+  resetButton() {
+    const { button } = this
+
+    button.innerHTML = button.getAttribute('data-original-content')
+    button.removeAttribute('disabled');
   }
 
   markConfirmed() {
