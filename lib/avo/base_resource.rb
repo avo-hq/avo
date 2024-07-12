@@ -207,7 +207,7 @@ module Avo
       end
 
       def find_record(id, query: nil, params: nil)
-        query = query || find_scope # If no record is given we'll use the default
+        query ||= find_scope # If no record is given we'll use the default
 
         if single_includes.present?
           query = query.includes(*single_includes)
