@@ -6,6 +6,7 @@ class Avo::Actions::Test::CloseModal < Avo::BaseAction
   }
 
   def handle(**args)
+    TestBuddy.hi "Hello from Avo::Actions::Test::CloseModal handle method"
     succeed "Modal closed!!"
     close_modal
 
