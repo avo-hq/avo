@@ -15,7 +15,7 @@ RSpec.feature "ConfirmOnSave", type: :feature do
 
         save
 
-        expect(page).to have_selector("#turbo-confirm button[value="confirm"]")
+        expect(page).to have_selector("#turbo-confirm button[value='confirm']")
       end
 
       it "completes the operation on confirmation" do
@@ -28,7 +28,7 @@ RSpec.feature "ConfirmOnSave", type: :feature do
         save
 
         accept_custom_alert do
-          click_on "Yes, I"m sure"
+          click_on "Yes, I'm sure"
         end
 
         expect(store.reload.name).to eq(changed_name)
