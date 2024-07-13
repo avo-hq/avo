@@ -210,6 +210,7 @@ RSpec.describe "Actions", type: :system do
 
       fill_in "user_first_name", with: "First name should persist after action."
 
+      expect(page).to have_title("Create new user — Avocadelicious")
 
       click_on "Actions"
       click_on "Close modal"
@@ -218,7 +219,8 @@ RSpec.describe "Actions", type: :system do
       click_on "Run"
       expect(page).not_to have_selector(modal)
       expect(page).to have_text "Modal closed!!"
-      expect(page).to have_field('user_first_name', with: 'First name should persist after action.')
+      expect(page).to have_title("Cool title")
+      expect(page).to have_field("user_first_name", with: "First name should persist after action.")
     end
   end
 
