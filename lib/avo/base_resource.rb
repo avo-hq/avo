@@ -14,7 +14,6 @@ module Avo
     include Avo::Concerns::HasHelpers
     include Avo::Concerns::Hydration
     include Avo::Concerns::Pagination
-    include ActionView::Helpers::SanitizeHelper
 
     # Avo::Current methods
     delegate :context, to: Avo::Current
