@@ -38,13 +38,13 @@ Avo is a very custom Admin Panel Framework, Content Management System, and Inter
 <br>
 🎸 **Demo app**: [Avodemo](https://main.avodemo.com/)
 <br>
-🐤 **Twitter**: [avo_hq](https://twitter.com/avo_hq)
+🐤 **Twitter**: [`avo_hq`](https://twitter.com/avo_hq)
 <br>
-💬 **Community chat**: [discord](https://discord.gg/pkTF6y8)
+💬 **Community chat**: [Discord](https://discord.gg/pkTF6y8)
 <br>
-🔧 **Issue tracker**: [GitHub issues](http://github.com/avo-hq/avo/issues)
+🔧 **Issue tracker**: [GitHub Issues](http://github.com/avo-hq/avo/issues)
 <br>
-🎙 **Discussions and feature requests**: [GitHub issues](http://github.com/avo-hq/avo/discussions)
+🎙 **Discussions and feature requests**: [GitHub Discussions](http://github.com/avo-hq/avo/discussions)
 
 ## Features
 
