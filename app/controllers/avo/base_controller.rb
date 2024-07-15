@@ -10,7 +10,6 @@ module Avo
     before_action :set_record, only: [:show, :edit, :destroy, :update, :preview]
     before_action :set_record_to_fill, only: [:new, :edit, :create, :update]
     before_action :detect_fields
-    before_action :initialize_via_association, if: -> { is_associated_record? }
     before_action :set_edit_title_and_breadcrumbs, only: [:edit, :update]
     before_action :fill_record, only: [:create, :update]
     # Don't run base authorizations for associations
@@ -67,8 +66,8 @@ module Avo
 
       # If we're accessing this resource via another resource add the parent to the breadcrumbs.
       if is_associated_record?
-        add_breadcrumb @via_resource.plural_name, resources_path(resource: @via_resource)
-        add_breadcrumb @via_resource.record_title, resource_path(record: @via_record, resource: @via_resource)
+        add_breadcrumb via_resource.plural_name, resources_path(resource: via_resource)
+        add_breadcrumb via_resource.record_title, resource_path(record: via_record, resource: via_resource)
       end
 
       add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
@@ -94,8 +93,8 @@ module Avo
       @page_title = @resource.default_panel_name.to_s
 
       if is_associated_record?
-        add_breadcrumb @via_resource.plural_name, resources_path(resource: @via_resource)
-        add_breadcrumb @via_resource.record_title, resource_path(record: @via_record, resource: @via_resource)
+        add_breadcrumb via_resource.plural_name, resources_path(resource: via_resource)
+        add_breadcrumb via_resource.record_title, resource_path(record: via_record, resource: via_resource)
       end
 
       add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
@@ -113,7 +112,7 @@ module Avo
         # Fills in the required info for belongs_to and has_many
         # Get the foreign key and set it to the id we received in the params
         if @reflection.is_a?(ActiveRecord::Reflection::BelongsToReflection) || @reflection.is_a?(ActiveRecord::Reflection::HasManyReflection)
-          @record.send(:"#{@reflection.foreign_key}=", @via_record.id)
+          @record.send(:"#{@reflection.foreign_key}=", via_record.id)
         end
 
         # For when working with has_one, has_one_through, has_many_through, has_and_belongs_to_many, polymorphic
@@ -121,10 +120,10 @@ module Avo
           association_name = BaseResource.valid_association_name(@record, params[:via_relation])
 
           if params[:via_association_type] == "has_one"
-            # On has_one scenarios we should switch the @record and @via_record
-            @via_record.send(:"#{@reflection.parent_reflection.inverse_of.name}=", @record)
+            # On has_one scenarios we should switch the @record and via_record
+            via_record.send(:"#{@reflection.parent_reflection.inverse_of.name}=", @record)
           else
-            @record.send(association_name) << @via_record
+            @record.send(association_name) << via_record
           end
         end
       end
@@ -388,8 +387,8 @@ module Avo
       last_crumb_args = {}
       # If we're accessing this resource via another resource add the parent to the breadcrumbs.
       if is_associated_record?
-        add_breadcrumb @via_resource.plural_name, resources_path(resource: @resource)
-        add_breadcrumb @via_resource.record_title, resource_path(record: @via_record, resource: @via_resource)
+        add_breadcrumb via_resource.plural_name, resources_path(resource: @resource)
+        add_breadcrumb via_resource.record_title, resource_path(record: via_record, resource: via_resource)
 
         last_crumb_args = {
           via_resource_class: params[:via_resource_class],
@@ -435,7 +434,7 @@ module Avo
 
         return resource_view_path(
           record: @record.send(association_name),
-          resource: @via_resource,
+          resource: via_resource,
           resource_id: params[:via_record_id]
         )
       end
@@ -516,10 +515,6 @@ module Avo
       end
     end
 
-    def is_associated_record?
-      (params[:via_resource_class].present? || params[:via_relation_class].present?) && params[:via_record_id].present?
-    end
-
     # Set pagy locale from params or from avo configuration, if both nil locale = "en"
     def set_pagy_locale
       @pagy_locale = locale.to_s || Avo.configuration.default_locale || "en"
@@ -589,17 +584,6 @@ module Avo
     # Sanitize sort_direction param
     def sanitized_sort_direction
       @sanitized_sort_direction ||= @index_params[:sort_direction].presence_in(["asc", :asc, "desc", :desc])
-    end
-
-    def initialize_via_association
-      via_resource_class = if params[:via_resource_class].present?
-        Avo.resource_manager.get_resource(params[:via_resource_class])
-      else
-        Avo.resource_manager.get_resource_by_model_class(params[:via_relation_class])
-      end
-
-      @via_record = via_resource_class.find_record params[:via_record_id], params: params
-      @via_resource = via_resource_class.new record: @via_record
     end
   end
 end

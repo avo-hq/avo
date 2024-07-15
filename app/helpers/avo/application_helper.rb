@@ -180,5 +180,51 @@ module Avo
       classes << "flex flex-col divide-y"
       content_tag :div, **args, class: classes, &block
     end
+
+    def is_associated_record?
+      (params[:via_resource_class].present? || params[:via_relation_class].present?) && params[:via_record_id].present?
+    end
+
+    def via_resource_class
+      @via_resource_class ||= if params[:via_resource_class].present?
+        Avo.resource_manager.get_resource(params[:via_resource_class])
+      else
+        Avo.resource_manager.get_resource_by_model_class(params[:via_relation_class])
+      end
+    end
+
+    def via_record
+      @via_record ||= via_resource_class.find_record params[:via_record_id], params: params
+    end
+
+    def via_resource
+      @via_resource ||= via_resource_class.new record: via_record
+    end
+
+    def association_name
+      if params[:related_name].present?
+        params[:related_name]
+      else
+        inverse_of = Avo.associations_information[@resource.record.class.name][params[:via_relation].to_sym][:inverse_of]
+
+        if inverse_of.blank?
+          if Rails.env.development?
+            # TODO: make error manager work
+            # Avo.error_manager.add({
+              # url: "",
+              # target: "_blank",
+              # Ex: Please configure the 'inverse_of' option for the ':users' association on the 'Project' model.
+              # message:
+              raise "Avo uses the 'inverse_of' option to determine the inverse association and figure out if the association permit this action.\n\r
+              Please configure the 'inverse_of' option for the '#{via_reflection.macro} :#{via_reflection.name}' association on the '#{via_reflection.active_record.name}' model.\n\r
+              Otherwise this action will be blocked by default."
+            # })
+          end
+          raise Avo::NotAuthorizedError.new
+        end
+
+        inverse_of[:name]
+      end
+    end
   end
 end

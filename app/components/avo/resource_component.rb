@@ -36,7 +36,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   def detach_path
     return "/" if @reflection.blank?
 
-    helpers.resource_detach_path(params[:resource_name], params[:id], @reflection.name.to_s, @resource.record.to_param)
+    helpers.resource_detach_path(params[:resource_name] || params[:via_relation], params[:via_record_id] ||  params[:id], @reflection.name.to_s, @resource.record.to_param)
   end
 
   def can_see_the_edit_button?
@@ -59,6 +59,14 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
   def destroy_path
     args = {record: @resource.record, resource: @resource}
+
+    if is_associated_record?
+      args[:via_resource_class] = params[:via_resource_class]
+      args[:via_relation_class] = params[:via_relation_class]
+      args[:via_relation] = params[:via_relation]
+      args[:via_record_id] = params[:via_record_id]
+      args.compact!
+    end
 
     args[:referrer] = if params[:via_resource_class].present?
       back_path
@@ -125,7 +133,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def render_back_button(control)
-    return if back_path.blank? || is_a_related_resource?
+    return if back_path.blank? || (is_a_related_resource? && !via_resource?)
 
     tippy = control.title ? :tooltip : nil
     a_link back_path,

@@ -220,34 +220,12 @@ module Avo
         dictionary = {
           index: :view,
           new: :create,
-
         }
 
-        association_name = if params[:related_name].present?
-          params[:related_name]
-        else
-          inverse_of = Avo.associations_information[@resource.record.class.name][params[:via_relation].to_sym][:inverse_of]
-
-          if inverse_of.blank?
-            if Rails.env.development?
-              # TODO: make error manager work
-              # Avo.error_manager.add({
-                # url: "",
-                # target: "_blank",
-                # Ex: Please configure the 'inverse_of' option for the ':users' association on the 'Project' model.
-                # message:
-                raise "Avo uses the 'inverse_of' option to determine the inverse association and figure out if the association permit this action.\n\r
-                Please configure the 'inverse_of' option for the '#{via_reflection.macro} :#{via_reflection.name}' association on the '#{via_reflection.active_record.name}' model.\n\r
-                Otherwise this action will be blocked by default."
-              # })
-            end
-            raise Avo::NotAuthorizedError.new
-          end
-
-          inverse_of[:name]
-        end
-
-        @via_resource.authorization.authorize_action(:"#{dictionary[action_name.to_sym] || action_name}_#{association_name}?")
+        @parent_record = via_record
+        @parent_resource = via_resource
+        @reflection = via_record._reflections.with_indifferent_access[association_name.to_s]
+        via_resource.authorization.authorize_action(:"#{dictionary[action_name.to_sym] || action_name}_#{association_name}?", raise_exception: false)
       else
         class_to_authorize = @record || @resource.model_class
 

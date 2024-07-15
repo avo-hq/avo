@@ -38,7 +38,8 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
     args = if via_resource?
       {
         via_resource_class: params[:via_resource_class],
-        via_record_id: params[:via_record_id]
+        via_record_id: params[:via_record_id],
+        via_relation: params[:via_relation]
       }
     elsif @parent_resource.present?
       {
