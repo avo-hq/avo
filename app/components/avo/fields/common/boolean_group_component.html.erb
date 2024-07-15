@@ -4,7 +4,7 @@
     <div class="p-2 space-y-2">
       <% @options.each do |id, label| %>
         <div class="flex flex-nowrap">
-          <%= render Avo::Fields::Common::BooleanCheckComponent.new checked: @value.present? && @value[id].present? %>
+          <%= render Avo::Fields::Common::BooleanCheckComponent.new checked: @value.present? && @value&.with_indifferent_access[id].present? %>
           <div class="ml-px text-left py-px"><%= label %></div>
         </div>
       <% end %>
