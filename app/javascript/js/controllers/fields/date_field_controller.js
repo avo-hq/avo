@@ -173,6 +173,8 @@ export default class extends Controller {
 
     this.flatpickrInstance = flatpickr(this.fakeInputTarget, options)
 
+    this.addClearButtonToDatePicker();
+
     // Don't try to parse the value if the input is empty.
     if (!this.initialValue) {
       return
@@ -194,6 +196,18 @@ export default class extends Controller {
     }
 
     this.updateRealInput(value)
+  }
+
+  addClearButtonToDatePicker() {
+    const clearButton = document.createElement("button");
+    clearButton.type = "button";
+    clearButton.className = "flatpickr-clear-button absolute top-1/2 -translate-y-1/2 mx-1.5";
+    clearButton.innerHTML = "&#x2716;"; // Unicode for an "X"
+    clearButton.addEventListener("click", () => {
+      this.flatpickrInstance.clear(); 
+      this.updateRealInput(''); 
+    });
+    this.fakeInputTarget.parentNode.appendChild(clearButton);
   }
 
   onChange(selectedDates) {
