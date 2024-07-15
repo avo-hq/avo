@@ -36,7 +36,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   def detach_path
     return "/" if @reflection.blank?
 
-    helpers.resource_detach_path(params[:resource_name] || params[:via_relation], params[:via_record_id] ||  params[:id], @reflection.name.to_s, @resource.record.to_param)
+    helpers.resource_detach_path(params[:resource_name] || params[:via_relation], params[:via_record_id] || params[:id], @reflection.name.to_s, @resource.record.to_param)
   end
 
   def can_see_the_edit_button?
@@ -307,13 +307,13 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
       if inverse_of.blank? && Rails.env.development?
         Avo.error_manager.add({
-            url: "https://docs.avohq.io/3.0/upgrade.html#upgrade-from-3-7-4-to-3-9-1",
-            target: "_blank",
-            # Ex: Please configure the 'inverse_of' option for the ':users' association on the 'Project' model.
-            message: "Avo uses the 'inverse_of' option to determine the inverse association and figure out if the association permit or not detaching.\n\r
-                      Please configure the 'inverse_of' option for the '#{current_reflection.macro} :#{current_reflection.name}' association on the '#{current_reflection.active_record.name}' model.\n\r
-                      Otherwise the detach button will be visible by default."
-          })
+          url: "https://docs.avohq.io/3.0/upgrade.html#upgrade-from-3-7-4-to-3-9-1",
+          target: "_blank",
+          # Ex: Please configure the 'inverse_of' option for the ':users' association on the 'Project' model.
+          message: "Avo uses the 'inverse_of' option to determine the inverse association and figure out if the association permit or not detaching.\n\r
+                    Please configure the 'inverse_of' option for the '#{current_reflection.macro} :#{current_reflection.name}' association on the '#{current_reflection.active_record.name}' model.\n\r
+                    Otherwise the detach button will be visible by default."
+        })
       end
 
       inverse_of

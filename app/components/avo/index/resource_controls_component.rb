@@ -119,6 +119,16 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
       }
   end
 
+  def destroy_path
+    helpers.resource_path(
+      record: @resource.record,
+      resource: @resource,
+      via_resource_class: params[:via_resource_class],
+      via_record_id: params[:via_record_id],
+      related_name: params[:related_name]
+    )
+  end
+
   def render_delete_button(control)
     # If the resource is a related resource, we use the can_delete? policy method because it uses
     # authorize_association_for(:destroy).
@@ -127,13 +137,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     policy_method = is_a_related_resource? ? :can_delete? : :can_see_the_destroy_button?
     return unless send policy_method
 
-    a_button url: helpers.resource_path(
-        record: @resource.record,
-        resource: @resource,
-        via_resource_class: params[:via_resource_class],
-        via_record_id: params[:via_record_id],
-        related_name: params[:related_name]
-      ),
+    a_button url: destroy_path,
       style: :icon,
       color: :gray,
       icon: "avo/trash",
