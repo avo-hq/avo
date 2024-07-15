@@ -88,4 +88,17 @@ class User < ApplicationRecord
   def is_developer?
     true
   end
+
+  def permissions
+    {
+      create: true,
+      update: false,
+      read: true,
+      delete: true,
+    }
+  end
+
+  def permissions=(value)
+    # assert here the value is a hash and has the right values sent in by the user
+  end
 end
