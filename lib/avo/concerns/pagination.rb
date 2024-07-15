@@ -35,11 +35,13 @@ module Avo
           extra_pagy_params[:keep_filters_panel_open] = "0"
         end
 
+        turbo_frame = ActionView::Base.full_sanitizer.sanitize(params[:turbo_frame])
+
         send PAGINATION_METHOD[pagination_type.to_sym],
           query,
           items: index_params[:per_page],
-          link_extra: "data-turbo-frame=\"#{ActionView::Base.full_sanitizer.sanitize(params[:turbo_frame])}\"", # Add extra arguments in pagy 7.
-          anchor_string: "data-turbo-frame=\"#{ActionView::Base.full_sanitizer.sanitize(params[:turbo_frame])}\"", # Add extra arguments in pagy 8.
+          link_extra: "data-turbo-frame=\"#{turbo_frame}\"", # Add extra arguments in pagy 7.
+          anchor_string: "data-turbo-frame=\"#{turbo_frame}\"", # Add extra arguments in pagy 8.
           params: extra_pagy_params,
           size: pagination_hash[:size]
       end
