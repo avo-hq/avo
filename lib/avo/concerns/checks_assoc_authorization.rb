@@ -9,7 +9,7 @@ module Avo
 
         if @reflection.present?
           # Fetch the appropriate resource
-          reflection_resource = params[:via_resource_class].safe_constantize.new || field.resource
+          reflection_resource = params[:via_resource_class]&.safe_constantize&.new || field.resource
           # Fetch the record
           # Hydrate the resource with the record if we have one
           reflection_resource.hydrate(record: @parent_record) if @parent_record.present?
