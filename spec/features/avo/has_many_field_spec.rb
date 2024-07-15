@@ -58,14 +58,14 @@ RSpec.feature "HasManyField", type: :feature do
 
         ## Table Rows
         # show link
-        show_path = "/admin/resources/posts/#{post.slug}?via_record_id=#{user.slug}&via_resource_class=Avo%3A%3AResources%3A%3AUser"
+        show_path = "/admin/resources/posts/#{post.slug}?via_record_id=#{user.slug}&via_relation=user&via_resource_class=Avo%3A%3AResources%3A%3AUser"
         expect(page).to have_css("a[data-control='show'][href='#{show_path}']")
 
         # id field show link
         expect(field_element_by_resource_id("id", post.to_param)).to have_css("a[href='/admin/resources/posts/#{post.slug}?via_record_id=#{user.slug}&via_resource_class=Avo%3A%3AResources%3A%3AUser']")
 
         # edit link
-        edit_path = "/admin/resources/posts/#{post.slug}/edit?via_record_id=#{user.slug}&via_resource_class=Avo%3A%3AResources%3A%3AUser"
+        edit_path = "/admin/resources/posts/#{post.slug}/edit?via_record_id=#{user.slug}&via_relation=user&via_resource_class=Avo%3A%3AResources%3A%3AUser"
         expect(page).to have_selector("[data-component='resources-index'] a[data-control='edit'][data-resource-id='#{post.id}'][href='#{edit_path}']")
 
         # detach form
@@ -76,7 +76,7 @@ RSpec.feature "HasManyField", type: :feature do
         expect(page).to have_selector("[data-component='resources-index'] #{form} button[data-control='detach'][data-resource-id='#{post.id}'][data-turbo-frame='has_many_field_posts']")
 
         # destroy form
-        form = "form[action='/admin/resources/posts/#{post.slug}']"
+        form = "form[action='/admin/resources/posts/#{post.slug}?related_name=posts']"
         expect(page).to have_selector("[data-component='resources-index'] #{form}")
         expect(page).to have_selector("#{form} input[type='hidden'][name='_method'][value='delete']", visible: false)
         # expect(page).to have_selector("#{form} input#referrer_destroy_#{post.id}[value='/admin/resources/users/#{user.slug}/posts?turbo_frame=has_many_field_posts']", visible: false)

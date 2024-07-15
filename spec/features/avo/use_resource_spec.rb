@@ -68,10 +68,10 @@ RSpec.describe "Post comments use_resource PhotoComment", type: :feature do
       visit "admin/resources/comments/#{comment.id}"
 
       expect(page).to have_link comment.user.name,
-        href: "/admin/resources/compact_users/#{comment.user.slug}?via_record_id=#{comment.id}&via_resource_class=Avo%3A%3AResources%3A%3AComment"
+        href: "/admin/resources/compact_users/#{comment.user.slug}?via_record_id=#{comment.id}&via_relation=comments&via_resource_class=Avo%3A%3AResources%3A%3AComment"
 
       click_on comment.user.name
-      expect(page).to have_current_path "/admin/resources/compact_users/#{comment.user.slug}?via_record_id=#{comment.id}&via_resource_class=Avo%3A%3AResources%3A%3AComment"
+      expect(page).to have_current_path "/admin/resources/compact_users/#{comment.user.slug}?via_record_id=#{comment.id}&via_relation=comments&via_resource_class=Avo%3A%3AResources%3A%3AComment"
 
       expect(page).to have_text "Personal information"
       expect(page).to have_text "Contact"

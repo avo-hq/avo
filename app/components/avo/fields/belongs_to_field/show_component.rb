@@ -6,7 +6,8 @@ class Avo::Fields::BelongsToField::ShowComponent < Avo::Fields::ShowComponent
       record: @field.value,
       resource: @field.target_resource,
       via_resource_class: @resource.class.to_s,
-      via_record_id: @resource.record.to_param
+      via_record_id: @resource.record.to_param,
+      via_relation: @resource.route_key
     )
   end
 end
