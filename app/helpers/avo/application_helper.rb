@@ -209,16 +209,9 @@ module Avo
 
         if inverse_of.blank?
           if Rails.env.development?
-            # TODO: make error manager work
-            # Avo.error_manager.add({
-              # url: "",
-              # target: "_blank",
-              # Ex: Please configure the 'inverse_of' option for the ':users' association on the 'Project' model.
-              # message:
-              raise "Avo uses the 'inverse_of' option to determine the inverse association and figure out if the association permit this action.\n\r
+            raise "Avo uses the 'inverse_of' option to determine the inverse association and figure out if the association permit this action.\n\r
               Please configure the 'inverse_of' option for the '#{via_reflection.macro} :#{via_reflection.name}' association on the '#{via_reflection.active_record.name}' model.\n\r
               Otherwise this action will be blocked by default."
-            # })
           end
           raise Avo::NotAuthorizedError.new
         end
