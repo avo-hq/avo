@@ -149,7 +149,7 @@ module Avo
     end
 
     def eager_load_models
-      model_paths = Rails.root.join('app', 'models', '**', '*.rb')
+      model_paths = Rails.root.join("app", "models", "**", "*.rb")
       Dir[model_paths].each do |file|
         require_dependency file
       end
