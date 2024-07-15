@@ -135,7 +135,7 @@ RSpec.feature "HasManyField", type: :feature do
       expect(link.link).to eq "https://google.com"
       expect(link.course.id).to eq course.id
 
-      visit "/admin/resources/course_links/#{link.id}/edit?via_resource_class=Avo::Resources::Course&via_record_id=#{course.id}"
+      visit "/admin/resources/course_links/#{link.id}/edit?via_resource_class=Avo::Resources::Course&via_record_id=#{course.id}&via_relation=course"
       fill_in "course_link_link", with: "https://apple.com"
       save
       link.reload
