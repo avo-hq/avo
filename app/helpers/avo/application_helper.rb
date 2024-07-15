@@ -202,22 +202,22 @@ module Avo
     end
 
     def association_name
-      if params[:related_name].present?
-        params[:related_name]
-      else
-        inverse_of = Avo.associations_information[@resource.record.class.name][params[:via_relation].to_sym][:inverse_of]
+      return params[:related_name] if params[:related_name].present?
 
-        if inverse_of.blank?
-          if Rails.env.development?
-            raise "Avo uses the 'inverse_of' option to determine the inverse association and figure out if the association permit this action.\n\r
-              Please configure the 'inverse_of' option for the '#{via_reflection.macro} :#{via_reflection.name}' association on the '#{via_reflection.active_record.name}' model.\n\r
-              Otherwise this action will be blocked by default."
-          end
-          raise Avo::NotAuthorizedError.new
-        end
+      inverse_of = Avo.associations_information[@resource.record.class.name][params[:via_relation].to_sym][:inverse_of]
 
-        inverse_of[:name]
+      if inverse_of.blank?
+        set_inverse_of_message if Rails.env.development?
+        raise Avo::NotAuthorizedError.new
       end
+
+      inverse_of[:name]
+    end
+
+    def set_inverse_of_message
+      raise "Avo uses the 'inverse_of' option to determine the inverse association and figure out if the association permit this action.\n\r
+        Please configure the 'inverse_of' option for the '#{via_reflection.macro} :#{via_reflection.name}' association on the '#{via_reflection.active_record.name}' model.\n\r
+        Otherwise this action will be blocked by default."
     end
   end
 end
