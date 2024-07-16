@@ -80,7 +80,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
         via_resource_class: @parent_resource.class,
         via_relation_class: reflection_model_class,
         via_record_id: @parent_record.to_param,
-        inverse_of: field.try(:for_attribute) || field.id
+        association_name: field.try(:association_name) || field.id
       }
 
       if @reflection.is_a? ActiveRecord::Reflection::ThroughReflection

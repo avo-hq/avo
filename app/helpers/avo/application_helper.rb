@@ -182,7 +182,7 @@ module Avo
     end
 
     def apply_association_policy?
-      @view.new? && params[:inverse_of] && params[:via_record_id] && (params[:via_relation_class] || via[:resource_class])
+      @view.new? && params[:association_name] && params[:via_record_id] && (params[:via_relation_class] || via[:resource_class])
     end
 
     def apply_association_policy
@@ -194,7 +194,7 @@ module Avo
 
       via_record = via_resource_class.find_record params[:via_record_id], params: params
       via_resource = via_resource_class.new record: via_record
-      via_resource.authorization.authorize_action(:"create_#{params[:inverse_of]}?")
+      via_resource.authorization.authorize_action(:"create_#{params[:association_name]}?")
     end
   end
 end
