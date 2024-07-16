@@ -180,5 +180,21 @@ module Avo
       classes << "flex flex-col divide-y"
       content_tag :div, **args, class: classes, &block
     end
+
+    def apply_association_policy?
+      @view.new? && params[:inverse_of] && params[:via_record_id] && (params[:via_relation_class] || via[:resource_class])
+    end
+
+    def apply_association_policy
+      via_resource_class = if params[:via_resource_class]
+        Avo.resource_manager.get_resource(params[:via_resource_class])
+      else
+        Avo.resource_manager.get_resource_by_model_class(params[:via_relation_class])
+      end
+
+      via_record = via_resource_class.find_record params[:via_record_id], params: params
+      via_resource = via_resource_class.new record: via_record
+      via_resource.authorization.authorize_action(:"create_#{params[:inverse_of]}?")
+    end
   end
 end

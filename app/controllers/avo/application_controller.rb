@@ -216,9 +216,14 @@ module Avo
     end
 
     def authorize_base_action
-      class_to_authorize = @record || @resource.model_class
+      # When request new from association
+      if apply_association_policy?
+        apply_association_policy
+      else
+        class_to_authorize = @record || @resource.model_class
 
-      authorize_action class_to_authorize
+        authorize_action class_to_authorize
+      end
     end
 
     def authorize_action(class_to_authorize, action = nil)
