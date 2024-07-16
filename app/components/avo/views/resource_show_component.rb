@@ -17,7 +17,7 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
   end
 
   def title
-    if @reflection.present? && !is_associated_record?
+    if @reflection.present?
       return field.name if has_one_field?
 
       reflection_resource.name

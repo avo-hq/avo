@@ -125,7 +125,8 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
       resource: @resource,
       via_resource_class: params[:via_resource_class],
       via_record_id: params[:via_record_id],
-      related_name: params[:related_name]
+      related_name: params[:related_name],
+      association_name: params[:association_name]
     )
   end
 
