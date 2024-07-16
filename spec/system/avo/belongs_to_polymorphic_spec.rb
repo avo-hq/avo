@@ -144,7 +144,7 @@ RSpec.feature "belongs_to", type: :system do
           scroll_to comments_frame = find('turbo-frame[id="has_many_field_show_comments"]')
 
           expect(comments_frame).not_to have_text "Commentable"
-          expect(comments_frame).to have_link comment.id.to_s, href: "/admin/resources/comments/#{comment.id}?via_record_id=#{project.id}&via_relation=commentable&via_resource_class=Avo%3A%3AResources%3A%3AProject"
+          expect(comments_frame).to have_link comment.id.to_s, href: "/admin/resources/comments/#{comment.id}?related_name=comments&via_record_id=#{project.id}&via_resource_class=Avo%3A%3AResources%3A%3AProject"
 
           click_on comment.id.to_s
 

@@ -10,7 +10,7 @@ RSpec.feature "ViaResourceClassIsAResourceClasses", type: :feature do
     visit "/admin/resources/z_posts/#{post.id}/comments?turbo_frame=has_many_field_show_photo_comments"
 
     within "tr[data-resource-id=\"#{comment.id}\"] [data-field-id=\"id\"]" do
-      expect(page).to have_link comment.id, href: "/admin/resources/photo_comments/#{comment.id}?via_record_id=#{post.slug}&via_relation=commentable&via_resource_class=Avo%3A%3AResources%3A%3AZPost"
+      expect(page).to have_link comment.id, href: "/admin/resources/photo_comments/#{comment.id}?related_name=comments&via_record_id=#{post.slug}&via_resource_class=Avo%3A%3AResources%3A%3AZPost"
     end
   end
 
