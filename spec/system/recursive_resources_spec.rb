@@ -18,6 +18,6 @@ RSpec.feature "RecursiveResources", type: :system do
 
     wait_for_loaded
 
-    expect(page).to have_current_path(avo.resources_spouse_path(spouse, via_resource_class: "Avo::Resources::Person", via_record_id: person.id, via_relation: "person"))
+    expect(page).to have_current_path(avo.resources_spouse_path(spouse, via_resource_class: "Avo::Resources::Person", via_record_id: person.id, related_name: "spouses"))
   end
 end
