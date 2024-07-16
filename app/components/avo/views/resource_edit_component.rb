@@ -83,17 +83,23 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   end
 
   def form_url
+    via_args = {
+      via_relation_class: params[:via_relation_class],
+      via_relation: params[:via_relation],
+      via_record_id: params[:via_record_id],
+      related_name: params[:related_name]
+    }.compact
+
     if is_edit?
       helpers.resource_path(
         record: @resource.record,
-        resource: @resource
+        resource: @resource,
+        **via_args
       )
     else
       helpers.resources_path(
         resource: @resource,
-        via_relation_class: params[:via_relation_class],
-        via_relation: params[:via_relation],
-        via_record_id: params[:via_record_id]
+        **via_args
       )
     end
   end

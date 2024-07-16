@@ -39,7 +39,8 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
       {
         via_resource_class: params[:via_resource_class],
         via_record_id: params[:via_record_id],
-        via_relation: params[:via_relation]
+        via_relation: params[:via_relation],
+        related_name: params[:related_name]
       }
     elsif @parent_resource.present?
       {
@@ -50,7 +51,7 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
       {}
     end
 
-    helpers.edit_resource_path(record: @resource.record, resource: @resource, **args)
+    helpers.edit_resource_path(record: @resource.record, resource: @resource, **args.compact)
   end
 
   def controls
