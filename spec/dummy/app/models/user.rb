@@ -48,6 +48,8 @@ class User < ApplicationRecord
   scope :admins, -> { where "(roles->>'admin')::boolean is true" }
   scope :non_admins, -> { where "(roles->>'admin')::boolean != true" }
 
+  attr_writer :permissions
+
   def is_admin?
     roles.present? && roles["admin"].present?
   end
@@ -96,9 +98,5 @@ class User < ApplicationRecord
       read: true,
       delete: true,
     }
-  end
-
-  def permissions=(value)
-    # assert here the value is a hash and has the right values sent in by the user
   end
 end

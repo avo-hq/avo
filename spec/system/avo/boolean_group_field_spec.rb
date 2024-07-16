@@ -15,7 +15,7 @@ RSpec.describe "BooleanGroupField", type: :system do
           sleep 0.1
           wait_for_loaded
 
-          assert_popup_texts %w(Administrator Manager Writer)
+          assert_popup_texts %w[Administrator Manager Writer]
         end
       end
 
@@ -26,8 +26,8 @@ RSpec.describe "BooleanGroupField", type: :system do
           show_popup_for("roles")
           sleep 0.1
 
-          assert_popup_texts %w(ROLES Administrator Manager Writer)
-          assert_svg_classes %w(text-red-500 text-red-500 text-red-500)
+          assert_popup_texts %w[ROLES Administrator Manager Writer]
+          assert_svg_classes %w[text-red-500 text-red-500 text-red-500]
         end
       end
 
@@ -58,7 +58,7 @@ RSpec.describe "BooleanGroupField", type: :system do
         end
 
         it "doesn't affect unspecified options" do
-          user.update(roles: user.roles.merge({ publisher: true }))
+          user.update(roles: user.roles.merge({publisher: true}))
 
           visit "/admin/resources/users/#{user.id}/edit"
 
@@ -69,8 +69,8 @@ RSpec.describe "BooleanGroupField", type: :system do
           save
 
           user.reload
-          expect(user.roles).to eql({ admin: false, manager: false, publisher: true,
-                                      writer: false }.with_indifferent_access)
+          expect(user.roles).to eql({admin: false, manager: false, publisher: true,
+                                     writer: false}.with_indifferent_access)
         end
       end
     end
