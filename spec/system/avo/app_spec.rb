@@ -67,4 +67,18 @@ RSpec.describe "App", type: :system do
       }.to change(Project, :count).by(-1)
     end
   end
+
+  describe "security", js: true do
+    let!(:projects) { create_list :project, 2 }
+
+    it "xss in turbo frames 1" do
+      visit "/admin/resources/projects?per_page=1&turbo_frame=has_many_field_show_test_xgc2pf%22%3e%3cscript%3ealert(1)%3c%2fscript%3ep9sk5"
+      expect { accept_alert }.to raise_error(Capybara::ModalNotFound)
+    end
+
+    it "xss in turbo frames 2" do
+      visit '/admin/resources/projects?per_page=1&turbo_frame=has_many_field_show_test_xgc2pf><script>alert("XSS")<%2Fscript>p9sk5'
+      expect { accept_alert }.to raise_error(Capybara::ModalNotFound)
+    end
+  end
 end

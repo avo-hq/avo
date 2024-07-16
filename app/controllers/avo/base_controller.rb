@@ -34,6 +34,13 @@ module Avo
         @query = @query.includes(*@resource.includes)
       end
 
+      # Eager load attachments
+      if @resource.attachments.present?
+        @resource.attachments.each do |attachment|
+          @query = @query.send(:"with_attached_#{attachment}")
+        end
+      end
+
       apply_sorting
 
       # Apply filters to the current query
