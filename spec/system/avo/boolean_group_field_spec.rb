@@ -53,8 +53,8 @@ RSpec.describe "BooleanGroupField", type: :system do
           show_popup_for("roles")
           sleep 0.1
 
-          assert_popup_texts %w(ROLES Administrator Manager Writer)
-          assert_svg_classes %w(text-green-600 text-red-500 text-red-500)
+          assert_popup_texts %w[ROLES Administrator Manager Writer]
+          assert_svg_classes %w[text-green-600 text-red-500 text-red-500]
         end
 
         it "doesn't affect unspecified options" do
@@ -97,7 +97,7 @@ RSpec.describe "BooleanGroupField", type: :system do
       it "displays the users permissions" do
         visit "/admin/resources/users/#{user.id}"
 
-        show_popup_for('permissions')
+        show_popup_for("permissions")
         sleep 0.1
 
         assert_popup_texts %w[PERMISSIONS Create Read Update Delete]
@@ -115,7 +115,7 @@ RSpec.describe "BooleanGroupField", type: :system do
         expect(page).to have_checked_field "user_permissions_delete"
 
         uncheck "user_permissions_create"
-        check   "user_permissions_update"
+        check "user_permissions_update"
 
         save
 
