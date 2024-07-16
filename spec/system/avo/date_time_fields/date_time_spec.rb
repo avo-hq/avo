@@ -66,6 +66,18 @@ RSpec.describe "Date field", type: :system do
 
           expect(show_field_value(id: :started_at)).to eq "January 02, 2000 17:17:17 Europe/Bucharest"
         end
+
+        it "resets the date when reset button is clicked" do
+          visit "/admin/resources/projects/#{project.id}/edit"
+
+          expect(text_input.value).to eq "2000-01-01 08:00:00"
+
+          click_button("reset")
+
+          save
+
+          expect(show_field_value(id: :started_at)).to eq "—"
+        end
       end
     end
   end

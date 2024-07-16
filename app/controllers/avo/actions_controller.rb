@@ -89,13 +89,13 @@ module Avo
 
       respond_to do |format|
         format.turbo_stream do
-          case @response[:type]
+          turbo_response = case @response[:type]
           when :keep_modal_open
             # Only render the flash messages if the action keeps the modal open
-            render turbo_stream: turbo_stream.flash_alerts
+            turbo_stream.flash_alerts
           when :download
             # Trigger download, removes modal and flash the messages
-            render turbo_stream: [
+            [
               turbo_stream.download(content: Base64.encode64(@response[:path]), filename: @response[:filename]),
               turbo_stream.close_action_modal,
               turbo_stream.flash_alerts
@@ -104,16 +104,16 @@ module Avo
             frame_id = Avo::ACTIONS_TURBO_FRAME_ID
             src, _ = @response[:action].link_arguments(resource: @action.resource, **@response[:navigate_to_action_args])
 
-            render turbo_stream: turbo_stream.turbo_frame_set_src(frame_id, src)
+            turbo_stream.turbo_frame_set_src(frame_id, src)
           when :redirect
-            render turbo_stream: turbo_stream.redirect_to(
+            turbo_stream.redirect_to(
               Avo::ExecutionContext.new(target: @response[:path]).handle,
               turbo_frame: @response[:redirect_args][:turbo_frame],
               **@response[:redirect_args].except(:turbo_frame)
             )
           when :close_modal
             # Close the modal and flash the messages
-            render turbo_stream: [
+            [
               turbo_stream.close_action_modal,
               turbo_stream.flash_alerts
             ]
@@ -121,8 +121,16 @@ module Avo
             # Reload the page
             back_path = request.referer || params[:referrer].presence || resources_path(resource: @resource)
 
-            render turbo_stream: turbo_stream.redirect_to(back_path)
+            turbo_stream.redirect_to(back_path)
           end
+
+          responses = if @action.appended_turbo_streams.present?
+            Array(turbo_response) + Array(instance_exec(&@action.appended_turbo_streams))
+          else
+            Array(turbo_response)
+          end
+
+          render turbo_stream: responses
         end
       end
     end
