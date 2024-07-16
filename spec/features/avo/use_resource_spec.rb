@@ -26,7 +26,7 @@ RSpec.describe "Post comments use_resource PhotoComment", type: :feature do
 
       click_on "Create new photo comment"
 
-      expect(page).to have_current_path "/admin/resources/photo_comments/new?via_record_id=#{post.slug}&via_relation=commentable&via_relation_class=Post&via_resource_class=Avo%3A%3AResources%3A%3APost"
+      expect(page).to have_current_path "/admin/resources/photo_comments/new?inverse_of=comments&via_record_id=#{post.slug}&via_relation=commentable&via_relation_class=Post&via_resource_class=Avo%3A%3AResources%3A%3APost"
 
       fill_in "comment_body", with: "I'm a photo comment!"
 

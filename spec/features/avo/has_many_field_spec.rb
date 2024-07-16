@@ -20,7 +20,7 @@ RSpec.feature "HasManyField", type: :feature do
 
         click_on "Create new post"
 
-        expect(page).to have_current_path "/admin/resources/posts/new?via_record_id=#{user.slug}&via_relation=user&via_relation_class=User&via_resource_class=Avo%3A%3AResources%3A%3AUser"
+        expect(page).to have_current_path "/admin/resources/posts/new?inverse_of=posts&via_record_id=#{user.slug}&via_relation=user&via_relation_class=User&via_resource_class=Avo%3A%3AResources%3A%3AUser"
         expect(page).to have_select "post_user_id", selected: user.name, disabled: true
 
         fill_in "post_name", with: "New post name"
@@ -41,7 +41,7 @@ RSpec.feature "HasManyField", type: :feature do
 
         click_on "Create new post"
 
-        expect(page).to have_current_path "/admin/resources/posts/new?via_record_id=#{user.slug}&via_relation=user&via_relation_class=User&via_resource_class=Avo%3A%3AResources%3A%3AUser"
+        expect(page).to have_current_path "/admin/resources/posts/new?inverse_of=posts&via_record_id=#{user.slug}&via_relation=user&via_relation_class=User&via_resource_class=Avo%3A%3AResources%3A%3AUser"
       end
 
       it "displays valid links to resources" do
@@ -51,7 +51,7 @@ RSpec.feature "HasManyField", type: :feature do
         expect(page).to have_selector "[data-control='view-type-toggle-grid'][href='/admin/resources/users/#{user.slug}/posts?turbo_frame=has_many_field_posts&view_type=grid']"
 
         # create new button
-        expect(page).to have_link("Create new post", href: "/admin/resources/posts/new?via_record_id=#{user.slug}&via_relation=user&via_relation_class=User&via_resource_class=Avo%3A%3AResources%3A%3AUser")
+        expect(page).to have_link("Create new post", href: "/admin/resources/posts/new?inverse_of=posts&via_record_id=#{user.slug}&via_relation=user&via_relation_class=User&via_resource_class=Avo%3A%3AResources%3A%3AUser")
 
         # attach button
         expect(page).to have_link("Attach post", href: /\/admin\/resources\/users\/#{user.slug}\/posts\/new/)
