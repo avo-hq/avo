@@ -58,7 +58,7 @@ RSpec.describe "BooleanGroupField", type: :system do
         end
 
         it "doesn't affect unspecified options" do
-          user.update(roles: user.roles.merge({publisher: true}))
+          user.update(roles: user.roles.merge({ publisher: true }))
 
           visit "/admin/resources/users/#{user.id}/edit"
 
@@ -69,67 +69,68 @@ RSpec.describe "BooleanGroupField", type: :system do
           save
 
           user.reload
-          expect(user.roles).to eql({admin: false, manager: false, publisher: true, writer: false}.with_indifferent_access)
+          expect(user.roles).to eql({ admin: false, manager: false, publisher: true,
+                                      writer: false }.with_indifferent_access)
         end
       end
     end
   end
 
   context "non database backed BooleanGroupField" do
-      let!(:user) { create :user }
+    let!(:user) { create :user }
 
-      context "index" do
-        it "displays the users permissions" do
-          visit "/admin/resources/users"
+    context "index" do
+      it "displays the users permissions" do
+        visit "/admin/resources/users"
 
-          expect(page).to have_text "PERMISSIONS"
-          expect(page).to have_text "View"
-          find("tr[data-resource-id='#{user.to_param}'] [data-field-id='permissions']").find("a", text: "View").hover
-          sleep 0.1
-          wait_for_loaded
+        expect(page).to have_text "PERMISSIONS"
+        expect(page).to have_text "View"
+        find("tr[data-resource-id='#{user.to_param}'] [data-field-id='permissions']").find("a", text: "View").hover
+        sleep 0.1
+        wait_for_loaded
 
-          assert_popup_texts %w[PERMISSIONS Create Read Update Delete]
-        end
+        assert_popup_texts %w[PERMISSIONS Create Read Update Delete]
       end
+    end
 
-      context "show" do
-        it "displays the users permissions" do
-          visit "/admin/resources/users/#{user.id}"
+    context "show" do
+      it "displays the users permissions" do
+        visit "/admin/resources/users/#{user.id}"
 
-          show_popup_for('permissions')
-          sleep 0.1
+        show_popup_for('permissions')
+        sleep 0.1
 
-          assert_popup_texts %w[PERMISSIONS Create Read Update Delete]
-          assert_svg_classes %w[text-green-600 text-green-600 text-red-500 text-green-600]
-        end
+        assert_popup_texts %w[PERMISSIONS Create Read Update Delete]
+        assert_svg_classes %w[text-green-600 text-green-600 text-red-500 text-green-600]
       end
+    end
 
-      context "edit" do
-        it "does not change the user permissions" do
-          visit "/admin/resources/users/#{user.id}/edit"
+    context "edit" do
+      it "does not change the user permissions" do
+        visit "/admin/resources/users/#{user.id}/edit"
 
-          expect(page).to have_checked_field "user_permissions_create"
-          expect(page).to have_checked_field "user_permissions_read"
-          expect(page).to_not have_checked_field "user_permissions_update"
-          expect(page).to have_checked_field "user_permissions_delete"
+        expect(page).to have_checked_field "user_permissions_create"
+        expect(page).to have_checked_field "user_permissions_read"
+        expect(page).to_not have_checked_field "user_permissions_update"
+        expect(page).to have_checked_field "user_permissions_delete"
 
-          uncheck "user_permissions_create"
-          check   "user_permissions_update"
+        uncheck "user_permissions_create"
+        check   "user_permissions_update"
 
-          save
+        save
 
-          user_id = page.find('[data-field-id="id"] [data-slot="value"]').text
-          user_slug = User.find(user_id).slug
-          expect(current_path).to eql "/admin/resources/users/#{user_slug}"
+        user_id = page.find('[data-field-id="id"] [data-slot="value"]').text
+        user_slug = User.find(user_id).slug
+        expect(current_path).to eql "/admin/resources/users/#{user_slug}"
 
-          visit "/admin/resources/users/#{user_slug}"
-          show_popup_for("permissions")
-          sleep 0.1
+        visit "/admin/resources/users/#{user_slug}"
+        show_popup_for("permissions")
+        sleep 0.1
 
-          assert_popup_texts %w[PERMISSIONS Create Read Update Delete]
-          assert_svg_classes %w[text-green-600 text-green-600 text-red-500 text-green-600]
-        end
+        assert_popup_texts %w[PERMISSIONS Create Read Update Delete]
+        assert_svg_classes %w[text-green-600 text-green-600 text-red-500 text-green-600]
       end
+    end
   end
 end
 
