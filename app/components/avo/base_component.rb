@@ -37,7 +37,11 @@ class Avo::BaseComponent < ViewComponent::Base
 
   # Get the resource for the resource using the klass attribute so we get the namespace too
   def reflection_resource
-    Avo.resource_manager.get_resource_by_model_class(@reflection.klass.to_s)
+    if @reflection.polymorphic?
+      Avo.resource_manager.get_resource_by_model_class(@reflection.active_record)
+    else
+      Avo.resource_manager.get_resource_by_model_class(@reflection.klass.to_s)
+    end
   rescue
     nil
   end

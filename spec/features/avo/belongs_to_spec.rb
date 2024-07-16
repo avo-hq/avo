@@ -52,7 +52,7 @@ RSpec.feature "belongs_to", type: :feature do
     describe "with user attached" do
       let!(:post) { create :post, user: admin }
 
-      it { is_expected.to have_link admin.name, href: "/admin/resources/users/#{admin.slug}?via_record_id=#{post.slug}&via_resource_class=Avo%3A%3AResources%3A%3APost" }
+      it { is_expected.to have_link admin.name, href: "/admin/resources/users/#{admin.slug}?related_name=user&via_record_id=#{post.slug}&via_resource_class=Avo%3A%3AResources%3A%3APost" }
     end
 
     describe "without user attached" do
@@ -79,7 +79,7 @@ RSpec.feature "belongs_to", type: :feature do
         save
 
         expect(current_path).to eql "/admin/resources/posts/#{post.slug}"
-        expect(page).to have_link admin.name, href: "/admin/resources/users/#{admin.slug}?via_record_id=#{post.slug}&via_resource_class=Avo%3A%3AResources%3A%3APost"
+        expect(page).to have_link admin.name, href: "/admin/resources/users/#{admin.slug}?related_name=user&via_record_id=#{post.slug}&via_resource_class=Avo%3A%3AResources%3A%3APost"
       end
     end
 
@@ -98,7 +98,7 @@ RSpec.feature "belongs_to", type: :feature do
         save
 
         expect(current_path).to eql "/admin/resources/posts/#{post.slug}"
-        expect(page).to have_link second_user.name, href: "/admin/resources/users/#{second_user.slug}?via_record_id=#{post.slug}&via_resource_class=Avo%3A%3AResources%3A%3APost"
+        expect(page).to have_link second_user.name, href: "/admin/resources/users/#{second_user.slug}?related_name=user&via_record_id=#{post.slug}&via_resource_class=Avo%3A%3AResources%3A%3APost"
       end
 
       it "nullifies the user" do
