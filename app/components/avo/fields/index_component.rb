@@ -25,10 +25,15 @@ class Avo::Fields::IndexComponent < Avo::BaseComponent
     if @parent_record.present?
       args = {
         via_resource_class: @parent_resource.class,
-        via_record_id: @parent_record.to_param,
-        # delegate_reflection is private API, TODO: find alternative
-        via_relation: @reflection.inverse_of&.name || @reflection.send(:delegate_reflection).parent_reflection.inverse_of.send(:delegate_reflection).name
+        via_record_id: @parent_record.to_param
       }
+
+      if params[:related_name]
+        args[:related_name] = params[:related_name]
+      else
+        # delegate_reflection is private API, TODO: find alternative
+        args[:via_relation] = @reflection.inverse_of&.name || @reflection.send(:delegate_reflection).parent_reflection.inverse_of.send(:delegate_reflection).name
+      end
     end
 
     helpers.resource_view_path(record: @resource.record, resource: parent_or_child_resource, **args)
