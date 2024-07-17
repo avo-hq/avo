@@ -115,7 +115,7 @@ GIT
 PATH
   remote: .
   specs:
-    avo (3.10.5)
+    avo (3.10.6)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
@@ -484,7 +484,7 @@ GEM
       railties (>= 5.2)
     reverse_markdown (2.1.1)
       nokogiri
-    rexml (3.3.1)
+    rexml (3.3.2)
       strscan
     ripper-tags (1.0.2)
     rspec-core (3.13.0)

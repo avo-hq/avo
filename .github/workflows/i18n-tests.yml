@@ -1,4 +1,4 @@
-name: System Tests
+name: i18n Tests
 
 on:
   pull_request:
@@ -25,15 +25,12 @@ env:
   COVERAGE: true
 
 jobs:
-  system_specs:
+  i18n_tests:
     strategy:
       matrix:
         ruby:
-          - '3.1.4'
           - '3.3.0'
         rails:
-          - '6.1'
-          - '7.1'
           - '8.0'
     runs-on: ubuntu-latest
 
@@ -102,7 +99,7 @@ jobs:
 
     - name: Run tests
       id: run_tests
-      run: bundle exec rspec spec/system/ --tag=~i18n
+      run: bundle exec rspec spec/system/i18n_spec.rb
 
     - uses: actions/upload-artifact@v3
       with:
