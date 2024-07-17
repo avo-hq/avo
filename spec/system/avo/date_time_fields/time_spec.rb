@@ -59,6 +59,17 @@ RSpec.describe "Time field", type: :system do
 
         expect(find_field_value_element("starting_at").text).to eq "17:30"
       end
+
+      it "resets the time when reset button is clicked" do
+        visit "/admin/resources/courses/#{course.id}/edit"
+
+        expect(text_input.value).to eq "16:30"
+
+        click_button("reset")
+        save
+
+        expect(find_field_value_element("starting_at").text).to eq "—"
+      end
     end
   end
 

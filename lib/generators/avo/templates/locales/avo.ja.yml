@@ -83,6 +83,7 @@ ja:
     prev_page: 前のページ
     records_selected_from_all_pages_html: 全ページから選択された全レコード
     remove_selection: 選択を解除
+    reset: リセット
     reset_filters: フィルターをリセット
     resource_created: レコードが作成されました
     resource_destroyed: レコードが破棄されました

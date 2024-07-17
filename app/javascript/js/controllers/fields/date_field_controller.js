@@ -230,4 +230,8 @@ export default class extends Controller {
   updateRealInput(value) {
     this.inputTarget.value = value
   }
+
+  clear() {
+    this.fakeInputTarget._flatpickr.clear();
+  }
 }
