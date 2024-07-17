@@ -11,6 +11,7 @@ export default class extends Controller {
     confirmationMessage: String,
     confirmed: Boolean,
   }
+
   connect() {
     this.button.setAttribute('data-original-content', this.button.innerHTML)
     this.dialog = document.getElementById('turbo-confirm')
@@ -18,6 +19,7 @@ export default class extends Controller {
 
     this.dialog.addEventListener('close', this.dialogCloseHandler)
   }
+
   disconnect() {
     this.dialog.removeEventListener('close', this.dialogCloseHandler)
   }
