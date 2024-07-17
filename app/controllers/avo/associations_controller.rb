@@ -62,17 +62,21 @@ module Avo
     def create
       association_name = BaseResource.valid_association_name(@record, association_from_params)
 
-      if reflection_class == "HasManyReflection"
-        @record.send(association_name) << @attachment_record
-      else
-        @record.send(:"#{association_name}=", @attachment_record)
+      created = perform_action_and_record_errors do
+        if reflection_class == "HasManyReflection"
+          @record.send(association_name) << @attachment_record
+        else
+          @record.send(:"#{association_name}=", @attachment_record)
+        end
+
+        @record.save!
       end
 
       respond_to do |format|
-        if @record.save
+        if created
           format.html { redirect_back fallback_location: resource_view_response_path, notice: t("avo.attachment_class_attached", attachment_class: @related_resource.name) }
         else
-          format.html { render :new }
+          format.turbo_stream { render "create_association_fail_action" }
         end
       end
     end
