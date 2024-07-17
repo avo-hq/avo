@@ -11,9 +11,6 @@
   <%= render_cards_component %>
   <%= form_with model: @resource.record,
     scope: @resource.form_scope,
-    data: {
-      turbo_confirm: @resource.confirm_on_save_message
-    },
     url: form_url,
     method: form_method,
     local: true,

@@ -270,10 +270,6 @@ module Avo
       end
     end
 
-    def confirm_on_save_message
-      t("avo.are_you_sure") if confirm_on_save
-    end
-
     def detect_fields
       self.items_holder = Avo::Resources::Items::Holder.new(parent: self)
 
