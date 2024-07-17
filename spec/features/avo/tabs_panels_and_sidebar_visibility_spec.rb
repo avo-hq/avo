@@ -82,6 +82,7 @@ RSpec.describe "TabsPanelsAndSidebarVisibility", type: :feature do
   describe "panels" do
     context "when panel should be visible" do
       let!(:visible_panel_fields_spouse) { create :spouse, name: "RSpec PanelVisibility" }
+      let(:url_with_visible_fields) { "/admin/resources/spouses/#{visible_panel_fields_spouse.id}" }
 
       it "displays the field inside the panel" do
         visit "/admin/resources/spouses/#{visible_panel_fields_spouse.id}"
@@ -92,9 +93,10 @@ RSpec.describe "TabsPanelsAndSidebarVisibility", type: :feature do
 
     context "when panel should be hidden" do
       let!(:not_visible_panel_fields_spouse) { create :spouse }
+      let(:url_with_not_visible_fields) { "/admin/resources/spouses/#{not_visible_panel_fields_spouse.id}" }
 
       it "does not display the field inside the panel" do
-        visit "/admin/resources/spouses/#{not_visible_panel_fields_spouse.id}"
+        visit url_with_not_visible_fields
         expect(page).not_to have_text "Hidden panel"
         expect(page).not_to have_text "Hidden field inside panel"
       end
