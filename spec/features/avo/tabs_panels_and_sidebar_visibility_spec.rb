@@ -35,6 +35,10 @@ RSpec.describe "TabsPanelsAndSidebarVisibility", type: :feature do
           end
         end
       end
+
+      panel "Hidden panel", visible: -> { resource.record.name == "RSpec PanelVisibility" } do
+        field :hidden_field_inside_panel, as: :text
+      end
     end
   end
 
@@ -71,6 +75,28 @@ RSpec.describe "TabsPanelsAndSidebarVisibility", type: :feature do
         expect(page).not_to have_text "Hidden field inside tabs inside tab"
         expect(page).not_to have_text "Hidden field inside tabs inside tab inside panel"
         expect(page).not_to have_text "Hidden field inside sidebar"
+      end
+    end
+  end
+
+  describe "panels" do
+    context "when panel should be visible" do
+      let!(:visible_panel_fields_spouse) { create :spouse, name: "RSpec PanelVisibility" }
+
+      it "displays the field inside the panel" do
+        visit "/admin/resources/spouses/#{visible_panel_fields_spouse.id}"
+        expect(page).to have_text "Hidden panel"
+        expect(page).to have_text "Hidden field inside panel"
+      end
+    end
+
+    context "when panel should be hidden" do
+      let!(:not_visible_panel_fields_spouse) { create :spouse }
+
+      it "does not display the field inside the panel" do
+        visit "/admin/resources/spouses/#{not_visible_panel_fields_spouse.id}"
+        expect(page).not_to have_text "Hidden panel"
+        expect(page).not_to have_text "Hidden field inside panel"
       end
     end
   end
