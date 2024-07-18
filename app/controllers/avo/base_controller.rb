@@ -305,8 +305,15 @@ module Avo
       # Sorting
       if params[:sort_by].present?
         @index_params[:sort_by] = params[:sort_by]
-      elsif @resource.model_class.present? && @resource.model_class.column_names.include?("created_at")
-        @index_params[:sort_by] = :created_at
+      elsif @resource.model_class.present?
+        available_columns = @resource.model_class.column_names
+        default_sort_column = @resource.default_sort_column
+
+        if available_columns.include?(default_sort_column.to_s)
+          @index_params[:sort_by] = default_sort_column
+        elsif available_columns.include?("created_at")
+          @index_params[:sort_by] = :created_at
+        end
       end
 
       @index_params[:sort_direction] = params[:sort_direction] || :desc

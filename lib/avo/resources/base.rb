@@ -75,6 +75,7 @@ module Avo
       class_attribute :link_to_child_resource, default: false
       class_attribute :map_view
       class_attribute :components, default: {}
+      class_attribute :default_sort_column, default: :created_at
 
       # EXTRACT:
       class_attribute :ordering
