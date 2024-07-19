@@ -45,8 +45,6 @@ uk:
     failed_to_load: Не вдалося завантажити
     file:
       one: файл
-      few: файли
-      many: файлів
       other: файлів
     filter_by: Фільтрувати за
     filters: Фільтри
@@ -72,8 +70,6 @@ uk:
     not_authorized: Ви не маєте дозволу на виконання цієї дії.
     number_of_items:
       one: один %{item}
-      few: %{count} %{item}
-      many: %{count} %{item}
       other: %{count} %{item}
       zero: жодного %{item}
     oops_nothing_found: Ой! Нічого не знайдено...
@@ -115,8 +111,6 @@ uk:
     was_successfully_updated: успішно оновлено
     x_items_more:
       one: ще один елемент
-      few: %{count} інші елементи
-      many: %{count} інших елементів
       other: %{count} інших елементів
       zero: жодного іншого елемента
     x_records_selected_from_a_total_of_x_html: Вибрано <span class="font-bold text-gray-700">%{selected}</span> записів на цій сторінці з загальної кількості <span class="font-bold text-gray-700">%{count}</span>
