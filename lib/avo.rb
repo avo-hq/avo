@@ -1,5 +1,6 @@
 require "zeitwerk"
 require "ostruct"
+require "net/http"
 require_relative "avo/version"
 require_relative "avo/engine" if defined?(Rails)
 
