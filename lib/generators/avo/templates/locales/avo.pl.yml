@@ -70,7 +70,7 @@ pl:
     not_authorized: Nie masz uprawnień do wykonania tej akcji.
     number_of_items:
       one: jeden %{item}
-      other: %{count} %{item}
+      other: "%{count} %{item}"
       zero: brak %{item}
     oops_nothing_found: Ups! Nic nie znaleziono...
     order:
@@ -111,7 +111,7 @@ pl:
     was_successfully_updated: został pomyślnie zaktualizowany
     x_items_more:
       one: jeszcze jeden element
-      other: %{count} innych elementów
+      other: "%{count} innych elementów"
       zero: brak innych elementów
     x_records_selected_from_a_total_of_x_html: Wybrano <span class="font-bold text-gray-700">%{selected}</span> rekordów z tej strony spośród <span class="font-bold text-gray-700">%{count}</span> rekordów
     x_records_selected_from_all_pages_html: Wybrano <span class="font-bold text-gray-700">%{count}</span> rekordów z wszystkich stron
