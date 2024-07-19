@@ -1,4 +1,3 @@
----
 de:
   avo:
     resource_translations:
@@ -13,14 +12,14 @@ de:
     are_you_sure_you_want_to_run_this_option: Sind Sie sicher, dass Sie diese Aktion ausführen möchten?
     attach: Anhängen
     attach_and_attach_another: Anhängen und noch eins anhängen
-    attach_item: %{item} anhängen
+    attach_item: "%{item} anhängen"
     attachment_class_attached: "%{attachment_class} angehängt."
     attachment_class_detached: "%{attachment_class} abgehängt."
     attachment_destroyed: Anhang gelöscht
     cancel: Abbrechen
     choose_a_country: Land auswählen
     choose_an_option: Option auswählen
-    choose_item: %{item} auswählen
+    choose_item: "%{item} auswählen"
     clear_value: Wert löschen
     click_to_reveal_filters: Klicken, um Filter anzuzeigen
     close_modal: Modal schließen
@@ -31,14 +30,14 @@ de:
     default_scope: Alle
     delete: löschen
     delete_file: Datei löschen
-    delete_item: %{item} löschen
-    detach_item: %{item} abhängen
+    delete_item: "%{item} löschen"
+    detach_item: "%{item} abhängen"
     details: Details
     download: Herunterladen
     download_file: Datei herunterladen
-    download_item: %{item} herunterladen
+    download_item: "%{item} herunterladen"
     edit: bearbeiten
-    edit_item: %{item} bearbeiten
+    edit_item: "%{item} bearbeiten"
     empty_dashboard_message: Fügen Sie Karten zu diesem Dashboard hinzu
     failed: Fehlgeschlagen
     failed_to_find_attachment: Anhang nicht gefunden
@@ -106,7 +105,7 @@ de:
     unauthorized: Nicht autorisiert
     undo: Rückgängig machen
     view: Anzeigen
-    view_item: %{item} anzeigen
+    view_item: "%{item} anzeigen"
     was_successfully_created: wurde erfolgreich erstellt
     was_successfully_updated: wurde erfolgreich aktualisiert
     x_items_more:
