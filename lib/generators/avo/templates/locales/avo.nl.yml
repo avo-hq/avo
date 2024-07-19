@@ -13,7 +13,7 @@ nl:
     are_you_sure_you_want_to_run_this_option: Weet u zeker dat u deze actie wilt uitvoeren?
     attach: Bijvoegen
     attach_and_attach_another: Bijvoegen en nog een bijvoegen
-    attach_item: %{item} bijvoegen
+    attach_item: "%{item} bijvoegen"
     attachment_class_attached: "%{attachment_class} bijgevoegd."
     attachment_class_detached: "%{attachment_class} losgekoppeld."
     attachment_destroyed: Bijlage verwijderd
@@ -31,14 +31,14 @@ nl:
     default_scope: Alle
     delete: verwijderen
     delete_file: Bestand verwijderen
-    delete_item: %{item} verwijderen
-    detach_item: %{item} loskoppelen
+    delete_item: "%{item} verwijderen"
+    detach_item: "%{item} loskoppelen"
     details: Details
     download: Downloaden
     download_file: Bestand downloaden
-    download_item: %{item} downloaden
+    download_item: "%{item} downloaden"
     edit: bewerken
-    edit_item: %{item} bewerken
+    edit_item: "%{item} bewerken"
     empty_dashboard_message: Voeg kaarten toe aan dit dashboard
     failed: Mislukt
     failed_to_find_attachment: Bijlage niet gevonden
@@ -106,7 +106,7 @@ nl:
     unauthorized: Niet geautoriseerd
     undo: Ongedaan maken
     view: Bekijken
-    view_item: %{item} bekijken
+    view_item: "%{item} bekijken"
     was_successfully_created: is succesvol aangemaakt
     was_successfully_updated: is succesvol bijgewerkt
     x_items_more:
