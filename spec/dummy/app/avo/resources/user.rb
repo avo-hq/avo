@@ -109,7 +109,7 @@ class Avo::Resources::User < Avo::BaseResource
     field :cv, as: :file, name: "CV"
     field :is_admin?, as: :boolean, name: "Is admin", only_on: :index
     field :roles, as: :boolean_group, options: {admin: "Administrator", manager: "Manager", writer: "Writer"}
-    field :permissions, as: :boolean_group, options: {create: "Create", read: "Read", update: "Update", delete: "Delete"}, hide_on: :index
+    field :permissions, as: :boolean_group, options: {create: "Create", read: "Read", update: "Update", delete: "Delete"}
     field :birthday,
       as: :date,
       first_day_of_week: 1,
