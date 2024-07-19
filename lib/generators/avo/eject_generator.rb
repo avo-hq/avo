@@ -146,7 +146,7 @@ module Generators
             [dest_rb, dest_erb].each do |path|
               if component.starts_with?("avo/views/")
                 modified_content = File.read(path).gsub("Avo::Views::", "Avo::Views::#{options[:scope].camelize}::")
-              elsif component.starts_with?("avo/fields/")
+              elsif component.starts_with?("avo/fields/") && options["field-components"].present?
                 modified_content = File.read(path).gsub("#{options["field-components"].camelize}Field", "#{options[:scope].camelize}::#{options["field-components"].camelize}Field")
               end
 
