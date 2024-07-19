@@ -2,9 +2,6 @@ module Avo
   class AssetManager
     include ActionView::Helpers::AssetTagHelper
 
-    attr_reader :stylesheets
-    attr_reader :javascripts
-
     def initialize
       @stylesheets = []
       @javascripts = []
@@ -21,6 +18,14 @@ module Avo
 
     def add_javascript(path)
       @javascripts.push path
+    end
+
+    def stylesheets
+      @stylesheets.uniq
+    end
+
+    def javascripts
+      @javascripts.uniq
     end
   end
 
