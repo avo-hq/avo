@@ -1,0 +1,120 @@
+---
+nl:
+  avo:
+    resource_translations:
+      product:
+        save: "Product opslaan!"
+    action_ran_successfully: Actie succesvol uitgevoerd!
+    actions: Acties
+    and_x_other_resources: en %{count} andere bronnen
+    applied: toegepast
+    are_you_sure: Weet u het zeker?
+    are_you_sure_detach_item: Weet u zeker dat u dit %{item} wilt loskoppelen?
+    are_you_sure_you_want_to_run_this_option: Weet u zeker dat u deze actie wilt uitvoeren?
+    attach: Bijvoegen
+    attach_and_attach_another: Bijvoegen en nog een bijvoegen
+    attach_item: %{item} bijvoegen
+    attachment_class_attached: "%{attachment_class} bijgevoegd."
+    attachment_class_detached: "%{attachment_class} losgekoppeld."
+    attachment_destroyed: Bijlage verwijderd
+    cancel: Annuleren
+    choose_a_country: Kies een land
+    choose_an_option: Kies een optie
+    choose_item: Kies %{item}
+    clear_value: Waarde wissen
+    click_to_reveal_filters: Klik om filters te tonen
+    close_modal: Modaal sluiten
+    confirm: Bevestigen
+    create_new_item: Nieuw %{item} aanmaken
+    dashboard: Dashboard
+    dashboards: Dashboards
+    default_scope: Alle
+    delete: verwijderen
+    delete_file: Bestand verwijderen
+    delete_item: %{item} verwijderen
+    detach_item: %{item} loskoppelen
+    details: Details
+    download: Downloaden
+    download_file: Bestand downloaden
+    download_item: %{item} downloaden
+    edit: bewerken
+    edit_item: %{item} bewerken
+    empty_dashboard_message: Voeg kaarten toe aan dit dashboard
+    failed: Mislukt
+    failed_to_find_attachment: Bijlage niet gevonden
+    failed_to_load: Laden mislukt
+    file:
+      one: bestand
+      other: bestanden
+    filter_by: Filteren op
+    filters: Filters
+    go_back: Terug
+    grid_view: Rasterweergave
+    hide_content: Inhoud verbergen
+    home: Startpagina
+    key_value_field:
+      add_row: Rij toevoegen
+      delete_row: Rij verwijderen
+      key: Sleutel
+      value: Waarde
+    list_is_empty: Lijst is leeg
+    loading: Laden...
+    more: Meer
+    new: nieuw
+    next_page: Volgende pagina
+    no_cancel: Nee, annuleren
+    no_cards_present: Geen kaarten aanwezig
+    no_item_found: Geen item gevonden
+    no_options_available: Geen opties beschikbaar
+    no_related_item_found: Geen gerelateerd item gevonden
+    not_authorized: U bent niet gemachtigd om deze actie uit te voeren.
+    number_of_items:
+      one: één %{item}
+      other: "%{count} %{item}"
+      zero: geen %{item}
+    oops_nothing_found: Oeps! Niets gevonden...
+    order:
+      higher: Verplaats record omhoog
+      lower: Verplaats record omlaag
+      reorder_record: Record opnieuw ordenen
+      to_bottom: Verplaats record naar onderen
+      to_top: Verplaats record naar boven
+    per_page: Per pagina
+    prev_page: Vorige pagina
+    records_selected_from_all_pages_html: Alle geselecteerde records van alle pagina's
+    remove_selection: Selectie verwijderen
+    reset_filters: Filters resetten
+    reset: resetten
+    resource_created: Record aangemaakt
+    resource_destroyed: Record verwijderd
+    resource_updated: Record bijgewerkt
+    resources: Bronnen
+    run: Uitvoeren
+    save: Opslaan
+    search:
+      cancel_button: Annuleren
+      placeholder: Zoeken
+    select_all: Alles selecteren
+    select_all_matching: Alles selecteren wat overeenkomt
+    select_item: Item selecteren
+    show_content: Inhoud tonen
+    sign_out: Afmelden
+    switch_to_view: Schakelen naar %{view_type}-weergave
+    table_view: Tabelweergave
+    tools: Gereedschappen
+    type_to_search: Typ om te zoeken.
+    unauthorized: Niet geautoriseerd
+    undo: Ongedaan maken
+    view: Bekijken
+    view_item: %{item} bekijken
+    was_successfully_created: is succesvol aangemaakt
+    was_successfully_updated: is succesvol bijgewerkt
+    x_items_more:
+      one: nog één item
+      other: "%{count} andere items"
+      zero: geen andere items
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> records geselecteerd op deze pagina van een totaal van <span class="font-bold text-gray-700">%{count}</span>
+    x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> records geselecteerd van alle pagina's
+    x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> records geselecteerd op deze pagina
+    yes_confirm: Ja, ik weet het zeker
+    you_missed_something_check_form: U heeft mogelijk iets gemist. Controleer het formulier.
