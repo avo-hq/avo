@@ -4,6 +4,7 @@ class Avo::Resources::Course < Avo::BaseResource
   }
   self.keep_filters_panel_open = true
   self.stimulus_controllers = "city-in-country toggle-fields"
+  # self.default_sort_column = :country
 
   def show_fields
     fields_bag
