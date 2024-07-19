@@ -70,7 +70,7 @@ uk:
     not_authorized: Ви не маєте дозволу на виконання цієї дії.
     number_of_items:
       one: один %{item}
-      other: %{count} %{item}
+      other: "%{count} %{item}"
       zero: жодного %{item}
     oops_nothing_found: Ой! Нічого не знайдено...
     order:
@@ -111,7 +111,7 @@ uk:
     was_successfully_updated: успішно оновлено
     x_items_more:
       one: ще один елемент
-      other: %{count} інших елементів
+      other: "%{count} інших елементів"
       zero: жодного іншого елемента
     x_records_selected_from_a_total_of_x_html: Вибрано <span class="font-bold text-gray-700">%{selected}</span> записів на цій сторінці з загальної кількості <span class="font-bold text-gray-700">%{count}</span>
     x_records_selected_from_all_pages_html: Вибрано <span class="font-bold text-gray-700">%{count}</span> записів з усіх сторінок
