@@ -48,6 +48,9 @@ class User < ApplicationRecord
   scope :admins, -> { where "(roles->>'admin')::boolean is true" }
   scope :non_admins, -> { where "(roles->>'admin')::boolean != true" }
 
+  # We're using a setter here because we want to test that the field is working properly with a non-db backed field.
+  attr_writer :permissions
+
   def is_admin?
     roles.present? && roles["admin"].present?
   end
@@ -87,5 +90,14 @@ class User < ApplicationRecord
 
   def is_developer?
     true
+  end
+
+  def permissions
+    {
+      create: true,
+      update: false,
+      read: true,
+      delete: true
+    }
   end
 end

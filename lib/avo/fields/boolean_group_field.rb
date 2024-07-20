@@ -33,7 +33,7 @@ module Avo
         end
 
         # Don't override existing values unless specified in options
-        record[id] = (record[id] || {}).merge(new_value)
+        record.send(:"#{id}=", (record.send(id) || {}).merge(new_value))
 
         record
       end
