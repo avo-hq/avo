@@ -83,16 +83,16 @@ module Avo
         }
       end
 
-      def fill_field(record, key, value, params)
+      def fill_field(model, key, value, params)
         begin
           new_value = JSON.parse(value)
         rescue
           new_value = {}
         end
 
-        record.send("#{key}=", new_value)
+        model.send("#{key}=", new_value)
 
-        record
+        model
       end
     end
   end

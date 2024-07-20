@@ -195,25 +195,25 @@ module Avo
         foreign_key.to_sym
       end
 
-      def fill_field(record, key, value, params)
-        return record unless record.methods.include? key.to_sym
+      def fill_field(model, key, value, params)
+        return model unless model.methods.include? key.to_sym
 
         if polymorphic_as.present?
           valid_model_class = valid_polymorphic_class params[:"#{polymorphic_as}_type"]
 
-          record.send(:"#{polymorphic_as}_type=", valid_model_class)
+          model.send(:"#{polymorphic_as}_type=", valid_model_class)
 
           # If the type is blank, reset the id too.
           if valid_model_class.blank?
-            record.send(:"#{polymorphic_as}_id=", nil)
+            model.send(:"#{polymorphic_as}_id=", nil)
           else
-            record.send(:"#{polymorphic_as}_id=", params["#{polymorphic_as}_id"])
+            model.send(:"#{polymorphic_as}_id=", params["#{polymorphic_as}_id"])
           end
         else
-          record.send("#{key}=", value)
+          model.send("#{key}=", value)
         end
 
-        record
+        model
       end
 
       def valid_polymorphic_class(possible_class)
