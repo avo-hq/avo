@@ -1,0 +1,6 @@
+<%= image_tag helpers.main_app.url_for(@profile_photo.value), class: class_names(
+  "relative rounded-full object-cover aspect-square border-4 border-application",
+  "has-cover-photo:sm:ml-8 sm:mr-2",
+  "self-center sm:self-start",
+  "size-24 has-cover-photo:size-36 has-cover-photo:sm:size-48 has-cover-photo:-mt-12",
+), data: {component: self.class.to_s.underscore} %>

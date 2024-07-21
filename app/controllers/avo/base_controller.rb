@@ -34,6 +34,13 @@ module Avo
         @query = @query.includes(*@resource.includes)
       end
 
+      # Eager load attachments
+      if @resource.attachments.present?
+        @resource.attachments.each do |attachment|
+          @query = @query.send(:"with_attached_#{attachment}")
+        end
+      end
+
       apply_sorting
 
       # Apply filters to the current query
@@ -219,32 +226,18 @@ module Avo
     def perform_action_and_record_errors(&block)
       begin
         succeeded = block.call
+      rescue ActiveRecord::RecordInvalid => e
+        # Do nothing as the record errors are already being displayed
       rescue => exception
         # In case there's an error somewhere else than the record
         # Example: When you save a license that should create a user for it and creating that user throws and error.
         # Example: When you Try to delete a record and has a foreign key constraint.
-        exception_message = exception.message
+        @record.errors.add(:base, exception.message)
+        @backtrace = exception.backtrace
       end
 
-      # Add the errors from the record
-      @errors = @record.errors.full_messages
-
-      # Remove duplicated errors
-      if exception_message.present?
-        @errors = @errors.reject { |error| exception_message.include? error }
-      end
-
-      # Figure out if we have to output the exception_message
-      # Usually it means that it's not a validation error but something else
-      if exception_message.present?
-        exception_is_validation = @errors.select { |error| exception_message.include? error }.present?
-      end
-
-      if exception_is_validation || (@errors.blank? && exception_message.present?)
-        @errors << exception_message
-      end
-
-      @errors.any? ? false : succeeded
+      # This method only needs to return true or false to indicate if the action was successful
+      @record.errors.any? ? false : succeeded
     end
 
     def model_params
@@ -312,8 +305,15 @@ module Avo
       # Sorting
       if params[:sort_by].present?
         @index_params[:sort_by] = params[:sort_by]
-      elsif @resource.model_class.present? && @resource.model_class.column_names.include?("created_at")
-        @index_params[:sort_by] = :created_at
+      elsif @resource.model_class.present?
+        available_columns = @resource.model_class.column_names
+        default_sort_column = @resource.default_sort_column
+
+        if available_columns.include?(default_sort_column.to_s)
+          @index_params[:sort_by] = default_sort_column
+        elsif available_columns.include?("created_at")
+          @index_params[:sort_by] = :created_at
+        end
       end
 
       @index_params[:sort_direction] = params[:sort_direction] || :desc
@@ -533,7 +533,8 @@ module Avo
     end
 
     def destroy_fail_message
-      @errors.present? ? @errors.join(". ") : t("avo.failed")
+      errors = @record.errors.full_messages
+      errors.present? ? errors.join(". ") : t("avo.failed")
     end
 
     def after_destroy_path

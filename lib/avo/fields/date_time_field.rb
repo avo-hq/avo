@@ -30,14 +30,14 @@ module Avo
 
       def fill_field(model, key, value, params)
         if value.in?(["", nil])
-          model[id] = value
+          model.send(:"#{id}=", value)
 
           return model
         end
 
         return model if value.blank?
 
-        model[id] = utc_time(value)
+        model.send(:"#{id}=", utc_time(value))
 
         model
       end

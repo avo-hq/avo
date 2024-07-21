@@ -1,5 +1,6 @@
 require "zeitwerk"
 require "ostruct"
+require "net/http"
 require_relative "avo/version"
 require_relative "avo/engine" if defined?(Rails)
 
@@ -72,6 +73,7 @@ module Avo
     # Runs on each request
     def init
       Avo::Current.error_manager = Avo::ErrorManager.build
+      check_rails_version_issues
       Avo::Current.resource_manager = Avo::Resources::ResourceManager.build
       Avo::Current.tool_manager = Avo::Tools::ToolManager.build
 
@@ -141,6 +143,21 @@ module Avo
 
     def eager_load_actions
       Rails.autoloaders.main.eager_load_namespace(Avo::Actions) if defined?(Avo::Actions)
+    end
+
+    def check_rails_version_issues
+      if Rails.version.start_with?("7.1") && Avo.configuration.license.in?(["pro", "advanced"])
+        Avo.error_manager.add({
+          url: "https://docs.avohq.io/3.0/upgrade.html#upgrade-from-3-7-4-to-3-9-1",
+          target: "_blank",
+          message: "Due to a Rails 7.1 bug the following features won't work:\n\r
+                    - Dashboards\n\r
+                    - Ordering\n\r
+                    - Dynamic filters\n\r
+                    We recommend you upgrade to Rails 7.2\n\r
+                    Click banner for more information."
+        })
+      end
     end
   end
 end

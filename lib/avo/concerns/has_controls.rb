@@ -11,6 +11,7 @@ module Avo
         class_attribute :row_controls
       end
 
+      # Any change applied here should also be applied on Avo::Advanced::Resources::Controls::ExecutionContext default_controls
       def render_show_controls
         [BackButton.new, DeleteButton.new, DetachButton.new, ActionsList.new, EditButton.new]
       end

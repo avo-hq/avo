@@ -4,8 +4,8 @@ source "https://rubygems.org"
 
 gem "jsbundling-rails"
 gem "cssbundling-rails"
-gem "rails", branch: "main", git: "https://github.com/rails/rails.git"
-gem "activestorage", branch: "main", git: "https://github.com/rails/rails.git"
+gem "rails", "~> 7.2.0.beta2"
+gem "activestorage"
 gem "pg", ">= 0.18", "< 2.0"
 gem "puma", "~> 6.4"
 gem "redis", "~> 5.0"
@@ -24,7 +24,7 @@ gem "iso"
 gem "active_link_to"
 gem "addressable"
 gem "meta-tags"
-gem "ransack", branch: "fix/rails-8/delegate-alias-tracker-to-relation", git: "https://github.com/avo-hq/ransack.git"
+gem "ransack", "~> 4.1", ">= 4.1.1"
 gem "friendly_id", "~> 5.5.1"
 gem "aws-sdk-s3", require: false
 gem "net-smtp", require: false
@@ -45,6 +45,7 @@ gem "money-rails", "~> 1.12"
 gem "avo-money_field"
 gem "avo-record_link_field"
 gem "pagy", "> 8"
+gem "csv"
 gem "psych", "< 4"
 
 group :development do
@@ -58,6 +59,7 @@ group :development do
   gem "ripper-tags"
   gem "rubocop-shopify", require: false
   gem "rubycritic", require: false
+  gem "actual_db_schema"
 end
 
 group :test do

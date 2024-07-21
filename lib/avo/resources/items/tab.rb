@@ -4,6 +4,7 @@ class Avo::Resources::Items::Tab
   include Avo::Concerns::HasItems
   include Avo::Concerns::HasItemType
   include Avo::Concerns::VisibleItems
+  include Avo::Concerns::IsVisible
   include Avo::Concerns::VisibleInDifferentViews
 
   delegate :items, :add_item, to: :items_holder
@@ -16,6 +17,7 @@ class Avo::Resources::Items::Tab
     @items_holder = Avo::Resources::Items::Holder.new
     @view = Avo::ViewInquirer.new view
     @args = args
+    @visible = args[:visible]
 
     post_initialize if respond_to?(:post_initialize)
   end

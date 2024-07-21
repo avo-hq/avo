@@ -17,7 +17,7 @@
       <%= sanitize @field.value.to_s %>
     <% end %>
     <%= @form.text_area @field.id,
-      value: @field.value,
+      value: @field.value.try(:to_trix_html) || @field.value,
       class: classes("w-full hidden"),
       data: @field.get_html(:data, view: view, element: :input),
       disabled: disabled?,

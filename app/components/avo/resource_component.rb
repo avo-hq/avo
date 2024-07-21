@@ -40,6 +40,8 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def can_see_the_edit_button?
+    return authorize_association_for(:edit) if @reflection.present?
+
     @resource.authorization.authorize_action(:edit, raise_exception: false)
   end
 
@@ -48,8 +50,6 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def can_see_the_actions_button?
-    return false if @actions.blank?
-
     return authorize_association_for(:act_on) if @reflection.present?
 
     @resource.authorization.authorize_action(:act_on, raise_exception: false) && !has_reflection_and_is_read_only

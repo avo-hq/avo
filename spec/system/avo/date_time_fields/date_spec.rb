@@ -51,6 +51,7 @@ RSpec.describe "Date field", type: :system do
         set_picker_day "February 9, 1988"
 
         save
+        sleep 1
 
         expect(find_field_value_element("birthday").text).to eq "Tuesday, 9 February 1988"
       end

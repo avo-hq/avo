@@ -64,7 +64,7 @@ export default class extends Controller {
       })
     } else {
       options = merge(options, {
-        originalInputValueFormat: (valuesArr) => valuesArr.map((item) => item.value).join(','),
+        originalInputValueFormat: (valuesArr) => valuesArr.map((item) => item.value).join(this.delimitersValue[0]),
       })
     }
 

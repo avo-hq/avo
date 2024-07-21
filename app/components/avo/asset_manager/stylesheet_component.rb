@@ -1,13 +1,7 @@
 # frozen_string_literal: true
 
-class Avo::AssetManager::StylesheetComponent < ViewComponent::Base
-  attr_reader :asset_manager
+class Avo::AssetManager::StylesheetComponent < Avo::BaseComponent
+  prop :asset_manager, Avo::AssetManager
 
-  def initialize(asset_manager:)
-    @asset_manager = asset_manager
-  end
-
-  def stylesheets
-    asset_manager.stylesheets
-  end
+  delegate :stylesheets, to: :@asset_manager
 end

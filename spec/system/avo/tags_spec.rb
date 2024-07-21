@@ -98,7 +98,7 @@ RSpec.describe "Tags", type: :system do
 
         save
 
-        expect(page).to have_text("Validation failed: Name can't be blank")
+        expect(page).to have_text("Name can't be blank")
         expect(page.all(".tagify__tag-text").map(&:text)).to eq ["one", "two"]
       end
     end
@@ -170,6 +170,66 @@ RSpec.describe "Tags", type: :system do
       Avo::Resources::Course.restore_items_from_backup
     end
   end
+
+  describe "format_using (same as deprecated fetch_labels) with fetch_values_from" do
+    let!(:users) { create_list :user, 2, first_name: "Bob" }
+    let!(:courses) { create_list :course, 2, skills: users.pluck(:id) }
+    let(:field_value_slot) { tags_element(find_field_value_element("skills")) }
+    let(:tags_input) { field_value_slot.find("span[contenteditable]") }
+
+    it "fetches the labels" do
+      Avo::Resources::Course.with_temporary_items do
+        field :name
+        field :skills,
+          as: :tags,
+          fetch_values_from: "/admin/resources/users/get_users", # {value: 1, label: "Jose"}
+          format_using: -> {
+            User.find(value).map do |user|
+              {
+                value: user.id,
+                label: user.name
+              }
+            end
+          }
+      end
+
+      visit avo.resources_courses_path
+
+      expect(page).to have_text "#{users[0].first_name} #{users[0].last_name}"
+      expect(page).to have_text "#{users[1].first_name} #{users[1].last_name}"
+    end
+
+    it "keep correct tags on validations error and edit" do
+      visit avo.new_resources_course_path
+
+      tags_input.click
+      tags_input.set("Bob")
+      wait_for_tags_to_load(field_value_slot)
+      type(:down)
+      type(:down, :return)
+
+      sleep 0.3
+      save
+
+      expect(page).to have_text "Name can't be blank"
+      expect(page).to have_text "#{users[0].first_name} #{users[0].last_name}"
+
+      fill_in "course_name", with: "The course"
+
+      tags_input.click
+      tags_input.set("Bob")
+      wait_for_tags_to_load(field_value_slot)
+      type(:down)
+      type(:down, :return)
+
+      sleep 0.3
+      save
+
+      expect(Course.last.skills.map(&:to_i)).to eql(users.pluck(:id))
+
+      Avo::Resources::Course.restore_items_from_backup
+    end
+  end
 end
 
 def wait_for_tags_to_load(element, time = Capybara.default_max_wait_time)
@@ -181,4 +241,10 @@ end
 
 def tags_element(parent)
   parent.find "tags.tagify"
+end
+
+def wait_until
+  Timeout.timeout(Capybara.default_max_wait_time) do
+    loop until yield
+  end
 end
