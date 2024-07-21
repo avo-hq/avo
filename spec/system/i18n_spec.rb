@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'i18n/tasks'
+require "i18n/tasks"
 
 RSpec.describe I18n do
   let(:i18n) { I18n::Tasks::BaseTask.new }
@@ -13,7 +13,7 @@ RSpec.describe I18n do
   # a separate job.
   it "does not have missing keys", i18n: true do
     expect(missing_keys).to be_empty,
-                            "Missing #{missing_keys.leaves.count} i18n keys, run `i18n-tasks missing' to show them"
+      "Missing #{missing_keys.leaves.count} i18n keys, run `i18n-tasks missing' to show them"
   end
 
   # it 'does not have unused keys' do
