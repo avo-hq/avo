@@ -17,9 +17,20 @@ class Avo::Index::ResourceCalendarComponent < Avo::BaseComponent
     @resource&.calendar_view&.dig(:starts_at) || :created_at
   end
 
+  def week_start
+    @resource&.calendar_view&.dig(:week_start) || :sunday
+  end
+
+  def weekdays_with_offset
+    weekdays = Date::ABBR_DAYNAMES
+    weekdays = weekdays.rotate if week_start == :monday
+    weekdays
+  end
+
   def month_offset
-    # you might want to update this based on your first day of the week (Sun/Mon)
-    date.beginning_of_month.wday - 1
+    first_day = date.beginning_of_month.wday
+    first_day = first_day - 1 if week_start == :monday
+    first_day
   end
 
   def today?(day)

@@ -15,9 +15,8 @@
           <%= date.strftime('%B %Y') %>
         </p>
       <% end %>
-
       <%= tag.div class: "grid grid-cols-7 bg-white" do %>
-        <% Date::ABBR_DAYNAMES.rotate.each do |day| %>
+        <% weekdays_with_offset.each do |day| %>
           <%= tag.div class: "border border-gray-100 font-bold text-center" do %>
             <%= day %>
           <% end %>
