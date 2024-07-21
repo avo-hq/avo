@@ -47,15 +47,28 @@ module Avo
         query: resource.query_scope
       ).handle
 
-      query = apply_scope(query) if should_apply_any_scope?
+      if query.is_a?(Array)
+        # Apply highlight
+        query.map do |result|
+          result[:_label] = highlight(result[:_label].to_s, CGI.escapeHTML(params[:q] || ""))
+        end
 
-      # Get the count
-      results_count = query.reselect(resource.model_class.primary_key).count
+        # Get the count
+        results_count = query.size
 
-      # Get the results
-      query = query.limit(search_results_count(resource))
+        # Apply the limit
+        results = query.first(search_results_count(resource))
+      else
+        query = apply_scope(query) if should_apply_any_scope?
 
-      results = apply_search_metadata(query, resource)
+        # Get the count
+        results_count = query.reselect(resource.model_class.primary_key).count
+
+        # Get the results
+        query = query.limit(search_results_count(resource))
+
+        results = apply_search_metadata(query, resource)
+      end
 
       header = resource.plural_name
 

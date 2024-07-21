@@ -4,6 +4,18 @@ class Avo::Resources::Project < Avo::BaseResource
   self.search = {
     query: -> {
       query.ransack(id_eq: params[:q], name_cont: params[:q], country_cont: params[:q], m: "or").result(distinct: false)
+
+      array = []
+
+      30.times do |iteration|
+        array << {
+          _id: iteration,
+          _label: "Label nr #{iteration}",
+          _url: "www.#{iteration}.ro"
+        }
+      end
+
+      array
     }
   }
   self.includes = [users: [:comments, :teams, post: [comments: :user]]]
