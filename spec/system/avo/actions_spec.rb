@@ -179,6 +179,7 @@ RSpec.describe "Actions", type: :system do
     end
   end
 
+
   describe "do_nothing" do
     it "closes the modal and flashes messages" do
       allow(TestBuddy).to receive(:hi).and_call_original
@@ -188,14 +189,15 @@ RSpec.describe "Actions", type: :system do
 
       fill_in "user_first_name", with: "First name should persist after action."
 
+
       click_on "Actions"
       click_on "Do Nothing"
-      expect(page).to have_css("turbo-frame#actions_show")
+      expect(page).to have_css('turbo-frame#actions_show')
       expect(page).to have_selector(modal = "[role='dialog']")
       click_on "Run"
       expect(page).not_to have_selector(modal)
       expect(page).to have_text "Nothing Done!!"
-      expect(page).to have_field("user_first_name", with: "First name should persist after action.")
+      expect(page).to have_field('user_first_name', with: 'First name should persist after action.')
     end
   end
 
@@ -212,7 +214,7 @@ RSpec.describe "Actions", type: :system do
 
       click_on "Actions"
       click_on "Close modal"
-      expect(page).to have_css("turbo-frame#actions_show")
+      expect(page).to have_css('turbo-frame#actions_show')
       expect(page).to have_selector(modal = "[role='dialog']")
       click_on "Run"
       expect(page).not_to have_selector(modal)

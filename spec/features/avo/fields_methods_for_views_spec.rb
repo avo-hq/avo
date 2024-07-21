@@ -1,4 +1,4 @@
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.feature "Fields methods for each view", type: :feature do
   let!(:links) { create_list :course_link, 3 }
@@ -113,6 +113,7 @@ RSpec.feature "Fields methods for each view", type: :feature do
       expect(page).not_to have_css "[data-field-id='country']"
       expect(page).not_to have_css "[data-field-id='city']"
       expect(page).not_to have_selector 'turbo-frame[id="has_many_field_show_links"]'
+
 
       # Restore the original method
       Avo::Resources::Course.class_eval do

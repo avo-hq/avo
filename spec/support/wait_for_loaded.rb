@@ -88,12 +88,12 @@ def wait_for_tag_suggestions_to_appear(time = Capybara.default_max_wait_time)
     page.has_css?(".tagify__dropdown")
   end
 
-  current_count = prev_count = page.all(".tagify__dropdown__item").count
+  current_count = prev_count = page.all('.tagify__dropdown__item').count
   attempts = 5
 
   loop do
     sleep(0.05)
-    current_count = page.all(".tagify__dropdown__item").count
+    current_count = page.all('.tagify__dropdown__item').count
 
     # Break when suggestions stop appearing
     # Or attempts reach 0

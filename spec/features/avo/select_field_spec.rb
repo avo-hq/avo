@@ -1,4 +1,4 @@
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.feature "Select", type: :feature do
   let(:project) { create :project }
@@ -51,10 +51,10 @@ RSpec.feature "Select", type: :feature do
 
   describe "when options are a hash" do
     HASH_OPTIONS = {
-      Zero: 0,
-      Low: 50000,
-      Medium: 100000,
-      High: 250000
+      'Zero': 0,
+      'Low': 50000,
+      'Medium': 100000,
+      'High': 250000,
     }
 
     def test_hash
@@ -113,7 +113,7 @@ RSpec.feature "Select", type: :feature do
   end
 
   describe "when options are an array" do
-    ARRAY_OPTIONS = ["Baia Mare", "București", "Coimbra", "Porto"]
+    ARRAY_OPTIONS =  ["Baia Mare", "București", "Coimbra", "Porto"]
 
     def test_array
       visit avo.new_resources_city_path
@@ -159,6 +159,7 @@ RSpec.feature "Select", type: :feature do
         test_array
       end
     end
+
   end
 
   describe "when options are enum array" do

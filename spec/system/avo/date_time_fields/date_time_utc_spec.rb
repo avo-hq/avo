@@ -56,9 +56,9 @@ RSpec.describe "Date field", type: :system do
         # Open the picker.
         text_input.click
         find('.flatpickr-day[aria-label="February 11, 1988"]').click
-        find(".flatpickr-hour").set(17)
-        find(".flatpickr-minute").set(17)
-        find(".flatpickr-second").set(17)
+        find('.flatpickr-hour').set(17)
+        find('.flatpickr-minute').set(17)
+        find('.flatpickr-second').set(17)
 
         # Close the picker.
         find_field_value_element("body").trigger("click")

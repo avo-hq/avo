@@ -29,7 +29,7 @@ class Avo::Index::ResourceCalendarComponent < Avo::BaseComponent
 
   def month_offset
     first_day = date.beginning_of_month.wday
-    first_day -= 1 if week_start == :monday
+    first_day = first_day - 1 if week_start == :monday
     first_day
   end
 

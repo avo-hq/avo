@@ -8,6 +8,7 @@ RSpec.feature "SignOutDropdown", type: :system do
       expect(page.body).to have_text admin.name
       expect(page.body).to have_css("form[data-controller='sign-out'][data-action='submit->sign-out#handle']", visible: false)
 
+
       dots_link = find("[data-control='profile-dots']")
 
       dots_link.click

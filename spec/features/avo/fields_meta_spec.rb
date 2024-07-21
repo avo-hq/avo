@@ -1,4 +1,4 @@
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe Avo::EventsController, type: :controller do
   it "finds the meta value as a hash" do

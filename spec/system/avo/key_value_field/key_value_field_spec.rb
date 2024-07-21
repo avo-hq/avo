@@ -121,7 +121,7 @@ RSpec.describe "KeyValueFields", type: :system do
   end
 
   describe "with value" do
-    let!(:meta_data) { {foo: "bar", hey: "hi"} }
+    let!(:meta_data) { {'foo': "bar", 'hey': "hi"} }
     let!(:project) { create :project, meta: meta_data }
 
     context "show" do
@@ -301,7 +301,7 @@ RSpec.describe "KeyValueFields", type: :system do
   end
 
   describe "with null values" do
-    let!(:meta_data) { {"foo" => nil, nil => "bar"} }
+    let!(:meta_data) { {'foo' => nil, nil => 'bar'} }
     let!(:project) { create :project, meta: meta_data }
 
     context "show" do

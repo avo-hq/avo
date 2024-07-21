@@ -1,4 +1,4 @@
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.feature Avo::Actions::ReleaseFish, type: :feature do
   let(:fish) { create :fish }

@@ -36,7 +36,6 @@ def stub_pro_license_request
     license_key: "license_123"
   }.stringify_keys)).to_return(status: 200, body: {id: "pro", valid: true}.to_json, headers: json_headers)
 end
-
 class DummyRequest
   attr_accessor :ip
   attr_accessor :host
