@@ -66,8 +66,8 @@ class Avo::Resources::Post < Avo::BaseResource
   end
 
   self.calendar_view = {
-    # title: -> (record) { record.name },
-    title: -> (record) { "#{record.created_at.strftime("%H:%M")} - #{record.name}" },
+    # title: ->(record) { record.name },
+    title: ->(record) { "#{record.created_at.strftime("%H:%M")} - #{record.name}" },
     starts_at: :created_at,
     week_start: :monday
   }
