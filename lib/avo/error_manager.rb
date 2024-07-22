@@ -15,11 +15,17 @@ module Avo
     end
 
     def add(error)
-      errors << error
+      @errors << error
     end
 
     def has_errors?
-      errors.present?
+      @errors.present?
+    end
+
+    def render?
+      return false if Rails.env.production?
+
+      has_errors?
     end
   end
 end
