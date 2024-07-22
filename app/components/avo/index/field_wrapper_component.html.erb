@@ -6,7 +6,7 @@
     **stimulus_attributes
   },
   style: style do %>
-  <% if @field.value.blank? && @dash_if_blank %>
+  <% if render_dash? %>
     —
   <% else %>
     <% if @center_content %>
