@@ -101,8 +101,4 @@ export default class extends Controller {
       this.markSidebarOpen()
     }
   }
-
-  toggleSidebarOnMobile() {
-    toggle(this.mobileSidebarTarget)
-  }
 }
