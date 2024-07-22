@@ -47,14 +47,15 @@ module Avo
         query: resource.query_scope
       ).handle
 
+      # When using custom search services query should return an array of hashes
       if query.is_a?(Array)
         # Apply highlight
         query.map do |result|
           result[:_label] = highlight(result[:_label].to_s, CGI.escapeHTML(params[:q] || ""))
         end
 
-        # Get the count
-        results_count = query.size
+        # Force count to 0 until implement an API to pass the count
+        results_count = 0
 
         # Apply the limit
         results = query.first(search_results_count(resource))
