@@ -82,23 +82,8 @@ export default class extends Controller {
     }
   }
 
-  markSidebarClosed() {
-    Cookies.set(this.cookieKey, '0')
-    this.openValue = false
-    this.mainAreaTarget.classList.remove('sidebar-open')
-  }
-
-  markSidebarOpen() {
-    Cookies.set(this.cookieKey, '1')
-    this.openValue = true
-    this.mainAreaTarget.classList.add('sidebar-open')
-  }
-
   toggleSidebar() {
-    if (this.openValue) {
-      this.markSidebarClosed()
-    } else {
-      this.markSidebarOpen()
-    }
+    this.mainAreaTarget.classList.toggle('sidebar-open')
+    Cookies.set(this.cookieKey, this.cookieKey === '1' ? '0' : '1')
   }
 }

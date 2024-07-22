@@ -18,6 +18,7 @@
     }
   }
 }
+
 .sidebar-open {
   .avo-sidebar {
     transform: translateX(0);
