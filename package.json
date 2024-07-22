@@ -95,7 +95,7 @@
     "prettier-plugin-erb": "^0.4.0"
   },
   "resolutions": {
-    "prosemirror-model": "1.16.1"
+    "prosemirror-model": "1.22.2"
   },
   "browserslist": [
     "last 3 and_chr versions",
