@@ -162,7 +162,6 @@ RSpec.feature "HasManyField", type: :feature do
     it "triggers callbacks on through model" do
       team.team_members << user
       expect(team.team_members.count).to eq 1
-      team_membership = team.memberships.first
 
       visit "/admin/resources/teams/#{team.id}/team_members?view=show&turbo_frame=has_many_field_show_team_members"
 
@@ -172,7 +171,6 @@ RSpec.feature "HasManyField", type: :feature do
     it "triggers callbacks when called from the other model too" do
       user.teams << team
       expect(user.teams.count).to eq 1
-      team_membership = user.team_memberships.first
 
       visit "/admin/resources/users/#{user.to_param}/teams?view=show&turbo_frame=has_and_belongs_to_many_field_show_teams"
 
