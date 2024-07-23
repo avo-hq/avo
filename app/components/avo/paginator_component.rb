@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::PaginatorComponent < ViewComponent::Base
+class Avo::PaginatorComponent < Avo::BaseComponent
   attr_reader :pagy
   attr_reader :turbo_frame
   attr_reader :index_params
