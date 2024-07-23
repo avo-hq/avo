@@ -31,7 +31,7 @@ class Avo::PaginatorComponent < Avo::BaseComponent
     if defined?(@pagy.limit)
       @pagy.limit > 0
     else
-      @pagy&.items > 0
+      @pagy.items > 0
     end
   end
 
