@@ -12,8 +12,15 @@
 class TeamMembership < ApplicationRecord
   belongs_to :team
   belongs_to :user
+  before_destroy :say_goodbye, if: -> { Rails.env.test? }
 
   def name
     "#{team&.name} - #{user&.name}"
+  end
+
+  private
+
+  def say_goodbye
+    raise "Callback Called"
   end
 end
