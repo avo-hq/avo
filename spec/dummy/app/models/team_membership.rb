@@ -12,7 +12,7 @@
 class TeamMembership < ApplicationRecord
   belongs_to :team
   belongs_to :user
-  before_destroy :say_goodbye, if: -> { Rails.env.test? }
+  before_destroy :raise_test_error, if: -> { Rails.env.test? }
 
   def name
     "#{team&.name} - #{user&.name}"
@@ -20,7 +20,7 @@ class TeamMembership < ApplicationRecord
 
   private
 
-  def say_goodbye
+  def raise_test_error
     raise "Callback Called"
   end
 end
