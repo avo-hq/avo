@@ -176,7 +176,7 @@ module Avo
 
     def join_record
       reflection.through_reflection.klass.find_by(source_foreign_key => @attachment_record.id,
-                                                  through_foreign_key => @record.id)
+        through_foreign_key => @record.id)
     end
   end
 end
