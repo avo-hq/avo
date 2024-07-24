@@ -23,8 +23,6 @@ module Avo
     end
 
     def render?
-      return false if Rails.env.production?
-
       has_errors?
     end
   end
