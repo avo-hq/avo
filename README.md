@@ -14,9 +14,6 @@
 <a href="https://github.com/testdouble/standard">
   <img alt="Ruby Style" src="https://img.shields.io/badge/style-standard-168AFE?logo=ruby&logoColor=FE1616" />
 </a>
-<a href="https://discord.com/invite/vuuwFe4Km3">
-  <img alt="Avo Rails Admin Discord Community" src="https://img.shields.io/discord/740892036978442260?color=8892F6&label=discord&logo=discord&logoColor=8892F6">
-</a>
 [![codecov](https://codecov.io/gh/avo-hq/avo/branch/master/graph/badge.svg?token=Q2LMFE4989)](https://codecov.io/gh/avo-hq/avo)
 [![Maintainability](https://api.codeclimate.com/v1/badges/676a0afa2cc79f03aa29/maintainability)](https://codeclimate.com/github/avo-hq/avo/maintainability)
 
@@ -36,15 +33,13 @@ Avo is a very custom Admin Panel Framework, Content Management System, and Inter
 <br>
 🗺 **Roadmap**: [GitHub Roadmap](https://github.com/orgs/avo-hq/projects/14)
 <br>
-🎸 **Demo app**: [Avodemo](https://main.avodemo.com/)
+🎸 **Demo App**: [Avodemo](https://main.avodemo.com/)
 <br>
-🐤 **Twitter**: [avo_hq](https://twitter.com/avo_hq)
+🐤 **Twitter**: [`avo_hq`](https://twitter.com/avo_hq)
 <br>
-💬 **Community chat**: [discord](https://discord.gg/pkTF6y8)
+🔧 **Issue Tracker**: [GitHub Issues](http://github.com/avo-hq/avo/issues)
 <br>
-🔧 **Issue tracker**: [GitHub issues](http://github.com/avo-hq/avo/issues)
-<br>
-🎙 **Discussions and feature requests**: [GitHub issues](http://github.com/avo-hq/avo/discussions)
+🎙 **Discussions and Feature Requests**: [GitHub Discussions](http://github.com/avo-hq/avo/discussions)
 
 ## Features
 

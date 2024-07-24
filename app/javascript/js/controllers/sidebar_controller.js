@@ -1,5 +1,4 @@
 import { Controller } from '@hotwired/stimulus'
-import { enter, leave, toggle } from 'el-transition'
 import Cookies from 'js-cookie'
 
 // Detect whether an element is in view inside a parent element.
@@ -83,29 +82,8 @@ export default class extends Controller {
     }
   }
 
-  markSidebarClosed() {
-    Cookies.set(this.cookieKey, '0')
-    this.openValue = false
-    leave(this.sidebarTarget)
-    this.mainAreaTarget.classList.remove('sidebar-open')
-  }
-
-  markSidebarOpen() {
-    Cookies.set(this.cookieKey, '1')
-    this.openValue = true
-    enter(this.sidebarTarget)
-    this.mainAreaTarget.classList.add('sidebar-open')
-  }
-
   toggleSidebar() {
-    if (this.openValue) {
-      this.markSidebarClosed()
-    } else {
-      this.markSidebarOpen()
-    }
-  }
-
-  toggleSidebarOnMobile() {
-    toggle(this.mobileSidebarTarget)
+    this.mainAreaTarget.classList.toggle('sidebar-open')
+    Cookies.set(this.cookieKey, this.cookieKey === '1' ? '0' : '1')
   }
 }

@@ -15,11 +15,11 @@ module Avo
     end
 
     def add(error)
-      errors << error
+      @errors << error
     end
 
     def has_errors?
-      errors.present?
+      @errors.present?
     end
   end
 end

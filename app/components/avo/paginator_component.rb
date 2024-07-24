@@ -28,7 +28,11 @@ class Avo::PaginatorComponent < Avo::BaseComponent
   def render?
     return false if discreet_pagination && pagy.pages <= 1
 
-    @pagy.items > 0
+    if defined?(@pagy.limit)
+      @pagy.limit > 0
+    else
+      @pagy.items > 0
+    end
   end
 
   def per_page_options

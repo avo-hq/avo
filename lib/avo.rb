@@ -1,5 +1,6 @@
 require "zeitwerk"
 require "ostruct"
+require "net/http"
 require_relative "avo/version"
 require_relative "avo/engine" if defined?(Rails)
 
@@ -72,7 +73,8 @@ module Avo
     # Runs on each request
     def init
       Avo::Current.error_manager = Avo::ErrorManager.build
-      check_rails_version_issues
+      # Check rails version issues only on NON Production environments
+      check_rails_version_issues unless Rails.env.production?
       Avo::Current.resource_manager = Avo::Resources::ResourceManager.build
       Avo::Current.tool_manager = Avo::Tools::ToolManager.build
 
