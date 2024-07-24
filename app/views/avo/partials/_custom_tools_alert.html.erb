@@ -5,7 +5,7 @@
     </a>
   </div>
 <% end %>
-<% if Avo.error_manager.render? %>
+<% if Avo.error_manager.has_errors? %>
   <% Avo.error_manager.all.each do |error| %>
     <% if error.is_a? Hash %>
       <%

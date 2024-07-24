@@ -21,9 +21,5 @@ module Avo
     def has_errors?
       @errors.present?
     end
-
-    def render?
-      has_errors?
-    end
   end
 end
