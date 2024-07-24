@@ -1,5 +1,6 @@
 require "pagy/extras/trim"
 require "pagy/extras/countless"
+require "pagy/extras/size"
 
 # For locales without native pagy i18n support
 def pagy_locale_path(file_name)
