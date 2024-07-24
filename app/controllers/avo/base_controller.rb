@@ -17,6 +17,8 @@ module Avo
     before_action :set_pagy_locale, only: :index
 
     def index
+      safe_call :audit, activity_class: @resource.class, payload: params, action: __method__
+
       @page_title = @resource.plural_name.humanize
       add_breadcrumb @resource.plural_name.humanize
 
@@ -65,6 +67,8 @@ module Avo
     end
 
     def show
+      safe_call :audit, activity_class: @resource.class, payload: params, action: __method__, records: @record
+
       @resource.hydrate(record: @record, view: :show, user: _current_user, params: params).detect_fields
 
       set_actions
@@ -115,6 +119,8 @@ module Avo
       add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
       add_breadcrumb t("avo.new").humanize
 
+      safe_call :audit, activity_class: @resource.class, payload: params, action: __method__
+
       set_component_for __method__, fallback_view: :edit
     end
 
@@ -159,6 +165,7 @@ module Avo
 
       set_component_for :edit
 
+      safe_call :audit, activity_class: @resource.class, payload: params, action: __method__, records: @record
       if saved
         create_success_action
       else
@@ -167,12 +174,16 @@ module Avo
     end
 
     def edit
+      safe_call :audit, activity_class: @resource.class, payload: params, action: __method__, records: @record
+
       set_actions
 
       set_component_for __method__
     end
 
     def update
+      safe_call :audit, activity_class: @resource.class, payload: params, action: __method__, records: @record
+
       # record gets instantiated and filled in the fill_record method
       saved = save_record
       @resource = @resource.hydrate(record: @record, view: :edit, user: _current_user)
@@ -188,6 +199,7 @@ module Avo
     end
 
     def destroy
+      safe_call :audit, activity_class: @resource.class, payload: params, action: __method__, records: @record
       if destroy_model
         destroy_success_action
       else
@@ -560,10 +572,6 @@ module Avo
     # Set pagy locale from params or from avo configuration, if both nil locale = "en"
     def set_pagy_locale
       @pagy_locale = locale.to_s || Avo.configuration.default_locale || "en"
-    end
-
-    def safe_call(method)
-      send(method) if respond_to?(method, true)
     end
 
     def pagy_query

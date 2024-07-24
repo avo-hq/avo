@@ -7,6 +7,7 @@ module Avo
     attr_writer :root_path
     attr_writer :cache_store
     attr_writer :logger
+    attr_writer :audit
     attr_writer :turbo
     attr_writer :pagination
     attr_accessor :timezone
@@ -107,6 +108,7 @@ module Avo
       @mount_avo_engines = true
       @cache_store = computed_cache_store
       @logger = default_logger
+      @audit = false
       @turbo = default_turbo
       @default_url_options = []
       @pagination = {}
@@ -172,7 +174,9 @@ module Avo
     def license
       gems = Gem::Specification.map {|gem| gem.name}
 
-      @license ||= if gems.include?("avo-advanced")
+      @license ||= if gems.include?("avo-audit_logging")
+        "enterprise"
+      elsif gems.include?("avo-advanced")
         "advanced"
       elsif gems.include?("avo-pro")
         "pro"
@@ -229,6 +233,21 @@ module Avo
 
         file_logger
       }
+    end
+
+    def database_exists?
+      ActiveRecord::Base.connection
+    rescue ActiveRecord::NoDatabaseError
+      false
+    else
+      true
+    end
+
+    def audit?
+      Avo.plugin_manager.installed?("avo-audit_logging") &&
+        @audit &&
+        database_exists? &&
+        ActiveRecord::Base.connection.table_exists?(:avo_activities)
     end
 
     def turbo

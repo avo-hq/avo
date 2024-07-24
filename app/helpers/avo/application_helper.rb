@@ -137,6 +137,10 @@ module Avo
       ["frame", resource.model_name.singular, resource.record.id].compact.join("-")
     end
 
+    def safe_call(method, **args)
+      send(method, **args) if respond_to?(method, true)
+    end
+
     def chart_color(index)
       Avo.configuration.branding.chart_colors[index % Avo.configuration.branding.chart_colors.length]
     end
