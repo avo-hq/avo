@@ -67,9 +67,8 @@ module Avo
           @record.send(association_name) << @attachment_record
         else
           @record.send(:"#{association_name}=", @attachment_record)
+          @record.save!
         end
-
-        @record.save!
       end
 
       respond_to do |format|
