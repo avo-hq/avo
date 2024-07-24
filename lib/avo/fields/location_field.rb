@@ -44,8 +44,8 @@ module Avo
       def fill_field(record, key, value, params)
         if value_as_array?
           latitude_field, longitude_field = stored_as
-          record.send("#{latitude_field}=", value[latitude_field])
-          record.send("#{longitude_field}=", value[longitude_field])
+          record.send(:"#{latitude_field}=", value[latitude_field])
+          record.send(:"#{longitude_field}=", value[longitude_field])
           record
         else
           super(record, key, value.split(","), params)
@@ -78,7 +78,7 @@ module Avo
         return super if stored_as.blank?
 
         stored_as.each_with_index do |database_id, index|
-          record.send("#{database_id}=", value[index])
+          record.send(:"#{database_id}=", value[index])
         end
       end
     end
