@@ -210,7 +210,7 @@ module Avo
             record.send(:"#{polymorphic_as}_id=", params["#{polymorphic_as}_id"])
           end
         else
-          record.send("#{key}=", value)
+          record.send(:"#{key}=", value)
         end
 
         record

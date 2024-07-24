@@ -90,7 +90,7 @@ module Avo
           new_value = {}
         end
 
-        record.send("#{key}=", new_value)
+        record.send(:"#{key}=", new_value)
 
         record
       end
