@@ -91,6 +91,7 @@ ar:
     prev_page: الصفحة السابقة
     records_selected_from_all_pages_html: جميع السجلات مختارة من جميع الصفحات
     remove_selection: إزالة التحديد
+    reset: اعاده تعيين
     reset_filters: إعادة تعيين الفلاتر
     resource_created: تم إنشاء السجل
     resource_destroyed: تم حذف السجل

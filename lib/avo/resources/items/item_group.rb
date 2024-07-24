@@ -5,6 +5,7 @@ class Avo::Resources::Items::ItemGroup
   include Avo::Concerns::HasItemType
   include Avo::Concerns::VisibleItems
   include Avo::Concerns::VisibleInDifferentViews
+  include Avo::Concerns::IsVisible
 
   attr_reader :name
   attr_reader :description
@@ -17,6 +18,7 @@ class Avo::Resources::Items::ItemGroup
     @description = description
     @items_holder = Avo::Resources::Items::Holder.new
     @args = args
+    @visible = args[:visible]
 
     post_initialize if respond_to?(:post_initialize)
   end
