@@ -162,6 +162,12 @@ module Avo
           final_value = computed_default_value
         end
 
+        # On edit view always show the persisted image. Related: issue#3008
+        if final_value.instance_of?(ActiveStorage::Attached::One) && final_value.image? && view == "edit"
+          persisted_record = record.class.find_by(id: record.id)
+          final_value = persisted_record.send(property)
+        end
+
         # Run computable callback block if present
         if computable && block.present?
           final_value = execute_block
