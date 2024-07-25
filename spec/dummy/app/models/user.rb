@@ -36,7 +36,6 @@ class User < ApplicationRecord
   has_many :people
   has_many :spouses
   has_many :comments
-  has_many :team_memberships
   has_and_belongs_to_many :projects, inverse_of: :users
   has_many :team_memberships
   has_many :teams, through: :team_memberships
