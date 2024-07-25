@@ -226,8 +226,12 @@ module Avo
     def perform_action_and_record_errors(&block)
       begin
         succeeded = block.call
-      rescue ActiveRecord::RecordInvalid => e
+      rescue ActiveRecord::RecordInvalid => error
         # Do nothing as the record errors are already being displayed
+        # On associations controller add errors from join record to record
+        if controller_name == "associations"
+          @record.errors.add(:base, error.message)
+        end
       rescue => exception
         # In case there's an error somewhere else than the record
         # Example: When you save a license that should create a user for it and creating that user throws and error.
