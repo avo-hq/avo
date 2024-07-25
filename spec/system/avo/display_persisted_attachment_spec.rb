@@ -43,7 +43,7 @@ RSpec.describe "DisplayPersistedAttachment", type: :system do
       click_button "Save"
       wait_for_loaded
 
-      expect(page).to have_selector 'audio'
+      expect(page).to have_selector "audio"
     end
   end
 end
