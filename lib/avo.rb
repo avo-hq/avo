@@ -74,7 +74,10 @@ module Avo
     def init
       Avo::Current.error_manager = Avo::ErrorManager.build
       # Check rails version issues only on NON Production environments
-      check_rails_version_issues unless Rails.env.production?
+      unless Rails.env.production?
+        check_rails_version_issues 
+        display_menu_editor_warning
+      end
       Avo::Current.resource_manager = Avo::Resources::ResourceManager.build
       Avo::Current.tool_manager = Avo::Tools::ToolManager.build
 
@@ -91,6 +94,7 @@ module Avo
 
     def main_menu
       return unless Avo.plugin_manager.installed?("avo-menu")
+
 
       # Return empty menu if the app doesn't have the profile menu configured
       return Avo::Menu::Builder.new.build unless has_main_menu?
@@ -157,6 +161,16 @@ module Avo
                     - Dynamic filters\n\r
                     We recommend you upgrade to Rails 7.2\n\r
                     Click banner for more information."
+        })
+      end
+    end
+
+    def display_menu_editor_warning
+      if Avo.configuration.license == "community" && has_main_menu?
+        Avo.error_manager.add({
+          url: "https://docs.avohq.io/3.0/menu-editor.html",
+          target: "_blank",
+          message: "The menu editor is available only on the Pro license. Please upgrade to Pro to use this."
         })
       end
     end
