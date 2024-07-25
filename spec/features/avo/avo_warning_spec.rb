@@ -25,7 +25,7 @@ RSpec.feature "AvoWarning", type: :feature do
   it "displays menu editor warning" do
     visit "/admin/resources/comments"
 
-    expect(page).to have_text "The menu editor is available exclusively with the Pro license. Consider upgrading to access this feature."
+    expect(page).to have_text "The menu editor is available exclusively with the Pro license or above. Consider upgrading to access this feature."
     expect(page).to have_link href: "https://docs.avohq.io/3.0/menu-editor.html"
   end
 end
