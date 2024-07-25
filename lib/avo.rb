@@ -170,7 +170,7 @@ module Avo
         Avo.error_manager.add({
           url: "https://docs.avohq.io/3.0/menu-editor.html",
           target: "_blank",
-          message: "The menu editor is available exclusively with the Pro license. Consider upgrading to access this feature."
+          message: "The menu editor is available exclusively with the Pro license or above. Consider upgrading to access this feature."
         })
       end
     end
