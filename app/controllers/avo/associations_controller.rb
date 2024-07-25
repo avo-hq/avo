@@ -73,9 +73,14 @@ module Avo
 
       respond_to do |format|
         if created
-          format.html { redirect_back fallback_location: resource_view_response_path, notice: t("avo.attachment_class_attached", attachment_class: @related_resource.name) }
+          format.html {
+            redirect_back fallback_location: resource_view_response_path,
+              notice: t("avo.attachment_class_attached", attachment_class: @related_resource.name)
+          }
         else
-          format.turbo_stream { render "create_association_fail_action" }
+          format.turbo_stream {
+            render turbo_stream: turbo_stream.append("alerts", partial: "avo/partials/all_alerts")
+          }
         end
       end
     end
