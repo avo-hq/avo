@@ -28,10 +28,9 @@ module Avo
       def value
         final_value = super
         # On edit view always show the persisted image. Related: issue#3008
-        if final_value.instance_of?(ActiveStorage::Attached::One) && final_value.image? && view == "edit"
+        if final_value.instance_of?(ActiveStorage::Attached::One) && view == "edit"
           persisted_record = record.class.find_by(id: record.id)
-          property = @for_attribute || id
-          final_value = persisted_record.send(property)
+          final_value = persisted_record.send(@for_attribute || id)
         end
         final_value
       end
