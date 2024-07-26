@@ -47,7 +47,7 @@ module Avo
         query: resource.query_scope
       ).handle
 
-      results_count, results = parse_results(query)
+      results_count, results = parse_results(query, resource)
 
       header = resource.plural_name
 
@@ -205,7 +205,7 @@ module Avo
       end
     end
 
-    def parse_results(query)
+    def parse_results(query, resource)
       # When using custom search services query should return an array of hashes
       if query.is_a?(Array)
         # Apply highlight

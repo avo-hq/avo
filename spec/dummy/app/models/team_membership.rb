@@ -13,6 +13,12 @@ class TeamMembership < ApplicationRecord
   belongs_to :team
   belongs_to :user
 
+  validate :fail, if: -> { ENV["MEMBERSHIP_FAIL"] == "true" }
+
+  def fail
+    errors.add(:team_membership, "dummy fail.")
+  end
+
   def name
     "#{team&.name} - #{user&.name}"
   end
