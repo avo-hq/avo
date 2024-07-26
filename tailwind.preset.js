@@ -3,7 +3,10 @@ const plugin = require('tailwindcss/plugin')
 const colors = require('tailwindcss/colors')
 const defaultTheme = require('tailwindcss/defaultTheme')
 
-const avoPath = require('child_process').execSync('bundle show avo', { encoding: 'utf-8' }).trim()
+// const t = require('child_process').execSync('pwd', { encoding: 'utf-8' }).trim()
+// console.log('t->', t)
+// const avoPath = require('child_process').execSync('bundle show avo', { encoding: 'utf-8' }).trim()
+const avoPath = '/Users/adrian/work/avocado/gems/avo'
 const { primary, blue, gray } = require('./tailwind.custom')
 
 function contentPaths(basePath) {
@@ -23,6 +26,7 @@ function contentPaths(basePath) {
 module.exports = {
   content: [
     ...contentPaths('./tmp/avo/packages/*'),
+    ...contentPaths('./../avo-kanban/*'),
     ...contentPaths(avoPath),
   ],
   theme: {
