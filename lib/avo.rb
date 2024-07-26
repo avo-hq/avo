@@ -75,7 +75,7 @@ module Avo
       Avo::Current.error_manager = Avo::ErrorManager.build
       # Check rails version issues only on NON Production environments
       unless Rails.env.production?
-        check_rails_version_issues 
+        check_rails_version_issues
         display_menu_editor_warning
       end
       Avo::Current.resource_manager = Avo::Resources::ResourceManager.build
@@ -137,6 +137,7 @@ module Avo
       -> {
         mount Avo::DynamicFilters::Engine, at: "/avo-dynamic_filters" if defined?(Avo::DynamicFilters::Engine)
         mount Avo::Dashboards::Engine, at: "/dashboards" if defined?(Avo::Dashboards::Engine)
+        mount Avo::Advanced::Engine, at: "/avo-advanced" if defined?(Avo::Advanced::Engine)
         mount Avo::Pro::Engine, at: "/avo-pro" if defined?(Avo::Pro::Engine)
       }
     end

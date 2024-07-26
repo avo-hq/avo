@@ -23,6 +23,7 @@ function contentPaths(basePath) {
 module.exports = {
   content: [
     ...contentPaths('./tmp/avo/packages/*'),
+    ...contentPaths('./../avo-advanced/*'),
     ...contentPaths(avoPath),
   ],
   theme: {
