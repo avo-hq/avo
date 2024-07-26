@@ -24,7 +24,6 @@
     <% end %>
     <%= render Avo::AssetManager::JavascriptComponent.new asset_manager: Avo.asset_manager %>
     <%= render partial: "avo/partials/head" %>
-    <%= turbo_refreshes_with method: :replace, scroll: :reset %>
     <%= content_for :head %>
   </head>
   <body class="bg-application os-mac">
