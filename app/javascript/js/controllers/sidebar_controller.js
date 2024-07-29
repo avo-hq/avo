@@ -89,6 +89,11 @@ export default class extends Controller {
   }
 
   toggleSidebarOnMobile() {
+    if (this.mobileSidebarTarget.classList.contains('hidden')) {
+      this.mainAreaTarget.classList.remove('sidebar-open')
+      this.mobileSidebarTarget.classList.remove('hidden')
+      this.mobileSidebarTarget.classList.add('flex')
+    }
     this.mainAreaTarget.classList.toggle('sidebar-open')
   }
 }
