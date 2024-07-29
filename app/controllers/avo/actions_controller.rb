@@ -19,6 +19,9 @@ module Avo
       @view = Avo::ViewInquirer.new("new")
 
       @resource.hydrate(record: @record, view: @view, user: _current_user, params: params)
+
+      # Fetch action's fields
+      @action.fields
       @fields = @action.get_fields
 
       build_background_url
