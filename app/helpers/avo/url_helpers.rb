@@ -20,8 +20,8 @@ module Avo
     end
 
     def resource_path(
-      record: nil,
       resource:,
+      record: nil,
       resource_id: nil,
       keep_query_params: false,
       **args
