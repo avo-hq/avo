@@ -12,6 +12,7 @@
 class TeamMembership < ApplicationRecord
   belongs_to :team
   belongs_to :user
+  before_destroy :raise_test_error, if: -> { Rails.env.test? }
 
   validate :fail, if: -> { ENV["MEMBERSHIP_FAIL"] == "true" }
 
@@ -21,5 +22,11 @@ class TeamMembership < ApplicationRecord
 
   def name
     "#{team&.name} - #{user&.name}"
+  end
+
+  private
+
+  def raise_test_error
+    raise "Callback Called"
   end
 end

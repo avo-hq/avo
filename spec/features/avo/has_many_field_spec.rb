@@ -154,4 +154,27 @@ RSpec.feature "HasManyField", type: :feature do
       }.not_to raise_error
     end
   end
+
+  describe "through relationship" do
+    let!(:team) { create :team }
+    let!(:user) { create :user }
+
+    it "triggers callbacks on through model" do
+      team.team_members << user
+      expect(team.team_members.count).to eq 1
+
+      visit "/admin/resources/teams/#{team.id}/team_members?view=show&turbo_frame=has_many_field_show_team_members"
+
+      expect { find("tr[data-resource-id='#{user.to_param}'] [data-control='detach']").click }.to raise_error("Callback Called")
+    end
+
+    it "triggers callbacks when called from the other model too" do
+      user.teams << team
+      expect(user.teams.count).to eq 1
+
+      visit "/admin/resources/users/#{user.to_param}/teams?view=show&turbo_frame=has_and_belongs_to_many_field_show_teams"
+
+      expect { find("tr[data-resource-id='#{team.id}'] [data-control='detach']").click }.to raise_error("Callback Called")
+    end
+  end
 end
