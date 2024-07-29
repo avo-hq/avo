@@ -40,8 +40,8 @@ module Avo
       avo.send :"new_resources_#{resource.singular_route_key}_path", **args
     end
 
-    def edit_resource_path(record:, resource:, **args)
-      avo.send :"edit_resources_#{resource.singular_route_key}_path", record, **args
+    def edit_resource_path(resource:, record: nil, resource_id: nil, **args)
+      avo.send :"edit_resources_#{resource.singular_route_key}_path", record || resource_id, **args
     end
 
     def resource_attach_path(resource, record_id, related_name, related_id = nil)
