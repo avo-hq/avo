@@ -276,6 +276,19 @@ RSpec.describe "Actions", type: :system do
     end
   end
 
+  describe "fetch fields" do
+    it "don't fetch when load index" do
+      expect(TestBuddy).not_to receive(:hi).with("Dummy action fields")
+      visit avo.resources_users_path
+    end
+
+    it "fetch when click on action" do
+      expect(TestBuddy).to receive(:hi).with("Dummy action fields").at_least :once
+      visit avo.resources_users_path
+      open_panel_action(action_name: "Dummy action")
+    end
+  end
+
   #   let!(:roles) { { admin: false, manager: false, writer: false } }
   #   let!(:user) { create :user, active: true, roles: roles }
 
