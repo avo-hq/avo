@@ -26,7 +26,7 @@ RSpec.feature "belongs_to", type: :feature do
             return_to_comment_page
 
             expect(find_field_value_element("body")).to have_text "Sample comment"
-            expect(find_field_value_element("user")).to have_link user.name, href: "/admin/resources/compact_users/#{user.slug}?via_record_id=#{Comment.last.id}&via_resource_class=Avo%3A%3AResources%3A%3AComment"
+            expect(find_field_value_element("user")).to have_link user.name, href: "/admin/resources/compact_users/#{user.slug}?via_record_id=#{Comment.last.to_param}&via_resource_class=Avo%3A%3AResources%3A%3AComment"
             expect(find_field_value_element("commentable")).to have_text empty_dash
           end
         end
@@ -84,7 +84,7 @@ RSpec.feature "belongs_to", type: :feature do
     let!(:course) { create :course }
 
     it "has the prefilled association details" do
-      visit "/admin/resources/course_links/new?via_relation=course&via_relation_class=Course&via_record_id=#{course.id}"
+      visit "/admin/resources/course_links/new?via_relation=course&via_relation_class=Course&via_record_id=#{course.to_param}"
 
       expect(page).to have_field type: :select, name: "course/link[course_id]", disabled: true, text: course.name
       expect(page).to have_field type: :hidden, name: "course/link[course_id]", visible: false, with: course.id
