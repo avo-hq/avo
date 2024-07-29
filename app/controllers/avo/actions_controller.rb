@@ -19,9 +19,6 @@ module Avo
       @view = Avo::ViewInquirer.new("new")
 
       @resource.hydrate(record: @record, view: @view, user: _current_user, params: params)
-
-      # Fetch action's fields
-      @action.fields
       @fields = @action.get_fields
 
       build_background_url
@@ -78,6 +75,9 @@ module Avo
         view: :new, # force the action view to in order to render new-related fields (hidden field)
         arguments: BaseAction.decode_arguments(params[:arguments] || params.dig(:fields, :arguments)) || {}
       )
+
+      # Fetch action's fields
+      @action.fields
     end
 
     def action_class
