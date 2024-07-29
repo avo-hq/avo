@@ -472,13 +472,7 @@ module Avo
           Avo.resource_manager.get_resource_by_model_class(params[:via_relation_class])
         end
 
-        association_name = BaseResource.valid_association_name(@record, params[:via_relation])
-
-        return resource_view_path(
-          record: @record.send(association_name),
-          resource: parent_resource,
-          resource_id: params[:via_record_id]
-        )
+        return resource_view_path(resource: parent_resource, resource_id: params[:via_record_id])
       end
 
       redirect_path_from_resource_option(:after_create_path) || resource_view_response_path
