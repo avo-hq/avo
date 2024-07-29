@@ -83,6 +83,9 @@ export default class extends Controller {
   }
 
   toggleSidebar() {
+    if (this.sidebarTarget.classList.contains('hidden')) {
+      this.sidebarTarget.classList.remove('hidden')
+    }
     this.mainAreaTarget.classList.toggle('sidebar-open')
     const value = Cookies.get(this.cookieKey)
     Cookies.set(this.cookieKey, value === '1' ? '0' : '1')
