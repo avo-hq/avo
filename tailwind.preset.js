@@ -54,9 +54,6 @@ module.exports = {
         '1/2': '50%',
         full: '100%',
       },
-      borderRadius: {
-        xl: '1rem',
-      },
       boxShadow: {
         row: '0 0 15px -5px rgba(0, 0, 0, 0.25)',
         context: '0 20px 25px -5px rgba(0, 0, 0, 0.25), 0 0 25px -5px rgba(0, 0, 0, 0.1)',
