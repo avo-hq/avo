@@ -83,7 +83,25 @@ export default class extends Controller {
   }
 
   toggleSidebar() {
+    if (this.sidebarTarget.classList.contains('hidden')) {
+      this.sidebarTarget.classList.remove('hidden')
+    }
     this.mainAreaTarget.classList.toggle('sidebar-open')
-    Cookies.set(this.cookieKey, this.cookieKey === '1' ? '0' : '1')
+    const value = Cookies.get(this.cookieKey)
+    Cookies.set(this.cookieKey, value === '1' ? '0' : '1')
+  }
+
+  toggleSidebarOnMobile() {
+    if (this.mobileSidebarTarget.classList.contains('hidden')) {
+      this.mainAreaTarget.classList.remove('sidebar-open')
+      this.mobileSidebarTarget.classList.remove('hidden')
+
+      // we force a reflow here because we remove then
+      // immediately add the sidebar-open class
+      // which doesn't give the browser enough time to apply the
+      // transistion.
+      this.mainAreaTarget.offsetHeight;
+    }
+    this.mainAreaTarget.classList.toggle('sidebar-open')
   }
 }
