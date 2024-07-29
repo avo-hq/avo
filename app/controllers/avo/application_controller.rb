@@ -293,7 +293,7 @@ module Avo
 
     def set_sidebar_open
       value = if cookies["#{Avo::COOKIES_KEY}.sidebar.open"].nil?
-        cookies["#{Avo::COOKIES_KEY}.sidebar.open"] = "0"
+        cookies["#{Avo::COOKIES_KEY}.sidebar.open"] = "1"
       else
         cookies["#{Avo::COOKIES_KEY}.sidebar.open"]
       end
