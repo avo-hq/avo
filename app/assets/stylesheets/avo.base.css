@@ -84,7 +84,7 @@ body.os-pc .pc\:hidden {
   display: none;
 }
 
-body.is-grabbing * {
+body.kanban-dragging * {
   @apply cursor-grabbing;
 }
 
