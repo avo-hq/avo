@@ -87,4 +87,8 @@ export default class extends Controller {
     const value = Cookies.get(this.cookieKey)
     Cookies.set(this.cookieKey, value === '1' ? '0' : '1')
   }
+
+  toggleSidebarOnMobile() {
+    this.mainAreaTarget.classList.toggle('sidebar-open')
+  }
 }
