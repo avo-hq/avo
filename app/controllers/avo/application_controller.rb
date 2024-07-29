@@ -37,7 +37,7 @@ module Avo
         format.html { raise exception }
         format.json {
           render json: {
-            errors: exception.respond_to?(:record) && exception.record.present? ? exception.record.errors : [],
+            errors: (exception.respond_to?(:record) && exception.record.present?) ? exception.record.errors : [],
             message: exception.message,
             traces: exception.backtrace
           }, status: ActionDispatch::ExceptionWrapper.status_code_for_exception(exception.class.name)
@@ -62,7 +62,7 @@ module Avo
 
       begin
         request.path
-          .match(/\/?#{Avo.root_path.delete('/')}\/resources\/([a-z1-9\-_]*)\/?/mi)
+          .match(/\/?#{Avo.root_path.delete("/")}\/resources\/([a-z1-9\-_]*)\/?/mi)
           .captures
           .first
       rescue
@@ -293,16 +293,12 @@ module Avo
 
     def set_sidebar_open
       value = if cookies["#{Avo::COOKIES_KEY}.sidebar.open"].nil?
-        cookies["#{Avo::COOKIES_KEY}.sidebar.open"] = '0'
+        cookies["#{Avo::COOKIES_KEY}.sidebar.open"] = "0"
       else
         cookies["#{Avo::COOKIES_KEY}.sidebar.open"]
       end
 
-      @sidebar_open = if value == '1'
-        true
-      else
-        false
-      end
+      @sidebar_open = value == "1"
     end
 
     # Set the current host for ActiveStorage
