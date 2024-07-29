@@ -187,7 +187,10 @@ class Avo::ResourceComponent < Avo::BaseComponent
       style: :primary,
       loading: true,
       type: :submit,
-      icon: "avo/save" do
+      icon: "avo/save",
+      data: {
+        turbo_confirm: @resource.confirm_on_save ? t("avo.are_you_sure") : nil
+      } do
       control.label
     end
   end
