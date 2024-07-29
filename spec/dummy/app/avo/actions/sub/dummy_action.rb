@@ -11,6 +11,7 @@ class Avo::Actions::Sub::DummyAction < Avo::BaseAction
   end
 
   def fields
+    TestBuddy.hi("Dummy action fields")
     field :keep_modal_open, as: :boolean
     field :persistent_text, as: :text
     field :parent_id,
