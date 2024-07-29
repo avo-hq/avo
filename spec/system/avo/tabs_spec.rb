@@ -42,7 +42,7 @@ RSpec.describe "Tabs", type: :system do
 
         expect(teams_frame).to have_text "Teams"
         expect(teams_frame).to have_link "Attach team"
-        expect(teams_frame).to have_link "Create new team", href: "/admin/resources/teams/new?via_record_id=#{user.slug}&via_relation=users&via_relation_class=User&via_resource_class=Avo%3A%3AResources%3A%3AUser"
+        expect(teams_frame).to have_link "Create new team", href: "/admin/resources/teams/new?via_record_id=#{user.slug}&via_relation=admin&via_relation_class=User&via_resource_class=Avo%3A%3AResources%3A%3AUser"
       end
 
       it "hides the birthday tab" do

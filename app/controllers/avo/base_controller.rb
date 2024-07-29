@@ -226,8 +226,12 @@ module Avo
     def perform_action_and_record_errors(&block)
       begin
         succeeded = block.call
-      rescue ActiveRecord::RecordInvalid => e
+      rescue ActiveRecord::RecordInvalid => error
         # Do nothing as the record errors are already being displayed
+        # On associations controller add errors from join record to record
+        if controller_name == "associations"
+          @record.errors.add(:base, error.message)
+        end
       rescue => exception
         # In case there's an error somewhere else than the record
         # Example: When you save a license that should create a user for it and creating that user throws and error.
@@ -468,13 +472,7 @@ module Avo
           Avo.resource_manager.get_resource_by_model_class(params[:via_relation_class])
         end
 
-        association_name = BaseResource.valid_association_name(@record, params[:via_relation])
-
-        return resource_view_path(
-          record: @record.send(association_name),
-          resource: parent_resource,
-          resource_id: params[:via_record_id]
-        )
+        return resource_view_path(resource: parent_resource, resource_id: params[:via_record_id])
       end
 
       redirect_path_from_resource_option(:after_create_path) || resource_view_response_path

@@ -29,17 +29,17 @@ module Avo
         {"#{id}": []}
       end
 
-      def fill_field(model, key, value, params)
-        return model unless model.methods.include? key.to_sym
+      def fill_field(record, key, value, params)
+        return record unless record.methods.include? key.to_sym
 
         value.each do |file|
           # Skip empty values
           next unless file.present?
 
-          model.send(key).attach file
+          record.send(key).attach file
         end
 
-        model
+        record
       end
     end
   end
