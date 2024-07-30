@@ -74,7 +74,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
       @reflection.class
     end
 
-    return false unless reflection_class.class.in? [
+    return false unless reflection_class.in? [
       ActiveRecord::Reflection::HasManyReflection,
       ActiveRecord::Reflection::HasAndBelongsToManyReflection
     ]
