@@ -17,7 +17,7 @@ module Avo
             if value.is_a? Array
               value.map { |v| @enum[v.to_s] }
             else
-              @enum[value.to_s] || value
+              @enum[value.to_s] || -1
             end
           end
         end
