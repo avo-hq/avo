@@ -66,7 +66,6 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def can_attach?
-    return false if @reflection.blank?
     return false if has_reflection_and_is_read_only
 
     reflection_class = if @reflection.is_a?(::ActiveRecord::Reflection::ThroughReflection)
