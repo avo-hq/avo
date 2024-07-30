@@ -132,12 +132,10 @@ module Avo
     end
 
     def reflection_class
-      reflection = @record.class.reflect_on_association(association_from_params)
-
-      if reflection.is_a?(ActiveRecord::Reflection::ThroughReflection)
-        reflection.through_reflection.class
+      if @reflection.is_a?(ActiveRecord::Reflection::ThroughReflection)
+        @reflection.through_reflection.class
       else
-        reflection.class
+        @reflection.class
       end
     end
 
