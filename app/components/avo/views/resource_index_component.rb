@@ -69,10 +69,13 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     return false if @reflection.blank?
     return false if has_reflection_and_is_read_only
 
-    klass = @reflection
-    klass = @reflection.through_reflection if klass.is_a? ::ActiveRecord::Reflection::ThroughReflection
+    reflection_class = if @reflection.is_a?(::ActiveRecord::Reflection::ThroughReflection)
+      @reflection.through_reflection.class
+    else
+      @reflection.class
+    end
 
-    return false unless klass.class.in? [
+    return false unless reflection_class.class.in? [
       ActiveRecord::Reflection::HasManyReflection,
       ActiveRecord::Reflection::HasAndBelongsToManyReflection
     ]

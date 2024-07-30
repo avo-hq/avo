@@ -134,10 +134,11 @@ module Avo
     def reflection_class
       reflection = @record.class.reflect_on_association(association_from_params)
 
-      klass = reflection.class.name.demodulize.to_s
-      klass = reflection.through_reflection.class.name.demodulize.to_s if klass == "ThroughReflection"
-
-      klass
+      if reflection.is_a?(ActiveRecord::Reflection::ThroughReflection)
+        reflection.through_reflection.class
+      else
+        reflection.class
+      end
     end
 
     def authorize_if_defined(method, record = @record)
@@ -190,7 +191,10 @@ module Avo
     end
 
     def has_many_reflection?
-      reflection_class.in? ["HasManyReflection", "HasAndBelongsToManyReflection"]
+      reflection_class.in? [
+        ActiveRecord::Reflection::HasManyReflection,
+        ActiveRecord::Reflection::HasAndBelongsToManyReflection
+      ]
     end
   end
 end
