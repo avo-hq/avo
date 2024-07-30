@@ -66,10 +66,18 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def can_attach?
+    return false if @reflection.blank?
+    return false if has_reflection_and_is_read_only
+
     klass = @reflection
     klass = @reflection.through_reflection if klass.is_a? ::ActiveRecord::Reflection::ThroughReflection
 
-    @reflection.present? && klass.is_a?(::ActiveRecord::Reflection::HasManyReflection) && !has_reflection_and_is_read_only && authorize_association_for(:attach)
+    return false unless klass.class.in? [
+      ActiveRecord::Reflection::HasManyReflection,
+      ActiveRecord::Reflection::HasAndBelongsToManyReflection
+    ]
+
+    authorize_association_for(:attach)
   end
 
   def create_path
@@ -82,7 +90,10 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
         via_record_id: @parent_record.to_param
       }
 
-      if @reflection.is_a? ActiveRecord::Reflection::ThroughReflection
+      if @reflection.class.in? [
+        ActiveRecord::Reflection::ThroughReflection,
+        ActiveRecord::Reflection::HasAndBelongsToManyReflection
+      ]
         args[:via_relation] = params[:resource_name]
       end
 
