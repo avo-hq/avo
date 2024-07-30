@@ -78,7 +78,7 @@ module Avo
       association_name = BaseResource.valid_association_name(@record, association_from_params)
 
       perform_action_and_record_errors do
-        if reflection_class == "HasManyReflection"
+        if has_many_reflection?
           @record.send(association_name) << @attachment_record
         else
           @record.send(:"#{association_name}=", @attachment_record)
@@ -92,7 +92,7 @@ module Avo
 
       if reflection.instance_of? ActiveRecord::Reflection::ThroughReflection
         join_record.destroy!
-      elsif reflection_class == "HasManyReflection"
+      elsif has_many_reflection?
         @record.send(association_name).delete @attachment_record
       else
         @record.send(:"#{association_name}=", nil)
@@ -106,7 +106,7 @@ module Avo
     private
 
     def set_reflection
-      @reflection = @record._reflections.with_indifferent_access[association_from_params]
+      @reflection = @record.class.reflect_on_association(association_from_params)
     end
 
     def set_attachment_class
@@ -132,12 +132,11 @@ module Avo
     end
 
     def reflection_class
-      reflection = @record._reflections.with_indifferent_access[association_from_params]
-
-      klass = reflection.class.name.demodulize.to_s
-      klass = reflection.through_reflection.class.name.demodulize.to_s if klass == "ThroughReflection"
-
-      klass
+      if @reflection.is_a?(ActiveRecord::Reflection::ThroughReflection)
+        @reflection.through_reflection.class
+      else
+        @reflection.class
+      end
     end
 
     def authorize_if_defined(method, record = @record)
@@ -187,6 +186,13 @@ module Avo
     def join_record
       reflection.through_reflection.klass.find_by(source_foreign_key => @attachment_record.id,
         through_foreign_key => @record.id)
+    end
+
+    def has_many_reflection?
+      reflection_class.in? [
+        ActiveRecord::Reflection::HasManyReflection,
+        ActiveRecord::Reflection::HasAndBelongsToManyReflection
+      ]
     end
   end
 end

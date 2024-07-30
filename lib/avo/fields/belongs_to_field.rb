@@ -243,7 +243,7 @@ module Avo
         else
           reflection_key = polymorphic_as || id
 
-          reflection_object = @record._reflections.with_indifferent_access[reflection_key]
+          reflection_object = @record.class.reflect_on_association(reflection_key)
 
           if reflection_object.klass.present?
             get_resource_by_model_class(reflection_object.klass.to_s)
