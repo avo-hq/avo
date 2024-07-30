@@ -11,5 +11,11 @@ class Avo::Resources::Store < Avo::BaseResource
       # Example for error message when resource is missing
       field :location, as: :has_one
     end
+
+    field :patrons, as: :has_many, through: :patronships,
+      translation_key: "patrons",
+      extra: -> {
+        field :review, as: :text
+      }
   end
 end

@@ -13,6 +13,7 @@ module Avo
       attr_accessor :discreet_pagination
       attr_accessor :hide_search_input
       attr_reader :link_to_child_resource
+      attr_reader :extra
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
@@ -27,6 +28,7 @@ module Avo
         @link_to_child_resource = args[:link_to_child_resource] || false
         @reloadable = args[:reloadable].present? ? args[:reloadable] : false
         @linkable = args[:linkable].present? ? args[:linkable] : false
+        @extra = args[:extra].present? ? args[:extra] : nil
       end
 
       def field_resource

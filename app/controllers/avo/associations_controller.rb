@@ -53,6 +53,13 @@ module Avo
           query = Avo::ExecutionContext.new(target: @field.attach_scope, query: query, parent: @record).handle
         end
 
+        @extra = if @field.extra.present?
+          Avo::FieldsExecutionContext.new(target: @field.extra, parent: @record)
+            .detect_fields
+            .items_holder
+            .items
+        end
+
         @options = query.all.map do |record|
           [@attachment_resource.new(record: record).record_title, record.id]
         end
@@ -67,6 +74,7 @@ module Avo
               notice: t("avo.attachment_class_attached", attachment_class: @related_resource.name)
           }
         else
+          flash[:error] = t("avo.attachment_failed", attachment_class: @related_resource.name)
           format.turbo_stream {
             render turbo_stream: turbo_stream.append("alerts", partial: "avo/partials/all_alerts")
           }
@@ -78,7 +86,9 @@ module Avo
       association_name = BaseResource.valid_association_name(@record, association_from_params)
 
       perform_action_and_record_errors do
-        if has_many_reflection?
+        if reflection.instance_of?(ActiveRecord::Reflection::ThroughReflection) && additional_params?
+          new_join_record.save
+        elsif has_many_reflection?
           @record.send(association_name) << @attachment_record
         else
           @record.send(:"#{association_name}=", @attachment_record)
@@ -193,6 +203,23 @@ module Avo
         ActiveRecord::Reflection::HasManyReflection,
         ActiveRecord::Reflection::HasAndBelongsToManyReflection
       ]
+    end
+
+    def additional_params?
+      additional_params.keys.count >= 1
+    end
+
+    def additional_params
+      params[:fields].except("related_id")
+    end
+
+    def new_join_record_params
+      field_names = Avo::FieldsExecutionContext.new(target: @field.extra, parent: @resource).detect_fields.items.map { |field| field.name.tr(" ", "_").downcase }
+      additional_params.permit(field_names).merge({source_foreign_key => @attachment_record.id, through_foreign_key => @record.id})
+    end
+
+    def new_join_record
+      reflection.through_reflection.klass.new(new_join_record_params)
     end
   end
 end

@@ -41,6 +41,9 @@
                 class: input_classes('w-full'),
               }
             %>
+          <% @extra&.each_with_index do |ex, index| %>
+            <%= render(Avo::Items::SwitcherComponent.new(resource: @related_resource, item: ex, index: index + 1, view: @view, form: form, field_component_extra_args: {stacked: true})) %>
+          <% end %>
           </div>
         <% end %>
       </div>
