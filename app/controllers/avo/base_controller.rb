@@ -121,7 +121,7 @@ module Avo
     def create
       # This means that the record has been created through another parent record and we need to attach it somehow.
       if params[:via_record_id].present? && params[:via_belongs_to_resource_class].nil?
-        @reflection = @record._reflections.with_indifferent_access[params[:via_relation]]
+        @reflection = @record.class.reflect_on_association(params[:via_relation])
         # Figure out what kind of association does the record have with the parent record
 
         # Fills in the required info for belongs_to and has_many
@@ -134,7 +134,7 @@ module Avo
         end
 
         # For when working with has_one, has_one_through, has_many_through, has_and_belongs_to_many, polymorphic
-        if @reflection.is_a? ActiveRecord::Reflection::ThroughReflection
+        if @reflection.is_a?(ActiveRecord::Reflection::ThroughReflection) || @reflection.is_a?(ActiveRecord::Reflection::HasAndBelongsToManyReflection)
           # find the record
           via_resource = Avo.resource_manager.get_resource_by_model_class(params[:via_relation_class])
           @related_record = via_resource.find_record params[:via_record_id], params: params
