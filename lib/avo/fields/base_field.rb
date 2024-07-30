@@ -264,7 +264,7 @@ module Avo
       end
 
       def options_for_filter
-        options
+        @options_for_filter || options
       end
 
       def updatable
