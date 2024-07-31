@@ -80,8 +80,12 @@ module Avo
       association_name = BaseResource.valid_association_name(@record, association_from_params)
 
       perform_action_and_record_errors do
-        if reflection.instance_of?(ActiveRecord::Reflection::ThroughReflection) && additional_params?
-          new_join_record.save
+        if through_reflection?
+          if additional_params?
+            new_join_record.save
+          else
+            @record.send(association_name) << @attachment_record
+          end
         elsif has_many_reflection?
           @record.send(association_name) << @attachment_record
         else
@@ -197,6 +201,10 @@ module Avo
         ActiveRecord::Reflection::HasManyReflection,
         ActiveRecord::Reflection::HasAndBelongsToManyReflection
       ]
+    end
+
+    def through_reflection?
+      reflection.instance_of? ActiveRecord::Reflection::ThroughReflection
     end
 
     def additional_params?
