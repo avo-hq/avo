@@ -28,7 +28,7 @@ module Avo
         @link_to_child_resource = args[:link_to_child_resource] || false
         @reloadable = args[:reloadable].present? ? args[:reloadable] : false
         @linkable = args[:linkable].present? ? args[:linkable] : false
-        @extra = args[:extra].present? ? args[:extra] : nil
+        @extra = args[:extra]
       end
 
       def field_resource

@@ -217,7 +217,7 @@ module Avo
 
     def set_extra_fields
       @extra = if @field.extra.present?
-        Avo::FieldsExecutionContext.new(target: @field.extra, parent: @record)
+        Avo::FieldsExecutionContext.new(target: @field.extra)
           .detect_fields
           .items_holder
           .items
@@ -225,10 +225,7 @@ module Avo
     end
 
     def new_join_record
-      field_names = Avo::FieldsExecutionContext.new(target: @field.extra, parent: @resource)
-        .detect_fields
-        .items
-        .map { |field| field.name.tr(" ", "_").downcase }
+      field_names = @extra.map { |field| field.name.tr(" ", "_").downcase }
 
       @resource.fill_record(
         reflection.through_reflection.klass.new,
