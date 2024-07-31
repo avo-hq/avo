@@ -80,12 +80,8 @@ module Avo
       association_name = BaseResource.valid_association_name(@record, association_from_params)
 
       perform_action_and_record_errors do
-        if through_reflection?
-          if additional_params?
-            new_join_record.save
-          else
-            @record.send(association_name) << @attachment_record
-          end
+        if through_reflection? && additional_params?
+          new_join_record.save
         elsif has_many_reflection?
           @record.send(association_name) << @attachment_record
         else
@@ -98,7 +94,7 @@ module Avo
     def destroy
       association_name = BaseResource.valid_association_name(@record, @field.for_attribute || params[:related_name])
 
-      if reflection.instance_of? ActiveRecord::Reflection::ThroughReflection
+      if through_reflection?
         join_record.destroy!
       elsif has_many_reflection?
         @record.send(association_name).delete @attachment_record
@@ -204,7 +200,7 @@ module Avo
     end
 
     def through_reflection?
-      reflection.instance_of? ActiveRecord::Reflection::ThroughReflection
+      @reflection.instance_of? ActiveRecord::Reflection::ThroughReflection
     end
 
     def additional_params?
