@@ -175,20 +175,16 @@ module Avo
       @field&.for_attribute || params[:related_name]
     end
 
-    def reflection
-      @record.class.reflections.with_indifferent_access[association_from_params]
-    end
-
     def source_foreign_key
-      reflection.source_reflection.foreign_key
+      @reflection.source_reflection.foreign_key
     end
 
     def through_foreign_key
-      reflection.through_reflection.foreign_key
+      @reflection.through_reflection.foreign_key
     end
 
     def join_record
-      reflection.through_reflection.klass.find_by(source_foreign_key => @attachment_record.id,
+      @reflection.through_reflection.klass.find_by(source_foreign_key => @attachment_record.id,
         through_foreign_key => @record.id)
     end
 
@@ -224,7 +220,7 @@ module Avo
       field_names = @extra_fields.map { |field| field.name.tr(" ", "_").downcase }
 
       @resource.fill_record(
-        reflection.through_reflection.klass.new,
+        @reflection.through_reflection.klass.new,
         additional_params.permit(field_names).merge({source_foreign_key => @attachment_record.id, through_foreign_key => @record.id}),
         fields: @extra_fields,
         extra_params: [source_foreign_key, through_foreign_key]
