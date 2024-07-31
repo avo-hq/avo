@@ -75,7 +75,7 @@ module Avo
       Avo::Current.error_manager = Avo::ErrorManager.build
       # Check rails version issues only on NON Production environments
       unless Rails.env.production?
-        check_rails_version_issues 
+        check_rails_version_issues
         display_menu_editor_warning
       end
       Avo::Current.resource_manager = Avo::Resources::ResourceManager.build
