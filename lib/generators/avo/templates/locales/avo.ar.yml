@@ -21,6 +21,7 @@ ar:
     attachment_class_attached: "%{attachment_class} تم ربط"
     attachment_class_detached: "%{attachment_class} تم فصل"
     attachment_destroyed: تم حذف المرفق
+    attachment_failed: فشل في إرفاق %{attachment_class}
     cancel: إلغاء
     choose_a_country: اختر دولة
     choose_an_option: اختر خيارًا

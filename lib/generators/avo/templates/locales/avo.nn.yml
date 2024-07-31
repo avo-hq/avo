@@ -17,6 +17,7 @@ nn:
     attachment_class_attached: "%{attachment_class} lagt til."
     attachment_class_detached: "%{attachment_class} fjerna."
     attachment_destroyed: Vedlegg sletta
+    attachment_failed: Klarte ikkje å legge ved %{attachment_class}
     cancel: Avbryt
     choose_a_country: Vel eit land
     choose_an_option: Vel eit alternativ
