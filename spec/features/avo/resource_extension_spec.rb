@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.feature "Resource extension", type: :feature do
   Avo::Resources::CourseLink.define_method :test_base_resource_extension do
@@ -12,17 +12,17 @@ RSpec.feature "Resource extension", type: :feature do
 
   it "with extension" do
     begin
-      file_path = Rails.root.join('app/avo/base_resource.rb')
+      file_path = Rails.root.join("app/avo/base_resource.rb")
       FileUtils.mkdir_p(File.dirname(file_path))
-      File.open(file_path, 'w') do |file|
-        file.write <<-RUBY
-module Avo
-  class BaseResource < Avo::Resources::Base
-    def some_extended_method
-      TestBuddy.hi("Extension successfully")
-    end
-  end
-end
+      File.open(file_path, "w") do |file|
+        file.write <<~RUBY
+          module Avo
+            class BaseResource < Avo::Resources::Base
+              def some_extended_method
+                TestBuddy.hi("Extension successfully")
+              end
+            end
+          end
         RUBY
       end
 
