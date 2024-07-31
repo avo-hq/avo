@@ -445,29 +445,14 @@ module Avo
           .to_h
       end
 
-      def fill_record(record, params, extra_params: [])
+      def fill_record(record, params, extra_params: [], fields: nil)
         # Write the field values
         params.each do |key, value|
-          field = fields_by_database_id[key]
-
-          next unless field.present?
-
-          record = field.fill_field record, key, value, params
-        end
-
-        # Write the user configured extra params to the record
-        if extra_params.present?
-          # Let Rails fill in the rest of the params
-          record.assign_attributes params.permit(extra_params)
-        end
-
-        record
-      end
-
-      def fill_join_record(record:, fields:, params:, extra_params:)
-        # Write the field values
-        params.each do |key, value|
-          field = fields.find { |f| f.id == key.to_sym }
+          field = if fields.present?
+            fields.find { |f| f.id == key.to_sym }
+          else
+            fields_by_database_id[key]
+          end
 
           next unless field.present?
 
