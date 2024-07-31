@@ -90,7 +90,7 @@ module Avo
     def destroy
       association_name = BaseResource.valid_association_name(@record, @field.for_attribute || params[:related_name])
 
-      if reflection.instance_of? ActiveRecord::Reflection::ThroughReflection
+      if @reflection.instance_of? ActiveRecord::Reflection::ThroughReflection
         join_record.destroy!
       elsif has_many_reflection?
         @record.send(association_name).delete @attachment_record
@@ -171,20 +171,16 @@ module Avo
       @field&.for_attribute || params[:related_name]
     end
 
-    def reflection
-      @record.class.reflections.with_indifferent_access[association_from_params]
-    end
-
     def source_foreign_key
-      reflection.source_reflection.foreign_key
+      @reflection.source_reflection.foreign_key
     end
 
     def through_foreign_key
-      reflection.through_reflection.foreign_key
+      @reflection.through_reflection.foreign_key
     end
 
     def join_record
-      reflection.through_reflection.klass.find_by(source_foreign_key => @attachment_record.id,
+      @reflection.through_reflection.klass.find_by(source_foreign_key => @attachment_record.id,
         through_foreign_key => @record.id)
     end
 
