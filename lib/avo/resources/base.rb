@@ -464,7 +464,7 @@ module Avo
         record
       end
 
-      def fill_join_record(record, fields, params, extra_params)
+      def fill_join_record(record:, fields:, params:, extra_params:)
         # Write the field values
         params.each do |key, value|
           field = fields.find { |f| f.id == key.to_sym }

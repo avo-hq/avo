@@ -222,10 +222,12 @@ module Avo
         .items
         .map { |field| field.name.tr(" ", "_").downcase }
 
-      @resource.fill_join_record(reflection.through_reflection.klass.new,
-        @extra,
-        additional_params.permit(field_names).merge({source_foreign_key => @attachment_record.id, through_foreign_key => @record.id}),
-        [source_foreign_key, through_foreign_key])
+      @resource.fill_join_record(
+        record: reflection.through_reflection.klass.new,
+        fields: @extra,
+        params: additional_params.permit(field_names).merge({source_foreign_key => @attachment_record.id, through_foreign_key => @record.id}),
+        extra_params: [source_foreign_key, through_foreign_key]
+      )
     end
   end
 end
