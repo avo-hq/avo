@@ -212,8 +212,8 @@ module Avo
     end
 
     def set_extra_fields
-      @extra = if @field.extra.present?
-        Avo::FieldsExecutionContext.new(target: @field.extra)
+      @extra_fields = if @field.extra_fields.present?
+        Avo::FieldsExecutionContext.new(target: @field.extra_fields)
           .detect_fields
           .items_holder
           .items
@@ -221,12 +221,12 @@ module Avo
     end
 
     def new_join_record
-      field_names = @extra.map { |field| field.name.tr(" ", "_").downcase }
+      field_names = @extra_fields.map { |field| field.name.tr(" ", "_").downcase }
 
       @resource.fill_record(
         reflection.through_reflection.klass.new,
         additional_params.permit(field_names).merge({source_foreign_key => @attachment_record.id, through_foreign_key => @record.id}),
-        fields: @extra,
+        fields: @extra_fields,
         extra_params: [source_foreign_key, through_foreign_key]
       )
     end
