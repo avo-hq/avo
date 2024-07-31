@@ -462,6 +462,25 @@ module Avo
         record
       end
 
+      def fill_join_record(record, fields, params, extra_params)
+        # Write the field values
+        params.each do |key, value|
+          field = fields.find { |f| f.id == key.to_sym }
+
+          next unless field.present?
+
+          record = field.fill_field record, key, value, params
+        end
+
+        # Write the user configured extra params to the record
+        if extra_params.present?
+          # Let Rails fill in the rest of the params
+          record.assign_attributes params.permit(extra_params)
+        end
+
+        record
+      end
+
       def authorization(user: nil)
         current_user = user || Avo::Current.user
         Avo::Services::AuthorizationService.new(current_user, record || model_class, policy_class: authorization_policy)

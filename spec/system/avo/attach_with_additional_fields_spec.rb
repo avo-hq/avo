@@ -28,4 +28,19 @@ RSpec.describe "Attach with extra fields", type: :system do
     }.to change(StorePatron, :count).by 1
     expect(page).to have_text "User attached"
   end
+
+  it "saves attachment adhering to options like update_using" do
+    ENV["TEST_FILL_JOIN_RECORD"] = "1"
+    visit url
+    expect(page).to have_selector "input#fields_review"
+    expect(page).to have_selector "select#fields_related_id"
+
+    select user.name
+    fill_in id: "fields_review", with: "Toilet paper is phenomenal here."
+
+    expect {
+      click_button "Attach"
+    }.to change(StorePatron, :count)
+    expect(store.patronships.first.review).to eq ">> Toilet paper is phenomenal here. <<"
+  end
 end

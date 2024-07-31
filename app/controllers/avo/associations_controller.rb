@@ -12,6 +12,7 @@ module Avo
     before_action :set_attachment_class, only: [:show, :index, :new, :create, :destroy]
     before_action :set_attachment_resource, only: [:show, :index, :new, :create, :destroy]
     before_action :set_attachment_record, only: [:create, :destroy]
+    before_action :set_extra_fields, only: [:new, :create]
     before_action :authorize_index_action, only: :index
     before_action :authorize_attach_action, only: :new
     before_action :authorize_detach_action, only: :destroy
@@ -51,13 +52,6 @@ module Avo
         # Add the association scope to the query scope
         if @field.attach_scope.present?
           query = Avo::ExecutionContext.new(target: @field.attach_scope, query: query, parent: @record).handle
-        end
-
-        @extra = if @field.extra.present?
-          Avo::FieldsExecutionContext.new(target: @field.extra, parent: @record)
-            .detect_fields
-            .items_holder
-            .items
         end
 
         @options = query.all.map do |record|
@@ -213,13 +207,25 @@ module Avo
       params[:fields].except("related_id")
     end
 
-    def new_join_record_params
-      field_names = Avo::FieldsExecutionContext.new(target: @field.extra, parent: @resource).detect_fields.items.map { |field| field.name.tr(" ", "_").downcase }
-      additional_params.permit(field_names).merge({source_foreign_key => @attachment_record.id, through_foreign_key => @record.id})
+    def set_extra_fields
+      @extra = if @field.extra.present?
+        Avo::FieldsExecutionContext.new(target: @field.extra, parent: @record)
+          .detect_fields
+          .items_holder
+          .items
+      end
     end
 
     def new_join_record
-      reflection.through_reflection.klass.new(new_join_record_params)
+      field_names = Avo::FieldsExecutionContext.new(target: @field.extra, parent: @resource)
+        .detect_fields
+        .items
+        .map { |field| field.name.tr(" ", "_").downcase }
+
+      @resource.fill_join_record(reflection.through_reflection.klass.new,
+        @extra,
+        additional_params.permit(field_names).merge({source_foreign_key => @attachment_record.id, through_foreign_key => @record.id}),
+        [source_foreign_key, through_foreign_key])
     end
   end
 end

@@ -15,7 +15,12 @@ class Avo::Resources::Store < Avo::BaseResource
     field :patrons, as: :has_many, through: :patronships,
       translation_key: "patrons",
       extra: -> {
-        field :review, as: :text
+        if ENV["TEST_FILL_JOIN_RECORD"]
+          field :review, as: :text,
+            update_using: -> { ">> #{value} <<" }
+        else
+          field :review, as: :text
+        end
       }
   end
 end
