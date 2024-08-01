@@ -58,7 +58,8 @@
             size: :sm,
             data: {
               target: :submit_action,
-            }, autofocus: @fields.reject { |field| field.is_a?(Avo::Fields::HiddenField) }.empty? do %>
+            },
+            autofocus: @fields.reject { |field| field.is_a?(Avo::Fields::HiddenField) }.empty? do %>
           <%= @action.confirm_button_label %>
         <% end %>
       <% end %>

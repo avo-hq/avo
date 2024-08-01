@@ -84,10 +84,6 @@ body.os-pc .pc\:hidden {
   display: none;
 }
 
-body.kanban-dragging * {
-  @apply cursor-grabbing;
-}
-
 trix-editor {
   max-height: 320px !important;
   overflow-y: auto;
@@ -95,12 +91,4 @@ trix-editor {
 
 dialog#turbo-confirm {
   @apply bg-transparent;
-}
-
-.sortable-ghost {
-  @apply saturate-50 opacity-50 border-gray-200;
-}
-
-.sortable-drag {
-  @apply shadow-2xl !opacity-100 !bg-opacity-100;
 }
