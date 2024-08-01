@@ -13,7 +13,6 @@
   <%= form_with scope: 'fields',
     url: url,
     local: true,
-    model: @related_resource.record,
     data: {
       'turbo-frame': '_top'
     } do |form| %>

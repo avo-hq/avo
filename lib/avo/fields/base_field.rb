@@ -242,7 +242,7 @@ module Avo
       end
 
       def record_errors
-        record.nil? ? {} : record.errors
+        record.present? ? record.errors : {}
       end
 
       def type
