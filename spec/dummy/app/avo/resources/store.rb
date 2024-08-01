@@ -20,6 +20,11 @@ class Avo::Resources::Store < Avo::BaseResource
             update_using: -> { ">> #{value} <<" }
         else
           field :review, as: :text
+          field :review, as: :text
+          field :review, as: :text
+          field :review, as: :text
+          field :review, as: :text
+          field :review_two, as: :textarea
         end
       }
   end
