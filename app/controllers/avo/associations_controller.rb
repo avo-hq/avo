@@ -221,7 +221,12 @@ module Avo
 
       @resource.fill_record(
         @reflection.through_reflection.klass.new,
-        additional_params.permit(field_names).merge({source_foreign_key => @attachment_record.id, through_foreign_key => @record.id}),
+        additional_params.permit(field_names).merge(
+          {
+            source_foreign_key => @attachment_record.id,
+            through_foreign_key => @record.id
+          }
+        ),
         fields: @extra_fields,
         extra_params: [source_foreign_key, through_foreign_key]
       )
