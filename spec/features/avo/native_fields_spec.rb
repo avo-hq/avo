@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.feature "NativeFields", type: :feature do
   let(:city) { create :city, is_capital: true }
