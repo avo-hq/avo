@@ -44,10 +44,10 @@
                 stacked: true,
                 classes: 'w-full'
               %>
-              <% @extra_fields&.each_with_index do |ex, index| %>
+              <% @extra_fields&.each_with_index do |field, index| %>
                 <%= render(Avo::Items::SwitcherComponent.new(
                   resource: @related_resource, 
-                  item: ex, 
+                  item: field,
                   index: index + 1, 
                   view: @view, 
                   form: form, 
