@@ -44,6 +44,7 @@ module Avo
       # Boot Avo
       ::Avo.boot
     end
+    config.eager_load_paths += %W(#{Avo::Engine.root.join("app", "avo", "base_resource.rb").to_s})
 
     initializer "avo.autoload" do |app|
       # This undoes Rails' previous nested directories behavior in the `app` dir.
@@ -55,11 +56,8 @@ module Avo
         Rails.autoloaders.main.push_dir(avo_directory, namespace: Avo)
         app.config.watchable_dirs[avo_directory] = [:rb]
       end
+      Rails.autoloaders.main.push_dir Avo::Engine.root.join("app", "avo").to_s, namespace: Avo
 
-      # Autoload app/avo from engine's path
-      # Necessary, for example, for Avo::BaseResource
-      require_dependency Avo::Engine.root.join("app", "avo", "resources", "base.rb").to_s
-      require_dependency Avo::Engine.root.join("app", "avo", "base_resource.rb").to_s
     end
 
     initializer "avo.reloader" do |app|
