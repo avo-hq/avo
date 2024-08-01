@@ -42,8 +42,7 @@
                 nil),
                 include_blank: t('avo.choose_an_option'),
                 stacked: true,
-                classes: 'w-full',
-                name: @related_resource.name.downcase
+                classes: 'w-full'
               %>
               <% @extra_fields&.each_with_index do |ex, index| %>
                 <%= render(Avo::Items::SwitcherComponent.new(resource: @related_resource, item: ex, index: index + 1, view: @view, form: form, field_component_extra_args: {compact: true, stacked: true})) %>
