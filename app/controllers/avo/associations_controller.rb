@@ -12,7 +12,7 @@ module Avo
     before_action :set_attachment_class, only: [:show, :index, :new, :create, :destroy]
     before_action :set_attachment_resource, only: [:show, :index, :new, :create, :destroy]
     before_action :set_attachment_record, only: [:create, :destroy]
-    before_action :set_extra_fields, only: [:new, :create]
+    before_action :set_attach_fields, only: [:new, :create]
     before_action :authorize_index_action, only: :index
     before_action :authorize_attach_action, only: :new
     before_action :authorize_detach_action, only: :destroy
@@ -207,9 +207,9 @@ module Avo
       params[:fields].except("related_id")
     end
 
-    def set_extra_fields
-      @extra_fields = if @field.extra_fields.present?
-        Avo::FieldsExecutionContext.new(target: @field.extra_fields)
+    def set_attach_fields
+      @attach_fields = if @field.attach_fields.present?
+        Avo::FieldsExecutionContext.new(target: @field.attach_fields)
           .detect_fields
           .items_holder
           .items
@@ -217,7 +217,7 @@ module Avo
     end
 
     def new_join_record
-      field_names = @extra_fields.map { |field| field.name.tr(" ", "_").downcase }
+      field_names = @attach_fields.map { |field| field.name.tr(" ", "_").downcase }
 
       @resource.fill_record(
         @reflection.through_reflection.klass.new,
@@ -227,7 +227,7 @@ module Avo
             through_foreign_key => @record.id
           }
         ),
-        fields: @extra_fields,
+        fields: @attach_fields,
         extra_params: [source_foreign_key, through_foreign_key]
       )
     end
