@@ -141,6 +141,10 @@ module Avo
       Avo.configuration.branding.chart_colors[index % Avo.configuration.branding.chart_colors.length]
     end
 
+    def html_req_for_association_page?
+      @reflection.present? && request.format == :html
+    end
+
     private
 
     # Taken from the original library
