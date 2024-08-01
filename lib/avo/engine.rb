@@ -58,7 +58,8 @@ module Avo
 
       # Autoload app/avo from engine's path
       # Necessary, for example, for Avo::BaseResource
-      Rails.autoloaders.main.push_dir Avo::Engine.root.join("app", "avo").to_s, namespace: Avo
+      require_dependency Avo::Engine.root.join("app", "avo", "resources", "base.rb").to_s
+      require_dependency Avo::Engine.root.join("app", "avo", "base_resource.rb").to_s
     end
 
     initializer "avo.reloader" do |app|
