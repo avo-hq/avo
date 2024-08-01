@@ -56,8 +56,6 @@ module Avo
         app.config.watchable_dirs[avo_directory] = [:rb]
       end
 
-      ActiveSupport::Dependencies.autoload_paths.delete(Avo::Engine.root.join("app", "avo").to_s)
-
       Rails.autoloaders.main.push_dir Avo::Engine.root.join("app", "avo").to_s, namespace: Avo
     end
 
