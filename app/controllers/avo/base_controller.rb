@@ -18,6 +18,7 @@ module Avo
 
     def index
       @page_title = @resource.plural_name.humanize
+      add_breadcrumb @record.class.to_s.pluralize if (@reflection.present? && !helpers.turbo_frame_request?)
       add_breadcrumb @resource.plural_name.humanize
 
       set_index_params
