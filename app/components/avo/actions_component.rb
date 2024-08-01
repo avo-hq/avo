@@ -2,7 +2,6 @@
 
 class Avo::ActionsComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
-  attr_reader :label, :size, :as_row_control
 
   prop :as_row_control, _Boolean, default: false
   prop :icon, _Nilable(String)
@@ -38,7 +37,7 @@ class Avo::ActionsComponent < Avo::BaseComponent
   # When running an action for one record we should do it on a special path.
   # We do that so we get the `record` param inside the action so we can prefill fields.
   def action_path(action)
-    return single_record_path(action) if as_row_control
+    return single_record_path(action) if @as_row_control
     return many_records_path(action) unless @resource.has_record_id?
 
     if on_record_page?
@@ -50,7 +49,7 @@ class Avo::ActionsComponent < Avo::BaseComponent
 
   # How should the action be displayed by default
   def is_disabled?(action)
-    return false if action.standalone || as_row_control
+    return false if action.standalone || @as_row_control
 
     on_index_page?
   end
@@ -58,7 +57,7 @@ class Avo::ActionsComponent < Avo::BaseComponent
   private
 
   def on_record_page?
-    @view.in?(%w[show edit new])
+    @view.in?([:show, :edit, :new])
   end
 
   def on_index_page?
