@@ -4,7 +4,7 @@ class Avo::ActionsComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
   attr_reader :label, :size, :as_row_control
 
-  def initialize(actions: [], resource: nil, view: nil, exclude: [], include: [], style: :outline, color: :primary, label: nil, size: :md, as_row_control: false, icon: nil)
+  def initialize(actions: [], resource: nil, view: nil, exclude: [], include: [], style: :outline, color: :primary, label: nil, size: :md, as_row_control: false, icon: nil, title: nil)
     @actions = actions || []
     @resource = resource
     @view = view
@@ -16,6 +16,7 @@ class Avo::ActionsComponent < Avo::BaseComponent
     @size = size
     @icon = icon
     @as_row_control = as_row_control
+    @title = title
   end
 
   def render?

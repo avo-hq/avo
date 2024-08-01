@@ -12,8 +12,12 @@
     size: size,
     class: "focus:outline-none",
     icon: @icon,
-    'data-action': "click->toggle#togglePanel",
-    'data-actions-dropdown-button': @resource.model_key do %>
+    data: {
+      action: "click->toggle#togglePanel",
+      actions_dropdown_button: @resource.model_key,
+      tippy: "tooltip",
+      tippy_content: @title
+    } do %>
     <%= label %>
   <% end %>
   <div
