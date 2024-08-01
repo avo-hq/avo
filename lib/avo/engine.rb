@@ -57,8 +57,8 @@ module Avo
       end
 
       ActiveSupport::Dependencies.autoload_paths.delete(Avo::Engine.root.join("app", "avo").to_s)
-      Rails.autoloaders.main.push_dir Avo::Engine.root.join("app", "avo").to_s, namespace: Avo
 
+      Rails.autoloaders.main.push_dir Avo::Engine.root.join("app", "avo").to_s, namespace: Avo
     end
 
     initializer "avo.reloader" do |app|
