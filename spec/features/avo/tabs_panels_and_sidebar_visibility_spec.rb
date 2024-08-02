@@ -43,6 +43,10 @@ RSpec.describe "TabsPanelsAndSidebarVisibility", type: :feature do
       panel "Hidden panel", visible: -> { resource.record.name == "RSpec PanelVisibility" } do
         field :hidden_field_inside_panel, as: :text
       end
+
+      tabs visible: -> { resource.record.name == "RSpec TabsPanelAndSidebarVisibility" } do
+        field :hidden_field_inside_hidden_tabs, as: :text
+      end
     end
   end
 
@@ -69,6 +73,8 @@ RSpec.describe "TabsPanelsAndSidebarVisibility", type: :feature do
         expect(page).to have_text "Hidden field inside tabs inside tab inside panel"
         expect(page).to have_text "Hidden field inside sidebar"
 
+        expect(page).to have_text "Hidden field inside hidden tabs"
+
         expect(page).to have_text "Conditional hidden tab inside tabs"
         expect(page).to have_text "Hidden field inside tabs inside conditional tab"
       end
@@ -82,6 +88,8 @@ RSpec.describe "TabsPanelsAndSidebarVisibility", type: :feature do
         expect(page).not_to have_text "Hidden field inside tabs inside tab"
         expect(page).not_to have_text "Hidden field inside tabs inside tab inside panel"
         expect(page).not_to have_text "Hidden field inside sidebar"
+
+        expect(page).not_to have_text "Hidden field inside hidden tabs"
 
         expect(page).not_to have_text "Conditional hidden tab inside tabs"
         expect(page).not_to have_text "Hidden field inside tabs inside conditional tab"

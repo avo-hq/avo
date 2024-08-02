@@ -16,7 +16,7 @@ RSpec.feature "SignOutDropdown", type: :system do
       expect(page.body).to have_css("form[data-controller='sign-out'][data-action='submit->sign-out#handle']", visible: true)
 
       # Test click away
-      page.find("body").click
+      all("div", text: "per page").first.click
       expect(page.body).to have_css("form[data-controller='sign-out'][data-action='submit->sign-out#handle']", visible: false)
 
       dots_link.click

@@ -59,7 +59,7 @@ module Avo
       end
 
       def target_resource
-        reflection = @record._reflections.with_indifferent_access[association_name]
+        reflection = @record.class.reflect_on_association(association_name)
 
         if reflection.klass.present?
           get_resource_by_model_class(reflection.klass.to_s)
