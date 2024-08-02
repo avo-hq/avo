@@ -59,10 +59,10 @@ module Avo
       end
 
       def target_resource
-        if @model._reflections[id.to_s].klass.present?
-          Avo::App.get_resource_by_model_name @model._reflections[id.to_s].klass.to_s
-        elsif @model._reflections[id.to_s].options[:class_name].present?
-          Avo::App.get_resource_by_model_name @model._reflections[id.to_s].options[:class_name]
+        if @model.class.reflect_on_association(id).klass.present?
+          Avo::App.get_resource_by_model_name @model.class.reflect_on_association(id).klass.to_s
+        elsif @model.class.reflect_on_association(id).options[:class_name].present?
+          Avo::App.get_resource_by_model_name @model.class.reflect_on_association(id).options[:class_name]
         else
           Avo::App.get_resource_by_name id.to_s
         end

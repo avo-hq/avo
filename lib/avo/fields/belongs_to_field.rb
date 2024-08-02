@@ -245,10 +245,10 @@ module Avo
 
         reflection_key = polymorphic_as || id
 
-        if @model._reflections[reflection_key.to_s].klass.present?
-          App.get_resource_by_model_name @model._reflections[reflection_key.to_s].klass.to_s
-        elsif @model._reflections[reflection_key.to_s].options[:class_name].present?
-          App.get_resource_by_model_name @model._reflections[reflection_key.to_s].options[:class_name]
+        if @model.class.reflect_on_association(reflection_key).klass.present?
+          App.get_resource_by_model_name @model.class.reflect_on_association(reflection_key).klass.to_s
+        elsif @model.class.reflect_on_association(reflection_key).options[:class_name].present?
+          App.get_resource_by_model_name @model.class.reflect_on_association(reflection_key).options[:class_name]
         else
           App.get_resource_by_name reflection_key.to_s
         end
