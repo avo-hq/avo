@@ -1,7 +1,6 @@
 require "rails_helper"
 
 RSpec.feature "Resource extension", type: :feature do
-
   before_all do
     Avo::Resources::CourseLink.define_method :test_base_resource_extension do
       some_extended_method
