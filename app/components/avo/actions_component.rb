@@ -2,23 +2,24 @@
 
 class Avo::ActionsComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
-
+  
   ACTION_FILTER = _Set(_Class(Avo::BaseAction))
 
-  prop :actions, _Array(Avo::BaseAction), default: -> { [] }
-  prop :resource, _Nilable(Avo::BaseResource)
-  prop :view, _Nilable(Symbol), &:to_sym
-  prop :exclude, _Nilable(ACTION_FILTER), &:to_set
-  prop :include, _Nilable(ACTION_FILTER), &:to_set
-  prop :style, Avo::ButtonComponent::STYLE, default: :outline
-  prop :color, Symbol, default: :primary
-  prop :label, String do |value|
-    value || I18n.t("avo.actions")
-  end
-  prop :size, Avo::ButtonComponent::SIZE, default: :md
   prop :as_row_control, _Boolean, default: false
   prop :icon, _Nilable(String)
-
+  prop :size, Avo::ButtonComponent::SIZE, default: :md
+  prop :title, _Nilable(String)
+  prop :color, Symbol, default: :primary
+  prop :include, _Nilable(ACTION_FILTER), &:to_set
+  prop :label, String do |label|
+    label || I18n.t("avo.actions")
+  end
+  prop :style, Avo::ButtonComponent::STYLE, default: :outline
+  prop :actions, _Array(Avo::BaseAction), default: [].freeze
+  prop :exclude, _Nilable(ACTION_FILTER), &:to_set
+  prop :resource, _Nilable(Avo::BaseResource)
+  prop :view, _Nilable(Symbol), &:to_sym
+    
   def after_initialize
     filter_actions
   end
@@ -62,7 +63,7 @@ class Avo::ActionsComponent < Avo::BaseComponent
   private
 
   def on_record_page?
-    @view.in?(%w[show edit new])
+    @view.in?([:show, :edit, :new])
   end
 
   def on_index_page?

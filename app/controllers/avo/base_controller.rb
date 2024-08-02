@@ -34,6 +34,13 @@ module Avo
         @query = @query.includes(*@resource.includes)
       end
 
+      # Eager load attachments
+      if @resource.attachments.present?
+        @resource.attachments.each do |attachment|
+          @query = @query.send(:"with_attached_#{attachment}")
+        end
+      end
+
       apply_sorting
 
       # Apply filters to the current query
@@ -114,7 +121,7 @@ module Avo
     def create
       # This means that the record has been created through another parent record and we need to attach it somehow.
       if params[:via_record_id].present? && params[:via_belongs_to_resource_class].nil?
-        @reflection = @record._reflections.with_indifferent_access[params[:via_relation]]
+        @reflection = @record.class.reflect_on_association(params[:via_relation])
         # Figure out what kind of association does the record have with the parent record
 
         # Fills in the required info for belongs_to and has_many
@@ -127,7 +134,7 @@ module Avo
         end
 
         # For when working with has_one, has_one_through, has_many_through, has_and_belongs_to_many, polymorphic
-        if @reflection.is_a? ActiveRecord::Reflection::ThroughReflection
+        if @reflection.is_a?(ActiveRecord::Reflection::ThroughReflection) || @reflection.is_a?(ActiveRecord::Reflection::HasAndBelongsToManyReflection)
           # find the record
           via_resource = Avo.resource_manager.get_resource_by_model_class(params[:via_relation_class])
           @related_record = via_resource.find_record params[:via_record_id], params: params
@@ -219,8 +226,12 @@ module Avo
     def perform_action_and_record_errors(&block)
       begin
         succeeded = block.call
-      rescue ActiveRecord::RecordInvalid => e
+      rescue ActiveRecord::RecordInvalid => error
         # Do nothing as the record errors are already being displayed
+        # On associations controller add errors from join record to record
+        if controller_name == "associations"
+          @record.errors.add(:base, error.message)
+        end
       rescue => exception
         # In case there's an error somewhere else than the record
         # Example: When you save a license that should create a user for it and creating that user throws and error.
@@ -298,8 +309,15 @@ module Avo
       # Sorting
       if params[:sort_by].present?
         @index_params[:sort_by] = params[:sort_by]
-      elsif @resource.model_class.present? && @resource.model_class.column_names.include?("created_at")
-        @index_params[:sort_by] = :created_at
+      elsif @resource.model_class.present?
+        available_columns = @resource.model_class.column_names
+        default_sort_column = @resource.default_sort_column
+
+        if available_columns.include?(default_sort_column.to_s)
+          @index_params[:sort_by] = default_sort_column
+        elsif available_columns.include?("created_at")
+          @index_params[:sort_by] = :created_at
+        end
       end
 
       @index_params[:sort_direction] = params[:sort_direction] || :desc
@@ -454,13 +472,7 @@ module Avo
           Avo.resource_manager.get_resource_by_model_class(params[:via_relation_class])
         end
 
-        association_name = BaseResource.valid_association_name(@record, params[:via_relation])
-
-        return resource_view_path(
-          record: @record.send(association_name),
-          resource: parent_resource,
-          resource_id: params[:via_record_id]
-        )
+        return resource_view_path(resource: parent_resource, resource_id: params[:via_record_id])
       end
 
       redirect_path_from_resource_option(:after_create_path) || resource_view_response_path

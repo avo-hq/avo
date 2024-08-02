@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.feature "Fields methods for each view", type: :feature do
   let!(:links) { create_list :course_link, 3 }

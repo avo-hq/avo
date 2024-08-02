@@ -23,18 +23,18 @@ module Avo
         value.utc.iso8601
       end
 
-      def fill_field(model, key, value, params)
+      def fill_field(record, key, value, params)
         if value.in?(["", nil])
-          model[id] = value
+          record.send(:"#{id}=", value)
 
-          return model
+          return record
         end
 
-        return model if value.blank?
+        return record if value.blank?
 
-        model[id] = utc_time(value)
+        record.send(:"#{id}=", utc_time(value))
 
-        model
+        record
       end
     end
   end

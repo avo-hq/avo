@@ -35,11 +35,14 @@ module Avo
           extra_pagy_params[:keep_filters_panel_open] = "0"
         end
 
+        data_turbo_frame = "data-turbo-frame=\"#{CGI.escapeHTML(params[:turbo_frame]) if params[:turbo_frame]}\""
+
         send PAGINATION_METHOD[pagination_type.to_sym],
           query,
-          items: index_params[:per_page],
-          link_extra: "data-turbo-frame=\"#{params[:turbo_frame]}\"", # Add extra arguments in pagy 7.
-          anchor_string: "data-turbo-frame=\"#{params[:turbo_frame]}\"", # Add extra arguments in pagy 8.
+          items: index_params[:per_page], # Add per page in pagy < 9
+          limit: index_params[:per_page], # Add per page in pagy >= 9
+          link_extra: data_turbo_frame, # Add extra arguments in pagy 7.
+          anchor_string: data_turbo_frame, # Add extra arguments in pagy 8.
           params: extra_pagy_params,
           size: pagination_hash[:size]
       end

@@ -102,7 +102,7 @@ jobs:
 
     - name: Run tests
       id: run_tests
-      run: bundle exec rspec spec/system
+      run: bundle exec rspec spec/system/ --tag=~i18n
 
     - uses: actions/upload-artifact@v3
       with:

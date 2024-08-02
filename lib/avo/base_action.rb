@@ -21,6 +21,7 @@ module Avo
     attr_accessor :user
     attr_reader :arguments
     attr_reader :icon
+    attr_reader :appended_turbo_streams
 
     # TODO: find a differnet way to delegate this to the uninitialized Current variable
     delegate :context, to: Avo::Current
@@ -119,7 +120,6 @@ module Avo
       self.class.cancel_button_label ||= I18n.t("avo.cancel")
 
       self.items_holder = Avo::Resources::Items::Holder.new
-      fields
 
       @response ||= {}
       @response[:messages] = []
@@ -289,6 +289,10 @@ module Avo
         view: @view,
         arguments: arguments
       ).handle
+    end
+
+    def append_to_response(turbo_stream)
+      @appended_turbo_streams = turbo_stream
     end
 
     private

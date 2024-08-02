@@ -50,8 +50,6 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def can_see_the_actions_button?
-    return false if @actions.blank?
-
     return authorize_association_for(:act_on) if @reflection.present?
 
     @resource.authorization.authorize_action(:act_on, raise_exception: false) && !has_reflection_and_is_read_only
@@ -151,6 +149,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       label: actions_list.label,
       size: actions_list.size,
       icon: actions_list.icon,
+      title: actions_list.title,
       as_row_control: instance_of?(Avo::Index::ResourceControlsComponent)
     )
   end
@@ -189,7 +188,10 @@ class Avo::ResourceComponent < Avo::BaseComponent
       style: :primary,
       loading: true,
       type: :submit,
-      icon: "avo/save" do
+      icon: "avo/save",
+      data: {
+        turbo_confirm: @resource.confirm_on_save ? t("avo.are_you_sure") : nil
+      } do
       control.label
     end
   end

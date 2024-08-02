@@ -195,25 +195,25 @@ module Avo
         foreign_key.to_sym
       end
 
-      def fill_field(model, key, value, params)
-        return model unless model.methods.include? key.to_sym
+      def fill_field(record, key, value, params)
+        return record unless record.methods.include? key.to_sym
 
         if polymorphic_as.present?
           valid_model_class = valid_polymorphic_class params[:"#{polymorphic_as}_type"]
 
-          model.send(:"#{polymorphic_as}_type=", valid_model_class)
+          record.send(:"#{polymorphic_as}_type=", valid_model_class)
 
           # If the type is blank, reset the id too.
           if valid_model_class.blank?
-            model.send(:"#{polymorphic_as}_id=", nil)
+            record.send(:"#{polymorphic_as}_id=", nil)
           else
-            model.send(:"#{polymorphic_as}_id=", params["#{polymorphic_as}_id"])
+            record.send(:"#{polymorphic_as}_id=", params["#{polymorphic_as}_id"])
           end
         else
-          model.send("#{key}=", value)
+          record.send(:"#{key}=", value)
         end
 
-        model
+        record
       end
 
       def valid_polymorphic_class(possible_class)
@@ -243,7 +243,7 @@ module Avo
         else
           reflection_key = polymorphic_as || id
 
-          reflection_object = @record._reflections.with_indifferent_access[reflection_key]
+          reflection_object = @record.class.reflect_on_association(reflection_key)
 
           if reflection_object.klass.present?
             get_resource_by_model_class(reflection_object.klass.to_s)

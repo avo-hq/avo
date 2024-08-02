@@ -13,7 +13,7 @@ RSpec.describe "App", type: :system do
       scroll_to comments_frame = find('turbo-frame[id="has_many_field_show_comments"]')
 
       expect(comments_frame).not_to have_text "Commentable"
-      expect(comments_frame).to have_link comment.id.to_s, href: "/admin/resources/comments/#{comment.id}?via_record_id=#{project.id}&via_resource_class=Avo%3A%3AResources%3A%3AProject"
+      expect(comments_frame).to have_link comment.id.to_s, href: "/admin/resources/comments/#{comment.id}?via_record_id=#{project.to_param}&via_resource_class=Avo%3A%3AResources%3A%3AProject"
 
       within 'turbo-frame[id="has_many_field_show_comments"]' do
         click_on comment.id.to_s
@@ -40,7 +40,7 @@ RSpec.describe "App", type: :system do
       scroll_to comments_frame = find('turbo-frame[id="has_many_field_show_comments"]')
 
       expect(comments_frame).not_to have_text "Commentable"
-      expect(comments_frame).to have_link comment.id.to_s, href: "/admin/resources/comments/#{comment.id}?via_record_id=#{project.id}&via_resource_class=Avo%3A%3AResources%3A%3AProject"
+      expect(comments_frame).to have_link comment.id.to_s, href: "/admin/resources/comments/#{comment.id}?via_record_id=#{project.to_param}&via_resource_class=Avo%3A%3AResources%3A%3AProject"
 
       destroy_button = find("turbo-frame[id='has_many_field_show_comments'] tr[data-resource-id='#{comment.id}'] button[data-control=\"destroy\"]")
 
@@ -65,6 +65,20 @@ RSpec.describe "App", type: :system do
         end
         wait_for_loaded
       }.to change(Project, :count).by(-1)
+    end
+  end
+
+  describe "security", js: true do
+    let!(:projects) { create_list :project, 2 }
+
+    it "xss in turbo frames 1" do
+      visit "/admin/resources/projects?per_page=1&turbo_frame=has_many_field_show_test_xgc2pf%22%3e%3cscript%3ealert(1)%3c%2fscript%3ep9sk5"
+      expect { accept_alert }.to raise_error(Capybara::ModalNotFound)
+    end
+
+    it "xss in turbo frames 2" do
+      visit '/admin/resources/projects?per_page=1&turbo_frame=has_many_field_show_test_xgc2pf><script>alert("XSS")<%2Fscript>p9sk5'
+      expect { accept_alert }.to raise_error(Capybara::ModalNotFound)
     end
   end
 end

@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.feature "RecordSelectors", type: :feature do
   let!(:comment) { create :comment }

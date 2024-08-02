@@ -210,6 +210,7 @@ RSpec.describe "Actions", type: :system do
 
       fill_in "user_first_name", with: "First name should persist after action."
 
+      expect(page).to have_title("Create new user — Avocadelicious")
 
       click_on "Actions"
       click_on "Close modal"
@@ -218,7 +219,8 @@ RSpec.describe "Actions", type: :system do
       click_on "Run"
       expect(page).not_to have_selector(modal)
       expect(page).to have_text "Modal closed!!"
-      expect(page).to have_field('user_first_name', with: 'First name should persist after action.')
+      expect(page).to have_title("Cool title")
+      expect(page).to have_field("user_first_name", with: "First name should persist after action.")
     end
   end
 
@@ -271,6 +273,19 @@ RSpec.describe "Actions", type: :system do
         run_action
         expect(page).to have_text "Sure, I love 🥑"
       end
+    end
+  end
+
+  describe "fetch fields" do
+    it "don't fetch when load index" do
+      expect(TestBuddy).not_to receive(:hi).with("Dummy action fields")
+      visit avo.resources_users_path
+    end
+
+    it "fetch when click on action" do
+      expect(TestBuddy).to receive(:hi).with("Dummy action fields").at_least :once
+      visit avo.resources_users_path
+      open_panel_action(action_name: "Dummy action")
     end
   end
 
