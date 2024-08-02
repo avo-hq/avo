@@ -13,20 +13,21 @@ RSpec.feature "Resource extension", type: :feature do
   it "with extension" do
     file_path = Rails.root.join("app/avo/base_resource.rb")
     FileUtils.mkdir_p(File.dirname(file_path))
-    File.write file_path, <<~RUBY
-  module Avo
-    class BaseResource < Avo::Resources::Base
-      def some_extended_method
-        TestBuddy.hi("Extension successfully")
-      end
-    end
-  end
-    RUBY
+    File.write file_path,
+      <<~RUBY
+        module Avo
+          class BaseResource < Avo::Resources::Base
+            def some_extended_method
+              TestBuddy.hi("Extension successfully")
+            end
+          end
+        end
+      RUBY
 
     load file_path
 
     expect(TestBuddy).to receive(:hi).with("Extension successfully").at_least :once
-    expect { Avo::Resources::CourseLink.new.test_base_resource_extension }.not_to raise_error(NameError)
+    expect { Avo::Resources::CourseLink.new.test_base_resource_extension }.not_to raise_error
 
     File.delete(file_path) if File.exist?(file_path)
   end
