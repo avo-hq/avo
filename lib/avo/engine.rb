@@ -56,7 +56,6 @@ module Avo
         app.config.watchable_dirs[avo_directory] = [:rb]
       end
 
-      Rails.autoloaders.main.push_dir(Avo::Engine.root.join("app", "avo").to_s, namespace: Avo)
       require Avo::Engine.root.join("app", "avo", "base_resource.rb").to_s
     end
 
