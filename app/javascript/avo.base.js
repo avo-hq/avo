@@ -49,6 +49,14 @@ function initTippy() {
 
       return title
     },
+    onShow(tooltipInstance) {
+      // Don't render tooltip if there is no content.
+      if (tooltipInstance.props.content === null || tooltipInstance.props.content.length === 0) {
+        return false
+      }
+
+      return tooltipInstance
+    },
   })
 }
 

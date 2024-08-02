@@ -2,21 +2,23 @@
 
 class Avo::ActionsComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
-  attr_reader :label, :size, :as_row_control
 
-  def initialize(actions: [], resource: nil, view: nil, exclude: [], include: [], style: :outline, color: :primary, label: nil, size: :md, as_row_control: false, icon: nil)
-    @actions = actions || []
-    @resource = resource
-    @view = view
-    @exclude = Array(exclude)
-    @include = include
-    @color = color
-    @style = style
-    @label = label || I18n.t("avo.actions")
-    @size = size
-    @icon = icon
-    @as_row_control = as_row_control
+  prop :as_row_control, _Boolean, default: false
+  prop :icon, _Nilable(String)
+  prop :size, Symbol, default: :md
+  prop :title, _Nilable(String)
+  prop :color, Symbol, default: :primary
+  prop :include, Array, default: [].freeze
+  prop :label, String do |label|
+    label || I18n.t("avo.actions")
   end
+  prop :style, Symbol, default: :outline
+  prop :actions, _Array(Avo::BaseAction), default: [].freeze
+  prop :exclude, Array, default: [].freeze do |exclude|
+    Array(exclude)
+  end
+  prop :resource, _Nilable(Avo::Resources::Base)
+  prop :view, _Nilable(Symbol), &:to_sym
 
   def render?
     actions.present?
@@ -35,7 +37,7 @@ class Avo::ActionsComponent < Avo::BaseComponent
   # When running an action for one record we should do it on a special path.
   # We do that so we get the `record` param inside the action so we can prefill fields.
   def action_path(action)
-    return single_record_path(action) if as_row_control
+    return single_record_path(action) if @as_row_control
     return many_records_path(action) unless @resource.has_record_id?
 
     if on_record_page?
@@ -47,7 +49,7 @@ class Avo::ActionsComponent < Avo::BaseComponent
 
   # How should the action be displayed by default
   def is_disabled?(action)
-    return false if action.standalone || as_row_control
+    return false if action.standalone || @as_row_control
 
     on_index_page?
   end
@@ -55,7 +57,7 @@ class Avo::ActionsComponent < Avo::BaseComponent
   private
 
   def on_record_page?
-    @view.in?(%w[show edit new])
+    @view.in?([:show, :edit, :new])
   end
 
   def on_index_page?
