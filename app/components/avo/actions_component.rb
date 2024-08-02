@@ -2,6 +2,7 @@
 
 class Avo::ActionsComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
+
   ACTION_FILTER = _Set(_Class(Avo::BaseAction))
 
   prop :as_row_control, _Boolean, default: false
