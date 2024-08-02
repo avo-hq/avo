@@ -18,13 +18,12 @@
       <%= javascript_include_tag "/avo-assets/avo.base", "data-turbo-track": "reload", defer: true %>
     <% else %>
       <%= javascript_include_tag "avo.base", "data-turbo-track": "reload", defer: true %>
-      <% if Rails.env.development? %>
+      <% if Rails.env.development? && defined?(Hotwire::Livereload) %>
         <%= javascript_include_tag "hotwire-livereload", defer: true %>
       <% end %>
     <% end %>
     <%= render Avo::AssetManager::JavascriptComponent.new asset_manager: Avo.asset_manager %>
     <%= render partial: "avo/partials/head" %>
-    <%= turbo_refreshes_with method: :replace, scroll: :reset %>
     <%= content_for :head %>
   </head>
   <body class="bg-application os-mac">

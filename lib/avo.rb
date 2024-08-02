@@ -36,19 +36,20 @@ module Avo
   class DeprecatedAPIError < StandardError; end
 
   class MissingResourceError < StandardError
-    def initialize(resource_name)
-      super(missing_resource_message(resource_name))
+    def initialize(model_class, field_name = nil)
+      super(missing_resource_message(model_class, field_name))
     end
 
     private
 
-    def missing_resource_message(resource_name)
-      name = resource_name.to_s.underscore
+    def missing_resource_message(model_class, field_name)
+      model_name = model_class.to_s.underscore
+      field_name ||= model_name
 
-      "Failed to find a resource while rendering the :#{name} field.\n" \
-      "You may generate a resource for it by running 'rails generate avo:resource #{name.singularize}'.\n" \
+      "Failed to find a resource while rendering the :#{field_name} field.\n" \
+      "You may generate a resource for it by running 'rails generate avo:resource #{model_name.singularize}'.\n" \
       "\n" \
-      "Alternatively add the 'use_resource' option to the :#{name} field to specify a custom resource to be used.\n" \
+      "Alternatively add the 'use_resource' option to the :#{field_name} field to specify a custom resource to be used.\n" \
       "More info on https://docs.avohq.io/#{Avo::VERSION[0]}.0/resources.html."
     end
   end
@@ -138,6 +139,7 @@ module Avo
         mount Avo::DynamicFilters::Engine, at: "/avo-dynamic_filters" if defined?(Avo::DynamicFilters::Engine)
         mount Avo::Dashboards::Engine, at: "/dashboards" if defined?(Avo::Dashboards::Engine)
         mount Avo::Pro::Engine, at: "/avo-pro" if defined?(Avo::Pro::Engine)
+        mount Avo::Kanban::Engine, at: "/boards" if defined?(Avo::Kanban::Engine)
       }
     end
 

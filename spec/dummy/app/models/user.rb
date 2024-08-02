@@ -96,7 +96,7 @@ class User < ApplicationRecord
       create: true,
       update: false,
       read: true,
-      delete: true
+      delete: true,
     }
   end
 end

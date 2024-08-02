@@ -1,8 +1,8 @@
-<%= content_tag :div, data: data_attributes, class: classes do %>
+<%= content_tag :div, class: classes, data: data_attributes do %>
   <%= render Avo::CoverPhotoComponent.new cover_photo: @cover_photo %>
 
   <% if render_header? %>
-    <div data-target="panel-header" class="flex flex-col flex-1 w-full mb-4">
+    <div data-target="panel-header" class="flex flex-col w-full mb-4">
       <div class="flex justify-center sm:justify-start flex-col sm:flex-row w-full flex-1 has-cover-photo:mt-0">
         <%= render Avo::ProfilePhotoComponent.new profile_photo: @profile_photo %>
         <div class="flex flex-col flex-1 w-full">
@@ -55,9 +55,11 @@
     </div>
   <% end %>
   <% if bare_content? %>
-    <div data-target="panel-bare-content" class="relative <% if sidebar? %> has-sidebar <% end %>">
+    <%= content_tag :div, class: class_names("relative flex flex-1", "has-sidebar": sidebar?), data: {
+      target: :"panel-bare-content"
+    } do %>
       <%= bare_content %>
-    </div>
+    <% end %>
   <% end %>
   <% if footer_tools? %>
     <div
