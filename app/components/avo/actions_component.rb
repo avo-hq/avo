@@ -10,8 +10,8 @@ class Avo::ActionsComponent < Avo::BaseComponent
   prop :size, Avo::ButtonComponent::SIZE, default: :md
   prop :title, _Nilable(String)
   prop :color, Symbol, default: :primary
-  prop :include, _Nilable(ACTION_FILTER), default: [].freeze do |_include|
-    Array(_include).to_set
+  prop :include, _Nilable(ACTION_FILTER), default: [].freeze do |include|
+    Array(include).to_set
   end
   prop :label, String do |label|
     label || I18n.t("avo.actions")
