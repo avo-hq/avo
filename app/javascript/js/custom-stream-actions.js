@@ -32,9 +32,3 @@ StreamActions.download = function () {
     this.getAttribute('filename'),
   )
 }
-
-// TODO: move to kanban
-// TODO: rename this method
-StreamActions.reload_boards = function () {
-  window.dispatchEvent(new CustomEvent('avo-reload_boards'))
-}
