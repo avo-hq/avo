@@ -3,34 +3,46 @@
 class Avo::ActionsComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
 
+  ACTION_FILTER = _Set(_Class(Avo::BaseAction))
+
   prop :as_row_control, _Boolean, default: false
   prop :icon, _Nilable(String)
-  prop :size, Symbol, default: :md
+  prop :size, Avo::ButtonComponent::SIZE, default: :md
   prop :title, _Nilable(String)
   prop :color, Symbol, default: :primary
-  prop :include, Array, default: [].freeze
+  prop :include, _Nilable(ACTION_FILTER), default: [].freeze do |include|
+    Array(include).to_set
+  end
   prop :label, String do |label|
     label || I18n.t("avo.actions")
   end
-  prop :style, Symbol, default: :outline
+  prop :style, Avo::ButtonComponent::STYLE, default: :outline
   prop :actions, _Array(Avo::BaseAction), default: [].freeze
-  prop :exclude, Array, default: [].freeze do |exclude|
-    Array(exclude)
+  prop :exclude, _Nilable(ACTION_FILTER), default: [].freeze do |exclude|
+    Array(exclude).to_set
   end
-  prop :resource, _Nilable(Avo::Resources::Base)
-  prop :view, _Nilable(Symbol), &:to_sym
+  prop :resource, _Nilable(Avo::BaseResource)
+  prop :view, _Nilable(Symbol) do |view|
+    view&.to_sym
+  end
+
+  def after_initialize
+    filter_actions
+  end
 
   def render?
-    actions.present?
+    @actions.present?
   end
 
-  def actions
-    if @exclude.present?
-      @actions.reject { |action| action.class.in?(@exclude) }
-    elsif @include.present?
-      @actions.select { |action| action.class.in?(@include) }
-    else
-      @actions
+  def filter_actions
+    @actions = @actions.dup
+
+    if @exclude.any?
+      @actions.reject! { |action| @exclude.include?(action.class) }
+    end
+
+    if @include.any?
+      @actions.select! { |action| @include.include?(action.class) }
     end
   end
 
