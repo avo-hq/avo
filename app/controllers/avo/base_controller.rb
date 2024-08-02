@@ -18,7 +18,13 @@ module Avo
 
     def index
       @page_title = @resource.plural_name.humanize
-      add_breadcrumb @record.class.to_s.pluralize if html_req_for_association_page?
+      @turbo_frame = params[:turbo_frame]
+
+      if html_req_for_association_page?
+        add_breadcrumb @record.class.to_s.pluralize, resources_path(resource: "Avo::Resources::#{@record.class}".constantize)
+        add_breadcrumb @record.id, resource_path(record: @record, resource: "Avo::Resources::#{@record.class}".constantize)
+        @turbo_frame = nil
+      end
       add_breadcrumb @resource.plural_name.humanize
 
       set_index_params

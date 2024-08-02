@@ -31,7 +31,13 @@ RSpec.feature "Breadcrumbs", type: :feature do
       visit url
 
       expect(page).to have_selector ".breadcrumbs"
-      expect(page.find(".breadcrumbs").text).to eq "Home Users Teams"
+      expect(page.find(".breadcrumbs").text).to eq "Home Users #{user.id} Teams"
+
+      breadcrumbs = find(".breadcrumbs")
+      expect(breadcrumbs).to have_link "Home"
+      expect(breadcrumbs).to have_link "Users"
+      expect(breadcrumbs).to have_link "#{user.id}"
+      expect(breadcrumbs).to_not have_link "Teams"
     end
 
     it "displays breadcrumbs" do
@@ -39,7 +45,13 @@ RSpec.feature "Breadcrumbs", type: :feature do
       visit url
 
       expect(page).to have_selector ".breadcrumbs"
-      expect(page.find(".breadcrumbs").text).to eq "Home Teams Users"
+      expect(page.find(".breadcrumbs").text).to eq "Home Teams #{team.id} Users"
+
+      breadcrumbs = find(".breadcrumbs")
+      expect(breadcrumbs).to have_link "Home"
+      expect(breadcrumbs).to have_link "Teams"
+      expect(breadcrumbs).to have_link "#{team.id}"
+      expect(breadcrumbs).to_not have_link "Users"
     end
   end
 end
