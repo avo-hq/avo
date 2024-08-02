@@ -17,7 +17,7 @@ GIT
 
 GIT
   remote: https://github.com/rails/rails.git
-  revision: d40c7dfbbdb506d87573b9e1a24bc4cf302f78b8
+  revision: 69d904e60f78300270ecbb01e4cf68e78074b30d
   branch: main
   specs:
     actioncable (8.0.0.alpha)
@@ -414,10 +414,10 @@ GEM
     net-smtp (0.5.0)
       net-protocol
     nio4r (2.7.3)
-    nokogiri (1.16.7)
+    nokogiri (1.16.6)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
-    nokogiri (1.16.7-x86_64-linux)
+    nokogiri (1.16.6-x86_64-linux)
       racc (~> 1.4)
     orm_adapter (0.5.0)
     pagy (8.6.3)
@@ -427,7 +427,7 @@ GEM
       racc
     path_expander (1.1.1)
     pg (1.5.6)
-    prefixed_ids (1.8.0)
+    prefixed_ids (1.7.1)
       hashids (>= 1.0.0, < 2.0.0)
       rails (>= 6.0.0)
     prettier_print (1.2.1)
@@ -436,7 +436,7 @@ GEM
     public_suffix (6.0.0)
     puma (6.4.2)
       nio4r (~> 2.0)
-    racc (1.8.1)
+    racc (1.8.0)
     rack (3.1.7)
     rack-session (2.0.0)
       rack (>= 3.0.0)
@@ -644,7 +644,7 @@ GEM
     xpath (3.2.0)
       nokogiri (~> 1.8)
     yard (0.9.36)
-    zeitwerk (2.6.17)
+    zeitwerk (2.6.16)
 
 PLATFORMS
   ruby
