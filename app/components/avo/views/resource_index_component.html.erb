@@ -11,7 +11,7 @@
       description: description,
       cover_photo: resource.cover_photo,
       data: {component: "resources-index"},
-      display_breadcrumbs: @reflection.blank? || (@reflection.present? && !helpers.turbo_frame_request?)
+      display_breadcrumbs: @reflection.blank?
     ) do |c| %>
     <% c.with_name_slot do %>
       <%= render Avo::PanelNameComponent.new name: title, url: (params[:turbo_frame].present? && linkable?) ? field.frame_url(add_turbo_frame: false) : nil, target: :_blank do |panel_name_component| %>
