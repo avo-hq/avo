@@ -10,15 +10,21 @@ class Avo::ActionsComponent < Avo::BaseComponent
   prop :size, Avo::ButtonComponent::SIZE, default: :md
   prop :title, _Nilable(String)
   prop :color, Symbol, default: :primary
-  prop :include, _Nilable(ACTION_FILTER), &:to_set
+  prop :include, _Nilable(ACTION_FILTER), default: [].freeze do |_include|
+    Array(_include).to_set
+  end
   prop :label, String do |label|
     label || I18n.t("avo.actions")
   end
   prop :style, Avo::ButtonComponent::STYLE, default: :outline
   prop :actions, _Array(Avo::BaseAction), default: [].freeze
-  prop :exclude, _Nilable(ACTION_FILTER), &:to_set
+  prop :exclude, _Nilable(ACTION_FILTER), default: [].freeze do |exclude|
+    Array(exclude).to_set
+  end
   prop :resource, _Nilable(Avo::BaseResource)
-  prop :view, _Nilable(Symbol), &:to_sym
+  prop :view, _Nilable(Symbol) do |view|
+    view&.to_sym
+  end
 
   def after_initialize
     filter_actions
