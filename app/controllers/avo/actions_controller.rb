@@ -75,6 +75,9 @@ module Avo
         view: :new, # force the action view to in order to render new-related fields (hidden field)
         arguments: BaseAction.decode_arguments(params[:arguments] || params.dig(:fields, :arguments)) || {}
       )
+
+      # Fetch action's fields
+      @action.fields
     end
 
     def action_class

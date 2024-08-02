@@ -1,5 +1,6 @@
 class Avo::Resources::Store < Avo::BaseResource
   self.includes = [:location]
+  self.confirm_on_save = true
 
   def fields
     field :id, as: :id

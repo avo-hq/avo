@@ -120,7 +120,6 @@ module Avo
       self.class.cancel_button_label ||= I18n.t("avo.cancel")
 
       self.items_holder = Avo::Resources::Items::Holder.new
-      fields
 
       @response ||= {}
       @response[:messages] = []

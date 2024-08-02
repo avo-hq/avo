@@ -149,6 +149,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       label: actions_list.label,
       size: actions_list.size,
       icon: actions_list.icon,
+      title: actions_list.title,
       as_row_control: instance_of?(Avo::Index::ResourceControlsComponent)
     )
   end
@@ -187,7 +188,10 @@ class Avo::ResourceComponent < Avo::BaseComponent
       style: :primary,
       loading: true,
       type: :submit,
-      icon: "avo/save" do
+      icon: "avo/save",
+      data: {
+        turbo_confirm: @resource.confirm_on_save ? t("avo.are_you_sure") : nil
+      } do
       control.label
     end
   end
