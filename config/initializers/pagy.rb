@@ -1,6 +1,6 @@
 require "pagy/extras/trim"
 require "pagy/extras/countless"
-if ::Pagy::VERSION > ::Gem::Version.new("9.0")
+if ::Pagy::VERSION >= ::Gem::Version.new("9.0")
   require "pagy/extras/size"
 end
 
