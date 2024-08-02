@@ -57,7 +57,7 @@ module Avo
       end
 
       Rails.autoloaders.main.push_dir(Avo::Engine.root.join("app", "avo").to_s, namespace: Avo)
-      require_relative Avo::Engine.root.join("app", "avo", "base_resource.rb").to_s
+      require Avo::Engine.root.join("app", "avo", "base_resource.rb").to_s
     end
 
     initializer "avo.reloader" do |app|
