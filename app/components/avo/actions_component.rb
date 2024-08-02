@@ -18,7 +18,6 @@ class Avo::ActionsComponent < Avo::BaseComponent
   prop :exclude, _Nilable(ACTION_FILTER), &:to_set
   prop :resource, _Nilable(Avo::BaseResource)
   prop :view, _Nilable(Symbol), &:to_sym
-    
   def after_initialize
     filter_actions
   end
