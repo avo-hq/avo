@@ -55,7 +55,7 @@
     </div>
   <% end %>
   <% if bare_content? %>
-    <%= content_tag :div, class: class_names("relative flex flex-1", "has-sidebar": sidebar?), data: {
+    <%= content_tag :div, class: class_names("relative flex flex-1 flex-col", "has-sidebar": sidebar?), data: {
       target: :"panel-bare-content"
     } do %>
       <%= bare_content %>
