@@ -35,16 +35,16 @@
                 view: :new
               %>
             <% else %>
-                  <%= avo_edit_field :related_id,
-                    as: :select,
-                    form: form,
-                    name: @related_resource.name,
-                    options: options_for_select(@options,
-                    nil),
-                    include_blank: t('avo.choose_an_option'),
-                    stacked: true,
-                    classes: 'w-full'
-                  %>
+              <%= avo_edit_field :related_id,
+                as: :select,
+                form: form,
+                name: @related_resource.name,
+                options: options_for_select(@options,
+                nil),
+                include_blank: t('avo.choose_an_option'),
+                stacked: true,
+                classes: 'w-full'
+              %>
             <% end %>
             <% @attach_fields&.each_with_index do |field, index| %>
               <%= render(Avo::Items::SwitcherComponent.new(
@@ -54,8 +54,8 @@
                 view: @view,
                 form: form,
                 field_component_extra_args: {
-                  compact: true,
-                  stacked: true}
+                  stacked: true,
+                classes: 'w-full'}
               )) %>
             <% end %>
           </div>
