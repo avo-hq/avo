@@ -49,14 +49,16 @@ module Avo
       # This undoes Rails' previous nested directories behavior in the `app` dir.
       # More on this: https://github.com/fxn/zeitwerk/issues/250
       avo_directory = Rails.root.join("app", "avo").to_s
-      ActiveSupport::Dependencies.autoload_paths.delete(avo_directory)
+      engine_avo_directory = Avo::Engine.root.join("app", "avo").to_s
 
-      if Dir.exist?(avo_directory)
-        Rails.autoloaders.main.push_dir(avo_directory, namespace: Avo)
-        app.config.watchable_dirs[avo_directory] = [:rb]
+      [avo_directory, engine_avo_directory].each do |directory_path|
+        ActiveSupport::Dependencies.autoload_paths.delete(directory_path)
+
+        if Dir.exist?(directory_path)
+          Rails.autoloaders.main.push_dir(directory_path, namespace: Avo)
+          app.config.watchable_dirs[directory_path] = [:rb]
+        end
       end
-
-      require Avo::Engine.root.join("app", "avo", "base_resource.rb").to_s
     end
 
     initializer "avo.reloader" do |app|
