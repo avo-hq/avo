@@ -257,6 +257,9 @@ GEM
     groupdate (6.4.0)
       activesupport (>= 6.1)
     hashdiff (1.1.0)
+    hashid-rails (1.4.1)
+      activerecord (>= 4.0)
+      hashids (~> 1.0)
     hashids (1.0.6)
     highline (3.1.0)
       reline
@@ -267,10 +270,6 @@ GEM
       listen (>= 3.0.0)
       railties (>= 6.0.0)
     htmlbeautifier (1.4.3)
-    httparty (0.22.0)
-      csv
-      mini_mime (>= 1.0.0)
-      multi_xml (>= 0.5.2)
     i18n (1.14.5)
       concurrent-ruby (~> 1.0)
     i18n-tasks (1.0.14)
@@ -343,8 +342,6 @@ GEM
       money (~> 6.13)
       railties (>= 3.0)
     msgpack (1.7.2)
-    multi_xml (0.7.1)
-      bigdecimal (~> 3.1)
     net-imap (0.4.14)
       date
       net-protocol
@@ -373,7 +370,7 @@ GEM
     public_suffix (6.0.0)
     puma (6.4.2)
       nio4r (~> 2.0)
-    racc (1.8.0)
+    racc (1.8.1)
     rack (3.1.7)
     rack-session (2.0.0)
       rack (>= 3.0.0)
@@ -646,10 +643,10 @@ DEPENDENCIES
   fuubar
   gem-release
   groupdate
+  hashid-rails (~> 1.4, >= 1.4.1)
   hightop
   hotwire-livereload (~> 1.3.0)
   htmlbeautifier
-  httparty
   i18n-tasks (~> 1.0.12)
   image_processing (~> 1.12)
   iso
@@ -668,7 +665,7 @@ DEPENDENCIES
   puma (~> 6.4)
   rails (~> 7.2.0.beta2)
   rails-controller-testing
-  ransack (~> 4.1, >= 4.1.1)
+  ransack (>= 4.2.0)
   redis (~> 5.0)
   ripper-tags
   rspec-rails (~> 6.0, >= 6.0.3)

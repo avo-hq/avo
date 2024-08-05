@@ -55,7 +55,7 @@ module Avo
         end
 
         @options = query.all.map do |record|
-          [@attachment_resource.new(record: record).record_title, record.id]
+          [@attachment_resource.new(record: record).record_title, record.to_param]
         end
       end
     end
