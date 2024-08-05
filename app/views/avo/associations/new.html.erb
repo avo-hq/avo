@@ -37,7 +37,7 @@
               <%= avo_edit_field :related_id,
                 as: :select,
                 form: form,
-                name: "related_id",
+                name: @related_resource.name,
                 options: options_for_select(@options,
                 nil),
                 include_blank: t('avo.choose_an_option'),
