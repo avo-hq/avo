@@ -18,7 +18,7 @@
     } do |form| %>
     <%= render Avo::ModalComponent.new do |c| %>
       <% c.with_heading do %>
-        <%= t 'avo.choose_item', item: @field.name.singularize %>
+        <%= t 'avo.choose_item', item: @field.name.singularize.downcase %>
       <% end %>
 
       <div class="flex-1 flex items-center justify-center px-0 lg:px-8 text-lg mt-8 mb-12">
