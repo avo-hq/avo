@@ -80,7 +80,7 @@ module Avo
       association_name = BaseResource.valid_association_name(@record, association_from_params)
 
       perform_action_and_record_errors do
-        if through_reflection? && additional_params.any?
+        if through_reflection? && additional_params.present?
           new_join_record.save
         elsif has_many_reflection? || through_reflection?
           @record.send(association_name) << @attachment_record
