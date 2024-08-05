@@ -46,19 +46,6 @@ class Avo::ActionsComponent < Avo::BaseComponent
     end
   end
 
-  # When running an action for one record we should do it on a special path.
-  # We do that so we get the `record` param inside the action so we can prefill fields.
-  def action_path(action)
-    return single_record_path(action) if @as_row_control
-    return many_records_path(action) unless @resource.has_record_id?
-
-    if on_record_page?
-      single_record_path action
-    else
-      many_records_path action
-    end
-  end
-
   # How should the action be displayed by default
   def is_disabled?(action)
     return false if action.standalone || @as_row_control
@@ -74,25 +61,6 @@ class Avo::ActionsComponent < Avo::BaseComponent
 
   def on_index_page?
     !on_record_page?
-  end
-
-  def single_record_path(action)
-    action_url(action, @resource.record_path)
-  end
-
-  def many_records_path(action)
-    action_url(action, @resource.records_path)
-  end
-
-  def action_url(action, path)
-    Avo::Services::URIService.parse(path)
-      .append_paths("actions")
-      .append_query(
-        {
-          action_id: action.to_param,
-          arguments: Avo::BaseAction.encode_arguments(action.arguments)
-        }.compact
-      ).to_s
   end
 
   def icon(action)
@@ -116,7 +84,7 @@ class Avo::ActionsComponent < Avo::BaseComponent
   end
 
   def render_action_link(action)
-    link_to action_path(action),
+    link_to action.link_arguments(resource: @resource).first,
       data: action_data_attributes(action),
       title: action.action_name,
       class: action_css_class(action) do
