@@ -30,7 +30,6 @@
                 field: @field,
                 model_key: @field.target_resource&.model_key,
                 foreign_key: 'related_id',
-                label_text: @related_resource.name,
                 resource: @resource,
                 view: :new
               %>
@@ -48,13 +47,13 @@
             <% end %>
             <% @attach_fields&.each_with_index do |field, index| %>
               <%= render(Avo::Items::SwitcherComponent.new(
-                resource: @related_resource, 
+                resource: @related_resource,
                 item: field,
-                index: index + 1, 
-                view: @view, 
-                form: form, 
+                index: index + 1,
+                view: @view,
+                form: form,
                 field_component_extra_args: {
-                  compact: true, 
+                  compact: true,
                   stacked: true}
               )) %>
             <% end %>
