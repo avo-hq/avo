@@ -66,21 +66,21 @@ RSpec.feature "HasManyField", type: :feature do
 
         # edit link
         edit_path = "/admin/resources/posts/#{post.slug}/edit?via_record_id=#{user.slug}&via_resource_class=Avo%3A%3AResources%3A%3AUser"
-        expect(page).to have_selector("[data-component='resources-index'] a[data-control='edit'][data-resource-id='#{post.id}'][href='#{edit_path}']")
+        expect(page).to have_selector("[data-component='resources-index'] a[data-control='edit'][data-resource-id='#{post.to_param}'][href='#{edit_path}']")
 
         # detach form
-        form = "form[action='/admin/resources/users/#{user.slug}/posts/#{post.id}']"
+        form = "form[action='/admin/resources/users/#{user.slug}/posts/#{post.to_param}']"
         expect(page).to have_selector("[data-component='resources-index'] #{form}")
         expect(page).to have_selector(:css, "#{form} input[type='hidden'][name='_method'][value='delete']", visible: false)
         # expect(page).to have_selector(:css, "#{form} input#referrer_detach_#{post.slug}[value='/admin/resources/users/#{user.slug}/posts?turbo_frame=has_many_field_posts']", visible: false)
-        expect(page).to have_selector("[data-component='resources-index'] #{form} button[data-control='detach'][data-resource-id='#{post.id}'][data-turbo-frame='has_many_field_posts']")
+        expect(page).to have_selector("[data-component='resources-index'] #{form} button[data-control='detach'][data-resource-id='#{post.to_param}'][data-turbo-frame='has_many_field_posts']")
 
         # destroy form
         form = "form[action='/admin/resources/posts/#{post.slug}']"
         expect(page).to have_selector("[data-component='resources-index'] #{form}")
         expect(page).to have_selector("#{form} input[type='hidden'][name='_method'][value='delete']", visible: false)
         # expect(page).to have_selector("#{form} input#referrer_destroy_#{post.id}[value='/admin/resources/users/#{user.slug}/posts?turbo_frame=has_many_field_posts']", visible: false)
-        expect(page).to have_selector("[data-component='resources-index'] #{form} button[data-control='destroy'][data-resource-id='#{post.id}'][data-turbo-frame='has_many_field_posts']")
+        expect(page).to have_selector("[data-component='resources-index'] #{form} button[data-control='destroy'][data-resource-id='#{post.to_param}'][data-turbo-frame='has_many_field_posts']")
       end
 
       it "deletes a post" do

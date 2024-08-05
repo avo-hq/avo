@@ -41,7 +41,7 @@ class User < ApplicationRecord
   has_many :teams, through: :team_memberships, inverse_of: :admin
   has_one_attached :cv
 
-  friendly_id :name, use: :slugged
+  friendly_id :name, use: [:slugged, :finders]
 
   scope :active, -> { where active: true }
   scope :admins, -> { where "(roles->>'admin')::boolean is true" }
