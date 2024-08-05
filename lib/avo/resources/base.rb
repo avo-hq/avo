@@ -395,7 +395,7 @@ module Avo
         return name if @record.nil?
 
         # Get the title from the record if title is not set, try to get the name, title or label, or fallback to the to_param
-        return @record.try(:name) || @record.try(:title) || @record.try(:label) || @record.to_param  if title.nil?
+        return @record.try(:name) || @record.try(:title) || @record.try(:label) || @record.to_param if title.nil?
 
         # If the title is a symbol, get the value from the record else execute the block/string
         case title
