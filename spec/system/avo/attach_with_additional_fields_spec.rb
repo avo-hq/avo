@@ -23,7 +23,7 @@ RSpec.describe "Attach with extra fields", type: :system do
     select user.name
     fill_in id: "fields_review", with: "Toilet paper is phenomenal here."
 
-    expect(page).to have_selector "label[for='fields_related_id']", text: "PATRONS"
+    expect(page).to have_selector "label[for='fields_related_id']", text: "PATRON"
     expect {
       click_button "Attach"
     }.to change(StorePatron, :count).by 1
@@ -39,7 +39,7 @@ RSpec.describe "Attach with extra fields", type: :system do
     select user.name
     fill_in id: "fields_review", with: "Toilet paper is phenomenal here."
 
-    expect(page).to have_selector "label[for='fields_related_id']", text: "PATRONS"
+    expect(page).to have_selector "label[for='fields_related_id']", text: "PATRON"
     expect {
       click_button "Attach"
     }.to change(StorePatron, :count)

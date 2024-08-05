@@ -80,7 +80,7 @@ module Avo
       association_name = BaseResource.valid_association_name(@record, association_from_params)
 
       perform_action_and_record_errors do
-        if through_reflection? && additional_params?
+        if through_reflection? && !additional_params.empty?
           new_join_record.save
         elsif has_many_reflection? || through_reflection?
           @record.send(association_name) << @attachment_record
@@ -199,12 +199,8 @@ module Avo
       @reflection.instance_of? ActiveRecord::Reflection::ThroughReflection
     end
 
-    def additional_params?
-      additional_params.keys.count >= 1
-    end
-
     def additional_params
-      params[:fields].except("related_id")
+      params[:fields].permit(@attach_fields.map(&:id))
     end
 
     def set_attach_fields
@@ -221,7 +217,7 @@ module Avo
 
       @resource.fill_record(
         @reflection.through_reflection.klass.new,
-        additional_params.permit(field_names).merge(
+        additional_params.merge(
           {
             source_foreign_key => @attachment_record.id,
             through_foreign_key => @record.id

@@ -30,7 +30,7 @@
                 field: @field,
                 model_key: @field.target_resource&.model_key,
                 foreign_key: 'related_id',
-                label_text: @field.name,
+                label_text: @field.name.singularize,
                 resource: @resource,
                 view: :new
               %>
@@ -38,7 +38,7 @@
               <%= avo_edit_field :related_id,
                 as: :select,
                 form: form,
-                name: @field.name,
+                name: @field.name.singularize,
                 options: options_for_select(@options,
                 nil),
                 include_blank: t('avo.choose_an_option'),
