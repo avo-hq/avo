@@ -64,6 +64,7 @@ class Avo::Resources::City < Avo::BaseResource
       },
       update_using: -> do
         ActiveSupport::JSON.decode(value)
+      rescue JSON::ParserError
       end
 
     field :created_at, as: :date_time, filterable: true
@@ -79,7 +80,7 @@ class Avo::Resources::City < Avo::BaseResource
         path, data = Avo::Actions::City::Update.link_arguments(
           resource: resource,
           arguments: {
-            cities: [resource.record.id],
+            cities: [resource.record.to_param],
             render_name: true
           }
         )
