@@ -130,10 +130,7 @@ gem "addressable"
 gem 'meta-tags'
 
 # Search
-# gem "ransack", "~> 4.1", ">= 4.1.1"
-
-# Temporary use of fork to add Rails 8 support
-gem "ransack", github: "avo-hq/ransack", branch: "fix/rails-8/delegate-alias-tracker-to-relation"
+gem "ransack", ">= 4.2.0"
 
 gem 'friendly_id', '~> 5.5.1'
 

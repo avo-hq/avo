@@ -674,7 +674,7 @@ DEPENDENCIES
   puma (~> 6.4)
   rails (~> 7.1)
   rails-controller-testing
-  ransack (~> 4.1, >= 4.1.1)
+  ransack (>= 4.2.0)
   redis (~> 5.0)
   ripper-tags
   rspec-rails (~> 6.0, >= 6.0.3)
