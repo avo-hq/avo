@@ -216,7 +216,7 @@ module Avo
         else
           record_id = value.blank? ? value : target_resource(record:).find_record(value).id
 
-          record.send(:"#{key}=", value)
+          record.send(:"#{key}=", record_id)
         end
 
         record
