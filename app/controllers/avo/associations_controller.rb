@@ -213,8 +213,6 @@ module Avo
     end
 
     def new_join_record
-      field_names = @attach_fields.map { |field| field.name.tr(" ", "_").downcase }
-
       @resource.fill_record(
         @reflection.through_reflection.klass.new,
         additional_params.merge(
