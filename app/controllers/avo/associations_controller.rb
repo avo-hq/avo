@@ -200,7 +200,7 @@ module Avo
     end
 
     def additional_params
-      params[:fields].permit(@attach_fields.map(&:id))
+      params[:fields].permit(@attach_fields&.map(&:id))
     end
 
     def set_attach_fields
