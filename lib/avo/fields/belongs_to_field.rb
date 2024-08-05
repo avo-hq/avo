@@ -241,8 +241,8 @@ module Avo
         @target_resource ||= if use_resource.present?
           use_resource
         elsif is_polymorphic?
-          if value&.class.present?
-            get_resource_by_model_class(value&.class)
+          if polymorphic_model_class.present?
+            get_resource_by_model_class(polymorphic_model_class)
           else
             return nil
           end
