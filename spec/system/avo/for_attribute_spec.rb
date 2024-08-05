@@ -54,7 +54,7 @@ RSpec.feature "for_attribute option", type: :system do
 
       click_on "Attach even review"
 
-      expect(page).to have_text "Choose even reviews"
+      expect(page).to have_text "Choose even review"
       expect(page).to have_select "fields_related_id", selected: "Choose an option"
 
       select review.tiny_name, from: "fields_related_id"
