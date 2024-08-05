@@ -22,43 +22,44 @@
       <% end %>
 
       <div class="flex-1 flex items-center justify-center px-0 lg:px-8 text-lg mt-8 mb-12">
-        <% if @field.is_searchable? %>
-          <%= render Avo::Pro::SearchableAssociations::AutocompleteComponent.new form: form,
-            classes: input_classes("w-full"),
-            field: @field,
-            model_key: @field.target_resource&.model_key,
-            foreign_key: 'related_id',
-            resource: @resource,
-            view: :new
-          %>
-        <% else %>
-          <div class="flex-1 flex flex-col items-center justify-center px-0 md:px-24 text-base">
-            <div class="w-full">
-              <%= avo_edit_field :related_id,
-                as: :select,
-                form: form,
-                name: @related_resource.name,
-                options: options_for_select(@options,
-                nil),
-                include_blank: t('avo.choose_an_option'),
-                stacked: true,
-                classes: 'w-full'
+        <div class="flex-1 flex flex-col items-center justify-center px-0 md:px-24 text-base">
+          <div class="w-full">
+            <% if @field.is_searchable? %>
+              <%= render Avo::Pro::SearchableAssociations::AutocompleteComponent.new form: form,
+                classes: input_classes("w-full"),
+                field: @field,
+                model_key: @field.target_resource&.model_key,
+                foreign_key: 'related_id',
+                label_text: @related_resource.name,
+                resource: @resource,
+                view: :new
               %>
-              <% @attach_fields&.each_with_index do |field, index| %>
-                <%= render(Avo::Items::SwitcherComponent.new(
-                  resource: @related_resource, 
-                  item: field,
-                  index: index + 1, 
-                  view: @view, 
-                  form: form, 
-                  field_component_extra_args: {
-                    compact: true, 
-                    stacked: true}
-                )) %>
-              <% end %>
-            </div>
+            <% else %>
+                  <%= avo_edit_field :related_id,
+                    as: :select,
+                    form: form,
+                    name: @related_resource.name,
+                    options: options_for_select(@options,
+                    nil),
+                    include_blank: t('avo.choose_an_option'),
+                    stacked: true,
+                    classes: 'w-full'
+                  %>
+            <% end %>
+            <% @attach_fields&.each_with_index do |field, index| %>
+              <%= render(Avo::Items::SwitcherComponent.new(
+                resource: @related_resource, 
+                item: field,
+                index: index + 1, 
+                view: @view, 
+                form: form, 
+                field_component_extra_args: {
+                  compact: true, 
+                  stacked: true}
+              )) %>
+            <% end %>
           </div>
-        <% end %>
+        </div>
       </div>
 
       <% c.with_controls do %>
