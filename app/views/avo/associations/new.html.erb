@@ -25,15 +25,23 @@
         <div class="flex-1 flex flex-col items-center justify-center px-0 md:px-24 text-base">
           <div class="w-full">
             <% if @field.is_searchable? %>
-              <%= render Avo::Pro::SearchableAssociations::AutocompleteComponent.new form: form,
-                classes: input_classes("w-full"),
+              <%= field_wrapper stacked: true,
                 field: @field,
-                model_key: @field.target_resource&.model_key,
-                foreign_key: 'related_id',
-                label_text: @field.name.singularize,
+                view: Avo::ViewInquirer.new("edit"),
+                form:,
+                index: 0,
                 resource: @resource,
-                view: :new
-              %>
+                label_for: @field.id,
+                label: @field.name.singularize.downcase do %>
+                <%= render Avo::Pro::SearchableAssociations::AutocompleteComponent.new form: form,
+                  classes: input_classes("w-full"),
+                  field: @field,
+                  model_key: @field.target_resource&.model_key,
+                  foreign_key: 'related_id',
+                  resource: @resource,
+                  view: :new
+                %>
+              <% end %>
             <% else %>
               <%= avo_edit_field :related_id,
                 as: :select,
