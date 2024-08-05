@@ -1,5 +1,4 @@
 import { Controller } from '@hotwired/stimulus'
-import { enter, leave, toggle } from 'el-transition'
 import Cookies from 'js-cookie'
 
 // Detect whether an element is in view inside a parent element.
@@ -83,29 +82,26 @@ export default class extends Controller {
     }
   }
 
-  markSidebarClosed() {
-    Cookies.set(this.cookieKey, '0')
-    this.openValue = false
-    leave(this.sidebarTarget)
-    this.mainAreaTarget.classList.remove('sidebar-open')
-  }
-
-  markSidebarOpen() {
-    Cookies.set(this.cookieKey, '1')
-    this.openValue = true
-    enter(this.sidebarTarget)
-    this.mainAreaTarget.classList.add('sidebar-open')
-  }
-
   toggleSidebar() {
-    if (this.openValue) {
-      this.markSidebarClosed()
-    } else {
-      this.markSidebarOpen()
+    if (this.sidebarTarget.classList.contains('hidden')) {
+      this.sidebarTarget.classList.remove('hidden')
     }
+    this.mainAreaTarget.classList.toggle('sidebar-open')
+    const value = Cookies.get(this.cookieKey)
+    Cookies.set(this.cookieKey, value === '1' ? '0' : '1')
   }
 
   toggleSidebarOnMobile() {
-    toggle(this.mobileSidebarTarget)
+    if (this.mobileSidebarTarget.classList.contains('hidden')) {
+      this.mainAreaTarget.classList.remove('sidebar-open')
+      this.mobileSidebarTarget.classList.remove('hidden')
+
+      // we force a reflow here because we remove then
+      // immediately add the sidebar-open class
+      // which doesn't give the browser enough time to apply the
+      // transistion.
+      this.mainAreaTarget.offsetHeight;
+    }
+    this.mainAreaTarget.classList.toggle('sidebar-open')
   }
 }

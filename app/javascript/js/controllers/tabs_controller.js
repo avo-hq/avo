@@ -54,7 +54,7 @@ export default class extends Controller {
 
     const u = new URL(window.location)
     u.searchParams.set(this.groupParam(groupId), encodeURIComponent(tabName))
-    window.history.replaceState(null, '', u.pathname + u.search)
+    window.Turbo.navigator.history.replace({ href: u.pathname + u.search })
 
     window.Avo.localStorage.set(key, tabName)
 

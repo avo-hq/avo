@@ -60,27 +60,39 @@ module Avo
     end
 
     def create
+      respond_to do |format|
+        if create_association
+          format.html {
+            redirect_back fallback_location: resource_view_response_path,
+              notice: t("avo.attachment_class_attached", attachment_class: @related_resource.name)
+          }
+        else
+          format.turbo_stream {
+            render turbo_stream: turbo_stream.append("alerts", partial: "avo/partials/all_alerts")
+          }
+        end
+      end
+    end
+
+    def create_association
       association_name = BaseResource.valid_association_name(@record, association_from_params)
 
-      if reflection_class == "HasManyReflection"
-        @record.send(association_name) << @attachment_record
-      else
-        @record.send(:"#{association_name}=", @attachment_record)
-      end
-
-      respond_to do |format|
-        if @record.save
-          format.html { redirect_back fallback_location: resource_view_response_path, notice: t("avo.attachment_class_attached", attachment_class: @related_resource.name) }
+      perform_action_and_record_errors do
+        if has_many_reflection?
+          @record.send(association_name) << @attachment_record
         else
-          format.html { render :new }
+          @record.send(:"#{association_name}=", @attachment_record)
+          @record.save!
         end
       end
     end
 
     def destroy
-      association_name = BaseResource.valid_association_name(@record, params[:related_name])
+      association_name = BaseResource.valid_association_name(@record, @field.for_attribute || params[:related_name])
 
-      if reflection_class == "HasManyReflection"
+      if @reflection.instance_of? ActiveRecord::Reflection::ThroughReflection
+        join_record.destroy!
+      elsif has_many_reflection?
         @record.send(association_name).delete @attachment_record
       else
         @record.send(:"#{association_name}=", nil)
@@ -94,7 +106,7 @@ module Avo
     private
 
     def set_reflection
-      @reflection = @record._reflections.with_indifferent_access[association_from_params]
+      @reflection = @record.class.reflect_on_association(association_from_params)
     end
 
     def set_attachment_class
@@ -120,12 +132,11 @@ module Avo
     end
 
     def reflection_class
-      reflection = @record._reflections.with_indifferent_access[association_from_params]
-
-      klass = reflection.class.name.demodulize.to_s
-      klass = reflection.through_reflection.class.name.demodulize.to_s if klass == "ThroughReflection"
-
-      klass
+      if @reflection.is_a?(ActiveRecord::Reflection::ThroughReflection)
+        @reflection.through_reflection.class
+      else
+        @reflection.class
+      end
     end
 
     def authorize_if_defined(method, record = @record)
@@ -157,7 +168,27 @@ module Avo
     end
 
     def association_from_params
-      params[:for_attribute] || params[:related_name]
+      @field&.for_attribute || params[:related_name]
+    end
+
+    def source_foreign_key
+      @reflection.source_reflection.foreign_key
+    end
+
+    def through_foreign_key
+      @reflection.through_reflection.foreign_key
+    end
+
+    def join_record
+      @reflection.through_reflection.klass.find_by(source_foreign_key => @attachment_record.id,
+        through_foreign_key => @record.id)
+    end
+
+    def has_many_reflection?
+      reflection_class.in? [
+        ActiveRecord::Reflection::HasManyReflection,
+        ActiveRecord::Reflection::HasAndBelongsToManyReflection
+      ]
     end
   end
 end

@@ -34,7 +34,7 @@ class Avo::Resources::Fish < Avo::BaseResource
 
     tool Avo::ResourceTools::NestedFishReviews, only_on: :new
     tool Avo::ResourceTools::FishInformation, show_on: :forms
-    tabs do
+    tabs visible: true do
       tab "big useless tab here" do
         panel do
           field :id, as: :id

@@ -3,7 +3,11 @@ es:
   avo:
     action_ran_successfully: "¡Acción ejecutada con éxito!"
     actions: Acciones
+    add_filter: Añadir filtro
     and_x_other_resources: y %{count} otros recursos
+    applied:
+      one: aplicado
+      other: aplicados
     are_you_sure: "¿Estás seguro?"
     are_you_sure_detach_item: "¿Estás seguro de que quieres separar este/a %{item}?"
     are_you_sure_you_want_to_run_this_option: "¿Estás seguro de que quieres ejectuar esta acción?"
@@ -39,6 +43,9 @@ es:
     failed: Fallo
     failed_to_find_attachment: No se ha encontrado el archivo adjunto
     failed_to_load: No se ha podido cargar
+    file:
+      one: archivo
+      other: archivos
     filter_by: Filtrar por
     filters: Filtros
     go_back: Volver
@@ -76,6 +83,7 @@ es:
     prev_page: Página anterior
     records_selected_from_all_pages_html: Todos los registros seleccionados de todas las páginas.
     remove_selection: Quitar la selección
+    reset: restablecer
     reset_filters: Reiniciar filtros
     resource_created: Recurso creado
     resource_destroyed: Recurso eliminado

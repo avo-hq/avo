@@ -13,6 +13,8 @@ module Avo
         end
 
         def label_from_item(item)
+          return item[:label] if item.is_a?(Hash) && item[:label].present?
+
           value = value_for_item item
 
           if suggestions_are_a_hash?

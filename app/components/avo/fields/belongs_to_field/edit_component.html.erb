@@ -66,8 +66,9 @@
                 <%= @form.hidden_field @field.id_input_foreign_key %>
               <% end %>
             <% end %>
-            <% if field.can_create? %>
-              <% create_href = create_path(Avo.resource_manager.get_resource_by_model_class(type.to_s)) %>
+            <% target_resource_for_type = Avo.resource_manager.get_resource_by_model_class(type.to_s) %>
+            <% if field.can_create?(target_resource_for_type) %>
+              <% create_href = create_path(target_resource_for_type) %>
               <% if !disabled && create_href.present? %>
                 <%= link_to t("avo.create_new_item", item: type.model_name.human.downcase),
                       create_href,

@@ -23,10 +23,16 @@ function contentPaths(basePath) {
 module.exports = {
   content: [
     ...contentPaths('./tmp/avo/packages/*'),
+    ...contentPaths('./../avo-kanban/*'),
     ...contentPaths(avoPath),
   ],
   theme: {
     extend: {
+      aspectRatio: {
+        'cover-sm': '9/2',
+        'cover-md': '9/3',
+        'cover-lg': '9/4',
+      },
       colors: {
         blue,
         gray,
@@ -44,9 +50,6 @@ module.exports = {
       inset: {
         '1/2': '50%',
         full: '100%',
-      },
-      borderRadius: {
-        xl: '1rem',
       },
       boxShadow: {
         row: '0 0 15px -5px rgba(0, 0, 0, 0.25)',
@@ -152,6 +155,11 @@ module.exports = {
       // Add has-sidebar variant to make it easier to target fields in panels and use the full-width
       addVariant('has-sidebar', '.has-sidebar & ')
       addVariant('has-record-selector', '.has-record-selector & ')
+      addVariant('has-profile-photo', '.has-profile-photo & ')
+      addVariant('has-cover-photo', '.has-cover-photo & ')
+      addVariant('index-grid-view', '.index-grid-view & ')
+      addVariant('index-table-view', '.index-table-view & ')
+      addVariant('kanban-dragging', '.kanban-dragging & ')
     }),
   ],
 }

@@ -34,6 +34,7 @@ class Avo::Resources::User < Avo::BaseResource
     end
   }
   self.includes = [:posts, :post]
+  self.attachments = [:cv]
   self.devise_password_optional = true
   self.grid_view = {
     card: -> do
@@ -67,12 +68,13 @@ class Avo::Resources::User < Avo::BaseResource
   def actions
     action Avo::Actions::ToggleInactive, icon: "heroicons/outline/globe"
     action Avo::Actions::ToggleAdmin
-    divider
+    divider label: "Other actions"
     action Avo::Actions::Sub::DummyAction
     action Avo::Actions::DownloadFile, icon: "heroicons/outline/arrow-left"
     divider
     action Avo::Actions::Test::NoConfirmationRedirect
     action Avo::Actions::Test::CloseModal
+    action Avo::Actions::Test::DoNothing
     action Avo::Actions::DetachUser
   end
 
@@ -107,6 +109,7 @@ class Avo::Resources::User < Avo::BaseResource
     field :cv, as: :file, name: "CV"
     field :is_admin?, as: :boolean, name: "Is admin", only_on: :index
     field :roles, as: :boolean_group, options: {admin: "Administrator", manager: "Manager", writer: "Writer"}
+    field :permissions, as: :boolean_group, options: {create: "Create", read: "Read", update: "Update", delete: "Delete"}
     field :birthday,
       as: :date,
       first_day_of_week: 1,

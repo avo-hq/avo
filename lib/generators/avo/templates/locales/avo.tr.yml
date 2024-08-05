@@ -3,7 +3,11 @@ tr:
   avo:
     action_ran_successfully: Eylem başarıyla gerçekleşti!
     actions: Aksiyonlar
+    add_filter: Filtre ekle
     and_x_other_resources: ve %{count} diğer kaynak
+    applied:
+      one: uygulandı
+      other: uygulanan
     are_you_sure: Emin misiniz?
     are_you_sure_detach_item: "%{item} öğesini ayırmak istediğinizden emin misiniz?"
     are_you_sure_you_want_to_run_this_option: Bu işlemi gerçekleştirmek istediğinize emin misiniz?
@@ -39,6 +43,9 @@ tr:
     failed: Başarısız
     failed_to_find_attachment: Ek bulunamadı
     failed_to_load: Yüklenemedi
+    file:
+      one: dosya
+      other: dosyalar
     filter_by: Tarafından filtre
     filters: Filtreler
     go_back: Geri dön
@@ -76,6 +83,7 @@ tr:
     prev_page: Önceki sayfa
     records_selected_from_all_pages_html: Tüm sayfalardan seçilen tüm kayıtlar
     remove_selection: Seçimi sil
+    reset: sıfırlama
     reset_filters: Filtreleri sıfırla
     resource_created: Kayıt oluşturuldu
     resource_destroyed: Kayıt silindi

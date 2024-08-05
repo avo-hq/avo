@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::Fields::Common::Files::ListViewerComponent < ViewComponent::Base
+class Avo::Fields::Common::Files::ListViewerComponent < Avo::BaseComponent
   include Turbo::FramesHelper
 
   attr_reader :field, :resource
@@ -11,7 +11,7 @@ class Avo::Fields::Common::Files::ListViewerComponent < ViewComponent::Base
   end
 
   def classes
-    base_classes = "py-4 rounded-xl max-w-full"
+    base_classes = "py-4 rounded-2xl max-w-full"
 
     view_type_classes = if view_type == :list
       "flex flex-col space-y-2"

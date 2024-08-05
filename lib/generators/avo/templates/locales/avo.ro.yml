@@ -3,7 +3,12 @@ ro:
   avo:
     action_ran_successfully: Acțiunea a rulat cu succes!
     actions: Acțiuni
+    add_filter: Adăugați filtru
     and_x_other_resources: plus alte %{count} recorduri
+    applied:
+      few: aplicate
+      one: aplicat
+      other: aplicate
     are_you_sure: Ești sigur?
     are_you_sure_detach_item: Sigur vrei să detașezi asta %{item}.
     are_you_sure_you_want_to_run_this_option: Ești sigur că vrei să rulezi aceasta acțiune?
@@ -39,6 +44,10 @@ ro:
     failed: A eșuat
     failed_to_find_attachment: Atașamentul nu a fost găsit
     failed_to_load: Încărcarea a eșuat
+    file:
+      few: fişiere
+      one: fişier
+      other: fişiere
     filter_by: Filtează după
     filters: Filtre
     go_back: Înapoi
@@ -76,6 +85,7 @@ ro:
     prev_page: Pagina anterioara
     records_selected_from_all_pages_html: Toate selectate din toate paginile
     remove_selection: Șterge selecția
+    reset: resetare
     reset_filters: Resetați filtrele
     resource_created: Resursă creata
     resource_destroyed: Resursă ștearsă

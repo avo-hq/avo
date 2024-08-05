@@ -6,7 +6,7 @@ RSpec.feature "AllowViaDetaching", type: :feature do
     let(:review) { create :review, reviewable: team }
 
     it "is enabled" do
-      visit "/admin/resources/reviews/#{review.id}/edit?via_record_id=#{team.id}&via_resource_class=Avo::Resources::Team"
+      visit "/admin/resources/reviews/#{review.id}/edit?via_record_id=#{team.to_param}&via_resource_class=Avo::Resources::Team"
 
       # Searchable is a pro feature so will be disabled even if the field defines it as enabled.
       # That's why all fields are type: :select.
@@ -27,7 +27,7 @@ RSpec.feature "AllowViaDetaching", type: :feature do
     let(:comment) { create :comment, commentable: post }
 
     it "is enabled" do
-      visit "/admin/resources/comments/#{comment.id}/edit?via_record_id=#{post.id}&via_resource_class=Avo::Resources::Post"
+      visit "/admin/resources/comments/#{comment.id}/edit?via_record_id=#{post.to_param}&via_resource_class=Avo::Resources::Post"
 
       expect(page).to have_field "comment_commentable_type", type: :select, disabled: true
 

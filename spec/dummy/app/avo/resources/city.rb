@@ -17,6 +17,17 @@ class Avo::Resources::City < Avo::BaseResource
         tooltip: record.name
       }
     },
+    extra_markers: -> do
+      [
+        {
+          latitude: params[:lat] || 37.780411,
+          longitude: params[:long] || -25.497047,
+          label: "Açores",
+          tooltip: "São Miguel",
+          color: "#0F0"
+        }
+      ]
+    end,
     table: {
       visible: true,
       layout: :bottom

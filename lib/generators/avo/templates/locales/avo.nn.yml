@@ -3,7 +3,11 @@ nn:
   avo:
     action_ran_successfully: Suksess!
     actions: Handlingar
+    add_filter: Legg til filter
     and_x_other_resources: og %{count} andre ressursar
+    applied:
+      one: applied
+      other: applied
     are_you_sure: Er du sikker?
     are_you_sure_detach_item: Er du sikker på at du vil koble frå %{item}.
     are_you_sure_you_want_to_run_this_option: Er du sikker?
@@ -39,6 +43,9 @@ nn:
     failed: Feila
     failed_to_find_attachment: Fann ikkje vedlegg
     failed_to_load: Lasting feila
+    file:
+      one: file
+      other: files
     filter_by: Filtrer etter
     filters: Filter
     go_back: Gå tilbake
@@ -76,6 +83,7 @@ nn:
     prev_page: Førre side
     records_selected_from_all_pages_html: Alle poster valgt fra alle sider
     remove_selection: Fjern val
+    reset: nullstille
     reset_filters: Nullstill filter
     resource_created: Ressurs generert
     resource_destroyed: Ressurs sletta

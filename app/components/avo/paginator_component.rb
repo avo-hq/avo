@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::PaginatorComponent < ViewComponent::Base
+class Avo::PaginatorComponent < Avo::BaseComponent
   attr_reader :pagy
   attr_reader :turbo_frame
   attr_reader :index_params
@@ -28,7 +28,11 @@ class Avo::PaginatorComponent < ViewComponent::Base
   def render?
     return false if discreet_pagination && pagy.pages <= 1
 
-    @pagy.items > 0
+    if ::Pagy::VERSION >= ::Gem::Version.new("9.0")
+      @pagy.limit > 0
+    else
+      @pagy.items > 0
+    end
   end
 
   def per_page_options

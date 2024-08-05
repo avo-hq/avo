@@ -24,4 +24,16 @@ class Avo::Current < ActiveSupport::CurrentAttributes
   def request
     view_context&.request || ActionDispatch::Request.empty
   end
+
+  def user_is_admin?
+    return false unless user&.respond_to?(Avo.configuration.is_admin_method)
+
+    user.send(Avo.configuration.is_admin_method)
+  end
+
+  def user_is_developer?
+    return false unless user&.respond_to?(Avo.configuration.is_developer_method)
+
+    user.send(Avo.configuration.is_developer_method)
+  end
 end

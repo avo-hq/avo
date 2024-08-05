@@ -19,6 +19,19 @@ RSpec.feature "belongs_to", type: :feature do
       let!(:post) { create :post, user: admin }
 
       it { is_expected.to have_text admin.name }
+      it { is_expected.to have_link admin.name, href: "/admin/resources/users/#{admin.slug}" }
+    end
+
+    describe "with a related user with link to record enabled" do
+      let!(:user) { create :user, first_name: "Alicia" }
+      let!(:comment) { create :comment, body: "a comment", user: user }
+
+      subject do
+        visit "/admin/resources/comments"
+        find("[data-resource-id='#{comment.to_param}'] [data-field-id='user']")
+      end
+
+      it { is_expected.to have_link user.name, href: "/admin/resources/comments/#{comment.id}" }
     end
 
     describe "without a related user" do
@@ -103,7 +116,7 @@ RSpec.feature "belongs_to", type: :feature do
   end
 
   context "new" do
-    let(:url) { "/admin/resources/posts/new?via_relation=user&via_record_id=#{admin.id}&via_relation_class=User" }
+    let(:url) { "/admin/resources/posts/new?via_relation=user&via_record_id=#{admin.to_param}&via_relation_class=User" }
 
     it { is_expected.to have_select "post_user_id", selected: admin.name, options: [empty_dash, admin.name], disabled: true }
 

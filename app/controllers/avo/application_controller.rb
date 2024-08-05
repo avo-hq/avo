@@ -15,7 +15,6 @@ module Avo
     protect_from_forgery with: :exception
     around_action :set_avo_locale
     around_action :set_force_locale, if: -> { params[:force_locale].present? }
-    before_action :set_default_locale, if: -> { params[:set_locale].present? }
     before_action :init_app
     before_action :set_active_storage_current_host
     before_action :set_resource_name
@@ -38,7 +37,7 @@ module Avo
         format.html { raise exception }
         format.json {
           render json: {
-            errors: exception.respond_to?(:record) && exception.record.present? ? exception.record.errors : [],
+            errors: (exception.respond_to?(:record) && exception.record.present?) ? exception.record.errors : [],
             message: exception.message,
             traces: exception.backtrace
           }, status: ActionDispatch::ExceptionWrapper.status_code_for_exception(exception.class.name)
@@ -52,10 +51,6 @@ module Avo
       super
     end
 
-    def hello
-      puts "Nobody tested me :("
-    end
-
     private
 
     # Get the pluralized resource name for this request
@@ -67,7 +62,7 @@ module Avo
 
       begin
         request.path
-          .match(/\/?#{Avo.root_path.delete('/')}\/resources\/([a-z1-9\-_]*)\/?/mi)
+          .match(/\/?#{Avo.root_path.delete("/")}\/resources\/([a-z1-9\-_]*)\/?/mi)
           .captures
           .first
       rescue
@@ -94,7 +89,7 @@ module Avo
 
       return field.use_resource if field&.use_resource.present?
 
-      reflection = @record._reflections.with_indifferent_access[params[:for_attribute] || params[:related_name]]
+      reflection = @record.class.reflect_on_association(field&.for_attribute || params[:related_name])
 
       reflected_model = reflection.klass
 
@@ -279,28 +274,31 @@ module Avo
       @resource.form_scope
     end
 
-    # Sets the locale set in avo.rb initializer
+    # Sets the locale set in avo.rb initializer or if to something that the user set using the `?set_locale=pt-BR` param
     def set_avo_locale(&action)
-      locale = Avo.configuration.locale || I18n.default_locale
+      locale = Avo.configuration.default_locale
+
+      if params[:set_locale].present?
+        locale = params[:set_locale]
+        Avo.configuration.locale = locale
+      end
+
       I18n.with_locale(locale, &action)
-    end
-
-    # Enable the user to change the default locale with the `?set_locale=pt-BR` param
-    def set_default_locale
-      locale = params[:set_locale] || I18n.default_locale
-
-      I18n.default_locale = locale
     end
 
     # Temporary set the locale and reverting at the end of the request.
     def set_force_locale(&action)
-      locale = params[:force_locale] || I18n.default_locale
-      I18n.with_locale(locale, &action)
+      I18n.with_locale(params[:force_locale], &action)
     end
 
     def set_sidebar_open
-      value = cookies["#{Avo::COOKIES_KEY}.sidebar.open"]
-      @sidebar_open = value.blank? || value == "1"
+      value = if cookies["#{Avo::COOKIES_KEY}.sidebar.open"].nil?
+        cookies["#{Avo::COOKIES_KEY}.sidebar.open"] = "1"
+      else
+        cookies["#{Avo::COOKIES_KEY}.sidebar.open"]
+      end
+
+      @sidebar_open = value == "1"
     end
 
     # Set the current host for ActiveStorage
@@ -326,8 +324,6 @@ module Avo
         "avo.base"
       end
     end
-
-    private
 
     def choose_layout
       if turbo_frame_request?

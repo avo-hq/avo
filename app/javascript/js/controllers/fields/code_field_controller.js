@@ -42,4 +42,8 @@ export default class extends Controller {
       })
     }, 1)
   }
+
+  disconnect() {
+    this.element.querySelector('.CodeMirror').CodeMirror.toTextArea()
+  }
 }

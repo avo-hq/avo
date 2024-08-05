@@ -17,7 +17,7 @@ class Avo::Fields::BooleanGroupField::EditComponent < Avo::Fields::EditComponent
     if params[@form_scope].present? && params[@form_scope][@field.id.to_s].present?
       params[@form_scope][@field.id.to_s].include?(id.to_s)
     elsif @field.value.present?
-      @field.value[id.to_s]
+      @field.value.with_indifferent_access[id]
     end
   end
 end

@@ -17,6 +17,8 @@ Avo.configure do |config|
 
   ## == App context ==
   config.current_user_method = :current_user
+  # config.is_admin_method = :is_admin?
+  # config.is_developer_method = :is_developer?
   config.model_resource_mapping = {
     User: "User"
   }
@@ -27,6 +29,7 @@ Avo.configure do |config|
       params: request.params
     }
   end
+  config.locale = :en
   # config.raise_error_on_missing_policy = true
   # config.authorization_client = "Avo::Services::AuthorizationClients::ExtraPunditClient"
 
@@ -39,6 +42,7 @@ Avo.configure do |config|
   config.search_debounce = 300
   # config.field_wrapper_layout = :stacked
   config.cache_resource_filters = false
+  config.click_row_to_view_record = true
 
   ## == Branding ==
   config.branding = {
@@ -70,62 +74,20 @@ Avo.configure do |config|
   #   "Avo::Resources::Fish"
   # ]
 
+  config.alert_dismiss_time = 5000
+  config.search_results_count = 8
+
   ## == Menus ==
-  config.main_menu = -> do
-    section "Resources", icon: "heroicons/solid/building-storefront", collapsable: true, collapsed: false do
-      group "Company", collapsable: true do
-        resource :projects
-        resource :team
-        resource :team_membership
-        resource :reviews
-      end
-
-      group "People", collapsable: true do
-        resource "User"
-        resource :people
-        resource :spouses
-      end
-
-      group "Education", collapsable: true do
-        resource :course
-        resource :course_link
-      end
-
-      group "Blog", collapsable: true do
-        # resource :z_posts
-        resource :posts
-        resource :comments
-        resource :photo_comments
-      end
-
-      section "Store", icon: "heroicons/outline/currency-dollar" do
-        resource :products
-        resource :stores
-      end
-
-      group "Other", collapsable: true, collapsed: true do
-        resource :fish, label: "Fishies"
-        resource :events
-      end
-    end
-
-    section "Geography", icon: "heroicons/outline/globe", collapsable: true, collapsed: true do
-      resource :city
-    end
-
-    section "Tools", icon: "heroicons/outline/finger-print", collapsable: true, collapsed: true do
-      all_tools
-    end
-
-    group do
+  if Rails.env.test?
+    config.main_menu = -> do
       link "Avo", "https://avohq.io"
-      link_to "Google", "https://google.com", target: :_blank
     end
   end
-  config.profile_menu = -> do
-    link "Profile", path: "/profile", icon: "heroicons/outline/user-circle"
-    # link_to "Sign out", path: main_app.destroy_user_session_path, icon: "user-circle", method: :post, params: {hehe: :hoho}
-  end
+  # end
+  # config.profile_menu = -> do
+  #   link "Profile", path: "/profile", icon: "heroicons/outline/user-circle"
+  #   # link_to "Sign out", path: main_app.destroy_user_session_path, icon: "user-circle", method: :post, params: {hehe: :hoho}
+  # end
 
   # config.pagination = -> do
   #   {

@@ -2,36 +2,31 @@
 import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
-  spinnerMarkup = `<div class="button-spinner">
-  <div class="double-bounce1"></div>
-  <div class="double-bounce2"></div>
-</div>`;
+  spinnerMarkup = `
+    <div class="button-spinner">
+      <div class="double-bounce1"></div>
+      <div class="double-bounce2"></div>
+    </div>`;
 
   static values = {
     confirmationMessage: String,
     confirmed: Boolean,
   }
 
-  attemptSubmit(e) {
-    // If the user has to confirm the action
-    if (this.confirmationMessageValue) {
-      this.confirmAndApply(e)
-    } else {
-      this.applyLoader()
-    }
+  connect() {
+    this.button.setAttribute('data-original-content', this.button.innerHTML)
+    this.dialog = document.getElementById('turbo-confirm')
+    this.dialogCloseHandler = this.handleDialogClose.bind(this)
 
-    return null
+    this.dialog.addEventListener('close', this.dialogCloseHandler)
   }
 
-  confirmAndApply(e) {
-    // Intervene only if not confirmed
-    if (!this.confirmedValue) {
-      e.preventDefault()
+  disconnect() {
+    this.dialog.removeEventListener('close', this.dialogCloseHandler)
+  }
 
-      if (window.confirm(this.confirmationMessageValue)) {
-        this.applyLoader()
-      }
-    }
+  attemptSubmit() {
+    this.applyLoader()
   }
 
   get button() {
@@ -45,19 +40,18 @@ export default class extends Controller {
     button.style.height = `${button.getBoundingClientRect().height}px`
     button.innerHTML = this.spinnerMarkup
     button.classList.add('justify-center')
-
-    setTimeout(() => {
-      this.markConfirmed()
-      button.click()
-      button.setAttribute('disabled', 'disabled')
-    }, 1)
   }
 
-  markConfirmed() {
-    this.confirmedValue = true
+  handleDialogClose() {
+    if (this.dialog.returnValue !== 'confirm') {
+      this.resetButton()
+    }
   }
 
-  markUnconfirmed() {
-    this.confirmedValue = false
+  resetButton() {
+    const { button } = this
+
+    button.innerHTML = button.getAttribute('data-original-content')
+    button.removeAttribute('disabled');
   }
 }

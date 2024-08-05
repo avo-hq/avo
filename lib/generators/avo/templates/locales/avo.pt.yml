@@ -3,7 +3,11 @@ pt:
   avo:
     action_ran_successfully: Ação executada com sucesso!
     actions: Ações
+    add_filter: Adicionar filtro
     and_x_other_resources: e %{count} outros recursos
+    applied:
+      one: aplicado
+      other: aplicados
     are_you_sure: Tem a certeza?
     are_you_sure_detach_item: Tem a certeza que deseja separar este %{item}.
     are_you_sure_you_want_to_run_this_option: Tem a certeza que deseja executar esta ação?
@@ -39,6 +43,9 @@ pt:
     failed: Falhou
     failed_to_find_attachment: Falha ao encontrar anexo
     failed_to_load: Falhou ao carregar
+    file:
+      one: ficheiro
+      other: ficheiros
     filter_by: Filtrar por
     filters: Filtros
     go_back: Voltar
@@ -76,6 +83,7 @@ pt:
     prev_page: Página anterior
     records_selected_from_all_pages_html: Todos os itens de todas as páginas selecionados
     remove_selection: Remover seleção
+    reset: restaurar
     reset_filters: Limpar filtros
     resource_created: Recurso criado
     resource_destroyed: Recurso destruído
