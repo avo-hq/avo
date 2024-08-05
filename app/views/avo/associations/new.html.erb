@@ -30,6 +30,7 @@
                 field: @field,
                 model_key: @field.target_resource&.model_key,
                 foreign_key: 'related_id',
+                label_text: @related_resource.name,
                 resource: @resource,
                 view: :new
               %>
