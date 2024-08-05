@@ -33,6 +33,7 @@ module Avo
     delegate :avo, to: :view_context
     delegate :main_app, to: :view_context
     delegate :to_param, to: :class
+    delegate :link_arguments, to: :class
 
     class << self
       delegate :context, to: ::Avo::Current
