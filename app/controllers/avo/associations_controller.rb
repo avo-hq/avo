@@ -12,6 +12,7 @@ module Avo
     before_action :set_attachment_class, only: [:show, :index, :new, :create, :destroy]
     before_action :set_attachment_resource, only: [:show, :index, :new, :create, :destroy]
     before_action :set_attachment_record, only: [:create, :destroy]
+    before_action :set_attach_fields, only: [:new, :create]
     before_action :authorize_index_action, only: :index
     before_action :authorize_attach_action, only: :new
     before_action :authorize_detach_action, only: :destroy
@@ -67,6 +68,7 @@ module Avo
               notice: t("avo.attachment_class_attached", attachment_class: @related_resource.name)
           }
         else
+          flash[:error] = t("avo.attachment_failed", attachment_class: @related_resource.name)
           format.turbo_stream {
             render turbo_stream: turbo_stream.append("alerts", partial: "avo/partials/all_alerts")
           }
@@ -78,7 +80,9 @@ module Avo
       association_name = BaseResource.valid_association_name(@record, association_from_params)
 
       perform_action_and_record_errors do
-        if has_many_reflection?
+        if through_reflection? && additional_params.present?
+          new_join_record.save
+        elsif has_many_reflection? || through_reflection?
           @record.send(association_name) << @attachment_record
         else
           @record.send(:"#{association_name}=", @attachment_record)
@@ -90,7 +94,7 @@ module Avo
     def destroy
       association_name = BaseResource.valid_association_name(@record, @field.for_attribute || params[:related_name])
 
-      if @reflection.instance_of? ActiveRecord::Reflection::ThroughReflection
+      if through_reflection?
         join_record.destroy!
       elsif has_many_reflection?
         @record.send(association_name).delete @attachment_record
@@ -189,6 +193,37 @@ module Avo
         ActiveRecord::Reflection::HasManyReflection,
         ActiveRecord::Reflection::HasAndBelongsToManyReflection
       ]
+    end
+
+    def through_reflection?
+      @reflection.instance_of? ActiveRecord::Reflection::ThroughReflection
+    end
+
+    def additional_params
+      @additional_params ||= params[:fields].permit(@attach_fields&.map(&:id))
+    end
+
+    def set_attach_fields
+      @attach_fields = if @field.attach_fields.present?
+        Avo::FieldsExecutionContext.new(target: @field.attach_fields)
+          .detect_fields
+          .items_holder
+          .items
+      end
+    end
+
+    def new_join_record
+      @resource.fill_record(
+        @reflection.through_reflection.klass.new,
+        additional_params.merge(
+          {
+            source_foreign_key => @attachment_record.id,
+            through_foreign_key => @record.id
+          }
+        ),
+        fields: @attach_fields,
+        extra_params: [source_foreign_key, through_foreign_key]
+      )
     end
   end
 end

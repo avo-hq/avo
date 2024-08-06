@@ -18,6 +18,7 @@ ro:
     attachment_class_attached: "%{attachment_class} anexat."
     attachment_class_detached: "%{attachment_class} separat."
     attachment_destroyed: Atașamentul a fost distrus
+    attachment_failed: Nu s-a reușit atașarea %{attachment_class}
     cancel: Anulează
     choose_a_country: Alege o țară
     choose_an_option: Alege o opțiune

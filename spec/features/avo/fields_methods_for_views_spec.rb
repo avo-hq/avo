@@ -175,7 +175,7 @@ RSpec.feature "Fields methods for each view", type: :feature do
 
       click_on "Attach link"
 
-      expect(page).to have_text "Choose course link"
+      expect(page).to have_text "Choose link"
 
       select attach_link.link, from: "fields_related_id"
 

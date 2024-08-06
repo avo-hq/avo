@@ -285,14 +285,16 @@ module Avo
         self
       end
 
-      VIEW_METHODS_MAPPING = {
-        index: [:index_fields, :display_fields],
-        show: [:show_fields, :display_fields],
-        edit: [:edit_fields, :form_fields],
-        update: [:edit_fields, :form_fields],
-        new: [:new_fields, :form_fields],
-        create: [:new_fields, :form_fields]
-      } unless defined? VIEW_METHODS_MAPPING
+      unless defined? VIEW_METHODS_MAPPING
+        VIEW_METHODS_MAPPING = {
+          index: [:index_fields, :display_fields],
+          show: [:show_fields, :display_fields],
+          edit: [:edit_fields, :form_fields],
+          update: [:edit_fields, :form_fields],
+          new: [:new_fields, :form_fields],
+          create: [:new_fields, :form_fields]
+        }
+      end
 
       def fetch_fields
         possible_methods_for_view = VIEW_METHODS_MAPPING[view.to_sym]
@@ -334,12 +336,12 @@ module Avo
         end
 
         # def get_actions / def get_filters / def get_scopes
-        define_method "get_#{plural_entity}" do
+        define_method :"get_#{plural_entity}" do
           return entity_loader(entity).bag if entity_loader(entity).present?
 
           # ex: @actions_loader = Avo::Loaders::ActionsLoader.new
           instance_variable_set(
-            "@#{plural_entity}_loader",
+            :"@#{plural_entity}_loader",
             "Avo::Loaders::#{plural_entity.humanize}Loader".constantize.new
           )
 
@@ -349,8 +351,8 @@ module Avo
         end
 
         # def get_action_arguments / def get_filter_arguments / def get_scope_arguments
-        define_method "get_#{entity}_arguments" do |entity_class|
-          klass = send("get_#{plural_entity}").find { |entity| entity[:class].to_s == entity_class.to_s }
+        define_method :"get_#{entity}_arguments" do |entity_class|
+          klass = send(:"get_#{plural_entity}").find { |entity| entity[:class].to_s == entity_class.to_s }
 
           raise "Couldn't find '#{entity_class}' in the 'def #{plural_entity}' method on your '#{self.class}' resource." if klass.nil?
 
@@ -359,7 +361,7 @@ module Avo
       end
 
       def hydrate(...)
-        super(...)
+        super
 
         if @record.present?
           hydrate_model_with_default_values if @view&.new?
@@ -443,10 +445,14 @@ module Avo
           .to_h
       end
 
-      def fill_record(record, params, extra_params: [])
+      def fill_record(record, params, extra_params: [], fields: nil)
         # Write the field values
         params.each do |key, value|
-          field = fields_by_database_id[key]
+          field = if fields.present?
+            fields.find { |f| f.id == key.to_sym }
+          else
+            fields_by_database_id[key]
+          end
 
           next unless field.present?
 
@@ -601,7 +607,7 @@ module Avo
       end
 
       def entity_loader(entity)
-        instance_variable_get("@#{entity.to_s.pluralize}_loader")
+        instance_variable_get(:"@#{entity.to_s.pluralize}_loader")
       end
 
       def record_param

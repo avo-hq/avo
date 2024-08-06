@@ -171,7 +171,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_04_10_120015) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "price_cents", default: 0, null: false
-    t.string "price_currency", default: "'USD'::character varying", null: false
+    t.string "price_currency", default: "USD", null: false
   end
 
   create_table "projects", force: :cascade do |t|
@@ -206,6 +206,14 @@ ActiveRecord::Schema[8.0].define(version: 2024_04_10_120015) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_reviews_on_user_id"
+  end
+
+  create_table "store_patrons", force: :cascade do |t|
+    t.integer "store_id"
+    t.integer "user_id"
+    t.string "review"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "stores", force: :cascade do |t|

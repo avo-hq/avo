@@ -16,6 +16,7 @@ en:
     attach_item: Attach %{item}
     attachment_class_attached: "%{attachment_class} attached."
     attachment_class_detached: "%{attachment_class} detached."
+    attachment_failed: "Failed to attach %{attachment_class}"
     attachment_destroyed: Attachment destroyed
     cancel: Cancel
     choose_a_country: Choose a country

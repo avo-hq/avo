@@ -13,7 +13,7 @@ module Avo
         private
 
         def required_from_validators
-          return false if record.nil?
+          return false unless record.present?
 
           validators.any? do |validator|
             validator.is_a? ActiveModel::Validations::PresenceValidator

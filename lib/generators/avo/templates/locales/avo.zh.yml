@@ -16,6 +16,7 @@ zh:
     attach_item: 附加 %{item}
     attachment_class_attached: "%{attachment_class} 已附加。"
     attachment_class_detached: "%{attachment_class} 已分离。"
+    attachment_failed: "无法附加 %{attachment_class}"
     attachment_destroyed: 附件已删除
     cancel: 取消
     choose_a_country: 选择一个国家

@@ -17,6 +17,7 @@ ja:
     attachment_class_attached: "%{attachment_class}をアタッチしました。"
     attachment_class_detached: "%{attachment_class}をデタッチしました。"
     attachment_destroyed: アタッチは削除されました
+    attachment_failed: "%{attachment_class}の添付に失敗しました"
     cancel: キャンセル
     choose_a_country: 国を選択
     choose_an_option: オプションを選択

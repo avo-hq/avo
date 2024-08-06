@@ -15,6 +15,7 @@ en:
     attachment_class_attached: "%{attachment_class} attached."
     attachment_class_detached: "%{attachment_class} detached."
     attachment_destroyed: Attachment destroyed
+    attachment_failed: Failed to attach %{attachment_class}
     cancel: Cancel
     choose_a_country: Choose a country
     choose_an_option: Choose an option

@@ -16,6 +16,7 @@ ru:
     attach_item: Прикрепить %{item}
     attachment_class_attached: "%{attachment_class} прикреплено."
     attachment_class_detached: "%{attachment_class} отсоединено."
+    attachment_failed: "Не удалось прикрепить %{attachment_class}"
     attachment_destroyed: Вложение удалено
     cancel: Отмена
     choose_a_country: Выберите страну
