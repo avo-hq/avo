@@ -142,7 +142,7 @@ module Avo
     end
 
     def html_req_for_association_page?
-      @reflection.present? && request.format == :html
+      @reflection.present? && !turbo_frame_request?
     end
 
     private
