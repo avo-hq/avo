@@ -18,12 +18,10 @@ module Avo
 
     def index
       @page_title = @resource.plural_name.humanize
-      @turbo_frame = params[:turbo_frame]
 
-      if html_req_for_association_page?
+      if @reflection.present? && !helpers.turbo_frame_request?
         add_breadcrumb @record.class.to_s.pluralize, resources_path(resource: @parent_resource)
         add_breadcrumb @parent_resource.record_title, resource_path(record: @record, resource: @parent_resource)
-        @turbo_frame = nil
       end
       add_breadcrumb @resource.plural_name.humanize
 
