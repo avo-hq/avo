@@ -19,7 +19,7 @@ module Avo
     def index
       @page_title = @resource.plural_name.humanize
 
-      if @reflection.present? && turbo_frame_request?
+      if @reflection.present? && !turbo_frame_request?
         add_breadcrumb @record.class.to_s.pluralize, resources_path(resource: @parent_resource)
         add_breadcrumb @parent_resource.record_title, resource_path(record: @record, resource: @parent_resource)
       end
