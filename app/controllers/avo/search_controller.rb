@@ -26,7 +26,7 @@ module Avo
             raise_exception: false
           )
           # Filter out the models without a search_query
-          next if resource.search_query.nil?
+          raise "Please configure the search for #{resource}" if resource.search_query.nil?
 
           search_resource resource
         end
