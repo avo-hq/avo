@@ -461,8 +461,17 @@ module Avo
 
         # Write the user configured extra params to the record
         if extra_params.present?
+          # Temporarily disable the action on unpermitted parameters
+          # The `params` object already had strong parameters applied to it and the base + extra_params have been permitted.
+          # Here, we only need to handle the extra parameters without reapplying the unpermitted parameters
+          action_on_unpermitted_parameters = ActionController::Parameters.action_on_unpermitted_parameters
+          ActionController::Parameters.action_on_unpermitted_parameters = false
+
           # Let Rails fill in the rest of the params
           record.assign_attributes params.permit(extra_params)
+
+          # Restore the action on unpermitted parameters
+          ActionController::Parameters.action_on_unpermitted_parameters = action_on_unpermitted_parameters
         end
 
         record
