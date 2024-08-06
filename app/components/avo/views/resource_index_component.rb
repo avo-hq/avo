@@ -189,6 +189,12 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     defined?(Avo::Advanced)
   end
 
+  def back_path
+    if @reflection.present? && !helpers.turbo_frame_request?
+      helpers.resource_path(record: @parent_record, resource: @parent_resource)
+    end
+  end
+
   private
 
   def reflection_model_class

@@ -53,5 +53,15 @@ RSpec.feature "Breadcrumbs", type: :feature do
       expect(breadcrumbs).to have_link team.name.to_s
       expect(breadcrumbs).to_not have_link "Users"
     end
+
+    it "has a back button" do
+      url = "/admin/resources/teams/#{team.id}/team_members?view=show"
+      visit url
+
+      expect(page).to have_link "Go back"
+      click_link "Go back"
+      expect(current_path).to eq "/admin/resources/teams/#{team.id}"
+      expect(page).to have_link "Go back", count: 1
+    end
   end
 end
