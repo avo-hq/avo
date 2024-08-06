@@ -27,7 +27,7 @@ RSpec.feature "Breadcrumbs", type: :feature do
     let!(:team) { create(:team) }
 
     it "displays breadcrumbs" do
-      url = "/admin/resources/users/#{user.slug}/teams?view=show&turbo_frame=has_and_belongs_to_many_field_show_teams"
+      url = "/admin/resources/users/#{user.slug}/teams?view=show"
       visit url
 
       expect(page).to have_selector ".breadcrumbs"
@@ -41,7 +41,7 @@ RSpec.feature "Breadcrumbs", type: :feature do
     end
 
     it "displays breadcrumbs" do
-      url = "/admin/resources/teams/#{team.id}/team_members?view=show&turbo_frame=has_many_field_show_team_members"
+      url = "/admin/resources/teams/#{team.id}/team_members?view=show"
       visit url
 
       expect(page).to have_selector ".breadcrumbs"
