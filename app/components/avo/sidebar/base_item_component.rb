@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 class Avo::Sidebar::BaseItemComponent < Avo::BaseComponent
-  attr_reader :item
-  delegate :items, :collapsable, :collapsed, to: :@item
+  attr_reader :item, :items
+  delegate :collapsable, :collapsed, to: :@item
 
   def initialize(item: nil)
     @item = item
+    @items = @item.items.select(&:visible?)
   end
 
   def render?
