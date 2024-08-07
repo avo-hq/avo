@@ -9,7 +9,7 @@ class Avo::ButtonComponent < Avo::BaseComponent
   prop :style, Symbol, default: :outline
   prop :color, Symbol, default: :gray
   prop :icon, _Nilable(String)
-  prop :icon_class, String, default: ''
+  prop :icon_class, String, default: ""
   prop :is_link, _Boolean, default: false
   prop :rounded, _Boolean, default: true
   prop :compact, _Boolean, default: false
