@@ -212,7 +212,7 @@ export default class extends Controller {
   }
 
   handleOnSelect({ item }) {
-    if (this.isBelongsToSearch) {
+    if (this.isBelongsToSearch && !item._error) {
       this.updateFieldAttribute(this.hiddenIdTarget, 'value', item._id)
       this.updateFieldAttribute(this.buttonTarget, 'value', this.removeHTMLTags(item._label))
 

@@ -9,9 +9,14 @@ module Avo
     before_action :set_resource, only: :show
 
     def show
-      render json: search_resources([resource])
+      if resource.search_query.blank?
+        render_error _label: "Please configure the search for #{resource}",
+          _url: "https://docs.avohq.io/3.0/search.html#enable-search-for-a-resource"
+      else
+        render json: search_resources([resource])
+      end
     rescue => error
-      render_search_error(error)
+      render_error _label: error.message
     end
 
     private
@@ -25,8 +30,6 @@ module Avo
             policy_class: resource.authorization_policy,
             raise_exception: false
           )
-          # Filter out the models without a search_query
-          raise "Please configure the search for #{resource}" if resource.search_query.nil?
 
           search_resource resource
         end
@@ -179,15 +182,17 @@ module Avo
       parent_resource.find_record params[:via_reflection_id], params: params
     end
 
-    def render_search_error(error)
+    def render_error(_label:, _url: "")
       raise error unless Rails.env.development?
 
       render json: {
         error: {
-          header: "🚨 An error occurred while searching. 🚨",
-          help: "Please see the error and fix it before deploying.",
+          header: "🚨 An error occurred during search 🚨",
+          help: "Please review and resolve the issue before deployment 🚨",
           results: {
-            _label: error.message
+            _label:,
+            _url:,
+            _error: true
           },
           count: 1
         }
