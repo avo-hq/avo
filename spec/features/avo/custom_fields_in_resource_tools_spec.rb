@@ -69,7 +69,6 @@ RSpec.feature "CustomFieldsInResourceTools", type: :feature do
       expect_any_instance_of(Fish).to receive("properties=").with(["Fishy property 1", "Fishy property 2"])
       expect_any_instance_of(Fish).to receive("information=").with({name: "Fishy name", history: "Fishy history", age: "Fishy age"})
 
-
       save
     end
   end
