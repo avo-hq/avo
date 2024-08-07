@@ -16,19 +16,7 @@ RSpec.describe "uncountable fish resource", type: :feature do
 
         fill_in "fish_name", with: "Nemo"
 
-        with_temporary_class_option(
-          Avo::Resources::Fish,
-          :extra_params,
-          [
-            :fish_type,
-            :something_else,
-            properties: [],
-            information: [:name, :history, :age],
-            reviews_attributes: [:body, :user_id]
-          ]
-        ) do
-          save
-        end
+        save
 
         nemo = Fish.first
 

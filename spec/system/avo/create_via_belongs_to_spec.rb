@@ -28,20 +28,8 @@ RSpec.describe 'Create Via Belongs to', type: :system do
 
         expect(page).to have_select('fish_user_id', selected: User.last.name)
 
-        with_temporary_class_option(
-          Avo::Resources::Fish,
-          :extra_params,
-          [
-            :fish_type,
-            :something_else,
-            properties: [],
-            information: [:name, :history, :age],
-            reviews_attributes: [:body, :user_id]
-          ]
-        ) do
-          click_on "Save"
-          sleep 0.2
-        end
+        click_on "Save"
+        sleep 0.2
 
         expect(fish.reload.user).to eq User.last
       end
@@ -98,20 +86,8 @@ RSpec.describe 'Create Via Belongs to', type: :system do
       expect(page).to have_select('fish_user_id', selected: User.last.name)
 
       expect do
-        with_temporary_class_option(
-          Avo::Resources::Fish,
-          :extra_params,
-          [
-            :fish_type,
-            :something_else,
-            properties: [],
-            information: [:name, :history, :age],
-            reviews_attributes: [:body, :user_id]
-          ]
-        ) do
-          click_on "Save"
-          sleep 0.2
-        end
+        click_on "Save"
+        sleep 0.2
       end.to change(Fish, :count).by(1)
 
       expect(Fish.last.user).to eq User.last
