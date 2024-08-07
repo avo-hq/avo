@@ -460,21 +460,29 @@ module Avo
         end
 
         # Write the user configured extra params to the record
-        if extra_params.present?
-          # Temporarily disable the action on unpermitted parameters
-          # The `params` object already had strong parameters applied to it and the base + extra_params have been permitted.
-          # Here, we only need to handle the extra parameters without reapplying the unpermitted parameters
-          action_on_unpermitted_parameters = ActionController::Parameters.action_on_unpermitted_parameters
-          ActionController::Parameters.action_on_unpermitted_parameters = false
-
-          # Let Rails fill in the rest of the params
-          record.assign_attributes params.permit(extra_params)
-
-          # Restore the action on unpermitted parameters
-          ActionController::Parameters.action_on_unpermitted_parameters = action_on_unpermitted_parameters
-        end
+        assign_extra_attributes(record, params, extra_params) if extra_params.present?
 
         record
+      end
+
+      def assign_extra_attributes(record, params, extra_params)
+        # [:fish_type, :something_else, properties: [], information: [:name, :history], reviews_attributes: [:body, :user_id]]
+        # becomes
+        # [:fish_type, :something_else, :properties, :information, :reviews_attributes]
+        # params at this point are already permited, only need the keys to access them
+        extra_params_keys = extra_params.flat_map do |element|
+          if element.is_a?(Hash)
+            element.keys
+          else
+            element
+          end
+        end
+
+        # Pick only the extra params
+        extra_attributes = params.slice(*extra_params_keys)
+
+        # Let Rails fill in the rest of the params
+        record.assign_attributes extra_attributes
       end
 
       def authorization(user: nil)
