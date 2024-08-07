@@ -26,7 +26,7 @@ RSpec.feature "CustomFieldsInResourceTools", type: :feature do
       expect { save }.to raise_error("found unpermitted parameter: :age")
     end
 
-    it "sends the params to the model" do
+    it "sends the params to the model ignoring unpermitted age" do
       expect_any_instance_of(Fish).to receive("fish_type=").with("Fishy type")
       expect_any_instance_of(Fish).to receive("properties=").with(["Fishy property 1", "Fishy property 2"])
       expect_any_instance_of(Fish).to receive("information=").with({name: "Fishy name", history: "Fishy history"})
@@ -34,6 +34,26 @@ RSpec.feature "CustomFieldsInResourceTools", type: :feature do
       ActionController::Parameters.action_on_unpermitted_parameters = :log
       save
       ActionController::Parameters.action_on_unpermitted_parameters = :warning
+    end
+
+    it "sends all the params to the model" do
+      expect_any_instance_of(Fish).to receive("fish_type=").with("Fishy type")
+      expect_any_instance_of(Fish).to receive("properties=").with(["Fishy property 1", "Fishy property 2"])
+      expect_any_instance_of(Fish).to receive("information=").with({name: "Fishy name", history: "Fishy history", age: "Fishy age"})
+
+      with_temporary_class_option(
+          Avo::Resources::Fish,
+          :extra_params,
+          [
+            :fish_type,
+            :something_else,
+            properties: [],
+            information: [:name, :history, :age],
+            reviews_attributes: [:body, :user_id]
+          ]
+        ) do
+        save
+      end
     end
   end
 end
