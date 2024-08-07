@@ -52,7 +52,6 @@ Avo.boot
 # Ensure that there are no unpermitted_parameters logs
 ActionController::Parameters.action_on_unpermitted_parameters = :raise
 
-
 require "support/download_helpers"
 require "support/request_helpers"
 
