@@ -466,20 +466,9 @@ module Avo
       end
 
       def assign_extra_attributes(record, params, extra_params)
-        # [:fish_type, :something_else, properties: [], information: [:name, :history], reviews_attributes: [:body, :user_id]]
-        # becomes
-        # [:fish_type, :something_else, :properties, :information, :reviews_attributes]
-        # params at this point are already permited, only need the keys to access them
-        extra_params_keys = extra_params.flat_map do |element|
-          if element.is_a?(Hash)
-            element.keys
-          else
-            element
-          end
-        end
-
         # Pick only the extra params
-        extra_attributes = params.slice(*extra_params_keys)
+        # params at this point are already permited, only need the keys to access them
+        extra_attributes = params.slice(*flatten_keys(extra_params))
 
         # Let Rails fill in the rest of the params
         record.assign_attributes extra_attributes
@@ -629,6 +618,22 @@ module Avo
 
       def record_param
         @record_param ||= @record.persisted? ? @record.to_param : nil
+      end
+
+      private
+
+      def flatten_keys(array)
+        # [:fish_type, :something_else, properties: [], information: [:name, :history], reviews_attributes: [:body, :user_id]]
+        # becomes
+        # [:fish_type, :something_else, :properties, :information, :reviews_attributes]
+        array.flat_map do |item|
+          case item
+          when Hash
+            item.keys
+          else
+            item
+          end
+        end
       end
     end
   end
