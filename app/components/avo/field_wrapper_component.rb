@@ -3,48 +3,25 @@
 class Avo::FieldWrapperComponent < Avo::BaseComponent
   include Avo::Concerns::HasResourceStimulusControllers
 
-  attr_reader :dash_if_blank
-  attr_reader :compact
-  attr_reader :field
-  attr_reader :form
-  attr_reader :full_width
-  attr_reader :resource
-  attr_reader :view
+  prop :dash_if_blank, _Boolean, default: true, reader: :public
+  prop :data, Hash, default: {}.freeze
+  prop :compact,  _Boolean, default: false, reader: :public
+  prop :help, _Nilable(String)
+  prop :field, _Nilable(Avo::Fields::BaseField), reader: :public
+  prop :form, _Nilable(ActionView::Helpers::FormBuilder), reader: :public
+  prop :full_width, _Boolean, default: false, reader: :public
+  prop :label, _Nilable(String)
+  prop :resource, _Nilable(Avo::BaseResource), reader: :public
+  prop :short, _Boolean, default: false
+  prop :stacked, _Nilable(_Boolean)
+  prop :style, String, default: ""
+  prop :view, String, default: "show", reader: :public
+  prop :label_for, _Nilable(String)
+  prop :args, Hash, :**, default: {}.freeze
 
-  def initialize(
-    dash_if_blank: true,
-    data: {},
-    compact: false,
-    help: nil, # do we really need it?
-    field: nil,
-    form: nil,
-    full_width: false,
-    label: nil, # do we really need it?
-    resource: nil,
-    short: false,
-    stacked: nil,
-    style: "",
-    view: :show,
-    label_for: nil,
-    **args
-  )
-    @args = args
-    @classes = args[:class].present? ? args[:class] : ""
-    @dash_if_blank = dash_if_blank
-    @data = data
-    @compact = compact
-    @help = help
-    @field = field
-    @form = form
-    @full_width = full_width
-    @label = label
-    @resource = resource
-    @action = field.action
-    @short = short
-    @stacked = stacked
-    @style = style
-    @view = view
-    @label_for = label_for
+  def after_initialize
+    @classes = @args[:class].present? ? @args[:class] : ""
+    @action = @field.action
   end
 
   def classes(extra_classes = "")
