@@ -31,9 +31,9 @@ RSpec.feature "CustomFieldsInResourceTools", type: :feature do
       expect_any_instance_of(Fish).to receive("properties=").with(["Fishy property 1", "Fishy property 2"])
       expect_any_instance_of(Fish).to receive("information=").with({name: "Fishy name", history: "Fishy history"})
 
-      ActionController::Parameters.action_on_unpermitted_parameters = :log
-      save
-      ActionController::Parameters.action_on_unpermitted_parameters = :warning
+      with_temporary_class_option(ActionController::Parameters, :action_on_unpermitted_parameters, :log) do
+        save
+      end
     end
 
     it "sends all the params to the model" do
