@@ -3,13 +3,8 @@
 class Avo::AlertComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
 
-  attr_reader :type
-  attr_reader :message
-
-  def initialize(type, message)
-    @type = type
-    @message = message
-  end
+  prop :type, Symbol, :positional, reader: :public
+  prop :message, String, :positional, reader: :public
 
   def icon
     return "heroicons/solid/exclamation-circle" if is_error?
