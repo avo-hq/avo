@@ -10,7 +10,7 @@ module TestHelpers
     end
 
     def with_temporary_class_option(klass, option_name, option_value, &block)
-      previous_value =  klass.send(option_name)
+      previous_value = klass.send(option_name)
       klass.send(:"#{option_name}=", option_value)
 
       block.call
