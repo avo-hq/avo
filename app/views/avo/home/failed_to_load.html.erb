@@ -2,7 +2,7 @@
   <%
   classes = 'absolute inset-auto left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2'
   label = t 'avo.failed_to_load'
-  src_url = params[:src].present? && !params[:src].starts_with?('http://') ? params.permit(:src).fetch(:src) : nil
+  src_url = params[:src].present? && !params[:src].starts_with?('http://') ? params[:src] : nil
 %>
   <div class="relative flex-1 py-4">
     <div class="relative block text-gray-300 h-64 w-full">
