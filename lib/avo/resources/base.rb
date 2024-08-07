@@ -621,9 +621,9 @@ module Avo
       private
 
       def flatten_keys(array)
-        # [:fish_type, :something_else, properties: [], information: [:name, :history], reviews_attributes: [:body, :user_id]]
+        # [:fish_type, information: [:name, :history], reviews_attributes: [:body, :user_id]]
         # becomes
-        # [:fish_type, :something_else, :properties, :information, :reviews_attributes]
+        # [:fish_type, :information, :reviews_attributes]
         array.flat_map do |item|
           case item
           when Hash
