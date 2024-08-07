@@ -460,18 +460,16 @@ module Avo
         end
 
         # Write the user configured extra params to the record
-        assign_extra_attributes(record, params, extra_params) if extra_params.present?
+        if extra_params.present?
+          # Pick only the extra params
+          # params at this point are already permited, only need the keys to access them
+          extra_attributes = params.slice(*flatten_keys(extra_params))
+
+          # Let Rails fill in the rest of the params
+          record.assign_attributes extra_attributes
+        end
 
         record
-      end
-
-      def assign_extra_attributes(record, params, extra_params)
-        # Pick only the extra params
-        # params at this point are already permited, only need the keys to access them
-        extra_attributes = params.slice(*flatten_keys(extra_params))
-
-        # Let Rails fill in the rest of the params
-        record.assign_attributes extra_attributes
       end
 
       def authorization(user: nil)
