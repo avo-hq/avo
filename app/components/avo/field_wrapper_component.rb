@@ -5,7 +5,7 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
 
   prop :dash_if_blank, _Boolean, default: true, reader: :public
   prop :data, Hash, default: {}.freeze
-  prop :compact,  _Boolean, default: false, reader: :public
+  prop :compact, _Boolean, default: false, reader: :public
   prop :help, _Nilable(String)
   prop :field, _Nilable(Avo::Fields::BaseField), reader: :public
   prop :form, _Nilable(ActionView::Helpers::FormBuilder), reader: :public
