@@ -12,6 +12,11 @@ on:
       - 1.x
       - 2.x
 
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   RAILS_ENV: test
   PGHOST: localhost
