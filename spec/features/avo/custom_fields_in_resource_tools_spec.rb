@@ -42,16 +42,16 @@ RSpec.feature "CustomFieldsInResourceTools", type: :feature do
       expect_any_instance_of(Fish).to receive("information=").with({name: "Fishy name", history: "Fishy history", age: "Fishy age"})
 
       with_temporary_class_option(
-          Avo::Resources::Fish,
-          :extra_params,
-          [
-            :fish_type,
-            :something_else,
-            properties: [],
-            information: [:name, :history, :age],
-            reviews_attributes: [:body, :user_id]
-          ]
-        ) do
+        Avo::Resources::Fish,
+        :extra_params,
+        [
+          :fish_type,
+          :something_else,
+          properties: [],
+          information: [:name, :history, :age],
+          reviews_attributes: [:body, :user_id]
+        ]
+      ) do
         save
       end
     end
