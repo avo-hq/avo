@@ -132,7 +132,7 @@ module Avo
     end
 
     def attachment_id
-      params[:related_id] || params.require(:fields).permit(:related_id)[:related_id]
+      params[:related_id] || params.dig(:fields, :related_id)
     end
 
     def reflection_class
@@ -200,7 +200,7 @@ module Avo
     end
 
     def additional_params
-      @additional_params ||= params[:fields].permit(@attach_fields&.map(&:id))
+      @additional_params ||= params[:fields].slice(@attach_fields&.map(&:id))
     end
 
     def set_attach_fields
