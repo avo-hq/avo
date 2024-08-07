@@ -1,5 +1,5 @@
 <%= turbo_frame_tag "new_via_belongs_to" do %>
-  <%= render(Avo::ModalComponent.new(width: :xl, body_class: "bg-application")) do |c| %>
+  <%= render(Avo::ModalComponent.new(width: :xl)) do |c| %>
     <div class="pt-4 pb-8">
       <%= render Avo::Views::ResourceEditComponent.new(
         resource: @resource,

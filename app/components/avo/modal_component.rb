@@ -4,14 +4,9 @@ class Avo::ModalComponent < Avo::BaseComponent
   renders_one :heading
   renders_one :controls
 
-  attr_reader :width
-  attr_reader :body_class
-
-  def initialize(width: :md, body_class: nil, overflow: :auto)
-    @width = width
-    @body_class = body_class
-    @overflow = overflow
-  end
+  prop :width, Symbol, default: :md, reader: :public
+  prop :body_class, _Nilable(String), reader: :public
+  prop :overflow, Symbol, default: :auto, reader: :public
 
   def width_classes
     case width.to_sym
