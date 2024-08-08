@@ -4,7 +4,6 @@ class Avo::PanelComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
 
   attr_reader :title # deprecating title in favor of name
-  attr_reader :name
 
   delegate :white_panel_classes, to: :helpers
 
@@ -18,18 +17,20 @@ class Avo::PanelComponent < Avo::BaseComponent
   renders_one :footer_tools
   renders_one :footer
 
-  def initialize(name: nil, description: nil, body_classes: nil, data: {}, display_breadcrumbs: false, index: nil, classes: nil, profile_photo: nil, cover_photo: nil, **args)
-    # deprecating title in favor of name
-    @title = args[:title]
+  prop :name, _Nilable(String), reader: :public
+  prop :description, _Nilable(String)
+  prop :body_classes, _Nilable(String)
+  prop :data, Hash, default: {}.freeze
+  prop :display_breadcrumbs, _Boolean, default: false
+  prop :index, _Nilable(Integer)
+  prop :classes, _Nilable(String)
+  prop :profile_photo, _Nilable(Avo::ProfilePhoto)
+  prop :cover_photo, _Nilable(Avo::CoverPhoto)
+  prop :args, Hash, :**, default: {}.freeze
+
+  def after_initialize
+    @title = @args[:title]
     @name = name || title
-    @description = description
-    @classes = classes
-    @body_classes = body_classes
-    @data = data
-    @display_breadcrumbs = display_breadcrumbs
-    @index = index
-    @profile_photo = profile_photo
-    @cover_photo = cover_photo
   end
 
   def classes
