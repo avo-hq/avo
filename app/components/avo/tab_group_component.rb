@@ -1,23 +1,17 @@
 # frozen_string_literal: true
 
 class Avo::TabGroupComponent < Avo::BaseComponent
-  attr_reader :group
-  attr_reader :index
-  attr_reader :view
-  attr_reader :form
-  attr_reader :resource
-
   delegate :group_param, to: :@group
 
-  def initialize(resource:, group:, index:, form:, params:, view:)
-    @resource = resource
-    @group = group
-    @index = index
-    @form = form
-    @params = params
-    @view = view
+  prop :resource, Avo::ResourcesBase, reader: :public
+  prop :group, Avo::Resources::Items::TabGroup, reader: :public
+  prop :index, Integer, reader: :public
+  prop :form, ActionView::Helpers::FormBuilder, reader: :public
+  prop :params, ActionController::Parameters, reader: :public
+  prop :view, String, reader: :public
 
-    @group.index = index
+  def after_initialize
+    group.index = index
   end
 
   def render?
