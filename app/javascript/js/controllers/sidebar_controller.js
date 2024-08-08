@@ -44,13 +44,6 @@ export default class extends Controller {
     return window.Avo.localStorage.get('sidebar.sidebarScrollPosition')
   }
 
-  get newValue(oldValue) {
-    if (oldValue === undefined) {
-      return '0'
-    }
-    return oldValue === '1' ? '0' : '1'
-  }
-
   set sidebarScrollPosition(value) {
     window.Avo.localStorage.set('sidebar.sidebarScrollPosition', value)
   }
@@ -111,4 +104,13 @@ export default class extends Controller {
     }
     this.mainAreaTarget.classList.toggle('sidebar-open')
   }
+
+  // private
+  newValue(oldValue) {
+    if (oldValue === undefined) {
+      return '0'
+    }
+    return oldValue === '1' ? '0' : '1'
+  }
+
 }
