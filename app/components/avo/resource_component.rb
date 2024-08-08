@@ -36,7 +36,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   def detach_path
     return "/" if @reflection.blank?
 
-    helpers.resource_detach_path(params[:resource_name], params[:id], @reflection.name.to_s, @resource.record.to_param)
+    helpers.resource_detach_path(params[:resource_name], params[:id], @reflection.name.to_s, @resource.record_param)
   end
 
   def can_see_the_edit_button?
@@ -149,6 +149,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       label: actions_list.label,
       size: actions_list.size,
       icon: actions_list.icon,
+      title: actions_list.title,
       as_row_control: instance_of?(Avo::Index::ResourceControlsComponent)
     )
   end
@@ -174,7 +175,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
         target: "control:destroy",
         control: :destroy,
         tippy: control.title ? :tooltip : nil,
-        "resource-id": @resource.record.id,
+        "resource-id": @resource.record_param,
       } do
       control.label
     end
@@ -187,7 +188,10 @@ class Avo::ResourceComponent < Avo::BaseComponent
       style: :primary,
       loading: true,
       type: :submit,
-      icon: "avo/save" do
+      icon: "avo/save",
+      data: {
+        turbo_confirm: @resource.confirm_on_save ? t("avo.are_you_sure") : nil
+      } do
       control.label
     end
   end

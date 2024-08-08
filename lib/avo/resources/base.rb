@@ -61,6 +61,7 @@ module Avo
       class_attribute :view_types
       class_attribute :grid_view
       class_attribute :calendar_view
+      class_attribute :confirm_on_save, default: false
       class_attribute :visible_on_sidebar, default: true
       class_attribute :index_query, default: -> {
         query
@@ -119,7 +120,7 @@ module Avo
         end
 
         def valid_association_name(record, association_name)
-          association_name if record._reflections.with_indifferent_access[association_name].present?
+          association_name if record.class.reflect_on_association(association_name).present?
         end
 
         def valid_attachment_name(record, association_name)
@@ -285,14 +286,16 @@ module Avo
         self
       end
 
-      VIEW_METHODS_MAPPING = {
-        index: [:index_fields, :display_fields],
-        show: [:show_fields, :display_fields],
-        edit: [:edit_fields, :form_fields],
-        update: [:edit_fields, :form_fields],
-        new: [:new_fields, :form_fields],
-        create: [:new_fields, :form_fields]
-      } unless defined? VIEW_METHODS_MAPPING
+      unless defined? VIEW_METHODS_MAPPING
+        VIEW_METHODS_MAPPING = {
+          index: [:index_fields, :display_fields],
+          show: [:show_fields, :display_fields],
+          edit: [:edit_fields, :form_fields],
+          update: [:edit_fields, :form_fields],
+          new: [:new_fields, :form_fields],
+          create: [:new_fields, :form_fields]
+        }
+      end
 
       def fetch_fields
         possible_methods_for_view = VIEW_METHODS_MAPPING[view.to_sym]
@@ -329,17 +332,17 @@ module Avo
         end
 
         # def action / def filter / def scope
-        define_method entity do |entity_class, arguments: {}, icon: nil|
-          entity_loader(entity).use({class: entity_class, arguments: arguments, icon: icon}.compact)
+        define_method entity do |entity_class, arguments: {}, icon: nil, default: nil|
+          entity_loader(entity).use({class: entity_class, arguments: arguments, icon: icon, default: default}.compact)
         end
 
         # def get_actions / def get_filters / def get_scopes
-        define_method "get_#{plural_entity}" do
+        define_method :"get_#{plural_entity}" do
           return entity_loader(entity).bag if entity_loader(entity).present?
 
           # ex: @actions_loader = Avo::Loaders::ActionsLoader.new
           instance_variable_set(
-            "@#{plural_entity}_loader",
+            :"@#{plural_entity}_loader",
             "Avo::Loaders::#{plural_entity.humanize}Loader".constantize.new
           )
 
@@ -349,8 +352,8 @@ module Avo
         end
 
         # def get_action_arguments / def get_filter_arguments / def get_scope_arguments
-        define_method "get_#{entity}_arguments" do |entity_class|
-          klass = send("get_#{plural_entity}").find { |entity| entity[:class].to_s == entity_class.to_s }
+        define_method :"get_#{entity}_arguments" do |entity_class|
+          klass = send(:"get_#{plural_entity}").find { |entity| entity[:class].to_s == entity_class.to_s }
 
           raise "Couldn't find '#{entity_class}' in the 'def #{plural_entity}' method on your '#{self.class}' resource." if klass.nil?
 
@@ -359,7 +362,7 @@ module Avo
       end
 
       def hydrate(...)
-        super(...)
+        super
 
         if @record.present?
           hydrate_model_with_default_values if @view&.new?
@@ -394,8 +397,8 @@ module Avo
       def record_title
         return name if @record.nil?
 
-        # Get the title from the record if title is not set, try to get the name, title or label, or fallback to the id
-        return @record.try(:name) || @record.try(:title) || @record.try(:label) || @record.id  if title.nil?
+        # Get the title from the record if title is not set, try to get the name, title or label, or fallback to the to_param
+        return @record.try(:name) || @record.try(:title) || @record.try(:label) || @record.to_param if title.nil?
 
         # If the title is a symbol, get the value from the record else execute the block/string
         case title
@@ -444,10 +447,14 @@ module Avo
           .to_h
       end
 
-      def fill_record(record, params, extra_params: [])
+      def fill_record(record, params, extra_params: [], fields: nil)
         # Write the field values
         params.each do |key, value|
-          field = fields_by_database_id[key]
+          field = if fields.present?
+            fields.find { |f| f.id == key.to_sym }
+          else
+            fields_by_database_id[key]
+          end
 
           next unless field.present?
 
@@ -510,7 +517,7 @@ module Avo
 
             if field.type == "belongs_to"
 
-              reflection = @record._reflections.with_indifferent_access[@params[:via_relation]]
+              reflection = @record.class.reflect_on_association(@params[:via_relation]) if @params[:via_relation].present?
 
               if field.polymorphic_as.present? && field.types.map(&:to_s).include?(@params[:via_relation_class])
                 # set the value to the actual record
@@ -602,7 +609,11 @@ module Avo
       end
 
       def entity_loader(entity)
-        instance_variable_get("@#{entity.to_s.pluralize}_loader")
+        instance_variable_get(:"@#{entity.to_s.pluralize}_loader")
+      end
+
+      def record_param
+        @record_param ||= @record.persisted? ? @record.to_param : nil
       end
     end
   end

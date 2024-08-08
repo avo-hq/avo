@@ -48,9 +48,13 @@
             %>
             <% else %>
               <%= @form.select @field.id_input_foreign_key,
-              options_for_select(@field.values_for_type(type), @resource.present? && @resource.record.present? && @field.value.class == type ? @resource.record[@field.id_input_foreign_key] : nil),
+              options_for_select(
+                # Options
+                @field.values_for_type(type),
+                # Selected
+                @field.value.is_a?(type) ? @field.value.to_param : nil
+              ),
               {
-                value: @field.value.class == type ? @resource.record[@field.id_input_foreign_key].to_s : nil,
                 include_blank: @field.placeholder,
               },
               {
@@ -98,10 +102,10 @@
         style: @field.get_html(:style, view: view, element: :input)
       %>
     <% else %>
-      <%= @form.select @field.id_input_foreign_key, @field.options,
+      <%= @form.select @field.id_input_foreign_key,
+        options_for_select(@field.options, @field.value.to_param),
         {
           include_blank: @field.placeholder,
-          value: @field.value
         },
         {
           class: classes("w-full"),

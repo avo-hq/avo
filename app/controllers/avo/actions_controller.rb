@@ -4,7 +4,7 @@ module Avo
   class ActionsController < ApplicationController
     before_action :set_resource_name
     before_action :set_resource
-    before_action :set_record, only: :show, if: ->(request) do
+    before_action :set_record, only: [:show, :handle], if: ->(request) do
       # Try to se the record only if the user is on the record page.
       # set_record will fail if it's tried to be used from the Index page.
       request.params[:id].present?
@@ -75,6 +75,9 @@ module Avo
         view: :new, # force the action view to in order to render new-related fields (hidden field)
         arguments: BaseAction.decode_arguments(params[:arguments] || params.dig(:fields, :arguments)) || {}
       )
+
+      # Fetch action's fields
+      @action.fields
     end
 
     def action_class

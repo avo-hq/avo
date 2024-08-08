@@ -26,7 +26,7 @@
       }), data: {slot: "value"} do %>
     <div class="self-center w-full <% unless full_width? || compact? || stacked? %> md:w-8/12 has-sidebar:w-full <% end %>">
       <% if on_show? %>
-        <% if field.value.blank? and dash_if_blank %>
+        <% if render_dash? %>
           —
         <% else %>
           <%= content %>

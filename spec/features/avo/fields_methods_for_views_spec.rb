@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.feature "Fields methods for each view", type: :feature do
   let!(:links) { create_list :course_link, 3 }
@@ -175,7 +175,7 @@ RSpec.feature "Fields methods for each view", type: :feature do
 
       click_on "Attach link"
 
-      expect(page).to have_text "Choose course link"
+      expect(page).to have_text "Choose link"
 
       select attach_link.link, from: "fields_related_id"
 

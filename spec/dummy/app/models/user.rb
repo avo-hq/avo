@@ -36,13 +36,12 @@ class User < ApplicationRecord
   has_many :people
   has_many :spouses
   has_many :comments
-  has_many :team_memberships
   has_and_belongs_to_many :projects, inverse_of: :users
-  has_and_belongs_to_many :teams, join_table: :team_memberships, inverse_of: :admin
-
+  has_many :team_memberships
+  has_many :teams, through: :team_memberships, inverse_of: :admin
   has_one_attached :cv
 
-  friendly_id :name, use: :slugged
+  friendly_id :name, use: [:slugged, :finders]
 
   scope :active, -> { where active: true }
   scope :admins, -> { where "(roles->>'admin')::boolean is true" }
@@ -97,7 +96,7 @@ class User < ApplicationRecord
       create: true,
       update: false,
       read: true,
-      delete: true
+      delete: true,
     }
   end
 end

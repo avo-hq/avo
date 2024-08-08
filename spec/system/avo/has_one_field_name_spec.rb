@@ -25,7 +25,7 @@ RSpec.describe "HasOneFieldName", type: :system do
 
         wait_for_loaded
 
-        expect(page).to have_text "Choose post"
+        expect(page).to have_text "Choose main post"
 
         expect(page).to have_select "fields_related_id", selected: "Choose an option"
         select post.name, from: "fields_related_id"

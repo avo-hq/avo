@@ -125,7 +125,7 @@ module Avo
         end
 
         query.all.map do |record|
-          [resource.new(record: record).record_title, record.id]
+          [resource.new(record: record).record_title, record.to_param]
         end
       end
 
@@ -195,25 +195,31 @@ module Avo
         foreign_key.to_sym
       end
 
-      def fill_field(model, key, value, params)
-        return model unless model.methods.include? key.to_sym
+      def fill_field(record, key, value, params)
+        return record unless record.methods.include? key.to_sym
 
         if polymorphic_as.present?
           valid_model_class = valid_polymorphic_class params[:"#{polymorphic_as}_type"]
 
-          model.send(:"#{polymorphic_as}_type=", valid_model_class)
+          record.send(:"#{polymorphic_as}_type=", valid_model_class)
 
           # If the type is blank, reset the id too.
-          if valid_model_class.blank?
-            model.send(:"#{polymorphic_as}_id=", nil)
+          id_from_param = params["#{polymorphic_as}_id"]
+
+          if valid_model_class.blank? || id_from_param.blank?
+            record.send(:"#{polymorphic_as}_id=", nil)
           else
-            model.send(:"#{polymorphic_as}_id=", params["#{polymorphic_as}_id"])
+            record_id = target_resource(record:, polymorphic_model_class: value.safe_constantize).find_record(id_from_param).id
+
+            record.send(:"#{polymorphic_as}_id=", record_id)
           end
         else
-          model.send("#{key}=", value)
+          record_id = value.blank? ? value : target_resource(record:).find_record(value).id
+
+          record.send(:"#{key}=", record_id)
         end
 
-        model
+        record
       end
 
       def valid_polymorphic_class(possible_class)
@@ -231,19 +237,19 @@ module Avo
         id
       end
 
-      def target_resource
+      def target_resource(record: @record, polymorphic_model_class: value&.class)
         @target_resource ||= if use_resource.present?
           use_resource
         elsif is_polymorphic?
-          if value.present?
-            get_resource_by_model_class(value.class)
+          if polymorphic_model_class.present?
+            get_resource_by_model_class(polymorphic_model_class)
           else
             return nil
           end
         else
           reflection_key = polymorphic_as || id
 
-          reflection_object = @record._reflections.with_indifferent_access[reflection_key]
+          reflection_object = record.class.reflect_on_association(reflection_key)
 
           if reflection_object.klass.present?
             get_resource_by_model_class(reflection_object.klass.to_s)

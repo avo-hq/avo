@@ -16,6 +16,7 @@ it:
     attach_item: Allega %{item}
     attachment_class_attached: "%{attachment_class} allegato."
     attachment_class_detached: "%{attachment_class} staccato."
+    attachment_failed: "Impossibile allegare %{attachment_class}"
     attachment_destroyed: Allegato distrutto
     cancel: Annulla
     choose_a_country: Scegli un paese

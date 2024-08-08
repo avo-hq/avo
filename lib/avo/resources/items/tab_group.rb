@@ -18,6 +18,7 @@ class Avo::Resources::Items::TabGroup
     @id = id
     @name = name
     @args = args
+    @visible = args[:visible]
 
     post_initialize if respond_to?(:post_initialize)
   end
@@ -66,8 +67,8 @@ class Avo::Resources::Items::TabGroup
       @items_holder.tabs tab
     end
 
-    def initialize(name:, id:, parent:, style: nil)
-      @group = Avo::Resources::Items::TabGroup.new(name: name, id: id, style: style)
+    def initialize(name:, id:, parent:, style: nil, **args)
+      @group = Avo::Resources::Items::TabGroup.new(name: name, id: id, style: style, **args)
       @items_holder = Avo::Resources::Items::Holder.new(parent: parent, from: self)
     end
 

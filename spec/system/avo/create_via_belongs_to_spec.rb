@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe 'Create Via Belongs to', type: :system do
   describe 'edit' do
@@ -39,7 +39,7 @@ RSpec.describe 'Create Via Belongs to', type: :system do
       let(:comment) { create(:comment, user: create(:user), commentable: create(:project)) }
 
       it 'successfully creates a new commentable and assigns it to the comment', :aggregate_failures do
-        visit "/admin/resources/comments/#{comment.id}/edit"
+        visit "/admin/resources/comments/#{comment.to_param}/edit"
 
         page.select 'Post', from: 'comment_commentable_type'
         click_on 'Create new post'

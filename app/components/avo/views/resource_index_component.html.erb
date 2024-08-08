@@ -11,7 +11,7 @@
       description: description,
       cover_photo: resource.cover_photo,
       data: {component: "resources-index"},
-      display_breadcrumbs: @reflection.blank?
+      display_breadcrumbs: @reflection.blank? || (@reflection.present? && !helpers.turbo_frame_request?)
     ) do |c| %>
     <% c.with_name_slot do %>
       <%= render Avo::PanelNameComponent.new name: title, url: (params[:turbo_frame].present? && linkable?) ? field.frame_url(add_turbo_frame: false) : nil, target: :_blank do |panel_name_component| %>
@@ -78,7 +78,7 @@
       <% end %>
       <% if view_type.to_sym == :table || view_type.to_sym == :map %>
         <% if @records.present? %>
-          <div class="mt-4">
+          <div class="mt-4 w-full">
             <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: turbo_frame || "none", index_params: @index_params, resource: @resource, parent_record: parent_record, discreet_pagination: field&.discreet_pagination %>
           </div>
         <% end %>

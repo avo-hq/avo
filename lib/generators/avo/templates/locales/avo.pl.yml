@@ -16,6 +16,7 @@ pl:
     attach_item: Załącz %{item}
     attachment_class_attached: "%{attachment_class} załączony."
     attachment_class_detached: "%{attachment_class} odłączony."
+    attachment_failed: "Nie udało się dołączyć %{attachment_class}"
     attachment_destroyed: Załącznik usunięty
     cancel: Anuluj
     choose_a_country: Wybierz kraj

@@ -24,7 +24,7 @@ class Avo::Fields::HasOneField::ShowComponent < Avo::Fields::ShowComponent
   def attach_path
     helpers.avo.resources_associations_new_path(
       @resource.singular_model_key,
-      @resource.record.to_param,
+      @resource.record_param,
       @field.id,
       for_attribute: @field.for_attribute
     )
@@ -42,13 +42,13 @@ class Avo::Fields::HasOneField::ShowComponent < Avo::Fields::ShowComponent
   end
 
   def create_path
-    association_id = @field.resource.model_class._reflections.with_indifferent_access[@field.association_name].inverse_of.name
+    association_id = @field.resource.model_class.reflect_on_association(@field.association_name).inverse_of.name
 
     args = {
       via_relation: association_id,
       via_relation_class: @resource.model_class.to_s,
       via_resource_class: @resource.class,
-      via_record_id: @resource.record.to_param,
+      via_record_id: @resource.record_param,
       via_association_type: :has_one
     }
 

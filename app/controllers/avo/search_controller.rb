@@ -47,15 +47,7 @@ module Avo
         query: resource.query_scope
       ).handle
 
-      query = apply_scope(query) if should_apply_any_scope?
-
-      # Get the count
-      results_count = query.reselect(resource.model_class.primary_key).count
-
-      # Get the results
-      query = query.limit(search_results_count(resource))
-
-      results = apply_search_metadata(query, resource)
+      results_count, results = parse_results(query, resource)
 
       header = resource.plural_name
 
@@ -137,7 +129,7 @@ module Avo
       end
 
       {
-        _id: record.id,
+        _id: record.to_param,
         _label: highlighted_title,
         _url: resource.class.fetch_search(:result_path, record: resource.record) || record_path
       }
@@ -211,6 +203,34 @@ module Avo
       else
         Avo.configuration.search_results_count
       end
+    end
+
+    def parse_results(query, resource)
+      # When using custom search services query should return an array of hashes
+      if query.is_a?(Array)
+        # Apply highlight
+        query.map do |result|
+          result[:_label] = highlight(result[:_label].to_s, CGI.escapeHTML(params[:q] || ""))
+        end
+
+        # Force count to 0 until implement an API to pass the count
+        results_count = 0
+
+        # Apply the limit
+        results = query.first(search_results_count(resource))
+      else
+        query = apply_scope(query) if should_apply_any_scope?
+
+        # Get the count
+        results_count = query.reselect(resource.model_class.primary_key).count
+
+        # Get the results
+        query = query.limit(search_results_count(resource))
+
+        results = apply_search_metadata(query, resource)
+      end
+
+      [results_count, results]
     end
   end
 end

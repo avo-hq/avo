@@ -11,7 +11,7 @@
     class="hidden text-slate-800"
   >
     <%= form_with scope: 'fields',
-      url: Avo::Services::URIService.parse(@resource.records_path).append_paths("actions").to_s,
+      url: @action.link_arguments(resource: @resource).first,
       local: true,
       html: {
         novalidate: true,
@@ -29,7 +29,6 @@
       <div class="flex-1 flex">
         <%= @action.get_message %>
       </div>
-      <%= hidden_field_tag :action_id, @action.to_param %>
       <%= form.hidden_field :avo_resource_ids, value: params[:id] || params[:resource_ids], 'data-action-target': 'resourceIds' %>
       <%= form.hidden_field :avo_selected_query, 'data-action-target': 'selectedAllQuery' %>
       <%= form.hidden_field :arguments, value: params[:arguments] %>
@@ -58,7 +57,8 @@
             size: :sm,
             data: {
               target: :submit_action,
-            }, autofocus: @fields.reject { |field| field.is_a?(Avo::Fields::HiddenField) }.empty? do %>
+            },
+            autofocus: @fields.reject { |field| field.is_a?(Avo::Fields::HiddenField) }.empty? do %>
           <%= @action.confirm_button_label %>
         <% end %>
       <% end %>

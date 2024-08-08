@@ -28,7 +28,7 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
 
   def back_path
     if via_resource?
-      helpers.resource_path(record: association_resource.model_class, resource: association_resource, resource_id: params[:via_record_id])
+      helpers.resource_path(resource: association_resource, resource_id: params[:via_record_id])
     else
       helpers.resources_path(resource: @resource, **keep_referrer_params, view_type: params[:view_type], date: params[:date])
     end
@@ -43,7 +43,7 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
     elsif @parent_resource.present?
       {
         via_resource_class: @parent_resource.class,
-        via_record_id: @parent_record.id
+        via_record_id: @parent_record.to_param
       }
     else
       {}

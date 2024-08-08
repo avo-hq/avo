@@ -65,7 +65,11 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   end
 
   def is_has_many_association?
-    @reflection.is_a?(::ActiveRecord::Reflection::HasManyReflection) || @reflection.is_a?(::ActiveRecord::Reflection::ThroughReflection)
+    @reflection.class.in? [
+      ActiveRecord::Reflection::HasManyReflection,
+      ActiveRecord::Reflection::HasAndBelongsToManyReflection,
+      ActiveRecord::Reflection::ThroughReflection
+    ]
   end
 
   def referrer_path
@@ -85,7 +89,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
       data: {
         target: "control:edit",
         control: :edit,
-        "resource-id": @resource.record.id,
+        "resource-id": @resource.record_param,
         tippy: "tooltip",
       }
   end
@@ -129,14 +133,14 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
         target: "control:destroy",
         control: :destroy,
         tippy: control.title ? :tooltip : nil,
-        "resource-id": @resource.record.id,
+        "resource-id": @resource.record_param,
       }
   end
 
   def render_detach_button(control)
     return unless can_detach?
 
-    a_button url: helpers.resource_detach_path(params[:resource_name], params[:id], params[:related_name], @resource.record.id),
+    a_button url: helpers.resource_detach_path(params[:resource_name], params[:id], params[:related_name], @resource.record_param),
       style: :icon,
       color: :gray,
       icon: "avo/detach",
@@ -150,7 +154,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
         turbo_confirm: control.confirmation_message,
         target: "control:detach",
         control: :detach,
-        "resource-id": @resource.record.id,
+        "resource-id": @resource.record_param,
         tippy: :tooltip,
       }
   end
