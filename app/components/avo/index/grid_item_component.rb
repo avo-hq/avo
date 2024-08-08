@@ -4,23 +4,15 @@ class Avo::Index::GridItemComponent < Avo::BaseComponent
   include Avo::ResourcesHelper
   include Avo::Fields::Concerns::HasHTMLAttributes
 
-  attr_reader :parent_resource, :actions
-  # NOTE through reflection breaks ./spec/features/avo/has_many_field_spec.rb
-  #
-  # prop :resource, _Nilable(Avo::BaseResource)
-  # prop :reflection, _Nilable(ActiveRecord::Reflection::AssociationReflection)
-  # prop :parent_record, _Nilable(ActiveRecord::Base)
-  # prop :parent_resource, _Nilable(Avo::BaseResource), reader: :public
-  # prop :actions, _Nilable(_Array(Avo::BaseAction)), reader: :public
+  prop :resource, _Nilable(Avo::BaseResource)
+  prop :reflection, _Nilable(ActiveRecord::Reflection::AbstractReflection)
+  prop :parent_record, _Nilable(ActiveRecord::Base)
+  prop :parent_resource, _Nilable(Avo::BaseResource), reader: :public
+  prop :actions, _Nilable(_Array(Avo::BaseAction)), reader: :public
 
-  def initialize(resource: nil, reflection: nil, parent_record: nil, parent_resource: nil, actions: nil)
-    @resource = resource
-    @reflection = reflection
-    @parent_record = parent_record
-    @parent_resource = parent_resource
-    @actions = actions
-    @card = Avo::ExecutionContext.new(target: resource.grid_view[:card], resource: resource, record: resource.record).handle
-    @whole_html = Avo::ExecutionContext.new(target: resource.grid_view[:html], resource: resource, record: resource.record).handle
+  def after_initialize
+    @card = Avo::ExecutionContext.new(target: @resource.grid_view[:card], resource: @resource, record: @resource.record).handle
+    @whole_html = Avo::ExecutionContext.new(target: @resource.grid_view[:html], resource: @resource, record: @resource.record).handle
   end
 
   private
