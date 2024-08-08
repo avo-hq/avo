@@ -8,27 +8,14 @@ class Avo::Index::ResourceTableComponent < Avo::BaseComponent
     @header_fields, @table_row_components = cache_table_rows
   end
 
-  # NOTE through reflection breaks ./spec/features/avo/has_many_field_spec.rb
-  #
-  # prop :resources, _Nilable(_Array(Avo::BaseResource))
-  # prop :resource, _Nilable(Avo::BaseResource)
-  # prop :reflection, _Nilable(ActiveRecord::Reflection::AssociationReflection)
-  # prop :reflection, _Nilable(ActiveRecord::Reflection::ThroughReflection)
-  # prop :parent_record, _Nilable(ActiveRecord::Base)
-  # prop :parent_resource, _Nilable(Avo::BaseResource), reader: :public
-  # prop :pagy, _Nilable(Pagy), reader: :public
-  # prop :query, _Nilable(ActiveRecord::Relation), reader: :public
-  # prop :actions, _Nilable(_Array(Avo::BaseAction)), reader: :public
-  def initialize(resources: nil, resource: nil, reflection: nil, parent_record: nil, parent_resource: nil, pagy: nil, query: nil, actions: nil)
-    @resources = resources
-    @resource = resource
-    @reflection = reflection
-    @parent_record = parent_record
-    @parent_resource = parent_resource
-    @pagy = pagy
-    @query = query
-    @actions = actions
-  end
+  prop :resources, _Nilable(_Array(Avo::BaseResource))
+  prop :resource, _Nilable(Avo::BaseResource)
+  prop :reflection, _Nilable(ActiveRecord::Reflection::AbstractReflection)
+  prop :parent_record, _Nilable(ActiveRecord::Base)
+  prop :parent_resource, _Nilable(Avo::BaseResource), reader: :public
+  prop :pagy, _Nilable(Pagy), reader: :public
+  prop :query, _Nilable(ActiveRecord::Relation), reader: :public
+  prop :actions, _Nilable(_Array(Avo::BaseAction)), reader: :public
 
   def encrypted_query
     # TODO: move this to the resource where we can apply the adapter pattern
