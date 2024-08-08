@@ -19,6 +19,36 @@ RSpec.describe "LinkToChildResource", type: :feature do
       end
     end
 
+    context "Resource show page links to associated resources" do
+      let(:paul) { create :sibling, name: "paul" }
+      let(:john) { create :person, name: "john", person: paul }
+      it "display belongs_to association linked to the child resource if set at resource level" do
+        Avo::Resources::Person.link_to_child_resource = true
+        visit "/admin/resources/people/#{john.id}"
+        wait_for_loaded
+        expect(page).to have_link(paul.name, href: "/admin/resources/siblings/#{paul.id}?via_record_id=#{john.id}&via_resource_class=Avo%3A%3AResources%3A%3APerson")
+      end
+
+      it "display belongs_to association linked to the parent class resource if set at resource level" do
+        Avo::Resources::Person.link_to_child_resource = false
+        visit "/admin/resources/people/#{john.id}"
+        wait_for_loaded
+        expect(page).to have_link(paul.name, href: "/admin/resources/people/#{paul.id}?via_record_id=#{john.id}&via_resource_class=Avo%3A%3AResources%3A%3APerson")
+      end
+
+      it "display belongs_to association linked to the child resource if set at field level" do
+        visit "/admin/resources/people/#{john.id}"
+        wait_for_loaded
+        expect(page).to have_link(paul.name, href: "/admin/resources/siblings/#{paul.id}?via_record_id=#{john.id}&via_resource_class=Avo%3A%3AResources%3A%3APerson")
+      end
+
+      it "display belongs_to association linked to the parent class resource if set at field level" do
+        visit "/admin/resources/people/#{john.id}"
+        wait_for_loaded
+        expect(page).to have_link(paul.name, href: "/admin/resources/people/#{paul.id}?via_record_id=#{john.id}&via_resource_class=Avo%3A%3AResources%3A%3APerson")
+      end
+    end
+
     context "Field linking to child resources" do
       let(:paul) { create :sibling, name: "paul" }
       let(:lisa) { create :spouse, name: "lisa" }

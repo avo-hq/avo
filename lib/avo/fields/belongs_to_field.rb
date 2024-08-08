@@ -86,6 +86,7 @@ module Avo
         @use_resource = args[:use_resource] || nil
         @can_create = args[:can_create].nil? ? true : args[:can_create]
         @link_to_record = args[:link_to_record].present? ? args[:link_to_record] : false
+        @link_to_child_resource = args[:link_to_child_resource]
       end
 
       def value
@@ -251,7 +252,9 @@ module Avo
 
           reflection_object = record.class.reflect_on_association(reflection_key)
 
-          if reflection_object.klass.present?
+          if (@link_to_child_resource || @resource&.link_to_child_resource) && value.present?
+            get_resource_by_model_class(value.class.to_s)
+          elsif reflection_object.klass.present?
             get_resource_by_model_class(reflection_object.klass.to_s)
           elsif reflection_object.options[:class_name].present?
             get_resource_by_model_class(reflection_object.options[:class_name])
