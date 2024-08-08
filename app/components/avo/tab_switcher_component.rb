@@ -4,24 +4,14 @@ class Avo::TabSwitcherComponent < Avo::BaseComponent
   include Avo::UrlHelpers
   include Avo::ApplicationHelper
 
-  attr_reader :active_tab_name
-  attr_reader :group
-  attr_reader :current_tab
-  attr_reader :tabs
-  attr_reader :view
-  attr_reader :resource
-
   delegate :white_panel_classes, to: :helpers
   delegate :group_param, to: :@group
 
-  def initialize(resource:, group:, current_tab:, active_tab_name:, view:)
-    @active_tab_name = active_tab_name
-    @resource = resource
-    @group = group
-    @current_tab = current_tab
-    @tabs = group.items
-    @view = view
-  end
+  prop :resource, Avo::BaseResource, reader: :public
+  prop :group, Avo::Resources::Items::TabGroup, reader: :public
+  prop :current_tab, Avo::Resources::Items::Tab, reader: :public
+  prop :active_tab_name, String, reader: :public
+  prop :view, String, reader: :public
 
   #TOD: helper to record:
   def tab_path(tab)
