@@ -87,8 +87,8 @@ export default class extends Controller {
       this.sidebarTarget.classList.remove('hidden')
     }
     this.mainAreaTarget.classList.toggle('sidebar-open')
-    const value = Cookies.get(this.cookieKey)
-    Cookies.set(this.cookieKey, value === '1' ? '0' : '1')
+
+    Cookies.set(this.cookieKey, this.newValue(Cookies.get(this.cookieKey)))
   }
 
   toggleSidebarOnMobile() {
@@ -104,4 +104,13 @@ export default class extends Controller {
     }
     this.mainAreaTarget.classList.toggle('sidebar-open')
   }
+
+  // private
+  newValue(oldValue) {
+    if (oldValue === undefined) {
+      return '0'
+    }
+    return oldValue === '1' ? '0' : '1'
+  }
+
 }
