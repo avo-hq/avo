@@ -1,11 +1,7 @@
 # frozen_string_literal: true
 
 class Avo::SidebarProfileComponent < Avo::BaseComponent
-  attr_reader :user
-
-  def initialize(user:)
-    @user = user
-  end
+  prop :user, ActiveRecord::Base, reader: :public
 
   def avatar
     if user.respond_to?(:avatar) && user.avatar.present?
