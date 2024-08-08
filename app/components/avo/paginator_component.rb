@@ -1,14 +1,12 @@
 # frozen_string_literal: true
 
 class Avo::PaginatorComponent < Avo::BaseComponent
-  def initialize(resource: nil, parent_record: nil, pagy: nil, turbo_frame: nil, index_params: nil, discreet_pagination: nil)
-    @pagy = pagy
-    @turbo_frame = CGI.escapeHTML(turbo_frame) if turbo_frame
-    @index_params = index_params
-    @resource = resource
-    @parent_record = parent_record
-    @discreet_pagination = discreet_pagination
-  end
+  prop :resource, _Nilable(Avo::BaseResource), reader: :public
+  prop :parent_record, _Nilable(ActiveRecord::Base), reader: :public
+  prop :pagy, _Nilable(Pagy), reader: :public
+  prop :turbo_frame, _Nilable(String), reader: :public
+  prop :index_params, _Nilable(Hash), reader: :public
+  prop :discreet_pagination, _Nilable(_Boolean), reader: :public
 
   def change_items_per_page_url(option)
     if @parent_record.present?
