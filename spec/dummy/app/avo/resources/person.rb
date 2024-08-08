@@ -23,7 +23,6 @@ class Avo::Resources::Person < Avo::BaseResource
     field :peoples,
       as: :has_many,
       hide_search_input: true,
-      link_to_child_resource: false,
       description: "Default behaviour with link_to_child_resource disabled"
   end
 end

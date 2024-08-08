@@ -69,6 +69,7 @@ module Avo
       attr_reader :attach_scope
       attr_reader :polymorphic_help
       attr_reader :link_to_record
+      attr_reader :link_to_child_resource
 
       def initialize(id, **args, &block)
         args[:placeholder] ||= I18n.t("avo.choose_an_option")
@@ -252,7 +253,7 @@ module Avo
 
           reflection_object = record.class.reflect_on_association(reflection_key)
 
-          if (@link_to_child_resource || @resource&.link_to_child_resource) && value.present?
+          if (link_to_child_resource || @resource&.link_to_child_resource) && value.present?
             get_resource_by_model_class(value.class.to_s)
           elsif reflection_object.klass.present?
             get_resource_by_model_class(reflection_object.klass.to_s)

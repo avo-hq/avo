@@ -3,6 +3,14 @@
 require "rails_helper"
 
 RSpec.describe "LinkToChildResource", type: :feature do
+  around do |example|
+    prev_state = Avo::Resources::Person.link_to_child_resource
+    # This test expects the fallback to be false
+    Avo::Resources::Person.link_to_child_resource = false
+    example.run
+    Avo::Resources::Person.link_to_child_resource = prev_state
+  end
+
   describe "link_to_child_resource " do
     context "Resource linking to child resources" do
       let!(:sibling) { create :sibling, name: "sibling" }
@@ -71,6 +79,34 @@ RSpec.describe "LinkToChildResource", type: :feature do
 
         expect(page).to have_link(href: "/admin/resources/people/#{paul.id}/edit?via_record_id=#{john.to_param}&via_resource_class=Avo%3A%3AResources%3A%3APerson")
         expect(page).to have_link(href: "/admin/resources/people/#{lisa.id}/edit?via_record_id=#{john.to_param}&via_resource_class=Avo%3A%3AResources%3A%3APerson")
+      end
+
+      context "id field" do
+        it "links to the parent class resource if link_to_child_resource false at the resource level" do
+          Avo::Resources::Person.link_to_child_resource = false
+          visit "/admin/resources/people/#{john.id}/peoples?turbo_frame=has_many_field_show_relatives"
+          wait_for_loaded
+          expect(page).to have_link(paul.name, href: "/admin/resources/people/#{paul.id}?via_record_id=#{john.id}&via_resource_class=Avo%3A%3AResources%3A%3APerson")
+        end
+
+        it "links to the child class resource if link_to_child_resource true at the resource level" do
+          Avo::Resources::Person.link_to_child_resource = true
+          visit "/admin/resources/people/#{john.id}/peoples?turbo_frame=has_many_field_show_relatives"
+          wait_for_loaded
+          expect(page).to have_link(paul.name, href: "/admin/resources/siblings/#{paul.id}?via_record_id=#{john.id}&via_resource_class=Avo%3A%3AResources%3A%3APerson")
+        end
+
+        it "links to the parent class resource if link_to_child_resource false at the field level" do
+          visit "/admin/resources/people/#{john.id}/peoples?turbo_frame=has_many_field_show_relatives"
+          wait_for_loaded
+          expect(page).to have_link(paul.name, href: "/admin/resources/people/#{paul.id}?via_record_id=#{john.id}&via_resource_class=Avo%3A%3AResources%3A%3APerson")
+        end
+
+        it "links to the child class resource if link_to_child_resource true at the field level" do
+          visit "/admin/resources/people/#{john.id}/relatives?turbo_frame=has_many_field_show_relatives"
+          wait_for_loaded
+          expect(page).to have_link(paul.name, href: "/admin/resources/siblings/#{paul.id}?via_record_id=#{john.id}&via_resource_class=Avo%3A%3AResources%3A%3APerson")
+        end
       end
     end
   end

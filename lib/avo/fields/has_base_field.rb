@@ -25,7 +25,8 @@ module Avo
         @description = args[:description]
         @use_resource = args[:use_resource] || nil
         @discreet_pagination = args[:discreet_pagination] || false
-        @link_to_child_resource = args[:link_to_child_resource] || false
+        # Defaults to nil so that if not set falls back to `link_to_child_resource` defined in the resource
+        @link_to_child_resource = args[:link_to_child_resource]
         @reloadable = args[:reloadable].present? ? args[:reloadable] : false
         @linkable = args[:linkable].present? ? args[:linkable] : false
         @attach_fields = args[:attach_fields]
