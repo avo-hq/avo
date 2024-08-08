@@ -3,6 +3,13 @@
 class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   include Avo::ApplicationHelper
 
+  # NOTE ThroughReflections break
+  # prop :resource, _Nilable(Avo::BaseResource)
+  # prop :reflection, _Nilable(ActiveRecord::Reflection::AssociationReflection)
+  # prop :parent_record, _Nilable(ActiveRecord::Base)
+  # prop :parent_resource, _Nilable(Avo::BaseResource), reader: :public
+  # prop :view_type, Symbol, default: :table, reader: :public
+  # prop :actions, _Nilable(_Array(Avo::BaseAction)), reader: :public
   def initialize(resource: nil, reflection: nil, parent_record: nil, parent_resource: nil, view_type: :table, actions: nil)
     @resource = resource
     @reflection = reflection
