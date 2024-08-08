@@ -3,10 +3,10 @@
 class Avo::TabGroupComponent < Avo::BaseComponent
   delegate :group_param, to: :@group
 
-  prop :resource, Avo::ResourcesBase, reader: :public
+  prop :resource, Avo::BaseResource, reader: :public
   prop :group, Avo::Resources::Items::TabGroup, reader: :public
   prop :index, Integer, reader: :public
-  prop :form, ActionView::Helpers::FormBuilder, reader: :public
+  prop :form, _Nilable(ActionView::Helpers::FormBuilder), reader: :public
   prop :params, ActionController::Parameters, reader: :public
   prop :view, String, reader: :public
 
