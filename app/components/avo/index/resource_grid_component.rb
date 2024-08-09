@@ -1,14 +1,10 @@
 # frozen_string_literal: true
 
 class Avo::Index::ResourceGridComponent < Avo::BaseComponent
-  attr_reader :actions
-
-  def initialize(resources: nil, resource: nil, reflection: nil, parent_record: nil, parent_resource: nil, actions: nil)
-    @resources = resources
-    @resource = resource
-    @reflection = reflection
-    @parent_record = parent_record
-    @parent_resource = parent_resource
-    @actions = actions
-  end
+  prop :resources, _Array(_Nilable(Avo::BaseResource))
+  prop :resource, _Nilable(Avo::BaseResource)
+  prop :reflection, _Nilable(ActiveRecord::Reflection::AbstractReflection)
+  prop :parent_record, _Nilable(ActiveRecord::Base)
+  prop :parent_resource, _Nilable(Avo::BaseResource)
+  prop :actions, _Nilable(_Array(Avo::BaseAction)), reader: :public
 end
