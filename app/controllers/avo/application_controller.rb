@@ -292,13 +292,8 @@ module Avo
     end
 
     def set_sidebar_open
-      value = if cookies["#{Avo::COOKIES_KEY}.sidebar.open"].nil?
-        cookies["#{Avo::COOKIES_KEY}.sidebar.open"] = "1"
-      else
-        cookies["#{Avo::COOKIES_KEY}.sidebar.open"]
-      end
-
-      @sidebar_open = value == "1"
+      value = cookies["#{Avo::COOKIES_KEY}.sidebar.open"]
+      @sidebar_open = value.blank? || value == "1"
     end
 
     # Set the current host for ActiveStorage
