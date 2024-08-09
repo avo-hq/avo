@@ -2,8 +2,8 @@
 
 require "rails_helper"
 
-RSpec.describe "DefaultSortColumn", type: :feature do
-  context "default_sort_column" do
+RSpec.describe "DefaultSortColumnAndDirection", type: :feature do
+  context "default_sort_column and default_sort_direction" do
     let(:courses) do
       create_list(:course, 3) do |course, i|
         course.update(created_at: (i + 1).days.ago)
@@ -11,6 +11,7 @@ RSpec.describe "DefaultSortColumn", type: :feature do
     end
     let(:course_index) { "/admin/resources/courses" }
     let(:default_sort_column) { :created_at }
+    let(:default_sort_direction) { nil }
 
     before(:all) do
       Avo::Resources::Course.with_temporary_items do
@@ -26,13 +27,17 @@ RSpec.describe "DefaultSortColumn", type: :feature do
 
     before do
       Avo::Resources::Course.default_sort_column = default_sort_column
+      Avo::Resources::Course.default_sort_direction = default_sort_direction
     end
 
-    shared_examples "sorts by" do |expected_sort_column|
-      it "sorts index table by #{expected_sort_column} in desc" do
-        sorted_values = courses.sort_by(&expected_sort_column).reverse.map do |course|
+    shared_examples "sorts by" do |expected_sort_column, expected_sort_direction|
+      it "sorts index table by #{expected_sort_column} in #{expected_sort_direction || "desc"}" do
+        sorted_values = courses.sort_by(&expected_sort_column).map do |course|
           value = course.send(expected_sort_column)
           value.is_a?(Time) ? value.iso8601 : value
+        end
+        unless expected_sort_direction == :asc
+          sorted_values.reverse!
         end
         visit course_index
 
@@ -57,6 +62,26 @@ RSpec.describe "DefaultSortColumn", type: :feature do
       let(:default_sort_column) { nil }
 
       include_examples "sorts by", :created_at
+    end
+
+    context "when default_sort_direction is set to asc" do
+      let(:default_sort_column) { :country }
+      let(:default_sort_direction) { :asc }
+
+      include_examples "sorts by", :country, :asc
+    end
+
+    context "when default_sort_direction is set to desc" do
+      let(:default_sort_column) { :country }
+      let(:default_sort_direction) { :desc }
+
+      include_examples "sorts by", :country, :desc
+    end
+
+    context "when default_sort_direction is not set" do
+      let(:default_sort_column) { :country }
+
+      include_examples "sorts by", :country, :desc
     end
   end
 end

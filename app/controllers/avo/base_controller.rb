@@ -325,7 +325,7 @@ module Avo
         end
       end
 
-      @index_params[:sort_direction] = params[:sort_direction] || :desc
+      @index_params[:sort_direction] = params[:sort_direction] || @resource.default_sort_direction || :desc
 
       # View types
       available_view_types = @resource.available_view_types
