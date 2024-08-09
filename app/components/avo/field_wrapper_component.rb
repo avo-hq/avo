@@ -16,7 +16,9 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
   prop :stacked, _Nilable(_Boolean)
   prop :style, String, default: ""
   prop :view, String, default: "show", reader: :public
-  prop :label_for, _Nilable(String)
+  prop :label_for, _Nilable(Symbol) do |value|
+    value&.to_sym
+  end
   prop :args, Hash, :**, default: {}.freeze
 
   def after_initialize
