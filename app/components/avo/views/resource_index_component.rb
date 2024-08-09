@@ -6,38 +6,24 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
   attr_reader :scopes, :query, :turbo_frame, :parent_record, :parent_resource, :resource, :actions
 
-  def initialize(
-    resource: nil,
-    resources: nil,
-    records: [],
-    pagy: nil,
-    index_params: {},
-    filters: [],
-    actions: [],
-    reflection: nil,
-    turbo_frame: "",
-    parent_record: nil,
-    parent_resource: nil,
-    applied_filters: [],
-    query: nil,
-    scopes: nil
-  )
-    @resource = resource
-    @resources = resources
-    @records = records
-    @pagy = pagy
-    @index_params = index_params
-    @filters = filters
-    @actions = actions
-    @reflection = reflection
-    @turbo_frame = turbo_frame
-    @parent_record = parent_record
-    @parent_resource = parent_resource
-    @applied_filters = applied_filters
-    @view = Avo::ViewInquirer.new("index")
-    @query = query
-    @scopes = scopes
-  end
+  prop :resource, _Nilable(Avo::BaseResource), reader: :public
+  prop :resources, _Nilable(_Array(Avo::BaseResource))
+  prop :records, ActiveRecord::Relation, default: [].freeze
+  prop :pagy, _Nilable(Pagy)
+  prop :index_params, Hash, default: {}.freeze
+  prop :filters, _Array(Avo::Filters::BaseFilter), default: [].freeze
+  prop :actions, _Array(Avo::BaseAction), default: [].freeze, reader: :public
+  prop :reflection, _Nilable(ActiveRecord::Reflection::AbstractReflection)
+  prop :turbo_frame, _Nilable(String), default: "", reader: :public
+  prop :parent_record, _Nilable(ActiveRecord::Base), reader: :public
+  prop :parent_resource, _Nilable(Avo::BaseResource), reader: :public
+  prop :applied_filters, Hash, default: {}.freeze
+  prop :query, _Nilable(ActiveRecord::Relation), reader: :public
+  # This should be
+  # prop :scopes, _Nilable(_Array(Avo::Advanced::Scopes::BaseScope)), reader: :public
+  # However, Avo::Advanced::Scopes::BaseScope raises an error because
+  # that constant is only available in the advanced repo
+  prop :scopes, _Nilable(Object), reader: :public
 
   def title
     if @reflection.present?
