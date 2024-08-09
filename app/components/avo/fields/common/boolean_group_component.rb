@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class Avo::Fields::Common::BooleanGroupComponent < Avo::BaseComponent
-  def initialize(options: {}, value: nil)
-    @options = options
-    @value = value
-  end
+  prop :options, Hash, default: {}.freeze
+  prop :value, _Nilable(Hash)
 end

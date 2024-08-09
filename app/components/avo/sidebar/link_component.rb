@@ -8,14 +8,16 @@ class Avo::Sidebar::LinkComponent < Avo::BaseComponent
   attr_reader :data
   attr_reader :icon
 
-  def initialize(label: nil, path: nil, active: :inclusive, target: nil, data: {}, icon: nil)
-    @label = label
-    @path = path
-    @active = active
-    @target = target
-    @data = data
-    @icon = icon
+  prop :label, _Nilable(String), reader: :public
+  prop :path, _Nilable(String), reader: :public
+  prop :active, Symbol, default: :inclusive, reader: :public do |value|
+    value&.to_sym
   end
+  prop :target, _Nilable(Symbol), reader: :public do |value|
+    value&.to_sym
+  end
+  prop :data, Hash, default: {}.freeze, reader: :public
+  prop :icon, _Nilable(String), reader: :public
 
   def is_external?
     # If the path contains the scheme, check if it includes the root path or not

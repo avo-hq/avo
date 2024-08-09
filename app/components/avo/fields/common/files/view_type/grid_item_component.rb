@@ -1,14 +1,10 @@
 # frozen_string_literal: true
 
 class Avo::Fields::Common::Files::ViewType::GridItemComponent < Avo::BaseComponent
-  attr_reader :field, :resource
-
-  def initialize(field:, resource:, file: nil, extra_classes: nil)
-    @file = file
-    @field = field
-    @resource = resource
-    @extra_classes = extra_classes
-  end
+  prop :field, Avo::Fields::BaseField, reader: :public
+  prop :resource, Avo::BaseResource, reader: :public
+  prop :file, _Nilable(ActiveStorage::Attachment), reader: :public
+  prop :extra_classes, _Nilable(String), reader: :public
 
   def id
     field.id

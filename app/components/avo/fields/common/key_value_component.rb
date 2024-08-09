@@ -5,9 +5,13 @@ class Avo::Fields::Common::KeyValueComponent < Avo::BaseComponent
 
   attr_reader :view
 
-  def initialize(field:, form: nil, view: "show")
-    @field = field
-    @form = form
-    @view = Avo::ViewInquirer.new(view)
+  prop :field, Avo::Fields::BaseField
+  prop :form, _Nilable(ActionView::Helpers::FormBuilder)
+  prop :view, Symbol, default: :show do |value|
+    value&.to_sym
+  end
+
+  def after_initialize
+    @view = Avo::ViewInquirer.new(@view)
   end
 end

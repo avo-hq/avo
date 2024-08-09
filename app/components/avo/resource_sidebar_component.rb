@@ -1,21 +1,12 @@
 # frozen_string_literal: true
 
 class Avo::ResourceSidebarComponent < Avo::BaseComponent
-  attr_reader :resource
-  attr_reader :params
-  attr_reader :view
-  attr_reader :form
-  attr_reader :fields
-  attr_reader :index
-
-  def initialize(resource: nil, sidebar: nil, index: nil, params: nil, form: nil, view: nil)
-    @resource = resource
-    @sidebar = sidebar
-    @params = params
-    @view = view
-    @form = form
-    @index = index
-  end
+  prop :resource, _Nilable(Avo::BaseResource), reader: :public
+  prop :sidebar, _Nilable(Avo::Resources::Items::Sidebar), reader: :public
+  prop :index, _Nilable(Integer), reader: :public
+  prop :params, _Nilable(ActionController::Parameters), reader: :public
+  prop :form, _Nilable(ActionView::Helpers::FormBuilder), reader: :public
+  prop :view, _Nilable(String), reader: :public
 
   def render?
     Avo.license.has_with_trial(:resource_sidebar)
