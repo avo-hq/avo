@@ -5,15 +5,13 @@ class Avo::Index::TableRowComponent < Avo::BaseComponent
 
   attr_writer :header_fields
 
-  def initialize(resource: nil, reflection: nil, parent_record: nil, parent_resource: nil, actions: nil, fields: nil, header_fields: nil)
-    @resource = resource
-    @reflection = reflection
-    @parent_record = parent_record
-    @parent_resource = parent_resource
-    @actions = actions
-    @fields = fields
-    @header_fields = header_fields
-  end
+  prop :resource, _Nilable(Avo::BaseResource)
+  prop :reflection, _Nilable(ActiveRecord::Reflection::AbstractReflection)
+  prop :parent_record, _Nilable(ActiveRecord::Base)
+  prop :parent_resource, _Nilable(Avo::BaseResource)
+  prop :actions, _Nilable(_Array(Avo::BaseAction))
+  prop :fields, _Nilable(_Array(Avo::Fields::BaseField))
+  prop :header_fields, _Nilable(_Array(Avo::Fields::BaseField))
 
   def resource_controls_component
     Avo::Index::ResourceControlsComponent.new(
