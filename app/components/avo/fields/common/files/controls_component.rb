@@ -7,7 +7,7 @@ class Avo::Fields::Common::Files::ControlsComponent < Avo::BaseComponent
   delegate :id, to: :field
 
   prop :field, Avo::Fields::BaseField, reader: :public
-  prop :file, ActiveStorage::Attached, reader: :public
+  prop :file, ActiveStorage::Attachment, reader: :public
   prop :resource, Avo::BaseResource, reader: :public
 
   def destroy_path
