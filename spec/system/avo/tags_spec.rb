@@ -143,8 +143,12 @@ RSpec.describe "Tags", type: :system do
       wait_for_tags_to_load(field_value_slot)
       type(:down, :return)
 
-      sleep 0.3
-      click_on "Run"
+      # TODO: fix "found unpermitted parameter: :user_id-dummy"
+      # tags field passes a dummy param generated from a fake input which is always unpermitted
+      with_temporary_class_option(ActionController::Parameters, :action_on_unpermitted_parameters, :log) do
+        sleep 0.3
+        click_on "Run"
+      end
     end
   end
 

@@ -132,7 +132,7 @@ module Avo
     end
 
     def attachment_id
-      params[:related_id] || params.require(:fields).permit(:related_id)[:related_id]
+      params[:related_id] || params.dig(:fields, :related_id)
     end
 
     def reflection_class
@@ -200,7 +200,7 @@ module Avo
     end
 
     def additional_params
-      @additional_params ||= params[:fields].permit(@attach_fields&.map(&:id))
+      @additional_params ||= params[:fields].slice(*@attach_fields&.map(&:id))
     end
 
     def set_attach_fields
@@ -214,15 +214,12 @@ module Avo
 
     def new_join_record
       @resource.fill_record(
-        @reflection.through_reflection.klass.new,
-        additional_params.merge(
-          {
-            source_foreign_key => @attachment_record.id,
-            through_foreign_key => @record.id
-          }
+        @reflection.through_reflection.klass.new(
+          source_foreign_key => @attachment_record.id,
+          through_foreign_key => @record.id
         ),
+        additional_params,
         fields: @attach_fields,
-        extra_params: [source_foreign_key, through_foreign_key]
       )
     end
   end

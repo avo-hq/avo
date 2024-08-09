@@ -4,7 +4,7 @@ RSpec.feature "CustomFieldsInResourceTools", type: :feature do
   let(:fish) { create :fish, name: :Salmon }
 
   describe "fish information" do
-    it "sends the params to the model" do
+    before(:example) do
       visit avo.edit_resources_fish_path fish
 
       expect(page).to have_text "There should be an image of this fish below 🐠"
@@ -20,9 +20,54 @@ RSpec.feature "CustomFieldsInResourceTools", type: :feature do
       find('input[name="fish[information][age]"]').set("Fishy age")
 
       expect(properties_fields.count).to be 2
+    end
+
+    it "raise unnpermited params" do
+      # Remove age from extra params
+      with_temporary_class_option(
+        Avo::Resources::Fish,
+        :extra_params,
+        [
+          :fish_type,
+          :something_else,
+          properties: [],
+          information: [:name, :history],
+          reviews_attributes: [:body, :user_id]
+        ]
+      ) do
+        expect { save }.to raise_error("found unpermitted parameter: :age")
+      end
+    end
+
+    it "sends the params to the model ignoring unpermitted age" do
       expect_any_instance_of(Fish).to receive("fish_type=").with("Fishy type")
       expect_any_instance_of(Fish).to receive("properties=").with(["Fishy property 1", "Fishy property 2"])
+      # Verify that age is not included on the information
       expect_any_instance_of(Fish).to receive("information=").with({name: "Fishy name", history: "Fishy history"})
+
+      # Remove age from extra params
+      with_temporary_class_option(
+        Avo::Resources::Fish,
+        :extra_params,
+        [
+          :fish_type,
+          :something_else,
+          properties: [],
+          information: [:name, :history],
+          reviews_attributes: [:body, :user_id]
+        ]
+      ) do
+        # Don't raise unpermitted parameters error
+        with_temporary_class_option(ActionController::Parameters, :action_on_unpermitted_parameters, :log) do
+          save
+        end
+      end
+    end
+
+    it "sends all the params to the model" do
+      expect_any_instance_of(Fish).to receive("fish_type=").with("Fishy type")
+      expect_any_instance_of(Fish).to receive("properties=").with(["Fishy property 1", "Fishy property 2"])
+      expect_any_instance_of(Fish).to receive("information=").with({name: "Fishy name", history: "Fishy history", age: "Fishy age"})
 
       save
     end
