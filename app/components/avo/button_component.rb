@@ -8,13 +8,19 @@ class Avo::ButtonComponent < Avo::BaseComponent
   prop :size, Symbol, default: :md
   prop :style, Symbol, default: :outline
   prop :color, Symbol, default: :gray
-  prop :icon, _Nilable(String)
+  prop :icon, _Nilable(Symbol) do |value|
+    value&.to_sym
+  end
   prop :icon_class, String, default: ""
   prop :is_link, _Boolean, default: false
   prop :rounded, _Boolean, default: true
   prop :compact, _Boolean, default: false
   prop :aria, Hash, default: {}.freeze
   prop :args, Hash, :**, default: {}.freeze
+
+  def after_initialize
+    @class = @args[:class]
+  end
 
   def args
     if @args[:loading]
