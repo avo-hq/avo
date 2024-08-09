@@ -190,6 +190,8 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def back_path
+    # Show Go Back link only when association page is opened
+    # as a standalone page
     if @reflection.present? && !helpers.turbo_frame_request?
       helpers.resource_path(record: @parent_record, resource: @parent_resource)
     end
