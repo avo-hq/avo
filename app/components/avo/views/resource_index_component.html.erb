@@ -91,6 +91,9 @@
           <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: turbo_frame || "none", index_params: @index_params, resource: @resource, parent_record: parent_record, discreet_pagination: field&.discreet_pagination %>
         </div>
       <% end %>
+      <% if view_type.to_sym == :calendar %>
+        <%= render Avo::Super::CalendarView::ResourceCalendarComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_record: parent_record, parent_resource: parent_resource, actions: actions, date: Date.parse(params.fetch(:date, Date.today.to_s))) %>
+      <% end %>
     <% end %>
   <% end %>
 <% end %>
