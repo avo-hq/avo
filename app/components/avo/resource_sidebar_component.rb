@@ -6,7 +6,9 @@ class Avo::ResourceSidebarComponent < Avo::BaseComponent
   prop :index, _Nilable(Integer), reader: :public
   prop :params, _Nilable(ActionController::Parameters), reader: :public
   prop :form, _Nilable(ActionView::Helpers::FormBuilder), reader: :public
-  prop :view, _Nilable(String), reader: :public
+  prop :view, _Nilable(Symbol), reader: :public do |value|
+    value&.to_sym
+  end
 
   def render?
     Avo.license.has_with_trial(:resource_sidebar)
