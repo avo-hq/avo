@@ -8,7 +8,8 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
   prop :resource, _Nilable(Avo::BaseResource), reader: :public
   prop :resources, _Nilable(_Array(Avo::BaseResource))
-  prop :records, ActiveRecord::Relation, default: [].freeze
+  # This is sometimes an array of records or an ActiveRecord::Relation
+  prop :records, Enumerable, default: [].freeze
   prop :pagy, _Nilable(Pagy)
   prop :index_params, Hash, default: {}.freeze
   prop :filters, _Array(Avo::Filters::BaseFilter), default: [].freeze
