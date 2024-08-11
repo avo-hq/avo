@@ -10,17 +10,19 @@ class Avo::ProfileItemComponent < Avo::BaseComponent
   attr_reader :params
   attr_reader :classes
 
-  def initialize(label: nil, icon: nil, path: nil, active: :inclusive, target: nil, title: nil, method: nil, params: {}, classes: "")
-    @label = label
-    @icon = icon
-    @path = path
-    @active = active
-    @target = target
-    @title = title
-    @method = method
-    @params = params
-    @classes = classes
+  prop :label, _Nilable(String), reader: :public
+  prop :icon, _Nilable(String), reader: :public
+  prop :path, _Nilable(String), reader: :public
+  prop :active, Symbol, default: :inclusive, reader: :public do |value|
+    value&.to_sym
   end
+  prop :target, _Nilable(Symbol), reader: :public do |value
+    value&.to_sym
+  end
+  prop :title, _Nilable(String), reader: :public
+  prop :method, _Nilable(String), reader: :public
+  prop :params, Hash, default: {}.freeze, reader: :public
+  prop :classes, String, default: "", reader: :public
 
   def title
     @title || @label
