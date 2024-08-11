@@ -1,17 +1,9 @@
 # frozen_string_literal: true
 
 class Avo::Sidebar::HeadingComponent < Avo::BaseComponent
-  attr_reader :collapsable
-  attr_reader :collapsed
-  attr_reader :icon
-  attr_reader :key
-  attr_reader :label
-
-  def initialize(label: nil, icon: nil, collapsable: false, collapsed: false, key: nil)
-    @collapsable = collapsable
-    @collapsed = collapsed
-    @icon = icon
-    @key = key
-    @label = label
-  end
+  prop :label, _Nilable(String), reader: :public
+  prop :icon, _Nilable(String), reader: :public
+  prop :collapsable, _Boolean, default: false, reader: :public
+  prop :collapsed, _Boolean, default: false, reader: :public
+  prop :key, _Nilable(_Boolean), default: false, reader: :public
 end
