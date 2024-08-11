@@ -4,8 +4,9 @@ class Avo::Sidebar::BaseItemComponent < Avo::BaseComponent
   attr_reader :item, :items
   delegate :collapsable, :collapsed, to: :@item
 
-  def initialize(item: nil)
-    @item = item
+  prop :item, _Nilable(ViewComponent::Base)
+
+  def after_initialize
     @items = @item.items.select(&:visible?)
   end
 
