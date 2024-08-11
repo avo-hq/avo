@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 class Avo::Items::VisibleItemsComponent < Avo::BaseComponent
-  def initialize(resource:, item:, view:, form:, field_component_extra_args: {})
-    @resource = resource
-    @item = item
-    @view = view
-    @form = form
-    @field_component_extra_args = field_component_extra_args
+  prop :resource, _Nilable(Avo::BaseResource)
+  prop :item, _Nilable(Avo::Concerns::IsResourceItem)
+  prop :view, _Nilable(Symbol) do |value|
+    value&.to_sym
   end
+  prop :form, _Nilable(ActionView::Helpers::FormBuilder)
+  prop :field_component_extra_args, _Nilable(Hash), default: {}.freeze
 end
