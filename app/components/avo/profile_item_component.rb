@@ -1,22 +1,13 @@
 # frozen_string_literal: true
 
 class Avo::ProfileItemComponent < Avo::BaseComponent
-  attr_reader :label
-  attr_reader :icon
-  attr_reader :path
-  attr_reader :active
-  attr_reader :target
-  attr_reader :method
-  attr_reader :params
-  attr_reader :classes
-
   prop :label, _Nilable(String), reader: :public
   prop :icon, _Nilable(String), reader: :public
   prop :path, _Nilable(String), reader: :public
   prop :active, Symbol, default: :inclusive, reader: :public do |value|
     value&.to_sym
   end
-  prop :target, _Nilable(Symbol), reader: :public do |value
+  prop :target, _Nilable(Symbol), reader: :public do |value|
     value&.to_sym
   end
   prop :title, _Nilable(String), reader: :public
