@@ -8,5 +8,5 @@ class Avo::PanelNameComponent < Avo::BaseComponent
   prop :target, Symbol, default: :self do |value|
     value&.to_sym
   end
-  prop :classes, String, default: ''
+  prop :classes, String, default: ""
 end
