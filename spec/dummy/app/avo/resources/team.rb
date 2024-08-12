@@ -79,15 +79,15 @@ class Avo::Resources::Team < Avo::BaseResource
       end
 
     field :admin, as: :has_one, linkable: true
-    field :reviews, as: :has_many,
-      reloadable: -> {
-        current_user.is_admin?
-      }
     field :team_members,
       as: :has_many,
       through: :memberships,
       linkable: true,
       reloadable: true
+    field :reviews, as: :has_many,
+      reloadable: -> {
+        current_user.is_admin?
+      }
 
     if params[:show_location_field] == "1"
       # Example for error message when resource is missing
