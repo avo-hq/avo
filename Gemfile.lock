@@ -144,6 +144,7 @@ GEM
       csv
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
+    amazing_print (1.6.0)
     annotate (3.2.0)
       activerecord (>= 3.2, < 8.0)
       rake (>= 10.4, < 14.0)
@@ -155,7 +156,6 @@ GEM
     avo-money_field (0.0.4)
       money-rails (~> 1.12)
     avo-record_link_field (0.0.1)
-    awesome_print (1.9.2)
     aws-eventstream (1.3.0)
     aws-partitions (1.962.0)
     aws-sdk-core (3.201.3)
@@ -660,12 +660,12 @@ DEPENDENCIES
   acts_as_list
   actual_db_schema
   addressable
+  amazing_print
   annotate
   appraisal
   avo!
   avo-money_field
   avo-record_link_field
-  awesome_print
   aws-sdk-s3
   bootsnap (>= 1.4.2)
   bump
