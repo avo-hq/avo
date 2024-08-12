@@ -446,9 +446,9 @@ module Avo
           .to_h
       end
 
-      def fill_record(record, params, extra_params: [], fields: nil)
+      def fill_record(record, permitted_params, extra_params: [], fields: nil)
         # Write the field values
-        params.each do |key, value|
+        permitted_params.each do |key, value|
           field = if fields.present?
             fields.find { |f| f.id == key.to_sym }
           else
@@ -457,13 +457,17 @@ module Avo
 
           next unless field.present?
 
-          record = field.fill_field record, key, value, params
+          record = field.fill_field record, key, value, permitted_params
         end
 
         # Write the user configured extra params to the record
         if extra_params.present?
+          # Pick only the extra params
+          # params at this point are already permited, only need the keys to access them
+          extra_attributes = permitted_params.slice(*flatten_keys(extra_params))
+
           # Let Rails fill in the rest of the params
-          record.assign_attributes params.permit(extra_params)
+          record.assign_attributes extra_attributes
         end
 
         record
@@ -613,6 +617,22 @@ module Avo
 
       def record_param
         @record_param ||= @record.persisted? ? @record.to_param : nil
+      end
+
+      private
+
+      def flatten_keys(array)
+        # [:fish_type, information: [:name, :history], reviews_attributes: [:body, :user_id]]
+        # becomes
+        # [:fish_type, :information, :reviews_attributes]
+        array.flat_map do |item|
+          case item
+          when Hash
+            item.keys
+          else
+            item
+          end
+        end
       end
     end
   end

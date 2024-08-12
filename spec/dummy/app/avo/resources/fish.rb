@@ -3,7 +3,7 @@ class Avo::Resources::Fish < Avo::BaseResource
   self.search = {
     query: -> { query.ransack(id_eq: params[:q], name_cont: params[:q], m: "or").result(distinct: false) }
   }
-  self.extra_params = [:fish_type, :something_else, properties: [], information: [:name, :history], reviews_attributes: [:body, :user_id]]
+  self.extra_params = [:fish_type, :something_else, properties: [], information: [:name, :history, :age], reviews_attributes: [:body, :user_id]]
   self.view_types = -> do
     if current_user.is_admin?
       [:table, :grid]

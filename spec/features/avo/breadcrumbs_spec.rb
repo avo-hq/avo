@@ -26,32 +26,57 @@ RSpec.feature "Breadcrumbs", type: :feature do
     let!(:user) { create(:user) }
     let!(:team) { create(:team) }
 
-    it "displays breadcrumbs" do
-      url = "/admin/resources/users/#{user.slug}/teams?view=show"
-      visit url
+    context "when HTML request" do
+      it "displays breadcrumbs" do
+        url = "/admin/resources/users/#{user.slug}/teams?view=show"
+        visit url
 
-      expect(page).to have_selector ".breadcrumbs"
-      expect(page.find(".breadcrumbs").text).to eq "Home Users #{user.name} Teams"
+        expect(page).to have_selector ".breadcrumbs"
+        expect(page.find(".breadcrumbs").text).to eq "Home Users #{user.name} Teams"
 
-      breadcrumbs = find(".breadcrumbs")
-      expect(breadcrumbs).to have_link "Home"
-      expect(breadcrumbs).to have_link "Users"
-      expect(breadcrumbs).to have_link user.name.to_s
-      expect(breadcrumbs).to_not have_link "Teams"
+        breadcrumbs = find(".breadcrumbs")
+        expect(breadcrumbs).to have_link "Home"
+        expect(breadcrumbs).to have_link "Users"
+        expect(breadcrumbs).to have_link user.name.to_s
+        expect(breadcrumbs).to_not have_link "Teams"
+      end
+
+      it "displays breadcrumbs" do
+        url = "/admin/resources/teams/#{team.id}/team_members?view=show"
+        visit url
+
+        expect(page).to have_selector ".breadcrumbs"
+        expect(page.find(".breadcrumbs").text).to eq "Home Teams #{team.name} Users"
+
+        breadcrumbs = find(".breadcrumbs")
+        expect(breadcrumbs).to have_link "Home"
+        expect(breadcrumbs).to have_link "Teams"
+        expect(breadcrumbs).to have_link team.name.to_s
+        expect(breadcrumbs).to_not have_link "Users"
+      end
+
+      it "displays a back button" do
+        url = "/admin/resources/teams/#{team.id}/team_members?view=show"
+        visit url
+
+        expect(page).to have_selector "div[data-target='panel-tools'] a[href='/admin/resources/teams/#{team.id}']", text: "Go back"
+      end
     end
 
-    it "displays breadcrumbs" do
-      url = "/admin/resources/teams/#{team.id}/team_members?view=show"
-      visit url
+    context "when Turbo request" do
+      before(:example) do
+        url = "/admin/resources/teams/#{team.id}/team_members?view=show"
+        page.driver.browser.header("Turbo-Frame", true)
+        visit url
+      end
 
-      expect(page).to have_selector ".breadcrumbs"
-      expect(page.find(".breadcrumbs").text).to eq "Home Teams #{team.name} Users"
+      it "does not display breadcrumbs" do
+        expect(page).to_not have_selector ".breadcrumbs"
+      end
 
-      breadcrumbs = find(".breadcrumbs")
-      expect(breadcrumbs).to have_link "Home"
-      expect(breadcrumbs).to have_link "Teams"
-      expect(breadcrumbs).to have_link team.name.to_s
-      expect(breadcrumbs).to_not have_link "Users"
+      it "does not display a back button" do
+        expect(page).to_not have_selector "div[data-target='panel-tools'] a", text: "Go back"
+      end
     end
   end
 end
