@@ -11,7 +11,7 @@ RSpec.describe "DefaultSortColumnAndDirection", type: :feature do
     end
     let(:course_index) { "/admin/resources/courses" }
     let(:default_sort_column) { :created_at }
-    let(:default_sort_direction) { nil }
+    let(:default_sort_direction) { Avo::Resources::Base.default_sort_direction }
 
     before(:all) do
       Avo::Resources::Course.with_temporary_items do
