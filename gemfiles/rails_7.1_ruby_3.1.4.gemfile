@@ -17,7 +17,7 @@ gem "listen", ">= 3.5.1"
 gem "spring"
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "devise"
-gem "awesome_print"
+gem "amazing_print"
 gem "zeitwerk"
 gem "iso"
 gem "active_link_to"
