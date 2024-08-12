@@ -12,9 +12,6 @@ module Avo
     end
 
     def empty_state(**args)
-      if args[:view_type]
-        args[:view_type] = args[:view_type].to_sym
-      end
       render Avo::EmptyStateComponent.new(**args)
     end
 

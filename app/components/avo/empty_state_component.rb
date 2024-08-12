@@ -4,7 +4,9 @@ class Avo::EmptyStateComponent < Avo::BaseComponent
   attr_reader :message, :view_type, :add_background, :by_association
 
   prop :message, _Nilable(String)
-  prop :view_type, Symbol, default: :table
+  prop :view_type, Symbol, default: :table do |value|
+    value&.to_sym
+  end
   prop :add_background, _Boolean, default: false
   prop :by_association, _Boolean, default: false
 
