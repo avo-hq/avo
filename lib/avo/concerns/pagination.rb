@@ -18,7 +18,7 @@ module Avo
         unless defined? PAGINATION_DEFAULTS
           PAGINATION_DEFAULTS = {
             type: :default,
-            size: [1, 2, 2, 1],
+            size: 9,
           }
         end
       end
