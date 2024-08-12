@@ -132,13 +132,15 @@ module.exports = {
     },
   },
   variants: {
-    display: ['responsive', 'hover', 'focus', 'group-hover', 'checked'],
-    padding: ['responsive', 'group-hover'],
+    margin: ['responsive', 'hover', 'focus', 'group-hover', 'checked', 'kanban-dragging'],
+    display: ['responsive', 'hover', 'focus', 'group-hover', 'checked', 'kanban-dragging'],
+    padding: ['responsive', 'group-hover', 'kanban-dragging'],
     borderColor: ['responsive', 'hover', 'focus', 'disabled'],
     backgroundColor: ['responsive', 'hover', 'focus', 'disabled'],
     textColor: ['responsive', 'hover', 'focus', 'disabled'],
     translate: ['responsive', 'hover', 'focus', 'active'],
     cursor: ['responsive', 'disabled'],
+    outline: ['responsive', 'disabled', 'kanban-dragging', 'empty'],
   },
   plugins: [
     require('@tailwindcss/forms'),
