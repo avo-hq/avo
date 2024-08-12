@@ -7,11 +7,8 @@ class Avo::Fields::Common::KeyValueComponent < Avo::BaseComponent
 
   prop :field, Avo::Fields::BaseField
   prop :form, _Nilable(ActionView::Helpers::FormBuilder)
-  prop :view, Symbol, default: :show do |value|
-    value&.to_sym
-  end
-
-  def after_initialize
-    @view = Avo::ViewInquirer.new(@view)
+  prop :view, Avo::ViewInquirer do |value|
+    value = :show if value.nil?
+    Avo::ViewInquirer.new(value.to_sym)
   end
 end
