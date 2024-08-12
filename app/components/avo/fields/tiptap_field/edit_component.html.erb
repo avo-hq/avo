@@ -37,6 +37,20 @@
           <% end %>
 
           <%= content_tag :div, class: "tiptap__button-group" do %>
+            <%= button_tag type: "button", class: "tiptap__button tiptap__button--align-left", data: { action: "click->tiptap-field#textAlignLeft" } do %>
+              LEFT
+            <% end %>
+
+            <%= button_tag type: "button", class: "tiptap__button tiptap__button--align-center", data: { action: "click->tiptap-field#textAlignCenter" } do %>
+              CENTER
+            <% end %>
+
+            <%= button_tag type: "button", class: "tiptap__button tiptap__button--align-right", data: { action: "click->tiptap-field#textAlignRight" } do %>
+              RIGHT
+            <% end %>
+          <% end %>
+
+          <%= content_tag :div, class: "tiptap__button-group" do %>
             <%= button_tag type: "button", class: "tiptap__button tiptap__button--ul", data: { action: "click->tiptap-field#unorderedList" } do %>
               <%= helpers.svg("avo/editor-list") %>
             <% end %>

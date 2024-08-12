@@ -40,6 +40,7 @@
     "@tiptap/extension-placeholder": "^2.5.9",
     "@tiptap/extension-strike": "^2.5.9",
     "@tiptap/extension-text": "^2.5.9",
+    "@tiptap/extension-text-align": "^2.5.9",
     "@tiptap/extension-underline": "^2.5.9",
     "@tiptap/pm": "^2.5.9",
     "@yaireo/tagify": "^4.27.0",
