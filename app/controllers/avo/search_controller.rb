@@ -43,7 +43,7 @@ module Avo
 
       # If search query is not defined return error in dev and nil otwherwise.
       if resource.search_query.blank?
-        return nil unless Rails.env.development?
+        return nil unless render_error?
 
         search_query_undefined = error_payload(
           _label: "Please configure the search for #{resource}",
@@ -192,7 +192,7 @@ module Avo
     end
 
     def render_error(...)
-      raise error unless Rails.env.development?
+      raise error unless render_error?
 
       render json: {
         error: error_payload(...)
@@ -249,6 +249,10 @@ module Avo
       end
 
       [results_count, results]
+    end
+
+    def render_error?
+      Rails.env.development?
     end
   end
 end
