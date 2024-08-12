@@ -32,3 +32,5 @@ StreamActions.download = function () {
     this.getAttribute('filename'),
   )
 }
+
+window.StreamActions = StreamActions
