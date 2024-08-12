@@ -56,7 +56,7 @@ Avo.configure do |config|
   # config.pagination = -> do
   #   {
   #     type: :default,
-  #     size: 9,
+  #     size: 9, # `[1, 2, 2, 1]` for pagy < 9.0
   #   }
   # end
 
