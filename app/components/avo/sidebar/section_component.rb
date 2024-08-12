@@ -2,7 +2,7 @@
 
 class Avo::Sidebar::SectionComponent < Avo::Sidebar::BaseItemComponent
   def render?
-    items.any? do |item| 
+    items.any? do |item|
       if item.is_a? Avo::Menu::Group
         item.items.find(&:visible?)
       else
