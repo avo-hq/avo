@@ -16,10 +16,4 @@ class Avo::Sidebar::SectionComponent < Avo::Sidebar::BaseItemComponent
 
     item.icon
   end
-
-  private
-
-  def groups
-    items.select {|item| item.is_a? Avo::Menu::Group}
-  end
 end
