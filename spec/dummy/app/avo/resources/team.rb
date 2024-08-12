@@ -78,12 +78,17 @@ class Avo::Resources::Team < Avo::BaseResource
         query.where.not(user_id: parent.id).or(query.where(user_id: nil))
       end
 
+    field :team_members,
+      as: :has_many,
+      through: :memberships,
+      linkable: true,
+      reloadable: true
+
     field :admin, as: :has_one, linkable: true
-    field :team_members, as: :has_many, through: :memberships, translation_key: "avo.resource_translations.team_members"
     field :reviews, as: :has_many,
-      reloadable: -> {
-        current_user.is_admin?
-      }
+    reloadable: -> {
+      current_user.is_admin?
+    }
 
     if params[:show_location_field] == "1"
       # Example for error message when resource is missing
