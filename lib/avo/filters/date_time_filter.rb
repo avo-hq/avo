@@ -16,6 +16,24 @@ module Avo
           "H:i:S"
         end
       end
+
+      # TODO: document how this method can be used to manipulate flatpickr options https://flatpickr.js.org/options/
+      def picker_options(value)
+        {
+          defaultDate: value,
+          enableTime: has_time?,
+          enableSeconds: has_time?,
+          time_24hr: has_time? ? true : nil,
+          noCalendar: type == :time,
+          mode: mode,
+          dateFormat: picker_format,
+          minuteIncrement: has_time? ? 1 : nil
+        }.compact
+      end
+
+      def has_time?
+        @has_time ||= type.in?([:time, :date_time])
+      end
     end
   end
 end

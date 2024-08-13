@@ -9,6 +9,6 @@ class Avo::Filters::Birthday < Avo::Filters::DateTimeFilter
   def apply(request, query, value)
     start_date, end_date = value.split(" to ")
 
-    query.where(Hash[:birthday, start_date..end_date])
+    query.where(birthday: start_date..end_date)
   end
 end
