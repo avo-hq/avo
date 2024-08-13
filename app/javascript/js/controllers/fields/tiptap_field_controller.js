@@ -72,6 +72,9 @@ export default class extends Controller {
       textAlignRight: this.element.querySelector(
         ".tiptap__button--align-right"
       ),
+      textAlignJustify: this.element.querySelector(
+        ".tiptap__button--align-justify"
+      ),
     };
 
     this.linkArea = this.element.querySelector(".tiptap__link-area");
@@ -86,15 +89,18 @@ export default class extends Controller {
   };
 
   onSelectionUpdate = () => {
-    Object.keys(this.buttons).forEach((action) => {
-      const isActive = this.editor.isActive(action);
-      this.buttons[action].classList.toggle(
+    Object.keys(this.buttons).forEach((actionString) => {
+      const isActive = this.editor.isActive(
+        this.actionStringToAction(actionString)
+      );
+
+      this.buttons[actionString].classList.toggle(
         "tiptap__button--selected",
         isActive
       );
 
-      if (action === "link") {
-        this.buttons[action].disabled =
+      if (actionString === "link") {
+        this.buttons[actionString].disabled =
           this.editor.view.state.selection.empty && !isActive;
       }
     });
@@ -111,10 +117,21 @@ export default class extends Controller {
   }
 
   updateButtonState(action) {
-    this.buttons[action].classList.toggle(
+    const actionString = this.actionString(action);
+
+    this.buttons[actionString].classList.toggle(
       "tiptap__button--selected",
       this.editor.isActive(action)
     );
+  }
+
+  updateButtonGroupState(action) {
+    if (action === "textAlign") {
+      this.updateButtonState({ textAlign: "left" });
+      this.updateButtonState({ textAlign: "center" });
+      this.updateButtonState({ textAlign: "right" });
+      this.updateButtonState({ textAlign: "justify" });
+    }
   }
 
   updateLinkButtonState() {
@@ -158,17 +175,22 @@ export default class extends Controller {
 
   textAlignLeft() {
     this.editor.chain().focus().setTextAlign("left").run();
-    this.updateButtonState("textAlignLeft");
+    this.updateButtonGroupState("textAlign");
   }
 
   textAlignCenter() {
     this.editor.chain().focus().setTextAlign("center").run();
-    this.updateButtonState("textAlignCenter");
+    this.updateButtonGroupState("textAlign");
   }
 
   textAlignRight() {
     this.editor.chain().focus().setTextAlign("right").run();
-    this.updateButtonState("textAlignRight");
+    this.updateButtonGroupState("textAlign");
+  }
+
+  textAlignJustify() {
+    this.editor.chain().focus().setTextAlign("justify").run();
+    this.updateButtonGroupState("textAlign");
   }
 
   unorderedList() {
@@ -235,6 +257,28 @@ export default class extends Controller {
     if (event.key === "Enter" || event.keyCode === 13) {
       event.preventDefault();
     }
+  }
+
+  actionString(action) {
+    return typeof action === "object"
+      ? this.actionObjectToString(action)
+      : action;
+  }
+
+  actionStringToAction(actionString) {
+    return actionString.includes("textAlign")
+      ? { textAlign: actionString.replace("textAlign", "").toLowerCase() }
+      : actionString;
+  }
+
+  actionObjectToString(object) {
+    return Object.keys(object)[0].concat(
+      this.capitalize(Object.values(object)[0])
+    );
+  }
+
+  capitalize(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
   disconnect() {

@@ -38,15 +38,19 @@
 
           <%= content_tag :div, class: "tiptap__button-group" do %>
             <%= button_tag type: "button", class: "tiptap__button tiptap__button--align-left", data: { action: "click->tiptap-field#textAlignLeft" } do %>
-              LEFT
+              <%= helpers.svg("avo/editor-align-left") %>
             <% end %>
 
             <%= button_tag type: "button", class: "tiptap__button tiptap__button--align-center", data: { action: "click->tiptap-field#textAlignCenter" } do %>
-              CENTER
+              <%= helpers.svg("avo/editor-align-center") %>
             <% end %>
 
             <%= button_tag type: "button", class: "tiptap__button tiptap__button--align-right", data: { action: "click->tiptap-field#textAlignRight" } do %>
-              RIGHT
+              <%= helpers.svg("avo/editor-align-right") %>
+            <% end %>
+
+            <%= button_tag type: "button", class: "tiptap__button tiptap__button--align-justify", data: { action: "click->tiptap-field#textAlignJustify" } do %>
+              <%= helpers.svg("avo/editor-align-justify") %>
             <% end %>
           <% end %>
 
