@@ -1,0 +1,24 @@
+<%= content_tag :div, data: {
+    controller: "date-time-filter",
+    filter_name: filter.name,
+    date_time_filter_class_value: filter.class.to_s,
+    date_time_filter_keep_filters_panel_open_value: @resource.keep_filters_panel_open,
+    date_time_filter_picker_options_value: {
+      defaultDate: @applied_filters[filter.class.to_s],
+      enableTime: filter.type.in?([:time, :date_time]),
+      noCalendar: filter.type == :time,
+      mode: filter.mode
+    }
+  } do %>
+  <%= filter_wrapper name: filter.name do %>
+    <div class="self-center w-full" data-slot="value">
+      <%= text_field_tag :value, "",
+        class: input_classes('w-full mb-0'),
+        placeholder: filter.class.empty_message,
+        data: {
+          date_time_filter_target: "input",
+        } %>
+    </div>
+    <%= link_to 'url_redirect', request.url, data: { 'date-time-filter-target': 'urlRedirect', 'turbo-frame': params[:turbo_frame] }, style: 'hidden', class: 'hidden' %>
+  <% end %>
+<% end %>
