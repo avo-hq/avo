@@ -8,21 +8,12 @@ module Avo
 
       self.template = "avo/base/date_time_filter"
 
-      def format
-        case type
-        when :date_time
-          "yyyy-LL-dd TT"
-        when :date
-          "yyyy-LL-dd"
-        end
-      end
-
       def picker_format
         case type
         when :date_time
           "Y-m-d H:i:S"
         when :time
-          "Y-m-d"
+          "H:i:S"
         end
       end
     end

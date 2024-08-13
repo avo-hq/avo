@@ -3,12 +3,16 @@
     filter_name: filter.name,
     date_time_filter_class_value: filter.class.to_s,
     date_time_filter_keep_filters_panel_open_value: @resource.keep_filters_panel_open,
-    date_time_filter_picker_options_value: {
+    date_time_filter_picker_options_value: { # Refactor this to maybe filter.picker_options, it's easy to maintain and more readable
       defaultDate: @applied_filters[filter.class.to_s],
       enableTime: filter.type.in?([:time, :date_time]),
+      enableSeconds: filter.type.in?([:time, :date_time]),
+      time_24hr: filter.type.in?([:time, :date_time]) ? true : nil,
       noCalendar: filter.type == :time,
-      mode: filter.mode
-    }
+      mode: filter.mode,
+      dateFormat: filter.picker_format,
+      minuteIncrement: filter.type.in?([:time, :date_time]) ? 1 : nil
+    }.compact
   } do %>
   <%= filter_wrapper name: filter.name do %>
     <div class="flex relative">
