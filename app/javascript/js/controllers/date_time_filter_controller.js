@@ -23,14 +23,10 @@ export default class extends BaseFilterController {
   }
 
   initFlatpickr() {
-    const options = {
-      onClose: this.handleOnClose.bind(this),
-    }
-
-    this.pickerInstance = flatpickr(this.inputTarget, { ...options, ...this.pickerOptionsValue })
+    this.pickerInstance = flatpickr(this.inputTarget, this.pickerOptionsValue)
   }
 
-  handleOnClose() {
-    this.changeFilter()
+  clear() {
+    this.inputTarget._flatpickr.clear()
   }
 }
