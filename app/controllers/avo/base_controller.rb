@@ -46,7 +46,7 @@ module Avo
         end
       end
 
-      # apply_search
+      apply_search
       apply_sorting
 
       # Apply filters to the current query
@@ -608,16 +608,14 @@ module Avo
     end
 
     def apply_search
-      return if @resource.search_query.nil?
+      return if @resource.class.search_query.nil?
       return if @index_params[:q].nil?
 
-      query = Avo::ExecutionContext.new(
-        target: @resource.search_query,
+      @query = Avo::ExecutionContext.new(
+        target: @resource.class.search_query,
         params: params,
-        query: @resource.query_scope
+        query: @query
       ).handle
-
-      @results_count, @results = parse_results(query, resource)
     end
 
     def parse_results(query, resource)
