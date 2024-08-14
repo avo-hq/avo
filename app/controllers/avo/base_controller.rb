@@ -46,6 +46,7 @@ module Avo
         end
       end
 
+      # apply_search
       apply_sorting
 
       # Apply filters to the current query
@@ -315,6 +316,9 @@ module Avo
         @index_params[:per_page] = params[:per_page]
         cookies[:per_page] = params[:per_page]
       end
+
+      # Search
+      @index_params[:q] = params[:q] if params[:q].present?
 
       # Sorting
       if params[:sort_by].present?
@@ -602,6 +606,23 @@ module Avo
 
     def apply_pagination
       @pagy, @records = @resource.apply_pagination(index_params: @index_params, query: pagy_query)
+    end
+
+    def apply_search
+      return if @resource.search_query.nil?
+      return if @index_params[:q].nil?
+
+      query = Avo::ExecutionContext.new(
+        target: @resource.search_query,
+        params: params,
+        query: resource.query_scope
+      ).handle
+      query = @resource.search_query
+
+      query = query.ransack(@index_params[:q])
+      query = query.result
+
+      @records = @resource.class.fetch_search(index_params: @index_params, query: pagy_query)
     end
 
     def apply_sorting
