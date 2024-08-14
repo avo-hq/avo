@@ -101,6 +101,7 @@ export default class extends Controller {
 
   toggleButtonState = (action, isActive) => {
     this.buttons[action].classList.toggle("tiptap__button--selected", isActive);
+
     if (action === "link") {
       this.buttons[action].disabled =
         this.editor.view.state.selection.empty && !isActive;
@@ -169,7 +170,6 @@ export default class extends Controller {
 
   toggleLinkArea = (event) => {
     const button = event.target.closest(".tiptap__button");
-    const isLinkActive = this.editor.isActive("link");
 
     if (button.classList.contains("tiptap__button--selected")) {
       this.linkArea.classList.add("hidden");

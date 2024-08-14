@@ -65,6 +65,7 @@
   }
 
   &:disabled {
+    opacity: 0.2;
     @apply text-gray-200 cursor-default;
   }
 
