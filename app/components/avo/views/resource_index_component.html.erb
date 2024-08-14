@@ -37,6 +37,9 @@
             <div class="flex items-center px-4 w-64">
               <% if show_search_input %>
                 <%= render partial: "avo/partials/resource_search", locals: {resource: @resource.route_key, via_reflection: via_reflection} %>
+                <label for="resource_search">
+                  <input type="text" name="search" id="resource_search">
+                </label>
               <% else %>
                 <%# Offset for the space-y-2 property when the search is missing %>
                 <div class="-mb-2"></div>
