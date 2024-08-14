@@ -615,14 +615,74 @@ module Avo
       query = Avo::ExecutionContext.new(
         target: @resource.search_query,
         params: params,
-        query: resource.query_scope
+        query: @resource.query_scope
       ).handle
-      query = @resource.search_query
 
-      query = query.ransack(@index_params[:q])
-      query = query.result
+      @results_count, @results = parse_results(query, resource)
+    end
 
-      @records = @resource.class.fetch_search(index_params: @index_params, query: pagy_query)
+    def parse_results(query, resource)
+      # When using custom search services query should return an array of hashes
+      if query.is_a?(Array)
+        # Apply highlight
+        query.map do |result|
+          result[:_label] = highlight(result[:_label].to_s, CGI.escapeHTML(params[:q] || ""))
+        end
+
+        # Force count to 0 until implement an API to pass the count
+        results_count = 0
+
+        # Apply the limit
+        results = query.first(search_results_count(resource))
+      else
+        query = apply_scope(query) if should_apply_any_scope?
+
+        # Get the count
+        results_count = query.reselect(resource.model_class.primary_key).count
+
+        # Get the results
+        query = query.limit(search_results_count(resource))
+
+        results = apply_search_metadata(query, resource)
+      end
+
+      [results_count, results]
+    end
+
+    def search_results_count(resource)
+      if resource.search_results_count
+        Avo::ExecutionContext.new(
+          target: resource.search_results_count,
+          params: params
+        ).handle
+      else
+        Avo.configuration.search_results_count
+      end
+    end
+
+    def apply_search_metadata(records, avo_resource)
+      records.map do |record|
+        resource = avo_resource.new(record: record)
+
+        fetch_result_information record, resource, resource.class.fetch_search(:item, record: record)
+      end
+    end
+
+    def fetch_result_information(record, resource, item)
+      title = item&.dig(:title) || resource.record_title
+      highlighted_title = highlight(title&.to_s, CGI.escapeHTML(params[:q] || ""))
+
+      record_path = if resource.link_to_child_resource
+                      Avo.resource_manager.get_resource_by_model_class(record.class).new(record: record).record_path
+                    else
+                      resource.record_path
+                    end
+
+      {
+        _id: record.to_param,
+        _label: highlighted_title,
+        _url: resource.class.fetch_search(:result_path, record: resource.record) || record_path
+      }
     end
 
     def apply_sorting
