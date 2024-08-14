@@ -11,7 +11,7 @@ module Avo
     def show
       render json: search_resources([resource])
     rescue => error
-      render_search_error(error)
+      render_error _label: error.message
     end
 
     private
@@ -25,8 +25,6 @@ module Avo
             policy_class: resource.authorization_policy,
             raise_exception: false
           )
-          # Filter out the models without a search_query
-          next if resource.search_query.nil?
 
           search_resource resource
         end
@@ -41,6 +39,20 @@ module Avo
     end
 
     def search_resource(resource)
+      key = resource.name.pluralize.downcase
+
+      # If search query is not defined return error in dev and nil otwherwise.
+      if resource.search_query.blank?
+        return nil unless render_error?
+
+        search_query_undefined = error_payload(
+          _label: "Please configure the search for #{resource}",
+          _url: "https://docs.avohq.io/3.0/search.html#enable-search-for-a-resource"
+        )
+
+        return [key, search_query_undefined]
+      end
+
       query = Avo::ExecutionContext.new(
         target: resource.search_query,
         params: params,
@@ -62,7 +74,7 @@ module Avo
         count: results.count
       }
 
-      [resource.name.pluralize.downcase, result_object]
+      [key, result_object]
     end
 
     # When searching in a `has_many` association and will scope out the records against the parent record.
@@ -179,19 +191,25 @@ module Avo
       parent_resource.find_record params[:via_reflection_id], params: params
     end
 
-    def render_search_error(error)
-      raise error unless Rails.env.development?
+    def render_error(...)
+      raise error unless render_error?
 
       render json: {
-        error: {
-          header: "🚨 An error occurred while searching. 🚨",
-          help: "Please see the error and fix it before deploying.",
-          results: {
-            _label: error.message
-          },
-          count: 1
-        }
+        error: error_payload(...)
       }, status: 500
+    end
+
+    def error_payload(_label:, _url: "")
+      {
+        header: "🚨 An error occurred during search 🚨",
+        help: "Please review and resolve the issue before deployment 🚨",
+        results: {
+          _label:,
+          _url:,
+          _error: true
+        },
+        count: 1
+      }
     end
 
     def search_results_count(resource)
@@ -231,6 +249,10 @@ module Avo
       end
 
       [results_count, results]
+    end
+
+    def render_error?
+      Rails.env.development?
     end
   end
 end

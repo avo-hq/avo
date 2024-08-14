@@ -342,8 +342,8 @@ RSpec.describe "Filters", type: :system do
         wait_for_loaded
         check "Featured"
 
-        expect(page).to have_css "[aria-label='Next']"
-        expect(page).to have_css "[aria-label='Previous']"
+        expect(page).to have_css "[data-turbo-frame][aria-label='Next']"
+        expect(page).to have_css "[data-turbo-frame][aria-label='Previous']"
 
         expect(find(".current")).to have_text "1"
         expect(find(".current")).not_to have_text "2"

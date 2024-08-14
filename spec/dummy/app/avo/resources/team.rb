@@ -79,7 +79,11 @@ class Avo::Resources::Team < Avo::BaseResource
       end
 
     field :admin, as: :has_one, linkable: true
-    field :team_members, as: :has_many, through: :memberships, translation_key: "avo.resource_translations.team_members"
+    field :team_members,
+      as: :has_many,
+      through: :memberships,
+      linkable: true,
+      reloadable: true
     field :reviews, as: :has_many,
       reloadable: -> {
         current_user.is_admin?

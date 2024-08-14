@@ -12,7 +12,9 @@ class Avo::Resources::Store < Avo::BaseResource
       field :location, as: :has_one
     end
 
-    field :patrons, as: :has_many, through: :patronships,
+    field :patrons,
+      as: :has_many,
+      through: :patronships,
       translation_key: "patrons",
       attach_fields: -> {
         if ENV["TEST_FILL_JOIN_RECORD"]
