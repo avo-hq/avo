@@ -1,35 +1,35 @@
 # frozen_string_literal: true
 
 class Avo::Fields::Common::Files::ViewType::GridItemComponent < Avo::BaseComponent
-  prop :field, Avo::Fields::BaseField, reader: :public
-  prop :resource, Avo::BaseResource, reader: :public
-  prop :file, _Nilable(ActiveStorage::Attachment), reader: :public
-  prop :extra_classes, _Nilable(String), reader: :public
+  prop :field, Avo::Fields::BaseField
+  prop :resource, Avo::BaseResource
+  prop :file, _Nilable(ActiveStorage::Attachment)
+  prop :extra_classes, _Nilable(String)
 
   def id
-    field.id
+    @field.id
   end
 
   def file
-    @file || field.value.attachment
+    @file || @field.value.attachment
   rescue
     nil
   end
 
   def is_image?
-    file.image? || field.is_image
+    @file.image? || @field.is_image
   rescue
     false
   end
 
   def is_audio?
-    file.audio? || field.is_audio
+    @file.audio? || @field.is_audio
   rescue
     false
   end
 
   def is_video?
-    file.video? || field.is_video
+    @file.video? || @field.is_video
   rescue
     false
   end
@@ -42,7 +42,7 @@ class Avo::Fields::Common::Files::ViewType::GridItemComponent < Avo::BaseCompone
   def record_persisted?
     return true if @resource.record.persisted?
 
-    ActiveStorage::Blob.destroy(file.blob_id) if file.blob_id.present?
+    ActiveStorage::Blob.destroy(@file.blob_id) if @file.blob_id.present?
     false
   end
 end
