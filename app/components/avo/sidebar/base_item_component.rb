@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class Avo::Sidebar::BaseItemComponent < Avo::BaseComponent
-  attr_reader :item, :items
   delegate :collapsable, :collapsed, to: :@item
 
   prop :item, _Nilable(ViewComponent::Base)
@@ -11,7 +10,7 @@ class Avo::Sidebar::BaseItemComponent < Avo::BaseComponent
   end
 
   def render?
-    items.any?
+    @items.any?
   end
 
   def key
