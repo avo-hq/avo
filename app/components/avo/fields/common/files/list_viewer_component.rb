@@ -3,8 +3,8 @@
 class Avo::Fields::Common::Files::ListViewerComponent < Avo::BaseComponent
   include Turbo::FramesHelper
 
-  prop :field, Avo::Fields::BaseField, reader: :public
-  prop :resource, Avo::BaseResource, reader: :public
+  prop :field, Avo::Fields::BaseField
+  prop :resource, Avo::BaseResource
 
   def classes
     base_classes = "py-4 rounded-2xl max-w-full"
@@ -19,7 +19,7 @@ class Avo::Fields::Common::Files::ListViewerComponent < Avo::BaseComponent
   end
 
   def wrapper_classes
-    (field.stacked && !field.hide_view_type_switcher) ? "-mt-9" : ""
+    (@field.stacked && !@field.hide_view_type_switcher) ? "-mt-9" : ""
   end
 
   def available_view_types
@@ -28,10 +28,10 @@ class Avo::Fields::Common::Files::ListViewerComponent < Avo::BaseComponent
 
   def view_type_component(file)
     component = "Avo::Fields::Common::Files::ViewType::#{view_type.to_s.capitalize}ItemComponent".constantize
-    component.new(field: field, resource: resource, file: file, extra_classes: "aspect-video")
+    component.new(field: @field, resource: @resource, file: file, extra_classes: "aspect-video")
   end
 
   def view_type
-    @view_type ||= (resource.params.dig(:view_type) || field.view_type).to_sym
+    @view_type ||= (@resource.params.dig(:view_type) || @field.view_type).to_sym
   end
 end
