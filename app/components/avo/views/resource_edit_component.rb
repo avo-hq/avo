@@ -5,16 +5,16 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
 
   prop :resource, _Nilable(Avo::BaseResource)
   prop :record, _Nilable(ActiveRecord::Base)
-  prop :actions, _Array(Avo::BaseAction), default: [].freeze, reader: :public
+  prop :actions, _Array(Avo::BaseAction), default: [].freeze
   prop :view, Avo::ViewInquirer do |value|
     value = :edit if value.nil?
     Avo::ViewInquirer.new(value.to_sym)
   end
-  prop :display_breadcrumbs, _Boolean, default: true, reader: :public
+  prop :display_breadcrumbs, _Boolean, default: true
 
   def after_initialize
-    @view = Avo::ViewInquirer.new(view)
-    @display_breadcrumbs = @reflection.blank? && display_breadcrumbs
+    @view = Avo::ViewInquirer.new(@view)
+    @display_breadcrumbs = @reflection.blank? && @display_breadcrumbs
   end
 
   def title
@@ -59,7 +59,7 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
 
   # Render :show view for read only trix fields
   def view_for(field)
-    field.is_a?(Avo::Fields::TrixField) && field.is_disabled? ? :show : view
+    field.is_a?(Avo::Fields::TrixField) && field.is_disabled? ? :show : @view
   end
 
   private
@@ -73,7 +73,7 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   end
 
   def is_edit?
-    view.in?(%w[edit update])
+    @view.in?(%w[edit update])
   end
 
   def form_method
