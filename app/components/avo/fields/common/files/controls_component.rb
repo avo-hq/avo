@@ -6,9 +6,9 @@ class Avo::Fields::Common::Files::ControlsComponent < Avo::BaseComponent
 
   delegate :id, to: :field
 
-  prop :field, Avo::Fields::BaseField, reader: :public
-  prop :file, ActiveStorage::Attachment, reader: :public
-  prop :resource, Avo::BaseResource, reader: :public
+  prop :field, Avo::Fields::BaseField
+  prop :file, ActiveStorage::Attachment
+  prop :resource, Avo::BaseResource
 
   def destroy_path
     Avo::Services::URIService.parse(@resource.record_path).append_paths("active_storage_attachments", id, file.id).to_s
