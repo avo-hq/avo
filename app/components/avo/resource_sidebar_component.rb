@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 class Avo::ResourceSidebarComponent < Avo::BaseComponent
-  prop :resource, _Nilable(Avo::BaseResource), reader: :public
-  prop :sidebar, _Nilable(Avo::Resources::Items::Sidebar), reader: :public
-  prop :index, _Nilable(Integer), reader: :public
-  prop :params, _Nilable(ActionController::Parameters), reader: :public
-  prop :form, _Nilable(ActionView::Helpers::FormBuilder), reader: :public
+  prop :resource, _Nilable(Avo::BaseResource)
+  prop :sidebar, _Nilable(Avo::Resources::Items::Sidebar)
+  prop :index, _Nilable(Integer)
+  prop :params, _Nilable(ActionController::Parameters)
+  prop :form, _Nilable(ActionView::Helpers::FormBuilder)
   prop :view, _Nilable(Symbol), reader: :public do |value|
     value&.to_sym
   end
