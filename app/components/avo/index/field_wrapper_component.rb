@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class Avo::Index::FieldWrapperComponent < Avo::BaseComponent
-  attr_reader :view
-
   prop :field, _Nilable(Avo::Fields::BaseField)
   prop :resource, _Nilable(Avo::BaseResource)
   prop :dash_if_blank, _Boolean, default: true
@@ -22,13 +20,13 @@ class Avo::Index::FieldWrapperComponent < Avo::BaseComponent
       result += " py-3"
     end
 
-    result += " #{@field.get_html(:classes, view: view, element: :wrapper)}"
+    result += " #{@field.get_html(:classes, view: @view, element: :wrapper)}"
 
     result
   end
 
   def style
-    @field.get_html(:style, view: view, element: :wrapper)
+    @field.get_html(:style, view: @view, element: :wrapper)
   end
 
   def stimulus_attributes
@@ -38,7 +36,7 @@ class Avo::Index::FieldWrapperComponent < Avo::BaseComponent
       attributes["#{controller}-target"] = "#{@field.id.to_s.underscore}_#{@field.type.to_s.underscore}_wrapper".camelize(:lower)
     end
 
-    wrapper_data_attributes = @field.get_html :data, view: view, element: :wrapper
+    wrapper_data_attributes = @field.get_html :data, view: @view, element: :wrapper
     if wrapper_data_attributes.present?
       attributes.merge! wrapper_data_attributes
     end
