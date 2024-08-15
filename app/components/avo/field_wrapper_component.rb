@@ -20,9 +20,15 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
     value&.to_sym
   end
   prop :args, Hash, :**, default: {}.freeze
+  prop :classes, _Nilable(String) do |value|
+    if @args
+      @args[:class]
+    else
+      ""
+    end
+  end
 
   def after_initialize
-    @classes = @args[:class].present? ? @args[:class] : ""
     @action = @field.action
   end
 
