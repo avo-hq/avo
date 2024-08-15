@@ -2,9 +2,8 @@
 
 class Avo::CoverPhotoComponent < Avo::BaseComponent
   prop :cover_photo, _Nilable(Avo::CoverPhoto)
-
-  def after_initialize
-    @size = @cover_photo&.size
+  prop :size, _Nilable(Symbol) do |value|
+    @cover_photo&.size
   end
 
   # aspect-cover-sm
