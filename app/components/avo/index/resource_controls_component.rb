@@ -6,9 +6,9 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   prop :resource, _Nilable(Avo::BaseResource)
   prop :reflection, _Nilable(ActiveRecord::Reflection::AbstractReflection)
   prop :parent_record, _Nilable(ActiveRecord::Base)
-  prop :parent_resource, _Nilable(Avo::BaseResource), reader: :public
-  prop :view_type, Symbol, default: :table, reader: :public
-  prop :actions, _Nilable(_Array(Avo::BaseAction)), reader: :public
+  prop :parent_resource, _Nilable(Avo::BaseResource)
+  prop :view_type, Symbol, default: :table
+  prop :actions, _Nilable(_Array(Avo::BaseAction))
 
   def can_detach?
     is_has_many_association? ? super : false
