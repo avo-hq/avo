@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 class Avo::Fields::Common::Files::ViewType::ListItemComponent < Avo::Fields::Common::Files::ViewType::GridItemComponent
+  prop :field, Avo::Fields::BaseField
+  prop :resource, Avo::BaseResource
+  prop :file, _Nilable(ActiveStorage::Attachment)
+  prop :extra_classes, _Nilable(String)
+
   def icon_for_file
     if is_image?
       "photo"
