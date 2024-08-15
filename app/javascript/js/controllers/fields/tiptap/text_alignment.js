@@ -1,20 +1,22 @@
-export const textAlignLeft = (editor, updateButtonGroupState) => {
-  setTextAlign(editor, "left", updateButtonGroupState);
+import { updateButtonGroupState } from "./editor_helpers";
+
+export const textAlignLeft = (editor, buttons) => {
+  setTextAlign(editor, "left", buttons);
 };
 
-export const textAlignCenter = (editor, updateButtonGroupState) => {
-  setTextAlign(editor, "center", updateButtonGroupState);
+export const textAlignCenter = (editor, buttons) => {
+  setTextAlign(editor, "center", buttons);
 };
 
-export const textAlignRight = (editor, updateButtonGroupState) => {
-  setTextAlign(editor, "right", updateButtonGroupState);
+export const textAlignRight = (editor, buttons) => {
+  setTextAlign(editor, "right", buttons);
 };
 
-export const textAlignJustify = (editor, updateButtonGroupState) => {
-  setTextAlign(editor, "justify", updateButtonGroupState);
+export const textAlignJustify = (editor, buttons) => {
+  setTextAlign(editor, "justify", buttons);
 };
 
-const setTextAlign = (editor, align, updateButtonGroupState) => {
+const setTextAlign = (editor, align, buttons) => {
   editor.chain().focus().setTextAlign(align).run();
-  updateButtonGroupState("textAlign");
+  updateButtonGroupState(editor, "textAlign", buttons);
 };

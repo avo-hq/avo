@@ -1,20 +1,22 @@
-export const bold = (editor, updateButtonState) => {
-  toggleMark(editor, "toggleBold", "bold", updateButtonState);
+import { updateButtonState } from "./editor_helpers";
+
+export const bold = (editor, buttons) => {
+  toggleMark(editor, "toggleBold", "bold", buttons);
 };
 
-export const italic = (editor, updateButtonState) => {
-  toggleMark(editor, "toggleItalic", "italic", updateButtonState);
+export const italic = (editor, buttons) => {
+  toggleMark(editor, "toggleItalic", "italic", buttons);
 };
 
-export const underline = (editor, updateButtonState) => {
-  toggleMark(editor, "toggleUnderline", "underline", updateButtonState);
+export const underline = (editor, buttons) => {
+  toggleMark(editor, "toggleUnderline", "underline", buttons);
 };
 
-export const strike = (editor, updateButtonState) => {
-  toggleMark(editor, "toggleStrike", "strike", updateButtonState);
+export const strike = (editor, buttons) => {
+  toggleMark(editor, "toggleStrike", "strike", buttons);
 };
 
-const toggleMark = (editor, method, action, updateButtonState) => {
+const toggleMark = (editor, method, action, buttons) => {
   editor.chain().focus()[method]().run();
-  updateButtonState(action);
+  updateButtonState(editor, action, buttons);
 };

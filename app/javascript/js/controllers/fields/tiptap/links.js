@@ -38,3 +38,9 @@ export const updateLinkButtonState = (editor, buttons) => {
   const isSelectionEmpty = editor.view.state.selection.empty;
   buttons["toggleLinkArea"].disabled = isSelectionEmpty && !isLinkActive;
 };
+
+export const preventEnter = (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+  }
+};
