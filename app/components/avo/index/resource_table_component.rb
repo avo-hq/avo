@@ -12,14 +12,14 @@ class Avo::Index::ResourceTableComponent < Avo::BaseComponent
   prop :resource, _Nilable(Avo::BaseResource)
   prop :reflection, _Nilable(ActiveRecord::Reflection::AbstractReflection)
   prop :parent_record, _Nilable(ActiveRecord::Base)
-  prop :parent_resource, _Nilable(Avo::BaseResource), reader: :public
-  prop :pagy, _Nilable(Pagy), reader: :public
-  prop :query, _Nilable(ActiveRecord::Relation), reader: :public
-  prop :actions, _Nilable(_Array(Avo::BaseAction)), reader: :public
+  prop :parent_resource, _Nilable(Avo::BaseResource)
+  prop :pagy, _Nilable(Pagy)
+  prop :query, _Nilable(ActiveRecord::Relation)
+  prop :actions, _Nilable(_Array(Avo::BaseAction))
 
   def encrypted_query
     # TODO: move this to the resource where we can apply the adapter pattern
-    if Module.const_defined?("Ransack::Search") && query.instance_of?(Ransack::Search)
+    if Module.const_defined?("Ransack::Search") && @query.instance_of?(Ransack::Search)
       @query = @query.result
     end
 
@@ -28,9 +28,9 @@ class Avo::Index::ResourceTableComponent < Avo::BaseComponent
 
   def selected_page_label
     if @resource.pagination_type.countless?
-      t "avo.x_records_selected_from_page_html", selected: pagy.in
+      t "avo.x_records_selected_from_page_html", selected: @pagy.in
     else
-      t "avo.x_records_selected_from_a_total_of_x_html", selected: pagy.in, count: pagy.count
+      t "avo.x_records_selected_from_a_total_of_x_html", selected: @pagy.in, count: @pagy.count
     end
   end
 
@@ -38,7 +38,7 @@ class Avo::Index::ResourceTableComponent < Avo::BaseComponent
     if @resource.pagination_type.countless?
       t "avo.records_selected_from_all_pages_html"
     else
-      t "avo.x_records_selected_from_all_pages_html", count: pagy.count
+      t "avo.x_records_selected_from_all_pages_html", count: @pagy.count
     end
   end
 
