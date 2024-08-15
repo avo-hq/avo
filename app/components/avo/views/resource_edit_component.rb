@@ -13,7 +13,6 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   prop :display_breadcrumbs, _Boolean, default: true, reader: :public
 
   def after_initialize
-    @view = Avo::ViewInquirer.new(@view)
     @display_breadcrumbs = @reflection.blank? && display_breadcrumbs
   end
 
