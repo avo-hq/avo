@@ -3,8 +3,6 @@
 class Avo::Fields::Common::KeyValueComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
 
-  attr_reader :view
-
   prop :field, Avo::Fields::BaseField
   prop :form, _Nilable(ActionView::Helpers::FormBuilder)
   prop :view, Avo::ViewInquirer do |value|
