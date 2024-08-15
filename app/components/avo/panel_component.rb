@@ -3,8 +3,6 @@
 class Avo::PanelComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
 
-  attr_reader :title # deprecating title in favor of name
-
   delegate :white_panel_classes, to: :helpers
 
   renders_one :cover_slot
@@ -30,7 +28,7 @@ class Avo::PanelComponent < Avo::BaseComponent
 
   def after_initialize
     @title = @args[:title]
-    @name = name || title
+    @name = name || @title
   end
 
   def classes
