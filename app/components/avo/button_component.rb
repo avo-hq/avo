@@ -17,9 +17,8 @@ class Avo::ButtonComponent < Avo::BaseComponent
   prop :compact, _Boolean, default: false
   prop :aria, Hash, default: {}.freeze
   prop :args, Hash, :**, default: {}.freeze
-
-  def after_initialize
-    @class = @args[:class]
+  prop :class, _Nilable(String) do |value|
+    @args[:class] if @args
   end
 
   def args
