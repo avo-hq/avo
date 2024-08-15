@@ -7,20 +7,20 @@ class Avo::TabSwitcherComponent < Avo::BaseComponent
   delegate :white_panel_classes, to: :helpers
   delegate :group_param, to: :@group
 
-  prop :resource, Avo::BaseResource, reader: :public
-  prop :group, Avo::Resources::Items::TabGroup, reader: :public
-  prop :current_tab, Avo::Resources::Items::Tab, reader: :public
+  prop :resource, Avo::BaseResource
+  prop :group, Avo::Resources::Items::TabGroup
+  prop :current_tab, Avo::Resources::Items::Tab
   prop :active_tab_name, String, reader: :public
-  prop :view, String, reader: :public
+  prop :view, String
 
   #TOD: helper to record:
   def tab_path(tab)
     if is_edit?
-      helpers.edit_resource_path(resource: @resource, record: @resource.record, keep_query_params: true, active_tab_name: tab.name, tab_turbo_frame: group.turbo_frame_id)
+      helpers.edit_resource_path(resource: @resource, record: @resource.record, keep_query_params: true, active_tab_name: tab.name, tab_turbo_frame: @group.turbo_frame_id)
     elsif is_new?
-      helpers.new_resource_path(resource: @resource, keep_query_params: true, active_tab_name: tab.name, tab_turbo_frame: group.turbo_frame_id)
+      helpers.new_resource_path(resource: @resource, keep_query_params: true, active_tab_name: tab.name, tab_turbo_frame: @group.turbo_frame_id)
     else
-      helpers.resource_path(resource: @resource, record: @resource.record, keep_query_params: true, active_tab_name: tab.name, tab_turbo_frame: group.turbo_frame_id)
+      helpers.resource_path(resource: @resource, record: @resource.record, keep_query_params: true, active_tab_name: tab.name, tab_turbo_frame: @group.turbo_frame_id)
     end
   end
 
@@ -34,7 +34,7 @@ class Avo::TabSwitcherComponent < Avo::BaseComponent
 
   # We'll mark the tab as selected if it's the current one
   def current_one?(tab)
-    tab.name == active_tab_name
+    tab.name == @active_tab_name
   end
 
   private
