@@ -1,20 +1,6 @@
 import { Controller } from "@hotwired/stimulus";
-import { Editor } from "@tiptap/core";
-
-import Bold from "@tiptap/extension-bold";
-import BulletList from "@tiptap/extension-bullet-list";
-import Document from "@tiptap/extension-document";
-import HardBreak from "@tiptap/extension-hard-break";
-import Italic from "@tiptap/extension-italic";
-import Link from "@tiptap/extension-link";
-import ListItem from "@tiptap/extension-list-item";
-import OrderedList from "@tiptap/extension-ordered-list";
-import Paragraph from "@tiptap/extension-paragraph";
-import Placeholder from "@tiptap/extension-placeholder";
-import Strike from "@tiptap/extension-strike";
-import Text from "@tiptap/extension-text";
-import TextAlign from "@tiptap/extension-text-align";
-import Underline from "@tiptap/extension-underline";
+import { initializeEditor } from "./tiptap/editor_initializer";
+import { initializeToolbar } from "./tiptap/toolbar_initializer";
 
 export default class extends Controller {
   static targets = ["editor", "controller", "input"];
@@ -41,41 +27,16 @@ export default class extends Controller {
   };
 
   initEditor = () => {
-    this.editor = new Editor({
-      element: this.editorTarget,
-      extensions: [
-        Bold,
-        BulletList,
-        Document,
-        HardBreak,
-        Italic,
-        Link.configure({
-          openOnClick: false,
-        }),
-        ListItem,
-        OrderedList,
-        Paragraph,
-        Placeholder.configure({
-          placeholder: this.inputTarget.placeholder,
-        }),
-        Strike,
-        Text,
-        TextAlign.configure({
-          types: ["heading", "paragraph"],
-        }),
-        Underline,
-      ],
-      type: "HTML",
-      content: this.inputTarget.value,
-      onUpdate: this.onUpdate,
-      onSelectionUpdate: this.onSelectionUpdate,
-    });
+    this.editor = initializeEditor(
+      this.editorTarget,
+      this.inputTarget,
+      this.onUpdate,
+      this.onSelectionUpdate
+    );
   };
 
   initToolbar = () => {
-    Object.values(this.buttons).forEach((button) => {
-      button.addEventListener("click", this.handleButtonClick);
-    });
+    initializeToolbar(this.buttons, this.handleButtonClick);
   };
 
   onUpdate = () => {
