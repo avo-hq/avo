@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 class Avo::PaginatorComponent < Avo::BaseComponent
-  prop :resource, _Nilable(Avo::BaseResource), reader: :public
-  prop :parent_record, _Nilable(ActiveRecord::Base), reader: :public
-  prop :pagy, _Nilable(Pagy), reader: :public
-  prop :turbo_frame, _Nilable(String), reader: :public
-  prop :index_params, _Nilable(Hash), reader: :public
-  prop :discreet_pagination, _Nilable(_Boolean), reader: :public
+  prop :resource, _Nilable(Avo::BaseResource)
+  prop :parent_record, _Nilable(ActiveRecord::Base)
+  prop :pagy, _Nilable(Pagy)
+  prop :turbo_frame, _Nilable(String)
+  prop :index_params, _Nilable(Hash)
+  prop :discreet_pagination, _Nilable(_Boolean)
 
   def change_items_per_page_url(option)
     if @parent_record.present?
