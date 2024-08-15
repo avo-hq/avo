@@ -7,8 +7,8 @@ class Avo::Index::GridItemComponent < Avo::BaseComponent
   prop :resource, _Nilable(Avo::BaseResource)
   prop :reflection, _Nilable(ActiveRecord::Reflection::AbstractReflection)
   prop :parent_record, _Nilable(ActiveRecord::Base)
-  prop :parent_resource, _Nilable(Avo::BaseResource), reader: :public
-  prop :actions, _Nilable(_Array(Avo::BaseAction)), reader: :public
+  prop :parent_resource, _Nilable(Avo::BaseResource)
+  prop :actions, _Nilable(_Array(Avo::BaseAction))
 
   def after_initialize
     @card = Avo::ExecutionContext.new(target: @resource.grid_view[:card], resource: @resource, record: @resource.record).handle
@@ -28,7 +28,7 @@ class Avo::Index::GridItemComponent < Avo::BaseComponent
 
     if @parent_record.present?
       args = {
-        via_resource_class: parent_resource.class.to_s,
+        via_resource_class: @parent_resource.class.to_s,
         via_record_id: @parent_record.to_param
       }
     end
