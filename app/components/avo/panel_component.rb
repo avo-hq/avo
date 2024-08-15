@@ -15,7 +15,6 @@ class Avo::PanelComponent < Avo::BaseComponent
   renders_one :footer_tools
   renders_one :footer
 
-  prop :name, _Nilable(String), reader: :public
   prop :description, _Nilable(String)
   prop :body_classes, _Nilable(String)
   prop :data, Hash, default: {}.freeze
@@ -25,10 +24,12 @@ class Avo::PanelComponent < Avo::BaseComponent
   prop :profile_photo, _Nilable(Avo::ProfilePhoto)
   prop :cover_photo, _Nilable(Avo::CoverPhoto)
   prop :args, Hash, :**, default: {}.freeze
-
-  def after_initialize
-    @title = @args[:title]
-    @name = name || @title
+  prop :name, _Nilable(String) do |value|
+    if @args
+      @args[:title]
+    else
+      value
+    end
   end
 
   def classes
