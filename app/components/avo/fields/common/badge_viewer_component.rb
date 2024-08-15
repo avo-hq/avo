@@ -3,8 +3,7 @@
 class Avo::Fields::Common::BadgeViewerComponent < Avo::BaseComponent
   prop :value, String
   prop :options, Hash
-
-  def after_initialize
+  prop :backgrounds, _Nilable(Hash) do |value|
     @backgrounds = {
       info: "bg-blue-500",
       success: "bg-green-500",
