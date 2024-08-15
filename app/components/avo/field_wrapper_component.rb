@@ -3,19 +3,19 @@
 class Avo::FieldWrapperComponent < Avo::BaseComponent
   include Avo::Concerns::HasResourceStimulusControllers
 
-  prop :dash_if_blank, _Boolean, default: true, reader: :public
+  prop :dash_if_blank, _Boolean, default: true
   prop :data, Hash, default: {}.freeze
-  prop :compact, _Boolean, default: false, reader: :public
+  prop :compact, _Boolean, default: false
   prop :help, _Nilable(String)
-  prop :field, _Nilable(Avo::Fields::BaseField), reader: :public
-  prop :form, _Nilable(ActionView::Helpers::FormBuilder), reader: :public
-  prop :full_width, _Boolean, default: false, reader: :public
+  prop :field, _Nilable(Avo::Fields::BaseField)
+  prop :form, _Nilable(ActionView::Helpers::FormBuilder)
+  prop :full_width, _Boolean, default: false
   prop :label, _Nilable(String)
-  prop :resource, _Nilable(Avo::BaseResource), reader: :public
+  prop :resource, _Nilable(Avo::BaseResource)
   prop :short, _Boolean, default: false
   prop :stacked, _Nilable(_Boolean)
   prop :style, String, default: ""
-  prop :view, String, default: "show", reader: :public
+  prop :view, String, default: "show"
   prop :label_for, _Nilable(Symbol) do |value|
     value&.to_sym
   end
@@ -30,7 +30,7 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
     class_names("field-wrapper relative flex flex-col grow pb-2 md:pb-0 leading-tight h-full",
       @classes,
       extra_classes,
-      @field.get_html(:classes, view: view, element: :wrapper),
+      @field.get_html(:classes, view: @view, element: :wrapper),
       {
         "min-h-14": !short?,
         "min-h-10": short?,
@@ -44,7 +44,7 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
   end
 
   def style
-    "#{@style} #{@field.get_html(:style, view: view, element: :wrapper)}"
+    "#{@style} #{@field.get_html(:style, view: @view, element: :wrapper)}"
   end
 
   def label
@@ -55,14 +55,14 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
     @label_for || @field.form_field_label
   end
 
-  delegate :show?, :edit?, to: :view, prefix: :on
+  delegate :show?, :edit?, to: :@view, prefix: :on
 
   def help
-    Avo::ExecutionContext.new(target: @help || @field.help, record: record, resource: resource, view: view).handle
+    Avo::ExecutionContext.new(target: @help || @field.help, record: record, resource: @resource, view: @view).handle
   end
 
   def record
-    resource.present? ? resource.record : nil
+    @resource.present? ? @resource.record : nil
   end
 
   def data
@@ -73,7 +73,7 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
     }
 
     # Fetch the data attributes off the html option
-    wrapper_data_attributes = @field.get_html :data, view: view, element: :wrapper
+    wrapper_data_attributes = @field.get_html :data, view: @view, element: :wrapper
     if wrapper_data_attributes.present?
       attributes.merge! wrapper_data_attributes
     end
@@ -95,7 +95,7 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
     return @stacked unless @stacked.nil?
 
     # Fetch it from the field
-    return field.stacked unless field.stacked.nil?
+    return @field.stacked unless @field.stacked.nil?
 
     # Fallback to defaults
     Avo.configuration.field_wrapper_layout == :stacked
