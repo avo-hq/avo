@@ -1,6 +1,23 @@
 import { Controller } from "@hotwired/stimulus";
 import { initializeEditor } from "./tiptap/editor_initializer";
 import { initializeToolbar } from "./tiptap/toolbar_initializer";
+import { bold, italic, underline, strike } from "./tiptap/text_formatting";
+import { unorderedList, orderedList } from "./tiptap/lists";
+
+import {
+  textAlignLeft,
+  textAlignCenter,
+  textAlignRight,
+  textAlignJustify,
+} from "./tiptap/text_alignment";
+
+import {
+  toggleLinkArea,
+  setLink,
+  unsetLink,
+  updateLinkArea,
+  updateLinkButtonState,
+} from "./tiptap/links";
 
 export default class extends Controller {
   static targets = ["editor", "controller", "input"];
@@ -49,8 +66,14 @@ export default class extends Controller {
       this.toggleButtonState(action, isActive);
     });
 
-    this.updateLinkArea();
-    this.updateLinkButtonState();
+    updateLinkArea(
+      this.editor,
+      this.linkArea,
+      this.unsetButton,
+      this.linkInput
+    );
+
+    updateLinkButtonState(this.editor, this.buttons);
   };
 
   handleButtonClick = (event) => {
@@ -103,64 +126,25 @@ export default class extends Controller {
     }
   };
 
-  bold = () => this.toggleMark("toggleBold", "bold");
-  italic = () => this.toggleMark("toggleItalic", "italic");
-  underline = () => this.toggleMark("toggleUnderline", "underline");
-  strike = () => this.toggleMark("toggleStrike", "strike");
-  textAlignLeft = () => this.setTextAlign("left");
-  textAlignCenter = () => this.setTextAlign("center");
-  textAlignRight = () => this.setTextAlign("right");
-  textAlignJustify = () => this.setTextAlign("justify");
-  unorderedList = () => this.toggleList("toggleBulletList", "bulletList");
-  orderedList = () => this.toggleList("toggleOrderedList", "orderedList");
+  bold = () => bold(this.editor, this.updateButtonState);
+  italic = () => italic(this.editor, this.updateButtonState);
+  underline = () => underline(this.editor, this.updateButtonState);
+  strike = () => strike(this.editor, this.updateButtonState);
 
-  toggleMark = (method, action) => {
-    this.editor.chain().focus()[method]().run();
-    this.updateButtonState(action);
-  };
+  textAlignLeft = () => textAlignLeft(this.editor, this.updateButtonGroupState);
+  textAlignCenter = () =>
+    textAlignCenter(this.editor, this.updateButtonGroupState);
+  textAlignRight = () =>
+    textAlignRight(this.editor, this.updateButtonGroupState);
+  textAlignJustify = () =>
+    textAlignJustify(this.editor, this.updateButtonGroupState);
 
-  setTextAlign = (align) => {
-    this.editor.chain().focus().setTextAlign(align).run();
-    this.updateButtonGroupState("textAlign");
-  };
+  unorderedList = () => unorderedList(this.editor, this.updateButtonState);
+  orderedList = () => orderedList(this.editor, this.updateButtonState);
 
-  toggleList = (method, action) => {
-    this.editor.chain().focus()[method]().run();
-    this.updateButtonState(action);
-  };
-
-  toggleLinkArea = (event) => {
-    const button = event.target.closest(".tiptap__button");
-
-    if (button.classList.contains("tiptap__button--selected")) {
-      this.linkArea.classList.add("hidden");
-      button.classList.remove("tiptap__button--selected");
-    } else if (!this.editor.view.state.selection.empty) {
-      this.linkArea.classList.remove("hidden");
-      button.classList.add("tiptap__button--selected");
-    }
-  };
-
-  setLink = () => {
-    const url = this.linkInput.value;
-
-    if (url) {
-      this.editor
-        .chain()
-        .focus()
-        .extendMarkRange("link")
-        .setLink({ href: url })
-        .run();
-      this.unsetButton.classList.remove("hidden");
-    } else {
-      this.unsetLink();
-    }
-  };
-
-  unsetLink = () => {
-    this.editor.chain().focus().extendMarkRange("link").unsetLink().run();
-    this.unsetButton.classList.add("hidden");
-  };
+  toggleLinkArea = (event) => toggleLinkArea(this.editor, this.linkArea, event);
+  setLink = () => setLink(this.editor, this.linkInput, this.unsetButton);
+  unsetLink = () => unsetLink(this.editor, this.unsetButton);
 
   preventEnter = (event) => {
     if (event.key === "Enter") {
