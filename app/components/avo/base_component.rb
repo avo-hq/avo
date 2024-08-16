@@ -64,7 +64,7 @@ class Avo::BaseComponent < ViewComponent::Base
   end
 
   def field_linked_to_child_resource?
-    resolved_field = @reflection ? @parent_resource.get_field(@reflection.name) : field
+    resolved_field = @reflection ? @parent_resource.get_field(params[:for_attribute] || @reflection.name) : field
     resolved_field.link_to_child_resource if resolved_field.respond_to?(:link_to_child_resource)
   end
 end
