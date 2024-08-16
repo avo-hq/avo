@@ -289,6 +289,19 @@ RSpec.describe "Actions", type: :system do
     end
   end
 
+  describe "arguments" do
+    it "access to arguments" do
+      visit avo.resources_fish_index_path
+
+      open_panel_action(action_name: "Dummy action")
+
+      run_action
+
+      expect(page).not_to have_text "Sure, I love 🥑"
+      expect(page).to have_text "I love 🥑"
+    end
+  end
+
   #   let!(:roles) { { admin: false, manager: false, writer: false } }
   #   let!(:user) { create :user, active: true, roles: roles }
 
