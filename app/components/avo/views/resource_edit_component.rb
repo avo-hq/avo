@@ -3,13 +3,13 @@
 class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   include Avo::ApplicationHelper
 
-  attr_reader :actions, :display_breadcrumbs
+  prop :resource, _Nilable(Avo::BaseResource)
+  prop :record, _Nilable(ActiveRecord::Base)
+  prop :actions, _Array(Avo::BaseAction), default: [].freeze
+  prop :view, Avo::ViewInquirer, default: Avo::ViewInquirer.new(:edit).freeze
+  prop :display_breadcrumbs, _Boolean, default: true, reader: :public
 
-  def initialize(resource: nil, record: nil, actions: [], view: "edit", display_breadcrumbs: true)
-    @resource = resource
-    @record = record
-    @actions = actions
-    @view = Avo::ViewInquirer.new(view)
+  def after_initialize
     @display_breadcrumbs = @reflection.blank? && display_breadcrumbs
   end
 
@@ -55,7 +55,7 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
 
   # Render :show view for read only trix fields
   def view_for(field)
-    field.is_a?(Avo::Fields::TrixField) && field.is_disabled? ? :show : view
+    (field.is_a?(Avo::Fields::TrixField) && field.is_disabled?) ? :show : @view
   end
 
   private
@@ -69,7 +69,7 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   end
 
   def is_edit?
-    view.in?(%w[edit update])
+    @view.in?(%w[edit update])
   end
 
   def form_method

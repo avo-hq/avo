@@ -1,4 +1,4 @@
-<% if name.present? %><turbo-frame id="<%= name %>"><% end %>
+<% if @name.present? %><turbo-frame id="<%= @name %>"><% end %>
 <%
   # When rendering the frames the flashed content gets lost.
   # We're appending it back if it's a turbo_frame_request.
@@ -7,4 +7,4 @@
   <%= helpers.turbo_stream_action_tag :append, target: "alerts", template: render(Avo::FlashAlertsComponent.new(flashes: helpers.flash)) %>
 <% end %>
 <%= content %>
-<% if name.present? %></turbo-frame><% end %>
+<% if @name.present? %></turbo-frame><% end %>

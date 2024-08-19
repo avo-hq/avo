@@ -46,20 +46,20 @@
             <div class="justify-self-end flex justify-start xs:justify-end items-center px-4 space-x-3">
               <%= render_dynamic_filters_button %>
 
-              <%= render Avo::FiltersComponent.new filters: @filters, resource: @resource, applied_filters: @applied_filters, parent_record: parent_record %>
+              <%= render Avo::FiltersComponent.new filters: @filters, resource: @resource, applied_filters: @applied_filters, parent_record: @parent_record %>
 
-              <%= render partial: "avo/partials/view_toggle_button", locals: { available_view_types: available_view_types, view_type: view_type, turbo_frame: turbo_frame } %>
+              <%= render partial: "avo/partials/view_toggle_button", locals: { available_view_types: available_view_types, view_type: view_type, turbo_frame: @turbo_frame } %>
             </div>
           </div>
           <% if has_dynamic_filters? %>
-            <%= render Avo::DynamicFilters::FiltersComponent.new resource: resource, turbo_frame: turbo_frame, dynamic_filters_component_id: dynamic_filters_component_id %>
+            <%= render Avo::DynamicFilters::FiltersComponent.new resource: resource, turbo_frame: @turbo_frame, dynamic_filters_component_id: dynamic_filters_component_id %>
           <% end %>
         </div>
       </div>
       <% if view_type.to_sym == :table %>
         <% if @resources.present? %>
           <div class="w-full relative flex-1 flex mt-0">
-            <%= render(Avo::Index::ResourceTableComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_record: parent_record, parent_resource: parent_resource, pagy: @pagy, query: query, actions: actions)) %>
+            <%= render(Avo::Index::ResourceTableComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_record: @parent_record, parent_resource: @parent_resource, pagy: @pagy, query: @query, actions: @actions)) %>
           </div>
         <% else %>
           <%= helpers.empty_state by_association: params[:related_name].present?, view_type: view_type, add_background: true %>
@@ -79,16 +79,16 @@
       <% if view_type.to_sym == :table || view_type.to_sym == :map %>
         <% if @records.present? %>
           <div class="mt-4 w-full">
-            <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: turbo_frame || "none", index_params: @index_params, resource: @resource, parent_record: parent_record, discreet_pagination: field&.discreet_pagination %>
+            <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: @turbo_frame || "none", index_params: @index_params, resource: @resource, parent_record: @parent_record, discreet_pagination: field&.discreet_pagination %>
           </div>
         <% end %>
       <% end %>
       <% if view_type.to_sym == :grid %>
         <div id="records_panel">
-          <%= render Avo::Index::ResourceGridComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_record: parent_record, parent_resource: parent_resource, actions: actions) %>
+          <%= render Avo::Index::ResourceGridComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_record: @parent_record, parent_resource: @parent_resource, actions: @actions) %>
         </div>
         <div class="mt-6">
-          <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: turbo_frame || "none", index_params: @index_params, resource: @resource, parent_record: parent_record, discreet_pagination: field&.discreet_pagination %>
+          <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: @turbo_frame || "none", index_params: @index_params, resource: @resource, parent_record: @parent_record, discreet_pagination: field&.discreet_pagination %>
         </div>
       <% end %>
     <% end %>

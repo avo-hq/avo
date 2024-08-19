@@ -13,7 +13,7 @@
         <%= helpers.number_to_human_size(file.byte_size) %>
       </div>
       <div class="flex space-x-2 justify-end col-span-1 flex-shrink-0">
-        <%= render Avo::Fields::Common::Files::ControlsComponent.new(field: field, file: file, resource: resource) %>
+        <%= render Avo::Fields::Common::Files::ControlsComponent.new(field: @field, file: file, resource: @resource) %>
       </div>
     </div>
   <% else %>

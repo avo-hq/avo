@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-class Avo::BacktraceAlertComponent < ViewComponent::Base
+class Avo::BacktraceAlertComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
 
-  def initialize(backtrace: nil)
-    @backtrace = backtrace
-  end
+  prop :backtrace, _Nilable(Array)
 
   def render?
     @backtrace.present?

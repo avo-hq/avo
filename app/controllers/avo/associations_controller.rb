@@ -127,7 +127,7 @@ module Avo
 
     def set_reflection_field
       @field = @resource.get_field(@related_resource_name.to_sym)
-      @field.hydrate(resource: @resource, record: @record, view: :new)
+      @field.hydrate(resource: @resource, record: @record, view: Avo::ViewInquirer.new(:new))
     rescue
     end
 

@@ -3,13 +3,8 @@
 class Avo::AlertComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
 
-  attr_reader :type
-  attr_reader :message
-
-  def initialize(type, message)
-    @type = type
-    @message = message
-  end
+  prop :type, Symbol, :positional
+  prop :message, String, :positional
 
   def icon
     return "heroicons/solid/exclamation-circle" if is_error?
@@ -39,22 +34,22 @@ class Avo::AlertComponent < Avo::BaseComponent
   end
 
   def is_error?
-    type.to_sym == :error || type.to_sym == :alert
+    @type.to_sym == :error || @type.to_sym == :alert
   end
 
   def is_success?
-    type.to_sym == :success
+    @type.to_sym == :success
   end
 
   def is_info?
-    type.to_sym == :notice || type.to_sym == :info
+    @type.to_sym == :notice || @type.to_sym == :info
   end
 
   def is_warning?
-    type.to_sym == :warning
+    @type.to_sym == :warning
   end
 
   def is_empty?
-    message.nil?
+    @message.nil?
   end
 end

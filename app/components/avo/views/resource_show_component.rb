@@ -3,17 +3,18 @@
 class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
   include Avo::ApplicationHelper
 
-  attr_reader :actions, :display_breadcrumbs
+  attr_reader :display_breadcrumbs
 
-  def initialize(resource: nil, reflection: nil, parent_resource: nil, parent_record: nil, resource_panel: nil, actions: [])
-    @resource = resource
-    @reflection = reflection
-    @resource_panel = resource_panel
-    @actions = actions
-    @parent_record = parent_record
-    @parent_resource = parent_resource
+  prop :resource, _Nilable(Avo::BaseResource)
+  prop :reflection, _Nilable(ActiveRecord::Reflection::AbstractReflection)
+  prop :parent_resource, _Nilable(Avo::BaseResource)
+  prop :parent_record, _Nilable(ActiveRecord::Base)
+  prop :resource_panel, _Nilable(_Array(Avo::BaseAction)), reader: :public
+  prop :actions, _Array(Avo::BaseAction), default: [].freeze, reader: :public
+
+  def after_initialize
     @view = Avo::ViewInquirer.new("show")
-    @display_breadcrumbs = reflection.blank?
+    @display_breadcrumbs = @reflection.blank?
   end
 
   def title

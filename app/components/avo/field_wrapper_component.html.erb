@@ -2,7 +2,7 @@
   class: classes,
   style: style,
   data: data do %>
-  <%= content_tag :div, class: class_names("pt-4 flex self-start items-center flex-shrink-0 w-48 px-6 uppercase font-semibold text-gray-500 text-sm", @field.get_html(:classes, view: view, element: :label), {
+  <%= content_tag :div, class: class_names("pt-4 flex self-start items-center flex-shrink-0 w-48 px-6 uppercase font-semibold text-gray-500 text-sm", @field.get_html(:classes, view: @view, element: :label), {
     "md:pt-4 md:w-full": stacked?,
     "h-full md:pt-0": !stacked?,
     "md:h-10 ": !stacked? && short?,
@@ -10,15 +10,15 @@
     "md:w-48": compact?,
     "md:w-64": !compact?,
   }), data: {slot: "label"} do %>
-    <% if form.present? %>
-      <%= form.label label_for, label %>
+    <% if @form.present? %>
+      <%= @form.label label_for, label %>
     <% else %>
-      <%= field.name %>
+      <%= @field.name %>
     <% end %>
-    <% if on_edit? && field.is_required? %> <span class="text-red-600 ml-1">*</span> <% end %>
+    <% if on_edit? && @field.is_required? %> <span class="text-red-600 ml-1">*</span> <% end %>
   <% end %>
   <%= content_tag :div, class: class_names("flex-1 flex flex-row md:min-h-inherit px-6",
-    @field.get_html(:classes, view: view, element: :content),
+    @field.get_html(:classes, view: @view, element: :content),
       {
         "pb-4": stacked?,
         "py-2": !compact?,
@@ -33,8 +33,8 @@
         <% end %>
       <% elsif on_edit? %>
         <%= content %>
-        <% if record.present? and record.errors.include? field.id %>
-          <div class="text-red-600 mt-2 text-sm"><%= record.errors.full_messages_for(field.id).to_sentence %></div>
+        <% if record.present? and record.errors.include? @field.id %>
+          <div class="text-red-600 mt-2 text-sm"><%= record.errors.full_messages_for(@field.id).to_sentence %></div>
         <% end %>
         <% if help.present? %>
           <div class="text-gray-600 mt-2 text-sm"><%= sanitize help %></div>
@@ -44,6 +44,6 @@
   <% end %>
   <% if params[:avo_debug].present? %>
     <!-- Raw value: -->
-    <!-- <%= sanitize field.value.inspect %> -->
+    <!-- <%= sanitize @field.value.inspect %> -->
   <% end %>
 <% end %>

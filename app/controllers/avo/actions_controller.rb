@@ -72,7 +72,8 @@ module Avo
         record: @record,
         resource: @resource,
         user: _current_user,
-        view: :new, # force the action view to in order to render new-related fields (hidden field)
+        # force the action view to in order to render new-related fields (hidden field)
+        view: Avo::ViewInquirer.new(:new),
         arguments: BaseAction.decode_arguments(params[:arguments] || params.dig(:fields, :arguments)) || {}
       )
 

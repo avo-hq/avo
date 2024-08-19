@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-class Avo::CoverPhotoComponent < ViewComponent::Base
-  def initialize(cover_photo:)
-    @cover_photo = cover_photo
-    @size = cover_photo&.size
+class Avo::CoverPhotoComponent < Avo::BaseComponent
+  prop :cover_photo, _Nilable(Avo::CoverPhoto)
+  prop :size, _Nilable(Symbol) do |value|
+    @cover_photo&.size
   end
 
   # aspect-cover-sm
