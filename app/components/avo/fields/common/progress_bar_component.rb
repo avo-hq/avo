@@ -5,10 +5,7 @@ class Avo::Fields::Common::ProgressBarComponent < Avo::BaseComponent
   prop :display_value, _Boolean, default: false
   prop :value_suffix, _Nilable(String)
   prop :max, Integer, default: 100
-  prop :view, Avo::ViewInquirer, reader: :public do |value|
-    value = :index if value.nil?
-    Avo::ViewInquirer.new(value.to_sym)
-  end
+  prop :view, Avo::ViewInquirer, reader: :public, default: Avo::ViewInquirer.new(:index)
 
   delegate :show?, :index?, to: :view
 end

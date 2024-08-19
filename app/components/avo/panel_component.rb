@@ -25,11 +25,7 @@ class Avo::PanelComponent < Avo::BaseComponent
   prop :cover_photo, _Nilable(Avo::CoverPhoto)
   prop :args, Hash, :**, default: {}.freeze
   prop :name, _Nilable(String) do |value|
-    if @args
-      @args[:title]
-    else
-      value
-    end
+    value || @args&.dig(:title)
   end
 
   def classes

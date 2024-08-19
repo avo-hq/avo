@@ -6,10 +6,7 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   prop :resource, _Nilable(Avo::BaseResource)
   prop :record, _Nilable(ActiveRecord::Base)
   prop :actions, _Array(Avo::BaseAction), default: [].freeze
-  prop :view, Avo::ViewInquirer do |value|
-    value = :edit if value.nil?
-    Avo::ViewInquirer.new(value.to_sym)
-  end
+  prop :view, Avo::ViewInquirer, default: Avo::ViewInquirer.new(:edit)
   prop :display_breadcrumbs, _Boolean, default: true, reader: :public
 
   def after_initialize
