@@ -1,33 +1,29 @@
 # frozen_string_literal: true
 
 class Avo::SidebarProfileComponent < Avo::BaseComponent
-  attr_reader :user
-
-  def initialize(user:)
-    @user = user
-  end
+  prop :user, _Nilable(ActiveRecord::Base)
 
   def avatar
-    if user.respond_to?(:avatar) && user.avatar.present?
-      user.avatar
+    if @user.respond_to?(:avatar) && @user.avatar.present?
+      @user.avatar
     else
       ""
     end
   end
 
   def name
-    if user.respond_to?(:name) && user.name.present?
-      user.name
-    elsif user.respond_to?(:email) && user.email.present?
-      user.email
+    if @user.respond_to?(:name) && @user.name.present?
+      @user.name
+    elsif @user.respond_to?(:email) && @user.email.present?
+      @user.email
     else
       "Avo user"
     end
   end
 
   def title
-    if user.respond_to?(:avo_title) && user.avo_title.present?
-      user.avo_title
+    if @user.respond_to?(:avo_title) && @user.avo_title.present?
+      @user.avo_title
     else
       ""
     end

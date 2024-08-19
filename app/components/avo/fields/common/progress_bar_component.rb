@@ -1,19 +1,11 @@
 # frozen_string_literal: true
 
 class Avo::Fields::Common::ProgressBarComponent < Avo::BaseComponent
-  attr_reader :value
-  attr_reader :display_value
-  attr_reader :value_suffix
-  attr_reader :max
-  attr_reader :view
-
-  def initialize(value:, display_value: false, value_suffix: nil, max: 100, view: "index")
-    @value = value
-    @display_value = display_value
-    @value_suffix = value_suffix
-    @max = max
-    @view = Avo::ViewInquirer.new(view)
-  end
+  prop :value, Integer
+  prop :display_value, _Boolean, default: false
+  prop :value_suffix, _Nilable(String)
+  prop :max, Integer, default: 100
+  prop :view, Avo::ViewInquirer, reader: :public, default: Avo::ViewInquirer.new(:index).freeze
 
   delegate :show?, :index?, to: :view
 end

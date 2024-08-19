@@ -22,9 +22,7 @@ class Avo::ActionsComponent < Avo::BaseComponent
     Array(exclude).to_set
   end
   prop :resource, _Nilable(Avo::BaseResource)
-  prop :view, _Nilable(Symbol) do |view|
-    view&.to_sym
-  end
+  prop :view, _Nilable(Avo::ViewInquirer)
 
   def after_initialize
     filter_actions
@@ -56,7 +54,7 @@ class Avo::ActionsComponent < Avo::BaseComponent
   private
 
   def on_record_page?
-    @view.in?([:show, :edit, :new])
+    @view.in?(["show", "edit", "new"])
   end
 
   def on_index_page?
@@ -84,7 +82,7 @@ class Avo::ActionsComponent < Avo::BaseComponent
   end
 
   def render_action_link(action)
-    link_to action.link_arguments(resource: @resource).first,
+    link_to action.link_arguments(resource: @resource, arguments: action.arguments).first,
       data: action_data_attributes(action),
       title: action.action_name,
       class: action_css_class(action) do

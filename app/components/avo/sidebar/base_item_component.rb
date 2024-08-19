@@ -1,16 +1,17 @@
 # frozen_string_literal: true
 
 class Avo::Sidebar::BaseItemComponent < Avo::BaseComponent
-  attr_reader :item, :items
   delegate :collapsable, :collapsed, to: :@item
 
-  def initialize(item: nil)
-    @item = item
+  # Object = Avo::Menu::BaseItem || ViewComponent::Base
+  prop :item, _Nilable(Object), reader: :public
+
+  def after_initialize
     @items = @item.items.select(&:visible?)
   end
 
   def render?
-    items.any?
+    @items.any?
   end
 
   def key

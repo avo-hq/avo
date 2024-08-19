@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 class Avo::DividerComponent < Avo::BaseComponent
-  attr_reader :label
-
-  def initialize(label = nil, **args)
-    @label = label
-  end
+  prop :label, _Nilable(String), :positional
+  prop :args, Hash, :**
 end

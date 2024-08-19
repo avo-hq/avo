@@ -19,7 +19,7 @@
       <%= render_body %>
     </div>
     <div class="place-self-end w-full">
-      <%= render(Avo::Index::ResourceControlsComponent.new(resource: @resource, reflection: @reflection, parent_record: @parent_record, parent_resource: @parent_resource, view_type: :grid, actions: actions)) %>
+      <%= render(Avo::Index::ResourceControlsComponent.new(resource: @resource, reflection: @reflection, parent_record: @parent_record, parent_resource: @parent_resource, view_type: :grid, actions: @actions)) %>
     </div>
   </div>
 <% end %>

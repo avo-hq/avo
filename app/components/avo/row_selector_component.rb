@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class Avo::RowSelectorComponent < Avo::BaseComponent
-  def initialize(floating: false, size: :md)
-    @floating = floating
-    @size = size
-  end
+  prop :floating, _Boolean, default: false
+  prop :size, Symbol, default: :md
 end
