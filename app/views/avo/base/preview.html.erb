@@ -12,7 +12,7 @@
               resource: @resource,
               record: @resource.record,
               user: @resource.user,
-              view: Avo::ViewInquirer(:show)
+              view: Avo::ViewInquirer.new(:show)
             )
             .component_for_view(:show)
             .new(field: field, resource: @resource, index: index, compact: true, short: true)
