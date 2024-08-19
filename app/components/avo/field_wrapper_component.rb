@@ -21,11 +21,7 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
   end
   prop :args, Hash, :**, default: {}.freeze
   prop :classes, _Nilable(String) do |value|
-    if @args
-      @args[:class]
-    else
-      ""
-    end
+    @args&.dig(:class) || ""
   end
 
   def after_initialize

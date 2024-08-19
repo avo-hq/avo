@@ -7,9 +7,12 @@ class Avo::Index::FieldWrapperComponent < Avo::BaseComponent
   prop :center_content, _Boolean, default: false
   prop :flush, _Boolean, default: false
   prop :args, Hash, :**, default: {}.freeze
-  prop :view, _Nilable(Avo::ViewInquirer), default: Avo::ViewInquirer.new("index").freeze
   prop :classes, _Nilable(String) do |value|
     @args&.dig(:class) || ""
+  end
+
+  def after_initialize
+    @view = Avo::ViewInquirer.new("index")
   end
 
   def classes
