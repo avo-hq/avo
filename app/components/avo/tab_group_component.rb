@@ -8,7 +8,7 @@ class Avo::TabGroupComponent < Avo::BaseComponent
   prop :index, Integer, reader: :public
   prop :form, _Nilable(ActionView::Helpers::FormBuilder), reader: :public
   prop :params, ActionController::Parameters, reader: :public
-  prop :view, String, reader: :public
+  prop :view, Avo::ViewInquirer, reader: :public
 
   def after_initialize
     group.index = index

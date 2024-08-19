@@ -7,9 +7,7 @@ class Avo::Items::PanelComponent < Avo::ResourceComponent
   prop :item, _Nilable(Avo::Resources::Items::Panel)
   prop :is_main_panel, _Nilable(_Boolean)
   prop :resource, Avo::BaseResource
-  prop :view, Symbol do |value|
-    value&.to_sym
-  end
+  prop :view, Avo::ViewInquirer
   prop :actions, _Nilable(_Array(Avo::BaseAction)), reader: :public
   prop :index, _Nilable(Integer), reader: :public
   prop :parent_component, _Nilable(ViewComponent::Base)

@@ -15,7 +15,7 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
   prop :short, _Boolean, default: false
   prop :stacked, _Nilable(_Boolean)
   prop :style, String, default: ""
-  prop :view, String, default: "show"
+  prop :view, Avo::ViewInquirer, default: Avo::ViewInquirer.new(:show).freeze
   prop :label_for, _Nilable(Symbol) do |value|
     value&.to_sym
   end

@@ -11,7 +11,7 @@ class Avo::TabSwitcherComponent < Avo::BaseComponent
   prop :group, Avo::Resources::Items::TabGroup
   prop :current_tab, Avo::Resources::Items::Tab
   prop :active_tab_name, String, reader: :public
-  prop :view, String
+  prop :view, Avo::ViewInquirer
 
   #TOD: helper to record:
   def tab_path(tab)
