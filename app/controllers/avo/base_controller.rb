@@ -70,7 +70,12 @@ module Avo
     end
 
     def show
-      @resource.hydrate(record: @record, view: :show, user: _current_user, params: params).detect_fields
+      @resource.hydrate(
+        record: @record,
+        view: Avo::ViewInquirer.new(:show),
+        user: _current_user,
+        params: params
+      ).detect_fields
 
       set_actions
 
@@ -97,7 +102,7 @@ module Avo
     def new
       # Record is already hydrated on set_record_to_fill method
       @record = @resource.record
-      @resource.hydrate(view: :new, user: _current_user)
+      @resource.hydrate(view: Avo::ViewInquirer.new(:new), user: _current_user)
 
       # Handle special cases when creating a new record via a belongs_to relationship
       if params[:via_belongs_to_resource_class].present?
@@ -156,7 +161,7 @@ module Avo
 
       # record gets instantiated and filled in the fill_record method
       saved = save_record
-      @resource.hydrate(record: @record, view: :new, user: _current_user)
+      @resource.hydrate(record: @record, view: Avo::ViewInquirer.new(:new), user: _current_user)
 
       add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
       add_breadcrumb t("avo.new").humanize
@@ -180,7 +185,7 @@ module Avo
     def update
       # record gets instantiated and filled in the fill_record method
       saved = save_record
-      @resource = @resource.hydrate(record: @record, view: :edit, user: _current_user)
+      @resource = @resource.hydrate(record: @record, view: Avo::ViewInquirer.new(:edit), user: _current_user)
       set_actions
 
       set_component_for :edit
@@ -201,7 +206,7 @@ module Avo
     end
 
     def preview
-      @resource.hydrate(record: @record, view: :show, user: _current_user, params: params)
+      @resource.hydrate(record: @record, view: Avo::ViewInquirer(:show), user: _current_user, params: params)
 
       render layout: params[:turbo_frame].blank?
     end
@@ -418,7 +423,7 @@ module Avo
     end
 
     def set_edit_title_and_breadcrumbs
-      @resource = @resource.hydrate(record: @record, view: :edit, user: _current_user)
+      @resource = @resource.hydrate(record: @record, view: Avo::ViewInquirer.new(:edit), user: _current_user)
       @page_title = @resource.default_panel_name.to_s
 
       last_crumb_args = {}

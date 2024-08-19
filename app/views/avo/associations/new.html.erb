@@ -39,7 +39,7 @@
                   model_key: @field.target_resource&.model_key,
                   foreign_key: 'related_id',
                   resource: @resource,
-                  view: :new
+                  view: Avo::ViewInquirer.new(:new)
                 %>
               <% end %>
             <% else %>

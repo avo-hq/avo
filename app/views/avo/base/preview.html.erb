@@ -8,7 +8,12 @@
       <div class="mt-0 divide-y border-t">
         <% @resource.get_preview_fields.each_with_index do |field, index| %>
           <%= render field
-            .hydrate(resource: @resource, record: @resource.record, user: @resource.user, view: :show)
+            .hydrate(
+              resource: @resource,
+              record: @resource.record,
+              user: @resource.user,
+              view: Avo::ViewInquirer(:show)
+            )
             .component_for_view(:show)
             .new(field: field, resource: @resource, index: index, compact: true, short: true)
           %>
