@@ -3,7 +3,8 @@
 class Avo::Sidebar::BaseItemComponent < Avo::BaseComponent
   delegate :collapsable, :collapsed, to: :@item
 
-  prop :item, _Nilable(ViewComponent::Base)
+  # Object = Avo::Menu::BaseItem || ViewComponent::Base
+  prop :item, _Nilable(Object), reader: :public
 
   def after_initialize
     @items = @item.items.select(&:visible?)

@@ -5,5 +5,5 @@ class Avo::Sidebar::HeadingComponent < Avo::BaseComponent
   prop :icon, _Nilable(String)
   prop :collapsable, _Boolean, default: false
   prop :collapsed, _Boolean, default: false
-  prop :key, _Nilable(_Boolean), default: false
+  prop :key, _Nilable(String)
 end
