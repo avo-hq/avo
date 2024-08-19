@@ -10,6 +10,8 @@ module Avo
 
       def picker_format
         case type
+        when :date
+          "Y-m-d"
         when :date_time
           "Y-m-d H:i:S"
         when :time
@@ -17,7 +19,6 @@ module Avo
         end
       end
 
-      # TODO: document how this method can be used to manipulate flatpickr options https://flatpickr.js.org/options/
       def picker_options(value)
         {
           defaultDate: value,
