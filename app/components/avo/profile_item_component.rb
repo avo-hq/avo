@@ -12,7 +12,7 @@ class Avo::ProfileItemComponent < Avo::BaseComponent
   end
   prop :title, _Nilable(String), reader: :public
   prop :method, _Nilable(String), reader: :public
-  prop :params, Hash, default: {}.freeze, reader: :public
+  prop :params, _Nilable(Hash), default: {}.freeze, reader: :public
   prop :classes, String, default: "", reader: :public
 
   def title
