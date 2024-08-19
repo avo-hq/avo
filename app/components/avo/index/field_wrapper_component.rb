@@ -9,11 +9,7 @@ class Avo::Index::FieldWrapperComponent < Avo::BaseComponent
   prop :args, Hash, :**, default: {}.freeze
   prop :view, _Nilable(Avo::ViewInquirer), default: Avo::ViewInquirer.new("index").freeze
   prop :classes, _Nilable(String) do |value|
-    if @args && @args[:class].present?
-      @args[:class]
-    else
-      ""
-    end
+    @args&.dig(:class) || ""
   end
 
   def classes
