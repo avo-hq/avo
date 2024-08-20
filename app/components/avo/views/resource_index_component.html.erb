@@ -40,9 +40,11 @@
               <% if show_search_input %>
                 <%= render partial: "avo/partials/resource_search", locals: {resource: @resource.route_key, via_reflection: via_reflection} %>
 
+                <%= helpers.turbo_stream.console_log "some message" %>
+
                   <label class="Xhidden" for="resource_search" data-controller="resource-search">
-                    <a href="/admin/resources/projects?q=strong" data-resource-search-target="link" xdata-turbo-frame="index_view" data-turbo-frame="navigation" data-turbo-action="advance" data-refresh="morph" autofocus>visit</a>
-                    <input type="text" name="search" id="resource_search" data-action="resource-search#submit" value="<%= params[:q] %>">
+                    <a href="/admin/resources/projects?q=strong" data-resource-search-target="link" xdata-turbo-frame="index_view" data-turbo-frame="projects_list" data-turbo-action="advance" data-refresh="morph" autofocus>visit</a>
+                    <input type="text" name="search" id="resource_search" data-action="resource-search#submit" value="<%= params[:q] %>" >
                   </label>
                 <%= form_with url: "/admin/resources/projects",
                   method: :get,
@@ -101,10 +103,11 @@
       <% end %>
       <% if view_type.to_sym == :table || view_type.to_sym == :map %>
         <% if @records.present? %>
-          <div class="mt-4 w-full">
+          <turbo-frame id="pagination" class="mt-4 w-full">
             <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: turbo_frame || "none", index_params: @index_params, resource: @resource, parent_record: parent_record, discreet_pagination: field&.discreet_pagination %>
-          </div>
+          </turbo-frame>
         <% end %>
+
       <% end %>
       <% if view_type.to_sym == :grid %>
         <div id="records_panel">

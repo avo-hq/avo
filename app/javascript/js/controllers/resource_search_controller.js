@@ -20,6 +20,7 @@ export default class extends ApplicationController {
 
   submit(event) {
     console.log('submitted', event)
+    // request.js solution
     // get(new URL(window.location), {
     //   responseKind: "turbo-stream",
     //   query: {
@@ -29,12 +30,16 @@ export default class extends ApplicationController {
     // const form = this.element
     // form.requestSubmit()
     // Retrieve params via url.search, passed into constructor
+
+    // Click solution
     const url = new URL(window.location)
     console.log(url.searchParams.toString(), event.target.value)
     url.searchParams.set('q', encodeURIComponent(event.target.value))
     console.log(url.toString(), this.linkTarget)
     this.linkTarget.href = url.toString()
     this.linkTarget.click()
+
+    // Turbo solution
     // window.Turbo.visit(url.toString())
     // const url = new URL("https://example.com?foo=1&bar=2");
     // const params1 = new URLSearchParams(url.search);
