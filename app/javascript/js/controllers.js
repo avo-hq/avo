@@ -11,6 +11,7 @@ import CodeFieldController from './controllers/fields/code_field_controller'
 import CopyToClipboardController from './controllers/copy_to_clipboard_controller'
 import DashboardCardController from './controllers/dashboard_card_controller'
 import DateFieldController from './controllers/fields/date_field_controller'
+import DateTimeFilterController from './controllers/date_time_filter_controller'
 import EasyMdeController from './controllers/fields/easy_mde_controller'
 import FilterController from './controllers/filter_controller'
 import HiddenInputController from './controllers/hidden_input_controller'
@@ -53,6 +54,7 @@ application.register('boolean-filter', BooleanFilterController)
 application.register('card-filters', CardFiltersController)
 application.register('copy-to-clipboard', CopyToClipboardController)
 application.register('dashboard-card', DashboardCardController)
+application.register('date-time-filter', DateTimeFilterController)
 application.register('filter', FilterController)
 application.register('panel-refresh', PanelRefreshController)
 application.register('hidden-input', HiddenInputController)

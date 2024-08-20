@@ -121,6 +121,7 @@ class Avo::Resources::Course < Avo::BaseResource
   def filters
     filter Avo::Filters::CourseCountryFilter
     filter Avo::Filters::CourseCityFilter
+    filter Avo::Filters::StartingAt
   end
 
   def actions

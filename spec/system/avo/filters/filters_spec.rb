@@ -350,4 +350,86 @@ RSpec.describe "Filters", type: :system do
       end
     end
   end
+
+  describe "date time filters" do
+    context "date with range selector" do
+      # Flatpickr opens on current year by default, use current year to avoid changing year on tests.
+      let!(:current_year) { Time.now.year }
+      # Flatpickr opens on current month by default, use current month to avoid changing month on tests.
+      let!(:current_month) { Time.now.month }
+      let!(:user_15) { create :user, first_name: "Birthday on 15", birthday: "#{current_year}-#{current_month}-15 00:00:00" }
+      let!(:user_17) { create :user, first_name: "Birthday on 17", birthday: "#{current_year}-#{current_month}-17 00:00:00" }
+      let!(:user_20) { create :user, first_name: "Birthday on 20", birthday: "#{current_year}-#{current_month}-20 00:00:00" }
+
+      subject(:text_input) { find 'input[type="text"][placeholder="Filter by birthday"][data-date-time-filter-target="input"]' }
+
+      it "filters users by birthday range" do
+        visit avo.resources_users_path
+
+        expect(page).to have_text user_15.first_name
+        expect(page).to have_text user_17.first_name
+        expect(page).to have_text user_20.first_name
+
+        open_filters_menu
+
+        expect(page).to have_text "Apply birthday filter"
+
+        open_picker
+        set_picker_day "#{Date::MONTHNAMES[current_month]} 15, #{current_year}"
+        set_picker_day "#{Date::MONTHNAMES[current_month]} 17, #{current_year}"
+
+        click_on "Apply birthday filter"
+
+        expect(page).to have_text user_15.first_name
+        expect(page).to have_text user_17.first_name
+        expect(page).not_to have_text user_20.first_name
+      end
+    end
+
+    # TODO
+    # context "date with single selector" do
+    # end
+
+    # TODO
+    # context "date time with range selector" do
+    # end
+
+    # TODO
+    # context "date time with single selector" do
+    # end
+
+    context "time with single selector" do
+      let!(:course_16_10) { create :course, name: "starting at 16:10", starting_at: Time.parse("16:10:00") }
+      let!(:course_16_15) { create :course, name: "starting at 16:15", starting_at: Time.parse("16:15:18") }
+      let!(:course_16_15_19) { create :course, name: "starting at 16:15:19", starting_at: Time.parse("16:15:19") }
+      let!(:course_16_16) { create :course, name: "starting at 16:16", starting_at: Time.parse("16:16:00") }
+
+      subject(:text_input) { find 'input[type="text"][placeholder="Search by start time"][data-date-time-filter-target="input"]' }
+
+      it "filters courses by starting at" do
+        visit avo.resources_courses_path
+
+        expect(page).to have_text course_16_10.name
+        expect(page).to have_text course_16_15.name
+        expect(page).to have_text course_16_15_19.name
+        expect(page).to have_text course_16_16.name
+
+        open_filters_menu
+
+        expect(page).to have_text "Filter by start time"
+
+        open_picker
+        set_picker_hour 16
+        set_picker_minute 15
+        set_picker_second 18
+
+        all("button", text: "Filter by start time").first.trigger("click")
+
+        expect(page).not_to have_text course_16_10.name
+        expect(page).to have_text course_16_15.name
+        expect(page).not_to have_text course_16_15_19.name
+        expect(page).not_to have_text course_16_16.name
+      end
+    end
+  end
 end

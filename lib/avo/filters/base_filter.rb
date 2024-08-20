@@ -9,6 +9,7 @@ module Avo
       class_attribute :name, default: "Filter"
       class_attribute :template, default: "avo/base/select_filter"
       class_attribute :visible
+      class_attribute :button_label
 
       attr_reader :arguments
 
