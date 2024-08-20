@@ -116,7 +116,7 @@ PATH
       literal (~> 0.2)
       meta-tags
       pagy (>= 7.0.0)
-      turbo-rails (>= 2.0.0)
+      turbo-rails (>= 2.0.6)
       turbo_power (>= 0.6.0)
       view_component (>= 3.7.0)
       zeitwerk (>= 2.6.12)
