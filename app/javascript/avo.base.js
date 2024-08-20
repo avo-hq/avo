@@ -95,10 +95,19 @@ document.addEventListener('turbo:before-fetch-response', async (e) => {
   }
 })
 
-document.addEventListener('turbo:visit', () => {
+document.addEventListener('turbo:visit', (e) => {
+  console.log('turbo:visit', e.detail)
+
   document.body.classList.add('turbo-loading')
 })
 document.addEventListener('turbo:submit-start', () => document.body.classList.add('turbo-loading'))
+document.addEventListener('turbo:submit-start', (event) => console.log('turbo:submit-start', event, event.detail.renderMethod))
+document.addEventListener('turbo:submit-end', (event) => console.log('turbo:submit-end', event, event.detail.renderMethod))
+document.addEventListener('turbo:before-render', (event) => console.log('turbo:before-render', event.detail.renderMethod))
+document.addEventListener('turbo:before-frame-render', (event) => console.log('turbo:before-frame-render', event.detail))
+document.addEventListener('turbo:before-frame', (event) => console.log('turbo:before-frame', event.detail))
+document.addEventListener('turbo:frame-load', (event) => console.log('turbo:frame-load', event.detail))
+document.addEventListener('turbo:render', (event) => console.log('turbo:render', event.detail.renderMethod))
 document.addEventListener('turbo:submit-end', () => document.body.classList.remove('turbo-loading'))
 document.addEventListener('turbo:before-cache', () => {
   document.querySelectorAll('[data-turbo-remove-before-cache]').forEach((element) => element.remove())
