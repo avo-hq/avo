@@ -82,6 +82,13 @@ document.addEventListener('turbo:load', () => {
 
 document.addEventListener('turbo:frame-load', () => {
   initTippy()
+
+  // Handles turbo bug with lazy loading
+  // https://github.com/hotwired/turbo/issues/886
+  // Remove when PR https://github.com/hotwired/turbo/pull/1227 is merged
+  document
+    .querySelectorAll('turbo-frame[loading="lazy"][complete]')
+    .forEach((frame) => frame.removeAttribute('loading'))
 })
 
 document.addEventListener('turbo:before-fetch-response', async (e) => {
