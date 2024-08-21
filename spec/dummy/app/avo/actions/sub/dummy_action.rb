@@ -34,6 +34,8 @@ class Avo::Actions::Sub::DummyAction < Avo::BaseAction
         sure: "Sure",
         why_not: "Why not"
       }
+
+    field :parent_param, default: arguments[:parent_param]
   end
 
   def handle(**args)
@@ -54,7 +56,7 @@ class Avo::Actions::Sub::DummyAction < Avo::BaseAction
       succeed "Success response ✌️"
     end
     warn "Warning response ✌️"
-    inform "Info response ✌️"
+    inform "Info response ✌️ and parent_param: #{arguments[:parent_param]}"
     error "Error response ✌️"
 
     # redirect_to "https://www.google.com/"

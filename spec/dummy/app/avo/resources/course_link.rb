@@ -25,4 +25,18 @@ class Avo::Resources::CourseLink < Avo::BaseResource
       }
     }
   end
+
+  def actions
+    action Avo::Actions::Sub::DummyAction, arguments: -> do
+      if @record.class == Course
+        {
+          parent_param: @record.to_param
+        }
+      else
+        {
+
+        }
+      end
+    end
+  end
 end
