@@ -629,7 +629,7 @@ module Avo
       end
 
       def custom_component(original_component)
-        custom_components.dig(original_component.to_s) || original_component
+        custom_components.dig(original_component.to_s)&.to_s&.safe_constantize || original_component
       end
 
       private
