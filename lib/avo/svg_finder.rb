@@ -21,12 +21,12 @@ class Avo::SvgFinder
 
   def paths
     [
-      Avo::Engine.root.join(@filename).to_s,
-      Avo::Engine.root.join("app", "assets", "svgs", "heroicons", "outline", @filename),
-      Avo::Engine.root.join("app", "assets", "svgs", "avo", @filename),
-      Avo::Engine.root.join("app", "assets", "svgs", @filename),
       Rails.root.join("app", "assets", "svgs", @filename),
       Rails.root.join(@filename),
+      Avo::Engine.root.join("app", "assets", "svgs", @filename),
+      Avo::Engine.root.join("app", "assets", "svgs", "avo", @filename),
+      Avo::Engine.root.join("app", "assets", "svgs", "heroicons", "outline", @filename),
+      Avo::Engine.root.join(@filename).to_s,
       # Add all paths from Rails including engines
       *Rails.application.assets.paths.map { |path| Rails.root.join(path, @filename) },
     ].map(&:to_s).uniq
