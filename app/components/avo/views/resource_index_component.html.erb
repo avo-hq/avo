@@ -59,7 +59,7 @@
       <% if view_type.to_sym == :table %>
         <% if @resources.present? %>
           <div class="w-full relative flex-1 flex mt-0">
-            <%= render(Avo::Index::ResourceTableComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_record: @parent_record, parent_resource: @parent_resource, pagy: @pagy, query: @query, actions: @actions)) %>
+            <%= render(resource.custom_component(Avo::Index::ResourceTableComponent).new(resources: @resources, resource: @resource, reflection: @reflection, parent_record: @parent_record, parent_resource: @parent_resource, pagy: @pagy, query: @query, actions: @actions)) %>
           </div>
         <% else %>
           <%= helpers.empty_state by_association: params[:related_name].present?, view_type: view_type, add_background: true %>
