@@ -56,7 +56,6 @@ RSpec.describe "Custom components", type: :feature do
       expect(page).to have_text("Custom index component here!")
       expect(page).to have_text("Resource table component here!")
       expect(page).to have_text("Table row component here!")
-
     end
 
     it "grid item component" do

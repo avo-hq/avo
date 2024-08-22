@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 class Avo::ForTest::TableRowComponent < Avo::Index::TableRowComponent
   def initialize(**args)
     @args = args
