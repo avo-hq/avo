@@ -11,7 +11,7 @@ class Avo::Index::TableRowComponent < Avo::BaseComponent
   prop :parent_resource, _Nilable(Avo::BaseResource)
   prop :actions, _Nilable(_Array(Avo::BaseAction))
   prop :fields, _Nilable(_Array(Avo::Fields::BaseField))
-  prop :header_fields, _Nilable(_Array(Avo::Fields::BaseField))
+  prop :header_fields, _Nilable(_Array(String))
 
   def resource_controls_component
     Avo::Index::ResourceControlsComponent.new(

@@ -45,15 +45,18 @@ RSpec.describe "Custom components", type: :feature do
         "Avo::Views::ResourceShowComponent": "Avo::ForTest::ResourceShowComponent",
         "Avo::Views::ResourceEditComponent": "Avo::ForTest::ResourceEditComponent",
         "Avo::Index::GridItemComponent": "Avo::ForTest::GridItemComponent",
-        "Avo::Index::ResourceTableComponent": "Avo::ForTest::ResourceTableComponent"
+        "Avo::Index::ResourceTableComponent": "Avo::ForTest::ResourceTableComponent",
+        "Avo::Index::TableRowComponent": "Avo::ForTest::TableRowComponent"
       }
     end
 
     it "index and table" do
       visit avo.resources_users_path
 
-      expect(page).to have_text("Resource table component here!")
       expect(page).to have_text("Custom index component here!")
+      expect(page).to have_text("Resource table component here!")
+      expect(page).to have_text("Table row component here!")
+
     end
 
     it "grid item component" do
