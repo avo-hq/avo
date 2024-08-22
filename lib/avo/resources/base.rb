@@ -619,6 +619,19 @@ module Avo
         @record_param ||= @record.persisted? ? @record.to_param : nil
       end
 
+      def custom_components
+        @custom_components ||= Avo::ExecutionContext.new(
+          target: components,
+          resource: self,
+          record: @record,
+          view: @view
+        ).handle.with_indifferent_access
+      end
+
+      def custom_component(original_component)
+        custom_components.dig(original_component.to_s) || original_component
+      end
+
       private
 
       def flatten_keys(array)

@@ -581,19 +581,11 @@ module Avo
     # Set the view component for the current view
     # It will try to use the custom component if it's set, otherwise it will use the default one
     def set_component_for(view, fallback_view: nil)
-      # Fetch the components from the resource
-      components = Avo::ExecutionContext.new(
-        target: @resource.components,
-        resource: @resource,
-        record: @record,
-        view: @view
-      ).handle.with_indifferent_access
-
       default_component = "Avo::Views::Resource#{(fallback_view || view).to_s.classify}Component"
 
       # Search for the custom component by key and by class name:
-      custom_component = components.dig(:"resource_#{view}_component") ||
-        components.dig(default_component)
+      custom_component = @resource.custom_components.dig(:"resource_#{view}_component") ||
+        @resource.custom_components.dig(default_component)
 
       # If the component is not set, use the default one
       return @component = default_component.constantize if custom_component.nil?
