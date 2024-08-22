@@ -49,9 +49,14 @@ RSpec.describe "Custom components", type: :feature do
     end
 
     it "index" do
-      visit avo.resources_users_path(view_type: :grid)
+      visit avo.resources_users_path
 
       expect(page).to have_text("Custom index component here!")
+    end
+
+    it "grid item component" do
+      visit avo.resources_users_path(view_type: :grid)
+
       expect(page).to have_text("Custom grid item component here!")
     end
 
