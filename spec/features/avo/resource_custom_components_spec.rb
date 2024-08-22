@@ -80,5 +80,17 @@ RSpec.describe "Custom components", type: :feature do
 
       expect(page).to have_text("Custom edit component here!")
     end
+
+    it "map" do
+      Avo::Resources::City.components = {
+        "Avo::Index::ResourceMapComponent": "Avo::ForTest::ResourceMapComponent"
+      }
+
+      City.create!
+
+      visit avo.resources_cities_path(view_type: :map)
+
+      expect(page).to have_text("Custom map component here!")
+    end
   end
 end
