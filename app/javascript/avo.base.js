@@ -11,6 +11,7 @@ import tippy from 'tippy.js'
 
 import { LocalStorageService } from './js/local-storage-service'
 
+import './blurhash'
 import './js/active-storage'
 import './js/controllers'
 import './js/custom-confirm'

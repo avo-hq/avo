@@ -44,6 +44,7 @@
     "@tiptap/pm": "^2.6.3",
     "@yaireo/tagify": "^4.27.0",
     "autoprefixer": "^10.4.20",
+    "blurhash": "^2.0.5",
     "chart.js": "^3.9.1",
     "chartkick": "^4.2.0",
     "codemirror": "5.59.1",
