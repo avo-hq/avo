@@ -628,7 +628,7 @@ module Avo
         ).handle.with_indifferent_access
       end
 
-      def custom_component(original_component)
+      def resolve_component(original_component)
         custom_components.dig(original_component.to_s)&.to_s&.safe_constantize || original_component
       end
 
