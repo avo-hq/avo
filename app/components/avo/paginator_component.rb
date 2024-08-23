@@ -4,7 +4,9 @@ class Avo::PaginatorComponent < Avo::BaseComponent
   prop :resource, _Nilable(Avo::BaseResource)
   prop :parent_record, _Nilable(ActiveRecord::Base)
   prop :pagy, _Nilable(Pagy)
-  prop :turbo_frame, _Nilable(String)
+  prop :turbo_frame, _Nilable(_Union(String, Symbol)) do |frame|
+    frame.present? ? CGI.escapeHTML(frame) : :_top
+  end
   prop :index_params, _Nilable(Hash)
   prop :discreet_pagination, _Nilable(_Boolean)
 
