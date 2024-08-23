@@ -170,7 +170,8 @@ gem "prefixed_ids"
 
 gem "mapkick-rb", "~> 0.1.4"
 
-gem "pluggy", path: "./pluggy"
+gemspec path: "./pluggy"
+# gemspec path: "./../active_storage-blurhash"
 
 gem "hashid-rails", "~> 1.4", ">= 1.4.1"
 
