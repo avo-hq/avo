@@ -3,8 +3,6 @@ module Avo
     include ::Pagy::Frontend
     include Avo::ResourcesHelper
 
-    AVO_CACHED_SVGS = {}
-
     def render_license_warning(title: "", message: "", icon: "exclamation")
       render partial: "avo/sidebar/license_warning", locals: {
         title: title,
@@ -67,12 +65,9 @@ module Avo
 
       file_name = "#{file_name}.svg" unless file_name.end_with? ".svg"
 
-      inline_svg svg_path(file_name), **args
-    end
-
-    # The path shouldn't change between reboots so we can memoize the paths based on the filename.
-    def svg_path(file_name)
-      AVO_CACHED_SVGS[file_name] ||= Avo::SvgFinder.find_asset(file_name).pathname.to_s
+      with_asset_finder(::Avo::SvgFinder) do
+        inline_svg file_name, **args
+      end
     end
 
     def input_classes(extra_classes = "", has_error: false)
