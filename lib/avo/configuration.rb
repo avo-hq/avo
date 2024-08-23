@@ -222,7 +222,7 @@ module Avo
 
         file_logger.datetime_format = "%Y-%m-%d %H:%M:%S"
         file_logger.formatter = proc do |severity, time, progname, msg|
-          "[Avo] #{time}: #{msg}\n".tap do |i|
+          "[Avo->] #{time}: #{msg}\n".tap do |i|
             puts i
           end
         end

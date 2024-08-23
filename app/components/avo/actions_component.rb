@@ -102,6 +102,9 @@ class Avo::ActionsComponent < Avo::BaseComponent
   end
 
   def action_css_class(action)
-    "flex items-center px-4 py-3 w-full font-semibold text-sm hover:bg-primary-100 border-b#{is_disabled?(action) ? " text-gray-500" : " text-black"}"
+    helpers.class_names("flex items-center px-4 py-3 w-full font-semibold text-sm hover:bg-primary-100", {
+      "text-gray-500": is_disabled?(action),
+      "text-black": !is_disabled?(action),
+    })
   end
 end

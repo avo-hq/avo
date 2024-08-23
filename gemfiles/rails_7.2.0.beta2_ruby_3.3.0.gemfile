@@ -10,7 +10,7 @@ gem "pg", ">= 0.18", "< 2.0"
 gem "puma", "~> 6.4"
 gem "redis", "~> 5.0"
 gem "bootsnap", ">= 1.4.2", require: false
-gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
+gem "debug", platforms: [:mri, :mingw, :x64_mingw]
 gem "dotenv-rails"
 gem "web-console", ">= 3.3.0"
 gem "listen", ">= 3.5.1"
