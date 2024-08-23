@@ -134,7 +134,7 @@ module Avo
 
       # This means that the record has been created through another parent record and we need to attach it somehow.
       if params[:via_resource_id].present? && params[:via_belongs_to_resource_class].nil?
-        @reflection = @model._reflections[params[:via_relation]]
+        @reflection = @model.class.reflections[params[:via_relation]]
         # Figure out what kind of association does the record have with the parent record
 
         # Fills in the required infor for belongs_to and has_many

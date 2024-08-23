@@ -101,7 +101,7 @@ module Avo
     private
 
     def set_reflection
-      @reflection = @model._reflections[params[:related_name].to_s]
+      @reflection = @model.class.reflections[params[:related_name].to_s]
     end
 
     def set_attachment_class
@@ -127,7 +127,7 @@ module Avo
     end
 
     def reflection_class
-      reflection = @model._reflections[params[:related_name]]
+      reflection = @model.class.reflections[params[:related_name]]
 
       klass = reflection.class.name.demodulize.to_s
       klass = reflection.through_reflection.class.name.demodulize.to_s if klass == "ThroughReflection"
