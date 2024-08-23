@@ -6,6 +6,11 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 # development dependencies will be added by default to the :development group.
 gemspec
 
+# Avo plugins
+gemspec path: "./pluggy"
+# gemspec path: "./../avo-rhino_field"
+# gemspec path: "./../active_storage-blurhash"
+
 # Declare any dependencies that are still in development here instead of in
 # your gemspec. These might include edge Rails or gems from your path or
 # Git. Remember to move these dependencies to your gemspec before releasing
@@ -169,9 +174,6 @@ gem "image_processing", "~> 1.12"
 gem "prefixed_ids"
 
 gem "mapkick-rb", "~> 0.1.4"
-
-gemspec path: "./pluggy"
-# gemspec path: "./../active_storage-blurhash"
 
 gem "hashid-rails", "~> 1.4", ">= 1.4.1"
 
