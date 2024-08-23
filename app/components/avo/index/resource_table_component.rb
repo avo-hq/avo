@@ -71,7 +71,7 @@ class Avo::Index::ResourceTableComponent < Avo::BaseComponent
       header_fields.concat row_fields
 
       # Create a TableRowComponent instance for the resource and add it to @table_row_components
-      table_row_components << Avo::Index::TableRowComponent.new(
+      table_row_components << resource.resolve_component(Avo::Index::TableRowComponent).new(
         resource: resource,
         fields: row_fields,
         reflection: @reflection,
