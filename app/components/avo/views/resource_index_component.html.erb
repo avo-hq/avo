@@ -79,7 +79,7 @@
       <% if view_type.to_sym == :table || view_type.to_sym == :map %>
         <% if @records.present? %>
           <div class="mt-4 w-full">
-            <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: @turbo_frame || "none", index_params: @index_params, resource: @resource, parent_record: @parent_record, discreet_pagination: field&.discreet_pagination %>
+            <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: @turbo_frame, index_params: @index_params, resource: @resource, parent_record: @parent_record, discreet_pagination: field&.discreet_pagination %>
           </div>
         <% end %>
       <% end %>
@@ -88,7 +88,7 @@
           <%= render Avo::Index::ResourceGridComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_record: @parent_record, parent_resource: @parent_resource, actions: @actions) %>
         </div>
         <div class="mt-6">
-          <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: @turbo_frame || "none", index_params: @index_params, resource: @resource, parent_record: @parent_record, discreet_pagination: field&.discreet_pagination %>
+          <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: @turbo_frame, index_params: @index_params, resource: @resource, parent_record: @parent_record, discreet_pagination: field&.discreet_pagination %>
         </div>
       <% end %>
     <% end %>
