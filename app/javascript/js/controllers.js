@@ -45,6 +45,7 @@ import TippyController from './controllers/tippy_controller'
 import TiptapFieldController from './controllers/fields/tiptap_field_controller'
 import ToggleController from './controllers/toggle_controller'
 import TrixFieldController from './controllers/fields/trix_field_controller'
+import FileFieldController from './controllers/fields/files_field_controller'
 
 application.register('action', ActionController)
 application.register('actions-overflow', ActionsOverflowController)
@@ -93,5 +94,6 @@ application.register('reload-belongs-to-field', ReloadBelongsToFieldController)
 application.register('tags-field', TagsFieldController)
 application.register('trix-field', TrixFieldController)
 application.register('tiptap-field', TiptapFieldController)
+application.register("file-field", FileFieldController);
 
 // Custom controllers
