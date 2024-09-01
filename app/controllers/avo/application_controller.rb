@@ -226,7 +226,7 @@ module Avo
 
       return field.use_resource if field&.use_resource.present?
 
-      reflection = @model._reflections[params[:related_name]]
+      reflection = @model.class.reflect_on_association(params[:related_name])
 
       reflected_model = reflection.klass
 
