@@ -34,9 +34,13 @@ jobs:
           - '6.0'
           - '6.1'
           - '7.0'
+          - '7.1'
+          - '7.2'
         exclude:
           - ruby: '3.2.2'
             rails: '6.0'
+          - ruby: '3.0.3'
+            rails: '7.2'
     runs-on: ubuntu-latest
 
     env:
