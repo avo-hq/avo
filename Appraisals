@@ -32,6 +32,9 @@ end
       gem "ransack", "~> 4.2.0"
       gem "acts-as-taggable-on", "~> 11.0"
       gem "puma", "~> 6.0"
+      group :test do
+        gem "rspec-rails", "~> 6.0"
+      end
     end
   end
 end

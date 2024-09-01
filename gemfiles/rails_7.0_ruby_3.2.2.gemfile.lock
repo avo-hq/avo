@@ -168,7 +168,7 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
-    diff-lcs (1.5.0)
+    diff-lcs (1.5.1)
     docile (1.4.0)
     dotenv (2.8.1)
     dotenv-rails (2.8.1)
@@ -352,10 +352,10 @@ GEM
     rspec-mocks (3.12.4)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.12.0)
-    rspec-rails (4.0.2)
-      actionpack (>= 4.2)
-      activesupport (>= 4.2)
-      railties (>= 4.2)
+    rspec-rails (5.1.2)
+      actionpack (>= 5.2)
+      activesupport (>= 5.2)
+      railties (>= 5.2)
       rspec-core (~> 3.10)
       rspec-expectations (~> 3.10)
       rspec-mocks (~> 3.10)
@@ -512,7 +512,7 @@ DEPENDENCIES
   rails-controller-testing
   ransack (~> 4.0.0)
   redis (~> 4.0)
-  rspec-rails (~> 4.0.0)
+  rspec-rails (~> 5.0)
   rubocop
   rubocop-shopify
   selenium-webdriver
