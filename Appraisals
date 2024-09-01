@@ -20,6 +20,7 @@ end
       gem "rails", "~> #{rails_version}.0"
       gem "ransack", "~> 4.0.0"
       gem "acts-as-taggable-on", "~> 10.0"
+      gem "puma", "~> 6.0"
     end
   end
 end
@@ -30,6 +31,7 @@ end
       gem "rails", "~> #{rails_version}.0"
       gem "ransack", "~> 4.0.0"
       gem "acts-as-taggable-on", "~> 11.0"
+      gem "puma", "~> 6.0"
     end
   end
 end
