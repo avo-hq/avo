@@ -4,9 +4,9 @@ source "https://rubygems.org"
 
 gem "jsbundling-rails"
 gem "cssbundling-rails"
-gem "rails", "~> 6.0.0"
+gem "rails", "~> 7.2.0"
 gem "pg", ">= 0.18", "< 2.0"
-gem "puma", "~> 5.6.4"
+gem "puma", "~> 6.0"
 gem "redis", "~> 4.0"
 gem "bootsnap", ">= 1.4.2", require: false
 gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
@@ -29,7 +29,7 @@ gem "addressable"
 gem "appraisal"
 gem "meta-tags"
 gem "manifester"
-gem "ransack", "~> 3.1.0"
+gem "ransack", "~> 4.2.0"
 gem "friendly_id", "~> 5.4.0"
 gem "aws-sdk-s3", require: false
 gem "net-smtp", require: false
@@ -37,7 +37,7 @@ gem "groupdate"
 gem "hightop"
 gem "active_median"
 gem "acts_as_list"
-gem "acts-as-taggable-on", "~> 9.0"
+gem "acts-as-taggable-on", "~> 11.0"
 gem "bundler-integrity", "~> 1.0"
 gem "erb-formatter"
 gem "pundit"
@@ -49,7 +49,7 @@ gem "image_processing", "~> 1.12"
 gem "prefixed_ids"
 gem "mapkick-rb", "~> 0.1.4"
 gem "turbo_power", "~> 0.5.0"
-gem "pagy", "~> 6.0"
+gem "pagy", "~> 8.0"
 
 group :development do
   gem "standard"
@@ -67,7 +67,7 @@ group :development, :test do
 end
 
 group :test do
-  gem "rspec-rails", "~> 5.0"
+  gem "rspec-rails", "~> 6.0"
   gem "rails-controller-testing"
   gem "capybara"
   gem "selenium-webdriver"

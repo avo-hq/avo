@@ -53,8 +53,4 @@ Rails.application.configure do
   config.log_level = :fatal
 
   config.i18n.load_path += Dir[Avo::Engine.root.join("lib", "generators", "avo", "templates", "locales", "*.{rb,yml}")]
-
-  config.to_prepare do
-    ActiveRecord::ConnectionAdapters::PostgreSQLAdapter.create_unlogged_tables = true
-  end
 end
