@@ -29,7 +29,7 @@ end
   ["7.2"].each do |rails_version|
     appraise "rails-#{rails_version}-ruby-#{ruby_version}" do
       gem "rails", "~> #{rails_version}.0"
-      gem "ransack", "~> 4.0.0"
+      gem "ransack", "~> 4.2.0"
       gem "acts-as-taggable-on", "~> 11.0"
       gem "puma", "~> 6.0"
     end
