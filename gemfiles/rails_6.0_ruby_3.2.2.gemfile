@@ -18,7 +18,6 @@ gem "factory_bot_rails"
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "devise"
 gem "database_cleaner"
-gem "ruby-debug-ide", require: false
 gem "awesome_print"
 gem "rubocop"
 gem "rubocop-shopify", require: false

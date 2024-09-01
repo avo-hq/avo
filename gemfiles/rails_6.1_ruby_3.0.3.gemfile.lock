@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    avo (2.46.0)
+    avo (2.52.0)
       actionview (>= 6.0)
       active_link_to
       activerecord (>= 6.0)
@@ -252,6 +252,7 @@ GEM
     method_source (1.0.0)
     mini_magick (4.12.0)
     mini_mime (1.1.5)
+    mini_portile2 (2.8.7)
     minitest (5.19.0)
     msgpack (1.7.0)
     multi_xml (0.6.0)
@@ -265,9 +266,8 @@ GEM
     net-smtp (0.3.3)
       net-protocol
     nio4r (2.5.9)
-    nokogiri (1.15.4-arm64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.15.4-x86_64-linux)
+    nokogiri (1.15.4)
+      mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     orm_adapter (0.5.0)
     pagy (6.0.4)
@@ -372,8 +372,6 @@ GEM
       rubocop-ast (>= 0.4.0)
     rubocop-shopify (2.12.0)
       rubocop (~> 1.44)
-    ruby-debug-ide (0.7.3)
-      rake (>= 0.8.1)
     ruby-progressbar (1.13.0)
     ruby-vips (2.1.4)
       ffi (~> 1.12)
@@ -511,7 +509,6 @@ DEPENDENCIES
   rspec-rails (~> 4.0.0)
   rubocop
   rubocop-shopify
-  ruby-debug-ide
   selenium-webdriver
   simplecov
   simplecov-cobertura
