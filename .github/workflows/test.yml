@@ -60,7 +60,7 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         # bundler-cache: true
-        bundler: default
+        bundler: 2.5.18
         ruby-version: ${{ matrix.ruby }}
 
     - name: Install PostgreSQL 11 client
@@ -147,7 +147,7 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         # bundler-cache: true
-        bundler: default
+        bundler: 2.5.18
         ruby-version: ${{ matrix.ruby }}
 
     - name: Install PostgreSQL 11 client
