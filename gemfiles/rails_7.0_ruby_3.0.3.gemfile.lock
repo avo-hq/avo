@@ -504,6 +504,7 @@ DEPENDENCIES
   mapkick-rb (~> 0.1.4)
   meta-tags
   net-smtp
+  pagy (~> 6.0)
   pg (>= 0.18, < 2.0)
   prefixed_ids
   puma (~> 5.6.4)
