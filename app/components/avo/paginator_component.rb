@@ -2,7 +2,7 @@
 
 class Avo::PaginatorComponent < Avo::BaseComponent
   prop :resource, _Nilable(Avo::BaseResource)
-  prop :parent_record, _Nilable(ActiveRecord::Base)
+  prop :parent_record, _Nilable(_Any)
   prop :pagy, _Nilable(Pagy)
   prop :turbo_frame, _Nilable(_Union(String, Symbol)) do |frame|
     frame.present? ? CGI.escapeHTML(frame) : :_top

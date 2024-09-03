@@ -7,7 +7,7 @@ class Avo::Index::TableRowComponent < Avo::BaseComponent
 
   prop :resource, _Nilable(Avo::BaseResource)
   prop :reflection, _Nilable(ActiveRecord::Reflection::AbstractReflection)
-  prop :parent_record, _Nilable(ActiveRecord::Base)
+  prop :parent_record, _Nilable(_Any)
   prop :parent_resource, _Nilable(Avo::BaseResource)
   prop :actions, _Nilable(_Array(Avo::BaseAction))
   prop :fields, _Nilable(_Array(Avo::Fields::BaseField))

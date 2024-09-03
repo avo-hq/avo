@@ -5,7 +5,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
 
   prop :resource, _Nilable(Avo::BaseResource)
   prop :reflection, _Nilable(ActiveRecord::Reflection::AbstractReflection)
-  prop :parent_record, _Nilable(ActiveRecord::Base)
+  prop :parent_record, _Nilable(_Any)
   prop :parent_resource, _Nilable(Avo::BaseResource)
   prop :view_type, Symbol, default: :table
   prop :actions, _Nilable(_Array(Avo::BaseAction))

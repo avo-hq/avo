@@ -6,7 +6,7 @@ class Avo::FiltersComponent < Avo::BaseComponent
   prop :filters, _Array(Avo::Filters::BaseFilter), default: [].freeze
   prop :resource, _Nilable(Avo::BaseResource)
   prop :applied_filters, Hash, default: {}.freeze
-  prop :parent_record, _Nilable(ActiveRecord::Base)
+  prop :parent_record, _Nilable(_Any)
 
   def render?
     @filters.present?

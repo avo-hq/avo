@@ -8,7 +8,7 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
   prop :resource, _Nilable(Avo::BaseResource)
   prop :reflection, _Nilable(ActiveRecord::Reflection::AbstractReflection)
   prop :parent_resource, _Nilable(Avo::BaseResource)
-  prop :parent_record, _Nilable(ActiveRecord::Base)
+  prop :parent_record, _Nilable(_Any)
   prop :resource_panel, _Nilable(_Array(Avo::BaseAction)), reader: :public
   prop :actions, _Array(Avo::BaseAction), default: [].freeze, reader: :public
 
