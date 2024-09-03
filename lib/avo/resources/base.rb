@@ -146,13 +146,13 @@ module Avo
           if @model_class.present?
             # Cast the model class to a constantized version
             return case @model_class
-            when Class
-              @model_class
-            when String, Symbol
-              @model_class.to_s.safe_constantize
-            else
-              raise ArgumentError.new "Failed to find a proper model class for #{self}"
-            end
+              when Class
+                @model_class
+              when String, Symbol
+                @model_class.to_s.safe_constantize
+              else
+                raise ArgumentError.new "Failed to find a proper model class for #{self}"
+              end
           end
 
           # get the model class off of the record for STI models
