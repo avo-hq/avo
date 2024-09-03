@@ -181,6 +181,33 @@ class Avo::ResourceComponent < Avo::BaseComponent
     end
   end
 
+  def render_bulk_delete_button(control)
+    # # If the resource is a related resource, we use the can_delete? policy method because it uses
+    # # authorize_association_for(:destroy).
+    # # Otherwise we use the can_see_the_destroy_button? policy method becuse it do no check for assiciation
+    # # only for authorize_action .
+    # policy_method = is_a_related_resource? ? :can_delete? : :can_see_the_destroy_button?
+    # return unless send policy_method
+
+    a_link helpers.resources_destroy_path,
+      style: :text,
+      color: :red,
+      icon: "avo/trash",
+      form_class: "flex flex-col sm:flex-row sm:inline-flex",
+      title: control.title,
+      aria_label: control.title,
+      data: {
+        turbo_confirm: t("avo.are_you_sure", item: @resource.record.model_name.name.downcase),
+        turbo_method: :delete,
+        target: "control:destroy",
+        control: :destroy,
+        tippy: control.title ? :tooltip : nil,
+        "resource-id": @resource.record_param,
+      } do
+      control.label
+    end
+  end
+
   def render_save_button(control)
     return unless can_see_the_save_button?
 

@@ -8,6 +8,10 @@ module Avo
               member do
                 get :preview
               end
+
+              collection do
+                delete :bulk_destroy
+              end
             end
           end
         end
