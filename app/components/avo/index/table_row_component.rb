@@ -26,8 +26,6 @@ class Avo::Index::TableRowComponent < Avo::BaseComponent
   end
 
   def click_row_to_view_record
-    return false unless Avo.configuration.click_row_to_view_record
-
-    can_view?
+    Avo.configuration.click_row_to_view_record && can_view?
   end
 end
