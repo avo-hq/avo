@@ -395,21 +395,22 @@ module Avo
       end
 
       def record_title
-        if @record.nil?
-          name
-        elsif title.nil?
-          # Get the title from the record if title is not set, try to get the name, title or label, or fallback to the to_param
-          @record.try(:name) || @record.try(:title) || @record.try(:label) || @record.to_param
+        fetch_record_title.to_s
+      end
 
-        else
-          # If the title is a symbol, get the value from the record else execute the block/string
-          case title
-          when Symbol
-            @record.send title
-          when Proc
-            Avo::ExecutionContext.new(target: title, resource: self, record: @record).handle
-          end
-        end.to_s
+      def fetch_record_title
+        return name if @record.nil?
+
+        # Get the title from the record if title is not set, try to get the name, title or label, or fallback to the to_param
+        return @record.try(:name) || @record.try(:title) || @record.try(:label) || @record.to_param if title.nil?
+
+        # If the title is a symbol, get the value from the record else execute the block/string
+        case title
+        when Symbol
+          @record.send title
+        when Proc
+          Avo::ExecutionContext.new(target: title, resource: self, record: @record).handle
+        end
       end
 
       def available_view_types
