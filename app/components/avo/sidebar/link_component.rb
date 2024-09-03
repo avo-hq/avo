@@ -11,6 +11,7 @@ class Avo::Sidebar::LinkComponent < Avo::BaseComponent
   end
   prop :data, Hash, default: {}.freeze
   prop :icon, _Nilable(String)
+  prop :args, Hash, :**, default: {}.freeze
 
   def is_external?
     # If the path contains the scheme, check if it includes the root path or not
