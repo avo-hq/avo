@@ -395,6 +395,10 @@ module Avo
       end
 
       def record_title
+        fetch_record_title.to_s
+      end
+
+      def fetch_record_title
         return name if @record.nil?
 
         # Get the title from the record if title is not set, try to get the name, title or label, or fallback to the to_param
