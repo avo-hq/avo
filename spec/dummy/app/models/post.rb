@@ -24,9 +24,10 @@ class Post < ApplicationRecord
 
   # Trigger TypeError: no _dump_data is defined for class Proc when serializing query
   # Test it by applying a status filter
-  normalizes :status, with: ->(status) {
-    status
-  }
+  # Only for rails > 7.1
+  # normalizes :status, with: ->(status) {
+  #   status
+  # }
 
   has_one_attached :cover_photo
   has_one_attached :audio
