@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Avo::Fields::Common::BadgeViewerComponent < Avo::BaseComponent
-  prop :value, prop :value, _Union(_String, _Symbol)
+  prop :value, _Union(_String, _Symbol)
   prop :options, Hash
 
   def after_initialize
