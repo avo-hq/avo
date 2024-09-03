@@ -9,7 +9,6 @@ class Avo::Sidebar::LinkComponent < Avo::BaseComponent
   prop :target, _Nilable(Symbol) do |value|
     value&.to_sym
   end
-  prop :rel, _Nilable(_Union(String, Symbol))
   prop :data, Hash, default: {}.freeze
   prop :icon, _Nilable(String)
 
