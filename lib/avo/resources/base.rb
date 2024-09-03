@@ -152,18 +152,6 @@ module Avo
           class_name.safe_constantize
         end
 
-        # Cast the model class to a constantized version
-        def constantized_model_class
-          @constantized_model_class ||= case @model_class
-          when Class
-            @model_class
-          when String, Symbol
-            @model_class.to_s.safe_constantize
-          else
-            raise ArgumentError.new "Failed to find a proper model class for #{self}"
-          end
-        end
-
         # This is used as the model class ID
         # We use this instead of the route_key to maintain compatibility with uncountable models
         # With uncountable models route key appends an _index suffix (Fish->fish_index)
