@@ -143,7 +143,7 @@ module Avo
         # where we figure out the model class from the record
         def model_class(record_class: nil)
           # get the model class off of the static property
-          return @model_class if @model_class.present?
+          return constantized_model_class if @model_class.present?
 
           # get the model class off of the record for STI models
           return record_class if record_class.present?

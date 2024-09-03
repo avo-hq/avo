@@ -24,6 +24,8 @@ class Avo::Index::ResourceTableComponent < Avo::BaseComponent
     end
 
     Avo::Services::EncryptionService.encrypt(message: @query, purpose: :select_all, serializer: Marshal)
+  rescue
+    disable_select_all
   end
 
   def selected_page_label
@@ -85,5 +87,19 @@ class Avo::Index::ResourceTableComponent < Avo::BaseComponent
     header_fields.uniq!(&:table_header_label)
 
     [header_fields, table_row_components]
+  end
+
+  private
+
+  def disable_select_all
+    if Rails.env.development?
+      Avo.error_manager.add({
+        url: "https://docs.avohq.io/3.0/select-all.html#serialization-known-issues",
+        target: "_blank",
+        message: "An error occurred while serializing the query object. The Select All feature has been disabled because it depends on successful query serialization. For more details and troubleshooting steps, click here."
+      })
+    end
+
+    :select_all_disabled
   end
 end
