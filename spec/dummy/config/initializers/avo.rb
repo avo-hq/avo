@@ -1,3 +1,18 @@
+module ViewComponent
+  class LogSubscriber < ActiveSupport::LogSubscriber
+    define_method :'!render' do |event|
+      info do
+        message = +" -> Rendered #{event.payload[:name]}"
+        message << " (Duration: #{event.duration.round(1)}ms"
+        message << " | Allocations: #{event.allocations})"
+      end
+    end
+  end
+end
+
+ViewComponent::LogSubscriber.attach_to :view_component
+
+
 Avo.configure do |config|
   ## == Base configs ==
   config.root_path = "/admin"

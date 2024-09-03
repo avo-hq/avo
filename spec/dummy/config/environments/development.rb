@@ -70,6 +70,8 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = {host: "localhost", port: 3030}
 
+  # config.view_component.instrumentation_enabled = true
+
   config.action_view.logger = nil
   config.assets.logger = nil
 
