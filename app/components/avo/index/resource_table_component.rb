@@ -18,8 +18,6 @@ class Avo::Index::ResourceTableComponent < Avo::BaseComponent
   prop :actions, _Nilable(_Array(Avo::BaseAction))
 
   def encrypted_query
-    return :select_all_disabled if @query.nil?
-
     # TODO: move this to the resource where we can apply the adapter pattern
     if Module.const_defined?("Ransack::Search") && @query.instance_of?(Ransack::Search)
       @query = @query.result
@@ -27,8 +25,7 @@ class Avo::Index::ResourceTableComponent < Avo::BaseComponent
 
     Avo::Services::EncryptionService.encrypt(message: @query, purpose: :select_all, serializer: Marshal)
   rescue
-    disabled_select_all_warning
-    :select_all_disabled
+    disable_select_all
   end
 
   def selected_page_label
@@ -94,7 +91,7 @@ class Avo::Index::ResourceTableComponent < Avo::BaseComponent
 
   private
 
-  def disabled_select_all_warning
+  def disable_select_all
     if Rails.env.development?
       Avo.error_manager.add({
         url: "https://docs.avohq.io/3.0/select-all.html#serialization-known-issues",
@@ -104,5 +101,7 @@ class Avo::Index::ResourceTableComponent < Avo::BaseComponent
                   Click here for more details.\n\r"
       })
     end
+
+    :select_all_disabled
   end
 end
