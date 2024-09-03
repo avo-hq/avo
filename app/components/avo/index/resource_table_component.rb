@@ -96,9 +96,7 @@ class Avo::Index::ResourceTableComponent < Avo::BaseComponent
       Avo.error_manager.add({
         url: "https://docs.avohq.io/3.0/select-all.html#serialization-known-issues",
         target: "_blank",
-        message: "Something went wrong while serializing the query object.\n\r
-                  Select all feature is disabled since it relies on the serialized query.\n\r
-                  Click here for more details.\n\r"
+        message: "An error occurred while serializing the query object. The Select All feature has been disabled because it depends on successful query serialization. For more details and troubleshooting steps, click here."
       })
     end
 
