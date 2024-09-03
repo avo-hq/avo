@@ -143,23 +143,25 @@ module Avo
         # where we figure out the model class from the record
         def model_class(record_class: nil)
           # get the model class off of the static property
-          if @model_class.present?
-            # Cast the model class to a constantized version
-            return case @model_class
-              when Class
-                @model_class
-              when String, Symbol
-                @model_class.to_s.safe_constantize
-              else
-                raise ArgumentError.new "Failed to find a proper model class for #{self}"
-              end
-          end
+          return constantized_model_class if @model_class.present?
 
           # get the model class off of the record for STI models
           return record_class if record_class.present?
 
           # generate a model class
           class_name.safe_constantize
+        end
+
+        # Cast the model class to a constantized version
+        def constantized_model_class
+          @constantized_model_class ||= case @model_class
+          when Class
+            @model_class
+          when String, Symbol
+            @model_class.to_s.safe_constantize
+          else
+            raise ArgumentError.new "Failed to find a proper model class for #{self}"
+          end
         end
 
         # This is used as the model class ID
