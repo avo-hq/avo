@@ -5,6 +5,7 @@ class Avo::Sidebar::BaseItemComponent < Avo::BaseComponent
 
   # Object = Avo::Menu::BaseItem || ViewComponent::Base
   prop :item, _Nilable(Object), reader: :public
+  prop :locals, _Nilable(Hash), default: {}.freeze
 
   def after_initialize
     @items = @item.items.select(&:visible?)

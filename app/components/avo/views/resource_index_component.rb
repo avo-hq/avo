@@ -14,7 +14,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   prop :actions, _Array(Avo::BaseAction), default: [].freeze
   prop :reflection, _Nilable(ActiveRecord::Reflection::AbstractReflection)
   prop :turbo_frame, _Nilable(String), default: ""
-  prop :parent_record, _Nilable(ActiveRecord::Base)
+  prop :parent_record, _Nilable(_Any)
   prop :parent_resource, _Nilable(Avo::BaseResource)
   prop :applied_filters, Hash, default: {}.freeze
   prop :query, _Nilable(ActiveRecord::Relation), reader: :public

@@ -4,7 +4,7 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   include Avo::ApplicationHelper
 
   prop :resource, _Nilable(Avo::BaseResource)
-  prop :record, _Nilable(ActiveRecord::Base)
+  prop :record, _Nilable(_Any)
   prop :actions, _Array(Avo::BaseAction), default: [].freeze
   prop :view, Avo::ViewInquirer, default: Avo::ViewInquirer.new(:edit).freeze
   prop :display_breadcrumbs, _Boolean, default: true, reader: :public

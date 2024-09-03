@@ -24,7 +24,7 @@ class Avo::PanelComponent < Avo::BaseComponent
   prop :profile_photo, _Nilable(Avo::ProfilePhoto)
   prop :cover_photo, _Nilable(Avo::CoverPhoto)
   prop :args, Hash, :**, default: {}.freeze
-  prop :name, _Nilable(String) do |value|
+  prop :name, _Nilable(_Union(_String, _Integer)) do |value|
     value || @args&.dig(:title)
   end
 

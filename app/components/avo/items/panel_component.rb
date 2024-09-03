@@ -11,7 +11,7 @@ class Avo::Items::PanelComponent < Avo::ResourceComponent
   prop :actions, _Nilable(_Array(Avo::BaseAction)), reader: :public
   prop :index, _Nilable(Integer), reader: :public
   prop :parent_component, _Nilable(ViewComponent::Base)
-  prop :parent_record, _Nilable(ActiveRecord::Base)
+  prop :parent_record, _Nilable(_Any)
   prop :parent_resource, _Nilable(Avo::BaseResource)
   prop :reflection, _Nilable(ActiveRecord::Reflection::AbstractReflection)
 

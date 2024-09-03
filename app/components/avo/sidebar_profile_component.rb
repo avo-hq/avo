@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Avo::SidebarProfileComponent < Avo::BaseComponent
-  prop :user, _Nilable(ActiveRecord::Base)
+  prop :user, _Nilable(_Any)
 
   def avatar
     if @user.respond_to?(:avatar) && @user.avatar.present?
