@@ -1,5 +1,5 @@
 <% if @path.present? %>
-  <%= send link_method, @path, class: classes, active: @active, target: @target, data: @data do %>
+  <%= send link_method, @path, class: classes, active: @active, target: @target, data: @data, **@args do %>
     <%= helpers.svg @icon, class: "h-4 text-gray-700" if @icon.present? %>
     <%= @label %>
     <% if @target == :_blank %>
