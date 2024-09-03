@@ -18,12 +18,26 @@ class Avo::Index::ResourceTableComponent < Avo::BaseComponent
   prop :actions, _Nilable(_Array(Avo::BaseAction))
 
   def encrypted_query
+    return :select_all_disabled if @query.nil?
+
     # TODO: move this to the resource where we can apply the adapter pattern
     if Module.const_defined?("Ransack::Search") && @query.instance_of?(Ransack::Search)
       @query = @query.result
     end
 
     Avo::Services::EncryptionService.encrypt(message: @query, purpose: :select_all, serializer: Marshal)
+  rescue
+    if Rails.env.development?
+      Avo.error_manager.add({
+        url: "https://docs.avohq.io/3.0/select-all.html#serialization-known-issues",
+        target: "_blank",
+        message: "Something went wrong while serializing the query object.\n\r
+                  Select all feature is disabled since it relies on the serialized query.\n\r
+                  Click here for more details.\n\r"
+      })
+    end
+
+    :select_all_disabled
   end
 
   def selected_page_label
