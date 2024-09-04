@@ -82,7 +82,7 @@ class Avo::ActionsComponent < Avo::BaseComponent
     when Avo::BaseAction
       render_action_link(action)
     when Avo::Resources::Controls::BaseControl
-      action.add_classes "w-full"
+      action.add_classes "rounded-none w-full"
       render_control(action)
     end
   end
