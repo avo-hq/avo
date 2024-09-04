@@ -338,8 +338,8 @@ module Generators
           }
         end
         def generate_fields
-          return unless can_connect_to_the_database?
           return generate_fields_from_args if invoked_by_model_generator?
+          return unless can_connect_to_the_database?
 
           if model.blank?
             puts "Can't generate fields from model. '#{model_class}.rb' not found!"
@@ -359,7 +359,7 @@ module Generators
         def generated_fields_template
           return if fields.blank?
 
-          fields_string = "lo"
+          fields_string = ""
 
           fields.each do |field_name, field_options|
             # if field_options are not available (likely a missing resource for an association), skip the field
