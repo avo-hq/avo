@@ -2,7 +2,7 @@ module Avo
   module Resources
     module Controls
       class BaseControl
-        attr_reader :label, :title, :color, :style, :icon, :icon_class, :confirmation_message, :size, :as_index_control
+        attr_reader :label, :title, :color, :style, :icon, :icon_class, :confirmation_message, :size, :as_index_control, :classes
 
         def initialize(**args)
           @label = args[:label]
@@ -18,6 +18,14 @@ module Avo
 
         def type
           self.class.name.demodulize.underscore.to_sym
+        end
+
+        def add_classes(value)
+          if @classes.present?
+            @classes += " #{value}"
+          else
+            @classes = value
+          end
         end
       end
     end

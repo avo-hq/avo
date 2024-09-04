@@ -9,23 +9,33 @@ class Avo::ActionsComponent < Avo::BaseComponent
   prop :icon, _Nilable(String)
   prop :size, Avo::ButtonComponent::SIZE, default: :md
   prop :title, _Nilable(String)
-  prop :color, Symbol, default: :primary
+  prop :color, _Nilable(Symbol) do |value|
+    value || :primary
+  end
   prop :include, _Nilable(ACTION_FILTER), default: [].freeze do |include|
     Array(include).to_set
   end
-  prop :label, String do |label|
-    label || I18n.t("avo.actions")
+  prop :custom_list, _Boolean, default: false
+  prop :label, _Nilable(String) do |label|
+    if @custom_list
+      label
+    else
+      label || I18n.t("avo.actions")
+    end
   end
   prop :style, Avo::ButtonComponent::STYLE, default: :outline
-  prop :actions, _Array(Avo::BaseAction), default: [].freeze
+  prop :actions, _Array(_Union(Avo::BaseAction, Avo::Resources::Controls::BaseControl)), default: [].freeze
   prop :exclude, _Nilable(ACTION_FILTER), default: [].freeze do |exclude|
     Array(exclude).to_set
   end
   prop :resource, _Nilable(Avo::BaseResource)
   prop :view, _Nilable(Avo::ViewInquirer)
+  prop :host_component, _Nilable(_Any)
+
+  delegate_missing_to :@host_component
 
   def after_initialize
-    filter_actions
+    filter_actions unless @custom_list
   end
 
   def render?
@@ -71,6 +81,9 @@ class Avo::ActionsComponent < Avo::BaseComponent
       render_divider(action)
     when Avo::BaseAction
       render_action_link(action)
+    when Avo::Resources::Controls::BaseControl
+      action.add_classes "w-full"
+      render_control(action)
     end
   end
 

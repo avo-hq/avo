@@ -128,6 +128,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
     tippy = control.title ? :tooltip : nil
     a_link back_path,
       style: :text,
+      class: control.classes,
       title: control.title,
       data: {tippy: tippy},
       icon: "heroicons/outline/arrow-left" do
@@ -169,6 +170,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       form_class: "flex flex-col sm:flex-row sm:inline-flex",
       title: control.title,
       aria_label: control.title,
+      class: control.classes,
       data: {
         turbo_confirm: t("avo.are_you_sure", item: @resource.record.model_name.name.downcase),
         turbo_method: :delete,
@@ -186,6 +188,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
     a_button color: :primary,
       style: :primary,
+      class: control.classes,
       loading: true,
       type: :submit,
       icon: "avo/save",
@@ -202,6 +205,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
     a_link edit_path,
       color: :primary,
       style: :primary,
+      class: control.classes,
       title: control.title,
       data: {tippy: control.title ? :tooltip : nil},
       icon: "avo/edit" do
@@ -216,6 +220,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       icon: "avo/detach",
       form_class: "flex flex-col sm:flex-row sm:inline-flex",
       style: :text,
+      class: control.classes,
       data: {
         turbo_method: :delete,
         turbo_confirm: "Are you sure you want to detach this #{title}."
@@ -231,6 +236,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       color: :primary,
       style: :primary,
       icon: "heroicons/outline/plus",
+      class: control.classes,
       data: {
         target: :create
       } do
@@ -245,6 +251,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       icon: "heroicons/outline/link",
       color: :primary,
       style: :text,
+      class: control.classes,
       data: {
         turbo_frame: :attach_modal,
         target: :attach
@@ -281,6 +288,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       icon_class: action.icon_class,
       title: action.title,
       size: action.size,
+      class: action.classes,
       data: {
         turbo_frame: Avo::ACTIONS_TURBO_FRAME_ID,
         action_name: action.action.action_name,
