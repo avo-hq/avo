@@ -24,7 +24,7 @@ class Avo::ActionsComponent < Avo::BaseComponent
     end
   end
   prop :style, Avo::ButtonComponent::STYLE, default: :outline
-  prop :actions, _Array(_Union(Avo::BaseAction, Avo::Resources::Controls::BaseControl)), default: [].freeze
+  prop :actions, _Array(_Any), default: [].freeze
   prop :exclude, _Nilable(ACTION_FILTER), default: [].freeze do |exclude|
     Array(exclude).to_set
   end
@@ -71,8 +71,8 @@ class Avo::ActionsComponent < Avo::BaseComponent
     !on_record_page?
   end
 
-  def icon(action)
-    svg action.icon, class: "h-5 shrink-0 mr-1 inline pointer-events-none"
+  def icon(icon)
+    svg icon, class: "h-5 shrink-0 mr-1 inline pointer-events-none"
   end
 
   def render_item(action)
@@ -81,9 +81,14 @@ class Avo::ActionsComponent < Avo::BaseComponent
       render_divider(action)
     when Avo::BaseAction
       render_action_link(action)
-    when Avo::Resources::Controls::BaseControl
-      action.add_classes "rounded-none w-full"
-      render_control(action)
+    when defined?(Avo::Advanced::Resources::Controls::Action) && Avo::Advanced::Resources::Controls::Action
+      render_action_link(action.action, icon: action.icon)
+    when defined?(Avo::Advanced::Resources::Controls::LinkTo) && Avo::Advanced::Resources::Controls::LinkTo
+      link_to action.args[:path],
+        class: (action.args.delete(:class) || "flex items-center px-4 py-3 w-full text-black font-semibold text-sm hover:bg-primary-100"),
+        **action.args.except(:path, :label, :icon) do
+          raw("#{icon(action.args[:icon])} #{action.args[:label]}")
+        end
     end
   end
 
@@ -94,12 +99,12 @@ class Avo::ActionsComponent < Avo::BaseComponent
     render Avo::DividerComponent.new(label)
   end
 
-  def render_action_link(action)
+  def render_action_link(action, icon: nil)
     link_to action.link_arguments(resource: @resource, arguments: action.arguments).first,
       data: action_data_attributes(action),
       title: action.action_name,
       class: action_css_class(action) do
-        raw("#{icon(action)} #{action.action_name}")
+        raw("#{icon(icon || action.icon)} #{action.action_name}")
       end
   end
 
