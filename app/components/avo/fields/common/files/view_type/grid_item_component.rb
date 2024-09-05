@@ -3,7 +3,7 @@
 class Avo::Fields::Common::Files::ViewType::GridItemComponent < Avo::BaseComponent
   prop :field, Avo::Fields::BaseField
   prop :resource, Avo::BaseResource
-  prop :file, _Nilable(ActiveStorage::Attachment) if defined?(ActiveStorage::Attachment)
+  prop :file, _Nilable(_Any)
   prop :extra_classes, _Nilable(String)
 
   def id
