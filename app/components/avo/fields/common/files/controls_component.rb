@@ -7,7 +7,7 @@ class Avo::Fields::Common::Files::ControlsComponent < Avo::BaseComponent
   delegate :id, to: :@field
 
   prop :field, Avo::Fields::BaseField
-  prop :file, ActiveStorage::Attachment if defined?(ActiveStorage::Attachment)
+  prop :file, _Any
   prop :resource, Avo::BaseResource
 
   def destroy_path
