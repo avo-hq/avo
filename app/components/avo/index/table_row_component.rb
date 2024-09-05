@@ -2,6 +2,7 @@
 
 class Avo::Index::TableRowComponent < Avo::BaseComponent
   include Avo::ResourcesHelper
+  include Avo::Concerns::ChecksShowAuthorization
 
   attr_writer :header_fields
 
@@ -24,5 +25,7 @@ class Avo::Index::TableRowComponent < Avo::BaseComponent
     )
   end
 
-  def click_row_to_view_record = Avo.configuration.click_row_to_view_record
+  def click_row_to_view_record
+    Avo.configuration.click_row_to_view_record && can_view?
+  end
 end
