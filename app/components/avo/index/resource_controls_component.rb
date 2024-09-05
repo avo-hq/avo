@@ -2,6 +2,7 @@
 
 class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   include Avo::ApplicationHelper
+  include Avo::Concerns::ChecksShowAuthorization
 
   prop :resource, _Nilable(Avo::BaseResource)
   prop :reflection, _Nilable(ActiveRecord::Reflection::AbstractReflection)
@@ -18,15 +19,6 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     return authorize_association_for(:edit) if @reflection.present?
 
     @resource.authorization.authorize_action(:edit, raise_exception: false)
-  end
-
-  def can_view?
-    return false if Avo.configuration.resource_default_view.edit?
-
-    return authorize_association_for(:show) if @reflection.present?
-
-    # Even if there's a @reflection object present, for show we're going to fallback to the original policy.
-    @resource.authorization.authorize_action(:show, raise_exception: false)
   end
 
   def show_path
