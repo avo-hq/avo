@@ -85,7 +85,7 @@ class Avo::ActionsComponent < Avo::BaseComponent
       render_action_link(action.action, icon: action.icon)
     when defined?(Avo::Advanced::Resources::Controls::LinkTo) && Avo::Advanced::Resources::Controls::LinkTo
       link_to action.args[:path],
-        class: (action.args.delete(:class) || "flex items-center px-4 py-3 w-full text-black font-semibold text-sm hover:bg-primary-100"),
+        class: action.args.delete(:class) || "flex items-center px-4 py-3 w-full text-black font-semibold text-sm hover:bg-primary-100",
         **action.args.except(:path, :label, :icon) do
           raw("#{icon(action.args[:icon])} #{action.args[:label]}")
         end
