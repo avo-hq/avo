@@ -148,7 +148,7 @@ module Avo
         end
 
         # For when working with has_one, has_one_through, has_many_through, has_and_belongs_to_many, polymorphic
-        if @reflection.is_a? ActiveRecord::Reflection::ThroughReflection
+        if @reflection.is_a?(ActiveRecord::Reflection::ThroughReflection) || @reflection.is_a?(ActiveRecord::Reflection::HasAndBelongsToManyReflection)
           # find the record
           via_resource = ::Avo::App.get_resource_by_model_name(params[:via_relation_class]).dup
           @related_record = via_resource.find_record params[:via_resource_id], params: params

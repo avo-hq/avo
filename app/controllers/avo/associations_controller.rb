@@ -62,7 +62,7 @@ module Avo
     def create
       association_name = BaseResource.valid_association_name(@model, params[:related_name])
 
-      if reflection_class == "HasManyReflection"
+      if has_many_reflection?
         @model.send(association_name) << @attachment_model
       else
         @model.send("#{association_name}=", @attachment_model)
@@ -80,7 +80,7 @@ module Avo
     def destroy
       association_name = BaseResource.valid_association_name(@model, params[:related_name])
 
-      if reflection_class == "HasManyReflection"
+      if has_many_reflection?
         @model.send(association_name).delete @attachment_model
       else
         @model.send("#{association_name}=", nil)
@@ -127,12 +127,11 @@ module Avo
     end
 
     def reflection_class
-      reflection = @model.class.reflect_on_association(params[:related_name])
-
-      klass = reflection.class.name.demodulize.to_s
-      klass = reflection.through_reflection.class.name.demodulize.to_s if klass == "ThroughReflection"
-
-      klass
+      if @reflection.is_a?(ActiveRecord::Reflection::ThroughReflection)
+        @reflection.through_reflection.class
+      else
+        @reflection.class
+      end
     end
 
     def authorize_if_defined(method)
@@ -155,14 +154,19 @@ module Avo
       authorize_if_defined "detach_#{@field.id}?"
     end
 
-    private
-
     def set_related_authorization
       @related_authorization = if related_resource
         related_resource.authorization(user: _current_user)
       else
         Services::AuthorizationService.new _current_user
       end
+    end
+
+    def has_many_reflection?
+      reflection_class.in? [
+        ActiveRecord::Reflection::HasManyReflection,
+        ActiveRecord::Reflection::HasAndBelongsToManyReflection
+      ]
     end
   end
 end
