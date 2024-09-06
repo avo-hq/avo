@@ -22,8 +22,7 @@ RSpec.feature "Breadcrumbs", type: :feature do
       expect(breadcrumbs).to have_text('Edit')
 
       # Ensure the breadcrumbs are in the correct order
-      breadcrumb_order = breadcrumbs.text
-      expect(breadcrumb_order).to match(/Dashboard.*Projects.*#{project.name}.*Edit/)
+      expect(breadcrumbs.text).to match(/Dashboard.*Projects.*#{project.name}.*Edit/)
     }
   end
 
