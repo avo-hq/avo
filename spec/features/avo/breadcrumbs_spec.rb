@@ -14,13 +14,13 @@ RSpec.feature "Breadcrumbs", type: :feature do
       visit url
 
       # Find the breadcrumbs container
-      breadcrumbs = find('.breadcrumbs')
+      breadcrumbs = find(".breadcrumbs")
 
       # Verify that the text includes all breadcrumbs
-      expect(breadcrumbs).to have_text('Home')
-      expect(breadcrumbs).to have_text('Projects')
+      expect(breadcrumbs).to have_text("Home")
+      expect(breadcrumbs).to have_text("Projects")
       expect(breadcrumbs).to have_text(project.name)
-      expect(breadcrumbs).to have_text('Edit')
+      expect(breadcrumbs).to have_text("Edit")
 
       # Ensure the breadcrumbs are in the correct order
       expect(breadcrumbs.text).to match(/Home.*Projects.*#{project.name}.*Edit/)
@@ -34,10 +34,10 @@ RSpec.feature "Breadcrumbs", type: :feature do
       visit url
 
       # Find the breadcrumbs container
-      breadcrumbs = find('.breadcrumbs')
+      breadcrumbs = find(".breadcrumbs")
 
       # Verify that the text includes all breadcrumbs
-      expect(breadcrumbs).to have_text('Home')
+      expect(breadcrumbs).to have_text("Home")
 
       # Ensure the breadcrumbs are in the correct order
       expect(breadcrumbs.text).to match(/Home/)
