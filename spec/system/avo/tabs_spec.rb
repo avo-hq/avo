@@ -41,7 +41,7 @@ RSpec.describe "Tabs", type: :system do
 
         expect(find("turbo-frame#has_and_belongs_to_many_field_show_teams")).to have_text "Teams"
         expect(find("turbo-frame#has_and_belongs_to_many_field_show_teams")).to have_link "Attach team"
-        expect(find("turbo-frame#has_and_belongs_to_many_field_show_teams")).to have_link "Create new team", href: "/admin/resources/teams/new?via_relation=users&via_relation_class=User&via_resource_id=#{user.slug}"
+        expect(find("turbo-frame#has_and_belongs_to_many_field_show_teams")).to have_link "Create new team", href: "/admin/resources/teams/new?via_relation=admin&via_relation_class=User&via_resource_id=#{user.slug}"
       end
 
       it "hides the birthday tab" do
