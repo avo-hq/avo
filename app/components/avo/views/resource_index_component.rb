@@ -62,10 +62,20 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def can_attach?
-    klass = @reflection
-    klass = @reflection.through_reflection if klass.is_a? ::ActiveRecord::Reflection::ThroughReflection
+    return false if has_reflection_and_is_read_only
 
-    @reflection.present? && klass.is_a?(::ActiveRecord::Reflection::HasManyReflection) && !has_reflection_and_is_read_only && authorize_association_for(:attach)
+    reflection_class = if @reflection.is_a?(::ActiveRecord::Reflection::ThroughReflection)
+      @reflection.through_reflection.class
+    else
+      @reflection.class
+    end
+
+    return false unless reflection_class.in? [
+      ActiveRecord::Reflection::HasManyReflection,
+      ActiveRecord::Reflection::HasAndBelongsToManyReflection
+    ]
+
+    authorize_association_for(:attach)
   end
 
   def create_path
