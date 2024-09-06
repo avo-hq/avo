@@ -8,7 +8,8 @@ RSpec.describe "Dashboards", type: :system do
     it "shows the empty screen" do
       visit "/admin/dashboards/sales"
 
-      content = page.find(".content")
+      # Ensure the content is loaded before making assertions
+      content = page.find(".content", wait: 5)
       expect(content).to have_text "Sales"
       expect(content).to have_text "Tiny dashboard description"
       expect(content).to have_text "No cards present"
@@ -19,21 +20,19 @@ RSpec.describe "Dashboards", type: :system do
   end
 
   describe "dashboard with cards" do
-    let(:card) { page.find("turbo-frame[id='#{full_card_id}']") }
+    let(:card) { page.find("turbo-frame[id='#{full_card_id}']", wait: 5) }
     let(:wait_for_card) { wait_for_turbo_frame_id full_card_id }
 
     subject do
       visit "/admin/dashboards/dashy"
-
       wait_for_card
-
       card
     end
 
     it "shows the dashboard info" do
       visit "/admin/dashboards/dashy"
 
-      content = page.find(".content")
+      content = page.find(".content", wait: 5)
       expect(content).to have_text "Dashy"
       expect(content).to have_text "The first dashbaord"
       expect(content).not_to have_text "No cards present"
@@ -49,7 +48,7 @@ RSpec.describe "Dashboards", type: :system do
       let(:index) { 0 }
       let(:card_id) { "users_metric" }
 
-      let(:card) { page.find("turbo-frame[id='#{full_card_id}'][data-card-index='#{index}']") }
+      let(:card) { page.find("turbo-frame[id='#{full_card_id}'][data-card-index='#{index}']", wait: 5) }
 
       it do
         is_expected.to have_text "Users count"
@@ -73,7 +72,7 @@ RSpec.describe "Dashboards", type: :system do
       let(:index) { 3 }
       let(:card_id) { "users_metric" }
 
-      let(:card) { page.find("turbo-frame[id='#{full_card_id}'][data-card-index='#{index}']") }
+      let(:card) { page.find("turbo-frame[id='#{full_card_id}'][data-card-index='#{index}']", wait: 5) }
 
       it do
         is_expected.to have_text "Active users metric"
@@ -179,10 +178,10 @@ RSpec.describe "Dashboards", type: :system do
   describe "card options" do
     let(:url) { "/admin/dashboards/dashy" }
 
-    subject {
+    subject do
       visit url
       page
-    }
+    end
 
     it { is_expected.to have_text "Users count" }
     it { is_expected.to have_text "Active users metric" }
@@ -191,10 +190,10 @@ end
 
 RSpec.describe "Dashboards", type: :feature do
   describe "dashboards visibility" do
-    subject {
+    subject do
       visit url
       page
-    }
+    end
 
     describe "visible dashboard" do
       let(:url) { "/admin/dashboards/dashy" }
@@ -219,5 +218,5 @@ def description_tooltip_has_text(text = "")
 
   card.find("[data-target='card-description']").hover
 
-  expect(page.find(".tippy-content[data-state='visible']")).to have_text text
+  expect(page.find(".tippy-content[data-state='visible']", wait: 5)).to have_text text
 end
