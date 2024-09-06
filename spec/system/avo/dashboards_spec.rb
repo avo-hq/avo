@@ -177,12 +177,15 @@ RSpec.describe "Dashboards", type: :system do
   end
 
   describe "card options" do
-    it do
-      visit "/admin/dashboards/dashy"
+    let(:url) { "/admin/dashboards/dashy" }
 
-      expect(page).to have_text "Users count"
-      expect(page).to have_text "Active users metric"
-    end
+    subject {
+      visit url
+      page
+    }
+
+    it { is_expected.to have_text "Users count" }
+    it { is_expected.to have_text "Active users metric" }
   end
 end
 
