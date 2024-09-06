@@ -53,7 +53,7 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
@@ -62,7 +62,7 @@ jobs:
         bundler: default
         ruby-version: ${{ matrix.ruby }}
 
-    - uses: actions/cache@v3
+    - uses: actions/cache@v4
       with:
         path: vendor/bundle
         key: ${{ runner.os }}-test-gems-${{ hashFiles('**/Gemfile.lock') }}
@@ -80,7 +80,7 @@ jobs:
       id: test-yarn-cache-dir-path
       run: echo "name=dir::$(yarn cache dir)" >> $GITHUB_OUTPUT
 
-    - uses: actions/cache@v3
+    - uses: actions/cache@v4
       id: test-yarn-cache
       with:
         path: ${{ steps.test-yarn-cache-dir-path.outputs.dir }}
@@ -109,12 +109,12 @@ jobs:
       id: run_tests
       run: bundle exec rspec spec/features
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: coverage_features_${{ matrix.rails }}_ruby_${{ matrix.ruby }}
         path: coverage/.resultset.json
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       if: always() && steps.run_tests.outcome == 'failure'
       with:
         name: rspec_failed_screenshots_rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}
