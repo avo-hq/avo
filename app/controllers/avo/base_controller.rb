@@ -91,7 +91,17 @@ module Avo
         add_breadcrumb via_resource.record_title, resource_path(record: via_record, resource: via_resource)
       end
 
-      add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
+      # Approach 1 not clickable breadcrumb
+      add_breadcrumb @resource.plural_name.humanize
+
+      # Appoarch 2 keep clickable breadcrumb and include via params when present.
+      add_breadcrumb @resource.plural_name.humanize, resources_path(
+        resource: @resource,
+        **{
+          via_resource_class: params[:via_resource_class],
+          via_record_id: params[:via_record_id]
+        }.compact
+      )
 
       add_breadcrumb @resource.record_title
       add_breadcrumb I18n.t("avo.details").upcase_first
