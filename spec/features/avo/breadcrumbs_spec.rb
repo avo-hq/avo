@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.feature "Breadcrumbs", type: :feature do
-  let!(:project) { create :project }
+  let!(:project) { create :project, users: [admin] }
   let!(:url) { "/admin/resources/projects/#{project.id}/edit" }
 
   before do
@@ -77,6 +77,53 @@ RSpec.feature "Breadcrumbs", type: :feature do
       it "does not display a back button" do
         expect(page).to_not have_selector "div[data-target='panel-tools'] a", text: "Go back"
       end
+    end
+  end
+
+  describe "on associations" do
+    it "show" do
+      url = avo.resources_project_path(project, via_record_id: admin, via_resource_class: Avo::Resources::User)
+      visit url
+
+      breadcrumbs = find(".breadcrumbs")
+      expect(breadcrumbs).to have_link "Home"
+      expect(breadcrumbs).to have_link "Users"
+      expect(breadcrumbs).to have_link admin.name
+      expect(breadcrumbs).to_not have_link "Projects"
+      expect(breadcrumbs).to have_text "Projects"
+      expect(breadcrumbs).to_not have_link project.name
+      expect(breadcrumbs).to have_text project.name
+      expect(breadcrumbs).to_not have_link "Details"
+      expect(breadcrumbs).to have_text "Details"
+    end
+
+    it "edit" do
+      url = avo.edit_resources_project_path(project, via_record_id: admin, via_resource_class: Avo::Resources::User)
+      visit url
+
+      breadcrumbs = find(".breadcrumbs")
+      expect(breadcrumbs).to have_link "Home"
+      expect(breadcrumbs).to have_link "Users"
+      expect(breadcrumbs).to have_link admin.name
+      expect(breadcrumbs).to_not have_link "Projects"
+      expect(breadcrumbs).to have_text "Projects"
+      expect(breadcrumbs).to have_link project.name
+      expect(breadcrumbs).to_not have_link "Edit"
+      expect(breadcrumbs).to have_text "Edit"
+    end
+
+    it "new" do
+      url = avo.new_resources_project_path(via_record_id: admin, via_resource_class: Avo::Resources::User, via_relation: :users, via_relation_class: "User")
+      visit url
+
+      breadcrumbs = find(".breadcrumbs")
+      expect(breadcrumbs).to have_link "Home"
+      expect(breadcrumbs).to have_link "Users"
+      expect(breadcrumbs).to have_link admin.name
+      expect(breadcrumbs).to_not have_link "Projects"
+      expect(breadcrumbs).to have_text "Projects"
+      expect(breadcrumbs).to_not have_link "New"
+      expect(breadcrumbs).to have_text "New"
     end
   end
 end
