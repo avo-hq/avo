@@ -123,9 +123,12 @@ module Avo
 
         add_breadcrumb via_resource.plural_name, resources_path(resource: via_resource)
         add_breadcrumb via_resource.record_title, resource_path(record: via_record, resource: via_resource)
+
+        add_breadcrumb @resource.plural_name.humanize
+      else
+        add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
       end
 
-      add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
       add_breadcrumb t("avo.new").humanize
 
       set_component_for __method__, fallback_view: :edit
@@ -443,6 +446,7 @@ module Avo
           via_resource_class: params[:via_resource_class],
           via_record_id: params[:via_record_id]
         }
+        add_breadcrumb @resource.plural_name.humanize
       else
         add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
       end
