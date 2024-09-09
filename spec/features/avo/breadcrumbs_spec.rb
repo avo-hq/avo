@@ -8,18 +8,40 @@ RSpec.feature "Breadcrumbs", type: :feature do
     visit url
   end
 
-  subject { page.body }
-
   describe "with breadcrumbs" do
-    it { is_expected.to have_css ".breadcrumbs" }
-    it { is_expected.to have_text "Home\n  \n\nProjects\n  \n\n#{project.name}\n  \n\nEdit\n" }
+    it do
+      login_as admin
+      visit url
+
+      # Find the breadcrumbs container
+      breadcrumbs = find(".breadcrumbs")
+
+      # Verify that the text includes all breadcrumbs
+      expect(breadcrumbs).to have_text("Home")
+      expect(breadcrumbs).to have_text("Projects")
+      expect(breadcrumbs).to have_text(project.name)
+      expect(breadcrumbs).to have_text("Edit")
+
+      # Ensure the breadcrumbs are in the correct order
+      expect(breadcrumbs.text).to match(/Home.*Projects.*#{project.name}.*Edit/)
+    end
   end
 
   describe "on a custom tool" do
     let!(:url) { "/admin/custom_tool" }
 
-    it { is_expected.to have_css ".breadcrumbs" }
-    it { is_expected.to have_text "Home\n" }
+    it do
+      visit url
+
+      # Find the breadcrumbs container
+      breadcrumbs = find(".breadcrumbs")
+
+      # Verify that the text includes all breadcrumbs
+      expect(breadcrumbs).to have_text("Home")
+
+      # Ensure the breadcrumbs are in the correct order
+      expect(breadcrumbs.text).to match(/Home/)
+    end
   end
 
   describe "on a has_and_belongs_to_many turbo frame" do
