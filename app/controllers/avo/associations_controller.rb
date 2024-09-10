@@ -126,16 +126,7 @@ module Avo
     end
 
     def set_reflection_field
-      @field = if params[:turbo_frame] && params[:turbo_frame].starts_with?("has_")
-        type = params[:turbo_frame][/.*(?=_field)/]
-
-        @resource.get_field_definitions.find do |field|
-          (field.id == @related_resource_name.to_sym) && (field.type == type)
-        end
-      else
-        field = @resource.get_field @related_resource_name.to_sym
-      end
-
+      @field = find_association_field(resource: @resource, association: @related_resource_name.to_sym)
       @field.hydrate(resource: @resource, record: @record, view: Avo::ViewInquirer.new(:new))
     rescue
     end
