@@ -84,12 +84,16 @@ module Avo
       Avo.resource_manager.get_resource_by_controller_name @resource_name
     end
 
+    def association_from_params
+      params[:for_attribute] || params[:related_name]
+    end
+
     def related_resource
-      field = find_association_field(resource: @resource, association: params[:related_name])
+      reflection = @record.class.reflect_on_association(association_from_params)
+
+      field = find_association_field(resource: @resource, association: association_from_params, type: reflection.macro)
 
       return field.use_resource if field&.use_resource.present?
-
-      reflection = @record.class.reflect_on_association(field&.for_attribute || params[:related_name])
 
       reflected_model = reflection.klass
 

@@ -6,9 +6,9 @@ module Avo
     before_action :set_related_resource_name
     before_action :set_related_resource, only: [:show, :index, :new, :create, :destroy]
     before_action :set_related_authorization
+    before_action :set_reflection
     before_action :set_reflection_field
     before_action :set_related_record, only: [:show]
-    before_action :set_reflection
     before_action :set_attachment_class, only: [:show, :index, :new, :create, :destroy]
     before_action :set_attachment_resource, only: [:show, :index, :new, :create, :destroy]
     before_action :set_attachment_record, only: [:create, :destroy]
@@ -126,7 +126,7 @@ module Avo
     end
 
     def set_reflection_field
-      @field = find_association_field(resource: @resource, association: @related_resource_name.to_sym)
+      @field = find_association_field(resource: @resource, association: @related_resource_name.to_sym, type: @reflection.macro)
       @field.hydrate(resource: @resource, record: @record, view: Avo::ViewInquirer.new(:new))
     rescue
     end
@@ -169,10 +169,6 @@ module Avo
       else
         Services::AuthorizationService.new _current_user
       end
-    end
-
-    def association_from_params
-      @field&.for_attribute || params[:related_name]
     end
 
     def source_foreign_key
