@@ -6,7 +6,7 @@ module Avo
           type = params[:turbo_frame][/.*(?=_field)/]
 
           resource.get_field_definitions.find do |field|
-            (field.id == association) && (field.type == type)
+            (field.id == association.to_sym) && (field.type == type)
           end
         else
           resource.get_field association
