@@ -12,6 +12,10 @@ class Avo::Resources::Store < Avo::BaseResource
       field :location, as: :has_one
     end
 
+    field :patrons, as: :tags do#, hide_on: [:show, :forms] do
+      record.patrons.map(&:name)
+    end
+
     field :patrons,
       as: :has_many,
       through: :patronships,
