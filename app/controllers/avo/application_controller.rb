@@ -11,6 +11,7 @@ module Avo
     include Avo::ApplicationHelper
     include Avo::UrlHelpers
     include Avo::Concerns::Breadcrumbs
+    include Avo::Concerns::FindAssociationField
 
     protect_from_forgery with: :exception
     around_action :set_avo_locale
@@ -84,8 +85,7 @@ module Avo
     end
 
     def related_resource
-      # Find the field from the parent resource
-      field = @resource.get_field params[:related_name]
+      field = find_association_field(resource: @resource, association: params[:related_name])
 
       return field.use_resource if field&.use_resource.present?
 
