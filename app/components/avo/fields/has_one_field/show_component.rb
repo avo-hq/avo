@@ -36,7 +36,7 @@ class Avo::Fields::HasOneField::ShowComponent < Avo::Fields::ShowComponent
   end
 
   def create_path
-    association_id = @field.resource.model_class._reflections[@field.id.to_s].inverse_of.name
+    association_id = @field.resource.model_class.reflect_on_association(@field.id).inverse_of.name
 
     args = {
       via_relation: association_id,

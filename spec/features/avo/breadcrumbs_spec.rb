@@ -11,8 +11,19 @@ RSpec.feature "Breadcrumbs", type: :feature do
   subject { page.body }
 
   describe "with breadcrumbs" do
-    it { is_expected.to have_css ".breadcrumbs" }
-    it { is_expected.to have_text "Dashboard\n  \n\nProjects\n  \n\n#{project.name}\n  \n\nEdit\n" }
+    it {
+      # Find the breadcrumbs container
+      breadcrumbs = find('.breadcrumbs')
+
+      # Verify that the text includes all breadcrumbs
+      expect(breadcrumbs).to have_text('Dashboard')
+      expect(breadcrumbs).to have_text('Projects')
+      expect(breadcrumbs).to have_text(project.name)
+      expect(breadcrumbs).to have_text('Edit')
+
+      # Ensure the breadcrumbs are in the correct order
+      expect(breadcrumbs.text).to match(/Dashboard.*Projects.*#{project.name}.*Edit/)
+    }
   end
 
   describe "on a custom tool" do

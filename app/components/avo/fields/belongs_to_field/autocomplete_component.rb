@@ -41,7 +41,7 @@ class Avo::Fields::BelongsToField::AutocompleteComponent < ViewComponent::Base
   end
 
   def reflection_class
-    has_polymorphic_association? ? polymorphic_class : @resource.model_class._reflections[@field.id.to_s].klass
+    has_polymorphic_association? ? polymorphic_class : @resource.model_class.reflect_on_association(@field.id).klass
   end
 
   private

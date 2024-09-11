@@ -77,7 +77,11 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   end
 
   def is_has_many_association?
-    @reflection.is_a?(::ActiveRecord::Reflection::HasManyReflection) || @reflection.is_a?(::ActiveRecord::Reflection::ThroughReflection)
+    @reflection.class.in? [
+      ActiveRecord::Reflection::HasManyReflection,
+      ActiveRecord::Reflection::HasAndBelongsToManyReflection,
+      ActiveRecord::Reflection::ThroughReflection
+    ]
   end
 
   def referrer_path
