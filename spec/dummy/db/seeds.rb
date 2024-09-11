@@ -168,10 +168,10 @@ puts "Creating posts"
   begin
     width = [1000, 1100, 1200, 1300].sample
     height = [1000, 1100, 1200, 1300].sample
-    url = "https://source.unsplash.com/random/#{width}x#{height}/?all"
+    url = "https://picsum.photos/#{width}/#{height}"
     io = URI.open(url) # standard:disable Security/Open
   rescue
-    puts "Failed to fetch cover photo from Unsplash"
+    puts "Failed to fetch cover photo from Picsum"
   end
   post.cover_photo.attach(io: io, filename: "cover.jpg") if io
 

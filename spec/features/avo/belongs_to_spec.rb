@@ -19,6 +19,19 @@ RSpec.feature "belongs_to", type: :feature do
       let!(:post) { create :post, user: admin }
 
       it { is_expected.to have_text admin.name }
+      it { is_expected.to have_link admin.name, href: "/admin/resources/users/#{admin.slug}" }
+    end
+
+    describe "with a related user with link to record enabled" do
+      let!(:user) { create :user, first_name: "Alicia" }
+      let!(:comment) { create :comment, body: "a comment", user: user }
+
+      subject do
+        visit "/admin/resources/comments"
+        find("[data-resource-id='#{comment.to_param}'] [data-field-id='user']")
+      end
+
+      it { is_expected.to have_link user.name, href: "/admin/resources/comments/#{comment.id}" }
     end
 
     describe "without a related user" do
@@ -103,7 +116,7 @@ RSpec.feature "belongs_to", type: :feature do
   end
 
   context "new" do
-    let(:url) { "/admin/resources/posts/new?via_relation=user&via_record_id=#{admin.id}&via_relation_class=User" }
+    let(:url) { "/admin/resources/posts/new?via_relation=user&via_record_id=#{admin.to_param}&via_relation_class=User" }
 
     it { is_expected.to have_select "post_user_id", selected: admin.name, options: [empty_dash, admin.name], disabled: true }
 
@@ -113,7 +126,7 @@ RSpec.feature "belongs_to", type: :feature do
       it "saves the related comment" do
         expect(Course::Link.count).to be 0
 
-        visit "/admin/resources/course_links/new?via_relation=course&via_record_id=#{course.id}&via_relation_class=Course"
+        visit "/admin/resources/course_links/new?via_relation=course&via_record_id=#{course.to_param}&via_relation_class=Course"
 
         fill_in "course_link_link", with: "https://avo.cool"
 
@@ -141,7 +154,8 @@ RSpec.feature "belongs_to", type: :feature do
       expect(find("thead")).not_to have_text "User"
       expect(page).to have_text comment.id
       expect(page).to have_text "a comment"
-      expect(page).not_to have_text user.name
+      # breadcrumb contains the user's name
+      expect(page).to have_text user.name, count: 1
     end
   end
 
@@ -160,7 +174,8 @@ RSpec.feature "belongs_to", type: :feature do
       expect(page).to have_text comment.id
       expect(page).to have_text "a comment"
       expect(page).to have_text user.name
-      expect(page).not_to have_text project.name
+      # breadcrumb contains the project's name
+      expect(page).to have_text project.name, count: 1
     end
   end
 
@@ -179,7 +194,8 @@ RSpec.feature "belongs_to", type: :feature do
       expect(page).to have_text review.id
       expect(page).to have_text "a review"
       expect(page).to have_text user.name
-      expect(page).not_to have_text team.name
+      # breadcrumb contains the team's name
+      expect(page).to have_text team.name, count: 1
     end
   end
 end

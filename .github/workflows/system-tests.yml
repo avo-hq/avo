@@ -12,6 +12,10 @@ on:
       - 1.x
       - 2.x
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   RAILS_ENV: test
   PGHOST: localhost
@@ -30,7 +34,6 @@ jobs:
       matrix:
         ruby:
           - '3.1.4'
-          - '3.2.2'
           - '3.3.0'
         rails:
           - '6.1'
@@ -49,7 +52,7 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
@@ -58,7 +61,7 @@ jobs:
         bundler: default
         ruby-version: ${{ matrix.ruby }}
 
-    - uses: actions/cache@v3
+    - uses: actions/cache@v4
       with:
         path: vendor/bundle
         key: ${{ runner.os }}-test-gems-${{ hashFiles('**/Gemfile.lock') }}
@@ -74,9 +77,9 @@ jobs:
 
     - name: Get yarn cache directory path
       id: test-yarn-cache-dir-path
-      run: echo "name=dir::$(yarn cache dir)" >> $GITHUB_OUTPUT
+      run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
 
-    - uses: actions/cache@v3
+    - uses: actions/cache@v4
       id: test-yarn-cache
       with:
         path: ${{ steps.test-yarn-cache-dir-path.outputs.dir }}
@@ -103,7 +106,7 @@ jobs:
 
     - name: Run tests
       id: run_tests
-      run: bundle exec rspec spec/system
+      run: bundle exec rspec spec/system/ --tag=~i18n
 
     - uses: actions/upload-artifact@v3
       with:

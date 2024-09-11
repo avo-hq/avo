@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::Fields::ShowComponent < ViewComponent::Base
+class Avo::Fields::ShowComponent < Avo::BaseComponent
   include Avo::ResourcesHelper
 
   attr_reader :compact

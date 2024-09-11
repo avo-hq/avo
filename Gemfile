@@ -42,7 +42,7 @@ gem 'redis', '~> 5.0'
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", ">= 1.4.2", require: false
 # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
+gem "debug", platforms: [:mri, :mingw, :x64_mingw]
 gem "dotenv-rails"
 # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
 gem "web-console", ">= 3.3.0"
@@ -103,7 +103,7 @@ group :test do
   gem "database_cleaner-active_record"
 end
 
-gem "awesome_print"
+gem "amazing_print"
 
 group :development, :test do
   gem "faker", require: false
@@ -121,8 +121,6 @@ end
 
 gem "zeitwerk"
 
-gem "httparty"
-
 gem "iso"
 
 gem "active_link_to"
@@ -132,10 +130,7 @@ gem "addressable"
 gem 'meta-tags'
 
 # Search
-# gem "ransack", "~> 4.1", ">= 4.1.1"
-
-# Temporary use of fork to add Rails 8 support
-gem "ransack", github: "avo-hq/ransack", branch: "fix/rails-8/delegate-alias-tracker-to-relation"
+gem "ransack", ">= 4.2.0"
 
 gem 'friendly_id', '~> 5.5.1'
 
@@ -177,6 +172,8 @@ gem "mapkick-rb", "~> 0.1.4"
 
 gem "pluggy", path: "./pluggy"
 
+gem "hashid-rails", "~> 1.4", ">= 1.4.1"
+
 # Avo money field
 # gem "avo-money_field", path: "./../avo-money_field"
 gem "money-rails", "~> 1.12"
@@ -188,3 +185,5 @@ gem "avo-record_link_field"
 
 # gem "pagy", "< 8.0.0"
 gem "pagy", "> 8"
+
+gem "csv"

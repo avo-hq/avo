@@ -1,39 +1,35 @@
 # frozen_string_literal: true
 
-class Avo::Fields::Common::Files::ViewType::GridItemComponent < ViewComponent::Base
-  attr_reader :field, :resource
-
-  def initialize(field:, resource:, file: nil, extra_classes: nil)
-    @file = file
-    @field = field
-    @resource = resource
-    @extra_classes = extra_classes
-  end
+class Avo::Fields::Common::Files::ViewType::GridItemComponent < Avo::BaseComponent
+  prop :field, Avo::Fields::BaseField
+  prop :resource, Avo::BaseResource
+  prop :file, _Nilable(_Any)
+  prop :extra_classes, _Nilable(String)
 
   def id
-    field.id
+    @field.id
   end
 
   def file
-    @file || field.value.attachment
+    @file || @field.value.attachment
   rescue
     nil
   end
 
   def is_image?
-    file.image? || field.is_image
+    file.image? || @field.is_image
   rescue
     false
   end
 
   def is_audio?
-    file.audio? || field.is_audio
+    file.audio? || @field.is_audio
   rescue
     false
   end
 
   def is_video?
-    file.video? || field.is_video
+    file.video? || @field.is_video
   rescue
     false
   end

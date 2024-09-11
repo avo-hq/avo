@@ -1,32 +1,28 @@
 # frozen_string_literal: true
 
-class Avo::Sidebar::BaseItemComponent < ViewComponent::Base
-  attr_reader :item
+class Avo::Sidebar::BaseItemComponent < Avo::BaseComponent
+  delegate :collapsable, :collapsed, to: :@item
 
-  def initialize(item: nil)
-    @item = item
+  # Object = Avo::Menu::BaseItem || ViewComponent::Base
+  prop :item, _Nilable(Object), reader: :public
+  prop :locals, _Nilable(Hash), default: {}.freeze
+
+  def after_initialize
+    @items = @item.items.select(&:visible?)
   end
 
-  def items
-    item.items
+  def render?
+    @items.any?
   end
 
   def key
-    result = "avo.#{request.host}.main_menu.#{item.name.to_s.underscore}"
+    result = "avo.#{request.host}.main_menu.#{@item.name.to_s.underscore}"
 
-    if item.icon.present?
-      result += ".#{item.icon.parameterize.underscore}"
+    if @item.icon.present?
+      result += ".#{@item.icon.parameterize.underscore}"
     end
 
     result
-  end
-
-  def collapsable
-    item.collapsable
-  end
-
-  def collapsed
-    item.collapsed
   end
 
   def section_collapse_data_animation

@@ -10,21 +10,20 @@ gem "pg", ">= 0.18", "< 2.0"
 gem "puma", "~> 6.4"
 gem "redis", "~> 5.0"
 gem "bootsnap", ">= 1.4.2", require: false
-gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
+gem "debug", platforms: [:mri, :mingw, :x64_mingw]
 gem "dotenv-rails"
 gem "web-console", ">= 3.3.0"
 gem "listen", ">= 3.5.1"
 gem "spring"
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "devise"
-gem "awesome_print"
+gem "amazing_print"
 gem "zeitwerk"
-gem "httparty"
 gem "iso"
 gem "active_link_to"
 gem "addressable"
 gem "meta-tags"
-gem "ransack", branch: "fix/rails-8/delegate-alias-tracker-to-relation", git: "https://github.com/avo-hq/ransack.git"
+gem "ransack", ">= 4.2.0"
 gem "friendly_id", "~> 5.5.1"
 gem "aws-sdk-s3", require: false
 gem "net-smtp", require: false
@@ -41,10 +40,12 @@ gem "image_processing", "~> 1.12"
 gem "prefixed_ids"
 gem "mapkick-rb", "~> 0.1.4"
 gem "pluggy", path: "../pluggy"
+gem "hashid-rails", "~> 1.4", ">= 1.4.1"
 gem "money-rails", "~> 1.12"
 gem "avo-money_field"
 gem "avo-record_link_field"
 gem "pagy", "> 8"
+gem "csv"
 gem "psych", "< 4"
 
 group :development do
@@ -58,6 +59,7 @@ group :development do
   gem "ripper-tags"
   gem "rubocop-shopify", require: false
   gem "rubycritic", require: false
+  gem "actual_db_schema"
 end
 
 group :test do

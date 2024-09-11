@@ -8,6 +8,10 @@ on:
     branches:
       - main
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   tailwindcss_integration_test:
     runs-on: ubuntu-latest
@@ -17,7 +21,7 @@ jobs:
       with:
         repository: avo-hq/avo_tailwindcss_test_repo
 
-    - uses: actions/cache@v3
+    - uses: actions/cache@v4
       with:
         path: vendor/bundle
         key: ${{ runner.os }}-test-gems-${{ hashFiles('**/Gemfile.lock') }}

@@ -3,7 +3,9 @@ en:
   avo:
     action_ran_successfully: Action ran successfully!
     actions: Actions
+    add_filter: Add filter
     and_x_other_resources: and %{count} other resources
+    applied: applied
     are_you_sure: Are you sure?
     are_you_sure_detach_item: Are you sure you want to detach this %{item}.
     are_you_sure_you_want_to_run_this_option: Are you sure you want to run this action?
@@ -13,6 +15,7 @@ en:
     attachment_class_attached: "%{attachment_class} attached."
     attachment_class_detached: "%{attachment_class} detached."
     attachment_destroyed: Attachment destroyed
+    attachment_failed: Failed to attach %{attachment_class}
     cancel: Cancel
     choose_a_country: Choose a country
     choose_an_option: Choose an option
@@ -39,6 +42,9 @@ en:
     failed: Failed
     failed_to_find_attachment: Failed to find attachment
     failed_to_load: Failed to load
+    file:
+      one: file
+      other: files
     filter_by: Filter by
     filters: Filters
     go_back: Go back
@@ -76,6 +82,7 @@ en:
     prev_page: Previous page
     records_selected_from_all_pages_html: All records selected from all pages
     remove_selection: Remove selection
+    reset: reset
     reset_filters: Reset filters
     resource_created: Record created
     resource_destroyed: Record destroyed

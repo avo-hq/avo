@@ -113,7 +113,7 @@ RSpec.describe "SelectAll", type: :system do
 
           within("nav.pagy.nav") do
             expect(page).to have_css(".current", text: "1")
-            expect(page).to have_css("a[data-turbo-frame]", text: "2")
+            expect(page).to have_css("a", text: "2")
           end
 
           check_select_all

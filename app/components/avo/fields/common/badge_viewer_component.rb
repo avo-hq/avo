@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
-class Avo::Fields::Common::BadgeViewerComponent < ViewComponent::Base
-  def initialize(value:, options:)
-    @value = value
-    @options = options
+class Avo::Fields::Common::BadgeViewerComponent < Avo::BaseComponent
+  prop :value, _Union(_String, _Symbol)
+  prop :options, Hash
+
+  def after_initialize
     @backgrounds = {
       info: "bg-blue-500",
       success: "bg-green-500",

@@ -1,0 +1,121 @@
+---
+ru:
+  avo:
+    resource_translations:
+      product:
+        save: "Сохранить продукт!"
+    action_ran_successfully: Действие успешно выполнено!
+    actions: Действия
+    and_x_other_resources: и %{count} других ресурсов
+    applied: применено
+    are_you_sure: Вы уверены?
+    are_you_sure_detach_item: Вы уверены, что хотите отсоединить этот %{item}?
+    are_you_sure_you_want_to_run_this_option: Вы уверены, что хотите выполнить это действие?
+    attach: Прикрепить
+    attach_and_attach_another: Прикрепить и прикрепить ещё один
+    attach_item: Прикрепить %{item}
+    attachment_class_attached: "%{attachment_class} прикреплено."
+    attachment_class_detached: "%{attachment_class} отсоединено."
+    attachment_failed: "Не удалось прикрепить %{attachment_class}"
+    attachment_destroyed: Вложение удалено
+    cancel: Отмена
+    choose_a_country: Выберите страну
+    choose_an_option: Выберите опцию
+    choose_item: Выбрать %{item}
+    clear_value: Очистить значение
+    click_to_reveal_filters: Нажмите, чтобы открыть фильтры
+    close_modal: Закрыть модальное окно
+    confirm: Подтвердить
+    create_new_item: Создать новый %{item}
+    dashboard: Панель управления
+    dashboards: Панели управления
+    default_scope: Все
+    delete: удалить
+    delete_file: Удалить файл
+    delete_item: Удалить %{item}
+    detach_item: Отсоединить %{item}
+    details: Детали
+    download: Скачать
+    download_file: Скачать файл
+    download_item: Скачать %{item}
+    edit: редактировать
+    edit_item: редактировать %{item}
+    empty_dashboard_message: Добавьте карточки на эту панель управления
+    failed: Ошибка
+    failed_to_find_attachment: Вложение не найдено
+    failed_to_load: Загрузка не удалась
+    file:
+      one: файл
+      other: файлы
+    filter_by: Фильтровать по
+    filters: Фильтры
+    go_back: Назад
+    grid_view: Сетка
+    hide_content: Скрыть содержимое
+    home: Главная
+    key_value_field:
+      add_row: Добавить строку
+      delete_row: Удалить строку
+      key: Ключ
+      value: Значение
+    list_is_empty: Список пуст
+    loading: Загрузка...
+    more: Ещё
+    new: новый
+    next_page: Следующая страница
+    no_cancel: Нет, отмена
+    no_cards_present: Нет карточек
+    no_item_found: Запись не найдена
+    no_options_available: Опции недоступны
+    no_related_item_found: Связанная запись не найдена
+    not_authorized: У вас нет прав для выполнения этого действия.
+    number_of_items:
+      one: один %{item}
+      other: "%{count} %{item}"
+      zero: нет %{item}
+    oops_nothing_found: Ой! Ничего не найдено...
+    order:
+      higher: Переместить запись вверх
+      lower: Переместить запись вниз
+      reorder_record: Переупорядочить запись
+      to_bottom: Переместить запись в конец
+      to_top: Переместить запись в начало
+    per_page: На странице
+    prev_page: Предыдущая страница
+    records_selected_from_all_pages_html: Все записи выбраны со всех страниц
+    remove_selection: Убрать выбор
+    reset_filters: Сбросить фильтры
+    reset: сбросить
+    resource_created: Запись создана
+    resource_destroyed: Запись удалена
+    resource_updated: Запись обновлена
+    resources: Ресурсы
+    run: Запустить
+    save: Сохранить
+    search:
+      cancel_button: Отмена
+      placeholder: Поиск
+    select_all: Выбрать все
+    select_all_matching: Выбрать все совпадающие
+    select_item: Выбрать элемент
+    show_content: Показать содержимое
+    sign_out: Выйти
+    switch_to_view: Переключиться на вид %{view_type}
+    table_view: Таблица
+    tools: Инструменты
+    type_to_search: Поиск...
+    unauthorized: Не авторизован
+    undo: Отменить
+    view: Просмотр
+    view_item: Просмотр %{item}
+    was_successfully_created: успешно создана
+    was_successfully_updated: успешно обновлена
+    x_items_more:
+      one: ещё один элемент
+      other: "%{count} других элементов"
+      zero: нет других элементов
+    x_records_selected_from_a_total_of_x_html: Выбрано <span class="font-bold text-gray-700">%{selected}</span> записей на этой странице из общего количества <span class="font-bold text-gray-700">%{count}</span>
+    x_records_selected_from_all_pages_html: Выбрано <span class="font-bold text-gray-700">%{count}</span> записей со всех страниц
+    x_records_selected_from_page_html: Выбрано <span class="font-bold text-gray-700">%{selected}</span> записей на этой странице
+    yes_confirm: Да, уверен
+    you_missed_something_check_form: Возможно, вы что-то упустили. Пожалуйста, проверьте форму.

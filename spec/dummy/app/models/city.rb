@@ -18,6 +18,11 @@
 #  city_center_area :json
 #
 class City < ApplicationRecord
+  # https://github.com/jcypret/hashid-rails/issues/86
+  if Gem::Version.new(Rails.version) < Gem::Version.new("8.0.0")
+    include Hashid::Rails
+  end
+
   if Gem::Version.new(Rails.version) >= Gem::Version.new("7.3.0")
     enum :status, {Open: "open", Closed: "closed", Quarantine: "On Quarantine"}
   else

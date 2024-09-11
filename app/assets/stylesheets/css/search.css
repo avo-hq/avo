@@ -11,7 +11,7 @@
     @apply text-gray-500 cursor-pointer;
 
     .aa-DetachedSearchButtonPlaceholder {
-      @apply hidden sm:block;
+      @apply max-sm:hidden;
     }
   }
 }

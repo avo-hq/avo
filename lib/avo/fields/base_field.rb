@@ -242,11 +242,11 @@ module Avo
       end
 
       def record_errors
-        record.nil? ? {} : record.errors
+        record.present? ? record.errors : {}
       end
 
       def type
-        self.class.name.demodulize.to_s.underscore.gsub("_field", "")
+        @type ||= self.class.name.demodulize.to_s.underscore.gsub("_field", "")
       end
 
       def custom?
@@ -313,7 +313,7 @@ module Avo
       def get_resource_by_model_class(model_class)
         resource = Avo.resource_manager.get_resource_by_model_class(model_class)
 
-        resource || (raise Avo::MissingResourceError.new(model_class))
+        resource || (raise Avo::MissingResourceError.new(model_class, id))
       end
     end
   end

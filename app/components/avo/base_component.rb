@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Avo::BaseComponent < ViewComponent::Base
+  extend Literal::Properties
   include Turbo::FramesHelper
 
   def has_with_trial(ability)
@@ -56,12 +57,14 @@ class Avo::BaseComponent < ViewComponent::Base
   end
 
   def link_to_child_resource_is_enabled?
-    return field_linked_to_child_resource? if @parent_resource
+    enabled = field_linked_to_child_resource? if @parent_resource
+    return enabled unless enabled.nil?
 
     @resource.link_to_child_resource
   end
 
   def field_linked_to_child_resource?
-    field.present? && field.respond_to?(:link_to_child_resource) && field.link_to_child_resource
+    resolved_field = @reflection ? @parent_resource.get_field(params[:for_attribute] || @reflection.name) : field
+    resolved_field.link_to_child_resource if resolved_field.respond_to?(:link_to_child_resource)
   end
 end

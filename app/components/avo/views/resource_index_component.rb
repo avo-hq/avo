@@ -4,40 +4,25 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   include Avo::ResourcesHelper
   include Avo::ApplicationHelper
 
-  attr_reader :scopes, :query, :turbo_frame, :parent_record, :parent_resource, :resource, :actions
-
-  def initialize(
-    resource: nil,
-    resources: nil,
-    records: [],
-    pagy: nil,
-    index_params: {},
-    filters: [],
-    actions: [],
-    reflection: nil,
-    turbo_frame: "",
-    parent_record: nil,
-    parent_resource: nil,
-    applied_filters: [],
-    query: nil,
-    scopes: nil
-  )
-    @resource = resource
-    @resources = resources
-    @records = records
-    @pagy = pagy
-    @index_params = index_params
-    @filters = filters
-    @actions = actions
-    @reflection = reflection
-    @turbo_frame = turbo_frame
-    @parent_record = parent_record
-    @parent_resource = parent_resource
-    @applied_filters = applied_filters
-    @view = Avo::ViewInquirer.new("index")
-    @query = query
-    @scopes = scopes
-  end
+  prop :resource, _Nilable(Avo::BaseResource)
+  prop :resources, _Nilable(_Array(Avo::BaseResource))
+  # This is sometimes an array of records or an ActiveRecord::Relation
+  prop :records, Enumerable, default: [].freeze
+  prop :pagy, _Nilable(Pagy)
+  prop :index_params, Hash, default: {}.freeze
+  prop :filters, _Array(Avo::Filters::BaseFilter), default: [].freeze
+  prop :actions, _Array(Avo::BaseAction), default: [].freeze
+  prop :reflection, _Nilable(ActiveRecord::Reflection::AbstractReflection)
+  prop :turbo_frame, _Nilable(String), default: ""
+  prop :parent_record, _Nilable(_Any)
+  prop :parent_resource, _Nilable(Avo::BaseResource)
+  prop :applied_filters, Hash, default: {}.freeze
+  prop :query, _Nilable(ActiveRecord::Relation), reader: :public
+  # This should be
+  # prop :scopes, _Nilable(_Array(Avo::Advanced::Scopes::BaseScope)), reader: :public
+  # However, Avo::Advanced::Scopes::BaseScope raises an error because
+  # that constant is only available in the advanced repo
+  prop :scopes, _Nilable(Object), reader: :public
 
   def title
     if @reflection.present?
@@ -66,10 +51,20 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def can_attach?
-    klass = @reflection
-    klass = @reflection.through_reflection if klass.is_a? ::ActiveRecord::Reflection::ThroughReflection
+    return false if has_reflection_and_is_read_only
 
-    @reflection.present? && klass.is_a?(::ActiveRecord::Reflection::HasManyReflection) && !has_reflection_and_is_read_only && authorize_association_for(:attach)
+    reflection_class = if @reflection.is_a?(::ActiveRecord::Reflection::ThroughReflection)
+      @reflection.through_reflection.class
+    else
+      @reflection.class
+    end
+
+    return false unless reflection_class.in? [
+      ActiveRecord::Reflection::HasManyReflection,
+      ActiveRecord::Reflection::HasAndBelongsToManyReflection
+    ]
+
+    authorize_association_for(:attach)
   end
 
   def create_path
@@ -82,7 +77,10 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
         via_record_id: @parent_record.to_param
       }
 
-      if @reflection.is_a? ActiveRecord::Reflection::ThroughReflection
+      if @reflection.class.in? [
+        ActiveRecord::Reflection::ThroughReflection,
+        ActiveRecord::Reflection::HasAndBelongsToManyReflection
+      ]
         args[:via_relation] = params[:resource_name]
       end
 
@@ -133,7 +131,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
   def show_search_input
     return false unless authorized_to_search?
-    return false unless resource.class.search_query.present?
+    return false unless @resource.class.search_query.present?
     return false if field&.hide_search_input
 
     true
@@ -141,12 +139,12 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
   def authorized_to_search?
     # Hide the search if the authorization prevents it
-    resource.authorization.authorize_action("search", raise_exception: false)
+    @resource.authorization.authorize_action("search", raise_exception: false)
   end
 
   def render_dynamic_filters_button
     return unless Avo.avo_dynamic_filters_installed?
-    return unless resource.has_filters?
+    return unless @resource.has_filters?
     return if Avo::DynamicFilters.configuration.always_expanded
 
     a_button size: :sm,
@@ -163,17 +161,25 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
   def scopes_list
     Avo::Advanced::Scopes::ListComponent.new(
-      scopes: scopes,
-      resource: resource,
-      turbo_frame: turbo_frame,
-      parent_record: parent_record,
-      query: query,
-      loader: resource.entity_loader(:scope)
+      scopes: @scopes,
+      resource: @resource,
+      turbo_frame: @turbo_frame,
+      parent_record: @parent_record,
+      query: @query,
+      loader: @resource.entity_loader(:scope)
     )
   end
 
   def can_render_scopes?
     defined?(Avo::Advanced)
+  end
+
+  def back_path
+    # Show Go Back link only when association page is opened
+    # as a standalone page
+    if @reflection.present? && !helpers.turbo_frame_request?
+      helpers.resource_path(record: @parent_record, resource: @parent_resource)
+    end
   end
 
   private
@@ -203,7 +209,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def has_dynamic_filters?
-    Avo.avo_dynamic_filters_installed? && resource.has_filters?
+    Avo.avo_dynamic_filters_installed? && @resource.has_filters?
   end
 
   def search_query_present?

@@ -21,6 +21,7 @@ module Avo
     attr_accessor :user
     attr_reader :arguments
     attr_reader :icon
+    attr_reader :appended_turbo_streams
 
     # TODO: find a differnet way to delegate this to the uninitialized Current variable
     delegate :context, to: Avo::Current
@@ -32,6 +33,7 @@ module Avo
     delegate :avo, to: :view_context
     delegate :main_app, to: :view_context
     delegate :to_param, to: :class
+    delegate :link_arguments, to: :class
 
     class << self
       delegate :context, to: ::Avo::Current
@@ -119,7 +121,6 @@ module Avo
       self.class.cancel_button_label ||= I18n.t("avo.cancel")
 
       self.items_holder = Avo::Resources::Items::Holder.new
-      fields
 
       @response ||= {}
       @response[:messages] = []
@@ -238,6 +239,8 @@ module Avo
       self
     end
 
+    alias_method :do_nothing, :close_modal
+
     # Add a placeholder silent message from when a user wants to do a redirect action or something similar
     def silent
       add_message nil, :silent
@@ -287,6 +290,10 @@ module Avo
         view: @view,
         arguments: arguments
       ).handle
+    end
+
+    def append_to_response(turbo_stream)
+      @appended_turbo_streams = turbo_stream
     end
 
     private

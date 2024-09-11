@@ -1,0 +1,121 @@
+---
+zh:
+  avo:
+    resource_translations:
+      product:
+        save: "保存产品！"
+    action_ran_successfully: 操作成功执行！
+    actions: 操作
+    and_x_other_resources: 和 %{count} 个其他资源
+    applied: 已应用
+    are_you_sure: 您确定吗？
+    are_you_sure_detach_item: 您确定要分离此 %{item} 吗？
+    are_you_sure_you_want_to_run_this_option: 您确定要执行此操作吗？
+    attach: 附加
+    attach_and_attach_another: 附加并附加另一个
+    attach_item: 附加 %{item}
+    attachment_class_attached: "%{attachment_class} 已附加。"
+    attachment_class_detached: "%{attachment_class} 已分离。"
+    attachment_failed: "无法附加 %{attachment_class}"
+    attachment_destroyed: 附件已删除
+    cancel: 取消
+    choose_a_country: 选择一个国家
+    choose_an_option: 选择一个选项
+    choose_item: 选择 %{item}
+    clear_value: 清除值
+    click_to_reveal_filters: 点击以显示筛选器
+    close_modal: 关闭模态框
+    confirm: 确认
+    create_new_item: 创建新的 %{item}
+    dashboard: 仪表盘
+    dashboards: 仪表盘
+    default_scope: 所有
+    delete: 删除
+    delete_file: 删除文件
+    delete_item: 删除 %{item}
+    detach_item: 分离 %{item}
+    details: 详情
+    download: 下载
+    download_file: 下载文件
+    download_item: 下载 %{item}
+    edit: 编辑
+    edit_item: 编辑 %{item}
+    empty_dashboard_message: 在此仪表盘添加卡片
+    failed: 失败
+    failed_to_find_attachment: 找不到附件
+    failed_to_load: 加载失败
+    file:
+      one: 文件
+      other: 文件
+    filter_by: 按...筛选
+    filters: 筛选器
+    go_back: 返回
+    grid_view: 网格视图
+    hide_content: 隐藏内容
+    home: 主页
+    key_value_field:
+      add_row: 添加行
+      delete_row: 删除行
+      key: 键
+      value: 值
+    list_is_empty: 列表为空
+    loading: 加载中...
+    more: 更多
+    new: 新建
+    next_page: 下一页
+    no_cancel: 不，取消
+    no_cards_present: 没有卡片
+    no_item_found: 找不到记录
+    no_options_available: 没有可用选项
+    no_related_item_found: 找不到相关记录
+    not_authorized: 您没有权限执行此操作。
+    number_of_items:
+      one: 一个 %{item}
+      other: "%{count} 个 %{item}"
+      zero: 没有 %{item}
+    oops_nothing_found: 哎呀！什么都没找到...
+    order:
+      higher: 将记录上移
+      lower: 将记录下移
+      reorder_record: 重新排序记录
+      to_bottom: 将记录移至底部
+      to_top: 将记录移至顶部
+    per_page: 每页显示
+    prev_page: 上一页
+    records_selected_from_all_pages_html: 所有页面中选中的记录
+    remove_selection: 清除选择
+    reset_filters: 重置筛选器
+    reset: 重置
+    resource_created: 记录已创建
+    resource_destroyed: 记录已删除
+    resource_updated: 记录已更新
+    resources: 资源
+    run: 运行
+    save: 保存
+    search:
+      cancel_button: 取消
+      placeholder: 搜索
+    select_all: 全选
+    select_all_matching: 选择所有匹配项
+    select_item: 选择项目
+    show_content: 显示内容
+    sign_out: 登出
+    switch_to_view: 切换到 %{view_type} 视图
+    table_view: 表格视图
+    tools: 工具
+    type_to_search: 输入以搜索。
+    unauthorized: 未经授权
+    undo: 撤销
+    view: 查看
+    view_item: 查看 %{item}
+    was_successfully_created: 创建成功
+    was_successfully_updated: 更新成功
+    x_items_more:
+      one: 另外一个项目
+      other: "%{count} 个其他项目"
+      zero: 没有其他项目
+    x_records_selected_from_a_total_of_x_html: 在所有页面中共选择了 <span class="font-bold text-gray-700">%{count}</span> 条记录
+    x_records_selected_from_all_pages_html: 从所有页面中选中了 <span class="font-bold text-gray-700">%{count}</span> 条记录
+    x_records_selected_from_page_html: 在本页中共选择了 <span class="font-bold text-gray-700">%{selected}</span> 条记录
+    yes_confirm: 是的，确认
+    you_missed_something_check_form: 您可能漏掉了一些内容，请检查表单。

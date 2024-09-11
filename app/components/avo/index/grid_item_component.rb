@@ -4,16 +4,15 @@ class Avo::Index::GridItemComponent < Avo::BaseComponent
   include Avo::ResourcesHelper
   include Avo::Fields::Concerns::HasHTMLAttributes
 
-  attr_reader :parent_resource, :actions
+  prop :resource, _Nilable(Avo::BaseResource)
+  prop :reflection, _Nilable(ActiveRecord::Reflection::AbstractReflection)
+  prop :parent_record, _Nilable(_Any)
+  prop :parent_resource, _Nilable(Avo::BaseResource)
+  prop :actions, _Nilable(_Array(Avo::BaseAction))
 
-  def initialize(resource: nil, reflection: nil, parent_record: nil, parent_resource: nil, actions: nil)
-    @resource = resource
-    @reflection = reflection
-    @parent_record = parent_record
-    @parent_resource = parent_resource
-    @actions = actions
-    @card = Avo::ExecutionContext.new(target: resource.grid_view[:card], resource: resource, record: resource.record).handle
-    @whole_html = Avo::ExecutionContext.new(target: resource.grid_view[:html], resource: resource, record: resource.record).handle
+  def after_initialize
+    @card = Avo::ExecutionContext.new(target: @resource.grid_view[:card], resource: @resource, record: @resource.record).handle
+    @whole_html = Avo::ExecutionContext.new(target: @resource.grid_view[:html], resource: @resource, record: @resource.record).handle
   end
 
   private
@@ -29,7 +28,7 @@ class Avo::Index::GridItemComponent < Avo::BaseComponent
 
     if @parent_record.present?
       args = {
-        via_resource_class: parent_resource.class.to_s,
+        via_resource_class: @parent_resource.class.to_s,
         via_record_id: @parent_record.to_param
       }
     end
@@ -48,7 +47,7 @@ class Avo::Index::GridItemComponent < Avo::BaseComponent
   def link_to_cover
     classes = "absolute h-full w-full object-cover"
 
-    link_to image_tag(@card[:cover_url], class: classes), resource_view_path, class: classes, title: @card[:title]
+    link_to image_tag(@card[:cover_url], class: classes), resource_view_path, class: classes, title: @card[:title], loading: :lazy, width: "640", height: "480"
   end
 
   def render_title

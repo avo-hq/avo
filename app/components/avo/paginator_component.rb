@@ -1,41 +1,38 @@
 # frozen_string_literal: true
 
-class Avo::PaginatorComponent < ViewComponent::Base
-  attr_reader :pagy
-  attr_reader :turbo_frame
-  attr_reader :index_params
-  attr_reader :resource
-  attr_reader :parent_record
-  attr_reader :discreet_pagination
-
-  def initialize(resource: nil, parent_record: nil, pagy: nil, turbo_frame: nil, index_params: nil, discreet_pagination: nil)
-    @pagy = pagy
-    @turbo_frame = turbo_frame
-    @index_params = index_params
-    @resource = resource
-    @parent_record = parent_record
-    @discreet_pagination = discreet_pagination
+class Avo::PaginatorComponent < Avo::BaseComponent
+  prop :resource, _Nilable(Avo::BaseResource)
+  prop :parent_record, _Nilable(_Any)
+  prop :pagy, _Nilable(Pagy)
+  prop :turbo_frame, _Nilable(_Union(String, Symbol)) do |frame|
+    frame.present? ? CGI.escapeHTML(frame) : :_top
   end
+  prop :index_params, _Nilable(Hash)
+  prop :discreet_pagination, _Nilable(_Boolean)
 
   def change_items_per_page_url(option)
-    if parent_record.present?
-      helpers.related_resources_path(parent_record, parent_record, per_page: option, keep_query_params: true, page: 1)
+    if @parent_record.present?
+      helpers.related_resources_path(@parent_record, @parent_record, per_page: option, keep_query_params: true, page: 1)
     else
-      helpers.resources_path(resource: resource, per_page: option, keep_query_params: true, page: 1)
+      helpers.resources_path(resource: @resource, per_page: option, keep_query_params: true, page: 1)
     end
   end
 
   def render?
-    return false if discreet_pagination && pagy.pages <= 1
+    return false if @discreet_pagination && @pagy.pages <= 1
 
-    @pagy.items > 0
+    if ::Pagy::VERSION >= ::Gem::Version.new("9.0")
+      @pagy.limit > 0
+    else
+      @pagy.items > 0
+    end
   end
 
   def per_page_options
     @per_page_options ||= begin
-      options = [*Avo.configuration.per_page_steps, Avo.configuration.per_page.to_i, index_params[:per_page].to_i]
+      options = [*Avo.configuration.per_page_steps, Avo.configuration.per_page.to_i, @index_params[:per_page].to_i]
 
-      if parent_record.present?
+      if @parent_record.present?
         options.prepend Avo.configuration.via_per_page
       end
 

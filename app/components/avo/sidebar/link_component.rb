@@ -1,25 +1,21 @@
 # frozen_string_literal: true
 
-class Avo::Sidebar::LinkComponent < ViewComponent::Base
-  attr_reader :active
-  attr_reader :target
-  attr_reader :label
-  attr_reader :path
-  attr_reader :data
-  attr_reader :icon
-
-  def initialize(label: nil, path: nil, active: :inclusive, target: nil, data: {}, icon: nil)
-    @label = label
-    @path = path
-    @active = active
-    @target = target
-    @data = data
-    @icon = icon
+class Avo::Sidebar::LinkComponent < Avo::BaseComponent
+  prop :label, _Nilable(String)
+  prop :path, _Nilable(String)
+  prop :active, Symbol, default: :inclusive do |value|
+    value&.to_sym
   end
+  prop :target, _Nilable(Symbol) do |value|
+    value&.to_sym
+  end
+  prop :data, Hash, default: {}.freeze
+  prop :icon, _Nilable(String)
+  prop :args, Hash, :**, default: {}.freeze
 
   def is_external?
     # If the path contains the scheme, check if it includes the root path or not
-    return !path.include?(helpers.mount_path) if URI(path).scheme.present?
+    return !@path.include?(helpers.mount_path) if URI(@path).scheme.present?
 
     false
   end

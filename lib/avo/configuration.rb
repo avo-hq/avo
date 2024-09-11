@@ -50,7 +50,11 @@ module Avo
     attr_accessor :resource_parent_controller
     attr_accessor :mount_avo_engines
     attr_accessor :default_url_options
+    attr_accessor :click_row_to_view_record
     attr_accessor :alert_dismiss_time
+    attr_accessor :is_admin_method
+    attr_accessor :is_developer_method
+    attr_accessor :search_results_count
 
     def initialize
       @root_path = "/avo"
@@ -108,7 +112,11 @@ module Avo
       @turbo = default_turbo
       @default_url_options = []
       @pagination = {}
+      @click_row_to_view_record = false
       @alert_dismiss_time = 5000
+      @is_admin_method = :is_admin?
+      @is_developer_method = :is_developer?
+      @search_results_count = 8
     end
 
     def current_user_method(&block)
@@ -218,7 +226,7 @@ module Avo
 
         file_logger.datetime_format = "%Y-%m-%d %H:%M:%S"
         file_logger.formatter = proc do |severity, time, progname, msg|
-          "[Avo] #{time}: #{msg}\n".tap do |i|
+          "[Avo->] #{time}: #{msg}\n".tap do |i|
             puts i
           end
         end

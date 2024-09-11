@@ -1,3 +1,7 @@
 <%= field_wrapper **field_wrapper_args, full_width: true do %>
-  <%= render Avo::Fields::Common::KeyValueComponent.new field: @field, view: :show %>
+  <%= render Avo::Fields::Common::KeyValueComponent.new(
+      field: @field,
+      view: Avo::ViewInquirer.new(:show)
+    )
+  %>
 <% end %>

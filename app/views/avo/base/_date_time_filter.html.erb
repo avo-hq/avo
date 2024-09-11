@@ -1,0 +1,37 @@
+<%= content_tag :div, data: {
+    controller: "date-time-filter",
+    filter_name: filter.name,
+    date_time_filter_class_value: filter.class.to_s,
+    date_time_filter_keep_filters_panel_open_value: @resource.keep_filters_panel_open,
+    date_time_filter_picker_options_value: filter.picker_options(@applied_filters[filter.class.to_s])
+  } do %>
+  <%= filter_wrapper name: filter.name do %>
+    <div class="flex relative">
+      <div class="self-center w-full" data-slot="value">
+        <%= text_field_tag :value, "",
+          class: input_classes('w-full mb-0 !pr-9'),
+          placeholder: filter.class.empty_message,
+          data: {
+            date_time_filter_target: "input",
+          } %>
+      </div>
+      <%= content_tag :button,
+        class: "absolute right-0 self-center mr-4 uppercase font-semibold text-xs",
+        id: :reset,
+        type: :button,
+        title: t("avo.reset").capitalize,
+        data: {
+          action: "click->date-time-filter#clear",
+          tippy: :tooltip
+        } do %>
+        <%= svg "avo/times", class: "h-4" %>
+      <% end %>
+    </div>
+    <div class="flex justify-end">
+      <%= a_button class: 'mt-4', color: :primary, data: { action: "date-time-filter#changeFilter" }, size: :xs do %>
+        <%= filter.button_label || "#{t("avo.filter_by")} #{filter.name}" %>
+      <% end %>
+    </div>
+    <%= link_to 'url_redirect', request.url, data: { 'date-time-filter-target': 'urlRedirect', 'turbo-frame': params[:turbo_frame] }, style: 'hidden', class: 'hidden' %>
+  <% end %>
+<% end %>

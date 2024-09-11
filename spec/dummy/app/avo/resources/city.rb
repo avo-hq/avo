@@ -17,6 +17,17 @@ class Avo::Resources::City < Avo::BaseResource
         tooltip: record.name
       }
     },
+    extra_markers: -> do
+      [
+        {
+          latitude: params[:lat] || 37.780411,
+          longitude: params[:long] || -25.497047,
+          label: "Açores",
+          tooltip: "São Miguel",
+          color: "#0F0"
+        }
+      ]
+    end,
     table: {
       visible: true,
       layout: :bottom
@@ -53,6 +64,7 @@ class Avo::Resources::City < Avo::BaseResource
       },
       update_using: -> do
         ActiveSupport::JSON.decode(value)
+      rescue JSON::ParserError
       end
 
     field :created_at, as: :date_time, filterable: true
@@ -68,7 +80,7 @@ class Avo::Resources::City < Avo::BaseResource
         path, data = Avo::Actions::City::Update.link_arguments(
           resource: resource,
           arguments: {
-            cities: [resource.record.id],
+            cities: [resource.record.to_param],
             render_name: true
           }
         )
