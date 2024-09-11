@@ -11,7 +11,7 @@ class Avo::ProfileItemComponent < Avo::BaseComponent
     value&.to_sym
   end
   prop :title, _Nilable(String), reader: :public
-  prop :method, _Nilable(String), reader: :public
+  prop :method, _Nilable(_Union(_String,  _Symbol)), reader: :public
   prop :params, _Nilable(Hash), default: {}.freeze, reader: :public
   prop :classes, String, default: "", reader: :public
 
