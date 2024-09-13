@@ -100,9 +100,6 @@ Avo.configure do |config|
   #   file_logger
   # }
 
-  ## == Audit ==
-  # config.audit = false
-
   ## == Customization ==
   # config.app_name = 'Avocadelicious'
   # config.timezone = 'UTC'
