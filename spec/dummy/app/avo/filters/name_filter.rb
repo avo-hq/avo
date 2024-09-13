@@ -1,6 +1,9 @@
 class Avo::Filters::NameFilter < Avo::Filters::TextFilter
-  self.name = "Name filter"
-  self.button_label = "Filter by name"
+  # Notice that name is changing on each request
+  self.name = -> { "Name filter #{rand(1000)}" }
+
+  # Notice that label is NOT changing on each request
+  self.button_label = "Filter by name #{rand(1000)}"
   # self.visible = -> do
   #   Access to:
   #   block
