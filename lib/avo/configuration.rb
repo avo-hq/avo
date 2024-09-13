@@ -174,9 +174,7 @@ module Avo
     def license
       gems = Gem::Specification.map {|gem| gem.name}
 
-      @license ||= if gems.include?("avo-audit_logging")
-        "enterprise"
-      elsif gems.include?("avo-advanced")
+      @license ||= if gems.include?("avo-advanced")
         "advanced"
       elsif gems.include?("avo-pro")
         "pro"
