@@ -233,21 +233,6 @@ module Avo
       }
     end
 
-    def database_exists?
-      ActiveRecord::Base.connection
-    rescue ActiveRecord::NoDatabaseError
-      false
-    else
-      true
-    end
-
-    def audit?
-      Avo.plugin_manager.installed?("avo-audit_logging") &&
-        @audit &&
-        database_exists? &&
-        ActiveRecord::Base.connection.table_exists?(:avo_activities)
-    end
-
     def turbo
       Avo::ExecutionContext.new(target: @turbo).handle
     end
