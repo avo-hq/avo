@@ -26,7 +26,7 @@ module Avo
       @parent_resource.hydrate(record: @parent_record)
       association_name = BaseResource.valid_association_name(@parent_record, association_from_params)
       @query = @related_authorization.apply_policy @parent_record.send(association_name)
-      @association_field = @parent_resource.get_field params[:related_name]
+      @association_field = find_association_field(resource: @parent_resource, association: params[:related_name])
 
       if @association_field.present? && @association_field.scope.present?
         @query = Avo::ExecutionContext.new(target: @association_field.scope, query: @query, parent: @parent_record).handle
@@ -129,7 +129,7 @@ module Avo
     end
 
     def set_reflection_field
-      @field = @resource.get_field(@related_resource_name.to_sym)
+      @field = find_association_field(resource: @resource, association: @related_resource_name)
       @field.hydrate(resource: @resource, record: @record, view: Avo::ViewInquirer.new(:new))
     rescue
     end
