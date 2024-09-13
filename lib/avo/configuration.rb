@@ -7,7 +7,6 @@ module Avo
     attr_writer :root_path
     attr_writer :cache_store
     attr_writer :logger
-    attr_writer :audit
     attr_writer :turbo
     attr_writer :pagination
     attr_accessor :timezone
@@ -108,7 +107,6 @@ module Avo
       @mount_avo_engines = true
       @cache_store = computed_cache_store
       @logger = default_logger
-      @audit = false
       @turbo = default_turbo
       @default_url_options = []
       @pagination = {}
