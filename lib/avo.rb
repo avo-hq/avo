@@ -178,4 +178,8 @@ module Avo
   end
 end
 
+def 🥑
+	Avo
+end
+
 loader.eager_load
