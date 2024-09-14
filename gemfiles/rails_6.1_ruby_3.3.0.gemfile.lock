@@ -140,6 +140,7 @@ GEM
     backport (1.2.0)
     bcrypt (3.1.20)
     benchmark (0.3.0)
+    benchmark-ips (2.14.0)
     better_html (2.1.1)
       actionview (>= 6.0)
       activesupport (>= 6.0)
@@ -187,9 +188,22 @@ GEM
       database_cleaner-core (~> 2.0.0)
     database_cleaner-core (2.0.1)
     date (3.3.4)
+    dead_end (4.0.0)
     debug (1.9.2)
       irb (~> 1.10)
       reline (>= 0.3.8)
+    derailed_benchmarks (2.1.2)
+      benchmark-ips (~> 2)
+      dead_end
+      get_process_mem (~> 0)
+      heapy (~> 0)
+      memory_profiler (>= 0, < 2)
+      mini_histogram (>= 0.3.0)
+      rack (>= 1)
+      rack-test
+      rake (> 10, < 14)
+      ruby-statistics (>= 2.1)
+      thor (>= 0.19, < 2)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
     devise (4.9.4)
@@ -244,6 +258,8 @@ GEM
       rspec-core (~> 3.0)
       ruby-progressbar (~> 1.4)
     gem-release (2.2.2)
+    get_process_mem (0.2.7)
+      ffi (~> 1.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
     groupdate (6.4.0)
@@ -253,6 +269,8 @@ GEM
       activerecord (>= 4.0)
       hashids (~> 1.0)
     hashids (1.0.6)
+    heapy (0.2.0)
+      thor
     highline (3.1.1)
       reline
     hightop (0.4.0)
@@ -318,9 +336,11 @@ GEM
     mapkick-rb (0.1.5)
     marcel (1.0.4)
     matrix (0.4.2)
+    memory_profiler (1.0.2)
     meta-tags (2.22.0)
       actionpack (>= 6.0.0, < 8.1)
     method_source (1.1.0)
+    mini_histogram (0.3.1)
     mini_magick (4.13.2)
     mini_mime (1.1.5)
     minitest (5.25.1)
@@ -471,6 +491,7 @@ GEM
     rubocop-shopify (2.15.1)
       rubocop (~> 1.51)
     ruby-progressbar (1.13.0)
+    ruby-statistics (3.0.2)
     ruby-vips (2.2.2)
       ffi (~> 1.12)
       logger
@@ -621,6 +642,7 @@ DEPENDENCIES
   cuprite
   database_cleaner-active_record
   debug
+  derailed_benchmarks (~> 2.1)
   devise
   dotenv-rails
   erb-formatter
@@ -660,13 +682,13 @@ DEPENDENCIES
   rspec-retry (~> 0.6.2)
   rubocop
   rubocop-shopify
+  ruby-statistics (< 4)
   rubycritic
   simplecov
   simplecov-cobertura
   simplecov-lcov
   solargraph
   solargraph-rails
-  spring
   spring-commands-rspec
   sprockets-rails
   standard

@@ -44,6 +44,11 @@ Avo.configure do |config|
   config.cache_resource_filters = false
   config.click_row_to_view_record = true
 
+  config.turbo = {
+    instant_click: true
+  }
+
+
   ## == Branding ==
   config.branding = {
     colors: {
