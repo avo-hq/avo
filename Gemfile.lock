@@ -746,6 +746,7 @@ DEPENDENCIES
   simplecov-lcov
   solargraph
   solargraph-rails
+  spring
   spring-commands-rspec
   sprockets-rails
   standard

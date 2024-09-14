@@ -99,6 +99,7 @@ group :test do
   gem "simplecov-cobertura"
   gem "simplecov-lcov"
   gem "webmock"
+  gem "spring"
   gem "spring-commands-rspec"
   gem "launchy", require: false
 
