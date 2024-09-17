@@ -60,7 +60,6 @@ group :development do
   gem "rubycritic", require: false
   gem "actual_db_schema"
   gem "derailed_benchmarks", "~> 2.1", group: :development
-  gem "ruby-statistics", "< 4"
 end
 
 group :test do
@@ -74,6 +73,7 @@ group :test do
   gem "simplecov-cobertura"
   gem "simplecov-lcov"
   gem "webmock"
+  gem "spring"
   gem "spring-commands-rspec"
   gem "launchy", require: false
   gem "test-prof"

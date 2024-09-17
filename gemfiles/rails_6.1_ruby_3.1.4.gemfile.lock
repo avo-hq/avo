@@ -709,13 +709,13 @@ DEPENDENCIES
   rspec-retry (~> 0.6.2)
   rubocop
   rubocop-shopify
-  ruby-statistics (< 4)
   rubycritic
   simplecov
   simplecov-cobertura
   simplecov-lcov
   solargraph
   solargraph-rails
+  spring
   spring-commands-rspec
   sprockets-rails
   standard
