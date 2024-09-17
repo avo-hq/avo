@@ -105,4 +105,22 @@ RSpec.feature "HasManyField", type: :system do
       end
     end
   end
+
+  describe "duplicated field id" do
+    let!(:store) { create(:store) }
+
+    it "render tags and has many field" do
+      StorePatron.create!(user:, store:, review: "some review")
+      visit avo.resources_store_path(store)
+
+      # Find user name on tags field
+      expect(page).to have_css('div[data-field-id="patrons"] div[data-target="tag-component"]', text: user.name)
+
+      # Find user name on has many field
+      within("tr[data-record-id='#{user.id}']") do
+        expect(page).to have_text(user.first_name)
+        expect(page).to have_text(user.last_name)
+      end
+    end
+  end
 end

@@ -3,6 +3,7 @@
 class Avo::BaseComponent < ViewComponent::Base
   extend Literal::Properties
   include Turbo::FramesHelper
+  include Avo::Concerns::FindAssociationField
 
   def has_with_trial(ability)
     Avo.license.has_with_trial(ability)
@@ -12,8 +13,7 @@ class Avo::BaseComponent < ViewComponent::Base
 
   # Use the @parent_resource to fetch the field using the @reflection name.
   def field
-    reflection_name = params[:related_name]&.to_sym || @reflection.name
-    @parent_resource.get_field(reflection_name)
+    find_association_field(resource: @parent_resource, association: params[:related_name] || @reflection.name)
   rescue
     nil
   end
