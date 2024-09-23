@@ -48,7 +48,6 @@ Avo.configure do |config|
     instant_click: true
   }
 
-
   ## == Branding ==
   config.branding = {
     colors: {
