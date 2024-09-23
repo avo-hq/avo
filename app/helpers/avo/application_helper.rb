@@ -137,6 +137,10 @@ module Avo
       ["frame", resource.model_name.singular, resource.record_param].compact.join("-")
     end
 
+    def audit
+      Proc.new
+    end
+
     def chart_color(index)
       Avo.configuration.branding.chart_colors[index % Avo.configuration.branding.chart_colors.length]
     end
