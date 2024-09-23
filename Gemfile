@@ -83,7 +83,7 @@ group :development do
 
   gem "actual_db_schema"
 
-  gem "derailed_benchmarks", "~> 2.1", :group => :development
+  gem "derailed_benchmarks", "~> 2.1"
 
   # gem "ruby-statistics", "< 4"
 end
