@@ -63,7 +63,7 @@ module Avo
     def create
       respond_to do |format|
         if create_association
-          safe_call :audit, activity_class: @resource.class, payload: params, action: :attach, records: @record
+          instance_exec(:attach, &audit)
 
           format.html {
             redirect_back fallback_location: resource_view_response_path,
@@ -104,7 +104,7 @@ module Avo
         @record.send(:"#{association_name}=", nil)
       end
 
-      safe_call :audit, activity_class: @resource.class, payload: params, action: :detach, records: @record
+      instance_exec(:detach, &audit)
       respond_to do |format|
         format.html { redirect_to params[:referrer] || resource_view_response_path, notice: t("avo.attachment_class_detached", attachment_class: @attachment_class) }
       end
