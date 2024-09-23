@@ -589,6 +589,10 @@ module Avo
       @pagy_locale = locale.to_s || Avo.configuration.default_locale || "en"
     end
 
+    def safe_call(method)
+      send(method) if respond_to?(method, true)
+    end
+
     def pagy_query
       @query
     end
