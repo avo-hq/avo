@@ -47,7 +47,7 @@ module Generators
         end
 
         def error_message(extra)
-          "Avo will not attemmpt to create resources for you.\n#{extra}\nThen run 'rails generate avo:all_resources' to generate all your resources."
+          "Avo will not attempt to create resources for you.\n#{extra}\nThen run 'rails generate avo:all_resources' to generate all your resources."
         end
 
         def resource_class

@@ -14,7 +14,6 @@ gem "debug", platforms: [:mri, :mingw, :x64_mingw]
 gem "dotenv-rails"
 gem "web-console", ">= 3.3.0"
 gem "listen", ">= 3.5.1"
-gem "spring"
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "devise"
 gem "amazing_print"
@@ -49,17 +48,18 @@ gem "csv"
 gem "psych", "< 4"
 
 group :development do
-  gem "standard"
+  gem "standard", require: false
   gem "bump", require: false
   gem "gem-release", require: false
   gem "annotate"
   gem "htmlbeautifier"
   gem "hotwire-livereload", "~> 1.3.0"
-  gem "rubocop"
-  gem "ripper-tags"
+  gem "rubocop", require: false
+  gem "ripper-tags", require: false
   gem "rubocop-shopify", require: false
   gem "rubycritic", require: false
   gem "actual_db_schema"
+  gem "derailed_benchmarks", "~> 2.1", group: :development
 end
 
 group :test do
@@ -73,6 +73,7 @@ group :test do
   gem "simplecov-cobertura"
   gem "simplecov-lcov"
   gem "webmock"
+  gem "spring"
   gem "spring-commands-rspec"
   gem "launchy", require: false
   gem "test-prof"
@@ -82,12 +83,12 @@ end
 group :development, :test do
   gem "faker", require: false
   gem "i18n-tasks", "~> 1.0.12"
-  gem "erb-formatter"
-  gem "erb_lint"
-  gem "solargraph"
-  gem "solargraph-rails"
+  gem "erb-formatter", require: false
+  gem "erb_lint", require: false
+  gem "solargraph", require: false
+  gem "solargraph-rails", require: false
   gem "factory_bot_rails"
-  gem "appraisal"
+  gem "appraisal", require: false
 end
 
 gemspec path: "../"
