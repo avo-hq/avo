@@ -138,7 +138,7 @@ module Avo
     end
 
     def audit
-      Proc.new
+      -> {}
     end
 
     def chart_color(index)
