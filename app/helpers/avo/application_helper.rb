@@ -138,7 +138,7 @@ module Avo
     end
 
     def audit
-      -> {}
+      -> (_) {}
     end
 
     def chart_color(index)
