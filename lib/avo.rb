@@ -64,7 +64,6 @@ module Avo
       @logger = Avo.configuration.logger
       @field_manager = Avo::Fields::FieldManager.build
       @cache_store = Avo.configuration.cache_store
-      plugin_manager.boot_plugins
       ActiveSupport.run_load_hooks(:avo_boot, self)
       eager_load_actions
     end
@@ -80,7 +79,7 @@ module Avo
       Avo::Current.resource_manager = Avo::Resources::ResourceManager.build
       Avo::Current.tool_manager = Avo::Tools::ToolManager.build
 
-      Avo.run_load_hooks(:init, self)
+      ActiveSupport.run_load_hooks(:avo_init, self)
     end
 
     # Generate a dynamic root path using the URIService
@@ -92,7 +91,7 @@ module Avo
     end
 
     def main_menu
-      return unless Avo.plugin_manager.installed?("avo-menu")
+      return unless Avo.plugin_manager.installed?(:avo_menu)
 
       # Return empty menu if the app doesn't have the profile menu configured
       return Avo::Menu::Builder.new.build unless has_main_menu?
@@ -101,7 +100,7 @@ module Avo
     end
 
     def profile_menu
-      return unless Avo.plugin_manager.installed?("avo-menu")
+      return unless Avo.plugin_manager.installed?(:avo_menu)
 
       # Return empty menu if the app doesn't have the profile menu configured
       return Avo::Menu::Builder.new.build unless has_profile_menu?

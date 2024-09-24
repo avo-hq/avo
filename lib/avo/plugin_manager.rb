@@ -8,8 +8,8 @@ module Avo
       @plugins = []
     end
 
-    def register(plugin_klass, priority: 10)
-      @plugins << Plugin.new(klass: plugin_klass, priority: priority)
+    def register(name, priority: 10)
+      @plugins << Plugin.new(name:, priority: priority)
     end
 
     def boot_plugins
@@ -53,7 +53,7 @@ module Avo
 
     def installed?(name)
       plugins.any? do |plugin|
-        plugin.klass.to_s.chomp("::Plugin").underscore.tr("/", "-") == name.to_s
+        plugin.name.to_s == name.to_s
       end
     end
   end
