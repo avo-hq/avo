@@ -109,7 +109,7 @@ module Avo
 
       # Handle special cases when creating a new record via a belongs_to relationship
       if params[:via_belongs_to_resource_class].present?
-        return render turbo_stream: turbo_stream.append("attach_modal", partial: "avo/base/new_via_belongs_to")
+        return render turbo_stream: turbo_stream.append(Avo::MODAL_FRAME_ID, partial: "avo/base/new_via_belongs_to")
       end
 
       set_actions
@@ -532,6 +532,7 @@ module Avo
     def destroy_success_action
       respond_to do |format|
         format.html { redirect_to after_destroy_path, notice: destroy_success_message }
+        format.turbo_stream { render turbo_stream: turbo_stream.turbo_frame_reload(params[:turbo_frame]) }
       end
     end
 

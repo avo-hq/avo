@@ -10,7 +10,7 @@
           icon: 'heroicons/outline/link',
           color: :primary,
           style: :text,
-          'data-turbo-frame': 'attach_modal' do %>
+          data_turbo_frame: Avo::MODAL_FRAME_ID do %>
           <%= t('avo.attach_item', item: @field.name.humanize(capitalize: false)) %>
         <% end %>
       <% end %>

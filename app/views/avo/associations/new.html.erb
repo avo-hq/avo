@@ -1,4 +1,4 @@
-<%= turbo_frame_tag 'attach_modal' do %>
+<%= turbo_frame_tag Avo::MODAL_FRAME_ID do %>
   <%
     url = Avo::Services::URIService.parse(avo.root_url.to_s)
       .append_paths('resources', params[:resource_name], params[:id], params[:related_name])
@@ -53,6 +53,7 @@
                 stacked: true,
                 classes: 'w-full'
               %>
+              <%= hidden_field_tag :turbo_frame, params[:for_turbo_frame] %>
             <% end %>
             <% @attach_fields&.each_with_index do |field, index| %>
               <%= render(Avo::Items::SwitcherComponent.new(
@@ -73,6 +74,9 @@
       <% c.with_controls do %>
         <%= a_button 'data-action': 'click->modal#close', type: :button, size: :sm, style: :outline, color: :gray do %>
           <%= t('avo.cancel') %>
+        <% end %>
+        <%= a_button type: :submit, value: :attach_another, style: :outline, color: :green, size: :sm do %>
+          <%= t('avo.attach_and_attach_another') %>
         <% end %>
         <%= a_button type: :submit, style: :primary, color: :green, size: :sm do %>
           <%= t('avo.attach') %>

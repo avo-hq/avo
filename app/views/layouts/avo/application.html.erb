@@ -49,8 +49,7 @@
         </div>
       </div>
     </div>
-    <%= turbo_frame_tag Avo::ACTIONS_TURBO_FRAME_ID, data: {turbo_temporary: 1} %>
-    <%= render partial: "avo/partials/attach_modal" %>
+    <%= turbo_frame_tag Avo::MODAL_FRAME_ID, data: {turbo_temporary: 1} %>
     <%= render partial: "avo/partials/alerts" %>
     <%= render partial: "avo/partials/scripts" %>
     <%= render partial: "avo/partials/confirm_dialog" %>

@@ -10,10 +10,10 @@ module Avo
         template: @view_context.render(Avo::FlashAlertsComponent.new(flashes: @view_context.flash.discard))
     end
 
-    def close_action_modal
+    def close_modal
       turbo_stream_action_tag :replace,
-        target: Avo::ACTIONS_TURBO_FRAME_ID,
-        template: @view_context.turbo_frame_tag(Avo::ACTIONS_TURBO_FRAME_ID, data: {turbo_temporary: 1})
+        target: Avo::MODAL_FRAME_ID,
+        template: @view_context.turbo_frame_tag(Avo::MODAL_FRAME_ID, data: {turbo_temporary: 1})
     end
   end
 end
