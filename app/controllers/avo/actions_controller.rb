@@ -11,6 +11,7 @@ module Avo
     end
     before_action :set_action, only: [:show, :handle]
     before_action :verify_authorization, only: [:show, :handle]
+    before_action :set_query, :set_fields, only: :handle
 
     layout :choose_layout
 
@@ -47,13 +48,6 @@ module Avo
     end
 
     def handle
-      resource_ids = action_params[:fields][:avo_resource_ids].split(",")
-
-      @query = decrypted_query || (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])
-      @fields = action_params[:fields].except(:avo_resource_ids, :avo_selected_query)
-
-      instance_exec(__method__, &audit)
-
       performed_action = @action.handle_action(
         fields: @fields,
         current_user: _current_user,
@@ -66,6 +60,16 @@ module Avo
     end
 
     private
+
+    def set_query
+      resource_ids = action_params[:fields][:avo_resource_ids].split(",")
+
+      @query = decrypted_query || (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])
+    end
+
+    def set_fields
+      @fields = action_params[:fields].except(:avo_resource_ids, :avo_selected_query)
+    end
 
     def action_params
       @action_params ||= params.permit(:id, :authenticity_token, :resource_name, :action_id, :button, fields: {})

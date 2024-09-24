@@ -17,8 +17,6 @@ module Avo
     before_action :set_pagy_locale, only: :index
 
     def index
-      instance_exec(__method__, &audit) if @reflection.blank?
-
       @page_title = @resource.plural_name.humanize
 
       if @reflection.present? && !turbo_frame_request?
@@ -72,8 +70,6 @@ module Avo
     end
 
     def show
-      instance_exec(__method__, &audit)
-
       @resource.hydrate(
         record: @record,
         view: Avo::ViewInquirer.new(:show),
@@ -135,8 +131,6 @@ module Avo
 
       add_breadcrumb t("avo.new").humanize
 
-      instance_exec(__method__, &audit)
-
       set_component_for __method__, fallback_view: :edit
     end
 
@@ -181,7 +175,6 @@ module Avo
 
       set_component_for :edit
 
-      instance_exec(__method__, &audit)
       if saved
         create_success_action
       else
@@ -190,16 +183,12 @@ module Avo
     end
 
     def edit
-      instance_exec(__method__, &audit)
-
       set_actions
 
       set_component_for __method__
     end
 
     def update
-      instance_exec(__method__, &audit)
-
       # record gets instantiated and filled in the fill_record method
       saved = save_record
       @resource = @resource.hydrate(record: @record, view: Avo::ViewInquirer.new(:edit), user: _current_user)
@@ -215,7 +204,6 @@ module Avo
     end
 
     def destroy
-      instance_exec(__method__, &audit)
       if destroy_model
         destroy_success_action
       else
