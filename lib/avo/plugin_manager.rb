@@ -9,7 +9,7 @@ module Avo
     end
 
     def register(plugin_klass, priority: 10)
-      @plugins << OpenStruct.new(klass: plugin_klass, priority: priority)
+      @plugins << Plugin.new(klass: plugin_klass, priority: priority)
     end
 
     def boot_plugins

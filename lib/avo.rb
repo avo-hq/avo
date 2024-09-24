@@ -14,8 +14,6 @@ loader.ignore("#{__dir__}/generators")
 loader.setup
 
 module Avo
-  extend ActiveSupport::LazyLoadHooks
-
   ROOT_PATH = Pathname.new(File.join(__dir__, ".."))
   IN_DEVELOPMENT = ENV["AVO_IN_DEVELOPMENT"] == "1"
   PACKED = !IN_DEVELOPMENT
@@ -67,7 +65,7 @@ module Avo
       @field_manager = Avo::Fields::FieldManager.build
       @cache_store = Avo.configuration.cache_store
       plugin_manager.boot_plugins
-      Avo.run_load_hooks(:boot, self)
+      ActiveSupport.run_load_hooks(:avo_boot, self)
       eager_load_actions
     end
 
@@ -179,7 +177,7 @@ module Avo
 end
 
 def 🥑
-	Avo
+  Avo
 end
 
 loader.eager_load
