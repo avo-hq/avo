@@ -1,4 +1,4 @@
-<%= content_tag :div, class: "#{params[:view_type] == "grid" ? "flex-wrap" : "space-x-2"} flex flex-row justify-evenly ml-2 has-record-selector:ml-0" do %>
+<%= content_tag :div, class: "#{view_type == "grid" ? "flex-wrap" : "space-x-2"} flex flex-row justify-evenly ml-2 has-record-selector:ml-0" do %>
   <% @resource.render_row_controls(item: singular_resource_name).each do |control| %>
     <%= render_control control %>
   <% end %>

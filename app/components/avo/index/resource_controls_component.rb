@@ -172,4 +172,8 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
 
     hidden.compact
   end
+
+  def view_type
+    params[:view_type]
+  end
 end
