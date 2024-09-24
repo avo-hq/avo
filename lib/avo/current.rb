@@ -9,7 +9,6 @@ class Avo::Current < ActiveSupport::CurrentAttributes
   attribute :tool_manager
   attribute :plugin_manager
   attribute :locale
-  attribute :activity
 
   # The tenant attributes are here so the user can add them on their own will
   attribute :tenant_id
