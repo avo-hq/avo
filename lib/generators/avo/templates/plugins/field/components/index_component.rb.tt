@@ -1,0 +1,4 @@
+# frozen_string_literal: true
+
+class <%= module_name %>::Fields::<%= full_class_name %>::IndexComponent < Avo::Fields::IndexComponent
+end

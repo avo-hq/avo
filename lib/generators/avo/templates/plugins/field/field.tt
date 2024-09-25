@@ -1,0 +1,13 @@
+module <%= class_name %>
+  module Fields
+    class <%= full_class_name %> < Avo::Fields::BaseField
+      # attr_reader :options
+
+      # def initialize(id, **args, &block)
+      #   super(id, **args, &block)
+
+      #   add_object_prop args, :options
+      # end
+    end
+  end
+end
