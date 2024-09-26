@@ -666,7 +666,7 @@ DEPENDENCIES
   cuprite
   database_cleaner-active_record
   debug
-  derailed_benchmarks (~> 2.1)
+  derailed_benchmarks (~> 2.1, >= 2.1.2)
   devise
   dotenv-rails
   erb-formatter

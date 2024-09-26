@@ -59,7 +59,7 @@ group :development do
   gem "rubocop-shopify", require: false
   gem "rubycritic", require: false
   gem "actual_db_schema"
-  gem "derailed_benchmarks", "~> 2.1", group: :development
+  gem "derailed_benchmarks", "~> 2.1", ">= 2.1.2"
 end
 
 group :test do
