@@ -60,6 +60,7 @@ group :development do
   gem "rubycritic", require: false
   gem "actual_db_schema"
   gem "derailed_benchmarks", "~> 2.1", ">= 2.1.2"
+  gem "ruby-statistics", "< 4"
 end
 
 group :test do

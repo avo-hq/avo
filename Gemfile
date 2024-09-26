@@ -85,7 +85,9 @@ group :development do
 
   gem "derailed_benchmarks", "~> 2.1", ">= 2.1.2"
 
-  # gem "ruby-statistics", "< 4"
+  # Keep version look on <4 until this PR gets merged and released
+  # https://github.com/zombocom/derailed_benchmarks/pull/239
+  gem "ruby-statistics", "< 4"
 end
 
 group :test do
