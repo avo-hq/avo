@@ -547,7 +547,7 @@ GEM
     rubocop-shopify (2.15.1)
       rubocop (~> 1.51)
     ruby-progressbar (1.13.0)
-    ruby-statistics (4.0.1)
+    ruby-statistics (3.0.2)
     ruby-vips (2.2.2)
       ffi (~> 1.12)
       logger
@@ -620,7 +620,6 @@ GEM
     standard-performance (1.4.0)
       lint_roller (~> 1.1)
       rubocop-performance (~> 1.21.0)
-    statistics (1.0.0)
     stringio (3.1.1)
     syntax_tree (6.2.0)
       prettier_print (>= 1.2.0)
@@ -740,6 +739,7 @@ DEPENDENCIES
   rspec-retry (~> 0.6.2)
   rubocop
   rubocop-shopify
+  ruby-statistics (< 4)
   rubycritic
   simplecov
   simplecov-cobertura
@@ -750,7 +750,6 @@ DEPENDENCIES
   spring-commands-rspec
   sprockets-rails
   standard
-  statistics (~> 1.0)
   test-prof
   tzinfo-data
   web-console (>= 3.3.0)
