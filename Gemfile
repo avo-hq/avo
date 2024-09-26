@@ -83,7 +83,7 @@ group :development do
 
   gem "actual_db_schema"
 
-  gem "derailed_benchmarks", "~> 2.1"
+  gem "derailed_benchmarks", "~> 2.1", ">= 2.1.2"
 
   # gem "ruby-statistics", "< 4"
 end
@@ -191,3 +191,5 @@ gem "avo-record_link_field"
 gem "pagy", "> 8"
 
 gem "csv"
+
+gem "statistics", "~> 1.0"

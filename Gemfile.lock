@@ -620,6 +620,7 @@ GEM
     standard-performance (1.4.0)
       lint_roller (~> 1.1)
       rubocop-performance (~> 1.21.0)
+    statistics (1.0.0)
     stringio (3.1.1)
     syntax_tree (6.2.0)
       prettier_print (>= 1.2.0)
@@ -700,7 +701,7 @@ DEPENDENCIES
   cuprite
   database_cleaner-active_record
   debug
-  derailed_benchmarks (~> 2.1)
+  derailed_benchmarks (~> 2.1, >= 2.1.2)
   devise
   dotenv-rails
   erb-formatter
@@ -749,6 +750,7 @@ DEPENDENCIES
   spring-commands-rspec
   sprockets-rails
   standard
+  statistics (~> 1.0)
   test-prof
   tzinfo-data
   web-console (>= 3.3.0)
