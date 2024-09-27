@@ -532,7 +532,6 @@ module Avo
     def destroy_success_action
       respond_to do |format|
         format.html { redirect_to after_destroy_path, notice: destroy_success_message }
-        format.turbo_stream { render turbo_stream: turbo_stream.turbo_frame_reload(params[:turbo_frame]) }
       end
     end
 
