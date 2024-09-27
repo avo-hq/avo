@@ -126,7 +126,7 @@ module Avo
             ]
           end
         else
-          format.html { redirect_to params[:referrer] || resource_view_response_path}
+          format.html { redirect_to params[:referrer] || resource_view_response_path }
         end
       end
     end
