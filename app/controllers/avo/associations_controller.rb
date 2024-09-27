@@ -29,7 +29,13 @@ module Avo
       @association_field = find_association_field(resource: @parent_resource, association: params[:related_name])
 
       if @association_field.present? && @association_field.scope.present?
-        @query = Avo::ExecutionContext.new(target: @association_field.scope, query: @query, parent: @parent_record).handle
+        @query = Avo::ExecutionContext.new(
+          target: @association_field.scope,
+          query: @query,
+          parent: @parent_record,
+          resource: @resource,
+          parent_resource: @parent_resource
+        ).handle
       end
 
       super
