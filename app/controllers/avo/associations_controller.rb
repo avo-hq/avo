@@ -63,23 +63,17 @@ module Avo
     def create
       respond_to do |format|
         if create_association
-          flash[:notice] = t("avo.attachment_class_attached", attachment_class: @related_resource.name)
+          format.html {
+            redirect_back fallback_location: resource_view_response_path, notice: t("avo.attachment_class_attached", attachment_class: @related_resource.name)
+          }
+          format.turbo_stream {
+            actions = [turbo_stream.turbo_frame_reload(params[:turbo_frame])]
 
-          if params[:turbo_frame].present?
-            format.turbo_stream {
-              actions = [
-                turbo_stream.turbo_frame_reload(params[:turbo_frame]),
-                turbo_stream.flash_alerts
-              ]
+            # We want to close the modal if the user wants to add just one record
+            actions << turbo_stream.close_modal if params[:button] != "attach_another"
 
-              # We want to close the modal if the user wants to add just one record
-              actions << turbo_stream.close_modal if params[:button] != "attach_another"
-
-              render turbo_stream: actions
-            }
-          else
-            format.html { redirect_back fallback_location: resource_view_response_path }
-          end
+            render turbo_stream: actions
+          }
         else
           flash[:error] = t("avo.attachment_failed", attachment_class: @related_resource.name)
           format.turbo_stream {
@@ -115,19 +109,9 @@ module Avo
         @record.send(:"#{association_name}=", nil)
       end
 
-      flash[:notice] = t("avo.attachment_class_detached", attachment_class: @attachment_class)
-
       respond_to do |format|
-        if params[:turbo_frame].present?
-          format.turbo_stream do
-            render turbo_stream: [
-              turbo_stream.turbo_frame_reload(params[:turbo_frame]),
-              turbo_stream.flash_alerts
-            ]
-          end
-        else
-          format.html { redirect_to params[:referrer] || resource_view_response_path }
-        end
+        format.html { redirect_to params[:referrer] || resource_view_response_path, notice: t("avo.attachment_class_detached", attachment_class: @attachment_class) }
+        format.turbo_stream { render turbo_stream: turbo_stream.turbo_frame_reload(params[:turbo_frame]) }
       end
     end
 

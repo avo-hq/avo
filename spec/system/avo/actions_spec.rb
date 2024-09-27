@@ -192,7 +192,7 @@ RSpec.describe "Actions", type: :system do
 
       click_on "Actions"
       click_on "Do Nothing"
-      expect(page).to have_css("turbo-frame#modal_frame")
+      expect(page).to have_css('turbo-frame#modal_frame')
       expect(page).to have_selector(modal = "[role='dialog']")
       click_on "Run"
       expect(page).not_to have_selector(modal)
@@ -214,7 +214,7 @@ RSpec.describe "Actions", type: :system do
 
       click_on "Actions"
       click_on "Close modal"
-      expect(page).to have_css("turbo-frame#modal_frame")
+      expect(page).to have_css('turbo-frame#modal_frame')
       expect(page).to have_selector(modal = "[role='dialog']")
       click_on "Run"
       expect(page).not_to have_selector(modal)

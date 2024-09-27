@@ -103,7 +103,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
       paths: [*current_path, "new"],
       query: {
         view: @parent_resource&.view&.to_s,
-        turbo_frame: params[:turbo_frame],
+        for_turbo_frame: field&.try(:turbo_frame),
         for_attribute: field&.try(:for_attribute)
       }.compact
     )
