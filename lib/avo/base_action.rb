@@ -61,11 +61,7 @@ module Avo
           )
           .to_s
 
-        data = {
-          turbo_frame: Avo::ACTIONS_TURBO_FRAME_ID,
-        }
-
-        [path, data]
+        [path, {turbo_frame: Avo::MODAL_FRAME_ID}]
       end
 
       # Encrypt the arguments so we can pass sensible data as a query param.

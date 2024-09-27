@@ -246,7 +246,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       color: :primary,
       style: :text,
       data: {
-        turbo_frame: :attach_modal,
+        turbo_frame: Avo::MODAL_FRAME_ID,
         target: :attach
       } do
       control.label
@@ -282,7 +282,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       title: action.title,
       size: action.size,
       data: {
-        turbo_frame: Avo::ACTIONS_TURBO_FRAME_ID,
+        turbo_frame: Avo::MODAL_FRAME_ID,
         action_name: action.action.action_name,
         tippy: action.title ? :tooltip : nil,
         action: "click->actions-picker#visitAction",

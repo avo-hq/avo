@@ -1,4 +1,4 @@
-<%= turbo_frame_tag 'attach_modal' do %>
+<%= turbo_frame_tag Avo::MODAL_FRAME_ID do %>
   <%
     url = Avo::Services::URIService.parse(avo.root_url.to_s)
       .append_paths('resources', params[:resource_name], params[:id], params[:related_name])

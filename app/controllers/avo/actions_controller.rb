@@ -105,10 +105,9 @@ module Avo
               turbo_stream.flash_alerts
             ]
           when :navigate_to_action
-            frame_id = Avo::ACTIONS_TURBO_FRAME_ID
             src, _ = @response[:action].link_arguments(resource: @action.resource, **@response[:navigate_to_action_args])
 
-            turbo_stream.turbo_frame_set_src(frame_id, src)
+            turbo_stream.turbo_frame_set_src(Avo::MODAL_FRAME_ID, src)
           when :redirect
             turbo_stream.redirect_to(
               Avo::ExecutionContext.new(target: @response[:path]).handle,
