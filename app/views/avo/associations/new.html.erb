@@ -53,7 +53,7 @@
                 stacked: true,
                 classes: 'w-full'
               %>
-              <%= hidden_field_tag :turbo_frame, params[:for_turbo_frame] %>
+              <%= hidden_field_tag :turbo_frame, params[:turbo_frame] %>
             <% end %>
             <% @attach_fields&.each_with_index do |field, index| %>
               <%= render(Avo::Items::SwitcherComponent.new(
