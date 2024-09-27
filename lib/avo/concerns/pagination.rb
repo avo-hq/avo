@@ -27,7 +27,7 @@ module Avo
         @pagination_type ||= ActiveSupport::StringInquirer.new(pagination_hash[:type].to_s)
       end
 
-      def apply_pagination(index_params:, query:)
+      def apply_pagination(index_params:, query:, **args)
         extra_pagy_params = {}
 
         # Reset open filters when a user navigates to a new page
@@ -39,6 +39,8 @@ module Avo
 
         send PAGINATION_METHOD[pagination_type.to_sym],
           query,
+          **args,
+          page: index_params[:page],
           items: index_params[:per_page], # Add per page in pagy < 9
           limit: index_params[:per_page], # Add per page in pagy >= 9
           link_extra: data_turbo_frame, # Add extra arguments in pagy 7.
