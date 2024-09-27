@@ -163,7 +163,7 @@ RSpec.feature "Fields methods for each view", type: :feature do
     end
 
     it "detach works using show and index fields api" do
-      visit "#{Avo::Engine.routes.url_helpers.resources_course_path(course)}/links?turbo_frame=has_many_field_links&view=show"
+      visit "#{Avo::Engine.routes.url_helpers.resources_course_path(course)}/links?view=show"
 
       expect {
         find("tr[data-resource-id='#{course.links.first.to_param}'] [data-control='detach']").click
@@ -171,7 +171,7 @@ RSpec.feature "Fields methods for each view", type: :feature do
     end
 
     it "attach works using show and index fields api" do
-      visit "#{Avo::Engine.routes.url_helpers.resources_course_path(course)}/links?turbo_frame=has_many_field_links&view=show"
+      visit "#{Avo::Engine.routes.url_helpers.resources_course_path(course)}/links?view=show"
 
       click_on "Attach link"
 
