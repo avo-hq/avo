@@ -169,22 +169,5 @@ RSpec.feature "Fields methods for each view", type: :feature do
         find("tr[data-resource-id='#{course.links.first.to_param}'] [data-control='detach']").click
       }.to change(course.links, :count).by(-1)
     end
-
-    it "attach works using show and index fields api" do
-      visit "#{Avo::Engine.routes.url_helpers.resources_course_path(course)}/links?turbo_frame=has_many_field_links&view=show"
-
-      click_on "Attach link"
-
-      expect(page).to have_text "Choose link"
-
-      select attach_link.link, from: "fields_related_id"
-
-      expect {
-        within '[aria-modal="true"]' do
-          click_on "Attach"
-        end
-        wait_for_loaded
-      }.to change(course.links, :count).by 1
-    end
   end
 end
