@@ -537,9 +537,19 @@ module Avo
     end
 
     def destroy_success_action
+      flash[:notice] = destroy_success_message
+
       respond_to do |format|
-        format.html { redirect_to after_destroy_path, notice: destroy_success_message }
-        format.turbo_stream { render turbo_stream: turbo_stream.turbo_frame_reload(params[:turbo_frame]) }
+        if params[:turbo_frame]
+          format.turbo_stream do
+            render turbo_stream: [
+              turbo_stream.turbo_frame_reload(params[:turbo_frame]),
+              turbo_stream.flash_alerts
+            ]
+          end
+        else
+          format.html { redirect_to after_destroy_path }
+        end
       end
     end
 
