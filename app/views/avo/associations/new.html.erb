@@ -14,8 +14,7 @@
     url: url,
     local: true,
     data: {
-      turbo: false,
-      'turbo-frame': '_top'
+      turbo_frame: :_top
     } do |form| %>
     <%= render Avo::ModalComponent.new do |c| %>
       <% c.with_heading do %>
