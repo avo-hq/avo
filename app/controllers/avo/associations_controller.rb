@@ -64,6 +64,16 @@ module Avo
           [@attachment_resource.new(record: record).record_title, record.to_param]
         end
       end
+
+      @url = Avo::Services::URIService.parse(avo.root_url.to_s)
+        .append_paths('resources', params[:resource_name], params[:id], params[:related_name])
+        .append_query(
+          {
+            view: @resource&.view&.to_s,
+            for_attribute: @field&.try(:for_attribute)
+          }.compact
+        )
+        .to_s
     end
 
     def create
