@@ -112,6 +112,7 @@ RSpec.feature "HasManyField", type: :feature do
     let!(:a_comment) { create :comment, user: user, body: "A comment that starts with the letter A" }
 
     subject do
+      expect(TestBuddy).to receive(:hi).with("parent_resource:true,resource:true").at_least :once
       visit "/admin/resources/users/#{user.id}/comments?turbo_frame=has_many_field_show_comments"
       page
     end

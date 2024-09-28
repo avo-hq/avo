@@ -305,8 +305,15 @@ module Avo
     def set_index_params
       @index_params = {}
 
+      # projects.has_many.users
+      if @related_resource.present?
+        key = "#{@record.to_global_id}.has_many.#{@resource.class.to_s.parameterize}"
+        session[key] = params[:page] || session[key]
+        page_from_session = session[key]
+      end
+
       # Pagination
-      @index_params[:page] = params[:page] || 1
+      @index_params[:page] = params[:page] || page_from_session || 1
       @index_params[:per_page] = Avo.configuration.per_page
 
       if cookies[:per_page].present?
@@ -609,7 +616,8 @@ module Avo
     end
 
     def apply_pagination
-      @pagy, @records = @resource.apply_pagination(index_params: @index_params, query: pagy_query)
+      # Set `trim_extra` to false in associations so the first page has the `page=1` param assigned
+      @pagy, @records = @resource.apply_pagination(index_params: @index_params, query: pagy_query, trim_extra: @related_resource.blank?)
     end
 
     def apply_sorting

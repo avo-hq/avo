@@ -253,7 +253,11 @@ class Avo::Resources::User < Avo::BaseResource
       field :comments,
         as: :has_many,
         # show_on: :edit,
-        scope: -> { query.starts_with parent.first_name[0].downcase },
+        scope: -> {
+          TestBuddy.hi("parent_resource:#{parent_resource.present?},resource:#{resource.present?}")
+
+          query.starts_with parent.first_name[0].downcase
+        },
         description: "The comments listed in the attach modal all start with the name of the parent user."
       field :comment, as: :has_one, name: "Main comment"
     end
