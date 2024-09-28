@@ -66,7 +66,7 @@ module Avo
       end
 
       @url = Avo::Services::URIService.parse(avo.root_url.to_s)
-        .append_paths('resources', params[:resource_name], params[:id], params[:related_name])
+        .append_paths("resources", params[:resource_name], params[:id], params[:related_name])
         .append_query(
           {
             view: @resource&.view&.to_s,
