@@ -133,11 +133,11 @@ RSpec.feature "HasManyField", type: :system do
 
       scroll_to find('turbo-frame[id="has_many_field_show_posts"]')
 
-        expect {
-          accept_custom_alert do
-            find("[data-resource-id='#{post.to_param}'] [data-control='destroy']").click
-          end
-        }.to change(Post, :count).by(-1)
+      expect {
+        accept_custom_alert do
+          find("[data-resource-id='#{post.to_param}'] [data-control='destroy']").click
+        end
+      }.to change(Post, :count).by(-1)
 
       expect(page).to have_current_path url
       expect(page).not_to have_text post.name
