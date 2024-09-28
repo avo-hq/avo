@@ -22,7 +22,7 @@ module Avo3Dummy
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     # We're going to load the defaults from the env because we're using appraisal and differently versioned gems.
-    config.load_defaults ENV["RAILS_VERSION"] || 8.0
+    config.load_defaults ENV["RAILS_VERSION"] || 7.2
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
