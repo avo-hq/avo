@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe "Attachment success", type: :system do
   let!(:attach_link) { create :course_link }
-  let!(:course) { create :course}
+  let!(:course) { create :course }
 
   it "attach works using show and index fields api" do
     visit "#{Avo::Engine.routes.url_helpers.resources_course_path(course)}"
