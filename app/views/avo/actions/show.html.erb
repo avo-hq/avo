@@ -2,7 +2,7 @@
   <%= render Avo::LoadingComponent.new(title: "...") %>
 <% end %>
 
-<%= turbo_frame_tag Avo::ACTIONS_TURBO_FRAME_ID do %>
+<%= turbo_frame_tag Avo::MODAL_FRAME_ID do %>
   <div
     data-controller="<%= ["action", @action.get_stimulus_controllers].join(" ") %>"
     data-action-no-confirmation-value="<%= @action.no_confirmation %>"

@@ -111,7 +111,7 @@ class Avo::ActionsComponent < Avo::BaseComponent
   def action_data_attributes(action)
     {
       action_name: action.action_name,
-      "turbo-frame": Avo::ACTIONS_TURBO_FRAME_ID,
+      "turbo-frame": Avo::MODAL_FRAME_ID,
       action: "click->actions-picker#visitAction",
       "actions-picker-target": action.standalone ? "standaloneAction" : "resourceAction",
       disabled: is_disabled?(action),

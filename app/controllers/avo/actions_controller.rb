@@ -101,14 +101,13 @@ module Avo
             # Trigger download, removes modal and flash the messages
             [
               turbo_stream.download(content: Base64.encode64(@response[:path]), filename: @response[:filename]),
-              turbo_stream.close_action_modal,
+              turbo_stream.close_modal,
               turbo_stream.flash_alerts
             ]
           when :navigate_to_action
-            frame_id = Avo::ACTIONS_TURBO_FRAME_ID
             src, _ = @response[:action].link_arguments(resource: @action.resource, **@response[:navigate_to_action_args])
 
-            turbo_stream.turbo_frame_set_src(frame_id, src)
+            turbo_stream.turbo_frame_set_src(Avo::MODAL_FRAME_ID, src)
           when :redirect
             turbo_stream.redirect_to(
               Avo::ExecutionContext.new(target: @response[:path]).handle,
@@ -118,7 +117,7 @@ module Avo
           when :close_modal
             # Close the modal and flash the messages
             [
-              turbo_stream.close_action_modal,
+              turbo_stream.close_modal,
               turbo_stream.flash_alerts
             ]
           else
