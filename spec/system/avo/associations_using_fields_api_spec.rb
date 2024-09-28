@@ -2,11 +2,12 @@
 
 require "rails_helper"
 
-RSpec.describe "Attachment success", type: :system do
+RSpec.describe "Associations using *_fields api", type: :system do
   let!(:attach_link) { create :course_link }
-  let!(:course) { create :course }
+  let!(:links) { create_list :course_link, 3 }
+  let!(:course) { create :course, links: links }
 
-  it "attach works using show and index fields api" do
+  it "attach and detach works using show and index fields api" do
     visit avo.resources_course_path(course)
 
     scroll_to find('turbo-frame[id="has_many_field_show_links"]')
@@ -23,5 +24,11 @@ RSpec.describe "Attachment success", type: :system do
       end
       wait_for_loaded
     }.to change(course.links, :count).by 1
+
+    expect {
+      accept_custom_alert do
+        find("tr[data-resource-id='#{course.links.first.to_param}'] [data-control='detach']").click
+      end
+    }.to change(course.links, :count).by(-1)
   end
 end

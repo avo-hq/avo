@@ -142,5 +142,20 @@ RSpec.feature "HasManyField", type: :system do
       expect(page).to have_current_path url
       expect(page).not_to have_text post.name
     end
+
+    it "detaches a post" do
+      visit url
+
+      scroll_to find('turbo-frame[id="has_many_field_show_posts"]')
+
+      expect {
+        accept_custom_alert do
+          find("[data-resource-id='#{post.to_param}'] [data-control='detach']").click
+        end
+      }.to change(user.posts, :count).by(-1)
+
+      expect(page).to have_current_path url
+      expect(page).not_to have_text post.name
+    end
   end
 end
