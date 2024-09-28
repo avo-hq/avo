@@ -7,7 +7,7 @@ RSpec.describe "Attachment success", type: :system do
   let!(:course) { create :course }
 
   it "attach works using show and index fields api" do
-    visit "#{Avo::Engine.routes.url_helpers.resources_course_path(course)}"
+    visit avo.resources_course_path(course)
 
     click_on "Attach link"
 
