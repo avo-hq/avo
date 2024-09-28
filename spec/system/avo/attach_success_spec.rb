@@ -9,6 +9,8 @@ RSpec.describe "Attachment success", type: :system do
   it "attach works using show and index fields api" do
     visit avo.resources_course_path(course)
 
+    scroll_to find('turbo-frame[id="has_many_field_show_links"]')
+
     click_on "Attach link"
 
     expect(page).to have_text "Choose link"

@@ -4,13 +4,8 @@ RSpec.describe "HasOneFieldName", type: :system do
   let!(:user) { create :user }
   let!(:post) { create :post }
 
-  subject do
-    visit url
-    page
-  end
-
   context "show" do
-    let(:url) { "/admin/resources/users/#{user.id}" }
+    let!(:url) { "/admin/resources/users/#{user.id}" }
 
     describe "without a related post" do
       it "attaches and detaches a post" do
