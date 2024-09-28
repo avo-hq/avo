@@ -79,17 +79,23 @@ module Avo
     def create
       respond_to do |format|
         if create_association
-          format.html {
-            redirect_back fallback_location: resource_view_response_path, notice: t("avo.attachment_class_attached", attachment_class: @related_resource.name)
-          }
-          format.turbo_stream {
-            actions = [turbo_stream.turbo_frame_reload(params[:turbo_frame])]
+          flash[:notice] = t("avo.attachment_class_attached", attachment_class: @related_resource.name)
 
-            # We want to close the modal if the user wants to add just one record
-            actions << turbo_stream.close_modal if params[:button] != "attach_another"
+          if params[:turbo_frame]
+            format.turbo_stream {
+              actions = [
+                turbo_stream.turbo_frame_reload(params[:turbo_frame]),
+                turbo_stream.flash_alerts
+              ]
 
-            render turbo_stream: actions
-          }
+              # We want to close the modal if the user wants to add just one record
+              actions << turbo_stream.close_modal if params[:button] != "attach_another"
+
+              render turbo_stream: actions
+            }
+          else
+            format.html { redirect_back fallback_location: resource_view_response_path }
+          end
         else
           flash[:error] = t("avo.attachment_failed", attachment_class: @related_resource.name)
           format.turbo_stream {
