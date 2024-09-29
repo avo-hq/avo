@@ -58,7 +58,7 @@ gem "devise"
 #
 
 group :development do
-  gem "standard"
+  gem "standard", require: false
 
   # Release helper
   gem "bump", require: false
@@ -73,12 +73,12 @@ group :development do
 
   # gem 'pry-rails'
 
-  gem "htmlbeautifier"
+  gem "htmlbeautifier", require: false
 
   gem "hotwire-livereload", "~> 1.3.0"
 
-  gem "rubocop"
-  gem "ripper-tags"
+  gem "rubocop", require: false
+  gem "ripper-tags", require: false
   gem "rubocop-shopify", require: false
   gem "rubycritic", require: false
 

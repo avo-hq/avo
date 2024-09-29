@@ -1,0 +1,19 @@
+<%= turbo_stream.morph(
+  'turbo-frame#index_view',
+  html: render(@component.new(
+    resource: @resource,
+    resources: @resources,
+    records: @records,
+    pagy: @pagy,
+    index_params: @index_params,
+    filters: @filters,
+    actions: @actions,
+    reflection: @reflection,
+    turbo_frame: params[:turbo_frame],
+    parent_record: @parent_record,
+    parent_resource: @parent_resource,
+    applied_filters: @applied_filters,
+    query: @query,
+    scopes: @scopes,
+  )))
+%>

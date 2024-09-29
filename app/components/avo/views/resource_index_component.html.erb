@@ -40,26 +40,27 @@
               <% if show_search_input %>
                 <%= render partial: "avo/partials/resource_search", locals: {resource: @resource.route_key, via_reflection: via_reflection} %>
 
-                <%= helpers.turbo_stream.console_log "some message" %>
+                <%#= helpers.turbo_stream.set_focus :"#resource_search_input" %>
 
-                  <label class="Xhidden" for="resource_search" data-controller="resource-search">
+                  <label class="hidden" for="resource_search" data-controller="resource-search">
                     <a href="/admin/resources/projects?q=strong" data-resource-search-target="link" xdata-turbo-frame="index_view" data-turbo-frame="projects_list" data-turbo-action="advance" data-refresh="morph" autofocus>visit</a>
                     <input type="text" name="search" id="resource_search" data-action="resource-search#submit" value="<%= params[:q] %>" >
                   </label>
                 <%= form_with url: "/admin/resources/projects",
                   method: :get,
                   id: :resource_search,
-                  class: "hidden",
+                  class: "xhidden",
                   data: {
                     # turbo_frame: "#{@resource.model_key}_list",
                     turbo_frame: :index_view,
                     controller: :"resource-search",
                     morph: true
                   } do |f| %>
-                <%= f.text_field :q, value: params[:q], placeholder: "Search", class: "w-full", data:
+                <%= f.text_field :q, id: :resource_search_input, value: params[:q], placeholder: "Search", class: "w-full", data:
                   {
                     action: "resource-search#submit"
                   } %>
+                <%= f.hidden_field :turbo_frame, value: :index_view %>
                 <%= f.submit "Search"%>
                 <% end %>
               <% else %>

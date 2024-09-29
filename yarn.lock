@@ -3838,6 +3838,11 @@ minimist@^1.2.0, minimist@^1.2.6:
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.8.tgz#c1a464e7693302e082a075cee0c057741ac4772c"
   integrity sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==
 
+"morphdom@>= 2.6, < 2.7":
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/morphdom/-/morphdom-2.6.2.tgz#fdb75032af7421c0b3115899cdee96a031b6b673"
+  integrity sha512-4RYdPa8ZUIdxiUsSrv6J1Ll+eF+lUt4K8+GGylRgMnwRMkJVexGR9HuVoI9D+1In2+Qn8IsRmY65xXNRnt9JOQ==
+
 mousetrap@^1.6.5:
   version "1.6.5"
   resolved "https://registry.yarnpkg.com/mousetrap/-/mousetrap-1.6.5.tgz#8a766d8c272b08393d5f56074e0b5ec183485bf9"
@@ -5156,6 +5161,13 @@ tsconfig-paths@^3.15.0:
     json5 "^1.0.2"
     minimist "^1.2.6"
     strip-bom "^3.0.0"
+
+turbo-morph@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/turbo-morph/-/turbo-morph-0.2.0.tgz#5ff9afe74bb85b583ad63e9c00b50bc3278fc87b"
+  integrity sha512-UbkDbviKmsCrcvPXezJ+lBGB7AhaNDke5tZ7HGAtNJswrKcJVBlQ8Ij713E1PXOg/6qCS69gTuZY4xZGW+67Zw==
+  dependencies:
+    morphdom ">= 2.6, < 2.7"
 
 turbo_power@^0.6.2:
   version "0.6.2"

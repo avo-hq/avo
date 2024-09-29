@@ -1,6 +1,6 @@
 // import { Controller } from '@hotwired/stimulus'
 import { ApplicationController, useDebounce } from 'stimulus-use'
-// import { get } from '@rails/request.js'
+import { get } from '@rails/request.js'
 
 // import { Turbo } from '@hotwired/turbo-rails'
 // import { autocomplete } from '@algolia/autocomplete-js'
@@ -17,27 +17,31 @@ export default class extends ApplicationController {
     useDebounce(this)
   }
 
-
   submit(event) {
     console.log('submitted', event)
     // request.js solution
-    // get(new URL(window.location), {
-    //   responseKind: "turbo-stream",
-    //   query: {
-    //     q: encodeURIComponent(event.target.value)
-    //   },
-    // })
-    // const form = this.element
+    get(new URL(window.location), {
+      responseKind: 'turbo-stream',
+      query: {
+        q: encodeURIComponent(event.target.value),
+        // turbo_frame: 'index_view',
+      },
+    })
+
+    // Form solution
+    // const form = this.element.closest("form")
+    // console.log('form->', form)
     // form.requestSubmit()
     // Retrieve params via url.search, passed into constructor
 
     // Click solution
-    const url = new URL(window.location)
-    console.log(url.searchParams.toString(), event.target.value)
-    url.searchParams.set('q', encodeURIComponent(event.target.value))
-    console.log(url.toString(), this.linkTarget)
-    this.linkTarget.href = url.toString()
-    this.linkTarget.click()
+    // const url = new URL(window.location)
+    // console.log(url.searchParams.toString(), event.target.value)
+    // url.searchParams.set('q', encodeURIComponent(event.target.value))
+    // url.searchParams.set('turbo_frame', encodeURIComponent(event.target.value))
+    // console.log(url.toString(), this.linkTarget)
+    // this.linkTarget.href = url.toString()
+    // this.linkTarget.click()
 
     // Turbo solution
     // window.Turbo.visit(url.toString())
