@@ -233,20 +233,15 @@ module Avo
       flash[:notice] = t("avo.attachment_class_attached", attachment_class: @related_resource.name)
 
       respond_to do |format|
-        if params[:turbo_frame].present?
-          format.turbo_stream do
-            actions = [
-              turbo_stream.turbo_frame_reload(params[:turbo_frame]),
-              turbo_stream.flash_alerts
-            ]
+        return format.html { redirect_back fallback_location: resource_view_response_path } if params[:turbo_frame].blank?
 
-            # We want to close the modal if the user wants to add just one record
-            actions << turbo_stream.close_modal if params[:button] != "attach_another"
+        format.turbo_stream do
+          actions = reload_frame_turbo_streams
 
-            render turbo_stream: actions
-          end
-        else
-          format.html { redirect_back fallback_location: resource_view_response_path }
+          # We want to close the modal if the user wants to add just one record
+          actions << turbo_stream.close_modal if params[:button] != "attach_another"
+
+          render turbo_stream: actions
         end
       end
     end
@@ -267,10 +262,7 @@ module Avo
       respond_to do |format|
         if params[:turbo_frame].present?
           format.turbo_stream do
-            render turbo_stream: [
-              turbo_stream.turbo_frame_reload(params[:turbo_frame]),
-              turbo_stream.flash_alerts
-            ]
+            render turbo_stream: reload_frame_turbo_streams
           end
         else
           format.html { redirect_to params[:referrer] || resource_view_response_path }
