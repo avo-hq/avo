@@ -5,7 +5,7 @@ class Avo::SidebarComponent < Avo::BaseComponent
   prop :for_mobile, _Boolean, default: false
 
   def dashboards
-    return [] unless Avo.plugin_manager.installed?("avo-dashboards")
+    return [] unless Avo.plugin_manager.installed?(:avo_dashboards)
 
     Avo::Dashboards.dashboard_manager.dashboards_for_navigation
   end

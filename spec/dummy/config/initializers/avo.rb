@@ -114,6 +114,6 @@ Rails.configuration.to_prepare do
   Avo::ApplicationController.helper Rails.application.helpers
 end
 
-Avo.on_load(:boot) do
+ActiveSupport.on_load(:avo_boot) do
   Avo.plugin_manager.register_field :color_pickerrr, Avo::Fields::ColorPickerField
 end

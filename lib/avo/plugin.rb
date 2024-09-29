@@ -1,6 +1,11 @@
 module Avo
   class Plugin
-    def initialize(*, **, &block)
+    attr_reader :name
+    attr_reader :priority
+
+    def initialize(*, name:, priority:, **, &block)
+      @name = name
+      @priority = priority
     end
 
     class << self
