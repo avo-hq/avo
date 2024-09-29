@@ -234,20 +234,20 @@ module Avo
 
       respond_to do |format|
         if params[:turbo_frame].present?
-          format.turbo_stream do
-            actions = reload_frame_turbo_streams
-
-            # We want to close the modal if the user wants to add just one record
-            actions << turbo_stream.close_modal if params[:button] != "attach_another"
-
-            render turbo_stream: actions
-          end
-
-          return
+          format.turbo_stream { render turbo_stream: reload_frame_turbo_streams }
+        else
+          format.html { redirect_back fallback_location: resource_view_response_path }
         end
-
-        format.html { redirect_back fallback_location: resource_view_response_path }
       end
+    end
+
+    def reload_frame_turbo_streams
+      turbo_streams = super
+
+      # We want to close the modal if the user wants to add just one record
+      turbo_streams << turbo_stream.close_modal if params[:button] != "attach_another"
+
+      turbo_streams
     end
 
     def create_fail_action
