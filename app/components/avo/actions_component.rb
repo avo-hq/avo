@@ -9,23 +9,33 @@ class Avo::ActionsComponent < Avo::BaseComponent
   prop :icon, _Nilable(String)
   prop :size, Avo::ButtonComponent::SIZE, default: :md
   prop :title, _Nilable(String)
-  prop :color, Symbol, default: :primary
+  prop :color, _Nilable(Symbol) do |value|
+    value || :primary
+  end
   prop :include, _Nilable(ACTION_FILTER), default: [].freeze do |include|
     Array(include).to_set
   end
-  prop :label, String do |label|
-    label || I18n.t("avo.actions")
+  prop :custom_list, _Boolean, default: false
+  prop :label, _Nilable(String) do |label|
+    if @custom_list
+      label
+    else
+      label || I18n.t("avo.actions")
+    end
   end
   prop :style, Avo::ButtonComponent::STYLE, default: :outline
-  prop :actions, _Array(Avo::BaseAction), default: [].freeze
+  prop :actions, _Array(_Any), default: [].freeze
   prop :exclude, _Nilable(ACTION_FILTER), default: [].freeze do |exclude|
     Array(exclude).to_set
   end
   prop :resource, _Nilable(Avo::BaseResource)
   prop :view, _Nilable(Avo::ViewInquirer)
+  prop :host_component, _Nilable(_Any)
+
+  delegate_missing_to :@host_component
 
   def after_initialize
-    filter_actions
+    filter_actions unless @custom_list
   end
 
   def render?
@@ -61,8 +71,8 @@ class Avo::ActionsComponent < Avo::BaseComponent
     !on_record_page?
   end
 
-  def icon(action)
-    svg action.icon, class: "h-5 shrink-0 mr-1 inline pointer-events-none"
+  def icon(icon)
+    svg icon, class: "h-5 shrink-0 mr-1 inline pointer-events-none"
   end
 
   def render_item(action)
@@ -71,6 +81,14 @@ class Avo::ActionsComponent < Avo::BaseComponent
       render_divider(action)
     when Avo::BaseAction
       render_action_link(action)
+    when defined?(Avo::Advanced::Resources::Controls::Action) && Avo::Advanced::Resources::Controls::Action
+      render_action_link(action.action, icon: action.icon)
+    when defined?(Avo::Advanced::Resources::Controls::LinkTo) && Avo::Advanced::Resources::Controls::LinkTo
+      link_to action.args[:path],
+        class: action.args.delete(:class) || "flex items-center px-4 py-3 w-full text-black font-semibold text-sm hover:bg-primary-100",
+        **action.args.except(:path, :label, :icon) do
+          raw("#{icon(action.args[:icon])} #{action.args[:label]}")
+        end
     end
   end
 
@@ -81,19 +99,19 @@ class Avo::ActionsComponent < Avo::BaseComponent
     render Avo::DividerComponent.new(label)
   end
 
-  def render_action_link(action)
+  def render_action_link(action, icon: nil)
     link_to action.link_arguments(resource: @resource, arguments: action.arguments).first,
       data: action_data_attributes(action),
       title: action.action_name,
       class: action_css_class(action) do
-        raw("#{icon(action)} #{action.action_name}")
+        raw("#{icon(icon || action.icon)} #{action.action_name}")
       end
   end
 
   def action_data_attributes(action)
     {
       action_name: action.action_name,
-      "turbo-frame": Avo::ACTIONS_TURBO_FRAME_ID,
+      "turbo-frame": Avo::MODAL_FRAME_ID,
       action: "click->actions-picker#visitAction",
       "actions-picker-target": action.standalone ? "standaloneAction" : "resourceAction",
       disabled: is_disabled?(action),
