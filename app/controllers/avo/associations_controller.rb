@@ -242,9 +242,11 @@ module Avo
 
             render turbo_stream: actions
           end
-        else
-          format.html { redirect_back fallback_location: resource_view_response_path }
+
+          return
         end
+
+        format.html { redirect_back fallback_location: resource_view_response_path }
       end
     end
 
