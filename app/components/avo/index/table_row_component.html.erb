@@ -1,6 +1,6 @@
 <%# hover:z-[21] removed from tr class to solve flickering actions component on row controls and z-20 changed to z-21%>
 <%= content_tag :tr,
-  class: class_names("bg-white hover:bg-gray-50 hover:shadow-row z-21 border-b", {"cursor-pointer": click_row_to_view_record}),
+  class: class_names("group bg-white hover:bg-gray-50 z-21 border-b", {"cursor-pointer": click_row_to_view_record}),
   data: {
     component_name: self.class.to_s.underscore,
     resource_name: @resource.class.to_s,
@@ -42,7 +42,7 @@
     <% end %>
   <% end %>
   <% if Avo.configuration.resource_controls_on_the_right? %>
-    <td class="text-right whitespace-nowrap px-3" data-control="resource-controls">
+    <td class="sticky group-hover:bg-gray-50 bg-white inset-auto right-0 text-right whitespace-nowrap px-3" data-control="resource-controls">
       <div class="flex items-center justify-end flex-grow-0 h-full">
         <%= render resource_controls_component %>
       </div>
