@@ -77,18 +77,10 @@ module Avo
     end
 
     def create
-      respond_to do |format|
-        if create_association
-          format.html {
-            redirect_back fallback_location: resource_view_response_path,
-              notice: t("avo.attachment_class_attached", attachment_class: @related_resource.name)
-          }
-        else
-          flash[:error] = t("avo.attachment_failed", attachment_class: @related_resource.name)
-          format.turbo_stream {
-            render turbo_stream: turbo_stream.append("alerts", partial: "avo/partials/all_alerts")
-          }
-        end
+      if create_association
+        create_success_action
+      else
+        create_fail_action
       end
     end
 
@@ -118,9 +110,7 @@ module Avo
         @record.send(:"#{association_name}=", nil)
       end
 
-      respond_to do |format|
-        format.html { redirect_to params[:referrer] || resource_view_response_path, notice: t("avo.attachment_class_detached", attachment_class: @attachment_class) }
-      end
+      destroy_success_action
     end
 
     private
@@ -237,6 +227,51 @@ module Avo
         additional_params,
         fields: @attach_fields,
       )
+    end
+
+    def create_success_action
+      flash[:notice] = t("avo.attachment_class_attached", attachment_class: @related_resource.name)
+
+      respond_to do |format|
+        if params[:turbo_frame].present?
+          format.turbo_stream { render turbo_stream: reload_frame_turbo_streams }
+        else
+          format.html { redirect_back fallback_location: resource_view_response_path }
+        end
+      end
+    end
+
+    def reload_frame_turbo_streams
+      turbo_streams = super
+
+      # We want to close the modal if the user wants to add just one record
+      turbo_streams << turbo_stream.close_modal if params[:button] != "attach_another"
+
+      turbo_streams
+    end
+
+    def create_fail_action
+      flash[:error] = t("avo.attachment_failed", attachment_class: @related_resource.name)
+
+      respond_to do |format|
+        format.turbo_stream {
+          render turbo_stream: turbo_stream.append("alerts", partial: "avo/partials/all_alerts")
+        }
+      end
+    end
+
+    def destroy_success_action
+      flash[:notice] = t("avo.attachment_class_detached", attachment_class: @attachment_class)
+
+      respond_to do |format|
+        if params[:turbo_frame].present?
+          format.turbo_stream do
+            render turbo_stream: reload_frame_turbo_streams
+          end
+        else
+          format.html { redirect_to params[:referrer] || resource_view_response_path }
+        end
+      end
     end
   end
 end

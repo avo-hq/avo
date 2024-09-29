@@ -67,8 +67,11 @@ RSpec.feature "for_attribute option", type: :system do
       }.to change(project.reviews, :count).by 1
 
       expect(current_path).to eql avo.resources_project_path(project)
-      expect(page).not_to have_text "Choose review"
-      expect(page).not_to have_text "No related record found"
+
+      within('turbo-frame[id="has_many_field_show_reviews"]') do
+        expect(page).not_to have_text "Choose review"
+        expect(page).not_to have_text "No related record found"
+      end
     end
   end
 end

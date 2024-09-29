@@ -537,8 +537,16 @@ module Avo
     end
 
     def destroy_success_action
+      flash[:notice] = destroy_success_message
+
       respond_to do |format|
-        format.html { redirect_to after_destroy_path, notice: destroy_success_message }
+        if params[:turbo_frame]
+          format.turbo_stream do
+            render turbo_stream: reload_frame_turbo_streams
+          end
+        else
+          format.html { redirect_to after_destroy_path }
+        end
       end
     end
 
@@ -645,6 +653,13 @@ module Avo
     # Sanitize sort_direction param
     def sanitized_sort_direction
       @sanitized_sort_direction ||= @index_params[:sort_direction].presence_in(["asc", :asc, "desc", :desc])
+    end
+
+    def reload_frame_turbo_streams
+      [
+        turbo_stream.turbo_frame_reload(params[:turbo_frame]),
+        turbo_stream.flash_alerts
+      ]
     end
   end
 end

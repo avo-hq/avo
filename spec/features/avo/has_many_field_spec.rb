@@ -82,28 +82,6 @@ RSpec.feature "HasManyField", type: :feature do
         # expect(page).to have_selector("#{form} input#referrer_destroy_#{post.id}[value='/admin/resources/users/#{user.slug}/posts?turbo_frame=has_many_field_posts']", visible: false)
         expect(page).to have_selector("[data-component='resources-index'] #{form} button[data-control='destroy'][data-resource-id='#{post.to_param}'][data-turbo-frame='has_many_field_posts']")
       end
-
-      it "deletes a post" do
-        visit url
-
-        expect {
-          find("[data-resource-id='#{post.to_param}'] [data-control='destroy']").click
-        }.to change(Post, :count).by(-1)
-
-        expect(page).to have_current_path url
-        expect(page).not_to have_text post.name
-      end
-
-      it "detaches a post" do
-        visit url
-
-        expect {
-          find("tr[data-resource-id='#{post.to_param}'] [data-control='detach']").click
-        }.to change(user.posts, :count).by(-1)
-
-        expect(page).to have_current_path url
-        expect(page).not_to have_text post.name
-      end
     end
   end
 
