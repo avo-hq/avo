@@ -27,12 +27,12 @@ RSpec.describe "HasOneFieldName", type: :system do
 
         click_on "Attach"
         wait_for_loaded
+        expect(page).to have_text "Post attached."
 
         scroll_to second_tab_group
 
         click_tab "Main post", within_target: second_tab_group
 
-        expect(page).to have_text "Post attached."
         expect(page).not_to have_text "Choose post"
         expect(page).to have_text post.name
 
