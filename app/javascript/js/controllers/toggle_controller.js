@@ -20,7 +20,7 @@ export default class extends Controller {
 
   clickOutside(e) {
     if (this.hasPanelTarget) {
-      if (this.hasExemptionContainerValue) {
+      if (this.hasExemptionContainerValue && this.exemptionContainerTarget) {
         const inExemptionContainer = this.exemptionContainerTarget.contains(e.target)
 
         if (!inExemptionContainer) {
