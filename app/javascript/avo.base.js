@@ -56,6 +56,12 @@ function initTippy() {
         title = reference.getAttribute('tippy_title')
       }
 
+      // Remove data-tippy to avoid multiples tippy renders for the same element
+      // Tag element with has-data-tippy
+      // Revert data-tippy attribute on turbo:before-cache to render the tippy on page navigation (ex when back button is pressed)
+      reference.removeAttribute('data-tippy')
+      reference.setAttribute('has-data-tippy', true)
+
       return title
     },
     onShow(tooltipInstance) {
@@ -118,6 +124,10 @@ document.addEventListener('turbo:submit-start', () => document.body.classList.ad
 document.addEventListener('turbo:submit-end', () => document.body.classList.remove('turbo-loading'))
 document.addEventListener('turbo:before-cache', () => {
   document.querySelectorAll('[data-turbo-remove-before-cache]').forEach((element) => element.remove())
+  document.querySelectorAll('[has-data-tippy="true"]').forEach((element) => {
+    element.removeAttribute('has-data-tippy')
+    element.setAttribute('data-tippy', 'tooltip')
+  })
 })
 
 window.Avo = window.Avo || { configuration: {} }
