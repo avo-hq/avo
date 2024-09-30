@@ -43,9 +43,18 @@ function initTippy() {
   tippy('[data-tippy="tooltip"]', {
     theme: 'light',
     content(reference) {
-      const title = reference.getAttribute('title')
-      reference.removeAttribute('title')
-      reference.removeAttribute('data-tippy')
+      // On fist load get the title
+      // Remove the title attribute from the element to avoid the default HTML title attribute behavior
+      // Add the title value to tippy_title attribute
+      // When browser back is clicked get the title from tippy_title
+      let title = reference.getAttribute('title')
+
+      if (title) {
+        reference.setAttribute('tippy_title', title)
+        reference.removeAttribute('title')
+      } else {
+        title = reference.getAttribute('tippy_title')
+      }
 
       return title
     },
