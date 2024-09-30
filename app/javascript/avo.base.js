@@ -43,24 +43,14 @@ function initTippy() {
   tippy('[data-tippy="tooltip"]', {
     theme: 'light',
     content(reference) {
-      // On fist load get the title
-      // Remove the title attribute from the element to avoid the default HTML title attribute behavior
-      // Add the title value to tippy_title attribute
-      // When browser back is clicked get the title from tippy_title
-      let title = reference.getAttribute('title')
-
-      if (title) {
-        reference.setAttribute('tippy_title', title)
-        reference.removeAttribute('title')
-      } else {
-        title = reference.getAttribute('tippy_title')
-      }
-
-      // Remove data-tippy to avoid multiples tippy renders for the same element
-      // Tag element with has-data-tippy
-      // Revert data-tippy attribute on turbo:before-cache to render the tippy on page navigation (ex when back button is pressed)
+      const title = reference.getAttribute('title')
+      reference.removeAttribute('title')
       reference.removeAttribute('data-tippy')
-      reference.setAttribute('has-data-tippy', true)
+
+      // Identify elements that have tippy tooltip with the has-data-tippy attribute
+      // Store the title on the attribute
+      // Used to revert data-tippy and title attributes before cache
+      reference.setAttribute('has-data-tippy', title)
 
       return title
     },
@@ -124,9 +114,12 @@ document.addEventListener('turbo:submit-start', () => document.body.classList.ad
 document.addEventListener('turbo:submit-end', () => document.body.classList.remove('turbo-loading'))
 document.addEventListener('turbo:before-cache', () => {
   document.querySelectorAll('[data-turbo-remove-before-cache]').forEach((element) => element.remove())
-  document.querySelectorAll('[has-data-tippy="true"]').forEach((element) => {
-    element.removeAttribute('has-data-tippy')
+
+  // Revert data-tippy and title attributes stored on the has-data-tippy attribute
+  document.querySelectorAll('[has-data-tippy]').forEach((element) => {
     element.setAttribute('data-tippy', 'tooltip')
+    element.setAttribute('title', element.getAttribute('has-data-tippy'))
+    element.removeAttribute('has-data-tippy')
   })
 })
 
