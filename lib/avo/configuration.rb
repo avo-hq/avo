@@ -2,6 +2,8 @@ module Avo
   class Configuration
     include ResourceConfiguration
 
+    #TODO: add a configuration switch that adds the necesarry classes
+
     attr_writer :app_name
     attr_writer :branding
     attr_writer :root_path
