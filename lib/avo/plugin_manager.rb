@@ -37,7 +37,7 @@ module Avo
     def as_json(*arg)
       plugins.map do |plugin|
         {
-          klass: plugin.klass.to_s,
+          klass: plugin.to_s,
           priority: plugin.priority,
         }
       end
@@ -45,7 +45,7 @@ module Avo
 
     def to_s
       plugins.map do |plugin|
-        plugin.klass.to_s
+        plugin.to_s
       end.join(",")
     rescue
       "Failed to fetch plugins."
