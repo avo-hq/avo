@@ -149,24 +149,22 @@ module Avo
       end
     end
 
-    def authorize_if_defined(method, record = @record)
+    def authorize(method, record = @record)
       @authorization.set_record(record)
 
-      if @authorization.has_method?(method.to_sym)
-        @authorization.authorize_action method.to_sym
-      end
+      raise Avo::NotAuthorizedError.new unless @authorization.authorize_action(method.to_sym)
     end
 
     def authorize_index_action
-      authorize_if_defined "view_#{@field.id}?"
+      authorize "view_#{@field.id}?"
     end
 
     def authorize_attach_action
-      authorize_if_defined "attach_#{@field.id}?"
+      authorize "attach_#{@field.id}?"
     end
 
     def authorize_detach_action
-      authorize_if_defined "detach_#{@field.id}?", @attachment_record
+      authorize "detach_#{@field.id}?", @attachment_record
     end
 
     def set_related_authorization

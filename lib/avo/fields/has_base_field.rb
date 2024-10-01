@@ -97,11 +97,7 @@ module Avo
         method = :"view_#{id}?"
         service = field_resource.authorization
 
-        if service.has_method? method
-          service.authorize_action(method, raise_exception: false)
-        else
-          true
-        end
+        service.authorize_action(method)
       end
 
       def default_name

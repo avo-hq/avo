@@ -18,6 +18,7 @@ module Avo
     attr_accessor :default_view_type
     attr_accessor :license_key
     attr_accessor :authorization_methods
+    attr_accessor :whitelisting_authorization
     attr_accessor :authenticate
     attr_accessor :current_user
     attr_accessor :id_links_to_resource
@@ -35,6 +36,7 @@ module Avo
     attr_accessor :display_license_request_timeout_error
     attr_accessor :current_user_resource_name
     attr_accessor :raise_error_on_missing_policy
+    attr_accessor :raise_error_on_missing_policy_method
     attr_accessor :disabled_features
     attr_accessor :buttons_on_form_footers
     attr_accessor :main_menu
@@ -68,6 +70,7 @@ module Avo
       @license_key = nil
       @current_user = proc {}
       @authenticate = proc {}
+      @whitelisting_authorization = false
       @authorization_methods = {
         index: "index?",
         show: "show?",
@@ -94,6 +97,7 @@ module Avo
       @display_license_request_timeout_error = true
       @current_user_resource_name = "user"
       @raise_error_on_missing_policy = false
+      @raise_error_on_missing_policy_method = false
       @disabled_features = []
       @buttons_on_form_footers = false
       @main_menu = nil
