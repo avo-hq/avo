@@ -12,18 +12,6 @@ module Avo
       @plugins << Plugin.new(name:, priority: priority)
     end
 
-    def boot_plugins
-      Avo.plugin_manager.all.sort_by(&:priority).each do |plugin|
-        plugin.klass.boot
-      end
-    end
-
-    def init_plugins
-      Avo.plugin_manager.all.sort_by(&:priority).each do |plugin|
-        plugin.klass.init
-      end
-    end
-
     def register_field(method_name, klass)
       Avo.field_manager.load_field method_name, klass
     end
