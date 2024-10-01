@@ -5,17 +5,8 @@ module Avo
 
       # Ex: A Post has many Comments
       def authorize_association_for(policy_method)
-        return true if @reflection.blank?
-
-        # Use the related_name as the base of the association
-        association_name = @reflection.name
-
         return true if association_name.blank?
 
-        # Fetch the appropriate resource
-        reflection_resource = field.resource
-
-        # Fetch the record
         # Hydrate the resource with the record if we have one
         reflection_resource.hydrate(record: @parent_record) if @parent_record.present?
 
@@ -38,6 +29,16 @@ module Avo
           record:,
           raise_exception: false
         )
+      end
+
+      # Use the related_name as the base of the association
+      def association_name
+        @association_name ||= @reflection&.name
+      end
+
+      # Fetch the appropriate resource
+      def reflection_resource
+        @reflection_resource ||= field.resource
       end
     end
   end
