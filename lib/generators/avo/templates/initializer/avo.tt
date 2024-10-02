@@ -40,7 +40,6 @@ Avo.configure do |config|
   #   search: 'search?',
   # }
   # config.raise_error_on_missing_policy = false
-  # config.raise_error_on_missing_policy_method = false
   config.authorization_client = nil
   config.whitelisting_authorization = true
 
