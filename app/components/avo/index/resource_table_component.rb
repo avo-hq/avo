@@ -14,7 +14,7 @@ class Avo::Index::ResourceTableComponent < Avo::BaseComponent
   prop :parent_record, _Nilable(_Any)
   prop :parent_resource, _Nilable(Avo::BaseResource)
   prop :pagy, _Nilable(Pagy)
-  prop :query, _Nilable(ActiveRecord::Relation)
+  prop :query, _Nilable(_Any)
   prop :actions, _Nilable(_Array(Avo::BaseAction))
 
   def encrypted_query
