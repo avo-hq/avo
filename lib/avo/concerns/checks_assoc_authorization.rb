@@ -5,7 +5,12 @@ module Avo
 
       # Ex: A Post has many Comments
       def authorize_association_for(policy_method)
+        # Use the related_name as the base of the association
+        association_name = @reflection&.name
         return true if association_name.blank?
+
+        # Fetch the appropriate resource
+        reflection_resource = field.resource
 
         # Hydrate the resource with the record if we have one
         reflection_resource.hydrate(record: @parent_record) if @parent_record.present?
@@ -25,26 +30,17 @@ module Avo
 
         # Use the policy methods from the parent (Post)
         service = reflection_resource.authorization
+        method_name = :"#{policy_method}_#{association_name}?".to_sym,
 
         if service.has_method?(method_name, raise_exception: false)
           service.authorize_action(
-            :"#{policy_method}_#{association_name}?".to_sym,
+            method_name,
             record:,
             raise_exception: false
           )
         else
           !Avo.configuration.whitelisting_authorization
         end
-      end
-
-      # Use the related_name as the base of the association
-      def association_name
-        @association_name ||= @reflection&.name
-      end
-
-      # Fetch the appropriate resource
-      def reflection_resource
-        @reflection_resource ||= field.resource
       end
     end
   end
