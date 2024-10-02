@@ -97,7 +97,11 @@ module Avo
         method = :"view_#{id}?"
         service = field_resource.authorization
 
-        service.authorize_action(method, raise_exception: false)
+        if service.has_method? method
+          service.authorize_action(method, raise_exception: false)
+        else
+          !Avo.configuration.whitelisting_authorization
+        end
       end
 
       def default_name
