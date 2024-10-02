@@ -30,14 +30,10 @@ module Avo
 
         # Use the policy methods from the parent (Post)
         service = reflection_resource.authorization
-        method_name = :"#{policy_method}_#{association_name}?".to_sym,
+        method_name = :"#{policy_method}_#{association_name}?".to_sym
 
         if service.has_method?(method_name, raise_exception: false)
-          service.authorize_action(
-            method_name,
-            record:,
-            raise_exception: false
-          )
+          service.authorize_action(method_name, record:, raise_exception: false)
         else
           !Avo.configuration.whitelisting_authorization
         end
