@@ -46,18 +46,13 @@ export default class extends Controller {
     this.updateKeyValueComponent()
   }
 
-  upRow(event) {
+  moveKey(event) {
     if (!this.options.editable) return
-    const { index } = event.params
-    this.fieldValue = this.moveElement(this.fieldValue, index, index - 1)
-    this.updateTextareaInput()
-    this.updateKeyValueComponent()
-  }
 
-  downRow(event) {
-    if (!this.options.editable) return
-    const { index } = event.params
-    this.fieldValue = this.moveElement(this.fieldValue, index, index + 1)
+    const { index, direction } = event.params
+    const toIndex = direction === 'up' ? index - 1 : index + 1
+    this.fieldValue = this.moveElement(this.fieldValue, index, toIndex)
+
     this.updateTextareaInput()
     this.updateKeyValueComponent()
   }
@@ -119,7 +114,8 @@ export default class extends Controller {
       result += `<a
       href="javascript:void(0);"
       data-key-value-index-param="${index}"
-      data-action="click->key-value#upRow"
+      data-key-value-direction-param="up"
+      data-action="click->key-value#moveKey"
       title="up"
       data-tippy="tooltip"
       data-button="up-row"
@@ -129,7 +125,8 @@ export default class extends Controller {
       <a
       href="javascript:void(0);"
       data-key-value-index-param="${index}"
-      data-action="click->key-value#downRow"
+      data-key-value-direction-param="down"
+      data-action="click->key-value#moveKey"
       title="down"
       data-tippy="tooltip"
       data-button="down-row"
