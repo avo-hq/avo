@@ -8,6 +8,9 @@ module Avo
       REQUEST_TIMEOUT = 5 unless const_defined?(:REQUEST_TIMEOUT) # seconds
       CACHE_TIME = 6.hours.to_i unless const_defined?(:CACHE_TIME) # seconds
 
+      # Define an immutable Response class using Data
+      Response = Data.define(:code, :body)
+
       class << self
         def cache_key
           "avo.hq-#{Avo::VERSION.parameterize}.response"
@@ -147,7 +150,8 @@ module Avo
         Avo.logger.debug "Performing request to avohq.io API to check license availability." if Rails.env.development?
 
         if Rails.env.test?
-          OpenStruct.new({code: 200, body: "{\"id\":\"pro\",\"valid\":true}"})
+          # Use the Response Data class instead of OpenStruct
+          Response.new(code: 200, body: "{\"id\":\"pro\",\"valid\":true}")
         else
           Avo::Licensing::Request.post ENDPOINT, body: payload.to_json, timeout: REQUEST_TIMEOUT
         end
