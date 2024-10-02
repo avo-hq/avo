@@ -32,7 +32,7 @@ module Avo
             record:,
             raise_exception: false
           )
-        elsif
+        else
           !Avo.configuration.whitelisting_authorization
         end
       end
