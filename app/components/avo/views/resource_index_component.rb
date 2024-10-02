@@ -17,7 +17,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   prop :parent_record, _Nilable(_Any)
   prop :parent_resource, _Nilable(Avo::BaseResource)
   prop :applied_filters, Hash, default: {}.freeze
-  prop :query, _Nilable(ActiveRecord::Relation), reader: :public
+  prop :query, _Nilable(_Any), reader: :public
   # This should be
   # prop :scopes, _Nilable(_Array(Avo::Advanced::Scopes::BaseScope)), reader: :public
   # However, Avo::Advanced::Scopes::BaseScope raises an error because
