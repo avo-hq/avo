@@ -83,13 +83,14 @@ module Avo
         }
       end
 
-      def fill_field(record, key, value, params)
+      def fill_field(record, key, value, _params)
         begin
           new_value = JSON.parse(value)
-        rescue
+        rescue StandardError
           new_value = {}
         end
 
+        record.send(:"#{key}_will_change!")
         record.send(:"#{key}=", new_value)
 
         record

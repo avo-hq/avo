@@ -46,6 +46,31 @@ export default class extends Controller {
     this.updateKeyValueComponent()
   }
 
+  upRow(event) {
+    if (!this.options.editable) return
+    const { index } = event.params
+    this.fieldValue = this.moveElement(this.fieldValue, index, index - 1)
+    this.updateTextareaInput()
+    this.updateKeyValueComponent()
+  }
+
+  downRow(event) {
+    if (!this.options.editable) return
+    const { index } = event.params
+    this.fieldValue = this.moveElement(this.fieldValue, index, index + 1)
+    this.updateTextareaInput()
+    this.updateKeyValueComponent()
+  }
+
+  moveElement(arr, fromIndex, toIndex) {
+    return arr.map((item, index) => {
+      if (index === toIndex) return arr[fromIndex]
+      if (index === fromIndex) return arr[toIndex]
+
+      return item
+    })
+  }
+
   focusLastRow() {
     return this.rowsTarget.querySelector('.flex.key-value-row:last-child .key-value-input-key').focus()
   }
@@ -89,9 +114,35 @@ export default class extends Controller {
   }
 
   interpolatedRow(key, value, index) {
-    let result = `<div class="flex key-value-row">
+    let result = '<div class="flex key-value-row">'
+    if (this.options.editable) {
+      result += `<a
+      href="javascript:void(0);"
+      data-key-value-index-param="${index}"
+      data-action="click->key-value#upRow"
+      title="up"
+      data-tippy="tooltip"
+      data-button="up-row"
+      tabindex="-1"
+      class="flex items-center justify-center p-2 px-3 border-none ${this.options.disable_deleting_rows ? 'cursor-not-allowed' : ''} ${index === 0 ? 'invisible' : ''}"
+      ><svg class="pointer-events-none text-gray-500 h-5 hover:text-gray-500" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg></a>
+      <a
+      href="javascript:void(0);"
+      data-key-value-index-param="${index}"
+      data-action="click->key-value#downRow"
+      title="down"
+      data-tippy="tooltip"
+      data-button="down-row"
+      tabindex="-1"
+      class="flex items-center justify-center p-2 px-3 border-none ${this.options.disable_deleting_rows ? 'cursor-not-allowed' : ''} ${index === this.fieldValue.length - 1 ? 'invisible' : ''}"
+      ><svg class="pointer-events-none text-gray-500 h-5 hover:text-gray-500" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg></a>`
+    }
+
+    result += `
       ${this.inputField('key', index, key, value)}
-      ${this.inputField('value', index, key, value)}`
+      ${this.inputField('value', index, key, value)}
+    `
+
     if (this.options.editable) {
       result += `<a
   href="javascript:void(0);"
