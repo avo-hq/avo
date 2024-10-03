@@ -110,29 +110,9 @@ export default class extends Controller {
 
   interpolatedRow(key, value, index) {
     let result = '<div class="flex key-value-row">'
+
     if (this.options.editable) {
-      result += `<a
-      href="javascript:void(0);"
-      data-key-value-index-param="${index}"
-      data-key-value-direction-param="up"
-      data-action="click->key-value#moveKey"
-      title="up"
-      data-tippy="tooltip"
-      data-button="up-row"
-      tabindex="-1"
-      class="flex items-center justify-center p-2 px-3 border-none ${this.options.disable_deleting_rows ? 'cursor-not-allowed' : ''} ${index === 0 ? 'invisible' : ''}"
-      ><svg class="pointer-events-none text-gray-500 h-5 hover:text-gray-500" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg></a>
-      <a
-      href="javascript:void(0);"
-      data-key-value-index-param="${index}"
-      data-key-value-direction-param="down"
-      data-action="click->key-value#moveKey"
-      title="down"
-      data-tippy="tooltip"
-      data-button="down-row"
-      tabindex="-1"
-      class="flex items-center justify-center p-2 px-3 border-none ${this.options.disable_deleting_rows ? 'cursor-not-allowed' : ''} ${index === this.fieldValue.length - 1 ? 'invisible' : ''}"
-      ><svg class="pointer-events-none text-gray-500 h-5 hover:text-gray-500" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg></a>`
+      result += this.upDownButtons(index)
     }
 
     result += `
@@ -169,6 +149,31 @@ export default class extends Controller {
   ${this[`${id}InputDisabled`] ? "disabled='disabled'" : ''}
   value="${typeof inputValue === 'undefined' || inputValue === null ? '' : inputValue}"
 />`
+  }
+
+  upDownButtons(index) {
+    return `<a
+      href="javascript:void(0);"
+      data-key-value-index-param="${index}"
+      data-key-value-direction-param="up"
+      data-action="click->key-value#moveKey"
+      title="up"
+      data-tippy="tooltip"
+      data-button="up-row"
+      tabindex="-1"
+      class="flex items-center justify-center p-2 px-3 border-none ${this.options.disable_deleting_rows ? 'cursor-not-allowed' : ''} ${index === 0 ? 'invisible' : ''}"
+      ><svg class="pointer-events-none text-gray-500 h-5 hover:text-gray-500" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg></a>
+      <a
+      href="javascript:void(0);"
+      data-key-value-index-param="${index}"
+      data-key-value-direction-param="down"
+      data-action="click->key-value#moveKey"
+      title="down"
+      data-tippy="tooltip"
+      data-button="down-row"
+      tabindex="-1"
+      class="flex items-center justify-center p-2 px-3 border-none ${this.options.disable_deleting_rows ? 'cursor-not-allowed' : ''} ${index === this.fieldValue.length - 1 ? 'invisible' : ''}"
+      ><svg class="pointer-events-none text-gray-500 h-5 hover:text-gray-500" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg></a>`
   }
 
   setOptions() {
