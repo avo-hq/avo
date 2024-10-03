@@ -121,18 +121,9 @@ export default class extends Controller {
     `
 
     if (this.options.editable) {
-      result += `<a
-  href="javascript:void(0);"
-  data-key-value-index-param="${index}"
-  data-action="click->key-value#deleteRow"
-  title="${this.options.delete_text}"
-  data-tippy="tooltip"
-  data-button="delete-row"
-  tabindex="-1"
-  ${this.options.disable_deleting_rows ? "disabled='disabled'" : ''}
-  class="flex items-center justify-center p-2 px-3 border-none ${this.options.disable_deleting_rows ? 'cursor-not-allowed' : ''}"
-><svg class="pointer-events-none text-gray-500 h-5 hover:text-gray-500" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></a>`
+      result += this.deleteButton(index)
     }
+
     result += '</div>'
 
     return result
@@ -149,6 +140,20 @@ export default class extends Controller {
   ${this[`${id}InputDisabled`] ? "disabled='disabled'" : ''}
   value="${typeof inputValue === 'undefined' || inputValue === null ? '' : inputValue}"
 />`
+  }
+
+  deleteButton(index) {
+    return `<a
+              href="javascript:void(0);"
+              data-key-value-index-param="${index}"
+              data-action="click->key-value#deleteRow"
+              title="${this.options.delete_text}"
+              data-tippy="tooltip"
+              data-button="delete-row"
+              tabindex="-1"
+              ${this.options.disable_deleting_rows ? "disabled='disabled'" : ''}
+              class="flex items-center justify-center p-2 px-3 border-none ${this.options.disable_deleting_rows ? 'cursor-not-allowed' : ''}"
+            ><svg class="pointer-events-none text-gray-500 h-5 hover:text-gray-500" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></a>`
   }
 
   upDownButtons(index) {
