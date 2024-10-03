@@ -6,7 +6,7 @@ class Avo::ModalComponent < Avo::BaseComponent
 
   prop :width, Symbol, default: :md
   prop :body_class, _Nilable(String)
-  prop :overflow, Symbol, default: :auto
+  prop :overflow, _Nilable(Symbol), default: :auto
 
   def width_classes
     case @width.to_sym
