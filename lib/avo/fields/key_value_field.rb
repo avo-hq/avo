@@ -86,7 +86,7 @@ module Avo
       def fill_field(record, key, value, _params)
         begin
           new_value = JSON.parse(value)
-        rescue StandardError
+        rescue
           new_value = {}
         end
 
