@@ -35,7 +35,7 @@ module Avo
         if service.has_method?(method_name, raise_exception: false)
           service.authorize_action(method_name, record:, raise_exception: false)
         else
-          !Avo.configuration.whitelisting_authorization
+          !Avo.configuration.implicit_authorization
         end
       end
     end

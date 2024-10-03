@@ -18,7 +18,7 @@ module Avo
     attr_accessor :default_view_type
     attr_accessor :license_key
     attr_accessor :authorization_methods
-    attr_accessor :whitelisting_authorization
+    attr_accessor :implicit_authorization
     attr_accessor :authenticate
     attr_accessor :current_user
     attr_accessor :id_links_to_resource
@@ -69,7 +69,7 @@ module Avo
       @license_key = nil
       @current_user = proc {}
       @authenticate = proc {}
-      @whitelisting_authorization = false
+      @implicit_authorization = false
       @authorization_methods = {
         index: "index?",
         show: "show?",

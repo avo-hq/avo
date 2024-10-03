@@ -154,7 +154,7 @@ module Avo
 
       if @authorization.has_method?(method.to_sym)
         @authorization.authorize_action method.to_sym
-      elsif Avo.configuration.authorization_client.present? && Avo.configuration.whitelisting_authorization
+      elsif Avo.configuration.authorization_client.present? && Avo.configuration.implicit_authorization
         raise Avo::NotAuthorizedError.new
       end
     end
