@@ -45,6 +45,7 @@ gem "avo-money_field"
 gem "avo-record_link_field"
 gem "pagy", "> 8"
 gem "csv"
+gem "literal", git: "https://github.com/avo-hq/literal.git"
 gem "psych", "< 4"
 
 group :development do

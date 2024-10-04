@@ -193,3 +193,5 @@ gem "avo-record_link_field"
 gem "pagy", "> 8"
 
 gem "csv"
+
+gem "literal", github: "avo-hq/literal"
