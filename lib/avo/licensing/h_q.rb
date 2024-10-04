@@ -8,7 +8,7 @@ module Avo
       REQUEST_TIMEOUT = 5 unless const_defined?(:REQUEST_TIMEOUT) # seconds
       CACHE_TIME = 6.hours.to_i unless const_defined?(:CACHE_TIME) # seconds
 
-      # Define an immutable Response class using Data
+      # Immutable Response class using Data
       Response = Data.define(:code, :body)
 
       class << self

@@ -82,7 +82,7 @@ class User < ApplicationRecord
     ["active", "birthday", "created_at", "custom_css", "email", "encrypted_password", "first_name", "id", "last_name", "remember_created_at", "reset_password_sent_at", "reset_password_token", "roles", "slug", "team_id", "updated_at"]
   end
 
-  # Account class using Data
+  # Immutable Account class using Data
   Account = Data.define(:id, :name)
 
   # Simulate accounts association
