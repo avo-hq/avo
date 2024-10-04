@@ -5,12 +5,12 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
 
   attr_reader :display_breadcrumbs
 
-  prop :resource, _Nilable(Avo::BaseResource)
-  prop :reflection, _Nilable(ActiveRecord::Reflection::AbstractReflection)
-  prop :parent_resource, _Nilable(Avo::BaseResource)
-  prop :parent_record, _Nilable(_Any)
-  prop :resource_panel, _Nilable(_Array(Avo::BaseAction)), reader: :public
-  prop :actions, _Array(Avo::BaseAction), default: [].freeze, reader: :public
+  prop :resource
+  prop :reflection
+  prop :parent_resource
+  prop :parent_record
+  prop :resource_panel, reader: :public
+  prop :actions, default: [].freeze, reader: :public
 
   def after_initialize
     @view = Avo::ViewInquirer.new("show")

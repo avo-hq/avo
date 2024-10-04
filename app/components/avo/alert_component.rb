@@ -3,8 +3,8 @@
 class Avo::AlertComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
 
-  prop :type, Symbol, :positional
-  prop :message, String, :positional
+  prop :type, nil, :positional
+  prop :message, nil, :positional
 
   def icon
     return "heroicons/solid/exclamation-circle" if is_error?

@@ -4,20 +4,20 @@ class Avo::ButtonComponent < Avo::BaseComponent
   SIZE = _Union(:xs, :sm, :md, :lg, :xl)
   STYLE = _Union(:primary, :outline, :text, :icon)
 
-  prop :path, _Nilable(String), :positional
-  prop :size, Symbol, default: :md
-  prop :style, Symbol, default: :outline
-  prop :color, Symbol, default: :gray
-  prop :icon, _Nilable(Symbol) do |value|
+  prop :path, nil, :positional
+  prop :size, default: :md
+  prop :style, default: :outline
+  prop :color, default: :gray
+  prop :icon do |value|
     value&.to_sym
   end
-  prop :icon_class, String, default: ""
-  prop :is_link, _Boolean, default: false
-  prop :rounded, _Boolean, default: true
-  prop :compact, _Boolean, default: false
-  prop :aria, Hash, default: {}.freeze
-  prop :args, Hash, :**, default: {}.freeze
-  prop :class, _Nilable(String)
+  prop :icon_class, default: ""
+  prop :is_link, default: false
+  prop :rounded, default: true
+  prop :compact, default: false
+  prop :aria, default: {}.freeze
+  prop :args, nil, :**, default: {}.freeze
+  prop :class
 
   def args
     if @args[:loading]
