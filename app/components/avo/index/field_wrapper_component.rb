@@ -6,7 +6,7 @@ class Avo::Index::FieldWrapperComponent < Avo::BaseComponent
   prop :dash_if_blank, default: true
   prop :center_content, default: false
   prop :flush, default: false
-  prop :args, nil, :**, default: {}.freeze
+  prop :args, kind: :**, default: {}.freeze
   prop :classes do |value|
     @args&.dig(:class) || ""
   end

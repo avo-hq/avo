@@ -19,7 +19,7 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
   prop :label_for do |value|
     value&.to_sym
   end
-  prop :args, nil, :**, default: {}.freeze
+  prop :args, kind: :**, default: {}.freeze
   prop :classes do |value|
     @args&.dig(:class) || ""
   end

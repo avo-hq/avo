@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Avo::BaseComponent < ViewComponent::Base
-  extend Literal::Properties
+  extend Avo::Initializer::Properties
   include Turbo::FramesHelper
   include Avo::Concerns::FindAssociationField
 

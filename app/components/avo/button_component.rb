@@ -1,10 +1,7 @@
 # frozen_string_literal: true
 
 class Avo::ButtonComponent < Avo::BaseComponent
-  SIZE = _Union(:xs, :sm, :md, :lg, :xl)
-  STYLE = _Union(:primary, :outline, :text, :icon)
-
-  prop :path, nil, :positional
+  prop :path, kind: :positional
   prop :size, default: :md
   prop :style, default: :outline
   prop :color, default: :gray
@@ -16,7 +13,7 @@ class Avo::ButtonComponent < Avo::BaseComponent
   prop :rounded, default: true
   prop :compact, default: false
   prop :aria, default: {}.freeze
-  prop :args, nil, :**, default: {}.freeze
+  prop :args, kind: :**, default: {}.freeze
   prop :class
 
   def args

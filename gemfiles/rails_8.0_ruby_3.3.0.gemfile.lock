@@ -6,10 +6,10 @@ GIT
       activerecord (>= 6.1, < 8)
 
 GIT
-  remote: https://github.com/avo-hq/literal.git
-  revision: e4765622b03ae597a13f4601f0302148a7c663dc
+  remote: https://github.com/avo-hq/avo-initializer.git
+  revision: da1dd681c06b34a09e4f8aee28e609cff4bdff1b
   specs:
-    literal (0.2.1)
+    avo-initializer (0.1.0)
 
 GIT
   remote: https://github.com/rails/rails.git
@@ -126,7 +126,6 @@ PATH
       addressable
       docile
       inline_svg
-      literal (~> 0.2)
       meta-tags
       pagy (>= 7.0.0)
       turbo-rails (>= 2.0.0)
@@ -659,6 +658,7 @@ DEPENDENCIES
   annotate
   appraisal
   avo!
+  avo-initializer!
   avo-money_field
   avo-record_link_field
   aws-sdk-s3
@@ -694,7 +694,6 @@ DEPENDENCIES
   jsbundling-rails
   launchy
   listen (>= 3.5.1)
-  literal!
   mapkick-rb (~> 0.1.4)
   meta-tags
   money-rails (~> 1.12)

@@ -23,7 +23,7 @@ class Avo::PanelComponent < Avo::BaseComponent
   prop :classes
   prop :profile_photo
   prop :cover_photo
-  prop :args, nil, :**, default: {}.freeze
+  prop :args, kind: :**, default: {}.freeze
   prop :name do |value|
     value || @args&.dig(:title)
   end

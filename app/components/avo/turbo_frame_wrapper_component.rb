@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 class Avo::TurboFrameWrapperComponent < Avo::BaseComponent
-  prop :name, nil, :positional
+  prop :name, kind: :positional
 end
