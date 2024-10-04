@@ -194,4 +194,4 @@ gem "pagy", "> 8"
 
 gem "csv"
 
-gem "avo-initializer", github: "avo-hq/avo-initializer"
+gem "prop_initializer", github: "avo-hq/prop_initializer", branch: "main"

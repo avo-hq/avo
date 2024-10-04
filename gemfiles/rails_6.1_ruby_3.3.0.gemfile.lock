@@ -6,10 +6,12 @@ GIT
       activerecord (>= 6.1, < 8)
 
 GIT
-  remote: https://github.com/avo-hq/avo-initializer.git
-  revision: da1dd681c06b34a09e4f8aee28e609cff4bdff1b
+  remote: https://github.com/avo-hq/prop_initializer.git
+  revision: ec6808bc18b00ee53123497e885305d4d63da9de
+  branch: main
   specs:
-    avo-initializer (0.1.0)
+    prop_initializer (0.1.0)
+      zeitwerk (>= 2.6.18)
 
 PATH
   remote: ../pluggy
@@ -629,7 +631,6 @@ DEPENDENCIES
   annotate
   appraisal
   avo!
-  avo-initializer!
   avo-money_field
   avo-record_link_field
   aws-sdk-s3
@@ -673,6 +674,7 @@ DEPENDENCIES
   pg (>= 0.18, < 2.0)
   pluggy!
   prefixed_ids
+  prop_initializer!
   psych (< 4)
   puma (~> 6.4)
   rails (~> 6.1)

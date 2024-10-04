@@ -45,7 +45,7 @@ gem "avo-money_field"
 gem "avo-record_link_field"
 gem "pagy", "> 8"
 gem "csv"
-gem "avo-initializer", git: "https://github.com/avo-hq/avo-initializer.git"
+gem "prop_initializer", branch: "main", git: "https://github.com/avo-hq/prop_initializer.git"
 gem "psych", "< 4"
 
 group :development do
