@@ -101,6 +101,15 @@ module Avo
       end
 
       # Returns the Avo resource by singular snake_cased name
+      #
+      # get_resource_by_name('z posts') => instance of Avo::Resources::ZPost
+      def get_resource_by_plural_name(name)
+        resources.find do |resource|
+          resource.plural_name == name
+        end
+      end
+
+      # Returns the Avo resource by singular snake_cased name
       # From all the resources that use the same model_class, it will fetch the first one in alphabetical order
       #
       # get_resource_by_name('User') => instance of Avo::Resources::User
