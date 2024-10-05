@@ -54,6 +54,7 @@ module Avo
     attr_accessor :is_admin_method
     attr_accessor :is_developer_method
     attr_accessor :search_results_count
+    attr_accessor :first_sorting_option
 
     def initialize
       @root_path = "/avo"
@@ -115,6 +116,7 @@ module Avo
       @is_admin_method = :is_admin?
       @is_developer_method = :is_developer?
       @search_results_count = 8
+      @first_sorting_option = :desc # :desc or :asc
     end
 
     def current_user_method(&block)
