@@ -100,6 +100,8 @@ module Avo
           cache_and_return_error "Request timeout.", exception.message
         rescue SocketError => exception
           cache_and_return_error "Connection error.", exception.message
+        rescue => exception
+          cache_and_return_error "HTTP client error.", exception.message
         end
       end
 
