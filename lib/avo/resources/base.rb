@@ -298,9 +298,17 @@ module Avo
       end
 
       def fetch_fields
+        if view.preview?
+          [:fields, :index_fields, :show_fields, :display_fields].each do |fields_method|
+            send(fields_method) if respond_to?(fields_method)
+          end
+
+          return
+        end
+
         possible_methods_for_view = VIEW_METHODS_MAPPING[view.to_sym]
 
-        # Safe navigation operator is used because the view can be "destroy" or "preview"
+        # Safe navigation operator is used because the view can be "destroy"
         possible_methods_for_view&.each do |method_for_view|
           return send(method_for_view) if respond_to?(method_for_view)
         end
