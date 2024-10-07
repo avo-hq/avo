@@ -6,12 +6,12 @@ export default class extends Controller {
   static targets = ['panel']
 
   static values = {
-    // One may want to have an element that is exempt from triggerring the click outside event
-    exemptionContainer: String,
+    // One may want to have elements that are exempt from triggering the click outside event
+    exemptionContainers: Array,
   }
 
-  get exemptionContainerTarget() {
-    return document.querySelector(this.exemptionContainerValue)
+  get exemptionContainerTargets() {
+    return this.exemptionContainersValue.map((selector) => document.querySelector(selector)).filter(Boolean)
   }
 
   connect() {
@@ -20,13 +20,9 @@ export default class extends Controller {
 
   clickOutside(e) {
     if (this.hasPanelTarget) {
-      if (this.hasExemptionContainerValue && this.exemptionContainerTarget) {
-        const inExemptionContainer = this.exemptionContainerTarget.contains(e.target)
+      const isInExemptionContainer = this.hasExemptionContainersValue && this.exemptionContainerTargets.some((container) => container.contains(e.target))
 
-        if (!inExemptionContainer) {
-          leave(this.panelTarget)
-        }
-      } else {
+      if (!isInExemptionContainer) {
         leave(this.panelTarget)
       }
     }
