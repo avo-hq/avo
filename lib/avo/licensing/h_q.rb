@@ -101,7 +101,7 @@ module Avo
         rescue SocketError => exception
           cache_and_return_error "Connection error.", exception.message
         rescue => exception
-          cache_and_return_error "HTTP client error.", exception.message
+          cache_and_return_error "HQ call error.", exception.message
         end
       end
 
