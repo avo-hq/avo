@@ -48,4 +48,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "literal", "~> 0.2"
   spec.add_dependency "docile"
   spec.add_dependency "inline_svg"
+  spec.add_dependency "active_storage-blurhash"
 end
