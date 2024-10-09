@@ -5,9 +5,9 @@ export function tagTemplate(tagData) {
     // eslint-disable-next-line eqeqeq
     (item) => item.value == tagData.value,
   )
-  const possibleLabel = possibleSuggestion
+  const possibleLabel = possibleSuggestion.label
     ? possibleSuggestion.label
-    : tagData.value
+    : tagData.value;
 
   return `
 <tag title="${tagData.value}"
