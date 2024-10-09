@@ -36,7 +36,7 @@ module Avo
     attr_accessor :display_license_request_timeout_error
     attr_accessor :current_user_resource_name
     attr_accessor :raise_error_on_missing_policy
-    attr_accessor :disabled_features
+    attr_writer :disabled_features
     attr_accessor :buttons_on_form_footers
     attr_accessor :main_menu
     attr_accessor :profile_menu
@@ -155,8 +155,12 @@ module Avo
       @root_path
     end
 
+    def disabled_features
+      Avo::ExecutionContext.new(target: @disabled_features).handle
+    end
+
     def feature_enabled?(feature)
-      !@disabled_features.map(&:to_sym).include?(feature.to_sym)
+      !disabled_features.map(&:to_sym).include?(feature.to_sym)
     end
 
     def branding
