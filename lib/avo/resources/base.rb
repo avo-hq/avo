@@ -78,6 +78,7 @@ module Avo
       class_attribute :components, default: {}
       class_attribute :default_sort_column, default: :created_at
       class_attribute :default_sort_direction, default: :desc
+      class_attribute :controls_placement, default: nil
 
       # EXTRACT:
       class_attribute :ordering

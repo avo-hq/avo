@@ -2,6 +2,7 @@
   # Currently there isn't a way to summarize records on associations.
   # We'd love to support this feature so please send in a PR.
   should_summarize = @parent_record.blank?
+  resource_controls_placement = @resource.controls_placement || Avo.configuration.resource_controls_placement
 %>
 
 <thead
@@ -26,7 +27,7 @@
       <% end %>
     </th>
   <% end %>
-  <% if Avo.configuration.resource_controls_on_the_left? %>
+  <% if resource_controls_placement == :left %>
     <th class="max-w-24" data-control="resource-controls-th">
       <!-- Item controls cell -->
     </th>
@@ -100,7 +101,7 @@
       <% end %>
     <% end %>
   <% end %>
-  <% if Avo.configuration.resource_controls_on_the_right? %>
+  <% if resource_controls_placement == :right %>
     <th class="w-px max-w-24" data-control="resource-controls-th">
       <!-- Item controls cell -->
     </th>
