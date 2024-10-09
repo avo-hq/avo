@@ -9,6 +9,7 @@ module Avo
     attr_writer :logger
     attr_writer :turbo
     attr_writer :pagination
+    attr_writer :implicit_authorization
     attr_accessor :timezone
     attr_accessor :per_page
     attr_accessor :per_page_steps
@@ -18,7 +19,6 @@ module Avo
     attr_accessor :default_view_type
     attr_accessor :license_key
     attr_accessor :authorization_methods
-    attr_accessor :implicit_authorization
     attr_accessor :authenticate
     attr_accessor :current_user
     attr_accessor :id_links_to_resource
