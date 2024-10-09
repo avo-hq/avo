@@ -252,6 +252,10 @@ module Avo
     def default_locale
       @locale || I18n.default_locale
     end
+
+    def implicit_authorization
+      Avo::ExecutionContext.new(target: @implicit_authorization).handle
+    end
   end
 
   def self.configuration
