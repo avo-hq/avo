@@ -100,7 +100,7 @@ module Avo
         if service.has_method? method
           service.authorize_action(method, raise_exception: false)
         else
-          true
+          !Avo.configuration.implicit_authorization
         end
       end
 
