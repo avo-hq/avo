@@ -315,7 +315,11 @@ module Avo
     end
 
     def type(...)
-      page.driver.browser.keyboard.type(...)
+      if page.driver.browser.respond_to?(:keyboard)
+        page.driver.browser.keyboard.type(...)
+      else
+        page.send_keys(...)
+      end
     end
 
     def accept_custom_alert(&block)
