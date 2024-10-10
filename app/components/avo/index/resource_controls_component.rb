@@ -102,7 +102,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   def render_delete_button(control)
     # If the resource is a related resource, we use the can_delete? policy method because it uses
     # authorize_association_for(:destroy).
-    # Otherwise we use the can_see_the_destroy_button? policy method becuse it do no check for assiciation
+    # Otherwise we use the can_see_the_destroy_button? policy method because it do no check for association
     # only for authorize_action .
     policy_method = is_a_related_resource? ? :can_delete? : :can_see_the_destroy_button?
     return unless send policy_method

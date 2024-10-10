@@ -100,6 +100,8 @@ module Avo
           cache_and_return_error "Request timeout.", exception.message
         rescue SocketError => exception
           cache_and_return_error "Connection error.", exception.message
+        rescue => exception
+          cache_and_return_error "HQ call error.", exception.message
         end
       end
 
@@ -111,6 +113,8 @@ module Avo
           cache_and_return_error "Avo HQ Internal server error.", hq_response.body if hq_response.code == 500
         when 200
           cache_response response: JSON.parse(hq_response.body)
+        else
+          cache_and_return_error "Invalid response.", "code: #{hq_response.code}, body: #{hq_response.body}"
         end
       end
 

@@ -9,14 +9,22 @@ module Avo
     before_action :set_resource, only: :show
 
     def show
-      render json: search_resources([resource])
+      render json: search_resources([resource], request:)
     rescue => error
       render_error _label: error.message
     end
 
+    def process_results(results, request:)
+      results
+    end
+
     private
 
-    def search_resources(resources)
+    def search_resources(resources, request: nil)
+      process_results search_results(resources, request:), request:
+    end
+
+    def search_results(resources, request: nil)
       resources
         .map do |resource|
           # Apply authorization

@@ -33,8 +33,11 @@
   <% end %>
   <% fields.each_with_index do |field, index|  %>
     <%
+      first_option = Avo.configuration.first_sorting_option.to_s
+      second_option = first_option == "desc" ? "asc" : "desc"
+
       if params[:sort_by] == field.id.to_s
-        if params[:sort_direction] == 'asc'
+        if params[:sort_direction] == second_option
           sort_by = nil
         else
           sort_by = field.id
@@ -43,10 +46,10 @@
         if sort_by.present?
           case params[:sort_direction]
             when nil
-              sort_direction = 'desc'
-            when 'desc'
-              sort_direction = 'asc'
-            when 'asc'
+              sort_direction = first_option
+            when first_option
+              sort_direction = second_option
+            when second_option
               sort_direction = nil
             end
         else
@@ -54,7 +57,7 @@
         end
       else
         sort_by = field.id
-        sort_direction = 'desc'
+        sort_direction = first_option
       end
       text_classes = "text-gray-600 tracking-tight leading-tight text-xs font-semibold"
     %>
