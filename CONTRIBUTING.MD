@@ -29,7 +29,7 @@ Please fork Avo and create a descriptive branch for your feature or fix. We usua
 Thank you for considering to contribute to Avo. These are our recommendations to improve readability and interoperability when contributing with a PR:
 
 - the title should have the type (`feature`, `chore`, `fix`, `refactor`) followed by the sentence case of what it does (ex: `feature: scoped search for has many associations` or `fix: broken sidebar on desktop`).
-- the PR should be marked by the appropiate tag (`feature`, `chore`, `fix`, `refactor`)
+- the PR should be marked by the appropriate tag (`feature`, `chore`, `fix`, `refactor`)
 - if there's an issue open that could be fixed by this PR you can mark it by writing `Fixes ISSUE_URL` in the description so GitHub automates some actions (ex: `Fixes https://github.com/avo-hq/avo/issues/1008`). If there are more issues that could be fixed, add more lines.
 - please follow the steps on the `Checklist` and mark them as done with an `x` inside the brackets `[x]`
 - if there's something that we can test, please send us the instructions to do that in that PR description.
@@ -167,7 +167,7 @@ In order to restore the previous fields you may run `RESOURCE_CLASS.restore_item
 
 ### Working with datepickers
 
-The prerequisite for these helpers is to ensure you have the two inputs mapped in your test file like so and you update the `FIELD_ID` attribute to the field you decalred on your resource `created_at`, `starting_at`, etc.
+The prerequisite for these helpers is to ensure you have the two inputs mapped in your test file like so and you update the `FIELD_ID` attribute to the field you declared on your resource `created_at`, `starting_at`, etc.
 
 ```ruby
 subject(:text_input) { find '[data-field-id="FIELD_ID"] [data-controller="date-field"] input[type="text"]' }
