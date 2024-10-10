@@ -82,9 +82,15 @@ class User < ApplicationRecord
     ["active", "birthday", "created_at", "custom_css", "email", "encrypted_password", "first_name", "id", "last_name", "remember_created_at", "reset_password_sent_at", "reset_password_token", "roles", "slug", "team_id", "updated_at"]
   end
 
+  # Immutable Account class using Data
+  Account = Data.define(:id, :name)
+
   # Simulate accounts association
   def accounts
-    [OpenStruct.new(id: 1, name: "Foo"), OpenStruct.new(id: 2, name: "Bar")]
+    [
+      Account.new(id: 1, name: "Foo"),
+      Account.new(id: 2, name: "Bar")
+    ]
   end
 
   def is_developer?
