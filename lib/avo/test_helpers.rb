@@ -313,7 +313,7 @@ module Avo
     end
 
     def type(...)
-      page.driver.browser.keyboard.type(...)
+      page.send_keys(...)
     end
 
     def accept_custom_alert(&block)
