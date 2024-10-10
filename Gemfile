@@ -193,5 +193,3 @@ gem "avo-record_link_field"
 gem "pagy", "> 8"
 
 gem "csv"
-
-gem "prop_initializer", github: "avo-hq/prop_initializer", branch: "main"

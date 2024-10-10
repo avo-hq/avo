@@ -6,14 +6,6 @@ GIT
       activerecord (>= 6.1, < 8)
 
 GIT
-  remote: https://github.com/avo-hq/prop_initializer.git
-  revision: ec6808bc18b00ee53123497e885305d4d63da9de
-  branch: main
-  specs:
-    prop_initializer (0.1.0)
-      zeitwerk (>= 2.6.18)
-
-GIT
   remote: https://github.com/rails/rails.git
   revision: b88d9af34fbc1c84ce2769ba02584eab2c28ac6e
   branch: main
@@ -125,6 +117,7 @@ PATH
       inline_svg
       meta-tags
       pagy (>= 7.0.0)
+      prop_initializer
       turbo-rails (>= 2.0.0)
       turbo_power (>= 0.6.0)
       view_component (>= 3.7.0)
@@ -456,6 +449,8 @@ GEM
       hashids (>= 1.0.0, < 2.0.0)
       rails (>= 6.0.0)
     prettier_print (1.2.1)
+    prop_initializer (0.1.0)
+      zeitwerk (>= 2.6.18)
     psych (5.1.2)
       stringio
     public_suffix (6.0.1)
@@ -735,7 +730,6 @@ DEPENDENCIES
   pg (>= 0.18, < 2.0)
   pluggy!
   prefixed_ids
-  prop_initializer!
   puma (~> 6.4)
   rails!
   rails-controller-testing
