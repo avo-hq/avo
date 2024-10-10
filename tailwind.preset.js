@@ -162,6 +162,7 @@ module.exports = {
       addVariant('index-grid-view', '.index-grid-view & ')
       addVariant('index-table-view', '.index-table-view & ')
       addVariant('kanban-dragging', '.kanban-dragging & ')
+      addVariant('floating-controls', '.floating-controls & ')
     }),
   ],
 }
