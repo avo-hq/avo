@@ -46,6 +46,26 @@ export default class extends Controller {
     this.updateKeyValueComponent()
   }
 
+  moveKey(event) {
+    if (!this.options.editable) return
+
+    const { index, direction } = event.params
+    const toIndex = direction === 'up' ? index - 1 : index + 1
+    this.fieldValue = this.moveElement(this.fieldValue, index, toIndex)
+
+    this.updateTextareaInput()
+    this.updateKeyValueComponent()
+  }
+
+  moveElement(arr, fromIndex, toIndex) {
+    return arr.map((item, index) => {
+      if (index === toIndex) return arr[fromIndex]
+      if (index === fromIndex) return arr[toIndex]
+
+      return item
+    })
+  }
+
   focusLastRow() {
     return this.rowsTarget.querySelector('.flex.key-value-row:last-child .key-value-input-key').focus()
   }
@@ -89,22 +109,18 @@ export default class extends Controller {
   }
 
   interpolatedRow(key, value, index) {
-    let result = `<div class="flex key-value-row">
+    let result = '<div class="flex key-value-row">'
+
+    result += `
       ${this.inputField('key', index, key, value)}
-      ${this.inputField('value', index, key, value)}`
+      ${this.inputField('value', index, key, value)}
+    `
+
     if (this.options.editable) {
-      result += `<a
-  href="javascript:void(0);"
-  data-key-value-index-param="${index}"
-  data-action="click->key-value#deleteRow"
-  title="${this.options.delete_text}"
-  data-tippy="tooltip"
-  data-button="delete-row"
-  tabindex="-1"
-  ${this.options.disable_deleting_rows ? "disabled='disabled'" : ''}
-  class="flex items-center justify-center p-2 px-3 border-none ${this.options.disable_deleting_rows ? 'cursor-not-allowed' : ''}"
-><svg class="pointer-events-none text-gray-500 h-5 hover:text-gray-500" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></a>`
+      result += this.upDownButtons(index)
+      result += this.deleteButton(index)
     }
+
     result += '</div>'
 
     return result
@@ -121,6 +137,45 @@ export default class extends Controller {
   ${this[`${id}InputDisabled`] ? "disabled='disabled'" : ''}
   value="${typeof inputValue === 'undefined' || inputValue === null ? '' : inputValue}"
 />`
+  }
+
+  deleteButton(index) {
+    return `<a
+              href="javascript:void(0);"
+              data-key-value-index-param="${index}"
+              data-action="click->key-value#deleteRow"
+              title="${this.options.delete_text}"
+              data-tippy="tooltip"
+              data-button="delete-row"
+              tabindex="-1"
+              ${this.options.disable_deleting_rows ? "disabled='disabled'" : ''}
+              class="flex items-center justify-center p-2 px-3 border-none ${this.options.disable_deleting_rows ? 'cursor-not-allowed' : ''}"
+            ><svg class="pointer-events-none text-gray-500 h-5 hover:text-gray-500" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></a>`
+  }
+
+  upDownButtons(index) {
+    return `<a
+      href="javascript:void(0);"
+      data-key-value-index-param="${index}"
+      data-key-value-direction-param="up"
+      data-action="click->key-value#moveKey"
+      title="up"
+      data-tippy="tooltip"
+      data-button="up-row"
+      tabindex="-1"
+      class="flex items-center justify-center p-2 border-none ${this.options.disable_deleting_rows ? 'cursor-not-allowed' : ''} ${index === 0 ? 'invisible' : ''}"
+      ><svg class="pointer-events-none text-gray-500 h-5 hover:text-gray-500" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg></a>
+      <a
+      href="javascript:void(0);"
+      data-key-value-index-param="${index}"
+      data-key-value-direction-param="down"
+      data-action="click->key-value#moveKey"
+      title="down"
+      data-tippy="tooltip"
+      data-button="down-row"
+      tabindex="-1"
+      class="flex items-center justify-center p-2 border-none ${this.options.disable_deleting_rows ? 'cursor-not-allowed' : ''} ${index === this.fieldValue.length - 1 ? 'invisible' : ''}"
+      ><svg class="pointer-events-none text-gray-500 h-5 hover:text-gray-500" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg></a>`
   }
 
   setOptions() {
