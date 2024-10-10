@@ -6,6 +6,14 @@ GIT
       activerecord (>= 6.1, < 8)
 
 GIT
+  remote: https://github.com/avo-hq/prop_initializer.git
+  revision: ec6808bc18b00ee53123497e885305d4d63da9de
+  branch: main
+  specs:
+    prop_initializer (0.1.0)
+      zeitwerk (>= 2.6.18)
+
+GIT
   remote: https://github.com/rails/rails.git
   revision: b88d9af34fbc1c84ce2769ba02584eab2c28ac6e
   branch: main
@@ -120,7 +128,6 @@ PATH
       addressable
       docile
       inline_svg
-      literal (~> 0.2)
       meta-tags
       pagy (>= 7.0.0)
       turbo-rails (>= 2.0.0)
@@ -365,7 +372,6 @@ GEM
     listen (3.9.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
-    literal (0.2.1)
     logger (1.6.1)
     loofah (2.22.0)
       crass (~> 1.0.2)
@@ -697,6 +703,7 @@ DEPENDENCIES
   pg (>= 0.18, < 2.0)
   pluggy!
   prefixed_ids
+  prop_initializer!
   psych (< 4)
   puma (~> 6.4)
   rails!

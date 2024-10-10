@@ -6,13 +6,13 @@ class Avo::Index::TableRowComponent < Avo::BaseComponent
 
   attr_writer :header_fields
 
-  prop :resource, _Nilable(Avo::BaseResource), reader: :public
-  prop :reflection, _Nilable(ActiveRecord::Reflection::AbstractReflection)
-  prop :parent_record, _Nilable(_Any)
-  prop :parent_resource, _Nilable(Avo::BaseResource)
-  prop :actions, _Nilable(_Array(Avo::BaseAction))
-  prop :fields, _Nilable(_Array(Avo::Fields::BaseField))
-  prop :header_fields, _Nilable(_Array(String))
+  prop :resource, reader: :public
+  prop :reflection
+  prop :parent_record
+  prop :parent_resource
+  prop :actions
+  prop :fields
+  prop :header_fields
 
   def resource_controls_component
     Avo::Index::ResourceControlsComponent.new(
