@@ -2,6 +2,7 @@
 import * as DOMPurify from 'dompurify'
 import { Controller } from '@hotwired/stimulus'
 import { castBoolean } from '../../helpers/cast_boolean'
+import Sortable from 'sortablejs'
 
 export default class extends Controller {
   static targets = ['input', 'controller', 'rows']
@@ -46,12 +47,10 @@ export default class extends Controller {
     this.updateKeyValueComponent()
   }
 
-  moveKey(event) {
+  moveKey(oldIndex, newIndex) {
     if (!this.options.editable) return
 
-    const { index, direction } = event.params
-    const toIndex = direction === 'up' ? index - 1 : index + 1
-    this.fieldValue = this.moveElement(this.fieldValue, index, toIndex)
+    this.fieldValue = this.moveElement(this.fieldValue, oldIndex, newIndex)
 
     this.updateTextareaInput()
     this.updateKeyValueComponent()
@@ -105,7 +104,20 @@ export default class extends Controller {
       index++
     })
     this.rowsTarget.innerHTML = result
+    this.#initDragNDrop()
     window.initTippy()
+  }
+
+  #initDragNDrop() {
+    const vm = this
+    // eslint-disable-next-line no-new
+    new Sortable(this.rowsTarget, {
+      animation: 150,
+      handle: '[data-control="dnd-handle"]',
+      onUpdate(event) {
+        vm.moveKey(event.oldIndex, event.newIndex)
+      },
+    })
   }
 
   interpolatedRow(key, value, index) {
@@ -154,28 +166,19 @@ export default class extends Controller {
   }
 
   upDownButtons(index) {
-    return `<a
-      href="javascript:void(0);"
-      data-key-value-index-param="${index}"
-      data-key-value-direction-param="up"
-      data-action="click->key-value#moveKey"
-      title="up"
-      data-tippy="tooltip"
-      data-button="up-row"
-      tabindex="-1"
-      class="flex items-center justify-center p-2 border-none ${this.options.disable_deleting_rows ? 'cursor-not-allowed' : ''} ${index === 0 ? 'invisible' : ''}"
-      ><svg class="pointer-events-none text-gray-500 h-5 hover:text-gray-500" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg></a>
+    return `<div class="flex flex-col">
       <a
-      href="javascript:void(0);"
-      data-key-value-index-param="${index}"
-      data-key-value-direction-param="down"
-      data-action="click->key-value#moveKey"
-      title="down"
-      data-tippy="tooltip"
-      data-button="down-row"
-      tabindex="-1"
-      class="flex items-center justify-center p-2 border-none ${this.options.disable_deleting_rows ? 'cursor-not-allowed' : ''} ${index === this.fieldValue.length - 1 ? 'invisible' : ''}"
-      ><svg class="pointer-events-none text-gray-500 h-5 hover:text-gray-500" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg></a>`
+        href="javascript:void(0);"
+        data-key-value-index-param="${index}"
+        data-control="dnd-handle"
+        title="reorder"
+        data-tippy="tooltip"
+        tabindex="-1"
+        class="flex items-center justify-center py-0 px-2 border-none h-full ${this.options.disable_deleting_rows ? 'cursor-not-allowed' : ''}"
+        >
+          <svg class="pointer-events-none text-gray-500 h-4 hover:text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+      </a>
+    </div>`
   }
 
   setOptions() {
