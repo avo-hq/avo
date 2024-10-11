@@ -117,7 +117,7 @@ PATH
       inline_svg
       meta-tags
       pagy (>= 7.0.0)
-      prop_initializer
+      prop_initializer (>= 0.2.0)
       turbo-rails (>= 2.0.0)
       turbo_power (>= 0.6.0)
       view_component (>= 3.7.0)
@@ -449,7 +449,7 @@ GEM
       hashids (>= 1.0.0, < 2.0.0)
       rails (>= 6.0.0)
     prettier_print (1.2.1)
-    prop_initializer (0.1.0)
+    prop_initializer (0.2.0)
       zeitwerk (>= 2.6.18)
     psych (5.1.2)
       stringio
