@@ -29,9 +29,9 @@ class Avo::Fields::TrixField::EditComponent < Avo::Fields::EditComponent
       hide_attachment_filesize: @field.hide_attachment_filesize,
       hide_attachment_url: @field.hide_attachment_url,
       is_action_text: @field.is_action_text?,
-      upload_warning: t('avo.you_cant_upload_new_resource'),
-      attachment_disable_warning: t('avo.this_field_has_attachments_disabled'),
-      attachment_key_warning: t('avo.you_havent_set_attachment_key')
+      upload_warning: t("avo.you_cant_upload_new_resource"),
+      attachment_disable_warning: t("avo.this_field_has_attachments_disabled"),
+      attachment_key_warning: t("avo.you_havent_set_attachment_key")
     }.transform_keys { |key| "trix_field_#{key}_value" }
   end
 end
