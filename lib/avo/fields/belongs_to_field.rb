@@ -194,7 +194,7 @@ module Avo
           return [:"#{polymorphic_as}_type", :"#{polymorphic_as}_id"]
         end
 
-        foreign_key.to_sym
+        foreign_key.is_a?(Array) ? foreign_key.map(&:to_sym) : foreign_key.to_sym                                                                                                                                                       
       end
 
       def fill_field(record, key, value, params)
