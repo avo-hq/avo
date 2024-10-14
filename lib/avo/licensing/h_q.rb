@@ -8,8 +8,14 @@ module Avo
       REQUEST_TIMEOUT = 5 unless const_defined?(:REQUEST_TIMEOUT) # seconds
       CACHE_TIME = 6.hours.to_i unless const_defined?(:CACHE_TIME) # seconds
 
-      # Immutable Response class using Data
-      Response = Data.define(:code, :body)
+      # Response class using ActiveSupport::OrderedOptions
+      class Response < ActiveSupport::OrderedOptions
+        def initialize(code:, body:)
+          super()
+          self.code = code
+          self.body = body
+        end
+      end
 
       class << self
         def cache_key
@@ -113,7 +119,7 @@ module Avo
 
         case hq_response.code.to_i
         when 500
-          cache_and_return_error "Avo HQ Internal server error.", hq_response.body if hq_response.code == 500
+          cache_and_return_error "Avo HQ Internal server error.", hq_response.body
         when 200
           cache_response response: JSON.parse(hq_response.body)
         else
@@ -140,10 +146,9 @@ module Avo
           response
         else
           {
-            normalized_response: JSON.stringify(response)
+            normalized_response: response.to_json
           }
         end
-        response.merge({})
       rescue
         {
           normalized_response: "rescued"
@@ -154,7 +159,7 @@ module Avo
         Avo.logger.debug "Performing request to avohq.io API to check license availability." if Rails.env.development?
 
         if Rails.env.test?
-          # Use the Response Data class instead of OpenStruct
+          # Use the Response class with ActiveSupport::OrderedOptions
           Response.new(code: 200, body: "{\"id\":\"pro\",\"valid\":true}")
         else
           Avo::Licensing::Request.post ENDPOINT, body: payload.to_json, timeout: REQUEST_TIMEOUT
