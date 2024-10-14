@@ -3,34 +3,32 @@
 class Avo::ActionsComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
 
-  ACTION_FILTER = _Set(_Class(Avo::BaseAction))
-
-  prop :as_row_control, _Boolean, default: false
-  prop :icon, _Nilable(String)
-  prop :size, Avo::ButtonComponent::SIZE, default: :md
-  prop :title, _Nilable(String)
-  prop :color, _Nilable(Symbol) do |value|
+  prop :as_row_control, default: false
+  prop :icon
+  prop :size, default: :md
+  prop :title
+  prop :color do |value|
     value || :primary
   end
-  prop :include, _Nilable(ACTION_FILTER), default: [].freeze do |include|
+  prop :include, default: [].freeze do |include|
     Array(include).to_set
   end
-  prop :custom_list, _Boolean, default: false
-  prop :label, _Nilable(String) do |label|
+  prop :custom_list, default: false
+  prop :label do |label|
     if @custom_list
       label
     else
       label || I18n.t("avo.actions")
     end
   end
-  prop :style, Avo::ButtonComponent::STYLE, default: :outline
-  prop :actions, _Array(_Any), default: [].freeze
-  prop :exclude, _Nilable(ACTION_FILTER), default: [].freeze do |exclude|
+  prop :style, default: :outline
+  prop :actions, default: [].freeze
+  prop :exclude, default: [].freeze do |exclude|
     Array(exclude).to_set
   end
-  prop :resource, _Nilable(Avo::BaseResource)
-  prop :view, _Nilable(Avo::ViewInquirer)
-  prop :host_component, _Nilable(_Any)
+  prop :resource
+  prop :view
+  prop :host_component
 
   delegate_missing_to :@host_component
 

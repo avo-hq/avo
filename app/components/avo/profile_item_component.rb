@@ -1,19 +1,19 @@
 # frozen_string_literal: true
 
 class Avo::ProfileItemComponent < Avo::BaseComponent
-  prop :label, _Nilable(String), reader: :public
-  prop :icon, _Nilable(String), reader: :public
-  prop :path, _Nilable(String), reader: :public
-  prop :active, Symbol, default: :inclusive, reader: :public do |value|
+  prop :label, reader: :public
+  prop :icon, reader: :public
+  prop :path, reader: :public
+  prop :active, default: :inclusive, reader: :public do |value|
     value&.to_sym
   end
-  prop :target, _Nilable(Symbol), reader: :public do |value|
+  prop :target, reader: :public do |value|
     value&.to_sym
   end
-  prop :title, _Nilable(String), reader: :public
-  prop :method, _Nilable(_Union(_String, _Symbol)), reader: :public
-  prop :params, _Nilable(Hash), default: {}.freeze, reader: :public
-  prop :classes, String, default: "", reader: :public
+  prop :title, reader: :public
+  prop :method, reader: :public
+  prop :params, default: {}.freeze, reader: :public
+  prop :classes, default: "", reader: :public
 
   def title
     @title || @label

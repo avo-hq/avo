@@ -214,6 +214,8 @@ module Avo
     def preview
       @resource.hydrate(record: @record, view: Avo::ViewInquirer.new(:show), user: _current_user, params: params)
 
+      @preview_fields = @resource.get_preview_fields
+
       render layout: params[:turbo_frame].blank?
     end
 
