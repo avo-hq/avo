@@ -3,12 +3,12 @@
 class Avo::TabGroupComponent < Avo::BaseComponent
   delegate :group_param, to: :@group
 
-  prop :resource, Avo::BaseResource, reader: :public
-  prop :group, Avo::Resources::Items::TabGroup, reader: :public
-  prop :index, Integer, reader: :public
-  prop :form, _Nilable(ActionView::Helpers::FormBuilder), reader: :public
-  prop :params, ActionController::Parameters, reader: :public
-  prop :view, Avo::ViewInquirer, reader: :public
+  prop :resource, reader: :public
+  prop :group, reader: :public
+  prop :index, reader: :public
+  prop :form, reader: :public
+  prop :params, reader: :public
+  prop :view, reader: :public
 
   def after_initialize
     group.index = index
