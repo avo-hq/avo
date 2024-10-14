@@ -107,7 +107,7 @@ GIT
 PATH
   remote: .
   specs:
-    avo (3.13.5)
+    avo (3.13.6)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
@@ -115,9 +115,9 @@ PATH
       addressable
       docile
       inline_svg
-      literal (~> 0.2)
       meta-tags
       pagy (>= 7.0.0)
+      prop_initializer (>= 0.2.0)
       turbo-rails (>= 2.0.0)
       turbo_power (>= 0.6.0)
       view_component (>= 3.7.0)
@@ -391,7 +391,6 @@ GEM
     listen (3.9.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
-    literal (0.2.1)
     logger (1.6.1)
     loofah (2.22.0)
       crass (~> 1.0.2)
@@ -450,6 +449,8 @@ GEM
       hashids (>= 1.0.0, < 2.0.0)
       rails (>= 6.0.0)
     prettier_print (1.2.1)
+    prop_initializer (0.2.0)
+      zeitwerk (>= 2.6.18)
     psych (5.1.2)
       stringio
     public_suffix (6.0.1)

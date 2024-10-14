@@ -15,16 +15,16 @@ class Avo::PanelComponent < Avo::BaseComponent
   renders_one :footer_tools
   renders_one :footer
 
-  prop :description, _Nilable(String)
-  prop :body_classes, _Nilable(String)
-  prop :data, Hash, default: {}.freeze
-  prop :display_breadcrumbs, _Boolean, default: false
-  prop :index, _Nilable(Integer)
-  prop :classes, _Nilable(String)
-  prop :profile_photo, _Nilable(Avo::ProfilePhoto)
-  prop :cover_photo, _Nilable(Avo::CoverPhoto)
-  prop :args, Hash, :**, default: {}.freeze
-  prop :name, _Nilable(_Union(_String, _Integer)) do |value|
+  prop :description
+  prop :body_classes
+  prop :data, default: {}.freeze
+  prop :display_breadcrumbs, default: false
+  prop :index
+  prop :classes
+  prop :profile_photo
+  prop :cover_photo
+  prop :args, kind: :**, default: {}.freeze
+  prop :name do |value|
     value || @args&.dig(:title)
   end
 
