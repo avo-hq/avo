@@ -17,7 +17,7 @@
 
 "@algolia/autocomplete-js@^1.0.0-alpha.46":
   version "1.17.4"
-  resolved "https://registry.pkg.com/@algolia/autocomplete-js/-/autocomplete-js-1.17.4.tgz#5bb3990b38123a64568430f3a85e1e92806dc5c3"
+  resolved "https://registry.yarnpkg.com/@algolia/autocomplete-js/-/autocomplete-js-1.17.4.tgz#5bb3990b38123a64568430f3a85e1e92806dc5c3"
   integrity sha512-ANhINMwusKmsW/xHhgiKvUSLis/Lll9OilueBR9h/lxBlgEJ/hHIOTnZupzksyna1OtGZaW5keAu04E19+CW1w==
   dependencies:
     "@algolia/autocomplete-core" "1.17.4"
