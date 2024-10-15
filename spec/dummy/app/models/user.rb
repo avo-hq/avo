@@ -19,6 +19,7 @@
 #  active                 :boolean          default(TRUE)
 #  slug                   :string
 #
+
 class User < ApplicationRecord
   extend FriendlyId
   # Include default devise modules. Others available are:
@@ -82,9 +83,22 @@ class User < ApplicationRecord
     ["active", "birthday", "created_at", "custom_css", "email", "encrypted_password", "first_name", "id", "last_name", "remember_created_at", "reset_password_sent_at", "reset_password_token", "roles", "slug", "team_id", "updated_at"]
   end
 
+  # Immutable Account class using ActiveSupport::OrderedOptions
+  class Account < ActiveSupport::OrderedOptions
+    def initialize(id:, name:)
+      super()
+      self.id = id
+      self.name = name
+      freeze
+    end
+  end
+
   # Simulate accounts association
   def accounts
-    [OpenStruct.new(id: 1, name: "Foo"), OpenStruct.new(id: 2, name: "Bar")]
+    [
+      Account.new(id: 1, name: "Foo"),
+      Account.new(id: 2, name: "Bar")
+    ]
   end
 
   def is_developer?
