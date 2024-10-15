@@ -58,6 +58,12 @@ RSpec.feature "password", type: :feature do
         expect(page).to have_field type: "password", id: "user_password_confirmation", placeholder: "Password confirmation", text: nil
       end
 
+      it "checks password reveal button" do
+        visit url
+
+        expect(page).to have_selector "[data-password-visibility-target]"
+      end
+
       it "saves the resource with password" do
         visit url
 
