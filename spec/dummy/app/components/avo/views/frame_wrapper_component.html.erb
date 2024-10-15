@@ -1,0 +1,7 @@
+<% if params[:turbo_frame] == "index" %>
+  <%= render(Avo::Views::ResourceIndexComponent.new(**@args)) %>
+<% else %>
+  <%= turbo_frame_tag :index, src: helpers.avo.resources_cities_path(turbo_frame: :index), loading: :lazy, target: :_top, class: "block" do %>
+    <%= render(Avo::LoadingComponent.new(title: "Loading cities")) %>
+  <% end %>
+<% end %>

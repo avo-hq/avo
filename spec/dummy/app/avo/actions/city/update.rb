@@ -13,5 +13,11 @@ class Avo::Actions::City::Update < Avo::BaseAction
     end
 
     succeed "City updated!"
+
+    close_modal
+
+    append_to_response -> {
+      turbo_stream.turbo_frame_reload("index")
+    }
   end
 end

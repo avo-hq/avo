@@ -33,6 +33,9 @@ class Avo::Resources::City < Avo::BaseResource
       layout: :bottom
     }
   }
+  self.components = {
+    resource_index_component: "Avo::Views::FrameWrapperComponent"
+  }
 
   def base_fields
     field :id, as: :id
