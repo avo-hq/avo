@@ -16,6 +16,8 @@ class Avo::SidebarProfileComponent < Avo::BaseComponent
       @user.name
     elsif @user.respond_to?(:email) && @user.email.present?
       @user.email
+    elsif @user.respond_to?(:email_address) && @user.email_address.present?
+      @user.email_address
     else
       "Avo user"
     end
