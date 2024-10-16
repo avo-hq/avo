@@ -1,5 +1,5 @@
 <%= field_wrapper **field_wrapper_args do %>
-  <div class="relative" data-controller="<%= @field.reveal ? 'password-visibility' : nil %>">
+  <div class="relative" data-controller="<%= @field.revealable ? 'password-visibility' : nil %>">
     <%= @form.password_field @field.id,
       value: @field.value,
       class: classes("w-full"),
@@ -11,7 +11,7 @@
       autofocus: @autofocus
     %>
 
-    <% if @field.reveal %>
+    <% if @field.revealable %>
       <button data-action="password-visibility#toggle" type="button" class="text-gray-500 absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer">
         <!-- Heroicon name: outline/eye -->
         <%= helpers.svg('heroicons/outline/eye', class: "size-6", data: { 'password-visibility-target': 'icon' }) %>

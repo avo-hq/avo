@@ -1,7 +1,7 @@
 module Avo
   module Fields
     class PasswordField < TextField
-      attr_reader :reveal
+      attr_reader :revealable
 
       def initialize(id, **args, &block)
         show_on :forms
@@ -10,7 +10,7 @@ module Avo
 
         hide_on :index, :show
 
-        @reveal = args[:reveal].present? ? args[:reveal] : false
+        @revealable = args[:revealable].present? ? args[:revealable] : false
       end
     end
   end
