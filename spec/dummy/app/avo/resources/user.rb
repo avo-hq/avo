@@ -130,7 +130,7 @@ class Avo::Resources::User < Avo::BaseResource
       end
 
     field :password, as: :password, name: "User Password", required: false, only_on: :forms, help: 'You may verify the password strength <a href="http://www.passwordmeter.com/" target="_blank">here</a>.'
-    field :password_confirmation, as: :password, name: "Password confirmation", required: false
+    field :password_confirmation, as: :password, name: "Password confirmation", required: false, revealable: true
 
     with_options hide_on: :forms do
       field :dev, as: :heading, label: '<div class="underline uppercase font-bold">DEV</div>', as_html: true
