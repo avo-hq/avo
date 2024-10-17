@@ -33,8 +33,7 @@ module Avo
         return record unless record.methods.include? key.to_sym
 
         # attach files in one call to avoid index_active_storage_attachments_uniqueness violation
-        files = value.compact_blank
-        record.send(key).attach(files) unless files.none?
+        record.send(key).attach(value.compact_blank)
 
         record
       end
