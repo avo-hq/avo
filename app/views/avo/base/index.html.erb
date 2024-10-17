@@ -1,4 +1,4 @@
-<%= render Avo::TurboFrameWrapperComponent.new(params[:turbo_frame]) do %>
+<%= render Avo::TurboFrameWrapperComponent.new(@turbo_frame) do %>
   <%= render @component.new(
       resource: @resource,
       resources: @resources,
@@ -8,7 +8,7 @@
       filters: @filters,
       actions: @actions,
       reflection: @reflection,
-      turbo_frame: params[:turbo_frame],
+      turbo_frame: @turbo_frame,
       parent_record: @parent_record,
       parent_resource: @parent_resource,
       applied_filters: @applied_filters,

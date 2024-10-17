@@ -17,6 +17,7 @@ module Avo
     before_action :set_pagy_locale, only: :index
 
     def index
+      @turbo_frame = params[:turbo_frame] || @resource.route_key
       @page_title = @resource.plural_name.humanize
 
       if @reflection.present? && !turbo_frame_request?

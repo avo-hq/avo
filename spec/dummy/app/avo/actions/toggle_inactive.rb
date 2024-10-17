@@ -34,5 +34,9 @@ class Avo::Actions::ToggleInactive < Avo::BaseAction
     end
 
     silent
+    close_modal
+    append_to_response -> {
+      turbo_stream.turbo_frame_set_src(@resource.model_key, src: avo.resources_users_path)
+    }
   end
 end
