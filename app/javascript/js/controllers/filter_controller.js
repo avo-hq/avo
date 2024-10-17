@@ -1,4 +1,5 @@
-import { Controller, Turbo } from '@hotwired/stimulus'
+import { Controller } from '@hotwired/stimulus'
+import { Turbo } from '@hotwired/turbo-rails'
 import URI from 'urijs'
 
 export default class extends Controller {
