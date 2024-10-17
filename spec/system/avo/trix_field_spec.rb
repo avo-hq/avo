@@ -39,8 +39,14 @@ RSpec.describe "TrixField", type: :system do
       it "contains js alert messages translated" do
         visit "/admin/resources/posts/#{post.id}/edit"
 
-        data = first("[data-upload-warning]")[:'data-upload-warning']
-        expect(data).to eq t("avo.you_cant_upload_new_resource")
+        upload_warning_message = find("[data-trix-field-upload-warning-value]")[:'data-trix-field-upload-warning-value']
+        expect(upload_warning_message).to eq I18n.t("avo.you_cant_upload_new_resource")
+
+        attachment_disable_message = find("[data-trix-field-attachment-disable-warning-value]")[:'data-trix-field-attachment-disable-warning-value']
+        expect(attachment_disable_message).to eq I18n.t("avo.this_field_has_attachments_disabled")
+
+        attachment_key_warning_message = find("[data-trix-field-attachment-key-warning-value]")[:'data-trix-field-attachment-key-warning-value']
+        expect(attachment_key_warning_message).to eq I18n.t("avo.you_havent_set_attachment_key")
       end
     end
   end
