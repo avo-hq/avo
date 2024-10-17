@@ -35,6 +35,13 @@ RSpec.describe "TrixField", type: :system do
 
         expect(find_field_value_element("body")).to have_text "Works for us!!!"
       end
+
+      it "contains js alert messages translated" do
+        visit "/admin/resources/posts/#{post.id}/edit"
+
+        data = first("[data-upload-warning]")[:'data-upload-warning']
+        expect(data).to eq t("avo.you_cant_upload_new_resource")
+      end
     end
   end
 
