@@ -6,7 +6,7 @@ class Avo::TurboFrameWrapperComponent < Avo::BaseComponent
   def render_content
     return content if @frame_id.blank?
 
-    turbo_frame_tag @frame_id  do
+    turbo_frame_tag @frame_id do
       # When rendering the frames the flashed content gets lost.
       # We're appending it back if it's a turbo_frame_request.
       if helpers.turbo_frame_request?

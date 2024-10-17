@@ -48,4 +48,12 @@ class Avo::PaginatorComponent < Avo::BaseComponent
 
     version
   end
+
+  def anchor_string
+    if @parent_record.present?
+      "data-turbo-frame=\"#{@turbo_frame}\""
+    else
+      "data-turbo-frame=\"#{@turbo_frame}\", data-turbo-action=\"advance\""
+    end
+  end
 end

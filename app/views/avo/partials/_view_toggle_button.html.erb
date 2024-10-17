@@ -26,6 +26,15 @@
     <div class="button-group">
       <% available_view_types.each do |type| %>
         <% is_active_view = view_type.to_s == type.to_s %>
+        <%
+          data = {
+            tippy: 'tooltip',
+            'turbo-frame': turbo_frame,
+            control: "view-type-toggle-#{type}"
+          }
+
+          data.merge(turbo_action: :advance) if @parent_record.blank?
+        %>
 
         <%= a_link url_for(params.permit!.merge(view_type: type)).to_s,
           icon: info[type][:new_icon],
@@ -34,11 +43,7 @@
           size: :sm,
           class: is_active_view ? "z-20" : "bg-gray-100 border-gray-300",
           title: t('avo.switch_to_view', view_type: type),
-          data: {
-            tippy: 'tooltip',
-            'turbo-frame': turbo_frame,
-            control: "view-type-toggle-#{type}"
-          }
+          data: data
         %>
       <% end %>
     </div>

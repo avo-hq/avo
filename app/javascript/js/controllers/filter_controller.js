@@ -1,4 +1,4 @@
-import { Controller } from '@hotwired/stimulus'
+import { Controller, Turbo } from '@hotwired/stimulus'
 import URI from 'urijs'
 
 export default class extends Controller {
@@ -109,7 +109,6 @@ export default class extends Controller {
 
     url.query(query)
 
-    this.urlRedirectTarget.href = url.readable().toString()
-    this.urlRedirectTarget.click()
+    Turbo.visit(url.readable().toString())
   }
 }
