@@ -31,7 +31,7 @@
 
       <% if @pagy.pages > 1 %>
         <%# @todo: add first & last page. make the first and last buttons rounded %>
-        <%== helpers.pagy_nav @pagy, anchor_string: "data-turbo-frame=\"#{@turbo_frame}\"" %>
+        <%== helpers.pagy_nav @pagy, anchor_string: anchor_string %>
       <% end %>
     </div>
   </div>

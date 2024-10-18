@@ -232,7 +232,8 @@ class Avo::ResourceComponent < Avo::BaseComponent
       style: :primary,
       icon: "heroicons/outline/plus",
       data: {
-        target: :create
+        target: :create,
+        turbo_frame: :_top
       } do
       control.label
     end
