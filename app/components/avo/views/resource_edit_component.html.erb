@@ -17,6 +17,7 @@
     html: {
       novalidate: true
     },
+    data: { controller: "form-exit-prompt", form_exit_prompt_target: "form" },
     multipart: true do |form| %>
     <%= render Avo::ReferrerParamsComponent.new back_path: back_path %>
     <%= content_tag :div, class: "space-y-12" do %>
