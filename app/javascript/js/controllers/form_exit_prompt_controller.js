@@ -5,6 +5,10 @@ export default class extends Controller {
 
   connect() {
     this.isDirty = false
+    this.skipFormStateEvaluation = false
+
+    this.initialFormState = this.getFormState()
+    this.currentFormState = this.getFormState()
 
     // for select tags
     this.formTarget.addEventListener('change', this.trackChanges.bind(this))
@@ -30,16 +34,53 @@ export default class extends Controller {
     )
   }
 
-  trackChanges() {
-    this.isDirty = true
+  getFormState() {
+    const formState = {}
+    const formFieldsArray = [...this.formTarget.querySelectorAll('input, textarea, select')]
+    const formFieldsWithIdentifier = formFieldsArray.filter((item) => Boolean(item.id))
+
+    formFieldsWithIdentifier.forEach((item) => {
+      let { value } = item
+
+      if (item.type === 'checkbox') {
+        value = item.checked
+      }
+
+      formState[item.id] = value
+    })
+
+    return formState
+  }
+
+  trackChanges(event) {
+    const { target: { id, type: fieldType, checked } } = event
+
+    let { target: { value } } = event
+
+    if (fieldType === 'checkbox') {
+      value = checked
+    }
+
+    this.currentFormState[id] = value
+  }
+
+  evaluateFormState() {
+    if (this.skipFormStateEvaluation) return
+
+    const isFormDirty = Object.keys(this.initialFormState).some((key) => this.initialFormState[key] !== this.currentFormState[key])
+
+    this.isDirty = isFormDirty
   }
 
   preventTurboNavigation(event) {
+    this.evaluateFormState()
+
     if (this.isDirty) {
       const message = 'Are you sure you want to navigate away from the page? You will lose all your changes.'
 
       if (window.confirm(message)) {
         this.isDirty = false
+        this.skipFormStateEvaluation = true
       } else {
         event.preventDefault()
       }
@@ -47,6 +88,8 @@ export default class extends Controller {
   }
 
   preventFullPageNavigation(event) {
+    this.evaluateFormState()
+
     if (this.isDirty) {
       event.preventDefault()
 
