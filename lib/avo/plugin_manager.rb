@@ -12,18 +12,6 @@ module Avo
       @plugins << Plugin.new(name:, priority: priority)
     end
 
-    def boot_plugins
-      Avo.plugin_manager.all.sort_by(&:priority).each do |plugin|
-        plugin.klass.boot
-      end
-    end
-
-    def init_plugins
-      Avo.plugin_manager.all.sort_by(&:priority).each do |plugin|
-        plugin.klass.init
-      end
-    end
-
     def register_field(method_name, klass)
       Avo.field_manager.load_field method_name, klass
     end
@@ -37,7 +25,7 @@ module Avo
     def as_json(*arg)
       plugins.map do |plugin|
         {
-          klass: plugin.klass.to_s,
+          klass: plugin.to_s,
           priority: plugin.priority,
         }
       end
@@ -45,7 +33,7 @@ module Avo
 
     def to_s
       plugins.map do |plugin|
-        plugin.klass.to_s
+        plugin.to_s
       end.join(",")
     rescue
       "Failed to fetch plugins."

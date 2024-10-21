@@ -41,6 +41,7 @@ Avo.configure do |config|
   # }
   # config.raise_error_on_missing_policy = false
   config.authorization_client = nil
+  config.implicit_authorization = true
 
   ## == Localization ==
   # config.locale = 'en-US'
@@ -101,6 +102,7 @@ Avo.configure do |config|
   # }
 
   ## == Customization ==
+  config.click_row_to_view_record = true
   # config.app_name = 'Avocadelicious'
   # config.timezone = 'UTC'
   # config.currency = 'USD'
@@ -114,7 +116,7 @@ Avo.configure do |config|
   # config.buttons_on_form_footers = true
   # config.field_wrapper_layout = true
   # config.resource_parent_controller = "Avo::ResourcesController"
-  # config.click_row_to_view_record = false
+  # config.first_sorting_option = :desc # :desc or :asc
 
   ## == Branding ==
   # config.branding = {

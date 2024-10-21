@@ -7,11 +7,11 @@ class Avo::TabSwitcherComponent < Avo::BaseComponent
   delegate :white_panel_classes, to: :helpers
   delegate :group_param, to: :@group
 
-  prop :resource, Avo::BaseResource
-  prop :group, Avo::Resources::Items::TabGroup
-  prop :current_tab, Avo::Resources::Items::Tab
-  prop :active_tab_name, String, reader: :public
-  prop :view, Avo::ViewInquirer
+  prop :resource
+  prop :group
+  prop :current_tab
+  prop :active_tab_name, reader: :public
+  prop :view
 
   #TOD: helper to record:
   def tab_path(tab)

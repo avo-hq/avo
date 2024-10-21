@@ -76,7 +76,7 @@
               <ul>
                 <li>Avo <%= Avo::VERSION %></li>
                 <% Avo.plugin_manager.plugins.each do |plugin| %>
-                  <li><%= plugin.klass.name %> - <%= plugin.klass.version %></li>
+                  <li><%= plugin.name %> - <%= plugin.version %></li>
                 <% end %>
               </ul>
             </div>

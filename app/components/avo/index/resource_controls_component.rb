@@ -4,12 +4,12 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   include Avo::ApplicationHelper
   include Avo::Concerns::ChecksShowAuthorization
 
-  prop :resource, _Nilable(Avo::BaseResource)
-  prop :reflection, _Nilable(ActiveRecord::Reflection::AbstractReflection)
-  prop :parent_record, _Nilable(_Any)
-  prop :parent_resource, _Nilable(Avo::BaseResource)
-  prop :view_type, Symbol, default: :table
-  prop :actions, _Nilable(_Array(Avo::BaseAction))
+  prop :resource
+  prop :reflection
+  prop :parent_record
+  prop :parent_resource
+  prop :view_type, default: :table
+  prop :actions
 
   def can_detach?
     is_has_many_association? ? super : false
@@ -102,7 +102,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   def render_delete_button(control)
     # If the resource is a related resource, we use the can_delete? policy method because it uses
     # authorize_association_for(:destroy).
-    # Otherwise we use the can_see_the_destroy_button? policy method becuse it do no check for assiciation
+    # Otherwise we use the can_see_the_destroy_button? policy method because it do no check for association
     # only for authorize_action .
     policy_method = is_a_related_resource? ? :can_delete? : :can_see_the_destroy_button?
     return unless send policy_method
@@ -171,5 +171,9 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     end
 
     hidden.compact
+  end
+
+  def view_type
+    params[:view_type]
   end
 end

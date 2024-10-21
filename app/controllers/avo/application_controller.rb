@@ -328,5 +328,13 @@ module Avo
         "avo/application"
       end
     end
+
+    def authenticate_developer_or_admin!
+      raise_404 unless Avo::Current.user_is_developer? || Avo::Current.user_is_admin?
+    end
+
+    def raise_404
+      raise ActionController::RoutingError.new "No route matches"
+    end
   end
 end

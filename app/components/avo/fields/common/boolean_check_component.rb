@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
 class Avo::Fields::Common::BooleanCheckComponent < Avo::BaseComponent
-  prop :checked, _Boolean, default: false
-  prop :size, Symbol, default: :md
-  prop :icon, _Nilable(String) do |value|
+  prop :checked, default: false
+  prop :size, default: :md
+  prop :icon do |value|
     @checked ? "heroicons/outline/check-circle" : "heroicons/outline/x-circle"
   end
-  prop :classes, _Nilable(String)
 
   def classes
     helpers.class_names({

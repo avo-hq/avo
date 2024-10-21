@@ -4,25 +4,20 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   include Avo::ResourcesHelper
   include Avo::ApplicationHelper
 
-  prop :resource, _Nilable(Avo::BaseResource)
-  prop :resources, _Nilable(_Array(Avo::BaseResource))
-  # This is sometimes an array of records or an ActiveRecord::Relation
-  prop :records, Enumerable, default: [].freeze
-  prop :pagy, _Nilable(Pagy)
-  prop :index_params, Hash, default: {}.freeze
-  prop :filters, _Array(Avo::Filters::BaseFilter), default: [].freeze
-  prop :actions, _Array(Avo::BaseAction), default: [].freeze
-  prop :reflection, _Nilable(ActiveRecord::Reflection::AbstractReflection)
-  prop :turbo_frame, _Nilable(String), default: ""
-  prop :parent_record, _Nilable(_Any)
-  prop :parent_resource, _Nilable(Avo::BaseResource)
-  prop :applied_filters, Hash, default: {}.freeze
-  prop :query, _Nilable(ActiveRecord::Relation), reader: :public
-  # This should be
-  # prop :scopes, _Nilable(_Array(Avo::Advanced::Scopes::BaseScope)), reader: :public
-  # However, Avo::Advanced::Scopes::BaseScope raises an error because
-  # that constant is only available in the advanced repo
-  prop :scopes, _Nilable(Object), reader: :public
+  prop :resource
+  prop :resources
+  prop :records, default: [].freeze
+  prop :pagy
+  prop :index_params, default: {}.freeze
+  prop :filters, default: [].freeze
+  prop :actions, default: [].freeze
+  prop :reflection
+  prop :turbo_frame, default: ""
+  prop :parent_record
+  prop :parent_resource
+  prop :applied_filters, default: {}.freeze
+  prop :query, reader: :public
+  prop :scopes, reader: :public
 
   def title
     if @reflection.present?

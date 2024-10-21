@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class Avo::Fields::Common::BadgeViewerComponent < Avo::BaseComponent
-  prop :value, _Union(_String, _Symbol)
-  prop :options, Hash
+  prop :value
+  prop :options
 
   def after_initialize
     @backgrounds = {
