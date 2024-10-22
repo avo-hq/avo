@@ -6,7 +6,7 @@ import { Controller } from '@hotwired/stimulus'
 import { castBoolean } from '../../helpers/cast_boolean'
 
 export default class extends Controller {
-  static targets = ['editor', 'controller']
+  static targets = ['editor', 'controller', 'textarea']
 
   static values = {
     resourceName: String,
@@ -33,6 +33,10 @@ export default class extends Controller {
   }
 
   connect() {
+    this.editorTarget.addEventListener('trix-change', () => {
+      this.textareaTarget.dispatchEvent(new Event('input', { bubbles: true }))
+    })
+
     if (this.attachmentsDisabledValue) {
       // Remove the attachments button
       this.controllerTarget.querySelector('.trix-button-group--file-tools').remove()

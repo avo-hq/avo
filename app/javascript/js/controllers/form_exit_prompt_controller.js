@@ -68,11 +68,17 @@ export default class extends Controller {
     if (this.skipFormStateEvaluation) return
 
     const isFormDirty = Object.keys(this.initialFormState).some((key) => this.initialFormState[key] !== this.currentFormState[key])
+    const isNewFieldAdded = Object.keys(this.currentFormState).length > Object.keys(this.initialFormState).length
 
-    this.isDirty = isFormDirty
+    this.isDirty = isFormDirty || isNewFieldAdded
   }
 
   preventTurboNavigation(event) {
+    // don't intercept if modals
+    if (event.detail.url.includes('/new')) {
+      return
+    }
+
     this.evaluateFormState()
 
     if (this.isDirty) {
