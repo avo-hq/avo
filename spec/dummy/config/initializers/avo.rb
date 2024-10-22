@@ -32,6 +32,7 @@ Avo.configure do |config|
   config.locale = :en
   # config.raise_error_on_missing_policy = true
   # config.authorization_client = "Avo::Services::AuthorizationClients::ExtraPunditClient"
+  config.implicit_authorization = true
 
   ## == Customization ==
   config.id_links_to_resource = true
