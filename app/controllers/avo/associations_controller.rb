@@ -154,7 +154,7 @@ module Avo
 
       if @authorization.has_method?(method.to_sym)
         @authorization.authorize_action method.to_sym
-      elsif !@authorization.is_a?(Avo::Services::AuthorizationService) && Avo.configuration.implicit_authorization
+      elsif !@authorization.is_a?(Avo::Services::AuthorizationService) && Avo.configuration.explicit_authorization
         raise Avo::NotAuthorizedError.new
       end
     end
