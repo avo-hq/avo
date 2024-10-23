@@ -33,7 +33,7 @@ Avo.configure do |config|
   # config.raise_error_on_missing_policy = true
   # config.authorization_client = "Avo::Services::AuthorizationClients::ExtraPunditClient"
   # Shouldn't impact on community only if custom authorization service was configured.
-  config.implicit_authorization = true
+  config.explicit_authorization = true
 
   ## == Customization ==
   config.id_links_to_resource = true
