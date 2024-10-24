@@ -2,6 +2,7 @@
 import * as DOMPurify from 'dompurify'
 import { Controller } from '@hotwired/stimulus'
 import { castBoolean } from '../../helpers/cast_boolean'
+import Sortable from 'sortablejs'
 
 export default class extends Controller {
   static targets = ['input', 'controller', 'rows']
@@ -46,6 +47,24 @@ export default class extends Controller {
     this.updateKeyValueComponent()
   }
 
+  moveKey(oldIndex, newIndex) {
+    if (!this.options.editable) return
+
+    this.fieldValue = this.moveElement(this.fieldValue, oldIndex, newIndex)
+
+    this.updateTextareaInput()
+    this.updateKeyValueComponent()
+  }
+
+  moveElement(arr, fromIndex, toIndex) {
+    return arr.map((item, index) => {
+      if (index === toIndex) return arr[fromIndex]
+      if (index === fromIndex) return arr[toIndex]
+
+      return item
+    })
+  }
+
   focusLastRow() {
     return this.rowsTarget.querySelector('.flex.key-value-row:last-child .key-value-input-key').focus()
   }
@@ -85,26 +104,35 @@ export default class extends Controller {
       index++
     })
     this.rowsTarget.innerHTML = result
+    this.#initDragNDrop()
     window.initTippy()
   }
 
+  #initDragNDrop() {
+    const vm = this
+    // eslint-disable-next-line no-new
+    new Sortable(this.rowsTarget, {
+      animation: 150,
+      handle: '[data-control="dnd-handle"]',
+      onUpdate(event) {
+        vm.moveKey(event.oldIndex, event.newIndex)
+      },
+    })
+  }
+
   interpolatedRow(key, value, index) {
-    let result = `<div class="flex key-value-row">
+    let result = '<div class="flex key-value-row">'
+
+    result += `
       ${this.inputField('key', index, key, value)}
-      ${this.inputField('value', index, key, value)}`
+      ${this.inputField('value', index, key, value)}
+    `
+
     if (this.options.editable) {
-      result += `<a
-  href="javascript:void(0);"
-  data-key-value-index-param="${index}"
-  data-action="click->key-value#deleteRow"
-  title="${this.options.delete_text}"
-  data-tippy="tooltip"
-  data-button="delete-row"
-  tabindex="-1"
-  ${this.options.disable_deleting_rows ? "disabled='disabled'" : ''}
-  class="flex items-center justify-center p-2 px-3 border-none ${this.options.disable_deleting_rows ? 'cursor-not-allowed' : ''}"
-><svg class="pointer-events-none text-gray-500 h-5 hover:text-gray-500" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></a>`
+      result += this.upDownButtons(index)
+      result += this.deleteButton(index)
     }
+
     result += '</div>'
 
     return result
@@ -121,6 +149,36 @@ export default class extends Controller {
   ${this[`${id}InputDisabled`] ? "disabled='disabled'" : ''}
   value="${typeof inputValue === 'undefined' || inputValue === null ? '' : inputValue}"
 />`
+  }
+
+  deleteButton(index) {
+    return `<a
+              href="javascript:void(0);"
+              data-key-value-index-param="${index}"
+              data-action="click->key-value#deleteRow"
+              title="${this.options.delete_text}"
+              data-tippy="tooltip"
+              data-button="delete-row"
+              tabindex="-1"
+              ${this.options.disable_deleting_rows ? "disabled='disabled'" : ''}
+              class="flex items-center justify-center p-2 px-3 border-none ${this.options.disable_deleting_rows ? 'cursor-not-allowed' : ''}"
+            ><svg class="pointer-events-none text-gray-500 h-5 hover:text-gray-500" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></a>`
+  }
+
+  upDownButtons(index) {
+    return `<div class="flex flex-col">
+      <a
+        href="javascript:void(0);"
+        data-key-value-index-param="${index}"
+        data-control="dnd-handle"
+        title="reorder"
+        data-tippy="tooltip"
+        tabindex="-1"
+        class="flex items-center justify-center py-0 px-2 border-none h-full ${this.options.disable_deleting_rows ? 'cursor-not-allowed' : ''}"
+        >
+          <svg class="pointer-events-none text-gray-500 h-4 hover:text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+      </a>
+    </div>`
   }
 
   setOptions() {
