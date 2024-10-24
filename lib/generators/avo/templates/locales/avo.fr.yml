@@ -100,7 +100,7 @@ fr:
     select_item: Sélectionnez un élément
     show_content: Afficher le contenu
     more_content: Plus de contenu
-    less content: Moins de contenu
+    less_content: Moins de contenu
     sign_out: Se déconnecter
     switch_to_view: Passez à la vue %{view_type}
     table_view: Vue table

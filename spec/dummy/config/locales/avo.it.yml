@@ -1,0 +1,123 @@
+---
+it:
+  avo:
+    resource_translations:
+      product:
+        save: "Salva il prodotto!"
+    action_ran_successfully: L'azione è stata eseguita con successo!
+    actions: Azioni
+    and_x_other_resources: e altri %{count} risorse
+    applied: applicato
+    are_you_sure: Sei sicuro?
+    are_you_sure_detach_item: Sei sicuro di voler staccare questo %{item}?
+    are_you_sure_you_want_to_run_this_option: Sei sicuro di voler eseguire questa azione?
+    attach: Allega
+    attach_and_attach_another: Allega e allega un altro
+    attach_item: Allega %{item}
+    attachment_class_attached: "%{attachment_class} allegato."
+    attachment_class_detached: "%{attachment_class} staccato."
+    attachment_failed: "Impossibile allegare %{attachment_class}"
+    attachment_destroyed: Allegato distrutto
+    cancel: Annulla
+    choose_a_country: Scegli un paese
+    choose_an_option: Scegli un'opzione
+    choose_item: Scegli %{item}
+    clear_value: Cancella valore
+    click_to_reveal_filters: Clicca per mostrare i filtri
+    close_modal: Chiudi modale
+    confirm: Conferma
+    create_new_item: Crea nuovo %{item}
+    dashboard: Cruscotto
+    dashboards: Cruscotti
+    default_scope: Tutti
+    delete: Elimina
+    delete_file: Elimina file
+    delete_item: Elimina %{item}
+    detach_item: Stacca %{item}
+    details: Dettagli
+    download: Scarica
+    download_file: Scarica file
+    download_item: Scarica %{item}
+    edit: Modifica
+    edit_item: Modifica %{item}
+    empty_dashboard_message: Aggiungi delle carte a questo cruscotto
+    failed: Fallito
+    failed_to_find_attachment: Impossibile trovare l'allegato
+    failed_to_load: Caricamento fallito
+    file:
+      one: file
+      other: file
+    filter_by: Filtra per
+    filters: Filtri
+    go_back: Torna indietro
+    grid_view: Vista griglia
+    hide_content: Nascondi contenuto
+    home: Home
+    key_value_field:
+      add_row: Aggiungi riga
+      delete_row: Elimina riga
+      key: Chiave
+      value: Valore
+    list_is_empty: La lista è vuota
+    loading: Caricamento in corso
+    more: Altro
+    new: nuovo
+    next_page: Pagina successiva
+    no_cancel: No, annulla
+    no_cards_present: Nessuna carta presente
+    no_item_found: Nessun record trovato
+    no_options_available: Nessuna opzione disponibile
+    no_related_item_found: Nessun record correlato trovato
+    not_authorized: Non sei autorizzato a eseguire questa azione.
+    number_of_items:
+      one: un %{item}
+      other: "%{count} %{item}"
+      zero: nessun %{item}
+    oops_nothing_found: Ops! Niente trovato...
+    order:
+      higher: Sposta record più in alto
+      lower: Sposta record più in basso
+      reorder_record: Riordina record
+      to_bottom: Sposta record in fondo
+      to_top: Sposta record in cima
+    per_page: Per pagina
+    prev_page: Pagina precedente
+    records_selected_from_all_pages_html: Tutti i record selezionati da tutte le pagine
+    remove_selection: Rimuovi selezione
+    reset_filters: Reimposta filtri
+    reset: Reimposta
+    resource_created: Record creato
+    resource_destroyed: Record distrutto
+    resource_updated: Record aggiornato
+    resources: Risorse
+    run: Esegui
+    save: Salva
+    search:
+      cancel_button: Annulla
+      placeholder: Cerca
+    select_all: Seleziona tutto
+    select_all_matching: Seleziona tutto corrispondente
+    select_item: Seleziona elemento
+    show_content: Mostra contenuto
+    more_content: Più contenuti
+    less_content: Meno contenuti
+    sign_out: Esci
+    switch_to_view: Passa a vista %{view_type}
+    table_view: Vista tabella
+    tools: Strumenti
+    type_to_search: Digita per cercare.
+    unauthorized: Non autorizzato
+    undo: Annulla
+    view: Visualizza
+    view_item: Visualizza %{item}
+    was_successfully_created: è stato creato con successo
+    was_successfully_updated: è stato aggiornato con successo
+    x_items_more:
+      one: un altro elemento
+      other: "%{count} altri elementi"
+      zero: nessun altro elemento
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> record selezionati su questa pagina su un totale di <span class="font-bold text-gray-700">%{count}</span>
+    x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> record selezionati da tutte le pagine
+    x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> record selezionati su questa pagina
+    yes_confirm: Sì, sono sicuro
+    you_missed_something_check_form: Potresti aver dimenticato qualcosa. Controlla il modulo.
