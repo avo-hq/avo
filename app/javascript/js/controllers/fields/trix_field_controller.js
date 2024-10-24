@@ -17,6 +17,9 @@ export default class extends Controller {
     hideAttachmentFilesize: Boolean,
     hideAttachmentUrl: Boolean,
     isActionText: Boolean,
+    uploadWarning: String,
+    attachmentDisableWarning: String,
+    attachmentKeyWarning: String,
   }
 
   get uploadUrl() {
@@ -43,7 +46,7 @@ export default class extends Controller {
         // Prevent file uploads for fields that have attachments disabled.
         if (this.attachmentsDisabledValue) {
           event.preventDefault()
-          alert('This field has attachments disabled.')
+          alert(this.attachmentDisableWarningValue)
 
           return
         }
@@ -51,7 +54,7 @@ export default class extends Controller {
         // Prevent file uploads for resources that haven't been saved yet.
         if (!this.resourceIdValue) {
           event.preventDefault()
-          alert("You can't upload files into the Trix editor until you save the resource.")
+          alert(this.uploadWarningValue)
 
           return
         }
@@ -60,7 +63,7 @@ export default class extends Controller {
         // When is rich text, attachment key is not needed.
         if (!this.isActionTextValue && !this.attachmentKeyValue) {
           event.preventDefault()
-          alert("You haven't set an `attachment_key` to this Trix field.")
+          alert(this.attachmentKeyWarningValue)
         }
       }
     })

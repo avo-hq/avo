@@ -104,6 +104,7 @@ ro:
     sign_out: Delogare
     switch_to_view: Comutați la vizualizarea %{view_type}
     table_view: Vezi sub formă de tabel
+    this_field_has_attachments_disabled: Acest câmp are atașamente dezactivate.
     tools: Instrumente
     type_to_search: Caută aici...
     unauthorized: Neautorizat
@@ -120,4 +121,6 @@ ro:
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> selectate din toate paginile
     x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> selectate
     yes_confirm: Da, sunt sigur
+    you_cant_upload_new_resource: Nu poți încărca fișiere în editorul Trix până când nu salvezi resursa.
+    you_havent_set_attachment_key: Trebuie să setezi o `attachment_key` pentru acest câmp Trix.
     you_missed_something_check_form: S-ar putea să fi omis ceva. Vă rugăm să verificați formularul.
