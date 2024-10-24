@@ -97,6 +97,8 @@ en:
     select_all_matching: Select all matching
     select_item: Select item
     show_content: Show content
+    more_content: More content
+    less_content: Less content
     sign_out: Sign out
     switch_to_view: Switch to %{view_type} view
     table_view: Table view

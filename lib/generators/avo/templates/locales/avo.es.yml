@@ -99,6 +99,8 @@ es:
     select_all_matching: Seleccionar todas las coincidencias
     select_item: Selecionar elemento
     show_content: Mostrar contenido
+    more_content: Más contenido
+    less_content: Menos contenido
     sign_out: Salir
     switch_to_view: Cambiar a la vista %{view_type}
     table_view: Vista en tabla

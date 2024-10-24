@@ -1,5 +1,17 @@
 @import './../../../../../node_modules/trix/dist/trix.css';
 
+.trix-content.hidden {
+  display: block !important;
+}
+
+.trix-content.hidden {
+  clip-path: inset(0 0 calc(100% - 50px) 0);
+  -webkit-mask-image: linear-gradient(to bottom, black 30px, transparent 50px);
+  mask-image: linear-gradient(to bottom, black 30px, transparent 50px);
+  max-height: 50px;
+  min-height: 0px;
+}
+
 .trix-content h1 {
   @apply text-xl font-bold mb-2;
 }
