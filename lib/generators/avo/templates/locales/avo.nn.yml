@@ -99,6 +99,8 @@ nn:
     select_all_matching: Vel alle samsvarende
     select_item: Vel
     show_content: Vis innhald
+    more_content: Mer innhold
+    less_content: Mindre innhold
     sign_out: Logg ut
     switch_to_view: Bytt til %{view_type} vis
     table_view: Tabellvisning

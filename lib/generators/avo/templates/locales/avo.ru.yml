@@ -99,6 +99,8 @@ ru:
     select_all_matching: Выбрать все совпадающие
     select_item: Выбрать элемент
     show_content: Показать содержимое
+    more_content: Больше контента
+    less_content: Меньше контента
     sign_out: Выйти
     switch_to_view: Переключиться на вид %{view_type}
     table_view: Таблица

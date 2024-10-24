@@ -99,6 +99,8 @@ de:
     select_all_matching: Alle übereinstimmenden auswählen
     select_item: Eintrag auswählen
     show_content: Inhalt anzeigen
+    more_content: Mehr Inhalt
+    less_content: Weniger Inhalt
     sign_out: Abmelden
     switch_to_view: Wechseln zur %{view_type}-Ansicht
     table_view: Tabellenansicht

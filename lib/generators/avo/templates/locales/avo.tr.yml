@@ -99,6 +99,8 @@ tr:
     select_all_matching: Tüm eşleşenleri seç
     select_item: Öğe seç
     show_content: İçeriği göster
+    more_content: Daha fazla içerik
+    less_content: Daha az içerik
     sign_out: Çıkış yap
     switch_to_view: "%{view_type} görünümüne kay"
     table_view: Tablo görünümü

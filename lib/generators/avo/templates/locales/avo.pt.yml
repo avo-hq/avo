@@ -99,6 +99,8 @@ pt:
     select_all_matching: Selecionar todas as correspondências
     select_item: Selecionar item
     show_content: Mostrar conteúdo
+    more_content: Mais conteúdo
+    less_content: Menos conteúdo
     sign_out: Terminar sessão
     switch_to_view: Alterar para visão %{view_type}
     table_view: Visualização em tabela
