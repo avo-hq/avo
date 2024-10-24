@@ -2,10 +2,11 @@
   <%= render Avo::Fields::Common::Files::ListViewerComponent.new(field: @field, resource: @resource) if @field.value.present? %>
 
   <% if can_upload_file? %>
-    <div class="mt-2">
+    <div class="mt-2 flex items-center" data-controller="file-field" data-file-field-target="previewContainer">
       <%= @form.file_field @field.id,
         accept: @field.accept,
-        data: @field.get_html(:data, view: view, element: :input),
+        data: @field.get_html(:data, view: view, element: :input)
+          .merge(action: "change->file-field#preview"),
         direct_upload: @field.direct_upload,
         disabled: disabled?,
         multiple: true,
@@ -13,6 +14,10 @@
         class: "w-full",
         autofocus: @autofocus
       %>
+      <span data-file-field-target="removeIcon" 
+             class="text-red-500 cursor-pointer"
+            data-action="click->file-field#remove" 
+            style="display: none;">&times;</span>
     </div>
   <% else %>
     —
