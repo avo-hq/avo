@@ -73,7 +73,7 @@ export default class extends Controller {
       result = Object.assign(...this.fieldValue.map(([key, val]) => ({ [key]: val })))
     }
     this.inputTarget.innerText = JSON.stringify(result)
-    this.inputTarget.dispatchEvent(new Event('input'))
+    this.inputTarget.dispatchEvent(new Event('input', { bubbles: true }))
   }
 
   updateKeyValueComponent() {
