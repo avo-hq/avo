@@ -8,8 +8,8 @@
       <div data-hidden-input-target="showContentLink">
         <%= link_to t('avo.show_content'), 'javascript:void(0);', class: 'font-bold inline-block', data: { action: 'click->hidden-input#showContent' } %>
       </div>
-      <div data-hidden-input-target="hideContentLink">
-        <%= link_to t('avo.hide_content'), 'javascript:void(0);', class: 'font-bold inline-block hidden', data: { action: 'click->hidden-input#hideContent' }%>
+      <div data-hidden-input-target="hideContentLink" class="hidden">
+        <%= link_to t('avo.hide_content'), 'javascript:void(0);', class: 'font-bold inline-block', data: { action: 'click->hidden-input#hideContent' }%>
       </div>
     <% end %>
     <div class="<%= content_classes %> " data-hidden-input-target="content">
