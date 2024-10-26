@@ -1,11 +1,16 @@
 <%= field_wrapper **field_wrapper_args do %>
   <%
     content_classes = 'trix-content py-2 max-w-4xl'
-    content_classes << ' hidden' unless @field.always_show
+    content_classes << ' hidden' unless @field.always_show_content
   %>
   <div data-controller="hidden-input">
-    <% unless @field.always_show %>
-      <%= link_to t('avo.show_content'), 'javascript:void(0);', class: 'font-bold inline-block', data: { action: 'click->hidden-input#showContent' } %>
+    <% unless @field.always_show_content %>
+      <div data-hidden-input-target="showContentLink">
+        <%= link_to t('avo.show_content'), 'javascript:void(0);', class: 'font-bold inline-block', data: { action: 'click->hidden-input#showContent' } %>
+      </div>
+      <div data-hidden-input-target="hideContentLink">
+        <%= link_to t('avo.hide_content'), 'javascript:void(0);', class: 'font-bold inline-block hidden', data: { action: 'click->hidden-input#hideContent' }%>
+      </div>
     <% end %>
     <div class="<%= content_classes %> " data-hidden-input-target="content">
       <%= sanitize @field.value.to_s %>

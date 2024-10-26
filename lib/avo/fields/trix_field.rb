@@ -1,7 +1,7 @@
 module Avo
   module Fields
     class TrixField < BaseField
-      attr_reader :always_show
+      attr_reader :always_show_content
       attr_reader :attachments_disabled
       attr_reader :attachment_key
       attr_reader :hide_attachment_filename
@@ -13,7 +13,7 @@ module Avo
 
         hide_on :index
 
-        @always_show = args[:always_show] || false
+        @always_show_content = args[:always_show_content] || false
         @attachment_key = args[:attachment_key]
         @attachments_disabled = disable_attachments?(args)
         @hide_attachment_filename = args[:hide_attachment_filename] || false
