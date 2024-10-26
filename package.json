@@ -43,7 +43,7 @@
     "@tiptap/extension-text": "^2.7.4",
     "@tiptap/extension-underline": "^2.7.4",
     "@tiptap/pm": "^2.7.4",
-    "@yaireo/tagify": "^4.31.3",
+    "@yaireo/tagify": "^4.31.4",
     "add": "^2.0.6",
     "autoprefixer": "^10.4.20",
     "chart.js": "^3.9.1",
@@ -107,4 +107,3 @@
     "last 3 safari versions"
   ]
 }
-
