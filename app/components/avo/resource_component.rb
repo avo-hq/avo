@@ -282,10 +282,14 @@ class Avo::ResourceComponent < Avo::BaseComponent
       title: action.title,
       size: action.size,
       data: {
+        controller: "actions-picker",
         turbo_frame: Avo::MODAL_FRAME_ID,
         action_name: action.action.action_name,
         tippy: action.title ? :tooltip : nil,
         action: "click->actions-picker#visitAction",
+        turbo_prefetch: false,
+        "actions-picker-target": action.action.standalone ? "standaloneAction" : "resourceAction",
+        disabled: action.disabled?
       } do
       action.label
     end

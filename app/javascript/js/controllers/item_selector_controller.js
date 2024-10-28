@@ -1,16 +1,18 @@
 import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
-  static targets = ['panel'];
+  static targets = ['panel']
 
-  checkbox = {};
-
-  enabledClasses = ['text-black']
-
-  disabledClasses = ['text-gray-500']
+  checkbox = {}
 
   get actionsPanelPresent() {
     return this.actionsButtonElement !== null
+  }
+
+  get actionLinks() {
+    return document.querySelectorAll(
+      'a[data-actions-picker-target="resourceAction"]',
+    )
   }
 
   get currentIds() {
@@ -19,12 +21,6 @@ export default class extends Controller {
     } catch (error) {
       return []
     }
-  }
-
-  get actionLinks() {
-    return document.querySelectorAll(
-      '.js-actions-dropdown a[data-actions-picker-target="resourceAction"]',
-    )
   }
 
   set currentIds(value) {
@@ -76,8 +72,8 @@ export default class extends Controller {
 
   enableResourceActions() {
     this.actionLinks.forEach((link) => {
-      link.classList.add(...this.enabledClasses)
-      link.classList.remove(...this.disabledClasses)
+      link.classList.add(link.dataset.enabledClasses)
+      link.classList.remove(link.dataset.disabledClasses)
       link.setAttribute('data-href', link.getAttribute('href'))
       link.dataset.disabled = false
     })
@@ -85,8 +81,8 @@ export default class extends Controller {
 
   disableResourceActions() {
     this.actionLinks.forEach((link) => {
-      link.classList.remove(...this.enabledClasses)
-      link.classList.add(...this.disabledClasses)
+      link.classList.remove(link.dataset.enabledClasses)
+      link.classList.add(link.dataset.disabledClasses)
       link.setAttribute('href', link.getAttribute('data-href'))
       link.dataset.disabled = true
     })

@@ -292,6 +292,14 @@ module Avo
       @appended_turbo_streams = turbo_stream
     end
 
+    def enabled?
+      self.class.standalone || @record&.persisted?
+    end
+
+    def disabled?
+      !enabled?
+    end
+
     private
 
     def add_message(body, type = :info)
