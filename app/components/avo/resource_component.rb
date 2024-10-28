@@ -289,7 +289,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
         action: "click->actions-picker#visitAction",
         turbo_prefetch: false,
         "actions-picker-target": action.action.standalone ? "standaloneAction" : "resourceAction",
-        disabled: action.disabled?
+        disabled: action.action.disabled?
       } do
       action.label
     end
