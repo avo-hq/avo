@@ -34,6 +34,13 @@ class Avo::ActionsComponent < Avo::BaseComponent
 
   def after_initialize
     filter_actions unless @custom_list
+
+    # Hydrate each action action with the record when rendering a list on row controls
+    if @as_row_control
+      @actions.each do |action|
+        action.hydrate(resource: @resource, record: @resource.record) if action.respond_to?(:hydrate)
+      end
+    end
   end
 
   def render?
