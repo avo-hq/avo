@@ -5,10 +5,6 @@ export default class extends Controller {
 
   checkbox = {}
 
-  get actionsPanelPresent() {
-    return this.actionsButtonElement !== null
-  }
-
   get actionLinks() {
     return document.querySelectorAll(
       'a[data-actions-picker-target="resourceAction"]',
@@ -26,7 +22,7 @@ export default class extends Controller {
   set currentIds(value) {
     this.stateHolderElement.dataset.selectedResources = JSON.stringify(value)
 
-    if (this.actionsPanelPresent) {
+    if (this.actionLinks.length > 0) {
       if (value.length > 0) {
         this.enableResourceActions()
       } else {
@@ -38,9 +34,6 @@ export default class extends Controller {
   connect() {
     this.resourceName = this.element.dataset.resourceName
     this.resourceId = this.element.dataset.resourceId
-    this.actionsButtonElement = document.querySelector(
-      `[data-actions-dropdown-button="${this.resourceName}"]`,
-    )
     this.stateHolderElement = document.querySelector(
       `[data-selected-resources-name="${this.resourceName}"]`,
     )
