@@ -66,9 +66,11 @@ ar:
       delete_row: حذف صف
       key: المفتاح
       value: القيمة
+    less_content: محتوى أقل
     list_is_empty: القائمة فارغة
     loading: جاري التحميل
     more: المزيد
+    more_content: المزيد من المحتوى
     new: جديد
     next_page: الصفحة التالية
     no_cancel: لا، إلغاء
@@ -107,8 +109,6 @@ ar:
     select_all_matching: تحديد كل المطابق
     select_item: تحديد العنصر
     show_content: عرض المحتوى
-    more_content: المزيد من المحتوى
-    less_content: محتوى أقل
     sign_out: تسجيل الخروج
     switch_to_view: التبديل إلى عرض %{view_type}
     table_view: عرض الجدول

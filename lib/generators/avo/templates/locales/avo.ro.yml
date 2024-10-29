@@ -60,9 +60,11 @@ ro:
       delete_row: Șterge rând
       key: Cheie
       value: Valoare
+    less_content: Mai puțin conținut
     list_is_empty: Lista este goală
     loading: Se incarcă
     more: Mai multe
+    more_content: Mai mult conținut
     new: nou
     next_page: Pagina următoare
     no_cancel: Nu, anulează
@@ -101,8 +103,6 @@ ro:
     select_all_matching: Selectează toate care se potrivesc
     select_item: Selectează record
     show_content: Arată conținutul
-    more_content: Mai mult conținut
-    less_content: Mai puțin conținut
     sign_out: Delogare
     switch_to_view: Comutați la vizualizarea %{view_type}
     table_view: Vezi sub formă de tabel

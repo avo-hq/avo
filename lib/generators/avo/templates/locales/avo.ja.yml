@@ -58,9 +58,11 @@ ja:
       delete_row: 行を削除
       key: キー
       value: 値
+    less_content: コンテンツが少ない
     list_is_empty: リストは空です
     loading: 読み込み中
     more: もっと
+    more_content: さらなるコンテンツ
     new: 新規
     next_page: 次のページ
     no_cancel: いいえ、キャンセル
@@ -99,8 +101,6 @@ ja:
     select_all_matching: 一致するすべてを選択
     select_item: アイテムを選択
     show_content: 内容を表示
-    more_content: さらなるコンテンツ
-    less_content: コンテンツが少ない
     sign_out: サインアウト
     switch_to_view: "%{view_type}ビューに切り替える"
     table_view: テーブルビュー

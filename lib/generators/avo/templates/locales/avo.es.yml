@@ -58,9 +58,11 @@ es:
       delete_row: Eliminar fila
       key: Clave
       value: Valor
+    less_content: Menos contenido
     list_is_empty: La lista está vacía
     loading: Cargando
     more: Más
+    more_content: Más contenido
     new: nuevo/a
     next_page: Página siguiente
     no_cancel: No, cancelar
@@ -99,8 +101,6 @@ es:
     select_all_matching: Seleccionar todas las coincidencias
     select_item: Selecionar elemento
     show_content: Mostrar contenido
-    more_content: Más contenido
-    less_content: Menos contenido
     sign_out: Salir
     switch_to_view: Cambiar a la vista %{view_type}
     table_view: Vista en tabla

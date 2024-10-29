@@ -56,9 +56,11 @@ en:
       delete_row: Delete row
       key: Key
       value: Value
+    less_content: Less content
     list_is_empty: List is empty
     loading: Loading
     more: More
+    more_content: More content
     new: new
     next_page: Next page
     no_cancel: No, cancel
@@ -97,8 +99,6 @@ en:
     select_all_matching: Select all matching
     select_item: Select item
     show_content: Show content
-    more_content: More content
-    less_content: Less content
     sign_out: Sign out
     switch_to_view: Switch to %{view_type} view
     table_view: Table view
