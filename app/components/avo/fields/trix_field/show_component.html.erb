@@ -3,11 +3,13 @@
     <div class="trix-content py-2 max-w-4xl hidden" data-trix-body-target="content">
       <%= sanitize @field.value.to_s %>
     </div>
-    <div data-trix-body-target="moreContentButton">
-      <%= link_to t('avo.more_content'), 'javascript:void(0);', class: 'font-bold inline-block pt-3', data: { action: 'click->trix-body#toggleContent' } %>
-    </div>
-    <div class="hidden" data-trix-body-target="lessContentButton">
-      <%= link_to t('avo.less_content'), 'javascript:void(0);', class: 'font-bold inline-block pt-3', data: { action: 'click->trix-body#toggleContent' } %>
-    </div>
+    <% if  @field.value.to_s.length > 87 %>
+      <div data-trix-body-target="moreContentButton">
+        <%= link_to t('avo.more_content'), 'javascript:void(0);', class: 'font-bold inline-block pt-3', data: { action: 'click->trix-body#toggleContent' } %>
+      </div>
+      <div class="hidden" data-trix-body-target="lessContentButton">
+        <%= link_to t('avo.less_content'), 'javascript:void(0);', class: 'font-bold inline-block pt-3', data: { action: 'click->trix-body#toggleContent' } %>
+      </div>
+    <% end %>
   </div>
 <% end %>
