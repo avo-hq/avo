@@ -105,4 +105,57 @@ RSpec.feature "HasManyField", type: :system do
       end
     end
   end
+
+  describe "duplicated field id" do
+    let!(:store) { create(:store) }
+
+    it "render tags and has many field" do
+      StorePatron.create!(user:, store:, review: "some review")
+      visit avo.resources_store_path(store)
+
+      # Find user name on tags field
+      expect(page).to have_css('div[data-field-id="patrons"] div[data-target="tag-component"]', text: user.name)
+
+      # Find user name on has many field
+      within("tr[data-record-id='#{user.id}']") do
+        expect(page).to have_text(user.first_name)
+        expect(page).to have_text(user.last_name)
+      end
+    end
+  end
+
+  describe "with a related post" do
+    let!(:post) { create :post, user: user }
+    let!(:url) { "/admin/resources/users/#{user.slug}?tab-group_second_tabs_group=Posts" }
+
+    it "deletes a post" do
+      visit url
+
+      scroll_to find('turbo-frame[id="has_many_field_show_posts"]')
+
+      expect {
+        accept_custom_alert do
+          find("[data-resource-id='#{post.to_param}'] [data-control='destroy']").click
+        end
+      }.to change(Post, :count).by(-1)
+
+      expect(page).to have_current_path url
+      expect(page).not_to have_text post.name
+    end
+
+    it "detaches a post" do
+      visit url
+
+      scroll_to find('turbo-frame[id="has_many_field_show_posts"]')
+
+      expect {
+        accept_custom_alert do
+          find("[data-resource-id='#{post.to_param}'] [data-control='detach']").click
+        end
+      }.to change(user.posts, :count).by(-1)
+
+      expect(page).to have_current_path url
+      expect(page).not_to have_text post.name
+    end
+  end
 end

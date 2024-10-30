@@ -7,7 +7,10 @@ class Avo::Resources::Post < Avo::BaseResource
     help: "- search by id, name or body"
   }
 
-  self.includes = [:user]
+  self.includes = [:user, :comments]
+  self.attachments = [:cover_photo, :audio, :attachments]
+  self.single_includes = [:user, :reviews]
+  self.single_attachments = [:cover_photo, :audio, :attachments]
   self.default_view_type = -> {
     mobile_user = request.user_agent =~ /Mobile/
 
@@ -70,7 +73,7 @@ class Avo::Resources::Post < Avo::BaseResource
       {
         cover_url:
           if record.cover_photo.attached?
-            main_app.url_for(record.cover_photo.url)
+            main_app.url_for(record.cover_photo)
           end,
         title: record.name,
         body: helpers.extract_excerpt(record.body)

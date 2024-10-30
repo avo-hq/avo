@@ -3,7 +3,11 @@ fr:
   avo:
     action_ran_successfully: L'action s'est exécutée avec succès !
     actions: Actions
+    add_filter: Ajouter un filtre
     and_x_other_resources: et %{count} autres ressources
+    applied:
+      one: appliqué
+      other: appliqués
     are_you_sure: Êtes-vous sûr ?
     are_you_sure_detach_item: Êtes-vous sûr de vouloir détacher %{item}.
     are_you_sure_you_want_to_run_this_option: Etes-vous sûr de vouloir exécuter cette action ?
@@ -13,6 +17,7 @@ fr:
     attachment_class_attached: "%{attachment_class} attaché."
     attachment_class_detached: "%{attachment_class} détaché."
     attachment_destroyed: Pièce jointe détruite
+    attachment_failed: Échec de l'ajout de %{attachment_class}
     cancel: Annuler
     choose_a_country: Sélectionnez un pays
     choose_an_option: Sélectionnez une option
@@ -39,6 +44,9 @@ fr:
     failed: Échec
     failed_to_find_attachment: Impossible de trouver la pièce jointe
     failed_to_load: Impossible de charger
+    file:
+      one: fichier
+      other: fichiers
     filter_by: Filtrer par
     filters: Filtres
     go_back: Retourner en arrière
@@ -76,6 +84,7 @@ fr:
     prev_page: Page précédente
     records_selected_from_all_pages_html: tous les éléments sélectionnés de toutes les pages
     remove_selection: Supprimer la sélection
+    reset: réinitialiser
     reset_filters: Réinitialiser les filtres
     resource_created: Ressource créee
     resource_destroyed: Ressource détruite
@@ -93,6 +102,7 @@ fr:
     sign_out: Se déconnecter
     switch_to_view: Passez à la vue %{view_type}
     table_view: Vue table
+    this_field_has_attachments_disabled: Ce champ a les pièces jointes désactivées.
     tools: Outils
     type_to_search: Type à rechercher.
     unauthorized: Non autorisé
@@ -109,4 +119,6 @@ fr:
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> enregistrements sélectionnés dans toutes les pages
     x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> éléments sélectionnés de cette page
     yes_confirm: Oui, je suis sûr
+    you_cant_upload_new_resource: Vous ne pouvez pas télécharger de fichiers dans l'éditeur Trix tant que vous n'avez pas enregistré la ressource.
+    you_havent_set_attachment_key: Vous devez définir une `attachment_key` pour ce champ Trix.
     you_missed_something_check_form: Vous avez peut-être oublié quelque chose. Veuillez vérifier le formulaire

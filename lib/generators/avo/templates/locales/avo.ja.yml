@@ -1,8 +1,13 @@
+---
 ja:
   avo:
     action_ran_successfully: アクションは正常に実行されました！
     actions: アクション
+    add_filter: フィルターの追加
     and_x_other_resources: その他%{count}件のリソース
+    applied:
+      one: applied
+      other: applied
     are_you_sure: 本当によろしいですか？
     are_you_sure_detach_item: この%{item}をデタッチしてもよろしいですか？
     are_you_sure_you_want_to_run_this_option: このアクションを実行してもよろしいですか？
@@ -12,6 +17,7 @@ ja:
     attachment_class_attached: "%{attachment_class}をアタッチしました。"
     attachment_class_detached: "%{attachment_class}をデタッチしました。"
     attachment_destroyed: アタッチは削除されました
+    attachment_failed: "%{attachment_class}の添付に失敗しました"
     cancel: キャンセル
     choose_a_country: 国を選択
     choose_an_option: オプションを選択
@@ -38,6 +44,9 @@ ja:
     failed: 失敗
     failed_to_find_attachment: アタッチメントを見つけるのに失敗
     failed_to_load: 読み込みに失敗
+    file:
+      one: ファイル
+      other: ファイル
     filter_by: フィルター条件
     filters: フィルター
     go_back: 戻る
@@ -54,8 +63,8 @@ ja:
     more: もっと
     new: 新規
     next_page: 次のページ
-    no_cards_present: カードがありません
     no_cancel: いいえ、キャンセル
+    no_cards_present: カードがありません
     no_item_found: レコードが見つかりませんでした
     no_options_available: 利用可能なオプションがありません
     no_related_item_found: 関連するレコードが見つかりませんでした
@@ -75,6 +84,7 @@ ja:
     prev_page: 前のページ
     records_selected_from_all_pages_html: 全ページから選択された全レコード
     remove_selection: 選択を解除
+    reset: リセット
     reset_filters: フィルターをリセット
     resource_created: レコードが作成されました
     resource_destroyed: レコードが破棄されました
@@ -92,6 +102,7 @@ ja:
     sign_out: サインアウト
     switch_to_view: "%{view_type}ビューに切り替える"
     table_view: テーブルビュー
+    this_field_has_attachments_disabled: このフィールドには添付ファイルが無効になっています。
     tools: ツール
     type_to_search: 検索する内容を入力してください。
     unauthorized: 許可されていません
@@ -108,4 +119,6 @@ ja:
     x_records_selected_from_all_pages_html: すべてのページから<span class="font-bold text-gray-700">%{count}</span>個のレコードが選択されました
     x_records_selected_from_page_html: このページから<span class="font-bold text-gray-700">%{selected}</span>個のレコードが選択されました
     yes_confirm: はい、私は確信しています
+    you_cant_upload_new_resource: リソースを保存するまで、Trixエディタにファイルをアップロードすることはできません。
+    you_havent_set_attachment_key: このTrixフィールドに`attachment_key`が設定されていません。
     you_missed_something_check_form: 何か見落としているかもしれません。フォームを確認してください。

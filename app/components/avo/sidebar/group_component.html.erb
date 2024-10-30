@@ -36,7 +36,7 @@
       menu_target: :items,
       **section_collapse_data_animation
     } do %>
-    <% items.each do |item| %>
+    <% @items.each do |item| %>
       <%= render Avo::Sidebar::ItemSwitcherComponent.new item: item %>
     <% end %>
   <% end %>

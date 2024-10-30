@@ -4,6 +4,7 @@ class Avo::Resources::Course < Avo::BaseResource
   }
   self.keep_filters_panel_open = true
   self.stimulus_controllers = "city-in-country toggle-fields"
+  # self.default_sort_column = :country
 
   def show_fields
     fields_bag
@@ -50,6 +51,18 @@ class Avo::Resources::Course < Avo::BaseResource
           end
         end
       end
+
+      # field :skills,
+      #   as: :tags,
+      #   fetch_values_from: "/admin/resources/users/get_users?hey=you&record_id=1", # {value: 1, label: "Jose"}
+      #   format_using: -> {
+      #     User.find(value).map do |user|
+      #       {
+      #         value: user.id,
+      #         label: user.name
+      #       }
+      #     end
+      #   }
 
       field :skills,
         as: :tags,
@@ -108,6 +121,7 @@ class Avo::Resources::Course < Avo::BaseResource
   def filters
     filter Avo::Filters::CourseCountryFilter
     filter Avo::Filters::CourseCityFilter
+    filter Avo::Filters::StartingAt
   end
 
   def actions

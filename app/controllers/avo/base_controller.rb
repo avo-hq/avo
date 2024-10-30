@@ -18,6 +18,11 @@ module Avo
 
     def index
       @page_title = @resource.plural_name.humanize
+
+      if @reflection.present? && !turbo_frame_request?
+        add_breadcrumb @record.class.to_s.pluralize, resources_path(resource: @parent_resource)
+        add_breadcrumb @parent_resource.record_title, resource_path(record: @record, resource: @parent_resource)
+      end
       add_breadcrumb @resource.plural_name.humanize
 
       set_index_params
@@ -32,6 +37,13 @@ module Avo
       # Eager load the associations
       if @resource.includes.present?
         @query = @query.includes(*@resource.includes)
+      end
+
+      # Eager load attachments
+      if @resource.attachments.present?
+        @resource.attachments.each do |attachment|
+          @query = @query.send(:"with_attached_#{attachment}")
+        end
       end
 
       apply_sorting
@@ -58,7 +70,12 @@ module Avo
     end
 
     def show
-      @resource.hydrate(record: @record, view: :show, user: _current_user, params: params).detect_fields
+      @resource.hydrate(
+        record: @record,
+        view: Avo::ViewInquirer.new(:show),
+        user: _current_user,
+        params: params
+      ).detect_fields
 
       set_actions
 
@@ -72,9 +89,12 @@ module Avo
 
         add_breadcrumb via_resource.plural_name, resources_path(resource: via_resource)
         add_breadcrumb via_resource.record_title, resource_path(record: via_record, resource: via_resource)
+
+        add_breadcrumb @resource.plural_name.humanize
+      else
+        add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
       end
 
-      add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
 
       add_breadcrumb @resource.record_title
       add_breadcrumb I18n.t("avo.details").upcase_first
@@ -85,11 +105,11 @@ module Avo
     def new
       # Record is already hydrated on set_record_to_fill method
       @record = @resource.record
-      @resource.hydrate(view: :new, user: _current_user)
+      @resource.hydrate(view: Avo::ViewInquirer.new(:new), user: _current_user)
 
       # Handle special cases when creating a new record via a belongs_to relationship
       if params[:via_belongs_to_resource_class].present?
-        return render turbo_stream: turbo_stream.append("attach_modal", partial: "avo/base/new_via_belongs_to")
+        return render turbo_stream: turbo_stream.append(Avo::MODAL_FRAME_ID, partial: "avo/base/new_via_belongs_to")
       end
 
       set_actions
@@ -103,9 +123,12 @@ module Avo
 
         add_breadcrumb via_resource.plural_name, resources_path(resource: via_resource)
         add_breadcrumb via_resource.record_title, resource_path(record: via_record, resource: via_resource)
+
+        add_breadcrumb @resource.plural_name.humanize
+      else
+        add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
       end
 
-      add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
       add_breadcrumb t("avo.new").humanize
 
       set_component_for __method__, fallback_view: :edit
@@ -114,7 +137,7 @@ module Avo
     def create
       # This means that the record has been created through another parent record and we need to attach it somehow.
       if params[:via_record_id].present? && params[:via_belongs_to_resource_class].nil?
-        @reflection = @record._reflections.with_indifferent_access[params[:via_relation]]
+        @reflection = @record.class.reflect_on_association(params[:via_relation])
         # Figure out what kind of association does the record have with the parent record
 
         # Fills in the required info for belongs_to and has_many
@@ -127,7 +150,7 @@ module Avo
         end
 
         # For when working with has_one, has_one_through, has_many_through, has_and_belongs_to_many, polymorphic
-        if @reflection.is_a? ActiveRecord::Reflection::ThroughReflection
+        if @reflection.is_a?(ActiveRecord::Reflection::ThroughReflection) || @reflection.is_a?(ActiveRecord::Reflection::HasAndBelongsToManyReflection)
           # find the record
           via_resource = Avo.resource_manager.get_resource_by_model_class(params[:via_relation_class])
           @related_record = via_resource.find_record params[:via_record_id], params: params
@@ -144,7 +167,7 @@ module Avo
 
       # record gets instantiated and filled in the fill_record method
       saved = save_record
-      @resource.hydrate(record: @record, view: :new, user: _current_user)
+      @resource.hydrate(record: @record, view: Avo::ViewInquirer.new(:new), user: _current_user)
 
       add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
       add_breadcrumb t("avo.new").humanize
@@ -168,7 +191,7 @@ module Avo
     def update
       # record gets instantiated and filled in the fill_record method
       saved = save_record
-      @resource = @resource.hydrate(record: @record, view: :edit, user: _current_user)
+      @resource = @resource.hydrate(record: @record, view: Avo::ViewInquirer.new(:edit), user: _current_user)
       set_actions
 
       set_component_for :edit
@@ -189,7 +212,9 @@ module Avo
     end
 
     def preview
-      @resource.hydrate(record: @record, view: :show, user: _current_user, params: params)
+      @resource.hydrate(record: @record, view: Avo::ViewInquirer.new(:show), user: _current_user, params: params)
+
+      @preview_fields = @resource.get_preview_fields
 
       render layout: params[:turbo_frame].blank?
     end
@@ -219,32 +244,22 @@ module Avo
     def perform_action_and_record_errors(&block)
       begin
         succeeded = block.call
+      rescue ActiveRecord::RecordInvalid => error
+        # Do nothing as the record errors are already being displayed
+        # On associations controller add errors from join record to record
+        if controller_name == "associations"
+          @record.errors.add(:base, error.message)
+        end
       rescue => exception
         # In case there's an error somewhere else than the record
         # Example: When you save a license that should create a user for it and creating that user throws and error.
         # Example: When you Try to delete a record and has a foreign key constraint.
-        exception_message = exception.message
+        @record.errors.add(:base, exception.message)
+        @backtrace = exception.backtrace
       end
 
-      # Add the errors from the record
-      @errors = @record.errors.full_messages
-
-      # Remove duplicated errors
-      if exception_message.present?
-        @errors = @errors.reject { |error| exception_message.include? error }
-      end
-
-      # Figure out if we have to output the exception_message
-      # Usually it means that it's not a validation error but something else
-      if exception_message.present?
-        exception_is_validation = @errors.select { |error| exception_message.include? error }.present?
-      end
-
-      if exception_is_validation || (@errors.blank? && exception_message.present?)
-        @errors << exception_message
-      end
-
-      @errors.any? ? false : succeeded
+      # This method only needs to return true or false to indicate if the action was successful
+      @record.errors.any? ? false : succeeded
     end
 
     def model_params
@@ -292,8 +307,15 @@ module Avo
     def set_index_params
       @index_params = {}
 
+      # projects.has_many.users
+      if @related_resource.present?
+        key = "#{@record.to_global_id}.has_many.#{@resource.class.to_s.parameterize}"
+        session[key] = params[:page] || session[key]
+        page_from_session = session[key]
+      end
+
       # Pagination
-      @index_params[:page] = params[:page] || 1
+      @index_params[:page] = params[:page] || page_from_session || 1
       @index_params[:per_page] = Avo.configuration.per_page
 
       if cookies[:per_page].present?
@@ -312,11 +334,18 @@ module Avo
       # Sorting
       if params[:sort_by].present?
         @index_params[:sort_by] = params[:sort_by]
-      elsif @resource.model_class.present? && @resource.model_class.column_names.include?("created_at")
-        @index_params[:sort_by] = :created_at
+      elsif @resource.model_class.present?
+        available_columns = @resource.model_class.column_names
+        default_sort_column = @resource.default_sort_column
+
+        if available_columns.include?(default_sort_column.to_s)
+          @index_params[:sort_by] = default_sort_column
+        elsif available_columns.include?("created_at")
+          @index_params[:sort_by] = :created_at
+        end
       end
 
-      @index_params[:sort_direction] = params[:sort_direction] || :desc
+      @index_params[:sort_direction] = params[:sort_direction] || @resource.default_sort_direction
 
       # View types
       available_view_types = @resource.available_view_types
@@ -409,7 +438,7 @@ module Avo
     end
 
     def set_edit_title_and_breadcrumbs
-      @resource = @resource.hydrate(record: @record, view: :edit, user: _current_user)
+      @resource = @resource.hydrate(record: @record, view: Avo::ViewInquirer.new(:edit), user: _current_user)
       @page_title = @resource.default_panel_name.to_s
 
       last_crumb_args = {}
@@ -426,6 +455,7 @@ module Avo
           via_resource_class: params[:via_resource_class],
           via_record_id: params[:via_record_id]
         }
+        add_breadcrumb @resource.plural_name.humanize
       else
         add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
       end
@@ -468,13 +498,7 @@ module Avo
           Avo.resource_manager.get_resource_by_model_class(params[:via_relation_class])
         end
 
-        association_name = BaseResource.valid_association_name(@record, params[:via_relation])
-
-        return resource_view_path(
-          record: @record.send(association_name),
-          resource: parent_resource,
-          resource_id: params[:via_record_id]
-        )
+        return resource_view_path(resource: parent_resource, resource_id: params[:via_record_id])
       end
 
       redirect_path_from_resource_option(:after_create_path) || resource_view_response_path
@@ -515,8 +539,16 @@ module Avo
     end
 
     def destroy_success_action
+      flash[:notice] = destroy_success_message
+
       respond_to do |format|
-        format.html { redirect_to after_destroy_path, notice: destroy_success_message }
+        if params[:turbo_frame]
+          format.turbo_stream do
+            render turbo_stream: reload_frame_turbo_streams
+          end
+        else
+          format.html { redirect_to after_destroy_path }
+        end
       end
     end
 
@@ -533,7 +565,8 @@ module Avo
     end
 
     def destroy_fail_message
-      @errors.present? ? @errors.join(". ") : t("avo.failed")
+      errors = @record.errors.full_messages
+      errors.present? ? errors.join(". ") : t("avo.failed")
     end
 
     def after_destroy_path
@@ -558,7 +591,7 @@ module Avo
 
     # Set pagy locale from params or from avo configuration, if both nil locale = "en"
     def set_pagy_locale
-      @pagy_locale = locale.to_s || Avo.configuration.locale || "en"
+      @pagy_locale = locale.to_s || Avo.configuration.default_locale || "en"
     end
 
     def safe_call(method)
@@ -572,18 +605,14 @@ module Avo
     # Set the view component for the current view
     # It will try to use the custom component if it's set, otherwise it will use the default one
     def set_component_for(view, fallback_view: nil)
-      # Fetch the components from the resource
-      components = Avo::ExecutionContext.new(
-        target: @resource.components,
-        resource: @resource,
-        record: @record,
-        view: @view
-      ).handle
+      default_component = "Avo::Views::Resource#{(fallback_view || view).to_s.classify}Component"
+
+      # Search for the custom component by key and by class name:
+      custom_component = @resource.custom_components.dig(:"resource_#{view}_component") ||
+        @resource.custom_components.dig(default_component)
 
       # If the component is not set, use the default one
-      if (custom_component = components.dig(:"resource_#{view}_component")).nil?
-        return @component = "Avo::Views::Resource#{(fallback_view || view).to_s.classify}Component".constantize
-      end
+      return @component = default_component.constantize if custom_component.nil?
 
       # If the component is set, try to use it
       @component = custom_component.to_s.safe_constantize
@@ -596,7 +625,8 @@ module Avo
     end
 
     def apply_pagination
-      @pagy, @records = @resource.apply_pagination(index_params: @index_params, query: pagy_query)
+      # Set `trim_extra` to false in associations so the first page has the `page=1` param assigned
+      @pagy, @records = @resource.apply_pagination(index_params: @index_params, query: pagy_query, trim_extra: @related_resource.blank?)
     end
 
     def apply_sorting
@@ -625,6 +655,13 @@ module Avo
     # Sanitize sort_direction param
     def sanitized_sort_direction
       @sanitized_sort_direction ||= @index_params[:sort_direction].presence_in(["asc", :asc, "desc", :desc])
+    end
+
+    def reload_frame_turbo_streams
+      [
+        turbo_stream.turbo_frame_reload(params[:turbo_frame]),
+        turbo_stream.flash_alerts
+      ]
     end
   end
 end

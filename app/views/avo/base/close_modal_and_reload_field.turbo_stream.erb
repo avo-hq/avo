@@ -2,7 +2,7 @@
 
 <turbo-stream action="update-belongs-to"
               data-relation-name="<%= params[:via_relation] %>"
-              data-target-record-id="<%= @record.id %>"
+              data-target-record-id="<%= @record.to_param %>"
               data-target-resource-label="<%= @resource.record_title %>"
               data-target-resource-class="<%= @record.class.name %>">
 </turbo-stream>

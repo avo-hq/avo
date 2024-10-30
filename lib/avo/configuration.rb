@@ -9,6 +9,7 @@ module Avo
     attr_writer :logger
     attr_writer :turbo
     attr_writer :pagination
+    attr_writer :explicit_authorization
     attr_accessor :timezone
     attr_accessor :per_page
     attr_accessor :per_page_steps
@@ -35,7 +36,7 @@ module Avo
     attr_accessor :display_license_request_timeout_error
     attr_accessor :current_user_resource_name
     attr_accessor :raise_error_on_missing_policy
-    attr_accessor :disabled_features
+    attr_writer :disabled_features
     attr_accessor :buttons_on_form_footers
     attr_accessor :main_menu
     attr_accessor :profile_menu
@@ -49,7 +50,12 @@ module Avo
     attr_accessor :resource_parent_controller
     attr_accessor :mount_avo_engines
     attr_accessor :default_url_options
+    attr_accessor :click_row_to_view_record
     attr_accessor :alert_dismiss_time
+    attr_accessor :is_admin_method
+    attr_accessor :is_developer_method
+    attr_accessor :search_results_count
+    attr_accessor :first_sorting_option
 
     def initialize
       @root_path = "/avo"
@@ -64,6 +70,7 @@ module Avo
       @license_key = nil
       @current_user = proc {}
       @authenticate = proc {}
+      @explicit_authorization = false
       @authorization_methods = {
         index: "index?",
         show: "show?",
@@ -106,7 +113,12 @@ module Avo
       @turbo = default_turbo
       @default_url_options = []
       @pagination = {}
+      @click_row_to_view_record = false
       @alert_dismiss_time = 5000
+      @is_admin_method = :is_admin?
+      @is_developer_method = :is_developer?
+      @search_results_count = 8
+      @first_sorting_option = :desc # :desc or :asc
     end
 
     def current_user_method(&block)
@@ -143,8 +155,12 @@ module Avo
       @root_path
     end
 
+    def disabled_features
+      Avo::ExecutionContext.new(target: @disabled_features).handle
+    end
+
     def feature_enabled?(feature)
-      !@disabled_features.map(&:to_sym).include?(feature.to_sym)
+      !disabled_features.map(&:to_sym).include?(feature.to_sym)
     end
 
     def branding
@@ -214,7 +230,7 @@ module Avo
 
         file_logger.datetime_format = "%Y-%m-%d %H:%M:%S"
         file_logger.formatter = proc do |severity, time, progname, msg|
-          "[Avo] #{time}: #{msg}\n".tap do |i|
+          "[Avo->] #{time}: #{msg}\n".tap do |i|
             puts i
           end
         end
@@ -237,6 +253,14 @@ module Avo
 
     def pagination
       Avo::ExecutionContext.new(target: @pagination).handle
+    end
+
+    def default_locale
+      @locale || I18n.default_locale
+    end
+
+    def explicit_authorization
+      Avo::ExecutionContext.new(target: @explicit_authorization).handle
     end
   end
 

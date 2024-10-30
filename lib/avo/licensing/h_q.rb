@@ -94,24 +94,27 @@ module Avo
           cache_and_return_error "HTTP connection refused error.", exception.message
         rescue OpenSSL::SSL::SSLError => exception
           cache_and_return_error "OpenSSL error.", exception.message
-        rescue HTTParty::Error => exception
-          cache_and_return_error "HTTP client error.", exception.message
         rescue Net::OpenTimeout => exception
           cache_and_return_error "Request timeout.", exception.message
         rescue Net::ReadTimeout => exception
           cache_and_return_error "Request timeout.", exception.message
         rescue SocketError => exception
           cache_and_return_error "Connection error.", exception.message
+        rescue => exception
+          cache_and_return_error "HQ call error.", exception.message
         end
       end
 
       def perform_and_cache_request
         hq_response = perform_request
 
-        return cache_and_return_error "Avo HQ Internal server error.", hq_response.body if hq_response.code == 500
-
-        if hq_response.code == 200
-          cache_response response: hq_response.parsed_response
+        case hq_response.code.to_i
+        when 500
+          cache_and_return_error "Avo HQ Internal server error.", hq_response.body if hq_response.code == 500
+        when 200
+          cache_response response: JSON.parse(hq_response.body)
+        else
+          cache_and_return_error "Invalid response.", "code: #{hq_response.code}, body: #{hq_response.body}"
         end
       end
 
@@ -148,9 +151,9 @@ module Avo
         Avo.logger.debug "Performing request to avohq.io API to check license availability." if Rails.env.development?
 
         if Rails.env.test?
-          OpenStruct.new({code: 200, parsed_response: {id: "pro", valid: true}})
+          OpenStruct.new({code: 200, body: "{\"id\":\"pro\",\"valid\":true}"})
         else
-          HTTParty.post ENDPOINT, body: payload.to_json, headers: {"Content-type": "application/json"}, timeout: REQUEST_TIMEOUT
+          Avo::Licensing::Request.post ENDPOINT, body: payload.to_json, timeout: REQUEST_TIMEOUT
         end
       end
 

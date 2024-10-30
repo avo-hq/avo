@@ -4,7 +4,7 @@ class Avo::Fields::BooleanGroupField::EditComponent < Avo::Fields::EditComponent
   def initialize(...)
     super(...)
 
-    # Initilize here to avoid multiple calls to @field.get_html for each option.
+    # Initialize here to avoid multiple calls to @field.get_html for each option.
     @classes = "w-4 h-4 rounded checked:bg-primary-400 focus:checked:!bg-primary-400" \
       "#{@field.get_html(:classes, view: view, element: :input)}"
     @data = @field.get_html(:data, view: view, element: :input)
@@ -17,7 +17,7 @@ class Avo::Fields::BooleanGroupField::EditComponent < Avo::Fields::EditComponent
     if params[@form_scope].present? && params[@form_scope][@field.id.to_s].present?
       params[@form_scope][@field.id.to_s].include?(id.to_s)
     elsif @field.value.present?
-      @field.value[id.to_s]
+      @field.value.with_indifferent_access[id]
     end
   end
 end

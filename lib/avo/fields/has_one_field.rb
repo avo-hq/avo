@@ -19,23 +19,23 @@ module Avo
 
       def frame_url
         Avo::Services::URIService.parse(field_resource.record_path)
-          .append_paths(id, value.id)
+          .append_paths(id, value.to_param)
           .append_query(query_params)
           .to_s
       end
 
-      def fill_field(model, key, value, params)
+      def fill_field(record, key, value, params)
         if value.blank?
           related_record = nil
         else
-          related_class = model.class.reflections[name.to_s.downcase].class_name
+          related_class = record.class.reflections[name.to_s.downcase].class_name
           related_resource = Avo.resource_manager.get_resource_by_model_class(related_class)
           related_record = related_resource.find_record value
         end
 
-        model.public_send(:"#{key}=", related_record)
+        record.public_send(:"#{key}=", related_record)
 
-        model
+        record
       end
     end
   end

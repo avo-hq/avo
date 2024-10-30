@@ -22,6 +22,13 @@ class Post < ApplicationRecord
 
   validates :name, presence: true
 
+  # Trigger TypeError: no _dump_data is defined for class Proc when serializing query
+  # Test it by applying a status filter
+  # Only for rails > 7.1
+  # normalizes :status, with: ->(status) {
+  #   status
+  # }
+
   has_one_attached :cover_photo
   has_one_attached :audio
   has_many_attached :attachments

@@ -1,88 +1,68 @@
 # frozen_string_literal: true
 
-class Avo::ActionsComponent < ViewComponent::Base
+class Avo::ActionsComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
-  attr_reader :label, :size, :as_row_control
 
-  def initialize(actions: [], resource: nil, view: nil, exclude: [], include: [], style: :outline, color: :primary, label: nil, size: :md, as_row_control: false, icon: nil)
-    @actions = actions || []
-    @resource = resource
-    @view = view
-    @exclude = Array(exclude)
-    @include = include
-    @color = color
-    @style = style
-    @label = label || I18n.t("avo.actions")
-    @size = size
-    @icon = icon
-    @as_row_control = as_row_control
+  prop :as_row_control, default: false
+  prop :icon
+  prop :size, default: :md
+  prop :title
+  prop :color do |value|
+    value || :primary
+  end
+  prop :include, default: [].freeze do |include|
+    Array(include).to_set
+  end
+  prop :custom_list, default: false
+  prop :label do |label|
+    if @custom_list
+      label
+    else
+      label || I18n.t("avo.actions")
+    end
+  end
+  prop :style, default: :outline
+  prop :actions, default: [].freeze
+  prop :exclude, default: [].freeze do |exclude|
+    Array(exclude).to_set
+  end
+  prop :resource
+  prop :view
+  prop :host_component
+
+  delegate_missing_to :@host_component
+
+  def after_initialize
+    filter_actions unless @custom_list
+
+    # Hydrate each action action with the record when rendering a list on row controls
+    if @as_row_control
+      @actions.each do |action|
+        action.hydrate(resource: @resource, record: @resource.record) if action.respond_to?(:hydrate)
+      end
+    end
   end
 
   def render?
-    actions.present?
+    @actions.present?
   end
 
-  def actions
-    if @exclude.present?
-      @actions.reject { |action| action.class.in?(@exclude) }
-    elsif @include.present?
-      @actions.select { |action| action.class.in?(@include) }
-    else
-      @actions
+  def filter_actions
+    @actions = @actions.dup
+
+    if @exclude.any?
+      @actions.reject! { |action| @exclude.include?(action.class) }
     end
-  end
 
-  # When running an action for one record we should do it on a special path.
-  # We do that so we get the `record` param inside the action so we can prefill fields.
-  def action_path(action)
-    return single_record_path(action) if as_row_control
-    return many_records_path(action) unless @resource.has_record_id?
-
-    if on_record_page?
-      single_record_path action
-    else
-      many_records_path action
+    if @include.any?
+      @actions.select! { |action| @include.include?(action.class) }
     end
-  end
-
-  # How should the action be displayed by default
-  def is_disabled?(action)
-    return false if action.standalone || as_row_control
-
-    on_index_page?
   end
 
   private
 
-  def on_record_page?
-    @view.in?(%w[show edit new])
-  end
-
-  def on_index_page?
-    !on_record_page?
-  end
-
-  def single_record_path(action)
-    action_url(action, @resource.record_path)
-  end
-
-  def many_records_path(action)
-    action_url(action, @resource.records_path)
-  end
-
-  def action_url(action, path)
-    Avo::Services::URIService.parse(path)
-      .append_paths("actions")
-      .append_query(
-        {
-          action_id: action.to_param,
-          arguments: Avo::BaseAction.encode_arguments(action.arguments)
-        }.compact
-      ).to_s
-  end
-
-  def icon(action)
-    svg action.icon, class: "h-5 shrink-0 mr-1 inline pointer-events-none"
+  def icon(icon)
+    svg icon, class: "h-5 shrink-0 mr-1 inline pointer-events-none"
   end
 
   def render_item(action)
@@ -91,6 +71,14 @@ class Avo::ActionsComponent < ViewComponent::Base
       render_divider(action)
     when Avo::BaseAction
       render_action_link(action)
+    when defined?(Avo::Advanced::Resources::Controls::Action) && Avo::Advanced::Resources::Controls::Action
+      render_action_link(action.action, icon: action.icon)
+    when defined?(Avo::Advanced::Resources::Controls::LinkTo) && Avo::Advanced::Resources::Controls::LinkTo
+      link_to action.args[:path],
+        class: action.args.delete(:class) || "flex items-center px-4 py-3 w-full text-black font-semibold text-sm hover:bg-primary-100",
+        **action.args.except(:path, :label, :icon) do
+          raw("#{icon(action.args[:icon])} #{action.args[:label]}")
+        end
     end
   end
 
@@ -101,27 +89,32 @@ class Avo::ActionsComponent < ViewComponent::Base
     render Avo::DividerComponent.new(label)
   end
 
-  def render_action_link(action)
-    link_to action_path(action),
+  def render_action_link(action, icon: nil)
+    link_to action.link_arguments(resource: @resource, arguments: action.arguments).first,
       data: action_data_attributes(action),
       title: action.action_name,
       class: action_css_class(action) do
-        raw("#{icon(action)} #{action.action_name}")
+        raw("#{icon(icon || action.icon)} #{action.action_name}")
       end
   end
 
   def action_data_attributes(action)
     {
       action_name: action.action_name,
-      "turbo-frame": Avo::ACTIONS_TURBO_FRAME_ID,
+      "turbo-frame": Avo::MODAL_FRAME_ID,
       action: "click->actions-picker#visitAction",
       "actions-picker-target": action.standalone ? "standaloneAction" : "resourceAction",
-      disabled: is_disabled?(action),
+      disabled: action.disabled?,
       turbo_prefetch: false,
+      enabled_classes: "text-black",
+      disabled_classes: "text-gray-500"
     }
   end
 
   def action_css_class(action)
-    "flex items-center px-4 py-3 w-full font-semibold text-sm hover:bg-primary-100 border-b#{is_disabled?(action) ? " text-gray-500" : " text-black"}"
+    helpers.class_names("flex items-center px-4 py-3 w-full font-semibold text-sm hover:bg-primary-100", {
+      "text-gray-500": action.disabled?,
+      "text-black": action.enabled?,
+    })
   end
 end

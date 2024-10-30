@@ -8,31 +8,31 @@ class Avo::Index::ResourceTableComponent < Avo::BaseComponent
     @header_fields, @table_row_components = cache_table_rows
   end
 
-  def initialize(resources: nil, resource: nil, reflection: nil, parent_record: nil, parent_resource: nil, pagy: nil, query: nil, actions: nil)
-    @resources = resources
-    @resource = resource
-    @reflection = reflection
-    @parent_record = parent_record
-    @parent_resource = parent_resource
-    @pagy = pagy
-    @query = query
-    @actions = actions
-  end
+  prop :resources
+  prop :resource
+  prop :reflection
+  prop :parent_record
+  prop :parent_resource
+  prop :pagy
+  prop :query
+  prop :actions
 
   def encrypted_query
     # TODO: move this to the resource where we can apply the adapter pattern
-    if Module.const_defined?("Ransack::Search") && query.instance_of?(Ransack::Search)
+    if Module.const_defined?("Ransack::Search") && @query.instance_of?(Ransack::Search)
       @query = @query.result
     end
 
     Avo::Services::EncryptionService.encrypt(message: @query, purpose: :select_all, serializer: Marshal)
+  rescue
+    disable_select_all
   end
 
   def selected_page_label
     if @resource.pagination_type.countless?
-      t "avo.x_records_selected_from_page_html", selected: pagy.in
+      t "avo.x_records_selected_from_page_html", selected: @pagy.in
     else
-      t "avo.x_records_selected_from_a_total_of_x_html", selected: pagy.in, count: pagy.count
+      t "avo.x_records_selected_from_a_total_of_x_html", selected: @pagy.in, count: @pagy.count
     end
   end
 
@@ -40,7 +40,7 @@ class Avo::Index::ResourceTableComponent < Avo::BaseComponent
     if @resource.pagination_type.countless?
       t "avo.records_selected_from_all_pages_html"
     else
-      t "avo.x_records_selected_from_all_pages_html", count: pagy.count
+      t "avo.x_records_selected_from_all_pages_html", count: @pagy.count
     end
   end
 
@@ -73,7 +73,7 @@ class Avo::Index::ResourceTableComponent < Avo::BaseComponent
       header_fields.concat row_fields
 
       # Create a TableRowComponent instance for the resource and add it to @table_row_components
-      table_row_components << Avo::Index::TableRowComponent.new(
+      table_row_components << resource.resolve_component(Avo::Index::TableRowComponent).new(
         resource: resource,
         fields: row_fields,
         reflection: @reflection,
@@ -87,5 +87,19 @@ class Avo::Index::ResourceTableComponent < Avo::BaseComponent
     header_fields.uniq!(&:table_header_label)
 
     [header_fields, table_row_components]
+  end
+
+  private
+
+  def disable_select_all
+    if Rails.env.development?
+      Avo.error_manager.add({
+        url: "https://docs.avohq.io/3.0/select-all.html#serialization-known-issues",
+        target: "_blank",
+        message: "An error occurred while serializing the query object. The Select All feature has been disabled because it depends on successful query serialization. For more details and troubleshooting steps, click here."
+      })
+    end
+
+    :select_all_disabled
   end
 end

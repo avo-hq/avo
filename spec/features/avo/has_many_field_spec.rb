@@ -66,43 +66,21 @@ RSpec.feature "HasManyField", type: :feature do
 
         # edit link
         edit_path = "/admin/resources/posts/#{post.slug}/edit?via_record_id=#{user.slug}&via_resource_class=Avo%3A%3AResources%3A%3AUser"
-        expect(page).to have_selector("[data-component='resources-index'] a[data-control='edit'][data-resource-id='#{post.id}'][href='#{edit_path}']")
+        expect(page).to have_selector("[data-component='resources-index'] a[data-control='edit'][data-resource-id='#{post.to_param}'][href='#{edit_path}']")
 
         # detach form
-        form = "form[action='/admin/resources/users/#{user.slug}/posts/#{post.id}']"
+        form = "form[action='/admin/resources/users/#{user.slug}/posts/#{post.to_param}']"
         expect(page).to have_selector("[data-component='resources-index'] #{form}")
         expect(page).to have_selector(:css, "#{form} input[type='hidden'][name='_method'][value='delete']", visible: false)
         # expect(page).to have_selector(:css, "#{form} input#referrer_detach_#{post.slug}[value='/admin/resources/users/#{user.slug}/posts?turbo_frame=has_many_field_posts']", visible: false)
-        expect(page).to have_selector("[data-component='resources-index'] #{form} button[data-control='detach'][data-resource-id='#{post.id}'][data-turbo-frame='has_many_field_posts']")
+        expect(page).to have_selector("[data-component='resources-index'] #{form} button[data-control='detach'][data-resource-id='#{post.to_param}'][data-turbo-frame='has_many_field_posts']")
 
         # destroy form
         form = "form[action='/admin/resources/posts/#{post.slug}']"
         expect(page).to have_selector("[data-component='resources-index'] #{form}")
         expect(page).to have_selector("#{form} input[type='hidden'][name='_method'][value='delete']", visible: false)
         # expect(page).to have_selector("#{form} input#referrer_destroy_#{post.id}[value='/admin/resources/users/#{user.slug}/posts?turbo_frame=has_many_field_posts']", visible: false)
-        expect(page).to have_selector("[data-component='resources-index'] #{form} button[data-control='destroy'][data-resource-id='#{post.id}'][data-turbo-frame='has_many_field_posts']")
-      end
-
-      it "deletes a post" do
-        visit url
-
-        expect {
-          find("[data-resource-id='#{post.to_param}'] [data-control='destroy']").click
-        }.to change(Post, :count).by(-1)
-
-        expect(page).to have_current_path url
-        expect(page).not_to have_text post.name
-      end
-
-      it "detaches a post" do
-        visit url
-
-        expect {
-          find("tr[data-resource-id='#{post.to_param}'] [data-control='detach']").click
-        }.to change(user.posts, :count).by(-1)
-
-        expect(page).to have_current_path url
-        expect(page).not_to have_text post.name
+        expect(page).to have_selector("[data-component='resources-index'] #{form} button[data-control='destroy'][data-resource-id='#{post.to_param}'][data-turbo-frame='has_many_field_posts']")
       end
     end
   end
@@ -112,6 +90,7 @@ RSpec.feature "HasManyField", type: :feature do
     let!(:a_comment) { create :comment, user: user, body: "A comment that starts with the letter A" }
 
     subject do
+      expect(TestBuddy).to receive(:hi).with("parent_resource:true,resource:true").at_least :once
       visit "/admin/resources/users/#{user.id}/comments?turbo_frame=has_many_field_show_comments"
       page
     end
@@ -125,7 +104,7 @@ RSpec.feature "HasManyField", type: :feature do
 
     it "creates and updates the course" do
       expect(Course::Link.count).to be 0
-      visit "/admin/resources/course_links/new?via_record_id=#{course.id}&via_relation=course&via_relation_class=Course"
+      visit "/admin/resources/course_links/new?via_record_id=#{course.to_param}&via_relation=course&via_relation_class=Course"
 
       fill_in "course_link_link", with: "https://google.com"
       save
@@ -135,7 +114,7 @@ RSpec.feature "HasManyField", type: :feature do
       expect(link.link).to eq "https://google.com"
       expect(link.course.id).to eq course.id
 
-      visit "/admin/resources/course_links/#{link.id}/edit?via_resource_class=Avo::Resources::Course&via_record_id=#{course.id}"
+      visit "/admin/resources/course_links/#{link.id}/edit?via_resource_class=Avo::Resources::Course&via_record_id=#{course.to_param}"
       fill_in "course_link_link", with: "https://apple.com"
       save
       link.reload
@@ -152,6 +131,29 @@ RSpec.feature "HasManyField", type: :feature do
       expect {
         visit "/admin/resources/people"
       }.not_to raise_error
+    end
+  end
+
+  describe "through relationship" do
+    let!(:team) { create :team }
+    let!(:user) { create :user }
+
+    it "triggers callbacks on through model" do
+      team.team_members << user
+      expect(team.team_members.count).to eq 1
+
+      visit "/admin/resources/teams/#{team.id}/team_members?view=show&turbo_frame=has_many_field_show_team_members"
+
+      expect { find("tr[data-resource-id='#{user.to_param}'] [data-control='detach']").click }.to raise_error("Callback Called")
+    end
+
+    it "triggers callbacks when called from the other model too" do
+      user.teams << team
+      expect(user.teams.count).to eq 1
+
+      visit "/admin/resources/users/#{user.to_param}/teams?view=show&turbo_frame=has_and_belongs_to_many_field_show_teams"
+
+      expect { find("tr[data-resource-id='#{team.id}'] [data-control='detach']").click }.to raise_error("Callback Called")
     end
   end
 end

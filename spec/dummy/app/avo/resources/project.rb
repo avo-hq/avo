@@ -6,7 +6,8 @@ class Avo::Resources::Project < Avo::BaseResource
       query.ransack(id_eq: params[:q], name_cont: params[:q], country_cont: params[:q], m: "or").result(distinct: false)
     }
   }
-  self.includes = [:users, :files_attachments]
+  self.includes = [users: [:comments, :teams, post: [comments: :user]]]
+  self.attachments = [:files]
   self.index_query = -> {
     query.unscoped
   }

@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.feature "ResourceNameUrls", type: :feature do
   let!(:user) { create :user, first_name: 'John MMM' }

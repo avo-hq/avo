@@ -48,9 +48,13 @@
             %>
             <% else %>
               <%= @form.select @field.id_input_foreign_key,
-              options_for_select(@field.values_for_type(type), @resource.present? && @resource.record.present? && @field.value.class == type ? @resource.record[@field.id_input_foreign_key] : nil),
+              options_for_select(
+                # Options
+                @field.values_for_type(type),
+                # Selected
+                @field.value.is_a?(type) ? @field.value.to_param : nil
+              ),
               {
-                value: @field.value.class == type ? @resource.record[@field.id_input_foreign_key].to_s : nil,
                 include_blank: @field.placeholder,
               },
               {
@@ -66,8 +70,9 @@
                 <%= @form.hidden_field @field.id_input_foreign_key %>
               <% end %>
             <% end %>
-            <% if field.can_create? %>
-              <% create_href = create_path(Avo.resource_manager.get_resource_by_model_class(type.to_s)) %>
+            <% target_resource_for_type = Avo.resource_manager.get_resource_by_model_class(type.to_s) %>
+            <% if field.can_create?(target_resource_for_type) %>
+              <% create_href = create_path(target_resource_for_type) %>
               <% if !disabled && create_href.present? %>
                 <%= link_to t("avo.create_new_item", item: type.model_name.human.downcase),
                       create_href,
@@ -97,10 +102,10 @@
         style: @field.get_html(:style, view: view, element: :input)
       %>
     <% else %>
-      <%= @form.select @field.id_input_foreign_key, @field.options,
+      <%= @form.select @field.id_input_foreign_key,
+        options_for_select(@field.options, @field.value.to_param),
         {
           include_blank: @field.placeholder,
-          value: @field.value
         },
         {
           class: classes("w-full"),

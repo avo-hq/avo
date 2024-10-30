@@ -86,6 +86,12 @@ export default class extends Controller {
       autoFocus: true,
       openOnFocus: true,
       detachedMediaQuery: '',
+      onStateChange({ prevState, state }) {
+        // If is closed and was open clear query value
+        if (!state.isOpen && prevState.isOpen) {
+          state.query = ''
+        }
+      },
       getSources: ({ query }) => {
         document.body.classList.add('search-loading')
         const endpoint = that.searchUrl(query)
@@ -206,7 +212,7 @@ export default class extends Controller {
   }
 
   handleOnSelect({ item }) {
-    if (this.isBelongsToSearch) {
+    if (this.isBelongsToSearch && !item._error) {
       this.updateFieldAttribute(this.hiddenIdTarget, 'value', item._id)
       this.updateFieldAttribute(this.buttonTarget, 'value', this.removeHTMLTags(item._label))
 

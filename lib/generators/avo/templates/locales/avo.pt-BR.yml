@@ -3,7 +3,11 @@ pt-BR:
   avo:
     action_ran_successfully: Ação executada com sucesso!
     actions: Ações
+    add_filter: Adicionar filtro
     and_x_other_resources: e %{count} outros recursos
+    applied:
+      one: aplicado
+      other: aplicados
     are_you_sure: Você tem certeza?
     are_you_sure_detach_item: Você tem certeza que deseja separar este %{item}.
     are_you_sure_you_want_to_run_this_option: Você tem certeza que deseja executar esta ação?
@@ -13,6 +17,7 @@ pt-BR:
     attachment_class_attached: "%{attachment_class} anexado."
     attachment_class_detached: "%{attachment_class} separado."
     attachment_destroyed: Anexo destruído
+    attachment_failed: Não foi possível anexar %{attachment_class}
     cancel: Cancelar
     choose_a_country: Escolha um país
     choose_an_option: Escolha uma opção
@@ -39,6 +44,9 @@ pt-BR:
     failed: Falhou
     failed_to_find_attachment: Falhou ao achar anexo
     failed_to_load: Falha ao carregar
+    file:
+      one: ficheiro
+      other: ficheiros
     filter_by: Filtrar por
     filters: Filtros
     go_back: Voltar
@@ -76,6 +84,7 @@ pt-BR:
     prev_page: Página anterior
     records_selected_from_all_pages_html: Todos os registros de todas as páginas selecionados
     remove_selection: Remover seleção
+    reset: resetar
     reset_filters: Limpar filtros
     resource_created: Recurso criado
     resource_destroyed: Recurso destruído
@@ -93,6 +102,7 @@ pt-BR:
     sign_out: sair
     switch_to_view: Alterar para visão %{view_type}
     table_view: Visualização em tabela
+    this_field_has_attachments_disabled: Este campo tem anexos desativados.
     tools: Ferramentas
     type_to_search: Digite para buscar.
     unauthorized: Não autorizado
@@ -109,4 +119,6 @@ pt-BR:
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> registros selecionados de todas as páginas
     x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> registros selecionados nesta página
     yes_confirm: Sim, tenho certeza
+    you_cant_upload_new_resource: Você não pode fazer upload de imagens no editor Trix até salvar o recurso.
+    you_havent_set_attachment_key: Você precisa definir uma `attachment_key` para este campo Trix.
     you_missed_something_check_form: Você pode ter esquecido algo. Por favor, cheque o formulário.

@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
-class Avo::SidebarComponent < ViewComponent::Base
-  def initialize(sidebar_open: nil, for_mobile: false)
-    @sidebar_open = sidebar_open
-    @for_mobile = for_mobile
-  end
+class Avo::SidebarComponent < Avo::BaseComponent
+  prop :sidebar_open, default: false
+  prop :for_mobile, default: false
 
   def dashboards
-    return [] unless Avo.plugin_manager.installed?("avo-dashboards")
+    return [] unless Avo.plugin_manager.installed?(:avo_dashboards)
 
     Avo::Dashboards.dashboard_manager.dashboards_for_navigation
   end

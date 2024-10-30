@@ -1,38 +1,25 @@
 # frozen_string_literal: true
 
-# A button/link can have the following settings:
-# style: primary/outline/text
-# size: :xs :sm, :md, :lg
-class Avo::ButtonComponent < ViewComponent::Base
-  def initialize(path = nil, size: :md, style: :outline, color: :gray, icon: nil, icon_class: "", is_link: false, rounded: true, compact: false, aria: {}, **args)
-    # Main settings
-    @size = size
-    @style = style
-    @color = color
-
-    # Other things that appear in the button
-    @path = path
-    @icon = icon
-    @icon_class = icon_class
-    @rounded = rounded
-    @compact = compact
-
-    # Other settings
-    @class = args[:class]
-    @is_link = is_link
-    @aria = aria
-    @args = args || {}
+class Avo::ButtonComponent < Avo::BaseComponent
+  prop :path, kind: :positional
+  prop :size, default: :md
+  prop :style, default: :outline
+  prop :color, default: :gray
+  prop :icon do |value|
+    value&.to_sym
   end
+  prop :icon_class, default: ""
+  prop :is_link, default: false
+  prop :rounded, default: true
+  prop :compact, default: false
+  prop :aria, default: {}.freeze
+  prop :args, kind: :**, default: {}.freeze
+  prop :class
 
   def args
     if @args[:loading]
       @args[:"data-controller"] = "loading-button"
-      @args[:"data-loading-button-confirmed-value"] = false
       @args[:"data-action"] = "click->loading-button#attemptSubmit"
-
-      if @args[:confirm]
-        @args[:"data-loading-button-confirmation-message-value"] = @args.delete(:confirm)
-      end
     end
 
     @args[:class] = button_classes

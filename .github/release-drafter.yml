@@ -5,6 +5,8 @@ categories:
     labels:
       - 'Feature'
       - 'Feat'
+  - title: '✨ Enhancements'
+    labels:
       - 'Enhancement'
   - title: '🐛 Bug Fixes'
     labels:
@@ -26,6 +28,8 @@ categories:
     label: 'Style'
   - title: '🎡 CI'
     label: 'CI'
+  - title: '😎 Developer Experience (DX)'
+    label: 'Developer Experience (DX)'
   - title: '⚡️ Performance'
     labels:
       - 'Perf'

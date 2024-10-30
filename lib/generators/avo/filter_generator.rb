@@ -18,7 +18,7 @@ module Generators
       private
 
       def filter_types
-        %w[boolean select text multiple_select]
+        %w[boolean select text multiple_select date_time]
       end
     end
   end

@@ -3,7 +3,12 @@ ro:
   avo:
     action_ran_successfully: Acțiunea a rulat cu succes!
     actions: Acțiuni
+    add_filter: Adăugați filtru
     and_x_other_resources: plus alte %{count} recorduri
+    applied:
+      few: aplicate
+      one: aplicat
+      other: aplicate
     are_you_sure: Ești sigur?
     are_you_sure_detach_item: Sigur vrei să detașezi asta %{item}.
     are_you_sure_you_want_to_run_this_option: Ești sigur că vrei să rulezi aceasta acțiune?
@@ -13,6 +18,7 @@ ro:
     attachment_class_attached: "%{attachment_class} anexat."
     attachment_class_detached: "%{attachment_class} separat."
     attachment_destroyed: Atașamentul a fost distrus
+    attachment_failed: Nu s-a reușit atașarea %{attachment_class}
     cancel: Anulează
     choose_a_country: Alege o țară
     choose_an_option: Alege o opțiune
@@ -39,6 +45,10 @@ ro:
     failed: A eșuat
     failed_to_find_attachment: Atașamentul nu a fost găsit
     failed_to_load: Încărcarea a eșuat
+    file:
+      few: fişiere
+      one: fişier
+      other: fişiere
     filter_by: Filtează după
     filters: Filtre
     go_back: Înapoi
@@ -76,6 +86,7 @@ ro:
     prev_page: Pagina anterioara
     records_selected_from_all_pages_html: Toate selectate din toate paginile
     remove_selection: Șterge selecția
+    reset: resetare
     reset_filters: Resetați filtrele
     resource_created: Resursă creata
     resource_destroyed: Resursă ștearsă
@@ -93,6 +104,7 @@ ro:
     sign_out: Delogare
     switch_to_view: Comutați la vizualizarea %{view_type}
     table_view: Vezi sub formă de tabel
+    this_field_has_attachments_disabled: Acest câmp are atașamente dezactivate.
     tools: Instrumente
     type_to_search: Caută aici...
     unauthorized: Neautorizat
@@ -109,4 +121,6 @@ ro:
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> selectate din toate paginile
     x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> selectate
     yes_confirm: Da, sunt sigur
+    you_cant_upload_new_resource: Nu poți încărca fișiere în editorul Trix până când nu salvezi resursa.
+    you_havent_set_attachment_key: Trebuie să setezi o `attachment_key` pentru acest câmp Trix.
     you_missed_something_check_form: S-ar putea să fi omis ceva. Vă rugăm să verificați formularul.

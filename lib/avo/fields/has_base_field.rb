@@ -13,6 +13,7 @@ module Avo
       attr_accessor :discreet_pagination
       attr_accessor :hide_search_input
       attr_reader :link_to_child_resource
+      attr_reader :attach_fields
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
@@ -24,9 +25,11 @@ module Avo
         @description = args[:description]
         @use_resource = args[:use_resource] || nil
         @discreet_pagination = args[:discreet_pagination] || false
-        @link_to_child_resource = args[:link_to_child_resource] || false
+        # Defaults to nil so that if not set falls back to `link_to_child_resource` defined in the resource
+        @link_to_child_resource = args[:link_to_child_resource]
         @reloadable = args[:reloadable].present? ? args[:reloadable] : false
         @linkable = args[:linkable].present? ? args[:linkable] : false
+        @attach_fields = args[:attach_fields]
       end
 
       def field_resource
@@ -59,7 +62,7 @@ module Avo
       end
 
       def target_resource
-        reflection = @record._reflections.with_indifferent_access[association_name]
+        reflection = @record.class.reflect_on_association(association_name)
 
         if reflection.klass.present?
           get_resource_by_model_class(reflection.klass.to_s)
@@ -96,6 +99,8 @@ module Avo
 
         if service.has_method? method
           service.authorize_action(method, raise_exception: false)
+        elsif !service.is_a?(Avo::Services::AuthorizationService)
+          !Avo.configuration.explicit_authorization
         else
           true
         end

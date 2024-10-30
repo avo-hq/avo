@@ -3,7 +3,11 @@ es:
   avo:
     action_ran_successfully: "¡Acción ejecutada con éxito!"
     actions: Acciones
+    add_filter: Añadir filtro
     and_x_other_resources: y %{count} otros recursos
+    applied:
+      one: aplicado
+      other: aplicados
     are_you_sure: "¿Estás seguro?"
     are_you_sure_detach_item: "¿Estás seguro de que quieres separar este/a %{item}?"
     are_you_sure_you_want_to_run_this_option: "¿Estás seguro de que quieres ejectuar esta acción?"
@@ -13,6 +17,7 @@ es:
     attachment_class_attached: "%{attachment_class} adjuntado/a."
     attachment_class_detached: "%{attachment_class} adjuntado/a."
     attachment_destroyed: Adjunto eliminado
+    attachment_failed: No se pudo adjuntar %{attachment_class}
     cancel: Cancelar
     choose_a_country: Elige un país
     choose_an_option: Elige una opción
@@ -39,6 +44,9 @@ es:
     failed: Fallo
     failed_to_find_attachment: No se ha encontrado el archivo adjunto
     failed_to_load: No se ha podido cargar
+    file:
+      one: archivo
+      other: archivos
     filter_by: Filtrar por
     filters: Filtros
     go_back: Volver
@@ -76,6 +84,7 @@ es:
     prev_page: Página anterior
     records_selected_from_all_pages_html: Todos los registros seleccionados de todas las páginas.
     remove_selection: Quitar la selección
+    reset: restablecer
     reset_filters: Reiniciar filtros
     resource_created: Recurso creado
     resource_destroyed: Recurso eliminado
@@ -93,6 +102,7 @@ es:
     sign_out: Salir
     switch_to_view: Cambiar a la vista %{view_type}
     table_view: Vista en tabla
+    this_field_has_attachments_disabled: Este campo tiene los adjuntos deshabilitados.
     tools: Herramientas
     type_to_search: Escribe para buscar.
     unauthorized: No autorizado
@@ -109,4 +119,6 @@ es:
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> registros seleccionados en todas las páginas
     x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> registros seleccionados en esta página
     yes_confirm: Sí, estoy seguro
+    you_cant_upload_new_resource: No puedes subir archivos al editor Trix hasta que guardes el recurso.
+    you_havent_set_attachment_key: No has establecido una `attachment_key` para este campo Trix.
     you_missed_something_check_form: Es posible que hayas pasado algo por alto. Comprueba el formulario.

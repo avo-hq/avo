@@ -35,7 +35,7 @@ module Generators
           script_name = "avo:tailwindcss"
           if Rails.root.join("Procfile.dev").exist?
             say "Add #{cmd = "avo_css: yarn #{script_name} --watch"} to Procfile.dev"
-            append_to_file "Procfile.dev", "#{cmd}\n"
+            append_to_file "Procfile.dev", "\n#{cmd}\n"
           else
             say "Add default Procfile.dev"
             copy_file template_path("Procfile.dev"), "Procfile.dev"

@@ -20,48 +20,64 @@ module Avo
         add_string_prop args, :suggestions_max_items
         add_string_prop args, :mode, nil
         add_string_prop args, :fetch_values_from
-        add_string_prop args, :fetch_labels
+
+        @format_using ||= args[:fetch_labels]
+
+        unless Rails.env.production?
+          if args[:fetch_labels].present?
+            puts "[Avo DEPRECATION WARNING]: The `fetch_labels` field configuration option is no longer supported and will be removed in future versions. Please discontinue its use and solely utilize the `format_using` instead."
+          end
+        end
       end
 
       def field_value
-        return fetched_labels if @fetch_labels.present?
-
-        return json_value if acts_as_taggable_on.present?
-
-        value || []
+        @field_value ||= if acts_as_taggable_on.present?
+          acts_as_taggable_on_values.map { |value| {value:} }.as_json
+        else
+          value || []
+        end
       end
 
-      def json_value
-        value.map do |item|
-          {
-            value: item.name
-          }
-        end.as_json
+      def acts_as_taggable_on_values
+        # When record is DB persistent the values are fetched from the DB
+        # Else the array values are fetched from the record using the tag_list_on helper
+        # values_array examples: ["1", "2"]
+        #                        ["example suggestion","example tag"]
+        if record.persisted?
+          value.map { |item| item.name }
+        else
+          record.tag_list_on(acts_as_taggable_on)
+        end
       end
 
-      def fill_field(model, key, value, params)
-        return fill_acts_as_taggable(model, key, value, params) if acts_as_taggable_on.present?
+      def fill_field(record, key, value, params)
+        return fill_acts_as_taggable(record, key, value, params) if acts_as_taggable_on.present?
 
-        val = if value.is_a?(String)
-          value.split(",")
-        elsif value.is_a?(Array)
-          value
+        value = if value.is_a?(String)
+          value.split(delimiters[0])
         else
           value
         end
-        model.send(:"#{key}=", val)
 
-        model
+        record.send(:"#{key}=", apply_update_using(record, key, value, resource))
+
+        record
       end
 
-      def fill_acts_as_taggable(model, key, value, params)
-        model.send(act_as_taggable_attribute(key), value)
+      def fill_acts_as_taggable(record, key, value, params)
+        record.send(act_as_taggable_attribute(key), value)
 
-        model
+        record
+      end
+
+      def whitelist_items
+        return suggestions.to_json if enforce_suggestions
+
+        (suggestions + field_value).to_json
       end
 
       def suggestions
-        Avo::ExecutionContext.new(target: @suggestions, record: record).handle
+        @fetched_suggestions ||= Avo::ExecutionContext.new(target: @suggestions, record: record).handle
       end
 
       def disallowed
@@ -73,14 +89,6 @@ module Avo
       end
 
       private
-
-      def fetched_labels
-        if @fetch_labels.respond_to?(:call)
-          Avo::ExecutionContext.new(target: @fetch_labels, resource: resource, record: record).handle
-        else
-          @fetch_labels
-        end
-      end
 
       def act_as_taggable_attribute(key)
         "#{key.singularize}_list="

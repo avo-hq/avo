@@ -1,0 +1,23 @@
+# frozen_string_literal: true
+
+class Avo::Filters::<%= class_name.camelize %> < Avo::Filters::DateTimeFilter
+  self.name = "<%= name.underscore.humanize %>"
+  # self.type = :date_time
+  # self.mode = :range
+  # self.visible = -> do
+  #   true
+  # end
+
+  def apply(request, query, value)
+    query
+  end
+
+  # def picker_format
+  #   case type
+  #   when :date_time
+  #     "Y-m-d H:i:S"
+  #   when :time
+  #     "H:i:S"
+  #   end
+  # end
+end

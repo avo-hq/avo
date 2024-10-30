@@ -1,16 +1,21 @@
 <%= turbo_frame_tag params[:turbo_frame] do %>
   <%= content_tag :div, class: "-mx-2" do %>
-    <%= content_tag :div, class: "px-4 py-2" do %>
-      <div class="text-base font-semibold text-gray-800">Previewing <%= @resource.record_title %></div>
+    <%= content_tag :div, class: "px-6 py-4" do %>
+      <div class="text-md font-semibold uppercase text-gray-800">Previewing <%= @resource.record_title %></div>
     <% end %>
 
-    <% if @resource.get_preview_fields.present? %>
-      <div class="mt-4 divide-y border-t">
-        <% @resource.get_preview_fields.each_with_index do |field, index| %>
+    <% if @preview_fields.present? %>
+      <div class="mt-0 divide-y border-t">
+        <% @preview_fields.each_with_index do |field, index| %>
           <%= render field
-            .hydrate(resource: @resource, record: @resource.record, user: @resource.user, view: :show)
+            .hydrate(
+              resource: @resource,
+              record: @resource.record,
+              user: @resource.user,
+              view: Avo::ViewInquirer.new(:show)
+            )
             .component_for_view(:show)
-            .new(field: field, resource: @resource, index: index, compact: true, short: true, stacked: false)
+            .new(field: field, resource: @resource, index: index, compact: true, short: true)
           %>
         <% end %>
       </div>

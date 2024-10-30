@@ -34,6 +34,7 @@ class Avo::Resources::User < Avo::BaseResource
     end
   }
   self.includes = [:posts, :post]
+  self.attachments = [:cv]
   self.devise_password_optional = true
   self.grid_view = {
     card: -> do
@@ -73,12 +74,14 @@ class Avo::Resources::User < Avo::BaseResource
     divider
     action Avo::Actions::Test::NoConfirmationRedirect
     action Avo::Actions::Test::CloseModal
+    action Avo::Actions::Test::DoNothing
     action Avo::Actions::DetachUser
   end
 
   def filters
     filter Avo::Filters::UserNamesFilter
     filter Avo::Filters::IsAdmin
+    filter Avo::Filters::Birthday
     filter Avo::Filters::DummyMultipleSelectFilter
   end
 
@@ -107,6 +110,7 @@ class Avo::Resources::User < Avo::BaseResource
     field :cv, as: :file, name: "CV"
     field :is_admin?, as: :boolean, name: "Is admin", only_on: :index
     field :roles, as: :boolean_group, options: {admin: "Administrator", manager: "Manager", writer: "Writer"}
+    field :permissions, as: :boolean_group, options: {create: "Create", read: "Read", update: "Update", delete: "Delete"}
     field :birthday,
       as: :date,
       first_day_of_week: 1,
@@ -126,7 +130,7 @@ class Avo::Resources::User < Avo::BaseResource
       end
 
     field :password, as: :password, name: "User Password", required: false, only_on: :forms, help: 'You may verify the password strength <a href="http://www.passwordmeter.com/" target="_blank">here</a>.'
-    field :password_confirmation, as: :password, name: "Password confirmation", required: false
+    field :password_confirmation, as: :password, name: "Password confirmation", required: false, revealable: true
 
     with_options hide_on: :forms do
       field :dev, as: :heading, label: '<div class="underline uppercase font-bold">DEV</div>', as_html: true
@@ -249,7 +253,11 @@ class Avo::Resources::User < Avo::BaseResource
       field :comments,
         as: :has_many,
         # show_on: :edit,
-        scope: -> { query.starts_with parent.first_name[0].downcase },
+        scope: -> {
+          TestBuddy.hi("parent_resource:#{parent_resource.present?},resource:#{resource.present?}")
+
+          query.starts_with parent.first_name[0].downcase
+        },
         description: "The comments listed in the attach modal all start with the name of the parent user."
       field :comment, as: :has_one, name: "Main comment"
     end

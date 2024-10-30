@@ -36,10 +36,12 @@ class Avo::ResourceComponent < Avo::BaseComponent
   def detach_path
     return "/" if @reflection.blank?
 
-    helpers.resource_detach_path(params[:resource_name], params[:id], @reflection.name.to_s, @resource.record.to_param)
+    helpers.resource_detach_path(params[:resource_name], params[:id], @reflection.name.to_s, @resource.record_param)
   end
 
   def can_see_the_edit_button?
+    return authorize_association_for(:edit) if @reflection.present?
+
     @resource.authorization.authorize_action(:edit, raise_exception: false)
   end
 
@@ -48,8 +50,6 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def can_see_the_actions_button?
-    return false if @actions.blank?
-
     return authorize_association_for(:act_on) if @reflection.present?
 
     @resource.authorization.authorize_action(:act_on, raise_exception: false) && !has_reflection_and_is_read_only
@@ -107,7 +107,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def render_cards_component
-    if Avo.plugin_manager.installed?("avo-dashboards")
+    if Avo.plugin_manager.installed?(:avo_dashboards)
       render Avo::CardsComponent.new cards: @resource.detect_cards.visible_cards, classes: "pb-4 sm:grid-cols-3"
     end
   end
@@ -149,6 +149,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       label: actions_list.label,
       size: actions_list.size,
       icon: actions_list.icon,
+      title: actions_list.title,
       as_row_control: instance_of?(Avo::Index::ResourceControlsComponent)
     )
   end
@@ -156,7 +157,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   def render_delete_button(control)
     # If the resource is a related resource, we use the can_delete? policy method because it uses
     # authorize_association_for(:destroy).
-    # Otherwise we use the can_see_the_destroy_button? policy method becuse it do no check for assiciation
+    # Otherwise we use the can_see_the_destroy_button? policy method because it do no check for association
     # only for authorize_action .
     policy_method = is_a_related_resource? ? :can_delete? : :can_see_the_destroy_button?
     return unless send policy_method
@@ -174,7 +175,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
         target: "control:destroy",
         control: :destroy,
         tippy: control.title ? :tooltip : nil,
-        "resource-id": @resource.record.id,
+        "resource-id": @resource.record_param,
       } do
       control.label
     end
@@ -187,7 +188,10 @@ class Avo::ResourceComponent < Avo::BaseComponent
       style: :primary,
       loading: true,
       type: :submit,
-      icon: "avo/save" do
+      icon: "avo/save",
+      data: {
+        turbo_confirm: @resource.confirm_on_save ? t("avo.are_you_sure") : nil
+      } do
       control.label
     end
   end
@@ -242,7 +246,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       color: :primary,
       style: :text,
       data: {
-        turbo_frame: :attach_modal,
+        turbo_frame: Avo::MODAL_FRAME_ID,
         target: :attach
       } do
       control.label
@@ -278,10 +282,14 @@ class Avo::ResourceComponent < Avo::BaseComponent
       title: action.title,
       size: action.size,
       data: {
-        turbo_frame: Avo::ACTIONS_TURBO_FRAME_ID,
+        controller: "actions-picker",
+        turbo_frame: Avo::MODAL_FRAME_ID,
         action_name: action.action.action_name,
         tippy: action.title ? :tooltip : nil,
         action: "click->actions-picker#visitAction",
+        turbo_prefetch: false,
+        "actions-picker-target": action.action.standalone ? "standaloneAction" : "resourceAction",
+        disabled: action.action.disabled?
       } do
       action.label
     end

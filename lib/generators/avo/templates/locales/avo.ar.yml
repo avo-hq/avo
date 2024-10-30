@@ -3,7 +3,15 @@ ar:
   avo:
     action_ran_successfully: تم تنفيذ الأمر بنجاح!
     actions: أوامر
+    add_filter: إضافة عامل تصفية
     and_x_other_resources: و %{count} موارد أخرى
+    applied:
+      few: applied
+      many: applied
+      one: applied
+      other: applied
+      two: applied
+      zero: applied
     are_you_sure: هل أنت متأكد؟
     are_you_sure_detach_item: هل أنت متأكد أنك تريد فصل هذا الـ%{item}؟
     are_you_sure_you_want_to_run_this_option: هل أنت متأكد أنك تريد تشغيل هذا الخيار؟
@@ -13,6 +21,7 @@ ar:
     attachment_class_attached: "%{attachment_class} تم ربط"
     attachment_class_detached: "%{attachment_class} تم فصل"
     attachment_destroyed: تم حذف المرفق
+    attachment_failed: فشل في إرفاق %{attachment_class}
     cancel: إلغاء
     choose_a_country: اختر دولة
     choose_an_option: اختر خيارًا
@@ -39,6 +48,13 @@ ar:
     failed: فشل
     failed_to_find_attachment: فشل في العثور على المرفق
     failed_to_load: فشل التحميل
+    file:
+      few: ملفات
+      many: ملفات
+      one: ملف
+      other: ملفات
+      two: ملفات
+      zero:
     filter_by: تصفية حسب
     filters: مرشحات
     go_back: العودة للخلف
@@ -76,6 +92,7 @@ ar:
     prev_page: الصفحة السابقة
     records_selected_from_all_pages_html: جميع السجلات مختارة من جميع الصفحات
     remove_selection: إزالة التحديد
+    reset: اعاده تعيين
     reset_filters: إعادة تعيين الفلاتر
     resource_created: تم إنشاء السجل
     resource_destroyed: تم حذف السجل
@@ -93,6 +110,7 @@ ar:
     sign_out: تسجيل الخروج
     switch_to_view: التبديل إلى عرض %{view_type}
     table_view: عرض الجدول
+    this_field_has_attachments_disabled: هذا الحقل لديه المرفقات معطلة.
     tools: الأدوات
     type_to_search: اكتب للبحث.
     unauthorized: غير مصرح به
@@ -109,4 +127,6 @@ ar:
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> السجلات المحددة من كل الصفحات
     x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> السجلات المختارة في هذه الصفحة
     yes_confirm: نعم، أنا متأكد
+    you_cant_upload_new_resource: لا يمكنك تحميل الملفات في محرر Trix حتى تحفظ السجل.
+    you_havent_set_attachment_key: لم تقم بتعيين `attachment_key` لهذا الحقل Trix.
     you_missed_something_check_form: ربما نسيت شيئًا، يرجى التحقق من البيانات.

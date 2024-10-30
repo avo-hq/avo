@@ -1,53 +1,71 @@
-<%= turbo_frame_tag 'attach_modal' do %>
-  <%
-    url = Avo::Services::URIService.parse(avo.root_url.to_s)
-      .append_paths('resources', params[:resource_name], params[:id], params[:related_name])
-      .append_query(
-        {
-          view: @resource&.view&.to_s,
-          for_attribute: @field&.try(:for_attribute)
-        }.compact
-      )
-      .to_s
-  %>
+<%= turbo_frame_tag Avo::MODAL_FRAME_ID do %>
   <%= form_with scope: 'fields',
-    url: url,
+    url: @url,
     local: true,
     data: {
-      'turbo-frame': '_top'
+      turbo_frame: :_top
     } do |form| %>
     <%= render Avo::ModalComponent.new do |c| %>
       <% c.with_heading do %>
-        <%= t 'avo.choose_item', item: @related_resource.name.downcase %>
+        <%= t 'avo.choose_item', item: @field.name.singularize.downcase %>
       <% end %>
 
       <div class="flex-1 flex items-center justify-center px-0 lg:px-8 text-lg mt-8 mb-12">
-        <% if @field.is_searchable? %>
-          <%= render Avo::Pro::SearchableAssociations::AutocompleteComponent.new form: form,
-            classes: input_classes("w-full"),
-            field: @field,
-            model_key: @field.target_resource&.model_key,
-            foreign_key: 'related_id',
-            resource: @resource,
-            view: :new
-          %>
-        <% else %>
-          <div class="flex-1 flex flex-col items-center justify-center px-0 md:px-24 text-base">
-            <%= form.select :related_id, options_for_select(@options, nil),
-              {
+        <div class="flex-1 flex flex-col items-center justify-center px-0 md:px-24 text-base">
+          <div class="w-full">
+            <% if @field.is_searchable? %>
+              <%= field_wrapper stacked: true,
+                field: @field,
+                view: Avo::ViewInquirer.new("edit"),
+                form:,
+                index: 0,
+                resource: @resource,
+                label_for: @field.id,
+                label: @field.name.singularize.downcase do %>
+                <%= render Avo::Pro::SearchableAssociations::AutocompleteComponent.new form: form,
+                  classes: input_classes("w-full"),
+                  field: @field,
+                  model_key: @field.target_resource&.model_key,
+                  foreign_key: 'related_id',
+                  resource: @resource,
+                  view: Avo::ViewInquirer.new(:new)
+                %>
+              <% end %>
+            <% else %>
+              <%= avo_edit_field :related_id,
+                as: :select,
+                form: form,
+                name: @field.name.singularize,
+                options: options_for_select(@options,
+                nil),
                 include_blank: t('avo.choose_an_option'),
-              },
-              {
-                class: input_classes('w-full'),
-              }
-            %>
+                stacked: true,
+                classes: 'w-full'
+              %>
+              <%= hidden_field_tag :turbo_frame, params[:turbo_frame] %>
+            <% end %>
+            <% @attach_fields&.each_with_index do |field, index| %>
+              <%= render(Avo::Items::SwitcherComponent.new(
+                resource: @related_resource,
+                item: field,
+                index: index + 1,
+                view: @view,
+                form: form,
+                field_component_extra_args: {
+                  stacked: true,
+                classes: 'w-full'}
+              )) %>
+            <% end %>
           </div>
-        <% end %>
+        </div>
       </div>
 
       <% c.with_controls do %>
         <%= a_button 'data-action': 'click->modal#close', type: :button, size: :sm, style: :outline, color: :gray do %>
           <%= t('avo.cancel') %>
+        <% end %>
+        <%= a_button type: :submit, value: :attach_another, style: :outline, color: :green, size: :sm do %>
+          <%= t('avo.attach_and_attach_another') %>
         <% end %>
         <%= a_button type: :submit, style: :primary, color: :green, size: :sm do %>
           <%= t('avo.attach') %>

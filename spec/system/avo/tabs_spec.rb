@@ -2,15 +2,16 @@ require "rails_helper"
 
 RSpec.describe "Tabs", type: :system do
   let!(:user) { create :user, birthday: "10.02.1988" }
+  let!(:projects) { create_list :project, 9, users: [user] }
 
   describe "doesn't display tabs content" do
     context "on index" do
       it "doesn't display the birthday from the tab content" do
         visit "/admin/resources/users"
 
-        expect(find("table thead").text).to eq "Select all\n\t\nID\n\t\nAVATAR\n\t\nFIRST NAME\n\t\nLAST NAME\n\t\nUSER EMAIL\n\t\nIS ACTIVE\n\t\nCV\n\t\nIS ADMIN\n\t\nROLES\n\t\nBIRTHDAY\n\t\nIS WRITER"
+        expect(find("table thead").text).to eq "Select all\n\t\nID\n\t\nAVATAR\n\t\nFIRST NAME\n\t\nLAST NAME\n\t\nUSER EMAIL\n\t\nIS ACTIVE\n\t\nCV\n\t\nIS ADMIN\n\t\nROLES\n\t\nPERMISSIONS\n\t\nBIRTHDAY\n\t\nIS WRITER"
         within find("tr[data-resource-id='#{user.to_param}']") do
-          expect(find_all("table tbody tr td")[10].text).to eq "Wednesday, 10 February 1988"
+          expect(find_all("table tbody tr td")[11].text).to eq "Wednesday, 10 February 1988"
         end
       end
     end
@@ -42,7 +43,7 @@ RSpec.describe "Tabs", type: :system do
 
         expect(teams_frame).to have_text "Teams"
         expect(teams_frame).to have_link "Attach team"
-        expect(teams_frame).to have_link "Create new team", href: "/admin/resources/teams/new?via_record_id=#{user.slug}&via_relation=users&via_relation_class=User&via_resource_class=Avo%3A%3AResources%3A%3AUser"
+        expect(teams_frame).to have_link "Create new team", href: "/admin/resources/teams/new?via_record_id=#{user.slug}&via_relation=admin&via_relation_class=User&via_resource_class=Avo%3A%3AResources%3A%3AUser"
       end
 
       it "hides the birthday tab" do
@@ -72,7 +73,7 @@ RSpec.describe "Tabs", type: :system do
         find('[aria-label="February 9, 1988"]').click
         save
 
-        expect(current_path).to eq avo.resources_user_path user
+        expect(page).to have_current_path avo.resources_user_path(user)
         expect(find_field_value_element("birthday")).to have_text "Tuesday, 9 February 1988"
       end
 
@@ -171,5 +172,26 @@ RSpec.describe "Tabs", type: :system do
 
     find('a[data-selected="false"][data-tabs-tab-name-param="Created at"]').click
     expect(page).not_to have_text 'Invalid DateTime'
+  end
+
+  it "keeps the pagination on tab when back is used" do
+    visit avo.resources_user_path user
+
+    find('a[data-selected="false"][data-tabs-tab-name-param="Projects"]').click
+    expect(page).to have_css('a.current[role="link"][aria-disabled="true"][aria-current="page"]', text: "1")
+    expect(page).to have_text "Displaying items 1-8 of 9 in total"
+
+    find('a[data-turbo-frame="has_and_belongs_to_many_field_show_projects"]', text: "2").click
+    expect(page).to have_css('a.current[role="link"][aria-disabled="true"][aria-current="page"]', text: "2")
+    expect(page).to have_text "Displaying items 9-9 of 9 in total"
+
+    find('a[aria-label="View project"]').click
+    wait_for_loaded
+
+    page.go_back
+    wait_for_loaded
+
+    expect(page).to have_css('a.current[role="link"][aria-disabled="true"][aria-current="page"]', text: "2")
+    expect(page).to have_text "Displaying items 9-9 of 9 in total"
   end
 end

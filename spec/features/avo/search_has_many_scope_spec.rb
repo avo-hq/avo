@@ -26,13 +26,13 @@ RSpec.feature Avo::SearchController, type: :controller do
       via_association: "has_many",
       via_association_id: "links",
       via_reflection_class: "Course",
-      via_reflection_id: course_with_three_links.id
+      via_reflection_id: course_with_three_links.to_param
     }
 
     expect(json["course links"]["results"].count).to eq 3
 
     3.times do |index|
-      expect(json["course links"]["results"][index]["_id"]).to eq course_with_three_links.links[index].id
+      expect(json["course links"]["results"][index]["_id"]).to eq course_with_three_links.links[index].to_param
     end
   end
 
@@ -45,13 +45,13 @@ RSpec.feature Avo::SearchController, type: :controller do
       via_association: "has_many",
       via_association_id: "links",
       via_reflection_class: "Course",
-      via_reflection_id: course_with_five_links.id
+      via_reflection_id: course_with_five_links.to_param
     }
 
     expect(json["course links"]["results"].count).to eq 5
 
     5.times do |index|
-      expect(json["course links"]["results"][index]["_id"]).to eq course_with_five_links.links[index].id
+      expect(json["course links"]["results"][index]["_id"]).to eq course_with_five_links.links[index].to_param
     end
   end
 end

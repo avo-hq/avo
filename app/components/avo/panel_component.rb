@@ -1,14 +1,11 @@
 # frozen_string_literal: true
 
-class Avo::PanelComponent < ViewComponent::Base
+class Avo::PanelComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
-
-  attr_reader :title # deprecating title in favor of name
-  attr_reader :name
-  attr_reader :classes
 
   delegate :white_panel_classes, to: :helpers
 
+  renders_one :cover_slot
   renders_one :name_slot
   renders_one :tools
   renders_one :body
@@ -18,16 +15,21 @@ class Avo::PanelComponent < ViewComponent::Base
   renders_one :footer_tools
   renders_one :footer
 
-  def initialize(name: nil, description: nil, body_classes: nil, data: {}, display_breadcrumbs: false, index: nil, classes: nil, **args)
-    # deprecating title in favor of name
-    @title = args[:title]
-    @name = name || title
-    @description = description
-    @classes = classes
-    @body_classes = body_classes
-    @data = data
-    @display_breadcrumbs = display_breadcrumbs
-    @index = index
+  prop :description
+  prop :body_classes
+  prop :data, default: {}.freeze
+  prop :display_breadcrumbs, default: false
+  prop :index
+  prop :classes
+  prop :profile_photo
+  prop :cover_photo
+  prop :args, kind: :**, default: {}.freeze
+  prop :name do |value|
+    value || @args&.dig(:title)
+  end
+
+  def classes
+    class_names(@classes, "has-cover-photo": @cover_photo.present?, "has-profile-photo": @profile_photo.present?)
   end
 
   private

@@ -2,7 +2,13 @@ require_dependency "avo/application_controller"
 
 module Avo
   class DebugController < ApplicationController
+    before_action :authenticate_developer_or_admin!
+
     def status
+      respond_to do |format|
+        format.html { render :status }
+        format.text { render :status }
+      end
     end
 
     def send_to_hq
@@ -12,7 +18,7 @@ module Avo
       body = params[:body]
       body = {license_key: license_key, body: body, payload: Avo::Services::DebugService.debug_report(request).to_json}.to_json
 
-      HTTParty.post url, body: body, headers: {"Content-Type": "application/json"}, timeout: timeout
+      Avo::Licensing::Request.post(url, body:, timeout:)
 
       render turbo_stream: turbo_stream.replace(:send_to_hq, plain: "Payload sent to Avo HQ.")
     end

@@ -10,4 +10,7 @@
 #
 class Store < ApplicationRecord
   has_one :location
+
+  has_many :patronships, class_name: :StorePatron
+  has_many :patrons, through: :patronships, class_name: :User, source: :user
 end

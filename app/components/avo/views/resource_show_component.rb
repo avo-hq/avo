@@ -3,17 +3,18 @@
 class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
   include Avo::ApplicationHelper
 
-  attr_reader :actions, :display_breadcrumbs
+  attr_reader :display_breadcrumbs
 
-  def initialize(resource: nil, reflection: nil, parent_resource: nil, parent_record: nil, resource_panel: nil, actions: [])
-    @resource = resource
-    @reflection = reflection
-    @resource_panel = resource_panel
-    @actions = actions
-    @parent_record = parent_record
-    @parent_resource = parent_resource
+  prop :resource
+  prop :reflection
+  prop :parent_resource
+  prop :parent_record
+  prop :resource_panel, reader: :public
+  prop :actions, default: [].freeze, reader: :public
+
+  def after_initialize
     @view = Avo::ViewInquirer.new("show")
-    @display_breadcrumbs = reflection.blank?
+    @display_breadcrumbs = @reflection.blank?
   end
 
   def title
@@ -28,7 +29,7 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
 
   def back_path
     if via_resource?
-      helpers.resource_path(record: association_resource.model_class, resource: association_resource, resource_id: params[:via_record_id])
+      helpers.resource_path(resource: association_resource, resource_id: params[:via_record_id])
     else
       helpers.resources_path(resource: @resource, **keep_referrer_params)
     end
@@ -43,7 +44,7 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
     elsif @parent_resource.present?
       {
         via_resource_class: @parent_resource.class,
-        via_record_id: @parent_record.id
+        via_record_id: @parent_record.to_param
       }
     else
       {}

@@ -42,13 +42,12 @@ gem 'redis', '~> 5.0'
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", ">= 1.4.2", require: false
 # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
+gem "debug", platforms: [:mri, :mingw, :x64_mingw]
 gem "dotenv-rails"
 # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
 gem "web-console", ">= 3.3.0"
 gem "listen", ">= 3.5.1"
-# Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-gem "spring"
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
@@ -58,7 +57,7 @@ gem "devise"
 #
 
 group :development do
-  gem "standard"
+  gem "standard", require: false
 
   # Release helper
   gem "bump", require: false
@@ -77,10 +76,18 @@ group :development do
 
   gem "hotwire-livereload", "~> 1.3.0"
 
-  gem "rubocop"
-  gem "ripper-tags"
+  gem "rubocop", require: false
+  gem "ripper-tags", require: false
   gem "rubocop-shopify", require: false
   gem "rubycritic", require: false
+
+  gem "actual_db_schema"
+
+  gem "derailed_benchmarks", "~> 2.1", ">= 2.1.2"
+
+  # Keep version look on <4 until this PR gets merged and released
+  # https://github.com/zombocom/derailed_benchmarks/pull/239
+  gem "ruby-statistics", "< 4"
 end
 
 group :test do
@@ -94,6 +101,7 @@ group :test do
   gem "simplecov-cobertura"
   gem "simplecov-lcov"
   gem "webmock"
+  gem "spring"
   gem "spring-commands-rspec"
   gem "launchy", require: false
 
@@ -101,25 +109,23 @@ group :test do
   gem "database_cleaner-active_record"
 end
 
-gem "awesome_print"
+gem "amazing_print"
 
 group :development, :test do
   gem "faker", require: false
   gem "i18n-tasks", "~> 1.0.12"
-  gem "erb-formatter"
+  gem "erb-formatter", require: false
   # https://thoughtbot.com/blog/a-standard-way-to-lint-your-views
-  gem "erb_lint"
-  gem "solargraph"
-  gem "solargraph-rails"
+  gem "erb_lint", require: false
+  gem "solargraph", require: false
+  gem "solargraph-rails", require: false
 
   gem "factory_bot_rails"
 
-  gem "appraisal"
+  gem "appraisal", require: false
 end
 
 gem "zeitwerk"
-
-gem "httparty"
 
 gem "iso"
 
@@ -130,10 +136,7 @@ gem "addressable"
 gem 'meta-tags'
 
 # Search
-# gem "ransack", "~> 4.1", ">= 4.1.1"
-
-# Temporary use of fork to add Rails 8 support
-gem "ransack", github: "avo-hq/ransack", branch: "fix/rails-8/delegate-alias-tracker-to-relation"
+gem "ransack", ">= 4.2.0"
 
 gem 'friendly_id', '~> 5.5.1'
 
@@ -156,7 +159,7 @@ gem "bundler-integrity", "~> 1.0"
 # Avo country field requires this gem
 gem "countries"
 
-# Avo dashbaords requires this gem
+# Avo dashboards requires this gem
 gem "chartkick"
 
 # Required by Avo
@@ -175,6 +178,8 @@ gem "mapkick-rb", "~> 0.1.4"
 
 gem "pluggy", path: "./pluggy"
 
+gem "hashid-rails", "~> 1.4", ">= 1.4.1"
+
 # Avo money field
 # gem "avo-money_field", path: "./../avo-money_field"
 gem "money-rails", "~> 1.12"
@@ -186,3 +191,5 @@ gem "avo-record_link_field"
 
 # gem "pagy", "< 8.0.0"
 gem "pagy", "> 8"
+
+gem "csv"

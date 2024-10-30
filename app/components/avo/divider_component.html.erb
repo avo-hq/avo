@@ -1,7 +1,7 @@
-<div class="relative flex justify-center items-center w-full !border-b-2 border-gray-200 border-solid">
-  <div class="absolute inset-auto z-20 text-xs font-semibold uppercase leading-none text-gray-500 bg-white px-2">
-    <%if label.present?%>
-      <%=label%>
-    <%end%>
-  </div>
+<div class="relative flex justify-center items-center w-full !border-b-2 border-gray-200 border-solid" data-component-name="<%= self.class.to_s.underscore %>">
+  <% if @label.present? %>
+    <div class="absolute inset-auto z-20 text-xs font-semibold uppercase leading-none text-gray-500 bg-white px-2 border py-1 rounded">
+      <%= @label %>
+    </div>
+  <% end %>
 </div>

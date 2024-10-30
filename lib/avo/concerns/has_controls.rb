@@ -11,6 +11,7 @@ module Avo
         class_attribute :row_controls
       end
 
+      # Any change applied here should also be applied on Avo::Advanced::Resources::Controls::ExecutionContext default_controls
       def render_show_controls
         [BackButton.new, DeleteButton.new, DetachButton.new, ActionsList.new, EditButton.new]
       end
@@ -20,7 +21,7 @@ module Avo
       end
 
       def render_index_controls(item:)
-        [AttachButton.new(item: item), ActionsList.new(as_index_control: true), CreateButton.new(item: item)]
+        [BackButton.new, AttachButton.new(item: item), ActionsList.new(as_index_control: true), CreateButton.new(item: item)]
       end
 
       def render_row_controls(item:)

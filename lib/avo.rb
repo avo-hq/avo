@@ -1,5 +1,6 @@
 require "zeitwerk"
 require "ostruct"
+require "net/http"
 require_relative "avo/version"
 require_relative "avo/engine" if defined?(Rails)
 
@@ -13,13 +14,11 @@ loader.ignore("#{__dir__}/generators")
 loader.setup
 
 module Avo
-  extend ActiveSupport::LazyLoadHooks
-
   ROOT_PATH = Pathname.new(File.join(__dir__, ".."))
   IN_DEVELOPMENT = ENV["AVO_IN_DEVELOPMENT"] == "1"
   PACKED = !IN_DEVELOPMENT
   COOKIES_KEY = "avo"
-  ACTIONS_TURBO_FRAME_ID = :actions_show
+  MODAL_FRAME_ID = :modal_frame
   ACTIONS_BACKGROUND_FRAME = :actions_background
 
   class LicenseVerificationTemperedError < StandardError; end
@@ -35,19 +34,20 @@ module Avo
   class DeprecatedAPIError < StandardError; end
 
   class MissingResourceError < StandardError
-    def initialize(resource_name)
-      super(missing_resource_message(resource_name))
+    def initialize(model_class, field_name = nil)
+      super(missing_resource_message(model_class, field_name))
     end
 
     private
 
-    def missing_resource_message(resource_name)
-      name = resource_name.to_s.underscore
+    def missing_resource_message(model_class, field_name)
+      model_name = model_class.to_s.underscore
+      field_name ||= model_name
 
-      "Failed to find a resource while rendering the :#{name} field.\n" \
-      "You may generate a resource for it by running 'rails generate avo:resource #{name.singularize}'.\n" \
+      "Failed to find a resource while rendering the :#{field_name} field.\n" \
+      "You may generate a resource for it by running 'rails generate avo:resource #{model_name.singularize}'.\n" \
       "\n" \
-      "Alternatively add the 'use_resource' option to the :#{name} field to specify a custom resource to be used.\n" \
+      "Alternatively add the 'use_resource' option to the :#{field_name} field to specify a custom resource to be used.\n" \
       "More info on https://docs.avohq.io/#{Avo::VERSION[0]}.0/resources.html."
     end
   end
@@ -64,18 +64,22 @@ module Avo
       @logger = Avo.configuration.logger
       @field_manager = Avo::Fields::FieldManager.build
       @cache_store = Avo.configuration.cache_store
-      plugin_manager.boot_plugins
-      Avo.run_load_hooks(:boot, self)
+      ActiveSupport.run_load_hooks(:avo_boot, self)
       eager_load_actions
     end
 
     # Runs on each request
     def init
       Avo::Current.error_manager = Avo::ErrorManager.build
+      # Check rails version issues only on NON Production environments
+      unless Rails.env.production?
+        check_rails_version_issues
+        display_menu_editor_warning
+      end
       Avo::Current.resource_manager = Avo::Resources::ResourceManager.build
       Avo::Current.tool_manager = Avo::Tools::ToolManager.build
 
-      Avo.run_load_hooks(:init, self)
+      ActiveSupport.run_load_hooks(:avo_init, self)
     end
 
     # Generate a dynamic root path using the URIService
@@ -87,7 +91,7 @@ module Avo
     end
 
     def main_menu
-      return unless Avo.plugin_manager.installed?("avo-menu")
+      return unless Avo.plugin_manager.installed?(:avo_menu)
 
       # Return empty menu if the app doesn't have the profile menu configured
       return Avo::Menu::Builder.new.build unless has_main_menu?
@@ -96,7 +100,7 @@ module Avo
     end
 
     def profile_menu
-      return unless Avo.plugin_manager.installed?("avo-menu")
+      return unless Avo.plugin_manager.installed?(:avo_menu)
 
       # Return empty menu if the app doesn't have the profile menu configured
       return Avo::Menu::Builder.new.build unless has_profile_menu?
@@ -132,6 +136,7 @@ module Avo
         mount Avo::DynamicFilters::Engine, at: "/avo-dynamic_filters" if defined?(Avo::DynamicFilters::Engine)
         mount Avo::Dashboards::Engine, at: "/dashboards" if defined?(Avo::Dashboards::Engine)
         mount Avo::Pro::Engine, at: "/avo-pro" if defined?(Avo::Pro::Engine)
+        mount Avo::Kanban::Engine, at: "/boards" if defined?(Avo::Kanban::Engine)
       }
     end
 
@@ -142,7 +147,36 @@ module Avo
     def eager_load_actions
       Rails.autoloaders.main.eager_load_namespace(Avo::Actions) if defined?(Avo::Actions)
     end
+
+    def check_rails_version_issues
+      if Rails.version.start_with?("7.1") && Avo.configuration.license.in?(["pro", "advanced"])
+        Avo.error_manager.add({
+          url: "https://docs.avohq.io/3.0/upgrade.html#upgrade-from-3-7-4-to-3-9-1",
+          target: "_blank",
+          message: "Due to a Rails 7.1 bug the following features won't work:\n\r
+                    - Dashboards\n\r
+                    - Ordering\n\r
+                    - Dynamic filters\n\r
+                    We recommend you upgrade to Rails 7.2\n\r
+                    Click banner for more information."
+        })
+      end
+    end
+
+    def display_menu_editor_warning
+      if Avo.configuration.license == "community" && has_main_menu?
+        Avo.error_manager.add({
+          url: "https://docs.avohq.io/3.0/menu-editor.html",
+          target: "_blank",
+          message: "The menu editor is available exclusively with the Pro license or above. Consider upgrading to access this feature."
+        })
+      end
+    end
   end
+end
+
+def 🥑
+  Avo
 end
 
 loader.eager_load

@@ -11,11 +11,11 @@ module Avo
     include Avo::ApplicationHelper
     include Avo::UrlHelpers
     include Avo::Concerns::Breadcrumbs
+    include Avo::Concerns::FindAssociationField
 
     protect_from_forgery with: :exception
     around_action :set_avo_locale
     around_action :set_force_locale, if: -> { params[:force_locale].present? }
-    before_action :set_default_locale, if: -> { params[:set_locale].present? }
     before_action :init_app
     before_action :set_active_storage_current_host
     before_action :set_resource_name
@@ -38,7 +38,7 @@ module Avo
         format.html { raise exception }
         format.json {
           render json: {
-            errors: exception.respond_to?(:record) && exception.record.present? ? exception.record.errors : [],
+            errors: (exception.respond_to?(:record) && exception.record.present?) ? exception.record.errors : [],
             message: exception.message,
             traces: exception.backtrace
           }, status: ActionDispatch::ExceptionWrapper.status_code_for_exception(exception.class.name)
@@ -52,10 +52,6 @@ module Avo
       super
     end
 
-    def hello
-      puts "Nobody tested me :("
-    end
-
     private
 
     # Get the pluralized resource name for this request
@@ -67,7 +63,7 @@ module Avo
 
       begin
         request.path
-          .match(/\/?#{Avo.root_path.delete('/')}\/resources\/([a-z1-9\-_]*)\/?/mi)
+          .match(/\/?#{Avo.root_path.delete("/")}\/resources\/([a-z1-9\-_]*)\/?/mi)
           .captures
           .first
       rescue
@@ -90,11 +86,11 @@ module Avo
 
     def related_resource
       # Find the field from the parent resource
-      field = @resource.get_field params[:related_name]
+      field = find_association_field(resource: @resource, association: params[:related_name])
 
       return field.use_resource if field&.use_resource.present?
 
-      reflection = @record._reflections.with_indifferent_access[params[:for_attribute] || params[:related_name]]
+      reflection = @record.class.reflect_on_association(field&.for_attribute || params[:related_name])
 
       reflected_model = reflection.klass
 
@@ -279,23 +275,21 @@ module Avo
       @resource.form_scope
     end
 
-    # Sets the locale set in avo.rb initializer
+    # Sets the locale set in avo.rb initializer or if to something that the user set using the `?set_locale=pt-BR` param
     def set_avo_locale(&action)
-      locale = Avo.configuration.locale || I18n.default_locale
+      locale = Avo.configuration.default_locale
+
+      if params[:set_locale].present?
+        locale = params[:set_locale]
+        Avo.configuration.locale = locale
+      end
+
       I18n.with_locale(locale, &action)
-    end
-
-    # Enable the user to change the default locale with the `?set_locale=pt-BR` param
-    def set_default_locale
-      locale = params[:set_locale] || I18n.default_locale
-
-      I18n.default_locale = locale
     end
 
     # Temporary set the locale and reverting at the end of the request.
     def set_force_locale(&action)
-      locale = params[:force_locale] || I18n.default_locale
-      I18n.with_locale(locale, &action)
+      I18n.with_locale(params[:force_locale], &action)
     end
 
     def set_sidebar_open
@@ -327,14 +321,20 @@ module Avo
       end
     end
 
-    private
-
     def choose_layout
       if turbo_frame_request?
         "avo/blank"
       else
         "avo/application"
       end
+    end
+
+    def authenticate_developer_or_admin!
+      raise_404 unless Avo::Current.user_is_developer? || Avo::Current.user_is_admin?
+    end
+
+    def raise_404
+      raise ActionController::RoutingError.new "No route matches"
     end
   end
 end

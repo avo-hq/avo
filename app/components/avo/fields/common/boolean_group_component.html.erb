@@ -1,14 +1,11 @@
 <div data-controller="tippy">
-  <%= link_to t('avo.view').humanize, 'javascript:void(0);', data: { 'tippy-target': 'source' } %>
+  <%= link_to t("avo.view").humanize, "javascript:void(0);", data: {"tippy-target": :source} %>
   <div class="hidden" data-tippy-target="content">
-    <div class="p-2 space-y-2">
-      <%
-        @options.each do |id, label|
-          checked = @value.present? && @value[id.to_s].present?
-      %>
-        <div class="flex flex-nowrap">
-          <%= render Avo::Fields::Common::BooleanCheckComponent.new checked: checked %>
-          <div class="ml-px text-left py-px"><%= label %></div>
+    <div class="p-1 space-y-1">
+      <% @options.each do |id, label| %>
+        <div class="flex items-center flex-nowrap space-x-1">
+          <%= render Avo::Fields::Common::BooleanCheckComponent.new checked: checked(id), size: :sm %>
+          <div class="flex itdems-center text-left text-sm py-px"><%= label %></div>
         </div>
       <% end %>
     </div>

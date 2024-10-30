@@ -3,19 +3,17 @@
 class Avo::Items::PanelComponent < Avo::ResourceComponent
   include Avo::ApplicationHelper
 
-  def initialize(form:, item:, is_main_panel:, resource:, view:, actions: nil, index: nil, parent_component: nil, parent_record: nil, parent_resource: nil, reflection: nil)
-    @actions = actions
-    @form = form
-    @index = index
-    @is_main_panel = is_main_panel
-    @item = item
-    @parent_component = parent_component
-    @parent_record = parent_record
-    @parent_resource = parent_resource
-    @reflection = reflection
-    @resource = resource
-    @view = view
-  end
+  prop :form
+  prop :item
+  prop :is_main_panel
+  prop :resource
+  prop :view
+  prop :actions, reader: :public
+  prop :index, reader: :public
+  prop :parent_component
+  prop :parent_record
+  prop :parent_resource
+  prop :reflection
 
   delegate :controls,
     :title,
@@ -34,7 +32,9 @@ class Avo::Items::PanelComponent < Avo::ResourceComponent
         description: @resource.description,
         display_breadcrumbs: display_breadcrumbs,
         index: 0,
-        data: {panel_id: "main"}
+        data: {panel_id: "main"},
+        cover_photo: @resource.cover_photo,
+        profile_photo: @resource.profile_photo
       }
     else
       {name: @item.name, description: @item.description, index: @index}

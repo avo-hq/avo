@@ -2,15 +2,14 @@
 
 class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   include Avo::ApplicationHelper
+  include Avo::Concerns::ChecksShowAuthorization
 
-  def initialize(resource: nil, reflection: nil, parent_record: nil, parent_resource: nil, view_type: :table, actions: nil)
-    @resource = resource
-    @reflection = reflection
-    @parent_record = parent_record
-    @parent_resource = parent_resource
-    @view_type = view_type
-    @actions = actions
-  end
+  prop :resource
+  prop :reflection
+  prop :parent_record
+  prop :parent_resource
+  prop :view_type, default: :table
+  prop :actions
 
   def can_detach?
     is_has_many_association? ? super : false
@@ -22,26 +21,8 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     @resource.authorization.authorize_action(:edit, raise_exception: false)
   end
 
-  def can_view?
-    return false if Avo.configuration.resource_default_view.edit?
-
-    return authorize_association_for(:show) if @reflection.present?
-
-    # Even if there's a @reflection object present, for show we're going to fallback to the original policy.
-    @resource.authorization.authorize_action(:show, raise_exception: false)
-  end
-
   def show_path
-    args = {}
-
-    if @parent_record.present?
-      args = {
-        via_resource_class: parent_resource.class.to_s,
-        via_record_id: @parent_record.to_param
-      }
-    end
-
-    helpers.resource_path(record: @resource.record, resource: parent_or_child_resource, **args)
+    helpers.resource_show_path(resource: @resource, parent_or_child_resource: parent_or_child_resource, parent_resource: parent_resource, parent_record: @parent_record)
   end
 
   def edit_path
@@ -74,7 +55,11 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   end
 
   def is_has_many_association?
-    @reflection.is_a?(::ActiveRecord::Reflection::HasManyReflection) || @reflection.is_a?(::ActiveRecord::Reflection::ThroughReflection)
+    @reflection.class.in? [
+      ActiveRecord::Reflection::HasManyReflection,
+      ActiveRecord::Reflection::HasAndBelongsToManyReflection,
+      ActiveRecord::Reflection::ThroughReflection
+    ]
   end
 
   def referrer_path
@@ -94,7 +79,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
       data: {
         target: "control:edit",
         control: :edit,
-        "resource-id": @resource.record.id,
+        "resource-id": @resource.record_param,
         tippy: "tooltip",
       }
   end
@@ -117,7 +102,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   def render_delete_button(control)
     # If the resource is a related resource, we use the can_delete? policy method because it uses
     # authorize_association_for(:destroy).
-    # Otherwise we use the can_see_the_destroy_button? policy method becuse it do no check for assiciation
+    # Otherwise we use the can_see_the_destroy_button? policy method because it do no check for association
     # only for authorize_action .
     policy_method = is_a_related_resource? ? :can_delete? : :can_see_the_destroy_button?
     return unless send policy_method
@@ -138,14 +123,14 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
         target: "control:destroy",
         control: :destroy,
         tippy: control.title ? :tooltip : nil,
-        "resource-id": @resource.record.id,
+        "resource-id": @resource.record_param,
       }
   end
 
   def render_detach_button(control)
     return unless can_detach?
 
-    a_button url: helpers.resource_detach_path(params[:resource_name], params[:id], params[:related_name], @resource.record.id),
+    a_button url: helpers.resource_detach_path(params[:resource_name], params[:id], params[:related_name], @resource.record_param),
       style: :icon,
       color: :gray,
       icon: "avo/detach",
@@ -159,7 +144,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
         turbo_confirm: control.confirmation_message,
         target: "control:detach",
         control: :detach,
-        "resource-id": @resource.record.id,
+        "resource-id": @resource.record_param,
         tippy: :tooltip,
       }
   end
@@ -186,5 +171,9 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     end
 
     hidden.compact
+  end
+
+  def view_type
+    params[:view_type]
   end
 end
