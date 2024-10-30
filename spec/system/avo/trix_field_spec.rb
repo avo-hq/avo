@@ -52,17 +52,23 @@ RSpec.describe "TrixField", type: :system do
       it "displays the posts body" do
         visit "/admin/resources/posts/#{post.id}"
 
-        expect(page).not_to have_content "More content"
+        expect(page).not_to have_link("More content", href: "javascript:void(0);")
         expect(find_field_value_element("body")).to have_text ActionView::Base.full_sanitizer.sanitize(body)
       end
 
-      context "when body is longer then 60 characters" do
-        let!(:body) { "a"*88 }
+      context "when body has more then 1 line" do
+        let!(:body) do
+          <<~HTML
+        <div>test1</div>
+        <div>test2</div>
+        <div>test3</div>
+          HTML
+        end
 
         it "displays correct button" do
           visit "/admin/resources/posts/#{post.id}"
 
-          expect(page).to have_content "More content"
+          expect(page).to have_link("More content", href: "javascript:void(0);")
         end
 
         it "displays correct button after extended content" do
@@ -70,7 +76,7 @@ RSpec.describe "TrixField", type: :system do
 
           click_on "More content"
 
-          expect(page).to have_content "Less content"
+          expect(page).to have_link("Less content", href: "javascript:void(0);")
         end
       end
     end
