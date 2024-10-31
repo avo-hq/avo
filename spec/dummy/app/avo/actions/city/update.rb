@@ -8,10 +8,14 @@ class Avo::Actions::City::Update < Avo::BaseAction
   end
 
   def handle(**args)
-    City.find(arguments[:cities]).each do |city|
+    cities = City.find(arguments[:cities])
+
+    cities.each do |city|
       city.update! args[:fields]
     end
 
     succeed "City updated!"
+
+    reload_records(cities)
   end
 end
