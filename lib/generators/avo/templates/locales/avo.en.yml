@@ -100,6 +100,7 @@ en:
     sign_out: Sign out
     switch_to_view: Switch to %{view_type} view
     table_view: Table view
+    this_field_has_attachments_disabled: This field has attachments disabled.
     tools: Tools
     type_to_search: Type to search.
     unauthorized: Unauthorized
@@ -116,4 +117,6 @@ en:
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> records selected from all pages
     x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> records selected on this page
     yes_confirm: Yes, I'm sure
+    you_cant_upload_new_resource: You can't upload files into the Trix editor until you save the resource.
+    you_havent_set_attachment_key: You haven't set an `attachment_key` to this Trix field.
     you_missed_something_check_form: You might have missed something. Please check the form.

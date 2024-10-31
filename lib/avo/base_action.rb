@@ -2,6 +2,7 @@ module Avo
   class BaseAction
     include Avo::Concerns::HasItems
     include Avo::Concerns::HasActionStimulusControllers
+    include Avo::Concerns::Hydration
 
     class_attribute :name, default: nil
     class_attribute :message
@@ -333,6 +334,14 @@ module Avo
 
     def append_to_response(turbo_stream)
       @appended_turbo_streams = turbo_stream
+    end
+
+    def enabled?
+      self.class.standalone || @record&.persisted?
+    end
+
+    def disabled?
+      !enabled?
     end
 
     private

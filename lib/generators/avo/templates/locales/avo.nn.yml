@@ -102,6 +102,7 @@ nn:
     sign_out: Logg ut
     switch_to_view: Bytt til %{view_type} vis
     table_view: Tabellvisning
+    this_field_has_attachments_disabled: Dette feltet har vedlegg deaktivert.
     tools: Reiskapane
     type_to_search: Søk.
     unauthorized: Ikkje autorisert
@@ -118,4 +119,6 @@ nn:
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> valde postar frå alle sider
     x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> poster valgt på denne siden
     yes_confirm: Ja, eg er sikker
+    you_cant_upload_new_resource: Du kan ikkje laste opp filer til Trix-editoren før du lagrar ressursen.
+    you_havent_set_attachment_key: Du har ikkje sett ein `attachment_key` til dette Trix-feltet.
     you_missed_something_check_form: Her manglar du noko. Ver venleg og sjekk skjemaet.
