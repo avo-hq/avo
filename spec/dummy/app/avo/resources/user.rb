@@ -172,7 +172,7 @@ class Avo::Resources::User < Avo::BaseResource
         only_on: [:show]
       field :is_writer, as: :text,
         hide_on: :edit do
-          raise "This should not execut on Index" if view.index?
+          raise "This should not execute on Index" if view.index?
 
           record.posts.to_a.size > 0 ? "yes" : "no"
         end
