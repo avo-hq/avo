@@ -7,15 +7,7 @@ module Avo
       ENDPOINT = "https://v3.avohq.io/api/v3/licenses/check".freeze unless const_defined?(:ENDPOINT)
       REQUEST_TIMEOUT = 5 unless const_defined?(:REQUEST_TIMEOUT) # seconds
       CACHE_TIME = 6.hours.to_i unless const_defined?(:CACHE_TIME) # seconds
-
-      # Response class using ActiveSupport::OrderedOptions
-      class Response < ActiveSupport::OrderedOptions
-        def initialize(code:, body:)
-          super()
-          self.code = code
-          self.body = body
-        end
-      end
+      RESPONSE_STRUCT = Struct.new(:code, :body) unless const_defined?(:RESPONSE_STRUCT)
 
       class << self
         def cache_key
@@ -146,9 +138,10 @@ module Avo
           response
         else
           {
-            normalized_response: response.to_json
+            normalized_response: JSON.stringify(response)
           }
         end
+        response.merge({})
       rescue
         {
           normalized_response: "rescued"
@@ -159,8 +152,7 @@ module Avo
         Avo.logger.debug "Performing request to avohq.io API to check license availability." if Rails.env.development?
 
         if Rails.env.test?
-          # Use the Response class with ActiveSupport::OrderedOptions
-          Response.new(code: 200, body: "{\"id\":\"pro\",\"valid\":true}")
+          RESPONSE_STRUCT.new(200, "{\"id\":\"pro\",\"valid\":true}")
         else
           Avo::Licensing::Request.post ENDPOINT, body: payload.to_json, timeout: REQUEST_TIMEOUT
         end

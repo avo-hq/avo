@@ -21,6 +21,8 @@
 #
 
 class User < ApplicationRecord
+  ACCOUNT_STRUCT = Struct.new(:id, :name) unless const_defined?(:ACCOUNT_STRUCT)
+
   extend FriendlyId
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -83,21 +85,11 @@ class User < ApplicationRecord
     ["active", "birthday", "created_at", "custom_css", "email", "encrypted_password", "first_name", "id", "last_name", "remember_created_at", "reset_password_sent_at", "reset_password_token", "roles", "slug", "team_id", "updated_at"]
   end
 
-  # Immutable Account class using ActiveSupport::OrderedOptions
-  class Account < ActiveSupport::OrderedOptions
-    def initialize(id:, name:)
-      super()
-      self.id = id
-      self.name = name
-      freeze
-    end
-  end
-
   # Simulate accounts association
   def accounts
     [
-      Account.new(id: 1, name: "Foo"),
-      Account.new(id: 2, name: "Bar")
+      ACCOUNT_STRUCT.new(1, "Foo"),
+      ACCOUNT_STRUCT.new(2, "Bar")
     ]
   end
 
