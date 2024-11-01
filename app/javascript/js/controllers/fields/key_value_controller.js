@@ -59,7 +59,7 @@ export default class extends Controller {
   moveElement(array, fromIndex, toIndex) {
     const element = array[fromIndex]
 
-    // remove 1 items at fromIndex
+    // remove 1 item at fromIndex
     array.splice(fromIndex, 1)
 
     // insert element at toIndex

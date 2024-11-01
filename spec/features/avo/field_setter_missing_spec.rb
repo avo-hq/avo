@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.feature "FieldSetterMissings", type: :feature do
+RSpec.feature "FieldSetterMissing", type: :feature do
   let!(:person) { create :person }
 
   context "on index" do

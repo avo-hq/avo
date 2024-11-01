@@ -103,6 +103,7 @@ pt:
     sign_out: Terminar sessão
     switch_to_view: Alterar para visão %{view_type}
     table_view: Visualização em tabela
+    this_field_has_attachments_disabled: Este campo tem anexos desativados.
     tools: Ferramentas
     type_to_search: Escreva para pesquisar.
     unauthorized: Não autorizado
@@ -119,4 +120,6 @@ pt:
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> itens selecionados de todas as páginas
     x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> itens selecionados nesta página
     yes_confirm: Sim, tenho a certeza
+    you_cant_upload_new_resource: Não pode carregar ficheiros no editor Trix até guardar o recurso.
+    you_havent_set_attachment_key: Precisa definir uma `attachment_key` para este campo Trix.
     you_missed_something_check_form: Pode ter-se esquecido algo. Por favor, verifique o formulário.
