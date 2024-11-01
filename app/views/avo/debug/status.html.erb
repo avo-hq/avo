@@ -62,6 +62,9 @@
                       (<%= time_ago_in_words license.response['fetched_at'] %> ago)</dd>
                   <% end %>
                   <dt class="font-semibold text-sm">Cache store</dt>
+                  <dd>
+                    <%= Avo.cache_store.class %>
+                  </dd>
                 </dl>
               </div>
             </div>
@@ -82,15 +85,6 @@
             </div>
           </div>
         </div>
-        <%= render Avo::PanelComponent.new(title: "Report") do |c| %>
-          <% c.with_body do %>
-            <div class="p-4">
-              <turbo-frame id="debug-report" src="<%= root_path %>avo_private/debug/report" target="_top" class="block">
-                Loading...
-              </turbo-frame>
-            </div>
-          <% end %>
-        <% end %>
       </div>
     <% end %>
   <% end %>
