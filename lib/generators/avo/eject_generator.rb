@@ -16,7 +16,7 @@ module Generators
       class_option :controller,
         desc: "The controller to eject. Example: 'application_controller'",
         type: :string,
-        required: false
+        required: true
 
       class_option :scope,
         desc: "The scope of the component. Example: 'users', 'admins'",
