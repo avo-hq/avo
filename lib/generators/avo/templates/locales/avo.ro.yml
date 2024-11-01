@@ -59,6 +59,7 @@ ro:
       add_row: Adaugă rând
       delete_row: Șterge rând
       key: Cheie
+      reorder_row: Reordonează rând
       value: Valoare
     list_is_empty: Lista este goală
     loading: Se incarcă

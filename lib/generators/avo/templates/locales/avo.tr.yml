@@ -57,6 +57,7 @@ tr:
       add_row: Satır ekle
       delete_row: Satır sil
       key: Anahtar
+      reorder_row: Satırı yeniden sırala
       value: Değer
     list_is_empty: Boş liste
     loading: Yükleniyor

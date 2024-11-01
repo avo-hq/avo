@@ -57,6 +57,7 @@ ja:
       add_row: 行を追加
       delete_row: 行を削除
       key: キー
+      reorder_row: 行の並べ替え
       value: 値
     list_is_empty: リストは空です
     loading: 読み込み中
