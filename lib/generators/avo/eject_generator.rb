@@ -13,6 +13,11 @@ module Generators
         type: :string,
         required: false
 
+      class_option :controller,
+        desc: "The controller to eject. Example: 'application_controller'",
+        type: :string,
+        required: false
+
       class_option :scope,
         desc: "The scope of the component. Example: 'users', 'admins'",
         type: :string,
@@ -44,7 +49,9 @@ module Generators
       }
 
       def handle
-        if options[:partial].present?
+        if options[:controller].present?
+          eject_controller
+        elsif options[:partial].present?
           eject_partial
         elsif options[:component].present?
           eject_component
@@ -56,6 +63,7 @@ module Generators
               "          rails g avo:eject --partial app/views/layouts/avo/application.html.erb\n" \
               "          rails g avo:eject --component Avo::Index::TableRowComponent\n" \
               "          rails g avo:eject --component avo/index/table_row_component\n" \
+              "          rails g avo:eject --controller application_controller\n" \
               "          rails g avo:eject --field-components trix\n" \
               "          rails g avo:eject --field-components trix --scope users\n" \
               "          rails g avo:eject --field-components text --scope users --view edit\n" \
@@ -206,6 +214,12 @@ module Generators
               end
             end
           end
+        end
+
+        def eject_controller
+          controller_file = options[:controller].present? ? options[:controller] : "application_controller"
+
+          eject ::Avo::Engine.root.join("app/controllers/avo/#{controller_file}.rb"), ::Rails.root.join("app/controllers/avo/#{controller_file}.rb")
         end
 
         def confirm_ejection_on(path, is_directory: false)
