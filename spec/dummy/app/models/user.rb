@@ -19,7 +19,6 @@
 #  active                 :boolean          default(TRUE)
 #  slug                   :string
 #
-
 class User < ApplicationRecord
   ACCOUNT_STRUCT = Struct.new(:id, :name) unless const_defined?(:ACCOUNT_STRUCT)
 
