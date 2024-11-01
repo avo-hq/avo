@@ -3,7 +3,7 @@
 class Avo::BacktraceAlertComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
 
-  prop :backtrace, _Nilable(Array)
+  prop :backtrace
 
   def render?
     @backtrace.present?

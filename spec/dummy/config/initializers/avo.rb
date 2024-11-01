@@ -32,6 +32,8 @@ Avo.configure do |config|
   config.locale = :en
   # config.raise_error_on_missing_policy = true
   # config.authorization_client = "Avo::Services::AuthorizationClients::ExtraPunditClient"
+  # Shouldn't impact on community only if custom authorization service was configured.
+  config.explicit_authorization = true
 
   ## == Customization ==
   config.id_links_to_resource = true
@@ -43,6 +45,10 @@ Avo.configure do |config|
   # config.field_wrapper_layout = :stacked
   config.cache_resource_filters = false
   config.click_row_to_view_record = true
+
+  config.turbo = {
+    instant_click: true
+  }
 
   ## == Branding ==
   config.branding = {
@@ -110,6 +116,6 @@ Rails.configuration.to_prepare do
   Avo::ApplicationController.helper Rails.application.helpers
 end
 
-Avo.on_load(:boot) do
+ActiveSupport.on_load(:avo_boot) do
   Avo.plugin_manager.register_field :color_pickerrr, Avo::Fields::ColorPickerField
 end

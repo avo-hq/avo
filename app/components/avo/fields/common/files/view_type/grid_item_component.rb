@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 class Avo::Fields::Common::Files::ViewType::GridItemComponent < Avo::BaseComponent
-  prop :field, Avo::Fields::BaseField
-  prop :resource, Avo::BaseResource
-  prop :file, _Nilable(ActiveStorage::Attachment)
-  prop :extra_classes, _Nilable(String)
+  prop :field
+  prop :resource
+  prop :file
+  prop :extra_classes
 
   def id
     @field.id

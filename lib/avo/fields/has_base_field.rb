@@ -99,6 +99,8 @@ module Avo
 
         if service.has_method? method
           service.authorize_action(method, raise_exception: false)
+        elsif !service.is_a?(Avo::Services::AuthorizationService)
+          !Avo.configuration.explicit_authorization
         else
           true
         end

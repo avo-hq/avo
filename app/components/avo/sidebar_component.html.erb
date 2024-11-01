@@ -1,5 +1,5 @@
 <div
-  class="avo-sidebar fixed z-[60] t-0 application-sidebar w-64 flex-1 border-r lg:border-none bg-none h-[calc(100vh-4rem)] bg-application lg:bg-transparent <%= 'print:hidden' if Avo.configuration.hide_layout_when_printing %> <%= 'hidden' unless @sidebar_open %>"
+  class="avo-sidebar fixed z-[60] t-0 application-sidebar w-64 flex-1 border-r lg:border-none bg-none h-[calc(100dvh-4rem)] bg-application lg:bg-transparent <%= 'print:hidden' if Avo.configuration.hide_layout_when_printing %> <%= 'hidden' unless @sidebar_open %>"
   data-sidebar-target="<%= stimulus_target %>"
 >
   <div class="flex flex-col w-full h-full">
@@ -7,7 +7,7 @@
       <div class="space-y-6 mb-4">
         <%= render Avo::Sidebar::LinkComponent.new label: 'Get started', path: helpers.avo.root_path, active: :exclusive if Rails.env.development? && Avo.configuration.home_path.nil? %>
 
-        <% if Avo.plugin_manager.installed?("avo-menu") && Avo.has_main_menu? %>
+        <% if Avo.plugin_manager.installed?(:avo_menu) && Avo.has_main_menu? %>
           <% Avo.main_menu.items.each do |item| %>
             <%= render Avo::Sidebar::ItemSwitcherComponent.new item: item %>
           <% end %>

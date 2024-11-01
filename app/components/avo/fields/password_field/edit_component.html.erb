@@ -1,12 +1,24 @@
 <%= field_wrapper **field_wrapper_args do %>
-  <%= @form.password_field @field.id,
-    value: @field.value,
-    class: classes("w-full"),
-    data: @field.get_html(:data, view: view, element: :input),
-    disabled: disabled?,
-    placeholder: @field.placeholder,
-    style: @field.get_html(:style, view: view, element: :input),
-    autocomplete: @field.autocomplete,
-    autofocus: @autofocus
+  <div class="relative" data-controller="<%= @field.revealable ? 'password-visibility' : nil %>">
+    <%= @form.password_field @field.id,
+      value: @field.value,
+      class: classes("w-full"),
+      data: @field.get_html(:data, view: view, element: :input).merge(password_visibility_target: "input"),
+      disabled: disabled?,
+      placeholder: @field.placeholder,
+      style: @field.get_html(:style, view: view, element: :input),
+      autocomplete: @field.autocomplete,
+      autofocus: @autofocus
     %>
+
+    <% if @field.revealable %>
+      <button data-action="password-visibility#toggle" type="button" class="text-gray-500 absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer">
+        <!-- Heroicon name: outline/eye -->
+        <%= helpers.svg('heroicons/outline/eye', class: "size-6", data: { 'password-visibility-target': 'icon' }) %>
+
+        <!-- Heroicon name: outline/eye-off -->
+        <%= helpers.svg('heroicons/outline/eye-off', class: "size-6 hidden", data: { 'password-visibility-target': 'icon' }) %>
+      </button>
+    <% end %>
+  </div>
 <% end %>

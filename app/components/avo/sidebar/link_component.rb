@@ -1,16 +1,17 @@
 # frozen_string_literal: true
 
 class Avo::Sidebar::LinkComponent < Avo::BaseComponent
-  prop :label, _Nilable(String)
-  prop :path, _Nilable(String)
-  prop :active, Symbol, default: :inclusive do |value|
+  prop :label
+  prop :path
+  prop :active, default: :inclusive do |value|
     value&.to_sym
   end
-  prop :target, _Nilable(Symbol) do |value|
+  prop :target do |value|
     value&.to_sym
   end
-  prop :data, Hash, default: {}.freeze
-  prop :icon, _Nilable(String)
+  prop :data, default: {}.freeze
+  prop :icon
+  prop :args, kind: :**, default: {}.freeze
 
   def is_external?
     # If the path contains the scheme, check if it includes the root path or not

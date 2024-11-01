@@ -12,6 +12,12 @@ class Avo::Resources::Store < Avo::BaseResource
       field :location, as: :has_one
     end
 
+    # Intentionally use the same ID as the :has_many field to test whether the correct association field
+    # is retrieved during rendering of the association.
+    field :patrons, as: :tags do
+      record.patrons.map(&:name)
+    end
+
     field :patrons,
       as: :has_many,
       through: :patronships,

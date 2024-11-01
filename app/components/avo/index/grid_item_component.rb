@@ -4,11 +4,11 @@ class Avo::Index::GridItemComponent < Avo::BaseComponent
   include Avo::ResourcesHelper
   include Avo::Fields::Concerns::HasHTMLAttributes
 
-  prop :resource, _Nilable(Avo::BaseResource)
-  prop :reflection, _Nilable(ActiveRecord::Reflection::AbstractReflection)
-  prop :parent_record, _Nilable(ActiveRecord::Base)
-  prop :parent_resource, _Nilable(Avo::BaseResource)
-  prop :actions, _Nilable(_Array(Avo::BaseAction))
+  prop :resource
+  prop :reflection
+  prop :parent_record
+  prop :parent_resource
+  prop :actions
 
   def after_initialize
     @card = Avo::ExecutionContext.new(target: @resource.grid_view[:card], resource: @resource, record: @resource.record).handle

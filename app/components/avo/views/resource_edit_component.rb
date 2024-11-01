@@ -3,11 +3,11 @@
 class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   include Avo::ApplicationHelper
 
-  prop :resource, _Nilable(Avo::BaseResource)
-  prop :record, _Nilable(ActiveRecord::Base)
-  prop :actions, _Array(Avo::BaseAction), default: [].freeze
-  prop :view, Avo::ViewInquirer, default: Avo::ViewInquirer.new(:edit).freeze
-  prop :display_breadcrumbs, _Boolean, default: true, reader: :public
+  prop :resource
+  prop :record
+  prop :actions, default: [].freeze
+  prop :view, default: Avo::ViewInquirer.new(:edit).freeze
+  prop :display_breadcrumbs, default: true, reader: :public
 
   def after_initialize
     @display_breadcrumbs = @reflection.blank? && display_breadcrumbs

@@ -3,10 +3,10 @@
 class Avo::FiltersComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
 
-  prop :filters, _Array(Avo::Filters::BaseFilter), default: [].freeze
-  prop :resource, _Nilable(Avo::BaseResource)
-  prop :applied_filters, Hash, default: {}.freeze
-  prop :parent_record, _Nilable(ActiveRecord::Base)
+  prop :filters, default: [].freeze
+  prop :resource
+  prop :applied_filters, default: {}.freeze
+  prop :parent_record
 
   def render?
     @filters.present?

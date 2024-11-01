@@ -57,6 +57,7 @@ tr:
       add_row: Satır ekle
       delete_row: Satır sil
       key: Anahtar
+      reorder_row: Satırı yeniden sırala
       value: Değer
     list_is_empty: Boş liste
     loading: Yükleniyor
@@ -102,6 +103,7 @@ tr:
     sign_out: Çıkış yap
     switch_to_view: "%{view_type} görünümüne kay"
     table_view: Tablo görünümü
+    this_field_has_attachments_disabled: Bu alanın ekleri devre dışı bırakıldı.
     tools: Araçlar
     type_to_search: Aramak için yazın.
     unauthorized: Yetkisiz
@@ -118,4 +120,6 @@ tr:
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> tüm sayfalardan seçilen kayıtlar
     x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> bu sayfada seçilen kayıtlar
     yes_confirm: Evet, eminim
+    you_cant_upload_new_resource: Kaynağı kaydedene kadar Trix editörüne dosya yükleyemezsiniz.
+    you_havent_set_attachment_key: Bu Trix alanına bir `attachment_key` ayarlamadınız.
     you_missed_something_check_form: Bir şeyleri kaçırmış olabilirsiniz. Lütfen formu kontrol edin.

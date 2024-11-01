@@ -4,9 +4,9 @@ class Avo::ModalComponent < Avo::BaseComponent
   renders_one :heading
   renders_one :controls
 
-  prop :width, Symbol, default: :md
-  prop :body_class, _Nilable(String)
-  prop :overflow, Symbol, default: :auto
+  prop :width, default: :md
+  prop :body_class
+  prop :overflow, default: :auto
 
   def width_classes
     case @width.to_sym

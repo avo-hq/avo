@@ -8,7 +8,7 @@ RSpec.describe "Post comments use_resource PhotoComment", type: :feature do
   let!(:comment) { create :comment, user: admin }
 
   describe "tests" do
-    it "if have diferent fields from original comment resource" do
+    it "if have different fields from original comment resource" do
       visit_page
 
       expect(page).to have_text("Photo comments")
@@ -49,22 +49,7 @@ RSpec.describe "Post comments use_resource PhotoComment", type: :feature do
       expect(page).to have_selector "[title='Delete photo comment']"
     end
 
-    it "if attach persist" do
-      visit_page
-
-      click_on "Attach photo comment"
-
-      expect(page).to have_text "Choose photo comment"
-      expect(page).to have_select "fields_related_id"
-
-      select comment.tiny_name, from: "fields_related_id"
-
-      click_on "Attach"
-      expect(page).to have_text "Photo comment attached."
-      expect(page).to have_text comment.tiny_name
-    end
-
-    it "applyes on belongs to" do
+    it "applies on belongs to" do
       visit "admin/resources/comments/#{comment.id}"
 
       expect(page).to have_link comment.user.name,

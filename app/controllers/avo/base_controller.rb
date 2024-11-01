@@ -89,9 +89,12 @@ module Avo
 
         add_breadcrumb via_resource.plural_name, resources_path(resource: via_resource)
         add_breadcrumb via_resource.record_title, resource_path(record: via_record, resource: via_resource)
+
+        add_breadcrumb @resource.plural_name.humanize
+      else
+        add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
       end
 
-      add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
 
       add_breadcrumb @resource.record_title
       add_breadcrumb I18n.t("avo.details").upcase_first
@@ -106,7 +109,7 @@ module Avo
 
       # Handle special cases when creating a new record via a belongs_to relationship
       if params[:via_belongs_to_resource_class].present?
-        return render turbo_stream: turbo_stream.append("attach_modal", partial: "avo/base/new_via_belongs_to")
+        return render turbo_stream: turbo_stream.append(Avo::MODAL_FRAME_ID, partial: "avo/base/new_via_belongs_to")
       end
 
       set_actions
@@ -120,9 +123,12 @@ module Avo
 
         add_breadcrumb via_resource.plural_name, resources_path(resource: via_resource)
         add_breadcrumb via_resource.record_title, resource_path(record: via_record, resource: via_resource)
+
+        add_breadcrumb @resource.plural_name.humanize
+      else
+        add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
       end
 
-      add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
       add_breadcrumb t("avo.new").humanize
 
       set_component_for __method__, fallback_view: :edit
@@ -207,6 +213,8 @@ module Avo
 
     def preview
       @resource.hydrate(record: @record, view: Avo::ViewInquirer.new(:show), user: _current_user, params: params)
+
+      @preview_fields = @resource.get_preview_fields
 
       render layout: params[:turbo_frame].blank?
     end
@@ -299,8 +307,15 @@ module Avo
     def set_index_params
       @index_params = {}
 
+      # projects.has_many.users
+      if @related_resource.present?
+        key = "#{@record.to_global_id}.has_many.#{@resource.class.to_s.parameterize}"
+        session[key] = params[:page] || session[key]
+        page_from_session = session[key]
+      end
+
       # Pagination
-      @index_params[:page] = params[:page] || 1
+      @index_params[:page] = params[:page] || page_from_session || 1
       @index_params[:per_page] = Avo.configuration.per_page
 
       if cookies[:per_page].present?
@@ -440,6 +455,7 @@ module Avo
           via_resource_class: params[:via_resource_class],
           via_record_id: params[:via_record_id]
         }
+        add_breadcrumb @resource.plural_name.humanize
       else
         add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
       end
@@ -523,8 +539,16 @@ module Avo
     end
 
     def destroy_success_action
+      flash[:notice] = destroy_success_message
+
       respond_to do |format|
-        format.html { redirect_to after_destroy_path, notice: destroy_success_message }
+        if params[:turbo_frame]
+          format.turbo_stream do
+            render turbo_stream: reload_frame_turbo_streams
+          end
+        else
+          format.html { redirect_to after_destroy_path }
+        end
       end
     end
 
@@ -601,7 +625,8 @@ module Avo
     end
 
     def apply_pagination
-      @pagy, @records = @resource.apply_pagination(index_params: @index_params, query: pagy_query)
+      # Set `trim_extra` to false in associations so the first page has the `page=1` param assigned
+      @pagy, @records = @resource.apply_pagination(index_params: @index_params, query: pagy_query, trim_extra: @related_resource.blank?)
     end
 
     def apply_sorting
@@ -630,6 +655,13 @@ module Avo
     # Sanitize sort_direction param
     def sanitized_sort_direction
       @sanitized_sort_direction ||= @index_params[:sort_direction].presence_in(["asc", :asc, "desc", :desc])
+    end
+
+    def reload_frame_turbo_streams
+      [
+        turbo_stream.turbo_frame_reload(params[:turbo_frame]),
+        turbo_stream.flash_alerts
+      ]
     end
   end
 end

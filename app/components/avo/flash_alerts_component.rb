@@ -3,5 +3,5 @@
 class Avo::FlashAlertsComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
 
-  prop :flashes, ActionDispatch::Flash::FlashHash, default: [].freeze
+  prop :flashes, default: [].freeze
 end

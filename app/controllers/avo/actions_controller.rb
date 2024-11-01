@@ -11,6 +11,7 @@ module Avo
     end
     before_action :set_action, only: [:show, :handle]
     before_action :verify_authorization, only: [:show, :handle]
+    before_action :set_query, :set_fields, only: :handle
 
     layout :choose_layout
 
@@ -47,14 +48,11 @@ module Avo
     end
 
     def handle
-      resource_ids = action_params[:fields][:avo_resource_ids].split(",")
-
       performed_action = @action.handle_action(
-        fields: action_params[:fields].except(:avo_resource_ids, :avo_selected_query),
+        fields: @fields,
         current_user: _current_user,
         resource: @resource,
-        query: decrypted_query ||
-          (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])
+        query: @query
       )
 
       @response = performed_action.response
@@ -62,6 +60,16 @@ module Avo
     end
 
     private
+
+    def set_query
+      resource_ids = action_params[:fields][:avo_resource_ids].split(",")
+
+      @query = decrypted_query || (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])
+    end
+
+    def set_fields
+      @fields = action_params[:fields].except(:avo_resource_ids, :avo_selected_query)
+    end
 
     def action_params
       @action_params ||= params.permit(:id, :authenticity_token, :resource_name, :action_id, :button, fields: {})
@@ -101,14 +109,13 @@ module Avo
             # Trigger download, removes modal and flash the messages
             [
               turbo_stream.download(content: Base64.encode64(@response[:path]), filename: @response[:filename]),
-              turbo_stream.close_action_modal,
+              turbo_stream.close_modal,
               turbo_stream.flash_alerts
             ]
           when :navigate_to_action
-            frame_id = Avo::ACTIONS_TURBO_FRAME_ID
             src, _ = @response[:action].link_arguments(resource: @action.resource, **@response[:navigate_to_action_args])
 
-            turbo_stream.turbo_frame_set_src(frame_id, src)
+            turbo_stream.turbo_frame_set_src(Avo::MODAL_FRAME_ID, src)
           when :redirect
             turbo_stream.redirect_to(
               Avo::ExecutionContext.new(target: @response[:path]).handle,
@@ -118,7 +125,7 @@ module Avo
           when :close_modal
             # Close the modal and flash the messages
             [
-              turbo_stream.close_action_modal,
+              turbo_stream.close_modal,
               turbo_stream.flash_alerts
             ]
           else

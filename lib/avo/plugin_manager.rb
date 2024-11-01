@@ -8,20 +8,8 @@ module Avo
       @plugins = []
     end
 
-    def register(plugin_klass, priority: 10)
-      @plugins << OpenStruct.new(klass: plugin_klass, priority: priority)
-    end
-
-    def boot_plugins
-      Avo.plugin_manager.all.sort_by(&:priority).each do |plugin|
-        plugin.klass.boot
-      end
-    end
-
-    def init_plugins
-      Avo.plugin_manager.all.sort_by(&:priority).each do |plugin|
-        plugin.klass.init
-      end
+    def register(name, priority: 10)
+      @plugins << Plugin.new(name:, priority: priority)
     end
 
     def register_field(method_name, klass)
@@ -37,7 +25,7 @@ module Avo
     def as_json(*arg)
       plugins.map do |plugin|
         {
-          klass: plugin.klass.to_s,
+          klass: plugin.to_s,
           priority: plugin.priority,
         }
       end
@@ -45,7 +33,7 @@ module Avo
 
     def to_s
       plugins.map do |plugin|
-        plugin.klass.to_s
+        plugin.to_s
       end.join(",")
     rescue
       "Failed to fetch plugins."
@@ -53,7 +41,7 @@ module Avo
 
     def installed?(name)
       plugins.any? do |plugin|
-        plugin.klass.to_s.chomp("::Plugin").underscore.tr("/", "-") == name.to_s
+        plugin.name.to_s == name.to_s
       end
     end
   end

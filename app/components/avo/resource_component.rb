@@ -107,7 +107,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def render_cards_component
-    if Avo.plugin_manager.installed?("avo-dashboards")
+    if Avo.plugin_manager.installed?(:avo_dashboards)
       render Avo::CardsComponent.new cards: @resource.detect_cards.visible_cards, classes: "pb-4 sm:grid-cols-3"
     end
   end
@@ -157,7 +157,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   def render_delete_button(control)
     # If the resource is a related resource, we use the can_delete? policy method because it uses
     # authorize_association_for(:destroy).
-    # Otherwise we use the can_see_the_destroy_button? policy method becuse it do no check for assiciation
+    # Otherwise we use the can_see_the_destroy_button? policy method because it do no check for association
     # only for authorize_action .
     policy_method = is_a_related_resource? ? :can_delete? : :can_see_the_destroy_button?
     return unless send policy_method
@@ -246,7 +246,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       color: :primary,
       style: :text,
       data: {
-        turbo_frame: :attach_modal,
+        turbo_frame: Avo::MODAL_FRAME_ID,
         target: :attach
       } do
       control.label
@@ -282,10 +282,14 @@ class Avo::ResourceComponent < Avo::BaseComponent
       title: action.title,
       size: action.size,
       data: {
-        turbo_frame: Avo::ACTIONS_TURBO_FRAME_ID,
+        controller: "actions-picker",
+        turbo_frame: Avo::MODAL_FRAME_ID,
         action_name: action.action.action_name,
         tippy: action.title ? :tooltip : nil,
         action: "click->actions-picker#visitAction",
+        turbo_prefetch: false,
+        "actions-picker-target": action.action.standalone ? "standaloneAction" : "resourceAction",
+        disabled: action.action.disabled?
       } do
       action.label
     end

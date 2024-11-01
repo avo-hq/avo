@@ -3,17 +3,17 @@
 class Avo::Items::PanelComponent < Avo::ResourceComponent
   include Avo::ApplicationHelper
 
-  prop :form, _Nilable(ActionView::Helpers::FormBuilder)
-  prop :item, _Nilable(Avo::Resources::Items::Panel)
-  prop :is_main_panel, _Nilable(_Boolean)
-  prop :resource, Avo::BaseResource
-  prop :view, Avo::ViewInquirer
-  prop :actions, _Nilable(_Array(Avo::BaseAction)), reader: :public
-  prop :index, _Nilable(Integer), reader: :public
-  prop :parent_component, _Nilable(ViewComponent::Base)
-  prop :parent_record, _Nilable(ActiveRecord::Base)
-  prop :parent_resource, _Nilable(Avo::BaseResource)
-  prop :reflection, _Nilable(ActiveRecord::Reflection::AbstractReflection)
+  prop :form
+  prop :item
+  prop :is_main_panel
+  prop :resource
+  prop :view
+  prop :actions, reader: :public
+  prop :index, reader: :public
+  prop :parent_component
+  prop :parent_record
+  prop :parent_resource
+  prop :reflection
 
   delegate :controls,
     :title,

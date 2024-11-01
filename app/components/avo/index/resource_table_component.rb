@@ -8,14 +8,14 @@ class Avo::Index::ResourceTableComponent < Avo::BaseComponent
     @header_fields, @table_row_components = cache_table_rows
   end
 
-  prop :resources, _Nilable(_Array(Avo::BaseResource))
-  prop :resource, _Nilable(Avo::BaseResource)
-  prop :reflection, _Nilable(ActiveRecord::Reflection::AbstractReflection)
-  prop :parent_record, _Nilable(ActiveRecord::Base)
-  prop :parent_resource, _Nilable(Avo::BaseResource)
-  prop :pagy, _Nilable(Pagy)
-  prop :query, _Nilable(ActiveRecord::Relation)
-  prop :actions, _Nilable(_Array(Avo::BaseAction))
+  prop :resources
+  prop :resource
+  prop :reflection
+  prop :parent_record
+  prop :parent_resource
+  prop :pagy
+  prop :query
+  prop :actions
 
   def encrypted_query
     # TODO: move this to the resource where we can apply the adapter pattern
@@ -24,6 +24,8 @@ class Avo::Index::ResourceTableComponent < Avo::BaseComponent
     end
 
     Avo::Services::EncryptionService.encrypt(message: @query, purpose: :select_all, serializer: Marshal)
+  rescue
+    disable_select_all
   end
 
   def selected_page_label
@@ -85,5 +87,19 @@ class Avo::Index::ResourceTableComponent < Avo::BaseComponent
     header_fields.uniq!(&:table_header_label)
 
     [header_fields, table_row_components]
+  end
+
+  private
+
+  def disable_select_all
+    if Rails.env.development?
+      Avo.error_manager.add({
+        url: "https://docs.avohq.io/3.0/select-all.html#serialization-known-issues",
+        target: "_blank",
+        message: "An error occurred while serializing the query object. The Select All feature has been disabled because it depends on successful query serialization. For more details and troubleshooting steps, click here."
+      })
+    end
+
+    :select_all_disabled
   end
 end
