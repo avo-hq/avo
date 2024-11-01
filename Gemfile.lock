@@ -107,7 +107,7 @@ GIT
 PATH
   remote: .
   specs:
-    avo (3.13.6)
+    avo (3.13.7)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
@@ -508,7 +508,7 @@ GEM
       railties (>= 5.2)
     reverse_markdown (2.1.1)
       nokogiri
-    rexml (3.3.7)
+    rexml (3.3.9)
     ripper-tags (1.0.2)
     rspec-core (3.13.1)
       rspec-support (~> 3.13.0)
@@ -643,7 +643,7 @@ GEM
     unicode-display_width (2.6.0)
     uri (0.13.1)
     useragent (0.16.10)
-    view_component (3.15.1)
+    view_component (3.17.0)
       activesupport (>= 5.2.0, < 8.0)
       concurrent-ruby (~> 1.0)
       method_source (~> 1.0)

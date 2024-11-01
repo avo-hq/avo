@@ -102,6 +102,7 @@ fr:
     sign_out: Se déconnecter
     switch_to_view: Passez à la vue %{view_type}
     table_view: Vue table
+    this_field_has_attachments_disabled: Ce champ a les pièces jointes désactivées.
     tools: Outils
     type_to_search: Type à rechercher.
     unauthorized: Non autorisé
@@ -118,4 +119,6 @@ fr:
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> enregistrements sélectionnés dans toutes les pages
     x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> éléments sélectionnés de cette page
     yes_confirm: Oui, je suis sûr
+    you_cant_upload_new_resource: Vous ne pouvez pas télécharger de fichiers dans l'éditeur Trix tant que vous n'avez pas enregistré la ressource.
+    you_havent_set_attachment_key: Vous devez définir une `attachment_key` pour ce champ Trix.
     you_missed_something_check_form: Vous avez peut-être oublié quelque chose. Veuillez vérifier le formulaire
