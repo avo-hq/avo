@@ -217,9 +217,12 @@ module Generators
         end
 
         def eject_controller
-          controller_file = options[:controller].present? ? options[:controller] : "application_controller"
+          controller_file = "#{options[:controller].chomp("_controller")}_controller"
+          controller_path = ::Avo::Engine.root.join("app/controllers/avo/#{controller_file}.rb")
 
-          eject ::Avo::Engine.root.join("app/controllers/avo/#{controller_file}.rb"), ::Rails.root.join("app/controllers/avo/#{controller_file}.rb")
+          return say("Failed to find the `#{options[:controller]}.rb` file.", :yellow) if !path_exists?(controller_path)
+
+          eject controller_path, ::Rails.root.join("app/controllers/avo/#{controller_file}.rb")
         end
 
         def confirm_ejection_on(path, is_directory: false)
