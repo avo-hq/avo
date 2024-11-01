@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.feature "CreateHasOne", type: :feature do
   let!(:user) { create :user }
 
-  it "policy applyed" do
+  it "policy applied" do
     visit "admin/resources/users/#{user.id}?active_tab_name=Fish&tab_turbo_frame=avo-tabgroup-2"
 
     expect(page).to have_text "Attach fish"

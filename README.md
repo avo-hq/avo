@@ -110,7 +110,7 @@ Please read the [RELEASE.MD](./RELEASE.MD)
 </tr>
 </table>
 
-[Become a sponsor ](https://github.com/sponsors/adrianthedev)
+[Become a sponsor](mailto:hi@avohq.io)
 
 
 ![Alt](https://repobeats.axiom.co/api/embed/1481a6a259064f02a7936470d12a50802a9c98a4.svg "Repobeats analytics image")
@@ -120,3 +120,10 @@ Please read the [RELEASE.MD](./RELEASE.MD)
 [Get a box of waffles and some of the best app monitoring from Appsignal](https://appsignal.com/r/93dbe69bfb) 🧇
 
 [Get $100 in credits from Digital Ocean](https://www.digitalocean.com/?refcode=efc1fe881d74&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge) 💸
+
+## Other Open Source Work
+
+ - [`active_storage-blurhash`](https://github.com/avo-hq/active_storage-blurhash) - A plug-n-play [blurhash](https://blurha.sh/) integration for images stored in ActiveStorage
+ - [`class_variants`](https://github.com/avo-hq/class_variants) - Easily configure styles and apply them as classes. Very useful when you're implementing Tailwind CSS components and call them with different states.
+ - [`prop_initializer`](https://github.com/avo-hq/prop_initializer) - A flexible tool for defining properties on Ruby classes.
+ - [`stimulus-confetti`](https://github.com/avo-hq/stimulus-confetti) - The easiest way to add confetti to your StimulusJS app

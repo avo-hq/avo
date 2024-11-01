@@ -65,6 +65,7 @@ ar:
       add_row: إضافة صف
       delete_row: حذف صف
       key: المفتاح
+      reorder_row: إعادة ترتيب الصف
       value: القيمة
     list_is_empty: القائمة فارغة
     loading: جاري التحميل
@@ -110,6 +111,7 @@ ar:
     sign_out: تسجيل الخروج
     switch_to_view: التبديل إلى عرض %{view_type}
     table_view: عرض الجدول
+    this_field_has_attachments_disabled: هذا الحقل لديه المرفقات معطلة.
     tools: الأدوات
     type_to_search: اكتب للبحث.
     unauthorized: غير مصرح به
@@ -126,4 +128,6 @@ ar:
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> السجلات المحددة من كل الصفحات
     x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> السجلات المختارة في هذه الصفحة
     yes_confirm: نعم، أنا متأكد
+    you_cant_upload_new_resource: لا يمكنك تحميل الملفات في محرر Trix حتى تحفظ السجل.
+    you_havent_set_attachment_key: لم تقم بتعيين `attachment_key` لهذا الحقل Trix.
     you_missed_something_check_form: ربما نسيت شيئًا، يرجى التحقق من البيانات.

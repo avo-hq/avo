@@ -68,10 +68,16 @@ module Avo
           app_name: app_name
         }
 
-        # metadata = Avo::Services::DebugService.avo_metadata
-        # if metadata[:resources_count] != 0
-        #   result[:avo_metadata] = "metadata"
-        # end
+        begin
+          metadata = Avo::Services::DebugService.avo_metadata
+        rescue => error
+          metadata = {
+            error_message: error.message,
+            error: "Failed to generate the Avo metadata"
+          }
+        end
+
+        result[:avo_metadata] = metadata
 
         result
       end
