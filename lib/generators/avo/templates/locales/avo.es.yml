@@ -57,6 +57,7 @@ es:
       add_row: Añadir fila
       delete_row: Eliminar fila
       key: Clave
+      reorder_row: Reordenar fila
       value: Valor
     list_is_empty: La lista está vacía
     loading: Cargando

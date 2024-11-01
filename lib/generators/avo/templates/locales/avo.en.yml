@@ -55,6 +55,7 @@ en:
       add_row: Add row
       delete_row: Delete row
       key: Key
+      reorder_row: Reorder row
       value: Value
     list_is_empty: List is empty
     loading: Loading

@@ -57,6 +57,7 @@ fr:
       add_row: Ajouter une ligne
       delete_row: Supprimer une ligne
       key: Clé
+      reorder_row: Réorganiser la ligne
       value: Valeur
     list_is_empty: La liste est vide
     loading: Chargement

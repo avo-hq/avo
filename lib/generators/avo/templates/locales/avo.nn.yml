@@ -57,6 +57,7 @@ nn:
       add_row: Legg til rad
       delete_row: Slett rad
       key: Nøkkel
+      reorder_row: Omorganiser rad
       value: Verdi
     list_is_empty: Lista er tom
     loading: Lastar
