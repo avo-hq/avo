@@ -47,22 +47,25 @@ export default class extends Controller {
     this.updateKeyValueComponent()
   }
 
-  moveKey(oldIndex, newIndex) {
+  moveKey(fromIndex, toIndex) {
     if (!this.options.editable) return
 
-    this.fieldValue = this.moveElement(this.fieldValue, oldIndex, newIndex)
+    this.fieldValue = this.moveElement(this.fieldValue, fromIndex, toIndex)
 
     this.updateTextareaInput()
     this.updateKeyValueComponent()
   }
 
-  moveElement(arr, fromIndex, toIndex) {
-    return arr.map((item, index) => {
-      if (index === toIndex) return arr[fromIndex]
-      if (index === fromIndex) return arr[toIndex]
+  moveElement(array, fromIndex, toIndex) {
+    const element = array[fromIndex]
 
-      return item
-    })
+    // remove 1 items at fromIndex
+    array.splice(fromIndex, 1)
+
+    // insert element at toIndex
+    array.splice(toIndex, 0, element)
+
+    return array
   }
 
   focusLastRow() {
