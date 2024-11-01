@@ -45,7 +45,7 @@ class Avo::SidebarProfileComponent < Avo::BaseComponent
   end
 
   def default_sign_out_path
-    default_path = "destroy_#{Avo.configuration.current_user_resource_name}_session_path".to_sym
+    default_path = :"destroy_#{Avo.configuration.current_user_resource_name}_session_path"
 
     default_path if main_app.respond_to?(default_path)
   end
