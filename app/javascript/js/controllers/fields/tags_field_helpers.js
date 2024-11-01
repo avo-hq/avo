@@ -7,7 +7,7 @@ export function tagTemplate(tagData) {
   )
   const possibleLabel = possibleSuggestion && 'label' in possibleSuggestion
     ? possibleSuggestion.label
-    : tagData.value;
+    : tagData.value
 
   return `
 <tag title="${tagData.value}"
