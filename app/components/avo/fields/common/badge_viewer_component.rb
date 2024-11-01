@@ -3,6 +3,7 @@
 class Avo::Fields::Common::BadgeViewerComponent < Avo::BaseComponent
   prop :value
   prop :options
+  prop :size
 
   def after_initialize
     @backgrounds = {
@@ -14,6 +15,8 @@ class Avo::Fields::Common::BadgeViewerComponent < Avo::BaseComponent
     }
   end
 
+  def size_sm? = @size == "sm"
+
   def classes
     background = :info
 
@@ -24,7 +27,7 @@ class Avo::Fields::Common::BadgeViewerComponent < Avo::BaseComponent
       end
     end
 
-    classes = "whitespace-nowrap rounded-md uppercase px-2 py-1 text-xs font-bold block text-center truncate "
+    classes = helpers.class_names("whitespace-nowrap rounded-md uppercase px-2 py-1 text-xs font-bold block text-center truncate ", "text-sm": size_sm?, "text-md": !size_sm?)
 
     classes += "#{@backgrounds[background]} text-white" if @backgrounds[background].present?
 
