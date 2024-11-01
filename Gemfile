@@ -159,7 +159,7 @@ gem "bundler-integrity", "~> 1.0"
 # Avo country field requires this gem
 gem "countries"
 
-# Avo dashbaords requires this gem
+# Avo dashboards requires this gem
 gem "chartkick"
 
 # Required by Avo

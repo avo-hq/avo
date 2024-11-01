@@ -1,5 +1,7 @@
 module Avo
   module TestHelpers
+    include WaitForLoaded
+
     # Finds the wrapper element on the index view for the given field id and type, and associated with the given record id
     # Example usage:
     #   index_field_wrapper(id: "name", type: "text", record_id: 2)
@@ -313,7 +315,11 @@ module Avo
     end
 
     def type(...)
-      page.driver.browser.keyboard.type(...)
+      if page.driver.browser.respond_to?(:keyboard)
+        page.driver.browser.keyboard.type(...)
+      else
+        page.send_keys(...)
+      end
     end
 
     def accept_custom_alert(&block)

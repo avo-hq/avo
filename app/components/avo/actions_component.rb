@@ -3,39 +3,44 @@
 class Avo::ActionsComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
 
-  ACTION_FILTER = _Set(_Class(Avo::BaseAction))
-
-  prop :as_row_control, _Boolean, default: false
-  prop :icon, _Nilable(String)
-  prop :size, Avo::ButtonComponent::SIZE, default: :md
-  prop :title, _Nilable(String)
-  prop :color, _Nilable(Symbol) do |value|
+  prop :as_row_control, default: false
+  prop :icon
+  prop :size, default: :md
+  prop :title
+  prop :color do |value|
     value || :primary
   end
-  prop :include, _Nilable(ACTION_FILTER), default: [].freeze do |include|
+  prop :include, default: [].freeze do |include|
     Array(include).to_set
   end
-  prop :custom_list, _Boolean, default: false
-  prop :label, _Nilable(String) do |label|
+  prop :custom_list, default: false
+  prop :label do |label|
     if @custom_list
       label
     else
       label || I18n.t("avo.actions")
     end
   end
-  prop :style, Avo::ButtonComponent::STYLE, default: :outline
-  prop :actions, _Array(_Any), default: [].freeze
-  prop :exclude, _Nilable(ACTION_FILTER), default: [].freeze do |exclude|
+  prop :style, default: :outline
+  prop :actions, default: [].freeze
+  prop :exclude, default: [].freeze do |exclude|
     Array(exclude).to_set
   end
-  prop :resource, _Nilable(Avo::BaseResource)
-  prop :view, _Nilable(Avo::ViewInquirer)
-  prop :host_component, _Nilable(_Any)
+  prop :resource
+  prop :view
+  prop :host_component
 
   delegate_missing_to :@host_component
 
   def after_initialize
     filter_actions unless @custom_list
+
+    # Hydrate each action action with the record when rendering a list on row controls
+    if @as_row_control
+      @actions.each do |action|
+        action.hydrate(resource: @resource, record: @resource.record) if action.respond_to?(:hydrate)
+      end
+    end
   end
 
   def render?
@@ -54,22 +59,7 @@ class Avo::ActionsComponent < Avo::BaseComponent
     end
   end
 
-  # How should the action be displayed by default
-  def is_disabled?(action)
-    return false if action.standalone || @as_row_control
-
-    on_index_page?
-  end
-
   private
-
-  def on_record_page?
-    @view.in?(["show", "edit", "new"])
-  end
-
-  def on_index_page?
-    !on_record_page?
-  end
 
   def icon(icon)
     svg icon, class: "h-5 shrink-0 mr-1 inline pointer-events-none"
@@ -114,15 +104,17 @@ class Avo::ActionsComponent < Avo::BaseComponent
       "turbo-frame": Avo::MODAL_FRAME_ID,
       action: "click->actions-picker#visitAction",
       "actions-picker-target": action.standalone ? "standaloneAction" : "resourceAction",
-      disabled: is_disabled?(action),
+      disabled: action.disabled?,
       turbo_prefetch: false,
+      enabled_classes: "text-black",
+      disabled_classes: "text-gray-500"
     }
   end
 
   def action_css_class(action)
     helpers.class_names("flex items-center px-4 py-3 w-full font-semibold text-sm hover:bg-primary-100", {
-      "text-gray-500": is_disabled?(action),
-      "text-black": !is_disabled?(action),
+      "text-gray-500": action.disabled?,
+      "text-black": action.enabled?,
     })
   end
 end

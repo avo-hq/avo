@@ -46,7 +46,7 @@ def get_gem_spec(name)
   spec
 end
 
-desc "Finds all Avo gems and outputs theyr paths"
+desc "Finds all Avo gems and outputs their paths"
 task "avo:gem_paths" do
   config = YAML.load_file("../support/gems.yml")
 

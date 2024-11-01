@@ -1,4 +1,5 @@
 <%# hover:z-[21] removed from tr class to solve flickering actions component on row controls and z-20 changed to z-21%>
+
 <%= content_tag :tr,
   class: class_names("bg-white hover:bg-gray-50 hover:shadow-row z-21 border-b", {"cursor-pointer": click_row_to_view_record}),
   data: {
@@ -19,7 +20,7 @@
       </div>
     </td>
   <% end %>
-  <% if Avo.configuration.resource_controls_on_the_left? %>
+  <% if @resource.resource_controls_render_on_the_left? %>
     <td class="text-right whitespace-nowrap w-px" data-control="resource-controls">
       <div class="flex items-center justify-end flex-grow-0 h-full">
         <%= render resource_controls_component %>
@@ -41,7 +42,7 @@
       <td class="text-center">—</td>
     <% end %>
   <% end %>
-  <% if Avo.configuration.resource_controls_on_the_right? %>
+  <% if @resource.resource_controls_render_on_the_right? %>
     <td class="text-right whitespace-nowrap px-3" data-control="resource-controls">
       <div class="flex items-center justify-end flex-grow-0 h-full">
         <%= render resource_controls_component %>

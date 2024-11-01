@@ -3,24 +3,24 @@
 class Avo::FieldWrapperComponent < Avo::BaseComponent
   include Avo::Concerns::HasResourceStimulusControllers
 
-  prop :dash_if_blank, _Boolean, default: true
-  prop :data, Hash, default: {}.freeze
-  prop :compact, _Boolean, default: false
-  prop :help, _Nilable(String)
-  prop :field, _Nilable(Avo::Fields::BaseField)
-  prop :form, _Nilable(ActionView::Helpers::FormBuilder)
-  prop :full_width, _Boolean, default: false
-  prop :label, _Nilable(String)
-  prop :resource, _Nilable(Avo::BaseResource)
-  prop :short, _Boolean, default: false
-  prop :stacked, _Nilable(_Boolean)
-  prop :style, String, default: ""
-  prop :view, Avo::ViewInquirer, default: Avo::ViewInquirer.new(:show).freeze
-  prop :label_for, _Nilable(Symbol) do |value|
+  prop :dash_if_blank, default: true
+  prop :data, default: {}.freeze
+  prop :compact, default: false
+  prop :help
+  prop :field
+  prop :form
+  prop :full_width, default: false
+  prop :label
+  prop :resource
+  prop :short, default: false
+  prop :stacked
+  prop :style, default: ""
+  prop :view, default: Avo::ViewInquirer.new(:show).freeze
+  prop :label_for do |value|
     value&.to_sym
   end
-  prop :args, Hash, :**, default: {}.freeze
-  prop :classes, _Nilable(String) do |value|
+  prop :args, kind: :**, default: {}.freeze
+  prop :classes do |value|
     @args&.dig(:class) || ""
   end
 
