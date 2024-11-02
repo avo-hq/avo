@@ -7,7 +7,7 @@ class Avo::ModalComponent < Avo::BaseComponent
   prop :width, default: :md
   prop :body_class
   prop :overflow, default: :auto
-  prop :dynamic_backdrop, default: true
+  prop :dynamic_backdrop, default: true, reader: :public
 
   def width_classes
     case @width.to_sym
@@ -24,9 +24,5 @@ class Avo::ModalComponent < Avo::BaseComponent
 
   def overflow_classes
     @overflow == :auto ? "overflow-auto" : ""
-  end
-
-  def dynamic_backdrop
-    @dynamic_backdrop
   end
 end
