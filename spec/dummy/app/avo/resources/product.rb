@@ -1,5 +1,5 @@
-require 'net/http'
-require 'json'
+require "net/http"
+require "json"
 
 class Avo::Resources::Product < Avo::BaseResource
   self.title = :title
