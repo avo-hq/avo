@@ -7,7 +7,7 @@
     <% end %>
   <% end %>
    <% c.with_body do %>
-    <% content_tag :div, class: "divide-y overflow-auto" do %>
+    <% content_tag :div, class: "divide-y" do %>
       <%= render Avo::Items::VisibleItemsComponent.new resource: @resource, item: @item, view: @view, form: @form %>
     <% end %>
   <% end %>

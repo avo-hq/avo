@@ -224,9 +224,12 @@ module Avo
 
       # Try to see if the field has a different database ID than it's name
       def database_id
-        foreign_key
-      rescue
-        id
+        # belongs_to field has a foreign_key method
+        return foreign_key if respond_to?(:foreign_key)
+
+        # we'll try the for_attribute if it's present
+        # otherwise we'll fallback to the id
+        for_attribute || id
       end
 
       def has_own_panel?

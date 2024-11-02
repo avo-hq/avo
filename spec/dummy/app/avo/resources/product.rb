@@ -1,3 +1,6 @@
+require 'net/http'
+require 'json'
+
 class Avo::Resources::Product < Avo::BaseResource
   self.title = :title
   self.includes = []
@@ -28,7 +31,7 @@ class Avo::Resources::Product < Avo::BaseResource
 
   def fields
     field :id, as: :id
-    field :title, as: :text, html: {
+    field :title, as: :text, hide_on: :forms, html: {
       show: {
         label: {
           classes: "bg-gray-50 !text-pink-600"
@@ -41,6 +44,23 @@ class Avo::Resources::Product < Avo::BaseResource
         }
       }
     }
+    field :combobox_title,
+      for_attribute: :title,
+      as: :combobox,
+      only_on: :forms,
+      help: "This is a combobox field and will suggest values based on your query.",
+      query: -> {
+        # Fetch products from an API
+        url = URI("https://dummyjson.com/products/search?q=#{params[:q]}")
+
+        # Make the HTTP request
+        response = Net::HTTP.get(url)
+
+        # Parse JSON response
+        data = JSON.parse(response)
+
+        data["products"].map { |item| item["title"] }
+      }
     field :price, as: :money, currencies: %w[EUR USD RON PEN]
     field :description, as: :tiptap, placeholder: "Enter text", always_show: false
     field :image, as: :file, is_image: true

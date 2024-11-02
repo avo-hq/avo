@@ -72,7 +72,7 @@ group :development do
 
   # gem 'pry-rails'
 
-  gem "htmlbeautifier"
+  gem "htmlbeautifier", require: false
 
   gem "hotwire-livereload", "~> 1.3.0"
 
@@ -193,3 +193,5 @@ gem "avo-record_link_field"
 gem "pagy", "> 8"
 
 gem "csv"
+
+gem "hotwire_combobox"

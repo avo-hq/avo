@@ -1,0 +1,25 @@
+root {
+  --hw-border-radius: 0.25rem;
+}
+
+.hw-combobox .hw-combobox__main__wrapper,
+.hw-combobox__input {
+  @apply bg-gray-25;
+}
+.hw-combobox .hw-combobox__main__wrapper {
+  @apply rounded;
+
+  &:focus-within {
+    @apply border-gray-600 shadow-none;
+  }
+}
+
+
+[data-field-type="combobox"] {
+  .hw-combobox {
+    @apply w-full;
+  }
+  .hw-combobox .hw-combobox__main__wrapper {
+    @apply w-full;
+  }
+}

@@ -22,6 +22,7 @@
         <%= javascript_include_tag "hotwire-livereload", defer: true %>
       <% end %>
     <% end %>
+    <%= combobox_style_tag %>
     <%= render Avo::AssetManager::JavascriptComponent.new asset_manager: Avo.asset_manager %>
     <%= render partial: "avo/partials/head" %>
     <%= content_for :head %>

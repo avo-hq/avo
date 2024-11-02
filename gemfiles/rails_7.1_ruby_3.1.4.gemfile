@@ -45,6 +45,7 @@ gem "avo-money_field"
 gem "avo-record_link_field"
 gem "pagy", "> 8"
 gem "csv"
+gem "hotwire_combobox"
 gem "psych", "< 4"
 
 group :development do
@@ -52,7 +53,7 @@ group :development do
   gem "bump", require: false
   gem "gem-release", require: false
   gem "annotate"
-  gem "htmlbeautifier"
+  gem "htmlbeautifier", require: false
   gem "hotwire-livereload", "~> 1.3.0"
   gem "rubocop", require: false
   gem "ripper-tags", require: false
