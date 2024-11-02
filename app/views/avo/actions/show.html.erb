@@ -21,7 +21,7 @@
         **@action.class.form_data_attributes,
       } do |form|
     %>
-    <%= render Avo::ModalComponent.new do |c| %>
+    <%= render Avo::ModalComponent.new(dynamic_backdrop: @action.dynamic_backdrop) do |c| %>
       <% c.with_heading do %>
         <%= @action.action_name %>
       <% end %>
