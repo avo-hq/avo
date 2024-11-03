@@ -47,7 +47,7 @@ class Avo::Fields::HasOneField::ShowComponent < Avo::Fields::ShowComponent
     args = {
       via_relation: association_id,
       via_relation_class: @resource.model_class.to_s,
-      via_resource_class: @resource.class,
+      via_resource_class: @resource.class.to_s.demodulize,
       via_record_id: @resource.record_param,
       via_association_type: :has_one
     }

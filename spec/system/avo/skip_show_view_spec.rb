@@ -86,7 +86,7 @@ RSpec.feature "SkipShowView", type: :system do
       expect(current_path).to eql "/admin/resources/courses/#{course.prefix_id}/edit"
 
       # Delete
-      visit "/admin/resources/course_links/#{course.links.first.id}/edit?via_resource_class=Avo::Resources::Course&via_record_id=#{course.prefix_id}"
+      visit "/admin/resources/course_links/#{course.links.first.id}/edit?via_resource_class=Course&via_record_id=#{course.prefix_id}"
 
       accept_custom_alert do
         click_on "Delete"
@@ -173,10 +173,10 @@ RSpec.feature "SkipShowView", type: :system do
       expect(current_path).to eql "/admin/resources/courses/#{course.prefix_id}"
 
       # Delete
-      visit "/admin/resources/course_links/#{course.links.first.id}/edit?via_resource_class=Avo::Resources::Course&via_record_id=#{course.prefix_id}"
+      visit "/admin/resources/course_links/#{course.links.first.id}/edit?via_resource_class=Course&via_record_id=#{course.prefix_id}"
       expect(page).to_not have_selector("[data-control='destroy']")
 
-      visit "/admin/resources/course_links/#{course.links.first.id}?via_resource_class=Avo::Resources::Course&via_record_id=#{course.prefix_id}"
+      visit "/admin/resources/course_links/#{course.links.first.id}?via_resource_class=Course&via_record_id=#{course.prefix_id}"
 
       accept_custom_alert do
         click_on "Delete"

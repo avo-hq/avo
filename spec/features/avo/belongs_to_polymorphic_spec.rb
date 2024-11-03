@@ -26,7 +26,7 @@ RSpec.feature "belongs_to", type: :feature do
             return_to_comment_page
 
             expect(find_field_value_element("body")).to have_text "Sample comment"
-            expect(find_field_value_element("user")).to have_link user.name, href: "/admin/resources/compact_users/#{user.slug}?via_record_id=#{Comment.last.to_param}&via_resource_class=Avo%3A%3AResources%3A%3AComment"
+            expect(find_field_value_element("user")).to have_link user.name, href: "/admin/resources/compact_users/#{user.slug}?via_record_id=#{Comment.last.to_param}&via_resource_class=Comment"
             expect(find_field_value_element("commentable")).to have_text empty_dash
           end
         end

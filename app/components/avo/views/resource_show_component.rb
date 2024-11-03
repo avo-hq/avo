@@ -43,7 +43,7 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
       }
     elsif @parent_resource.present?
       {
-        via_resource_class: @parent_resource.class,
+        via_resource_class: @parent_resource.class.to_s.demodulize,
         via_record_id: @parent_record.to_param
       }
     else

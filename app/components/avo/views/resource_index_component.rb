@@ -67,7 +67,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
     if @reflection.present?
       args = {
-        via_resource_class: @parent_resource.class,
+        via_resource_class: @parent_resource.class.to_s.demodulize,
         via_relation_class: reflection_model_class,
         via_record_id: @parent_record.to_param
       }

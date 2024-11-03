@@ -20,7 +20,7 @@ RSpec.feature "HasManyField", type: :feature do
 
         click_on "Create new post"
 
-        expect(page).to have_current_path "/admin/resources/posts/new?via_record_id=#{user.slug}&via_relation=user&via_relation_class=User&via_resource_class=Avo%3A%3AResources%3A%3AUser"
+        expect(page).to have_current_path "/admin/resources/posts/new?via_record_id=#{user.slug}&via_relation=user&via_relation_class=User&via_resource_class=User"
         expect(page).to have_select "post_user_id", selected: user.name, disabled: true
 
         fill_in "post_name", with: "New post name"
@@ -41,7 +41,7 @@ RSpec.feature "HasManyField", type: :feature do
 
         click_on "Create new post"
 
-        expect(page).to have_current_path "/admin/resources/posts/new?via_record_id=#{user.slug}&via_relation=user&via_relation_class=User&via_resource_class=Avo%3A%3AResources%3A%3AUser"
+        expect(page).to have_current_path "/admin/resources/posts/new?via_record_id=#{user.slug}&via_relation=user&via_relation_class=User&via_resource_class=User"
       end
 
       it "displays valid links to resources" do
@@ -51,21 +51,21 @@ RSpec.feature "HasManyField", type: :feature do
         expect(page).to have_selector "[data-control='view-type-toggle-grid'][href='/admin/resources/users/#{user.slug}/posts?turbo_frame=has_many_field_posts&view_type=grid']"
 
         # create new button
-        expect(page).to have_link("Create new post", href: "/admin/resources/posts/new?via_record_id=#{user.slug}&via_relation=user&via_relation_class=User&via_resource_class=Avo%3A%3AResources%3A%3AUser")
+        expect(page).to have_link("Create new post", href: "/admin/resources/posts/new?via_record_id=#{user.slug}&via_relation=user&via_relation_class=User&via_resource_class=User")
 
         # attach button
         expect(page).to have_link("Attach post", href: /\/admin\/resources\/users\/#{user.slug}\/posts\/new/)
 
         ## Table Rows
         # show link
-        show_path = "/admin/resources/posts/#{post.slug}?via_record_id=#{user.slug}&via_resource_class=Avo%3A%3AResources%3A%3AUser"
+        show_path = "/admin/resources/posts/#{post.slug}?via_record_id=#{user.slug}&via_resource_class=User"
         expect(page).to have_css("a[data-control='show'][href='#{show_path}']")
 
         # id field show link
-        expect(field_element_by_resource_id("id", post.to_param)).to have_css("a[href='/admin/resources/posts/#{post.slug}?via_record_id=#{user.slug}&via_resource_class=Avo%3A%3AResources%3A%3AUser']")
+        expect(field_element_by_resource_id("id", post.to_param)).to have_css("a[href='/admin/resources/posts/#{post.slug}?via_record_id=#{user.slug}&via_resource_class=User']")
 
         # edit link
-        edit_path = "/admin/resources/posts/#{post.slug}/edit?via_record_id=#{user.slug}&via_resource_class=Avo%3A%3AResources%3A%3AUser"
+        edit_path = "/admin/resources/posts/#{post.slug}/edit?via_record_id=#{user.slug}&via_resource_class=User"
         expect(page).to have_selector("[data-component='resources-index'] a[data-control='edit'][data-resource-id='#{post.to_param}'][href='#{edit_path}']")
 
         # detach form
@@ -114,7 +114,7 @@ RSpec.feature "HasManyField", type: :feature do
       expect(link.link).to eq "https://google.com"
       expect(link.course.id).to eq course.id
 
-      visit "/admin/resources/course_links/#{link.id}/edit?via_resource_class=Avo::Resources::Course&via_record_id=#{course.to_param}"
+      visit "/admin/resources/course_links/#{link.id}/edit?via_resource_class=Course&via_record_id=#{course.to_param}"
       fill_in "course_link_link", with: "https://apple.com"
       save
       link.reload

@@ -104,7 +104,7 @@ RSpec.feature "Breadcrumbs", type: :feature do
 
   describe "on associations" do
     it "show" do
-      url = avo.resources_project_path(project, via_record_id: admin, via_resource_class: Avo::Resources::User)
+      url = avo.resources_project_path(project, via_record_id: admin, via_resource_class: 'User')
       visit url
 
       breadcrumbs = find(".breadcrumbs")
@@ -120,7 +120,7 @@ RSpec.feature "Breadcrumbs", type: :feature do
     end
 
     it "edit" do
-      url = avo.edit_resources_project_path(project, via_record_id: admin, via_resource_class: Avo::Resources::User)
+      url = avo.edit_resources_project_path(project, via_record_id: admin, via_resource_class: 'User')
       visit url
 
       breadcrumbs = find(".breadcrumbs")
@@ -135,7 +135,7 @@ RSpec.feature "Breadcrumbs", type: :feature do
     end
 
     it "new" do
-      url = avo.new_resources_project_path(via_record_id: admin, via_resource_class: Avo::Resources::User, via_relation: :users, via_relation_class: "User")
+      url = avo.new_resources_project_path(via_record_id: admin, via_resource_class: 'User', via_relation: :users, via_relation_class: "User")
       visit url
 
       breadcrumbs = find(".breadcrumbs")

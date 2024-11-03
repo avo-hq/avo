@@ -71,7 +71,7 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
   private
 
   def visit_through_association?
-    @field.target_resource.to_s == params[:via_resource_class].to_s
+    @field.target_resource.to_s.demodulize == params[:via_resource_class].to_s.demodulize
   end
 
   def model_keys

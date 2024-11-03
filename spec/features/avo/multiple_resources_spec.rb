@@ -10,7 +10,7 @@ RSpec.describe "Multiple resources on same model", type: :feature do
 
       click_on "Create new post"
 
-      expect(page).to have_current_path "/admin/resources/posts/new?via_record_id=#{user.to_param}&via_relation=user&via_relation_class=User&via_resource_class=Avo%3A%3AResources%3A%3ACompactUser"
+      expect(page).to have_current_path "/admin/resources/posts/new?via_record_id=#{user.to_param}&via_relation=user&via_relation_class=User&via_resource_class=CompactUser"
 
       click_on "Cancel"
       expect(current_path).to eql "/admin/resources/compact_users/#{user.to_param}"
@@ -22,7 +22,7 @@ RSpec.describe "Multiple resources on same model", type: :feature do
 
       click_on "Create new post"
 
-      expect(page).to have_current_path "/admin/resources/posts/new?via_record_id=#{user.to_param}&via_relation=user&via_relation_class=User&via_resource_class=Avo%3A%3AResources%3A%3ACompactUser"
+      expect(page).to have_current_path "/admin/resources/posts/new?via_record_id=#{user.to_param}&via_relation=user&via_relation_class=User&via_resource_class=CompactUser"
 
       fill_in "post_name", with: "I'm a post from compact user!"
 
