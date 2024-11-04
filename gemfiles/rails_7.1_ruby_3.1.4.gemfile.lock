@@ -13,7 +13,7 @@ PATH
 PATH
   remote: ..
   specs:
-    avo (3.13.6)
+    avo (3.13.7)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
@@ -497,7 +497,7 @@ GEM
       railties (>= 5.2)
     reverse_markdown (2.1.1)
       nokogiri
-    rexml (3.3.7)
+    rexml (3.3.9)
     ripper-tags (1.0.2)
     rspec-core (3.13.1)
       rspec-support (~> 3.13.0)

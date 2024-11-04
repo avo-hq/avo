@@ -35,6 +35,19 @@ RSpec.describe "TrixField", type: :system do
 
         expect(find_field_value_element("body")).to have_text "Works for us!!!"
       end
+
+      it "contains js alert messages translated" do
+        visit "/admin/resources/posts/#{post.id}/edit"
+
+        upload_warning_message = find("[data-trix-field-upload-warning-value]")[:"data-trix-field-upload-warning-value"]
+        expect(upload_warning_message).to eq I18n.t("avo.you_cant_upload_new_resource")
+
+        attachment_disable_message = find("[data-trix-field-attachment-disable-warning-value]")[:"data-trix-field-attachment-disable-warning-value"]
+        expect(attachment_disable_message).to eq I18n.t("avo.this_field_has_attachments_disabled")
+
+        attachment_key_warning_message = find("[data-trix-field-attachment-key-warning-value]")[:"data-trix-field-attachment-key-warning-value"]
+        expect(attachment_key_warning_message).to eq I18n.t("avo.you_havent_set_attachment_key")
+      end
     end
   end
 
