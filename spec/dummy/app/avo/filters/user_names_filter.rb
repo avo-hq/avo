@@ -1,6 +1,6 @@
 class Avo::Filters::UserNamesFilter < Avo::Filters::TextFilter
-  self.name = "User names filter"
-  self.button_label = "Filter by user names"
+  self.name = -> { I18n.t("avo.filter_translations.user_names_filter.name") }
+  self.button_label = -> { I18n.t("avo.filter_translations.user_names_filter.button_label") }
   self.empty_message = "Search by name"
 
   def apply(request, query, value)

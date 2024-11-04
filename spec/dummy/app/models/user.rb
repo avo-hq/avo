@@ -20,6 +20,8 @@
 #  slug                   :string
 #
 class User < ApplicationRecord
+  ACCOUNT_STRUCT = Struct.new(:id, :name) unless const_defined?(:ACCOUNT_STRUCT)
+
   extend FriendlyId
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -84,7 +86,10 @@ class User < ApplicationRecord
 
   # Simulate accounts association
   def accounts
-    [OpenStruct.new(id: 1, name: "Foo"), OpenStruct.new(id: 2, name: "Bar")]
+    [
+      ACCOUNT_STRUCT.new(1, "Foo"),
+      ACCOUNT_STRUCT.new(2, "Bar")
+    ]
   end
 
   def is_developer?

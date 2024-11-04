@@ -17,11 +17,11 @@ class Avo::Services::DebugService
       payload[:app_timezone] = Time.current.zone
       payload[:cache_key] = Avo::Licensing::HQ.cache_key
       payload[:cache_key_contents] = hq&.cached_response
-      payload[:plugins] = Avo.plugin_manager
+      payload[:plugins] = Avo.plugin_manager.as_json
 
       payload
     rescue => e
-      e
+      e.message
     end
 
     def get_thread_count
@@ -31,46 +31,50 @@ class Avo::Services::DebugService
     end
 
     def avo_metadata
-      resources = Avo.resource_manager.all
+      resource_classes = Avo.resource_manager.all
       dashboards = defined?(Avo::Dashboards) ? Avo::Dashboards.dashboard_manager.all : []
-      # field_definitions = resources.map(&:get_field_definitions)
-      # fields_count = field_definitions.map(&:count).sum
-      # fields_per_resource = sprintf("%0.01f", fields_count / (resources.count + 0.0))
+      resources = resource_classes.map do |resource_class|
+        resource = resource_class.new view: :index
+        resource.detect_fields
+        resource
+      end
+      field_definitions = resources.map(&:get_field_definitions)
+      fields_count = field_definitions.map(&:count).sum
+      fields_per_resource = sprintf("%0.01f", fields_count / (resources.count + 0.0)).to_f
 
-      # field_types = {}
-      # custom_fields_count = 0
-      # field_definitions.each do |fields|
-      #   fields.each do |field|
-      #     field_types[field.type] ||= 0
-      #     field_types[field.type] += 1
+      field_types = {}
+      custom_fields_count = 0
+      field_definitions.each do |fields|
+        fields.each do |field|
+          field_types[field.type] ||= 0
+          field_types[field.type] += 1
 
-      #     custom_fields_count += 1 if field.custom?
-      #   end
-      # end
+          custom_fields_count += 1 if field.custom?
+        end
+      end
 
       {
         resources_count: resources.count,
         dashboards_count: dashboards.count,
-        # fields_count: fields_count,
-        # fields_per_resource: fields_per_resource,
-        # custom_fields_count: custom_fields_count,
-        # field_types: field_types,
-        # **other_metadata(:actions), # TODO: this is fetching actions without hydration
-        # **other_metadata(:filters),
+        fields_count:,
+        fields_per_resource:,
+        custom_fields_count:,
+        field_types:,
+        **other_metadata(:actions, resources:),
+        **other_metadata(:filters, resources:),
         main_menu_present: Avo.configuration.main_menu.present?,
         profile_menu_present: Avo.configuration.profile_menu.present?,
         cache_store: Avo.cache_store&.class&.to_s,
         **config_metadata
       }
-    # rescue => error
-    #   {
-    #     error: error.message
-    #   }
+    rescue => error
+      {
+        error: "Failed to generate the Avo metadata",
+        error_message: error.message
+      }
     end
 
-    def other_metadata(type = :actions)
-      resources = Avo.resource_manager.all
-
+    def other_metadata(type = :actions, resources: [])
       types = resources.map(&:"get_#{type}")
       type_count = types.flatten.uniq.count
       type_per_resource = sprintf("%0.01f", types.map(&:count).sum / (resources.count + 0.0))

@@ -57,6 +57,7 @@ pt-BR:
       add_row: Adicionar linha
       delete_row: Remover linha
       key: Chave
+      reorder_row: Reordenar linha
       value: Valor
     less_content: Menos conteúdo
     list_is_empty: Lista vazia
@@ -104,6 +105,7 @@ pt-BR:
     sign_out: sair
     switch_to_view: Alterar para visão %{view_type}
     table_view: Visualização em tabela
+    this_field_has_attachments_disabled: Este campo tem anexos desativados.
     tools: Ferramentas
     type_to_search: Digite para buscar.
     unauthorized: Não autorizado
@@ -120,4 +122,6 @@ pt-BR:
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> registros selecionados de todas as páginas
     x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> registros selecionados nesta página
     yes_confirm: Sim, tenho certeza
+    you_cant_upload_new_resource: Você não pode fazer upload de imagens no editor Trix até salvar o recurso.
+    you_havent_set_attachment_key: Você precisa definir uma `attachment_key` para este campo Trix.
     you_missed_something_check_form: Você pode ter esquecido algo. Por favor, cheque o formulário.
