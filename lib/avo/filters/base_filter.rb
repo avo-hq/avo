@@ -90,11 +90,11 @@ module Avo
       end
 
       def name
-        Avo::ExecutionContext.new(target: self.class.name).handle
+        Avo::ExecutionContext.new(target: self.class.name, arguments: @arguments).handle
       end
 
       def button_label
-        Avo::ExecutionContext.new(target: self.class.button_label).handle
+        Avo::ExecutionContext.new(target: self.class.button_label, arguments: @arguments).handle
       end
     end
   end
