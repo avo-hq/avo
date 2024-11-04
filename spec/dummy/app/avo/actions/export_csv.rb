@@ -4,7 +4,7 @@ class Avo::Actions::ExportCsv < Avo::BaseAction
   self.name = "Export CSV"
   self.no_confirmation = false
   self.standalone = true
-  self.dynamic_backdrop = false
+  self.click_backdrop_to_close_modal = false
 
   def fields
     # Add more fields here for custom user-selected columns

@@ -168,6 +168,35 @@ RSpec.describe "Actions", type: :system do
     end
   end
 
+  describe "action modal dynamic backdrop" do
+    it "closes the modal on backdrop click" do
+      Avo::Actions::ExportCsv.click_backdrop_to_close_modal = true
+
+      visit "/admin/resources/projects"
+
+      click_on "Actions"
+      click_on "Export CSV"
+      find('[data-modal-target="backdrop"]').trigger("click")
+
+      expect(page).not_to have_selector '[data-controller="modal"]'
+    end
+
+    it "does not close the modal on backdrop click" do
+      Avo::Actions::ExportCsv.click_backdrop_to_close_modal = false
+
+      visit "/admin/resources/projects"
+
+      click_on "Actions"
+      click_on "Export CSV"
+      find('[data-modal-target="backdrop"]').trigger("click")
+
+      expect(page).to have_selector '[data-controller="modal"]'
+
+      click_on "Cancel"
+      expect(page).not_to have_selector '[data-controller="modal"]'
+    end
+  end
+
   describe "redirects when no confirmation" do
     it "redirects to hey page" do
       visit "/admin/resources/users"
