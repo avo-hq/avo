@@ -9,7 +9,7 @@ RSpec.feature "direct_upload", type: :system do
 
       attach_file("project_files", [
         Rails.root.join("dummy-file.txt"),
-        Rails.root.join("dummy-file.pdf"),
+        Rails.root.join("dummy-file.pdf")
       ], make_visible: true)
 
       click_on "Save"
