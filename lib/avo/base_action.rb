@@ -14,7 +14,7 @@ module Avo
     class_attribute :may_download_file
     class_attribute :turbo
     class_attribute :authorize, default: true
-    class_attribute :click_backdrop_to_close_modal, default: true
+    class_attribute :close_modal_on_backdrop_click, default: true
 
     attr_accessor :view
     attr_accessor :response

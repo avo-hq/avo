@@ -168,9 +168,9 @@ RSpec.describe "Actions", type: :system do
     end
   end
 
-  describe "action modal dynamic backdrop" do
+  describe "action close_modal_on_backdrop_click" do
     it "closes the modal on backdrop click" do
-      Avo::Actions::ExportCsv.click_backdrop_to_close_modal = true
+      Avo::Actions::ExportCsv.close_modal_on_backdrop_click = true
 
       visit "/admin/resources/projects"
 
@@ -182,7 +182,7 @@ RSpec.describe "Actions", type: :system do
     end
 
     it "does not close the modal on backdrop click" do
-      Avo::Actions::ExportCsv.click_backdrop_to_close_modal = false
+      Avo::Actions::ExportCsv.close_modal_on_backdrop_click = false
 
       visit "/admin/resources/projects"
 

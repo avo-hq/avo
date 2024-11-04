@@ -4,11 +4,11 @@ export default class extends Controller {
   static targets = ['modal', 'backdrop']
 
   static values = {
-    dynamicBackdrop: true,
+    closeModalOnBackdropClick: true,
   }
 
   close() {
-    if (event.target === this.backdropTarget && !this.dynamicBackdropValue) return
+    if (event.target === this.backdropTarget && !this.closeModalOnBackdropClickValue) return
 
     this.modalTarget.remove()
 
