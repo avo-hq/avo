@@ -7,6 +7,7 @@ import AttachmentsController from './controllers/attachments_controller'
 import BelongsToFieldController from './controllers/fields/belongs_to_field_controller'
 import BooleanFilterController from './controllers/boolean_filter_controller'
 import CardFiltersController from './controllers/card_filters_controller'
+import ClearInputController from './controllers/fields/clear_input_controller'
 import CodeFieldController from './controllers/fields/code_field_controller'
 import CopyToClipboardController from './controllers/copy_to_clipboard_controller'
 import DashboardCardController from './controllers/dashboard_card_controller'
@@ -52,6 +53,7 @@ application.register('actions-picker', ActionsPickerController)
 application.register('attachments', AttachmentsController)
 application.register('boolean-filter', BooleanFilterController)
 application.register('card-filters', CardFiltersController)
+application.register('clear-input', ClearInputController)
 application.register('copy-to-clipboard', CopyToClipboardController)
 application.register('dashboard-card', DashboardCardController)
 application.register('date-time-filter', DateTimeFilterController)

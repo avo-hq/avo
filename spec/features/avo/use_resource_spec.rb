@@ -8,7 +8,7 @@ RSpec.describe "Post comments use_resource PhotoComment", type: :feature do
   let!(:comment) { create :comment, user: admin }
 
   describe "tests" do
-    it "if have diferent fields from original comment resource" do
+    it "if have different fields from original comment resource" do
       visit_page
 
       expect(page).to have_text("Photo comments")
@@ -49,7 +49,7 @@ RSpec.describe "Post comments use_resource PhotoComment", type: :feature do
       expect(page).to have_selector "[title='Delete photo comment']"
     end
 
-    it "applyes on belongs to" do
+    it "applies on belongs to" do
       visit "admin/resources/comments/#{comment.id}"
 
       expect(page).to have_link comment.user.name,

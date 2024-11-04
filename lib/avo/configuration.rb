@@ -9,7 +9,7 @@ module Avo
     attr_writer :logger
     attr_writer :turbo
     attr_writer :pagination
-    attr_writer :implicit_authorization
+    attr_writer :explicit_authorization
     attr_accessor :timezone
     attr_accessor :per_page
     attr_accessor :per_page_steps
@@ -70,7 +70,7 @@ module Avo
       @license_key = nil
       @current_user = proc {}
       @authenticate = proc {}
-      @implicit_authorization = false
+      @explicit_authorization = false
       @authorization_methods = {
         index: "index?",
         show: "show?",
@@ -259,8 +259,8 @@ module Avo
       @locale || I18n.default_locale
     end
 
-    def implicit_authorization
-      Avo::ExecutionContext.new(target: @implicit_authorization).handle
+    def explicit_authorization
+      Avo::ExecutionContext.new(target: @explicit_authorization).handle
     end
   end
 

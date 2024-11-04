@@ -34,6 +34,13 @@ class Avo::ActionsComponent < Avo::BaseComponent
 
   def after_initialize
     filter_actions unless @custom_list
+
+    # Hydrate each action action with the record when rendering a list on row controls
+    if @as_row_control
+      @actions.each do |action|
+        action.hydrate(resource: @resource, record: @resource.record) if action.respond_to?(:hydrate)
+      end
+    end
   end
 
   def render?
@@ -52,22 +59,7 @@ class Avo::ActionsComponent < Avo::BaseComponent
     end
   end
 
-  # How should the action be displayed by default
-  def is_disabled?(action)
-    return false if action.standalone || @as_row_control
-
-    on_index_page?
-  end
-
   private
-
-  def on_record_page?
-    @view.in?(["show", "edit", "new"])
-  end
-
-  def on_index_page?
-    !on_record_page?
-  end
 
   def icon(icon)
     svg icon, class: "h-5 shrink-0 mr-1 inline pointer-events-none"
@@ -112,15 +104,17 @@ class Avo::ActionsComponent < Avo::BaseComponent
       "turbo-frame": Avo::MODAL_FRAME_ID,
       action: "click->actions-picker#visitAction",
       "actions-picker-target": action.standalone ? "standaloneAction" : "resourceAction",
-      disabled: is_disabled?(action),
+      disabled: action.disabled?,
       turbo_prefetch: false,
+      enabled_classes: "text-black",
+      disabled_classes: "text-gray-500"
     }
   end
 
   def action_css_class(action)
     helpers.class_names("flex items-center px-4 py-3 w-full font-semibold text-sm hover:bg-primary-100", {
-      "text-gray-500": is_disabled?(action),
-      "text-black": !is_disabled?(action),
+      "text-gray-500": action.disabled?,
+      "text-black": action.enabled?,
     })
   end
 end
