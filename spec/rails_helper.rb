@@ -210,6 +210,14 @@ require "support/devise"
 require "support/shared_contexts"
 require "support/timezone"
 
+Avo::ApplicationHelper.define_method(:combobox_style_tag) {
+  # The HW Combobox component is not available for Rails 6.x
+  # We need to stub it for that suite of tests
+  return super if respond_to?(:combobox_style_tag)
+
+  ""
+}
+
 # https://github.com/titusfortner/webdrivers/issues/247
 # Webdrivers::Chromedriver.required_version = "114.0.5735.90"
 # Webdrivers::Chromedriver.required_version = "116.0.5845.96"
