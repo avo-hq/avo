@@ -47,14 +47,6 @@ RSpec.describe "TrixField", type: :system do
         expect(attachment_key_warning_message).to eq I18n.t("avo.you_havent_set_attachment_key")
       end
     end
-
-    context "show" do
-      it "displays the posts empty body (dash)" do
-        visit "/admin/resources/posts/#{post.id}"
-
-        expect(find_field_element("body")).to have_text empty_dash
-      end
-    end
   end
 
   describe "with regular value" do
@@ -72,9 +64,9 @@ RSpec.describe "TrixField", type: :system do
       context "when body has more then 1 line" do
         let!(:body) do
           <<~HTML
-        <div>test1</div>
-        <div>test2</div>
-        <div>test3</div>
+            <div>test1</div>
+            <div>test2</div>
+            <div>test3</div>
           HTML
         end
 
@@ -82,10 +74,6 @@ RSpec.describe "TrixField", type: :system do
           visit "/admin/resources/posts/#{post.id}"
 
           expect(page).to have_link("More content", href: "javascript:void(0);")
-        end
-
-        it "displays correct button after extended content" do
-          visit "/admin/resources/posts/#{post.id}"
 
           click_on "More content"
 

@@ -2,9 +2,6 @@
 
 .trix-content.hidden {
   display: block !important;
-}
-
-.trix-content.hidden {
   clip-path: inset(0 0 calc(100% - 50px) 0);
   -webkit-mask-image: linear-gradient(to bottom, black 30px, transparent 50px);
   mask-image: linear-gradient(to bottom, black 30px, transparent 50px);
