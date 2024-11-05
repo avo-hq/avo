@@ -1,6 +1,6 @@
 <%= field_wrapper **field_wrapper_args do %>
   <%= @form.combobox @field.for_attribute,
     helpers.combobox_results_path(resource_class: @resource.class, field_id: @field.id),
-    name_when_new: "#{@resource.form_scope}[#{@field.for_attribute}]"
+    name_when_new:
   %>
 <% end %>

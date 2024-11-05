@@ -47,6 +47,7 @@ class Avo::Resources::Product < Avo::BaseResource
     field :combobox_title,
       for_attribute: :title,
       as: :combobox,
+      # accept_free_text: false,
       only_on: :forms,
       help: "This is a combobox field and will suggest values based on your query.",
       query: -> {
