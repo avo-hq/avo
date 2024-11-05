@@ -24,6 +24,7 @@ module Avo
     attr_reader :arguments
     attr_reader :icon
     attr_reader :appended_turbo_streams
+    attr_reader :records_to_reload
 
     # TODO: find a differnet way to delegate this to the uninitialized Current variable
     delegate :context, to: Avo::Current
@@ -237,6 +238,7 @@ module Avo
       self
     end
 
+    # def do_nothing
     alias_method :do_nothing, :close_modal
 
     # Add a placeholder silent message from when a user wants to do a redirect action or something similar
@@ -263,6 +265,47 @@ module Avo
 
       self
     end
+
+    def reload_record(records)
+      # Force close modal to avoid default redirect to
+      # Redirect is 100% not wanted when using reload_record
+      close_modal
+
+      @records_to_reload = Array(records)
+
+      append_to_response -> {
+        table_row_components = []
+        header_fields = []
+
+        @action.records_to_reload.each do |record|
+          resource = @resource.dup
+          resource.hydrate(record:, view: :index)
+          resource.detect_fields
+          row_fields = resource.get_fields(only_root: true)
+          header_fields.concat row_fields
+          table_row_components << resource.resolve_component(Avo::Index::TableRowComponent).new(
+            resource: resource,
+            header_fields: row_fields.map(&:table_header_label),
+            fields: row_fields
+          )
+        end
+
+        header_fields.uniq!(&:table_header_label)
+
+        header_fields_ids = header_fields.map(&:table_header_label)
+
+        table_row_components.map.with_index do |table_row_component, index|
+          table_row_component.header_fields = header_fields_ids
+          turbo_stream.replace(
+            "avo/index/table_row_component_#{@action.records_to_reload[index].to_param}",
+            table_row_component
+          )
+        end
+      }
+    end
+
+    # def reload_records
+    alias_method :reload_records, :reload_record
 
     def navigate_to_action(action, **kwargs)
       response[:type] = :navigate_to_action
