@@ -67,6 +67,8 @@ RSpec.describe "TrixField", type: :system do
             <div>test1</div>
             <div>test2</div>
             <div>test3</div>
+            <div>test4</div>
+            <div>test5</div>
           HTML
         end
 
@@ -78,6 +80,21 @@ RSpec.describe "TrixField", type: :system do
           click_on "More content"
 
           expect(page).to have_link("Less content", href: "javascript:void(0);")
+
+          click_on "Less content"
+        end
+
+        it "always_show" do
+          Avo::Resources::Post.with_temporary_items do
+            field :body, as: :trix, always_show: true
+          end
+
+          visit "/admin/resources/posts/#{post.id}"
+
+          expect(page).not_to have_link("More content", href: "javascript:void(0);")
+          expect(page).not_to have_link("Less content", href: "javascript:void(0);")
+
+          Avo::Resources::Post.restore_items_from_backup
         end
       end
     end
