@@ -57,6 +57,7 @@ de:
       add_row: Zeile hinzufügen
       delete_row: Zeile löschen
       key: Schlüssel
+      reorder_row: Zeile neu anordnen
       value: Wert
     list_is_empty: Liste ist leer
     loading: Lade...
