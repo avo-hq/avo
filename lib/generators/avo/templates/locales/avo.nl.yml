@@ -57,9 +57,11 @@ nl:
       key: Sleutel
       reorder_row: Rij herschikken
       value: Waarde
+    less_content: Minder inhoud
     list_is_empty: Lijst is leeg
     loading: Laden...
     more: Meer
+    more_content: Meer inhoud
     new: nieuw
     next_page: Volgende pagina
     no_cancel: Nee, annuleren
@@ -98,8 +100,6 @@ nl:
     select_all_matching: Alles selecteren wat overeenkomt
     select_item: Item selecteren
     show_content: Inhoud tonen
-    more_content: Meer inhoud
-    less_content: Minder inhoud
     sign_out: Afmelden
     switch_to_view: Schakelen naar %{view_type}-weergave
     table_view: Tabelweergave
