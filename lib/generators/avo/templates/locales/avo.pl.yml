@@ -43,9 +43,9 @@ pl:
     failed_to_find_attachment: Nie udało się znaleźć załącznika
     failed_to_load: Nie udało się załadować
     file:
-      one: plik
       few: pliki
       many: plików
+      one: plik
       other: plików
     filter_by: Filtruj według
     filters: Filtry

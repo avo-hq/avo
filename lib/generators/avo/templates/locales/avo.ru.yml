@@ -43,9 +43,9 @@ ru:
     failed_to_find_attachment: Вложение не найдено
     failed_to_load: Загрузка не удалась
     file:
-      one: файл
       few: файла
       many: файлов
+      one: файл
       other: файлов
     filter_by: Фильтровать по
     filters: Фильтры

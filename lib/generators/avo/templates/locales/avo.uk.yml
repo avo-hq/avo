@@ -43,9 +43,9 @@ uk:
     failed_to_find_attachment: Не вдалося знайти вкладення
     failed_to_load: Не вдалося завантажити
     file:
-      one: файл
       few: файли
       many: файлів
+      one: файл
       other: файлів
     filter_by: Фільтрувати за
     filters: Фільтри
