@@ -228,6 +228,8 @@ RSpec.describe "TestHelpers", type: :system do
       it "verify tags" do
         visit avo.edit_resources_post_path(post)
 
+        wait_for_loaded
+
         expect(tags(field: :tags)).to eq ["one", "two"]
       end
       # end
