@@ -59,9 +59,11 @@ uk:
       key: Ключ
       reorder_row: Змінити порядок рядка
       value: Значення
+    less_content: Менше вмісту
     list_is_empty: Список порожній
     loading: Завантаження
     more: Ще
+    more_content: Більше вмісту
     new: новий
     next_page: Наступна сторінка
     no_cancel: Ні, скасувати
@@ -100,8 +102,6 @@ uk:
     select_all_matching: Вибрати всі відповідні
     select_item: Вибрати елемент
     show_content: Показати вміст
-    more_content: Більше вмісту
-    less_content: Менше вмісту
     sign_out: Вийти
     switch_to_view: Перейти до виду %{view_type}
     table_view: Таблиця
