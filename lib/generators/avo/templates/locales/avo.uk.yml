@@ -1,9 +1,6 @@
 ---
 uk:
   avo:
-    resource_translations:
-      product:
-        save: "Зберегти продукт!"
     action_ran_successfully: Дія успішно виконана!
     actions: Дії
     and_x_other_resources: і ще %{count} інших ресурсів

@@ -1,9 +1,6 @@
 ---
 ru:
   avo:
-    resource_translations:
-      product:
-        save: "Сохранить продукт!"
     action_ran_successfully: Действие успешно выполнено!
     actions: Действия
     and_x_other_resources: и %{count} других ресурсов

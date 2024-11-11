@@ -1,9 +1,6 @@
 ---
 it:
   avo:
-    resource_translations:
-      product:
-        save: "Salva il prodotto!"
     action_ran_successfully: L'azione è stata eseguita con successo!
     actions: Azioni
     and_x_other_resources: e altri %{count} risorse

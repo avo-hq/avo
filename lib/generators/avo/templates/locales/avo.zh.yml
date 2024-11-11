@@ -1,9 +1,6 @@
 ---
 zh:
   avo:
-    resource_translations:
-      product:
-        save: "保存产品！"
     action_ran_successfully: 操作成功执行！
     actions: 操作
     and_x_other_resources: 和 %{count} 个其他资源

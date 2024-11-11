@@ -1,9 +1,6 @@
 ---
 pl:
   avo:
-    resource_translations:
-      product:
-        save: "Zapisz produkt!"
     action_ran_successfully: Akcja została pomyślnie wykonana!
     actions: Akcje
     and_x_other_resources: i %{count} innych zasobów

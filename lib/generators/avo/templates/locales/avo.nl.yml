@@ -1,9 +1,6 @@
 ---
 nl:
   avo:
-    resource_translations:
-      product:
-        save: "Product opslaan!"
     action_ran_successfully: Actie succesvol uitgevoerd!
     actions: Acties
     and_x_other_resources: en %{count} andere bronnen
