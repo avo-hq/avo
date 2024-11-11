@@ -57,9 +57,11 @@ zh:
       key: 键
       reorder_row: 重新排序行
       value: 值
+    less_content: 内容较少
     list_is_empty: 列表为空
     loading: 加载中...
     more: 更多
+    more_content: 更多内容
     new: 新建
     next_page: 下一页
     no_cancel: 不，取消
@@ -98,8 +100,6 @@ zh:
     select_all_matching: 选择所有匹配项
     select_item: 选择项目
     show_content: 显示内容
-    more_content: 更多内容
-    less_content: 内容较少
     sign_out: 登出
     switch_to_view: 切换到 %{view_type} 视图
     table_view: 表格视图
