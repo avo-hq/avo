@@ -98,6 +98,8 @@ nl:
     select_all_matching: Alles selecteren wat overeenkomt
     select_item: Item selecteren
     show_content: Inhoud tonen
+    more_content: Meer inhoud
+    less_content: Minder inhoud
     sign_out: Afmelden
     switch_to_view: Schakelen naar %{view_type}-weergave
     table_view: Tabelweergave

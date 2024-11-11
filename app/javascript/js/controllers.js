@@ -45,6 +45,7 @@ import TextFilterController from './controllers/text_filter_controller'
 import TippyController from './controllers/tippy_controller'
 import TiptapFieldController from './controllers/fields/tiptap_field_controller'
 import ToggleController from './controllers/toggle_controller'
+import TrixBodyController from './controllers/trix_body_controller'
 import TrixFieldController from './controllers/fields/trix_field_controller'
 
 application.register('action', ActionController)
@@ -83,6 +84,7 @@ application.register('table-row', TableRowController)
 application.register('text-filter', TextFilterController)
 application.register('tippy', TippyController)
 application.register('toggle', ToggleController)
+application.register('trix-body', TrixBodyController)
 
 // Field controllers
 application.register('belongs-to-field', BelongsToFieldController)

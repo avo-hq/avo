@@ -98,6 +98,8 @@ it:
     select_all_matching: Seleziona tutto corrispondente
     select_item: Seleziona elemento
     show_content: Mostra contenuto
+    more_content: Più contenuti
+    less_content: Meno contenuti
     sign_out: Esci
     switch_to_view: Passa a vista %{view_type}
     table_view: Vista tabella

@@ -100,6 +100,8 @@ uk:
     select_all_matching: Вибрати всі відповідні
     select_item: Вибрати елемент
     show_content: Показати вміст
+    more_content: Більше вмісту
+    less_content: Менше вмісту
     sign_out: Вийти
     switch_to_view: Перейти до виду %{view_type}
     table_view: Таблиця
