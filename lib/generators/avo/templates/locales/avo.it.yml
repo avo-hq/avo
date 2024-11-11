@@ -3,6 +3,7 @@ it:
   avo:
     action_ran_successfully: L'azione è stata eseguita con successo!
     actions: Azioni
+    add_filter: Aggiungi filtro
     and_x_other_resources: e altri %{count} risorse
     applied: applicato
     are_you_sure: Sei sicuro?
@@ -13,8 +14,8 @@ it:
     attach_item: Allega %{item}
     attachment_class_attached: "%{attachment_class} allegato."
     attachment_class_detached: "%{attachment_class} staccato."
-    attachment_failed: "Impossibile allegare %{attachment_class}"
     attachment_destroyed: Allegato distrutto
+    attachment_failed: Impossibile allegare %{attachment_class}
     cancel: Annulla
     choose_a_country: Scegli un paese
     choose_an_option: Scegli un'opzione
@@ -54,6 +55,7 @@ it:
       add_row: Aggiungi riga
       delete_row: Elimina riga
       key: Chiave
+      reorder_row: Riordina riga
       value: Valore
     list_is_empty: La lista è vuota
     loading: Caricamento in corso
@@ -81,8 +83,8 @@ it:
     prev_page: Pagina precedente
     records_selected_from_all_pages_html: Tutti i record selezionati da tutte le pagine
     remove_selection: Rimuovi selezione
-    reset_filters: Reimposta filtri
     reset: Reimposta
+    reset_filters: Reimposta filtri
     resource_created: Record creato
     resource_destroyed: Record distrutto
     resource_updated: Record aggiornato
@@ -99,6 +101,7 @@ it:
     sign_out: Esci
     switch_to_view: Passa a vista %{view_type}
     table_view: Vista tabella
+    this_field_has_attachments_disabled: Gli allegati sono disabilitati per questo campo.
     tools: Strumenti
     type_to_search: Digita per cercare.
     unauthorized: Non autorizzato
@@ -115,4 +118,6 @@ it:
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> record selezionati da tutte le pagine
     x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> record selezionati su questa pagina
     yes_confirm: Sì, sono sicuro
+    you_cant_upload_new_resource: Non puoi caricare file nell'editor Trix finché non salvi la risorsa.
+    you_havent_set_attachment_key: Non hai impostato un `attachment_key` per questo campo Trix.
     you_missed_something_check_form: Potresti aver dimenticato qualcosa. Controlla il modulo.
