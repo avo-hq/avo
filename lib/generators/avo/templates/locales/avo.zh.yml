@@ -114,7 +114,7 @@ zh:
       one: 另外一个项目
       other: "%{count} 个其他项目"
       zero: 没有其他项目
-    x_records_selected_from_a_total_of_x_html: 在所有页面中共选择了 <span class="font-bold text-gray-700">%{count}</span> 条记录
+    x_records_selected_from_a_total_of_x_html: 本页面共选择了 <span class="font-bold text-gray-700">%{selected}</span> 条记录，所有页面共有 <span class="font-bold text-gray-700">%{count}</span> 条记录
     x_records_selected_from_all_pages_html: 从所有页面中选中了 <span class="font-bold text-gray-700">%{count}</span> 条记录
     x_records_selected_from_page_html: 在本页中共选择了 <span class="font-bold text-gray-700">%{selected}</span> 条记录
     yes_confirm: 是的，确认
