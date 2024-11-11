@@ -1,11 +1,9 @@
 ---
 de:
   avo:
-    resource_translations:
-      product:
-        save: "Produkt speichern!"
     action_ran_successfully: Aktion erfolgreich durchgeführt!
     actions: Aktionen
+    add_filter: Filter hinzufügen
     and_x_other_resources: und %{count} weitere Ressourcen
     applied: angewendet
     are_you_sure: Sind Sie sicher?
@@ -16,8 +14,8 @@ de:
     attach_item: "%{item} anhängen"
     attachment_class_attached: "%{attachment_class} angehängt."
     attachment_class_detached: "%{attachment_class} abgehängt."
-    attachment_failed: "Kon %{attachment_class} niet bijvoegen"
     attachment_destroyed: Anhang gelöscht
+    attachment_failed: Kon %{attachment_class} niet bijvoegen
     cancel: Abbrechen
     choose_a_country: Land auswählen
     choose_an_option: Option auswählen
@@ -57,6 +55,7 @@ de:
       add_row: Zeile hinzufügen
       delete_row: Zeile löschen
       key: Schlüssel
+      reorder_row: Zeile neu anordnen
       value: Wert
     list_is_empty: Liste ist leer
     loading: Lade...
@@ -84,8 +83,8 @@ de:
     prev_page: Vorherige Seite
     records_selected_from_all_pages_html: Alle Einträge von allen Seiten ausgewählt
     remove_selection: Auswahl aufheben
-    reset_filters: Filter zurücksetzen
     reset: zurücksetzen
+    reset_filters: Filter zurücksetzen
     resource_created: Eintrag erstellt
     resource_destroyed: Eintrag gelöscht
     resource_updated: Eintrag aktualisiert
@@ -99,9 +98,12 @@ de:
     select_all_matching: Alle übereinstimmenden auswählen
     select_item: Eintrag auswählen
     show_content: Inhalt anzeigen
+    more_content: Mehr Inhalt
+    less_content: Weniger Inhalt
     sign_out: Abmelden
     switch_to_view: Wechseln zur %{view_type}-Ansicht
     table_view: Tabellenansicht
+    this_field_has_attachments_disabled: Für dieses Feld sind Anhänge deaktiviert.
     tools: Werkzeuge
     type_to_search: Tippen, um zu suchen.
     unauthorized: Nicht autorisiert
@@ -118,4 +120,6 @@ de:
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> Einträge von allen Seiten ausgewählt
     x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> Einträge auf dieser Seite ausgewählt
     yes_confirm: Ja, ich bin sicher
+    you_cant_upload_new_resource: Du kannst keine Dateien in den Trix-Editor hochladen, bis die Ressource gespeichert ist.
+    you_havent_set_attachment_key: Du hast keinen `attachment_key` für dieses Trix-Feld festgelegt.
     you_missed_something_check_form: Sie haben möglicherweise etwas übersehen. Bitte überprüfen Sie das Formular.
