@@ -44,7 +44,9 @@ ru:
     failed_to_load: Загрузка не удалась
     file:
       one: файл
-      other: файлы
+      few: файла
+      many: файлов
+      other: файлов
     filter_by: Фильтровать по
     filters: Фильтры
     go_back: Назад

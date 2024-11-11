@@ -44,6 +44,8 @@ pl:
     failed_to_load: Nie udało się załadować
     file:
       one: plik
+      few: pliki
+      many: plików
       other: plików
     filter_by: Filtruj według
     filters: Filtry

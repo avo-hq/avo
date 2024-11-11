@@ -44,6 +44,8 @@ uk:
     failed_to_load: Не вдалося завантажити
     file:
       one: файл
+      few: файли
+      many: файлів
       other: файлів
     filter_by: Фільтрувати за
     filters: Фільтри
