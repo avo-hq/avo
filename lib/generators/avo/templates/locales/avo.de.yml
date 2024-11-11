@@ -15,7 +15,7 @@ de:
     attachment_class_attached: "%{attachment_class} angehängt."
     attachment_class_detached: "%{attachment_class} abgehängt."
     attachment_destroyed: Anhang gelöscht
-    attachment_failed: Kon %{attachment_class} niet bijvoegen
+    attachment_failed: "%{attachment_class} konnte nicht angehängt werden"
     cancel: Abbrechen
     choose_a_country: Land auswählen
     choose_an_option: Option auswählen
