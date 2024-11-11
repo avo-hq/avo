@@ -322,8 +322,8 @@ module Avo
         cards
       end
 
-      def divider(**)
-        entity_loader(:action).use({class: Divider, **}.compact)
+      def divider(**kwargs)
+        entity_loader(:action).use({class: Divider, **kwargs}.compact)
       end
 
       # def fields / def cards
