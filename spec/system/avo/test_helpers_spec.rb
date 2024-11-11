@@ -222,6 +222,14 @@ RSpec.describe "TestHelpers", type: :system do
         expect(remove_tag(field: :tags, tag: "one")).to eq ["three"]
         expect(tag_suggestions(field: :tags, input: "")).to eq ["one", "two"]
       end
+
+      let!(:post) { create :post, tag_list: ["test", "five", "seven"] }
+
+      it "verify tags" do
+        visit avo.edit_resources_post_path(post)
+
+        expect(tags(field: :tags)).to eq ["test", "five", "seven"]
+      end
       # end
     end
   end
