@@ -6,7 +6,7 @@
       data-association-class="<%= @field&.target_resource&.model_class || nil %>"
     >
     <%= field_wrapper **field_wrapper_args, label_for: @field.polymorphic_form_field_label, help: @field.polymorphic_help || '' do %>
-      <%= @form.select @field.type_input_foreign_key, options_for_select(@field.types.map { |type| [type, type] }, @field.value.type),
+      <%= @form.select @field.type_input_foreign_key, options_for_select(@field.types.map { |type| [type, type] }, @field.value.try(:type)),
         {
           include_blank: @field.placeholder,
         },
