@@ -64,6 +64,7 @@ ja:
     loading: 読み込み中
     more: もっと
     more_content: さらなるコンテンツ
+    more_records_available: さらに多くのレコードが利用可能です。
     new: 新規
     next_page: 次のページ
     no_cancel: いいえ、キャンセル
@@ -125,4 +126,3 @@ ja:
     you_cant_upload_new_resource: リソースを保存するまで、Trixエディタにファイルをアップロードすることはできません。
     you_havent_set_attachment_key: このTrixフィールドに`attachment_key`が設定されていません。
     you_missed_something_check_form: 何か見落としているかもしれません。フォームを確認してください。
-    more_records_available: さらに多くのレコードが利用可能です。

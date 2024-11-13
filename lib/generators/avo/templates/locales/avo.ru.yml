@@ -64,6 +64,7 @@ ru:
     loading: Загрузка...
     more: Ещё
     more_content: Больше контента
+    more_records_available: Доступно больше записей.
     new: новый
     next_page: Следующая страница
     no_cancel: Нет, отмена
@@ -125,4 +126,3 @@ ru:
     you_cant_upload_new_resource: Вы не можете загружать файлы в редактор Trix, пока не сохраните ресурс.
     you_havent_set_attachment_key: Вы не установили `attachment_key` для этого поля Trix.
     you_missed_something_check_form: Возможно, вы что-то упустили. Пожалуйста, проверьте форму.
-    more_records_available: Доступно больше записей.

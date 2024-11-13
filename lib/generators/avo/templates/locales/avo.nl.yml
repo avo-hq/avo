@@ -62,6 +62,7 @@ nl:
     loading: Laden...
     more: Meer
     more_content: Meer inhoud
+    more_records_available: Er zijn meer records beschikbaar.
     new: nieuw
     next_page: Volgende pagina
     no_cancel: Nee, annuleren
@@ -123,4 +124,3 @@ nl:
     you_cant_upload_new_resource: Je kunt geen bestanden uploaden in de Trix-editor totdat je de bron hebt opgeslagen.
     you_havent_set_attachment_key: Je hebt geen `attachment_key` ingesteld voor dit Trix-veld.
     you_missed_something_check_form: U heeft mogelijk iets gemist. Controleer het formulier.
-    more_records_available: Er zijn meer records beschikbaar.

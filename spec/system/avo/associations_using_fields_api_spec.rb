@@ -35,9 +35,10 @@ RSpec.describe "Associations using *_fields api", type: :system do
   context "when associations options exceeds associations_query_limit" do
     let!(:link) { Course::Link.first }
 
-    it "limits select options" do
-      Avo.configuration.associations_query_limit = 1
+    before { Avo.configuration.associations_query_limit = 1 }
+    after { Avo.configuration.associations_query_limit = 2000 }
 
+    it "limits select options" do
       visit avo.resources_course_path(course)
 
       scroll_to find('turbo-frame[id="has_many_field_show_links"]')

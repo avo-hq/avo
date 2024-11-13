@@ -62,6 +62,7 @@ it:
     loading: Caricamento in corso
     more: Altro
     more_content: Più contenuti
+    more_records_available: Sono disponibili più record.
     new: nuovo
     next_page: Pagina successiva
     no_cancel: No, annulla
@@ -123,4 +124,3 @@ it:
     you_cant_upload_new_resource: Non puoi caricare file nell'editor Trix finché non salvi la risorsa.
     you_havent_set_attachment_key: Non hai impostato un `attachment_key` per questo campo Trix.
     you_missed_something_check_form: Potresti aver dimenticato qualcosa. Controlla il modulo.
-    more_records_available: Sono disponibili più record.

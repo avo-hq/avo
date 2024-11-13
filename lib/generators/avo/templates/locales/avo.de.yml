@@ -62,6 +62,7 @@ de:
     loading: Lade...
     more: Mehr
     more_content: Mehr Inhalt
+    more_records_available: Es sind weitere Datensätze verfügbar.
     new: neu
     next_page: Nächste Seite
     no_cancel: Nein, abbrechen
@@ -123,4 +124,3 @@ de:
     you_cant_upload_new_resource: Du kannst keine Dateien in den Trix-Editor hochladen, bis die Ressource gespeichert ist.
     you_havent_set_attachment_key: Du hast keinen `attachment_key` für dieses Trix-Feld festgelegt.
     you_missed_something_check_form: Sie haben möglicherweise etwas übersehen. Bitte überprüfen Sie das Formular.
-    more_records_available: Es sind weitere Datensätze verfügbar.

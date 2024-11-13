@@ -64,6 +64,7 @@ nn:
     loading: Lastar
     more: Meir
     more_content: Mer innhold
+    more_records_available: Det finst fleire opptak tilgjengelege.
     new: ny
     next_page: Neste side
     no_cancel: Nei, avbryt
@@ -125,4 +126,3 @@ nn:
     you_cant_upload_new_resource: Du kan ikkje laste opp filer til Trix-editoren før du lagrar ressursen.
     you_havent_set_attachment_key: Du har ikkje sett ein `attachment_key` til dette Trix-feltet.
     you_missed_something_check_form: Her manglar du noko. Ver venleg og sjekk skjemaet.
-    more_records_available: Det finst fleire opptak tilgjengelege.

@@ -62,6 +62,7 @@ zh:
     loading: 加载中...
     more: 更多
     more_content: 更多内容
+    more_records_available: 还有更多记录可供参考。
     new: 新建
     next_page: 下一页
     no_cancel: 不，取消
@@ -123,4 +124,3 @@ zh:
     you_cant_upload_new_resource: 在保存资源之前，您无法将文件上传到 Trix 编辑器。
     you_havent_set_attachment_key: 您尚未为此 Trix 字段设置 `attachment_key`。
     you_missed_something_check_form: 您可能漏掉了一些内容，请检查表单。
-    more_records_available: 还有更多记录可供参考。

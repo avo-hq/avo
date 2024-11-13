@@ -97,9 +97,10 @@ RSpec.describe 'Create Via Belongs to', type: :system do
       let!(:course) { create :course }
       let!(:exceeded_course) { create :course }
 
-      it "limits select options" do
-        Avo.configuration.associations_query_limit = 1
+      before { Avo.configuration.associations_query_limit = 1 }
+      after { Avo.configuration.associations_query_limit = 2000 }
 
+      it "limits select options" do
         visit "/admin/resources/course_links/new"
         expect(page).to have_select "course_link_course_id", options: ["Choose an option", course.name, "There are more records available."]
         expect(page).to have_selector 'option[disabled="disabled"][value="There are more records available."]'
@@ -109,7 +110,7 @@ RSpec.describe 'Create Via Belongs to', type: :system do
 
   context 'with polymorphic belongs_to' do
     it 'successfully creates a new commentable and assigns it to the comment', :aggregate_failures do
-      visit '/admin/resources/comments/new'
+      visit "/admin/resources/comments/new"
 
       fill_in 'comment_body', with: 'Test comment'
 
@@ -142,10 +143,11 @@ RSpec.describe 'Create Via Belongs to', type: :system do
       let!(:user) { User.first }
       let!(:exceeded_user) { create :user }
 
-      it "limits select options" do
-        Avo.configuration.associations_query_limit = 1
+      before { Avo.configuration.associations_query_limit = 1 }
+      after { Avo.configuration.associations_query_limit = 2000 }
 
-        visit '/admin/resources/comments/new'
+      it "limits select options" do
+        visit "/admin/resources/comments/new"
         expect(page).to have_select "comment_user_id", options: ["Choose an option", user.name, "There are more records available."]
         expect(page).to have_selector 'option[disabled="disabled"][value="There are more records available."]'
       end

@@ -64,6 +64,7 @@ uk:
     loading: Завантаження
     more: Ще
     more_content: Більше вмісту
+    more_records_available: Є більше доступних записів.
     new: новий
     next_page: Наступна сторінка
     no_cancel: Ні, скасувати
@@ -125,4 +126,3 @@ uk:
     you_cant_upload_new_resource: Ви не можете завантажувати файли в редактор Trix, поки не збережете ресурс.
     you_havent_set_attachment_key: Ви не встановили `attachment_key` для цього поля Trix.
     you_missed_something_check_form: Можливо, ви щось пропустили. Перевірте форму.
-    more_records_available: Є більше доступних записів.

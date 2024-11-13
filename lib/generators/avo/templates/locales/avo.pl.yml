@@ -64,6 +64,7 @@ pl:
     loading: Ładowanie
     more: Więcej
     more_content: Pokaż wiecej
+    more_records_available: Dostępnych jest więcej rekordów.
     new: nowy
     next_page: Następna strona
     no_cancel: Nie, anuluj
@@ -125,4 +126,3 @@ pl:
     you_cant_upload_new_resource: Nie możesz przesyłać plików do edytora Trix, dopóki nie zapiszesz zasobu.
     you_havent_set_attachment_key: Nie ustawiłeś `attachment_key` dla tego pola Trix.
     you_missed_something_check_form: Możliwe, że coś przeoczyłeś. Sprawdź formularz.
-    more_records_available: Dostępnych jest więcej rekordów.
