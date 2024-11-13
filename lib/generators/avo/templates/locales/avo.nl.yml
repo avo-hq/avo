@@ -119,3 +119,4 @@ nl:
     x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> records geselecteerd op deze pagina
     yes_confirm: Ja, ik weet het zeker
     you_missed_something_check_form: U heeft mogelijk iets gemist. Controleer het formulier.
+    more_records_available: Er zijn meer records beschikbaar.

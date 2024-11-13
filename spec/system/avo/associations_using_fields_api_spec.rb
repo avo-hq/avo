@@ -31,4 +31,21 @@ RSpec.describe "Associations using *_fields api", type: :system do
       end
     }.to change(course.links, :count).by(-1)
   end
+
+  context "when associations options exceeds associations_query_limit" do
+    let!(:link) { Course::Link.first }
+
+    it "limits select options" do
+      Avo.configuration.associations_query_limit = 1
+
+      visit avo.resources_course_path(course)
+
+      scroll_to find('turbo-frame[id="has_many_field_show_links"]')
+
+      click_on "Attach link"
+
+      expect(page).to have_select "fields_related_id", options: ["Choose an option", link.link, "There are more records available."]
+      expect(page).to have_selector 'option[disabled="disabled"][value="There are more records available."]'
+    end
+  end
 end

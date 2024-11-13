@@ -119,3 +119,4 @@ de:
     x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> Einträge auf dieser Seite ausgewählt
     yes_confirm: Ja, ich bin sicher
     you_missed_something_check_form: Sie haben möglicherweise etwas übersehen. Bitte überprüfen Sie das Formular.
+    more_records_available: Es sind weitere Datensätze verfügbar.

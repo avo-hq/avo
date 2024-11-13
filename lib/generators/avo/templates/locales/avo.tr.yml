@@ -123,3 +123,4 @@ tr:
     you_cant_upload_new_resource: Kaynağı kaydedene kadar Trix editörüne dosya yükleyemezsiniz.
     you_havent_set_attachment_key: Bu Trix alanına bir `attachment_key` ayarlamadınız.
     you_missed_something_check_form: Bir şeyleri kaçırmış olabilirsiniz. Lütfen formu kontrol edin.
+    more_records_available: Daha fazla kayıt mevcut.

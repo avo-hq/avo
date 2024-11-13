@@ -69,7 +69,7 @@ Avo.configure do |config|
   # config.search_results_count = 8
 
   ## == Associations query limit on select options ==
-  # config.associations_query_limit = 1000
+  # config.associations_query_limit = 2000
 
   ## == Cache options ==
   ## Provide a lambda to customize the cache store used by Avo.

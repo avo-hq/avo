@@ -92,6 +92,19 @@ RSpec.describe 'Create Via Belongs to', type: :system do
 
       expect(Fish.last.user).to eq User.last
     end
+
+    context "when belongs_to record options exceeds associations_query_limit" do
+      let!(:course) { create :course }
+      let!(:exceeded_course) { create :course }
+
+      it "limits select options" do
+        Avo.configuration.associations_query_limit = 1
+
+        visit "/admin/resources/course_links/new"
+        expect(page).to have_select "course_link_course_id", options: ["Choose an option", course.name, "There are more records available."]
+        expect(page).to have_selector 'option[disabled="disabled"][value="There are more records available."]'
+      end
+    end
   end
 
   context 'with polymorphic belongs_to' do
@@ -123,6 +136,19 @@ RSpec.describe 'Create Via Belongs to', type: :system do
         body: 'Test Comment',
         commentable: Post.last
       )
+    end
+
+    context "when belongs_to record options exceeds associations_query_limit" do
+      let!(:user) { User.first }
+      let!(:exceeded_user) { create :user }
+
+      it "limits select options" do
+        Avo.configuration.associations_query_limit = 1
+
+        visit '/admin/resources/comments/new'
+        expect(page).to have_select "comment_user_id", options: ["Choose an option", user.name, "There are more records available."]
+        expect(page).to have_selector 'option[disabled="disabled"][value="There are more records available."]'
+      end
     end
   end
 

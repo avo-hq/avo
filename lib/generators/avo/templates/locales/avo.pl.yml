@@ -119,3 +119,4 @@ pl:
     x_records_selected_from_page_html: Wybrano <span class="font-bold text-gray-700">%{selected}</span> rekordów z tej strony
     yes_confirm: Tak, potwierdzam
     you_missed_something_check_form: Możliwe, że coś przeoczyłeś. Sprawdź formularz.
+    more_records_available: Dostępnych jest więcej rekordów.

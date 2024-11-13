@@ -120,7 +120,7 @@ module Avo
       @is_developer_method = :is_developer?
       @search_results_count = 8
       @first_sorting_option = :desc # :desc or :asc
-      @associations_query_limit = 1000
+      @associations_query_limit = 2000
     end
 
     def current_user_method(&block)

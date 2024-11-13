@@ -123,3 +123,4 @@ pt:
     you_cant_upload_new_resource: Não pode carregar ficheiros no editor Trix até guardar o recurso.
     you_havent_set_attachment_key: Precisa definir uma `attachment_key` para este campo Trix.
     you_missed_something_check_form: Pode ter-se esquecido algo. Por favor, verifique o formulário.
+    more_records_available: Existem mais registos disponíveis.

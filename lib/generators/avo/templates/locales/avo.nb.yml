@@ -123,3 +123,4 @@ nb:
     you_cant_upload_new_resource: Du kan ikke laste opp filer til Trix editoren før du lagrer ressursen.
     you_havent_set_attachment_key: Du har ikke satt en `attachment_key` til dette Trix-feltet.
     you_missed_something_check_form: Her mangler du noe. Vennligst sjekk skjemaet.
+    more_records_available: Det er flere poster tilgjengelig.

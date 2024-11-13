@@ -119,3 +119,4 @@ it:
     x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> record selezionati su questa pagina
     yes_confirm: Sì, sono sicuro
     you_missed_something_check_form: Potresti aver dimenticato qualcosa. Controlla il modulo.
+    more_records_available: Sono disponibili più record.

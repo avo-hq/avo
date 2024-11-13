@@ -121,3 +121,4 @@ en:
     you_cant_upload_new_resource: You can't upload files into the Trix editor until you save the resource.
     you_havent_set_attachment_key: You haven't set an `attachment_key` to this Trix field.
     you_missed_something_check_form: You might have missed something. Please check the form.
+    more_records_available: There are more records available.

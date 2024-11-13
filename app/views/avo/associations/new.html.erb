@@ -36,7 +36,7 @@
                 as: :select,
                 form: form,
                 name: @field.name.singularize,
-                options: options_for_select(@options, selected: nil, disabled: "There are more records available."),
+                options: options_for_select(@options, selected: nil, disabled: t("avo.more_records_available")),
                 include_blank: t('avo.choose_an_option'),
                 stacked: true,
                 classes: 'w-full'

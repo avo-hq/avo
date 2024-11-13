@@ -119,3 +119,4 @@ uk:
     x_records_selected_from_page_html: Вибрано <span class="font-bold text-gray-700">%{selected}</span> записів на цій сторінці
     yes_confirm: Так, підтверджую
     you_missed_something_check_form: Можливо, ви щось пропустили. Перевірте форму.
+    more_records_available: Є більше доступних записів.

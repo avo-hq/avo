@@ -51,7 +51,7 @@
               options_for_select(
                 @field.values_for_type(type),
                 selected: @field.value.is_a?(type) ? @field.value.to_param : nil,
-                disabled: "There are more records available."
+                disabled: t("avo.more_records_available")
               ),
               {
                 include_blank: @field.placeholder,
@@ -102,7 +102,7 @@
       %>
     <% else %>
       <%= @form.select @field.id_input_foreign_key,
-        options_for_select(@field.options, selected: @field.value.to_param, disabled: "There are more records available."),
+        options_for_select(@field.options, selected: @field.value.to_param, disabled: t("avo.more_records_available")),
         {
           include_blank: @field.placeholder,
         },

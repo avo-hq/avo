@@ -119,3 +119,4 @@ ru:
     x_records_selected_from_page_html: Выбрано <span class="font-bold text-gray-700">%{selected}</span> записей на этой странице
     yes_confirm: Да, уверен
     you_missed_something_check_form: Возможно, вы что-то упустили. Пожалуйста, проверьте форму.
+    more_records_available: Доступно больше записей.
