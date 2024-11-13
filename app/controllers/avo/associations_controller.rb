@@ -120,8 +120,8 @@ module Avo
 
       # Ensure inverse_of is present on STI
       if !@record.class.descends_from_active_record? && @reflection.inverse_of.blank? && Rails.env.development?
-        raise "Avo relies on the 'inverse_of' option to establish the inverse association and perform some specific logic.\n"\
-          "Please configure the 'inverse_of' option for the '#{@reflection.macro} :#{@reflection.name}' association "\
+        raise "Avo relies on the 'inverse_of' option to establish the inverse association and perform some specific logic.\n" \
+          "Please configure the 'inverse_of' option for the '#{@reflection.macro} :#{@reflection.name}' association " \
           "in the '#{@reflection.active_record.name}' model."
       end
     end
