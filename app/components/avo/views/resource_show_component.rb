@@ -50,7 +50,7 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
       {}
     end
 
-    helpers.edit_resource_path(record: @resource.record, resource: @resource, **args)
+    helpers.edit_resource_path(record: @resource.record, resource: @resource, **keep_referrer_params, **args)
   end
 
   def controls
