@@ -31,6 +31,7 @@ RSpec.describe Avo::Views::ResourceShowComponent, type: :component do
         test_controller.view_context.render(component)
 
         expect(component.back_path).to eq("/admin/resources/users?page=42")
+        expect(component.edit_path).to eq("/admin/resources/users/#{user.first_name.downcase}-#{user.last_name.downcase}/edit?page=42")
       end
     end
   end
