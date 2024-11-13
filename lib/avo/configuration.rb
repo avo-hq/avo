@@ -56,6 +56,7 @@ module Avo
     attr_accessor :is_developer_method
     attr_accessor :search_results_count
     attr_accessor :first_sorting_option
+    attr_accessor :associations_query_limit
 
     def initialize
       @root_path = "/avo"
@@ -119,6 +120,7 @@ module Avo
       @is_developer_method = :is_developer?
       @search_results_count = 8
       @first_sorting_option = :desc # :desc or :asc
+      @associations_query_limit = 1000
     end
 
     def current_user_method(&block)

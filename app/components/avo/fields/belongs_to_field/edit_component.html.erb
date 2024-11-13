@@ -49,10 +49,9 @@
             <% else %>
               <%= @form.select @field.id_input_foreign_key,
               options_for_select(
-                # Options
                 @field.values_for_type(type),
-                # Selected
-                @field.value.is_a?(type) ? @field.value.to_param : nil
+                selected: @field.value.is_a?(type) ? @field.value.to_param : nil,
+                disabled: "There are more records available."
               ),
               {
                 include_blank: @field.placeholder,
@@ -103,7 +102,7 @@
       %>
     <% else %>
       <%= @form.select @field.id_input_foreign_key,
-        options_for_select(@field.options, @field.value.to_param),
+        options_for_select(@field.options, selected: @field.value.to_param, disabled: "There are more records available."),
         {
           include_blank: @field.placeholder,
         },
