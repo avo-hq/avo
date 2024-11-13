@@ -1,11 +1,9 @@
 ---
 uk:
   avo:
-    resource_translations:
-      product:
-        save: "Зберегти продукт!"
     action_ran_successfully: Дія успішно виконана!
     actions: Дії
+    add_filter: Додати фільтр
     and_x_other_resources: і ще %{count} інших ресурсів
     applied: застосовано
     are_you_sure: Ви впевнені?
@@ -16,8 +14,8 @@ uk:
     attach_item: Прикріпити %{item}
     attachment_class_attached: "%{attachment_class} прикріплено."
     attachment_class_detached: "%{attachment_class} відкріплено."
-    attachment_failed: "Не вдалося прикріпити %{attachment_class}"
     attachment_destroyed: Вкладення знищено
+    attachment_failed: Не вдалося прикріпити %{attachment_class}
     cancel: Скасувати
     choose_a_country: Виберіть країну
     choose_an_option: Виберіть опцію
@@ -45,6 +43,8 @@ uk:
     failed_to_find_attachment: Не вдалося знайти вкладення
     failed_to_load: Не вдалося завантажити
     file:
+      few: файли
+      many: файлів
       one: файл
       other: файлів
     filter_by: Фільтрувати за
@@ -57,10 +57,13 @@ uk:
       add_row: Додати рядок
       delete_row: Видалити рядок
       key: Ключ
+      reorder_row: Змінити порядок рядка
       value: Значення
+    less_content: Менше вмісту
     list_is_empty: Список порожній
     loading: Завантаження
     more: Ще
+    more_content: Більше вмісту
     new: новий
     next_page: Наступна сторінка
     no_cancel: Ні, скасувати
@@ -84,8 +87,8 @@ uk:
     prev_page: Попередня сторінка
     records_selected_from_all_pages_html: Вибрані всі записи з усіх сторінок
     remove_selection: Видалити вибір
-    reset_filters: Скинути фільтри
     reset: Скинути
+    reset_filters: Скинути фільтри
     resource_created: Запис створено
     resource_destroyed: Запис видалено
     resource_updated: Запис оновлено
@@ -102,6 +105,7 @@ uk:
     sign_out: Вийти
     switch_to_view: Перейти до виду %{view_type}
     table_view: Таблиця
+    this_field_has_attachments_disabled: Прикріплення для цього поля вимкнено.
     tools: Інструменти
     type_to_search: Введіть для пошуку.
     unauthorized: Не авторизовано
@@ -118,5 +122,7 @@ uk:
     x_records_selected_from_all_pages_html: Вибрано <span class="font-bold text-gray-700">%{count}</span> записів з усіх сторінок
     x_records_selected_from_page_html: Вибрано <span class="font-bold text-gray-700">%{selected}</span> записів на цій сторінці
     yes_confirm: Так, підтверджую
+    you_cant_upload_new_resource: Ви не можете завантажувати файли в редактор Trix, поки не збережете ресурс.
+    you_havent_set_attachment_key: Ви не встановили `attachment_key` для цього поля Trix.
     you_missed_something_check_form: Можливо, ви щось пропустили. Перевірте форму.
     more_records_available: Є більше доступних записів.

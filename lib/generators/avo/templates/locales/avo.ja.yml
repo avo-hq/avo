@@ -59,9 +59,11 @@ ja:
       key: キー
       reorder_row: 行の並べ替え
       value: 値
+    less_content: コンテンツが少ない
     list_is_empty: リストは空です
     loading: 読み込み中
     more: もっと
+    more_content: さらなるコンテンツ
     new: 新規
     next_page: 次のページ
     no_cancel: いいえ、キャンセル

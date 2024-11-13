@@ -1,6 +1,7 @@
 <%# hover:z-[21] removed from tr class to solve flickering actions component on row controls and z-20 changed to z-21%>
 
 <%= content_tag :tr,
+  id: "#{self.class.to_s.underscore}_#{@resource.record.to_param}",
   class: class_names("bg-white hover:bg-gray-50 hover:shadow-row z-21 border-b", {"cursor-pointer": click_row_to_view_record}),
   data: {
     component_name: self.class.to_s.underscore,

@@ -31,8 +31,6 @@ RSpec.describe "TrixField", type: :system do
 
         save
 
-        click_on "Show content"
-
         expect(find_field_value_element("body")).to have_text "Works for us!!!"
       end
 
@@ -59,9 +57,45 @@ RSpec.describe "TrixField", type: :system do
       it "displays the posts body" do
         visit "/admin/resources/posts/#{post.id}"
 
-        click_on "Show content"
-
+        expect(page).not_to have_link("More content", href: "javascript:void(0);")
         expect(find_field_value_element("body")).to have_text ActionView::Base.full_sanitizer.sanitize(body)
+      end
+
+      context "when body has more then 1 line" do
+        let!(:body) do
+          <<~HTML
+            <div>test1</div>
+            <div>test2</div>
+            <div>test3</div>
+            <div>test4</div>
+            <div>test5</div>
+          HTML
+        end
+
+        it "displays correct button" do
+          visit "/admin/resources/posts/#{post.id}"
+
+          expect(page).to have_link("More content", href: "javascript:void(0);")
+
+          click_on "More content"
+
+          expect(page).to have_link("Less content", href: "javascript:void(0);")
+
+          click_on "Less content"
+        end
+
+        it "always_show" do
+          Avo::Resources::Post.with_temporary_items do
+            field :body, as: :trix, always_show: true
+          end
+
+          visit "/admin/resources/posts/#{post.id}"
+
+          expect(page).not_to have_link("More content", href: "javascript:void(0);")
+          expect(page).not_to have_link("Less content", href: "javascript:void(0);")
+
+          Avo::Resources::Post.restore_items_from_backup
+        end
       end
     end
 
@@ -86,7 +120,6 @@ RSpec.describe "TrixField", type: :system do
         fill_in_trix_editor "trix_post_body", with: "New example!"
 
         save
-        click_on "Show content"
 
         expect(find_field_value_element("body")).to have_text "New example!"
       end

@@ -1,11 +1,9 @@
 ---
 ru:
   avo:
-    resource_translations:
-      product:
-        save: "Сохранить продукт!"
     action_ran_successfully: Действие успешно выполнено!
     actions: Действия
+    add_filter: Добавить фильтр
     and_x_other_resources: и %{count} других ресурсов
     applied: применено
     are_you_sure: Вы уверены?
@@ -16,8 +14,8 @@ ru:
     attach_item: Прикрепить %{item}
     attachment_class_attached: "%{attachment_class} прикреплено."
     attachment_class_detached: "%{attachment_class} отсоединено."
-    attachment_failed: "Не удалось прикрепить %{attachment_class}"
     attachment_destroyed: Вложение удалено
+    attachment_failed: Не удалось прикрепить %{attachment_class}
     cancel: Отмена
     choose_a_country: Выберите страну
     choose_an_option: Выберите опцию
@@ -45,8 +43,10 @@ ru:
     failed_to_find_attachment: Вложение не найдено
     failed_to_load: Загрузка не удалась
     file:
+      few: файла
+      many: файлов
       one: файл
-      other: файлы
+      other: файлов
     filter_by: Фильтровать по
     filters: Фильтры
     go_back: Назад
@@ -57,10 +57,13 @@ ru:
       add_row: Добавить строку
       delete_row: Удалить строку
       key: Ключ
+      reorder_row: Перенести строку
       value: Значение
+    less_content: Меньше контента
     list_is_empty: Список пуст
     loading: Загрузка...
     more: Ещё
+    more_content: Больше контента
     new: новый
     next_page: Следующая страница
     no_cancel: Нет, отмена
@@ -84,8 +87,8 @@ ru:
     prev_page: Предыдущая страница
     records_selected_from_all_pages_html: Все записи выбраны со всех страниц
     remove_selection: Убрать выбор
-    reset_filters: Сбросить фильтры
     reset: сбросить
+    reset_filters: Сбросить фильтры
     resource_created: Запись создана
     resource_destroyed: Запись удалена
     resource_updated: Запись обновлена
@@ -102,6 +105,7 @@ ru:
     sign_out: Выйти
     switch_to_view: Переключиться на вид %{view_type}
     table_view: Таблица
+    this_field_has_attachments_disabled: Для этого поля прикрепления отключены.
     tools: Инструменты
     type_to_search: Поиск...
     unauthorized: Не авторизован
@@ -118,5 +122,7 @@ ru:
     x_records_selected_from_all_pages_html: Выбрано <span class="font-bold text-gray-700">%{count}</span> записей со всех страниц
     x_records_selected_from_page_html: Выбрано <span class="font-bold text-gray-700">%{selected}</span> записей на этой странице
     yes_confirm: Да, уверен
+    you_cant_upload_new_resource: Вы не можете загружать файлы в редактор Trix, пока не сохраните ресурс.
+    you_havent_set_attachment_key: Вы не установили `attachment_key` для этого поля Trix.
     you_missed_something_check_form: Возможно, вы что-то упустили. Пожалуйста, проверьте форму.
     more_records_available: Доступно больше записей.

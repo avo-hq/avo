@@ -32,12 +32,8 @@ module Avo
       def fill_field(record, key, value, params)
         return record unless record.methods.include? key.to_sym
 
-        value.each do |file|
-          # Skip empty values
-          next unless file.present?
-
-          record.send(key).attach file
-        end
+        # attach files in one call to avoid index_active_storage_attachments_uniqueness violation
+        record.send(key).attach(value.compact_blank)
 
         record
       end

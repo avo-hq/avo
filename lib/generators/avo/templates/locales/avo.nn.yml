@@ -59,9 +59,11 @@ nn:
       key: Nøkkel
       reorder_row: Omorganiser rad
       value: Verdi
+    less_content: Mindre innhold
     list_is_empty: Lista er tom
     loading: Lastar
     more: Meir
+    more_content: Mer innhold
     new: ny
     next_page: Neste side
     no_cancel: Nei, avbryt

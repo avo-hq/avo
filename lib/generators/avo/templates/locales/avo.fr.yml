@@ -59,9 +59,11 @@ fr:
       key: Clé
       reorder_row: Réorganiser la ligne
       value: Valeur
+    less_content: Moins de contenu
     list_is_empty: La liste est vide
     loading: Chargement
     more: Plus
+    more_content: Plus de contenu
     new: Nouveau
     next_page: Page suivante
     no_cancel: Non, annuler
