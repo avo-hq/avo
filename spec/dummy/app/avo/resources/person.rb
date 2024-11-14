@@ -10,7 +10,7 @@ class Avo::Resources::Person < Avo::BaseResource
 
   def fields
     field :name, as: :text, link_to_record: true, sortable: true, stacked: true
-    field :type, as: ::Pluggy::Fields::RadioField, name: "Type", options: {Spouse: "Spouse", Sibling: "Sibling"}, include_blank: true, filterable: true
+    field :type, as: :pluggy_radio, name: "Type", options: {Spouse: "Spouse", Sibling: "Sibling"}, include_blank: true, filterable: true
     field :link, as: :text, as_html: true
     field :spouses, as: :has_many, hide_search_input: true
     field :person, as: :belongs_to
