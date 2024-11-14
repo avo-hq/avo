@@ -32,11 +32,11 @@ RSpec.describe "Associations using *_fields api", type: :system do
     }.to change(course.links, :count).by(-1)
   end
 
-  context "when associations options exceeds associations_query_limit" do
+  context "when associations options exceeds associations_lookup_list_limit" do
     let!(:link) { Course::Link.first }
 
-    before { Avo.configuration.associations_query_limit = 1 }
-    after { Avo.configuration.associations_query_limit = 1000 }
+    before { Avo.configuration.associations_lookup_list_limit = 1 }
+    after { Avo.configuration.associations_lookup_list_limit = 1000 }
 
     it "limits select options" do
       visit avo.resources_course_path(course)

@@ -93,12 +93,12 @@ RSpec.describe 'Create Via Belongs to', type: :system do
       expect(Fish.last.user).to eq User.last
     end
 
-    context "when belongs_to record options exceeds associations_query_limit" do
+    context "when belongs_to record options exceeds associations_lookup_list_limit" do
       let!(:course) { create :course }
       let!(:exceeded_course) { create :course }
 
-      before { Avo.configuration.associations_query_limit = 1 }
-      after { Avo.configuration.associations_query_limit = 1000 }
+      before { Avo.configuration.associations_lookup_list_limit = 1 }
+      after { Avo.configuration.associations_lookup_list_limit = 1000 }
 
       it "limits select options" do
         visit "/admin/resources/course_links/new"
@@ -139,12 +139,12 @@ RSpec.describe 'Create Via Belongs to', type: :system do
       )
     end
 
-    context "when belongs_to record options exceeds associations_query_limit" do
+    context "when belongs_to record options exceeds associations_lookup_list_limit" do
       let!(:user) { User.first }
       let!(:exceeded_user) { create :user }
 
-      before { Avo.configuration.associations_query_limit = 1 }
-      after { Avo.configuration.associations_query_limit = 1000 }
+      before { Avo.configuration.associations_lookup_list_limit = 1 }
+      after { Avo.configuration.associations_lookup_list_limit = 1000 }
 
       it "limits select options" do
         visit "/admin/resources/comments/new"
