@@ -159,6 +159,9 @@ module Avo
 
       def primary_key
         @primary_key ||= reflection.association_primary_key
+      # Quick fix for "Polymorphic associations do not support computing the class."
+      rescue
+        id
       end
 
       def foreign_key
