@@ -127,7 +127,7 @@ module Avo
         end
 
         query.all.map do |record|
-          [resource.new(record: record).record_title, record.to_param]
+          [resource.new(record: record).record_title, record.send(primary_key)]
         end
       end
 
@@ -155,6 +155,10 @@ module Avo
         polymorphic_as.present?
       rescue
         false
+      end
+
+      def primary_key
+        @primary_key ||= reflection.association_primary_key
       end
 
       def foreign_key
@@ -211,12 +215,12 @@ module Avo
           if valid_model_class.blank? || id_from_param.blank?
             record.send(:"#{polymorphic_as}_id=", nil)
           else
-            record_id = target_resource(record:, polymorphic_model_class: value.safe_constantize).find_record(id_from_param).id
+            record_id = target_resource(record:, polymorphic_model_class: value.safe_constantize).find_record(id_from_param).send(primary_key)
 
             record.send(:"#{polymorphic_as}_id=", record_id)
           end
         else
-          record_id = value.blank? ? value : target_resource(record:).find_record(value).id
+          record_id = value.blank? ? value : target_resource(record:).find_record(value).send(primary_key)
 
           record.send(:"#{key}=", record_id)
         end
