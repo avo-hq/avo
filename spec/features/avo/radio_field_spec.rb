@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "RadioField", type: :system do
+RSpec.describe "RadioField", type: :feature do
   describe "when size is present" do
     let!(:fish) { create :fish, size: "small" }
 
@@ -8,7 +8,7 @@ RSpec.describe "RadioField", type: :system do
       it "displays the fish name" do
         visit "/admin/resources/fish"
 
-        expect(page).to have_text "SIZE"
+        expect(page).to have_text "Size"
         expect(page).to have_text fish.size
       end
     end
