@@ -36,7 +36,7 @@ RSpec.describe "Associations using *_fields api", type: :system do
     let!(:link) { Course::Link.first }
 
     before { Avo.configuration.associations_query_limit = 1 }
-    after { Avo.configuration.associations_query_limit = 2000 }
+    after { Avo.configuration.associations_query_limit = 1000 }
 
     it "limits select options" do
       visit avo.resources_course_path(course)

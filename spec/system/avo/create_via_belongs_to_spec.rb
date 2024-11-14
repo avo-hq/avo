@@ -98,7 +98,7 @@ RSpec.describe 'Create Via Belongs to', type: :system do
       let!(:exceeded_course) { create :course }
 
       before { Avo.configuration.associations_query_limit = 1 }
-      after { Avo.configuration.associations_query_limit = 2000 }
+      after { Avo.configuration.associations_query_limit = 1000 }
 
       it "limits select options" do
         visit "/admin/resources/course_links/new"
@@ -144,7 +144,7 @@ RSpec.describe 'Create Via Belongs to', type: :system do
       let!(:exceeded_user) { create :user }
 
       before { Avo.configuration.associations_query_limit = 1 }
-      after { Avo.configuration.associations_query_limit = 2000 }
+      after { Avo.configuration.associations_query_limit = 1000 }
 
       it "limits select options" do
         visit "/admin/resources/comments/new"
