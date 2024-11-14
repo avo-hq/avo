@@ -278,7 +278,7 @@ module Avo
       query.all.limit(Avo.configuration.associations_query_limit).map do |record|
         [@attachment_resource.new(record: record).record_title, record.to_param]
       end.tap do |options|
-        options << t("avo.more_records_available") if query.all.count > Avo.configuration.associations_query_limit
+        options << t("avo.more_records_available") if options.size == Avo.configuration.associations_query_limit
       end
     end
   end
