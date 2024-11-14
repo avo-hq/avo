@@ -127,7 +127,7 @@ module Avo
         end
 
         query.all.map do |record|
-          [resource.new(record: record).record_title, record.to_param]
+          [resource.new(record: record).record_title, primary_key.present? ? record.send(primary_key) : record.to_param]
         end
       end
 
@@ -155,6 +155,13 @@ module Avo
         polymorphic_as.present?
       rescue
         false
+      end
+
+      def primary_key
+        @primary_key ||= reflection.association_primary_key
+      # Quick fix for "Polymorphic associations do not support computing the class."
+      rescue
+        nil
       end
 
       def foreign_key
@@ -211,12 +218,22 @@ module Avo
           if valid_model_class.blank? || id_from_param.blank?
             record.send(:"#{polymorphic_as}_id=", nil)
           else
-            record_id = target_resource(record:, polymorphic_model_class: value.safe_constantize).find_record(id_from_param).id
+            record = target_resource(record:, polymorphic_model_class: value.safe_constantize).find_record(id_from_param)
+            record_id = if primary_key.present?
+              record.send(primary_key)
+            else
+              record.id
+            end
 
             record.send(:"#{polymorphic_as}_id=", record_id)
           end
         else
-          record_id = value.blank? ? value : target_resource(record:).find_record(value).id
+          record = value.blank? ? value : target_resource(record:).find_record(value)
+          record_id = if primary_key.present?
+            record.send(primary_key)
+          else
+            record.id
+          end
 
           record.send(:"#{key}=", record_id)
         end
