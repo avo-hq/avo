@@ -161,7 +161,7 @@ module Avo
         @primary_key ||= reflection.association_primary_key
       # Quick fix for "Polymorphic associations do not support computing the class."
       rescue
-        id
+        nil
       end
 
       def foreign_key
@@ -218,12 +218,22 @@ module Avo
           if valid_model_class.blank? || id_from_param.blank?
             record.send(:"#{polymorphic_as}_id=", nil)
           else
-            record_id = target_resource(record:, polymorphic_model_class: value.safe_constantize).find_record(id_from_param).send(primary_key)
+            record = target_resource(record:, polymorphic_model_class: value.safe_constantize).find_record(id_from_param)
+            record_id = if primary_key.present?
+              record.send(primary_key)
+            else
+              record.id
+            end
 
             record.send(:"#{polymorphic_as}_id=", record_id)
           end
         else
-          record_id = value.blank? ? value : target_resource(record:).find_record(value).send(primary_key)
+          record = value.blank? ? value : target_resource(record:).find_record(value)
+          record_id = if primary_key.present?
+            record.send(primary_key)
+          else
+            record.id
+          end
 
           record.send(:"#{key}=", record_id)
         end
