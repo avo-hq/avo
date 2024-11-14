@@ -127,7 +127,7 @@ module Avo
         end
 
         query.all.map do |record|
-          [resource.new(record: record).record_title, primary_key.present? ? record.send(primary_key) : record.id]
+          [resource.new(record: record).record_title, primary_key.present? ? record.send(primary_key) : record.to_param]
         end
       end
 
