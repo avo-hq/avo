@@ -93,6 +93,16 @@ export default class extends Controller {
     this.currentFormState = {}
   }
 
+  handleDirtyFormNavigation(event) {
+    const message = 'Are you sure you want to navigate away from the page? You will lose all your changes.'
+
+    if (window.confirm(message)) {
+      this.resetState()
+    } else {
+      event.preventDefault()
+    }
+  }
+
   preventTurboNavigation(event) {
     // don't intercept if URL doesn't change e.g. modals OR when form is submitting
     if (event.detail.url === this.currentLocationUrl || this.isFormSubmitting) {
@@ -102,13 +112,7 @@ export default class extends Controller {
     this.evaluateFormState()
 
     if (this.isDirty) {
-      const message = 'Are you sure you want to navigate away from the page? You will lose all your changes.'
-
-      if (window.confirm(message)) {
-        this.resetState()
-      } else {
-        event.preventDefault()
-      }
+      this.handleDirtyFormNavigation(event)
     }
   }
 
