@@ -5,7 +5,8 @@ export default class extends Controller {
 
   connect() {
     this.isDirty = false
-    this.skipFormStateEvaluation = false
+    this.isFormSubmitting = false
+    this.currentLocationUrl = window.location.href
 
     this.initialFormState = this.getFormState()
     this.currentFormState = this.getFormState()
@@ -21,6 +22,9 @@ export default class extends Controller {
       this.preventTurboNavigation.bind(this),
     )
     window.addEventListener('beforeunload', this.preventFullPageNavigation.bind(this))
+
+    this.formTarget.addEventListener('turbo:submit-start', this.handleFormSubmitStart.bind(this))
+    this.formTarget.addEventListener('turbo:submit-end', this.handleFormSubmitEnd.bind(this))
   }
 
   disconnect() {
@@ -65,17 +69,33 @@ export default class extends Controller {
   }
 
   evaluateFormState() {
-    if (this.skipFormStateEvaluation) return
-
     const isFormDirty = Object.keys(this.initialFormState).some((key) => this.initialFormState[key] !== this.currentFormState[key])
+    // for key value fields which are not present in initial state for new form
     const isNewFieldAdded = Object.keys(this.currentFormState).length > Object.keys(this.initialFormState).length
 
     this.isDirty = isFormDirty || isNewFieldAdded
   }
 
+  handleFormSubmitStart() {
+    this.isFormSubmitting = true
+  }
+
+  handleFormSubmitEnd(event) {
+    if (event.detail.success) {
+      this.resetState()
+    }
+  }
+
+  resetState() {
+    this.isDirty = false
+    this.isFormSubmitting = false
+    this.initialFormState = {}
+    this.currentFormState = {}
+  }
+
   preventTurboNavigation(event) {
-    // don't intercept if modals
-    if (event.detail.url.includes('/new')) {
+    // don't intercept if URL doesn't change e.g. modals OR when form is submitting
+    if (event.detail.url === this.currentLocationUrl || this.isFormSubmitting) {
       return
     }
 
@@ -85,8 +105,7 @@ export default class extends Controller {
       const message = 'Are you sure you want to navigate away from the page? You will lose all your changes.'
 
       if (window.confirm(message)) {
-        this.isDirty = false
-        this.skipFormStateEvaluation = true
+        this.resetState()
       } else {
         event.preventDefault()
       }
