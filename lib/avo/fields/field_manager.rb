@@ -38,7 +38,7 @@ module Avo
         Avo::Fields::BaseField.descendants.each do |class_name|
           next if class_name.to_s == "BaseField"
 
-          if class_name.to_s.end_with? "Field"
+          if class_name.to_s.starts_with?("Avo") && class_name.to_s.end_with?("Field")
             load_field class_name.get_field_name, class_name
           end
         end
