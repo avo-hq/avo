@@ -24,6 +24,10 @@ export default class extends Controller {
     'clearButton',
   ]
 
+  static values = {
+    extraParams: Object,
+  }
+
   debouncedFetch = debouncePromise(fetch, this.searchDebounce)
 
   destroyMethod
@@ -256,6 +260,7 @@ export default class extends Controller {
       ...Object.fromEntries(new URLSearchParams(window.location.search)),
       q: query,
       global: false,
+      ...this.extraParamsValue,
     }
 
     if (this.isGlobalSearch) {
