@@ -4,7 +4,7 @@ module Pluggy
       ActiveSupport.on_load(:avo_boot) do
         Avo.plugin_manager.register :pluggy
 
-        Avo.plugin_manager.register_field :radio, Pluggy::Fields::RadioField
+        Avo.plugin_manager.register_field :pluggy_radio, Pluggy::Fields::RadioField
       end
     end
   end
