@@ -36,9 +36,11 @@ module Avo
       # Avo::Fields::DateTimeField -> date_time
       def init_fields
         Avo::Fields::BaseField.descendants.each do |class_name|
-          next unless valid_class_name?(class_name)
+          next if class_name.to_s == "BaseField"
 
-          load_field class_name.get_field_name, class_name
+          if class_name.to_s.end_with? "Field"
+            load_field class_name.get_field_name, class_name
+          end
         end
       end
 
@@ -55,10 +57,6 @@ module Avo
 
       def field_exists?(name)
         fields.pluck(:name).map(&:to_sym).include?(name.to_sym)
-      end
-
-      def valid_class_name?(class_name)
-        class_name.to_s != "BaseField" && class_name.to_s.starts_with?("Avo::Fields") && class_name.to_s.end_with?("Field")
       end
     end
   end

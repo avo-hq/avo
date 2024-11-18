@@ -5,6 +5,8 @@ module Pluggy
 
       attr_reader :options
 
+      self.field_name_attribute = :pluggy_radio
+
       def initialize(id, **args, &block)
         super(id, **args, &block)
 
