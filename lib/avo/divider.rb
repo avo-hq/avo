@@ -1,8 +1,8 @@
 class Avo::Divider < Avo::BaseAction
-  attr_reader :label, :view
+  attr_reader :label
 
-  def initialize(label: nil, view: nil, **kwargs)
-    @label = label
-    @view = view
+  def initialize(**kwargs)
+    @label = kwargs[:label]
+    @view = kwargs[:view]
   end
 end
