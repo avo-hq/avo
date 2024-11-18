@@ -26,8 +26,8 @@ RSpec.describe "RadioField", type: :feature do
         visit "/admin/resources/fish/#{fish.id}/edit"
 
         expect(Avo.field_manager.fields).to include(
-          name: "radio", class: Avo::Fields::RadioField,
-          name: "pluggy_radio", class: Pluggy::Fields::RadioField
+          {name: "radio", class: Avo::Fields::RadioField},
+          {name: "pluggy_radio", class: Pluggy::Fields::RadioField}
         )
 
         expect(page).to have_checked_field "fish_size_small"
