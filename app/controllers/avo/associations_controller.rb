@@ -60,9 +60,7 @@ module Avo
           query = Avo::ExecutionContext.new(target: @field.attach_scope, query: query, parent: @record).handle
         end
 
-        @options = query.all.map do |record|
-          [@attachment_resource.new(record: record).record_title, record.to_param]
-        end
+        @options = select_options(query)
       end
 
       @url = Avo::Services::URIService.parse(avo.root_url.to_s)
@@ -280,6 +278,14 @@ module Avo
         else
           format.html { redirect_to params[:referrer] || resource_view_response_path }
         end
+      end
+    end
+
+    def select_options(query)
+      query.all.limit(Avo.configuration.associations_lookup_list_limit).map do |record|
+        [@attachment_resource.new(record: record).record_title, record.to_param]
+      end.tap do |options|
+        options << t("avo.more_records_available") if options.size == Avo.configuration.associations_lookup_list_limit
       end
     end
   end

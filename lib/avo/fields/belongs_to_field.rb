@@ -126,8 +126,10 @@ module Avo
           query = Avo::ExecutionContext.new(target: attach_scope, query: query, parent: get_record).handle
         end
 
-        query.all.map do |record|
+        query.all.limit(Avo.configuration.associations_lookup_list_limit).map do |record|
           [resource.new(record: record).record_title, record.to_param]
+        end.tap do |options|
+          options << t("avo.more_records_available") if options.size == Avo.configuration.associations_lookup_list_limit
         end
       end
 
