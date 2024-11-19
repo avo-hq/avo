@@ -37,7 +37,7 @@ class Avo::Resources::Items::Holder
     add_item field_parser.instance
   end
 
-  def tabs(tab = nil, id: nil, name: nil, title: nil, description: nil, **kwargs, &block)
+  def tabs(tab = nil, id: nil, name: nil, title: nil, description: nil, **, &block)
     if tab.present?
       add_item tab
     else
@@ -47,7 +47,7 @@ class Avo::Resources::Items::Holder
         name: name,
         title: title,
         description: description,
-        **kwargs,
+        **,
         &block
       )
     end
