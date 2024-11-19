@@ -3,7 +3,7 @@ require_dependency "avo/base_controller"
 module Avo
   class ChartsController < BaseController
     def distribution_chart
-      @values_summary = records.group(params[:field_id]).reorder("count_all desc").count
+      @values_summary = scoped_query.group(params[:field_id].to_sym).reorder("count_all desc").count
 
       @field_id = params[:field_id]
 
@@ -12,11 +12,13 @@ module Avo
 
     private
 
-    def records
+    def scoped_query
       if is_associated_record?
-        related_records
+        query = resource.authorization&.apply_policy related_records
+
+        Avo::ExecutionContext.new(target: resource.search_query, query: query).handle
       else
-        resource.model_class
+        resource.query_scope
       end
     end
 
