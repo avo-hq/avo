@@ -4,5 +4,7 @@
     class: classes("w-full"),
     placeholder: field.placeholder,
     disabled: disabled?,
-    autofocus: @autofocus %>
+    autofocus: @autofocus,
+    **field.edit_input_additional_attributes
+  %>
 <% end %>

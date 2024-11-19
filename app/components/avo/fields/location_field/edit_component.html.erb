@@ -5,12 +5,14 @@
         <%= coordinates_form.text_field @field.as_lat_long_field_id(:lat),
           value: @field.as_lat_long_value(:lat),
           class: classes("w-full"),
-          placeholder: @field.as_lat_long_placeholder(:lat)
+          placeholder: @field.as_lat_long_placeholder(:lat),
+          **@field.edit_input_additional_attributes
         %>
         <%= coordinates_form.text_field @field.as_lat_long_field_id(:long),
           value: @field.as_lat_long_value(:long),
           class: classes("w-full"),
-          placeholder: @field.as_lat_long_placeholder(:long)
+          placeholder: @field.as_lat_long_placeholder(:long),
+          **@field.edit_input_additional_attributes
         %>
     <% end %>
     </div>
@@ -18,7 +20,8 @@
     <%= @form.text_field @field.id,
       value: @field.value,
       class: classes("w-full"),
-      placeholder: @field.placeholder
+      placeholder: @field.placeholder,
+      **@field.edit_input_additional_attributes
     %>
   <% end %>
 <% end %>

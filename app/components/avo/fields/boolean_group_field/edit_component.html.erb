@@ -11,7 +11,8 @@
               id: "#{@form_scope}_#{@field.id}_#{id}",
               style: @style,
               multiple: true,
-              checked: checked?(id)
+              checked: checked?(id),
+              **@field.edit_input_additional_attributes
             },
             id,
             ""

@@ -4,6 +4,14 @@ module Avo
       module HasHTMLAttributes
         extend ActiveSupport::Concern
 
+        # The default attributes can be used within any
+        # view: (index, show, or edit)
+        # element: (wrapper, label, content or input)
+        #
+        # Additional attributes not included in DEFAULT_ATTRIBUTES
+        # are used only on edit (view) input (element)
+        DEFAULT_ATTRIBUTES = %i[style classes data]
+
         attr_reader :html
 
         # Used to get attributes for elements and views
@@ -11,7 +19,7 @@ module Avo
         # examples:
         # get_html :data, view: :edit, element: :input
         # get_html :classes, view: :show, element: :wrapper
-        # get_html :styles, view: :index, element: :wrapper
+        # get_html :style, view: :index, element: :wrapper
         def get_html(name = nil, element:, view:)
           view = view.to_sym if view.present?
 
@@ -36,6 +44,15 @@ module Avo
           value_or_default name, attributes
         end
 
+        def edit_input_additional_attributes
+          view = :edit
+          element = :input
+
+          additional_attributes(view, element).each_with_object({}) do |attribute, hash|
+            hash[attribute] = get_html(attribute, element:, view:)
+          end
+        end
+
         private
 
         def value_or_default(name, attributes)
@@ -53,6 +70,14 @@ module Avo
           elsif @html.respond_to? :call
             Avo::HTML::Builder.parse_block(record: record, resource: resource, &@html)
           end
+        end
+
+        def additional_attributes(view, element)
+          parsed = parse_html
+
+          return [] unless parsed.is_a? Hash
+
+          (parsed.dig(view, element) || {}).keys - DEFAULT_ATTRIBUTES
         end
 
         def default_attribute_value(name)

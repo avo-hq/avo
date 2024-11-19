@@ -8,6 +8,7 @@
     style: @field.get_html(:style, view: view, element: :input),
     multiple: multiple,
     autocomplete: @field.autocomplete,
-    autofocus: @autofocus
+    autofocus: @autofocus,
+    **@field.edit_input_additional_attributes
   %>
 <% end %>
