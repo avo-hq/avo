@@ -1,4 +1,8 @@
 class Avo::TabHeaderComponent < Avo::BaseComponent
-  prop :title, reader: :public
-  prop :description, reader: :public
+  prop :title
+  prop :description
+
+  def render?
+    (@title || @description).present?
+  end
 end
