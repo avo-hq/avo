@@ -118,7 +118,7 @@ module Generators
           component = component_to_eject.underscore
 
           # Get the component path for both, the rb and erb files
-          rb, erb = if component_constant = component_to_eject.safe_constantize
+          rb, erb = if (component_constant = component_to_eject.safe_constantize)
             # If component is a constant, find the source location
             source_location = component_constant.source_location
 
