@@ -117,8 +117,16 @@ module Generators
           # Example: Avo::Views::ResourceIndexComponent => avo/views/resource_index_component
           component = component_to_eject.underscore
 
+
           # Get the component path for both, the rb and erb files
-          rb, erb = ["app/components/#{component}.rb", "app/components/#{component}.html.erb"]
+          rb, erb = if component_constant = component_to_eject.safe_constantize
+            # If component is a constant, find the source location
+            source_location = component_constant.source_location
+
+            [source_location, source_location.gsub(".rb", ".html.erb")]
+          else
+            ["app/components/#{component}.rb", "app/components/#{component}.html.erb"]
+          end
 
           # Return if one of the components doesn't exist
           if !path_exists?(rb) || !path_exists?(erb)
