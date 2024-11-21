@@ -179,7 +179,7 @@ module Avo
         end
 
         def name
-          @name ||= name_from_translation_key(count: 1, default: class_name.underscore.humanize)
+          name_from_translation_key(count: 1, default: class_name.underscore.humanize)
         end
         alias_method :singular_name, :name
 
@@ -203,8 +203,6 @@ module Avo
         end
 
         def underscore_name
-          return @name if @name.present?
-
           name.demodulize.underscore
         end
 
