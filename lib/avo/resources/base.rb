@@ -179,7 +179,7 @@ module Avo
         end
 
         def name
-          @name ||= name_from_translation_key(count: 1, default: class_name.underscore.humanize)
+          name_from_translation_key(count: 1, default: class_name.underscore.humanize)
         end
         alias_method :singular_name, :name
 
@@ -203,8 +203,6 @@ module Avo
         end
 
         def underscore_name
-          return @name if @name.present?
-
           name.demodulize.underscore
         end
 
@@ -256,39 +254,6 @@ module Avo
       delegate :find_record, to: :class
       delegate :model_key, to: :class
       delegate :tab, to: :items_holder
-
-      # Test if instance methods fixes the issue
-      # Uncomment to test theory
-      # def translation_key
-      #   @translation_key || "avo.resource_translations.#{class_name.underscore}"
-      # end
-
-      # def name
-      #   @name ||= name_from_translation_key(count: 1, default: class_name.underscore.humanize)
-      # end
-      # alias_method :singular_name, :name
-
-      # def plural_name
-      #   name_from_translation_key(count: 2, default: name.pluralize)
-      # end
-
-      # def name_from_translation_key(count:, default:)
-      #   t(translation_key, count:, default:).humanize
-      # rescue I18n::InvalidPluralizationData
-      #   default
-      # end
-
-      # def underscore_name
-      #   return @name if @name.present?
-
-      #   name.demodulize.underscore
-      # end
-
-      # def navigation_label
-      #   plural_name.humanize
-      # end
-
-
 
       def initialize(record: nil, view: nil, user: nil, params: nil)
         @view = Avo::ViewInquirer.new(view) if view.present?
