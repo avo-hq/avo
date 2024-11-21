@@ -12,7 +12,7 @@ RSpec.feature "locales generator", type: :feature do
       original_file = Rails.root.join("config", "locales", "avo.#{locale}.yml")
       backup_file = Rails.root.join("config", "locales", "avo.#{locale}.yml.bak")
       FileUtils.cp(original_file, backup_file) if File.exist?(original_file)
-      backup_files[locale] = { original: original_file, backup: backup_file }
+      backup_files[locale] = {original: original_file, backup: backup_file}
     end
 
     locales = %w[ar de en es fr it ja nb nl nn pl pt-BR pt ro ru tr uk zh]
@@ -25,7 +25,7 @@ RSpec.feature "locales generator", type: :feature do
       files << Rails.root.join("config", "locales", "pagy", "#{locale}.yml").to_s
     end
 
-    Rails::Generators.invoke("avo:locales", ["-q"], { destination_root: Rails.root })
+    Rails::Generators.invoke("avo:locales", ["-q"], {destination_root: Rails.root})
 
     check_files_and_clean_up files
 
