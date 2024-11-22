@@ -6,6 +6,11 @@ module Avo
       Avo::ApplicationController.include Pundit
     end
 
+    # # Support Rails default authentication generator
+    # if defined?(Authentication)
+    #   include Authentication
+    # end
+
     include Avo::InitializesAvo
     include Avo::CommonController
     include Avo::ApplicationHelper

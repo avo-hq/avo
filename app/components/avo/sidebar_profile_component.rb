@@ -39,7 +39,7 @@ class Avo::SidebarProfileComponent < Avo::BaseComponent
 
   def sign_out_path
     return Avo.configuration.sign_out_path_name if Avo.configuration.sign_out_path_name.present?
-    return :session_path if possibly_rails_authentication?
+    return :session_path if helpers.possibly_rails_authentication?
 
     default_sign_out_path
   end
@@ -52,9 +52,5 @@ class Avo::SidebarProfileComponent < Avo::BaseComponent
 
   def can_sign_out_user?
     sign_out_path.present? && main_app.respond_to?(sign_out_path&.to_sym)
-  end
-
-  def possibly_rails_authentication?
-    defined?(Authentication) && Authentication.private_instance_methods.include?(:require_authentication) && Authentication.private_instance_methods.include?(:authenticated?)
   end
 end
