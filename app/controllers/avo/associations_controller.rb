@@ -68,7 +68,8 @@ module Avo
         .append_query(
           {
             view: @resource&.view&.to_s,
-            for_attribute: @field&.try(:for_attribute)
+            for_attribute: @field&.try(:for_attribute),
+            turbo_frame: params[:turbo_frame],
           }.compact
         )
         .to_s
