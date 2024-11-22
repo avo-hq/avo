@@ -155,11 +155,13 @@ module Avo
     end
 
     def authorize_if_defined(method, record = @record)
+      return unless Avo.configuration.authorization_enabled?
+
       @authorization.set_record(record)
 
       if @authorization.has_method?(method.to_sym)
         @authorization.authorize_action method.to_sym
-      elsif !@authorization.is_a?(Avo::Services::AuthorizationService) && Avo.configuration.explicit_authorization
+      elsif Avo.configuration.explicit_authorization
         raise Avo::NotAuthorizedError.new
       end
     end

@@ -123,6 +123,12 @@ module Avo
       @associations_lookup_list_limit = 1000
     end
 
+    # Authorization is enabled when:
+    # (avo-pro gem is installed) AND (authorization_client is NOT nil)
+    def authorization_enabled?
+      @authorization_enabled ||= Avo.plugin_manager.installed?(:avo_pro) && !authorization_client.nil?
+    end
+
     def current_user_method(&block)
       @current_user = block if block.present?
     end
