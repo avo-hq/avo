@@ -3,6 +3,8 @@
 class Avo::SidebarProfileComponent < Avo::BaseComponent
   prop :user
 
+  delegate :main_app, to: :helpers
+
   def avatar
     if @user.respond_to?(:avatar) && @user.avatar.present?
       @user.avatar
@@ -31,13 +33,24 @@ class Avo::SidebarProfileComponent < Avo::BaseComponent
     end
   end
 
-  def destroy_user_session_path
-    # If `sign_out_path_name` is configured, use it. Otherwise construct the
-    # path name based on `current_user_resource_name`.
-    (Avo.configuration.sign_out_path_name || "destroy_#{Avo.configuration.current_user_resource_name}_session_path").to_sym
+  def sign_out_method
+    :delete
   end
 
-  def can_destroy_user?
-    helpers.main_app.respond_to?(destroy_user_session_path)
+  def sign_out_path
+    return Avo.configuration.sign_out_path_name if Avo.configuration.sign_out_path_name.present?
+    return :session_path if helpers.possibly_rails_authentication?
+
+    default_sign_out_path
+  end
+
+  def default_sign_out_path
+    default_path = :"destroy_#{Avo.configuration.current_user_resource_name}_session_path"
+
+    default_path if main_app.respond_to?(default_path)
+  end
+
+  def can_sign_out_user?
+    sign_out_path.present? && main_app.respond_to?(sign_out_path&.to_sym)
   end
 end
