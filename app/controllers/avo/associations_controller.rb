@@ -155,7 +155,7 @@ module Avo
     end
 
     def authorize_if_defined(method, record = @record)
-      return true unless Avo.configuration.authorization_enabled?
+      return unless Avo.configuration.authorization_enabled?
 
       @authorization.set_record(record)
 
