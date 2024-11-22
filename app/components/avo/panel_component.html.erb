@@ -6,11 +6,15 @@
     display_breadcrumbs: @display_breadcrumbs,
     profile_photo: @profile_photo
   ) do |header| %>
-    <% header.name_slot do %>
-      <%= name_slot %>
+    <% if name_slot.present? %>
+      <% header.with_name_slot do %>
+        <%= name_slot %>
+      <% end %>
     <% end %>
-    <% header.tools do %>
-      <%= tools %>
+    <% if tools.present? %>
+      <% header.with_tools do %>
+        <%= tools %>
+      <% end %>
     <% end %>
   <% end %>
   <% if body? %>
