@@ -10,7 +10,7 @@
   } do %>
   <% visible_tabs.each_with_index do |tab, index| %>
     <%= content_tag :div, **args(tab) do %>
-      <%= render Avo::PanelComponent.new name: group.title, description: group.description %>
+      <%= render Avo::PanelHeaderComponent.new name: group.title, description: group.description %>
       <div class="border rounded-lg p-2 -mx-2 -my-2 lg:p-4 lg:-mx-4 lg:-my-3 space-y-4">
         <%= render Avo::TabSwitcherComponent.new resource: resource, current_tab: visible_tabs.first, group: group, active_tab_name: tab.name, view: view %>
         <% if !tab.is_empty? %>
