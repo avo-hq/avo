@@ -179,7 +179,7 @@ module Avo
         end
 
         def name
-          @name ||= name_from_translation_key(count: 1, default: class_name.underscore.humanize)
+          name_from_translation_key(count: 1, default: class_name.underscore.humanize)
         end
         alias_method :singular_name, :name
 
@@ -203,8 +203,6 @@ module Avo
         end
 
         def underscore_name
-          return @name if @name.present?
-
           name.demodulize.underscore
         end
 
@@ -322,8 +320,8 @@ module Avo
         cards
       end
 
-      def divider(label = nil)
-        entity_loader(:action).use({class: Divider, label: label}.compact)
+      def divider(**kwargs)
+        entity_loader(:action).use({class: Divider, **kwargs}.compact)
       end
 
       # def fields / def cards

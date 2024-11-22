@@ -1,11 +1,9 @@
 ---
 nl:
   avo:
-    resource_translations:
-      product:
-        save: "Product opslaan!"
     action_ran_successfully: Actie succesvol uitgevoerd!
     actions: Acties
+    add_filter: Filter toevoegen
     and_x_other_resources: en %{count} andere bronnen
     applied: toegepast
     are_you_sure: Weet u het zeker?
@@ -16,8 +14,8 @@ nl:
     attach_item: "%{item} bijvoegen"
     attachment_class_attached: "%{attachment_class} bijgevoegd."
     attachment_class_detached: "%{attachment_class} losgekoppeld."
-    attachment_failed: "Kon %{attachment_class} niet bijvoegen"
     attachment_destroyed: Bijlage verwijderd
+    attachment_failed: Kon %{attachment_class} niet bijvoegen
     cancel: Annuleren
     choose_a_country: Kies een land
     choose_an_option: Kies een optie
@@ -57,10 +55,14 @@ nl:
       add_row: Rij toevoegen
       delete_row: Rij verwijderen
       key: Sleutel
+      reorder_row: Rij herschikken
       value: Waarde
+    less_content: Minder inhoud
     list_is_empty: Lijst is leeg
     loading: Laden...
     more: Meer
+    more_content: Meer inhoud
+    more_records_available: Er zijn meer records beschikbaar.
     new: nieuw
     next_page: Volgende pagina
     no_cancel: Nee, annuleren
@@ -84,8 +86,8 @@ nl:
     prev_page: Vorige pagina
     records_selected_from_all_pages_html: Alle geselecteerde records van alle pagina's
     remove_selection: Selectie verwijderen
-    reset_filters: Filters resetten
     reset: resetten
+    reset_filters: Filters resetten
     resource_created: Record aangemaakt
     resource_destroyed: Record verwijderd
     resource_updated: Record bijgewerkt
@@ -102,6 +104,7 @@ nl:
     sign_out: Afmelden
     switch_to_view: Schakelen naar %{view_type}-weergave
     table_view: Tabelweergave
+    this_field_has_attachments_disabled: Bijlagen zijn uitgeschakeld voor dit veld.
     tools: Gereedschappen
     type_to_search: Typ om te zoeken.
     unauthorized: Niet geautoriseerd
@@ -118,4 +121,6 @@ nl:
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> records geselecteerd van alle pagina's
     x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> records geselecteerd op deze pagina
     yes_confirm: Ja, ik weet het zeker
+    you_cant_upload_new_resource: Je kunt geen bestanden uploaden in de Trix-editor totdat je de bron hebt opgeslagen.
+    you_havent_set_attachment_key: Je hebt geen `attachment_key` ingesteld voor dit Trix-veld.
     you_missed_something_check_form: U heeft mogelijk iets gemist. Controleer het formulier.

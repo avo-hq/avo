@@ -59,9 +59,12 @@ tr:
       key: Anahtar
       reorder_row: Satırı yeniden sırala
       value: Değer
+    less_content: Daha az içerik
     list_is_empty: Boş liste
     loading: Yükleniyor
     more: Daha fazla
+    more_content: Daha fazla içerik
+    more_records_available: Daha fazla kayıt mevcut.
     new: yeni
     next_page: Sonraki sayfa
     no_cancel: Hayır, iptal et

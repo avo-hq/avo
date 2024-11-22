@@ -6,7 +6,7 @@ export default class extends Controller {
     <div class="button-spinner">
       <div class="double-bounce1"></div>
       <div class="double-bounce2"></div>
-    </div>`;
+    </div>`
 
   static values = {
     confirmationMessage: String,
@@ -52,6 +52,6 @@ export default class extends Controller {
     const { button } = this
 
     button.innerHTML = button.getAttribute('data-original-content')
-    button.removeAttribute('disabled');
+    button.removeAttribute('disabled')
   }
 }

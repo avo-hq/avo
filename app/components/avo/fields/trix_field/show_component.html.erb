@@ -2,13 +2,19 @@
   <%
     content_classes = 'trix-content py-2 max-w-4xl'
     content_classes << ' hidden' unless @field.always_show
+    button_classes = 'font-bold inline-block pt-3'
   %>
-  <div data-controller="hidden-input">
-    <% unless @field.always_show %>
-      <%= link_to t('avo.show_content'), 'javascript:void(0);', class: 'font-bold inline-block', data: { action: 'click->hidden-input#showContent' } %>
-    <% end %>
-    <div class="<%= content_classes %> " data-hidden-input-target="content">
+  <div data-controller="trix-body">
+    <div class="<%= content_classes %>" data-trix-body-target="content">
       <%= sanitize @field.value.to_s %>
     </div>
+    <% unless @field.always_show %>
+      <div class="hidden" data-trix-body-target="moreContentButton">
+        <%= link_to t('avo.more_content'), 'javascript:void(0);', class: button_classes, data: { action: 'click->trix-body#toggleContent' } %>
+      </div>
+      <div class="hidden" data-trix-body-target="lessContentButton">
+        <%= link_to t('avo.less_content'), 'javascript:void(0);', class: button_classes, data: { action: 'click->trix-body#toggleContent' } %>
+      </div>
+    <% end %>
   </div>
 <% end %>

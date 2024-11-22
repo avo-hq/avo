@@ -61,9 +61,12 @@ ro:
       key: Cheie
       reorder_row: Reordonează rând
       value: Valoare
+    less_content: Mai puțin conținut
     list_is_empty: Lista este goală
     loading: Se incarcă
     more: Mai multe
+    more_content: Mai mult conținut
+    more_records_available: Sunt mai multe înregistrări disponibile.
     new: nou
     next_page: Pagina următoare
     no_cancel: Nu, anulează

@@ -68,6 +68,9 @@ Avo.configure do |config|
   ## == Number of search results to display ==
   # config.search_results_count = 8
 
+  ## == Associations lookup list limit ==
+  # config.associations_lookup_list_limit = 1000
+
   ## == Cache options ==
   ## Provide a lambda to customize the cache store used by Avo.
   ## We compute the cache store by default, this is NOT the default, just an example.
