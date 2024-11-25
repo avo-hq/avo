@@ -10,7 +10,7 @@ export default class extends Controller {
   checkContentHeight() {
     const contentHeight = this.contentTarget.scrollHeight
 
-    if (contentHeight > 50) {
+    if (contentHeight > 50 && this.hasMoreContentButtonTarget) {
       this.moreContentButtonTarget.classList.remove('hidden')
     }
   }
@@ -21,7 +21,7 @@ export default class extends Controller {
   }
 
   toggleButtons() {
-    this.moreContentButtonTarget.classList.toggle('hidden')
-    this.lessContentButtonTarget.classList.toggle('hidden')
+    if (this.hasMoreContentButtonTarget) this.moreContentButtonTarget.classList.toggle('hidden')
+    if (this.hasLessContentButtonTarget) this.lessContentButtonTarget.classList.toggle('hidden')
   }
 }
