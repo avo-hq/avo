@@ -6,15 +6,34 @@
   <% end %>
 
   <% if can_upload_file? %>
-    <%= @form.file_field @field.id,
-      accept: @field.accept,
-      data: @field.get_html(:data, view: view, element: :input),
-      direct_upload: @field.direct_upload,
-      disabled: disabled?,
-      style: @field.get_html(:style, view: view, element: :input),
-      autofocus: @autofocus,
-      class: "w-full"
-    %>
+    <div data-controller="clear-input">
+      <div class="mt-2 flex items-center">
+        <%= @form.file_field @field.id,
+          accept: @field.accept,
+          data: @field.get_html(:data, view: view, element: :input)
+            .merge(
+              action: "change->clear-input#showClearButton",
+              clear_input_target: "input"
+            ),
+          direct_upload: @field.direct_upload,
+          disabled: disabled?,
+          style: @field.get_html(:style, view: view, element: :input),
+          autofocus: @autofocus,
+          class: "w-full"
+        %>
+      </div>
+      <%= content_tag :button,
+          class: "self-center hidden font-semibold text-xs text-red-600 p-1",
+          id: :reset,
+          type: :button,
+          data: {
+            clear_input_target: "clearButton",
+            action: "click->clear-input#clearInput",
+            tippy: :tooltip
+          } do %>
+        <% t("avo.clear_value") %>
+      <% end %>
+    </div>
   <% else %>
     —
   <% end %>

@@ -65,10 +65,14 @@ ar:
       add_row: إضافة صف
       delete_row: حذف صف
       key: المفتاح
+      reorder_row: إعادة ترتيب الصف
       value: القيمة
+    less_content: محتوى أقل
     list_is_empty: القائمة فارغة
     loading: جاري التحميل
     more: المزيد
+    more_content: المزيد من المحتوى
+    more_records_available: هناك المزيد من السجلات المتاحة.
     new: جديد
     next_page: الصفحة التالية
     no_cancel: لا، إلغاء

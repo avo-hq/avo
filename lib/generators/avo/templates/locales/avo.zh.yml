@@ -1,11 +1,9 @@
 ---
 zh:
   avo:
-    resource_translations:
-      product:
-        save: "保存产品！"
     action_ran_successfully: 操作成功执行！
     actions: 操作
+    add_filter: 添加筛选器
     and_x_other_resources: 和 %{count} 个其他资源
     applied: 已应用
     are_you_sure: 您确定吗？
@@ -16,8 +14,8 @@ zh:
     attach_item: 附加 %{item}
     attachment_class_attached: "%{attachment_class} 已附加。"
     attachment_class_detached: "%{attachment_class} 已分离。"
-    attachment_failed: "无法附加 %{attachment_class}"
     attachment_destroyed: 附件已删除
+    attachment_failed: 无法附加 %{attachment_class}
     cancel: 取消
     choose_a_country: 选择一个国家
     choose_an_option: 选择一个选项
@@ -57,10 +55,14 @@ zh:
       add_row: 添加行
       delete_row: 删除行
       key: 键
+      reorder_row: 重新排序行
       value: 值
+    less_content: 内容较少
     list_is_empty: 列表为空
     loading: 加载中...
     more: 更多
+    more_content: 更多内容
+    more_records_available: 还有更多记录可供参考。
     new: 新建
     next_page: 下一页
     no_cancel: 不，取消
@@ -84,8 +86,8 @@ zh:
     prev_page: 上一页
     records_selected_from_all_pages_html: 所有页面中选中的记录
     remove_selection: 清除选择
-    reset_filters: 重置筛选器
     reset: 重置
+    reset_filters: 重置筛选器
     resource_created: 记录已创建
     resource_destroyed: 记录已删除
     resource_updated: 记录已更新
@@ -102,6 +104,7 @@ zh:
     sign_out: 登出
     switch_to_view: 切换到 %{view_type} 视图
     table_view: 表格视图
+    this_field_has_attachments_disabled: 此字段已禁用附件。
     tools: 工具
     type_to_search: 输入以搜索。
     unauthorized: 未经授权
@@ -114,8 +117,10 @@ zh:
       one: 另外一个项目
       other: "%{count} 个其他项目"
       zero: 没有其他项目
-    x_records_selected_from_a_total_of_x_html: 在所有页面中共选择了 <span class="font-bold text-gray-700">%{count}</span> 条记录
+    x_records_selected_from_a_total_of_x_html: 本页面共选择了 <span class="font-bold text-gray-700">%{selected}</span> 条记录，所有页面共有 <span class="font-bold text-gray-700">%{count}</span> 条记录
     x_records_selected_from_all_pages_html: 从所有页面中选中了 <span class="font-bold text-gray-700">%{count}</span> 条记录
     x_records_selected_from_page_html: 在本页中共选择了 <span class="font-bold text-gray-700">%{selected}</span> 条记录
     yes_confirm: 是的，确认
+    you_cant_upload_new_resource: 在保存资源之前，您无法将文件上传到 Trix 编辑器。
+    you_havent_set_attachment_key: 您尚未为此 Trix 字段设置 `attachment_key`。
     you_missed_something_check_form: 您可能漏掉了一些内容，请检查表单。

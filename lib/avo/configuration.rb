@@ -56,6 +56,7 @@ module Avo
     attr_accessor :is_developer_method
     attr_accessor :search_results_count
     attr_accessor :first_sorting_option
+    attr_accessor :associations_lookup_list_limit
 
     def initialize
       @root_path = "/avo"
@@ -119,6 +120,13 @@ module Avo
       @is_developer_method = :is_developer?
       @search_results_count = 8
       @first_sorting_option = :desc # :desc or :asc
+      @associations_lookup_list_limit = 1000
+    end
+
+    # Authorization is enabled when:
+    # (avo-pro gem is installed) AND (authorization_client is NOT nil)
+    def authorization_enabled?
+      @authorization_enabled ||= Avo.plugin_manager.installed?(:avo_pro) && !authorization_client.nil?
     end
 
     def current_user_method(&block)

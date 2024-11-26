@@ -57,10 +57,14 @@ pt:
       add_row: Adicionar linha
       delete_row: Apagar linha
       key: Chave
+      reorder_row: Reordenar linha
       value: Valor
+    less_content: Menos conteúdo
     list_is_empty: Lista vazia
     loading: A carregar
     more: Mais
+    more_content: Mais conteúdo
+    more_records_available: Existem mais registos disponíveis.
     new: novo
     next_page: Próxima página
     no_cancel: Não, cancelar

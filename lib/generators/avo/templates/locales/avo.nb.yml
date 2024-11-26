@@ -57,10 +57,14 @@ nb:
       add_row: Legg til rad
       delete_row: Slett rad
       key: Nøkkel
+      reorder_row: Omorganiser rad
       value: Verdi
+    less_content: Mindre innhold
     list_is_empty: Listen er tom
     loading: Laster
     more: Mer
+    more_content: Mer innhold
+    more_records_available: Det er flere poster tilgjengelig.
     new: ny
     next_page: Neste side
     no_cancel: Nei, avbryt
