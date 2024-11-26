@@ -6,6 +6,15 @@ GIT
       activerecord (>= 6.1, < 8)
 
 GIT
+  remote: https://github.com/avo-hq/avo-meta.git
+  revision: 874345836c3e686c2d716a0ae542caaad3aa8cab
+  branch: main
+  specs:
+    avo-meta (0.1.0)
+      avo (~> 3)
+      store_model (~> 4.1)
+
+GIT
   remote: https://github.com/rails/rails.git
   revision: b88d9af34fbc1c84ce2769ba02584eab2c28ac6e
   branch: main
@@ -180,7 +189,7 @@ GEM
     backport (1.2.0)
     base64 (0.2.0)
     bcrypt (3.1.20)
-    benchmark (0.3.0)
+    benchmark (0.4.0)
     benchmark-ips (2.14.0)
     better_html (2.1.1)
       actionview (>= 6.0)
@@ -369,7 +378,7 @@ GEM
       activesupport (>= 3.0)
       nokogiri (>= 1.6)
     io-console (0.7.2)
-    irb (1.14.0)
+    irb (1.14.1)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
     iso (0.4.0)
@@ -392,7 +401,7 @@ GEM
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     logger (1.6.1)
-    loofah (2.22.0)
+    loofah (2.23.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
     mail (2.8.1)
@@ -410,8 +419,8 @@ GEM
     mini_histogram (0.3.1)
     mini_magick (4.13.2)
     mini_mime (1.1.5)
-    mini_portile2 (2.8.7)
-    minitest (5.25.1)
+    mini_portile2 (2.8.8)
+    minitest (5.25.2)
     monetize (1.13.0)
       money (~> 6.12)
     money (6.19.0)
@@ -438,7 +447,7 @@ GEM
     nokogiri (1.16.7-x86_64-linux)
       racc (~> 1.4)
     orm_adapter (0.5.0)
-    pagy (9.0.9)
+    pagy (9.3.1)
     parallel (1.26.3)
     parser (3.3.5.0)
       ast (~> 2.4.1)
@@ -451,20 +460,19 @@ GEM
     prettier_print (1.2.1)
     prop_initializer (0.2.0)
       zeitwerk (>= 2.6.18)
-    psych (5.1.2)
+    psych (5.2.0)
       stringio
     public_suffix (6.0.1)
     puma (6.4.3)
       nio4r (~> 2.0)
     racc (1.8.1)
-    rack (3.1.7)
+    rack (3.1.8)
     rack-session (2.0.0)
       rack (>= 3.0.0)
     rack-test (2.1.0)
       rack (>= 1.3)
-    rackup (2.1.0)
+    rackup (2.2.1)
       rack (>= 3)
-      webrick (~> 1.8)
     rails-controller-testing (1.0.5)
       actionpack (>= 5.0.1.rc1)
       actionview (>= 5.0.1.rc1)
@@ -489,7 +497,7 @@ GEM
     rb-inotify (0.11.1)
       ffi (~> 1.0)
     rbs (2.8.4)
-    rdoc (6.7.0)
+    rdoc (6.8.1)
       psych (>= 4.0.0)
     redis (5.3.0)
       redis-client (>= 0.22.0)
@@ -501,7 +509,7 @@ GEM
       rainbow (>= 2.0, < 4.0)
       rexml (~> 3.1)
     regexp_parser (2.9.2)
-    reline (0.5.10)
+    reline (0.5.11)
       io-console (~> 0.5)
     responders (3.1.1)
       actionpack (>= 5.2)
@@ -567,7 +575,7 @@ GEM
       simplecov (>= 0.22.0)
       tty-which (~> 0.5.0)
       virtus (~> 2.0)
-    securerandom (0.3.1)
+    securerandom (0.3.2)
     sexp_processor (4.17.2)
     simplecov (0.22.0)
       docile (~> 1.1)
@@ -621,7 +629,9 @@ GEM
     standard-performance (1.4.0)
       lint_roller (~> 1.1)
       rubocop-performance (~> 1.21.0)
-    stringio (3.1.1)
+    store_model (4.1.0)
+      activerecord (>= 7.0)
+    stringio (3.1.2)
     syntax_tree (6.2.0)
       prettier_print (>= 1.2.0)
     terminal-table (3.0.2)
@@ -630,9 +640,9 @@ GEM
     thor (1.3.2)
     thread_safe (0.3.6)
     tilt (2.4.0)
-    timeout (0.4.1)
+    timeout (0.4.2)
     tty-which (0.5.0)
-    turbo-rails (2.0.10)
+    turbo-rails (2.0.11)
       actionpack (>= 6.0.0)
       railties (>= 6.0.0)
     turbo_power (0.6.2)
@@ -641,10 +651,10 @@ GEM
       concurrent-ruby (~> 1.0)
     unaccent (0.4.0)
     unicode-display_width (2.6.0)
-    uri (0.13.1)
+    uri (1.0.2)
     useragent (0.16.10)
-    view_component (3.17.0)
-      activesupport (>= 5.2.0, < 8.0)
+    view_component (3.20.0)
+      activesupport (>= 5.2.0, < 8.1)
       concurrent-ruby (~> 1.0)
       method_source (~> 1.0)
     virtus (2.0.0)
@@ -662,14 +672,14 @@ GEM
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
-    webrick (1.8.2)
+    webrick (1.9.0)
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
     yard (0.9.37)
-    zeitwerk (2.6.18)
+    zeitwerk (2.7.1)
 
 PLATFORMS
   ruby
@@ -687,6 +697,7 @@ DEPENDENCIES
   annotate
   appraisal
   avo!
+  avo-meta!
   avo-money_field
   avo-record_link_field
   aws-sdk-s3

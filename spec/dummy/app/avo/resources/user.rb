@@ -54,6 +54,8 @@ class Avo::Resources::User < Avo::BaseResource
 
     user_information_panel
 
+    meta_panel
+
     first_tabs_group
     second_tabs_group
 

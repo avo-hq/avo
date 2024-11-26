@@ -22,7 +22,9 @@
 class User < ApplicationRecord
   ACCOUNT_STRUCT = Struct.new(:id, :name) unless const_defined?(:ACCOUNT_STRUCT)
 
+  include Avo::Metaable
   extend FriendlyId
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
