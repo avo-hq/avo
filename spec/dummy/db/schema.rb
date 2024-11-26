@@ -60,18 +60,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_14_165947) do
     t.index ["resource_name"], name: "index_avo_meta_schemas_on_resource_name", unique: true
   end
 
-  create_table "avo_resources", force: :cascade do |t|
-    t.string "name", null: false
-    t.json "fields", null: false
-    t.json "includes"
-    t.json "attachments"
-    t.json "single_includes"
-    t.json "single_attachments"
-    t.json "meta", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "cities", force: :cascade do |t|
     t.string "name"
     t.integer "population"

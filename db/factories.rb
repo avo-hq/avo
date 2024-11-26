@@ -37,7 +37,7 @@ FactoryBot.define do
 
   factory :project do
     name { Faker::App.name }
-    status { ['closed', :rejected, :failed, 'loading', :running, :waiting].sample }
+    status { ["closed", :rejected, :failed, "loading", :running, :waiting].sample }
     stage { ["Discovery", "Idea", "Done", "On hold", "Cancelled", "Drafting"].sample }
     budget { Faker::Number.decimal(l_digits: 4) }
     country { Faker::Address.country_code }
@@ -147,5 +147,14 @@ FactoryBot.define do
   factory :store do
     name { Faker::Company.name }
     size { ["small", "medium", "large"].sample }
+  end
+
+  factory :meta_schema, class: "Avo::Meta::Schema" do
+    resource_name { "User" }
+    schema_entries {
+      [
+          Avo::Meta::SchemaEntry.new(name: "shoe_size", type: "integer", as: "number")
+      ]
+    }
   end
 end

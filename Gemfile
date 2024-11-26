@@ -195,3 +195,5 @@ gem "pagy", "> 8"
 gem "csv"
 
 gem "avo-meta", github: "avo-hq/avo-meta", branch: "main"
+
+gem "store_model"

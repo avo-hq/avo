@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: https://github.com/avo-hq/avo-meta.git
-  revision: 874345836c3e686c2d716a0ae542caaad3aa8cab
+  revision: 92a9977f0389015e5229fa0552db52045a41ea78
   branch: main
   specs:
     avo-meta (0.1.0)
@@ -762,6 +762,7 @@ DEPENDENCIES
   spring-commands-rspec
   sprockets-rails
   standard
+  store_model
   test-prof
   tzinfo-data
   web-console (>= 3.3.0)
