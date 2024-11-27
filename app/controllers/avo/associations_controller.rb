@@ -254,7 +254,7 @@ module Avo
       turbo_streams = super
 
       # We want to close the modal if the user wants to add just one record
-      turbo_streams << turbo_stream.close_modal if params[:button] != "attach_another"
+      turbo_streams << turbo_stream.avo_close_modal if params[:button] != "attach_another"
 
       turbo_streams
     end
