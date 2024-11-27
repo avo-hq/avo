@@ -153,7 +153,7 @@ FactoryBot.define do
     resource_name { "User" }
     schema_entries {
       [
-          Avo::Meta::SchemaEntry.new(name: "shoe_size", type: "integer", as: "number")
+          Avo::Meta::SchemaEntry.new(name: "shoe_size", as: "number")
       ]
     }
   end

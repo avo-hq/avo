@@ -25,8 +25,7 @@ RSpec.describe "MetaSchema", type: :system do
     click_on "Add a new property"
 
     fill_in "Name", with: "guest_author_name"
-    select "string", from: find('select[name*="[schema_entries_attributes]["][name*="][type]"]')[:id]
-    select "text", from: find('select[name*="[schema_entries_attributes]["][name*="][as]"]')[:id]
+    select "Text", from: find('select[name*="[schema_entries_attributes]["][name*="][as]"]')[:id]
 
     save
 
@@ -47,8 +46,7 @@ RSpec.describe "MetaSchema", type: :system do
     click_on "Add a new property"
 
     fill_in "Name", with: "nickname"
-    select "string", from: find('select[name*="[schema_entries_attributes]["][name*="][type]"]')[:id]
-    select "text", from: find('select[name*="[schema_entries_attributes]["][name*="][as]"]')[:id]
+    select "Text", from: find('select[name*="[schema_entries_attributes]["][name*="][as]"]')[:id]
 
     save
 
