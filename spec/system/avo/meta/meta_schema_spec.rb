@@ -66,4 +66,31 @@ RSpec.describe "MetaSchema", type: :system do
 
     expect(page).to have_text("Ace Ventura")
   end
+
+  it "allows to add new entries to the user meta schema with default" do
+    visit avo.resources_meta_schemas_path
+
+    within "#avo_meta_schemas_list" do
+      find("td", text: "User").click
+    end
+
+    click_on "Edit"
+
+    click_on "Add a new property"
+
+    fill_in "Name", with: "driving_license"
+    select "Text", from: find('select[name*="[schema_entries_attributes]["][name*="][as]"]')[:id]
+    fill_in "Default", with: "B"
+
+    save
+
+    expect(page).to have_text("Meta schema was successfully updated")
+
+    # assert that the new attribute is actually present and the default is prefilled
+    visit avo.new_resources_user_path
+
+    expect(page).to have_field("Driving license", with: "B")
+
+    # TODO test backfilling
+  end
 end

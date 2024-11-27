@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: https://github.com/avo-hq/avo-meta.git
-  revision: 12fdada734a696d47dbb8828d5310fea2577d80f
+  revision: 0bb45bf773286ff4a0f57450812d818d0930cada
   branch: main
   specs:
     avo-meta (0.1.0)
