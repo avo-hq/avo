@@ -175,7 +175,7 @@ module Generators
             fields[name] = if association.is_a? ActiveRecord::Reflection::ThroughReflection
               field_from_through_association(association)
             else
-              associations_mapping[association.class]
+              ::Avo::Mappings::ASSOCIATIONS_MAPPING[association.class]
             end
           end
         end
@@ -198,7 +198,7 @@ module Generators
 
         def fields_from_model_attachements
           attachments.each do |name, attachment|
-            fields[remove_last_word_from name] = attachments_mapping[attachment.class]
+            fields[remove_last_word_from name] = ::Avo::Mappings::ATTACHMENTS_MAPPING[attachment.class]
           end
         end
 
@@ -228,115 +228,6 @@ module Generators
           end
         end
 
-        def associations_mapping
-          {
-            ActiveRecord::Reflection::BelongsToReflection => {
-              field: "belongs_to"
-            },
-            ActiveRecord::Reflection::HasOneReflection => {
-              field: "has_one"
-            },
-            ActiveRecord::Reflection::HasManyReflection => {
-              field: "has_many"
-            },
-            ActiveRecord::Reflection::HasAndBelongsToManyReflection => {
-              field: "has_and_belongs_to_many"
-            }
-          }
-        end
-
-        def attachments_mapping
-          {
-            ActiveRecord::Reflection::HasOneReflection => {
-              field: "file"
-            },
-            ActiveRecord::Reflection::HasManyReflection => {
-              field: "files"
-            }
-          }
-        end
-
-        def names_mapping
-          {
-            id: {
-              field: "id"
-            },
-            description: {
-              field: "textarea"
-            },
-            gravatar: {
-              field: "gravatar"
-            },
-            email: {
-              field: "text"
-            },
-            password: {
-              field: "password"
-            },
-            password_confirmation: {
-              field: "password"
-            },
-            stage: {
-              field: "select"
-            },
-            budget: {
-              field: "currency"
-            },
-            money: {
-              field: "currency"
-            },
-            country: {
-              field: "country"
-            }
-          }
-        end
-
-        def fields_mapping
-          {
-            primary_key: {
-              field: "id"
-            },
-            string: {
-              field: "text"
-            },
-            text: {
-              field: "textarea"
-            },
-            integer: {
-              field: "number"
-            },
-            float: {
-              field: "number"
-            },
-            decimal: {
-              field: "number"
-            },
-            datetime: {
-              field: "date_time"
-            },
-            timestamp: {
-              field: "date_time"
-            },
-            time: {
-              field: "date_time"
-            },
-            date: {
-              field: "date"
-            },
-            binary: {
-              field: "number"
-            },
-            boolean: {
-              field: "boolean"
-            },
-            references: {
-              field: "belongs_to"
-            },
-            json: {
-              field: "code"
-            }
-          }
-        end
         def generate_fields
           return generate_fields_from_args if invoked_by_model_generator?
           return unless can_connect_to_the_database?
@@ -385,7 +276,7 @@ module Generators
         end
 
         def field(name, type)
-          names_mapping[name.to_sym] || fields_mapping[type&.to_sym] || {field: "text"}
+          ::Avo::Mappings::NAMES_MAPPING[name.to_sym] || ::Avo::Mappings::FIELDS_MAPPING[type&.to_sym] || {field: "text"}
         end
       end
     end
