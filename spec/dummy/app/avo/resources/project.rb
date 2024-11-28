@@ -51,7 +51,7 @@ class Avo::Resources::Project < Avo::BaseResource
       sortable: true,
       summarizable: true
     field :country,
-      as: :country,
+      as: :country, copyable: true,
       include_blank: "No country",
       filterable: true,
       summarizable: true

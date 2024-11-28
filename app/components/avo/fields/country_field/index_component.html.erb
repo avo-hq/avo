@@ -1,7 +1,12 @@
 <%= index_field_wrapper **field_wrapper_args do %>
-  <% if @field.display_code %>
-    <%= @field.value %>
-  <% else %>
-    <%= @field.countries[@field.value] %>
-  <% end %>
+  <div class="flex flex-row items-center justify-between space-x-1 group">
+    <% if @field.display_code %>
+      <%= @field.value %>
+    <% else %>
+      <%= @field.countries[@field.value] %>
+    <% end %>
+    <% if copyable? %>
+      <%= render Avo::ClipboardComponent.new value: @field.value, view: 'index' %>
+    <% end %>
+  </div>
 <% end %>

@@ -1,4 +1,4 @@
-<div class="flex flex-row justify-between" data-controller="clipboard" data-clipboard-success-content-value=<%= success_value %>>
+<div class="flex flex-row justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-200" data-controller="clipboard" data-clipboard-success-content-value=<%= success_value %>>
   <div class="hidden" data-clipboard-target="source"><%= @value %></div>
   <div class="text-xs xl:text-sm">
     <button type="button" data-action="clipboard#copy" data-clipboard-target="button">
