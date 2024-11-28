@@ -65,7 +65,7 @@ module Avo
 
       file_name = "#{file_name}.svg" unless file_name.end_with? ".svg"
 
-      with_asset_finder(::Avo::SvgFinder) do
+      Avo::CACHED_SVGS[file_name] ||= with_asset_finder(::Avo::SvgFinder) do
         inline_svg file_name, **args
       end
     end
