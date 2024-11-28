@@ -8,7 +8,7 @@
       <%= link_to_if @field.link_to_record, @field.value, resource_view_path %>
     <% end %>
     <% if copyable? %>
-      <%= render Avo::ClipboardComponent.new value: @field.value, view: 'index' %>
+      <%= render Avo::ClipboardComponent.new value: @field.value %>
     <% end %>
   </div>
 <% end %>

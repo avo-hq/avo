@@ -6,7 +6,7 @@
       <%= @field.countries[@field.value] %>
     <% end %>
     <% if copyable? %>
-      <%= render Avo::ClipboardComponent.new value: @field.value, view: 'index' %>
+      <%= render Avo::ClipboardComponent.new value: field_value %>
     <% end %>
   </div>
 <% end %>
