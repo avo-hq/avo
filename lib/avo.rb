@@ -19,7 +19,6 @@ module Avo
   COOKIES_KEY = "avo"
   MODAL_FRAME_ID = :modal_frame
   ACTIONS_BACKGROUND_FRAME = :actions_background
-  CACHED_SVGS = {}
 
   class LicenseVerificationTemperedError < StandardError; end
 
