@@ -57,10 +57,14 @@ es:
       add_row: Añadir fila
       delete_row: Eliminar fila
       key: Clave
+      reorder_row: Reordenar fila
       value: Valor
+    less_content: Menos contenido
     list_is_empty: La lista está vacía
     loading: Cargando
     more: Más
+    more_content: Más contenido
+    more_records_available: Hay más registros disponibles.
     new: nuevo/a
     next_page: Página siguiente
     no_cancel: No, cancelar
@@ -102,6 +106,7 @@ es:
     sign_out: Salir
     switch_to_view: Cambiar a la vista %{view_type}
     table_view: Vista en tabla
+    this_field_has_attachments_disabled: Este campo tiene los adjuntos deshabilitados.
     tools: Herramientas
     type_to_search: Escribe para buscar.
     unauthorized: No autorizado
@@ -118,4 +123,6 @@ es:
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> registros seleccionados en todas las páginas
     x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> registros seleccionados en esta página
     yes_confirm: Sí, estoy seguro
+    you_cant_upload_new_resource: No puedes subir archivos al editor Trix hasta que guardes el recurso.
+    you_havent_set_attachment_key: No has establecido una `attachment_key` para este campo Trix.
     you_missed_something_check_form: Es posible que hayas pasado algo por alto. Comprueba el formulario.

@@ -32,6 +32,8 @@ Avo.configure do |config|
   config.locale = :en
   # config.raise_error_on_missing_policy = true
   # config.authorization_client = "Avo::Services::AuthorizationClients::ExtraPunditClient"
+  # Shouldn't impact on community only if custom authorization service was configured.
+  config.explicit_authorization = true
 
   ## == Customization ==
   config.id_links_to_resource = true
@@ -80,6 +82,7 @@ Avo.configure do |config|
 
   config.alert_dismiss_time = 5000
   config.search_results_count = 8
+  config.associations_lookup_list_limit = 1000
 
   ## == Menus ==
   if Rails.env.test?

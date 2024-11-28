@@ -7,6 +7,7 @@ import AttachmentsController from './controllers/attachments_controller'
 import BelongsToFieldController from './controllers/fields/belongs_to_field_controller'
 import BooleanFilterController from './controllers/boolean_filter_controller'
 import CardFiltersController from './controllers/card_filters_controller'
+import ClearInputController from './controllers/fields/clear_input_controller'
 import CodeFieldController from './controllers/fields/code_field_controller'
 import CopyToClipboardController from './controllers/copy_to_clipboard_controller'
 import DashboardCardController from './controllers/dashboard_card_controller'
@@ -44,6 +45,7 @@ import TextFilterController from './controllers/text_filter_controller'
 import TippyController from './controllers/tippy_controller'
 import TiptapFieldController from './controllers/fields/tiptap_field_controller'
 import ToggleController from './controllers/toggle_controller'
+import TrixBodyController from './controllers/trix_body_controller'
 import TrixFieldController from './controllers/fields/trix_field_controller'
 
 application.register('action', ActionController)
@@ -52,6 +54,7 @@ application.register('actions-picker', ActionsPickerController)
 application.register('attachments', AttachmentsController)
 application.register('boolean-filter', BooleanFilterController)
 application.register('card-filters', CardFiltersController)
+application.register('clear-input', ClearInputController)
 application.register('copy-to-clipboard', CopyToClipboardController)
 application.register('dashboard-card', DashboardCardController)
 application.register('date-time-filter', DateTimeFilterController)
@@ -81,6 +84,7 @@ application.register('table-row', TableRowController)
 application.register('text-filter', TextFilterController)
 application.register('tippy', TippyController)
 application.register('toggle', ToggleController)
+application.register('trix-body', TrixBodyController)
 
 // Field controllers
 application.register('belongs-to-field', BelongsToFieldController)

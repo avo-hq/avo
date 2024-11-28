@@ -78,7 +78,7 @@ RSpec.describe "number", type: :feature do
         is_expected.to have_text "Users required must be less than 1000000"
       end
 
-      it "cleares the users_required" do
+      it "clears the users_required" do
         is_expected.to have_xpath "//input[@id='project_users_required'][@type='number'][@placeholder='Users required'][@min='10.0'][@max='1000000.0'][@step='1.0'][@value='#{users_required}']"
 
         fill_in "project_users_required", with: 'nil'

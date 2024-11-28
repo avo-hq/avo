@@ -130,7 +130,7 @@ class Avo::Resources::User < Avo::BaseResource
       end
 
     field :password, as: :password, name: "User Password", required: false, only_on: :forms, help: 'You may verify the password strength <a href="http://www.passwordmeter.com/" target="_blank">here</a>.'
-    field :password_confirmation, as: :password, name: "Password confirmation", required: false
+    field :password_confirmation, as: :password, name: "Password confirmation", required: false, revealable: true
 
     with_options hide_on: :forms do
       field :dev, as: :heading, label: '<div class="underline uppercase font-bold">DEV</div>', as_html: true
@@ -172,7 +172,7 @@ class Avo::Resources::User < Avo::BaseResource
         only_on: [:show]
       field :is_writer, as: :text,
         hide_on: :edit do
-          raise "This should not execut on Index" if view.index?
+          raise "This should not execute on Index" if view.index?
 
           record.posts.to_a.size > 0 ? "yes" : "no"
         end
