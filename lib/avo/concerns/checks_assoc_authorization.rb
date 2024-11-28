@@ -5,6 +5,8 @@ module Avo
 
       # Ex: A Post has many Comments
       def authorize_association_for(policy_method)
+        return true unless Avo.configuration.authorization_enabled?
+
         # Use the related_name as the base of the association
         association_name = @reflection&.name
         return true if association_name.blank?
@@ -35,7 +37,7 @@ module Avo
         if service.has_method?(method_name, raise_exception: false)
           service.authorize_action(method_name, record:, raise_exception: false)
         else
-          !Avo.configuration.implicit_authorization
+          !Avo.configuration.explicit_authorization
         end
       end
     end

@@ -94,13 +94,15 @@ module Avo
       end
 
       def authorized?
+        return true unless Avo.configuration.authorization_enabled?
+
         method = :"view_#{id}?"
         service = field_resource.authorization
 
         if service.has_method? method
           service.authorize_action(method, raise_exception: false)
         else
-          !Avo.configuration.implicit_authorization
+          !Avo.configuration.explicit_authorization
         end
       end
 

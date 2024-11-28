@@ -60,9 +60,7 @@ module Avo
           query = Avo::ExecutionContext.new(target: @field.attach_scope, query: query, parent: @record).handle
         end
 
-        @options = query.all.map do |record|
-          [@attachment_resource.new(record: record).record_title, record.to_param]
-        end
+        @options = select_options(query)
       end
 
       @url = Avo::Services::URIService.parse(avo.root_url.to_s)
@@ -117,6 +115,13 @@ module Avo
 
     def set_reflection
       @reflection = @record.class.reflect_on_association(association_from_params)
+
+      # Ensure inverse_of is present on STI
+      if !@record.class.descends_from_active_record? && @reflection.inverse_of.blank? && Rails.env.development?
+        raise "Avo relies on the 'inverse_of' option to establish the inverse association and perform some specific logic.\n" \
+          "Please configure the 'inverse_of' option for the '#{@reflection.macro} :#{@reflection.name}' association " \
+          "in the '#{@reflection.active_record.name}' model."
+      end
     end
 
     def set_attachment_class
@@ -150,11 +155,13 @@ module Avo
     end
 
     def authorize_if_defined(method, record = @record)
+      return unless Avo.configuration.authorization_enabled?
+
       @authorization.set_record(record)
 
       if @authorization.has_method?(method.to_sym)
         @authorization.authorize_action method.to_sym
-      elsif Avo.configuration.authorization_client.present? && Avo.configuration.implicit_authorization
+      elsif Avo.configuration.explicit_authorization
         raise Avo::NotAuthorizedError.new
       end
     end
@@ -273,6 +280,14 @@ module Avo
         else
           format.html { redirect_to params[:referrer] || resource_view_response_path }
         end
+      end
+    end
+
+    def select_options(query)
+      query.all.limit(Avo.configuration.associations_lookup_list_limit).map do |record|
+        [@attachment_resource.new(record: record).record_title, record.to_param]
+      end.tap do |options|
+        options << t("avo.more_records_available") if options.size == Avo.configuration.associations_lookup_list_limit
       end
     end
   end
