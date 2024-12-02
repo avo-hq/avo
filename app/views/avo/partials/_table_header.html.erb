@@ -84,7 +84,15 @@
           <turbo-frame
             id="summary-frame-<%= field.id %>"
             loading="lazy"
-            src="<%= distribution_chart_path(resource_name: field.resource.model_class, field_id: field.id, via_relation_class: @parent_record.class, via_record_id: @parent_record&.id) %>"
+            src="<%= distribution_chart_path(
+              {
+                resource_name: field.resource.model_class,
+                field_id: field.id,
+                via_record_id: @parent_record&.to_param,
+                via_resource_class: @parent_resource&.class&.to_s,
+                association_name: @field&.for_attribute || @field&.id
+              }.compact
+            ) %>"
             class="absolute inset-auto bg-white w-full sm:w-[400px] top-0 mt-6 p-4 z-40 shadow-modal rounded overflow-hidden hidden border border-gray-50"
             data-toggle-target="panel"
           >
