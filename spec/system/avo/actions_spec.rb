@@ -168,6 +168,35 @@ RSpec.describe "Actions", type: :system do
     end
   end
 
+  describe "action close_modal_on_backdrop_click" do
+    it "closes the modal on backdrop click" do
+      Avo::Actions::ExportCsv.close_modal_on_backdrop_click = true
+
+      visit "/admin/resources/projects"
+
+      click_on "Actions"
+      click_on "Export CSV"
+      find('[data-modal-target="backdrop"]').trigger("click")
+
+      expect(page).not_to have_selector '[data-controller="modal"]'
+    end
+
+    it "does not close the modal on backdrop click" do
+      Avo::Actions::ExportCsv.close_modal_on_backdrop_click = false
+
+      visit "/admin/resources/projects"
+
+      click_on "Actions"
+      click_on "Export CSV"
+      find('[data-modal-target="backdrop"]').trigger("click")
+
+      expect(page).to have_selector '[data-controller="modal"]'
+
+      click_on "Cancel"
+      expect(page).not_to have_selector '[data-controller="modal"]'
+    end
+  end
+
   describe "redirects when no confirmation" do
     it "redirects to hey page" do
       visit "/admin/resources/users"
@@ -299,6 +328,20 @@ RSpec.describe "Actions", type: :system do
 
       expect(page).not_to have_text "Sure, I love 🥑"
       expect(page).to have_text "I love 🥑"
+    end
+  end
+
+  describe "callable labels" do
+    it "pick label from arguments on run and cancel" do
+      encoded_arguments = Avo::BaseAction.encode_arguments({
+        cancel_button_label: "Cancel dummy action",
+        confirm_button_label: "Confirm dummy action"
+      })
+
+      visit "#{avo.resources_users_path}/actions?action_id=Avo::Actions::Sub::DummyAction&arguments=#{encoded_arguments}"
+
+      expect(page).to have_text "Cancel dummy action"
+      expect(page).to have_text "Confirm dummy action"
     end
   end
 

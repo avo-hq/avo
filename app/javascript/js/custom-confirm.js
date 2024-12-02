@@ -1,6 +1,6 @@
 import { Turbo } from '@hotwired/turbo-rails'
 
-Turbo.setConfirmMethod((message) => {
+Turbo.config.forms.confirm = (message) => {
   const dialog = document.getElementById('turbo-confirm')
   dialog.querySelector('p').textContent = message
   dialog.showModal()
@@ -16,4 +16,4 @@ Turbo.setConfirmMethod((message) => {
       resolve(dialog.returnValue === 'confirm')
     }, { once: true })
   })
-})
+}

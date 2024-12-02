@@ -99,6 +99,8 @@ en:
     select_all_matching: Select all matching
     select_item: Select item
     show_content: Show content
+    more_content: More content
+    less_content: Less content
     sign_out: Sign out
     switch_to_view: Switch to %{view_type} view
     table_view: Table view
@@ -119,3 +121,8 @@ en:
     x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> records selected on this page
     yes_confirm: Yes, I'm sure
     you_missed_something_check_form: You might have missed something. Please check the form.
+    more_records_available: There are more records available.
+    filter_translations:
+      user_names_filter:
+        name: User names filter
+        button_label: Filter by user names

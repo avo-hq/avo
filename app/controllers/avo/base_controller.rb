@@ -556,7 +556,7 @@ module Avo
       flash[:error] = destroy_fail_message
 
       respond_to do |format|
-        format.turbo_stream { render turbo_stream: turbo_stream.flash_alerts }
+        format.turbo_stream { render turbo_stream: turbo_stream.avo_flash_alerts }
       end
     end
 
@@ -660,7 +660,7 @@ module Avo
     def reload_frame_turbo_streams
       [
         turbo_stream.turbo_frame_reload(params[:turbo_frame]),
-        turbo_stream.flash_alerts
+        turbo_stream.avo_flash_alerts
       ]
     end
   end

@@ -59,9 +59,12 @@ pt-BR:
       key: Chave
       reorder_row: Reordenar linha
       value: Valor
+    less_content: Menos conteúdo
     list_is_empty: Lista vazia
     loading: Carregando
     more: Mais
+    more_content: Mais conteúdo
+    more_records_available: Existem mais registros disponíveis.
     new: novo
     next_page: Próxima página
     no_cancel: Não, cancelar
