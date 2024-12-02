@@ -65,4 +65,16 @@ class Avo::Index::GridItemComponent < Avo::BaseComponent
       @card[:body]
     end
   end
+
+  def render_badge
+    return if @card[:badge_label].blank?
+
+    content_tag :div, class: "absolute block inset-auto top-0 right-0 mt-2 mr-2 text-sm font-semibold bg-#{badge_color}-50 border border-#{badge_color}-300 text-#{badge_color}-700 rounded shadow-lg px-2 py-px z-10 #{html(:badge, :classes)}", style: html(:badge, :style) do
+      @card[:badge_label]
+    end
+  end
+
+  def badge_color
+    @card[:badge_color] || "gray"
+  end
 end
