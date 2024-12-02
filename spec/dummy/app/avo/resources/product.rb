@@ -9,7 +9,8 @@ class Avo::Resources::Product < Avo::BaseResource
         title: record.title,
         body: simple_format(record.description),
         badge_label: (record.updated_at < 1.week.ago ? "New" : "Updated"),
-        badge_color: (record.updated_at < 1.week.ago ? "green" : "orange")
+        badge_color: (record.updated_at < 1.week.ago ? "green" : "orange"),
+        badge_title: (record.updated_at < 1.week.ago ? "New product here" : "Updated product here"),
       }
     end,
     html: -> do
