@@ -3,14 +3,18 @@ import { Controller } from '@hotwired/stimulus'
 export default class extends Controller {
   static targets = ['content', 'moreContentButton', 'lessContentButton']
 
+  static values = { alwaysShow: Boolean }
+
   connect() {
+    if (this.alwaysShowValue) return // Ignore checking when alwaysShow is true
+
     this.checkContentHeight()
   }
 
   checkContentHeight() {
     const contentHeight = this.contentTarget.scrollHeight
 
-    if (contentHeight > 50 && this.hasMoreContentButtonTarget) {
+    if (contentHeight > 50) {
       this.moreContentButtonTarget.classList.remove('hidden')
     }
   }
@@ -21,7 +25,7 @@ export default class extends Controller {
   }
 
   toggleButtons() {
-    if (this.hasMoreContentButtonTarget) this.moreContentButtonTarget.classList.toggle('hidden')
-    if (this.hasLessContentButtonTarget) this.lessContentButtonTarget.classList.toggle('hidden')
+    this.moreContentButtonTarget.classList.toggle('hidden')
+    this.lessContentButtonTarget.classList.toggle('hidden')
   }
 }
