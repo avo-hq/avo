@@ -14,7 +14,7 @@ class Avo::PanelHeaderComponent < Avo::BaseComponent
   private
 
   def display_breadcrumbs?
-    @display_breadcrumbs == true && Avo.configuration.display_breadcrumbs == true
+    @display_breadcrumbs && Avo.configuration.display_breadcrumbs
   end
 
   def description
