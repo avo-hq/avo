@@ -31,11 +31,11 @@ module Avo
       private
 
       def disable_attachments?(args)
-        # If we don't have an attachment_key, we disable attachments. There's no point in having
-        # attachments if we can't store them.
-        return false if args[:attachment_key].present?
+        # Return the value of attachments_disabled if explicitly provided
+        return args[:attachments_disabled] unless args[:attachments_disabled].nil?
 
-        args[:attachments_disabled] == true
+        # Disable attachments if attachment_key is not present
+        args[:attachment_key].blank?
       end
     end
   end
