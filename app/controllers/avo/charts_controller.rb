@@ -14,8 +14,8 @@ module Avo
 
     def is_associated_summary
       params[:via_record_id].present? &&
-      params[:via_resource_class].present? &&
-      params[:association_name].present?
+        params[:via_resource_class].present? &&
+        params[:association_name].present?
     end
 
     def summary_query
