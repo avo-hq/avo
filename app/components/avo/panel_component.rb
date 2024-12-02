@@ -7,7 +7,6 @@ class Avo::PanelComponent < Avo::BaseComponent
 
   renders_one :cover_slot
   renders_one :name_slot
-  renders_one :header_slot
   renders_one :tools
   renders_one :body
   renders_one :sidebar
