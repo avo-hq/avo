@@ -32,6 +32,12 @@ RSpec.describe "Tabs", type: :system do
         expect(find('turbo-frame[id="has_many_field_show_posts"]')).to have_link "Attach post"
         expect(find('turbo-frame[id="has_many_field_show_posts"]')).to have_link "Create new post", href: "/admin/resources/posts/new?via_record_id=#{user.slug}&via_relation=user&via_relation_class=User&via_resource_class=Avo%3A%3AResources%3A%3AUser"
 
+        expect(page).to have_text "First tabs group"
+        expect(page).to have_text "First tabs group description"
+
+        expect(page).to have_text "Second tabs group"
+        expect(page).to have_text "Second tabs group description"
+
         click_on "Attach post"
 
         expect(page).to have_text "Choose post"
