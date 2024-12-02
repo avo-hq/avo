@@ -14,6 +14,8 @@
 #  slug         :string
 #
 class Post < ApplicationRecord
+  include Avo::Metaable
+
   if Gem::Version.new(Rails.version) >= Gem::Version.new("7.3.0")
     enum :status, [:draft, :published, :archived]
   else

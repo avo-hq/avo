@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       get "custom_tool", to: "avo/tools#custom_tool", as: :custom_tool
     end
 
+    mount Avo::Meta::Engine, at: "#{Avo.configuration.root_path}/avo_meta/"
     mount Avo::Engine, at: Avo.configuration.root_path
     # Uncomment to test constraints /123/en/admin
     # scope ":course", constraints: {course: /\w+(-\w+)*/} do
