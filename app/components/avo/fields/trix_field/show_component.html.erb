@@ -4,7 +4,11 @@
     content_classes << ' hidden' unless @field.always_show
     button_classes = 'font-bold inline-block pt-3'
   %>
-  <div data-controller="trix-body">
+  <%= content_tag :div,
+    data: {
+      controller: "trix-body",
+      trix_body_always_show_value: @field.always_show
+    } do %>
     <div class="<%= content_classes %>" data-trix-body-target="content">
       <%= sanitize @field.value.to_s %>
     </div>
@@ -16,5 +20,5 @@
         <%= link_to t('avo.less_content'), 'javascript:void(0);', class: button_classes, data: { action: 'click->trix-body#toggleContent' } %>
       </div>
     <% end %>
-  </div>
+  <% end %>
 <% end %>
