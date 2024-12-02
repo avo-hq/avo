@@ -38,7 +38,7 @@ export default class extends Controller {
   connect() {
     if (this.attachmentsDisabledValue) {
       // Remove the attachments button
-      this.window.addEventListener("trix-initialize", (event) => {
+      window.addEventListener('trix-initialize', (event) => {
         if (event.target === this.editorTarget) {
           this.controllerTarget.querySelector('.trix-button-group--file-tools').remove()
         }
