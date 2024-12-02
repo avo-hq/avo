@@ -41,8 +41,14 @@
                 stacked: true,
                 classes: 'w-full'
               %>
-              <%= hidden_field_tag :turbo_frame, params[:turbo_frame] %>
             <% end %>
+            <%#
+              It is important to render this hidden field to allow selective rendering of the turbo frame.
+              (e.g. in the case of "Attach and Attach Another")
+
+              Without this, the entire page will be reloaded when the form is submitted.
+            %>
+            <%= hidden_field_tag :turbo_frame, params[:turbo_frame] %>
             <% @attach_fields&.each_with_index do |field, index| %>
               <%= render(Avo::Items::SwitcherComponent.new(
                 resource: @related_resource,

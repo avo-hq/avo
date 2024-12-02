@@ -1,9 +1,3 @@
-<%
-  # Currently there isn't a way to summarize records on associations.
-  # We'd love to support this feature so please send in a PR.
-  should_summarize = @parent_record.blank?
-%>
-
 <thead
   data-component-name="avo/partials/table_header"
   class="bg-white border-b border-gray-200 pb-1">
@@ -83,14 +77,22 @@
             <%= field.table_header_label %>
           <% end %>
         <% end %>
-        <% if field.summarizable && should_summarize %>
+        <% if field.summarizable %>
           <div id="summary-header-<%= field.id %>" class="<%= text_classes %> cursor-pointer" data-action="click->toggle#togglePanel">
             <%= svg 'heroicons/solid/chart-bar', class: 'h-3 ml-1' %>
           </div>
           <turbo-frame
             id="summary-frame-<%= field.id %>"
             loading="lazy"
-            src="<%= distribution_chart_path(resource_name: field.resource.model_class, field_id: field.id) %>"
+            src="<%= distribution_chart_path(
+              {
+                resource_name: field.resource.model_class,
+                field_id: field.id,
+                via_record_id: @parent_record&.to_param,
+                via_resource_class: @parent_resource&.class&.to_s,
+                association_name: @field&.for_attribute || @field&.id
+              }.compact
+            ) %>"
             class="absolute inset-auto bg-white w-full sm:w-[400px] top-0 mt-6 p-4 z-40 shadow-modal rounded overflow-hidden hidden border border-gray-50"
             data-toggle-target="panel"
           >

@@ -104,13 +104,13 @@ module Avo
           turbo_response = case @response[:type]
           when :keep_modal_open
             # Only render the flash messages if the action keeps the modal open
-            turbo_stream.flash_alerts
+            turbo_stream.avo_flash_alerts
           when :download
             # Trigger download, removes modal and flash the messages
             [
-              turbo_stream.download(content: Base64.encode64(@response[:path]), filename: @response[:filename]),
-              turbo_stream.close_modal,
-              turbo_stream.flash_alerts
+              turbo_stream.avo_download(content: Base64.encode64(@response[:path]), filename: @response[:filename]),
+              turbo_stream.avo_close_modal,
+              turbo_stream.avo_flash_alerts
             ]
           when :navigate_to_action
             src, _ = @response[:action].link_arguments(resource: @action.resource, **@response[:navigate_to_action_args])
@@ -125,8 +125,8 @@ module Avo
           when :close_modal
             # Close the modal and flash the messages
             [
-              turbo_stream.close_modal,
-              turbo_stream.flash_alerts
+              turbo_stream.avo_close_modal,
+              turbo_stream.avo_flash_alerts
             ]
           else
             # Reload the page
