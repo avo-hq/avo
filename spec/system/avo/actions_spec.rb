@@ -331,6 +331,20 @@ RSpec.describe "Actions", type: :system do
     end
   end
 
+  describe "callable labels" do
+    it "pick label from arguments on run and cancel" do
+      encoded_arguments = Avo::BaseAction.encode_arguments({
+        cancel_button_label: "Cancel dummy action",
+        confirm_button_label: "Confirm dummy action"
+      })
+
+      visit "#{avo.resources_users_path}/actions?action_id=Avo::Actions::Sub::DummyAction&arguments=#{encoded_arguments}"
+
+      expect(page).to have_text "Cancel dummy action"
+      expect(page).to have_text "Confirm dummy action"
+    end
+  end
+
   #   let!(:roles) { { admin: false, manager: false, writer: false } }
   #   let!(:user) { create :user, active: true, roles: roles }
 
