@@ -13,10 +13,12 @@ class Avo::SvgFinder
       found_asset = default_strategy
 
       # Use the found asset
-      return found_asset if found_asset.present?
-
-      paths.find do |path|
-        File.exist? path
+      if found_asset.present?
+        found_asset
+      else
+        paths.find do |path|
+          File.exist? path
+        end
       end
     end
   end
