@@ -227,7 +227,7 @@ class Avo::Resources::User < Avo::BaseResource
   end
 
   def first_tabs_group
-    tabs do
+    tabs title: "First tabs group", description: "First tabs group description" do
       birthday_tab
       test_tab
       test_field("Inside tabs")
@@ -241,7 +241,7 @@ class Avo::Resources::User < Avo::BaseResource
   end
 
   def second_tabs_group
-    tabs id: :second_tabs_group do
+    tabs title: "Second tabs group", description: "Second tabs group description", id: :second_tabs_group do
       field :post,
         as: :has_one,
         name: "Main post",
