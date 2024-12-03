@@ -158,7 +158,8 @@ module Avo
               resource.model_class,
               Avo.configuration.authorization_methods.stringify_keys["index"],
               policy_class: resource.authorization_policy,
-              raise_exception: false
+              raise_exception: false,
+              resource_class: resource.to_s
             )
           end
           .sort_by { |r| r.name }
