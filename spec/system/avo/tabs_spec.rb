@@ -211,7 +211,7 @@ RSpec.describe "Tabs", type: :system do
     end
 
     expect(page).to have_text "Displaying 9 items"
-    expect(find('select#per_page.appearance-none').find('option[selected]').text).to eq('24')
+    expect(find("select#per_page.appearance-none").find("option[selected]").text).to eq("24")
 
     find_all('a[aria-label="View project"]')[0].click
     wait_for_loaded
@@ -220,6 +220,6 @@ RSpec.describe "Tabs", type: :system do
     wait_for_loaded
 
     expect(page).to have_text "Displaying 9 items"
-    expect(find('select#per_page.appearance-none').find('option[selected]').text).to eq('24')
+    expect(find("select#per_page.appearance-none").find("option[selected]").text).to eq("24")
   end
 end
