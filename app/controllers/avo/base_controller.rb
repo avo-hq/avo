@@ -316,14 +316,14 @@ module Avo
 
       # Pagination
       @index_params[:page] = params[:page] || page_from_session || 1
-      @index_params[:per_page] = Avo.configuration.per_page
-
-      if cookies[:per_page].present?
-        @index_params[:per_page] = cookies[:per_page]
-      end
+      @index_params[:per_page] = cookies[:per_page] || Avo.configuration.per_page
 
       if @parent_record.present?
-        @index_params[:per_page] = Avo.configuration.via_per_page
+        per_page_key = "#{@record.to_global_id}.has_many.#{@resource.class.to_s.parameterize}.per_page"
+        session[per_page_key] = params[:per_page] || session[per_page_key]
+        per_page_from_session = session[per_page_key]
+
+        @index_params[:per_page] = per_page_from_session || Avo.configuration.via_per_page
       end
 
       if params[:per_page].present?

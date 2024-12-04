@@ -200,4 +200,26 @@ RSpec.describe "Tabs", type: :system do
     expect(page).to have_css('a.current[role="link"][aria-disabled="true"][aria-current="page"]', text: "2")
     expect(page).to have_text "Displaying items 9-9 of 9 in total"
   end
+
+  it "keeps the per_page on association when back is used" do
+    visit avo.resources_user_path user
+
+    find('a[data-selected="false"][data-tabs-tab-name-param="Projects"]').click
+    within("#has_and_belongs_to_many_field_show_projects") do
+      expect(page).to have_text "Displaying items 1-8 of 9 in total"
+      find("select#per_page.appearance-none").select("24")
+    end
+
+    expect(page).to have_text "Displaying 9 items"
+    expect(find("select#per_page.appearance-none").find("option[selected]").text).to eq("24")
+
+    find_all('a[aria-label="View project"]')[0].click
+    wait_for_loaded
+
+    page.go_back
+    wait_for_loaded
+
+    expect(page).to have_text "Displaying 9 items"
+    expect(find("select#per_page.appearance-none").find("option[selected]").text).to eq("24")
+  end
 end
