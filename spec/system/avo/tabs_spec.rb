@@ -207,7 +207,7 @@ RSpec.describe "Tabs", type: :system do
     find('a[data-selected="false"][data-tabs-tab-name-param="Projects"]').click
     within("#has_and_belongs_to_many_field_show_projects") do
       expect(page).to have_text "Displaying items 1-8 of 9 in total"
-      find('select#per_page.appearance-none').select('24')
+      find("select#per_page.appearance-none").select("24")
     end
 
     expect(page).to have_text "Displaying 9 items"
