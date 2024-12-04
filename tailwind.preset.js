@@ -24,6 +24,7 @@ module.exports = {
   content: [
     ...contentPaths('./tmp/avo/packages/*'),
     ...contentPaths('./../avo-kanban/*'),
+    ...contentPaths('./../avo-collaborate'),
     ...contentPaths(avoPath),
   ],
   theme: {
@@ -162,6 +163,7 @@ module.exports = {
       addVariant('index-grid-view', '.index-grid-view & ')
       addVariant('index-table-view', '.index-table-view & ')
       addVariant('kanban-dragging', '.kanban-dragging & ')
+      addVariant('shift-pressed', '.shift-pressed & ')
     }),
   ],
 }

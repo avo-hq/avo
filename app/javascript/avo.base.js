@@ -39,6 +39,20 @@ function isMac() {
     document.body.classList.remove('os-mac')
   }
 }
+
+// Add the shift-pressed class to the body when the shift key is pressed
+document.addEventListener('keydown', (event) => {
+  if (event.shiftKey) {
+    document.body.classList.add('shift-pressed')
+  }
+})
+// Remove the shift-pressed class from the body when the shift key is released
+document.addEventListener('keyup', (event) => {
+  if (!event.shiftKey) {
+    document.body.classList.remove('shift-pressed')
+  }
+})
+
 function initTippy() {
   tippy('[data-tippy="tooltip"]', {
     theme: 'light',
@@ -68,6 +82,13 @@ function initTippy() {
 window.initTippy = initTippy
 
 ActiveStorage.start()
+
+document.addEventListener('turbo:before-stream-render', () => {
+  // We're using the timeout feature so we can fake the `turbo:after-stream-render` event
+  setTimeout(() => {
+    initTippy()
+  }, 1)
+})
 
 document.addEventListener('turbo:load', () => {
   initTippy()

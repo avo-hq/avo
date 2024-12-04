@@ -92,3 +92,13 @@ trix-editor {
 dialog#turbo-confirm {
   @apply bg-transparent;
 }
+
+.shift-pressed {
+  & .highlighted-row {
+    @apply !bg-slate-200;
+  }
+}
+
+.selected-row {
+  @apply !bg-slate-100;
+}

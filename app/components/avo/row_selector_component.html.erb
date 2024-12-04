@@ -11,7 +11,12 @@
       "w-4 h-4": @size.to_sym != :lg,
     }),
     data: {
-      action: "input->item-selector#toggle input->item-select-all#selectRow",
+      index: @index,
+      action: "
+        input->item-selector#toggle
+        input->item-select-all#selectRow
+        click->record-selector#toggleMultiple
+      ",
       item_select_all_target: "itemCheckbox",
       tippy: "tooltip"
     }

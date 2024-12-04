@@ -1,5 +1,10 @@
 <%= render Avo::PanelComponent.new(**args) do |c| %>
   <% if @is_main_panel %>
+    <% c.with_after_description_slot do %>
+      <% if Avo.plugin_manager.installed?("avo_collaborate") %>
+        <%#= render Avo::Collaborate::ReactionPickerComponent.new(target: @resource.record, resource: @resource) %>
+      <% end %>
+    <% end %>
     <% c.with_tools do %>
       <% controls.each do |control| %>
         <%= render_control control %>
