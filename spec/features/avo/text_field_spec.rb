@@ -51,6 +51,7 @@ RSpec.describe "TextField", type: :feature do
       it "changes the users name" do
         visit "/admin/resources/users/#{user.id}/edit"
 
+        expect(page).to have_selector('input[spellcheck="true"]')
         fill_in "user_first_name", with: "Jack Jack Jack"
 
         save

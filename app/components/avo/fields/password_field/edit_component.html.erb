@@ -8,7 +8,8 @@
       placeholder: @field.placeholder,
       style: @field.get_html(:style, view: view, element: :input),
       autocomplete: @field.autocomplete,
-      autofocus: @autofocus
+      autofocus: @autofocus,
+      **@field.edit_input_additional_attributes
     %>
 
     <% if @field.revealable %>

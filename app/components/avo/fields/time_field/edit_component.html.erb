@@ -22,7 +22,8 @@
       },
       disabled: disabled?,
       placeholder: @field.placeholder,
-      style: @field.get_html(:style, view: view, element: :input)
+      style: @field.get_html(:style, view: view, element: :input),
+      **@field.edit_input_additional_attributes
     %>
     <%= datetime_field "fake_#{@field.id}", "fake",
       value: @field.edit_formatted_value,
@@ -34,7 +35,8 @@
       },
       disabled: disabled?,
       placeholder: @field.placeholder,
-      style: @field.get_html(:style, view: view, element: :input)
+      style: @field.get_html(:style, view: view, element: :input),
+      **@field.edit_input_additional_attributes
     %>
     <%= content_tag :button,
       class: "absolute right-0 self-center mr-4 uppercase font-semibold text-xs",

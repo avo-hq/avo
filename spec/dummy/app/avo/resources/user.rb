@@ -221,7 +221,7 @@ class Avo::Resources::User < Avo::BaseResource
 
   def stacked_name
     with_options as: :text, stacked: true do
-      field :first_name, placeholder: "John"
+      field :first_name, placeholder: "John", html: {edit: {input: {spellcheck: true}}}
       field :last_name, placeholder: "Doe"
     end
   end
