@@ -13,7 +13,20 @@ export default class extends Controller {
     return document.querySelectorAll('.item-selector-cell')
   }
 
+  get hasLastCheckedIndex() {
+    return this.lastCheckedIndex !== null
+  }
+
   connect() {
+    this.#addEventListeners()
+  }
+
+  #resetEventListeners() {
+    this.#removeEventListeners()
+    this.#addEventListeners()
+  }
+
+  #addEventListeners() {
     // Attach event listeners to item selector cells
     Array.from(this.itemSelectorCells).forEach((itemSelectorCell) => {
       itemSelectorCell.addEventListener('mouseenter', this.#selectorMouseenterHandler.bind(this))
@@ -26,20 +39,27 @@ export default class extends Controller {
   }
 
   disconnect() {
+    this.#removeEventListeners()
+  }
+
+  #removeEventListeners() {
+    console.log('removeEventListeners')
     // Remove event listeners
     Array.from(this.itemSelectorCells).forEach((itemSelectorCell) => {
       itemSelectorCell.removeEventListener('mouseenter', this.#selectorMouseenterHandler.bind(this))
       itemSelectorCell.removeEventListener('mouseleave', this.#selectorMouseleaveHandler.bind(this))
     })
-    document.removeEventListener('keydown', this.#keydownHandler)
-    document.removeEventListener('keyup', this.#keyupHandler)
+    document.removeEventListener('keydown', this.#keydownHandler.bind(this))
+    document.removeEventListener('keyup', this.#keyupHandler.bind(this))
   }
 
   #selectorMouseenterHandler(event) {
     // Add the highlighted-row class to the row that the mouse is over
     event.target.closest('tr').classList.add('highlighted-row')
-    // Highlight the range of rows between the last checked index and the current index
-    this.#highlightRange(this.lastCheckedIndex, parseInt(event.target.closest('tr').dataset.index))
+    if (this.lastCheckedIndex) {
+      // Highlight the range of rows between the last checked index and the current index
+      this.#highlightRange(this.lastCheckedIndex, parseInt(event.target.closest('tr').dataset.index))
+    }
   }
 
   #selectorMouseleaveHandler(event) {
@@ -76,26 +96,35 @@ export default class extends Controller {
 
   // Toggle multiple items
   toggleMultiple(event) {
+    console.log('toggleMultiple', this.autoClicking, this.lastCheckedIndex, event.shiftKey, !this.lastCheckedIndex && !event.shiftKey)
     // this check is to prevent the method from running twice when the script clicks the checkboxes
     if (this.autoClicking) {
       return
     }
 
-    if (!this.lastCheckedIndex && !event.shiftKey) {
+    // If there's no last checked index and the shift key isn't pressed, set the starting index
+    // if (!this.hasLastCheckedIndex && !event.shiftKey) {
+    if (!this.hasLastCheckedIndex) {
       this.#setStartingIndex(event)
 
       return
     }
 
+    // // If there's no last checked index and the shift key isn't pressed, set the starting index
+    // if (!this.hasLastCheckedIndex && event.shiftKey) {
+    //   return
+    // }
+
     // Ignore action if shift key is not pressed
     if (!event.shiftKey) {
+      this.#resetLastCheckedIndex()
+
       return
     }
+    console.log('starting')
 
     const currentIndex = parseInt(event.target.dataset.index)
     const theRange = difference(range(this.lastCheckedIndex, currentIndex), [this.lastCheckedIndex, currentIndex])
-
-    this.lastCheckedIndex = null
 
     // Set the autoClicking flag to true to prevent the method from running twice
     this.autoClicking = true
@@ -117,6 +146,18 @@ export default class extends Controller {
 
     // Reset the autoClicking flag
     this.autoClicking = false
+    // console.log('autoClicking', this.autoClicking)
+
+    // Reset the last checked index
+    this.#resetLastCheckedIndex()
+
+    this.#resetEventListeners()
+
+    console.log('reached the end', this.lastCheckedIndex)
+  }
+
+  #resetLastCheckedIndex() {
+    this.lastCheckedIndex = null
   }
 
   // Set the starting index
