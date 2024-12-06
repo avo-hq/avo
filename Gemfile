@@ -21,12 +21,12 @@ gem 'cssbundling-rails'
 # Dependencies for dummy_app
 #
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-# gem "rails", "~> 7.1.0"
-gem "rails", github: "rails/rails", branch: "main"
+gem "rails", ">= 8.0.0"
+# gem "rails", github: "rails/rails", branch: "main"
 
 # Avo file filed requires this gem
 # gem "activestorage"
-gem "activestorage", github: "rails/rails", branch: "main"
+gem "activestorage", ">= 8.0.0"
 
 # Use postgresql as the database for Active Record
 gem "pg", ">= 0.18", "< 2.0"
@@ -152,7 +152,7 @@ gem "active_median"
 gem 'acts_as_list'
 
 # gem 'acts-as-taggable-on', '~> 10.0'
-gem "acts-as-taggable-on", github: "avo-hq/acts-as-taggable-on"
+gem "acts-as-taggable-on"
 
 gem "bundler-integrity", "~> 1.0"
 
