@@ -38,4 +38,8 @@ class Avo::Fields::IndexComponent < Avo::BaseComponent
       resource: @resource
     }
   end
+
+  def copyable?
+    field.respond_to?(:copyable) && field.copyable
+  end
 end

@@ -41,7 +41,7 @@ RSpec.describe "TestHelpers", type: :system do
           name_wrapper_without_type = show_field_wrapper(id: "name")
 
           expect(name_wrapper).to eq name_wrapper_without_type
-          expect(name_wrapper.text).to eql "NAME\n#{project.name}"
+          expect(name_wrapper.text).to eql "NAME\n#{project.name}\n Copy to clipboard"
         end
       end
     end
@@ -139,7 +139,7 @@ RSpec.describe "TestHelpers", type: :system do
           name_value_without_type = show_field_value(id: "name")
 
           expect(name_value).to eq name_value_without_type
-          expect(name_value).to eql project.name
+          expect(name_value).to eql "#{project.name}\n Copy to clipboard"
         end
       end
     end

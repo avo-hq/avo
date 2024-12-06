@@ -61,4 +61,8 @@ class Avo::Fields::ShowComponent < Avo::BaseComponent
   def disabled?
     field.is_readonly? || field.is_disabled?
   end
+
+  def copyable?
+    field.respond_to?(:copyable) && field.copyable
+  end
 end
